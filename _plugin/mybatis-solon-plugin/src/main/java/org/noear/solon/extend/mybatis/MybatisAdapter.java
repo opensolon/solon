@@ -4,6 +4,8 @@ import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 
+import java.util.List;
+
 /**
  * 适配器
  *
@@ -31,7 +33,7 @@ public interface MybatisAdapter {
     SqlSession getSession();
 
     /**
-     * 替代 @mapperScan
-     */
-    void mapperScan();
+     * 获取 Mapper 配置获取
+     * */
+    List<String> getMapperList();
 }

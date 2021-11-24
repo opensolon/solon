@@ -7,7 +7,7 @@ import org.noear.solon.extend.mybatis.MybatisAdapterFactory;
 import java.util.Properties;
 
 /**
- * 适配器工厂默认实现
+ * Mybatis 适配器工厂默认实现
  *
  * @author noear
  * @since 1.5

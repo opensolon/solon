@@ -6,7 +6,7 @@ import org.noear.solon.core.event.EventListener;
 import javax.sql.DataSource;
 
 /**
- * 数据源Bean事件监听器
+ * 数据源监听器（监听：DataSource bean）
  *
  * @author noear
  * @since 1.1

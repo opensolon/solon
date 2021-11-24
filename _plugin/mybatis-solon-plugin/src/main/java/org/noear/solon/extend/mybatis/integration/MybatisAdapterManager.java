@@ -76,7 +76,8 @@ public class MybatisAdapterManager {
             adapter = adapterFactory.create(bw, Solon.cfg().getProp("mybatis." + bw.name()));
         }
 
-        adapter.mapperScan();
+        //就扫一次
+        MybatisMapperHelper.mapperScan(adapter);
 
         return adapter;
     }

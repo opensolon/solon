@@ -15,7 +15,6 @@ import org.noear.solon.Utils;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.event.EventBus;
-import org.noear.solon.core.util.ScanUtil;
 import org.noear.solon.extend.mybatis.MybatisAdapter;
 import org.noear.solon.extend.mybatis.tran.SolonManagedTransactionFactory;
 
@@ -26,6 +25,8 @@ import java.util.List;
 import java.util.Properties;
 
 /**
+ * Mybatis 适配器默认实现
+ *
  * @author noear
  * @since 1.1
  */
@@ -187,6 +188,7 @@ public class MybatisAdapterDefault implements MybatisAdapter {
     }
 
     private SqlSession session;
+
     @Override
     public SqlSession getSession() {
         if (session == null) {
@@ -196,47 +198,8 @@ public class MybatisAdapterDefault implements MybatisAdapter {
         return session;
     }
 
-    /**
-     * 替代 @mapperScan
-     */
     @Override
-    public void mapperScan() {
-        SqlSession session = getSession();
-
-        for (String val : mappers) {
-            mapperScan0(session, val);
-        }
-    }
-
-    private void mapperScan0(SqlSession session, String val) {
-        if (val.endsWith(".xml")) {
-
-        } else if (val.endsWith(".class")) {
-            Class<?> clz = Utils.loadClass(val.substring(0, val.length() - 6));
-            mapperBindDo(session, clz);
-        } else {
-            String dir = val.replace('.', '/');
-            mapperScanDo(session, dir);
-        }
-    }
-
-    private void mapperScanDo(SqlSession session, String dir) {
-        ScanUtil.scan(dir, n -> n.endsWith(".class"))
-                .stream()
-                .map(name -> {
-                    String className = name.substring(0, name.length() - 6);
-                    return Utils.loadClass(className.replace("/", "."));
-                })
-                .forEach((clz) -> {
-                    mapperBindDo(session, clz);
-                });
-    }
-
-    private void mapperBindDo(SqlSession session, Class<?> clz) {
-        if (clz != null && clz.isInterface()) {
-            Object mapper = session.getMapper(clz);
-
-            Aop.context().putWrap(clz, Aop.wrap(clz, mapper));
-        }
+    public List<String> getMapperList() {
+        return mappers;
     }
 }
