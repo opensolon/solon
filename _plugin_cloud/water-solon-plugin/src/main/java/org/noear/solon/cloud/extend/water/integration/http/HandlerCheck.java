@@ -9,6 +9,8 @@ import org.noear.solon.core.handle.Handler;
 import org.noear.water.utils.TextUtils;
 
 /**
+ * 状态检测处理
+ *
  * @author noear
  * @since 1.2
  */

@@ -94,12 +94,4 @@ public interface CloudListService {
         return inList("server", "token", token);
     }
 
-    /**
-     * 在Token名单列表中
-     *
-     * @param token Token
-     */
-    default boolean inListOfMasterToken(String token) {
-        return inList("master", "token", token);
-    }
 }

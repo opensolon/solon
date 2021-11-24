@@ -10,7 +10,7 @@ import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Handler;
 
 /**
- * 任务处理者实体
+ * 任务调度处理（用令牌的形式实现安全）
  *
  * @author noear
  * @since 1.4
@@ -19,13 +19,15 @@ public class HandlerJob implements Handler {
     @Override
     public void handle(Context ctx) throws Throwable {
         String ip = ctx.realIp();
+        String token = ctx.header("token", "");
 
-        if (Solon.cfg().isWhiteMode()) {
-            if (CloudClient.list().inListOfClientAndServerIp(ip) == false) {
-                ctx.output(ip + ", not is whitelist!");
-                return;
-            }
+        //订时任务，必须要有令片
+        if (authServerSafe(ip, token)) {
+            ctx.status(400);
+            ctx.output("Invalid token!");
+            return;
         }
+
 
         handleDo(ctx, ctx.param("name"));
     }
@@ -50,6 +52,16 @@ public class HandlerJob implements Handler {
                 ctx.status(500);
                 ctx.output(ex);
             }
+        }
+    }
+
+    private boolean authServerSafe(String ip, String token) {
+        if (Solon.cfg().isDriftMode()) {
+            return true;
+        } else {
+            return CloudClient.list().inListOfServerToken(token) ||
+                    CloudClient.list().inListOfServerIp(ip);
+
         }
     }
 }

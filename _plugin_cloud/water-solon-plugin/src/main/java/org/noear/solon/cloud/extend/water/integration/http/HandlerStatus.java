@@ -18,7 +18,7 @@ public class HandlerStatus implements Handler {
     public void handle(Context ctx) throws Throwable {
         String ip = ctx.realIp();
 
-        if (authMasterIp(ip)) {
+        if (authServerIp(ip)) {
             RuntimeStatus rs = RuntimeUtils.getStatus();
             rs.name = Instance.local().service();
             rs.address = Instance.local().address();
@@ -29,7 +29,7 @@ public class HandlerStatus implements Handler {
         }
     }
 
-    private boolean authMasterIp(String ip) {
+    private boolean authServerIp(String ip) {
         if (Solon.cfg().isDriftMode()) {
             return true;
         } else {

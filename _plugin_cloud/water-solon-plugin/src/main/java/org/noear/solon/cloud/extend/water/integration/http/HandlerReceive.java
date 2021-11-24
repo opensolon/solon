@@ -7,12 +7,13 @@ import org.noear.solon.cloud.model.Event;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Handler;
-import org.noear.solon.logging.utils.TagsMDC;
 import org.noear.water.WaterClient;
 import org.noear.water.dso.MessageHandler;
 import org.noear.water.model.MessageM;
 
 /**
+ * 消息接收处理（用签名的形式实现安全）
+ *
  * @author noear
  * @since 1.2
  */
