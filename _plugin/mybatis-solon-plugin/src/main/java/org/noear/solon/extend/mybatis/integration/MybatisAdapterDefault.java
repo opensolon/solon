@@ -10,14 +10,13 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.apache.ibatis.transaction.TransactionFactory;
-import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.ScanUtil;
-import org.noear.solon.extend.mybatis.SqlAdapter;
+import org.noear.solon.extend.mybatis.MybatisAdapter;
 import org.noear.solon.extend.mybatis.tran.SolonManagedTransactionFactory;
 
 import javax.sql.DataSource;
@@ -30,7 +29,7 @@ import java.util.Properties;
  * @author noear
  * @since 1.1
  */
-public class SqlAdapterDefault implements SqlAdapter {
+public class MybatisAdapterDefault implements MybatisAdapter {
     protected final BeanWrap dsWrap;
 
     protected Configuration config;
@@ -41,14 +40,14 @@ public class SqlAdapterDefault implements SqlAdapter {
     /**
      * 构建Sql工厂适配器，使用默认的 typeAliases 和 mappers 配置
      */
-    public SqlAdapterDefault(BeanWrap dsWrap) {
+    public MybatisAdapterDefault(BeanWrap dsWrap) {
         this(dsWrap, Solon.cfg().getProp("mybatis"));
     }
 
     /**
      * 构建Sql工厂适配器，使用属性配置
      */
-    public SqlAdapterDefault(BeanWrap dsWrap, Properties props) {
+    public MybatisAdapterDefault(BeanWrap dsWrap, Properties props) {
         this.dsWrap = dsWrap;
         this.factoryBuilder = new SqlSessionFactoryBuilder();
 
@@ -61,7 +60,7 @@ public class SqlAdapterDefault implements SqlAdapter {
         initConfiguration(environment);
 
         //加载插件
-        for (Interceptor i : SqlPlugins.getInterceptors()) {
+        for (Interceptor i : MybatisPlugins.getInterceptors()) {
             config.addInterceptor(i);
         }
 
@@ -201,14 +200,12 @@ public class SqlAdapterDefault implements SqlAdapter {
      * 替代 @mapperScan
      */
     @Override
-    public SqlAdapter mapperScan() {
+    public void mapperScan() {
         SqlSession session = getSession();
 
         for (String val : mappers) {
             mapperScan0(session, val);
         }
-
-        return this;
     }
 
     private void mapperScan0(SqlSession session, String val) {

@@ -3,6 +3,8 @@ package org.noear.solon.extend.mybatis;
 import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
+import org.noear.solon.core.BeanWrap;
+import org.noear.solon.extend.mybatis.integration.MybatisAdapterManager;
 
 /**
  * 适配器
@@ -13,7 +15,11 @@ import org.apache.ibatis.session.SqlSessionFactory;
  * @author noear
  * @since 1.5
  * */
-public interface SqlAdapter {
+public interface MybatisAdapter {
+    static MybatisAdapter get(BeanWrap bw){
+        return MybatisAdapterManager.global().get(bw);
+    }
+
     /**
      * 获取配置器
      */
@@ -32,5 +38,5 @@ public interface SqlAdapter {
     /**
      * 替代 @mapperScan
      */
-    SqlAdapter mapperScan();
+    void mapperScan();
 }

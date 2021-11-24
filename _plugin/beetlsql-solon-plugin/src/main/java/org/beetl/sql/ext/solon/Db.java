@@ -12,7 +12,7 @@ import java.lang.annotation.*;
  * @author noear
  * @since 2020-09-01
  * */
-@Target({ElementType.FIELD, ElementType.TYPE})
+@Target({ElementType.FIELD, ElementType.PARAMETER, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface Db {

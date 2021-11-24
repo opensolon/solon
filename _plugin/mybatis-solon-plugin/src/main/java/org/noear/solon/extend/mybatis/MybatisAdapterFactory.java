@@ -10,7 +10,7 @@ import java.util.Properties;
  * @author noear
  * @since 1.5
  */
-public interface SqlAdapterFactory {
-    SqlAdapter create(BeanWrap dsWrap);
-    SqlAdapter create(BeanWrap dsWrap, Properties props);
+public interface MybatisAdapterFactory {
+    MybatisAdapter create(BeanWrap dsWrap);
+    MybatisAdapter create(BeanWrap dsWrap, Properties props);
 }

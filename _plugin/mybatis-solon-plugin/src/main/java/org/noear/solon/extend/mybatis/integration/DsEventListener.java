@@ -16,7 +16,7 @@ class DsEventListener implements EventListener<BeanWrap> {
     public void onEvent(BeanWrap bw) {
         if (bw.raw() instanceof DataSource) {
             //将数据源bean，注册到会话管理器
-            SqlSessionManager.global().reg(bw);
+            MybatisAdapterManager.global().reg(bw);
         }
     }
 }
