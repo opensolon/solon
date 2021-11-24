@@ -19,7 +19,7 @@ class MybatisMapperHelper {
     protected static void mapperScan(MybatisAdapter adapter) {
         SqlSession session = adapter.getSession();
 
-        for (String val : adapter.getMapperList()) {
+        for (String val : adapter.getMappers()) {
             mapperScan0(session, val);
         }
     }

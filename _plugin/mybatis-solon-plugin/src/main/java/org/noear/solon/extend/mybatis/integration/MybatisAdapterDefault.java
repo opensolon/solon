@@ -98,11 +98,11 @@ public class MybatisAdapterDefault implements MybatisAdapter {
                                 //type class
                                 Class<?> clz = Utils.loadClass(val.substring(0, val.length() - 6));
                                 if (clz != null) {
-                                    getConfig().getTypeAliasRegistry().registerAlias(clz);
+                                    getConfiguration().getTypeAliasRegistry().registerAlias(clz);
                                 }
                             } else {
                                 //package
-                                getConfig().getTypeAliasRegistry().registerAliases(val);
+                                getConfiguration().getTypeAliasRegistry().registerAliases(val);
                             }
                         }
                     }
@@ -130,12 +130,12 @@ public class MybatisAdapterDefault implements MybatisAdapter {
                                 //mapper class
                                 Class<?> clz = Utils.loadClass(val.substring(0, val.length() - 6));
                                 if (clz != null) {
-                                    getConfig().addMapper(clz);
+                                    getConfiguration().addMapper(clz);
                                     mappers.add(val);
                                 }
                             } else {
                                 //package
-                                getConfig().addMappers(val);
+                                getConfiguration().addMappers(val);
                                 mappers.add(val);
                             }
                         }
@@ -160,7 +160,7 @@ public class MybatisAdapterDefault implements MybatisAdapter {
             /**
              * mapper映射文件都是通过XMLMapperBuilder解析
              */
-            XMLMapperBuilder mapperParser = new XMLMapperBuilder(stream, getConfig(), val, getConfig().getSqlFragments());
+            XMLMapperBuilder mapperParser = new XMLMapperBuilder(stream, getConfiguration(), val, getConfiguration().getSqlFragments());
             mapperParser.parse();
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -171,7 +171,7 @@ public class MybatisAdapterDefault implements MybatisAdapter {
      * 获取配置器
      */
     @Override
-    public Configuration getConfig() {
+    public Configuration getConfiguration() {
         return config;
     }
 
@@ -199,7 +199,7 @@ public class MybatisAdapterDefault implements MybatisAdapter {
     }
 
     @Override
-    public List<String> getMapperList() {
+    public List<String> getMappers() {
         return mappers;
     }
 }

@@ -18,9 +18,14 @@ import java.util.List;
 public interface MybatisAdapter {
 
     /**
+     * 获取 Mapper 配置获取
+     * */
+    List<String> getMappers();
+
+    /**
      * 获取配置器
      */
-    Configuration getConfig();
+    Configuration getConfiguration();
 
     /**
      * 获取会话工厂
@@ -28,12 +33,8 @@ public interface MybatisAdapter {
     SqlSessionFactory getFactory();
 
     /**
-     * 获取会话
+     * 获取缓存的会话
      */
     SqlSession getSession();
 
-    /**
-     * 获取 Mapper 配置获取
-     * */
-    List<String> getMapperList();
 }
