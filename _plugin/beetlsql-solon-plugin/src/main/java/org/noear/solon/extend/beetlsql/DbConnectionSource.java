@@ -24,6 +24,13 @@ class DbConnectionSource extends DefaultConnectionSource {
 
     @Override
     public Connection getConn(ExecuteContext ctx, boolean isUpdate) {
+        if(getForceDataSource()!=null){
+            try {
+                return getForceDataSource().getConnection();
+            } catch (SQLException e) {
+                throw new BeetlSQLException(BeetlSQLException.CANNOT_GET_CONNECTION, e);
+            }
+        }
         //只有一个数据源
         if (this.slaves == null || this.slaves.length == 0) {
             return this.getWriteConn(ctx);
