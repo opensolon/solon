@@ -1,16 +1,14 @@
 package webapp.demoe_websocket;
 
 import org.noear.solon.Solon;
-import org.noear.solon.SolonApp;
-import org.noear.solon.annotation.Controller;
-import org.noear.solon.annotation.Mapping;
+import org.noear.solon.annotation.*;
 import org.noear.solon.core.handle.ModelAndView;
 import org.noear.solon.core.handle.Context;
-import org.noear.solon.core.handle.MethodType;
 
 @Controller
 public class WsDemoController {
-    @Mapping(value = "/demoe/*",method = MethodType.WEBSOCKET)
+    @WebSocket
+    @Mapping("/demoe/*")
     public void test(Context ctx) throws Exception{
         if(ctx == null){
             return;
@@ -27,7 +25,8 @@ public class WsDemoController {
         }
     }
 
-    @Mapping(value = "/demoe/websocket")
+    @Http
+    @Mapping("/demoe/websocket")
     public Object test_client(Context ctx){
         ModelAndView mv = new ModelAndView("demoe/websocket.ftl");
         mv.put("app_port", Solon.global().port() + 10000);
