@@ -1,7 +1,10 @@
 package webapp.demoe_websocket;
 
 import org.noear.solon.Solon;
-import org.noear.solon.annotation.*;
+import org.noear.solon.annotation.Controller;
+import org.noear.solon.annotation.Http;
+import org.noear.solon.annotation.Mapping;
+import org.noear.solon.annotation.WebSocket;
 import org.noear.solon.core.handle.ModelAndView;
 import org.noear.solon.core.handle.Context;
 
