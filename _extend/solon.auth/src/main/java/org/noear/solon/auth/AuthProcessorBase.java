@@ -14,7 +14,7 @@ public abstract class AuthProcessorBase implements AuthProcessor {
 
     /**
      * 验证IP
-     * */
+     */
     @Override
     public boolean verifyIp(String ip) {
         return false;
@@ -31,7 +31,7 @@ public abstract class AuthProcessorBase implements AuthProcessor {
     /**
      * 验证路径（一般使用路径验证）
      *
-     * @param path 路径
+     * @param path   路径
      * @param method 请求方式
      */
     @Override
@@ -43,13 +43,13 @@ public abstract class AuthProcessorBase implements AuthProcessor {
      * 验证特定权限（有特殊情况用权限验证）
      *
      * @param permissions 权限
-     * @param logical 认证的逻辑关系
+     * @param logical     认证的逻辑关系
      */
     @Override
     public boolean verifyPermissions(String[] permissions, Logical logical) {
         List<String> list = getPermissions();
 
-        if (list.size() == 0) {
+        if (list == null || list.size() == 0) {
             return false;
         }
 
@@ -75,14 +75,14 @@ public abstract class AuthProcessorBase implements AuthProcessor {
     /**
      * 验证特定角色（有特殊情况用角色验证）
      *
-     * @param roles 角色
+     * @param roles   角色
      * @param logical 认证的逻辑关系
      */
     @Override
     public boolean verifyRoles(String[] roles, Logical logical) {
         List<String> list = getRoles();
 
-        if (list.size() == 0) {
+        if (list == null || list.size() == 0) {
             return false;
         }
 
@@ -107,11 +107,11 @@ public abstract class AuthProcessorBase implements AuthProcessor {
 
     /**
      * 获取用户权限列表
-     * */
+     */
     protected abstract List<String> getPermissions();
 
     /**
      * 获取用户角色列表
-     * */
+     */
     protected abstract List<String> getRoles();
 }
