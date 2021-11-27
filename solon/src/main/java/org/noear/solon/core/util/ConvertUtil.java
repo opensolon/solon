@@ -182,6 +182,10 @@ public class ConvertUtil {
         }
 
         if (Boolean.class == type || type == Boolean.TYPE) {
+            if("1".equals(val)){
+                return true;
+            }
+
             return Boolean.parseBoolean(val);
         }
 
