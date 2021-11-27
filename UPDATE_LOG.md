@@ -2,6 +2,7 @@
 * Mvc 注入，支持 1 转为 true
 * session.state.jwt 的 TOKEN 默认改为 Token
 * AuthProcessorBase 增加 list = null 的预检
+* 去掉 Scan completed 打印
 
 #### 1.6.1
 * 增加 @Inject("ds1") BeanWrap bw; 模式

@@ -52,10 +52,6 @@ public class ResourceScanner {
             EventBus.push(ex);
         }
 
-        if (Solon.cfg().isDebugMode()) {
-            PrintUtil.info("Scan completed: ", urls.toString());
-        }
-
         return urls;
     }
 
