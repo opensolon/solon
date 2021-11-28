@@ -16,6 +16,7 @@ public class Invocation extends Context {
 
     public Invocation(Config config, Method method, String action, String url, Filter actuator) {
         super(config, method, action, url);
+        this.headers.putAll(config.getHeaders());
         this.filters.addAll(config.getFilters());
         this.filters.add(actuator);
         this.index = 0;

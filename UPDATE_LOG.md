@@ -3,6 +3,7 @@
 * session.state.jwt 的 TOKEN 默认改为 Token
 * AuthProcessorBase 增加 list = null 的预检
 * 去掉 Scan completed 打印
+* 修复 Nami 构造器设定的Headers，没有下传的问题
 
 #### 1.6.1
 * 增加 @Inject("ds1") BeanWrap bw; 模式

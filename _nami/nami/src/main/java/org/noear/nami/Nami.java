@@ -118,6 +118,8 @@ public class Nami {
     public Nami call(Map<String, String> headers, Map args, Object body) {
         try {
             Invocation invocation = new Invocation(_config, _method, _action, _url, this::callDo);
+
+
             if (headers != null) {
                 invocation.headers.putAll(headers);
             }
