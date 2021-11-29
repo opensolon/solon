@@ -22,13 +22,13 @@ public class LengthValidator implements Validator<Length> {
 
     @Override
     public Result validateOfEntity(Class<?> clz, Length anno, String name, Object val0, StringBuilder tmp) {
-        if (val0 instanceof String == false) {
+        if (val0 != null && val0 instanceof String == false) {
             return Result.failure(clz.getSimpleName() + "." + name);
         }
 
         String val = (String) val0;
 
-        if (val == null || (anno.min() > 0 && val.length() < anno.min()) || (anno.max() > 0 && val.length() > anno.max())) {
+        if (verify(anno, val) == false) {
             return Result.failure(clz.getSimpleName() + "." + name);
         } else {
             return Result.succeed();
@@ -39,7 +39,7 @@ public class LengthValidator implements Validator<Length> {
     public Result validateOfContext(Context ctx, Length anno, String name, StringBuilder tmp) {
         String val = ctx.param(name);
 
-        if (verify(anno, val)) {
+        if (verify(anno, val) == false) {
             return Result.failure(name);
         } else {
             return Result.succeed();

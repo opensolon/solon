@@ -120,8 +120,8 @@ public class ValidController {
     }
 
     //这也是基于 context 的验证体系
-    @Mapping("size")
-    public String size(@Length(min = 2, max = 5, message = "测试") String val1,
+    @Mapping("length")
+    public String length(@Length(min = 2, max = 5, message = "测试") String val1,
                        @Length(min = 2, max = 5, message = "测试") String val2) {
         return "OK";
     }
