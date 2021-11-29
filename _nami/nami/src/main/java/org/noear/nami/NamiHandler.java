@@ -131,7 +131,7 @@ public class NamiHandler implements InvocationHandler {
 
         //Object 函数调用
         Class caller = method.getDeclaringClass();
-        if (Object.class == caller) {
+        if (method.isDefault()) {
             if (this.lookup == null) {
                 Constructor<MethodHandles.Lookup> constructor = MethodHandles.Lookup.class.getDeclaredConstructor(Class.class, Integer.TYPE);
                 constructor.setAccessible(true);
