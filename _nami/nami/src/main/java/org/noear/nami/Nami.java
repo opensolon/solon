@@ -1,7 +1,6 @@
 package org.noear.nami;
 
 import org.noear.nami.common.Constants;
-import org.noear.solon.Solon;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
