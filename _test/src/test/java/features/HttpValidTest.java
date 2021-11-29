@@ -171,7 +171,8 @@ public class HttpValidTest extends _TestBase{
     public void test2v_length() throws IOException {
         assert get("/demo2/valid/length?val1=111-2&val2=222-2").equals("OK");
         assert get("/demo2/valid/length?val1=11-12&val2=").equals("OK") == false;
-        assert get("/demo2/valid/length").equals("OK")== false;
+        assert get("/demo2/valid/length?val1=11-12&val2=12121212").equals("OK") == false;
+        assert get("/demo2/valid/length").equals("OK");
     }
 
     @Test
