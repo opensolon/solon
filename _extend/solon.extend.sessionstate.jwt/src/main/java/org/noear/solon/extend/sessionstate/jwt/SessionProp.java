@@ -38,7 +38,7 @@ class SessionProp {
         session_state_domain = Solon.cfg().get("server.session.state.domain");
         session_state_domain_auto = Solon.cfg().getBool("server.session.state.domain.auto", true);
 
-        session_jwt_name = Solon.cfg().get("server.session.state.jwt.name", "Token");
+        session_jwt_name = Solon.cfg().get("server.session.state.jwt.name", "TOKEN");
         session_jwt_secret = Solon.cfg().get("server.session.state.jwt.secret");
         session_jwt_prefix = Solon.cfg().get("server.session.state.jwt.prefix", "").trim();
 

@@ -1,6 +1,5 @@
 #### 1.6.2
 * Mvc 注入，支持 1 转为 true 的支持
-* session.state.jwt 的 TOKEN 默认改为 Token
 * AuthProcessorBase 增加 list = null 的预检
 * 去掉 Scan completed 打印
 * 修复 Nami 构造器设定的Headers，没有下传的问题
