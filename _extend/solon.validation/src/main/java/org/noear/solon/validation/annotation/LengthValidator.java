@@ -1,8 +1,11 @@
 package org.noear.solon.validation.annotation;
 
+import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Result;
 import org.noear.solon.validation.Validator;
+
+import java.time.format.DateTimeFormatter;
 
 /**
  *
@@ -36,10 +39,27 @@ public class LengthValidator implements Validator<Length> {
     public Result validateOfContext(Context ctx, Length anno, String name, StringBuilder tmp) {
         String val = ctx.param(name);
 
-        if (val == null || (anno.min() > 0 && val.length() < anno.min()) || (anno.max() > 0 && val.length() > anno.max())) {
+        if (verify(anno, val)) {
             return Result.failure(name);
         } else {
             return Result.succeed();
         }
+    }
+
+    private boolean verify(Length anno, String val) {
+        //如果为空，算通过（交由@NotEmpty之类，进一步控制）
+        if (Utils.isEmpty(val)) {
+            return true;
+        }
+
+        if (anno.min() > 0 && val.length() < anno.min()) {
+            return false;
+        }
+
+        if (anno.max() > 0 && val.length() > anno.max()) {
+            return false;
+        }
+
+        return true;
     }
 }
