@@ -51,6 +51,6 @@ public class ValidModel2 {
     private Integer field16;
     @Length(min = 3)
     private String field17;
-    @Size(min = 1)
+    @Size(min = 2)
     private List<String> field18;
 }

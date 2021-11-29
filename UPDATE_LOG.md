@@ -4,6 +4,7 @@
 * 去掉 Scan completed 打印
 * 修复 Nami 构造器设定的Headers，没有下传的问题
 * Nami 增加 interface 默认函数的支持
+* 允许 Size，Length 注解的数据为Null。交由 NotNull 负责
 
 #### 1.6.1
 * 增加 @Inject("ds1") BeanWrap bw; 模式

@@ -21,13 +21,13 @@ public class SizeValidator implements Validator<Size> {
 
     @Override
     public Result validateOfEntity(Class<?> clz, Size anno, String name, Object val0, StringBuilder tmp) {
-        if (val0 instanceof Collection == false) {
+        if (val0 != null && val0 instanceof Collection == false) {
             return Result.failure(clz.getSimpleName() + "." + name);
         }
 
         Collection val = (Collection) val0;
 
-        if (val == null || (anno.min() > 0 && val.size() < anno.min()) || (anno.max() > 0 && val.size() > anno.max())) {
+        if (verify(anno, val) == false) {
             return Result.failure(clz.getSimpleName() + "." + name);
         } else {
             return Result.succeed();
@@ -37,5 +37,22 @@ public class SizeValidator implements Validator<Size> {
     @Override
     public Result validateOfContext(Context ctx, Size anno, String name, StringBuilder tmp) {
         return Result.failure();
+    }
+
+    private boolean verify(Size anno, Collection val) {
+        //如果为空，算通过（交由@NotNull之类，进一步控制）
+        if (val == null) {
+            return true;
+        }
+
+        if (anno.min() > 0 && val.size() < anno.min()) {
+            return false;
+        }
+
+        if (anno.max() > 0 && val.size() > anno.max()) {
+            return false;
+        }
+
+        return true;
     }
 }
