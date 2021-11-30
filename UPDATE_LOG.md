@@ -2,7 +2,7 @@
 * Mvc 注入，支持 1 转为 true 的支持
 * AuthProcessorBase 增加 list = null 的预检
 * 去掉 Scan completed 打印
-* 修复 Nami 构造器设定的Headers，没有下传的问题
+* 修复 Nami 构造器设定的 Headers，没有下传的问题
 * Nami 增加 interface 默认函数的支持
 * 允许 Size，Length 注解的数据为Null。交由 NotNull 负责
 
