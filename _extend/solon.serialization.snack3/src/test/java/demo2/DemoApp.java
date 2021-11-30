@@ -29,6 +29,8 @@ public class DemoApp {
         SnackRenderFactory.global
                 .addConvertor(LocalDate.class, s -> s.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 
+        SnackRenderFactory.global
+                .addConvertor(Double.class, s -> String.valueOf(s));
 
         //通过编码器，做复杂类型的原生定制（基于框架原生接口）
         SnackRenderFactory.global
