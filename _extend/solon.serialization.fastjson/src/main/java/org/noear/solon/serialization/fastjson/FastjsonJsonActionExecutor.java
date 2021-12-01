@@ -8,6 +8,7 @@ import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.wrap.ParamWrap;
 
 import java.lang.reflect.ParameterizedType;
+import java.util.Collection;
 
 public class FastjsonJsonActionExecutor extends ActionExecutorDefault {
     private static final String label = "/json";
@@ -40,6 +41,11 @@ public class FastjsonJsonActionExecutor extends ActionExecutorDefault {
             JSONObject tmp = (JSONObject) bodyObj;
 
             if (tmp.containsKey(p.getName())) {
+                //支持泛型的转换
+                ParameterizedType gp=p.getGenericType();
+                if(gp!=null){
+                    return tmp.getObject(p.getName(), gp);
+                }
                 return tmp.getObject(p.getName(), pt);
             } else if (ctx.paramMap().containsKey(p.getName())) {
                 //有可能是path变量
@@ -49,19 +55,31 @@ public class FastjsonJsonActionExecutor extends ActionExecutorDefault {
                 if (pt.isPrimitive() || pt.getTypeName().startsWith("java.lang.")) {
                     return super.changeValue(ctx, p, pi, pt, bodyObj);
                 } else {
+                    //支持泛型的转换 如：Map<T>
+                    ParameterizedType gp=p.getGenericType();
+                    if(gp!=null){
+                        return tmp.toJavaObject(gp);
+                    }
                     return tmp.toJavaObject(pt);
+                   // return tmp.toJavaObject(pt);
                 }
             }
         }
 
         if (bodyObj instanceof JSONArray) {
             JSONArray tmp = (JSONArray) bodyObj;
-            //List<T> 类型转换
+            //如果参数是非集合类型
+            if(!Collection.class.isAssignableFrom(pt)){
+                return null;
+            }
+            //集合类型转换
             ParameterizedType gp = p.getGenericType();
             if (gp != null) {
-                return tmp.toJavaList((Class) gp.getActualTypeArguments()[0]);
+                //转换带泛型的集合
+                return  tmp.toJavaObject(gp);
             }
-            return tmp;
+            //不仅可以转换为List 还可以转换成Set
+            return tmp.toJavaObject(p.getType());
         }
 
         return bodyObj;
