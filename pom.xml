@@ -6,7 +6,7 @@
 
     <groupId>org.noear</groupId>
     <artifactId>solon_java</artifactId>
-    <version>_root</version>
+    <version>dev</version>
     <packaging>pom</packaging>
 
     <name>_root</name>
