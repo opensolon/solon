@@ -3,7 +3,7 @@
 
 ` QQ交流群：22200020 `
 
-### Solon
+## Solon
 
 轻量级 Java 应用基础开发框架。**更快、更小、更自由！**
 
@@ -20,7 +20,7 @@
 * 体验与 Spring Boot 相近，迁移成本低： [《Solon 特性简集，相较于 Springboot 有什么区别？》](https://my.oschina.net/noear/blog/4863844)
 
 
-### Solon Cloud
+## Solon Cloud
 
 是一系列分布式开发的接口标准和配置规范，相当于DDD模式里的防腐层概念。是 Solon 的微服务架构模式开发解决方案。
 目前已适配了一系列的插件用于支持这一标准：[《Solon Cloud 分布式服务开发套件清单，感觉受与 Spring Cloud 的不同》](https://my.oschina.net/noear/blog/5039169)
@@ -30,7 +30,7 @@
 
 
 
-### Hello world：
+## Hello world：
 
 ```java
 //Handler 模式：
@@ -73,7 +73,7 @@ public class App implements HelloService{
 ```
 
 
-### 主框架及快速集成开发包：
+## 主框架及快速集成开发包：
 
 ###### 主框架
 
@@ -95,17 +95,17 @@ public class App implements HelloService{
 | org.noear:solon-rpc | solon-api + nami；快速开发RPC应用 |
 | org.noear:solon-cloud | solon-rpc + consul；快速开发微服务应用 |
 
-### 快速了解 Solon 架构的材料：
+## 快速了解 Solon 架构的材料：
 
 ##### [《Solon 的想法与架构笔记》](https://my.oschina.net/noear/blog/4980834)
 ##### [《Solon 生态插件清单》](https://my.oschina.net/noear/blog/5053423)
 
-### 丰富的示例与文章
-* 项目内的：[_test](./_test/) 和 [_demo](./_demo/)
+## 丰富的示例与文章
+* 项目内的：[_test](./_test/) 
 * 更多示例：[solon_demo](https://gitee.com/noear/solon_demo) 、 [solon_api_demo](https://gitee.com/noear/solon_api_demo)  、 [solon_rpc_demo](https://gitee.com/noear/solon_rpc_demo) 、 [solon_socketd_demo](https://gitee.com/noear/solon_socketd_demo) 、 [solon_cloud_demo](https://gitee.com/noear/solon_cloud_demo) 、 [solon_auth_demo](https://gitee.com/noear/solon_auth_demo)
 * 更多文章：[https://www.cnblogs.com/noear/](https://www.cnblogs.com/noear/)
 
-### 快速入门示例
+## 快速入门示例
 * Web 示例（mvc）
 ```xml
 <parent>
@@ -394,7 +394,7 @@ CloudClient.job().register("JobHandlerDemo3","",c->{
 ```
 
 
-### Solon 框架详解
+## Solon 框架详解
 
 * [《Solon 框架详解（一）- 快速入门》](https://www.cnblogs.com/noear/p/14115763.html)
 * [《Solon 框架详解（二）- Solon的核心》](https://www.cnblogs.com/noear/p/14115817.html)
@@ -408,7 +408,7 @@ CloudClient.job().register("JobHandlerDemo3","",c->{
 * [《Solon 框架详解（十）- Solon 的常用配置》](https://www.cnblogs.com/noear/p/14139768.html)
 * [《Solon 框架详解（十一）- Solon Cloud 的配置说明》](https://www.cnblogs.com/noear/p/14530716.html)
 
-### Solon Aop 特色开发
+## Solon Aop 特色开发
 
 * [《Solon Aop 特色开发（1）注入或手动获取配置》](https://www.cnblogs.com/noear/p/14801122.html)
 * [《Solon Aop 特色开发（2）注入或手动获取Bean》](https://www.cnblogs.com/noear/p/14801154.html)
@@ -417,13 +417,13 @@ CloudClient.job().register("JobHandlerDemo3","",c->{
 * [《Solon Aop 特色开发（5）切面与环绕拦截》](https://www.cnblogs.com/noear/p/14801197.html)
 * [《Solon Aop 特色开发（6）新鲜货提取器，提取Bean的函数进行定制开发》](https://www.cnblogs.com/noear/p/14801249.html)
 
-### 插件开发说明
+## 插件开发说明
 * 新建一个 maven 项目
 * 新建一个 java/{包名}/XPluginImp.java （implements XPlugin）
 * 新建一个 resources/META-INF/solon/{包名.properties}
 *    添加配置：solon.plugin={包名}.XPluginImp
 
-### 启动顺序参考
+## 启动顺序参考
 
 * 1.实例化 Solon.global() 并加载配置
 * 2.加载扩展文件夹
@@ -441,7 +441,7 @@ CloudClient.job().register("JobHandlerDemo3","",c->{
 * e.结束
 
 
-### Helloworld 的单机并发数 [《helloworld_wrk_test》](https://gitee.com/noear/helloworld_wrk_test)
+## Helloworld 的单机并发数 [《helloworld_wrk_test》](https://gitee.com/noear/helloworld_wrk_test)
 
 > * 机器：2017 macbook pro 13, i7, 16g, MacOS 10.15, jdk11
 > * 测试：wrk -t10 -c200 -d30s --latency "http://127.0.0.1:8080/"
