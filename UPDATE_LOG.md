@@ -1,3 +1,6 @@
+#### 1.6.3
+* 插件 solon.serialization.fastjson 增加泛型参数支持
+
 #### 1.6.2
 * Mvc 注入，支持 1 转为 true 的支持
 * AuthProcessorBase 增加 list = null 的预检
