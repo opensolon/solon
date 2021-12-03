@@ -8,7 +8,7 @@ public class XPluginImp implements Plugin {
     @Override
     public void start(SolonApp app) {
         boolean enable = app.cfg().getBool("solon.stop.enable", false);
-        String path = app.cfg().get("solon.stop.path", "/run/stop/");
+        String path = app.cfg().get("solon.stop.path", "/_run/stop/");
         String host = app.cfg().get("solon.stop.host", "127.0.0.1");
 
         //单位为秒

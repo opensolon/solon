@@ -99,7 +99,7 @@ solon.stop.delay: 10
 #是否启用安全停止插件
 solon.stop.enable: false
 #远程停止地址
-solon.stop.path: /run/stop/
+solon.stop.path: /_run/stop/
 #充许调用远程停止的主机ip
 solon.stop.host: 127.0.0.1
   ```

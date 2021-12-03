@@ -26,7 +26,7 @@ public class HeaderTest extends HttpTestBase {
         map.put("meta", "");
         map.put("check_type", "0");
         map.put("is_unstable", "0");
-        map.put("check_url", "/run/check/");
+        map.put("check_url", "/_run/check/");
 
         assert path("/demo2/header/")
                 .header("Water-Trace-Id", "")
@@ -42,7 +42,7 @@ public class HeaderTest extends HttpTestBase {
         map.put("meta", "");
         map.put("check_type", "0");
         map.put("is_unstable", "0");
-        map.put("check_url", "/run/check/");
+        map.put("check_url", "/_run/check/");
 
         assert path("/demo2/header/")
                 .header("Water-Trace-Id", "a")

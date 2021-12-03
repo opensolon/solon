@@ -27,7 +27,6 @@ solon.cloud.consul:
     enable: true                    #是否启用（默认为: 启用）
     unstable: true                  #不稳定ip?
     tags: "test"                    #添加服务标签
-    healthCheckPath: "/run/check/"  #健康检测路径（默认为：/run/check/）
     healthCheckInterval: "5s"       #健康检测时间间隔（默认为：5s）
     healthDetector: ""              #自定义探测器
     refreshInterval: "5s"           #发现刷新时间间隔（默认为：5s）
