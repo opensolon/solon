@@ -1,6 +1,7 @@
 #### 1.6.3
 * 插件 solon.serialization.fastjson 增加泛型参数支持
 * 插件 solon.serialization.snack3 增加泛型参数支持
+* 插件 beetlsql-solon-plugin，升级 beetlsql 到 3.12.2-RELEASE
 * water 升级为 2.5.1，原 /run/,/msg/ 升级为 /_run/
 
 #### 1.6.2
