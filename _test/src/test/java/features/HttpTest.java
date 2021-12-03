@@ -2,7 +2,9 @@ package features;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.noear.nami.Nami;
 import org.noear.snack.ONode;
+import org.noear.solon.Solon;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.test.SolonTest;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
@@ -235,7 +237,15 @@ public class HttpTest extends _TestBase {
         assert get("/demo2/rpc/json").indexOf("@type") > 0;
     }
 
-
+    @Test
+    public void test2u_nami() throws IOException {
+        Demo2Rpc rpc = Nami.builder()
+                .path("/demo2/rpc/")
+                .upstream(() -> "http://localhost:" + Solon.cfg().serverPort())
+                .headerSet("name", "noear")
+                .create(Demo2Rpc.class);
+        assert "noear".equals(rpc.header());
+    }
 
     @Test
     public void test41() throws IOException{

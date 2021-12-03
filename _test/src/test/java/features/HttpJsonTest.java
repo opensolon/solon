@@ -8,6 +8,9 @@ import org.noear.solon.test.HttpTestBase;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author noear 2021/12/3 created
  */
@@ -37,5 +40,22 @@ public class HttpJsonTest extends HttpTestBase {
         oNode1.set("userMap", oNode);
 
         path("/demo2/json/map").bodyJson(oNode1.toJson()).post();
+    }
+
+    @Test
+    public void json_list() throws Exception {
+        List<UserModel> list = new ArrayList<>();
+
+        UserModel userModel = new UserModel();
+        userModel.id = 12;
+
+        list.add(userModel);
+
+        userModel = new UserModel();
+        userModel.id = 13;
+
+        list.add(userModel);
+
+        path("/demo2/json/list").bodyJson(ONode.stringify(list)).post();
     }
 }

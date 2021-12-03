@@ -13,20 +13,24 @@ import java.util.Map;
 @Remoting
 public class JsonRpcController {
 
-    public Object json(Context ctx){
+    public Object json(Context ctx) {
 //        ctx.headerMap().put("serialization","@avro");
 
-        Map<String,Object> model = new HashMap<>();
-        model.put("title","dock");
-        model.put("msg","你好 world! in XController");
+        Map<String, Object> model = new HashMap<>();
+        model.put("title", "dock");
+        model.put("msg", "你好 world! in XController");
 
-        model.put("bool",true);
-        model.put("int",12);
-        model.put("long",12l);
-        model.put("double",12.12d);
-        model.put("date",new Date());
+        model.put("bool", true);
+        model.put("int", 12);
+        model.put("long", 12l);
+        model.put("double", 12.12d);
+        model.put("date", new Date());
         model.put("local_date", LocalDate.now());
 
         return model;
+    }
+
+    public String header(Context ctx) {
+        return ctx.header("name");
     }
 }

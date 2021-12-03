@@ -4,6 +4,7 @@ import org.noear.solon.annotation.Mapping;
 import org.noear.solon.annotation.Remoting;
 import webapp.models.UserModel;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -18,6 +19,15 @@ public class JsonController {
             return null;
         } else {
             return userMap.get("1").id;
+        }
+    }
+
+    @Mapping("/list")
+    public Object list(List<UserModel> userAry) {
+        if (userAry == null) {
+            return null;
+        } else {
+            return userAry.get(0).id;
         }
     }
 }
