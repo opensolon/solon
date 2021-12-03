@@ -23,9 +23,5 @@ public class XPluginImp implements Plugin {
 
         // 加载xml sql
         XmlSqlLoader.tryLoad();
-
-        WeedConfig.onExecuteAft(cmd->{
-            System.out.println(cmd.toSqlString());
-        });
     }
 }
