@@ -185,7 +185,7 @@ public class XPluginImp implements Plugin {
         app.http(WW.path_run_check, new HandlerCheck());
         app.http(WW.path_run_status, new HandlerStatus());
         app.http(WW.path_run_stop, new HandlerStop());
-        app.http(WW.path_msg_receiver, new HandlerReceive(eventServiceImp));
+        app.http(WW.path_run_msg, new HandlerReceive(eventServiceImp));
     }
 
     @Override

@@ -1,5 +1,6 @@
 #### 1.6.3
 * 插件 solon.serialization.fastjson 增加泛型参数支持
+* water 升级为 2.5.1，原 /run/,/msg/ 升级为 /_run/
 
 #### 1.6.2
 * Mvc 注入，支持 1 转为 true 的支持
