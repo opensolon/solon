@@ -5,7 +5,7 @@
 
 ## Solon
 
-轻量级 Java 应用基础开发框架。**更快、更小、更自由！**
+轻量级 Java 应用开发框架。**更快、更小、更自由！**
 
 支持jdk8+；主框架0.1mb；组合不同的插件应对不同需求；方便定制；快速开发。
 
@@ -22,11 +22,11 @@
 
 ## Solon Cloud
 
-是一系列分布式开发的接口标准和配置规范，相当于DDD模式里的防腐层概念。是 Solon 的微服务架构模式开发解决方案。
+一系列分布式开发的接口标准和配置规范，相当于DDD模式里的防腐层概念。是 Solon 的微服务架构模式开发解决方案。
 目前已适配了一系列的插件用于支持这一标准：[《Solon Cloud 分布式服务开发套件清单，感觉受与 Spring Cloud 的不同》](https://my.oschina.net/noear/blog/5039169)
 
 其中，[Water 项目](https://gitee.com/noear/water) 是一站式支持 Solon Cloud 系列标准的支撑平台。
-功能约等于：consul + rabbitmq + elk + prometheus + aws lambda + quartz 等一些别的功能，并有机结合在一起。一直与 Solon 项目伴生成长。
+功能相当于：consul + rabbitmq + elk + prometheus + openFaas + quartz + 等等，并有机结合在一起。一直与 Solon 项目伴生成长。
 
 
 
