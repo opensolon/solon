@@ -9,6 +9,12 @@ import org.noear.solon.core.wrap.ParamWrap;
 
 import java.lang.reflect.ParameterizedType;
 
+/**
+ * Json 动作执行器
+ *
+ * @author noear
+ * @since 1.0
+ * */
 public class FastjsonJsonActionExecutor extends ActionExecutorDefault {
     private static final String label = "/json";
 
@@ -56,7 +62,8 @@ public class FastjsonJsonActionExecutor extends ActionExecutorDefault {
 
         if (bodyObj instanceof JSONArray) {
             JSONArray tmp = (JSONArray) bodyObj;
-            //List<T> 类型转换
+
+            //List<T> 类型转换 //@author 夜の孤城, 增加泛型支持
             ParameterizedType gp = p.getGenericType();
             if (gp != null) {
                 return tmp.toJavaList((Class) gp.getActualTypeArguments()[0]);

@@ -7,6 +7,12 @@ import org.noear.solon.core.wrap.ParamWrap;
 
 import java.lang.reflect.ParameterizedType;
 
+/**
+ * Json 动作执行器
+ *
+ * @author noear
+ * @since 1.0
+ * */
 public class SnackJsonActionExecutor extends ActionExecutorDefault {
     private static final String label = "/json";
 

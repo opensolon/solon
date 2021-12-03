@@ -7,6 +7,8 @@ import org.noear.solon.serialization.StringSerializer;
 import java.io.IOException;
 
 /**
+ * Json 序列化器
+ *
  * @author noear
  * @since 1.5
  */

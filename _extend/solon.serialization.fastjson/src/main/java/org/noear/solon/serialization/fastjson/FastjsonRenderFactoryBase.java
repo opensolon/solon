@@ -10,7 +10,10 @@ import java.math.BigDecimal;
 
 
 /**
- * @author noear 2021/10/11 created
+ * Json 渲染器工厂基类
+ *
+ * @author noear
+ * @since 1.5
  */
 public abstract class FastjsonRenderFactoryBase implements JsonRenderFactory {
     protected abstract SerializeConfig config();

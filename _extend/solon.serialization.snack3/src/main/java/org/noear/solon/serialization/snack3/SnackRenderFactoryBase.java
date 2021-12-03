@@ -6,7 +6,10 @@ import org.noear.solon.serialization.JsonRenderFactory;
 import org.noear.solon.serialization.JsonConverter;
 
 /**
- * @author noear 2021/10/11 created
+ * Json 渲染器工厂基类
+ *
+ * @author noear
+ * @since 1.5
  */
 public abstract class SnackRenderFactoryBase implements JsonRenderFactory {
 

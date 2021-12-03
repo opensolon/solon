@@ -6,7 +6,10 @@ import org.noear.solon.core.handle.Render;
 import org.noear.solon.serialization.StringSerializerRender;
 
 /**
- * @author noear 2021/10/11 created
+ * Json 渲染器工厂
+ *
+ * @author noear
+ * @since 1.5
  */
 public class FastjsonRenderFactory extends FastjsonRenderFactoryBase {
     public static final FastjsonRenderFactory global = new FastjsonRenderFactory();
