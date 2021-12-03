@@ -3,13 +3,14 @@ package org.noear.solon.cloud.extend.water.integration.http;
 import org.noear.snack.ONode;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
+import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.cloud.model.Instance;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Handler;
 import org.noear.water.WaterClient;
 
 /**
- * 服务停目处理（用强制ip名单处理安全）//超代频
+ * 服务停目处理（用强制ip名单处理安全）//超低频//一般在固定IP下运行，给运维手动用
  *
  * @author noear
  * @since 1.2
@@ -23,7 +24,7 @@ public class HandlerStop implements Handler {
     private String handle0(Context ctx) throws Throwable {
         String ip = ctx.realIp();
 
-        if (authMasterIp(ip)) {
+        if (authServerIp(ip)) {
             stateSet(false);
             Solon.stop();
             return "OK";
@@ -45,11 +46,12 @@ public class HandlerStop implements Handler {
         }
     }
 
-    private boolean authMasterIp(String ip) {
+    private boolean authServerIp(String ip) {
         if (Solon.cfg().isDriftMode()) {
-            return false; //isDriftMode，拒绝停止
+            //isDriftMode，拒绝停止
+            return false;
         } else {
-            return WaterClient.Whitelist.existsOfMasterIp(ip);
+            return CloudClient.list().inListOfServerIp(ip);
         }
     }
 }
