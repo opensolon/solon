@@ -6,6 +6,7 @@ import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.wrap.ParamWrap;
 
 import java.lang.reflect.ParameterizedType;
+import java.util.Collection;
 
 /**
  * Json 动作执行器
@@ -44,6 +45,12 @@ public class SnackJsonActionExecutor extends ActionExecutorDefault {
 
         if (tmp.isObject()) {
             if (tmp.contains(p.getName())) {
+                //支持泛型的转换
+                ParameterizedType gp = p.getGenericType();
+                if (gp != null) {
+                    return tmp.get(p.getName()).toObject(gp);
+                }
+
                 return tmp.get(p.getName()).toObject(pt);
             } else if (ctx.paramMap().containsKey(p.getName())) {
                 //有可能是path变量
@@ -53,19 +60,32 @@ public class SnackJsonActionExecutor extends ActionExecutorDefault {
                 if (pt.isPrimitive() || pt.getTypeName().startsWith("java.lang.")) {
                     return super.changeValue(ctx, p, pi, pt, bodyObj);
                 } else {
+                    //支持泛型的转换 如：Map<T>
+                    ParameterizedType gp = p.getGenericType();
+                    if (gp != null) {
+                        return tmp.toObject(gp);
+                    }
+
                     return tmp.toObject(pt);
                 }
             }
         }
 
         if (tmp.isArray()) {
-            //List<T> 类型转换
-            ParameterizedType gp = p.getGenericType();
-            if (gp != null) {
-                return tmp.toObjectList((Class) gp.getActualTypeArguments()[0]);
+            //如果参数是非集合类型
+            if (!Collection.class.isAssignableFrom(pt)) {
+                return null;
             }
 
-            return tmp.toObject(pt);
+            //集合类型转换
+            ParameterizedType gp = p.getGenericType();
+            if (gp != null) {
+                //转换带泛型的集合
+                return tmp.toObject(gp);
+            }
+
+            //不仅可以转换为List 还可以转换成Set
+            return tmp.toObject(p.getType());
         }
 
         return tmp.val().getRaw();
