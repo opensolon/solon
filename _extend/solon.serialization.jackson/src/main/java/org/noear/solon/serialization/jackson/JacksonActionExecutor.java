@@ -8,6 +8,7 @@ import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.wrap.ParamWrap;
 
 import java.lang.reflect.ParameterizedType;
+import java.util.Collection;
 
 public class JacksonActionExecutor extends ActionExecutorDefault {
     private static final String label = "/json";
@@ -60,17 +61,14 @@ public class JacksonActionExecutor extends ActionExecutorDefault {
                 //
                 return super.changeValue(ctx, p, pi, pt, bodyObj);
             } else {
-                //return tmp.toObject(pt);
-
                 return mapper_type.readValue(mapper_type.treeAsTokens(tmp), new TypeReferenceImp<>(p));
             }
         }
 
         if (tmp.isArray()) {
-            //List<T> 类型转换
-            ParameterizedType gp = p.getGenericType();
-            if (gp != null) {
-                return mapper_type.readValues(mapper_type.treeAsTokens(tmp), (Class) gp.getActualTypeArguments()[0]);
+            //如果参数是非集合类型
+            if(!Collection.class.isAssignableFrom(pt)){
+                return null;
             }
 
             return mapper_type.readValue(mapper_type.treeAsTokens(tmp), new TypeReferenceImp<>(p));

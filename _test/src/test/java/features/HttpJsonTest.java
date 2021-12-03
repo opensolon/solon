@@ -25,7 +25,7 @@ public class HttpJsonTest extends HttpTestBase {
         userModel.id = 12;
         oNode.set("1", ONode.loadObj(userModel));
 
-        path("/demo2/json/map").bodyJson(oNode.toJson()).post();
+        assert path("/demo2/json/map").bodyJson(oNode.toJson()).post().equals("12");
     }
 
     @Test
@@ -39,7 +39,7 @@ public class HttpJsonTest extends HttpTestBase {
         ONode oNode1 = new ONode();
         oNode1.set("userMap", oNode);
 
-        path("/demo2/json/map").bodyJson(oNode1.toJson()).post();
+        assert path("/demo2/json/map").bodyJson(oNode1.toJson()).post().equals("12");
     }
 
     @Test
@@ -56,6 +56,6 @@ public class HttpJsonTest extends HttpTestBase {
 
         list.add(userModel);
 
-        path("/demo2/json/list").bodyJson(ONode.stringify(list)).post();
+        assert path("/demo2/json/list").bodyJson(ONode.stringify(list)).post().equals("12");
     }
 }
