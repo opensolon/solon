@@ -1,3 +1,6 @@
+#### 1.6.4
+* 关闭 water-solon-plugin 的默认日志打印
+
 #### 1.6.3
 * 插件 solon.serialization.fastjson 增加泛型参数支持
 * 插件 solon.serialization.snack3 增加泛型参数支持
