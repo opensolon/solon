@@ -7,6 +7,7 @@ import org.noear.solon.cloud.model.Event;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Handler;
+import org.noear.solon.core.handle.MethodType;
 import org.noear.water.WaterClient;
 import org.noear.water.dso.MessageHandler;
 import org.noear.water.model.MessageM;
@@ -27,6 +28,11 @@ public class HandlerReceive implements Handler, MessageHandler {
     @Override
     public void handle(Context ctx) throws Throwable {
         try {
+            if (MethodType.HEAD.name.equals(ctx.method())) {
+                ctx.output("HEAD-OK");
+                return;
+            }
+
             String rst = WaterClient.Message.receiveMessage(ctx::param, eventService.getSeal(), this);
             ctx.output(rst);
         } catch (Throwable ex) {
