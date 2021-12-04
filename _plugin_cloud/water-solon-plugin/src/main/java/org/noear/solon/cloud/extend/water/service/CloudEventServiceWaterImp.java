@@ -70,7 +70,7 @@ public class CloudEventServiceWaterImp implements CloudEventServicePlus {
         if (Utils.isEmpty(event.group())) {
             topicNew = event.topic();
         } else {
-            topicNew = event.group() + WaterProps.GROUP_SPLIT_MART + event.topic();
+            topicNew = event.group() + WaterProps.GROUP_TOPIC_SPLIT_MART + event.topic();
         }
 
         try {
@@ -95,7 +95,7 @@ public class CloudEventServiceWaterImp implements CloudEventServicePlus {
         if (Utils.isEmpty(group)) {
             topicNew = topic;
         } else {
-            topicNew = group + WaterProps.GROUP_SPLIT_MART + topic;
+            topicNew = group + WaterProps.GROUP_TOPIC_SPLIT_MART + topic;
         }
 
         if (level == EventLevel.instance) {

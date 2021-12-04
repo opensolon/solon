@@ -12,7 +12,7 @@ public class WaterProps {
     public static final String http_header_token = "Water-Access-Token";
 
 
-    public static final String GROUP_SPLIT_MART = ":";
+    public static final String GROUP_TOPIC_SPLIT_MART = ":";
 
     public static final String PROP_EVENT_seal = "event.seal";
     public static final String PROP_EVENT_receive = "event.receive";

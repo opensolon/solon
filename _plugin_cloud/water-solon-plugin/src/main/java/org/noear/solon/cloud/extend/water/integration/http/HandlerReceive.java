@@ -39,8 +39,8 @@ public class HandlerReceive implements Handler, MessageHandler {
     @Override
     public boolean handler(MessageM msg) throws Throwable {
         Event event = null;
-        if (msg.topic.contains(WaterProps.GROUP_SPLIT_MART)) {
-            String[] groupAndTopic = msg.topic.split(WaterProps.GROUP_SPLIT_MART);
+        if (msg.topic.contains(WaterProps.GROUP_TOPIC_SPLIT_MART)) {
+            String[] groupAndTopic = msg.topic.split(WaterProps.GROUP_TOPIC_SPLIT_MART);
             event = new Event(groupAndTopic[1], msg.message);
             event.group(groupAndTopic[0]);
         } else {
