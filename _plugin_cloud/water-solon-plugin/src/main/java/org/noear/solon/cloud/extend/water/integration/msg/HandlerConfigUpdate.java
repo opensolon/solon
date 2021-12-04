@@ -21,7 +21,12 @@ public class HandlerConfigUpdate implements CloudEventHandler {
         String[] tag_keys = event.content().split(";");
 
         for (String tagKey : tag_keys) {
-            String[] ss = tagKey.split(WaterProps.GROUP_SPLIT_MART);
+            String[] ss = null;
+            if (tagKey.contains("::")) {
+                ss = tagKey.split("::");
+            } else {
+                ss = tagKey.split(":");
+            }
 
             if (ss.length > 1) {
                 configService.onUpdate(ss[0], ss[1]);

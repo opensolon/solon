@@ -80,6 +80,7 @@ public class CloudClient {
                 } else {
                     gk = gkStr.split(":"); //支持 water:water
                 }
+
                 if (gk.length == 2) {
                     configLoad(gk[0], gk[1]);
                 } else {

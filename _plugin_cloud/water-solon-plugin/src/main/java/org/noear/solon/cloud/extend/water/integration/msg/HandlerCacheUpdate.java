@@ -40,8 +40,14 @@ public class HandlerCacheUpdate implements CloudEventHandler {
     /**
      * 更新 upstream
      * */
-    public void cacheUpdateHandler0(String tag) {
-        String[] ss = tag.split(":");
+    public void cacheUpdateHandler0(String tagKey) {
+        String[] ss = null;
+        if (tagKey.contains("::")) {
+            ss = tagKey.split("::");
+        } else {
+            ss = tagKey.split(":");
+        }
+
         if ("upstream".equals(ss[0])) {
             String service = ss[1];
             try {
