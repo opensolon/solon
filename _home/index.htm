@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Solon，应用开发框架</title>
+    <meta http-equiv="cleartype" content="on" />
+    <meta name="MobileOptimized" content="320" />
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8 " />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+
+    <script src="//cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+
+    <!-- highlight lib -->
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.18.1/build/highlight.min.js"></script>
+    <link href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.18.1/build/styles/atom-one-light.min.css" rel="stylesheet" type="text/css" />
+    <link href="/img/ext_file_md/markdown_github.css" rel="stylesheet" type="text/css" />
+
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.18.1/build/languages/bash.min.js"></script>
+
+    <style>
+        *,*::before, *::after { box-sizing: border-box; }
+        html,body,main,left,right,middle,tree,menu,header,footer,block,blockquote,flex,li,ul,ol,p,hr,cell,switcher,selector,file,checkbox,radio,boxlist,detail,label,h1,h2,h3,h4,h5,h6,pre{ margin: 0px; padding: 0px; }
+
+        left{text-algin:left; display:inline-block;}
+        right{text-algin:right; float:right; display:inline-block;}
+
+        body{width: 999px;margin: 10px auto;}
+
+        main{margin: 40px 10px;}
+        main > section{margin: 30px 10px;}
+
+        section h1{line-height: 50px;}
+
+        topbar{display: block; border: 1px solid #666; line-height: 24px; padding: 10px;}
+        topbar ul{display:inline-block;}
+        topbar li{display: inline-block;}
+
+        .center{text-align: center;}
+
+        .tab{display:inline-block; padding:20px; background: #666666}
+
+        .slogan{margin-bottom: 30px;}
+        .slogan h1{text-algin:center; display:inline-block;}
+
+        .features{display: inline-block; }
+        .features li{display: inline-block; width: 100px; height: 90px; line-height:90px; margin: 10px; border: 1px solid #666; text-algin:center;}
+    </style>
+
+</head>
+<body>
+
+<topbar>
+    <left>
+        <h2>Solon</h2>
+    </left>
+    <right>
+        <ul>
+            <li>开始</li>
+            <li>文档</li>
+            <li>项目</li>
+            <li>社区</li>
+        </ul>
+    </right>
+</topbar>
+
+<main>
+    <section>
+        <div class="slogan">
+            <h1>
+                一个轻量级的应用开发框架
+                <br>
+                更快、更小、更自由
+            </h1>
+        </div>
+        <div class="tab">Java</div>
+        <div class="markdown-body">
+            <pre><code class="language-java">public class DemoApp{
+    public static void main(String[] args){
+        Solon.start(DemoApp.class, args, app->{
+            app.get("/", c->c.output("Helloworld!"));
+        });
+    }
+}</code></pre>
+        </div>
+    </section>
+    <hr />
+    <section class="center">
+        <ul class="features">
+            <li>Web</li>
+            <li>Job</li>
+            <li>Remoting</li>
+            <li>Cloud</li>
+        </ul>
+    </section>
+</main>
+<script>
+    $('pre code').each(function(i, block) {
+        hljs.highlightBlock(block);
+    });
+</script>
+</body>
+</html>
