@@ -61,19 +61,20 @@
         .features{display: inline-block; margin-top:20px;}
         .features li{display: inline-block; width: 100px; height: 90px; line-height:90px; margin: 10px; border: 1px solid #888; text-algin:center;}
 
-
-
-        .home main > section{margin: 30px 10px;}
-
-        .home section h1{line-height: 50px;}
+        .projects main{display: flex;}
+        .projects aside{width: 30%;}
+        .projects aside li{display: block; padding:5px; margin:5px;}
+        .projects aside li.sel{display: block; border: 1px solid #666; }
+        .projects article{width: 70%;}
     </style>
 
+
 </head>
-<body class="home">
+<body class="projects">
 
 <header class="topbar">
     <left>
-        <h2>Solon</h2>
+        <h2><a href="/">Solon</a></h2>
     </left>
     <right>
         <ul class="nav">
@@ -118,34 +119,38 @@
 </header>
 
 <main>
-    <section>
-        <div class="slogan">
-            <h1>
-                一个轻量级的应用开发框架
-                <br>
-                更快、更小、更自由
-            </h1>
-        </div>
-        <div class="tab">Java</div>
-        <div class="markdown-body">
-            <pre><code class="language-java">public class DemoApp{
-    public static void main(String[] args){
-        Solon.start(DemoApp.class, args, app->{
-            app.get("/", c->c.output("Helloworld!"));
-        });
-    }
-}</code></pre>
-        </div>
-    </section>
-
-    <section class="center">
-        <ul class="features">
-            <li><a>Web</a></li>
-            <li><a>Batch</a></li>
-            <li><a>Remoting</a></li>
-            <li><a>Cloud</a></li>
+    <aside>
+        <ul>
+            <li>Solon</li>
+            <li>Solon Boot</li>
+            <li>Solon Serialization</li>
+            <li>Solon View</li>
+            <li >Solon Data
+                <ol>
+                    <li class="sel">weed3-solon-plugin</li>
+                    <li>beetlsql-solon-plugin</li>
+                    <li>activerecord-solon-plugin</li>
+                    <li>mybatis-solon-plugin</li>
+                    <li>mybatisplus-solon-plugin</li>
+                </ol>
+            </li>
+            <li>Solon Logging</li>
+            <li>Solon Auth</li>
+            <li>Solon I18n</li>
+            <li>Solon Web</li>
+            <li>Solon Batch</li>
+            <li>Solon Remoting</li>
+            <li>Solon Cloud</li>
         </ul>
-    </section>
+    </aside>
+    <article>
+        <header>
+            <h3>weed3-solon-plugin</h3>
+        </header>
+        <section>
+
+        </section>
+    </article>
 </main>
 <script>
     $('pre code').each(function(i, block) {
