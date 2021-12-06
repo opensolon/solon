@@ -1,3 +1,7 @@
+#### 1.6.6
+* 增加 @Body 注解，注入 body string 支持
+* 增加 @Validated List<?> 验证模式支持
+
 #### 1.6.5
 * 修复 water-solon-plugin ，不能处理缓存更新通知的问题（之前的版改出了问题）
 
