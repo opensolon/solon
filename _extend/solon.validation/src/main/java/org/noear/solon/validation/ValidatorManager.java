@@ -185,20 +185,26 @@ public class ValidatorManager {
      */
     @Note("执行实体的验证处理")
     public static Result validateOfEntity(Object obj) {
-        if (obj instanceof Collection) {
-            return validateOfEntityColl(obj);
-        } else {
-            return validateOfEntityOne(obj);
+        try {
+            if (obj instanceof Collection) {
+                return validateOfEntityAry(obj);
+            } else if (obj instanceof Map) {
+                return validateOfEntityMap(obj);
+            } else {
+                return validateOfEntityOne(obj);
+            }
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
         }
     }
 
-    private static Result validateOfEntityColl(Object obj){
-        Iterator iterator = ((Iterable) obj).iterator();
+    private static Result validateOfEntityAry(Object obj){
+        Iterator iterator = ((Collection) obj).iterator();
         while (iterator.hasNext()) {
             Object val2 = iterator.next();
 
             if (val2 != null) {
-                Result rst = validateOfEntityOne(val2);
+                Result rst = validateOfEntity(val2);
 
                 if (rst.getCode() != Result.SUCCEED_CODE) {
                     return rst;
@@ -209,7 +215,24 @@ public class ValidatorManager {
         return Result.succeed();
     }
 
-    private static Result validateOfEntityOne(Object obj){
+    private static Result validateOfEntityMap(Object obj){
+        Iterator iterator = ((Map) obj).values().iterator();
+        while (iterator.hasNext()) {
+            Object val2 = iterator.next();
+
+            if (val2 != null) {
+                Result rst = validateOfEntity(val2);
+
+                if (rst.getCode() != Result.SUCCEED_CODE) {
+                    return rst;
+                }
+            }
+        }
+
+        return Result.succeed();
+    }
+
+    private static Result validateOfEntityOne(Object obj) throws IllegalAccessException{
         if (obj == null) {
             //null，由 @NotNull 来验证
             return Result.succeed();
@@ -218,55 +241,34 @@ public class ValidatorManager {
         ClassWrap cw = ClassWrap.get(obj.getClass());
         StringBuilder tmp = new StringBuilder();
 
-        try {
-            for (Map.Entry<String, FieldWrap> kv : cw.getFieldAllWraps().entrySet()) {
-                Field field = kv.getValue().field;
 
-                for (Annotation anno : kv.getValue().annoS) {
-                    Validator valid = validMap.get(anno.annotationType());
+        for (Map.Entry<String, FieldWrap> kv : cw.getFieldAllWraps().entrySet()) {
+            Field field = kv.getValue().field;
 
-                    if (valid != null) {
-                        tmp.setLength(0);
-                        Result rst = valid.validateOfEntity(cw.clz(), anno, field.getName(), field.get(obj), tmp);
+            for (Annotation anno : kv.getValue().annoS) {
+                Validator valid = validMap.get(anno.annotationType());
 
-                        if (rst.getCode() != Result.SUCCEED_CODE) {
-                            rst.setData(new BeanValidateInfo(anno, valid.message(anno)));
-                            return rst;
-                        }
-                    }
-                }
+                if (valid != null) {
+                    tmp.setLength(0);
+                    Result rst = valid.validateOfEntity(cw.clz(), anno, field.getName(), field.get(obj), tmp);
 
-                if (field.getAnnotation(Validated.class) != null) {
-                    Object val = field.get(obj);
-
-                    if (val == null) {
-                        continue;
-                    }
-
-                    if (val instanceof Iterable) {
-                        Iterator iterator = ((Iterable) val).iterator();
-                        while (iterator.hasNext()) {
-                            Object val2 = iterator.next();
-
-                            if (val2 != null) {
-                                Result rst = validateOfEntity(val2);
-
-                                if (rst.getCode() != Result.SUCCEED_CODE) {
-                                    return rst;
-                                }
-                            }
-                        }
-                    } else {
-                        Result rst = validateOfEntity(val);
-
-                        if (rst.getCode() != Result.SUCCEED_CODE) {
-                            return rst;
-                        }
+                    if (rst.getCode() != Result.SUCCEED_CODE) {
+                        rst.setData(new BeanValidateInfo(anno, valid.message(anno)));
+                        return rst;
                     }
                 }
             }
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
+
+            if (field.getAnnotation(Validated.class) != null) {
+                Object val = field.get(obj);
+
+                if (val != null) {
+                    Result rst = validateOfEntity(val);
+                    if (rst.getCode() != Result.SUCCEED_CODE) {
+                        return rst;
+                    }
+                }
+            }
         }
 
         return Result.succeed();
