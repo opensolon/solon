@@ -12,6 +12,7 @@ import org.noear.solon.validation.annotation.*;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -73,7 +74,7 @@ public class ValidatorManager {
 
     /**
      * 初始化（验证器注册）
-     * */
+     */
     private static void initialize() {
         register(Date.class, DateValidator.instance);
 
@@ -179,12 +180,41 @@ public class ValidatorManager {
         return false;
     }
 
-
     /**
      * 执行实体的验证处理
      */
     @Note("执行实体的验证处理")
     public static Result validateOfEntity(Object obj) {
+        if (obj instanceof Collection) {
+            return validateOfEntityColl(obj);
+        } else {
+            return validateOfEntityOne(obj);
+        }
+    }
+
+    private static Result validateOfEntityColl(Object obj){
+        Iterator iterator = ((Iterable) obj).iterator();
+        while (iterator.hasNext()) {
+            Object val2 = iterator.next();
+
+            if (val2 != null) {
+                Result rst = validateOfEntityOne(val2);
+
+                if (rst.getCode() != Result.SUCCEED_CODE) {
+                    return rst;
+                }
+            }
+        }
+
+        return Result.succeed();
+    }
+
+    private static Result validateOfEntityOne(Object obj){
+        if (obj == null) {
+            //null，由 @NotNull 来验证
+            return Result.succeed();
+        }
+
         ClassWrap cw = ClassWrap.get(obj.getClass());
         StringBuilder tmp = new StringBuilder();
 

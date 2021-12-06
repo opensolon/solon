@@ -20,23 +20,6 @@ class BeanValidatorDefault implements BeanValidator {
      */
     @Override
     public Result validate(Object obj, Class<?>... groups) {
-        if (obj instanceof Iterable) {
-            Iterator iterator = ((Iterable) obj).iterator();
-            while (iterator.hasNext()) {
-                Object val2 = iterator.next();
-
-                if (val2 != null) {
-                    Result rst = ValidatorManager.validateOfEntity(val2);
-
-                    if (rst.getCode() != Result.SUCCEED_CODE) {
-                        return rst;
-                    }
-                }
-            }
-
-            return Result.succeed();
-        } else {
-            return ValidatorManager.validateOfEntity(obj);
-        }
+        return ValidatorManager.validateOfEntity(obj);
     }
 }
