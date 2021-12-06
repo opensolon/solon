@@ -5,6 +5,7 @@ import org.noear.solon.annotation.Mapping;
 import org.noear.solon.validation.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @Valid
 @Mapping("/demo2/valid")
@@ -68,7 +69,7 @@ public class ValidController {
     }
 
     @Mapping("min")
-    public String min(@Min(10) int val1, @Min(10)int val2) {
+    public String min(@Min(10) int val1, @Min(10) int val2) {
         return "OK";
     }
 
@@ -124,7 +125,7 @@ public class ValidController {
     //这也是基于 context 的验证体系
     @Mapping("length")
     public String length(@Length(min = 2, max = 5, message = "测试") String val1,
-                       @Length(min = 2, max = 5, message = "测试") String val2) {
+                         @Length(min = 2, max = 5, message = "测试") String val2) {
         return "OK";
     }
 
@@ -144,6 +145,12 @@ public class ValidController {
     //这是基于 bean 的验证体系
     @Mapping("beanlist2")
     public String beanlist2(@Validated List<ValidModel> list) {
+        return "OK";
+    }
+
+    //这是基于 bean 的验证体系
+    @Mapping("map")
+    public String map(@Validated Map<String, ValidModel> map) {
         return "OK";
     }
 

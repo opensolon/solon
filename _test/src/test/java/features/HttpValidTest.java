@@ -204,4 +204,15 @@ public class HttpValidTest extends _TestBase{
         assert path("/demo2/valid/beanlist2").bodyJson(node2.toJson()).post().equals("OK") == false;
     }
 
+    @Test
+    public void test2v_map() throws IOException {
+        ONode node = ONode.loadStr("{a:{mobile:'x',password:'x'},b:{mobile:'y',password:'y'}}");
+
+        ONode node2 = ONode.loadStr("{a:{mobile:'x'},b:{mobile:'y'}}");
+
+
+        assert path("/demo2/valid/map").bodyJson(node.toJson()).post().equals("OK");
+        assert path("/demo2/valid/map").bodyJson(node2.toJson()).post().equals("OK") == false;
+    }
+
 }
