@@ -29,26 +29,29 @@
         left{text-algin:left; display:inline-block;}
         right{text-algin:right; float:right; display:inline-block;}
 
-        body{width: 999px;margin: 10px auto;}
+        body{width: 999px;margin: 10px auto; color:#333;}
 
         main{margin: 40px 10px;}
         main > section{margin: 30px 10px;}
 
         section h1{line-height: 50px;}
 
-        topbar{display: block; border: 1px solid #666; line-height: 24px; padding: 10px;}
+        topbar{display: block; border: 1px solid #888; line-height: 24px; padding: 10px;}
         topbar ul{display:inline-block;}
-        topbar li{display: inline-block;}
+        topbar li{display: inline-block;margin-left:10px;}
+
+        a{color:#000; cursor: default;}
+        a:hover{color:#333;}
 
         .center{text-align: center;}
 
-        .tab{display:inline-block; padding:20px; background: #666666}
+        .tab{display:inline-block; padding:10px; background: #f6f8fa}
 
         .slogan{margin-bottom: 30px;}
         .slogan h1{text-algin:center; display:inline-block;}
 
-        .features{display: inline-block; }
-        .features li{display: inline-block; width: 100px; height: 90px; line-height:90px; margin: 10px; border: 1px solid #666; text-algin:center;}
+        .features{display: inline-block; margin-top:20px;}
+        .features li{display: inline-block; width: 100px; height: 90px; line-height:90px; margin: 10px; border: 1px solid #888; text-algin:center;}
     </style>
 
 </head>
@@ -59,11 +62,11 @@
         <h2>Solon</h2>
     </left>
     <right>
-        <ul>
-            <li>开始</li>
-            <li>文档</li>
-            <li>项目</li>
-            <li>社区</li>
+        <ul class="nav">
+            <li><a>开始</a></li>
+            <li><a>文档</a></li>
+            <li><a>项目</a></li>
+            <li><a>社区</a></li>
         </ul>
     </right>
 </topbar>
@@ -88,13 +91,13 @@
 }</code></pre>
         </div>
     </section>
-    <hr />
+
     <section class="center">
         <ul class="features">
-            <li>Web</li>
-            <li>Job</li>
-            <li>Remoting</li>
-            <li>Cloud</li>
+            <li><a>Web</a></li>
+            <li><a>Job</a></li>
+            <li><a>Remoting</a></li>
+            <li><a>Cloud</a></li>
         </ul>
     </section>
 </main>

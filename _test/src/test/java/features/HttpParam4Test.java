@@ -21,12 +21,12 @@ public class HttpParam4Test extends HttpTestBase {
         //走json通过，这个格式会有问题
         String json = "{id:1,name:'noear',date:'2021-12-12'}";
 
-        String json2 =  path("/demo2/param4/json").bodyJson(json).post();
+        String json2 = path("/demo2/param4/json").bodyJson(json).post();
 
         ONode oNode2 = ONode.loadStr(json2);
 
         assert oNode2.get("id").getInt() == 1;
-        assert new Datetime(oNode2.get("date").getDate() ).getYear() > 2000;
+        assert new Datetime(oNode2.get("date").getDate()).getYear() > 2000;
     }
 
     @Test
@@ -34,12 +34,12 @@ public class HttpParam4Test extends HttpTestBase {
         //走json通过，这个格式OK
         String json = "{id:1,name:'noear',date:'2021-12-12T12:12:12'}";
 
-        String json2 =  path("/demo2/param4/json").bodyJson(json).post();
+        String json2 = path("/demo2/param4/json").bodyJson(json).post();
 
         ONode oNode2 = ONode.loadStr(json2);
 
         assert oNode2.get("id").getInt() == 1;
-        assert new Datetime(oNode2.get("date").getDate() ).getYear() > 2000;
+        assert new Datetime(oNode2.get("date").getDate()).getYear() > 2000;
     }
 
     @Test
@@ -54,7 +54,7 @@ public class HttpParam4Test extends HttpTestBase {
         ONode oNode2 = ONode.loadStr(json2);
 
         assert oNode2.get("id").getInt() == 1;
-        assert new Datetime(oNode2.get("date").getDate() ).getYear() > 2000;
+        assert new Datetime(oNode2.get("date").getDate()).getYear() > 2000;
     }
 
     @Test
@@ -69,6 +69,19 @@ public class HttpParam4Test extends HttpTestBase {
         ONode oNode2 = ONode.loadStr(json2);
 
         assert oNode2.get("id").getInt() == 1;
-        assert new Datetime(oNode2.get("date").getDate() ).getYear() > 2000;
+        assert new Datetime(oNode2.get("date").getDate()).getYear() > 2000;
+    }
+
+
+    @Test
+    public void body() throws IOException {
+        String body = "{name:'noear'}";
+
+        String body2 = path("/demo2/param4/body").bodyJson(body).post();
+        assert body.equals(body2);
+
+
+        body2 = path("/demo2/param4/body").bodyTxt(body).post();
+        assert body.equals(body2);
     }
 }

@@ -74,7 +74,13 @@ public class ActionExecutorDefault implements ActionExecutor {
             } else if (pt.getTypeName().equals("javax.servlet.http.HttpServletResponse")) {
                 args.add(ctx.response());
             } else {
-                Object tv = changeValue(ctx, p, i, pt, bodyObj);
+                Object tv = null;
+
+                if(p.requireBody() && String.class.equals(pt)){
+                    tv = ctx.body();
+                }else{
+                    tv = changeValue(ctx, p, i, pt, bodyObj);;
+                }
 
                 if (tv == null) {
                     //

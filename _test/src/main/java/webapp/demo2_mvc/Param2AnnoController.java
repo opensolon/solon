@@ -33,7 +33,7 @@ public class Param2AnnoController {
     }
 
     @Mapping("name")
-    public Object test_pm_name(@Param(name = "n2") String name) throws IOException {
+    public Object test_pm_name(@Param("n2") String name) throws IOException {
         return name;
     }
 }
