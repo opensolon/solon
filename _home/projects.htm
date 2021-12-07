@@ -1,3 +1,27 @@
+<#assign slug_or_id=ctx.pathMap("/article/{akey}").akey/>
+<#assign is_category=false>
+<!--全局共享变量article-->
+<#if XUtil.isNumber(slug_or_id) >
+<#assign am=db.table("article")
+.where('id=?',slug_or_id?number)
+.select("*")
+.caching(cache).cacheTag("article_"+slug_or_id)
+.getMap() />
+<#else>
+<#assign am=db.table("article")
+.where('slug=?', slug_or_id)
+.select("*")
+.caching(cache).cacheTag("article_"+slug_or_id)
+.getMap() />
+</#if>
+
+<#if (am?size > 0) >
+<#assign loged=db.table("article")
+.set('view_count',"$view_count+1")
+.where('id=?', am.id).update() />
+</#if>
+
+
 <!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -16,8 +40,8 @@
     <script src="//cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
 
     <!-- highlight lib -->
-    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.18.1/build/highlight.min.js"></script>
-    <link href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.18.1/build/styles/atom-one-light.min.css" rel="stylesheet" type="text/css" />
+    <script src="${XUtil.cfgGet('ext_file_md_cdn_highlight_js')}"></script>
+    <link href="${XUtil.cfgGet('ext_file_md_cdn_highlight_css')}" rel="stylesheet" type="text/css" />
     <link href="/img/ext_file_md/markdown_github.css" rel="stylesheet" type="text/css" />
 
     <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.18.1/build/languages/bash.min.js"></script>
@@ -29,16 +53,17 @@
         left{text-algin:left; display:inline-block;}
         right{text-algin:right; float:right; display:inline-block;}
 
-        body{width: 999px;margin: 10px auto; color:#333;}
-        main{margin: 40px 10px;}
+        body{margin: 10px auto; color:#333;}
+        main{width: 999px; margin: 40px auto;}
 
         a{color:#000; cursor: default;}
         a:hover{color:#333;}
 
-        .topbar{display: block; border: 1px solid #888; line-height: 26px;}
-        .topbar h2{padding: 10px;}
-        .topbar ul{display:inline-block;}
-        .topbar li{display: inline-block; margin-left:10px; padding: 10px;}
+        topbar{display: block; width: 999px; margin: auto; border: 1px solid #888; line-height: 26px;}
+        topbar section{width: 999px; margin: auto;}
+        topbar h2{padding: 10px;}
+        topbar ul{display:inline-block;}
+        topbar li{display: inline-block; margin-left:10px; padding: 10px;}
 
         .btn-group{position: relative; display:inline-block;}
         .btn-group .btn-dropdown{display: none;  box-shadow: 0 3px 5px rgba(0, 0, 0, .125);}
@@ -62,93 +87,104 @@
         .features li{display: inline-block; width: 100px; height: 90px; line-height:90px; margin: 10px; border: 1px solid #888; text-algin:center;}
 
         .projects main{display: flex;}
-        .projects aside{width: 30%;}
-        .projects aside li{display: block; padding:5px; margin:5px;}
-        .projects aside li.sel{display: block; border: 1px solid #666; }
-        .projects article{width: 70%;}
+        .projects aside{width: 20%;}
+        .projects aside ul{border-right: 1px solid #666;}
+        .projects aside li{display: block; margin:5px;}
+        .projects aside li a{display: block; padding:5px;}
+        .projects aside li a:hover{background:#f6f8fa}
+        .projects aside li.sel > a{background:#333; color:#fff; border-radius: 4px;}
+        .projects aside ol li{font-size:0.5rem;}
+        .projects article{width: 80%; padding-left: 30px;}
+        .projects article > header{margin-bottom: 30px;}
     </style>
 
 
 </head>
 <body class="projects">
 
-<header class="topbar">
-    <left>
-        <h2><a href="/">Solon</a></h2>
-    </left>
-    <right>
-        <ul class="nav">
-            <li class="btn-group">
-                <a>关于</a>
-                <div class="btn-dropdown">
-                    <a class="btn-link">概述</a>
-                    <a class="btn-link">更小、更快</a>
-                    <a class="btn-link">更自由</a>
-                    <a class="btn-link">三元合一</a>
-                </div>
-            </li>
-            <li class="btn-group">
-                <a>学习</a>
-                <div class="btn-dropdown">
-                    <a class="btn-link">概述</a>
-                    <a class="btn-link">快速开始</a>
-                    <a class="btn-link">向导</a>
-                    <a class="btn-link">QA</a>
-                </div>
-            </li>
-            <li  class="btn-group">
-                <a>项目</a>
-                <div class="btn-dropdown">
-                    <a class="btn-link">Overview</a>
-                    <a class="btn-link" href="/projects/solon">Solon</a>
-                    <a class="btn-link">Solon Web</a>
-                    <a class="btn-link">Solon Batch</a>
-                    <a class="btn-link">Solon Remoting</a>
-                    <a class="btn-link">Solon Cloud</a>
-                </div>
-            </li>
-            <li  class="btn-group">
-                <a>社区</a>
-                <div class="btn-dropdown">
-                    <a class="btn-link" href="https://github.com/noear/solon">GitHub</a>
-                    <a class="btn-link" href="https://gitee.com/noear/solon">Gitee</a>
-                </div>
-            </li>
-        </ul>
-    </right>
-</header>
+<topbar>
+    <section>
+        <left>
+            <h2>Solon</h2>
+        </left>
+        <right>
+            <ul class="nav">
+                <li class="btn-group">
+                    <a>关于</a>
+                    <div class="btn-dropdown">
+                        <a class="btn-link">概述</a>
+                        <a class="btn-link">更小、更快</a>
+                        <a class="btn-link">更自由</a>
+                        <a class="btn-link">三元合一</a>
+                    </div>
+                </li>
+                <li class="btn-group">
+                    <a>学习</a>
+                    <div class="btn-dropdown">
+                        <a class="btn-link">概述</a>
+                        <a class="btn-link">快速开始</a>
+                        <a class="btn-link">向导</a>
+                        <a class="btn-link">QA</a>
+                    </div>
+                </li>
+                <li  class="btn-group">
+                    <a>项目</a>
+                    <div class="btn-dropdown">
+                        <a class="btn-link">Overview</a>
+                        <a class="btn-link" href="/projects/solon">Solon</a>
+                        <a class="btn-link">Solon Web</a>
+                        <a class="btn-link">Solon Batch</a>
+                        <a class="btn-link">Solon Remoting</a>
+                        <a class="btn-link">Solon Cloud</a>
+                    </div>
+                </li>
+                <li  class="btn-group">
+                    <a>社区</a>
+                    <div class="btn-dropdown">
+                        <a class="btn-link" href="https://github.com/noear/solon">GitHub</a>
+                        <a class="btn-link" href="https://gitee.com/noear/solon">Gitee</a>
+                    </div>
+                </li>
+            </ul>
+        </right>
+    </section>
+</topbar>
 
 <main>
     <aside>
         <ul>
-            <li>Solon</li>
-            <li>Solon Boot</li>
-            <li>Solon Serialization</li>
-            <li>Solon View</li>
-            <li >Solon Data
+            <li><a>Solon</a></li>
+            <li><a>Solon Boot</a></li>
+            <li><a>Solon Serialization</a></li>
+            <li><a>Solon View</a></li>
+            <li ><a>Solon Data</a>
                 <ol>
-                    <li class="sel">weed3-solon-plugin</li>
-                    <li>beetlsql-solon-plugin</li>
-                    <li>activerecord-solon-plugin</li>
-                    <li>mybatis-solon-plugin</li>
-                    <li>mybatisplus-solon-plugin</li>
+                    <li class="sel"><a>weed3-solon-plugin</a></li>
+                    <li><a>beetlsql-solon-plugin</a></li>
+                    <li><a>activerecord-solon-plugin</a></li>
+                    <li><a>mybatis-solon-plugin</a></li>
+                    <li><a>mybatisplus-solon-plugin</a></li>
                 </ol>
             </li>
-            <li>Solon Logging</li>
-            <li>Solon Auth</li>
-            <li>Solon I18n</li>
-            <li>Solon Web</li>
-            <li>Solon Batch</li>
-            <li>Solon Remoting</li>
-            <li>Solon Cloud</li>
+            <li><a>Solon Logging</a></li>
+            <li><a>Solon Auth</a></li>
+            <li><a>Solon I18n</a></li>
+            <li><a>Solon Web</a></li>
+            <li><a>Solon Batch</a></li>
+            <li><a>Solon Remoting</a></li>
+            <li><a>Solon Cloud</a></li>
         </ul>
     </aside>
     <article>
         <header>
-            <h3>weed3-solon-plugin</h3>
+            <h1>${am.title!}</h1>
         </header>
-        <section>
-
+        <section class="markdown-body">
+            <#if am.edit_mode ='markdown'>
+            ${eMark.mdToHtml(am.content!)}
+            <#else>
+            ${am.content!}
+        </#if>
         </section>
     </article>
 </main>
@@ -159,3 +195,4 @@
 </script>
 </body>
 </html>
+

@@ -29,16 +29,17 @@
         left{text-algin:left; display:inline-block;}
         right{text-algin:right; float:right; display:inline-block;}
 
-        body{width: 999px;margin: 10px auto; color:#333;}
-        main{margin: 40px 10px;}
+        body{margin: 10px auto; color:#333;}
+        main{width: 999px; margin: 40px auto;}
 
         a{color:#000; cursor: default;}
         a:hover{color:#333;}
 
-        .topbar{display: block; border: 1px solid #888; line-height: 26px;}
-        .topbar h2{padding: 10px;}
-        .topbar ul{display:inline-block;}
-        .topbar li{display: inline-block; margin-left:10px; padding: 10px;}
+        topbar{display: block; width: 1199px; margin: auto; border: 1px solid #888; line-height: 26px;}
+        topbar section{width: 999px; margin: auto;}
+        topbar h2{padding: 10px;}
+        topbar ul{display:inline-block;}
+        topbar li{display: inline-block; margin-left:10px; padding: 10px;}
 
         .btn-group{position: relative; display:inline-block;}
         .btn-group .btn-dropdown{display: none;  box-shadow: 0 3px 5px rgba(0, 0, 0, .125);}
@@ -71,51 +72,53 @@
 </head>
 <body class="home">
 
-<header class="topbar">
-    <left>
-        <h2>Solon</h2>
-    </left>
-    <right>
-        <ul class="nav">
-            <li class="btn-group">
-                <a>关于</a>
-                <div class="btn-dropdown">
-                    <a class="btn-link">概述</a>
-                    <a class="btn-link">更小、更快</a>
-                    <a class="btn-link">更自由</a>
-                    <a class="btn-link">三元合一</a>
-                </div>
-            </li>
-            <li class="btn-group">
-                <a>学习</a>
-                <div class="btn-dropdown">
-                    <a class="btn-link">概述</a>
-                    <a class="btn-link">快速开始</a>
-                    <a class="btn-link">向导</a>
-                    <a class="btn-link">QA</a>
-                </div>
-            </li>
-            <li  class="btn-group">
-                <a>项目</a>
-                <div class="btn-dropdown">
-                    <a class="btn-link">Overview</a>
-                    <a class="btn-link" href="/projects/solon">Solon</a>
-                    <a class="btn-link">Solon Web</a>
-                    <a class="btn-link">Solon Batch</a>
-                    <a class="btn-link">Solon Remoting</a>
-                    <a class="btn-link">Solon Cloud</a>
-                </div>
-            </li>
-            <li  class="btn-group">
-                <a>社区</a>
-                <div class="btn-dropdown">
-                    <a class="btn-link" href="https://github.com/noear/solon">GitHub</a>
-                    <a class="btn-link" href="https://gitee.com/noear/solon">Gitee</a>
-                </div>
-            </li>
-        </ul>
-    </right>
-</header>
+<topbar>
+    <section>
+        <left>
+            <h2>Solon</h2>
+        </left>
+        <right>
+            <ul class="nav">
+                <li class="btn-group">
+                    <a>关于</a>
+                    <div class="btn-dropdown">
+                        <a class="btn-link">概述</a>
+                        <a class="btn-link">更小、更快</a>
+                        <a class="btn-link">更自由</a>
+                        <a class="btn-link">三元合一</a>
+                    </div>
+                </li>
+                <li class="btn-group">
+                    <a>学习</a>
+                    <div class="btn-dropdown">
+                        <a class="btn-link">概述</a>
+                        <a class="btn-link">快速开始</a>
+                        <a class="btn-link">向导</a>
+                        <a class="btn-link">QA</a>
+                    </div>
+                </li>
+                <li  class="btn-group">
+                    <a>项目</a>
+                    <div class="btn-dropdown">
+                        <a class="btn-link">Overview</a>
+                        <a class="btn-link" href="/projects/solon">Solon</a>
+                        <a class="btn-link">Solon Web</a>
+                        <a class="btn-link">Solon Batch</a>
+                        <a class="btn-link">Solon Remoting</a>
+                        <a class="btn-link">Solon Cloud</a>
+                    </div>
+                </li>
+                <li  class="btn-group">
+                    <a>社区</a>
+                    <div class="btn-dropdown">
+                        <a class="btn-link" href="https://github.com/noear/solon">GitHub</a>
+                        <a class="btn-link" href="https://gitee.com/noear/solon">Gitee</a>
+                    </div>
+                </li>
+            </ul>
+        </right>
+    </section>
+</topbar>
 
 <main>
     <section>
