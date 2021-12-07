@@ -77,10 +77,13 @@ public abstract class SessionBase implements Session {
             paramMap = new NvMap();
 
             String query = uri().getQuery();
-            String[] ss = query.split("&");
-            for (String kv : ss) {
-                String[] s = kv.split("=");
-                paramMap.put(s[0], s[1]);
+
+            if (Utils.isNotEmpty(query)) {
+                String[] ss = query.split("&");
+                for (String kv : ss) {
+                    String[] s = kv.split("=");
+                    paramMap.put(s[0], s[1]);
+                }
             }
         }
 
