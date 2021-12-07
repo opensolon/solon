@@ -111,7 +111,7 @@ public class App implements HelloService{
 <parent>
     <groupId>org.noear</groupId>
     <artifactId>solon-parent</artifactId>
-    <version>1.6.6-m2</version>
+    <version>1.6.6-m3</version>
 </parent>
 
 <dependencies>

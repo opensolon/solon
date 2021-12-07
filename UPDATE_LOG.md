@@ -1,6 +1,8 @@
 #### 1.6.6
 * 增加 @Body 注解，注入 body string 支持
 * 增加 @Validated List<?> 验证模式支持
+* 修复 solon.boot.socketd.websocket，去掉 session.path() 多余内容
+* 修复 sockted sessionBase::paramMap()，当 query=null 时会出错的问题
 
 #### 1.6.5
 * 修复 water-solon-plugin ，不能处理缓存更新通知的问题（之前的版改出了问题）
