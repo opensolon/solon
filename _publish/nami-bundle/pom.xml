@@ -32,9 +32,9 @@
         <module>../../_nami/nami.channel.socketd.smartsocket</module>
         <module>../../_nami/nami.channel.socketd.websocket</module>
 
+        <module>../../_nami/nami.coder.snack3</module>
         <module>../../_nami/nami.coder.fastjson</module>
         <module>../../_nami/nami.coder.jackson</module>
-        <module>../../_nami/nami.coder.snack3</module>
         <module>../../_nami/nami.coder.hessian</module>
         <module>../../_nami/nami.coder.protostuff</module>
     </modules>
