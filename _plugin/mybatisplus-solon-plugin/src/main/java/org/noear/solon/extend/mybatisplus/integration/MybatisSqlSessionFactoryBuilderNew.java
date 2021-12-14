@@ -11,6 +11,7 @@ import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import org.apache.ibatis.reflection.MetaObject;
 import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.SqlSessionFactory;
+import org.noear.solon.core.Aop;
 
 /**
  * @author noear
@@ -35,9 +36,9 @@ public class MybatisSqlSessionFactoryBuilderNew extends MybatisSqlSessionFactory
 
         SqlSessionFactory sqlSessionFactory = super.build(configuration);
         globalConfig.setSqlSessionFactory(sqlSessionFactory);
-
-        //globalConfig.setMetaObjectHandler(new MetaObjectHandlerImpl());
-
+        Aop.getAsyn(MetaObjectHandler.class, bw-> {
+            globalConfig.setMetaObjectHandler(bw.get());
+        });
         return sqlSessionFactory;
     }
 }
