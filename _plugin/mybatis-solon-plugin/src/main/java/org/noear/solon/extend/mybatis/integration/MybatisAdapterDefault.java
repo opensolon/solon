@@ -181,7 +181,7 @@ public class MybatisAdapterDefault implements MybatisAdapter {
     @Override
     public SqlSessionFactory getFactory() {
         if (factory == null) {
-            factory = factoryBuilder.build(config);//new SqlSessionFactoryProxy(factoryBuilder.build(config));
+            factory = factoryBuilder.build(getConfiguration());//new SqlSessionFactoryProxy(factoryBuilder.build(config));
         }
 
         return factory;
