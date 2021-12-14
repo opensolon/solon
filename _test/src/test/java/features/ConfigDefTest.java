@@ -15,8 +15,13 @@ public class ConfigDefTest {
     @Inject("${test.name:noear}")
     String name;
 
+
+    @Inject("${test.url:http://solon.noear.org}")
+    String url;
+
     @Test
     public void test(){
         assert "noear".equals(name);
+        assert "http://solon.noear.org".equals(url);
     }
 }

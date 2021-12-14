@@ -385,8 +385,8 @@ public abstract class BeanContainer {
             String def = null;
             int defIdx = name.indexOf(":");
             if(defIdx > 0) {
-                def = name.substring(0, defIdx).trim();
-                name = name.substring(defIdx + 1).trim();
+                def = name.substring(defIdx + 1).trim();
+                name = name.substring(0, defIdx).trim();
             }
 
             String val = Solon.cfg().get(name);
