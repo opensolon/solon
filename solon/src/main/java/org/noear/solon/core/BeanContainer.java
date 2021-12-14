@@ -383,9 +383,10 @@ public abstract class BeanContainer {
         } else {
             //2.然后尝试获取配置
             String def = null;
-            if(name.contains(":")) {
-                def = name.split(":")[1].trim();
-                name = name.split(":")[0].trim();
+            int defIdx = name.indexOf(":");
+            if(defIdx > 0) {
+                def = name.substring(0, defIdx).trim();
+                name = name.substring(defIdx + 1).trim();
             }
 
             String val = Solon.cfg().get(name);

@@ -1,6 +1,7 @@
 #### 1.6.7
 * 增加 Context::sessionAsInt, Context::sessionAsLong, Context::sessionAsDouble 接口
 * 修复 solon.extend.stop 用户ip获取错误
+* 优化 配置注入"${xxx:def}"的兼容性，def有":"符也没关系了
 
 #### 1.6.6
 * 增加 @Body 注解，注入 body string 支持
