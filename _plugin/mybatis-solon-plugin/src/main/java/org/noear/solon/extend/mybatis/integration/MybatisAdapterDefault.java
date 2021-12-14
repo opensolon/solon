@@ -41,14 +41,14 @@ public class MybatisAdapterDefault implements MybatisAdapter {
     /**
      * 构建Sql工厂适配器，使用默认的 typeAliases 和 mappers 配置
      */
-    public MybatisAdapterDefault(BeanWrap dsWrap) {
+    protected MybatisAdapterDefault(BeanWrap dsWrap) {
         this(dsWrap, Solon.cfg().getProp("mybatis"));
     }
 
     /**
      * 构建Sql工厂适配器，使用属性配置
      */
-    public MybatisAdapterDefault(BeanWrap dsWrap, Properties props) {
+    protected MybatisAdapterDefault(BeanWrap dsWrap, Properties props) {
         this.dsWrap = dsWrap;
         this.factoryBuilder = new SqlSessionFactoryBuilder();
 

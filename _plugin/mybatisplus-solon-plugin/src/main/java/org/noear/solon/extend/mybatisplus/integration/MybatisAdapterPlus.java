@@ -20,7 +20,7 @@ import java.util.Properties;
  * @author noear, iYarnFog
  * @since 1.5
  */
-class MybatisAdapterPlus extends MybatisAdapterDefault {
+public class MybatisAdapterPlus extends MybatisAdapterDefault {
 
     MybatisSqlSessionFactoryBuilder factoryBuilderPlus;
     GlobalConfig globalConfig;
@@ -28,14 +28,14 @@ class MybatisAdapterPlus extends MybatisAdapterDefault {
     /**
      * 构建Sql工厂适配器，使用默认的 typeAliases 和 mappers 配置
      */
-    public MybatisAdapterPlus(BeanWrap dsWrap) {
+    protected MybatisAdapterPlus(BeanWrap dsWrap) {
         super(dsWrap);
     }
 
     /**
      * 构建Sql工厂适配器，使用属性配置
      */
-    public MybatisAdapterPlus(BeanWrap dsWrap, Properties props) {
+    protected MybatisAdapterPlus(BeanWrap dsWrap, Properties props) {
         super(dsWrap, props);
 
         this.factoryBuilderPlus = new MybatisSqlSessionFactoryBuilder();
