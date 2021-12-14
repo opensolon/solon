@@ -544,10 +544,11 @@ public abstract class Context {
     }
 
     /**
-     * 获取 session 状态
+     * 获取 session 状态（类型转换，存在风险）
      *
      * @param name 状态名
      */
+    @Deprecated
     public final <T> T session(String name, T def) {
         Object tmp = session(name);
         if (tmp == null) {
@@ -556,6 +557,7 @@ public abstract class Context {
             return (T) tmp;
         }
     }
+
     /**
      * 获取 session 状态，并以 int 型输出
      *
@@ -577,9 +579,14 @@ public abstract class Context {
         } else {
             if (tmp instanceof Number) {
                 return ((Number) tmp).intValue();
-            } else {
-                return def;
+            } else if (tmp instanceof String) {
+                String str = (String) tmp;
+                if (str.length() > 0) {
+                    return Integer.parseInt(str);
+                }
             }
+
+            return def;
         }
     }
 
@@ -604,9 +611,14 @@ public abstract class Context {
         } else {
             if (tmp instanceof Number) {
                 return ((Number) tmp).longValue();
-            } else {
-                return def;
+            } else if (tmp instanceof String) {
+                String str = (String) tmp;
+                if (str.length() > 0) {
+                    return Long.parseLong(str);
+                }
             }
+
+            return def;
         }
     }
 
@@ -631,9 +643,14 @@ public abstract class Context {
         } else {
             if (tmp instanceof Number) {
                 return ((Number) tmp).doubleValue();
-            } else {
-                return def;
+            } else if (tmp instanceof String) {
+                String str = (String) tmp;
+                if (str.length() > 0) {
+                    return Double.parseDouble(str);
+                }
             }
+
+            return def;
         }
     }
 
