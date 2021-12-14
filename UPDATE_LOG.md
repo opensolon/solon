@@ -1,3 +1,6 @@
+#### 1.6.7
+* 增加 Context::sessionAsInt, Context::sessionAsLong, Context::sessionAsDouble 接口
+
 #### 1.6.6
 * 增加 @Body 注解，注入 body string 支持
 * 增加 @Validated List<?> 验证模式支持

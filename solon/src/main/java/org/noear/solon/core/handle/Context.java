@@ -556,6 +556,86 @@ public abstract class Context {
             return (T) tmp;
         }
     }
+    /**
+     * 获取 session 状态，并以 int 型输出
+     *
+     * @param name 状态名
+     */
+    public final int sessionAsInt(String name){
+        return sessionAsInt(name, 0);
+    }
+
+    /**
+     * 获取 session 状态，并以 int 型输出
+     *
+     * @param name 状态名
+     */
+    public final int sessionAsInt(String name, int def) {
+        Object tmp = session(name);
+        if (tmp == null) {
+            return def;
+        } else {
+            if (tmp instanceof Number) {
+                return ((Number) tmp).intValue();
+            } else {
+                return def;
+            }
+        }
+    }
+
+    /**
+     * 获取 session 状态，并以 long 型输出
+     *
+     * @param name 状态名
+     */
+    public final long sessionAsLong(String name){
+        return sessionAsLong(name, 0L);
+    }
+
+    /**
+     * 获取 session 状态，并以 long 型输出
+     *
+     * @param name 状态名
+     */
+    public final long sessionAsLong(String name, long def) {
+        Object tmp = session(name);
+        if (tmp == null) {
+            return def;
+        } else {
+            if (tmp instanceof Number) {
+                return ((Number) tmp).longValue();
+            } else {
+                return def;
+            }
+        }
+    }
+
+    /**
+     * 获取 session 状态，并以 double 型输出
+     *
+     * @param name 状态名
+     */
+    public final double sessionAsDouble(String name) {
+        return sessionAsDouble(name, 0.0D);
+    }
+
+    /**
+     * 获取 session 状态，并以 double 型输出
+     *
+     * @param name 状态名
+     */
+    public final double sessionAsDouble(String name, double def) {
+        Object tmp = session(name);
+        if (tmp == null) {
+            return def;
+        } else {
+            if (tmp instanceof Number) {
+                return ((Number) tmp).doubleValue();
+            } else {
+                return def;
+            }
+        }
+    }
 
     /**
      * 设置 session 状态
