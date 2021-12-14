@@ -11,15 +11,15 @@ paasword=1234
 solon.view.mapping.htm = BeetlRender
 solon.view.mapping.html = EnjoyRender
 
-water.host=http://water.zmapi.cn/
+water.host=http://waterapi:9371
 water.adapter.service_name=1212
 water.adapter.alarm_mobile=18658857337
 water.adapter.msg_subscriber_id=bbb
 water.adapter.msg_signature_key=
 water.adapter.cache_service=webapp.dao.CacheUtil.data2
 
-server.session.state.redis.server=redis.dev.zmapi.cn:6379
-server.session.state.redis.password=AVsVSKd1
+server.session.state.redis.server=redis.io:6379
+server.session.state.redis.password=1234
 server.session.state.redis.db=31
 server.session.state.redis.maxTotaol=200
 

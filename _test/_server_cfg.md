@@ -30,8 +30,8 @@ server.session.timeout: 3600
 server.session.state.domain: noear.org
 
 #当使用 sesstionstate.redis 的配置
-server.session.state.redis.server: redis.dev.zmapi.cn:6379
-server.session.state.redis.password: AVsVSKd1
+server.session.state.redis.server: redis.io:6379
+server.session.state.redis.password: 1234
 server.session.state.redis.db: 31
 server.session.state.redis.maxTotaol: 200
 

@@ -14,7 +14,7 @@ public class NginxHotUpdateTest {
     }
 
     private void test1Do() {
-        String url = "http://rock2.zmapi.cn/getAppByID?appID=10970";
+        String url = "http://rock.sponge.io/getAppByID?appID=10970";
 
         while (true) {
             try {
