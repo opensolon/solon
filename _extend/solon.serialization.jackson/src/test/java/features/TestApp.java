@@ -1,11 +1,15 @@
 package features;
 
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.SerializerProvider;
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Mapping;
 import org.noear.solon.serialization.JsonConverter;
 import org.noear.solon.serialization.jackson.JacksonRenderFactory;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -38,6 +42,13 @@ public class TestApp {
         JacksonRenderFactory.global
                 .addConvertor(LocalDateTime.class, s -> s.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
 
+        JacksonRenderFactory.global
+                .addEncoder(Date.class, new JsonSerializer<Date>() {
+                    @Override
+                    public void serialize(Date date, JsonGenerator out, SerializerProvider sp) throws IOException {
+                        out.writeNumber(date.getTime());
+                    }
+                });
     }
 
     @Mapping("/")
