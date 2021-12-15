@@ -5,6 +5,7 @@ import org.noear.solon.core.wrap.MethodWrap;
 import org.noear.solon.core.util.ConvertUtil;
 import org.noear.solon.core.wrap.ParamWrap;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -61,7 +62,7 @@ public class ActionExecutorDefault implements ActionExecutor {
                 //如果是 Context 类型，直接加入参数
                 //
                 args.add(ctx);
-            } else if(Locale.class.isAssignableFrom(pt)){
+            } else if (Locale.class.isAssignableFrom(pt)) {
                 //如果是 Locale 类型，直接加入参数
                 //
                 args.add(ctx.getLocale());
@@ -76,10 +77,16 @@ public class ActionExecutorDefault implements ActionExecutor {
             } else {
                 Object tv = null;
 
-                if(p.requireBody() && String.class.equals(pt)){
-                    tv = ctx.body();
-                }else{
-                    tv = changeValue(ctx, p, i, pt, bodyObj);;
+                if (p.requireBody()) {
+                    if (String.class.equals(pt)) {
+                        tv = ctx.body();
+                    } else if (InputStream.class.equals(pt)) {
+                        tv = ctx.bodyAsStream();
+                    }
+                }
+
+                if (tv == null) {
+                    tv = changeValue(ctx, p, i, pt, bodyObj);
                 }
 
                 if (tv == null) {
