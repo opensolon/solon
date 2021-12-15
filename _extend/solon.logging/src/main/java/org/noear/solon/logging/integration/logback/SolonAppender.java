@@ -36,6 +36,9 @@ public class SolonAppender extends AppenderBase<ILoggingEvent> {
                 break;
         }
 
+//        IThrowableProxy throwableProxy = e.getThrowableProxy();
+//        ThrowableProxyUtil.asString(throwableProxy);
+
         LogEvent event = new LogEvent(
                 e.getLoggerName(),
                 level,

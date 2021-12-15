@@ -1,61 +1,75 @@
 package org.noear.solon.logging.integration.log4j;
 
-import org.apache.log4j.AppenderSkeleton;
-import org.apache.log4j.Priority;
-import org.apache.log4j.spi.LoggingEvent;
-import org.apache.log4j.spi.ThrowableInformation;
+import org.apache.logging.log4j.core.Filter;
+import org.apache.logging.log4j.core.Layout;
+import org.apache.logging.log4j.core.LogEvent;
+import org.apache.logging.log4j.core.appender.AbstractAppender;
+import org.apache.logging.log4j.core.config.Property;
+import org.apache.logging.log4j.core.config.plugins.Plugin;
+import org.apache.logging.log4j.core.config.plugins.PluginAttribute;
+import org.apache.logging.log4j.core.config.plugins.PluginElement;
+import org.apache.logging.log4j.core.config.plugins.PluginFactory;
+import org.apache.logging.log4j.core.layout.PatternLayout;
+import org.apache.logging.log4j.spi.StandardLevel;
 import org.noear.solon.logging.AppenderManager;
 import org.noear.solon.logging.event.Level;
-import org.noear.solon.logging.event.LogEvent;
+
+import java.io.Serializable;
 
 
 /**
  * @author noear
  * @since 1.4
  */
-public class SolonAppender extends AppenderSkeleton {
+@Plugin(name="SolonAppender", category="Core", elementType="appender", printObject=true)
+public final  class SolonAppender extends AbstractAppender {
+
+    protected SolonAppender(String name, Filter filter, Layout<? extends Serializable> layout, boolean ignoreExceptions) {
+        super(name, filter, layout, ignoreExceptions, Property.EMPTY_ARRAY);
+    }
 
     @Override
-    protected void append(LoggingEvent e) {
+    public void append(LogEvent e) {
         Level level = Level.INFO;
 
-        switch (e.getLevel().toInt()) {
-            case 5000:
-                level = Level.TRACE;
-                break;
-            case Priority.DEBUG_INT:
-                level = Level.DEBUG;
-                break;
-            case Priority.WARN_INT:
-                level = Level.WARN;
-                break;
-            case Priority.ERROR_INT:
-            case Priority.FATAL_INT:
-                level = Level.ERROR;
-                break;
+        int eLevel = e.getLevel().intLevel();
+        if (StandardLevel.DEBUG.intLevel() == (eLevel)) {
+            level = Level.DEBUG;
+        } else if (StandardLevel.WARN.intLevel() == (eLevel)) {
+            level = Level.WARN;
+        } else if (StandardLevel.INFO.intLevel() == (eLevel)) {
+            level = Level.INFO;
+        } else if (StandardLevel.TRACE.intLevel() == (eLevel)) {
+            level = Level.TRACE;
+        } else {
+            level = Level.ERROR;
         }
 
-        ThrowableInformation tmp = e.getThrowableInformation();
-
-        LogEvent event = new LogEvent(
+        org.noear.solon.logging.event.LogEvent event = new org.noear.solon.logging.event.LogEvent(
                 e.getLoggerName(),
                 level,
-                e.getProperties(),
+                e.getContextData().toMap(),
                 e.getMessage(),
-                e.getTimeStamp(),
+                e.getTimeMillis(),
                 e.getThreadName(),
-                (tmp == null ? null : tmp.getThrowable()));
+                e.getThrown());
 
         AppenderManager.getInstance().append(event);
     }
 
-    @Override
-    public void close() {
-
-    }
-
-    @Override
-    public boolean requiresLayout() {
-        return false;
+    @PluginFactory
+    public static SolonAppender createAppender(
+            @PluginAttribute("name") String name,
+            @PluginElement("Layout") Layout<? extends Serializable> layout,
+            @PluginElement("Filter") final Filter filter,
+            @PluginAttribute("otherAttribute") String otherAttribute) {
+        if (name == null) {
+            LOGGER.error("No name provided for MyCustomAppenderImpl");
+            return null;
+        }
+        if (layout == null) {
+            layout = PatternLayout.createDefaultLayout();
+        }
+        return new SolonAppender(name, filter, layout, true);
     }
 }
