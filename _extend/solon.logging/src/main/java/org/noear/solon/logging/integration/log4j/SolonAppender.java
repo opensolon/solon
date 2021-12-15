@@ -11,6 +11,7 @@ import org.apache.logging.log4j.core.config.plugins.PluginElement;
 import org.apache.logging.log4j.core.config.plugins.PluginFactory;
 import org.apache.logging.log4j.core.layout.PatternLayout;
 import org.apache.logging.log4j.spi.StandardLevel;
+import org.apache.logging.log4j.util.ReadOnlyStringMap;
 import org.noear.solon.logging.AppenderManager;
 import org.noear.solon.logging.event.Level;
 
@@ -45,10 +46,12 @@ public final  class SolonAppender extends AbstractAppender {
             level = Level.ERROR;
         }
 
+        ReadOnlyStringMap eData = e.getContextData();
+
         org.noear.solon.logging.event.LogEvent event = new org.noear.solon.logging.event.LogEvent(
                 e.getLoggerName(),
                 level,
-                e.getContextData().toMap(),
+                (eData == null ? null : eData.toMap()),
                 e.getMessage(),
                 e.getTimeMillis(),
                 e.getThreadName(),
