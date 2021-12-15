@@ -55,6 +55,8 @@ public class CacheLib {
 
     /**
      * 注册缓存工厂
+     *
+     * @since 1.6
      * */
     public static void cacheFactoryAdd(String driverType, CacheFactory factory) {
         cacheFactoryMap.put(driverType, factory);
@@ -62,6 +64,8 @@ public class CacheLib {
 
     /**
      * 获取缓存工厂
+     *
+     * @since 1.6
      * */
     public static CacheFactory cacheFactoryGet(String driverType) {
         return cacheFactoryMap.get(driverType);

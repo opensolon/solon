@@ -561,6 +561,7 @@ public abstract class Context {
     /**
      * 获取 session 状态，并以 int 型输出
      *
+     * @since 1.6
      * @param name 状态名
      */
     public final int sessionAsInt(String name){
@@ -570,6 +571,7 @@ public abstract class Context {
     /**
      * 获取 session 状态，并以 int 型输出
      *
+     * @since 1.6
      * @param name 状态名
      */
     public final int sessionAsInt(String name, int def) {
@@ -593,6 +595,7 @@ public abstract class Context {
     /**
      * 获取 session 状态，并以 long 型输出
      *
+     * @since 1.6
      * @param name 状态名
      */
     public final long sessionAsLong(String name){
@@ -602,6 +605,7 @@ public abstract class Context {
     /**
      * 获取 session 状态，并以 long 型输出
      *
+     * @since 1.6
      * @param name 状态名
      */
     public final long sessionAsLong(String name, long def) {
@@ -625,6 +629,7 @@ public abstract class Context {
     /**
      * 获取 session 状态，并以 double 型输出
      *
+     * @since 1.6
      * @param name 状态名
      */
     public final double sessionAsDouble(String name) {
@@ -634,6 +639,7 @@ public abstract class Context {
     /**
      * 获取 session 状态，并以 double 型输出
      *
+     * @since 1.6
      * @param name 状态名
      */
     public final double sessionAsDouble(String name, double def) {
