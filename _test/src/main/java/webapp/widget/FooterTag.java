@@ -1,6 +1,6 @@
 package webapp.widget;
 
-import org.noear.solon.core.handle.Context;
+import org.noear.solon.core.event.EventBus;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.TagSupport;
@@ -9,24 +9,11 @@ public class FooterTag extends TagSupport {
     @Override
     public int doStartTag() throws JspException {
         try {
-            //当前视图path
-            String cPath = Context.current().path();
-
             StringBuffer sb = new StringBuffer();
-            sb.append("<footer>");
-
-            if(cPath.indexOf("/WEB-INF/view/login")==0) //只在登录页显示
-            {
-                sb.append("<p>");
-                sb.append("你好你好");
-                sb.append("</p>");
-            }
-
-            sb.append("</footer>");
+            sb.append("<div>").append("你好 world!").append("</div>");
             pageContext.getOut().write(sb.toString());
-        }
-        catch (Exception e){
-            e.printStackTrace();
+        } catch (Exception e) {
+            EventBus.push(e);
         }
 
         return super.doStartTag();
