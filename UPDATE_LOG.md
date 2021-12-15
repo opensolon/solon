@@ -14,7 +14,7 @@
 * 修复 sockted sessionBase::paramMap()，当 query=null 时会出错的问题
 * 插件 solon.boot.smarthttp，升级 smart-http 为 1.1.10
 * 插件 weed3-solon-plugin，升级 weed 为 3.4.10
-* 依赖 snack3 升级为 3.2.1
+* 依赖 snack3 升级为 3.2.2
 
 #### 1.6.5
 * 修复 water-solon-plugin ，不能处理缓存更新通知的问题（之前的版改出了问题）
