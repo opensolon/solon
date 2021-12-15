@@ -548,7 +548,7 @@ public abstract class Context {
      *
      * @param name 状态名
      */
-    @Note("泛型转换，存在类型失真风险")
+    @Note("泛型转换，存在转换风险")
     public final <T> T session(String name, T def) {
         Object tmp = session(name);
         if (tmp == null) {
