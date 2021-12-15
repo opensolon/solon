@@ -107,5 +107,5 @@ public class App implements HelloService{
 
 ## 官网
 
-更多内容见网站：[https://solon.noear.org](https://solon.noear.org)
+* 更多内容见网站：[https://solon.noear.org](https://solon.noear.org)
 
