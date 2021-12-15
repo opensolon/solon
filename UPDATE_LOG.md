@@ -4,7 +4,7 @@
 * 优化 配置注入"${xxx:def}"的兼容性，def有":"符也没关系了
 * 增加 mybatisplus-solon-plugin 为 globalConfig 注入内容的入口
 * 集成包 solon-api 默认添加 solon.extend.cors
-* 增加 主体流（@Body InputStream body） 
+* 增加 主体流注入支持（@Body InputStream body） 
 
 #### 1.6.6
 * 增加 @Body 注解，注入 body string 支持
