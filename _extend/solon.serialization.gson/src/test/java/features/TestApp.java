@@ -1,5 +1,6 @@
 package features;
 
+import com.google.gson.JsonPrimitive;
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Mapping;
@@ -36,6 +37,12 @@ public class TestApp {
 
         GsonRenderFactory.global
                 .addConvertor(LocalDateTime.class, s -> s.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
+
+
+        GsonRenderFactory.global
+                .addEncoder(Date.class, (source, type, jsc) -> {
+                    return new JsonPrimitive(source.getTime());
+                });
 
     }
 

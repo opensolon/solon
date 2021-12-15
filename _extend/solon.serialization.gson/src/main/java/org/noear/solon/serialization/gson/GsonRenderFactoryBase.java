@@ -21,7 +21,7 @@ public abstract class GsonRenderFactoryBase implements JsonRenderFactory {
 
     @Override
     public <T> void addConvertor(Class<T> clz, JsonConverter<T> converter) {
-        addEncoder(clz, (source, type, jsonSerializationContext) -> {
+        addEncoder(clz, (source, type, jsc) -> {
             Object val = converter.convert((T) source);
 
             if (val == null) {
