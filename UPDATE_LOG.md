@@ -5,6 +5,7 @@
 * 增加 mybatisplus-solon-plugin 为 globalConfig 注入内容的入口
 * 集成包 solon-api 默认添加 solon.extend.cors
 * 增加 主体流注入支持（@Body InputStream body） 
+* 取消 solon.cache 插件，由 solon.data 插件集成相关功能，并提供工厂扩展机制
 
 #### 1.6.6
 * 增加 @Body 注解，注入 body string 支持
