@@ -548,7 +548,7 @@ public abstract class Context {
      *
      * @param name 状态名
      */
-    @Deprecated
+    @Note("泛型转换，存在类型失真风险")
     public final <T> T session(String name, T def) {
         Object tmp = session(name);
         if (tmp == null) {
