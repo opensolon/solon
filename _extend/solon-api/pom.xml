@@ -31,6 +31,12 @@
             <groupId>org.noear</groupId>
             <artifactId>solon.extend.staticfiles</artifactId>
         </dependency>
+
+        <!-- 跨域处理组件 -->
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.extend.cors</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

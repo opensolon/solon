@@ -18,7 +18,7 @@ public class CrossHandler implements Handler {
 
     protected String allowedMethods = "*";
     protected String allowedHeaders = "*";
-    protected boolean allowCredentials;
+    protected boolean allowCredentials = true; //1.6起，默认为true
 
     protected String exposedHeaders;
 
