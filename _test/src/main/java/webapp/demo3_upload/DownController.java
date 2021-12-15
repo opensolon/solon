@@ -27,6 +27,14 @@ public class DownController {
         return file;
     }
 
+    @Mapping("f12")
+    public DownloadedFile down12() {
+        return new DownloadedFile("text/json",
+                "test".getBytes(StandardCharsets.UTF_8),
+                "test.txt");
+
+    }
+
     @Mapping("f2")
     public File down2() {
         String filePath = Utils.getResource("static/debug.htm").getFile();
