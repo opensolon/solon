@@ -3,10 +3,7 @@ package org.noear.solon.data.integration;
 import org.noear.solon.SolonApp;
 import org.noear.solon.core.*;
 import org.noear.solon.data.annotation.*;
-import org.noear.solon.data.cache.CacheServiceEventListener;
-import org.noear.solon.data.cache.CacheLib;
-import org.noear.solon.data.cache.CacheService;
-import org.noear.solon.data.cache.LocalCacheService;
+import org.noear.solon.data.cache.*;
 import org.noear.solon.data.tran.TranExecutor;
 import org.noear.solon.data.around.CacheInterceptor;
 import org.noear.solon.data.around.CachePutInterceptor;
@@ -17,6 +14,9 @@ import org.noear.solon.data.tran.TranExecutorImp;
 public class XPluginImp implements Plugin {
     @Override
     public void start(SolonApp app) {
+        //注册缓存工厂
+        CacheLib.cacheFactoryAdd("local", new LocalCacheFactoryImpl());
+
         //添加事务控制支持
         if (app.enableTransaction()) {
             Aop.wrapAndPut(TranExecutor.class, TranExecutorImp.global);

@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.noear</groupId>
         <artifactId>solon-parent</artifactId>
-        <version>1.6.7-m1</version>
+        <version>1.6.7-m2</version>
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
@@ -25,11 +25,6 @@
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon.data</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.cache</artifactId>
         </dependency>
 
         <!-- 加强的动态代理支持组件 -->

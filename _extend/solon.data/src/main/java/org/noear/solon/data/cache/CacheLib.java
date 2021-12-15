@@ -1,7 +1,6 @@
 package org.noear.solon.data.cache;
 
 import org.noear.solon.annotation.Note;
-import org.noear.solon.data.cache.CacheService;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -47,5 +46,24 @@ public class CacheLib {
     @Note("获取缓存服务")
     public static CacheService cacheServiceGet(String name) {
         return cacheServiceMap.get(name);
+    }
+
+
+    ///////////////////////
+
+    private static Map<String, CacheFactory> cacheFactoryMap = new HashMap<>();
+
+    /**
+     * 注册缓存工厂
+     * */
+    public static void cacheFactoryAdd(String driverType, CacheFactory factory) {
+        cacheFactoryMap.put(driverType, factory);
+    }
+
+    /**
+     * 获取缓存工厂
+     * */
+    public static CacheFactory cacheFactoryGet(String driverType) {
+        return cacheFactoryMap.get(driverType);
     }
 }
