@@ -13,7 +13,7 @@ import static ch.qos.logback.classic.Level.ERROR_INT;
 
 /**
  * @author noear
- * @since
+ * @since 1.4
  */
 public class SolonAppender extends AppenderBase<ILoggingEvent> {
 

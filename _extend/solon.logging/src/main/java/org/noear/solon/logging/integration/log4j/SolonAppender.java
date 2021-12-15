@@ -10,7 +10,8 @@ import org.noear.solon.logging.event.LogEvent;
 
 
 /**
- * @author noear 2021/6/3 created
+ * @author noear
+ * @since 1.4
  */
 public class SolonAppender extends AppenderSkeleton {
 
