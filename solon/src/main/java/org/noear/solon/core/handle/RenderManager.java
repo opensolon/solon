@@ -5,6 +5,7 @@ import org.noear.solon.core.util.PrintUtil;
 import org.noear.solon.ext.DataThrowable;
 
 import java.io.File;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -150,36 +151,7 @@ public class RenderManager implements Render {
 
         }
 
-        //@json
-        //@type_json
-        //@xml
-        //@protobuf
-        //@hessian
-        //
-        Render render = null;
-        String mode = ctx.header("X-Serialization");
-
-        if (Utils.isEmpty(mode)) {
-            mode = ctx.attr("@render");
-        }
-
-        if (Utils.isEmpty(mode) == false) {
-            render = _mapping.get(mode);
-
-            if (render == null) {
-                ctx.headerSet("Solon.serialization.mode", "Not supported " + mode);
-            }
-        }
-
-        if (render == null) {
-            if (ctx.remoting()) {
-                render = _mapping.get("@type_json");
-            }
-        }
-
-        if (render == null) {
-            render = _mapping.get("@json");
-        }
+        Render render = resolveRander(ctx);
 
         if (render != null) {
             return render.renderAndReturn(data, ctx);
@@ -189,6 +161,7 @@ public class RenderManager implements Render {
             return _def.renderAndReturn(data, ctx);
         }
     }
+
 
     /**
      * 渲染
@@ -241,6 +214,28 @@ public class RenderManager implements Render {
             return;
         }
 
+        if(data instanceof InputStream) {
+            ctx.output((InputStream) data);
+            return;
+        }
+
+        Render render = resolveRander(ctx);
+
+        if (render != null) {
+            render.render(data, ctx);
+        } else {
+            //最后只有 def
+            //
+            _def.render(data, ctx);
+        }
+    }
+
+    /**
+     * 分析出渲染器
+     *
+     * @since 1.6
+     * */
+    private Render resolveRander(Context ctx){
         //@json
         //@type_json
         //@xml
@@ -250,7 +245,7 @@ public class RenderManager implements Render {
         Render render = null;
         String mode = ctx.header("X-Serialization");
 
-        if(Utils.isEmpty(mode)){
+        if (Utils.isEmpty(mode)) {
             mode = ctx.attr("@render");
         }
 
@@ -272,12 +267,6 @@ public class RenderManager implements Render {
             render = _mapping.get("@json");
         }
 
-        if (render != null) {
-            render.render(data, ctx);
-        } else {
-            //最后只有 def
-            //
-            _def.render(data, ctx);
-        }
+        return render;
     }
 }
