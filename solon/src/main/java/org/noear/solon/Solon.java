@@ -202,13 +202,15 @@ public class Solon {
             Solon.cfg().plugs().forEach(p -> p.stop());
             PrintUtil.info("App", "Security to stop: 3 completed " + hint);
         } else {
-            //1.预停止
-            Solon.cfg().plugs().forEach(p -> p.prestop());
+            if (Solon.cfg() != null) {
+                //1.预停止
+                Solon.cfg().plugs().forEach(p -> p.prestop());
 
-            //2.标停
-            Solon.global().stopped = true;
-            //3.停止
-            Solon.cfg().plugs().forEach(p -> p.stop());
+                //2.标停
+                Solon.global().stopped = true;
+                //3.停止
+                Solon.cfg().plugs().forEach(p -> p.stop());
+            }
         }
 
 
