@@ -109,20 +109,17 @@ public class Solon {
             global.run();
 
         } catch (Throwable ex) {
-            //3.1.停止服务（主要是停目插件）
-            Solon.stop0(false, 0);
-
             //显示异常信息
             ex = Utils.throwableUnwrap(ex);
-            if (ex instanceof RuntimeException) {
-                throw (RuntimeException) ex;
-            } else {
-                throw new RuntimeException(ex);
-            }
+            ex.printStackTrace();
+
+            //4.停止服务并退出（主要是停止插件）
+            Solon.stop0(false, 0);
+            return null;
         }
 
 
-        //4.初始化安全停止
+        //5.初始化安全停止
         stopDelay = Solon.cfg().getInt("solon.stop.delay", 10);
 
         if (global.enableSafeStop()) {
