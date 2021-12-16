@@ -150,7 +150,44 @@ public class RenderManager implements Render {
 
         }
 
-        throw new IllegalArgumentException("RenderAndReturn: Only support ModelAndView data");
+        //@json
+        //@type_json
+        //@xml
+        //@protobuf
+        //@hessian
+        //
+        Render render = null;
+        String mode = ctx.header("X-Serialization");
+
+        if (Utils.isEmpty(mode)) {
+            mode = ctx.attr("@render");
+        }
+
+        if (Utils.isEmpty(mode) == false) {
+            render = _mapping.get(mode);
+
+            if (render == null) {
+                ctx.headerSet("Solon.serialization.mode", "Not supported " + mode);
+            }
+        }
+
+        if (render == null) {
+            if (ctx.remoting()) {
+                render = _mapping.get("@type_json");
+            }
+        }
+
+        if (render == null) {
+            render = _mapping.get("@json");
+        }
+
+        if (render != null) {
+            return render.renderAndReturn(data, ctx);
+        } else {
+            //最后只有 def
+            //
+            return _def.renderAndReturn(data, ctx);
+        }
     }
 
     /**
