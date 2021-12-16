@@ -959,8 +959,8 @@ public abstract class Context {
     /**
      * 渲染数据并返回
      * */
-    public final String renderAndReturn(ModelAndView modelAndView) throws Throwable {
-        return RenderManager.global.renderAndReturn(modelAndView, this);
+    public final String renderAndReturn(Object obj) throws Throwable {
+        return RenderManager.global.renderAndReturn(obj, this);
     }
 
     private boolean _remoting;
