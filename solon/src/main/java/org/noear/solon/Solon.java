@@ -98,22 +98,28 @@ public class Solon {
         //2.1.内部初始化（如配置等，顺序不能乱）
         global.init();
 
-        //2.2.自定义初始化
-        if (initialize != null) {
-            try {
+
+        try {
+            //2.2.自定义初始化
+            if (initialize != null) {
                 initialize.accept(global);
-            } catch (Throwable ex) {
-                ex = Utils.throwableUnwrap(ex);
-                if (ex instanceof RuntimeException) {
-                    throw (RuntimeException) ex;
-                } else {
-                    throw new RuntimeException(ex);
-                }
+            }
+
+            //3.运行应用（运行插件、扫描Bean等）
+            global.run();
+
+        } catch (Throwable ex) {
+            //3.1.停止服务（主要是停目插件）
+            Solon.stop0(false, 0);
+
+            //显示异常信息
+            ex = Utils.throwableUnwrap(ex);
+            if (ex instanceof RuntimeException) {
+                throw (RuntimeException) ex;
+            } else {
+                throw new RuntimeException(ex);
             }
         }
-
-        //3.运行应用（运行插件、扫描Bean等）
-        global.run();
 
 
         //4.初始化安全停止
