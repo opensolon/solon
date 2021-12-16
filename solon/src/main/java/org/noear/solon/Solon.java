@@ -114,7 +114,7 @@ public class Solon {
             ex.printStackTrace();
 
             //4.停止服务并退出（主要是停止插件）
-            Solon.stop0(false, 0);
+            Solon.stop0(true, 0);
             return null;
         }
 
