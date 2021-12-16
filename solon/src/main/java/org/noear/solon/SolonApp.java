@@ -598,6 +598,17 @@ public class SolonApp implements HandlerSlots {
     }
 
 
+
+    /**
+     * 锁住线程（如果有需要，建议在启动程序的最后调用）
+     * */
+    public void block() throws InterruptedException{
+        synchronized (this) {
+            this.wait();
+        }
+    }
+
+
     private boolean _enableHttp = true; //与函数同名，_开头
 
     /**

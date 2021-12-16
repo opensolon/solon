@@ -121,9 +121,8 @@ public class TestApp {
         });
 
         System.out.println("...........1111");
-        synchronized (app) {
-            app.wait();
-        }
+        app.block();
+        //或 Solon.global().block();
         System.out.println("...........xxxx");
     }
 
