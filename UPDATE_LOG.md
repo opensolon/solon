@@ -1,9 +1,10 @@
 #### 1.6.8
 * 增加 @Init 私有函数支持
+* 增加 @Bean 私有函数支持
 * 增加 @Inject("${xxx:}")，默认值为空的支持
-* 调整 初始化失败时，停掉所有插件
 * 增加 StringSerializerRender 对 renderAndReturn 的支持
 * 增加 Context::renderAndReturn 支持非视图数据
+* 调整 初始化失败时，停掉所有插件并结束进程
 
 #### 1.6.7
 * 增加 Context::sessionAsInt, Context::sessionAsLong, Context::sessionAsDouble 接口
