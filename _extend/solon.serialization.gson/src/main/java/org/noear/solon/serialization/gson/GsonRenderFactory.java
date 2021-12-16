@@ -3,6 +3,7 @@ package org.noear.solon.serialization.gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSerializer;
 import org.noear.solon.core.handle.Render;
+import org.noear.solon.serialization.StringSerializer;
 import org.noear.solon.serialization.StringSerializerRender;
 
 /**
@@ -20,10 +21,6 @@ public class GsonRenderFactory extends GsonRenderFactoryBase {
                 .registerTypeAdapter(java.util.Date.class, new GsonDateSerialize());
     }
 
-    @Override
-    protected GsonBuilder config() {
-        return config;
-    }
 
     /**
      * 添加编码器
@@ -34,6 +31,17 @@ public class GsonRenderFactory extends GsonRenderFactoryBase {
 
     @Override
     public Render create() {
-        return new StringSerializerRender(false, new GsonSerializer(config.create()));
+        return new StringSerializerRender(false, serializer());
+    }
+
+
+    @Override
+    public StringSerializer serializer() {
+        return new GsonSerializer(config.create());
+    }
+
+    @Override
+    protected GsonBuilder config() {
+        return config;
     }
 }

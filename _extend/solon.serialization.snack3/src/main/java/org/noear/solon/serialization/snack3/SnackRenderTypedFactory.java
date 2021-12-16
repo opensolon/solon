@@ -3,6 +3,7 @@ package org.noear.solon.serialization.snack3;
 import org.noear.snack.core.Options;
 import org.noear.snack.core.NodeEncoder;
 import org.noear.solon.core.handle.Render;
+import org.noear.solon.serialization.StringSerializer;
 import org.noear.solon.serialization.StringSerializerRender;
 
 /**
@@ -20,10 +21,6 @@ public class SnackRenderTypedFactory extends SnackRenderFactoryBase {
         config = Options.serialize();
     }
 
-    @Override
-    protected Options config() {
-        return null;
-    }
 
     /**
      * 添加编码器
@@ -34,6 +31,16 @@ public class SnackRenderTypedFactory extends SnackRenderFactoryBase {
 
     @Override
     public Render create() {
-        return new StringSerializerRender(true, new SnackSerializer(config));
+        return new StringSerializerRender(true, serializer());
+    }
+
+    @Override
+    public StringSerializer serializer() {
+        return new SnackSerializer(config);
+    }
+
+    @Override
+    protected Options config() {
+        return config;
     }
 }

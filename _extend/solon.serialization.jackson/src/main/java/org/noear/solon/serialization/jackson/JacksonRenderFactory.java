@@ -3,6 +3,7 @@ package org.noear.solon.serialization.jackson;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.noear.solon.core.handle.Render;
+import org.noear.solon.serialization.StringSerializer;
 import org.noear.solon.serialization.StringSerializerRender;
 
 /**
@@ -22,7 +23,12 @@ public class JacksonRenderFactory extends JacksonRenderFactoryBase {
     public Render create() {
         registerModule();
 
-        return new StringSerializerRender(false, new JacksonSerializer(config));
+        return new StringSerializerRender(false, serializer());
+    }
+
+    @Override
+    public StringSerializer serializer() {
+        return new JacksonSerializer(config);
     }
 
     @Override

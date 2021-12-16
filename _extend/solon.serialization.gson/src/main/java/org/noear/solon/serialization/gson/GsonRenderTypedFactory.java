@@ -2,6 +2,7 @@ package org.noear.solon.serialization.gson;
 
 import com.google.gson.GsonBuilder;
 import org.noear.solon.core.handle.Render;
+import org.noear.solon.serialization.StringSerializer;
 import org.noear.solon.serialization.StringSerializerRender;
 
 /**
@@ -22,7 +23,13 @@ public class GsonRenderTypedFactory extends GsonRenderFactoryBase {
 
     @Override
     public Render create() {
-        return new StringSerializerRender(true, new GsonSerializer(config.create()));
+        return new StringSerializerRender(true, serializer());
+    }
+
+
+    @Override
+    public StringSerializer serializer() {
+        return new GsonSerializer(config.create());
     }
 
     @Override
