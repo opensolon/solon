@@ -2,6 +2,7 @@ package aop;
 
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Init;
+import org.noear.solon.annotation.Inject;
 
 /**
  * @author noear 2021/4/20 created
@@ -12,8 +13,11 @@ public class DemoService {
         System.out.println(System.currentTimeMillis());
     }
 
+    @Inject("${xxx.user-name:}")
+    String userName;
+
     @Init
-    public void init(){
+    private void init(){
         System.out.println(System.currentTimeMillis());
     }
 
