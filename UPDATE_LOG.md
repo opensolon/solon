@@ -3,6 +3,7 @@
 * 增加 @Inject("${xxx:}")，默认值为空的支持
 * 调整 初始化失败时，停掉所有插件
 * 增加 StringSerializerRender 对 renderAndReturn 的支持
+* 增加 Context::renderAndReturn 支持非视图数据
 
 #### 1.6.7
 * 增加 Context::sessionAsInt, Context::sessionAsLong, Context::sessionAsDouble 接口
