@@ -119,6 +119,12 @@ public class TestApp {
             String msg = c.body();
             c.output("收到了...:" + msg);
         });
+
+        System.out.println("...........1111");
+        synchronized (app) {
+            app.wait();
+        }
+        System.out.println("...........xxxx");
     }
 
     void test1() {
