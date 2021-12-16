@@ -266,6 +266,7 @@ public class BeanWrap {
                 if (m.getParameters().length == 0) {
                     //只接收没有参数的
                     clzInit = m;
+                    clzInit.setAccessible(true);
                     clzInitDelay = initAnno.delay();
                 }
                 break;

@@ -385,7 +385,11 @@ public abstract class BeanContainer {
             String def = null;
             int defIdx = name.indexOf(":");
             if(defIdx > 0) {
-                def = name.substring(defIdx + 1).trim();
+                if (name.length() > defIdx + 1) {
+                    def = name.substring(defIdx + 1).trim();
+                } else {
+                    def = "";
+                }
                 name = name.substring(0, defIdx).trim();
             }
 

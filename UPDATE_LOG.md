@@ -1,3 +1,7 @@
+#### 1.6.8
+* 增加 @Init 私有函数支持
+* 增加 @Inject("${xxx:}")，默认值为空的支持
+
 #### 1.6.7
 * 增加 Context::sessionAsInt, Context::sessionAsLong, Context::sessionAsDouble 接口
 * 修复 solon.extend.stop 用户ip获取错误
