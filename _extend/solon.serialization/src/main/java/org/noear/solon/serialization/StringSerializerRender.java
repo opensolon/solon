@@ -25,6 +25,11 @@ public class StringSerializerRender implements Render {
         this.serializer = serializer;
     }
 
+    @Override
+    public String renderAndReturn(Object data, Context ctx) throws Throwable {
+        return serializer.serialize(data);
+    }
+
     /**
      * 渲染
      */
