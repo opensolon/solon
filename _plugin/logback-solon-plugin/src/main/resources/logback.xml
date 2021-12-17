@@ -5,7 +5,7 @@
     <property name="LOG_HOME" value="./logs"/>
     <appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>%highlight(%-5level %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread][@tag0:%mdc{tag0}][*%mdc{traceId}][%logger{20}]#console:) %n%msg%n</pattern>
+            <pattern>%highlight(%-5level %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread][*%mdc{traceId}][@tag0:%mdc{tag0}][%logger{20}]#console:) %n%msg%n</pattern>
         </encoder>
     </appender>
 
@@ -24,7 +24,7 @@
             </timeBasedFileNamingAndTriggeringPolicy>
         </rollingPolicy>
         <encoder>
-            <pattern>%-5level %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread][@tag0:%mdc{tag0}][*%mdc{traceId}][%logger{20}]#console: %n%msg%n</pattern>
+            <pattern>%-5level %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread][*%mdc{traceId}][@tag0:%mdc{tag0}][%logger{20}]#console: %n%msg%n</pattern>
             <charset>UTF-8</charset>
         </encoder>
     </appender>
@@ -44,7 +44,7 @@
             </timeBasedFileNamingAndTriggeringPolicy>
         </rollingPolicy>
         <encoder>
-            <pattern>%-5level %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread][@tag0:%mdc{tag0}][*%mdc{traceId}][%logger{20}]#console: %n%msg%n</pattern>
+            <pattern>%-5level %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread][*%mdc{traceId}][@tag0:%mdc{tag0}][%logger{20}]#console: %n%msg%n</pattern>
             <charset>UTF-8</charset>
         </encoder>
     </appender>
