@@ -65,6 +65,7 @@ public final class EventBus {
                 try {
                     h1.l.onEvent(event);
                 } catch (Throwable ex) {
+                    //此处不能再转发异常
                     ex.printStackTrace();
                 }
             }

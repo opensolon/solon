@@ -15,6 +15,7 @@ import org.noear.solon.extend.staticfiles.repository.FileStaticRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import webapp.demo6_aop.TestImport;
+import webapp.dso.AppPluginImp;
 
 import java.util.Locale;
 
@@ -63,7 +64,10 @@ public class TestApp {
             System.out.println("3.Bean扫描并加载完成");
         }).onAppLoadEnd(e -> {
             System.out.println("4.应用全加载完成了");
-        }).start(TestApp.class, args, x -> {x.enableSocketD(true).enableWebSocket(true);
+        }).start(TestApp.class, args, x -> {
+            x.enableSocketD(true);
+            x.enableWebSocket(true);
+            x.pluginAdd(1, new AppPluginImp());
             StaticMappings.add("/sa-token",new FileStaticRepository("/Users/noear/Downloads/"));
         });
 
