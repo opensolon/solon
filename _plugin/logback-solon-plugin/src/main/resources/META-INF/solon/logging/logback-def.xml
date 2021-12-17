@@ -4,55 +4,38 @@
 <configuration scan="true" scanPeriod="60 seconds" debug="false">
     <conversionRule conversionWord="tags" converterClass="ch.qos.logback.solon.SolonTagsConverter" />
 
-    <solonProperty name="APP_NAME" source="solon.app.name" defaultValue="solon" />
+    <solonProperty name="APP_LOG_FILE" source="solon.logging.file" defaultValue="logs/solon" />
 
-    <property name="ENCODER_PATTERN" value="%highlight(%-5level %d{yyyy-MM-dd HH:mm:ss.SSS} [-%thread][*%mdc{traceId}]%tags[%logger{20}]:) %n%msg%n"/>
-    <property name="LOG_HOME" value="${log.dir:-logs}/${APP_NAME}"/>
+    <property name="LOG_FILE" value="${LOG_FILE:-${APP_LOG_FILE}}"/>
+
+
+    <property name="FILE_LOG_PATTERN" value="%-5level %d{yyyy-MM-dd HH:mm:ss.SSS} [-%thread][*%mdc{traceId}]%tags[%logger{20}]: %n%msg%n"/>
+    <property name="CONSOLE_LOG_PATTERN" value="%highlight(%-5level %d{yyyy-MM-dd HH:mm:ss.SSS} [-%thread][*%mdc{traceId}]%tags[%logger{20}]:) %n%msg%n"/>
 
     <appender name="Console" class="ch.qos.logback.solon.SolonAppender" />
 
 <!--    <appender name="Console" class="ch.qos.logback.core.ConsoleAppender">-->
 <!--        <encoder>-->
-<!--            <pattern>${ENCODER_PATTERN}</pattern>-->
+<!--            <pattern>${CONSOLE_LOG_PATTERN}</pattern>-->
 <!--        </encoder>-->
 <!--    </appender>-->
 
-    <appender name="Info" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <appender name="File" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>TRACE</level>
         </filter>
 
-        <File>${LOG_HOME}/info.log</File>
+        <File>${LOG_FILE}.log</File>
         <append>true</append>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${LOG_HOME}/info_%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <fileNamePattern>${LOG_FILE}_%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <maxHistory>7</maxHistory>
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                 <maxFileSize>100 MB</maxFileSize>
             </timeBasedFileNamingAndTriggeringPolicy>
         </rollingPolicy>
         <encoder>
-            <pattern>${ENCODER_PATTERN}</pattern>
-            <charset>UTF-8</charset>
-        </encoder>
-    </appender>
-
-    <appender name="Error" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-            <level>ERROR</level>
-        </filter>
-
-        <File>${LOG_HOME}/error.log</File>
-        <append>true</append>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${LOG_HOME}/error_%d{yyyy-MM-dd}.%i.log</fileNamePattern>
-            <maxHistory>7</maxHistory>
-            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-                <maxFileSize>100 MB</maxFileSize>
-            </timeBasedFileNamingAndTriggeringPolicy>
-        </rollingPolicy>
-        <encoder>
-            <pattern>${ENCODER_PATTERN}</pattern>
+            <pattern>${FILE_LOG_PATTERN}</pattern>
             <charset>UTF-8</charset>
         </encoder>
     </appender>
@@ -60,8 +43,7 @@
     <root>
         <level value="trace" />
         <appender-ref ref="Console"/>
-        <appender-ref ref="Info"/>
-        <appender-ref ref="Error"/>
+        <appender-ref ref="File"/>
     </root>
 
 </configuration>
