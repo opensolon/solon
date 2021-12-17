@@ -13,6 +13,8 @@ import org.noear.solon.core.handle.Handler;
 public class Run0Handler implements Handler {
     @Override
     public void handle(Context ctx) throws Exception {
+        ctx.sessionRemove("_test_key");
+
         if(ctx.param("str") == null) {
             ctx.output("是null");
         }else{
