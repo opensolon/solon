@@ -52,21 +52,25 @@ public final class EventBus {
             }
 
             //异常分发
-            push1(sThrow, event);
+            push1(sThrow, event, false);
         } else {
             //其它事件分发
-            push1(sOther, event);
+            push1(sOther, event, true);
         }
     }
 
-    private static void push1(Collection<HH> hhs, Object event) {
+    private static void push1(Collection<HH> hhs, Object event, boolean thrown) {
         for (HH h1 : hhs) {
             if (h1.t.isInstance(event)) {
                 try {
                     h1.l.onEvent(event);
-                } catch (Throwable ex) {
-                    //此处不能再转发异常
-                    ex.printStackTrace();
+                } catch (Throwable e) {
+                    if (thrown) {
+                        EventBus.push(e);
+                    } else {
+                        //此处不能再转发异常
+                        e.printStackTrace();
+                    }
                 }
             }
         }
