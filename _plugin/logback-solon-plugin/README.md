@@ -1,5 +1,6 @@
 
 
+默认xml配置，支持应用配置
 ```yaml
 solon.app:
   name: demoapp
