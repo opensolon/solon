@@ -6,14 +6,14 @@
 
     <solonProperty name="APP_NAME" source="solon.app.name" defaultValue="solon" />
 
-    <property name="ENCODER_PATTERN" value="%-5level %d{yyyy-MM-dd HH:mm:ss.SSS} [-%thread][*%mdc{traceId}]%tags[%logger{20}]#console: %n%msg%n"/>
+    <property name="ENCODER_PATTERN" value="%highlight(%-5level %d{yyyy-MM-dd HH:mm:ss.SSS} [-%thread][*%mdc{traceId}]%tags[%logger{20}]:) %n%msg%n"/>
     <property name="LOG_HOME" value="${log.dir:-logs}/${APP_NAME}"/>
 
     <appender name="Console" class="ch.qos.logback.solon.SolonAppender" />
 
 <!--    <appender name="Console" class="ch.qos.logback.core.ConsoleAppender">-->
 <!--        <encoder>-->
-<!--            <pattern>%highlight(%-5level %d{yyyy-MM-dd HH:mm:ss.SSS} [-%thread][*%mdc{traceId}]%tags[%logger{20}]#console:) %n%msg%n</pattern>-->
+<!--            <pattern>${ENCODER_PATTERN}</pattern>-->
 <!--        </encoder>-->
 <!--    </appender>-->
 

@@ -7,6 +7,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.core.Plugin;
+import org.noear.solon.core.event.EventBus;
 import org.slf4j.LoggerFactory;
 
 import java.net.URL;
@@ -32,7 +33,11 @@ public class XPluginImp implements Plugin {
 
             //尝试默认加载
             if (url == null) {
-                url = Utils.getResource("logback-def.xml");
+                url = Utils.getResource("META-INF/solon/logging/logback-def.xml");
+            }
+
+            if (url == null) {
+                return;
             }
 
             try {
@@ -42,7 +47,7 @@ public class XPluginImp implements Plugin {
                 loggerContext.reset();
                 jc.doConfigure(url);
             } catch (JoranException e) {
-                throw new RuntimeException(e);
+                EventBus.push(e);
             }
         }
     }
