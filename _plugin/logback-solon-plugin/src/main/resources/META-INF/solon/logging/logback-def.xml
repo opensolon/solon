@@ -14,7 +14,7 @@
                    defaultValue="%-5level %d{yyyy-MM-dd HH:mm:ss.SSS} [-%thread][*%mdc{traceId}]%tags[%logger{20}]: %n%msg%n" />
 
     <solonProperty name="FILE_LOG_LEVEL" source="solon.logging.appender.file.level"
-                   defaultValue="TRACE" />
+                   defaultValue="INFO" />
 
 
     <solonProperty name="CONSOLE_LOG_PATTERN" source="solon.logging.appender.console.pattern"
