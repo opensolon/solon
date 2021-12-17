@@ -54,6 +54,10 @@
 
         <module>../../_plugin/captcha-solon-plugin</module>
         <module>../../_plugin/vaptcha-solon-plugin</module>
+
+
+        <module>../../_plugin/log4j-solon-plugin</module>
+        <module>../../_plugin/logback-solon-plugin</module>
     </modules>
 
 
