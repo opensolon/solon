@@ -19,7 +19,7 @@ solon.logging.appender:
   
 ```
 
-用户自定义xml配置
+用户自定义xml配置，及环境切换
 ```yaml
 logback-solon.xml 默认
 logback-solon-{env}.xml 环镜切换
