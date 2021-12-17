@@ -1,4 +1,4 @@
-package org.noear.solon.extend.logback.integration;
+package ch.qos.logback.solon;
 
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.AppenderBase;
