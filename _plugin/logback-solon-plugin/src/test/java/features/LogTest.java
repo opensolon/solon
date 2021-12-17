@@ -3,6 +3,7 @@ package features;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.noear.solon.Utils;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
 import org.slf4j.Logger;
@@ -20,6 +21,8 @@ public class LogTest {
     @Test
     public void test1() {
         Logger log = LoggerFactory.getLogger(LogTest.class);
+
+        MDC.put("traceId", Utils.guid());
 
         log.info("你好");
         log.trace("你不好");

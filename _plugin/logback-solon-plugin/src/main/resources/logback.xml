@@ -5,33 +5,32 @@
     <property name="LOG_HOME" value="./logs"/>
     <appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>%highlight([%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread][@tag0:%mdc{tag0}][%logger{20}]#console:) %n%msg%n</pattern>
+            <pattern>%highlight(%-5level %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread][@tag0:%mdc{tag0}][*%mdc{traceId}][%logger{20}]#console:) %n%msg%n</pattern>
         </encoder>
     </appender>
 
     <appender name="File" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>INFO</level>
-            <OnMatch>ACCEPT</OnMatch>
-            <OnMismatch>DENY</OnMismatch>
         </filter>
 
-        <File>${LOG_HOME}/file.log</File>
+        <File>${LOG_HOME}/log.log</File>
         <append>true</append>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${LOG_HOME}/file_%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <fileNamePattern>${LOG_HOME}/log_%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <maxHistory>7</maxHistory>
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                 <maxFileSize>100 MB</maxFileSize>
             </timeBasedFileNamingAndTriggeringPolicy>
         </rollingPolicy>
         <encoder>
-            <pattern>[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread][@tag0:%mdc{tag0}][%logger{20}]#console: %n%msg%n</pattern>
+            <pattern>%-5level %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread][@tag0:%mdc{tag0}][*%mdc{traceId}][%logger{20}]#console: %n%msg%n</pattern>
             <charset>UTF-8</charset>
         </encoder>
     </appender>
 
-    <root level="trace">
+    <root>
+        <level value="trace" />
         <appender-ref ref="Console"/>
         <appender-ref ref="File"/>
     </root>
