@@ -9,15 +9,35 @@
         </encoder>
     </appender>
 
-    <appender name="File" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <appender name="Info" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>INFO</level>
         </filter>
 
-        <File>${LOG_HOME}/log.log</File>
+        <File>${LOG_HOME}/info.log</File>
         <append>true</append>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${LOG_HOME}/log_%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <fileNamePattern>${LOG_HOME}/info_%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxHistory>7</maxHistory>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>100 MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%-5level %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread][@tag0:%mdc{tag0}][*%mdc{traceId}][%logger{20}]#console: %n%msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <appender name="Error" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+
+        <File>${LOG_HOME}/error.log</File>
+        <append>true</append>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_HOME}/error_%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <maxHistory>7</maxHistory>
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                 <maxFileSize>100 MB</maxFileSize>
@@ -32,7 +52,8 @@
     <root>
         <level value="trace" />
         <appender-ref ref="Console"/>
-        <appender-ref ref="File"/>
+        <appender-ref ref="Info"/>
+        <appender-ref ref="Error"/>
     </root>
 
 </configuration>
