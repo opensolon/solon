@@ -44,6 +44,8 @@ public final class SolonProps extends Props {
     private boolean isSetupMode;//是否为安装蕈式
     private boolean isAloneMode;//是否为独立蕈式（即独立运行模式）
 
+    private String env;
+
     private Locale locale;
 
     private String extend;
@@ -82,7 +84,7 @@ public final class SolonProps extends Props {
         loadEnv("solon.");
 
         //2.2.加载环境配置(例：env=pro 或 env=debug)
-        String env = getArg("env");
+        env = getArg("env");
 
         if (Utils.isEmpty(env)) {
             //@Deprecated
@@ -433,6 +435,13 @@ public final class SolonProps extends Props {
         }
 
         return fileEncoding;
+    }
+
+    /**
+     * 环境
+     * */
+    public String env(){
+        return env;
     }
 
     /**

@@ -1,13 +1,13 @@
 package ch.qos.logback.solon.integration;
 
 import ch.qos.logback.classic.LoggerContext;
-import ch.qos.logback.classic.joran.JoranConfigurator;
 import ch.qos.logback.core.joran.spi.JoranException;
+import ch.qos.logback.solon.SolonConfigurator;
+import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.core.Plugin;
 import org.slf4j.LoggerFactory;
-import org.slf4j.MDC;
 
 import java.net.URL;
 
@@ -20,11 +20,24 @@ public class XPluginImp implements Plugin {
     public void start(SolonApp app) {
         URL url = Utils.getResource("logback.xml");
         if (url == null) {
-            url = Utils.getResource("logback_def.xml");
+            //尝试环境加载
+            if (Utils.isNotEmpty(Solon.cfg().env())) {
+                url = Utils.getResource("logback-" + Solon.cfg().env() + ".xml");
+            }
+
+            //尝试应用加载
+            if (url == null) {
+                url = Utils.getResource("logback-app.xml");
+            }
+
+            //尝试默认加载
+            if (url == null) {
+                url = Utils.getResource("logback-def.xml");
+            }
 
             try {
                 LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
-                JoranConfigurator jc = new JoranConfigurator();
+                SolonConfigurator jc = new SolonConfigurator();
                 jc.setContext(loggerContext);
                 loggerContext.reset();
                 jc.doConfigure(url);

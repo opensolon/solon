@@ -4,8 +4,10 @@
 <configuration scan="true" scanPeriod="60 seconds" debug="false">
     <conversionRule conversionWord="tags" converterClass="ch.qos.logback.solon.SolonTagsConverter" />
 
+    <solonProperty name="APP_NAME" source="solon.app.name" defaultValue="solon" />
+
     <property name="ENCODER_PATTERN" value="%-5level %d{yyyy-MM-dd HH:mm:ss.SSS} [-%thread][*%mdc{traceId}]%tags[%logger{20}]#console: %n%msg%n"/>
-    <property name="LOG_HOME" value="${log.dir:-logs}"/>
+    <property name="LOG_HOME" value="${log.dir:-logs}/${APP_NAME}"/>
 
     <appender name="Console" class="ch.qos.logback.solon.SolonAppender" />
 
