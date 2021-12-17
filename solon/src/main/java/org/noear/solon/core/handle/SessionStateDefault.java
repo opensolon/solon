@@ -32,6 +32,11 @@ public class SessionStateDefault implements SessionState{
     }
 
     @Override
+    public void sessionRemove(String key) {
+
+    }
+
+    @Override
     public void sessionClear() {
 
     }

@@ -6,6 +6,7 @@
 * 增加 Context::renderAndReturn 支持非视图数据
 * 增加 上下文特性，自动做为模板变量
 * 增加 模板引擎配置 扩展机制
+* 增加 Context::sessionRemove 接口
 * 调整 EventListener 充许 onEvent 抛出异常
 * 调整 初始化失败时，停掉所有插件并结束进程
 

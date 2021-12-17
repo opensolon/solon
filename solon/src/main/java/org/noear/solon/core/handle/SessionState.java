@@ -50,6 +50,11 @@ public interface SessionState {
     void sessionSet(String key, Object val);
 
     /**
+     * 移除SESSION状态
+     */
+    void sessionRemove(String key);
+
+    /**
      * 清除SESSION状态
      */
     void sessionClear();

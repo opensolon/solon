@@ -42,6 +42,11 @@ public class ContextEmpty extends Context {
             }
 
             @Override
+            public void sessionRemove(String key) {
+                sessionMap().remove(key);
+            }
+
+            @Override
             public void sessionClear() {
                 sessionMap().clear();
             }

@@ -57,6 +57,11 @@ public class SolonServletContext extends Context {
                 }
 
                 @Override
+                public void sessionRemove(String key) {
+                    _request.getSession().removeAttribute(key);
+                }
+
+                @Override
                 public void sessionClear() {
                     Enumeration<String> names = _request.getSession().getAttributeNames();
                     while (names.hasMoreElements()) {

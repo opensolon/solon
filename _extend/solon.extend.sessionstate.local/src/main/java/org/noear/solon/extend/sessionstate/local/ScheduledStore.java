@@ -54,7 +54,16 @@ class ScheduledStore {
         return null;
     }
 
-    public void remove(String block) {
+    public void remove(String block, String key) {
+        synchronized (block.intern()) {
+            Entity ent = _data.get(block);
+            if (ent != null) {
+                ent.map.remove(key);
+            }
+        }
+    }
+
+    public void clear(String block) {
         synchronized (block.intern()) {
             Entity ent = _data.get(block);
             if (ent != null) {

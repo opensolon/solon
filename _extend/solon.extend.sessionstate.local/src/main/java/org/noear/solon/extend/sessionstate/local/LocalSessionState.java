@@ -38,11 +38,11 @@ public class LocalSessionState extends SessionStateDefault {
         return ctx.cookie(key);
     }
 
-    public  void   cookieSet(String key, String val) {
+    public void cookieSet(String key, String val) {
 
         if (SessionProp.session_state_domain_auto) {
             if (_domain != null) {
-                if(ctx.uri().getHost().indexOf(_domain) < 0){ //非安全域
+                if (ctx.uri().getHost().indexOf(_domain) < 0) { //非安全域
                     ctx.cookieSet(key, val, null, _expiry);
                     return;
                 }
@@ -51,7 +51,6 @@ public class LocalSessionState extends SessionStateDefault {
 
         ctx.cookieSet(key, val, _domain, _expiry);
     }
-
 
 
     //
@@ -81,7 +80,7 @@ public class LocalSessionState extends SessionStateDefault {
         String skey = cookieGet(SESSIONID_KEY);
         String smd5 = cookieGet(SESSIONID_MD5());
 
-        if(reset == false) {
+        if (reset == false) {
             if (Utils.isEmpty(skey) == false && Utils.isEmpty(smd5) == false) {
                 if (Utils.md5(skey + SESSIONID_salt).equals(smd5)) {
                     return skey;
@@ -106,8 +105,13 @@ public class LocalSessionState extends SessionStateDefault {
     }
 
     @Override
+    public void sessionRemove(String key) {
+        _store.remove(sessionId(), key);
+    }
+
+    @Override
     public void sessionClear() {
-        _store.remove(sessionId());
+        _store.clear(sessionId());
     }
 
     @Override
@@ -127,7 +131,6 @@ public class LocalSessionState extends SessionStateDefault {
             _store.delay(sessionId());
         }
     }
-
 
 
     @Override

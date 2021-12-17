@@ -147,6 +147,11 @@ public class RedisSessionState extends SessionStateDefault {
     }
 
     @Override
+    public void sessionRemove(String key) {
+        redisClient.open((ru) -> ru.key(sessionId()).expire(_expiry).hashDel(key));
+    }
+
+    @Override
     public void sessionClear() {
         redisClient.open((ru)->ru.key(sessionId()).delete());
     }
