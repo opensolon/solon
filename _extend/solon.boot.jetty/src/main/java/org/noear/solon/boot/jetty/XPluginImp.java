@@ -72,12 +72,11 @@ public final class XPluginImp implements Plugin {
         String connectorInfo = "solon.connector:main: jetty: Started ServerConnector@{HTTP/1.1,[http/1.1]";
         if (app.enableWebSocket()) {
             System.out.println(connectorInfo + "[WebSocket]}{0.0.0.0:" + _port + "}");
-        } else {
-            System.out.println(connectorInfo + "}{http://localhost:" + _port + "}");
         }
 
-        PrintUtil.info("Server:main: jetty: Started @" + (time_end - time_start) + "ms");
+        System.out.println(connectorInfo + "}{http://localhost:" + _port + "}");
 
+        PrintUtil.info("Server:main: jetty: Started @" + (time_end - time_start) + "ms");
 
         app.before(-9, new FormContentFilter());
     }

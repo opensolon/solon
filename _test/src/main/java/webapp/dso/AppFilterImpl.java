@@ -12,6 +12,7 @@ import org.noear.solon.core.handle.FilterChain;
 public class AppFilterImpl implements Filter {
     @Override
     public void doFilter(Context ctx, FilterChain chain) throws Throwable {
+        ctx.attrSet("_test_var","attr_test");
         chain.doFilter(ctx);
     }
 }
