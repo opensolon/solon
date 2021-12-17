@@ -37,7 +37,7 @@ public class AppenderSimple extends AppenderBase {
         LocalDateTime dateTime = LocalDateTime.ofInstant(new Date(logEvent.getTimeStamp()).toInstant(), ZoneId.systemDefault());
 
         StringBuilder buf = new StringBuilder();
-        buf.append("[").append(logEvent.getLevel().name()).append("] ");
+        buf.append("").append(logEvent.getLevel().name()).append(" ");
         buf.append(dateTime.toString()).append(" ");
         buf.append("[-").append(Thread.currentThread().getName()).append("]");
 
