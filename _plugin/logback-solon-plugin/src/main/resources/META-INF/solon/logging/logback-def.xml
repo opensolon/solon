@@ -20,9 +20,19 @@
     <solonProperty name="CONSOLE_LOG_PATTERN" source="solon.logging.appender.console.pattern"
                    defaultValue="%highlight(%-5level %d{yyyy-MM-dd HH:mm:ss.SSS} [-%thread][*%mdc{traceId}]%tags[%logger{20}]:) %n%msg%n" />
 
-    <appender name="Console" class="ch.qos.logback.solon.SolonAppender" />
+    <solonProperty name="CONSOLE_LOG_LEVEL" source="solon.logging.appender.console.level"
+                   defaultValue="TRACE" />
+
+    <appender name="Console" class="ch.qos.logback.solon.SolonAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>${CONSOLE_LOG_LEVEL}</level>
+        </filter>
+    </appender>
 
 <!--    <appender name="Console" class="ch.qos.logback.core.ConsoleAppender">-->
+<!--        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">-->
+<!--            <level>${CONSOLE_LOG_LEVEL}</level>-->
+<!--        </filter>-->
 <!--        <encoder>-->
 <!--            <pattern>${CONSOLE_LOG_PATTERN}</pattern>-->
 <!--        </encoder>-->
