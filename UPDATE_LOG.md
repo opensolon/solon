@@ -8,7 +8,7 @@
 * 增加 模板引擎配置 扩展机制
 * 增加 Context::sessionRemove 接口
 * 调整 EventListener 充许 onEvent 抛出异常
-* 调整 初始化失败时，停掉所有插件并结束进程
+* 调整 初始化失败时，自动停掉所有插件并结束进程
 
 #### 1.6.7
 * 增加 Context::sessionAsInt, Context::sessionAsLong, Context::sessionAsDouble 接口
