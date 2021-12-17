@@ -4,13 +4,21 @@
 <configuration scan="true" scanPeriod="60 seconds" debug="false">
     <conversionRule conversionWord="tags" converterClass="ch.qos.logback.solon.SolonTagsConverter" />
 
-    <solonProperty name="APP_LOG_FILE" source="solon.logging.file" defaultValue="logs/solon" />
+    <solonProperty name="APP_NAME" source="solon.app.name"
+                   defaultValue="solon" />
 
-    <property name="LOG_FILE" value="${LOG_FILE:-${APP_LOG_FILE}}"/>
+    <solonProperty name="FILE_LOG_NAME" source="solon.logging.logback.file.name"
+                   defaultValue="logs/${APP_NAME}" />
+
+    <solonProperty name="FILE_LOG_PATTERN" source="solon.logging.logback.file.pattern"
+                   defaultValue="%-5level %d{yyyy-MM-dd HH:mm:ss.SSS} [-%thread][*%mdc{traceId}]%tags[%logger{20}]: %n%msg%n" />
+
+    <solonProperty name="FILE_LOG_LEVEL" source="solon.logging.logback.file.level"
+                   defaultValue="TRACE" />
 
 
-    <property name="FILE_LOG_PATTERN" value="%-5level %d{yyyy-MM-dd HH:mm:ss.SSS} [-%thread][*%mdc{traceId}]%tags[%logger{20}]: %n%msg%n"/>
-    <property name="CONSOLE_LOG_PATTERN" value="%highlight(%-5level %d{yyyy-MM-dd HH:mm:ss.SSS} [-%thread][*%mdc{traceId}]%tags[%logger{20}]:) %n%msg%n"/>
+    <solonProperty name="CONSOLE_LOG_PATTERN" source="solon.logging.logback.console.pattern"
+                   defaultValue="%highlight(%-5level %d{yyyy-MM-dd HH:mm:ss.SSS} [-%thread][*%mdc{traceId}]%tags[%logger{20}]:) %n%msg%n" />
 
     <appender name="Console" class="ch.qos.logback.solon.SolonAppender" />
 
@@ -22,13 +30,13 @@
 
     <appender name="File" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-            <level>TRACE</level>
+            <level>${FILE_LOG_LEVEL}</level>
         </filter>
 
-        <File>${LOG_FILE}.log</File>
+        <File>${FILE_LOG_NAME}.log</File>
         <append>true</append>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${LOG_FILE}_%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <fileNamePattern>${FILE_LOG_NAME}_%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <maxHistory>7</maxHistory>
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                 <maxFileSize>100 MB</maxFileSize>
