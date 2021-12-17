@@ -11,7 +11,6 @@
 
     <name>_root</name>
     <description>Java project for solon</description>
-
     
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
