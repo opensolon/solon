@@ -90,6 +90,9 @@ public class FreemarkerRender implements Render {
             if (dir != null && dir.exists()) {
                 provider_debug.setDirectoryForTemplateLoading(dir);
             }
+
+            //通过事件扩展
+            EventBus.push(provider_debug);
         } catch (Exception ex) {
             EventBus.push(ex);
         }
@@ -112,6 +115,9 @@ public class FreemarkerRender implements Render {
         }
 
         provider.setCacheStorage(new freemarker.cache.MruCacheStorage(0, Integer.MAX_VALUE));
+
+        //通过事件扩展
+        EventBus.push(provider);
     }
 
     /**

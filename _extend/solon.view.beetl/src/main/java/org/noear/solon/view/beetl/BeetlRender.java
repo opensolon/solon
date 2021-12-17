@@ -96,6 +96,9 @@ public class BeetlRender implements Render {
             if (dir != null && dir.exists()) {
                 FileResourceLoader loader = new FileResourceLoader(dir.getAbsolutePath(), "utf-8");
                 provider_debug = new GroupTemplate(loader, cfg);
+
+                //通过事件扩展
+                EventBus.push(provider_debug);
             }
         } catch (Exception ex) {
             EventBus.push(ex);
@@ -110,6 +113,9 @@ public class BeetlRender implements Render {
         try {
             ClasspathResourceLoader loader = new ClasspathResourceLoader(JarClassLoader.global(), _baseUri);
             provider = new GroupTemplate(loader, cfg);
+
+            //通过事件扩展
+            EventBus.push(provider);
         } catch (Exception ex) {
             EventBus.push(ex);
         }

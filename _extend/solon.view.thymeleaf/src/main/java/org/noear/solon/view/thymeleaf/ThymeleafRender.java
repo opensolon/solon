@@ -96,6 +96,9 @@ public class ThymeleafRender implements Render {
 
                 provider.addTemplateResolver(_loader);
             }
+
+            //通过事件扩展
+            EventBus.push(provider);
         } catch (Exception ex) {
             EventBus.push(ex);
         }
@@ -111,6 +114,9 @@ public class ThymeleafRender implements Render {
         _loader.setCacheTTLMs(Long.valueOf(3600000L));
 
         provider.addTemplateResolver(_loader);
+
+        //通过事件扩展
+        EventBus.push(provider);
     }
 
 
