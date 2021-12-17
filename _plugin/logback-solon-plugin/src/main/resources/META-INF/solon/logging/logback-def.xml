@@ -7,17 +7,17 @@
     <solonProperty name="APP_NAME" source="solon.app.name"
                    defaultValue="solon" />
 
-    <solonProperty name="FILE_LOG_NAME" source="solon.logging.logback.file.name"
+    <solonProperty name="FILE_LOG_NAME" source="solon.logging.appender.file.name"
                    defaultValue="logs/${APP_NAME}" />
 
-    <solonProperty name="FILE_LOG_PATTERN" source="solon.logging.logback.file.pattern"
+    <solonProperty name="FILE_LOG_PATTERN" source="solon.logging.appender.file.pattern"
                    defaultValue="%-5level %d{yyyy-MM-dd HH:mm:ss.SSS} [-%thread][*%mdc{traceId}]%tags[%logger{20}]: %n%msg%n" />
 
-    <solonProperty name="FILE_LOG_LEVEL" source="solon.logging.logback.file.level"
+    <solonProperty name="FILE_LOG_LEVEL" source="solon.logging.appender.file.level"
                    defaultValue="TRACE" />
 
 
-    <solonProperty name="CONSOLE_LOG_PATTERN" source="solon.logging.logback.console.pattern"
+    <solonProperty name="CONSOLE_LOG_PATTERN" source="solon.logging.appender.console.pattern"
                    defaultValue="%highlight(%-5level %d{yyyy-MM-dd HH:mm:ss.SSS} [-%thread][*%mdc{traceId}]%tags[%logger{20}]:) %n%msg%n" />
 
     <appender name="Console" class="ch.qos.logback.solon.SolonAppender" />
