@@ -53,7 +53,11 @@ public class SolonServletContext extends Context {
 
                 @Override
                 public void sessionSet(String key, Object val) {
-                    _request.getSession().setAttribute(key, val);
+                    if (val == null) {
+                        sessionRemove(key);
+                    } else {
+                        _request.getSession().setAttribute(key, val);
+                    }
                 }
 
                 @Override

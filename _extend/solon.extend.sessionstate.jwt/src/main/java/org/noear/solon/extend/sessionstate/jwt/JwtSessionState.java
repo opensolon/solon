@@ -144,8 +144,12 @@ public class JwtSessionState extends SessionStateDefault {
 
     @Override
     public void sessionSet(String key, Object val) {
-        sessionMap().put(key, val);
-        sessionToken = null;
+        if (val == null) {
+            sessionRemove(key);
+        } else {
+            sessionMap().put(key, val);
+            sessionToken = null;
+        }
     }
 
     @Override

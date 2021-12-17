@@ -38,7 +38,11 @@ public class ContextEmpty extends Context {
 
             @Override
             public void sessionSet(String key, Object val) {
-                sessionMap().put(key,val);
+                if (val == null) {
+                    sessionRemove(key);
+                } else {
+                    sessionMap().put(key, val);
+                }
             }
 
             @Override

@@ -96,7 +96,7 @@ public class RedisSessionState extends SessionStateDefault {
 
     @Override
     public Object sessionGet(String key) {
-        String json = redisClient.open1((ru) -> ru.key(sessionId()).expire(_expiry).hashGet(key));
+        String json = redisClient.openAndGet((ru) -> ru.key(sessionId()).expire(_expiry).hashGet(key));
 
         if(json == null){
             return null;
@@ -127,23 +127,21 @@ public class RedisSessionState extends SessionStateDefault {
 
     @Override
     public void sessionSet(String key, Object val) {
-        ONode tmp = new ONode();
-        try {
-            if(val == null) {
-                tmp.set("t", "Null");
-                tmp.set("d", null);
-            }else{
+        if (val == null) {
+            sessionRemove(key);
+        } else {
+            ONode tmp = new ONode();
+            try {
                 tmp.set("t", val.getClass().getSimpleName());
                 tmp.set("d", ONode.loadObj(val, Options.serialize().remove(Feature.BrowserCompatible)));
+            } catch (Exception ex) {
+                throw new RuntimeException("Session state serialization error: " + key + " = " + val);
             }
 
-        } catch (Exception ex) {
-            throw new RuntimeException("Session state serialization error: " + key + " = " + val);
+            String json = tmp.toJson();
+
+            redisClient.open((ru) -> ru.key(sessionId()).expire(_expiry).hashSet(key, json));
         }
-
-        String json = tmp.toJson();
-
-        redisClient.open((ru) -> ru.key(sessionId()).expire(_expiry).hashSet(key, json));
     }
 
     @Override

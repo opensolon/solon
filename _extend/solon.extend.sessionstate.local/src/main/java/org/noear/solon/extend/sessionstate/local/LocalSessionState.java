@@ -101,7 +101,11 @@ public class LocalSessionState extends SessionStateDefault {
 
     @Override
     public void sessionSet(String key, Object val) {
-        _store.put(sessionId(), key, val);
+        if (val == null) {
+            sessionRemove(key);
+        } else {
+            _store.put(sessionId(), key, val);
+        }
     }
 
     @Override
