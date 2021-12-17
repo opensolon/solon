@@ -38,18 +38,19 @@ public class AppenderSimple extends AppenderBase {
 
         LocalDateTime dateTime = LocalDateTime.ofInstant(new Date(logEvent.getTimeStamp()).toInstant(), ZoneId.systemDefault());
         DateTimeFormatter dateTimeF = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
-        String traceId = logEvent.getMetainfo().get("traceId");
 
         StringBuilder buf = new StringBuilder();
         buf.append(logEvent.getLevel().name()).append(" ");
         buf.append(dateTimeF.format(dateTime)).append(" ");
         buf.append("[-").append(Thread.currentThread().getName()).append("]");
 
-        if (Utils.isNotEmpty(traceId)) {
-            buf.append("[*").append(traceId).append("]");
-        }
-
         if (logEvent.getMetainfo() != null) {
+            String traceId = logEvent.getMetainfo().get("traceId");
+
+            if (Utils.isNotEmpty(traceId)) {
+                buf.append("[*").append(traceId).append("]");
+            }
+
             logEvent.getMetainfo().forEach((k, v) -> {
                 if ("traceId".equals(k) == false) {
                     buf.append("[@").append(k).append(":").append(v).append("]");
