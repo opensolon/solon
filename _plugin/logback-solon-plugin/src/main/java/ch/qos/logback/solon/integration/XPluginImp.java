@@ -23,12 +23,12 @@ public class XPluginImp implements Plugin {
         if (url == null) {
             //尝试环境加载
             if (Utils.isNotEmpty(Solon.cfg().env())) {
-                url = Utils.getResource("logback-app-" + Solon.cfg().env() + ".xml");
+                url = Utils.getResource("logback-solon-" + Solon.cfg().env() + ".xml");
             }
 
             //尝试应用加载
             if (url == null) {
-                url = Utils.getResource("logback-app.xml");
+                url = Utils.getResource("logback-solon.xml");
             }
 
             //尝试默认加载

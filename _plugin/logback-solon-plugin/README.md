@@ -17,6 +17,6 @@ solon.logging.appender:
 
 用户自定义xml配置
 ```yaml
-logback-app.xml 默认
-logback-app-{env}.xml 环镜切换
+logback-solon.xml 默认
+logback-solon-{env}.xml 环镜切换
 ```
