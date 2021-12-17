@@ -671,6 +671,15 @@ public abstract class Context {
     }
 
     /**
+     * 移除 session 状态
+     *
+     * @param name 状态名
+     * */
+    public final void  sessionRemove(String name){
+        sessionState().sessionRemove(name);
+    }
+
+    /**
      * 清空 session 状态
      * */
     public final void sessionClear() {
