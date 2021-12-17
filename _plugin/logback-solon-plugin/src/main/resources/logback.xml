@@ -2,6 +2,8 @@
 
 <!DOCTYPE configuration>
 <configuration scan="true" scanPeriod="60 seconds" debug="false">
+    <conversionRule conversionWord="message" converterClass="ch.qos.logback.solon.SolonConverter" />
+
     <property name="LOG_HOME" value="./logs"/>
     <appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
