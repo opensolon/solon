@@ -4,6 +4,7 @@ import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.classic.spi.IThrowableProxy;
 import ch.qos.logback.classic.spi.ThrowableProxyUtil;
 import ch.qos.logback.core.AppenderBase;
+import org.noear.solon.logging.AppenderHolder;
 import org.noear.solon.logging.AppenderManager;
 import org.noear.solon.logging.event.Level;
 import org.noear.solon.logging.event.LogEvent;
@@ -14,10 +15,15 @@ import static ch.qos.logback.classic.Level.*;
  * @author noear
  * @since 1.4
  */
-public class SolonAppender extends AppenderBase<ILoggingEvent> {
+public class SolonCloudAppender extends AppenderBase<ILoggingEvent> {
 
     @Override
     protected void append(ILoggingEvent e) {
+        AppenderHolder appender = AppenderManager.getInstance().get("cloud");
+        if (appender == null) {
+            return;
+        }
+
         Level level = Level.INFO;
 
         switch (e.getLevel().toInt()) {
@@ -37,7 +43,7 @@ public class SolonAppender extends AppenderBase<ILoggingEvent> {
 
         String message = e.getFormattedMessage();
         IThrowableProxy throwableProxy = e.getThrowableProxy();
-        if(throwableProxy != null) {
+        if (throwableProxy != null) {
             String errorStr = ThrowableProxyUtil.asString(throwableProxy);
 
             if (message.contains("{}")) {
@@ -56,6 +62,7 @@ public class SolonAppender extends AppenderBase<ILoggingEvent> {
                 e.getThreadName(),
                 null);
 
-        AppenderManager.getInstance().append(event);
+
+        appender.append(event);
     }
 }

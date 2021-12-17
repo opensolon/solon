@@ -19,7 +19,7 @@ public class AppenderManager {
 
     /**
      * 获取单例
-     * */
+     */
     public static AppenderManager getInstance() {
         if (instance == null) {
             synchronized (AppenderManager.class) {
@@ -42,13 +42,20 @@ public class AppenderManager {
     /**
      * 注册添加器
      *
-     * @param name 名称
+     * @param name     名称
      * @param appender 添加器
      */
     public void register(String name, Appender appender) {
         appenderMap.putIfAbsent(name, new AppenderHolder(name, appender));
 
         PrintUtil.info("Logging", "LogAppender registered from the " + appender.getClass().getTypeName() + "#" + name);
+    }
+
+    /**
+     * 获取添加器
+     */
+    public AppenderHolder get(String name) {
+        return appenderMap.get(name);
     }
 
     /**
@@ -64,8 +71,8 @@ public class AppenderManager {
 
     /**
      * 停止生命周期
-     * */
-    public void stop(){
+     */
+    public void stop() {
         for (AppenderHolder appender : appenderMap.values()) {
             appender.stop();
         }
