@@ -3,7 +3,7 @@ package org.noear.solon.annotation;
 import java.lang.annotation.*;
 
 /**
- * 通用 组件
+ * 通用 组件（只能配合 @Configuration 使用）
  *
  * <pre><code>
  * //注解在配置器的函数上
