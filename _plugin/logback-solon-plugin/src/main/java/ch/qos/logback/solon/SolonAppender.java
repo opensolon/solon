@@ -1,6 +1,8 @@
 package ch.qos.logback.solon;
 
 import ch.qos.logback.classic.spi.ILoggingEvent;
+import ch.qos.logback.classic.spi.IThrowableProxy;
+import ch.qos.logback.classic.spi.ThrowableProxyUtil;
 import ch.qos.logback.core.AppenderBase;
 import org.noear.solon.logging.AppenderManager;
 import org.noear.solon.logging.event.Level;
@@ -33,14 +35,23 @@ public class SolonAppender extends AppenderBase<ILoggingEvent> {
                 break;
         }
 
-//        IThrowableProxy throwableProxy = e.getThrowableProxy();
-//        ThrowableProxyUtil.asString(throwableProxy);
+        String message = e.getFormattedMessage();
+        IThrowableProxy throwableProxy = e.getThrowableProxy();
+        if(throwableProxy != null) {
+            String errorStr = ThrowableProxyUtil.asString(throwableProxy);
+
+            if (message.contains("{}")) {
+                message = message.replace("{}", errorStr);
+            } else {
+                message = message + "\n" + errorStr;
+            }
+        }
 
         LogEvent event = new LogEvent(
                 e.getLoggerName(),
                 level,
                 e.getMDCPropertyMap(),
-                e.getFormattedMessage(),
+                message,
                 e.getTimeStamp(),
                 e.getThreadName(),
                 null);

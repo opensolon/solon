@@ -1,11 +1,13 @@
 package org.noear.solon.logging.appender;
 
+import org.noear.solon.Utils;
 import org.noear.solon.logging.event.AppenderBase;
 import org.noear.solon.logging.event.Level;
 import org.noear.solon.logging.event.LogEvent;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 /**
@@ -18,8 +20,8 @@ public class AppenderSimple extends AppenderBase {
 
     /**
      * 是否允许添加
-     * */
-    protected boolean allowAppend(){
+     */
+    protected boolean allowAppend() {
         return true;
     }
 
@@ -27,23 +29,31 @@ public class AppenderSimple extends AppenderBase {
      * 添加日志事件
      *
      * @param logEvent 日志事件
-     * */
+     */
     @Override
     public void append(LogEvent logEvent) {
-        if(allowAppend() == false){
+        if (allowAppend() == false) {
             return;
         }
 
         LocalDateTime dateTime = LocalDateTime.ofInstant(new Date(logEvent.getTimeStamp()).toInstant(), ZoneId.systemDefault());
+        DateTimeFormatter dateTimeF = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
+        String traceId = logEvent.getMetainfo().get("traceId");
 
         StringBuilder buf = new StringBuilder();
         buf.append(logEvent.getLevel().name()).append(" ");
-        buf.append(dateTime.toString()).append(" ");
+        buf.append(dateTimeF.format(dateTime)).append(" ");
         buf.append("[-").append(Thread.currentThread().getName()).append("]");
+
+        if (Utils.isNotEmpty(traceId)) {
+            buf.append("[*").append(traceId).append("]");
+        }
 
         if (logEvent.getMetainfo() != null) {
             logEvent.getMetainfo().forEach((k, v) -> {
-                buf.append("[@").append(k).append(":").append(v).append("]");
+                if ("traceId".equals(k) == false) {
+                    buf.append("[@").append(k).append(":").append(v).append("]");
+                }
             });
         }
 
