@@ -2,12 +2,12 @@
 
 <!DOCTYPE configuration>
 <configuration scan="true" scanPeriod="60 seconds" debug="false">
-    <conversionRule conversionWord="message" converterClass="ch.qos.logback.solon.SolonConverter" />
+    <conversionRule conversionWord="tags" converterClass="ch.qos.logback.solon.SolonTagsConverter" />
 
     <property name="LOG_HOME" value="./logs"/>
     <appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>%highlight(%-5level %d{yyyy-MM-dd HH:mm:ss.SSS} [-%thread][*%mdc{traceId}][@tag0:%mdc{tag0}][%logger{20}]#console:) %n%msg%n</pattern>
+            <pattern>%highlight(%-5level %d{yyyy-MM-dd HH:mm:ss.SSS} [-%thread][*%mdc{traceId}]%tags[%logger{20}]#console:) %n%msg%n</pattern>
         </encoder>
     </appender>
 
@@ -26,7 +26,7 @@
             </timeBasedFileNamingAndTriggeringPolicy>
         </rollingPolicy>
         <encoder>
-            <pattern>%-5level %d{yyyy-MM-dd HH:mm:ss.SSS} [-%thread][*%mdc{traceId}][@tag0:%mdc{tag0}][%logger{20}]#console: %n%msg%n</pattern>
+            <pattern>%-5level %d{yyyy-MM-dd HH:mm:ss.SSS} [-%thread][*%mdc{traceId}]%tags[%logger{20}]#console: %n%msg%n</pattern>
             <charset>UTF-8</charset>
         </encoder>
     </appender>
@@ -46,7 +46,7 @@
             </timeBasedFileNamingAndTriggeringPolicy>
         </rollingPolicy>
         <encoder>
-            <pattern>%-5level %d{yyyy-MM-dd HH:mm:ss.SSS} [-%thread][*%mdc{traceId}][@tag0:%mdc{tag0}][%logger{20}]#console: %n%msg%n</pattern>
+            <pattern>%-5level %d{yyyy-MM-dd HH:mm:ss.SSS} [-%thread][*%mdc{traceId}]%tags[%logger{20}]#console: %n%msg%n</pattern>
             <charset>UTF-8</charset>
         </encoder>
     </appender>
