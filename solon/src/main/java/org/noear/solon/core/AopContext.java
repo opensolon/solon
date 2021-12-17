@@ -46,7 +46,7 @@ public class AopContext extends BeanContainer {
                 Bean m_an = m.getAnnotation(Bean.class);
 
                 if (m_an != null) {
-                    //支持私有和保护函数
+                    //支持非公有函数
                     m.setAccessible(true);
                     MethodWrap mWrap = MethodWrap.get(m);
 

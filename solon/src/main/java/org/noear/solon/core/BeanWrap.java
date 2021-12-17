@@ -264,7 +264,7 @@ public class BeanWrap {
             Init initAnno = m.getAnnotation(Init.class);
             if (initAnno != null) {
                 if (m.getParameters().length == 0) {
-                    //只接收没有参数的
+                    //只接收没有参数的，支持非公有函数
                     clzInit = m;
                     clzInit.setAccessible(true);
                     clzInitDelay = initAnno.delay();
