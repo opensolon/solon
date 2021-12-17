@@ -1,4 +1,4 @@
-package org.noear.solon.logging.integration.logback;
+package org.noear.solon.extend.logback.integration;
 
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.AppenderBase;
@@ -6,10 +6,7 @@ import org.noear.solon.logging.AppenderManager;
 import org.noear.solon.logging.event.Level;
 import org.noear.solon.logging.event.LogEvent;
 
-import static ch.qos.logback.classic.Level.TRACE_INT;
-import static ch.qos.logback.classic.Level.DEBUG_INT;
-import static ch.qos.logback.classic.Level.WARN_INT;
-import static ch.qos.logback.classic.Level.ERROR_INT;
+import static ch.qos.logback.classic.Level.*;
 
 /**
  * @author noear

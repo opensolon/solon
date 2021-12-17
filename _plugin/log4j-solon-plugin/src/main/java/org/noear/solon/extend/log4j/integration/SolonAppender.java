@@ -1,4 +1,4 @@
-package org.noear.solon.logging.integration.log4j;
+package org.noear.solon.extend.log4j.integration;
 
 import org.apache.logging.log4j.core.Filter;
 import org.apache.logging.log4j.core.Layout;
