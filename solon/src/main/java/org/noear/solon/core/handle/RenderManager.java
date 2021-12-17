@@ -140,6 +140,11 @@ public class RenderManager implements Render {
                     if (render != null) {
                         //如果找到对应的渲染器
                         //
+                        //同步上下文特性
+                        ctx.attrMap().forEach((k, v) -> {
+                            mv.putIfAbsent(k, v);
+                        });
+                        //视图渲染
                         return render.renderAndReturn(mv, ctx);
                     }
                 }
@@ -191,6 +196,11 @@ public class RenderManager implements Render {
                     if (render != null) {
                         //如果找到对应的渲染器
                         //
+                        //同步上下文特性
+                        ctx.attrMap().forEach((k, v) -> {
+                            mv.putIfAbsent(k, v);
+                        });
+                        //视图渲染
                         render.render(mv, ctx);
                         return;
                     }
