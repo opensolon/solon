@@ -4,6 +4,7 @@
 <configuration scan="true" scanPeriod="60 seconds" debug="false">
     <conversionRule conversionWord="tags" converterClass="ch.qos.logback.solon.SolonTagsConverter" />
 
+    <property name="ENCODER_PATTERN" value="%-5level %d{yyyy-MM-dd HH:mm:ss.SSS} [-%thread][*%mdc{traceId}]%tags[%logger{20}]#console: %n%msg%n"/>
     <property name="LOG_HOME" value="${log.dir:-logs}"/>
 
     <appender name="Console" class="ch.qos.logback.solon.SolonAppender" />
@@ -29,7 +30,7 @@
             </timeBasedFileNamingAndTriggeringPolicy>
         </rollingPolicy>
         <encoder>
-            <pattern>%-5level %d{yyyy-MM-dd HH:mm:ss.SSS} [-%thread][*%mdc{traceId}]%tags[%logger{20}]#console: %n%msg%n</pattern>
+            <pattern>${ENCODER_PATTERN}</pattern>
             <charset>UTF-8</charset>
         </encoder>
     </appender>
@@ -49,7 +50,7 @@
             </timeBasedFileNamingAndTriggeringPolicy>
         </rollingPolicy>
         <encoder>
-            <pattern>%-5level %d{yyyy-MM-dd HH:mm:ss.SSS} [-%thread][*%mdc{traceId}]%tags[%logger{20}]#console: %n%msg%n</pattern>
+            <pattern>${ENCODER_PATTERN}</pattern>
             <charset>UTF-8</charset>
         </encoder>
     </appender>
