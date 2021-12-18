@@ -2,7 +2,6 @@ package org.noear.solon.serialization.gson;
 
 import com.google.gson.GsonBuilder;
 import org.noear.solon.core.handle.Render;
-import org.noear.solon.serialization.StringSerializer;
 import org.noear.solon.serialization.StringSerializerRender;
 
 /**

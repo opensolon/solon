@@ -3,7 +3,6 @@ package org.noear.solon.serialization.snack3;
 import org.noear.snack.core.Options;
 import org.noear.snack.core.NodeEncoder;
 import org.noear.solon.core.handle.Render;
-import org.noear.solon.serialization.StringSerializer;
 import org.noear.solon.serialization.StringSerializerRender;
 
 /**
@@ -31,11 +30,7 @@ public class SnackRenderTypedFactory extends SnackRenderFactoryBase {
 
     @Override
     public Render create() {
-        return new StringSerializerRender(true, serializer());
-    }
-
-    protected StringSerializer serializer() {
-        return new SnackSerializer(config);
+        return new StringSerializerRender(true, new SnackSerializer(config));
     }
 
     @Override
