@@ -15,11 +15,6 @@ public interface JsonRenderFactory {
     <T> void addConvertor(Class<T> clz, JsonConverter<T> converter);
 
     /**
-     * 获取序列化器
-     * */
-    StringSerializer serializer();
-
-    /**
      * 创建渲染器
      * */
     Render create();

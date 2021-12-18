@@ -26,8 +26,7 @@ public class JacksonRenderFactory extends JacksonRenderFactoryBase {
         return new StringSerializerRender(false, serializer());
     }
 
-    @Override
-    public StringSerializer serializer() {
+    protected StringSerializer serializer() {
         return new JacksonSerializer(config);
     }
 

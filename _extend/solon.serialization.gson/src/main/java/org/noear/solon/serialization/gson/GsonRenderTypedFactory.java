@@ -26,9 +26,7 @@ public class GsonRenderTypedFactory extends GsonRenderFactoryBase {
         return new StringSerializerRender(true, serializer());
     }
 
-
-    @Override
-    public StringSerializer serializer() {
+    protected StringSerializer serializer() {
         return new GsonSerializer(config.create());
     }
 

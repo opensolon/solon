@@ -34,8 +34,7 @@ public class SnackRenderTypedFactory extends SnackRenderFactoryBase {
         return new StringSerializerRender(true, serializer());
     }
 
-    @Override
-    public StringSerializer serializer() {
+    protected StringSerializer serializer() {
         return new SnackSerializer(config);
     }
 

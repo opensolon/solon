@@ -35,8 +35,7 @@ public class GsonRenderFactory extends GsonRenderFactoryBase {
     }
 
 
-    @Override
-    public StringSerializer serializer() {
+    protected StringSerializer serializer() {
         return new GsonSerializer(config.create());
     }
 
