@@ -36,7 +36,9 @@ public class SolonTagsConverter extends LogEventPatternConverter {
 
         if (eData != null) {
             eData.forEach((tag, val) -> {
-                toAppendTo.append("[@").append(tag).append(":").append(val).append("]");
+                if ("traceId".equals(tag) == false) {
+                    toAppendTo.append("[@").append(tag).append(":").append(val).append("]");
+                }
             });
         }
     }

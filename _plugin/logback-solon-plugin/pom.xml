@@ -31,6 +31,12 @@
             <groupId>org.noear</groupId>
             <artifactId>solon-test</artifactId>
             <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.noear</groupId>
+                    <artifactId>solon.logging.impl</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>

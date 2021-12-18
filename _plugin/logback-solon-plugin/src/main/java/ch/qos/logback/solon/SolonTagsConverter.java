@@ -18,7 +18,9 @@ public class SolonTagsConverter extends MessageConverter {
         if (eData != null) {
             StringBuilder buf = new StringBuilder();
             eData.forEach((tag, val) -> {
-                buf.append("[@").append(tag).append(":").append(val).append("]");
+                if ("traceId".equals(tag) == false) {
+                    buf.append("[@").append(tag).append(":").append(val).append("]");
+                }
             });
             return buf.toString();
         } else {

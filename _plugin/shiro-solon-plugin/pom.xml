@@ -32,12 +32,13 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon-api</artifactId>
+            <artifactId>solon-test</artifactId>
             <scope>test</scope>
         </dependency>
+
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.logging.impl</artifactId>
+            <artifactId>solon-api</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>
