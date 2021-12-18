@@ -799,9 +799,16 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>log4j2-solon-plugin</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>logback-solon-plugin</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
+
 
 
             <!-- //////////// servlet ////////////  -->
