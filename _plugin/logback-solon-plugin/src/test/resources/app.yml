@@ -12,3 +12,7 @@ solon.logging.appender:
   cloud:
     level: INFO
 
+
+solon.logging.logger:
+  "features":
+    level: WARN
