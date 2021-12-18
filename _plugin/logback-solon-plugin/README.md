@@ -24,3 +24,16 @@ solon.logging.appender:
 logback-solon.xml 默认
 logback-solon-{env}.xml 环镜切换
 ```
+
+Spring boot 怀旧风格
+```yaml
+solon.app:
+  name: demoapp
+
+solon.logging.appender:
+  console:
+    pattern: "%d{yyyy-MM-dd HH:mm:ss} %-5level %magenta(${PID:-}) %white(-&#45;&#45;) %-20(%yellow([%20.20thread])) %-55(%cyan(%.32logger{30}:%L)) %msg%n"
+  file:
+    pattern: "%d{yyyy-MM-dd HH:mm:ss} %-5level %magenta(${PID:-}) %white(-&#45;&#45;) %-20(%yellow([%20.20thread])) %-55(%cyan(%.32logger{30}:%L)) %msg%n"
+  
+```

@@ -23,6 +23,10 @@
 
     <solonProperty name="FILE_LOG_LEVEL" source="solon.logging.appender.file.level"
                    defaultValue="INFO" />
+    <solonProperty name="FILE_LOG_MAX_HISTORY" source="solon.logging.appender.file.maxHistory"
+                   defaultValue="7" />
+    <solonProperty name="FILE_LOG_MAX_FILE_SIZE" source="solon.logging.appender.file.maxFileSize"
+                   defaultValue="10 MB" />
 
 
     <solonProperty name="CLOUD_LOG_LEVEL" source="solon.logging.appender.cloud.level"
@@ -46,9 +50,9 @@
         <append>true</append>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>${FILE_LOG_NAME}_%d{yyyy-MM-dd}.%i.log</fileNamePattern>
-            <maxHistory>7</maxHistory>
+            <maxHistory>${FILE_LOG_MAX_HISTORY}</maxHistory>
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-                <maxFileSize>100 MB</maxFileSize>
+                <maxFileSize>${FILE_LOG_MAX_FILE_SIZE}</maxFileSize>
             </timeBasedFileNamingAndTriggeringPolicy>
         </rollingPolicy>
         <encoder>
@@ -69,5 +73,13 @@
         <appender-ref ref="File"/>
         <appender-ref ref="Cloud"/>
     </root>
+
+    <logger name="org.apache.catalina.startup.DigesterFactory" level="ERROR"/>
+    <logger name="org.apache.catalina.util.LifecycleBase" level="ERROR"/>
+    <logger name="org.apache.coyote.http11.Http11NioProtocol" level="WARN"/>
+    <logger name="org.apache.sshd.common.util.SecurityUtils" level="WARN"/>
+    <logger name="org.apache.tomcat.util.net.NioSelectorPool" level="WARN"/>
+    <logger name="org.eclipse.jetty.util.component.AbstractLifeCycle" level="ERROR"/>
+    <logger name="org.hibernate.validator.internal.util.Version" level="WARN"/>
 
 </configuration>
