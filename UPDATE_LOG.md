@@ -1,3 +1,7 @@
+#### 1.6.9
+* 增加 log4j2-solon-plugin,logback-solon-plugin 对记录器等级的应用配置支持
+* 增加 JsonRenderFactory 的事件扩展支持
+
 #### 1.6.8
 * 增加 @Init 私有函数支持
 * 增加 @Bean 私有函数支持
