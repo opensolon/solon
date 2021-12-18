@@ -246,14 +246,20 @@ public final class SolonProps extends Props {
                     if (v1 instanceof String) {
                         // db1.url=xxx
                         // db1.jdbcUrl=${db1.url}
+                        // db1.jdbcUrl=jdbc:mysql:${db1.server}
                         String tmpV = (String) v1;
-                        if (tmpV.startsWith("${") && tmpV.endsWith("}")) {
-                            String tmpK = tmpV.substring(2, tmpV.length() - 1);
-                            tmpV = props.getProperty(tmpK);
-                            if (tmpV == null) {
-                                tmpV = getProperty(tmpK);
+                        int symStart = tmpV.indexOf("${");
+                        if (symStart >= 0) {
+                            int symEnd = tmpV.indexOf("}", symStart + 1);
+                            if (symEnd > symStart) {
+                                String tmpK = tmpV.substring(symStart + 2, symEnd);
+                                String tmpV2 = props.getProperty(tmpK);
+                                if (tmpV2 == null) {
+                                    tmpV2 = getProperty(tmpK);
+                                }
+
+                                v1 = tmpV.substring(0, symStart) + tmpV2 + tmpV.substring(symEnd + 1);
                             }
-                            v1 = tmpV;
                         }
                     }
 
