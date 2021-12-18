@@ -11,8 +11,7 @@ solon.logging.appender:
     level: TRACE
     pattern: "%highlight(%-5level %d{yyyy-MM-dd HH:mm:ss.SSS} [-%thread][*%mdc{traceId}]%tags[%logger{20}]:) %n%msg%n"
   file:
-    name: "${solon.app.name}"
-    path: "logs"
+    name: "logs/${solon.app.name}"
     level: INFO
     pattern: "%-5level %d{yyyy-MM-dd HH:mm:ss.SSS} [-%thread][*%mdc{traceId}]%tags[%logger{20}]: %n%msg%n"
   cloud:
