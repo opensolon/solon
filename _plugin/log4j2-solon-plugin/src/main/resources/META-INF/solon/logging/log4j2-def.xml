@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Configuration status="WARN">
+<Configuration status="WARN" packages="org.apache.logging.log4j.solon">
     <Properties>
         <Property name="APP_NAME">${sys:solon.app.name}</Property>
 
-        <Property name="CONSOLE_LOG_PATTERN_DEF">%highlight(%-5level %d{yyyy-MM-dd HH:mm:ss.SSS} [-%thread][*%mdc{traceId}]%tags[%logger{20}]:) %n%msg%n</Property>
+        <Property name="CONSOLE_LOG_PATTERN_DEF">%highlight{%-5level %d{yyyy-MM-dd HH:mm:ss.SSS} [-%t][*%X{traceId}]%tags[%logger{20}]:} %n%msg%n</Property>
         <Property name="CONSOLE_LOG_PATTERN">${sys:solon.logging.appender.console.pattern:-${CONSOLE_LOG_PATTERN_DEF}}</Property>
         <Property name="CONSOLE_LOG_LEVEL">${sys:solon.logging.appender.console.level:-TRACE}</Property>
 
         <Property name="FILE_LOG_NAME">${sys:solon.logging.appender.file.name:-logs/${APP_NAME}}</Property>
-        <Property name="FILE_LOG_PATTERN_DEF">%-5level %d{yyyy-MM-dd HH:mm:ss.SSS} [-%thread][*%mdc{traceId}]%tags[%logger{20}]: %n%msg%n</Property>
+        <Property name="FILE_LOG_PATTERN_DEF">%-5level %d{yyyy-MM-dd HH:mm:ss.SSS} [-%t][*%X{traceId}]%tags[%logger{20}]: %n%msg%n</Property>
         <Property name="FILE_LOG_PATTERN">${sys:solon.logging.appender.file.pattern:-${CONSOLE_LOG_PATTERN_DEF}}</Property>
         <Property name="FILE_LOG_LEVEL">${sys:solon.logging.appender.file.level:-INFO}</Property>
         <Property name="FILE_LOG_MAX_HISTORY">${sys:solon.logging.appender.file.maxHistory:-7}</Property>
@@ -18,10 +18,12 @@
     </Properties>
     <Appenders>
         <Console name="Console" target="SYSTEM_OUT" follow="true">
-            <PatternLayout pattern="${sys:CONSOLE_LOG_PATTERN}" />
+            <PatternLayout pattern="${sys:CONSOLE_LOG_PATTERN}"
+                           disableAnsi="false"
+                           noConsoleNoAnsi="false"/>
         </Console>
         <RollingFile name="File"
-                     fileName="${sys:FILE_LOG_NAME}"
+                     fileName="${sys:FILE_LOG_NAME}.log"
                      filePattern="${sys:FILE_LOG_NAME}_%d{yyyy-MM-dd HH}_%i.log">
             <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>
             <PatternLayout>
@@ -49,6 +51,7 @@
         <Root level="trace">
             <AppenderRef ref="Console" />
             <AppenderRef ref="File" />
+            <AppenderRef ref="Cloud" />
         </Root>
     </Loggers>
 </Configuration>

@@ -9,7 +9,7 @@
 
 
     <solonProperty name="CONSOLE_LOG_PATTERN" source="solon.logging.appender.console.pattern"
-                   defaultValue="%highlight(%-5level %d{yyyy-MM-dd HH:mm:ss.SSS} [-%thread][*%mdc{traceId}]%tags[%logger{20}]:) %n%msg%n" />
+                   defaultValue="%highlight(%-5level %d{yyyy-MM-dd HH:mm:ss.SSS} [-%thread][*%X{traceId}]%tags[%logger{20}]:) %n%msg%n" />
 
     <solonProperty name="CONSOLE_LOG_LEVEL" source="solon.logging.appender.console.level"
                    defaultValue="TRACE" />
@@ -19,7 +19,7 @@
                    defaultValue="logs/${APP_NAME}" />
 
     <solonProperty name="FILE_LOG_PATTERN" source="solon.logging.appender.file.pattern"
-                   defaultValue="%-5level %d{yyyy-MM-dd HH:mm:ss.SSS} [-%thread][*%mdc{traceId}]%tags[%logger{20}]: %n%msg%n" />
+                   defaultValue="%-5level %d{yyyy-MM-dd HH:mm:ss.SSS} [-%thread][*%X{traceId}]%tags[%logger{20}]: %n%msg%n" />
 
     <solonProperty name="FILE_LOG_LEVEL" source="solon.logging.appender.file.level"
                    defaultValue="INFO" />
