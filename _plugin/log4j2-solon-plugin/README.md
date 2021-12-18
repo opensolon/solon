@@ -1,6 +1,8 @@
 
+## 使用说明
 
-默认xml配置，支持应用配置
+### 1、内部署默认配置（当什么都不加时，以此配置运行）
+
 ```yaml
 solon.app:
   name: demoapp
@@ -18,8 +20,13 @@ solon.logging.appender:
     level: INFO
 ```
 
-用户自定义xml配置，及环境切换
+### 2、如果想高度定制，自定义可 xml 配置（支持环境切换）
 ```yaml
-log4j2-solon.xml 默认
-log4j2-solon-{env}.xml 环镜切换
+#默认配置，可以从插件里复制 log4j2-def.xml 进行修改（-solon 可以支持 solon 特性）
+log4j2-solon.xml
+
+#环镜配置
+log4j2-solon-{env}.xml 
 ```
+
+也可以用 `log4j2.xml` 配置文件。但其它配置都会失效，也没有环境切换功能
