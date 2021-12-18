@@ -7,7 +7,7 @@
 solon.app:
   name: demoapp
 
-# 以下为默认值，如果没有变化，不用加（与 solon.logging 插件配置统一）(支持日志服务配置)
+# 以下为默认值，可以都不加，或者想改哪行加哪行(支持"云端配置服务"进行配置，支持写到"云端日志服务")
 solon.logging.appender:
   console:
     level: TRACE

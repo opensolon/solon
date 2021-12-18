@@ -19,7 +19,6 @@ solon.logging.appender:
     pattern: "%-5level %d{yyyy-MM-dd HH:mm:ss.SSS} [-%t][*%X{traceId}]%tags[%logger{20}]: %n%msg%n"
   cloud:
     level: INFO
-  
 ```
 
 
