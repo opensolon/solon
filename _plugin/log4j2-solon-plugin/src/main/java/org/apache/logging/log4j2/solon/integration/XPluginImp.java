@@ -1,4 +1,4 @@
-package org.apache.logging.log4j.solon.integration;
+package org.apache.logging.log4j2.solon.integration;
 
 import org.apache.logging.log4j.core.config.ConfigurationSource;
 import org.apache.logging.log4j.core.config.Configurator;

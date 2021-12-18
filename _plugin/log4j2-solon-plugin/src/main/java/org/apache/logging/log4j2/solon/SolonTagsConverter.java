@@ -1,4 +1,4 @@
-package org.apache.logging.log4j.solon;
+package org.apache.logging.log4j2.solon;
 
 import org.apache.logging.log4j.core.LogEvent;
 import org.apache.logging.log4j.core.config.plugins.Plugin;

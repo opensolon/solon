@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Configuration status="WARN" packages="org.apache.logging.log4j.solon">
+<Configuration status="WARN" packages="org.apache.logging.log4j2.solon">
     <Properties>
         <Property name="APP_NAME">${sys:solon.app.name}</Property>
 
