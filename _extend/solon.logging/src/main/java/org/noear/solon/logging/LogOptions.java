@@ -17,14 +17,14 @@ public class LogOptions {
 
     /**
      * 设置默认日志等级
-     * */
+     */
     public static void setLevel(Level level) {
         LogOptions.level = level;
     }
 
     /**
      * 获取默认日志等级
-     * */
+     */
     public static Level getLevel() {
         return LogOptions.level;
     }
@@ -37,8 +37,8 @@ public class LogOptions {
      * 添加记录器等级设定
      *
      * @param loggerExpr 记录器表达式
-     * @param level 等级
-     * */
+     * @param level      等级
+     */
     public static void addLoggerLevel(String loggerExpr, Level level) {
         if (loggerExpr.endsWith(".*")) {
             loggerExpr = loggerExpr.substring(0, loggerExpr.length() - 1);
@@ -50,16 +50,27 @@ public class LogOptions {
     }
 
     /**
+     * 获取所有配置的记录器等级设定
+     * */
+    public static Collection<LoggerLevelEntity> getLoggerLevels() {
+        if (loggerLevelMapInited == false) {
+            loggerLevelMapInit();
+        }
+
+        return loggerLevelMap.values();
+    }
+
+    /**
      * 获取记录器等级设定
      *
      * @param logger 记录器名称
-     * */
+     */
     public static Level getLoggerLevel(String logger) {
         if (loggerLevelMapInited == false) {
             loggerLevelMapInit();
         }
 
-        if(logger == null){
+        if (logger == null) {
             return Level.INFO;
         }
 
@@ -74,7 +85,7 @@ public class LogOptions {
 
     /**
      * 初始化记录器默认等级
-     * */
+     */
     private static synchronized void loggerLevelMapInit() {
         if (loggerLevelMapInited) {
             return;
