@@ -26,6 +26,11 @@ public class StringSerializerRender implements Render {
     }
 
     @Override
+    public String getName() {
+        return this.getClass().getSimpleName() + "#" + serializer.getClass().getSimpleName();
+    }
+
+    @Override
     public String renderAndReturn(Object data, Context ctx) throws Throwable {
         return serializer.serialize(data);
     }

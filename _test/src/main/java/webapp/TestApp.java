@@ -12,6 +12,7 @@ import org.noear.solon.extend.cors.CrossHandler;
 import org.noear.solon.extend.staticfiles.StaticMappings;
 import org.noear.solon.extend.staticfiles.repository.ExtendStaticRepository;
 import org.noear.solon.extend.staticfiles.repository.FileStaticRepository;
+import org.noear.solon.serialization.JsonRenderFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import webapp.demo6_aop.TestImport;
@@ -68,6 +69,11 @@ public class TestApp {
             x.enableSocketD(true);
             x.enableWebSocket(true);
             x.pluginAdd(1, new AppPluginImp());
+
+            x.onEvent(JsonRenderFactory.class, e->{
+               System.out.println("JsonRenderFactory event: xxxxx: " + e.getClass().getSimpleName());
+            });
+
             StaticMappings.add("/sa-token",new FileStaticRepository("/Users/noear/Downloads/"));
         });
 

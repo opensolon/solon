@@ -1,5 +1,5 @@
-#solon.app:
-#  name: demoapp
+solon.app:
+  name: demoapp
 
 #solon.logging.appender:
 #  console:

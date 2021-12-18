@@ -78,7 +78,7 @@ public class RenderManager implements Render {
         //suffix=.ftl
         _mapping.put(suffix, render);
 
-        PrintUtil.info("View: mapping: " + suffix + "=" + render.getClass().getSimpleName());
+        PrintUtil.info("View: mapping: " + suffix + "=" + render.getName());
     }
 
     /**
