@@ -24,7 +24,7 @@
         </Console>
         <RollingFile name="File"
                      fileName="${sys:FILE_LOG_NAME}.log"
-                     filePattern="${sys:FILE_LOG_NAME}_%d{yyyy-MM-dd HH}_%i.log">
+                     filePattern="${sys:FILE_LOG_NAME}_%d{yyyy-MM-dd}_%i.log">
             <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>
             <PatternLayout>
                 <Pattern>${sys:FILE_LOG_PATTERN}</Pattern>
@@ -33,7 +33,7 @@
                 <TimeBasedTriggeringPolicy/>
                 <SizeBasedTriggeringPolicy size="${sys:FILE_LOG_MAX_FILE_SIZE}" />
             </Policies>
-            <DefaultRolloverStrategy max="20"/>
+            <DefaultRolloverStrategy max="${sys:FILE_LOG_MAX_HISTORY}"/>
         </RollingFile>
         <Cloud name="Cloud">
             <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>
