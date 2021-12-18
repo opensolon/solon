@@ -20,38 +20,24 @@ public class SolonTagsConverter extends LogEventPatternConverter {
 
     /**
      * 创建实体，这个函数必须有
-     * */
+     */
     public static SolonTagsConverter newInstance(
             final String[] options) {
         return INSTANCE;
     }
 
     private SolonTagsConverter() {
-        super("tags","tags");
+        super("tags", "tags");
     }
 
     @Override
     public void format(LogEvent event, StringBuilder toAppendTo) {
         ReadOnlyStringMap eData = event.getContextData();
-        StringBuilder buf = toAppendTo;
-        if (eData.containsKey("tag0")) {
-            buf.append("[@tag0:").append(eData.getValue("tag0").toString()).append("]");
-        }
 
-        if (eData.containsKey("tag1")) {
-            buf.append("[@tag1:").append(eData.getValue("tag1").toString()).append("]");
-        }
-
-        if (eData.containsKey("tag2")) {
-            buf.append("[@tag2:").append(eData.getValue("tag2").toString()).append("]");
-        }
-
-        if (eData.containsKey("tag3")) {
-            buf.append("[@tag3:").append(eData.getValue("tag3").toString()).append("]");
-        }
-
-        if (eData.containsKey("tag4")) {
-            buf.append("[@tag4:").append(eData.getValue("tag4").toString()).append("]");
+        if (eData != null) {
+            eData.forEach((tag, val) -> {
+                toAppendTo.append("[@").append(tag).append(":").append(val).append("]");
+            });
         }
     }
 }
