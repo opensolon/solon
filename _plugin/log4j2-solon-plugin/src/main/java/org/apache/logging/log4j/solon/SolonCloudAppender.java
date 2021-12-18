@@ -30,12 +30,19 @@ public final  class SolonCloudAppender extends AbstractAppender {
         super(name, filter, layout, ignoreExceptions, Property.EMPTY_ARRAY);
     }
 
+    AppenderHolder appender;
+
     @Override
     public void append(LogEvent e) {
-        AppenderHolder appender = AppenderManager.getInstance().get("cloud");
         if (appender == null) {
-            return;
+            appender = AppenderManager.getInstance().get("cloud");
+
+            if (appender == null) {
+                return;
+            }
         }
+
+
 
         Level level;
 

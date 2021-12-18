@@ -17,11 +17,16 @@ import static ch.qos.logback.classic.Level.*;
  */
 public class SolonCloudAppender extends AppenderBase<ILoggingEvent> {
 
+    AppenderHolder appender;
+
     @Override
     protected void append(ILoggingEvent e) {
-        AppenderHolder appender = AppenderManager.getInstance().get("cloud");
         if (appender == null) {
-            return;
+            appender = AppenderManager.getInstance().get("cloud");
+
+            if (appender == null) {
+                return;
+            }
         }
 
         Level level = Level.INFO;
