@@ -1,20 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="WARN">
     <Properties>
-        <Property name="PID">????</Property>
-        <Property name="LOG_EXCEPTION_CONVERSION_WORD">%xwEx</Property>
-        <Property name="LOG_LEVEL_PATTERN">%5p</Property>
-        <Property name="LOG_DATEFORMAT_PATTERN">yyyy-MM-dd HH:mm:ss.SSS</Property>
-        <Property name="CONSOLE_LOG_PATTERN">%clr{%d{${LOG_DATEFORMAT_PATTERN}}}{faint} %clr{${LOG_LEVEL_PATTERN}} %clr{${sys:PID}}{magenta} %clr{---}{faint} %clr{[%15.15t]}{faint} %clr{%-40.40c{1.}}{cyan} %clr{:}{faint} %m%n${sys:LOG_EXCEPTION_CONVERSION_WORD}</Property>
-        <Property name="FILE_LOG_PATTERN">%d{${LOG_DATEFORMAT_PATTERN}} ${LOG_LEVEL_PATTERN} ${sys:PID} --- [%t] %-40.40c{1.} : %m%n${sys:LOG_EXCEPTION_CONVERSION_WORD}</Property>
-
         <Property name="APP_NAME">${sys:solon.app.name}</Property>
 
         <Property name="CONSOLE_LOG_PATTERN_DEF"></Property>
         <Property name="CONSOLE_LOG_PATTERN">${sys:solon.logging.appender.console.pattern:-${CONSOLE_LOG_PATTERN_DEF}}</Property>
         <Property name="CONSOLE_LOG_LEVEL">${sys:solon.logging.appender.console.level:-TRACE}</Property>
 
-        <Property name="FILE_LOG_NAME">${sys:solon.logging.appender.file.name:-logs/${APP_NAME}}</Property>
+        <Property name="FILE_LOG_NAME">${sys:solon.logging.appender.file.name:-${APP_NAME}}</Property>
+        <Property name="FILE_LOG_PATH">${sys:solon.logging.appender.file.path:-logs}</Property>
         <Property name="FILE_LOG_PATTERN_DEF"></Property>
         <Property name="FILE_LOG_PATTERN">${sys:solon.logging.appender.file.pattern:-${CONSOLE_LOG_PATTERN_DEF}}</Property>
         <Property name="FILE_LOG_LEVEL">${sys:solon.logging.appender.file.level:-INFO}</Property>
@@ -28,17 +22,17 @@
             <PatternLayout pattern="${sys:CONSOLE_LOG_PATTERN}" />
         </Console>
         <RollingFile name="File"
-                     fileName="${sys:LOG_FILE}"
-                     filePattern="${sys:LOG_PATH}/$${date:yyyy-MM}/app-%d{yyyy-MM-dd-HH}-%i.log">
+                     fileName="${sys:FILE_LOG_NAME}"
+                     filePattern="${sys:FILE_LOG_PATH}/%d{yyyy-MM-dd}/${sys:FILE_LOG_NAME}_%d{yyyy-MM-dd HH}_%i.log">
             <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>
             <PatternLayout>
                 <Pattern>${sys:FILE_LOG_PATTERN}</Pattern>
             </PatternLayout>
             <Policies>
                 <TimeBasedTriggeringPolicy/>
-                <SizeBasedTriggeringPolicy size="10 MB" />
+                <SizeBasedTriggeringPolicy size="${sys:FILE_LOG_MAX_FILE_SIZE}" />
             </Policies>
-            <DefaultRolloverStrategy max="20"/>
+            <DefaultRolloverStrategy max="${sys:FILE_LOG_MAX_FILE_SIZE}"/>
         </RollingFile>
         <Cloud name="Cloud">
             <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>
