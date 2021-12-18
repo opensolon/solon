@@ -1,4 +1,4 @@
-package org.apache.logging.log4j2.solon;
+package org.apache.logging.log4j.solon;
 
 import org.apache.logging.log4j.core.Filter;
 import org.apache.logging.log4j.core.Layout;
