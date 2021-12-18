@@ -31,13 +31,9 @@ public class GsonRenderFactory extends GsonRenderFactoryBase {
 
     @Override
     public Render create() {
-        return new StringSerializerRender(false, serializer());
+        return new StringSerializerRender(false, new GsonSerializer(config.create()));
     }
 
-
-    protected StringSerializer serializer() {
-        return new GsonSerializer(config.create());
-    }
 
     @Override
     protected GsonBuilder config() {
