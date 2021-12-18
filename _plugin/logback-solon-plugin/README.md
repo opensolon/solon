@@ -19,6 +19,13 @@ solon.logging.appender:
     pattern: "%-5level %d{yyyy-MM-dd HH:mm:ss.SSS} [-%t][*%X{traceId}]%tags[%logger{20}]: %n%msg%n"
   cloud:
     level: INFO
+
+# 记录器级别的配置示例
+solon.logging.logger:
+  "features.*":
+    level: WARN
+  "org.jetty.demo.*":
+    level: WARN
 ```
 
 
