@@ -7,7 +7,6 @@ import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.core.Plugin;
-import org.noear.solon.core.event.EventBus;
 import org.slf4j.LoggerFactory;
 
 import java.net.URL;
@@ -40,15 +39,19 @@ public class XPluginImp implements Plugin {
                 return;
             }
 
-            try {
-                LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
-                SolonConfigurator jc = new SolonConfigurator();
-                jc.setContext(loggerContext);
-                loggerContext.reset();
-                jc.doConfigure(url);
-            } catch (JoranException e) {
-                EventBus.push(e);
-            }
+            initDo(url);
+        }
+    }
+
+    private void initDo(URL url){
+        try {
+            LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
+            SolonConfigurator jc = new SolonConfigurator();
+            jc.setContext(loggerContext);
+            loggerContext.reset();
+            jc.doConfigure(url);
+        } catch (JoranException e) {
+            throw new RuntimeException(e);
         }
     }
 }
