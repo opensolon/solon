@@ -78,9 +78,6 @@ public class Solon {
             return global;
         }
 
-        //默认设为 utf-8
-        System.setProperty("file.encoding", "UTF-8");
-
         //确定PID
         RuntimeMXBean rb = ManagementFactory.getRuntimeMXBean();
         String pid = rb.getName().split("@")[0];
