@@ -5,7 +5,6 @@ import org.noear.solon.core.NvMap;
 import org.noear.solon.core.util.PrintUtil;
 import org.noear.solon.ext.ConsumerEx;
 
-import javax.rmi.CORBA.Util;
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
 
@@ -78,6 +77,9 @@ public class Solon {
         if (global != null) {
             return global;
         }
+
+        //默认设为 utf-8
+        System.setProperty("file.encoding", "UTF-8");
 
         //确定PID
         RuntimeMXBean rb = ManagementFactory.getRuntimeMXBean();
