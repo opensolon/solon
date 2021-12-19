@@ -272,12 +272,8 @@ public final class SolonProps extends Props {
                     }
 
                     if (v1 != null) {
-                        if (v1 instanceof String) {
-                            //同步到系统属性
-                            System.setProperty(key, (String) v1);
-                        }
-
-                        put(kv.getKey(), v1);
+                        System.getProperties().put(k1, v1);
+                        put(k1, v1);
                     }
                 }
             }
