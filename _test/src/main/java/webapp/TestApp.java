@@ -18,6 +18,9 @@ import org.slf4j.LoggerFactory;
 import webapp.demo6_aop.TestImport;
 import webapp.dso.AppPluginImp;
 
+import java.io.ByteArrayOutputStream;
+import java.io.OutputStreamWriter;
+import java.nio.charset.Charset;
 import java.util.Locale;
 
 @Import(value = TestImport.class)
@@ -28,19 +31,12 @@ public class TestApp {
     static Logger logger = LoggerFactory.getLogger(TestApp.class);
 
     public static void main(String[] args) throws Exception {
-        /**
-         *
-         * http://t5_undertow.test.noear.org
-         *
-         * http://t4_nettyhttp.test.noear.org
-         *
-         * http://t3_smarthttp.test.noear.org
-         *
-         * http://t2_jlhttp.test.noear.org
-         *
-         * http://t1_jetty.test.noear.org
-         *
-         * */
+        //System.setProperty("file.encoding", "UTF-8");
+
+        System.out.println("Default Charset=" + Charset.defaultCharset());
+        System.out.println("file.encoding=" + System.getProperty("file.encoding"));
+        System.out.println("Default Charset=" + Charset.defaultCharset());
+        System.out.println("Default Charset in Use=" + getDefaultCharSet());
 
         //简化方式
         //SolonApp app = Solon.start(TestApp.class, args, x -> x.enableSocketD(true).enableWebSocket(true));
@@ -153,5 +149,14 @@ public class TestApp {
 
         //全局添加跨域处理
         app.before(new CrossHandler().allowedOrigins("*"));
+    }
+
+    private static String getDefaultCharSet() {
+        OutputStreamWriter writer = new OutputStreamWriter(new ByteArrayOutputStream());
+
+        String enc = writer.getEncoding();
+
+        return enc;
+
     }
 }
