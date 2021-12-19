@@ -30,6 +30,8 @@
         <module>../../_plugin/cron4j-solon-plugin</module>
         <module>../../_plugin/dubbo-solon-plugin</module>
         <module>../../_plugin/feign-solon-plugin</module>
+        <module>../../_plugin/forest-solon-plugin</module>
+
         <module>../../_plugin/graphql-solon-plugin</module>
         <module>../../_plugin/hasor-solon-plugin</module>
         <module>../../_plugin/luffy-solon-plugin</module>
