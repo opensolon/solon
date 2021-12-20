@@ -4,7 +4,6 @@ import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.core.*;
-import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.util.PrintUtil;
 
