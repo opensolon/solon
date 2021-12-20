@@ -1,6 +1,8 @@
 #### 1.6.9
 * 增加 log4j2-solon-plugin,logback-solon-plugin 对记录器等级的应用配置支持
 * 增加 JsonRenderFactory 的事件扩展支持
+* 增加 Mvc 参数自动以,号分离为数组
+* 取消 @Param::format 属性
 
 #### 1.6.8
 * 增加 @Init 私有函数支持

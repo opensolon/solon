@@ -14,7 +14,6 @@ public class UserModel implements Serializable {
 
     public transient String _type;
 
-    @Param(format = "yyyy-MM-dd")
     public Date date = new Date();
 
     public long[] aaa;
