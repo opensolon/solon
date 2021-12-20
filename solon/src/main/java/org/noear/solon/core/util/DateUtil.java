@@ -28,7 +28,6 @@ public class DateUtil {
     public static final String FORMAT_10_a = "yyyy-MM-dd";
     public static final String FORMAT_10_b = "yyyy/MM/dd";
     public static final String FORMAT_10_c = "yyyy.MM.dd";
-
     public static final String FORMAT_9 = "HH时mm分ss秒";
     public static final String FORMAT_8_a = "HH:mm:ss";
     public static final String FORMAT_8_b = "yyyyMMdd";
@@ -77,16 +76,34 @@ public class DateUtil {
                 ft = FORMAT_10_b;
             } else if (c1 == '.') {
                 ft = FORMAT_10_c;
-            } else {
+            } else if (c1 == '-') {
                 ft = FORMAT_10_a;
             }
         } else if (len == 9) {
-            ft = FORMAT_9;
-        } else if (len == 8) {
-            if (val.charAt(2) == ':') {
-                ft = FORMAT_8_a;
+            char c1 = val.charAt(4);
+            if (c1 == '/') {
+                ft = FORMAT_10_b; //兼容：yyyy/d/m
+            } else if (c1 == '.') {
+                ft = FORMAT_10_c;
+            } else if (c1 == '-') {
+                ft = FORMAT_10_a;
             } else {
-                ft = FORMAT_8_b;
+                ft = FORMAT_9;
+            }
+        } else if (len == 8) {
+            char c1 = val.charAt(4);
+            if (c1 == '/') {
+                ft = FORMAT_10_b; //兼容：yyyy/d/m
+            } else if (c1 == '.') {
+                ft = FORMAT_10_c;
+            } else if (c1 == '-') {
+                ft = FORMAT_10_a;
+            } else {
+                if (val.charAt(2) == ':') {
+                    ft = FORMAT_8_a;
+                } else {
+                    ft = FORMAT_8_b;
+                }
             }
         }
 
