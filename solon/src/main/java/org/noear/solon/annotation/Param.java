@@ -25,10 +25,6 @@ public @interface Param {
     @Alias("value")
     String name() default "";
     /**
-     * 格式（主要为日期之类的服务）
-     * */
-    String format() default "";
-    /**
      * 必须的(只做标识，不做检查)
      * */
     boolean required() default false;

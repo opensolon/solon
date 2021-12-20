@@ -32,7 +32,7 @@ public class ConvertUtil {
      * @param val     值
      * @param ctx     通用上下文
      */
-    public static Object to(AnnotatedElement element, Class<?> type, String key, String val, Context ctx) throws ClassCastException {
+    public static Object to(AnnotatedElement element,  Class<?> type, String key, String val, Context ctx) throws ClassCastException {
         if (String.class == (type)) {
             return val;
         }
@@ -44,19 +44,9 @@ public class ConvertUtil {
         Object rst = null;
 
         if (rst == null && Date.class == type) {
-            Param xd = null;
-
-            if (element != null) {
-                xd = element.getAnnotation(Param.class);
-            }
-
             try {
-                if (xd != null && Utils.isEmpty(xd.format()) == false) {
-                    rst = new SimpleDateFormat(xd.format()).parse(val);
-                } else {
-                    rst = DateUtil.parse(val);
-                }
-            }catch (ParseException e){
+                rst = DateUtil.parse(val);
+            } catch (ParseException e) {
                 throw new RuntimeException(e);
             }
         }
@@ -71,7 +61,7 @@ public class ConvertUtil {
                 }
 
                 //todo:可能有兼容问题("?aaa=1,2&aaa=3,4,5,6"，只传第一部份时就麻烦了)
-                if(ary.length == 1){
+                if (ary.length == 1) {
                     ary = val.split(",");
                 }
 

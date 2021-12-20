@@ -75,7 +75,7 @@ public class ParamController {
 
     //支持时间参数（要加XParam指定格式）
     @Mapping("date")
-    public Object test_h2(Context ctx, @Param(format = "yyyy-MM-dd") Date date, Date date2) throws Exception{
+    public Object test_h2(Context ctx, Date date, Date date2) throws Exception{
         return date + " # " + date2;
     }
 
