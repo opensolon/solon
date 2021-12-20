@@ -59,7 +59,7 @@ public class ResourceScanner {
         if ("file".equals(url.getProtocol())) {
             //3.1.找到文件
             //
-            String fp = URLDecoder.decode(url.getFile(), "UTF-8");
+            String fp = URLDecoder.decode(url.getFile(), Solon.encoding());
             doScanByFile(new File(fp), path, filter, urls);
         } else if ("jar".equals(url.getProtocol())) {
             //3.2.找到jar包

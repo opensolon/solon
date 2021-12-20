@@ -94,7 +94,7 @@ public class BeetlRender implements Render {
 
         try {
             if (dir != null && dir.exists()) {
-                FileResourceLoader loader = new FileResourceLoader(dir.getAbsolutePath(), "utf-8");
+                FileResourceLoader loader = new FileResourceLoader(dir.getAbsolutePath(), Solon.encoding());
                 provider_debug = new GroupTemplate(loader, cfg);
 
                 //通过事件扩展

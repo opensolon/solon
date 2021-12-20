@@ -1,5 +1,6 @@
 package org.noear.solon.core.util;
 
+import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.NvMap;
 
@@ -73,7 +74,7 @@ public class PathUtil {
         if (expr.indexOf("{") >= 0) {
             String path2 = null;
             try {
-                path2 = URLDecoder.decode(path, "utf-8");
+                path2 = URLDecoder.decode(path, Solon.encoding());
             } catch (Throwable ex) {
                 path2 = path;
             }

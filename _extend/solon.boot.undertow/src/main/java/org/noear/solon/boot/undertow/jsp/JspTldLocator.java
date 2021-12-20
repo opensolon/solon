@@ -34,6 +34,7 @@ import org.jboss.metadata.web.spec.TagFileMetaData;
 import org.jboss.metadata.web.spec.TagMetaData;
 import org.jboss.metadata.web.spec.TldMetaData;
 import org.jboss.metadata.web.spec.VariableMetaData;
+import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.JarClassLoader;
 import org.noear.solon.core.event.EventBus;
@@ -54,7 +55,7 @@ public class JspTldLocator {
         for (URL url : urls) {
             if (url.toString().endsWith(".jar")) {
                 try {
-                    String file_uri = URLDecoder.decode(url.getFile(), "utf-8");
+                    String file_uri = URLDecoder.decode(url.getFile(), Solon.encoding());
 
                     JarFile jarFile = new JarFile(file_uri);
 

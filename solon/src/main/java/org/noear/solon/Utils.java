@@ -414,7 +414,7 @@ public class Utils {
      * @param name 资源名称
      */
     public static String getResourceAsString(String name) throws IOException {
-        return getResourceAsString(JarClassLoader.global(), name, "utf-8");
+        return getResourceAsString(JarClassLoader.global(), name, Solon.encoding());
     }
 
     /**

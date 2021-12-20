@@ -27,6 +27,8 @@ public class Solon {
     private static int stopDelay = 10;
     //全局实例
     private static SolonApp global;
+    //全局默认编码
+    private static String encoding = "utf-8";
 
     /**
      * 全局实例
@@ -37,17 +39,33 @@ public class Solon {
 
     /**
      * 应用配置
-     * */
-    public static SolonProps cfg(){
+     */
+    public static SolonProps cfg() {
         return global().cfg();
     }
 
+    /**
+     * 全局默认编码
+     */
+    public static String encoding() {
+        return encoding;
+    }
+
+    /**
+     * 全局默认编码设置
+     */
+    public static void encodingSet(String charset) {
+        //只能在初始化之前设置
+        if (global == null && Utils.isNotEmpty(charset)) {
+            encoding = charset;
+        }
+    }
 
     /**
      * 启动应用（全局只启动一个）
      *
      * @param source 主应用包（用于定制Bean所在包）
-     * @param args 启动参数
+     * @param args   启动参数
      */
     public static SolonApp start(Class<?> source, String[] args) {
         return start(source, args, null);
@@ -56,10 +74,10 @@ public class Solon {
     /**
      * 启动应用（全局只启动一个）
      *
-     * @param source 主应用包（用于定制Bean所在包）
-     * @param args 启动参数
+     * @param source     主应用包（用于定制Bean所在包）
+     * @param args       启动参数
      * @param initialize 实始化函数
-     * */
+     */
     public static SolonApp start(Class<?> source, String[] args, ConsumerEx<SolonApp> initialize) {
         //1.初始化应用，加载配置
         NvMap argx = NvMap.from(args);
@@ -69,13 +87,18 @@ public class Solon {
     /**
      * 启动应用（全局只启动一个）
      *
-     * @param source 主应用包（用于定制Bean所在包）
-     * @param argx 启动参数
+     * @param source     主应用包（用于定制Bean所在包）
+     * @param argx       启动参数
      * @param initialize 实始化函数
-     * */
+     */
     public static SolonApp start(Class<?> source, NvMap argx, ConsumerEx<SolonApp> initialize) {
         if (global != null) {
             return global;
+        }
+
+        //设置文件编码
+        if (Utils.isNotEmpty(encoding)) {
+            System.setProperty("file.encoding", encoding);
         }
 
         //确定PID
@@ -138,14 +161,14 @@ public class Solon {
      * 设置停止延时时间（单位：秒）
      *
      * @param delay 延迟时间（单位：秒）
-     * */
-    public static void stopDelaySet(int delay){
+     */
+    public static void stopDelaySet(int delay) {
         stopDelay = delay;
     }
 
     /**
      * 停止应用
-     * */
+     */
     public static void stop() {
         stop(stopDelay);
     }
@@ -154,7 +177,7 @@ public class Solon {
      * 停止应用
      *
      * @param delay 延迟时间（单位：秒）
-     * */
+     */
     public static void stop(int delay) {
         new Thread(() -> stop0(true, delay)).start();
     }
@@ -214,7 +237,7 @@ public class Solon {
         }
     }
 
-    private static void sleep0(int seconds){
+    private static void sleep0(int seconds) {
         try {
             Thread.sleep(seconds * 1000);
         } catch (InterruptedException ex) {

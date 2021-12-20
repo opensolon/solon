@@ -31,8 +31,6 @@ public class TestApp {
     static Logger logger = LoggerFactory.getLogger(TestApp.class);
 
     public static void main(String[] args) throws Exception {
-        //System.setProperty("file.encoding", "UTF-8");
-
         System.out.println("Default Charset=" + Charset.defaultCharset());
         System.out.println("file.encoding=" + System.getProperty("file.encoding"));
         System.out.println("Default Charset=" + Charset.defaultCharset());

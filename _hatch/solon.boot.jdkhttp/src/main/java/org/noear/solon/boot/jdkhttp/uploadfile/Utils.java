@@ -1,5 +1,7 @@
 package org.noear.solon.boot.jdkhttp.uploadfile;
 
+import org.noear.solon.Solon;
+
 import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -67,7 +69,7 @@ public class Utils {
 
 
     public static String readLine(InputStream in) throws IOException {
-        String s = readToken(in, '\n', "UTF-8", 8192);//ISO8859_1//xyj,20181220
+        String s = readToken(in, '\n', Solon.encoding(), 8192);//ISO8859_1//xyj,20181220
         return s.length() > 0 && s.charAt(s.length() - 1) == '\r'
                 ? s.substring(0, s.length() - 1) : s;
     }

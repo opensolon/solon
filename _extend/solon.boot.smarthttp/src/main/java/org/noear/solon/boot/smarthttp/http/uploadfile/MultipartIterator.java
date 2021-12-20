@@ -1,5 +1,6 @@
 package org.noear.solon.boot.smarthttp.http.uploadfile;
 
+import org.noear.solon.Solon;
 import org.smartboot.http.server.HttpRequest;
 
 import java.io.IOException;
@@ -27,7 +28,7 @@ public class MultipartIterator implements Iterator<MultipartIterator.Part> {
 
         public String getString() throws IOException {
             String charset = headers.getParams("Content-Type").get("charset");
-            return Utils.readToken(body, -1, charset == null ? "UTF-8" : charset, 8192);
+            return Utils.readToken(body, -1, charset == null ? Solon.encoding() : charset, 8192);
         }
     }
 

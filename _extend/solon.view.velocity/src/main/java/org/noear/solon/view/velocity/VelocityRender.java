@@ -158,7 +158,7 @@ public class VelocityRender implements Render {
     }
 
     public String getEncoding() {
-        return "utf-8";
+        return Solon.encoding();
     }
 
     @Override

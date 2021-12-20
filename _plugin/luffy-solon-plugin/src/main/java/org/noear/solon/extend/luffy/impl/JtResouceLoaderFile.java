@@ -1,6 +1,7 @@
 package org.noear.solon.extend.luffy.impl;
 
 import org.noear.luffy.model.AFileModel;
+import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.event.EventBus;
 
@@ -64,7 +65,7 @@ public class JtResouceLoaderFile implements JtResouceLoader {
 
             if (file.exists()) {
                 try {
-                    return Utils.transferToString(new FileInputStream(file), "UTF-8");
+                    return Utils.transferToString(new FileInputStream(file), Solon.encoding());
                 } catch (IOException ex) {
                     EventBus.push(ex);
                     return null;

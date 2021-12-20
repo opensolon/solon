@@ -1,5 +1,6 @@
 package org.noear.solon.cloud.model;
 
+import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.exception.CloudFileException;
 
@@ -73,7 +74,7 @@ public class Media {
      */
     public String bodyAsString() {
         try {
-            return Utils.transferToString(body, "UTF-8");
+            return Utils.transferToString(body, Solon.encoding());
         } catch (IOException e) {
             throw new CloudFileException(e);
         }

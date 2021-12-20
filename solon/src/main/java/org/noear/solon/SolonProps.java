@@ -30,9 +30,6 @@ import java.util.function.BiConsumer;
  * @since 1.0
  * */
 public final class SolonProps extends Props {
-    private static final String FILE_ENCODING = "file.encoding";
-    private static final String FILE_ENCODING_DEF = "utf-8";
-
     private NvMap args;
     private Class<?> source;
     private URL sourceLocation;
@@ -439,17 +436,6 @@ public final class SolonProps extends Props {
         return serverPort;
     }
 
-    private String fileEncoding;
-    /**
-     * 获取应用文件编码
-     * */
-    public String fileEncoding() {
-        if (fileEncoding == null) {
-            fileEncoding = get(FILE_ENCODING, FILE_ENCODING_DEF);
-        }
-
-        return fileEncoding;
-    }
 
     /**
      * 环境
@@ -505,7 +491,7 @@ public final class SolonProps extends Props {
      * 框架版本号
      */
     public String version() {
-        return "1.6.9-m1";
+        return "1.6.9-m2";
     }
 
     /**

@@ -8,8 +8,8 @@ class XServerProp {
     public static int session_timeout = 0;
     public static String session_state_domain;
     public static boolean output_meta = false;
-    public static String encoding_request = "UTF-8";
-    public static String encoding_response = "UTF-8";
+    public static String encoding_request = Solon.encoding();
+    public static String encoding_response = Solon.encoding();
 
     public static void init() {
         String tmp = Solon.cfg().get("server.request.maxRequestSize", "").trim().toLowerCase();//k数
@@ -27,7 +27,7 @@ class XServerProp {
         session_state_domain = Solon.cfg().get("server.session.state.domain");
         output_meta = Solon.cfg().getInt("solon.output.meta", 0) > 0;
 
-        encoding_request = Solon.cfg().get("solon.encoding.request", "UTF-8");
-        encoding_response = Solon.cfg().get("solon.encoding.response", "UTF-8");
+        encoding_request = Solon.cfg().get("solon.encoding.request", Solon.encoding());
+        encoding_response = Solon.cfg().get("solon.encoding.response", Solon.encoding());
     }
 }

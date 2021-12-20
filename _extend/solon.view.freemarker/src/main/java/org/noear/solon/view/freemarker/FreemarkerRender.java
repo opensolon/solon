@@ -186,14 +186,14 @@ public class FreemarkerRender implements Render {
 
         if (provider_debug != null) {
             try {
-                template = provider_debug.getTemplate(mv.view(), "utf-8");
+                template = provider_debug.getTemplate(mv.view(), Solon.encoding());
             } catch (TemplateNotFoundException ex) {
                 //跳过
             }
         }
 
         if (template == null) {
-            template = provider.getTemplate(mv.view(), "utf-8");
+            template = provider.getTemplate(mv.view(), Solon.encoding());
         }
 
         template.process(mv.model(), writer);
