@@ -216,6 +216,11 @@ public class ConvertUtil {
             return enumOf((Class<Enum>) type, val);
         }
 
+        if(String[].class == type){
+            //as "1,2,3,4"
+            return val.split(",");
+        }
+
         return null;
     }
 

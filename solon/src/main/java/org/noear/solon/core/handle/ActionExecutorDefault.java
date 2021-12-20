@@ -77,7 +77,9 @@ public class ActionExecutorDefault implements ActionExecutor {
             } else {
                 Object tv = null;
 
+
                 if (p.requireBody()) {
+                    //需要 body 数据
                     if (String.class.equals(pt)) {
                         tv = ctx.body();
                     } else if (InputStream.class.equals(pt)) {
@@ -86,6 +88,7 @@ public class ActionExecutorDefault implements ActionExecutor {
                 }
 
                 if (tv == null) {
+                    //尝试数据转换
                     tv = changeValue(ctx, p, i, pt, bodyObj);
                 }
 
