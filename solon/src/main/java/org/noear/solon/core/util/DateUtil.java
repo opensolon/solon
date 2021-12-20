@@ -20,10 +20,18 @@ public class DateUtil {
     public static final String FORMAT_23_b = "yyyy-MM-dd HH:mm:ss.SSS";
     public static final String FORMAT_22 = "yyyyMMddHHmmssSSSZ";//z: +0000
     public static final String FORMAT_19_ISO = "yyyy-MM-dd'T'HH:mm:ss";
-    public static final String FORMAT_19 = "yyyy-MM-dd HH:mm:ss";
-    public static final String FORMAT_10 = "yyyy-MM-dd";
+    public static final String FORMAT_19_a = "yyyy-MM-dd HH:mm:ss";
+    public static final String FORMAT_19_b = "yyyy/MM/dd HH:mm:ss";
+    public static final String FORMAT_19_c = "yyyy.MM.dd HH:mm:ss";
+    public static final String FORMAT_17 = "yyyyMMddHHmmssSSS";
+    public static final String FORMAT_14 = "yyyyMMddHHmmss";
+    public static final String FORMAT_10_a = "yyyy-MM-dd";
+    public static final String FORMAT_10_b = "yyyy/MM/dd";
+    public static final String FORMAT_10_c = "yyyy.MM.dd";
 
-    public static final String FORMAT_8 = "HH:mm:ss";
+    public static final String FORMAT_9 = "HH时mm分ss秒";
+    public static final String FORMAT_8_a = "HH:mm:ss";
+    public static final String FORMAT_8_b = "yyyyMMdd";
 
     public static Date parse(String val) throws ParseException {
         final int len = val.length();
@@ -50,12 +58,36 @@ public class DateUtil {
             if (val.charAt(10) == 'T') {
                 ft = FORMAT_19_ISO;
             } else {
-                ft = FORMAT_19;
+                char c1 = val.charAt(4);
+                if (c1 == '/') {
+                    ft = FORMAT_19_b;
+                } else if (c1 == '.') {
+                    ft = FORMAT_19_c;
+                } else {
+                    ft = FORMAT_19_a;
+                }
             }
+        } else if (len == 17) {
+            ft = FORMAT_17;
+        } else if (len == 14) {
+            ft = FORMAT_14;
         } else if (len == 10) {
-            ft = FORMAT_10;
+            char c1 = val.charAt(4);
+            if (c1 == '/') {
+                ft = FORMAT_10_b;
+            } else if (c1 == '.') {
+                ft = FORMAT_10_c;
+            } else {
+                ft = FORMAT_10_a;
+            }
+        } else if (len == 9) {
+            ft = FORMAT_9;
         } else if (len == 8) {
-            ft = FORMAT_8;
+            if (val.charAt(2) == ':') {
+                ft = FORMAT_8_a;
+            } else {
+                ft = FORMAT_8_b;
+            }
         }
 
         if (ft != null) {
