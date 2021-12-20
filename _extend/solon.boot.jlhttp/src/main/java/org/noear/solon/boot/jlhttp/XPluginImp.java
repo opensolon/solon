@@ -41,8 +41,6 @@ public final class XPluginImp implements Plugin {
             return;
         }
 
-        XServerProp.init();
-
         Aop.beanOnloaded(() -> {
             start0(app);
         });

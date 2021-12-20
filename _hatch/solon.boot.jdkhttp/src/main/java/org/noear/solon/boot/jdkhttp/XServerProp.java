@@ -1,17 +1,16 @@
 package org.noear.solon.boot.jdkhttp;
 
 import org.noear.solon.Solon;
-import org.noear.solon.SolonApp;
 
 class XServerProp {
-    public static int request_maxRequestSize = 1024 * 1024 * 2;//默认2mb
-    public static int session_timeout = 0;
-    public static String session_state_domain;
-    public static boolean output_meta = false;
-    public static String encoding_request = Solon.encoding();
-    public static String encoding_response = Solon.encoding();
+    public static final int request_maxRequestSize;
+    public static final int session_timeout;
+    public static final String session_state_domain;
+    public static final boolean output_meta;
+    public static final String encoding_request;
+    public static final String encoding_response;
 
-    public static void init() {
+    static {
         String tmp = Solon.cfg().get("server.request.maxRequestSize", "").trim().toLowerCase();//k数
         if (tmp.endsWith("mb")) {
             int val = Integer.parseInt(tmp.substring(0, tmp.length() - 2));
@@ -21,6 +20,8 @@ class XServerProp {
             request_maxRequestSize = val * 1204;
         } else if (tmp.length() > 0) {
             request_maxRequestSize = Integer.parseInt(tmp) * 1204;
+        } else {
+            request_maxRequestSize = 1024 * 1024 * 2;//默认2mb
         }
 
         session_timeout = Solon.cfg().getInt("server.session.timeout", 0);

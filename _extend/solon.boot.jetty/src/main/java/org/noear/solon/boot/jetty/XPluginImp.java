@@ -35,8 +35,6 @@ public final class XPluginImp implements Plugin {
         Aop.context().beanBuilderAdd(WebServlet.class,(clz, bw, ano)->{});
         Aop.context().beanBuilderAdd(WebListener.class,(clz, bw, ano)->{});
 
-        XServerProp.init();
-
         Aop.beanOnloaded(() -> {
             start0(app);
         });
