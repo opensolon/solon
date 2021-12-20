@@ -41,27 +41,27 @@ public class ConvertUtil {
             return null;
         }
 
-        Object rst = tryTo(type, val);
+        Object rst = null;
 
-        if (rst != null) {
-            return rst;
-        }
+        if (rst == null && Date.class == type) {
+            Param xd = null;
 
-        if (Date.class == (type) && element != null) {
-            Param xd = element.getAnnotation(Param.class);
+            if (element != null) {
+                xd = element.getAnnotation(Param.class);
+            }
 
             try {
                 if (xd != null && Utils.isEmpty(xd.format()) == false) {
-                    return new SimpleDateFormat(xd.format()).parse(val);
+                    rst = new SimpleDateFormat(xd.format()).parse(val);
                 } else {
-                    return DateUtil.parse(val);
+                    rst = DateUtil.parse(val);
                 }
-            } catch (ParseException ex) {
-                throw new RuntimeException(ex);
+            }catch (ParseException e){
+                throw new RuntimeException(e);
             }
         }
 
-        if (type.isArray()) {
+        if (rst == null && type.isArray()) {
             if (ctx == null) {
                 return null;
             } else {
@@ -70,53 +70,19 @@ public class ConvertUtil {
                     return null;
                 }
 
-                int len = ary.length;
-
-                if (is(String[].class, type)) {
-                    return ary;
-                } else if (is(short[].class, type)) {
-                    short[] ary2 = new short[len];
-                    for (int i = 0; i < len; i++) {
-                        ary2[i] = Short.parseShort(ary[i]);
-                    }
-                    return ary2;
-                } else if (is(int[].class, type)) {
-                    int[] ary2 = new int[len];
-                    for (int i = 0; i < len; i++) {
-                        ary2[i] = Integer.parseInt(ary[i]);
-                    }
-                    return ary2;
-                } else if (is(long[].class, type)) {
-                    long[] ary2 = new long[len];
-                    for (int i = 0; i < len; i++) {
-                        ary2[i] = Long.parseLong(ary[i]);
-                    }
-                    return ary2;
-                } else if (is(float[].class, type)) {
-                    float[] ary2 = new float[len];
-                    for (int i = 0; i < len; i++) {
-                        ary2[i] = Float.parseFloat(ary[i]);
-                    }
-                    return ary2;
-                } else if (is(double[].class, type)) {
-                    double[] ary2 = new double[len];
-                    for (int i = 0; i < len; i++) {
-                        ary2[i] = Double.parseDouble(ary[i]);
-                    }
-                    return ary2;
-                } else if (is(Object[].class, type)) {
-                    Class<?> c = type.getComponentType();
-                    Object[] ary2 = (Object[]) Array.newInstance(c, len);
-                    for (int i = 0; i < len; i++) {
-                        ary2[i] = tryTo(c, ary[i]);
-                    }
-                    return ary2;
-                }
+                rst = tryToArray(ary, type);
             }
         }
 
+        if (rst == null) {
+            rst = tryTo(type, val);
+        }
 
-        throw new ClassCastException("不支持类型:" + type.getName());
+        if (rst == null) {
+            throw new ClassCastException("Unsupported type:" + type.getName());
+        } else {
+            return rst;
+        }
     }
 
     /**
@@ -152,6 +118,55 @@ public class ConvertUtil {
 
 
         throw new ClassCastException("不支持类型:" + type.getName());
+    }
+
+
+
+    private static Object tryToArray(String[] ary, Class<?> type){
+        int len = ary.length;
+
+        if (is(String[].class, type)) {
+            return ary;
+        } else if (is(short[].class, type)) {
+            short[] ary2 = new short[len];
+            for (int i = 0; i < len; i++) {
+                ary2[i] = Short.parseShort(ary[i]);
+            }
+            return ary2;
+        } else if (is(int[].class, type)) {
+            int[] ary2 = new int[len];
+            for (int i = 0; i < len; i++) {
+                ary2[i] = Integer.parseInt(ary[i]);
+            }
+            return ary2;
+        } else if (is(long[].class, type)) {
+            long[] ary2 = new long[len];
+            for (int i = 0; i < len; i++) {
+                ary2[i] = Long.parseLong(ary[i]);
+            }
+            return ary2;
+        } else if (is(float[].class, type)) {
+            float[] ary2 = new float[len];
+            for (int i = 0; i < len; i++) {
+                ary2[i] = Float.parseFloat(ary[i]);
+            }
+            return ary2;
+        } else if (is(double[].class, type)) {
+            double[] ary2 = new double[len];
+            for (int i = 0; i < len; i++) {
+                ary2[i] = Double.parseDouble(ary[i]);
+            }
+            return ary2;
+        } else if (is(Object[].class, type)) {
+            Class<?> c = type.getComponentType();
+            Object[] ary2 = (Object[]) Array.newInstance(c, len);
+            for (int i = 0; i < len; i++) {
+                ary2[i] = tryTo(c, ary[i]);
+            }
+            return ary2;
+        }
+
+        return null;
     }
 
     /**
@@ -214,11 +229,6 @@ public class ConvertUtil {
 
         if (type.isEnum()) {
             return enumOf((Class<Enum>) type, val);
-        }
-
-        if(String[].class == type){
-            //as "1,2,3,4"
-            return val.split(",");
         }
 
         return null;
