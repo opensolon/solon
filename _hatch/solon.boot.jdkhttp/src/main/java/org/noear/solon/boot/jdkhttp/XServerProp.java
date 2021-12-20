@@ -2,7 +2,7 @@ package org.noear.solon.boot.jdkhttp;
 
 import org.noear.solon.Solon;
 
-class XServerProp {
+public class XServerProp {
     public static final int request_maxRequestSize;
     public static final int session_timeout;
     public static final String session_state_domain;

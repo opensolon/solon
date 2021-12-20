@@ -8,7 +8,6 @@ import org.noear.solon.core.Plugin;
 import org.noear.solon.core.Signal;
 import org.noear.solon.core.SignalSim;
 import org.noear.solon.core.SignalType;
-import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.PrintUtil;
 
 import java.net.InetSocketAddress;
@@ -31,8 +30,6 @@ public final class XPluginImp implements Plugin {
         if (app.enableHttp() == false) {
             return;
         }
-
-        XServerProp.init();
 
         String _name = app.cfg().get("server.http.name");
         int _port = app.cfg().getInt("server.http.port", 0);

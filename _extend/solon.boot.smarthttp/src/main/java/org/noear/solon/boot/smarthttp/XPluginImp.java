@@ -34,8 +34,6 @@ public final class XPluginImp implements Plugin {
             return;
         }
 
-        XServerProp.init();
-
         String _name = app.cfg().get("server.http.name");
         int _port = app.cfg().getInt("server.http.port", 0);
         if (_port < 1) {

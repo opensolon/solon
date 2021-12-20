@@ -75,8 +75,8 @@ public class VelocityRender implements Render {
             return;
         }
 
-        ve.setProperty(Velocity.ENCODING_DEFAULT, getEncoding());
-        ve.setProperty(Velocity.INPUT_ENCODING, getEncoding());
+        ve.setProperty(Velocity.ENCODING_DEFAULT, Solon.encoding());
+        ve.setProperty(Velocity.INPUT_ENCODING, Solon.encoding());
 
         Solon.cfg().forEach((k, v) -> {
             String key = k.toString();
@@ -157,9 +157,6 @@ public class VelocityRender implements Render {
         _sharedVariable.put(key, obj);
     }
 
-    public String getEncoding() {
-        return Solon.encoding();
-    }
 
     @Override
     public void render(Object obj, Context ctx) throws Throwable {
@@ -206,14 +203,14 @@ public class VelocityRender implements Render {
 
         if (provider_debug != null) {
             try {
-                template = provider_debug.getTemplate(view, getEncoding());
+                template = provider_debug.getTemplate(view, Solon.encoding());
             } catch (ResourceNotFoundException ex) {
                 //忽略此异常
             }
         }
 
         if (template == null) {
-            template = provider.getTemplate(view, getEncoding());
+            template = provider.getTemplate(view, Solon.encoding());
         }
 
         // 取得velocity的上下文context

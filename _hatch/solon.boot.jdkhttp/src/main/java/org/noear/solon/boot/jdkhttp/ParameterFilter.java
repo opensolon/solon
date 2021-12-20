@@ -60,7 +60,7 @@ public class ParameterFilter extends Filter {
                 return;
             }
 
-            InputStreamReader isr = new InputStreamReader(exchange.getRequestBody(), Solon.encoding());
+            InputStreamReader isr = new InputStreamReader(exchange.getRequestBody(), XServerProp.encoding_request);
             BufferedReader br = new BufferedReader(isr);
             String query = br.readLine();
             parseQuery(query, parameters);

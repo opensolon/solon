@@ -3,6 +3,7 @@ package org.noear.solon.boot.jdkhttp.uploadfile;
 
 import com.sun.net.httpserver.HttpExchange;
 import org.noear.solon.Solon;
+import org.noear.solon.boot.jdkhttp.XServerProp;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,7 +30,7 @@ public class MultipartIterator implements Iterator<MultipartIterator.Part> {
 
         public String getString() throws IOException {
             String charset = headers.getParams("Content-Type").get("charset");
-            return Utils.readToken(body, -1, charset == null ? Solon.encoding() : charset, 8192);
+            return Utils.readToken(body, -1, charset == null ? XServerProp.encoding_request : charset, 8192);
         }
     }
 

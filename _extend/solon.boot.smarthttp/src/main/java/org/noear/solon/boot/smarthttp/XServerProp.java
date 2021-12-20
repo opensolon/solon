@@ -8,6 +8,8 @@ public class XServerProp {
     public static final int session_timeout;
     public static final String session_state_domain;
     public static final boolean output_meta;
+    public static final String encoding_request;
+    public static final String encoding_response;
 
     static {
         String tmp = Solon.cfg().get("server.request.maxRequestSize", "").trim().toLowerCase();//k数
@@ -26,5 +28,8 @@ public class XServerProp {
         session_timeout = Solon.cfg().getInt("server.session.timeout", 0);
         session_state_domain = Solon.cfg().get("server.session.state.domain");
         output_meta = Solon.cfg().getInt("solon.output.meta", 0) > 0;
+
+        encoding_request = Solon.cfg().get("solon.encoding.request", Solon.encoding());
+        encoding_response = Solon.cfg().get("solon.encoding.response", Solon.encoding());
     }
 }
