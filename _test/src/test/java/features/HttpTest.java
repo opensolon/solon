@@ -186,8 +186,18 @@ public class HttpTest extends _TestBase {
     }
 
     @Test
+    public void test2g_2() throws IOException{
+        assert  get("/demo2/param/array_str?aaa=1,2,中文").equals("[\"1\",\"2\",\"中文\"]");
+    }
+
+    @Test
     public void test2h() throws IOException{
         assert  get("/demo2/param/array_Int?aaa=1&aaa=2&ccc=3").equals("[1,2]");
+    }
+
+    @Test
+    public void test2h_2() throws IOException{
+        assert  get("/demo2/param/array_Int?aaa=1,2&ccc=3").equals("[1,2]");
     }
 
     @Test
