@@ -6,7 +6,7 @@ import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * 初始化（相当于 PostConstruct，可以在任何 Bean 里使用）
+ * 初始化（相当于 PostConstruct，也不同。可以在任何 Bean 里使用）
  *
  * Bean 构建过程：Constructor(构造方法) -> @Inject(依赖注入) -> @Init(初始化)
  *
@@ -41,4 +41,8 @@ public @interface Init {
      * 延时执行
      * */
     boolean delay() default true;
+    /**
+     * 优化级
+     * */
+    int priority() default 0;
 }

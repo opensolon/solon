@@ -182,12 +182,22 @@ public class HttpTest extends _TestBase {
 
     @Test
     public void test2g() throws IOException{
-        assert  get("/demo2/param/array_str?aaa=1&aaa=2&aaa=中文").equals("[\"1\",\"2\",\"中文\"]");
+        assert  get("/demo2/param/array_str?aaa=1&aaa=2&aaa=中文")
+                .equals("[\"1\",\"2\",\"中文\"]");
     }
 
     @Test
     public void test2g_2() throws IOException{
-        assert  get("/demo2/param/array_str?aaa=1,2,中文").equals("[\"1\",\"2\",\"中文\"]");
+        assert  get("/demo2/param/array_str?aaa=1,2,中文")
+                .equals("[\"1\",\"2\",\"中文\"]");
+    }
+
+    @Test
+    public void test2g_3() throws IOException{
+        assert  path("/demo2/param/array_str")
+                .data("aaa","1,2,中文")
+                .post()
+                .equals("[\"1\",\"2\",\"中文\"]");
     }
 
     @Test
@@ -198,6 +208,15 @@ public class HttpTest extends _TestBase {
     @Test
     public void test2h_2() throws IOException{
         assert  get("/demo2/param/array_Int?aaa=1,2&ccc=3").equals("[1,2]");
+    }
+
+    @Test
+    public void test2h_3() throws IOException{
+        assert  path("/demo2/param/array_Int")
+                .data("aaa","1,2")
+                .data("ccc","3")
+                .post()
+                .equals("[1,2]");
     }
 
     @Test
