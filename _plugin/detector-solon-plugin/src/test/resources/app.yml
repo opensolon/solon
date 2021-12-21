@@ -1,0 +1,7 @@
+
+solon.app:
+  name: demoapi
+  gorup: demo
+
+
+solon.health.detector: "cpu,disk,jvm,memory,os,qps"

@@ -25,6 +25,12 @@
             <artifactId>qps-helper</artifactId>
             <version>1.1.1-RELEASE</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon-api</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
 </project>
