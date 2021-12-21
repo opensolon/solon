@@ -42,7 +42,7 @@ public @interface Init {
      * */
     boolean delay() default true;
     /**
-     * 优化级
+     * 顺序
      * */
-    int priority() default 0;
+    int index() default 0;
 }
