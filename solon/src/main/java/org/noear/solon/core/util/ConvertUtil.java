@@ -58,7 +58,7 @@ public class ConvertUtil {
             } else {
                 ary = ctx.paramValues(key);
                 if (ary == null || ary.length == 1) {
-                    //todo:可能有兼容问题("?aaa=1,2&aaa=3,4,5,6"，只传第一部份时就麻烦了)
+                    //todo:可能有兼容问题("?aaa=1,2&aaa=3,4,5,6"，只传第一部份时会有歧意)
                     ary = val.split(",");
                 }
             }
