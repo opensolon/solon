@@ -52,10 +52,11 @@ public class ConvertUtil {
         }
 
         if (rst == null && type.isArray()) {
+            String[] ary = null;
             if (ctx == null) {
-                return null;
+                ary = val.split(",");
             } else {
-                String[] ary = ctx.paramValues(key);
+                ary = ctx.paramValues(key);
                 if (ary == null) {
                     return null;
                 }
@@ -64,9 +65,9 @@ public class ConvertUtil {
                 if (ary.length == 1) {
                     ary = val.split(",");
                 }
-
-                rst = tryToArray(ary, type);
             }
+
+            rst = tryToArray(ary, type);
         }
 
         if (rst == null) {
