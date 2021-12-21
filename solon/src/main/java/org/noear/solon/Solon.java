@@ -101,6 +101,9 @@ public class Solon {
             System.setProperty("file.encoding", encoding);
         }
 
+        //设置 headless 默认值
+        System.getProperties().putIfAbsent("java.awt.headless","true");
+
         //确定PID
         RuntimeMXBean rb = ManagementFactory.getRuntimeMXBean();
         String pid = rb.getName().split("@")[0];
