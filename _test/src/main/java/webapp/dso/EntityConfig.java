@@ -1,6 +1,7 @@
 package webapp.dso;
 
 import org.noear.solon.annotation.Configuration;
+import org.noear.solon.annotation.Init;
 import org.noear.solon.annotation.Inject;
 
 import java.util.List;
@@ -27,5 +28,11 @@ public class EntityConfig {
                 ", codes=" + codes +
                 ", likes=" + likes +
                 '}';
+    }
+
+
+    @Init(index = 5)
+    public void init(){
+        System.out.println("我是5号");
     }
 }

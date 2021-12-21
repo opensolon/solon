@@ -1,6 +1,7 @@
 package webapp.dso;
 
 import org.noear.solon.annotation.Component;
+import org.noear.solon.annotation.Init;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Filter;
 import org.noear.solon.core.handle.FilterChain;
@@ -14,5 +15,10 @@ public class AppFilterImpl implements Filter {
     public void doFilter(Context ctx, FilterChain chain) throws Throwable {
         ctx.attrSet("_test_var","attr_test");
         chain.doFilter(ctx);
+    }
+
+    @Init(index = 6)
+    public void init(){
+        System.out.println("我是6号");
     }
 }

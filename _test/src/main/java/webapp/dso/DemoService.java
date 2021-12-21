@@ -16,9 +16,12 @@ public class DemoService {
     @Inject("${xxx.user-name:}")
     String userName;
 
-    @Init
+    @Init(index = 9)
     private void init(){
         System.out.println(System.currentTimeMillis());
+
+
+        System.out.println("我应该比较晚....%%%%");
     }
 
     public String hello() {
