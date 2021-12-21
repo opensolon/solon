@@ -1503,14 +1503,17 @@ public class HTTPServer {
                 String ct = headers.get("Content-Type");
                 if (ct != null && ct.toLowerCase(Locale.US).startsWith("application/x-www-form-urlencoded"))
                     bodyParams = parseParamsList(readToken(body, -1, "UTF-8", 2097152)); // 2MB limit
-                if (bodyParams.isEmpty())
-                    return queryParams;
-                if (queryParams.isEmpty())
-                    return bodyParams;
-                queryParams.addAll(bodyParams);
 
-                _paramsList = queryParams;
+
+                _paramsList = new ArrayList<>(); //noear,20211218,最终都汇总
+
+                if (queryParams.isEmpty() == false)
+                    _paramsList.addAll(queryParams);
+
+                if (bodyParams.isEmpty() == false)
+                    _paramsList.addAll(bodyParams);
             }
+
             return _paramsList;
         }
 
