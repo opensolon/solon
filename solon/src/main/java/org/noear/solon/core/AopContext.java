@@ -8,6 +8,7 @@ import org.noear.solon.core.event.EventListener;
 import org.noear.solon.core.handle.*;
 import org.noear.solon.core.message.Listener;
 import org.noear.solon.core.util.GenericUtil;
+import org.noear.solon.core.util.RunnableEntity;
 import org.noear.solon.core.wrap.*;
 import org.noear.solon.ext.BiConsumerEx;
 import org.noear.solon.core.util.ScanUtil;
@@ -126,7 +127,7 @@ public class AopContext extends BeanContainer {
 
     /**
      * 添加bean的不同形态
-     * */
+     */
     private void addBeanShape(Class<?> clz, BeanWrap bw, int index) {
         //Plugin
         if (Plugin.class.isAssignableFrom(clz)) {
@@ -177,7 +178,7 @@ public class AopContext extends BeanContainer {
 
     /**
      * 为一个对象提取函数
-     * */
+     */
     public void beanExtract(BeanWrap bw) {
         if (bw == null) {
             return;
@@ -227,7 +228,7 @@ public class AopContext extends BeanContainer {
 
     /**
      * 根据配置导入bean
-     * */
+     */
     public void beanImport(Import anno) {
         if (anno != null) {
             for (Class<?> clz : anno.value()) {
@@ -280,13 +281,13 @@ public class AopContext extends BeanContainer {
                 .stream()
                 .sorted(Comparator.comparing(s -> s.length()))
                 .forEach(name -> {
-            String className = name.substring(0, name.length() - 6);
+                    String className = name.substring(0, name.length() - 6);
 
-            Class<?> clz = Utils.loadClass(classLoader, className.replace("/", "."));
-            if (clz != null) {
-                tryCreateBean(clz);
-            }
-        });
+                    Class<?> clz = Utils.loadClass(classLoader, className.replace("/", "."));
+                    if (clz != null) {
+                        tryCreateBean(clz);
+                    }
+                });
     }
 
     /**
@@ -360,9 +361,9 @@ public class AopContext extends BeanContainer {
     /**
      * 尝试构建 bean
      *
-     * @param anno      bean 注解
-     * @param mWrap     方法包装器
-     * @param bw        bean 包装器
+     * @param anno  bean 注解
+     * @param mWrap 方法包装器
+     * @param bw    bean 包装器
      */
     protected void tryBuildBean(Bean anno, MethodWrap mWrap, BeanWrap bw) throws Exception {
         int size2 = mWrap.getParamWraps().length;
@@ -458,7 +459,7 @@ public class AopContext extends BeanContainer {
     //加载完成标志
     private boolean loadDone;
     //加载事件
-    private Set<Runnable> loadEvents = new LinkedHashSet<>();
+    private Set<RunnableEntity> loadEvents = new LinkedHashSet<>();
 
     //::bean事件处理
 
@@ -467,7 +468,12 @@ public class AopContext extends BeanContainer {
      */
     @Note("添加bean加载完成事件")
     public void beanOnloaded(Runnable fun) {
-        loadEvents.add(fun);
+        beanOnloaded(0, fun);
+    }
+
+    @Note("添加bean加载完成事件")
+    public void beanOnloaded(int index, Runnable fun) {
+        loadEvents.add(new RunnableEntity(fun, index));
 
         //如果已加载完成，则直接返回
         if (loadDone) {
@@ -482,6 +488,8 @@ public class AopContext extends BeanContainer {
         loadDone = true;
 
         //执行加载事件（不用函数包装，是为了减少代码）
-        loadEvents.forEach(f -> f.run());
+        loadEvents.stream()
+                .sorted(Comparator.comparingInt(m -> m.index))
+                .forEach(m -> m.runnable.run());
     }
 }

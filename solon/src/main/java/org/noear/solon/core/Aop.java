@@ -168,6 +168,10 @@ public class Aop {
         ac.beanOnloaded(fun);
     }
 
+    public static void beanOnloaded(int index,Runnable fun) {
+        ac.beanOnloaded(index, fun);
+    }
+
     /**
      * 遍历有name的bean包装
      *
