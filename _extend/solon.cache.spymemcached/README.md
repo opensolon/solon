@@ -24,12 +24,12 @@ solon.cache2:
 //构建 bean
 @Configuration
 public class Config {
-    @Bean
+    @Bean(value = "cache1", typed = true) //默认
     public CacheService cache1(@Inject("${solon.cache1}") MemCacheService cache){
         return cache;
     }
 
-    @Bean
+    @Bean("cache2")
     public CacheService cache2(@Inject("${solon.cache2}") MemCacheService cache){
         return cache;
     }
