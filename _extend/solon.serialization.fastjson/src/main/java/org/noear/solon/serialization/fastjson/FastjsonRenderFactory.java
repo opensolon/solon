@@ -37,4 +37,11 @@ public class FastjsonRenderFactory extends FastjsonRenderFactoryBase {
 
         return config;
     }
+
+    /**
+     * 重新设置特性
+     * */
+    public void setFeatures(SerializerFeature... features) {
+        this.features = features;
+    }
 }

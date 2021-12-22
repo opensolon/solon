@@ -1,5 +1,6 @@
 package org.noear.solon.serialization.snack3;
 
+import org.noear.snack.core.Feature;
 import org.noear.snack.core.Options;
 import org.noear.solon.core.handle.Render;
 import org.noear.solon.serialization.StringSerializerRender;
@@ -29,9 +30,9 @@ public class SnackRenderFactory extends SnackRenderFactoryBase {
     }
 
     /**
-     * 用于扩展修改选项
+     * 重新设置特性
      * */
-    public Options options(){
-        return config;
+    public void setFeatures(Feature... features) {
+        config.setFeatures(features);
     }
 }
