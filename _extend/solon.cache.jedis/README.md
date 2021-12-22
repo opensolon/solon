@@ -5,6 +5,7 @@
 ```yaml
 #完整配置示例
 solon.cache1:
+  driverType: "redis"
   keyHeader: "demo" #默认为 ${solon.app.name} ，可不配置
   defSeconds: 30 #默认为 30，可不配置
   server: "localhost:6379"
