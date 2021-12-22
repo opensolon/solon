@@ -27,4 +27,11 @@ public class SnackRenderFactory extends SnackRenderFactoryBase {
     protected Options config() {
         return config;
     }
+
+    /**
+     * 用于扩展修改
+     * */
+    public Options options(){
+        return config;
+    }
 }
