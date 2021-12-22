@@ -341,10 +341,18 @@ public class AopContext extends BeanContainer {
         });
     }
 
+    private Set<Class<?>> tryCreateCached = new HashSet<>();
     protected void tryCreateBean0(Class<?> clz, BiConsumerEx<BeanBuilder, Annotation> consumer) {
         Annotation[] annS = clz.getDeclaredAnnotations();
 
         if (annS.length > 0) {
+            //去重处理
+            if (tryCreateCached.contains(clz)) {
+                return;
+            } else {
+                tryCreateCached.add(clz);
+            }
+
             try {
                 for (Annotation a : annS) {
                     BeanBuilder builder = beanBuilders.get(a.annotationType());
