@@ -6,7 +6,6 @@ import org.noear.solon.SolonBuilder;
 import org.noear.solon.annotation.Import;
 import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.core.ExtendLoader;
-import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.extend.cors.CrossHandler;
 import org.noear.solon.extend.staticfiles.StaticMappings;
@@ -23,7 +22,7 @@ import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
 import java.util.Locale;
 
-@Import(value = TestImport.class)
+@Import(value = TestImport.class, scanPackages = "webapp")
 //@EnableCron4j
 //@EnableQuartz
 public class TestApp {

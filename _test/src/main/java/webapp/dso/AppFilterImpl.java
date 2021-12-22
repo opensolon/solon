@@ -15,6 +15,7 @@ public class AppFilterImpl implements Filter {
     public void doFilter(Context ctx, FilterChain chain) throws Throwable {
         ctx.attrSet("_test_var","attr_test");
         chain.doFilter(ctx);
+        System.out.println("我是：AppFilterImpl");
     }
 
     @Init(index = 6)
