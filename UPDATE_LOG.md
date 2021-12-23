@@ -1,5 +1,6 @@
 #### 1.6.10
 * snack3 升级为 3.2.4，增加泛型传导支持
+* solon.cloud 移除 solon.logging.impl 依赖
 
 #### 1.6.9
 * 增加 log4j2-solon-plugin,logback-solon-plugin 对记录器等级的应用配置支持

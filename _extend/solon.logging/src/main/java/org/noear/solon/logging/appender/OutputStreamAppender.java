@@ -65,7 +65,7 @@ public abstract class OutputStreamAppender extends AppenderSimple {
                     blueln(title);
                     break;
                 case TRACE:
-                    out.println(title);
+                    purpleln(title);
                     break;
                 default:
                     greenln(title);
@@ -99,6 +99,11 @@ public abstract class OutputStreamAppender extends AppenderSimple {
 
     protected void yellowln(Object txt) {
         out.println(PrintUtil.ANSI_YELLOW + txt);
+        out.print(PrintUtil.ANSI_RESET);
+    }
+
+    protected void purpleln(Object txt) {
+        out.println(PrintUtil.ANSI_PURPLE + txt);
         out.print(PrintUtil.ANSI_RESET);
     }
 }
