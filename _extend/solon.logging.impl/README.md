@@ -5,6 +5,6 @@
 
 日志服务将由：
 
-* log4j2-solon-plugin
-* logback-solon-plugin
-* water-solon-plugin
+* log4j2-solon-plugin //本地日志
+* logback-solon-plugin  //本地日志
+* water-solon-plugin //分布式日志服务
