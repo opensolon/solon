@@ -1,7 +1,33 @@
+<p align="center">
+	<a href="https://solon.noear.org/" style="font-size:xx-large;">Solon</a>
+</p>
+<p align="center">
+	<strong>A lightweight Java application development framework</strong>
+</p>
+<p align="center">
+	<a href="https://solon.noear.org/">https://solon.noear.org</a>
+</p>
 
-[![Maven Central](https://img.shields.io/maven-central/v/org.noear/solon.svg)](https://mvnrepository.com/search?q=g:org.noear%20AND%20solon)
+<p align="center">
+    <a target="_blank" href="https://search.maven.org/search?q=org.noear%20solon">
+        <img src="https://img.shields.io/maven-central/v/org.noear/solon.svg?label=Maven%20Central" />
+    </a>
+    <a target="_blank" href="https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html">
+		<img src="https://img.shields.io/badge/JDK-8+-green.svg" />
+	</a>
+    <a href="https://app.codacy.com/gh/noear/solon/dashboard">
+		<img src="https://app.codacy.com/project/badge/Grade/8a6897d9de7440dd9de8804c28d2871d"/>
+	</a>
+</p>
 
-` QQ交流群：22200020 ` 
+<br/>
+<p align="center">
+	<a href="https://jq.qq.com/?_wv=1027&k=kjB5JNiC">
+	<img src="https://img.shields.io/badge/QQ交流群-22200020-orange"/></a>
+</p>
+
+
+<hr />
 
 ## Solon
 
