@@ -14,18 +14,22 @@
     <artifactId>cron4j-solon-plugin</artifactId>
     <packaging>jar</packaging>
 
-
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon</artifactId>
         </dependency>
 
-
         <dependency>
             <groupId>it.sauronsoftware.cron4j</groupId>
             <artifactId>cron4j</artifactId>
             <version>2.2.5</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon-test</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
