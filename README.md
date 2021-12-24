@@ -12,11 +12,20 @@
     <a target="_blank" href="https://search.maven.org/search?q=org.noear%20solon">
         <img src="https://img.shields.io/maven-central/v/org.noear/solon.svg?label=Maven%20Central" />
     </a>
+    <a target="_blank" href="https://license.coscl.org.cn/Apache2/">
+		<img src="https://img.shields.io/:license-Apache2-blue.svg" />
+	</a>
     <a target="_blank" href="https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html">
 		<img src="https://img.shields.io/badge/JDK-8+-green.svg" />
 	</a>
     <a href="https://app.codacy.com/gh/noear/solon/dashboard">
 		<img src="https://app.codacy.com/project/badge/Grade/8a6897d9de7440dd9de8804c28d2871d"/>
+	</a>
+    <a target="_blank" href='https://gitee.com/noear/solon/stargazers'>
+		<img src='https://gitee.com/noear/solon/badge/star.svg' alt='star'/>
+	</a>
+    <a target="_blank" href='https://github.com/noear/solon/stargazers'>
+		<img src="https://img.shields.io/github/stars/noear/solon.svg?logo=github" alt="github star"/>
 	</a>
 </p>
 
