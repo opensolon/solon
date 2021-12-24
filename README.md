@@ -21,6 +21,7 @@
     <a href="https://app.codacy.com/gh/noear/solon/dashboard">
 		<img src="https://app.codacy.com/project/badge/Grade/8a6897d9de7440dd9de8804c28d2871d"/>
 	</a>
+    <br />
     <a target="_blank" href='https://gitee.com/noear/solon/stargazers'>
 		<img src='https://gitee.com/noear/solon/badge/star.svg' alt='star'/>
 	</a>
