@@ -10,20 +10,20 @@
 
 <p align="center">
     <a target="_blank" href="https://search.maven.org/search?q=org.noear%20solon">
-        <img src="https://img.shields.io/maven-central/v/org.noear/solon.svg?label=Maven%20Central" />
+        <img src="https://img.shields.io/maven-central/v/org.noear/solon.svg?label=Maven%20Central" alt="Maven" />
     </a>
     <a target="_blank" href="https://license.coscl.org.cn/Apache2/">
-		<img src="https://img.shields.io/:license-Apache2-blue.svg" />
+		<img src="https://img.shields.io/:license-Apache2-blue.svg" alt="Apache 2" />
 	</a>
     <a target="_blank" href="https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html">
-		<img src="https://img.shields.io/badge/JDK-8+-green.svg" />
+		<img src="https://img.shields.io/badge/JDK-8+-green.svg" alt="jdk-8+" />
 	</a>
     <a href="https://app.codacy.com/gh/noear/solon/dashboard">
-		<img src="https://app.codacy.com/project/badge/Grade/8a6897d9de7440dd9de8804c28d2871d"/>
+		<img src="https://app.codacy.com/project/badge/Grade/8a6897d9de7440dd9de8804c28d2871d" alt="codacy"/>
 	</a>
     <br />
     <a target="_blank" href='https://gitee.com/noear/solon/stargazers'>
-		<img src='https://gitee.com/noear/solon/badge/star.svg' alt='star'/>
+		<img src='https://gitee.com/noear/solon/badge/star.svg' alt='gitee star'/>
 	</a>
     <a target="_blank" href='https://github.com/noear/solon/stargazers'>
 		<img src="https://img.shields.io/github/stars/noear/solon.svg?logo=github" alt="github star"/>
