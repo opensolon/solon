@@ -1,7 +1,4 @@
 <p align="center">
-	<a href="https://solon.noear.org/" style="font-size:xx-large;">Solon</a>
-</p>
-<p align="center">
 	<strong>A lightweight Java application development framework</strong>
 </p>
 <p align="center">
