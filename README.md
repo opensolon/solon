@@ -1,3 +1,6 @@
+<h1 align="center" style="text-align:center;">
+  Solon
+</h1>
 <p align="center">
 	<strong>A lightweight Java application development framework</strong>
 </p>
