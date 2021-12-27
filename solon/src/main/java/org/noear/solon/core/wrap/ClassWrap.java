@@ -55,10 +55,13 @@ public class ClassWrap {
         methods = clz.getDeclaredMethods();
 
         //所有字段的包装（自己的 + 父类的）
-        fieldAllWrapsMap = new LinkedHashMap<>();
-        doScanAllFields(clz, fieldAllWrapsMap::containsKey, fieldAllWrapsMap::put);
 
         fieldWraps = new ArrayList<>();
+        fieldAllWrapsMap = new LinkedHashMap<>();
+
+        //扫描所有字段
+        doScanAllFields(clz, fieldAllWrapsMap::containsKey, fieldAllWrapsMap::put);
+
         //自己申明的字段
         for (Field f : clz.getDeclaredFields()) {
             FieldWrap fw = fieldAllWrapsMap.get(f.getName());
@@ -170,7 +173,7 @@ public class ClassWrap {
         for (Field f : clz.getDeclaredFields()) {
             int mod = f.getModifiers();
 
-            if (!Modifier.isStatic(mod)) {
+            if (!Modifier.isStatic(mod) && !Modifier.isTransient(mod)) {
                 f.setAccessible(true);
 
                 if (checker.test(f.getName()) == false) {
