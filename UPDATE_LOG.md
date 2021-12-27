@@ -1,3 +1,6 @@
+#### 1.6.11
+* 增加 ModelAndView 注入支持
+
 #### 1.6.10
 * snack3 升级为 3.2.4，增加泛型传导支持
 * solon.cloud 移除 solon.logging.impl 依赖
