@@ -62,7 +62,11 @@ public class ActionExecutorDefault implements ActionExecutor {
                 //如果是 Context 类型，直接加入参数
                 //
                 args.add(ctx);
-            } else if (Locale.class.isAssignableFrom(pt)) {
+            } else if (ModelAndView.class.isAssignableFrom(pt)) {
+                //如果是 ModelAndView 类型，直接加入参数
+                //
+                args.add(new ModelAndView());
+            }else if (Locale.class.isAssignableFrom(pt)) {
                 //如果是 Locale 类型，直接加入参数
                 //
                 args.add(ctx.getLocale());

@@ -77,18 +77,18 @@ public class ClassWrap {
 
     /**
      * 获取所有字段的包装（含超类）
-     * */
-    public Map<String, FieldWrap> getFieldAllWraps(){
+     */
+    public Map<String, FieldWrap> getFieldAllWraps() {
         return Collections.unmodifiableMap(fieldAllWrapsMap);
     }
 
-    public FieldWrap getFieldWrap(String field){
+    public FieldWrap getFieldWrap(String field) {
         return fieldAllWrapsMap.get(field);
     }
 
     /**
      * 获取申明的Method
-     * */
+     */
     public Method[] getMethods() {
         return methods;
     }
@@ -97,7 +97,7 @@ public class ClassWrap {
      * 新建实例
      *
      * @param data 填充数据
-     * */
+     */
     public <T> T newBy(Function<String, String> data) {
         return newBy(data, null);
     }
@@ -118,15 +118,15 @@ public class ClassWrap {
      * 新建实例
      *
      * @param data 填充数据
-     * @param ctx 上下文
-     * */
+     * @param ctx  上下文
+     */
     public <T> T newBy(Function<String, String> data, Context ctx) {
         try {
             Object obj = clz().newInstance();
 
             fill(obj, data, ctx);
 
-            return (T)obj;
+            return (T) obj;
         } catch (RuntimeException ex) {
             throw ex;
         } catch (Exception ex) {
@@ -138,7 +138,7 @@ public class ClassWrap {
      * 为实例填充数据
      *
      * @param data 填充数据
-     * */
+     */
     public void fill(Object bean, Function<String, String> data) {
         fill(bean, data, null);
     }
@@ -147,10 +147,10 @@ public class ClassWrap {
      * 为实例填充数据
      *
      * @param data 填充数据
-     * @param ctx 上下文
-     * */
+     * @param ctx  上下文
+     */
     public void fill(Object bean, Function<String, String> data, Context ctx) {
-        for (Map.Entry<String,FieldWrap> kv : fieldAllWrapsMap.entrySet()) {
+        for (Map.Entry<String, FieldWrap> kv : fieldAllWrapsMap.entrySet()) {
             String key = kv.getKey();
             String val0 = data.apply(key);
 
@@ -164,8 +164,10 @@ public class ClassWrap {
         }
     }
 
-    /** 扫描一个类的所有字段（不能与Snack3的复用；它需要排除非序列化字段） */
-    private static void doScanAllFields(Class<?> clz, Predicate<String> checker, BiConsumer<String,FieldWrap> consumer) {
+    /**
+     * 扫描一个类的所有字段（不能与Snack3的复用；它需要排除非序列化字段）
+     */
+    private static void doScanAllFields(Class<?> clz, Predicate<String> checker, BiConsumer<String, FieldWrap> consumer) {
         if (clz == null) {
             return;
         }
@@ -173,7 +175,9 @@ public class ClassWrap {
         for (Field f : clz.getDeclaredFields()) {
             int mod = f.getModifiers();
 
-            if (!Modifier.isStatic(mod) && !Modifier.isTransient(mod)) {
+            if (!Modifier.isFinal(mod)
+                    && !Modifier.isStatic(mod)
+                    && !Modifier.isTransient(mod)) {
                 f.setAccessible(true);
 
                 if (checker.test(f.getName()) == false) {
