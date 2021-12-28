@@ -5,6 +5,7 @@ import org.noear.solon.core.event.EventBus;
 import org.noear.solon.schedule.cron.CronExpressionPlus;
 import org.noear.solon.schedule.cron.CronUtils;
 
+import java.awt.*;
 import java.util.Date;
 
 /**
@@ -61,25 +62,25 @@ public class JobEntity extends Thread {
 
     private void run0() throws Throwable {
         if (fixedRate > 0) {
-            runnable.run();
-            this.sleepMillis = fixedRate;
+            if (System.currentTimeMillis() - baseTime.getTime() >= fixedRate) {
+                baseTime = new Date();
+                runnable.run();
+            }
         } else {
             CronExpressionPlus expr = CronUtils.get(cron);
             nextTime = expr.getNextValidTimeAfter(baseTime);
-            long timespan = nextTime.getTime() - baseTime.getTime();
+            long timespan = System.currentTimeMillis() - nextTime.getTime();
             if (timespan >= 0) {
                 baseTime = nextTime;
                 nextTime = expr.getNextValidTimeAfter(baseTime);
 
-                if (timespan < 1000) {
+                if (timespan <= 1000) {
                     runnable.run();
                 }
             }
-
-            this.sleepMillis = nextTime.getTime() - baseTime.getTime();
         }
 
-        sleep0(sleepMillis);
+        sleep0(100);
     }
 
     private void sleep0(long sleep) {
