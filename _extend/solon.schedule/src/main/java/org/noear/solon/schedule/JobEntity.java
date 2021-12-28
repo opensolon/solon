@@ -3,9 +3,7 @@ package org.noear.solon.schedule;
 import org.noear.solon.Utils;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.schedule.cron.CronExpressionPlus;
-import org.noear.solon.schedule.cron.CronUtils;
 
-import java.awt.*;
 import java.util.Date;
 
 /**
@@ -14,7 +12,7 @@ import java.util.Date;
  */
 public class JobEntity extends Thread {
     final String name;
-    final String cron;
+    final CronExpressionPlus cron;
     final String zone;
     final long fixedRate;
     final long fixedDelay;
@@ -27,7 +25,7 @@ public class JobEntity extends Thread {
     Date baseTime;
     Date nextTime;
 
-    public JobEntity(String name, String cron, String zone, long fixedRate, long fixedDelay, Runnable runnable) {
+    public JobEntity(String name, CronExpressionPlus cron, String zone, long fixedRate, long fixedDelay, Runnable runnable) {
         this.name = name;
         this.cron = cron;
         this.zone = zone;
@@ -62,28 +60,53 @@ public class JobEntity extends Thread {
 
     private void run0() throws Throwable {
         if (fixedRate > 0) {
-            if (System.currentTimeMillis() - baseTime.getTime() >= fixedRate) {
-                baseTime = new Date();
-                runnable.run();
-            }
-        } else {
-            CronExpressionPlus expr = CronUtils.get(cron);
-            nextTime = expr.getNextValidTimeAfter(baseTime);
-            long timespan = System.currentTimeMillis() - nextTime.getTime();
-            if (timespan >= 0) {
-                baseTime = nextTime;
-                nextTime = expr.getNextValidTimeAfter(baseTime);
+            sleepMillis = System.currentTimeMillis() - baseTime.getTime();
 
-                if (timespan <= 1000) {
-                    runnable.run();
+            if (sleepMillis >= fixedRate) {
+                baseTime = new Date();
+                runDo();
+
+                //重新设定休息时间
+                sleepMillis = fixedRate;
+            } else {
+                //时间还未到（一般，第一次才会到这里来）
+                sleepMillis = 100;
+            }
+
+            sleep0(sleepMillis);
+        } else {
+            nextTime = cron.getNextValidTimeAfter(baseTime);
+            sleepMillis = System.currentTimeMillis() - nextTime.getTime();
+
+            if (sleepMillis >= 0) {
+                baseTime = nextTime;
+                nextTime = cron.getNextValidTimeAfter(baseTime);
+
+                if (sleepMillis <= 1000) {
+                    runDo();
+
+                    //重新设定休息时间
+                    sleepMillis = System.currentTimeMillis() - nextTime.getTime();
                 }
             }
-        }
 
-        sleep0(100);
+            sleep0(sleepMillis);
+        }
+    }
+
+    private void runDo() {
+        try {
+            runnable.run();
+        } catch (Throwable e) {
+            EventBus.push(e);
+        }
     }
 
     private void sleep0(long sleep) {
+        if (sleep < 0) {
+            sleep = 100;
+        }
+
         try {
             Thread.sleep(sleep);
         } catch (Exception e) {

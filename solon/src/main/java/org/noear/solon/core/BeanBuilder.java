@@ -34,5 +34,5 @@ public interface BeanBuilder<T extends Annotation> {
      * @param clz 类
      * @param anno 注解
      * */
-    void doBuild(Class<?> clz, BeanWrap bw, T anno) throws Exception;
+    void doBuild(Class<?> clz, BeanWrap bw, T anno) throws Throwable;
 }

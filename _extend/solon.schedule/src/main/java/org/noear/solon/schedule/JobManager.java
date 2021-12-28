@@ -1,5 +1,9 @@
 package org.noear.solon.schedule;
 
+import org.noear.solon.schedule.cron.CronExpressionPlus;
+import org.noear.solon.schedule.cron.CronUtils;
+
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,12 +14,15 @@ import java.util.List;
 public class JobManager {
     private static List<JobEntity> jobEntityList = new ArrayList<>();
 
-    public static void add(String name, String cron, Runnable runnable) {
-        jobEntityList.add(new JobEntity(name, cron, null, 0, 0, runnable));
+    public static void add(String name, String cron, Runnable runnable) throws ParseException {
+        CronExpressionPlus cronX = CronUtils.get(cron);
+        jobEntityList.add(new JobEntity(name, cronX, null, 0, 0, runnable));
     }
 
-    public static void add(String name, String cron, String zone, Runnable runnable) {
-        jobEntityList.add(new JobEntity(name, cron, zone, 0, 0, runnable));
+    public static void add(String name, String cron, String zone, Runnable runnable) throws ParseException {
+        CronExpressionPlus cronX = CronUtils.get(cron);
+
+        jobEntityList.add(new JobEntity(name, cronX, zone, 0, 0, runnable));
     }
 
     public static void add(String name, long fixedRate, Runnable runnable) {

@@ -195,7 +195,16 @@ public class AopContext extends BeanContainer {
                 BeanExtractor be = beanExtractors.get(a.annotationType());
 
                 if (be != null) {
-                    be.doExtract(bw, m, a);
+                    try {
+                        be.doExtract(bw, m, a);
+                    } catch (Throwable e) {
+                        e = Utils.throwableUnwrap(e);
+                        if (e instanceof RuntimeException) {
+                            throw (RuntimeException) e;
+                        } else {
+                            throw new RuntimeException(e);
+                        }
+                    }
                 }
             }
         }
@@ -335,7 +344,7 @@ public class AopContext extends BeanContainer {
         });
     }
 
-    protected void tryCreateBean(BeanWrap bw) {
+    protected void tryCreateBean(BeanWrap bw){
         tryCreateBean0(bw.clz(), (c, a) -> {
             c.doBuild(bw.clz(), bw, a);
         });
@@ -353,15 +362,20 @@ public class AopContext extends BeanContainer {
                 tryCreateCached.add(clz);
             }
 
-            try {
-                for (Annotation a : annS) {
-                    BeanBuilder builder = beanBuilders.get(a.annotationType());
-                    if (builder != null) {
+            for (Annotation a : annS) {
+                BeanBuilder builder = beanBuilders.get(a.annotationType());
+                if (builder != null) {
+                    try {
                         consumer.accept(builder, a);
+                    } catch (Throwable e) {
+                        e = Utils.throwableUnwrap(e);
+                        if (e instanceof RuntimeException) {
+                            throw (RuntimeException) e;
+                        } else {
+                            throw new RuntimeException(e);
+                        }
                     }
                 }
-            } catch (Throwable ex) {
-                ex.printStackTrace();
             }
         }
     }
@@ -389,12 +403,12 @@ public class AopContext extends BeanContainer {
                     //
                     Object raw = mWrap.invoke(bw.raw(), args2);
                     tryBuildBean0(mWrap, anno, raw);
-                } catch (Throwable ex) {
-                    ex = Utils.throwableUnwrap(ex);
-                    if (ex instanceof RuntimeException) {
-                        throw (RuntimeException) ex;
+                } catch (Throwable e) {
+                    e = Utils.throwableUnwrap(e);
+                    if (e instanceof RuntimeException) {
+                        throw (RuntimeException) e;
                     } else {
-                        throw new RuntimeException(ex);
+                        throw new RuntimeException(e);
                     }
                 }
             });

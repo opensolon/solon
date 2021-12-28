@@ -14,5 +14,5 @@ public interface BeanExtractor<T extends Annotation> {
     /**
      * 提取
      * */
-    void doExtract(BeanWrap bw, Method method, T anno);
+    void doExtract(BeanWrap bw, Method method, T anno) throws Throwable;
 }
