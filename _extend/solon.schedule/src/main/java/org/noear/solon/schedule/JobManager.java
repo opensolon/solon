@@ -11,15 +11,19 @@ public class JobManager {
     private static List<JobEntity> jobEntityList = new ArrayList<>();
 
     public static void add(String name, String cron, Runnable runnable) {
-        jobEntityList.add(new JobEntity(name, cron, null, 0, runnable));
+        jobEntityList.add(new JobEntity(name, cron, null, 0, 0, runnable));
     }
 
     public static void add(String name, String cron, String zone, Runnable runnable) {
-        jobEntityList.add(new JobEntity(name, cron, zone, 0, runnable));
+        jobEntityList.add(new JobEntity(name, cron, zone, 0, 0, runnable));
     }
 
     public static void add(String name, long fixedRate, Runnable runnable) {
-        jobEntityList.add(new JobEntity(name, null, null, fixedRate, runnable));
+        jobEntityList.add(new JobEntity(name, null, null, fixedRate, 0, runnable));
+    }
+
+    public static void add(String name, long fixedRate, long fixedDelay, Runnable runnable) {
+        jobEntityList.add(new JobEntity(name, null, null, fixedRate, fixedDelay, runnable));
     }
 
     /**

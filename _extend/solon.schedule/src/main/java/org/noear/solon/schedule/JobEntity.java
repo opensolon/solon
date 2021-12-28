@@ -16,6 +16,7 @@ public class JobEntity extends Thread {
     final String cron;
     final String zone;
     final long fixedRate;
+    final long fixedDelay;
     final Runnable runnable;
 
     boolean isCanceled;
@@ -25,11 +26,12 @@ public class JobEntity extends Thread {
     Date baseTime;
     Date nextTime;
 
-    public JobEntity(String name, String cron, String zone, long fixedRate, Runnable runnable) {
+    public JobEntity(String name, String cron, String zone, long fixedRate, long fixedDelay, Runnable runnable) {
         this.name = name;
         this.cron = cron;
         this.zone = zone;
         this.fixedRate = fixedRate;
+        this.fixedDelay = fixedDelay;
         this.runnable = runnable;
 
         this.baseTime = new Date();
@@ -41,6 +43,10 @@ public class JobEntity extends Thread {
 
     @Override
     public void run() {
+        if (fixedDelay > 0) {
+            sleep0(fixedDelay);
+        }
+
         while (true) {
             if (isCanceled == false) {
                 try {
@@ -73,7 +79,15 @@ public class JobEntity extends Thread {
             this.sleepMillis = nextTime.getTime() - baseTime.getTime();
         }
 
-        Thread.sleep(sleepMillis);
+        sleep0(sleepMillis);
+    }
+
+    private void sleep0(long sleep) {
+        try {
+            Thread.sleep(sleep);
+        } catch (Exception e) {
+            EventBus.push(e);
+        }
     }
 
     /**
