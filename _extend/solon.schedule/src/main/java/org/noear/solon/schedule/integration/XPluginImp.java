@@ -4,6 +4,7 @@ import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.Plugin;
+import org.noear.solon.core.event.AppLoadEndEvent;
 import org.noear.solon.schedule.JobManager;
 import org.noear.solon.schedule.MethodRunnable;
 import org.noear.solon.schedule.annotation.EnableScheduling;
@@ -43,8 +44,14 @@ public class XPluginImp implements Plugin {
             }
         });
 
-        Aop.beanOnloaded(() -> {
+        //应用加载完后，再启动任务
+        app.onEvent(AppLoadEndEvent.class, e -> {
             JobManager.start();
         });
+    }
+
+    @Override
+    public void stop() throws Throwable {
+        JobManager.stop();
     }
 }
