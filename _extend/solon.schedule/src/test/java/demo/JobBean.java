@@ -17,8 +17,18 @@ public class JobBean {
         log.debug(new Date() + ": 1000*3");
     }
 
-    @Scheduled(cron = "0/10 * * * * ? *")
+    @Scheduled(cron = "0/10 * * * * ? *", zone = "+00")
     public void job12(){
+        log.debug(new Date() + ": 0/10 * * * * ? *");
+    }
+
+    @Scheduled(cron = "0/10 * * * * ? *", zone = "CET")
+    public void job13(){
+        log.debug(new Date() + ": 0/10 * * * * ? *");
+    }
+
+    @Scheduled(cron = "0/10 * * * * ? *", zone = "Asia/Shanghai")
+    public void job14(){
         log.debug(new Date() + ": 0/10 * * * * ? *");
     }
 }
