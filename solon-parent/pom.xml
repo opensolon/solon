@@ -1079,6 +1079,7 @@
         <module>../_extend/solon.validation</module>
         <module>../_extend/solon.data</module>
         <module>../_extend/solon.auth</module>
+        <module>../_extend/solon.schedule</module>
 
 
         <module>../_extend/solon.boot.jetty.add.jsp</module>
