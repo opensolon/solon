@@ -2816,7 +2816,8 @@ public class HTTPServer {
      * @see #readToken(InputStream, int, String, int)
      */
     public static String readLine(InputStream in) throws IOException {
-        return readToken(in, '\n', "ISO8859_1", 8192);
+        //todo: update utf-8 by noear, 2021-11-11
+        return readToken(in, '\n', "UTF-8", 8192);
     }
 
     /**
