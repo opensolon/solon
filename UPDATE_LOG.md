@@ -1,7 +1,8 @@
 #### 1.6.11
 * 增加 ModelAndView 注入支持
 * 修复 jlhttp 上传文件可能乱码
-* 长级 beetlsql 到 3.12.5
+* 升级 beetlsql 到 3.12.5
+* 新增 solon.schedule 插件
 
 #### 1.6.10
 * snack3 升级为 3.2.4，增加泛型传导支持
