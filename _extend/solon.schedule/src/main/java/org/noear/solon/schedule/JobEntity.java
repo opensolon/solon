@@ -35,7 +35,7 @@ public class JobEntity extends Thread {
         this.baseTime = new Date();
 
         if (Utils.isNotEmpty(name)) {
-            setName(name);
+            setName("Job:" + name);
         }
     }
 
@@ -62,12 +62,14 @@ public class JobEntity extends Thread {
             nextTime = expr.getNextValidTimeAfter(baseTime);
             long timespan = nextTime.getTime() - baseTime.getTime();
             if (timespan >= 0) {
+                baseTime = nextTime;
+                nextTime = expr.getNextValidTimeAfter(baseTime);
+
                 if (timespan < 1000) {
                     runnable.run();
                 }
-                baseTime = nextTime;
-                nextTime = expr.getNextValidTimeAfter(baseTime);
             }
+
             this.sleepMillis = nextTime.getTime() - baseTime.getTime();
         }
 
