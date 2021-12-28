@@ -3,7 +3,7 @@ package org.noear.solon.schedule.annotation;
 import java.lang.annotation.*;
 
 /**
- * 启用定时任务
+ * 启用定时任务注解
  *
  * @author noear
  * @since 1.6

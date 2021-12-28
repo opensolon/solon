@@ -1470,4 +1470,10 @@ public class CronExpression implements Serializable, Cloneable {
     public Object clone() {
         return new CronExpression(this);
     }
+
+
+    static class ValueSet {
+        public int value;
+        public int pos;
+    }
 }

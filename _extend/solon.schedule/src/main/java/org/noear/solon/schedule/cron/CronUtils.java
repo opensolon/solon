@@ -9,6 +9,9 @@ import java.util.TimeZone;
 
 /**
  * Cron 工具类
+ *
+ * @author noear
+ * @since 1.6
  * */
 public class CronUtils {
     private static Map<String, CronExpressionPlus> cached = new HashMap<>();

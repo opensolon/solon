@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.Set;
 
 /**
+ * CronExpression 加强版
+ *
  * @author noear
  * @since 1.6
  */

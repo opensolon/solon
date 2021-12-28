@@ -7,13 +7,14 @@ import org.noear.solon.schedule.cron.CronExpressionPlus;
 import java.util.Date;
 
 /**
+ * 任务实体
+ *
  * @author noear
  * @since 1.6
  */
-public class JobEntity extends Thread {
+class JobEntity extends Thread {
     final String name;
     final CronExpressionPlus cron;
-    final String zone;
     final long fixedRate;
     final long fixedDelay;
     final Runnable runnable;
@@ -25,10 +26,9 @@ public class JobEntity extends Thread {
     Date baseTime;
     Date nextTime;
 
-    public JobEntity(String name, CronExpressionPlus cron, String zone, long fixedRate, long fixedDelay, Runnable runnable) {
+    public JobEntity(String name, CronExpressionPlus cron,  long fixedRate, long fixedDelay, Runnable runnable) {
         this.name = name;
         this.cron = cron;
-        this.zone = zone;
         this.fixedRate = fixedRate;
         this.fixedDelay = fixedDelay;
         this.runnable = runnable;

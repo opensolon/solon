@@ -293,6 +293,12 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>solon.schedule</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>solon.extend.sessionstate.redis</artifactId>
                 <version>${solon.ver}</version>
             </dependency>

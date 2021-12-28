@@ -1,6 +1,8 @@
 package org.noear.solon.schedule;
 
 /**
+ * 计划任务异常
+ *
  * @author noear
  * @since 1.5
  */
