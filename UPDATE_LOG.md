@@ -2,6 +2,8 @@
 * 增加 ModelAndView 注入支持
 * 修复 jlhttp 上传文件可能乱码
 * 升级 beetlsql 到 3.12.5
+* 升级 weed3 到 3.4.11
+* 升级 snack3 到 3.2.6
 * 新增 solon.schedule 插件
 * 插件 quartz-solon-plugin 排除关于 quartz 对线程池的依赖（有点莫名）
 
@@ -12,10 +14,10 @@
 #### 1.6.9
 * 增加 log4j2-solon-plugin,logback-solon-plugin 对记录器等级的应用配置支持
 * 增加 JsonRenderFactory 的事件扩展支持
-* 增加 Mvc 数组参数注入时，自动以,号分离为数组 **
+* 增加 Mvc 数组参数注入时，自动以,号分离为数组
 * 增加 @Init::index 属性
 * 增加 容器扫描去重去处
-* 取消 @Param::format 属性（自动处理增加17种格式）**
+* 取消 @Param::format 属性（自动处理增加17种格式
 
 #### 1.6.8
 * 增加 @Init 私有函数支持
