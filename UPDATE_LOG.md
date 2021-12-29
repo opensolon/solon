@@ -1,11 +1,11 @@
 #### 1.6.11
-* 增加 ModelAndView 注入支持
-* 修复 jlhttp 上传文件可能乱码
+* 增加 ModelAndView 注入支持 ##
+* 修复 jlhttp 上传的文件名可能乱码 ##
 * 升级 beetlsql 到 3.12.5
 * 升级 weed3 到 3.4.11
-* 升级 snack3 到 3.2.6
-* 新增 solon.schedule 插件
-* 插件 quartz-solon-plugin 排除关于 quartz 对线程池的依赖（有点莫名）
+* 升级 snack3 到 3.2.6 ##
+* 新增 solon.schedule 插件 ##
+* 插件 quartz-solon-plugin 排除关于 quartz 对线程池的依赖
 
 #### 1.6.10
 * snack3 升级为 3.2.4，增加泛型传导支持
