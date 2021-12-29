@@ -6,7 +6,7 @@
 
     <groupId>org.noear.bundle</groupId>
     <artifactId>hatch-bundle</artifactId>
-    <version>1.6.11-m3</version>
+    <version>1.6.11</version>
     <packaging>pom</packaging>
 
 
