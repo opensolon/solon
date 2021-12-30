@@ -76,7 +76,7 @@ public class _SocketServerSession extends SessionBase {
     @Override
     public String path() {
         if (_path == null) {
-            _path = real.getResourceDescriptor();
+            _path = uri().getPath();
         }
 
         return _path;
