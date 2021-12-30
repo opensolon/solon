@@ -63,7 +63,7 @@ public class BasicSubjectSolonCreator implements SubjectCreate {
 
         String password = auth[1];
         String remoteHost = ((Context) context).ip();
-        String requestUri = ((Context) context).path();
+        String requestUri = ((Context) context).pathNew();
         String requestType = ((Context) context).method();
         String targetUri = requestUri.concat("===").concat(requestType).toLowerCase();
 

@@ -16,7 +16,7 @@ public class LuffyHandler implements Handler {
 
     @Override
     public void handle(Context ctx) throws Exception {
-        String path = ctx.path();
+        String path = ctx.pathNew();
 
         if (Solon.cfg().isDebugMode()) {
             String name = path.replace("/", "__");

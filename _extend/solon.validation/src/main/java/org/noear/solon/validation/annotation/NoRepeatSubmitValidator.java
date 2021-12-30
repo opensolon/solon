@@ -34,7 +34,7 @@ public class NoRepeatSubmitValidator implements Validator<NoRepeatSubmit> {
             throw new IllegalArgumentException("Missing NoRepeatSubmitChecker Setting");
         }
 
-        tmp.append(ctx.path()).append("#");
+        tmp.append(ctx.pathNew()).append("#");
 
         for (HttpPart part : anno.value()) {
             switch (part) {

@@ -44,11 +44,11 @@ public class StaticResourceHandler implements Handler {
             return;
         }
 
-        if (_rule.matcher(ctx.path()).find() == false) {
+        if (_rule.matcher(ctx.pathNew()).find() == false) {
             return;
         }
 
-        String path = ctx.path();
+        String path = ctx.pathNew();
 
         URL uri = StaticMappings.find(path);
 

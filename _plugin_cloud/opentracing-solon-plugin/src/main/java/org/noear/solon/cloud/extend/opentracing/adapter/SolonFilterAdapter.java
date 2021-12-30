@@ -55,7 +55,7 @@ public class SolonFilterAdapter implements Filter {
 
         //实例化构建器
         StringBuilder spanName = new StringBuilder();
-        spanName.append(ctx.path()).append(" (").append(ctx.uri().getScheme()).append(" ").append(ip).append(":").append(port).append(')');
+        spanName.append(ctx.pathNew()).append(" (").append(ctx.uri().getScheme()).append(" ").append(ip).append(":").append(port).append(')');
         Tracer.SpanBuilder spanBuilder = tracer.buildSpan(spanName.toString());
 
         //添加标志
