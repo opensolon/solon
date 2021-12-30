@@ -58,16 +58,21 @@ public class _SocketServerSession extends SessionBase {
         return MethodType.WEBSOCKET;
     }
 
+    private URI _uri;
     @Override
     public URI uri() {
-        return real.getUpgradeRequest().getRequestURI();
+        if (_uri == null) {
+            _uri = real.getUpgradeRequest().getRequestURI();
+        }
+
+        return _uri;
     }
 
     private String _path;
     @Override
     public String path() {
         if(_path == null) {
-            _path = real.getUpgradeRequest().getRequestURI().getPath();
+            _path = uri().getPath();
         }
 
         return _path;
