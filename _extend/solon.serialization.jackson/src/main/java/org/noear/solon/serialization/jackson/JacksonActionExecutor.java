@@ -3,6 +3,7 @@ package org.noear.solon.serialization.jackson;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.*;
+import org.noear.solon.Utils;
 import org.noear.solon.core.handle.ActionExecutorDefault;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.wrap.ParamWrap;
@@ -35,18 +36,24 @@ public class JacksonActionExecutor extends ActionExecutorDefault {
 
     @Override
     protected Object changeBody(Context ctx) throws Exception {
-        return mapper_type.readTree(ctx.bodyNew());
+        String json = ctx.bodyNew();
+
+        if (Utils.isNotEmpty(json)) {
+            return mapper_type.readTree(json);
+        } else {
+            return null;
+        }
     }
 
     @Override
     protected Object changeValue(Context ctx, ParamWrap p, int pi, Class<?> pt, Object bodyObj) throws Exception {
-        if (bodyObj == null) {
-            return null;
-        }
-
 
         if (ctx.paramMap().containsKey(p.getName())) {
             return super.changeValue(ctx, p, pi, pt, bodyObj);
+        }
+
+        if (bodyObj == null) {
+            return null;
         }
 
         JsonNode tmp = (JsonNode) bodyObj;
