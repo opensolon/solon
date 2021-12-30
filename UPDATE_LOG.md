@@ -2,6 +2,7 @@
 * 修复 solon.boot.websocket 插件，带参数时无法匹配的问题
 * 调整 ctx.path() 的应用，全改为 ctx.pathNew()
 * 修复 json body 为空时，可能出错的问题
+* 升级 log4j-core 为 2.17.1
 
 #### 1.6.11
 * 增加 ModelAndView 注入支持 ##
