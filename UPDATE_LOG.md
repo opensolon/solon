@@ -1,6 +1,7 @@
 #### 1.6.12
 * 修复 solon.boot.websocket 插件，带参数时无法匹配的问题
-* 所有对 ctx.path() 的应用，全改为 ctx.pathNew()
+* 调整 ctx.path() 的应用，全改为 ctx.pathNew()
+* 修复 json body 为空时，可能出错的问题
 
 #### 1.6.11
 * 增加 ModelAndView 注入支持 ##
