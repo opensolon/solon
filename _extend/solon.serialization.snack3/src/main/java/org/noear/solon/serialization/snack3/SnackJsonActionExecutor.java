@@ -1,6 +1,7 @@
 package org.noear.solon.serialization.snack3;
 
 import org.noear.snack.ONode;
+import org.noear.solon.Utils;
 import org.noear.solon.core.handle.ActionExecutorDefault;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.wrap.ParamWrap;
@@ -28,17 +29,23 @@ public class SnackJsonActionExecutor extends ActionExecutorDefault {
 
     @Override
     protected Object changeBody(Context ctx) throws Exception {
-        return ONode.loadStr(ctx.bodyNew());
+        String json = ctx.bodyNew();
+
+        if (Utils.isNotEmpty(json)) {
+            return ONode.loadStr(json);
+        } else {
+            return null;
+        }
     }
 
     @Override
     protected Object changeValue(Context ctx, ParamWrap p, int pi, Class<?> pt, Object bodyObj) throws Exception {
-        if (bodyObj == null) {
-            return null;
-        }
-
         if (ctx.paramMap().containsKey(p.getName())) {
             return super.changeValue(ctx, p, pi, pt, bodyObj);
+        }
+
+        if (bodyObj == null) {
+            return null;
         }
 
         ONode tmp = (ONode) bodyObj;

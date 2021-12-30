@@ -23,4 +23,16 @@ public class TestDemo extends HttpTestBase {
         assert  oNode.get("time2").getString().length() == 10;
         assert  oNode.get("time3").getLong() > 1000000000;
     }
+
+    @Test
+    public void hello_test() throws Exception {
+        String json = path("/hello").bodyJson("").post();
+        assert "".equals(json);
+
+        json = path("/hello?name=world").bodyJson("").post();
+        assert "world".equals(json);
+
+        json = path("/hello").bodyJson("{\"name\":\"world\"}").post();
+        assert "world".equals(json);
+    }
 }

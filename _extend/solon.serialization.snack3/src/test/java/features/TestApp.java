@@ -50,4 +50,9 @@ public class TestApp {
 
         return data;
     }
+
+    @Mapping("/hello")
+    public Object hello(String name) {
+        return name;
+    }
 }
