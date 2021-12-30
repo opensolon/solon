@@ -3,6 +3,7 @@ package org.noear.solon.serialization.fastjson;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import org.noear.solon.Utils;
 import org.noear.solon.core.handle.ActionExecutorDefault;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.wrap.ParamWrap;
@@ -24,17 +25,23 @@ public class FastjsonJsonActionExecutor extends ActionExecutorDefault {
 
     @Override
     protected Object changeBody(Context ctx) throws Exception {
-        return JSON.parse(ctx.bodyNew());
+        String json = ctx.bodyNew();
+
+        if (Utils.isNotEmpty(json)) {
+            return JSON.parse(json);
+        } else {
+            return null;
+        }
     }
 
     @Override
     protected Object changeValue(Context ctx, ParamWrap p, int pi, Class<?> pt, Object bodyObj) throws Exception {
-        if (bodyObj == null) {
-            return null;
-        }
-
         if (ctx.paramMap().containsKey(p.getName())) {
             return super.changeValue(ctx, p, pi, pt, bodyObj);
+        }
+
+        if (bodyObj == null) {
+            return null;
         }
 
         if (bodyObj instanceof JSONObject) {

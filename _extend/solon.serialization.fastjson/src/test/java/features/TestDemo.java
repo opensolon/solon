@@ -16,13 +16,25 @@ import org.noear.solon.test.SolonTest;
 @SolonTest(TestApp.class)
 public class TestDemo extends HttpTestBase {
     @Test
-    public void test0() throws Exception{
+    public void home_test() throws Exception {
         String json = path("/").get();
 
         JSONObject oNode = JSON.parseObject(json);
 
-        assert  oNode.getString("time1").length() == 16;
-        assert  oNode.getString("time2").length() == 10;
-        assert  oNode.getLong("time3") > 1000000000;
+        assert oNode.getString("time1").length() == 16;
+        assert oNode.getString("time2").length() == 10;
+        assert oNode.getLong("time3") > 1000000000;
+    }
+
+    @Test
+    public void hello_test() throws Exception {
+        String json = path("/hello").bodyJson("").post();
+        assert "".equals(json);
+
+        json = path("/hello?name=world").bodyJson("").post();
+        assert "world".equals(json);
+
+        json = path("/hello").bodyJson("{\"name\":\"world\"}").post();
+        assert "world".equals(json);
     }
 }
