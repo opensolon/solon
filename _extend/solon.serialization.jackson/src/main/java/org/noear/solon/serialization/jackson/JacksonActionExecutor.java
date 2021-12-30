@@ -16,7 +16,7 @@ public class JacksonActionExecutor extends ActionExecutorDefault {
 
     ObjectMapper mapper_type = new ObjectMapper();
 
-    public JacksonActionExecutor(){
+    public JacksonActionExecutor() {
         mapper_type.enable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         mapper_type.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         mapper_type.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
@@ -74,7 +74,7 @@ public class JacksonActionExecutor extends ActionExecutorDefault {
 
         if (tmp.isArray()) {
             //如果参数是非集合类型
-            if(!Collection.class.isAssignableFrom(pt)){
+            if (!Collection.class.isAssignableFrom(pt)) {
                 return null;
             }
 
@@ -82,6 +82,10 @@ public class JacksonActionExecutor extends ActionExecutorDefault {
         }
 
         //return tmp.val().getRaw();
-        return mapper_type.readValue(mapper_type.treeAsTokens(tmp), new TypeReferenceImp<>(p));
+        if (tmp.isValueNode()) {
+            return mapper_type.readValue(mapper_type.treeAsTokens(tmp), new TypeReferenceImp<>(p));
+        } else {
+            return null;
+        }
     }
 }
