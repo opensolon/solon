@@ -2,6 +2,7 @@ package org.noear.solon;
 
 import org.noear.solon.core.JarClassLoader;
 import org.noear.solon.core.NvMap;
+import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.PrintUtil;
 import org.noear.solon.ext.ConsumerEx;
 
@@ -136,7 +137,7 @@ public class Solon {
         } catch (Throwable ex) {
             //显示异常信息
             ex = Utils.throwableUnwrap(ex);
-            ex.printStackTrace();
+            EventBus.push(ex);
 
             //4.停止服务并退出（主要是停止插件）
             Solon.stop0(true, 0);
