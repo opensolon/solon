@@ -85,6 +85,10 @@ public final class EventBus {
     public static <T> void subscribe(Class<T> eventType, EventListener<T> listener) {
         if (Throwable.class.isAssignableFrom(eventType)) {
             sThrow.add(new HH(eventType, listener));
+
+            if (Solon.global() != null) {
+                Solon.global().enableErrorAutoprint(false);
+            }
         } else {
             sOther.add(new HH(eventType, listener));
         }
