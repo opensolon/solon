@@ -1,9 +1,9 @@
 #### 1.6.12
 * 修复 solon.boot.websocket 插件，带参数时无法正确路由的问题
 * 修复 solon.serialization.jackson 插件，body 为空时，会出错的问题
-* 升级 log4j-core 为 2.17.1
-* 升级 snack3 为 3.2.7 ，支持成员类反序列化
 * 调整 ctx.path() 的应用，全改为 ctx.pathNew()
+* 升级 log4j 为 2.17.1
+* 升级 snack3 为 3.2.7 ，支持成员类反序列化
 * 调整 logback-solon-plugin, log4j2-solon-plugin，启动异常退出能记录日志
 
 #### 1.6.11
