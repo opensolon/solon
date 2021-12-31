@@ -3,7 +3,6 @@ package org.apache.logging.log4j.solon.integration;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.core.LoggerContext;
 import org.apache.logging.log4j.core.config.Configuration;
-import org.apache.logging.log4j.core.config.ConfigurationSource;
 import org.apache.logging.log4j.core.config.Configurator;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
@@ -12,7 +11,6 @@ import org.noear.solon.core.Plugin;
 import org.noear.solon.logging.LogOptions;
 import org.noear.solon.logging.model.LoggerLevelEntity;
 
-import java.io.FileInputStream;
 import java.net.URL;
 
 /**
@@ -49,8 +47,7 @@ public class XPluginImp implements Plugin {
 
     private void initDo(URL url) {
         try {
-            ConfigurationSource source = new ConfigurationSource(new FileInputStream(url.getPath()), url);
-            Configurator.initialize(null, source);
+            Configurator.reconfigure(url.toURI());
 
             //同步 logger level 配置
             if (LogOptions.getLoggerLevels().size() > 0) {

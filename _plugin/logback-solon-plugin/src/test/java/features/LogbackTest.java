@@ -15,11 +15,11 @@ import org.slf4j.MDC;
 
 @RunWith(SolonJUnit4ClassRunner.class)
 @SolonTest(App.class)
-public class LogTest {
+public class LogbackTest {
 
     @Test
     public void test1() {
-        Logger log = LoggerFactory.getLogger(LogTest.class);
+        Logger log = LoggerFactory.getLogger(LogbackTest.class);
 
         MDC.put("traceId", Utils.guid());
 

@@ -1,5 +1,7 @@
 package features;
 
+import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.noear.solon.Utils;
@@ -15,11 +17,11 @@ import org.slf4j.MDC;
 
 @RunWith(SolonJUnit4ClassRunner.class)
 @SolonTest(App.class)
-public class LogTest {
+public class Log4j2Test {
 
     @Test
     public void test1() {
-        Logger log = LoggerFactory.getLogger(LogTest.class);
+        Logger log = LoggerFactory.getLogger(Log4j2Test.class);
 
         MDC.put("traceId", Utils.guid());
 
