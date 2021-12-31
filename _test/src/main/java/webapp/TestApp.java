@@ -3,6 +3,7 @@ package webapp;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.SolonBuilder;
+import org.noear.solon.Utils;
 import org.noear.solon.annotation.Import;
 import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.core.ExtendLoader;
@@ -21,6 +22,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
 import java.util.Locale;
+import java.util.Properties;
 
 @Import(value = TestImport.class, scanPackages = "webapp")
 //@EnableCron4j
@@ -80,6 +82,11 @@ public class TestApp {
 
 
         System.out.println("生在ID = " + CloudClient.id().generate());
+
+        Properties testP = Utils.loadProperties("test.properties");
+        if(testP == null){
+
+        }
 
 //        app.filter((ctx, chain)->{
 //            System.out.println("我是过滤器!!!path="+ctx.path());

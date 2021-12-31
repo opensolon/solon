@@ -49,6 +49,10 @@ public class PropertiesYaml extends Properties {
             return;
         }
 
+        if(tmp == null){
+            tmp = "";
+        }
+
         put0(prefix, String.valueOf(tmp));
     }
 
