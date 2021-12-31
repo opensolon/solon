@@ -13,6 +13,7 @@ import org.noear.solon.annotation.Init;
 public class App {
     public static void main(String[] args){
         Solon.start(App.class, args, app -> {
+            app.enableErrorAutoprint(false);
 
             app.onError(err -> {
                 log.error(err.getLocalizedMessage(), err);
@@ -20,8 +21,8 @@ public class App {
         });
     }
 
-    @Init
-    public void init() {
-        throw new RuntimeException("测试一下");
-    }
+//    @Init
+//    public void init() {
+//        throw new RuntimeException("测试一下");
+//    }
 }
