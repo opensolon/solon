@@ -121,11 +121,11 @@ public class Solon {
         //2.0.内部初始化等待（尝试ping等待）
         global.initAwait();
 
-        //2.1.内部初始化（如配置等，顺序不能乱）
-        global.init();
-
 
         try {
+            //2.1.内部初始化（如配置等，顺序不能乱）
+            global.init();
+
             //2.2.自定义初始化
             if (initialize != null) {
                 initialize.accept(global);
