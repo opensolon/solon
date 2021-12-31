@@ -36,7 +36,7 @@ public class PropertiesJson extends Properties {
         }
 
         if(tmp.isNull()){
-            do_put(prefix, null);
+            do_put(prefix, "");
         }else{
             do_put(prefix, tmp.getString());
         }

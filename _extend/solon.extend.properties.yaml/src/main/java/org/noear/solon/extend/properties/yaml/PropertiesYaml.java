@@ -49,14 +49,14 @@ public class PropertiesYaml extends Properties {
             return;
         }
 
-        if(tmp == null){
-            tmp = "";
+        if (tmp == null) {
+            put0(prefix, "");
+        } else {
+            put0(prefix, String.valueOf(tmp));
         }
-
-        put0(prefix, String.valueOf(tmp));
     }
 
-    private void put0(String key, Object val){
+    private void put0(String key, Object val) {
         if (key.startsWith(".")) {
             put(key.substring(1), val);
         } else {
