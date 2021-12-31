@@ -395,8 +395,10 @@ public abstract class BeanContainer {
 
             String val = Solon.cfg().get(name);
 
-            if(val == null){
-                val = def;
+            if(def != null) {
+                if (Utils.isEmpty(val)) {
+                    val = def;
+                }
             }
 
             if (val == null) {
