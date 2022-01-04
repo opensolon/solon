@@ -6,6 +6,8 @@
 * 升级 snack3 为 3.2.7 ，支持成员类反序列化
 * 升级 jackson 为 2.13.1
 * 升级 aws-java-sdk-s3 为 1.12.132
+* 升级 beetl 为 3.9.3
+* 升级 beetlsql 为 3.12.6
 * 调整 logback-solon-plugin, log4j2-solon-plugin，启动异常退出能记录日志
 * 调整 yaml、json 配置的 的 null 值默认转为空字符串（与 properties 保持一至）
 * 新增 配置文件 "引用符" 任意使用（之前只能出现一个${xxx}）
