@@ -244,35 +244,41 @@ public final class SolonProps extends Props {
                         // db1.url=xxx
                         // db1.jdbcUrl=${db1.url}
                         // db1.jdbcUrl=jdbc:mysql:${db1.server}
-                        String tmpV = (String) v1;
+                        // db1.jdbcUrl=jdbc:mysql:${db1.server}/${db1.db}
+                        String v1Str = (String) v1;
 
                         while (true) {
-                            int symStart = tmpV.indexOf("${");
+                            int symStart = v1Str.indexOf("${");
                             if (symStart >= 0) {
-                                int symEnd = tmpV.indexOf("}", symStart + 1);
+                                int symEnd = v1Str.indexOf("}", symStart + 1);
                                 if (symEnd > symStart) {
-                                    String tmpK = tmpV.substring(symStart + 2, symEnd);
+                                    String tmpK = v1Str.substring(symStart + 2, symEnd);
 
                                     String tmpV2 = props.getProperty(tmpK);
                                     if (tmpV2 == null) {
                                         tmpV2 = getProperty(tmpK);
                                     }
 
-                                    if (tmpV2 != null) {
-                                        //有值，才替换
-                                        if (symStart == 0) {
-                                            tmpV = tmpV2 + tmpV.substring(symEnd + 1);
-                                        } else {
-                                            tmpV = tmpV.substring(0, symStart) + tmpV2 + tmpV.substring(symEnd + 1);
-                                        }
+                                    if (tmpV2 == null) {
+                                        tmpV2 = ""; //如果没有找到，默认为空值
                                     }
+
+                                    if (symStart == 0) {
+                                        v1Str = tmpV2 + v1Str.substring(symEnd + 1);
+                                    } else {
+                                        v1Str = v1Str.substring(0, symStart) + tmpV2 + v1Str.substring(symEnd + 1);
+                                    }
+                                } else {
+                                    //找不到 "}"，则终止
+                                    break;
                                 }
-                            }else{
+                            } else {
+                                //找不到 "${"，则终止
                                 break;
                             }
                         }
 
-                        v1 = tmpV;
+                        v1 = v1Str;
                     }
 
                     if (v1 != null) {

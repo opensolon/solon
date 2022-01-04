@@ -22,6 +22,9 @@ public class InjectTest {
     @Inject("${formattest.text}")
     String formattest;
 
+    @Inject("${formattest.text2}")
+    String formattest2;
+
 
     @Inject
     Map<String, Object> map;
@@ -39,5 +42,7 @@ public class InjectTest {
 
         System.out.println(formattest);
         assert "512m/-/en_US".equals(formattest);
+
+        assert "".equals(formattest2);
     }
 }

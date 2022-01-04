@@ -61,7 +61,10 @@ solon.socketd:
   socketTimeout: "60s"
 
 
-formattest.text: "${solon.socketd.readBufferSize}m/-/${solon.locale}"
+formattest:
+  text: "${solon.socketd.readBufferSize}m/-/${solon.locale}"
+  text2: "${aaaa.bbb}"
+
 
 server.session:
   timeout: 7200 #单位秒；（可不配，默认：7200）
