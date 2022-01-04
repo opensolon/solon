@@ -245,27 +245,34 @@ public final class SolonProps extends Props {
                         // db1.jdbcUrl=${db1.url}
                         // db1.jdbcUrl=jdbc:mysql:${db1.server}
                         String tmpV = (String) v1;
-                        int symStart = tmpV.indexOf("${");
-                        if (symStart >= 0) {
-                            int symEnd = tmpV.indexOf("}", symStart + 1);
-                            if (symEnd > symStart) {
-                                String tmpK = tmpV.substring(symStart + 2, symEnd);
 
-                                String tmpV2 = props.getProperty(tmpK);
-                                if (tmpV2 == null) {
-                                    tmpV2 = getProperty(tmpK);
-                                }
+                        while (true) {
+                            int symStart = tmpV.indexOf("${");
+                            if (symStart >= 0) {
+                                int symEnd = tmpV.indexOf("}", symStart + 1);
+                                if (symEnd > symStart) {
+                                    String tmpK = tmpV.substring(symStart + 2, symEnd);
 
-                                if (tmpV2 != null) {
-                                    //有值，才替换
-                                    if (symStart == 0) {
-                                        v1 = tmpV2 + tmpV.substring(symEnd + 1);
-                                    } else {
-                                        v1 = tmpV.substring(0, symStart) + tmpV2 + tmpV.substring(symEnd + 1);
+                                    String tmpV2 = props.getProperty(tmpK);
+                                    if (tmpV2 == null) {
+                                        tmpV2 = getProperty(tmpK);
+                                    }
+
+                                    if (tmpV2 != null) {
+                                        //有值，才替换
+                                        if (symStart == 0) {
+                                            tmpV = tmpV2 + tmpV.substring(symEnd + 1);
+                                        } else {
+                                            tmpV = tmpV.substring(0, symStart) + tmpV2 + tmpV.substring(symEnd + 1);
+                                        }
                                     }
                                 }
+                            }else{
+                                break;
                             }
                         }
+
+                        v1 = tmpV;
                     }
 
                     if (v1 != null) {

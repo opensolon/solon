@@ -19,6 +19,10 @@ public class InjectTest {
     String username;
 
 
+    @Inject("${formattest.text}")
+    String formattest;
+
+
     @Inject
     Map<String, Object> map;
 
@@ -32,5 +36,8 @@ public class InjectTest {
 
         assert map != null;
         assert map.get("1").equals(1);
+
+        System.out.println(formattest);
+        assert "512m/-/en_US".equals(formattest);
     }
 }
