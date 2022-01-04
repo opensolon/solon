@@ -300,8 +300,15 @@ public class HttpTest extends _TestBase {
         assert  get("/demo7/exception").contains("出错了");
     }
     @Test
-    public void test81() throws IOException{
-        assert  get("/demo8/config_inject").equals("{\"username\":\"noear\",\"paasword\":1234,\"test\":{\"url\":\"jdbc:mysql://127.0.0.1/user\",\"paasword\":\"12\",\"username\":\"root\"},\"nameuser_2\":\"noear\",\"dbcfg\":{\"url\":\"jdbc:mysql://127.0.0.1/user\",\"paasword\":\"12\",\"username\":\"root\"}}");
+    public void test81() throws IOException {
+        String json0 = "{\"username\":\"noear\",\"paasword\":1234,\"test\":{\"url\":\"jdbc:mysql://127.0.0.1/user\",\"paasword\":\"12\",\"username\":\"root\"},\"nameuser_2\":\"noear\",\"dbcfg\":{\"url\":\"jdbc:mysql://127.0.0.1/user\",\"paasword\":\"12\",\"username\":\"root\"}}";
+        String json1 = get("/demo8/config_inject");
+
+        System.out.println(json1);
+
+        System.out.println("json0:: " + ONode.loadStr(json0).toJson());
+        System.out.println("json1:: " + ONode.loadStr(json1).toJson());
+        assert ONode.loadStr(json0).toJson().length() == ONode.loadStr(json1).toJson().length();
     }
     @Test
     public void test82() throws IOException{
