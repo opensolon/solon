@@ -246,9 +246,10 @@ public final class SolonProps extends Props {
                         // db1.jdbcUrl=jdbc:mysql:${db1.server}
                         // db1.jdbcUrl=jdbc:mysql:${db1.server}/${db1.db}
                         String v1Str = (String) v1;
+                        int symStart = 0;
 
                         while (true) {
-                            int symStart = v1Str.indexOf("${");
+                            symStart = v1Str.indexOf("${", symStart);
                             if (symStart >= 0) {
                                 int symEnd = v1Str.indexOf("}", symStart + 1);
                                 if (symEnd > symStart) {
@@ -260,13 +261,14 @@ public final class SolonProps extends Props {
                                     }
 
                                     if (tmpV2 == null) {
-                                        tmpV2 = ""; //如果没有找到，默认为空值
-                                    }
-
-                                    if (symStart == 0) {
-                                        v1Str = tmpV2 + v1Str.substring(symEnd + 1);
+                                        symStart = symEnd;
                                     } else {
-                                        v1Str = v1Str.substring(0, symStart) + tmpV2 + v1Str.substring(symEnd + 1);
+                                        if (symStart > 0) {
+                                            //确定左侧部分
+                                            tmpV2 = v1Str.substring(0, symStart) + tmpV2;
+                                        }
+                                        symStart = tmpV2.length();
+                                        v1Str = tmpV2 + v1Str.substring(symEnd + 1);
                                     }
                                 } else {
                                     //找不到 "}"，则终止

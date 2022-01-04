@@ -30,7 +30,7 @@ public class InjectTest {
     Map<String, Object> map;
 
     @Test
-    public void xxx() {
+    public void test1() {
         assert "noear".equals(username);
 
         Solon.cfg().setProperty("username", "xxx");
@@ -39,10 +39,13 @@ public class InjectTest {
 
         assert map != null;
         assert map.get("1").equals(1);
+    }
 
+    @Test
+    public void test2() {
         System.out.println(formattest);
         assert "512m/-/en_US".equals(formattest);
 
-        assert "".equals(formattest2);
+        assert "${aaaa.bbb}".equals(formattest2);
     }
 }
