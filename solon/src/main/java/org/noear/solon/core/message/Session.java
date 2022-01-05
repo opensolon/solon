@@ -1,14 +1,13 @@
 package org.noear.solon.core.message;
 
 import org.noear.solon.core.NvMap;
-import org.noear.solon.core.Signal;
 import org.noear.solon.core.handle.MethodType;
+import org.noear.solon.core.util.PathUtil;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.URI;
 import java.util.Collection;
-import java.util.Map;
 import java.util.function.BiConsumer;
 
 /**
@@ -40,6 +39,14 @@ public interface Session {
      */
     String path();
 
+
+    /**
+     * 获取请求的URI路径变量,根据路径表达式
+     */
+    default NvMap pathMap(String expr) {
+        return PathUtil.pathVarMap(path(), expr);
+    }
+
     /**
      * 请求头
      */
@@ -69,6 +76,7 @@ public interface Session {
      * 请求参数集合
      */
     NvMap paramMap();
+
 
     /**
      * 标识（为特定业务提供帮助）
