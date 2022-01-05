@@ -93,8 +93,15 @@ public class TestApp {
 //            chain.doFilter(ctx);
 //        });
 
-//        app.ws("/demoe/websocket",(session,message)->{
-//            System.out.println(session.resourceDescriptor());
+
+        app.ws("/demoe/websocket/{id}",(session,message)->{
+            System.out.println(session.uri());
+            System.out.println("WebSocket-PathVar:Id: " + session.param("id"));
+        });
+
+
+//        app.ws("/demoe/websocket/{id}",(session,message)->{
+//            System.out.println(session.uri());
 //
 //            if(Solon.cfg().isDebugMode()){
 //                return;

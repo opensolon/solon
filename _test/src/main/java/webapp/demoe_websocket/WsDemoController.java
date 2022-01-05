@@ -11,26 +11,28 @@ import org.noear.solon.core.handle.Context;
 @Controller
 public class WsDemoController {
     @WebSocket
-    @Mapping("/demoe/*")
-    public void test(Context ctx) throws Exception{
-        if(ctx == null){
+    @Mapping("/demoe/*/{id}")
+    public void test(Context ctx, String id) throws Exception {
+        if (ctx == null) {
             return;
         }
 
+        System.out.println("WebSocket-PathVar-Mvc:Id: " + id);
+
         String msg = ctx.body();
 
-        if(msg.equals("close")){
-            ctx.output("它叫我关了："+ msg);
-            System.out.println("它叫我关了："+ msg+"!!!");
+        if (msg.equals("close")) {
+            ctx.output("它叫我关了：" + msg);
+            System.out.println("它叫我关了：" + msg + "!!!");
             ctx.close();//关掉
-        }else{
-            ctx.output("我收到了："+ msg);
+        } else {
+            ctx.output("我收到了：" + msg + ": " + ctx.paramMap().toString());
         }
     }
 
     @Http
     @Mapping("/demoe/websocket")
-    public Object test_client(Context ctx){
+    public Object test_client(Context ctx, String id){
         ModelAndView mv = new ModelAndView("demoe/websocket.ftl");
         mv.put("app_port", Solon.global().port() + 10000);
 

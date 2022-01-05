@@ -8,7 +8,7 @@
 <script type="text/javascript">
     var sock = null;
     //服务器的地址
-    var wsuri = "ws://127.0.0.1:18080/demoe/websocket?id=1&guid=2";
+    var wsuri = "ws://127.0.0.1:18080/demoe/websocket/13?guid=2";
     window.onload = function() {
         console.log("onload");
         sock = new WebSocket(wsuri);

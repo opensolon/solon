@@ -19,7 +19,7 @@ public class WebSocketTestSelf {
         Thread.sleep(100);
         long time_start = System.currentTimeMillis();
 
-        WsDemoClient client = new WsDemoClient(URI.create("ws://127.0.0.1:8080/demoe/websocket"));
+        WsDemoClient client = new WsDemoClient(URI.create("ws://127.0.0.1:8080/demoe/websocket/12"));
         client.connect();
 
         while (!client.isOpen()) {

@@ -6,7 +6,7 @@ import java.io.IOException;
  * SocketD 监听器（实现 Message + Listener 架构）
  *
  * <pre><code>
- * @ServerEndpoint(value = "/demoe/websocket")
+ * @ServerEndpoint(value = "/demoe/websocket/{id}")
  * public class SocketListenerImp implements Listener {
  *     @Override
  *     public void onMessage(Session session, Message message) {
