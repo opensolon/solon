@@ -3,6 +3,7 @@ package org.noear.solon.core.handle;
 import org.noear.solon.Utils;
 import org.noear.solon.core.*;
 import org.noear.solon.core.event.EventBus;
+import org.noear.solon.core.util.PathUtil;
 import org.noear.solon.ext.DataThrowable;
 import org.noear.solon.core.wrap.MethodWrap;
 import org.noear.solon.core.util.PathAnalyzer;
@@ -46,8 +47,6 @@ public class Action extends HandlerAide implements Handler {
     private PathAnalyzer pathAnalyzer;//路径分析器
     //path key 列表
     private List<String> pathKeys;
-    //path key 表达式
-    private static Pattern pathKeyExpr = Pattern.compile("\\{([^\\\\}]+)\\}");
 
     public Action(BeanWrap bWrap, Method method) {
         this(bWrap, null, method, null, null, false, null);
@@ -84,7 +83,7 @@ public class Action extends HandlerAide implements Handler {
         //支持path变量
         if (path != null && path.indexOf("{") >= 0) {
             pathKeys = new ArrayList<>();
-            Matcher pm = pathKeyExpr.matcher(path);
+            Matcher pm = PathUtil.pathKeyExpr.matcher(path);
             while (pm.find()) {
                 pathKeys.add(pm.group(1));
             }

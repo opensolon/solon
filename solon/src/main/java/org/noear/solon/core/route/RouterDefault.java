@@ -5,6 +5,7 @@ import org.noear.solon.core.handle.Endpoint;
 import org.noear.solon.core.handle.Handler;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.message.Listener;
+import org.noear.solon.core.message.ListenerHolder;
 import org.noear.solon.core.message.Session;
 
 import java.util.Collections;
@@ -107,7 +108,9 @@ public class RouterDefault implements Router{
      */
     @Override
     public void add(String path, MethodType method, int index, Listener listener) {
-        routesL.add(new RoutingDefault<>(path, method, index, listener));
+        Listener lh = new ListenerHolder(path, listener);
+
+        routesL.add(new RoutingDefault<>(path, method, index, lh));
     }
 
     /**

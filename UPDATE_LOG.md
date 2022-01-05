@@ -1,3 +1,7 @@
+#### 1.6.13
+* 增加 Socket Session 路径变量支持
+
+
 #### 1.6.12
 * 修复 solon.boot.websocket 插件，带参数时无法正确路由的问题
 * 修复 solon.serialization.jackson 插件，body 为空时，会出错的问题
