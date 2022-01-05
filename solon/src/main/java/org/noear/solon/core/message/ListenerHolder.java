@@ -9,7 +9,10 @@ import java.util.List;
 import java.util.regex.Matcher;
 
 /**
- * @author noear 2022/1/5 created
+ * SocketD 监听器增强持有（用于支持 path var）
+ *
+ * @author noear
+ * @since 1.6
  */
 public class ListenerHolder implements Listener {
     private Listener listener;
