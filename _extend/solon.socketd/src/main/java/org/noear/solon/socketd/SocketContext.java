@@ -32,9 +32,19 @@ public class SocketContext extends ContextEmpty {
         _method = session.method();
         _inetSocketAddress = session.getRemoteAddress();
 
+        //传递 Header
+        if(session.headerMap().size() > 0){
+            headerMap().putAll(session.headerMap());
+        }
+
         if (Utils.isNotEmpty(message.header())) {
             Map<String,String> headerMap = HeaderUtil.decodeHeaderMap(message.header());
             headerMap().putAll(headerMap);
+        }
+
+        //传递 Param
+        if(session.paramMap().size() > 0){
+            paramMap().putAll(session.paramMap());
         }
     }
 

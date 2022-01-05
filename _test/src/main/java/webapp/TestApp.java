@@ -94,10 +94,10 @@ public class TestApp {
 //        });
 
 
-        app.ws("/demoe/websocket/{id}",(session,message)->{
-            System.out.println(session.uri());
-            System.out.println("WebSocket-PathVar:Id: " + session.param("id"));
-        });
+//        app.ws("/demoe/websocket/{id}",(session,message)->{
+//            System.out.println(session.uri());
+//            System.out.println("WebSocket-PathVar:Id: " + session.param("id"));
+//        });
 
 
 //        app.ws("/demoe/websocket/{id}",(session,message)->{
