@@ -69,6 +69,7 @@ public class TestApp {
                System.out.println("JsonRenderFactory event: xxxxx: " + e.getClass().getSimpleName());
             });
 
+            StaticMappings.add("/ext", new ExtendStaticRepository());
             StaticMappings.add("/sa-token",new FileStaticRepository("/Users/noear/Downloads/"));
         });
 
