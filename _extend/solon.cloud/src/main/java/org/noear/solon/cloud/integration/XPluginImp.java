@@ -55,15 +55,18 @@ public class XPluginImp implements Plugin {
         }
 
         if (CloudClient.log() != null) {
+            //设置日志添加器
             AppenderManager.getInstance().register("cloud", new CloudLogAppender());
         }
 
         if (CloudClient.trace() == null) {
+            //设置默认的登录服务
             CloudManager.register(new CloudTraceServiceImpl());
         }
 
         //有些场景会排除掉nami
         if (Utils.loadClass("org.noear.nami.NamiManager") != null) {
+            //注册Nami跟踪过滤器
             NamiTraceFilter.register();
         }
     }
