@@ -4,7 +4,6 @@
 * 优化 本地服务配置发现机制
 * 调整 当配置文件不支持解析时，抛出异常
 
-
 #### 1.6.12
 * 修复 solon.boot.websocket 插件，带参数时无法正确路由的问题
 * 修复 solon.serialization.jackson 插件，body 为空时，会出错的问题
