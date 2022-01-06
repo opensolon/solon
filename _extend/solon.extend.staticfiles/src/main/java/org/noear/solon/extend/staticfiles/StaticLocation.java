@@ -16,8 +16,16 @@ public class StaticLocation {
      * */
     public final StaticRepository repository;
 
-    public StaticLocation(String pathPrefix, StaticRepository repository) {
+    /**
+     * 资源仓库是否包括路径前缀（默认为：true）
+     *
+     * @since 1.6
+     * */
+    public final boolean repositoryIncPrefix;
+
+    public StaticLocation(String pathPrefix, StaticRepository repository, boolean repositoryIncPrefix) {
         this.pathPrefix = pathPrefix;
         this.repository = repository;
+        this.repositoryIncPrefix = repositoryIncPrefix;
     }
 }

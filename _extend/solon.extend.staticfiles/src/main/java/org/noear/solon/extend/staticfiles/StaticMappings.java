@@ -12,23 +12,41 @@ import java.util.List;
  * */
 public class StaticMappings {
     static final List<StaticLocation> locationList = new ArrayList<>();
-    
+
     /**
      * 印射数量
-     * */
-    public static int count(){
+     */
+    public static int count() {
         return locationList.size();
     }
 
     /**
      * 添加印射关系
+     *
+     * @param pathPrefix 路径前缀
+     * @param repository 资源仓库
      */
     public static void add(String pathPrefix, StaticRepository repository) {
+        add(pathPrefix, true, repository);
+    }
+
+    /**
+     * 添加印射关系
+     *
+     * @param pathPrefix          路径前缀
+     * @param repositoryIncPrefix 资源仓库是否包括路径前缀
+     * @param repository          资源仓库
+     */
+    public static void add(String pathPrefix, boolean repositoryIncPrefix, StaticRepository repository) {
         if (pathPrefix.startsWith("/") == false) {
             pathPrefix = "/" + pathPrefix;
         }
 
-        locationList.add(new StaticLocation(pathPrefix, repository));
+        if (pathPrefix.endsWith("/") == false) {
+            pathPrefix = pathPrefix + "/";
+        }
+
+        locationList.add(new StaticLocation(pathPrefix, repository, repositoryIncPrefix));
     }
 
     /**
@@ -39,7 +57,11 @@ public class StaticMappings {
 
         for (StaticLocation m : locationList) {
             if (path.startsWith(m.pathPrefix)) {
-                rst = m.repository.find(path);
+                if (m.repositoryIncPrefix) {
+                    rst = m.repository.find(path);
+                } else {
+                    rst = m.repository.find(path.substring(m.pathPrefix.length()));
+                }
 
                 if (rst != null) {
                     return rst;
