@@ -27,6 +27,18 @@ public class CloudLoadBalanceFactory implements LoadBalance.Factory {
         return cached.get(cacheKey);
     }
 
+    /**
+     * 负载均衡数量
+     *
+     * @since 1.6
+     * */
+    public int count(){
+        return cached.size();
+    }
+
+    /**
+     * 负载均衡遍历
+     * */
     public void forEach(BiConsumer<String, CloudLoadBalance> action) {
         cached.forEach(action);
     }

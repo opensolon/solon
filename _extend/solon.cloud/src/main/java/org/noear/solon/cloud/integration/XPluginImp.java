@@ -46,6 +46,12 @@ public class XPluginImp implements Plugin {
 
             //设置负载工厂
             Bridge.upstreamFactorySet(CloudLoadBalanceFactory.instance);
+        }else{
+            //@since 1.6
+            if(CloudLoadBalanceFactory.instance.count() > 0){
+                //设置负载工厂
+                Bridge.upstreamFactorySet(CloudLoadBalanceFactory.instance);
+            }
         }
 
         if (CloudClient.log() != null) {
