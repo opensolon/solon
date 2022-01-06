@@ -52,7 +52,7 @@ public class PropsLoaderExt extends PropsLoader {
             return tmp;
         }
 
-        return null;
+        throw new RuntimeException("This profile is not supported: " + fileName);
     }
 
     @Override

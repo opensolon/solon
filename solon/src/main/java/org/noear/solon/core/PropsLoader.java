@@ -73,7 +73,7 @@ public class PropsLoader {
             return tmp;
         }
 
-        return null;
+        throw new RuntimeException("This profile is not supported: " + fileName);
     }
 
     /**
