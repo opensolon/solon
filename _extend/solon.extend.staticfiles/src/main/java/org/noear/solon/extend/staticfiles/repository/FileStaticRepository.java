@@ -3,7 +3,6 @@ package org.noear.solon.extend.staticfiles.repository;
 import org.noear.solon.extend.staticfiles.StaticRepository;
 
 import java.io.File;
-import java.net.URI;
 import java.net.URL;
 
 /**
@@ -19,7 +18,7 @@ public class FileStaticRepository implements StaticRepository {
      * 构建函数
      *
      * @param location 位置
-     * */
+     */
     public FileStaticRepository(String location) {
         setLocation(location);
     }
@@ -28,22 +27,10 @@ public class FileStaticRepository implements StaticRepository {
      * 设置位置
      *
      * @param location 位置
-     * */
+     */
     protected void setLocation(String location) {
         if (location == null) {
             return;
-        }
-
-        if (location.endsWith("/")) {
-            location = location.substring(0, location.length() - 1);
-        }
-
-        if (location.startsWith("file:/") == false) {
-            if (location.startsWith("/")) {
-                location = "file:" + location;
-            } else {
-                location = "file:/" + location;
-            }
         }
 
         this.location = location;
@@ -51,11 +38,10 @@ public class FileStaticRepository implements StaticRepository {
 
     @Override
     public URL find(String path) throws Exception {
-        URI uri = URI.create(location + path);
-        File file = new File(uri);
+        File file = new File(location, path);
 
         if (file.exists()) {
-            return uri.toURL();
+            return file.toURI().toURL();
         } else {
             return null;
         }
