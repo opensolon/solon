@@ -50,7 +50,7 @@ public class BeanWrap {
     private final Annotation[] annotations;
 
 
-    public BeanWrap(Class<?> clz){
+    public BeanWrap(Class<?> clz) {
         this(clz, null);
     }
 
@@ -75,15 +75,15 @@ public class BeanWrap {
         attrsSet(attrs);
     }
 
-    public Proxy proxy(){
+    public Proxy proxy() {
         return proxy;
     }
 
     //设置代理
-    public void proxySet(BeanWrap.Proxy proxy){
+    public void proxySet(BeanWrap.Proxy proxy) {
         this.proxy = proxy;
 
-        if(raw != null){
+        if (raw != null) {
             //如果_raw存在，则进行代理转换
             raw = proxy.getProxy(raw);
         }
@@ -91,12 +91,12 @@ public class BeanWrap {
 
     /**
      * 是否为单例
-     * */
-    public boolean singleton(){
+     */
+    public boolean singleton() {
         return singleton;
     }
 
-    public void singletonSet(boolean singleton){
+    public void singletonSet(boolean singleton) {
         this.singleton = singleton;
     }
 
@@ -124,26 +124,43 @@ public class BeanWrap {
     public <T> T raw() {
         return (T) raw;
     }
+
     protected void rawSet(Object raw) {
         this.raw = raw;
     }
-    /**
-     * bean 标签
-     * */
-    public String name(){ return name; }
-    protected void nameSet(String name){ this.name = name; }
 
     /**
      * bean 标签
-     * */
-    public String tag(){ return tag; }
-    protected void tagSet(String tag){ this.tag = tag; }
+     */
+    public String name() {
+        return name;
+    }
+
+    protected void nameSet(String name) {
+        this.name = name;
+    }
+
+    /**
+     * bean 标签
+     */
+    public String tag() {
+        return tag;
+    }
+
+    protected void tagSet(String tag) {
+        this.tag = tag;
+    }
 
     /**
      * bean 特性
-     * */
-    public String[] attrs(){ return attrs; }
-    protected void attrsSet(String[] attrs){ this.attrs = attrs; }
+     */
+    public String[] attrs() {
+        return attrs;
+    }
+
+    protected void attrsSet(String[] attrs) {
+        this.attrs = attrs;
+    }
 
     public String attrGet(String name) {
         if (attrs == null) {
@@ -166,18 +183,23 @@ public class BeanWrap {
 
     /**
      * bean 是否有类型化标识
-     * */
-    public boolean typed(){return typed;}
-    protected void typedSet(boolean typed){
-        this.typed = typed; }
+     */
+    public boolean typed() {
+        return typed;
+    }
+
+    protected void typedSet(boolean typed) {
+        this.typed = typed;
+    }
 
     /**
      * 注解
-     * */
+     */
     public Annotation[] annotations() {
         return annotations;
     }
-    public <T extends Annotation> T annotationGet(Class<T> annClz){
+
+    public <T extends Annotation> T annotationGet(Class<T> annClz) {
         return clz.getAnnotation(annClz);
     }
 
@@ -194,15 +216,20 @@ public class BeanWrap {
 
     /**
      * bean 初始化
-     * */
-    public void init(Object bean) {
+     */
+    protected void init(Object bean) {
         //a.注入
         Aop.inject(bean);
 
         //b.调用初始化函数
         if (clzInit != null) {
             if (clzInitDelay) {
-                Aop.beanOnloaded(IndexBuilder.buildIndex(bean.getClass()), () -> {
+                if (clzInitIndex == 0) {
+                    //自动生成顺序位
+                    clzInitIndex = IndexBuilder.buildIndex(clz);
+                }
+
+                Aop.beanOnloaded(clzInitIndex, () -> {
                     initInvokeDo(bean);
                 });
             } else {
@@ -212,7 +239,7 @@ public class BeanWrap {
     }
 
 
-	protected void initInvokeDo(Object bean) {
+    protected void initInvokeDo(Object bean) {
         try {
             clzInit.invoke(bean);
         } catch (RuntimeException ex) {
@@ -251,7 +278,7 @@ public class BeanWrap {
 
     /**
      * 尝试构建初始化函数
-     * */
+     */
     protected void tryBuildInit() {
         if (clzInit != null) {
             return;
@@ -284,12 +311,12 @@ public class BeanWrap {
      *
      * @author noear
      * @since 1.0
-     * */
+     */
     @FunctionalInterface
     public interface Proxy {
         /**
          * 获取代理
-         * */
+         */
         Object getProxy(Object bean);
     }
 }

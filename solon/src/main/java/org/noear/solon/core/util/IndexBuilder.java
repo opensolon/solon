@@ -12,7 +12,7 @@ import org.noear.solon.annotation.Inject;
  * 构建初始化的index
  * 
  * @author cym1102
- *
+ * @since 1.6
  */
 public class IndexBuilder {
 
@@ -21,7 +21,7 @@ public class IndexBuilder {
 
 	/**
 	 * 获取bean的初始化index
-	 * 
+	 *
 	 * @param clazz bean类
 	 * @return 顺序index
 	 */
@@ -31,7 +31,7 @@ public class IndexBuilder {
 
 	/**
 	 * 获取bean的初始化index
-	 * 
+	 *
 	 * @param clazz    bean类
 	 * @param stackTop 是否为查找栈顶
 	 * @return 顺序index
@@ -49,9 +49,8 @@ public class IndexBuilder {
 					}
 				}
 
-				throw new RuntimeException("发生依赖循环:" + link);
+				throw new RuntimeException("Dependency loops are not supported: " + link);
 			}
-
 		}
 
 		if (map.get(clazz.getName()) != null) {
@@ -87,7 +86,7 @@ public class IndexBuilder {
 
 	/**
 	 * 寻找依赖类
-	 * 
+	 *
 	 * @param clazz
 	 * @return 依赖类集合
 	 */
@@ -110,13 +109,14 @@ public class IndexBuilder {
 
 	/**
 	 * 检查是否循环依赖
-	 * 
+	 *
 	 * @param clazz
 	 * @return 是否循环依赖
 	 */
 	private static boolean isLoopRelate(Class<?> clazz, String topName) {
 		classStack.add(clazz.getName()); // 入栈
 
+		//寻找依赖类
 		List<Class<?>> clazzList = findRelateClass(clazz);
 
 		for (Class<?> clazzRelate : clazzList) {
@@ -135,5 +135,4 @@ public class IndexBuilder {
 		classStack.remove(clazz.getName()); // 出栈
 		return false;
 	}
-
 }
