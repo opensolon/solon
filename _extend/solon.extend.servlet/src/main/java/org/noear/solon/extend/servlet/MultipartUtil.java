@@ -37,20 +37,20 @@ class MultipartUtil {
         if (list == null) {
             list = new ArrayList<>();
             context._fileMap.put(part.getName(), list);
-
-            UploadedFile f1 = new UploadedFile();
-            f1.contentType = part.getContentType();
-            f1.contentSize = part.getSize();
-            f1.content = part.getInputStream(); //可以转成 ByteArrayInputStream
-
-            f1.name = part.getSubmittedFileName();
-            int idx = f1.name.lastIndexOf(".");
-            if (idx > 0) {
-                f1.extension = f1.name.substring(idx + 1);
-            }
-
-            list.add(f1);
         }
+
+        UploadedFile f1 = new UploadedFile();
+        f1.contentType = part.getContentType();
+        f1.contentSize = part.getSize();
+        f1.content = part.getInputStream(); //可以转成 ByteArrayInputStream
+
+        f1.name = part.getSubmittedFileName();
+        int idx = f1.name.lastIndexOf(".");
+        if (idx > 0) {
+            f1.extension = f1.name.substring(idx + 1);
+        }
+
+        list.add(f1);
     }
 
     private static boolean isField(Part filePart) {

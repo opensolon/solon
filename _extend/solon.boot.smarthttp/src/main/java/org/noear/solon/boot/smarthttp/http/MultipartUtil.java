@@ -31,19 +31,19 @@ class MultipartUtil {
         if(list == null){
             list = new ArrayList<>();
             context._fileMap.put(part.getName(), list);
-
-            UploadedFile f1 = new UploadedFile();
-            f1.contentType = part.getHeaders().get("Content-Type");
-            f1.content = read(part.getBody());
-            f1.contentSize = f1.content.available();
-            f1.name = part.getFilename();
-            int idx = f1.name.lastIndexOf(".");
-            if (idx > 0) {
-                f1.extension = f1.name.substring(idx + 1);
-            }
-
-            list.add(f1);
         }
+
+        UploadedFile f1 = new UploadedFile();
+        f1.contentType = part.getHeaders().get("Content-Type");
+        f1.content = read(part.getBody());
+        f1.contentSize = f1.content.available();
+        f1.name = part.getFilename();
+        int idx = f1.name.lastIndexOf(".");
+        if (idx > 0) {
+            f1.extension = f1.name.substring(idx + 1);
+        }
+
+        list.add(f1);
     }
 
     private static boolean isField(MultipartIterator.Part filePart){
