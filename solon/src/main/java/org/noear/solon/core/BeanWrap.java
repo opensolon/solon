@@ -1,13 +1,14 @@
 package org.noear.solon.core;
 
-import org.noear.solon.annotation.Init;
-import org.noear.solon.annotation.Singleton;
-import org.noear.solon.core.wrap.ClassWrap;
-
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.noear.solon.annotation.Init;
+import org.noear.solon.annotation.Singleton;
+import org.noear.solon.core.util.IndexBuilder;
+import org.noear.solon.core.wrap.ClassWrap;
 
 /**
  * Bean 包装
@@ -201,7 +202,7 @@ public class BeanWrap {
         //b.调用初始化函数
         if (clzInit != null) {
             if (clzInitDelay) {
-                Aop.beanOnloaded(clzInitIndex, () -> {
+                Aop.beanOnloaded(IndexBuilder.buildIndex(bean.getClass()), () -> {
                     initInvokeDo(bean);
                 });
             } else {
@@ -210,7 +211,8 @@ public class BeanWrap {
         }
     }
 
-    protected void initInvokeDo(Object bean) {
+
+	protected void initInvokeDo(Object bean) {
         try {
             clzInit.invoke(bean);
         } catch (RuntimeException ex) {
