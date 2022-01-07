@@ -26,8 +26,6 @@ public class BeanWrap {
     private Method clzInit;
     // bean clz init method delay
     private boolean clzInitDelay;
-    // bean clz init method index
-    private int clzInitIndex;
     // bean raw（初始实例）
     private Object raw;
     // 是否为单例
@@ -224,12 +222,7 @@ public class BeanWrap {
         //b.调用初始化函数
         if (clzInit != null) {
             if (clzInitDelay) {
-                if (clzInitIndex == 0) {
-                    //自动生成顺序位
-                    clzInitIndex = IndexBuilder.buildIndex(clz);
-                }
-
-                Aop.beanOnloaded(clzInitIndex, () -> {
+                Aop.beanOnloaded(IndexBuilder.buildIndex(clz), () -> {
                     initInvokeDo(bean);
                 });
             } else {
@@ -299,7 +292,6 @@ public class BeanWrap {
                     clzInit = m;
                     clzInit.setAccessible(true);
                     clzInitDelay = initAnno.delay();
-                    clzInitIndex = initAnno.index();
                 }
                 break;
             }

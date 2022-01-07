@@ -41,8 +41,4 @@ public @interface Init {
      * 延时执行
      * */
     boolean delay() default true;
-    /**
-     * 顺序
-     * */
-    int index() default 0;
 }

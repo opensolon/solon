@@ -16,7 +16,7 @@ public class DemoService {
     @Inject("${xxx.user-name:}")
     String userName;
 
-    @Init(index = 9)
+    @Init
     private void init(){
         System.out.println(System.currentTimeMillis());
 

@@ -31,7 +31,7 @@ public class EntityConfig {
     }
 
 
-    @Init(index = 5)
+    @Init
     public void init(){
         System.out.println("我是5号");
     }

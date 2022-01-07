@@ -18,7 +18,7 @@ public class AppFilterImpl implements Filter {
         System.out.println("我是：AppFilterImpl");
     }
 
-    @Init(index = 6)
+    @Init
     public void init(){
         System.out.println("我是6号");
     }
