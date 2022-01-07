@@ -10,6 +10,7 @@ import org.noear.solon.annotation.Inject;
 
 /**
  * 构建初始化的index
+ *
  * 
  * @author cym1102
  * @since 1.6
