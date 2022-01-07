@@ -65,21 +65,21 @@ public class IndexBuilder {
 				return 0;
 			}
 
-			// 找到依赖类中最小的index
-			Integer miniIndex = null;
+			// 找到依赖类中最大的index
+			Integer maxIndex = null;
 			for (Class<?> clazzRelate : clazzList) {
 				Integer index = buildIndex(clazzRelate, false);
 
-				if (miniIndex == null) {
-					miniIndex = index;
-				} else if (miniIndex < index) {
-					miniIndex = index;
+				if (maxIndex == null) {
+					maxIndex = index;
+				} else if (maxIndex < index) {
+					maxIndex = index;
 				}
 			}
 
-			// 返回miniIndex + 1
-			map.put(clazz.getName(), miniIndex + 1);
-			return miniIndex + 1;
+			// 返回maxIndex + 1
+			map.put(clazz.getName(), maxIndex + 1);
+			return maxIndex + 1;
 		}
 
 	}
