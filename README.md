@@ -144,5 +144,5 @@ public class App implements HelloService{
 ## 官网
 
 * 官网地址：[https://solon.noear.org](https://solon.noear.org)
-* 官网配置演示：[https://gitee.com/noear/solon-examples](https://gitee.com/noear/solon-examples)
+* 官网配套演示：[https://gitee.com/noear/solon-examples](https://gitee.com/noear/solon-examples)
 
