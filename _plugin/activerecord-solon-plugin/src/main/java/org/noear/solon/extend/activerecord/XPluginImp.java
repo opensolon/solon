@@ -44,17 +44,9 @@ public class XPluginImp implements Plugin {
     }
 
 
-    private Set<DataSource> dsCached = new HashSet<>();
-
     private void initActiveRecord(DataSource ds, String name) {
         if (ds == null) {
             return;
-        }
-
-        if (dsCached.contains(ds)) {
-            return;
-        } else {
-            dsCached.add(ds);
         }
 
         if (Utils.isEmpty(name)) {
