@@ -36,7 +36,7 @@ public abstract class BeanContainer {
      * bean包装库
      */
     protected final Map<Class<?>, BeanWrap> beanWraps = new ConcurrentHashMap<>();
-    protected final Set<BeanWrap> beanWrapSet = new ConcurrentSkipListSet<>();
+    protected final Map<BeanWrap, BeanWrap> beanWrapSet = new ConcurrentHashMap<>();
     /**
      * bean库
      */
@@ -192,7 +192,7 @@ public abstract class BeanContainer {
             //
             if (beanWraps.containsKey(type) == false) {
                 beanWraps.put(type, wrap);
-                beanWrapSet.add(wrap);
+                beanWrapSet.put(wrap, wrap);
                 beanNotice(type, wrap);
             }
         }
@@ -445,7 +445,7 @@ public abstract class BeanContainer {
     @Note("遍历bean包装库")
     public void beanForeach(Consumer<BeanWrap> action) {
         //相关于 beanWraps ，不会出现重复的
-        beanWrapSet.forEach(bw -> {
+        beanWrapSet.forEach((k, bw) -> {
             action.accept(bw);
         });
     }

@@ -14,10 +14,8 @@ import org.noear.solon.core.util.ScanUtil;
 import org.noear.solon.extend.activerecord.annotation.Table;
 
 import javax.sql.DataSource;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * @author noear
