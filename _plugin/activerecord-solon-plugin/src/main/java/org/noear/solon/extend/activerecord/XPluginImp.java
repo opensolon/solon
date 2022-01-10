@@ -14,8 +14,10 @@ import org.noear.solon.core.util.ScanUtil;
 import org.noear.solon.extend.activerecord.annotation.Table;
 
 import javax.sql.DataSource;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author noear
@@ -34,16 +36,25 @@ public class XPluginImp implements Plugin {
 
         Aop.beanOnloaded(() -> {
             Aop.beanForeach(bw -> {
-                if (bw.raw() instanceof DataSource) {
+                if (DataSource.class.isAssignableFrom(bw.clz())) {
                     initActiveRecord(bw.raw(), bw.name());
                 }
             });
         });
     }
 
+
+    private Set<DataSource> dsCached = new HashSet<>();
+
     private void initActiveRecord(DataSource ds, String name) {
         if (ds == null) {
             return;
+        }
+
+        if (dsCached.contains(ds)) {
+            return;
+        } else {
+            dsCached.add(ds);
         }
 
         if (Utils.isEmpty(name)) {
