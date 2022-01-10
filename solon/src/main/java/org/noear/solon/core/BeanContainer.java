@@ -445,7 +445,7 @@ public abstract class BeanContainer {
     @Note("遍历bean包装库")
     public void beanForeach(Consumer<BeanWrap> action) {
         //相关于 beanWraps ，不会出现重复的
-        beanWrapSet.forEach((k, bw) -> {
+        beanWrapSet.values().forEach(bw -> {
             action.accept(bw);
         });
     }
