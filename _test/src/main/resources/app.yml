@@ -13,7 +13,9 @@ paasword: 1234
 
 testname: xxx
 
-server.port: 8080
+server.port: 8081
+
+solon.env: test
 
 solon.app:
   name: testapp

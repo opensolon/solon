@@ -194,7 +194,7 @@ public class Instance implements Serializable {
         n1.protocol(signal.protocol());
 
         n1.metaPutAll(Solon.cfg().argx());
-        n1.metaRemove("server.port");
+        n1.metaRemove("server.port"); //移除端口元信息
         n1.metaPut("protocol", signal.protocol());
 
         n1.tagsAdd("solon");
