@@ -14,6 +14,7 @@ import org.noear.solon.core.util.ConvertUtil;
 import java.lang.annotation.Annotation;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.function.BiConsumer;
 import java.util.function.BiPredicate;
 import java.util.function.Consumer;
@@ -35,6 +36,7 @@ public abstract class BeanContainer {
      * bean包装库
      */
     protected final Map<Class<?>, BeanWrap> beanWraps = new ConcurrentHashMap<>();
+    protected final Set<BeanWrap> beanWrapSet = new ConcurrentSkipListSet<>();
     /**
      * bean库
      */
@@ -190,6 +192,7 @@ public abstract class BeanContainer {
             //
             if (beanWraps.containsKey(type) == false) {
                 beanWraps.put(type, wrap);
+                beanWrapSet.add(wrap);
                 beanNotice(type, wrap);
             }
         }
@@ -441,7 +444,8 @@ public abstract class BeanContainer {
      */
     @Note("遍历bean包装库")
     public void beanForeach(Consumer<BeanWrap> action) {
-        beanWraps.forEach((k, bw) -> {
+        //相关于 beanWraps ，不会出现重复的
+        beanWrapSet.forEach(bw -> {
             action.accept(bw);
         });
     }

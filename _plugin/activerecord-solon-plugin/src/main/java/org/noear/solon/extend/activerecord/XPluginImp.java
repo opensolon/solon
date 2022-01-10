@@ -36,13 +36,12 @@ public class XPluginImp implements Plugin {
 
         Aop.beanOnloaded(() -> {
             Aop.beanForeach(bw -> {
-                if (DataSource.class.isAssignableFrom(bw.clz())) {
+                if (bw.raw() instanceof DataSource) {
                     initActiveRecord(bw.raw(), bw.name());
                 }
             });
         });
     }
-
 
     private void initActiveRecord(DataSource ds, String name) {
         if (ds == null) {
