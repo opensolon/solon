@@ -1,5 +1,6 @@
 package org.noear.solon.extend.impl;
 
+import org.noear.solon.Solon;
 import org.noear.solon.core.PropsLoader;
 import org.noear.solon.core.util.PrintUtil;
 import org.noear.solon.extend.properties.yaml.PropertiesJson;
@@ -40,7 +41,7 @@ public class PropsLoaderExt extends PropsLoader {
             PrintUtil.info(url);
 
             Properties tmp = new Properties();
-            tmp.load(new InputStreamReader(url.openStream()));
+            tmp.load(new InputStreamReader(url.openStream(), Solon.encoding()));
             return tmp;
         }
 
@@ -48,7 +49,7 @@ public class PropsLoaderExt extends PropsLoader {
             PrintUtil.info(url);
 
             PropertiesYaml tmp = new PropertiesYaml();
-            tmp.loadYml(new InputStreamReader(url.openStream()));
+            tmp.loadYml(new InputStreamReader(url.openStream(), Solon.encoding()));
             return tmp;
         }
 
