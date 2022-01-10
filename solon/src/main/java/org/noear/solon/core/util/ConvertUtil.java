@@ -1,7 +1,5 @@
 package org.noear.solon.core.util;
 
-import org.noear.solon.Utils;
-import org.noear.solon.annotation.Param;
 import org.noear.solon.core.handle.Context;
 
 import java.lang.reflect.AnnotatedElement;
@@ -9,7 +7,6 @@ import java.lang.reflect.Array;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -45,7 +42,7 @@ public class ConvertUtil {
 
         if (rst == null && Date.class == type) {
             try {
-                rst = DateUtil.parse(val);
+                rst = DateAnalyzer.getGlobal().parse(val);
             } catch (ParseException e) {
                 throw new RuntimeException(e);
             }
@@ -100,7 +97,7 @@ public class ConvertUtil {
 
         if (Date.class == (type)) {
             try {
-                return DateUtil.parse(val);
+                return DateAnalyzer.getGlobal().parse(val);
             } catch (RuntimeException ex) {
                 throw ex;
             } catch (Throwable ex) {

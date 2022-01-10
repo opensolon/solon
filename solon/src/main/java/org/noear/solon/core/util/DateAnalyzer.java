@@ -13,7 +13,7 @@ import java.util.TimeZone;
  * @author noear
  * @since 1.5
  */
-public class DateUtil {
+public class DateAnalyzer {
     public static final String FORMAT_29 = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX";
     public static final String FORMAT_24_ISO08601 = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
     public static final String FORMAT_23_a = "yyyy-MM-dd HH:mm:ss,SSS";
@@ -35,7 +35,27 @@ public class DateUtil {
     public static final String FORMAT_8_a = "HH:mm:ss";
     public static final String FORMAT_8_b = "yyyyMMdd";
 
-    public static Date parse(String val) throws ParseException {
+
+    //
+    // 可以进行替换扩展
+    //
+    private static DateAnalyzer global = new DateAnalyzer();
+
+    public static void setGlobal(DateAnalyzer instance) {
+        if (instance != null) {
+            global = instance;
+        }
+    }
+
+    public static DateAnalyzer getGlobal() {
+        return global;
+    }
+
+
+    /**
+     * 解析
+     */
+    public Date parse(String val) throws ParseException {
         final int len = val.length();
         String ft = null;
 
