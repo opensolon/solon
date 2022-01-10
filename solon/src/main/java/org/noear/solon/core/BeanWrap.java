@@ -4,6 +4,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import org.noear.solon.annotation.Init;
 import org.noear.solon.annotation.Singleton;
@@ -310,5 +311,18 @@ public class BeanWrap {
          * 获取代理
          */
         Object getProxy(Object bean);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof BeanWrap)) return false;
+        BeanWrap beanWrap = (BeanWrap) o;
+        return clz.equals(beanWrap.clz);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(clz);
     }
 }
