@@ -36,7 +36,7 @@ public abstract class BeanContainer {
      * bean包装库
      */
     protected final Map<Class<?>, BeanWrap> beanWraps = new ConcurrentHashMap<>();
-    protected final Map<BeanWrap, BeanWrap> beanWrapSet = new ConcurrentHashMap<>();
+    private final Map<BeanWrap, BeanWrap> beanWrapSet = new ConcurrentHashMap<>();
     /**
      * bean库
      */
