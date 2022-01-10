@@ -24,6 +24,9 @@ public class DateUtil {
     public static final String FORMAT_19_b = "yyyy/MM/dd HH:mm:ss";
     public static final String FORMAT_19_c = "yyyy.MM.dd HH:mm:ss";
     public static final String FORMAT_17 = "yyyyMMddHHmmssSSS";
+    public static final String FORMAT_16_a = "yyyy-MM-dd HH:mm";
+    public static final String FORMAT_16_b = "yyyy/MM/dd HH:mm";
+    public static final String FORMAT_16_c = "yyyy.MM.dd HH:mm";
     public static final String FORMAT_14 = "yyyyMMddHHmmss";
     public static final String FORMAT_10_a = "yyyy-MM-dd";
     public static final String FORMAT_10_b = "yyyy/MM/dd";
@@ -68,6 +71,15 @@ public class DateUtil {
             }
         } else if (len == 17) {
             ft = FORMAT_17;
+        } else if (len == 16) {
+            char c1 = val.charAt(4);
+            if (c1 == '/') {
+                ft = FORMAT_16_b;
+            } else if (c1 == '.') {
+                ft = FORMAT_16_c;
+            } else {
+                ft = FORMAT_16_a;
+            }
         } else if (len == 14) {
             ft = FORMAT_14;
         } else if (len == 10) {
