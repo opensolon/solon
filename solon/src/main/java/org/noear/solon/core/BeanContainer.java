@@ -13,8 +13,6 @@ import org.noear.solon.core.util.ConvertUtil;
 
 import java.lang.annotation.Annotation;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.function.BiConsumer;
 import java.util.function.BiPredicate;
 import java.util.function.Consumer;
@@ -35,16 +33,16 @@ public abstract class BeanContainer {
     /**
      * bean包装库
      */
-    protected final Map<Class<?>, BeanWrap> beanWraps = new ConcurrentHashMap<>();
-    private final Map<BeanWrap, BeanWrap> beanWrapSet = new ConcurrentHashMap<>();
+    private final Map<Class<?>, BeanWrap> beanWraps = new HashMap<>();
+    private final Set<BeanWrap> beanWrapSet = new HashSet<>();
     /**
      * bean库
      */
-    protected final Map<String, BeanWrap> beans = new ConcurrentHashMap<>();
+    private final Map<String, BeanWrap> beans = new HashMap<>();
     /**
      * clz mapping
      */
-    protected final Map<Class<?>, Class<?>> clzMapping = new ConcurrentHashMap<>();
+    private final Map<Class<?>, Class<?>> clzMapping = new HashMap<>();
 
     //启动时写入
     /**
@@ -171,7 +169,7 @@ public abstract class BeanContainer {
      *
      * @param wrap 如果raw为null，拒绝注册
      */
-    public void putWrap(String name, BeanWrap wrap) {
+    public synchronized void putWrap(String name, BeanWrap wrap) {
         if (Utils.isEmpty(name) == false && wrap.raw() != null) {
             if (beans.containsKey(name) == false) {
                 beans.put(name, wrap);
@@ -185,14 +183,14 @@ public abstract class BeanContainer {
      *
      * @param wrap 如果raw为null，拒绝注册
      */
-    public void putWrap(Class<?> type, BeanWrap wrap) {
+    public synchronized void putWrap(Class<?> type, BeanWrap wrap) {
         if (type != null && wrap.raw() != null) {
             //
             //wrap.raw()==null, 说明它是接口；等它完成代理再注册；以@Db为例，可以看一下
             //
             if (beanWraps.containsKey(type) == false) {
                 beanWraps.put(type, wrap);
-                beanWrapSet.put(wrap, wrap);
+                beanWrapSet.add(wrap);
                 beanNotice(type, wrap);
             }
         }
@@ -445,7 +443,7 @@ public abstract class BeanContainer {
     @Note("遍历bean包装库")
     public void beanForeach(Consumer<BeanWrap> action) {
         //相关于 beanWraps ，不会出现重复的
-        beanWrapSet.values().forEach(bw -> {
+        beanWrapSet.forEach(bw -> {
             action.accept(bw);
         });
     }
