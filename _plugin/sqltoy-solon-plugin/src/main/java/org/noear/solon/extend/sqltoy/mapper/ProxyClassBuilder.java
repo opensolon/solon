@@ -180,7 +180,7 @@ public class ProxyClassBuilder {
                                 source.append("_queryMap.put(\""+k+"\","+k+");");
                             }
                         }
-                        source.append(" QueryExecutor queryExecutor = new QueryExecutor(_sql, queryMap);");
+                        source.append(" QueryExecutor queryExecutor = new QueryExecutor(_sql, _queryMap);");
                         source.append(" queryExecutor.resultType("+resultType.getName()+".class);");
                         source.append(" Page _result = dao.findPageByQuery("+pageParam+", queryExecutor).getPageResult();");
                         if(primitive){
@@ -216,7 +216,7 @@ public class ProxyClassBuilder {
                                 source.append("_queryMap.put(\""+k+"\","+k+");");
                             }
                         }
-                        source.append("QueryExecutor queryExecutor = new QueryExecutor(_sql, queryMap).resultType("+resultType.getName()+".class);");
+                        source.append("QueryExecutor queryExecutor = new QueryExecutor(_sql, _queryMap).resultType("+resultType.getName()+".class);");
                         if(primitive){
                             source.append("List<Map> _result = dao.findByQuery(queryExecutor).getRows();");
                             source.append("return _result.stream().map(it -> it.values().stream().findFirst().get()).collect(Collectors.toList());");
@@ -237,9 +237,9 @@ public class ProxyClassBuilder {
                         }
                         source.append(" List _result = dao.findByQuery(queryExecutor).getRows();");
                         source.append(" if (_result == null || _result.size() == 0){return null;}");
-                        source.append("Object _target = result.get(0);");
+                        source.append("Object _target = _result.get(0);");
                         if(isPrimitive){
-                            source.append("return ((Map) _target).values().stream().findFirst().get();");
+                            source.append("return ("+retType.getName()+")((Map) _target).values().stream().findFirst().get();");
                         }else{
                             source.append("return ("+retType.getName()+")_target;");
                         }
@@ -261,8 +261,9 @@ public class ProxyClassBuilder {
                         }
                         source.append("List _result = dao.findByQuery(queryExecutor).getRows();");
                         source.append("if (_result == null || _result.size() == 0) {return null;}");
+                        source.append("Object _target = _result.get(0);");
                         if(isPrimitive){
-                            source.append("return ((Map) _target).values().stream().findFirst().get()");
+                            source.append("return ("+retType.getName()+")((Map) _target).values().stream().findFirst().get();");
                         }else{
                             source.append("return ("+retType.getName()+")_target;");
                         }
@@ -275,7 +276,7 @@ public class ProxyClassBuilder {
                 if (_objIdx > -1) {
                     int objIdx = _objIdx;
                     String qeName=methodParameters[objIdx].getName();
-                    source.append("return dao.executeSql(_sql,"+qeName+")");
+                    source.append("return dao.executeSql(_sql,"+qeName+");");
                 } else {
                     int mapParamIdx = _mapParamIdx;
                     String mp=mapParamIdx>-1?methodParameters[mapParamIdx].getName():"new HashMap<>();";
