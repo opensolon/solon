@@ -1,14 +1,12 @@
 package org.noear.solon.extend.sqltoy.mapper;
 
 import com.itranswarp.compiler.JavaStringCompiler;
-import org.noear.solon.core.Aop;
 import org.noear.solon.extend.sqltoy.annotation.Param;
 import org.noear.solon.extend.sqltoy.annotation.Sql;
 import org.sagacity.sqltoy.SqlToyContext;
 import org.sagacity.sqltoy.config.model.SqlToyConfig;
 import org.sagacity.sqltoy.config.model.SqlType;
 import org.sagacity.sqltoy.model.Page;
-import org.sagacity.sqltoy.model.QueryExecutor;
 import org.sagacity.sqltoy.utils.StringUtil;
 
 import java.io.IOException;
