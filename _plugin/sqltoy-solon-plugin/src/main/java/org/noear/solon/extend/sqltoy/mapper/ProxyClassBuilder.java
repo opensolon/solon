@@ -35,7 +35,8 @@ public class ProxyClassBuilder {
     private SqlToyContext context;
     public ProxyClassBuilder(SqlToyContext context,Class type){
         this.type=type;
-        this.className=type.getSimpleName()+"Impl"+ type.hashCode();
+        String name=type.getName().replaceAll("\\.","_")+"Impl";
+        this.className=StringUtil.toHumpStr(name,true,true);
         this.context=context;
         buildSource();
     }
