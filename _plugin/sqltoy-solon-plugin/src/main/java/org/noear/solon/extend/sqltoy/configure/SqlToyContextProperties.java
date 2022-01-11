@@ -139,6 +139,27 @@ public class SqlToyContextProperties implements Serializable {
      */
     private String connectionFactory;
 
+
+    /**
+     * 安全私钥
+     */
+    private String securePrivateKey;
+
+    /**
+     * 安全公钥
+     */
+    private String securePublicKey;
+
+    /**
+     * 字段安全加密处理器定义(开发者可以自行扩展，sqltoy默认提供了RSA的实现)
+     */
+    private String fieldsSecureProvider;
+
+    /**
+     * 字段展示安全脱敏处理器(sqltoy默认提供了实现，此处提供不满足的情况下的自行扩展)
+     */
+    private String desensitizeProvider;
+
     /**
      * @return the sqlResourcesDir
      */
@@ -432,5 +453,35 @@ public class SqlToyContextProperties implements Serializable {
         this.breakWhenSqlRepeat = breakWhenSqlRepeat;
     }
 
+    public String getSecurePrivateKey() {
+        return securePrivateKey;
+    }
 
+    public void setSecurePrivateKey(String securePrivateKey) {
+        this.securePrivateKey = securePrivateKey;
+    }
+
+    public String getSecurePublicKey() {
+        return securePublicKey;
+    }
+
+    public void setSecurePublicKey(String securePublicKey) {
+        this.securePublicKey = securePublicKey;
+    }
+
+    public String getFieldsSecureProvider() {
+        return fieldsSecureProvider;
+    }
+
+    public void setFieldsSecureProvider(String fieldsSecureProvider) {
+        this.fieldsSecureProvider = fieldsSecureProvider;
+    }
+
+    public String getDesensitizeProvider() {
+        return desensitizeProvider;
+    }
+
+    public void setDesensitizeProvider(String desensitizeProvider) {
+        this.desensitizeProvider = desensitizeProvider;
+    }
 }
