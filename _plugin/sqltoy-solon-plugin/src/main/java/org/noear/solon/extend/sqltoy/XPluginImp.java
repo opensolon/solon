@@ -4,21 +4,19 @@ import org.noear.solon.SolonApp;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.data.cache.CacheService;
-import org.noear.solon.extend.sqltoy.annotation.Mapper;
+import org.noear.solon.extend.sqltoy.annotation.Db;
 import org.noear.solon.extend.sqltoy.configure.Elastic;
 import org.noear.solon.extend.sqltoy.configure.ElasticConfig;
 import org.noear.solon.extend.sqltoy.configure.SqlToyContextProperties;
-import org.noear.solon.extend.sqltoy.configure.SqltoyConfiguration;
 import org.noear.solon.extend.sqltoy.translate.SolonTranslateCacheManager;
 import org.sagacity.sqltoy.SqlToyContext;
 import org.sagacity.sqltoy.config.model.ElasticEndpoint;
-import org.sagacity.sqltoy.dao.SqlToyLazyDao;
-import org.sagacity.sqltoy.dao.impl.SqlToyLazyDaoImpl;
 import org.sagacity.sqltoy.plugins.IUnifyFieldsHandler;
 import org.sagacity.sqltoy.plugins.TypeHandler;
 import org.sagacity.sqltoy.plugins.datasource.ConnectionFactory;
 import org.sagacity.sqltoy.plugins.datasource.DataSourceSelector;
-import org.sagacity.sqltoy.service.SqlToyCRUDService;
+import org.sagacity.sqltoy.plugins.secure.DesensitizeProvider;
+import org.sagacity.sqltoy.plugins.secure.FieldsSecureProvider;
 import org.sagacity.sqltoy.translate.cache.TranslateCacheManager;
 import org.sagacity.sqltoy.utils.StringUtil;
 import org.springframework.context.ApplicationContext;
@@ -38,64 +36,56 @@ import static java.lang.System.err;
 public class XPluginImp implements Plugin {
     @Override
     public void start(SolonApp app) {
-        app.beanScan(SqltoyConfiguration.class);
-
         ApplicationContext applicationContext = new ApplicationContext() {
         };
-
         SqlToyContextProperties properties = app.cfg().getBean("sqltoy", SqlToyContextProperties.class);
-
+        if (properties == null) {
+            properties = new SqlToyContextProperties();
+        }
         if (app.cfg().isDebugMode()) {
             properties.setDebug(true);
         }
-
         try {
-
-            final SqlToyContext sqlToyContext = sqlToyContext(properties);
-            sqlToyContext.setApplicationContext(applicationContext);
-
-            if("solon".equals(properties.getCacheType())||properties.getCacheType()==null){
-                Aop.getAsyn(CacheService.class,bw->{
+            final SqlToyContext sqlToyContext = sqlToyContext(properties, applicationContext);
+            if ("solon".equals(properties.getCacheType()) || properties.getCacheType() == null) {
+                Aop.getAsyn(CacheService.class, bw -> {
                     sqlToyContext.setTranslateCacheManager(new SolonTranslateCacheManager(bw.get()));
                     try {
-                        sqlToyContext.initialize();
+                        DbManager.setContext(sqlToyContext);
+                        initSqlToy(sqlToyContext);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 });
-            }else{
-                sqlToyContext.initialize();
+            } else {
+                DbManager.setContext(sqlToyContext);
+                initSqlToy(sqlToyContext);
             }
-
-            Aop.wrapAndPut(SqlToyContext.class, sqlToyContext);
-
-            SqlToyLazyDaoImpl sqlToyLazyDao = new SqlToyLazyDaoImpl();
-            sqlToyLazyDao.setSqlToyContext(sqlToyContext);
-            Aop.wrapAndPut(SqlToyLazyDao.class, sqlToyLazyDao);
-
-            //SqlToyCRUDService
-            SqlToyCRUDService service = Aop.getOrNew(SqlToyCRUDServiceForSolon.class);
-            Aop.wrapAndPut(SqlToyCRUDService.class, service);
-
-            Aop.context().beanBuilderAdd(Mapper.class, new MapperCreator());
+            Aop.context().beanInjectorAdd(Db.class, new DbInjector());
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
+    private void initSqlToy(SqlToyContext sqlToyContext) throws Exception {
+        sqlToyContext.initialize();
+        Aop.wrapAndPut(SqlToyContext.class, sqlToyContext);
+    }
     @Override
     public void prestop() throws Throwable {
         SqlToyContext sqlToyContext = Aop.get(SqlToyContext.class);
         sqlToyContext.destroy();
     }
 
-    public SqlToyContext sqlToyContext(SqlToyContextProperties properties) throws Exception {
-        // 用辅助配置来校验是否配置错误
+    public SqlToyContext sqlToyContext(SqlToyContextProperties properties, ApplicationContext applicationContext) throws Exception {
+
         if (StringUtil.isBlank(properties.getSqlResourcesDir())) {
-            throw new IllegalArgumentException(
-                    "请检查sqltoy配置!\n范例: sqltoy.sqlResourcesDir=classpath:com/sagframe/modules");
+            properties.setSqlResourcesDir("classpath:sqltoy");
+            // throw new IllegalArgumentException(
+            //        "请检查sqltoy配置,是sqltoy作为前缀,而不是spring.sqltoy!\n正确范例: sqltoy.sqlResourcesDir=classpath:com/sagframe/modules");
         }
         SqlToyContext sqlToyContext = new SqlToyContext();
+
+
 
         // 当发现有重复sqlId时是否抛出异常，终止程序执行
         sqlToyContext.setBreakWhenSqlRepeat(properties.isBreakWhenSqlRepeat());
@@ -180,6 +170,10 @@ public class XPluginImp implements Plugin {
 
         // update 2021-01-18 设置缓存类别,默认ehcache
         sqlToyContext.setCacheType(properties.getCacheType());
+
+        sqlToyContext.setSecurePrivateKey(properties.getSecurePrivateKey());
+        sqlToyContext.setSecurePublicKey(properties.getSecurePublicKey());
+
         // 设置公共统一属性的处理器
         String unfiyHandler = properties.getUnifyFieldsHandler();
         if (StringUtil.isNotBlank(unfiyHandler)) {
@@ -200,9 +194,9 @@ public class XPluginImp implements Plugin {
                 }
             } catch (ClassNotFoundException cne) {
                 err.println("------------------- 错误提示 ------------------------------------------- ");
-                err.println("spring.sqltoy.unifyFieldsHandler=" + unfiyHandler + " 对应类不存在,错误原因:");
+                err.println("sqltoy.unifyFieldsHandler=" + unfiyHandler + " 对应类不存在,错误原因:");
                 err.println("--1.您可能直接copy了参照项目的配置文件,但没有将具体的类也同步copy过来!");
-                err.println("--2.如您并不需要此功能，请将配置文件中注释掉spring.sqltoy.unifyFieldsHandler");
+                err.println("--2.如您并不需要此功能，请将配置文件中注释掉sqltoy.unifyFieldsHandler");
                 err.println("------------------------------------------------");
                 cne.printStackTrace();
                 throw cne;
@@ -275,8 +269,7 @@ public class XPluginImp implements Plugin {
         String dataSourceSelector = properties.getDataSourceSelector();
         if (StringUtil.isNotBlank(dataSourceSelector)) {
             if (Aop.has(dataSourceSelector)) {
-                sqlToyContext
-                        .setDataSourceSelector(Aop.get(dataSourceSelector));
+                sqlToyContext.setDataSourceSelector(Aop.get(dataSourceSelector));
             } // 包名和类名称
             else if (dataSourceSelector.contains(".")) {
                 sqlToyContext.setDataSourceSelector(
@@ -295,6 +288,32 @@ public class XPluginImp implements Plugin {
                         (ConnectionFactory) Class.forName(connectionFactory).getDeclaredConstructor().newInstance());
             }
         }
+        // 自定义字段安全实现器
+        String fieldsSecureProvider = properties.getFieldsSecureProvider();
+        if (StringUtil.isNotBlank(fieldsSecureProvider)) {
+            if (applicationContext.containsBean(fieldsSecureProvider)) {
+                sqlToyContext.setFieldsSecureProvider(
+                        (FieldsSecureProvider) applicationContext.getBean(fieldsSecureProvider));
+            } // 包名和类名称
+            else if (fieldsSecureProvider.contains(".")) {
+                sqlToyContext.setFieldsSecureProvider((FieldsSecureProvider) Class.forName(fieldsSecureProvider)
+                        .getDeclaredConstructor().newInstance());
+            }
+        }
+
+        // 自定义字段脱敏处理器
+        String desensitizeProvider = properties.getDesensitizeProvider();
+        if (StringUtil.isNotBlank(desensitizeProvider)) {
+            if (applicationContext.containsBean(desensitizeProvider)) {
+                sqlToyContext
+                        .setDesensitizeProvider((DesensitizeProvider) applicationContext.getBean(desensitizeProvider));
+            } // 包名和类名称
+            else if (desensitizeProvider.contains(".")) {
+                sqlToyContext.setDesensitizeProvider((DesensitizeProvider) Class.forName(desensitizeProvider)
+                        .getDeclaredConstructor().newInstance());
+            }
+        }
+        sqlToyContext.setApplicationContext(applicationContext);
         return sqlToyContext;
     }
 }
