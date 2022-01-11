@@ -4,9 +4,7 @@
 
 
 在 jdk9 之后，如果出现序列化权限问题。可添加jvm参数：
-
 --add-opens java.base/java.lang=ALL-UNNAMED
 
-例：
-
+示例：
 java --add-opens java.base/java.lang=ALL-UNNAMED -jar xxx.jar
