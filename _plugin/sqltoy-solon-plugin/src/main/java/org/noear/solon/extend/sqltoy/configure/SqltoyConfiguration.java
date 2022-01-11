@@ -15,6 +15,8 @@ import org.sagacity.sqltoy.plugins.IUnifyFieldsHandler;
 import org.sagacity.sqltoy.plugins.TypeHandler;
 import org.sagacity.sqltoy.plugins.datasource.ConnectionFactory;
 import org.sagacity.sqltoy.plugins.datasource.DataSourceSelector;
+import org.sagacity.sqltoy.plugins.secure.DesensitizeProvider;
+import org.sagacity.sqltoy.plugins.secure.FieldsSecureProvider;
 import org.sagacity.sqltoy.service.SqlToyCRUDService;
 import org.sagacity.sqltoy.translate.cache.TranslateCacheManager;
 import org.sagacity.sqltoy.utils.StringUtil;
@@ -63,7 +65,7 @@ public class SqltoyConfiguration {
         // 用辅助配置来校验是否配置错误
         if (StringUtil.isBlank(properties.getSqlResourcesDir()) && StringUtil.isNotBlank(sqlResourcesDir)) {
             throw new IllegalArgumentException(
-                    "请检查sqltoy配置,是spring.sqltoy作为前缀,而不是sqltoy!\n正确范例: spring.sqltoy.sqlResourcesDir=classpath:com/sagframe/modules");
+                    "请检查sqltoy配置,是sqltoy作为前缀,而不是spring.sqltoy!\n正确范例: sqltoy.sqlResourcesDir=classpath:com/sagframe/modules");
         }
         SqlToyContext sqlToyContext = new SqlToyContext();
         // 当发现有重复sqlId时是否抛出异常，终止程序执行
@@ -147,8 +149,12 @@ public class SqltoyConfiguration {
         // sqltoy内置参数默认值修改
         sqlToyContext.setDialectConfig(properties.getDialectConfig());
 
-        // update 2021-01-18 设置缓存类别,默认ehcache
+        // update 2021-01-18 设置缓存类别,默认solonCache
         sqlToyContext.setCacheType(properties.getCacheType());
+
+        sqlToyContext.setSecurePrivateKey(properties.getSecurePrivateKey());
+        sqlToyContext.setSecurePublicKey(properties.getSecurePublicKey());
+
         // 设置公共统一属性的处理器
         String unfiyHandler = properties.getUnifyFieldsHandler();
         if (StringUtil.isNotBlank(unfiyHandler)) {
@@ -169,9 +175,9 @@ public class SqltoyConfiguration {
                 }
             } catch (ClassNotFoundException cne) {
                 err.println("------------------- 错误提示 ------------------------------------------- ");
-                err.println("spring.sqltoy.unifyFieldsHandler=" + unfiyHandler + " 对应类不存在,错误原因:");
+                err.println("sqltoy.unifyFieldsHandler=" + unfiyHandler + " 对应类不存在,错误原因:");
                 err.println("--1.您可能直接copy了参照项目的配置文件,但没有将具体的类也同步copy过来!");
-                err.println("--2.如您并不需要此功能，请将配置文件中注释掉spring.sqltoy.unifyFieldsHandler");
+                err.println("--2.如您并不需要此功能，请将配置文件中注释掉sqltoy.unifyFieldsHandler");
                 err.println("------------------------------------------------");
                 cne.printStackTrace();
                 throw cne;
@@ -263,6 +269,31 @@ public class SqltoyConfiguration {
             else if (connectionFactory.contains(".")) {
                 sqlToyContext.setConnectionFactory(
                         (ConnectionFactory) Class.forName(connectionFactory).getDeclaredConstructor().newInstance());
+            }
+        }
+        // 自定义字段安全实现器
+        String fieldsSecureProvider = properties.getFieldsSecureProvider();
+        if (StringUtil.isNotBlank(fieldsSecureProvider)) {
+            if (applicationContext.containsBean(fieldsSecureProvider)) {
+                sqlToyContext.setFieldsSecureProvider(
+                        (FieldsSecureProvider) applicationContext.getBean(fieldsSecureProvider));
+            } // 包名和类名称
+            else if (fieldsSecureProvider.contains(".")) {
+                sqlToyContext.setFieldsSecureProvider((FieldsSecureProvider) Class.forName(fieldsSecureProvider)
+                        .getDeclaredConstructor().newInstance());
+            }
+        }
+
+        // 自定义字段脱敏处理器
+        String desensitizeProvider = properties.getDesensitizeProvider();
+        if (StringUtil.isNotBlank(desensitizeProvider)) {
+            if (applicationContext.containsBean(desensitizeProvider)) {
+                sqlToyContext
+                        .setDesensitizeProvider((DesensitizeProvider) applicationContext.getBean(desensitizeProvider));
+            } // 包名和类名称
+            else if (desensitizeProvider.contains(".")) {
+                sqlToyContext.setDesensitizeProvider((DesensitizeProvider) Class.forName(desensitizeProvider)
+                        .getDeclaredConstructor().newInstance());
             }
         }
         return sqlToyContext;
