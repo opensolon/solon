@@ -51,21 +51,25 @@ public class SqltoyConfiguration {
 
     // 增加一个辅助校验,避免不少新用户将spring.sqltoy开头写成sqltoy.开头
     // @Inject("${sqltoy.sqlResourcesDir:}")
-    private String sqlResourcesDir;
-
-    public void setSqlResourcesDir(String sqlResourcesDir) {
-        this.sqlResourcesDir = sqlResourcesDir;
-    }
+//    private String sqlResourcesDir;
+//
+//    public void setSqlResourcesDir(String sqlResourcesDir) {
+//        this.sqlResourcesDir = sqlResourcesDir;
+//    }
 
     // 构建sqltoy上下文,并指定初始化方法和销毁方法
     // @Bean(name = "sqlToyContext", initMethod = "initialize", destroyMethod = "destroy")
     // @ConditionalOnMissingBean
     @Bean(name = "sqlToyContext")
     public SqlToyContext sqlToyContext() throws Exception {
+        if(properties==null){
+            properties=new SqlToyContextProperties();
+        }
         // 用辅助配置来校验是否配置错误
-        if (StringUtil.isBlank(properties.getSqlResourcesDir()) && StringUtil.isNotBlank(sqlResourcesDir)) {
-            throw new IllegalArgumentException(
-                    "请检查sqltoy配置,是sqltoy作为前缀,而不是spring.sqltoy!\n正确范例: sqltoy.sqlResourcesDir=classpath:com/sagframe/modules");
+        if (StringUtil.isBlank(properties.getSqlResourcesDir())) {
+            properties.setSqlResourcesDir("classpath:sqltoy");
+           // throw new IllegalArgumentException(
+            //        "请检查sqltoy配置,是sqltoy作为前缀,而不是spring.sqltoy!\n正确范例: sqltoy.sqlResourcesDir=classpath:com/sagframe/modules");
         }
         SqlToyContext sqlToyContext = new SqlToyContext();
         // 当发现有重复sqlId时是否抛出异常，终止程序执行
@@ -302,7 +306,7 @@ public class SqltoyConfiguration {
     /**
      * @return 返回预定义的通用Dao实例
      */
-    @Bean(name = "sqlToyLazyDao")
+    @Bean(name = "sqlToyLazyDao",typed = true)
     //@ConditionalOnMissingBean
     public SqlToyLazyDao sqlToyLazyDao() {
         return new SqlToyLazyDaoImpl();
@@ -311,7 +315,7 @@ public class SqltoyConfiguration {
     /**
      * @return 返回预定义的通用CRUD service实例
      */
-    @Bean(name = "sqlToyCRUDService")
+    @Bean(name = "sqlToyCRUDService",typed = true)
     //@ConditionalOnMissingBean
     public SqlToyCRUDService sqlToyCRUDService() {
         return new SqlToyCRUDServiceForSolon();
