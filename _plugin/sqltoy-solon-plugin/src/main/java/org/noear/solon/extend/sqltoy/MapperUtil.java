@@ -20,14 +20,19 @@ import java.util.stream.Collectors;
 
 
 /**
+ * 创建Mapper，已弃用，原因：该版使用Proxy代理，sqltoy的日志中无法定位代码位置
  * @author 夜の孤城
  * @since 1.5
  * */
-public class MapperUtil {
+@Deprecated
+class MapperUtil {
     private static Map<Class<?>, Object> _proxy_cache = new HashMap<>();
     private static Object _proxy_lock = new Object();
 
-    protected static <T> T proxy(Class<T> mapperInf, SqlToyLazyDao dao) {
+    /**
+     * 获取代理实例,带实例缓存
+     */
+    public static <T> T proxy(Class<T> mapperInf, SqlToyLazyDao dao) {
         Object tmp = _proxy_cache.get(mapperInf);
         if (tmp == null) {
             synchronized (_proxy_lock) {
@@ -43,9 +48,9 @@ public class MapperUtil {
     }
 
     /**
-     * 获取代理实例
+     * 创建代理实例
      */
-    private static <T> T buildProxy(Class<?> mapperInf, SqlToyLazyDao dao) {
+    public static <T> T buildProxy(Class<?> mapperInf, SqlToyLazyDao dao) {
         return (T) Proxy.newProxyInstance(
                 mapperInf.getClassLoader(),
                 new Class[]{mapperInf},

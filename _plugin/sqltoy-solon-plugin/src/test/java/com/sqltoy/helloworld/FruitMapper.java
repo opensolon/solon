@@ -1,7 +1,6 @@
 package com.sqltoy.helloworld;
 
 import com.sqltoy.helloworld.vo.FruitOrderVO;
-import org.noear.solon.extend.sqltoy.annotation.Mapper;
 import org.noear.solon.extend.sqltoy.annotation.Sql;
 import org.sagacity.sqltoy.model.Page;
 
@@ -13,7 +12,6 @@ import org.sagacity.sqltoy.model.Page;
  * 参数可有0～2个,两个参数时其中一个为Page,另外一个为Map或Entity,顺序不限
  * 当为default方法时，直接调用default方法
  */
-@Mapper
 public interface FruitMapper {
     //通过注解映射
     @Sql("helloworld_search_fruitOrder")

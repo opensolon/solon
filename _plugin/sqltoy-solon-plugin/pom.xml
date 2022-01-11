@@ -30,6 +30,11 @@
             <groupId>org.noear</groupId>
             <artifactId>solon.extend.aspect</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.itranswarp</groupId>
+            <artifactId>compiler</artifactId>
+            <version>1.0</version>
+        </dependency>
 
         <dependency>
             <groupId>com.sagframe</groupId>
