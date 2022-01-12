@@ -2,6 +2,7 @@ package org.noear.solon.extend.async;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 /**
  * 异步运行管理器
@@ -10,7 +11,11 @@ import java.util.concurrent.Executors;
  * @since 1.6
  */
 public class AsyncManager {
-    private static ExecutorService executor = Executors.newCachedThreadPool();
+    private static ExecutorService executor;
+
+    static {
+        executor = Executors.newCachedThreadPool(new AsyncThreadFactory());
+    }
 
     /**
      * 设置执行器
@@ -22,9 +27,9 @@ public class AsyncManager {
     }
 
     /**
-     * 执行（仅用于内部）
+     * 提交运行任务（仅用于内部）
      */
-    protected static void execute(Runnable command) {
-        executor.submit(command);
+    protected static Future<?> submit(Runnable task) {
+        return executor.submit(task);
     }
 }

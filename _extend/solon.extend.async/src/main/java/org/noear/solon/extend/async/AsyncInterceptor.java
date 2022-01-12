@@ -2,7 +2,6 @@ package org.noear.solon.extend.async;
 
 import org.noear.solon.core.aspect.Interceptor;
 import org.noear.solon.core.aspect.Invocation;
-import org.noear.solon.core.event.EventBus;
 import org.noear.solon.extend.async.annotation.Async;
 
 /**
@@ -17,14 +16,7 @@ public class AsyncInterceptor implements Interceptor {
         Async anno = inv.method().getAnnotation(Async.class);
 
         if (anno != null) {
-            AsyncManager.execute(() -> {
-                try {
-                    inv.invoke();
-                } catch (Throwable e) {
-                    EventBus.push(e);
-                }
-            });
-
+            AsyncManager.submit(new InvocationRunnable(inv));
             return null;
         } else {
             return inv.invoke();
