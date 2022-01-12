@@ -1,6 +1,6 @@
 package org.noear.solon.extend.sqltoy.mapper;
 
-import com.itranswarp.compiler.JavaStringCompiler;
+import org.noear.liquor.DynamicCompiler;
 import org.noear.solon.extend.sqltoy.annotation.Param;
 import org.noear.solon.extend.sqltoy.annotation.Sql;
 import org.sagacity.sqltoy.SqlToyContext;
@@ -319,22 +319,12 @@ public class ProxyClassBuilder {
         source.append("_result.setRows(_distRows);");
     }
     public Class compile(){
-        // 声明包名：package top.fomeiherz;
-
-        // 全类名：top.fomeiherz.Main
+        //调用liquor进行动态编译
         String fullName = String.format("%s.%s", packageName, className);
-        // 编译器
-        JavaStringCompiler compiler = new JavaStringCompiler();
-        try {
-            // 编译
-            Map<String, byte[]> results = compiler.compile(className + ".java", source.toString());
-            // 加载内存中byte到Class<?>对象
-            Class<?> clazz = compiler.loadClass(fullName, results);
-            return clazz;
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        return null;
+        DynamicCompiler compiler = new DynamicCompiler();
+        compiler.addSource(fullName, source.toString());
+        Map<String, Class<?>> classMap = compiler.build();
+        return classMap.get(fullName);
     }
     private static Class getGenericType(Method method) {
         Type t = method.getGenericReturnType();
