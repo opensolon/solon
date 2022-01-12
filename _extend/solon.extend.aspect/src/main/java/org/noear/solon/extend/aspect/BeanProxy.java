@@ -15,7 +15,7 @@ public class BeanProxy implements BeanWrap.Proxy {
 
     /**
      * 全局实例
-     * */
+     */
     public static BeanWrap.Proxy global() {
         if (_global == null) {
             _global = new BeanProxy();
@@ -26,15 +26,25 @@ public class BeanProxy implements BeanWrap.Proxy {
 
     /**
      * 绑定
-     * */
-    public static boolean binding(BeanWrap bw) {
+     *
+     * @param name  注册名字
+     * @param typed 注册类型（当 name 不为空时才有效；否则都算 true）
+     */
+    public static boolean binding(BeanWrap bw, String name, boolean typed) {
         if (bw.proxy() instanceof BeanProxy) {
             return false;
         } else {
             bw.proxySet(BeanProxy.global());
-            Aop.context().beanRegister(bw, "", true);
+            Aop.context().beanRegister(bw, name, typed);
             return true;
         }
+    }
+
+    /**
+     * 绑定
+     */
+    public static boolean binding(BeanWrap bw) {
+        return binding(bw, "", false);
     }
 
     @Override
