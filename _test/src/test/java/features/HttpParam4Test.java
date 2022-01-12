@@ -58,6 +58,19 @@ public class HttpParam4Test extends HttpTestBase {
     }
 
     @Test
+    public void param_2() throws IOException {
+        //走param，@Param 的格式化会起效果
+        String json2 = path("/demo2/param4/param2")
+                .data("id", "1")
+                .data("name", "noear")
+                .post();
+
+        ONode oNode2 = ONode.loadStr(json2);
+
+        assert oNode2.get("id").getInt() == 1;
+    }
+
+    @Test
     public void param2() throws IOException {
         //走param，@Param 的格式化会起效果
         String json2 = path("/demo2/param4/param")

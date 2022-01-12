@@ -1,6 +1,7 @@
 package webapp.demo2_mvc;
 
 import org.noear.solon.annotation.*;
+import webapp.models.UserD;
 import webapp.models.UserModel;
 
 import java.io.IOException;
@@ -20,6 +21,11 @@ public class Param4Controller {
 
     @Mapping("param")
     public UserModel test_param(UserModel user) throws IOException {
+        return user;
+    }
+
+    @Mapping("param2")
+    public UserD test_param(UserD user) throws IOException {
         return user;
     }
 
