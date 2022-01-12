@@ -51,6 +51,7 @@ public class ClassWrap {
 
     protected ClassWrap(Class<?> clz) {
         _clz = clz;
+        _recordable = true;
 
         //自己申明的函数
         methods = clz.getDeclaredMethods();
@@ -131,10 +132,6 @@ public class ClassWrap {
      *
      * @param data 填充数据
      */
-    public <T> T newBy(Function<String, String> data) {
-        return newBy(data, null);
-    }
-
     public <T> T newBy(Properties data) {
         try {
             Constructor constructor = clz().getConstructor(Properties.class);
@@ -147,6 +144,12 @@ public class ClassWrap {
         return newBy(data::getProperty);
     }
 
+
+    public <T> T newBy(Function<String, String> data) {
+        return newBy(data, null);
+    }
+
+
     /**
      * 新建实例
      *
@@ -155,11 +158,34 @@ public class ClassWrap {
      */
     public <T> T newBy(Function<String, String> data, Context ctx) {
         try {
-            Object obj = clz().newInstance();
+            if (recordable()) {
+                //for record
+                Parameter[] argsP = recordParams();
+                Object[] argsV = new Object[argsP.length];
 
-            fill(obj, data, ctx);
+                for (int i = 0; i < argsP.length; i++) {
+                    Parameter p = argsP[i];
+                    String key = p.getName();
+                    String val0 = data.apply(key);
 
-            return (T) obj;
+                    if (val0 != null) {
+                        //将 string 转为目标 type，并为字段赋值
+                        Object val = ConvertUtil.to(p, p.getType(), key, val0, ctx);
+                        argsV[i] = val;
+                    } else {
+                        argsV[i] = null;
+                    }
+                }
+
+                Object obj = recordConstructor().newInstance(argsV);
+                return (T) obj;
+            } else {
+                Object obj = clz().newInstance();
+
+                fill(obj, data, ctx);
+
+                return (T) obj;
+            }
         } catch (RuntimeException ex) {
             throw ex;
         } catch (Exception ex) {
@@ -182,7 +208,7 @@ public class ClassWrap {
      * @param data 填充数据
      * @param ctx  上下文
      */
-    public void fill(Object bean, Function<String, String> data, Context ctx) {
+    private void fill(Object bean, Function<String, String> data, Context ctx) {
         for (Map.Entry<String, FieldWrap> kv : fieldAllWrapsMap.entrySet()) {
             String key = kv.getKey();
             String val0 = data.apply(key);

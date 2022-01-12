@@ -93,6 +93,10 @@ public class FieldWrap {
      * 设置字段的值
      */
     public void setValue(Object tObj, Object val) {
+        if (readonly){
+            return;
+        }
+
         try {
             if (val == null) {
                 return;

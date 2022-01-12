@@ -3,6 +3,8 @@
 * 优化 Aop.beanForeach ，进行去重处理
 * 新增 三种日期格式自动解析
 * @Service 增加 name, typed 属性
+* 优化 sqltoy-solon-plugin 插件
+* 增加对 kotlin data class 和 jdk14+ record 的序列化与反序列化支持
 
 #### 1.6.14
 * 修复 上传多个同名name的文件时，只能取到一个的问题

@@ -638,7 +638,7 @@ public class Utils {
             return;
         }
 
-        ClassWrap.get(target.getClass()).fill(target, source, null);
+        ClassWrap.get(target.getClass()).fill(target, source);
     }
 
     /**
