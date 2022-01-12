@@ -1,4 +1,4 @@
-package org.noear.solon.extend.async;
+package org.noear.solon.extend.async.integration;
 
 import org.noear.solon.core.aspect.Invocation;
 import org.noear.solon.core.event.EventBus;

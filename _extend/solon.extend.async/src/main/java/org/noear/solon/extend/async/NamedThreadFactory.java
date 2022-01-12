@@ -9,25 +9,31 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author noear
  * @since 1.6
  */
-public class AsyncThreadFactory implements ThreadFactory {
+public class NamedThreadFactory implements ThreadFactory {
     private final ThreadGroup group;
+    private final String prefix;
     private final AtomicInteger threadNumber = new AtomicInteger(1);
 
 
-    AsyncThreadFactory() {
+    public NamedThreadFactory(String prefix) {
         SecurityManager s = System.getSecurityManager();
-        group = (s != null) ? s.getThreadGroup() :
+        this.group = (s != null) ? s.getThreadGroup() :
                 Thread.currentThread().getThreadGroup();
+        this.prefix = prefix;
     }
 
+    @Override
     public Thread newThread(Runnable r) {
-        Thread t = new Thread(group, r,
-                "AsyncTaskExecutor-" + threadNumber.getAndIncrement(),
-                0);
-        if (t.isDaemon())
+        Thread t = new Thread(group, r, prefix + "-" + threadNumber.getAndIncrement(), 0);
+
+        if (t.isDaemon()) {
             t.setDaemon(false);
-        if (t.getPriority() != Thread.NORM_PRIORITY)
+        }
+
+        if (t.getPriority() != Thread.NORM_PRIORITY) {
             t.setPriority(Thread.NORM_PRIORITY);
+        }
+
         return t;
     }
 }

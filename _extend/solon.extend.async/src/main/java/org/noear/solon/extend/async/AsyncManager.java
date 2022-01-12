@@ -11,18 +11,14 @@ import java.util.concurrent.Future;
  * @since 1.6
  */
 public class AsyncManager {
-    private static ExecutorService executor;
-
-    static {
-        executor = Executors.newCachedThreadPool(new AsyncThreadFactory());
-    }
+    private static AsyncExecutor executor = new AsyncExecutorDefault();
 
     /**
      * 设置执行器
      *
      * @param executor 执行线程池
      */
-    public static void setExecutor(ExecutorService executor) {
+    public static void setExecutor(AsyncExecutor executor) {
         if (executor != null) {
             AsyncManager.executor = executor;
         }
@@ -31,7 +27,7 @@ public class AsyncManager {
     /**
      * 提交运行任务（仅用于内部）
      */
-    protected static Future<?> submit(Runnable task) {
-        return executor.submit(task);
+    public static void submit(Runnable task) {
+        executor.submit(task);
     }
 }

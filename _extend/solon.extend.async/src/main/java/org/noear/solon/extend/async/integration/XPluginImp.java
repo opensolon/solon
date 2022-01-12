@@ -3,7 +3,6 @@ package org.noear.solon.extend.async.integration;
 import org.noear.solon.SolonApp;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.Plugin;
-import org.noear.solon.extend.async.AsyncInterceptor;
 import org.noear.solon.extend.async.annotation.Async;
 import org.noear.solon.extend.async.annotation.EnableAsync;
 

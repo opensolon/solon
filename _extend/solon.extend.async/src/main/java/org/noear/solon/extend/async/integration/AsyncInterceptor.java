@@ -1,7 +1,8 @@
-package org.noear.solon.extend.async;
+package org.noear.solon.extend.async.integration;
 
 import org.noear.solon.core.aspect.Interceptor;
 import org.noear.solon.core.aspect.Invocation;
+import org.noear.solon.extend.async.AsyncManager;
 import org.noear.solon.extend.async.annotation.Async;
 
 /**
