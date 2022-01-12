@@ -1,22 +1,15 @@
 package com.sqltoy;
 
-import com.itranswarp.compiler.JavaStringCompiler;
-import com.sqltoy.helloworld.FruitMapper;
 import com.sqltoy.helloworld.service.FruitOrderService;
 
 import com.sqltoy.helloworld.vo.FruitOrderVO;
 import org.noear.solon.Solon;
 
 import org.noear.solon.core.Aop;
-import org.noear.solon.extend.sqltoy.mapper.AbstractMapper;
-import org.noear.solon.extend.sqltoy.mapper.ProxyClassBuilder;
-import org.sagacity.sqltoy.SqlToyContext;
-import org.sagacity.sqltoy.dao.SqlToyLazyDao;
 import org.sagacity.sqltoy.model.Page;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.Map;
 
 
 public class SqlToyDemoApplication {
