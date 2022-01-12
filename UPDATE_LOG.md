@@ -4,6 +4,7 @@
 * 新增 三种日期格式自动解析
 * @Service 增加 name, typed 属性
 * 优化 sqltoy-solon-plugin 插件
+* 新增 solon.extend.async 插件
 * 增加对 kotlin data class 和 jdk14+ record 的序列化与反序列化支持
   * 目前  solon,snack3,weed3 都支持
 
