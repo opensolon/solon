@@ -52,6 +52,11 @@
             <artifactId>solon.extend.cors</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.extend.async</artifactId>
+        </dependency>
+
 
 
 

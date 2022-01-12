@@ -8,6 +8,7 @@ import org.noear.solon.annotation.Import;
 import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.core.ExtendLoader;
 import org.noear.solon.core.handle.MethodType;
+import org.noear.solon.extend.async.annotation.EnableAsync;
 import org.noear.solon.extend.cors.CrossHandler;
 import org.noear.solon.extend.staticfiles.StaticMappings;
 import org.noear.solon.extend.staticfiles.repository.ExtendStaticRepository;
@@ -24,6 +25,7 @@ import java.nio.charset.Charset;
 import java.util.Locale;
 import java.util.Properties;
 
+@EnableAsync
 @Import(value = TestImport.class, scanPackages = "webapp")
 //@EnableCron4j
 //@EnableQuartz

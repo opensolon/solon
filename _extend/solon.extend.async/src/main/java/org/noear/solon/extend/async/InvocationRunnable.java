@@ -17,7 +17,6 @@ public class InvocationRunnable implements Runnable {
     @Override
     public void run() {
         try {
-            Thread.currentThread().setName("");
             invocation.invoke();
         } catch (Throwable e) {
             EventBus.push(e);
