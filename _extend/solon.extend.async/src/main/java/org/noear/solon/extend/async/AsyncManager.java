@@ -19,6 +19,8 @@ public class AsyncManager {
 
     /**
      * 设置执行器
+     *
+     * @param executor 执行线程池
      */
     public static void setExecutor(ExecutorService executor) {
         if (executor != null) {

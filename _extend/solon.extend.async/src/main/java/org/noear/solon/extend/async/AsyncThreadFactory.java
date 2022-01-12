@@ -2,7 +2,6 @@ package org.noear.solon.extend.async;
 
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * 异步运行线程工厂（用于控制名字）
@@ -11,10 +10,24 @@ import java.util.concurrent.atomic.AtomicLong;
  * @since 1.6
  */
 public class AsyncThreadFactory implements ThreadFactory {
-    AtomicInteger nameIndex = new AtomicInteger();
+    private final ThreadGroup group;
+    private final AtomicInteger threadNumber = new AtomicInteger(1);
 
-    @Override
+
+    AsyncThreadFactory() {
+        SecurityManager s = System.getSecurityManager();
+        group = (s != null) ? s.getThreadGroup() :
+                Thread.currentThread().getThreadGroup();
+    }
+
     public Thread newThread(Runnable r) {
-        return new Thread("Async-Task-" + nameIndex.incrementAndGet());
+        Thread t = new Thread(group, r,
+                "AsyncTaskExecutor-" + threadNumber.getAndIncrement(),
+                0);
+        if (t.isDaemon())
+            t.setDaemon(false);
+        if (t.getPriority() != Thread.NORM_PRIORITY)
+            t.setPriority(Thread.NORM_PRIORITY);
+        return t;
     }
 }

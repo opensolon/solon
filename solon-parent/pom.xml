@@ -249,6 +249,11 @@
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>solon.extend.async</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>solon.extend.health</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
