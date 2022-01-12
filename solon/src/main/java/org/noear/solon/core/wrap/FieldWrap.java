@@ -38,6 +38,10 @@ public class FieldWrap {
      * 字段泛型类型（可能为null）
      */
     public final ParameterizedType genericType;
+    /**
+     * 字段是否只读
+     * */
+    public final boolean readonly;
 
     /**
      * 值设置器
@@ -48,10 +52,11 @@ public class FieldWrap {
      */
     private Method _getter;
 
-    public FieldWrap(Class<?> clz, Field f1) {
+    public FieldWrap(Class<?> clz, Field f1, boolean isFinal) {
         entityClz = clz;
         field = f1;
         annoS = f1.getDeclaredAnnotations();
+        readonly = isFinal;
 
         type = f1.getType();
         Type tmp = f1.getGenericType();

@@ -3,10 +3,7 @@ package org.noear.solon.core.wrap;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.util.ConvertUtil;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
+import java.lang.reflect.*;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListMap;
@@ -47,6 +44,10 @@ public class ClassWrap {
     //clz.all_fieldS
     private final Map<String, FieldWrap> fieldAllWrapsMap;
 
+    //for record
+    private boolean _recordable;
+    private Constructor _recordConstructor;
+    private Parameter[] _recordParams;
 
     protected ClassWrap(Class<?> clz) {
         _clz = clz;
@@ -68,6 +69,16 @@ public class ClassWrap {
             if (fw != null) {
                 fieldWraps.add(fw);
             }
+        }
+
+        if (fieldWraps.size() == 0) {
+            _recordable = false;
+        }
+
+        if (_recordable) {
+            //如果合字段只读
+            _recordConstructor = clz.getConstructors()[0];
+            _recordParams = _recordConstructor.getParameters();
         }
     }
 
@@ -91,6 +102,28 @@ public class ClassWrap {
      */
     public Method[] getMethods() {
         return methods;
+    }
+
+
+    /**
+     * 是否为 record
+     * */
+    public boolean recordable() {
+        return _recordable;
+    }
+
+    /**
+     * record 构建函数（可能为 null）
+     * */
+    public Constructor recordConstructor(){
+        return _recordConstructor;
+    }
+
+    /**
+     * record 构造参数（可能为 null）
+     * */
+    public Parameter[] recordParams(){
+        return _recordParams;
     }
 
     /**
@@ -167,7 +200,7 @@ public class ClassWrap {
     /**
      * 扫描一个类的所有字段（不能与Snack3的复用；它需要排除非序列化字段）
      */
-    private static void doScanAllFields(Class<?> clz, Predicate<String> checker, BiConsumer<String, FieldWrap> consumer) {
+    private void doScanAllFields(Class<?> clz, Predicate<String> checker, BiConsumer<String, FieldWrap> consumer) {
         if (clz == null) {
             return;
         }
@@ -175,13 +208,13 @@ public class ClassWrap {
         for (Field f : clz.getDeclaredFields()) {
             int mod = f.getModifiers();
 
-            if (!Modifier.isFinal(mod)
-                    && !Modifier.isStatic(mod)
+            if (!Modifier.isStatic(mod)
                     && !Modifier.isTransient(mod)) {
                 f.setAccessible(true);
 
                 if (checker.test(f.getName()) == false) {
-                    consumer.accept(f.getName(), new FieldWrap(clz, f));
+                    _recordable &= Modifier.isFinal(mod);
+                    consumer.accept(f.getName(), new FieldWrap(clz, f, Modifier.isFinal(mod)));
                 }
             }
         }
