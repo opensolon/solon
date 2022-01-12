@@ -10,6 +10,7 @@ import org.noear.solon.core.wrap.ParamWrap;
 
 import java.lang.reflect.ParameterizedType;
 import java.util.Collection;
+import java.util.List;
 
 public class JacksonActionExecutor extends ActionExecutorDefault {
     private static final String label = "/json";
@@ -68,6 +69,14 @@ public class JacksonActionExecutor extends ActionExecutorDefault {
                 //
                 return super.changeValue(ctx, p, pi, pt, bodyObj);
             } else {
+                if(List.class.isAssignableFrom(p.getType())){
+                    return null;
+                }
+
+                if(p.getType().isArray()){
+                    return null;
+                }
+
                 return mapper_type.readValue(mapper_type.treeAsTokens(tmp), new TypeReferenceImp<>(p));
             }
         }

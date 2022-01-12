@@ -8,6 +8,7 @@ import org.noear.solon.core.wrap.ParamWrap;
 
 import java.lang.reflect.ParameterizedType;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Json 动作执行器
@@ -67,6 +68,14 @@ public class SnackJsonActionExecutor extends ActionExecutorDefault {
                 if (pt.isPrimitive() || pt.getTypeName().startsWith("java.lang.")) {
                     return super.changeValue(ctx, p, pi, pt, bodyObj);
                 } else {
+                    if(List.class.isAssignableFrom(p.getType())){
+                        return null;
+                    }
+
+                    if(p.getType().isArray()){
+                        return null;
+                    }
+
                     //支持泛型的转换 如：Map<T>
                     ParameterizedType gp = p.getGenericType();
                     if (gp != null) {
