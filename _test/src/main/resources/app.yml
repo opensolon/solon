@@ -75,7 +75,7 @@ server.session:
       server: localhost:6379
       password: 123456
       db: 3
-      maxTotaol: 200
+      maxTotal: 200
 
 #特殊信息输出
 solon.output.meta: 1

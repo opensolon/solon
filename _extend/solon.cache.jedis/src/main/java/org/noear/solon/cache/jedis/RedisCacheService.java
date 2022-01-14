@@ -34,7 +34,7 @@ public class RedisCacheService implements CacheService {
     public RedisCacheService(Properties prop, String keyHeader, int defSeconds) {
         String defSeconds_str = prop.getProperty("defSeconds");
         String db_str = prop.getProperty("db");
-        String maxTotaol_str = prop.getProperty("maxTotaol");
+        String maxTotal_str = prop.getProperty("maxTotal");
 
         if (defSeconds == 0) {
             if (Utils.isNotEmpty(defSeconds_str)) {
@@ -43,14 +43,14 @@ public class RedisCacheService implements CacheService {
         }
 
         int db = 0;
-        int maxTotaol = 200;
+        int maxTotal = 200;
 
         if (Utils.isNotEmpty(db_str)) {
             db = Integer.parseInt(db_str);
         }
 
-        if (Utils.isNotEmpty(maxTotaol_str)) {
-            maxTotaol = Integer.parseInt(maxTotaol_str);
+        if (Utils.isNotEmpty(maxTotal_str)) {
+            maxTotal = Integer.parseInt(maxTotal_str);
         }
 
         if(Utils.isEmpty(keyHeader)){
@@ -68,7 +68,7 @@ public class RedisCacheService implements CacheService {
             _cacheKeyHead = Solon.cfg().appName();
         }
 
-        _redisClient = new RedisClient(prop, db, maxTotaol);
+        _redisClient = new RedisClient(prop, db, maxTotal);
         _serializer = JavabinSerializer.instance;
     }
 

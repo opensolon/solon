@@ -22,7 +22,7 @@ public class XPluginImp implements Plugin {
          * server:
          * password:
          * db: 31
-         * maxTotaol: 200
+         * maxTotal: 200
          *
          * */
         SessionProp.init();

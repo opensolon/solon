@@ -33,7 +33,7 @@ server.session.state.domain: noear.org
 server.session.state.redis.server: redis.io:6379
 server.session.state.redis.password: 1234
 server.session.state.redis.db: 31
-server.session.state.redis.maxTotaol: 200
+server.session.state.redis.maxTotal: 200
 
 
 ```
