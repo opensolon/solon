@@ -1,5 +1,9 @@
 #### 1.6.16
 * 修复单词拼写错误（maxTotaol -> maxTotal）
+* mybatis 升为 3.5.9
+* mybatis 升为 3.5.0
+* sqlhelper-mybatis  升为 3.6.9
+* pagehelper 升为 5.3.0
 
 #### 1.6.15
 * 修复 当主应用配置有变量时，应用环境配置无法替换的问题

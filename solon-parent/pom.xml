@@ -43,7 +43,7 @@
 
         <junit.ver>4.13.1</junit.ver>
 
-        <mybatis.ver>3.5.7</mybatis.ver>
+        <mybatis.ver>3.5.9</mybatis.ver>
 
         <hikaricp.ver>4.0.3</hikaricp.ver>
 
