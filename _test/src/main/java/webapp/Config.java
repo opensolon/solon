@@ -32,10 +32,8 @@ public class Config {
     }
 
     @Bean
-    public void test(){
+    public void test() {
         ExecutorService pools = Executors.newCachedThreadPool();
-        AsyncManager.setExecutor(cmd->{
-            pools.submit(cmd);
-        });
+        AsyncManager.setExecutor(cmd -> pools.submit(cmd));
     }
 }

@@ -1,7 +1,5 @@
 package org.noear.solon.extend.async;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 /**
@@ -27,7 +25,7 @@ public class AsyncManager {
     /**
      * 提交运行任务（仅用于内部）
      */
-    public static void submit(Runnable task) {
-        executor.submit(task);
+    public static Future<?> submit(Runnable task) {
+        return executor.submit(task);
     }
 }
