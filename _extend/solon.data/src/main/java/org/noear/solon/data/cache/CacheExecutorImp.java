@@ -90,12 +90,13 @@ public class CacheExecutorImp {
     /**
      * 清除移除
      *
-     * @param anno   注解
-     * @param method 函数
-     * @param params 参数
-     * @param values 参数值
+     * @param anno     注解
+     * @param method   函数
+     * @param params   参数
+     * @param values   参数值
+     * @param rstValue 结果值
      */
-    public void cacheRemove(CacheRemove anno, Method method, ParamWrap[] params, Object[] values) {
+    public void cacheRemove(CacheRemove anno, Method method, ParamWrap[] params, Object[] values, Object rstValue) {
         if (anno == null) {
             return;
         }
@@ -106,7 +107,7 @@ public class CacheExecutorImp {
 
         //按 tags 清除缓存
         if (Utils.isNotEmpty(anno.tags())) {
-            String tags = formatTagsOrKey(anno.tags(), parMap, null);
+            String tags = formatTagsOrKey(anno.tags(), parMap, rstValue);
             CacheTags ct = new CacheTags(cs);
 
             for (String tag : tags.split(",")) {
@@ -116,7 +117,7 @@ public class CacheExecutorImp {
 
         //按 key 清除缓存
         if (Utils.isNotEmpty(anno.key())) {
-            String key = formatTagsOrKey(anno.key(), parMap, null);
+            String key = formatTagsOrKey(anno.key(), parMap, rstValue);
             cs.remove(key);
         }
     }
@@ -128,9 +129,9 @@ public class CacheExecutorImp {
      * @param method   函数
      * @param params   参数
      * @param values   参数值
-     * @param newValue 新的值
+     * @param rstValue 结果值（将做更新值用）
      */
-    public void cachePut(CachePut anno, Method method, ParamWrap[] params, Object[] values, Object newValue) {
+    public void cachePut(CachePut anno, Method method, ParamWrap[] params, Object[] values, Object rstValue) {
         if (anno == null) {
             return;
         }
@@ -140,18 +141,18 @@ public class CacheExecutorImp {
 
         //按 tags 更新缓存
         if (Utils.isNotEmpty(anno.tags())) {
-            String tags = formatTagsOrKey(anno.tags(), parMap, newValue);
+            String tags = formatTagsOrKey(anno.tags(), parMap, rstValue);
             CacheTags ct = new CacheTags(cs);
 
             for (String tag : tags.split(",")) {
-                ct.update(tag, newValue, anno.seconds());
+                ct.update(tag, rstValue, anno.seconds());
             }
         }
 
         //按 key 更新缓存
         if (Utils.isNotEmpty(anno.key())) {
-            String key = formatTagsOrKey(anno.key(), parMap, newValue);
-            cs.store(key, newValue, anno.seconds());
+            String key = formatTagsOrKey(anno.key(), parMap, rstValue);
+            cs.store(key, rstValue, anno.seconds());
         }
     }
 
@@ -192,7 +193,10 @@ public class CacheExecutorImp {
 
         String str2 = str;
 
-        Pattern pattern = Pattern.compile("\\$\\{(\\.?\\w+)\\}");
+        //${name}
+        //${.name}
+        //${obj.name}
+        Pattern pattern = Pattern.compile("\\$\\{(\\w*\\.?\\w+)\\}");
         Matcher m = pattern.matcher(str);
         while (m.find()) {
             String mark = m.group(0);
@@ -203,30 +207,41 @@ public class CacheExecutorImp {
                 String val = String.valueOf(map.get(name));
 
                 str2 = str2.replace(mark, val);
-            } else if (name.startsWith(".")) {
+            } else if (name.contains(".")) {
                 //说明要从返回结果取值
-                String val = null;
-                if (rst != null) {
-                    FieldWrap fw = ClassWrap.get(rst.getClass()).getFieldWrap(name.substring(1));
+                Object obj;
+                String fieldKey = null;
+                String fieldVal = null;
+                if (name.startsWith(".")) {
+                    obj = rst;
+                    fieldKey = name.substring(1);
+                } else {
+                    String[] cf = name.split("\\.");
+                    obj = map.get(cf[0]);
+                    fieldKey = cf[1];
+                }
+
+                if (obj != null) {
+                    FieldWrap fw = ClassWrap.get(obj.getClass()).getFieldWrap(fieldKey);
                     if (fw == null) {
                         throw new IllegalArgumentException("Missing cache tag parameter (result field): " + name);
                     }
 
                     try {
-                        Object val2 = fw.getValue(rst);
+                        Object val2 = fw.getValue(obj);
                         if (val2 != null) {
-                            val = val2.toString();
+                            fieldVal = val2.toString();
                         }
                     } catch (ReflectiveOperationException e) {
                         throw new RuntimeException(e);
                     }
                 }
 
-                if (val == null) {
-                    val = "null";
+                if (fieldVal == null) {
+                    fieldVal = "null";
                 }
 
-                str2 = str2.replace(mark, val);
+                str2 = str2.replace(mark, fieldVal);
             } else {
                 //如果缺少参数就出异常，容易发现问题
                 throw new IllegalArgumentException("Missing cache tag parameter: " + name);
