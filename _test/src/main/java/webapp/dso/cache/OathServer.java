@@ -1,4 +1,4 @@
-package features.cache;
+package webapp.dso.cache;
 
 import org.noear.solon.data.annotation.Cache;
 import org.noear.solon.data.annotation.CacheRemove;
@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
  */
 @Service
 public class OathServer {
-    @Cache(key = "xxx_${code}", seconds = 2592000)
+    @Cache(key = "oath_test_${code}", seconds = 2592000)
     public Oauth queryInfoByCode(String code) {
         Oauth oauth = new Oauth();
         oauth.setCode(code);
@@ -20,12 +20,12 @@ public class OathServer {
         return oauth;
     }
 
-    @CacheRemove(key = "xxx_${oauth.code}")
+    @CacheRemove(key = "oath_test_${oauth.code}")
     public void updateInfo(Oauth oauth) {
 
     }
 
-    @CacheRemove(key = "xxx_${.code}")
+    @CacheRemove(key = "oath_test_${.code}")
     public Oauth updateInfo2(Oauth oauth) {
         return oauth;
     }

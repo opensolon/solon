@@ -1,4 +1,4 @@
-package features.cache;
+package webapp.dso.cache;
 
 import lombok.Data;
 
