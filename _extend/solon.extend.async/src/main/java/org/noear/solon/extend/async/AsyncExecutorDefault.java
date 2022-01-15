@@ -2,6 +2,7 @@ package org.noear.solon.extend.async;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 /**
  * @author noear
@@ -15,7 +16,7 @@ public class AsyncExecutorDefault implements AsyncExecutor {
     }
 
     @Override
-    public void submit(Runnable task) {
-        pools.submit(task);
+    public Future<?> submit(Runnable task) {
+        return pools.submit(task);
     }
 }

@@ -1,5 +1,7 @@
 package org.noear.solon.extend.async;
 
+import java.util.concurrent.Future;
+
 /**
  * 异步执行器
  *
@@ -11,5 +13,5 @@ public interface AsyncExecutor {
     /**
      * 提交任务
      * */
-    void submit(Runnable task);
+    Future<?> submit(Runnable task);
 }
