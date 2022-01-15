@@ -1,5 +1,7 @@
 package org.noear.solon.extend.async;
 
+import org.noear.solon.ext.NamedThreadFactory;
+
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -12,7 +14,7 @@ public class AsyncExecutorDefault implements AsyncExecutor {
     ExecutorService pools;
 
     public AsyncExecutorDefault() {
-        pools = Executors.newCachedThreadPool(new NamedThreadFactory("AsyncTaskExecutor"));
+        pools = Executors.newCachedThreadPool(new NamedThreadFactory("AsyncTaskExecutor-"));
     }
 
     @Override
