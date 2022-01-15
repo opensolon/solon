@@ -222,18 +222,25 @@ public class CacheExecutorImp {
                 }
 
                 if (obj != null) {
-                    FieldWrap fw = ClassWrap.get(obj.getClass()).getFieldWrap(fieldKey);
-                    if (fw == null) {
-                        throw new IllegalArgumentException("Missing cache tag parameter (result field): " + name);
+                    Object valTmp = null;
+
+                    if (obj instanceof Map) {
+                        valTmp = ((Map) obj).get(fieldKey);
+                    } else {
+                        FieldWrap fw = ClassWrap.get(obj.getClass()).getFieldWrap(fieldKey);
+                        if (fw == null) {
+                            throw new IllegalArgumentException("Missing cache tag parameter (result field): " + name);
+                        }
+
+                        try {
+                            valTmp = fw.getValue(obj);
+                        } catch (ReflectiveOperationException e) {
+                            throw new RuntimeException(e);
+                        }
                     }
 
-                    try {
-                        Object val2 = fw.getValue(obj);
-                        if (val2 != null) {
-                            fieldVal = val2.toString();
-                        }
-                    } catch (ReflectiveOperationException e) {
-                        throw new RuntimeException(e);
+                    if (valTmp != null) {
+                        fieldVal = valTmp.toString();
                     }
                 }
 
