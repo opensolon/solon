@@ -1,4 +1,4 @@
-package features;
+package features.cache;
 
 import org.noear.solon.data.annotation.Cache;
 import org.noear.solon.data.annotation.CacheRemove;

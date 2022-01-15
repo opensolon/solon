@@ -1,4 +1,4 @@
-package features;
+package features.cache;
 
 import org.noear.solon.Solon;
 
