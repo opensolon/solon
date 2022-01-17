@@ -3,6 +3,7 @@ package org.noear.solon.boot.socketd.jdksocket;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.core.util.PrintUtil;
+import org.noear.solon.ext.NamedThreadFactory;
 import org.noear.solon.socketd.ListenerProxy;
 import org.noear.solon.socketd.client.jdksocket.BioReceiver;
 import org.noear.solon.socketd.client.jdksocket.BioSocketSession;
@@ -15,7 +16,7 @@ import java.util.concurrent.Executors;
 
 class BioServer {
     private ServerSocket server;
-    private ExecutorService pool = Executors.newCachedThreadPool();
+    private ExecutorService pool = Executors.newCachedThreadPool(new NamedThreadFactory("jdksocket-"));
 
     public void start(int port) {
         new Thread(() -> {
