@@ -2,12 +2,11 @@ package org.noear.solon.core.wrap;
 
 import org.noear.solon.core.VarHolder;
 import org.noear.solon.core.event.EventBus;
+import org.noear.solon.core.util.GenericUtil;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
+import java.lang.reflect.*;
+import java.util.Map;
 
 /**
  * 字段包装
@@ -58,12 +57,22 @@ public class FieldWrap {
         annoS = f1.getDeclaredAnnotations();
         readonly = isFinal;
 
-        type = f1.getType();
+
         Type tmp = f1.getGenericType();
-        if (tmp instanceof ParameterizedType) {
-            genericType = (ParameterizedType) tmp;
-        } else {
+        if (tmp instanceof TypeVariable) {
             genericType = null;
+            //如果是类型变量，则重新构建类型
+
+            Map<TypeVariable, Type> gMap = GenericUtil.getGenericInfo(clz);
+            type = (Class<?>) gMap.get(tmp);
+        } else {
+            type = f1.getType();
+
+            if (tmp instanceof ParameterizedType) {
+                genericType = (ParameterizedType) tmp;
+            } else {
+                genericType = null;
+            }
         }
 
         field.setAccessible(true);

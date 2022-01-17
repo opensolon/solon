@@ -240,7 +240,8 @@ public class ClassWrap {
 
                 if (checker.test(f.getName()) == false) {
                     _recordable &= Modifier.isFinal(mod);
-                    consumer.accept(f.getName(), new FieldWrap(clz, f, Modifier.isFinal(mod)));
+                    //使用当前类，而不是申明类！
+                    consumer.accept(f.getName(), new FieldWrap(_clz, f, Modifier.isFinal(mod)));
                 }
             }
         }
