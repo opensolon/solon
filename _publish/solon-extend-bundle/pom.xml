@@ -37,11 +37,12 @@
         <module>../../_extend/solon.extend.stop</module>
         <module>../../_extend/solon.extend.jsr330</module>
         <module>../../_extend/solon.extend.jsr303</module>
-        <module>../../_extend/solon.extend.async</module>
         <module>../../_extend/solon.extend.cors</module>
         <module>../../_extend/solon.extend.health</module>
         <module>../../_extend/solon.extend.graalvm</module>
         <module>../../_extend/solon.extend.hotdev</module>
+        <module>../../_extend/solon.extend.async</module>
+        <module>../../_extend/solon.extend.retry</module>
 
         <module>../../_extend/solon.extend.schedule</module>
     </modules>
