@@ -48,19 +48,12 @@ public class NvMap extends LinkedCaseInsensitiveMap<String> {
         NvMap d = new NvMap();
 
         if (args != null) {
-            int len = args.size();
-
-            for (int i = 0; i < len; i++) {
-                String arg = args.get(i).replaceAll("-*", "");
-
+            for (String arg : args) {
                 if (arg.indexOf("=") > 0) {
                     String[] ss = arg.split("=");
-                    d.put(ss[0], ss[1]);
+                    d.put(ss[0].replaceAll("^-*", ""), ss[1]);
                 } else {
-                    if (i + 1 < len) {
-                        d.put(arg, args.get(i + 1));
-                    }
-                    i++;
+                    d.put(arg.replaceAll("^-*", ""), "");
                 }
             }
         }
