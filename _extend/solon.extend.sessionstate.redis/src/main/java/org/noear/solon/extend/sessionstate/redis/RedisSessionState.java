@@ -117,7 +117,7 @@ public class RedisSessionState extends SessionStateDefault {
                 case "Double":return data.val().getDouble();
                 case "Date":return data.val().getDate();
                 case "Boolean":return data.val().getBoolean();
-                default:return data.toObject(null);
+                default:return data.toObject(Object.class);
             }
 
         }catch (Exception ex){
