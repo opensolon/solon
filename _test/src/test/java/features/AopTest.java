@@ -13,10 +13,15 @@ public class AopTest {
     @Inject
     Bean2 bean2;
 
+    @Inject("${testpath}")
+    String testpath;
+
     //双向依赖的bean测试
     //
     @Test
-    public void test(){
-        assert  "bean2bean1".equals(bean2.namePlus());
+    public void test() {
+        assert "bean2bean1".equals(bean2.namePlus());
+        assert "D:/abc-1-2.12/xx.xml".equals(testpath);
+        System.out.println(testpath);
     }
 }
