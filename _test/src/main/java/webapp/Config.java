@@ -16,7 +16,7 @@ import java.util.concurrent.Executors;
  */
 @Configuration
 public class Config {
-    @Bean(value = "map1", typed = true)
+    @Bean(value = "map1")
     public Map<String, Object> map() {
         Map<String, Object> map = new HashMap<>();
         map.put("1", 1);
