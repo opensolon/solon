@@ -1,4 +1,9 @@
 #### 1.6.17-m1
+* 进一步增强注入泛型推断能力
+* 增加泛型基类注册
+* 所有泛型基类，都改为typeName注册；同时基于typeName注入。
+
+#### 1.6.16
 * mybatis 升为 3.5.9
 * mybatis 升为 3.5.0
 * sqlhelper-mybatis  升为 3.6.9

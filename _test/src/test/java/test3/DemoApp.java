@@ -8,7 +8,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.annotation.*;
 
 
-@Component
+@Configuration
 public class DemoApp {
 
     public static void main(String[] args) throws Exception {
