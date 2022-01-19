@@ -301,7 +301,7 @@ public abstract class BeanContainer {
             //
             // @Inject //使用 type, 注入BEAN
             //
-            if(varH.getGenericType() == null){
+            if(varH.getGenericType() != null){
                 getWrapAsyn(varH.getGenericType().getTypeName(), (bw) -> {
                     varH.setValue(bw.get());
                 });

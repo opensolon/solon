@@ -14,37 +14,37 @@ public class DemoApp {
         Parent o = Aop.get(S1.class);
         Parent o2 = Aop.get(S2.class);
 
-        o.hello();
-        o2.hello();
+        assert o.hello() == 1;
+        assert o2.hello() == 2;
 
-        System.out.println();
+        System.out.println("ok");
     }
 
 
     public interface Service {
-        void hello();
+        int hello();
     }
 
     public abstract static class Parent<T extends Service> {
         @Inject
         protected T s;
 
-        public void hello() {
-            this.s.hello();
+        public int hello() {
+            return this.s.hello();
         }
     }
 
     @Component
     public static class Service1 implements Service {
-        public void hello() {
-            System.out.println(1);
+        public int hello() {
+            return 1;
         }
     }
 
     @Component
     public static class Service2 implements Service {
-        public void hello() {
-            System.out.println(2);
+        public int hello() {
+            return 2;
         }
     }
 

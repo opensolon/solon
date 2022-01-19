@@ -1,4 +1,4 @@
-#### 1.6.16
+#### 1.6.17-m1
 * mybatis 升为 3.5.9
 * mybatis 升为 3.5.0
 * sqlhelper-mybatis  升为 3.6.9

@@ -37,7 +37,7 @@ public class DemoApp {
         @Inject
         protected Base<T, K> service;
 
-        @Inject
+        @Inject //这个不支持
         public void setService(Base<T, K> service) {
             if (this.service != service) {
                 throw new IllegalStateException();
