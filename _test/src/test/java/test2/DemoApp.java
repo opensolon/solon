@@ -37,6 +37,7 @@ public class DemoApp {
     @Component
     public static class Service1 implements Service {
         public int hello() {
+            System.out.println(1);
             return 1;
         }
     }
@@ -44,6 +45,7 @@ public class DemoApp {
     @Component
     public static class Service2 implements Service {
         public int hello() {
+            System.out.println(2);
             return 2;
         }
     }
