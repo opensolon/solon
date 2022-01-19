@@ -11,6 +11,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
+import java.lang.reflect.Type;
 import java.util.*;
 
 /**
@@ -137,6 +138,13 @@ public class MethodWrap implements Interceptor, MethodHolder {
      */
     public Class<?> getReturnType() {
         return method.getReturnType();
+    }
+
+    /**
+     * 获取函数泛型类型
+     */
+    public Type getGenericReturnType() {
+        return method.getGenericReturnType();
     }
 
     /**

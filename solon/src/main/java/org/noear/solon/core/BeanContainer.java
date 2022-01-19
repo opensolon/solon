@@ -301,9 +301,15 @@ public abstract class BeanContainer {
             //
             // @Inject //使用 type, 注入BEAN
             //
-            getWrapAsyn(varH.getType(), (bw) -> {
-                varH.setValue(bw.get());
-            });
+            if(varH.getGenericType() == null){
+                getWrapAsyn(varH.getGenericType().getTypeName(), (bw) -> {
+                    varH.setValue(bw.get());
+                });
+            }else{
+                getWrapAsyn(varH.getType(), (bw) -> {
+                    varH.setValue(bw.get());
+                });
+            }
         } else if (name.startsWith("${classpath:")) {
             //
             // @Inject("${classpath:user.yml}") //注入配置文件

@@ -16,6 +16,8 @@ import org.noear.solon.core.util.ScanUtil;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.*;
 
 /**
@@ -440,7 +442,8 @@ public class AopContext extends BeanContainer {
     protected void tryBuildBean0(MethodWrap mWrap, Bean anno, Object raw) {
         if (raw != null) {
             Class<?> beanClz = mWrap.getReturnType();
-            Inject beanInj = mWrap.getAnnotation(Inject.class);
+            Type     beanGtp = mWrap.getGenericReturnType();
+            Inject   beanInj = mWrap.getAnnotation(Inject.class);
 
             BeanWrap m_bw = null;
             if (raw instanceof BeanWrap) {
@@ -461,6 +464,11 @@ public class AopContext extends BeanContainer {
             }
 
             String beanName = Utils.annoAlias(anno.value(), anno.name());
+            if(Utils.isEmpty(beanName) && beanGtp instanceof ParameterizedType){
+                //如果是 ParameterizedType，则将类型做为名字
+                beanName = beanGtp.getTypeName();
+            }
+
             m_bw.nameSet(beanName);
             m_bw.tagSet(anno.tag());
             m_bw.typedSet(anno.typed());
