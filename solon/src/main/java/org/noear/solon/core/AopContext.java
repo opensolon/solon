@@ -445,8 +445,8 @@ public class AopContext extends BeanContainer {
     protected void tryBuildBean0(MethodWrap mWrap, Bean anno, Object raw) {
         if (raw != null) {
             Class<?> beanClz = mWrap.getReturnType();
-            Type     beanGtp = mWrap.getGenericReturnType();
-            Inject   beanInj = mWrap.getAnnotation(Inject.class);
+            Type beanGtp = mWrap.getGenericReturnType();
+            Inject beanInj = mWrap.getAnnotation(Inject.class);
 
             BeanWrap m_bw = null;
             if (raw instanceof BeanWrap) {
@@ -467,10 +467,6 @@ public class AopContext extends BeanContainer {
             }
 
             String beanName = Utils.annoAlias(anno.value(), anno.name());
-            if(Utils.isEmpty(beanName) && beanGtp instanceof ParameterizedType){
-                //如果是 ParameterizedType，则将类型做为名字
-                beanName = beanGtp.getTypeName();
-            }
 
             m_bw.nameSet(beanName);
             m_bw.tagSet(anno.tag());
@@ -481,6 +477,11 @@ public class AopContext extends BeanContainer {
 
             //注册到容器
             beanRegister(m_bw, beanName, anno.typed());
+
+            //尝试泛型注册(通过 name 实现)
+            if (beanGtp instanceof ParameterizedType) {
+                putWrap(beanGtp.getTypeName(), m_bw);
+            }
 
             //@Bean 动态产生的 beanWrap（含 name,tag,attrs），进行事件通知
             EventBus.push(m_bw);
