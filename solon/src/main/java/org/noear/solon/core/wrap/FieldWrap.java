@@ -3,6 +3,7 @@ package org.noear.solon.core.wrap;
 import org.noear.solon.core.VarHolder;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.GenericUtil;
+import org.noear.solon.core.util.ParameterizedTypeImpl;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
@@ -51,7 +52,7 @@ public class FieldWrap {
      */
     private Method _getter;
 
-    public FieldWrap(Class<?> clz, Field f1, boolean isFinal) {
+    protected FieldWrap(Class<?> clz, Field f1, boolean isFinal) {
         entityClz = clz;
         field = f1;
         annoS = f1.getDeclaredAnnotations();
@@ -69,7 +70,22 @@ public class FieldWrap {
             type = f1.getType();
 
             if (tmp instanceof ParameterizedType) {
-                genericType = (ParameterizedType) tmp;
+                ParameterizedType gt0 = (ParameterizedType) tmp;
+
+                Map<TypeVariable, Type> gMap = GenericUtil.getGenericInfo(clz);
+                Type[] typeArgs0 = gt0.getActualTypeArguments();
+                Type[] typeArgs2 =  new Type[typeArgs0.length];
+
+                for(int i=0; i<typeArgs0.length; i++){
+                    Type t1 = typeArgs0[i];
+                    if(t1 instanceof TypeVariable){
+                        typeArgs2[i] = gMap.get(t1);
+                    }else{
+                        typeArgs2[i] = t1;
+                    }
+                }
+
+                genericType = new ParameterizedTypeImpl(typeArgs2, gt0.getOwnerType(), gt0.getRawType());
             } else {
                 genericType = null;
             }
