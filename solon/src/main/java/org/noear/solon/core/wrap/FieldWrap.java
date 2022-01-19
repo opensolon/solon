@@ -73,18 +73,23 @@ public class FieldWrap {
                 ParameterizedType gt0 = (ParameterizedType) tmp;
 
                 Map<String, Type> gMap = GenericUtil.getGenericInfo(clz);
-                Type[] typeArgs0 = gt0.getActualTypeArguments();
-                Type[] typeArgs2 =  new Type[typeArgs0.length];
+                Type[] gArgs = gt0.getActualTypeArguments();
+                boolean gChanged = false;
 
-                for(int i=0; i<typeArgs0.length; i++){
-                    Type t1 = typeArgs0[i];
-                    if(t1 instanceof TypeVariable){
-                        typeArgs2[i] = gMap.get(t1.getTypeName());
-                    }else{
-                        typeArgs2[i] = t1;
+                for (int i = 0; i < gArgs.length; i++) {
+                    Type t1 = gArgs[i];
+                    if (t1 instanceof TypeVariable) {
+                        //尝试转换参数类型
+                        gArgs[i] = gMap.get(t1.getTypeName());
+                        gChanged = true;
                     }
                 }
-                genericType =  ParameterizedTypeImpl.make((Class<?>) gt0.getRawType(), typeArgs2, gt0.getOwnerType());
+
+                if (gChanged) {
+                    genericType = ParameterizedTypeImpl.make((Class<?>) gt0.getRawType(), gArgs, gt0.getOwnerType());
+                } else {
+                    genericType = gt0;
+                }
             } else {
                 genericType = null;
             }
