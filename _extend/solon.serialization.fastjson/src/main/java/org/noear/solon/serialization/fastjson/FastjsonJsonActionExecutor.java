@@ -42,7 +42,7 @@ public class FastjsonJsonActionExecutor extends ActionExecutorDefault {
         }
 
         if (bodyObj == null) {
-            return null;
+            return super.changeValue(ctx, p, pi, pt, bodyObj);
         }
 
         if (bodyObj instanceof JSONObject) {

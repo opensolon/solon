@@ -6,8 +6,9 @@
 * 修复 redis 单词拼写错误（maxTotaol -> maxTotal）
 * 修复 启动参数值会丢失"-"的顺题
 * 修复 sessionstate.redis 不能反序列化对象的问题
+* 修复 json post 空值时，不会触发实体验证机制
 * 增加 注入泛型推断支持。泛型一般为两种（ParameterizedType 和 TypeVariable）
-* 增加 sessionstate.jwt 对象存储的问题##
+* 增加 国际化配置 支持 yml 格式
 
 #### 1.6.15
 * 修复 当主应用配置有变量时，应用环境配置无法替换的问题

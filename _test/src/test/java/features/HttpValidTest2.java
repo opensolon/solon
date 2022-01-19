@@ -24,6 +24,11 @@ public class HttpValidTest2 extends HttpTestBase {
     }
 
     @Test
+    public void test0_1() throws IOException {
+        assert path("/demo2/valid/bean2").bodyJson("").post().contains("field1");
+    }
+
+    @Test
     public void test1() throws IOException {
         Map<String, String> data = new LinkedHashMap<>();
         data.put("field1", "2020-12-12T12:12:12");

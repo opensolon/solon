@@ -29,7 +29,7 @@ public class I18nBundleLocal implements I18nBundle {
         String bundleName2 = bundleName.replace(".", "/");
 
         //加载默认配置
-        bundle = Utils.loadProperties(bundleName2 + ".properties");
+        bundle = loadProperties(bundleName2, new String[]{".properties", ".yml"});
         if (bundle == null) {
             bundle = new Properties();
         }
@@ -38,7 +38,7 @@ public class I18nBundleLocal implements I18nBundle {
         Properties tmp = null;
 
         //尝试加(语言)的配置
-        tmp = Utils.loadProperties(bundleName2 + "_" + locale.getLanguage() + ".properties");
+        tmp = loadProperties(bundleName2 + "_" + locale.getLanguage(), new String[]{".properties", ".yml"});
 
         if (tmp != null) {
             //如果有，替换掉默认配置
@@ -48,7 +48,7 @@ public class I18nBundleLocal implements I18nBundle {
         }
 
         //尝试(语言_国家)的配置
-        tmp = Utils.loadProperties(bundleName2 + "_" + locale + ".properties");
+        tmp = loadProperties(bundleName2 + "_" + locale, new String[]{".properties", ".yml"});
 
         if (tmp != null) {
             //如果有，替换掉默认配置
@@ -95,6 +95,18 @@ public class I18nBundleLocal implements I18nBundle {
                     + ", key " + key,
                     this.getClass().getName(),
                     key);
+        }
+
+        return tmp;
+    }
+
+    private Properties loadProperties(String path, String[] extensions) {
+        Properties tmp = null;
+        for (String ext : extensions) {
+            tmp = Utils.loadProperties(path + ext);
+            if (tmp != null) {
+                break;
+            }
         }
 
         return tmp;

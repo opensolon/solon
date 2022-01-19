@@ -54,7 +54,7 @@ public class JacksonActionExecutor extends ActionExecutorDefault {
         }
 
         if (bodyObj == null) {
-            return null;
+            return super.changeValue(ctx, p, pi, pt, bodyObj);
         }
 
         JsonNode tmp = (JsonNode) bodyObj;

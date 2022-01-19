@@ -46,7 +46,7 @@ public class SnackJsonActionExecutor extends ActionExecutorDefault {
         }
 
         if (bodyObj == null) {
-            return null;
+            return super.changeValue(ctx, p, pi, pt, bodyObj);
         }
 
         ONode tmp = (ONode) bodyObj;
