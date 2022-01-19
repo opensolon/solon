@@ -117,6 +117,9 @@ public class FieldWrap {
      * 设置字段的值
      */
     public void setValue(Object tObj, Object val) {
+        setValue(tObj, val, false);
+    }
+    public void setValue(Object tObj, Object val, boolean disProp) {
         if (readonly){
             return;
         }
@@ -126,7 +129,7 @@ public class FieldWrap {
                 return;
             }
 
-            if (_setter == null) {
+            if (_setter == null || disProp) {
                 field.set(tObj, val);
             } else {
                 _setter.invoke(tObj, new Object[]{val});

@@ -37,7 +37,7 @@ public class DemoApp {
         @Inject
         protected Base<T, K> service;
 
-        @Inject //这个不支持
+        @Inject //这个不支持函数注入；还可能会被当成属性的set
         public void setService(Base<T, K> service) {
             if (this.service != service) {
                 throw new IllegalStateException();

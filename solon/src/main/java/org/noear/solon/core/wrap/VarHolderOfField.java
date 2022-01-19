@@ -53,6 +53,6 @@ public class VarHolderOfField implements VarHolder {
      */
     @Override
     public void setValue(Object val) {
-        fw.setValue(obj, val);
+        fw.setValue(obj, val, true);
     }
 }
