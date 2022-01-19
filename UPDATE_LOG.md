@@ -1,12 +1,12 @@
 #### 1.6.16
-* 修复单词拼写错误（maxTotaol -> maxTotal）
 * mybatis 升为 3.5.9
 * mybatis 升为 3.5.0
 * sqlhelper-mybatis  升为 3.6.9
 * pagehelper 升为 5.3.0
-* 增加 注入泛型推断支持。泛型一般为两种（ParameterizedType 和 TypeVariable）
+* 修复 redis 单词拼写错误（maxTotaol -> maxTotal）
 * 修复 启动参数值会丢失"-"的顺题
 * 修复 sessionstate.redis 不能反序列化对象的问题
+* 增加 注入泛型推断支持。泛型一般为两种（ParameterizedType 和 TypeVariable）
 * 增加 sessionstate.jwt 对象存储的问题
 
 #### 1.6.15
