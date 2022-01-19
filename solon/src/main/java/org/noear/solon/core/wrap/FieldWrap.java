@@ -119,7 +119,7 @@ public class FieldWrap {
     public void setValue(Object tObj, Object val) {
         setValue(tObj, val, false);
     }
-    public void setValue(Object tObj, Object val, boolean disProp) {
+    public void setValue(Object tObj, Object val, boolean disFun) {
         if (readonly){
             return;
         }
@@ -129,7 +129,7 @@ public class FieldWrap {
                 return;
             }
 
-            if (_setter == null || disProp) {
+            if (_setter == null || disFun) {
                 field.set(tObj, val);
             } else {
                 _setter.invoke(tObj, new Object[]{val});
