@@ -62,6 +62,8 @@ public class DemoApp {
         public void afterPropertiesSet() {
             if (this.defaultBase != this.service) {
                 throw new IllegalStateException();
+            }else{
+                System.out.println("ok");
             }
         }
     }

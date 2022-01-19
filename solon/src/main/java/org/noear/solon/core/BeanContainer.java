@@ -12,6 +12,7 @@ import org.noear.solon.core.wrap.ClassWrap;
 import org.noear.solon.core.util.ConvertUtil;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Type;
 import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.BiPredicate;
@@ -246,7 +247,7 @@ public abstract class BeanContainer {
      * 尝试BEAN注册（按名字和类型存入容器；并进行类型印射）
      */
     public void beanRegister(BeanWrap bw, String name, boolean typed) {
-        beanRegister0(bw, name, typed);
+        beanRegisterDo(bw, name, typed);
 
         //如果是remoting状态，同时加载到 Solon 路由器
         if (bw.remoting()) {
@@ -260,7 +261,7 @@ public abstract class BeanContainer {
         }
     }
 
-    private void beanRegister0(BeanWrap bw, String name, boolean typed) {
+    protected void beanRegisterDo(BeanWrap bw, String name, boolean typed) {
         if (Utils.isNotEmpty(name)) {
             //有name的，只用name注入
             //
@@ -274,6 +275,10 @@ public abstract class BeanContainer {
         putWrap(bw.clz(), bw);
         putWrap(bw.clz().getName(), bw);
 
+        beanRegisterSupDo(bw);
+    }
+
+    protected void beanRegisterSupDo(BeanWrap bw) {
         //如果有父级接口，则建立关系映射
         Class<?>[] list = bw.clz().getInterfaces();
         for (Class<?> c : list) {
@@ -282,6 +287,11 @@ public abstract class BeanContainer {
                 clzMapping.putIfAbsent(c, bw.clz());
                 putWrap(c, bw);
             }
+        }
+
+        Type[] list2 = bw.clz().getGenericInterfaces();
+        for (Type t : list2) {
+            putWrap(t.getTypeName(), bw);
         }
     }
 

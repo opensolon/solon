@@ -3,7 +3,7 @@ package org.noear.solon.core.wrap;
 import org.noear.solon.core.VarHolder;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.GenericUtil;
-import org.noear.solon.core.util.ParameterizedTypeImpl;
+import sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
@@ -64,28 +64,27 @@ public class FieldWrap {
             genericType = null;
             //如果是类型变量，则重新构建类型
 
-            Map<TypeVariable, Type> gMap = GenericUtil.getGenericInfo(clz);
-            type = (Class<?>) gMap.get(tmp);
+            Map<String, Type> gMap = GenericUtil.getGenericInfo(clz);
+            type = (Class<?>) gMap.get(tmp.getTypeName());
         } else {
             type = f1.getType();
 
             if (tmp instanceof ParameterizedType) {
                 ParameterizedType gt0 = (ParameterizedType) tmp;
 
-                Map<TypeVariable, Type> gMap = GenericUtil.getGenericInfo(clz);
+                Map<String, Type> gMap = GenericUtil.getGenericInfo(clz);
                 Type[] typeArgs0 = gt0.getActualTypeArguments();
                 Type[] typeArgs2 =  new Type[typeArgs0.length];
 
                 for(int i=0; i<typeArgs0.length; i++){
                     Type t1 = typeArgs0[i];
                     if(t1 instanceof TypeVariable){
-                        typeArgs2[i] = gMap.get(t1);
+                        typeArgs2[i] = gMap.get(t1.getTypeName());
                     }else{
                         typeArgs2[i] = t1;
                     }
                 }
-
-                genericType = new ParameterizedTypeImpl(typeArgs2, gt0.getOwnerType(), gt0.getRawType());
+                genericType =  ParameterizedTypeImpl.make((Class<?>) gt0.getRawType(), typeArgs2, gt0.getOwnerType());
             } else {
                 genericType = null;
             }

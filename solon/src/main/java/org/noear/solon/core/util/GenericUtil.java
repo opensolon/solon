@@ -83,7 +83,7 @@ public class GenericUtil {
 
     ///////////////////////////
 
-    private static final Map<Type, Map<TypeVariable, Type>> genericInfoCached = new HashMap<>();
+    private static final Map<Type, Map<String, Type>> genericInfoCached = new HashMap<>();
 
     /**
      * 获取泛型变量和泛型实际类型的对应关系Map
@@ -91,8 +91,8 @@ public class GenericUtil {
      * @param type 被解析的包含泛型参数的类
      * @return 泛型对应关系Map
      */
-    public static Map<TypeVariable, Type> getGenericInfo(Type type) {
-        Map<TypeVariable, Type> tmp = genericInfoCached.get(type);
+    public static Map<String, Type> getGenericInfo(Type type) {
+        Map<String, Type> tmp = genericInfoCached.get(type);
         if (tmp == null) {
             synchronized (type) {
                 tmp = genericInfoCached.get(type);
@@ -114,8 +114,8 @@ public class GenericUtil {
      * @param type 被解析的包含泛型参数的类
      * @return 泛型对应关系Map
      */
-    private static Map<TypeVariable, Type> createTypeGenericMap(Type type) {
-        final Map<TypeVariable, Type> typeMap = new HashMap<>();
+    private static Map<String, Type> createTypeGenericMap(Type type) {
+        final Map<String, Type> typeMap = new HashMap<>();
 
         // 按继承层级寻找泛型变量和实际类型的对应关系
         // 在类中，对应关系分为两类：
@@ -138,7 +138,7 @@ public class GenericUtil {
                 value = typeArguments[i];
                 // 跳过泛型变量对应泛型变量的情况
                 if(false == value instanceof TypeVariable){
-                    typeMap.put(typeParameters[i], value);
+                    typeMap.put(typeParameters[i].getTypeName(), value);
                 }
             }
 
