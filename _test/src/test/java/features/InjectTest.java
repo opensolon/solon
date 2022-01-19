@@ -26,7 +26,7 @@ public class InjectTest {
     String formattest2;
 
 
-    @Inject("map1")
+    @Inject
     Map<String, Object> map;
 
     @Test
