@@ -4,8 +4,10 @@
 * mybatis 升为 3.5.0
 * sqlhelper-mybatis  升为 3.6.9
 * pagehelper 升为 5.3.0
-* 增加泛型注入推断
-* 调整启动参数，不自动去掉值的"-"
+* 增加 注入泛型推断支持。泛型一般为两种（ParameterizedType 和 TypeVariable）
+* 修复 启动参数值会丢失"-"的顺题
+* 修复 sessionstate.redis 不能反序列化对象的问题
+* 增加 sessionstate.jwt 对象存储的问题
 
 #### 1.6.15
 * 修复 当主应用配置有变量时，应用环境配置无法替换的问题
