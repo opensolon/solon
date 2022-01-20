@@ -86,7 +86,11 @@ public class SolonServletContext extends Context {
             try {
                 MultipartUtil.buildParamsAndFiles(this);
             } catch (Throwable ex) {
-                throw new RuntimeException(ex);
+                if (ex instanceof RuntimeException) {
+                    throw (RuntimeException) ex;
+                } else {
+                    throw new RuntimeException(ex);
+                }
             }
         }
     }

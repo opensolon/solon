@@ -28,7 +28,11 @@ public class JlHttpContext extends Context {
                 _fileMap = new HashMap<>();
                 MultipartUtil.buildParamsAndFiles(this);
             } catch (Throwable ex) {
-                throw new RuntimeException(ex);
+                if (ex instanceof RuntimeException) {
+                    throw (RuntimeException) ex;
+                } else {
+                    throw new RuntimeException(ex);
+                }
             }
         }
     }
