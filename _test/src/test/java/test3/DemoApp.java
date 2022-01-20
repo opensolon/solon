@@ -37,7 +37,7 @@ public class DemoApp {
         @Inject
         protected Base<T, K> service;
 
-        //@Inject //这个不支持函数注入；//避免误用，取消函数注入了
+        //@Inject //@Inject 与 @Bean 配合才有效；//避免误用，取消函数注入了
         public void setService(Base<T, K> service) {
             if (this.service != service) {
                 throw new IllegalStateException();

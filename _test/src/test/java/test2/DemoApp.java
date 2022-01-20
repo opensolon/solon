@@ -14,47 +14,43 @@ public class DemoApp {
         Parent o = Aop.get(S1.class);
         Parent o2 = Aop.get(S2.class);
 
-         o.hello();
-         o2.hello();
+        o.hello();
+        o2.hello();
 
         System.out.println("ok");
     }
 
 
     public interface Service {
-        int hello();
+        void hello();
     }
 
     public abstract static class Parent<T extends Service> {
         @Inject
         protected T s;
 
-        public int hello() {
-            return this.s.hello();
+        public void hello() {
+            this.s.hello();
         }
     }
 
     @Component
     public static class Service1 implements Service {
-        public int hello() {
+        public void hello() {
             System.out.println(1);
-            return 1;
         }
     }
 
     @Component
     public static class Service2 implements Service {
-        public int hello() {
+        public void hello() {
             System.out.println(2);
-            return 2;
         }
     }
 
     @Component
-    public static class S1 extends Parent<Service1> {
-    }
+    public static class S1 extends Parent<Service1> {}
 
     @Component
-    public static class S2 extends Parent<Service2> {
-    }
+    public static class S2 extends Parent<Service2> {}
 }
