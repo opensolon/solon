@@ -51,10 +51,8 @@ public class DemoApp {
     public static class DefaultController extends IntBaseController<Entity> {
         @Inject
         private DefaultBaseImpl defaultBase;
-
         @Inject
         private Base<Bean1, Long> bean1Base;
-
         @Inject
         private Base<Bean2, Long> bean2Base;
 
