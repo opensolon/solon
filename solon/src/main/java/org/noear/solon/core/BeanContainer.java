@@ -247,9 +247,25 @@ public abstract class BeanContainer {
      * 尝试BEAN注册（按名字和类型存入容器；并进行类型印射）
      */
     public void beanRegister(BeanWrap bw, String name, boolean typed) {
-        beanRegisterDo(bw, name, typed);
+        //按名字注册
+        if (Utils.isNotEmpty(name)) {
+            //有name的，只用name注入
+            //
+            putWrap(name, bw);
+            if (typed == false) {
+                //如果非typed，则直接返回
+                return;
+            }
+        }
 
-        //如果是remoting状态，同时加载到 Solon 路由器
+        //按类型注册
+        putWrap(bw.clz(), bw);
+        putWrap(bw.clz().getName(), bw);
+
+        //尝试Bean的基类注册
+        beanRegisterSup0(bw);
+
+        //尝试Remoting处理。如果是，则加载到 Solon 路由器
         if (bw.remoting()) {
             HandlerLoader bww = new HandlerLoader(bw);
             if (bww.mapping() != null) {
@@ -261,24 +277,10 @@ public abstract class BeanContainer {
         }
     }
 
-    protected void beanRegisterDo(BeanWrap bw, String name, boolean typed) {
-        if (Utils.isNotEmpty(name)) {
-            //有name的，只用name注入
-            //
-            putWrap(name, bw);
-            if (typed == false) {
-                //如果非typed，则直接返回
-                return;
-            }
-        }
-
-        putWrap(bw.clz(), bw);
-        putWrap(bw.clz().getName(), bw);
-
-        beanRegisterSupDo(bw);
-    }
-
-    protected void beanRegisterSupDo(BeanWrap bw) {
+    /**
+     * 尝试Bean的基类注册
+     * */
+    protected void beanRegisterSup0(BeanWrap bw) {
         //如果有父级接口，则建立关系映射
         Class<?>[] list = bw.clz().getInterfaces();
         for (Class<?> c : list) {

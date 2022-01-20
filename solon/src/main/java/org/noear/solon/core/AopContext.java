@@ -75,7 +75,7 @@ public class AopContext extends BeanContainer {
             //beanRegister(bw,bw.name(),bw.typed());
 
             //支持基类注册
-            beanRegisterSupDo(bw);
+            beanRegisterSup0(bw);
         });
 
         //注册 @Component 构建器
@@ -446,17 +446,17 @@ public class AopContext extends BeanContainer {
         if (raw != null) {
             Class<?> beanClz = mWrap.getReturnType();
             Type beanGtp = mWrap.getGenericReturnType();
-            Inject beanInj = mWrap.getAnnotation(Inject.class);
+            //Inject beanInj = mWrap.getAnnotation(Inject.class);
 
             BeanWrap m_bw = null;
             if (raw instanceof BeanWrap) {
                 m_bw = (BeanWrap) raw;
             } else {
-                if (beanInj != null && Utils.isEmpty(beanInj.value()) == false) {
-                    if (beanInj.value().startsWith("${")) {
-                        Utils.injectProperties(raw, Solon.cfg().getPropByExpr(beanInj.value()));
-                    }
-                }
+//                if (beanInj != null && Utils.isEmpty(beanInj.value()) == false) {
+//                    if (beanInj.value().startsWith("${")) {
+//                        Utils.injectProperties(raw, Solon.cfg().getPropByExpr(beanInj.value()));
+//                    }
+//                }
 
                 //@Bean 动态构建的bean, 可通过事件广播进行扩展
                 EventBus.push(raw);

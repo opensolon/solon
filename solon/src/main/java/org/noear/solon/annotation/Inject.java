@@ -43,7 +43,7 @@ import java.lang.annotation.*;
  * @author noear
  * @since 1.0
  * */
-@Target({ElementType.FIELD, ElementType.PARAMETER, ElementType.METHOD, ElementType.TYPE})
+@Target({ElementType.FIELD, ElementType.PARAMETER, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface Inject {
