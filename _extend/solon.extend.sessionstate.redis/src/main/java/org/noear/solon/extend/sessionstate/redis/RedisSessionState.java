@@ -62,7 +62,7 @@ public class RedisSessionState extends SessionStateDefault {
         String _sessionId = ctx.attr("sessionId",null);
 
         if(_sessionId == null){
-            _sessionId = sessionId_get(false);
+            _sessionId = sessionIdGet(false);
             ctx.attrSet("sessionId",_sessionId);
         }
 
@@ -71,12 +71,12 @@ public class RedisSessionState extends SessionStateDefault {
 
     @Override
     public String sessionChangeId() {
-        sessionId_get(true);
+        sessionIdGet(true);
         ctx.attrSet("sessionId", null);
         return sessionId();
     }
 
-    private String sessionId_get(boolean reset) {
+    private String sessionIdGet(boolean reset) {
         String skey = cookieGet(SESSIONID_KEY);
         String smd5 = cookieGet(SESSIONID_MD5());
 
@@ -117,7 +117,7 @@ public class RedisSessionState extends SessionStateDefault {
                 case "Double":return data.val().getDouble();
                 case "Date":return data.val().getDate();
                 case "Boolean":return data.val().getBoolean();
-                default:return data.toObject(Object.class);
+                default:return data.toObject();
             }
 
         }catch (Exception ex){
