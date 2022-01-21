@@ -26,13 +26,18 @@ public class Config {
     }
 
     @Bean
-    public void test(@Inject("map1") BeanWrap bw) {
+    public void test1(@Inject("map1") BeanWrap bw) {
         Map map = bw.get();
         System.out.println("map::" + map.toString());
     }
 
     @Bean
-    public void test() {
+    public void test2(@Inject("${username}") String name) {
+        System.out.println("cfg::" +name);
+    }
+
+    @Bean
+    public void test3() {
         ExecutorService pools = Executors.newCachedThreadPool();
         AsyncManager.setExecutor(cmd -> pools.submit(cmd));
     }
