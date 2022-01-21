@@ -21,15 +21,17 @@ public class VarGather implements Runnable {
     int varSize;
     //完成时
     Consumer<Object[]> done;
+    Class<?> clz;
 
-    public VarGather(int varSize, Consumer<Object[]> done) {
+    public VarGather(Class<?> clz , int varSize, Consumer<Object[]> done) {
+        this.clz = clz;
         this.done = done;
         this.varSize = varSize;
         this.vars = new ArrayList<>(varSize);
     }
 
     public VarHolder add(Parameter p) {
-        VarHolderOfParam p2 = new VarHolderOfParam(p, this);
+        VarHolderOfParam p2 = new VarHolderOfParam(clz,p, this);
         vars.add(p2);
         return p2;
     }

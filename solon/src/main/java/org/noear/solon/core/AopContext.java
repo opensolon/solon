@@ -401,7 +401,7 @@ public class AopContext extends BeanContainer {
             tryBuildBean0(mWrap, anno, raw);
         } else {
             //1.构建参数
-            VarGather gather = new VarGather(size2, (args2) -> {
+            VarGather gather = new VarGather(bw.clz(), size2, (args2) -> {
                 try {
                     //
                     //变量收集完成后，会回调此处
