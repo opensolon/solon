@@ -105,7 +105,7 @@ public class Aop {
      *
      * @param type bean type
      */
-    public static <T> T get(Class<?> type) {
+    public static <T> T get(Class<T> type) {
         BeanWrap bw = ac.getWrap(type);
         return bw == null ? null : bw.get();
     }
@@ -115,7 +115,7 @@ public class Aop {
      *
      * @param type bean type
      */
-    public static <T> T getOrNew(Class<?> type) {
+    public static <T> T getOrNew(Class<T> type) {
         return wrapAndPut(type).get();
     }
 

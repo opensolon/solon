@@ -7,6 +7,7 @@ import org.noear.solon.SolonBuilder;
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.Import;
 import org.noear.solon.cloud.CloudClient;
+import org.noear.solon.core.Aop;
 import org.noear.solon.core.ExtendLoader;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.extend.async.annotation.EnableAsync;
@@ -19,6 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import webapp.demo6_aop.TestImport;
 import webapp.dso.AppPluginImp;
+import webapp.models.UserModel;
 
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStreamWriter;
@@ -76,7 +78,6 @@ public class TestApp {
             StaticMappings.add("/ext",false, new ExtendStaticRepository());
             StaticMappings.add("/sa-token",new FileStaticRepository("/Users/noear/Downloads/"));
         });
-
 
         //NamiAttachment.put("lang","en_US");
 
