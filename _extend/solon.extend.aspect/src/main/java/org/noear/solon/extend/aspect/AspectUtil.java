@@ -8,6 +8,7 @@ import org.noear.solon.core.util.ScanUtil;
 
 import java.lang.reflect.InvocationHandler;
 import java.util.Comparator;
+import java.util.function.Predicate;
 
 /**
  * 切面工具
@@ -51,15 +52,34 @@ public class AspectUtil {
 
     /**
      * 为搜索的类，系上拦截代理
+     *
+     * @param basePackage 基础包名
+     * @param handler     拦截代理
      */
     public static void attachByScan(String basePackage, InvocationHandler handler) {
-        attachByScan(JarClassLoader.global(), basePackage, handler);
+        attachByScan(JarClassLoader.global(), basePackage, null, handler);
     }
 
     /**
      * 为搜索的类，系上拦截代理
+     *
+     * @param basePackage 基础包名
+     * @param filter      过滤器
+     * @param handler     拦截代理
      */
-    public static void attachByScan(ClassLoader classLoader, String basePackage, InvocationHandler handler) {
+    public static void attachByScan(String basePackage, Predicate<String> filter, InvocationHandler handler) {
+        attachByScan(JarClassLoader.global(), basePackage, filter, handler);
+    }
+
+    /**
+     * 为搜索的类，系上拦截代理
+     *
+     * @param classLoader 类加载器
+     * @param basePackage 基础包名
+     * @param filter      过滤器
+     * @param handler     拦截代理
+     */
+    public static void attachByScan(ClassLoader classLoader, String basePackage, Predicate<String> filter, InvocationHandler handler) {
         if (Utils.isEmpty(basePackage)) {
             return;
         }
@@ -68,12 +88,17 @@ public class AspectUtil {
             return;
         }
 
+        if (filter == null) {
+            filter = (s) -> true;
+        }
+
         String dir = basePackage.replace('.', '/');
 
         //扫描类文件并处理（采用两段式加载，可以部分bean先处理；剩下的为第二段处理）
         ScanUtil.scan(classLoader, dir, n -> n.endsWith(".class"))
                 .stream()
                 .sorted(Comparator.comparing(s -> s.length()))
+                .filter(filter)
                 .forEach(name -> {
                     String className = name.substring(0, name.length() - 6);
 
