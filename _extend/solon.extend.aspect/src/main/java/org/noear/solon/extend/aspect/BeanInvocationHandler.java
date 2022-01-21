@@ -65,7 +65,7 @@ public class BeanInvocationHandler implements InvocationHandler {
 
             return result;
         } else {
-            return handler.invoke(proxy, method, args);
+            return handler.invoke(bean, method, args);
         }
     }
 }

@@ -25,6 +25,13 @@
             <artifactId>asm</artifactId>
             <version>${asm.ver}</version>
         </dependency>
+
+
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon-test</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
 
