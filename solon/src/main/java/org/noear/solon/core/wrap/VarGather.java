@@ -31,7 +31,7 @@ public class VarGather implements Runnable {
     }
 
     public VarHolder add(Parameter p) {
-        VarHolderOfParam p2 = new VarHolderOfParam(clz,p, this);
+        VarHolderOfParam p2 = new VarHolderOfParam(p, this);
         vars.add(p2);
         return p2;
     }
