@@ -15,12 +15,13 @@ public class DemoApp {
     @Inject
     public Demo demo;
 
-    //不需要扫描，直接系上
-    //public Demo demo = AspectUtil.attach(new Demo(), DemoHandler.global);
 
-    public static void main(String[] args){
-        Solon.start(DemoApp.class, args, app->{
-            AspectUtil.attachByScan("thirdparty", new DemoHandler());
+    public static void main(String[] args) {
+        Solon.start(DemoApp.class, args, app -> {
+            //为一个类绑定拦截代理
+            //AspectUtil.attach(Demo.class, DemoHandler.global);
+            //为一批类绑定拦截代理
+            AspectUtil.attachByScan("thirdparty", DemoHandler.global);
         });
 
         Aop.get(DemoApp.class).demo.test();
