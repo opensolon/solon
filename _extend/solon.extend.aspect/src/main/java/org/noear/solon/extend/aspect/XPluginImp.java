@@ -14,19 +14,19 @@ public class XPluginImp implements Plugin {
         Aop.context().beanBuilderAdd(Dao.class, (clz, bw, anno) -> {
             String beanName = Utils.annoAlias(anno.value(), anno.name());
 
-            BeanProxy.binding(bw, beanName, anno.typed());
+            AspectUtil.binding(bw, beanName, anno.typed());
         });
 
         Aop.context().beanBuilderAdd(Service.class, (clz, bw, anno) -> {
             String beanName = Utils.annoAlias(anno.value(), anno.name());
 
-            BeanProxy.binding(bw, beanName, anno.typed());
+            AspectUtil.binding(bw, beanName, anno.typed());
         });
 
         Aop.context().beanBuilderAdd(Repository.class, (clz, bw, anno) -> {
             String beanName = Utils.annoAlias(anno.value(), anno.name());
 
-            BeanProxy.binding(bw, beanName, anno.typed());
+            AspectUtil.binding(bw, beanName, anno.typed());
         });
     }
 }
