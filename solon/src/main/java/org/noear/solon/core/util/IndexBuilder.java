@@ -101,6 +101,10 @@ public class IndexBuilder {
 					continue;
 				}
 
+				if(clazz.equals(field.getType())){
+					continue;
+				}
+
 				clazzList.add(field.getType());
 			}
 		}

@@ -1,5 +1,6 @@
 package webapp;
 
+import org.noear.nami.NamiAttachment;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.SolonBuilder;
@@ -77,6 +78,7 @@ public class TestApp {
         });
 
 
+        //NamiAttachment.put("lang","en_US");
 
         //extend: /Users/noear/WORK/work_github/noear/solon/_test/target/app_ext/
         //System.out.println("extend: " + ExtendLoader.path()+"static");

@@ -26,6 +26,12 @@ public class DemoApp {
 
     @Configuration
     public static class DefaultBaseImpl implements Base<Entity, Integer> {
+        @Inject
+        private DefaultBaseImpl defaultBase2;
+
+        @Inject
+        private Base<Entity, Integer> defaultBase3;
+
         @Bean
         public Base<Bean1, Long> base1() { return new Base<Bean1, Long>() {}; }
 
