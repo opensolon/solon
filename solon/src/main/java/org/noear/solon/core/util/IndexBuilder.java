@@ -97,11 +97,12 @@ public class IndexBuilder {
 			if (field.isAnnotationPresent(Inject.class)) {
 				Inject inject = field.getAnnotation(Inject.class);
 				if (inject.value().contains("${")) {
-					// 注入的是参数, 略过
+					//注入的是参数, 略过
 					continue;
 				}
 
 				if(clazz.equals(field.getType())){
+					//自己注入自己，略过
 					continue;
 				}
 
