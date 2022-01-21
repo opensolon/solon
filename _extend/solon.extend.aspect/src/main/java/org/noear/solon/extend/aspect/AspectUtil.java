@@ -42,12 +42,12 @@ public class AspectUtil {
 
 
     /**
-     * 系上拦截代理
+     * 为类，系上拦截代理
      *
      * @since 1.6
      */
-    public static <T> T attach(T bean, InvocationHandler handler) {
-        return (T) new BeanInvocationHandler(bean, handler).getProxy();
+    public static void attach(Class<?> clz, InvocationHandler handler) {
+        Aop.wrapAndPut(clz).proxySet(new BeanProxy(handler));
     }
 
     /**
