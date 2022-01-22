@@ -47,6 +47,10 @@ public class AspectUtil {
      * @since 1.6
      */
     public static void attach(Class<?> clz, InvocationHandler handler) {
+        if (clz.isAnnotation() || clz.isInterface() || clz.isEnum() || clz.isPrimitive()) {
+            return;
+        }
+
         Aop.wrapAndPut(clz).proxySet(new BeanProxy(handler));
     }
 
@@ -104,7 +108,7 @@ public class AspectUtil {
 
                     Class<?> clz = Utils.loadClass(classLoader, className.replace("/", "."));
                     if (clz != null) {
-                        Aop.wrapAndPut(clz).proxySet(new BeanProxy(handler));
+                        attach(clz, handler);
                     }
                 });
     }
