@@ -5,9 +5,6 @@ import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.core.Aop;
 
-/**
- * @author noear 2022/1/17 created
- */
 public class DemoApp {
     public static void main(String[] args) throws Exception {
         Solon.start(DemoApp.class, args);
@@ -19,7 +16,6 @@ public class DemoApp {
 
         System.out.println("ok");
     }
-
 
     public interface Service {
         void hello();

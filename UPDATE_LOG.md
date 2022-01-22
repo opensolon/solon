@@ -11,11 +11,11 @@
 
 #### 1.6.16
 * mybatis 升为 3.5.9
-* mybatis 升为 3.5.0
+* mybatis-plus 升为 3.5.0
 * sqlhelper-mybatis  升为 3.6.9
 * pagehelper 升为 5.3.0
 * 修复 redis 单词拼写错误（maxTotaol -> maxTotal）
-* 修复 启动参数值会丢失"-"的顺题
+* 修复 启动参数值会丢失"-"的问题
 * 修复 sessionstate.redis 不能反序列化对象的问题
 * 修复 json post 空值时，不会触发实体验证机制
 * 增加 注入泛型推断支持。泛型一般为两种（ParameterizedType 和 TypeVariable）
