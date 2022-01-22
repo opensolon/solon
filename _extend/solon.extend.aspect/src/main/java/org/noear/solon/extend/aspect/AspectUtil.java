@@ -8,6 +8,8 @@ import org.noear.solon.core.util.ScanUtil;
 
 import java.lang.reflect.InvocationHandler;
 import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.function.Predicate;
 
 /**
@@ -41,6 +43,10 @@ public class AspectUtil {
     }
 
 
+    /////////////////////////////////////////////
+
+    private static Set<Class<?>> tryCreateCached = new HashSet<>();
+
     /**
      * 为类，系上拦截代理
      *
@@ -49,6 +55,13 @@ public class AspectUtil {
     public static void attach(Class<?> clz, InvocationHandler handler) {
         if (clz.isAnnotation() || clz.isInterface() || clz.isEnum() || clz.isPrimitive()) {
             return;
+        }
+
+        //去重处理
+        if (tryCreateCached.contains(clz)) {
+            return;
+        } else {
+            tryCreateCached.add(clz);
         }
 
         Aop.wrapAndPut(clz).proxySet(new BeanProxy(handler));
