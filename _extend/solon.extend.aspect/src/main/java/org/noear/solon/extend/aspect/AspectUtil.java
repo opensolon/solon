@@ -45,7 +45,7 @@ public class AspectUtil {
 
     /////////////////////////////////////////////
 
-    private static Set<Class<?>> tryCreateCached = new HashSet<>();
+    private static Set<Class<?>> tryAttachCached = new HashSet<>();
 
     /**
      * 为类，系上拦截代理
@@ -58,10 +58,10 @@ public class AspectUtil {
         }
 
         //去重处理
-        if (tryCreateCached.contains(clz)) {
+        if (tryAttachCached.contains(clz)) {
             return;
         } else {
-            tryCreateCached.add(clz);
+            tryAttachCached.add(clz);
         }
 
         Aop.wrapAndPut(clz).proxySet(new BeanProxy(handler));
