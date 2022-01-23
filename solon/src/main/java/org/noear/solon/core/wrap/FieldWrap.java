@@ -3,7 +3,7 @@ package org.noear.solon.core.wrap;
 import org.noear.solon.core.VarHolder;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.GenericUtil;
-import sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl;
+import org.noear.solon.core.util.ParameterizedTypeImpl;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
@@ -86,7 +86,7 @@ public class FieldWrap {
                 }
 
                 if (gChanged) {
-                    genericType = ParameterizedTypeImpl.make((Class<?>) gt0.getRawType(), gArgs, gt0.getOwnerType());
+                    genericType = new ParameterizedTypeImpl((Class<?>) gt0.getRawType(), gArgs, gt0.getOwnerType());
                 } else {
                     genericType = gt0;
                 }
