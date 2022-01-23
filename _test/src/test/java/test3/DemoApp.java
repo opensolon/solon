@@ -7,7 +7,7 @@ import org.noear.solon.annotation.*;
 public class DemoApp {
 
     public static void main(String[] args) throws Exception {
-        Solon.start(DemoApp.class, args);
+        Solon.start(DemoApp.class, args, app->app.enableHttp(false));
     }
 
     public static class Bean1 {}

@@ -7,7 +7,7 @@ import org.noear.solon.core.Aop;
 
 public class DemoApp {
     public static void main(String[] args) throws Exception {
-        Solon.start(DemoApp.class, args);
+        Solon.start(DemoApp.class, args, app->app.enableHttp(false));
         Parent o = Aop.get(S1.class);
         Parent o2 = Aop.get(S2.class);
 
