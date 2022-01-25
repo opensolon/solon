@@ -69,12 +69,20 @@ public final class SolonProps extends Props {
         //1.2.应用源位置
         this.sourceLocation = source.getProtectionDomain().getCodeSource().getLocation();
 
-        //2.加载文件配置
 
-        //未同步前的系统属性
+        //2.获取原始系统属性
         Properties sysPropOrg = new Properties();
-        System.getProperties().forEach((k,v)->sysPropOrg.put(k,v));
+        System.getProperties().forEach((k, v) -> sysPropOrg.put(k, v));
 
+
+        //3.同步启动参数到
+        this.args.forEach((k, v) -> {
+            if (k.contains(".")) {
+                sysPropOrg.setProperty(k, v);
+            }
+        });
+
+        //4.加载文件配置
         //@Deprecated
         loadInit(Utils.getResource("application.properties"), sysPropOrg);
         //@Deprecated
@@ -82,10 +90,10 @@ public final class SolonProps extends Props {
         loadInit(Utils.getResource("app.properties"), sysPropOrg);
         loadInit(Utils.getResource("app.yml"), sysPropOrg);
 
-        //2.1.加载环境变量（支持弹性容器设置的环境变量）
+        //4.1.加载环境变量（支持弹性容器设置的环境变量）
         loadEnv("solon.");
 
-        //2.2.加载环境配置(例：env=pro 或 env=debug)
+        //4.2.加载环境配置(例：env=pro 或 env=debug)
         env = getArg("env");
 
         if (Utils.isEmpty(env)) {
@@ -102,15 +110,8 @@ public final class SolonProps extends Props {
             loadInit(Utils.getResource("app-" + env + ".yml"), sysPropOrg);
         }
 
-        //3.同步启动参数
-        this.args.forEach((k, v) -> {
-            if (k.contains(".")) {
-                this.setProperty(k, v);
-                System.setProperty(k, v);
-            }
-        });
 
-        //4.初始化模式状态
+        //5.初始化模式状态
 
         //是否为文件模式
         isFilesMode = (sourceLocation.getPath().endsWith(".jar") == false
@@ -135,12 +136,12 @@ public final class SolonProps extends Props {
         }
 
 
-        //5.确定扩展文件夹
+        //6.确定扩展文件夹
         extend = getArg("extend");
         extendFilter = getArg("extend.filter");//5.1.扩展文件夹过滤器
 
 
-        //6.确定地区配置
+        //7.确定地区配置
         String localeStr = getArg("locale");
         if (Utils.isNotEmpty(localeStr)) {
             locale = Utils.toLocale(localeStr);
@@ -149,7 +150,7 @@ public final class SolonProps extends Props {
             locale = Locale.getDefault();
         }
 
-        //7.应用基础信息
+        //8.应用基础信息
         appName = getArg("app.name");  //6.应用名
         appGroup = getArg("app.group"); //6.1.应用组
         appTitle = getArg("app.title"); //6.1.应用标题
@@ -512,7 +513,7 @@ public final class SolonProps extends Props {
      * 框架版本号
      */
     public String version() {
-        return "1.6.19-m1";
+        return "1.6.19-m2";
     }
 
     /**
