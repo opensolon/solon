@@ -1,6 +1,6 @@
 #### 1.6.19
-* 增加 接口 BeanProxy.attach(T,handler)；可以强制为一个类绑上代理
-* 增加 接口 BeanProxy.attachByScan(basePackage,handler)；可以强制为一批类绑上代理
+* 增加 接口 AspectUtil.attach(T,handler)；可以强制为一个类绑上代理
+* 增加 接口 AspectUtil.attachByScan(basePackage,handler)；可以强制为一批类绑上代理
 * 调整 接口动态代理的实现逻辑，以适应jdk19之后的权限处理
 * 调整 启动参数的处理时机
 
