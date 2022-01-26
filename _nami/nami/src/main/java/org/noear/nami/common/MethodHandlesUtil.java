@@ -24,6 +24,9 @@ import java.lang.reflect.Method;
  * 而jdk11中直接调用{@link MethodHandles#lookup()}获取到的{@link MethodHandles.Lookup},也只能对接口类型才会权限获取方法的方法句柄{@link MethodHandle}.
  * <p>
  * 如果是普通类型Class,需要使用jdk9开始提供的 MethodHandles#privateLookupIn(java.lang.Class, java.lang.invoke.MethodHandles.Lookup)方法.
+ *
+ * @author brucelwl
+ * @since 1.6
  */
 public class MethodHandlesUtil {
     private static final int ALLOWED_MODES = MethodHandles.Lookup.PRIVATE | MethodHandles.Lookup.PROTECTED

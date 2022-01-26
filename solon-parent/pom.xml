@@ -73,6 +73,22 @@
             <organization>noear.org</organization>
             <organizationUrl>http://www.noear.org</organizationUrl>
         </developer>
+        <developer>
+            <name>夜の孤城</name>
+        </developer>
+        <developer>
+            <name>馒头虫/瓢虫</name>
+        </developer>
+        <developer>
+            <name>颖</name>
+        </developer>
+        <developer>
+            <name>cym1102</name>
+        </developer>
+        <developer>
+            <name>brucelwl</name>
+            <email>841326226@qq.com</email>
+        </developer>
     </developers>
     <scm>
         <connection>scm:git:git@github.com:noear/solon.git</connection>
