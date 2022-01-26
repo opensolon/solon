@@ -1,6 +1,5 @@
 package org.noear.solon.extend.aspect;
 
-import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.wrap.MethodWrap;
 import org.noear.solon.extend.aspect.asm.AsmProxy;
 

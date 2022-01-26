@@ -3,6 +3,7 @@
 * 增加 接口 AspectUtil.attachByScan(basePackage,handler)；可以强制为一批类绑上代理
 * 调整 接口动态代理的实现逻辑，以适应jdk19之后的权限处理
 * 调整 启动参数的处理时机
+* 拆分 BeanProxy 为 BeanProxy 和 AspectUtil
 
 #### 1.6.17
 * 增强 注入泛型推断能力
