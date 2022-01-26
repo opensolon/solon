@@ -1,8 +1,10 @@
 #### 1.6.19
-* 增加 接口 AspectUtil.attach(T,handler)；可以强制为一个类绑上代理
-* 增加 接口 AspectUtil.attachByScan(basePackage,handler)；可以强制为一批类绑上代理
 * 调整 接口动态代理的实现逻辑，以适应jdk19之后的权限处理
 * 调整 启动参数的处理时机
+
+#### 1.6.18
+* 增加 接口 AspectUtil.attach(T,handler)；可以强制为一个类绑上代理
+* 增加 接口 AspectUtil.attachByScan(basePackage,handler)；可以强制为一批类绑上代理
 
 #### 1.6.17
 * 增强 注入泛型推断能力
