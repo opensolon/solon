@@ -1,5 +1,7 @@
 #### 1.6.19
-* 增加接口 BeanProxy.attach(T,handler);
+* 增加 接口 BeanProxy.attach(T,handler);
+* 调整 动态代理的实现逻辑，以适配jdk19之后的权限处理
+* 调整 启动参数的处理时机
 
 #### 1.6.17
 * 增强 注入泛型推断能力
