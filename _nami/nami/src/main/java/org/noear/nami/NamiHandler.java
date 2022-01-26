@@ -2,17 +2,16 @@ package org.noear.nami;
 
 import org.noear.nami.annotation.Mapping;
 import org.noear.nami.annotation.NamiClient;
-import org.noear.nami.common.Constants;
-import org.noear.nami.common.MethodWrap;
-import org.noear.nami.common.TextUtils;
-import org.noear.nami.common.UpstreamFixed;
+import org.noear.nami.common.*;
 
+import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.reflect.*;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -116,7 +115,8 @@ public class NamiHandler implements InvocationHandler {
     }
 
 
-    protected MethodHandles.Lookup lookup;
+    //protected MethodHandles.Lookup lookup;
+    private ConcurrentHashMap<Method, MethodHandle> methodHandleMap = new ConcurrentHashMap<>();
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] vals) throws Throwable {
@@ -129,16 +129,13 @@ public class NamiHandler implements InvocationHandler {
 
         MethodWrap methodWrap = MethodWrap.get(method);
 
-        //Object 函数调用
-        Class caller = method.getDeclaringClass();
+        //默认函数调用
         if (method.isDefault()) {
-            if (this.lookup == null) {
-                Constructor<MethodHandles.Lookup> constructor = MethodHandles.Lookup.class.getDeclaredConstructor(Class.class, Integer.TYPE);
-                constructor.setAccessible(true);
-                this.lookup = constructor.newInstance(caller, MethodHandles.Lookup.PRIVATE);
-            }
-
-            return this.lookup.unreflectSpecial(method, caller).bindTo(proxy).invokeWithArguments(vals);
+            MethodHandle defaultMethodHandle = methodHandleMap.computeIfAbsent(method, key -> {
+                MethodHandle methodHandle = MethodHandlesUtil.getSpecialMethodHandle(method);
+                return methodHandle.bindTo(proxy);
+            });
+            return defaultMethodHandle.invokeWithArguments(vals);
         }
 
         //构建 headers
