@@ -14,4 +14,8 @@ public interface rockapi {
     List<UserModel> test5();
 
     Object testerror();
+
+    default Object textdef(){
+        return test3();
+    }
 }

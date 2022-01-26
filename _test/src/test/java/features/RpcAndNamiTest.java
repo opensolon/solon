@@ -42,6 +42,13 @@ public class RpcAndNamiTest {
     }
 
     @Test
+    public void test_2() {
+        UserModel user = userService.getUserDef(12);
+        System.out.println(user);
+        assert user.getId() == 12;
+    }
+
+    @Test
     public void test2() {
         UserModel user = userService2.getUser(23);
         System.out.println(user);
