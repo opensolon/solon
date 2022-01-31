@@ -79,6 +79,7 @@ public final class SolonProps extends Props {
         this.args.forEach((k, v) -> {
             if (k.contains(".")) {
                 sysPropOrg.setProperty(k, v);
+                System.setProperty(k,v);
             }
         });
 
