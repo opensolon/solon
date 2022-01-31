@@ -70,18 +70,17 @@ public final class SolonProps extends Props {
         this.sourceLocation = source.getProtectionDomain().getCodeSource().getLocation();
 
 
-        //2.获取原始系统属性
-        Properties sysPropOrg = new Properties();
-        System.getProperties().forEach((k, v) -> sysPropOrg.put(k, v));
-
-
-        //3.同步启动参数到
+        //2.同步启动参数到系统属性
         this.args.forEach((k, v) -> {
             if (k.contains(".")) {
-                sysPropOrg.setProperty(k, v);
                 System.setProperty(k,v);
             }
         });
+
+        //3.获取原始系统属性原始副本
+        Properties sysPropOrg = new Properties();
+        System.getProperties().forEach((k, v) -> sysPropOrg.put(k, v));
+
 
         //4.加载文件配置
         //@Deprecated
