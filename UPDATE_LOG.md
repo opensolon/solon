@@ -1,3 +1,6 @@
+#### 1.6.20
+* 修复 当未设定server.port时，启动参数将无法指定
+
 #### 1.6.19
 * 增加 接口 AspectUtil.attach(T,handler)；可以强制为一个类绑上代理
 * 增加 接口 AspectUtil.attachByScan(basePackage,handler)；可以强制为一批类绑上代理
