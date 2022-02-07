@@ -20,7 +20,7 @@ class XServerProp {
             int val = Integer.parseInt(tmp.substring(0, tmp.length() - 2));
             request_maxRequestSize = val * 1204;
         } else if (tmp.length() > 0) {
-            request_maxRequestSize = Integer.parseInt(tmp) * 1204;
+            request_maxRequestSize = Integer.parseInt(tmp); //支持-1
         } else {
             request_maxRequestSize = 1024 * 1024 * 2;//默认2mb
         }
