@@ -69,14 +69,17 @@ formattest:
   text2: "${aaaa.bbb}"
 
 
-server.session:
-  timeout: 7200 #单位秒；（可不配，默认：7200）
-  state:
-    redis:
-      server: localhost:6379
-      password: 123456
-      db: 3
-      maxTotal: 200
+server:
+  request:
+    maxRequestSize: 2mb
+  session:
+    timeout: 7200 #单位秒；（可不配，默认：7200）
+    state:
+      redis:
+        server: localhost:6379
+        password: 123456
+        db: 3
+        maxTotal: 200
 
 #特殊信息输出
 solon.output.meta: 1

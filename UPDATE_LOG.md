@@ -1,5 +1,5 @@
 #### 1.6.21
-* 支持 
+* 支持 request_maxRequestSize 为 -1
 
 #### 1.6.20
 * 修复 当未设定server.port时，启动参数将无法指定
