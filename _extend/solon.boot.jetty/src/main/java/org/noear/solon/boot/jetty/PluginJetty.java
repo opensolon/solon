@@ -40,42 +40,30 @@ class PluginJetty extends PluginJettyBase implements Plugin {
         }
     }
 
-    protected void setup(SolonApp app) throws IOException{
+    protected void setup(SolonApp app) throws IOException {
         Class<?> wsClz = Utils.loadClass("org.eclipse.jetty.websocket.server.WebSocketHandler");
 
         _server = new Server(port);
 
         //session 支持
-        if(Solon.global().enableSessionState()) {
+        if (Solon.global().enableSessionState()) {
             _server.setSessionIdManager(new DefaultSessionIdManager(_server));
         }
 
-        if(app.enableWebSocket() && wsClz != null) {
+        if (app.enableWebSocket() && wsClz != null) {
             _server.setHandler(new HandlerHub(buildHandler()));
 
             SessionManager.register(new _SessionManagerImpl());
-        }else {
+        } else {
             //没有ws包 或 没有开启
             _server.setHandler(buildHandler());
         }
 
 
-        _server.setAttribute("org.eclipse.jetty.server.Request.maxFormContentSize",
-                XServerProp.request_maxRequestSize);
-
-
-        app.cfg().forEach((k, v) -> {
-            String key = k.toString();
-            if (key.indexOf(".jetty.") > 0) {
-                _server.setAttribute(key, v);
-            }
-        });
-
-        app.cfg().onChange((k, v) -> {
-            if (k.indexOf(".jetty.") > 0) {
-                _server.setAttribute(k, v);
-            }
-        });
+        if (XServerProp.request_maxRequestSize != 0) {
+            System.setProperty("org.eclipse.jetty.server.Request.maxFormContentSize",
+                    String.valueOf(XServerProp.request_maxRequestSize));
+        }
 
         //1.1:分发事件（充许外部扩展）
         EventBus.push(_server);

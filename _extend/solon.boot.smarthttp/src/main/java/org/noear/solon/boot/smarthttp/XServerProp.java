@@ -22,7 +22,7 @@ public class XServerProp {
         } else if (tmp.length() > 0) {
             request_maxRequestSize = Integer.parseInt(tmp); //支持-1
         } else {
-            request_maxRequestSize = 1024 * 1024 * 2;//默认2mb
+            request_maxRequestSize = 0;//默认0，表不设置
         }
 
         session_timeout = Solon.cfg().getInt("server.session.timeout", 0);
