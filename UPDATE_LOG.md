@@ -1,5 +1,7 @@
 #### 1.6.21
 * 支持 request_maxRequestSize 为 -1(不限) 和 0(默认)
+* 插件 solon.extend.staticfiles，增加jdk自带的 "mime" 表支持
+* 插件 solon.boot.jetty，调整 "org.eclipse.jetty.server.Request.maxFormContentSize" 配置的同步方式
 
 #### 1.6.20
 * 修复 当未设定server.port时，启动参数将无法指定
