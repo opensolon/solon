@@ -1,6 +1,6 @@
 #### 1.6.21
-* 支持 request_maxRequestSize 为 -1(不限) 和 0(默认)
-* 插件 solon.extend.staticfiles，增加jdk自带的 "mime" 表支持
+* 增加 request_maxRequestSize 支持配置： -1(不限) 和 0(默认)
+* 插件 solon.extend.staticfiles，增加jdk自带的 "mime" 表支持；并优化性能
 * 插件 solon.boot.jetty，调整 "org.eclipse.jetty.server.Request.maxFormContentSize" 配置的同步方式
 
 #### 1.6.20
