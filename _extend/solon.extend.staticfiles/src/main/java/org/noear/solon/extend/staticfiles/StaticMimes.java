@@ -44,19 +44,41 @@ public class StaticMimes {
 
     }
 
-    public synchronized static String put(String extension, String conentType) {
+    public synchronized static String add(String extension, String conentType) {
         return mimeMap.put(extension, conentType);
     }
 
-    public synchronized static String putIfAbsent(String extension, String conentType) {
-        return mimeMap.putIfAbsent(extension, conentType);
+    public synchronized static String findByExt(String extension) {
+        return mimeMap.get(extension);
     }
 
-    public synchronized static String get(String extension) {
-        return mimeMap.get(extension);
+    public synchronized static String findByFileName(String fileName) {
+        String ext = resolveExt(fileName);
+
+        return findByExt(ext);
     }
 
     public static Map<String, String> getMap() {
         return Collections.unmodifiableMap(mimeMap);
+    }
+
+    /**
+     * 分析扩展名
+     */
+    public static String resolveExt(String fileName) {
+        String ext = "";
+        int pos = fileName.lastIndexOf(35);
+        if (pos > 0) {
+            fileName = fileName.substring(0, pos - 1);
+        }
+
+        pos = fileName.lastIndexOf(46);
+        pos = Math.max(pos, fileName.lastIndexOf(47));
+        pos = Math.max(pos, fileName.lastIndexOf(63));
+        if (pos != -1 && fileName.charAt(pos) == '.') {
+            ext = fileName.substring(pos).toLowerCase();
+        }
+
+        return ext;
     }
 }

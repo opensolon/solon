@@ -40,8 +40,8 @@ public class StaticResourceHandler implements Handler {
             return;
         }
 
-        //找内容类型
-        String conentType = StaticMimes.get(suffix);
+        //找内容类型(先用配置的，再用jdk的)
+        String conentType = StaticMimes.findByExt(suffix);
 
         if (Utils.isEmpty(conentType)) {
             conentType = Utils.mime(suffix);
