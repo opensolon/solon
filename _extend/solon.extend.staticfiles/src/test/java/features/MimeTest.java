@@ -3,8 +3,6 @@ package features;
 import org.junit.Test;
 import org.noear.solon.extend.staticfiles.StaticMimes;
 import org.noear.solon.extend.staticfiles.StaticResourceHandler;
-import sun.net.www.MimeEntry;
-import sun.net.www.MimeTable;
 
 import java.net.FileNameMap;
 import java.net.URLConnection;
@@ -28,18 +26,6 @@ public class MimeTest {
         System.out.println(tmp.getContentTypeFor("/bbb/c/xxx.jpg/"));
         System.out.println(tmp.getContentTypeFor("/cxxx.xxx"));
 
-    }
-
-    @Test
-    public void test0() {
-        MimeTable tmp = MimeTable.getDefaultTable();
-
-        Enumeration<MimeEntry> list = tmp.elements();
-
-        while (list.hasMoreElements()) {
-            MimeEntry entry = list.nextElement();
-            System.out.println(entry.toString());
-        }
     }
 
     @Test
