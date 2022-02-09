@@ -1,6 +1,8 @@
 package org.noear.solon.extend.staticfiles;
 
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 静态文件类型申明
@@ -8,46 +10,53 @@ import java.util.HashMap;
  * @author noear
  * @since 1.0
  * */
-public class StaticMimes extends HashMap<String,String> {
-    private StaticMimes() {
-        super();
-        put(".txt", "text/plain");
+public class StaticMimes {
+    static final Map<String, String> mimeMap = new HashMap<>();
 
-        put(".html", "text/html");
-        put(".htm", "text/html");
-        put(".xml", "text/xml");
-        put(".css", "text/css");
-        put(".js", "application/x-javascript");
+    static {
+        mimeMap.put(".txt", "text/plain");
 
-        put(".ico", "image/x-icon");
+        mimeMap.put(".html", "text/html");
+        mimeMap.put(".htm", "text/html");
+        mimeMap.put(".xml", "text/xml");
+        mimeMap.put(".css", "text/css");
+        mimeMap.put(".js", "application/x-javascript");
 
-        put(".gif", "image/gif");
-        put(".jpg", "image/jpeg");
-        put(".png", "image/png");
-        put(".svg", "image/svg+xml");
-        put(".jpeg", "image/jpeg");
+        mimeMap.put(".ico", "image/x-icon");
 
-        put(".json", "application/json");
+        mimeMap.put(".gif", "image/gif");
+        mimeMap.put(".jpg", "image/jpeg");
+        mimeMap.put(".png", "image/png");
+        mimeMap.put(".svg", "image/svg+xml");
+        mimeMap.put(".jpeg", "image/jpeg");
 
-        put(".mp3", "audio/mpeg");
-        put(".mp4", "application/octet-stream");
-        put(".flv", "application/octet-stream");
+        mimeMap.put(".json", "application/json");
 
-        put(".woff", "application/x-font-woff");
-        put(".woff2", "application/x-font-woff2");
-        put(".ttf", "application/x-font-truetype");
-        put(".otf", "application/x-font-opentype");
-        put(".eot", "application/vnd.ms-fontobject");
+        mimeMap.put(".mp3", "audio/mpeg");
+        mimeMap.put(".mp4", "application/octet-stream");
+        mimeMap.put(".flv", "application/octet-stream");
+
+        mimeMap.put(".woff", "application/x-font-woff");
+        mimeMap.put(".woff2", "application/x-font-woff2");
+        mimeMap.put(".ttf", "application/x-font-truetype");
+        mimeMap.put(".otf", "application/x-font-opentype");
+        mimeMap.put(".eot", "application/vnd.ms-fontobject");
 
     }
 
-    private static StaticMimes _instance;
+    public synchronized static String put(String extension, String conentType) {
+        return mimeMap.put(extension, conentType);
+    }
 
-    public static StaticMimes instance() {
-        if (_instance == null) {
-            _instance = new StaticMimes();
-        }
+    public synchronized static String putIfAbsent(String extension, String conentType) {
+        return mimeMap.putIfAbsent(extension, conentType);
+    }
 
-        return _instance;
+    public synchronized static String get(String extension) {
+        return mimeMap.get(extension);
+    }
+
+    public static Map<String, String> getMap() {
+        return Collections.unmodifiableMap(mimeMap);
     }
 }

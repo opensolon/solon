@@ -1,13 +1,12 @@
 package org.noear.solon.extend.staticfiles;
 
+import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Handler;
 import org.noear.solon.core.handle.MethodType;
 
 import java.net.URL;
 import java.util.*;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 /**
  * 静态文件资源处理
@@ -19,20 +18,9 @@ public class StaticResourceHandler implements Handler {
     private static final String CACHE_CONTROL = "Cache-Control";
     private static final String LAST_MODIFIED = "Last-Modified";
 
-    private StaticMimes staticMimes = StaticMimes.instance();
-    private Pattern _rule;
-
     public StaticResourceHandler() {
-        List<String> keys = staticMimes.keySet().stream()
-                .map(s-> s.substring(1))
-                .collect(Collectors.toList());
-
-        String expr = "(\\." + String.join("|\\.", keys) + ")$";
-
-        _rule = Pattern.compile(expr, Pattern.CASE_INSENSITIVE);
 
     }
-
 
     @Override
     public void handle(Context ctx) throws Exception {
@@ -44,12 +32,26 @@ public class StaticResourceHandler implements Handler {
             return;
         }
 
-        if (_rule.matcher(ctx.pathNew()).find() == false) {
+        String path = ctx.pathNew();
+
+        //找后缀名
+        String suffix = findByExtName(path);
+        if (Utils.isEmpty(suffix)) {
             return;
         }
 
-        String path = ctx.pathNew();
+        //找内容类型
+        String conentType = StaticMimes.get(suffix);
 
+        if (Utils.isEmpty(conentType)) {
+            conentType = Utils.mime(suffix);
+        }
+
+        if (Utils.isEmpty(conentType)) {
+            return;
+        }
+
+        //找资源
         URL uri = StaticMappings.find(path);
 
         if (uri == null) {
@@ -69,20 +71,12 @@ public class StaticResourceHandler implements Handler {
                 }
             }
 
-            int idx = path.lastIndexOf(".");
-            if (idx > 0) {
-                String suffix = path.substring(idx);
-                String mime = staticMimes.get(suffix);
-
-                if (mime != null) {
-                    if (XPluginProp.maxAge() > 0) {
-                        ctx.headerSet(CACHE_CONTROL, "max-age=" + XPluginProp.maxAge());//单位秒
-                        ctx.headerSet(LAST_MODIFIED, modified_time.toString());
-                    }
-
-                    ctx.contentType(mime);
-                }
+            if (XPluginProp.maxAge() > 0) {
+                ctx.headerSet(CACHE_CONTROL, "max-age=" + XPluginProp.maxAge());//单位秒
+                ctx.headerSet(LAST_MODIFIED, modified_time.toString());
             }
+
+            ctx.contentType(conentType);
 
             ctx.status(200);
             ctx.output(uri.openStream());
@@ -90,4 +84,22 @@ public class StaticResourceHandler implements Handler {
     }
 
     private static final Date modified_time = new Date();
+
+
+    private String findByExtName(String path) {
+        String ext = "";
+        int pos = path.lastIndexOf(35);
+        if (pos > 0) {
+            path = path.substring(0, pos - 1);
+        }
+
+        pos = path.lastIndexOf(46);
+        pos = Math.max(pos, path.lastIndexOf(47));
+        pos = Math.max(pos, path.lastIndexOf(63));
+        if (pos != -1 && path.charAt(pos) == '.') {
+            ext = path.substring(pos).toLowerCase();
+        }
+
+        return ext;
+    }
 }
