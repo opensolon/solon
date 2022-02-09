@@ -9,6 +9,7 @@ import java.util.Map;
  *
  * @author noear
  * @since 1.0
+ * @since 1.6
  * */
 public class StaticMimes {
     static final Map<String, String> mimeMap = new HashMap<>();
@@ -44,20 +45,32 @@ public class StaticMimes {
 
     }
 
+    /**
+     * 添加 Mime 记录
+     */
     public synchronized static String add(String extension, String conentType) {
         return mimeMap.put(extension, conentType);
     }
 
-    public synchronized static String findByExt(String extension) {
-        return mimeMap.get(extension);
+    /**
+     * 查找 Mime 记录（找到对应的内容类型）
+     */
+    public synchronized static String findByExt(String ext) {
+        return mimeMap.get(ext);
     }
 
+    /**
+     * 查找 Mime 记录（找到对应的内容类型）
+     */
     public synchronized static String findByFileName(String fileName) {
         String ext = resolveExt(fileName);
 
         return findByExt(ext);
     }
 
+    /**
+     * 获取所有 Mime 记录表
+     */
     public static Map<String, String> getMap() {
         return Collections.unmodifiableMap(mimeMap);
     }

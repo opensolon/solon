@@ -38,7 +38,7 @@ public class MimeTest {
 
         while (list.hasMoreElements()) {
             MimeEntry entry = list.nextElement();
-            System.out.println(entry.getDescription());
+            System.out.println(entry.toString());
         }
     }
 
