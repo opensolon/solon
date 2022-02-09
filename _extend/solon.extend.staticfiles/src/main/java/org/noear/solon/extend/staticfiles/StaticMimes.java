@@ -27,13 +27,17 @@ public class StaticMimes {
 
         mimeMap.put(".gif", "image/gif");
         mimeMap.put(".jpg", "image/jpeg");
+        mimeMap.put(".jpeg", "image/jpeg");
         mimeMap.put(".png", "image/png");
         mimeMap.put(".svg", "image/svg+xml");
-        mimeMap.put(".jpeg", "image/jpeg");
+
+        mimeMap.put(".bmp", "image/x-ms-bmp");
 
         mimeMap.put(".json", "application/json");
 
+        mimeMap.put(".au", "audio/basic");
         mimeMap.put(".mp3", "audio/mpeg");
+
         mimeMap.put(".mp4", "application/octet-stream");
         mimeMap.put(".flv", "application/octet-stream");
 
@@ -42,6 +46,15 @@ public class StaticMimes {
         mimeMap.put(".ttf", "application/x-font-truetype");
         mimeMap.put(".otf", "application/x-font-opentype");
         mimeMap.put(".eot", "application/vnd.ms-fontobject");
+
+        mimeMap.put(".pdf", "application/pdf");
+        mimeMap.put(".zip", "application/zip");
+        mimeMap.put(".gz", "application/x-gzip");
+        mimeMap.put(".tar", "application/x-tar");
+
+        mimeMap.put(".doc", "application/msword");
+        mimeMap.put(".xls", "application/vnd.ms-excel");
+        mimeMap.put(".ppt", "application/vnd.ms-powerpoint");
 
     }
 
