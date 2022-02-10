@@ -3,7 +3,7 @@ package org.noear.solon.boot.reactornetty;
 import org.noear.solon.Solon;
 
 class XServerProp {
-    public static int request_maxRequestSize = 1024 * 1024 * 2;//默认2mb
+    public static long request_maxRequestSize;
     public static int session_timeout = 0;
     public static String session_state_domain;
     public static boolean output_meta = false;
@@ -19,7 +19,7 @@ class XServerProp {
         } else if (tmp.length() > 0) {
             request_maxRequestSize = Integer.parseInt(tmp);//支持-1
         } else {
-            request_maxRequestSize = 0;//默认0，表不设置
+            request_maxRequestSize = 0;//默认0，表示不设置
         }
 
         session_timeout = Solon.cfg().getInt("server.session.timeout", 0);
