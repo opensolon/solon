@@ -59,12 +59,6 @@ class PluginJetty extends PluginJettyBase implements Plugin {
             _server.setHandler(buildHandler());
         }
 
-
-        if (XServerProp.request_maxRequestSize != 0) {
-            System.setProperty("org.eclipse.jetty.server.Request.maxFormContentSize",
-                    String.valueOf(XServerProp.request_maxRequestSize));
-        }
-
         //1.1:分发事件（充许外部扩展）
         EventBus.push(_server);
     }

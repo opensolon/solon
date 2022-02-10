@@ -31,6 +31,11 @@ public final class XPluginImp implements Plugin {
             return;
         }
 
+        if (XServerProp.request_maxRequestSize != 0) {
+            System.setProperty("org.eclipse.jetty.server.Request.maxFormContentSize",
+                    String.valueOf(XServerProp.request_maxRequestSize));
+        }
+
         Aop.context().beanBuilderAdd(WebFilter.class,(clz, bw, ano)->{});
         Aop.context().beanBuilderAdd(WebServlet.class,(clz, bw, ano)->{});
         Aop.context().beanBuilderAdd(WebListener.class,(clz, bw, ano)->{});
