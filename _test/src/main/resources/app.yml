@@ -71,7 +71,7 @@ formattest:
 
 server:
   request:
-    maxRequestSize: 2kb
+    maxRequestSize: 2mb
   session:
     timeout: 7200 #单位秒；（可不配，默认：7200）
     state:
