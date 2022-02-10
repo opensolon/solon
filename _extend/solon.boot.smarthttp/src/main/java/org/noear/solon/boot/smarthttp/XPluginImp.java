@@ -49,6 +49,11 @@ public final class XPluginImp implements Plugin {
                 .bannerEnabled(false)
                 .threadNum(Runtime.getRuntime().availableProcessors() + 2);
 
+        if(XServerProp.request_maxRequestSize != 0){
+            _server.configuration()
+                    .setMaxFormContentSize(XServerProp.request_maxRequestSize);
+        }
+
         _server.httpHandler(_handler);
         //_server.pipeline().next(_handler);
 

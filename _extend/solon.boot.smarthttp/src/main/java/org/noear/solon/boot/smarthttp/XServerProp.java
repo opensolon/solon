@@ -3,7 +3,7 @@ package org.noear.solon.boot.smarthttp;
 import org.noear.solon.Solon;
 
 public class XServerProp {
-    public static final long request_maxRequestSize;
+    public static final int request_maxRequestSize;
     public static final int session_timeout;
     public static final String session_state_domain;
     public static final boolean output_meta;
