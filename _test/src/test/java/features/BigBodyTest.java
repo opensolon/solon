@@ -1,24 +1,22 @@
-package test1;
+package features;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.noear.snack.ONode;
-
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
+import org.noear.solon.Utils;
+import org.noear.solon.test.HttpTestBase;
+import org.noear.solon.test.SolonJUnit4ClassRunner;
+import org.noear.solon.test.SolonTest;
 
 /**
- * @author noear 2021/6/10 created
+ * @author noear 2022/2/10 created
  */
-public class DataTest {
+@RunWith(SolonJUnit4ClassRunner.class)
+@SolonTest(webapp.TestApp.class)
+public class BigBodyTest extends HttpTestBase {
     @Test
-    public void test() {
-        System.out.println(LocalDateTime.now());
-
-        System.out.println(LocalDateTime.now(ZoneOffset.ofHours(0)));
-    }
-
-    @Test
-    public void test1() {
+    public void test1() throws Exception {
+        //构发大json数据块(20mb)
         ONode oNode = new ONode();
 
         for (int i = 0; i < 500; i++) {
@@ -31,8 +29,12 @@ public class DataTest {
             oNode.add(n1);
         }
 
+        String json = oNode.toJson();
+        String len = String.valueOf(json.length());
+        System.out.println(json.length());
 
-        System.out.println(oNode.toJson());
-        System.out.println(oNode.toJson().length());
+        assert path("/demo2/json/body").bodyJson(json).post().equals(len);
+
+        assert path("/demo2/json/form").data("p", json).post().equals(len);
     }
 }

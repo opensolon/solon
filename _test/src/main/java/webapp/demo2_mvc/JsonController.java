@@ -1,5 +1,7 @@
 package webapp.demo2_mvc;
 
+import org.noear.solon.Utils;
+import org.noear.solon.annotation.Body;
 import org.noear.solon.annotation.Mapping;
 import org.noear.solon.annotation.Remoting;
 import org.noear.solon.core.handle.ModelAndView;
@@ -29,6 +31,24 @@ public class JsonController {
             return null;
         } else {
             return userAry.get(0).id;
+        }
+    }
+
+    @Mapping("/body")
+    public Integer body(@Body String body) {
+        if(Utils.isEmpty(body)){
+            return 0;
+        }else{
+            return body.length();
+        }
+    }
+
+    @Mapping("/form")
+    public Integer form(String p) {
+        if(Utils.isEmpty(p)){
+            return 0;
+        }else{
+            return p.length();
         }
     }
 }
