@@ -15,7 +15,7 @@ public class Test3App {
     public static void main(String[] args) {
         SolonApp app = Solon.start(Test3App.class, args, x->{
             //添加插件（随启动一起启动）
-            x.pluginAdd(0, new PluginImpl());
+            //x.pluginAdd(0, new PluginImpl());
         });
 
         //加载jar
