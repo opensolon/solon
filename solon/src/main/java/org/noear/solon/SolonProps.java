@@ -373,7 +373,7 @@ public final class SolonProps extends Props {
             for (String clzName : plugins) {
                 if (clzName.length() > 0) {
                     PluginEntity ent = new PluginEntity(classLoader, clzName.trim());
-                    ent.priority = priority;
+                    ent.setPriority(priority);
                     plugs.add(ent);
                 }
             }

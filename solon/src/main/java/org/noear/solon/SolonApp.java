@@ -347,6 +347,27 @@ public class SolonApp implements HandlerSlots {
         cfg().plugsSort();
     }
 
+    /**
+     * 拨出插件
+     *
+     * @param pluginClz 插件类
+     * */
+    public PluginEntity pluginPop(Class<?> pluginClz) {
+        PluginEntity tmp = null;
+        for (PluginEntity pe : cfg().plugs()) {
+            if (pluginClz.isInstance(pe.getPlugin())) {
+                tmp = pe;
+                break;
+            }
+        }
+
+        if (tmp != null) {
+            cfg().plugs().remove(tmp);
+        }
+
+        return tmp;
+    }
+
     ///////////////////////////////////////////////
     //
     // 以下为web handler 有关
