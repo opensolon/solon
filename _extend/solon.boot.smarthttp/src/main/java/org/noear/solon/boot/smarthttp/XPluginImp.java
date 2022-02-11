@@ -55,10 +55,8 @@ public final class XPluginImp implements Plugin {
         }
 
         _server.httpHandler(_handler);
-        //_server.pipeline().next(_handler);
 
         if (app.enableWebSocket()) {
-            //_server.wsPipeline().next(new WebSocketHandleImp());
             _server.webSocketHandler(new WebSocketHandleImp());
 
             SessionManager.register(new _SessionManagerImpl());
