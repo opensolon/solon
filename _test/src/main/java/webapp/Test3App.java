@@ -32,7 +32,7 @@ public class Test3App {
     }
 
     //热加载demo
-    void hotdemo(SolonApp app){
+    void hotdemo(SolonApp app) {
         //热加载jar
         File jarFile = new File("/xxx/xxx.jar");
         ExtendLoader.loadJar(jarFile);
@@ -41,7 +41,9 @@ public class Test3App {
         Object jarPlugin = Utils.newInstance("xxx.xxx.xxx.xx");
 
         //插入(内部会直接调用)
-        app.plug((Plugin) jarPlugin);
+        if (jarPlugin != null) {
+            app.plug((Plugin) jarPlugin);
+        }
     }
 
     public static class PluginImpl implements Plugin{
