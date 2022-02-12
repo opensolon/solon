@@ -38,11 +38,11 @@ public class Test3App {
         ExtendLoader.loadJar(jarFile);
 
         //热实例化插件类class
-        Object jarPlugin = Utils.newInstance("xxx.xxx.xxx.xx");
+        Plugin jarPlugin = Utils.newInstance("xxx.xxx.xxx.xx");
 
         //插入(内部会直接调用)
         if (jarPlugin != null) {
-            app.plug((Plugin) jarPlugin);
+            app.plug(jarPlugin);
         }
     }
 
