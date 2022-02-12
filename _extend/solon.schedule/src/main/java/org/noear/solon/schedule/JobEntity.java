@@ -88,7 +88,14 @@ class JobEntity extends Thread {
                     exec();
 
                     //重新设定休息时间
-                    sleepMillis = System.currentTimeMillis() - nextTime.getTime();
+                    if(concurrent) {
+                        sleepMillis = System.currentTimeMillis() - nextTime.getTime();
+                    }else{
+                        baseTime = new Date();
+
+                        nextTime = cron.getNextValidTimeAfter(baseTime);
+                        sleepMillis = System.currentTimeMillis() - nextTime.getTime();
+                    }
                 }
             }
 
@@ -98,11 +105,19 @@ class JobEntity extends Thread {
 
 
     private void exec() {
-        Utils.pools.submit(this::exec0);
+        if (concurrent) {
+            Utils.pools.submit(this::exec0);
+        } else {
+            exec0();
+        }
     }
 
     private void exec0() {
         try {
+            if (concurrent) {
+                Thread.currentThread().setName("Job:" + name);
+            }
+
             runnable.run();
         } catch (Throwable e) {
             EventBus.push(e);
