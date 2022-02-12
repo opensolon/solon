@@ -32,7 +32,7 @@ public class Test3App {
     }
 
     //热加载demo
-    void hotdemo(SolonApp app) {
+    void demo_hotadd(SolonApp app) {
         //热加载jar
         File jarFile = new File("/xxx/xxx.jar");
         ExtendLoader.loadJar(jarFile);
@@ -43,6 +43,18 @@ public class Test3App {
         //插入(内部会直接调用)
         if (jarPlugin != null) {
             app.plug(jarPlugin);
+        }
+    }
+
+    //热拨出
+    void demo_hotpop(SolonApp app){
+        Class<?> pluginClz = Utils.loadClass("xxx.xxx.xxx.xx");
+
+        PluginEntity tmp = app.pluginPop(pluginClz);
+        if(tmp != null) {
+            //停掉插件
+            tmp.prestop();
+            tmp.stop();
         }
     }
 
