@@ -2,6 +2,7 @@ package webapp;
 
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
+import org.noear.solon.Utils;
 import org.noear.solon.core.ExtendLoader;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.PluginEntity;
@@ -18,12 +19,8 @@ public class Test3App {
             //x.pluginAdd(0, new PluginImpl());
         });
 
-        //加载jar
-        File jarFile = new File("/xxx/xxx.jar");
-        ExtendLoader.loadJar(jarFile);
-
         //直接插入
-        app.plug(new PluginImpl());
+        app.plug(new PluginImpl()); //
 
         //拨出
         PluginEntity tmp = app.pluginPop(PluginImpl.class);
@@ -32,6 +29,19 @@ public class Test3App {
             tmp.prestop();
             tmp.stop();
         }
+    }
+
+    //热加载demo
+    void hotdemo(SolonApp app){
+        //热加载jar
+        File jarFile = new File("/xxx/xxx.jar");
+        ExtendLoader.loadJar(jarFile);
+
+        //热实例化插件类class
+        Object jarPlugin = Utils.newInstance("xxx.xxx.xxx.xx");
+
+        //插入(内部会直接调用)
+        app.plug((Plugin) jarPlugin);
     }
 
     public static class PluginImpl implements Plugin{
