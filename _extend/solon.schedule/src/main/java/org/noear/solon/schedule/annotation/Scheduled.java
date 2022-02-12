@@ -41,4 +41,9 @@ public @interface Scheduled {
      * 固定延时毫秒数
      */
     long fixedDelay() default 0;
+
+    /**
+     * 可并发执行
+     * */
+    boolean concurrent() default true;
 }

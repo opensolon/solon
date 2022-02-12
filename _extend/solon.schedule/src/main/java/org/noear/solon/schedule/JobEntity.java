@@ -18,6 +18,7 @@ class JobEntity extends Thread {
     final long fixedRate;
     final long fixedDelay;
     final Runnable runnable;
+    final boolean concurrent;
 
     boolean isCanceled;
 
@@ -26,12 +27,13 @@ class JobEntity extends Thread {
     Date baseTime;
     Date nextTime;
 
-    public JobEntity(String name, CronExpressionPlus cron,  long fixedRate, long fixedDelay, Runnable runnable) {
+    public JobEntity(String name, CronExpressionPlus cron,  long fixedRate, long fixedDelay, boolean concurrent, Runnable runnable) {
         this.name = name;
         this.cron = cron;
         this.fixedRate = fixedRate;
         this.fixedDelay = fixedDelay;
         this.runnable = runnable;
+        this.concurrent = concurrent;
 
         this.baseTime = new Date();
 
@@ -64,7 +66,7 @@ class JobEntity extends Thread {
 
             if (sleepMillis >= fixedRate) {
                 baseTime = new Date();
-                runDo();
+                exec();
 
                 //重新设定休息时间
                 sleepMillis = fixedRate;
@@ -83,7 +85,7 @@ class JobEntity extends Thread {
                 nextTime = cron.getNextValidTimeAfter(baseTime);
 
                 if (sleepMillis <= 1000) {
-                    runDo();
+                    exec();
 
                     //重新设定休息时间
                     sleepMillis = System.currentTimeMillis() - nextTime.getTime();
@@ -94,7 +96,12 @@ class JobEntity extends Thread {
         }
     }
 
-    private void runDo() {
+
+    private void exec() {
+        Utils.pools.submit(this::exec0);
+    }
+
+    private void exec0() {
         try {
             runnable.run();
         } catch (Throwable e) {

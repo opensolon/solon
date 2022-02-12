@@ -25,9 +25,9 @@ public class JobManager {
      * @param cron     cron 表达式
      * @param runnable 运行函数
      */
-    public static void add(String name, String cron, Runnable runnable) throws ParseException {
+    public static void add(String name, String cron, boolean concurrent, Runnable runnable) throws ParseException {
         CronExpressionPlus cronX = CronUtils.get(cron);
-        jobEntityList.add(new JobEntity(name, cronX, 0, 0, runnable));
+        jobEntityList.add(new JobEntity(name, cronX, 0, 0, concurrent, runnable));
     }
 
     /**
@@ -38,14 +38,14 @@ public class JobManager {
      * @param zone     时区
      * @param runnable 运行函数
      */
-    public static void add(String name, String cron, String zone, Runnable runnable) throws ParseException {
+    public static void add(String name, String cron, String zone, boolean concurrent, Runnable runnable) throws ParseException {
         CronExpressionPlus cronX = CronUtils.get(cron);
 
         if (Utils.isNotEmpty(zone)) {
             cronX.setTimeZone(TimeZone.getTimeZone(zone));
         }
 
-        jobEntityList.add(new JobEntity(name, cronX, 0, 0, runnable));
+        jobEntityList.add(new JobEntity(name, cronX, 0, 0, concurrent, runnable));
     }
 
     /**
@@ -55,8 +55,8 @@ public class JobManager {
      * @param fixedRate 固定间隔毫秒数
      * @param runnable  运行函数
      */
-    public static void add(String name, long fixedRate, Runnable runnable) {
-        jobEntityList.add(new JobEntity(name, null, fixedRate, 0, runnable));
+    public static void add(String name, long fixedRate, boolean concurrent, Runnable runnable) {
+        jobEntityList.add(new JobEntity(name, null, fixedRate, 0, concurrent, runnable));
     }
 
     /**
@@ -67,8 +67,8 @@ public class JobManager {
      * @param fixedDelay 固定延迟毫秒数
      * @param runnable   运行函数
      */
-    public static void add(String name, long fixedRate, long fixedDelay, Runnable runnable) {
-        jobEntityList.add(new JobEntity(name, null, fixedRate, fixedDelay, runnable));
+    public static void add(String name, long fixedRate, long fixedDelay, boolean concurrent, Runnable runnable) {
+        jobEntityList.add(new JobEntity(name, null, fixedRate, fixedDelay, concurrent, runnable));
     }
 
     /**

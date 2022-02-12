@@ -26,9 +26,9 @@ public class XPluginImp implements Plugin {
                 String name = Utils.annoAlias(anno.name(), clz.getSimpleName());
 
                 if (anno.fixedRate() > 0) {
-                    JobManager.add(name, anno.fixedRate(), anno.fixedDelay(), bw.raw());
+                    JobManager.add(name, anno.fixedRate(), anno.fixedDelay(), anno.concurrent(), bw.raw());
                 } else {
-                    JobManager.add(name, anno.cron(), anno.zone(), bw.raw());
+                    JobManager.add(name, anno.cron(), anno.zone(), anno.concurrent(), bw.raw());
                 }
             }
         });
@@ -38,9 +38,9 @@ public class XPluginImp implements Plugin {
             String name = Utils.annoAlias(anno.name(), method.getName());
 
             if (anno.fixedRate() > 0) {
-                JobManager.add(name, anno.fixedRate(), anno.fixedDelay(), runnable);
+                JobManager.add(name, anno.fixedRate(), anno.fixedDelay(), anno.concurrent(), runnable);
             } else {
-                JobManager.add(name, anno.cron(), anno.zone(), runnable);
+                JobManager.add(name, anno.cron(), anno.zone(), anno.concurrent(), runnable);
             }
         });
 
