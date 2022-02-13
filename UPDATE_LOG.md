@@ -1,3 +1,6 @@
+#### 1.6.23
+* 调整 solon.schedule 时间策略 
+
 #### 1.6.22
 * 插件 solon.boot.smarthttp，升级 smart-http 到 1.1.11
 * 插件 solon.socketd.client.smartsocket，升级 smart-socket 到 1.5.15

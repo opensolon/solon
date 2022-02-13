@@ -45,5 +45,5 @@ public @interface Scheduled {
     /**
      * 可并发执行
      * */
-    boolean concurrent() default true;
+    boolean concurrent() default false;
 }
