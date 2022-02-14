@@ -15,5 +15,6 @@ public class DemoController {
     @Mapping("test")
     public void test(String mail, String title) {
         asyncTask.snedMail(mail, title);
+        System.out.println("1");
     }
 }

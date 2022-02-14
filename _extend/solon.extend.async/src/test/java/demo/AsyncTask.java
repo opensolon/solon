@@ -10,6 +10,6 @@ import org.noear.solon.extend.async.annotation.Async;
 public class AsyncTask {
     @Async
     public void snedMail(String mail, String title) {
-
+        System.out.println("2");
     }
 }
