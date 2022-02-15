@@ -7,7 +7,11 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 
- class DsConnectionFactoryImpl extends DbConnectionFactory {
+/**
+ * @author noear
+ * @since 1.3
+ */
+class DsConnectionFactoryImpl extends DbConnectionFactory {
     @Override
     public Connection getConnection(DataSource ds) throws SQLException {
         return TranUtils.getConnection(ds);

@@ -6,6 +6,10 @@ import org.noear.weed.WeedConfig;
 import org.noear.weed.annotation.Db;
 import org.noear.weed.xml.XmlSqlLoader;
 
+/**
+ * @author noear
+ * @since 1.3
+ */
 public class XPluginImp implements Plugin {
     @Override
     public void start(SolonApp app) {

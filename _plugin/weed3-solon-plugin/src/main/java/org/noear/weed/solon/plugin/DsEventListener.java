@@ -5,7 +5,11 @@ import org.noear.solon.core.event.EventListener;
 
 import javax.sql.DataSource;
 
- class DsEventListener implements EventListener<BeanWrap> {
+/**
+ * @author noear
+ * @since 1.3
+ */
+class DsEventListener implements EventListener<BeanWrap> {
 
     @Override
     public void onEvent(BeanWrap bw) {

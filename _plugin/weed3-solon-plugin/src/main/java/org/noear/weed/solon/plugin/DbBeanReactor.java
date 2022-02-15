@@ -9,7 +9,8 @@ import org.noear.weed.annotation.Db;
 import javax.sql.DataSource;
 
 /**
- * @author noear 2021/1/26 created
+ * @author noear
+ * @since 1.3
  */
 public class DbBeanReactor implements BeanBuilder<Db>, BeanInjector<Db> {
     @Override

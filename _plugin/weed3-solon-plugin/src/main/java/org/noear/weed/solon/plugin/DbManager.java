@@ -7,7 +7,11 @@ import javax.sql.DataSource;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
- class DbManager {
+/**
+ * @author noear
+ * @since 1.3
+ */
+class DbManager {
     private static DbManager _global = new DbManager();
 
     public static DbManager global() {
@@ -29,7 +33,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
                     dbMap.putIfAbsent(bw.name(), db);
 
-                    if(bw.typed()){
+                    if (bw.typed()) {
                         dbMap.putIfAbsent("", db);
                     }
 
@@ -43,7 +47,7 @@ import java.util.concurrent.ConcurrentHashMap;
         return db;
     }
 
-    public void reg(BeanWrap bw){
+    public void reg(BeanWrap bw) {
         get(bw);
     }
 }
