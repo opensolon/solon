@@ -51,7 +51,7 @@ public class LocalCacheService implements CacheService {
      */
     @Override
     public void store(String key, Object obj, int seconds) {
-        if(seconds == 0){
+        if (seconds <= 0) {
             seconds = getDefalutSeconds();
         }
 
