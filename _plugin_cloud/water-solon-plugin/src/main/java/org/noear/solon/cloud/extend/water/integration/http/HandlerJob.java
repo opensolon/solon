@@ -25,7 +25,7 @@ public class HandlerJob implements Handler {
         if (authServerToken(token)) {
             String name = ctx.header(WW.http_header_job);
             if(Utils.isEmpty(name)){
-                name = ctx.param("name");
+                name = ctx.param("name");//兼容旧版
             }
 
             handleDo(ctx, name);
