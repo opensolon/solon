@@ -8,6 +8,7 @@ import org.noear.solon.cloud.model.JobHandlerEntity;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Handler;
+import org.noear.water.WW;
 
 /**
  * 任务调度处理（用令牌的形式实现安全）//中频
@@ -22,7 +23,12 @@ public class HandlerJob implements Handler {
 
         //调用任务必须要有server token
         if (authServerToken(token)) {
-            handleDo(ctx, ctx.param("name"));
+            String name = ctx.header(WW.http_header_job);
+            if(Utils.isEmpty(name)){
+                name = ctx.param("name");
+            }
+
+            handleDo(ctx, name);
         }else{
             ctx.status(400);
             ctx.output("Invalid server token!");
