@@ -7,18 +7,29 @@
     <parent>
         <groupId>org.noear</groupId>
         <artifactId>solon-parent</artifactId>
-        <version>1.6.24</version>
-        <relativePath>../../solon-parent/pom.xml</relativePath>
+        <version>1.6.20</version>
+        <!--version>1.6.24</version-->
+        <!--relativePath>../../solon-parent/pom.xml</relativePath-->
     </parent>
 
     <artifactId>jap-ids-solon-plugin</artifactId>
     <packaging>jar</packaging>
 
-
     <dependencies>
+        <dependency>
+            <groupId>com.fujieid</groupId>
+            <artifactId>jap-ids</artifactId>
+            <version>1.0.7</version>
+        </dependency>
+
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.serialization.snack3</artifactId>
         </dependency>
 
         <dependency>
@@ -27,4 +38,5 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
 </project>
