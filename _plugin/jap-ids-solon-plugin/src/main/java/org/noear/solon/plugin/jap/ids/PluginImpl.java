@@ -10,13 +10,15 @@ import org.noear.solon.plugin.jap.ids.http.controller.ApprovalController;
 import org.noear.solon.plugin.jap.ids.managers.RouterManager;
 
 /**
- * @author noear
+ * @author noear, 颖
  * @since 1.6
  */
-public class XPluginImpl implements Plugin {
+public class PluginImpl implements Plugin {
 
     @Override
     public void start(SolonApp app) {
+        IdsProps.initialize();
+
         // 不实现和注入任何 Service, 因为 Jap Ids 会调用
         // ServiceLoader.load 方法, 这样方便用户实现后自动注入
         // 还能很好地避免冲突

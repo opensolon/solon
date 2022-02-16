@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * @author 颖
  */
-@Component
 public class ApprovalController extends BaseController {
 
     public ApprovalController(SolonApp app) {
