@@ -28,7 +28,7 @@
 
         <fastjson.ver>1.2.75</fastjson.ver>
         <okhttp.ver>3.14.9</okhttp.ver>
-        <hutool.ver>5.5.6</hutool.ver>
+        <hutool.ver>5.7.21</hutool.ver>
 
         <asm.ver>9.2</asm.ver>
 
