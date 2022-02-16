@@ -4,6 +4,7 @@ import org.noear.solon.plugin.jap.ids.IdsProps;
 
 /**
  * @author 颖
+ * @since 1.6
  */
 public abstract class BaseController {
 
