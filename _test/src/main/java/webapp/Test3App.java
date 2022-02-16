@@ -56,6 +56,10 @@ public class Test3App {
             tmp.prestop();
             tmp.stop();
         }
+
+        //移除jar包
+        File jarFile = new File("/xxx/xxx.jar");
+        ExtendLoader.unloadJar(jarFile);
     }
 
     public static class PluginImpl implements Plugin{
