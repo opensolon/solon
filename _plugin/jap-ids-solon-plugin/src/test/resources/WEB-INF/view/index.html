@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>jap-ids 示例</title>
+  <style>
+    * {
+      font-size: 14px;
+    }
+    h1 {
+      font-size: 2em;
+    }
+    .table {
+      border: 1px solid #b3b3b3;
+      border-collapse: collapse;
+    }
+    .table td, .table th {
+      border: 1px solid #b3b3b3;
+      padding: .25rem;
+      vertical-align: top;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+<div style="text-align: center">
+  <h1>JAP授权服务端软件</h1>
+</div>
+<table>
+  <tr>
+    <td style="width: 50%;">
+      <h2>API 列表 · <a href="/" target="_blank">首页</a></h2>
+    </td>
+    <td style="width: 50%;">
+      <h2>操作步骤</h2>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <ul>
+        <li>服务发现：<a href="http://localhost:8081/.well-known/openid-configuration" target="_blank">http://localhost:8081/.well-known/openid-configuration</a></li>
+        <li>加密公钥：<a href="http://localhost:8081/.well-known/jwks.json" target="_blank">http://localhost:8081/.well-known/jwks.json</a></li>
+        <li>获取授权：<a href="http://localhost:8081/oauth/authorize" target="_blank">http://localhost:8081/oauth/authorize</a></li>
+        <li>确认授权：<a href="http://localhost:8081/oauth/confirm" target="_blank">http://localhost:8081/oauth/confirm</a></li>
+        <li>获取/刷新Token：<a href="http://localhost:8081/oauth/token" target="_blank">http://localhost:8081/oauth/token</a></li>
+        <li>收回Token：<a href="http://localhost:8081/oauth/revoke_token" target="_blank">http://localhost:8081/oauth/revoke_token</a></li>
+        <li>用户详情：<a href="http://localhost:8081/oauth/userinfo" target="_blank">http://localhost:8081/oauth/userinfo</a></li>
+        <li>check session：<a href="http://localhost:8081/oauth/check_session" target="_blank">http://localhost:8081/oauth/check_session</a></li>
+        <li>授权异常：<a href="http://localhost:8081/oauth/error" target="_blank">http://localhost:8081/oauth/error</a></li>
+        <li>登录：<a href="http://localhost:8081/oauth/logout" target="_blank">http://localhost:8081/oauth/login</a></li>
+        <li>退出登录：<a href="http://localhost:8081/oauth/logout" target="_blank">http://localhost:8081/oauth/logout</a></li>
+      </ul>
+    </td>
+    <td>
+      <ul>
+        <li>第一步：根据 Grant Types 点击下方 table 中的 ”生成授权链接“，点击后会在下方生成不同类型的链接</li>
+        <li>第二步：在后面的四个授权模式中，选择合适的链接点击访问</li>
+        <li>第三步：如果是选择的授权码模式或者隐式授权模式，会回调回当前页面，并且 URL 中附带相关参数（回调参数会在下方”回调参数“中显示）。如果是授权码模式，可以根据 code 换取 token</li>
+        <li>第四步：获取完 access_token 后，可以在”通用方法“中使用 access_token 进行相关操作</li>
+        <li style="color: red;font-weight: bold">默认情况下，登录时的账号为“test”，密码随便填</li>
+      </ul>
+    </td>
+  </tr>
+</table>
+
+
+<h2>可供选择的 client 信息</h2>
+<table class="table" border="1">
+  <tr>
+    <th width="110">App Name</th>
+    <th width="250">Client ID</th>
+    <th width="330">Client Secret</th>
+    <th width="134">Redirect Uri</th>
+    <th width="200">scopes</th>
+    <th width="300">Grant Types</th>
+    <th width="180">Response Types</th>
+    <th width="50">AutoApprove</th>
+    <th width="50">available</th>
+    <th width="110">操作</th>
+  </tr>
+  <tr th:each="clientDetail : ${clientDetails}">
+    <td class="appName"><span th:text="${clientDetail.appName}"></span></td>
+    <td class="clientId"><span th:text="${clientDetail.clientId}"></span></td>
+    <td class="clientSecret"><span th:text="${clientDetail.clientSecret}"></span></td>
+    <td class="redirectUri"><span th:text="${clientDetail.redirectUri}"></span></td>
+    <td class="scopes"><span th:text="${clientDetail.scopes}"></span></td>
+    <td class="grantTypes"><span th:text="${clientDetail.grantTypes}"></span></td>
+    <td class="responseTypes"><span th:text="${clientDetail.responseTypes}"></span></td>
+    <td class="autoApprove"><span th:text="${clientDetail.autoApprove}"></span></td>
+    <td class="available"><span th:text="${clientDetail.available}"></span></td>
+    <td>
+      <a href="javascript:void(0)" type="button" class="createAuthorizeUrl">生成授权链接</a>
+    </td>
+  </tr>
+</table>
+
+<h3>API</h3>
+<fieldset disabled>
+  <legend>应用参数</legend>
+  <table>
+    <tr>
+      <td>clientId: <input id="clientIdSpan" type="text"></td>
+      <td>clientSecret: <input id="clientSecretSpan" type="text"></td>
+      <td>redirectUri: <input id="redirectUriSpan" type="text"></td>
+      <td>scopes: <input id="scopesSpan" type="text"></td>
+      <td>grantTypes: <input id="grantTypesSpan" type="text"></td>
+      <td>responseTypes: <input id="responseTypesSpan" type="text"></td>
+    </tr>
+  </table>
+</fieldset>
+<fieldset id="callbackParam" disabled>
+  <legend>回调参数</legend>
+  <table>
+    <tr>
+      <td>code: <input id="codeSpan" type="text"></td>
+      <td>state: <input id="stateSpan" type="text"></td>
+      <td>accessToken: <input id="accessTokenSpan" type="text"></td>
+      <td>refreshToken: <input id="refreshTokenSpan" type="text"></td>
+      <td>expiresIn: <input id="expiresInSpan" type="text"></td>
+      <td>tokenType: <input id="tokenTypeSpan" type="text"></td>
+      <td>scope: <input id="scopeSpan" type="text"></td>
+      <td>idToken: <input id="idTokenSpan" type="text"></td>
+    </tr>
+  </table>
+</fieldset>
+<fieldset>
+  <legend>通用方法</legend>
+  <ul>
+    <li>
+      http://localhost:8081/oauth/userinfo?access_token=
+      <input type="text" placeholder="输入 access_token" id="userInfoToken"><input type="button" id="userInfo_btn" value="获取用户信息">
+    </li>
+    <li>
+      http://localhost:8081/oauth/revoke_token?access_token=
+      <input type="text" placeholder="输入 access_token" id="revokeToken"><input type="button" id="revokeToken_btn" value="收回token">
+    </li>
+    <li>
+      http://localhost:8081/oauth/token?grant_type=refresh_token&
+      <input type="text" placeholder="输入 refresh_token" id="refreshToken">
+      <input type="text" placeholder="输入 ClientId" id="refreshTokenClientId">
+      <input type="text" placeholder="输入 ClientSecret" id="refreshTokenClientSecret">
+      <input type="text" placeholder="输入 Scope" id="refreshTokenScope">
+      <input type="button" id="refreshToken_btn" value="刷新token">
+    </li>
+    <li>
+      http://localhost:8081/oauth/logout<input type="button" id="logoutToken_btn" value="退出登录">
+    </li>
+  </ul>
+</fieldset>
+<fieldset>
+  <legend>授权码模式</legend>
+  <ul>
+    <li>获取授权：<a id="authorizeUrl" target="_blank" href="">http://localhost:8081/oauth/authorize?client_id=?&response_type=code&scope=?&redirect_uri=?&state=?</a></li>
+    <li>获取授权（跳过确认授权）：<a id="authorizeAutoApproveAUrl" target="_blank" href="">http://localhost:8081/oauth/authorize?autoapprove=true&client_id=?&response_type=code&scope=?&redirect_uri=?&state=?</a></li>
+    <li>获取token：<a id="tokenUrl" target="_blank" href="">http://localhost:8081/oauth/token?client_id=?&client_secret=?&grant_type=authorization_code&redirect_uri=?&code=?</a></li>
+    <li>获取授权(PKCE)：<a id="authorizePkceUrl" target="_blank" href="">http://localhost:8081/oauth/pcke/authorize?client_id=?</a></li>
+    <li>获取token(PKCE)：<a id="tokenPkceUrl" target="_blank" href="">http://localhost:8081/oauth/pkce/token?client_id=?&code=?&state=?</a></li>
+  </ul>
+</fieldset>
+<fieldset>
+  <legend>隐式授权模式</legend>
+  <ul>
+    <li>获取授权：<a id="authorizeImplicitUrl" target="_blank" href="">http://localhost:8081/oauth/authorize?client_id=?&response_type=token&scope=?&redirect_uri=?&state=?</a></li>
+  </ul>
+</fieldset>
+<fieldset>
+  <legend>密码授权模式</legend>
+  <ul>
+    <li>获取token：<a id="authorizePasswordUrl" target="_blank" href="">http://localhost:8081/oauth/token?grant_type=password&username=test&password=test&client_id=?&client_secret=?&scope=?</a></li>
+  </ul>
+</fieldset>
+<fieldset>
+  <legend>客户端授权模式</legend>
+  <ul>
+    <li>获取token：<a id="authorizeClientUrl" target="_blank" href="">http://localhost:8081/oauth/token?grant_type=client_credentials&client_id=?&client_secret=?&scope=?</a></li>
+  </ul>
+</fieldset>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+<script>
+  var baseUrl = "http://localhost:8081";
+
+  function getQueryParams(paramName) {
+    var query = window.location.search.substring(1);
+    var vars = query.split("&");
+    for (var i = 0; i < vars.length; i++) {
+      var param = vars[i].split("=");
+      if (param[0] === paramName) {
+        return param[1];
+      }
+    }
+    return null;
+  }
+
+  $(function () {
+    var code = getQueryParams("code");
+    var callbackState = getQueryParams("state");
+    if (code || callbackState) {
+      var clientDetail = JSON.parse(localStorage.getItem(callbackState));
+      if (!clientDetail) {
+        alert("state 不匹配");
+        return false;
+      }
+      var clientId = clientDetail.clientId;
+      var clientSecret = clientDetail.clientSecret;
+      var tokenUrl = baseUrl + "/oauth/token?client_id=" + clientId + "&client_secret=" + clientSecret + "&grant_type=authorization_code&redirect_uri=http://localhost:8081&code=" + code
+      $("#tokenUrl").attr("href", tokenUrl).html(tokenUrl);
+
+      // (PKCE)
+      var tokenPkceUrl = baseUrl + "/oauth/pkce/token?client_id=" + clientId + "&code=" + code + "&state=" + callbackState
+      $("#tokenPkceUrl").attr("href", tokenPkceUrl).html(tokenPkceUrl);
+
+      $("#codeSpan").val(code);
+      $("#stateSpan").val(callbackState);
+      $("#accessTokenSpan").val(getQueryParams("access_token"));
+      $("#refreshTokenSpan").val(getQueryParams("refresh_token"));
+      $("#expiresInSpan").val(getQueryParams("expires_in"));
+      $("#tokenTypeSpan").val(getQueryParams("token_type"));
+      $("#scopeSpan").val(getQueryParams("scope"));
+      $("#idTokenSpan").val(getQueryParams("id_token"));
+
+      $("#clientIdSpan").val(clientId);
+      $("#clientSecretSpan").val(clientSecret);
+      $("#redirectUriSpan").val(clientDetail.redirectUri);
+      $("#scopesSpan").val(clientDetail.scopes);
+      $("#grantTypesSpan").val(clientDetail.grantTypes);
+      $("#responseTypesSpan").val(clientDetail.responseTypes);
+
+
+      $("#refreshTokenClientId").val(clientId);
+      $("#refreshTokenClientSecret").val(clientSecret);
+      $("#refreshTokenScope").val(clientDetail.scopes);
+    }
+    /**
+     * 创建授权地址
+     */
+    $(".createAuthorizeUrl").click(function () {
+      var $this = $(this);
+      var $tr = $this.parents("tr");
+      var clientId = $tr.find(".clientId span").text();
+      var clientSecret = $tr.find(".clientSecret span").text();
+      var redirectUri = $tr.find(".redirectUri span").text();
+      var scopes = $tr.find(".scopes span").text();
+      var grantTypes = $tr.find(".grantTypes span").text();
+      var responseTypes = $tr.find(".responseTypes span").text();
+      var state = new Date().getTime();
+
+      // 授权码模式
+      var authorizeUrl = baseUrl + "/oauth/authorize?client_id=" + clientId + "&response_type=code&scope=" + scopes + "&redirect_uri=" + redirectUri + "&state=" + state
+      $("#authorizeUrl").attr("href", authorizeUrl).html(authorizeUrl);
+      // 授权码模式（跳过确认授权）
+      var authorizeAutoApproveAUrl = baseUrl + "/oauth/authorize?autoapprove=true&client_id=" + clientId + "&response_type=code&scope=" + scopes + "&redirect_uri=" + redirectUri + "&state=" + state
+      $("#authorizeAutoApproveAUrl").attr("href", authorizeAutoApproveAUrl).html(authorizeAutoApproveAUrl);
+      // 授权码模式(PKCE)
+      var authorizePkceUrl = baseUrl + "/oauth/pkce/authorize?client_id=" + clientId + "&state=" + state
+      $("#authorizePkceUrl").attr("href", authorizePkceUrl).html(authorizePkceUrl);
+
+      // 隐式模式
+      var authorizeImplicitUrl = baseUrl + "/oauth/authorize?client_id=" + clientId + "&response_type=token&scope=" + scopes + "&redirect_uri=" + redirectUri + "&state=" + state
+      $("#authorizeImplicitUrl").attr("href", authorizeImplicitUrl).html(authorizeImplicitUrl);
+
+      // 密码模式
+      var authorizePasswordUrl = baseUrl + "/oauth/token?grant_type=password&username=test&password=test&client_id=" + clientId + "&client_secret=" + clientSecret + "&scope=" + scopes
+      $("#authorizePasswordUrl").attr("href", authorizePasswordUrl).html(authorizePasswordUrl);
+
+      // 客户端模式
+      var authorizeClientUrl = baseUrl + "/oauth/token?grant_type=client_credentials&client_id=" + clientId + "&client_secret=" + clientSecret + "&scope=" + scopes
+      $("#authorizeClientUrl").attr("href", authorizeClientUrl).html(authorizeClientUrl);
+
+      localStorage.setItem(state + "", JSON.stringify({
+        clientId: clientId,
+        clientSecret: clientSecret,
+        redirectUri: redirectUri,
+        scopes: scopes,
+        grantTypes: grantTypes,
+        responseTypes: responseTypes
+      }));
+
+      $("#clientIdSpan").val(clientId);
+      $("#clientSecretSpan").val(clientSecret);
+      $("#redirectUriSpan").val(redirectUri);
+      $("#scopesSpan").val(scopes);
+      $("#grantTypesSpan").val(grantTypes);
+      $("#responseTypesSpan").val(responseTypes);
+    })
+    /**
+     * 获取当前登录用户信息
+     */
+    $("#userInfo_btn").click(function () {
+      var userInfoToken = $("#userInfoToken").val();
+      if (!userInfoToken) {
+        alert("请输入 token");
+        return false;
+      }
+      window.open(baseUrl + "/oauth/userinfo?access_token=" + userInfoToken)
+    })
+    /**
+     * 收回token
+     */
+    $("#revokeToken_btn").click(function () {
+      var revokeToken = $("#revokeToken").val();
+      if (!revokeToken) {
+        alert("请输入 token");
+        return false;
+      }
+      window.open(baseUrl + "/oauth/revoke_token?access_token=" + revokeToken)
+    })
+    /**
+     * 刷新token
+     */
+    $("#refreshToken_btn").click(function () {
+      var refreshToken = $("#refreshToken").val();
+      var refreshTokenClientId = $("#refreshTokenClientId").val();
+      var refreshTokenClientSecret = $("#refreshTokenClientSecret").val();
+      var refreshTokenScope = $("#refreshTokenScope").val();
+      if (!refreshToken || !refreshTokenClientId || !refreshTokenClientSecret || !refreshTokenScope) {
+        alert("参数不全");
+        return false;
+      }
+      window.open(baseUrl + "/oauth/token?client_id=" + refreshTokenClientId + "&client_secret=" + refreshTokenClientSecret + "&scope=" + refreshTokenScope + "&grant_type=refresh_token&refresh_token=" + refreshToken)
+    })
+    /**
+     * 退出登录
+     */
+    $("#logoutToken_btn").click(function () {
+      window.open(baseUrl + "/oauth/logout")
+    })
+  })
+</script>
+</html>

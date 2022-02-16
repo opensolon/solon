@@ -13,10 +13,10 @@ public class IdsProps {
     public static IdsConfig idsConfig = null;
 
     public static void initialize() {
-        bastPath = Solon.cfg().get("jpa.ids.bastPath", "/oauth");
+        bastPath = Solon.cfg().get("jap.ids.bastPath", "/oauth");
         bastPath = bastPath.startsWith("/") ? bastPath : "/" + bastPath;
         idsConfig = Solon.cfg().getBean(
-                "jpa.ids.config",
+                "jap.ids.config",
                 IdsConfig.class
         );
     }

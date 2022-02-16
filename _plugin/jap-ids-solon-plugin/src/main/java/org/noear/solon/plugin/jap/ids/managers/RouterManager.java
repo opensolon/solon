@@ -3,11 +3,8 @@ package org.noear.solon.plugin.jap.ids.managers;
 import com.fujieid.jap.http.adapter.jakarta.JakartaResponseAdapter;
 import com.fujieid.jap.ids.endpoint.ErrorEndpoint;
 import com.fujieid.jap.ids.exception.IdsException;
-import org.noear.solon.Solon;
+import com.fujieid.jap.ids.exception.InvalidRequestException;
 import org.noear.solon.SolonApp;
-import org.noear.solon.core.handle.Context;
-import org.noear.solon.core.handle.Filter;
-import org.noear.solon.core.handle.FilterChain;
 import org.noear.solon.plugin.jap.ids.http.controller.*;
 
 import javax.servlet.http.HttpServletRequest;
