@@ -6,7 +6,7 @@
 
     <groupId>org.noear.bundle</groupId>
     <artifactId>solon-extend-bundle</artifactId>
-    <version>1.6.24</version>
+    <version>1.6.25-m1</version>
     <packaging>pom</packaging>
 
 
