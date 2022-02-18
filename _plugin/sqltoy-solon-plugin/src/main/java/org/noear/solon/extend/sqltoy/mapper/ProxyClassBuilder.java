@@ -167,7 +167,7 @@ public class ProxyClassBuilder {
                         source.append("queryExecutor.resultType("+resultType.getName()+".class);");
                         source.append("Page _result = dao.findPageByQuery("+pageParam+",queryExecutor).getPageResult();");
                         if(primitive){
-                            appendPagePrimitive();
+                            appendPagePrimitive(entityType);
                         }
                         source.append("return _result;");
                     } else {
@@ -182,7 +182,7 @@ public class ProxyClassBuilder {
                         source.append(" queryExecutor.resultType("+resultType.getName()+".class);");
                         source.append(" Page _result = dao.findPageByQuery("+pageParam+", queryExecutor).getPageResult();");
                         if(primitive){
-                            appendPagePrimitive();
+                            appendPagePrimitive(entityType);
                         }
                         source.append("return _result;");
                     }
@@ -202,7 +202,7 @@ public class ProxyClassBuilder {
                         source.append("queryExecutor.resultType("+resultType.getName()+".class);");
                        if(primitive){
                            source.append("List<Map> _result = dao.findByQuery(queryExecutor).getRows();");
-                           source.append("return _result.stream().map(it -> it.values().stream().findFirst().get()).collect(Collectors.toList());");
+                           source.append("return _result.stream().map(it ->_cast(it.values().stream().findFirst().get(),"+entityType.getName()+".class)).collect(Collectors.toList());");
                        }else{
                            source.append("return dao.findByQuery(queryExecutor).getRows();");
                        }
@@ -234,10 +234,10 @@ public class ProxyClassBuilder {
                             source.append("queryExecutor.resultType("+retType.getName()+".class);");
                         }
                         source.append(" List _result = dao.findByQuery(queryExecutor).getRows();");
-                        source.append(" if (_result == null || _result.size() == 0){return null;}");
+                        source.append(" if (_result == null || _result.size() == 0){return _cast(null,"+retType.getName()+".class);}");
                         source.append("Object _target = _result.get(0);");
                         if(isPrimitive){
-                            source.append("return ("+retType.getName()+")((Map) _target).values().stream().findFirst().get();");
+                            source.append("return _cast(((Map) _target).values().stream().findFirst().get(),"+retType.getName()+".class);");
                         }else{
                             source.append("return ("+retType.getName()+")_target;");
                         }
@@ -258,10 +258,13 @@ public class ProxyClassBuilder {
                             source.append(" queryExecutor.resultType("+retType.getName()+".class);");
                         }
                         source.append("List _result = dao.findByQuery(queryExecutor).getRows();");
-                        source.append("if (_result == null || _result.size() == 0) {return null;}");
+                       // source.append("if (_result == null || _result.size() == 0) {return null;}");
+                        source.append(" if (_result == null || _result.size() == 0){return _cast(null,"+retType.getName()+".class);}");
                         source.append("Object _target = _result.get(0);");
                         if(isPrimitive){
-                            source.append("return ("+retType.getName()+")((Map) _target).values().stream().findFirst().get();");
+                            source.append("return _cast(((Map) _target).values().stream().findFirst().get(),"+retType.getName()+".class);");
+
+                            // source.append("return ("+retType.getName()+")((Map) _target).values().stream().findFirst().get();");
                         }else{
                             source.append("return ("+retType.getName()+")_target;");
                         }
@@ -274,7 +277,7 @@ public class ProxyClassBuilder {
                 if (_objIdx > -1) {
                     int objIdx = _objIdx;
                     String qeName=methodParameters[objIdx].getName();
-                    source.append("return dao.executeSql(_sql,"+qeName+");");
+                    source.append(convertLongReturnType("dao.executeSql(_sql,"+qeName+")",retType));
                 } else {
                     int mapParamIdx = _mapParamIdx;
                     String mp=mapParamIdx>-1?methodParameters[mapParamIdx].getName():"new HashMap<>();";
@@ -284,28 +287,29 @@ public class ProxyClassBuilder {
                             source.append("_queryMap.put(\""+k+"\","+k+");");
                         }
                     }
-                    source.append("return dao.executeSql(_sql,_queryMap);");
+                    source.append(convertLongReturnType("dao.executeSql(_sql,_queryMap)",retType));
                 }
                 break;
             case update:
-                if (_listIdx > -1) {// batch update
+                if (_listIdx > -1 && sql.batch()) {// batch update
                     int listIdx = _listIdx;
                     String lName=methodParameters[listIdx].getName();
-                    source.append("return dao.batchUpdate(_sql,"+lName+");");
+                    source.append(convertLongReturnType("dao.batchUpdate(_sql,"+lName+")",retType));
                 } else if (_objIdx > -1) {
                     int objIdx = _objIdx;
                     String lName=methodParameters[objIdx].getName();
-                    source.append("return dao.executeSql(_sql,"+lName+");");
+                    source.append(convertLongReturnType("dao.executeSql(_sql,"+lName+")",retType));
                 } else {
                     int mapParamIdx = _mapParamIdx;
-                    String mp=methodParameters[mapParamIdx].getName();
+                  //  String mp=methodParameters[mapParamIdx].getName();
+                    String mp=mapParamIdx>-1?methodParameters[mapParamIdx].getName():"new HashMap<>();";
                     source.append(" Map<String, Object> _queryMap = "+mp);
                     if(hasNamedParams){
                         for(String k:namedParamIdxMap.keySet()){
                             source.append("_queryMap.put(\""+k+"\","+k+");");
                         }
                     }
-                    source.append("return dao.executeSql(_sql,_queryMap);");
+                    source.append(convertLongReturnType("dao.executeSql(_sql,_queryMap)",retType));
                 }
                 break;
             default:
@@ -313,9 +317,22 @@ public class ProxyClassBuilder {
         }
         source.append("}");
     }
-    private void appendPagePrimitive(){
+    //转换返回语句执行的返回类型，只支持Long,Integer,Boolean
+    private String convertLongReturnType(String ret,Class toType){
+        if(Boolean.class==toType||boolean.class==toType){
+            return "return "+ret+">=1;";
+        }
+        if(Integer.class==toType||int.class==toType){
+            return "return "+ret+".intValue();";
+        }
+        if(Void.class==toType||void.class==toType){
+            return ret+";";
+        }
+        return "return "+ret+";";
+    }
+    private void appendPagePrimitive(Class entityType){
         source.append("List<Map> _rows = _result.getRows();");
-        source.append("List _distRows = _rows.stream().map(it -> it.values().stream().findFirst().get()).collect(Collectors.toList());");
+        source.append("List _distRows = _rows.stream().map(it -> _cast(it.values().stream().findFirst().get(),"+entityType.getName()+".class).collect(Collectors.toList());");
         source.append("_result.setRows(_distRows);");
     }
     public Class compile(){
@@ -342,11 +359,19 @@ public class ProxyClassBuilder {
             BigDecimal.class,
             BigInteger.class,
             Long.class,
+            long.class,
             Integer.class,
+            int.class,
             Byte.class,
+            byte.class,
             Double.class,
+            double.class,
             Float.class,
-            Character.class
+            float.class,
+            Character.class,
+            char.class,
+            Boolean.class,
+            boolean.class
     }));
 
     /**
@@ -355,7 +380,7 @@ public class ProxyClassBuilder {
      * @param retType
      * @return
      */
-    private static boolean isPrimitive(Class retType) {
+    protected static boolean isPrimitive(Class retType) {
         if (retType == null) {
             return false;
         }
