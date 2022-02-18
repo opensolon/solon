@@ -1,4 +1,4 @@
-package org.noear.solon.plugin.jap.ids.http.controller;
+package com.fujieid.jap.ids.solon.http.controller;
 
 import com.fujieid.jap.ids.context.IdsContext;
 import org.noear.solon.annotation.Controller;
