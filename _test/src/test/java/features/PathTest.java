@@ -8,31 +8,31 @@ import org.noear.solon.extend.staticfiles.repository.FileStaticRepository;
 
 public class PathTest {
     @Test
-    public void test(){
-        assert  PathUtil.mergePath("/user/*","").equals("/user/");
-
-        assert  PathUtil.mergePath("","/user/*").equals("/user/*");
-
-        assert  PathUtil.mergePath("/","/user/*").equals("/user/*");
-
-        assert PathUtil.mergePath("/render/direct/","*").equals("/render/direct/*");
+    public void test() {
+        assert PathUtil.mergePath("/user/*", "").equals("/user/");
+        assert PathUtil.mergePath("", "/user/*").equals("/user/*");
+        assert PathUtil.mergePath("/", "/user/*").equals("/user/*");
+        assert PathUtil.mergePath("/render/direct/", "*").equals("/render/direct/*");
+        assert PathUtil.mergePath("user", "/").equals("/user/");
+        assert PathUtil.mergePath("user", "").equals("/user");
+        assert PathUtil.mergePath("user/add", "/").equals("/user/add/");
     }
 
     @Test
-    public void test2(){
-        StaticMappings.add("/a/",new FileStaticRepository("/test/"));
+    public void test2() {
+        StaticMappings.add("/a/", new FileStaticRepository("/test/"));
     }
 
     @Test
-    public void test3(){
-        PathAnalyzer pathAnalyzer =  PathAnalyzer.get("/demo2/intercept/**");
+    public void test3() {
+        PathAnalyzer pathAnalyzer = PathAnalyzer.get("/demo2/intercept/**");
 
         assert pathAnalyzer.matches("/demo2/intercept/");
     }
 
     @Test
-    public void test4(){
-        PathAnalyzer pathAnalyzer =  PathAnalyzer.get("/demo2/intercept/*");
+    public void test4() {
+        PathAnalyzer pathAnalyzer = PathAnalyzer.get("/demo2/intercept/*");
 
         assert pathAnalyzer.matches("/demo2/intercept/");
     }
