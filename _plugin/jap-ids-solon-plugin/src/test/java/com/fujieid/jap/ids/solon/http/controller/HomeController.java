@@ -18,15 +18,13 @@ public class HomeController extends BaseController {
     IdsContext context;
 
     @Mapping(method = MethodType.GET)
-    public ModelAndView index() {
+    public ModelAndView index(ModelAndView mv) {
         //返回模型与视图，会被视图引擎渲染后再输出，默认是html格式
-        Map<String, Object> map = new HashMap<>();
-        map.put(
+        mv.put(
                 "clientDetails",
                 this.context.getClientDetailService().getAllClientDetail()
         );
 
-        return new ModelAndView("index.html", map);
+        return mv.view("index.html");
     }
-
 }
