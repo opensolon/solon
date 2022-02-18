@@ -1,5 +1,5 @@
 #### 1.6.25
-* 新增 jap-ids-solon-plugin 插件
+* 增加 jap-ids-solon-plugin 插件
 
 #### 1.6.24
 * 调整 water job 的 name 处理
