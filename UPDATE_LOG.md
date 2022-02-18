@@ -1,4 +1,10 @@
-#### 1.6.25-m1
+#### 1.6.25
+* 新增 jap-ids-solon-plugin 插件
+
+#### 1.6.24
+* 调整 water job 的 name 处理
+
+#### 1.6.23
 * 调整 solon.schedule 调度策略 
 
 #### 1.6.22
