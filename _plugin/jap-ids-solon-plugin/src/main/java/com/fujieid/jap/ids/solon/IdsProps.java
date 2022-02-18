@@ -1,6 +1,5 @@
 package com.fujieid.jap.ids.solon;
 
-
 import com.fujieid.jap.ids.config.IdsConfig;
 import org.noear.solon.Solon;
 
@@ -15,9 +14,6 @@ public class IdsProps {
 
     static {
         bastPath = Solon.cfg().get("jap.ids.bastPath", "/oauth");
-        idsConfig = Solon.cfg().getBean(
-                "jap.ids.config",
-                IdsConfig.class
-        );
+        idsConfig = Solon.cfg().getBean("jap.ids.config", IdsConfig.class);
     }
 }
