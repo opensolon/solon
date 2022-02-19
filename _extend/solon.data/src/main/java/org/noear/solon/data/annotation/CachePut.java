@@ -27,6 +27,9 @@ public @interface CachePut {
     @Note("缓存时间，0表示缓存服务的默认时间")
     int seconds() default 0;
 
+    /**
+     * 例：user_${user_id}
+     * */
     @Note("缓存唯一标识")
     String key() default "";
 
