@@ -1,5 +1,6 @@
 #### 1.6.25
 * 增加 jap-ids-solon-plugin 插件
+* 调整 @CacheRemove key 为 keys
 
 #### 1.6.24
 * 调整 water job 的 name 处理

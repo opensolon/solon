@@ -116,9 +116,12 @@ public class CacheExecutorImp {
         }
 
         //按 key 清除缓存
-        if (Utils.isNotEmpty(anno.key())) {
-            String key = formatTagsOrKey(anno.key(), parMap, rstValue);
-            cs.remove(key);
+        if (Utils.isNotEmpty(anno.keys())) {
+            String keys = formatTagsOrKey(anno.keys(), parMap, rstValue);
+
+            for (String key : keys.split(",")) {
+                cs.remove(key);
+            }
         }
     }
 

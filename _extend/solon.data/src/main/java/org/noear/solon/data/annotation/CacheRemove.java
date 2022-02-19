@@ -21,8 +21,8 @@ public @interface CacheRemove {
     @Note("缓存服务")
     String service() default "";
 
-    @Note("缓存唯一标识")
-    String key() default "";
+    @Note("缓存唯一标识，多个以逗号隔开")
+    String keys() default "";
 
     /**
      * 例：user_${user_id} ，user_id 为参数
