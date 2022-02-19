@@ -1,7 +1,6 @@
 package model;
 
 import lombok.Data;
-import org.noear.solon.annotation.Param;
 
 import java.io.Serializable;
 import java.util.Date;

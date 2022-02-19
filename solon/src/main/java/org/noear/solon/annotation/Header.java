@@ -10,7 +10,7 @@ import java.lang.annotation.*;
  * @author noear
  * @since 1.0
  * */
-@Target({ElementType.FIELD,ElementType.PARAMETER})
+@Target({ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface Header {
