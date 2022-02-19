@@ -1,7 +1,9 @@
 #### 1.6.25
 * 增加 jap-ids-solon-plugin 插件
 * 调整 @CacheRemove key 为 keys
+* 调整 @Param 的作用范围
 * 新增 @Header 以支持头变量注入
+* 新增 @PathVar 以方便文档框架识别
 
 #### 1.6.24
 * 调整 water job 的 name 处理
