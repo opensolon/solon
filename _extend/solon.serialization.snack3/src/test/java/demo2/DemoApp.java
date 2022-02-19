@@ -22,6 +22,7 @@ public class DemoApp {
         });
     }
 
+    //初始化json定制（需要在插件运行前定制）
     private static void initMvcJsonCustom(SnackRenderFactory factory) {
         //示例1：通过转换器，做简单类型的定制
         factory.addConvertor(Date.class, s -> s.getTime());
@@ -33,7 +34,7 @@ public class DemoApp {
         //示例2：通过编码器，做复杂类型的原生定制（基于框架原生接口）
         factory.addEncoder(Date.class, (data, node) -> node.val().setNumber(data.getTime()));
 
-        //示例3：添加序列化null的特性
+        //示例3：重置序列化特性（例，添加序列化null的特性）
         factory.setFeatures(
                 Feature.OrderedField,
                 Feature.WriteDateUseTicks,
