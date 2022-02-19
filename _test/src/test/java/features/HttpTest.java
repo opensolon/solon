@@ -146,6 +146,12 @@ public class HttpTest extends _TestBase {
     }
 
     @Test
+    public void test2d_header() throws IOException{
+        assert  path("/demo2/param/header").header("Test-Token","demo").get().equals("demo");
+        assert  path("/demo2/param/header").header("Test-Token","demo").data("test","test").post().equals("demo");
+    }
+
+    @Test
     public void test2d_2() throws IOException{
         assert  post("/demo2/param/body","name=xxx").equals("name=xxx");
         assert  get("/demo2/param/body?name=xxx").equals("");

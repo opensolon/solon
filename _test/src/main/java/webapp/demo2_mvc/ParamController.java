@@ -1,9 +1,6 @@
 package webapp.demo2_mvc;
 
-import org.noear.solon.annotation.Mapping;
-import org.noear.solon.annotation.Param;
-import org.noear.solon.annotation.Controller;
-import org.noear.solon.annotation.Singleton;
+import org.noear.solon.annotation.*;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.UploadedFile;
 import org.noear.solon.core.handle.MethodType;
@@ -21,6 +18,11 @@ public class ParamController {
     @Mapping("body")
     public String test_body(Context ctx) throws IOException {
         return ctx.body();
+    }
+
+    @Mapping("header")
+    public String test_header(@Header("Test-Token") String token) throws IOException {
+        return token;
     }
 
     @Mapping("int")
