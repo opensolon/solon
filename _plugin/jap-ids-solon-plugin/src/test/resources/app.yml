@@ -5,6 +5,7 @@ jap:
   ids:
     basePath: /oauth
     config:
+      issuer: https://lab.iying.top/
       jwtConfig:
         jwksKeyId: jap-jwk-keyid
         jwksJson: |-

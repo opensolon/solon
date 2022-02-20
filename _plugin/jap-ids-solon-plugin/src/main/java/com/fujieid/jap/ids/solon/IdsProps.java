@@ -1,6 +1,7 @@
 package com.fujieid.jap.ids.solon;
 
 import com.fujieid.jap.ids.config.IdsConfig;
+import com.fujieid.jap.ids.config.JwtConfig;
 import org.noear.solon.Solon;
 
 /**
@@ -8,12 +9,15 @@ import org.noear.solon.Solon;
  * @since 1.6
  */
 public class IdsProps {
-    public static final String bastPath;
-    public static final String wellPath = "/.well-known";
-    public static final IdsConfig idsConfig;
+    public static final String BAST_PATH;
+    public static final String WELL_PATH = "/.well-known";
+    public static final IdsConfig IDS_CONFIG;
 
     static {
-        bastPath = Solon.cfg().get("jap.ids.bastPath", "/oauth");
-        idsConfig = Solon.cfg().getBean("jap.ids.config", IdsConfig.class);
+        BAST_PATH = Solon.cfg().get("jap.ids.bastPath", "/oauth");
+        IDS_CONFIG = Solon.cfg().getBean("jap.ids.config", IdsConfig.class);
+        IDS_CONFIG.setJwtConfig(
+                Solon.cfg().getBean("jap.ids.config.jwtConfig", JwtConfig.class)
+        );
     }
 }
