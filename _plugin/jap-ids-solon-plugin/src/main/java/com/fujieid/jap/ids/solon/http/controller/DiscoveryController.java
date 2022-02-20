@@ -8,16 +8,20 @@ import org.noear.solon.annotation.Mapping;
 /**
  * @author 颖
  */
-public class DiscoveryController extends BaseController {
+public class DiscoveryController extends IdsController {
+
+    private final DiscoveryEndpoint discoveryEndpoint = new DiscoveryEndpoint();
+
     @Get
     @Mapping("openid-configuration")
     public OidcDiscoveryDto openidCfg(){
-        return new DiscoveryEndpoint().getOidcDiscoveryInfo(null);
+        return this.discoveryEndpoint.getOidcDiscoveryInfo(null);
     }
 
     @Get
     @Mapping("jwks.json")
     public String jwksJson(){
-        return new DiscoveryEndpoint().getJwksPublicKey(null);
+        return this.discoveryEndpoint.getJwksPublicKey(null);
     }
+
 }

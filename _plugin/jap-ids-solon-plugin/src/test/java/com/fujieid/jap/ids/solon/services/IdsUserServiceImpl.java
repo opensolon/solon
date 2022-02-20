@@ -1,8 +1,7 @@
-package org.noear.solon.plugin.jap.ids.services;
+package com.fujieid.jap.ids.solon.services;
 
 import com.fujieid.jap.ids.model.UserInfo;
 import com.fujieid.jap.ids.service.IdsUserService;
-import org.noear.solon.annotation.Component;
 
 import java.util.LinkedList;
 import java.util.List;

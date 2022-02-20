@@ -7,12 +7,9 @@ import org.noear.solon.annotation.Mapping;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.handle.ModelAndView;
 
-import java.util.HashMap;
-import java.util.Map;
-
 @Controller
 @Mapping("/")
-public class HomeController extends BaseController {
+public class HomeController extends IdsController {
 
     @Inject
     IdsContext context;

@@ -12,13 +12,15 @@ import java.util.Map;
 /**
  * @author 颖
  */
-public class UserController extends BaseController {
+public class UserController extends IdsController {
+
+    private final UserInfoEndpoint userInfoEndpoint = new UserInfoEndpoint();
+
     @Get
     @Mapping("userInfo")
     public Map<String, Object> userInfo(HttpServletRequest request) {
-        IdsResponse<String, Object> idsResponse = new UserInfoEndpoint()
+        return this.userInfoEndpoint
                 .getCurrentUserInfo(new JakartaRequestAdapter(request));
-
-        return idsResponse;
     }
+
 }

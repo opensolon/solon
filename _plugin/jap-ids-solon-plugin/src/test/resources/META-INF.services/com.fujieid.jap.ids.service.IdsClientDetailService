@@ -1,1 +1,1 @@
-org.noear.solon.plugin.jap.ids.services.IdsClientDetailServiceImpl
+com.fujieid.jap.ids.solon.services.IdsClientDetailServiceImpl

@@ -1,3 +1,6 @@
+server:
+  port: 8081
+
 jap:
   ids:
     basePath: /oauth

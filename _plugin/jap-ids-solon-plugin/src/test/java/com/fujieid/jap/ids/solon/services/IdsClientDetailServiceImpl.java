@@ -1,4 +1,4 @@
-package org.noear.solon.plugin.jap.ids.services;
+package com.fujieid.jap.ids.solon.services;
 
 import com.fujieid.jap.ids.model.ClientDetail;
 import com.fujieid.jap.ids.model.enums.GrantType;
@@ -6,7 +6,6 @@ import com.fujieid.jap.ids.model.enums.ResponseType;
 import com.fujieid.jap.ids.provider.IdsScopeProvider;
 import com.fujieid.jap.ids.service.IdsClientDetailService;
 import com.fujieid.jap.ids.util.OauthUtil;
-import org.noear.solon.annotation.Component;
 
 import java.util.Arrays;
 import java.util.LinkedList;

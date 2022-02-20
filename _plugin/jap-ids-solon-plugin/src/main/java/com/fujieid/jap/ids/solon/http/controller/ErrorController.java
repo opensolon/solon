@@ -14,13 +14,17 @@ import java.io.IOException;
  * @author 颖
  * @since 1.6
  */
-public class ErrorController extends BaseController {
+public class ErrorController extends IdsController {
+
+    private final ErrorEndpoint errorEndpoint = new ErrorEndpoint();
+
     @Get
     @Mapping("error")
     public void error(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        new ErrorEndpoint().showErrorPage(
+        this.errorEndpoint.showErrorPage(
                 new JakartaRequestAdapter(request),
                 new JakartaResponseAdapter(response)
         );
     }
+
 }

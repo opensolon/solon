@@ -12,22 +12,22 @@ import java.util.Map;
 /**
  * @author 颖
  */
-public class TokenController extends BaseController {
+public class TokenController extends IdsController {
+
+    private final TokenEndpoint tokenEndpoint = new TokenEndpoint();
+
     @Get
     @Mapping("token")
     public Map<String, Object> token(HttpServletRequest request) {
-        IdsResponse<String, Object> idsResponse = new TokenEndpoint()
+        return this.tokenEndpoint
                 .getToken(new JakartaRequestAdapter(request));
-
-        return idsResponse;
     }
 
     @Get
     @Mapping("revoke_token")
-    public Map<String, Object> revoke_token(HttpServletRequest request) {
-        IdsResponse<String, Object> idsResponse = new TokenEndpoint()
+    public Map<String, Object> revokeToken(HttpServletRequest request) {
+        return this.tokenEndpoint
                 .revokeToken(new JakartaRequestAdapter(request));
-
-        return idsResponse;
     }
+
 }
