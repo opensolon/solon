@@ -12,26 +12,26 @@ import org.noear.solon.annotation.Post;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.plugin.jap.config.httpSession.HttpServletRequestWrapperImpl;
 import org.noear.solon.plugin.jap.properties.JapProperties;
-import org.noear.solon.plugin.jap.properties.JapSoloConfig;
+import org.noear.solon.plugin.jap.properties.JapSolonConfig;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
-@Mapping("/login")
 public class SimpleController {
 
     @Inject
     private JapProperties japProperties;
 
     @Inject
-    private JapSoloConfig japSoloConfig;
+    private JapSolonConfig japSolonConfig;
 
     @Post
     @Mapping("/username")
-    public Object username( HttpServletRequest request, HttpServletResponse response) {
+    public Object username(HttpServletRequest request, HttpServletResponse response) {
         request = new HttpServletRequestWrapperImpl(Context.current(), request);
         SimpleConfig simple = japProperties.getSimple();
-        JapResponse japResponse = japSoloConfig.getSimpleStrategy().authenticate(new SimpleConfig()
+        JapResponse japResponse = japSolonConfig.getSimpleStrategy().authenticate(new SimpleConfig()
                         .setUsernameField(simple.getUsernameField())
                         .setPasswordField(simple.getPasswordField())
                         .setCredentialEncryptSalt(simple.getCredentialEncryptSalt())
@@ -48,4 +48,5 @@ public class SimpleController {
         }
         return japResponse.getData();
     }
+
 }

@@ -9,6 +9,8 @@ import org.noear.solon.annotation.Inject;
 @Inject("${jap}")
 public class JapProperties {
 
+    private String basePath;
+
     private Boolean sso;
 
     private String domain;
@@ -18,7 +20,7 @@ public class JapProperties {
     private SimpleConfig simple;
 
     public Boolean getSso() {
-        return sso;
+        return this.sso;
     }
 
     public void setSso(Boolean sso) {
@@ -26,7 +28,7 @@ public class JapProperties {
     }
 
     public String getDomain() {
-        return domain;
+        return this.domain;
     }
 
     public void setDomain(String domain) {
@@ -34,7 +36,7 @@ public class JapProperties {
     }
 
     public SocialConfig getSocial() {
-        return social;
+        return this.social;
     }
 
     public void setSocial(SocialConfig social) {
@@ -42,10 +44,18 @@ public class JapProperties {
     }
 
     public SimpleConfig getSimple() {
-        return simple;
+        return this.simple;
     }
 
     public void setSimple(SimpleConfig simple) {
         this.simple = simple;
+    }
+
+    public String getBasePath() {
+        return this.basePath;
+    }
+
+    public void setBasePath(String basePath) {
+        this.basePath = basePath;
     }
 }
