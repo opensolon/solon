@@ -1,4 +1,4 @@
-package org.noear.solon.plugin.jap.properties;
+package com.fujieid.jap.solon;
 
 import cn.hutool.log.Log;
 import cn.hutool.log.LogFactory;
@@ -17,7 +17,7 @@ public class JapSolonConfig {
     private static final Log log = LogFactory.get();
 
     @Inject
-    private JapProperties japProperties;
+    private JapProps japProperties;
 
     @Inject
     private JapUserService japUserService;

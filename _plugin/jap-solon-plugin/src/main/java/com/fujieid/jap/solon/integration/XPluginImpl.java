@@ -1,11 +1,11 @@
-package org.noear.solon.plugin.jap;
+package com.fujieid.jap.solon.integration;
 
+import com.fujieid.jap.solon.controller.SimpleController;
+import com.fujieid.jap.solon.JapProps;
+import com.fujieid.jap.solon.JapSolonConfig;
 import org.noear.solon.SolonApp;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.Plugin;
-import org.noear.solon.plugin.jap.controller.SimpleController;
-import org.noear.solon.plugin.jap.properties.JapProperties;
-import org.noear.solon.plugin.jap.properties.JapSolonConfig;
 
 /**
  * @author noear
@@ -15,7 +15,7 @@ public class XPluginImpl implements Plugin {
 
     @Override
     public void start(SolonApp app) {
-        app.beanMake(JapProperties.class);
+        app.beanMake(JapProps.class);
         app.beanMake(JapSolonConfig.class);
 
         JapSolonConfig japSolonConfig = Aop.get(JapSolonConfig.class);
@@ -23,7 +23,7 @@ public class XPluginImpl implements Plugin {
             japSolonConfig.initStrategy();
         }
 
-        JapProperties properties = Aop.get(JapProperties.class);
+        JapProps properties = Aop.get(JapProps.class);
 
         app.add(properties.getBasePath(), SimpleController.class);
     }

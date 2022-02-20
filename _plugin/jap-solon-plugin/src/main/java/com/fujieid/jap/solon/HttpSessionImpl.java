@@ -1,4 +1,4 @@
-package org.noear.solon.plugin.jap.config.httpSession;
+package com.fujieid.jap.solon;
 
 import org.noear.solon.core.handle.SessionState;
 

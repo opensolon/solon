@@ -1,4 +1,4 @@
-package org.noear.solon.plugin.jap.properties;
+package com.fujieid.jap.solon;
 
 import com.fujieid.jap.simple.SimpleConfig;
 import com.fujieid.jap.social.SocialConfig;
@@ -7,7 +7,7 @@ import org.noear.solon.annotation.Inject;
 
 @Configuration
 @Inject("${jap}")
-public class JapProperties {
+public class JapProps {
 
     private String basePath;
 

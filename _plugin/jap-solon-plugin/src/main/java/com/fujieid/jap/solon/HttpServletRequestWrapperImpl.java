@@ -1,6 +1,7 @@
-package org.noear.solon.plugin.jap.config.httpSession;
+package com.fujieid.jap.solon;
 
 import org.noear.solon.core.handle.Context;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpSession;
