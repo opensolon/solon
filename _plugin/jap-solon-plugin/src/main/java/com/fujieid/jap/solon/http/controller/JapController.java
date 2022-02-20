@@ -8,6 +8,7 @@ import org.noear.solon.core.handle.Context;
 
 /**
  * @author 颖
+ * @since 1.6
  */
 public class JapController {
 
@@ -22,6 +23,7 @@ public class JapController {
                 return null;
             }
         }
+
         if (japResponse.isRedirectUrl()) {
             Context.current().redirect((String) japResponse.getData());
             return null;

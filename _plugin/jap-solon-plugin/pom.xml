@@ -26,6 +26,11 @@
 
         <dependency>
             <groupId>org.noear</groupId>
+            <artifactId>solon.logging</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.noear</groupId>
             <artifactId>solon.extend.properties.yaml</artifactId>
         </dependency>
 

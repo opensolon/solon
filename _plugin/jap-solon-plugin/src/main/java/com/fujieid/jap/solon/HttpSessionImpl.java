@@ -9,7 +9,8 @@ import javax.servlet.http.HttpSessionContext;
 import java.util.Enumeration;
 
 /**
- * @author noear 2022/1/18 created
+ * @author noear
+ * @since 1.6
  */
 public class HttpSessionImpl implements HttpSession {
     SessionState sessionState;

@@ -1,7 +1,5 @@
 package com.fujieid.jap.solon;
 
-import cn.hutool.log.Log;
-import cn.hutool.log.LogFactory;
 import com.fujieid.jap.core.JapUserService;
 import com.fujieid.jap.core.config.JapConfig;
 import com.fujieid.jap.simple.SimpleStrategy;
@@ -13,17 +11,20 @@ import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Init;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.core.Aop;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Component
 public class JapSolonConfig {
+    private static final Logger log = LoggerFactory.getLogger(JapSolonConfig.class);
 
-    private static final Log log = LogFactory.get();
     @Inject
     JapProps japProps;
     @Inject
     private JapUserService japUserService;
     @Inject
     private JapMfaService japMfaService;
+
     private SocialStrategy socialStrategy;
     private SimpleStrategy simpleStrategy;
     private JapConfig japConfig;
@@ -35,16 +36,20 @@ public class JapSolonConfig {
     private void initialize() {
         log.info("SSO：{}", this.japProps.isSso() ? "已启用" : "未启用");
         log.info("Cookie Domain：{}", this.japProps.getDomain());
+
         this.japConfig = new JapConfig()
                 .setSso(this.japProps.isSso())
                 .setSsoConfig(new JapSsoConfig()
                         .setCookieDomain(this.japProps.getDomain()));
+
         this.socialStrategy = new SocialStrategy(this.japUserService, this.japConfig);
         this.simpleStrategy = new SimpleStrategy(this.japUserService, this.japConfig);
+
         if(this.japMfaService != null) {
             JapMfa japMfa = new JapMfa(this.japMfaService);
             Aop.wrapAndPut(JapMfa.class, japMfa);
         }
+
         log.info("Mfa：{}", this.japMfaService != null ? "已启用" : "未启用");
     }
 

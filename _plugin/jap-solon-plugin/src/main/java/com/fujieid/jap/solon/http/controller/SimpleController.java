@@ -51,6 +51,7 @@ public class SimpleController {
                 return null;
             }
         }
+
         if (japResponse.isRedirectUrl()) {
            Context.current().redirect((String) japResponse.getData());
            return null;

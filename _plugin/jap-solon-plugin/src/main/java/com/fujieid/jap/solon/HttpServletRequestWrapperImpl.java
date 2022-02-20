@@ -7,7 +7,8 @@ import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpSession;
 
 /**
- * @author noear 2022/1/18 created
+ * @author noear
+ * @since 1.6
  */
 public class HttpServletRequestWrapperImpl extends HttpServletRequestWrapper {
     Context ctx;

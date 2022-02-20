@@ -1,7 +1,6 @@
 package com.fujieid.jap.solon;
 
 import com.fujieid.jap.simple.SimpleConfig;
-import com.fujieid.jap.social.SocialConfig;
 import me.zhyd.oauth.config.AuthConfig;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
