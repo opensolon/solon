@@ -595,6 +595,12 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>jap-solon-plugin</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>jap-ids-solon-plugin</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
