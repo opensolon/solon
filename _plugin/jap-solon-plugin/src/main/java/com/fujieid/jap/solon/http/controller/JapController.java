@@ -3,7 +3,8 @@ package com.fujieid.jap.solon.http.controller;
 import com.fujieid.jap.core.JapUser;
 import com.fujieid.jap.core.result.JapResponse;
 import com.fujieid.jap.solon.JapProps;
-import org.noear.solon.core.Aop;
+
+import org.noear.solon.annotation.Inject;
 import org.noear.solon.core.handle.Context;
 
 /**
@@ -12,9 +13,10 @@ import org.noear.solon.core.handle.Context;
  */
 public abstract class JapController {
 
-    public Object simpleResponse(JapResponse japResponse) {
-        JapProps japProperties= Aop.get(JapProps.class);
+    @Inject
+    JapProps japProperties;
 
+    public Object simpleResponse(JapResponse japResponse) {
         if (!japResponse.isSuccess()) {
             if (japProperties.isSeparate()) {
                 return japResponse;
@@ -39,5 +41,4 @@ public abstract class JapController {
             }
         }
     }
-
 }

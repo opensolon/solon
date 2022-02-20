@@ -7,8 +7,9 @@ import com.fujieid.jap.social.SocialConfig;
 import com.fujieid.jap.solon.HttpServletRequestWrapperImpl;
 import com.fujieid.jap.solon.JapProps;
 import com.fujieid.jap.solon.JapSolonConfig;
+
 import me.zhyd.oauth.utils.UuidUtils;
-import org.noear.solon.annotation.Controller;
+
 import org.noear.solon.annotation.Get;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.annotation.Mapping;

@@ -8,7 +8,7 @@ import com.fujieid.jap.simple.SimpleConfig;
 import com.fujieid.jap.solon.HttpServletRequestWrapperImpl;
 import com.fujieid.jap.solon.JapProps;
 import com.fujieid.jap.solon.JapSolonConfig;
-import org.noear.solon.annotation.Controller;
+
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.annotation.Mapping;
 import org.noear.solon.annotation.Post;
