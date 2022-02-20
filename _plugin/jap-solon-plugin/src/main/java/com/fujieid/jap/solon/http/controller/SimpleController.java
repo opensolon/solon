@@ -1,4 +1,4 @@
-package com.fujieid.jap.solon.controller;
+package com.fujieid.jap.solon.http.controller;
 
 import com.fujieid.jap.core.JapUser;
 import com.fujieid.jap.core.result.JapResponse;
@@ -22,13 +22,12 @@ public class SimpleController {
 
     @Inject
     private JapProps japProperties;
-
     @Inject
     private JapSolonConfig japSolonConfig;
 
     @Post
-    @Mapping("/username")
-    public Object username(HttpServletRequest request, HttpServletResponse response) {
+    @Mapping("/login")
+    public Object login(HttpServletRequest request, HttpServletResponse response) {
         request = new HttpServletRequestWrapperImpl(Context.current(), request);
 
         SimpleConfig simple = japProperties.getSimple();
@@ -51,4 +50,5 @@ public class SimpleController {
 
         return japResponse.getData();
     }
+
 }

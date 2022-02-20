@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.noear</groupId>
         <artifactId>solon-parent</artifactId>
-        <version>1.6.25</version>
+        <version>1.6.25-m2</version>
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
@@ -19,10 +19,14 @@
     </properties>
 
     <dependencies>
-
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.extend.properties.yaml</artifactId>
         </dependency>
 
         <dependency>
@@ -38,6 +42,12 @@
         </dependency>
 
         <dependency>
+            <groupId>com.fujieid</groupId>
+            <artifactId>jap-mfa</artifactId>
+            <version>${jap-version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon-test</artifactId>
             <scope>test</scope>
@@ -48,7 +58,6 @@
             <artifactId>solon.boot.jetty</artifactId>
             <scope>test</scope>
         </dependency>
-
     </dependencies>
 
 </project>

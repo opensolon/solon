@@ -2,25 +2,25 @@ package com.fujieid.jap.solon;
 
 import com.fujieid.jap.simple.SimpleConfig;
 import com.fujieid.jap.social.SocialConfig;
+import me.zhyd.oauth.config.AuthConfig;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
+
+import java.util.List;
 
 @Configuration
 @Inject("${jap}")
 public class JapProps {
 
     private String basePath;
-
     private Boolean sso;
-
     private String domain;
-
     private SocialConfig social;
-
     private SimpleConfig simple;
+    private List<AuthConfig> credentials;
 
     public Boolean getSso() {
-        return this.sso;
+        return sso;
     }
 
     public void setSso(Boolean sso) {
@@ -58,4 +58,13 @@ public class JapProps {
     public void setBasePath(String basePath) {
         this.basePath = basePath;
     }
+
+    public List<AuthConfig> getCredentials() {
+        return this.credentials;
+    }
+
+    public void setCredentials(List<AuthConfig> credentials) {
+        this.credentials = credentials;
+    }
+
 }

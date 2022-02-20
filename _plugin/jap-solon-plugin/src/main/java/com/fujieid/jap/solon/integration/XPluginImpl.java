@@ -1,6 +1,6 @@
 package com.fujieid.jap.solon.integration;
 
-import com.fujieid.jap.solon.controller.SimpleController;
+import com.fujieid.jap.solon.http.controller.SimpleController;
 import com.fujieid.jap.solon.JapProps;
 import com.fujieid.jap.solon.JapSolonConfig;
 import org.noear.solon.SolonApp;
