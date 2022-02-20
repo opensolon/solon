@@ -547,8 +547,7 @@ public class Utils {
      * @param propS 属性集
      */
     public static <T> T injectProperties(T obj, Properties propS) {
-        ClassWrap.get(obj.getClass()).fill(obj, propS::getProperty);
-        return obj;
+        return PropsConverter.global().convert(propS, obj, null);
     }
 
     /**
@@ -627,7 +626,7 @@ public class Utils {
      * 将 source:Properties 数据，绑定到 target:bean
      */
     public static void bindTo(Properties source, Object target) {
-        bindTo((k) -> source.getProperty(k), target);
+        injectProperties(target, source);
     }
 
     /**

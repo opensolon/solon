@@ -344,10 +344,9 @@ public abstract class BeanContainer {
                 });
                 varH.setValue(val2);
             } else {
-                Object val2 = ClassWrap.get(varH.getType()).newBy(val);
+                Object val2 = PropsConverter.global().convert(val, null, varH.getType());
                 varH.setValue(val2);
             }
-
         } else if (name.startsWith("${")) {
             //
             // @Inject("${xxx}") //注入配置 ${xxx} or ${xxx:def},只适合单值
@@ -430,7 +429,7 @@ public abstract class BeanContainer {
                     Properties val0 = Solon.cfg().getProp(name);
                     if (val0.size() > 0) {
                         //如果找到配置了
-                        Object val2 = ClassWrap.get(pt).newBy(val0);
+                        Object val2 = PropsConverter.global().convert(val0, null, pt);
                         varH.setValue(val2);
                     }
                 }

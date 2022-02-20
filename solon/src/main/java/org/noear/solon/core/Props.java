@@ -125,7 +125,8 @@ public class Props extends Properties {
      * @param keyStarts key 的开始字符
      */
     public <T> T getBean(String keyStarts, Class<T> type) {
-        return ClassWrap.get(type).newBy(getProp(keyStarts));
+        Properties props = getProp(keyStarts);
+        return PropsConverter.global().convert(props, null, type);
     }
 
     /**

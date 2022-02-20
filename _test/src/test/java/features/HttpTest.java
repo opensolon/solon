@@ -323,7 +323,7 @@ public class HttpTest extends _TestBase {
 
     @Test
     public void test83() throws IOException{
-        assert ONode.loadStr(get("/demo8/config_system")).get("file.separator").getString().equals("/");
+        assert ONode.loadStr(get("/demo8/config_system")).select("file.separator").getString().equals("/");
     }
 
     @Test

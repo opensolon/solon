@@ -4,6 +4,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.core.BeanInjector;
+import org.noear.solon.core.PropsConverter;
 import org.noear.solon.core.VarHolder;
 import org.noear.solon.core.util.ConvertUtil;
 import org.noear.solon.core.wrap.ClassWrap;
@@ -71,7 +72,7 @@ public class CloudConfigBeanInjector implements BeanInjector<CloudConfig> {
             //尝试转为实体
             //
             Properties val0 = cfg.toProps();
-            return ClassWrap.get(type).newBy(val0);
+            return PropsConverter.global().convert(val0, null, type);
         }
     }
 }
