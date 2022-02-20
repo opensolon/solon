@@ -17,7 +17,9 @@ import org.noear.solon.core.handle.Context;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@Controller
+/**
+ * //手动添加的控制器，不要用 @Controller 注解（免得重复）
+ * */
 public class SimpleController {
 
     @Inject

@@ -10,7 +10,7 @@ import org.noear.solon.core.handle.Context;
  * @author 颖
  * @since 1.6
  */
-public class JapController {
+public abstract class JapController {
 
     public Object simpleResponse(JapResponse japResponse) {
         JapProps japProperties= Aop.get(JapProps.class);

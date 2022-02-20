@@ -18,11 +18,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
+ * //手动添加的控制器，不要用 @Controller 注解（免得重复）
+ *
  * @author 颖
  * @since 1.6
  */
-@Controller
-@Mapping("/social")
 public class SocialController extends JapController {
 
     @Inject
@@ -34,7 +34,7 @@ public class SocialController extends JapController {
      * 第三方跳转方法
      */
     @Get
-    @Mapping("/{platform}/redirect")
+    @Mapping("social/{platform}/redirect")
     public Object redirect(HttpServletRequest request, HttpServletResponse response, String platform, String callback) throws IllegalAccessException {
         if (!this.japProperties.getCallbacks().contains(callback)) {
             throw new IllegalAccessException();
@@ -61,7 +61,7 @@ public class SocialController extends JapController {
      * 第三方回调方法
      */
     @Get
-    @Mapping("/{platform}/callback/")
+    @Mapping("social/{platform}/callback/")
     public void callback(Context ctx, String platform, String state, String code, String callback) {
         callback = callback.endsWith("/") ? callback : callback + "/";
         ctx.redirect(callback + "/code=" + code + "&state=" + state + "&platform=" + platform);
