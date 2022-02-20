@@ -15,12 +15,15 @@ import java.io.IOException;
  * @author 颖
  * @since 1.6
  */
-public class AuthorizationController extends BaseController {
+public class AuthorizationController extends IdsController {
+
+    private final AuthorizationEndpoint authorizationEndpoint = new AuthorizationEndpoint();
+
     @Get
     @Mapping("authorize")
     public void authorizeGet(Context ctx, HttpServletRequest request) throws IOException {
         //authorize
-        IdsResponse<String, String> idsResponse = new AuthorizationEndpoint()
+        IdsResponse<String, String> idsResponse = this.authorizationEndpoint
                 .authorize(new JakartaRequestAdapter(request));
 
         ctx.redirect(idsResponse.getData());
@@ -30,7 +33,7 @@ public class AuthorizationController extends BaseController {
     @Mapping("authorize")
     public void authorizePost(Context ctx, HttpServletRequest request) throws IOException {
         //agree
-        IdsResponse<String, String> idsResponse = new AuthorizationEndpoint()
+        IdsResponse<String, String> idsResponse = this.authorizationEndpoint
                 .agree(new JakartaRequestAdapter(request));
 
         ctx.redirect(idsResponse.getData());
@@ -42,4 +45,5 @@ public class AuthorizationController extends BaseController {
         //Auto agree
         this.authorizePost(ctx, request);
     }
+
 }

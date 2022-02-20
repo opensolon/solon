@@ -12,13 +12,13 @@ import java.util.Map;
 /**
  * @author 颖
  */
-public class CheckSessionController extends BaseController {
+public class CheckSessionController extends IdsController {
+
     @Get
     @Mapping("check_session")
-    public Map<String, Object> check_session(HttpServletRequest request) {
-        IdsResponse<String, Object> response = new IdsResponse<String, Object>()
+    public Map<String, Object> checkSession(HttpServletRequest request) {
+        return new IdsResponse<String, Object>()
                 .data(JapIds.isAuthenticated(new JakartaRequestAdapter(request)));
-
-        return response;
     }
+
 }

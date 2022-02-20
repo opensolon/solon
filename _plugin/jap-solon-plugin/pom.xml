@@ -48,5 +48,7 @@
             <artifactId>solon.boot.jetty</artifactId>
             <scope>test</scope>
         </dependency>
+
     </dependencies>
+
 </project>

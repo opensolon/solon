@@ -1,13 +1,12 @@
-package org.noear.solon.plugin.jap.ids.configurations;
+package com.fujieid.jap.ids.solon.configurations;
 
-import com.fujieid.jap.core.context.JapContext;
 import com.fujieid.jap.ids.context.IdsContext;
 import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
-import org.noear.solon.plugin.jap.ids.services.IdsClientDetailServiceImpl;
-import org.noear.solon.plugin.jap.ids.services.IdsIdentityServiceImpl;
-import org.noear.solon.plugin.jap.ids.services.IdsUserServiceImpl;
+import com.fujieid.jap.ids.solon.services.IdsClientDetailServiceImpl;
+import com.fujieid.jap.ids.solon.services.IdsIdentityServiceImpl;
+import com.fujieid.jap.ids.solon.services.IdsUserServiceImpl;
 
 @Configuration
 public class JapConfig {

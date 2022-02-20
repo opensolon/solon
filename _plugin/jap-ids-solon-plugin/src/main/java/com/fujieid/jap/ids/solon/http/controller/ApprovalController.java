@@ -14,14 +14,14 @@ import java.io.IOException;
  * @author 颖
  * @since 1.6
  */
-public class ApprovalController extends BaseController {
+public class ApprovalController extends IdsController {
+
+    private final ApprovalEndpoint approvalEndpoint = new ApprovalEndpoint();
+
     @Get
     @Mapping("confirm")
     public void confirm(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        //todo: 这个能不能单例化？做为类字段？by noear
-        ApprovalEndpoint approvalEndpoint = new ApprovalEndpoint();
-
-        approvalEndpoint.showConfirmPage(
+        this.approvalEndpoint.showConfirmPage(
                 new JakartaRequestAdapter(request),
                 new JakartaResponseAdapter(response)
         );

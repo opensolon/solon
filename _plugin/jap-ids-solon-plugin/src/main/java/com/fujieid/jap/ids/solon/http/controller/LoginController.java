@@ -17,11 +17,14 @@ import java.io.IOException;
  * @author 颖
  * @since 1.6
  */
-public class LoginController extends BaseController {
+public class LoginController extends IdsController {
+
+    private final LoginEndpoint loginEndpoint = new LoginEndpoint();
+
     @Get
     @Mapping("login")
     public void loginGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        new LoginEndpoint().showLoginPage(
+        this.loginEndpoint.showLoginPage(
                 new JakartaRequestAdapter(request),
                 new JakartaResponseAdapter(response)
         );
@@ -30,10 +33,11 @@ public class LoginController extends BaseController {
     @Post
     @Mapping("login")
     public void loginPost(Context ctx, HttpServletRequest request, HttpServletResponse response) {
-        IdsResponse<String, String> idsResponse = new LoginEndpoint().signin(
+        IdsResponse<String, String> idsResponse = this.loginEndpoint.signin(
                 new JakartaRequestAdapter(request),
                 new JakartaResponseAdapter(response)
         );
         ctx.redirect(idsResponse.getData());
     }
+
 }

@@ -1,8 +1,7 @@
-package org.noear.solon.plugin.jap.ids.services;
+package com.fujieid.jap.ids.solon.services;
 
 import com.fujieid.jap.ids.config.JwtConfig;
 import com.fujieid.jap.ids.service.IdsIdentityService;
-import org.noear.solon.annotation.Component;
 
 /**
  * @author yadong.zhang (yadong.zhang0415(a)gmail.com)

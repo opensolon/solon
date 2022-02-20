@@ -1,7 +1,6 @@
-package org.noear.solon.plugin.jap.ids.services;
+package com.fujieid.jap.ids.solon.services;
 
 import com.fujieid.jap.core.cache.JapCache;
-import org.noear.solon.annotation.Component;
 
 import java.io.Serializable;
 

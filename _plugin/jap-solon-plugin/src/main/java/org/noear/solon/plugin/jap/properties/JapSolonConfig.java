@@ -12,7 +12,7 @@ import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
 
 @Configuration
-public class JapSoloConfig {
+public class JapSolonConfig {
 
     private static final Log log = LogFactory.get();
 
@@ -53,4 +53,5 @@ public class JapSoloConfig {
     public JapConfig getJapConfig() {
         return japConfig;
     }
+
 }
