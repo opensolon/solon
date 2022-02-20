@@ -17,7 +17,6 @@ public class XPluginImpl implements Plugin {
     public void start(SolonApp app) {
         app.beanMake(JapProperties.class);
         app.beanMake(JapSolonConfig.class);
-        app.beanMake(SimpleController.class);
 
         JapSolonConfig japSolonConfig = Aop.get(JapSolonConfig.class);
         if (null != japSolonConfig) {
@@ -28,5 +27,4 @@ public class XPluginImpl implements Plugin {
 
         app.add(properties.getBasePath(), SimpleController.class);
     }
-
 }
