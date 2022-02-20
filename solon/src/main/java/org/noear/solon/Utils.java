@@ -547,8 +547,7 @@ public class Utils {
      * @param propS 属性集
      */
     public static <T> T injectProperties(T obj, Properties propS) {
-        ClassWrap.get(obj.getClass()).fill(obj, propS::getProperty);
-        return obj;
+        return PropsConverter.global().convert(propS, obj, null);
     }
 
     /**
