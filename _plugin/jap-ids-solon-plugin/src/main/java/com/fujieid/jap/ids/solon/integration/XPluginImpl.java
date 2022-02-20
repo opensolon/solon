@@ -17,28 +17,27 @@ public class XPluginImpl implements Plugin {
 
     @Override
     public void start(SolonApp app) {
-
         // 不实现和注入任何 Service, 因为 Jap Ids 会调用
         // ServiceLoader.load 方法, 这样方便用户实现后自动注入
         // 还能很好地避免冲突
         IdsContext context = new IdsContext()
-                .setIdsConfig(IdsProps.idsConfig);
+                .setIdsConfig(IdsProps.IDS_CONFIG);
 
         JapIds.registerContext(context);
 
         Aop.wrapAndPut(IdsContext.class, context);
 
         //添加控制器
-        app.add(IdsProps.bastPath, ApprovalController.class);
-        app.add(IdsProps.bastPath, AuthorizationController.class);
-        app.add(IdsProps.bastPath, CheckSessionController.class);
-        app.add(IdsProps.bastPath, ErrorController.class);
-        app.add(IdsProps.bastPath, LoginController.class);
-        app.add(IdsProps.bastPath, LogoutController.class);
-        app.add(IdsProps.bastPath, TokenController.class);
-        app.add(IdsProps.bastPath, UserController.class);
+        app.add(IdsProps.BAST_PATH, ApprovalController.class);
+        app.add(IdsProps.BAST_PATH, AuthorizationController.class);
+        app.add(IdsProps.BAST_PATH, CheckSessionController.class);
+        app.add(IdsProps.BAST_PATH, ErrorController.class);
+        app.add(IdsProps.BAST_PATH, LoginController.class);
+        app.add(IdsProps.BAST_PATH, LogoutController.class);
+        app.add(IdsProps.BAST_PATH, TokenController.class);
+        app.add(IdsProps.BAST_PATH, UserController.class);
 
-        app.add(IdsProps.wellPath, DiscoveryController.class);
+        app.add(IdsProps.WELL_PATH, DiscoveryController.class);
 
         //添加过滤器
         app.filter(new ErrorFilter());
