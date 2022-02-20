@@ -33,14 +33,14 @@ public class JapSolonConfig {
      */
     @Init
     private void initialize() {
-        log.info("SSO：{}", this.japProps.getSso() ? "已启用" : "未启用");
+        log.info("SSO：{}", this.japProps.isSso() ? "已启用" : "未启用");
         log.info("Cookie Domain：{}", this.japProps.getDomain());
-        japConfig = new JapConfig()
-                .setSso(this.japProps.getSso())
+        this.japConfig = new JapConfig()
+                .setSso(this.japProps.isSso())
                 .setSsoConfig(new JapSsoConfig()
                         .setCookieDomain(this.japProps.getDomain()));
-        this.socialStrategy = new SocialStrategy(this.japUserService, japConfig);
-        this.simpleStrategy = new SimpleStrategy(this.japUserService, japConfig);
+        this.socialStrategy = new SocialStrategy(this.japUserService, this.japConfig);
+        this.simpleStrategy = new SimpleStrategy(this.japUserService, this.japConfig);
         if(this.japMfaService != null) {
             JapMfa japMfa = new JapMfa(this.japMfaService);
             Aop.wrapAndPut(JapMfa.class, japMfa);

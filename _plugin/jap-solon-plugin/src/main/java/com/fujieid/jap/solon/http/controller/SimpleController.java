@@ -30,25 +30,41 @@ public class SimpleController {
     public Object login(HttpServletRequest request, HttpServletResponse response) {
         request = new HttpServletRequestWrapperImpl(Context.current(), request);
 
-        SimpleConfig simple = japProperties.getSimple();
-        JapResponse japResponse = japSolonConfig.getSimpleStrategy().authenticate(new SimpleConfig()
-                        .setUsernameField(simple.getUsernameField())
-                        .setPasswordField(simple.getPasswordField())
-                        .setCredentialEncryptSalt(simple.getCredentialEncryptSalt())
-                        .setRememberMeField(simple.getRememberMeField())
-                        .setRememberMeCookieKey(simple.getRememberMeCookieKey())
-                        .setRememberMeCookieExpire(simple.getRememberMeCookieExpire())
-                        .setRememberMeCookieDomain(simple.getRememberMeCookieDomain()),
-                new JakartaRequestAdapter(request),
-                new JakartaResponseAdapter(response));
+        SimpleConfig simple = this.japProperties.getSimple();
+        JapResponse japResponse = this.japSolonConfig.getSimpleStrategy()
+                .authenticate(new SimpleConfig()
+                                .setUsernameField(simple.getUsernameField())
+                                .setPasswordField(simple.getPasswordField())
+                                .setCredentialEncryptSalt(simple.getCredentialEncryptSalt())
+                                .setRememberMeField(simple.getRememberMeField())
+                                .setRememberMeCookieKey(simple.getRememberMeCookieKey())
+                                .setRememberMeCookieExpire(simple.getRememberMeCookieExpire())
+                                .setRememberMeCookieDomain(simple.getRememberMeCookieDomain()),
+                        new JakartaRequestAdapter(request),
+                        new JakartaResponseAdapter(response));
 
-        if (japResponse.isSuccess()) {
-            JapUser japUser = (JapUser) japResponse.getData();
-            japUser.setPassword(null);
-            return japUser;
+        if (!japResponse.isSuccess()) {
+            if (this.japProperties.isSeparate()) {
+                return japResponse;
+            } else {
+                // Todo: 普通项目跳转
+                return null;
+            }
         }
-
-        return japResponse.getData();
+        if (japResponse.isRedirectUrl()) {
+           Context.current().redirect((String) japResponse.getData());
+           return null;
+        } else {
+            // 登录成功，需要对用户数据进行处理
+            if (this.japProperties.isSeparate()) {
+                JapUser japUser = (JapUser) japResponse.getData();
+                japUser.setPassword(null);
+                return japUser;
+            } else {
+                // Todo: 普通项目跳转
+                return null;
+            }
+        }
     }
 
 }
