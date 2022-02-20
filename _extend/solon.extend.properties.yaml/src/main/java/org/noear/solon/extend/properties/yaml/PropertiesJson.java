@@ -11,14 +11,14 @@ public class PropertiesJson extends Properties {
         ONode node = ONode.loadStr(text);
 
         String prefix = "";
-        do_load(prefix, node);
+        load0(prefix, node);
     }
 
-    private void do_load(String prefix, ONode tmp) {
+    private void load0(String prefix, ONode tmp) {
         if (tmp.isObject()) {
             tmp.forEach((k, v) -> {
                 String prefix2 = prefix + "." + k;
-                do_load(prefix2, v);
+                load0(prefix2, v);
             });
             return;
         }
@@ -29,20 +29,20 @@ public class PropertiesJson extends Properties {
             int index = 0;
             for (ONode v : tmp.ary()) {
                 String prefix2 = prefix + "[" + index + "]";
-                do_load(prefix2, v);
+                load0(prefix2, v);
                 index++;
             }
             return;
         }
 
         if(tmp.isNull()){
-            do_put(prefix, "");
+            put0(prefix, "");
         }else{
-            do_put(prefix, tmp.getString());
+            put0(prefix, tmp.getString());
         }
     }
 
-    private void do_put(String key, Object val){
+    private void put0(String key, Object val){
         if (key.startsWith(".")) {
             put(key.substring(1), val);
         } else {
