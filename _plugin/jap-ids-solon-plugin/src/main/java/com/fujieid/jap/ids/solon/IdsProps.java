@@ -16,8 +16,5 @@ public class IdsProps {
     static {
         BAST_PATH = Solon.cfg().get("jap.ids.bastPath", "/oauth");
         IDS_CONFIG = Solon.cfg().getBean("jap.ids.config", IdsConfig.class);
-        IDS_CONFIG.setJwtConfig(
-                Solon.cfg().getBean("jap.ids.config.jwtConfig", JwtConfig.class)
-        );
     }
 }
