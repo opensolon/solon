@@ -627,7 +627,7 @@ public class Utils {
      * 将 source:Properties 数据，绑定到 target:bean
      */
     public static void bindTo(Properties source, Object target) {
-        bindTo((k) -> source.getProperty(k), target);
+        injectProperties(target, source);
     }
 
     /**

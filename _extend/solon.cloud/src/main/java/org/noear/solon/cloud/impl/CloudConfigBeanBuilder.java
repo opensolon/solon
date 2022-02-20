@@ -32,7 +32,7 @@ public class CloudConfigBeanBuilder implements BeanBuilder<CloudConfig> {
         } else {
             handler = (Config cfg) -> {
                 Properties val0 = cfg.toProps();
-                ClassWrap.get(clz).fill(bw.raw(), val0::getProperty);
+                Utils.injectProperties(bw.raw(),val0);
             };
         }
 
