@@ -9,6 +9,7 @@ import com.fujieid.jap.simple.SimpleStrategy;
 import com.fujieid.jap.social.SocialStrategy;
 import com.fujieid.jap.sso.config.JapSsoConfig;
 import org.noear.solon.annotation.Configuration;
+import org.noear.solon.annotation.Init;
 import org.noear.solon.annotation.Inject;
 
 @Configuration
@@ -23,12 +24,14 @@ public class JapSolonConfig {
     private JapUserService japUserService;
 
     private SocialStrategy socialStrategy;
-
     private SimpleStrategy simpleStrategy;
-
     private JapConfig japConfig;
 
-    public void initStrategy(){
+    /**
+     * 初始化
+     */
+    @Init
+    private void init() {
         log.info("初始化JAP配置：{}", JSON.toJSONString(japProperties));
         log.info("是否开启SSO：{}", japProperties.getSso());
         log.info("CookieDomain：{}", japProperties.getDomain());
@@ -53,5 +56,4 @@ public class JapSolonConfig {
     public JapConfig getJapConfig() {
         return japConfig;
     }
-
 }

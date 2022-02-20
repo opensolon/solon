@@ -30,6 +30,7 @@ public class SimpleController {
     @Mapping("/username")
     public Object username(HttpServletRequest request, HttpServletResponse response) {
         request = new HttpServletRequestWrapperImpl(Context.current(), request);
+
         SimpleConfig simple = japProperties.getSimple();
         JapResponse japResponse = japSolonConfig.getSimpleStrategy().authenticate(new SimpleConfig()
                         .setUsernameField(simple.getUsernameField())
@@ -41,12 +42,13 @@ public class SimpleController {
                         .setRememberMeCookieDomain(simple.getRememberMeCookieDomain()),
                 new JakartaRequestAdapter(request),
                 new JakartaResponseAdapter(response));
+
         if (japResponse.isSuccess()) {
             JapUser japUser = (JapUser) japResponse.getData();
             japUser.setPassword(null);
             return japUser;
         }
+
         return japResponse.getData();
     }
-
 }

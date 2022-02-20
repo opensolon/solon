@@ -18,11 +18,6 @@ public class XPluginImpl implements Plugin {
         app.beanMake(JapProps.class);
         app.beanMake(JapSolonConfig.class);
 
-        JapSolonConfig japSolonConfig = Aop.get(JapSolonConfig.class);
-        if (null != japSolonConfig) {
-            japSolonConfig.initStrategy();
-        }
-
         JapProps properties = Aop.get(JapProps.class);
 
         app.add(properties.getBasePath(), SimpleController.class);
