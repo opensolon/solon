@@ -7,9 +7,7 @@ import com.fujieid.jap.social.SocialConfig;
 import com.fujieid.jap.solon.HttpServletRequestWrapperImpl;
 import com.fujieid.jap.solon.JapProps;
 import com.fujieid.jap.solon.JapSolonConfig;
-
 import me.zhyd.oauth.utils.UuidUtils;
-
 import org.noear.solon.annotation.Get;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.annotation.Mapping;
@@ -19,9 +17,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * //手动添加的控制器，不要用 @Controller 注解（免得重复）
- *
  * @author 颖
+ * @author work
  * @since 1.6
  */
 public class SocialController extends JapController {
@@ -64,8 +61,7 @@ public class SocialController extends JapController {
     @Get
     @Mapping("social/{platform}/callback/")
     public void callback(Context ctx, String platform, String state, String code, String callback) {
-        callback = callback.endsWith("/") ? callback : callback + "/";
-        ctx.redirect(callback + "/code=" + code + "&state=" + state + "&platform=" + platform);
+        ctx.redirect(callback + "?code=" + code + "&state=" + state + "&platform=" + platform);
     }
 
 }
