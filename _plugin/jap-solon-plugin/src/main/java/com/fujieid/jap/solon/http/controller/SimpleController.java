@@ -21,9 +21,9 @@ import javax.servlet.http.HttpServletResponse;
 public class SimpleController extends JapController {
 
     @Inject
-    private JapProps japProperties;
+    JapProps japProperties;
     @Inject
-    private JapSolonConfig japSolonConfig;
+    JapSolonConfig japSolonConfig;
 
     @Post
     @Mapping("/login")

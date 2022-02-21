@@ -12,6 +12,7 @@ import org.noear.solon.annotation.Get;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.annotation.Mapping;
 import org.noear.solon.core.handle.Context;
+import org.noear.solon.data.cache.CacheService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,31 +25,38 @@ import javax.servlet.http.HttpServletResponse;
 public class SocialController extends JapController {
 
     @Inject
-    private JapProps japProperties;
+    JapProps japProperties;
     @Inject
-    private JapSolonConfig japSolonConfig;
+    JapSolonConfig japSolonConfig;
+    @Inject
+    CacheService cacheService;
 
     /**
      * 第三方跳转方法
      */
     @Get
-    @Mapping("social/{platform}/redirect")
+    @Mapping("/social/{platform}/redirect")
     public Object redirect(HttpServletRequest request, HttpServletResponse response, String platform, String callback) throws IllegalAccessException {
-        if (!this.japProperties.getCallbacks().contains(callback)) {
+        // 验证 二次回调地址 是否合法
+        if (!this.validCallback(callback)) {
             throw new IllegalAccessException();
         }
 
-        Context ctx = Context.current();
-        request = new HttpServletRequestWrapperImpl(ctx, request);
-
+        // 构建 社会化登录 Payload
         SocialConfig socialConfig = new SocialConfig()
                 .setPlatform(platform)
                 .setState(UuidUtils.getUUID())
                 .setJustAuthConfig(this.japProperties.getCredentials().get(platform));
-
+        // 将 State -> Callback 存入缓存
+        this.cacheService.store(
+                this.getKey(socialConfig.getState()),
+                callback,
+                30
+        );
+        // 请求登录
         JapResponse japResponse = this.japSolonConfig.getSocialStrategy().authenticate(
                 socialConfig,
-                new JakartaRequestAdapter(request),
+                new JakartaRequestAdapter(new HttpServletRequestWrapperImpl(Context.current(), request)),
                 new JakartaResponseAdapter(response)
         );
 
@@ -59,9 +67,24 @@ public class SocialController extends JapController {
      * 第三方回调方法
      */
     @Get
-    @Mapping("social/{platform}/callback/")
-    public void callback(Context ctx, String platform, String state, String code, String callback) {
-        ctx.redirect(callback + "?code=" + code + "&state=" + state + "&platform=" + platform);
+    @Mapping("/social/{platform}/callback")
+    public void callback(String platform, String state, String code) {
+        String callback = (String) this.cacheService.get(
+                this.getKey(state)
+        );
+
+        // 如果 Callback 所属的 State 已过期
+        if(callback == null) {
+            throw new IllegalStateException();
+        }
+        boolean hasParameters = callback.contains("?");
+
+        // 拿到回调地址则跳转
+        Context.current().redirect(callback + (hasParameters ? "&" : "?") + "code=" + code + "&state=" + state + "&platform=" + platform);
+    }
+
+    private String getKey(String state) {
+        return String.format("%s:%s", this.getClass().getName(), state);
     }
 
 }

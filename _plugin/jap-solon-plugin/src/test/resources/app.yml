@@ -7,4 +7,4 @@ jap:
       clientSecret: 016f88fbff2d178263c4060c46168f4937153120a310adc21980e7838b76e833
       redirectUri: http://127.0.0.1:8443/social/login/gitee
   callbacks:
-    - http://127.0.0.1:8443/social/login/gitee
+    - /

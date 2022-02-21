@@ -35,6 +35,11 @@
         </dependency>
 
         <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.data</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>com.fujieid</groupId>
             <artifactId>jap-social</artifactId>
             <version>${jap-version}</version>

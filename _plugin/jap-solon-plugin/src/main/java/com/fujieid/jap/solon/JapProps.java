@@ -19,6 +19,7 @@ public class JapProps {
     private boolean separate;
     private String basePath;
     private boolean sso;
+    private String issuer;
     private String domain;
     private SimpleConfig simple;
     private Map<String, AuthConfig> credentials;
@@ -30,6 +31,10 @@ public class JapProps {
 
     public boolean isSso() {
         return sso;
+    }
+
+    public String getIssuer() {
+        return this.issuer == null ? this.getDomain() : this.issuer;
     }
 
     public String getDomain() {
