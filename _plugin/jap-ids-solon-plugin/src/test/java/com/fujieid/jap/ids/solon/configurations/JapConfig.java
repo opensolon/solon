@@ -1,6 +1,7 @@
 package com.fujieid.jap.ids.solon.configurations;
 
 import com.fujieid.jap.ids.context.IdsContext;
+import com.fujieid.jap.ids.solon.services.IdsCacheImpl;
 import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
@@ -16,6 +17,7 @@ public class JapConfig {
         // 由于 Solon 的 ClassLoader 机制,
         // ServiceLoader 并不会正常运行
         // 白高兴了...
+        context.setCache(new IdsCacheImpl());
         context.setClientDetailService(new IdsClientDetailServiceImpl());
         context.setIdentityService(new IdsIdentityServiceImpl());
         context.setUserService(new IdsUserServiceImpl());

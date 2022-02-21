@@ -1,5 +1,6 @@
 package com.fujieid.jap.solon;
 
+import com.fujieid.jap.core.config.JapConfig;
 import com.fujieid.jap.simple.SimpleConfig;
 import me.zhyd.oauth.config.AuthConfig;
 import org.noear.solon.annotation.Configuration;
@@ -16,33 +17,17 @@ import java.util.Map;
 @Inject("${jap}")
 public class JapProps {
 
-    private boolean separate;
     private String basePath;
-    private boolean sso;
     private String issuer;
-    private String domain;
-    private SimpleConfig simple;
+
+    private JapConfig japConfig;
+    private SimpleConfig simpleConfig;
+
     private Map<String, AuthConfig> credentials;
     private List<String> callbacks;
 
-    public boolean isSeparate() {
-        return separate;
-    }
-
-    public boolean isSso() {
-        return sso;
-    }
-
     public String getIssuer() {
-        return this.issuer == null ? this.getDomain() : this.issuer;
-    }
-
-    public String getDomain() {
-        return this.domain;
-    }
-
-    public SimpleConfig getSimple() {
-        return this.simple == null ? new SimpleConfig() : this.simple;
+        return this.issuer;
     }
 
     public String getBasePath() {
@@ -55,6 +40,14 @@ public class JapProps {
 
     public List<String> getCallbacks() {
         return this.callbacks;
+    }
+
+    public JapConfig getJapConfig() {
+        return this.japConfig;
+    }
+
+    public SimpleConfig getSimpleConfig() {
+        return this.simpleConfig;
     }
 
 }

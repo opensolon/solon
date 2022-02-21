@@ -1,6 +1,11 @@
 jap:
-  sso: true
-  domain: https://lab.iying.top
+  issuer: SakuraImpression
+  japConfig:
+    sso: true
+    ssoConfig:
+      cookieDomain: https://lab.iying.top
+  simpleConfig:
+    credentialEncryptSalt: a1f735ed0cffd6f5ea80f8ee7ba68d02
   credentials:
     gitee:
       clientId: fda07d40917d6f040822d3fa01c8c75588c67d63132c3ddc5c66990342115ba9
