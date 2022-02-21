@@ -1,6 +1,8 @@
-package com.fujieid.jap.ids.solon.services;
+package com.fujieid.jap.ids.solon;
 
 import com.fujieid.jap.core.cache.JapCache;
+import org.noear.solon.core.Aop;
+import org.noear.solon.data.cache.CacheService;
 
 import java.io.Serializable;
 
@@ -11,6 +13,9 @@ import java.io.Serializable;
  * @since 1.0.0
  */
 public class IdsCacheImpl implements JapCache {
+
+    private final CacheService cacheService = Aop.get(CacheService.class);
+
     /**
      * Set cache
      *
@@ -19,7 +24,7 @@ public class IdsCacheImpl implements JapCache {
      */
     @Override
     public void set(String key, Serializable value) {
-
+        this.cacheService.store(key, value, -1);
     }
 
     /**
@@ -31,7 +36,7 @@ public class IdsCacheImpl implements JapCache {
      */
     @Override
     public void set(String key, Serializable value, long timeout) {
-
+        this.cacheService.store(key, value, (int) timeout);
     }
 
     /**
@@ -42,7 +47,7 @@ public class IdsCacheImpl implements JapCache {
      */
     @Override
     public Serializable get(String key) {
-        return null;
+        return (Serializable) this.cacheService.get(key);
     }
 
     /**
@@ -53,7 +58,7 @@ public class IdsCacheImpl implements JapCache {
      */
     @Override
     public boolean containsKey(String key) {
-        return false;
+        return this.get(key) != null;
     }
 
     /**
@@ -63,6 +68,7 @@ public class IdsCacheImpl implements JapCache {
      */
     @Override
     public void removeKey(String key) {
-
+        this.cacheService.remove(key);
     }
+
 }

@@ -1,7 +1,7 @@
 package com.fujieid.jap.ids.solon.configurations;
 
 import com.fujieid.jap.ids.context.IdsContext;
-import com.fujieid.jap.ids.solon.services.IdsCacheImpl;
+import com.fujieid.jap.ids.solon.IdsCacheImpl;
 import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
