@@ -4,17 +4,15 @@ import com.fujieid.jap.core.result.JapResponse;
 import com.fujieid.jap.http.adapter.jakarta.JakartaRequestAdapter;
 import com.fujieid.jap.http.adapter.jakarta.JakartaResponseAdapter;
 import com.fujieid.jap.social.SocialConfig;
+import com.fujieid.jap.social.SocialStrategy;
 import com.fujieid.jap.solon.HttpServletRequestWrapperImpl;
 import com.fujieid.jap.solon.JapProps;
-import com.fujieid.jap.solon.JapSolonConfig;
 import me.zhyd.oauth.utils.UuidUtils;
 import org.noear.solon.annotation.Get;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.annotation.Mapping;
-import org.noear.solon.core.Aop;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.data.cache.CacheService;
-import org.noear.solon.data.cache.LocalCacheService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -29,7 +27,7 @@ public class SocialController extends JapController {
     @Inject
     JapProps japProperties;
     @Inject
-    JapSolonConfig japSolonConfig;
+    SocialStrategy socialStrategy;
     @Inject
     CacheService cacheService;
 
@@ -56,7 +54,7 @@ public class SocialController extends JapController {
                 300
         );
         // 请求登录
-        JapResponse japResponse = this.japSolonConfig.getSocialStrategy().authenticate(
+        JapResponse japResponse = this.socialStrategy.authenticate(
                 socialConfig,
                 new JakartaRequestAdapter(new HttpServletRequestWrapperImpl(Context.current(), request)),
                 new JakartaResponseAdapter(response)
@@ -76,7 +74,7 @@ public class SocialController extends JapController {
         );
 
         // 如果 Callback 所属的 State 已过期
-        if(callback == null) {
+        if (callback == null) {
             throw new IllegalStateException();
         }
         boolean hasParameters = callback.contains("?");
