@@ -8,6 +8,10 @@ import org.noear.solon.annotation.Inject;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author 颖
+ * @author work
+ */
 @Configuration
 @Inject("${jap}")
 public class JapProps {
@@ -15,6 +19,7 @@ public class JapProps {
     private boolean separate;
     private String basePath;
     private boolean sso;
+    private String issuer;
     private String domain;
     private SimpleConfig simple;
     private Map<String, AuthConfig> credentials;
@@ -24,55 +29,32 @@ public class JapProps {
         return separate;
     }
 
-    public void setSeparate(boolean separate) {
-        this.separate = separate;
-    }
-
     public boolean isSso() {
         return sso;
     }
 
-    public void setSso(boolean sso) {
-        this.sso = sso;
+    public String getIssuer() {
+        return this.issuer == null ? this.getDomain() : this.issuer;
     }
 
     public String getDomain() {
         return this.domain;
     }
 
-    public void setDomain(String domain) {
-        this.domain = domain;
-    }
-
     public SimpleConfig getSimple() {
-        return this.simple;
-    }
-
-    public void setSimple(SimpleConfig simple) {
-        this.simple = simple;
+        return this.simple == null ? new SimpleConfig() : this.simple;
     }
 
     public String getBasePath() {
-        return this.basePath;
-    }
-
-    public void setBasePath(String basePath) {
-        this.basePath = basePath;
+        return this.basePath == null ? "/auth" : this.basePath;
     }
 
     public Map<String, AuthConfig> getCredentials() {
         return this.credentials;
     }
 
-    public void setCredentials(Map<String, AuthConfig> credentials) {
-        this.credentials = credentials;
-    }
-
     public List<String> getCallbacks() {
         return this.callbacks;
     }
 
-    public void setCallbacks(List<String> callbacks) {
-        this.callbacks = callbacks;
-    }
 }
