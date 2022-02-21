@@ -11,8 +11,10 @@ import me.zhyd.oauth.utils.UuidUtils;
 import org.noear.solon.annotation.Get;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.annotation.Mapping;
+import org.noear.solon.core.Aop;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.data.cache.CacheService;
+import org.noear.solon.data.cache.LocalCacheService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -51,7 +53,7 @@ public class SocialController extends JapController {
         this.cacheService.store(
                 this.getKey(socialConfig.getState()),
                 callback,
-                30
+                300
         );
         // 请求登录
         JapResponse japResponse = this.japSolonConfig.getSocialStrategy().authenticate(

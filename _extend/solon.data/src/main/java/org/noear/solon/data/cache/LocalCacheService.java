@@ -13,7 +13,7 @@ import java.util.concurrent.*;
  * @since 1.0
  * */
 public class LocalCacheService implements CacheService {
-    public static CacheService instance = new LocalCacheService();
+    public static final CacheService instance = new LocalCacheService();
 
     private int _defaultSeconds;
 
