@@ -6,6 +6,7 @@ import com.fujieid.jap.ids.model.enums.ResponseType;
 import com.fujieid.jap.ids.provider.IdsScopeProvider;
 import com.fujieid.jap.ids.service.IdsClientDetailService;
 import com.fujieid.jap.ids.util.OauthUtil;
+import org.noear.solon.annotation.Component;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -17,6 +18,7 @@ import java.util.List;
  * @date 2021-04-14 10:27
  * @since 1.0.0
  */
+@Component
 public class IdsClientDetailServiceImpl implements IdsClientDetailService {
     public List<ClientDetail> clientDetails = new LinkedList<>();
 
