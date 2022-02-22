@@ -14,13 +14,11 @@
     <artifactId>jap-ids-solon-plugin</artifactId>
     <packaging>jar</packaging>
 
-    <dependencies>
-        <dependency>
-            <groupId>com.fujieid</groupId>
-            <artifactId>jap-ids</artifactId>
-            <version>1.0.7</version>
-        </dependency>
+    <properties>
+        <jap-version>1.0.7</jap-version>
+    </properties>
 
+    <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon</artifactId>
@@ -29,6 +27,12 @@
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon.data</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fujieid</groupId>
+            <artifactId>jap-ids</artifactId>
+            <version>${jap-version}</version>
         </dependency>
 
         <dependency>
