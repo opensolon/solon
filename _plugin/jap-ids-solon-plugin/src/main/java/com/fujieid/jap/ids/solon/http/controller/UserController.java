@@ -17,7 +17,7 @@ public class UserController extends IdsController {
     private final UserInfoEndpoint userInfoEndpoint = new UserInfoEndpoint();
 
     @Get
-    @Mapping("userInfo")
+    @Mapping("userinfo")
     public Map<String, Object> userInfo(HttpServletRequest request) {
         return this.userInfoEndpoint
                 .getCurrentUserInfo(new JakartaRequestAdapter(request));
