@@ -13,7 +13,6 @@ import java.util.List;
  * @date 2021-04-14 10:27
  * @since 1.0.0
  */
-@Component
 public class IdsUserServiceImpl implements IdsUserService {
     public List<UserInfo> userInfoList = new LinkedList<>();
 

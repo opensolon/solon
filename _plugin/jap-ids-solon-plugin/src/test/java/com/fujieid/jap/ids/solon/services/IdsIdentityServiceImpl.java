@@ -10,7 +10,6 @@ import org.noear.solon.annotation.Component;
  * @date 2021-04-16 16:32
  * @since 1.0.0
  */
-@Component
 public class IdsIdentityServiceImpl implements IdsIdentityService {
     /**
      * Get the jwt token encryption key string

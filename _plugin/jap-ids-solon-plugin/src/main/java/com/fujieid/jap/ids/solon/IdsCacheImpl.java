@@ -1,7 +1,6 @@
 package com.fujieid.jap.ids.solon;
 
 import com.fujieid.jap.core.cache.JapCache;
-import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.data.cache.CacheService;
 
@@ -13,7 +12,6 @@ import java.io.Serializable;
  * @date 2021-04-17 20:06
  * @since 1.0.0
  */
-@Component
 public class IdsCacheImpl implements JapCache {
 
     @Inject

@@ -18,7 +18,6 @@ import java.util.List;
  * @date 2021-04-14 10:27
  * @since 1.0.0
  */
-@Component
 public class IdsClientDetailServiceImpl implements IdsClientDetailService {
     public List<ClientDetail> clientDetails = new LinkedList<>();
 
