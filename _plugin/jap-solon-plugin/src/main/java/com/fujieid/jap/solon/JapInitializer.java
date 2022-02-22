@@ -54,7 +54,7 @@ public class JapInitializer {
 
         // 启用 Social
         if(japProperties.getCredentials() != null) {
-            Aop.wrapAndPut(SocialStrategy.class, new SocialStrategy(japUserService, japProperties.getJapConfig()));
+            Aop.wrapAndPut(SocialStrategy.class, new FixedSocialStrategy(japUserService, japProperties.getJapConfig()));
             Solon.global().add(japProperties.getAuthPath(), SocialController.class);
         }
 
