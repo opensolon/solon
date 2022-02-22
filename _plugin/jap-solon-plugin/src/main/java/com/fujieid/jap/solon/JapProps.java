@@ -17,29 +17,34 @@ import java.util.Map;
 @Inject("${jap}")
 public class JapProps {
 
-    private String basePath;
-    private String issuer;
+    String authPath;
+    String accountPath;
+    String issuer;
 
-    private JapConfig japConfig;
-    private SimpleConfig simpleConfig;
+    JapConfig japConfig;
+    SimpleConfig simpleConfig;
 
-    private Map<String, AuthConfig> credentials;
-    private List<String> callbacks;
+    Map<String, AuthConfig> credentials;
+    List<String> nexts;
 
     public String getIssuer() {
         return this.issuer;
     }
 
-    public String getBasePath() {
-        return this.basePath == null ? "/auth" : this.basePath;
+    public String getAuthPath() {
+        return this.authPath == null ? "/auth" : this.authPath;
+    }
+
+    public String getAccountPath() {
+        return this.accountPath == null ? "/account" : this.accountPath;
     }
 
     public Map<String, AuthConfig> getCredentials() {
         return this.credentials;
     }
 
-    public List<String> getCallbacks() {
-        return this.callbacks;
+    public List<String> getNexts() {
+        return this.nexts;
     }
 
     public JapConfig getJapConfig() {

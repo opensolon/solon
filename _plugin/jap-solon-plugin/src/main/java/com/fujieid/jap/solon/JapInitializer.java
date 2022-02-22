@@ -3,6 +3,7 @@ package com.fujieid.jap.solon;
 import com.fujieid.jap.core.JapUserService;
 import com.fujieid.jap.simple.SimpleStrategy;
 import com.fujieid.jap.social.SocialStrategy;
+import com.fujieid.jap.solon.http.controller.AccountController;
 import com.fujieid.jap.solon.http.controller.SimpleController;
 import com.fujieid.jap.solon.http.controller.SocialController;
 import com.fujieid.jap.sso.JapMfa;
@@ -40,15 +41,17 @@ public class JapInitializer {
         log.info("\tSimple: {}", this.japProperties.getSimpleConfig() != null ? "已启用" : "未启用");
         log.info("\tSocial: {}", this.japProperties.getCredentials() != null ? "已启用" : "未启用");
         log.info("\tMfa: {}", this.japMfaService != null ? "已启用" : "未启用");
+        // 启用用户接口
+        Solon.global().add(this.japProperties.getAccountPath(), AccountController.class);
         // 启用 Simple
         if(this.japProperties.getSimpleConfig() != null) {
             Aop.wrapAndPut(SimpleStrategy.class, new SimpleStrategy(this.japUserService, this.japProperties.getJapConfig()));
-            Solon.global().add(this.japProperties.getBasePath(), SimpleController.class);
+            Solon.global().add(this.japProperties.getAuthPath(), SimpleController.class);
         }
         // 启用 Social
         if(this.japProperties.getCredentials() != null) {
             Aop.wrapAndPut(SocialStrategy.class, new SocialStrategy(this.japUserService, this.japProperties.getJapConfig()));
-            Solon.global().add(this.japProperties.getBasePath(), SocialController.class);
+            Solon.global().add(this.japProperties.getAuthPath(), SocialController.class);
         }
         // 启用 Mfa
         if(this.japMfaService != null) {
