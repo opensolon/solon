@@ -15,8 +15,6 @@ public class StaticMimes {
     static final Map<String, String> mimeMap = new HashMap<>();
 
     static {
-        mimeMap.put(".txt", "text/plain");
-
         mimeMap.put(".abs", "audio/x-mpeg");
         mimeMap.put(".ai", "application/postscript");
         mimeMap.put(".aif", "audio/x-aiff");
@@ -57,6 +55,7 @@ public class StaticMimes {
         mimeMap.put(".htm", "text/html");
         mimeMap.put(".html", "text/html");
         mimeMap.put(".ief", "image/ief");
+        mimeMap.put(".ico", "image/x-icon");
         mimeMap.put(".jad", "text/vnd.sun.j2me.app-descriptor");
         mimeMap.put(".jar", "application/java-archive");
         mimeMap.put(".java", "text/x-java-source");
