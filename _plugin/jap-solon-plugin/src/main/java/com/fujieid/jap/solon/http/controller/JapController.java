@@ -1,6 +1,5 @@
 package com.fujieid.jap.solon.http.controller;
 
-import com.fujieid.jap.core.JapUser;
 import com.fujieid.jap.core.result.JapResponse;
 import org.noear.solon.core.handle.Context;
 
@@ -11,37 +10,27 @@ import org.noear.solon.core.handle.Context;
 public abstract class JapController {
 
     public Object simpleResponse(JapResponse japResponse) {
-        String callback = Context.current().param("callback");
-        boolean isSeparate = callback == null;
+        String next = Context.current().param("next");
+        boolean isSeparate = next == null;
 
-        if (!japResponse.isSuccess()) {
-            if (isSeparate) {
-                return japResponse;
-            } else {
-                // Todo: 普通项目数据储存
-                Context.current().redirect(callback);
-                return null;
-            }
-        }
-
-        if (japResponse.isRedirectUrl()) {
-            Context.current().redirect((String) japResponse.getData());
-            return null;
+        if (isSeparate) {
+            return japResponse;
         } else {
-            // 登录成功，需要对用户数据进行处理
-            if (isSeparate) {
-                JapUser japUser = (JapUser) japResponse.getData();
-                japUser.setPassword(null);
-                return japUser;
+            if (japResponse.isSuccess()) {
+                if (japResponse.isRedirectUrl()) {
+                    Context.current().redirect((String) japResponse.getData());
+                } else {
+                    Context.current().redirect(next);
+                }
             } else {
-                // Todo: 普通项目数据储存
-                Context.current().redirect(callback);
-                return null;
+                // Todo: 异常处理
+                Context.current().redirect(next);
             }
+            return null;
         }
     }
 
-    protected boolean validCallback(String callback) {
+    protected boolean validNext(String next) {
         return true;
     }
 

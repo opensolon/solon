@@ -2,6 +2,7 @@ package com.fujieid.jap.ids.solon.services;
 
 import com.fujieid.jap.ids.config.JwtConfig;
 import com.fujieid.jap.ids.service.IdsIdentityService;
+import org.noear.solon.annotation.Component;
 
 /**
  * @author yadong.zhang (yadong.zhang0415(a)gmail.com)
@@ -9,6 +10,7 @@ import com.fujieid.jap.ids.service.IdsIdentityService;
  * @date 2021-04-16 16:32
  * @since 1.0.0
  */
+@Component
 public class IdsIdentityServiceImpl implements IdsIdentityService {
     /**
      * Get the jwt token encryption key string

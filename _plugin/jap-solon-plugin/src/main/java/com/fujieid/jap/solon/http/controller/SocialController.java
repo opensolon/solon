@@ -36,9 +36,9 @@ public class SocialController extends JapController {
      */
     @Get
     @Mapping("/social/{platform}/redirect")
-    public Object redirect(HttpServletRequest request, HttpServletResponse response, String platform, String callback) throws IllegalAccessException {
+    public Object redirect(HttpServletRequest request, HttpServletResponse response, String platform, String next) throws IllegalAccessException {
         // 验证 二次回调地址 是否合法
-        if (!this.validCallback(callback)) {
+        if (!this.validNext(next)) {
             throw new IllegalAccessException();
         }
 
@@ -50,7 +50,7 @@ public class SocialController extends JapController {
         // 将 State -> Callback 存入缓存
         this.cacheService.store(
                 this.getKey(socialConfig.getState()),
-                callback,
+                next,
                 300
         );
         // 请求登录
@@ -69,18 +69,18 @@ public class SocialController extends JapController {
     @Get
     @Mapping("/social/{platform}/callback")
     public void callback(String platform, String state, String code) {
-        String callback = (String) this.cacheService.get(
+        String next = (String) this.cacheService.get(
                 this.getKey(state)
         );
 
         // 如果 Callback 所属的 State 已过期
-        if (callback == null) {
+        if (next == null) {
             throw new IllegalStateException();
         }
-        boolean hasParameters = callback.contains("?");
+        boolean hasParameters = next.contains("?");
 
         // 拿到回调地址则跳转
-        Context.current().redirect(callback + (hasParameters ? "&" : "?") + "code=" + code + "&state=" + state + "&platform=" + platform);
+        Context.current().redirect(next + (hasParameters ? "&" : "?") + "code=" + code + "&state=" + state + "&platform=" + platform);
     }
 
     private String getKey(String state) {
