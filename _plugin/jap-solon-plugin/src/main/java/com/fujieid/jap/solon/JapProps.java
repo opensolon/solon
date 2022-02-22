@@ -6,6 +6,7 @@ import me.zhyd.oauth.config.AuthConfig;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -44,7 +45,7 @@ public class JapProps {
     }
 
     public List<String> getNexts() {
-        return this.nexts;
+        return this.nexts == null ? new LinkedList<>() : this.nexts;
     }
 
     public JapConfig getJapConfig() {
