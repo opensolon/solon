@@ -3,7 +3,6 @@ package com.fujieid.jap.ids.solon;
 import com.fujieid.jap.core.cache.JapCache;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Inject;
-import org.noear.solon.core.Aop;
 import org.noear.solon.data.cache.CacheService;
 
 import java.io.Serializable;

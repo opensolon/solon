@@ -1,7 +1,6 @@
 package com.fujieid.jap.ids.solon;
 
 import com.fujieid.jap.ids.config.IdsConfig;
-import com.fujieid.jap.ids.config.JwtConfig;
 import org.noear.solon.Solon;
 
 /**
