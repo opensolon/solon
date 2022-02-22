@@ -11,7 +11,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
+ * @author 颖
  * @author noear
+ * @since 1.6
  */
 public class ErrorFilter implements Filter {
     @Override

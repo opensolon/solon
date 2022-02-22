@@ -18,29 +18,30 @@ public abstract class JapController {
 
     @Inject
     JapProps japProprieties;
+
     private final Pattern urlPattern = Pattern.compile(
             "^((http://)|(https://))?([a-zA-Z0-9]([a-zA-Z0-9\\-]{0,61}[a-zA-Z0-9])?\\.)+[a-zA-Z]{2,6}(/)"
     );
 
-    public Object simpleResponse(JapResponse japResponse) {
+    public Object simpleResponse(Context ctx,JapResponse japResponse) {
         // 记录 Response
-        String next = Context.current().param("next");
+        String next = ctx.param("next");
         boolean isSeparate = next == null;
 
         if (isSeparate) {
             return japResponse;
         } else {
-            Context.current().sessionSet(JAP_LAST_RESPONSE_KEY, japResponse);
+            ctx.sessionSet(JAP_LAST_RESPONSE_KEY, japResponse);
             if (japResponse.isSuccess()) {
                 if (japResponse.isRedirectUrl()) {
-                    Context.current().redirect((String) japResponse.getData());
+                    ctx.redirect((String) japResponse.getData());
                 } else {
-                    Context.current().redirect(next);
+                    ctx.redirect(next);
                 }
             } else {
-                // Todo: 异常处理
-                Context.current().redirect(next);
+                ctx.redirect(next); // Todo: 异常处理
             }
+
             return null;
         }
     }

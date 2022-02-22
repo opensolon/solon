@@ -11,9 +11,9 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author 颖
+ * @since 1.6
  */
 public class DiscoveryController extends IdsController {
-
     private final DiscoveryEndpoint discoveryEndpoint = new DiscoveryEndpoint();
 
     @Get
@@ -29,5 +29,4 @@ public class DiscoveryController extends IdsController {
     public String jwksJson(){
         return this.discoveryEndpoint.getJwksPublicKey(null);
     }
-
 }

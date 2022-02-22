@@ -17,9 +17,9 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * @author 颖
  * @author work
+ * @since 1.6
  */
 public class SimpleController extends JapController {
-
     @Inject
     JapProps japProperties;
     @Inject
@@ -27,8 +27,8 @@ public class SimpleController extends JapController {
 
     @Post
     @Mapping("/login")
-    public Object login(HttpServletRequest request, HttpServletResponse response) {
-        request = new HttpServletRequestWrapperImpl(Context.current(), request);
+    public Object login(Context ctx, HttpServletRequest request, HttpServletResponse response) {
+        request = new HttpServletRequestWrapperImpl(ctx, request);
 
         JapResponse japResponse = this.simpleStrategy.authenticate(
                 this.japProperties.getSimpleConfig(),
@@ -36,7 +36,6 @@ public class SimpleController extends JapController {
                 new JakartaResponseAdapter(response)
         );
 
-        return this.simpleResponse(japResponse);
+        return this.simpleResponse(ctx, japResponse);
     }
-
 }

@@ -18,7 +18,6 @@ import java.io.IOException;
  * @since 1.6
  */
 public class LoginController extends IdsController {
-
     private final LoginEndpoint loginEndpoint = new LoginEndpoint();
 
     @Get
@@ -39,5 +38,4 @@ public class LoginController extends IdsController {
         );
         ctx.redirect(idsResponse.getData());
     }
-
 }

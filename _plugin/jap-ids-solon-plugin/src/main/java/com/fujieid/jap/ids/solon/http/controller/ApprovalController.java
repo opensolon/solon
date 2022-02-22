@@ -21,7 +21,7 @@ public class ApprovalController extends IdsController {
     @Get
     @Mapping("confirm")
     public void confirm(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        this.approvalEndpoint.showConfirmPage(
+        approvalEndpoint.showConfirmPage(
                 new JakartaRequestAdapter(request),
                 new JakartaResponseAdapter(response)
         );

@@ -15,7 +15,6 @@ import java.io.IOException;
  * @since 1.6
  */
 public class ErrorController extends IdsController {
-
     private final ErrorEndpoint errorEndpoint = new ErrorEndpoint();
 
     @Get
@@ -26,5 +25,4 @@ public class ErrorController extends IdsController {
                 new JakartaResponseAdapter(response)
         );
     }
-
 }

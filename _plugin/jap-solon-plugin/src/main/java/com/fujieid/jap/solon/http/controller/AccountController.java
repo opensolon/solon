@@ -5,6 +5,7 @@ import com.fujieid.jap.core.context.JapAuthentication;
 import com.fujieid.jap.http.adapter.jakarta.JakartaRequestAdapter;
 import com.fujieid.jap.http.adapter.jakarta.JakartaResponseAdapter;
 import com.fujieid.jap.solon.HttpServletRequestWrapperImpl;
+import org.noear.solon.annotation.Get;
 import org.noear.solon.annotation.Mapping;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.MethodType;
@@ -14,12 +15,13 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author 颖
+ * @since 1.6
  */
 public class AccountController extends JapController {
-
-    @Mapping(path = "/current", method = MethodType.GET)
-    public JapUser current(HttpServletRequest request, HttpServletResponse response) {
-        request = new HttpServletRequestWrapperImpl(Context.current(), request);
+    @Get
+    @Mapping("/current")
+    public JapUser current(Context ctx, HttpServletRequest request, HttpServletResponse response) {
+        request = new HttpServletRequestWrapperImpl(ctx, request);
 
         try {
             return JapAuthentication.getUser(
@@ -27,9 +29,8 @@ public class AccountController extends JapController {
                     new JakartaResponseAdapter(response)
             ).setPassword(null);
         } catch (NullPointerException ignore) {
-            Context.current().status(401);
+            ctx.status(401);
             return null;
         }
     }
-
 }

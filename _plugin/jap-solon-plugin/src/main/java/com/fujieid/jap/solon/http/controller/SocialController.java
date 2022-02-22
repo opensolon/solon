@@ -36,7 +36,7 @@ public class SocialController extends JapController {
      */
     @Get
     @Mapping("/social/{platform}")
-    public Object redirect(HttpServletRequest request, HttpServletResponse response, String platform, String next, String code, String state) throws IllegalAccessException {
+    public Object redirect(Context ctx, HttpServletRequest request, HttpServletResponse response, String platform, String next, String code, String state) throws IllegalAccessException {
         // 验证 二次回调地址 是否合法
         if (next == null) {
             // 如果没指定回调地址，可能是第三方回调的结果
@@ -67,15 +67,14 @@ public class SocialController extends JapController {
         // 请求登录
         JapResponse japResponse = this.socialStrategy.authenticate(
                 socialConfig,
-                new JakartaRequestAdapter(new HttpServletRequestWrapperImpl(Context.current(), request)),
+                new JakartaRequestAdapter(new HttpServletRequestWrapperImpl(ctx, request)),
                 new JakartaResponseAdapter(response)
         );
 
-        return this.simpleResponse(japResponse);
+        return this.simpleResponse(ctx, japResponse);
     }
 
     private String getKey(String state) {
         return String.format("%s:%s", this.getClass().getName(), state);
     }
-
 }

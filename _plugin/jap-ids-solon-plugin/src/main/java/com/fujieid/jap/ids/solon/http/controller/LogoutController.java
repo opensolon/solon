@@ -2,7 +2,6 @@ package com.fujieid.jap.ids.solon.http.controller;
 
 import com.fujieid.jap.http.adapter.jakarta.JakartaRequestAdapter;
 import com.fujieid.jap.http.adapter.jakarta.JakartaResponseAdapter;
-import com.fujieid.jap.ids.endpoint.LoginEndpoint;
 import com.fujieid.jap.ids.endpoint.LogoutEndpoint;
 import com.fujieid.jap.ids.model.IdsResponse;
 import org.noear.solon.annotation.Get;

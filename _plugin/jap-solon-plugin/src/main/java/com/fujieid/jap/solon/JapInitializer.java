@@ -19,6 +19,7 @@ import org.slf4j.LoggerFactory;
 /**
  * @author 颖
  * @author work
+ * @since 1.6
  */
 @Component
 public class JapInitializer {
@@ -38,26 +39,29 @@ public class JapInitializer {
     @Init
     private void initialize() {
         log.info("Just Auth Plus: ");
-        log.info("\tSimple: {}", this.japProperties.getSimpleConfig() != null ? "已启用" : "未启用");
-        log.info("\tSocial: {}", this.japProperties.getCredentials() != null ? "已启用" : "未启用");
-        log.info("\tMfa: {}", this.japMfaService != null ? "已启用" : "未启用");
+        log.info("\tSimple: {}", japProperties.getSimpleConfig() != null ? "已启用" : "未启用");
+        log.info("\tSocial: {}", japProperties.getCredentials() != null ? "已启用" : "未启用");
+        log.info("\tMfa: {}", japMfaService != null ? "已启用" : "未启用");
+
         // 启用用户接口
-        Solon.global().add(this.japProperties.getAccountPath(), AccountController.class);
+        Solon.global().add(japProperties.getAccountPath(), AccountController.class);
+
         // 启用 Simple
-        if(this.japProperties.getSimpleConfig() != null) {
-            Aop.wrapAndPut(SimpleStrategy.class, new SimpleStrategy(this.japUserService, this.japProperties.getJapConfig()));
-            Solon.global().add(this.japProperties.getAuthPath(), SimpleController.class);
+        if(japProperties.getSimpleConfig() != null) {
+            Aop.wrapAndPut(SimpleStrategy.class, new SimpleStrategy(japUserService, japProperties.getJapConfig()));
+            Solon.global().add(japProperties.getAuthPath(), SimpleController.class);
         }
+
         // 启用 Social
-        if(this.japProperties.getCredentials() != null) {
-            Aop.wrapAndPut(SocialStrategy.class, new SocialStrategy(this.japUserService, this.japProperties.getJapConfig()));
-            Solon.global().add(this.japProperties.getAuthPath(), SocialController.class);
+        if(japProperties.getCredentials() != null) {
+            Aop.wrapAndPut(SocialStrategy.class, new SocialStrategy(japUserService, japProperties.getJapConfig()));
+            Solon.global().add(japProperties.getAuthPath(), SocialController.class);
         }
+
         // 启用 Mfa
-        if(this.japMfaService != null) {
-            JapMfa japMfa = new JapMfa(this.japMfaService);
+        if(japMfaService != null) {
+            JapMfa japMfa = new JapMfa(japMfaService);
             Aop.wrapAndPut(JapMfa.class, japMfa);
         }
     }
-
 }

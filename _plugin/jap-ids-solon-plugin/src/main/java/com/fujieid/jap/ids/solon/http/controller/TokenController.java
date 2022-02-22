@@ -2,7 +2,6 @@ package com.fujieid.jap.ids.solon.http.controller;
 
 import com.fujieid.jap.http.adapter.jakarta.JakartaRequestAdapter;
 import com.fujieid.jap.ids.endpoint.TokenEndpoint;
-import com.fujieid.jap.ids.model.IdsResponse;
 import org.noear.solon.annotation.Get;
 import org.noear.solon.annotation.Mapping;
 
@@ -11,9 +10,9 @@ import java.util.Map;
 
 /**
  * @author 颖
+ * @since 1.6
  */
 public class TokenController extends IdsController {
-
     private final TokenEndpoint tokenEndpoint = new TokenEndpoint();
 
     @Get
@@ -29,5 +28,4 @@ public class TokenController extends IdsController {
         return this.tokenEndpoint
                 .revokeToken(new JakartaRequestAdapter(request));
     }
-
 }

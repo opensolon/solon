@@ -20,6 +20,7 @@ import java.io.FileNotFoundException;
 /**
  * @author 颖
  * @author work
+ * @since 1.6
  */
 public class MfaController extends JapController {
 
@@ -84,5 +85,4 @@ public class MfaController extends JapController {
             throw new IllegalArgumentException();
         }
     }
-
 }

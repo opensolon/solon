@@ -10,7 +10,8 @@ import com.fujieid.jap.ids.solon.http.ErrorFilter;
 import com.fujieid.jap.ids.solon.http.controller.*;
 
 /**
- * @author noear, 颖
+ * @since 颖
+ * @author noear
  * @since 1.6
  */
 public class XPluginImpl implements Plugin {
