@@ -14,6 +14,8 @@ import java.util.regex.Pattern;
  */
 public abstract class JapController {
 
+    public final static String JAP_LAST_RESPONSE_KEY = "_jap:lastResponse";
+
     @Inject
     JapProps japProprieties;
     private final Pattern urlPattern = Pattern.compile(
@@ -21,12 +23,14 @@ public abstract class JapController {
     );
 
     public Object simpleResponse(JapResponse japResponse) {
+        // 记录 Response
         String next = Context.current().param("next");
         boolean isSeparate = next == null;
 
         if (isSeparate) {
             return japResponse;
         } else {
+            Context.current().sessionSet(JAP_LAST_RESPONSE_KEY, japResponse);
             if (japResponse.isSuccess()) {
                 if (japResponse.isRedirectUrl()) {
                     Context.current().redirect((String) japResponse.getData());
