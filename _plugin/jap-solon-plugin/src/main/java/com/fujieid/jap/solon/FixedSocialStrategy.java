@@ -17,6 +17,7 @@ import org.joor.Reflect;
 
 /**
  * @author 颖
+ * @since 1.6
  */
 public class FixedSocialStrategy extends SocialStrategy {
 
