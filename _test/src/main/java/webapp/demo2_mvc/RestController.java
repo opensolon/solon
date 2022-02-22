@@ -13,8 +13,14 @@ import org.noear.solon.core.handle.MethodType;
 public class RestController {
 
     @Get
+    @Mapping("null")
+    public String test_null() {
+        return null;
+    }
+
+    @Get
     @Mapping("test")
-    public String test_options(String name) {
+    public String test_get(String name) {
         return "Get-" + name;
     }
 

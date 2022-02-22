@@ -13,6 +13,11 @@ import org.noear.solon.test.SolonTest;
 @SolonTest(webapp.TestApp.class)
 public class RestTest extends HttpTestBase {
     @Test
+    public void null0() throws Exception {
+        assert path("/demo2a/rest/null").get().equals("");
+    }
+
+    @Test
     public void get() throws Exception {
         assert path("/demo2a/rest/test?name=noear").get().equals("Get-noear");
     }
