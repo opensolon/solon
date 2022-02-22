@@ -200,6 +200,7 @@ public class StaticMimes {
         mimeMap.put(".wspolicy", "application/wspolicy+xml");
         mimeMap.put(".z", "application/x-compress");
         mimeMap.put(".zip", "application/zip");
+        mimeMap.put(".7z", "application/x-7z-compressed");
     }
 
     /**
