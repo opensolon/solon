@@ -31,7 +31,7 @@ import java.util.function.Predicate;
  * */
 public class Aop {
 
-    private static AopContext ac = new AopContext();
+    private final static AopContext ac = new AopContext();
 
     /**
      * 获取Aop上下文

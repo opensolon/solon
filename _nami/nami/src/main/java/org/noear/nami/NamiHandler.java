@@ -22,7 +22,7 @@ import java.util.regex.Pattern;
  * @since 1.0
  * */
 public class NamiHandler implements InvocationHandler {
-    private static Pattern pathKeyExpr = Pattern.compile("\\{([^\\\\}]+)\\}");
+    private final static Pattern pathKeyExpr = Pattern.compile("\\{([^\\\\}]+)\\}");
 
     private final Config config;
     private final NamiClient client;

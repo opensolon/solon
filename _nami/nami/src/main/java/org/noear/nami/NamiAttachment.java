@@ -13,7 +13,7 @@ import java.util.Map;
 public final class NamiAttachment {
     private final static ThreadLocal<Map<String, String>> threadMap = new InheritableThreadLocal<>();
 
-    private final static Map<String, String> getContextMap0() {
+    private static Map<String, String> getContextMap0() {
         Map<String, String> tmp = threadMap.get();
         if (tmp == null) {
             tmp = new LinkedHashMap<>();

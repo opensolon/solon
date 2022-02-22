@@ -16,8 +16,8 @@ import org.noear.solon.annotation.Inject;
  */
 public class IndexBuilder {
 
-	private static Map<String, Integer> map = new HashMap<>();
-	private static ArrayList<String> classStack = new ArrayList<>();
+	private static final Map<String, Integer> map = new HashMap<>();
+	private static final ArrayList<String> classStack = new ArrayList<>();
 
 	/**
 	 * 获取bean的初始化index
