@@ -15,6 +15,7 @@ public class RestTest extends HttpTestBase {
     @Test
     public void null0() throws Exception {
         assert path("/demo2a/rest/null").get().equals("");
+        assert path("/demo2a/rest/null").exec("GET").header("test") == null;
     }
 
     @Test

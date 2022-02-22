@@ -39,6 +39,7 @@ public class StaticMimes {
         mimeMap.put(".css", "text/css");
         mimeMap.put(".dib", "image/bmp");
         mimeMap.put(".doc", "application/msword");
+        mimeMap.put(".docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
         mimeMap.put(".dtd", "application/xml-dtd");
         mimeMap.put(".dv", "video/x-dv");
         mimeMap.put(".dvi", "application/x-dvi");
@@ -129,16 +130,20 @@ public class StaticMimes {
         mimeMap.put(".pnt", "image/x-macpaint");
         mimeMap.put(".ppm", "image/x-portable-pixmap");
         mimeMap.put(".ppt", "application/vnd.ms-powerpoint");
+        mimeMap.put(".pptx", "application/vnd.openxmlformats-officedocument.presentationml.presentation");
         mimeMap.put(".pps", "application/vnd.ms-powerpoint");
+        mimeMap.put(".ppsx", "application/vnd.openxmlformats-officedocument.presentationml.slideshow");
         mimeMap.put(".ps", "application/postscript");
         mimeMap.put(".psd", "image/vnd.adobe.photoshop");
         mimeMap.put(".qt", "video/quicktime");
         mimeMap.put(".qti", "image/x-quicktime");
         mimeMap.put(".qtif", "image/x-quicktime");
         mimeMap.put(".ras", "image/x-cmu-raster");
+        mimeMap.put(".rar", "application/octet-stream");
         mimeMap.put(".rdf", "application/rdf+xml");
         mimeMap.put(".rgb", "image/x-rgb");
         mimeMap.put(".rm", "application/vnd.rn-realmedia");
+        mimeMap.put(".rmi", "audio/mid");
         mimeMap.put(".roff", "text/troff");
         mimeMap.put(".rtf", "application/rtf");
         mimeMap.put(".rtx", "text/richtext");
@@ -159,6 +164,7 @@ public class StaticMimes {
         mimeMap.put(".tex", "application/x-tex");
         mimeMap.put(".texi", "application/x-texinfo");
         mimeMap.put(".texinfo", "application/x-texinfo");
+        mimeMap.put(".tgz", "application/x-compressed");
         mimeMap.put(".tif", "image/tiff");
         mimeMap.put(".tiff", "image/tiff");
         mimeMap.put(".tr", "text/troff");
@@ -172,6 +178,7 @@ public class StaticMimes {
         mimeMap.put(".xht", "application/xhtml+xml");
         mimeMap.put(".xhtml", "application/xhtml+xml");
         mimeMap.put(".xls", "application/vnd.ms-excel");
+        mimeMap.put(".xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         mimeMap.put(".xml", "application/xml");
         mimeMap.put(".xpm", "image/x-xpixmap");
         mimeMap.put(".xsl", "application/xml");
@@ -185,6 +192,7 @@ public class StaticMimes {
         mimeMap.put(".wmlc", "application/vnd.wap.wmlc");
         mimeMap.put(".wmls", "text/vnd.wap.wmlsc");
         mimeMap.put(".wmlscriptc", "application/vnd.wap.wmlscriptc");
+        mimeMap.put(".wma", "audio/x-ms-wma");
         mimeMap.put(".wmv", "video/x-ms-wmv");
         mimeMap.put(".woff", "application/font-woff");
         mimeMap.put(".woff2", "application/font-woff2");
