@@ -9,6 +9,7 @@ import com.fujieid.jap.sso.JapMfa;
 import org.noear.solon.annotation.Get;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.annotation.Mapping;
+import org.noear.solon.annotation.Post;
 import org.noear.solon.core.handle.DownloadedFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -74,9 +75,9 @@ public class MfaController extends JapController {
         }
     }
 
-    @Get
+    @Post
     @Mapping("/mfa/verify")
-    public Object generate(String username, String secretKey, int otpCode) throws FileNotFoundException {
+    public Object verify(String username, String secretKey, int otpCode) throws FileNotFoundException {
         if (username != null) {
             return this.japMfa.verifyByUsername(username, otpCode);
         } else if (secretKey != null) {
