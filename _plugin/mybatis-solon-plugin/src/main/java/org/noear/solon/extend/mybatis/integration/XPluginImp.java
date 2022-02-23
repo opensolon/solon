@@ -61,11 +61,6 @@ public class XPluginImp implements Plugin {
     private void inject0(VarHolder varH, BeanWrap dsBw) {
         MybatisAdapter adapter = MybatisAdapterManager.get(dsBw);
 
-        if (SqlSession.class.isAssignableFrom(varH.getType())) {
-            varH.setValue(adapter.getSession());
-            return;
-        }
-
         if (SqlSessionFactory.class.isAssignableFrom(varH.getType())) {
             varH.setValue(adapter.getFactory());
             return;
@@ -83,7 +78,7 @@ public class XPluginImp implements Plugin {
         }
 
         if (varH.getType().isInterface()) {
-            Object mapper = adapter.getSession().getMapper(varH.getType());
+            Object mapper = adapter.getMapperProxy(varH.getType());
 
             varH.setValue(mapper);
             return;

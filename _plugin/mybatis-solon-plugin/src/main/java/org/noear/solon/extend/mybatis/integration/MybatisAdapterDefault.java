@@ -6,7 +6,6 @@ import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.mapping.Environment;
 import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.session.Configuration;
-import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.apache.ibatis.transaction.TransactionFactory;
@@ -185,17 +184,6 @@ public class MybatisAdapterDefault implements MybatisAdapter {
         }
 
         return factory;
-    }
-
-    private SqlSession session;
-
-    @Override
-    public SqlSession getSession() {
-        if (session == null) {
-            session = getFactory().openSession();
-        }
-
-        return session;
     }
 
     @Override

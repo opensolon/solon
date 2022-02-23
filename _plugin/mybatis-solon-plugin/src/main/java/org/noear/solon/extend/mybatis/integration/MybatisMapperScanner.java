@@ -1,42 +1,39 @@
 package org.noear.solon.extend.mybatis.integration;
 
-import org.apache.ibatis.session.SqlSession;
 import org.noear.solon.Utils;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.util.ScanUtil;
 import org.noear.solon.extend.mybatis.MybatisAdapter;
 
 /**
- * Mybatis Mapper Scan Helper
+ * Mybatis Mapper Scanner
  *
  * @author noear
  * @since 1.6
  */
-class MybatisMapperHelper {
+class MybatisMapperScanner {
     /**
      * 扫描 Mapper
-     * */
+     */
     protected static void mapperScan(MybatisAdapter adapter) {
-        SqlSession session = adapter.getSession();
-
         for (String val : adapter.getMappers()) {
-            mapperScan0(session, val);
+            mapperScan0(adapter, val);
         }
     }
 
-    private static void mapperScan0(SqlSession session, String val) {
+    private static void mapperScan0(MybatisAdapter adapter, String val) {
         if (val.endsWith(".xml")) {
 
         } else if (val.endsWith(".class")) {
             Class<?> clz = Utils.loadClass(val.substring(0, val.length() - 6));
-            mapperBindDo(session, clz);
+            mapperBindDo(adapter, clz);
         } else {
             String dir = val.replace('.', '/');
-            mapperScanDo(session, dir);
+            mapperScanDo(adapter, dir);
         }
     }
 
-    private static void mapperScanDo(SqlSession session, String dir) {
+    private static void mapperScanDo(MybatisAdapter adapter, String dir) {
         ScanUtil.scan(dir, n -> n.endsWith(".class"))
                 .stream()
                 .map(name -> {
@@ -44,13 +41,13 @@ class MybatisMapperHelper {
                     return Utils.loadClass(className.replace("/", "."));
                 })
                 .forEach((clz) -> {
-                    mapperBindDo(session, clz);
+                    mapperBindDo(adapter, clz);
                 });
     }
 
-    private static void mapperBindDo(SqlSession session, Class<?> clz) {
+    private static void mapperBindDo(MybatisAdapter adapter, Class<?> clz) {
         if (clz != null && clz.isInterface()) {
-            Object mapper = session.getMapper(clz);
+            Object mapper = adapter.getMapperProxy(clz);
 
             Aop.context().putWrap(clz, Aop.wrap(clz, mapper));
         }

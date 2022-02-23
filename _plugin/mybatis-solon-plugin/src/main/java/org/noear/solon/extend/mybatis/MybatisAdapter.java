@@ -1,9 +1,10 @@
 package org.noear.solon.extend.mybatis;
 
 import org.apache.ibatis.session.Configuration;
-import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
+import org.noear.solon.extend.mybatis.integration.MybatisMapperInterceptor;
 
+import java.lang.reflect.Proxy;
 import java.util.List;
 
 /**
@@ -19,7 +20,7 @@ public interface MybatisAdapter {
 
     /**
      * 获取 Mapper 配置获取
-     * */
+     */
     List<String> getMappers();
 
     /**
@@ -33,8 +34,14 @@ public interface MybatisAdapter {
     SqlSessionFactory getFactory();
 
     /**
-     * 获取缓存的会话
-     */
-    SqlSession getSession();
+     * 获取印映代理
+     * */
+    default Object getMapperProxy(Class<?> mapperClz) {
+        MybatisMapperInterceptor handler = new MybatisMapperInterceptor(getFactory(), mapperClz);
 
+        return Proxy.newProxyInstance(
+                mapperClz.getClassLoader(),
+                new Class[]{mapperClz},
+                handler);
+    }
 }

@@ -77,7 +77,7 @@ public class MybatisAdapterManager {
         }
 
         //就扫一次
-        MybatisMapperHelper.mapperScan(adapter);
+        MybatisMapperScanner.mapperScan(adapter);
 
         return adapter;
     }
