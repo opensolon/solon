@@ -67,7 +67,7 @@ public class XPluginImp implements Plugin {
         }
 
         if (SqlSessionFactory.class.isAssignableFrom(varH.getType())) {
-            varH.setValue(adapter.getSession());
+            varH.setValue(adapter.getFactory());
             return;
         }
 
