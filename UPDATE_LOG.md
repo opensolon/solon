@@ -1,5 +1,9 @@
-#### 1.6.25
+#### 1.6.26-m1
 * 增加 jap-ids-solon-plugin 插件
+* 增加 jap-solon-plugin 插件
+* mybatis-plus 升级为 3.5.1
+
+#### 1.6.25
 * 调整 @CacheRemove key 为 keys
 * 调整 @Param 的作用范围
 * 新增 @Header 以支持头变量注入

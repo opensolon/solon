@@ -7,6 +7,8 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 
 /**
+ * Mybatis Mapper Interceptor
+ *
  * @author noear
  * @since 1.6
  */
