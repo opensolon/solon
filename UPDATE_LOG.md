@@ -1,4 +1,4 @@
-#### 1.6.26-m1
+#### 1.6.26
 * 增加 jap-ids-solon-plugin 插件
 * 增加 jap-solon-plugin 插件
 * 插件 mybatisplus-solon-plugin，升级  mybatis-plus 为 3.5.1
