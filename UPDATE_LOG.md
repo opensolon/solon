@@ -1,7 +1,8 @@
 #### 1.6.26-m1
 * 增加 jap-ids-solon-plugin 插件
 * 增加 jap-solon-plugin 插件
-* mybatis-plus 升级为 3.5.1
+* 插件 mybatisplus-solon-plugin，升级  mybatis-plus 为 3.5.1
+* 修复 mybatis-solon-plugin 没有关闭会话的问题
 
 #### 1.6.25
 * 调整 @CacheRemove key 为 keys
