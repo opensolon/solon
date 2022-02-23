@@ -2,6 +2,7 @@
 * 增加 jap-ids-solon-plugin 插件
 * 增加 jap-solon-plugin 插件
 * 插件 mybatisplus-solon-plugin，升级  mybatis-plus 为 3.5.1
+* 插件 solon.extend.staticfiles 新增 10 个默认 mime
 * 修复 mybatis-solon-plugin 没有自动关闭会话的问题
 * 优化 配置对复杂结构类的支持
 
