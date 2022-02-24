@@ -20,15 +20,15 @@ public class NumericValidator implements Validator<Numeric> {
     }
 
     @Override
-    public Result validateOfEntity(Class<?> clz, Numeric anno, String name, Object val0, StringBuilder tmp) {
+    public Result validateOfValue(String label, Numeric anno, Object val0, StringBuilder tmp) {
         if (val0 != null && val0 instanceof String == false) {
-            return Result.failure(clz.getSimpleName() + "." + name);
+            return Result.failure(label);
         }
 
         String val = (String) val0;
 
         if (verify(anno, val) == false) {
-            return Result.failure(clz.getSimpleName() + "." + name);
+            return Result.failure(label);
         } else {
             return Result.succeed();
         }

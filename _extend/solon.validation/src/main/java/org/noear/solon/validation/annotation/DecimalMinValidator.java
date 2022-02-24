@@ -19,15 +19,15 @@ public class DecimalMinValidator implements Validator<DecimalMin> {
     }
 
     @Override
-    public Result validateOfEntity(Class<?> clz, DecimalMin anno, String name, Object val0, StringBuilder tmp) {
+    public Result validateOfValue(String label, DecimalMin anno, Object val0, StringBuilder tmp) {
         if (val0 instanceof Double == false) {
-            return Result.failure(clz.getSimpleName() + "." + name);
+            return Result.failure(label);
         }
 
         Double val = (Double) val0;
 
         if (val == null || val < anno.value()) {
-            return Result.failure(clz.getSimpleName() + "." + name);
+            return Result.failure(label);
         } else {
             return Result.succeed();
         }

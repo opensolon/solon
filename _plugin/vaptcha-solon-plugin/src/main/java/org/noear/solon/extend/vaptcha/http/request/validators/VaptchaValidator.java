@@ -30,15 +30,16 @@ public class VaptchaValidator implements Validator<Vaptcha> {
         return annotation.message();
     }
 
+
     /**
      * 校验实体的字段
      */
     @Override
-    public Result<?> validateOfEntity(Class<?> clz, Vaptcha annotation, String name, Object value0, StringBuilder tmp) {
-        if (value0 instanceof iVaptcha) {
-            return verify(annotation, (iVaptcha) value0) ? Result.succeed() : Result.failure(name);
+    public Result validateOfValue(String label, Vaptcha anno, Object val0, StringBuilder tmp) {
+        if (val0 instanceof iVaptcha) {
+            return verify(anno, (iVaptcha) val0) ? Result.succeed() : Result.failure(label);
         } else {
-            return Result.failure(name);
+            return Result.failure(label);
         }
     }
 
@@ -46,9 +47,9 @@ public class VaptchaValidator implements Validator<Vaptcha> {
      * 校验上下文的参数
      */
     @Override
-    public Result<?> validateOfContext(Context ctx, Vaptcha annotation, String name, StringBuilder tmp) {
+    public Result validateOfContext(Context ctx, Vaptcha anno, String name, StringBuilder tmp) {
         String value = ctx.param(name);
-        return value == null || verify(annotation, ONode.deserialize(value, iVaptcha.class)) ? Result.succeed() : Result.failure(name);
+        return value == null || verify(anno, ONode.deserialize(value, iVaptcha.class)) ? Result.succeed() : Result.failure(name);
     }
 
     private boolean verify(Vaptcha annotation, iVaptcha vaptcha) {

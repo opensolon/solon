@@ -20,15 +20,15 @@ public class SizeValidator implements Validator<Size> {
     }
 
     @Override
-    public Result validateOfEntity(Class<?> clz, Size anno, String name, Object val0, StringBuilder tmp) {
+    public Result validateOfValue(String label, Size anno, Object val0, StringBuilder tmp) {
         if (val0 != null && val0 instanceof Collection == false) {
-            return Result.failure(clz.getSimpleName() + "." + name);
+            return Result.failure(label);
         }
 
         Collection val = (Collection) val0;
 
         if (verify(anno, val) == false) {
-            return Result.failure(clz.getSimpleName() + "." + name);
+            return Result.failure(label);
         } else {
             return Result.succeed();
         }

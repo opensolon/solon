@@ -20,15 +20,15 @@ public class NotZeroValidator implements Validator<NotZero> {
     }
 
     @Override
-    public Result validateOfEntity(Class<?> clz, NotZero anno, String name, Object val0, StringBuilder tmp) {
+    public Result validateOfValue(String label, NotZero anno, Object val0, StringBuilder tmp) {
         if (val0 instanceof Number == false) {
-            return Result.failure(clz.getSimpleName() + "." + name);
+            return Result.failure(label);
         }
 
         Number val = (Number) val0;
 
         if (val == null || val.longValue() == 0) {
-            return Result.failure(clz.getSimpleName() + "." + name);
+            return Result.failure(label);
         } else {
             return Result.succeed();
         }

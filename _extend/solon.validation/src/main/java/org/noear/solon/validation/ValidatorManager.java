@@ -2,12 +2,15 @@ package org.noear.solon.validation;
 
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.Note;
+import org.noear.solon.core.Aop;
+import org.noear.solon.core.aspect.Invocation;
 import org.noear.solon.core.handle.Action;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Result;
 import org.noear.solon.core.wrap.ClassWrap;
 import org.noear.solon.core.wrap.FieldWrap;
 import org.noear.solon.core.wrap.ParamWrap;
+import org.noear.solon.ext.DataThrowable;
 import org.noear.solon.validation.annotation.*;
 
 import java.lang.annotation.Annotation;
@@ -26,6 +29,15 @@ import java.util.Map;
  * @since 1.0
  * */
 public class ValidatorManager {
+    private static BeanValidator validator;
+
+    static {
+        validator = new BeanValidatorDefault();
+
+        Aop.getAsyn(BeanValidator.class, bw -> {
+            validator = bw.get();
+        });
+    }
 
     /**
      * 设定非重复提交检测器
@@ -104,6 +116,8 @@ public class ValidatorManager {
         register(Logined.class, LoginedValidator.instance);
 
         register(NotBlacklist.class, NotBlacklistValidator.instance);
+
+        register(Validated.class, ValidatedValidator.instance);
     }
 
     /**
@@ -130,6 +144,11 @@ public class ValidatorManager {
         validMap.put(type, validator);
     }
 
+    @Note("移除某个类型的验证器")
+    public static <T extends Annotation> Validator<T> get(Class<T> type) {
+        return validMap.get(type);
+    }
+
     /**
      * 执行上下文的验证处理
      */
@@ -148,16 +167,7 @@ public class ValidatorManager {
                 return;
             }
         }
-
-        for (ParamWrap para : action.method().getParamWraps()) {
-            for (Annotation anno : para.getParameter().getAnnotations()) {
-                if (validateOfContext0(ctx, anno, para.getName(), tmp)) {
-                    return;
-                }
-            }
-        }
     }
-
 
     private static boolean validateOfContext0(Context ctx, Annotation anno, String name, StringBuilder tmp) {
         if (ctx.getHandled()) {
@@ -180,6 +190,47 @@ public class ValidatorManager {
         return false;
     }
 
+    @Note("执行参数的验证处理")
+    public static void validateOfInvocation(Invocation inv) throws Throwable {
+        StringBuilder tmp = new StringBuilder();
+
+        for (int i = 0, len = inv.args().length; i < len; i++) {
+            ParamWrap pw = inv.method().getParamWraps()[i];
+
+            for (Annotation anno : pw.getParameter().getAnnotations()) {
+                //内部会自动抛异常
+                validateOfValue0(pw.getName(), anno, inv.args()[i], tmp);
+            }
+        }
+    }
+
+    private static void validateOfValue0(String label, Annotation anno, Object val, StringBuilder tmp) {
+        Validator valid = validMap.get(anno.annotationType());
+
+        if (valid != null) {
+            tmp.setLength(0);
+            Result rst = valid.validateOfValue(label, anno, val, tmp);
+
+            if (rst.getCode() == Result.FAILURE_CODE) {
+                String message = null;
+                if (rst.getData() instanceof BeanValidateInfo) {
+                    BeanValidateInfo info = (BeanValidateInfo) rst.getData();
+                    anno = info.anno;
+                    message = info.message;
+                } else {
+                    message = rst.getDescription();
+                }
+
+                if (ValidatorManager.failureDo(Context.current(), anno, rst, message)) {
+                    throw new DataThrowable();
+                } else {
+                    throw new IllegalArgumentException(rst.getDescription());
+                }
+            }
+        }
+    }
+
+
     /**
      * 执行实体的验证处理
      */
@@ -198,7 +249,7 @@ public class ValidatorManager {
         }
     }
 
-    private static Result validateOfEntityAry(Object obj){
+    private static Result validateOfEntityAry(Object obj) {
         Iterator iterator = ((Collection) obj).iterator();
         while (iterator.hasNext()) {
             Object val2 = iterator.next();
@@ -215,7 +266,7 @@ public class ValidatorManager {
         return Result.succeed();
     }
 
-    private static Result validateOfEntityMap(Object obj){
+    private static Result validateOfEntityMap(Object obj) {
         Iterator iterator = ((Map) obj).values().iterator();
         while (iterator.hasNext()) {
             Object val2 = iterator.next();
@@ -232,7 +283,7 @@ public class ValidatorManager {
         return Result.succeed();
     }
 
-    private static Result validateOfEntityOne(Object obj) throws IllegalAccessException{
+    private static Result validateOfEntityOne(Object obj) throws IllegalAccessException {
         if (obj == null) {
             //null，由 @NotNull 来验证
             return Result.succeed();
@@ -246,11 +297,12 @@ public class ValidatorManager {
             Field field = kv.getValue().field;
 
             for (Annotation anno : kv.getValue().annoS) {
-                Validator valid = validMap.get(anno.annotationType());
+                Validator valid = ValidatorManager.get(anno.annotationType());
 
                 if (valid != null) {
+                    String label = cw.clz().getSimpleName() + "." + field.getName();
                     tmp.setLength(0);
-                    Result rst = valid.validateOfEntity(cw.clz(), anno, field.getName(), field.get(obj), tmp);
+                    Result rst = valid.validateOfValue(label, anno, field.get(obj), tmp);
 
                     if (rst.getCode() != Result.SUCCEED_CODE) {
                         rst.setData(new BeanValidateInfo(anno, valid.message(anno)));

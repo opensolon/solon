@@ -2,15 +2,13 @@ package org.noear.solon.validation;
 
 import org.noear.solon.core.handle.Result;
 
-import java.util.Iterator;
-
 /**
  * Bean 验证默认实现
  *
  * @author noear
  * @since 1.5
  */
-class BeanValidatorDefault implements BeanValidator {
+public class BeanValidatorDefault implements BeanValidator {
     /**
      * 验证
      *

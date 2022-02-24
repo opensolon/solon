@@ -25,15 +25,15 @@ public class DateValidator implements Validator<Date> {
      * 校验实体的字段
      * */
     @Override
-    public Result validateOfEntity(Class<?> clz, Date anno, String name, Object val0, StringBuilder tmp) {
+    public Result validateOfValue(String label, Date anno, Object val0, StringBuilder tmp) {
         if (val0 != null && val0 instanceof String == false) {
-            return Result.failure(clz.getSimpleName() + "." + name);
+            return Result.failure(label);
         }
 
         String val = (String) val0;
 
         if (verify(anno, val) == false) {
-            return Result.failure(clz.getSimpleName() + "." + name);
+            return Result.failure(label);
         } else {
             return Result.succeed();
         }
