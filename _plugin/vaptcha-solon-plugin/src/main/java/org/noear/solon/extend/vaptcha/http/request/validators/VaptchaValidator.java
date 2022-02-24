@@ -35,11 +35,11 @@ public class VaptchaValidator implements Validator<Vaptcha> {
      * 校验实体的字段
      */
     @Override
-    public Result validateOfValue(String label, Vaptcha anno, Object val0, StringBuilder tmp) {
+    public Result validateOfValue(Vaptcha anno, Object val0, StringBuilder tmp) {
         if (val0 instanceof iVaptcha) {
-            return verify(anno, (iVaptcha) val0) ? Result.succeed() : Result.failure(label);
+            return verify(anno, (iVaptcha) val0) ? Result.succeed() : Result.failure();
         } else {
-            return Result.failure(label);
+            return Result.failure();
         }
     }
 

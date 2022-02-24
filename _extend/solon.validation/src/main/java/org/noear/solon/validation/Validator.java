@@ -20,13 +20,12 @@ public interface Validator<T extends Annotation> {
     /**
      * 验证强类型值
      *
-     * @param label 标识
      * @param anno 验证注解
-     * @param val 字段值
+     * @param val 值
      * @param tmp 临时字符构建器（用于构建message；起到复用之效）
      * @return  验证结果
      */
-    default Result validateOfValue(String label, T anno, Object val, StringBuilder tmp) {
+    default Result validateOfValue(T anno, Object val, StringBuilder tmp) {
         return Result.failure();
     }
 

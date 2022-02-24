@@ -19,15 +19,15 @@ public class NotEmptyValidator implements Validator<NotEmpty> {
     }
 
     @Override
-    public Result validateOfValue(String label, NotEmpty anno, Object val0, StringBuilder tmp) {
+    public Result validateOfValue(NotEmpty anno, Object val0, StringBuilder tmp) {
         if (val0 instanceof String == false) {
-            return Result.failure(label);
+            return Result.failure();
         }
 
         String val = (String) val0;
 
         if (Utils.isEmpty(val)) {
-            return Result.failure(label);
+            return Result.failure();
         } else {
             return Result.succeed();
         }

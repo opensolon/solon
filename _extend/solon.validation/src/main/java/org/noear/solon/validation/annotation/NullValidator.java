@@ -18,9 +18,9 @@ public class NullValidator implements Validator<Null> {
     }
 
     @Override
-    public Result validateOfValue(String label, Null anno,  Object val, StringBuilder tmp) {
+    public Result validateOfValue(Null anno, Object val, StringBuilder tmp) {
         if (val != null) {
-            return Result.failure(label);
+            return Result.failure();
         } else {
             return Result.succeed();
         }

@@ -25,7 +25,7 @@ public class ValidatedValidator implements Validator<Validated> {
     }
 
     @Override
-    public Result validateOfValue(String label, Validated anno, Object val, StringBuilder tmp) {
+    public Result validateOfValue(Validated anno, Object val, StringBuilder tmp) {
         return validator.validate(val, anno.value());
     }
 

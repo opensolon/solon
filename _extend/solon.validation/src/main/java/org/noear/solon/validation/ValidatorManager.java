@@ -209,10 +209,15 @@ public class ValidatorManager {
 
         if (valid != null) {
             tmp.setLength(0);
-            Result rst = valid.validateOfValue(label, anno, val, tmp);
+            Result rst = valid.validateOfValue(anno, val, tmp);
 
             if (rst.getCode() == Result.FAILURE_CODE) {
                 String message = null;
+
+                if (Utils.isEmpty(rst.getDescription())) {
+                    rst.setDescription(label);
+                }
+
                 if (rst.getData() instanceof BeanValidateInfo) {
                     BeanValidateInfo info = (BeanValidateInfo) rst.getData();
                     anno = info.anno;
@@ -300,11 +305,14 @@ public class ValidatorManager {
                 Validator valid = ValidatorManager.get(anno.annotationType());
 
                 if (valid != null) {
-                    String label = cw.clz().getSimpleName() + "." + field.getName();
                     tmp.setLength(0);
-                    Result rst = valid.validateOfValue(label, anno, field.get(obj), tmp);
+                    Result rst = valid.validateOfValue(anno, field.get(obj), tmp);
 
                     if (rst.getCode() != Result.SUCCEED_CODE) {
+                        if (Utils.isEmpty(rst.getDescription())) {
+                            rst.setDescription(cw.clz().getSimpleName() + "." + field.getName());
+                        }
+
                         if (rst.getData() instanceof BeanValidateInfo == false) {
                             rst.setData(new BeanValidateInfo(anno, valid.message(anno)));
                         }

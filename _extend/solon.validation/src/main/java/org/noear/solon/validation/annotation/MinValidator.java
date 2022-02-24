@@ -19,15 +19,15 @@ public class MinValidator implements Validator<Min> {
     }
 
     @Override
-    public Result validateOfValue(String label, Min anno, Object val0, StringBuilder tmp) {
+    public Result validateOfValue(Min anno, Object val0, StringBuilder tmp) {
         if (val0 instanceof Number == false) {
-            return Result.failure(label);
+            return Result.failure();
         }
 
         Number val = (Number) val0;
 
         if (val == null || val.longValue() < anno.value()) {
-            return Result.failure(label);
+            return Result.failure();
         } else {
             return Result.succeed();
         }

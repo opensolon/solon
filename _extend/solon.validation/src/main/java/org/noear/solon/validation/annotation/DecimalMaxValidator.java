@@ -19,15 +19,15 @@ public class DecimalMaxValidator implements Validator<DecimalMax> {
     }
 
     @Override
-    public Result validateOfValue(String label, DecimalMax anno, Object val0, StringBuilder tmp) {
+    public Result validateOfValue(DecimalMax anno, Object val0, StringBuilder tmp) {
         if (val0 instanceof Double == false) {
-            return Result.failure(label);
+            return Result.failure();
         }
 
         Double val = (Double) val0;
 
         if (val == null || val > anno.value()) {
-            return Result.failure(label);
+            return Result.failure();
         } else {
             return Result.succeed();
         }

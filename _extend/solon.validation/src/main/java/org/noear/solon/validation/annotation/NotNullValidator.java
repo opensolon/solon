@@ -19,9 +19,9 @@ public class NotNullValidator implements Validator<NotNull> {
     }
 
     @Override
-    public Result validateOfValue(String label, NotNull anno, Object val, StringBuilder tmp) {
+    public Result validateOfValue(NotNull anno, Object val, StringBuilder tmp) {
         if (val == null) {
-            return Result.failure(label);
+            return Result.failure();
         } else {
             return Result.succeed();
         }

@@ -19,15 +19,15 @@ public class NotBlankValidator implements Validator<NotBlank> {
     }
 
     @Override
-    public Result validateOfValue(String label, NotBlank anno, Object val0, StringBuilder tmp) {
+    public Result validateOfValue(NotBlank anno, Object val0, StringBuilder tmp) {
         if (val0 instanceof String == false) {
-            return Result.failure(label);
+            return Result.failure();
         }
 
         String val = (String) val0;
 
         if (Utils.isBlank(val)) {
-            return Result.failure(label);
+            return Result.failure();
         } else {
             return Result.succeed();
         }
