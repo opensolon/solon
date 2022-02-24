@@ -22,7 +22,7 @@ public interface Validator<T extends Annotation> {
      *
      * @param anno 验证注解
      * @param val 值
-     * @param tmp 临时字符构建器（用于构建message；起到复用之效）
+     * @param tmp 临时字符构建器（用于构建 message；起到复用之效）
      * @return  验证结果
      */
     default Result validateOfValue(T anno, Object val, StringBuilder tmp) {
