@@ -4,6 +4,7 @@ import com.fujieid.jap.core.JapUserService;
 import com.fujieid.jap.simple.SimpleStrategy;
 import com.fujieid.jap.social.SocialStrategy;
 import com.fujieid.jap.solon.http.controller.AccountController;
+import com.fujieid.jap.solon.http.controller.MfaController;
 import com.fujieid.jap.solon.http.controller.SimpleController;
 import com.fujieid.jap.solon.http.controller.SocialController;
 import com.fujieid.jap.sso.JapMfa;
@@ -62,6 +63,7 @@ public class JapInitializer {
         if(japMfaService != null) {
             JapMfa japMfa = new JapMfa(japMfaService);
             Aop.wrapAndPut(JapMfa.class, japMfa);
+            Solon.global().add(japProperties.getAuthPath(), MfaController.class);
         }
     }
 }

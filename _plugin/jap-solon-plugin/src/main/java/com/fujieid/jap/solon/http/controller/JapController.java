@@ -18,6 +18,7 @@ import java.util.regex.Pattern;
 public abstract class JapController {
 
     public final static String JAP_LAST_RESPONSE_KEY = "_jap:lastResponse";
+    public final static String JAP_MFA_VERIFIED_KEY = "_jap:mfaVerified";
 
     @Inject
     JapProps japProprieties;
