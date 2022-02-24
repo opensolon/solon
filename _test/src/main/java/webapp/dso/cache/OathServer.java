@@ -20,6 +20,12 @@ public class OathServer {
         return oauth;
     }
 
+
+    @CacheRemove(keys = "oath_test_${.code}")
+    public Oauth updateInfo2(Oauth oauth) {
+        return oauth;
+    }
+
     @CacheRemove(keys = "oath_test_${oauth.code}")
     public void updateInfo(Oauth oauth) {
 

@@ -6,7 +6,6 @@ import org.noear.solon.annotation.Inject;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
 import webapp.dso.cache.OathServer;
-import webapp.dso.cache.OathServer2;
 import webapp.dso.cache.Oauth;
 
 /**
@@ -18,30 +17,37 @@ public class CacheTagBuildTest {
     @Inject
     OathServer oathServer;
 
-    @Inject
-    OathServer2 oathServer2;
-
     @Test
-    public void test_by_rst() {
-        Oauth oauth = oathServer2.queryInfoByCode("12");
-        Oauth oauth2 = oathServer2.queryInfoByCode("12");
+    public void test_by_rst() throws InterruptedException{
+        Oauth oauth = oathServer.queryInfoByCode("12");
+        Oauth oauth2 = oathServer.queryInfoByCode("12");
+
+        System.out.println(oauth.getExpTime() + " : " + oauth2.getExpTime());
         assert oauth.getExpTime().equals(oauth2.getExpTime());
 
-        oathServer2.updateInfo2(oauth);
+        oathServer.updateInfo2(oauth);
+        Thread.sleep(1000);
 
-        Oauth oauth3 = oathServer2.queryInfoByCode("12");
+        Oauth oauth3 = oathServer.queryInfoByCode("12");
+
+        System.out.println(oauth.getExpTime() + " : " + oauth3.getExpTime());
         assert oauth.getExpTime().equals(oauth3.getExpTime()) == false;
     }
 
     @Test
-    public void test_by_param_bean() {
+    public void test_by_param_bean() throws InterruptedException{
         Oauth oauth = oathServer.queryInfoByCode("12");
         Oauth oauth2 = oathServer.queryInfoByCode("12");
+
+        System.out.println(oauth.getExpTime() + " : " + oauth2.getExpTime());
         assert oauth.getExpTime().equals(oauth2.getExpTime());
 
         oathServer.updateInfo(oauth);
+        Thread.sleep(1000);
 
         Oauth oauth3 = oathServer.queryInfoByCode("12");
+
+        System.out.println(oauth.getExpTime() + " : " + oauth3.getExpTime());
         assert oauth.getExpTime().equals(oauth3.getExpTime()) == false;
     }
 }
