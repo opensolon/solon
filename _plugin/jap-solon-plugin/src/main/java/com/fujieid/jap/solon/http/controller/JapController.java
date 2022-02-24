@@ -1,10 +1,13 @@
 package com.fujieid.jap.solon.http.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.fujieid.jap.core.result.JapResponse;
 import com.fujieid.jap.solon.JapProps;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.core.handle.Context;
 
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -23,7 +26,7 @@ public abstract class JapController {
             "^((http://)|(https://))?([a-zA-Z0-9]([a-zA-Z0-9\\-]{0,61}[a-zA-Z0-9])?\\.)+[a-zA-Z]{2,6}(/)"
     );
 
-    public Object simpleResponse(Context ctx,JapResponse japResponse) {
+    public Object simpleResponse(Context ctx, JapResponse japResponse) {
         // 记录 Response
         String next = ctx.param("next");
         boolean isSeparate = next == null;
@@ -32,6 +35,12 @@ public abstract class JapController {
             return japResponse;
         } else {
             ctx.sessionSet(JAP_LAST_RESPONSE_KEY, japResponse);
+            // 替换二次跳转后的参数
+            for (Map.Entry<String, Object> parameters : ((JSONObject) JSON.toJSON(japResponse)).entrySet()) {
+                if (parameters.getValue() != null) {
+                    next = next.replace(String.format("{%s}", parameters.getKey()), parameters.getValue().toString());
+                }
+            }
             if (japResponse.isSuccess()) {
                 if (japResponse.isRedirectUrl()) {
                     ctx.redirect((String) japResponse.getData());
@@ -39,7 +48,8 @@ public abstract class JapController {
                     ctx.redirect(next);
                 }
             } else {
-                ctx.redirect(next); // Todo: 异常处理
+                // Todo: 异常处理
+                ctx.redirect(next);
             }
 
             return null;
@@ -48,12 +58,13 @@ public abstract class JapController {
 
     /**
      * 校验下一跳地址是否合法
+     *
      * @param next 下一跳地址
      * @return 是否合法
      */
     protected boolean validNext(String next) {
         Matcher matcher = this.urlPattern.matcher(next);
-        next = matcher.find() ?  matcher.group() : next;
+        next = matcher.find() ? matcher.group() : next;
         return this.japProprieties.getNexts().contains(next);
     }
 
