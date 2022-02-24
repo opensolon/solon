@@ -10,8 +10,8 @@ import java.time.LocalDateTime;
  * @author noear 2022/1/15 created
  */
 @Service
-public class OathServer {
-    @Cache(key = "oath_test_${code}", seconds = 2592000)
+public class OathServer2 {
+    @Cache(key = "oath2_test_${code}", seconds = 2592000)
     public Oauth queryInfoByCode(String code) {
         Oauth oauth = new Oauth();
         oauth.setCode(code);
@@ -20,8 +20,8 @@ public class OathServer {
         return oauth;
     }
 
-    @CacheRemove(keys = "oath_test_${oauth.code}")
-    public void updateInfo(Oauth oauth) {
-
+    @CacheRemove(keys = "oath2_test_${.code}")
+    public Oauth updateInfo2(Oauth oauth) {
+        return oauth;
     }
 }
