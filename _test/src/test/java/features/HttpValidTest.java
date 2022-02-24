@@ -134,6 +134,12 @@ public class HttpValidTest extends _TestBase{
     }
 
     @Test
+    public void test2v_nnull2() throws IOException {
+        assert get("/demo2/valid/nnull2?val1=1").equals("OK");
+        assert get("/demo2/valid/nnull2").equals("OK") == false;
+    }
+
+    @Test
     public void test2v_nzero() throws IOException {
         assert get("/demo2/valid/nzero?val1=1&val2=2").equals("OK");
         assert get("/demo2/valid/nzero?val1=1&val2=2.0").equals("OK") == false;

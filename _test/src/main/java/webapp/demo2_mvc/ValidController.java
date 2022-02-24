@@ -97,6 +97,11 @@ public class ValidController {
         return "OK";
     }
 
+    @Mapping("nnull2")
+    public String nnull2(@NotNull(message = "val1") Integer val1) {
+        return "OK";
+    }
+
 
     @Null({"val1", "val2"})
     @Mapping("null")
