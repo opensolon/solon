@@ -26,7 +26,7 @@ public class CacheTagBuildTest {
         assert oauth.getExpTime().equals(oauth2.getExpTime());
 
         oathServer.updateInfo2(oauth);
-        Thread.sleep(1000);
+        Thread.sleep(10);
 
         Oauth oauth3 = oathServer.queryInfoByCode("12");
 
@@ -43,7 +43,7 @@ public class CacheTagBuildTest {
         assert oauth.getExpTime().equals(oauth2.getExpTime());
 
         oathServer.updateInfo(oauth);
-        Thread.sleep(1000);
+        Thread.sleep(10);
 
         Oauth oauth3 = oathServer.queryInfoByCode("12");
 
