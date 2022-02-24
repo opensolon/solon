@@ -46,6 +46,9 @@ public class SocialController extends JapController {
             // 如果 Callback 所属的 State 已过期
             if (next == null) {
                 throw new IllegalStateException();
+            } else {
+                // 填入缺失的 next 参数
+                ctx.paramSet("next", next);
             }
         } else {
             if (!this.validNext(next)) {
