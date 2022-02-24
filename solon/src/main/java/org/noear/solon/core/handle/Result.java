@@ -103,17 +103,12 @@ public class Result<T> implements Serializable {
         this.data = data;
     }
 
-    private static ResultReadonly _succeed;
     /**
      * 成功的空结果
      */
     @Note("成功的空结果")
     public static <T> Result<T> succeed() {
-        if (_succeed == null) {
-            _succeed = new ResultReadonly(SUCCEED_CODE, "");
-        }
-
-        return _succeed;
+        return new Result(SUCCEED_CODE, "");
     }
 
     /**
@@ -134,17 +129,12 @@ public class Result<T> implements Serializable {
         return new Result<>(code, "", data);
     }
 
-    private static ResultReadonly _failure;
     /**
      * 成功的空结果
      */
     @Note("失败的空结果")
     public static <T> Result<T> failure() {
-        if (_failure == null) {
-            _failure = new ResultReadonly(FAILURE_CODE, "");
-        }
-
-        return _failure;
+        return new Result(FAILURE_CODE, "");
     }
 
     /**
@@ -166,34 +156,5 @@ public class Result<T> implements Serializable {
     @Note("失败的结果")
     public static <T> Result<T> failure(String description) {
         return new Result<>(FAILURE_CODE, description);
-    }
-
-
-    /**
-     * 只读 Result
-     * */
-    static class ResultReadonly<T> extends Result<T> {
-        public ResultReadonly(T data) {
-            super(data);
-        }
-
-        public ResultReadonly(int code, String description) {
-            super(code, description);
-        }
-
-        @Override
-        public void setCode(int code) {
-            throw new RuntimeException("This result is readonly!");
-        }
-
-        @Override
-        public void setData(T data) {
-            throw new RuntimeException("This result is readonly!");
-        }
-
-        @Override
-        public void setDescription(String description) {
-            throw new RuntimeException("This result is readonly!");
-        }
     }
 }

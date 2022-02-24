@@ -163,7 +163,16 @@ public class HttpValidTest extends _TestBase{
     public void test2v_patt() throws IOException {
         assert get("/demo2/valid/patt?val1=111-12&val2=222-12").equals("OK");
         assert get("/demo2/valid/patt?val1=111-12&val2=").equals("OK");
+        assert get("/demo2/valid/patt?val1=111-12&val2=1").equals("OK") == false;
         assert get("/demo2/valid/patt").equals("OK");
+    }
+
+    @Test
+    public void test2v_patt_json() throws IOException {
+        assert path("/demo2/valid/patt").bodyJson("{val1:'111-12',val2:'222-12'}").post().equals("OK");
+        assert path("/demo2/valid/patt").bodyJson("{val1:'111-12',val2:''}").post().equals("OK");
+        assert path("/demo2/valid/patt").bodyJson("{val1:'111-12',val2:'1'}").post().equals("OK") == false;
+        assert path("/demo2/valid/patt").bodyJson("{}").post().equals("OK");
     }
 
     @Test
@@ -176,6 +185,7 @@ public class HttpValidTest extends _TestBase{
     @Test
     public void test2v_patt2_json() throws IOException {
         assert path("/demo2/valid/patt2").bodyJson("{val1:'111-12',val2:'222-12'}").post().equals("OK");
+        assert path("/demo2/valid/patt2").bodyJson("{val1:'111-12',val2:'222-12-6'}").post().equals("OK") == false;
         assert path("/demo2/valid/patt2").bodyJson("{val1:'111-12',val2:''}").post().equals("OK") == false;
     }
 
