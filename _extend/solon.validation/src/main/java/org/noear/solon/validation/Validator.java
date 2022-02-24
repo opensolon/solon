@@ -18,7 +18,7 @@ public interface Validator<T extends Annotation> {
     }
 
     /**
-     * 验证强类型值
+     * 验证值
      *
      * @param anno 验证注解
      * @param val 值
@@ -31,11 +31,11 @@ public interface Validator<T extends Annotation> {
 
 
     /**
-     * 验证上下文参数
+     * 验证上下文
      *
      * @param ctx 上下文
      * @param anno 验证注解
-     * @param name 参数名
+     * @param name 参数名（可能没有）
      * @param tmp 临时字符构建器（用于构建 message；起到复用之效）
      * @return 验证结果
      */
