@@ -13,6 +13,7 @@ import java.util.Map;
 /**
  * @author 颖
  * @author work
+ * @since 1.6
  */
 @Configuration
 @Inject("${jap}")

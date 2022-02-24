@@ -34,15 +34,17 @@ public class MfaController extends JapController {
 
     @Get
     @Mapping("/mfa/generate")
-    public Object generate(String type, HttpServletRequest request, HttpServletResponse response) throws FileNotFoundException, IllegalAccessException {
+    public Object generate(String type, Context ctx, HttpServletRequest request, HttpServletResponse response) throws FileNotFoundException, IllegalAccessException {
         // 校验用户是否登录
         JapUser japUser = JapAuthentication.getUser(
-                new JakartaRequestAdapter(new HttpServletRequestWrapperImpl(Context.current(), request)),
+                new JakartaRequestAdapter(new HttpServletRequestWrapperImpl(ctx, request)),
                 new JakartaResponseAdapter(response)
         );
-        if(japUser == null) {
+
+        if (japUser == null) {
             throw new IllegalAccessException();
         }
+
         // 根据需求生成不同类型的 QRCode
         switch (type) {
             case "file": {
@@ -79,8 +81,9 @@ public class MfaController extends JapController {
 
     @Post
     @Mapping("/mfa/verify")
-    public boolean verify(String username, String secretKey, int otpCode) throws FileNotFoundException {
+    public boolean verify(Context ctx, String username, String secretKey, int otpCode) throws FileNotFoundException {
         boolean result = false;
+
         if (username != null) {
             result = this.japMfa.verifyByUsername(username, otpCode);
         } else if (secretKey != null) {
@@ -88,8 +91,8 @@ public class MfaController extends JapController {
         } else {
             throw new IllegalArgumentException();
         }
-        Context.current().sessionSet(JapController.JAP_MFA_VERIFIED_KEY, result);
+
+        ctx.sessionSet(JapController.JAP_MFA_VERIFIED_KEY, result);
         return result;
     }
-
 }
