@@ -1,3 +1,6 @@
+#### 1.6.27
+* 插件 solon.validation ，增加对函数参数注解验证（之前只支持上下文参数验证）
+
 #### 1.6.26
 * 增加 jap-ids-solon-plugin 插件
 * 增加 jap-solon-plugin 插件
