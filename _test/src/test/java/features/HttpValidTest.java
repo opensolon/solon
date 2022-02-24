@@ -174,6 +174,12 @@ public class HttpValidTest extends _TestBase{
     }
 
     @Test
+    public void test2v_patt2_json() throws IOException {
+        assert path("/demo2/valid/patt2").bodyJson("{val1:'111-12',val2:'222-12'}").post().equals("OK");
+        assert path("/demo2/valid/patt2").bodyJson("{val1:'111-12',val2:''}").post().equals("OK") == false;
+    }
+
+    @Test
     public void test2v_length() throws IOException {
         assert get("/demo2/valid/length?val1=111-2&val2=222-2").equals("OK");
         assert get("/demo2/valid/length?val1=11-12&val2=").equals("OK") == false;

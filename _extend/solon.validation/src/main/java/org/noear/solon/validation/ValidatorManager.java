@@ -305,18 +305,10 @@ public class ValidatorManager {
                     Result rst = valid.validateOfValue(label, anno, field.get(obj), tmp);
 
                     if (rst.getCode() != Result.SUCCEED_CODE) {
-                        rst.setData(new BeanValidateInfo(anno, valid.message(anno)));
-                        return rst;
-                    }
-                }
-            }
+                        if (rst.getData() instanceof BeanValidateInfo == false) {
+                            rst.setData(new BeanValidateInfo(anno, valid.message(anno)));
+                        }
 
-            if (field.getAnnotation(Validated.class) != null) {
-                Object val = field.get(obj);
-
-                if (val != null) {
-                    Result rst = validateOfEntity(val);
-                    if (rst.getCode() != Result.SUCCEED_CODE) {
                         return rst;
                     }
                 }
