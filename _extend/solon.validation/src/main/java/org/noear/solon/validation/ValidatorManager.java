@@ -223,7 +223,7 @@ public class ValidatorManager {
                     anno = info.anno;
                     message = info.message;
                 } else {
-                    message = rst.getDescription();
+                    message = valid.message(anno);
                 }
 
                 if (ValidatorManager.failureDo(Context.current(), anno, rst, message)) {
