@@ -172,6 +172,7 @@ public class HttpValidTest extends _TestBase{
         assert path("/demo2/valid/patt").bodyJson("{val1:'111-12',val2:'222-12'}").post().equals("OK");
         assert path("/demo2/valid/patt").bodyJson("{val1:'111-12',val2:''}").post().equals("OK");
         assert path("/demo2/valid/patt").bodyJson("{val1:'111-12',val2:'1'}").post().equals("OK") == false;
+        assert path("/demo2/valid/patt").bodyJson("{val1:'111-12',val2:'1'}").post().contains("demo");
         assert path("/demo2/valid/patt").bodyJson("{}").post().equals("OK");
     }
 

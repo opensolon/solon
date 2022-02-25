@@ -110,7 +110,7 @@ public class ValidController {
     }
 
     @Mapping("patt")
-    public String patt(@Pattern("\\d{3}-\\d+") String val1, @Pattern("\\d{3}-\\d+$") String val2) {
+    public String patt(@Pattern(value = "\\d{3}-\\d+", message = "test") String val1, @Pattern(value = "\\d{3}-\\d+$", message = "demo") String val2) {
         return "OK";
     }
 
