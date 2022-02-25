@@ -4,6 +4,7 @@ import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.core.BeanWrap;
+import org.noear.solon.data.cache.CacheServiceSupplier;
 import org.noear.solon.extend.async.AsyncManager;
 
 import java.util.HashMap;
@@ -34,6 +35,12 @@ public class Config {
     @Bean
     public void test2(@Inject("${username}") String name) {
         System.out.println("cfg::" +name);
+    }
+
+    @Bean
+    public void test3(@Inject("${cache1}") CacheServiceSupplier supplier) {
+        supplier.get();
+        System.out.println("cache::");
     }
 
     @Bean

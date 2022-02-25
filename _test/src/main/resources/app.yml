@@ -8,6 +8,10 @@ demo8.test:
   username: root
   paasword: 12
 
+
+cache1:
+  driverType: local
+
 username: noear
 paasword: 1234
 
