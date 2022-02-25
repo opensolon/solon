@@ -61,11 +61,18 @@ public class FieldWrap {
 
         Type tmp = f1.getGenericType();
         if (tmp instanceof TypeVariable) {
-            genericType = null;
             //如果是类型变量，则重新构建类型
-
             Map<String, Type> gMap = GenericUtil.getGenericInfo(clz);
-            type = (Class<?>) gMap.get(tmp.getTypeName());
+            Type typeH = gMap.get(tmp.getTypeName());
+
+            if (typeH instanceof ParameterizedType) {
+                //以防外万一
+                genericType = (ParameterizedType) typeH;
+                type = (Class<?>) ((ParameterizedType) typeH).getRawType();
+            } else {
+                genericType = null;
+                type = (Class<?>) typeH;
+            }
         } else {
             type = f1.getType();
 
