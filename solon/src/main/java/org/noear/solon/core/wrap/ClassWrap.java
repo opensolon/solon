@@ -138,7 +138,7 @@ public class ClassWrap {
             if (constructor != null) {
                 return (T) constructor.newInstance(data);
             }
-        } catch (Throwable ex) {
+        } catch (Throwable e) {
         }
 
         return newBy(data::getProperty);
