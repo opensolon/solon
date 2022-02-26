@@ -3,7 +3,7 @@
 * 增加 配置对复杂结构类的支持
 * 增加 多级复杂泛型注入的支持
 
-#### 1.6.26
+#### 1.6.26 --
 * 增加 jap-ids-solon-plugin 插件
 * 增加 jap-solon-plugin 插件
 * 插件 mybatisplus-solon-plugin，升级  mybatis-plus 为 3.5.1
@@ -11,7 +11,7 @@
 * 修复 mybatis-solon-plugin 没有自动关闭会话的问题
 * 优化 配置对复杂结构类的支持
 
-#### 1.6.25
+#### 1.6.25 --
 * 调整 @CacheRemove key 为 keys
 * 调整 @Param 的作用范围
 * 新增 @Header 以支持头变量注入
