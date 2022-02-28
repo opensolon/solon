@@ -9,7 +9,7 @@ public class JtHttpContextServletHandler extends SolonServletHandler {
     @Override
     protected void preHandle(Context ctx) {
         if (XServerProp.output_meta) {
-            ctx.headerSet("solon.boot", XPluginImp.solon_boot_ver());
+            ctx.headerSet("Solon-Boot", XPluginImp.solon_boot_ver());
         }
     }
 }

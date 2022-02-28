@@ -53,18 +53,19 @@ class RnHttpHandler implements BiFunction<HttpServerRequest, HttpServerResponse,
     }
 
     protected ByteBuf applyDo(HttpServerRequest request, HttpServerResponse response, HttpRequestParser parser) {
-        RnHttpContext context = new RnHttpContext(request, response, parser);
-        context.contentType("text/plain;charset=UTF-8");//默认
+        RnHttpContext ctx = new RnHttpContext(request, response, parser);
+        ctx.contentType("text/plain;charset=UTF-8");//默认
+
         if (XServerProp.output_meta) {
-            context.headerSet("solon.boot", XPluginImp.solon_boot_ver());
+            ctx.headerSet("Solon-Boot", XPluginImp.solon_boot_ver());
         }
 
-        Solon.global().tryHandle(context);
+        Solon.global().tryHandle(ctx);
 
-        if (context.status() == 404) {
+        if (ctx.status() == 404) {
             return null;  //response.sendNotFound();
         } else {
-            return context._outputStream.buffer();//response.send(Mono.just(context._outputStream.buffer())).neverComplete();
+            return ctx._outputStream.buffer();//response.send(Mono.just(context._outputStream.buffer())).neverComplete();
         }
     }
 }

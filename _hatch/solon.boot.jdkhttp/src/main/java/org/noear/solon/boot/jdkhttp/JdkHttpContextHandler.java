@@ -21,26 +21,25 @@ public class JdkHttpContextHandler implements HttpHandler {
     }
 
     private void handleDo(HttpExchange exchange) {
-        JdkHttpContext context = new JdkHttpContext(exchange); //这里可能会有异常
+        JdkHttpContext ctx = new JdkHttpContext(exchange); //这里可能会有异常
 
         try {
             //初始化好后，再处理；异常时，可以获取上下文
             //
-            context.contentType("text/plain;charset=UTF-8");
+            ctx.contentType("text/plain;charset=UTF-8");
 
             if (XServerProp.output_meta) {
-                context.headerSet("solon.boot", XPluginImp.solon_boot_ver());
+                ctx.headerSet("Solon-Boot", XPluginImp.solon_boot_ver());
             }
 
-            Solon.global().tryHandle(context);
+            Solon.global().tryHandle(ctx);
 
-            if (context.getHandled() && context.status() >= 200) {
-                context.commit();
+            if (ctx.getHandled() && ctx.status() >= 200) {
+                ctx.commit();
             } else {
-                context.status(404);
-                context.commit();
+                ctx.status(404);
+                ctx.commit();
             }
-
         } catch (Throwable ex) {
             EventBus.push(ex);
         }

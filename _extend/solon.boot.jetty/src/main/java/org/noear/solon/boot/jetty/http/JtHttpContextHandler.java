@@ -33,17 +33,17 @@ public class JtHttpContextHandler extends AbstractHandler {
     }
 
     private void handleDo(Request baseRequest, HttpServletRequest request, HttpServletResponse response) {
-        SolonServletContext context = new SolonServletContext(request, response);
-        context.attrSet("signal", XPluginImp.signal());
+        SolonServletContext ctx = new SolonServletContext(request, response);
+        ctx.attrSet("signal", XPluginImp.signal());
 
-        context.contentType("text/plain;charset=UTF-8");
+        ctx.contentType("text/plain;charset=UTF-8");
         if (XServerProp.output_meta) {
-            context.headerSet("solon.boot", XPluginImp.solon_boot_ver());
+            ctx.headerSet("Solon-Boot", XPluginImp.solon_boot_ver());
         }
 
-        Solon.global().tryHandle(context);
+        Solon.global().tryHandle(ctx);
 
-        if (context.getHandled() && context.status() >= 200) {
+        if (ctx.getHandled() && ctx.status() >= 200) {
             baseRequest.setHandled(true);
         } else {
             response.setStatus(404);

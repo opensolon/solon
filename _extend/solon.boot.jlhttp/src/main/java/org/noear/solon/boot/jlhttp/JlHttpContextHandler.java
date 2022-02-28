@@ -32,18 +32,18 @@ public class JlHttpContextHandler implements HTTPServer.ContextHandler {
     }
 
     private int handleDo(HTTPServer.Request request, HTTPServer.Response response) throws IOException {
-        JlHttpContext context = new JlHttpContext(request, response);
+        JlHttpContext ctx = new JlHttpContext(request, response);
 
-        context.contentType("text/plain;charset=UTF-8");
+        ctx.contentType("text/plain;charset=UTF-8");
 
         if (XServerProp.output_meta) {
-            context.headerSet("solon.boot", XPluginImp.solon_boot_ver());
+            ctx.headerSet("Solon-Boot", XPluginImp.solon_boot_ver());
         }
 
-        Solon.global().tryHandle(context);
+        Solon.global().tryHandle(ctx);
 
-        if (context.getHandled() && context.status() >= 200) {
-            context.commit();
+        if (ctx.getHandled() && ctx.status() >= 200) {
+            ctx.commit();
 
             return 0;
         } else {

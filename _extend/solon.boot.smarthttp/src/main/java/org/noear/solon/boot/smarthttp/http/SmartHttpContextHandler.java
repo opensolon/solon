@@ -26,20 +26,20 @@ public class SmartHttpContextHandler extends HttpServerHandler {
          * */
 
         try {
-            SmartHttpContext context = new SmartHttpContext(request, response);
+            SmartHttpContext ctx = new SmartHttpContext(request, response);
 
-            context.contentType("text/plain;charset=UTF-8");
+            ctx.contentType("text/plain;charset=UTF-8");
             if (XServerProp.output_meta) {
-                context.headerSet("solon.boot", XPluginImp.solon_boot_ver());
+                ctx.headerSet("Solon-Boot", XPluginImp.solon_boot_ver());
             }
 
-            Solon.global().tryHandle(context);
+            Solon.global().tryHandle(ctx);
 
-            if (context.getHandled() && context.status() >= 200) {
-                context.commit();
+            if (ctx.getHandled() && ctx.status() >= 200) {
+                ctx.commit();
             } else {
-                context.status(404);
-                context.commit();
+                ctx.status(404);
+                ctx.commit();
             }
         } catch (Throwable ex) {
             EventBus.push(ex);
