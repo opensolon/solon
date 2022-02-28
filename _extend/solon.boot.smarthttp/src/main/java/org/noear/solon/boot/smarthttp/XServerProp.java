@@ -4,6 +4,7 @@ import org.noear.solon.Solon;
 
 public class XServerProp {
     public static final int request_maxRequestSize;
+    public static final int request_maxHeaderSize;
     public static final int session_timeout;
     public static final String session_state_domain;
     public static final boolean output_meta;
@@ -12,16 +13,33 @@ public class XServerProp {
 
     static {
         String tmp = Solon.cfg().get("server.request.maxRequestSize", "").trim().toLowerCase();//k数
-        if (tmp.endsWith("mb")) {
-            int val = Integer.parseInt(tmp.substring(0, tmp.length() - 2));
-            request_maxRequestSize = val * 1204 * 1204;
-        } else if (tmp.endsWith("kb")) {
-            int val = Integer.parseInt(tmp.substring(0, tmp.length() - 2));
-            request_maxRequestSize = val * 1204;
-        } else if (tmp.length() > 0) {
-            request_maxRequestSize = Integer.parseInt(tmp); //支持-1
-        } else {
-            request_maxRequestSize = 0;//默认0，表示不设置
+        {
+            if (tmp.endsWith("mb")) {
+                int val = Integer.parseInt(tmp.substring(0, tmp.length() - 2));
+                request_maxRequestSize = val * 1204 * 1204;
+            } else if (tmp.endsWith("kb")) {
+                int val = Integer.parseInt(tmp.substring(0, tmp.length() - 2));
+                request_maxRequestSize = val * 1204;
+            } else if (tmp.length() > 0) {
+                request_maxRequestSize = Integer.parseInt(tmp); //支持-1
+            } else {
+                request_maxRequestSize = 0;//默认0，表示不设置
+            }
+        }
+
+        tmp = Solon.cfg().get("server.request.maxHeaderSize", "").trim().toLowerCase();//k数
+        {
+            if (tmp.endsWith("mb")) {
+                int val = Integer.parseInt(tmp.substring(0, tmp.length() - 2));
+                request_maxHeaderSize = val * 1204 * 1204;
+            } else if (tmp.endsWith("kb")) {
+                int val = Integer.parseInt(tmp.substring(0, tmp.length() - 2));
+                request_maxHeaderSize = val * 1204;
+            } else if (tmp.length() > 0) {
+                request_maxHeaderSize = Integer.parseInt(tmp); //支持-1
+            } else {
+                request_maxHeaderSize = 0;//默认0，表示不设置
+            }
         }
 
         session_timeout = Solon.cfg().getInt("server.session.timeout", 0);

@@ -10,7 +10,6 @@ import org.noear.solon.core.Signal;
 import org.noear.solon.core.SignalSim;
 import org.noear.solon.core.SignalType;
 import org.noear.solon.core.event.EventBus;
-import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.util.PrintUtil;
 import org.noear.solon.socketd.SessionManager;
@@ -18,7 +17,8 @@ import org.smartboot.http.server.HttpBootstrap;
 
 public final class XPluginImp implements Plugin {
     private static Signal _signal;
-    public static Signal signal(){
+
+    public static Signal signal() {
         return _signal;
     }
 
@@ -47,16 +47,23 @@ public final class XPluginImp implements Plugin {
         _server = new HttpBootstrap();
         _server.configuration()
                 .bannerEnabled(false)
-                .readBufferSize(1024 * 1024) //1m
+                .readBufferSize(1024 * 8) //默认: 8k
                 .threadNum(Runtime.getRuntime().availableProcessors() + 2);
 
-        //HttpServerConfiguration
-        EventBus.push(_server.configuration());
+
+        if (XServerProp.request_maxHeaderSize != 0) {
+            _server.configuration()
+                    .readBufferSize(XServerProp.request_maxHeaderSize);
+        }
 
         if (XServerProp.request_maxRequestSize != 0) {
             _server.configuration()
                     .setMaxFormContentSize(XServerProp.request_maxRequestSize);
         }
+
+
+        //HttpServerConfiguration
+        EventBus.push(_server.configuration());
 
         _server.httpHandler(_handler);
 
