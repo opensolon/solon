@@ -47,9 +47,13 @@ public final class XPluginImp implements Plugin {
         _server = new HttpBootstrap();
         _server.configuration()
                 .bannerEnabled(false)
+                .readBufferSize(1024 * 1024) //1m
                 .threadNum(Runtime.getRuntime().availableProcessors() + 2);
 
-        if(XServerProp.request_maxRequestSize != 0){
+        //HttpServerConfiguration
+        EventBus.push(_server.configuration());
+
+        if (XServerProp.request_maxRequestSize != 0) {
             _server.configuration()
                     .setMaxFormContentSize(XServerProp.request_maxRequestSize);
         }
@@ -67,6 +71,7 @@ public final class XPluginImp implements Plugin {
         try {
 
             _server.setPort(_port);
+
             _server.start();
 
             _signal = new SignalSim(_name, _port, "http", SignalType.HTTP);
