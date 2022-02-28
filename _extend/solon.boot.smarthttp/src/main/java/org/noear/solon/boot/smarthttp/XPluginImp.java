@@ -57,9 +57,9 @@ public final class XPluginImp implements Plugin {
                     .readBufferSize(ServerProps.request_maxHeaderSize);
         }
 
-        if (ServerProps.request_maxRequestSize != 0) {
+        if (ServerProps.request_maxBodySize != 0) {
             _server.configuration()
-                    .setMaxFormContentSize(ServerProps.request_maxRequestSize);
+                    .setMaxFormContentSize(ServerProps.request_maxBodySize);
         }
 
 

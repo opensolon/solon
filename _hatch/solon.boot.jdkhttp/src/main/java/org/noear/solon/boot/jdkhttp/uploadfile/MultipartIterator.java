@@ -29,7 +29,7 @@ public class MultipartIterator implements Iterator<MultipartIterator.Part> {
 
         public String getString() throws IOException {
             String charset = headers.getParams("Content-Type").get("charset");
-            return Utils.readToken(body, -1, charset == null ? ServerProps.encoding_request : charset, 8192);
+            return Utils.readToken(body, -1, charset == null ? ServerProps.request_encoding : charset, 8192);
         }
     }
 

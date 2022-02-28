@@ -32,9 +32,9 @@ public final class XPluginImp implements Plugin {
             return;
         }
 
-        if (ServerProps.request_maxRequestSize != 0) {
+        if (ServerProps.request_maxBodySize != 0) {
             System.setProperty("org.eclipse.jetty.server.Request.maxFormContentSize",
-                    String.valueOf(ServerProps.request_maxRequestSize));
+                    String.valueOf(ServerProps.request_maxBodySize));
         }
 
         Aop.context().beanBuilderAdd(WebFilter.class,(clz, bw, ano)->{});

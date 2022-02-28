@@ -20,7 +20,7 @@ abstract class PluginUndertowBase {
                 .setClassLoader(XPluginImp.class.getClassLoader())
                 .setDeploymentName("solon")
                 .setContextPath("/")
-                .setDefaultEncoding(ServerProps.encoding_request)
+                .setDefaultEncoding(ServerProps.request_encoding)
                 .setDefaultMultipartConfig(configElement)
                 .setClassIntrospecter(DefaultClassIntrospector.INSTANCE);
 
