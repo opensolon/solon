@@ -1,7 +1,6 @@
 package org.noear.solon.boot.jdkhttp.uploadfile;
 
-import org.noear.solon.Solon;
-import org.noear.solon.boot.jdkhttp.XServerProp;
+import org.noear.solon.boot.ServerProps;
 
 import java.io.EOFException;
 import java.io.IOException;
@@ -70,7 +69,7 @@ public class Utils {
 
 
     public static String readLine(InputStream in) throws IOException {
-        String s = readToken(in, '\n', XServerProp.encoding_request, 8192);//ISO8859_1//xyj,20181220
+        String s = readToken(in, '\n', ServerProps.encoding_request, 8192);//ISO8859_1//xyj,20181220
         return s.length() > 0 && s.charAt(s.length() - 1) == '\r'
                 ? s.substring(0, s.length() - 1) : s;
     }

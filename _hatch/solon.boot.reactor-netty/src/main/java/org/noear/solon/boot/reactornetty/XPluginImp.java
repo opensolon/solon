@@ -3,7 +3,6 @@ package org.noear.solon.boot.reactornetty;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.core.Plugin;
-import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.PrintUtil;
 import reactor.netty.DisposableServer;
 import reactor.netty.http.HttpProtocol;
@@ -21,8 +20,6 @@ public class XPluginImp implements Plugin {
         if (app.enableHttp() == false) {
             return;
         }
-
-        XServerProp.init();
 
         new Thread(() -> {
             start0(app);

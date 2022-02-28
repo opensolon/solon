@@ -3,8 +3,8 @@ package org.noear.solon.boot.undertow;
 import io.undertow.servlet.api.DeploymentInfo;
 import io.undertow.servlet.util.DefaultClassIntrospector;
 import org.noear.solon.Solon;
-import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
+import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.undertow.http.UtContainerInitializerProxy;
 
 import javax.servlet.MultipartConfigElement;
@@ -20,7 +20,7 @@ abstract class PluginUndertowBase {
                 .setClassLoader(XPluginImp.class.getClassLoader())
                 .setDeploymentName("solon")
                 .setContextPath("/")
-                .setDefaultEncoding(XServerProp.encoding_request)
+                .setDefaultEncoding(ServerProps.encoding_request)
                 .setDefaultMultipartConfig(configElement)
                 .setClassIntrospecter(DefaultClassIntrospector.INSTANCE);
 
@@ -28,8 +28,8 @@ abstract class PluginUndertowBase {
         builder.addServletContainerInitializer(UtContainerInitializerProxy.info());
         builder.setEagerFilterInit(true);
 
-        if (XServerProp.session_timeout > 0) {
-            builder.setDefaultSessionTimeout(XServerProp.session_timeout);
+        if (ServerProps.session_timeout > 0) {
+            builder.setDefaultSessionTimeout(ServerProps.session_timeout);
         }
 
         return builder;

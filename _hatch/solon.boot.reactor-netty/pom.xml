@@ -18,7 +18,7 @@
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon</artifactId>
+            <artifactId>solon.boot</artifactId>
         </dependency>
         <dependency>
             <groupId>io.projectreactor.netty</groupId>

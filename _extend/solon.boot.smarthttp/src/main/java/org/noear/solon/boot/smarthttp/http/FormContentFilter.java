@@ -1,9 +1,8 @@
 package org.noear.solon.boot.smarthttp.http;
 
 
-import org.noear.solon.Solon;
 import org.noear.solon.Utils;
-import org.noear.solon.boot.smarthttp.XServerProp;
+import org.noear.solon.boot.ServerProps;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Handler;
 
@@ -46,7 +45,7 @@ public class FormContentFilter implements Handler {
             String[] ss2 = s1.split("=");
 
             if (ss2.length == 2) {
-                ctx.paramMap().put(ss2[0], URLDecoder.decode(ss2[1], XServerProp.encoding_request));
+                ctx.paramMap().put(ss2[0], URLDecoder.decode(ss2[1], ServerProps.encoding_request));
             }
         }
     }

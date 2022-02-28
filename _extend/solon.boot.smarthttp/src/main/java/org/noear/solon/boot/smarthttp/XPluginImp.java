@@ -2,6 +2,7 @@ package org.noear.solon.boot.smarthttp;
 
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
+import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.smarthttp.http.SmartHttpContextHandler;
 import org.noear.solon.boot.smarthttp.http.FormContentFilter;
 import org.noear.solon.boot.smarthttp.websocket.WebSocketHandleImp;
@@ -51,14 +52,14 @@ public final class XPluginImp implements Plugin {
                 .threadNum(Runtime.getRuntime().availableProcessors() + 2);
 
 
-        if (XServerProp.request_maxHeaderSize != 0) {
+        if (ServerProps.request_maxHeaderSize != 0) {
             _server.configuration()
-                    .readBufferSize(XServerProp.request_maxHeaderSize);
+                    .readBufferSize(ServerProps.request_maxHeaderSize);
         }
 
-        if (XServerProp.request_maxRequestSize != 0) {
+        if (ServerProps.request_maxRequestSize != 0) {
             _server.configuration()
-                    .setMaxFormContentSize(XServerProp.request_maxRequestSize);
+                    .setMaxFormContentSize(ServerProps.request_maxRequestSize);
         }
 
 

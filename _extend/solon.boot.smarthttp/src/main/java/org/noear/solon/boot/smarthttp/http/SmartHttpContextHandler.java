@@ -1,8 +1,8 @@
 package org.noear.solon.boot.smarthttp.http;
 
 import org.noear.solon.Solon;
+import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.smarthttp.XPluginImp;
-import org.noear.solon.boot.smarthttp.XServerProp;
 import org.noear.solon.core.event.EventBus;
 import org.smartboot.http.common.enums.HttpStatus;
 import org.smartboot.http.server.HttpRequest;
@@ -29,7 +29,7 @@ public class SmartHttpContextHandler extends HttpServerHandler {
             SmartHttpContext ctx = new SmartHttpContext(request, response);
 
             ctx.contentType("text/plain;charset=UTF-8");
-            if (XServerProp.output_meta) {
+            if (ServerProps.output_meta) {
                 ctx.headerSet("Solon-Boot", XPluginImp.solon_boot_ver());
             }
 

@@ -3,6 +3,7 @@ package org.noear.solon.boot.reactornetty;
 import io.netty.buffer.ByteBuf;
 import io.netty.handler.codec.http.*;
 import org.noear.solon.Solon;
+import org.noear.solon.boot.ServerProps;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Mono;
 import reactor.netty.http.server.HttpServerRequest;
@@ -56,7 +57,7 @@ class RnHttpHandler implements BiFunction<HttpServerRequest, HttpServerResponse,
         RnHttpContext ctx = new RnHttpContext(request, response, parser);
         ctx.contentType("text/plain;charset=UTF-8");//默认
 
-        if (XServerProp.output_meta) {
+        if (ServerProps.output_meta) {
             ctx.headerSet("Solon-Boot", XPluginImp.solon_boot_ver());
         }
 
