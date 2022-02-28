@@ -1,7 +1,6 @@
 package org.noear.solon.boot.jetty;
 
-import org.eclipse.jetty.server.Handler;
-import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.*;
 import org.eclipse.jetty.server.session.DefaultSessionIdManager;
 import org.eclipse.jetty.server.session.SessionHandler;
 import org.noear.solon.Solon;
@@ -44,7 +43,20 @@ class PluginJetty extends PluginJettyBase implements Plugin {
     protected void setup(SolonApp app) throws IOException {
         Class<?> wsClz = Utils.loadClass("org.eclipse.jetty.websocket.server.WebSocketHandler");
 
-        _server = new Server(port);
+        _server = new Server();
+
+        //配置 //http://www.eclipse.org/jetty/documentation/jetty-9/index.html
+        HttpConfiguration config = new HttpConfiguration();
+        if(ServerProps.request_maxHeaderSize != 0){
+            config.setRequestHeaderSize(ServerProps.request_maxHeaderSize);
+        }
+
+        //有配置的链接器
+        ServerConnector connector = new ServerConnector(_server, new HttpConnectionFactory(config));
+        connector.setPort(port);
+
+        //添加链接器
+        _server.addConnector(connector);
 
         //session 支持
         if (Solon.global().enableSessionState()) {

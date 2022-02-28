@@ -1,5 +1,6 @@
 package org.noear.solon.boot.jetty;
 
+import org.eclipse.jetty.server.handler.ContextHandler;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
@@ -34,7 +35,7 @@ public final class XPluginImp implements Plugin {
         }
 
         if (ServerProps.request_maxBodySize != 0) {
-            System.setProperty("org.eclipse.jetty.server.Request.maxFormContentSize",
+            System.setProperty(ContextHandler.MAX_FORM_CONTENT_SIZE_KEY,
                     String.valueOf(ServerProps.request_maxBodySize));
         }
 

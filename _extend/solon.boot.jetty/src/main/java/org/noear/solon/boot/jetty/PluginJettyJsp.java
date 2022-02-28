@@ -5,7 +5,6 @@ import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.noear.solon.Solon;
-import org.noear.solon.SolonApp;
 import org.noear.solon.boot.jetty.http.JtJspStarter;
 
 import java.io.File;

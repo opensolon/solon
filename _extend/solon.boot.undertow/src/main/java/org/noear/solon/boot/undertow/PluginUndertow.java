@@ -53,6 +53,11 @@ class PluginUndertow extends PluginUndertowBase implements Plugin {
         Undertow.Builder builder = Undertow.builder();
 
         builder.setServerOption(UndertowOptions.ALWAYS_SET_KEEP_ALIVE, false);
+
+        if(ServerProps.request_maxHeaderSize != 0) {
+            builder.setServerOption(UndertowOptions.MAX_HEADER_SIZE, ServerProps.request_maxHeaderSize);
+        }
+
         if(ServerProps.request_maxBodySize != 0) {
             builder.setServerOption(UndertowOptions.MAX_ENTITY_SIZE, (long)ServerProps.request_maxBodySize);
         }
