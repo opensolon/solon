@@ -2,6 +2,7 @@ package org.noear.solon.boot.socketd.websocket;
 
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
+import org.noear.solon.boot.ServerConstants;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.Signal;
 import org.noear.solon.core.SignalSim;
@@ -31,8 +32,8 @@ public class XPluginImp implements Plugin {
             return;
         }
 
-        String _name = app.cfg().get("server.websocket.name");
-        int _port = app.cfg().getInt("server.websocket.port", 0);
+        String _name = app.cfg().get(ServerConstants.SERVER_WEBSOCKET_NAME);
+        int _port = app.cfg().getInt(ServerConstants.SERVER_WEBSOCKET_PORT, 0);
         if (_port < 1) {
             _port = 15000 + app.port();
         }

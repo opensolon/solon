@@ -15,6 +15,10 @@
     <packaging>jar</packaging>
 
     <dependencies>
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.boot</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>org.noear</groupId>

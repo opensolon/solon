@@ -3,6 +3,7 @@ package org.noear.solon.boot.jlhttp;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
+import org.noear.solon.boot.ServerConstants;
 import org.noear.solon.core.*;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.util.PrintUtil;
@@ -50,8 +51,8 @@ public final class XPluginImp implements Plugin {
     private void start0(SolonApp app) {
         _server = new HTTPServer();
 
-        String _name = app.cfg().get("server.http.name");
-        int _port = app.cfg().getInt("server.http.port", 0);
+        String _name = app.cfg().get(ServerConstants.SERVER_HTTP_NAME);
+        int _port = app.cfg().getInt(ServerConstants.SERVER_HTTP_PORT, 0);
         if (_port < 1) {
             _port = app.port();
         }

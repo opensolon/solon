@@ -2,6 +2,7 @@ package org.noear.solon.boot.smarthttp;
 
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
+import org.noear.solon.boot.ServerConstants;
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.smarthttp.http.SmartHttpContextHandler;
 import org.noear.solon.boot.smarthttp.http.FormContentFilter;
@@ -35,8 +36,8 @@ public final class XPluginImp implements Plugin {
             return;
         }
 
-        String _name = app.cfg().get("server.http.name");
-        int _port = app.cfg().getInt("server.http.port", 0);
+        String _name = app.cfg().get(ServerConstants.SERVER_HTTP_NAME);
+        int _port = app.cfg().getInt(ServerConstants.SERVER_HTTP_PORT, 0);
         if (_port < 1) {
             _port = app.port();
         }

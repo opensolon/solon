@@ -4,6 +4,7 @@ import com.sun.net.httpserver.HttpContext;
 import com.sun.net.httpserver.HttpServer;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
+import org.noear.solon.boot.ServerConstants;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.Signal;
 import org.noear.solon.core.SignalSim;
@@ -31,8 +32,8 @@ public final class XPluginImp implements Plugin {
             return;
         }
 
-        String _name = app.cfg().get("server.http.name");
-        int _port = app.cfg().getInt("server.http.port", 0);
+        String _name = app.cfg().get(ServerConstants.SERVER_HTTP_NAME);
+        int _port = app.cfg().getInt(ServerConstants.SERVER_HTTP_PORT, 0);
         if (_port < 1) {
             _port = app.port();
         }

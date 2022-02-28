@@ -3,6 +3,7 @@ package org.noear.solon.boot.jetty;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
+import org.noear.solon.boot.ServerConstants;
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.jetty.http.FormContentFilter;
 import org.noear.solon.core.*;
@@ -50,8 +51,8 @@ public final class XPluginImp implements Plugin {
         Class<?> jspClz = Utils.loadClass("org.eclipse.jetty.jsp.JettyJspServlet");
 
 
-        String _name = app.cfg().get("server.http.name");
-        int _port = app.cfg().getInt("server.http.port", 0);
+        String _name = app.cfg().get(ServerConstants.SERVER_HTTP_NAME);
+        int _port = app.cfg().getInt(ServerConstants.SERVER_HTTP_PORT, 0);
         if (_port < 1) {
             _port = app.port();
         }

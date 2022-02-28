@@ -3,6 +3,10 @@ package org.noear.solon.boot;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 
+/**
+ * @author noear
+ * @since 1.6
+ * */
 public class ServerProps {
     /**
      * 是否输出元信息
