@@ -22,7 +22,8 @@ server.socket.name: "waterapi.tcp"
 server.websocket.name: "waterapi.ws"
 
 #设定最大的请求包大小
-server.request.maxRequestSize: 2Mb #kb,mb
+server.request.maxBodySize: 2Mb #kb,mb
+server.request.maxHeaderSize: 2Kb #kb,mb
 
 #设定会话超时秒数（单位：秒）
 server.session.timeout: 3600
