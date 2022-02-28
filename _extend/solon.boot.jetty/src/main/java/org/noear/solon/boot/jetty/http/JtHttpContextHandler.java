@@ -3,8 +3,8 @@ package org.noear.solon.boot.jetty.http;
 import org.noear.solon.Solon;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
+import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.jetty.XPluginImp;
-import org.noear.solon.boot.jetty.XServerProp;
 import org.noear.solon.extend.servlet.SolonServletContext;
 import org.noear.solon.core.event.EventBus;
 
@@ -37,7 +37,7 @@ public class JtHttpContextHandler extends AbstractHandler {
         ctx.attrSet("signal", XPluginImp.signal());
 
         ctx.contentType("text/plain;charset=UTF-8");
-        if (XServerProp.output_meta) {
+        if (ServerProps.output_meta) {
             ctx.headerSet("Solon-Boot", XPluginImp.solon_boot_ver());
         }
 

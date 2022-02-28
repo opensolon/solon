@@ -3,6 +3,7 @@ package org.noear.solon.boot.jetty;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
+import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.jetty.http.FormContentFilter;
 import org.noear.solon.core.*;
 import org.noear.solon.core.util.PrintUtil;
@@ -31,9 +32,9 @@ public final class XPluginImp implements Plugin {
             return;
         }
 
-        if (XServerProp.request_maxRequestSize != 0) {
+        if (ServerProps.request_maxRequestSize != 0) {
             System.setProperty("org.eclipse.jetty.server.Request.maxFormContentSize",
-                    String.valueOf(XServerProp.request_maxRequestSize));
+                    String.valueOf(ServerProps.request_maxRequestSize));
         }
 
         Aop.context().beanBuilderAdd(WebFilter.class,(clz, bw, ano)->{});

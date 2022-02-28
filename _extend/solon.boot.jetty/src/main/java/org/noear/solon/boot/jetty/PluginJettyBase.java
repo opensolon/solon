@@ -5,6 +5,7 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.util.resource.ResourceCollection;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
+import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.jetty.http.JtContainerInitializerProxy;
 import org.noear.solon.boot.jetty.http.JtHttpContextServletHandler;
 
@@ -25,8 +26,8 @@ class PluginJettyBase {
         if(Solon.global().enableSessionState()) {
             handler.setSessionHandler(new SessionHandler());
 
-            if (XServerProp.session_timeout > 0) {
-                handler.getSessionHandler().setMaxInactiveInterval(XServerProp.session_timeout);
+            if (ServerProps.session_timeout > 0) {
+                handler.getSessionHandler().setMaxInactiveInterval(ServerProps.session_timeout);
             }
         }
 
