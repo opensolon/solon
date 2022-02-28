@@ -38,6 +38,7 @@ public class CloudJobExtractor implements BeanExtractor<CloudJob> {
             throw new RuntimeException("CloudJob[" + name + "] naming conflicts.");
         }
 
+        //method,必须返回为void
         Action action = new Action(bw, method);
 
         CloudClient.job().register(name, anno.cron7x(), description, action);
