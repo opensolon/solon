@@ -5,7 +5,7 @@ import org.noear.solon.cloud.model.Media;
 import org.noear.solon.core.handle.Result;
 
 /**
- * 云端文件服务（事件总线服务）
+ * 云端文件服务（分布式文件服务服务）
  *
  * @author noear
  * @since 1.3

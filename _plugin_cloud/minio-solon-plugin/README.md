@@ -36,5 +36,22 @@ solon:
 ## 🔨 示例
 
 ```java
-// Not available.
+//常规使用
+public class DemoApp {
+    public void main(String[] args) {
+        SolonApp app = Solon.start(DemoApp.class, args);
+
+        String key = "test/" + Utils.guid();
+        String val = "Hello world!";
+
+        //上传媒体
+        Result rst = CloudClient.file().put(key, new Media(val));
+
+        //获取媒体，并转为字符串
+        String val2 = CloudClient.file().get(key).bodyAsString();
+    }
+}
+
+//这样，可以获取其原始接口
+MinioClient client = ((CloudFileServiceMinioImp)CloudClient.file()).getMinio();
 ```
