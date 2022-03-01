@@ -1,4 +1,10 @@
-#### 1.6.30-m1
+#### 1.6.30
+* smart-http-server 升级到：1.1.12
+* jlhttp 增加 maxHeaderSize, maxBodySize 设置支持 **
+* solon boot 相关的公共配置，独立为 solon.boot 模块
+
+
+#### 1.6.29
 * 增加 对函数参数注解验证（之前只支持上下文参数验证）
 * 增加 配置对复杂结构类的支持
 * 增加 多级复杂泛型注入的支持
