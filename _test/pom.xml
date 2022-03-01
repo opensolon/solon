@@ -206,22 +206,18 @@
         </dependency>
 
 
-<!--        <dependency>-->
-<!--            <groupId>org.noear</groupId>-->
-<!--            <artifactId>solon.boot.jlhttp</artifactId>-->
-<!--        </dependency>-->
-
-
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.boot.smarthttp</artifactId>
+            <artifactId>solon.boot.jlhttp</artifactId>
         </dependency>
 
 
 <!--        <dependency>-->
 <!--            <groupId>org.noear</groupId>-->
-<!--            <artifactId>solon.boot.reactor-netty</artifactId>-->
+<!--            <artifactId>solon.boot.smarthttp</artifactId>-->
 <!--        </dependency>-->
+
+
 
 <!--        <dependency>-->
 <!--            <groupId>org.noear</groupId>-->
@@ -260,10 +256,19 @@
             <artifactId>solon.view.jsp</artifactId>
         </dependency>
 
+
+        <!--        <dependency>-->
+        <!--            <groupId>org.noear</groupId>-->
+        <!--            <artifactId>solon.boot.reactor-netty</artifactId>-->
+        <!--        </dependency>-->
+
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon.extend.sessionstate.jwt</artifactId>
         </dependency>
+
+
+
 <!--        <dependency>-->
 <!--            <groupId>org.noear</groupId>-->
 <!--            <artifactId>solon.extend.sessionstate.redis</artifactId>-->

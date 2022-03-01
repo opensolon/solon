@@ -2,8 +2,10 @@ package webapp.demo2_mvc;
 
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.Body;
+import org.noear.solon.annotation.Header;
 import org.noear.solon.annotation.Mapping;
 import org.noear.solon.annotation.Remoting;
+import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.ModelAndView;
 import webapp.models.UserModel;
 
@@ -36,18 +38,38 @@ public class JsonController {
 
     @Mapping("/body")
     public Integer body(@Body String body) {
-        if(Utils.isEmpty(body)){
+        if (Utils.isEmpty(body)) {
             return 0;
-        }else{
+        } else {
             return body.length();
         }
     }
 
     @Mapping("/form")
     public Integer form(String p) {
-        if(Utils.isEmpty(p)){
+        if (Utils.isEmpty(p)) {
             return 0;
-        }else{
+        } else {
+            return p.length();
+        }
+    }
+
+    @Mapping("/header")
+    public Integer header(@Header("p") String p) {
+        if (Utils.isEmpty(p)) {
+            return 0;
+        } else {
+            return p.length();
+        }
+    }
+
+    @Mapping("/cookie")
+    public Integer cookie(Context ctx) {
+        String p = ctx.cookie("p");
+
+        if (Utils.isEmpty(p)) {
+            return 0;
+        } else {
             return p.length();
         }
     }
