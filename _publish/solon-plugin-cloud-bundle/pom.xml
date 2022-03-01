@@ -33,6 +33,7 @@
         <module>../../_plugin_cloud/aws-s3-solon-plugin</module>
         <module>../../_plugin_cloud/qiniu-kodo-solon-plugin</module>
         <module>../../_plugin_cloud/minio-solon-plugin</module>
+        <module>../../_plugin_cloud/fastdfs-solon-plugin</module>
 
         <module>../../_plugin_cloud/rabbitmq-solon-plugin</module>
         <module>../../_plugin_cloud/rocketmq-solon-plugin</module>
