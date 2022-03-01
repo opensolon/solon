@@ -63,6 +63,9 @@
 
         <module>../../_plugin/log4j2-solon-plugin</module>
         <module>../../_plugin/logback-solon-plugin</module>
+
+
+        <module>../../_plugin/dynamic-tp-solon-plugin</module>
     </modules>
 
 
