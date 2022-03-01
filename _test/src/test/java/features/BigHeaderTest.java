@@ -21,10 +21,10 @@ import java.util.Map;
 public class BigHeaderTest extends HttpTestBase {
     @Test
     public void test_header() throws Exception {
-        //构发大json数据块(20mb)
+        //构发大json数据块(7k)
         ONode oNode = new ONode();
 
-        for (int i = 0; i < 500; i++) {
+        for (int i = 0; i < 4; i++) {
             ONode n1 = new ONode();
             n1.set("name", String.valueOf(i));
             n1.set("time", System.currentTimeMillis());
@@ -45,10 +45,10 @@ public class BigHeaderTest extends HttpTestBase {
 
     @Test
     public void test_cookie() throws Exception {
-        //构发大json数据块(20mb)
+        //构发大json数据块(7k)
         ONode oNode = new ONode();
 
-        for (int i = 0; i < 500; i++) {
+        for (int i = 0; i < 4; i++) {
             ONode n1 = new ONode();
             n1.set("name", String.valueOf(i));
             n1.set("time", System.currentTimeMillis());
