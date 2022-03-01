@@ -194,6 +194,14 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>solon.boot.jetty.add.servlet</artifactId>
+                <version>${solon.ver}</version>
+                <type>jar</type>
+            </dependency>
+
+
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>solon.boot.jetty.add.websocket</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
@@ -1136,6 +1144,7 @@
 
 
         <module>../_extend/solon.boot.jetty.add.jsp</module>
+        <module>../_extend/solon.boot.jetty.add.servlet</module>
         <module>../_extend/solon.boot.jetty.add.websocket</module>
         <module>../_extend/solon.boot.undertow.add.jsp</module>
 
