@@ -62,7 +62,8 @@ public final class XPluginImp implements Plugin {
         JlHttpContextHandler _handler = new JlHttpContextHandler();
 
         //maxHeaderSize def: 8k
-        //maxBodySize def: 2m (from content)
+        //maxFormContentSize def: 2m (from content)
+        //maxBodySize def: -
 
         if (System.getProperty("javax.net.ssl.keyStore") != null) { // enable SSL if configured
             _server.setServerSocketFactory(SSLServerSocketFactory.getDefault());
