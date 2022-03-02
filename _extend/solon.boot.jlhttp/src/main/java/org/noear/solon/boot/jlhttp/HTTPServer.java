@@ -124,6 +124,9 @@ import javax.net.ssl.SSLSocket;
  */
 public class HTTPServer {
 
+    protected static int MAX_BODY_SIZE = 2097152; //2m
+    protected static int MAX_HEADER_SIZE = 8192;
+
     /**
      * The SimpleDateFormat-compatible formats of dates which must be supported.
      * Note that all generated date fields must be in the RFC 1123 format only,
@@ -744,7 +747,7 @@ public class HTTPServer {
              */
             public String getString() throws IOException {
                 String charset = headers.getParams("Content-Type").get("charset");
-                return readToken(body, -1, charset == null ? "UTF-8" : charset, 8192);
+                return readToken(body, -1, charset == null ? "UTF-8" : charset, MAX_HEADER_SIZE);
             }
         }
 
@@ -1502,7 +1505,7 @@ public class HTTPServer {
                 List<String[]> bodyParams = Collections.emptyList();
                 String ct = headers.get("Content-Type");
                 if (ct != null && ct.toLowerCase(Locale.US).startsWith("application/x-www-form-urlencoded"))
-                    bodyParams = parseParamsList(readToken(body, -1, "UTF-8", 2097152)); // 2MB limit
+                    bodyParams = parseParamsList(readToken(body, -1, "UTF-8", MAX_BODY_SIZE)); // 2MB limit
 
 
                 _paramsList = new ArrayList<>(); //noear,20211218,最终都汇总
@@ -2817,7 +2820,7 @@ public class HTTPServer {
      */
     public static String readLine(InputStream in) throws IOException {
         //todo: update utf-8 by noear, 2021-11-11
-        return readToken(in, '\n', "UTF-8", 8192);
+        return readToken(in, '\n', "UTF-8", MAX_HEADER_SIZE);
     }
 
     /**

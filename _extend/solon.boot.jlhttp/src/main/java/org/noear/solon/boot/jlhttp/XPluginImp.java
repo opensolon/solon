@@ -4,6 +4,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerConstants;
+import org.noear.solon.boot.ServerProps;
 import org.noear.solon.core.*;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.util.PrintUtil;
@@ -70,6 +71,16 @@ public final class XPluginImp implements Plugin {
         }
 
         HTTPServer.VirtualHost host = _server.getVirtualHost(null);
+
+
+        if(ServerProps.request_maxHeaderSize > 0) {
+            HTTPServer.MAX_HEADER_SIZE = ServerProps.request_maxHeaderSize;
+        }
+
+        if(ServerProps.request_maxBodySize > 0) {
+            HTTPServer.MAX_BODY_SIZE = ServerProps.request_maxBodySize;
+        }
+
 
         host.setDirectoryIndex(null);
 
