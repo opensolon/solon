@@ -746,6 +746,12 @@
                 <version>${solon.ver}</version>
             </dependency>
 
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>minio7-solon-plugin</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+
 
             <dependency>
                 <groupId>org.noear</groupId>
