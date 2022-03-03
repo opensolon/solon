@@ -369,7 +369,7 @@ public class SmartHttpContext extends Context {
             OutputStream out = _response.getOutputStream();
             _response.setContentLength(_outputStream.size());
             _outputStream.writeTo(out);
-            _response.close();
+            //_response.close();
         }
     }
 

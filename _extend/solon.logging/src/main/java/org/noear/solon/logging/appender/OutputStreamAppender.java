@@ -6,7 +6,7 @@ import org.noear.solon.logging.event.Level;
 import org.noear.solon.logging.event.LogEvent;
 
 import java.io.OutputStream;
-import java.io.PrintStream;
+import java.io.PrintWriter;
 
 
 /**
@@ -16,22 +16,26 @@ import java.io.PrintStream;
  * @since 1.3
  */
 public abstract class OutputStreamAppender extends AppenderSimple {
-    protected PrintStream out = null;
+    protected PrintWriter out = null;
 
-    protected void setStream(OutputStream stream) {
+    protected void setOutput(OutputStream stream) {
         if (stream == null) {
             return;
         }
 
+        setOutput(new PrintWriter(stream, true));
+    }
+
+    protected void setOutput(PrintWriter writer) {
+        if (writer == null) {
+            return;
+        }
+
         //1.保存旧的打印器
-        PrintStream outOld = out;
+        PrintWriter outOld = out;
 
         //2.换为新的打印器
-        if (stream instanceof PrintStream) {
-            out = (PrintStream) stream;
-        } else {
-            out = new PrintStream(stream, true);
-        }
+        out = writer;
 
         //3.关注旧的打印器
         if (outOld != null) {
