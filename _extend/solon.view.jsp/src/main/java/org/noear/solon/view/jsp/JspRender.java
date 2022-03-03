@@ -49,7 +49,7 @@ public class JspRender implements Render {
         }
 
         if(XPluginImp.output_meta){
-            ctx.headerSet("solon.view","JspRender");
+            ctx.headerSet("Solon-View","JspRender");
         }
 
 

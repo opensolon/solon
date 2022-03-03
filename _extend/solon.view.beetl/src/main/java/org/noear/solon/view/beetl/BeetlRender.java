@@ -187,7 +187,7 @@ public class BeetlRender implements Render {
         }
 
         if (XPluginImp.output_meta) {
-            ctx.headerSet("solon.view", "BeetlRender");
+            ctx.headerSet("Solon-View", "BeetlRender");
         }
 
         Template template = null;

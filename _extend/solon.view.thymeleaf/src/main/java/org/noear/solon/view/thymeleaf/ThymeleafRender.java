@@ -173,7 +173,7 @@ public class ThymeleafRender implements Render {
         }
 
         if (XPluginImp.output_meta) {
-            ctx.headerSet("solon.view", "ThymeleafRender");
+            ctx.headerSet("Solon-View", "ThymeleafRender");
         }
 
         org.thymeleaf.context.Context context = new org.thymeleaf.context.Context();

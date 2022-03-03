@@ -193,7 +193,7 @@ public class VelocityRender implements Render {
         }
 
         if (XPluginImp.output_meta) {
-            ctx.headerSet("solon.view", "VelocityRender");
+            ctx.headerSet("Solon-View", "VelocityRender");
         }
 
         String view = mv.view();

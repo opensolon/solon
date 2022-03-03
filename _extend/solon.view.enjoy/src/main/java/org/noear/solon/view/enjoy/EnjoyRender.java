@@ -183,7 +183,7 @@ public class EnjoyRender implements Render {
         }
 
         if (XPluginImp.output_meta) {
-            ctx.headerSet("solon.view", "EnjoyRender");
+            ctx.headerSet("Solon-View", "EnjoyRender");
         }
 
         Template template = null;

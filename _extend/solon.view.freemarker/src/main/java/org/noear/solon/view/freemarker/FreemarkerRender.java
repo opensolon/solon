@@ -177,7 +177,7 @@ public class FreemarkerRender implements Render {
         }
 
         if (XPluginImp.output_meta) {
-            ctx.headerSet("solon.view", "FreemarkerRender");
+            ctx.headerSet("Solon-View", "FreemarkerRender");
         }
 
         PrintWriter writer = new PrintWriter(outputStream.get());
