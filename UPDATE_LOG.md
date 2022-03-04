@@ -3,6 +3,7 @@
 * jlhttp 增加 maxHeaderSize, maxBodySize 设置支持 **
 * solon boot 相关的公共配置，独立为 solon.boot 模块
 * 新增 solon.boot.jetty.add.servlet 插件
+* 插件 mybatisplus-solon-plugin 更名为：mybatis-plus-solon-plugin
 
 #### 1.6.29
 * 增加 对函数参数注解验证（之前只支持上下文参数验证）
