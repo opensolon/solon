@@ -22,29 +22,27 @@ public class DownController {
     public DownloadedFile down() {
         InputStream stream = new ByteArrayInputStream("{code:1}".getBytes(StandardCharsets.UTF_8));
 
-        DownloadedFile file = new DownloadedFile("text/json", stream, "没有耳多 test.json");
-
-        return file;
-    }
-
-    @Mapping("f12")
-    public DownloadedFile down12() {
-        return new DownloadedFile("text/json",
-                "test".getBytes(StandardCharsets.UTF_8),
-                "test.txt");
-
+        //使用 InputStream 实例化
+        return new DownloadedFile("text/json", stream, "test.json");
     }
 
     @Mapping("f2")
-    public File down2() {
-        String filePath = Utils.getResource("static/debug.htm").getFile();
+    public DownloadedFile down12() {
+        byte[] bytes = "test".getBytes(StandardCharsets.UTF_8);
 
-        File file = new File(filePath);
+        //使用 byte[] 实例化
+        return new DownloadedFile("text/json", bytes, "test.txt");
 
-        return file;
     }
 
     @Mapping("f3")
+    public File down2() {
+        String filePath = Utils.getResource("static/debug.htm").getFile();
+
+        return new File(filePath);
+    }
+
+    @Mapping("f4")
     public void down3(Context ctx) throws IOException {
         String filePath = Utils.getResource("static/debug.htm").getFile();
 
