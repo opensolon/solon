@@ -10,16 +10,6 @@ public class JlHttpContextHandler implements HTTPServer.ContextHandler {
 
     @Override
     public int serve(HTTPServer.Request request, HTTPServer.Response response) throws IOException {
-        /*
-         *
-         * jlhttp 流程
-         *
-         * 1.处理，并暂存结果
-         * 2.输出头
-         * 3.输出内容
-         *
-         * */
-
         try {
             return handleDo(request, response);
         } catch (Throwable ex) {
