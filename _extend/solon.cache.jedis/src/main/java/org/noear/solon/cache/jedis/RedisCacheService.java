@@ -10,6 +10,8 @@ import org.noear.solon.data.cache.Serializer;
 import java.util.Properties;
 
 /**
+ * Redis 封装的缓存服务
+ *
  * @author noear
  * @since 1.3
  */

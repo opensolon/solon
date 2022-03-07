@@ -14,6 +14,8 @@ import java.io.IOException;
 import java.util.Properties;
 
 /**
+ * MemCache 封装的缓存服务
+ *
  * @author noear
  * @since 1.3
  */

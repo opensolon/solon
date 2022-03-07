@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.noear</groupId>
         <artifactId>solon-parent</artifactId>
-        <version>1.6.30-m2</version>
+        <version>1.6.30-m3</version>
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
@@ -24,7 +24,7 @@
         <dependency>
             <groupId>com.hazelcast</groupId>
             <artifactId>hazelcast</artifactId>
-            <version>5.1</version>
+            <version>${hazelcast.ver}</version>
         </dependency>
     </dependencies>
 
