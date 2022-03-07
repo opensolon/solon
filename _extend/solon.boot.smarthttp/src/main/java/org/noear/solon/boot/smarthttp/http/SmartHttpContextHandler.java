@@ -15,16 +15,6 @@ public class SmartHttpContextHandler extends HttpServerHandler {
 
     @Override
     public void handle(HttpRequest request, HttpResponse response) throws IOException {
-        /*
-         *
-         * jlhttp 流程
-         *
-         * 1.处理，并暂存结果
-         * 2.输出头
-         * 3.输出内容
-         *
-         * */
-
         try {
             SmartHttpContext ctx = new SmartHttpContext(request, response);
 
