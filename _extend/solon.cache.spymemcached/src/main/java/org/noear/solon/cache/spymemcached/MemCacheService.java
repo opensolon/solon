@@ -116,7 +116,7 @@ public class MemCacheService implements CacheService {
     }
 
 
-    private String newKey(String key) {
+    protected String newKey(String key) {
         return _cacheKeyHead + "$" + Utils.md5(key);
     }
 }
