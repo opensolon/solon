@@ -37,12 +37,14 @@ public class CacheTags {
      * @param tag 缓存标签
      */
     public CacheTags remove(String tag) {
-        List<String> keys = _get(_tagKey(tag));
+        String tagKey = _tagKey(tag);
 
-        for (String cacheKey : keys)
+        List<String> cacheKeyList = _get(tagKey);
+
+        for (String cacheKey : cacheKeyList)
             _cache.remove(cacheKey);
 
-        _cache.remove(_tagKey(tag));
+        _cache.remove(tagKey);
 
         return this;
     }
@@ -55,20 +57,22 @@ public class CacheTags {
      * @param seconds 秒数
      * */
     public void update(String tag, Object newValue, int seconds) {
-        List<String> keys = _get(_tagKey(tag));
+        String tagKey = _tagKey(tag);
 
-        for (String key : keys) {
-            Object temp = _cache.get(key);
+        List<String> cacheKeyList = _get(tagKey);
+
+        for (String cacheKey : cacheKeyList) {
+            Object temp = _cache.get(cacheKey);
             if (temp != null) {
                 //如果之前有缓存，则：
                 //
                 if (newValue == null) {
                     //如果值为null，则删除
-                    _cache.remove(key);
+                    _cache.remove(cacheKey);
                 } else {
                     //类型一样才更新 //避免引起莫名的错
                     if (newValue.getClass() == temp.getClass()) {
-                        _cache.store(key, newValue, seconds);
+                        _cache.store(cacheKey, newValue, seconds);
                     }
                 }
             }
