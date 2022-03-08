@@ -20,13 +20,15 @@ public class CacheTags {
      * @param targetCacheKey 目标缓存键
      */
     public void add(String tag, String targetCacheKey) {
-        List<String> temp = $get(tagKey(tag));
-        if (temp.contains(targetCacheKey))
+        String tagKey = _tagKey(tag);
+
+        List<String> cacheKeyList = _get(tagKey);
+        if (cacheKeyList.contains(targetCacheKey))
             return;
 
-        temp.add(targetCacheKey);
+        cacheKeyList.add(targetCacheKey);
 
-        $set(tagKey(tag), temp);
+        _set(tagKey, cacheKeyList);
     }
 
     /**
@@ -35,12 +37,12 @@ public class CacheTags {
      * @param tag 缓存标签
      */
     public CacheTags remove(String tag) {
-        List<String> keys = $get(tagKey(tag));
+        List<String> keys = _get(_tagKey(tag));
 
         for (String cacheKey : keys)
             _cache.remove(cacheKey);
 
-        _cache.remove(tagKey(tag));
+        _cache.remove(_tagKey(tag));
 
         return this;
     }
@@ -53,7 +55,7 @@ public class CacheTags {
      * @param seconds 秒数
      * */
     public void update(String tag, Object newValue, int seconds) {
-        List<String> keys = $get(tagKey(tag));
+        List<String> keys = _get(_tagKey(tag));
 
         for (String key : keys) {
             Object temp = _cache.get(key);
@@ -78,7 +80,7 @@ public class CacheTags {
      *
      * @param tagKey 标签键
      * */
-    protected List<String> $get(String tagKey) {
+    protected List<String> _get(String tagKey) {
         Object temp = _cache.get(tagKey);
 
         if (temp == null)
@@ -93,14 +95,14 @@ public class CacheTags {
      * @param tagKey 标签键
      * @param value 标签键列表
      * */
-    protected void $set(String tagKey, List<String> value) {
+    protected void _set(String tagKey, List<String> value) {
         _cache.store(tagKey, value, 0);
     }
 
     /**
      * 生成标签键
      * */
-    protected String tagKey(String tag) {
+    protected String _tagKey(String tag) {
         return ("@" + tag).toUpperCase();
     }
 }
