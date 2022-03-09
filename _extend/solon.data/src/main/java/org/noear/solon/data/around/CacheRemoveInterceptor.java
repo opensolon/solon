@@ -18,7 +18,7 @@ public class CacheRemoveInterceptor implements Interceptor {
 
         CacheRemove anno = inv.method().getAnnotation(CacheRemove.class);
         CacheExecutorImp.global
-                .cacheRemove(anno, inv.method().getMethod(), inv.method().getParamWraps(), inv.args(), tmp);
+                .cacheRemove(anno, inv, tmp);
 
         return tmp;
     }

@@ -1,19 +1,12 @@
 package org.noear.solon.data.cache;
 
 import org.noear.solon.Utils;
-import org.noear.solon.core.wrap.ClassWrap;
-import org.noear.solon.core.wrap.FieldWrap;
-import org.noear.solon.core.wrap.ParamWrap;
+import org.noear.solon.core.aspect.Invocation;
 import org.noear.solon.data.annotation.Cache;
 import org.noear.solon.data.annotation.CachePut;
 import org.noear.solon.data.annotation.CacheRemove;
+import org.noear.solon.data.util.InvKeys;
 import org.noear.solon.ext.SupplierEx;
-
-import java.lang.reflect.Method;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * 缓存执行器
@@ -28,30 +21,27 @@ public class CacheExecutorImp {
      * 添加缓存
      *
      * @param anno     注解
-     * @param method   函数
-     * @param params   参数
-     * @param values   参数值
+     * @param inv      拦截动作
      * @param executor 真实执行者
      */
-    public Object cache(Cache anno, Method method, ParamWrap[] params, Object[] values, SupplierEx executor) throws Throwable {
+    public Object cache(Cache anno, Invocation inv, SupplierEx executor) throws Throwable {
         if (anno == null) {
             return executor.get();
         }
-
-        Map<String, Object> parMap = buildParamsMap(params, values);
-        Object result = null;
-
-        CacheService cs = CacheLib.cacheServiceGet(anno.service());
 
         //0.构建缓存key（如果有注解的key，优先用）
         String key = anno.key();
         if (Utils.isEmpty(key)) {
             //没有注解key，生成一个key
-            key = buildCacheKey(method, parMap);
+            key = InvKeys.buildByInv(inv);
         } else {
             //格式化key
-            key = formatTagsOrKey(key, parMap, null);
+            key = InvKeys.buildByTmlAndInv(key, inv);
         }
+
+
+        Object result = null;
+        CacheService cs = CacheLib.cacheServiceGet(anno.service());
 
         String keyLock = key + ":lock";
 
@@ -72,7 +62,7 @@ public class CacheExecutorImp {
                     cs.store(key, result, anno.seconds());
 
                     if (Utils.isNotEmpty(anno.tags())) {
-                        String tags = formatTagsOrKey(anno.tags(), parMap, result);
+                        String tags = InvKeys.buildByTmlAndInv(anno.tags(), inv, result);
                         CacheTags ct = new CacheTags(cs);
 
                         //4.添加缓存标签
@@ -91,23 +81,19 @@ public class CacheExecutorImp {
      * 清除移除
      *
      * @param anno     注解
-     * @param method   函数
-     * @param params   参数
-     * @param values   参数值
+     * @param inv      拦截动作
      * @param rstValue 结果值
      */
-    public void cacheRemove(CacheRemove anno, Method method, ParamWrap[] params, Object[] values, Object rstValue) {
+    public void cacheRemove(CacheRemove anno, Invocation inv, Object rstValue) {
         if (anno == null) {
             return;
         }
 
         CacheService cs = CacheLib.cacheServiceGet(anno.service());
-        Map<String, Object> parMap = buildParamsMap(params, values);
-
 
         //按 tags 清除缓存
         if (Utils.isNotEmpty(anno.tags())) {
-            String tags = formatTagsOrKey(anno.tags(), parMap, rstValue);
+            String tags = InvKeys.buildByTmlAndInv(anno.tags(), inv, rstValue);
             CacheTags ct = new CacheTags(cs);
 
             for (String tag : tags.split(",")) {
@@ -117,7 +103,7 @@ public class CacheExecutorImp {
 
         //按 key 清除缓存
         if (Utils.isNotEmpty(anno.keys())) {
-            String keys = formatTagsOrKey(anno.keys(), parMap, rstValue);
+            String keys = InvKeys.buildByTmlAndInv(anno.keys(), inv, rstValue);
 
             for (String key : keys.split(",")) {
                 cs.remove(key);
@@ -129,22 +115,19 @@ public class CacheExecutorImp {
      * 缓存更新
      *
      * @param anno     注解
-     * @param method   函数
-     * @param params   参数
-     * @param values   参数值
+     * @param inv      拦截动作
      * @param rstValue 结果值（将做更新值用）
      */
-    public void cachePut(CachePut anno, Method method, ParamWrap[] params, Object[] values, Object rstValue) {
+    public void cachePut(CachePut anno, Invocation inv, Object rstValue) {
         if (anno == null) {
             return;
         }
 
         CacheService cs = CacheLib.cacheServiceGet(anno.service());
-        Map<String, Object> parMap = buildParamsMap(params, values);
 
         //按 tags 更新缓存
         if (Utils.isNotEmpty(anno.tags())) {
-            String tags = formatTagsOrKey(anno.tags(), parMap, rstValue);
+            String tags = InvKeys.buildByTmlAndInv(anno.tags(), inv, rstValue);
             CacheTags ct = new CacheTags(cs);
 
             for (String tag : tags.split(",")) {
@@ -154,110 +137,8 @@ public class CacheExecutorImp {
 
         //按 key 更新缓存
         if (Utils.isNotEmpty(anno.key())) {
-            String key = formatTagsOrKey(anno.key(), parMap, rstValue);
+            String key = InvKeys.buildByTmlAndInv(anno.key(), inv, rstValue);
             cs.store(key, rstValue, anno.seconds());
         }
-    }
-
-    /**
-     * 构建参数为Map
-     */
-    protected Map<String, Object> buildParamsMap(ParamWrap[] params, Object[] values) {
-        Map<String, Object> parMap = new LinkedHashMap<>();
-
-        for (int i = 0, len = params.length; i < len; i++) {
-            parMap.put(params[i].getName(), values[i]);
-        }
-
-        return parMap;
-    }
-
-
-    /**
-     * 构建缓存Key
-     */
-    protected String buildCacheKey(Method method, Map<String, Object> parMap) {
-        StringBuilder keyB = new StringBuilder();
-
-        keyB.append(method.getDeclaringClass().getName()).append(":");
-        keyB.append(method.getName()).append(":");
-
-        parMap.forEach((k, v) -> {
-            keyB.append(k).append("_").append(v);
-        });
-
-        return keyB.toString();
-    }
-
-    protected String formatTagsOrKey(String str, Map map, Object rst) {
-        if (str.indexOf("$") < 0) {
-            return str;
-        }
-
-        String str2 = str;
-
-        //${name}
-        //${.name}
-        //${obj.name}
-        Pattern pattern = Pattern.compile("\\$\\{(\\w*\\.?\\w+)\\}");
-        Matcher m = pattern.matcher(str);
-        while (m.find()) {
-            String mark = m.group(0);
-            String name = m.group(1);
-
-            if (map.containsKey(name)) {
-                //说明从输入参数取值
-                String val = String.valueOf(map.get(name));
-
-                str2 = str2.replace(mark, val);
-            } else if (name.contains(".")) {
-                //说明要从返回结果取值
-                Object obj;
-                String fieldKey = null;
-                String fieldVal = null;
-                if (name.startsWith(".")) {
-                    obj = rst;
-                    fieldKey = name.substring(1);
-                } else {
-                    String[] cf = name.split("\\.");
-                    obj = map.get(cf[0]);
-                    fieldKey = cf[1];
-                }
-
-                if (obj != null) {
-                    Object valTmp = null;
-
-                    if (obj instanceof Map) {
-                        valTmp = ((Map) obj).get(fieldKey);
-                    } else {
-                        FieldWrap fw = ClassWrap.get(obj.getClass()).getFieldWrap(fieldKey);
-                        if (fw == null) {
-                            throw new IllegalArgumentException("Missing cache tag parameter (result field): " + name);
-                        }
-
-                        try {
-                            valTmp = fw.getValue(obj);
-                        } catch (ReflectiveOperationException e) {
-                            throw new RuntimeException(e);
-                        }
-                    }
-
-                    if (valTmp != null) {
-                        fieldVal = valTmp.toString();
-                    }
-                }
-
-                if (fieldVal == null) {
-                    fieldVal = "null";
-                }
-
-                str2 = str2.replace(mark, fieldVal);
-            } else {
-                //如果缺少参数就出异常，容易发现问题
-                throw new IllegalArgumentException("Missing cache tag parameter: " + name);
-            }
-        }
-
-        return str2;
     }
 }
