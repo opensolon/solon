@@ -13,19 +13,19 @@ import java.util.Properties;
 import java.util.logging.Logger;
 
 /**
- * 简单数据源（无连接池）
+ * 无池数据源
  *
  * @author noear
  * @since 1.6
  */
-public class SimpleDataSource implements DataSource {
+public class UnpooledDataSource implements DataSource {
     private PrintWriter logWriter;
     private String url;
     private String username;
     private String password;
     private String driverClassName;
 
-    public SimpleDataSource(Properties props) {
+    public UnpooledDataSource(Properties props) {
         this.url = props.getProperty("url");
         if (Utils.isEmpty(this.url)) {
             this.url = props.getProperty("jdbcUrl");
@@ -43,7 +43,7 @@ public class SimpleDataSource implements DataSource {
         setDriverClassName(driverClassName);
     }
 
-    public SimpleDataSource(String url, String username, String password, String driverClassName) {
+    public UnpooledDataSource(String url, String username, String password, String driverClassName) {
         if (Utils.isEmpty(url)) {
             throw new IllegalArgumentException("Invalid ds url parameter");
         }
@@ -58,20 +58,20 @@ public class SimpleDataSource implements DataSource {
     }
 
 
-    public void setUrl(String url){
+    public void setUrl(String url) {
         this.url = url;
     }
 
-    public void setUsername(String username){
+    public void setUsername(String username) {
         this.username = username;
     }
 
-    public void setPassword(String password){
+    public void setPassword(String password) {
         this.password = password;
     }
 
     public void setDriverClassName(String driverClassName) {
-        if(driverClassName == null){
+        if (driverClassName == null) {
             return;
         }
 
@@ -87,8 +87,7 @@ public class SimpleDataSource implements DataSource {
     public Connection getConnection() throws SQLException {
         if (username == null) {
             return DriverManager.getConnection(url);
-        }
-        else {
+        } else {
             return DriverManager.getConnection(url, username, password);
         }
     }
@@ -137,7 +136,7 @@ public class SimpleDataSource implements DataSource {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        SimpleDataSource that = (SimpleDataSource) o;
+        UnpooledDataSource that = (UnpooledDataSource) o;
         return Objects.equals(url, that.url) &&
                 Objects.equals(username, that.username) &&
                 Objects.equals(password, that.password);
