@@ -13,19 +13,19 @@ import java.util.Properties;
 import java.util.logging.Logger;
 
 /**
- * 数据源
+ * 简单数据源（无连接池）
  *
  * @author noear
  * @since 1.6
  */
-public class SolonDataSource implements DataSource {
-    protected PrintWriter logWriter;
-    protected String url;
-    protected String username;
-    protected String password;
-    protected String driverClassName;
+public class SimpleDataSource implements DataSource {
+    private PrintWriter logWriter;
+    private String url;
+    private String username;
+    private String password;
+    private String driverClassName;
 
-    public SolonDataSource(Properties props) {
+    public SimpleDataSource(Properties props) {
         this.url = props.getProperty("url");
         if (Utils.isEmpty(this.url)) {
             this.url = props.getProperty("jdbcUrl");
@@ -43,7 +43,7 @@ public class SolonDataSource implements DataSource {
         setDriverClassName(driverClassName);
     }
 
-    public SolonDataSource(String url, String username, String password, String driverClassName) {
+    public SimpleDataSource(String url, String username, String password, String driverClassName) {
         if (Utils.isEmpty(url)) {
             throw new IllegalArgumentException("Invalid ds url parameter");
         }
@@ -137,7 +137,7 @@ public class SolonDataSource implements DataSource {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        SolonDataSource that = (SolonDataSource) o;
+        SimpleDataSource that = (SimpleDataSource) o;
         return Objects.equals(url, that.url) &&
                 Objects.equals(username, that.username) &&
                 Objects.equals(password, that.password);
