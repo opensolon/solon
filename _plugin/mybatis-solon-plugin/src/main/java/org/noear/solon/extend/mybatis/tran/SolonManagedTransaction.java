@@ -20,7 +20,11 @@ public class SolonManagedTransaction implements Transaction {
 
     @Override
     public Connection getConnection() throws SQLException {
-        return connection = TranUtils.getConnection(dataSource);
+        if (connection == null) {
+            connection = TranUtils.getConnection(dataSource);
+        }
+
+        return connection;
     }
 
     @Override
