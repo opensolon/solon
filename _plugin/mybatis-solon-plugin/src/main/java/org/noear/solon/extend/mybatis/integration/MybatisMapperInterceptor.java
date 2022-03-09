@@ -2,7 +2,6 @@ package org.noear.solon.extend.mybatis.integration;
 
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
-import org.noear.solon.data.tran.TranUtils;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -24,17 +23,9 @@ public class MybatisMapperInterceptor implements InvocationHandler {
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        boolean autoCommit = (TranUtils.inTrans() == false);
-        SqlSession session = null;
-        try {
-            session = factory.openSession(autoCommit);
-
+        try (SqlSession session = factory.openSession()) {
             Object mapper = session.getMapper(mapperClz);
             return method.invoke(mapper, args);
-        } finally {
-            if (session != null && autoCommit) {
-                session.close();
-            }
         }
     }
 }
