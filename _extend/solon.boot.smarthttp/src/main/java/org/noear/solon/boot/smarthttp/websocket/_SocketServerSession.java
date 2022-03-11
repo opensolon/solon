@@ -96,8 +96,10 @@ public class _SocketServerSession extends SessionBase {
         if (Solon.global().enableWebSocketD()) {
             sendBuffer(ProtocolManager.encode(Message.wrap(message)));
         } else {
-            response.sendTextMessage(message);
-            response.flush();
+            synchronized (response) {
+                response.sendTextMessage(message);
+                response.flush();
+            }
         }
     }
 
@@ -123,17 +125,21 @@ public class _SocketServerSession extends SessionBase {
     }
 
     private void sendBytes(byte[] message) {
-        response.sendBinaryMessage(message);
-        response.flush();
+        synchronized (response) {
+            response.sendBinaryMessage(message);
+            response.flush();
+        }
     }
 
     private boolean isOpen = true;
 
     @Override
     public void close() throws IOException {
-        isOpen = false;
-        response.close();
-        sessions.remove(request);
+        synchronized (response) {
+            isOpen = false;
+            response.close();
+            sessions.remove(request);
+        }
     }
 
     protected void onClose() {
