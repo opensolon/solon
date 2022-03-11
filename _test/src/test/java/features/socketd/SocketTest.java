@@ -16,7 +16,7 @@ import java.util.List;
 @SolonTest(webapp.TestApp.class)
 public class SocketTest {
     @Test
-    public void test() throws Throwable {
+    public void test_compatible() throws Throwable {
         //
         //这是短链接模式
         //
