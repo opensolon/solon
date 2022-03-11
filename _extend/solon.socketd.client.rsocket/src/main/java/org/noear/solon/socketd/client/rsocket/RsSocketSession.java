@@ -44,7 +44,8 @@ public class RsSocketSession extends SessionBase {
         sessions.remove(real);
     }
 
-    RSocket real;
+    private final String _sessionId = Utils.guid();
+    private RSocket real;
 
     public RsSocketSession(RSocket real) {
         this.real = real;
@@ -76,7 +77,6 @@ public class RsSocketSession extends SessionBase {
         return real;
     }
 
-    private String _sessionId = Utils.guid();
     @Override
     public String sessionId() {
         return _sessionId;
@@ -151,16 +151,16 @@ public class RsSocketSession extends SessionBase {
 
                 send0(message);
             }
-        } catch (RuntimeException ex) {
-            Throwable ex2 = Utils.throwableUnwrap(ex);
-            if (ex2 instanceof ConnectException) {
+        } catch (RuntimeException e) {
+            Throwable e2 = Utils.throwableUnwrap(e);
+            if (e2 instanceof ConnectException) {
                 if (autoReconnect) {
                     real = null;
                 }
             }
-            throw ex;
-        } catch (Exception ex) {
-            throw new RuntimeException(ex);
+            throw e;
+        } catch (Throwable e) {
+            throw new RuntimeException(e);
         }
     }
 

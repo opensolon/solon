@@ -39,7 +39,10 @@ public class AioSocketSession extends SessionBase {
         sessions.remove(real);
     }
 
-    AioSession real;
+
+
+    private final String _sessionId = Utils.guid();
+    private AioSession real;
 
     public AioSocketSession(AioSession real) {
         this.real = real;
@@ -81,8 +84,6 @@ public class AioSocketSession extends SessionBase {
     public Object real() {
         return real;
     }
-
-    private String _sessionId = Utils.guid();
 
     @Override
     public String sessionId() {
@@ -154,14 +155,14 @@ public class AioSocketSession extends SessionBase {
                 //
                 send0(message);
             }
-        } catch (ClosedChannelException ex) {
+        } catch (ClosedChannelException e) {
             if (autoReconnect) {
                 real = null;
             } else {
-                throw new RuntimeException(ex);
+                throw new RuntimeException(e);
             }
-        } catch (Exception ex) {
-            throw new RuntimeException(ex);
+        } catch (Throwable e) {
+            throw new RuntimeException(e);
         }
     }
 

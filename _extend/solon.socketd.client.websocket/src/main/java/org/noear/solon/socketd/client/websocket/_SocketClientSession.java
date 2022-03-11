@@ -23,7 +23,10 @@ import java.util.*;
 
 public class _SocketClientSession extends SessionBase {
 
-    WebSocket real;
+
+
+    private final String _sessionId = Utils.guid();
+    public WebSocket real;
 
     final Connector<WebSocket> connector;
     final boolean autoReconnect;
@@ -56,8 +59,6 @@ public class _SocketClientSession extends SessionBase {
     public Object real() {
         return real;
     }
-
-    private String _sessionId = Utils.guid();
 
     @Override
     public String sessionId() {
@@ -164,14 +165,16 @@ public class _SocketClientSession extends SessionBase {
                 //
                 send0(message);
             }
-        } catch (SocketException ex) {
+        } catch (SocketException e) {
             if (autoReconnect) {
                 real = null;
             }
 
-            throw new RuntimeException(ex);
-        } catch (Exception ex) {
-            throw new RuntimeException(ex);
+            throw new RuntimeException(e);
+        } catch (RuntimeException e) {
+            throw e;
+        } catch (Throwable e) {
+            throw new RuntimeException(e);
         }
     }
 

@@ -58,7 +58,8 @@ public class BioSocketSession extends SessionBase {
     }
 
 
-    Socket real;
+    private final String _sessionId = Utils.guid();
+    private Socket real;
 
     public BioSocketSession(Socket real) {
         this.real = real;
@@ -90,8 +91,6 @@ public class BioSocketSession extends SessionBase {
     public Object real() {
         return real;
     }
-
-    private String _sessionId = Utils.guid();
 
     @Override
     public String sessionId() {
@@ -125,9 +124,7 @@ public class BioSocketSession extends SessionBase {
     public void sendAsync(String message) {
         Utils.pools.submit(() -> {
             try {
-                synchronized (this) {
-                    send(message);
-                }
+                send(message);
             } catch (Throwable e) {
                 EventBus.push(e);
             }
@@ -138,9 +135,7 @@ public class BioSocketSession extends SessionBase {
     public void sendAsync(Message message) {
         Utils.pools.submit(() -> {
             try {
-                synchronized (this) {
-                    send(message);
-                }
+                send(message);
             } catch (Throwable e) {
                 EventBus.push(e);
             }

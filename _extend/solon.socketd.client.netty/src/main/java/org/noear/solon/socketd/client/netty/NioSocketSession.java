@@ -37,7 +37,9 @@ public class NioSocketSession extends SessionBase {
         sessions.remove(real);
     }
 
-    Channel real;
+
+    private final String _sessionId = Utils.guid();
+    private Channel real;
 
     public NioSocketSession(Channel real) {
         this.real = real;
@@ -79,8 +81,6 @@ public class NioSocketSession extends SessionBase {
     public Object real() {
         return real;
     }
-
-    private String _sessionId = Utils.guid();
 
     @Override
     public String sessionId() {
@@ -155,16 +155,16 @@ public class NioSocketSession extends SessionBase {
 
                 send0(message);
             }
-        } catch (RuntimeException ex) {
-            Throwable ex2 = Utils.throwableUnwrap(ex);
-            if (ex2 instanceof ConnectException) {
+        } catch (RuntimeException e) {
+            Throwable e2 = Utils.throwableUnwrap(e);
+            if (e2 instanceof ConnectException) {
                 if (autoReconnect) {
                     real = null;
                 }
             }
-            throw ex;
-        } catch (Exception ex) {
-            throw new RuntimeException(ex);
+            throw e;
+        } catch (Throwable e) {
+            throw new RuntimeException(e);
         }
     }
 
