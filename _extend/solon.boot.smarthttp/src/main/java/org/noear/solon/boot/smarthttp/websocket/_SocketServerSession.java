@@ -18,7 +18,7 @@ import java.nio.ByteBuffer;
 import java.util.*;
 
 public class _SocketServerSession extends SessionBase {
-    public static final Map<WebSocketRequest, _SocketServerSession> sessions = new HashMap<>();
+    protected static final Map<WebSocketRequest, _SocketServerSession> sessions = new HashMap<>();
 
     public static _SocketServerSession get(WebSocketRequest req, WebSocketResponse res) {
         _SocketServerSession tmp = sessions.get(req);
@@ -174,7 +174,7 @@ public class _SocketServerSession extends SessionBase {
 
     @Override
     public Collection<Session> getOpenSessions() {
-        return new ArrayList<>(sessions.values());
+        return Collections.unmodifiableCollection(sessions.values());
     }
 
 

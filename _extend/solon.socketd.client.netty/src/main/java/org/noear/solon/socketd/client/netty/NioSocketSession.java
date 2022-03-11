@@ -15,7 +15,7 @@ import java.net.URI;
 import java.util.*;
 
 public class NioSocketSession extends SessionBase {
-    public static final Map<Channel, Session> sessions = new HashMap<>();
+    protected static final Map<Channel, Session> sessions = new HashMap<>();
 
     public static Session get(Channel real) {
         Session tmp = sessions.get(real);
@@ -210,7 +210,7 @@ public class NioSocketSession extends SessionBase {
 
     @Override
     public Collection<Session> getOpenSessions() {
-        return new ArrayList<>(sessions.values());
+        return Collections.unmodifiableCollection(sessions.values());
     }
 
     @Override

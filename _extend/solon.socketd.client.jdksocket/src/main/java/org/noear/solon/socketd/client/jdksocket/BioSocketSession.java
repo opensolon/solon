@@ -35,7 +35,7 @@ import java.util.*;
  * </code></pre>
  * */
 public class BioSocketSession extends SessionBase {
-    public static final Map<Socket, Session> sessions = new HashMap<>();
+    protected static final Map<Socket, Session> sessions = new HashMap<>();
 
     public static Session get(Socket real) {
         Session tmp = sessions.get(real);
