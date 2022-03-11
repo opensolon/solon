@@ -1,4 +1,7 @@
-#### 1.6.31-m1
+#### 1.6.31
+* 修复 solon.boot.jetty 的 websocket 在多线程发时，会出错的问题
+
+#### 1.6.30
 * smart-http-server 升级到：1.1.12
 * jlhttp 增加 maxHeaderSize, maxBodySize 设置支持 **
 * solon boot 相关的公共配置，独立为 solon.boot 模块
