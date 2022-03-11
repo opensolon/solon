@@ -2,6 +2,7 @@ package org.noear.solon.boot.socketd.websocket;
 
 import org.java_websocket.WebSocket;
 import org.noear.solon.Utils;
+import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
@@ -83,27 +84,44 @@ public class _SocketServerSession extends SessionBase {
     }
 
     @Override
+    public void sendAsync(String message) {
+        Utils.pools.submit(() -> {
+            try {
+                send(message);
+            } catch (Throwable e) {
+                EventBus.push(e);
+            }
+        });
+    }
+
+    @Override
+    public void sendAsync(Message message) {
+        Utils.pools.submit(() -> {
+            try {
+                send(message);
+            } catch (Throwable e) {
+                EventBus.push(e);
+            }
+        });
+    }
+
+    @Override
     public void send(String message) {
-        sendBuffer(ProtocolManager.encode(Message.wrap(message)));
+        synchronized (real) {
+            ByteBuffer buf = ProtocolManager.encode(Message.wrap(message));
+            real.send(buf);
+        }
     }
 
     @Override
     public void send(Message message) {
         super.send(message);
 
-        sendBuffer(ProtocolManager.encode(message));
-    }
-
-    private void sendBuffer(ByteBuffer buffer) {
-        if (buffer != null) {
-            sendBytes(buffer.array());
+        synchronized (real) {
+            ByteBuffer buf = ProtocolManager.encode(message);
+            real.send(buf);
         }
     }
-
-    private void sendBytes(byte[] bytes) {
-        real.send(bytes);
-    }
-
 
     @Override
     public void close() throws IOException {

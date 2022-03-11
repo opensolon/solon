@@ -3,6 +3,7 @@ package org.noear.solon.socketd.client.websocket;
 import org.java_websocket.WebSocket;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
+import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
@@ -85,6 +86,28 @@ public class _SocketClientSession extends SessionBase {
     }
 
     @Override
+    public void sendAsync(String message) {
+        Utils.pools.submit(() -> {
+            try {
+                send(message);
+            } catch (Throwable e) {
+                EventBus.push(e);
+            }
+        });
+    }
+
+    @Override
+    public void sendAsync(Message message) {
+        Utils.pools.submit(() -> {
+            try {
+                send(message);
+            } catch (Throwable e) {
+                EventBus.push(e);
+            }
+        });
+    }
+
+    @Override
     public void send(String message) {
         if (isWebSocketD()) {
             sendD(Message.wrap(message.getBytes(StandardCharsets.UTF_8)));
@@ -95,6 +118,8 @@ public class _SocketClientSession extends SessionBase {
 
     @Override
     public void send(Message message) {
+        super.send(message);
+
         if (isWebSocketD()) {
             sendD(message);
         } else {

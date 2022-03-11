@@ -2,6 +2,7 @@ package org.noear.solon.socketd.client.netty;
 
 import io.netty.channel.Channel;
 import org.noear.solon.Utils;
+import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
@@ -107,6 +108,28 @@ public class NioSocketSession extends SessionBase {
         } else {
             return connector.uri().getPath();
         }
+    }
+
+    @Override
+    public void sendAsync(String message) {
+        Utils.pools.submit(() -> {
+            try {
+                send(message);
+            } catch (Throwable e) {
+                EventBus.push(e);
+            }
+        });
+    }
+
+    @Override
+    public void sendAsync(Message message) {
+        Utils.pools.submit(() -> {
+            try {
+                send(message);
+            } catch (Throwable e) {
+                EventBus.push(e);
+            }
+        });
     }
 
     @Override
