@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.noear</groupId>
         <artifactId>solon-parent</artifactId>
-        <version>1.6.30</version>
+        <version>1.6.31-m1</version>
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
@@ -29,7 +29,6 @@
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>apache-jsp</artifactId>
-            <type>jar</type>
         </dependency>
 
         <dependency>

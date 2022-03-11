@@ -1,4 +1,4 @@
-#### 1.6.30
+#### 1.6.31-m1
 * smart-http-server 升级到：1.1.12
 * jlhttp 增加 maxHeaderSize, maxBodySize 设置支持 **
 * solon boot 相关的公共配置，独立为 solon.boot 模块
