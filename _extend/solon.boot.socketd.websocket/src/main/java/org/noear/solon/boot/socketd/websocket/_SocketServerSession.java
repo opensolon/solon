@@ -38,7 +38,8 @@ public class _SocketServerSession extends SessionBase {
     }
 
 
-    WebSocket real;
+    private final WebSocket real;
+    private final String _sessionId = Utils.guid();
 
     public _SocketServerSession(WebSocket real) {
         this.real = real;
@@ -48,8 +49,6 @@ public class _SocketServerSession extends SessionBase {
     public Object real() {
         return real;
     }
-
-    private String _sessionId = Utils.guid();
 
     @Override
     public String sessionId() {

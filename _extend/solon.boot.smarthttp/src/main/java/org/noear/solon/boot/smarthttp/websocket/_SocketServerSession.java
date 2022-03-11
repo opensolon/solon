@@ -45,8 +45,9 @@ public class _SocketServerSession extends SessionBase {
     }
 
 
-    WebSocketRequest request;
-    WebSocketResponse real;
+    private final WebSocketRequest request;
+    private final WebSocketResponse real;
+    private String _sessionId = Utils.guid();
 
     public _SocketServerSession(WebSocketRequest request, WebSocketResponse response) {
         this.request = request;
@@ -58,7 +59,6 @@ public class _SocketServerSession extends SessionBase {
         return request;
     }
 
-    private String _sessionId = Utils.guid();
 
     @Override
     public String sessionId() {
@@ -96,9 +96,7 @@ public class _SocketServerSession extends SessionBase {
     public void sendAsync(String message) {
         Utils.pools.submit(() -> {
             try {
-                synchronized (this) {
-                    send(message);
-                }
+                send(message);
             } catch (Throwable e) {
                 EventBus.push(e);
             }

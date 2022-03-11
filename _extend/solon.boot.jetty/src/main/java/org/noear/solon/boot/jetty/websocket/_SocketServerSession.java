@@ -37,7 +37,8 @@ public class _SocketServerSession extends SessionBase {
     }
 
 
-    org.eclipse.jetty.websocket.api.Session real;
+    private final org.eclipse.jetty.websocket.api.Session real;
+    private final String _sessionId = Utils.guid();
 
     public _SocketServerSession(org.eclipse.jetty.websocket.api.Session real) {
         this.real = real;
@@ -48,7 +49,6 @@ public class _SocketServerSession extends SessionBase {
         return real;
     }
 
-    private String _sessionId = Utils.guid();
 
     @Override
     public String sessionId() {
