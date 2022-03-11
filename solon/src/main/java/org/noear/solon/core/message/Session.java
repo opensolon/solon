@@ -92,12 +92,23 @@ public interface Session {
     /**
      * 发送消息
      */
+    void sendAsync(String message, Callback callback);
+
+    /**
+     * 发送消息
+     */
+    void sendAsync(Message message, Callback callback);
+
+    /**
+     * 发送消息
+     */
     void send(String message);
 
     /**
      * 发送消息
      */
     void send(Message message);
+
 
     /**
      * 发送消息并等待响应

@@ -3,6 +3,7 @@ package org.noear.solon.boot.jetty.websocket;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.MethodType;
+import org.noear.solon.core.message.Callback;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.socketd.ProtocolManager;
@@ -16,6 +17,7 @@ import java.util.*;
 
 public class _SocketServerSession extends SessionBase {
     public static Map<org.eclipse.jetty.websocket.api.Session, Session> sessions = new HashMap<>();
+
     public static Session get(org.eclipse.jetty.websocket.api.Session real) {
         Session tmp = sessions.get(real);
         if (tmp == null) {
@@ -31,14 +33,14 @@ public class _SocketServerSession extends SessionBase {
         return tmp;
     }
 
-    public static void remove(org.eclipse.jetty.websocket.api.Session real){
+    public static void remove(org.eclipse.jetty.websocket.api.Session real) {
         sessions.remove(real);
     }
 
 
-
     org.eclipse.jetty.websocket.api.Session real;
-    public _SocketServerSession(org.eclipse.jetty.websocket.api.Session real){
+
+    public _SocketServerSession(org.eclipse.jetty.websocket.api.Session real) {
         this.real = real;
     }
 
@@ -48,6 +50,7 @@ public class _SocketServerSession extends SessionBase {
     }
 
     private String _sessionId = Utils.guid();
+
     @Override
     public String sessionId() {
         return _sessionId;
@@ -59,6 +62,7 @@ public class _SocketServerSession extends SessionBase {
     }
 
     private URI _uri;
+
     @Override
     public URI uri() {
         if (_uri == null) {
@@ -69,9 +73,10 @@ public class _SocketServerSession extends SessionBase {
     }
 
     private String _path;
+
     @Override
     public String path() {
-        if(_path == null) {
+        if (_path == null) {
             _path = uri().getPath();
         }
 
@@ -79,12 +84,48 @@ public class _SocketServerSession extends SessionBase {
     }
 
     @Override
+    public void sendAsync(String message, Callback callback) {
+        try {
+            if (Solon.global().enableWebSocketD()) {
+                ByteBuffer buf = ProtocolManager.encode(Message.wrap(message));
+                real.getRemote().sendBytes(buf, new _CallbackHolder(callback));
+            } else {
+                real.getRemote().sendString(message, new _CallbackHolder(callback));
+            }
+        } catch (Throwable ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    @Override
+    public void sendAsync(Message message, Callback callback) {
+        super.send(message);
+
+        try {
+            if (Solon.global().enableWebSocketD()) {
+                ByteBuffer buf = ProtocolManager.encode(message);
+                real.getRemote().sendBytes(buf, new _CallbackHolder(callback));
+            } else {
+                if (message.isString()) {
+                    real.getRemote().sendString(message.bodyAsString(), new _CallbackHolder(callback));
+                } else {
+                    ByteBuffer buf = ByteBuffer.wrap(message.body());
+                    real.getRemote().sendBytes(buf, new _CallbackHolder(callback));
+                }
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
     public void send(String message) {
         try {
             if (Solon.global().enableWebSocketD()) {
-                sendBytes(ProtocolManager.encode(Message.wrap(message)));
+                ByteBuffer buf = ProtocolManager.encode(Message.wrap(message));
+                real.getRemote().sendBytes(buf);
             } else {
-                real.getRemote().sendString(message,null);
+                real.getRemote().sendString(message);
             }
         } catch (Throwable ex) {
             throw new RuntimeException(ex);
@@ -95,29 +136,26 @@ public class _SocketServerSession extends SessionBase {
     public void send(Message message) {
         super.send(message);
 
-        if (Solon.global().enableWebSocketD()) {
-            sendBytes(ProtocolManager.encode(message));
-        } else {
-            if (message.isString()) {
-                send(message.bodyAsString());
-            } else {
-                sendBytes(ByteBuffer.wrap(message.body()));
-            }
-        }
-    }
-
-    private void sendBytes(ByteBuffer buf) {
         try {
-            if (buf != null) {
-                real.getRemote().sendBytes(buf, null);
+            if (Solon.global().enableWebSocketD()) {
+                ByteBuffer buf = ProtocolManager.encode(message);
+                real.getRemote().sendBytes(buf);
+            } else {
+                if (message.isString()) {
+                    real.getRemote().sendString(message.bodyAsString());
+                } else {
+                    ByteBuffer buf = ByteBuffer.wrap(message.body());
+                    real.getRemote().sendBytes(buf);
+                }
             }
-        } catch (Throwable ex) {
-            throw new RuntimeException(ex);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 
 
     private boolean _open = true;
+
     @Override
     public void close() throws IOException {
         _open = false; //jetty 的 close 不及时
@@ -136,12 +174,12 @@ public class _SocketServerSession extends SessionBase {
     }
 
     @Override
-    public InetSocketAddress getRemoteAddress(){
+    public InetSocketAddress getRemoteAddress() {
         return real.getRemoteAddress();
     }
 
     @Override
-    public InetSocketAddress getLocalAddress(){
+    public InetSocketAddress getLocalAddress() {
         return real.getLocalAddress();
     }
 
@@ -154,7 +192,7 @@ public class _SocketServerSession extends SessionBase {
 
     @Override
     public <T> T getAttachment() {
-        return (T)attachment;
+        return (T) attachment;
     }
 
     @Override
