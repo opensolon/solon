@@ -84,7 +84,7 @@ public class _SocketServerSession extends SessionBase {
             if (Solon.global().enableWebSocketD()) {
                 sendBytes(ProtocolManager.encode(Message.wrap(message)));
             } else {
-                real.getRemote().sendString(message);
+                real.getRemote().sendString(message,null);
             }
         } catch (Throwable ex) {
             throw new RuntimeException(ex);
@@ -109,7 +109,7 @@ public class _SocketServerSession extends SessionBase {
     private void sendBytes(ByteBuffer buf) {
         try {
             if (buf != null) {
-                real.getRemote().sendBytes(buf);
+                real.getRemote().sendBytes(buf, null);
             }
         } catch (Throwable ex) {
             throw new RuntimeException(ex);
