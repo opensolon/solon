@@ -109,16 +109,11 @@ public class NioSocketSession extends SessionBase {
         }
     }
 
-
     @Override
     public void send(String message) {
         send(Message.wrap(message));
     }
 
-//    @Override
-//    public void send(byte[] message) {
-//        send(MessageUtils.wrap(message));
-//    }
 
     @Override
     public void send(Message message) {
@@ -161,8 +156,10 @@ public class NioSocketSession extends SessionBase {
 
     @Override
     public void close() throws IOException {
-        real.close();
-        sessions.remove(real);
+        synchronized (real) {
+            real.close();
+            sessions.remove(real);
+        }
     }
 
     @Override

@@ -21,12 +21,12 @@ import java.util.*;
  * <pre><code>
  * public void test() throws Throwable{
  *     String root = "tcp://localhost:" + (20000 + Solon.global().port());
- *     XMessage message =  XMessage.wrap(root + "/demog/中文/1", "Hello 世界!".getBytes());
+ *     Message message =  Message.wrap(root + "/demog/中文/1", "Hello 世界!".getBytes());
  *
  *     Socket socket = new Socket("localhost", Solon.global().port() + 20000);
  *
- *     XSession session = _SocketSession.get(socket);
- *     XMessage rst = session.sendAndResponse(message);
+ *     Session session = _SocketSession.get(socket);
+ *     Message rst = session.sendAndResponse(message);
  *
  *     System.out.println(rst.toString());
  *
@@ -120,15 +120,12 @@ public class BioSocketSession extends SessionBase {
         }
     }
 
+
     @Override
     public void send(String message) {
         send(Message.wrap(message));
     }
 
-//    @Override
-//    public void send(byte[] message) {
-//        send(MessageUtils.wrap(message));
-//    }
 
     public void send(Message message) {
         try {

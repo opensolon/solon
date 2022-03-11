@@ -84,10 +84,13 @@ public class _SocketServerSession extends SessionBase {
 
     @Override
     public void send(String message) {
-        if (Solon.global().enableWebSocketD()) {
-            sendBuffer(ProtocolManager.encode(Message.wrap(message)));
-        } else {
-            real.send(message);
+        synchronized (real) {
+            if (Solon.global().enableWebSocketD()) {
+                ByteBuffer buf = ProtocolManager.encode(Message.wrap(message));
+                real.send(buf.array());
+            } else {
+                real.send(message);
+            }
         }
     }
 
@@ -95,32 +98,28 @@ public class _SocketServerSession extends SessionBase {
     public void send(Message message) {
         super.send(message);
 
-        if (Solon.global().enableWebSocketD()) {
-            sendBuffer(ProtocolManager.encode(message));
-        } else {
-            if (message.isString()) {
-                send(message.bodyAsString());
+        synchronized (real) {
+            if (Solon.global().enableWebSocketD()) {
+                ByteBuffer buf = ProtocolManager.encode(message);
+                real.send(buf.array());
             } else {
-                sendBytes(message.body());
+                if (message.isString()) {
+                    real.send(message.bodyAsString());
+                } else {
+                    byte[] bytes = message.body();
+                    real.send(bytes);
+                }
             }
         }
-    }
-
-    private void sendBuffer(ByteBuffer buffer) {
-        if (buffer != null) {
-            sendBytes(buffer.array());
-        }
-    }
-
-    private void sendBytes(byte[] bytes) {
-        real.send(bytes);
     }
 
 
     @Override
     public void close() throws IOException {
-        real.close();
-        sessions.remove(real);
+        synchronized (real) {
+            real.close();
+            sessions.remove(real);
+        }
     }
 
     @Override

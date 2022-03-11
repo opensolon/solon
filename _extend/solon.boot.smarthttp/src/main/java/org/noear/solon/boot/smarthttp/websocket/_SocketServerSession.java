@@ -91,14 +91,15 @@ public class _SocketServerSession extends SessionBase {
         return _path;
     }
 
+
     @Override
     public void send(String message) {
-        if (Solon.global().enableWebSocketD()) {
-            sendBuffer(ProtocolManager.encode(Message.wrap(message)));
-        } else {
-            synchronized (response) {
+        synchronized (response) {
+            if (Solon.global().enableWebSocketD()) {
+                ByteBuffer buf = ProtocolManager.encode(Message.wrap(message));
+                response.sendBinaryMessage(buf.array());
+            } else {
                 response.sendTextMessage(message);
-                response.flush();
             }
         }
     }
@@ -107,27 +108,18 @@ public class _SocketServerSession extends SessionBase {
     public void send(Message message) {
         super.send(message);
 
-        if (Solon.global().enableWebSocketD()) {
-            sendBuffer(ProtocolManager.encode(message));
-        } else {
-            if (message.isString()) {
-                send(message.bodyAsString());
-            } else {
-                sendBytes(message.body());
-            }
-        }
-    }
-
-    private void sendBuffer(ByteBuffer buffer) {
-        if (buffer != null) {
-            sendBytes(buffer.array());
-        }
-    }
-
-    private void sendBytes(byte[] message) {
         synchronized (response) {
-            response.sendBinaryMessage(message);
-            response.flush();
+            if (Solon.global().enableWebSocketD()) {
+                ByteBuffer buf = ProtocolManager.encode(message);
+                response.sendBinaryMessage(buf.array());
+            } else {
+                if (message.isString()) {
+                    response.sendTextMessage(message.bodyAsString());
+                } else {
+                    byte[] bytes = message.body();
+                    response.sendBinaryMessage(bytes);
+                }
+            }
         }
     }
 

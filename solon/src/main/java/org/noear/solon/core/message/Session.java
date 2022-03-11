@@ -88,17 +88,6 @@ public interface Session {
      */
     void flagSet(int flag);
 
-
-    /**
-     * 发送消息
-     */
-    void sendAsync(String message, Callback callback);
-
-    /**
-     * 发送消息
-     */
-    void sendAsync(Message message, Callback callback);
-
     /**
      * 发送消息
      */

@@ -4,6 +4,7 @@ import io.rsocket.RSocket;
 import io.rsocket.util.DefaultPayload;
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.MethodType;
+import org.noear.solon.core.message.Callback;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.socketd.Connector;
@@ -104,16 +105,22 @@ public class RsSocketSession extends SessionBase {
         }
     }
 
+    @Override
+    public void sendAsync(String message, Callback callback) {
+
+    }
+
+    @Override
+    public void sendAsync(Message message, Callback callback) {
+
+    }
+
 
     @Override
     public void send(String message) {
         send(Message.wrap(message));
     }
 
-//    @Override
-//    public void send(byte[] message) {
-//        send(MessageUtils.wrap(message));
-//    }
 
     @Override
     public void send(Message message) {

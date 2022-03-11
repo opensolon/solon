@@ -3,7 +3,6 @@ package org.noear.solon.boot.jetty.websocket;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.MethodType;
-import org.noear.solon.core.message.Callback;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.socketd.ProtocolManager;
@@ -84,51 +83,12 @@ public class _SocketServerSession extends SessionBase {
     }
 
     @Override
-    public void sendAsync(String message, Callback callback) {
-        try {
-            if (Solon.global().enableWebSocketD()) {
-                ByteBuffer buf = ProtocolManager.encode(Message.wrap(message));
-                real.getRemote().sendBytes(buf, new _CallbackHolder(callback));
-            } else {
-                real.getRemote().sendString(message, new _CallbackHolder(callback));
-            }
-        } catch (Throwable ex) {
-            throw new RuntimeException(ex);
-        }
-    }
-
-    @Override
-    public void sendAsync(Message message, Callback callback) {
-        super.send(message);
-
-        try {
-            if (Solon.global().enableWebSocketD()) {
-                ByteBuffer buf = ProtocolManager.encode(message);
-                real.getRemote().sendBytes(buf, new _CallbackHolder(callback));
-            } else {
-                if (message.isString()) {
-                    real.getRemote().sendString(message.bodyAsString(), new _CallbackHolder(callback));
-                } else {
-                    ByteBuffer buf = ByteBuffer.wrap(message.body());
-                    real.getRemote().sendBytes(buf, new _CallbackHolder(callback));
-                }
-            }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
     public void send(String message) {
-        try {
-            if (Solon.global().enableWebSocketD()) {
-                ByteBuffer buf = ProtocolManager.encode(Message.wrap(message));
-                real.getRemote().sendBytes(buf);
-            } else {
-                real.getRemote().sendString(message);
-            }
-        } catch (Throwable ex) {
-            throw new RuntimeException(ex);
+        if (Solon.global().enableWebSocketD()) {
+            ByteBuffer buf = ProtocolManager.encode(Message.wrap(message));
+            real.getRemote().sendBytes(buf, _CallbackImpl.instance);
+        } else {
+            real.getRemote().sendString(message, _CallbackImpl.instance);
         }
     }
 
@@ -136,20 +96,16 @@ public class _SocketServerSession extends SessionBase {
     public void send(Message message) {
         super.send(message);
 
-        try {
-            if (Solon.global().enableWebSocketD()) {
-                ByteBuffer buf = ProtocolManager.encode(message);
-                real.getRemote().sendBytes(buf);
+        if (Solon.global().enableWebSocketD()) {
+            ByteBuffer buf = ProtocolManager.encode(message);
+            real.getRemote().sendBytes(buf, _CallbackImpl.instance);
+        } else {
+            if (message.isString()) {
+                real.getRemote().sendString(message.bodyAsString(), _CallbackImpl.instance);
             } else {
-                if (message.isString()) {
-                    real.getRemote().sendString(message.bodyAsString());
-                } else {
-                    ByteBuffer buf = ByteBuffer.wrap(message.body());
-                    real.getRemote().sendBytes(buf);
-                }
+                ByteBuffer buf = ByteBuffer.wrap(message.body());
+                real.getRemote().sendBytes(buf, _CallbackImpl.instance);
             }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         }
     }
 

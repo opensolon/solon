@@ -6,7 +6,6 @@ import io.undertow.websockets.core.WebSockets;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.MethodType;
-import org.noear.solon.core.message.Callback;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.socketd.ProtocolManager;
@@ -87,66 +86,31 @@ public class _SocketServerSession extends SessionBase {
     }
 
     @Override
-    public void sendAsync(String message, Callback callback) {
-
-        if (Solon.global().enableWebSocketD()) {
-            ByteBuffer buf = ProtocolManager.encode(Message.wrap(message));
-            WebSockets.sendBinary(buf, real, new _CallbackHolder(callback));
-        } else {
-            WebSockets.sendText(message, real, new _CallbackHolder(callback));
-        }
-    }
-
-    @Override
-    public void sendAsync(Message message, Callback callback) {
-        super.send(message);
-
-
-        if (Solon.global().enableWebSocketD()) {
-            ByteBuffer buf = ProtocolManager.encode(message);
-            WebSockets.sendBinary(buf, real, new _CallbackHolder(callback));
-        } else {
-            if (message.isString()) {
-                WebSockets.sendText(message.bodyAsString(), real, new _CallbackHolder(callback));
-            } else {
-                ByteBuffer buf = ByteBuffer.wrap(message.body());
-                WebSockets.sendBinary(buf, real, new _CallbackHolder(callback));
-            }
-        }
-    }
-
-    @Override
     public void send(String message) {
-        try {
+
             if (Solon.global().enableWebSocketD()) {
                 ByteBuffer buf = ProtocolManager.encode(Message.wrap(message));
-                WebSockets.sendBinaryBlocking(buf, real);
+                WebSockets.sendBinary(buf, real, _CallbackImpl.instance);
             } else {
-                WebSockets.sendTextBlocking(message, real);
+                WebSockets.sendText(message, real, _CallbackImpl.instance);
             }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+
     }
 
     @Override
     public void send(Message message) {
         super.send(message);
 
-        try {
-            if (Solon.global().enableWebSocketD()) {
-                ByteBuffer buf = ProtocolManager.encode(message);
-                WebSockets.sendBinaryBlocking(buf, real);
+        if (Solon.global().enableWebSocketD()) {
+            ByteBuffer buf = ProtocolManager.encode(message);
+            WebSockets.sendBinary(buf, real, _CallbackImpl.instance);
+        } else {
+            if (message.isString()) {
+                WebSockets.sendText(message.bodyAsString(), real, _CallbackImpl.instance);
             } else {
-                if (message.isString()) {
-                    WebSockets.sendTextBlocking(message.bodyAsString(), real);
-                } else {
-                    ByteBuffer buf = ByteBuffer.wrap(message.body());
-                    WebSockets.sendBinaryBlocking(buf, real);
-                }
+                ByteBuffer buf = ByteBuffer.wrap(message.body());
+                WebSockets.sendBinary(buf, real, _CallbackImpl.instance);
             }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         }
     }
 
