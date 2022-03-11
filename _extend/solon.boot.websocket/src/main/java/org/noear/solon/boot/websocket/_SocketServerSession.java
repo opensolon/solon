@@ -107,7 +107,7 @@ public class _SocketServerSession extends SessionBase {
 
     @Override
     public void send(String message) {
-        synchronized (real) {
+        synchronized (this) {
             if (Solon.global().enableWebSocketD()) {
                 ByteBuffer buf = ProtocolManager.encode(Message.wrap(message));
                 real.send(buf.array());
@@ -121,7 +121,7 @@ public class _SocketServerSession extends SessionBase {
     public void send(Message message) {
         super.send(message);
 
-        synchronized (real) {
+        synchronized (this) {
             if (Solon.global().enableWebSocketD()) {
                 ByteBuffer buf = ProtocolManager.encode(message);
                 real.send(buf.array());

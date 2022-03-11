@@ -140,31 +140,26 @@ public class NioSocketSession extends SessionBase {
 
     @Override
     public void send(Message message) {
-        try {
-            super.send(message);
+        super.send(message);
 
-            synchronized (this) {
+        synchronized (this) {
+            try {
                 if (prepareNew()) {
                     send0(handshakeMessage);
                 }
 
-                //
-                // 转包为Message，再转byte[]
-                //
-                //byte[] bytes = MessageUtils.encode(message).array();
-
                 send0(message);
-            }
-        } catch (RuntimeException e) {
-            Throwable e2 = Utils.throwableUnwrap(e);
-            if (e2 instanceof ConnectException) {
-                if (autoReconnect) {
-                    real = null;
+            } catch (RuntimeException e) {
+                Throwable e2 = Utils.throwableUnwrap(e);
+                if (e2 instanceof ConnectException) {
+                    if (autoReconnect) {
+                        real = null;
+                    }
                 }
+                throw e;
+            } catch (Throwable e) {
+                throw new RuntimeException(e);
             }
-            throw e;
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
         }
     }
 
@@ -173,6 +168,7 @@ public class NioSocketSession extends SessionBase {
             return;
         }
 
+        // 由 MessageEncoder, MessageDecoder 内部进行编解码
         real.writeAndFlush(message);
     }
 

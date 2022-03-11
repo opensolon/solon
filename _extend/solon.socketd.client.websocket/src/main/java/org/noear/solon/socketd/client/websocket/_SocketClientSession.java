@@ -110,10 +110,24 @@ public class _SocketClientSession extends SessionBase {
 
     @Override
     public void send(String message) {
-        if (isWebSocketD()) {
-            sendD(Message.wrap(message.getBytes(StandardCharsets.UTF_8)));
-        }else{
-            sendW(() -> real.send(message));
+        synchronized (this) {
+            try {
+                if (isWebSocketD()) {
+                    sendD(Message.wrap(message.getBytes(StandardCharsets.UTF_8)));
+                } else {
+                    sendW(() -> real.send(message));
+                }
+            } catch (SocketException e) {
+                if (autoReconnect) {
+                    real = null;
+                }
+
+                throw new RuntimeException(e);
+            } catch (RuntimeException e) {
+                throw e;
+            } catch (Throwable e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
@@ -121,61 +135,49 @@ public class _SocketClientSession extends SessionBase {
     public void send(Message message) {
         super.send(message);
 
-        if (isWebSocketD()) {
-            sendD(message);
-        } else {
-            if (message.isString()) {
-                send(message.bodyAsString());
-            } else {
-                sendW(() -> real.send(message.body()));
-            }
-        }
-    }
-
-    private void sendW(RunnableEx runnable){
-        try {
-            synchronized (this) {
-                prepareNew();
-
-                //
-                // 转包为Message，再转byte[]
-                //
-                runnable.run();
-            }
-        } catch (SocketException ex) {
-            if (autoReconnect) {
-                real = null;
-            }
-
-            throw new RuntimeException(ex);
-        } catch (Throwable ex) {
-            throw new RuntimeException(ex);
-        }
-    }
-
-    private void sendD(Message message) {
-        try {
-            synchronized (this) {
-                if (prepareNew()) {
-                    send0(handshakeMessage);
+        synchronized (this) {
+            try {
+                if (isWebSocketD()) {
+                    sendD(message);
+                } else {
+                    if (message.isString()) {
+                        send(message.bodyAsString());
+                    } else {
+                        sendW(() -> real.send(message.body()));
+                    }
+                }
+            } catch (SocketException e) {
+                if (autoReconnect) {
+                    real = null;
                 }
 
-                //
-                // 转包为Message，再转byte[]
-                //
-                send0(message);
+                throw new RuntimeException(e);
+            } catch (RuntimeException e) {
+                throw e;
+            } catch (Throwable e) {
+                throw new RuntimeException(e);
             }
-        } catch (SocketException e) {
-            if (autoReconnect) {
-                real = null;
-            }
-
-            throw new RuntimeException(e);
-        } catch (RuntimeException e) {
-            throw e;
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
         }
+    }
+
+    private void sendW(RunnableEx runnable) throws Throwable {
+        prepareNew();
+
+        //
+        // 转包为Message，再转byte[]
+        //
+        runnable.run();
+    }
+
+    private void sendD(Message message) throws IOException{
+        if (prepareNew()) {
+            send0(handshakeMessage);
+        }
+
+        //
+        // 转包为Message，再转byte[]
+        //
+        send0(message);
     }
 
     private void send0(Message message) throws IOException {

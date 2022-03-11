@@ -142,27 +142,24 @@ public class AioSocketSession extends SessionBase {
 
     @Override
     public void send(Message message) {
-        try {
-            super.send(message);
+        super.send(message);
 
-            synchronized (this) {
+        synchronized (this) {
+            try {
                 if (prepareNew()) {
                     send0(handshakeMessage);
                 }
 
-                //
-                // 转包为Message，再转byte[]
-                //
                 send0(message);
-            }
-        } catch (ClosedChannelException e) {
-            if (autoReconnect) {
-                real = null;
-            } else {
+            } catch (ClosedChannelException e) {
+                if (autoReconnect) {
+                    real = null;
+                } else {
+                    throw new RuntimeException(e);
+                }
+            } catch (Throwable e) {
                 throw new RuntimeException(e);
             }
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
         }
     }
 

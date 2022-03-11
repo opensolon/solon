@@ -150,29 +150,26 @@ public class BioSocketSession extends SessionBase {
 
 
     public void send(Message message) {
-        try {
-            super.send(message);
+        super.send(message);
 
-            synchronized (this) {
+        synchronized (this) {
+            try {
                 if (prepareNew()) {
                     send0(handshakeMessage);
                 }
 
-                //
-                // 转包为Message，再转byte[]
-                //
                 send0(message);
-            }
-        } catch (SocketException e) {
-            if (autoReconnect) {
-                real = null;
-            }
+            } catch (SocketException e) {
+                if (autoReconnect) {
+                    real = null;
+                }
 
-            throw new RuntimeException(e);
-        } catch (RuntimeException e) {
-            throw e;
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
+                throw new RuntimeException(e);
+            } catch (RuntimeException e) {
+                throw e;
+            } catch (Throwable e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
