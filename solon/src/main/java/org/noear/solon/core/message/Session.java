@@ -91,6 +91,16 @@ public interface Session {
     /**
      * 发送消息
      */
+    void sendAsync(String message);
+
+    /**
+     * 发送消息
+     */
+    void sendAsync(Message message);
+
+    /**
+     * 发送消息
+     */
     void send(String message);
 
     /**

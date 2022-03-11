@@ -3,6 +3,7 @@ package org.noear.solon.boot.websocket;
 import org.java_websocket.WebSocket;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
+import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.core.message.Message;
@@ -83,12 +84,36 @@ public class _SocketServerSession extends SessionBase {
     }
 
     @Override
+    public void sendAsync(String message) {
+        Utils.pools.submit(() -> {
+            try {
+                send(message);
+            } catch (Throwable e) {
+                EventBus.push(e);
+            }
+        });
+    }
+
+    @Override
+    public void sendAsync(Message message) {
+        Utils.pools.submit(() -> {
+            try {
+                send(message);
+            } catch (Throwable e) {
+                EventBus.push(e);
+            }
+        });
+    }
+
+    @Override
     public void send(String message) {
-        if (Solon.global().enableWebSocketD()) {
-            ByteBuffer buf = ProtocolManager.encode(Message.wrap(message));
-            real.send(buf.array());
-        } else {
-            real.send(message);
+        synchronized (real) {
+            if (Solon.global().enableWebSocketD()) {
+                ByteBuffer buf = ProtocolManager.encode(Message.wrap(message));
+                real.send(buf.array());
+            } else {
+                real.send(message);
+            }
         }
     }
 
@@ -96,15 +121,17 @@ public class _SocketServerSession extends SessionBase {
     public void send(Message message) {
         super.send(message);
 
-        if (Solon.global().enableWebSocketD()) {
-            ByteBuffer buf = ProtocolManager.encode(message);
-            real.send(buf.array());
-        } else {
-            if (message.isString()) {
-                real.send(message.bodyAsString());
+        synchronized (real) {
+            if (Solon.global().enableWebSocketD()) {
+                ByteBuffer buf = ProtocolManager.encode(message);
+                real.send(buf.array());
             } else {
-                byte[] bytes = message.body();
-                real.send(bytes);
+                if (message.isString()) {
+                    real.send(message.bodyAsString());
+                } else {
+                    byte[] bytes = message.body();
+                    real.send(bytes);
+                }
             }
         }
     }

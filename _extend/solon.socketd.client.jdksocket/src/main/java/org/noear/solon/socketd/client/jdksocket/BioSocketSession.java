@@ -1,6 +1,7 @@
 package org.noear.solon.socketd.client.jdksocket;
 
 import org.noear.solon.Utils;
+import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
@@ -120,6 +121,32 @@ public class BioSocketSession extends SessionBase {
         }
     }
 
+    @Override
+    public void sendAsync(String message) {
+        Utils.pools.submit(() -> {
+            try {
+                synchronized (this) {
+                    send(message);
+                }
+            } catch (Throwable e) {
+                EventBus.push(e);
+            }
+        });
+    }
+
+    @Override
+    public void sendAsync(Message message) {
+        Utils.pools.submit(() -> {
+            try {
+                synchronized (this) {
+                    send(message);
+                }
+            } catch (Throwable e) {
+                EventBus.push(e);
+            }
+        });
+    }
+
 
     @Override
     public void send(String message) {
@@ -141,14 +168,16 @@ public class BioSocketSession extends SessionBase {
                 //
                 send0(message);
             }
-        } catch (SocketException ex) {
+        } catch (SocketException e) {
             if (autoReconnect) {
                 real = null;
             }
 
-            throw new RuntimeException(ex);
-        } catch (Exception ex) {
-            throw new RuntimeException(ex);
+            throw new RuntimeException(e);
+        } catch (RuntimeException e) {
+            throw e;
+        } catch (Throwable e) {
+            throw new RuntimeException(e);
         }
     }
 

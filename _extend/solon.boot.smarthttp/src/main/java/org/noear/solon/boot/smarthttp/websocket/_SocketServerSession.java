@@ -2,6 +2,7 @@ package org.noear.solon.boot.smarthttp.websocket;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
+import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.message.Session;
@@ -91,14 +92,40 @@ public class _SocketServerSession extends SessionBase {
         return _path;
     }
 
+    @Override
+    public void sendAsync(String message) {
+        Utils.pools.submit(() -> {
+            try {
+                synchronized (this) {
+                    send(message);
+                }
+            } catch (Throwable e) {
+                EventBus.push(e);
+            }
+        });
+    }
+
+    @Override
+    public void sendAsync(Message message) {
+        Utils.pools.submit(() -> {
+            try {
+                send(message);
+            } catch (Throwable e) {
+                EventBus.push(e);
+            }
+        });
+    }
+
 
     @Override
     public void send(String message) {
-        if (Solon.global().enableWebSocketD()) {
-            ByteBuffer buf = ProtocolManager.encode(Message.wrap(message));
-            real.sendBinaryMessage(buf.array());
-        } else {
-            real.sendTextMessage(message);
+        synchronized (real) {
+            if (Solon.global().enableWebSocketD()) {
+                ByteBuffer buf = ProtocolManager.encode(Message.wrap(message));
+                real.sendBinaryMessage(buf.array());
+            } else {
+                real.sendTextMessage(message);
+            }
         }
     }
 
@@ -106,15 +133,17 @@ public class _SocketServerSession extends SessionBase {
     public void send(Message message) {
         super.send(message);
 
-        if (Solon.global().enableWebSocketD()) {
-            ByteBuffer buf = ProtocolManager.encode(message);
-            real.sendBinaryMessage(buf.array());
-        } else {
-            if (message.isString()) {
-                real.sendTextMessage(message.bodyAsString());
+        synchronized (real) {
+            if (Solon.global().enableWebSocketD()) {
+                ByteBuffer buf = ProtocolManager.encode(message);
+                real.sendBinaryMessage(buf.array());
             } else {
-                byte[] bytes = message.body();
-                real.sendBinaryMessage(bytes);
+                if (message.isString()) {
+                    real.sendTextMessage(message.bodyAsString());
+                } else {
+                    byte[] bytes = message.body();
+                    real.sendBinaryMessage(bytes);
+                }
             }
         }
     }

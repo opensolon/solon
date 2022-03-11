@@ -86,7 +86,7 @@ public class _SocketServerSession extends SessionBase {
     }
 
     @Override
-    public void send(String message) {
+    public void sendAsync(String message) {
         if (Solon.global().enableWebSocketD()) {
             ByteBuffer buf = ProtocolManager.encode(Message.wrap(message));
             WebSockets.sendBinary(buf, real, _CallbackImpl.instance);
@@ -96,7 +96,7 @@ public class _SocketServerSession extends SessionBase {
     }
 
     @Override
-    public void send(Message message) {
+    public void sendAsync(Message message) {
         super.send(message);
 
         if (Solon.global().enableWebSocketD()) {
@@ -109,6 +109,45 @@ public class _SocketServerSession extends SessionBase {
                 ByteBuffer buf = ByteBuffer.wrap(message.body());
                 WebSockets.sendBinary(buf, real, _CallbackImpl.instance);
             }
+        }
+    }
+
+    @Override
+    public void send(String message) {
+        try {
+            if (Solon.global().enableWebSocketD()) {
+                ByteBuffer buf = ProtocolManager.encode(Message.wrap(message));
+                WebSockets.sendBinaryBlocking(buf, real);
+            } else {
+                WebSockets.sendTextBlocking(message, real);
+            }
+        } catch (RuntimeException e) {
+            throw e;
+        } catch (Throwable e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void send(Message message) {
+        super.send(message);
+
+        try {
+            if (Solon.global().enableWebSocketD()) {
+                ByteBuffer buf = ProtocolManager.encode(message);
+                WebSockets.sendBinaryBlocking(buf, real);
+            } else {
+                if (message.isString()) {
+                    WebSockets.sendTextBlocking(message.bodyAsString(), real);
+                } else {
+                    ByteBuffer buf = ByteBuffer.wrap(message.body());
+                    WebSockets.sendBinaryBlocking(buf, real);
+                }
+            }
+        } catch (RuntimeException e) {
+            throw e;
+        } catch (Throwable e) {
+            throw new RuntimeException(e);
         }
     }
 
