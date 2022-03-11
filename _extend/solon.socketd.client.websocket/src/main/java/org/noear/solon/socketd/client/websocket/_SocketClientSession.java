@@ -155,21 +155,26 @@ public class _SocketClientSession extends SessionBase {
             return;
         }
 
-        ByteBuffer buffer = ProtocolManager.encode(message);
-
-        if (buffer != null) {
-            real.send(buffer.array());
-        }
+        ByteBuffer buf = ProtocolManager.encode(message);
+        real.send(buf.array());
     }
 
 
     @Override
     public void close() throws IOException {
+        if (real == null) {
+            return;
+        }
+
         real.close();
     }
 
     @Override
     public boolean isValid() {
+        if(real == null){
+            return false;
+        }
+
         return real.isOpen();
     }
 

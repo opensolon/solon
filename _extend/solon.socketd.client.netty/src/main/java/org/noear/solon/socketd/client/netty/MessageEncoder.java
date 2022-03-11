@@ -12,11 +12,8 @@ class MessageEncoder extends MessageToByteEncoder<Message> {
     @Override
     protected void encode(ChannelHandlerContext channelHandlerContext, Message message, ByteBuf byteBuf) throws Exception {
         if (message != null) {
-            ByteBuffer buffer = ProtocolManager.encode(message);
-
-            if (buffer != null) {
-                byteBuf.writeBytes(buffer.array());
-            }
+            ByteBuffer buf = ProtocolManager.encode(message);
+            byteBuf.writeBytes(buf.array());
         }
     }
 }

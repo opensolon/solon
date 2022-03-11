@@ -16,7 +16,7 @@ import java.nio.ByteBuffer;
 import java.util.*;
 
 public class _SocketServerSession extends SessionBase {
-    public static Map<WebSocket, Session> sessions = new HashMap<>();
+    public static final Map<WebSocket, Session> sessions = new HashMap<>();
 
     public static Session get(WebSocket real) {
         Session tmp = sessions.get(real);
@@ -84,13 +84,11 @@ public class _SocketServerSession extends SessionBase {
 
     @Override
     public void send(String message) {
-        synchronized (real) {
-            if (Solon.global().enableWebSocketD()) {
-                ByteBuffer buf = ProtocolManager.encode(Message.wrap(message));
-                real.send(buf.array());
-            } else {
-                real.send(message);
-            }
+        if (Solon.global().enableWebSocketD()) {
+            ByteBuffer buf = ProtocolManager.encode(Message.wrap(message));
+            real.send(buf.array());
+        } else {
+            real.send(message);
         }
     }
 
@@ -98,17 +96,15 @@ public class _SocketServerSession extends SessionBase {
     public void send(Message message) {
         super.send(message);
 
-        synchronized (real) {
-            if (Solon.global().enableWebSocketD()) {
-                ByteBuffer buf = ProtocolManager.encode(message);
-                real.send(buf.array());
+        if (Solon.global().enableWebSocketD()) {
+            ByteBuffer buf = ProtocolManager.encode(message);
+            real.send(buf.array());
+        } else {
+            if (message.isString()) {
+                real.send(message.bodyAsString());
             } else {
-                if (message.isString()) {
-                    real.send(message.bodyAsString());
-                } else {
-                    byte[] bytes = message.body();
-                    real.send(bytes);
-                }
+                byte[] bytes = message.body();
+                real.send(bytes);
             }
         }
     }
@@ -116,14 +112,20 @@ public class _SocketServerSession extends SessionBase {
 
     @Override
     public void close() throws IOException {
-        synchronized (real) {
-            real.close();
-            sessions.remove(real);
+        if (real == null) {
+            return;
         }
+
+        real.close();
+        sessions.remove(real);
     }
 
     @Override
     public boolean isValid() {
+        if(real == null){
+            return false;
+        }
+
         return real.isOpen();
     }
 

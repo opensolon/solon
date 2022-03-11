@@ -35,7 +35,7 @@ import java.util.*;
  * </code></pre>
  * */
 public class BioSocketSession extends SessionBase {
-    public static Map<Socket, Session> sessions = new HashMap<>();
+    public static final Map<Socket, Session> sessions = new HashMap<>();
 
     public static Session get(Socket real) {
         Session tmp = sessions.get(real);
@@ -157,27 +157,31 @@ public class BioSocketSession extends SessionBase {
             return;
         }
 
-        ByteBuffer buffer = ProtocolManager.encode(message);
+        ByteBuffer buf = ProtocolManager.encode(message);
 
-        if (buffer != null) {
-            real.getOutputStream().write(buffer.array());
-            real.getOutputStream().flush();
-        }
+        real.getOutputStream().write(buf.array());
+        real.getOutputStream().flush();
     }
 
     @Override
     public void close() throws IOException {
-        synchronized (real) {
-            real.shutdownInput();
-            real.shutdownOutput();
-            real.close();
-
-            sessions.remove(real);
+        if (real == null) {
+            return;
         }
+
+        real.shutdownInput();
+        real.shutdownOutput();
+        real.close();
+
+        sessions.remove(real);
     }
 
     @Override
     public boolean isValid() {
+        if(real == null){
+            return false;
+        }
+
         return real.isConnected();
     }
 

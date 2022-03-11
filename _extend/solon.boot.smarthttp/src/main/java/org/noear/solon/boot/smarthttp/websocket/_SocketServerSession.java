@@ -18,7 +18,7 @@ import java.nio.ByteBuffer;
 import java.util.*;
 
 public class _SocketServerSession extends SessionBase {
-    public static Map<WebSocketRequest, _SocketServerSession> sessions = new HashMap<>();
+    public static final Map<WebSocketRequest, _SocketServerSession> sessions = new HashMap<>();
 
     public static _SocketServerSession get(WebSocketRequest req, WebSocketResponse res) {
         _SocketServerSession tmp = sessions.get(req);
@@ -45,11 +45,11 @@ public class _SocketServerSession extends SessionBase {
 
 
     WebSocketRequest request;
-    WebSocketResponse response;
+    WebSocketResponse real;
 
     public _SocketServerSession(WebSocketRequest request, WebSocketResponse response) {
         this.request = request;
-        this.response = response;
+        this.real = response;
     }
 
     @Override
@@ -94,13 +94,11 @@ public class _SocketServerSession extends SessionBase {
 
     @Override
     public void send(String message) {
-        synchronized (response) {
-            if (Solon.global().enableWebSocketD()) {
-                ByteBuffer buf = ProtocolManager.encode(Message.wrap(message));
-                response.sendBinaryMessage(buf.array());
-            } else {
-                response.sendTextMessage(message);
-            }
+        if (Solon.global().enableWebSocketD()) {
+            ByteBuffer buf = ProtocolManager.encode(Message.wrap(message));
+            real.sendBinaryMessage(buf.array());
+        } else {
+            real.sendTextMessage(message);
         }
     }
 
@@ -108,17 +106,15 @@ public class _SocketServerSession extends SessionBase {
     public void send(Message message) {
         super.send(message);
 
-        synchronized (response) {
-            if (Solon.global().enableWebSocketD()) {
-                ByteBuffer buf = ProtocolManager.encode(message);
-                response.sendBinaryMessage(buf.array());
+        if (Solon.global().enableWebSocketD()) {
+            ByteBuffer buf = ProtocolManager.encode(message);
+            real.sendBinaryMessage(buf.array());
+        } else {
+            if (message.isString()) {
+                real.sendTextMessage(message.bodyAsString());
             } else {
-                if (message.isString()) {
-                    response.sendTextMessage(message.bodyAsString());
-                } else {
-                    byte[] bytes = message.body();
-                    response.sendBinaryMessage(bytes);
-                }
+                byte[] bytes = message.body();
+                real.sendBinaryMessage(bytes);
             }
         }
     }
@@ -127,11 +123,13 @@ public class _SocketServerSession extends SessionBase {
 
     @Override
     public void close() throws IOException {
-        synchronized (response) {
-            isOpen = false;
-            response.close();
-            sessions.remove(request);
+        if (real == null) {
+            return;
         }
+
+        isOpen = false;
+        real.close();
+        sessions.remove(request);
     }
 
     protected void onClose() {
@@ -140,6 +138,10 @@ public class _SocketServerSession extends SessionBase {
 
     @Override
     public boolean isValid() {
+        if(real == null){
+            return false;
+        }
+
         return isOpen;
     }
 

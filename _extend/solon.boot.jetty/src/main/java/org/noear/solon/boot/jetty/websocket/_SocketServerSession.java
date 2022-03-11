@@ -15,7 +15,7 @@ import java.nio.ByteBuffer;
 import java.util.*;
 
 public class _SocketServerSession extends SessionBase {
-    public static Map<org.eclipse.jetty.websocket.api.Session, Session> sessions = new HashMap<>();
+    public static final Map<org.eclipse.jetty.websocket.api.Session, Session> sessions = new HashMap<>();
 
     public static Session get(org.eclipse.jetty.websocket.api.Session real) {
         Session tmp = sessions.get(real);
@@ -114,6 +114,10 @@ public class _SocketServerSession extends SessionBase {
 
     @Override
     public void close() throws IOException {
+        if(real == null){
+            return;
+        }
+
         _open = false; //jetty 的 close 不及时
         real.close();
         sessions.remove(real);
@@ -121,6 +125,10 @@ public class _SocketServerSession extends SessionBase {
 
     @Override
     public boolean isValid() {
+        if(real == null){
+            return false;
+        }
+
         return _open && real.isOpen();
     }
 

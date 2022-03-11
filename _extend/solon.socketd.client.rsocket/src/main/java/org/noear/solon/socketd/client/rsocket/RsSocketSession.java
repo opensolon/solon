@@ -19,7 +19,7 @@ import java.nio.ByteBuffer;
 import java.util.*;
 
 public class RsSocketSession extends SessionBase {
-    public static Map<RSocket, Session> sessions = new HashMap<>();
+    public static final Map<RSocket, Session> sessions = new HashMap<>();
 
     public static Session get(RSocket real) {
         Session tmp = sessions.get(real);
@@ -146,28 +146,31 @@ public class RsSocketSession extends SessionBase {
             return;
         }
 
-        ByteBuffer byteBuffer = ProtocolManager.encode(message);
+        ByteBuffer buf = ProtocolManager.encode(message);
 
-        if (byteBuffer != null) {
-            real.fireAndForget(DefaultPayload.create(byteBuffer))
-                    .doOnError((err) -> {
-                        ListenerProxy.getGlobal().onError(this, err);
-                    })
-                    .subscribe();
-        }
+        real.fireAndForget(DefaultPayload.create(buf))
+                .doOnError((err) -> {
+                    ListenerProxy.getGlobal().onError(this, err);
+                })
+                .subscribe();
     }
 
     @Override
     public void close() {
-        synchronized (real) {
-            real.dispose();
-
-            sessions.remove(real);
+        if (real == null) {
+            return;
         }
+
+        real.dispose();
+        sessions.remove(real);
     }
 
     @Override
     public boolean isValid() {
+        if(real == null){
+            return false;
+        }
+
         return real.isDisposed() == false;
     }
 

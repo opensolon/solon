@@ -15,7 +15,7 @@ import java.nio.ByteBuffer;
 import java.util.*;
 
 public class _SocketServerSession extends SessionBase {
-    public static Map<WebSocket, Session> sessions = new HashMap<>();
+    public static final Map<WebSocket, Session> sessions = new HashMap<>();
 
     public static Session get(WebSocket real) {
         Session tmp = sessions.get(real);
@@ -107,12 +107,20 @@ public class _SocketServerSession extends SessionBase {
 
     @Override
     public void close() throws IOException {
+        if(real == null){
+            return;
+        }
+
         real.close();
         sessions.remove(real);
     }
 
     @Override
     public boolean isValid() {
+        if(real == null){
+            return false;
+        }
+
         return real.isOpen();
     }
 

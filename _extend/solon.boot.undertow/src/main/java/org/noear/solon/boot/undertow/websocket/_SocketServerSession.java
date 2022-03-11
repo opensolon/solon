@@ -18,7 +18,7 @@ import java.nio.ByteBuffer;
 import java.util.*;
 
 public class _SocketServerSession extends SessionBase {
-    public static Map<WebSocketChannel, Session> sessions = new HashMap<>();
+    public static final Map<WebSocketChannel, Session> sessions = new HashMap<>();
 
     public static Session get(WebSocketChannel real) {
         Session tmp = sessions.get(real);
@@ -87,14 +87,12 @@ public class _SocketServerSession extends SessionBase {
 
     @Override
     public void send(String message) {
-
-            if (Solon.global().enableWebSocketD()) {
-                ByteBuffer buf = ProtocolManager.encode(Message.wrap(message));
-                WebSockets.sendBinary(buf, real, _CallbackImpl.instance);
-            } else {
-                WebSockets.sendText(message, real, _CallbackImpl.instance);
-            }
-
+        if (Solon.global().enableWebSocketD()) {
+            ByteBuffer buf = ProtocolManager.encode(Message.wrap(message));
+            WebSockets.sendBinary(buf, real, _CallbackImpl.instance);
+        } else {
+            WebSockets.sendText(message, real, _CallbackImpl.instance);
+        }
     }
 
     @Override
@@ -117,12 +115,20 @@ public class _SocketServerSession extends SessionBase {
 
     @Override
     public void close() throws IOException {
+        if(real == null){
+            return;
+        }
+
         real.close();
         sessions.remove(real);
     }
 
     @Override
     public boolean isValid() {
+        if(real == null){
+            return false;
+        }
+
         return real.isOpen();
     }
 

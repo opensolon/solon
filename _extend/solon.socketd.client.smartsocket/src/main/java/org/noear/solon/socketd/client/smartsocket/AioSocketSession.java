@@ -17,7 +17,7 @@ import java.nio.channels.ClosedChannelException;
 import java.util.*;
 
 public class AioSocketSession extends SessionBase {
-    public static Map<AioSession, Session> sessions = new HashMap<>();
+    public static final Map<AioSession, Session> sessions = new HashMap<>();
 
     public static Session get(AioSession real) {
         Session tmp = sessions.get(real);
@@ -116,11 +116,6 @@ public class AioSocketSession extends SessionBase {
         send(Message.wrap(message));
     }
 
-//    @Override
-//    public void send(byte[] message) {
-//        send(MessageUtils.wrap(message));
-//    }
-
     @Override
     public void send(Message message) {
         try {
@@ -152,22 +147,27 @@ public class AioSocketSession extends SessionBase {
             return;
         }
 
-        ByteBuffer buffer = ProtocolManager.encode(message);
-
-        if (buffer != null) {
-            real.writeBuffer().writeAndFlush(buffer.array());
-        }
+        ByteBuffer buf = ProtocolManager.encode(message);
+        real.writeBuffer().writeAndFlush(buf.array());
     }
 
 
     @Override
     public void close() throws IOException {
+        if (real == null) {
+            return;
+        }
+
         real.close();
         sessions.remove(real);
     }
 
     @Override
     public boolean isValid() {
+        if(real == null){
+            return false;
+        }
+
         return real.isInvalid() == false;
     }
 

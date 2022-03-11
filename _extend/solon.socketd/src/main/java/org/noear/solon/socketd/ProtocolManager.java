@@ -1,6 +1,5 @@
 package org.noear.solon.socketd;
 
-import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.socketd.protocol.MessageProtocol;
 import org.noear.solon.socketd.protocol.MessageProtocolBase;
@@ -18,7 +17,7 @@ public class ProtocolManager {
 
     /**
      * 设置消息协议
-     * */
+     */
     public static void setProtocol(MessageProtocol protocol) {
         if (protocol != null) {
             ProtocolManager.protocol = protocol;
@@ -29,13 +28,12 @@ public class ProtocolManager {
      * 编码
      *
      * @param message 消息
-     * */
-    public static ByteBuffer encode(Message message) {
+     */
+    public static ByteBuffer encode(Message message) throws IllegalArgumentException {
         try {
             return protocol.encode(message);
-        } catch (Throwable ex) {
-            EventBus.push(ex);
-            return null;
+        } catch (Throwable e) {
+            throw new IllegalArgumentException(e);
         }
     }
 
@@ -43,13 +41,12 @@ public class ProtocolManager {
      * 解码
      *
      * @param buffer 缓冲
-     * */
-    public static Message decode(ByteBuffer buffer)  {
+     */
+    public static Message decode(ByteBuffer buffer) throws IllegalArgumentException {
         try {
             return protocol.decode(buffer);
-        } catch (Throwable ex) {
-            EventBus.push(ex);
-            return null;
+        } catch (Throwable e) {
+            throw new IllegalArgumentException(e);
         }
     }
 }

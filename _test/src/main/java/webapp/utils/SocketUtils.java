@@ -123,21 +123,19 @@ public class SocketUtils {
         }
     }
 
-    private void sendDo(final SocketMessageWrap msgD, Consumer<SocketMessageWrap> callback)  {
+    private void sendDo(final SocketMessageWrap msgD, Consumer<SocketMessageWrap> callback) {
         // 建立连接后获得输出流
         try {
             tryConnect();
 
-            ByteBuffer buffer = ProtocolManager.encode(msgD.req);
+            ByteBuffer buf = ProtocolManager.encode(msgD.req);
 
-            if(buffer != null) {
-                outputStream.write(buffer.array());
-                outputStream.flush();
+            outputStream.write(buf.array());
+            outputStream.flush();
 
-                msgD.res = decode(connector.getInputStream());
+            msgD.res = decode(connector.getInputStream());
 
-                callback.accept(msgD);
-            }
+            callback.accept(msgD);
 
         } catch (Throwable ex) {
             msgD.err = ex;
