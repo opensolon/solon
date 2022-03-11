@@ -19,7 +19,7 @@ import java.nio.ByteBuffer;
 import java.util.*;
 
 public class RsSocketSession extends SessionBase {
-    protected static final Map<RSocket, Session> sessions = new HashMap<>();
+    public static final Map<RSocket, Session> sessions = new HashMap<>();
 
     public static Session get(RSocket real) {
         Session tmp = sessions.get(real);

@@ -18,7 +18,7 @@ import java.nio.ByteBuffer;
 import java.util.*;
 
 public class _SocketServerSession extends SessionBase {
-    protected static final Map<WebSocketRequest, _SocketServerSession> sessions = new HashMap<>();
+    public static final Map<WebSocketRequest, _SocketServerSession> sessions = new HashMap<>();
 
     public static _SocketServerSession get(WebSocketRequest req, WebSocketResponse res) {
         _SocketServerSession tmp = sessions.get(req);

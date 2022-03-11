@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.Collections;
 
 public class _SessionManagerImpl extends SessionManager {
+
     @Override
     protected SignalType signalType() {
         return SignalType.WEBSOCKET;

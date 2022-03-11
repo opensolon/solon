@@ -15,7 +15,7 @@ import java.net.URI;
 import java.util.*;
 
 public class NioSocketSession extends SessionBase {
-    protected static final Map<Channel, Session> sessions = new HashMap<>();
+    public static final Map<Channel, Session> sessions = new HashMap<>();
 
     public static Session get(Channel real) {
         Session tmp = sessions.get(real);

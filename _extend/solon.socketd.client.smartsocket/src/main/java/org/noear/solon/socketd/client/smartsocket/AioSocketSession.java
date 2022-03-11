@@ -17,7 +17,7 @@ import java.nio.channels.ClosedChannelException;
 import java.util.*;
 
 public class AioSocketSession extends SessionBase {
-    protected static final Map<AioSession, Session> sessions = new HashMap<>();
+    public static final Map<AioSession, Session> sessions = new HashMap<>();
 
     public static Session get(AioSession real) {
         Session tmp = sessions.get(real);
