@@ -1,11 +1,14 @@
 package org.noear.solon.boot.jetty;
 
-import org.eclipse.jetty.server.Handler;
+import org.eclipse.jetty.http.HttpVersion;
+import org.eclipse.jetty.server.*;
 import org.eclipse.jetty.server.session.SessionHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.util.resource.ResourceCollection;
+import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
+import org.noear.solon.boot.ServerConstants;
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.jetty.http.JtContainerInitializerProxy;
 import org.noear.solon.boot.jetty.http.JtHttpContextHandler;
@@ -17,6 +20,41 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 class PluginJettyBase {
+    protected ServerConnector getConnector(Server server) {
+        //配置 //http://www.eclipse.org/jetty/documentation/jetty-9/index.html
+        HttpConfiguration config = new HttpConfiguration();
+        if (ServerProps.request_maxHeaderSize != 0) {
+            config.setRequestHeaderSize(ServerProps.request_maxHeaderSize);
+        }
+
+        HttpConnectionFactory httpFactory = new HttpConnectionFactory(config);
+
+        if (System.getProperty(ServerConstants.SSL_KEYSTORE) == null) {
+            return new ServerConnector(server, httpFactory);
+        } else {
+            String sslKeyStore = System.getProperty(ServerConstants.SSL_KEYSTORE);
+            String sslKeyStoreType = System.getProperty(ServerConstants.SSL_KEYSTORE_TYPE);
+            String sslKeyStorePassword = System.getProperty(ServerConstants.SSL_KEYSTORE_PASSWORD);
+
+            SslContextFactory.Server contextFactory = new SslContextFactory.Server();
+            if (Utils.isNotEmpty(sslKeyStoreType)) {
+                contextFactory.setKeyStoreType(sslKeyStoreType);
+            }
+
+            if (Utils.isNotEmpty(sslKeyStore)) {
+                contextFactory.setKeyStorePath(sslKeyStore);
+            }
+
+            if (Utils.isNotEmpty(sslKeyStorePassword)) {
+                contextFactory.setKeyStorePassword(sslKeyStorePassword);
+            }
+
+            SslConnectionFactory sslFactory = new SslConnectionFactory(contextFactory, HttpVersion.HTTP_1_1.asString());
+
+            return new ServerConnector(server, sslFactory, httpFactory);
+        }
+    }
+
     protected ServletContextHandler getServletHandler() throws IOException {
         ServletContextHandler handler = new ServletContextHandler();
         handler.setContextPath("/");

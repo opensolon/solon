@@ -44,17 +44,9 @@ class PluginJetty extends PluginJettyBase implements Plugin {
 
         _server = new Server();
 
-        //配置 //http://www.eclipse.org/jetty/documentation/jetty-9/index.html
-        HttpConfiguration config = new HttpConfiguration();
-        if (ServerProps.request_maxHeaderSize != 0) {
-            config.setRequestHeaderSize(ServerProps.request_maxHeaderSize);
-        }
-
-        //链接工厂
-        ConnectionFactory factory = new HttpConnectionFactory(config);
 
         //有配置的链接器
-        ServerConnector connector = new ServerConnector(_server, factory);
+        ServerConnector connector = getConnector(_server);
         connector.setPort(port);
 
         //添加链接器
