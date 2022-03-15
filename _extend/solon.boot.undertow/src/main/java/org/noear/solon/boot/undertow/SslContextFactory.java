@@ -6,6 +6,7 @@ import org.noear.solon.boot.ServerConstants;
 import javax.net.ssl.*;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.*;
@@ -29,16 +30,16 @@ public class SslContextFactory {
         String sslKeyStoreType = System.getProperty(ServerConstants.SSL_KEYSTORE_TYPE);
         String sslKeyStorePassword = System.getProperty(ServerConstants.SSL_KEYSTORE_PASSWORD);
 
+        char[] keyStorePassword = null;
+        if (Utils.isNotEmpty(sslKeyStorePassword)) {
+            keyStorePassword = sslKeyStorePassword.toCharArray();
+        }
+
         try {
-            KeyStore keyStore = loadKeyStore(sslKeyStore, sslKeyStoreType, sslKeyStorePassword);
+            KeyStore keyStore = loadKeyStore(sslKeyStore, sslKeyStoreType, keyStorePassword);
             KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
 
-            char[] keyPassword = null;
-            if (Utils.isNotEmpty(sslKeyStorePassword)) {
-                keyPassword = sslKeyStorePassword.toCharArray();
-            }
-
-            keyManagerFactory.init(keyStore, keyPassword);
+            keyManagerFactory.init(keyStore, keyStorePassword);
 
             return keyManagerFactory.getKeyManagers();
 
@@ -47,10 +48,13 @@ public class SslContextFactory {
         }
     }
 
-    protected static KeyStore loadKeyStore(String sslKeyStore, String sslKeyStoreType, String sslKeyStorePassword) throws Exception {
-        InputStream keyStoreStream = Utils.getResource(sslKeyStore).openStream();
+    protected static KeyStore loadKeyStore(String sslKeyStore, String sslKeyStoreType, char[] keyStorePassword) throws Exception {
+        URL keyStoreUrl = Utils.getResource(sslKeyStore);
+        InputStream keyStoreStream;
 
-        if (keyStoreStream == null) {
+        if (keyStoreUrl != null) {
+            keyStoreStream = keyStoreUrl.openStream();
+        } else {
             keyStoreStream = Files.newInputStream(Paths.get(sslKeyStore));
         }
 
@@ -68,11 +72,7 @@ public class SslContextFactory {
                 keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
             }
 
-            if (Utils.isNotEmpty(sslKeyStorePassword)) {
-                keyStore.load(is, sslKeyStorePassword.trim().toCharArray());
-            } else {
-                keyStore.load(is, null);
-            }
+            keyStore.load(is, keyStorePassword);
 
             return keyStore;
         }
