@@ -45,6 +45,16 @@ public class ServerProps {
         String tmp = null;
         output_meta = Solon.cfg().getInt("solon.output.meta", 0) > 0;
 
+
+
+        //
+        // for server ssl
+        //
+        synProps(ServerConstants.SERVER_KEY_STORE, ServerConstants.SSL_KEYSTORE);
+        synProps(ServerConstants.SERVER_KEY_TYPE, ServerConstants.SSL_KEYSTORE_TYPE);
+        synProps(ServerConstants.SERVER_KEY_PASSWORD, ServerConstants.SSL_KEYSTORE_PASSWORD);
+
+
         //
         // for request
         //
@@ -89,6 +99,13 @@ public class ServerProps {
             response_encoding = Solon.encoding();
         } else {
             response_encoding = tmp;
+        }
+    }
+
+    static void synProps(String appProp, String sysProp) {
+        String tmp = Solon.cfg().get(appProp);
+        if (tmp != null) {
+            System.setProperty(sysProp, tmp);
         }
     }
 
