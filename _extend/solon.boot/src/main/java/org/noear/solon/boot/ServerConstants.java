@@ -13,4 +13,7 @@ public class ServerConstants {
 
     public static final String SERVER_WEBSOCKET_NAME = "server.websocket.name";
     public static final String SERVER_WEBSOCKET_PORT = "server.websocket.port";
+
+    public static final String SSL_KEYSTORE = "javax.net.ssl.keyStore";
+    public static final String SSL_KEYSTORE_PASSWORD = "javax.net.ssl.keyStorePassword";
 }
