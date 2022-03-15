@@ -1,5 +1,7 @@
 package org.noear.solon.boot.jetty;
 
+import org.eclipse.jetty.server.Handler;
+import org.eclipse.jetty.server.handler.ScopedHandler;
 import org.eclipse.jetty.server.session.SessionHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.util.resource.ResourceCollection;
@@ -7,6 +9,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.jetty.http.JtContainerInitializerProxy;
+import org.noear.solon.boot.jetty.http.JtHttpContextHandler;
 import org.noear.solon.boot.jetty.http.JtHttpContextServletHandler;
 
 import java.io.FileNotFoundException;
@@ -35,6 +38,29 @@ class PluginJettyBase {
         handler.addLifeCycleListener(new JtContainerInitializerProxy(handler.getServletContext()));
 
         return handler;
+    }
+
+    protected Handler getJettyHandler(){
+        //::走Handler接口
+        JtHttpContextHandler _handler = new JtHttpContextHandler();
+
+        if(Solon.global().enableSessionState()) {
+            //需要session state
+            //
+            SessionHandler s_handler = new SessionHandler();
+
+            if (ServerProps.session_timeout > 0) {
+                s_handler.setMaxInactiveInterval(ServerProps.session_timeout);
+            }
+
+            s_handler.setHandler(_handler);
+
+            return s_handler;
+        }else{
+            //不需要session state
+            //
+            return _handler;
+        }
     }
 
 

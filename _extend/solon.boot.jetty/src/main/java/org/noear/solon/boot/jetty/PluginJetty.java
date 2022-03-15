@@ -18,7 +18,8 @@ import java.io.IOException;
 class PluginJetty extends PluginJettyBase implements Plugin {
     protected Server _server = null;
     private int port;
-    public PluginJetty(int port){
+
+    public PluginJetty(int port) {
         this.port = port;
     }
 
@@ -47,12 +48,15 @@ class PluginJetty extends PluginJettyBase implements Plugin {
 
         //配置 //http://www.eclipse.org/jetty/documentation/jetty-9/index.html
         HttpConfiguration config = new HttpConfiguration();
-        if(ServerProps.request_maxHeaderSize != 0){
+        if (ServerProps.request_maxHeaderSize != 0) {
             config.setRequestHeaderSize(ServerProps.request_maxHeaderSize);
         }
 
+        //链接工厂
+        ConnectionFactory factory = new HttpConnectionFactory(config);
+
         //有配置的链接器
-        ServerConnector connector = new ServerConnector(_server, new HttpConnectionFactory(config));
+        ServerConnector connector = new ServerConnector(_server, factory);
         connector.setPort(port);
 
         //添加链接器
@@ -78,30 +82,11 @@ class PluginJetty extends PluginJettyBase implements Plugin {
 
     /**
      * 获取Server Handler
-     * */
+     */
     protected Handler buildHandler() throws IOException {
-        if(Utils.loadClass("org.eclipse.jetty.servlet.ServletContextHandler") == null){
-            //::走Handler接口
-            JtHttpContextHandler _handler = new JtHttpContextHandler();
-
-            if(Solon.global().enableSessionState()) {
-                //需要session state
-                //
-                SessionHandler s_handler = new SessionHandler();
-
-                if (ServerProps.session_timeout > 0) {
-                    s_handler.setMaxInactiveInterval(ServerProps.session_timeout);
-                }
-
-                s_handler.setHandler(_handler);
-
-                return s_handler;
-            }else{
-                //不需要session state
-                //
-                return _handler;
-            }
-        }else{
+        if (Utils.loadClass("org.eclipse.jetty.servlet.ServletContextHandler") == null) {
+            return getJettyHandler();
+        } else {
             //::走Servlet接口（需要多个包）
             return getServletHandler();
         }
