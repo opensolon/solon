@@ -18,25 +18,30 @@ import java.security.cert.CertificateException;
  */
 public class SslContextFactory {
     public static SSLContext createSslContext() throws KeyManagementException, NoSuchAlgorithmException, CertificateException, IOException, UnrecoverableKeyException {
-        SSLContext sslContext = SSLContext.getInstance("TLS");
-
-        sslContext.init(getKeyManagers(), null, null);
-
-        return sslContext;
-    }
-
-    protected static KeyManager[] getKeyManagers() {
         String sslKeyStore = System.getProperty(ServerConstants.SSL_KEYSTORE);
         String sslKeyStoreType = System.getProperty(ServerConstants.SSL_KEYSTORE_TYPE);
         String sslKeyStorePassword = System.getProperty(ServerConstants.SSL_KEYSTORE_PASSWORD);
 
+        return createSslContext(sslKeyStore, sslKeyStoreType, sslKeyStorePassword);
+    }
+
+    public static SSLContext createSslContext(String sslKeyStore, String sslKeyStoreType, String sslKeyStorePassword) throws KeyManagementException, NoSuchAlgorithmException, CertificateException, IOException, UnrecoverableKeyException {
+        SSLContext sslContext = SSLContext.getInstance("TLS");
+        KeyManager[] keyManagers = getKeyManagers(sslKeyStore, sslKeyStoreType, sslKeyStorePassword);
+
+        sslContext.init(keyManagers, null, null);
+
+        return sslContext;
+    }
+
+    protected static KeyManager[] getKeyManagers(String sslKeyStore, String sslKeyStoreType, String sslKeyStorePassword) {
         char[] keyStorePassword = null;
         if (Utils.isNotEmpty(sslKeyStorePassword)) {
             keyStorePassword = sslKeyStorePassword.toCharArray();
         }
 
         try {
-            KeyStore keyStore = loadKeyStore(sslKeyStore, sslKeyStoreType, keyStorePassword);
+            KeyStore keyStore = getKeyStore(sslKeyStore, sslKeyStoreType, keyStorePassword);
             KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
 
             keyManagerFactory.init(keyStore, keyStorePassword);
@@ -48,7 +53,7 @@ public class SslContextFactory {
         }
     }
 
-    protected static KeyStore loadKeyStore(String sslKeyStore, String sslKeyStoreType, char[] keyStorePassword) throws Exception {
+    protected static KeyStore getKeyStore(String sslKeyStore, String sslKeyStoreType, char[] keyStorePassword) throws Exception {
         URL keyStoreUrl = Utils.getResource(sslKeyStore);
         InputStream keyStoreStream;
 
