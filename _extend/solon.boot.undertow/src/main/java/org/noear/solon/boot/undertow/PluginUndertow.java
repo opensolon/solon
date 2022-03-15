@@ -6,6 +6,7 @@ import io.undertow.server.HttpHandler;
 import io.undertow.servlet.Servlets;
 import io.undertow.servlet.api.*;
 import org.noear.solon.SolonApp;
+import org.noear.solon.boot.ServerConstants;
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.undertow.http.UtHandlerJspHandler;
 import org.noear.solon.boot.undertow.websocket.UtWsConnectionCallback;
@@ -23,7 +24,8 @@ import static io.undertow.Handlers.websocket;
 class PluginUndertow extends PluginUndertowBase implements Plugin {
     Undertow _server;
     int port;
-    public PluginUndertow(int port){
+
+    public PluginUndertow(int port) {
         this.port = port;
     }
 
@@ -54,15 +56,21 @@ class PluginUndertow extends PluginUndertowBase implements Plugin {
 
         builder.setServerOption(UndertowOptions.ALWAYS_SET_KEEP_ALIVE, false);
 
-        if(ServerProps.request_maxHeaderSize != 0) {
+        if (ServerProps.request_maxHeaderSize != 0) {
             builder.setServerOption(UndertowOptions.MAX_HEADER_SIZE, ServerProps.request_maxHeaderSize);
         }
 
-        if(ServerProps.request_maxBodySize != 0) {
-            builder.setServerOption(UndertowOptions.MAX_ENTITY_SIZE, (long)ServerProps.request_maxBodySize);
+        if (ServerProps.request_maxBodySize != 0) {
+            builder.setServerOption(UndertowOptions.MAX_ENTITY_SIZE, (long) ServerProps.request_maxBodySize);
         }
 
-        builder.addHttpListener(port, "0.0.0.0");
+        if (System.getProperty(ServerConstants.SSL_KEYSTORE) == null) {
+            //http
+            builder.addHttpListener(port, "0.0.0.0");
+        } else {
+            //https
+            builder.addHttpsListener(port, "0.0.0.0", SslContextFactory.createSslContext());
+        }
 
         if (app.enableWebSocket()) {
             builder.setHandler(websocket(new UtWsConnectionCallback(), httpHandler));
