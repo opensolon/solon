@@ -12,6 +12,8 @@ server:
 
 ```
 
+或者
+
 ```shell
 java -Dserver.ssl.keyStore=/demo.keystore 
      -Dserver.ssl.keyPassword=demo 

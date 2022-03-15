@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.noear</groupId>
         <artifactId>solon-parent</artifactId>
-        <version>1.6.31-m2</version>
+        <version>1.6.31-m3</version>
         <relativePath>../solon-parent/pom.xml</relativePath>
     </parent>
 
@@ -219,38 +219,38 @@
 
 
 
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.boot.undertow</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.boot.undertow.add.jsp</artifactId>
+        </dependency>
+
+
+
 <!--        <dependency>-->
 <!--            <groupId>org.noear</groupId>-->
-<!--            <artifactId>solon.boot.undertow</artifactId>-->
+<!--            <artifactId>solon.boot.jetty</artifactId>-->
+<!--        </dependency>-->
+
+
+<!--        <dependency>-->
+<!--            <groupId>org.noear</groupId>-->
+<!--            <artifactId>solon.boot.jetty.add.servlet</artifactId>-->
 <!--        </dependency>-->
 
 <!--        <dependency>-->
 <!--            <groupId>org.noear</groupId>-->
-<!--            <artifactId>solon.boot.undertow.add.jsp</artifactId>-->
+<!--            <artifactId>solon.boot.jetty.add.websocket</artifactId>-->
 <!--        </dependency>-->
 
-
-
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.boot.jetty</artifactId>
-        </dependency>
-
-
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.boot.jetty.add.servlet</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.boot.jetty.add.websocket</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.boot.jetty.add.jsp</artifactId>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.noear</groupId>-->
+<!--            <artifactId>solon.boot.jetty.add.jsp</artifactId>-->
+<!--        </dependency>-->
 
 
         <dependency>
