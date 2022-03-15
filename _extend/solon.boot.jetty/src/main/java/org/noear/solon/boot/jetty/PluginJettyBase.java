@@ -1,7 +1,6 @@
 package org.noear.solon.boot.jetty;
 
 import org.eclipse.jetty.server.Handler;
-import org.eclipse.jetty.server.handler.ScopedHandler;
 import org.eclipse.jetty.server.session.SessionHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.util.resource.ResourceCollection;
