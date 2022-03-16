@@ -5,12 +5,12 @@ import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerConstants;
 import org.noear.solon.boot.ServerProps;
+import org.noear.solon.boot.ssl.SslContextFactory;
 import org.noear.solon.core.*;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.util.PrintUtil;
 import org.noear.solon.ext.NamedThreadFactory;
 
-import javax.net.ssl.SSLServerSocketFactory;
 import java.util.concurrent.Executors;
 
 //
@@ -64,44 +64,45 @@ public final class XPluginImp implements Plugin {
         //maxFormContentSize def: 2m (from content)
         //maxBodySize def: -
 
-        if(ServerProps.request_maxHeaderSize > 0) {
+        if (ServerProps.request_maxHeaderSize > 0) {
             HTTPServer.MAX_HEADER_SIZE = ServerProps.request_maxHeaderSize;
         }
 
-        if(ServerProps.request_maxBodySize > 0) {
+        if (ServerProps.request_maxBodySize > 0) {
             HTTPServer.MAX_BODY_SIZE = ServerProps.request_maxBodySize;
         }
 
-
-        JlHttpContextHandler _handler = new JlHttpContextHandler();
-
-
-        if (System.getProperty(ServerConstants.SSL_KEYSTORE) != null) { // enable SSL if configured
-            _server.setServerSocketFactory(SSLServerSocketFactory.getDefault());
-        }
-
-        HTTPServer.VirtualHost host = _server.getVirtualHost(null);
-
-
-        host.setDirectoryIndex(null);
-
-        host.addContext("/", _handler,
-                MethodType.HEAD.name,
-                MethodType.GET.name,
-                MethodType.POST.name,
-                MethodType.PUT.name,
-                MethodType.DELETE.name,
-                MethodType.PATCH.name,
-                MethodType.OPTIONS.name);
-
-        PrintUtil.info("Server:main: JlHttpServer 2.4(jlhttp)");
-
         try {
+
+            JlHttpContextHandler _handler = new JlHttpContextHandler();
+
+
+            if (System.getProperty(ServerConstants.SSL_KEYSTORE) != null) { // enable SSL if configured
+                _server.setServerSocketFactory(SslContextFactory.createSslContext().getServerSocketFactory());
+            }
+
+            HTTPServer.VirtualHost host = _server.getVirtualHost(null);
+
+
+            host.setDirectoryIndex(null);
+
+            host.addContext("/", _handler,
+                    MethodType.HEAD.name,
+                    MethodType.GET.name,
+                    MethodType.POST.name,
+                    MethodType.PUT.name,
+                    MethodType.DELETE.name,
+                    MethodType.PATCH.name,
+                    MethodType.OPTIONS.name);
+
+            PrintUtil.info("Server:main: JlHttpServer 2.4(jlhttp)");
+
+
             _server.setExecutor(Executors.newCachedThreadPool(new NamedThreadFactory("jlhttp-")));
             _server.setPort(_port);
             _server.start();
 
-            _signal= new SignalSim(_name, _port, "http", SignalType.HTTP);
+            _signal = new SignalSim(_name, _port, "http", SignalType.HTTP);
 
             app.signalAdd(_signal);
 
@@ -109,8 +110,10 @@ public final class XPluginImp implements Plugin {
 
             PrintUtil.info("Connector:main: jlhttp: Started ServerConnector@{HTTP/1.1,[http/1.1]}{http://localhost:" + _port + "}");
             PrintUtil.info("Server:main: jlhttp: Started @" + (time_end - time_start) + "ms");
-        } catch (Exception ex) {
-            throw new RuntimeException(ex);
+        } catch (RuntimeException e) {
+            throw e;
+        } catch (Throwable e) {
+            throw new IllegalStateException(e);
         }
     }
 

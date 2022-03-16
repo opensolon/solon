@@ -26,8 +26,10 @@ class PluginJetty extends PluginJettyBase implements Plugin {
         try {
             setup(app);
             _server.start();
-        } catch (Exception ex) {
-            throw new RuntimeException(ex);
+        } catch (RuntimeException e) {
+            throw e;
+        } catch (Throwable e) {
+            throw new IllegalStateException(e);
         }
     }
 

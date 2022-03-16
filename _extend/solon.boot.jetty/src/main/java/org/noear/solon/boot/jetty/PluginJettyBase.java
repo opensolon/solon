@@ -25,7 +25,7 @@ class PluginJettyBase {
      *
      * @since 1.6
      * */
-    protected ServerConnector getConnector(Server server) {
+    protected ServerConnector getConnector(Server server) throws RuntimeException{
         //配置 //http://www.eclipse.org/jetty/documentation/jetty-9/index.html
         HttpConfiguration config = new HttpConfiguration();
         if (ServerProps.request_maxHeaderSize != 0) {
@@ -43,12 +43,17 @@ class PluginJettyBase {
 
             SslContextFactory.Server contextFactory = new SslContextFactory.Server();
 
-            if (Utils.isNotEmpty(sslKeyStoreType)) {
-                contextFactory.setKeyStoreType(sslKeyStoreType);
+            if (Utils.isNotEmpty(sslKeyStore)) {
+                URL url = Utils.getResource(sslKeyStore);
+                if (url != null) {
+                    sslKeyStore = url.toString();
+                }
+
+                contextFactory.setKeyStorePath(sslKeyStore);
             }
 
-            if (Utils.isNotEmpty(sslKeyStore)) {
-                contextFactory.setKeyStorePath(sslKeyStore);
+            if (Utils.isNotEmpty(sslKeyStoreType)) {
+                contextFactory.setKeyStoreType(sslKeyStoreType);
             }
 
             if (Utils.isNotEmpty(sslKeyStorePassword)) {

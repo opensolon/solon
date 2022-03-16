@@ -1,14 +1,14 @@
-package org.noear.solon.boot.undertow.ssl;
+package org.noear.solon.boot.ssl;
 
 /**
  * @author noear
  * @since 1.6
  */
-import java.security.cert.X509Certificate;
 
 import javax.net.ssl.X509TrustManager;
+import java.security.cert.X509Certificate;
 
-public class DummyTrustManager implements X509TrustManager {
+public class TrustManagerImpl implements X509TrustManager {
 
     public X509Certificate[] getAcceptedIssuers() {
         return new X509Certificate[] {};

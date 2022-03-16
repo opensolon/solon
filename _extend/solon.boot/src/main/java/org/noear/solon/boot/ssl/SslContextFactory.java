@@ -1,24 +1,15 @@
-package org.noear.solon.boot.undertow.ssl;
+package org.noear.solon.boot.ssl;
 
 import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerConstants;
 
+import javax.net.ssl.*;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.security.KeyManagementException;
-import java.security.KeyStore;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.UnrecoverableKeyException;
+import java.security.*;
 import java.security.cert.CertificateException;
-
-import javax.net.ssl.KeyManager;
-import javax.net.ssl.KeyManagerFactory;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.TrustManagerFactory;
-import javax.net.ssl.X509TrustManager;
 
 /**
  * @author noear
@@ -26,7 +17,7 @@ import javax.net.ssl.X509TrustManager;
  */
 public class SslContextFactory {
 
-    public final static TrustManager[] TRUST_ALL_CERTS = new X509TrustManager[]{new DummyTrustManager()};
+    public final static TrustManager[] TRUST_ALL_CERTS = new X509TrustManager[]{new TrustManagerImpl()};
 
     public static SSLContext createSslContext() throws IOException {
         String keyStoreName = System.getProperty(ServerConstants.SSL_KEYSTORE);
@@ -56,20 +47,22 @@ public class SslContextFactory {
 
     private static KeyStore loadKeyStore(final String location, String type, String storePassword)
             throws IOException {
-        String url = location;
-        if (url.indexOf(':') == -1) {
-            url = "file:" + location;
+
+        URL KeyStoreUrl = Utils.getResource(location);
+        InputStream KeyStoreStream = null;
+
+        if (KeyStoreUrl == null) {
+            KeyStoreStream = new FileInputStream(location);
+        } else {
+            KeyStoreStream = KeyStoreUrl.openStream();
         }
 
-        final InputStream stream = new URL(url).openStream();
-        try {
+        try (InputStream stream = KeyStoreStream) {
             KeyStore loadedKeystore = KeyStore.getInstance(type);
             loadedKeystore.load(stream, storePassword.toCharArray());
             return loadedKeystore;
         } catch (KeyStoreException | NoSuchAlgorithmException | CertificateException exc) {
             throw new IOException(String.format("Unable to load KeyStore %s", location), exc);
-        } finally {
-            stream.close();
         }
     }
 

@@ -99,8 +99,10 @@ public final class XPluginImp implements Plugin {
             PrintUtil.info(connectorInfo + "}{http://localhost:" + _port + "}");
 
             PrintUtil.info("Server:main: smarthttp: Started @" + (time_end - time_start) + "ms");
-        } catch (Exception ex) {
-            throw new RuntimeException(ex);
+        } catch (RuntimeException e) {
+            throw e;
+        } catch (Throwable e) {
+            throw new IllegalStateException(e);
         }
     }
 
