@@ -95,7 +95,7 @@ public final class XPluginImp implements Plugin {
                     MethodType.PATCH.name,
                     MethodType.OPTIONS.name);
 
-            PrintUtil.info("Server:main: JlHttpServer 2.4(jlhttp)");
+            PrintUtil.info("Server:main: JlHttpServer 2.6(jlhttp)");
 
 
             _server.setExecutor(Executors.newCachedThreadPool(new NamedThreadFactory("jlhttp-")));
