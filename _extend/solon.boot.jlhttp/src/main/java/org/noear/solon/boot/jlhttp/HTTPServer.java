@@ -1692,10 +1692,13 @@ public class HTTPServer {
             encodedOut = new ResponseOutputStream(out); // leaves underlying stream open when closed
             if (te.contains("chunked"))
                 encodedOut = new ChunkedOutputStream(encodedOut);
-            if (ce.contains("gzip") || te.contains("gzip"))
-                encodedOut = new GZIPOutputStream(encodedOut, 4096);
-            else if (ce.contains("deflate") || te.contains("deflate"))
-                encodedOut = new DeflaterOutputStream(encodedOut);
+
+            //todo: by noear 20220316, 关掉自动gzip
+//            if (ce.contains("gzip") || te.contains("gzip"))
+//                encodedOut = new GZIPOutputStream(encodedOut, 4096);
+//            else if (ce.contains("deflate") || te.contains("deflate"))
+//                encodedOut = new DeflaterOutputStream(encodedOut);
+
             return encodedOut; // return the outer-most stream
         }
 

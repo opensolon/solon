@@ -14,7 +14,7 @@ public class AppFilterImpl implements Filter {
     @Override
     public void doFilter(Context ctx, FilterChain chain) throws Throwable {
 
-        ctx.headerSet("Content-Encoding","gzip");
+        //ctx.headerSet("Content-Encoding","gzip");
 
         ctx.attrSet("_test_var","attr_test");
         chain.doFilter(ctx);
