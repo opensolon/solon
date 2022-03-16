@@ -36,8 +36,8 @@ class PluginUndertow extends PluginUndertowBase implements Plugin {
             setup(app);
 
             _server.start();
-        } catch (Throwable ex) {
-            throw new RuntimeException(ex);
+        } catch (Throwable e) {
+            throw new IllegalStateException(e);
         }
     }
 

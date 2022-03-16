@@ -69,7 +69,7 @@ public class SocketAsyncTest {
     }
 
     @Test
-    public void test_async_message3() throws Throwable {
+    public void test_async_message3_self_ws() throws Throwable {
         Session session = SocketD.createSession("ws://127.0.0.1:8080/demoe/websocket/12", true);
 
         CompletableFuture<Boolean> check = new CompletableFuture<>();

@@ -1,5 +1,6 @@
 package org.noear.solon.boot.undertow.ssl;
 
+import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerConstants;
 
 import java.io.IOException;
@@ -31,6 +32,10 @@ public class SslContextFactory {
         String keyStoreName = System.getProperty(ServerConstants.SSL_KEYSTORE);
         String keyStoreType = System.getProperty(ServerConstants.SSL_KEYSTORE_TYPE);
         String keyStorePassword = System.getProperty(ServerConstants.SSL_KEYSTORE_PASSWORD);
+
+        if(Utils.isEmpty(keyStoreType)){
+            keyStoreType = "jks";
+        }
 
         KeyStore keyStore = loadKeyStore(keyStoreName, keyStoreType, keyStorePassword);
 

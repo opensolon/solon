@@ -60,18 +60,9 @@ public final class XPluginImp implements Plugin {
 
         long time_start = System.currentTimeMillis();
 
-        JlHttpContextHandler _handler = new JlHttpContextHandler();
-
         //maxHeaderSize def: 8k
         //maxFormContentSize def: 2m (from content)
         //maxBodySize def: -
-
-        if (System.getProperty("javax.net.ssl.keyStore") != null) { // enable SSL if configured
-            _server.setServerSocketFactory(SSLServerSocketFactory.getDefault());
-        }
-
-        HTTPServer.VirtualHost host = _server.getVirtualHost(null);
-
 
         if(ServerProps.request_maxHeaderSize > 0) {
             HTTPServer.MAX_HEADER_SIZE = ServerProps.request_maxHeaderSize;
@@ -80,6 +71,16 @@ public final class XPluginImp implements Plugin {
         if(ServerProps.request_maxBodySize > 0) {
             HTTPServer.MAX_BODY_SIZE = ServerProps.request_maxBodySize;
         }
+
+
+        JlHttpContextHandler _handler = new JlHttpContextHandler();
+
+
+        if (System.getProperty(ServerConstants.SSL_KEYSTORE) != null) { // enable SSL if configured
+            _server.setServerSocketFactory(SSLServerSocketFactory.getDefault());
+        }
+
+        HTTPServer.VirtualHost host = _server.getVirtualHost(null);
 
 
         host.setDirectoryIndex(null);

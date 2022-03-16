@@ -20,6 +20,11 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 class PluginJettyBase {
+    /**
+     * 创建连接器（支持https）
+     *
+     * @since 1.6
+     * */
     protected ServerConnector getConnector(Server server) {
         //配置 //http://www.eclipse.org/jetty/documentation/jetty-9/index.html
         HttpConfiguration config = new HttpConfiguration();
@@ -37,6 +42,7 @@ class PluginJettyBase {
             String sslKeyStorePassword = System.getProperty(ServerConstants.SSL_KEYSTORE_PASSWORD);
 
             SslContextFactory.Server contextFactory = new SslContextFactory.Server();
+
             if (Utils.isNotEmpty(sslKeyStoreType)) {
                 contextFactory.setKeyStoreType(sslKeyStoreType);
             }
