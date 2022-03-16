@@ -1,5 +1,6 @@
 #### 1.6.31
 * 修复 solon.boot.jetty 的 websocket 在多线程发时，会出错的问题
+* 修复 solon.boot.jlhttp 可能会产生2个 Content-Encoding 头的问题
 * 增加 message::Session::sendAsync() 接口
 * 增加 server.ssl.* 专属ssl配置属性
 * 插件 solon.boot.undertow，增加 ssl 支持
