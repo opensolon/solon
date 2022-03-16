@@ -1784,12 +1784,13 @@ public class HTTPServer {
                 String compression = encodings.contains("gzip") ? "gzip" :
                                      encodings.contains("deflate") ? "deflate" : null;
                 if (compression != null && (length < 0 || length > 300) && isCompressible(ct) && modern) {
-                    headers.add("Transfer-Encoding", "chunked"); // compressed data is always unknown length
-                    headers.add("Content-Encoding", compression);
+                    //todo: by noear 20220316; add() -> replace()
+                    headers.replace("Transfer-Encoding", "chunked"); // compressed data is always unknown length
+                    headers.replace("Content-Encoding", compression);
                 } else if (length < 0 && modern) {
-                    headers.add("Transfer-Encoding", "chunked"); // unknown length
+                    headers.replace("Transfer-Encoding", "chunked"); // unknown length
                 } else if (length >= 0) {
-                    headers.add("Content-Length", Long.toString(length)); // known length
+                    headers.replace("Content-Length", Long.toString(length)); // known length
                 }
             }
             if (!headers.contains("Vary")) // RFC7231#7.1.4: Vary field should include headers
