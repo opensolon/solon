@@ -1,10 +1,12 @@
-#### 1.6.31
+#### 1.6.32
 * 修复 solon.boot.jetty 的 websocket 在多线程发时，会出错的问题
 * 修复 solon.boot.jlhttp 可能会产生2个 Content-Encoding 头的问题；并关掉自动gzip
 * 增加 message::Session::sendAsync() 接口
 * 增加 server.ssl.* 专属ssl配置属性
 * 插件 solon.boot.undertow，增加 ssl 支持
 * 插件 solon.boot.jetty，增加 ssl 支持
+
+#### 1.6.31 --invalid
 
 #### 1.6.30
 * smart-http-server 升级到：1.1.12
@@ -19,9 +21,9 @@
 * 增加 配置对复杂结构类的注入支持
 * 增加 多级复杂泛型注入的支持
 
-#### 1.6.27 --
+#### 1.6.27 --invalid
 
-#### 1.6.26 --
+#### 1.6.26 --invalid
 * 增加 jap-ids-solon-plugin 插件
 * 增加 jap-solon-plugin 插件
 * 插件 mybatisplus-solon-plugin，升级  mybatis-plus 为 3.5.1
@@ -29,7 +31,7 @@
 * 修复 mybatis-solon-plugin 没有自动关闭会话的问题
 * 优化 配置对复杂结构类的支持
 
-#### 1.6.25 --
+#### 1.6.25 --invalid
 * 调整 @CacheRemove key 为 keys
 * 调整 @Param 的作用范围
 * 新增 @Header 以支持头变量注入
