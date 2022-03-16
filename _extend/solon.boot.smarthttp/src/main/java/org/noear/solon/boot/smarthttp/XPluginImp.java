@@ -75,7 +75,7 @@ public final class XPluginImp implements Plugin {
             SessionManager.register(new _SessionManagerImpl());
         }
 
-        PrintUtil.info("Server:main: SmartHttpServer 1.1.4(smarthttp)");
+        PrintUtil.info("Server:main: SmartHttpServer 1.1(smarthttp)");
 
         try {
 
