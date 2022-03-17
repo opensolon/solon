@@ -15,43 +15,43 @@ import java.util.Date;
 class JobEntity extends Thread {
     /**
      * 调度表达式
-     * */
-    private final CronExpressionPlus cron;
+     */
+    final CronExpressionPlus cron;
     /**
      * 固定频率
-     * */
-    private final long fixedRate;
+     */
+    final long fixedRate;
     /**
      * 固定延时
-     * */
-    private final long fixedDelay;
+     */
+    final long fixedDelay;
     /**
      * 执行函数
-     * */
-    private final Runnable runnable;
+     */
+    final Runnable runnable;
     /**
      * 是否并发执行（时间到了，新启一个线程执行；不管之前有没有执行完成）
-     * */
-    private final boolean concurrent;
+     */
+    final boolean concurrent;
 
 
     /**
      * 是否取消任务
-     * */
+     */
     private boolean isCanceled;
 
     /**
      * 休息时间
-     * */
+     */
     private long sleepMillis;
 
     /**
      * 基准时间（对于比对）
-     * */
+     */
     private Date baseTime;
     /**
      * 下次执行时间
-     * */
+     */
     private Date nextTime;
 
 
@@ -86,7 +86,7 @@ class JobEntity extends Thread {
 
     /**
      * 运行
-     * */
+     */
     @Override
     public void run() {
         if (fixedDelay > 0) {
@@ -107,7 +107,7 @@ class JobEntity extends Thread {
 
     /**
      * 调度
-     * */
+     */
     private void scheduling() throws Throwable {
         if (fixedRate > 0) {
             //按固定频率调度

@@ -108,6 +108,18 @@ public class JobManager {
     }
 
     /**
+     * 获取执行函数
+     * */
+    public static Runnable getRunnable(String name) {
+        JobEntity jobEntity = jobEntityMap.get(name);
+        if (jobEntity != null) {
+            return jobEntity.runnable;
+        } else {
+            return null;
+        }
+    }
+
+    /**
      * 开启
      */
     public static void start() {
