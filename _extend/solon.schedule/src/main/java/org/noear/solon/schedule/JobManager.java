@@ -25,7 +25,7 @@ public class JobManager {
      */
     public static void add(String name, String cron, boolean concurrent, Runnable runnable) throws ParseException {
         CronExpressionPlus cronX = CronUtils.get(cron);
-        jobEntityMap.put(name, new JobEntity(name, cronX, 0, 0, concurrent, runnable));
+        add(name, new JobEntity(name, cronX, concurrent, runnable));
     }
 
     /**
@@ -43,7 +43,7 @@ public class JobManager {
             cronX.setTimeZone(TimeZone.getTimeZone(zone));
         }
 
-        jobEntityMap.put(name, new JobEntity(name, cronX, 0, 0, concurrent, runnable));
+        add(name, new JobEntity(name, cronX, concurrent, runnable));
     }
 
     /**
@@ -54,7 +54,7 @@ public class JobManager {
      * @param runnable  运行函数
      */
     public static void add(String name, long fixedRate, boolean concurrent, Runnable runnable) {
-        jobEntityMap.put(name, new JobEntity(name, null, fixedRate, 0, concurrent, runnable));
+        add(name, new JobEntity(name, fixedRate, 0, concurrent, runnable));
     }
 
     /**
@@ -66,12 +66,24 @@ public class JobManager {
      * @param runnable   运行函数
      */
     public static void add(String name, long fixedRate, long fixedDelay, boolean concurrent, Runnable runnable) {
-        jobEntityMap.put(name, new JobEntity(name, null, fixedRate, fixedDelay, concurrent, runnable));
+        add(name, new JobEntity(name, fixedRate, fixedDelay, concurrent, runnable));
+    }
+
+    /**
+     * 添加计划任务
+     *
+     * @param name      任务名称
+     * @param jobEntity 任务实体
+     */
+    public static void add(String name, JobEntity jobEntity) {
+        jobEntityMap.putIfAbsent(name, jobEntity);
     }
 
     /**
      * 移除计划任务
-     * */
+     *
+     * @param name 任务名称
+     */
     public static void remove(String name) {
         JobEntity jobEntity = jobEntityMap.get(name);
         if (jobEntity != null) {

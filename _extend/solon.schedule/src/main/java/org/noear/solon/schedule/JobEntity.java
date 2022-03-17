@@ -13,21 +13,30 @@ import java.util.Date;
  * @since 1.6
  */
 public class JobEntity extends Thread {
-    final String name;
-    final CronExpressionPlus cron;
-    final long fixedRate;
-    final long fixedDelay;
-    final Runnable runnable;
-    final boolean concurrent;
+    public final String name;
+    private final CronExpressionPlus cron;
+    private final long fixedRate;
+    private final long fixedDelay;
+    private final Runnable runnable;
+    private final boolean concurrent;
 
-    boolean isCanceled;
+    private boolean isCanceled;
 
-    long sleepMillis;
+    private long sleepMillis;
 
-    Date baseTime;
-    Date nextTime;
+    private Date baseTime;
+    private Date nextTime;
 
-    public JobEntity(String name, CronExpressionPlus cron, long fixedRate, long fixedDelay, boolean concurrent, Runnable runnable) {
+
+    public JobEntity(String name, long fixedRate, long fixedDelay, boolean concurrent, Runnable runnable) {
+        this(name, null, fixedRate, fixedDelay, concurrent, runnable);
+    }
+
+    public JobEntity(String name, CronExpressionPlus cron, boolean concurrent, Runnable runnable) {
+        this(name, cron, 0, 0, concurrent, runnable);
+    }
+
+    private JobEntity(String name, CronExpressionPlus cron, long fixedRate, long fixedDelay, boolean concurrent, Runnable runnable) {
         this.name = name;
         this.cron = cron;
         this.fixedRate = fixedRate;
@@ -88,9 +97,9 @@ public class JobEntity extends Thread {
                     exec();
 
                     //重新设定休息时间
-                    if(concurrent) {
+                    if (concurrent) {
                         sleepMillis = System.currentTimeMillis() - nextTime.getTime();
-                    }else{
+                    } else {
                         baseTime = new Date();
 
                         nextTime = cron.getNextValidTimeAfter(baseTime);
