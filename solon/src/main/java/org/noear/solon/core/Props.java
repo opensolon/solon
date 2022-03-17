@@ -48,6 +48,9 @@ public class Props extends Properties {
         return get(name);
     }
 
+    /**
+     * @param expr 兼容 ${key} or key
+     */
     public String getByParse(String expr) {
         if (Utils.isEmpty(expr)) {
             return expr;
