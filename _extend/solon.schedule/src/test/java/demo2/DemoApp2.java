@@ -29,9 +29,9 @@ public class DemoApp2 {
                 String cron = ctx.param("cron");
                 if (Utils.isNotEmpty(name) && Utils.isNotEmpty(cron)) {
                     Runnable runnable = JobManager.getRunnable(name);
-                    if (runnable != null) {
-                        JobManager.remove(name);
-                        JobManager.add(name, cron, false, runnable);
+                    if (runnable != null) { //如果找到了对应的执行函数
+                        JobManager.remove(name); //移除
+                        JobManager.add(name, cron, false, runnable); //再添加
                     }
                 }
             });
