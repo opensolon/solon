@@ -80,6 +80,15 @@ public class JobManager {
     }
 
     /**
+     * 检查计划任务是否存在
+     *
+     * @param name 任务名称
+     */
+    public static boolean contains(String name) {
+        return jobEntityMap.containsKey(name);
+    }
+
+    /**
      * 移除计划任务
      *
      * @param name 任务名称
