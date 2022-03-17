@@ -1,6 +1,9 @@
 package demo2;
 
 import org.noear.solon.Solon;
+import org.noear.solon.annotation.Component;
+import org.noear.solon.annotation.Inject;
+import org.noear.solon.core.Aop;
 import org.noear.solon.schedule.JobManager;
 
 import java.time.LocalDateTime;
@@ -20,6 +23,24 @@ public class DemoApp2 {
             System.out.println("job2::" + LocalDateTime.now());
         });
 
+        Runnable job3 = Aop.getOrNew(Job3.class); //如果不存在自动生成bean
+        JobManager.add("job3", 1000, false, job3);
+
         JobManager.start();
+    }
+
+    public static class Job3 implements Runnable{
+        @Inject
+        UserService userService;
+
+        @Override
+        public void run() {
+            System.out.println("job3::" + LocalDateTime.now());
+        }
+    }
+
+    @Component
+    public static class UserService{
+
     }
 }
