@@ -1,6 +1,7 @@
 #### 1.6.33
-* 插件 solon.schedule 添加纯手工控制能力
+* 插件 solon.schedule 添加 纯手工控制能力
 * 取消 非泛型基类的 typeName 注册
+* 插件 dubbo-solon-plugin 的注解添加属性模板支持
 
 #### 1.6.32
 * 修复 solon.boot.jetty 的 websocket 在多线程发时，会出错的问题
