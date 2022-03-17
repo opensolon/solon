@@ -25,7 +25,7 @@ public class XPluginImp implements Plugin {
         Aop.context().beanBuilderAdd(Service.class, ((clz, bw, anno) -> {
             Class<?>[] ifs = bw.clz().getInterfaces();
             if (ifs.length > 0) {
-                ServiceConfig cfg = new ServiceConfig(anno);
+                ServiceConfig cfg = new ServiceConfig(new ServiceHolder(anno));
                 if (cfg.getInterface() == null) {
                     cfg.setInterface(ifs[0]);
                 }
@@ -39,7 +39,7 @@ public class XPluginImp implements Plugin {
         //支持dubbo.Reference注入
         Aop.context().beanInjectorAdd(Reference.class, ((fwT, anno) -> {
             if (fwT.getType().isInterface()) {
-                Object raw = _server.getService(fwT.getType(), anno);
+                Object raw = _server.getService(fwT.getType(), new ReferenceHolder(anno));
                 fwT.setValue(raw);
             }
         }));
