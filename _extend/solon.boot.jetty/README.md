@@ -2,7 +2,7 @@
 
 ### 添加https证书支持
 
-通过应用配置文件（app.yml）进行配置
+通过应用配置文件（app.yml）进行配置（支持 .jks 或 .pfx）
 
 ```yml
 server:
