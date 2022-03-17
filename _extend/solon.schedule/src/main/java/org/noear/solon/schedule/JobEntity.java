@@ -13,7 +13,6 @@ import java.util.Date;
  * @since 1.6
  */
 public class JobEntity extends Thread {
-    public final String name;
     private final CronExpressionPlus cron;
     private final long fixedRate;
     private final long fixedDelay;
@@ -37,7 +36,6 @@ public class JobEntity extends Thread {
     }
 
     private JobEntity(String name, CronExpressionPlus cron, long fixedRate, long fixedDelay, boolean concurrent, Runnable runnable) {
-        this.name = name;
         this.cron = cron;
         this.fixedRate = fixedRate;
         this.fixedDelay = fixedDelay;
@@ -124,7 +122,7 @@ public class JobEntity extends Thread {
     private void exec0() {
         try {
             if (concurrent) {
-                Thread.currentThread().setName("Job:" + name);
+                Thread.currentThread().setName(getName());
             }
 
             runnable.run();
