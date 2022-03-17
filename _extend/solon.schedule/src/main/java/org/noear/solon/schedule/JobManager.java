@@ -5,9 +5,7 @@ import org.noear.solon.schedule.cron.CronExpressionPlus;
 import org.noear.solon.schedule.cron.CronUtils;
 
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.TimeZone;
+import java.util.*;
 
 /**
  * 任务管理器
@@ -16,7 +14,7 @@ import java.util.TimeZone;
  * @since 1.6
  */
 public class JobManager {
-    private static List<JobEntity> jobEntityList = new ArrayList<>();
+    private static Map<String, JobEntity> jobEntityMap = new HashMap<>();
 
     /**
      * 添加计划任务
@@ -27,7 +25,7 @@ public class JobManager {
      */
     public static void add(String name, String cron, boolean concurrent, Runnable runnable) throws ParseException {
         CronExpressionPlus cronX = CronUtils.get(cron);
-        jobEntityList.add(new JobEntity(name, cronX, 0, 0, concurrent, runnable));
+        jobEntityMap.put(name, new JobEntity(name, cronX, 0, 0, concurrent, runnable));
     }
 
     /**
@@ -45,7 +43,7 @@ public class JobManager {
             cronX.setTimeZone(TimeZone.getTimeZone(zone));
         }
 
-        jobEntityList.add(new JobEntity(name, cronX, 0, 0, concurrent, runnable));
+        jobEntityMap.put(name, new JobEntity(name, cronX, 0, 0, concurrent, runnable));
     }
 
     /**
@@ -56,7 +54,7 @@ public class JobManager {
      * @param runnable  运行函数
      */
     public static void add(String name, long fixedRate, boolean concurrent, Runnable runnable) {
-        jobEntityList.add(new JobEntity(name, null, fixedRate, 0, concurrent, runnable));
+        jobEntityMap.put(name, new JobEntity(name, null, fixedRate, 0, concurrent, runnable));
     }
 
     /**
@@ -68,14 +66,25 @@ public class JobManager {
      * @param runnable   运行函数
      */
     public static void add(String name, long fixedRate, long fixedDelay, boolean concurrent, Runnable runnable) {
-        jobEntityList.add(new JobEntity(name, null, fixedRate, fixedDelay, concurrent, runnable));
+        jobEntityMap.put(name, new JobEntity(name, null, fixedRate, fixedDelay, concurrent, runnable));
+    }
+
+    /**
+     * 移除计划任务
+     * */
+    public static void remove(String name) {
+        JobEntity jobEntity = jobEntityMap.get(name);
+        if (jobEntity != null) {
+            jobEntity.cancel();
+            jobEntityMap.remove(name);
+        }
     }
 
     /**
      * 开启
      */
     public static void start() {
-        for (JobEntity job : jobEntityList) {
+        for (JobEntity job : jobEntityMap.values()) {
             job.start();
         }
     }
@@ -84,7 +93,7 @@ public class JobManager {
      * 停止
      */
     public static void stop() {
-        for (JobEntity job : jobEntityList) {
+        for (JobEntity job : jobEntityMap.values()) {
             job.cancel();
         }
     }

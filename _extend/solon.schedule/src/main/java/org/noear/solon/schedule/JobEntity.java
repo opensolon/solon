@@ -12,7 +12,7 @@ import java.util.Date;
  * @author noear
  * @since 1.6
  */
-class JobEntity extends Thread {
+public class JobEntity extends Thread {
     final String name;
     final CronExpressionPlus cron;
     final long fixedRate;
@@ -27,7 +27,7 @@ class JobEntity extends Thread {
     Date baseTime;
     Date nextTime;
 
-    public JobEntity(String name, CronExpressionPlus cron,  long fixedRate, long fixedDelay, boolean concurrent, Runnable runnable) {
+    public JobEntity(String name, CronExpressionPlus cron, long fixedRate, long fixedDelay, boolean concurrent, Runnable runnable) {
         this.name = name;
         this.cron = cron;
         this.fixedRate = fixedRate;
