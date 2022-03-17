@@ -12,7 +12,7 @@ import java.util.Date;
  * @author noear
  * @since 1.6
  */
-public class JobEntity extends Thread {
+class JobEntity extends Thread {
     private final CronExpressionPlus cron;
     private final long fixedRate;
     private final long fixedDelay;
