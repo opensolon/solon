@@ -15,8 +15,8 @@ import java.time.LocalDateTime;
 public class DemoApp2 {
     public static void main(String[] args) throws Throwable {
         Solon.start(DemoApp2.class, args, app -> {
-            //停掉job
-            app.get("/stopJob", (ctx) -> {
+            //删掉job
+            app.get("/removeJob", (ctx) -> {
                 String name = ctx.param("name");
                 if (Utils.isNotEmpty(name)) {
                     JobManager.remove(name);
