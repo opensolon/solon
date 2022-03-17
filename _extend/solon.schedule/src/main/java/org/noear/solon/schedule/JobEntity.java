@@ -7,7 +7,7 @@ import org.noear.solon.schedule.cron.CronExpressionPlus;
 import java.util.Date;
 
 /**
- * 任务实体
+ * 任务实体（内部使用）
  *
  * @author noear
  * @since 1.6
