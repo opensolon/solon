@@ -15,6 +15,7 @@ import java.util.*;
  */
 public class JobManager {
     private static Map<String, JobEntity> jobEntityMap = new HashMap<>();
+    private static boolean isStarted = false;
 
     /**
      * 添加计划任务
@@ -77,6 +78,11 @@ public class JobManager {
      */
     protected static void add(String name, JobEntity jobEntity) {
         jobEntityMap.putIfAbsent(name, jobEntity);
+
+        if (isStarted) {
+            //如果已开始，则直接开始调度
+            jobEntity.start();
+        }
     }
 
     /**
@@ -108,6 +114,7 @@ public class JobManager {
         for (JobEntity job : jobEntityMap.values()) {
             job.start();
         }
+        isStarted = true;
     }
 
     /**
@@ -117,5 +124,6 @@ public class JobManager {
         for (JobEntity job : jobEntityMap.values()) {
             job.cancel();
         }
+        isStarted = false;
     }
 }

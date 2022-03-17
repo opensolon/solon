@@ -13,17 +13,45 @@ import java.util.Date;
  * @since 1.6
  */
 class JobEntity extends Thread {
+    /**
+     * 调度表达式
+     * */
     private final CronExpressionPlus cron;
+    /**
+     * 固定频率
+     * */
     private final long fixedRate;
+    /**
+     * 固定延时
+     * */
     private final long fixedDelay;
+    /**
+     * 执行函数
+     * */
     private final Runnable runnable;
+    /**
+     * 是否并发执行（时间到了，新启一个线程执行；不管之前有没有执行完成）
+     * */
     private final boolean concurrent;
 
+
+    /**
+     * 是否取消任务
+     * */
     private boolean isCanceled;
 
+    /**
+     * 休息时间
+     * */
     private long sleepMillis;
 
+    /**
+     * 基准时间（对于比对）
+     * */
     private Date baseTime;
+    /**
+     * 下次执行时间
+     * */
     private Date nextTime;
 
 
@@ -49,6 +77,16 @@ class JobEntity extends Thread {
         }
     }
 
+    /**
+     * 取消
+     */
+    public void cancel() {
+        isCanceled = true;
+    }
+
+    /**
+     * 运行
+     * */
     @Override
     public void run() {
         if (fixedDelay > 0) {
@@ -58,7 +96,7 @@ class JobEntity extends Thread {
         while (true) {
             if (isCanceled == false) {
                 try {
-                    run0();
+                    scheduling();
                 } catch (Throwable e) {
                     e = Utils.throwableUnwrap(e);
                     EventBus.push(new ScheduledException(e));
@@ -67,8 +105,12 @@ class JobEntity extends Thread {
         }
     }
 
-    private void run0() throws Throwable {
+    /**
+     * 调度
+     * */
+    private void scheduling() throws Throwable {
         if (fixedRate > 0) {
+            //按固定频率调度
             sleepMillis = System.currentTimeMillis() - baseTime.getTime();
 
             if (sleepMillis >= fixedRate) {
@@ -84,6 +126,7 @@ class JobEntity extends Thread {
 
             sleep0(sleepMillis);
         } else {
+            //按表达式调度
             nextTime = cron.getNextValidTimeAfter(baseTime);
             sleepMillis = System.currentTimeMillis() - nextTime.getTime();
 
@@ -141,12 +184,5 @@ class JobEntity extends Thread {
         } catch (Exception e) {
             EventBus.push(e);
         }
-    }
-
-    /**
-     * 关闭
-     */
-    public void cancel() {
-        isCanceled = true;
     }
 }

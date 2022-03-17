@@ -8,10 +8,10 @@ import org.noear.solon.annotation.Note;
 import org.noear.solon.core.aspect.Interceptor;
 import org.noear.solon.core.aspect.InterceptorEntity;
 import org.noear.solon.core.handle.HandlerLoader;
-import org.noear.solon.core.wrap.ClassWrap;
 import org.noear.solon.core.util.ConvertUtil;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.*;
 import java.util.function.BiConsumer;
@@ -291,9 +291,11 @@ public abstract class BeanContainer {
             }
         }
 
-        Type[] list2 = bw.clz().getGenericInterfaces();
+        Type[] list2 = bw.clz().getGenericInterfaces(); //有可能跟 getInterfaces() 一样
         for (Type t : list2) {
-            putWrap(t.getTypeName(), bw);
+            if (t instanceof ParameterizedType) { //有可能不是 ParameterizedType
+                putWrap(t.getTypeName(), bw);
+            }
         }
     }
 
