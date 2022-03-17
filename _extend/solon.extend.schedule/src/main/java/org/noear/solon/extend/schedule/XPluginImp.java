@@ -15,9 +15,9 @@ public class XPluginImp implements Plugin {
     @Override
     public void start(SolonApp app) {
         Aop.context().beanOnloaded(() -> {
-            Aop.context().beanForeach((k, v) -> {
+            Aop.context().beanForeach((v) -> {
                 if (v.raw() instanceof IJob) {
-                    JobManager.register(new JobEntity(k, v.raw()));
+                    JobManager.register(new JobEntity(v.name(), v.raw()));
                 }
             });
         });
