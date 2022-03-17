@@ -76,7 +76,7 @@ public class JobManager {
      * @param name      任务名称
      * @param jobEntity 任务实体
      */
-    protected static void add(String name, JobEntity jobEntity) {
+    private static void add(String name, JobEntity jobEntity) {
         jobEntityMap.putIfAbsent(name, jobEntity);
 
         if (isStarted) {
