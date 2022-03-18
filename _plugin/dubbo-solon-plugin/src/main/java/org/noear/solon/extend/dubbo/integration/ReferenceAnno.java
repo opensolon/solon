@@ -1,7 +1,7 @@
 package org.noear.solon.extend.dubbo.integration;
 
 import org.apache.dubbo.config.annotation.Method;
-import org.apache.dubbo.config.annotation.Service;
+import org.apache.dubbo.config.annotation.Reference;
 import org.noear.solon.Solon;
 
 import java.lang.annotation.Annotation;
@@ -10,10 +10,9 @@ import java.lang.annotation.Annotation;
  * @author noear
  * @since 1.6
  */
-public class ServiceHolder implements Service {
-    private Service anno;
-
-    public ServiceHolder(Service anno){
+public class ReferenceAnno implements Reference {
+    private Reference anno;
+    public ReferenceAnno(Reference anno){
         this.anno = anno;
     }
 
@@ -26,6 +25,7 @@ public class ServiceHolder implements Service {
     public String interfaceName() {
         return anno.interfaceName();
     }
+
 
     private String version;
     @Override
@@ -47,113 +47,69 @@ public class ServiceHolder implements Service {
         return group;
     }
 
-    private String path;
+    private String url;
     @Override
-    public String path() {
-        if (path == null) {
-            path = Solon.cfg().getByParse(anno.path());
+    public String url() {
+        if (url == null) {
+            url = Solon.cfg().getByParse(anno.url());
         }
 
-        return path;
+        return url;
     }
 
+    private String client;
     @Override
-    public boolean export() {
-        return anno.export();
-    }
-
-
-    private String token;
-    @Override
-    public String token() {
-        if (token == null) {
-            token = Solon.cfg().getByParse(anno.token());
+    public String client() {
+        if (client == null) {
+            client = Solon.cfg().getByParse(anno.client());
         }
 
-        return token;
+        return client;
     }
 
     @Override
-    public boolean deprecated() {
-        return anno.deprecated();
+    public boolean generic() {
+        return anno.generic();
     }
 
     @Override
-    public boolean dynamic() {
-        return anno.dynamic();
+    public boolean injvm() {
+        return anno.injvm();
     }
 
-    private String accesslog;
     @Override
-    public String accesslog() {
-        if (accesslog == null) {
-            accesslog = Solon.cfg().getByParse(anno.accesslog());
+    public boolean check() {
+        return anno.check();
+    }
+
+    @Override
+    public boolean init() {
+        return anno.init();
+    }
+
+    @Override
+    public boolean lazy() {
+        return anno.lazy();
+    }
+
+    @Override
+    public boolean stubevent() {
+        return anno.stubevent();
+    }
+
+    private String reconnect;
+    @Override
+    public String reconnect() {
+        if (reconnect == null) {
+            reconnect = Solon.cfg().getByParse(anno.reconnect());
         }
 
-        return accesslog;
+        return reconnect;
     }
 
     @Override
-    public int executes() {
-        return anno.executes();
-    }
-
-    @Override
-    public boolean register() {
-        return anno.register();
-    }
-
-    @Override
-    public int weight() {
-        return anno.weight();
-    }
-
-    private String document;
-    @Override
-    public String document() {
-        if (document == null) {
-            document = Solon.cfg().getByParse(anno.document());
-        }
-
-        return document;
-    }
-
-    @Override
-    public int delay() {
-        return anno.delay();
-    }
-
-
-    private String local;
-    @Override
-    public String local() {
-        if (local == null) {
-            local = Solon.cfg().getByParse(anno.local());
-        }
-
-        return local;
-    }
-
-
-    private String stub;
-    @Override
-    public String stub() {
-        if (stub == null) {
-            stub = Solon.cfg().getByParse(anno.stub());
-        }
-
-        return stub;
-    }
-
-
-    private String cluster;
-    @Override
-    public String cluster() {
-        if (cluster == null) {
-            cluster = Solon.cfg().getByParse(anno.cluster());
-        }
-
-        return cluster;
+    public boolean sticky() {
+        return anno.sticky();
     }
 
     private String proxy;
@@ -166,6 +122,26 @@ public class ServiceHolder implements Service {
         return proxy;
     }
 
+    private String stub;
+    @Override
+    public String stub() {
+        if (stub == null) {
+            stub = Solon.cfg().getByParse(anno.stub());
+        }
+
+        return stub;
+    }
+
+    private String cluster;
+    @Override
+    public String cluster() {
+        if (cluster == null) {
+            cluster = Solon.cfg().getByParse(anno.cluster());
+        }
+
+        return cluster;
+    }
+
     @Override
     public int connections() {
         return anno.connections();
@@ -175,6 +151,7 @@ public class ServiceHolder implements Service {
     public int callbacks() {
         return anno.callbacks();
     }
+
 
     private String onconnect;
     @Override
@@ -206,9 +183,14 @@ public class ServiceHolder implements Service {
         return owner;
     }
 
+    private String layer;
     @Override
     public String layer() {
-        return anno.layer();
+        if (layer == null) {
+            layer = Solon.cfg().getByParse(anno.layer());
+        }
+
+        return layer;
     }
 
     @Override
@@ -291,14 +273,9 @@ public class ServiceHolder implements Service {
         return anno.parameters();
     }
 
-    private String application;
     @Override
     public String application() {
-        if (application == null) {
-            application = Solon.cfg().getByParse(anno.application());
-        }
-
-        return application;
+        return anno.application();
     }
 
     private String module;
@@ -311,29 +288,39 @@ public class ServiceHolder implements Service {
         return module;
     }
 
-    private String provider;
+    private String consumer;
     @Override
-    public String provider() {
-        if (provider == null) {
-            provider = Solon.cfg().getByParse(anno.provider());
+    public String consumer() {
+        if (consumer == null) {
+            consumer = Solon.cfg().getByParse(anno.consumer());
         }
 
-        return provider;
+        return consumer;
     }
 
-    @Override
-    public String[] protocol() {
-        return anno.protocol();
-    }
-
+    private String monitor;
     @Override
     public String monitor() {
-        return anno.monitor();
+        if (monitor == null) {
+            monitor = Solon.cfg().getByParse(anno.monitor());
+        }
+
+        return monitor;
     }
 
     @Override
     public String[] registry() {
         return anno.registry();
+    }
+
+    private String protocol;
+    @Override
+    public String protocol() {
+        if (protocol == null) {
+            protocol = Solon.cfg().getByParse(anno.protocol());
+        }
+
+        return protocol;
     }
 
     private String tag;
@@ -349,6 +336,16 @@ public class ServiceHolder implements Service {
     @Override
     public Method[] methods() {
         return anno.methods();
+    }
+
+    private String id;
+    @Override
+    public String id() {
+        if (id == null) {
+            id = Solon.cfg().getByParse(anno.id());
+        }
+
+        return id;
     }
 
     @Override
