@@ -41,7 +41,7 @@ public final class AppenderHolder {
             meta.put("enable", enable);
 
             //打印无信息
-            PrintUtil.info("Logging", getName() + " " + meta.toString());
+            PrintUtil.info("Logging", getName() + " " + meta);
         } else {
             setLevel(real.getDefaultLevel());
         }
@@ -90,6 +90,7 @@ public final class AppenderHolder {
         }
 
         if (logEvent.getLoggerLevel().code == Level.ALL.code) {
+            //说明 logger 未配置；由 appender 再过滤一下
             if (this.level.code > logEvent.getLevel().code) {
                 return;
             }
