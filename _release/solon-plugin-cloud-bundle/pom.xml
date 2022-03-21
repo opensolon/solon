@@ -26,6 +26,7 @@
 
         <module>../../_plugin_cloud/water-solon-plugin</module>
         <module>../../_plugin_cloud/consul-solon-plugin</module>
+        <module>../../_plugin_cloud/nacos2-solon-plugin</module>
         <module>../../_plugin_cloud/nacos-solon-plugin</module>
         <module>../../_plugin_cloud/zookeeper-solon-plugin</module>
 

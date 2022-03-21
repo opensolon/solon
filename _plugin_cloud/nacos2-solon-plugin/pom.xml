@@ -10,11 +10,11 @@
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>nacos-solon-plugin</artifactId>
+    <artifactId>nacos2-solon-plugin</artifactId>
     <packaging>jar</packaging>
 
     <properties>
-        <nacos.ver>1.4.3</nacos.ver>
+        <nacos.ver>2.0.2</nacos.ver>
     </properties>
 
     <dependencies>
