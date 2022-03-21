@@ -59,10 +59,19 @@ public class MybatisAdapterDefault implements MybatisAdapter {
 
         initConfiguration(environment);
 
-        //加载插件
+        //加载插件（通过配置）
         for (Interceptor i : MybatisPlugins.getInterceptors()) {
             config.addInterceptor(i);
         }
+
+        //加载插件（通过Bean）
+        Aop.beanOnloaded(() -> {
+            Aop.beanForeach(bw -> {
+                if (bw.raw() instanceof Interceptor) {
+                    config.addInterceptor(bw.raw());
+                }
+            });
+        });
 
         //1.分发事件，推给扩展处理
         EventBus.push(config);
