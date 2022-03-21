@@ -53,10 +53,12 @@ public class XPluginImp implements Plugin {
             if (LogOptions.getLoggerLevels().size() > 0) {
                 LoggerContext lctx = LoggerContext.getContext(false);
                 Configuration lcfg = lctx.getConfiguration();
+
                 for (LoggerLevelEntity lle : LogOptions.getLoggerLevels()) {
                     lcfg.getLoggerConfig(lle.getLoggerExpr())
                             .setLevel(Level.valueOf(lle.getLevel().name()));
                 }
+
                 lctx.updateLoggers();
             }
         } catch (Exception e) {
