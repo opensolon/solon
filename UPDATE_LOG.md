@@ -1,4 +1,4 @@
-#### 1.6.33
+#### 1.6.34-m1
 * 插件 solon.schedule 添加 纯手工控制能力
 * 取消 非泛型基类的 typeName 注册
 * 插件 dubbo-solon-plugin 的注解添加属性模板支持
