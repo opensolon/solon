@@ -60,7 +60,6 @@ public class XPluginImp implements Plugin {
                 for (LoggerLevelEntity lle : LogOptions.getLoggerLevels()) {
                     Logger logger = loggerContext.getLogger(lle.getLoggerExpr());
                     logger.setLevel(Level.valueOf(lle.getLevel().name()));
-                    logger.setAdditive(false);
                 }
             }
         } catch (JoranException e) {

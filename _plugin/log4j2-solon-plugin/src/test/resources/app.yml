@@ -3,7 +3,7 @@ solon.app:
 
 solon.logging.appender:
   console:
-    level: INFO
+    level: WARN
   file:
     level: INFO
   cloud:
@@ -12,4 +12,4 @@ solon.logging.appender:
 
 solon.logging.logger:
   "features":
-    level: TRACE
+    level: INFO

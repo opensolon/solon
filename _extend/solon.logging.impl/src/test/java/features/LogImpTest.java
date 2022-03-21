@@ -10,16 +10,14 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 
 /**
- * @author noear 2021/12/17 created
+ * @author noear 2022/3/21 created
  */
-
 @RunWith(SolonJUnit4ClassRunner.class)
 @SolonTest(App.class)
-public class Log4j2Test {
-
+public class LogImpTest {
     @Test
     public void test1() {
-        Logger log = LoggerFactory.getLogger(Log4j2Test.class);
+        Logger log = LoggerFactory.getLogger(LogImpTest.class);
 
         MDC.put("traceId", Utils.guid());
 
