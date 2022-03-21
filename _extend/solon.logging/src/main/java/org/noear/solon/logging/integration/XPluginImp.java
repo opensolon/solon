@@ -40,7 +40,7 @@ public class XPluginImp implements Plugin {
         }
 
         //init
-        LogOptions.getLoggerLevel(null);
+        LogOptions.getLoggerLevelInit();
 
         app.filter(-9, (ctx, chain) -> {
             MDC.clear();

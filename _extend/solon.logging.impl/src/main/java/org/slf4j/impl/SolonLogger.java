@@ -20,17 +20,17 @@ import java.util.Map;
  */
 public class SolonLogger implements Logger {
     private String name;
-    private Level level = Level.TRACE;
+    private Level loggerLevel = Level.ALL;
 
 
     public SolonLogger(String name) {
         this.name = name;
 
         if (Solon.global() != null) {
-            level = LogOptions.getLoggerLevel(name);
+            loggerLevel = LogOptions.getLoggerLevel(name);
         } else {
             Aop.beanOnloaded(() -> {
-                level = LogOptions.getLoggerLevel(name);
+                loggerLevel = LogOptions.getLoggerLevel(name);
             });
         }
     }
@@ -42,7 +42,7 @@ public class SolonLogger implements Logger {
 
     @Override
     public boolean isTraceEnabled() {
-        return level.code <= Level.TRACE.code;
+        return loggerLevel.code <= Level.TRACE.code;
     }
 
     @Override
@@ -102,7 +102,7 @@ public class SolonLogger implements Logger {
 
     @Override
     public boolean isDebugEnabled() {
-        return level.code <= Level.DEBUG.code;
+        return loggerLevel.code <= Level.DEBUG.code;
     }
 
     @Override
@@ -162,7 +162,7 @@ public class SolonLogger implements Logger {
 
     @Override
     public boolean isInfoEnabled() {
-        return level.code <= Level.INFO.code;
+        return loggerLevel.code <= Level.INFO.code;
     }
 
     @Override
@@ -222,7 +222,7 @@ public class SolonLogger implements Logger {
 
     @Override
     public boolean isWarnEnabled() {
-        return level.code <= Level.WARN.code;
+        return loggerLevel.code <= Level.WARN.code;
     }
 
     @Override
@@ -282,7 +282,7 @@ public class SolonLogger implements Logger {
 
     @Override
     public boolean isErrorEnabled() {
-        return level.code <= Level.ERROR.code;
+        return loggerLevel.code <= Level.ERROR.code;
     }
 
     @Override
@@ -341,7 +341,7 @@ public class SolonLogger implements Logger {
     }
 
     private void appendDo(Level level, String content, String format, Object[] args) {
-        if(level.code < this.level.code){
+        if(level.code < loggerLevel.code){
             return;
         }
 
@@ -379,7 +379,7 @@ public class SolonLogger implements Logger {
             }
         }
 
-        LogEvent logEvent = new LogEvent(getName(), level, metainfo, content,
+        LogEvent logEvent = new LogEvent(getName(), loggerLevel, level, metainfo, content,
                 System.currentTimeMillis(),
                 Thread.currentThread().getName(), throwable);
 

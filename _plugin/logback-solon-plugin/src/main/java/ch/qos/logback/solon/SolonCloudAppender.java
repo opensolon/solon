@@ -61,6 +61,7 @@ public class SolonCloudAppender extends AppenderBase<ILoggingEvent> {
         LogEvent event = new LogEvent(
                 e.getLoggerName(),
                 level,
+                level,
                 e.getMDCPropertyMap(),
                 message,
                 e.getTimeStamp(),

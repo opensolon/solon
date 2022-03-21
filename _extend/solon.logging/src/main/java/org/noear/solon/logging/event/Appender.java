@@ -1,6 +1,5 @@
 package org.noear.solon.logging.event;
 
-import org.noear.solon.logging.LogOptions;
 
 /**
  * 日志添加器
@@ -13,7 +12,7 @@ public interface Appender{
      * 默认级别
      * */
     default Level getDefaultLevel() {
-        return LogOptions.getLevel();
+        return Level.TRACE;
     }
 
     /**

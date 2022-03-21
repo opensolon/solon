@@ -13,22 +13,6 @@ import java.util.*;
  * @since 1.3
  */
 public class LogOptions {
-    private static volatile Level level = Level.TRACE;
-
-    /**
-     * 设置默认日志等级
-     */
-    public static void setLevel(Level level) {
-        LogOptions.level = level;
-    }
-
-    /**
-     * 获取默认日志等级
-     */
-    public static Level getLevel() {
-        return LogOptions.level;
-    }
-
 
     private static volatile Map<String, LoggerLevelEntity> loggerLevelMap = new LinkedHashMap<>();
     private static volatile boolean loggerLevelMapInited = false;
@@ -60,10 +44,17 @@ public class LogOptions {
         return loggerLevelMap.values();
     }
 
+
+    /**
+     * 初始化记录器等级配置
+     * */
+    public static void getLoggerLevelInit() {
+        if (loggerLevelMapInited == false) {
+            loggerLevelMapInit();
+        }
+    }
     /**
      * 获取记录器等级设定
-     *
-     * @param logger 记录器名称
      */
     public static Level getLoggerLevel(String logger) {
         if (loggerLevelMapInited == false) {
@@ -71,7 +62,7 @@ public class LogOptions {
         }
 
         if (logger == null) {
-            return Level.INFO;
+            return Level.ALL;
         }
 
         for (LoggerLevelEntity l : loggerLevelMap.values()) {
@@ -80,7 +71,7 @@ public class LogOptions {
             }
         }
 
-        return getLevel();
+        return Level.ALL;
     }
 
     /**

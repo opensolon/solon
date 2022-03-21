@@ -85,8 +85,14 @@ public final class AppenderHolder {
      * 添加日志
      * */
     public void append(LogEvent logEvent) {
-        if (enable == false || this.level.code > logEvent.getLevel().code) {
+        if (enable == false) {
             return;
+        }
+
+        if (logEvent.getLoggerLevel().code == Level.ALL.code) {
+            if (this.level.code > logEvent.getLevel().code) {
+                return;
+            }
         }
 
         real.append(logEvent);
