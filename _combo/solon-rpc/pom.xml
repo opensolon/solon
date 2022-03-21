@@ -8,10 +8,10 @@
         <groupId>org.noear</groupId>
         <artifactId>solon-parent</artifactId>
         <version>1.6.34-m1</version>
-        <relativePath>../solon-parent/pom.xml</relativePath>
+        <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>solon-web</artifactId>
+    <artifactId>solon-rpc</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>
@@ -20,17 +20,25 @@
             <artifactId>solon-api</artifactId>
         </dependency>
 
-        <!-- 本地SessionSate支持组件 -->
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.extend.sessionstate.local</artifactId>
+            <artifactId>solon.serialization.hessian</artifactId>
         </dependency>
 
-        <!-- freemarker模板支持组件 -->
+        <!-- rpc client -->
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.view.freemarker</artifactId>
+            <artifactId>nami.channel.http.okhttp</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>nami.coder.snack3</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>nami.coder.hessian</artifactId>
+        </dependency>
+
     </dependencies>
 
 </project>

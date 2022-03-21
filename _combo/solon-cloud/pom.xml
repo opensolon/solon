@@ -8,37 +8,23 @@
         <groupId>org.noear</groupId>
         <artifactId>solon-parent</artifactId>
         <version>1.6.34-m1</version>
-        <relativePath>../solon-parent/pom.xml</relativePath>
+        <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>solon-rpc</artifactId>
+    <artifactId>solon-cloud</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon-api</artifactId>
+            <artifactId>solon-rpc</artifactId>
         </dependency>
 
+        <!-- 注册与发现组件 -->
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.serialization.hessian</artifactId>
+            <artifactId>consul-solon-plugin</artifactId>
         </dependency>
-
-        <!-- rpc client -->
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>nami.channel.http.okhttp</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>nami.coder.snack3</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>nami.coder.hessian</artifactId>
-        </dependency>
-
     </dependencies>
 
 </project>

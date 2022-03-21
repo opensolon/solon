@@ -1166,16 +1166,16 @@
 
         <module>../_extend/solon.cloud</module>
 
-        <module>../_extend/solon-beetl-web</module>
-        <module>../_extend/solon-enjoy-web</module>
-        <module>../_extend/solon-lib</module>
-        <module>../_extend/solon-api</module>
+        <module>../_combo/solon-beetl-web</module>
+        <module>../_combo/solon-enjoy-web</module>
+        <module>../_combo/solon-lib</module>
+        <module>../_combo/solon-api</module>
 
-        <module>../solon-web</module>
-        <module>../solon-rpc</module>
-        <module>../solon-cloud</module>
+        <module>../_combo/solon-web</module>
+        <module>../_combo/solon-rpc</module>
+        <module>../_combo/solon-cloud</module>
 
-        <module>../solon-test</module>
+        <module>../_combo/solon-test</module>
 
     </modules>
 

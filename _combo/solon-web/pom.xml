@@ -8,38 +8,28 @@
         <groupId>org.noear</groupId>
         <artifactId>solon-parent</artifactId>
         <version>1.6.34-m1</version>
-        <relativePath>../solon-parent/pom.xml</relativePath>
+        <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>solon-test</artifactId>
+    <artifactId>solon-web</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon</artifactId>
+            <artifactId>solon-api</artifactId>
         </dependency>
 
+        <!-- 本地SessionSate支持组件 -->
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.extend.properties.yaml</artifactId>
+            <artifactId>solon.extend.sessionstate.local</artifactId>
         </dependency>
 
+        <!-- freemarker模板支持组件 -->
         <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.18.20</version>
-        </dependency>
-
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>${junit.ver}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.squareup.okhttp3</groupId>
-            <artifactId>okhttp</artifactId>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.view.freemarker</artifactId>
         </dependency>
     </dependencies>
 

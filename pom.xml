@@ -21,14 +21,14 @@
     <modules>
         <module>solon-parent</module>
 
-        <module>_publish/nami-bundle</module>
-        <module>_publish/socketd-bundle</module>
-        <module>_publish/solon-plugin-bundle</module>
-        <module>_publish/solon-plugin-cloud-bundle</module>
-        <module>_publish/solon-render-bundle</module>
-        <module>_publish/solon-extend-bundle</module>
+        <module>_release/nami-bundle</module>
+        <module>_release/socketd-bundle</module>
+        <module>_release/solon-plugin-bundle</module>
+        <module>_release/solon-plugin-cloud-bundle</module>
+        <module>_release/solon-render-bundle</module>
+        <module>_release/solon-extend-bundle</module>
 
-        <module>_publish/hatch-bundle</module>
+        <module>_release/hatch-bundle</module>
 
         <module>_test</module>
     </modules>

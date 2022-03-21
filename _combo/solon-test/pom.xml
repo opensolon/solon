@@ -8,22 +8,38 @@
         <groupId>org.noear</groupId>
         <artifactId>solon-parent</artifactId>
         <version>1.6.34-m1</version>
-        <relativePath>../solon-parent/pom.xml</relativePath>
+        <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>solon-cloud</artifactId>
+    <artifactId>solon-test</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon-rpc</artifactId>
+            <artifactId>solon</artifactId>
         </dependency>
 
-        <!-- 注册与发现组件 -->
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>consul-solon-plugin</artifactId>
+            <artifactId>solon.extend.properties.yaml</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.20</version>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.ver}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
         </dependency>
     </dependencies>
 
