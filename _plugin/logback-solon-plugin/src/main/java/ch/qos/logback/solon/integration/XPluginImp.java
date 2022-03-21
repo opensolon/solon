@@ -1,6 +1,7 @@
 package ch.qos.logback.solon.integration;
 
 import ch.qos.logback.classic.Level;
+import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.core.joran.spi.JoranException;
 import ch.qos.logback.solon.SolonConfigurator;
@@ -57,8 +58,9 @@ public class XPluginImp implements Plugin {
             //同步 logger level 配置
             if (LogOptions.getLoggerLevels().size() > 0) {
                 for (LoggerLevelEntity lle : LogOptions.getLoggerLevels()) {
-                    loggerContext.getLogger(lle.getLoggerExpr())
-                            .setLevel(Level.valueOf(lle.getLevel().name()));
+                    Logger logger = loggerContext.getLogger(lle.getLoggerExpr());
+                    logger.setLevel(Level.valueOf(lle.getLevel().name()));
+                    logger.setAdditive(false);
                 }
             }
         } catch (JoranException e) {

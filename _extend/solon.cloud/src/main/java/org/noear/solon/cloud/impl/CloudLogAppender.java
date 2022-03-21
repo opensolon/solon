@@ -6,9 +6,10 @@ import org.noear.solon.logging.event.Level;
 import org.noear.solon.logging.event.LogEvent;
 
 /**
- * cloud appender
+ * Cloud Log Appender
  *
- * @author noear 2021/2/23 created
+ * @author noear
+ * @since 1.6
  */
 public class CloudLogAppender extends AppenderBase {
     @Override

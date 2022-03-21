@@ -42,8 +42,6 @@ public final  class SolonCloudAppender extends AbstractAppender {
             }
         }
 
-
-
         Level level;
 
         int eLevel = e.getLevel().intLevel();
@@ -80,13 +78,16 @@ public final  class SolonCloudAppender extends AbstractAppender {
             @PluginElement("Layout") Layout<? extends Serializable> layout,
             @PluginElement("Filter") final Filter filter,
             @PluginAttribute("otherAttribute") String otherAttribute) {
+
         if (name == null) {
-            LOGGER.error("No name provided for MyCustomAppenderImpl");
+            LOGGER.error("No name provided for SolonCloudAppender");
             return null;
         }
+
         if (layout == null) {
             layout = PatternLayout.createDefaultLayout();
         }
+
         return new SolonCloudAppender(name, filter, layout, true);
     }
 }
