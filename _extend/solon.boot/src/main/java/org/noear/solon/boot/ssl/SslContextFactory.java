@@ -16,9 +16,6 @@ import java.security.cert.CertificateException;
  * @since 1.6
  */
 public class SslContextFactory {
-
-    public final static TrustManager[] TRUST_ALL_CERTS = new X509TrustManager[]{new TrustManagerImpl()};
-
     public static SSLContext createSslContext() throws IOException {
         String keyStoreName = System.getProperty(ServerConstants.SSL_KEYSTORE);
         String keyStoreType = System.getProperty(ServerConstants.SSL_KEYSTORE_TYPE);
@@ -31,13 +28,12 @@ public class SslContextFactory {
         KeyStore keyStore = loadKeyStore(keyStoreName, keyStoreType, keyStorePassword);
 
         KeyManager[] keyManagers = buildKeyManagers(keyStore, keyStorePassword.toCharArray());
-        TrustManager[] trustManagers = buildTrustManagers(null);
 
         SSLContext sslContext;
 
         try {
             sslContext = SSLContext.getInstance("TLS");
-            sslContext.init(keyManagers, trustManagers, null);
+            sslContext.init(keyManagers, null, null);
         } catch (NoSuchAlgorithmException | KeyManagementException exc) {
             throw new IOException("Unable to create and initialise the SSLContext", exc);
         }
@@ -64,23 +60,6 @@ public class SslContextFactory {
         } catch (KeyStoreException | NoSuchAlgorithmException | CertificateException exc) {
             throw new IOException(String.format("Unable to load KeyStore %s", location), exc);
         }
-    }
-
-    private static TrustManager[] buildTrustManagers(final KeyStore trustStore) throws IOException {
-        TrustManager[] trustManagers = null;
-        if (trustStore == null) {
-            try {
-                TrustManagerFactory trustManagerFactory = TrustManagerFactory
-                        .getInstance(KeyManagerFactory.getDefaultAlgorithm());
-                trustManagerFactory.init(trustStore);
-                trustManagers = trustManagerFactory.getTrustManagers();
-            } catch (NoSuchAlgorithmException | KeyStoreException exc) {
-                throw new IOException("Unable to initialise TrustManager[]", exc);
-            }
-        } else {
-            trustManagers = TRUST_ALL_CERTS;
-        }
-        return trustManagers;
     }
 
     private static KeyManager[] buildKeyManagers(final KeyStore keyStore, char[] storePassword)
