@@ -21,19 +21,20 @@ public class JlHttpContext extends Context {
     public JlHttpContext(HTTPServer.Request request, HTTPServer.Response response) {
         _request = request;
         _response = response;
+        _fileMap = new HashMap<>();
+    }
+
+    private boolean _loadMultipart = false;
+    private void lazyLoadMultipart() throws IOException{
+        if (_loadMultipart) {
+            return;
+        } else {
+            _loadMultipart = true;
+        }
 
         //文件上传需要
         if (isMultipart()) {
-            try {
-                _fileMap = new HashMap<>();
-                MultipartUtil.buildParamsAndFiles(this);
-            } catch (Throwable ex) {
-                if (ex instanceof RuntimeException) {
-                    throw (RuntimeException) ex;
-                } else {
-                    throw new RuntimeException(ex);
-                }
-            }
+            MultipartUtil.buildParamsAndFiles(this);
         }
     }
 
@@ -189,9 +190,13 @@ public class JlHttpContext extends Context {
             _paramMap = new NvMap();
 
             try {
+                lazyLoadMultipart();
+
                 _paramMap.putAll(_request.getParams());
-            } catch (Exception ex) {
-                EventBus.push(ex);
+            } catch (RuntimeException e) {
+                throw e;
+            } catch (Exception e) {
+                throw new IllegalStateException(e);
             }
         }
 
@@ -227,6 +232,8 @@ public class JlHttpContext extends Context {
     @Override
     public List<UploadedFile> files(String key) throws Exception {
         if (isMultipartFormData()) {
+            lazyLoadMultipart();
+
             List<UploadedFile> temp = _fileMap.get(key);
             if (temp == null) {
                 return new ArrayList<>();

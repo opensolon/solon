@@ -14,10 +14,12 @@ import java.util.List;
 
 class MultipartUtil {
     public static void buildParamsAndFiles(SmartHttpContext context) throws IOException{
-        MultipartIterator parts = new MultipartIterator((HttpRequest) context.request());
+        HttpRequest request = (HttpRequest) context.request();
+        MultipartIterator parts = new MultipartIterator(request);
 
         while (parts.hasNext()){
             MultipartIterator.Part part = parts.next();
+
             if(isFile(part) == false){
                 context.paramSet(part.name, part.getString());
             }else{

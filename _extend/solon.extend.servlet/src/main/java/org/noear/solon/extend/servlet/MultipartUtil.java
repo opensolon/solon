@@ -21,10 +21,6 @@ class MultipartUtil {
         request.setAttribute("org.eclipse.jetty.multipartConfig",
                 new MultipartConfigElement(System.getProperty("java.io.tmpdir")));
 
-        if (context._fileMap == null) {
-            context._fileMap = new HashMap<>();
-        }
-
         for (Part part : request.getParts()) {
             if (isFile(part)) {
                 doBuildFiles(context, part);

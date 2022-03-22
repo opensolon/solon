@@ -7,6 +7,7 @@ import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.SessionState;
 import org.noear.solon.core.handle.UploadedFile;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,6 +25,7 @@ import java.util.*;
 public class SolonServletContext extends Context {
     private HttpServletRequest _request;
     private HttpServletResponse _response;
+    private boolean _isParseMultipart;
     protected Map<String, List<UploadedFile>> _fileMap;
 
     public SolonServletContext(HttpServletRequest request, HttpServletResponse response) {
@@ -33,6 +35,8 @@ public class SolonServletContext extends Context {
     public SolonServletContext(HttpServletRequest request, HttpServletResponse response, boolean parseMultipart) {
         _request = request;
         _response = response;
+        _fileMap = new HashMap<>();
+        _isParseMultipart = parseMultipart;
 
         if (sessionState().replaceable() && Solon.global().enableSessionState()) {
             sessionStateInit(new SessionState() {
@@ -80,18 +84,19 @@ public class SolonServletContext extends Context {
             });
         }
 
+    }
+
+    private boolean _loadMultipart = false;
+    private void lazyLoadMultipart() throws IOException, ServletException {
+        if (_loadMultipart) {
+            return;
+        } else {
+            _loadMultipart = true;
+        }
 
         //文件上传需要
-        if (parseMultipart && isMultipart()) {
-            try {
-                MultipartUtil.buildParamsAndFiles(this);
-            } catch (Throwable ex) {
-                if (ex instanceof RuntimeException) {
-                    throw (RuntimeException) ex;
-                } else {
-                    throw new RuntimeException(ex);
-                }
-            }
+        if (_isParseMultipart && isMultipart()) {
+            MultipartUtil.buildParamsAndFiles(this);
         }
     }
 
@@ -204,12 +209,20 @@ public class SolonServletContext extends Context {
         if (_paramMap == null) {
             _paramMap = new NvMap();
 
-            Enumeration<String> names = _request.getParameterNames();
+            try {
+                lazyLoadMultipart();
 
-            while (names.hasMoreElements()) {
-                String name = names.nextElement();
-                String value = _request.getParameter(name);
-                _paramMap.put(name, value);
+                Enumeration<String> names = _request.getParameterNames();
+
+                while (names.hasMoreElements()) {
+                    String name = names.nextElement();
+                    String value = _request.getParameter(name);
+                    _paramMap.put(name, value);
+                }
+            } catch (RuntimeException e) {
+                throw e;
+            } catch (Throwable e) {
+                throw new IllegalStateException(e);
             }
         }
 

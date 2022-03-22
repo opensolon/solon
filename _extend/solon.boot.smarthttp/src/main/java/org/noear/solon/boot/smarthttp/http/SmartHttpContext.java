@@ -25,19 +25,20 @@ public class SmartHttpContext extends Context {
     public SmartHttpContext(HttpRequest request, HttpResponse response) {
         _request = request;
         _response = response;
+        _fileMap = new HashMap<>();
+    }
+
+    private boolean _loadMultipart = false;
+    private void lazyLoadMultipart() throws IOException{
+        if (_loadMultipart) {
+            return;
+        } else {
+            _loadMultipart = true;
+        }
 
         //文件上传需要
         if (isMultipart()) {
-            try {
-                _fileMap = new HashMap<>();
-                MultipartUtil.buildParamsAndFiles(this);
-            } catch (Throwable ex) {
-                if (ex instanceof RuntimeException) {
-                    throw (RuntimeException) ex;
-                } else {
-                    throw new RuntimeException(ex);
-                }
-            }
+            MultipartUtil.buildParamsAndFiles(this);
         }
     }
 
@@ -159,11 +160,15 @@ public class SmartHttpContext extends Context {
             _paramMap = new NvMap();
 
             try {
+                lazyLoadMultipart();
+
                 for (Map.Entry<String, String[]> entry : _request.getParameters().entrySet()) {
                     _paramMap.put(entry.getKey(), entry.getValue()[0]);
                 }
-            } catch (Exception ex) {
-                EventBus.push(ex);
+            } catch (RuntimeException e) {
+                throw e;
+            } catch (Throwable e) {
+                throw new IllegalStateException(e);
             }
         }
 
@@ -189,7 +194,9 @@ public class SmartHttpContext extends Context {
     @Override
     public List<UploadedFile> files(String key) throws Exception {
         if (isMultipartFormData()) {
+            lazyLoadMultipart();
             List<UploadedFile> temp = _fileMap.get(key);
+
             if (temp == null) {
                 return new ArrayList<>();
             } else {

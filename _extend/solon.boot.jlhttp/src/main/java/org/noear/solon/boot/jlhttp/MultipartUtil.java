@@ -13,11 +13,11 @@ import java.util.List;
 class MultipartUtil {
     public static void buildParamsAndFiles(JlHttpContext context) throws IOException{
         HTTPServer.Request request = (HTTPServer.Request)context.request();
-
         HTTPServer.MultipartIterator parts = new HTTPServer.MultipartIterator(request);
 
         while (parts.hasNext()){
             HTTPServer.MultipartIterator.Part part = parts.next();
+
             if(isFile(part) == false){
                 context.paramSet(part.name, part.getString());
             }else{
