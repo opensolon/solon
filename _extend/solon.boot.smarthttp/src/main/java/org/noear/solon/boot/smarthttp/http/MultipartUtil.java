@@ -1,7 +1,9 @@
 package org.noear.solon.boot.smarthttp.http;
 
 
+import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.smarthttp.http.uploadfile.MultipartIterator;
+import org.noear.solon.boot.util.LimitedInputStream;
 import org.noear.solon.core.handle.UploadedFile;
 import org.smartboot.http.server.HttpRequest;
 
@@ -37,7 +39,7 @@ class MultipartUtil {
 
         UploadedFile f1 = new UploadedFile();
         f1.contentType = part.getHeaders().get("Content-Type");
-        f1.content = read(part.getBody());
+        f1.content = read(new LimitedInputStream(part.getBody(), ServerProps.request_maxBodySize));
         f1.contentSize = f1.content.available();
         f1.name = part.getFilename();
         int idx = f1.name.lastIndexOf(".");

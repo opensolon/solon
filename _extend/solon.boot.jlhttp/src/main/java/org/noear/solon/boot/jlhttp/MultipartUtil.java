@@ -1,6 +1,8 @@
 package org.noear.solon.boot.jlhttp;
 
 
+import org.noear.solon.boot.ServerProps;
+import org.noear.solon.boot.util.LimitedInputStream;
 import org.noear.solon.core.handle.UploadedFile;
 
 import java.io.ByteArrayInputStream;
@@ -11,16 +13,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 class MultipartUtil {
-    public static void buildParamsAndFiles(JlHttpContext context) throws IOException{
-        HTTPServer.Request request = (HTTPServer.Request)context.request();
+    public static void buildParamsAndFiles(JlHttpContext context) throws IOException {
+        HTTPServer.Request request = (HTTPServer.Request) context.request();
         HTTPServer.MultipartIterator parts = new HTTPServer.MultipartIterator(request);
 
-        while (parts.hasNext()){
+        while (parts.hasNext()) {
             HTTPServer.MultipartIterator.Part part = parts.next();
 
-            if(isFile(part) == false){
+            if (isFile(part) == false) {
                 context.paramSet(part.name, part.getString());
-            }else{
+            } else {
                 doBuildFiles(context, part);
             }
         }
@@ -35,7 +37,7 @@ class MultipartUtil {
 
         UploadedFile f1 = new UploadedFile();
         f1.contentType = part.getHeaders().get("Content-Type");
-        f1.content = read(part.getBody());
+        f1.content = read(new LimitedInputStream(part.getBody(), ServerProps.request_maxBodySize));
         f1.contentSize = f1.content.available();
         f1.name = part.getFilename();
         int idx = f1.name.lastIndexOf(".");
@@ -46,11 +48,11 @@ class MultipartUtil {
         list.add(f1);
     }
 
-    private static boolean isField(HTTPServer.MultipartIterator.Part filePart){
+    private static boolean isField(HTTPServer.MultipartIterator.Part filePart) {
         return filePart.getFilename() == null;
     }
 
-    private static boolean isFile(HTTPServer.MultipartIterator.Part filePart){
+    private static boolean isFile(HTTPServer.MultipartIterator.Part filePart) {
         return !isField(filePart);
     }
 
@@ -62,6 +64,7 @@ class MultipartUtil {
         while (-1 != (n = input.read(buffer))) {
             output.write(buffer, 0, n);
         }
+
         return new ByteArrayInputStream(output.toByteArray());
     }
 }
