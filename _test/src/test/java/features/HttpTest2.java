@@ -34,12 +34,4 @@ public class HttpTest2 extends HttpTestBase {
 //        }
 //    }
 
-
-    @Test
-    public void upload() throws IOException {
-        InputStream inputStream = new ByteArrayInputStream("test".getBytes(StandardCharsets.UTF_8));
-        assert path("/demo3/upload/f1")
-                .data("file", "装修-水电-视频.mp4", inputStream, "video/mp4")
-                .post().contains("成功：装修-水电-视频.mp4");
-    }
 }
