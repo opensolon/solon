@@ -1,11 +1,15 @@
 package webapp.demo3_upload;
 
+import org.noear.solon.Utils;
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Mapping;
 import org.noear.solon.annotation.Singleton;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.handle.UploadedFile;
+
+import java.io.File;
+import java.io.FileOutputStream;
 
 @Mapping("/demo3/upload")
 @Controller
@@ -14,6 +18,26 @@ public class UploadController {
     //支持上传文件参数（file 变量名，与表单变量名保持一至）
     @Mapping(path = "f1", method = MethodType.POST)
     public String test_f1(Context ctx, UploadedFile file, UploadedFile file2) throws Exception {
+        if (file != null && Utils.isNotEmpty(file.name)) {
+            File fileD1 = new File("/Users/noear/Downloads/tmp/" + file.name);
+            if (fileD1.exists()) {
+                fileD1.delete();
+            }
+            fileD1.createNewFile();
+
+            Utils.transferTo(file.content, new FileOutputStream(fileD1));
+        }
+
+        if (file2 != null && Utils.isNotEmpty(file2.name)) {
+            File fileD1 = new File("/Users/noear/Downloads/tmp/" + file2.name);
+            if (fileD1.exists()) {
+                fileD1.delete();
+            }
+            fileD1.createNewFile();
+
+            Utils.transferTo(file2.content, new FileOutputStream(fileD1));
+        }
+
         if (file != null) {
             if (file2 == null) {
                 return "成功：" + file.name + ": " + file.contentSize + "; null";

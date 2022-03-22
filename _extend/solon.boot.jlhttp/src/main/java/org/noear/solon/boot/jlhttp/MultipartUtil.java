@@ -64,7 +64,6 @@ class MultipartUtil {
         while (-1 != (n = input.read(buffer))) {
             output.write(buffer, 0, n);
         }
-
         return new ByteArrayInputStream(output.toByteArray());
     }
 }

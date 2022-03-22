@@ -20,12 +20,12 @@ public class LimitedInputStream extends FilterInputStream implements Closeable {
     }
 
     protected void raiseError(long pSizeMax, long pCount) throws IOException {
-        throw new IOException("The stream is too large: " + pSizeMax);
+        throw new IOException("The input stream is too large: " + pSizeMax);
     }
 
 
     private void checkLimit() throws IOException {
-        if (count > sizeMax) {
+        if (sizeMax > 0 && count > sizeMax) {
             raiseError(sizeMax, count);
         }
     }
