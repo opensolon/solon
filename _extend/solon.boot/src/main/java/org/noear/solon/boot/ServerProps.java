@@ -18,13 +18,17 @@ public class ServerProps {
      * */
     public static final String request_encoding;
     /**
+     * 请求最大头大小
+     * */
+    public static final int request_maxHeaderSize;
+    /**
      * 请求最大主体大小
      * */
     public static final int request_maxBodySize;
     /**
-     * 请求最大头大小
+     * 请求最大文件大小
      * */
-    public static final int request_maxHeaderSize;
+    public static final int request_maxFileSize;
 
     /**
      * 会话超时
@@ -46,7 +50,6 @@ public class ServerProps {
         output_meta = Solon.cfg().getInt("solon.output.meta", 0) > 0;
 
 
-
         //
         // for server ssl
         //
@@ -58,6 +61,10 @@ public class ServerProps {
         //
         // for request
         //
+
+        tmp = Solon.cfg().get("server.request.maxHeaderSize", "").trim().toLowerCase();//k数
+        request_maxHeaderSize = getSize(tmp);
+
         tmp = Solon.cfg().get("server.request.maxBodySize", "").trim().toLowerCase();//k数
         if (Utils.isEmpty(tmp)) {
             //兼容旧的配置
@@ -65,8 +72,12 @@ public class ServerProps {
         }
         request_maxBodySize = getSize(tmp);
 
-        tmp = Solon.cfg().get("server.request.maxHeaderSize", "").trim().toLowerCase();//k数
-        request_maxHeaderSize = getSize(tmp);
+        tmp = Solon.cfg().get("server.request.maxFileSize", "").trim().toLowerCase();//k数
+        if (Utils.isEmpty(tmp)) {
+            request_maxFileSize = request_maxBodySize;
+        } else {
+            request_maxFileSize = getSize(tmp);
+        }
 
 
         tmp = Solon.cfg().get("solon.request.encoding", "").trim();

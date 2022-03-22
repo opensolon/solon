@@ -19,7 +19,7 @@ class MultipartUtil {
     public static void buildParamsAndFiles(SolonServletContext context) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) context.request();
 
-        long maxBodySize = (ServerProps.request_maxBodySize == 0 ? -1L : ServerProps.request_maxBodySize);
+        long maxBodySize = (ServerProps.request_maxFileSize == 0 ? -1L : ServerProps.request_maxFileSize);
 
         MultipartConfigElement configElement = new MultipartConfigElement(
                 System.getProperty("java.io.tmpdir"),
