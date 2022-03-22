@@ -247,6 +247,8 @@ public class SolonServletContext extends Context {
     @Override
     public List<UploadedFile> files(String key) throws Exception {
         if (_fileMap != null && isMultipartFormData()) {
+            lazyLoadMultipart();
+
             List<UploadedFile> temp = _fileMap.get(key);
             if (temp == null) {
                 return new ArrayList<>();
