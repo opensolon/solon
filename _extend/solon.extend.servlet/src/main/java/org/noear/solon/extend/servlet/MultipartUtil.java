@@ -19,13 +19,15 @@ class MultipartUtil {
     public static void buildParamsAndFiles(SolonServletContext context) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) context.request();
 
+        long maxBodySize = (ServerProps.request_maxBodySize == 0 ? -1L : ServerProps.request_maxBodySize);
+
         MultipartConfigElement configElement = new MultipartConfigElement(
                 System.getProperty("java.io.tmpdir"),
-                -1L,
-                ServerProps.request_maxBodySize,
+                maxBodySize,
+                maxBodySize,
                 0);
 
-        request.setAttribute("org.eclipse.jetty.multipartConfig",configElement);
+        request.setAttribute("org.eclipse.jetty.multipartConfig", configElement);
 
         for (Part part : request.getParts()) {
             if (isFile(part)) {
