@@ -157,6 +157,8 @@ public class AioSocketSession extends SessionBase {
                 } else {
                     throw new RuntimeException(e);
                 }
+            } catch (RuntimeException e) {
+                throw e;
             } catch (Throwable e) {
                 throw new RuntimeException(e);
             }
