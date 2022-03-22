@@ -13,12 +13,21 @@ public class UploadController {
 
     //支持上传文件参数（file 变量名，与表单变量名保持一至）
     @Mapping(path = "f1", method = MethodType.POST)
-    public String test_f1(Context ctx, UploadedFile file) throws Exception {
+    public String test_f1(Context ctx, UploadedFile file, UploadedFile file2) throws Exception {
         if (file != null) {
-            return "成功：" + file.name + ": " + file.contentSize;
+            if (file2 == null) {
+                return "成功：" + file.name + ": " + file.contentSize + "; null";
+            } else {
+                return "成功：" + file.name + ": " + file.contentSize + "; " + file2.name + ": " + file2.contentSize;
+            }
         }
 
         return "失败：" + ctx.path();
+    }
+
+    @Mapping(path = "f11", method = MethodType.POST)
+    public String test_f11(Context ctx) throws Exception {
+        return "我没接数据：）";
     }
 
     //支持上传文件参数

@@ -43,8 +43,16 @@
     <li><a href="/demo2/rpc/json" target="_blank">/demo2/rpc/json</a></li>
 
     <li>
-        <p>/demo3/upload</p>
+        <p>/demo3/upload/f1</p>
         <form action="/demo3/upload/f1" method="post" enctype="multipart/form-data">
+            <input type="file" name="file" />
+            <input type="file" name="file2" />
+            <input type="submit" value="上传文件" />
+        </form>
+    </li>
+    <li>
+        <p>/demo3/upload/f11 - 不接收</p>
+        <form action="/demo3/upload/f11" method="post" enctype="multipart/form-data">
             <input type="file" name="file" />
             <input type="submit" value="上传文件" />
         </form>
