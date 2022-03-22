@@ -1,5 +1,6 @@
 package org.noear.solon.extend.servlet;
 
+import org.noear.solon.boot.ServerProps;
 import org.noear.solon.core.handle.UploadedFile;
 
 import javax.servlet.MultipartConfigElement;
@@ -18,8 +19,13 @@ class MultipartUtil {
     public static void buildParamsAndFiles(SolonServletContext context) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) context.request();
 
-        request.setAttribute("org.eclipse.jetty.multipartConfig",
-                new MultipartConfigElement(System.getProperty("java.io.tmpdir")));
+        MultipartConfigElement configElement = new MultipartConfigElement(
+                System.getProperty("java.io.tmpdir"),
+                -1L,
+                ServerProps.request_maxBodySize,
+                0);
+
+        request.setAttribute("org.eclipse.jetty.multipartConfig",configElement);
 
         for (Part part : request.getParts()) {
             if (isFile(part)) {
