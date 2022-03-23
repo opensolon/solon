@@ -46,6 +46,11 @@ public @interface Mapping {
     String produces() default "";
 
     /**
+     * 是否多片
+     * */
+    boolean multipart() default false;
+
+    /**
      * 顺序位（before 或 after =true 时有效）
      * */
     int index() default 0;
