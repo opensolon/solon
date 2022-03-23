@@ -1,5 +1,6 @@
 package org.noear.solon.boot.smarthttp.http;
 
+import org.noear.solon.boot.ServerProps;
 import org.noear.solon.core.NvMap;
 import org.noear.solon.Utils;
 import org.noear.solon.core.event.EventBus;
@@ -26,6 +27,7 @@ public class SmartHttpContext extends Context {
         _request = request;
         _response = response;
         _fileMap = new HashMap<>();
+        autoMultipart(ServerProps.multipart_auto);
     }
 
     private boolean _loadMultipart = false;
@@ -160,7 +162,7 @@ public class SmartHttpContext extends Context {
             _paramMap = new NvMap();
 
             try {
-                if(allowMultipart()) {
+                if(autoMultipart()) {
                     lazyLoadMultipart();
                 }
 

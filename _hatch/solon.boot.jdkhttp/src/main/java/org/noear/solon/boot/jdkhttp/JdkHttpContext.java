@@ -3,6 +3,7 @@ package org.noear.solon.boot.jdkhttp;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import org.noear.solon.Utils;
+import org.noear.solon.boot.ServerProps;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.UploadedFile;
@@ -25,6 +26,7 @@ public class JdkHttpContext extends Context {
         _exchange = exchange;
         _parameters = (Map<String, Object>) _exchange.getAttribute("parameters");
         _fileMap = new HashMap<>();
+        autoMultipart(ServerProps.multipart_auto);
     }
 
     private boolean _loadMultipart = false;
@@ -193,7 +195,7 @@ public class JdkHttpContext extends Context {
             _paramMap = new NvMap();
 
             try {
-                if(allowMultipart()) {
+                if(autoMultipart()) {
                     lazyLoadMultipart();
                 }
 

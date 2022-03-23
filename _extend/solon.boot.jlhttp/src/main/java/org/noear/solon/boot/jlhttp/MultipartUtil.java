@@ -36,7 +36,7 @@ class MultipartUtil {
 
         UploadedFile f1 = new UploadedFile();
         f1.contentType = part.getHeaders().get("Content-Type");
-        f1.content = read(new LimitedInputStream(part.getBody(), ServerProps.request_maxFileSize));
+        f1.content = read(new LimitedInputStream(part.getBody(), ServerProps.multipart_maxFileSize));
         f1.contentSize = f1.content.available();
         f1.name = part.getFilename();
         int idx = f1.name.lastIndexOf(".");

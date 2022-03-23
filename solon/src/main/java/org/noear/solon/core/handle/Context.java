@@ -119,16 +119,16 @@ public abstract class Context {
 
     private boolean allowMultipart = true;
     /**
-     * 允许 Multipart 解析
+     * 是否自动解析分段内容
      * */
-    public boolean allowMultipart() {
+    public boolean autoMultipart() {
         return allowMultipart;
     }
     /**
-     * 设置是否允许 Multipart 解析
+     * 设置是否自动解析分段内容
      * */
-    public void allowMultipart(boolean allow) {
-        this.allowMultipart = allow;
+    public void autoMultipart(boolean auto) {
+        this.allowMultipart = auto;
     }
 
     /**

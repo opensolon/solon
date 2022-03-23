@@ -20,7 +20,7 @@ class MultipartUtil {
         HttpServletRequest request = (HttpServletRequest) context.request();
 
         long maxBodySize = (ServerProps.request_maxBodySize == 0 ? -1L : ServerProps.request_maxBodySize);
-        long maxFileSize = (ServerProps.request_maxFileSize == 0 ? -1L : ServerProps.request_maxFileSize);
+        long maxFileSize = (ServerProps.multipart_maxFileSize == 0 ? -1L : ServerProps.multipart_maxFileSize);
 
         MultipartConfigElement configElement = new MultipartConfigElement(
                 System.getProperty("java.io.tmpdir"),

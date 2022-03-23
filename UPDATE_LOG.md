@@ -3,7 +3,8 @@
 * 插件 solon.logging.impl 充行记录器的级别配置优于添加器的配置
 * 插件 solon.boot.jlhttp 增加文件上传大小限制
 * 插件 solon.boot.smarthttp 增加文件上传大小限制
-* Multipart 解析改为按需加载模式
+* 增加 Multipart 解析改为按需加载模式
+* 增加 Context::alowMultipart() 接口，控制是否解析
 
 #### 1.6.33
 * 插件 solon.schedule 添加 纯手工控制能力

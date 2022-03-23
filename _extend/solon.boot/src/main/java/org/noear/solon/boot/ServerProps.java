@@ -26,9 +26,13 @@ public class ServerProps {
      * */
     public static final int request_maxBodySize;
     /**
-     * 请求最大文件大小
+     * 分片最大文件大小
      * */
-    public static final int request_maxFileSize;
+    public static final int multipart_maxFileSize;
+    /**
+     * 分片是否自动解析
+     * */
+    public static final boolean multipart_auto;
 
     /**
      * 会话超时
@@ -72,12 +76,14 @@ public class ServerProps {
         }
         request_maxBodySize = getSize(tmp);
 
-        tmp = Solon.cfg().get("server.request.maxFileSize", "").trim().toLowerCase();//k数
+        tmp = Solon.cfg().get("server.request.multipart.maxFileSize", "").trim().toLowerCase();//k数
         if (Utils.isEmpty(tmp)) {
-            request_maxFileSize = request_maxBodySize;
+            multipart_maxFileSize = request_maxBodySize;
         } else {
-            request_maxFileSize = getSize(tmp);
+            multipart_maxFileSize = getSize(tmp);
         }
+
+        multipart_auto = Solon.cfg().getBool("server.request.multipart.auto", true);
 
 
         tmp = Solon.cfg().get("solon.request.encoding", "").trim();
