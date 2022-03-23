@@ -4,6 +4,7 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.core.LoggerContext;
 import org.apache.logging.log4j.core.config.Configuration;
 import org.apache.logging.log4j.core.config.Configurator;
+import org.apache.logging.log4j.core.config.LoggerConfig;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
@@ -55,8 +56,8 @@ public class XPluginImp implements Plugin {
                 Configuration lcfg = lctx.getConfiguration();
 
                 for (LoggerLevelEntity lle : LogOptions.getLoggerLevels()) {
-                    lcfg.getLoggerConfig(lle.getLoggerExpr())
-                            .setLevel(Level.valueOf(lle.getLevel().name()));
+                    LoggerConfig logger = lcfg.getLoggerConfig(lle.getLoggerExpr());
+                    logger.setLevel(Level.valueOf(lle.getLevel().name()));
                 }
 
                 lctx.updateLoggers();

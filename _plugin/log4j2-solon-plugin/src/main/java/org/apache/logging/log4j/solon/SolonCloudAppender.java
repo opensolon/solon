@@ -62,7 +62,6 @@ public final  class SolonCloudAppender extends AbstractAppender {
         org.noear.solon.logging.event.LogEvent event = new org.noear.solon.logging.event.LogEvent(
                 e.getLoggerName(),
                 level,
-                level,
                 (eData == null ? null : eData.toMap()),
                 e.getMessage(),
                 e.getTimeMillis(),

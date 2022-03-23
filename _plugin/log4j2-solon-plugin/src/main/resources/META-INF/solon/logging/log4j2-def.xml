@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Configuration status="WARN" packages="org.apache.logging.log4j.solon">
+<Configuration packages="org.apache.logging.log4j.solon">
     <Properties>
         <Property name="APP_NAME">${sys:solon.app.name:-solon}</Property>
 
@@ -15,17 +15,20 @@
         <Property name="FILE_LOG_MAX_FILE_SIZE">${sys:solon.logging.appender.file.maxFileSize:-10 MB}</Property>
 
         <Property name="CLOUD_LOG_LEVEL">${sys:solon.logging.appender.cloud.level:-INFO}</Property>
+
+        <Property name="LOGGER_ROOT_LEVEL">${sys:solon.logging.logger.root.level:-TRACE}</Property>
     </Properties>
     <Appenders>
         <Console name="Console" target="SYSTEM_OUT" follow="true">
             <PatternLayout pattern="${CONSOLE_LOG_PATTERN}"
                            disableAnsi="false"
                            noConsoleNoAnsi="false"/>
+            <ThresholdFilter level="${CONSOLE_LOG_LEVEL}" onMatch="ACCEPT" onMismatch="DENY"/>
         </Console>
         <RollingFile name="File"
                      fileName="${FILE_LOG_NAME}.log"
                      filePattern="${FILE_LOG_NAME}_%d{yyyy-MM-dd}_%i.log">
-            <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>
+            <ThresholdFilter level="${FILE_LOG_LEVEL}" onMatch="ACCEPT" onMismatch="DENY"/>
             <PatternLayout>
                 <Pattern>${FILE_LOG_PATTERN}</Pattern>
             </PatternLayout>
@@ -40,7 +43,7 @@
         </Cloud>
     </Appenders>
     <Loggers>
-        <Root level="trace">
+        <Root level="${LOGGER_ROOT_LEVEL}">
             <AppenderRef ref="Console" />
             <AppenderRef ref="File" />
             <AppenderRef ref="Cloud" />
