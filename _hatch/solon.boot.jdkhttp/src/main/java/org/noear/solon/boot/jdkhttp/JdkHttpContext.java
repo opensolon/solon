@@ -24,15 +24,20 @@ public class JdkHttpContext extends Context {
     public JdkHttpContext(HttpExchange exchange) {
         _exchange = exchange;
         _parameters = (Map<String, Object>) _exchange.getAttribute("parameters");
+        _fileMap = new HashMap<>();
+    }
+
+    private boolean _loadMultipart = false;
+    private void lazyLoadMultipart() throws IOException{
+        if (_loadMultipart) {
+            return;
+        } else {
+            _loadMultipart = true;
+        }
 
         //文件上传需要
         if (isMultipart()) {
-            try {
-                _fileMap = new HashMap<>();
-                MultipartUtil.buildParamsAndFiles(this);
-            } catch (Throwable ex) {
-                throw new RuntimeException(ex);
-            }
+            MultipartUtil.buildParamsAndFiles(this);
         }
     }
 
@@ -187,13 +192,21 @@ public class JdkHttpContext extends Context {
         if (_paramMap == null) {
             _paramMap = new NvMap();
 
-            _parameters.forEach((k, v) -> {
-                if (v instanceof List) {
-                    _paramMap.put(k, ((List<String>) v).get(0));
-                } else {
-                    _paramMap.put(k, (String) v);
-                }
-            });
+            try {
+                lazyLoadMultipart();
+
+                _parameters.forEach((k, v) -> {
+                    if (v instanceof List) {
+                        _paramMap.put(k, ((List<String>) v).get(0));
+                    } else {
+                        _paramMap.put(k, (String) v);
+                    }
+                });
+            } catch (RuntimeException e) {
+                throw e;
+            } catch (Throwable e) {
+                throw new IllegalStateException(e);
+            }
         }
 
         return _paramMap;
@@ -223,6 +236,8 @@ public class JdkHttpContext extends Context {
     @Override
     public List<UploadedFile> files(String key) throws Exception {
         if (isMultipartFormData()) {
+            lazyLoadMultipart();
+
             List<UploadedFile> temp = _fileMap.get(key);
             if (temp == null) {
                 return new ArrayList<>();

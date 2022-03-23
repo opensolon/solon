@@ -13,7 +13,7 @@ public class TestExt implements Plugin {
         app.add("/demo2x/param", ParamController.class);
         app.add("/demo2x/mapping", MappingController.class);
 
-        app.get("/",c->c.redirect("/debug.htm"));
+        app.get("/",c->c.forward("/debug.htm"));
 
 
         app.plug(new Plugin() {
