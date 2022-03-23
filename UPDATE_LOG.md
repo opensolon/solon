@@ -12,6 +12,8 @@
 * 增加 Context::autoMultipart() 接口，控制自动解决分片内容
 * 增加 "server.request.maxFileSize" 配置
 * 增加 "server.request.autoMultipart" 配置，可免避被人刷死
+* 新增 nacos2-solon-plugin 插件
+* 新增 dubbo3-solon-plugin 插件
 
 #### 1.6.33
 * 插件 solon.schedule 添加 纯手工控制能力
