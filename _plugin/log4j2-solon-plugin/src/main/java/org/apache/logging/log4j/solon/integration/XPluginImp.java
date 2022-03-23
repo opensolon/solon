@@ -56,8 +56,10 @@ public class XPluginImp implements Plugin {
                 Configuration lcfg = lctx.getConfiguration();
 
                 for (LoggerLevelEntity lle : LogOptions.getLoggerLevels()) {
-                    LoggerConfig logger = lcfg.getLoggerConfig(lle.getLoggerExpr());
-                    logger.setLevel(Level.valueOf(lle.getLevel().name()));
+                    LoggerConfig logger = new LoggerConfig(lle.getLoggerExpr(),
+                            Level.valueOf(lle.getLevel().name()),
+                            true);
+                    lcfg.addLogger(logger.getName(), logger);
                 }
 
                 lctx.updateLoggers();
