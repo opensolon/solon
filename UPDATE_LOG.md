@@ -4,7 +4,7 @@
 * 插件 solon.boot.jlhttp 增加文件上传大小限制
 * 插件 solon.boot.smarthttp 增加文件上传大小限制
 * 增加 Multipart 解析改为按需加载模式
-* 增加 Context::alowMultipart() 接口，控制是否解析
+* 增加 Context::autoMultipart() 接口，控制自动解决分片内容
 * 增加 "server.request.maxFileSize" 配置
 * 增加 "server.request.autoMultipart" 配置
 
