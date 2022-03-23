@@ -21,9 +21,11 @@ solon.logging.appender:
 
 # 记录器级别的配置示例
 solon.logging.logger:
-  "features.*":
-    level: WARN
-  "org.jetty.demo.*":
+  "root": #默认记录器配置
+    level: INFO
+  "features":
+    level: DEBUG
+  "org.jetty.demo":
     level: WARN
 ```
 
