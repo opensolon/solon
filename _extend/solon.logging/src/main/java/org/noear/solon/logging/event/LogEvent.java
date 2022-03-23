@@ -11,7 +11,6 @@ import java.util.Map;
 public class LogEvent {
 
     private String loggerName;
-    private Level loggerLevel;
     private Level level;
     private Map<String, String> metainfo;
     private Object content;
@@ -19,9 +18,8 @@ public class LogEvent {
     private String threadName;
     private Throwable throwable;
 
-    public LogEvent(String loggerName, Level loggerLevel,Level level, Map<String, String> metainfo, Object content, long timeStamp, String threadName, Throwable throwable) {
+    public LogEvent(String loggerName, Level level, Map<String, String> metainfo, Object content, long timeStamp, String threadName, Throwable throwable) {
         this.loggerName = loggerName;
-        this.loggerLevel = loggerLevel;
         this.level = level;
         this.metainfo = metainfo;
         this.content = content;
@@ -35,13 +33,6 @@ public class LogEvent {
      */
     public String getLoggerName() {
         return loggerName;
-    }
-
-    /**
-     * 获取日志器级别
-     */
-    public Level getLoggerLevel() {
-        return loggerLevel;
     }
 
     /**

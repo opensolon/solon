@@ -19,12 +19,12 @@ import java.util.Map;
  * @since 1.0
  */
 public class SolonLogger implements Logger {
-    private String name;
-    private Level loggerLevel = Level.ALL;
+    private String loggerName;
+    private Level loggerLevel = Level.TRACE;
 
 
     public SolonLogger(String name) {
-        this.name = name;
+        loggerName = name;
 
         if (Solon.global() != null) {
             loggerLevel = LogOptions.getLoggerLevel(name);
@@ -37,7 +37,7 @@ public class SolonLogger implements Logger {
 
     @Override
     public String getName() {
-        return name;
+        return loggerName;
     }
 
     @Override
@@ -379,7 +379,7 @@ public class SolonLogger implements Logger {
             }
         }
 
-        LogEvent logEvent = new LogEvent(getName(), loggerLevel, level, metainfo, content,
+        LogEvent logEvent = new LogEvent(getName(), level, metainfo, content,
                 System.currentTimeMillis(),
                 Thread.currentThread().getName(), throwable);
 
