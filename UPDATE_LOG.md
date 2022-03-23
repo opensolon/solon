@@ -1,12 +1,14 @@
 #### 1.6.34
-* 插件 mybatis-solon-plugin 充许通过 bean 添加拦截截器
-* 插件 solon.logging.impl 充行记录器的级别配置优于添加器的配置
+* 插件 mybatis-solon-plugin 
+  * 增加 bean 方式添加拦截截器
+  * 增加 mybatis.xxx.configuration 配置节支持
+* 插件 solon.logging.impl 允许记录器的级别配置优于添加器的配置
 * 插件 solon.boot.jlhttp 增加文件上传大小限制
 * 插件 solon.boot.smarthttp 增加文件上传大小限制
 * 增加 Multipart 解析改为按需加载模式
 * 增加 Context::autoMultipart() 接口，控制自动解决分片内容
 * 增加 "server.request.maxFileSize" 配置
-* 增加 "server.request.autoMultipart" 配置
+* 增加 "server.request.autoMultipart" 配置，可免避被人刷死
 
 #### 1.6.33
 * 插件 solon.schedule 添加 纯手工控制能力

@@ -7,10 +7,6 @@ package org.noear.solon.logging.event;
  * @since 1.0
  */
 public enum Level {
-    /**
-     * 相当于未配置
-     */
-    ALL(0),
     TRACE(10),
     DEBUG(20),
     INFO(30),

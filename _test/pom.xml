@@ -206,10 +206,10 @@
         </dependency>
 
 
-<!--        <dependency>-->
-<!--            <groupId>org.noear</groupId>-->
-<!--            <artifactId>solon.boot.jlhttp</artifactId>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.boot.jlhttp</artifactId>
+        </dependency>
 
 
 <!--        <dependency>-->
@@ -231,25 +231,25 @@
 
 
 
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.boot.jetty</artifactId>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.noear</groupId>-->
+<!--            <artifactId>solon.boot.jetty</artifactId>-->
+<!--        </dependency>-->
 
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.boot.jetty.add.servlet</artifactId>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.noear</groupId>-->
+<!--            <artifactId>solon.boot.jetty.add.servlet</artifactId>-->
+<!--        </dependency>-->
 
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.boot.jetty.add.websocket</artifactId>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.noear</groupId>-->
+<!--            <artifactId>solon.boot.jetty.add.websocket</artifactId>-->
+<!--        </dependency>-->
 
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.boot.jetty.add.jsp</artifactId>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.noear</groupId>-->
+<!--            <artifactId>solon.boot.jetty.add.jsp</artifactId>-->
+<!--        </dependency>-->
 
 
         <dependency>

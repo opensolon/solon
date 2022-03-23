@@ -62,7 +62,7 @@ public class LogOptions {
         }
 
         if (logger == null) {
-            return Level.ALL;
+            return Level.TRACE;
         }
 
         for (LoggerLevelEntity l : loggerLevelMap.values()) {
@@ -71,7 +71,7 @@ public class LogOptions {
             }
         }
 
-        return Level.ALL;
+        return Level.TRACE;
     }
 
     /**

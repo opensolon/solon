@@ -13,6 +13,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.BeanWrap;
+import org.noear.solon.core.Props;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.extend.mybatis.MybatisAdapter;
 import org.noear.solon.extend.mybatis.tran.SolonManagedTransactionFactory;
@@ -77,7 +78,7 @@ public class MybatisAdapterDefault implements MybatisAdapter {
         EventBus.push(config);
 
         //2.初始化（顺序不能乱）
-        init0(props);
+        init0(new Props(props));
 
         Aop.getAsyn(SqlSessionFactoryBuilder.class, bw -> {
             factoryBuilder = bw.raw();
@@ -88,8 +89,15 @@ public class MybatisAdapterDefault implements MybatisAdapter {
         config = new Configuration(environment);
     }
 
-    private void init0(Properties props) {
+    private void init0(Props props) {
         if (props != null) {
+            //for configuration section
+            Props cfgProps = props.getProp("configuration");
+            if(cfgProps.size() > 0) {
+                Utils.injectProperties(getConfiguration(), cfgProps);
+            }
+
+            //for typeAliases section
             props.forEach((k, v) -> {
                 if (k instanceof String && v instanceof String) {
                     String key = (String) k;
@@ -118,6 +126,7 @@ public class MybatisAdapterDefault implements MybatisAdapter {
             });
 
             //支持包名和xml
+            //for mappers section
             props.forEach((k, v) -> {
                 if (k instanceof String && v instanceof String) {
                     String key = (String) k;

@@ -89,11 +89,8 @@ public final class AppenderHolder {
             return;
         }
 
-        if (logEvent.getLoggerLevel().code == Level.ALL.code) {
-            //说明 logger 未配置；由 appender 再过滤一下
-            if (this.level.code > logEvent.getLevel().code) {
-                return;
-            }
+        if (this.level.code > logEvent.getLevel().code) {
+            return;
         }
 
         real.append(logEvent);

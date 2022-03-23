@@ -10,6 +10,6 @@ solon.logging.appender:
     level: INFO
 
 
-solon.logging.logger:
-  "features":
-    level: INFO
+#solon.logging.logger:
+#  "features":
+#    level: INFO
