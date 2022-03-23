@@ -1,12 +1,12 @@
-package org.noear.solon.cloud.extend.nacos2;
+package org.noear.solon.cloud.extend.nacos;
 
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.cloud.CloudManager;
-import org.noear.solon.cloud.extend.nacos2.service.CloudConfigServiceNacosImp;
-import org.noear.solon.cloud.extend.nacos2.service.CloudDiscoveryServiceNacosImp;
+import org.noear.solon.cloud.extend.nacos.service.CloudConfigServiceNacosImp;
+import org.noear.solon.cloud.extend.nacos.service.CloudDiscoveryServiceNacosImp;
 
 /**
  * @author noear

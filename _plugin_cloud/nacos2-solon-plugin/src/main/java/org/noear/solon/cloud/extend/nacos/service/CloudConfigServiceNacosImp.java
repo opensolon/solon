@@ -1,4 +1,4 @@
-package org.noear.solon.cloud.extend.nacos2.service;
+package org.noear.solon.cloud.extend.nacos.service;
 
 import com.alibaba.nacos.api.config.ConfigFactory;
 import com.alibaba.nacos.api.config.ConfigService;

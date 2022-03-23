@@ -11,11 +11,11 @@
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>dubbo-solon-plugin</artifactId>
+    <artifactId>dubbo3-solon-plugin</artifactId>
     <packaging>jar</packaging>
 
     <properties>
-        <dubbo.ver>2.7.5</dubbo.ver>
+        <dubbo.ver>3.0.6</dubbo.ver>
     </properties>
 
     <dependencies>
@@ -29,11 +29,6 @@
             <artifactId>dubbo</artifactId>
             <version>${dubbo.ver}</version>
             <exclusions>
-                <exclusion>
-                    <groupId>org.springframework</groupId>
-                    <artifactId>spring</artifactId>
-                </exclusion>
-
                 <exclusion>
                     <groupId>javax.servlet</groupId>
                     <artifactId>servlet-api</artifactId>

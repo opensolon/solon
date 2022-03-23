@@ -1,4 +1,4 @@
-package org.noear.solon.cloud.extend.nacos2.impl;
+package org.noear.solon.cloud.extend.nacos.impl;
 
 import com.alibaba.nacos.api.naming.pojo.Instance;
 

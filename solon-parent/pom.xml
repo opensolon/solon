@@ -55,7 +55,6 @@
         <springboot.ver>2.0.4.RELEASE</springboot.ver>
         <spring.ver>5.0.8.RELEASE</spring.ver>
 
-        <dubbo.ver>2.7.5</dubbo.ver>
         <hazelcast.ver>5.1</hazelcast.ver>
     </properties>
 
@@ -711,6 +710,12 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>dubbo3-solon-plugin</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>feign-solon-plugin</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
@@ -761,6 +766,12 @@
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>nacos-solon-plugin</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>nacos2-solon-plugin</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
 

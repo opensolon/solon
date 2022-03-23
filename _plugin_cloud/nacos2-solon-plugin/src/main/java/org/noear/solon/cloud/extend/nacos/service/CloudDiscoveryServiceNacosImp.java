@@ -1,4 +1,4 @@
-package org.noear.solon.cloud.extend.nacos2.service;
+package org.noear.solon.cloud.extend.nacos.service;
 
 import com.alibaba.nacos.api.exception.NacosException;
 import com.alibaba.nacos.api.naming.NamingFactory;
@@ -8,7 +8,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudDiscoveryHandler;
 import org.noear.solon.cloud.CloudProps;
-import org.noear.solon.cloud.extend.nacos2.impl.InstanceWrap;
+import org.noear.solon.cloud.extend.nacos.impl.InstanceWrap;
 import org.noear.solon.cloud.model.Discovery;
 import org.noear.solon.cloud.model.Instance;
 import org.noear.solon.cloud.service.CloudDiscoveryObserverEntity;

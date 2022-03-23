@@ -1,4 +1,4 @@
-package org.noear.solon.cloud.extend.nacos2;
+package org.noear.solon.cloud.extend.nacos;
 
 import org.noear.solon.cloud.CloudProps;
 
