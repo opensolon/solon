@@ -21,20 +21,4 @@ public class ConsoleAppender extends OutputStreamAppender {
             setOutput(System.out);
         }
     }
-
-    /**
-     * 获取默认级别
-     */
-    @Override
-    public Level getDefaultLevel() {
-        if (Solon.global() == null) {
-            return Level.TRACE;
-        } else {
-            if (Solon.cfg().isDebugMode() || Solon.cfg().isFilesMode()) {
-                return Level.TRACE;
-            } else {
-                return Level.INFO;
-            }
-        }
-    }
 }

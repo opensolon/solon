@@ -8,12 +8,6 @@ package org.noear.solon.logging.event;
  * @since 1.0
  */
 public interface Appender{
-    /**
-     * 默认级别
-     * */
-    default Level getDefaultLevel() {
-        return Level.TRACE;
-    }
 
     /**
      * 开始生命周期（一般由 AppenderHolder 控制 ）
