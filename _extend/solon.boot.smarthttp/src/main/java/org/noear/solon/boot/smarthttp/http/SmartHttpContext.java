@@ -160,7 +160,9 @@ public class SmartHttpContext extends Context {
             _paramMap = new NvMap();
 
             try {
-                lazyLoadMultipart();
+                if(allowMultipart()) {
+                    lazyLoadMultipart();
+                }
 
                 for (Map.Entry<String, String[]> entry : _request.getParameters().entrySet()) {
                     _paramMap.put(entry.getKey(), entry.getValue()[0]);

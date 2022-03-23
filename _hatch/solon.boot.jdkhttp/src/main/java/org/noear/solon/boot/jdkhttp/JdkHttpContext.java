@@ -193,7 +193,9 @@ public class JdkHttpContext extends Context {
             _paramMap = new NvMap();
 
             try {
-                lazyLoadMultipart();
+                if(allowMultipart()) {
+                    lazyLoadMultipart();
+                }
 
                 _parameters.forEach((k, v) -> {
                     if (v instanceof List) {

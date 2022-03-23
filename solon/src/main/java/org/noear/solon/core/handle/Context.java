@@ -117,6 +117,20 @@ public abstract class Context {
         return realIp;
     }
 
+    private boolean allowMultipart = true;
+    /**
+     * 允许 Multipart 解析
+     * */
+    public boolean allowMultipart() {
+        return allowMultipart;
+    }
+    /**
+     * 设置是否允许 Multipart 解析
+     * */
+    public void allowMultipart(boolean allow) {
+        this.allowMultipart = allow;
+    }
+
     /**
      * 是否为分段内容
      */

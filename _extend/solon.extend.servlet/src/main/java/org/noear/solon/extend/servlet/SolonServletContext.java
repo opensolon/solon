@@ -25,7 +25,6 @@ import java.util.*;
 public class SolonServletContext extends Context {
     private HttpServletRequest _request;
     private HttpServletResponse _response;
-    private boolean _isParseMultipart;
     protected Map<String, List<UploadedFile>> _fileMap;
 
     public SolonServletContext(HttpServletRequest request, HttpServletResponse response) {
@@ -36,7 +35,7 @@ public class SolonServletContext extends Context {
         _request = request;
         _response = response;
         _fileMap = new HashMap<>();
-        _isParseMultipart = parseMultipart;
+        allowMultipart(parseMultipart);
 
         if (sessionState().replaceable() && Solon.global().enableSessionState()) {
             sessionStateInit(new SessionState() {
@@ -95,7 +94,7 @@ public class SolonServletContext extends Context {
         }
 
         //文件上传需要
-        if (_isParseMultipart && isMultipart()) {
+        if (isMultipart()) {
             MultipartUtil.buildParamsAndFiles(this);
         }
     }
@@ -210,7 +209,9 @@ public class SolonServletContext extends Context {
             _paramMap = new NvMap();
 
             try {
-                lazyLoadMultipart();
+                if(allowMultipart()) {
+                    lazyLoadMultipart();
+                }
 
                 Enumeration<String> names = _request.getParameterNames();
 

@@ -190,7 +190,9 @@ public class JlHttpContext extends Context {
             _paramMap = new NvMap();
 
             try {
-                lazyLoadMultipart();
+                if(allowMultipart()) {
+                    lazyLoadMultipart();
+                }
 
                 _paramMap.putAll(_request.getParams());
             } catch (RuntimeException e) {
