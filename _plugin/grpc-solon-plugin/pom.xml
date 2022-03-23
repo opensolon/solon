@@ -11,22 +11,13 @@
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>solon.socketd.client.smartsocket</artifactId>
+    <artifactId>grpc-solon-plugin</artifactId>
     <packaging>jar</packaging>
-
 
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.socketd</artifactId>
+            <artifactId>solon</artifactId>
         </dependency>
-
-        <dependency>
-            <groupId>org.smartboot.socket</groupId>
-            <artifactId>aio-core</artifactId>
-            <version>1.5.16</version>
-        </dependency>
-
     </dependencies>
-
 </project>
