@@ -2,9 +2,10 @@
 * 插件 mybatis-solon-plugin 
   * 增加 bean 方式添加拦截截器
   * 增加 mybatis.xxx.configuration 配置节支持
-* 插件 solon.logging.impl 增加 root 等级配置
-* 插件 log4j2-solon-plugin 增加 root 等级配置
-* 插件 logback-solon-plugin 增加 root 等级配置
+* 插件 solon.logging 统一体验 
+  * 增加 root 等级配置
+  * 统一 root,logger,appender 的 level 关系
+  * 包括 solon.logging.impl, log4j2-solon-plugin, logback-solon-plugin
 * 插件 solon.boot.jlhttp 增加文件上传大小限制
 * 插件 solon.boot.smarthttp 增加文件上传大小限制
 * 增加 Multipart 解析改为按需加载模式
