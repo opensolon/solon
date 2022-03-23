@@ -63,8 +63,8 @@ class PluginUndertow extends PluginUndertowBase implements Plugin {
             builder.setServerOption(UndertowOptions.MAX_HEADER_SIZE, ServerProps.request_maxHeaderSize);
         }
 
-        if (ServerProps.multipart_maxFileSize != 0) {
-            builder.setServerOption(UndertowOptions.MAX_ENTITY_SIZE, (long) ServerProps.multipart_maxFileSize);
+        if (ServerProps.request_maxFileSize != 0) {
+            builder.setServerOption(UndertowOptions.MAX_ENTITY_SIZE, (long) ServerProps.request_maxFileSize);
         }
 
         if (System.getProperty(ServerConstants.SSL_KEYSTORE) == null) {

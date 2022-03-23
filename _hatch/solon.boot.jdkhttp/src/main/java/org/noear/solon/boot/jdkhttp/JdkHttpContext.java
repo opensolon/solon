@@ -26,7 +26,7 @@ public class JdkHttpContext extends Context {
         _exchange = exchange;
         _parameters = (Map<String, Object>) _exchange.getAttribute("parameters");
         _fileMap = new HashMap<>();
-        autoMultipart(ServerProps.multipart_auto);
+        autoMultipart(ServerProps.request_autoMultipart);
     }
 
     private boolean _loadMultipart = false;

@@ -29,7 +29,7 @@ public class SolonServletContext extends Context {
     protected Map<String, List<UploadedFile>> _fileMap;
 
     public SolonServletContext(HttpServletRequest request, HttpServletResponse response) {
-        this(request, response, ServerProps.multipart_auto);
+        this(request, response, ServerProps.request_autoMultipart);
     }
 
     public SolonServletContext(HttpServletRequest request, HttpServletResponse response, boolean parseMultipart) {

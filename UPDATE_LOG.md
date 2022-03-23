@@ -5,6 +5,8 @@
 * 插件 solon.boot.smarthttp 增加文件上传大小限制
 * 增加 Multipart 解析改为按需加载模式
 * 增加 Context::alowMultipart() 接口，控制是否解析
+* 增加 "server.request.maxFileSize" 配置
+* 增加 "server.request.autoMultipart" 配置
 
 #### 1.6.33
 * 插件 solon.schedule 添加 纯手工控制能力
