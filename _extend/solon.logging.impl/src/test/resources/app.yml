@@ -3,13 +3,18 @@ solon.app:
 
 solon.logging.appender:
   console:
-    level: WARN
+    level: DEBUG
   file:
     level: INFO
   cloud:
     level: INFO
 
 
-solon.logging.logger:
-  "features":
-    level: INFO
+solon.logging:
+  logger:
+    "root":
+      level: WARN
+    "features":
+      level: INFO
+
+

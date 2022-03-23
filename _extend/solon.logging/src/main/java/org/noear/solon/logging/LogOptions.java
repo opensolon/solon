@@ -1,6 +1,7 @@
 package org.noear.solon.logging;
 
 import org.noear.solon.Solon;
+import org.noear.solon.Utils;
 import org.noear.solon.logging.event.Level;
 import org.noear.solon.logging.model.LoggerLevelEntity;
 
@@ -16,6 +17,9 @@ public class LogOptions {
 
     private static volatile Map<String, LoggerLevelEntity> loggerLevelMap = new LinkedHashMap<>();
     private static volatile boolean loggerLevelMapInited = false;
+
+
+    private static volatile Level rootLevel = Level.TRACE;
 
     /**
      * 添加记录器等级设定
@@ -35,7 +39,7 @@ public class LogOptions {
 
     /**
      * 获取所有配置的记录器等级设定
-     * */
+     */
     public static Collection<LoggerLevelEntity> getLoggerLevels() {
         if (loggerLevelMapInited == false) {
             loggerLevelMapInit();
@@ -47,12 +51,13 @@ public class LogOptions {
 
     /**
      * 初始化记录器等级配置
-     * */
+     */
     public static void getLoggerLevelInit() {
         if (loggerLevelMapInited == false) {
             loggerLevelMapInit();
         }
     }
+
     /**
      * 获取记录器等级设定
      */
@@ -61,8 +66,8 @@ public class LogOptions {
             loggerLevelMapInit();
         }
 
-        if (logger == null) {
-            return Level.TRACE;
+        if (Utils.isEmpty(logger)) {
+            return getRootLevel();
         }
 
         for (LoggerLevelEntity l : loggerLevelMap.values()) {
@@ -71,7 +76,11 @@ public class LogOptions {
             }
         }
 
-        return Level.TRACE;
+        return getRootLevel();
+    }
+
+    public static Level getRootLevel() {
+        return rootLevel;
     }
 
     /**
@@ -97,8 +106,13 @@ public class LogOptions {
 
                 if (key.endsWith(".level")) {
                     String loggerExpr = key.substring(0, key.length() - 6);
+                    Level loggerLevel = Level.of(val, Level.INFO);
 
-                    LogOptions.addLoggerLevel(loggerExpr, Level.of(val, Level.INFO));
+                    LogOptions.addLoggerLevel(loggerExpr, loggerLevel);
+
+                    if ("root".equals(loggerExpr)) {
+                        rootLevel = loggerLevel;
+                    }
                 }
             });
         }
