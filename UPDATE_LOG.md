@@ -2,16 +2,19 @@
 * 插件 mybatis-solon-plugin 
   * 增加 bean 方式添加拦截截器
   * 增加 mybatis.xxx.configuration 配置节支持
-* 插件 solon.logging 统一体验 
+* 统一日志配置体验 
   * 增加 root 等级配置
   * 统一 root,logger,appender 的 level 关系
   * 包括 solon.logging.impl, log4j2-solon-plugin, logback-solon-plugin
-* 插件 solon.boot.jlhttp 增加文件上传大小限制
-* 插件 solon.boot.smarthttp 增加文件上传大小限制
-* 增加 Multipart 解析改为按需加载模式
-* 增加 Context::autoMultipart() 接口，控制自动解决分片内容
-* 增加 "server.request.maxFileSize" 配置
-* 增加 "server.request.autoMultipart" 配置，可免避被人刷死
+* 统一文件上传限制配置体验
+  * 插件 solon.boot.jlhttp 增加文件上传大小限制
+  * 插件 solon.boot.smarthttp 增加文件上传大小限制
+  * 插件 solon.boot.jetty 增加文件上传大小限制
+  * 增加 "server.request.maxFileSize" 配置（其默认值为 maxBodySize）
+* 优化 Multipart 安全机制
+  * 增加 Multipart 解析改为按需加载模式
+  * 增加 Context::autoMultipart() 接口，控制自动解决分片内容
+  * 增加 Mapping::multipart 属性，用于显示申明分片处理（默认为自动）
 * 新增 nacos2-solon-plugin 插件
 * 新增 dubbo3-solon-plugin 插件
 
