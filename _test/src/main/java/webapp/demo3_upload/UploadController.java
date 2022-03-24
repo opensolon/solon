@@ -2,6 +2,7 @@ package webapp.demo3_upload;
 
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Mapping;
+import org.noear.solon.annotation.Multipart;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.handle.UploadedFile;
@@ -42,8 +43,10 @@ public class UploadController {
         return userName + ": " + file.name + "- " + file.contentSize;
     }
 
+    @Multipart
     @Mapping(path = "f12_1", method = MethodType.POST)
-    public String test_f12_1(UploadedFile file, String userName) throws Exception {
+    public String test_f12_1(Context ctx,String userName) throws Exception {
+        UploadedFile file = ctx.file("file");
         if (userName == null) {
             return "userName is null";
         }

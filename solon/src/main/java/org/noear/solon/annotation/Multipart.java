@@ -3,7 +3,7 @@ package org.noear.solon.annotation;
 import java.lang.annotation.*;
 
 /**
- * 多分片请求
+ * 多分片请求申请
  *
  * 一般附加在动作上
  *
