@@ -3,7 +3,7 @@
   * 增加 bean 方式添加拦截截器
   * 增加 mybatis.xxx.configuration 配置节支持
 * 统一日志配置体验 
-  * 增加 root 等级配置
+  * 增加 root 等级配置，做为 logger 的默认等级!!!
   * 统一 root,logger,appender 的 level 关系
   * 包括 solon.logging.impl, log4j2-solon-plugin, logback-solon-plugin
 * 统一文件上传限制配置体验
