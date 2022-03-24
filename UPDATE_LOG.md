@@ -13,7 +13,7 @@
   * 增加 "server.request.maxFileSize" 配置（其默认值为 maxBodySize）
 * 优化 Multipart 安全机制
   * 增加 Multipart 解析改为按需加载模式
-  * 增加 Context::autoMultipart() 接口，控制自动解决分片内容
+  * 增加 Context::autoMultipart() 接口，控制在参数解析时自动解析分片内容
   * 增加 Mapping::multipart 属性，用于显示申明分片处理（默认为自动）
 * 新增 nacos2-solon-plugin 插件
 * 新增 dubbo3-solon-plugin 插件
