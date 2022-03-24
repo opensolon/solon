@@ -1,7 +1,6 @@
 package org.noear.solon.core.handle;
 
 import org.noear.solon.Utils;
-import org.noear.solon.annotation.Multipart;
 import org.noear.solon.core.*;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.PathUtil;
@@ -43,7 +42,7 @@ public class Action extends HandlerAide implements Handler {
     private final boolean mRemoting;
     private final Mapping mMapping;
 
-    private boolean mAutoMultipart;
+    private boolean mMultipart;
 
     //path 分析器
     private PathAnalyzer pathAnalyzer;//路径分析器
@@ -78,16 +77,16 @@ public class Action extends HandlerAide implements Handler {
         } else {
             mProduces = mapping.produces();
             mConsumes = mapping.consumes();
+            mMultipart = mapping.multipart();
             mName = Utils.annoAlias(mapping.value(), mapping.path());
             mIsMain = !(mapping.after() || mapping.before());
         }
 
         //支持多分片申明
-        mAutoMultipart = (method.getAnnotation(Multipart.class) != null);
-        if(mAutoMultipart == false) {
+        if(mMultipart == false) {
             for (Class<?> clz : method.getParameterTypes()) {
                 if (UploadedFile.class.isAssignableFrom(clz)) {
-                    mAutoMultipart = true;
+                    mMultipart = true;
                 }
             }
         }
@@ -157,7 +156,7 @@ public class Action extends HandlerAide implements Handler {
             }
         }
 
-        if (mAutoMultipart) {
+        if (mMultipart) {
             x.autoMultipart(true);
         }
 
