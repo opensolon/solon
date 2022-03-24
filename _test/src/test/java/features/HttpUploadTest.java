@@ -46,4 +46,31 @@ public class HttpUploadTest extends HttpTestBase {
                 .data("file", "装修-水电-视频.mp4", inputStream, "video/mp4")
                 .post().contains("我没接数据：）");
     }
+
+    @Test
+    public void upload_param() throws IOException {
+        InputStream inputStream = new ByteArrayInputStream("test".getBytes(StandardCharsets.UTF_8));
+        assert path("/demo3/upload/f12")
+                .data("file", "装修-水电-视频.mp4", inputStream, "video/mp4")
+                .data("userName", "noear")
+                .post().startsWith("noear") == false;
+    }
+
+    @Test
+    public void upload_param_1() throws IOException {
+        InputStream inputStream = new ByteArrayInputStream("test".getBytes(StandardCharsets.UTF_8));
+        assert path("/demo3/upload/f12_1")
+                .data("file", "装修-水电-视频.mp4", inputStream, "video/mp4")
+                .data("userName", "noear")
+                .post().startsWith("noear");
+    }
+
+    @Test
+    public void upload_param_2() throws IOException {
+        InputStream inputStream = new ByteArrayInputStream("test".getBytes(StandardCharsets.UTF_8));
+        assert path("/demo3/upload/f13")
+                .data("file", "装修-水电-视频.mp4", inputStream, "video/mp4")
+                .data("userName", "noear")
+                .post().startsWith("noear");
+    }
 }

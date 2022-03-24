@@ -1,6 +1,7 @@
 package webapp.demo3_upload;
 
 import org.noear.solon.Utils;
+import org.noear.solon.annotation.AutoMutipart;
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Mapping;
 import org.noear.solon.annotation.Singleton;
@@ -32,6 +33,46 @@ public class UploadController {
     @Mapping(path = "f11", method = MethodType.POST)
     public String test_f11(Context ctx) throws Exception {
         return "我没接数据：）";
+    }
+
+    @Mapping(path = "f12", method = MethodType.POST)
+    public String test_f12(String userName, UploadedFile file) throws Exception {
+        if (userName == null) {
+            return "userName is null";
+        }
+
+        if (file == null) {
+            return "file is null";
+        }
+
+        return userName + ": " + file.name + "- " + file.contentSize;
+    }
+
+    @Mapping(path = "f12_1", method = MethodType.POST)
+    public String test_f12_1(UploadedFile file, String userName) throws Exception {
+        if (userName == null) {
+            return "userName is null";
+        }
+
+        if (file == null) {
+            return "file is null";
+        }
+
+        return userName + ": " + file.name + "- " + file.contentSize;
+    }
+
+    @AutoMutipart
+    @Mapping(path = "f13", method = MethodType.POST)
+    public String test_f13(String userName, UploadedFile file) throws Exception {
+        if (userName == null) {
+            return "userName is null";
+        }
+
+        if (file == null) {
+            return "file is null";
+        }
+
+        return userName + ": " + file.name + "- " + file.contentSize;
     }
 
     //支持上传文件参数

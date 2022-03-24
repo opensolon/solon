@@ -77,6 +77,7 @@ server:
   request:
     maxBodySize: 2000mb
     maxHeaderSize: 200kb
+    autoMultipart: false
   session:
     timeout: 7200 #单位秒；（可不配，默认：7200）
     state:
