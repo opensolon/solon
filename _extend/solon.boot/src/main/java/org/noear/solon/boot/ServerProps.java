@@ -30,11 +30,6 @@ public class ServerProps {
      * */
     public static final int request_maxFileSize;
     /**
-     * 分片是否自动解析
-     * */
-    public static final boolean request_autoMultipart;
-
-    /**
      * 会话超时
      * */
     public static final int session_timeout;
@@ -82,9 +77,6 @@ public class ServerProps {
         } else {
             request_maxFileSize = getSize(tmp);
         }
-
-        request_autoMultipart = Solon.cfg().getBool("server.request.autoMultipart", true);
-
 
         tmp = Solon.cfg().get("solon.request.encoding", "").trim();
         if (Utils.isEmpty(tmp)) {

@@ -53,7 +53,7 @@ public class HttpUploadTest extends HttpTestBase {
         assert path("/demo3/upload/f12")
                 .data("file", "装修-水电-视频.mp4", inputStream, "video/mp4")
                 .data("userName", "noear")
-                .post().startsWith("noear") == false;
+                .post().startsWith("noear");
     }
 
     @Test

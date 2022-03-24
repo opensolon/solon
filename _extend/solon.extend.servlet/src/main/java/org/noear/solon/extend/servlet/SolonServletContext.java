@@ -2,7 +2,6 @@ package org.noear.solon.extend.servlet;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
-import org.noear.solon.boot.ServerProps;
 import org.noear.solon.core.NvMap;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.SessionState;
@@ -29,14 +28,9 @@ public class SolonServletContext extends Context {
     protected Map<String, List<UploadedFile>> _fileMap;
 
     public SolonServletContext(HttpServletRequest request, HttpServletResponse response) {
-        this(request, response, ServerProps.request_autoMultipart);
-    }
-
-    public SolonServletContext(HttpServletRequest request, HttpServletResponse response, boolean parseMultipart) {
         _request = request;
         _response = response;
         _fileMap = new HashMap<>();
-        autoMultipart(parseMultipart);
 
         if (sessionState().replaceable() && Solon.global().enableSessionState()) {
             sessionStateInit(new SessionState() {

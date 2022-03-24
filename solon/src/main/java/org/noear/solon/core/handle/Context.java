@@ -117,7 +117,10 @@ public abstract class Context {
         return realIp;
     }
 
-    private boolean allowMultipart = true;
+    /**
+     * ::默认不自动处理；仅在取文件时解析
+     * */
+    private boolean allowMultipart = false;
     /**
      * 是否自动解析分段内容
      * */

@@ -1,16 +1,10 @@
 package webapp.demo3_upload;
 
-import org.noear.solon.Utils;
-import org.noear.solon.annotation.AutoMutipart;
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Mapping;
-import org.noear.solon.annotation.Singleton;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.handle.UploadedFile;
-
-import java.io.File;
-import java.io.FileOutputStream;
 
 @Mapping("/demo3/upload")
 @Controller
@@ -61,7 +55,6 @@ public class UploadController {
         return userName + ": " + file.name + "- " + file.contentSize;
     }
 
-    @AutoMutipart
     @Mapping(path = "f13", method = MethodType.POST)
     public String test_f13(String userName, UploadedFile file) throws Exception {
         if (userName == null) {

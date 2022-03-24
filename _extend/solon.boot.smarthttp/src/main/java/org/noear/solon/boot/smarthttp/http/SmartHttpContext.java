@@ -27,7 +27,6 @@ public class SmartHttpContext extends Context {
         _request = request;
         _response = response;
         _fileMap = new HashMap<>();
-        autoMultipart(ServerProps.request_autoMultipart);
     }
 
     private boolean _loadMultipart = false;
