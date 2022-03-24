@@ -1,6 +1,7 @@
 package org.noear.solon.core.handle;
 
 import org.noear.solon.Utils;
+import org.noear.solon.annotation.AutoMutipart;
 import org.noear.solon.core.*;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.PathUtil;
@@ -42,6 +43,7 @@ public class Action extends HandlerAide implements Handler {
     //action remoting
     private final boolean mRemoting;
     private final Mapping mMapping;
+    private final boolean mAutoMultipart;
 
     //path 分析器
     private PathAnalyzer pathAnalyzer;//路径分析器
@@ -61,6 +63,7 @@ public class Action extends HandlerAide implements Handler {
         mWrap = MethodWrap.get(method);
         mRemoting = remoting;
         mMapping = mapping;
+        mAutoMultipart = (method.getAnnotation(AutoMutipart.class) != null);
         bRender = render;
 
         if (bRender == null) {
@@ -143,6 +146,10 @@ public class Action extends HandlerAide implements Handler {
                 x.status(415);
                 return;
             }
+        }
+
+        if (mAutoMultipart) {
+            x.autoMultipart(true);
         }
 
         invoke(x, null);
