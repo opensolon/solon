@@ -12,7 +12,7 @@
   * 插件 solon.boot.jetty 增加文件上传大小限制
   * 增加 "server.request.maxFileSize" 配置（其默认值为 maxBodySize；可以只用 fileSize）
 * 优化 Multipart 安全机制
-  * 增加 Multipart 解析改为延迟按需加载模式（不然内存可能被人刷暴了）
+  * 增加 Multipart 解析改为延迟按需加载模式（不然内存可能被人刷暴了）!!!
   * 增加 Context::autoMultipart() 接口，控制在参数解析时自动解析分片内容
   * 增加 Mapping::multipart 属性，用于显示申明分片处理（默认为自动）
 * 新增 nacos2-solon-plugin 插件
