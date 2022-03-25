@@ -80,16 +80,16 @@ public class SolonServletContext extends Context {
 
     }
 
-    private boolean _loadMultipart = false;
-    private void lazyLoadMultipart() throws IOException, ServletException {
-        if (_loadMultipart) {
+    private boolean _loadMultipartFormData = false;
+    private void loadMultipartFormData() throws IOException, ServletException {
+        if (_loadMultipartFormData) {
             return;
         } else {
-            _loadMultipart = true;
+            _loadMultipartFormData = true;
         }
 
         //文件上传需要
-        if (isMultipart()) {
+        if (isMultipartFormData()) {
             MultipartUtil.buildParamsAndFiles(this);
         }
     }
@@ -205,7 +205,7 @@ public class SolonServletContext extends Context {
 
             try {
                 if(autoMultipart()) {
-                    lazyLoadMultipart();
+                    loadMultipartFormData();
                 }
 
                 Enumeration<String> names = _request.getParameterNames();
@@ -243,7 +243,7 @@ public class SolonServletContext extends Context {
     @Override
     public List<UploadedFile> files(String key) throws Exception {
         if (_fileMap != null && isMultipartFormData()) {
-            lazyLoadMultipart();
+            loadMultipartFormData();
 
             List<UploadedFile> temp = _fileMap.get(key);
             if (temp == null) {

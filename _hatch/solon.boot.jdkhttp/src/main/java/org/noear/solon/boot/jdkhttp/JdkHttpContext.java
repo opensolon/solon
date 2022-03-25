@@ -3,7 +3,6 @@ package org.noear.solon.boot.jdkhttp;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import org.noear.solon.Utils;
-import org.noear.solon.boot.ServerProps;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.UploadedFile;
@@ -28,16 +27,16 @@ public class JdkHttpContext extends Context {
         _fileMap = new HashMap<>();
     }
 
-    private boolean _loadMultipart = false;
-    private void lazyLoadMultipart() throws IOException{
-        if (_loadMultipart) {
+    private boolean _loadMultipartFormData = false;
+    private void loadMultipartFormData() throws IOException{
+        if (_loadMultipartFormData) {
             return;
         } else {
-            _loadMultipart = true;
+            _loadMultipartFormData = true;
         }
 
         //文件上传需要
-        if (isMultipart()) {
+        if (isMultipartFormData()) {
             MultipartUtil.buildParamsAndFiles(this);
         }
     }
@@ -195,7 +194,7 @@ public class JdkHttpContext extends Context {
 
             try {
                 if(autoMultipart()) {
-                    lazyLoadMultipart();
+                    loadMultipartFormData();
                 }
 
                 _parameters.forEach((k, v) -> {
@@ -239,7 +238,7 @@ public class JdkHttpContext extends Context {
     @Override
     public List<UploadedFile> files(String key) throws Exception {
         if (isMultipartFormData()) {
-            lazyLoadMultipart();
+            loadMultipartFormData();
 
             List<UploadedFile> temp = _fileMap.get(key);
             if (temp == null) {

@@ -1,6 +1,5 @@
 package org.noear.solon.boot.smarthttp.http;
 
-import org.noear.solon.boot.ServerProps;
 import org.noear.solon.core.NvMap;
 import org.noear.solon.Utils;
 import org.noear.solon.core.event.EventBus;
@@ -29,16 +28,16 @@ public class SmartHttpContext extends Context {
         _fileMap = new HashMap<>();
     }
 
-    private boolean _loadMultipart = false;
-    private void lazyLoadMultipart() throws IOException{
-        if (_loadMultipart) {
+    private boolean _loadMultipartFormData = false;
+    private void loadMultipartFormData() throws IOException{
+        if (_loadMultipartFormData) {
             return;
         } else {
-            _loadMultipart = true;
+            _loadMultipartFormData = true;
         }
 
         //文件上传需要
-        if (isMultipart()) {
+        if (isMultipartFormData()) {
             MultipartUtil.buildParamsAndFiles(this);
         }
     }
@@ -162,7 +161,7 @@ public class SmartHttpContext extends Context {
 
             try {
                 if(autoMultipart()) {
-                    lazyLoadMultipart();
+                    loadMultipartFormData();
                 }
 
                 for (Map.Entry<String, String[]> entry : _request.getParameters().entrySet()) {
@@ -197,7 +196,7 @@ public class SmartHttpContext extends Context {
     @Override
     public List<UploadedFile> files(String key) throws Exception {
         if (isMultipartFormData()) {
-            lazyLoadMultipart();
+            loadMultipartFormData();
             List<UploadedFile> temp = _fileMap.get(key);
 
             if (temp == null) {
