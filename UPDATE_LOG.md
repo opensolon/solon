@@ -1,3 +1,7 @@
+#### 1.6.35
+
+添加：context-path 支持
+
 #### 1.6.34
 * 插件 mybatis-solon-plugin 
   * 增加 bean 方式添加拦截截器
