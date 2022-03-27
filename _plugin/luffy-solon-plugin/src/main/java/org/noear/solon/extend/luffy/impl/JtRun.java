@@ -12,6 +12,11 @@ import org.noear.solon.core.handle.ContextUtil;
 import java.util.Collections;
 import java.util.concurrent.CompletableFuture;
 
+
+/**
+ * @author noear
+ * @since 1.3
+ */
 public class JtRun {
     private static CompletableFuture<Integer> initFuture = new CompletableFuture<>();
 

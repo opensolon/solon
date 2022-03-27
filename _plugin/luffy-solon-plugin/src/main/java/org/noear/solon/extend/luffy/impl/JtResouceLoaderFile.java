@@ -34,7 +34,7 @@ public class JtResouceLoaderFile implements JtResouceLoader {
 
     @Override
     public AFileModel fileGet(String path) throws Exception {
-        AFileModel file = file = new AFileModel();
+        AFileModel file = new AFileModel();
 
         file.content = fileContentGet(path);
         if (file.content != null) {
