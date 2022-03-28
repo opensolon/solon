@@ -1,6 +1,5 @@
 #### 1.6.35
-
-添加：context-path 支持
+* 插件 mybatis-plus-solon-plugin 添加 solon 版的 IService 实现
 
 #### 1.6.34
 * 插件 mybatis-solon-plugin 
