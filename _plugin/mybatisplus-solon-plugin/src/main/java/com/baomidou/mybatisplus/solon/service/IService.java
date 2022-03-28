@@ -25,9 +25,9 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
- * @author noear 2022/3/28 created
+ * @author noear
+ * @since 1.6
  */
-
 public interface IService<T> {
     int DEFAULT_BATCH_SIZE = 1000;
 
