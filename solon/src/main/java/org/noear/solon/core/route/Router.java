@@ -142,12 +142,20 @@ public interface Router {
     void add(String path, MethodType method, int index, Listener listener);
 
     /**
-     * 区配一个目标（根据上下文）
+     * 区配一个目标（会话对象）
      *
      * @param session 会话对象
      * @return 首个匹配监听
      */
     Listener matchOne(Session session);
+
+    /**
+     * 区配多个目标（会话对象）
+     *
+     * @param session 会话对象
+     * @return 多个匹配监听
+     */
+    List<Listener> matchAll(Session session);
 
 
 

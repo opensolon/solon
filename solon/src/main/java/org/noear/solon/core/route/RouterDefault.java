@@ -130,6 +130,17 @@ public class RouterDefault implements Router{
         }
     }
 
+    @Override
+    public List<Listener> matchAll(Session session) {
+        String path = session.pathNew();
+
+        if (path == null) {
+            return null;
+        } else {
+            return routesL.matchAll(path, session.method());
+        }
+    }
+
     /**
      * 清空路由关系
      */
