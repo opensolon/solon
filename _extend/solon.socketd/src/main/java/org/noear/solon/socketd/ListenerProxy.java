@@ -10,7 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.util.Map;
 import java.util.concurrent.*;
 
 /**
@@ -49,26 +48,6 @@ public class ListenerProxy implements Listener {
     public ListenerProxy() {
     }
 
-
-    /**
-     * 请求并响应的默认超时时间（单位：秒）
-     * */
-    public static int REQUEST_AND_RESPONSE_TIMEOUT_SECONDS = 30;
-
-    /**
-     * 请求暂存处
-     * */
-    private static Map<String, CompletableFuture<Message>> requests = new ConcurrentHashMap<>();
-
-    /**
-     * 注册请求
-     *
-     * @param message 请求消息
-     * @param future 回调
-     * */
-    protected static void regRequest(Message message, CompletableFuture<Message> future) {
-        requests.putIfAbsent(message.key(), future);
-    }
 
 
     //
@@ -142,11 +121,11 @@ public class ListenerProxy implements Listener {
             if (message.flag() == MessageFlag.response) {
                 //flag 消息标志（-1握手包；0发起包； 1响应包）
                 //
-                CompletableFuture<Message> request = requests.get(message.key());
+                CompletableFuture<Message> request = RequestManager.get(message.key());
 
                 //请求模式
                 if (request != null) {
-                    requests.remove(message.key());
+                    RequestManager.remove(message.key());
                     request.complete(message);
                     return;
                 }

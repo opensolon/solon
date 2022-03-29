@@ -163,12 +163,12 @@ public abstract class SessionBase implements Session {
         }
 
         if (timeout < 1) {
-            timeout = ListenerProxy.REQUEST_AND_RESPONSE_TIMEOUT_SECONDS;
+            timeout = RequestManager.REQUEST_AND_RESPONSE_TIMEOUT_SECONDS;
         }
 
         //注册请求
         CompletableFuture<Message> request = new CompletableFuture<>();
-        ListenerProxy.regRequest(message, request);
+        RequestManager.register(message, request);
 
         //发送消息
         send(message);
@@ -203,7 +203,7 @@ public abstract class SessionBase implements Session {
 
         //注册请求
         CompletableFuture<Message> request = new CompletableFuture<>();
-        ListenerProxy.regRequest(message, request);
+        RequestManager.register(message, request);
 
         //等待响应
         request.whenCompleteAsync(callback);
