@@ -6,6 +6,7 @@ import org.noear.solon.annotation.Inject;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.data.cache.CacheServiceSupplier;
 import org.noear.solon.extend.async.AsyncManager;
+import org.noear.solon.socketd.ListenerPipeline;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -34,7 +35,7 @@ public class Config {
 
     @Bean
     public void test2(@Inject("${username}") String name) {
-        System.out.println("cfg::" +name);
+        System.out.println("cfg::" + name);
     }
 
     @Bean
@@ -47,5 +48,14 @@ public class Config {
     public void test3() {
         ExecutorService pools = Executors.newCachedThreadPool();
         AsyncManager.setExecutor(cmd -> pools.submit(cmd));
+    }
+
+    @Bean
+    public void filterListen(ListenerPipeline pipeline) {
+        pipeline.prevOnOpen((s) -> {
+            if (s.path() != null) {
+                s.pathNew("/xxxx" + s.path());
+            }
+        });
     }
 }
