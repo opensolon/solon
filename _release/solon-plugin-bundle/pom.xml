@@ -37,6 +37,7 @@
 
         <module>../../_plugin/graphql-solon-plugin</module>
         <module>../../_plugin/hasor-solon-plugin</module>
+        <module>../../_plugin/hasor-db-solon-plugin</module>
         <module>../../_plugin/luffy-solon-plugin</module>
 
         <module>../../_plugin/jap-ids-solon-plugin</module>
