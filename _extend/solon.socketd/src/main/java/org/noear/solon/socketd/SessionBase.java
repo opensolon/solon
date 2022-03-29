@@ -7,6 +7,8 @@ import org.noear.solon.core.message.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -104,6 +106,16 @@ public abstract class SessionBase implements Session {
         }
 
         return paramMap;
+    }
+
+
+    private Map<String,Object> attrMap = null;
+    public Map<String,Object> attrMap(){
+        if(attrMap == null){
+            attrMap = new HashMap<>();
+        }
+
+        return attrMap;
     }
 
 

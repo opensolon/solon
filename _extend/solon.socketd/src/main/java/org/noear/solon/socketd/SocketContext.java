@@ -33,19 +33,21 @@ public class SocketContext extends ContextEmpty {
         _inetSocketAddress = session.getRemoteAddress();
 
         //传递 Header
-        if(session.headerMap().size() > 0){
+        if (session.headerMap().size() > 0) {
             headerMap().putAll(session.headerMap());
         }
 
         if (Utils.isNotEmpty(message.header())) {
-            Map<String,String> headerMap = HeaderUtil.decodeHeaderMap(message.header());
+            Map<String, String> headerMap = HeaderUtil.decodeHeaderMap(message.header());
             headerMap().putAll(headerMap);
         }
 
         //传递 Param
-        if(session.paramMap().size() > 0){
+        if (session.paramMap().size() > 0) {
             paramMap().putAll(session.paramMap());
         }
+
+        sessionState = new SocketSessionState(_session);
     }
 
 
@@ -125,6 +127,11 @@ public class SocketContext extends ContextEmpty {
     @Override
     public InputStream bodyAsStream() throws IOException {
         return new ByteArrayInputStream(_message.body());
+    }
+
+    @Override
+    public Map<String, Object> sessionMap() {
+        return _session.attrMap();
     }
 
     //==============

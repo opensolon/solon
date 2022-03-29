@@ -522,7 +522,7 @@ public abstract class Context {
      */
     public abstract NvMap headerMap();
 
-    private SessionState sessionState;
+    protected SessionState sessionState;
 
     /**
      * 初始化 sessionState 对象

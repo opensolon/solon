@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.URI;
 import java.util.Collection;
+import java.util.Map;
 import java.util.function.BiConsumer;
 
 /**
@@ -86,6 +87,21 @@ public interface Session {
      * 请求参数集合
      */
     NvMap paramMap();
+
+
+
+    /**
+     * 获取特性
+     * */
+    default Object attr(String name){ return attrMap().get(name); }
+    /**
+     * 设置特性
+     * */
+    default void attrSet(String name, Object value){ attrMap().put(name, value);}
+    /**
+     * 特性集合
+     * */
+    Map<String,Object> attrMap();
 
 
     /**
