@@ -11,20 +11,13 @@ public class ListenerManager {
     /**
      * 全局对象
      * */
-    static ListenerPipeline pipeline;
+    static final ListenerPipeline pipeline;
 
     /**
      * 获取全局对象
      * */
     public static ListenerPipeline getPipeline() {
         return pipeline;
-    }
-
-    /**
-     * 设置全局对象
-     * */
-    public static void setPipeline(ListenerPipeline pipeline) {
-        ListenerManager.pipeline = pipeline;
     }
 
     static {

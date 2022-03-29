@@ -15,11 +15,17 @@ import java.util.List;
 public class ListenerPipeline implements Listener {
     private List<Listener> chain = new LinkedList<>();
 
+    /**
+     * 下一步
+     * */
     public ListenerPipeline next(Listener listener) {
         chain.add(listener);
         return this;
     }
 
+    /**
+     * 上一步
+     * */
     public ListenerPipeline prev(Listener listener) {
         chain.add(0, listener);
         return this;
