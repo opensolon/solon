@@ -8,7 +8,7 @@ import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.socketd.Connector;
-import org.noear.solon.socketd.ListenerProxy;
+import org.noear.solon.socketd.ListenerManager;
 import org.noear.solon.socketd.ProtocolManager;
 import org.noear.solon.socketd.SessionBase;
 
@@ -32,7 +32,7 @@ public class RsSocketSession extends SessionBase {
                     sessions.put(real, tmp);
 
                     //算第一次
-                    ListenerProxy.getGlobal().onOpen(tmp);
+                    ListenerManager.getPipeline().onOpen(tmp);
                 }
             }
         }
@@ -169,7 +169,7 @@ public class RsSocketSession extends SessionBase {
 
         real.fireAndForget(DefaultPayload.create(buf))
                 .doOnError((err) -> {
-                    ListenerProxy.getGlobal().onError(this, err);
+                    ListenerManager.getPipeline().onError(this, err);
                 })
                 .subscribe();
     }

@@ -6,7 +6,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
-import org.noear.solon.socketd.ListenerProxy;
+import org.noear.solon.socketd.ListenerManager;
 import org.noear.solon.socketd.ProtocolManager;
 import org.xnio.Pooled;
 
@@ -23,7 +23,7 @@ public class UtWsChannelListener extends AbstractReceiveListener {
             }
         });
 
-        ListenerProxy.getGlobal().onOpen(session);
+        ListenerManager.getPipeline().onOpen(session);
     }
 
 
@@ -45,7 +45,7 @@ public class UtWsChannelListener extends AbstractReceiveListener {
                     message = Message.wrap(channel.getUrl(), null, byteBuffer.array());
                 }
 
-                ListenerProxy.getGlobal().onMessage(session, message);
+                ListenerManager.getPipeline().onMessage(session, message);
 
             } finally {
                 pulledData.discard();
@@ -62,7 +62,7 @@ public class UtWsChannelListener extends AbstractReceiveListener {
             Session session = _SocketServerSession.get(channel);
             Message message = Message.wrap(channel.getUrl(), null, msg.getData());
 
-            ListenerProxy.getGlobal().onMessage(session, message.isString(true));
+            ListenerManager.getPipeline().onMessage(session, message.isString(true));
         } catch (Throwable ex) {
             EventBus.push(ex);
         }
@@ -70,13 +70,13 @@ public class UtWsChannelListener extends AbstractReceiveListener {
 
     @Override
     protected void onClose(WebSocketChannel channel, StreamSourceFrameChannel frameChannel) throws IOException {
-        ListenerProxy.getGlobal().onClose(_SocketServerSession.get(channel));
+        ListenerManager.getPipeline().onClose(_SocketServerSession.get(channel));
 
         _SocketServerSession.remove(channel);
     }
 
     @Override
     protected void onError(WebSocketChannel channel, Throwable error) {
-        ListenerProxy.getGlobal().onError(_SocketServerSession.get(channel), error);
+        ListenerManager.getPipeline().onError(_SocketServerSession.get(channel), error);
     }
 }

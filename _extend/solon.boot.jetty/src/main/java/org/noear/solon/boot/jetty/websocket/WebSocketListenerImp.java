@@ -5,7 +5,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
-import org.noear.solon.socketd.ListenerProxy;
+import org.noear.solon.socketd.ListenerManager;
 import org.noear.solon.socketd.ProtocolManager;
 
 import java.nio.ByteBuffer;
@@ -23,7 +23,7 @@ public class WebSocketListenerImp extends WebSocketAdapter {
             }
         });
 
-        ListenerProxy.getGlobal().onOpen(session);
+        ListenerManager.getPipeline().onOpen(session);
     }
 
     @Override
@@ -41,7 +41,7 @@ public class WebSocketListenerImp extends WebSocketAdapter {
                         buf.array());
             }
 
-            ListenerProxy.getGlobal().onMessage(session, message);
+            ListenerManager.getPipeline().onMessage(session, message);
         } catch (Throwable ex) {
             EventBus.push(ex);
         }
@@ -53,7 +53,7 @@ public class WebSocketListenerImp extends WebSocketAdapter {
             Session session = _SocketServerSession.get(getSession());
             Message message = Message.wrap(getSession().getUpgradeRequest().getRequestURI().toString(), null, text);
 
-            ListenerProxy.getGlobal().onMessage(session, message.isString(true));
+            ListenerManager.getPipeline().onMessage(session, message.isString(true));
 
         } catch (Throwable ex) {
             EventBus.push(ex);
@@ -62,7 +62,7 @@ public class WebSocketListenerImp extends WebSocketAdapter {
 
     @Override
     public void onWebSocketClose(int statusCode, String reason) {
-        ListenerProxy.getGlobal().onClose(_SocketServerSession.get(getSession()));
+        ListenerManager.getPipeline().onClose(_SocketServerSession.get(getSession()));
 
         _SocketServerSession.remove(getSession());
         super.onWebSocketClose(statusCode, reason);
@@ -70,6 +70,6 @@ public class WebSocketListenerImp extends WebSocketAdapter {
 
     @Override
     public void onWebSocketError(Throwable cause) {
-        ListenerProxy.getGlobal().onError(_SocketServerSession.get(getSession()), cause);
+        ListenerManager.getPipeline().onError(_SocketServerSession.get(getSession()), cause);
     }
 }

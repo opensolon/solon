@@ -4,7 +4,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
-import org.noear.solon.socketd.ListenerProxy;
+import org.noear.solon.socketd.ListenerManager;
 import org.noear.solon.socketd.ProtocolManager;
 import org.smartboot.http.server.WebSocketRequest;
 import org.smartboot.http.server.WebSocketResponse;
@@ -16,7 +16,7 @@ public class WebSocketHandleImp extends WebSocketDefaultHandler {
 
     @Override
     public void onHandShake(WebSocketRequest request, WebSocketResponse response) {
-        ListenerProxy.getGlobal().onOpen(_SocketServerSession.get(request, response));
+        ListenerManager.getPipeline().onOpen(_SocketServerSession.get(request, response));
     }
 
     @Override
@@ -24,7 +24,7 @@ public class WebSocketHandleImp extends WebSocketDefaultHandler {
         _SocketServerSession session = _SocketServerSession.get(request, response);
         session.onClose();
 
-        ListenerProxy.getGlobal().onClose(session);
+        ListenerManager.getPipeline().onClose(session);
 
         _SocketServerSession.remove(request);
     }
@@ -35,7 +35,7 @@ public class WebSocketHandleImp extends WebSocketDefaultHandler {
             Session session = _SocketServerSession.get(request, response);
             Message message = Message.wrap(request.getRequestURI(),null, data);
 
-            ListenerProxy.getGlobal().onMessage(session, message.isString(true));
+            ListenerManager.getPipeline().onMessage(session, message.isString(true));
         } catch (Throwable ex) {
             EventBus.push(ex);
         }
@@ -53,7 +53,7 @@ public class WebSocketHandleImp extends WebSocketDefaultHandler {
                 message = Message.wrap(request.getRequestURI(), null, data);
             }
 
-            ListenerProxy.getGlobal().onMessage(session, message);
+            ListenerManager.getPipeline().onMessage(session, message);
 
         } catch (Throwable ex) {
             EventBus.push(ex);

@@ -4,7 +4,7 @@ import io.rsocket.ConnectionSetupPayload;
 import io.rsocket.RSocket;
 import io.rsocket.SocketAcceptor;
 import org.noear.solon.core.message.Session;
-import org.noear.solon.socketd.ListenerProxy;
+import org.noear.solon.socketd.ListenerManager;
 import reactor.core.publisher.Mono;
 
 /**
@@ -37,7 +37,7 @@ public class RsAcceptor implements SocketAcceptor {
         }
 
 
-        ListenerProxy.getGlobal().onOpen(session1);
+        ListenerManager.getPipeline().onOpen(session1);
 
         return Mono.just(new RsAcceptorHandler(rSocket, session1));
     }

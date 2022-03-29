@@ -10,44 +10,20 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.util.concurrent.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
- * 监听者代理
- *
  * @author noear
- * @since 1.0
- * */
-public class ListenerProxy implements Listener {
+ * @since 1.6
+ */
+public class ListenerProxy implements Listener{
     static final Logger log = LoggerFactory.getLogger(ListenerProxy.class);
-
     /**
      * 消息处理线程池
      * */
     static final ExecutorService executors = Executors.newCachedThreadPool();
-
-    /**
-     * 全局对象
-     * */
-    static Listener global = new ListenerProxy();
-
-    /**
-     * 获取全局对象
-     * */
-    public static Listener getGlobal() {
-        return global;
-    }
-
-    /**
-     * 设置全局对象
-     * */
-    public static void setGlobal(Listener global) {
-        ListenerProxy.global = global;
-    }
-
-    public ListenerProxy() {
-    }
-
 
 
     //
