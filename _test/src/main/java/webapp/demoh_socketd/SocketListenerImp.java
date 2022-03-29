@@ -11,7 +11,7 @@ import org.noear.solon.annotation.ServerEndpoint;
 public class SocketListenerImp implements Listener {
     @Override
     public void onMessage(Session session, Message message) {
-        System.out.println(session.path() + ":" + message.resourceDescriptor());
+        System.out.println(session.pathNew() + ":" + message.resourceDescriptor());
 
         if (Solon.cfg().isDebugMode()) {
             return;

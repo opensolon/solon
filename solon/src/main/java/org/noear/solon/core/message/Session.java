@@ -39,12 +39,22 @@ public interface Session {
      */
     String path();
 
+    /**
+     * 设置新路径
+     */
+    void pathNew(String pathNew);
+
+    /**
+     * 获取新路径，不存在则返回原路径
+     */
+    String pathNew();
+
 
     /**
      * 获取请求的URI路径变量,根据路径表达式
      */
     default NvMap pathMap(String expr) {
-        return PathUtil.pathVarMap(path(), expr);
+        return PathUtil.pathVarMap(pathNew(), expr);
     }
 
     /**

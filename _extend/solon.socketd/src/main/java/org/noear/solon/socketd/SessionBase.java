@@ -22,6 +22,20 @@ public abstract class SessionBase implements Session {
 
     static final Logger log = LoggerFactory.getLogger(SessionBase.class);
 
+    //路径
+    public void pathNew(String pathNew) {
+        this.pathNew = pathNew;
+    }
+
+    private String pathNew;
+    public String pathNew() {
+        if (pathNew == null) {
+            return path();
+        } else {
+            return pathNew;
+        }
+    }
+
     //
     //标志
     //

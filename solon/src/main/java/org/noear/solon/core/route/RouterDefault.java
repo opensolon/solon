@@ -121,7 +121,7 @@ public class RouterDefault implements Router{
      */
     @Override
     public Listener matchOne(Session session) {
-        String path = session.path();
+        String path = session.pathNew();
 
         if (path == null) {
             return null;

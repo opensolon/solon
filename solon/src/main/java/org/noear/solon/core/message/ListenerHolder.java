@@ -44,7 +44,7 @@ public class ListenerHolder implements Listener {
     public void onOpen(Session s) {
         //获取path var
         if (pathAnalyzer != null) {
-            Matcher pm = pathAnalyzer.matcher(s.path());
+            Matcher pm = pathAnalyzer.matcher(s.pathNew());
             if (pm.find()) {
                 for (int i = 0, len = pathKeys.size(); i < len; i++) {
                     s.paramSet(pathKeys.get(i), pm.group(i + 1));//不采用group name,可解决_的问题
