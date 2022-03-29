@@ -39,5 +39,8 @@ public class XPluginImp implements Plugin {
                 }
             }
         });
+
+        //注册 ListenerPipeline
+        Aop.wrapAndPut(ListenerPipeline.class, ListenerManager.getPipeline());
     }
 }

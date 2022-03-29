@@ -7,6 +7,8 @@ import org.noear.solon.core.message.Session;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 /**
  * @author noear
@@ -29,6 +31,20 @@ public class ListenerPipeline implements Listener {
     public ListenerPipeline prev(Listener listener) {
         chain.add(0, listener);
         return this;
+    }
+
+    public ListenerPipeline prevOnOpen(Consumer<Session> consumer) {
+        return prev(new Listener() {
+            @Override
+            public void onOpen(Session session) {
+                consumer.accept(session);
+            }
+
+            @Override
+            public void onMessage(Session session, Message message) throws IOException {
+
+            }
+        });
     }
 
     @Override
