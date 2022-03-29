@@ -1,4 +1,6 @@
 #### 1.6.35
+* 为 SocketContext 添加 SessionState 接口支持
+* 为 Session 添加 pathNew() 接口支持
 
 #### 1.6.34
 * 插件 mybatis-solon-plugin 
