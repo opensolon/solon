@@ -686,7 +686,7 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>mybatis-plus-extension-solon</artifactId>
+                <artifactId>mybatis-plus-extension-solon-plugin</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
 

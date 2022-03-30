@@ -1,10 +1,5 @@
 package demo;
 
-import com.baomidou.mybatisplus.annotation.DbType;
-import com.baomidou.mybatisplus.core.MybatisSqlSessionFactoryBuilder;
-import com.baomidou.mybatisplus.solon.plugins.MybatisPlusInterceptor;
-import com.baomidou.mybatisplus.solon.plugins.inner.PaginationInnerInterceptor;
-import demo.dso.MybatisSqlSessionFactoryBuilderImpl;
 import demo.dso.service.UserService;
 import org.apache.ibatis.session.Configuration;
 import org.noear.solon.SolonBuilder;
@@ -19,9 +14,9 @@ public class DemoApp {
                 .onEvent(Configuration.class, e -> {
                     //添加 mybatis-plug 分页支持
                     //
-                    MybatisPlusInterceptor plusInterceptor = new MybatisPlusInterceptor();
-                    plusInterceptor.addInnerInterceptor(new PaginationInnerInterceptor(DbType.MYSQL));
-                    e.addInterceptor(plusInterceptor);
+//                    MybatisPlusInterceptor plusInterceptor = new MybatisPlusInterceptor();
+//                    plusInterceptor.addInnerInterceptor(new PaginationInnerInterceptor(DbType.MYSQL));
+//                    e.addInterceptor(plusInterceptor);
                 })
                 .onPluginLoadEnd(e -> {
                     //重新定义 SqlSessionFactoryBuilder
