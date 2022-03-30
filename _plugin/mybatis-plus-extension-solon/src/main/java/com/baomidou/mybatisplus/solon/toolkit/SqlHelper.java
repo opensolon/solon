@@ -238,7 +238,7 @@ public class SqlHelper {
      * @param entityClass 实体
      * @param <T>         实体类型
      * @return Mapper
-     * @deprecated 使用后未释放连接 {@link com.baomidou.mybatisplus.extension.toolkit.SqlHelper#getMapper(Class, SqlSession)}
+     * @deprecated 使用后未释放连接 {@link com.baomidou.mybatisplus.solon.toolkit.SqlHelper#getMapper(Class, SqlSession)}
      */
     @SuppressWarnings("unchecked")
     @Deprecated
