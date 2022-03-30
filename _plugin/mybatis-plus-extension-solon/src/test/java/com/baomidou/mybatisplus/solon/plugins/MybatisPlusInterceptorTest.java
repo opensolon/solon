@@ -19,7 +19,7 @@ class MybatisPlusInterceptorTest {
     @Test
     void setProperties() {
         Properties properties = new Properties();
-        properties.setProperty("@page", "com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor");
+        properties.setProperty("@page", "com.baomidou.mybatisplus.solon.plugins.inner.PaginationInnerInterceptor");
         properties.setProperty("page:maxLimit", "10");
         properties.setProperty("page:dbType", "h2");
         MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
