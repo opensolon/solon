@@ -8,7 +8,7 @@ import java.util.Map;
  * @author noear
  * @since 1.0
  */
-public class SessionStateDefault implements SessionState{
+public class SessionStateEmpty implements SessionState{
 
     private Map<String,Object> sessionMap = null;
     public Map<String,Object> sessionMap(){

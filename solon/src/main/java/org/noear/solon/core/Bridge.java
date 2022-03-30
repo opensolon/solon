@@ -45,7 +45,7 @@ public class Bridge {
     //
     // SessionState 对接 //与函数同名，_开头
     //
-    private static SessionStateFactory _sessionStateFactory = (ctx) -> new SessionStateDefault();
+    private static SessionStateFactory _sessionStateFactory = (ctx) -> new SessionStateEmpty();
     private static boolean sessionStateUpdated;
 
     public static SessionStateFactory sessionStateFactory() {
