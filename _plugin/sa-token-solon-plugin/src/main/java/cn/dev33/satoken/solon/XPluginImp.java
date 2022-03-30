@@ -13,6 +13,7 @@ import cn.dev33.satoken.id.SaIdUtil;
 import cn.dev33.satoken.listener.SaTokenListener;
 import cn.dev33.satoken.solon.integration.SaContextForSolon;
 import cn.dev33.satoken.solon.integration.SaTokenMethodInterceptor;
+import cn.dev33.satoken.solon.model.SaTokenDaoForSolon;
 import cn.dev33.satoken.sso.SaSsoTemplate;
 import cn.dev33.satoken.sso.SaSsoUtil;
 import cn.dev33.satoken.stp.StpInterface;
@@ -47,6 +48,9 @@ public class XPluginImp implements Plugin {
 
         // 注入上下文Bean
         SaManager.setSaTokenContext(new SaContextForSolon());
+
+        //注入Dao
+        SaManager.setSaTokenDao(new SaTokenDaoForSolon());
 
         // 注入二级上下文 Bean
         Aop.getAsyn(SaTokenSecondContextCreator.class, bw->{
