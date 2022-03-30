@@ -29,8 +29,8 @@ import com.baomidou.mybatisplus.core.metadata.TableInfo;
 import com.baomidou.mybatisplus.core.metadata.TableInfoHelper;
 import com.baomidou.mybatisplus.core.toolkit.Constants;
 import com.baomidou.mybatisplus.core.toolkit.ExceptionUtils;
-import com.baomidou.mybatisplus.core.toolkit.ReflectionKit;
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
+import com.baomidou.mybatisplus.solon.toolkit.GenericTypeUtil;
 import org.apache.ibatis.executor.Executor;
 import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.mapping.SqlCommandType;
@@ -174,7 +174,7 @@ public class OptimisticLockerInnerInterceptor implements InnerInterceptor {
             if (null == entityClass) {
                 try {
                     final String className = msId.substring(0, msId.lastIndexOf('.'));
-                    entityClass = ReflectionKit.getSuperClassGenericType(Class.forName(className), Mapper.class, 0);
+                    entityClass = GenericTypeUtil.getSuperClassGenericType(Class.forName(className), Mapper.class, 0);
                     ENTITY_CLASS_CACHE.put(msId, entityClass);
                 } catch (ClassNotFoundException e) {
                     throw ExceptionUtils.mpe(e);
