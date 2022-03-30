@@ -51,7 +51,6 @@
         <module>../../_plugin/mybatis-sqlhelper-solon-plugin</module>
         <module>../../_plugin/mybatis-pagehelper-solon-plugin</module>
 
-        <module>../../_plugin/mybatisplus-solon-plugin</module>
         <module>../../_plugin/mybatis-plus-solon-plugin</module>
         <module>../../_plugin/mybatis-plus-extension-solon</module>
 

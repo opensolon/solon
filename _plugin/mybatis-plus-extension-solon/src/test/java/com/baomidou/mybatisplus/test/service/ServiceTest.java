@@ -1,11 +1,14 @@
 package com.baomidou.mybatisplus.test.service;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.toolkit.ClassUtils;
 import com.baomidou.mybatisplus.core.toolkit.ReflectionKit;
+import com.baomidou.mybatisplus.core.toolkit.reflect.GenericTypeUtils;
 import com.baomidou.mybatisplus.solon.service.IService;
 import com.baomidou.mybatisplus.solon.service.impl.ServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.noear.solon.core.util.GenericUtil;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -52,9 +55,14 @@ public class ServiceTest {
     @Test
     void testSuperClassGenericType() {
         // 多重继承测试
-        assertThat(ReflectionKit.getSuperClassGenericType(MyServiceExtend.class,
+        assertThat(getSuperClassGenericType(MyServiceExtend.class,
             ServiceImpl.class, 0).equals(DemoMapper.class));
-        assertThat(ReflectionKit.getSuperClassGenericType(MyServiceExtend.class,
+        assertThat(getSuperClassGenericType(MyServiceExtend.class,
             ServiceImpl.class, 1).equals(Demo.class));
+    }
+
+    public static Class<?> getSuperClassGenericType(final Class<?> clazz, final Class<?> genericIfc, final int index) {
+        Class<?>[] typeArguments = GenericUtil.resolveTypeArguments(ClassUtils.getUserClass(clazz), genericIfc);
+        return null == typeArguments ? null : typeArguments[index];
     }
 }

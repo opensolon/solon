@@ -26,6 +26,14 @@ public class GenericUtil {
             }
         }
 
+        Type type1 = clazz.getGenericSuperclass();
+        if (type1 instanceof ParameterizedType) {
+            ParameterizedType type = (ParameterizedType) type1;
+            return Arrays.stream(type.getActualTypeArguments())
+                    .map(item -> (Class<?>) item)
+                    .toArray(Class[]::new);
+        }
+
         return null;
     }
 
