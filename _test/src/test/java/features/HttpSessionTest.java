@@ -1,11 +1,9 @@
 package features;
 
-import okhttp3.Headers;
 import okhttp3.Response;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.noear.solon.test.HttpTestBase;
-import org.noear.solon.test.HttpUtils;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
 
@@ -62,5 +60,39 @@ public class HttpSessionTest extends HttpTestBase {
                 .header("Cookie", cookiesStr.toString())
                 .get();
         assert "test".equals(rst);
+    }
+
+    @Test
+    public void session2() throws IOException {
+        //init
+        Response response = path("/demo2/session/id").exec("GET");
+        String session_id = response.body().string();
+        List<String> cookies;
+        StringBuilder cookiesStr;
+
+        cookies = response.headers().values("Set-Cookie");
+        cookiesStr = new StringBuilder();
+        for (String cookie : cookies) {
+            String KeyVal = cookie.split(";")[0];
+            System.out.println("cookie:: " + KeyVal);
+            if (KeyVal.contains("=")) {
+                cookiesStr.append(KeyVal).append("; ");
+            }
+        }
+
+
+        System.out.println(session_id);
+        System.out.println(cookiesStr);
+
+
+        //set
+        path("/demo2/session/set").data("val", "test")
+                .exec("POST");
+
+
+        //get（使用旧的 cookie）
+        String rst = path("/demo2/session/get")
+                .get();
+        assert "test".equals(rst) == false;
     }
 }

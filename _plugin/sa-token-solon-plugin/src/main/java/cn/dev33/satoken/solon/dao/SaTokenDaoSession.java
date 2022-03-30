@@ -1,4 +1,4 @@
-package cn.dev33.satoken.solon.model;
+package cn.dev33.satoken.solon.dao;
 
 import cn.dev33.satoken.dao.SaTokenDao;
 import cn.dev33.satoken.util.SaFoxUtil;
@@ -7,10 +7,12 @@ import org.noear.solon.core.handle.Context;
 import java.util.List;
 
 /**
+ * SaTokenDao 的 session 适配
+ *
  * @author noear
  * @since 1.6
  */
-public class SaTokenDaoForSolon implements SaTokenDao {
+public class SaTokenDaoSession implements SaTokenDao {
     /**
      * 获取Value，如无返空
      */
