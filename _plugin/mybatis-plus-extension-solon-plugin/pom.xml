@@ -18,7 +18,7 @@
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.data</artifactId>
+            <artifactId>mybatis-plus-solon-plugin</artifactId>
         </dependency>
 
         <dependency>
@@ -26,13 +26,6 @@
             <artifactId>snack3</artifactId>
             <scope>provided</scope>
         </dependency>
-
-        <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-core</artifactId>
-            <version>3.5.1</version>
-        </dependency>
-
 
         <dependency>
             <groupId>org.slf4j</groupId>
