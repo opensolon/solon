@@ -56,6 +56,7 @@
         <spring.ver>5.0.8.RELEASE</spring.ver>
 
         <hazelcast.ver>5.1</hazelcast.ver>
+        <lombok.ver>1.18.20</lombok.ver>
     </properties>
 
 
@@ -106,6 +107,12 @@
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.ver}</version>
+            </dependency>
+
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.cache.jedis</artifactId>
@@ -674,6 +681,12 @@
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>mybatis-plus-solon-plugin</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>mybatis-plus-extension-solon</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
 

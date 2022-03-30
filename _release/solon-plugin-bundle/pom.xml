@@ -53,6 +53,7 @@
 
         <module>../../_plugin/mybatisplus-solon-plugin</module>
         <module>../../_plugin/mybatis-plus-solon-plugin</module>
+        <module>../../_plugin/mybatis-plus-extension-solon</module>
 
         <module>../../_plugin/activerecord-solon-plugin</module>
 

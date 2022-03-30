@@ -6,14 +6,12 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Assert;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
-import com.baomidou.mybatisplus.extension.conditions.query.QueryChainWrapper;
-import com.baomidou.mybatisplus.extension.conditions.update.LambdaUpdateChainWrapper;
-import com.baomidou.mybatisplus.extension.conditions.update.UpdateChainWrapper;
-import com.baomidou.mybatisplus.extension.kotlin.KtQueryChainWrapper;
-import com.baomidou.mybatisplus.extension.kotlin.KtUpdateChainWrapper;
-import com.baomidou.mybatisplus.extension.toolkit.ChainWrappers;
-import com.baomidou.mybatisplus.solon.utils.SqlHelper;
+import com.baomidou.mybatisplus.solon.conditions.query.LambdaQueryChainWrapper;
+import com.baomidou.mybatisplus.solon.conditions.query.QueryChainWrapper;
+import com.baomidou.mybatisplus.solon.conditions.update.LambdaUpdateChainWrapper;
+import com.baomidou.mybatisplus.solon.conditions.update.UpdateChainWrapper;
+import com.baomidou.mybatisplus.solon.toolkit.ChainWrappers;
+import com.baomidou.mybatisplus.solon.toolkit.SqlHelper;
 import org.noear.solon.data.annotation.Tran;
 
 import java.io.Serializable;
@@ -212,13 +210,6 @@ public interface IService<T> {
         return ChainWrappers.lambdaQueryChain(this.getBaseMapper());
     }
 
-    default KtQueryChainWrapper<T> ktQuery() {
-        return ChainWrappers.ktQueryChain(this.getBaseMapper(), this.getEntityClass());
-    }
-
-    default KtUpdateChainWrapper<T> ktUpdate() {
-        return ChainWrappers.ktUpdateChain(this.getBaseMapper(), this.getEntityClass());
-    }
 
     default UpdateChainWrapper<T> update() {
         return ChainWrappers.updateChain(this.getBaseMapper());

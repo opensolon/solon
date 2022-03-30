@@ -1,20 +1,21 @@
-package com.baomidou.mybatisplus.solon.utils;
+package com.baomidou.mybatisplus.solon.toolkit;
 
 import com.baomidou.mybatisplus.core.enums.SqlMethod;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.TableInfo;
+import com.baomidou.mybatisplus.core.metadata.TableInfoHelper;
 import com.baomidou.mybatisplus.core.toolkit.*;
-import org.apache.ibatis.exceptions.PersistenceException;
 import org.apache.ibatis.logging.Log;
 import org.apache.ibatis.reflection.ExceptionUtil;
+import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
-import org.mybatis.spring.MyBatisExceptionTranslator;
-import org.mybatis.spring.SqlSessionHolder;
 import org.noear.solon.data.tran.TranUtils;
 
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.BiPredicate;
 import java.util.function.Consumer;
@@ -25,6 +26,21 @@ import java.util.function.Supplier;
  * @since 1.6
  */
 public class SqlHelper {
+
+    /**
+     * 主要用于 service 和 ar
+     */
+    public static SqlSessionFactory FACTORY;
+    /**
+     * 获取Session
+     *
+     * @param clazz 实体类
+     * @return SqlSession
+     */
+    public static SqlSession sqlSession(Class<?> clazz) {
+        return sqlSessionFactory(clazz).openSession();
+    }
+
     /**
      * 批量操作 SqlSession
      *
@@ -45,6 +61,18 @@ public class SqlHelper {
      */
     public static SqlSessionFactory sqlSessionFactory(Class<?> clazz) {
         return GlobalConfigUtils.currentSessionFactory(clazz);
+    }
+
+    /**
+     * 获取TableInfo
+     *
+     * @param clazz 对象类
+     * @return TableInfo 对象表信息
+     */
+    public static TableInfo table(Class<?> clazz) {
+        TableInfo tableInfo = TableInfoHelper.getTableInfo(clazz);
+        Assert.notNull(tableInfo, "Error: Cannot execute table Method, ClassGenericType not found.");
+        return tableInfo;
     }
 
     /**
@@ -202,5 +230,58 @@ public class SqlHelper {
      */
     public static String getSqlStatement(Class<?> mapper, SqlMethod sqlMethod) {
         return mapper.getName() + StringPool.DOT + sqlMethod.getMethod();
+    }
+
+    /**
+     * 通过entityClass获取Mapper
+     *
+     * @param entityClass 实体
+     * @param <T>         实体类型
+     * @return Mapper
+     * @deprecated 使用后未释放连接 {@link com.baomidou.mybatisplus.extension.toolkit.SqlHelper#getMapper(Class, SqlSession)}
+     */
+    @SuppressWarnings("unchecked")
+    @Deprecated
+    public static <T> BaseMapper<T> getMapper(Class<T> entityClass) {
+        Optional.ofNullable(entityClass).orElseThrow(() -> ExceptionUtils.mpe("entityClass can't be null!"));
+        TableInfo tableInfo = Optional.ofNullable(TableInfoHelper.getTableInfo(entityClass)).orElseThrow(() -> ExceptionUtils.mpe("Can not find TableInfo from Class: \"%s\".", entityClass.getName()));
+        String namespace = tableInfo.getCurrentNamespace();
+
+        Configuration configuration = tableInfo.getConfiguration();
+        SqlSession sqlSession = sqlSession(entityClass);
+        BaseMapper<T> mapper;
+        try {
+            mapper = (BaseMapper<T>) configuration.getMapper(Class.forName(namespace), sqlSession);
+        } catch (ClassNotFoundException e) {
+            throw ExceptionUtils.mpe(e);
+        }
+        return mapper;
+    }
+
+    /**
+     * 通过entityClass获取Mapper，记得要释放连接
+     * 例： {@code
+     * SqlSession sqlSession = SqlHelper.sqlSession(entityClass);
+     * try {
+     *     BaseMapper<User> userMapper = getMapper(User.class, sqlSession);
+     * } finally {
+     *     sqlSession.close();
+     * }
+     * }
+     *
+     * @param entityClass 实体
+     * @param <T>         实体类型
+     * @return Mapper
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> BaseMapper<T> getMapper(Class<T> entityClass, SqlSession sqlSession) {
+        Optional.ofNullable(entityClass).orElseThrow(() -> ExceptionUtils.mpe("entityClass can't be null!"));
+        TableInfo tableInfo = Optional.ofNullable(TableInfoHelper.getTableInfo(entityClass)).orElseThrow(() -> ExceptionUtils.mpe("Can not find TableInfo from Class: \"%s\".", entityClass.getName()));
+        try {
+            Configuration configuration = tableInfo.getConfiguration();
+            return (BaseMapper<T>) configuration.getMapper(Class.forName(tableInfo.getCurrentNamespace()), sqlSession);
+        } catch (ClassNotFoundException e) {
+            throw ExceptionUtils.mpe(e);
+        }
     }
 }
