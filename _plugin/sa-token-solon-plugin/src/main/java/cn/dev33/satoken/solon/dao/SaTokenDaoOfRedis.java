@@ -16,18 +16,14 @@ import java.util.Set;
  * @author noear
  * @since 1.6
  */
-public class SaTokenDaoRedis implements SaTokenDao {
+public class SaTokenDaoOfRedis implements SaTokenDao {
+    private final RedisBucket redisBucket;
 
-    /**
-     * String专用
-     */
-    private RedisBucket redisBucket;
-
-    public SaTokenDaoRedis(Properties properties) {
-        this(new RedisClient(properties));
+    public SaTokenDaoOfRedis(Properties props) {
+        this(new RedisClient(props));
     }
 
-    public SaTokenDaoRedis(RedisClient redisClient) {
+    public SaTokenDaoOfRedis(RedisClient redisClient) {
         redisBucket = redisClient.getBucket();
     }
 

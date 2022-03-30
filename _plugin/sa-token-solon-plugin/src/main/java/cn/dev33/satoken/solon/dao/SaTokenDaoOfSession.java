@@ -12,7 +12,7 @@ import java.util.List;
  * @author noear
  * @since 1.6
  */
-public class SaTokenDaoSession implements SaTokenDao {
+public class SaTokenDaoOfSession implements SaTokenDao {
     /**
      * 获取Value，如无返空
      */
