@@ -18,7 +18,7 @@ sa-token:
   is-log: false
 
 
-sa-token-dao:
+sa-token-dao: #名字可以随意取
   redis:
     server: "localhost:6379"
     password: 123456
