@@ -20,7 +20,7 @@ public class ContextEmpty extends Context {
     }
 
     public ContextEmpty(){
-        sessionState = new SessionStateEmpty();
+        sessionState = new SessionStateDefault();
     }
 
 

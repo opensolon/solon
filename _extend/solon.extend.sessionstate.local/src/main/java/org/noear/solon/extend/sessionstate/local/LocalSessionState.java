@@ -1,14 +1,17 @@
 package org.noear.solon.extend.sessionstate.local;
 
 import org.noear.solon.Utils;
+import org.noear.solon.boot.ServerConstants;
 import org.noear.solon.core.handle.Context;
-import org.noear.solon.core.handle.SessionStateDefault;
+import org.noear.solon.core.handle.SessionState;
+
+import java.util.Collection;
 
 
 /**
  * 它会是个单例，不能有上下文数据
  * */
-public class LocalSessionState extends SessionStateDefault {
+public class LocalSessionState implements SessionState {
     private static int _expiry = 60 * 60 * 2;
     private static String _domain = null;
     private static ScheduledStore _store;
@@ -76,21 +79,26 @@ public class LocalSessionState extends SessionStateDefault {
         return sessionId();
     }
 
+    @Override
+    public Collection<String> sessionKeys() {
+        return _store.keys();
+    }
+
     private String sessionId_get(boolean reset) {
-        String skey = cookieGet(SESSIONID_KEY);
-        String smd5 = cookieGet(SESSIONID_MD5());
+        String skey = cookieGet(ServerConstants.SESSIONID_KEY);
+        String smd5 = cookieGet(ServerConstants.SESSIONID_MD5());
 
         if (reset == false) {
             if (Utils.isEmpty(skey) == false && Utils.isEmpty(smd5) == false) {
-                if (Utils.md5(skey + SESSIONID_salt).equals(smd5)) {
+                if (Utils.md5(skey + ServerConstants.SESSIONID_salt).equals(smd5)) {
                     return skey;
                 }
             }
         }
 
         skey = Utils.guid();
-        cookieSet(SESSIONID_KEY, skey);
-        cookieSet(SESSIONID_MD5(), Utils.md5(skey + SESSIONID_salt));
+        cookieSet(ServerConstants.SESSIONID_KEY, skey);
+        cookieSet(ServerConstants.SESSIONID_MD5(), Utils.md5(skey + ServerConstants.SESSIONID_salt));
         return skey;
     }
 
@@ -126,11 +134,11 @@ public class LocalSessionState extends SessionStateDefault {
 
     @Override
     public void sessionRefresh() {
-        String skey = cookieGet(SESSIONID_KEY);
+        String skey = cookieGet(ServerConstants.SESSIONID_KEY);
 
         if (Utils.isEmpty(skey) == false) {
-            cookieSet(SESSIONID_KEY, skey);
-            cookieSet(SESSIONID_MD5(), Utils.md5(skey + SESSIONID_salt));
+            cookieSet(ServerConstants.SESSIONID_KEY, skey);
+            cookieSet(ServerConstants.SESSIONID_MD5(), Utils.md5(skey + ServerConstants.SESSIONID_salt));
 
             _store.delay(sessionId());
         }

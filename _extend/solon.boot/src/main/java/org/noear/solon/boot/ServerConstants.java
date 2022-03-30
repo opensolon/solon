@@ -22,4 +22,11 @@ public class ServerConstants {
     public static final String SSL_KEYSTORE = "javax.net.ssl.keyStore";
     public static final String SSL_KEYSTORE_TYPE = "javax.net.ssl.keyStoreType";
     public static final String SSL_KEYSTORE_PASSWORD = "javax.net.ssl.keyStorePassword";
+
+
+    public final static String SESSIONID_KEY = "SOLONID";
+    public final static String SESSIONID_MD5() {
+        return SESSIONID_KEY + "2";
+    }
+    public final static String SESSIONID_salt = "&L8e!@T0";
 }

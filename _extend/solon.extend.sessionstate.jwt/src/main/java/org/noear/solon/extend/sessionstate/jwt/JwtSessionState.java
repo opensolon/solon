@@ -3,14 +3,17 @@ package org.noear.solon.extend.sessionstate.jwt;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.impl.DefaultClaims;
 import org.noear.solon.Utils;
+import org.noear.solon.boot.ServerConstants;
 import org.noear.solon.core.handle.Context;
-import org.noear.solon.core.handle.SessionStateDefault;
+import org.noear.solon.core.handle.SessionState;
+
+import java.util.Collection;
 
 /**
  * @author noear
  * @since 1.3
  */
-public class JwtSessionState extends SessionStateDefault {
+public class JwtSessionState implements SessionState {
     /**
      * 单位：秒
      * */
@@ -82,21 +85,26 @@ public class JwtSessionState extends SessionStateDefault {
         return sessionId();
     }
 
+    @Override
+    public Collection<String> sessionKeys() {
+        return sessionMap.keySet();
+    }
+
     private String sessionId_get(boolean reset) {
-        String skey = cookieGet(SESSIONID_KEY);
-        String smd5 = cookieGet(SESSIONID_MD5());
+        String skey = cookieGet(ServerConstants.SESSIONID_KEY);
+        String smd5 = cookieGet(ServerConstants.SESSIONID_MD5());
 
         if(reset == false) {
             if (Utils.isEmpty(skey) == false && Utils.isEmpty(smd5) == false) {
-                if (Utils.md5(skey + SESSIONID_salt).equals(smd5)) {
+                if (Utils.md5(skey + ServerConstants.SESSIONID_salt).equals(smd5)) {
                     return skey;
                 }
             }
         }
 
         skey = Utils.guid();
-        cookieSet(SESSIONID_KEY, skey);
-        cookieSet(SESSIONID_MD5(), Utils.md5(skey + SESSIONID_salt));
+        cookieSet(ServerConstants.SESSIONID_KEY, skey);
+        cookieSet(ServerConstants.SESSIONID_MD5(), Utils.md5(skey + ServerConstants.SESSIONID_salt));
         return skey;
     }
 
@@ -176,11 +184,11 @@ public class JwtSessionState extends SessionStateDefault {
             return;
         }
 
-        String skey = cookieGet(SESSIONID_KEY);
+        String skey = cookieGet(ServerConstants.SESSIONID_KEY);
 
         if (Utils.isNotEmpty(skey)) {
-            cookieSet(SESSIONID_KEY, skey);
-            cookieSet(SESSIONID_MD5(), Utils.md5(skey + SESSIONID_salt));
+            cookieSet(ServerConstants.SESSIONID_KEY, skey);
+            cookieSet(ServerConstants.SESSIONID_MD5(), Utils.md5(skey + ServerConstants.SESSIONID_salt));
         }
     }
 

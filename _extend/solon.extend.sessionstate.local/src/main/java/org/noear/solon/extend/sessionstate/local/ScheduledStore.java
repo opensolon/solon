@@ -1,5 +1,7 @@
 package org.noear.solon.extend.sessionstate.local;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.*;
 
@@ -14,6 +16,10 @@ class ScheduledStore {
 
     public ScheduledStore(int seconds){
         _defaultSeconds = seconds;
+    }
+
+    public Collection<String> keys(){
+        return _data.keySet();
     }
 
     public void put(String block, String key, Object obj) {

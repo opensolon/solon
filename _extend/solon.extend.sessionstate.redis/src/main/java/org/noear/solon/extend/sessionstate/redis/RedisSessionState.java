@@ -5,13 +5,16 @@ import org.noear.snack.ONode;
 import org.noear.snack.core.Options;
 import org.noear.snack.core.Feature;
 import org.noear.solon.Utils;
+import org.noear.solon.boot.ServerConstants;
 import org.noear.solon.core.handle.Context;
-import org.noear.solon.core.handle.SessionStateDefault;
+import org.noear.solon.core.handle.SessionState;
+
+import java.util.Collection;
 
 /**
  * 它会是个单例，不能有上下文数据
  * */
-public class RedisSessionState extends SessionStateDefault {
+public class RedisSessionState implements SessionState {
     private static int _expiry =  60 * 60 * 2;
     private static String _domain=null;
 
@@ -76,21 +79,26 @@ public class RedisSessionState extends SessionStateDefault {
         return sessionId();
     }
 
+    @Override
+    public Collection<String> sessionKeys() {
+        return redisClient.openAndGet((ru) -> ru.key(sessionId()).hashGetAllKeys());
+    }
+
     private String sessionIdGet(boolean reset) {
-        String skey = cookieGet(SESSIONID_KEY);
-        String smd5 = cookieGet(SESSIONID_MD5());
+        String skey = cookieGet(ServerConstants.SESSIONID_KEY);
+        String smd5 = cookieGet(ServerConstants.SESSIONID_MD5());
 
         if(reset == false) {
             if (Utils.isEmpty(skey) == false && Utils.isEmpty(smd5) == false) {
-                if (Utils.md5(skey + SESSIONID_salt).equals(smd5)) {
+                if (Utils.md5(skey + ServerConstants.SESSIONID_salt).equals(smd5)) {
                     return skey;
                 }
             }
         }
 
         skey = Utils.guid();
-        cookieSet(SESSIONID_KEY, skey);
-        cookieSet(SESSIONID_MD5(), Utils.md5(skey + SESSIONID_salt));
+        cookieSet(ServerConstants.SESSIONID_KEY, skey);
+        cookieSet(ServerConstants.SESSIONID_MD5(), Utils.md5(skey + ServerConstants.SESSIONID_salt));
         return skey;
     }
 
@@ -162,11 +170,11 @@ public class RedisSessionState extends SessionStateDefault {
 
     @Override
     public void sessionRefresh() {
-        String skey = cookieGet(SESSIONID_KEY);
+        String skey = cookieGet(ServerConstants.SESSIONID_KEY);
 
         if (Utils.isEmpty(skey) == false) {
-            cookieSet(SESSIONID_KEY, skey);
-            cookieSet(SESSIONID_MD5(), EncryptUtil.md5(skey + SESSIONID_salt));
+            cookieSet(ServerConstants.SESSIONID_KEY, skey);
+            cookieSet(ServerConstants.SESSIONID_MD5(), EncryptUtil.md5(skey + ServerConstants.SESSIONID_salt));
 
             redisClient.open((ru)->ru.key(sessionId()).expire(_expiry).delay());
         }
