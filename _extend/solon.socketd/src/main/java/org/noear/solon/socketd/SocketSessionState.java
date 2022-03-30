@@ -3,6 +3,8 @@ package org.noear.solon.socketd;
 import org.noear.solon.core.handle.SessionState;
 import org.noear.solon.core.message.Session;
 
+import java.util.Collection;
+
 /**
  * @author noear
  * @since 1.6
@@ -26,6 +28,11 @@ public class SocketSessionState implements SessionState {
     @Override
     public String sessionChangeId() {
         return session.sessionId();
+    }
+
+    @Override
+    public Collection<String> sessionKeys() {
+        return session.attrMap().keySet();
     }
 
     @Override

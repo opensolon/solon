@@ -1,5 +1,7 @@
 package org.noear.solon.core.handle;
 
+import java.util.Collection;
+
 /**
  * Session 状态器接口
  *
@@ -38,6 +40,11 @@ public interface SessionState {
      * 变更SESSION_ID
      */
     String sessionChangeId();
+
+    /**
+     * 获取SESSION键名集合
+     * */
+    Collection<String> sessionKeys();
 
     /**
      * 获取SESSION状态

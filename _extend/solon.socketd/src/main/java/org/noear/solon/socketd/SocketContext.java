@@ -129,11 +129,6 @@ public class SocketContext extends ContextEmpty {
         return new ByteArrayInputStream(_message.body());
     }
 
-    @Override
-    public Map<String, Object> sessionMap() {
-        return _session.attrMap();
-    }
-
     //==============
 
     @Override

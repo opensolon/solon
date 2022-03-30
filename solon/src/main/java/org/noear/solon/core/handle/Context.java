@@ -525,15 +525,6 @@ public abstract class Context {
     protected SessionState sessionState;
 
     /**
-     * 初始化 sessionState 对象
-     * */
-    protected void sessionStateInit(SessionState sessionState) {
-        if (sessionState().replaceable()) {
-            this.sessionState = sessionState;
-        }
-    }
-
-    /**
      * 获取 sessionState
      * */
     public SessionState sessionState() {

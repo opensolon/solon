@@ -1,10 +1,8 @@
 package org.noear.solon.extend.servlet;
 
-import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.NvMap;
 import org.noear.solon.core.handle.Context;
-import org.noear.solon.core.handle.SessionState;
 import org.noear.solon.core.handle.UploadedFile;
 
 import javax.servlet.ServletException;
@@ -32,52 +30,9 @@ public class SolonServletContext extends Context {
         _response = response;
         _fileMap = new HashMap<>();
 
-        if (sessionState().replaceable() && Solon.global().enableSessionState()) {
-            sessionStateInit(new SessionState() {
-                @Override
-                public String sessionId() {
-                    return _request.getRequestedSessionId();
-                }
-
-                @Override
-                public String sessionChangeId() {
-                    return _request.changeSessionId();
-                }
-
-                @Override
-                public Object sessionGet(String key) {
-                    return _request.getSession().getAttribute(key);
-                }
-
-                @Override
-                public void sessionSet(String key, Object val) {
-                    if (val == null) {
-                        sessionRemove(key);
-                    } else {
-                        _request.getSession().setAttribute(key, val);
-                    }
-                }
-
-                @Override
-                public void sessionRemove(String key) {
-                    _request.getSession().removeAttribute(key);
-                }
-
-                @Override
-                public void sessionClear() {
-                    Enumeration<String> names = _request.getSession().getAttributeNames();
-                    while (names.hasMoreElements()) {
-                        _request.getSession().removeAttribute(names.nextElement());
-                    }
-                }
-
-                @Override
-                public void sessionReset() {
-                    _request.getSession().invalidate();
-                }
-            });
+        if (sessionState().replaceable()) {
+            sessionState = new SolonServletSessionState(request);
         }
-
     }
 
     private boolean _loadMultipartFormData = false;
