@@ -78,7 +78,7 @@ public class ServerProps {
             request_maxFileSize = getSize(tmp);
         }
 
-        tmp = Solon.cfg().get("solon.request.encoding", "").trim();
+        tmp = Solon.cfg().get("server.request.encoding", "").trim();
         if (Utils.isEmpty(tmp)) {
             //兼容旧的配置 //@Deprecated
             tmp = Solon.cfg().get("solon.encoding.request", "").trim();
@@ -99,7 +99,7 @@ public class ServerProps {
         //
         // for response
         //
-        tmp = Solon.cfg().get("solon.request.response", "").trim();
+        tmp = Solon.cfg().get("server.response.encoding", "").trim();
         if (Utils.isEmpty(tmp)) {
             //兼容旧的配置  //@Deprecated
             tmp = Solon.cfg().get("solon.encoding.response", "").trim();
