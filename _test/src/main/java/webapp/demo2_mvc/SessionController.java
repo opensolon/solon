@@ -8,7 +8,7 @@ import org.noear.solon.core.handle.Context;
 @Controller
 public class SessionController {
     @Mapping("id")
-    public String id(Context ctx, String val) {
+    public String id(Context ctx) {
         return ctx.sessionId();
     }
 
