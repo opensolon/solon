@@ -1,7 +1,7 @@
 #### 1.6.35
 * 添加 SocketContext::SessionState 接口支持
 * 添加 Session::pathNew() 接口支持
-* 添加 ListenerPipeline 类，并提供 Listener 过滤的支持[实验方案]
+* 添加 SolonApp::listenBefore, SolonApp::listenAfter 接口，以提供 Listener 过滤的支持
 * 添加 sa-token-solon-plugin 插件对 dao 适配[实验方案]
   * SaTokenDaoOfRedis
   * SaTokenDaoOfSession
