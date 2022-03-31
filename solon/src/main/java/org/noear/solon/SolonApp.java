@@ -605,20 +605,23 @@ public class SolonApp implements HandlerSlots {
     }
 
     /**
-     * 添加监听之前
+     * 添加监听到之前的位置
      * */
     public void listenBefore(Listener listener){
         _listenerPipeline.prev(listener);
     }
 
     /**
-     * 添加监听之后
+     * 添加监听到之后的位置
      * */
     public void listenAfter(Listener listener){
         _listenerPipeline.next(listener);
     }
 
     private final ListenerPipeline _listenerPipeline = new ListenerPipeline();
+    /**
+     * 监听器入口
+     * */
     public Listener listener(){
         return _listenerPipeline;
     }
