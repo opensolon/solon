@@ -3,8 +3,8 @@ package org.noear.solon.socketd.client.rsocket;
 import io.rsocket.ConnectionSetupPayload;
 import io.rsocket.RSocket;
 import io.rsocket.SocketAcceptor;
+import org.noear.solon.Solon;
 import org.noear.solon.core.message.Session;
-import org.noear.solon.socketd.ListenerManager;
 import reactor.core.publisher.Mono;
 
 /**
@@ -37,7 +37,7 @@ public class RsAcceptor implements SocketAcceptor {
         }
 
 
-        ListenerManager.getPipeline().onOpen(session1);
+        Solon.global().listener().onOpen(session1);
 
         return Mono.just(new RsAcceptorHandler(rSocket, session1));
     }

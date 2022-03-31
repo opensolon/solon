@@ -2,13 +2,13 @@ package org.noear.solon.socketd.client.rsocket;
 
 import io.rsocket.RSocket;
 import io.rsocket.util.DefaultPayload;
+import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.socketd.Connector;
-import org.noear.solon.socketd.ListenerManager;
 import org.noear.solon.socketd.ProtocolManager;
 import org.noear.solon.socketd.SessionBase;
 
@@ -32,7 +32,7 @@ public class RsSocketSession extends SessionBase {
                     sessions.put(real, tmp);
 
                     //算第一次
-                    ListenerManager.getPipeline().onOpen(tmp);
+                    Solon.global().listener().onOpen(tmp);
                 }
             }
         }
@@ -169,7 +169,7 @@ public class RsSocketSession extends SessionBase {
 
         real.fireAndForget(DefaultPayload.create(buf))
                 .doOnError((err) -> {
-                    ListenerManager.getPipeline().onError(this, err);
+                    Solon.global().listener().onError(this, err);
                 })
                 .subscribe();
     }

@@ -15,11 +15,13 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
+ * 路由器监听者
+ *
  * @author noear
  * @since 1.6
  */
-public class ListenerProxy implements Listener{
-    static final Logger log = LoggerFactory.getLogger(ListenerProxy.class);
+public class RouterListener implements Listener{
+    static final Logger log = LoggerFactory.getLogger(RouterListener.class);
     /**
      * 消息处理线程池
      * */

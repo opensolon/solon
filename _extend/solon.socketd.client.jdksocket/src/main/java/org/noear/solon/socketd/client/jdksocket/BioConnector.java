@@ -1,10 +1,10 @@
 package org.noear.solon.socketd.client.jdksocket;
 
+import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.socketd.ConnectorBase;
-import org.noear.solon.socketd.ListenerManager;
 import org.noear.solon.socketd.SocketProps;
 
 import java.io.IOException;
@@ -51,7 +51,7 @@ public class BioConnector extends ConnectorBase<Socket> {
         Utils.pools.submit(() -> {
             while (true) {
                 if (socket.isClosed()) {
-                    ListenerManager.getPipeline().onClose(session);
+                    Solon.global().listener().onClose(session);
                     break;
                 }
 
@@ -61,14 +61,14 @@ public class BioConnector extends ConnectorBase<Socket> {
                     if (message != null) {
                         Utils.pools.execute(() -> {
                             try {
-                                ListenerManager.getPipeline().onMessage(session, message);
+                                Solon.global().listener().onMessage(session, message);
                             } catch (Throwable ex) {
-                                ListenerManager.getPipeline().onError(session, ex);
+                                Solon.global().listener().onError(session, ex);
                             }
                         });
                     }
                 } catch (Exception ex) {
-                    ListenerManager.getPipeline().onError(session, ex);
+                    Solon.global().listener().onError(session, ex);
                 }
             }
         });

@@ -1,9 +1,9 @@
 package org.noear.solon.boot.socketd.smartsocket;
 
+import org.noear.solon.Solon;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
-import org.noear.solon.socketd.ListenerManager;
 import org.noear.solon.socketd.client.smartsocket.AioSocketSession;
 
 
@@ -17,7 +17,7 @@ class AioServerProcessor implements MessageProcessor<Message> {
         try {
             Session session1 = AioSocketSession.get(session);
 
-            ListenerManager.getPipeline().onMessage(session1, message);
+            Solon.global().listener().onMessage(session1, message);
         } catch (Throwable ex) {
             EventBus.push(ex);
         }
@@ -28,11 +28,11 @@ class AioServerProcessor implements MessageProcessor<Message> {
 
         switch (state) {
             case NEW_SESSION:
-                ListenerManager.getPipeline().onOpen(AioSocketSession.get(session));
+                Solon.global().listener().onOpen(AioSocketSession.get(session));
                 break;
 
             case SESSION_CLOSED:
-                ListenerManager.getPipeline().onClose(AioSocketSession.get(session));
+                Solon.global().listener().onClose(AioSocketSession.get(session));
                 AioSocketSession.remove(session);
                 break;
 
@@ -41,7 +41,7 @@ class AioServerProcessor implements MessageProcessor<Message> {
             case INPUT_EXCEPTION:
             case ACCEPT_EXCEPTION:
             case OUTPUT_EXCEPTION:
-                ListenerManager.getPipeline().onError(AioSocketSession.get(session), throwable);
+                Solon.global().listener().onError(AioSocketSession.get(session), throwable);
                 break;
         }
 

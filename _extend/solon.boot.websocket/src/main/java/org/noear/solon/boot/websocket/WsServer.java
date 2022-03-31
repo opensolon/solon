@@ -8,7 +8,6 @@ import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.core.util.PrintUtil;
-import org.noear.solon.socketd.ListenerManager;
 import org.noear.solon.socketd.ProtocolManager;
 
 import java.net.InetSocketAddress;
@@ -36,7 +35,7 @@ public class WsServer extends WebSocketServer {
             session.headerSet(k, shake.getFieldValue(k));
         });
 
-        ListenerManager.getPipeline().onOpen(session);
+        Solon.global().listener().onOpen(session);
     }
 
     @Override
@@ -45,7 +44,7 @@ public class WsServer extends WebSocketServer {
             return;
         }
 
-        ListenerManager.getPipeline().onClose(_SocketServerSession.get(conn));
+        Solon.global().listener().onClose(_SocketServerSession.get(conn));
 
         _SocketServerSession.remove(conn);
     }
@@ -60,7 +59,7 @@ public class WsServer extends WebSocketServer {
             Session session = _SocketServerSession.get(conn);
             Message message = Message.wrap(conn.getResourceDescriptor(), null, data);
 
-            ListenerManager.getPipeline().onMessage(session, message.isString(true));
+            Solon.global().listener().onMessage(session, message.isString(true));
         } catch (Throwable ex) {
             EventBus.push(ex);
         }
@@ -82,7 +81,7 @@ public class WsServer extends WebSocketServer {
                 message = Message.wrap(conn.getResourceDescriptor(), null,data.array());;
             }
 
-            ListenerManager.getPipeline().onMessage(session, message);
+            Solon.global().listener().onMessage(session, message);
         } catch (Throwable ex) {
             EventBus.push(ex);
         }
@@ -94,6 +93,6 @@ public class WsServer extends WebSocketServer {
             return;
         }
 
-        ListenerManager.getPipeline().onError(_SocketServerSession.get(conn), ex);
+        Solon.global().listener().onError(_SocketServerSession.get(conn), ex);
     }
 }

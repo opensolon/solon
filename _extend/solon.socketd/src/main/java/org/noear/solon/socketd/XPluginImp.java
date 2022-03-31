@@ -14,6 +14,9 @@ public class XPluginImp implements Plugin {
     @Override
     public void start(SolonApp app) {
         //注册 @ClientListenEndpoint 构建器
+
+        app.listenAfter(new RouterListener());
+
         Aop.context().beanBuilderAdd(ClientEndpoint.class, (clz, wrap, anno) -> {
             if (Listener.class.isAssignableFrom(clz)) {
                 Listener l = wrap.raw();
@@ -39,8 +42,5 @@ public class XPluginImp implements Plugin {
                 }
             }
         });
-
-        //注册 ListenerPipeline
-        Aop.wrapAndPut(ListenerPipeline.class, ListenerManager.getPipeline());
     }
 }

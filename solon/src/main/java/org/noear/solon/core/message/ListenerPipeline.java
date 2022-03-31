@@ -1,21 +1,17 @@
-package org.noear.solon.socketd;
-
-import org.noear.solon.core.message.Listener;
-import org.noear.solon.core.message.Message;
-import org.noear.solon.core.message.Session;
+package org.noear.solon.core.message;
 
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 
 /**
+ * 监听器管道
+ *
  * @author noear
  * @since 1.6
  */
-@Deprecated
 public class ListenerPipeline implements Listener {
+
     private List<Listener> chain = new LinkedList<>();
 
     /**
@@ -34,20 +30,9 @@ public class ListenerPipeline implements Listener {
         return this;
     }
 
-    public ListenerPipeline prevOnOpen(Consumer<Session> consumer) {
-        return prev(new Listener() {
-            @Override
-            public void onOpen(Session session) {
-                consumer.accept(session);
-            }
-
-            @Override
-            public void onMessage(Session session, Message message) throws IOException {
-
-            }
-        });
-    }
-
+    /**
+     * 打开时
+     * */
     @Override
     public void onOpen(Session session) {
         for (Listener l : chain) {
@@ -55,6 +40,9 @@ public class ListenerPipeline implements Listener {
         }
     }
 
+    /**
+     * 收到消息时
+     * */
     @Override
     public void onMessage(Session session, Message message) throws IOException {
         for (Listener l : chain) {
@@ -62,6 +50,9 @@ public class ListenerPipeline implements Listener {
         }
     }
 
+    /**
+     * 关闭时
+     * */
     @Override
     public void onClose(Session session) {
         for (Listener l : chain) {
@@ -69,6 +60,9 @@ public class ListenerPipeline implements Listener {
         }
     }
 
+    /**
+     * 出错时
+     * */
     @Override
     public void onError(Session session, Throwable error) {
         for (Listener l : chain) {

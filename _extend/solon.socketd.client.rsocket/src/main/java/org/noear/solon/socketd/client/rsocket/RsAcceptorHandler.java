@@ -3,10 +3,10 @@ package org.noear.solon.socketd.client.rsocket;
 import io.netty.buffer.ByteBuf;
 import io.rsocket.Payload;
 import io.rsocket.RSocket;
+import org.noear.solon.Solon;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
-import org.noear.solon.socketd.ListenerManager;
 import org.noear.solon.socketd.ProtocolManager;
 import reactor.core.publisher.Mono;
 
@@ -41,7 +41,7 @@ public class RsAcceptorHandler implements RSocket {
             Message message = ProtocolManager.decode(byteBuffer);
 
             try {
-                ListenerManager.getPipeline().onMessage(session, message);
+                Solon.global().listener().onMessage(session, message);
             } catch (Throwable ex) {
                 EventBus.push(ex);
             }

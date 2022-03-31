@@ -3,7 +3,7 @@ package org.noear.solon.core.message;
 import java.io.IOException;
 
 /**
- * SocketD 监听器（实现 Message + Listener 架构）
+ * 监听器（实现 Message + Listener 架构）
  *
  * <pre><code>
  * @ServerEndpoint(value = "/demoe/websocket/{id}")

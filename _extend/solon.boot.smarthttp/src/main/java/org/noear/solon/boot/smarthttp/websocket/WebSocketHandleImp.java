@@ -4,7 +4,6 @@ import org.noear.solon.Solon;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
-import org.noear.solon.socketd.ListenerManager;
 import org.noear.solon.socketd.ProtocolManager;
 import org.smartboot.http.server.WebSocketRequest;
 import org.smartboot.http.server.WebSocketResponse;
@@ -16,7 +15,7 @@ public class WebSocketHandleImp extends WebSocketDefaultHandler {
 
     @Override
     public void onHandShake(WebSocketRequest request, WebSocketResponse response) {
-        ListenerManager.getPipeline().onOpen(_SocketServerSession.get(request, response));
+        Solon.global().listener().onOpen(_SocketServerSession.get(request, response));
     }
 
     @Override
@@ -24,7 +23,7 @@ public class WebSocketHandleImp extends WebSocketDefaultHandler {
         _SocketServerSession session = _SocketServerSession.get(request, response);
         session.onClose();
 
-        ListenerManager.getPipeline().onClose(session);
+        Solon.global().listener().onClose(session);
 
         _SocketServerSession.remove(request);
     }
@@ -35,7 +34,7 @@ public class WebSocketHandleImp extends WebSocketDefaultHandler {
             Session session = _SocketServerSession.get(request, response);
             Message message = Message.wrap(request.getRequestURI(),null, data);
 
-            ListenerManager.getPipeline().onMessage(session, message.isString(true));
+            Solon.global().listener().onMessage(session, message.isString(true));
         } catch (Throwable ex) {
             EventBus.push(ex);
         }
@@ -53,7 +52,7 @@ public class WebSocketHandleImp extends WebSocketDefaultHandler {
                 message = Message.wrap(request.getRequestURI(), null, data);
             }
 
-            ListenerManager.getPipeline().onMessage(session, message);
+            Solon.global().listener().onMessage(session, message);
 
         } catch (Throwable ex) {
             EventBus.push(ex);

@@ -5,7 +5,6 @@ import org.noear.solon.Solon;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
-import org.noear.solon.socketd.ListenerManager;
 import org.noear.solon.socketd.ProtocolManager;
 
 import java.nio.ByteBuffer;
@@ -23,7 +22,7 @@ public class WebSocketListenerImp extends WebSocketAdapter {
             }
         });
 
-        ListenerManager.getPipeline().onOpen(session);
+        Solon.global().listener().onOpen(session);
     }
 
     @Override
@@ -41,7 +40,7 @@ public class WebSocketListenerImp extends WebSocketAdapter {
                         buf.array());
             }
 
-            ListenerManager.getPipeline().onMessage(session, message);
+            Solon.global().listener().onMessage(session, message);
         } catch (Throwable ex) {
             EventBus.push(ex);
         }
@@ -53,7 +52,7 @@ public class WebSocketListenerImp extends WebSocketAdapter {
             Session session = _SocketServerSession.get(getSession());
             Message message = Message.wrap(getSession().getUpgradeRequest().getRequestURI().toString(), null, text);
 
-            ListenerManager.getPipeline().onMessage(session, message.isString(true));
+            Solon.global().listener().onMessage(session, message.isString(true));
 
         } catch (Throwable ex) {
             EventBus.push(ex);
@@ -62,7 +61,7 @@ public class WebSocketListenerImp extends WebSocketAdapter {
 
     @Override
     public void onWebSocketClose(int statusCode, String reason) {
-        ListenerManager.getPipeline().onClose(_SocketServerSession.get(getSession()));
+        Solon.global().listener().onClose(_SocketServerSession.get(getSession()));
 
         _SocketServerSession.remove(getSession());
         super.onWebSocketClose(statusCode, reason);
@@ -70,6 +69,6 @@ public class WebSocketListenerImp extends WebSocketAdapter {
 
     @Override
     public void onWebSocketError(Throwable cause) {
-        ListenerManager.getPipeline().onError(_SocketServerSession.get(getSession()), cause);
+        Solon.global().listener().onError(_SocketServerSession.get(getSession()), cause);
     }
 }

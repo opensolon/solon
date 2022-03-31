@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 
 /**
- * SocketD 监听器增强持有（用于支持 path var）
+ * 监听器增强持有（用于支持 path var）
  *
  * @author noear
  * @since 1.6

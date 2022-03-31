@@ -3,6 +3,7 @@ package org.noear.solon;
 import org.noear.solon.core.event.*;
 import org.noear.solon.core.event.EventListener;
 import org.noear.solon.core.handle.*;
+import org.noear.solon.core.message.ListenerPipeline;
 import org.noear.solon.core.route.Router;
 import org.noear.solon.core.route.RouterDefault;
 import org.noear.solon.core.route.RouterHandler;
@@ -602,6 +603,26 @@ public class SolonApp implements HandlerSlots {
     public void listen(String path, Listener listener) {
         _router.add(path, MethodType.ALL, listener);
     }
+
+    /**
+     * 添加监听之前
+     * */
+    public void listenBefore(Listener listener){
+        _listenerPipeline.prev(listener);
+    }
+
+    /**
+     * 添加监听之后
+     * */
+    public void listenAfter(Listener listener){
+        _listenerPipeline.next(listener);
+    }
+
+    private final ListenerPipeline _listenerPipeline = new ListenerPipeline();
+    public Listener listener(){
+        return _listenerPipeline;
+    }
+
 
     /**
      * Solon Handler

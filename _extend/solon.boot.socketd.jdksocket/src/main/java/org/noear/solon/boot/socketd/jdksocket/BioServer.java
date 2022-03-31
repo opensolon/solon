@@ -1,10 +1,10 @@
 package org.noear.solon.boot.socketd.jdksocket;
 
+import org.noear.solon.Solon;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.core.util.PrintUtil;
 import org.noear.solon.ext.NamedThreadFactory;
-import org.noear.solon.socketd.ListenerManager;
 import org.noear.solon.socketd.client.jdksocket.BioReceiver;
 import org.noear.solon.socketd.client.jdksocket.BioSocketSession;
 
@@ -37,12 +37,12 @@ class BioServer {
             Socket socket = server.accept();
 
             Session session = BioSocketSession.get(socket);
-            ListenerManager.getPipeline().onOpen(session);
+            Solon.global().listener().onOpen(session);
 
             pool.execute(() -> {
                 while (true) {
                     if (socket.isClosed()) {
-                        ListenerManager.getPipeline().onClose(session);
+                        Solon.global().listener().onClose(session);
                         BioSocketSession.remove(socket);
                         break;
                     }
@@ -53,14 +53,14 @@ class BioServer {
                         if (message != null) {
                             pool.execute(() -> {
                                 try {
-                                    ListenerManager.getPipeline().onMessage(session, message);
+                                    Solon.global().listener().onMessage(session, message);
                                 } catch (Throwable ex) {
-                                    ListenerManager.getPipeline().onError(session, ex);
+                                    Solon.global().listener().onError(session, ex);
                                 }
                             });
                         }
                     } catch (Throwable ex) {
-                        ListenerManager.getPipeline().onError(session, ex);
+                        Solon.global().listener().onError(session, ex);
                     }
                 }
             });

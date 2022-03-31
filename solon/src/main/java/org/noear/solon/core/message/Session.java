@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.function.BiConsumer;
 
 /**
- * SocketD 会话（为 Message + Listener 架构服务 ）
+ * 会话（为 Message + Listener 架构服务 ）
  *
  * @author noear
  * @since 1.0
