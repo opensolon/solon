@@ -14,6 +14,7 @@ import java.util.function.Consumer;
  * @author noear
  * @since 1.6
  */
+@Deprecated
 public class ListenerPipeline implements Listener {
     private List<Listener> chain = new LinkedList<>();
 

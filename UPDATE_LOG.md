@@ -1,9 +1,11 @@
 #### 1.6.35
-* 为 SocketContext 添加 SessionState 接口支持
-* 为 Session 添加 pathNew() 接口支持
-* 插件 sa-token-solon-plugin，增加 dao 适配
-  * SaTokenDaoRedis
-  * SaTokenDaoSession
+* 添加 SocketContext::SessionState 接口支持
+* 添加 Session::pathNew() 接口支持
+* 添加 ListenerPipeline 类，并提供 Listener 过滤的支持[实验方案]
+* 添加 sa-token-solon-plugin 插件对 dao 适配[实验方案]
+  * SaTokenDaoOfRedis
+  * SaTokenDaoOfSession
+* 新增 mybatis-plus-extension-solon-plugin 插件
 
 #### 1.6.34
 * 插件 mybatis-solon-plugin 
