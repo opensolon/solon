@@ -338,17 +338,19 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
             if (h instanceof Action) {
                 Action h2 = (Action) h;
 
-                if (Utils.isEmpty(h2.name())) {
-                    mainDef = h2;
+                if (path == null) {
+                    add(h2.name(), h2);
                 } else {
-                    if (path == null) {
-                        add(h2.name(), h2);
-                    } else {
-                        add(PathUtil.mergePath(path, h2.name()), h2);
-                    }
+                    add(PathUtil.mergePath(path, h2.name()), h2);
                 }
             }
         });
+    }
+
+
+    @Note("添加缺少处理")
+    public void add(Handler handler) {
+        addDo("", handler);
     }
 
     /**
@@ -364,6 +366,11 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
      * 添加接口
      */
     protected void addDo(String path, Handler handler) {
+        if (Utils.isEmpty(path)) {
+            mainDef = handler;
+            return;
+        }
+
         //addPath 已处理 path1= null 的情况
         if (allowPathMerging()) {
             main.put(PathUtil.mergePath(mapping, path).toUpperCase(), handler);

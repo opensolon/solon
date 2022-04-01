@@ -1,3 +1,6 @@
+#### 1.6.36-m1
+* 调整 Gateway 的默认处理方式
+
 #### 1.6.35
 * 添加 SocketContext::SessionState 接口支持
 * 添加 Session::pathNew() 接口支持
