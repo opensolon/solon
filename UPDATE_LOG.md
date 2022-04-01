@@ -1,5 +1,5 @@
 #### 1.6.36-m1
-* 调整 Gateway 的默认处理方式
+* 调整 Gateway 的缺省处理设定方式
 
 #### 1.6.35
 * 添加 SocketContext::SessionState 接口支持
