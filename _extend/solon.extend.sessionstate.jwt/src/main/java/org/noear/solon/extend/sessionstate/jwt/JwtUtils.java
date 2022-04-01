@@ -99,7 +99,7 @@ public class JwtUtils {
                     .getBody();
         } catch (ExpiredJwtException ex) {
 
-        } catch (Exception ex) {
+        } catch (Throwable ex) {
             EventBus.push(ex);
         }
 

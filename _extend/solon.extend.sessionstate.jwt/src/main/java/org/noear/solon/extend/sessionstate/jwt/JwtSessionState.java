@@ -8,6 +8,7 @@ import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.SessionState;
 
 import java.util.Collection;
+import java.util.ServiceConfigurationError;
 
 /**
  * @author noear
@@ -220,10 +221,15 @@ public class JwtSessionState implements SessionState {
                     if (SessionProp.session_jwt_allowUseHeader || Utils.isNotEmpty(skey)) {
                         tmp.setId(skey);
 
-                        if (SessionProp.session_jwt_allowExpire) {
-                            sessionToken = JwtUtils.buildJwt(tmp, _expiry * 1000L);
-                        } else {
-                            sessionToken = JwtUtils.buildJwt(tmp, 0);
+                        try {
+                            if (SessionProp.session_jwt_allowExpire) {
+                                sessionToken = JwtUtils.buildJwt(tmp, _expiry * 1000L);
+                            } else {
+                                sessionToken = JwtUtils.buildJwt(tmp, 0);
+                            }
+                        } catch (ServiceConfigurationError e) {
+                            //服务切换时，可能配置文件无法加载
+                            sessionToken = "";
                         }
                     }
                 }
