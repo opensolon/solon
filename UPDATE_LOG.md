@@ -1,10 +1,10 @@
 #### 1.6.36
-* 调整 Gateway 的缺省处理设定方式
 * 插件 solon.extend.sessionstate.jwt 呼略 ServiceConfigurationError 抛出
 * 添加 CloudJobInterceptor，提供 job 的拦截机制 
 * 添加 CloudEventInterceptor，提供 event 的拦截机制
+* 调整 Gateway 的缺省处理设定方式
 * 调整 CloudJobHandler 为 job 的强制接口，之前 Handler 即可
-* HttpUtils 增加短处理和长处理的切换支持
+* 调整 HttpUtils 增加短处理和长处理的切换支持
 
 #### 1.6.35
 * 添加 SocketContext::SessionState 接口支持
