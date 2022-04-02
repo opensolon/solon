@@ -1,9 +1,9 @@
 package org.noear.solon.cloud.extend.water.service;
 
 import org.noear.solon.Solon;
+import org.noear.solon.cloud.CloudJobHandler;
 import org.noear.solon.cloud.model.JobHolder;
 import org.noear.solon.cloud.service.CloudJobService;
-import org.noear.solon.core.handle.Handler;
 import org.noear.solon.core.util.PrintUtil;
 import org.noear.solon.logging.utils.TagsMDC;
 import org.noear.water.WaterClient;
@@ -48,7 +48,7 @@ public class CloudJobServiceWaterImp implements CloudJobService {
     }
 
     @Override
-    public boolean register(String name, String cron7x, String description, Handler handler) {
+    public boolean register(String name, String cron7x, String description, CloudJobHandler handler) {
         JobHolder jobHolder = new JobHolder(name, cron7x, description, handler);
 
         jobMap.put(name, jobHolder);

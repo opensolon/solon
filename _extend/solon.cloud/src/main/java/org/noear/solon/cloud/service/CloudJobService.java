@@ -1,6 +1,6 @@
 package org.noear.solon.cloud.service;
 
-import org.noear.solon.core.handle.Handler;
+import org.noear.solon.cloud.CloudJobHandler;
 
 /**
  * 云端任务服务
@@ -17,7 +17,7 @@ public interface CloudJobService {
      * @param description 描述
      * @param handler 处理者
      */
-    boolean register(String name, String cron7x, String description, Handler handler);
+    boolean register(String name, String cron7x, String description, CloudJobHandler handler);
 
     /**
      * 是否已注册

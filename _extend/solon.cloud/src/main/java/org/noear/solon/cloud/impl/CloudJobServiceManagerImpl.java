@@ -1,5 +1,6 @@
 package org.noear.solon.cloud.impl;
 
+import org.noear.solon.cloud.CloudJobHandler;
 import org.noear.solon.cloud.CloudJobInterceptor;
 import org.noear.solon.cloud.service.CloudJobService;
 import org.noear.solon.core.Aop;
@@ -26,7 +27,7 @@ public class CloudJobServiceManagerImpl implements CloudJobServiceManager {
     }
 
     @Override
-    public boolean register(String name, String cron7x, String description, Handler handler) {
+    public boolean register(String name, String cron7x, String description, CloudJobHandler handler) {
         return service.register(name, cron7x, description, handler);
     }
 

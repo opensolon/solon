@@ -1,8 +1,8 @@
 package org.noear.solon.cloud.model;
 
+import org.noear.solon.cloud.CloudJobHandler;
 import org.noear.solon.cloud.CloudManager;
 import org.noear.solon.core.handle.Context;
-import org.noear.solon.core.handle.Handler;
 
 /**
  * 任务处理实体
@@ -10,13 +10,13 @@ import org.noear.solon.core.handle.Handler;
  * @author noear
  * @since 1.4
  */
-public class JobHolder implements Handler {
+public class JobHolder implements CloudJobHandler {
     private final String name;
     private final String cron7x;
     private final String description;
-    private final Handler handler;
+    private final CloudJobHandler handler;
 
-    public JobHolder(String name, String cron7x, String description, Handler handler) {
+    public JobHolder(String name, String cron7x, String description, CloudJobHandler handler) {
         this.name = name;
         this.cron7x = cron7x;
         this.description = description;

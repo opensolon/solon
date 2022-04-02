@@ -4,6 +4,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.cloud.annotation.CloudJob;
+import org.noear.solon.cloud.model.JobWrapper;
 import org.noear.solon.core.BeanExtractor;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.handle.Action;
@@ -41,6 +42,6 @@ public class CloudJobExtractor implements BeanExtractor<CloudJob> {
         //method,必须返回为void
         Action action = new Action(bw, method);
 
-        CloudClient.job().register(name, anno.cron7x(), description, action);
+        CloudClient.job().register(name, anno.cron7x(), description, new JobWrapper(action));
     }
 }
