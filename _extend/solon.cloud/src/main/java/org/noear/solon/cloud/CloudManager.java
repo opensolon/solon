@@ -215,6 +215,9 @@ public class CloudManager {
         return eventServiceManager;
     }
 
+    /**
+     * 事件拦截器（仅内部使用）
+     * */
     public static CloudEventInterceptor eventInterceptor() {
         if (eventServiceManager == null) {
             return null;
@@ -259,6 +262,9 @@ public class CloudManager {
         return jobServiceManager;
     }
 
+    /**
+     * 任务拦截器（仅内部使用）
+     * */
     public static CloudJobInterceptor jobInterceptor() {
         if (jobServiceManager == null) {
             return null;
