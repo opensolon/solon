@@ -2,10 +2,12 @@ package org.noear.solon.cloud.impl;
 
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudEventHandler;
+import org.noear.solon.cloud.CloudEventInterceptor;
 import org.noear.solon.cloud.annotation.EventLevel;
 import org.noear.solon.cloud.exception.CloudEventException;
 import org.noear.solon.cloud.model.Event;
 import org.noear.solon.cloud.service.CloudEventServicePlus;
+import org.noear.solon.core.Aop;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,8 +19,22 @@ import java.util.Map;
  * @author noear
  * @since 1.5
  */
-public class CloudEventManagerImpl implements CloudEventManager {
+public class CloudEventServiceManagerImpl implements CloudEventServiceManager {
     Map<String, CloudEventServicePlus> route = new HashMap<>();
+    CloudEventInterceptor eventInterceptor;
+
+    public CloudEventServiceManagerImpl() {
+        Aop.getAsyn(CloudEventInterceptor.class, bw -> {
+            eventInterceptor = bw.raw();
+        });
+    }
+
+    /**
+     * 获取拦截器
+     * */
+    public CloudEventInterceptor getEventInterceptor() {
+        return eventInterceptor;
+    }
 
     /**
      * 注册事件服务

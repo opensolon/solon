@@ -1,5 +1,6 @@
 package org.noear.solon.cloud.impl;
 
+import org.noear.solon.cloud.CloudEventInterceptor;
 import org.noear.solon.cloud.service.CloudEventService;
 import org.noear.solon.cloud.service.CloudEventServicePlus;
 
@@ -10,7 +11,11 @@ import org.noear.solon.cloud.service.CloudEventServicePlus;
  * @author noear
  * @since 1.3
  */
-public interface CloudEventManager extends CloudEventService {
+public interface CloudEventServiceManager extends CloudEventService {
+    /**
+     * 获取事件拦截器
+     */
+    CloudEventInterceptor getEventInterceptor();
 
     /**
      * 注册事件服务

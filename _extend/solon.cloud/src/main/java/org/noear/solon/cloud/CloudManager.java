@@ -3,8 +3,10 @@ package org.noear.solon.cloud;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.annotation.CloudConfig;
 import org.noear.solon.cloud.annotation.CloudEvent;
-import org.noear.solon.cloud.impl.CloudEventManager;
-import org.noear.solon.cloud.impl.CloudEventManagerImpl;
+import org.noear.solon.cloud.impl.CloudEventServiceManager;
+import org.noear.solon.cloud.impl.CloudEventServiceManagerImpl;
+import org.noear.solon.cloud.impl.CloudJobServiceManager;
+import org.noear.solon.cloud.impl.CloudJobServiceManagerImpl;
 import org.noear.solon.cloud.service.*;
 import org.noear.solon.core.util.PrintUtil;
 
@@ -29,7 +31,7 @@ public class CloudManager {
     /**
      * 云端事件服务管理
      */
-    private static CloudEventManager eventServiceManager = new CloudEventManagerImpl();
+    private static final CloudEventServiceManager eventServiceManager = new CloudEventServiceManagerImpl();
     /**
      * 云端锁服务
      */
@@ -62,17 +64,17 @@ public class CloudManager {
 
     /**
      * 云端度量服务（监控）
-     * */
+     */
     private static CloudMetricService metricService;
 
     /**
      * 云端任务服务
      */
-    private static CloudJobService jobService;
+    private static CloudJobServiceManager jobServiceManager;
 
     /**
      * 云端ID生成工厂
-     * */
+     */
     private static CloudIdServiceFactory idServiceFactory;
     private static CloudIdService idServiceDef;
 
@@ -124,9 +126,9 @@ public class CloudManager {
      */
     public static void register(CloudEventServicePlus service) {
         eventServiceManager.register(service);
-        if(Utils.isEmpty(service.getChannel())) {
+        if (Utils.isEmpty(service.getChannel())) {
             PrintUtil.info("Cloud", "CloudEventService registered from the " + service.getClass().getTypeName());
-        }else{
+        } else {
             PrintUtil.info("Cloud", "CloudEventService registered from the " + service.getClass().getTypeName() + " as &" + service.getChannel());
         }
     }
@@ -184,7 +186,7 @@ public class CloudManager {
      * 登记任务服务
      */
     public static void register(CloudJobService service) {
-        jobService = service;
+        jobServiceManager = new CloudJobServiceManagerImpl(service);
         PrintUtil.info("Cloud", "CloudJobService registered from the " + service.getClass().getTypeName());
     }
 
@@ -213,6 +215,14 @@ public class CloudManager {
         return eventServiceManager;
     }
 
+    public static CloudEventInterceptor eventInterceptor() {
+        if (eventServiceManager == null) {
+            return null;
+        }
+
+        return eventServiceManager.getEventInterceptor();
+    }
+
     protected static CloudLockService lockService() {
         return lockService;
     }
@@ -233,18 +243,27 @@ public class CloudManager {
         return traceService;
     }
 
-    protected static CloudMetricService metricService(){return metricService;}
+    protected static CloudMetricService metricService() {
+        return metricService;
+    }
 
-    protected static CloudIdServiceFactory idServiceFactory(){
+    protected static CloudIdServiceFactory idServiceFactory() {
         return idServiceFactory;
     }
 
-    protected static CloudIdService idServiceDef(){
+    protected static CloudIdService idServiceDef() {
         return idServiceDef;
     }
 
-    protected static CloudJobService jobService(){
-        return jobService;
+    protected static CloudJobService jobService() {
+        return jobServiceManager;
     }
 
+    public static CloudJobInterceptor jobInterceptor() {
+        if (jobServiceManager == null) {
+            return null;
+        }
+
+        return jobServiceManager.getJobInterceptor();
+    }
 }

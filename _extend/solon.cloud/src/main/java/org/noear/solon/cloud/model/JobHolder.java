@@ -1,5 +1,6 @@
 package org.noear.solon.cloud.model;
 
+import org.noear.solon.cloud.CloudManager;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Handler;
 
@@ -50,6 +51,10 @@ public class JobHolder implements Handler {
      */
     @Override
     public void handle(Context ctx) throws Throwable {
-        handler.handle(ctx);
+        if (CloudManager.jobInterceptor() == null) {
+            handler.handle(ctx);
+        } else {
+            CloudManager.jobInterceptor().doInterceptor(ctx, handler);
+        }
     }
 }
