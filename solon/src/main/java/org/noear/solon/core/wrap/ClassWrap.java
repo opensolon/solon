@@ -236,7 +236,6 @@ public class ClassWrap {
 
             if (!Modifier.isStatic(mod)
                     && !Modifier.isTransient(mod)) {
-                f.setAccessible(true);
 
                 if (checker.test(f.getName()) == false) {
                     _recordable &= Modifier.isFinal(mod);
