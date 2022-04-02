@@ -36,9 +36,9 @@ public class HandlerJob implements Handler {
     }
 
     private void handleDo(Context ctx, String name) {
-        JobHolder handlerHolder = CloudJobServiceWaterImp.instance.get(name);
+        JobHolder jobHolder = CloudJobServiceWaterImp.instance.get(name);
 
-        if (handlerHolder == null) {
+        if (jobHolder == null) {
             ctx.status(400);
             if (Utils.isEmpty(name)) {
                 ctx.output("CloudJob need the name parameter");
@@ -47,7 +47,7 @@ public class HandlerJob implements Handler {
             }
         } else {
             try {
-                handlerHolder.handle(ctx);
+                jobHolder.handle(ctx);
                 ctx.output("OK");
             } catch (Throwable ex) {
                 ex = Utils.throwableUnwrap(ex);
