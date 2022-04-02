@@ -1,6 +1,8 @@
 #### 1.6.36
 * 调整 Gateway 的缺省处理设定方式
-* 插件 x.x.jwt 呼略 ServiceConfigurationError 抛出
+* 插件 solon.extend.sessionstate.jwt 呼略 ServiceConfigurationError 抛出
+* CloudJobHandler
+* CloudEventHandler
 
 #### 1.6.35
 * 添加 SocketContext::SessionState 接口支持

@@ -4,7 +4,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.cloud.extend.water.WaterProps;
 import org.noear.solon.cloud.extend.water.service.CloudJobServiceWaterImp;
-import org.noear.solon.cloud.model.JobHandlerEntity;
+import org.noear.solon.cloud.model.JobHandlerHolder;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Handler;
@@ -36,9 +36,9 @@ public class HandlerJob implements Handler {
     }
 
     private void handleDo(Context ctx, String name) {
-        JobHandlerEntity entity = CloudJobServiceWaterImp.instance.get(name);
+        JobHandlerHolder handlerHolder = CloudJobServiceWaterImp.instance.get(name);
 
-        if (entity == null) {
+        if (handlerHolder == null) {
             ctx.status(400);
             if (Utils.isEmpty(name)) {
                 ctx.output("CloudJob need the name parameter");
@@ -47,7 +47,7 @@ public class HandlerJob implements Handler {
             }
         } else {
             try {
-                entity.getHandler().handle(ctx);
+                handlerHolder.handle(ctx);
                 ctx.output("OK");
             } catch (Throwable ex) {
                 ex = Utils.throwableUnwrap(ex);
