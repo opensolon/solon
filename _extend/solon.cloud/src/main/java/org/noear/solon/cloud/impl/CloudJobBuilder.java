@@ -3,6 +3,7 @@ package org.noear.solon.cloud.impl;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudClient;
+import org.noear.solon.cloud.CloudJobHandler;
 import org.noear.solon.cloud.annotation.CloudJob;
 import org.noear.solon.core.BeanBuilder;
 import org.noear.solon.core.BeanWrap;
@@ -21,7 +22,7 @@ public class CloudJobBuilder implements BeanBuilder<CloudJob> {
             throw new IllegalArgumentException("Missing CloudJobService component");
         }
 
-        if (Handler.class.isAssignableFrom(clz)) {
+        if (CloudJobHandler.class.isAssignableFrom(clz)) {
             //支持${xxx}配置
             String name = Solon.cfg().getByParse(Utils.annoAlias(anno.value(), anno.name()));
             //支持${xxx}配置
