@@ -3,6 +3,7 @@
 * 插件 solon.extend.sessionstate.jwt 呼略 ServiceConfigurationError 抛出
 * CloudJobHandler
 * CloudEventHandler
+* HttpUtils 增加短处理和长处理的切换支持
 
 #### 1.6.35
 * 添加 SocketContext::SessionState 接口支持

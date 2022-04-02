@@ -4,7 +4,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.cloud.extend.water.WaterProps;
 import org.noear.solon.cloud.extend.water.service.CloudJobServiceWaterImp;
-import org.noear.solon.cloud.model.JobHandlerHolder;
+import org.noear.solon.cloud.model.JobHolder;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Handler;
@@ -36,7 +36,7 @@ public class HandlerJob implements Handler {
     }
 
     private void handleDo(Context ctx, String name) {
-        JobHandlerHolder handlerHolder = CloudJobServiceWaterImp.instance.get(name);
+        JobHolder handlerHolder = CloudJobServiceWaterImp.instance.get(name);
 
         if (handlerHolder == null) {
             ctx.status(400);

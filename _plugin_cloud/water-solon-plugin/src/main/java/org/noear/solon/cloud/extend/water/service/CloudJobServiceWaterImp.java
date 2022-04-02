@@ -1,7 +1,7 @@
 package org.noear.solon.cloud.extend.water.service;
 
 import org.noear.solon.Solon;
-import org.noear.solon.cloud.model.JobHandlerHolder;
+import org.noear.solon.cloud.model.JobHolder;
 import org.noear.solon.cloud.service.CloudJobService;
 import org.noear.solon.core.handle.Handler;
 import org.noear.solon.core.util.PrintUtil;
@@ -24,9 +24,9 @@ import java.util.Map;
 public class CloudJobServiceWaterImp implements CloudJobService {
     public static final CloudJobServiceWaterImp instance = new CloudJobServiceWaterImp();
 
-    public Map<String, JobHandlerHolder> jobMap = new LinkedHashMap<>();
+    public Map<String, JobHolder> jobMap = new LinkedHashMap<>();
 
-    public JobHandlerHolder get(String name) {
+    public JobHolder get(String name) {
         return jobMap.get(name);
     }
 
@@ -49,7 +49,7 @@ public class CloudJobServiceWaterImp implements CloudJobService {
 
     @Override
     public boolean register(String name, String cron7x, String description, Handler handler) {
-        JobHandlerHolder handlerHolder = new JobHandlerHolder(name, cron7x, description, handler);
+        JobHolder handlerHolder = new JobHolder(name, cron7x, description, handler);
 
         jobMap.put(name, handlerHolder);
         TagsMDC.tag0("CloudJob");

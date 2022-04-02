@@ -9,13 +9,13 @@ import org.noear.solon.core.handle.Handler;
  * @author noear
  * @since 1.4
  */
-public class JobHandlerHolder implements Handler {
+public class JobHolder implements Handler {
     private final String name;
     private final String cron7x;
     private final String description;
     private final Handler handler;
 
-    public JobHandlerHolder(String name, String cron7x, String description, Handler handler) {
+    public JobHolder(String name, String cron7x, String description, Handler handler) {
         this.name = name;
         this.cron7x = cron7x;
         this.description = description;
