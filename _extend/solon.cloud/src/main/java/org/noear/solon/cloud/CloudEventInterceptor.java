@@ -1,6 +1,5 @@
 package org.noear.solon.cloud;
 
-import org.noear.solon.cloud.CloudEventHandler;
 import org.noear.solon.cloud.model.Event;
 
 /**
