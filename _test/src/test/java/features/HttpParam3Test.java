@@ -23,11 +23,11 @@ public class HttpParam3Test {
                 .create(ParamService.class);
 
         UserModel userModel = new UserModel();
-        userModel.name = "noear";
+        userModel.setName("noear");
 
         UserModel model2 = paramService.model(userModel);
 
-        assert userModel.name.equals(model2.name);
+        assert userModel.getName().equals(model2.getName());
     }
 
 

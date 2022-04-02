@@ -1,16 +1,20 @@
 package webapp.models;
 
+import lombok.Data;
+
 import java.io.Serializable;
 import java.util.Date;
 
+@Data
 public class UserModel implements Serializable {
-    public int id;
-    public String name;
-    public int sex;
+    private int id;
+    private String name;
+    private int sex;
 
-    public transient String _type;
+    private transient String _type;
 
-    public Date date = new Date();
+    private Date date = new Date();
 
-    public long[] aaa;
+    private long[] aaa;
+
 }

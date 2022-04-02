@@ -38,9 +38,9 @@ public class rockservice implements rockapi {
     @Override
     public UserModel test4() {
         UserModel m = new UserModel();
-        m.id = 1;
-        m.name = "user 1";
-        m.sex = 1;
+        m.setId(1);
+        m.setName("user 1");
+        m.setSex(1);
         return m;
     }
 
@@ -49,16 +49,16 @@ public class rockservice implements rockapi {
         List<UserModel> list =new ArrayList<>();
 
         UserModel m = new UserModel();
-        m.id = 1;
-        m.name = "user 1";
-        m.sex = 1;
+        m.setId(1);
+        m.setName("user 1");
+        m.setSex(1);
 
         list.add(m);
 
         m = new UserModel();
-        m.id = 2;
-        m.name = "user 2";
-        m.sex = 0;
+        m.setId(2);
+        m.setName("user 2");
+        m.setSex(0);
 
         list.add(m);
 

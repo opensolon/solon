@@ -17,8 +17,8 @@ public class CacheController4 {
     public UserModel cache() {
         UserModel u = new UserModel();
 
-        u.id = 12;
-        u.date = new Date();
+        u.setId(12);
+        u.setDate(new Date());
 
         return u;
     }

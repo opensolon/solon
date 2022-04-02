@@ -23,7 +23,7 @@ public class JsonController {
         if (userMap == null) {
             return null;
         } else {
-            return userMap.get("1").id;
+            return userMap.get("1").getId();
         }
     }
 
@@ -32,7 +32,7 @@ public class JsonController {
         if (userAry == null) {
             return null;
         } else {
-            return userAry.get(0).id;
+            return userAry.get(0).getId();
         }
     }
 
