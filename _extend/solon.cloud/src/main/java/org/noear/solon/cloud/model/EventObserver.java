@@ -15,12 +15,12 @@ import java.util.List;
  * @since 1.2
  */
 public class EventObserver implements CloudEventHandler {
-    static Logger log = LoggerFactory.getLogger(EventObserver.class);
+    private static Logger log = LoggerFactory.getLogger(EventObserver.class);
 
-    private EventLevel level;
-    private String group;
-    private String topic;
-    private List<CloudEventHandler> handlers;
+    private final EventLevel level;
+    private final String group;
+    private final String topic;
+    private final List<CloudEventHandler> handlers;
 
 
     public EventObserver(EventLevel level, String group, String topic) {
@@ -28,6 +28,18 @@ public class EventObserver implements CloudEventHandler {
         this.group = group;
         this.topic = topic;
         this.handlers = new ArrayList<>();
+    }
+
+    public EventLevel getLevel() {
+        return level;
+    }
+
+    public String getGroup() {
+        return group;
+    }
+
+    public String getTopic() {
+        return topic;
     }
 
     /**

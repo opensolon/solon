@@ -17,14 +17,14 @@ import java.util.Map;
  * @author noear
  * @since 1.5
  */
-public class CloudEventManagerImpl implements CloudEventManager{
+public class CloudEventManagerImpl implements CloudEventManager {
     Map<String, CloudEventServicePlus> route = new HashMap<>();
 
     /**
      * 注册事件服务
      *
      * @param service 事件服务
-     * */
+     */
     public void register(CloudEventServicePlus service) {
         if (service.getChannel() == null) {
             route.put("", service);
@@ -37,7 +37,7 @@ public class CloudEventManagerImpl implements CloudEventManager{
      * 获取事件服务
      *
      * @param channel 通道
-     * */
+     */
     public CloudEventServicePlus get(String channel) {
         if (channel == null) {
             channel = "";
@@ -50,7 +50,7 @@ public class CloudEventManagerImpl implements CloudEventManager{
      * 获取事件服务，如果没有则异常
      *
      * @param channel 通道
-     * */
+     */
     public CloudEventServicePlus getOrThrow(String channel) {
         CloudEventServicePlus tmp = get(channel);
 
@@ -69,7 +69,7 @@ public class CloudEventManagerImpl implements CloudEventManager{
      * 发布事件
      *
      * @param event 事件
-     * */
+     */
     @Override
     public boolean publish(Event event) throws CloudEventException {
         CloudEventServicePlus tmp = getOrThrow(event.channel());
@@ -84,12 +84,12 @@ public class CloudEventManagerImpl implements CloudEventManager{
     /**
      * 关注事件
      *
-     * @param level 级别
-     * @param channel 通道
-     * @param group 分组
-     * @param topic 主题
+     * @param level    级别
+     * @param channel  通道
+     * @param group    分组
+     * @param topic    主题
      * @param observer 观察者
-     * */
+     */
     @Override
     public void attention(EventLevel level, String channel, String group, String topic, CloudEventHandler observer) {
         CloudEventServicePlus tmp = getOrThrow(channel);
