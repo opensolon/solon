@@ -28,6 +28,7 @@
         <module>_release/solon-render-bundle</module>
         <module>_release/solon-extend-bundle</module>
 
+        
         <module>_release/hatch-bundle</module>
 
         <module>_test</module>
