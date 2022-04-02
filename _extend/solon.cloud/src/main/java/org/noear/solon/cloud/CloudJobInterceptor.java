@@ -1,6 +1,6 @@
 package org.noear.solon.cloud;
 
-import org.noear.solon.core.handle.Context;
+import org.noear.solon.cloud.model.Job;
 
 /**
  * 云工作拦截器
@@ -9,5 +9,5 @@ import org.noear.solon.core.handle.Context;
  * @since 1.6
  */
 public interface CloudJobInterceptor {
-    void doInterceptor(Context ctx, CloudJobHandler handler) throws Throwable;
+    void doInterceptor(Job job, CloudJobHandler handler) throws Throwable;
 }
