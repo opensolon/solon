@@ -49,9 +49,9 @@ public class CloudJobServiceWaterImp implements CloudJobService {
 
     @Override
     public boolean register(String name, String cron7x, String description, Handler handler) {
-        JobHolder handlerHolder = new JobHolder(name, cron7x, description, handler);
+        JobHolder jobHolder = new JobHolder(name, cron7x, description, handler);
 
-        jobMap.put(name, handlerHolder);
+        jobMap.put(name, jobHolder);
         TagsMDC.tag0("CloudJob");
         PrintUtil.warn("CloudJob", "Handler registered name:" + name + ", class:" + handler.getClass().getName());
         TagsMDC.tag0("");

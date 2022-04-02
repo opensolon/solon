@@ -14,9 +14,9 @@ public class CloudJobServiceImpl implements CloudJobService {
 
     @Override
     public boolean register(String name, String cron7x, String description, Handler handler) {
-        JobHolder handlerHolder = new JobHolder(name, cron7x, description, handler);
+        JobHolder jobHolder = new JobHolder(name, cron7x, description, handler);
 
-        XxlJobExecutor.registJobHandler(name, new CloudJobHanderProxy(handlerHolder));
+        XxlJobExecutor.registJobHandler(name, new IJobHandlerImpl(jobHolder));
         return true;
     }
 
