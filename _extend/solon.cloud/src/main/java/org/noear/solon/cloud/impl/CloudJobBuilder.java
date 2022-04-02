@@ -7,7 +7,6 @@ import org.noear.solon.cloud.CloudJobHandler;
 import org.noear.solon.cloud.annotation.CloudJob;
 import org.noear.solon.core.BeanBuilder;
 import org.noear.solon.core.BeanWrap;
-import org.noear.solon.core.handle.Handler;
 
 /**
  * @author noear
@@ -29,6 +28,8 @@ public class CloudJobBuilder implements BeanBuilder<CloudJob> {
             String description = Solon.cfg().getByParse(anno.description());
 
             CloudClient.job().register(name, anno.cron7x(), description, bw.raw());
+        } else {
+            throw new IllegalArgumentException("Illegal CloudJobHandler type: " + clz.getName());
         }
     }
 }
