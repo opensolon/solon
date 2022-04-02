@@ -1,6 +1,7 @@
 package org.noear.solon.cloud.model;
 
 import org.noear.solon.cloud.CloudEventHandler;
+import org.noear.solon.cloud.CloudManager;
 import org.noear.solon.cloud.annotation.EventLevel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,21 +45,21 @@ public class EventObserver implements CloudEventHandler {
 
     /**
      * 添加云事件处理
-     * */
+     */
     public void addHandler(CloudEventHandler handler) {
         handlers.add(handler);
     }
 
     /**
      * 处理
-     * */
+     */
     @Override
     public boolean handler(Event event) throws Throwable {
         boolean isOk = true;
         boolean isHandled = false;
 
         for (CloudEventHandler h1 : handlers) {
-            isOk = isOk && h1.handler(event); //两个都成功，才是成功
+            isOk = isOk && handlerDo(event, h1); //两个都成功，才是成功
             isHandled = true;
         }
 
@@ -68,5 +69,13 @@ public class EventObserver implements CloudEventHandler {
         }
 
         return isOk;
+    }
+
+    private boolean handlerDo(Event event, CloudEventHandler handler) throws Throwable {
+        if (CloudManager.eventInterceptor() == null) {
+            return handler.handler(event);
+        } else {
+            return CloudManager.eventInterceptor().doInterceptor(event, handler);
+        }
     }
 }
