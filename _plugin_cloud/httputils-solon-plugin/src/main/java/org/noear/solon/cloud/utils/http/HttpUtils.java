@@ -33,10 +33,18 @@ public class HttpUtils {
         return temp;
     };
 
-    private final static OkHttpClient httpClientDefault = new OkHttpClient.Builder()
-            .connectTimeout(10, TimeUnit.SECONDS)
+    private final static OkHttpClient httpShortClient = new OkHttpClient.Builder()
+            .connectTimeout(10 , TimeUnit.SECONDS)
             .writeTimeout(10, TimeUnit.SECONDS)
-            .readTimeout(60, TimeUnit.SECONDS)
+            .readTimeout(10, TimeUnit.SECONDS)
+            .dispatcher(httpClientDefaultDispatcher.get())
+            .build();
+
+    //用于跑定时任务调度
+    private final static OkHttpClient httpLongClient = new OkHttpClient.Builder()
+            .connectTimeout(30, TimeUnit.SECONDS)
+            .writeTimeout(60 * 5, TimeUnit.SECONDS)
+            .readTimeout(60 * 5, TimeUnit.SECONDS)
             .dispatcher(httpClientDefaultDispatcher.get())
             .build();
 
@@ -44,7 +52,7 @@ public class HttpUtils {
      * 构建一个 Http 请求工具
      */
     public static HttpUtils http(String url) {
-        return http(url, httpClientDefault);
+        return http(url, httpShortClient);
     }
 
     public static HttpUtils http(String url, OkHttpClient client) {
@@ -60,7 +68,7 @@ public class HttpUtils {
      * 构建一个 Http 请求工具
      */
     public static HttpUtils http(String service, String path) {
-        return http(service, path, httpClientDefault);
+        return http(service, path, httpShortClient);
     }
 
     public static HttpUtils http(String service, String path, OkHttpClient client) {
@@ -69,7 +77,7 @@ public class HttpUtils {
     }
 
     public static HttpUtils http(String group, String service, String path) {
-        return http(group, service, path, httpClientDefault);
+        return http(group, service, path, httpShortClient);
     }
 
     public static HttpUtils http(String group, String service, String path, OkHttpClient client) {
@@ -77,7 +85,9 @@ public class HttpUtils {
         return http(url, client);
     }
 
-    private final OkHttpClient _httpClient;
+
+
+    private OkHttpClient _client;
     private Charset _charset;
     private Map<String, String> _cookies;
     private RequestBody _body;
@@ -92,12 +102,28 @@ public class HttpUtils {
 
     public HttpUtils(OkHttpClient client, String url) {
         if (client == null) {
-            _httpClient = httpClientDefault;
+            _client = httpShortClient;
         } else {
-            _httpClient = client;
+            _client = client;
         }
 
         _builder = new Request.Builder().url(url);
+    }
+
+    /**
+     * 短时间处理
+     * */
+    public HttpUtils asShortHttp(){
+        _client = httpShortClient;
+        return this;
+    }
+
+    /**
+     * 长时间处理
+     * */
+    public HttpUtils asLongHttp(){
+        _client = httpLongClient;
+        return this;
     }
 
     //@XNote("设置multipart")
@@ -338,7 +364,7 @@ public class HttpUtils {
         }
 
         if (_callAsync) {
-            _httpClient.newCall(_builder.build()).enqueue(new Callback() {
+            _client.newCall(_builder.build()).enqueue(new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
                     e.printStackTrace();
@@ -355,7 +381,7 @@ public class HttpUtils {
 
             return null;
         } else {
-            Call call = _httpClient.newCall(_builder.build());
+            Call call = _client.newCall(_builder.build());
             return call.execute();
         }
     }
