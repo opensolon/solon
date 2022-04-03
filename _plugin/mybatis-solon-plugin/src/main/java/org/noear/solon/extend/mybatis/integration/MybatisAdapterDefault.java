@@ -52,7 +52,12 @@ public class MybatisAdapterDefault implements MybatisAdapter {
      */
     protected MybatisAdapterDefault(BeanWrap dsWrap, Props dsProps) {
         this.dsWrap = dsWrap;
-        this.dsProps = dsProps;
+        if (dsProps == null) {
+            this.dsProps = new Props();
+        } else {
+            this.dsProps = dsProps;
+        }
+
         this.factoryBuilder = new SqlSessionFactoryBuilder();
 
         DataSource dataSource = dsWrap.raw();
