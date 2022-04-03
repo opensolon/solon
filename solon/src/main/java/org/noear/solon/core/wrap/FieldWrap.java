@@ -58,6 +58,7 @@ public class FieldWrap {
         annoS = f1.getDeclaredAnnotations();
         readonly = isFinal;
 
+        field.setAccessible(true);
 
         Type tmp = f1.getGenericType();
         if (tmp instanceof TypeVariable) {
@@ -102,7 +103,6 @@ public class FieldWrap {
             }
         }
 
-        field.setAccessible(true);
         _setter = doFindSetter(clz, f1);
         _getter = dofindGetter(clz, f1);
     }
