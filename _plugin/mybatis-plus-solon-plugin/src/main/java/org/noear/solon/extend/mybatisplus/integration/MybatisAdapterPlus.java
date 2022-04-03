@@ -35,8 +35,8 @@ public class MybatisAdapterPlus extends MybatisAdapterDefault {
     /**
      * 构建Sql工厂适配器，使用属性配置
      */
-    protected MybatisAdapterPlus(BeanWrap dsWrap, Properties props) {
-        super(dsWrap, props);
+    protected MybatisAdapterPlus(BeanWrap dsWrap, Props dsProps) {
+        super(dsWrap, dsProps);
 
         this.factoryBuilderPlus = new MybatisSqlSessionFactoryBuilder();
 
