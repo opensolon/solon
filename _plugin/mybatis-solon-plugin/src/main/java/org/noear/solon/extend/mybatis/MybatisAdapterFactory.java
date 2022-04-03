@@ -1,6 +1,7 @@
 package org.noear.solon.extend.mybatis;
 
 import org.noear.solon.core.BeanWrap;
+import org.noear.solon.core.Props;
 
 import java.util.Properties;
 
@@ -12,5 +13,5 @@ import java.util.Properties;
  */
 public interface MybatisAdapterFactory {
     MybatisAdapter create(BeanWrap dsWrap);
-    MybatisAdapter create(BeanWrap dsWrap, Properties props);
+    MybatisAdapter create(BeanWrap dsWrap, Props dsProps);
 }

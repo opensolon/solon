@@ -50,9 +50,9 @@ public class MybatisAdapterDefault implements MybatisAdapter {
     /**
      * 构建Sql工厂适配器，使用属性配置
      */
-    protected MybatisAdapterDefault(BeanWrap dsWrap, Properties props) {
+    protected MybatisAdapterDefault(BeanWrap dsWrap, Props dsProps) {
         this.dsWrap = dsWrap;
-        this.dsProps = new Props(props);
+        this.dsProps = dsProps;
         this.factoryBuilder = new SqlSessionFactoryBuilder();
 
         DataSource dataSource = dsWrap.raw();
@@ -93,79 +93,77 @@ public class MybatisAdapterDefault implements MybatisAdapter {
     }
 
     private void init0() {
-        if (dsProps.size() > 0) {
-            //for configuration section
-            Props cfgProps = dsProps.getProp("configuration");
-            if(cfgProps.size() > 0) {
-                Utils.injectProperties(getConfiguration(), cfgProps);
-            }
+        //for configuration section
+        Props cfgProps = dsProps.getProp("configuration");
+        if (cfgProps.size() > 0) {
+            Utils.injectProperties(getConfiguration(), cfgProps);
+        }
 
-            //for typeAliases section
-            dsProps.forEach((k, v) -> {
-                if (k instanceof String && v instanceof String) {
-                    String key = (String) k;
-                    String valStr = (String) v;
+        //for typeAliases section
+        dsProps.forEach((k, v) -> {
+            if (k instanceof String && v instanceof String) {
+                String key = (String) k;
+                String valStr = (String) v;
 
-                    if (key.startsWith("typeAliases[") || key.equals("typeAliases")) {
-                        for (String val : valStr.split(",")) {
-                            val = val.trim();
-                            if (val.length() == 0) {
-                                continue;
+                if (key.startsWith("typeAliases[") || key.equals("typeAliases")) {
+                    for (String val : valStr.split(",")) {
+                        val = val.trim();
+                        if (val.length() == 0) {
+                            continue;
+                        }
+
+                        if (val.endsWith(".class")) {
+                            //type class
+                            Class<?> clz = Utils.loadClass(val.substring(0, val.length() - 6));
+                            if (clz != null) {
+                                getConfiguration().getTypeAliasRegistry().registerAlias(clz);
                             }
-
-                            if (val.endsWith(".class")) {
-                                //type class
-                                Class<?> clz = Utils.loadClass(val.substring(0, val.length() - 6));
-                                if (clz != null) {
-                                    getConfiguration().getTypeAliasRegistry().registerAlias(clz);
-                                }
-                            } else {
-                                //package
-                                getConfiguration().getTypeAliasRegistry().registerAliases(val);
-                            }
+                        } else {
+                            //package
+                            getConfiguration().getTypeAliasRegistry().registerAliases(val);
                         }
                     }
                 }
-            });
+            }
+        });
 
-            //支持包名和xml
-            //for mappers section
-            dsProps.forEach((k, v) -> {
-                if (k instanceof String && v instanceof String) {
-                    String key = (String) k;
-                    String valStr = (String) v;
+        //支持包名和xml
+        //for mappers section
+        dsProps.forEach((k, v) -> {
+            if (k instanceof String && v instanceof String) {
+                String key = (String) k;
+                String valStr = (String) v;
 
-                    if (key.startsWith("mappers[") || key.equals("mappers")) {
-                        for (String val : valStr.split(",")) {
-                            val = val.trim();
-                            if (val.length() == 0) {
-                                continue;
-                            }
+                if (key.startsWith("mappers[") || key.equals("mappers")) {
+                    for (String val : valStr.split(",")) {
+                        val = val.trim();
+                        if (val.length() == 0) {
+                            continue;
+                        }
 
-                            if (val.endsWith(".xml")) {
-                                //mapper xml
-                                addMappersByXml(val);
-                                mappers.add(val);
-                            } else if (val.endsWith(".class")) {
-                                //mapper class
-                                Class<?> clz = Utils.loadClass(val.substring(0, val.length() - 6));
-                                if (clz != null) {
-                                    getConfiguration().addMapper(clz);
-                                    mappers.add(val);
-                                }
-                            } else {
-                                //package
-                                getConfiguration().addMappers(val);
+                        if (val.endsWith(".xml")) {
+                            //mapper xml
+                            addMappersByXml(val);
+                            mappers.add(val);
+                        } else if (val.endsWith(".class")) {
+                            //mapper class
+                            Class<?> clz = Utils.loadClass(val.substring(0, val.length() - 6));
+                            if (clz != null) {
+                                getConfiguration().addMapper(clz);
                                 mappers.add(val);
                             }
+                        } else {
+                            //package
+                            getConfiguration().addMappers(val);
+                            mappers.add(val);
                         }
                     }
                 }
-            });
-
-            if (mappers.size() == 0) {
-                throw new RuntimeException("Please add the mappers configuration!");
             }
+        });
+
+        if (mappers.size() == 0) {
+            throw new RuntimeException("Please add the mappers configuration!");
         }
     }
 

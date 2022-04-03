@@ -1,6 +1,7 @@
 package org.noear.solon.extend.mybatisplus.integration;
 
 import org.noear.solon.core.BeanWrap;
+import org.noear.solon.core.Props;
 import org.noear.solon.extend.mybatis.MybatisAdapter;
 import org.noear.solon.extend.mybatis.MybatisAdapterFactory;
 
@@ -19,7 +20,7 @@ public class MybatisAdapterFactoryPlus implements MybatisAdapterFactory {
     }
 
     @Override
-    public MybatisAdapter create(BeanWrap dsWrap, Properties props) {
-        return new MybatisAdapterPlus(dsWrap, props);
+    public MybatisAdapter create(BeanWrap dsWrap, Props dsProps) {
+        return new MybatisAdapterPlus(dsWrap, dsProps);
     }
 }
