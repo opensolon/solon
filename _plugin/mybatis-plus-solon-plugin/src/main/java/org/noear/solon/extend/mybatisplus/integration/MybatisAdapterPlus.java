@@ -77,6 +77,13 @@ public class MybatisAdapterPlus extends MybatisAdapterDefault {
         return factory;
     }
 
+    /**
+     * 获取全局配置
+     * */
+    public GlobalConfig getGlobalConfig() {
+        return globalConfig;
+    }
+
     @Override
     public void injectTo(VarHolder varH) {
         super.injectTo(varH);
@@ -86,12 +93,5 @@ public class MybatisAdapterPlus extends MybatisAdapterDefault {
             varH.setValue(this.getGlobalConfig());
             return;
         }
-    }
-
-    /**
-     * 获取全局配置
-     * */
-    public GlobalConfig getGlobalConfig() {
-        return globalConfig;
     }
 }
