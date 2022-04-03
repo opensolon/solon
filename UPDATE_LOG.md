@@ -1,4 +1,4 @@
-#### 1.6.37-m1
+#### 1.6.37-m2
 * 插件 solon.extend.sessionstate.jwt 呼略 ServiceConfigurationError 抛出
 * 添加 CloudJobInterceptor，提供 job 的拦截机制 
 * 添加 CloudEventInterceptor，提供 event 的拦截机制
