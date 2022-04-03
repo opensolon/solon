@@ -33,7 +33,7 @@ import java.util.Properties;
  */
 public class MybatisAdapterDefault implements MybatisAdapter {
     protected final BeanWrap dsWrap;
-    protected final Props props;
+    protected final Props dsProps;
 
     protected Configuration config;
     protected SqlSessionFactory factory;
@@ -50,10 +50,10 @@ public class MybatisAdapterDefault implements MybatisAdapter {
     /**
      * 构建Sql工厂适配器，使用属性配置
      */
-    protected MybatisAdapterDefault(BeanWrap dsWrap, Properties properties) {
+    protected MybatisAdapterDefault(BeanWrap dsWrap, Properties props) {
         this.dsWrap = dsWrap;
+        this.dsProps = new Props(props);
         this.factoryBuilder = new SqlSessionFactoryBuilder();
-        this.props = new Props(properties);
 
         DataSource dataSource = dsWrap.raw();
         String dataSourceId = "ds-" + (dsWrap.name() == null ? "" : dsWrap.name());
@@ -81,7 +81,7 @@ public class MybatisAdapterDefault implements MybatisAdapter {
         EventBus.push(config);
 
         //2.初始化（顺序不能乱）
-        init0(props);
+        init0();
 
         Aop.getAsyn(SqlSessionFactoryBuilder.class, bw -> {
             factoryBuilder = bw.raw();
@@ -92,16 +92,16 @@ public class MybatisAdapterDefault implements MybatisAdapter {
         config = new Configuration(environment);
     }
 
-    private void init0(Props props) {
-        if (props != null) {
+    private void init0() {
+        if (dsProps.size() > 0) {
             //for configuration section
-            Props cfgProps = props.getProp("configuration");
+            Props cfgProps = dsProps.getProp("configuration");
             if(cfgProps.size() > 0) {
                 Utils.injectProperties(getConfiguration(), cfgProps);
             }
 
             //for typeAliases section
-            props.forEach((k, v) -> {
+            dsProps.forEach((k, v) -> {
                 if (k instanceof String && v instanceof String) {
                     String key = (String) k;
                     String valStr = (String) v;
@@ -130,7 +130,7 @@ public class MybatisAdapterDefault implements MybatisAdapter {
 
             //支持包名和xml
             //for mappers section
-            props.forEach((k, v) -> {
+            dsProps.forEach((k, v) -> {
                 if (k instanceof String && v instanceof String) {
                     String key = (String) k;
                     String valStr = (String) v;

@@ -62,7 +62,7 @@ public class MybatisAdapterPlus extends MybatisAdapterDefault {
             factory = factoryBuilderPlus.build(getConfiguration());
             globalConfig = GlobalConfigUtils.getGlobalConfig(getConfiguration());
 
-            Props globalProps = this.props.getProp("globalConfig");
+            Props globalProps = dsProps.getProp("globalConfig");
             if (globalProps.size() > 0) {
                 //尝试配置注入
                 Utils.injectProperties(globalConfig, globalProps);
