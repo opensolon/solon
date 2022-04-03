@@ -6,8 +6,8 @@ import com.baomidou.mybatisplus.core.config.GlobalConfig;
 import com.baomidou.mybatisplus.core.toolkit.GlobalConfigUtils;
 import org.apache.ibatis.mapping.Environment;
 import org.apache.ibatis.session.SqlSessionFactory;
-import org.noear.solon.core.Aop;
-import org.noear.solon.core.BeanWrap;
+import org.noear.solon.Utils;
+import org.noear.solon.core.*;
 import org.noear.solon.extend.mybatis.integration.MybatisAdapterDefault;
 import java.util.Properties;
 
@@ -61,9 +61,26 @@ public class MybatisAdapterPlus extends MybatisAdapterDefault {
         if (factory == null) {
             factory = factoryBuilderPlus.build(getConfiguration());
             globalConfig = GlobalConfigUtils.getGlobalConfig(getConfiguration());
+
+            Props globalProps = this.props.getProp("globalConfig");
+            if (globalProps.size() > 0) {
+                //尝试配置注入
+                Utils.injectProperties(globalConfig, globalProps);
+            }
         }
 
         return factory;
+    }
+
+    @Override
+    public void injectTo(VarHolder varH) {
+        super.injectTo(varH);
+
+        //@Db("db1") SqlSessionFactory factory;
+        if (GlobalConfig.class.isAssignableFrom(varH.getType())) {
+            varH.setValue(this.getGlobalConfig());
+            return;
+        }
     }
 
     /**

@@ -1,8 +1,6 @@
 package org.noear.solon.extend.mybatis.integration;
 
-import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.core.*;
@@ -61,30 +59,8 @@ public class XPluginImp implements Plugin {
     private void inject0(VarHolder varH, BeanWrap dsBw) {
         MybatisAdapter adapter = MybatisAdapterManager.get(dsBw);
 
-        //@Db("db1") SqlSessionFactory factory;
-        if (SqlSessionFactory.class.isAssignableFrom(varH.getType())) {
-            varH.setValue(adapter.getFactory());
-            return;
-        }
-
-        //@Db("db1") MybatisAdapter adapter;
-        if (MybatisAdapter.class.isAssignableFrom(varH.getType())) {
-            varH.setValue(adapter);
-            return;
-        }
-
-        //@Db("db1") Configuration cfg;
-        if (Configuration.class.isAssignableFrom(varH.getType())) {
-            varH.setValue(adapter.getConfiguration());
-            return;
-        }
-
-        //@Db("db1") UserMapper userMapper;
-        if (varH.getType().isInterface()) {
-            Object mapper = adapter.getMapperProxy(varH.getType());
-
-            varH.setValue(mapper);
-            return;
+        if (adapter != null) {
+            adapter.injectTo(varH);
         }
     }
 }

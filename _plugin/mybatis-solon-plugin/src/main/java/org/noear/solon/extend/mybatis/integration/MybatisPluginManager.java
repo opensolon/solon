@@ -13,7 +13,7 @@ import java.util.Map;
  * @author noear
  * @since 1.5
  */
-public class MybatisPlugins {
+public class MybatisPluginManager {
     private static List<Interceptor> interceptors;
 
     public static List<Interceptor> getInterceptors() {

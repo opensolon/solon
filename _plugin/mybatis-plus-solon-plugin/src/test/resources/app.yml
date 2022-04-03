@@ -14,3 +14,10 @@ mybatis:
   db1:
     mappers:
       - "demo.mappers"
+    configuration:
+      cacheEnabled: false
+      mapUnderscoreToCamelCase: true
+    globalConfig:
+      banner: false
+      dbConfig:
+        logicDeleteField: "deleted"

@@ -2,6 +2,7 @@ package org.noear.solon.extend.mybatis;
 
 import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.SqlSessionFactory;
+import org.noear.solon.core.VarHolder;
 import org.noear.solon.extend.mybatis.integration.MybatisMapperInterceptor;
 
 import java.lang.reflect.Proxy;
@@ -44,4 +45,9 @@ public interface MybatisAdapter {
                 new Class[]{mapperClz},
                 handler);
     }
+
+    /**
+     * 注入到
+     * */
+    void injectTo(VarHolder varH);
 }

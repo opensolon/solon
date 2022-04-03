@@ -14,6 +14,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.Props;
+import org.noear.solon.core.VarHolder;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.extend.mybatis.MybatisAdapter;
 import org.noear.solon.extend.mybatis.tran.SolonManagedTransactionFactory;
@@ -32,6 +33,7 @@ import java.util.Properties;
  */
 public class MybatisAdapterDefault implements MybatisAdapter {
     protected final BeanWrap dsWrap;
+    protected final Props props;
 
     protected Configuration config;
     protected SqlSessionFactory factory;
@@ -48,9 +50,10 @@ public class MybatisAdapterDefault implements MybatisAdapter {
     /**
      * 构建Sql工厂适配器，使用属性配置
      */
-    protected MybatisAdapterDefault(BeanWrap dsWrap, Properties props) {
+    protected MybatisAdapterDefault(BeanWrap dsWrap, Properties properties) {
         this.dsWrap = dsWrap;
         this.factoryBuilder = new SqlSessionFactoryBuilder();
+        this.props = new Props(properties);
 
         DataSource dataSource = dsWrap.raw();
         String dataSourceId = "ds-" + (dsWrap.name() == null ? "" : dsWrap.name());
@@ -61,7 +64,7 @@ public class MybatisAdapterDefault implements MybatisAdapter {
         initConfiguration(environment);
 
         //加载插件（通过配置）
-        for (Interceptor i : MybatisPlugins.getInterceptors()) {
+        for (Interceptor i : MybatisPluginManager.getInterceptors()) {
             config.addInterceptor(i);
         }
 
@@ -78,7 +81,7 @@ public class MybatisAdapterDefault implements MybatisAdapter {
         EventBus.push(config);
 
         //2.初始化（顺序不能乱）
-        init0(new Props(props));
+        init0(props);
 
         Aop.getAsyn(SqlSessionFactoryBuilder.class, bw -> {
             factoryBuilder = bw.raw();
@@ -184,6 +187,7 @@ public class MybatisAdapterDefault implements MybatisAdapter {
         }
     }
 
+
     /**
      * 获取配置器
      */
@@ -207,5 +211,34 @@ public class MybatisAdapterDefault implements MybatisAdapter {
     @Override
     public List<String> getMappers() {
         return mappers;
+    }
+
+    @Override
+    public void injectTo(VarHolder varH) {
+        //@Db("db1") MybatisAdapter adapter;
+        if (MybatisAdapter.class.isAssignableFrom(varH.getType())) {
+            varH.setValue(this);
+            return;
+        }
+
+        //@Db("db1") SqlSessionFactory factory;
+        if (SqlSessionFactory.class.isAssignableFrom(varH.getType())) {
+            varH.setValue(this.getFactory());
+            return;
+        }
+
+        //@Db("db1") Configuration cfg;
+        if (Configuration.class.isAssignableFrom(varH.getType())) {
+            varH.setValue(this.getConfiguration());
+            return;
+        }
+
+        //@Db("db1") UserMapper userMapper;
+        if (varH.getType().isInterface()) {
+            Object mapper = this.getMapperProxy(varH.getType());
+
+            varH.setValue(mapper);
+            return;
+        }
     }
 }
