@@ -9,7 +9,6 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.noear.solon.Utils;
 import org.noear.solon.core.*;
 import org.noear.solon.extend.mybatis.integration.MybatisAdapterDefault;
-import java.util.Properties;
 
 /**
  * 适配器 for mybatis-plus
@@ -45,6 +44,19 @@ public class MybatisAdapterPlus extends MybatisAdapterDefault {
         });
     }
 
+    @Override
+    protected void initDo() {
+        super.initDo();
+
+        globalConfig = GlobalConfigUtils.getGlobalConfig(getConfiguration());
+
+        Props globalProps = dsProps.getProp("globalConfig");
+        if (globalProps.size() > 0) {
+            //尝试配置注入
+            Utils.injectProperties(globalConfig, globalProps);
+        }
+    }
+
     /**
      * 初始化配置
      */
@@ -60,13 +72,6 @@ public class MybatisAdapterPlus extends MybatisAdapterDefault {
     public SqlSessionFactory getFactory() {
         if (factory == null) {
             factory = factoryBuilderPlus.build(getConfiguration());
-            globalConfig = GlobalConfigUtils.getGlobalConfig(getConfiguration());
-
-            Props globalProps = dsProps.getProp("globalConfig");
-            if (globalProps.size() > 0) {
-                //尝试配置注入
-                Utils.injectProperties(globalConfig, globalProps);
-            }
         }
 
         return factory;
@@ -87,10 +92,6 @@ public class MybatisAdapterPlus extends MybatisAdapterDefault {
      * 获取全局配置
      * */
     public GlobalConfig getGlobalConfig() {
-        if (globalConfig == null) {
-            getFactory();
-        }
-
         return globalConfig;
     }
 }

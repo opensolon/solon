@@ -23,7 +23,6 @@ import javax.sql.DataSource;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 
 /**
  * Mybatis 适配器默认实现
@@ -86,7 +85,7 @@ public class MybatisAdapterDefault implements MybatisAdapter {
         EventBus.push(config);
 
         //2.初始化（顺序不能乱）
-        init0();
+        initDo();
 
         Aop.getAsyn(SqlSessionFactoryBuilder.class, bw -> {
             factoryBuilder = bw.raw();
@@ -97,7 +96,7 @@ public class MybatisAdapterDefault implements MybatisAdapter {
         config = new Configuration(environment);
     }
 
-    private void init0() {
+    protected void initDo() {
         //for configuration section
         Props cfgProps = dsProps.getProp("configuration");
         if (cfgProps.size() > 0) {
