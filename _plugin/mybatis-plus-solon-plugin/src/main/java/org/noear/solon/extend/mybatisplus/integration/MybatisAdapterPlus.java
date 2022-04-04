@@ -55,6 +55,8 @@ public class MybatisAdapterPlus extends MybatisAdapterDefault {
             //尝试配置注入
             Utils.injectProperties(globalConfig, globalProps);
         }
+
+        GlobalConfigUtils.setGlobalConfig(getConfiguration(), globalConfig);
     }
 
     /**
