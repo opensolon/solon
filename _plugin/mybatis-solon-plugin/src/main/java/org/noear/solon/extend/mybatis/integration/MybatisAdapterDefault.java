@@ -94,15 +94,15 @@ public class MybatisAdapterDefault implements MybatisAdapter {
 
     protected void initConfiguration(Environment environment) {
         config = new Configuration(environment);
-    }
 
-    protected void initDo() {
         //for configuration section
         Props cfgProps = dsProps.getProp("configuration");
         if (cfgProps.size() > 0) {
-            Utils.injectProperties(getConfiguration(), cfgProps);
+            Utils.injectProperties(config, cfgProps);
         }
+    }
 
+    protected void initDo() {
         //for typeAliases section
         dsProps.forEach((k, v) -> {
             if (k instanceof String && v instanceof String) {

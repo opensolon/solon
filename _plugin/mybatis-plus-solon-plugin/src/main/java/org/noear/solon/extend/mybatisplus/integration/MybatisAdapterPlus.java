@@ -47,25 +47,30 @@ public class MybatisAdapterPlus extends MybatisAdapterDefault {
         });
     }
 
+    /**
+     * 初始化配置
+     */
     @Override
-    protected void initDo() {
-        super.initDo();
+    protected void initConfiguration(Environment environment) {
+        //for configuration section
+        config = new MybatisConfiguration(environment);
 
-        globalConfig = GlobalConfigUtils.getGlobalConfig(getConfiguration());
+        Props cfgProps = dsProps.getProp("configuration");
+        if (cfgProps.size() > 0) {
+            Utils.injectProperties(config, cfgProps);
+        }
+
+
+        //for globalConfig section
+        globalConfig = new GlobalConfig().setDbConfig(new GlobalConfig.DbConfig());
 
         Props globalProps = dsProps.getProp("globalConfig");
         if (globalProps.size() > 0) {
             //尝试配置注入
             Utils.injectProperties(globalConfig, globalProps);
         }
-    }
 
-    /**
-     * 初始化配置
-     */
-    @Override
-    protected void initConfiguration(Environment environment) {
-        config = new MybatisConfiguration(environment);
+        GlobalConfigUtils.setGlobalConfig(config, globalConfig);
     }
 
     /**
