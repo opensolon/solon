@@ -3,6 +3,9 @@ package org.noear.solon.extend.mybatisplus.integration;
 import com.baomidou.mybatisplus.core.MybatisConfiguration;
 import com.baomidou.mybatisplus.core.MybatisSqlSessionFactoryBuilder;
 import com.baomidou.mybatisplus.core.config.GlobalConfig;
+import com.baomidou.mybatisplus.core.incrementer.DefaultIdentifierGenerator;
+import com.baomidou.mybatisplus.core.injector.DefaultSqlInjector;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.toolkit.GlobalConfigUtils;
 import org.apache.ibatis.mapping.Environment;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -55,8 +58,6 @@ public class MybatisAdapterPlus extends MybatisAdapterDefault {
             //尝试配置注入
             Utils.injectProperties(globalConfig, globalProps);
         }
-
-        GlobalConfigUtils.setGlobalConfig(getConfiguration(), globalConfig);
     }
 
     /**
