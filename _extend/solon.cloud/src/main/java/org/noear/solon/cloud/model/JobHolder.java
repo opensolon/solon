@@ -54,7 +54,7 @@ public class JobHolder implements CloudJobHandler {
         if (CloudManager.jobInterceptor() == null) {
             handler.handle(ctx);
         } else {
-            CloudManager.jobInterceptor().doInterceptor(new Job(this, ctx), handler);
+            CloudManager.jobInterceptor().doInterceptor(new JobImpl(this, ctx), handler);
         }
     }
 }

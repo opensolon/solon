@@ -6,40 +6,21 @@ import org.noear.solon.core.handle.Context;
  * @author noear
  * @since 1.6
  */
-public class Job {
-    private final JobHolder holder;
-    private final Context context;
-
-    public Job(JobHolder holder, Context context) {
-        this.holder = holder;
-        this.context = context;
-    }
-
+public interface Job {
     /**
      * 获取任务
      */
-    public String getName() {
-        return holder.getName();
-    }
-
+    String getName();
     /**
      * 获取计划表达式
      */
-    public String getCron7x() {
-        return holder.getCron7x();
-    }
-
+    String getCron7x();
     /**
      * 获取描述
      */
-    public String getDescription() {
-        return holder.getDescription();
-    }
-
+    String getDescription();
     /**
      * 获取上下文
      */
-    public Context getContext() {
-        return context;
-    }
+    Context getContext();
 }

@@ -24,5 +24,7 @@ public class Test4App {
                 }
             });
         });
+
+        ;
     }
 }
