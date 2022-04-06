@@ -1,6 +1,7 @@
 #### 1.6.37
 * 添加 mybatis-plus-solon-plugin 对 globalConfig 的支持
 * 调整 CloudEventHandler:handler 更名为：handle
+* snack3 升级为：3.2.18
 
 #### 1.6.36
 * 插件 solon.extend.sessionstate.jwt 呼略 ServiceConfigurationError 抛出
