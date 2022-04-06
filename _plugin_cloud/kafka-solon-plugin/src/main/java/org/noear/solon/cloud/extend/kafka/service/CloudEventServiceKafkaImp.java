@@ -186,7 +186,7 @@ public class CloudEventServiceKafkaImp implements CloudEventServicePlus {
 
         handler = observerManger.get(event.topic());
         if (handler != null) {
-            isOk = handler.handler(event);
+            isOk = handler.handle(event);
         } else {
             //只需要记录一下
             log.warn("There is no observer for this event topic[{}]", event.topic());

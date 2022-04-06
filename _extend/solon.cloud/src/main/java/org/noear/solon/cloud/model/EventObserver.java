@@ -54,7 +54,7 @@ public class EventObserver implements CloudEventHandler {
      * 处理
      */
     @Override
-    public boolean handler(Event event) throws Throwable {
+    public boolean handle(Event event) throws Throwable {
         boolean isOk = true;
         boolean isHandled = false;
 
@@ -73,7 +73,7 @@ public class EventObserver implements CloudEventHandler {
 
     private boolean handlerDo(Event event, CloudEventHandler handler) throws Throwable {
         if (CloudManager.eventInterceptor() == null) {
-            return handler.handler(event);
+            return handler.handle(event);
         } else {
             return CloudManager.eventInterceptor().doInterceptor(event, handler);
         }

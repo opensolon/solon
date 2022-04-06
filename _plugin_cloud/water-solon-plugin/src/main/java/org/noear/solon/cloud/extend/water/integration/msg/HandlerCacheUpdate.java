@@ -24,7 +24,7 @@ public class HandlerCacheUpdate implements CloudEventHandler {
     }
 
     @Override
-    public boolean handler(Event event) {
+    public boolean handle(Event event) {
         String[] tagKeyAry = event.content().split(";");
 
         for (String tagKey : tagKeyAry) {

@@ -15,5 +15,5 @@ public interface CloudEventHandler {
      *
      * @param event 事件
      * */
-    boolean handler(Event event) throws Throwable;
+    boolean handle(Event event) throws Throwable;
 }

@@ -57,7 +57,7 @@ class MqttCallbackImp implements MqttCallback {
             CloudEventHandler handler = observerManger.get(topic);
 
             if (handler != null) {
-                handler.handler(event);
+                handler.handle(event);
             } else {
                 //只需要记录一下
                 log.warn("There is no observer for this event topic[{}]", event.topic());

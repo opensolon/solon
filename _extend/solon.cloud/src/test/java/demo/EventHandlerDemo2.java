@@ -10,7 +10,7 @@ import org.noear.solon.cloud.model.Event;
 @CloudEvent("demo.user.created")
 public class EventHandlerDemo2 implements CloudEventHandler {
     @Override
-    public boolean handler(Event event) throws Throwable {
+    public boolean handle(Event event) throws Throwable {
         //与移动合作，送100块充值卡
         return true;
     }

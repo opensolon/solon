@@ -1,5 +1,6 @@
 #### 1.6.37
 * 添加 mybatis-plus-solon-plugin 对 globalConfig 的支持
+* 调整 CloudEventHandler:handler 更名为：handle
 
 #### 1.6.36
 * 插件 solon.extend.sessionstate.jwt 呼略 ServiceConfigurationError 抛出

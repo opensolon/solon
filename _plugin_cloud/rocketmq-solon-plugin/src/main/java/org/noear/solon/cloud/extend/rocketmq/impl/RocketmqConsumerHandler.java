@@ -79,7 +79,7 @@ public class RocketmqConsumerHandler implements MessageListenerConcurrently {
 
         handler = observerManger.get(topicNew);
         if (handler != null) {
-            isOk = handler.handler(event);
+            isOk = handler.handle(event);
         }else{
             //只需要记录一下
             log.warn("There is no observer for this event topic[{}]", topicNew);
