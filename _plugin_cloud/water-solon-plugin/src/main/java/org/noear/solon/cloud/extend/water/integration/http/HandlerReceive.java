@@ -43,7 +43,7 @@ public class HandlerReceive implements Handler, MessageHandler {
     }
 
     @Override
-    public boolean handler(MessageM msg) throws Throwable {
+    public boolean handle(MessageM msg) throws Throwable {
         Event event = null;
         if (msg.topic.contains(WaterProps.GROUP_TOPIC_SPLIT_MART)) {
             String[] groupAndTopic = msg.topic.split(WaterProps.GROUP_TOPIC_SPLIT_MART);

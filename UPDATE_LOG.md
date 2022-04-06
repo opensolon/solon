@@ -1,4 +1,4 @@
-#### 1.6.37
+#### 1.7.0
 * 添加 mybatis-plus-solon-plugin 对 globalConfig 的支持
 * 调整 CloudEventHandler:handler 更名为：handle
 * snack3 升级为：3.2.18
