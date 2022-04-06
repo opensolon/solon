@@ -15,37 +15,55 @@ public class XPluginImp implements Plugin {
 
         app.onEvent(BeanWrap.class, new DsEventListener());
 
-        Aop.context().beanBuilderAdd(Db.class, (clz, wrap, anno) -> {
-            if (clz.isInterface() == false) {
-                return;
-            }
+        //for @Deprecated
+        Aop.context().beanBuilderAdd(org.apache.ibatis.ext.solon.Db.class, (clz, wrap, anno) -> {
+            builderAddDo(clz, wrap,anno.value());
+        });
 
-            if (Utils.isEmpty(anno.value())) {
-                Aop.getAsyn(DataSource.class, (dsBw) -> {
+        Aop.context().beanInjectorAdd(org.apache.ibatis.ext.solon.Db.class, (varH, anno) -> {
+            injectorAddDo(varH, anno.value());
+        });
+
+        //for new
+        Aop.context().beanBuilderAdd(org.apache.ibatis.solon.annotation.Db.class, (clz, wrap, anno) -> {
+            builderAddDo(clz, wrap,anno.value());
+        });
+
+        Aop.context().beanInjectorAdd(org.apache.ibatis.solon.annotation.Db.class, (varH, anno) -> {
+            injectorAddDo(varH, anno.value());
+        });
+    }
+
+    private void builderAddDo(Class<?> clz,BeanWrap wrap, String annoValue) {
+        if (clz.isInterface() == false) {
+            return;
+        }
+
+        if (Utils.isEmpty(annoValue)) {
+            Aop.getAsyn(DataSource.class, (dsBw) -> {
+                create0(clz, dsBw);
+            });
+        } else {
+            Aop.getAsyn(annoValue, (dsBw) -> {
+                if (dsBw.raw() instanceof DataSource) {
                     create0(clz, dsBw);
-                });
-            } else {
-                Aop.getAsyn(anno.value(), (dsBw) -> {
-                    if (dsBw.raw() instanceof DataSource) {
-                        create0(clz, dsBw);
-                    }
-                });
-            }
-        });
+                }
+            });
+        }
+    }
 
-        Aop.context().beanInjectorAdd(Db.class, (varH, anno) -> {
-            if (Utils.isEmpty(anno.value())) {
-                Aop.getAsyn(DataSource.class, (dsBw) -> {
+    private void injectorAddDo(VarHolder varH, String annoValue) {
+        if (Utils.isEmpty(annoValue)) {
+            Aop.getAsyn(DataSource.class, (dsBw) -> {
+                inject0(varH, dsBw);
+            });
+        } else {
+            Aop.getAsyn(annoValue, (dsBw) -> {
+                if (dsBw.raw() instanceof DataSource) {
                     inject0(varH, dsBw);
-                });
-            } else {
-                Aop.getAsyn(anno.value(), (dsBw) -> {
-                    if (dsBw.raw() instanceof DataSource) {
-                        inject0(varH, dsBw);
-                    }
-                });
-            }
-        });
+                }
+            });
+        }
     }
 
 
