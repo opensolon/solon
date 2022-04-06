@@ -1,7 +1,6 @@
 package org.noear.solon.extend.beetlsql;
 
 import org.beetl.sql.core.SQLManager;
-import org.beetl.sql.ext.solon.Db;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.core.Aop;
@@ -23,37 +22,26 @@ public class XPluginImp implements Plugin {
         //监听事件
         app.onEvent(BeanWrap.class, new DsEventListener());
 
-        Aop.context().beanBuilderAdd(Db.class, (clz, wrap, anno) -> {
-            if (clz.isInterface() == false) {
-                return;
-            }
-
-            if (Utils.isEmpty(anno.value())) {
-                Aop.getAsyn(DataSource.class, (dsBw) -> {
-                    create0(clz, dsBw);
-                });
-            } else {
-                Aop.getAsyn(anno.value(), (dsBw) -> {
-                    if (dsBw.raw() instanceof DataSource) {
-                        create0(clz, dsBw);
-                    }
-                });
-            }
+        //for @Deprecated
+        Aop.context().beanBuilderAdd(org.beetl.sql.ext.solon.Db.class, (clz, wrap, anno) -> {
+            builderAddDo(clz, wrap, anno.value());
         });
 
-        Aop.context().beanInjectorAdd(Db.class, (varH, anno) -> {
-            if (Utils.isEmpty(anno.value())) {
-                Aop.getAsyn(DataSource.class, (dsBw) -> {
-                    inject0(anno, varH, dsBw);
-                });
-            } else {
-                Aop.getAsyn(anno.value(), (dsBw) -> {
-                    if (dsBw.raw() instanceof DataSource) {
-                        inject0(anno, varH, dsBw);
-                    }
-                });
-            }
+        Aop.context().beanInjectorAdd(org.beetl.sql.ext.solon.Db.class, (varH, anno) -> {
+            injectorAddDo(varH, anno.value());
         });
+
+
+        //for new
+        Aop.context().beanBuilderAdd(org.beetl.sql.solon.annotation.Db.class, (clz, wrap, anno) -> {
+            builderAddDo(clz, wrap, anno.value());
+        });
+
+        Aop.context().beanInjectorAdd(org.beetl.sql.solon.annotation.Db.class, (varH, anno) -> {
+            injectorAddDo(varH, anno.value());
+        });
+
+
 
         //初始化管理器（主要为了生成动态管理器）
         //
@@ -70,6 +58,38 @@ public class XPluginImp implements Plugin {
         });
     }
 
+    private void builderAddDo(Class<?> clz, BeanWrap wrap, String annoValue) {
+        if (clz.isInterface() == false) {
+            return;
+        }
+
+        if (Utils.isEmpty(annoValue)) {
+            Aop.getAsyn(DataSource.class, (dsBw) -> {
+                create0(clz, dsBw);
+            });
+        } else {
+            Aop.getAsyn(annoValue, (dsBw) -> {
+                if (dsBw.raw() instanceof DataSource) {
+                    create0(clz, dsBw);
+                }
+            });
+        }
+    }
+
+    private void injectorAddDo(VarHolder varH, String annoValue) {
+        if (Utils.isEmpty(annoValue)) {
+            Aop.getAsyn(DataSource.class, (dsBw) -> {
+                inject0(varH, dsBw, annoValue);
+            });
+        } else {
+            Aop.getAsyn(annoValue, (dsBw) -> {
+                if (dsBw.raw() instanceof DataSource) {
+                    inject0(varH, dsBw, annoValue);
+                }
+            });
+        }
+    }
+
     private void create0(Class<?> clz, BeanWrap dsBw) {
         Object raw = DbManager.global().get(dsBw).getMapper(clz);
 
@@ -81,7 +101,7 @@ public class XPluginImp implements Plugin {
     /**
      * 字段注入
      */
-    private void inject0(Db anno, VarHolder varH, BeanWrap dsBw) {
+    private void inject0(VarHolder varH, BeanWrap dsBw, String annoValue) {
         SQLManager tmp = DbManager.global().get(dsBw);
 
         if (varH.getType().isInterface()) {
@@ -92,7 +112,7 @@ public class XPluginImp implements Plugin {
         }
 
         if (SQLManager.class.isAssignableFrom(varH.getType())) {
-            if (Utils.isNotEmpty(anno.value())) {
+            if (Utils.isNotEmpty(annoValue)) {
                 varH.setValue(tmp);
             } else {
                 Aop.getAsyn(SQLManager.class, (bw2) -> {

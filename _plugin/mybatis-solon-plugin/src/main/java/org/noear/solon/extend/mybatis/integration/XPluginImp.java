@@ -34,7 +34,7 @@ public class XPluginImp implements Plugin {
         });
     }
 
-    private void builderAddDo(Class<?> clz,BeanWrap wrap, String annoValue) {
+    private void builderAddDo(Class<?> clz, BeanWrap wrap, String annoValue) {
         if (clz.isInterface() == false) {
             return;
         }
