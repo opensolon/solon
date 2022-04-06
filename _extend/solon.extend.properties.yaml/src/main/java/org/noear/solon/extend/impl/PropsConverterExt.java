@@ -1,6 +1,7 @@
 package org.noear.solon.extend.impl;
 
 import org.noear.snack.ONode;
+import org.noear.snack.core.Feature;
 import org.noear.solon.core.PropsConverter;
 
 import java.lang.reflect.Constructor;
@@ -24,9 +25,9 @@ public class PropsConverterExt extends PropsConverter {
 
             }
 
-            return ONode.loadObj(props).toObject(targetClz);
+            return ONode.loadObj(props, Feature.UseSetter).toObject(targetClz);
         } else {
-            return ONode.loadObj(props).bindTo(target);
+            return ONode.loadObj(props, Feature.UseSetter).bindTo(target);
         }
     }
 }
