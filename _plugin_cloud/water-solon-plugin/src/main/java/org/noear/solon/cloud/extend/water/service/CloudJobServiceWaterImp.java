@@ -41,7 +41,7 @@ public class CloudJobServiceWaterImp implements CloudJobService {
         });
 
         try {
-            WaterClient.job.register(Solon.cfg().appGroup(), Solon.cfg().appName(), jobs);
+            WaterClient.Job.register(Solon.cfg().appGroup(), Solon.cfg().appName(), jobs);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
