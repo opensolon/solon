@@ -13,5 +13,5 @@ public interface CloudEventHandlerPlus<T extends CloudEventEntity> {
      *
      * @param event 事件
      * */
-    boolean handler(T event) throws Throwable;
+    boolean handle(T event) throws Throwable;
 }

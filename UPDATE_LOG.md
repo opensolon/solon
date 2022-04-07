@@ -1,9 +1,11 @@
 #### 1.7.1
-* 调整 CloudConfigHandler:handler 更名为：handle
-* 调整 CloudDiscoveryHandler:handler 更名为：handle
-* 调整 CloudEventHandler:handler 更名为：handle
-* 调整 CloudEventInterceptor:doInterceptor 更名为：doIntercept
-* 调整 CloudJobInterceptor:doInterceptor 更名为：doIntercept
+* 函数名 handler 更名为：handle
+  * 调整 CloudConfigHandler:handler 更名为：handle
+  * 调整 CloudDiscoveryHandler:handler 更名为：handle
+  * 调整 CloudEventHandler:handler 更名为：handle
+* 函数名 doInterceptor 更名为：doIntercept
+  * 调整 CloudEventInterceptor:doInterceptor 更名为：doIntercept
+  * 调整 CloudJobInterceptor:doInterceptor 更名为：doIntercept
 * water 升级为：2.6.0
 
 

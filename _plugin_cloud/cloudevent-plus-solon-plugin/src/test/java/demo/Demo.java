@@ -19,7 +19,7 @@ public class Demo {
     @CloudEventSubscribe
     public class UserCreatedEventHandler implements CloudEventHandlerPlus<UserCreatedEvent> {
         @Override
-        public boolean handler(UserCreatedEvent event) throws Throwable {
+        public boolean handle(UserCreatedEvent event) throws Throwable {
             //业务处理
             return false;
         }

@@ -25,7 +25,7 @@ import org.noear.solon.cloud.model.Event;
  *
  * //订阅事件
  * public class UserCreatedEventHandler implements CloudEventEntityHandler<UserCreatedEvent>{
- *     public boolean handler(UserCreatedEvent event) throws Throwable{
+ *     public boolean handle(UserCreatedEvent event) throws Throwable{
  *         //
  *         return true;
  *     }
