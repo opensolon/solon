@@ -23,6 +23,6 @@ public class CloudEventHandlerProxy implements CloudEventHandler {
     @Override
     public boolean handle(Event event) throws Throwable {
         CloudEventEntity eventEntity = ONode.deserialize(event.content(), entityClz);
-        return entityHandler.handler(eventEntity);
+        return entityHandler.handle(eventEntity);
     }
 }

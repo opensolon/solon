@@ -7,6 +7,8 @@
   * 调整 CloudEventInterceptor:doInterceptor 更名为：doIntercept
   * 调整 CloudJobInterceptor:doInterceptor 更名为：doIntercept
 * water 升级为：2.6.0
+  * 添加 ak/sk 适配
+  * 添加 多语言 适配
 
 
 #### 1.7.0
