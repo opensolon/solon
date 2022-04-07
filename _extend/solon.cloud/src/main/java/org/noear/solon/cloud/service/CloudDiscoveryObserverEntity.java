@@ -22,9 +22,9 @@ public class CloudDiscoveryObserverEntity implements CloudDiscoveryHandler {
     }
 
     @Override
-    public void handler(Discovery discovery) {
+    public void handle(Discovery discovery) {
         try {
-            handler.handler(discovery);
+            handler.handle(discovery);
         } catch (Throwable ex) {
             EventBus.push(ex);
         }

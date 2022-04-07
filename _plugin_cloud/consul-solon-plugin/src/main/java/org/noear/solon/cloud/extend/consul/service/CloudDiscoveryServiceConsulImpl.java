@@ -213,7 +213,7 @@ public class CloudDiscoveryServiceConsulImpl extends TimerTask implements CloudD
             CloudDiscoveryObserverEntity entity = kv.getValue();
             Discovery tmp = discoveryMap.get(entity.service);
             if (tmp != null) {
-                entity.handler(tmp);
+                entity.handle(tmp);
             }
         }
     }

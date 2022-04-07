@@ -10,7 +10,7 @@ import org.noear.solon.cloud.model.Config;
 @CloudConfig("test/app2")
 public class ConfigHandlerTest implements CloudConfigHandler {
     @Override
-    public void handler(Config config) {
+    public void handle(Config config) {
         System.out.println(config.value());
     }
 }

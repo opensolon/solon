@@ -22,9 +22,9 @@ public class CloudConfigObserverEntity implements CloudConfigHandler {
     }
 
     @Override
-    public void handler(Config config) {
+    public void handle(Config config) {
         try {
-            handler.handler(config);
+            handler.handle(config);
         } catch (Throwable ex) {
             EventBus.push(ex);
         }

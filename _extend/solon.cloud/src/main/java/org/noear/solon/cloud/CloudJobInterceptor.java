@@ -9,5 +9,5 @@ import org.noear.solon.cloud.model.Job;
  * @since 1.6
  */
 public interface CloudJobInterceptor {
-    void doInterceptor(Job job, CloudJobHandler handler) throws Throwable;
+    void doIntercept(Job job, CloudJobHandler handler) throws Throwable;
 }

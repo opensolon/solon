@@ -4,14 +4,11 @@ import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudConfigHandler;
 import org.noear.solon.cloud.CloudProps;
-import org.noear.solon.cloud.extend.zookeeper.ZkProps;
 import org.noear.solon.cloud.extend.zookeeper.impl.ZkClient;
 import org.noear.solon.cloud.model.Config;
 import org.noear.solon.cloud.service.CloudConfigObserverEntity;
 import org.noear.solon.cloud.service.CloudConfigService;
 
-import java.io.Closeable;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -89,7 +86,7 @@ public class CloudConfigServiceZkImp implements CloudConfigService {
         observerMap.put(observer, entity);
 
         client.watchNodeData(String.format("%s/%s/%s", PATH_ROOT, group, key), event -> {
-            entity.handler(pull(entity.group, entity.key));
+            entity.handle(pull(entity.group, entity.key));
         });
     }
 

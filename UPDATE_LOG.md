@@ -1,13 +1,14 @@
 #### 1.7.1
+* 调整 CloudConfigHandler:handler 更名为：handle
+* 调整 CloudDiscoveryHandler:handler 更名为：handle
 * 调整 CloudEventHandler:handler 更名为：handle
-* 调整 CloudEventHandler:handler 更名为：handle
-* 调整 CloudEventHandler:handler 更名为：handle
-* water 升级为：2.5.10
+* 调整 CloudEventInterceptor:doInterceptor 更名为：doIntercept
+* 调整 CloudJobInterceptor:doInterceptor 更名为：doIntercept
+* water 升级为：2.6.0
 
 
 #### 1.7.0
 * 添加 mybatis-plus-solon-plugin 对 globalConfig 的配置支持
-* 调整 CloudEventHandler:handler 更名为：handle
 * snack3 升级为：3.2.18
 * water 升级为：2.5.10
 

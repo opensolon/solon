@@ -154,7 +154,7 @@ public class CloudDiscoveryServiceWaterImp extends TimerTask implements CloudDis
 
             observerMap.forEach((k, v) -> {
                 if (service.equals(v.service)) {
-                    v.handler(discovery);
+                    v.handle(discovery);
                 }
             });
         }

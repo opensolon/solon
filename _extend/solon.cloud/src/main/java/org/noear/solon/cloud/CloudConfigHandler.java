@@ -10,5 +10,5 @@ import org.noear.solon.cloud.model.Config;
  */
 @FunctionalInterface
 public interface CloudConfigHandler {
-    void handler(Config config);
+    void handle(Config config);
 }

@@ -75,7 +75,7 @@ public class EventObserver implements CloudEventHandler {
         if (CloudManager.eventInterceptor() == null) {
             return handler.handle(event);
         } else {
-            return CloudManager.eventInterceptor().doInterceptor(event, handler);
+            return CloudManager.eventInterceptor().doIntercept(event, handler);
         }
     }
 }

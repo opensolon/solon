@@ -9,5 +9,5 @@ import org.noear.solon.cloud.model.Discovery;
  * @since 1.2
  */
 public interface CloudDiscoveryHandler {
-    void handler(Discovery discovery);
+    void handle(Discovery discovery);
 }

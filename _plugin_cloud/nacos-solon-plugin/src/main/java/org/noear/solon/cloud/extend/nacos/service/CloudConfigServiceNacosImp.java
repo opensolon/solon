@@ -134,7 +134,7 @@ public class CloudConfigServiceNacosImp implements CloudConfigService {
 
                 @Override
                 public void receiveConfigInfo(String value) {
-                    entity.handler(new Config(entity.group, entity.key, value, 0));
+                    entity.handle(new Config(entity.group, entity.key, value, 0));
                 }
             });
         } catch (NacosException ex) {

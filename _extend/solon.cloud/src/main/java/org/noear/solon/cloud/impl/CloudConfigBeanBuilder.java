@@ -9,7 +9,6 @@ import org.noear.solon.cloud.annotation.CloudConfig;
 import org.noear.solon.cloud.model.Config;
 import org.noear.solon.core.BeanBuilder;
 import org.noear.solon.core.BeanWrap;
-import org.noear.solon.core.wrap.ClassWrap;
 
 import java.util.Properties;
 
@@ -46,7 +45,7 @@ public class CloudConfigBeanBuilder implements BeanBuilder<CloudConfig> {
 
             Config config = CloudClient.config().pull(group, name);
             if (config != null) {
-                handler.handler(config);
+                handler.handle(config);
             }
 
             //关注配置

@@ -176,13 +176,13 @@ public class CloudDiscoveryServiceNacosImp implements CloudDiscoveryService {
             if (TextUtils.isEmpty(group)) {
                 real.subscribe(service, (event) -> {
                     Discovery discovery = find(entity.group, service);
-                    entity.handler(discovery);
+                    entity.handle(discovery);
                 });
 
             } else {
                 real.subscribe(service, group, (event) -> {
                     Discovery discovery = find(entity.group, service);
-                    entity.handler(discovery);
+                    entity.handle(discovery);
                 });
 
             }

@@ -175,7 +175,7 @@ public class CloudConfigServiceConsulImpl extends TimerTask implements CloudConf
         for (Config cfg2 : cfgTmp.values()) {
             observerMap.forEach((k, v) -> {
                 if (cfg2.group().equals(v.group) && cfg2.key().equals(v.key)) {
-                    v.handler(cfg2);
+                    v.handle(cfg2);
                 }
             });
         }

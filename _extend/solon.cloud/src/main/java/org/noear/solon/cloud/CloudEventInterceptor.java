@@ -9,5 +9,5 @@ import org.noear.solon.cloud.model.Event;
  * @since 1.6
  */
 public interface CloudEventInterceptor {
-    boolean doInterceptor(Event event, CloudEventHandler handler) throws Throwable;
+    boolean doIntercept(Event event, CloudEventHandler handler) throws Throwable;
 }

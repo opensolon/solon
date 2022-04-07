@@ -64,7 +64,7 @@ public class CloudConfigServiceWaterImp extends TimerTask implements CloudConfig
                     ConfigM cfg = WaterClient.Config.get(v.group, v.key);
 
                     onUpdateDo(v.group, v.key, cfg, cfg2 -> {
-                        v.handler(cfg2);
+                        v.handle(cfg2);
                     });
                 });
             } catch (Throwable ex) {
@@ -153,7 +153,7 @@ public class CloudConfigServiceWaterImp extends TimerTask implements CloudConfig
         onUpdateDo(group, key, cfg, (cfg2) -> {
             observerMap.forEach((k, v) -> {
                 if (group.equals(v.group) && key.equals(v.key)) {
-                    v.handler(cfg2);
+                    v.handle(cfg2);
                 }
             });
         });

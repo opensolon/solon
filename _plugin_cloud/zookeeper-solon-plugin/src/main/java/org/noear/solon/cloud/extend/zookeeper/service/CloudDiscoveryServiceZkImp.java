@@ -12,7 +12,6 @@ import org.noear.solon.cloud.service.CloudDiscoveryObserverEntity;
 import org.noear.solon.cloud.service.CloudDiscoveryService;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author noear
@@ -102,7 +101,7 @@ public class CloudDiscoveryServiceZkImp implements CloudDiscoveryService {
 
         client.watchChildrenNode(String.format("%s/%s/%s", PATH_ROOT, group, service), (event) -> {
             Discovery discovery = find(entity.group, service);
-            entity.handler(discovery);
+            entity.handle(discovery);
         });
     }
 
