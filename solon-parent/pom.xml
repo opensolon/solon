@@ -735,6 +735,12 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>hasordb-solon-plugin</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>solon-springboot-starter</artifactId>
                 <version>${solon.ver}</version>
             </dependency>

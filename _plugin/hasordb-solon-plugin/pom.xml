@@ -11,17 +11,17 @@
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>hasor-db-solon-plugin</artifactId>
+    <artifactId>hasordb-solon-plugin</artifactId>
     <packaging>jar</packaging>
 
     <properties>
-        <hasor.ver>4.3.1</hasor.ver>
+        <hasor.ver>4.3.2</hasor.ver>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon</artifactId>
+            <artifactId>solon.data</artifactId>
         </dependency>
 
         <dependency>
