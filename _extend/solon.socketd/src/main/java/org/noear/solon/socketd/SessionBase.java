@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.BiConsumer;
 
@@ -188,8 +189,9 @@ public abstract class SessionBase implements Session {
         try {
             //等待响应
             return request.get(timeout, TimeUnit.SECONDS);
-        } catch (Exception ex) {
-            throw new RuntimeException(ex);
+        } catch (Exception e) {
+            RequestManager.remove(message.key());
+            throw new RuntimeException(e);
         }
     }
 
