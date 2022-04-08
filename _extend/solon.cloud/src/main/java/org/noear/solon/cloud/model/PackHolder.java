@@ -8,14 +8,14 @@ import java.util.Locale;
  */
 public class PackHolder {
     private final String group;
-    private final String bundleName;
+    private final String packName;
     private final Locale locale;
     private final String lang;
     private final Pack pack;
 
-    public PackHolder(String group, String bundleName, Locale locale) {
+    public PackHolder(String group, String packName, Locale locale) {
         this.group = group;
-        this.bundleName = bundleName;
+        this.packName = packName;
         this.locale = locale;
         this.lang = locale.toString();
         this.pack = new Pack();
@@ -25,8 +25,8 @@ public class PackHolder {
         return group;
     }
 
-    public String getBundleName() {
-        return bundleName;
+    public String getPackName() {
+        return packName;
     }
 
     public Locale getLocale() {

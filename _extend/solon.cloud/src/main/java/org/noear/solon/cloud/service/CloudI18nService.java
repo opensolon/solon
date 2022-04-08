@@ -12,11 +12,11 @@ import java.util.Locale;
  */
 public interface CloudI18nService {
     /**
-     * 拉取配置
+     * 拉取语言包
      *
-     * @param group      分组
-     * @param bundleName 包名
-     * @param locale     地区
+     * @param group    分组
+     * @param packName 包名
+     * @param locale   地区
      */
-    Pack pull(String group, String bundleName, Locale locale);
+    Pack pull(String group, String packName, Locale locale);
 }

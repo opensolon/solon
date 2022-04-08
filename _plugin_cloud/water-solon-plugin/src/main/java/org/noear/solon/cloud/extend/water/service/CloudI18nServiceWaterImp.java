@@ -29,8 +29,8 @@ public class CloudI18nServiceWaterImp implements CloudI18nService {
         }
     }
 
-    public PackHolder pullDo(String group, String bundleName, Locale locale) throws IOException {
-        String packKey = String.format("%s:%s:%s", group, bundleName, locale.toString());
+    public PackHolder pullDo(String group, String packName, Locale locale) throws IOException {
+        String packKey = String.format("%s:%s:%s", group, packName, locale.toString());
 
         PackHolder packHolder = packHolderMap.get(packKey);
 
@@ -39,8 +39,8 @@ public class CloudI18nServiceWaterImp implements CloudI18nService {
                 packHolder = packHolderMap.get(packKey);
 
                 if (packHolder == null) {
-                    packHolder = new PackHolder(group, bundleName, locale);
-                    Map<String, String> data = WaterClient.I18n.getI18n(group, bundleName, packHolder.getLang());
+                    packHolder = new PackHolder(group, packName, locale);
+                    Map<String, String> data = WaterClient.I18n.getI18n(group, packName, packHolder.getLang());
                     packHolder.getPack().setData(data);
                 }
 
@@ -51,13 +51,14 @@ public class CloudI18nServiceWaterImp implements CloudI18nService {
         return packHolder;
     }
 
-    public void onUpdate(String group, String bundleName, String lang) {
-        String packKey = String.format("%s:%s:%s", group, bundleName, lang);
+    public void onUpdate(String group, String packName, String lang) {
+        String packKey = String.format("%s:%s:%s", group, packName, lang);
 
         PackHolder packHolder = packHolderMap.get(packKey);
+
         if (packHolder != null) {
             try {
-                Map<String, String> data = WaterClient.I18n.getI18n(group, bundleName, packHolder.getLang());
+                Map<String, String> data = WaterClient.I18n.getI18n(group, packName, packHolder.getLang());
                 packHolder.getPack().setData(data);
             } catch (Throwable e) {
                 EventBus.push(e);
