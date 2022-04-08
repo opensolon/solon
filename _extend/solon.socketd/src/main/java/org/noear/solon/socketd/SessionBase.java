@@ -190,8 +190,9 @@ public abstract class SessionBase implements Session {
             //等待响应
             return request.get(timeout, TimeUnit.SECONDS);
         } catch (Exception e) {
-            RequestManager.remove(message.key());
             throw new RuntimeException(e);
+        }finally {
+            RequestManager.remove(message.key());
         }
     }
 
