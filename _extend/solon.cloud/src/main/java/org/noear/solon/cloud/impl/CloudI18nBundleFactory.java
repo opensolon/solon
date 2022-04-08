@@ -13,7 +13,12 @@ import java.util.Locale;
  * @since 1.6
  */
 public class CloudI18nBundleFactory implements I18nBundleFactory {
-    private String group;
+    private final String group;
+
+
+    public CloudI18nBundleFactory(){
+        this(Solon.cfg().appGroup());
+    }
 
     public CloudI18nBundleFactory(String group) {
         this.group = group;

@@ -68,7 +68,6 @@ public class CloudProps {
     //度量服务相关
     private String METRIC_ENABLE = "solon.cloud.@@.metric.enable";
 
-
     //文件服务相关
     private String FILE_ENABLE = "solon.cloud.@@.file.enable";
     private String FILE_BUCKET = "solon.cloud.@@.file.bucket";
@@ -76,6 +75,9 @@ public class CloudProps {
     private String FILE_REGION_ID = "solon.cloud.@@.file.regionId";
     private String FILE_ACCESS_KEY = "solon.cloud.@@.file.accessKey";
     private String FILE_SECRET_KEY = "solon.cloud.@@.file.secretKey";
+
+    //国际化服务相关
+    private String I18N_ENABLE = "solon.cloud.@@.i18n.enable";
 
     //ID服务相关
     private String ID_ENABLE = "solon.cloud.@@.id.enable";
@@ -144,6 +146,8 @@ public class CloudProps {
         FILE_BUCKET = FILE_BUCKET.replace("@@", frame);
         FILE_ACCESS_KEY = FILE_ACCESS_KEY.replace("@@", frame);
         FILE_SECRET_KEY = FILE_SECRET_KEY.replace("@@", frame);
+
+        I18N_ENABLE = I18N_ENABLE.replace("@@", frame);
 
         ID_ENABLE = ID_ENABLE.replace("@@", frame);
         ID_START = ID_START.replace("@@", frame);
@@ -365,6 +369,12 @@ public class CloudProps {
         return Solon.cfg().get(FILE_SECRET_KEY);
     }
 
+    //
+    //国际化服务相关
+    //
+    public boolean getI18nEnable() {
+        return Solon.cfg().getBool(I18N_ENABLE, true);
+    }
 
     //
     //ID服务相关

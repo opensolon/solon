@@ -114,6 +114,11 @@ public class XPluginImp implements Plugin {
 
         }
 
+        if(cloudProps.getI18nEnable()){
+            i18nServiceImp = new CloudI18nServiceWaterImp();
+            CloudManager.register(i18nServiceImp);
+        }
+
 
         if (cloudProps.getDiscoveryEnable()) {
             discoveryServiceImp = new CloudDiscoveryServiceWaterImp(cloudProps);
