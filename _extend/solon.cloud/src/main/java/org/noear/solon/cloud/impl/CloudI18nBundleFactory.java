@@ -2,11 +2,11 @@ package org.noear.solon.cloud.impl;
 
 import org.noear.solon.Solon;
 import org.noear.solon.cloud.CloudClient;
+import org.noear.solon.cloud.model.Pack;
 import org.noear.solon.i18n.I18nBundle;
 import org.noear.solon.i18n.I18nBundleFactory;
 
 import java.util.Locale;
-import java.util.Map;
 
 /**
  * @author noear
@@ -29,7 +29,7 @@ public class CloudI18nBundleFactory implements I18nBundleFactory {
             bundleName = Solon.cfg().appName();
         }
 
-        Map<String, String> data = CloudClient.i18n().pull(group, bundleName, locale);
-        return new CloudI18nBundle(data, locale);
+        Pack pack = CloudClient.i18n().pull(group, bundleName, locale);
+        return new CloudI18nBundle(pack, locale);
     }
 }

@@ -77,6 +77,7 @@ public class XPluginImp implements Plugin {
         CloudDiscoveryServiceWaterImp discoveryServiceImp = null;
         CloudConfigServiceWaterImp configServiceImp = null;
         CloudEventServiceWaterImp eventServiceImp = null;
+        CloudI18nServiceWaterImp i18nServiceImp = null;
         CloudTraceServiceWaterImp traceServiceImp = new CloudTraceServiceWaterImp();
         CloudMetricServiceWaterImp metricServiceImp = new CloudMetricServiceWaterImp();
 
@@ -145,10 +146,10 @@ public class XPluginImp implements Plugin {
             eventServiceImp = new CloudEventServiceWaterImp(cloudProps);
             CloudManager.register(eventServiceImp);
 
-            if (discoveryServiceImp != null) {
+            if (discoveryServiceImp != null || i18nServiceImp != null) {
                 //关注缓存更新事件
                 eventServiceImp.attention(EventLevel.instance, "", "", WW.msg_ucache_topic,
-                        new HandlerCacheUpdate(discoveryServiceImp));
+                        new HandlerCacheUpdate(discoveryServiceImp, i18nServiceImp));
             }
 
             if (configServiceImp != null) {

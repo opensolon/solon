@@ -3,6 +3,7 @@ package org.noear.solon.cloud.extend.water.integration.msg;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudEventHandler;
 import org.noear.solon.cloud.extend.water.service.CloudDiscoveryServiceWaterImp;
+import org.noear.solon.cloud.extend.water.service.CloudI18nServiceWaterImp;
 import org.noear.solon.cloud.model.Event;
 import org.noear.solon.logging.utils.TagsMDC;
 import org.noear.water.WW;
@@ -19,8 +20,11 @@ public class HandlerCacheUpdate implements CloudEventHandler {
     static Logger logger = LoggerFactory.getLogger(WW.logger_water_log_upstream);
 
     CloudDiscoveryServiceWaterImp discoveryService;
-    public HandlerCacheUpdate(CloudDiscoveryServiceWaterImp discoveryService){
+    CloudI18nServiceWaterImp i18nService;
+
+    public HandlerCacheUpdate(CloudDiscoveryServiceWaterImp discoveryService, CloudI18nServiceWaterImp i18nService){
         this.discoveryService = discoveryService;
+        this.i18nService = i18nService;
     }
 
     @Override
@@ -40,7 +44,7 @@ public class HandlerCacheUpdate implements CloudEventHandler {
     /**
      * 更新 upstream
      * */
-    public void cacheUpdateHandler0(String tagKey) {
+    public boolean cacheUpdateHandler0(String tagKey) {
         String[] ss = null;
         if (tagKey.contains("::")) {
             ss = tagKey.split("::");
@@ -48,17 +52,31 @@ public class HandlerCacheUpdate implements CloudEventHandler {
             ss = tagKey.split(":");
         }
 
-        if ("upstream".equals(ss[0])) {
-            String service = ss[1];
-            try {
-                discoveryService.onUpdate("", service);
-            } catch (Exception ex) {
-                TagsMDC.tag0(ss[1]);
-                TagsMDC.tag1("reload");
+        if (discoveryService != null) {
+            if ("upstream".equals(ss[0])) {
+                String service = ss[1];
+                try {
+                    discoveryService.onUpdate("", service);
+                } catch (Exception ex) {
+                    TagsMDC.tag0(ss[1]);
+                    TagsMDC.tag1("reload");
 
-                logger.error("{}", ex);
+                    logger.error("{}", ex);
+                }
+
+                return true;
             }
         }
+
+        if (i18nService != null) {
+            if ("i18n".equals(ss[0]) && ss.length >= 3) {
+                i18nService.onUpdate(ss[1], ss[2]);
+
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**

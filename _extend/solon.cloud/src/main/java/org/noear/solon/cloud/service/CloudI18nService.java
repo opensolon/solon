@@ -1,7 +1,8 @@
 package org.noear.solon.cloud.service;
 
+import org.noear.solon.cloud.model.Pack;
+
 import java.util.Locale;
-import java.util.Map;
 
 /**
  * 云端国际化服务
@@ -17,5 +18,5 @@ public interface CloudI18nService {
      * @param bundleName 包名
      * @param locale     地区
      */
-    Map<String, String> pull(String group, String bundleName, Locale locale);
+    Pack pull(String group, String bundleName, Locale locale);
 }
