@@ -58,7 +58,7 @@ public class CloudI18nServiceWaterImp implements CloudI18nService {
 
         if (packHolder != null) {
             try {
-                Map<String, String> data = WaterClient.I18n.getI18n(group, packName, packHolder.getLang());
+                Map<String, String> data = WaterClient.I18n.getI18nNoCache(group, packName, packHolder.getLang());
                 packHolder.getPack().setData(data);
             } catch (Throwable e) {
                 EventBus.push(e);

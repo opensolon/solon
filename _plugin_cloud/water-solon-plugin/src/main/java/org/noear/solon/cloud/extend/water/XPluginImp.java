@@ -201,10 +201,6 @@ public class XPluginImp implements Plugin {
         }
     }
 
-    public  String getEventSeal() {
-        return cloudProps.getProp(WaterProps.PROP_EVENT_seal);
-    }
-
     public  String getEventReceive() {
         return cloudProps.getProp(WaterProps.PROP_EVENT_receive);
     }
