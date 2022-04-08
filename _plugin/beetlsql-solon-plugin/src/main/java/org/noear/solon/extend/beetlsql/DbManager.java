@@ -5,7 +5,6 @@ import org.beetl.sql.core.SQLManager;
 import org.beetl.sql.core.SQLManagerBuilder;
 import org.beetl.sql.core.db.*;
 import org.beetl.sql.core.nosql.*;
-import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.BeanWrap;
@@ -53,7 +52,7 @@ class DbManager {
                 ValHolder<Integer> valHolder = new ValHolder<>(i);
 
                 Aop.getAsyn(slaveAry[i], dsBw -> {
-                    slaves[valHolder.value] = dsBw.raw();
+                    slaves[valHolder.getValue()] = dsBw.raw();
                 });
 
 //                //todo::此处不能用同步，有些源可能还没构建好 //不过异常，没法检查了

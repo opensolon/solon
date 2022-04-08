@@ -53,6 +53,11 @@ public class CloudManager {
     private static CloudFileService fileService;
 
     /**
+     * 去端国际化服务
+     * */
+    private static CloudI18nService i18nService;
+
+    /**
      * 云端断路器服务
      */
     private static CloudBreakerService breakerService;
@@ -165,6 +170,14 @@ public class CloudManager {
         PrintUtil.info("Cloud", "CloudFileService registered from the " + service.getClass().getTypeName());
     }
 
+    /**
+     * 登记国际化服务
+     */
+    public static void register(CloudI18nService service) {
+        i18nService = service;
+        PrintUtil.info("Cloud", "CloudI18nService registered from the " + service.getClass().getTypeName());
+    }
+
 
     /**
      * 登记链路跟踪服务
@@ -241,6 +254,8 @@ public class CloudManager {
     protected static CloudFileService fileService() {
         return fileService;
     }
+
+    protected static CloudI18nService i18nService(){return i18nService;}
 
     protected static CloudTraceService traceService() {
         return traceService;

@@ -32,6 +32,12 @@
 
         <dependency>
             <groupId>org.noear</groupId>
+            <artifactId>solon.i18n</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.noear</groupId>
             <artifactId>nami</artifactId>
             <scope>provided</scope>
         </dependency>

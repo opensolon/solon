@@ -179,6 +179,14 @@ public class CloudClient {
     }
 
     /**
+     * 获取 云端国际化服务
+     * */
+    @Note("云端国际化服务")
+    public static CloudI18nService i18n(){
+        return CloudManager.i18nService();
+    }
+
+    /**
      * 获取 云端ID服务
      * */
     @Note("云端ID服务")
