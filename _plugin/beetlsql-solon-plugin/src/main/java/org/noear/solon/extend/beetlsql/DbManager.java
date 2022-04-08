@@ -52,7 +52,7 @@ class DbManager {
                 ValHolder<Integer> valHolder = new ValHolder<>(i);
 
                 Aop.getAsyn(slaveAry[i], dsBw -> {
-                    slaves[valHolder.getValue()] = dsBw.raw();
+                    slaves[valHolder.value] = dsBw.raw();
                 });
 
 //                //todo::此处不能用同步，有些源可能还没构建好 //不过异常，没法检查了

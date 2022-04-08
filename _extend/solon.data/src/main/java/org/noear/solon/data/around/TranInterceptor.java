@@ -19,9 +19,9 @@ public class TranInterceptor implements Interceptor {
 
         Tran anno = inv.method().getAnnotation(Tran.class);
         TranExecutorImp.global.execute(anno, () -> {
-            val0.setValue(inv.invoke());
+            val0.value = inv.invoke();
         });
 
-        return val0.getValue();
+        return val0.value;
     }
 }

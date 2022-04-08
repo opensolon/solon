@@ -7,21 +7,7 @@ package org.noear.solon.core;
  * @since 1.0
  * */
 public class ValHolder<T> {
-    private T value;
-
-    /**
-     * @since 1.6
-     * */
-    public T getValue() {
-        return value;
-    }
-
-    /**
-     * @since 1.6
-     * */
-    public void setValue(T value) {
-        this.value = value;
-    }
+    public T value;
 
     public ValHolder(){
     }
