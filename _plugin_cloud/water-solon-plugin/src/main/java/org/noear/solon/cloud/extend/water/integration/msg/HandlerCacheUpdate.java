@@ -69,8 +69,8 @@ public class HandlerCacheUpdate implements CloudEventHandler {
         }
 
         if (i18nService != null) {
-            if ("i18n".equals(ss[0]) && ss.length >= 3) {
-                i18nService.onUpdate(ss[1], ss[2]);
+            if ("i18n".equals(ss[0]) && ss.length >= 4) {
+                i18nService.onUpdate(ss[1], ss[2], ss[3]);
 
                 return true;
             }

@@ -39,9 +39,8 @@ public class CloudI18nServiceWaterImp implements CloudI18nService {
                 packHolder = packHolderMap.get(packKey);
 
                 if (packHolder == null) {
-                    Map<String, String> data = WaterClient.I18n.getI18n(group, bundleName, locale.toString());
-
                     packHolder = new PackHolder(group, bundleName, locale);
+                    Map<String, String> data = WaterClient.I18n.getI18n(group, bundleName, packHolder.getLang());
                     packHolder.getPack().setData(data);
                 }
 
@@ -52,15 +51,14 @@ public class CloudI18nServiceWaterImp implements CloudI18nService {
         return packHolder;
     }
 
-    public void onUpdate(String group, String bundleName) {
-        for (Map.Entry<String, PackHolder> kv : packHolderMap.entrySet()) {
-            PackHolder packHolder = kv.getValue();
+    public void onUpdate(String group, String bundleName, String lang) {
+        String packKey = String.format("%s:%s:%s", group, bundleName, lang);
 
+        PackHolder packHolder = packHolderMap.get(packKey);
+        if (packHolder != null) {
             try {
-                if (packHolder.getGroup().equals(group) && packHolder.getBundleName().equals(bundleName)) {
-                    Map<String, String> data = WaterClient.I18n.getI18n(group, bundleName, packHolder.getLocale().toString());
-                    packHolder.getPack().setData(data);
-                }
+                Map<String, String> data = WaterClient.I18n.getI18n(group, bundleName, packHolder.getLang());
+                packHolder.getPack().setData(data);
             } catch (Throwable e) {
                 EventBus.push(e);
             }

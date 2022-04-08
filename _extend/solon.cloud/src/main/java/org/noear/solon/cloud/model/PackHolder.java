@@ -10,12 +10,14 @@ public class PackHolder {
     private final String group;
     private final String bundleName;
     private final Locale locale;
+    private final String lang;
     private final Pack pack;
 
     public PackHolder(String group, String bundleName, Locale locale) {
         this.group = group;
         this.bundleName = bundleName;
         this.locale = locale;
+        this.lang = locale.toString();
         this.pack = new Pack();
     }
 
@@ -29,6 +31,10 @@ public class PackHolder {
 
     public Locale getLocale() {
         return locale;
+    }
+
+    public String getLang() {
+        return lang;
     }
 
     public Pack getPack() {
