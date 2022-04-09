@@ -30,7 +30,7 @@ public class CloudI18nServiceWaterImp implements CloudI18nService {
     }
 
     public PackHolder pullDo(String group, String packName, Locale locale) throws IOException {
-        String packKey = String.format("%s:%s:%s", group, packName, locale.toString());
+        String packKey = String.format("%s:%s:%s", group, packName, locale.toString().toLowerCase(Locale.ROOT));
 
         PackHolder packHolder = packHolderMap.get(packKey);
 
@@ -52,7 +52,7 @@ public class CloudI18nServiceWaterImp implements CloudI18nService {
     }
 
     public void onUpdate(String group, String packName, String lang) {
-        String packKey = String.format("%s:%s:%s", group, packName, lang);
+        String packKey = String.format("%s:%s:%s", group, packName, lang.toLowerCase(Locale.ROOT));
 
         PackHolder packHolder = packHolderMap.get(packKey);
 
