@@ -1,5 +1,6 @@
 package net.hasor.db.solon.integration;
 
+import net.hasor.db.dal.repository.DalRegistry;
 import net.hasor.db.dal.session.BaseMapper;
 import net.hasor.db.dal.session.DalSession;
 import net.hasor.db.jdbc.core.JdbcTemplate;
@@ -47,7 +48,7 @@ public class XPluginImp implements Plugin {
         }
     }
 
-    private void inject1(VarHolder varH, BeanWrap dsBw) throws SQLException {
+    private void inject1(VarHolder varH, BeanWrap dsBw) throws Exception {
         DataSource ds = dsBw.get();
         Class<?> clz = varH.getType();
 
@@ -80,7 +81,10 @@ public class XPluginImp implements Plugin {
 
         //@Db("db1") UserMapper ;
         if (varH.getType().isInterface()) {
-            DalSession accessor = new DalSession(ds);
+            DalRegistry dalRegistry = new DalRegistry();
+            dalRegistry.loadMapper(varH.getType());
+
+            DalSession accessor = new DalSession(ds, dalRegistry);
             accessor.setAccessorApply(AccessorApplyImpl.getInstance());
 
             if (clz == BaseMapper.class) {
