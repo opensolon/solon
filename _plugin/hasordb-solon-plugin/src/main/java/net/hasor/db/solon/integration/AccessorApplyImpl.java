@@ -13,9 +13,9 @@ import java.sql.SQLException;
  * @see 1.6
  */
 public class AccessorApplyImpl implements EFunction<DataSource, Connection, SQLException> {
-    private static AccessorApplyImpl instance = new AccessorApplyImpl();
+    private static EFunction<DataSource, Connection, SQLException> instance = new AccessorApplyImpl();
 
-    public static AccessorApplyImpl getInstance() {
+    public static EFunction<DataSource, Connection, SQLException> getInstance() {
         return instance;
     }
 
