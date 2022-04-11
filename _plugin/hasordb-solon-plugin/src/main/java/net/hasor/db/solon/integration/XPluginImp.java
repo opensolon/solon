@@ -1,6 +1,7 @@
 package net.hasor.db.solon.integration;
 
 import net.hasor.db.dal.repository.DalRegistry;
+import net.hasor.db.dal.repository.RefMapper;
 import net.hasor.db.dal.session.BaseMapper;
 import net.hasor.db.dal.session.DalSession;
 import net.hasor.db.jdbc.core.JdbcTemplate;
@@ -14,13 +15,14 @@ import org.noear.solon.core.Plugin;
 import org.noear.solon.core.VarHolder;
 
 import javax.sql.DataSource;
-import java.sql.SQLException;
 
 /**
  * @author noear
  * @since 1.6
  */
 public class XPluginImp implements Plugin {
+    DalRegistry dalRegistry = new DalRegistry();
+
     @Override
     public void start(SolonApp app) {
         Aop.context().beanInjectorAdd(Db.class, (varH, anno) -> {
@@ -35,6 +37,10 @@ public class XPluginImp implements Plugin {
                     }
                 });
             }
+        });
+
+        Aop.context().beanBuilderAdd(RefMapper.class, (clz, bw, anno) -> {
+            dalRegistry.loadMapper(clz);
         });
     }
 
@@ -54,8 +60,7 @@ public class XPluginImp implements Plugin {
 
         //@Db("db1") JdbcTemplate ;
         if (JdbcTemplate.class.isAssignableFrom(varH.getType())) {
-            JdbcTemplate accessor = new JdbcTemplate(ds);
-            accessor.setAccessorApply(AccessorApplyImpl.getInstance());
+            JdbcTemplate accessor = new JdbcTemplate(new DynamicConnectionImpl(ds));
 
             varH.setValue(accessor);
             return;
@@ -63,8 +68,7 @@ public class XPluginImp implements Plugin {
 
         //@Db("db1") LambdaTemplate ;
         if (LambdaTemplate.class.isAssignableFrom(varH.getType())) {
-            LambdaTemplate accessor = new LambdaTemplate(ds);
-            accessor.setAccessorApply(AccessorApplyImpl.getInstance());
+            LambdaTemplate accessor = new LambdaTemplate(new DynamicConnectionImpl(ds));
 
             varH.setValue(accessor);
             return;
@@ -72,8 +76,7 @@ public class XPluginImp implements Plugin {
 
         //@Db("db1") DalSession ;
         if (DalSession.class.isAssignableFrom(varH.getType())) {
-            DalSession accessor = new DalSession(ds);
-            accessor.setAccessorApply(AccessorApplyImpl.getInstance());
+            DalSession accessor = new DalSession(new DynamicConnectionImpl(ds));
 
             varH.setValue(accessor);
             return;
@@ -81,11 +84,7 @@ public class XPluginImp implements Plugin {
 
         //@Db("db1") UserMapper ;
         if (varH.getType().isInterface()) {
-            DalRegistry dalRegistry = new DalRegistry();
-            dalRegistry.loadMapper(varH.getType());
-
-            DalSession accessor = new DalSession(ds, dalRegistry);
-            accessor.setAccessorApply(AccessorApplyImpl.getInstance());
+            DalSession accessor = new DalSession(new DynamicConnectionImpl(ds), dalRegistry, null);
 
             if (clz == BaseMapper.class) {
                 Object obj = accessor.createBaseMapper((Class<?>) varH.getGenericType().getActualTypeArguments()[0]);

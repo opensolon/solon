@@ -15,7 +15,7 @@
     <packaging>jar</packaging>
 
     <properties>
-        <hasor.ver>4.3.2</hasor.ver>
+        <hasor.ver>4.3.3-SNAPSHOT</hasor.ver>
     </properties>
 
     <dependencies>
