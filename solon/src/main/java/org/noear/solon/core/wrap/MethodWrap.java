@@ -79,7 +79,7 @@ public class MethodWrap implements Interceptor, MethodHolder {
 
         if (arounds.size() > 0) {
             //排序（顺排）
-            arounds.sort(Comparator.comparing(x -> x.index));
+            arounds.sort(Comparator.comparing(x -> x.getIndex()));
         }
 
         arounds.add(new InterceptorEntity(0, this));
@@ -168,6 +168,13 @@ public class MethodWrap implements Interceptor, MethodHolder {
         return method.getAnnotation(type);
     }
 
+
+    /**
+     * 获取包围处理
+     * */
+    public List<InterceptorEntity> getArounds() {
+        return Collections.unmodifiableList(arounds);
+    }
 
     //::XInterceptorChain
     @Override
