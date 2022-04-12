@@ -22,13 +22,13 @@ public class RouterDefault implements Router{
     private final RoutingTable<Listener> routesL;
 
     public RouterDefault() {
-        routesH = new RoutingTable[3];
+        routesH = new RoutingTableDefault[3];
 
-        routesH[0] = new RoutingTable<>();//before:0
-        routesH[1] = new RoutingTable<>();//main
-        routesH[2] = new RoutingTable<>();//after:2
+        routesH[0] = new RoutingTableDefault<>();//before:0
+        routesH[1] = new RoutingTableDefault<>();//main
+        routesH[2] = new RoutingTableDefault<>();//after:2
 
-        routesL = new RoutingTable<>();
+        routesL = new RoutingTableDefault<>();
     }
 
     /**
@@ -60,7 +60,7 @@ public class RouterDefault implements Router{
      * */
     @Override
     public List<Routing<Handler>> getAll(Endpoint endpoint){
-        return Collections.unmodifiableList(routesH[endpoint.code]);
+        return routesH[endpoint.code].getAll();
     }
 
 

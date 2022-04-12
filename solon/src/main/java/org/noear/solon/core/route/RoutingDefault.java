@@ -5,6 +5,8 @@ import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.util.PathAnalyzer;
 
 /**
+ * 路由默认实现
+ *
  * @author noear
  * @since 1.3
  */
