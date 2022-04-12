@@ -1042,6 +1042,7 @@
         </dependencies>
     </dependencyManagement>
 
+
     <profiles>
         <profile>
             <id>release</id>
@@ -1156,6 +1157,24 @@
             </plugin>
 
         </plugins>
+
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.noear</groupId>
+                    <artifactId>solon-maven-plugin</artifactId>
+                    <version>1.0.0</version>
+                    <executions>
+                        <execution>
+                            <phase>package</phase>
+                            <goals>
+                                <goal>repackage</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
     </build>
 
 
