@@ -2,6 +2,7 @@ package org.noear.solon.core.route;
 
 import org.noear.solon.core.handle.MethodType;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -29,7 +30,7 @@ public interface RoutingTable<T> {
     /**
      * 获取所有路由记录
      * */
-    List<Routing<T>> getAll();
+    Collection<Routing<T>> getAll();
 
     /**
      * 区配一个目标

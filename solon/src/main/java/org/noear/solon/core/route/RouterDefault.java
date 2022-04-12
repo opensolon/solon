@@ -8,6 +8,7 @@ import org.noear.solon.core.message.Listener;
 import org.noear.solon.core.message.ListenerHolder;
 import org.noear.solon.core.message.Session;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -59,7 +60,7 @@ public class RouterDefault implements Router{
      * @return 处理点的所有路由记录
      * */
     @Override
-    public List<Routing<Handler>> getAll(Endpoint endpoint){
+    public Collection<Routing<Handler>> getAll(Endpoint endpoint){
         return routesH[endpoint.code].getAll();
     }
 

@@ -2,10 +2,7 @@ package org.noear.solon.core.route;
 
 import org.noear.solon.core.handle.MethodType;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -40,7 +37,7 @@ public class RoutingTableDefault<T> implements RoutingTable<T> {
     }
 
     @Override
-    public List<Routing<T>> getAll() {
+    public Collection<Routing<T>> getAll() {
         return Collections.unmodifiableList(table);
     }
 

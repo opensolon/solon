@@ -82,7 +82,7 @@ public interface Router {
      * @param endpoint 处理点
      * @return 处理点的所有路由记录
      * */
-    List<Routing<Handler>> getAll(Endpoint endpoint);
+    Collection<Routing<Handler>> getAll(Endpoint endpoint);
 
 
 
