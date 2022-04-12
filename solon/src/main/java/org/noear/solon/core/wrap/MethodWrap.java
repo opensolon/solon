@@ -171,12 +171,14 @@ public class MethodWrap implements Interceptor, MethodHolder {
 
     /**
      * 获取包围处理
-     * */
+     */
     public List<InterceptorEntity> getArounds() {
         return Collections.unmodifiableList(arounds);
     }
 
-    //::XInterceptorChain
+    /**
+     * 拦截处理
+     */
     @Override
     public Object doIntercept(Invocation inv) throws Exception {
         return invoke(inv.target(), inv.args());
