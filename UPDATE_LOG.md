@@ -1,3 +1,8 @@
+#### 1.7.2
+* 新增 hasordb-solon-plugin 插件
+* 新增 solon-maven-plugin 打包打件
+* beetlsql 升级为 3.14.0
+
 #### 1.7.1
 * 函数名 handler 更名为：handle
   * 调整 CloudConfigHandler:handler 更名为：handle
