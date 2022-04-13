@@ -2,6 +2,7 @@
 * 新增 hasordb-solon-plugin 插件
 * 新增 solon-maven-plugin 打包打件
 * 添加 CloudBreakerService::exists
+* 添加 CloudBreakerService root 配置支持(可支持动态创建)
 * beetlsql 升级为 3.14.0
 
 #### 1.7.1
