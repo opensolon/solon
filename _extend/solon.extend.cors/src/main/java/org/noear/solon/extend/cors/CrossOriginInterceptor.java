@@ -22,7 +22,7 @@ public class CrossOriginInterceptor implements Handler {
         if (action != null) {
             CrossOrigin anno = action.method().getAnnotation(CrossOrigin.class);
             if (anno == null) {
-                anno = action.bean().annotationGet(CrossOrigin.class);
+                anno = action.controller().annotationGet(CrossOrigin.class);
             }
 
             if (anno == null) {

@@ -127,9 +127,9 @@ public class Action extends HandlerAide implements Handler {
     }
 
     /**
-     * 控制器类包装
+     * 控制类包装器
      */
-    public BeanWrap bean() {
+    public BeanWrap controller() {
         return bWrap;
     }
 

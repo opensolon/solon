@@ -169,7 +169,7 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
             if (is_action) {
                 if (allowReadyController()) {
                     //提前准备控制器?（通过拦截器产生的参数，需要懒加载）
-                    obj = ((Action) m).bean().get();
+                    obj = ((Action) m).controller().get();
                     c.attrSet("controller", obj);
                 }
 

@@ -156,7 +156,7 @@ public class ValidatorManager {
     public static void validateOfContext(Context ctx, Action action) throws Throwable {
         StringBuilder tmp = new StringBuilder();
 
-        for (Annotation anno : action.bean().annotations()) {
+        for (Annotation anno : action.controller().annotations()) {
             if (validateOfContext0(ctx, anno, null, tmp)) {
                 return;
             }
