@@ -15,9 +15,4 @@ public interface CloudBreakerService {
      * @param breakerName 断路器名称
      */
     AutoCloseable entry(String breakerName) throws BreakerException;
-
-    /**
-     * 是否存在入口
-     * */
-    boolean exists(String breakerName);
 }

@@ -83,9 +83,4 @@ public abstract class CloudBreakerServiceLocalImpl implements CloudBreakerServic
             return tmp.enter();
         }
     }
-
-    @Override
-    public boolean exists(String breakerName){
-        return breakers.containsKey(breakerName);
-    }
 }
