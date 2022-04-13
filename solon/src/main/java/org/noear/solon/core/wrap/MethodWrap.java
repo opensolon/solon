@@ -170,6 +170,13 @@ public class MethodWrap implements Interceptor, MethodHolder {
 
 
     /**
+     * 检测是否存在注解
+     * */
+    public boolean isAnnotationPresent(Class<? extends Annotation> annotationClass) {
+        return method.isAnnotationPresent(annotationClass);
+    }
+
+    /**
      * 获取包围处理
      */
     public List<InterceptorEntity> getArounds() {
