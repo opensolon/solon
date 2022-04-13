@@ -26,7 +26,7 @@
 * water 升级为：2.5.10
 
 #### 1.6.36
-* 插件 solon.extend.sessionstate.jwt 呼略 ServiceConfigurationError 抛出
+* 插件 solon.extend.sessionstate.jwt 忽略 ServiceConfigurationError 抛出
 * 添加 CloudJobInterceptor，提供 job 的拦截机制 
 * 添加 CloudEventInterceptor，提供 event 的拦截机制
 * 调整 Gateway 的缺省处理设定方式

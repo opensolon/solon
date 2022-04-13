@@ -11,6 +11,11 @@ import org.noear.solon.core.util.PathAnalyzer;
  * @since 1.3
  */
 public class RoutingDefault<T> implements Routing<T> {
+
+    public RoutingDefault(String path, MethodType method, T target) {
+        this(path, method, 0, target);
+    }
+
     public RoutingDefault(String path, MethodType method, int index, T target) {
         this.rule = PathAnalyzer.get(path);
 
