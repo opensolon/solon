@@ -5,7 +5,7 @@
 * 添加 MethodWrap::getArounds() 接口
 * 调整 Action::bean() 更名为 controller()
 * 调整 Gateway 内部路由改为 RoutingTable 接口，支持 method（之前为 Map）
-* beetlsql 升级为 3.14.0
+* 插件 beetlsql-solon-plugin 升级 beetlsql 为 3.14.0
 
 #### 1.7.1
 * 函数名 handler 更名为：handle
