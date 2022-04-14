@@ -21,8 +21,12 @@ public class PropsConverterExt extends PropsConverter {
                 if (constructor != null) {
                     return (T) constructor.newInstance(props);
                 }
+            } catch (NoSuchMethodException e) {
+                //跳过
+            } catch (RuntimeException e) {
+                throw e;
             } catch (Throwable e) {
-
+                throw new RuntimeException(e);
             }
 
             return ONode.loadObj(props, Feature.UseSetter).toObject(targetClz);
