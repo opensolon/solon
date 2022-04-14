@@ -1,11 +1,14 @@
 #### 1.7.2
 * 新增 hasordb-solon-plugin 插件
+* 新增 solon.cache.redisson 插件
+* 新增 solon.sessionstate.redisson 插件
 * 新增 solon-maven-plugin 打包打件
 * 添加 CloudBreakerService /root 配置支持(可支持动态创建)
 * 添加 MethodWrap::getArounds() 接口
 * 调整 Action::bean() 更名为 controller()
 * 调整 Gateway 内部路由改为 RoutingTable 接口，支持 method（之前为 Map）
 * 插件 beetlsql-solon-plugin 升级 beetlsql 为 3.14.0
+* snack3 升级为：3.2.20
 
 #### 1.7.1
 * 函数名 handler 更名为：handle
