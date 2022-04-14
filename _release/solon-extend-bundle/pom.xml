@@ -36,6 +36,7 @@
 
         <module>../../_extend/solon.extend.servlet</module>
 
+        <!-- @Deprecated -->
         <module>../../_extend/solon.extend.sessionstate.redis</module>
         <module>../../_extend/solon.extend.sessionstate.local</module>
         <module>../../_extend/solon.extend.sessionstate.jwt</module>

@@ -11,6 +11,7 @@
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
+    <!-- @Deprecated -->
     <artifactId>solon.extend.sessionstate.jwt</artifactId>
     <packaging>jar</packaging>
 
