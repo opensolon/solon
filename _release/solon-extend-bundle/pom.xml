@@ -29,6 +29,7 @@
         <module>../../_extend/solon.sessionstate.jedis</module>
         <module>../../_extend/solon.sessionstate.local</module>
         <module>../../_extend/solon.sessionstate.jwt</module>
+        <module>../../_extend/solon.sessionstate.redisson</module>
 
 
         <module>../../_extend/solon.extend.aspect</module>

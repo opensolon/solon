@@ -4,7 +4,6 @@ import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.data.cache.CacheService;
 import org.redisson.api.RedissonClient;
-import org.redisson.config.Config;
 
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
@@ -16,7 +15,7 @@ import java.util.concurrent.TimeUnit;
 public class RedissonCacheService implements CacheService {
     protected String _cacheKeyHead;
     protected int _defaultSeconds;
-    protected RedissonClient redissonClient;
+    protected final RedissonClient redissonClient;
 
     public RedissonCacheService(Properties prop){
         this(prop, prop.getProperty("keyHeader"), 0);
@@ -24,25 +23,11 @@ public class RedissonCacheService implements CacheService {
 
     public RedissonCacheService(Properties prop, String keyHeader, int defSeconds) {
         String defSeconds_str = prop.getProperty("defSeconds");
-        String db_str = prop.getProperty("db");
-        String maxTotal_str = prop.getProperty("maxTotal");
-        String server_str = prop.getProperty("server");
 
         if (defSeconds == 0) {
             if (Utils.isNotEmpty(defSeconds_str)) {
                 defSeconds = Integer.parseInt(defSeconds_str);
             }
-        }
-
-        int db = 0;
-        int maxTotal = 200;
-
-        if (Utils.isNotEmpty(db_str)) {
-            db = Integer.parseInt(db_str);
-        }
-
-        if (Utils.isNotEmpty(maxTotal_str)) {
-            maxTotal = Integer.parseInt(maxTotal_str);
         }
 
         if(Utils.isEmpty(keyHeader)){
@@ -60,15 +45,7 @@ public class RedissonCacheService implements CacheService {
             _cacheKeyHead = Solon.cfg().appName();
         }
 
-        //
-        // 开始实例化 redissonClient
-        //
-        Config config = new Config();
-        if(server_str.contains(",")){
-
-        }else{
-
-        }
+        redissonClient = RedissonBuilder.build(prop);
     }
 
     @Override
