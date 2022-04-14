@@ -2,6 +2,7 @@ package org.noear.solon.cache.redisson.integration;
 
 import org.noear.solon.SolonApp;
 import org.noear.solon.core.Plugin;
+import org.noear.solon.data.cache.CacheFactory;
 import org.noear.solon.data.cache.CacheLib;
 
 /**
@@ -11,6 +12,9 @@ import org.noear.solon.data.cache.CacheLib;
 public class XPluginImp implements Plugin {
     @Override
     public void start(SolonApp app) {
-        CacheLib.cacheFactoryAdd("redis", new RedissonCacheFactoryImpl());
+        CacheFactory cacheFactory = new RedissonCacheFactoryImpl();
+
+        CacheLib.cacheFactoryAdd("redis", cacheFactory);
+        CacheLib.cacheFactoryAdd("redisson", cacheFactory);
     }
 }
