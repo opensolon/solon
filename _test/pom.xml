@@ -265,18 +265,18 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.extend.sessionstate.jwt</artifactId>
+            <artifactId>solon.sessionstate.jwt</artifactId>
         </dependency>
 
 
 
 <!--        <dependency>-->
 <!--            <groupId>org.noear</groupId>-->
-<!--            <artifactId>solon.extend.sessionstate.redis</artifactId>-->
+<!--            <artifactId>solon.sessionstate.redis</artifactId>-->
 <!--        </dependency>-->
 <!--        <dependency>-->
 <!--            <groupId>org.noear</groupId>-->
-<!--            <artifactId>solon.extend.sessionstate.local</artifactId>-->
+<!--            <artifactId>solon.sessionstate.local</artifactId>-->
 <!--        </dependency>-->
 
 

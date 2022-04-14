@@ -24,7 +24,7 @@
         <!-- 本地SessionSate支持组件 -->
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.extend.sessionstate.local</artifactId>
+            <artifactId>solon.sessionstate.local</artifactId>
         </dependency>
 
         <!-- beetl模板支持组件 -->
