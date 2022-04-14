@@ -20,11 +20,14 @@ public class ErrorFilter implements Filter {
     public void doFilter(Context ctx, FilterChain chain) throws Throwable {
         try {
             chain.doFilter(ctx);
-            // 抛出验证异常
-            HttpServletRequest request = (HttpServletRequest) ctx.request();
+            // 判断此次请求是否为 HttpServletRequest 请求
+            if(ctx.request() instanceof HttpServletRequest) {
+                // 抛出验证异常
+                HttpServletRequest request = (HttpServletRequest) ctx.request();
 
-            if (request.getAttribute("javax.servlet.error.exception") != null) {
-                throw (Throwable) request.getAttribute("javax.servlet.error.exception");
+                if (request.getAttribute("javax.servlet.error.exception") != null) {
+                    throw (Throwable) request.getAttribute("javax.servlet.error.exception");
+                }
             }
         } catch (IdsException exception) {
             new ErrorEndpoint().showErrorPage(
