@@ -1,6 +1,7 @@
 package org.noear.solon.sessionstate.redisson;
 
 import org.noear.solon.Utils;
+import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
 import org.redisson.config.Config;
 
@@ -23,12 +24,13 @@ public class RedissonBuilder {
      *   maxTotal: 200 #默认为 200，可不配
      *   ...
      * </pre></code>
-     *
-     * */
-    public static RedissonClient build(Properties prop){
+     */
+    public static RedissonClient build(Properties prop) {
         String server_str = prop.getProperty("server");
         String db_str = prop.getProperty("db");
         String maxTotal_str = prop.getProperty("maxTotal");
+        String user_str = prop.getProperty("user");
+        String password_str = prop.getProperty("password");
 
 
         int db = 0;
@@ -46,12 +48,23 @@ public class RedissonBuilder {
         // 开始实例化 redissonClient
         //
         Config config = new Config();
-        if(server_str.contains(",")){
+        Utils.injectProperties(config, prop);
+
+        if (server_str.contains(",")) {
             //集群
-        }else{
+            config.useClusterServers()
+                    .addNodeAddress(server_str.split(","))
+                    .setUsername(user_str)
+                    .setPassword(password_str);
+        } else {
             //单例
+            config.useSingleServer()
+                    .setAddress(server_str)
+                    .setUsername(user_str)
+                    .setPassword(password_str)
+                    .setDatabase(db);
         }
 
-        return null;
+        return Redisson.create(config);
     }
 }
