@@ -13,7 +13,7 @@ public class XPluginImp implements Plugin {
             return;
         }
 
-        if (Bridge.sessionStateFactory().priority() >= RedisSessionStateFactory.SESSION_STATE_PRIORITY) {
+        if (Bridge.sessionStateFactory().priority() >= JedisSessionStateFactory.SESSION_STATE_PRIORITY) {
             return;
         }
         /*
@@ -27,11 +27,11 @@ public class XPluginImp implements Plugin {
          * */
         SessionProp.init();
 
-        if (RedisSessionStateFactory.getInstance().redisClient() == null) {
+        if (JedisSessionStateFactory.getInstance().redisClient() == null) {
             return;
         }
 
-        Bridge.sessionStateFactorySet(RedisSessionStateFactory.getInstance());
+        Bridge.sessionStateFactorySet(JedisSessionStateFactory.getInstance());
 
         PrintUtil.info("Session","solon: Redis session state plugin is loaded");
     }

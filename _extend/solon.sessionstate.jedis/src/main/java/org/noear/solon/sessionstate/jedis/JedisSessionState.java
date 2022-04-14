@@ -14,7 +14,7 @@ import java.util.Collection;
 /**
  * 它会是个单例，不能有上下文数据
  * */
-public class RedisSessionState implements SessionState {
+public class JedisSessionState implements SessionState {
     private static int _expiry =  60 * 60 * 2;
     private static String _domain=null;
 
@@ -31,9 +31,9 @@ public class RedisSessionState implements SessionState {
 
     private Context ctx;
     private RedisClient redisClient;
-    protected RedisSessionState(Context ctx){
+    protected JedisSessionState(Context ctx){
         this.ctx = ctx;
-        this.redisClient = RedisSessionStateFactory.getInstance().redisClient();
+        this.redisClient = JedisSessionStateFactory.getInstance().redisClient();
     }
 
     //

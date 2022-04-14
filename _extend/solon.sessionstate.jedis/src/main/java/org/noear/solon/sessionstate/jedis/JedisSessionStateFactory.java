@@ -11,17 +11,17 @@ import java.util.Properties;
 /**
  * @author noear 2021/2/14 created
  */
-public class RedisSessionStateFactory implements SessionStateFactory {
-    private static RedisSessionStateFactory instance;
-    public static RedisSessionStateFactory getInstance() {
+public class JedisSessionStateFactory implements SessionStateFactory {
+    private static JedisSessionStateFactory instance;
+    public static JedisSessionStateFactory getInstance() {
         if (instance == null) {
-            instance = new RedisSessionStateFactory();
+            instance = new JedisSessionStateFactory();
         }
 
         return instance;
     }
 
-    private RedisSessionStateFactory() {
+    private JedisSessionStateFactory() {
         Properties prop = Solon.cfg().getProp("server.session.state.redis");
 
         if (prop.size() < 4) {
@@ -47,6 +47,6 @@ public class RedisSessionStateFactory implements SessionStateFactory {
 
     @Override
     public SessionState create(Context ctx) {
-        return new RedisSessionState(ctx);
+        return new JedisSessionState(ctx);
     }
 }
