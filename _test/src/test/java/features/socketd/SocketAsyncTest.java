@@ -83,7 +83,10 @@ public class SocketAsyncTest {
 
 
         //异步发
-        session.sendAsync("test");
+        session.sendAsync("test0");
+        session.sendAsync("test1");
+        session.sendAsync("test2");
+        session.sendAsync("test3");
 
         assert check.get(2, TimeUnit.SECONDS);
     }

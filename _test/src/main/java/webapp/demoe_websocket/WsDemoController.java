@@ -26,6 +26,7 @@ public class WsDemoController {
             System.out.println("它叫我关了：" + msg + "!!!");
             ctx.close();//关掉
         } else {
+            System.out.println(">>>>>>>>我收到了：" + msg + ": " + ctx.paramMap().toString());
             ctx.output("我收到了：" + msg + ": " + ctx.paramMap().toString());
         }
     }

@@ -23,6 +23,13 @@
     <modules>
         <module>../../_extend/solon.cache.jedis</module>
         <module>../../_extend/solon.cache.spymemcached</module>
+        <module>../../_extend/solon.cache.redisson</module>
+
+
+        <module>../../_extend/solon.sessionstate.jedis</module>
+        <module>../../_extend/solon.sessionstate.local</module>
+        <module>../../_extend/solon.sessionstate.jwt</module>
+
 
         <module>../../_extend/solon.extend.aspect</module>
         <module>../../_extend/solon.extend.staticfiles</module>
