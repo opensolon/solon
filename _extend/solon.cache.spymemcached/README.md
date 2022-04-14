@@ -30,8 +30,9 @@ public class Config {
     }
 
     @Bean("cache2")
-    public CacheService cache2(@Inject("${solon.cache2}") MemCacheService cache){
-        return cache;
+    public CacheService cache2(@Inject("${solon.cache2}") CacheServiceSupplier supplier){
+        //CacheServiceSupplier 可自动识别类型
+        return supplier.get();
     }
 }
 

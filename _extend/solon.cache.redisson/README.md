@@ -25,7 +25,7 @@ solon.cache2:
 @Configuration
 public class Config {
     @Bean(value = "cache1", typed = true) //默认
-    public CacheService cache1(@Inject("${solon.cache1}") RedisCacheService cache){
+    public CacheService cache1(@Inject("${solon.cache1}") RedissonCacheService cache){
         return cache;
     }
 
