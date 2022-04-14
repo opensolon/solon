@@ -2,6 +2,7 @@ package org.noear.solon.extend.impl;
 
 import org.noear.snack.ONode;
 import org.noear.snack.core.Feature;
+import org.noear.solon.Utils;
 import org.noear.solon.core.PropsConverter;
 
 import java.lang.reflect.Constructor;
@@ -23,10 +24,13 @@ public class PropsConverterExt extends PropsConverter {
                 }
             } catch (NoSuchMethodException e) {
                 //跳过
-            } catch (RuntimeException e) {
-                throw e;
             } catch (Throwable e) {
-                throw new RuntimeException(e);
+                e = Utils.throwableUnwrap(e);
+                if (e instanceof RuntimeException) {
+                    throw (RuntimeException) e;
+                } else {
+                    throw new RuntimeException(e);
+                }
             }
 
             return ONode.loadObj(props, Feature.UseSetter).toObject(targetClz);
