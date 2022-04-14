@@ -10,6 +10,7 @@
 * 调整 Gateway 内部路由改为 RoutingTable 接口，支持 method（之前为 Map）
 * 插件 beetlsql-solon-plugin 升级 beetlsql 为 3.14.0
 * snack3 升级为：3.2.20
+* redisx 升级为：1.3.11
 
 #### 1.7.1
 * 函数名 handler 更名为：handle
