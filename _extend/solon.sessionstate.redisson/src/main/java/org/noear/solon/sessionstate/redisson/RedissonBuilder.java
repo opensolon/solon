@@ -27,20 +27,14 @@ public class RedissonBuilder {
     public static RedissonClient build(Properties prop) {
         String server_str = prop.getProperty("server");
         String db_str = prop.getProperty("db");
-        String maxTotal_str = prop.getProperty("maxTotal");
         String user_str = prop.getProperty("user");
         String password_str = prop.getProperty("password");
 
 
         int db = 0;
-        int maxTotal = 200;
 
         if (Utils.isNotEmpty(db_str)) {
             db = Integer.parseInt(db_str);
-        }
-
-        if (Utils.isNotEmpty(maxTotal_str)) {
-            maxTotal = Integer.parseInt(maxTotal_str);
         }
 
         //
