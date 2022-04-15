@@ -57,15 +57,15 @@ public class XPluginImp implements Plugin {
         }
 
         if (server.equals(configServer) == false) {
-            WaterAddress.setConfigApiUrl(configServer);
+            WaterAddress.setCfgApiUrl(configServer);
         }
 
         if (server.equals(discoveryServer) == false) {
-            WaterAddress.setRegistryApiUrl(discoveryServer);
+            WaterAddress.setRegApiUrl(discoveryServer);
         }
 
         if (server.equals(eventServer) == false) {
-            WaterAddress.setMessageApiUrl(eventServer);
+            WaterAddress.setMsgApiUrl(eventServer);
         }
 
         if (server.equals(logServer) == false) {
