@@ -2,6 +2,7 @@
 * 新增 hasordb-solon-plugin 插件
 * 新增 solon.cache.redisson 插件
 * 新增 solon.sessionstate.redisson 插件
+* 新增 solon.sessionstate.jedis 插件
 * 新增 solon-maven-plugin 打包插件
 * 新增 solon-swagger-knife4j 文档插件
 * 添加 CloudBreakerService /root 配置支持(可支持动态创建)
