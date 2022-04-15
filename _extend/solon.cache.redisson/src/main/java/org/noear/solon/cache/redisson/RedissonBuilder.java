@@ -59,7 +59,8 @@ public class RedissonBuilder {
             Utils.injectProperties(serverConfig, prop);
 
             //设置关键配置
-            serverConfig.addNodeAddress(server_str.split(","))
+            String[] address = resolveServers(server_str.split(","));
+            serverConfig.addNodeAddress(address)
                     .setUsername(user_str)
                     .setPassword(password_str);
         } else {
@@ -70,12 +71,29 @@ public class RedissonBuilder {
             Utils.injectProperties(serverConfig, prop);
 
             //设置关键配置
-            serverConfig.setAddress(server_str)
+            String[] address = resolveServers(server_str);
+            serverConfig.setAddress(address[0])
                     .setUsername(user_str)
                     .setPassword(password_str)
                     .setDatabase(db);
         }
 
         return Redisson.create(config);
+    }
+
+    private static String[] resolveServers(String... servers) {
+        String[] uris = new String[servers.length];
+
+        for (int i = 0; i < servers.length; i++) {
+            String sev = servers[i];
+
+            if (sev.contains("://")) {
+                uris[i] = sev;
+            } else {
+                uris[i] = "redis://" + sev;
+            }
+        }
+
+        return uris;
     }
 }
