@@ -26,6 +26,12 @@
             <artifactId>redisson</artifactId>
             <version>3.17.0</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon-test</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
 </project>
