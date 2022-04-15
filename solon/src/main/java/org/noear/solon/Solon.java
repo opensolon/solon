@@ -139,6 +139,10 @@ public class Solon {
             ex = Utils.throwableUnwrap(ex);
             EventBus.push(ex);
 
+            if (global.enableErrorAutoprint() == false) {
+                ex.printStackTrace();
+            }
+
             //4.停止服务并退出（主要是停止插件）
             Solon.stop0(true, 0);
             return null;
