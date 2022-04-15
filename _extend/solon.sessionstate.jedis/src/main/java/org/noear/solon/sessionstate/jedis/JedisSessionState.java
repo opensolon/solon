@@ -1,13 +1,11 @@
 package org.noear.solon.sessionstate.jedis;
 
 import org.noear.redisx.RedisClient;
-import org.noear.snack.ONode;
-import org.noear.snack.core.Feature;
-import org.noear.snack.core.Options;
 import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerConstants;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.SessionState;
+import org.noear.solon.data.cache.Serializer;
 
 import java.util.Collection;
 
@@ -31,8 +29,10 @@ public class JedisSessionState implements SessionState {
 
     private Context ctx;
     private RedisClient redisClient;
+    private Serializer<String> serializer;
     protected JedisSessionState(Context ctx){
         this.ctx = ctx;
+        this.serializer = JavabinSerializer.instance;
         this.redisClient = JedisSessionStateFactory.getInstance().redisClient();
     }
 
@@ -104,32 +104,16 @@ public class JedisSessionState implements SessionState {
 
     @Override
     public Object sessionGet(String key) {
-        String json = redisClient.openAndGet((ru) -> ru.key(sessionId()).expire(_expiry).hashGet(key));
+        String val = redisClient.openAndGet((ru) -> ru.key(sessionId()).expire(_expiry).hashGet(key));
 
-        if(json == null){
+        if (val == null) {
             return null;
         }
 
-        ONode tmp = ONode.loadStr(json);
-        String type = tmp.get("t").getString();
-        ONode data = tmp.get("d");
-
-
         try {
-            switch (type){
-                case "Null":return null;
-                case "Short":return data.val().getShort();
-                case "Integer":return data.val().getInt();
-                case "Long":return data.val().getLong();
-                case "Float":return data.val().getFloat();
-                case "Double":return data.val().getDouble();
-                case "Date":return data.val().getDate();
-                case "Boolean":return data.val().getBoolean();
-                default:return data.toObject();
-            }
-
-        }catch (Exception ex){
-            throw new RuntimeException("Session state deserialization error: "+ key + " = " + json);
+            return serializer.deserialize(val);
+        } catch (Exception e) {
+            throw new RuntimeException("Session state deserialization error: " + key + " = " + val, e);
         }
     }
 
@@ -138,17 +122,13 @@ public class JedisSessionState implements SessionState {
         if (val == null) {
             sessionRemove(key);
         } else {
-            ONode tmp = new ONode();
             try {
-                tmp.set("t", val.getClass().getSimpleName());
-                tmp.set("d", ONode.loadObj(val, Options.serialize().remove(Feature.BrowserCompatible)));
-            } catch (Exception ex) {
-                throw new RuntimeException("Session state serialization error: " + key + " = " + val);
+                String json = serializer.serialize(val);
+
+                redisClient.open((ru) -> ru.key(sessionId()).expire(_expiry).hashSet(key, json));
+            } catch (Exception e) {
+                throw new RuntimeException("Session state serialization error: " + key + " = " + val, e);
             }
-
-            String json = tmp.toJson();
-
-            redisClient.open((ru) -> ru.key(sessionId()).expire(_expiry).hashSet(key, json));
         }
     }
 
