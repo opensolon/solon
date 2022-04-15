@@ -2,11 +2,13 @@
 * 新增 hasordb-solon-plugin 插件
 * 新增 solon.cache.redisson 插件
 * 新增 solon.sessionstate.redisson 插件
-* 新增 solon.sessionstate.jedis 插件
+* 新增 solon.sessionstate.jedis 插件（替代旧的 solon.extend.sessionstate.redis）
+* 新增 solon.sessionstate.local 插件（替代旧的 solon.extend.sessionstate.local）
 * 添加 CloudBreakerService /root 配置支持(可支持动态创建)
 * 添加 MethodWrap::getArounds() 接口
 * 调整 Action::bean() 更名为 controller()
 * 调整 Gateway 内部路由改为 RoutingTable 接口，支持 method（之前为 Map）
+* 调整 属性注入的异常透传机制
 * 插件 beetlsql-solon-plugin 升级 beetlsql 为 3.14.0
 * snack3 升级为：3.2.20
 * redisx 升级为：1.4.1
