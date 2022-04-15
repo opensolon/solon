@@ -3,7 +3,9 @@ package org.noear.solon.sessionstate.redisson;
 import org.noear.solon.Utils;
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
+import org.redisson.config.ClusterServersConfig;
 import org.redisson.config.Config;
+import org.redisson.config.SingleServerConfig;
 
 import java.util.Properties;
 
@@ -45,18 +47,27 @@ public class RedissonBuilder {
         // 开始实例化 redissonClient
         //
         Config config = new Config();
-        Utils.injectProperties(config, prop);
 
         if (server_str.contains(",")) {
             //集群
-            config.useClusterServers()
-                    .addNodeAddress(server_str.split(","))
+            ClusterServersConfig serverConfig = config.useClusterServers();
+
+            //注入一般配置
+            Utils.injectProperties(serverConfig, prop);
+
+            //设置关键配置
+            serverConfig.addNodeAddress(server_str.split(","))
                     .setUsername(user_str)
                     .setPassword(password_str);
         } else {
             //单例
-            config.useSingleServer()
-                    .setAddress(server_str)
+            SingleServerConfig serverConfig = config.useSingleServer();
+
+            //注入一般配置
+            Utils.injectProperties(serverConfig, prop);
+
+            //设置关键配置
+            serverConfig.setAddress(server_str)
                     .setUsername(user_str)
                     .setPassword(password_str)
                     .setDatabase(db);

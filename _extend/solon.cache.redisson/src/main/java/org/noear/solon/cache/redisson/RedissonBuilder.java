@@ -3,7 +3,9 @@ package org.noear.solon.cache.redisson;
 import org.noear.solon.Utils;
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
+import org.redisson.config.ClusterServersConfig;
 import org.redisson.config.Config;
+import org.redisson.config.SingleServerConfig;
 
 import java.util.Properties;
 
@@ -24,9 +26,8 @@ public class RedissonBuilder {
      *   maxTotal: 200 #默认为 200，可不配
      *   ...
      * </pre></code>
-     *
-     * */
-    public static RedissonClient build(Properties prop){
+     */
+    public static RedissonClient build(Properties prop) {
         String server_str = prop.getProperty("server");
         String db_str = prop.getProperty("db");
         String maxTotal_str = prop.getProperty("maxTotal");
@@ -49,18 +50,27 @@ public class RedissonBuilder {
         // 开始实例化 redissonClient
         //
         Config config = new Config();
-        Utils.injectProperties(config, prop);
 
-        if(server_str.contains(",")){
+        if (server_str.contains(",")) {
             //集群
-            config.useClusterServers()
-                    .addNodeAddress(server_str.split(","))
+            ClusterServersConfig serverConfig = config.useClusterServers();
+
+            //注入一般配置
+            Utils.injectProperties(serverConfig, prop);
+
+            //设置关键配置
+            serverConfig.addNodeAddress(server_str.split(","))
                     .setUsername(user_str)
                     .setPassword(password_str);
-        }else{
+        } else {
             //单例
-            config.useSingleServer()
-                    .setAddress(server_str)
+            SingleServerConfig serverConfig = config.useSingleServer();
+
+            //注入一般配置
+            Utils.injectProperties(serverConfig, prop);
+
+            //设置关键配置
+            serverConfig.setAddress(server_str)
                     .setUsername(user_str)
                     .setPassword(password_str)
                     .setDatabase(db);
