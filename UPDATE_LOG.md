@@ -13,8 +13,8 @@
 * snack3 升级为：3.2.20
 * redisx 升级为：1.4.1
 
-* 新增 solon-maven-plugin 打包插件
-* 新增 solon-swagger-knife4j 文档插件
+* 新增 solon-maven-plugin 打包插件[试用阶段]
+* 新增 solon-swagger-knife4j 文档插件[试用阶段]
 
 #### 1.7.1
 * 函数名 handler 更名为：handle
