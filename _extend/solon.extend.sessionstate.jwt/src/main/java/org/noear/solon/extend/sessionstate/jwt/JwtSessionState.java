@@ -3,7 +3,7 @@ package org.noear.solon.extend.sessionstate.jwt;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.impl.DefaultClaims;
 import org.noear.solon.Utils;
-import org.noear.solon.boot.web.WebSessionStateBase;
+import org.noear.solon.boot.web.SessionStateBase;
 import org.noear.solon.core.handle.Context;
 
 import java.util.Collection;
@@ -13,7 +13,7 @@ import java.util.ServiceConfigurationError;
  * @author noear
  * @since 1.3
  */
-public class JwtSessionState extends WebSessionStateBase {
+public class JwtSessionState extends SessionStateBase {
     /**
      * 单位：秒
      * */

@@ -1,7 +1,7 @@
 package org.noear.solon.extend.sessionstate.local;
 
 import org.noear.solon.Utils;
-import org.noear.solon.boot.web.WebSessionStateBase;
+import org.noear.solon.boot.web.SessionStateBase;
 import org.noear.solon.core.handle.Context;
 
 import java.util.Collection;
@@ -10,7 +10,7 @@ import java.util.Collection;
 /**
  * 它会是个单例，不能有上下文数据
  * */
-public class LocalSessionState extends WebSessionStateBase {
+public class LocalSessionState extends SessionStateBase {
     private static int _expiry = 60 * 60 * 2;
     private static String _domain = null;
     private static ScheduledStore _store;

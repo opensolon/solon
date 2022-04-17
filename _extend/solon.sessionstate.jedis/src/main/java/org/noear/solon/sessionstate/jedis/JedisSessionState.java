@@ -2,7 +2,7 @@ package org.noear.solon.sessionstate.jedis;
 
 import org.noear.redisx.RedisClient;
 import org.noear.solon.Utils;
-import org.noear.solon.boot.web.WebSessionStateBase;
+import org.noear.solon.boot.web.SessionStateBase;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.data.cache.Serializer;
 
@@ -11,7 +11,7 @@ import java.util.Collection;
 /**
  * 它会是个单例，不能有上下文数据
  * */
-public class JedisSessionState extends WebSessionStateBase {
+public class JedisSessionState extends SessionStateBase {
     private static int _expiry =  60 * 60 * 2;
     private static String _domain=null;
 

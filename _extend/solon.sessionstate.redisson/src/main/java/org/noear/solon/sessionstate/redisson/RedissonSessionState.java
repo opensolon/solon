@@ -1,7 +1,7 @@
 package org.noear.solon.sessionstate.redisson;
 
 import org.noear.solon.Utils;
-import org.noear.solon.boot.web.WebSessionStateBase;
+import org.noear.solon.boot.web.SessionStateBase;
 import org.noear.solon.core.handle.Context;
 import org.redisson.api.RMapCache;
 import org.redisson.api.RedissonClient;
@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * 它会是个单例，不能有上下文数据
  * */
-public class RedissonSessionState extends WebSessionStateBase {
+public class RedissonSessionState extends SessionStateBase {
     private static int _expiry =  60 * 60 * 2;
     private static String _domain=null;
 

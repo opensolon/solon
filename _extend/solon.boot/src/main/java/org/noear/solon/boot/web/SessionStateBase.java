@@ -8,7 +8,7 @@ import org.noear.solon.core.handle.SessionState;
  * @author noear
  * @since 1.7
  */
-public abstract class WebSessionStateBase implements SessionState {
+public abstract class SessionStateBase implements SessionState {
     protected abstract String cookieGet(String key);
 
     protected abstract void cookieSet(String key, String val);

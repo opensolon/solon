@@ -5,7 +5,7 @@ import org.noear.snack.ONode;
 import org.noear.snack.core.Options;
 import org.noear.snack.core.Feature;
 import org.noear.solon.Utils;
-import org.noear.solon.boot.web.WebSessionStateBase;
+import org.noear.solon.boot.web.SessionStateBase;
 import org.noear.solon.core.handle.Context;
 
 import java.util.Collection;
@@ -13,7 +13,7 @@ import java.util.Collection;
 /**
  * 它会是个单例，不能有上下文数据
  * */
-public class RedisSessionState extends WebSessionStateBase {
+public class RedisSessionState extends SessionStateBase {
     private static int _expiry =  60 * 60 * 2;
     private static String _domain=null;
 
