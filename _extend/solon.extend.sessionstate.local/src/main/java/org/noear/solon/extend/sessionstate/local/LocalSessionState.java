@@ -117,9 +117,9 @@ public class LocalSessionState extends SessionStateBase {
 
     @Override
     public void sessionRefresh() {
-        String skey = sessionIdPush();
+        String sid = sessionIdPush();
 
-        if (Utils.isEmpty(skey) == false) {
+        if (Utils.isEmpty(sid) == false) {
             _store.delay(sessionId());
         }
     }

@@ -263,17 +263,17 @@
         <!--            <artifactId>solon.boot.reactor-netty</artifactId>-->
         <!--        </dependency>-->
 
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.sessionstate.jwt</artifactId>
-        </dependency>
-
-
-
 <!--        <dependency>-->
 <!--            <groupId>org.noear</groupId>-->
-<!--            <artifactId>solon.sessionstate.redis</artifactId>-->
+<!--            <artifactId>solon.sessionstate.jwt</artifactId>-->
 <!--        </dependency>-->
+
+
+
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.sessionstate.jedis</artifactId>
+        </dependency>
 <!--        <dependency>-->
 <!--            <groupId>org.noear</groupId>-->
 <!--            <artifactId>solon.sessionstate.local</artifactId>-->

@@ -14,17 +14,17 @@ public abstract class SessionStateBase implements SessionState {
     protected abstract void cookieSet(String key, String val);
 
     protected String sessionIdGet(boolean reset) {
-        String skey = cookieGet(ServerConstants.SESSIONID_KEY);
+        String sid = cookieGet(ServerConstants.SESSIONID_KEY);
 
         if (reset == false) {
-            if (Utils.isEmpty(skey) == false && skey.length() > 30) {
-                return skey;
+            if (Utils.isEmpty(sid) == false && sid.length() > 30) {
+                return sid;
             }
         }
 
-        skey = Utils.guid();
-        cookieSet(ServerConstants.SESSIONID_KEY, skey);
-        return skey;
+        sid = Utils.guid();
+        cookieSet(ServerConstants.SESSIONID_KEY, sid);
+        return sid;
     }
 
     protected String sessionIdPush() {

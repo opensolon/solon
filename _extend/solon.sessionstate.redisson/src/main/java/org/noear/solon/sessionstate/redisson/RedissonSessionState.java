@@ -122,9 +122,9 @@ public class RedissonSessionState extends SessionStateBase {
 
     @Override
     public void sessionRefresh() {
-        String skey = sessionIdPush();
+        String sid = sessionIdPush();
 
-        if (Utils.isEmpty(skey) == false) {
+        if (Utils.isEmpty(sid) == false) {
             RMapCache<String, Object> hash = redisClient.getMapCache(sessionId());
             hash.expire(_expiry, TimeUnit.SECONDS);
         }
