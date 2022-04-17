@@ -21,7 +21,7 @@ public class CloudEventSubscribeBeanBuilder implements BeanBuilder<CloudEventSub
     @Override
     public void doBuild(Class<?> clz, BeanWrap bw, CloudEventSubscribe anno) throws Exception {
         if (CloudClient.event() == null) {
-            throw new IllegalArgumentException("Missing CloudEventService component");
+            throw new IllegalStateException("Missing CloudEventService component");
         }
 
         if (bw.raw() instanceof CloudEventHandlerPlus) {
