@@ -1,4 +1,7 @@
-#### 1.7.3-M1
+#### 1.7.3
+* 新增 SessionStateBase
+
+#### 1.7.2
 * 新增 hasordb-solon-plugin 插件
 * 新增 solon.cache.redisson 插件
 * 新增 solon.sessionstate.redisson 插件
