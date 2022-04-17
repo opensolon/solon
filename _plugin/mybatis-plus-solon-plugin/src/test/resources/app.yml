@@ -20,5 +20,6 @@ mybatis:
       mapUnderscoreToCamelCase: true
     globalConfig:
       banner: false
+      metaObjectHandler: "demo.dso.MetaObjectHandlerImpl"
       dbConfig:
         logicDeleteField: "deleted"

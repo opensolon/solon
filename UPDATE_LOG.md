@@ -1,6 +1,6 @@
 #### 1.7.3
 * 新增 SessionStateBase
-* 调整 session-id-key 可配置
+* 调整 session-id-key 可配置 "server.session.cookieName"
 
 #### 1.7.2
 * 新增 hasordb-solon-plugin 插件
