@@ -2,9 +2,8 @@ package org.noear.solon.sessionstate.jedis;
 
 import org.noear.redisx.RedisClient;
 import org.noear.solon.Utils;
-import org.noear.solon.boot.ServerConstants;
+import org.noear.solon.boot.web.WebSessionStateBase;
 import org.noear.solon.core.handle.Context;
-import org.noear.solon.core.handle.SessionState;
 import org.noear.solon.data.cache.Serializer;
 
 import java.util.Collection;
@@ -12,7 +11,7 @@ import java.util.Collection;
 /**
  * 它会是个单例，不能有上下文数据
  * */
-public class JedisSessionState implements SessionState {
+public class JedisSessionState extends WebSessionStateBase {
     private static int _expiry =  60 * 60 * 2;
     private static String _domain=null;
 
@@ -39,11 +38,12 @@ public class JedisSessionState implements SessionState {
     //
     // cookies control
     //
-
-    public  String cookieGet(String key){
+    @Override
+    protected  String cookieGet(String key){
         return ctx.cookie(key);
     }
-    public  void   cookieSet(String key, String val) {
+    @Override
+    protected  void   cookieSet(String key, String val) {
         if (SessionProp.session_state_domain_auto) {
             if (_domain != null) {
                 if(ctx.uri().getHost().indexOf(_domain) < 0){ //非安全域
@@ -84,23 +84,6 @@ public class JedisSessionState implements SessionState {
         return redisClient.openAndGet((ru) -> ru.key(sessionId()).hashGetAllKeys());
     }
 
-    private String sessionIdGet(boolean reset) {
-        String skey = cookieGet(ServerConstants.SESSIONID_KEY);
-        String smd5 = cookieGet(ServerConstants.SESSIONID_MD5_KEY);
-
-        if(reset == false) {
-            if (Utils.isEmpty(skey) == false && Utils.isEmpty(smd5) == false) {
-                if (Utils.md5(skey + ServerConstants.SESSIONID_salt).equals(smd5)) {
-                    return skey;
-                }
-            }
-        }
-
-        skey = Utils.guid();
-        cookieSet(ServerConstants.SESSIONID_KEY, skey);
-        cookieSet(ServerConstants.SESSIONID_MD5_KEY, Utils.md5(skey + ServerConstants.SESSIONID_salt));
-        return skey;
-    }
 
     @Override
     public Object sessionGet(String key) {
@@ -150,12 +133,9 @@ public class JedisSessionState implements SessionState {
 
     @Override
     public void sessionRefresh() {
-        String skey = cookieGet(ServerConstants.SESSIONID_KEY);
+        String skey = sessionIdPush();
 
         if (Utils.isEmpty(skey) == false) {
-            cookieSet(ServerConstants.SESSIONID_KEY, skey);
-            cookieSet(ServerConstants.SESSIONID_MD5_KEY, EncryptUtil.md5(skey + ServerConstants.SESSIONID_salt));
-
             redisClient.open((ru)->ru.key(sessionId()).expire(_expiry).delay());
         }
     }

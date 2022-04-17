@@ -3,9 +3,8 @@ package org.noear.solon.extend.sessionstate.jwt;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.impl.DefaultClaims;
 import org.noear.solon.Utils;
-import org.noear.solon.boot.ServerConstants;
+import org.noear.solon.boot.web.WebSessionStateBase;
 import org.noear.solon.core.handle.Context;
-import org.noear.solon.core.handle.SessionState;
 
 import java.util.Collection;
 import java.util.ServiceConfigurationError;
@@ -14,7 +13,7 @@ import java.util.ServiceConfigurationError;
  * @author noear
  * @since 1.3
  */
-public class JwtSessionState implements SessionState {
+public class JwtSessionState extends WebSessionStateBase {
     /**
      * 单位：秒
      * */
@@ -40,12 +39,12 @@ public class JwtSessionState implements SessionState {
     //
     // cookies control
     //
-
-    public String cookieGet(String key) {
+    @Override
+    protected String cookieGet(String key) {
         return ctx.cookie(key);
     }
-
-    public void cookieSet(String key, String val) {
+    @Override
+    protected void cookieSet(String key, String val) {
         if (SessionProp.session_state_domain_auto) {
             if (_domain != null) {
                 if (ctx.uri().getHost().indexOf(_domain) < 0) { //非安全域
@@ -72,7 +71,7 @@ public class JwtSessionState implements SessionState {
         String _sessionId = ctx.attr("sessionId", null);
 
         if (_sessionId == null) {
-            _sessionId = sessionId_get(false);
+            _sessionId = sessionIdGet(false);
             ctx.attrSet("sessionId", _sessionId);
         }
 
@@ -81,7 +80,7 @@ public class JwtSessionState implements SessionState {
 
     @Override
     public String sessionChangeId() {
-        sessionId_get(true);
+        sessionIdGet(true);
         ctx.attrSet("sessionId", null);
         return sessionId();
     }
@@ -89,24 +88,6 @@ public class JwtSessionState implements SessionState {
     @Override
     public Collection<String> sessionKeys() {
         return sessionMap.keySet();
-    }
-
-    private String sessionId_get(boolean reset) {
-        String skey = cookieGet(ServerConstants.SESSIONID_KEY);
-        String smd5 = cookieGet(ServerConstants.SESSIONID_MD5_KEY);
-
-        if(reset == false) {
-            if (Utils.isEmpty(skey) == false && Utils.isEmpty(smd5) == false) {
-                if (Utils.md5(skey + ServerConstants.SESSIONID_salt).equals(smd5)) {
-                    return skey;
-                }
-            }
-        }
-
-        skey = Utils.guid();
-        cookieSet(ServerConstants.SESSIONID_KEY, skey);
-        cookieSet(ServerConstants.SESSIONID_MD5_KEY, Utils.md5(skey + ServerConstants.SESSIONID_salt));
-        return skey;
     }
 
     private Claims sessionMap;
@@ -185,12 +166,7 @@ public class JwtSessionState implements SessionState {
             return;
         }
 
-        String skey = cookieGet(ServerConstants.SESSIONID_KEY);
-
-        if (Utils.isNotEmpty(skey)) {
-            cookieSet(ServerConstants.SESSIONID_KEY, skey);
-            cookieSet(ServerConstants.SESSIONID_MD5_KEY, Utils.md5(skey + ServerConstants.SESSIONID_salt));
-        }
+        sessionIdPush();
     }
 
     @Override

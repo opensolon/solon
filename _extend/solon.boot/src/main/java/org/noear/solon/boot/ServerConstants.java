@@ -25,6 +25,4 @@ public class ServerConstants {
 
 
     public final static String SESSIONID_KEY = "SOLONID";
-    public final static String SESSIONID_MD5_KEY = "SOLONID2";
-    public final static String SESSIONID_salt = "&L8e!@T0";
 }
