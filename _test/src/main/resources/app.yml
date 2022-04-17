@@ -34,7 +34,7 @@ solon.locale: "en_US"
 
 solon.cloud.local:
   breaker:
-    test: 1
+    root: 1
   discovery:
     service:
       local:
