@@ -28,6 +28,8 @@ server.request.maxFileSize: -1 #kb,mb #如果没有配置，采用 maxBodySize �
 
 #设定会话超时秒数（单位：秒）
 server.session.timeout: 3600
+#设定会话id的cookieName
+server.session.cookieName: "SOLONID"
 #设定会话状态的cookie域（默认为当前域名）
 server.session.state.domain: noear.org
 

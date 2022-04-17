@@ -23,6 +23,9 @@ public class ServerConstants {
     public static final String SSL_KEYSTORE_TYPE = "javax.net.ssl.keyStoreType";
     public static final String SSL_KEYSTORE_PASSWORD = "javax.net.ssl.keyStorePassword";
 
+    public final static String SESSIONID_KEY;
 
-    public final static String SESSIONID_KEY = "SOLONID";
+    static {
+        SESSIONID_KEY = System.getProperty("server.session.cookieName", "SOLONID");
+    }
 }
