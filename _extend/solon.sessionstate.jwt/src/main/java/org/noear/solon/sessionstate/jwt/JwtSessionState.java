@@ -93,7 +93,7 @@ public class JwtSessionState implements SessionState {
 
     private String sessionId_get(boolean reset) {
         String skey = cookieGet(ServerConstants.SESSIONID_KEY);
-        String smd5 = cookieGet(ServerConstants.SESSIONID_MD5());
+        String smd5 = cookieGet(ServerConstants.SESSIONID_MD5_KEY);
 
         if(reset == false) {
             if (Utils.isEmpty(skey) == false && Utils.isEmpty(smd5) == false) {
@@ -105,7 +105,7 @@ public class JwtSessionState implements SessionState {
 
         skey = Utils.guid();
         cookieSet(ServerConstants.SESSIONID_KEY, skey);
-        cookieSet(ServerConstants.SESSIONID_MD5(), Utils.md5(skey + ServerConstants.SESSIONID_salt));
+        cookieSet(ServerConstants.SESSIONID_MD5_KEY, Utils.md5(skey + ServerConstants.SESSIONID_salt));
         return skey;
     }
 
@@ -189,7 +189,7 @@ public class JwtSessionState implements SessionState {
 
         if (Utils.isNotEmpty(skey)) {
             cookieSet(ServerConstants.SESSIONID_KEY, skey);
-            cookieSet(ServerConstants.SESSIONID_MD5(), Utils.md5(skey + ServerConstants.SESSIONID_salt));
+            cookieSet(ServerConstants.SESSIONID_MD5_KEY, Utils.md5(skey + ServerConstants.SESSIONID_salt));
         }
     }
 

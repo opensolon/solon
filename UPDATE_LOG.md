@@ -1,4 +1,4 @@
-#### 1.7.2
+#### 1.7.3-M1
 * 新增 hasordb-solon-plugin 插件
 * 新增 solon.cache.redisson 插件
 * 新增 solon.sessionstate.redisson 插件
