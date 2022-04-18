@@ -80,6 +80,7 @@ server:
     autoMultipart: false
   session:
     timeout: 7200 #单位秒；（可不配，默认：7200）
+    cookieName: "i8Vn"
     state:
       redis:
         server: localhost:6379
