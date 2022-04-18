@@ -14,6 +14,11 @@ public class ServerProps {
     public static final boolean output_meta;
 
     /**
+     * 会话标识 key
+     * */
+    public static final String session_cookieName;
+
+    /**
      * 请求编码
      * */
     public static final String request_encoding;
@@ -47,6 +52,8 @@ public class ServerProps {
     static {
         String tmp = null;
         output_meta = Solon.cfg().getInt("solon.output.meta", 0) > 0;
+
+        session_cookieName = System.getProperty(ServerConstants.SERVER_SESSION_COOKIENAME, "SOLONID");
 
 
         //

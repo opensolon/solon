@@ -14,6 +14,8 @@ public class ServerConstants {
     public static final String SERVER_WEBSOCKET_NAME = "server.websocket.name";
     public static final String SERVER_WEBSOCKET_PORT = "server.websocket.port";
 
+    public static final String SERVER_SESSION_COOKIENAME = "server.session.cookieName";
+
 
     public static final String SERVER_KEY_STORE = "server.ssl.keyStore";
     public static final String SERVER_KEY_TYPE = "server.ssl.keyType";
@@ -22,10 +24,4 @@ public class ServerConstants {
     public static final String SSL_KEYSTORE = "javax.net.ssl.keyStore";
     public static final String SSL_KEYSTORE_TYPE = "javax.net.ssl.keyStoreType";
     public static final String SSL_KEYSTORE_PASSWORD = "javax.net.ssl.keyStorePassword";
-
-    public final static String SESSIONID_KEY;
-
-    static {
-        SESSIONID_KEY = System.getProperty("server.session.cookieName", "SOLONID");
-    }
 }

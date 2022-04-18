@@ -1,7 +1,7 @@
 package org.noear.solon.boot.web;
 
 import org.noear.solon.Utils;
-import org.noear.solon.boot.ServerConstants;
+import org.noear.solon.boot.ServerProps;
 import org.noear.solon.core.handle.SessionState;
 
 /**
@@ -14,7 +14,7 @@ public abstract class SessionStateBase implements SessionState {
     protected abstract void cookieSet(String key, String val);
 
     protected String sessionIdGet(boolean reset) {
-        String sid = cookieGet(ServerConstants.SESSIONID_KEY);
+        String sid = cookieGet(ServerProps.session_cookieName);
 
         if (reset == false) {
             if (Utils.isEmpty(sid) == false && sid.length() > 30) {
@@ -23,15 +23,15 @@ public abstract class SessionStateBase implements SessionState {
         }
 
         sid = Utils.guid();
-        cookieSet(ServerConstants.SESSIONID_KEY, sid);
+        cookieSet(ServerProps.session_cookieName, sid);
         return sid;
     }
 
     protected String sessionIdPush() {
-        String skey = cookieGet(ServerConstants.SESSIONID_KEY);
+        String skey = cookieGet(ServerProps.session_cookieName);
 
         if (Utils.isNotEmpty(skey)) {
-            cookieSet(ServerConstants.SESSIONID_KEY, skey);
+            cookieSet(ServerProps.session_cookieName, skey);
         }
 
         return skey;
