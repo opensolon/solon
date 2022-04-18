@@ -24,4 +24,7 @@ public class ServerConstants {
     public static final String SSL_KEYSTORE = "javax.net.ssl.keyStore";
     public static final String SSL_KEYSTORE_TYPE = "javax.net.ssl.keyStoreType";
     public static final String SSL_KEYSTORE_PASSWORD = "javax.net.ssl.keyStorePassword";
+
+    @Deprecated
+    public final static String SESSIONID_MD5_SALT = "&L8e!@T0";
 }

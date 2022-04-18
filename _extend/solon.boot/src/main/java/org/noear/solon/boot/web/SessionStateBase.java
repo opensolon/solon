@@ -1,6 +1,7 @@
 package org.noear.solon.boot.web;
 
 import org.noear.solon.Utils;
+import org.noear.solon.boot.ServerConstants;
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.core.handle.SessionState;
 
@@ -24,6 +25,9 @@ public abstract class SessionStateBase implements SessionState {
 
         sid = Utils.guid();
         cookieSet(ServerProps.session_cookieName, sid);
+        //监容旧的策略
+        cookieSet(ServerProps.session_cookieName2, Utils.md5(sid + ServerConstants.SESSIONID_MD5_SALT));
+
         return sid;
     }
 

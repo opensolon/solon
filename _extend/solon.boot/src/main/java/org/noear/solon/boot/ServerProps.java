@@ -17,6 +17,11 @@ public class ServerProps {
      * 会话标识 key
      * */
     public static final String session_cookieName;
+    /**
+     * 会话标识 key2（兼容旧策略）
+     * */
+    @Deprecated
+    public static final String session_cookieName2;
 
     /**
      * 请求编码
@@ -54,6 +59,7 @@ public class ServerProps {
         output_meta = Solon.cfg().getInt("solon.output.meta", 0) > 0;
 
         session_cookieName = System.getProperty(ServerConstants.SERVER_SESSION_COOKIENAME, "SOLONID");
+        session_cookieName2 = session_cookieName+"2";
 
 
         //
