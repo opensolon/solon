@@ -1,4 +1,4 @@
-package org.noear.solon.extend.dubbo.integration;
+package org.noear.solon.extend.dubbo3.integration;
 
 import org.apache.dubbo.config.annotation.Method;
 import org.apache.dubbo.config.annotation.Reference;

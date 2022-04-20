@@ -1,4 +1,4 @@
-package org.noear.solon.extend.dubbo;
+package org.noear.solon.extend.dubbo3;
 
 import org.apache.dubbo.config.*;
 import org.apache.dubbo.config.annotation.Reference;
@@ -48,7 +48,8 @@ public class DubboAdapter {
                 application.setMonitor(monitor);
             }
 
-            ApplicationModel.getConfigManager().addConfig(application);
+            ApplicationModel.defaultModel().getApplicationConfigManager()
+                    .addConfig(application);
         }
 
 
@@ -61,7 +62,8 @@ public class DubboAdapter {
                 props.put("address", "A/N");
             }
             registry.setParameters(props);
-            ApplicationModel.getConfigManager().addRegistry(registry);
+            ApplicationModel.defaultModel().getApplicationConfigManager()
+                    .addRegistry(registry);
         }
 
 
@@ -83,13 +85,14 @@ public class DubboAdapter {
                 protocol.setPort(port);
             }
 
-            ApplicationModel.getConfigManager().addProtocol(protocol);
+            ApplicationModel.defaultModel().getApplicationConfigManager()
+                    .addProtocol(protocol);
         }
 
         // 服务消费者配置
         //
         {
-            ConsumerConfig  consumer = new ConsumerConfig();
+            ConsumerConfig consumer = new ConsumerConfig();
             props = Solon.cfg().getXmap("dubbo.consumer");
             if (props.containsKey("check") == false) {
                 props.put("check", "false");
@@ -99,7 +102,8 @@ public class DubboAdapter {
             }
 
             consumer.setParameters(props);
-            ApplicationModel.getConfigManager().addConsumer(consumer);
+            ApplicationModel.defaultModel().getApplicationConfigManager()
+                    .addConfig(consumer);
         }
     }
 
