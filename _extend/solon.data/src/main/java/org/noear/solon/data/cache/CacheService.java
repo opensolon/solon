@@ -18,12 +18,7 @@ public interface CacheService {
      */
     void store(String key, Object obj, int seconds);
 
-    /**
-     * 获取
-     *
-     * @param key 缓存键
-     */
-    Object get(String key);
+
 
     /**
      * 移除
@@ -32,14 +27,13 @@ public interface CacheService {
      */
     void remove(String key);
 
+
     /**
-     * 缓存标签管理器
+     * 获取
      *
-     * @since 1.7
+     * @param key 缓存键
      */
-    default CacheTags tags() {
-        return new CacheTags(this);
-    }
+    Object get(String key);
 
     /**
      * 获取或者存储
