@@ -1,5 +1,7 @@
 package org.noear.solon.data.cache;
 
+import java.util.function.Supplier;
+
 /**
  * 缓存服务接口（用于支持@Cache相关注解）
  *
@@ -32,9 +34,25 @@ public interface CacheService {
 
     /**
      * 缓存标签管理器
+     *
      * @since 1.7
      */
     default CacheTags tags() {
         return new CacheTags(this);
+    }
+
+    /**
+     * 获取或者存储
+     *
+     * @since 1.7
+     */
+    default <T> T getOrStore(String key, int seconds, Supplier supplier) {
+        Object obj = get(key);
+        if (obj == null) {
+            obj = supplier.get();
+            store(key, obj, seconds);
+        }
+
+        return (T) obj;
     }
 }
