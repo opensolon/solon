@@ -4,7 +4,7 @@ import java.util.Properties;
 import java.util.function.Supplier;
 
 /**
- * CacheService 供应者
+ * CacheService 供应者，根据注册的工厂获取对应的缓存服务
  *
  * @author noear
  * @since 1.5
