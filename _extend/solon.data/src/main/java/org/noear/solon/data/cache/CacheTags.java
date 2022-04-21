@@ -5,6 +5,9 @@ import java.util.List;
 
 /**
  * 缓存标签管理器
+ *
+ * @author noear
+ * @since 1.0
  * */
 public class CacheTags {
     private CacheService _cache;

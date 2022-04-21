@@ -10,8 +10,8 @@ public interface CacheService {
     /**
      * 保存
      *
-     * @param key 缓存键
-     * @param obj 对象
+     * @param key     缓存键
+     * @param obj     对象
      * @param seconds 秒数
      */
     void store(String key, Object obj, int seconds);
@@ -29,4 +29,12 @@ public interface CacheService {
      * @param key 缓存键
      */
     void remove(String key);
+
+    /**
+     * 缓存标签管理器
+     * @since 1.7
+     */
+    default CacheTags tags() {
+        return new CacheTags(this);
+    }
 }
