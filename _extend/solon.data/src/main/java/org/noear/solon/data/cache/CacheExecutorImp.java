@@ -63,7 +63,7 @@ public class CacheExecutorImp {
 
                     if (Utils.isNotEmpty(anno.tags())) {
                         String tags = InvKeys.buildByTmlAndInv(anno.tags(), inv, result);
-                        CacheTags ct = new CacheTags(cs);
+                        CacheTags ct = cs.tags();
 
                         //4.添加缓存标签
                         for (String tag : tags.split(",")) {
@@ -94,7 +94,7 @@ public class CacheExecutorImp {
         //按 tags 清除缓存
         if (Utils.isNotEmpty(anno.tags())) {
             String tags = InvKeys.buildByTmlAndInv(anno.tags(), inv, rstValue);
-            CacheTags ct = new CacheTags(cs);
+            CacheTags ct = cs.tags();
 
             for (String tag : tags.split(",")) {
                 ct.remove(tag);
@@ -128,7 +128,7 @@ public class CacheExecutorImp {
         //按 tags 更新缓存
         if (Utils.isNotEmpty(anno.tags())) {
             String tags = InvKeys.buildByTmlAndInv(anno.tags(), inv, rstValue);
-            CacheTags ct = new CacheTags(cs);
+            CacheTags ct = cs.tags();
 
             for (String tag : tags.split(",")) {
                 ct.update(tag, rstValue, anno.seconds());
