@@ -94,6 +94,10 @@ public class CloudEventServiceManagerImpl implements CloudEventServiceManager {
             event.group(tmp.getGroup());
         }
 
+        if (Utils.isEmpty(event.key())) {
+            event.key(Utils.guid());
+        }
+
         return tmp.publish(event);
     }
 
