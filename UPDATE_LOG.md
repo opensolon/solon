@@ -7,6 +7,7 @@
 * redis 升级为：1.4.2
 * sqltoy 升级为：5.1.31
 * beetlsql 升级为：3.14
+* water 升级为：2.6.2
 
 #### 1.7.2
 * 新增 hasordb-solon-plugin 插件
@@ -22,7 +23,6 @@
 * 插件 beetlsql-solon-plugin 升级 beetlsql 为 3.14.0
 * snack3 升级为：3.2.20
 * redisx 升级为：1.4.1
-
 * 新增 solon-maven-plugin 打包插件[试用阶段]
 * 新增 solon-swagger-knife4j 文档插件[试用阶段]
 
