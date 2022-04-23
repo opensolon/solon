@@ -1,7 +1,7 @@
 #### 1.7.3
 * 新增 SessionStateBase
 * 调整 session-id-key 可配置 "server.session.cookieName"
-* 增加 配置注入支持 string 转换为 object
+* 增加 配置注入支持 string 按需转换为 object(bean)
 * snack3 升级为：3.2.21
 * weed3 升级为：3.4.24
 * redis 升级为：1.4.2
