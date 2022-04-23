@@ -1,8 +1,12 @@
 #### 1.7.3
 * 新增 SessionStateBase
 * 调整 session-id-key 可配置 "server.session.cookieName"
+* 增加 配置注入支持 string 转换为 object
 * snack3 升级为：3.2.21
-* weed3 升级为：3.4.23
+* weed3 升级为：3.4.24
+* redis 升级为：1.4.2
+* sqltoy 升级为：5.1.31
+* beetlsql 升级为：3.14
 
 #### 1.7.2
 * 新增 hasordb-solon-plugin 插件
