@@ -1,5 +1,6 @@
 #### 1.7.4
 * 插件 httputils-solon-plugin 增加对服务上游和地址的检测
+* 增加 NamiBuilder::timeout 接口
 * weed3 升级为：3.4.25
 * redisx 升级为：1.4.3
 
