@@ -87,26 +87,51 @@ public class SocketD {
 
     // rpc client //
 
+    /**
+     * 创建接口
+     *
+     * @param serverUri 服务端地址
+     * @param service 服务接口类型
+     * */
     public static <T> T create(URI serverUri, Class<T> service) {
         Session session = createSession(serverUri, true);
         return create(() -> session, service);
     }
 
+    /**
+     * 创建接口
+     *
+     * @param serverUri 服务端地址
+     * @param encoder 编码器
+     * @param decoder 解码器
+     * @param service 服务接口类型
+     * @since 1.7
+     * */
     public static <T> T create(URI serverUri, Encoder encoder, Decoder decoder, Class<T> service) {
         Session session = createSession(serverUri, true);
         return create(() -> session, encoder, decoder, service);
     }
 
+    /**
+     * 创建接口
+     * */
     public static <T> T create(String serverUri, Class<T> service) {
         Session session = createSession(serverUri, true);
         return create(() -> session, service);
     }
 
+    /**
+     * 创建接口
+     * @since 1.7
+     * */
     public static <T> T create(String serverUri, Encoder encoder, Decoder decoder, Class<T> service) {
         Session session = createSession(serverUri, true);
         return create(() -> session, encoder, decoder, service);
     }
 
+    /**
+     * 创建接口
+     * */
     public static <T> T create(Context context, Class<T> service) {
         if (context.request() instanceof Session) {
             Session session = (Session) context.request();
@@ -116,18 +141,30 @@ public class SocketD {
         }
     }
 
+    /**
+     * 创建接口
+     * */
     public static <T> T create(Session session, Class<T> service) {
         return create(() -> session, service);
     }
 
+    /**
+     * 创建接口
+     * */
     public static <T> T create(Supplier<Session> sessions, Class<T> service) {
         return create(sessions, null, null, service);
     }
 
+    /**
+     * 创建接口
+     * */
     public static <T> T create(Session session, Encoder encoder, Decoder decoder, Class<T> service) {
         return create(() -> session, encoder, decoder, service);
     }
 
+    /**
+     * 创建接口
+     * */
     public static <T> T create(Supplier<Session> sessions, Encoder encoder, Decoder decoder, Class<T> service) {
         URI uri = sessions.get().uri();
         if (uri == null) {
