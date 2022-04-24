@@ -1,6 +1,7 @@
 #### 1.7.4
 * 插件 httputils-solon-plugin 增加对服务上游和地址的检测
 * weed3 升级为：3.4.25
+* redisx 升级为：1.4.3
 
 #### 1.7.3
 * 新增 SessionStateBase
@@ -8,7 +9,7 @@
 * 增加 配置注入支持 string 按需转换为 object(bean)
 * snack3 升级为：3.2.21
 * weed3 升级为：3.4.24
-* redis 升级为：1.4.2
+* redisx 升级为：1.4.2
 * sqltoy 升级为：5.1.31
 * beetlsql 升级为：3.14
 * water 升级为：2.6.2
