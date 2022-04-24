@@ -1,3 +1,6 @@
+#### 1.7.4
+* 插件 httputils-solon-plugin 增加对服务上游和地址的检测
+
 #### 1.7.3
 * 新增 SessionStateBase
 * 调整 session-id-key 可配置 "server.session.cookieName"
