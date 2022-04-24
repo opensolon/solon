@@ -92,9 +92,19 @@ public class SocketD {
         return create(() -> session, service);
     }
 
+    public static <T> T create(URI serverUri, Encoder encoder, Decoder decoder, Class<T> service) {
+        Session session = createSession(serverUri, true);
+        return create(() -> session, encoder, decoder, service);
+    }
+
     public static <T> T create(String serverUri, Class<T> service) {
         Session session = createSession(serverUri, true);
         return create(() -> session, service);
+    }
+
+    public static <T> T create(String serverUri, Encoder encoder, Decoder decoder, Class<T> service) {
+        Session session = createSession(serverUri, true);
+        return create(() -> session, encoder, decoder, service);
     }
 
     public static <T> T create(Context context, Class<T> service) {
