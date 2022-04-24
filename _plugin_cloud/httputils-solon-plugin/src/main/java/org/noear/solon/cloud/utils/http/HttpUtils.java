@@ -87,12 +87,18 @@ public class HttpUtils {
     }
 
     private static String getServer(String group, String service) {
-        String server = null;
+        LoadBalance upstream = null;
         if (Utils.isEmpty(group)) {
-            server = LoadBalance.get(service).getServer();
+            upstream = LoadBalance.get(service);
         } else {
-            server = LoadBalance.get(group, service).getServer();
+            upstream = LoadBalance.get(group, service);
         }
+
+        if(upstream == null){
+            throw new IllegalArgumentException("No service upstream found: " + service);
+        }
+
+        String server = upstream.getServer();
 
         if (Utils.isEmpty(server)) {
             throw new IllegalArgumentException("No service address found: " + service);
