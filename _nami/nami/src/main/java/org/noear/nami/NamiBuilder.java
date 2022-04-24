@@ -66,23 +66,32 @@ public class NamiBuilder {
 
 
     /**
-     * 设置服务端
+     * 设置服务端地址
      */
     public NamiBuilder url(String url) {
         _config.setUrl(url);
         return this;
     }
 
+    /**
+     * 设置服务名字
+     */
     public NamiBuilder name(String name) {
         _config.setName(name);
         return this;
     }
 
+    /**
+     * 设置服务路径
+     */
     public NamiBuilder path(String path) {
         _config.setPath(path);
         return this;
     }
 
+    /**
+     * 设置服务分组
+     */
     public NamiBuilder group(String group) {
         _config.setGroup(group);
         return this;
