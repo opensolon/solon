@@ -176,7 +176,7 @@ public class SocketD {
         return Nami.builder()
                 .encoder(encoder)
                 .decoder(decoder)
-                .headerSet(Constants.HEADER_ACCEPT, Constants.CONTENT_TYPE_JSON) //相当于指定默认解码器
+                .headerSet(Constants.HEADER_ACCEPT, Constants.CONTENT_TYPE_JSON) //相当于指定默认解码器 //如果指定不同的编码器，会被盖掉
                 .headerSet(Constants.HEADER_CONTENT_TYPE, Constants.CONTENT_TYPE_JSON) //相当于指定默认编码器
                 .channel(new SocketChannel(sessions))
                 .upstream(() -> server)
