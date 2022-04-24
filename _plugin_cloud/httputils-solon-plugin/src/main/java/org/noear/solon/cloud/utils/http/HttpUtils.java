@@ -5,6 +5,7 @@ import okhttp3.internal.Util;
 import okio.BufferedSink;
 import okio.Okio;
 import okio.Source;
+import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.core.LoadBalance;
 
@@ -72,7 +73,7 @@ public class HttpUtils {
     }
 
     public static HttpUtils http(String service, String path, OkHttpClient client) {
-        String url = LoadBalance.get(service).getServer() + path;
+        String url = getServer(null, service) + path;
         return http(url, client);
     }
 
@@ -81,8 +82,23 @@ public class HttpUtils {
     }
 
     public static HttpUtils http(String group, String service, String path, OkHttpClient client) {
-        String url = LoadBalance.get(group, service).getServer() + path;
+        String url = getServer(group, service) + path;
         return http(url, client);
+    }
+
+    private static String getServer(String group, String service) {
+        String server = null;
+        if (Utils.isEmpty(group)) {
+            server = LoadBalance.get(service).getServer();
+        } else {
+            server = LoadBalance.get(group, service).getServer();
+        }
+
+        if (Utils.isEmpty(server)) {
+            throw new IllegalArgumentException("No service address found: " + service);
+        }
+
+        return server;
     }
 
 
