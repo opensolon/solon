@@ -21,13 +21,15 @@ public class NamiBuilder {
         _config = config;
     }
 
+
     /**
-     * 设置负载代理
-     */
-    public NamiBuilder upstream(Supplier<String> upstream) {
-        _config.setUpstream(upstream);
+     * @param timeout 单位秒
+     * */
+    public NamiBuilder timeout(int timeout) {
+        _config.setTimeout(timeout);
         return this;
     }
+
 
     /**
      * 设置序列化器
@@ -46,14 +48,6 @@ public class NamiBuilder {
     }
 
     /**
-     * 设置头
-     * */
-    public NamiBuilder headerSet(String name, String val) {
-        _config.setHeader(name, val);
-        return this;
-    }
-
-    /**
      * 设置反序列器
      */
     public NamiBuilder channel(Channel channel) {
@@ -61,11 +55,12 @@ public class NamiBuilder {
         return this;
     }
 
+
     /**
-     * 添加拦截器
+     * 设置负载代理
      */
-    public NamiBuilder filterAdd(Filter filter) {
-        _config.filterAdd(filter);
+    public NamiBuilder upstream(Supplier<String> upstream) {
+        _config.setUpstream(upstream);
         return this;
     }
 
@@ -90,6 +85,24 @@ public class NamiBuilder {
 
     public NamiBuilder group(String group) {
         _config.setGroup(group);
+        return this;
+    }
+
+
+
+    /**
+     * 添加拦截器
+     */
+    public NamiBuilder filterAdd(Filter filter) {
+        _config.filterAdd(filter);
+        return this;
+    }
+
+    /**
+     * 设置头
+     * */
+    public NamiBuilder headerSet(String name, String val) {
+        _config.setHeader(name, val);
         return this;
     }
 
