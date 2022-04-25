@@ -8,6 +8,13 @@ import org.noear.solon.cloud.utils.http.HttpUtils;
  */
 public class DemoTest {
     @Test
+    public void demo0() throws Exception {
+        //基于具体地址去调用
+        //
+        HttpUtils.http("http://h5.noear.org").get();
+    }
+
+    @Test
     public void demo1() throws Exception {
         //基于具体地址去调用
         //

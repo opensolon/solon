@@ -98,13 +98,13 @@ public class HttpUtils {
         }
 
         if (upstream == null) {
-            throw new IllegalArgumentException("No service upstream found: " + service);
+            throw new IllegalStateException("No service upstream found: " + service);
         }
 
         String server = upstream.getServer();
 
         if (Utils.isEmpty(server)) {
-            throw new IllegalArgumentException("No service address found: " + service);
+            throw new IllegalStateException("No service address found: " + service);
         }
 
         return server;
@@ -133,7 +133,7 @@ public class HttpUtils {
         }
 
         if (url.contains("://") == false) {
-            throw new IllegalArgumentException(url + ", url scheme 'http' or 'https'  no found");
+            throw new IllegalArgumentException("No url scheme 'http' or 'https' found: " + url);
 
         }
 
