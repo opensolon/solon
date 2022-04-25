@@ -58,8 +58,11 @@ public class HttpUtils {
 
     public static HttpUtils http(String url, OkHttpClient client) {
         HttpUtils tmp = new HttpUtils(client, url);
-        tmp.header(CloudClient.trace().HEADER_TRACE_ID_NAME(), CloudClient.trace().getTraceId());
-        tmp.header(CloudClient.trace().HEADER_FROM_ID_NAME(), CloudClient.trace().getFromId());
+
+        if (CloudClient.trace() != null) {
+            tmp.header(CloudClient.trace().HEADER_TRACE_ID_NAME(), CloudClient.trace().getTraceId());
+            tmp.header(CloudClient.trace().HEADER_FROM_ID_NAME(), CloudClient.trace().getFromId());
+        }
 
         return tmp;
     }
@@ -331,7 +334,7 @@ public class HttpUtils {
         try {
             return execDo(mothod);
         } catch (IOException e) {
-            throw new IOException(_url, e);
+            throw new IOException(_url + ", request failed", e);
         }
     }
 
