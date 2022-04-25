@@ -265,16 +265,22 @@ public abstract class SessionBase implements Session {
             return;
         }
 
-        _sendHeartbeatAuto = true;
+        synchronized (this) {
+            if (_sendHeartbeatAuto) {
+                return;
+            }
 
-        Utils.scheduled.scheduleWithFixedDelay(
-                () -> {
-                    try {
-                        sendHeartbeat();
-                    } catch (Throwable ex) {
-                        EventBus.push(ex);
-                    }
-                }, 1, intervalSeconds, TimeUnit.SECONDS);
+            _sendHeartbeatAuto = true;
+
+            Utils.scheduled.scheduleWithFixedDelay(
+                    () -> {
+                        try {
+                            sendHeartbeat();
+                        } catch (Throwable ex) {
+                            EventBus.push(ex);
+                        }
+                    }, 1, intervalSeconds, TimeUnit.SECONDS);
+        }
     }
 
     //保存最后一次握手的信息；之后重链时使用

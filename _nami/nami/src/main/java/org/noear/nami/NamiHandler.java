@@ -69,6 +69,11 @@ public class NamiHandler implements InvocationHandler {
                 config.setTimeout(client.timeout());
             }
 
+            //尝试设置心跳
+            if (client.heartbeat() > 0) {
+                config.setHeartbeat(client.heartbeat());
+            }
+
             //>>添加接口url
             if (TextUtils.isNotEmpty(client.url())) {
                 config.setUrl(client.url());

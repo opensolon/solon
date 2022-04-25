@@ -77,8 +77,14 @@ public class SocketChannel extends SocketChannelBase implements Channel {
         byte[] bytes = encoder.encode(ctx.body);
         message = new Message(flag, message_key, ctx.url, HeaderUtil.encodeHeaderMap(ctx.headers), bytes);
 
-        //3.发送消息
-        Message res = sessions.get().sendAndResponse(message, ctx.config.getTimeout());
+        //3.获取会话
+        Session session = sessions.get();
+        if(ctx.config.getHeartbeat() > 0){
+            session.sendHeartbeatAuto(ctx.config.getHeartbeat());
+        }
+
+        //4.发送消息
+        Message res = session.sendAndResponse(message, ctx.config.getTimeout());
 
         if (res == null) {
             return null;

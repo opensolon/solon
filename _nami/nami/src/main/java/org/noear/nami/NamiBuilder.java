@@ -23,13 +23,20 @@ public class NamiBuilder {
 
 
     /**
-     * @param timeout 单位秒
+     * @param timeout 超时（单位：秒）
      * */
     public NamiBuilder timeout(int timeout) {
         _config.setTimeout(timeout);
         return this;
     }
 
+    /**
+     * @param heartbeat 心跳（单为：秒）
+     * */
+    public NamiBuilder heartbeat(int heartbeat) {
+        _config.setHeartbeat(heartbeat);
+        return this;
+    }
 
     /**
      * 设置序列化器
