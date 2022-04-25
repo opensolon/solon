@@ -24,4 +24,13 @@ public class DemoTest {
 
         HttpUtils.http("userapi", "/api/demo").data("name", "noear").post();
     }
+
+    @Test
+    public void demo3() throws Exception {
+        //基于具体地址去调用
+        //
+        HttpUtils.http("x.x.x/demo").get();
+
+        HttpUtils.http("x.x.x/demo").data("name", "noear").post();
+    }
 }

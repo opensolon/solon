@@ -132,6 +132,11 @@ public class HttpUtils {
             _client = client;
         }
 
+        if (url.contains("://") == false) {
+            throw new IllegalArgumentException(url + ", url scheme 'http' or 'https'  no found");
+
+        }
+
         _url = url;
         _builder = new Request.Builder().url(url);
     }
