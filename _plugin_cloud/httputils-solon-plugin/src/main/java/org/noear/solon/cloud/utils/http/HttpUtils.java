@@ -35,7 +35,7 @@ public class HttpUtils {
     };
 
     private final static OkHttpClient httpShortClient = new OkHttpClient.Builder()
-            .connectTimeout(10 , TimeUnit.SECONDS)
+            .connectTimeout(10, TimeUnit.SECONDS)
             .writeTimeout(10, TimeUnit.SECONDS)
             .readTimeout(60, TimeUnit.SECONDS)
             .dispatcher(httpClientDefaultDispatcher.get())
@@ -94,7 +94,7 @@ public class HttpUtils {
             upstream = LoadBalance.get(group, service);
         }
 
-        if(upstream == null){
+        if (upstream == null) {
             throw new IllegalArgumentException("No service upstream found: " + service);
         }
 
@@ -108,8 +108,8 @@ public class HttpUtils {
     }
 
 
-
     private OkHttpClient _client;
+    private String _url;
     private Charset _charset;
     private Map<String, String> _cookies;
     private RequestBody _body;
@@ -129,21 +129,22 @@ public class HttpUtils {
             _client = client;
         }
 
+        _url = url;
         _builder = new Request.Builder().url(url);
     }
 
     /**
      * 短时间处理
-     * */
-    public HttpUtils asShortHttp(){
+     */
+    public HttpUtils asShortHttp() {
         _client = httpShortClient;
         return this;
     }
 
     /**
      * 长时间处理
-     * */
-    public HttpUtils asLongHttp(){
+     */
+    public HttpUtils asLongHttp() {
         _client = httpLongClient;
         return this;
     }
@@ -327,6 +328,14 @@ public class HttpUtils {
 
     //@XNote("执行请求，返回响应对象")
     public Response exec(String mothod) throws IOException {
+        try {
+            return execDo(mothod);
+        } catch (IOException e) {
+            throw new IOException(_url, e);
+        }
+    }
+
+    private Response execDo(String mothod) throws IOException {
         if (_multipart) {
             tryInitPartBuilder(MultipartBody.FORM);
 
