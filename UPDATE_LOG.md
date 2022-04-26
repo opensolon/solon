@@ -1,5 +1,10 @@
-#### 1.7.4
-* 增加 NamiBuilder::timeout 接口
+#### 1.7.5
+* 增加 NamiBuilder::heartbeat 接口
+* 增加 MethodHolder::getArounds 接口
+* 插件 httputils-solon-plugin
+  * 增加 upstream 检查
+  * 增加 address 检查
+  * 增加 url 检查
 
 #### 1.7.4
 * 插件 httputils-solon-plugin 增加对服务上游和地址的检测
