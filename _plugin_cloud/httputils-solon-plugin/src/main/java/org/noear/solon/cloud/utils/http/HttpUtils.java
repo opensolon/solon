@@ -138,7 +138,7 @@ public class HttpUtils {
      * 短时间处理
      */
     public HttpUtils asShortHttp() {
-        return timeout(10, 10, 69);
+        return timeout(10, 10, 60);
     }
 
     /**
@@ -148,14 +148,18 @@ public class HttpUtils {
         return timeout(30, 60*5, 60*5);
     }
 
-    public HttpUtils timeout(int seconds) {
-        _builder.tag(new HttpTimeout(seconds));
+    public HttpUtils timeout(int timeoutSeconds) {
+        if (timeoutSeconds > 0) {
+            _builder.tag(new HttpTimeout(timeoutSeconds));
+        }
 
         return this;
     }
 
-    public HttpUtils timeout(int connectTimeout, int writeTimeout, int readTimeout) {
-        _builder.tag(new HttpTimeout(connectTimeout, writeTimeout, readTimeout));
+    public HttpUtils timeout(int connectTimeoutSeconds, int writeTimeoutSeconds, int readTimeoutSeconds) {
+        if (connectTimeoutSeconds > 0) {
+            _builder.tag(new HttpTimeout(connectTimeoutSeconds, writeTimeoutSeconds, readTimeoutSeconds));
+        }
 
         return this;
     }

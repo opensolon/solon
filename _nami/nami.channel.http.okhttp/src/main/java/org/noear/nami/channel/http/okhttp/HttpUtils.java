@@ -97,10 +97,11 @@ class HttpUtils {
         return this;
     }
 
-    public HttpUtils timeout(int seconds){
-        if(seconds > 0){
-            _builder.tag(new HttpTimeout(seconds));
+    public HttpUtils timeout(int timeoutSeconds) {
+        if (timeoutSeconds > 0) {
+            _builder.tag(new HttpTimeout(timeoutSeconds));
         }
+
         return this;
     }
 
