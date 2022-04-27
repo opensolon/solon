@@ -557,7 +557,7 @@
 * 增加 qiniu-kodo-solon-plugin 对象存储适配插件
 * 增加 SolonApp::signalGet 接口
 * 插件 mybatis-solon-plugin 升级 mybatis 为 3.5.7
-* 插件 solon.serialization.protostuff 升级 protostuff 为 1.7.5-M1
+* 插件 solon.serialization.protostuff 升级 protostuff 为 1.7.5-M2
 * 插件 solon.socketd.client.smartsocket 升级 smartsocket 1.5.10
 * 插件 solon.serialization.hession 升级 hessian 4.0.65
 * 插件 solon.auth AuthUtil 验证权限与角色前增加登录验证
