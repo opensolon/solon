@@ -39,6 +39,7 @@ public class HttpUtils {
             .writeTimeout(10, TimeUnit.SECONDS)
             .readTimeout(60, TimeUnit.SECONDS)
             .dispatcher(httpClientDefaultDispatcher.get())
+            .addInterceptor(HttpInterceptor.instance)
             .build();
 
 
