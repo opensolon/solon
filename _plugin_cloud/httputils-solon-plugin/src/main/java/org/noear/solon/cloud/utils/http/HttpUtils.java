@@ -41,13 +41,6 @@ public class HttpUtils {
             .dispatcher(httpClientDefaultDispatcher.get())
             .build();
 
-    //用于跑定时任务调度
-    private final static OkHttpClient httpLongClient = new OkHttpClient.Builder()
-            .connectTimeout(30, TimeUnit.SECONDS)
-            .writeTimeout(60 * 5, TimeUnit.SECONDS)
-            .readTimeout(60 * 5, TimeUnit.SECONDS)
-            .dispatcher(httpClientDefaultDispatcher.get())
-            .build();
 
     /**
      * 构建一个 Http 请求工具
@@ -145,15 +138,25 @@ public class HttpUtils {
      * 短时间处理
      */
     public HttpUtils asShortHttp() {
-        _client = httpShortClient;
-        return this;
+        return timeout(10, 10, 69);
     }
 
     /**
      * 长时间处理
      */
     public HttpUtils asLongHttp() {
-        _client = httpLongClient;
+        return timeout(30, 60*5, 60*5);
+    }
+
+    public HttpUtils timeout(int seconds) {
+        _builder.tag(new HttpTimeout(seconds));
+
+        return this;
+    }
+
+    public HttpUtils timeout(int connectTimeout, int writeTimeout, int readTimeout) {
+        _builder.tag(new HttpTimeout(connectTimeout, writeTimeout, readTimeout));
+
         return this;
     }
 
