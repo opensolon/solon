@@ -26,7 +26,7 @@ public class RpcAndNamiTest {
     UserService userService;
 
     //使用负载
-    @NamiClient(name = "local", path = "/demo5/user/", headers = {"Content-Type:application/json"})
+    @NamiClient(name = "local", path = "/demo5/user/", headers = {"Content-Type:application/json"}, timeout = 20)
     UserService userService2;
 
 

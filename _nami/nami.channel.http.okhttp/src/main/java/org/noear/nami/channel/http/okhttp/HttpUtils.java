@@ -99,7 +99,7 @@ class HttpUtils {
 
     public HttpUtils timeout(int timeoutSeconds) {
         if (timeoutSeconds > 0) {
-            _builder.tag(new HttpTimeout(timeoutSeconds));
+            _builder.tag(HttpTimeout.class, new HttpTimeout(timeoutSeconds));
         }
 
         return this;

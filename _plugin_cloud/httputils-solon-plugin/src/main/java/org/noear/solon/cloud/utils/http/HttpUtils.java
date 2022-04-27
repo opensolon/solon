@@ -150,7 +150,7 @@ public class HttpUtils {
 
     public HttpUtils timeout(int timeoutSeconds) {
         if (timeoutSeconds > 0) {
-            _builder.tag(new HttpTimeout(timeoutSeconds));
+            _builder.tag(HttpTimeout.class, new HttpTimeout(timeoutSeconds));
         }
 
         return this;
@@ -158,7 +158,7 @@ public class HttpUtils {
 
     public HttpUtils timeout(int connectTimeoutSeconds, int writeTimeoutSeconds, int readTimeoutSeconds) {
         if (connectTimeoutSeconds > 0) {
-            _builder.tag(new HttpTimeout(connectTimeoutSeconds, writeTimeoutSeconds, readTimeoutSeconds));
+            _builder.tag(HttpTimeout.class, new HttpTimeout(connectTimeoutSeconds, writeTimeoutSeconds, readTimeoutSeconds));
         }
 
         return this;

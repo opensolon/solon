@@ -730,6 +730,14 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>fluentmybatis-solon-plugin</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+
+
+
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>cron4j-solon-plugin</artifactId>
                 <version>${solon.ver}</version>
             </dependency>

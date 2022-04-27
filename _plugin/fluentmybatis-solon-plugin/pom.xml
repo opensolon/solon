@@ -21,6 +21,12 @@
             <artifactId>mybatis-solon-plugin</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.github.atool</groupId>
+            <artifactId>fluent-mybatis</artifactId>
+            <version>1.9.7</version>
+        </dependency>
+
     </dependencies>
 
 </project>

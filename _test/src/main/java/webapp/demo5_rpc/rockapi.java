@@ -5,7 +5,7 @@ import webapp.models.UserModel;
 
 import java.util.List;
 
-@NamiClient(name = "demo",path = "/demo5/test/")
+@NamiClient(name = "demo",path = "/demo5/test/", timeout = 20)
 public interface rockapi {
     Object test1(Integer a);
     Object test2(int b);
