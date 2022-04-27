@@ -56,8 +56,6 @@
 
         <module>../../_plugin/activerecord-solon-plugin</module>
 
-        <module>../../_plugin/fluentmybatis-solon-plugin</module>
-
         <module>../../_plugin/quartz-solon-plugin</module>
 
         <module>../../_plugin/shiro-solon-plugin</module>
