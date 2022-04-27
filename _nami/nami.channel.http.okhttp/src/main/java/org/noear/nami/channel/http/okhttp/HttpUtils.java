@@ -9,21 +9,21 @@ import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Supplier;
 
 class HttpUtils {
-
-    private final static Dispatcher dispatcher() {
+    private final static Supplier<Dispatcher> httpClientDispatcher = () -> {
         Dispatcher temp = new Dispatcher();
         temp.setMaxRequests(20000);
         temp.setMaxRequestsPerHost(10000);
         return temp;
-    }
+    };
 
     private final static OkHttpClient httpClient = new OkHttpClient.Builder()
             .connectTimeout(10, TimeUnit.SECONDS)
             .writeTimeout(10, TimeUnit.SECONDS)
             .readTimeout(10, TimeUnit.SECONDS)
-            .dispatcher(dispatcher())
+            .dispatcher(httpClientDispatcher.get())
             .addInterceptor(HttpInterceptor.instance)
             .build();
 
