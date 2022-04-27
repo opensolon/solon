@@ -9,17 +9,18 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * @author noear
+ * @since 1.7
  */
 public class HttpClientCached {
-    private final static Dispatcher dispatcher;
-    private final static Map<Integer, OkHttpClient> clientMap = new HashMap<>();
+    private final static Dispatcher sharedDispatcher;
+    private final static Map<Integer, OkHttpClient> cachedClient = new HashMap<>();
 
     static {
-        dispatcher = new Dispatcher();
-        dispatcher.setMaxRequests(20000);
-        dispatcher.setMaxRequestsPerHost(10000);
+        sharedDispatcher = new Dispatcher();
+        sharedDispatcher.setMaxRequests(20000);
+        sharedDispatcher.setMaxRequestsPerHost(10000);
 
-        clientMap.put(10, create(10));
+        cachedClient.put(10, create(10));
     }
 
     private static OkHttpClient create(int timeout) {
@@ -27,7 +28,7 @@ public class HttpClientCached {
                 .connectTimeout(timeout, TimeUnit.SECONDS)
                 .writeTimeout(timeout, TimeUnit.SECONDS)
                 .readTimeout(timeout, TimeUnit.SECONDS)
-                .dispatcher(dispatcher)
+                .dispatcher(sharedDispatcher)
                 .build();
     }
 
@@ -37,15 +38,15 @@ public class HttpClientCached {
             timeout = 10;
         }
 
-        OkHttpClient tmp = clientMap.get(timeout);
+        OkHttpClient tmp = cachedClient.get(timeout);
 
         if (tmp == null) {
             synchronized (HttpClientCached.class) {
-                tmp = clientMap.get(timeout);
+                tmp = cachedClient.get(timeout);
 
                 if (tmp == null) {
                     tmp = create(timeout);
-                    clientMap.put(timeout, tmp);
+                    cachedClient.put(timeout, tmp);
                 }
             }
         }
