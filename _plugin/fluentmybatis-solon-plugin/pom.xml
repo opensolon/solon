@@ -24,9 +24,14 @@
         <dependency>
             <groupId>com.github.atool</groupId>
             <artifactId>fluent-mybatis</artifactId>
-            <version>1.9.7</version>
+            <version>1.7.3</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>mybatis-spring</artifactId>
+                    <groupId>org.mybatis</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
-
     </dependencies>
 
 </project>
