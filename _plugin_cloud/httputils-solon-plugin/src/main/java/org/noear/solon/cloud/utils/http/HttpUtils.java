@@ -27,18 +27,18 @@ import java.util.function.Supplier;
  * @since 1.5
  * */
 public class HttpUtils {
-    private final static Supplier<Dispatcher> httpClientDefaultDispatcher = () -> {
+    private final static Supplier<Dispatcher> httpClientDispatcher = () -> {
         Dispatcher temp = new Dispatcher();
         temp.setMaxRequests(20000);
         temp.setMaxRequestsPerHost(10000);
         return temp;
     };
 
-    private final static OkHttpClient httpShortClient = new OkHttpClient.Builder()
+    private final static OkHttpClient httpClient = new OkHttpClient.Builder()
             .connectTimeout(10, TimeUnit.SECONDS)
             .writeTimeout(10, TimeUnit.SECONDS)
             .readTimeout(60, TimeUnit.SECONDS)
-            .dispatcher(httpClientDefaultDispatcher.get())
+            .dispatcher(httpClientDispatcher.get())
             .addInterceptor(HttpInterceptor.instance)
             .build();
 
@@ -47,7 +47,7 @@ public class HttpUtils {
      * 构建一个 Http 请求工具
      */
     public static HttpUtils http(String url) {
-        return http(url, httpShortClient);
+        return http(url, httpClient);
     }
 
     public static HttpUtils http(String url, OkHttpClient client) {
@@ -66,7 +66,7 @@ public class HttpUtils {
      * 构建一个 Http 请求工具
      */
     public static HttpUtils http(String service, String path) {
-        return http(service, path, httpShortClient);
+        return http(service, path, httpClient);
     }
 
     public static HttpUtils http(String service, String path, OkHttpClient client) {
@@ -75,7 +75,7 @@ public class HttpUtils {
     }
 
     public static HttpUtils http(String group, String service, String path) {
-        return http(group, service, path, httpShortClient);
+        return http(group, service, path, httpClient);
     }
 
     public static HttpUtils http(String group, String service, String path, OkHttpClient client) {
@@ -121,7 +121,7 @@ public class HttpUtils {
 
     public HttpUtils(OkHttpClient client, String url) {
         if (client == null) {
-            _client = httpShortClient;
+            _client = httpClient;
         } else {
             _client = client;
         }
