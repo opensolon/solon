@@ -5,6 +5,7 @@
   * 增加 upstream 检查
   * 增加 address 检查
   * 增加 url 检查
+* 插件 nami.channel.http.hutool 增加超时支持
 
 #### 1.7.4
 * 插件 httputils-solon-plugin 增加对服务上游和地址的检测

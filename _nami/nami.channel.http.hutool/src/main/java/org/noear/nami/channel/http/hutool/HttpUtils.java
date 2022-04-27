@@ -64,6 +64,14 @@ class HttpUtils {
         return this;
     }
 
+    public HttpUtils timeout(int seconds) {
+        if (seconds > 0) {
+            _builder.timeout(seconds * 1000);
+        }
+
+        return this;
+    }
+
 
     //@XNote("执行请求，返回响应对象")
     public HttpResponse exec(String mothod) throws Exception {

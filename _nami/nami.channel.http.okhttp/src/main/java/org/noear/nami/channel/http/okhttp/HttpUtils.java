@@ -11,19 +11,7 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 class HttpUtils {
-    private final static Dispatcher dispatcher() {
-        Dispatcher temp = new Dispatcher();
-        temp.setMaxRequests(20000);
-        temp.setMaxRequestsPerHost(10000);
-        return temp;
-    }
 
-    private final static OkHttpClient httpClient = new OkHttpClient.Builder()
-            .connectTimeout(10, TimeUnit.SECONDS)
-            .writeTimeout(10, TimeUnit.SECONDS)
-            .readTimeout(10, TimeUnit.SECONDS)
-            .dispatcher(dispatcher())
-            .build();
 
     public static HttpUtils http(String url){
         return new HttpUtils(url);
@@ -95,6 +83,12 @@ class HttpUtils {
         return this;
     }
 
+    private int timeout;
+    public HttpUtils timeout(int timeout){
+        this.timeout = timeout;
+        return this;
+    }
+
 
     //@XNote("执行请求，返回响应对象")
     public Response exec(String mothod) throws Exception {
@@ -120,7 +114,7 @@ class HttpUtils {
             default: throw new RuntimeException("This method is not supported");
         }
 
-        Call call = httpClient.newCall(_builder.build());
+        Call call = HttpClientCached.getClient(timeout).newCall(_builder.build());
         return call.execute();
     }
 

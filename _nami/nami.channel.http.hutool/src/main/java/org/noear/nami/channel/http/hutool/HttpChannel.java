@@ -43,7 +43,7 @@ public class HttpChannel implements Channel {
         ctx.config.getDecoder().pretreatment(ctx);
 
         //0.开始构建http
-        HttpUtils http = HttpUtils.http(url).headers(ctx.headers);
+        HttpUtils http = HttpUtils.http(url).headers(ctx.headers).timeout(ctx.config.getTimeout());
         HttpResponse response = null;
         Encoder encoder = ctx.config.getEncoder();
 
