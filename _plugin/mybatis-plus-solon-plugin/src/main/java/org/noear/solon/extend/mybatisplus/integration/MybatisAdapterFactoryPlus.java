@@ -5,8 +5,6 @@ import org.noear.solon.core.Props;
 import org.noear.solon.extend.mybatis.MybatisAdapter;
 import org.noear.solon.extend.mybatis.MybatisAdapterFactory;
 
-import java.util.Properties;
-
 /**
  * 适配器工厂
  *
