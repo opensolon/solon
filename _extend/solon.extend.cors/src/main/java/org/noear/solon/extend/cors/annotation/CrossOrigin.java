@@ -26,5 +26,5 @@ public @interface CrossOrigin {
     /**
      * 允许认证
      * */
-    boolean credentials() default false;
+    boolean credentials() default true;
 }
