@@ -1,6 +1,5 @@
 package org.noear.solon.extend.cors;
 
-import org.noear.solon.Solon;
 import org.noear.solon.core.handle.Action;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Handler;
