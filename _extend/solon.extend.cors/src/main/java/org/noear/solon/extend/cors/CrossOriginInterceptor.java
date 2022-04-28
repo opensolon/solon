@@ -18,6 +18,7 @@ public class CrossOriginInterceptor implements Handler {
     @Override
     public void handle(Context ctx) throws Throwable {
         Action action = ctx.action();
+
         if (action != null) {
             CrossOrigin anno = action.method().getAnnotation(CrossOrigin.class);
             if (anno == null) {
