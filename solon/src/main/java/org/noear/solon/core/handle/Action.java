@@ -12,6 +12,7 @@ import org.noear.solon.annotation.Mapping;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 
 /**
@@ -146,6 +147,7 @@ public class Action extends HandlerAide implements Handler {
     public String consumes() {
         return mConsumes;
     }
+
 
     @Override
     public void handle(Context x) throws Throwable {

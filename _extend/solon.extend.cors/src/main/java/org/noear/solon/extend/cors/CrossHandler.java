@@ -1,9 +1,11 @@
 package org.noear.solon.extend.cors;
 
+import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Handler;
 import org.noear.solon.core.handle.MethodType;
+import org.noear.solon.extend.cors.annotation.CrossOrigin;
 
 /**
  * 跨域处理
@@ -12,6 +14,19 @@ import org.noear.solon.core.handle.MethodType;
  * @since 1.3
  */
 public class CrossHandler implements Handler {
+    public CrossHandler(){
+
+    }
+
+    public CrossHandler(CrossOrigin anno){
+        maxAge(anno.maxAge());
+        //支持表达式配置: ${xxx}
+        allowedOrigins(Solon.cfg().getByParse(anno.origins()));
+        allowCredentials(anno.credentials());
+    }
+
+
+
     protected int maxAge = 3600;
 
     protected String allowedOrigins = "*";

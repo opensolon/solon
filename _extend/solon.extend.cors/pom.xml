@@ -19,6 +19,12 @@
             <groupId>org.noear</groupId>
             <artifactId>solon</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.boot.jlhttp</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
 

@@ -41,19 +41,7 @@ public class CrossOriginInterceptor implements Handler {
                 handler = handlerMap.get(anno);
 
                 if (handler == null) {
-                    handler = new CrossHandler();
-
-                    String origins = anno.origins();
-
-                    if (origins.startsWith("${")) {
-                        origins = Solon.cfg().get(origins.substring(2, origins.length() - 1));
-                    }
-
-                    handler.maxAge(anno.maxAge());
-                    handler.allowedOrigins(origins);
-                    handler.allowedMethods("*");
-                    handler.allowedHeaders("*");
-                    handler.allowCredentials(anno.credentials());
+                    handler = new CrossHandler(anno);
 
                     handlerMap.put(anno, handler);
                 }
