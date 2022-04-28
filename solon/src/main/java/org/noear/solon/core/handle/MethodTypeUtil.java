@@ -35,6 +35,10 @@ public class MethodTypeUtil {
             list.add(MethodType.HEAD);
         }
 
+        if (checker.test(Options.class)) {
+            list.add(MethodType.OPTIONS);
+        }
+
         if (checker.test(Http.class)) {
             list.add(MethodType.HTTP);
         }

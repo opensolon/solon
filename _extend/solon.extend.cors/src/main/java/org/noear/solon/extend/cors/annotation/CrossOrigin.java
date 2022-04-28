@@ -2,6 +2,7 @@ package org.noear.solon.extend.cors.annotation;
 
 import org.noear.solon.annotation.Before;
 import org.noear.solon.annotation.Note;
+import org.noear.solon.annotation.Options;
 import org.noear.solon.extend.cors.CrossOriginInterceptor;
 
 import java.lang.annotation.*;
@@ -10,8 +11,9 @@ import java.lang.annotation.*;
  * @author noear
  * @since 1.3
  */
-@Before({CrossOriginInterceptor.class})
+@Options //添加 Options
 @Inherited
+@Before({CrossOriginInterceptor.class})
 @Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface CrossOrigin {
