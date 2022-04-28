@@ -119,13 +119,15 @@ public class HandlerLoader extends HandlerAide {
             bPath = "";
         }
 
-        loadControllerAide();
+        Set<MethodType> b_method = new HashSet<>();
+
+        loadControllerAide(b_method);
 
         Set<MethodType> m_method;
         Mapping m_map;
         int m_index = 0;
 
-        //只支持public函数为Action
+        //只支持 public 函数为 Action
         for (Method method : bw.clz().getDeclaredMethods()) {
             m_map = method.getAnnotation(Mapping.class);
             m_index = 0;
@@ -167,7 +169,14 @@ public class HandlerLoader extends HandlerAide {
 
                 Action action = createAction(bw, method, m_map, newPath, bRemoting);
 
-                loadActionAide(method, action);
+                //m_method 必须之前已准备好，不再动  //用于支持 Cors
+                loadActionAide(method, action, m_method);
+                if (b_method.size() > 0 &&
+                        m_method.contains(MethodType.HTTP) == false &&
+                        m_method.contains(MethodType.ALL) == false) {
+                    //用于支持 Cors
+                    m_method.addAll(b_method);
+                }
 
                 for (MethodType m1 : m_method) {
                     if (m_map == null) {
@@ -189,7 +198,7 @@ public class HandlerLoader extends HandlerAide {
     }
 
 
-    protected void loadControllerAide() {
+    protected void loadControllerAide(Set<MethodType> methodSet) {
         for (Annotation anno : bw.clz().getAnnotations()) {
             if (anno instanceof Before) {
                 addDo(((Before) anno).value(), (b) -> this.before(Aop.getOrNew(b)));
@@ -201,13 +210,16 @@ public class HandlerLoader extends HandlerAide {
                         addDo(((Before) anno2).value(), (b) -> this.before(Aop.getOrNew(b)));
                     } else if (anno2 instanceof After) {
                         addDo(((After) anno2).value(), (f) -> this.after(Aop.getOrNew(f)));
+                    } else if (anno2 instanceof Options) {
+                        //用于支持 Cors
+                        methodSet.add(MethodType.OPTIONS);
                     }
                 }
             }
         }
     }
 
-    protected void loadActionAide(Method method, Action action) {
+    protected void loadActionAide(Method method, Action action, Set<MethodType> methodSet) {
         for (Annotation anno : method.getAnnotations()) {
             if (anno instanceof Before) {
                 addDo(((Before) anno).value(), (b) -> action.before(Aop.getOrNew(b)));
@@ -219,6 +231,12 @@ public class HandlerLoader extends HandlerAide {
                         addDo(((Before) anno2).value(), (b) -> action.before(Aop.getOrNew(b)));
                     } else if (anno2 instanceof After) {
                         addDo(((After) anno2).value(), (f) -> action.after(Aop.getOrNew(f)));
+                    } else if (anno2 instanceof Options) {
+                        //用于支持 Cors
+                        if (methodSet.contains(MethodType.HTTP) == false &&
+                                methodSet.contains(MethodType.ALL) == false) {
+                            methodSet.add(MethodType.OPTIONS);
+                        }
                     }
                 }
             }
