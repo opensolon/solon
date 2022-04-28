@@ -9,9 +9,7 @@ import org.noear.solon.ext.ConsumerEx;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * 通用处理接口加载器（根据bean加载）
@@ -102,9 +100,9 @@ public class HandlerLoader extends HandlerAide {
         }
 
         Handler handler = bw.raw();
-        List<MethodType> v0 = MethodTypeUtil.findAndFill(new ArrayList<>(), t -> bw.annotationGet(t) != null);
+        Set<MethodType> v0 = MethodTypeUtil.findAndFill(new HashSet<>(), t -> bw.annotationGet(t) != null);
         if (v0.size() == 0) {
-            v0 = Arrays.asList(bMapping.method());
+            v0 = new HashSet<>(Arrays.asList(bMapping.method()));
         }
 
         slots.add(bMapping, v0, handler);
@@ -123,7 +121,7 @@ public class HandlerLoader extends HandlerAide {
 
         loadControllerAide();
 
-        List<MethodType> m_method;
+        Set<MethodType> m_method;
         Mapping m_map;
         int m_index = 0;
 
@@ -131,7 +129,7 @@ public class HandlerLoader extends HandlerAide {
         for (Method method : bw.clz().getDeclaredMethods()) {
             m_map = method.getAnnotation(Mapping.class);
             m_index = 0;
-            m_method = new ArrayList<>();
+            m_method = new HashSet<>();
 
             //获取 action 的methodTypes
             MethodTypeUtil.findAndFill(m_method, t -> method.getAnnotation(t) != null);
@@ -142,7 +140,7 @@ public class HandlerLoader extends HandlerAide {
 
                 if (m_method.size() == 0) {
                     //如果没有找到，则用Mapping上自带的
-                    m_method = Arrays.asList(m_map.method());
+                    m_method = new HashSet<>(Arrays.asList(m_map.method()));
                 }
                 m_index = m_map.index();
             } else {
@@ -158,7 +156,7 @@ public class HandlerLoader extends HandlerAide {
                     if (bMapping == null) {
                         m_method.add(MethodType.HTTP);
                     } else {
-                        m_method = Arrays.asList(bMapping.method());
+                        m_method = new HashSet<>(Arrays.asList(bMapping.method()));
                     }
                 }
             }

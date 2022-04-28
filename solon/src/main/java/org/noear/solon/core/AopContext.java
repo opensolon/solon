@@ -157,9 +157,9 @@ public class AopContext extends BeanContainer {
             Mapping mapping = clz.getAnnotation(Mapping.class);
             if (mapping != null) {
                 Handler handler = bw.raw();
-                List<MethodType> v0 = MethodTypeUtil.findAndFill(new ArrayList<>(), t -> bw.annotationGet(t) != null);
+                Set<MethodType> v0 = MethodTypeUtil.findAndFill(new HashSet<>(), t -> bw.annotationGet(t) != null);
                 if (v0.size() == 0) {
-                    v0 = Arrays.asList(mapping.method());
+                    v0 = new HashSet<>(Arrays.asList(mapping.method()));
                 }
                 Solon.global().add(mapping, v0, handler);
             }
