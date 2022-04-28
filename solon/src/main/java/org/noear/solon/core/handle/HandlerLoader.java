@@ -140,7 +140,7 @@ public class HandlerLoader extends HandlerAide {
 
                 if (m_method.size() == 0) {
                     //如果没有找到，则用Mapping上自带的
-                    m_method = new HashSet<>(Arrays.asList(m_map.method()));
+                    m_method.addAll(Arrays.asList(m_map.method()));
                 }
                 m_index = m_map.index();
             } else {
@@ -156,7 +156,7 @@ public class HandlerLoader extends HandlerAide {
                     if (bMapping == null) {
                         m_method.add(MethodType.HTTP);
                     } else {
-                        m_method = new HashSet<>(Arrays.asList(bMapping.method()));
+                        m_method.addAll(Arrays.asList(bMapping.method()));
                     }
                 }
             }
