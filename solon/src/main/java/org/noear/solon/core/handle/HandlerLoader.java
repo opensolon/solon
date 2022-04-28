@@ -69,7 +69,7 @@ public class HandlerLoader extends HandlerAide {
     }
 
     /**
-     * 加载 XAction 到目标容器
+     * 加载 Action 到目标容器
      *
      * @param slots 接收加载结果的容器（槽）
      */
@@ -78,7 +78,7 @@ public class HandlerLoader extends HandlerAide {
     }
 
     /**
-     * 加载 XAction 到目标容器
+     * 加载 Action 到目标容器
      *
      * @param all   加载全部函数（一般 remoting 会全部加载）
      * @param slots 接收加载结果的容器（槽）
@@ -110,7 +110,7 @@ public class HandlerLoader extends HandlerAide {
 
 
     /**
-     * 加载 XAction 处理
+     * 加载 Action 处理
      */
     protected void loadActionDo(HandlerSlots slots, boolean all) {
         String m_path;
@@ -125,7 +125,7 @@ public class HandlerLoader extends HandlerAide {
         Mapping m_map;
         int m_index = 0;
 
-        //只支持public函数为XAction
+        //只支持public函数为Action
         for (Method method : bw.clz().getDeclaredMethods()) {
             m_map = method.getAnnotation(Mapping.class);
             m_index = 0;
@@ -226,7 +226,7 @@ public class HandlerLoader extends HandlerAide {
     }
 
     /**
-     * 构建 XAction
+     * 构建 Action
      */
     protected Action createAction(BeanWrap bw, Method method, Mapping mp, String path, boolean remoting) {
         if (allowMapping) {
