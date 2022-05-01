@@ -45,11 +45,19 @@ public class HttpUtils {
 
     /**
      * 构建一个 Http 请求工具
+     *
+     * @param url 地址
      */
     public static HttpUtils http(String url) {
         return http(url, httpClient);
     }
 
+    /**
+     * 构建一个 Http 请求工具
+     *
+     * @param url    地址
+     * @param client 客户端
+     */
     public static HttpUtils http(String url, OkHttpClient client) {
         HttpUtils tmp = new HttpUtils(client, url);
 
@@ -64,25 +72,56 @@ public class HttpUtils {
 
     /**
      * 构建一个 Http 请求工具
+     *
+     * @param service 服务
+     * @param path    路径
      */
     public static HttpUtils http(String service, String path) {
         return http(service, path, httpClient);
     }
 
+    /**
+     * 构建一个 Http 请求工具
+     *
+     * @param service 服务
+     * @param path    路径
+     * @param client  客户端
+     */
     public static HttpUtils http(String service, String path, OkHttpClient client) {
         String url = getServer(null, service) + path;
         return http(url, client);
     }
 
+    /**
+     * 构建一个 Http 请求工具
+     *
+     * @param group   分组
+     * @param service 服务
+     * @param path    路径
+     */
     public static HttpUtils http(String group, String service, String path) {
         return http(group, service, path, httpClient);
     }
 
+    /**
+     * 构建一个 Http 请求工具
+     *
+     * @param group   分组
+     * @param service 服务
+     * @param path    路径
+     * @param client  客户端
+     */
     public static HttpUtils http(String group, String service, String path, OkHttpClient client) {
         String url = getServer(group, service) + path;
         return http(url, client);
     }
 
+    /**
+     * 获取服务地址
+     *
+     * @param group   分组
+     * @param service 服务
+     */
     private static String getServer(String group, String service) {
         LoadBalance upstream = null;
         if (Utils.isEmpty(group)) {
@@ -138,6 +177,7 @@ public class HttpUtils {
     /**
      * 短时间处理
      */
+    @Deprecated
     public HttpUtils asShortHttp() {
         return timeout(10, 10, 60);
     }
@@ -145,10 +185,14 @@ public class HttpUtils {
     /**
      * 长时间处理
      */
+    @Deprecated
     public HttpUtils asLongHttp() {
-        return timeout(30, 60*5, 60*5);
+        return timeout(30, 60 * 5, 60 * 5);
     }
 
+    /**
+     * 超时设置
+     */
     public HttpUtils timeout(int timeoutSeconds) {
         if (timeoutSeconds > 0) {
             _builder.tag(HttpTimeout.class, new HttpTimeout(timeoutSeconds));
@@ -157,6 +201,9 @@ public class HttpUtils {
         return this;
     }
 
+    /**
+     * 超时设置
+     */
     public HttpUtils timeout(int connectTimeoutSeconds, int writeTimeoutSeconds, int readTimeoutSeconds) {
         if (connectTimeoutSeconds > 0) {
             _builder.tag(HttpTimeout.class, new HttpTimeout(connectTimeoutSeconds, writeTimeoutSeconds, readTimeoutSeconds));
@@ -165,25 +212,33 @@ public class HttpUtils {
         return this;
     }
 
-    //@XNote("设置multipart")
+    /**
+     * 设置 multipart 标识
+     * */
     public HttpUtils multipart(boolean multipart) {
         _multipart = multipart;
         return this;
     }
 
-    //@XNote("设置UA")
+    /**
+     * 设置 UA
+     * */
     public HttpUtils userAgent(String ua) {
         _builder.header("User-Agent", ua);
         return this;
     }
 
-    //@XNote("设置charset")
+    /**
+     * 设置 charset
+     * */
     public HttpUtils charset(String charset) {
         _charset = Charset.forName(charset);
         return this;
     }
 
-    //@XNote("设置请求头")
+    /**
+     * 设置请求头
+     * */
     public HttpUtils headers(Map<String, String> headers) {
         if (headers != null) {
             headers.forEach((k, v) -> {
@@ -194,7 +249,9 @@ public class HttpUtils {
         return this;
     }
 
-    //@XNote("设置请求头")
+    /**
+     * 设置请求头
+     * */
     public HttpUtils header(String name, String value) {
         if (name == null || value == null) {
             return this;
@@ -204,6 +261,9 @@ public class HttpUtils {
         return this;
     }
 
+    /**
+     * 添加请求头
+     * */
     public HttpUtils headerAdd(String name, String value) {
         if (name == null || value == null) {
             return this;
@@ -213,7 +273,9 @@ public class HttpUtils {
         return this;
     }
 
-    //@XNote("设置表单数据")
+    /**
+     * 设置表单数据
+     * */
     public HttpUtils data(Map data) {
         if (data != null) {
             tryInitForm();
@@ -228,7 +290,9 @@ public class HttpUtils {
         return this;
     }
 
-    //@XNote("设置表单数据")
+    /**
+     * 设置表单数据
+     * */
     public HttpUtils data(String key, String value) {
         if (key == null || value == null) {
             return this;
@@ -240,7 +304,9 @@ public class HttpUtils {
     }
 
 
-    //@XNote("设置表单文件")
+    /**
+     * 设置表单文件
+     * */
     public HttpUtils data(String key, String filename, InputStream inputStream, String contentType) {
         if (key == null || inputStream == null) {
             return this;
@@ -256,12 +322,16 @@ public class HttpUtils {
         return this;
     }
 
-    //@XNote("设置BODY txt")
+    /**
+     * 设置BODY txt
+     * */
     public HttpUtils bodyTxt(String txt) {
         return bodyTxt(txt, null);
     }
 
-    //@XNote("设置BODY txt及内容类型")
+    /**
+     * 设置BODY txt及内容类型
+     * */
     public HttpUtils bodyTxt(String txt, String contentType) {
         if (txt == null) {
             return this;
@@ -276,27 +346,37 @@ public class HttpUtils {
         return this;
     }
 
-    //@XNote("设置BODY txt及内容类型")
+    /**
+     * 设置BODY josn
+     * */
     public HttpUtils bodyJson(String txt) {
         return bodyTxt(txt, "application/json");
     }
 
-    //@XNote("设置BODY raw")
+    /**
+     * 设置BODY raw
+     * */
     public HttpUtils bodyRaw(byte[] bytes) {
         return bodyRaw(bytes, null);
     }
 
-    //@XNote("设置BODY raw")
+    /**
+     * "设置BODY raw 和 内容类型
+     * */
     public HttpUtils bodyRaw(byte[] bytes, String contentType) {
         return bodyRaw(new ByteArrayInputStream(bytes), contentType);
     }
 
-    //@XNote("设置BODY raw")
+    /**
+     * 设置BODY raw stream
+     * */
     public HttpUtils bodyRaw(InputStream raw) {
         return bodyRaw(raw, null);
     }
 
-    //@XNote("设置BODY raw及内容类型")
+    /**
+     * 设置BODY raw stream 和内容类型
+     * */
     public HttpUtils bodyRaw(InputStream raw, String contentType) {
         if (raw == null) {
             return this;
@@ -308,7 +388,9 @@ public class HttpUtils {
     }
 
 
-    //@XNote("设置请求cookies")
+    /**
+     * 设置请求cookies
+     * */
     public HttpUtils cookies(Map cookies) {
         if (cookies != null) {
             tryInitCookies();
@@ -342,14 +424,6 @@ public class HttpUtils {
         }
     }
 
-    //@XNote("执行请求，返回响应对象")
-    public Response exec(String mothod) throws IOException {
-        try {
-            return execDo(mothod);
-        } catch (IOException e) {
-            throw new IOException(_url + ", request failed", e);
-        }
-    }
 
     private Response execDo(String mothod) throws IOException {
         if (_multipart) {
@@ -433,8 +507,22 @@ public class HttpUtils {
         }
     }
 
-    //@XNote("执行请求，返回字符串")
-    public String exec2(String mothod) throws IOException {
+
+    /**
+     * 执行请求，返回响应对象
+     * */
+    public Response exec(String mothod) throws IOException {
+        try {
+            return execDo(mothod);
+        } catch (IOException e) {
+            throw new IOException(_url + ", request failed", e);
+        }
+    }
+
+    /**
+     * 执行请求，返回Body字符串
+     * */
+    public String execAsBody(String mothod) throws IOException {
         Response tmp = exec(mothod);
 
         int code = tmp.code();
@@ -446,20 +534,38 @@ public class HttpUtils {
         }
     }
 
-    //@XNote("执行请求，返回状态码")
-    public int exec3(String mothod) throws IOException {
+    /**
+     * 执行请求，返回状态码
+     * */
+    public int execAsCode(String mothod) throws IOException {
         return exec(mothod).code();
+    }
+
+    /**
+     * @deprecated 1.7
+     * */
+    @Deprecated
+    public String exec2(String mothod) throws IOException {
+        return execAsBody(mothod);
+    }
+
+    /**
+     * @deprecated 1.7
+     * */
+    @Deprecated
+    public int exec3(String mothod) throws IOException {
+        return execAsCode(mothod);
     }
 
 
     //@XNote("发起GET请求，返回字符串（RESTAPI.select 从服务端获取一或多项资源）")
     public String get() throws IOException {
-        return exec2("GET");
+        return execAsBody("GET");
     }
 
     //@XNote("发起POST请求，返回字符串（RESTAPI.create 在服务端新建一项资源）")
     public String post() throws IOException {
-        return exec2("POST");
+        return execAsBody("POST");
     }
 
     public void postAsync() throws IOException {
@@ -480,17 +586,17 @@ public class HttpUtils {
 
     //@XNote("发起PUT请求，返回字符串（RESTAPI.update 客户端提供改变后的完整资源）")
     public String put() throws IOException {
-        return exec2("PUT");
+        return execAsBody("PUT");
     }
 
     //@XNote("发起PATCH请求，返回字符串（RESTAPI.update 客户端提供改变的属性）")
     public String patch() throws IOException {
-        return exec2("PATCH");
+        return execAsBody("PATCH");
     }
 
     //@XNote("发起DELETE请求，返回字符串（RESTAPI.delete 从服务端删除资源）")
     public String delete() throws IOException {
-        return exec2("DELETE");
+        return execAsBody("DELETE");
     }
 
     private static String getRequestCookieString(Map<String, String> cookies) {
