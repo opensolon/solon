@@ -176,6 +176,8 @@ public class HttpUtils {
 
     /**
      * 短时间处理
+     *
+     * @deprecated 1.7
      */
     @Deprecated
     public HttpUtils asShortHttp() {
@@ -184,6 +186,8 @@ public class HttpUtils {
 
     /**
      * 长时间处理
+     *
+     * @deprecated 1.7
      */
     @Deprecated
     public HttpUtils asLongHttp() {
@@ -323,14 +327,14 @@ public class HttpUtils {
     }
 
     /**
-     * 设置BODY txt
+     * 设置 BODY txt
      * */
     public HttpUtils bodyTxt(String txt) {
         return bodyTxt(txt, null);
     }
 
     /**
-     * 设置BODY txt及内容类型
+     * 设置 BODY txt 及内容类型
      * */
     public HttpUtils bodyTxt(String txt, String contentType) {
         if (txt == null) {
@@ -347,35 +351,35 @@ public class HttpUtils {
     }
 
     /**
-     * 设置BODY josn
+     * 设置 BODY josn
      * */
     public HttpUtils bodyJson(String txt) {
         return bodyTxt(txt, "application/json");
     }
 
     /**
-     * 设置BODY raw
+     * 设置 BODY raw
      * */
     public HttpUtils bodyRaw(byte[] bytes) {
         return bodyRaw(bytes, null);
     }
 
     /**
-     * "设置BODY raw 和 内容类型
+     * "设置 BODY raw 及内容类型
      * */
     public HttpUtils bodyRaw(byte[] bytes, String contentType) {
         return bodyRaw(new ByteArrayInputStream(bytes), contentType);
     }
 
     /**
-     * 设置BODY raw stream
+     * 设置 BODY raw stream
      * */
     public HttpUtils bodyRaw(InputStream raw) {
         return bodyRaw(raw, null);
     }
 
     /**
-     * 设置BODY raw stream 和内容类型
+     * 设置 BODY raw stream 及内容类型
      * */
     public HttpUtils bodyRaw(InputStream raw, String contentType) {
         if (raw == null) {
@@ -389,7 +393,7 @@ public class HttpUtils {
 
 
     /**
-     * 设置请求cookies
+     * 设置请求 cookies
      * */
     public HttpUtils cookies(Map cookies) {
         if (cookies != null) {
@@ -527,6 +531,7 @@ public class HttpUtils {
 
         int code = tmp.code();
         String text = tmp.body().string();
+
         if (code >= 200 && code < 400) {
             return text;
         } else {
@@ -558,12 +563,16 @@ public class HttpUtils {
     }
 
 
-    //@XNote("发起GET请求，返回字符串（RESTAPI.select 从服务端获取一或多项资源）")
+    /**
+     * 发起GET请求，返回字符串（RESTAPI.select 从服务端获取一或多项资源）
+     * */
     public String get() throws IOException {
         return execAsBody("GET");
     }
 
-    //@XNote("发起POST请求，返回字符串（RESTAPI.create 在服务端新建一项资源）")
+    /**
+     * 发起POST请求，返回字符串（RESTAPI.create 在服务端新建一项资源）
+     * */
     public String post() throws IOException {
         return execAsBody("POST");
     }
@@ -584,17 +593,23 @@ public class HttpUtils {
         exec("HEAD");
     }
 
-    //@XNote("发起PUT请求，返回字符串（RESTAPI.update 客户端提供改变后的完整资源）")
+    /**
+     * 发起PUT请求，返回字符串（RESTAPI.update 客户端提供改变后的完整资源）
+     * */
     public String put() throws IOException {
         return execAsBody("PUT");
     }
 
-    //@XNote("发起PATCH请求，返回字符串（RESTAPI.update 客户端提供改变的属性）")
+    /**
+     * 发起PATCH请求，返回字符串（RESTAPI.update 客户端提供改变的属性）
+     * */
     public String patch() throws IOException {
         return execAsBody("PATCH");
     }
 
-    //@XNote("发起DELETE请求，返回字符串（RESTAPI.delete 从服务端删除资源）")
+    /**
+     * 发起DELETE请求，返回字符串（RESTAPI.delete 从服务端删除资源）
+     * */
     public String delete() throws IOException {
         return execAsBody("DELETE");
     }
