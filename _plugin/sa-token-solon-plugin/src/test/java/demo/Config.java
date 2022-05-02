@@ -1,5 +1,7 @@
 package demo;
 
+import cn.dev33.satoken.SaManager;
+import cn.dev33.satoken.config.SaTokenConfig;
 import cn.dev33.satoken.dao.SaTokenDao;
 import cn.dev33.satoken.solon.dao.SaTokenDaoOfRedis;
 import org.noear.solon.annotation.Bean;
@@ -15,4 +17,13 @@ public class Config {
     public SaTokenDao saTokenDaoInit(@Inject("${sa-token-dao.redis}") SaTokenDaoOfRedis saTokenDao) {
         return saTokenDao;
     }
+
+    @Bean
+    public void saTokenConfigInit(){
+        SaTokenConfig saTokenConfig = new SaTokenConfig();
+        //..
+
+        SaManager.setConfig(saTokenConfig);
+    }
+
 }
