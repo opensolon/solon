@@ -1,3 +1,6 @@
+#### 1.7.6
+* 插件 sa-token-solon-plugin 支持 SaTokenConfig 注入
+
 #### 1.7.5
 * 增加 NamiBuilder::heartbeat 接口
 * 增加 MethodHolder::getArounds 接口
