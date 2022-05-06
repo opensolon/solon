@@ -31,6 +31,7 @@ public class HttpUtils {
             .writeTimeout(10, TimeUnit.SECONDS)
             .readTimeout(60 * 5, TimeUnit.SECONDS)
             .dispatcher(okhttp_dispatcher.get())
+            .addInterceptor(HttpInterceptor.instance)
             .build();
 
     public static HttpUtils http(String service, String path) {
@@ -68,6 +69,28 @@ public class HttpUtils {
 
     public HttpUtils enablePrintln(boolean enable) {
         _enablePrintln = enable;
+        return this;
+    }
+
+    /**
+     * 超时设置
+     */
+    public HttpUtils timeout(int timeoutSeconds) {
+        if (timeoutSeconds > 0) {
+            _builder.tag(HttpTimeout.class, new HttpTimeout(timeoutSeconds));
+        }
+
+        return this;
+    }
+
+    /**
+     * 超时设置
+     */
+    public HttpUtils timeout(int connectTimeoutSeconds, int writeTimeoutSeconds, int readTimeoutSeconds) {
+        if (connectTimeoutSeconds > 0) {
+            _builder.tag(HttpTimeout.class, new HttpTimeout(connectTimeoutSeconds, writeTimeoutSeconds, readTimeoutSeconds));
+        }
+
         return this;
     }
 
