@@ -1,5 +1,7 @@
 package org.noear.solon.core.util;
 
+import java.io.File;
+
 /**
  * 彩色打印小工具
  *
@@ -17,37 +19,44 @@ public class PrintUtil {
     public static final String ANSI_CYAN = "\u001B[36m";
     public static final String ANSI_WHITE = "\u001B[37m";
 
+    /**
+     * 是否为 Windows
+     */
+    public static final boolean IS_WINDOWS = (File.separatorChar == '\\');
+
 
     public static void blackln(Object txt) {
-        System.out.println(ANSI_BLACK + txt);
-        System.out.print(ANSI_RESET);
+        colorln(ANSI_BLACK, txt);
     }
 
     public static void redln(Object txt) {
-        System.out.println(ANSI_RED + txt);
-        System.out.print(ANSI_RESET);
+        colorln(ANSI_RED, txt);
     }
 
     public static void blueln(Object txt) {
-        System.out.println(ANSI_BLUE + txt);
-        System.out.print(ANSI_RESET);
+        colorln(ANSI_BLUE, txt);
     }
 
     public static void greenln(Object txt) {
-        System.out.println(ANSI_GREEN + txt);
-        System.out.print(ANSI_RESET);
+        colorln(ANSI_GREEN, txt);
     }
 
-    public static void purpleln(String txt) {
-        System.out.println(ANSI_PURPLE + txt);
-        System.out.print(ANSI_RESET);
+    public static void purpleln(Object txt) {
+        colorln(ANSI_PURPLE, txt);
     }
 
     public static void yellowln(Object txt) {
-        System.out.println(ANSI_YELLOW + txt);
-        System.out.print(ANSI_RESET);
+        colorln(ANSI_YELLOW, txt);
     }
 
+    public static void colorln(String color, Object s) {
+        if (IS_WINDOWS) {
+            System.out.println(s);
+        } else {
+            System.out.println(color + s);
+            System.out.print(ANSI_RESET);
+        }
+    }
 
 
     public static void debug(Object content) {

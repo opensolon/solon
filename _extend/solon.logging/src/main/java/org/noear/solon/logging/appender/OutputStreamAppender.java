@@ -87,27 +87,31 @@ public abstract class OutputStreamAppender extends AppenderSimple {
     }
 
     protected void greenln(Object txt) {
-        out.println(PrintUtil.ANSI_GREEN + txt);
-        out.print(PrintUtil.ANSI_RESET);
+        colorln(PrintUtil.ANSI_GREEN , txt);
     }
 
     protected void blueln(Object txt) {
-        out.println(PrintUtil.ANSI_BLUE + txt);
-        out.print(PrintUtil.ANSI_RESET);
+        colorln(PrintUtil.ANSI_BLUE , txt);
     }
 
     protected void redln(String txt) {
-        out.println(PrintUtil.ANSI_RED + txt);
-        out.print(PrintUtil.ANSI_RESET);
+        colorln(PrintUtil.ANSI_RED , txt);
     }
 
     protected void yellowln(Object txt) {
-        out.println(PrintUtil.ANSI_YELLOW + txt);
-        out.print(PrintUtil.ANSI_RESET);
+        colorln(PrintUtil.ANSI_YELLOW , txt);
     }
 
     protected void purpleln(Object txt) {
-        out.println(PrintUtil.ANSI_PURPLE + txt);
-        out.print(PrintUtil.ANSI_RESET);
+        colorln(PrintUtil.ANSI_PURPLE , txt);
+    }
+
+    protected void colorln(String color, Object s) {
+        if (PrintUtil.IS_WINDOWS) {
+            out.println(s);
+        } else {
+            out.println(color + s);
+            out.print(PrintUtil.ANSI_RESET);
+        }
     }
 }
