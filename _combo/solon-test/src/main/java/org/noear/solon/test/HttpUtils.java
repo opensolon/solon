@@ -332,7 +332,7 @@ public class HttpUtils {
     }
 
     //@XNote("执行请求，返回字符串")
-    public String exec2(String mothod) throws IOException {
+    public String execAsBody(String mothod) throws IOException {
         String rst = exec(mothod).body().string();
         if (_enablePrintln) {
             System.out.println(_url + ":: " + rst);
@@ -342,7 +342,7 @@ public class HttpUtils {
     }
 
     //@XNote("执行请求，返回状态码")
-    public int exec3(String mothod) throws IOException {
+    public int execAsCode(String mothod) throws IOException {
         int code = exec(mothod).code();
         if (_enablePrintln) {
             System.out.println(_url + "::code:: " + code);
@@ -351,15 +351,29 @@ public class HttpUtils {
         return code;
     }
 
+    //@XNote("执行请求，返回字符串")
+    @Deprecated
+    public String exec2(String mothod) throws IOException {
+       return execAsBody(mothod);
+    }
+
+    //@XNote("执行请求，返回状态码")
+    @Deprecated
+    public int exec3(String mothod) throws IOException {
+        return execAsCode(mothod);
+    }
+
+
+
 
     //@XNote("发起GET请求，返回字符串（RESTAPI.select 从服务端获取一或多项资源）")
     public String get() throws IOException {
-        return exec2("GET");
+        return execAsBody("GET");
     }
 
     //@XNote("发起POST请求，返回字符串（RESTAPI.create 在服务端新建一项资源）")
     public String post() throws IOException {
-        return exec2("POST");
+        return execAsBody("POST");
     }
 
     public void postAsync() throws IOException {
@@ -380,26 +394,26 @@ public class HttpUtils {
 
     //@XNote("发起 PUT 请求，返回字符串（RESTAPI.update 客户端提供改变后的完整资源）")
     public String put() throws IOException {
-        return exec2("PUT");
+        return execAsBody("PUT");
     }
 
     //@XNote("发起 PATCH 请求，返回字符串（RESTAPI.update 客户端提供改变的属性）")
     public String patch() throws IOException {
-        return exec2("PATCH");
+        return execAsBody("PATCH");
     }
 
     //@XNote("发起 DELETE 请求，返回字符串（RESTAPI.delete 从服务端删除资源）")
     public String delete() throws IOException {
-        return exec2("DELETE");
+        return execAsBody("DELETE");
     }
 
     //@XNote("发起 OPTIONS 请求，返回字符串")
     public String options() throws IOException {
-        return exec2("OPTIONS");
+        return execAsBody("OPTIONS");
     }
 
     public int head() throws IOException {
-        return exec3("HEAD");
+        return execAsCode("HEAD");
     }
 
 

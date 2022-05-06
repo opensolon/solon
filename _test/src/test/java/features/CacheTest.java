@@ -71,7 +71,7 @@ public class CacheTest extends HttpTestBase {
         int code = path("/cache/error").head();
         System.out.println(code);
         assert code != 200;
-        int code2 = path("/cache/error").exec3("GET");
+        int code2 = path("/cache/error").execAsCode("GET");
         assert code2 == 500;
     }
 }

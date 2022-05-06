@@ -15,7 +15,7 @@ public class _TestBase extends HttpTestBase {
     }
 
     protected int getStatus(String path) throws IOException {
-        int rst = path(path).exec3("GET");
+        int rst = path(path).execAsCode("GET");
 
         System.out.println("code : " + rst);
 
@@ -23,7 +23,7 @@ public class _TestBase extends HttpTestBase {
     }
 
     protected int headStatus(String path) throws IOException {
-        int rst = path(path).exec3("HEAD");
+        int rst = path(path).execAsCode("HEAD");
 
         System.out.println("code : " + rst);
 

@@ -28,7 +28,7 @@ public class HttpMethod2Test extends _TestBase {
 
     @Test
     public void test23_head() throws IOException {
-        assert path("/demo2/method2/post_get").exec3("HEAD") == 200;
+        assert path("/demo2/method2/post_get").execAsCode("HEAD") == 200;
     }
 
     @Test
