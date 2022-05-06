@@ -13,7 +13,7 @@ import org.noear.solon.i18n.annotation.I18n;
  * 国际化方法拦截器
  *
  * @author noear
- * @since 1.8
+ * @since 1.5
  */
 public final class I18nInterceptor implements Interceptor {
     public static final I18nInterceptor instance = new I18nInterceptor();
