@@ -171,6 +171,13 @@ public class I18nUtil {
 
     /**
      * 获取国际化消息包
+     */
+    public static I18nBundle getMessageBundle() {
+        return getBundle(messageBundleName, Context.current());
+    }
+
+    /**
+     * 获取国际化消息包
      *
      * @param ctx 上下文
      */
