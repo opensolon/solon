@@ -1,5 +1,6 @@
 #### 1.7.6
 * 插件 sa-token-solon-plugin 支持 SaTokenConfig 注入
+* 取消window下彩色打印符号输出。window不支持
 * snack3 升级为：3.2.22。支持 yaml 对象数组注入
 
 #### 1.7.5
