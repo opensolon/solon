@@ -13,12 +13,17 @@ import java.util.function.Consumer;
  * @since 1.7
  */
 public class TracingUtil {
+    private static Tracer tracer;
+    static {
+        Aop.getAsyn(Tracer.class, bw -> {
+            tracer = bw.raw();
+        });
+    }
+
     /**
      * 活动中的Span（可能为Null；不推荐用）
      * */
     public static Span activeSpan() {
-        Tracer tracer = Aop.get(Tracer.class);
-
         if (tracer == null) {
             return null;
         } else {
