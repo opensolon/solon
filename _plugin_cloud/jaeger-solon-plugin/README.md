@@ -4,7 +4,8 @@
 solon.cloud.jaeger:
   server: "localhost:6831"
   trace:
-    enable: true #默认为启用
+    enable: true                    #是否启用（默认：true）
+    exclude: "/health,/_run/check/" #排除路径
 ```
 
 #### http
@@ -15,7 +16,8 @@ solon.cloud.jaeger:
   username: user
   password: 1234
   trace:
-    enable: true #默认为启用
+    enable: true                    #是否启用（默认：true）
+    exclude: "/health,/_run/check/" #排除路径
 ```
 
 ```yaml
@@ -23,5 +25,6 @@ solon.cloud.jaeger:
   server: "http://localhost:xxxx"
   token: xxxx
   trace:
-    enable: true #默认为启用
+    enable: true                    #是否启用（默认：true）
+    exclude: "/health,/_run/check/" #排除路径
 ```

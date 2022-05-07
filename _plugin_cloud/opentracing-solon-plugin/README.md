@@ -3,5 +3,6 @@
 ```yaml
 solon.cloud.opentracing:
   trace:
-    enable: true #默认为启用
+    enable: true                    #是否启用（默认：true）
+    exclude: "/health,/_run/check/" #排除路径
 ```
