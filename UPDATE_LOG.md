@@ -2,6 +2,7 @@
 * 插件 sa-token-solon-plugin 支持 SaTokenConfig 注入
 * 插件 solon-test 调整 HttpUtils。支持超时
 * 取消 window 下彩色打印符输出。window 不支持
+* 增加 bodyNew 的应用范围
 * snack3 升级为：3.2.22。支持 yaml 对象数组注入
 
 #### 1.7.5
