@@ -22,7 +22,7 @@ public class TracingManager {
     /**
      * 启用
      */
-    public synchronized static void enable() {
+    public synchronized static void enable(String excluded) {
         if (enabled) {
             return;
         } else {
@@ -33,7 +33,7 @@ public class TracingManager {
         NamiManager.reg(new NamiFilterAdapter());
 
         //添加 solon 适配
-        Solon.global().filter(new SolonFilterAdapter());
+        Solon.global().filter(new SolonFilterAdapter(excluded));
         Solon.global().onError(new SolonErrorAdapter());
 
         //添加 @Tracing 适配

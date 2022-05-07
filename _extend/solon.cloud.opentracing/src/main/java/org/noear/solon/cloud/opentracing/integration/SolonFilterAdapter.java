@@ -15,14 +15,34 @@ import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Filter;
 import org.noear.solon.core.handle.FilterChain;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * @author noear
  * @since 1.4
  */
 public class SolonFilterAdapter implements Filter {
     private Tracer tracer;
+    private Set<String> excludePaths = new HashSet<>();
 
-    public SolonFilterAdapter() {
+    public SolonFilterAdapter(String excluded) {
+        //排除支持
+        if (Utils.isNotEmpty(excluded)) {
+            for (String path : excluded.split(",")) {
+                path = path.trim();
+
+                if (path.length() > 0) {
+                    if (path.startsWith("/")) {
+                        excludePaths.add(path);
+                    } else {
+                        excludePaths.add("/" + path);
+                    }
+                }
+            }
+        }
+
+        //跟踪器注入
         Aop.getAsyn(Tracer.class, bw -> {
             tracer = bw.raw();
         });
@@ -30,7 +50,8 @@ public class SolonFilterAdapter implements Filter {
 
     @Override
     public void doFilter(Context ctx, FilterChain chain) throws Throwable {
-        if (tracer == null) {
+        if (tracer == null || excludePaths.contains(ctx.pathNew())) {
+            //没有跟踪器，或者排除
             chain.doFilter(ctx);
         } else {
             Span span = buildSpan(ctx);

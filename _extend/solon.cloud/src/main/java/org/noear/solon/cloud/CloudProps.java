@@ -64,6 +64,9 @@ public class CloudProps {
 
     //链路跟踪服务相关
     private String TRACE_ENABLE = "solon.cloud.@@.trace.enable";
+    private String TRACE_EXCLUDE = "solon.cloud.@@.trace.exclude";
+
+
 
     //度量服务相关
     private String METRIC_ENABLE = "solon.cloud.@@.metric.enable";
@@ -137,6 +140,7 @@ public class CloudProps {
         LOG_DEFAULT = LOG_DEFAULT.replace("@@", frame);
 
         TRACE_ENABLE = TRACE_ENABLE.replace("@@", frame);
+        TRACE_EXCLUDE = TRACE_EXCLUDE.replace("@@", frame);
 
         METRIC_ENABLE = METRIC_ENABLE.replace("@@", frame);
 
@@ -332,6 +336,11 @@ public class CloudProps {
     //
     public boolean getTraceEnable() {
         return Solon.cfg().getBool(TRACE_ENABLE, true);
+    }
+
+
+    public String getTraceExclude() {
+        return Solon.cfg().get(TRACE_EXCLUDE);
     }
 
     //

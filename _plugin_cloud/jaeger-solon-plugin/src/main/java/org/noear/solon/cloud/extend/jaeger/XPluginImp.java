@@ -16,7 +16,7 @@ public class XPluginImp implements Plugin {
             return;
         }
 
-        TracingManager.enable();
+        TracingManager.enable(JaegerProps.instance.getTraceExclude());
         TracingManager.register(new JaegerTracerFactoryService(JaegerProps.instance));
     }
 }
