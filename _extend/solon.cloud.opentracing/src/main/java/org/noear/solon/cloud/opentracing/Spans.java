@@ -2,7 +2,7 @@ package org.noear.solon.cloud.opentracing;
 
 import io.opentracing.Span;
 import io.opentracing.Tracer;
-import org.noear.solon.cloud.opentracing.integration.SpanEmpty;
+import org.noear.solon.cloud.opentracing.integration.SpanSimulate;
 import org.noear.solon.core.Aop;
 
 import java.util.function.Consumer;
@@ -28,7 +28,7 @@ public class Spans {
     public static Span active() {
         if (tracer == null) {
             //避免出现 NullPointerException
-            return SpanEmpty.instance;
+            return SpanSimulate.instance;
         } else {
             return tracer.activeSpan();
         }

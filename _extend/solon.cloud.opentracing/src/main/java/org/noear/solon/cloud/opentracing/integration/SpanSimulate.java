@@ -10,8 +10,8 @@ import java.util.Map;
  * @author noear
  * @since 1.7
  */
-public class SpanEmpty implements Span {
-    public static final Span instance = new SpanEmpty();
+public class SpanSimulate implements Span {
+    public static final Span instance = new SpanSimulate();
 
     @Override
     public SpanContext context() {
