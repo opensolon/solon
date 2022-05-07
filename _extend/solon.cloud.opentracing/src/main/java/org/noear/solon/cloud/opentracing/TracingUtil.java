@@ -13,6 +13,9 @@ import java.util.function.Consumer;
  * @since 1.7
  */
 public class TracingUtil {
+    /**
+     * 活动中的Span（可能为Null；不推荐用）
+     * */
     public static Span activeSpan() {
         Tracer tracer = Aop.get(Tracer.class);
 
@@ -23,6 +26,9 @@ public class TracingUtil {
         }
     }
 
+    /**
+     * 活动中的Span
+     * */
     public static void activeSpan(Consumer<Span> consumer) {
         Span span = activeSpan();
 
