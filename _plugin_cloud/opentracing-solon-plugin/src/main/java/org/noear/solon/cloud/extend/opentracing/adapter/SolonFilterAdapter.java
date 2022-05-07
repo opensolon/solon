@@ -9,7 +9,6 @@ import io.opentracing.propagation.TextMapAdapter;
 import io.opentracing.tag.Tags;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
-import org.noear.solon.cloud.model.Instance;
 import org.noear.solon.cloud.utils.LocalUtils;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.handle.Context;

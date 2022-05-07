@@ -14,9 +14,6 @@ import org.noear.nami.common.TextUtils;
 import org.noear.solon.Utils;
 import org.noear.solon.core.Aop;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 /**
  * @author noear
  * @since 1.4
