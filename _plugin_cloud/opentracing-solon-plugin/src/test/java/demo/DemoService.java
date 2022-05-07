@@ -11,9 +11,9 @@ import org.noear.solon.cloud.opentracing.Spans;
 public class DemoService {
     @Mapping("hello")
     public String hello() {
-        Spans.active(span -> {
-            span.setTag("订单", 12);
-        });
+        Spans.active(span -> span.setTag("订单", 12));
+        //或
+        Spans.active().setTag("订单", 12);
 
         return "hello world";
     }
