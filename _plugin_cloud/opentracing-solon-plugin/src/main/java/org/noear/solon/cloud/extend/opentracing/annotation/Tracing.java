@@ -1,5 +1,7 @@
 package org.noear.solon.cloud.extend.opentracing.annotation;
 
+import org.noear.solon.annotation.Note;
+
 import java.lang.annotation.*;
 
 /**
@@ -12,5 +14,7 @@ import java.lang.annotation.*;
 public @interface Tracing {
     String value() default "";
     String name() default "";
-    String[] tags() default {};
+
+    @Note("缓存标签，多个以逗号隔开")
+    String tags() default "";
 }

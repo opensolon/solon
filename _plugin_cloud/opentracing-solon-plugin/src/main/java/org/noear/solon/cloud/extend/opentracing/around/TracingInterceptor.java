@@ -3,12 +3,12 @@ package org.noear.solon.cloud.extend.opentracing.around;
 import io.opentracing.Scope;
 import io.opentracing.Span;
 import io.opentracing.Tracer;
-import io.opentracing.tag.Tags;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.extend.opentracing.annotation.Tracing;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.aspect.Interceptor;
 import org.noear.solon.core.aspect.Invocation;
+import org.noear.solon.data.util.InvKeys;
 
 /**
  * @author noear
@@ -31,10 +31,7 @@ public class TracingInterceptor implements Interceptor {
         if (anno == null) {
             return inv.invoke();
         } else {
-            Span parentSpan = tracer.activeSpan();
-
-            Span span = buildSpan(anno, parentSpan);
-
+            Span span = buildSpan(inv, anno);
 
             try (Scope scope = tracer.activateSpan(span)) {
                 return inv.invoke();
@@ -47,31 +44,25 @@ public class TracingInterceptor implements Interceptor {
         }
     }
 
-    public Span buildSpan(Tracing anno, Span parentSpan) {
+    public Span buildSpan(Invocation inv, Tracing anno) {
         String spanName = Utils.annoAlias(anno.value(), anno.name());
+        if (Utils.isEmpty(spanName)) {
+            spanName = inv.method().getMethod().getName();
+        }
 
         //实例化构建器
         Tracer.SpanBuilder spanBuilder = tracer.buildSpan(spanName);
 
         //添加标志
-        spanBuilder.withTag(Tags.SPAN_KIND.getKey(), Tags.SPAN_KIND_CLIENT);
-
-        String[] spanTags = anno.tags();
-        if (spanTags != null) {
-            for (String tag : spanTags) {
+        String tags = InvKeys.buildByTmlAndInv(anno.tags(), inv);
+        if (Utils.isNotEmpty(tags)) {
+            for (String tag : tags.split(",")) {
                 String[] kv = tag.split("=");
                 spanBuilder.withTag(kv[0], kv[1]);
             }
         }
 
-        //添加父级
-        if (parentSpan != null) {
-            spanBuilder.asChildOf(parentSpan);
-        }
-
         Span span = spanBuilder.start();
-
-        //尝试注入
 
 
         //开始
