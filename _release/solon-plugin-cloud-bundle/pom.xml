@@ -24,8 +24,6 @@
         <module>../../_plugin_cloud/cloudevent-plus-solon-plugin</module>
         <module>../../_plugin_cloud/httputils-solon-plugin</module>
 
-        <module>../../_plugin_cloud/jaeger-solon-plugin</module>
-
         <module>../../_plugin_cloud/water-solon-plugin</module>
         <module>../../_plugin_cloud/consul-solon-plugin</module>
         <module>../../_plugin_cloud/nacos2-solon-plugin</module>
@@ -56,6 +54,7 @@
         <module>../../_plugin_cloud/xxl-job-solon-plugin</module>
 
         <module>../../_plugin_cloud/opentracing-solon-plugin</module>
+        <module>../../_plugin_cloud/jaeger-solon-plugin</module>
 
     </modules>
 
