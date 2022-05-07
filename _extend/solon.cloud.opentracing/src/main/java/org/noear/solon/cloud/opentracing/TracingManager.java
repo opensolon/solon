@@ -19,29 +19,27 @@ public class TracingManager {
     private static Tracer tracer;
 
     private static void init(Tracer tracer) {
+        if (TracingManager.tracer == null) {
+            //添加 nami 适配
+            NamiManager.reg(new NamiFilterAdapter());
+
+            //添加 solon 适配
+            Solon.global().filter(new SolonFilterAdapter());
+            Solon.global().onError(new SolonErrorAdapter());
+
+            //添加 @Tracing 适配
+            Aop.context().beanAroundAdd(Tracing.class, new TracingInterceptor());
+        }
+
+
         TracingManager.tracer = tracer;
-
         Aop.wrapAndPut(Tracer.class, tracer);
-
-        //添加 nami 适配
-        NamiManager.reg(new NamiFilterAdapter());
-
-        //添加 solon 适配
-        Solon.global().filter(new SolonFilterAdapter());
-        Solon.global().onError(new SolonErrorAdapter());
-
-        //添加 @Tracing 适配
-        Aop.context().beanAroundAdd(Tracing.class, new TracingInterceptor());
     }
 
     /**
      * 注册
      */
     public static synchronized void register(TracerFactoryService service) {
-        if (tracer != null) {
-            return;
-        }
-
         try {
             init(service.create());
         } catch (RuntimeException e) {
