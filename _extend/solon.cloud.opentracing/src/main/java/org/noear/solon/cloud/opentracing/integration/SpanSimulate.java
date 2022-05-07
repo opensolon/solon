@@ -7,6 +7,8 @@ import io.opentracing.tag.Tag;
 import java.util.Map;
 
 /**
+ * Span 伪装类
+ *
  * @author noear
  * @since 1.7
  */
