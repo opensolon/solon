@@ -1,12 +1,13 @@
 package org.noear.solon.cloud.opentracing.service;
 
 import io.opentracing.Tracer;
-import org.noear.solon.cloud.CloudProps;
 
 /**
+ * 跟踪器工厂服务
+ *
  * @author noear
  * @since 1.7
  */
-public interface TracerFactoryService {
+public interface TracerFactory {
     Tracer create() throws Exception;
 }

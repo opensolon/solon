@@ -8,11 +8,13 @@ import org.noear.solon.cloud.opentracing.annotation.TracingInterceptor;
 import org.noear.solon.cloud.opentracing.integration.NamiFilterAdapter;
 import org.noear.solon.cloud.opentracing.integration.SolonErrorAdapter;
 import org.noear.solon.cloud.opentracing.integration.SolonFilterAdapter;
-import org.noear.solon.cloud.opentracing.service.TracerFactoryService;
+import org.noear.solon.cloud.opentracing.service.TracerFactory;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.util.PrintUtil;
 
 /**
+ * 跟踪管理器
+ *
  * @author noear
  * @since 1.7
  */
@@ -44,7 +46,7 @@ public class TracingManager {
     /**
      * 注册
      */
-    public static synchronized void register(TracerFactoryService service) {
+    public static synchronized void register(TracerFactory service) {
         try {
             Aop.wrapAndPut(Tracer.class, service.create());
 

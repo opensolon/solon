@@ -14,7 +14,7 @@ import io.opentracing.Tracer;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudProps;
-import org.noear.solon.cloud.opentracing.service.TracerFactoryService;
+import org.noear.solon.cloud.opentracing.service.TracerFactory;
 
 import java.net.URI;
 
@@ -22,10 +22,10 @@ import java.net.URI;
  * @author noear
  * @since 1.7
  */
-public class JaegerTracerFactoryService implements TracerFactoryService {
+public class JaegerTracerFactory implements TracerFactory {
     final CloudProps cloudProps;
 
-    public JaegerTracerFactoryService(CloudProps cloudProps) {
+    public JaegerTracerFactory(CloudProps cloudProps) {
         this.cloudProps = cloudProps;
     }
 

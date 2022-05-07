@@ -1,7 +1,7 @@
 package org.noear.solon.cloud.extend.jaeger;
 
 import org.noear.solon.SolonApp;
-import org.noear.solon.cloud.extend.jaeger.service.JaegerTracerFactoryService;
+import org.noear.solon.cloud.extend.jaeger.service.JaegerTracerFactory;
 import org.noear.solon.cloud.opentracing.TracingManager;
 import org.noear.solon.core.Plugin;
 
@@ -17,6 +17,6 @@ public class XPluginImp implements Plugin {
         }
 
         TracingManager.enable(JaegerProps.instance.getTraceExclude());
-        TracingManager.register(new JaegerTracerFactoryService(JaegerProps.instance));
+        TracingManager.register(new JaegerTracerFactory(JaegerProps.instance));
     }
 }
