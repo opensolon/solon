@@ -12,11 +12,11 @@ import org.noear.solon.core.Plugin;
 public class XPluginImp implements Plugin {
     @Override
     public void start(SolonApp app) {
-        if (JeagerProps.instance.getTraceEnable() == false) {
+        if (JaegerProps.instance.getTraceEnable() == false) {
             return;
         }
 
         TracingManager.enable();
-        TracingManager.register(new JaegerTracerFactoryService(JeagerProps.instance));
+        TracingManager.register(new JaegerTracerFactoryService(JaegerProps.instance));
     }
 }
