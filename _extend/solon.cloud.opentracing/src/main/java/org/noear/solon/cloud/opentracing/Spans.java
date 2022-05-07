@@ -2,6 +2,7 @@ package org.noear.solon.cloud.opentracing;
 
 import io.opentracing.Span;
 import io.opentracing.Tracer;
+import org.noear.solon.cloud.opentracing.integration.SpanEmpty;
 import org.noear.solon.core.Aop;
 
 import java.util.function.Consumer;
@@ -12,8 +13,9 @@ import java.util.function.Consumer;
  * @author noear
  * @since 1.7
  */
-public class TracingUtil {
+public class Spans {
     private static Tracer tracer;
+
     static {
         Aop.getAsyn(Tracer.class, bw -> {
             tracer = bw.raw();
@@ -22,10 +24,11 @@ public class TracingUtil {
 
     /**
      * 活动中的Span（可能为Null；不推荐用）
-     * */
-    public static Span activeSpan() {
+     */
+    public static Span active() {
         if (tracer == null) {
-            return null;
+            //避免出现 NullPointerException
+            return SpanEmpty.instance;
         } else {
             return tracer.activeSpan();
         }
@@ -33,12 +36,10 @@ public class TracingUtil {
 
     /**
      * 活动中的Span
-     * */
-    public static void activeSpan(Consumer<Span> consumer) {
-        Span span = activeSpan();
-
-        if (span != null) {
-            consumer.accept(span);
+     */
+    public static void active(Consumer<Span> consumer) {
+        if (tracer != null) {
+            consumer.accept(tracer.activeSpan());
         }
     }
 }

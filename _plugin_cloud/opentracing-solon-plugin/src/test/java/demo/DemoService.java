@@ -2,7 +2,7 @@ package demo;
 
 import org.noear.nami.annotation.Mapping;
 import org.noear.solon.annotation.Controller;
-import org.noear.solon.cloud.opentracing.TracingUtil;
+import org.noear.solon.cloud.opentracing.Spans;
 
 /**
  * @author noear 2022/5/7 created
@@ -11,7 +11,7 @@ import org.noear.solon.cloud.opentracing.TracingUtil;
 public class DemoService {
     @Mapping("hello")
     public String hello() {
-        TracingUtil.activeSpan(span -> {
+        Spans.active(span -> {
             span.setTag("订单", 12);
         });
 
