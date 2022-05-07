@@ -1,4 +1,4 @@
-package org.noear.solon.cloud.extend.jeager.service;
+package org.noear.solon.cloud.extend.jaeger.service;
 
 import io.jaegertracing.internal.JaegerTracer;
 import io.jaegertracing.internal.metrics.Metrics;

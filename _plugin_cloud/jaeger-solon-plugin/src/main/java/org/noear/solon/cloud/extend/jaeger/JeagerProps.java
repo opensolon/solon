@@ -1,4 +1,4 @@
-package org.noear.solon.cloud.extend.jeager;
+package org.noear.solon.cloud.extend.jaeger;
 
 import org.noear.solon.cloud.CloudProps;
 
