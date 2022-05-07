@@ -41,7 +41,7 @@ public class NoRepeatSubmitValidator implements Validator<NoRepeatSubmit> {
                 case body: {
                     try {
                         tmp.append("body:");
-                        tmp.append(ctx.body()).append(";");
+                        tmp.append(ctx.bodyNew()).append(";");
                     } catch (IOException ex) {
                         throw new RuntimeException(ex);
                     }

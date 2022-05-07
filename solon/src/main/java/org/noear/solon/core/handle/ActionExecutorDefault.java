@@ -85,7 +85,7 @@ public class ActionExecutorDefault implements ActionExecutor {
                 if (p.requireBody()) {
                     //需要 body 数据
                     if (String.class.equals(pt)) {
-                        tv = ctx.body();
+                        tv = ctx.bodyNew();
                     } else if (InputStream.class.equals(pt)) {
                         tv = ctx.bodyAsStream();
                     }

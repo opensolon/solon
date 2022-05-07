@@ -34,11 +34,11 @@ public class FormContentFilter implements Handler {
             return;
         }
 
-        if (Utils.isEmpty(ctx.body())) {
+        if (Utils.isEmpty(ctx.bodyNew())) {
             return;
         }
 
-        String[] ss = ctx.body().split("&");
+        String[] ss = ctx.bodyNew().split("&");
 
         for (String s1 : ss) {
             String[] ss2 = s1.split("=");
