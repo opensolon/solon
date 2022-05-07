@@ -3,17 +3,12 @@ package org.noear.solon.cloud.extend.opentracing.around;
 import io.opentracing.Scope;
 import io.opentracing.Span;
 import io.opentracing.Tracer;
-import io.opentracing.propagation.Format;
-import io.opentracing.propagation.TextMapAdapter;
 import io.opentracing.tag.Tags;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.extend.opentracing.annotation.Tracing;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.aspect.Interceptor;
 import org.noear.solon.core.aspect.Invocation;
-import org.noear.solon.core.handle.Context;
-
-import java.util.Map;
 
 /**
  * @author noear
@@ -36,7 +31,10 @@ public class TracingInterceptor implements Interceptor {
         if (anno == null) {
             return inv.invoke();
         } else {
-            Span span = buildSpan(anno);
+            Span parentSpan = tracer.activeSpan();
+
+            Span span = buildSpan(anno, parentSpan);
+
 
             try (Scope scope = tracer.activateSpan(span)) {
                 return inv.invoke();
@@ -49,7 +47,7 @@ public class TracingInterceptor implements Interceptor {
         }
     }
 
-    public Span buildSpan(Tracing anno) {
+    public Span buildSpan(Tracing anno, Span parentSpan) {
         String spanName = Utils.annoAlias(anno.value(), anno.name());
 
         //实例化构建器
@@ -66,21 +64,15 @@ public class TracingInterceptor implements Interceptor {
             }
         }
 
-        Map<String, String> tags = TracingAttachment.getData();
-        if (tags != null) {
-            tags.forEach((key, val) -> {
-                spanBuilder.withTag(key, val);
-            });
+        //添加父级
+        if (parentSpan != null) {
+            spanBuilder.asChildOf(parentSpan);
         }
-
 
         Span span = spanBuilder.start();
 
         //尝试注入
-//        Context ctx = Context.current();
-//        if (ctx != null) {
-//            tracer.inject(span.context(), Format.Builtin.HTTP_HEADERS, new TextMapAdapter(ctx.headerMap()));
-//        }
+
 
         //开始
         return span;

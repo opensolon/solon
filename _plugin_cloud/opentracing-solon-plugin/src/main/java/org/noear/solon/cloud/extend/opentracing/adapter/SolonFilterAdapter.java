@@ -34,6 +34,7 @@ public class SolonFilterAdapter implements Filter {
             chain.doFilter(ctx);
         } else {
             Span span = buildSpan(ctx);
+
             try (Scope scope = tracer.activateSpan(span)) {
                 chain.doFilter(ctx);
             } catch (Throwable e) {
