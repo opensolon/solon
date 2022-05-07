@@ -4,11 +4,13 @@ import java.lang.annotation.*;
 
 /**
  * @author noear
- * @since 1.4
+ * @since 1.7
  */
-@Deprecated
-@Target({ElementType.TYPE})
+@Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface EnableOpentracing {
+public @interface Tracing {
+    String value() default "";
+    String name() default "";
+    String[] tags();
 }

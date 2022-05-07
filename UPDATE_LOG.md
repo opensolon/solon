@@ -1,5 +1,6 @@
 #### 1.7.6
 * 插件 sa-token-solon-plugin 支持 SaTokenConfig 注入
+* 插件 opentracing-solon-plugin 添加 @Tracking 注解
 * 插件 solon-test 调整 HttpUtils。支持超时
 * 取消 window 下彩色打印符输出。window 不支持
 * 增加 bodyNew 的应用范围
