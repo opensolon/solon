@@ -13,6 +13,8 @@ import org.noear.solon.core.aspect.Interceptor;
 import org.noear.solon.core.aspect.Invocation;
 import org.noear.solon.core.handle.Context;
 
+import java.util.Map;
+
 /**
  * @author noear
  * @since 1.7
@@ -64,14 +66,21 @@ public class TracingInterceptor implements Interceptor {
             }
         }
 
+        Map<String, String> tags = TracingAttachment.getData();
+        if (tags != null) {
+            tags.forEach((key, val) -> {
+                spanBuilder.withTag(key, val);
+            });
+        }
+
 
         Span span = spanBuilder.start();
 
         //尝试注入
-        Context ctx = Context.current();
-        if (ctx != null) {
-            tracer.inject(span.context(), Format.Builtin.HTTP_HEADERS, new TextMapAdapter(ctx.headerMap()));
-        }
+//        Context ctx = Context.current();
+//        if (ctx != null) {
+//            tracer.inject(span.context(), Format.Builtin.HTTP_HEADERS, new TextMapAdapter(ctx.headerMap()));
+//        }
 
         //开始
         return span;

@@ -60,11 +60,11 @@ public class SolonFilterAdapter implements Filter {
         //添加标志
         spanBuilder.withTag(Tags.SPAN_KIND.getKey(), Tags.SPAN_KIND_SERVER);
 
-        //获取提取器
-        SpanContext extract = tracer.extract(Format.Builtin.HTTP_HEADERS, new TextMapAdapter(ctx.headerMap()));
-        if (extract != null) {
+        //获取上下文
+        SpanContext spanContext = tracer.extract(Format.Builtin.HTTP_HEADERS, new TextMapAdapter(ctx.headerMap()));
+        if (spanContext != null) {
             //如果有，说明是从上传传导过来的
-            spanBuilder = spanBuilder.asChildOf(extract);
+            spanBuilder = spanBuilder.asChildOf(spanContext);
         }
 
         Span span = spanBuilder.start();

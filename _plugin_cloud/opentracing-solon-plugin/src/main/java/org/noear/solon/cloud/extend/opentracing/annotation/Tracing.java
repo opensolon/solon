@@ -12,5 +12,5 @@ import java.lang.annotation.*;
 public @interface Tracing {
     String value() default "";
     String name() default "";
-    String[] tags();
+    String[] tags() default {};
 }
