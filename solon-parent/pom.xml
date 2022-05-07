@@ -1239,6 +1239,7 @@
         <module>../_extend/solon.logging.impl</module>
 
         <module>../_extend/solon.cloud</module>
+        <module>../_extend/solon.cloud.opentracing</module>
 
         <module>../_combo/solon-beetl-web</module>
         <module>../_combo/solon-enjoy-web</module>
