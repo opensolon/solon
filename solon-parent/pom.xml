@@ -483,6 +483,12 @@
                 <version>${solon.ver}</version>
             </dependency>
 
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.cloud.opentracing</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+
 
             <dependency>
                 <groupId>org.noear</groupId>
