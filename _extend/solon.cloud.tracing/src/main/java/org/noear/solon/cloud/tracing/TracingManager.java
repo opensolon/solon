@@ -49,7 +49,7 @@ public class TracingManager {
         try {
             Aop.wrapAndPut(Tracer.class, service.create());
 
-            PrintUtil.info("Cloud", "TracerFactoryService registered from the " + service.getClass().getTypeName());
+            PrintUtil.info("Cloud", "TracerFactory registered from the " + service.getClass().getTypeName());
         } catch (RuntimeException e) {
             throw e;
         } catch (Throwable e) {
