@@ -14,7 +14,7 @@ import io.opentracing.Tracer;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudProps;
-import org.noear.solon.cloud.opentracing.service.TracerFactory;
+import org.noear.solon.cloud.tracing.service.TracerFactory;
 
 import java.net.URI;
 

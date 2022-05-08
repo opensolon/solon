@@ -1,4 +1,4 @@
-package org.noear.solon.cloud.opentracing.annotation;
+package org.noear.solon.cloud.tracing.annotation;
 
 import io.opentracing.Scope;
 import io.opentracing.Span;

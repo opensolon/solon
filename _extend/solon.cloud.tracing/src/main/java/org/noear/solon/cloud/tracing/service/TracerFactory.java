@@ -1,4 +1,4 @@
-package org.noear.solon.cloud.opentracing.service;
+package org.noear.solon.cloud.tracing.service;
 
 import io.opentracing.Tracer;
 

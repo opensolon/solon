@@ -11,7 +11,7 @@
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>solon.cloud.opentracing</artifactId>
+    <artifactId>solon.cloud.tracing</artifactId>
     <packaging>jar</packaging>
 
     <properties>

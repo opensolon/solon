@@ -2,7 +2,7 @@ package demo;
 
 import org.noear.nami.annotation.Mapping;
 import org.noear.solon.annotation.Controller;
-import org.noear.solon.cloud.opentracing.Spans;
+import org.noear.solon.cloud.tracing.Spans;
 
 /**
  * @author noear 2022/5/7 created

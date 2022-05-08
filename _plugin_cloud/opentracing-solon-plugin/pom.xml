@@ -17,7 +17,7 @@
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.cloud.opentracing</artifactId>
+            <artifactId>solon.cloud.tracing</artifactId>
         </dependency>
     </dependencies>
 

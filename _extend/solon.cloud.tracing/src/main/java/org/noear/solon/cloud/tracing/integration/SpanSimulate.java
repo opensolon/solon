@@ -1,4 +1,4 @@
-package org.noear.solon.cloud.opentracing.integration;
+package org.noear.solon.cloud.tracing.integration;
 
 import io.opentracing.Span;
 import io.opentracing.SpanContext;

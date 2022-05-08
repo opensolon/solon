@@ -1,8 +1,8 @@
-package org.noear.solon.cloud.opentracing;
+package org.noear.solon.cloud.tracing;
 
 import io.opentracing.Span;
 import io.opentracing.Tracer;
-import org.noear.solon.cloud.opentracing.integration.SpanSimulate;
+import org.noear.solon.cloud.tracing.integration.SpanSimulate;
 import org.noear.solon.core.Aop;
 
 import java.util.function.Consumer;

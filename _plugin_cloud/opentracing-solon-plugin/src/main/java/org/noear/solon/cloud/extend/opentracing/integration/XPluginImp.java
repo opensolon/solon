@@ -1,10 +1,8 @@
 package org.noear.solon.cloud.extend.opentracing.integration;
 
-import org.noear.nami.NamiManager;
 import org.noear.solon.SolonApp;
 import org.noear.solon.cloud.extend.opentracing.OpentracingProps;
-import org.noear.solon.cloud.opentracing.TracingManager;
-import org.noear.solon.core.Aop;
+import org.noear.solon.cloud.tracing.TracingManager;
 import org.noear.solon.core.Plugin;
 
 /**

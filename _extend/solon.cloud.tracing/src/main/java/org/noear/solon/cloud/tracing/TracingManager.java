@@ -1,14 +1,14 @@
-package org.noear.solon.cloud.opentracing;
+package org.noear.solon.cloud.tracing;
 
 import io.opentracing.Tracer;
 import org.noear.nami.NamiManager;
 import org.noear.solon.Solon;
-import org.noear.solon.cloud.opentracing.annotation.Tracing;
-import org.noear.solon.cloud.opentracing.annotation.TracingInterceptor;
-import org.noear.solon.cloud.opentracing.integration.NamiFilterAdapter;
-import org.noear.solon.cloud.opentracing.integration.SolonErrorAdapter;
-import org.noear.solon.cloud.opentracing.integration.SolonFilterAdapter;
-import org.noear.solon.cloud.opentracing.service.TracerFactory;
+import org.noear.solon.cloud.tracing.annotation.Tracing;
+import org.noear.solon.cloud.tracing.annotation.TracingInterceptor;
+import org.noear.solon.cloud.tracing.integration.NamiFilterAdapter;
+import org.noear.solon.cloud.tracing.integration.SolonErrorAdapter;
+import org.noear.solon.cloud.tracing.integration.SolonFilterAdapter;
+import org.noear.solon.cloud.tracing.service.TracerFactory;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.util.PrintUtil;
 
