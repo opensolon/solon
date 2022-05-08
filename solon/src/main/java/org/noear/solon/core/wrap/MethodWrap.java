@@ -1,6 +1,5 @@
 package org.noear.solon.core.wrap;
 
-import org.noear.solon.Utils;
 import org.noear.solon.annotation.*;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.aspect.Interceptor;
@@ -48,6 +47,7 @@ public class MethodWrap implements Interceptor, MethodHolder {
         parameters = paramsWrap(m.getParameters());
         annotations = m.getAnnotations();
         arounds = new ArrayList<>();
+        aroundsIdx = new HashSet<>();
 
         //scan cless @Around
         for (Annotation anno : entityClz.getAnnotations()) {
@@ -103,6 +103,11 @@ public class MethodWrap implements Interceptor, MethodHolder {
 
     private void doAroundAdd(InterceptorEntity i) {
         if (i != null) {
+            if(aroundsIdx.contains(i.getReal())){
+                return;
+            }
+
+            aroundsIdx.add(i.getReal());
             arounds.add(i);
         }
     }
@@ -117,6 +122,7 @@ public class MethodWrap implements Interceptor, MethodHolder {
     private final Annotation[] annotations;
     //函数包围列表（扩展切点）
     private final List<InterceptorEntity> arounds;
+    private final Set<Interceptor> aroundsIdx;
 
 
     /**
