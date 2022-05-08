@@ -77,11 +77,11 @@ public class SolonFilterAdapter implements Filter {
         String ip = LocalUtils.getLocalAddress();
 
         //实例化构建器
-        StringBuilder spanName = new StringBuilder();
-        spanName.append(ctx.pathNew()).append(" (").append(ctx.uri().getScheme()).append(" ").append(ip).append(":").append(port).append(')');
-        Tracer.SpanBuilder spanBuilder = tracer.buildSpan(spanName.toString());
+        StringBuilder operationName = new StringBuilder();
+        operationName.append(ctx.pathNew()).append(" (").append(ctx.uri().getScheme()).append(" ").append(ip).append(":").append(port).append(')');
+        Tracer.SpanBuilder spanBuilder = tracer.buildSpan(operationName.toString());
 
-        //添加标志
+        //添加种类标志
         spanBuilder.withTag(Tags.SPAN_KIND.getKey(), Tags.SPAN_KIND_SERVER);
 
         //获取上下文

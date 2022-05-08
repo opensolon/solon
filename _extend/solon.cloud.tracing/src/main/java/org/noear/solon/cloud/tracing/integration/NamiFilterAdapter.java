@@ -49,21 +49,21 @@ public class NamiFilterAdapter implements Filter {
 
     public Span buildSpan(Context ctx) {
         //构建 Span Name
-        StringBuilder spanName = new StringBuilder();
+        StringBuilder operationName = new StringBuilder();
 
-        spanName.append("Nami:");
+        operationName.append("Nami:");
         if (TextUtils.isEmpty(ctx.config.getName())) {
-            spanName.append(ctx.url);
+            operationName.append(ctx.url);
         } else {
-            spanName.append(ctx.config.getName()).append(":");
-            spanName.append(ctx.url);
+            operationName.append(ctx.config.getName()).append(":");
+            operationName.append(ctx.url);
         }
 
 
         //实例化构建器
-        Tracer.SpanBuilder spanBuilder = tracer.buildSpan(spanName.toString());
+        Tracer.SpanBuilder spanBuilder = tracer.buildSpan(operationName.toString());
 
-        //添加标志
+        //添加种类标志
         spanBuilder.withTag(Tags.SPAN_KIND.getKey(), Tags.SPAN_KIND_CLIENT);
 
         Span span = spanBuilder.start();
