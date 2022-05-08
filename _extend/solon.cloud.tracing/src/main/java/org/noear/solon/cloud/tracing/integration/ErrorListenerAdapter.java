@@ -7,13 +7,15 @@ import org.noear.solon.core.Aop;
 import org.noear.solon.core.event.EventListener;
 
 /**
+ * 异常监听适配
+ *
  * @author noear
  * @since 1.4
  */
-public class SolonErrorAdapter implements EventListener<Throwable> {
+public class ErrorListenerAdapter implements EventListener<Throwable> {
     private Tracer tracer;
 
-    public SolonErrorAdapter() {
+    public ErrorListenerAdapter() {
         Aop.getAsyn(Tracer.class, bw -> {
             tracer = bw.raw();
         });

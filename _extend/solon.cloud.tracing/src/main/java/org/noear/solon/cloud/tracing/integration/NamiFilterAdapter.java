@@ -15,6 +15,8 @@ import org.noear.solon.Utils;
 import org.noear.solon.core.Aop;
 
 /**
+ * Nami 过滤器适配
+ *
  * @author noear
  * @since 1.4
  */

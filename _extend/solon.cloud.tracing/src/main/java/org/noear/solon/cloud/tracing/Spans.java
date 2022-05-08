@@ -28,7 +28,7 @@ public class Spans {
     public static Span active() {
         if (tracer == null) {
             //避免出现 NullPointerException
-            return SpanSimulate.instance;
+            return SpanSimulate.getInstance();
         } else {
             return tracer.activeSpan();
         }

@@ -13,7 +13,11 @@ import java.util.Map;
  * @since 1.7
  */
 public class SpanSimulate implements Span {
-    public static final Span instance = new SpanSimulate();
+    private static final Span instance = new SpanSimulate();
+
+    public static Span getInstance() {
+        return instance;
+    }
 
     @Override
     public SpanContext context() {
@@ -22,47 +26,47 @@ public class SpanSimulate implements Span {
 
     @Override
     public Span setTag(String key, String value) {
-        return instance;
+        return this;
     }
 
     @Override
     public Span setTag(String key, boolean value) {
-        return instance;
+        return this;
     }
 
     @Override
     public Span setTag(String key, Number value) {
-        return instance;
+        return this;
     }
 
     @Override
     public <T> Span setTag(Tag<T> tag, T value) {
-        return instance;
+        return this;
     }
 
     @Override
     public Span log(Map<String, ?> fields) {
-        return instance;
+        return this;
     }
 
     @Override
     public Span log(long timestampMicroseconds, Map<String, ?> fields) {
-        return instance;
+        return this;
     }
 
     @Override
     public Span log(String event) {
-        return instance;
+        return this;
     }
 
     @Override
     public Span log(long timestampMicroseconds, String event) {
-        return instance;
+        return this;
     }
 
     @Override
     public Span setBaggageItem(String key, String value) {
-        return instance;
+        return this;
     }
 
     @Override
@@ -72,7 +76,7 @@ public class SpanSimulate implements Span {
 
     @Override
     public Span setOperationName(String operationName) {
-        return instance;
+        return this;
     }
 
     @Override
