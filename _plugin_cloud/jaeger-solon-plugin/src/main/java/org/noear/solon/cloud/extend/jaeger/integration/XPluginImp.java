@@ -1,6 +1,7 @@
-package org.noear.solon.cloud.extend.jaeger;
+package org.noear.solon.cloud.extend.jaeger.integration;
 
 import org.noear.solon.SolonApp;
+import org.noear.solon.cloud.extend.jaeger.JaegerProps;
 import org.noear.solon.cloud.extend.jaeger.service.JaegerTracerFactory;
 import org.noear.solon.cloud.tracing.TracingManager;
 import org.noear.solon.core.Plugin;
