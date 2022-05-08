@@ -97,13 +97,14 @@ public class MethodWrap implements Interceptor, MethodHolder {
 
     private void doAroundAdd(Around a) {
         if (a != null) {
-            arounds.add(new InterceptorEntity(a.index(), Aop.getOrNew(a.value())));
+            doAroundAdd(new InterceptorEntity(a.index(), Aop.getOrNew(a.value())));
         }
     }
 
     private void doAroundAdd(InterceptorEntity i) {
         if (i != null) {
             if(aroundsIdx.contains(i.getReal())){
+                //去重处理
                 return;
             }
 
