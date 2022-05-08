@@ -14,9 +14,15 @@ import java.lang.annotation.*;
 @Target({ElementType.METHOD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Tracing {
+    /**
+     * 操作名
+     * */
     String value() default "";
+    /**
+     * 操作名
+     * */
     String name() default "";
 
-    @Note("缓存标签，多个以逗号隔开")
+    @Note("标签，多个以逗号隔开")
     String tags() default "";
 }
