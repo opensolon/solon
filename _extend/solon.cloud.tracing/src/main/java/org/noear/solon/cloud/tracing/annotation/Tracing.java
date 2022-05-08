@@ -8,9 +8,9 @@ import java.lang.annotation.*;
  * @author noear
  * @since 1.7
  */
-@Target({ElementType.METHOD})
+@Inherited
+@Target({ElementType.METHOD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-@Documented
 public @interface Tracing {
     String value() default "";
     String name() default "";

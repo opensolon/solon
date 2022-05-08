@@ -28,6 +28,11 @@ public class TracingInterceptor implements Interceptor {
         Tracing anno = inv.method().getAnnotation(Tracing.class);
 
         if (anno == null) {
+            //支持注解在类上
+            anno = inv.target().getClass().getAnnotation(Tracing.class);
+        }
+
+        if (anno == null) {
             return inv.invoke();
         } else {
             Span span = buildSpan(inv, anno);

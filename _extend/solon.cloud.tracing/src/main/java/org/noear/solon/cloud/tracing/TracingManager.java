@@ -40,7 +40,6 @@ public class TracingManager {
 
         //添加 @Tracing 适配
         Aop.context().beanAroundAdd(Tracing.class, new TracingInterceptor());
-
     }
 
     /**
