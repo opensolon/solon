@@ -49,8 +49,8 @@ public class MethodWrap implements Interceptor, MethodHolder {
         arounds = new ArrayList<>();
         aroundsIdx = new HashSet<>();
 
-        //scan cless @Around
-        for (Annotation anno : entityClz.getAnnotations()) {
+        //scan method @Around （优先）
+        for (Annotation anno : annotations) {
             if (anno instanceof Around) {
                 doAroundAdd((Around) anno);
             } else {
@@ -63,8 +63,8 @@ public class MethodWrap implements Interceptor, MethodHolder {
             }
         }
 
-        //scan method @Around
-        for (Annotation anno : annotations) {
+        //scan cless @Around
+        for (Annotation anno : entityClz.getAnnotations()) {
             if (anno instanceof Around) {
                 doAroundAdd((Around) anno);
             } else {
