@@ -29,6 +29,11 @@ public class SolonFilterAdapter implements Filter {
     private Set<String> excludePaths = new HashSet<>();
 
     public SolonFilterAdapter(String excluded) {
+        //跟踪器注入
+        Aop.getAsyn(Tracer.class, bw -> {
+            tracer = bw.raw();
+        });
+
         //排除支持
         if (Utils.isNotEmpty(excluded)) {
             for (String path : excluded.split(",")) {
@@ -43,11 +48,6 @@ public class SolonFilterAdapter implements Filter {
                 }
             }
         }
-
-        //跟踪器注入
-        Aop.getAsyn(Tracer.class, bw -> {
-            tracer = bw.raw();
-        });
     }
 
     @Override
