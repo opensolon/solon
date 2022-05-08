@@ -25,6 +25,11 @@ public class TracingInterceptor implements Interceptor {
 
     @Override
     public Object doIntercept(Invocation inv) throws Throwable {
+        if(tracer == null){
+            return inv.invoke();
+        }
+
+
         Tracing anno = inv.method().getAnnotation(Tracing.class);
 
         if (anno == null) {
