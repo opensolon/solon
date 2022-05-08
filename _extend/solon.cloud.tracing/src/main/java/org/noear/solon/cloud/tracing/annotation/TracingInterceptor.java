@@ -51,7 +51,9 @@ public class TracingInterceptor implements Interceptor {
     public Span buildSpan(Invocation inv, Tracing anno) {
         String spanName = Utils.annoAlias(anno.value(), anno.name());
         if (Utils.isEmpty(spanName)) {
-            spanName = inv.method().getMethod().getName();
+            spanName = inv.method().getMethod().getDeclaringClass().getName()
+                    + "::"
+                    + inv.method().getMethod().getName();
         }
 
         //实例化构建器
