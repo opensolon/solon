@@ -24,11 +24,11 @@ import java.util.Set;
  * @author noear
  * @since 1.4
  */
-public class SolonFilterAdapter implements Filter {
+public class SolonFilterTracing implements Filter {
     private Tracer tracer;
     private Set<String> excludePaths = new HashSet<>();
 
-    public SolonFilterAdapter(String excluded) {
+    public SolonFilterTracing(String excluded) {
         //跟踪器注入
         Aop.getAsyn(Tracer.class, bw -> {
             tracer = bw.raw();

@@ -20,10 +20,10 @@ import org.noear.solon.core.Aop;
  * @author noear
  * @since 1.4
  */
-public class NamiFilterAdapter implements Filter {
+public class NamiFilterTracing implements Filter {
     private Tracer tracer;
 
-    public NamiFilterAdapter() {
+    public NamiFilterTracing() {
         Aop.getAsyn(Tracer.class, bw -> {
             tracer = bw.raw();
         });

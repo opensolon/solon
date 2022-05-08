@@ -5,9 +5,9 @@ import org.noear.nami.NamiManager;
 import org.noear.solon.Solon;
 import org.noear.solon.cloud.tracing.annotation.Tracing;
 import org.noear.solon.cloud.tracing.annotation.TracingInterceptor;
-import org.noear.solon.cloud.tracing.integration.NamiFilterAdapter;
-import org.noear.solon.cloud.tracing.integration.ErrorListenerAdapter;
-import org.noear.solon.cloud.tracing.integration.SolonFilterAdapter;
+import org.noear.solon.cloud.tracing.integration.NamiFilterTracing;
+import org.noear.solon.cloud.tracing.integration.ErrorListenerTracing;
+import org.noear.solon.cloud.tracing.integration.SolonFilterTracing;
 import org.noear.solon.cloud.tracing.service.TracerFactory;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.util.PrintUtil;
@@ -32,11 +32,11 @@ public class TracingManager {
         }
 
         //添加 nami 适配
-        NamiManager.reg(new NamiFilterAdapter());
+        NamiManager.reg(new NamiFilterTracing());
 
         //添加 solon 适配
-        Solon.global().filter(new SolonFilterAdapter(excluded));
-        Solon.global().onError(new ErrorListenerAdapter());
+        Solon.global().filter(new SolonFilterTracing(excluded));
+        Solon.global().onError(new ErrorListenerTracing());
 
         //添加 @Tracing 适配
         Aop.context().beanAroundAdd(Tracing.class, new TracingInterceptor());
