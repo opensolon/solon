@@ -5,6 +5,8 @@ import org.noear.solon.annotation.Note;
 import java.lang.annotation.*;
 
 /**
+ * 跟踪埋点（支持可继承）
+ *
  * @author noear
  * @since 1.7
  */

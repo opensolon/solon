@@ -29,7 +29,7 @@ public class TracingInterceptor implements Interceptor {
 
         if (anno == null) {
             //支持注解在类上
-            anno = inv.target().getClass().getAnnotation(Tracing.class);
+            anno = inv.method().getMethod().getDeclaringClass().getAnnotation(Tracing.class);
         }
 
         if (anno == null) {
