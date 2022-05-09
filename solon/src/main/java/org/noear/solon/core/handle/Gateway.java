@@ -377,7 +377,7 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
      * 添加二级路径处理
      */
     @Note("添加二级路径处理")
-    public void add(String path, MethodType method, Handler handler){
+    public void add(String path, MethodType method, Handler handler) {
         addDo(path, method, handler);
     }
 
@@ -427,7 +427,7 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
             return mainDef;
         } else {
             if (h instanceof Action) {
-                c.attrSet("handler_name", ((Action) h).name());
+                c.attrSet("handler_name", ((Action) h).fullName());
             }
             return h;
         }
