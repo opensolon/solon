@@ -446,18 +446,13 @@ public class AopContext extends BeanContainer {
         if (raw != null) {
             Class<?> beanClz = mWrap.getReturnType();
             Type beanGtp = mWrap.getGenericReturnType();
-            //Inject beanInj = mWrap.getAnnotation(Inject.class);
+
+            //产生的bean，不再支持二次注入
 
             BeanWrap m_bw = null;
             if (raw instanceof BeanWrap) {
                 m_bw = (BeanWrap) raw;
             } else {
-//                if (beanInj != null && Utils.isEmpty(beanInj.value()) == false) {
-//                    if (beanInj.value().startsWith("${")) {
-//                        Utils.injectProperties(raw, Solon.cfg().getPropByExpr(beanInj.value()));
-//                    }
-//                }
-
                 //@Bean 动态构建的bean, 可通过事件广播进行扩展
                 EventBus.push(raw);
 
