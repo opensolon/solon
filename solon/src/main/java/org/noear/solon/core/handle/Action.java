@@ -86,7 +86,11 @@ public class Action extends HandlerAide implements Handler {
         if (Utils.isEmpty(path)) {
             mFullName = mName;
         } else {
-            mFullName = path;
+            if (path.startsWith("/")) {
+                mFullName = path.substring(1);
+            } else {
+                mFullName = path;
+            }
         }
 
         //支持多分片申明
