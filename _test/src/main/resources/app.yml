@@ -87,6 +87,7 @@ server:
         password: 123456
         db: 3
         maxTotal: 200
+        minIdle: 3
 
 #特殊信息输出
 solon.output.meta: 1
