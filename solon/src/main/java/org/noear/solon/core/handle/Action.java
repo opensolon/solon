@@ -38,6 +38,7 @@ public class Action extends HandlerAide implements Handler {
     private String mConsumes;
     //action name
     private final String mName;
+    private final String mFullName;//包类的 Mapping
     //action remoting
     private final boolean mRemoting;
     private final Mapping mMapping;
@@ -82,8 +83,14 @@ public class Action extends HandlerAide implements Handler {
             mIsMain = !(mapping.after() || mapping.before());
         }
 
+        if (Utils.isEmpty(path)) {
+            mFullName = mName;
+        } else {
+            mFullName = path;
+        }
+
         //支持多分片申明
-        if(mMultipart == false) {
+        if (mMultipart == false) {
             for (Class<?> clz : method.getParameterTypes()) {
                 if (UploadedFile.class.isAssignableFrom(clz)) {
                     mMultipart = true;
@@ -110,6 +117,10 @@ public class Action extends HandlerAide implements Handler {
      */
     public String name() {
         return mName;
+    }
+
+    public String fullName() {
+        return mFullName;
     }
 
     /**
@@ -272,7 +283,7 @@ public class Action extends HandlerAide implements Handler {
             e = Utils.throwableUnwrap(e);
 
             if (e instanceof DataThrowable) {
-                DataThrowable ex = (DataThrowable)e;
+                DataThrowable ex = (DataThrowable) e;
                 if (ex.data() == null) {
                     renderDo(ex, c);
                 } else {
