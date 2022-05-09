@@ -1,3 +1,6 @@
+#### 1.7.7
+
+
 #### 1.7.6
 * 插件 sa-token-solon-plugin 支持 SaTokenConfig 注入
 * 插件 opentracing-solon-plugin 重新调整
