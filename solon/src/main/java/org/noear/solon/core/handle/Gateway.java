@@ -341,17 +341,19 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
             return;
         }
 
-        HandlerLoader uw = new HandlerLoader(beanWp, mapping, remoting, this, allowActionMapping());
+        Mapping bMapping = beanWp.clz().getAnnotation(Mapping.class);
+        String bPath = null;
+        if (bMapping != null) {
+            bPath = Utils.annoAlias(bMapping.value(), bMapping.path());
+        }
+
+        HandlerLoader uw = new HandlerLoader(beanWp, bPath, remoting, this, allowActionMapping());
 
         uw.load((expr, method, handler) -> {
-            if (handler instanceof Action) {
-                Action action = (Action) handler;
-
-                if (path == null) {
-                    addDo(action.name(), method, action);
-                } else {
-                    addDo(PathUtil.mergePath(path, action.name()), method, action);
-                }
+            if (path == null) {
+                addDo(expr, method, handler);
+            } else {
+                addDo(PathUtil.mergePath(path, expr), method, handler);
             }
         });
     }
