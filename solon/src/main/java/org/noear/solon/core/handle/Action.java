@@ -38,7 +38,7 @@ public class Action extends HandlerAide implements Handler {
     private String mConsumes;
     //action name
     private final String mName;
-    private final String mFullName;//包类的 Mapping
+    private final String mFullName;//包类的 Mapping，去掉 / 开头
     //action remoting
     private final boolean mRemoting;
     private final Mapping mMapping;
