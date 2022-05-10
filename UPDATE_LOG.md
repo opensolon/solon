@@ -1,6 +1,7 @@
 #### 1.7.7
 * 增加 Action::fullName() 接口
 * 增加 Gateway 对类 Mapping 主解的支持
+* 插件 sa-token-solon-plugin 升级 sa-token 为 1.3.0
 
 #### 1.7.6
 * 插件 sa-token-solon-plugin 支持 SaTokenConfig 注入
