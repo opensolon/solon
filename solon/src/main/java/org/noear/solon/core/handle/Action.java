@@ -1,6 +1,8 @@
 package org.noear.solon.core.handle;
 
 import org.noear.solon.Utils;
+import org.noear.solon.annotation.Consumes;
+import org.noear.solon.annotation.Produces;
 import org.noear.solon.core.*;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.PathUtil;
@@ -76,8 +78,21 @@ public class Action extends HandlerAide implements Handler {
             mName = method.getName();
             mIsMain = true;
         } else {
-            mProduces = mapping.produces();
-            mConsumes = mapping.consumes();
+            Produces producesAnno = method.getAnnotation(Produces.class);
+            Consumes consumesAnno = method.getAnnotation(Consumes.class);
+
+            if (producesAnno == null) {
+                mProduces = mapping.produces();
+            } else {
+                mProduces = producesAnno.value();
+            }
+
+            if (consumesAnno == null) {
+                mConsumes = mapping.consumes();
+            } else {
+                mConsumes = consumesAnno.value();
+            }
+
             mMultipart = mapping.multipart();
             mName = Utils.annoAlias(mapping.value(), mapping.path());
             mIsMain = !(mapping.after() || mapping.before());

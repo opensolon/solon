@@ -1,5 +1,6 @@
 package org.noear.solon.cloud.tracing.annotation;
 
+import org.noear.solon.annotation.Alias;
 import org.noear.solon.annotation.Note;
 
 import java.lang.annotation.*;
@@ -17,10 +18,12 @@ public @interface Tracing {
     /**
      * 操作名
      * */
+    @Alias("name")
     String value() default "";
     /**
      * 操作名
      * */
+    @Alias("value")
     String name() default "";
 
     @Note("标签，多个以逗号隔开")
