@@ -3,6 +3,7 @@
 * 增加 Gateway 对类 Mapping 主解的支持
 * 插件 sa-token-solon-plugin 升级 sa-token 为 1.3.0
 * 添加 Consumes 和 Produces 注解
+* 过期 Mapping::before,after,index
 
 #### 1.7.6
 * 插件 sa-token-solon-plugin 支持 SaTokenConfig 注入

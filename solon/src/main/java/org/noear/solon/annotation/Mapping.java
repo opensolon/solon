@@ -52,14 +52,23 @@ public @interface Mapping {
 
     /**
      * 顺序位（before 或 after =true 时有效）
+     *
+     * @deprecated 1.7
      * */
+    @Deprecated
     int index() default 0;
     /**
      * 是否前置
+     *
+     * @deprecated 1.7
      * */
+    @Deprecated
     boolean before() default false;
     /**
      * 是否后置
+     *
+     * @deprecated 1.7
      * */
+    @Deprecated
     boolean after() default false;
 }
