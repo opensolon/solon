@@ -248,11 +248,11 @@ public class HttpTest extends _TestBase {
     }
 
     @Test
-    public void test2k2() throws IOException{
-        Map<String,String> map = new HashMap<>();
-        map.put("username","noear");
-        map.put("password","zk1234");
-        assert  post("/demo2/param/login", map).equals("noear # zk1234");
+    public void test2k2() throws IOException {
+        Map<String, String> map = new HashMap<>();
+        map.put("username", "noear");
+        map.put("password", "zk1234");
+        assert path("/demo2/param/login").data(map).post().equals("noear # zk1234");
     }
 
     @Test

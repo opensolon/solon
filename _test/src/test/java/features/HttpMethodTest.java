@@ -23,7 +23,7 @@ public class HttpMethodTest extends _TestBase {
         Map<String, String> map = new HashMap<>();
         map.put("name", "中文");
 
-        assert post("/demo2/method/post", map).equals("中文");
+        assert path("/demo2/method/post").data(map).post().equals("中文");
     }
 
     @Test
