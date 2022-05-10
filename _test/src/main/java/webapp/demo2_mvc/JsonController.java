@@ -1,10 +1,7 @@
 package webapp.demo2_mvc;
 
 import org.noear.solon.Utils;
-import org.noear.solon.annotation.Body;
-import org.noear.solon.annotation.Header;
-import org.noear.solon.annotation.Mapping;
-import org.noear.solon.annotation.Remoting;
+import org.noear.solon.annotation.*;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.ModelAndView;
 import webapp.models.UserModel;
@@ -18,6 +15,12 @@ import java.util.Map;
 @Mapping("/demo2/json/")
 @Remoting
 public class JsonController {
+    @Produces("text/json")
+    @Mapping("/json")
+    public Object json() {
+        return "{}";
+    }
+
     @Mapping("/map")
     public Object map(Map<String, UserModel> userMap, ModelAndView mv) {
         if (userMap == null) {
