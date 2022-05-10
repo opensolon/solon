@@ -2,6 +2,7 @@ package features;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.noear.solon.test.HttpTestBase;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
 
@@ -11,7 +12,7 @@ import java.util.Map;
 
 @RunWith(SolonJUnit4ClassRunner.class)
 @SolonTest(webapp.TestApp.class)
-public class HttpMethodTest extends _TestBase {
+public class HttpMethodTest extends HttpTestBase {
 
     @Test
     public void test21() throws IOException {
