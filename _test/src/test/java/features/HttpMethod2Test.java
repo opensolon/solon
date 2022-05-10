@@ -15,7 +15,7 @@ public class HttpMethod2Test extends _TestBase {
 
     @Test
     public void test21() throws IOException {
-        assert getStatus("/demo2/method2/post") == 404;
+        assert path("/demo2/method2/post").execAsCode("GET") == 404;
     }
 
     @Test

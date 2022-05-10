@@ -22,7 +22,7 @@ public class HttpTest extends _TestBase {
 
     @Test
     public void test0() throws IOException{
-        assert getStatus("/debug.htm") == 200;
+        assert path("/debug.htm").execAsCode("GET") == 200;
     }
 
     @Test
@@ -40,22 +40,22 @@ public class HttpTest extends _TestBase {
 
     @Test
     public void test12_post() throws IOException {
-        assert post("/demo1/run1/*", "").equals("http://localhost:8080/demo1/run1/*");
+        assert path("/demo1/run1/*").bodyTxt("").post().equals("http://localhost:8080/demo1/run1/*");
     }
 
     @Test
     public void test12_put() throws IOException {
-        assert put("/demo1/run1/*", "").equals("http://localhost:8080/demo1/run1/*");
+        assert path("/demo1/run1/*").bodyTxt("").put().equals("http://localhost:8080/demo1/run1/*");
     }
 
     @Test
     public void test12_head() throws IOException {
-        assert headStatus("/demo1/run1/*") == 200;
+        assert path("/demo1/run1/*").execAsCode("HEAD") == 200;
     }
 
     @Test
     public void test13() throws IOException{
-        assert  getStatus("/demo1/run2/*") != 200;
+        assert path("/demo1/run2/*").execAsCode("GET") != 200 ;
     }
 
     @Test
@@ -91,7 +91,7 @@ public class HttpTest extends _TestBase {
 
     @Test
     public void test21() throws IOException{
-        assert  getStatus("/demo2/CMD/{cmd_name}") == 404;
+        assert  path("/demo2/CMD/{cmd_name}").execAsCode("GET") == 404;
     }
 
     @Test
@@ -152,11 +152,10 @@ public class HttpTest extends _TestBase {
     }
 
     @Test
-    public void test2d_2() throws IOException{
-        assert  post("/demo2/param/body","name=xxx").equals("name=xxx");
-        assert  get("/demo2/param/body?name=xxx").equals("");
-        assert  post("/demo2/param/body","name=xxx").equals("name=xxx");
-
+    public void test2d_2() throws IOException {
+        assert path("/demo2/param/body").bodyTxt("name=xxx").post().equals("name=xxx");
+        assert path("/demo2/param/body?name=xxx").get().equals("");
+        assert path("/demo2/param/body").bodyTxt("name=xxx").post().equals("name=xxx");
     }
 
     @Test

@@ -187,7 +187,7 @@ public class HttpUtils {
 
     //@XNote("设置BODY txt")
     public HttpUtils bodyTxt(String txt) {
-        return bodyTxt(txt, null);
+        return bodyTxt(txt, "text/plain");
     }
 
     //@XNote("设置BODY txt及内容类型")
