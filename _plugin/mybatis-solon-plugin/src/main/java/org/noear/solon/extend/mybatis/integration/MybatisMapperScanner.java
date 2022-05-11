@@ -23,10 +23,12 @@ class MybatisMapperScanner {
 
     private static void mapperScan0(MybatisAdapter adapter, String val) {
         if (val.endsWith(".xml")) {
-
+            //跳过
         } else if (val.endsWith(".class")) {
             Class<?> clz = Utils.loadClass(val.substring(0, val.length() - 6));
             mapperBindDo(adapter, clz);
+        } else if (val.endsWith("/")) {
+            //跳过
         } else {
             String dir = val.replace('.', '/');
             mapperScanDo(adapter, dir);
