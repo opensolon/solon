@@ -149,7 +149,7 @@ public class MybatisAdapterDefault implements MybatisAdapter {
                         if (val.endsWith(".xml")) {
                             //mapper xml
                             if (val.endsWith("*.xml")) {
-                                String dir = val.substring(0, val.length() - 5);
+                                String dir = val.substring(0, val.length() - 6);
                                 ScanUtil.scan(dir, n -> n.endsWith(".xml"))
                                         .stream()
                                         .forEach(uri -> {
