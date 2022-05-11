@@ -16,6 +16,7 @@ import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.Props;
 import org.noear.solon.core.VarHolder;
 import org.noear.solon.core.event.EventBus;
+import org.noear.solon.core.util.ScanUtil;
 import org.noear.solon.extend.mybatis.MybatisAdapter;
 import org.noear.solon.extend.mybatis.tran.SolonManagedTransactionFactory;
 
@@ -147,7 +148,6 @@ public class MybatisAdapterDefault implements MybatisAdapter {
 
                         if (val.endsWith(".xml")) {
                             //mapper xml
-                            addMappersByXml(val);
                             mappers.add(val);
                         } else if (val.endsWith(".class")) {
                             //mapper class
@@ -159,6 +159,13 @@ public class MybatisAdapterDefault implements MybatisAdapter {
                         } else {
                             //package
                             getConfiguration().addMappers(val);
+
+                            ScanUtil.scan(val, n -> n.endsWith(".xml"))
+                                    .stream()
+                                    .forEach(uri -> {
+                                        addMapperByXml(uri);
+                                    });
+
                             mappers.add(val);
                         }
                     }
@@ -170,25 +177,6 @@ public class MybatisAdapterDefault implements MybatisAdapter {
             throw new RuntimeException("Please add the mappers configuration!");
         }
     }
-
-    private void addMappersByXml(String val) {
-        try {
-            // resource 配置方式
-            ErrorContext.instance().resource(val);
-            /**
-             * 读取mapper文件
-             */
-            InputStream stream = Resources.getResourceAsStream(val);
-            /**
-             * mapper映射文件都是通过XMLMapperBuilder解析
-             */
-            XMLMapperBuilder mapperParser = new XMLMapperBuilder(stream, getConfiguration(), val, getConfiguration().getSqlFragments());
-            mapperParser.parse();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
 
     /**
      * 获取配置器
@@ -241,6 +229,24 @@ public class MybatisAdapterDefault implements MybatisAdapter {
 
             varH.setValue(mapper);
             return;
+        }
+    }
+
+    protected void addMapperByXml(String uri) {
+        try {
+            // resource 配置方式
+            ErrorContext.instance().resource(uri);
+            /**
+             * 读取mapper文件
+             */
+            InputStream stream = Resources.getResourceAsStream(uri);
+            /**
+             * mapper映射文件都是通过XMLMapperBuilder解析
+             */
+            XMLMapperBuilder mapperParser = new XMLMapperBuilder(stream, getConfiguration(), uri, getConfiguration().getSqlFragments());
+            mapperParser.parse();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 }
