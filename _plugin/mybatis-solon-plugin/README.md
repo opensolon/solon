@@ -9,11 +9,7 @@ mybatis.db1:
   mappers:
     - "webapp.dso.db1"            #或支持包名
     - "webapp/dso/db1/mapp.xml"   #或支持mapper xml 资源地址
-    - "webapp/dso/db1/mapp.class" #或支持mapper class 资源地址(以 class 结尾)
-  mapperLocations:      #专用于 xml 配置（可以让 xml 不需要与 mapper 类放在相同位置）
-    - "mybatis"           #或支持资源包名
-    - "mybatis/mapp.xml"  #或支持资源地址
-      
+    - "webapp/dso/db1/mapp.class" #或支持mapper class 资源地址(以 class 结尾)      
 
 # 配置插件
 mybatis.plugin:

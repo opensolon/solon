@@ -148,22 +148,27 @@ public class MybatisAdapterDefault implements MybatisAdapter {
 
                         if (val.endsWith(".xml")) {
                             //mapper xml
-                            addMapperByXml(val);
+                            if (val.endsWith("*.xml")) {
+                                String dir = val.substring(0, val.length() - 5);
+                                ScanUtil.scan(dir, n -> n.endsWith(".xml"))
+                                        .stream()
+                                        .forEach(uri -> {
+                                            addMapperByXml(uri);
+                                        });
+                            } else {
+                                addMapperByXml(val);
+                            }
+
                             mappers.add(val);
                         } else if (val.endsWith(".class")) {
                             //mapper class
+                            val = val.replace("/", ".");
+
                             Class<?> clz = Utils.loadClass(val.substring(0, val.length() - 6));
                             if (clz != null) {
                                 getConfiguration().addMapper(clz);
                                 mappers.add(val);
                             }
-                        } else if (val.endsWith("/")) {
-                            ScanUtil.scan(val, n -> n.endsWith(".xml"))
-                                    .stream()
-                                    .forEach(uri -> {
-                                        addMapperByXml(uri);
-                                    });
-                            mappers.add(val);
                         } else {
                             //package
                             getConfiguration().addMappers(val);
