@@ -7,12 +7,12 @@ mybatis.db1:
   typeAliases:
     - "webapp.model"    #支持包名
   mappers:
-    - "webapp.dso.db1"            #或支持包名
-    - "webapp/dso/db1/mapp.xml"   #或支持mapper xml 资源地址
-    - "webapp/dso/db1/*.xml"      #或支持mapper xml 资源地址
-    - "webapp/dso/db1/mapp.class" #或支持mapper class 资源地址(以 class 结尾)      
+    - "webapp.dso.db1"            #或支持包名(要求 xml 同包同名)
+    - "webapp/dso/db1/mapp.class" #或支持mapper class 资源地址(要求 xml 同包同名)
+    - "mybatis/db1/mapp.xml"      #或支持mapper xml 资源地址
+    - "mybatis/db1/*.xml"         #或支持mapper *.xml 资源地址     
 
-# 配置插件
+# 配置全局插件
 mybatis.plugin:
     - pagehelper:
         class: com.github.pagehelper.PageHelper
@@ -41,12 +41,14 @@ public class DemoController {
 
 ```java
 @Configuration
-public class MybatisExtConfiguration implements EventListener<org.apache.ibatis.session.Configuration> {
+public class MybatisExtConfiguration {
 
-    @Override
-    public void onEvent(org.apache.ibatis.session.Configuration configuration) {
+    //调整 db1 的配置，或添加插件
+    @Bean
+    public void db1_cfg(@Db("db1") org.apache.ibatis.session.Configuration cfg) {
         //扩展
-        //configuration.addInterceptor(...);
+        //cfg.addInterceptor(...);
+        cfg.setCacheEnabled(false);
     }
 }
 ```
