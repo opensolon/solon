@@ -148,6 +148,7 @@ public class MybatisAdapterDefault implements MybatisAdapter {
 
                         if (val.endsWith(".xml")) {
                             //mapper xml
+                            addMapperByXml(val);
                             mappers.add(val);
                         } else if (val.endsWith(".class")) {
                             //mapper class
@@ -160,13 +161,29 @@ public class MybatisAdapterDefault implements MybatisAdapter {
                             //package
                             getConfiguration().addMappers(val);
 
+
+
+                            mappers.add(val);
+                        }
+                    }
+                }
+
+                if (key.startsWith("mapperLocations[") || key.equals("mapperLocations")) {
+                    //mapperLocations
+                    for (String val : valStr.split(",")) {
+                        val = val.trim();
+                        if (val.length() == 0) {
+                            continue;
+                        }
+
+                        if (val.endsWith(".xml")) {
+                            addMapperByXml(val);
+                        }else{
                             ScanUtil.scan(val, n -> n.endsWith(".xml"))
                                     .stream()
                                     .forEach(uri -> {
                                         addMapperByXml(uri);
                                     });
-
-                            mappers.add(val);
                         }
                     }
                 }
