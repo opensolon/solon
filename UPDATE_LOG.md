@@ -2,7 +2,7 @@
 * 增加 Action::fullName() 接口
 * 增加 Gateway 对类 Mapping 注解的支持
 * 插件 sa-token-solon-plugin 升级 sa-token 为 1.3.0
-* 添加 Consumes 和 Produces 注解
+* 添加 Consumes 和 Produces 注解。作为 Mapping 的副词
 * 添加 mybatis-solon-plugin 对 res/*.xml 的配置支持
 * 过期 Mapping::before,after,index
 
