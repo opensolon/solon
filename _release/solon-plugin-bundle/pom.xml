@@ -72,8 +72,6 @@
 
         <module>../../_plugin/dynamic-tp-solon-plugin</module>
 
-        <module>../../_plugin/nami-springboot-starter</module>
-
 <!--        <module>../../_plugin/hazelcast-solon-plugin</module>-->
     </modules>
 

@@ -1,7 +1,0 @@
-spring:
-  nami:
-    #配置服务地址，可选。未配置时直接在@NamiClient中配置url即可
-    services:
-      baidu: https://www.baidu.com,http://220.181.38.150
-    #可选配置,多个包用","分隔
-    packages: org.noear.nami.demo
