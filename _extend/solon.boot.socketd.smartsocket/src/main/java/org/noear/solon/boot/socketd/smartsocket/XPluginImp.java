@@ -7,7 +7,6 @@ import org.noear.solon.core.Plugin;
 import org.noear.solon.core.Signal;
 import org.noear.solon.core.SignalSim;
 import org.noear.solon.core.SignalType;
-import org.noear.solon.core.event.EventBus;
 
 import org.noear.solon.core.util.PrintUtil;
 import org.noear.solon.socketd.SessionManager;
@@ -66,8 +65,10 @@ public final class XPluginImp implements Plugin {
 
             PrintUtil.info("Connector:main: smartsocket-socketd: Started ServerConnector@{[Socket]}{0.0.0.0:" + _port + "}");
             PrintUtil.info("Server:main: smartsocket-socketd: Started @" + (time_end - time_start) + "ms");
-        } catch (Exception ex) {
-            EventBus.push(ex);
+        } catch (RuntimeException e) {
+            throw e;
+        } catch (Throwable e) {
+            throw new IllegalStateException(e);
         }
     }
 

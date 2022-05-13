@@ -74,12 +74,16 @@ public class XPluginImp implements Plugin {
 
             PrintUtil.info("Connector:main: netty-socketd: Started ServerConnector@{[Socket]}{0.0.0.0:" + _port + "}");
             PrintUtil.info("Server:main: netty-socketd: Started @" + (time_end - time_start) + "ms");
-        } catch (Exception ex) {
-
+        } catch (RuntimeException e) {
             bossGroup.shutdownGracefully();
             wokerGroup.shutdownGracefully();
 
-            EventBus.push(ex);
+            throw e;
+        } catch (Throwable e) {
+            bossGroup.shutdownGracefully();
+            wokerGroup.shutdownGracefully();
+
+            throw new IllegalStateException(e);
         }
     }
 

@@ -18,7 +18,7 @@ paasword: 1234
 testname: xxx
 testpath: "D:/abc-1-2.12/xx.xml"
 
-server.port: 8081
+server.port: 8080
 
 solon.env: test
 

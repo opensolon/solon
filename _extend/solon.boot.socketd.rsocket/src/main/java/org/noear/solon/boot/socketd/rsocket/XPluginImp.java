@@ -28,7 +28,7 @@ public class XPluginImp implements Plugin {
         //注册会话管理器
         SessionManager.register(new _SessionManagerImpl());
 
-        if(app.enableSocketD() == false){
+        if (app.enableSocketD() == false) {
             return;
         }
 
@@ -55,8 +55,10 @@ public class XPluginImp implements Plugin {
 
             PrintUtil.info("Connector:main: rsocket-socketd: Started ServerConnector@{[Socket]}{0.0.0.0:" + _port + "}");
             PrintUtil.info("Server:main: rsocket-socketd: Started @" + (time_end - time_start) + "ms");
-        }catch (Exception ex){
-            EventBus.push(ex);
+        } catch (RuntimeException e) {
+            throw e;
+        } catch (Throwable e) {
+            throw new IllegalStateException(e);
         }
     }
 
