@@ -19,12 +19,32 @@
             <groupId>org.noear</groupId>
             <artifactId>nami</artifactId>
         </dependency>
-
+                <dependency>
+                    <groupId>org.noear</groupId>
+                    <artifactId>nami.coder.fastjson</artifactId>
+                </dependency>
+                <dependency>
+                    <groupId>org.noear</groupId>
+                    <artifactId>nami.channel.http.okhttp</artifactId>
+                </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-autoconfigure</artifactId>
             <version>${springboot.ver}</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <version>${springboot.ver}</version>
+            <scope>compile</scope>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+            <version>${springboot.ver}</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 </project>

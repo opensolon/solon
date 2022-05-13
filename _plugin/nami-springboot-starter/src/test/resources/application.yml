@@ -1,0 +1,5 @@
+spring:
+  nami:
+    services:
+      baidu: https://www.baidu.com,http://220.181.38.150
+    packages: org.noear.nami.demo
