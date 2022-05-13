@@ -3,10 +3,7 @@ package org.noear.solon.boot.socketd.websocket;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.boot.ServerConstants;
-import org.noear.solon.core.Plugin;
-import org.noear.solon.core.Signal;
-import org.noear.solon.core.SignalSim;
-import org.noear.solon.core.SignalType;
+import org.noear.solon.core.*;
 import org.noear.solon.core.util.PrintUtil;
 import org.noear.solon.socketd.SessionManager;
 
@@ -31,6 +28,12 @@ public class XPluginImp implements Plugin {
             return;
         }
 
+        Aop.beanOnloaded(() -> {
+            start0(app);
+        });
+    }
+
+    private void start0(SolonApp app) {
         String _name = app.cfg().get(ServerConstants.SERVER_WEBSOCKET_NAME);
         int _port = app.cfg().getInt(ServerConstants.SERVER_WEBSOCKET_PORT, 0);
         if (_port < 1) {

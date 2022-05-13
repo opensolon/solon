@@ -3,10 +3,7 @@ package org.noear.solon.boot.socketd.smartsocket;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.boot.ServerConstants;
-import org.noear.solon.core.Plugin;
-import org.noear.solon.core.Signal;
-import org.noear.solon.core.SignalSim;
-import org.noear.solon.core.SignalType;
+import org.noear.solon.core.*;
 
 import org.noear.solon.core.util.PrintUtil;
 import org.noear.solon.socketd.SessionManager;
@@ -36,6 +33,12 @@ public final class XPluginImp implements Plugin {
             return;
         }
 
+        Aop.beanOnloaded(() -> {
+            start0(app);
+        });
+    }
+
+    private void start0(SolonApp app) {
         long time_start = System.currentTimeMillis();
 
         PrintUtil.info("Server:main: SmartSocket 1.5(smartsocket-socketd)");

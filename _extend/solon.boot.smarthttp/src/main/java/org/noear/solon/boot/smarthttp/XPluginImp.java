@@ -8,11 +8,8 @@ import org.noear.solon.boot.smarthttp.http.SmartHttpContextHandler;
 import org.noear.solon.boot.smarthttp.http.FormContentFilter;
 import org.noear.solon.boot.smarthttp.websocket.WebSocketHandleImp;
 import org.noear.solon.boot.smarthttp.websocket._SessionManagerImpl;
-import org.noear.solon.core.Signal;
-import org.noear.solon.core.SignalSim;
-import org.noear.solon.core.SignalType;
+import org.noear.solon.core.*;
 import org.noear.solon.core.event.EventBus;
-import org.noear.solon.core.Plugin;
 import org.noear.solon.core.util.PrintUtil;
 import org.noear.solon.socketd.SessionManager;
 import org.smartboot.http.server.HttpBootstrap;
@@ -36,6 +33,12 @@ public final class XPluginImp implements Plugin {
             return;
         }
 
+        Aop.beanOnloaded(() -> {
+            start0(app);
+        });
+    }
+
+    private void start0(SolonApp app) {
         String _name = app.cfg().get(ServerConstants.SERVER_HTTP_NAME);
         int _port = app.cfg().getInt(ServerConstants.SERVER_HTTP_PORT, 0);
         if (_port < 1) {

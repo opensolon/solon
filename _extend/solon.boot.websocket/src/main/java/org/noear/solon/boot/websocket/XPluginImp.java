@@ -2,10 +2,7 @@ package org.noear.solon.boot.websocket;
 
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
-import org.noear.solon.core.Plugin;
-import org.noear.solon.core.Signal;
-import org.noear.solon.core.SignalSim;
-import org.noear.solon.core.SignalType;
+import org.noear.solon.core.*;
 import org.noear.solon.core.util.PrintUtil;
 import org.noear.solon.socketd.SessionManager;
 
@@ -23,13 +20,19 @@ public class XPluginImp implements Plugin {
 
     @Override
     public void start(SolonApp app) {
+        //注册会话管理器
+        SessionManager.register(new _SessionManagerImpl());
+
         if (app.enableWebSocket() == false) {
             return;
         }
 
-        SessionManager.register(new _SessionManagerImpl());
+        Aop.beanOnloaded(() -> {
+            start0(app);
+        });
+    }
 
-
+    private void start0(SolonApp app) {
         String _name = app.cfg().get("server.websocket.name");
         int _port = app.cfg().getInt("server.websocket.port", 0);
         if (_port < 1) {

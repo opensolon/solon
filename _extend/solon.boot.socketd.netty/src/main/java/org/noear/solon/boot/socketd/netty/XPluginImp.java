@@ -8,11 +8,7 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.boot.ServerConstants;
-import org.noear.solon.core.Plugin;
-import org.noear.solon.core.Signal;
-import org.noear.solon.core.SignalSim;
-import org.noear.solon.core.SignalType;
-import org.noear.solon.core.event.EventBus;
+import org.noear.solon.core.*;
 import org.noear.solon.core.util.PrintUtil;
 import org.noear.solon.socketd.SessionManager;
 import org.noear.solon.socketd.client.netty.NioChannelInitializer;
@@ -38,9 +34,9 @@ public class XPluginImp implements Plugin {
             return;
         }
 
-        new Thread(() -> {
+        Aop.beanOnloaded(() -> {
             start0(app);
-        }).start();
+        });
     }
 
     private void start0(SolonApp app) {
@@ -65,7 +61,7 @@ public class XPluginImp implements Plugin {
                     .channel(NioServerSocketChannel.class)
                     .childHandler(new NioChannelInitializer(() -> new NioServerProcessor()));
 
-            _server = bootstrap.bind(_port).sync();
+            _server = bootstrap.bind(_port).await();
 
             _signal = new SignalSim(_name, _port, "tcp", SignalType.SOCKET);
             app.signalAdd(_signal);
