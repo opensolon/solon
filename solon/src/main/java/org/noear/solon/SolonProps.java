@@ -1,10 +1,6 @@
 package org.noear.solon;
 
-import org.noear.solon.core.JarClassLoader;
-import org.noear.solon.core.NvMap;
-import org.noear.solon.core.PluginEntity;
-import org.noear.solon.core.Props;
-import org.noear.solon.core.util.ScanUtil;
+import org.noear.solon.core.*;
 
 import java.net.URL;
 import java.util.*;
@@ -339,45 +335,15 @@ public final class SolonProps extends Props {
      */
     protected void plugsScan(List<ClassLoader> classLoaders) {
         for (ClassLoader classLoader : classLoaders) {
-            //3.查找插件配置（如果出错，让它抛出异常）
-            ScanUtil.scan(classLoader, "META-INF/solon", n -> n.endsWith(".properties") || n.endsWith(".yml"))
-                    .stream()
-                    .map(k -> Utils.getResource(classLoader, k))
-                    .forEach(url -> plugsScanMapDo(classLoader, url));
+            //扫描配置
+            PluginUtils.scanPlugins(classLoader, plugs::add);
         }
 
         //扫描主配置
-        plugsScanLoadDo(JarClassLoader.global(), this);
+        PluginUtils.findPlugins(JarClassLoader.global(), this, plugs::add);
 
         //插件排序
         plugsSort();
-    }
-
-    /**
-     * 插件扫描，根据某个资源地址扫描
-     *
-     * @param url 资源地址
-     */
-    private void plugsScanMapDo(ClassLoader classLoader, URL url) {
-        Props p = new Props(Utils.loadProperties(url));
-        plugsScanLoadDo(classLoader, p);
-    }
-
-    private void plugsScanLoadDo(ClassLoader classLoader, Props p) {
-        String pluginStr = p.get("solon.plugin");
-
-        if (Utils.isNotEmpty(pluginStr)) {
-            int priority = p.getInt("solon.plugin.priority", 0);
-            String[] plugins = pluginStr.trim().split(",");
-
-            for (String clzName : plugins) {
-                if (clzName.length() > 0) {
-                    PluginEntity ent = new PluginEntity(classLoader, clzName.trim());
-                    ent.setPriority(priority);
-                    plugs.add(ent);
-                }
-            }
-        }
     }
 
     private Set<BiConsumer<String, String>> _changeEvent = new HashSet<>();

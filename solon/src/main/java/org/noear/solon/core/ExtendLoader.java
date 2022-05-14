@@ -81,6 +81,33 @@ public class ExtendLoader {
         return loaders;
     }
 
+    /**
+     * 加载jar插件包
+     * */
+    public static PluginPackage loadPluginJar(File file) {
+        JarClassLoader classLoader = JarClassLoader.loadJar(file);
+        List<PluginEntity> plugins = new ArrayList<>();
+
+        PluginUtils.scanPlugins(classLoader, plugins::add);
+
+
+        return new PluginPackage(file, classLoader, plugins);
+    }
+
+    /**
+     * 卸载Jar插件包
+     * */
+    public static void unloadPluginJar(PluginPackage pluginPackage) {
+        try {
+            pluginPackage.prestop();
+            pluginPackage.stop();
+
+            pluginPackage.getClassLoader().removeJar(pluginPackage.getFile());
+            pluginPackage.getClassLoader().close();
+        } catch (Throwable e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     /**
      * 加载扩展具体的jar文件
