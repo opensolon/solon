@@ -79,6 +79,10 @@ public class CrossHandler implements Handler {
 
     @Override
     public void handle(Context ctx) throws Throwable {
+        if(ctx.getHandled()){
+            return;
+        }
+
         String origin = ctx.header("Origin");
 
         if (Utils.isEmpty(origin)) {

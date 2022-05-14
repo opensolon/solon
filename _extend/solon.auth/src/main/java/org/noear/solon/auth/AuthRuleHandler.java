@@ -22,10 +22,11 @@ public class AuthRuleHandler implements Handler {
     @Override
     public void handle(Context ctx) throws Throwable {
         for (AuthRule r : rules) {
-            r.handle(ctx);
             if (ctx.getHandled()) {
-                break;
+                return;
             }
+
+            r.handle(ctx);
         }
     }
 }
