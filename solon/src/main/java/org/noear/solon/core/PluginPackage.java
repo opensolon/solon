@@ -1,7 +1,5 @@
 package org.noear.solon.core;
 
-import org.noear.solon.SolonApp;
-
 import java.io.File;
 import java.util.Comparator;
 import java.util.List;
@@ -37,18 +35,27 @@ public class PluginPackage {
         return file;
     }
 
-    public void start(SolonApp app) {
+    /**
+     * 启动插件包
+     * */
+    public void start() {
         for (PluginEntity p1 : plugins) {
             p1.start();
         }
     }
 
+    /**
+     * 预停止插件包
+     * */
     public void prestop() {
         for (PluginEntity p1 : plugins) {
             p1.prestop();
         }
     }
 
+    /**
+     * 停止插件包
+     * */
     public void stop() {
         for (PluginEntity p1 : plugins) {
             p1.stop();

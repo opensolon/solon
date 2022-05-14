@@ -19,7 +19,7 @@ public class Test5App {
         //加载插件包
         PluginPackage pluginPackage = ExtendLoader.loadPluginJar(jarFile);
         //启动插件包
-        pluginPackage.start(Solon.global());
+        pluginPackage.start();
 
 
         //卸载Jar插件包
