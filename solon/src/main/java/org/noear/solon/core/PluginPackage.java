@@ -29,7 +29,7 @@ public class PluginPackage {
         this.classLoader = classLoader;
     }
 
-    public JarClassLoader getClassLoader() {
+    public ClassLoader getClassLoader() {
         return classLoader;
     }
 

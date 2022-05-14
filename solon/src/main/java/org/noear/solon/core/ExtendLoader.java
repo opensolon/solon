@@ -103,8 +103,10 @@ public class ExtendLoader {
             pluginPackage.prestop();
             pluginPackage.stop();
 
-            pluginPackage.getClassLoader().removeJar(pluginPackage.getFile());
-            pluginPackage.getClassLoader().close();
+            JarClassLoader classLoader = (JarClassLoader) pluginPackage.getClassLoader();
+
+            classLoader.removeJar(pluginPackage.getFile());
+            classLoader.close();
         } catch (Throwable e) {
             throw new RuntimeException(e);
         }
