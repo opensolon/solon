@@ -10,7 +10,7 @@ import org.noear.solon.core.handle.Handler;
  * @author noear
  * @since 1.0
  * */
-public class ContextValidateInterceptor implements Handler {
+public class ContextValidateHandler implements Handler {
 
     @Override
     public void handle(Context ctx) throws Throwable {

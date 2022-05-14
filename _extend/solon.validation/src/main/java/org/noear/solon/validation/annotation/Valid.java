@@ -3,7 +3,7 @@ package org.noear.solon.validation.annotation;
 import org.noear.solon.annotation.Around;
 import org.noear.solon.annotation.Before;
 import org.noear.solon.validation.BeanValidateInterceptor;
-import org.noear.solon.validation.ContextValidateInterceptor;
+import org.noear.solon.validation.ContextValidateHandler;
 
 import java.lang.annotation.*;
 
@@ -14,7 +14,7 @@ import java.lang.annotation.*;
  * @since 1.0
  * */
 @Inherited
-@Before({ContextValidateInterceptor.class})
+@Before({ContextValidateHandler.class})
 @Around(value = BeanValidateInterceptor.class, index = 1)
 @Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
