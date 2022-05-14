@@ -1,6 +1,7 @@
 package org.noear.solon;
 
 import org.noear.solon.core.*;
+import org.noear.solon.core.util.PluginUtil;
 
 import java.net.URL;
 import java.util.*;
@@ -336,11 +337,11 @@ public final class SolonProps extends Props {
     protected void plugsScan(List<ClassLoader> classLoaders) {
         for (ClassLoader classLoader : classLoaders) {
             //扫描配置
-            PluginUtils.scanPlugins(classLoader, plugs::add);
+            PluginUtil.scanPlugins(classLoader, plugs::add);
         }
 
         //扫描主配置
-        PluginUtils.findPlugins(JarClassLoader.global(), this, plugs::add);
+        PluginUtil.findPlugins(JarClassLoader.global(), this, plugs::add);
 
         //插件排序
         plugsSort();

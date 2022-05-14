@@ -3,6 +3,7 @@ package org.noear.solon.core;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.event.EventBus;
+import org.noear.solon.core.util.PluginUtil;
 import org.noear.solon.core.util.PrintUtil;
 
 import java.io.File;
@@ -88,7 +89,7 @@ public class ExtendLoader {
         JarClassLoader classLoader = JarClassLoader.loadJar(file);
         List<PluginEntity> plugins = new ArrayList<>();
 
-        PluginUtils.scanPlugins(classLoader, plugins::add);
+        PluginUtil.scanPlugins(classLoader, plugins::add);
 
 
         return new PluginPackage(file, classLoader, plugins);

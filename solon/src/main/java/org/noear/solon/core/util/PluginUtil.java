@@ -1,7 +1,8 @@
-package org.noear.solon.core;
+package org.noear.solon.core.util;
 
 import org.noear.solon.Utils;
-import org.noear.solon.core.util.ScanUtil;
+import org.noear.solon.core.PluginEntity;
+import org.noear.solon.core.Props;
 
 import java.util.function.Consumer;
 
@@ -9,7 +10,7 @@ import java.util.function.Consumer;
  * @author noear
  * @since 1.7
  */
-public class PluginUtils {
+public class PluginUtil {
 
     /**
      * 扫描插件
