@@ -36,6 +36,17 @@ public class RoutingTableDefault<T> implements RoutingTable<T> {
         table.add(index, routing);
     }
 
+    /**
+     * 移除路由记录
+     *
+     * @param path   路径
+     * @param method 方法
+     * */
+    @Override
+    public void remove(String path, MethodType method) {
+        table.removeIf(l -> l.matches(method, path));
+    }
+
     @Override
     public Collection<Routing<T>> getAll() {
         return Collections.unmodifiableList(table);
