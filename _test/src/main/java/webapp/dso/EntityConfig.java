@@ -15,9 +15,9 @@ import java.util.Map;
 public class EntityConfig {
     public String name;
     public Integer age;
-    @Inject("${app.dict.codes}")
+    //@Inject("${app.dict.codes}")//不需要分块注入了
     public Map<String,String> codes;
-    @Inject("${app.dict.likes}")
+    //@Inject("${app.dict.likes}")//不需要分块注入了
     public List<String> likes;
 
     @Override
