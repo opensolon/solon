@@ -1,6 +1,7 @@
 package org.noear.solon.addin;
 
 import org.noear.solon.Solon;
+import org.noear.solon.core.Aop;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.route.Router;
@@ -20,6 +21,7 @@ public abstract class Addin implements Plugin {
     public AopContext context() {
         if (context == null) {
             context = new AopContext();
+            context.copy(Aop.context());
         }
 
         return context;
