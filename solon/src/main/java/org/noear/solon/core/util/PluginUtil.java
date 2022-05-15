@@ -15,9 +15,17 @@ public class PluginUtil {
     /**
      * 扫描插件
      */
-    public static void scanPlugins(ClassLoader classLoader, Consumer<PluginEntity> consumer) {
+    public static void scanPlugins(ClassLoader classLoader, String limitFile, Consumer<PluginEntity> consumer) {
         //3.查找插件配置（如果出错，让它抛出异常）
-        ScanUtil.scan(classLoader, "META-INF/solon", n -> n.endsWith(".properties") || n.endsWith(".yml"))
+        ScanUtil.scan(classLoader, "META-INF/solon", n -> {
+                    if (Utils.isNotEmpty(limitFile)) {
+                        if (n.contains(limitFile) == false) {
+                            return false;
+                        }
+                    }
+
+                    return n.endsWith(".properties") || n.endsWith(".yml");
+                })
                 .stream()
                 .map(k -> Utils.getResource(classLoader, k))
                 .forEach(url -> {

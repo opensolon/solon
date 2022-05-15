@@ -337,7 +337,7 @@ public final class SolonProps extends Props {
     protected void plugsScan(List<ClassLoader> classLoaders) {
         for (ClassLoader classLoader : classLoaders) {
             //扫描配置
-            PluginUtil.scanPlugins(classLoader, plugs::add);
+            PluginUtil.scanPlugins(classLoader, null ,plugs::add);
         }
 
         //扫描主配置
@@ -480,7 +480,7 @@ public final class SolonProps extends Props {
      * 框架版本号
      */
     public String version() {
-        return "1.7.9-M1";
+        return "1.7.9-M2";
     }
 
     /**

@@ -7,6 +7,8 @@ import org.noear.solon.core.util.PluginUtil;
 import org.noear.solon.core.util.PrintUtil;
 
 import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
@@ -86,13 +88,20 @@ public class ExtendLoader {
      * 加载jar插件包
      * */
     public static PluginPackage loadPluginJar(File file) {
-        JarClassLoader classLoader = JarClassLoader.loadJar(file);
-        List<PluginEntity> plugins = new ArrayList<>();
+        try {
+            URL url = file.toURI().toURL();
+            JarClassLoader classLoader = new JarClassLoader(JarClassLoader.global());
+            classLoader.addJar(url);
 
-        PluginUtil.scanPlugins(classLoader, plugins::add);
+            List<PluginEntity> plugins = new ArrayList<>();
+
+            PluginUtil.scanPlugins(classLoader, url.toString(), plugins::add);
 
 
-        return new PluginPackage(file, classLoader, plugins);
+            return new PluginPackage(file, classLoader, plugins);
+        } catch (MalformedURLException e) {
+            throw new IllegalArgumentException(e);
+        }
     }
 
     /**
