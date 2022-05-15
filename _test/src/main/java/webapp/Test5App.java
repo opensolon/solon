@@ -15,6 +15,6 @@ public class Test5App {
         File jarFile = new File("/xxx/xxx.jar");
 
         //加载插件包
-        AddinLoader.load(jarFile).start();
+        AddinLoader.loadJar(jarFile).start();
     }
 }
