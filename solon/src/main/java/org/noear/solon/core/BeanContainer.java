@@ -63,26 +63,27 @@ public abstract class BeanContainer {
      * */
     protected final Map<Class<?>, InterceptorEntity> beanInterceptors = new HashMap<>();
 
+
     /**
-     * 容器制复能力
+     * 容器能力制复到另一个容器
      * */
-    public void copy(BeanContainer container){
-        container.beanBuilders.forEach((k,v)->{
-            beanBuilders.putIfAbsent(k,v);
+    public void copyTo(BeanContainer container) {
+        beanBuilders.forEach((k, v) -> {
+            container.beanBuilders.putIfAbsent(k, v);
         });
 
         //用于跨容器复制
-        container.beanInjectors.forEach((k,v)->{
-            beanInjectors.putIfAbsent(k,v);
+        beanInjectors.forEach((k, v) -> {
+            container.beanInjectors.putIfAbsent(k, v);
         });
 
         //用于跨容器复制
-        container.beanInterceptors.forEach((k, v) -> {
-            beanInterceptors.putIfAbsent(k, v);
+        beanInterceptors.forEach((k, v) -> {
+            container.beanInterceptors.putIfAbsent(k, v);
         });
 
-        container.beanExtractors.forEach((k, v) -> {
-            beanExtractors.putIfAbsent(k, v);
+        beanExtractors.forEach((k, v) -> {
+            container.beanExtractors.putIfAbsent(k, v);
         });
     }
 

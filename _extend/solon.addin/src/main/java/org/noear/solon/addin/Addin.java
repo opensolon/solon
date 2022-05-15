@@ -20,8 +20,7 @@ public abstract class Addin implements Plugin {
      * */
     public AopContext context() {
         if (context == null) {
-            context = new AopContext();
-            context.copy(Aop.context());
+            context = Aop.context().copy();
         }
 
         return context;

@@ -36,6 +36,12 @@ public class AopContext extends BeanContainer {
         initialize();
     }
 
+    public AopContext copy() {
+        AopContext tmp = new AopContext();
+        copyTo(tmp);
+        return tmp;
+    }
+
     /**
      * ::初始化（独立出 initialize，方便重写）
      */
