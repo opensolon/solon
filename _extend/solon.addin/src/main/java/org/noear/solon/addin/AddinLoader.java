@@ -1,5 +1,6 @@
 package org.noear.solon.addin;
 
+import org.noear.solon.Solon;
 import org.noear.solon.core.JarClassLoader;
 import org.noear.solon.core.PluginEntity;
 import org.noear.solon.core.util.PluginUtil;
@@ -15,6 +16,17 @@ import java.util.*;
  */
 public class AddinLoader {
     static Map<String, AddinInfo> addinInfoMap = new HashMap<>();
+
+    static {
+        Properties pops = Solon.cfg().getProp("solon.addin");
+        if (pops.size() > 0) {
+            pops.forEach((k, v) -> {
+                if (k instanceof String && v instanceof String) {
+                    add((String) k, new File((String) v));
+                }
+            });
+        }
+    }
 
     public Collection<AddinInfo> all(){
         return addinInfoMap.values();
