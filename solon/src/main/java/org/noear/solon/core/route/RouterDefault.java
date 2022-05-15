@@ -53,6 +53,11 @@ public class RouterDefault implements Router{
         }
     }
 
+    @Override
+    public void remove(String path, Endpoint endpoint, MethodType method) {
+        routesH[endpoint.code].remove(path, method);
+    }
+
 
     /**
      * 获取某个处理点的所有路由记录

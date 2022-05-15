@@ -74,6 +74,7 @@ public interface Router {
      */
     void add(String path, Endpoint endpoint, MethodType method, int index, Handler handler);
 
+    void remove(String path, Endpoint endpoint, MethodType method);
 
     /**
      * 获取某个处理点的所有路由记录

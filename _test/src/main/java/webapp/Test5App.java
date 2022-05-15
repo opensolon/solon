@@ -1,8 +1,7 @@
 package webapp;
 
 import org.noear.solon.Solon;
-import org.noear.solon.core.ExtendLoader;
-import org.noear.solon.core.PluginPackage;
+import org.noear.solon.addin.AddinLoader;
 
 import java.io.File;
 
@@ -13,12 +12,9 @@ public class Test5App {
     public static void main(String[] args) {
         Solon.start(Test5App.class, args);
 
-        File jarFile = new File("/xxx/mysql.jar");
+        File jarFile = new File("/xxx/xxx.jar");
 
         //加载插件包
-        PluginPackage pluginPackage = ExtendLoader.loadPluginJar(jarFile).start();
-
-        //卸载Jar插件包
-        ExtendLoader.unloadPluginJar(pluginPackage);
+        AddinLoader.load(jarFile).start();
     }
 }

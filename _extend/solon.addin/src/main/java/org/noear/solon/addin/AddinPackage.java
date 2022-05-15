@@ -1,7 +1,9 @@
-package org.noear.solon.core;
+package org.noear.solon.addin;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
+import org.noear.solon.core.JarClassLoader;
+import org.noear.solon.core.PluginEntity;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,12 +17,12 @@ import java.util.List;
  * @author noear
  * @since 1.7
  */
-public class PluginPackage {
+public class AddinPackage {
     private final File file;
     private final JarClassLoader classLoader;
     private final List<PluginEntity> plugins;
 
-    public PluginPackage(File file, JarClassLoader classLoader, List<PluginEntity> plugins) {
+    public AddinPackage(File file, JarClassLoader classLoader, List<PluginEntity> plugins) {
         if (plugins.size() > 0) {
             //进行优先级顺排（数值要倒排）
             //
@@ -63,7 +65,7 @@ public class PluginPackage {
     /**
      * 启动插件包
      */
-    public PluginPackage start() {
+    public AddinPackage start() {
         for (PluginEntity p1 : plugins) {
             p1.start();
         }
@@ -74,7 +76,7 @@ public class PluginPackage {
     /**
      * 预停止插件包
      */
-    public PluginPackage prestop() {
+    public AddinPackage prestop() {
         for (PluginEntity p1 : plugins) {
             p1.prestop();
         }
@@ -85,7 +87,7 @@ public class PluginPackage {
     /**
      * 停止插件包
      */
-    public PluginPackage stop() {
+    public AddinPackage stop() {
         for (PluginEntity p1 : plugins) {
             p1.stop();
         }

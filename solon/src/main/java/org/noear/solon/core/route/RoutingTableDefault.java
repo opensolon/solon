@@ -37,6 +37,11 @@ public class RoutingTableDefault<T> implements RoutingTable<T> {
     }
 
     @Override
+    public void remove(String path, MethodType method) {
+        table.removeIf(l -> l.matches(method, path));
+    }
+
+    @Override
     public Collection<Routing<T>> getAll() {
         return Collections.unmodifiableList(table);
     }

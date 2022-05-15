@@ -3,12 +3,9 @@ package org.noear.solon.core;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.event.EventBus;
-import org.noear.solon.core.util.PluginUtil;
 import org.noear.solon.core.util.PrintUtil;
 
 import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
@@ -84,42 +81,6 @@ public class ExtendLoader {
         return loaders;
     }
 
-    /**
-     * 加载jar插件包
-     * */
-    public static PluginPackage loadPluginJar(File file) {
-        try {
-            URL url = file.toURI().toURL();
-            JarClassLoader classLoader = new JarClassLoader(JarClassLoader.global());
-            classLoader.addJar(url);
-
-            List<PluginEntity> plugins = new ArrayList<>();
-
-            PluginUtil.scanPlugins(classLoader, url.toString(), plugins::add);
-
-
-            return new PluginPackage(file, classLoader, plugins);
-        } catch (MalformedURLException e) {
-            throw new IllegalArgumentException(e);
-        }
-    }
-
-    /**
-     * 卸载Jar插件包
-     * */
-    public static void unloadPluginJar(PluginPackage pluginPackage) {
-        try {
-            pluginPackage.prestop();
-            pluginPackage.stop();
-
-            JarClassLoader classLoader = (JarClassLoader) pluginPackage.getClassLoader();
-
-            classLoader.removeJar(pluginPackage.getFile());
-            classLoader.close();
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     /**
      * 加载扩展具体的jar文件

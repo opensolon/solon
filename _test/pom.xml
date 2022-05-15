@@ -34,6 +34,11 @@
 
         <dependency>
             <groupId>org.noear</groupId>
+            <artifactId>solon.addin</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.noear</groupId>
             <artifactId>snowflake-id-solon-plugin</artifactId>
         </dependency>
 
