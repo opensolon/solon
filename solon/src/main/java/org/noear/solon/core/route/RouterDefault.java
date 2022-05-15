@@ -54,17 +54,11 @@ public class RouterDefault implements Router{
     }
 
     @Override
-    public void remove(String path) {
-        routesH[Endpoint.before.code].remove(path, MethodType.ALL);
-        routesH[Endpoint.main.code].remove(path, MethodType.ALL);
-        routesH[Endpoint.after.code].remove(path, MethodType.ALL);
+    public void remove(String pathPrefix) {
+        routesH[Endpoint.before.code].remove(pathPrefix);
+        routesH[Endpoint.main.code].remove(pathPrefix);
+        routesH[Endpoint.after.code].remove(pathPrefix);
     }
-
-    @Override
-    public void remove(String path, Endpoint endpoint, MethodType method) {
-        routesH[endpoint.code].remove(path, method);
-    }
-
 
     /**
      * 获取某个处理点的所有路由记录

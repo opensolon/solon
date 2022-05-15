@@ -27,7 +27,7 @@ public interface RoutingTable<T> {
      */
     void add(int index, Routing<T> routing);
 
-    void remove(String path, MethodType method);
+    void remove(String pathPrefix);
 
     /**
      * 获取所有路由记录

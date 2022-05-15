@@ -37,8 +37,8 @@ public class RoutingTableDefault<T> implements RoutingTable<T> {
     }
 
     @Override
-    public void remove(String path, MethodType method) {
-        table.removeIf(l -> l.matches(method, path));
+    public void remove(String pathPrefix) {
+        table.removeIf(l -> l.path().startsWith(pathPrefix));
     }
 
     @Override
