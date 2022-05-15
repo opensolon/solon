@@ -1,6 +1,11 @@
 package org.noear.solon.core;
 
+import org.noear.solon.Solon;
+import org.noear.solon.Utils;
+
 import java.io.File;
+import java.io.IOException;
+import java.net.URL;
 import java.util.Comparator;
 import java.util.List;
 
@@ -27,38 +32,64 @@ public class PluginPackage {
         this.classLoader = classLoader;
     }
 
-    public ClassLoader getClassLoader() {
-        return classLoader;
-    }
-
     public File getFile() {
         return file;
     }
 
+    public ClassLoader getClassLoader() {
+        return classLoader;
+    }
+
+    public Class<?> loadClass(String className) {
+        return Utils.loadClass(getClassLoader(), className);
+    }
+
+    public <T> T newInstance(String className) {
+        return Utils.newInstance(getClassLoader(), className);
+    }
+
+    public URL getResource(String name) {
+        return Utils.getResource(getClassLoader(), name);
+    }
+
+    public String getResourceAsString(String name) throws IOException {
+        return Utils.getResourceAsString(getClassLoader(), name, Solon.encoding());
+    }
+
+    public String getResourceAsString(String name, String charset) throws IOException {
+        return Utils.getResourceAsString(getClassLoader(), name, charset);
+    }
+
     /**
      * 启动插件包
-     * */
-    public void start() {
+     */
+    public PluginPackage start() {
         for (PluginEntity p1 : plugins) {
             p1.start();
         }
+
+        return this;
     }
 
     /**
      * 预停止插件包
-     * */
-    public void prestop() {
+     */
+    public PluginPackage prestop() {
         for (PluginEntity p1 : plugins) {
             p1.prestop();
         }
+
+        return this;
     }
 
     /**
      * 停止插件包
-     * */
-    public void stop() {
+     */
+    public PluginPackage stop() {
         for (PluginEntity p1 : plugins) {
             p1.stop();
         }
+
+        return this;
     }
 }
