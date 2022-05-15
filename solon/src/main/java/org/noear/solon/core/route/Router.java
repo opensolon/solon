@@ -44,7 +44,7 @@ public interface Router {
     /**
      * 添加路由关系 for Handler
      *
-     * @param path 路径
+     * @param path    路径
      * @param handler 处理接口
      */
     default void add(String path, Handler handler) {
@@ -54,10 +54,10 @@ public interface Router {
     /**
      * 添加路由关系 for Handler
      *
-     * @param path 路径
+     * @param path     路径
      * @param endpoint 处理点
-     * @param method 方法
-     * @param handler 处理接口
+     * @param method   方法
+     * @param handler  处理接口
      */
     default void add(String path, Endpoint endpoint, MethodType method, Handler handler) {
         add(path, endpoint, method, 0, handler);
@@ -66,31 +66,37 @@ public interface Router {
     /**
      * 添加路由关系 for Handler
      *
-     * @param path 路径
+     * @param path     路径
      * @param endpoint 处理点
-     * @param method 方法
-     * @param index 顺序位
-     * @param handler 处理接口
+     * @param method   方法
+     * @param index    顺序位
+     * @param handler  处理接口
      */
     void add(String path, Endpoint endpoint, MethodType method, int index, Handler handler);
 
 
+    /**
+     * 移除路由关系 for Handler
+     *
+     * @param path     路径
+     * @param endpoint 处理点
+     * @param method   方法
+     */
+    void remove(String path, Endpoint endpoint, MethodType method);
 
     /**
      * 获取某个处理点的所有路由记录
      *
      * @param endpoint 处理点
      * @return 处理点的所有路由记录
-     * */
+     */
     Collection<Routing<Handler>> getAll(Endpoint endpoint);
-
-
 
 
     /**
      * 区配一个处理（根据上下文）
      *
-     * @param ctx 上下文
+     * @param ctx      上下文
      * @param endpoint 处理点
      * @return 一个匹配的处理
      */
@@ -99,7 +105,7 @@ public interface Router {
     /**
      * 区配多个处理（根据上下文）
      *
-     * @param ctx 上下文
+     * @param ctx      上下文
      * @param endpoint 处理点
      * @return 一批匹配的处理
      */
@@ -112,7 +118,7 @@ public interface Router {
     /**
      * 添加路由关系 for Listener
      *
-     * @param path 路径
+     * @param path     路径
      * @param listener 监听接口
      */
     default void add(String path, Listener listener) {
@@ -123,8 +129,8 @@ public interface Router {
     /**
      * 添加路由关系 for Listener
      *
-     * @param path 路径
-     * @param method 方法
+     * @param path     路径
+     * @param method   方法
      * @param listener 监听接口
      */
     default void add(String path, MethodType method, Listener listener) {
@@ -134,9 +140,9 @@ public interface Router {
     /**
      * 添加路由关系 for Listener
      *
-     * @param path 路径
-     * @param method 方法
-     * @param index 顺序位
+     * @param path     路径
+     * @param method   方法
+     * @param index    顺序位
      * @param listener 监听接口
      */
     void add(String path, MethodType method, int index, Listener listener);
@@ -156,7 +162,6 @@ public interface Router {
      * @return 多个匹配监听
      */
     List<Listener> matchAll(Session session);
-
 
 
     /**
