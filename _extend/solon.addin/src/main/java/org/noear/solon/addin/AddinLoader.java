@@ -7,18 +7,86 @@ import org.noear.solon.core.util.PluginUtil;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author noear
  * @since 1.7
  */
 public class AddinLoader {
+    static Map<String, AddinInfo> addinInfoMap = new HashMap<>();
+
+    public Collection<AddinInfo> all(){
+        return addinInfoMap.values();
+    }
+
+    public static void add(String name, File file){
+        if(addinInfoMap.containsKey(name)){
+            return;
+        }
+
+        addinInfoMap.put(name, new AddinInfo(name, file));
+    }
+
+    public static void remove(String name){
+        addinInfoMap.remove(name);
+    }
+
+
+    public static AddinPackage load(String name) {
+        AddinInfo info = addinInfoMap.get(name);
+
+        if (info == null) {
+            throw new IllegalArgumentException("Addin does not exist: " + name);
+        }
+
+        if (info.getAddinPackage() == null) {
+            info.setAddinPackage(loadJar(info.getFile()));
+        }
+
+        return info.getAddinPackage();
+    }
+
+    public static void unload(String name){
+        AddinInfo info = addinInfoMap.get(name);
+
+        if (info == null) {
+            throw new IllegalArgumentException("Addin does not exist: " + name);
+        }
+
+        unloadJar(info.getAddinPackage());
+    }
+
+    public static void start(String name){
+        AddinInfo info = addinInfoMap.get(name);
+
+        if (info == null) {
+            throw new IllegalArgumentException("Addin does not exist: " + name);
+        }
+
+        if(info.getAddinPackage() != null){
+            info.getAddinPackage().start();
+        }
+    }
+
+    public static void stop(String name){
+        AddinInfo info = addinInfoMap.get(name);
+
+        if (info == null) {
+            throw new IllegalArgumentException("Addin does not exist: " + name);
+        }
+
+        if(info.getAddinPackage() != null){
+            info.getAddinPackage().prestop();
+            info.getAddinPackage().stop();
+        }
+    }
+
+
     /**
      * 加载jar插件包
      * */
-    public static AddinPackage load(File file) {
+    public static AddinPackage loadJar(File file) {
         try {
             URL url = file.toURI().toURL();
             JarClassLoader classLoader = new JarClassLoader(JarClassLoader.global());
@@ -38,7 +106,7 @@ public class AddinLoader {
     /**
      * 卸载Jar插件包
      * */
-    public static void unload(AddinPackage pluginPackage) {
+    public static void unloadJar(AddinPackage pluginPackage) {
         try {
             pluginPackage.prestop();
             pluginPackage.stop();
