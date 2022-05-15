@@ -54,6 +54,13 @@ public class RouterDefault implements Router{
     }
 
     @Override
+    public void remove(String path) {
+        routesH[Endpoint.before.code].remove(path, MethodType.ALL);
+        routesH[Endpoint.main.code].remove(path, MethodType.ALL);
+        routesH[Endpoint.after.code].remove(path, MethodType.ALL);
+    }
+
+    @Override
     public void remove(String path, Endpoint endpoint, MethodType method) {
         routesH[endpoint.code].remove(path, method);
     }

@@ -57,7 +57,7 @@ public class RoutingDefault<T> implements Routing<T> {
      */
     @Override
     public boolean matches(MethodType method2, String path2) {
-        if (MethodType.ALL == method) {
+        if (MethodType.ALL == method || MethodType.ALL == method2) {
             return matches0(path2);
         } else if (MethodType.HTTP == method) { //不是null时，不能用==
             if (method2.signal == SignalType.HTTP) {
