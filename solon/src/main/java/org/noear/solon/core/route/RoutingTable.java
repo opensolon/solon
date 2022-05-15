@@ -28,14 +28,6 @@ public interface RoutingTable<T> {
     void add(int index, Routing<T> routing);
 
     /**
-     * 移除路由记录
-     *
-     * @param path   路径
-     * @param method 方法
-     * */
-    void remove(String path, MethodType method);
-
-    /**
      * 获取所有路由记录
      * */
     Collection<Routing<T>> getAll();

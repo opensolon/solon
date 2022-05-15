@@ -76,15 +76,6 @@ public interface Router {
 
 
     /**
-     * 移除路由关系 for Handler
-     *
-     * @param path     路径
-     * @param endpoint 处理点
-     * @param method   方法
-     */
-    void remove(String path, Endpoint endpoint, MethodType method);
-
-    /**
      * 获取某个处理点的所有路由记录
      *
      * @param endpoint 处理点
