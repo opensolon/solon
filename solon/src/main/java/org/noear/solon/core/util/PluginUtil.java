@@ -2,8 +2,8 @@ package org.noear.solon.core.util;
 
 import org.noear.solon.Utils;
 import org.noear.solon.core.PluginEntity;
-import org.noear.solon.core.Props;
 
+import java.util.Properties;
 import java.util.function.Consumer;
 
 /**
@@ -32,7 +32,7 @@ public class PluginUtil {
                     return true;
                 })
                 .forEach(url -> {
-                    Props props = new Props(Utils.loadProperties(url));
+                    Properties props = Utils.loadProperties(url);
                     findPlugins(classLoader, props, consumer);
                 });
     }
@@ -40,11 +40,11 @@ public class PluginUtil {
     /**
      * 查找插件
      */
-    public static void findPlugins(ClassLoader classLoader, Props props, Consumer<PluginEntity> consumer) {
-        String pluginStr = props.get("solon.plugin");
+    public static void findPlugins(ClassLoader classLoader, Properties props, Consumer<PluginEntity> consumer) {
+        String pluginStr = props.getProperty("solon.plugin");
 
         if (Utils.isNotEmpty(pluginStr)) {
-            int priority = props.getInt("solon.plugin.priority", 0);
+            int priority = Integer.parseInt(props.getProperty("solon.plugin.priority", "0"));
             String[] plugins = pluginStr.trim().split(",");
 
             for (String clzName : plugins) {

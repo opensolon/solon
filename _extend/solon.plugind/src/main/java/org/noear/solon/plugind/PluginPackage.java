@@ -39,7 +39,7 @@ public class PluginPackage {
                 if (pe.getPlugin() instanceof PluginPlus) {
                     PluginPlus pp = (PluginPlus) pe.getPlugin();
                     if (pp.context().getProps() != Solon.cfg()) {
-                        pp.context().getProps().putAll(props);
+                        pp.context().getProps().loadAdd(props);
                     }
                 }
             }

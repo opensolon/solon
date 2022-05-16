@@ -4,6 +4,8 @@ import org.noear.solon.Solon;
 import org.noear.solon.SolonProps;
 import org.noear.solon.Utils;
 
+import java.util.Properties;
+
 /**
  * 插件实体
  *
@@ -29,9 +31,9 @@ public class PluginEntity {
      */
     private Plugin plugin;
 
-    private Props props;
+    private Properties props;
 
-    public PluginEntity(ClassLoader classLoader, String className, Props props) {
+    public PluginEntity(ClassLoader classLoader, String className, Properties props) {
         this.classLoader = classLoader;
         this.className = className;
         this.props = props;
@@ -70,7 +72,7 @@ public class PluginEntity {
         return plugin;
     }
 
-    public Props getProps() {
+    public Properties getProps() {
         return props;
     }
 
