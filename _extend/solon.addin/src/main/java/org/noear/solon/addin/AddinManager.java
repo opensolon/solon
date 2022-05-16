@@ -14,7 +14,7 @@ import java.util.*;
  * @author noear
  * @since 1.7
  */
-public class AddinLoader {
+public class AddinManager {
     static Map<String, AddinInfo> addinInfoMap = new HashMap<>();
 
     static {
@@ -28,7 +28,7 @@ public class AddinLoader {
         }
     }
 
-    public Collection<AddinInfo> all(){
+    public Collection<AddinInfo> getAll(){
         return addinInfoMap.values();
     }
 

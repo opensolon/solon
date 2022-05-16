@@ -1,7 +1,7 @@
 package webapp;
 
 import org.noear.solon.Solon;
-import org.noear.solon.addin.AddinLoader;
+import org.noear.solon.addin.AddinManager;
 
 import java.io.File;
 
@@ -15,6 +15,6 @@ public class Test5App {
         File jarFile = new File("/xxx/xxx.jar");
 
         //加载插件包
-        AddinLoader.loadJar(jarFile).start();
+        AddinManager.loadJar(jarFile).start();
     }
 }
