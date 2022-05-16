@@ -29,7 +29,20 @@ public class DemoApp {
 
 注意事项：
 
-* 包名需独立或做为主程序的子包名（避免描扫时扫到别人）
-* 插件如果有配置文件，直接在资源里添加文件
-  * 用 Solon.cfg().loadAdd("xxx.addin.yml")  ；安排好前缀不要与人冲突；可注入
-  * 用 Utils.loadProperties("xxx.addin.yml") 独立使用
+* 插件包名需独立性（避免描扫时扫到别人）
+  * 例主程为：xxx
+  * 插件1为：xxx.add1
+  * 插件2为：xxx.add2
+* 插件的配置支持隔离模式与非隔离模式
+
+  ```java
+  public class DemoPlugin1 extends PluginPlus{
+      //配置不隔离
+  }
+  
+  public class DemoPlugin2 extends PluginPlus{
+      public DemoPlugin2(){
+          super(new Props());  //配置隔离
+      }
+  }
+  ```
