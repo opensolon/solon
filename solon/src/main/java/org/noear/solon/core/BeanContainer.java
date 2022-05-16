@@ -30,10 +30,10 @@ public abstract class BeanContainer {
 
     public Props getProps() {
         if (props == null) {
-            props = Solon.cfg();
+            return Solon.cfg();
+        } else {
+            return props;
         }
-
-        return props;
     }
 
     //////////////////////////
