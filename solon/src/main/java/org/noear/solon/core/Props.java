@@ -28,6 +28,15 @@ public class Props extends Properties {
         super(defaults);
     }
 
+    @Override
+    public synchronized int size() {
+        if (defaults == null) {
+            return super.size();
+        } else {
+            return super.size() + defaults.size();
+        }
+    }
+
     /**
      * 获取某项配置
      */

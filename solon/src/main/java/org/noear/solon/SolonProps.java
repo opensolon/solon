@@ -5,7 +5,6 @@ import org.noear.solon.core.util.PluginUtil;
 
 import java.net.URL;
 import java.util.*;
-import java.util.function.BiConsumer;
 
 /**
  * 统一配置加载器
