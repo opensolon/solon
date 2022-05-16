@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Properties;
 
 /**
  * 外接小程序包
@@ -34,7 +35,7 @@ public class PluginPackage {
 
             //尝试加载插件配置
             //
-            Props props = plugins.get(0).getProps();
+            Properties props = plugins.get(0).getProps();
             for (PluginEntity pe : plugins) {
                 if (pe.getPlugin() instanceof PluginPlus) {
                     PluginPlus pp = (PluginPlus) pe.getPlugin();
