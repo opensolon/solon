@@ -35,7 +35,7 @@ public abstract class PluginPlus implements Plugin {
     }
 
     /**
-     * 路由器
+     * 路由器（注销路由时方便些）
      * */
     public Router router() {
         return Solon.global().router();
