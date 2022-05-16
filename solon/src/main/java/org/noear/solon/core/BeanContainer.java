@@ -64,6 +64,26 @@ public abstract class BeanContainer {
     protected final Map<Class<?>, InterceptorEntity> beanInterceptors = new HashMap<>();
 
 
+
+    /**
+     * bean订阅者
+     */
+    protected final Set<SubscriberEntity> beanSubscribers = new LinkedHashSet<>();
+
+
+    public void clear(){
+        beanWraps.clear();
+        beanWrapSet.clear();
+        beans.clear();
+        clzMapping.clear();
+        beanBuilders.clear();
+        beanInjectors.clear();
+        beanExtractors.clear();
+        beanInterceptors.clear();
+
+        beanSubscribers.clear();
+    }
+
     /**
      * 容器能力制复到另一个容器
      * */
@@ -131,12 +151,6 @@ public abstract class BeanContainer {
     // bean 对内通知体系
     //
     /////////////////////////
-
-    /**
-     * bean订阅者
-     */
-    protected final Set<SubscriberEntity> beanSubscribers = new LinkedHashSet<>();
-
     /**
      * bean订阅
      */

@@ -36,6 +36,15 @@ public class AopContext extends BeanContainer {
         initialize();
     }
 
+    @Override
+    public void clear() {
+        super.clear();
+
+        tryCreateCached.clear();
+        loadDone = false;
+        loadEvents.clear();
+    }
+
     public AopContext copy() {
         AopContext tmp = new AopContext();
         copyTo(tmp);
