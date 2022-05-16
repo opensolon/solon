@@ -15,7 +15,7 @@ import java.util.*;
  * @since 1.7
  */
 public class AddinManager {
-    static Map<String, AddinInfo> addinInfoMap = new HashMap<>();
+    static final Map<String, AddinInfo> addinInfoMap = new HashMap<>();
 
     static {
         Properties pops = Solon.cfg().getProp("solon.addin");
@@ -29,7 +29,7 @@ public class AddinManager {
         }
     }
 
-    public synchronized Collection<AddinInfo> getAll(){
+    public synchronized Collection<AddinInfo> getAddins(){
         return addinInfoMap.values();
     }
 
