@@ -21,6 +21,7 @@ public class AddinPackage {
     private final File file;
     private final JarClassLoader classLoader;
     private final List<PluginEntity> plugins;
+    private boolean started;
 
     public AddinPackage(File file, JarClassLoader classLoader, List<PluginEntity> plugins) {
         if (plugins.size() > 0) {
@@ -41,6 +42,11 @@ public class AddinPackage {
     public ClassLoader getClassLoader() {
         return classLoader;
     }
+
+    public boolean getStarted(){
+        return started;
+    }
+
 
     public Class<?> loadClass(String className) {
         return Utils.loadClass(getClassLoader(), className);
@@ -65,10 +71,11 @@ public class AddinPackage {
     /**
      * 启动插件包
      */
-    public AddinPackage start() {
+    public synchronized AddinPackage start() {
         for (PluginEntity p1 : plugins) {
             p1.start();
         }
+        started = true;
 
         return this;
     }
@@ -76,10 +83,11 @@ public class AddinPackage {
     /**
      * 预停止插件包
      */
-    public AddinPackage prestop() {
+    public synchronized AddinPackage prestop() {
         for (PluginEntity p1 : plugins) {
             p1.prestop();
         }
+        started = false;
 
         return this;
     }
@@ -87,10 +95,11 @@ public class AddinPackage {
     /**
      * 停止插件包
      */
-    public AddinPackage stop() {
+    public synchronized AddinPackage stop() {
         for (PluginEntity p1 : plugins) {
             p1.stop();
         }
+        started = false;
 
         return this;
     }

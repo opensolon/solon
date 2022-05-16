@@ -91,7 +91,6 @@ public class AddinManager {
         }
 
         info.getAddinPackage().start();
-        info.setStarted(true);
     }
 
     public synchronized static void stop(String name){
@@ -108,7 +107,6 @@ public class AddinManager {
         if(info.getAddinPackage() != null){
             info.getAddinPackage().prestop();
             info.getAddinPackage().stop();
-            info.setStarted(false);
         }
     }
 
