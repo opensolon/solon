@@ -29,9 +29,12 @@ public class PluginEntity {
      */
     private Plugin plugin;
 
-    public PluginEntity(ClassLoader classLoader, String className) {
+    private Props props;
+
+    public PluginEntity(ClassLoader classLoader, String className, Props props) {
         this.classLoader = classLoader;
         this.className = className;
+        this.props = props;
     }
 
     public PluginEntity(Plugin plugin) {
@@ -65,6 +68,10 @@ public class PluginEntity {
         init();
 
         return plugin;
+    }
+
+    public Props getProps() {
+        return props;
     }
 
     /**

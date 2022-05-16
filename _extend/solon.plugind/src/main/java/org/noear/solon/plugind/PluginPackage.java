@@ -1,9 +1,12 @@
 package org.noear.solon.plugind;
 
 import org.noear.solon.Solon;
+import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.core.JarClassLoader;
+import org.noear.solon.core.Plugin;
 import org.noear.solon.core.PluginEntity;
+import org.noear.solon.core.Props;
 
 import java.io.File;
 import java.io.IOException;
@@ -28,6 +31,18 @@ public class PluginPackage {
             //进行优先级顺排（数值要倒排）
             //
             plugins.sort(Comparator.comparingInt(PluginEntity::getPriority).reversed());
+
+            //尝试加载插件配置
+            //
+            Props props = plugins.get(0).getProps();
+            for (PluginEntity pe : plugins) {
+                if (pe.getPlugin() instanceof PluginPlus) {
+                    PluginPlus pp = (PluginPlus) pe.getPlugin();
+                    if (pp.context().getProps() != Solon.cfg()) {
+                        pp.context().getProps().putAll(props);
+                    }
+                }
+            }
         }
 
         this.file = file;

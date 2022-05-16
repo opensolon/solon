@@ -49,7 +49,7 @@ public class PluginUtil {
 
             for (String clzName : plugins) {
                 if (clzName.length() > 0) {
-                    PluginEntity ent = new PluginEntity(classLoader, clzName.trim());
+                    PluginEntity ent = new PluginEntity(classLoader, clzName.trim(), props);
                     ent.setPriority(priority);
                     consumer.accept(ent);
                 }
