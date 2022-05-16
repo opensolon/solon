@@ -48,12 +48,15 @@ public class BeanWrap {
     // bean clz 的注解（算是缓存起来）
     private final Annotation[] annotations;
 
+    private final AopContext context;
 
-    public BeanWrap(Class<?> clz) {
-        this(clz, null);
+
+    public BeanWrap(AopContext context,Class<?> clz) {
+        this(context,clz, null);
     }
 
-    public BeanWrap(Class<?> clz, Object raw) {
+    public BeanWrap(AopContext context,Class<?> clz, Object raw) {
+        this.context = context;
         this.clz = clz;
 
         Singleton ano = clz.getAnnotation(Singleton.class);
@@ -69,8 +72,8 @@ public class BeanWrap {
         }
     }
 
-    public BeanWrap(Class<?> clz, Object raw, String[] attrs) {
-        this(clz, raw);
+    public BeanWrap(AopContext context,Class<?> clz, Object raw, String[] attrs) {
+        this(context,clz, raw);
         attrsSet(attrs);
     }
 
@@ -218,12 +221,12 @@ public class BeanWrap {
      */
     protected void init(Object bean) {
         //a.注入
-        Aop.inject(bean);
+        context.beanInject(bean);
 
         //b.调用初始化函数
         if (clzInit != null) {
             if (clzInitDelay) {
-                Aop.beanOnloaded(IndexBuilder.buildIndex(clz), () -> {
+                context.beanOnloaded(IndexBuilder.buildIndex(clz), () -> {
                     initInvokeDo(bean);
                 });
             } else {

@@ -257,11 +257,13 @@ public abstract class BeanContainer {
     public BeanWrap wrap(Class<?> type, Object bean) {
         BeanWrap wrap = getWrap(type);
         if (wrap == null) {
-            wrap = new BeanWrap(type, bean);
+            wrap = wrapCreate(type, bean);
         }
 
         return wrap;
     }
+
+    protected abstract BeanWrap wrapCreate(Class<?> type, Object bean);
 
     //////////////////////////
     //

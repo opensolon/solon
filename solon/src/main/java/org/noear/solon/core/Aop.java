@@ -71,7 +71,7 @@ public class Aop {
     public static BeanWrap wrapAndPut(Class<?> type, Object bean) {
         BeanWrap wrap = ac.getWrap(type);
         if (wrap == null) {
-            wrap = new BeanWrap(type, bean);
+            wrap = new BeanWrap(ac, type, bean);
             ac.putWrap(type, wrap);
         }
 

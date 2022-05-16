@@ -50,6 +50,11 @@ public class AopContext extends BeanContainer {
         loadEvents.clear();
     }
 
+    @Override
+    protected BeanWrap wrapCreate(Class<?> type, Object bean) {
+        return new BeanWrap(this, type, bean);
+    }
+
     public AopContext copy() {
         return copy(null);
     }
@@ -481,7 +486,7 @@ public class AopContext extends BeanContainer {
                 EventBus.push(raw);
 
                 //动态构建的bean，都用新生成wrap（否则会类型混乱）
-                m_bw = new BeanWrap(beanClz, raw);
+                m_bw = wrapCreate(beanClz, raw);
                 m_bw.attrsSet(anno.attrs());
             }
 
