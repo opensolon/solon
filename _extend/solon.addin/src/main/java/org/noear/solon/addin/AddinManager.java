@@ -19,6 +19,7 @@ public class AddinManager {
 
     static {
         Properties pops = Solon.cfg().getProp("solon.addin");
+
         if (pops.size() > 0) {
             pops.forEach((k, v) -> {
                 if (k instanceof String && v instanceof String) {
@@ -28,11 +29,11 @@ public class AddinManager {
         }
     }
 
-    public Collection<AddinInfo> getAll(){
+    public synchronized Collection<AddinInfo> getAll(){
         return addinInfoMap.values();
     }
 
-    public static void add(String name, File file){
+    public synchronized static void add(String name, File file){
         if(addinInfoMap.containsKey(name)){
             return;
         }
@@ -40,12 +41,12 @@ public class AddinManager {
         addinInfoMap.put(name, new AddinInfo(name, file));
     }
 
-    public static void remove(String name){
+    public synchronized static void remove(String name){
         addinInfoMap.remove(name);
     }
 
 
-    public static AddinPackage load(String name) {
+    public synchronized static AddinPackage load(String name) {
         AddinInfo info = addinInfoMap.get(name);
 
         if (info == null) {
@@ -59,38 +60,55 @@ public class AddinManager {
         return info.getAddinPackage();
     }
 
-    public static void unload(String name){
+    public synchronized static void unload(String name){
         AddinInfo info = addinInfoMap.get(name);
 
         if (info == null) {
             throw new IllegalArgumentException("Addin does not exist: " + name);
+        }
+
+        if(info.getAddinPackage() == null){
+            return;
         }
 
         unloadJar(info.getAddinPackage());
+        info.setAddinPackage(null);
     }
 
-    public static void start(String name){
+    public synchronized static void start(String name) {
         AddinInfo info = addinInfoMap.get(name);
 
         if (info == null) {
             throw new IllegalArgumentException("Addin does not exist: " + name);
         }
 
-        if(info.getAddinPackage() != null){
-            info.getAddinPackage().start();
+        if (info.getAddinPackage() == null) {
+            return;
         }
+
+        if (info.getStarted()) {
+            return;
+        }
+
+        info.getAddinPackage().start();
+        info.setStarted(true);
     }
 
-    public static void stop(String name){
+    public synchronized static void stop(String name){
         AddinInfo info = addinInfoMap.get(name);
 
         if (info == null) {
             throw new IllegalArgumentException("Addin does not exist: " + name);
+        }
+
+        if(info.getStarted() == false){
+            return;
         }
 
         if(info.getAddinPackage() != null){
             info.getAddinPackage().prestop();
             info.getAddinPackage().stop();
+            info.setStarted(false);
         }
     }
 
@@ -98,7 +116,7 @@ public class AddinManager {
     /**
      * 加载jar插件包
      * */
-    public static AddinPackage loadJar(File file) {
+    public synchronized static AddinPackage loadJar(File file) {
         try {
             URL url = file.toURI().toURL();
             JarClassLoader classLoader = new JarClassLoader(JarClassLoader.global());
@@ -118,7 +136,7 @@ public class AddinManager {
     /**
      * 卸载Jar插件包
      * */
-    public static void unloadJar(AddinPackage pluginPackage) {
+    public synchronized static void unloadJar(AddinPackage pluginPackage) {
         try {
             pluginPackage.prestop();
             pluginPackage.stop();
