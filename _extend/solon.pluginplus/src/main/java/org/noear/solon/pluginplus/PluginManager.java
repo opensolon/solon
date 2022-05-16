@@ -1,4 +1,4 @@
-package org.noear.solon.addin;
+package org.noear.solon.pluginplus;
 
 import org.noear.solon.Solon;
 import org.noear.solon.core.JarClassLoader;
@@ -16,8 +16,8 @@ import java.util.*;
  * @author noear
  * @since 1.7
  */
-public class AddinManager {
-    static final Map<String, AddinInfo> addinMap = new HashMap<>();
+public class PluginManager {
+    static final Map<String, PluginInfo> pluginMap = new HashMap<>();
 
     static {
         Properties pops = Solon.cfg().getProp("solon.addin");
@@ -31,25 +31,25 @@ public class AddinManager {
         }
     }
 
-    public synchronized Collection<AddinInfo> getAddins(){
-        return addinMap.values();
+    public synchronized Collection<PluginInfo> getPlugins(){
+        return pluginMap.values();
     }
 
     public synchronized static void add(String name, File file){
-        if(addinMap.containsKey(name)){
+        if(pluginMap.containsKey(name)){
             return;
         }
 
-        addinMap.put(name, new AddinInfo(name, file));
+        pluginMap.put(name, new PluginInfo(name, file));
     }
 
     public synchronized static void remove(String name){
-        addinMap.remove(name);
+        pluginMap.remove(name);
     }
 
 
-    public synchronized static AddinPackage load(String name) {
-        AddinInfo info = addinMap.get(name);
+    public synchronized static PluginPackage load(String name) {
+        PluginInfo info = pluginMap.get(name);
 
         if (info == null) {
             throw new IllegalArgumentException("Addin does not exist: " + name);
@@ -63,7 +63,7 @@ public class AddinManager {
     }
 
     public synchronized static void unload(String name){
-        AddinInfo info = addinMap.get(name);
+        PluginInfo info = pluginMap.get(name);
 
         if (info == null) {
             throw new IllegalArgumentException("Addin does not exist: " + name);
@@ -78,7 +78,7 @@ public class AddinManager {
     }
 
     public synchronized static void start(String name) {
-        AddinInfo info = addinMap.get(name);
+        PluginInfo info = pluginMap.get(name);
 
         if (info == null) {
             throw new IllegalArgumentException("Addin does not exist: " + name);
@@ -97,7 +97,7 @@ public class AddinManager {
     }
 
     public synchronized static void stop(String name){
-        AddinInfo info = addinMap.get(name);
+        PluginInfo info = pluginMap.get(name);
 
         if (info == null) {
             throw new IllegalArgumentException("Addin does not exist: " + name);
@@ -117,7 +117,7 @@ public class AddinManager {
     /**
      * 加载jar插件包
      * */
-    public synchronized static AddinPackage loadJar(File file) {
+    public synchronized static PluginPackage loadJar(File file) {
         try {
             URL url = file.toURI().toURL();
             JarClassLoader classLoader = new JarClassLoader(JarClassLoader.global());
@@ -128,7 +128,7 @@ public class AddinManager {
             PluginUtil.scanPlugins(classLoader, url.toString(), plugins::add);
 
 
-            return new AddinPackage(file, classLoader, plugins);
+            return new PluginPackage(file, classLoader, plugins);
         } catch (MalformedURLException e) {
             throw new IllegalArgumentException(e);
         }
@@ -137,7 +137,7 @@ public class AddinManager {
     /**
      * 卸载Jar插件包
      * */
-    public synchronized static void unloadJar(AddinPackage pluginPackage) {
+    public synchronized static void unloadJar(PluginPackage pluginPackage) {
         try {
             pluginPackage.prestop();
             pluginPackage.stop();

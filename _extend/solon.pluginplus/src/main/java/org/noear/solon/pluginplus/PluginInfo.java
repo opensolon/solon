@@ -1,4 +1,4 @@
-package org.noear.solon.addin;
+package org.noear.solon.pluginplus;
 
 import java.io.File;
 
@@ -8,7 +8,7 @@ import java.io.File;
  * @author noear
  * @since 1.7
  */
-public class AddinInfo {
+public class PluginInfo {
     /**
      * 插件名
      */
@@ -20,9 +20,9 @@ public class AddinInfo {
     /**
      * 插件包
      */
-    private AddinPackage addinPackage;
+    private PluginPackage addinPackage;
 
-    public AddinInfo(String name, File file) {
+    public PluginInfo(String name, File file) {
         this.name = name;
         this.file = file;
     }
@@ -44,13 +44,13 @@ public class AddinInfo {
     }
 
 
-    public AddinPackage getAddinPackage() {
+    public PluginPackage getAddinPackage() {
         return addinPackage;
     }
 
     ///////
 
-    protected void setAddinPackage(AddinPackage addinPackage) {
+    protected void setAddinPackage(PluginPackage addinPackage) {
         this.addinPackage = addinPackage;
     }
 }

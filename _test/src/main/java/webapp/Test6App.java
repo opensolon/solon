@@ -2,8 +2,8 @@ package webapp;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
-import org.noear.solon.addin.AddinManager;
-import org.noear.solon.addin.AddinPackage;
+import org.noear.solon.pluginplus.PluginManager;
+import org.noear.solon.pluginplus.PluginPackage;
 
 import java.io.File;
 
@@ -18,8 +18,8 @@ public class Test6App {
         File dsKafkaJar = new File("/xxx/ds/kafka.jar");
 
         //1.加载插件包，并启动
-        AddinPackage dsMysql = AddinManager.loadJar(dsMysqlJar).start();
-        AddinPackage dsKafka = AddinManager.loadJar(dsKafkaJar).start();
+        PluginPackage dsMysql = PluginManager.loadJar(dsMysqlJar).start();
+        PluginPackage dsKafka = PluginManager.loadJar(dsKafkaJar).start();
 
 
         //2.使用插件包内的接口
@@ -30,8 +30,8 @@ public class Test6App {
         task.run(dsMysqlSource, dsKafkaTarget);
 
         //3.卸载Jar插件包
-        AddinManager.unloadJar(dsMysql);
-        AddinManager.unloadJar(dsKafka);
+        PluginManager.unloadJar(dsMysql);
+        PluginManager.unloadJar(dsKafka);
     }
 
     public interface IEtlTask {

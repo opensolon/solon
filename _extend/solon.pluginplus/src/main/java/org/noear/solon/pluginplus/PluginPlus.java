@@ -1,4 +1,4 @@
-package org.noear.solon.addin;
+package org.noear.solon.pluginplus;
 
 import org.noear.solon.Solon;
 import org.noear.solon.core.Aop;
@@ -12,7 +12,7 @@ import org.noear.solon.core.route.Router;
  * @author noear
  * @since 1.7
  */
-public abstract class Addin implements Plugin {
+public abstract class PluginPlus implements Plugin {
     private AopContext context;
 
     /**

@@ -202,27 +202,14 @@ public final class SolonProps extends Props {
         return this;
     }
 
-    /**
-     * 加载配置（用于扩展加载）
-     *
-     * @param url 配置地址
-     */
-    public SolonProps loadAdd(URL url) {
-        if (url != null) {
-            Properties props = Utils.loadProperties(url);
-            loadAdd(props);
-        }
-
-        return this;
-    }
 
     /**
      * 加载配置（用于扩展加载）
      *
      * @param url 配置地址
      */
-    public SolonProps loadAdd(String url) {
-        return loadAdd(Utils.getResource(url));
+    public void loadAdd(String url) {
+         loadAdd(Utils.getResource(url));
     }
 
     /**
@@ -230,71 +217,9 @@ public final class SolonProps extends Props {
      *
      * @param props 配置地址
      */
-    public SolonProps loadAdd(Properties props) {
-        if (props != null) {
-            for (Map.Entry<Object, Object> kv : props.entrySet()) {
-                Object k1 = kv.getKey();
-                Object v1 = kv.getValue();
-
-                if (k1 instanceof String) {
-                    String key = (String) k1;
-
-                    if (Utils.isEmpty(key)) {
-                        continue;
-                    }
-
-                    if (v1 instanceof String) {
-                        // db1.url=xxx
-                        // db1.jdbcUrl=${db1.url}
-                        // db1.jdbcUrl=jdbc:mysql:${db1.server}
-                        // db1.jdbcUrl=jdbc:mysql:${db1.server}/${db1.db}
-                        String v1Str = (String) v1;
-                        int symStart = 0;
-
-                        while (true) {
-                            symStart = v1Str.indexOf("${", symStart);
-                            if (symStart >= 0) {
-                                int symEnd = v1Str.indexOf("}", symStart + 1);
-                                if (symEnd > symStart) {
-                                    String tmpK = v1Str.substring(symStart + 2, symEnd);
-
-                                    String tmpV2 = props.getProperty(tmpK);
-                                    if (tmpV2 == null) {
-                                        tmpV2 = getProperty(tmpK);
-                                    }
-
-                                    if (tmpV2 == null) {
-                                        symStart = symEnd;
-                                    } else {
-                                        if (symStart > 0) {
-                                            //确定左侧部分
-                                            tmpV2 = v1Str.substring(0, symStart) + tmpV2;
-                                        }
-                                        symStart = tmpV2.length();
-                                        v1Str = tmpV2 + v1Str.substring(symEnd + 1);
-                                    }
-                                } else {
-                                    //找不到 "}"，则终止
-                                    break;
-                                }
-                            } else {
-                                //找不到 "${"，则终止
-                                break;
-                            }
-                        }
-
-                        v1 = v1Str;
-                    }
-
-                    if (v1 != null) {
-                        System.getProperties().put(k1, v1);
-                        put(k1, v1);
-                    }
-                }
-            }
-        }
-
-        return this;
+    @Override
+    public void loadAdd(Properties props) {
+        loadAddDo(props, true);
     }
 
     /**

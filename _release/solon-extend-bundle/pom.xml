@@ -21,7 +21,7 @@
     </properties>
 
     <modules>
-        <module>../../_extend/solon.addin</module>
+        <module>../../_extend/solon.pluginplus</module>
 
         <module>../../_extend/solon.cache.jedis</module>
         <module>../../_extend/solon.cache.spymemcached</module>
