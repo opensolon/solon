@@ -76,12 +76,13 @@ public abstract class BeanContainer {
         beanWrapSet.clear();
         beans.clear();
         clzMapping.clear();
-        beanBuilders.clear();
-        beanInjectors.clear();
-        beanExtractors.clear();
-        beanInterceptors.clear();
 
-        beanSubscribers.clear();
+//        beanBuilders.clear();
+//        beanInjectors.clear();
+//        beanExtractors.clear();
+//        beanInterceptors.clear();
+//
+//        beanSubscribers.clear();
     }
 
     /**
