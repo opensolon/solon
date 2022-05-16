@@ -20,10 +20,6 @@ public abstract class PluginPlus implements Plugin {
     public PluginPlus(){
         this(null);
     }
-
-    /**
-     * @param props 注入的配置，默认为全局的
-     * */
     public PluginPlus(Props props){
         this.props = props;
     }
