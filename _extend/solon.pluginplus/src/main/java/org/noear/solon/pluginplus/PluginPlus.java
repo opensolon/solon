@@ -4,6 +4,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
+import org.noear.solon.core.Props;
 import org.noear.solon.core.route.Router;
 
 /**
@@ -14,15 +15,23 @@ import org.noear.solon.core.route.Router;
  */
 public abstract class PluginPlus implements Plugin {
     private AopContext context;
+    private Props props;
+
+    public PluginPlus(){
+        this(null);
+    }
+
+    public PluginPlus(Props props){
+        this.props = props;
+    }
 
     /**
      * 上下文
      * */
     public AopContext context() {
-        if (context == null) {
-            context = Aop.context().copy();
+        if(context == null){
+            context = Aop.context().copy(props);
         }
-
         return context;
     }
 

@@ -51,7 +51,11 @@ public class AopContext extends BeanContainer {
     }
 
     public AopContext copy() {
-        AopContext tmp = new AopContext();
+        return copy(null);
+    }
+
+    public AopContext copy(Props props) {
+        AopContext tmp = new AopContext(props);
         copyTo(tmp);
         return tmp;
     }
