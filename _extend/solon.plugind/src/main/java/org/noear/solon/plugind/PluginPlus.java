@@ -1,4 +1,4 @@
-package org.noear.solon.pluginplus;
+package org.noear.solon.plugind;
 
 import org.noear.solon.Solon;
 import org.noear.solon.core.Aop;
@@ -21,6 +21,9 @@ public abstract class PluginPlus implements Plugin {
         this(null);
     }
 
+    /**
+     * @param props 注入的配置，默认为全局的
+     * */
     public PluginPlus(Props props){
         this.props = props;
     }

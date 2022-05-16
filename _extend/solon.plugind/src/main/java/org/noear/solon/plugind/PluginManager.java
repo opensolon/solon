@@ -1,4 +1,4 @@
-package org.noear.solon.pluginplus;
+package org.noear.solon.plugind;
 
 import org.noear.solon.Solon;
 import org.noear.solon.core.JarClassLoader;

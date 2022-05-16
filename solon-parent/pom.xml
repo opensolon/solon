@@ -293,7 +293,7 @@
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.pluginplus</artifactId>
+                <artifactId>solon.plugind</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
             <dependency>
