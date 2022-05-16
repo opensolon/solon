@@ -26,6 +26,16 @@ import java.util.function.Predicate;
  * @since 1.0
  * */
 public abstract class BeanContainer {
+    protected Props props;
+
+    public Props getProps() {
+        if (props == null) {
+            props = Solon.cfg();
+        }
+
+        return props;
+    }
+
     //////////////////////////
     //
     // 容器存储
@@ -374,7 +384,7 @@ public abstract class BeanContainer {
             beanInjectConfig(varH, name2);
 
             if (autoRefreshed && varH.isField()) {
-                Solon.cfg().onChange((key, val) -> {
+                getProps().onChange((key, val) -> {
                     if(key.startsWith(name2)){
                         beanInjectConfig(varH, name2);
                     }
@@ -398,7 +408,7 @@ public abstract class BeanContainer {
         Inject typeInj = clz.getAnnotation(Inject.class);
         if (typeInj != null && Utils.isNotEmpty(typeInj.value())) {
             if (typeInj.value().startsWith("${")) {
-                Utils.injectProperties(bw.raw(), Solon.cfg().getPropByExpr(typeInj.value()));
+                Utils.injectProperties(bw.raw(), getProps().getPropByExpr(typeInj.value()));
             }
         }
     }
@@ -406,15 +416,15 @@ public abstract class BeanContainer {
     private void beanInjectConfig(VarHolder varH, String name){
         if (Properties.class == varH.getType()) {
             //如果是 Properties
-            Properties val = Solon.cfg().getProp(name);
+            Properties val = getProps().getProp(name);
             varH.setValue(val);
         } else if (Map.class == varH.getType()) {
             //如果是 Map
-            Map val = Solon.cfg().getXmap(name);
+            Map val = getProps().getXmap(name);
             varH.setValue(val);
         } else if(List.class == varH.getType()){
             //如果是 List
-            List ary = Solon.cfg().getList(name);
+            List ary = getProps().getList(name);
             varH.setValue(ary);
         } else {
             //2.然后尝试获取配置
@@ -429,7 +439,7 @@ public abstract class BeanContainer {
                 name = name.substring(0, defIdx).trim();
             }
 
-            String val = Solon.cfg().get(name);
+            String val = getProps().get(name);
 
             if(def != null) {
                 if (Utils.isEmpty(val)) {
@@ -444,7 +454,7 @@ public abstract class BeanContainer {
                     //如果是java基础类型，则不注入配置值
                 } else {
                     //尝试转为实体
-                    Properties val0 = Solon.cfg().getProp(name);
+                    Properties val0 = getProps().getProp(name);
                     if (val0.size() > 0) {
                         //如果找到配置了
                         Object val2 = PropsConverter.global().convert(val0, null, pt);

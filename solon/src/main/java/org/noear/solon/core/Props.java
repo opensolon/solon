@@ -5,10 +5,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.core.wrap.ClassWrap;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
@@ -221,6 +218,33 @@ public class Props extends Properties {
                 }
             });
         }
+    }
+
+    ////
+
+    private Set<BiConsumer<String, String>> _changeEvent = new HashSet<>();
+
+    /**
+     * 添加变更事件
+     */
+    public void onChange(BiConsumer<String, String> event) {
+        _changeEvent.add(event);
+    }
+
+    /**
+     * 设置应用属性
+     */
+    @Override
+    public synchronized Object put(Object key, Object value) {
+        Object obj = super.put(key, value);
+
+        if (key instanceof String && value instanceof String) {
+            _changeEvent.forEach(event -> {
+                event.accept((String) key, (String) value);
+            });
+        }
+
+        return obj;
     }
 
     ////

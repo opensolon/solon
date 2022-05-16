@@ -36,6 +36,11 @@ public class AopContext extends BeanContainer {
         initialize();
     }
 
+    public AopContext(Props props) {
+        this.props = props;
+        initialize();
+    }
+
     @Override
     public void clear() {
         super.clear();

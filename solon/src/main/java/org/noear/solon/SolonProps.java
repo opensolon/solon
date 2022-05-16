@@ -272,30 +272,6 @@ public final class SolonProps extends Props {
         plugsSort();
     }
 
-    private Set<BiConsumer<String, String>> _changeEvent = new HashSet<>();
-
-    /**
-     * 添加变更事件
-     */
-    public void onChange(BiConsumer<String, String> event) {
-        _changeEvent.add(event);
-    }
-
-    /**
-     * 设置应用属性
-     */
-    @Override
-    public synchronized Object put(Object key, Object value) {
-        Object obj = super.put(key, value);
-
-        if (key instanceof String && value instanceof String) {
-            _changeEvent.forEach(event -> {
-                event.accept((String) key, (String) value);
-            });
-        }
-
-        return obj;
-    }
 
     /**
      * 应用源
