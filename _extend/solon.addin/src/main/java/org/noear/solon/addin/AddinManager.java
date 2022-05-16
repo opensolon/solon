@@ -11,11 +11,13 @@ import java.net.URL;
 import java.util.*;
 
 /**
+ * 外接小程序管理器
+ *
  * @author noear
  * @since 1.7
  */
 public class AddinManager {
-    static final Map<String, AddinInfo> addinInfoMap = new HashMap<>();
+    static final Map<String, AddinInfo> addinMap = new HashMap<>();
 
     static {
         Properties pops = Solon.cfg().getProp("solon.addin");
@@ -30,24 +32,24 @@ public class AddinManager {
     }
 
     public synchronized Collection<AddinInfo> getAddins(){
-        return addinInfoMap.values();
+        return addinMap.values();
     }
 
     public synchronized static void add(String name, File file){
-        if(addinInfoMap.containsKey(name)){
+        if(addinMap.containsKey(name)){
             return;
         }
 
-        addinInfoMap.put(name, new AddinInfo(name, file));
+        addinMap.put(name, new AddinInfo(name, file));
     }
 
     public synchronized static void remove(String name){
-        addinInfoMap.remove(name);
+        addinMap.remove(name);
     }
 
 
     public synchronized static AddinPackage load(String name) {
-        AddinInfo info = addinInfoMap.get(name);
+        AddinInfo info = addinMap.get(name);
 
         if (info == null) {
             throw new IllegalArgumentException("Addin does not exist: " + name);
@@ -61,7 +63,7 @@ public class AddinManager {
     }
 
     public synchronized static void unload(String name){
-        AddinInfo info = addinInfoMap.get(name);
+        AddinInfo info = addinMap.get(name);
 
         if (info == null) {
             throw new IllegalArgumentException("Addin does not exist: " + name);
@@ -76,14 +78,15 @@ public class AddinManager {
     }
 
     public synchronized static void start(String name) {
-        AddinInfo info = addinInfoMap.get(name);
+        AddinInfo info = addinMap.get(name);
 
         if (info == null) {
             throw new IllegalArgumentException("Addin does not exist: " + name);
         }
 
         if (info.getAddinPackage() == null) {
-            return;
+            //如果未加载，则自动加载
+            info.setAddinPackage(loadJar(info.getFile()));
         }
 
         if (info.getStarted()) {
@@ -94,7 +97,7 @@ public class AddinManager {
     }
 
     public synchronized static void stop(String name){
-        AddinInfo info = addinInfoMap.get(name);
+        AddinInfo info = addinMap.get(name);
 
         if (info == null) {
             throw new IllegalArgumentException("Addin does not exist: " + name);

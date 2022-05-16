@@ -3,24 +3,26 @@ package org.noear.solon.addin;
 import java.io.File;
 
 /**
+ * 外接小程序信息
+ *
  * @author noear
  * @since 1.7
  */
 public class AddinInfo {
     /**
      * 插件名
-     * */
+     */
     private final String name;
     /**
      * 对应文件
-     * */
+     */
     private final File file;
     /**
      * 插件包
-     * */
+     */
     private AddinPackage addinPackage;
 
-    public AddinInfo(String name, File file){
+    public AddinInfo(String name, File file) {
         this.name = name;
         this.file = file;
     }

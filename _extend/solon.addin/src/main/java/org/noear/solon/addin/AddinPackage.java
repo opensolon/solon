@@ -12,7 +12,7 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * 插件包
+ * 外接小程序包
  *
  * @author noear
  * @since 1.7

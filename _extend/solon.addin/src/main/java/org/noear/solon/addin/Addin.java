@@ -7,7 +7,7 @@ import org.noear.solon.core.Plugin;
 import org.noear.solon.core.route.Router;
 
 /**
- * 外接小程序
+ * 外接小程序（由独立 ClassLoader 加载的，可动态管理的 Plugin）
  *
  * @author noear
  * @since 1.7
