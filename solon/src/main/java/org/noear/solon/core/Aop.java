@@ -171,7 +171,6 @@ public class Aop {
      *
      * @param action 执行动作
      */
-    @Deprecated
     public static void beanForeach(BiConsumer<String, BeanWrap> action) {
         ac.beanForeach(action);
     }
@@ -181,7 +180,6 @@ public class Aop {
      *
      * @param action 执行动作
      */
-    @Deprecated
     public static void beanForeach(Consumer<BeanWrap> action) {
         ac.beanForeach(action);
     }
@@ -191,7 +189,6 @@ public class Aop {
      *
      * @param filter 过滤
      */
-    @Deprecated
     public static List<BeanWrap> beanFind(BiPredicate<String, BeanWrap> filter) {
         return ac.beanFind(filter);
     }
@@ -201,7 +198,6 @@ public class Aop {
      *
      * @param filter 过滤
      */
-    @Deprecated
     public static List<BeanWrap> beanFind(Predicate<BeanWrap> filter) {
         return ac.beanFind(filter);
     }
