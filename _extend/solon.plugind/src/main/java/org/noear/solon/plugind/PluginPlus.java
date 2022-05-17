@@ -17,23 +17,18 @@ public abstract class PluginPlus implements Plugin {
      * 属性是否隔离
      */
     protected abstract boolean isPropIsolation();
-
     /**
      * Bean是否隔离
      */
     protected abstract boolean isBeanIsolation();
-
-
     /**
      * 启动时
      * */
     protected abstract void onStart(SolonApp app);
-
     /**
      * 预停止时
      * */
     protected abstract void onPrestop() throws Throwable;
-
     /**
      * 停止时
      * */
