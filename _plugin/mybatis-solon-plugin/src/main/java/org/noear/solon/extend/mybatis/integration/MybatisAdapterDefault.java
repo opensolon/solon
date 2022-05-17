@@ -11,7 +11,6 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.apache.ibatis.transaction.TransactionFactory;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
-import org.noear.solon.core.Aop;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.Props;
 import org.noear.solon.core.VarHolder;
@@ -74,8 +73,8 @@ public class MybatisAdapterDefault implements MybatisAdapter {
         }
 
         //加载插件（通过Bean）
-        Aop.beanOnloaded(() -> {
-            Aop.beanForeach(bw -> {
+        dsWrap.context().beanOnloaded(() -> {
+            dsWrap.context().beanForeach(bw -> {
                 if (bw.raw() instanceof Interceptor) {
                     config.addInterceptor(bw.raw());
                 }
@@ -88,7 +87,7 @@ public class MybatisAdapterDefault implements MybatisAdapter {
         //2.初始化（顺序不能乱）
         initDo();
 
-        Aop.getAsyn(SqlSessionFactoryBuilder.class, bw -> {
+        dsWrap.context().getWrapAsyn(SqlSessionFactoryBuilder.class, bw -> {
             factoryBuilder = bw.raw();
         });
     }

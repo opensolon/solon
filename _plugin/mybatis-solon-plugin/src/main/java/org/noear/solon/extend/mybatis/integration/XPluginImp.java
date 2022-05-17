@@ -40,11 +40,11 @@ public class XPluginImp implements Plugin {
         }
 
         if (Utils.isEmpty(annoValue)) {
-            Aop.getAsyn(DataSource.class, (dsBw) -> {
+            wrap.context().getWrapAsyn(DataSource.class, (dsBw) -> {
                 create0(clz, dsBw);
             });
         } else {
-            Aop.getAsyn(annoValue, (dsBw) -> {
+            wrap.context().getWrapAsyn(annoValue, (dsBw) -> {
                 if (dsBw.raw() instanceof DataSource) {
                     create0(clz, dsBw);
                 }
@@ -54,11 +54,11 @@ public class XPluginImp implements Plugin {
 
     private void injectorAddDo(VarHolder varH, String annoValue) {
         if (Utils.isEmpty(annoValue)) {
-            Aop.getAsyn(DataSource.class, (dsBw) -> {
+            varH.context().getWrapAsyn(DataSource.class, (dsBw) -> {
                 inject0(varH, dsBw);
             });
         } else {
-            Aop.getAsyn(annoValue, (dsBw) -> {
+            varH.context().getWrapAsyn(annoValue, (dsBw) -> {
                 if (dsBw.raw() instanceof DataSource) {
                     inject0(varH, dsBw);
                 }
@@ -71,7 +71,7 @@ public class XPluginImp implements Plugin {
         SqlSession session = MybatisAdapterManager.get(dsBw).getFactory().openSession();
 
         Object raw = session.getMapper(clz);
-        Aop.wrapAndPut(clz, raw);
+        dsBw.context().wrapAndPut(clz, raw);
     }
 
     private void inject0(VarHolder varH, BeanWrap dsBw) {
