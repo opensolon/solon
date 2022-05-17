@@ -18,18 +18,18 @@ public class XPluginImp implements Plugin {
     public void start(SolonApp app) {
         output_meta = app.cfg().getInt("solon.output.meta", 0) > 0;
 
-        EnjoyRender render =  EnjoyRender.global();
+        EnjoyRender render = EnjoyRender.global();
 
-        Aop.beanOnloaded(() -> {
-            Aop.beanForeach((k, v) -> {
+        Aop.context().beanOnloaded((ctx) -> {
+            ctx.beanForeach((k, v) -> {
                 if (k.startsWith("view:")) { //java view widget
-                    if(Directive.class.isAssignableFrom(v.clz())){
-                        render.putDirective(k.split(":")[1], (Class<? extends Directive>)v.clz());
+                    if (Directive.class.isAssignableFrom(v.clz())) {
+                        render.putDirective(k.split(":")[1], (Class<? extends Directive>) v.clz());
                     }
                     return;
                 }
 
-                if(k.startsWith("share:")){ //java share object
+                if (k.startsWith("share:")) { //java share object
                     render.putVariable(k.split(":")[1], v.raw());
                     return;
                 }
@@ -37,7 +37,7 @@ public class XPluginImp implements Plugin {
         });
 
         RenderManager.register(render);
-        RenderManager.mapping(".shtm",render);
+        RenderManager.mapping(".shtm", render);
 
         if (Utils.loadClass("org.noear.solon.auth.AuthUtil") != null) {
             render.putDirective(AuthConstants.TAG_authPermissions, AuthPermissionsTag.class);

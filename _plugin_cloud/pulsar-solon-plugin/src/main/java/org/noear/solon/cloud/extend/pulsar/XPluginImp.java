@@ -22,7 +22,7 @@ public class XPluginImp implements Plugin {
             CloudEventServicePulsarImp eventServiceImp = new CloudEventServicePulsarImp(PulsarProps.instance);
             CloudManager.register(eventServiceImp);
 
-            Aop.beanOnloaded(eventServiceImp::subscribe);
+            Aop.context().beanOnloaded(ctx -> eventServiceImp.subscribe());
         }
     }
 }

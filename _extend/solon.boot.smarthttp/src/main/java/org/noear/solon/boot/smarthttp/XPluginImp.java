@@ -33,7 +33,7 @@ public final class XPluginImp implements Plugin {
             return;
         }
 
-        Aop.beanOnloaded(() -> {
+        Aop.context().beanOnloaded((ctx) -> {
             start0(app);
         });
     }

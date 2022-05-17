@@ -76,7 +76,7 @@ public class XPluginImp implements Plugin {
         //2.初始化服务
         CloudDiscoveryServiceWaterImp discoveryServiceImp = null;
         CloudConfigServiceWaterImp configServiceImp = null;
-        CloudEventServiceWaterImp eventServiceImp = null;
+        CloudEventServiceWaterImp eventServiceImp = new CloudEventServiceWaterImp(cloudProps);
         CloudI18nServiceWaterImp i18nServiceImp = null;
         CloudTraceServiceWaterImp traceServiceImp = new CloudTraceServiceWaterImp();
         CloudMetricServiceWaterImp metricServiceImp = new CloudMetricServiceWaterImp();
@@ -148,7 +148,6 @@ public class XPluginImp implements Plugin {
                 }
             }
 
-            eventServiceImp = new CloudEventServiceWaterImp(cloudProps);
             CloudManager.register(eventServiceImp);
 
             if (discoveryServiceImp != null || i18nServiceImp != null) {
@@ -163,7 +162,7 @@ public class XPluginImp implements Plugin {
                         new HandlerConfigUpdate(configServiceImp));
             }
 
-            Aop.beanOnloaded(eventServiceImp::subscribe);
+            Aop.context().beanOnloaded(ctx -> eventServiceImp.subscribe());
         }
 
         if (cloudProps.getLockEnable()) {
@@ -177,7 +176,7 @@ public class XPluginImp implements Plugin {
         if (cloudProps.getJobEnable()) {
             CloudManager.register(CloudJobServiceWaterImp.instance);
 
-            Aop.beanOnloaded(() -> {
+            Aop.context().beanOnloaded((ctx) -> {
                 CloudJobServiceWaterImp.instance.push();
             });
         }

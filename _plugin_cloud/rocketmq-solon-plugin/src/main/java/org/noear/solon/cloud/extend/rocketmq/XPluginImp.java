@@ -22,7 +22,7 @@ public class XPluginImp implements Plugin {
             CloudEventServiceRocketmqImp eventServiceImp = new CloudEventServiceRocketmqImp(RocketmqProps.instance);
             CloudManager.register(eventServiceImp);
 
-            Aop.beanOnloaded(eventServiceImp::subscribe);
+            Aop.context().beanOnloaded(ctx -> eventServiceImp.subscribe());
         }
     }
 }

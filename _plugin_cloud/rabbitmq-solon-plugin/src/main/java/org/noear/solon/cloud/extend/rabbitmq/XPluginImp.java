@@ -22,7 +22,7 @@ public class XPluginImp implements Plugin {
             CloudEventServiceRabbitmqImp eventServiceImp = new CloudEventServiceRabbitmqImp(RabbitmqProps.instance);
             CloudManager.register(eventServiceImp);
 
-            Aop.beanOnloaded(eventServiceImp::subscribe);
+            Aop.context().beanOnloaded(ctx -> eventServiceImp.subscribe());
         }
     }
 }

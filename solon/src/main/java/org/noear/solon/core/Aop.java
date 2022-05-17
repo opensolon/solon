@@ -158,12 +158,12 @@ public class Aop {
     /**
      * 添加Onloaded事件
      */
-    public static void beanOnloaded(Runnable fun) {
-        ac.beanOnloaded(ctx -> fun.run());
+    public static void beanOnloaded(Consumer<AopContext> fun) {
+        ac.beanOnloaded(fun);
     }
 
-    public static void beanOnloaded(int index,Runnable fun) {
-        ac.beanOnloaded(index, ctx -> fun.run());
+    public static void beanOnloaded(int index,Consumer<AopContext> fun) {
+        ac.beanOnloaded(index, fun);
     }
 
     /**
@@ -171,6 +171,7 @@ public class Aop {
      *
      * @param action 执行动作
      */
+    @Deprecated
     public static void beanForeach(BiConsumer<String, BeanWrap> action) {
         ac.beanForeach(action);
     }
@@ -189,6 +190,7 @@ public class Aop {
      *
      * @param filter 过滤
      */
+    @Deprecated
     public static List<BeanWrap> beanFind(BiPredicate<String, BeanWrap> filter) {
         return ac.beanFind(filter);
     }
@@ -198,6 +200,7 @@ public class Aop {
      *
      * @param filter 过滤
      */
+    @Deprecated
     public static List<BeanWrap> beanFind(Predicate<BeanWrap> filter) {
         return ac.beanFind(filter);
     }

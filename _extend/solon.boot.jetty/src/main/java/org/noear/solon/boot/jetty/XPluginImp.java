@@ -43,7 +43,7 @@ public final class XPluginImp implements Plugin {
         Aop.context().beanBuilderAdd(WebServlet.class,(clz, bw, ano)->{});
         Aop.context().beanBuilderAdd(WebListener.class,(clz, bw, ano)->{});
 
-        Aop.beanOnloaded(() -> {
+        Aop.context().beanOnloaded((ctx) -> {
             start0(app);
         });
     }

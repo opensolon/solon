@@ -30,9 +30,9 @@ public class XPluginImp implements Plugin {
             //构建自动配置
             Aop.context().beanMake(XxlJobAutoConfig.class);
 
-            Aop.beanOnloaded(() -> {
+            Aop.context().beanOnloaded((ctx) -> {
                 try {
-                    XxlJobExecutor executor = Aop.getOrNew(XxlJobExecutor.class);
+                    XxlJobExecutor executor = ctx.wrapAndPut(XxlJobExecutor.class).get();
                     executor.start();
                 } catch (Exception e) {
                     throw new RuntimeException(e);

@@ -32,8 +32,8 @@ public class XPluginImp implements Plugin {
             }
         });
 
-        Aop.beanOnloaded(() -> {
-            Aop.beanForeach(bw -> {
+        Aop.context().beanOnloaded((ctx) -> {
+            ctx.beanForeach(bw -> {
                 if (bw.raw() instanceof DataSource) {
                     initActiveRecord(bw.raw(), bw.name());
                 }

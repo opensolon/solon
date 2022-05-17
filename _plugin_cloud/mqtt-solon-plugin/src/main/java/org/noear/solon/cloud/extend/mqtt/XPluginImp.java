@@ -22,7 +22,7 @@ public class XPluginImp implements Plugin {
             CloudEventServiceMqttImp eventServiceImp = new CloudEventServiceMqttImp(MqttProps.instance);
             CloudManager.register(eventServiceImp);
 
-            Aop.beanOnloaded(eventServiceImp::subscribe);
+            Aop.context().beanOnloaded(ctx -> eventServiceImp.subscribe());
         }
     }
 }

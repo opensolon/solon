@@ -31,20 +31,20 @@ public final class XPluginImp implements Plugin {
 
     @Override
     public  void start(SolonApp app) {
-        if(app.enableHttp() == false){
+        if (app.enableHttp() == false) {
             return;
         }
         //如果有jetty插件，就不启动了
-        if(Utils.loadClass("org.noear.solon.boot.jetty.XPluginImp") != null){
+        if (Utils.loadClass("org.noear.solon.boot.jetty.XPluginImp") != null) {
             return;
         }
 
         //如果有undrtow插件，就不启动了
-        if(Utils.loadClass("org.noear.solon.boot.undertow.XPluginImp") != null){
+        if (Utils.loadClass("org.noear.solon.boot.undertow.XPluginImp") != null) {
             return;
         }
 
-        Aop.beanOnloaded(() -> {
+        Aop.context().beanOnloaded((ctx) -> {
             start0(app);
         });
     }

@@ -270,6 +270,13 @@ public abstract class BeanContainer {
     /**
      * 包装并推入
      * */
+    public BeanWrap wrapAndPut(Class<?> type) {
+        return wrapAndPut(type, null);
+    }
+
+    /**
+     * 包装并推入
+     * */
     public BeanWrap wrapAndPut(Class<?> type, Object bean) {
         BeanWrap wrap = getWrap(type);
         if (wrap == null) {

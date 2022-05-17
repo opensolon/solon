@@ -260,8 +260,8 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
      */
     @Note("添加接口")
     public void addBeans(Predicate<BeanWrap> where, boolean remoting) {
-        Aop.beanOnloaded(() -> {
-            Aop.beanForeach(bw -> {
+        Aop.context().beanOnloaded((ctx) -> {
+            ctx.beanForeach(bw -> {
                 if (where.test(bw)) {
                     if (remoting) {
                         add(bw, remoting); //强制为 remoting

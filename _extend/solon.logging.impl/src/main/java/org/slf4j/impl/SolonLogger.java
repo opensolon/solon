@@ -29,7 +29,7 @@ public class SolonLogger implements Logger {
         if (Solon.global() != null) {
             loggerLevel = LogOptions.getLoggerLevel(name);
         } else {
-            Aop.beanOnloaded(() -> {
+            Aop.context().beanOnloaded((ctx) -> {
                 loggerLevel = LogOptions.getLoggerLevel(name);
             });
         }

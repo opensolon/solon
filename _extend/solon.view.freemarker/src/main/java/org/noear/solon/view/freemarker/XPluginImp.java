@@ -19,8 +19,8 @@ public class XPluginImp implements Plugin {
 
         FreemarkerRender render = FreemarkerRender.global();
 
-        Aop.beanOnloaded(() -> {
-            Aop.beanForeach((k, v) -> {
+        Aop.context().beanOnloaded((ctx) -> {
+            ctx.beanForeach((k, v) -> {
                 if (k.startsWith("view:") || k.startsWith("ftl:")) {
                     //java view widget
                     if (TemplateDirectiveModel.class.isAssignableFrom(v.clz())) {
