@@ -19,17 +19,17 @@ public class XPluginImp implements Plugin {
         }
 
         Aop.context().beanBuilderAdd(FeignClient.class, (clz, wrap, anno) -> {
-            getProxy(clz, anno, obj -> Aop.wrapAndPut(clz, obj));
+            getProxy(wrap.context(),clz, anno, obj -> wrap.context().wrapAndPut(clz, obj));
         });
 
         Aop.context().beanInjectorAdd(FeignClient.class, (varH, anno) -> {
-            getProxy(varH.getType(), anno, obj -> varH.setValue(obj));
+            getProxy(varH.context(),varH.getType(), anno, obj -> varH.setValue(obj));
         });
     }
 
-    private void getProxy(Class<?> clz, FeignClient anno, Consumer consumer) {
+    private void getProxy(AopContext ctx, Class<?> clz, FeignClient anno, Consumer consumer) {
         //获取配置器
-        FeignConfiguration configuration = Aop.getOrNew(anno.configuration());
+        FeignConfiguration configuration = ctx.wrapAndPut(anno.configuration()).get();
 
         //生成构建器
         Feign.Builder builder0 = Feign.builder();
@@ -50,7 +50,7 @@ public class XPluginImp implements Plugin {
                 FeignTarget target = new FeignTarget(clz, anno.name(), anno.path(), upstream);
                 consumer.accept(builder.target(target));
             } else {
-                Aop.getAsyn(anno.name(), (bw) -> {
+                ctx.getWrapAsyn(anno.name(), (bw) -> {
                     LoadBalance tmp = bw.raw();
                     FeignTarget target = new FeignTarget(clz, anno.name(), anno.path(), tmp);
                     consumer.accept(builder.target(target));
