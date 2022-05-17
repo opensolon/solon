@@ -17,7 +17,7 @@ import java.lang.reflect.ParameterizedType;
  * @since 1.0
  * */
 public interface VarHolder {
-    AopContext getContext();
+    AopContext context();
 
     ParameterizedType getGenericType();
 

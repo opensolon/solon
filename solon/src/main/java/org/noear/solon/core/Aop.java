@@ -69,13 +69,7 @@ public class Aop {
      * @param bean 实例
      */
     public static BeanWrap wrapAndPut(Class<?> type, Object bean) {
-        BeanWrap wrap = ac.getWrap(type);
-        if (wrap == null) {
-            wrap = new BeanWrap(ac, type, bean);
-            ac.putWrap(type, wrap);
-        }
-
-        return wrap;
+        return ac.wrapAndPut(type, bean);
     }
 
     //::bean获取

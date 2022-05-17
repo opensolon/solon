@@ -263,6 +263,19 @@ public abstract class BeanContainer {
         return wrap;
     }
 
+    /**
+     * 包装并推入
+     * */
+    public BeanWrap wrapAndPut(Class<?> type, Object bean) {
+        BeanWrap wrap = getWrap(type);
+        if (wrap == null) {
+            wrap = wrapCreate(type, bean);
+            putWrap(type, wrap);
+        }
+
+        return wrap;
+    }
+
     protected abstract BeanWrap wrapCreate(Class<?> type, Object bean);
 
     //////////////////////////

@@ -40,7 +40,7 @@ public class VarHolderOfParam implements VarHolder {
     }
 
     @Override
-    public AopContext getContext() {
+    public AopContext context() {
         return ctx;
     }
 
