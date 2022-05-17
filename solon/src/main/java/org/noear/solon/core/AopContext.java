@@ -261,7 +261,7 @@ public class AopContext extends BeanContainer {
         for (Map.Entry<String, FieldWrap> kv : clzWrap.getFieldAllWraps().entrySet()) {
             Annotation[] annS = kv.getValue().annoS;
             if (annS.length > 0) {
-                VarHolder varH = kv.getValue().holder(obj);
+                VarHolder varH = kv.getValue().holder(this,obj);
                 tryInject(varH, annS);
             }
         }
@@ -430,7 +430,7 @@ public class AopContext extends BeanContainer {
             tryBuildBean0(mWrap, anno, raw);
         } else {
             //1.构建参数
-            VarGather gather = new VarGather(bw.clz(), size2, (args2) -> {
+            VarGather gather = new VarGather(bw, size2, (args2) -> {
                 try {
                     //
                     //变量收集完成后，会回调此处

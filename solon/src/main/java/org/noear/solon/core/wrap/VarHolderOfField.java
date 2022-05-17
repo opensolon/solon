@@ -1,5 +1,6 @@
 package org.noear.solon.core.wrap;
 
+import org.noear.solon.core.AopContext;
 import org.noear.solon.core.VarHolder;
 
 import java.lang.annotation.Annotation;
@@ -16,10 +17,17 @@ import java.lang.reflect.ParameterizedType;
 public class VarHolderOfField implements VarHolder {
     protected final FieldWrap fw;
     protected final Object obj;
+    protected final AopContext ctx;
 
-    public VarHolderOfField(FieldWrap fw, Object obj) {
+    public VarHolderOfField(AopContext ctx, FieldWrap fw, Object obj) {
+        this.ctx = ctx;
         this.fw = fw;
         this.obj = obj;
+    }
+
+    @Override
+    public AopContext getContext() {
+        return ctx;
     }
 
     @Override

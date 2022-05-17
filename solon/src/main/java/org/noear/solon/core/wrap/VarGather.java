@@ -1,6 +1,7 @@
 package org.noear.solon.core.wrap;
 
 import org.noear.solon.core.AopContext;
+import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.VarHolder;
 
 import java.lang.reflect.Parameter;
@@ -21,35 +22,35 @@ public class VarGather implements Runnable {
     int varSize;
     //完成时
     Consumer<Object[]> done;
-    Class<?> clz;
+    BeanWrap bw;
 
-    public VarGather(Class<?> clz , int varSize, Consumer<Object[]> done) {
-        this.clz = clz;
+    public VarGather(BeanWrap bw, int varSize, Consumer<Object[]> done) {
+        this.bw = bw;
         this.done = done;
         this.varSize = varSize;
         this.vars = new ArrayList<>(varSize);
     }
 
     public VarHolder add(Parameter p) {
-        VarHolderOfParam p2 = new VarHolderOfParam(p, this);
+        VarHolderOfParam p2 = new VarHolderOfParam(bw.context(), p, this);
         vars.add(p2);
         return p2;
     }
 
     @Override
     public void run() {
-        for(VarHolderOfParam p1 : vars){
-            if(p1.isDone() == false){
+        for (VarHolderOfParam p1 : vars) {
+            if (p1.isDone() == false) {
                 return;
             }
         }
 
-        if(vars.size() != varSize){
+        if (vars.size() != varSize) {
             return;
         }
 
         List<Object> args = new ArrayList<>(vars.size());
-        for(VarHolderOfParam p1 : vars){
+        for (VarHolderOfParam p1 : vars) {
             args.add(p1.getValue());
         }
 

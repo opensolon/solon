@@ -77,6 +77,10 @@ public class BeanWrap {
         attrsSet(attrs);
     }
 
+    public AopContext context() {
+        return context;
+    }
+
     public Proxy proxy() {
         return proxy;
     }

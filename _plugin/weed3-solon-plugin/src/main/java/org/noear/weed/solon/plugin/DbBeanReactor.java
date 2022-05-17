@@ -20,11 +20,11 @@ public class DbBeanReactor implements BeanBuilder<Db>, BeanInjector<Db> {
         }
 
         if (Utils.isEmpty(anno.value())) {
-            Aop.getAsyn(DataSource.class, (dsBw) -> {
+            wrap.context().getWrapAsyn(DataSource.class, (dsBw) -> {
                 create0(clz, dsBw);
             });
         } else {
-            Aop.getAsyn(anno.value(), (dsBw) -> {
+            wrap.context().getWrapAsyn(anno.value(), (dsBw) -> {
                 if (dsBw.raw() instanceof DataSource) {
                     create0(clz, dsBw);
                 }
