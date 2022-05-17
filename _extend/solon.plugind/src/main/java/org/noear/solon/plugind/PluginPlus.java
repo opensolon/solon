@@ -1,5 +1,6 @@
 package org.noear.solon.plugind;
 
+import org.noear.solon.SolonApp;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
@@ -23,6 +24,22 @@ public abstract class PluginPlus implements Plugin {
     protected abstract boolean isBeanIsolation();
 
 
+    /**
+     * 启动时
+     * */
+    protected abstract void onStart(SolonApp app);
+
+    /**
+     * 预停止时
+     * */
+    protected abstract void onPrestop() throws Throwable;
+
+    /**
+     * 停止时
+     * */
+    protected abstract void onStop() throws Throwable;
+
+
     private AopContext context;
 
     /**
@@ -44,4 +61,24 @@ public abstract class PluginPlus implements Plugin {
 
         return context;
     }
+
+    @Override
+    public final void start(SolonApp app) {
+        onStart(app);
+
+        if(isBeanIsolation()){
+            context().beanLoaded();
+        }
+    }
+
+    @Override
+    public final void prestop() throws Throwable {
+        onPrestop();
+    }
+
+    @Override
+    public final void stop() throws Throwable {
+        onStop();
+    }
+
 }
