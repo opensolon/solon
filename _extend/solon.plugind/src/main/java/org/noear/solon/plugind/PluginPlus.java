@@ -56,7 +56,6 @@ public abstract class PluginPlus implements Plugin {
             } else {
                 context = Aop.context();
             }
-
         }
 
         return context;
