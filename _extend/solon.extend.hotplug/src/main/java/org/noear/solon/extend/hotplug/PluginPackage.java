@@ -28,7 +28,7 @@ public class PluginPackage {
         this.file = file;
         this.plugins = plugins;
         this.classLoader = classLoader;
-        this.context = new AopContext(new Props());
+        this.context = Aop.context().copy(new Props());
 
         if (plugins.size() > 0) {
             //进行优先级顺排（数值要倒排）
