@@ -121,7 +121,7 @@ public class SolonApp implements HandlerSlots {
         //1.1.尝试启动插件（顺序不能乱） //不能用forEach，以免当中有插进来
         List<PluginEntity> plugs = cfg().plugs();
         for (int i = 0, len = plugs.size(); i < len; i++) {
-            plugs.get(i).start();
+            plugs.get(i).start(Aop.context());
         }
 
         //event::1.x.推送Plugin load end事件
@@ -332,7 +332,7 @@ public class SolonApp implements HandlerSlots {
      */
     public void plug(Plugin plugin) {
         PluginEntity p = new PluginEntity(plugin);
-        p.start();
+        p.start(Aop.context());
         cfg().plugs().add(p);
     }
 

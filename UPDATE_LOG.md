@@ -1,7 +1,8 @@
-#### 1.7.9
+#### 1.8.0
+* 调整 AopContext ，更具独立性
 
 #### 1.7.8
-* 恢复 Mapping::before,after,index
+* 取消 Mapping::before,after,index 的弃用标注
 
 #### 1.7.7
 * 增加 Action::fullName() 接口

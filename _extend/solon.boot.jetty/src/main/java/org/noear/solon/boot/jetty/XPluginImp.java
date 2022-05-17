@@ -29,8 +29,8 @@ public final class XPluginImp implements Plugin {
 
 
     @Override
-    public void start(SolonApp app) {
-        if (app.enableHttp() == false) {
+    public void start(AopContext context) {
+        if (Solon.global().enableHttp() == false) {
             return;
         }
 
@@ -39,16 +39,16 @@ public final class XPluginImp implements Plugin {
                     String.valueOf(ServerProps.request_maxBodySize));
         }
 
-        Aop.context().beanBuilderAdd(WebFilter.class,(clz, bw, ano)->{});
-        Aop.context().beanBuilderAdd(WebServlet.class,(clz, bw, ano)->{});
-        Aop.context().beanBuilderAdd(WebListener.class,(clz, bw, ano)->{});
+        context.beanBuilderAdd(WebFilter.class,(clz, bw, ano)->{});
+        context.beanBuilderAdd(WebServlet.class,(clz, bw, ano)->{});
+        context.beanBuilderAdd(WebListener.class,(clz, bw, ano)->{});
 
-        Aop.context().beanOnloaded((ctx) -> {
-            start0(app);
+        context.beanOnloaded((ctx) -> {
+            start0(Solon.global(), context);
         });
     }
 
-    private void start0(SolonApp app) {
+    private void start0(SolonApp app, AopContext context) {
         Class<?> jspClz = Utils.loadClass("org.eclipse.jetty.jsp.JettyJspServlet");
 
 
@@ -68,7 +68,7 @@ public final class XPluginImp implements Plugin {
         long time_start = System.currentTimeMillis();
         PrintUtil.info("Server:main: Jetty 9.4(jetty)");
 
-        _server.start(app);
+        _server.start(context);
         _signal = new SignalSim(_name, _port, "http", SignalType.HTTP);
 
         app.signalAdd(_signal);

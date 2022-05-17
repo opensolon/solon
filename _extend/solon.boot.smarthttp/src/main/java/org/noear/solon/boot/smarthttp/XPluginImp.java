@@ -28,13 +28,13 @@ public final class XPluginImp implements Plugin {
     }
 
     @Override
-    public void start(SolonApp app) {
-        if (app.enableHttp() == false) {
+    public void start(AopContext context) {
+        if (Solon.global().enableHttp() == false) {
             return;
         }
 
-        Aop.context().beanOnloaded((ctx) -> {
-            start0(app);
+        context.beanOnloaded((ctx) -> {
+            start0(Solon.global());
         });
     }
 

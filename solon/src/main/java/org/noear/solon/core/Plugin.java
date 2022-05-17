@@ -13,7 +13,7 @@ public interface Plugin {
     /**
      * 启动 （stop 可通过: app.onStop(..) 实现）
      */
-    void start(SolonApp app);
+    void start(AopContext context);
 
     /**
      * 预停目

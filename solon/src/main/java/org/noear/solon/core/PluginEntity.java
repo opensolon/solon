@@ -79,11 +79,11 @@ public class PluginEntity {
     /**
      * 启动
      */
-    public void start() {
+    public void start(AopContext context) {
         init();
 
         if (plugin != null) {
-            plugin.start(Solon.global());
+            plugin.start(context);
         }
     }
 

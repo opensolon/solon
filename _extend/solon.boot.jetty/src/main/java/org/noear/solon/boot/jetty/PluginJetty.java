@@ -7,6 +7,7 @@ import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.jetty.websocket._SessionManagerImpl;
+import org.noear.solon.core.AopContext;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.socketd.SessionManager;
@@ -22,9 +23,9 @@ class PluginJetty extends PluginJettyBase implements Plugin {
     }
 
     @Override
-    public void start(SolonApp app) {
+    public void start(AopContext context) {
         try {
-            setup(app);
+            setup(Solon.global(), context);
             _server.start();
         } catch (RuntimeException e) {
             throw e;
@@ -41,7 +42,7 @@ class PluginJetty extends PluginJettyBase implements Plugin {
         }
     }
 
-    protected void setup(SolonApp app) throws IOException {
+    protected void setup(SolonApp app, AopContext context) throws IOException {
         Class<?> wsClz = Utils.loadClass("org.eclipse.jetty.websocket.server.WebSocketHandler");
 
         _server = new Server();

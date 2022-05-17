@@ -3,10 +3,7 @@ package org.noear.solon.plugind;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
-import org.noear.solon.core.JarClassLoader;
-import org.noear.solon.core.Plugin;
-import org.noear.solon.core.PluginEntity;
-import org.noear.solon.core.Props;
+import org.noear.solon.core.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -26,8 +23,14 @@ public class PluginPackage {
     private final JarClassLoader classLoader;
     private final List<PluginEntity> plugins;
     private boolean started;
+    private AopContext context;
 
     public PluginPackage(File file, JarClassLoader classLoader, List<PluginEntity> plugins) {
+        this.file = file;
+        this.plugins = plugins;
+        this.classLoader = classLoader;
+        this.context = new AopContext(new Props());
+
         if (plugins.size() > 0) {
             //进行优先级顺排（数值要倒排）
             //
@@ -36,19 +39,8 @@ public class PluginPackage {
             //尝试加载插件配置
             //
             Properties props = plugins.get(0).getProps();
-            for (PluginEntity pe : plugins) {
-                if (pe.getPlugin() instanceof PluginPlus) {
-                    PluginPlus pp = (PluginPlus) pe.getPlugin();
-                    if (pp.context().getProps() != Solon.cfg()) {
-                        pp.context().getProps().loadAdd(props);
-                    }
-                }
-            }
+            context.getProps().loadAdd(props);
         }
-
-        this.file = file;
-        this.plugins = plugins;
-        this.classLoader = classLoader;
     }
 
     public File getFile() {
@@ -89,7 +81,7 @@ public class PluginPackage {
      */
     public synchronized PluginPackage start() {
         for (PluginEntity p1 : plugins) {
-            p1.start();
+            p1.start(context);
         }
         started = true;
 

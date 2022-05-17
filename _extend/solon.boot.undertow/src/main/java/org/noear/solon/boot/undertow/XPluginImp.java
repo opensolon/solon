@@ -23,8 +23,8 @@ public final class XPluginImp implements Plugin {
     }
 
     @Override
-    public void start(SolonApp app) {
-        if (app.enableHttp() == false) {
+    public void start(AopContext context) {
+        if (Solon.global().enableHttp() == false) {
             return;
         }
 
@@ -33,11 +33,11 @@ public final class XPluginImp implements Plugin {
         Aop.context().beanBuilderAdd(WebListener.class,(clz, bw, ano)->{});
 
         Aop.context().beanOnloaded((ctx) -> {
-            start0(app);
+            start0(Solon.global(), context);
         });
     }
 
-    private void start0(SolonApp app) {
+    private void start0(SolonApp app, AopContext context) {
         String _name = app.cfg().get(ServerConstants.SERVER_HTTP_NAME);
         int _port = app.cfg().getInt(ServerConstants.SERVER_HTTP_PORT, 0);
         if (_port < 1) {
@@ -55,7 +55,7 @@ public final class XPluginImp implements Plugin {
             _server = new PluginUndertowJsp(_port);
         }
 
-        _server.start(app);
+        _server.start(context);
 
         _signal = new SignalSim(_name, _port, "http", SignalType.HTTP);
 
