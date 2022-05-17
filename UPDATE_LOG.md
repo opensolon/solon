@@ -1,5 +1,6 @@
 #### 1.8.0
 * 调整 AopContext ，更具独立性
+* 调整插件接口，start 参数由 SolonApp 改为：AopContext
 
 #### 1.7.8
 * 取消 Mapping::before,after,index 的弃用标注
