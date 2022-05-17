@@ -273,11 +273,6 @@
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.extend.hotdev</artifactId>
-                <version>${solon.ver}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.noear</groupId>
                 <artifactId>solon.validation</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
@@ -293,7 +288,7 @@
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.plugind</artifactId>
+                <artifactId>solon.extend.hotplug</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
             <dependency>

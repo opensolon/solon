@@ -1,4 +1,4 @@
-package org.noear.solon.plugind;
+package org.noear.solon.extend.hotplug;
 
 import java.io.File;
 

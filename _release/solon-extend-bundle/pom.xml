@@ -21,7 +21,6 @@
     </properties>
 
     <modules>
-        <module>../../_extend/solon.plugind</module>
 
         <module>../../_extend/solon.cache.jedis</module>
         <module>../../_extend/solon.cache.spymemcached</module>
@@ -33,6 +32,8 @@
         <module>../../_extend/solon.sessionstate.jwt</module>
         <module>../../_extend/solon.sessionstate.redisson</module>
 
+
+        <module>../../_extend/solon.extend.hotplug</module>
 
         <module>../../_extend/solon.extend.aspect</module>
         <module>../../_extend/solon.extend.staticfiles</module>
@@ -51,7 +52,6 @@
         <module>../../_extend/solon.extend.cors</module>
         <module>../../_extend/solon.extend.health</module>
         <module>../../_extend/solon.extend.graalvm</module>
-        <module>../../_extend/solon.extend.hotdev</module>
         <module>../../_extend/solon.extend.async</module>
         <module>../../_extend/solon.extend.retry</module>
 

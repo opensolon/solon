@@ -34,7 +34,7 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.plugind</artifactId>
+            <artifactId>solon.extend.hotplug</artifactId>
         </dependency>
 
         <dependency>

@@ -1,7 +1,6 @@
-package org.noear.solon.plugind;
+package org.noear.solon.extend.hotplug;
 
 import org.noear.solon.Solon;
-import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.core.*;
 
