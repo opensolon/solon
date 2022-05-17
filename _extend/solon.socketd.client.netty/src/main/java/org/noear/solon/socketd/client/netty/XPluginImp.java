@@ -1,6 +1,7 @@
 package org.noear.solon.socketd.client.netty;
 
 import org.noear.solon.SolonApp;
+import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.socketd.SessionFactoryManager;
 

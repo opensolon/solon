@@ -1,6 +1,7 @@
 package org.noear.solon.extend.luffy.impl;
 
 import org.noear.solon.SolonApp;
+import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
 
 /**

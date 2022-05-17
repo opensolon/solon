@@ -3,6 +3,7 @@ package webapp;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
+import org.noear.solon.core.AopContext;
 import org.noear.solon.core.ExtendLoader;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.PluginEntity;

@@ -8,6 +8,7 @@ import com.jfinal.template.source.ClassPathSourceFactory;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.core.Aop;
+import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.ScanUtil;
@@ -26,13 +27,13 @@ public class XPluginImp implements Plugin {
 
     @Override
     public void start(AopContext context) {
-        Aop.context().beanBuilderAdd(Table.class, (clz, wrap, anno) -> {
+        context.beanBuilderAdd(Table.class, (clz, wrap, anno) -> {
             if (wrap.raw() instanceof Model) {
                 tableMap.put(anno, (Class<? extends Model<?>>) clz);
             }
         });
 
-        Aop.context().beanOnloaded((ctx) -> {
+        context.beanOnloaded((ctx) -> {
             ctx.beanForeach(bw -> {
                 if (bw.raw() instanceof DataSource) {
                     initActiveRecord(bw.raw(), bw.name());

@@ -1,9 +1,9 @@
 package org.noear.solon.extend.cron4j;
 
 import org.noear.solon.Solon;
-import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.core.Aop;
+import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.event.AppLoadEndEvent;
 
@@ -12,7 +12,7 @@ import java.util.Properties;
 public class XPluginImp implements Plugin {
     @Override
     public void start(AopContext context) {
-        if (app.source().getAnnotation(EnableCron4j.class) == null) {
+        if (Solon.global().source().getAnnotation(EnableCron4j.class) == null) {
             return;
         }
 
@@ -44,7 +44,7 @@ public class XPluginImp implements Plugin {
         });
 
         //应用加载完后，再启动任务
-        app.onEvent(AppLoadEndEvent.class, e -> {
+        Solon.global().onEvent(AppLoadEndEvent.class, e -> {
             JobManager.start();
         });
     }

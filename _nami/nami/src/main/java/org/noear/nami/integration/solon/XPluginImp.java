@@ -6,6 +6,7 @@ import org.noear.nami.common.InfoUtils;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.core.Aop;
+import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
 
 import java.util.LinkedHashMap;
@@ -24,7 +25,7 @@ public class XPluginImp implements Plugin {
             NamiConfigurationDefault.proxy = new NamiConfigurationSolon();
         }
 
-        Aop.context().beanInjectorAdd(NamiClient.class, (varH, anno) -> {
+        context.beanInjectorAdd(NamiClient.class, (varH, anno) -> {
             if (varH.getType().isInterface() == false) {
                 return;
             }

@@ -4,6 +4,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.core.Aop;
+import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.event.AppLoadEndEvent;
 import org.quartz.SchedulerException;
@@ -13,7 +14,7 @@ import java.util.Properties;
 public class XPluginImp implements Plugin {
     @Override
     public void start(AopContext context) {
-        if (app.source().getAnnotation(EnableQuartz.class) == null) {
+        if (Solon.global().source().getAnnotation(EnableQuartz.class) == null) {
             return;
         }
 
@@ -23,7 +24,7 @@ public class XPluginImp implements Plugin {
             throw new RuntimeException(ex);
         }
 
-        Aop.context().beanBuilderAdd(Quartz.class, (clz, bw, anno) -> {
+        context.beanBuilderAdd(Quartz.class, (clz, bw, anno) -> {
             String cronx = anno.cron7x();
             String name = anno.name();
             boolean enable = anno.enable();
@@ -48,7 +49,7 @@ public class XPluginImp implements Plugin {
             JobManager.register(name, cronx, enable, bw);
         });
 
-        app.onEvent(AppLoadEndEvent.class, e -> {
+        Solon.global().onEvent(AppLoadEndEvent.class, e -> {
             try {
                 JobManager.start();
             } catch (SchedulerException ex) {

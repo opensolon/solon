@@ -1,9 +1,9 @@
 package org.noear.solon.cloud.extend.minio;
 
-import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudManager;
 import org.noear.solon.cloud.extend.minio.service.CloudFileServiceMinioImp;
+import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
 
 /**

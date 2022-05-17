@@ -5,6 +5,7 @@ import net.hasor.core.Module;
 import net.hasor.solon.boot.BuildConfig;
 import org.noear.solon.SolonApp;
 import org.noear.solon.core.Aop;
+import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
 
 /**
@@ -19,7 +20,7 @@ public class XPluginImp implements Plugin {
         //
         //注册bean构建器
         //
-        Aop.context().beanBuilderAdd(DimModule.class, (type, bw, anno) -> {
+        context.beanBuilderAdd(DimModule.class, (type, bw, anno) -> {
             // 把Solon 中所有标记了 @DimModule 的 Module，捞进来。
             //
             if (Module.class.isAssignableFrom(type)) {

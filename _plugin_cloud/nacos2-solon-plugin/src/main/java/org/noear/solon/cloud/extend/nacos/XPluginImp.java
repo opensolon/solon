@@ -3,6 +3,7 @@ package org.noear.solon.cloud.extend.nacos;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudClient;
+import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.cloud.CloudManager;
 import org.noear.solon.cloud.extend.nacos.service.CloudConfigServiceNacosImp;

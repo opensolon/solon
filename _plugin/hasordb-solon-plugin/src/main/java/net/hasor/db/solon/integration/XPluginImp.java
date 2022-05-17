@@ -9,10 +9,7 @@ import net.hasor.db.lambda.LambdaTemplate;
 import net.hasor.db.solon.Db;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
-import org.noear.solon.core.Aop;
-import org.noear.solon.core.BeanWrap;
-import org.noear.solon.core.Plugin;
-import org.noear.solon.core.VarHolder;
+import org.noear.solon.core.*;
 
 import javax.sql.DataSource;
 
@@ -25,7 +22,7 @@ public class XPluginImp implements Plugin {
 
     @Override
     public void start(AopContext context) {
-        Aop.context().beanInjectorAdd(Db.class, (varH, anno) -> {
+        context.beanInjectorAdd(Db.class, (varH, anno) -> {
             if (Utils.isEmpty(anno.value())) {
                 Aop.getAsyn(DataSource.class, (dsBw) -> {
                     inject0(varH, dsBw);
@@ -39,7 +36,7 @@ public class XPluginImp implements Plugin {
             }
         });
 
-        Aop.context().beanBuilderAdd(RefMapper.class, (clz, bw, anno) -> {
+        context.beanBuilderAdd(RefMapper.class, (clz, bw, anno) -> {
             dalRegistry.loadMapper(clz);
         });
     }

@@ -1,10 +1,12 @@
 package org.noear.solon.view.beetl;
 
 import org.beetl.core.tag.Tag;
+import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.auth.tags.AuthConstants;
 import org.noear.solon.core.Aop;
+import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.handle.RenderManager;
 import org.noear.solon.view.beetl.tags.AuthPermissionsTag;
@@ -15,11 +17,11 @@ public class XPluginImp implements Plugin {
 
     @Override
     public void start(AopContext context) {
-        output_meta = app.cfg().getInt("solon.output.meta", 0) > 0;
+        output_meta = Solon.cfg().getInt("solon.output.meta", 0) > 0;
 
         BeetlRender render = BeetlRender.global();
 
-        Aop.context().beanOnloaded((ctx) -> {
+        context.beanOnloaded((ctx) -> {
             ctx.beanForeach((k, v) -> {
                 if (k.startsWith("view:")) { //java view widget
                     if (Tag.class.isAssignableFrom(v.clz())) {

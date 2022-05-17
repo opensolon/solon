@@ -3,8 +3,8 @@ package org.noear.solon.extend.dubbo.integration;
 import org.apache.dubbo.config.ServiceConfig;
 import org.apache.dubbo.config.annotation.Reference;
 import org.apache.dubbo.config.annotation.Service;
-import org.noear.solon.SolonApp;
-import org.noear.solon.core.Aop;
+import org.noear.solon.Solon;
+import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.extend.dubbo.DubboAdapter;
 import org.noear.solon.extend.dubbo.EnableDubbo;
@@ -15,14 +15,14 @@ public class XPluginImp implements Plugin {
 
     @Override
     public void start(AopContext context) {
-        if (app.source().getAnnotation(EnableDubbo.class) == null) {
+        if (Solon.global().source().getAnnotation(EnableDubbo.class) == null) {
             return;
         }
 
-        _server = DubboAdapter.global(app);
+        _server = DubboAdapter.global();
 
         //支持duboo.Service注解
-        Aop.context().beanBuilderAdd(Service.class, ((clz, bw, anno) -> {
+        context.beanBuilderAdd(Service.class, ((clz, bw, anno) -> {
             Class<?>[] ifs = bw.clz().getInterfaces();
             if (ifs.length > 0) {
                 ServiceConfig cfg = new ServiceConfig(new ServiceAnno(anno));
@@ -37,7 +37,7 @@ public class XPluginImp implements Plugin {
         }));
 
         //支持dubbo.Reference注入
-        Aop.context().beanInjectorAdd(Reference.class, ((fwT, anno) -> {
+        context.beanInjectorAdd(Reference.class, ((fwT, anno) -> {
             if (fwT.getType().isInterface()) {
                 Object raw = _server.getService(fwT.getType(), new ReferenceAnno(anno));
                 fwT.setValue(raw);

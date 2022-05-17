@@ -1,6 +1,7 @@
 package org.noear.solon.extend.mybatisplus.integration;
 
 import com.baomidou.mybatisplus.core.toolkit.reflect.GenericTypeUtils;
+import org.noear.solon.core.AopContext;
 import org.noear.solon.core.util.GenericUtil;
 import org.noear.solon.extend.mybatis.integration.MybatisAdapterManager;
 import org.noear.solon.SolonApp;

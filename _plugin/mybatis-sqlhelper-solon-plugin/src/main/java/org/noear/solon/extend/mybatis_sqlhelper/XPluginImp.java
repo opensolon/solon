@@ -6,6 +6,6 @@ import org.noear.solon.core.*;
 public class XPluginImp implements Plugin {
     @Override
     public void start(AopContext context) {
-        app.beanMake(SqlHelperConfiguration.class);
+        context.beanMake(SqlHelperConfiguration.class);
     }
 }

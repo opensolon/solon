@@ -1,6 +1,7 @@
 package org.noear.solon.serialization.fastjson;
 
-import org.noear.solon.SolonApp;
+import org.noear.solon.Solon;
+import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Bridge;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.event.EventBus;
@@ -11,7 +12,7 @@ public class XPluginImp implements Plugin {
 
     @Override
     public void start(AopContext context) {
-        output_meta = app.cfg().getInt("solon.output.meta", 0) > 0;
+        output_meta = Solon.cfg().getInt("solon.output.meta", 0) > 0;
 
         //事件扩展
         EventBus.push(FastjsonRenderFactory.global);

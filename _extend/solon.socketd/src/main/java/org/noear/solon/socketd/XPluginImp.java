@@ -1,8 +1,10 @@
 package org.noear.solon.socketd;
 
+import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.core.Aop;
+import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.message.Listener;
@@ -15,9 +17,9 @@ public class XPluginImp implements Plugin {
     public void start(AopContext context) {
         //注册 @ClientListenEndpoint 构建器
 
-        app.listenAfter(new RouterListener());
+        Solon.global().listenAfter(new RouterListener());
 
-        Aop.context().beanBuilderAdd(ClientEndpoint.class, (clz, wrap, anno) -> {
+        context.beanBuilderAdd(ClientEndpoint.class, (clz, wrap, anno) -> {
             if (Listener.class.isAssignableFrom(clz)) {
                 Listener l = wrap.raw();
 

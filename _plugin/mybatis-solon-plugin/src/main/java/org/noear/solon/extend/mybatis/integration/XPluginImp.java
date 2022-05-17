@@ -1,6 +1,7 @@
 package org.noear.solon.extend.mybatis.integration;
 
 import org.apache.ibatis.session.SqlSession;
+import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.core.*;
@@ -13,23 +14,23 @@ public class XPluginImp implements Plugin {
     @Override
     public void start(AopContext context) {
 
-        app.onEvent(BeanWrap.class, new DsEventListener());
+        Solon.global().onEvent(BeanWrap.class, new DsEventListener());
 
         //for @Deprecated
-        Aop.context().beanBuilderAdd(org.apache.ibatis.ext.solon.Db.class, (clz, wrap, anno) -> {
+        context.beanBuilderAdd(org.apache.ibatis.ext.solon.Db.class, (clz, wrap, anno) -> {
             builderAddDo(clz, wrap,anno.value());
         });
 
-        Aop.context().beanInjectorAdd(org.apache.ibatis.ext.solon.Db.class, (varH, anno) -> {
+        context.beanInjectorAdd(org.apache.ibatis.ext.solon.Db.class, (varH, anno) -> {
             injectorAddDo(varH, anno.value());
         });
 
         //for new
-        Aop.context().beanBuilderAdd(org.apache.ibatis.solon.annotation.Db.class, (clz, wrap, anno) -> {
+        context.beanBuilderAdd(org.apache.ibatis.solon.annotation.Db.class, (clz, wrap, anno) -> {
             builderAddDo(clz, wrap,anno.value());
         });
 
-        Aop.context().beanInjectorAdd(org.apache.ibatis.solon.annotation.Db.class, (varH, anno) -> {
+        context.beanInjectorAdd(org.apache.ibatis.solon.annotation.Db.class, (varH, anno) -> {
             injectorAddDo(varH, anno.value());
         });
     }

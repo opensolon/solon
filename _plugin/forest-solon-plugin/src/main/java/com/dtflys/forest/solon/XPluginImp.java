@@ -3,6 +3,7 @@ package com.dtflys.forest.solon;
 import com.dtflys.forest.annotation.ForestClient;
 import org.noear.solon.SolonApp;
 import org.noear.solon.core.Aop;
+import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
 
 import java.util.function.Consumer;

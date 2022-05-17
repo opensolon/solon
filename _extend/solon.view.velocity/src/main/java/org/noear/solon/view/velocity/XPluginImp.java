@@ -1,9 +1,11 @@
 package org.noear.solon.view.velocity;
 
 import org.apache.velocity.runtime.directive.Directive;
+import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.core.Aop;
+import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.handle.RenderManager;
 import org.noear.solon.view.velocity.tags.AuthPermissionsTag;
@@ -14,11 +16,11 @@ public class XPluginImp implements Plugin {
 
     @Override
     public void start(AopContext context) {
-        output_meta = app.cfg().getInt("solon.output.meta", 0) > 0;
+        output_meta = Solon.cfg().getInt("solon.output.meta", 0) > 0;
 
         VelocityRender render = VelocityRender.global();
 
-        Aop.context().beanOnloaded((ctx) -> {
+        context.beanOnloaded((ctx) -> {
             ctx.beanForeach((k, v) -> {
                 if (k.startsWith("view:")) { //java view widget
                     if (v.raw() instanceof Directive) {

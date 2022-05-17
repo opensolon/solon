@@ -1,12 +1,10 @@
 package org.noear.solon.extend.beetlsql;
 
 import org.beetl.sql.core.SQLManager;
+import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
-import org.noear.solon.core.Aop;
-import org.noear.solon.core.BeanWrap;
-import org.noear.solon.core.VarHolder;
-import org.noear.solon.core.Plugin;
+import org.noear.solon.core.*;
 
 import javax.sql.DataSource;
 
@@ -20,24 +18,24 @@ public class XPluginImp implements Plugin {
     @Override
     public void start(AopContext context) {
         //监听事件
-        app.onEvent(BeanWrap.class, new DsEventListener());
+        Solon.global().onEvent(BeanWrap.class, new DsEventListener());
 
         //for @Deprecated
-        Aop.context().beanBuilderAdd(org.beetl.sql.ext.solon.Db.class, (clz, wrap, anno) -> {
+        context.beanBuilderAdd(org.beetl.sql.ext.solon.Db.class, (clz, wrap, anno) -> {
             builderAddDo(clz, wrap, anno.value());
         });
 
-        Aop.context().beanInjectorAdd(org.beetl.sql.ext.solon.Db.class, (varH, anno) -> {
+        context.beanInjectorAdd(org.beetl.sql.ext.solon.Db.class, (varH, anno) -> {
             injectorAddDo(varH, anno.value());
         });
 
 
         //for new
-        Aop.context().beanBuilderAdd(org.beetl.sql.solon.annotation.Db.class, (clz, wrap, anno) -> {
+        context.beanBuilderAdd(org.beetl.sql.solon.annotation.Db.class, (clz, wrap, anno) -> {
             builderAddDo(clz, wrap, anno.value());
         });
 
-        Aop.context().beanInjectorAdd(org.beetl.sql.solon.annotation.Db.class, (varH, anno) -> {
+        context.beanInjectorAdd(org.beetl.sql.solon.annotation.Db.class, (varH, anno) -> {
             injectorAddDo(varH, anno.value());
         });
 
@@ -45,7 +43,7 @@ public class XPluginImp implements Plugin {
 
         //初始化管理器（主要为了生成动态管理器）
         //
-        Aop.context().beanOnloaded((ctx) -> {
+        context.beanOnloaded((ctx) -> {
             BeanWrap defBw = ctx.getWrap(DataSource.class);
 
             if (defBw != null) {

@@ -2,6 +2,7 @@ package org.noear.solon.sessionstate.jedis;
 
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
+import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Bridge;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.util.PrintUtil;
