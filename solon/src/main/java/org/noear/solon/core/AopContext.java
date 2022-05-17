@@ -81,7 +81,7 @@ public class AopContext extends BeanContainer {
                 if (m_an != null) {
                     //支持非公有函数
                     m.setAccessible(true);
-                    MethodWrap mWrap = MethodWrap.get(m);
+                    MethodWrap mWrap = MethodWrap.get(this, m);
 
                     //有参数的bean，采用线程池处理；所以需要锁等待
                     //

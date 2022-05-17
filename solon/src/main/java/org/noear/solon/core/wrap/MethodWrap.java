@@ -1,7 +1,7 @@
 package org.noear.solon.core.wrap;
 
 import org.noear.solon.annotation.*;
-import org.noear.solon.core.Aop;
+import org.noear.solon.core.AopContext;
 import org.noear.solon.core.aspect.Interceptor;
 import org.noear.solon.core.aspect.InterceptorEntity;
 import org.noear.solon.core.aspect.Invocation;
@@ -24,13 +24,13 @@ import java.util.*;
 public class MethodWrap implements Interceptor, MethodHolder {
     private static Map<Method, MethodWrap> cached = new HashMap<>();
 
-    public static MethodWrap get(Method method) {
+    public static MethodWrap get(AopContext ctx, Method method) {
         MethodWrap mw = cached.get(method);
         if (mw == null) {
             synchronized (method) {
                 mw = cached.get(method);
                 if (mw == null) {
-                    mw = new MethodWrap(method);
+                    mw = new MethodWrap(ctx,method);
                     cached.put(method, mw);
                 }
             }
@@ -40,7 +40,9 @@ public class MethodWrap implements Interceptor, MethodHolder {
     }
 
 
-    protected MethodWrap(Method m) {
+    protected MethodWrap(AopContext ctx, Method m) {
+        context = ctx;
+
         entityClz = m.getDeclaringClass();
 
         method = m;
@@ -54,7 +56,7 @@ public class MethodWrap implements Interceptor, MethodHolder {
             if (anno instanceof Around) {
                 doAroundAdd((Around) anno);
             } else {
-                InterceptorEntity ie = Aop.context().beanAroundGet(anno.annotationType());
+                InterceptorEntity ie = context.beanAroundGet(anno.annotationType());
                 if (ie != null) {
                     doAroundAdd(ie);
                 } else {
@@ -68,7 +70,7 @@ public class MethodWrap implements Interceptor, MethodHolder {
             if (anno instanceof Around) {
                 doAroundAdd((Around) anno);
             } else {
-                InterceptorEntity ie = Aop.context().beanAroundGet(anno.annotationType());
+                InterceptorEntity ie = context.beanAroundGet(anno.annotationType());
                 if (ie != null) {
                     doAroundAdd(ie);
                 } else {
@@ -97,7 +99,7 @@ public class MethodWrap implements Interceptor, MethodHolder {
 
     private void doAroundAdd(Around a) {
         if (a != null) {
-            doAroundAdd(new InterceptorEntity(a.index(), Aop.getOrNew(a.value())));
+            doAroundAdd(new InterceptorEntity(a.index(), context.wrapAndPut(a.value()).get()));
         }
     }
 
@@ -112,6 +114,8 @@ public class MethodWrap implements Interceptor, MethodHolder {
             arounds.add(i);
         }
     }
+
+    private final AopContext context;
 
     //实体类型
     private final Class<?> entityClz;

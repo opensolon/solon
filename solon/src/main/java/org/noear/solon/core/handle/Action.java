@@ -62,7 +62,7 @@ public class Action extends HandlerAide implements Handler {
 
         method.setAccessible(true);
 
-        mWrap = MethodWrap.get(method);
+        mWrap = MethodWrap.get(bWrap.context(), method);
         mRemoting = remoting;
         mMapping = mapping;
         bRender = render;

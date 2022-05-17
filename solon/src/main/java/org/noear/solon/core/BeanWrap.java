@@ -91,7 +91,7 @@ public class BeanWrap {
 
         if (raw != null) {
             //如果_raw存在，则进行代理转换
-            raw = proxy.getProxy(raw);
+            raw = proxy.getProxy(context(), raw);
         }
     }
 
@@ -266,7 +266,7 @@ public class BeanWrap {
             init(bean);
 
             if (proxy != null) {
-                bean = proxy.getProxy(bean);
+                bean = proxy.getProxy(context(), bean);
             }
 
             return bean;
@@ -317,7 +317,7 @@ public class BeanWrap {
         /**
          * 获取代理
          */
-        Object getProxy(Object bean);
+        Object getProxy(AopContext ctx, Object bean);
     }
 
     @Override
