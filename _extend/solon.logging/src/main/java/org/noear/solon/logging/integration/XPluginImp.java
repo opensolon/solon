@@ -1,7 +1,8 @@
 package org.noear.solon.logging.integration;
 
-import org.noear.solon.SolonApp;
+import org.noear.solon.Solon;
 import org.noear.solon.Utils;
+import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.logging.AppenderManager;
 import org.noear.solon.logging.LogOptions;
@@ -17,12 +18,12 @@ import java.util.Properties;
  */
 public class XPluginImp implements Plugin {
     @Override
-    public void start(SolonApp app) {
-        loadAppenderConfig(app);
+    public void start(AopContext context) {
+        loadAppenderConfig();
     }
 
-    private void loadAppenderConfig(SolonApp app) {
-        Properties props = app.cfg().getProp("solon.logging.appender");
+    private void loadAppenderConfig() {
+        Properties props = Solon.cfg().getProp("solon.logging.appender");
 
         if (props.size() > 0) {
             props.forEach((k, v) -> {
@@ -42,7 +43,7 @@ public class XPluginImp implements Plugin {
         //init
         LogOptions.getLoggerLevelInit();
 
-        app.filter(-9, (ctx, chain) -> {
+        Solon.global().filter(-9, (ctx, chain) -> {
             MDC.clear();
             chain.doFilter(ctx);
         });

@@ -28,11 +28,11 @@ public final class XPluginImp implements Plugin {
             return;
         }
 
-        Aop.context().beanBuilderAdd(WebFilter.class,(clz,bw,ano)->{});
-        Aop.context().beanBuilderAdd(WebServlet.class,(clz, bw, ano)->{});
-        Aop.context().beanBuilderAdd(WebListener.class,(clz, bw, ano)->{});
+        context.beanBuilderAdd(WebFilter.class,(clz,bw,ano)->{});
+        context.beanBuilderAdd(WebServlet.class,(clz, bw, ano)->{});
+        context.beanBuilderAdd(WebListener.class,(clz, bw, ano)->{});
 
-        Aop.context().beanOnloaded((ctx) -> {
+        context.beanOnloaded((ctx) -> {
             start0(Solon.global(), context);
         });
     }

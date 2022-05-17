@@ -32,7 +32,7 @@ public class XPluginImp implements Plugin {
     CloudProps cloudProps;
 
     @Override
-    public void start(SolonApp app) {
+    public void start(AopContext context) {
         if (Utils.isEmpty(WaterProps.instance.getServer())) {
             return;
         }

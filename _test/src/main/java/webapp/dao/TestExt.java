@@ -9,7 +9,7 @@ import webapp.demo2_mvc.ParamController;
 @Component
 public class TestExt implements Plugin {
     @Override
-    public void start(SolonApp app) {
+    public void start(AopContext context) {
         app.add("/demo2x/param", ParamController.class);
         app.add("/demo2x/mapping", MappingController.class);
 
@@ -18,7 +18,7 @@ public class TestExt implements Plugin {
 
         app.plug(new Plugin() {
             @Override
-            public void start(SolonApp app) {
+            public void start(AopContext context) {
 
             }
 

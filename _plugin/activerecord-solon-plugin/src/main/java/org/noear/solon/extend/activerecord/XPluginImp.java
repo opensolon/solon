@@ -25,7 +25,7 @@ public class XPluginImp implements Plugin {
     Map<Table, Class<? extends Model<?>>> tableMap = new LinkedHashMap<>();
 
     @Override
-    public void start(SolonApp app) {
+    public void start(AopContext context) {
         Aop.context().beanBuilderAdd(Table.class, (clz, wrap, anno) -> {
             if (wrap.raw() instanceof Model) {
                 tableMap.put(anno, (Class<? extends Model<?>>) clz);

@@ -14,7 +14,7 @@ import org.noear.solon.validation.annotation.WhitelistChecker;
  */
 public class XPluginImp implements Plugin {
     @Override
-    public void start(SolonApp app) {
+    public void start(AopContext context) {
 
         //ValidatorFailureHandler
         Aop.getAsyn(ValidatorFailureHandler.class, (bw) -> {

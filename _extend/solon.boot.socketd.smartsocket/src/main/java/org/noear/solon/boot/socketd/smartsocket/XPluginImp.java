@@ -24,17 +24,17 @@ public final class XPluginImp implements Plugin {
     }
 
     @Override
-    public void start(SolonApp app) {
+    public void start(AopContext context) {
         //注册会话管理器
         SessionManager.register(new _SessionManagerImpl());
 
 
-        if (app.enableSocketD() == false) {
+        if (Solon.global().enableSocketD() == false) {
             return;
         }
 
-        Aop.context().beanOnloaded((ctx) -> {
-            start0(app);
+        context.beanOnloaded((ctx) -> {
+            start0(Solon.global());
         });
     }
 

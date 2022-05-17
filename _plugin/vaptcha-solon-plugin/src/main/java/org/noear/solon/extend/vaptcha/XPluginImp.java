@@ -12,7 +12,7 @@ import org.noear.solon.validation.ValidatorManager;
  */
 public class XPluginImp implements Plugin {
     @Override
-    public void start(SolonApp app) {
+    public void start(AopContext context) {
         ValidatorManager.register(Vaptcha.class, new VaptchaValidator());
     }
 }

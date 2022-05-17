@@ -1,7 +1,7 @@
 package demo;
 
-import org.noear.solon.SolonApp;
 import org.noear.solon.annotation.Component;
+import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.extend.staticfiles.StaticMappings;
 import org.noear.solon.extend.staticfiles.StaticMimes;
@@ -15,7 +15,7 @@ import org.noear.solon.extend.staticfiles.repository.FileStaticRepository;
 @Component
 public class InitPluginDemo implements Plugin {
     @Override
-    public void start(SolonApp app) {
+    public void start(AopContext context) {
         //添加静态目录印射
 
         //1.添加扩展目录：${solon.extend}/static/

@@ -7,7 +7,7 @@ import org.noear.solon.core.Plugin;
 
 public class XPluginImp implements Plugin {
     @Override
-    public void start(SolonApp app) {
+    public void start(AopContext context) {
         Aop.context().beanOnloaded((ctx) -> {
             ctx.beanForeach(bw -> {
                 if (GraphQLQueryResolver.class.isAssignableFrom(bw.clz())) {

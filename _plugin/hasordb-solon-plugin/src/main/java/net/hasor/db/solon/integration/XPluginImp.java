@@ -24,7 +24,7 @@ public class XPluginImp implements Plugin {
     DalRegistry dalRegistry = new DalRegistry();
 
     @Override
-    public void start(SolonApp app) {
+    public void start(AopContext context) {
         Aop.context().beanInjectorAdd(Db.class, (varH, anno) -> {
             if (Utils.isEmpty(anno.value())) {
                 Aop.getAsyn(DataSource.class, (dsBw) -> {

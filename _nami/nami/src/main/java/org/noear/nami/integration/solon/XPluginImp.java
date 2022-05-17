@@ -19,7 +19,7 @@ public class XPluginImp implements Plugin {
     private Map<NamiClient, Object> cached = new LinkedHashMap<>();
 
     @Override
-    public void start(SolonApp app) {
+    public void start(AopContext context) {
         if (NamiConfigurationDefault.proxy == null) {
             NamiConfigurationDefault.proxy = new NamiConfigurationSolon();
         }

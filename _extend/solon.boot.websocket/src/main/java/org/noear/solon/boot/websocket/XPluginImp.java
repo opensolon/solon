@@ -19,16 +19,16 @@ public class XPluginImp implements Plugin {
     }
 
     @Override
-    public void start(SolonApp app) {
+    public void start(AopContext context) {
         //注册会话管理器
         SessionManager.register(new _SessionManagerImpl());
 
-        if (app.enableWebSocket() == false) {
+        if (Solon.global().enableWebSocket() == false) {
             return;
         }
 
-        Aop.context().beanOnloaded((ctx) -> {
-            start0(app);
+        context.beanOnloaded((ctx) -> {
+            start0(Solon.global());
         });
     }
 

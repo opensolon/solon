@@ -26,7 +26,7 @@ public class XPluginImp implements Plugin {
     };
 
     @Override
-    public void start(SolonApp app) {
+    public void start(AopContext context) {
         String detectorNamesStr = Solon.cfg().get("solon.health.detector");
         if (Utils.isEmpty(detectorNamesStr)) {
             return;

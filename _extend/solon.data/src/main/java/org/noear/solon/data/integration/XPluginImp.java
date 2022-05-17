@@ -1,6 +1,6 @@
 package org.noear.solon.data.integration;
 
-import org.noear.solon.SolonApp;
+import org.noear.solon.Solon;
 import org.noear.solon.core.*;
 import org.noear.solon.data.annotation.*;
 import org.noear.solon.data.cache.*;
@@ -13,22 +13,22 @@ import org.noear.solon.data.tran.TranExecutorImp;
 
 public class XPluginImp implements Plugin {
     @Override
-    public void start(SolonApp app) {
+    public void start(AopContext context) {
         //注册缓存工厂
         CacheLib.cacheFactoryAdd("local", new LocalCacheFactoryImpl());
 
         //添加事务控制支持
-        if (app.enableTransaction()) {
+        if (Solon.global().enableTransaction()) {
             Aop.wrapAndPut(TranExecutor.class, TranExecutorImp.global);
 
             Aop.context().beanAroundAdd(Tran.class, new TranInterceptor(), 120);
         }
 
         //添加缓存控制支持
-        if (app.enableCaching()) {
+        if (Solon.global().enableCaching()) {
             CacheLib.cacheServiceAddIfAbsent("", LocalCacheService.instance);
 
-            app.onEvent(BeanWrap.class, new CacheServiceEventListener());
+            Solon.global().onEvent(BeanWrap.class, new CacheServiceEventListener());
 
             Aop.context().beanOnloaded((ctx) -> {
                 if (ctx.hasWrap(CacheService.class) == false) {

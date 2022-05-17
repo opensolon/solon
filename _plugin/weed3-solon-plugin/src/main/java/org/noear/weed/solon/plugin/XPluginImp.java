@@ -12,7 +12,7 @@ import org.noear.weed.xml.XmlSqlLoader;
  */
 public class XPluginImp implements Plugin {
     @Override
-    public void start(SolonApp app) {
+    public void start(AopContext context) {
         // 事件监听，用于时实初始化
         app.onEvent(BeanWrap.class, new DsEventListener());
 

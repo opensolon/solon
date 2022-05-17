@@ -16,7 +16,7 @@ public class XPluginImp implements Plugin {
     DubboAdapter _server;
 
     @Override
-    public void start(SolonApp app) {
+    public void start(AopContext context) {
         if (app.source().getAnnotation(EnableDubbo.class) == null) {
             return;
         }

@@ -64,7 +64,7 @@ public class Test3App {
 
     public static class PluginImpl implements Plugin{
         @Override
-        public void start(SolonApp app) {
+        public void start(AopContext context) {
             System.out.println("on start");
         }
 

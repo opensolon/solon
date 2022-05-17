@@ -9,7 +9,7 @@ import org.noear.solon.core.Plugin;
  */
 public class AppPluginImp implements Plugin {
     @Override
-    public void start(SolonApp app) {
+    public void start(AopContext context) {
         //Aop.context().beanAroundAdd();
 
         app.onEvent(Configuration.class, cfg -> {

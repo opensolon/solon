@@ -1,6 +1,7 @@
 package org.noear.solon.cache.jedis.integration;
 
 import org.noear.solon.SolonApp;
+import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.data.cache.CacheFactory;
 import org.noear.solon.data.cache.CacheLib;
@@ -11,7 +12,7 @@ import org.noear.solon.data.cache.CacheLib;
  */
 public class XPluginImp implements Plugin {
     @Override
-    public void start(SolonApp app) {
+    public void start(AopContext context) {
         CacheFactory cacheFactory = new RedisCacheFactoryImpl();
 
         CacheLib.cacheFactoryAdd("redis", cacheFactory);

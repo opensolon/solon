@@ -11,7 +11,7 @@ import javax.sql.DataSource;
 
 public class XPluginImp implements Plugin {
     @Override
-    public void start(SolonApp app) {
+    public void start(AopContext context) {
 
         app.onEvent(BeanWrap.class, new DsEventListener());
 

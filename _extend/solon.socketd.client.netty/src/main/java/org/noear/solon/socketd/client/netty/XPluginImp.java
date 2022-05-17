@@ -6,7 +6,7 @@ import org.noear.solon.socketd.SessionFactoryManager;
 
 public class XPluginImp implements Plugin {
     @Override
-    public void start(SolonApp app) {
+    public void start(AopContext context) {
         //注册会话工厂
         SessionFactoryManager.register(new _SessionFactoryImpl());
     }

@@ -6,14 +6,10 @@ import org.noear.solon.cloud.annotation.CloudBreaker;
 import org.noear.solon.cloud.annotation.CloudJob;
 import org.noear.solon.cloud.impl.*;
 import org.noear.solon.cloud.trace.NamiTraceFilter;
+import org.noear.solon.core.*;
 import org.noear.solon.logging.AppenderManager;
 import org.noear.solon.Solon;
-import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
-import org.noear.solon.core.Aop;
-import org.noear.solon.core.Bridge;
-import org.noear.solon.core.Plugin;
-import org.noear.solon.core.Signal;
 import org.noear.solon.core.util.PrintUtil;
 import org.noear.solon.cloud.annotation.CloudConfig;
 import org.noear.solon.cloud.annotation.CloudEvent;
@@ -26,16 +22,16 @@ import org.noear.solon.cloud.model.Instance;
  */
 public class XPluginImp implements Plugin {
     @Override
-    public void start(SolonApp app) {
-        Aop.context().beanInjectorAdd(CloudConfig.class, CloudConfigBeanInjector.instance);
-        Aop.context().beanBuilderAdd(CloudConfig.class, CloudConfigBeanBuilder.instance);
+    public void start(AopContext context) {
+        context.beanInjectorAdd(CloudConfig.class, CloudConfigBeanInjector.instance);
+        context.beanBuilderAdd(CloudConfig.class, CloudConfigBeanBuilder.instance);
 
-        Aop.context().beanBuilderAdd(CloudEvent.class, CloudEventBeanBuilder.instance);
+        context.beanBuilderAdd(CloudEvent.class, CloudEventBeanBuilder.instance);
 
-        Aop.context().beanAroundAdd(CloudBreaker.class, CloudBreakerInterceptor.instance);
+        context.beanAroundAdd(CloudBreaker.class, CloudBreakerInterceptor.instance);
 
-        Aop.context().beanExtractorAdd(CloudJob.class, CloudJobExtractor.instance);
-        Aop.context().beanBuilderAdd(CloudJob.class, CloudJobBuilder.instance);
+        context.beanExtractorAdd(CloudJob.class, CloudJobExtractor.instance);
+        context.beanBuilderAdd(CloudJob.class, CloudJobBuilder.instance);
 
         //尝试注册本地发现服务
         LocalDiscoveryResolver.register("");

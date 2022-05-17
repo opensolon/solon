@@ -1,7 +1,7 @@
 package org.noear.solon.extend.async.integration;
 
-import org.noear.solon.SolonApp;
-import org.noear.solon.core.Aop;
+import org.noear.solon.Solon;
+import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.extend.async.annotation.Async;
 import org.noear.solon.extend.async.annotation.EnableAsync;
@@ -12,11 +12,11 @@ import org.noear.solon.extend.async.annotation.EnableAsync;
  */
 public class XPluginImp implements Plugin {
     @Override
-    public void start(SolonApp app) {
-        if (app.source().getAnnotation(EnableAsync.class) == null) {
+    public void start(AopContext context) {
+        if (Solon.global().source().getAnnotation(EnableAsync.class) == null) {
             return;
         }
 
-        Aop.context().beanAroundAdd(Async.class, new AsyncInterceptor());
+        context.beanAroundAdd(Async.class, new AsyncInterceptor());
     }
 }

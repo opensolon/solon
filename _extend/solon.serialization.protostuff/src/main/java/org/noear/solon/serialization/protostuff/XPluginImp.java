@@ -12,7 +12,7 @@ import org.noear.solon.core.handle.RenderManager;
 public class XPluginImp implements Plugin {
     public static boolean output_meta = false;
     @Override
-    public void start(SolonApp app) {
+    public void start(AopContext context) {
         output_meta = app.cfg().getInt("solon.output.meta", 0) > 0;
 
         ProtostuffRender render = new ProtostuffRender();

@@ -9,7 +9,7 @@ import org.noear.solon.core.Plugin;
  */
 public class XPluginImp implements Plugin {
     @Override
-    public void start(SolonApp app) {
+    public void start(AopContext context) {
         NamiManager.reg("tcp", SocketClientChannel.instance);
         NamiManager.reg("ws", SocketClientChannel.instance);
         NamiManager.reg("wss", SocketClientChannel.instance);

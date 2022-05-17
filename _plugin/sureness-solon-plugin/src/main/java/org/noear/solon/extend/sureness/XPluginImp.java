@@ -18,7 +18,7 @@ import java.util.UUID;
  */
 public class XPluginImp implements Plugin {
     @Override
-    public void start(SolonApp app) {
+    public void start(AopContext context) {
         app.beanScan(SurenessConfiguration.class);
 
         // issue jwt rest api

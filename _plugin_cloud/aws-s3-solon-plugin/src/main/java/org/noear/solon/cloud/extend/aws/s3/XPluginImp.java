@@ -15,7 +15,7 @@ public class XPluginImp implements Plugin {
     final String AWS_SDK_TAG = "com.amazonaws.services.s3.AmazonS3ClientBuilder";
 
     @Override
-    public void start(SolonApp app) {
+    public void start(AopContext context) {
         if (Utils.isEmpty(S3Props.instance.getFileAccessKey())) {
             return;
         }

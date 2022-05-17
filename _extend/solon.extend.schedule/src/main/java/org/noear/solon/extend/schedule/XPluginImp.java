@@ -1,7 +1,9 @@
 package org.noear.solon.extend.schedule;
 
+import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.core.Aop;
+import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.event.AppLoadEndEvent;
 
@@ -13,8 +15,8 @@ import org.noear.solon.core.event.AppLoadEndEvent;
  * */
 public class XPluginImp implements Plugin {
     @Override
-    public void start(SolonApp app) {
-        Aop.context().beanOnloaded((ctx) -> {
+    public void start(AopContext context) {
+        context.beanOnloaded((ctx) -> {
             ctx.beanForeach((v) -> {
                 if (v.raw() instanceof IJob) {
                     JobManager.register(new JobEntity(v.name(), v.raw()));
@@ -22,7 +24,7 @@ public class XPluginImp implements Plugin {
             });
         });
 
-        app.onEvent(AppLoadEndEvent.class, e -> {
+        Solon.global().onEvent(AppLoadEndEvent.class, e -> {
             JobManager.run(JobRunner.global);
         });
     }

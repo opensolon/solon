@@ -12,7 +12,7 @@ import org.noear.solon.core.Plugin;
  */
 public class XPluginImp implements Plugin {
     @Override
-    public void start(SolonApp app) {
+    public void start(AopContext context) {
         //
         // 此插件的 solon.plugin.priority 会大于 mybatis-solon-plugin 的值
         //

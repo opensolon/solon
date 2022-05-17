@@ -12,7 +12,7 @@ import org.noear.solon.socketd.annotation.ClientEndpoint;
 
 public class XPluginImp implements Plugin {
     @Override
-    public void start(SolonApp app) {
+    public void start(AopContext context) {
         //注册 @ClientListenEndpoint 构建器
 
         app.listenAfter(new RouterListener());

@@ -14,7 +14,7 @@ import org.noear.solon.cloud.extend.nacos.service.CloudDiscoveryServiceNacosImp;
  */
 public class XPluginImp implements Plugin {
     @Override
-    public void start(SolonApp app) {
+    public void start(AopContext context) {
         if (Utils.isEmpty(NacosProps.instance.getServer())) {
             return;
         }

@@ -1,7 +1,8 @@
 package org.noear.solon.extend.staticfiles;
 
-import org.noear.solon.SolonApp;
+import org.noear.solon.Solon;
 import org.noear.solon.Utils;
+import org.noear.solon.core.AopContext;
 import org.noear.solon.core.NvMap;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.handle.HandlerPipeline;
@@ -9,11 +10,11 @@ import org.noear.solon.extend.staticfiles.repository.ClassPathStaticRepository;
 
 public class XPluginImp implements Plugin {
     @Override
-    public void start(SolonApp app) {
+    public void start(AopContext context) {
         //通过动态控制是否启用
         //
 
-        if (app.enableStaticfiles() == false) {
+        if (Solon.global().enableStaticfiles() == false) {
             return;
         }
 
@@ -33,7 +34,7 @@ public class XPluginImp implements Plugin {
         if (StaticMappings.count() > 0) {
             //1.加载自定义的mime
             //
-            NvMap mimeTypes = app.cfg().getXmap("solon.mime");
+            NvMap mimeTypes = Solon.cfg().getXmap("solon.mime");
             mimeTypes.forEach((k, v) -> {
                 StaticMimes.add("." + k, v);
             });
@@ -41,8 +42,8 @@ public class XPluginImp implements Plugin {
 
             //2.切换代理（让静态文件优先）
             HandlerPipeline pipeline = new HandlerPipeline();
-            pipeline.next(new StaticResourceHandler()).next(app.handlerGet());
-            app.handlerSet(pipeline);
+            pipeline.next(new StaticResourceHandler()).next(Solon.global().handlerGet());
+            Solon.global().handlerSet(pipeline);
         }
     }
 }

@@ -12,7 +12,7 @@ import org.noear.solon.core.Plugin;
 public class XPluginImpl implements Plugin {
 
     @Override
-    public void start(SolonApp app) {
+    public void start(AopContext context) {
         app.beanMake(JapProps.class);
         app.beanMake(JapInitializer.class);
     }

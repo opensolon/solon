@@ -7,7 +7,7 @@ import org.noear.solon.core.Plugin;
 @Component
 public class Demo4Plug implements Plugin {
     @Override
-    public void start(SolonApp app) {
+    public void start(AopContext context) {
         app.get("/demo4/*", c -> c.output("是插件生出了我..."));
     }
 }

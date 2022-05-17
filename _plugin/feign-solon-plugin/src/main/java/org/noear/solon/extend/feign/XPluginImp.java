@@ -12,7 +12,7 @@ import java.util.function.Consumer;
 
 public class XPluginImp implements Plugin {
     @Override
-    public void start(SolonApp app) {
+    public void start(AopContext context) {
         //检查是否启用了@FeignClient
         if (app.source().getAnnotation(EnableFeignClient.class) == null) {
             return;

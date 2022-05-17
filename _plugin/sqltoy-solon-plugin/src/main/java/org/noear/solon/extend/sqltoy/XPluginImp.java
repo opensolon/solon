@@ -35,7 +35,7 @@ import static java.lang.System.err;
  */
 public class XPluginImp implements Plugin {
     @Override
-    public void start(SolonApp app) {
+    public void start(AopContext context) {
         ApplicationContext applicationContext = new ApplicationContext() {
         };
         SqlToyContextProperties properties = app.cfg().getBean("sqltoy", SqlToyContextProperties.class);

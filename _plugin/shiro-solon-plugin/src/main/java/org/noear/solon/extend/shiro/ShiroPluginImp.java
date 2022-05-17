@@ -14,7 +14,7 @@ import org.noear.solon.extend.shiro.config.ShiroConfiguration;
  */
 public class ShiroPluginImp implements Plugin {
     @Override
-    public void start(SolonApp app) {
+    public void start(AopContext context) {
         //换了种方式，注册AOP环绕处理，获得一级拦截权限（之前的方案，需要类上有：@Valid 注解；借助它的拦截，获得二级执行权限有）
         //
         Aop.context().beanAroundAdd(RequiresPermissions.class, PermissionInterceptor.instance);

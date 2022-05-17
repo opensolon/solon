@@ -20,7 +20,7 @@ import java.net.URL;
  */
 public class XPluginImp implements Plugin {
     @Override
-    public void start(SolonApp app) {
+    public void start(AopContext context) {
         URL url = Utils.getResource("log4j2.xml");
         if (url == null) {
             //尝试环境加载

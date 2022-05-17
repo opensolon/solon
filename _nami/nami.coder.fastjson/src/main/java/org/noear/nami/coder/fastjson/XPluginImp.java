@@ -10,7 +10,7 @@ import org.noear.solon.core.Plugin;
  */
 public class XPluginImp implements Plugin {
     @Override
-    public void start(SolonApp app) {
+    public void start(AopContext context) {
         NamiManager.reg(FastjsonDecoder.instance);
         NamiManager.reg(FastjsonEncoder.instance);
         NamiManager.reg(FastjsonTypeEncoder.instance);
