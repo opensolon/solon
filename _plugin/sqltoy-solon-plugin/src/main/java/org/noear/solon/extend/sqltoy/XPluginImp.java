@@ -1,7 +1,9 @@
 package org.noear.solon.extend.sqltoy;
 
+import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.core.Aop;
+import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.data.cache.CacheService;
 import org.noear.solon.extend.sqltoy.annotation.Db;
@@ -38,13 +40,16 @@ public class XPluginImp implements Plugin {
     public void start(AopContext context) {
         ApplicationContext applicationContext = new ApplicationContext() {
         };
-        SqlToyContextProperties properties = app.cfg().getBean("sqltoy", SqlToyContextProperties.class);
+
+        SqlToyContextProperties properties = context.getProps().getBean("sqltoy", SqlToyContextProperties.class);
         if (properties == null) {
             properties = new SqlToyContextProperties();
         }
-        if (app.cfg().isDebugMode()) {
+
+        if (Solon.cfg().isDebugMode()) {
             properties.setDebug(true);
         }
+
         try {
             final SqlToyContext sqlToyContext = sqlToyContext(properties, applicationContext);
             if ("solon".equals(properties.getCacheType()) || properties.getCacheType() == null) {
@@ -61,7 +66,8 @@ public class XPluginImp implements Plugin {
                 DbManager.setContext(sqlToyContext);
                 initSqlToy(sqlToyContext);
             }
-            Aop.context().beanInjectorAdd(Db.class, new DbInjector());
+
+            context.beanInjectorAdd(Db.class, new DbInjector());
         } catch (Exception e) {
             e.printStackTrace();
         }

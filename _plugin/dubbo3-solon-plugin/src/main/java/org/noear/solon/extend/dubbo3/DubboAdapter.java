@@ -18,16 +18,16 @@ public class DubboAdapter {
 
     private static DubboAdapter _global;
 
-    public static DubboAdapter global(SolonApp app) {
+    public static DubboAdapter global() {
         if (_global == null) {
-            _global = new DubboAdapter(app);
+            _global = new DubboAdapter();
         }
 
         return _global;
     }
 
 
-    private DubboAdapter(SolonApp app) {
+    private DubboAdapter() {
 
         // 当前应用配置
         //

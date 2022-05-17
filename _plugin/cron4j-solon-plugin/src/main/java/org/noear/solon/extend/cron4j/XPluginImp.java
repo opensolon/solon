@@ -18,7 +18,7 @@ public class XPluginImp implements Plugin {
 
         JobManager.init();
 
-        Aop.context().beanBuilderAdd(Cron4j.class, (clz, bw, anno) -> {
+        context.beanBuilderAdd(Cron4j.class, (clz, bw, anno) -> {
             String cronx = anno.cron5x();
             String name = anno.name();
             boolean enable = anno.enable();

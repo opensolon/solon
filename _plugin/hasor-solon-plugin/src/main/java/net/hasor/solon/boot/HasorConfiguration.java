@@ -60,9 +60,9 @@ public class HasorConfiguration implements EventListener<BeanLoadEndEvent> {
         if (enableHasor.scanPackages().length != 0) {
             for (String p : enableHasor.scanPackages()) {
                 if (p.endsWith(".*")) {
-                    Solon.global().beanScan(p.substring(0, p.length() - 2));
+                    Aop.context().beanScan(p.substring(0, p.length() - 2));
                 } else {
-                    Solon.global().beanScan(p);
+                    Aop.context().beanScan(p);
                 }
             }
         }

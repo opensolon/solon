@@ -1,10 +1,10 @@
 package org.noear.solon.cloud.extend.aws.s3;
 
-import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudManager;
 import org.noear.solon.cloud.extend.aws.s3.service.CloudFileServiceS3OfHttpImp;
 import org.noear.solon.cloud.extend.aws.s3.service.CloudFileServiceS3OfSdkImp;
+import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
 
 /**

@@ -5,6 +5,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudManager;
 import org.noear.solon.cloud.extend.pulsar.service.CloudEventServicePulsarImp;
 import org.noear.solon.core.Aop;
+import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
 
 /**
@@ -22,7 +23,7 @@ public class XPluginImp implements Plugin {
             CloudEventServicePulsarImp eventServiceImp = new CloudEventServicePulsarImp(PulsarProps.instance);
             CloudManager.register(eventServiceImp);
 
-            Aop.context().beanOnloaded(ctx -> eventServiceImp.subscribe());
+            context.beanOnloaded(ctx -> eventServiceImp.subscribe());
         }
     }
 }

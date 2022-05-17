@@ -83,6 +83,7 @@ public class PluginPackage {
         for (PluginEntity p1 : plugins) {
             p1.start(context);
         }
+        context.beanLoaded();
         started = true;
 
         return this;
@@ -107,6 +108,7 @@ public class PluginPackage {
         for (PluginEntity p1 : plugins) {
             p1.stop();
         }
+        context.clear();
         started = false;
 
         return this;

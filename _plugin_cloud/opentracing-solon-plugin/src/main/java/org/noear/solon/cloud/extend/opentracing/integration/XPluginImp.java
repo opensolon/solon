@@ -4,6 +4,7 @@ import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.extend.opentracing.OpentracingProps;
 import org.noear.solon.cloud.tracing.TracingManager;
+import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
 
 /**
@@ -13,7 +14,7 @@ import org.noear.solon.core.Plugin;
 public class XPluginImp implements Plugin {
 
     @Override
-    public void start(SolonApp app) {
+    public void start(AopContext context) {
         if (OpentracingProps.instance.getTraceEnable() == false) {
             return;
         }

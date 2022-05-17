@@ -214,27 +214,6 @@ public class SolonApp implements HandlerSlots {
     }
 
     /**
-     * 根据源扫描bean
-     */
-    public void beanScan(Class<?> source) {
-        Aop.context().beanScan(source);
-    }
-
-    /**
-     * 根据包扫描bean
-     */
-    public void beanScan(String basePackage) {
-        Aop.context().beanScan(basePackage);
-    }
-
-    /**
-     * 根据类型构建bean
-     */
-    public BeanWrap beanMake(Class<?> clz) {
-        return Aop.context().beanMake(clz);
-    }
-
-    /**
      * 添加共享对象
      */
     public void sharedAdd(String key, Object obj) {

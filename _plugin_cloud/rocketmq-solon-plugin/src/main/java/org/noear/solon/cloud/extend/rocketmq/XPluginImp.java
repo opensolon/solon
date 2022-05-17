@@ -5,6 +5,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudManager;
 import org.noear.solon.cloud.extend.rocketmq.service.CloudEventServiceRocketmqImp;
 import org.noear.solon.core.Aop;
+import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
 
 /**
@@ -13,7 +14,7 @@ import org.noear.solon.core.Plugin;
  */
 public class XPluginImp implements Plugin {
     @Override
-    public void start(SolonApp app) {
+    public void start(AopContext context) {
         if (Utils.isEmpty(RocketmqProps.instance.getEventServer())) {
             return;
         }
@@ -22,7 +23,7 @@ public class XPluginImp implements Plugin {
             CloudEventServiceRocketmqImp eventServiceImp = new CloudEventServiceRocketmqImp(RocketmqProps.instance);
             CloudManager.register(eventServiceImp);
 
-            Aop.context().beanOnloaded(ctx -> eventServiceImp.subscribe());
+            context.beanOnloaded(ctx -> eventServiceImp.subscribe());
         }
     }
 }

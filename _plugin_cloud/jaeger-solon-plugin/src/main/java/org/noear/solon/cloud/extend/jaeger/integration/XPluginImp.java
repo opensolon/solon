@@ -5,6 +5,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.cloud.extend.jaeger.JaegerProps;
 import org.noear.solon.cloud.extend.jaeger.service.JaegerTracerFactory;
 import org.noear.solon.cloud.tracing.TracingManager;
+import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
 
 /**
@@ -13,7 +14,7 @@ import org.noear.solon.core.Plugin;
  */
 public class XPluginImp implements Plugin {
     @Override
-    public void start(SolonApp app) {
+    public void start(AopContext context) {
         if (JaegerProps.instance.getTraceEnable() == false) {
             return;
         }

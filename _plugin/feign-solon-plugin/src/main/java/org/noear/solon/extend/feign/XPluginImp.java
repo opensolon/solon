@@ -3,6 +3,7 @@ package org.noear.solon.extend.feign;
 import feign.Feign;
 import feign.Request;
 import feign.Retryer;
+import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.core.*;
@@ -14,15 +15,15 @@ public class XPluginImp implements Plugin {
     @Override
     public void start(AopContext context) {
         //检查是否启用了@FeignClient
-        if (app.source().getAnnotation(EnableFeignClient.class) == null) {
+        if (Solon.global().source().getAnnotation(EnableFeignClient.class) == null) {
             return;
         }
 
-        Aop.context().beanBuilderAdd(FeignClient.class, (clz, wrap, anno) -> {
+        context.beanBuilderAdd(FeignClient.class, (clz, wrap, anno) -> {
             getProxy(wrap.context(),clz, anno, obj -> wrap.context().wrapAndPut(clz, obj));
         });
 
-        Aop.context().beanInjectorAdd(FeignClient.class, (varH, anno) -> {
+        context.beanInjectorAdd(FeignClient.class, (varH, anno) -> {
             getProxy(varH.context(),varH.getType(), anno, obj -> varH.setValue(obj));
         });
     }

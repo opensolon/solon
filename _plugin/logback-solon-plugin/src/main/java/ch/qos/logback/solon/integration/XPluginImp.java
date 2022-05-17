@@ -6,8 +6,8 @@ import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.core.joran.spi.JoranException;
 import ch.qos.logback.solon.SolonConfigurator;
 import org.noear.solon.Solon;
-import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
+import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.logging.LogOptions;
 import org.noear.solon.logging.model.LoggerLevelEntity;
@@ -21,7 +21,7 @@ import java.net.URL;
  */
 public class XPluginImp implements Plugin {
     @Override
-    public void start(SolonApp app) {
+    public void start(AopContext context) {
         URL url = Utils.getResource("logback.xml");
         if (url == null) {
             //尝试环境加载

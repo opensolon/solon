@@ -30,7 +30,7 @@ public class AspectUtil {
             return false;
         } else {
             bw.proxySet(BeanProxy.global);
-            Aop.context().beanRegister(bw, name, typed);
+            bw.context().beanRegister(bw, name, typed);
             return true;
         }
     }

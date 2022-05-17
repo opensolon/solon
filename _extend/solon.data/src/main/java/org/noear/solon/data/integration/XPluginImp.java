@@ -19,9 +19,9 @@ public class XPluginImp implements Plugin {
 
         //添加事务控制支持
         if (Solon.global().enableTransaction()) {
-            Aop.wrapAndPut(TranExecutor.class, TranExecutorImp.global);
+            context.wrapAndPut(TranExecutor.class, TranExecutorImp.global);
 
-            Aop.context().beanAroundAdd(Tran.class, new TranInterceptor(), 120);
+            context.beanAroundAdd(Tran.class, new TranInterceptor(), 120);
         }
 
         //添加缓存控制支持
@@ -30,15 +30,15 @@ public class XPluginImp implements Plugin {
 
             Solon.global().onEvent(BeanWrap.class, new CacheServiceEventListener());
 
-            Aop.context().beanOnloaded((ctx) -> {
+            context.beanOnloaded((ctx) -> {
                 if (ctx.hasWrap(CacheService.class) == false) {
                     ctx.wrapAndPut(CacheService.class, LocalCacheService.instance);
                 }
             });
 
-            Aop.context().beanAroundAdd(CachePut.class, new CachePutInterceptor(), 110);
-            Aop.context().beanAroundAdd(CacheRemove.class, new CacheRemoveInterceptor(), 110);
-            Aop.context().beanAroundAdd(Cache.class, new CacheInterceptor(), 111);
+            context.beanAroundAdd(CachePut.class, new CachePutInterceptor(), 110);
+            context.beanAroundAdd(CacheRemove.class, new CacheRemoveInterceptor(), 110);
+            context.beanAroundAdd(Cache.class, new CacheInterceptor(), 111);
         }
     }
 }

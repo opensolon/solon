@@ -63,6 +63,7 @@ public class AopContext extends BeanContainer {
     public void clear() {
         super.clear();
 
+        methodCached.clear();
         tryCreateCached.clear();
         loadDone = false;
         loadEvents.clear();

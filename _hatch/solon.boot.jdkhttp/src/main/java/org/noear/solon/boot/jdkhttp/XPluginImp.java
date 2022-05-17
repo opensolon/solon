@@ -3,12 +3,8 @@ package org.noear.solon.boot.jdkhttp;
 import com.sun.net.httpserver.HttpContext;
 import com.sun.net.httpserver.HttpServer;
 import org.noear.solon.Solon;
-import org.noear.solon.SolonApp;
 import org.noear.solon.boot.ServerConstants;
-import org.noear.solon.core.Plugin;
-import org.noear.solon.core.Signal;
-import org.noear.solon.core.SignalSim;
-import org.noear.solon.core.SignalType;
+import org.noear.solon.core.*;
 import org.noear.solon.core.util.PrintUtil;
 
 import java.net.InetSocketAddress;
@@ -27,15 +23,15 @@ public final class XPluginImp implements Plugin {
     }
 
     @Override
-    public  void start(SolonApp app) {
-        if (app.enableHttp() == false) {
+    public  void start(AopContext context) {
+        if (Solon.global().enableHttp() == false) {
             return;
         }
 
-        String _name = app.cfg().get(ServerConstants.SERVER_HTTP_NAME);
-        int _port = app.cfg().getInt(ServerConstants.SERVER_HTTP_PORT, 0);
+        String _name = Solon.cfg().get(ServerConstants.SERVER_HTTP_NAME);
+        int _port = Solon.cfg().getInt(ServerConstants.SERVER_HTTP_PORT, 0);
         if (_port < 1) {
-            _port = app.port();
+            _port = Solon.global().port();
         }
 
         long time_start = System.currentTimeMillis();
@@ -45,14 +41,14 @@ public final class XPluginImp implements Plugin {
         try {
             _server = HttpServer.create(new InetSocketAddress(_port), 0);
 
-            HttpContext context = _server.createContext("/", new JdkHttpContextHandler());
-            context.getFilters().add(new ParameterFilter());
+            HttpContext httpContext = _server.createContext("/", new JdkHttpContextHandler());
+            httpContext.getFilters().add(new ParameterFilter());
 
             _server.setExecutor(Executors.newCachedThreadPool());
             _server.start();
 
             _signal = new SignalSim(_name, _port, "http", SignalType.HTTP);
-            app.signalAdd(_signal);
+            Solon.global().signalAdd(_signal);
 
             long time_end = System.currentTimeMillis();
 

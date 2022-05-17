@@ -4,6 +4,7 @@ import org.noear.solon.cloud.extend.cloudeventplus.CloudEventSubscribe;
 import org.noear.solon.cloud.extend.cloudeventplus.impl.CloudEventSubscribeBeanBuilder;
 import org.noear.solon.cloud.extend.cloudeventplus.impl.CloudEventSubscribeBeanExtractor;
 import org.noear.solon.core.Aop;
+import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.SolonApp;
 
@@ -14,11 +15,11 @@ import org.noear.solon.SolonApp;
 public class XPluginImp implements Plugin {
 
     @Override
-    public void start(SolonApp app) {
-        Aop.context().beanBuilderAdd(CloudEventSubscribe.class,
+    public void start(AopContext context) {
+        context.beanBuilderAdd(CloudEventSubscribe.class,
                 new CloudEventSubscribeBeanBuilder());
 
-        Aop.context().beanExtractorAdd(CloudEventSubscribe.class,
+        context.beanExtractorAdd(CloudEventSubscribe.class,
                 new CloudEventSubscribeBeanExtractor());
     }
 }

@@ -1,12 +1,11 @@
 package org.noear.solon.cloud.extend.zookeeper;
 
-import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.cloud.CloudManager;
-import org.noear.solon.cloud.extend.zookeeper.impl.ZkClient;
 import org.noear.solon.cloud.extend.zookeeper.service.CloudConfigServiceZkImp;
 import org.noear.solon.cloud.extend.zookeeper.service.CloudDiscoveryServiceZkImp;
+import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
 
 /**
@@ -19,7 +18,7 @@ public class XPluginImp implements Plugin {
     CloudDiscoveryServiceZkImp discoveryServiceZkImp;
 
     @Override
-    public void start(SolonApp app) {
+    public void start(AopContext context) {
         if (Utils.isEmpty(ZkProps.instance.getServer())) {
             return;
         }

@@ -15,8 +15,8 @@ import java.util.function.Consumer;
 public class XPluginImp implements Plugin {
     @Override
     public void start(AopContext context) {
-        Aop.context().beanBuilderAdd(ForestClient.class, (clz, wrap, anno) -> {
-            getProxy(clz, anno, obj -> Aop.wrapAndPut(clz, obj));
+        context.beanBuilderAdd(ForestClient.class, (clz, wrap, anno) -> {
+            getProxy(clz, anno, obj -> wrap.context().wrapAndPut(clz, obj));
         });
     }
 

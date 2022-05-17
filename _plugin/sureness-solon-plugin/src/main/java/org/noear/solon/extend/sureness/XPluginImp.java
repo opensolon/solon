@@ -1,11 +1,12 @@
 package org.noear.solon.extend.sureness;
 
+import org.noear.solon.Solon;
+import org.noear.solon.core.AopContext;
 import org.noear.solon.core.handle.Result;
 import org.noear.solon.extend.sureness.integration.SurenessConfiguration;
 import com.usthe.sureness.subject.SubjectSum;
 import com.usthe.sureness.util.JsonWebTokenUtil;
 import com.usthe.sureness.util.SurenessContextHolder;
-import org.noear.solon.SolonApp;
 import org.noear.solon.core.Plugin;
 
 import java.util.List;
@@ -19,10 +20,10 @@ import java.util.UUID;
 public class XPluginImp implements Plugin {
     @Override
     public void start(AopContext context) {
-        app.beanScan(SurenessConfiguration.class);
+        context.beanScan(SurenessConfiguration.class);
 
         // issue jwt rest api
-        app.get("/auth/token", ctx -> {
+        Solon.global().get("/auth/token", ctx -> {
             SubjectSum subjectSum = SurenessContextHolder.getBindSubject();
 
             if (subjectSum == null) {
@@ -37,6 +38,6 @@ public class XPluginImp implements Plugin {
             }
         });
 
-        app.after("**", context -> SurenessContextHolder.unbindSubject());
+        Solon.global().after("**", ctx -> SurenessContextHolder.unbindSubject());
     }
 }

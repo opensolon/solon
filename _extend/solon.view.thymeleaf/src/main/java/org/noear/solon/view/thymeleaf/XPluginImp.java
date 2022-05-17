@@ -21,7 +21,7 @@ public class XPluginImp implements Plugin {
 
         ThymeleafRender render = ThymeleafRender.global();
 
-        Aop.context().beanOnloaded((ctx) -> {
+        context.beanOnloaded((ctx) -> {
             ctx.beanForeach((k, v) -> {
                 if (k.startsWith("view:")) { //java view widget
                     if (IDialect.class.isAssignableFrom(v.clz())) {

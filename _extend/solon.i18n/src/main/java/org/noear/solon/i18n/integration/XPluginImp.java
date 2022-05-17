@@ -13,7 +13,7 @@ import org.noear.solon.i18n.annotation.I18n;
 public class XPluginImp implements Plugin {
     @Override
     public void start(AopContext context) {
-        Aop.context().beanAroundAdd(I18n.class, I18nInterceptor.instance);
+        context.beanAroundAdd(I18n.class, I18nInterceptor.instance);
 
         Solon.global().filter(-9, (ctx, chain) -> {
             //尝试自动完成地区解析
