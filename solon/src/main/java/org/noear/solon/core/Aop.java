@@ -181,6 +181,7 @@ public class Aop {
      *
      * @param action 执行动作
      */
+    @Deprecated
     public static void beanForeach(Consumer<BeanWrap> action) {
         ac.beanForeach(action);
     }

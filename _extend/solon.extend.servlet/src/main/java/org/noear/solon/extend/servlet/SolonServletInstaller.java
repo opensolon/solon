@@ -24,7 +24,7 @@ public class SolonServletInstaller {
     Set<ServletHolder> servlets = new LinkedHashSet<>();
 
     public SolonServletInstaller() {
-        Aop.beanForeach((bw) -> {
+        Aop.context().beanForeach((bw) -> {
             if (bw.raw() instanceof ServletContainerInitializer) {
                 initializers.add(bw.raw());
             }
