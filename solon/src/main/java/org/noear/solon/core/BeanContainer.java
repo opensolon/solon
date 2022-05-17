@@ -223,6 +223,10 @@ public abstract class BeanContainer {
         }
     }
 
+    public boolean hasWrap(Object nameOrType) {
+        return getWrap(nameOrType) != null;
+    }
+
     /**
      * 获取一个bean包装
      *

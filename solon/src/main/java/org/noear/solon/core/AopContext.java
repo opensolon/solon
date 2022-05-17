@@ -8,7 +8,7 @@ import org.noear.solon.core.event.EventListener;
 import org.noear.solon.core.handle.*;
 import org.noear.solon.core.message.Listener;
 import org.noear.solon.core.util.GenericUtil;
-import org.noear.solon.core.util.RunnableEntity;
+import org.noear.solon.core.util.RankEntity;
 import org.noear.solon.core.wrap.*;
 import org.noear.solon.ext.BiConsumerEx;
 import org.noear.solon.core.util.ScanUtil;
@@ -19,6 +19,7 @@ import java.lang.reflect.Parameter;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.*;
+import java.util.function.Consumer;
 
 /**
  * Aop 上下文（不直接使用；由 Aop 提供 AopContext 的手动使用模式）
@@ -261,7 +262,7 @@ public class AopContext extends BeanContainer {
         for (Map.Entry<String, FieldWrap> kv : clzWrap.getFieldAllWraps().entrySet()) {
             Annotation[] annS = kv.getValue().annoS;
             if (annS.length > 0) {
-                VarHolder varH = kv.getValue().holder(this,obj);
+                VarHolder varH = kv.getValue().holder(this, obj);
                 tryInject(varH, annS);
             }
         }
@@ -378,13 +379,14 @@ public class AopContext extends BeanContainer {
         });
     }
 
-    protected void tryCreateBean(BeanWrap bw){
+    protected void tryCreateBean(BeanWrap bw) {
         tryCreateBean0(bw.clz(), (c, a) -> {
             c.doBuild(bw.clz(), bw, a);
         });
     }
 
     private Set<Class<?>> tryCreateCached = new HashSet<>();
+
     protected void tryCreateBean0(Class<?> clz, BiConsumerEx<BeanBuilder, Annotation> consumer) {
         Annotation[] annS = clz.getDeclaredAnnotations();
 
@@ -517,7 +519,7 @@ public class AopContext extends BeanContainer {
     //加载完成标志
     private boolean loadDone;
     //加载事件
-    private Set<RunnableEntity> loadEvents = new LinkedHashSet<>();
+    private Set<RankEntity<Consumer<AopContext>>> loadEvents = new LinkedHashSet<>();
 
     //::bean事件处理
 
@@ -525,17 +527,17 @@ public class AopContext extends BeanContainer {
      * 添加bean加载完成事件
      */
     @Note("添加bean加载完成事件")
-    public void beanOnloaded(Runnable fun) {
+    public void beanOnloaded(Consumer<AopContext> fun) {
         beanOnloaded(0, fun);
     }
 
     @Note("添加bean加载完成事件")
-    public void beanOnloaded(int index, Runnable fun) {
-        loadEvents.add(new RunnableEntity(fun, index));
+    public void beanOnloaded(int index, Consumer<AopContext> fun) {
+        loadEvents.add(new RankEntity(fun, index));
 
         //如果已加载完成，则直接返回
         if (loadDone) {
-            fun.run();
+            fun.accept(this);
         }
     }
 
@@ -548,6 +550,6 @@ public class AopContext extends BeanContainer {
         //执行加载事件（不用函数包装，是为了减少代码）
         loadEvents.stream()
                 .sorted(Comparator.comparingInt(m -> m.index))
-                .forEach(m -> m.runnable.run());
+                .forEach(m -> m.target.accept(this));
     }
 }

@@ -80,7 +80,7 @@ public class Aop {
      * @param nameOrType bean name or type
      */
     public static boolean has(Object nameOrType) {
-        return ac.getWrap(nameOrType) != null;
+        return ac.hasWrap(nameOrType);
     }
 
 
@@ -159,11 +159,11 @@ public class Aop {
      * 添加Onloaded事件
      */
     public static void beanOnloaded(Runnable fun) {
-        ac.beanOnloaded(fun);
+        ac.beanOnloaded(ctx -> fun.run());
     }
 
     public static void beanOnloaded(int index,Runnable fun) {
-        ac.beanOnloaded(index, fun);
+        ac.beanOnloaded(index, ctx -> fun.run());
     }
 
     /**

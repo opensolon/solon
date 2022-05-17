@@ -30,9 +30,9 @@ public class XPluginImp implements Plugin {
 
             app.onEvent(BeanWrap.class, new CacheServiceEventListener());
 
-            Aop.context().beanOnloaded(() -> {
-                if (Aop.has(CacheService.class) == false) {
-                    Aop.wrapAndPut(CacheService.class, LocalCacheService.instance);
+            Aop.context().beanOnloaded((ctx) -> {
+                if (ctx.hasWrap(CacheService.class) == false) {
+                    ctx.wrapAndPut(CacheService.class, LocalCacheService.instance);
                 }
             });
 

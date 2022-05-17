@@ -45,14 +45,14 @@ public class XPluginImp implements Plugin {
 
         //初始化管理器（主要为了生成动态管理器）
         //
-        Aop.context().beanOnloaded(() -> {
-            BeanWrap defBw = Aop.context().getWrap(DataSource.class);
+        Aop.context().beanOnloaded((ctx) -> {
+            BeanWrap defBw = ctx.getWrap(DataSource.class);
 
             if (defBw != null) {
                 DbManager.global().dynamicBuild(defBw);
 
                 if (DbManager.global().dynamicGet() != null) {
-                    Aop.wrapAndPut(SQLManager.class, DbManager.global().dynamicGet());
+                    ctx.wrapAndPut(SQLManager.class, DbManager.global().dynamicGet());
                 }
             }
         });
@@ -64,11 +64,11 @@ public class XPluginImp implements Plugin {
         }
 
         if (Utils.isEmpty(annoValue)) {
-            Aop.getAsyn(DataSource.class, (dsBw) -> {
+            wrap.context().getWrapAsyn(DataSource.class, (dsBw) -> {
                 create0(clz, dsBw);
             });
         } else {
-            Aop.getAsyn(annoValue, (dsBw) -> {
+            wrap.context().getWrapAsyn(annoValue, (dsBw) -> {
                 if (dsBw.raw() instanceof DataSource) {
                     create0(clz, dsBw);
                 }
@@ -78,11 +78,11 @@ public class XPluginImp implements Plugin {
 
     private void injectorAddDo(VarHolder varH, String annoValue) {
         if (Utils.isEmpty(annoValue)) {
-            Aop.getAsyn(DataSource.class, (dsBw) -> {
+            varH.context().getWrapAsyn(DataSource.class, (dsBw) -> {
                 inject0(varH, dsBw, annoValue);
             });
         } else {
-            Aop.getAsyn(annoValue, (dsBw) -> {
+            varH.context().getWrapAsyn(annoValue, (dsBw) -> {
                 if (dsBw.raw() instanceof DataSource) {
                     inject0(varH, dsBw, annoValue);
                 }
@@ -94,7 +94,7 @@ public class XPluginImp implements Plugin {
         Object raw = DbManager.global().get(dsBw).getMapper(clz);
 
         if (raw != null) {
-            Aop.wrapAndPut(clz, raw);
+            dsBw.context().wrapAndPut(clz, raw);
         }
     }
 
@@ -115,7 +115,7 @@ public class XPluginImp implements Plugin {
             if (Utils.isNotEmpty(annoValue)) {
                 varH.setValue(tmp);
             } else {
-                Aop.getAsyn(SQLManager.class, (bw2) -> {
+                dsBw.context().getWrapAsyn(SQLManager.class, (bw2) -> {
                     varH.setValue(bw2.raw());
                 });
             }
