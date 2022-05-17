@@ -50,7 +50,7 @@ class MybatisMapperScanner {
         if (clz != null && clz.isInterface()) {
             Object mapper = adapter.getMapperProxy(clz);
 
-            dsBw.context().putWrap(clz, Aop.wrap(clz, mapper));
+            dsBw.context().putWrap(clz, dsBw.context().wrap(clz, mapper));
         }
     }
 }
