@@ -90,8 +90,7 @@ public class Aop {
      * @param name bean name
      */
     public static <T> T get(String name) {
-        BeanWrap bw = ac.getWrap(name);
-        return bw == null ? null : bw.get();
+        return ac.getBean(name);
     }
 
     /**
@@ -100,8 +99,7 @@ public class Aop {
      * @param type bean type
      */
     public static <T> T get(Class<T> type) {
-        BeanWrap bw = ac.getWrap(type);
-        return bw == null ? null : bw.get();
+        return ac.getBean(type);
     }
 
     /**

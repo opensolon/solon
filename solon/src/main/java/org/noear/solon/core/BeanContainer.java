@@ -255,6 +255,12 @@ public abstract class BeanContainer {
         return bw == null ? null : bw.get();
     }
 
+    public <T> void getBeanAsyn(Object nameOrType, Consumer<T> callback) {
+        getWrapAsyn(nameOrType, (bw) -> {
+            callback.accept(bw.get());
+        });
+    }
+
     /**
      * 包装
      */
