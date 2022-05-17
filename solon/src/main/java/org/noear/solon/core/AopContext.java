@@ -42,6 +42,23 @@ public class AopContext extends BeanContainer {
         initialize();
     }
 
+    private  Map<Method, MethodWrap> methodCached = new HashMap<>();
+
+    public  MethodWrap methodGet(Method method) {
+        MethodWrap mw = methodCached.get(method);
+        if (mw == null) {
+            synchronized (method) {
+                mw = methodCached.get(method);
+                if (mw == null) {
+                    mw = new MethodWrap(this, method);
+                    methodCached.put(method, mw);
+                }
+            }
+        }
+
+        return mw;
+    }
+
     @Override
     public void clear() {
         super.clear();
@@ -81,7 +98,7 @@ public class AopContext extends BeanContainer {
                 if (m_an != null) {
                     //支持非公有函数
                     m.setAccessible(true);
-                    MethodWrap mWrap = MethodWrap.get(this, m);
+                    MethodWrap mWrap = methodGet(m);
 
                     //有参数的bean，采用线程池处理；所以需要锁等待
                     //

@@ -1,5 +1,6 @@
 package org.noear.solon.extend.aspect;
 
+import org.noear.solon.core.AopContext;
 import org.noear.solon.core.BeanWrap;
 
 import java.lang.reflect.InvocationHandler;
@@ -24,7 +25,7 @@ class BeanProxy implements BeanWrap.Proxy {
      * 获取代理
      */
     @Override
-    public Object getProxy(Object bean) {
-        return new BeanInvocationHandler(bean, handler).getProxy();
+    public Object getProxy(AopContext context, Object bean) {
+        return new BeanInvocationHandler(context, bean, handler).getProxy();
     }
 }

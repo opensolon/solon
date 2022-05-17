@@ -22,25 +22,8 @@ import java.util.*;
  * @since 1.0
  * */
 public class MethodWrap implements Interceptor, MethodHolder {
-    private static Map<Method, MethodWrap> cached = new HashMap<>();
 
-    public static MethodWrap get(AopContext ctx, Method method) {
-        MethodWrap mw = cached.get(method);
-        if (mw == null) {
-            synchronized (method) {
-                mw = cached.get(method);
-                if (mw == null) {
-                    mw = new MethodWrap(ctx,method);
-                    cached.put(method, mw);
-                }
-            }
-        }
-
-        return mw;
-    }
-
-
-    protected MethodWrap(AopContext ctx, Method m) {
+    public MethodWrap(AopContext ctx, Method m) {
         context = ctx;
 
         entityClz = m.getDeclaringClass();
