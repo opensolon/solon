@@ -6,7 +6,7 @@
 
     <groupId>org.noear</groupId>
     <artifactId>solon-parent</artifactId>
-    <version>1.7.9-M3</version>
+    <version>1.7.9-M4</version>
     <packaging>pom</packaging>
 
     <name>${project.artifactId}</name>
@@ -18,7 +18,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
 
-        <solon.ver>1.7.9-M3</solon.ver>
+        <solon.ver>1.7.9-M4</solon.ver>
 
         <snack3.ver>3.2.24</snack3.ver>
         <weed3.ver>3.4.25</weed3.ver>
@@ -27,7 +27,7 @@
         <redisx.ver>1.4.3</redisx.ver>
         <redisson.ver>3.17.0</redisson.ver>
 
-        <fastjson.ver>1.2.75</fastjson.ver>
+        <fastjson.ver>1.2.78</fastjson.ver>
         <okhttp.ver>3.14.9</okhttp.ver>
         <hutool.ver>5.7.21</hutool.ver>
 
@@ -38,7 +38,7 @@
         <jetty.ver>9.4.40.v20210413</jetty.ver>
         <undertow.ver>2.2.7.Final</undertow.ver>
 
-        <jackson.ver>2.12.6</jackson.ver>
+        <jackson.ver>2.13.3</jackson.ver>
         <hessian.ver>4.0.65</hessian.ver>
         <protostuff.ver>1.7.4</protostuff.ver>
 
