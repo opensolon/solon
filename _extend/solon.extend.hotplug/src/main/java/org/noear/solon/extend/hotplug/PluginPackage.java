@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Properties;
 
 /**
  * 外接小程序包
@@ -37,8 +36,13 @@ public class PluginPackage {
 
             //尝试加载插件配置
             //
-            Properties props = plugins.get(0).getProps();
-            context.getProps().loadAdd(props);
+            plugins.forEach(pe -> {
+                if (pe.getProps().size() > 1) {
+                    context.getProps().loadAdd(pe.getProps());
+                    context.getProps().remove("solon.plugin");
+                    context.getProps().remove("solon.plugin.priority");
+                }
+            });
         }
     }
 
