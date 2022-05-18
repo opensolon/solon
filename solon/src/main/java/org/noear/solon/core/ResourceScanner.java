@@ -3,7 +3,6 @@ package org.noear.solon.core;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.event.EventBus;
-import org.noear.solon.core.util.PrintUtil;
 
 import java.io.File;
 import java.io.IOException;

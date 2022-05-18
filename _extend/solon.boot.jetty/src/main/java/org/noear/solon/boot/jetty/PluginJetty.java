@@ -5,7 +5,6 @@ import org.eclipse.jetty.server.session.DefaultSessionIdManager;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
-import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.jetty.websocket._SessionManagerImpl;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.event.EventBus;
