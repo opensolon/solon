@@ -14,13 +14,28 @@ import java.util.List;
  * 外接小程序包
  *
  * @author noear
- * @since 1.7
+ * @since 1.8
  */
 public class PluginPackage {
+    /**
+     * 包文件
+     * */
     private final File file;
+    /**
+     * 类加载器
+     * */
     private final JarClassLoader classLoader;
+    /**
+     * 找到的插件
+     * */
     private final List<PluginEntity> plugins;
+    /**
+     * 开始状态
+     * */
     private boolean started;
+    /**
+     * Aop 上下文
+     * */
     private AopContext context;
 
     public PluginPackage(File file, JarClassLoader classLoader, List<PluginEntity> plugins) {

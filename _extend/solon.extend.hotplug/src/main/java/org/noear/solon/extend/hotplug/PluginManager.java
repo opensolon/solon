@@ -14,7 +14,7 @@ import java.util.*;
  * 外接小程序管理器
  *
  * @author noear
- * @since 1.7
+ * @since 1.8
  */
 public class PluginManager {
     static final Map<String, PluginInfo> pluginMap = new HashMap<>();
