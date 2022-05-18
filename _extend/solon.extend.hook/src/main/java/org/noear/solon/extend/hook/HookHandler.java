@@ -3,6 +3,8 @@ package org.noear.solon.extend.hook;
 import java.util.Map;
 
 /**
+ * 勾子处理
+ *
  * @author noear
  * @since 1.8
  */

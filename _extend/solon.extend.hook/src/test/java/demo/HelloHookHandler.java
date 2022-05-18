@@ -1,14 +1,14 @@
 package demo;
 
 import org.noear.solon.extend.hook.HookHandler;
-import org.noear.solon.extend.hook.annotation.HookAction;
+import org.noear.solon.extend.hook.annotation.HookDo;
 
 import java.util.Map;
 
 /**
  * @author noear 2022/5/18 created
  */
-@HookAction("hello")
+@HookDo("hello")
 public class HelloHookHandler implements HookHandler {
 
     @Override
