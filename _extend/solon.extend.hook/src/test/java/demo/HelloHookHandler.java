@@ -12,7 +12,12 @@ import java.util.Map;
 public class HelloHookHandler implements HookHandler {
 
     @Override
-    public void handle(Map<String, Object> args) {
+    public void onBefore(Map<String, Object> args) {
         System.out.println(args);
+    }
+
+    @Override
+    public void onAfter(Map<String, Object> args) {
+
     }
 }

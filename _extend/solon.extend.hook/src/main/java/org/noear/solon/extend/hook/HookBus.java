@@ -12,12 +12,22 @@ import java.util.Set;
 public class HookBus {
     static Map<String, Set<HookHandler>> subsList = new HashMap<>();
 
-    public static void publish(String name, Map<String, Object> args) {
+    public static void onBefore(String name, Map<String, Object> args) {
         Set<HookHandler> subs = subsList.get(name);
 
         if (subs != null) {
             for (HookHandler handler : subs) {
-                handler.handle(args);
+                handler.onBefore(args);
+            }
+        }
+    }
+
+    public static void onAfter(String name, Map<String, Object> args) {
+        Set<HookHandler> subs = subsList.get(name);
+
+        if (subs != null) {
+            for (HookHandler handler : subs) {
+                handler.onAfter(args);
             }
         }
     }

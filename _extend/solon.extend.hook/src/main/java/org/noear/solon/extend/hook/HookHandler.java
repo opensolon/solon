@@ -7,5 +7,7 @@ import java.util.Map;
  * @since 1.8
  */
 public interface HookHandler {
-    void handle(Map<String, Object> args);
+    void onBefore(Map<String, Object> args);
+
+    void onAfter(Map<String, Object> args);
 }

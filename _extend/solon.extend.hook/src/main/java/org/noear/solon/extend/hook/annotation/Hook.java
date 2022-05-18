@@ -14,6 +14,6 @@ import java.lang.annotation.Target;
 @Around(HookInterceptor.class)
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface HookBefore {
+public @interface Hook {
     String value();
 }

@@ -11,17 +11,16 @@ import org.noear.solon.extend.hook.HookBus;
 public class HookInterceptor implements Interceptor {
     @Override
     public Object doIntercept(Invocation inv) throws Throwable {
-        HookBefore before = inv.method().getAnnotation(HookBefore.class);
-        HookAfter after = inv.method().getAnnotation(HookAfter.class);
+        Hook hook = inv.method().getAnnotation(Hook.class);
 
-        if (before != null) {
-            HookBus.publish(before.value(), inv.argsAsMap());
+        if (hook != null) {
+            HookBus.onBefore(hook.value(), inv.argsAsMap());
         }
 
         Object obj = inv.invoke();
 
-        if (after != null) {
-            HookBus.publish(after.value(), inv.argsAsMap());
+        if (hook != null) {
+            HookBus.onAfter(hook.value(), inv.argsAsMap());
         }
 
         return obj;
