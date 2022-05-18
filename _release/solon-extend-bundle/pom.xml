@@ -57,7 +57,6 @@
 
 
         <module>../../_extend/solon.extend.hotplug</module>
-        <module>../../_extend/solon.extend.hook</module>
     </modules>
 
 
