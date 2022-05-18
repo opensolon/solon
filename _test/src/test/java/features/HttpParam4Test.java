@@ -85,6 +85,41 @@ public class HttpParam4Test extends HttpTestBase {
         assert new Datetime(oNode2.get("date").getDate()).getYear() > 2000;
     }
 
+    @Test
+    public void param3() throws IOException {
+        //走param，@Param 的格式化会起效果
+        String json2 = path("/demo2/param4/param3")
+                .data("id", "1")
+                .data("name", "noear")
+                .data("icon", "bbb")
+                .data("date", "2021-12-12 12:12:12")
+                .post();
+
+        ONode oNode2 = ONode.loadStr(json2);
+
+        assert oNode2.get("id").getInt() == 1;
+        assert new Datetime(oNode2.get("date").getDate()).getYear() > 2000;
+        assert "bbb".equals(oNode2.get("icon").getString());
+    }
+
+    @Test
+    public void param3_json() throws IOException {
+        ONode oNode = new ONode();
+        oNode.set("id", "1")
+                .set("name", "noear")
+                .set("icon", "bbb")
+                .set("date", "2021-12-12 12:12:12");
+
+        //走param，@Param 的格式化会起效果
+        String json2 = path("/demo2/param4/param3").bodyJson(oNode.toJson()).post();
+
+        ONode oNode2 = ONode.loadStr(json2);
+
+        assert oNode2.get("id").getInt() == 1;
+        assert new Datetime(oNode2.get("date").getDate()).getYear() > 2000;
+        assert "bbb".equals(oNode2.get("icon").getString());
+    }
+
 
     @Test
     public void body() throws IOException {

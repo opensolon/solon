@@ -20,7 +20,7 @@ public class PluginManager {
     static final Map<String, PluginInfo> pluginMap = new HashMap<>();
 
     static {
-        Properties pops = Solon.cfg().getProp("solon.addin");
+        Properties pops = Solon.cfg().getProp("solon.hotplug");
 
         if (pops.size() > 0) {
             pops.forEach((k, v) -> {

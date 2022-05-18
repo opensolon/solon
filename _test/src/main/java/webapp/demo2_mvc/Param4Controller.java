@@ -4,6 +4,7 @@ import org.noear.solon.annotation.*;
 import webapp.dso.AsyncTask;
 import webapp.models.UserD;
 import webapp.models.UserModel;
+import webapp.models.UserModelEx;
 
 import java.io.IOException;
 
@@ -33,6 +34,12 @@ public class Param4Controller {
 
     @Mapping("param2")
     public UserD test_param(UserD user) throws IOException {
+        asyncTask.test();
+        return user;
+    }
+
+    @Mapping("param3")
+    public UserModelEx test_param3(UserModelEx user) throws IOException {
         asyncTask.test();
         return user;
     }
