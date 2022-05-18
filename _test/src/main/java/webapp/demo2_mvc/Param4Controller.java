@@ -2,6 +2,7 @@ package webapp.demo2_mvc;
 
 import org.noear.solon.annotation.*;
 import webapp.dso.AsyncTask;
+import webapp.models.RegisterUsername;
 import webapp.models.UserD;
 import webapp.models.UserModel;
 import webapp.models.UserModelEx;
@@ -48,5 +49,11 @@ public class Param4Controller {
     public String test_body(@Body String bodyStr) throws IOException {
         asyncTask.test();
         return bodyStr;
+    }
+
+    @Mapping("body2")
+    public RegisterUsername test_body2(RegisterUsername user) throws IOException {
+        asyncTask.test();
+        return user;
     }
 }

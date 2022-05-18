@@ -132,4 +132,17 @@ public class HttpParam4Test extends HttpTestBase {
         body2 = path("/demo2/param4/body").bodyTxt(body).post();
         assert body.equals(body2);
     }
+
+    @Test
+    public void body2() throws IOException {
+        String body = "{username:'noear',confirmPassword:'123456'}";
+
+        System.out.println(body);
+        String body2 = path("/demo2/param4/body2").bodyJson(body).post();
+        ONode oNode = ONode.loadStr(body2);
+
+
+        assert oNode.get("username").getString().equals("noear");
+        assert oNode.get("confirmPassword").getString().equals("123456");
+    }
 }
