@@ -11,13 +11,19 @@
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
     
-    <artifactId>solon.extend.hotplug</artifactId>
+    <artifactId>solon.extend.hook</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.boot.jlhttp</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 

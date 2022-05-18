@@ -1,4 +1,5 @@
 #### 1.8.0
+* 新增 solon.extend.hotplug 插件
 * 调整 AopContext ，更具独立性
 * 调整插件接口，start 参数由 SolonApp 改为：AopContext
 
