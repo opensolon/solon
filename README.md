@@ -66,6 +66,21 @@
 
 ## Hello world：
 
+```xml
+<parent>
+    <groupId>org.noear</groupId>
+    <artifactId>solon-parent</artifactId>
+    <version>${solon.ver}</version>
+</parent>
+
+<dependencies>
+    <dependency>
+        <groupId>org.noear</groupId>
+        <artifactId>solon-web</artifactId>
+    </dependency>
+</dependencies>
+```
+
 ```java
 //Handler 模式：
 public class App{
@@ -83,8 +98,8 @@ public class App{
         Solon.start(App.class,args);
     }
   
-    //限定 put 方法类型
-    @Put
+    //限定 WebSocket 方法类型
+    @WebSocket
     @Mapping("/")
     public String hello(String name){
         return "Hello " + name;
