@@ -1,7 +1,8 @@
 #### 1.8.0
-* 新增 solon.extend.hotplug 插件
-* 调整 AopContext ，更具独立性
-* 调整插件接口，start 参数由 SolonApp 改为：AopContext
+* 新增 solon.extend.hotplug 插件（热插拨和管理支持）
+* 调整 AopContext ，更具隔离性
+* 调整 AopContext::beanOnloaded 参数由 Runnable 改为：Consumer<AopContext>
+* 调整 Plugin::start 参数由 SolonApp 改为：AopContext
 
 #### 1.7.8
 * 取消 Mapping::before,after,index 的弃用标注
