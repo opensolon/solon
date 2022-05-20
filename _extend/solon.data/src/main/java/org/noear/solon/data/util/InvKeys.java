@@ -1,5 +1,6 @@
 package org.noear.solon.data.util;
 
+import org.noear.solon.Utils;
 import org.noear.solon.core.aspect.Invocation;
 import org.noear.solon.core.wrap.ClassWrap;
 import org.noear.solon.core.wrap.FieldWrap;
@@ -34,7 +35,8 @@ public class InvKeys {
             keyB.append(k).append("_").append(v);
         });
 
-        return keyB.toString();
+        //必须md5，不然会出现特殊符号
+        return Utils.md5(keyB.toString());
     }
 
     /**
