@@ -57,7 +57,7 @@ public class RocketmqConsumerHandler implements MessageListenerConcurrently {
                     event.group(group);
                 }
 
-                isOk = isOk && onReceive(event, topicNew);
+                isOk = isOk && onReceive(event, topicNew); //可以不吃异常
             }
         } catch (Throwable ex) {
             isOk = false;

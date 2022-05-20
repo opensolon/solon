@@ -57,6 +57,6 @@ public class HandlerReceive implements Handler, MessageHandler {
         event.tags(msg.tags);
         event.times(msg.times);
 
-        return eventService.onReceive(msg.topic, event);
+        return eventService.onReceive(msg.topic, event); // 可以不吃异常
     }
 }

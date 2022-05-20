@@ -42,7 +42,7 @@ public class RabbitConsumeHandler extends DefaultConsumer {
             Event event = ONode.deserialize(event_json, Event.class);
             event.channel(eventChannelName);
 
-            boolean isOk = onReceive(event);
+            boolean isOk = onReceive(event); //吃掉异常，方便下面的动作
 
             if (isOk == false) {
                 event.times(event.times() + 1);
@@ -74,10 +74,19 @@ public class RabbitConsumeHandler extends DefaultConsumer {
         }
     }
 
+    private boolean onReceive(Event event) throws Throwable {
+        try {
+            return onReceiveDo(event);
+        } catch (Throwable e) {
+            EventBus.push(e);
+            return false;
+        }
+    }
+
     /**
      * 处理接收事件
      */
-    public boolean onReceive(Event event) throws Throwable {
+    private boolean onReceiveDo(Event event) throws Throwable {
         boolean isOk = true;
         CloudEventHandler handler = null;
 
