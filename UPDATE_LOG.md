@@ -1,8 +1,9 @@
 #### 1.8.0
-* 新增 solon.extend.hotplug 插件（热插拨和管理支持）
+* 新增 solon.extend.hotplug 插件（插件热插拨和管理支持）
 * 调整 AopContext ，更具隔离性
 * 调整 AopContext::beanOnloaded 参数由 Runnable 改为：Consumer<AopContext>
 * 调整 Plugin::start 参数由 SolonApp 改为：AopContext
+* 修复 rocketmq-solon-plugin ，消费异常时仍返回成功的问题
 
 #### 1.7.8
 * 取消 Mapping::before,after,index 的弃用标注

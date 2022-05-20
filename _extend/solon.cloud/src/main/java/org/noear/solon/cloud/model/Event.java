@@ -110,7 +110,7 @@ public class Event implements Serializable {
     }
 
     /**
-     * 获取质量：0 只发一次；1 最少发一次；2 发一次并且不重复；（兼容mqtt）
+     * 获取质量：0 只发一次；1 最少发一次；2 发一次并且不重复；（兼容mqtt,kafka）
      */
     public int qos() {
         return qos;

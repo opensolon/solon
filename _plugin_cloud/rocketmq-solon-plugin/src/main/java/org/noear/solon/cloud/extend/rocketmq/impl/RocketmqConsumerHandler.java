@@ -60,6 +60,7 @@ public class RocketmqConsumerHandler implements MessageListenerConcurrently {
                 isOk = isOk && onReceive(event, topicNew);
             }
         } catch (Throwable ex) {
+            isOk = false;
             EventBus.push(ex);
         }
 
