@@ -88,7 +88,7 @@ public class RabbitProducer {
         }
 
         if (ttl > 0) {
-            return publish(event, config.queue_ready, 0);
+            return publish(event, config.queue_ready, ttl);
         } else {
             if (config.exchangeType == BuiltinExchangeType.FANOUT) {
                 return publish(event, "", 0);

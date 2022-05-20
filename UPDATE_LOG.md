@@ -4,6 +4,7 @@
 * 调整 AopContext::beanOnloaded 参数由 Runnable 改为：Consumer<AopContext>
 * 调整 Plugin::start 参数由 SolonApp 改为：AopContext
 * 修复 rocketmq-solon-plugin ，消费异常时仍返回成功的问题
+* 优化 rabbitmq-solon-plugin ，消费异常时的处理
 
 #### 1.7.8
 * 取消 Mapping::before,after,index 的弃用标注
