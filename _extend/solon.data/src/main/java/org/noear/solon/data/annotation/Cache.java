@@ -30,7 +30,7 @@ public @interface Cache {
     /**
      * 例：user_${user_id}
      * */
-    @Note("缓存唯一标识")
+    @Note("缓存唯一标识，不能有逗号")
     String key() default "";
 
     /**
