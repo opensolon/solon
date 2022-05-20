@@ -49,9 +49,10 @@ public class NvMap extends LinkedCaseInsensitiveMap<String> {
 
         if (args != null) {
             for (String arg : args) {
-                if (arg.indexOf("=") > 0) {
-                    String name = arg.substring(0, arg.indexOf('='));
-                    String value = arg.substring(arg.indexOf('=') + 1);
+                int index = arg.indexOf('=');
+                if (index > 0) {
+                    String name = arg.substring(0, index);
+                    String value = arg.substring(index + 1);
                     d.put(name.replaceAll("^-*", ""), value);
                 } else {
                     d.put(arg.replaceAll("^-*", ""), "");
