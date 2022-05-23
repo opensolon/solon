@@ -36,6 +36,7 @@ public class RabbitChannelFactory {
         // 配置连接信息
         connectionFactory.setHost(host);
         connectionFactory.setPort(port);
+        connectionFactory.setRequestedHeartbeat(30);
 
         if (Utils.isNotEmpty(config.username)) {
             connectionFactory.setUsername(config.username);
@@ -49,8 +50,8 @@ public class RabbitChannelFactory {
 
         // 网络异常自动连接恢复
         connectionFactory.setAutomaticRecoveryEnabled(true);
-        // 每10秒尝试重试连接一次
-        connectionFactory.setNetworkRecoveryInterval(10000);
+        // 每5秒尝试重试连接一次
+        connectionFactory.setNetworkRecoveryInterval(5000L);
     }
 
     public ConnectionFactory getConnectionFactory() {
