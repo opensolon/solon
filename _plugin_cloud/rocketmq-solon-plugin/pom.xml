@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.noear</groupId>
         <artifactId>solon-parent</artifactId>
-        <version>1.8.0-M5</version>
+        <version>1.8.0-M6</version>
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
@@ -22,7 +22,7 @@
         <dependency>
             <groupId>org.apache.rocketmq</groupId>
             <artifactId>rocketmq-client</artifactId>
-            <version>4.7.0</version>
+            <version>4.9.3</version>
         </dependency>
     </dependencies>
 

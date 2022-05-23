@@ -1,4 +1,4 @@
-#### 1.8.0
+#### 1.8.0-M6
 * 新增 solon.extend.hotplug 插件（插件热插拨和管理支持）
 * 调整 AopContext ，更具隔离性
 * 调整 AopContext::beanOnloaded 参数由 Runnable 改为：Consumer<AopContext>
