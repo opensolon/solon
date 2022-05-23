@@ -6,7 +6,7 @@
 
     <groupId>org.noear.bundle</groupId>
     <artifactId>solon-plugin-cloud-bundle</artifactId>
-    <version>1.8.0-M6</version>
+    <version>1.8.0</version>
     <packaging>pom</packaging>
 
     <name>${project.artifactId}</name>
