@@ -31,19 +31,22 @@ public class CloudFileServiceS3OfHttpImp implements CloudFileService {
     protected final String accessKey;
     protected final String secretKey;
     protected final String regionId;
+    protected final String endpoint;
 
 
     public CloudFileServiceS3OfHttpImp(CloudProps cloudProps) {
         this(
                 cloudProps.getFileRegionId(),
+                cloudProps.getFileEndpoint(),
                 cloudProps.getFileBucket(),
                 cloudProps.getFileAccessKey(),
                 cloudProps.getFileSecretKey()
         );
     }
 
-    public CloudFileServiceS3OfHttpImp(String regionId, String bucket, String accessKey, String secretKey) {
+    public CloudFileServiceS3OfHttpImp(String regionId, String endpoint,String bucket, String accessKey, String secretKey) {
         this.regionId = regionId;
+        this.endpoint = endpoint;
 
         this.bucketDef = bucket;
 
@@ -143,7 +146,11 @@ public class CloudFileServiceS3OfHttpImp implements CloudFileService {
     }
 
     private String buildUrl(String bucket, String key) {
-        return "http://" + bucket + ".s3." + regionId + ".amazonaws.com" + "/" + key;
+        if (Utils.isEmpty(regionId)) {
+            return "http://" + endpoint + "/" + key;
+        } else {
+            return "http://" + bucket + ".s3." + regionId + ".amazonaws.com" + "/" + key;
+        }
     }
 
     private String hmacSha1(String data, String secretKey) {
