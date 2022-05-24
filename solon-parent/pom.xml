@@ -35,7 +35,7 @@
 
         <servlet.ver>4.0.1</servlet.ver>
 
-        <jetty.ver>9.4.40.v20210413</jetty.ver>
+        <jetty.ver>9.4.46.v20220331</jetty.ver>
         <undertow.ver>2.2.17.Final</undertow.ver>
 
         <snakeyaml.ver>1.29</snakeyaml.ver>
