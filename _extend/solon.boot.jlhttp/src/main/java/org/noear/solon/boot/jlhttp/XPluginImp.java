@@ -101,7 +101,7 @@ public final class XPluginImp implements Plugin {
 
             _server.setExecutor(Executors.newCachedThreadPool(new NamedThreadFactory("jlhttp-")));
             _server.setPort(_port);
-            if (_host!=null){
+            if (Utils.isNotEmpty(_host)) {
                 _server.setHost(_host);
             }
             _server.start();

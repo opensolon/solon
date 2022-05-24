@@ -325,6 +325,18 @@ public final class SolonProps extends Props {
         return serverPort;
     }
 
+    private String serverHost;
+    /**
+     * 获取应用主端口(默认:8080)
+     */
+    public String serverHost() {
+        if (serverHost == null) {
+            serverHost = get("server.host", "");
+        }
+
+        return serverHost;
+    }
+
 
     /**
      * 环境

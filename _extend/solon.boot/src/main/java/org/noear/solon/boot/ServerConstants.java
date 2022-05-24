@@ -11,9 +11,11 @@ public class ServerConstants {
 
     public static final String SERVER_SOCKET_NAME = "server.socket.name";
     public static final String SERVER_SOCKET_PORT = "server.socket.port";
+    public static final String SERVER_SOCKET_HOST = "server.socket.host";
 
     public static final String SERVER_WEBSOCKET_NAME = "server.websocket.name";
     public static final String SERVER_WEBSOCKET_PORT = "server.websocket.port";
+    public static final String SERVER_WEBSOCKET_HOST = "server.websocket.host";
 
     public static final String SERVER_SESSION_COOKIENAME = "server.session.cookieName";
 
