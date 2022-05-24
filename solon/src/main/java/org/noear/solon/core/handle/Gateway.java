@@ -385,7 +385,7 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
      * 添加接口
      */
     protected void addDo(String path, MethodType method, Handler handler) {
-        if (Utils.isEmpty(path)) {
+        if (Utils.isEmpty(path) || "/".equals(path)) {
             mainDef = handler;
             return;
         }
