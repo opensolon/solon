@@ -7,6 +7,7 @@ package org.noear.solon.boot;
 public class ServerConstants {
     public static final String SERVER_HTTP_NAME = "server.http.name";
     public static final String SERVER_HTTP_PORT = "server.http.port";
+    public static final String SERVER_HTTP_HOST = "server.http.host";
 
     public static final String SERVER_SOCKET_NAME = "server.socket.name";
     public static final String SERVER_SOCKET_PORT = "server.socket.port";

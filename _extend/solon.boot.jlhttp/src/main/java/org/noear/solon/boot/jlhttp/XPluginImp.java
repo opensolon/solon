@@ -54,6 +54,7 @@ public final class XPluginImp implements Plugin {
 
         String _name = app.cfg().get(ServerConstants.SERVER_HTTP_NAME);
         int _port = app.cfg().getInt(ServerConstants.SERVER_HTTP_PORT, 0);
+        String _host = app.cfg().get(ServerConstants.SERVER_HTTP_HOST, null);
         if (_port < 1) {
             _port = app.port();
         }
@@ -100,6 +101,9 @@ public final class XPluginImp implements Plugin {
 
             _server.setExecutor(Executors.newCachedThreadPool(new NamedThreadFactory("jlhttp-")));
             _server.setPort(_port);
+            if (_host!=null){
+                _server.setHost(_host);
+            }
             _server.start();
 
             _signal = new SignalSim(_name, _port, "http", SignalType.HTTP);

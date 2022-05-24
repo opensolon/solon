@@ -1944,6 +1944,7 @@ public class HTTPServer {
     }
 
     protected volatile int port;
+    protected volatile String host;
     protected volatile int socketTimeout = 10000;
     protected volatile ServerSocketFactory serverSocketFactory;
     protected volatile boolean secure;
@@ -1962,7 +1963,20 @@ public class HTTPServer {
         setPort(port);
         addVirtualHost(new VirtualHost(null)); // add default virtual host
     }
-
+    /**
+     * Constructs an HTTPServer which can accept connections on the given port.
+     * Note: the {@link #start()} method must be called to start accepting
+     * connections.
+     *
+     * @param port the port on which this server will accept connections
+     * @param host only accept request from this host .if host check fail, will
+     *             work like  HTTPServer(int port)
+     */
+    public HTTPServer(String host,int port) {
+        setPort(port);
+        setHost(host);
+        addVirtualHost(new VirtualHost(null)); // add default virtual host
+    }
     /**
      * Constructs an HTTPServer which can accept connections on the default HTTP port 80.
      * Note: the {@link #start()} method must be called to start accepting connections.
@@ -1979,7 +1993,9 @@ public class HTTPServer {
     public void setPort(int port) {
         this.port = port;
     }
-
+    public void setHost(String host) {
+        this.host = host;
+    }
     /**
      * Sets the factory used to create the server socket.
      * If null or not set, the default {@link ServerSocketFactory#getDefault()} is used.
@@ -2059,7 +2075,14 @@ public class HTTPServer {
     protected ServerSocket createServerSocket() throws IOException {
         ServerSocket serv = serverSocketFactory.createServerSocket();
         serv.setReuseAddress(true);
-        serv.bind(new InetSocketAddress(port));
+        InetSocketAddress address = null;
+        if (host==null){
+            address=new InetSocketAddress(port);
+        }else{
+            address=new InetSocketAddress(host,port);
+        }
+        serv.bind(address);
+
         return serv;
     }
 
