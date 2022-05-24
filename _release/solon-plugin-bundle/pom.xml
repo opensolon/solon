@@ -38,6 +38,8 @@
         <module>../../_plugin/graphql-solon-plugin</module>
         <module>../../_plugin/hasor-solon-plugin</module>
         <module>../../_plugin/hasordb-solon-plugin</module>
+        <module>../../_plugin/dbvisitor-solon-plugin</module>
+
         <module>../../_plugin/luffy-solon-plugin</module>
 
         <module>../../_plugin/jap-ids-solon-plugin</module>
