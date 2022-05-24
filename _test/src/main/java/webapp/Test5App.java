@@ -2,6 +2,7 @@ package webapp;
 
 import org.noear.solon.Solon;
 import org.noear.solon.extend.hotplug.PluginManager;
+import org.noear.solon.extend.hotplug.PluginPackage;
 
 import java.io.File;
 
@@ -15,6 +16,8 @@ public class Test5App {
         File jarFile = new File("/xxx/xxx.jar");
 
         //加载插件包
-        PluginManager.loadJar(jarFile).start();
+        PluginPackage jarPlugin = PluginManager.loadJar(jarFile).start();
+
+        PluginManager.unloadJar(jarPlugin);
     }
 }
