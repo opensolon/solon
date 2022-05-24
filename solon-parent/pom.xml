@@ -773,6 +773,12 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>dbvisitor-solon-plugin</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>hasordb-solon-plugin</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
