@@ -2,7 +2,6 @@ package org.noear.solon.extend.beetlsql;
 
 import org.beetl.sql.core.SQLManager;
 import org.noear.solon.Solon;
-import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.core.*;
 
