@@ -58,6 +58,9 @@ public final class XPluginImp implements Plugin {
         if (_port < 1) {
             _port = app.port();
         }
+        if (Utils.isEmpty(_host)) {
+            _host = app.cfg().serverHost();
+        }
 
         long time_start = System.currentTimeMillis();
 

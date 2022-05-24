@@ -2,6 +2,7 @@ package org.noear.solon.boot.smarthttp;
 
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
+import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerConstants;
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.smarthttp.http.SmartHttpContextHandler;
@@ -13,6 +14,7 @@ import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.PrintUtil;
 import org.noear.solon.socketd.SessionManager;
 import org.smartboot.http.server.HttpBootstrap;
+import org.smartboot.http.server.HttpServerConfiguration;
 
 public final class XPluginImp implements Plugin {
     private static Signal _signal;
@@ -41,8 +43,12 @@ public final class XPluginImp implements Plugin {
     private void start0(SolonApp app) {
         String _name = app.cfg().get(ServerConstants.SERVER_HTTP_NAME);
         int _port = app.cfg().getInt(ServerConstants.SERVER_HTTP_PORT, 0);
+        String _host = app.cfg().get(ServerConstants.SERVER_HTTP_HOST, null);
         if (_port < 1) {
             _port = app.port();
+        }
+        if (Utils.isEmpty(_host)) {
+            _host = app.cfg().serverHost();
         }
 
         long time_start = System.currentTimeMillis();
@@ -50,25 +56,27 @@ public final class XPluginImp implements Plugin {
         SmartHttpContextHandler _handler = new SmartHttpContextHandler();
 
         _server = new HttpBootstrap();
-        _server.configuration()
-                .bannerEnabled(false)
-                .readBufferSize(1024 * 8) //默认: 8k
-                .threadNum(Runtime.getRuntime().availableProcessors() + 2);
+        HttpServerConfiguration _config = _server.configuration();
+        if (Utils.isNotEmpty(_host)) {
+            _config.host(_host);
+        }
+
+        _config.bannerEnabled(false);
+        _config.readBufferSize(1024 * 8); //默认: 8k
+        _config.threadNum(Runtime.getRuntime().availableProcessors() + 2);
 
 
         if (ServerProps.request_maxHeaderSize != 0) {
-            _server.configuration()
-                    .readBufferSize(ServerProps.request_maxHeaderSize);
+            _config.readBufferSize(ServerProps.request_maxHeaderSize);
         }
 
         if (ServerProps.request_maxBodySize != 0) {
-            _server.configuration()
-                    .setMaxFormContentSize(ServerProps.request_maxBodySize);
+            _config.setMaxFormContentSize(ServerProps.request_maxBodySize);
         }
 
 
         //HttpServerConfiguration
-        EventBus.push(_server.configuration());
+        EventBus.push(_config);
 
         _server.httpHandler(_handler);
 

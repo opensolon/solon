@@ -1,3 +1,6 @@
+#### 1.8.1
+* 添加 server.host 和 server.http.host 支持
+
 #### 1.8.0
 * 新增 solon.extend.hotplug 插件（插件热插拨和管理支持）
 * 调整 AopContext ，更具隔离性

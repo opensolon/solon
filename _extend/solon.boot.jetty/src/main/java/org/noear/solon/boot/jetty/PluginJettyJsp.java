@@ -15,8 +15,8 @@ import java.util.Properties;
 
 class PluginJettyJsp extends PluginJetty {
 
-    public PluginJettyJsp(int port) {
-        super(port);
+    public PluginJettyJsp(int port, String host) {
+        super(port, host);
     }
 
     /**

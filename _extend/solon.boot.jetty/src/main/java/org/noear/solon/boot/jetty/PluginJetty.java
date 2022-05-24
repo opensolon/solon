@@ -16,9 +16,11 @@ import java.io.IOException;
 class PluginJetty extends PluginJettyBase implements Plugin {
     protected Server _server = null;
     private int port;
+    private String host;
 
-    public PluginJetty(int port) {
+    public PluginJetty(int port, String host) {
         this.port = port;
+        this.host = host;
     }
 
     @Override
@@ -50,6 +52,10 @@ class PluginJetty extends PluginJettyBase implements Plugin {
         //有配置的链接器
         ServerConnector connector = getConnector(_server);
         connector.setPort(port);
+
+        if(Utils.isNotEmpty(host)){
+            connector.setHost(host);
+        }
 
         //添加链接器
         _server.addConnector(connector);

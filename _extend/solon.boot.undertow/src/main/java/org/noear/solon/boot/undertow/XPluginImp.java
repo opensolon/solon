@@ -40,8 +40,12 @@ public final class XPluginImp implements Plugin {
     private void start0(SolonApp app, AopContext context) {
         String _name = app.cfg().get(ServerConstants.SERVER_HTTP_NAME);
         int _port = app.cfg().getInt(ServerConstants.SERVER_HTTP_PORT, 0);
+        String _host = app.cfg().get(ServerConstants.SERVER_HTTP_HOST, null);
         if (_port < 1) {
             _port = app.port();
+        }
+        if (Utils.isEmpty(_host)) {
+            _host = app.cfg().serverHost();
         }
 
         long time_start = System.currentTimeMillis();
@@ -50,9 +54,9 @@ public final class XPluginImp implements Plugin {
         Class<?> jspClz = Utils.loadClass("io.undertow.jsp.JspServletBuilder");
 
         if (jspClz == null) {
-            _server = new PluginUndertow(_port);
+            _server = new PluginUndertow(_port, _host);
         } else {
-            _server = new PluginUndertowJsp(_port);
+            _server = new PluginUndertowJsp(_port, _host);
         }
 
         _server.start(context);
