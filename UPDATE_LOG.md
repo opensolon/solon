@@ -4,6 +4,7 @@
 * 调整 AopContext::beanOnloaded 参数由 Runnable 改为：Consumer<AopContext>
 * 调整 Plugin::start 参数由 SolonApp 改为：AopContext
 * 修复 @Cache 在函数里有逗号时无法删除缓存的问题
+* 修复 Gateway 对默认接口识别失效的问题
 * 修复 rocketmq-solon-plugin ，消费异常时仍返回成功的问题
 * 优化 rabbitmq-solon-plugin ，消费异常时的处理
 
