@@ -44,6 +44,10 @@ public class CloudFileServiceOssImp implements CloudFileService {
 
 
     public CloudFileServiceOssImp(String endpoint, String bucket, String accessKey, String secretKey) {
+        if(Utils.isEmpty(endpoint)){
+            throw new IllegalArgumentException("The endpoint configuration is missing");
+        }
+
         this.endpoint = endpoint;
 
         this.bucketDef = bucket;
