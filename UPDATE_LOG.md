@@ -1,5 +1,11 @@
 #### 1.8.1
 * 添加 server.host 和 server.http.host 支持
+* fastjson 升为 1.2.83
+* hutool 升为：5.8.1
+* jetty 升为：9.4.46.v20220331
+* undertow 升为：2.2.17.Final
+* jackson 升为：2.13.3
+* gson 升为：2.9.0
 
 #### 1.8.0
 * 新增 solon.extend.hotplug 插件（插件热插拨和管理支持）
