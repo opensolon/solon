@@ -3,7 +3,7 @@ package features;
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Mapping;
-import org.noear.solon.serialization.fastjson.FastjsonRenderFactory;
+import org.noear.solon.serialization.fastjson2.Fastjson2RenderFactory;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -28,13 +28,13 @@ public class TestApp {
      */
     private static void initMvcJsonCustom() {
         //通过转换器，做简单类型的定制
-        FastjsonRenderFactory.global
+        Fastjson2RenderFactory.global
                 .addConvertor(Date.class, s -> s.getTime());
 
-        FastjsonRenderFactory.global
+        Fastjson2RenderFactory.global
                 .addConvertor(LocalDate.class, s -> s.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 
-        FastjsonRenderFactory.global
+        Fastjson2RenderFactory.global
                 .addConvertor(LocalDateTime.class, s -> s.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
 
     }

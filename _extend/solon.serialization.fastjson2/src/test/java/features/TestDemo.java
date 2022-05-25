@@ -1,7 +1,7 @@
 package features;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.JSONObject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.noear.solon.test.HttpTestBase;
