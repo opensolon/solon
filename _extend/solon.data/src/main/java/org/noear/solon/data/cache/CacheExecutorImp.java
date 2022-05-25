@@ -91,6 +91,15 @@ public class CacheExecutorImp {
 
         CacheService cs = CacheLib.cacheServiceGet(anno.service());
 
+        //按 key 清除缓存
+        if (Utils.isNotEmpty(anno.keys())) {
+            String keys = InvKeys.buildByTmlAndInv(anno.keys(), inv, rstValue);
+
+            for (String key : keys.split(",")) {
+                cs.remove(key);
+            }
+        }
+
         //按 tags 清除缓存
         if (Utils.isNotEmpty(anno.tags())) {
             String tags = InvKeys.buildByTmlAndInv(anno.tags(), inv, rstValue);
@@ -98,15 +107,6 @@ public class CacheExecutorImp {
 
             for (String tag : tags.split(",")) {
                 ct.remove(tag);
-            }
-        }
-
-        //按 key 清除缓存
-        if (Utils.isNotEmpty(anno.keys())) {
-            String keys = InvKeys.buildByTmlAndInv(anno.keys(), inv, rstValue);
-
-            for (String key : keys.split(",")) {
-                cs.remove(key);
             }
         }
     }
@@ -125,6 +125,12 @@ public class CacheExecutorImp {
 
         CacheService cs = CacheLib.cacheServiceGet(anno.service());
 
+        //按 key 更新缓存
+        if (Utils.isNotEmpty(anno.key())) {
+            String key = InvKeys.buildByTmlAndInv(anno.key(), inv, rstValue);
+            cs.store(key, rstValue, anno.seconds());
+        }
+
         //按 tags 更新缓存
         if (Utils.isNotEmpty(anno.tags())) {
             String tags = InvKeys.buildByTmlAndInv(anno.tags(), inv, rstValue);
@@ -133,12 +139,6 @@ public class CacheExecutorImp {
             for (String tag : tags.split(",")) {
                 ct.update(tag, rstValue, anno.seconds());
             }
-        }
-
-        //按 key 更新缓存
-        if (Utils.isNotEmpty(anno.key())) {
-            String key = InvKeys.buildByTmlAndInv(anno.key(), inv, rstValue);
-            cs.store(key, rstValue, anno.seconds());
         }
     }
 }
