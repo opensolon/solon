@@ -20,11 +20,10 @@ public final class EventBus {
     private static List<HH> sOther = new ArrayList<>();
 
     /**
-     * 异步推送事件
+     * 异步推送事件（一般不推荐）
      *
      * @param event 事件（可以是任何对象）
      */
-    @Deprecated
     public static void pushAsyn(Object event) {
         if (event != null) {
             Utils.pools.submit(() -> {
@@ -34,7 +33,7 @@ public final class EventBus {
     }
 
     /**
-     * 推送事件
+     * 同步推送事件
      *
      * @param event 事件（可以是任何对象）
      */
