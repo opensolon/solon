@@ -81,7 +81,7 @@ public final class EventBus {
      * @param eventType 事件类型
      * @param listener  事件监听者
      */
-    public static <T> void subscribe(Class<T> eventType, EventListener<T> listener) {
+    public synchronized static <T> void subscribe(Class<T> eventType, EventListener<T> listener) {
         if (Throwable.class.isAssignableFrom(eventType)) {
             sThrow.add(new HH(eventType, listener));
 
