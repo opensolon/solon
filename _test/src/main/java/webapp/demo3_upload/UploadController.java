@@ -25,8 +25,21 @@ public class UploadController {
     }
 
     @Mapping(path = "f11", method = MethodType.POST)
-    public String test_f11(Context ctx) throws Exception {
-        return "我没接数据：）";
+    public String test_f11(String userName) throws Exception {
+        if (userName == null) {
+            return "我没接数据：）";
+        } else {
+            return userName;
+        }
+    }
+
+    @Mapping(path = "f11_2", method = MethodType.POST, multipart = true)
+    public String test_f11_2(String userName) throws Exception {
+        if (userName == null) {
+            return "我没接数据：）";
+        } else {
+            return userName;
+        }
     }
 
     @Mapping(path = "f12", method = MethodType.POST)
@@ -43,7 +56,7 @@ public class UploadController {
     }
 
     @Mapping(path = "f12_1", method = MethodType.POST, multipart = true)
-    public String test_f12_1(Context ctx,String userName) throws Exception {
+    public String test_f12_1(Context ctx, String userName) throws Exception {
         UploadedFile file = ctx.file("file");
         if (userName == null) {
             return "userName is null";
@@ -71,7 +84,7 @@ public class UploadController {
 
     //支持上传文件参数
     @Mapping("f2")
-    public String test_f2(Context ctx) throws Exception{
+    public String test_f2(Context ctx) throws Exception {
         UploadedFile file = ctx.file("file"); //（file 变量名，与表单变量名保持一至）
 
         return ctx.path();
