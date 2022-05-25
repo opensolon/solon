@@ -77,6 +77,8 @@
         <module>../../_plugin/bean-searcher-solon-plugin</module>
 
 <!--        <module>../../_plugin/hazelcast-solon-plugin</module>-->
+
+        <module>../../_plugin/solon-maven-plugin</module>
     </modules>
 
 
