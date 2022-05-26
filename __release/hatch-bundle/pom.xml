@@ -22,17 +22,17 @@
 
 
     <modules>
-        <module>../../_hatch/nami.coder.thrift</module>
+        <module>../../__hatch/nami.coder.thrift</module>
 
-        <module>../../_hatch/solon.serialization.thrift</module>
-        <module>../../_hatch/solon.serialization.avro</module>
+        <module>../../__hatch/solon.serialization.thrift</module>
+        <module>../../__hatch/solon.serialization.avro</module>
 
-        <module>../../_hatch/solon.boot.jdkhttp</module>
-        <module>../../_hatch/solon.boot.reactor-netty</module>
+        <module>../../__hatch/solon.boot.jdkhttp</module>
+        <module>../../__hatch/solon.boot.reactor-netty</module>
 
-<!--        <module>../../_hatch/solon.boot.rapidoid-http-fast</module>-->
-<!--        <module>../../_hatch/solon.boot.jdkudp</module>-->
-<!--        <module>../../_hatch/solon.boot.tomcat</module>-->
+<!--        <module>../../__hatch/solon.boot.rapidoid-http-fast</module>-->
+<!--        <module>../../__hatch/solon.boot.jdkudp</module>-->
+<!--        <module>../../__hatch/solon.boot.tomcat</module>-->
     </modules>
 
 
