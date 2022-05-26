@@ -27,20 +27,20 @@ public class Solon {
     //默认停止延时
     private static int stopDelay = 10;
     //全局实例
-    private static SolonApp global;
+    private static SolonApp app;
     //全局默认编码
     private static String encoding = "utf-8";
 
     @Deprecated
     public static SolonApp global() {
-        return global;
+        return app;
     }
 
     /**
      * 全局实例
      */
     public static SolonApp app() {
-        return global;
+        return app;
     }
 
     /**
@@ -62,7 +62,7 @@ public class Solon {
      */
     public static void encodingSet(String charset) {
         //只能在初始化之前设置
-        if (global == null && Utils.isNotEmpty(charset)) {
+        if (app == null && Utils.isNotEmpty(charset)) {
             encoding = charset;
         }
     }
@@ -98,8 +98,8 @@ public class Solon {
      * @param initialize 实始化函数
      */
     public static SolonApp start(Class<?> source, NvMap argx, ConsumerEx<SolonApp> initialize) {
-        if (global != null) {
-            return global;
+        if (app != null) {
+            return app;
         }
 
         //设置文件编码
@@ -121,30 +121,30 @@ public class Solon {
         PrintUtil.info("App", "Start loading");
 
         //1.创建全局应用
-        global = new SolonApp(source, argx);
+        app = new SolonApp(source, argx);
 
         //2.0.内部初始化等待（尝试ping等待）
-        global.initAwait();
+        app.initAwait();
 
 
         try {
             //2.1.内部初始化（如配置等，顺序不能乱）
-            global.init();
+            app.init();
 
             //2.2.自定义初始化
             if (initialize != null) {
-                initialize.accept(global);
+                initialize.accept(app);
             }
 
             //3.运行应用（运行插件、扫描Bean等）
-            global.run();
+            app.run();
 
         } catch (Throwable ex) {
             //显示异常信息
             ex = Utils.throwableUnwrap(ex);
             EventBus.push(ex);
 
-            if (global.enableErrorAutoprint() == false) {
+            if (app.enableErrorAutoprint() == false) {
                 ex.printStackTrace();
             }
 
@@ -157,7 +157,7 @@ public class Solon {
         //5.初始化安全停止
         stopDelay = Solon.cfg().getInt("solon.stop.delay", 10);
 
-        if (global.enableSafeStop()) {
+        if (app.enableSafeStop()) {
             //添加关闭勾子
             Runtime.getRuntime().addShutdownHook(new Thread(() -> Solon.stop0(false, stopDelay)));
         } else {
@@ -165,9 +165,9 @@ public class Solon {
         }
 
         //启动完成
-        PrintUtil.info("App", "End loading elapsed=" + global.elapsedTimes() + "ms pid=" + pid);
+        PrintUtil.info("App", "End loading elapsed=" + app.elapsedTimes() + "ms pid=" + pid);
 
-        return global;
+        return app;
     }
 
     /**
