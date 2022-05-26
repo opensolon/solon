@@ -5,10 +5,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.noear.bundle</groupId>
-    <artifactId>solon-render-bundle</artifactId>
+    <artifactId>solon-plugin-bundle</artifactId>
     <version>1.8.1-M2</version>
     <packaging>pom</packaging>
-
 
     <name>${project.artifactId}</name>
     <description>Java project for solon</description>
@@ -22,24 +21,64 @@
 
 
     <modules>
-        <module>../../_extend/solon.serialization</module>
+        <module>../../_solon_plugin/solon-springboot-starter</module>
 
-        <module>../../_extend/solon.serialization.snack3</module>
-        <module>../../_extend/solon.serialization.fastjson</module>
-        <module>../../_extend/solon.serialization.fastjson2</module>
-        <module>../../_extend/solon.serialization.jackson</module>
-        <module>../../_extend/solon.serialization.gson</module>
-        <module>../../_extend/solon.serialization.hessian</module>
-        <module>../../_extend/solon.serialization.protostuff</module>
+        <module>../../_solon_plugin/detector-solon-plugin</module>
 
-        <module>../../_extend/solon.view.freemarker</module>
-        <module>../../_extend/solon.view.jsp</module>
-        <module>../../_extend/solon.view.velocity</module>
-        <module>../../_extend/solon.view.thymeleaf</module>
+        <module>../../_solon_plugin/beetlsql-solon-plugin</module>
 
-        <module>../../_extend/solon.view.enjoy</module>
-        <module>../../_extend/solon.view.beetl</module>
-        <!--        <module>../../solon.view.rocker</module>-->
+        <module>../../_solon_plugin/cron4j-solon-plugin</module>
+        <module>../../_solon_plugin/dubbo-solon-plugin</module>
+        <module>../../_solon_plugin/dubbo3-solon-plugin</module>
+        <module>../../_solon_plugin/feign-solon-plugin</module>
+        <module>../../_solon_plugin/forest-solon-plugin</module>
+
+        <module>../../_solon_plugin/grpc-solon-plugin</module>
+
+        <module>../../_solon_plugin/graphql-solon-plugin</module>
+        <module>../../_solon_plugin/hasor-solon-plugin</module>
+        <module>../../_solon_plugin/hasordb-solon-plugin</module>
+        <module>../../_solon_plugin/dbvisitor-solon-plugin</module>
+
+        <module>../../_solon_plugin/luffy-solon-plugin</module>
+
+        <module>../../_solon_plugin/jap-ids-solon-plugin</module>
+        <module>../../_solon_plugin/jap-solon-plugin</module>
+
+        <module>../../_solon_plugin/weed3-solon-plugin</module>
+
+        <module>../../_solon_plugin/sqltoy-solon-plugin</module>
+
+        <module>../../_solon_plugin/mybatis-solon-plugin</module>
+        <module>../../_solon_plugin/mybatis-sqlhelper-solon-plugin</module>
+        <module>../../_solon_plugin/mybatis-pagehelper-solon-plugin</module>
+
+        <module>../../_solon_plugin/mybatis-plus-solon-plugin</module>
+        <module>../../_solon_plugin/mybatis-plus-extension-solon-plugin</module>
+
+        <module>../../_solon_plugin/activerecord-solon-plugin</module>
+
+        <module>../../_solon_plugin/quartz-solon-plugin</module>
+
+        <module>../../_solon_plugin/shiro-solon-plugin</module>
+        <module>../../_solon_plugin/sureness-solon-plugin</module>
+        <module>../../_solon_plugin/sa-token-solon-plugin</module>
+
+        <module>../../_solon_plugin/captcha-solon-plugin</module>
+        <module>../../_solon_plugin/vaptcha-solon-plugin</module>
+
+
+        <module>../../_solon_plugin/log4j2-solon-plugin</module>
+        <module>../../_solon_plugin/logback-solon-plugin</module>
+
+
+        <module>../../_solon_plugin/dynamic-tp-solon-plugin</module>
+
+        <module>../../_solon_plugin/bean-searcher-solon-plugin</module>
+
+<!--        <module>../../_solon_plugin/hazelcast-solon-plugin</module>-->
+
+        <module>../../_solon_plugin/solon-maven-plugin</module>
     </modules>
 
 

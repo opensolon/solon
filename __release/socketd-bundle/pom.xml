@@ -5,10 +5,26 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.noear.bundle</groupId>
-    <artifactId>solon-extend-bundle</artifactId>
+    <artifactId>socketd-bundle</artifactId>
     <version>1.8.1-M2</version>
     <packaging>pom</packaging>
 
+
+    <modules>
+        <module>../../_solon_extend/solon.socketd</module>
+
+        <module>../../_solon_extend/solon.boot.socketd.jdksocket</module>
+        <module>../../_solon_extend/solon.boot.socketd.netty</module>
+        <module>../../_solon_extend/solon.boot.socketd.smartsocket</module>
+        <module>../../_solon_extend/solon.boot.socketd.rsocket</module>
+        <module>../../_solon_extend/solon.boot.socketd.websocket</module>
+
+        <module>../../_solon_extend/solon.socketd.client.jdksocket</module>
+        <module>../../_solon_extend/solon.socketd.client.netty</module>
+        <module>../../_solon_extend/solon.socketd.client.rsocket</module>
+        <module>../../_solon_extend/solon.socketd.client.smartsocket</module>
+        <module>../../_solon_extend/solon.socketd.client.websocket</module>
+    </modules>
 
     <name>${project.artifactId}</name>
     <description>Java project for solon</description>
@@ -19,46 +35,6 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
     </properties>
-
-    <modules>
-
-        <module>../../_extend/solon.cache.jedis</module>
-        <module>../../_extend/solon.cache.spymemcached</module>
-        <module>../../_extend/solon.cache.redisson</module>
-
-
-        <module>../../_extend/solon.sessionstate.jedis</module>
-        <module>../../_extend/solon.sessionstate.local</module>
-        <module>../../_extend/solon.sessionstate.jwt</module>
-        <module>../../_extend/solon.sessionstate.redisson</module>
-
-
-        <module>../../_extend/solon.extend.aspect</module>
-        <module>../../_extend/solon.extend.staticfiles</module>
-
-        <module>../../_extend/solon.extend.servlet</module>
-
-        <!-- @Deprecated -->
-        <module>../../_extend/solon.extend.sessionstate.redis</module>
-        <module>../../_extend/solon.extend.sessionstate.local</module>
-        <module>../../_extend/solon.extend.sessionstate.jwt</module>
-
-        <module>../../_extend/solon.extend.properties.yaml</module>
-        <module>../../_extend/solon.extend.stop</module>
-        <module>../../_extend/solon.extend.jsr330</module>
-        <module>../../_extend/solon.extend.jsr303</module>
-        <module>../../_extend/solon.extend.cors</module>
-        <module>../../_extend/solon.extend.health</module>
-        <module>../../_extend/solon.extend.graalvm</module>
-        <module>../../_extend/solon.extend.async</module>
-        <module>../../_extend/solon.extend.retry</module>
-
-        <module>../../_extend/solon.extend.schedule</module>
-
-
-        <module>../../_extend/solon.extend.hotplug</module>
-    </modules>
-
 
     <licenses>
         <license>

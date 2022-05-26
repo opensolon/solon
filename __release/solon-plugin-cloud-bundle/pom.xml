@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.noear.bundle</groupId>
-    <artifactId>solon-plugin-bundle</artifactId>
+    <artifactId>solon-plugin-cloud-bundle</artifactId>
     <version>1.8.1-M2</version>
     <packaging>pom</packaging>
 
@@ -21,64 +21,41 @@
 
 
     <modules>
-        <module>../../_plugin/solon-springboot-starter</module>
+        <module>../../_solon_plugin_cloud/cloudevent-plus-solon-plugin</module>
+        <module>../../_solon_plugin_cloud/httputils-solon-plugin</module>
 
-        <module>../../_plugin/detector-solon-plugin</module>
+        <module>../../_solon_plugin_cloud/water-solon-plugin</module>
+        <module>../../_solon_plugin_cloud/consul-solon-plugin</module>
+        <module>../../_solon_plugin_cloud/nacos2-solon-plugin</module>
+        <module>../../_solon_plugin_cloud/nacos-solon-plugin</module>
+        <module>../../_solon_plugin_cloud/zookeeper-solon-plugin</module>
 
-        <module>../../_plugin/beetlsql-solon-plugin</module>
+        <module>../../_solon_plugin_cloud/aliyun-oss-solon-plugin</module>
+        <module>../../_solon_plugin_cloud/aws-s3-solon-plugin</module>
+        <module>../../_solon_plugin_cloud/qiniu-kodo-solon-plugin</module>
+        <module>../../_solon_plugin_cloud/minio-solon-plugin</module>
+        <module>../../_solon_plugin_cloud/minio7-solon-plugin</module>
+        <module>../../_solon_plugin_cloud/fastdfs-solon-plugin</module>
 
-        <module>../../_plugin/cron4j-solon-plugin</module>
-        <module>../../_plugin/dubbo-solon-plugin</module>
-        <module>../../_plugin/dubbo3-solon-plugin</module>
-        <module>../../_plugin/feign-solon-plugin</module>
-        <module>../../_plugin/forest-solon-plugin</module>
-
-        <module>../../_plugin/grpc-solon-plugin</module>
-
-        <module>../../_plugin/graphql-solon-plugin</module>
-        <module>../../_plugin/hasor-solon-plugin</module>
-        <module>../../_plugin/hasordb-solon-plugin</module>
-        <module>../../_plugin/dbvisitor-solon-plugin</module>
-
-        <module>../../_plugin/luffy-solon-plugin</module>
-
-        <module>../../_plugin/jap-ids-solon-plugin</module>
-        <module>../../_plugin/jap-solon-plugin</module>
-
-        <module>../../_plugin/weed3-solon-plugin</module>
-
-        <module>../../_plugin/sqltoy-solon-plugin</module>
-
-        <module>../../_plugin/mybatis-solon-plugin</module>
-        <module>../../_plugin/mybatis-sqlhelper-solon-plugin</module>
-        <module>../../_plugin/mybatis-pagehelper-solon-plugin</module>
-
-        <module>../../_plugin/mybatis-plus-solon-plugin</module>
-        <module>../../_plugin/mybatis-plus-extension-solon-plugin</module>
-
-        <module>../../_plugin/activerecord-solon-plugin</module>
-
-        <module>../../_plugin/quartz-solon-plugin</module>
-
-        <module>../../_plugin/shiro-solon-plugin</module>
-        <module>../../_plugin/sureness-solon-plugin</module>
-        <module>../../_plugin/sa-token-solon-plugin</module>
-
-        <module>../../_plugin/captcha-solon-plugin</module>
-        <module>../../_plugin/vaptcha-solon-plugin</module>
+        <module>../../_solon_plugin_cloud/rabbitmq-solon-plugin</module>
+        <module>../../_solon_plugin_cloud/rocketmq-solon-plugin</module>
+        <module>../../_solon_plugin_cloud/mqtt-solon-plugin</module>
+        <module>../../_solon_plugin_cloud/kafka-solon-plugin</module>
+        <module>../../_solon_plugin_cloud/pulsar-solon-plugin</module>
 
 
-        <module>../../_plugin/log4j2-solon-plugin</module>
-        <module>../../_plugin/logback-solon-plugin</module>
+        <module>../../_solon_plugin_cloud/guava-solon-plugin</module>
+        <module>../../_solon_plugin_cloud/sentinel-solon-plugin</module>
+        <module>../../_solon_plugin_cloud/semaphore-solon-plugin</module>
+
+        <module>../../_solon_plugin_cloud/snowflake-id-solon-plugin</module>
 
 
-        <module>../../_plugin/dynamic-tp-solon-plugin</module>
+        <module>../../_solon_plugin_cloud/xxl-job-solon-plugin</module>
 
-        <module>../../_plugin/bean-searcher-solon-plugin</module>
+        <module>../../_solon_plugin_cloud/opentracing-solon-plugin</module>
+        <module>../../_solon_plugin_cloud/jaeger-solon-plugin</module>
 
-<!--        <module>../../_plugin/hazelcast-solon-plugin</module>-->
-
-        <module>../../_plugin/solon-maven-plugin</module>
     </modules>
 
 

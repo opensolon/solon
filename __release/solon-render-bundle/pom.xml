@@ -5,26 +5,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.noear.bundle</groupId>
-    <artifactId>socketd-bundle</artifactId>
+    <artifactId>solon-render-bundle</artifactId>
     <version>1.8.1-M2</version>
     <packaging>pom</packaging>
 
-
-    <modules>
-        <module>../../_extend/solon.socketd</module>
-
-        <module>../../_extend/solon.boot.socketd.jdksocket</module>
-        <module>../../_extend/solon.boot.socketd.netty</module>
-        <module>../../_extend/solon.boot.socketd.smartsocket</module>
-        <module>../../_extend/solon.boot.socketd.rsocket</module>
-        <module>../../_extend/solon.boot.socketd.websocket</module>
-
-        <module>../../_extend/solon.socketd.client.jdksocket</module>
-        <module>../../_extend/solon.socketd.client.netty</module>
-        <module>../../_extend/solon.socketd.client.rsocket</module>
-        <module>../../_extend/solon.socketd.client.smartsocket</module>
-        <module>../../_extend/solon.socketd.client.websocket</module>
-    </modules>
 
     <name>${project.artifactId}</name>
     <description>Java project for solon</description>
@@ -35,6 +19,29 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
     </properties>
+
+
+    <modules>
+        <module>../../_solon_extend/solon.serialization</module>
+
+        <module>../../_solon_extend/solon.serialization.snack3</module>
+        <module>../../_solon_extend/solon.serialization.fastjson</module>
+        <module>../../_solon_extend/solon.serialization.fastjson2</module>
+        <module>../../_solon_extend/solon.serialization.jackson</module>
+        <module>../../_solon_extend/solon.serialization.gson</module>
+        <module>../../_solon_extend/solon.serialization.hessian</module>
+        <module>../../_solon_extend/solon.serialization.protostuff</module>
+
+        <module>../../_solon_extend/solon.view.freemarker</module>
+        <module>../../_solon_extend/solon.view.jsp</module>
+        <module>../../_solon_extend/solon.view.velocity</module>
+        <module>../../_solon_extend/solon.view.thymeleaf</module>
+
+        <module>../../_solon_extend/solon.view.enjoy</module>
+        <module>../../_solon_extend/solon.view.beetl</module>
+        <!--        <module>../../solon.view.rocker</module>-->
+    </modules>
+
 
     <licenses>
         <license>

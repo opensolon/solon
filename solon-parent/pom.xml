@@ -1241,44 +1241,44 @@
 
         <module>../solon</module>
 
-        <module>../_extend/solon.boot</module>
-        <module>../_extend/solon.boot.jlhttp</module>
-        <module>../_extend/solon.boot.smarthttp</module>
-        <module>../_extend/solon.boot.jetty</module>
-        <module>../_extend/solon.boot.undertow</module>
+        <module>../_solon_extend/solon.boot</module>
+        <module>../_solon_extend/solon.boot.jlhttp</module>
+        <module>../_solon_extend/solon.boot.smarthttp</module>
+        <module>../_solon_extend/solon.boot.jetty</module>
+        <module>../_solon_extend/solon.boot.undertow</module>
 
-        <module>../_extend/solon.boot.websocket</module>
-
-
-        <module>../_extend/solon.validation</module>
-        <module>../_extend/solon.data</module>
-        <module>../_extend/solon.auth</module>
-        <module>../_extend/solon.schedule</module>
+        <module>../_solon_extend/solon.boot.websocket</module>
 
 
-        <module>../_extend/solon.boot.jetty.add.jsp</module>
-        <module>../_extend/solon.boot.jetty.add.servlet</module>
-        <module>../_extend/solon.boot.jetty.add.websocket</module>
-        <module>../_extend/solon.boot.undertow.add.jsp</module>
+        <module>../_solon_extend/solon.validation</module>
+        <module>../_solon_extend/solon.data</module>
+        <module>../_solon_extend/solon.auth</module>
+        <module>../_solon_extend/solon.schedule</module>
 
-        <module>../_extend/solon.i18n</module>
 
-        <module>../_extend/solon.logging</module>
-        <module>../_extend/solon.logging.impl</module>
+        <module>../_solon_extend/solon.boot.jetty.add.jsp</module>
+        <module>../_solon_extend/solon.boot.jetty.add.servlet</module>
+        <module>../_solon_extend/solon.boot.jetty.add.websocket</module>
+        <module>../_solon_extend/solon.boot.undertow.add.jsp</module>
 
-        <module>../_extend/solon.cloud</module>
-        <module>../_extend/solon.cloud.tracing</module>
+        <module>../_solon_extend/solon.i18n</module>
 
-        <module>../_combo/solon-beetl-web</module>
-        <module>../_combo/solon-enjoy-web</module>
-        <module>../_combo/solon-lib</module>
-        <module>../_combo/solon-api</module>
+        <module>../_solon_extend/solon.logging</module>
+        <module>../_solon_extend/solon.logging.impl</module>
 
-        <module>../_combo/solon-web</module>
-        <module>../_combo/solon-rpc</module>
-        <module>../_combo/solon-cloud</module>
+        <module>../_solon_extend/solon.cloud</module>
+        <module>../_solon_extend/solon.cloud.tracing</module>
 
-        <module>../_combo/solon-test</module>
+        <module>../_solon_shortcut/solon-beetl-web</module>
+        <module>../_solon_shortcut/solon-enjoy-web</module>
+        <module>../_solon_shortcut/solon-lib</module>
+        <module>../_solon_shortcut/solon-api</module>
+
+        <module>../_solon_shortcut/solon-web</module>
+        <module>../_solon_shortcut/solon-rpc</module>
+        <module>../_solon_shortcut/solon-cloud</module>
+
+        <module>../_solon_shortcut/solon-test</module>
 
     </modules>
 
