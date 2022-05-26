@@ -3,14 +3,10 @@ package org.noear.solon;
 import org.noear.solon.core.event.*;
 import org.noear.solon.core.event.EventListener;
 import org.noear.solon.core.handle.*;
-import org.noear.solon.core.message.ListenerPipeline;
-import org.noear.solon.core.route.Router;
-import org.noear.solon.core.route.RouterDefault;
-import org.noear.solon.core.route.RouterHandler;
 import org.noear.solon.annotation.Import;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.*;
-import org.noear.solon.core.message.Listener;
+import org.noear.solon.core.route.RouterAdapter;
 import org.noear.solon.core.util.PrintUtil;
 
 import java.lang.annotation.Annotation;
@@ -33,12 +29,11 @@ import java.util.function.Consumer;
  * @author noear
  * @since 1.0
  * */
-public class SolonApp implements HandlerSlots {
+public class SolonApp extends RouterAdapter {
     private final SolonProps _prop; //属性配置
     private final Class<?> _source; //应用加载源
     private final long _startupTime;
 
-    private List<FilterEntity> _filterList = new ArrayList<>();
     protected boolean stopped = false;
 
     protected SolonApp(Class<?> source, NvMap args) {
@@ -48,12 +43,10 @@ public class SolonApp implements HandlerSlots {
         //初始化配置
         _prop = new SolonProps().load(source, args);
 
-        //顺序不能换
-        _router = new RouterDefault();
-        _routerHandler = new RouterHandler(_router);
-        _filterList.add(new FilterEntity(Integer.MAX_VALUE, this::doFilter));
+        //初始化路由
+        initRouter(this::doFilter);
 
-        _handler = _routerHandler;
+        _handler = routerHandler();
 
         enableJarIsolation(_prop.getBool("solon.extend.isolation", false));
     }
@@ -258,24 +251,6 @@ public class SolonApp implements HandlerSlots {
     }
 
 
-    private RouterHandler _routerHandler;
-    private Router _router; //与函数同名，_开头
-
-    /**
-     * 路由器
-     */
-    public Router router() {
-        return _router;
-    }
-
-    public void routerSet(Router router) {
-        if (router != null) {
-            _router = router;
-            _routerHandler.bind(router);
-        }
-    }
-
-
     /**
      * 从启动开启已运行时间
      */
@@ -349,264 +324,6 @@ public class SolonApp implements HandlerSlots {
         return tmp;
     }
 
-    ///////////////////////////////////////////////
-    //
-    // 以下为web handler 有关
-    //
-    //////////////////////////////////////////////
-
-    /**
-     * 添加过滤器（按先进后出策略执行）
-     *
-     * @param filter 过滤器
-     */
-    public void filter(Filter filter) {
-        filter(0, filter);
-    }
-
-    /**
-     * 添加过滤器（按先进后出策略执行）
-     *
-     * @param index  顺序位
-     * @param filter 过滤器
-     * @since 1.5
-     */
-    public void filter(int index, Filter filter) {
-        _filterList.add(new FilterEntity(index, filter));
-        _filterList.sort(Comparator.comparingInt(f -> f.index));
-    }
-
-    /**
-     * 添加前置处理
-     */
-    public void before(Handler handler) {
-        before("**", MethodType.ALL, handler);
-    }
-
-    /**
-     * 添加前置处理
-     */
-    public void before(int index, Handler handler) {
-        before("**", MethodType.ALL, index, handler);
-    }
-
-    /**
-     * 添加前置处理
-     *
-     * @since 1.6
-     */
-    public void before(MethodType method, Handler handler) {
-        before("**", method, handler);
-    }
-
-    /**
-     * 添加前置处理
-     *
-     * @since 1.6
-     */
-    public void before(MethodType method, int index, Handler handler) {
-        before("**", method, index, handler);
-    }
-
-    /**
-     * 添加前置处理
-     */
-    public void before(String expr, Handler handler) {
-        before(expr, MethodType.ALL, handler);
-    }
-
-    /**
-     * 添加前置处理
-     */
-    public void before(String expr, MethodType method, Handler handler) {
-        _router.add(expr, Endpoint.before, method, handler);
-    }
-
-    /**
-     * 添加前置处理
-     */
-    @Override
-    public void before(String expr, MethodType method, int index, Handler handler) {
-        _router.add(expr, Endpoint.before, method, index, handler);
-    }
-
-    /**
-     * 添加后置处理
-     */
-    public void after(Handler handler) {
-        after("**", MethodType.ALL, handler);
-    }
-
-    /**
-     * 添加后置处理
-     *
-     * @since 1.6
-     */
-    public void after(MethodType method, Handler handler) {
-        after("**", method, handler);
-    }
-
-    /**
-     * 添加后置处理
-     *
-     * @since 1.6
-     */
-    public void after(String expr, Handler handler) {
-        after(expr, MethodType.ALL, handler);
-    }
-
-    /**
-     * 添加后置处理
-     */
-    public void after(String expr, MethodType method, Handler handler) {
-        _router.add(expr, Endpoint.after, method, handler);
-    }
-
-    /**
-     * 添加后置处理
-     */
-    @Override
-    public void after(String expr, MethodType method, int index, Handler handler) {
-        _router.add(expr, Endpoint.after, method, index, handler);
-    }
-
-    /**
-     * 添加主体处理
-     */
-    @Override
-    public void add(String expr, MethodType method, Handler handler) {
-        _router.add(expr, Endpoint.main, method, handler);
-    }
-
-    public void add(String expr, Class<?> clz) {
-        BeanWrap bw = Aop.wrapAndPut(clz);
-        if (bw != null) {
-            new HandlerLoader(bw, expr).load(this);
-        }
-    }
-
-    public void add(String expr, Class<?> clz, boolean remoting) {
-        BeanWrap bw = Aop.wrapAndPut(clz);
-        if (bw != null) {
-            new HandlerLoader(bw, expr, remoting).load(this);
-        }
-    }
-
-
-    /**
-     * 添加所有方法处理
-     */
-    public void all(String path, Handler handler) {
-        add(path, MethodType.ALL, handler);
-    }
-
-    /**
-     * 添加HTTP所有方法的处理（GET,POST,PUT,PATCH,DELETE,HEAD）
-     */
-    public void http(String path, Handler handler) {
-        add(path, MethodType.HTTP, handler);
-    }
-
-    /**
-     * 添加HEAD方法的处理
-     */
-    public void head(String path, Handler handler) {
-        add(path, MethodType.HEAD, handler);
-    }
-
-    /**
-     * 添加GET方法的处理（REST.select 从服务端获取一或多项资源）
-     */
-    public void get(String path, Handler handler) {
-        add(path, MethodType.GET, handler);
-    }
-
-    /**
-     * 添加POST方法的处理（REST.create 在服务端新建一项资源）
-     */
-    public void post(String path, Handler handler) {
-        add(path, MethodType.POST, handler);
-    }
-
-    /**
-     * 添加PUT方法的处理（REST.update 客户端提供改变后的完整资源）
-     */
-    public void put(String path, Handler handler) {
-        add(path, MethodType.PUT, handler);
-    }
-
-    /**
-     * 添加PATCH方法的处理（REST.update 客户端提供改变的属性）
-     */
-    public void patch(String path, Handler handler) {
-        add(path, MethodType.PATCH, handler);
-    }
-
-    /**
-     * 添加DELETE方法的处理（REST.delete 从服务端删除资源）
-     */
-    public void delete(String path, Handler handler) {
-        add(path, MethodType.DELETE, handler);
-    }
-
-    /**
-     * 添加web socket方法的监听
-     */
-    public void ws(String path, Handler handler) {
-        add(path, MethodType.WEBSOCKET, handler);
-    }
-
-    /**
-     * 添加web socket方法的监听
-     */
-    public void ws(String path, Listener listener) {
-        _router.add(path, MethodType.WEBSOCKET, listener);
-    }
-
-    /**
-     * 添加socket方法的监听
-     */
-    public void socket(String path, Handler handler) {
-        add(path, MethodType.SOCKET, handler);
-    }
-
-    /**
-     * 添加socket方法的监听
-     */
-    public void socket(String path, Listener listener) {
-        _router.add(path, MethodType.SOCKET, listener);
-    }
-
-    /**
-     * 添加监听
-     */
-    public void listen(String path, Listener listener) {
-        _router.add(path, MethodType.ALL, listener);
-    }
-
-    /**
-     * 添加监听到之前的位置
-     * */
-    public void listenBefore(Listener listener){
-        _listenerPipeline.prev(listener);
-    }
-
-    /**
-     * 添加监听到之后的位置
-     * */
-    public void listenAfter(Listener listener){
-        _listenerPipeline.next(listener);
-    }
-
-    private final ListenerPipeline _listenerPipeline = new ListenerPipeline();
-    /**
-     * 监听器入口
-     * */
-    public Listener listener(){
-        return _listenerPipeline;
-    }
-
-
     /**
      * Solon Handler
      */
@@ -634,7 +351,7 @@ public class SolonApp implements HandlerSlots {
             if (stopped) {
                 x.status(403);
             } else {
-                new FilterChainNode(_filterList).doFilter(x);
+                new FilterChainNode(filterList()).doFilter(x);
             }
         } catch (Throwable ex) {
             ex = Utils.throwableUnwrap(ex);
