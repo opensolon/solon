@@ -8,7 +8,7 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
-import org.noear.solon.boot.ServerConstants;
+import org.noear.solon.boot.props.ServerSocketProps;
 import org.noear.solon.core.*;
 import org.noear.solon.core.util.PrintUtil;
 import org.noear.solon.socketd.SessionManager;
@@ -45,15 +45,10 @@ public class XPluginImp implements Plugin {
 
         PrintUtil.info("Server:main: java.net.ServerSocket(netty-socketd)");
 
-        String _name = app.cfg().get(ServerConstants.SERVER_SOCKET_NAME);
-        int _port = app.cfg().getInt(ServerConstants.SERVER_SOCKET_PORT, 0);
-        String _host = app.cfg().get(ServerConstants.SERVER_SOCKET_HOST, null);
-        if (_port < 1) {
-            _port = 20000 + app.port();
-        }
-        if(Utils.isEmpty(_host)){
-            _host = app.cfg().serverHost();
-        }
+        ServerSocketProps props = new ServerSocketProps(20000);
+        String _host = props.getHost();
+        int _port = props.getPort();
+        String _name = props.getName();
 
 
         EventLoopGroup bossGroup = new NioEventLoopGroup();
