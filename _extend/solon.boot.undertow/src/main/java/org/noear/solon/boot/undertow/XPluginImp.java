@@ -4,7 +4,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerLifecycle;
-import org.noear.solon.boot.props.ServerHttpProps;
+import org.noear.solon.boot.prop.ServerHttpProps;
 import org.noear.solon.core.*;
 import org.noear.solon.core.util.PrintUtil;
 

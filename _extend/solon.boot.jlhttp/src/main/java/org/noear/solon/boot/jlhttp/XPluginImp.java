@@ -5,7 +5,7 @@ import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerConstants;
 import org.noear.solon.boot.ServerProps;
-import org.noear.solon.boot.props.ServerHttpProps;
+import org.noear.solon.boot.prop.ServerHttpProps;
 import org.noear.solon.boot.ssl.SslContextFactory;
 import org.noear.solon.core.*;
 import org.noear.solon.core.handle.MethodType;

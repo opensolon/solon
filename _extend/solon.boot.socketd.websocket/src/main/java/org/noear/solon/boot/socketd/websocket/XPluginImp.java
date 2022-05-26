@@ -3,7 +3,7 @@ package org.noear.solon.boot.socketd.websocket;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
-import org.noear.solon.boot.props.ServerWebSocketProps;
+import org.noear.solon.boot.prop.ServerWebSocketProps;
 import org.noear.solon.core.*;
 import org.noear.solon.core.util.PrintUtil;
 import org.noear.solon.socketd.SessionManager;

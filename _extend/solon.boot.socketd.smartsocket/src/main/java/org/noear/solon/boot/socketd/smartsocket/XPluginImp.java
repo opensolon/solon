@@ -3,7 +3,7 @@ package org.noear.solon.boot.socketd.smartsocket;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
-import org.noear.solon.boot.props.ServerSocketProps;
+import org.noear.solon.boot.prop.ServerSocketProps;
 import org.noear.solon.core.*;
 
 import org.noear.solon.core.util.PrintUtil;

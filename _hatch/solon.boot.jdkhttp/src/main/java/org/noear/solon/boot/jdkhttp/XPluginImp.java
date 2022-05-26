@@ -5,8 +5,7 @@ import com.sun.net.httpserver.HttpServer;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
-import org.noear.solon.boot.ServerConstants;
-import org.noear.solon.boot.props.ServerHttpProps;
+import org.noear.solon.boot.prop.ServerHttpProps;
 import org.noear.solon.core.*;
 import org.noear.solon.core.util.PrintUtil;
 

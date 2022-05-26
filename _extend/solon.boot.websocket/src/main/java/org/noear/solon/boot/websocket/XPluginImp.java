@@ -3,14 +3,12 @@ package org.noear.solon.boot.websocket;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
-import org.noear.solon.boot.ServerConstants;
-import org.noear.solon.boot.props.ServerWebSocketProps;
+import org.noear.solon.boot.prop.ServerWebSocketProps;
 import org.noear.solon.core.*;
 import org.noear.solon.core.util.PrintUtil;
 import org.noear.solon.socketd.SessionManager;
 
 import java.net.Inet4Address;
-import java.net.InetAddress;
 
 public class XPluginImp implements Plugin {
     private static Signal _signal;
