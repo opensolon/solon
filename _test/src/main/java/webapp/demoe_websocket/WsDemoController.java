@@ -35,7 +35,7 @@ public class WsDemoController {
     @Mapping("/demoe/websocket")
     public Object test_client(Context ctx, String id){
         ModelAndView mv = new ModelAndView("demoe/websocket.ftl");
-        mv.put("app_port", Solon.global().port() + 10000);
+        mv.put("app_port", Solon.app().port() + 10000);
 
         return mv;
     }

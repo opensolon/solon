@@ -46,7 +46,7 @@ public final class EventBus {
     private static void push0(Object event) {
         if (event instanceof Throwable) {
 
-            if (Solon.global().enableErrorAutoprint()) {
+            if (Solon.app().enableErrorAutoprint()) {
                 ((Throwable) event).printStackTrace();
             }
 
@@ -85,8 +85,8 @@ public final class EventBus {
         if (Throwable.class.isAssignableFrom(eventType)) {
             sThrow.add(new HH(eventType, listener));
 
-            if (Solon.global() != null) {
-                Solon.global().enableErrorAutoprint(false);
+            if (Solon.app() != null) {
+                Solon.app().enableErrorAutoprint(false);
             }
         } else {
             sOther.add(new HH(eventType, listener));

@@ -73,7 +73,7 @@ public class AuthAdapter {
     private synchronized void addRuleDo(AuthRule rule) {
         if (authRuleHandler == null) {
             authRuleHandler = new AuthRuleHandler();
-            Solon.global().before(authRuleHandler);
+            Solon.app().before(authRuleHandler);
         }
 
         authRuleHandler.rules().add(rule);

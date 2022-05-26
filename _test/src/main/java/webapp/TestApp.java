@@ -1,13 +1,11 @@
 package webapp;
 
-import org.noear.nami.NamiAttachment;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.SolonBuilder;
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.Import;
 import org.noear.solon.cloud.CloudClient;
-import org.noear.solon.core.Aop;
 import org.noear.solon.core.ExtendLoader;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.extend.async.annotation.EnableAsync;
@@ -20,7 +18,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import webapp.demo6_aop.TestImport;
 import webapp.dso.AppPluginImp;
-import webapp.models.UserModel;
 
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStreamWriter;
@@ -46,7 +43,7 @@ public class TestApp {
         //SolonApp app = Solon.start(TestApp.class, args, x -> x.enableSocketD(true).enableWebSocket(true));
 
 
-        if(Solon.global() != null){
+        if(Solon.app() != null){
             return;
         }
 

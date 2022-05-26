@@ -37,7 +37,7 @@ public class _SocketClientSession extends SessionBase {
     }
 
     private boolean isWebSocketD() {
-        return Solon.global().enableWebSocketD() || flag() == SessionFlag.socketd;
+        return Solon.app().enableWebSocketD() || flag() == SessionFlag.socketd;
     }
 
     /**

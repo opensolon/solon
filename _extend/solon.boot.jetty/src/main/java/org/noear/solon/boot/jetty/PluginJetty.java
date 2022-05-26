@@ -26,7 +26,7 @@ class PluginJetty extends PluginJettyBase implements Plugin {
     @Override
     public void start(AopContext context) {
         try {
-            setup(Solon.global(), context);
+            setup(Solon.app(), context);
             _server.start();
         } catch (RuntimeException e) {
             throw e;
@@ -61,7 +61,7 @@ class PluginJetty extends PluginJettyBase implements Plugin {
         _server.addConnector(connector);
 
         //session 支持
-        if (Solon.global().enableSessionState()) {
+        if (Solon.app().enableSessionState()) {
             _server.setSessionIdManager(new DefaultSessionIdManager(_server));
         }
 

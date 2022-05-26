@@ -68,7 +68,7 @@ public class CloudDiscoveryServiceWaterImp extends TimerTask implements CloudDis
     private void runByFile() {
         if (Utils.isNotEmpty(Solon.cfg().appName())) {
             try {
-                for (Signal signal : Solon.global().signals()) {
+                for (Signal signal : Solon.app().signals()) {
                     Instance instance = Instance.localNew(signal);
                     register(Solon.cfg().appGroup(), instance);
                 }

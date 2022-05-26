@@ -4,7 +4,6 @@ import org.apache.dubbo.config.*;
 import org.apache.dubbo.config.annotation.Reference;
 import org.apache.dubbo.rpc.model.ApplicationModel;
 import org.noear.solon.Solon;
-import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.core.NvMap;
 
@@ -78,7 +77,7 @@ public class DubboAdapter {
             }
 
             if (props.containsKey("port") == false) {
-                int port = Solon.global().port() + 20000;
+                int port = Solon.app().port() + 20000;
                 props.put("port", String.valueOf(port));
                 protocol.setPort(port);
             }

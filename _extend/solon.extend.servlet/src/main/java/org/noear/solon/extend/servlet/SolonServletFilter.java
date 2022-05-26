@@ -40,7 +40,7 @@ public class SolonServletFilter implements Filter {
                 doFilterStart(ctx);
 
                 //Solon处理(可能是空处理)
-                Solon.global().tryHandle(ctx);
+                Solon.app().tryHandle(ctx);
 
                 //重新设置当前上下文（上面会清掉）
                 ContextUtil.currentSet(ctx);

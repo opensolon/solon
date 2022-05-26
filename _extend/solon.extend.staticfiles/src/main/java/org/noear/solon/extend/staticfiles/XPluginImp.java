@@ -14,7 +14,7 @@ public class XPluginImp implements Plugin {
         //通过动态控制是否启用
         //
 
-        if (Solon.global().enableStaticfiles() == false) {
+        if (Solon.app().enableStaticfiles() == false) {
             return;
         }
 
@@ -42,8 +42,8 @@ public class XPluginImp implements Plugin {
 
             //2.切换代理（让静态文件优先）
             HandlerPipeline pipeline = new HandlerPipeline();
-            pipeline.next(new StaticResourceHandler()).next(Solon.global().handlerGet());
-            Solon.global().handlerSet(pipeline);
+            pipeline.next(new StaticResourceHandler()).next(Solon.app().handlerGet());
+            Solon.app().handlerSet(pipeline);
         }
     }
 }

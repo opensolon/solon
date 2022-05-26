@@ -31,10 +31,15 @@ public class Solon {
     //全局默认编码
     private static String encoding = "utf-8";
 
+    @Deprecated
+    public static SolonApp global() {
+        return global;
+    }
+
     /**
      * 全局实例
      */
-    public static SolonApp global() {
+    public static SolonApp app() {
         return global;
     }
 
@@ -42,7 +47,7 @@ public class Solon {
      * 应用配置
      */
     public static SolonProps cfg() {
-        return global().cfg();
+        return app().cfg();
     }
 
     /**
@@ -191,7 +196,7 @@ public class Solon {
     }
 
     private static void stop0(boolean exit, int delay) {
-        if (Solon.global() == null) {
+        if (Solon.app() == null) {
             return;
         }
 
@@ -216,7 +221,7 @@ public class Solon {
                 sleep0(delay1);
             }
 
-            Solon.global().stopped = true;
+            Solon.app().stopped = true;
 
             //二段暂停
             if (delay2 > 0) {
@@ -233,7 +238,7 @@ public class Solon {
             Solon.cfg().plugs().forEach(p -> p.prestop());
 
             //2.标停
-            Solon.global().stopped = true;
+            Solon.app().stopped = true;
             //3.停止
             Solon.cfg().plugs().forEach(p -> p.stop());
         }

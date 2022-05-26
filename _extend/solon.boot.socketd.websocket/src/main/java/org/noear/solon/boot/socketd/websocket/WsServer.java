@@ -34,7 +34,7 @@ public class WsServer extends WebSocketServer {
             session.headerSet(k, shake.getFieldValue(k));
         });
 
-        Solon.global().listener().onOpen(session);
+        Solon.app().listener().onOpen(session);
     }
 
     @Override
@@ -43,7 +43,7 @@ public class WsServer extends WebSocketServer {
             return;
         }
 
-        Solon.global().listener().onClose(_SocketServerSession.get(conn));
+        Solon.app().listener().onClose(_SocketServerSession.get(conn));
 
         _SocketServerSession.remove(conn);
     }
@@ -63,7 +63,7 @@ public class WsServer extends WebSocketServer {
             Session session = _SocketServerSession.get(conn);
             Message message = ProtocolManager.decode(data);
 
-            Solon.global().listener().onMessage(session, message);
+            Solon.app().listener().onMessage(session, message);
         } catch (Throwable ex) {
             EventBus.push(ex);
         }
@@ -75,6 +75,6 @@ public class WsServer extends WebSocketServer {
             return;
         }
 
-        Solon.global().listener().onError(_SocketServerSession.get(conn), ex);
+        Solon.app().listener().onError(_SocketServerSession.get(conn), ex);
     }
 }

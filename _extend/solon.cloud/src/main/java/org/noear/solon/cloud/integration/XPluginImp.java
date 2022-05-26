@@ -71,7 +71,7 @@ public class XPluginImp implements Plugin {
     public void prestop() throws Throwable {
         if (CloudClient.discovery() != null) {
             if (Utils.isNotEmpty(Solon.cfg().appName())) {
-                for (Signal signal : Solon.global().signals()) {
+                for (Signal signal : Solon.app().signals()) {
                     Instance instance = Instance.localNew(signal);
 
                     CloudClient.discovery().deregister(Solon.cfg().appGroup(), instance);

@@ -60,7 +60,7 @@ public class BeetlRender implements Render {
         forDebug();
         forRelease();
 
-        Solon.global().onSharedAdd((k, v) -> {
+        Solon.app().onSharedAdd((k, v) -> {
             putVariable(k, v);
         });
     }

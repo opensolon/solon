@@ -11,13 +11,13 @@ import webapp.demo2_mvc.ParamController;
 public class TestExt implements Plugin {
     @Override
     public void start(AopContext context) {
-        Solon.global().add("/demo2x/param", ParamController.class);
-        Solon.global().add("/demo2x/mapping", MappingController.class);
+        Solon.app().add("/demo2x/param", ParamController.class);
+        Solon.app().add("/demo2x/mapping", MappingController.class);
 
-        Solon.global().get("/",c->c.forward("/debug.htm"));
+        Solon.app().get("/", c->c.forward("/debug.htm"));
 
 
-        Solon.global().plug(new Plugin() {
+        Solon.app().plug(new Plugin() {
             @Override
             public void start(AopContext context) {
 

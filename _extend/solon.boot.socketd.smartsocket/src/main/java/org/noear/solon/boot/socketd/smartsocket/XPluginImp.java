@@ -29,12 +29,12 @@ public final class XPluginImp implements Plugin {
         SessionManager.register(new _SessionManagerImpl());
 
 
-        if (Solon.global().enableSocketD() == false) {
+        if (Solon.app().enableSocketD() == false) {
             return;
         }
 
         context.beanOnloaded((ctx) -> {
-            start0(Solon.global());
+            start0(Solon.app());
         });
     }
 

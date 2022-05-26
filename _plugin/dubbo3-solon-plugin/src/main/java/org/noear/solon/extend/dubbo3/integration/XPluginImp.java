@@ -6,8 +6,6 @@ import org.apache.dubbo.config.annotation.DubboService;
 import org.apache.dubbo.config.annotation.Reference;
 import org.apache.dubbo.config.annotation.Service;
 import org.noear.solon.Solon;
-import org.noear.solon.SolonApp;
-import org.noear.solon.core.Aop;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.extend.dubbo3.DubboAdapter;
@@ -19,7 +17,7 @@ public class XPluginImp implements Plugin {
 
     @Override
     public void start(AopContext context) {
-        if (Solon.global().source().getAnnotation(EnableDubbo.class) == null) {
+        if (Solon.app().source().getAnnotation(EnableDubbo.class) == null) {
             return;
         }
 

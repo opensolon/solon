@@ -1,8 +1,6 @@
 package org.noear.solon.extend.schedule;
 
 import org.noear.solon.Solon;
-import org.noear.solon.SolonApp;
-import org.noear.solon.core.Aop;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.event.AppLoadEndEvent;
@@ -24,7 +22,7 @@ public class XPluginImp implements Plugin {
             });
         });
 
-        Solon.global().onEvent(AppLoadEndEvent.class, e -> {
+        Solon.app().onEvent(AppLoadEndEvent.class, e -> {
             JobManager.run(JobRunner.global);
         });
     }

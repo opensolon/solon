@@ -18,17 +18,17 @@ public class XPluginImp implements Plugin {
         CacheLib.cacheFactoryAdd("local", new LocalCacheFactoryImpl());
 
         //添加事务控制支持
-        if (Solon.global().enableTransaction()) {
+        if (Solon.app().enableTransaction()) {
             context.wrapAndPut(TranExecutor.class, TranExecutorImp.global);
 
             context.beanAroundAdd(Tran.class, new TranInterceptor(), 120);
         }
 
         //添加缓存控制支持
-        if (Solon.global().enableCaching()) {
+        if (Solon.app().enableCaching()) {
             CacheLib.cacheServiceAddIfAbsent("", LocalCacheService.instance);
 
-            Solon.global().onEvent(BeanWrap.class, new CacheServiceEventListener());
+            Solon.app().onEvent(BeanWrap.class, new CacheServiceEventListener());
 
             context.beanOnloaded((ctx) -> {
                 if (ctx.hasWrap(CacheService.class) == false) {

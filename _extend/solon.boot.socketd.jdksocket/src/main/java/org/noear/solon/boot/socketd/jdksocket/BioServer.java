@@ -37,12 +37,12 @@ class BioServer {
             Socket socket = server.accept();
 
             Session session = BioSocketSession.get(socket);
-            Solon.global().listener().onOpen(session);
+            Solon.app().listener().onOpen(session);
 
             pool.execute(() -> {
                 while (true) {
                     if (socket.isClosed()) {
-                        Solon.global().listener().onClose(session);
+                        Solon.app().listener().onClose(session);
                         BioSocketSession.remove(socket);
                         break;
                     }
@@ -53,14 +53,14 @@ class BioServer {
                         if (message != null) {
                             pool.execute(() -> {
                                 try {
-                                    Solon.global().listener().onMessage(session, message);
+                                    Solon.app().listener().onMessage(session, message);
                                 } catch (Throwable ex) {
-                                    Solon.global().listener().onError(session, ex);
+                                    Solon.app().listener().onError(session, ex);
                                 }
                             });
                         }
                     } catch (Throwable ex) {
-                        Solon.global().listener().onError(session, ex);
+                        Solon.app().listener().onError(session, ex);
                     }
                 }
             });

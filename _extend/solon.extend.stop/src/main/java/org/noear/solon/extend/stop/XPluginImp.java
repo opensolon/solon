@@ -1,7 +1,6 @@
 package org.noear.solon.extend.stop;
 
 import org.noear.solon.Solon;
-import org.noear.solon.SolonApp;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
 
@@ -17,7 +16,7 @@ public class XPluginImp implements Plugin {
 
         //开启WEB关闭
         if (enable) {
-            Solon.global().get(path, (c) -> {
+            Solon.app().get(path, (c) -> {
                 int delay2 = c.paramAsInt("delay", delay);
 
                 if (delay2 < 0) {

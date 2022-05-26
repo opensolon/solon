@@ -330,7 +330,7 @@ public abstract class BeanContainer {
                 //
                 //如果没有xmapping，则不进行web注册
                 //
-                bww.load(Solon.global());
+                bww.load(Solon.app());
             }
         }
     }

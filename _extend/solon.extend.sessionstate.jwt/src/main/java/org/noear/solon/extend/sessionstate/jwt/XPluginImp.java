@@ -13,7 +13,7 @@ import org.noear.solon.core.util.PrintUtil;
 public class XPluginImp implements Plugin {
     @Override
     public void start(AopContext context) {
-        if (Solon.global().enableSessionState() == false) {
+        if (Solon.app().enableSessionState() == false) {
             return;
         }
 

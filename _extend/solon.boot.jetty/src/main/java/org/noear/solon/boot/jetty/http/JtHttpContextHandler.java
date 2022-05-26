@@ -41,7 +41,7 @@ public class JtHttpContextHandler extends AbstractHandler {
             ctx.headerSet("Solon-Boot", XPluginImp.solon_boot_ver());
         }
 
-        Solon.global().tryHandle(ctx);
+        Solon.app().tryHandle(ctx);
 
         if (ctx.getHandled() && ctx.status() >= 200) {
             baseRequest.setHandled(true);

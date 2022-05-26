@@ -22,13 +22,13 @@ public class WsSocketClientImp extends WebSocketClient {
 
     @Override
     public void onOpen(ServerHandshake serverHandshake) {
-        Solon.global().listener().onOpen(session);
+        Solon.app().listener().onOpen(session);
     }
 
     @Override
     public void onMessage(String test) {
         try {
-            Solon.global().listener().onMessage(session, Message.wrap(test).isString(true));
+            Solon.app().listener().onMessage(session, Message.wrap(test).isString(true));
         } catch (Throwable ex) {
             EventBus.push(ex);
         }
@@ -45,7 +45,7 @@ public class WsSocketClientImp extends WebSocketClient {
                 message = Message.wrap(bytes.array());
             }
 
-            Solon.global().listener().onMessage(session, message);
+            Solon.app().listener().onMessage(session, message);
         } catch (Throwable ex) {
             EventBus.push(ex);
         }
@@ -53,15 +53,15 @@ public class WsSocketClientImp extends WebSocketClient {
 
     @Override
     public void onClose(int i, String s, boolean b) {
-        Solon.global().listener().onClose(session);
+        Solon.app().listener().onClose(session);
     }
 
     @Override
     public void onError(Exception e) {
-        Solon.global().listener().onError(session, e);
+        Solon.app().listener().onError(session, e);
     }
 
     private boolean isWebSocketD() {
-        return Solon.global().enableWebSocketD() || session.flag() == SessionFlag.socketd;
+        return Solon.app().enableWebSocketD() || session.flag() == SessionFlag.socketd;
     }
 }

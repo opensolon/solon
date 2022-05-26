@@ -13,7 +13,7 @@ import org.noear.solon.extend.async.annotation.EnableAsync;
 public class XPluginImp implements Plugin {
     @Override
     public void start(AopContext context) {
-        if (Solon.global().source().getAnnotation(EnableAsync.class) == null) {
+        if (Solon.app().source().getAnnotation(EnableAsync.class) == null) {
             return;
         }
 

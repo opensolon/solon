@@ -23,7 +23,7 @@ public class XPluginImp implements Plugin {
         context.beanScan(SurenessConfiguration.class);
 
         // issue jwt rest api
-        Solon.global().get("/auth/token", ctx -> {
+        Solon.app().get("/auth/token", ctx -> {
             SubjectSum subjectSum = SurenessContextHolder.getBindSubject();
 
             if (subjectSum == null) {
@@ -38,6 +38,6 @@ public class XPluginImp implements Plugin {
             }
         });
 
-        Solon.global().after("**", ctx -> SurenessContextHolder.unbindSubject());
+        Solon.app().after("**", ctx -> SurenessContextHolder.unbindSubject());
     }
 }

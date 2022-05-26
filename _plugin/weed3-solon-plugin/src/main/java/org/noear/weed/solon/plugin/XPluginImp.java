@@ -14,7 +14,7 @@ public class XPluginImp implements Plugin {
     @Override
     public void start(AopContext context) {
         // 事件监听，用于时实初始化
-        Solon.global().onEvent(BeanWrap.class, new DsEventListener());
+        Solon.app().onEvent(BeanWrap.class, new DsEventListener());
 
         // 切换Weed的链接工厂，交于Solon托管这
         WeedConfig.connectionFactory = new DsConnectionFactoryImpl();

@@ -141,7 +141,7 @@ public class DateAnalyzer {
 
         if (ft != null) {
             DateFormat df = null;
-            if (Solon.global() == null) {
+            if (Solon.app() == null) {
                 df = new SimpleDateFormat(ft);
             } else {
                 df = new SimpleDateFormat(ft, Solon.cfg().locale());

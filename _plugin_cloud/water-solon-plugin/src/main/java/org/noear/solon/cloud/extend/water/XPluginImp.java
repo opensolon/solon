@@ -1,7 +1,6 @@
 package org.noear.solon.cloud.extend.water;
 
 import org.noear.solon.Solon;
-import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.cloud.CloudManager;
@@ -13,7 +12,6 @@ import org.noear.solon.cloud.extend.water.integration.msg.HandlerConfigUpdate;
 import org.noear.solon.cloud.extend.water.service.*;
 import org.noear.solon.cloud.model.Config;
 import org.noear.solon.cloud.model.Instance;
-import org.noear.solon.core.Aop;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
 import org.noear.water.WW;
@@ -185,13 +183,13 @@ public class XPluginImp implements Plugin {
 
         //3.注册http监听
         if (cloudProps.getJobEnable()) {
-            Solon.global().http(WW.path_run_job, new HandlerJob());
+            Solon.app().http(WW.path_run_job, new HandlerJob());
         }
 
-        Solon.global().http(WW.path_run_check, new HandlerCheck());
-        Solon.global().http(WW.path_run_status, new HandlerStatus());
-        Solon.global().http(WW.path_run_stop, new HandlerStop());
-        Solon.global().http(WW.path_run_msg, new HandlerReceive(eventServiceImp));
+        Solon.app().http(WW.path_run_check, new HandlerCheck());
+        Solon.app().http(WW.path_run_status, new HandlerStatus());
+        Solon.app().http(WW.path_run_stop, new HandlerStop());
+        Solon.app().http(WW.path_run_msg, new HandlerReceive(eventServiceImp));
     }
 
     @Override

@@ -15,7 +15,7 @@ public class WebSocketHandleImp extends WebSocketDefaultHandler {
 
     @Override
     public void onHandShake(WebSocketRequest request, WebSocketResponse response) {
-        Solon.global().listener().onOpen(_SocketServerSession.get(request, response));
+        Solon.app().listener().onOpen(_SocketServerSession.get(request, response));
     }
 
     @Override
@@ -23,7 +23,7 @@ public class WebSocketHandleImp extends WebSocketDefaultHandler {
         _SocketServerSession session = _SocketServerSession.get(request, response);
         session.onClose();
 
-        Solon.global().listener().onClose(session);
+        Solon.app().listener().onClose(session);
 
         _SocketServerSession.remove(request);
     }
@@ -34,7 +34,7 @@ public class WebSocketHandleImp extends WebSocketDefaultHandler {
             Session session = _SocketServerSession.get(request, response);
             Message message = Message.wrap(request.getRequestURI(),null, data);
 
-            Solon.global().listener().onMessage(session, message.isString(true));
+            Solon.app().listener().onMessage(session, message.isString(true));
         } catch (Throwable ex) {
             EventBus.push(ex);
         }
@@ -46,13 +46,13 @@ public class WebSocketHandleImp extends WebSocketDefaultHandler {
             Session session = _SocketServerSession.get(request, response);
             Message message = null;
 
-            if (Solon.global().enableWebSocketD()) {
+            if (Solon.app().enableWebSocketD()) {
                 message = ProtocolManager.decode(ByteBuffer.wrap(data));
             } else {
                 message = Message.wrap(request.getRequestURI(), null, data);
             }
 
-            Solon.global().listener().onMessage(session, message);
+            Solon.app().listener().onMessage(session, message);
 
         } catch (Throwable ex) {
             EventBus.push(ex);

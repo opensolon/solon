@@ -24,12 +24,12 @@ public class XPluginImp implements Plugin {
         //注册会话管理器
         SessionManager.register(new _SessionManagerImpl());
 
-        if (Solon.global().enableWebSocket() == false) {
+        if (Solon.app().enableWebSocket() == false) {
             return;
         }
 
         context.beanOnloaded((ctx) -> {
-            start0(Solon.global());
+            start0(Solon.app());
         });
     }
 

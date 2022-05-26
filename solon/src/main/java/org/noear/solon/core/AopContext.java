@@ -160,14 +160,14 @@ public class AopContext extends BeanContainer {
 
         //注册 @Controller 构建器
         beanBuilderAdd(Controller.class, (clz, bw, anno) -> {
-            new HandlerLoader(bw).load(Solon.global());
+            new HandlerLoader(bw).load(Solon.app());
         });
 
         //注册 @ServerEndpoint 构建器
         beanBuilderAdd(ServerEndpoint.class, (clz, wrap, anno) -> {
             if (Listener.class.isAssignableFrom(clz)) {
                 Listener l = wrap.raw();
-                Solon.global().router().add(Utils.annoAlias(anno.value(), anno.path()), anno.method(), l);
+                Solon.app().router().add(Utils.annoAlias(anno.value(), anno.path()), anno.method(), l);
             }
         });
 
@@ -185,7 +185,7 @@ public class AopContext extends BeanContainer {
         //Plugin
         if (Plugin.class.isAssignableFrom(clz)) {
             //如果是插件，则插入
-            Solon.global().plug(bw.raw());
+            Solon.app().plug(bw.raw());
             return;
         }
 
@@ -209,13 +209,13 @@ public class AopContext extends BeanContainer {
                 if (v0.size() == 0) {
                     v0 = new HashSet<>(Arrays.asList(mapping.method()));
                 }
-                Solon.global().add(mapping, v0, handler);
+                Solon.app().add(mapping, v0, handler);
             }
         }
 
         //Filter
         if (Filter.class.isAssignableFrom(clz)) {
-            Solon.global().filter(index, bw.raw());
+            Solon.app().filter(index, bw.raw());
         }
     }
 

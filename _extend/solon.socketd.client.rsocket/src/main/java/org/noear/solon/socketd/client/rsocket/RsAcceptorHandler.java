@@ -41,7 +41,7 @@ public class RsAcceptorHandler implements RSocket {
             Message message = ProtocolManager.decode(byteBuffer);
 
             try {
-                Solon.global().listener().onMessage(session, message);
+                Solon.app().listener().onMessage(session, message);
             } catch (Throwable ex) {
                 EventBus.push(ex);
             }

@@ -14,7 +14,7 @@ public class NioServerProcessor extends SimpleChannelInboundHandler<Message> {
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, Message msg) throws Exception {
         Session session = NioSocketSession.get(ctx.channel());
-        Solon.global().listener().onMessage(session, msg);
+        Solon.app().listener().onMessage(session, msg);
     }
 
     @Override
@@ -22,7 +22,7 @@ public class NioServerProcessor extends SimpleChannelInboundHandler<Message> {
         super.channelActive(ctx);
 
         Session session = NioSocketSession.get(ctx.channel());
-        Solon.global().listener().onOpen(session);
+        Solon.app().listener().onOpen(session);
     }
 
     @Override
@@ -30,13 +30,13 @@ public class NioServerProcessor extends SimpleChannelInboundHandler<Message> {
         super.channelInactive(ctx);
 
         Session session = NioSocketSession.get(ctx.channel());
-        Solon.global().listener().onClose(session);
+        Solon.app().listener().onClose(session);
     }
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         Session session = NioSocketSession.get(ctx.channel());
-        Solon.global().listener().onError(session, cause);
+        Solon.app().listener().onError(session, cause);
 
         ctx.close();
     }

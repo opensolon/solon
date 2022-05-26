@@ -31,7 +31,7 @@ public final class XPluginImp implements Plugin {
 
     @Override
     public  void start(AopContext context) {
-        if (Solon.global().enableHttp() == false) {
+        if (Solon.app().enableHttp() == false) {
             return;
         }
         //如果有jetty插件，就不启动了
@@ -45,7 +45,7 @@ public final class XPluginImp implements Plugin {
         }
 
         context.beanOnloaded((ctx) -> {
-            start0(Solon.global());
+            start0(Solon.app());
         });
     }
 

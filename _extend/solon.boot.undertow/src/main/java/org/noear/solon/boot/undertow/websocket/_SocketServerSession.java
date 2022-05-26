@@ -86,7 +86,7 @@ public class _SocketServerSession extends SessionBase {
 
     @Override
     public void sendAsync(String message) {
-        if (Solon.global().enableWebSocketD()) {
+        if (Solon.app().enableWebSocketD()) {
             ByteBuffer buf = ProtocolManager.encode(Message.wrap(message));
             WebSockets.sendBinary(buf, real, _CallbackImpl.instance);
         } else {
@@ -98,7 +98,7 @@ public class _SocketServerSession extends SessionBase {
     public void sendAsync(Message message) {
         super.send(message);
 
-        if (Solon.global().enableWebSocketD()) {
+        if (Solon.app().enableWebSocketD()) {
             ByteBuffer buf = ProtocolManager.encode(message);
             WebSockets.sendBinary(buf, real, _CallbackImpl.instance);
         } else {
@@ -114,7 +114,7 @@ public class _SocketServerSession extends SessionBase {
     @Override
     public void send(String message) {
         try {
-            if (Solon.global().enableWebSocketD()) {
+            if (Solon.app().enableWebSocketD()) {
                 ByteBuffer buf = ProtocolManager.encode(Message.wrap(message));
                 WebSockets.sendBinaryBlocking(buf, real);
             } else {
@@ -132,7 +132,7 @@ public class _SocketServerSession extends SessionBase {
         super.send(message);
 
         try {
-            if (Solon.global().enableWebSocketD()) {
+            if (Solon.app().enableWebSocketD()) {
                 ByteBuffer buf = ProtocolManager.encode(message);
                 WebSockets.sendBinaryBlocking(buf, real);
             } else {

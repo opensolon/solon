@@ -25,7 +25,7 @@ public class HasorConfiguration implements EventListener<BeanLoadEndEvent> {
     private static Logger logger = LoggerFactory.getLogger(HasorConfiguration.class);
 
     public HasorConfiguration() {
-        this(Solon.global().source().getAnnotation(EnableHasor.class));
+        this(Solon.app().source().getAnnotation(EnableHasor.class));
     }
 
     /**
@@ -81,7 +81,7 @@ public class HasorConfiguration implements EventListener<BeanLoadEndEvent> {
     public void onEvent(BeanLoadEndEvent beanLoadedEvent) {
         //没有EnableHasorWeb时，生成AppContext并注入容器
         //
-        if (Solon.global().source().getAnnotation(EnableHasorWeb.class) == null) {
+        if (Solon.app().source().getAnnotation(EnableHasorWeb.class) == null) {
             //所有bean加载完成之后，手动注入AppContext
             Aop.wrapAndPut(AppContext.class, initAppContext());
         }

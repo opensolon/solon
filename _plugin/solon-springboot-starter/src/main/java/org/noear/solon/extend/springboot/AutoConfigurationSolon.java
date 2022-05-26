@@ -27,8 +27,8 @@ public class AutoConfigurationSolon {
     @ConditionalOnWebApplication
     public FilterRegistrationBean servletRegistrationBean() {
         //如果是WEB，注册一个信号
-        Signal signal = new SignalSim(Solon.cfg().appName(), Solon.global().port(), "http", SignalType.HTTP);
-        Solon.global().signalAdd(signal);
+        Signal signal = new SignalSim(Solon.cfg().appName(), Solon.app().port(), "http", SignalType.HTTP);
+        Solon.app().signalAdd(signal);
         EventBus.push(signal);
 
 

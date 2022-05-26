@@ -63,7 +63,7 @@ public class Bridge {
             if (sessionStateUpdated == false) {
                 sessionStateUpdated = true;
 
-                Solon.global().before("**", MethodType.HTTP, (c) -> {
+                Solon.app().before("**", MethodType.HTTP, (c) -> {
                     c.sessionState().sessionRefresh();
                 });
             }

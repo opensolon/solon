@@ -29,7 +29,7 @@ public class SocketRpcTest {
     @Test
     public void test_rpc_api2() throws Throwable {
         HelloRpcService rpc = Nami.builder()
-                .url("tcp://localhost:" + (Solon.global().port() + 20000) + "/demoh/rpc")
+                .url("tcp://localhost:" + (Solon.app().port() + 20000) + "/demoh/rpc")
                 .create(HelloRpcService.class);
 
         String rst = rpc.hello("noear");
@@ -41,7 +41,7 @@ public class SocketRpcTest {
     @Test
     public void test_rpc_api3() throws Throwable {
         HelloRpcService rpc = Nami.builder()
-                .upstream(() -> "tcp://localhost:" + (Solon.global().port() + 20000))
+                .upstream(() -> "tcp://localhost:" + (Solon.app().port() + 20000))
                 .create(HelloRpcService.class);
 
         String rst = rpc.hello("noear");
@@ -53,7 +53,7 @@ public class SocketRpcTest {
     @Test
     public void test_rpc_api_http1() throws Throwable {
         HelloRpcService rpc = Nami.builder()
-                .upstream(() -> "http://localhost:" + Solon.global().port())
+                .upstream(() -> "http://localhost:" + Solon.app().port())
                 .create(HelloRpcService.class);
 
         String rst = rpc.hello("noear");
@@ -65,7 +65,7 @@ public class SocketRpcTest {
     @Test
     public void test_rpc_api_ws1() throws Throwable {
         HelloRpcService rpc = Nami.builder()
-                .upstream(() -> "ws://localhost:" + (Solon.global().port() + 15000))
+                .upstream(() -> "ws://localhost:" + (Solon.app().port() + 15000))
                 .create(HelloRpcService.class);
 
         String rst = rpc.hello("noear");

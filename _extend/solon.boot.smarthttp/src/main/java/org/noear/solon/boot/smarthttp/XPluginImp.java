@@ -31,12 +31,12 @@ public final class XPluginImp implements Plugin {
 
     @Override
     public void start(AopContext context) {
-        if (Solon.global().enableHttp() == false) {
+        if (Solon.app().enableHttp() == false) {
             return;
         }
 
         context.beanOnloaded((ctx) -> {
-            start0(Solon.global());
+            start0(Solon.app());
         });
     }
 

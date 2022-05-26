@@ -5,7 +5,6 @@ import net.hasor.utils.ExceptionUtils;
 import net.hasor.web.startup.RuntimeFilter;
 import net.hasor.web.startup.RuntimeListener;
 import org.noear.solon.Solon;
-import org.noear.solon.SolonApp;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.core.Aop;
 import org.slf4j.Logger;
@@ -29,7 +28,7 @@ public class HasorWebConfiguration implements ServletContainerInitializer {
     private int filterOrder = 0;
 
     public HasorWebConfiguration() {
-        this(Solon.global().source().getAnnotation(EnableHasorWeb.class));
+        this(Solon.app().source().getAnnotation(EnableHasorWeb.class));
     }
 
     /**

@@ -17,7 +17,7 @@ public class XPluginImp implements Plugin {
     @Override
     public void start(AopContext context) {
         //监听事件
-        Solon.global().onEvent(BeanWrap.class, new DsEventListener());
+        Solon.app().onEvent(BeanWrap.class, new DsEventListener());
 
         //for @Deprecated
         context.beanBuilderAdd(org.beetl.sql.ext.solon.Db.class, (clz, wrap, anno) -> {

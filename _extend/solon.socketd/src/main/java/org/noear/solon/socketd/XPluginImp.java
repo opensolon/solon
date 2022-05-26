@@ -15,7 +15,7 @@ public class XPluginImp implements Plugin {
     public void start(AopContext context) {
         //注册 @ClientListenEndpoint 构建器
 
-        Solon.global().listenAfter(new RouterListener());
+        Solon.app().listenAfter(new RouterListener());
 
         context.beanBuilderAdd(ClientEndpoint.class, (clz, wrap, anno) -> {
             if (Listener.class.isAssignableFrom(clz)) {

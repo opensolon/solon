@@ -38,7 +38,7 @@ class PluginUndertow extends PluginUndertowBase implements Plugin {
     @Override
     public void start(AopContext context) {
         try {
-            setup(Solon.global());
+            setup(Solon.app());
 
             _server.start();
         } catch (RuntimeException e) {

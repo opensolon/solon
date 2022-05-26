@@ -22,7 +22,7 @@ public class UtWsChannelListener extends AbstractReceiveListener {
             }
         });
 
-        Solon.global().listener().onOpen(session);
+        Solon.app().listener().onOpen(session);
     }
 
 
@@ -38,13 +38,13 @@ public class UtWsChannelListener extends AbstractReceiveListener {
                 Session session = _SocketServerSession.get(channel);
                 Message message = null;
 
-                if (Solon.global().enableWebSocketD()) {
+                if (Solon.app().enableWebSocketD()) {
                     message = ProtocolManager.decode(byteBuffer);
                 } else {
                     message = Message.wrap(channel.getUrl(), null, byteBuffer.array());
                 }
 
-                Solon.global().listener().onMessage(session, message);
+                Solon.app().listener().onMessage(session, message);
 
             } finally {
                 pulledData.discard();
@@ -61,7 +61,7 @@ public class UtWsChannelListener extends AbstractReceiveListener {
             Session session = _SocketServerSession.get(channel);
             Message message = Message.wrap(channel.getUrl(), null, msg.getData());
 
-            Solon.global().listener().onMessage(session, message.isString(true));
+            Solon.app().listener().onMessage(session, message.isString(true));
         } catch (Throwable ex) {
             EventBus.push(ex);
         }
@@ -69,13 +69,13 @@ public class UtWsChannelListener extends AbstractReceiveListener {
 
     @Override
     protected void onClose(WebSocketChannel channel, StreamSourceFrameChannel frameChannel) throws IOException {
-        Solon.global().listener().onClose(_SocketServerSession.get(channel));
+        Solon.app().listener().onClose(_SocketServerSession.get(channel));
 
         _SocketServerSession.remove(channel);
     }
 
     @Override
     protected void onError(WebSocketChannel channel, Throwable error) {
-        Solon.global().listener().onError(_SocketServerSession.get(channel), error);
+        Solon.app().listener().onError(_SocketServerSession.get(channel), error);
     }
 }

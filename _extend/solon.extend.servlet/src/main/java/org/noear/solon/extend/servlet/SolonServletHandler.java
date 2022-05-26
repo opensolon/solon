@@ -26,7 +26,7 @@ public class SolonServletHandler extends HttpServlet {
 
         preHandle(ctx);
 
-        Solon.global().tryHandle(ctx);
+        Solon.app().tryHandle(ctx);
 
         if (ctx.getHandled() == false || ctx.status() == 404) {
             response.setStatus(404);

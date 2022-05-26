@@ -91,7 +91,7 @@ public class LogOptions {
             return;
         }
 
-        if (Solon.global() == null) {
+        if (Solon.app() == null) {
             return;
         }
 

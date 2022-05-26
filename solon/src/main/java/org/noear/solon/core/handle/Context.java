@@ -877,7 +877,7 @@ public abstract class Context {
     @Note("转发")
     public void forward(String pathNew){
         pathNew(pathNew);
-        Solon.global().tryHandle(this);
+        Solon.app().tryHandle(this);
         setHandled(true);
         setRendered(true);
     }

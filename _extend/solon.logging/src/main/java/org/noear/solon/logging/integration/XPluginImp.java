@@ -43,7 +43,7 @@ public class XPluginImp implements Plugin {
         //init
         LogOptions.getLoggerLevelInit();
 
-        Solon.global().filter(-9, (ctx, chain) -> {
+        Solon.app().filter(-9, (ctx, chain) -> {
             MDC.clear();
             chain.doFilter(ctx);
         });

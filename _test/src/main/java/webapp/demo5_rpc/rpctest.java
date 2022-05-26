@@ -29,7 +29,7 @@ public class rpctest implements Handler {
     }
 
     private Object httpOf() {
-        String root = "http://localhost:" + Solon.global().port();
+        String root = "http://localhost:" + Solon.app().port();
 
         rockapi client = Nami.builder()
                 .decoder(SnackDecoder.instance)
@@ -40,7 +40,7 @@ public class rpctest implements Handler {
     }
 
     private Object socketOf() {
-        int _port = 20000 + Solon.global().port();
+        int _port = 20000 + Solon.app().port();
         rockapi client = SocketD.create("tcp://localhost:" + _port, rockapi.class);
 
         return client.test1(12);

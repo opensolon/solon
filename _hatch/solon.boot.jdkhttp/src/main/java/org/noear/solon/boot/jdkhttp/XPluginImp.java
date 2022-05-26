@@ -26,11 +26,11 @@ public final class XPluginImp implements Plugin {
 
     @Override
     public  void start(AopContext context) {
-        if (Solon.global().enableHttp() == false) {
+        if (Solon.app().enableHttp() == false) {
             return;
         }
 
-        SolonApp app = Solon.global();
+        SolonApp app = Solon.app();
 
         String _name = app.cfg().get(ServerConstants.SERVER_HTTP_NAME);
         int _port = app.cfg().getInt(ServerConstants.SERVER_HTTP_PORT, 0);

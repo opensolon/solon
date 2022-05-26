@@ -45,25 +45,25 @@ public class JapInitializer {
         log.info("\tMfa: {}", japMfaService != null ? "已启用" : "未启用");
 
         // 启用用户接口
-        Solon.global().add(japProperties.getAccountPath(), AccountController.class);
+        Solon.app().add(japProperties.getAccountPath(), AccountController.class);
 
         // 启用 Simple
         if(japProperties.getSimpleConfig() != null) {
             Aop.wrapAndPut(SimpleStrategy.class, new SimpleStrategy(japUserService, japProperties.getJapConfig()));
-            Solon.global().add(japProperties.getAuthPath(), SimpleController.class);
+            Solon.app().add(japProperties.getAuthPath(), SimpleController.class);
         }
 
         // 启用 Social
         if(japProperties.getCredentials() != null) {
             Aop.wrapAndPut(SocialStrategy.class, new FixedSocialStrategy(japUserService, japProperties.getJapConfig()));
-            Solon.global().add(japProperties.getAuthPath(), SocialController.class);
+            Solon.app().add(japProperties.getAuthPath(), SocialController.class);
         }
 
         // 启用 Mfa
         if(japMfaService != null) {
             JapMfa japMfa = new JapMfa(japMfaService);
             Aop.wrapAndPut(JapMfa.class, japMfa);
-            Solon.global().add(japProperties.getAuthPath(), MfaController.class);
+            Solon.app().add(japProperties.getAuthPath(), MfaController.class);
         }
     }
 }

@@ -37,7 +37,7 @@ public class RsAcceptor implements SocketAcceptor {
         }
 
 
-        Solon.global().listener().onOpen(session1);
+        Solon.app().listener().onOpen(session1);
 
         return Mono.just(new RsAcceptorHandler(rSocket, session1));
     }

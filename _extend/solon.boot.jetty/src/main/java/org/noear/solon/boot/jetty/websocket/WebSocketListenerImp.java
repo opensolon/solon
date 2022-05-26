@@ -22,7 +22,7 @@ public class WebSocketListenerImp extends WebSocketAdapter {
             }
         });
 
-        Solon.global().listener().onOpen(session);
+        Solon.app().listener().onOpen(session);
     }
 
     @Override
@@ -33,14 +33,14 @@ public class WebSocketListenerImp extends WebSocketAdapter {
 
             Message message = null;
 
-            if (Solon.global().enableWebSocketD()) {
+            if (Solon.app().enableWebSocketD()) {
                 message = ProtocolManager.decode(buf);
             } else {
                 message = Message.wrap(getSession().getUpgradeRequest().getOrigin(), null,
                         buf.array());
             }
 
-            Solon.global().listener().onMessage(session, message);
+            Solon.app().listener().onMessage(session, message);
         } catch (Throwable ex) {
             EventBus.push(ex);
         }
@@ -52,7 +52,7 @@ public class WebSocketListenerImp extends WebSocketAdapter {
             Session session = _SocketServerSession.get(getSession());
             Message message = Message.wrap(getSession().getUpgradeRequest().getRequestURI().toString(), null, text);
 
-            Solon.global().listener().onMessage(session, message.isString(true));
+            Solon.app().listener().onMessage(session, message.isString(true));
 
         } catch (Throwable ex) {
             EventBus.push(ex);
@@ -61,7 +61,7 @@ public class WebSocketListenerImp extends WebSocketAdapter {
 
     @Override
     public void onWebSocketClose(int statusCode, String reason) {
-        Solon.global().listener().onClose(_SocketServerSession.get(getSession()));
+        Solon.app().listener().onClose(_SocketServerSession.get(getSession()));
 
         _SocketServerSession.remove(getSession());
         super.onWebSocketClose(statusCode, reason);
@@ -69,6 +69,6 @@ public class WebSocketListenerImp extends WebSocketAdapter {
 
     @Override
     public void onWebSocketError(Throwable cause) {
-        Solon.global().listener().onError(_SocketServerSession.get(getSession()), cause);
+        Solon.app().listener().onError(_SocketServerSession.get(getSession()), cause);
     }
 }

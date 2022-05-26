@@ -35,8 +35,8 @@ public class TracingManager {
         NamiManager.reg(new NamiFilterTracing());
 
         //添加 solon 适配
-        Solon.global().filter(new SolonFilterTracing(excluded));
-        Solon.global().onError(new ErrorListenerTracing());
+        Solon.app().filter(new SolonFilterTracing(excluded));
+        Solon.app().onError(new ErrorListenerTracing());
 
         //添加 @Tracing 适配
         Aop.context().beanAroundAdd(Tracing.class, new TracingInterceptor());

@@ -32,7 +32,7 @@ public class RsSocketSession extends SessionBase {
                     sessions.put(real, tmp);
 
                     //算第一次
-                    Solon.global().listener().onOpen(tmp);
+                    Solon.app().listener().onOpen(tmp);
                 }
             }
         }
@@ -169,7 +169,7 @@ public class RsSocketSession extends SessionBase {
 
         real.fireAndForget(DefaultPayload.create(buf))
                 .doOnError((err) -> {
-                    Solon.global().listener().onError(this, err);
+                    Solon.app().listener().onError(this, err);
                 })
                 .subscribe();
     }

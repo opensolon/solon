@@ -27,7 +27,7 @@ public final class AppenderHolder {
         //开始生命周期
         real.start();
 
-        if (Solon.global() != null) {
+        if (Solon.app() != null) {
             String levelStr = Solon.cfg().get("solon.logging.appender." + getName() + ".level");
 
             //设置级别

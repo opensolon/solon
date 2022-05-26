@@ -30,7 +30,7 @@ public final class XPluginImp implements Plugin {
 
     @Override
     public void start(AopContext context) {
-        if (Solon.global().enableHttp() == false) {
+        if (Solon.app().enableHttp() == false) {
             return;
         }
 
@@ -44,7 +44,7 @@ public final class XPluginImp implements Plugin {
         context.beanBuilderAdd(WebListener.class,(clz, bw, ano)->{});
 
         context.beanOnloaded((ctx) -> {
-            start0(Solon.global(), context);
+            start0(Solon.app(), context);
         });
     }
 

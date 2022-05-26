@@ -61,7 +61,7 @@ class RnHttpHandler implements BiFunction<HttpServerRequest, HttpServerResponse,
             ctx.headerSet("Solon-Boot", XPluginImp.solon_boot_ver());
         }
 
-        Solon.global().tryHandle(ctx);
+        Solon.app().tryHandle(ctx);
 
         if (ctx.status() == 404) {
             return null;  //response.sendNotFound();

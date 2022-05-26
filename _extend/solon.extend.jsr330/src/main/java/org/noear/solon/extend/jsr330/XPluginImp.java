@@ -17,7 +17,7 @@ public class XPluginImp implements Plugin {
 
             if (Plugin.class.isAssignableFrom(bw.clz())) {
                 //如果是插件，则插入
-                Solon.global().plug(bw.raw());
+                Solon.app().plug(bw.raw());
             } else {
 
                 //注册到容器
@@ -30,7 +30,7 @@ public class XPluginImp implements Plugin {
                         //
                         //如果没有xmapping，则不进行web注册
                         //
-                        bww.load(Solon.global());
+                        bww.load(Solon.app());
                     }
                 }
             }

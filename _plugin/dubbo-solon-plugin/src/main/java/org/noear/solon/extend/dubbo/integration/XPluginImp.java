@@ -15,7 +15,7 @@ public class XPluginImp implements Plugin {
 
     @Override
     public void start(AopContext context) {
-        if (Solon.global().source().getAnnotation(EnableDubbo.class) == null) {
+        if (Solon.app().source().getAnnotation(EnableDubbo.class) == null) {
             return;
         }
 

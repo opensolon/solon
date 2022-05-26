@@ -51,7 +51,7 @@ public class BioConnector extends ConnectorBase<Socket> {
         Utils.pools.submit(() -> {
             while (true) {
                 if (socket.isClosed()) {
-                    Solon.global().listener().onClose(session);
+                    Solon.app().listener().onClose(session);
                     break;
                 }
 
@@ -61,14 +61,14 @@ public class BioConnector extends ConnectorBase<Socket> {
                     if (message != null) {
                         Utils.pools.execute(() -> {
                             try {
-                                Solon.global().listener().onMessage(session, message);
+                                Solon.app().listener().onMessage(session, message);
                             } catch (Throwable ex) {
-                                Solon.global().listener().onError(session, ex);
+                                Solon.app().listener().onError(session, ex);
                             }
                         });
                     }
                 } catch (Exception ex) {
-                    Solon.global().listener().onError(session, ex);
+                    Solon.app().listener().onError(session, ex);
                 }
             }
         });

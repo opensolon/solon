@@ -31,7 +31,7 @@ public class JlHttpContextHandler implements HTTPServer.ContextHandler {
             ctx.headerSet("Solon-Boot", XPluginImp.solon_boot_ver());
         }
 
-        Solon.global().tryHandle(ctx);
+        Solon.app().tryHandle(ctx);
 
         if (ctx.getHandled() && ctx.status() >= 200) {
             ctx.commit();

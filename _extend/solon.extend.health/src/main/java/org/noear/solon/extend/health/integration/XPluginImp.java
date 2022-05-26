@@ -15,7 +15,7 @@ public class XPluginImp implements Plugin {
         //
         // HealthHandler 独立出来，便于其它检测路径的复用
         //
-        Solon.global().get(HealthHandler.HANDLER_PATH, HealthHandler.getInstance());
-        Solon.global().head(HealthHandler.HANDLER_PATH, HealthHandler.getInstance());
+        Solon.app().get(HealthHandler.HANDLER_PATH, HealthHandler.getInstance());
+        Solon.app().head(HealthHandler.HANDLER_PATH, HealthHandler.getInstance());
     }
 }

@@ -8,7 +8,7 @@ public class HttpTestBase {
     }
 
     public HttpUtils path(String path) {
-        return http("http://localhost:" + Solon.global().port() + path);
+        return http("http://localhost:" + Solon.app().port() + path);
     }
 
     public HttpUtils http(String url) {

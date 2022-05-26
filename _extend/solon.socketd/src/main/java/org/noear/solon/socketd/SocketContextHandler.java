@@ -28,7 +28,7 @@ public class SocketContextHandler {
         try {
             SocketContext ctx = new SocketContext(session, message);
 
-            Solon.global().tryHandle(ctx);
+            Solon.app().tryHandle(ctx);
 
             if (ctx.getHandled() || ctx.status() != 404) {
                 ctx.commit();

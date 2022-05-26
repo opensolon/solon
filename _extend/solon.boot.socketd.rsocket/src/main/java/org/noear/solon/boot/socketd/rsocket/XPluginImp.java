@@ -4,7 +4,6 @@ import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.boot.ServerConstants;
 import org.noear.solon.core.*;
-import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.PrintUtil;
 import org.noear.solon.socketd.SessionManager;
 
@@ -25,12 +24,12 @@ public class XPluginImp implements Plugin {
         //注册会话管理器
         SessionManager.register(new _SessionManagerImpl());
 
-        if (Solon.global().enableSocketD() == false) {
+        if (Solon.app().enableSocketD() == false) {
             return;
         }
 
         context.beanOnloaded((ctx) -> {
-            start0(Solon.global());
+            start0(Solon.app());
         });
     }
 

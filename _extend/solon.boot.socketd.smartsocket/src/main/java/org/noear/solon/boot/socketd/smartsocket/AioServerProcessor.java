@@ -17,7 +17,7 @@ class AioServerProcessor implements MessageProcessor<Message> {
         try {
             Session session1 = AioSocketSession.get(session);
 
-            Solon.global().listener().onMessage(session1, message);
+            Solon.app().listener().onMessage(session1, message);
         } catch (Throwable ex) {
             EventBus.push(ex);
         }
@@ -28,11 +28,11 @@ class AioServerProcessor implements MessageProcessor<Message> {
 
         switch (state) {
             case NEW_SESSION:
-                Solon.global().listener().onOpen(AioSocketSession.get(session));
+                Solon.app().listener().onOpen(AioSocketSession.get(session));
                 break;
 
             case SESSION_CLOSED:
-                Solon.global().listener().onClose(AioSocketSession.get(session));
+                Solon.app().listener().onClose(AioSocketSession.get(session));
                 AioSocketSession.remove(session);
                 break;
 
@@ -41,7 +41,7 @@ class AioServerProcessor implements MessageProcessor<Message> {
             case INPUT_EXCEPTION:
             case ACCEPT_EXCEPTION:
             case OUTPUT_EXCEPTION:
-                Solon.global().listener().onError(AioSocketSession.get(session), throwable);
+                Solon.app().listener().onError(AioSocketSession.get(session), throwable);
                 break;
         }
 

@@ -2,10 +2,8 @@ package org.noear.solon.extend.mybatis.integration;
 
 import org.apache.ibatis.session.SqlSession;
 import org.noear.solon.Solon;
-import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.core.*;
-import org.apache.ibatis.ext.solon.Db;
 import org.noear.solon.extend.mybatis.MybatisAdapter;
 
 import javax.sql.DataSource;
@@ -14,7 +12,7 @@ public class XPluginImp implements Plugin {
     @Override
     public void start(AopContext context) {
 
-        Solon.global().onEvent(BeanWrap.class, new DsEventListener());
+        Solon.app().onEvent(BeanWrap.class, new DsEventListener());
 
         //for @Deprecated
         context.beanBuilderAdd(org.apache.ibatis.ext.solon.Db.class, (clz, wrap, anno) -> {

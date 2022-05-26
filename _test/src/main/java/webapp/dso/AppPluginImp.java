@@ -2,7 +2,6 @@ package webapp.dso;
 
 import freemarker.template.Configuration;
 import org.noear.solon.Solon;
-import org.noear.solon.SolonApp;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
 
@@ -14,7 +13,7 @@ public class AppPluginImp implements Plugin {
     public void start(AopContext context) {
         //Aop.context().beanAroundAdd();
 
-        Solon.global().onEvent(Configuration.class, cfg -> {
+        Solon.app().onEvent(Configuration.class, cfg -> {
             System.out.println("%%%%%%%%%%%%%%%%%%");
             cfg.setSetting("classic_compatible", "true");
         });

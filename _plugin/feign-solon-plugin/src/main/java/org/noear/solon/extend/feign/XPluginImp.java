@@ -4,7 +4,6 @@ import feign.Feign;
 import feign.Request;
 import feign.Retryer;
 import org.noear.solon.Solon;
-import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.core.*;
 
@@ -15,7 +14,7 @@ public class XPluginImp implements Plugin {
     @Override
     public void start(AopContext context) {
         //检查是否启用了@FeignClient
-        if (Solon.global().source().getAnnotation(EnableFeignClient.class) == null) {
+        if (Solon.app().source().getAnnotation(EnableFeignClient.class) == null) {
             return;
         }
 

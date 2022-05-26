@@ -74,7 +74,7 @@ class PluginJettyBase {
 
 
         //添加session state 支持
-        if(Solon.global().enableSessionState()) {
+        if(Solon.app().enableSessionState()) {
             handler.setSessionHandler(new SessionHandler());
 
             if (ServerProps.session_timeout > 0) {
@@ -92,7 +92,7 @@ class PluginJettyBase {
         //::走Handler接口
         JtHttpContextHandler _handler = new JtHttpContextHandler();
 
-        if(Solon.global().enableSessionState()) {
+        if(Solon.app().enableSessionState()) {
             //需要session state
             //
             SessionHandler s_handler = new SessionHandler();

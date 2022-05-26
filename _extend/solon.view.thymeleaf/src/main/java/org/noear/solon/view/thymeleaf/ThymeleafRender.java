@@ -49,7 +49,7 @@ public class ThymeleafRender implements Render {
         forRelease();
 
         try {
-            Solon.global().shared().forEach((k, v) -> {
+            Solon.app().shared().forEach((k, v) -> {
                 putVariable(k, v);
             });
 
@@ -57,7 +57,7 @@ public class ThymeleafRender implements Render {
             EventBus.push(ex);
         }
 
-        Solon.global().onSharedAdd((k, v) -> {
+        Solon.app().onSharedAdd((k, v) -> {
             putVariable(k, v);
         });
     }

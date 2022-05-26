@@ -4,7 +4,6 @@ import com.fujieid.jap.ids.JapIds;
 import com.fujieid.jap.ids.context.IdsContext;
 import com.fujieid.jap.ids.solon.IdsProps;
 import org.noear.solon.Solon;
-import org.noear.solon.SolonApp;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
@@ -31,19 +30,19 @@ public class XPluginImpl implements Plugin {
         Aop.wrapAndPut(IdsContext.class, context);
 
         //添加控制器
-        Solon.global().add(IdsProps.BAST_PATH, ApprovalController.class);
-        Solon.global().add(IdsProps.BAST_PATH, AuthorizationController.class);
-        Solon.global().add(IdsProps.BAST_PATH, CheckSessionController.class);
-        Solon.global().add(IdsProps.BAST_PATH, ErrorController.class);
-        Solon.global().add(IdsProps.BAST_PATH, LoginController.class);
-        Solon.global().add(IdsProps.BAST_PATH, LogoutController.class);
-        Solon.global().add(IdsProps.BAST_PATH, TokenController.class);
-        Solon.global().add(IdsProps.BAST_PATH, UserController.class);
+        Solon.app().add(IdsProps.BAST_PATH, ApprovalController.class);
+        Solon.app().add(IdsProps.BAST_PATH, AuthorizationController.class);
+        Solon.app().add(IdsProps.BAST_PATH, CheckSessionController.class);
+        Solon.app().add(IdsProps.BAST_PATH, ErrorController.class);
+        Solon.app().add(IdsProps.BAST_PATH, LoginController.class);
+        Solon.app().add(IdsProps.BAST_PATH, LogoutController.class);
+        Solon.app().add(IdsProps.BAST_PATH, TokenController.class);
+        Solon.app().add(IdsProps.BAST_PATH, UserController.class);
 
-        Solon.global().add(IdsProps.WELL_PATH, DiscoveryController.class);
+        Solon.app().add(IdsProps.WELL_PATH, DiscoveryController.class);
 
         //添加过滤器
-        Solon.global().filter(new ErrorFilter());
+        Solon.app().filter(new ErrorFilter());
     }
 
 }

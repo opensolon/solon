@@ -179,6 +179,6 @@ public class RouterListener implements Listener{
         //路由监听模式，可实现双向RPC模式
         //
 
-        return Solon.global().router().matchOne(s);
+        return Solon.app().router().matchOne(s);
     }
 }
