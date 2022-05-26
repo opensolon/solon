@@ -25,13 +25,13 @@ public class ServerWebSocketProps {
         return host;
     }
 
-    public ServerWebSocketProps() {
+    public ServerWebSocketProps(int portBase) {
         name = Solon.cfg().get(ServerConstants.SERVER_WEBSOCKET_NAME);
         port = Solon.cfg().getInt(ServerConstants.SERVER_WEBSOCKET_PORT, 0);
         host = Solon.cfg().get(ServerConstants.SERVER_WEBSOCKET_HOST);
 
         if (port < 1) {
-            port = 15000 + Solon.cfg().serverPort();
+            port = portBase + Solon.cfg().serverPort();
         }
 
         if (Utils.isEmpty(host)) {

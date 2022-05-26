@@ -3,7 +3,7 @@ package org.noear.solon.boot.socketd.websocket;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
-import org.noear.solon.boot.ServerConstants;
+import org.noear.solon.boot.props.ServerWebSocketProps;
 import org.noear.solon.core.*;
 import org.noear.solon.core.util.PrintUtil;
 import org.noear.solon.socketd.SessionManager;
@@ -38,15 +38,11 @@ public class XPluginImp implements Plugin {
     }
 
     private void start0(SolonApp app) {
-        String _name = app.cfg().get(ServerConstants.SERVER_WEBSOCKET_NAME);
-        int _port = app.cfg().getInt(ServerConstants.SERVER_WEBSOCKET_PORT, 0);
-        String _host = app.cfg().get(ServerConstants.SERVER_WEBSOCKET_HOST);
-        if (_port < 1) {
-            _port = 15000 + app.port();
-        }
-        if (Utils.isEmpty(_host)) {
-            _host = app.cfg().serverHost();
-        }
+        ServerWebSocketProps props = new ServerWebSocketProps(15000);
+        String _host = props.getHost();
+        int _port = props.getPort();
+        String _name = props.getName();
+
 
         long time_start = System.currentTimeMillis();
 

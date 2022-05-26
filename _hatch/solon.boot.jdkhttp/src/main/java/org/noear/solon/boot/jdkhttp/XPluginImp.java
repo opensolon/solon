@@ -6,6 +6,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerConstants;
+import org.noear.solon.boot.props.ServerHttpProps;
 import org.noear.solon.core.*;
 import org.noear.solon.core.util.PrintUtil;
 
@@ -32,15 +33,10 @@ public final class XPluginImp implements Plugin {
 
         SolonApp app = Solon.app();
 
-        String _name = app.cfg().get(ServerConstants.SERVER_HTTP_NAME);
-        int _port = app.cfg().getInt(ServerConstants.SERVER_HTTP_PORT, 0);
-        String _host = app.cfg().get(ServerConstants.SERVER_HTTP_HOST, null);
-        if (_port < 1) {
-            _port = app.port();
-        }
-        if (Utils.isEmpty(_host)) {
-            _host = app.cfg().serverHost();
-        }
+        ServerHttpProps props = new ServerHttpProps();
+        String _host = props.getHost();
+        int _port = props.getPort();
+        String _name = props.getName();
 
         long time_start = System.currentTimeMillis();
 

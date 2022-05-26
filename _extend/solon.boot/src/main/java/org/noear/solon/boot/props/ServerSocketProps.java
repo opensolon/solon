@@ -25,13 +25,13 @@ public class ServerSocketProps {
         return host;
     }
 
-    public ServerSocketProps() {
+    public ServerSocketProps(int portBase) {
         name = Solon.cfg().get(ServerConstants.SERVER_SOCKET_NAME);
         port = Solon.cfg().getInt(ServerConstants.SERVER_SOCKET_PORT, 0);
         host = Solon.cfg().get(ServerConstants.SERVER_SOCKET_HOST);
 
         if (port < 1) {
-            port = 20000 + Solon.cfg().serverPort();
+            port = portBase + Solon.cfg().serverPort();
         }
 
         if (Utils.isEmpty(host)) {
