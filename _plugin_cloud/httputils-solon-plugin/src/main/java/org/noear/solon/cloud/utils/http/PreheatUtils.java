@@ -23,7 +23,7 @@ public final class PreheatUtils {
      */
     public static void preheat(String path, ConsumerEx<HttpUtils> handling) {
         try {
-            HttpUtils http = HttpUtils.http("http://localhost:" + Solon.app().port() + path);
+            HttpUtils http = HttpUtils.http("http://localhost:" + Solon.cfg().serverPort() + path);
             handling.accept(http);
             System.out.println("[Preheat] " + path + " : preheat succeeded");
         } catch (Throwable e) {

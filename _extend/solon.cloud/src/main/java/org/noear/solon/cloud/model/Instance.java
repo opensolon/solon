@@ -180,7 +180,7 @@ public class Instance implements Serializable {
 
     public static Instance local() {
         if (local == null) {
-            local = localNew(new SignalSim(Solon.cfg().appName(), Solon.app().port(), "http", SignalType.HTTP));
+            local = localNew(new SignalSim(Solon.cfg().appName(), Solon.cfg().serverPort(), "http", SignalType.HTTP));
         }
 
         return local;

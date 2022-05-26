@@ -294,6 +294,7 @@ public class SolonApp implements HandlerSlots {
     /**
      * 获取端口
      */
+    @Deprecated
     public int port() {
         return _prop.serverPort();
     }

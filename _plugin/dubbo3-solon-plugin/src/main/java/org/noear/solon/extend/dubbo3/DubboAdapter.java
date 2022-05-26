@@ -79,7 +79,7 @@ public class DubboAdapter {
             }
 
             if (props.containsKey("port") == false) {
-                int port = Solon.app().port() + 20000;
+                int port = Solon.cfg().serverPort() + 20000;
                 props.put("port", String.valueOf(port));
                 protocol.setPort(port);
             }

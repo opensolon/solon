@@ -20,7 +20,7 @@ public class SocketTest {
         //
         //这是短链接模式
         //
-        String root = "tcp://localhost:" + (20000 + Solon.app().port());
+        String root = "tcp://localhost:" + (20000 + Solon.cfg().serverPort());
 
 
         Message msg = SocketUtils.send(root + "/demog/中文/1", "Hello 世界!");
@@ -49,7 +49,7 @@ public class SocketTest {
     @Test
     public void test2() throws Throwable {
         //socket client
-        String root = "tcp://localhost:" + (20000 + Solon.app().port());
+        String root = "tcp://localhost:" + (20000 + Solon.cfg().serverPort());
 
         SocketUtils.send(root + "/seb/test", "Hello 世界!+1", (msg, err) -> {
             if (msg == null) {
@@ -65,7 +65,7 @@ public class SocketTest {
     @Test
     public void test3() throws Throwable {
         //socket client
-        String root = "tcp://localhost:" + (20000 + Solon.app().port());
+        String root = "tcp://localhost:" + (20000 + Solon.cfg().serverPort());
 
         List<Integer> list = new ArrayList<>();
         for (int i = 0; i < 100; i++) {
@@ -91,7 +91,7 @@ public class SocketTest {
     @Test
     public void test4() throws Throwable {
         //socket client
-        String root = "tcp://localhost:" + (20000 + Solon.app().port());
+        String root = "tcp://localhost:" + (20000 + Solon.cfg().serverPort());
 
 
         SocketUtils.create(root).send(root + "/seb/test", "Hello 世界!", (msg, err) -> {
