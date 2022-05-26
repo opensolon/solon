@@ -34,17 +34,17 @@ import java.util.function.Consumer;
 public class AopContext extends BeanContainer {
 
     public AopContext() {
+        this(null, null);
+    }
+
+    public AopContext(ClassLoader classLoader, Props props) {
+        super(classLoader, props);
         initialize();
     }
 
-    public AopContext(Props props) {
-        this.props = props;
-        initialize();
-    }
+    private Map<Method, MethodWrap> methodCached = new HashMap<>();
 
-    private  Map<Method, MethodWrap> methodCached = new HashMap<>();
-
-    public  MethodWrap methodGet(Method method) {
+    public MethodWrap methodGet(Method method) {
         MethodWrap mw = methodCached.get(method);
         if (mw == null) {
             synchronized (method) {
@@ -75,11 +75,11 @@ public class AopContext extends BeanContainer {
     }
 
     public AopContext copy() {
-        return copy(null);
+        return copy(null, null);
     }
 
-    public AopContext copy(Props props) {
-        AopContext tmp = new AopContext(props);
+    public AopContext copy(ClassLoader classLoader, Props props) {
+        AopContext tmp = new AopContext(classLoader, props);
         copyTo(tmp);
         return tmp;
     }
@@ -313,7 +313,7 @@ public class AopContext extends BeanContainer {
     public void beanScan(Class<?> source) {
         //确定文件夹名
         if (source.getPackage() != null) {
-            beanScan(source.getClassLoader(), source.getPackage().getName());
+            beanScan(source.getPackage().getName());
         }
     }
 
@@ -321,31 +321,20 @@ public class AopContext extends BeanContainer {
      * ::扫描源下的所有 bean 及对应处理
      */
     public void beanScan(String basePackage) {
-        beanScan(JarClassLoader.global(), basePackage);
-    }
-
-    /**
-     * ::扫描源下的所有 bean 及对应处理
-     */
-    public void beanScan(ClassLoader classLoader, String basePackage) {
         if (Utils.isEmpty(basePackage)) {
-            return;
-        }
-
-        if (classLoader == null) {
             return;
         }
 
         String dir = basePackage.replace('.', '/');
 
         //扫描类文件并处理（采用两段式加载，可以部分bean先处理；剩下的为第二段处理）
-        ScanUtil.scan(classLoader, dir, n -> n.endsWith(".class"))
+        ScanUtil.scan(getClassLoader(), dir, n -> n.endsWith(".class"))
                 .stream()
                 .sorted(Comparator.comparing(s -> s.length()))
                 .forEach(name -> {
                     String className = name.substring(0, name.length() - 6);
 
-                    Class<?> clz = Utils.loadClass(classLoader, className.replace("/", "."));
+                    Class<?> clz = Utils.loadClass(getClassLoader(), className.replace("/", "."));
                     if (clz != null) {
                         tryCreateBean(clz);
                     }

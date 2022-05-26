@@ -19,30 +19,30 @@ import java.util.List;
 public class PluginPackage {
     /**
      * 包文件
-     * */
+     */
     private final File file;
     /**
      * 类加载器
-     * */
+     */
     private final JarClassLoader classLoader;
     /**
      * 找到的插件
-     * */
+     */
     private final List<PluginEntity> plugins;
     /**
      * 开始状态
-     * */
+     */
     private boolean started;
     /**
      * Aop 上下文
-     * */
+     */
     private AopContext context;
 
     public PluginPackage(File file, JarClassLoader classLoader, List<PluginEntity> plugins) {
         this.file = file;
         this.plugins = plugins;
         this.classLoader = classLoader;
-        this.context = Aop.context().copy(new Props());
+        this.context = Aop.context().copy(classLoader, new Props());
 
         if (plugins.size() > 0) {
             //进行优先级顺排（数值要倒排）
@@ -69,7 +69,7 @@ public class PluginPackage {
         return classLoader;
     }
 
-    public boolean getStarted(){
+    public boolean getStarted() {
         return started;
     }
 

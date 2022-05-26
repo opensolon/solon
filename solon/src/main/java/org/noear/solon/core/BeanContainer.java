@@ -26,13 +26,27 @@ import java.util.function.Predicate;
  * @since 1.0
  * */
 public abstract class BeanContainer {
-    protected Props props;
+    private Props props;
+    private ClassLoader classLoader;
+
+    public BeanContainer(ClassLoader classLoader, Props props) {
+        this.classLoader = classLoader;
+        this.props = props;
+    }
 
     public Props getProps() {
         if (props == null) {
             return Solon.cfg();
         } else {
             return props;
+        }
+    }
+
+    public ClassLoader getClassLoader() {
+        if (classLoader == null) {
+            return JarClassLoader.global();
+        } else {
+            return classLoader;
         }
     }
 
@@ -387,7 +401,7 @@ public abstract class BeanContainer {
             // @Inject("${classpath:user.yml}") //注入配置文件
             //
             String url = name.substring(12, name.length() - 1);
-            Properties val = Utils.loadProperties(Utils.getResource(url));
+            Properties val = Utils.loadProperties(Utils.getResource(getClassLoader(),url));
 
             if (val == null) {
                 throw new RuntimeException(name + "  failed to load!");
