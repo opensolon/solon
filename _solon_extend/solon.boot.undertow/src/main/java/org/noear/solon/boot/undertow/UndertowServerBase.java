@@ -12,7 +12,7 @@ import java.io.FileNotFoundException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-abstract class PluginUndertowBase {
+abstract class UndertowServerBase {
     protected DeploymentInfo initDeploymentInfo() {
         MultipartConfigElement configElement = new MultipartConfigElement(System.getProperty("java.io.tmpdir"));
 

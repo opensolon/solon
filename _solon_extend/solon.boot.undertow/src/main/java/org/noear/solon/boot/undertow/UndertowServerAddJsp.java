@@ -18,7 +18,7 @@ import java.util.HashMap;
  * @author by: Yukai
  * @since: 2019/3/28 15:50
  */
-class PluginUndertowJsp extends PluginUndertow {
+class UndertowServerAddJsp extends UndertowServer {
 
     @Override
     protected HttpHandler buildHandler() throws Exception{

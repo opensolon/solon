@@ -59,9 +59,9 @@ public final class XPluginImp implements Plugin {
         Class<?> jspClz = Utils.loadClass("io.undertow.jsp.JspServletBuilder");
 
         if (jspClz == null) {
-            _server = new PluginUndertow();
+            _server = new UndertowServer();
         } else {
-            _server = new PluginUndertowJsp();
+            _server = new UndertowServerAddJsp();
         }
 
         _server.start(_host, _port);

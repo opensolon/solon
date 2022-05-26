@@ -24,7 +24,7 @@ import static io.undertow.Handlers.websocket;
  * @author  by: Yukai
  * @since : 2019/3/28 15:49
  */
-class PluginUndertow extends PluginUndertowBase implements ServerLifecycle {
+class UndertowServer extends UndertowServerBase implements ServerLifecycle {
     protected Undertow _server;
 
     @Override

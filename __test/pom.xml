@@ -195,20 +195,20 @@
         <!--            <artifactId>solon.boot.socketd.rsocket</artifactId>-->
         <!--        </dependency>-->
 
-        <!--        <dependency>-->
-        <!--            <groupId>org.noear</groupId>-->
-        <!--            <artifactId>solon.boot.socketd.jdksocket</artifactId>-->
-        <!--        </dependency>-->
+                <dependency>
+                    <groupId>org.noear</groupId>
+                    <artifactId>solon.boot.socketd.jdksocket</artifactId>
+                </dependency>
 
         <!--        <dependency>-->
         <!--            <groupId>org.noear</groupId>-->
         <!--            <artifactId>solon.boot.socketd.netty</artifactId>-->
         <!--        </dependency>-->
 
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.boot.socketd.smartsocket</artifactId>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.noear</groupId>-->
+<!--            <artifactId>solon.boot.socketd.smartsocket</artifactId>-->
+<!--        </dependency>-->
 
 
         <!--        <dependency>-->
@@ -217,22 +217,22 @@
         <!--        </dependency>-->
 
 
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.boot.smarthttp</artifactId>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.noear</groupId>-->
+<!--            <artifactId>solon.boot.smarthttp</artifactId>-->
+<!--        </dependency>-->
 
 
 
-        <!--        <dependency>-->
-        <!--            <groupId>org.noear</groupId>-->
-        <!--            <artifactId>solon.boot.undertow</artifactId>-->
-        <!--        </dependency>-->
+                <dependency>
+                    <groupId>org.noear</groupId>
+                    <artifactId>solon.boot.undertow</artifactId>
+                </dependency>
 
-        <!--        <dependency>-->
-        <!--            <groupId>org.noear</groupId>-->
-        <!--            <artifactId>solon.boot.undertow.add.jsp</artifactId>-->
-        <!--        </dependency>-->
+                <dependency>
+                    <groupId>org.noear</groupId>
+                    <artifactId>solon.boot.undertow.add.jsp</artifactId>
+                </dependency>
 
 
 
