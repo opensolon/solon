@@ -1,5 +1,7 @@
 #### 1.8.1
 * 添加 server.host 和 server.http.host 支持
+* 添加 StaticMappings::remove 接口
+* 添加 EventBus::unsubscribe 接口
 * fastjson 升为 1.2.83
 * hutool 升为：5.8.1
 * jetty 升为：9.4.46.v20220331
