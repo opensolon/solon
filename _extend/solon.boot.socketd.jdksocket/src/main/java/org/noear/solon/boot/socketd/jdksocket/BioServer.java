@@ -1,6 +1,8 @@
 package org.noear.solon.boot.socketd.jdksocket;
 
 import org.noear.solon.Solon;
+import org.noear.solon.Utils;
+import org.noear.solon.boot.ServerLifecycle;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.core.util.PrintUtil;
@@ -9,27 +11,25 @@ import org.noear.solon.socketd.client.jdksocket.BioReceiver;
 import org.noear.solon.socketd.client.jdksocket.BioSocketSession;
 
 import java.io.IOException;
+import java.net.Inet4Address;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-class BioServer {
+class BioServer implements ServerLifecycle {
     private ServerSocket server;
     private ExecutorService pool = Executors.newCachedThreadPool(new NamedThreadFactory("jdksocket-"));
 
-    public void start(int port) {
-        new Thread(() -> {
-            try {
-                start0(port);
-            } catch (Exception ex) {
-                throw new RuntimeException(ex);
-            }
-        }).start();
-    }
+    private void start0(String host, int port) throws IOException {
+        if (Utils.isEmpty(host)) {
+            server = new ServerSocket(port);
+        } else {
+            InetAddress inetAddress = Inet4Address.getByName(host);
+            server = new ServerSocket(port, 50, inetAddress);
+        }
 
-    private void start0(int port) throws IOException {
-        server = new ServerSocket(port);
 
         PrintUtil.info("Server started, waiting for customer connection...");
 
@@ -67,6 +67,18 @@ class BioServer {
         }
     }
 
+    @Override
+    public void start(String host, int port) throws Throwable {
+        new Thread(() -> {
+            try {
+                start0(host, port);
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
+            }
+        }).start();
+    }
+
+    @Override
     public void stop() {
         if (server.isClosed()) {
             return;

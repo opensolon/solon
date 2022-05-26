@@ -5,34 +5,20 @@ import org.eclipse.jetty.server.session.DefaultSessionIdManager;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
+import org.noear.solon.boot.ServerLifecycle;
 import org.noear.solon.boot.jetty.websocket._SessionManagerImpl;
-import org.noear.solon.core.AopContext;
 import org.noear.solon.core.event.EventBus;
-import org.noear.solon.core.Plugin;
 import org.noear.solon.socketd.SessionManager;
 
 import java.io.IOException;
 
-class PluginJetty extends PluginJettyBase implements Plugin {
+class JettyServer extends JettyServerBase implements ServerLifecycle {
     protected Server _server = null;
-    private int port;
-    private String host;
-
-    public PluginJetty(int port, String host) {
-        this.port = port;
-        this.host = host;
-    }
 
     @Override
-    public void start(AopContext context) {
-        try {
-            setup(Solon.app(), context);
-            _server.start();
-        } catch (RuntimeException e) {
-            throw e;
-        } catch (Throwable e) {
-            throw new IllegalStateException(e);
-        }
+    public void start(String host, int port) throws Throwable {
+        setup(Solon.app(), host, port);
+        _server.start();
     }
 
     @Override
@@ -43,7 +29,7 @@ class PluginJetty extends PluginJettyBase implements Plugin {
         }
     }
 
-    protected void setup(SolonApp app, AopContext context) throws IOException {
+    protected void setup(SolonApp app, String host, int port) throws IOException {
         Class<?> wsClz = Utils.loadClass("org.eclipse.jetty.websocket.server.WebSocketHandler");
 
         _server = new Server();

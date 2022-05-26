@@ -2,13 +2,19 @@ package org.noear.solon.boot.websocket;
 
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
+import org.noear.solon.Utils;
+import org.noear.solon.boot.ServerConstants;
 import org.noear.solon.core.*;
 import org.noear.solon.core.util.PrintUtil;
 import org.noear.solon.socketd.SessionManager;
 
+import java.net.Inet4Address;
+import java.net.InetAddress;
+
 public class XPluginImp implements Plugin {
     private static Signal _signal;
-    public static Signal signal(){
+
+    public static Signal signal() {
         return _signal;
     }
 
@@ -28,15 +34,25 @@ public class XPluginImp implements Plugin {
         }
 
         context.beanOnloaded((ctx) -> {
-            start0(Solon.app());
+            try {
+                start0(Solon.app());
+            } catch (RuntimeException e) {
+                throw e;
+            } catch (Throwable e) {
+                throw new IllegalStateException(e);
+            }
         });
     }
 
-    private void start0(SolonApp app) {
-        String _name = app.cfg().get("server.websocket.name");
-        int _port = app.cfg().getInt("server.websocket.port", 0);
+    private void start0(SolonApp app) throws Throwable{
+        String _name = app.cfg().get(ServerConstants.SERVER_WEBSOCKET_NAME);
+        int _port = app.cfg().getInt(ServerConstants.SERVER_WEBSOCKET_PORT, 0);
+        String _host = app.cfg().get(ServerConstants.SERVER_WEBSOCKET_HOST, null);
         if (_port < 1) {
             _port = 10000 + app.port();
+        }
+        if (Utils.isEmpty(_host)) {
+            _host = app.cfg().serverHost();
         }
 
         long time_start = System.currentTimeMillis();
@@ -44,24 +60,25 @@ public class XPluginImp implements Plugin {
 
         PrintUtil.info("Server:main: org.java_websocket 1.5.0(websocket)");
 
-        try {
-            _server = new WsServer(_port);
 
-            _server.start();
-
-            _signal = new SignalSim(_name, _port, "ws", SignalType.WEBSOCKET);
-
-            app.signalAdd(_signal);
-
-            long time_end = System.currentTimeMillis();
-
-            PrintUtil.info("Connector:main: websocket: Started ServerConnector@{HTTP/1.1,[WebSocket]}{0.0.0.0:" + _port + "}");
-            PrintUtil.info("Server:main: websocket: Started @" + (time_end - time_start) + "ms");
-        } catch (RuntimeException e) {
-            throw e;
-        } catch (Throwable e) {
-            throw new IllegalStateException(e);
+        if (Utils.isEmpty(_host)) {
+            InetAddress address = Inet4Address.getLocalHost();
+            _server = new WsServer(address, _port);
+        } else {
+            InetAddress address = Inet4Address.getByName(_host);
+            _server = new WsServer(address, _port);
         }
+
+        _server.start();
+
+        _signal = new SignalSim(_name, _port, "ws", SignalType.WEBSOCKET);
+
+        app.signalAdd(_signal);
+
+        long time_end = System.currentTimeMillis();
+
+        PrintUtil.info("Connector:main: websocket: Started ServerConnector@{HTTP/1.1,[WebSocket]}{0.0.0.0:" + _port + "}");
+        PrintUtil.info("Server:main: websocket: Started @" + (time_end - time_start) + "ms");
     }
 
     @Override

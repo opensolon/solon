@@ -4,6 +4,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerConstants;
+import org.noear.solon.boot.ServerLifecycle;
 import org.noear.solon.core.*;
 import org.noear.solon.core.util.PrintUtil;
 
@@ -17,7 +18,7 @@ public final class XPluginImp implements Plugin {
         return _signal;
     }
 
-    private Plugin _server = null;
+    private ServerLifecycle _server = null;
     public static String solon_boot_ver(){
         return "undertow 2.1/" + Solon.cfg().version();
     }
@@ -28,16 +29,25 @@ public final class XPluginImp implements Plugin {
             return;
         }
 
-        context.beanBuilderAdd(WebFilter.class,(clz,bw,ano)->{});
-        context.beanBuilderAdd(WebServlet.class,(clz, bw, ano)->{});
-        context.beanBuilderAdd(WebListener.class,(clz, bw, ano)->{});
+        context.beanBuilderAdd(WebFilter.class, (clz, bw, ano) -> {
+        });
+        context.beanBuilderAdd(WebServlet.class, (clz, bw, ano) -> {
+        });
+        context.beanBuilderAdd(WebListener.class, (clz, bw, ano) -> {
+        });
 
         context.beanOnloaded((ctx) -> {
-            start0(Solon.app(), context);
+            try {
+                start0(Solon.app());
+            } catch (RuntimeException e) {
+                throw e;
+            } catch (Throwable e) {
+                throw new IllegalStateException(e);
+            }
         });
     }
 
-    private void start0(SolonApp app, AopContext context) {
+    private void start0(SolonApp app) throws Throwable{
         String _name = app.cfg().get(ServerConstants.SERVER_HTTP_NAME);
         int _port = app.cfg().getInt(ServerConstants.SERVER_HTTP_PORT, 0);
         String _host = app.cfg().get(ServerConstants.SERVER_HTTP_HOST, null);
@@ -54,12 +64,12 @@ public final class XPluginImp implements Plugin {
         Class<?> jspClz = Utils.loadClass("io.undertow.jsp.JspServletBuilder");
 
         if (jspClz == null) {
-            _server = new PluginUndertow(_port, _host);
+            _server = new PluginUndertow();
         } else {
-            _server = new PluginUndertowJsp(_port, _host);
+            _server = new PluginUndertowJsp();
         }
 
-        _server.start(context);
+        _server.start(_host, _port);
 
         _signal = new SignalSim(_name, _port, "http", SignalType.HTTP);
 

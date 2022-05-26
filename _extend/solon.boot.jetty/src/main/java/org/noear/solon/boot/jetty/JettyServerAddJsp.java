@@ -13,11 +13,7 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Properties;
 
-class PluginJettyJsp extends PluginJetty {
-
-    public PluginJettyJsp(int port, String host) {
-        super(port, host);
-    }
+class JettyServerAddJsp extends JettyServer {
 
     /**
      * 获取Server Handler

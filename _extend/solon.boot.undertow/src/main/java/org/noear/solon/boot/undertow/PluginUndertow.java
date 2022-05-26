@@ -9,14 +9,13 @@ import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerConstants;
+import org.noear.solon.boot.ServerLifecycle;
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.ssl.SslContextFactory;
 import org.noear.solon.boot.undertow.http.UtHandlerJspHandler;
 import org.noear.solon.boot.undertow.websocket.UtWsConnectionCallback;
 import org.noear.solon.boot.undertow.websocket._SessionManagerImpl;
-import org.noear.solon.core.AopContext;
 import org.noear.solon.core.event.EventBus;
-import org.noear.solon.core.Plugin;
 import org.noear.solon.socketd.SessionManager;
 
 import static io.undertow.Handlers.websocket;
@@ -25,20 +24,13 @@ import static io.undertow.Handlers.websocket;
  * @author  by: Yukai
  * @since : 2019/3/28 15:49
  */
-class PluginUndertow extends PluginUndertowBase implements Plugin {
-    Undertow _server;
-    int port;
-    String host;
-
-    public PluginUndertow(int port,  String host) {
-        this.port = port;
-        this.host = host;
-    }
+class PluginUndertow extends PluginUndertowBase implements ServerLifecycle {
+    protected Undertow _server;
 
     @Override
-    public void start(AopContext context) {
+    public void start(String host, int port) {
         try {
-            setup(Solon.app());
+            setup(Solon.app(), host, port);
 
             _server.start();
         } catch (RuntimeException e) {
@@ -56,7 +48,7 @@ class PluginUndertow extends PluginUndertowBase implements Plugin {
         }
     }
 
-    protected void setup(SolonApp app) throws Throwable {
+    protected void setup(SolonApp app, String host, int port) throws Throwable {
         HttpHandler httpHandler = buildHandler();
 
         //************************** init server start******************

@@ -36,11 +36,17 @@ public final class XPluginImp implements Plugin {
         }
 
         context.beanOnloaded((ctx) -> {
-            start0(Solon.app());
+            try {
+                start0(Solon.app());
+            } catch (RuntimeException e) {
+                throw e;
+            } catch (Throwable e) {
+                throw new IllegalStateException(e);
+            }
         });
     }
 
-    private void start0(SolonApp app) {
+    private void start0(SolonApp app) throws Throwable {
         String _name = app.cfg().get(ServerConstants.SERVER_HTTP_NAME);
         int _port = app.cfg().getInt(ServerConstants.SERVER_HTTP_PORT, 0);
         String _host = app.cfg().get(ServerConstants.SERVER_HTTP_HOST, null);
@@ -88,33 +94,26 @@ public final class XPluginImp implements Plugin {
 
         PrintUtil.info("Server:main: SmartHttpServer 1.1(smarthttp)");
 
-        try {
 
-            _server.setPort(_port);
+        _server.setPort(_port);
+        _server.start();
 
-            _server.start();
+        _signal = new SignalSim(_name, _port, "http", SignalType.HTTP);
 
-            _signal = new SignalSim(_name, _port, "http", SignalType.HTTP);
+        app.signalAdd(_signal);
 
-            app.signalAdd(_signal);
+        app.before(-9, new FormContentFilter());
 
-            app.before(-9, new FormContentFilter());
+        long time_end = System.currentTimeMillis();
 
-            long time_end = System.currentTimeMillis();
-
-            String connectorInfo = "solon.connector:main: smarthttp: Started ServerConnector@{HTTP/1.1,[http/1.1]";
-            if (app.enableWebSocket()) {
-                PrintUtil.info(connectorInfo + "[WebSocket]}{0.0.0.0:" + _port + "}");
-            }
-
-            PrintUtil.info(connectorInfo + "}{http://localhost:" + _port + "}");
-
-            PrintUtil.info("Server:main: smarthttp: Started @" + (time_end - time_start) + "ms");
-        } catch (RuntimeException e) {
-            throw e;
-        } catch (Throwable e) {
-            throw new IllegalStateException(e);
+        String connectorInfo = "solon.connector:main: smarthttp: Started ServerConnector@{HTTP/1.1,[http/1.1]";
+        if (app.enableWebSocket()) {
+            PrintUtil.info(connectorInfo + "[WebSocket]}{0.0.0.0:" + _port + "}");
         }
+
+        PrintUtil.info(connectorInfo + "}{http://localhost:" + _port + "}");
+
+        PrintUtil.info("Server:main: smarthttp: Started @" + (time_end - time_start) + "ms");
     }
 
     @Override

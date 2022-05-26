@@ -19,9 +19,6 @@ import java.util.HashMap;
  * @since: 2019/3/28 15:50
  */
 class PluginUndertowJsp extends PluginUndertow {
-    public PluginUndertowJsp(int port, String host) {
-        super(port, host);
-    }
 
     @Override
     protected HttpHandler buildHandler() throws Exception{

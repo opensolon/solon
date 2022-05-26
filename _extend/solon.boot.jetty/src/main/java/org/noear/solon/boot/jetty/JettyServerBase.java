@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-class PluginJettyBase {
+class JettyServerBase {
     /**
      * 创建连接器（支持https）
      *

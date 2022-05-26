@@ -45,11 +45,17 @@ public final class XPluginImp implements Plugin {
         }
 
         context.beanOnloaded((ctx) -> {
-            start0(Solon.app());
+            try {
+                start0(Solon.app());
+            } catch (RuntimeException e) {
+                throw e;
+            } catch (Throwable e) {
+                throw new IllegalStateException(e);
+            }
         });
     }
 
-    private void start0(SolonApp app) {
+    private void start0(SolonApp app) throws Throwable{
         _server = new HTTPServer();
 
         String _name = app.cfg().get(ServerConstants.SERVER_HTTP_NAME);
@@ -76,52 +82,45 @@ public final class XPluginImp implements Plugin {
             HTTPServer.MAX_BODY_SIZE = ServerProps.request_maxBodySize;
         }
 
-        try {
-
-            JlHttpContextHandler _handler = new JlHttpContextHandler();
+        JlHttpContextHandler _handler = new JlHttpContextHandler();
 
 
-            if (System.getProperty(ServerConstants.SSL_KEYSTORE) != null) { // enable SSL if configured
-                _server.setServerSocketFactory(SslContextFactory.createSslContext().getServerSocketFactory());
-            }
-
-            HTTPServer.VirtualHost host = _server.getVirtualHost(null);
-
-
-            host.setDirectoryIndex(null);
-
-            host.addContext("/", _handler,
-                    MethodType.HEAD.name,
-                    MethodType.GET.name,
-                    MethodType.POST.name,
-                    MethodType.PUT.name,
-                    MethodType.DELETE.name,
-                    MethodType.PATCH.name,
-                    MethodType.OPTIONS.name);
-
-            PrintUtil.info("Server:main: JlHttpServer 2.6(jlhttp)");
-
-
-            _server.setExecutor(Executors.newCachedThreadPool(new NamedThreadFactory("jlhttp-")));
-            _server.setPort(_port);
-            if (Utils.isNotEmpty(_host)) {
-                _server.setHost(_host);
-            }
-            _server.start();
-
-            _signal = new SignalSim(_name, _port, "http", SignalType.HTTP);
-
-            app.signalAdd(_signal);
-
-            long time_end = System.currentTimeMillis();
-
-            PrintUtil.info("Connector:main: jlhttp: Started ServerConnector@{HTTP/1.1,[http/1.1]}{http://localhost:" + _port + "}");
-            PrintUtil.info("Server:main: jlhttp: Started @" + (time_end - time_start) + "ms");
-        } catch (RuntimeException e) {
-            throw e;
-        } catch (Throwable e) {
-            throw new IllegalStateException(e);
+        if (System.getProperty(ServerConstants.SSL_KEYSTORE) != null) { // enable SSL if configured
+            _server.setServerSocketFactory(SslContextFactory.createSslContext().getServerSocketFactory());
         }
+
+        HTTPServer.VirtualHost host = _server.getVirtualHost(null);
+
+
+        host.setDirectoryIndex(null);
+
+        host.addContext("/", _handler,
+                MethodType.HEAD.name,
+                MethodType.GET.name,
+                MethodType.POST.name,
+                MethodType.PUT.name,
+                MethodType.DELETE.name,
+                MethodType.PATCH.name,
+                MethodType.OPTIONS.name);
+
+        PrintUtil.info("Server:main: JlHttpServer 2.6(jlhttp)");
+
+
+        _server.setExecutor(Executors.newCachedThreadPool(new NamedThreadFactory("jlhttp-")));
+        _server.setPort(_port);
+        if (Utils.isNotEmpty(_host)) {
+            _server.setHost(_host);
+        }
+        _server.start();
+
+        _signal = new SignalSim(_name, _port, "http", SignalType.HTTP);
+
+        app.signalAdd(_signal);
+
+        long time_end = System.currentTimeMillis();
+
+        PrintUtil.info("Connector:main: jlhttp: Started ServerConnector@{HTTP/1.1,[http/1.1]}{http://localhost:" + _port + "}");
+        PrintUtil.info("Server:main: jlhttp: Started @" + (time_end - time_start) + "ms");
     }
 
     @Override

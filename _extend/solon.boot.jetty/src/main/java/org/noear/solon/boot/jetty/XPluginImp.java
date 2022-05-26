@@ -16,14 +16,15 @@ import javax.servlet.annotation.WebServlet;
 
 public final class XPluginImp implements Plugin {
     private static Signal _signal;
-    public static Signal signal(){
+
+    public static Signal signal() {
         return _signal;
     }
 
-    private PluginJetty _server = null;
+    private JettyServer _server = null;
 
 
-    public static String solon_boot_ver(){
+    public static String solon_boot_ver() {
         return "jetty 9.4/" + Solon.cfg().version();
     }
 
@@ -39,16 +40,25 @@ public final class XPluginImp implements Plugin {
                     String.valueOf(ServerProps.request_maxBodySize));
         }
 
-        context.beanBuilderAdd(WebFilter.class,(clz, bw, ano)->{});
-        context.beanBuilderAdd(WebServlet.class,(clz, bw, ano)->{});
-        context.beanBuilderAdd(WebListener.class,(clz, bw, ano)->{});
+        context.beanBuilderAdd(WebFilter.class, (clz, bw, ano) -> {
+        });
+        context.beanBuilderAdd(WebServlet.class, (clz, bw, ano) -> {
+        });
+        context.beanBuilderAdd(WebListener.class, (clz, bw, ano) -> {
+        });
 
         context.beanOnloaded((ctx) -> {
-            start0(Solon.app(), context);
+            try {
+                start0(Solon.app());
+            } catch (RuntimeException e) {
+                throw e;
+            } catch (Throwable e) {
+                throw new IllegalStateException(e);
+            }
         });
     }
 
-    private void start0(SolonApp app, AopContext context) {
+    private void start0(SolonApp app) throws Throwable{
         Class<?> jspClz = Utils.loadClass("org.eclipse.jetty.jsp.JettyJspServlet");
 
 
@@ -64,15 +74,15 @@ public final class XPluginImp implements Plugin {
 
 
         if (jspClz == null) {
-            _server = new PluginJetty(_port, _host);
+            _server = new JettyServer();
         } else {
-            _server = new PluginJettyJsp(_port, _host);
+            _server = new JettyServerAddJsp();
         }
 
         long time_start = System.currentTimeMillis();
         PrintUtil.info("Server:main: Jetty 9.4(jetty)");
 
-        _server.start(context);
+        _server.start(_host, _port);
         _signal = new SignalSim(_name, _port, "http", SignalType.HTTP);
 
         app.signalAdd(_signal);
