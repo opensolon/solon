@@ -8,7 +8,7 @@ import org.noear.solon.boot.ServerConstants;
  * @author noear
  * @since 1.8
  */
-public class ServerSocketProps {
+public class WebSocketSignalProps {
     private String name;
     private int port;
     private String host;
@@ -25,10 +25,10 @@ public class ServerSocketProps {
         return host;
     }
 
-    public ServerSocketProps(int portBase) {
-        name = Solon.cfg().get(ServerConstants.SERVER_SOCKET_NAME);
-        port = Solon.cfg().getInt(ServerConstants.SERVER_SOCKET_PORT, 0);
-        host = Solon.cfg().get(ServerConstants.SERVER_SOCKET_HOST);
+    public WebSocketSignalProps(int portBase) {
+        name = Solon.cfg().get(ServerConstants.SERVER_WEBSOCKET_NAME);
+        port = Solon.cfg().getInt(ServerConstants.SERVER_WEBSOCKET_PORT, 0);
+        host = Solon.cfg().get(ServerConstants.SERVER_WEBSOCKET_HOST);
 
         if (port < 1) {
             port = portBase + Solon.cfg().serverPort();

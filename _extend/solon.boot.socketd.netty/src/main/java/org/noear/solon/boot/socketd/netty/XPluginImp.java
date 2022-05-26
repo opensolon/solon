@@ -8,7 +8,7 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
-import org.noear.solon.boot.prop.ServerSocketProps;
+import org.noear.solon.boot.prop.SocketSignalProps;
 import org.noear.solon.core.*;
 import org.noear.solon.core.util.PrintUtil;
 import org.noear.solon.socketd.SessionManager;
@@ -45,7 +45,7 @@ public class XPluginImp implements Plugin {
 
         PrintUtil.info("Server:main: java.net.ServerSocket(netty-socketd)");
 
-        ServerSocketProps props = new ServerSocketProps(20000);
+        SocketSignalProps props = new SocketSignalProps(20000);
         String _host = props.getHost();
         int _port = props.getPort();
         String _name = props.getName();

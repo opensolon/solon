@@ -3,7 +3,7 @@ package org.noear.solon.boot.socketd.smartsocket;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
-import org.noear.solon.boot.prop.ServerSocketProps;
+import org.noear.solon.boot.prop.SocketSignalProps;
 import org.noear.solon.core.*;
 
 import org.noear.solon.core.util.PrintUtil;
@@ -46,7 +46,7 @@ public final class XPluginImp implements Plugin {
         PrintUtil.info("Server:main: SmartSocket 1.5(smartsocket-socketd)");
 
 
-        ServerSocketProps props = new ServerSocketProps(20000);
+        SocketSignalProps props = new SocketSignalProps(20000);
         String _host = props.getHost();
         int _port = props.getPort();
         String _name = props.getName();
