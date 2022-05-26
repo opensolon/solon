@@ -2,14 +2,18 @@ package org.noear.solon.boot.socketd.websocket;
 
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
+import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerConstants;
 import org.noear.solon.core.*;
 import org.noear.solon.core.util.PrintUtil;
 import org.noear.solon.socketd.SessionManager;
 
+import java.net.Inet4Address;
+
 public class XPluginImp implements Plugin {
     private static Signal _signal;
-    public static Signal signal(){
+
+    public static Signal signal() {
         return _signal;
     }
 
@@ -36,8 +40,12 @@ public class XPluginImp implements Plugin {
     private void start0(SolonApp app) {
         String _name = app.cfg().get(ServerConstants.SERVER_WEBSOCKET_NAME);
         int _port = app.cfg().getInt(ServerConstants.SERVER_WEBSOCKET_PORT, 0);
+        String _host = app.cfg().get(ServerConstants.SERVER_WEBSOCKET_HOST);
         if (_port < 1) {
             _port = 15000 + app.port();
+        }
+        if (Utils.isEmpty(_host)) {
+            _host = app.cfg().serverHost();
         }
 
         long time_start = System.currentTimeMillis();
@@ -46,7 +54,12 @@ public class XPluginImp implements Plugin {
         PrintUtil.info("Server:main: org.java_websocket 1.5.0(websocketd)");
 
         try {
-            _server = new WsServer(_port);
+            if (Utils.isEmpty(_host)) {
+                _server = new WsServer(Inet4Address.getLocalHost(), _port);
+            } else {
+                _server = new WsServer(Inet4Address.getByName(_host), _port);
+            }
+
 
             _server.start();
 

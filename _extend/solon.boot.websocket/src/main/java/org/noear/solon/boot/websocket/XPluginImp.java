@@ -62,11 +62,9 @@ public class XPluginImp implements Plugin {
 
 
         if (Utils.isEmpty(_host)) {
-            InetAddress address = Inet4Address.getLocalHost();
-            _server = new WsServer(address, _port);
+            _server = new WsServer(Inet4Address.getLocalHost(), _port);
         } else {
-            InetAddress address = Inet4Address.getByName(_host);
-            _server = new WsServer(address, _port);
+            _server = new WsServer(Inet4Address.getByName(_host), _port);
         }
 
         _server.start();
