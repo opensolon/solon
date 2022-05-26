@@ -26,8 +26,8 @@ import java.util.function.Predicate;
  * @since 1.0
  * */
 public abstract class BeanContainer {
-    private Props props;
-    private ClassLoader classLoader;
+    private final Props props;
+    private final ClassLoader classLoader;
 
     public BeanContainer(ClassLoader classLoader, Props props) {
         this.classLoader = classLoader;
