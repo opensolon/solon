@@ -5,6 +5,7 @@ import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerConstants;
 import org.noear.solon.boot.ServerProps;
+import org.noear.solon.boot.props.ServerHttpProps;
 import org.noear.solon.boot.ssl.SslContextFactory;
 import org.noear.solon.core.*;
 import org.noear.solon.core.handle.MethodType;
@@ -58,15 +59,10 @@ public final class XPluginImp implements Plugin {
     private void start0(SolonApp app) throws Throwable{
         _server = new HTTPServer();
 
-        String _name = app.cfg().get(ServerConstants.SERVER_HTTP_NAME);
-        int _port = app.cfg().getInt(ServerConstants.SERVER_HTTP_PORT, 0);
-        String _host = app.cfg().get(ServerConstants.SERVER_HTTP_HOST, null);
-        if (_port < 1) {
-            _port = app.port();
-        }
-        if (Utils.isEmpty(_host)) {
-            _host = app.cfg().serverHost();
-        }
+        ServerHttpProps props = new ServerHttpProps();
+        String _host = props.getHost();
+        int _port = props.getPort();
+        String _name = props.getName();
 
         long time_start = System.currentTimeMillis();
 
