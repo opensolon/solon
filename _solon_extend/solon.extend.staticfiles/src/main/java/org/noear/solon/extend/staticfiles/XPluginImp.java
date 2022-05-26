@@ -30,20 +30,18 @@ public class XPluginImp implements Plugin {
             StaticMappings.add("/", new ClassPathStaticRepository(XPluginProp.RES_STATIC_LOCATION));
         }
 
-        //尝试启动静态代理
-        if (StaticMappings.count() > 0) {
-            //1.加载自定义的mime
-            //
-            NvMap mimeTypes = Solon.cfg().getXmap("solon.mime");
-            mimeTypes.forEach((k, v) -> {
-                StaticMimes.add("." + k, v);
-            });
+        //尝试启动静态代理（也可能在后面动态添加仓库）
+
+        //1.加载自定义的mime
+        NvMap mimeTypes = Solon.cfg().getXmap("solon.mime");
+        mimeTypes.forEach((k, v) -> {
+            StaticMimes.add("." + k, v);
+        });
 
 
-            //2.切换代理（让静态文件优先）
-            HandlerPipeline pipeline = new HandlerPipeline();
-            pipeline.next(new StaticResourceHandler()).next(Solon.app().handlerGet());
-            Solon.app().handlerSet(pipeline);
-        }
+        //2.切换代理（让静态文件优先）
+        HandlerPipeline pipeline = new HandlerPipeline();
+        pipeline.next(new StaticResourceHandler()).next(Solon.app().handlerGet());
+        Solon.app().handlerSet(pipeline);
     }
 }
