@@ -1,7 +1,6 @@
 package org.noear.solon;
 
 import org.noear.solon.annotation.Note;
-import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.wrap.ClassWrap;
 import org.noear.solon.core.*;
 
