@@ -1,8 +1,8 @@
 package org.noear.solon.extend.staticfiles;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 静态文件印射
@@ -11,13 +11,13 @@ import java.util.List;
  * @since 1.0
  * */
 public class StaticMappings {
-    static final List<StaticLocation> locationList = new ArrayList<>();
+    static final Map<StaticRepository, StaticLocation> locationMap = new HashMap<>();
 
     /**
      * 印射数量
      */
     public static int count() {
-        return locationList.size();
+        return locationMap.size();
     }
 
     /**
@@ -26,7 +26,7 @@ public class StaticMappings {
      * @param pathPrefix 路径前缀
      * @param repository 资源仓库
      */
-    public static void add(String pathPrefix, StaticRepository repository) {
+    public synchronized static void add(String pathPrefix, StaticRepository repository) {
         add(pathPrefix, true, repository);
     }
 
@@ -37,7 +37,7 @@ public class StaticMappings {
      * @param repositoryIncPrefix 资源仓库是否包括路径前缀
      * @param repository          资源仓库
      */
-    public static void add(String pathPrefix, boolean repositoryIncPrefix, StaticRepository repository) {
+    public synchronized static void add(String pathPrefix, boolean repositoryIncPrefix, StaticRepository repository) {
         if (pathPrefix.startsWith("/") == false) {
             pathPrefix = "/" + pathPrefix;
         }
@@ -46,7 +46,14 @@ public class StaticMappings {
             pathPrefix = pathPrefix + "/";
         }
 
-        locationList.add(new StaticLocation(pathPrefix, repository, repositoryIncPrefix));
+        locationMap.putIfAbsent(repository, new StaticLocation(pathPrefix, repository, repositoryIncPrefix));
+    }
+
+    /**
+     * 移除仓库
+     */
+    public synchronized static void remove(StaticRepository repository) {
+        locationMap.remove(repository);
     }
 
     /**
@@ -55,7 +62,7 @@ public class StaticMappings {
     public static URL find(String path) throws Exception {
         URL rst = null;
 
-        for (StaticLocation m : locationList) {
+        for (StaticLocation m : locationMap.values()) {
             if (path.startsWith(m.pathPrefix)) {
                 if (m.repositoryIncPrefix) {
                     rst = m.repository.find(path);
