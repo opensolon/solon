@@ -16,8 +16,12 @@ import java.nio.ByteBuffer;
 
 @SuppressWarnings("unchecked")
 public class WsServer extends WebSocketServer {
+    public WsServer(int port) {
+        super(new InetSocketAddress(port));
+    }
+
     public WsServer(InetAddress address, int port) {
-        super(new InetSocketAddress(address,port));
+        super(new InetSocketAddress(address, port));
     }
 
     @Override

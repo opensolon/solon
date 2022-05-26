@@ -26,8 +26,7 @@ class BioServer implements ServerLifecycle {
         if (Utils.isEmpty(host)) {
             server = new ServerSocket(port);
         } else {
-            InetAddress inetAddress = Inet4Address.getByName(host);
-            server = new ServerSocket(port, 50, inetAddress);
+            server = new ServerSocket(port, 50, Inet4Address.getByName(host));
         }
 
 
