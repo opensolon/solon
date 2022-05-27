@@ -3,12 +3,13 @@ package org.noear.solon.boot.prop;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerConstants;
+import org.noear.solon.boot.ServerSignalProps;
 
 /**
  * @author noear
  * @since 1.8
  */
-public class WebSocketSignalProps {
+public class WebSocketSignalProps implements ServerSignalProps {
     private String name;
     private int port;
     private String host;

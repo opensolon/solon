@@ -4,6 +4,8 @@ import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 
 /**
+ * 服务公共属性
+ *
  * @author noear
  * @since 1.6
  * */
