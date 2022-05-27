@@ -2,7 +2,6 @@ package org.noear.solon.extend.staticfiles.repository;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
-import org.noear.solon.core.AopContext;
 import org.noear.solon.core.JarClassLoader;
 import org.noear.solon.extend.staticfiles.StaticRepository;
 
