@@ -2,6 +2,7 @@ package org.noear.solon.extend.staticfiles.repository;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
+import org.noear.solon.core.AopContext;
 import org.noear.solon.core.JarClassLoader;
 import org.noear.solon.extend.staticfiles.StaticRepository;
 
@@ -28,6 +29,10 @@ public class ClassPathStaticRepository implements StaticRepository {
      */
     public ClassPathStaticRepository(String location) {
         this(JarClassLoader.global(), location);
+    }
+
+    public ClassPathStaticRepository(AopContext context, String location) {
+        this(context.getClassLoader(), location);
     }
 
     public ClassPathStaticRepository(ClassLoader classLoader, String location) {
