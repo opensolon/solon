@@ -45,6 +45,11 @@ public final class XPluginImp implements Plugin {
             return;
         }
 
+        //如果有smarthttp插件，就不启动了
+        if (Utils.loadClass("org.noear.solon.boot.smarthttp.XPluginImp") != null) {
+            return;
+        }
+
         context.beanOnloaded((ctx) -> {
             try {
                 start0(Solon.app());
