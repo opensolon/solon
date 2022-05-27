@@ -1,5 +1,5 @@
 #### 1.8.1
-* 添加 server.host 和 server.xxx.host 支持
+* 添加 server.host 和 server.?.host 支持
 * 添加 StaticMappings::remove 接口
 * 添加 EventBus::unsubscribe 接口
 * fastjson 升为 1.2.83
