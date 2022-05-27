@@ -31,10 +31,6 @@ public class ClassPathStaticRepository implements StaticRepository {
         this(JarClassLoader.global(), location);
     }
 
-    public ClassPathStaticRepository(AopContext context, String location) {
-        this(context.getClassLoader(), location);
-    }
-
     public ClassPathStaticRepository(ClassLoader classLoader, String location) {
         this.classLoader = classLoader;
 
