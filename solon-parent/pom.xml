@@ -103,6 +103,11 @@
             <name>brucelwl</name>
             <email>841326226@qq.com</email>
         </developer>
+        <developer>
+            <name>YukaiTang</name>
+            <email>2420177044@qq.com</email>
+            <url> https://blog.csdn.net/fanduifandui</url>
+        </developer>
     </developers>
     <scm>
         <connection>scm:git:git@github.com:noear/solon.git</connection>
