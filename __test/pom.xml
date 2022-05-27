@@ -12,7 +12,7 @@
     </parent>
 
     <groupId>org.noear.solon</groupId>
-    <artifactId>_test</artifactId>
+    <artifactId>__test</artifactId>
     <packaging>jar</packaging>
 
     <name>${project.artifactId}</name>
