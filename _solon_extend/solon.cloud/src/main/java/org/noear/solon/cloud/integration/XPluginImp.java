@@ -42,9 +42,9 @@ public class XPluginImp implements Plugin {
 
             //设置负载工厂
             Bridge.upstreamFactorySet(CloudLoadBalanceFactory.instance);
-        }else{
+        } else {
             //@since 1.6
-            if(CloudLoadBalanceFactory.instance.count() > 0){
+            if (CloudLoadBalanceFactory.instance.count() > 0) {
                 //设置负载工厂
                 Bridge.upstreamFactorySet(CloudLoadBalanceFactory.instance);
             }
@@ -69,6 +69,10 @@ public class XPluginImp implements Plugin {
 
     @Override
     public void prestop() throws Throwable {
+        if (Solon.app().enableSafeStop() == false) {
+            return;
+        }
+
         if (CloudClient.discovery() != null) {
             if (Utils.isNotEmpty(Solon.cfg().appName())) {
                 for (Signal signal : Solon.app().signals()) {
