@@ -120,14 +120,14 @@ public class Solon {
 
         PrintUtil.info("App", "Start loading");
 
-        //1.创建全局应用
-        app = new SolonApp(source, argx);
-
-        //2.0.内部初始化等待（尝试ping等待）
-        app.initAwait();
-
 
         try {
+            //1.创建全局应用
+            app = new SolonApp(source, argx);
+
+            //2.0.内部初始化等待（尝试ping等待）
+            app.initAwait();
+
             //2.1.内部初始化（如配置等，顺序不能乱）
             app.init();
 

@@ -3,6 +3,7 @@ package org.noear.solon;
 import org.noear.solon.core.*;
 import org.noear.solon.core.util.PluginUtil;
 
+import java.io.File;
 import java.net.URL;
 import java.util.*;
 
@@ -57,7 +58,7 @@ public final class SolonProps extends Props {
      *
      * @param args 启用参数
      */
-    public SolonProps load(Class<?> source, NvMap args) {
+    public SolonProps load(Class<?> source, NvMap args) throws Exception{
         //1.接收启动参数
         this.args = args;
         //1.1.应用源
@@ -104,6 +105,12 @@ public final class SolonProps extends Props {
             loadInit(Utils.getResource("application-" + env + ".yml"), sysPropOrg);
             loadInit(Utils.getResource("app-" + env + ".properties"), sysPropOrg);
             loadInit(Utils.getResource("app-" + env + ".yml"), sysPropOrg);
+        }
+
+        //4.3.加载扩展配置 solon.extend.config
+        String extConfig = getArg("extend.config");
+        if(Utils.isNotEmpty(extConfig)) {
+            loadInit(new File(extConfig).toURI().toURL(), sysPropOrg);
         }
 
 

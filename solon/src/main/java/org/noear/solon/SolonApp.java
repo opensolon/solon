@@ -36,7 +36,7 @@ public class SolonApp extends RouterAdapter {
 
     protected boolean stopped = false;
 
-    protected SolonApp(Class<?> source, NvMap args) {
+    protected SolonApp(Class<?> source, NvMap args) throws Exception{
         _startupTime = System.currentTimeMillis();
         _source = source;
 
