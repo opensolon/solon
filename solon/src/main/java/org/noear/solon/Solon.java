@@ -122,7 +122,7 @@ public class Solon {
 
 
         try {
-            //1.创建全局应用
+            //1.创建全局应用及配置
             app = new SolonApp(source, argx);
 
             //2.0.内部初始化等待（尝试ping等待）
