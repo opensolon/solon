@@ -38,6 +38,7 @@ public class DemoApp {
         factory.setFeatures(
                 Feature.OrderedField,
                 Feature.WriteDateUseTicks,
+                Feature.TransferCompatible,
                 Feature.StringNullAsEmpty,
                 Feature.QuoteFieldNames,
                 Feature.SerializeNulls);
