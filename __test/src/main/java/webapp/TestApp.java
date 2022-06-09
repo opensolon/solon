@@ -5,7 +5,7 @@ import org.noear.solon.SolonApp;
 import org.noear.solon.SolonBuilder;
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.Import;
-import org.noear.solon.boot.filter.ContextPathFilter;
+import org.noear.solon.mvc.filter.ContextPathFilter;
 import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.core.ExtendLoader;
 import org.noear.solon.core.handle.MethodType;

@@ -10,14 +10,14 @@
         <version>1.8.3-M1</version>
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
-    
-    <artifactId>solon.boot</artifactId>
+
+    <artifactId>solon.mvc</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.mvc</artifactId>
+            <artifactId>solon</artifactId>
         </dependency>
     </dependencies>
 

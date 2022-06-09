@@ -1,4 +1,4 @@
-package org.noear.solon.boot.filter;
+package org.noear.solon.mvc.filter;
 
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Filter;

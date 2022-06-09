@@ -187,6 +187,12 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>solon.mvc</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>solon.boot</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
@@ -1255,6 +1261,7 @@
 
         <module>../_solon_extend/solon.boot.websocket</module>
 
+        <module>../_solon_extend/solon.mvc</module>
 
         <module>../_solon_extend/solon.validation</module>
         <module>../_solon_extend/solon.data</module>
