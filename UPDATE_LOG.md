@@ -1,5 +1,6 @@
 #### 1.8.3
 * 添加 solon.extend.config 配置支持
+* 添加 ContextPathFilter 类，摸拟 contextPath 特性
 
 #### 1.8.2
 * 添加 server.host 和 server.?.host 支持
