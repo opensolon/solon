@@ -2,7 +2,6 @@ package org.noear.solon.cloud.model;
 
 import org.noear.solon.Utils;
 import org.noear.solon.core.PropsConverter;
-import org.noear.solon.core.wrap.ClassWrap;
 
 import java.io.Serializable;
 import java.util.Map;

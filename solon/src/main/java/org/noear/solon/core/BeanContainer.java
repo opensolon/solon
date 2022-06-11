@@ -464,18 +464,6 @@ public abstract class BeanContainer {
             //如果是 Properties
             Properties val = getProps().getProp(name);
             varH.setValue(val);
-        } else if (Map.class == varH.getType()) {
-            //如果是 Map
-            Map val = getProps().getXmap(name);
-            varH.setValue(val);
-//        } else if(List.class == varH.getType()){
-//            //如果是 List
-//            Properties val0 = getProps().getProp(name);
-//            if (val0.size() > 0) {
-//                //如果找到配置了
-//                Object val2 = PropsConverter.global().convert(val0, null, varH.getType(), varH.getGenericType());
-//                varH.setValue(val2);
-//            }
         } else {
             //2.然后尝试获取配置
             String def = null;

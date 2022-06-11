@@ -124,6 +124,18 @@ cfgitems:
   - id: 2
     name: id2
 
+cfgmap:
+  cfg1:
+    id: 1
+    name: id1
+  cfg2:
+    id: 2
+    name: id2
+
 stritems:
   - id1
   - id2
+
+strmap:
+  id1: 1
+  id2: 2

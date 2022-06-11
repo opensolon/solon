@@ -8,6 +8,7 @@ import org.noear.solon.test.SolonTest;
 import webapp.models.CfgItem;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author noear 2022/6/11 created
@@ -19,11 +20,17 @@ public class PropTest {
     @Inject("${cfgitems}")
     List<CfgItem> cfgitems;
 
+    @Inject("${cfgmap}")
+    Map<String, CfgItem> cfgmap;
+
     @Inject("${stritems}")
     List<String> stritems;
 
+    @Inject("${strmap}")
+    Map<String, String> strmap;
+
     @Test
-    public void test(){
+    public void test() {
         System.out.println(cfgitems);
 
         assert cfgitems != null;
@@ -35,5 +42,20 @@ public class PropTest {
         assert stritems != null;
         assert stritems.size() == 2;
         assert stritems.get(0).equals("id1");
+    }
+
+    @Test
+    public void test1() {
+        System.out.println(cfgmap);
+
+        assert cfgmap != null;
+        assert cfgmap.size() == 2;
+        assert cfgmap.get("cfg1").getId() == 1;
+
+        System.out.println(strmap);
+
+        assert strmap != null;
+        assert strmap.size() == 2;
+        assert strmap.get("id1").equals("1");
     }
 }
