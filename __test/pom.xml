@@ -211,28 +211,28 @@
 <!--        </dependency>-->
 
 
-        <!--        <dependency>-->
-        <!--            <groupId>org.noear</groupId>-->
-        <!--            <artifactId>solon.boot.jlhttp</artifactId>-->
-        <!--        </dependency>-->
-
-
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.boot.smarthttp</artifactId>
-        </dependency>
-
-
-
 <!--                <dependency>-->
 <!--                    <groupId>org.noear</groupId>-->
-<!--                    <artifactId>solon.boot.undertow</artifactId>-->
+<!--                    <artifactId>solon.boot.jlhttp</artifactId>-->
 <!--                </dependency>-->
 
-<!--                <dependency>-->
-<!--                    <groupId>org.noear</groupId>-->
-<!--                    <artifactId>solon.boot.undertow.add.jsp</artifactId>-->
-<!--                </dependency>-->
+
+<!--        <dependency>-->
+<!--            <groupId>org.noear</groupId>-->
+<!--            <artifactId>solon.boot.smarthttp</artifactId>-->
+<!--        </dependency>-->
+
+
+
+                <dependency>
+                    <groupId>org.noear</groupId>
+                    <artifactId>solon.boot.undertow</artifactId>
+                </dependency>
+
+                <dependency>
+                    <groupId>org.noear</groupId>
+                    <artifactId>solon.boot.undertow.add.jsp</artifactId>
+                </dependency>
 
 
 
