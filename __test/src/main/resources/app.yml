@@ -117,3 +117,9 @@ app.dict:
   likes:
     - 素描
     - 摄影
+
+cfgitems:
+  - id: 1
+    name: id1
+  - id: 2
+    name: id2

@@ -135,9 +135,9 @@ public class Props extends Properties {
      *
      * @param keyStarts key 的开始字符
      */
-    public <T> T getBean(String keyStarts, Class<T> type) {
+    public <T> T getBean(String keyStarts, Class<T> clz) {
         Properties props = getProp(keyStarts);
-        return PropsConverter.global().convert(props, null, type);
+        return PropsConverter.global().convert(props, null, clz, null);
     }
 
     /**
@@ -148,6 +148,11 @@ public class Props extends Properties {
     public Props getProp(String keyStarts) {
         Props prop = new Props();
         doFind(keyStarts + ".", prop::put);
+        if (prop.size() == 0) {
+            doFind(keyStarts + "[", (k, v) -> {
+                prop.put("[" + k, v);
+            });
+        }
         return prop;
     }
 
@@ -174,13 +179,13 @@ public class Props extends Properties {
         return map;
     }
 
-    public List<String> getList(String keyStarts) {
-        List<String> ary = new ArrayList<>();
-        doFind(keyStarts + "[", (k, v) -> {
-            ary.add(v);
-        });
-        return ary;
-    }
+//    public List<String> getList(String keyStarts) {
+//        List<String> ary = new ArrayList<>();
+//        doFind(keyStarts + "[", (k, v) -> {
+//            ary.add(v);
+//        });
+//        return ary;
+//    }
 
     private void doFind(String keyStarts, BiConsumer<String, String> setFun) {
         String key2 = keyStarts;

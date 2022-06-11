@@ -6,6 +6,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.core.PropsConverter;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Type;
 import java.util.Properties;
 
 /**
@@ -14,7 +15,7 @@ import java.util.Properties;
  */
 public class PropsConverterExt extends PropsConverter {
     @Override
-    public <T> T convert(Properties props, T target, Class<T> targetClz) {
+    public <T> T convert(Properties props, T target, Class<T> targetClz, Type targetType) {
         if (target == null) {
             try {
                 //尝试用构造函数注入
@@ -33,7 +34,11 @@ public class PropsConverterExt extends PropsConverter {
                 }
             }
 
-            return ONode.loadObj(props, Feature.UseSetter).toObject(targetClz);
+            if(targetType == null){
+                targetType = targetClz;
+            }
+
+            return ONode.loadObj(props, Feature.UseSetter).toObject(targetType);
         } else {
             return ONode.loadObj(props, Feature.UseSetter).bindTo(target);
         }

@@ -418,7 +418,7 @@ public abstract class BeanContainer {
                 });
                 varH.setValue(val2);
             } else {
-                Object val2 = PropsConverter.global().convert(val, null, varH.getType());
+                Object val2 = PropsConverter.global().convert(val, null, varH.getType(), varH.getGenericType());
                 varH.setValue(val2);
             }
         } else if (name.startsWith("${")) {
@@ -468,10 +468,14 @@ public abstract class BeanContainer {
             //如果是 Map
             Map val = getProps().getXmap(name);
             varH.setValue(val);
-        } else if(List.class == varH.getType()){
-            //如果是 List
-            List ary = getProps().getList(name);
-            varH.setValue(ary);
+//        } else if(List.class == varH.getType()){
+//            //如果是 List
+//            Properties val0 = getProps().getProp(name);
+//            if (val0.size() > 0) {
+//                //如果找到配置了
+//                Object val2 = PropsConverter.global().convert(val0, null, varH.getType(), varH.getGenericType());
+//                varH.setValue(val2);
+//            }
         } else {
             //2.然后尝试获取配置
             String def = null;
@@ -496,14 +500,14 @@ public abstract class BeanContainer {
             if (val == null) {
                 Class<?> pt = varH.getType();
 
-                if (pt.getName().startsWith("java.") || pt.isArray() || pt.isPrimitive()) {
+                if (pt.getName().startsWith("java.lang.") || pt.isPrimitive()) {
                     //如果是java基础类型，则不注入配置值
                 } else {
                     //尝试转为实体
                     Properties val0 = getProps().getProp(name);
                     if (val0.size() > 0) {
                         //如果找到配置了
-                        Object val2 = PropsConverter.global().convert(val0, null, pt);
+                        Object val2 = PropsConverter.global().convert(val0, null, pt, varH.getGenericType());
                         varH.setValue(val2);
                     }
                 }

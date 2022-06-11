@@ -64,7 +64,7 @@ public class CloudConfigBeanInjector implements BeanInjector<CloudConfig> {
             return cfg.toProps();
         }
 
-        if (type.getName().startsWith("java.") || type.isPrimitive()) {
+        if (type.getName().startsWith("java.lang.") || type.isPrimitive()) {
             //如果是java基础类型，则为null（后面统一地 isPrimitive 做处理）
             //
             return ConvertUtil.to(type, cfg.value());
@@ -72,7 +72,7 @@ public class CloudConfigBeanInjector implements BeanInjector<CloudConfig> {
             //尝试转为实体
             //
             Properties val0 = cfg.toProps();
-            return PropsConverter.global().convert(val0, null, type);
+            return PropsConverter.global().convert(val0, null, type, null);
         }
     }
 }

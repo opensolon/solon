@@ -96,6 +96,6 @@ public class Config implements Serializable {
      */
     public <T> T toBean(Class<T> clz) {
         Properties props = toProps();
-        return PropsConverter.global().convert(props, null, clz);
+        return PropsConverter.global().convert(props, null, clz, clz);
     }
 }

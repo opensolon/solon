@@ -546,7 +546,7 @@ public class Utils {
      * @param propS 属性集
      */
     public static <T> T injectProperties(T obj, Properties propS) {
-        return PropsConverter.global().convert(propS, obj, null);
+        return PropsConverter.global().convert(propS, obj, null, null);
     }
 
     /**

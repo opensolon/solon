@@ -3,6 +3,7 @@ package org.noear.solon.core;
 import org.noear.solon.Utils;
 import org.noear.solon.core.wrap.ClassWrap;
 
+import java.lang.reflect.Type;
 import java.util.Properties;
 
 /**
@@ -41,7 +42,7 @@ public class PropsConverter {
      * @param target    目标
      * @param targetClz 目标类型
      */
-    public <T> T convert(Properties props, T target, Class<T> targetClz) {
+    public <T> T convert(Properties props, T target, Class<T> targetClz, Type targetType) {
         if (target == null) {
             return ClassWrap.get(targetClz).newBy(props);
         } else {
