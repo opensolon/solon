@@ -7,7 +7,8 @@ solon.health.detector=cpu,disk,jvm,memory,os,qps
 
 
 ```yml
-solon.health.detector: "cpu,disk,jvm,memory,os,qps"
+# 可选: cpu,disk,jvm,memory,os,qps (qps 最好别加)
+solon.health.detector: "cpu,jvm"
 ```
 
 /healthz
