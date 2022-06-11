@@ -123,3 +123,7 @@ cfgitems:
     name: id1
   - id: 2
     name: id2
+
+stritems:
+  - id1
+  - id2
