@@ -1,6 +1,7 @@
 #### 1.8.3
 * 添加 solon.extend.config 配置支持
 * 添加 ContextPathFilter 类，摸拟 contextPath 特性
+* 文件下载时 增加 Content-Length 输出
 * snack3 升为 3.2.29
 * weed3 升为 3.4.26
 
