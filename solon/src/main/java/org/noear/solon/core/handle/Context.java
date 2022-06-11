@@ -805,10 +805,6 @@ public abstract class Context {
             headerSet("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
         }
 
-        if (file.content.available() > 0) {
-            headerSet("Content-Length", String.valueOf(file.content.available()));
-        }
-
         Utils.transferTo(file.content, outputStream());
     }
 
@@ -820,8 +816,6 @@ public abstract class Context {
             String fileName = URLEncoder.encode(file.getName(), Solon.encoding());
             headerSet("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
         }
-
-        headerSet("Content-Length", String.valueOf(file.length()));
 
         try (InputStream ins = new FileInputStream(file)) {
             Utils.transferTo(ins, outputStream());
