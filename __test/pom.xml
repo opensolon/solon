@@ -39,6 +39,11 @@
 
         <dependency>
             <groupId>org.noear</groupId>
+            <artifactId>solon.extend.health</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.noear</groupId>
             <artifactId>snowflake-id-solon-plugin</artifactId>
         </dependency>
 

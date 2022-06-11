@@ -22,6 +22,7 @@ public class InitPluginDemo implements Plugin {
         StaticMappings.add("/", new ExtendStaticRepository());
         //2.添加本地绝对目录
         StaticMappings.add("/", new FileStaticRepository("/data/sss/water/water_ext/"));
+        StaticMappings.add("/file/", false, new FileStaticRepository("/data/sss/water/file/"));
         //3.添加资源路径
         StaticMappings.add("/", new ClassPathStaticRepository("user"));
 
