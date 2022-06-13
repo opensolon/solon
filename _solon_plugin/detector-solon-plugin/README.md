@@ -7,7 +7,7 @@ solon.health.detector=cpu,disk,jvm,memory,os,qps
 
 
 ```yml
-# 可选: cpu,disk,jvm,memory,os,qps (qps 最好别加)
+# 可选: cpu,disk,jvm,memory,os,qps
 solon.health.detector: "cpu,jvm"
 ```
 
