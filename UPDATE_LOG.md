@@ -4,6 +4,7 @@
 * 修复 @Inject("${list}") List<CfgItem> list ，数据不对的问题
 * snack3 升为 3.2.29
 * weed3 升为 3.4.26
+* beetlsql 升为 3.14.4-RELEASE
 
 #### 1.8.2
 * 添加 server.host 和 server.?.host 支持
