@@ -5,9 +5,9 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class Headers implements Iterable<Header> {
+public class HttpHeaderCollection implements Iterable<HttpHeader> {
 
-    protected Header[] headers = new Header[12];
+    protected HttpHeader[] headers = new HttpHeader[12];
     protected int count;
 
     public int size() {
@@ -27,26 +27,28 @@ public class Headers implements Iterable<Header> {
     }
 
     public void add(String name, String value) {
-        Header header = new Header(name, value); // also validates
+        HttpHeader header = new HttpHeader(name, value); // also validates
+
         // expand array if necessary
         if (count == headers.length) {
-            Header[] expanded = new Header[2 * count];
+            HttpHeader[] expanded = new HttpHeader[2 * count];
             System.arraycopy(headers, 0, expanded, 0, count);
             headers = expanded;
         }
         headers[count++] = header; // inlining header would cause a bug!
     }
 
-    public void addAll(Headers headers) {
-        for (Header header : headers)
+    public void addAll(HttpHeaderCollection headers) {
+        for (HttpHeader header : headers) {
             add(header.getName(), header.getValue());
+        }
     }
 
-    public Header replace(String name, String value) {
+    public HttpHeader replace(String name, String value) {
         for (int i = 0; i < count; i++) {
             if (headers[i].getName().equalsIgnoreCase(name)) {
-                Header prev = headers[i];
-                headers[i] = new Header(name, value);
+                HttpHeader prev = headers[i];
+                headers[i] = new HttpHeader(name, value);
                 return prev;
             }
         }
@@ -73,9 +75,7 @@ public class Headers implements Iterable<Header> {
         return params;
     }
 
-    public Iterator<Header> iterator() {
-        // we use the built-in wrapper instead of a trivial custom implementation
-        // since even a tiny anonymous class here compiles to a 1.5K class file
+    public Iterator<HttpHeader> iterator() {
         return Arrays.asList(headers).subList(0, count).iterator();
     }
 }

@@ -7,7 +7,7 @@ import java.io.InputStream;
 import static org.noear.solon.boot.jdkhttp.uploadfile.Consts.CRLF;
 
 
-public class MultipartInputStream extends FilterInputStream {
+public class HttpMultipartInputStream extends FilterInputStream {
 
     protected final byte[] boundary; // including leading CRLF--
     protected final byte[] buf = new byte[4096];
@@ -16,7 +16,7 @@ public class MultipartInputStream extends FilterInputStream {
     protected int len; // length of found boundary
     protected int state; // initial, started data, start boundary, EOS, last boundary, epilogue
 
-    protected MultipartInputStream(InputStream in, byte[] boundary) {
+    protected HttpMultipartInputStream(InputStream in, byte[] boundary) {
         super(in);
         int len = boundary.length;
         if (len == 0 || len > 70)

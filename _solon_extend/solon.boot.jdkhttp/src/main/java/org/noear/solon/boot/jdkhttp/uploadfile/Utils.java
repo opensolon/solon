@@ -10,7 +10,7 @@ import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class Utils {
+class Utils {
     public static String trimRight(String s, char c) {
         int len = s.length() - 1;
         int end;
@@ -86,8 +86,8 @@ public class Utils {
         return dest;
     }
 
-    public static Headers readHeaders(InputStream in) throws IOException {
-        Headers headers = new Headers();
+    public static HttpHeaderCollection readHeaders(InputStream in) throws IOException {
+        HttpHeaderCollection headers = new HttpHeaderCollection();
         String line;
         String prevLine = "";
         int count = 0;
@@ -102,7 +102,7 @@ public class Utils {
                 throw new IOException("invalid header: \"" + line + "\"");
             String name = line.substring(0, separator);
             String value = line.substring(separator + 1).trim(); // ignore LWS
-            Header replaced = headers.replace(name, value);
+            HttpHeader replaced = headers.replace(name, value);
             // concatenate repeated headers (distinguishing repeated from folded)
             if (replaced != null && first == 0) {
                 value = replaced.getValue() + ", " + value;
