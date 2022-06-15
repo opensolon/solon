@@ -11,7 +11,7 @@
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <groupId>org.noear.hatch</groupId>
+    <groupId>org.noear</groupId>
     <artifactId>solon.boot.jdkhttp</artifactId>
     <packaging>jar</packaging>
 

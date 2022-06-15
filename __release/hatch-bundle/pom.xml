@@ -27,7 +27,6 @@
         <module>../../__hatch/solon.serialization.thrift</module>
         <module>../../__hatch/solon.serialization.avro</module>
 
-        <module>../../__hatch/solon.boot.jdkhttp</module>
         <module>../../__hatch/solon.boot.reactor-netty</module>
 
 <!--        <module>../../__hatch/solon.boot.rapidoid-http-fast</module>-->
