@@ -4,7 +4,7 @@ import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class MultipartInputStream extends FilterInputStream {
+public class HttpMultipartInputStream extends FilterInputStream {
     public static final byte[] CRLF = {0x0d, 0x0a};
 
     protected final byte[] boundary; // including leading CRLF--
@@ -14,7 +14,7 @@ public class MultipartInputStream extends FilterInputStream {
     protected int len; // length of found boundary
     protected int state; // initial, started data, start boundary, EOS, last boundary, epilogue
 
-    protected MultipartInputStream(InputStream in, byte[] boundary) {
+    protected HttpMultipartInputStream(InputStream in, byte[] boundary) {
         super(in);
         int len = boundary.length;
         if (len == 0 || len > 70)
