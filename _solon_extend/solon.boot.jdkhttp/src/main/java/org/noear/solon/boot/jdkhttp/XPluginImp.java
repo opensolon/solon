@@ -86,7 +86,7 @@ public final class XPluginImp implements Plugin {
                 _server = HttpsServer.create(new InetSocketAddress(_port), 0);
             }
 
-            configSsl((HttpsServer) _server);
+            addSslConfig((HttpsServer) _server);
         } else {
             if (Utils.isNotEmpty(_host)) {
                 _server = HttpServer.create(new InetSocketAddress(_host, _port), 0);
@@ -110,7 +110,7 @@ public final class XPluginImp implements Plugin {
         PrintUtil.info("Server:main: jdkhttp: Started @" + (time_end - time_start) + "ms");
     }
 
-    private void configSsl(HttpsServer httpsServer) throws IOException {
+    private void addSslConfig(HttpsServer httpsServer) throws IOException {
         SSLContext sslContext = SslContextFactory.createSslContext();
         httpsServer.setHttpsConfigurator(new HttpsConfigurator(sslContext) {
             public void configure(HttpsParameters params) {
