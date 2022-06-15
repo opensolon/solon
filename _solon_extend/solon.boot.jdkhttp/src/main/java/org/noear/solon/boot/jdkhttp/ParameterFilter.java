@@ -13,13 +13,6 @@ import java.net.URLDecoder;
 import java.util.*;
 
 public class ParameterFilter extends Filter {
-
-    final String file_encoding;
-
-    public ParameterFilter() {
-        file_encoding = System.getProperty("file.encoding");
-    }
-
     @Override
     public String description() {
         return "Parses the requested URI for parameters";
@@ -79,11 +72,11 @@ public class ParameterFilter extends Filter {
                 String key = null;
                 String value = null;
                 if (param.length > 0) {
-                    key = URLDecoder.decode(param[0], file_encoding);
+                    key = URLDecoder.decode(param[0], ServerProps.request_encoding);
                 }
 
                 if (param.length > 1) {
-                    value = URLDecoder.decode(param[1], file_encoding);
+                    value = URLDecoder.decode(param[1], ServerProps.request_encoding);
                 }else{
                     value = "";
                 }

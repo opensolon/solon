@@ -35,6 +35,7 @@ public final class XPluginImp implements Plugin {
         if (Solon.app().enableHttp() == false) {
             return;
         }
+
         //如果有jetty插件，就不启动了
         if (Utils.loadClass("org.noear.solon.boot.jetty.XPluginImp") != null) {
             return;

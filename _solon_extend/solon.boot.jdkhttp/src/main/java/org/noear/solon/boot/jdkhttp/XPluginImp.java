@@ -30,8 +30,33 @@ public final class XPluginImp implements Plugin {
             return;
         }
 
-        SolonApp app = Solon.app();
+        //如果有jetty插件，就不启动了
+        if (Utils.loadClass("org.noear.solon.boot.jetty.XPluginImp") != null) {
+            return;
+        }
 
+        //如果有undrtow插件，就不启动了
+        if (Utils.loadClass("org.noear.solon.boot.undertow.XPluginImp") != null) {
+            return;
+        }
+
+        //如果有smarthttp插件，就不启动了
+        if (Utils.loadClass("org.noear.solon.boot.smarthttp.XPluginImp") != null) {
+            return;
+        }
+
+        context.beanOnloaded((ctx) -> {
+            try {
+                start0(Solon.app());
+            } catch (RuntimeException e) {
+                throw e;
+            } catch (Throwable e) {
+                throw new IllegalStateException(e);
+            }
+        });
+    }
+
+    private void start0(SolonApp app) throws Throwable {
         HttpSignalProps props = new HttpSignalProps();
         String _host = props.getHost();
         int _port = props.getPort();
@@ -41,29 +66,26 @@ public final class XPluginImp implements Plugin {
 
         PrintUtil.info("Server:main: Sun.net.HttpServer(jdkhttp)");
 
-        try {
-            if (Utils.isNotEmpty(_host)) {
-                _server = HttpServer.create(new InetSocketAddress(_host, _port), 0);
-            } else {
-                _server = HttpServer.create(new InetSocketAddress(_port), 0);
-            }
 
-            HttpContext httpContext = _server.createContext("/", new JdkHttpContextHandler());
-            httpContext.getFilters().add(new ParameterFilter());
-
-            _server.setExecutor(Executors.newCachedThreadPool());
-            _server.start();
-
-            _signal = new SignalSim(_name, _port, "http", SignalType.HTTP);
-            app.signalAdd(_signal);
-
-            long time_end = System.currentTimeMillis();
-
-            PrintUtil.info("Connector:main: jdkhttp: Started ServerConnector@{HTTP/1.1,[http/1.1]}{http://localhost:" + _port + "}");
-            PrintUtil.info("Server:main: jdkhttp: Started @" + (time_end - time_start) + "ms");
-        } catch (Exception ex) {
-            throw new RuntimeException(ex);
+        if (Utils.isNotEmpty(_host)) {
+            _server = HttpServer.create(new InetSocketAddress(_host, _port), 0);
+        } else {
+            _server = HttpServer.create(new InetSocketAddress(_port), 0);
         }
+
+        HttpContext httpContext = _server.createContext("/", new JdkHttpContextHandler());
+        httpContext.getFilters().add(new ParameterFilter());
+
+        _server.setExecutor(Executors.newCachedThreadPool());
+        _server.start();
+
+        _signal = new SignalSim(_name, _port, "http", SignalType.HTTP);
+        app.signalAdd(_signal);
+
+        long time_end = System.currentTimeMillis();
+
+        PrintUtil.info("Connector:main: jdkhttp: Started ServerConnector@{HTTP/1.1,[http/1.1]}{http://localhost:" + _port + "}");
+        PrintUtil.info("Server:main: jdkhttp: Started @" + (time_end - time_start) + "ms");
     }
 
     @Override
