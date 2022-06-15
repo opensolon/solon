@@ -6,6 +6,8 @@ import org.noear.solon.Solon;
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.core.event.EventBus;
 
+import java.io.IOException;
+
 public class JdkHttpContextHandler implements HttpHandler {
     @Override
     public void handle(HttpExchange exchange) {
@@ -14,13 +16,13 @@ public class JdkHttpContextHandler implements HttpHandler {
         } catch (Throwable ex) {
             //context 初始化时，可能会出错
             //
-            EventBus.push( ex);
+            EventBus.push(ex);
         } finally {
             exchange.close();
         }
     }
 
-    private void handleDo(HttpExchange exchange) {
+    private void handleDo(HttpExchange exchange) throws IOException {
         JdkHttpContext ctx = new JdkHttpContext(exchange); //这里可能会有异常
 
         try {
@@ -42,6 +44,8 @@ public class JdkHttpContextHandler implements HttpHandler {
             }
         } catch (Throwable ex) {
             EventBus.push(ex);
+
+            exchange.sendResponseHeaders(500, -1);
         }
     }
 }
