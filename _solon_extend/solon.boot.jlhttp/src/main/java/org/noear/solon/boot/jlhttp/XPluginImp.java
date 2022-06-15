@@ -63,6 +63,9 @@ public final class XPluginImp implements Plugin {
     }
 
     private void start0(SolonApp app) throws Throwable{
+        //初始化属性
+        ServerProps.init();
+
         _server = new HTTPServer();
 
         HttpSignalProps props = new HttpSignalProps();
@@ -87,7 +90,8 @@ public final class XPluginImp implements Plugin {
         JlHttpContextHandler _handler = new JlHttpContextHandler();
 
 
-        if (System.getProperty(ServerConstants.SSL_KEYSTORE) != null) { // enable SSL if configured
+        if (System.getProperty(ServerConstants.SSL_KEYSTORE) != null) {
+            // enable SSL if configured
             _server.setServerSocketFactory(SslContextFactory.createSslContext().getServerSocketFactory());
         }
 

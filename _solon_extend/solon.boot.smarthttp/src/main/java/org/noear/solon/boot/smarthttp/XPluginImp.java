@@ -47,6 +47,9 @@ public final class XPluginImp implements Plugin {
     }
 
     private void start0(SolonApp app) throws Throwable {
+        //初始化属性
+        ServerProps.init();
+
         HttpSignalProps props = new HttpSignalProps();
         String _host = props.getHost();
         int _port = props.getPort();

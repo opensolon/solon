@@ -56,6 +56,10 @@ public class ServerProps {
      * */
     public static final String response_encoding;
 
+    public static void init(){
+        //空的，别去掉
+    }
+
     static {
         String tmp = null;
         output_meta = Solon.cfg().getInt("solon.output.meta", 0) > 0;

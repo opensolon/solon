@@ -3,6 +3,7 @@ package org.noear.solon.boot.websocket;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
+import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.prop.WebSocketSignalProps;
 import org.noear.solon.core.*;
 import org.noear.solon.core.util.PrintUtil;
@@ -44,6 +45,9 @@ public class XPluginImp implements Plugin {
     }
 
     private void start0(SolonApp app) throws Throwable{
+        //初始化属性
+        ServerProps.init();
+
         WebSocketSignalProps props = new WebSocketSignalProps(10000);
         String _host = props.getHost();
         int _port = props.getPort();

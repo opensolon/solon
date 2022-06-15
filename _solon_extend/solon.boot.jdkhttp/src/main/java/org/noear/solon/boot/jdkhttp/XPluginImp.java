@@ -1,31 +1,39 @@
 package org.noear.solon.boot.jdkhttp;
 
-import com.sun.net.httpserver.HttpContext;
-import com.sun.net.httpserver.HttpServer;
+import com.sun.net.httpserver.*;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
+import org.noear.solon.boot.ServerConstants;
+import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.prop.HttpSignalProps;
+import org.noear.solon.boot.ssl.SslContextFactory;
 import org.noear.solon.core.*;
+import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.PrintUtil;
 
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLEngine;
+import javax.net.ssl.SSLParameters;
+import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.concurrent.Executors;
 
 public final class XPluginImp implements Plugin {
     private static Signal _signal;
-    public static Signal signal(){
+
+    public static Signal signal() {
         return _signal;
     }
 
     private HttpServer _server = null;
 
-    public static String solon_boot_ver(){
-        return "jdk http/"+ Solon.cfg().version();
+    public static String solon_boot_ver() {
+        return "jdk http/" + Solon.cfg().version();
     }
 
     @Override
-    public  void start(AopContext context) {
+    public void start(AopContext context) {
         if (Solon.app().enableHttp() == false) {
             return;
         }
@@ -57,6 +65,9 @@ public final class XPluginImp implements Plugin {
     }
 
     private void start0(SolonApp app) throws Throwable {
+        //初始化属性
+        ServerProps.init();
+
         HttpSignalProps props = new HttpSignalProps();
         String _host = props.getHost();
         int _port = props.getPort();
@@ -67,10 +78,21 @@ public final class XPluginImp implements Plugin {
         PrintUtil.info("Server:main: Sun.net.HttpServer(jdkhttp)");
 
 
-        if (Utils.isNotEmpty(_host)) {
-            _server = HttpServer.create(new InetSocketAddress(_host, _port), 0);
+        if (System.getProperty(ServerConstants.SSL_KEYSTORE) != null) {
+            // enable SSL if configured
+            if (Utils.isNotEmpty(_host)) {
+                _server = HttpsServer.create(new InetSocketAddress(_host, _port), 0);
+            } else {
+                _server = HttpsServer.create(new InetSocketAddress(_port), 0);
+            }
+
+            configSsl((HttpsServer) _server);
         } else {
-            _server = HttpServer.create(new InetSocketAddress(_port), 0);
+            if (Utils.isNotEmpty(_host)) {
+                _server = HttpServer.create(new InetSocketAddress(_host, _port), 0);
+            } else {
+                _server = HttpServer.create(new InetSocketAddress(_port), 0);
+            }
         }
 
         HttpContext httpContext = _server.createContext("/", new JdkHttpContextHandler());
@@ -86,6 +108,29 @@ public final class XPluginImp implements Plugin {
 
         PrintUtil.info("Connector:main: jdkhttp: Started ServerConnector@{HTTP/1.1,[http/1.1]}{http://localhost:" + _port + "}");
         PrintUtil.info("Server:main: jdkhttp: Started @" + (time_end - time_start) + "ms");
+    }
+
+    private void configSsl(HttpsServer httpsServer) throws IOException {
+        SSLContext sslContext = SslContextFactory.createSslContext();
+        httpsServer.setHttpsConfigurator(new HttpsConfigurator(sslContext) {
+            public void configure(HttpsParameters params) {
+                try {
+                    // Initialise the SSL context
+                    SSLContext c = SSLContext.getDefault();
+                    SSLEngine engine = c.createSSLEngine();
+                    params.setNeedClientAuth(false);
+                    params.setCipherSuites(engine.getEnabledCipherSuites());
+                    params.setProtocols(engine.getEnabledProtocols());
+
+                    // Get the default parameters
+                    SSLParameters defaultSSLParameters = c.getDefaultSSLParameters();
+                    params.setSSLParameters(defaultSSLParameters);
+                } catch (Throwable e) {
+                    //"Failed to create HTTPS port"
+                    EventBus.push(e);
+                }
+            }
+        });
     }
 
     @Override
