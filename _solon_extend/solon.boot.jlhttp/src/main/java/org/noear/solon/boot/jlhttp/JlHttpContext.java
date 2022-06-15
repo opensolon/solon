@@ -359,7 +359,6 @@ public class JlHttpContext extends Context {
 
     @Override
     public void cookieSet(String key, String val, String domain, String path, int maxAge) {
-
         StringBuilder sb = new StringBuilder();
         sb.append(key).append("=").append(val).append(";");
 

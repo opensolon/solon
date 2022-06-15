@@ -311,6 +311,18 @@ public class JdkHttpContext extends Context {
         headerSet("Content-Type", contentType);
     }
 
+
+    @Override
+    public OutputStream outputStream() throws IOException {
+        sendHeaders();
+
+        if (_allows_write) {
+            return _exchange.getResponseBody();
+        } else {
+            return new ByteArrayOutputStream();
+        }
+    }
+
     @Override
     public void output(byte[] bytes) {
         try {
@@ -335,26 +347,16 @@ public class JdkHttpContext extends Context {
                 return;
             }
 
-            byte[] buff = new byte[100];
-            int rc = 0;
-            while ((rc = stream.read(buff, 0, 100)) > 0) {
-                out.write(buff, 0, rc);
+            int len = 0;
+            byte[] buf = new byte[512]; //0.5k
+            while ((len = stream.read(buf)) != -1) {
+                out.write(buf, 0, len);
             }
         } catch (Throwable ex) {
             throw new RuntimeException(ex);
         }
     }
 
-    @Override
-    public OutputStream outputStream() throws IOException {
-        sendHeaders();
-
-        if (_allows_write) {
-            return _exchange.getResponseBody();
-        } else {
-            return new ByteArrayOutputStream();
-        }
-    }
 
     @Override
     public void headerSet(String key, String val) {
