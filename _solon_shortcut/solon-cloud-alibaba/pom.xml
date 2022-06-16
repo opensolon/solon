@@ -11,20 +11,29 @@
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>solon.boot.vertx</artifactId>
+    <artifactId>solon-cloud-alibaba</artifactId>
     <packaging>jar</packaging>
-
 
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.boot</artifactId>
+            <artifactId>solon-rpc</artifactId>
+        </dependency>
+
+        <!-- 注册与发现组件 -->
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>nacos-solon-plugin</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>io.vertx</groupId>
-            <artifactId>vertx-core</artifactId>
-            <version>3.5.4</version>
+            <groupId>org.noear</groupId>
+            <artifactId>rocketmq-solon-plugin</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>sentinel-solon-plugin</artifactId>
         </dependency>
     </dependencies>
 

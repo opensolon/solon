@@ -627,6 +627,18 @@
                 <version>${solon.ver}</version>
             </dependency>
 
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-cloud-alibaba</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-cloud-water</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+
 
             <dependency>
                 <groupId>org.noear</groupId>
@@ -1289,6 +1301,8 @@
         <module>../_solon_shortcut/solon-web</module>
         <module>../_solon_shortcut/solon-rpc</module>
         <module>../_solon_shortcut/solon-cloud</module>
+        <module>../_solon_shortcut/solon-cloud-alibaba</module>
+        <module>../_solon_shortcut/solon-cloud-water</module>
 
         <module>../_solon_shortcut/solon-test</module>
 
