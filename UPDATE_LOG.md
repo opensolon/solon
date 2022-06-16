@@ -4,9 +4,9 @@
 * 修复 @Inject("${list}") List<CfgItem> list ，数据不对的问题
 * 插件 solon.boot.jdkhttp，添加 ssl 支持（尝试替代 jlhttp ）
 * 插件 sqltoy-solon-plugin 升级为 sqltoy 5.2.0
+* 插件 weed3-solon-plugin 升级 weed3 3.4.26
+* 插件 beetlsql-solon-plugin 升级 beetlsql 3.14.4-RELEASE
 * snack3 升为 3.2.29
-* weed3 升为 3.4.26
-* beetlsql 升为 3.14.4-RELEASE
 
 #### 1.8.2
 * 添加 server.host 和 server.?.host 支持
