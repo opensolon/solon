@@ -6,7 +6,7 @@ import com.mongodb.MongoCredential;
 import com.mongodb.ServerAddress;
 import com.mongodb.client.MongoDatabase;
 import org.noear.solon.Solon;
-import org.noear.solon.core.Aop;
+import org.noear.solon.Utils;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.Props;
@@ -45,12 +45,14 @@ import static java.lang.System.err;
  * @since 1.5
  */
 public class XPluginImp implements Plugin {
+    AopContext context;
+
     @Override
     public void start(AopContext context) {
+        this.context = context;
 
         //尝试build MongodbClient
-        tryBuildMongoDbClient(context);
-        AppContext ctx = new SolonAppContext();
+        tryBuildMongoDbClient();
 
 
         SqlToyContextProperties properties = context.getProps().getBean("sqltoy", SqlToyContextProperties.class);
@@ -64,10 +66,10 @@ public class XPluginImp implements Plugin {
 
         try {
 
-            final SqlToyContext sqlToyContext = sqlToyContext(properties, ctx);
+            final SqlToyContext sqlToyContext = sqlToyContext(properties, new SolonAppContext(context));
 
             if ("solon".equals(properties.getCacheType()) || properties.getCacheType() == null) {
-                Aop.getAsyn(CacheService.class, bw -> {
+                context.getWrapAsyn(CacheService.class, bw -> {
                     sqlToyContext.setTranslateCacheManager(new SolonTranslateCacheManager(bw.get()));
                     try {
                         DbManager.setContext(sqlToyContext);
@@ -90,12 +92,12 @@ public class XPluginImp implements Plugin {
 
     private void initSqlToy(SqlToyContext sqlToyContext) throws Exception {
         sqlToyContext.initialize();
-        Aop.wrapAndPut(SqlToyContext.class, sqlToyContext);
+        context.wrapAndPut(SqlToyContext.class, sqlToyContext);
     }
 
     @Override
     public void prestop() throws Throwable {
-        SqlToyContext sqlToyContext = Aop.get(SqlToyContext.class);
+        SqlToyContext sqlToyContext = context.getBean(SqlToyContext.class);
         sqlToyContext.destroy();
     }
 
@@ -371,40 +373,43 @@ public class XPluginImp implements Plugin {
         return sqlToyContext;
     }
 
-    public void tryBuildMongoDbClient(AopContext context) {
-        try {
-            Class.forName("com.mongodb.client.MongoDatabase");
-            MongoDatabase mongodb = Aop.get(MongoDatabase.class);
-            if (mongodb == null) {
-                Props props = context.getProps().getProp("data.mongodb");
-                if (props == null) {
-                    return;
-                }
-                MongoClientOptions.Builder builder = new MongoClientOptions.Builder();
-                //每个地址的最大连接数
-                builder.connectionsPerHost(props.getInt("connectionsPerHost", 10));
-                //连接超时时间
-                builder.connectTimeout(props.getInt("connectTimeout", 5000));
-                //设置读写操作超时时间
-                builder.socketTimeout(props.getInt("socketTimeout", 5000));
+    private void tryBuildMongoDbClient() {
+        Class<?> mongoClz = Utils.loadClass(context.getClassLoader(), "com.mongodb.client.MongoDatabase");
 
-                //封装MongoDB的地址与端口
-                ServerAddress address = new ServerAddress(props.get("host", "127.0.0.1"), props.getInt("port", 27017));
-
-                String databaseName = props.get("database", "test");
-                MongoClient client = null;
-                //认证
-                if (props.contains("username")) {
-                    MongoCredential credential = MongoCredential.createCredential(props.get("username"), databaseName, props.get("password", "").toCharArray());
-                    client = new MongoClient(address, Arrays.asList(credential), builder.build());
-                } else {
-                    client = new MongoClient(address, builder.build());
-                }
-                //client
-                MongoDatabase database = client.getDatabase(databaseName);
-                Aop.wrapAndPut(MongoDatabase.class, database);
-            }
-        } catch (ClassNotFoundException e) {
+        if (mongoClz == null) {
+            return;
         }
+
+        MongoDatabase mongodb = context.getBean(MongoDatabase.class);
+        if (mongodb == null) {
+            Props props = context.getProps().getProp("data.mongodb");
+            if (props == null) {
+                return;
+            }
+            MongoClientOptions.Builder builder = new MongoClientOptions.Builder();
+            //每个地址的最大连接数
+            builder.connectionsPerHost(props.getInt("connectionsPerHost", 10));
+            //连接超时时间
+            builder.connectTimeout(props.getInt("connectTimeout", 5000));
+            //设置读写操作超时时间
+            builder.socketTimeout(props.getInt("socketTimeout", 5000));
+
+            //封装MongoDB的地址与端口
+            ServerAddress address = new ServerAddress(props.get("host", "127.0.0.1"), props.getInt("port", 27017));
+
+            String databaseName = props.get("database", "test");
+            MongoClient client = null;
+            //认证
+            if (props.contains("username")) {
+                MongoCredential credential = MongoCredential.createCredential(props.get("username"), databaseName, props.get("password", "").toCharArray());
+                client = new MongoClient(address, Arrays.asList(credential), builder.build());
+            } else {
+                client = new MongoClient(address, builder.build());
+            }
+            //client
+            MongoDatabase database = client.getDatabase(databaseName);
+            context.wrapAndPut(MongoDatabase.class, database);
+        }
+
     }
 }

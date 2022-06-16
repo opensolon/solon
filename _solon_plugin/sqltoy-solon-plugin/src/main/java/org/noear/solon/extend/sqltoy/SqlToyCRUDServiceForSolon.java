@@ -1,6 +1,5 @@
 package org.noear.solon.extend.sqltoy;
 
-import org.noear.solon.core.Aop;
 import org.noear.solon.data.annotation.Tran;
 import org.noear.solon.extend.aspect.annotation.Service;
 import org.sagacity.sqltoy.dao.SqlToyLazyDao;
