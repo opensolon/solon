@@ -93,7 +93,7 @@ public class XPluginImp implements Plugin {
     }
 
     @Override
-    public void prestop() throws Throwable {
+    public void stop() throws Throwable {
         SqlToyContext sqlToyContext = context.getBean(SqlToyContext.class);
         sqlToyContext.destroy();
     }
@@ -367,6 +367,7 @@ public class XPluginImp implements Plugin {
                         (FilterHandler) Class.forName(customFilterHandler).getDeclaredConstructor().newInstance());
             }
         }
+
         return sqlToyContext;
     }
 }
