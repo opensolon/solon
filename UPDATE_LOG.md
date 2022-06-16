@@ -3,6 +3,7 @@
 * 添加 ContextPathFilter 类，摸拟 contextPath 特性
 * 修复 @Inject("${list}") List<CfgItem> list ，数据不对的问题
 * 插件 solon.boot.jdkhttp，添加 ssl 支持（尝试替代 jlhttp ）
+* 插件 sqltoy-solon-plugin 升级为 sqltoy 5.2.0
 * snack3 升为 3.2.29
 * weed3 升为 3.4.26
 * beetlsql 升为 3.14.4-RELEASE
