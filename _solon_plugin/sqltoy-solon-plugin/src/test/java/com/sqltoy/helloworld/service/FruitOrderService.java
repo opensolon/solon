@@ -40,6 +40,7 @@ public class FruitOrderService {
 
 	@Tran
 	public Page<FruitOrderVO> searchFruitOrder(Page pageModel, FruitOrderVO fruitOrderVO) {
+
 		/** 测试数据回滚
 		Map p=new HashMap();
 		sqlToyLazyDao2.executeSql("insert into test(name) value('haha2')",p);

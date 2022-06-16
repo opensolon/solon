@@ -83,27 +83,34 @@ public class Config {
  * 在@Sql中写 sqltoy Sql或者 sqlId
  * 没有@Sql注解时 通过方法名映射sqlId
  * 返回值分为Page,List,Entity和直接值(如：Integer等)，当其中Page,List的类型为直接值或返回值类型为直接值时,具体类型由sql中查询结果决定
- * 参数可有0～2个,两个参数时其中一个为Page,另外一个为Map或Entity,顺序不限
  * 当为default方法时，直接调用default方法
+ * Mapper中其他注解无效，如：@Tran,@Cache
  * 
+ * Mapper参数规则：
+ * 1、当参数列表中存在String,Date,Number,List,Array等类型参数或者以@Param标注的参数时，sql中参数为对应名字的参数
+ * 2、切勿声明多个Page类型参数
+ * 3、当不满足第一个条件时，以第一个非Page类型参数来作为Params传入sql进行查询
  */
 
 public interface DemoMapper {
     // 查询单个User,getByUserName这个名字不重要，以@sql注解中内容为准
     @Sql("userList")
-    UserVo getByUserName(@Param String username);
+    UserVo getByUserName(String username);
 
     //不用@Sql注解的时候,就匹配方法名(userList)
-    List<UserVo> userList(@Param String username);
+    List<UserVo> userList(String username);
 
-    // 也可直接写sql
-    @Sql("  SELECT * FROM T_USER WHERE WHERE USER_NAME=:username #[and GENDER=:gender]")
-    UserVo getByUserName2(@Param String username,@Param Integer gender);
+    // 也可直接写sql，由于参数列表中有String等类型,可在sql中直接使用参数名称
+    @Sql("SELECT * FROM T_USER WHERE WHERE USER_NAME=:username #[and GENDER=:gender]")
+    UserVo getByUserName2(String username,Integer gender);
 
-    // 可查list,可以直接用Map或entity 做查询参数,这种情况下不支持 @Param指定多个参数
-    @Sql("userList")
-    List<UserVo> allUser(UserVo query);
-
+    // 可查list,可以直接用Map或entity 做查询参数
+    @Sql("SELECT * FROM T_USER WHERE WHERE USER_NAME=:username #[and GENDER=:gender]")
+    List<UserVo> queryUser(UserVo query);
+    
+    //由于使用了Integer类型参数,user的值需要使用user.这样的前缀
+    @Sql("SELECT * FROM T_USER WHERE WHERE USER_NAME=:user.username #[and GENDER=:gender]")
+    List<UserVo> queryUser(UserVo user,Integer gender);
     // 也可分页
     @Sql("userList")
     Page<UserVo> pageUser(UserVo query,Page page);
@@ -114,11 +121,12 @@ public interface DemoMapper {
     //default 方法不处理，直接调用，可在default方法中调用本接口方法处理一些业务
     default long doSomeThingElse(){
         // Aop.get(XX.class) 获取其他bean来处理业务
+        //dao().xxx  或通过SqlToyLazyDao来处理其他业务
         return count()+1;
     }
 
     //下面操作建议直接调使用dao接口调用，比如:insert操作，调用dao.save(user)还以返回user的主键(主键自增时比较有用)
-    //但是使用mapper的语句时，返回的时影响数据的条数
+    //但是使用mapper的语句时，返回的是影响数据的条数
     //更新返回影响数据条数
     @Sql("INSERT INTO T_USER(USER_NAME,GENDER) VALUES(:username,:gender)")
     long saveUser(User user);
@@ -130,7 +138,13 @@ public interface DemoMapper {
     long deleteUser(User user);
 
     @Sql("DELETE FROM T_USER WHERE USER_NAME=:username")
-    long deleteUser1(@Param String username);
+    long deleteUser1(String username);
+    /**
+     * 返回值为SqlToyLazyDao的方法可获取默认的dao,加入任意名字的String类型参数，可获取指定数据源名称的dao
+     * @return
+     */
+    SqlToyLazyDao dao();
+    SqlToyLazyDao dao(String dataSourceName);
 }
 
 ```

@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.Map;
 
 public class SqlToyContextProperties implements Serializable {
-
     /**
      *
      */
@@ -60,6 +59,9 @@ public class SqlToyContextProperties implements Serializable {
      */
     private Integer batchSize;
 
+    /**
+     * 默认查询数据库端提取记录量,一般无需设置
+     */
     private int fetchSize = -1;
 
     /**
@@ -83,11 +85,6 @@ public class SqlToyContextProperties implements Serializable {
     private Integer delayCheckSeconds;
 
     private String encoding;
-
-    /**
-     * 分页页号超出总页时转第一页，否则返回空集合
-     */
-    private boolean pageOverToFirst = true;
 
     /**
      * 统一字段处理器
@@ -125,7 +122,7 @@ public class SqlToyContextProperties implements Serializable {
     private String dataSourceSelector;
 
     /**
-     * 缓存类型，默认solon，可选ehcache,caffeine
+     * 缓存类型，默认solon，可选caffeine,ehcache
      */
     private String cacheType = "solon";
 
@@ -138,7 +135,6 @@ public class SqlToyContextProperties implements Serializable {
      * 连接管理的实现扩展定义
      */
     private String connectionFactory;
-
 
     /**
      * 安全私钥
@@ -159,6 +155,11 @@ public class SqlToyContextProperties implements Serializable {
      * 字段展示安全脱敏处理器(sqltoy默认提供了实现，此处提供不满足的情况下的自行扩展)
      */
     private String desensitizeProvider;
+
+    /**
+     * add 2022-4-26 自定义filter处理器(预留备用)
+     */
+    private String customFilterHandler;
 
     /**
      * @return the sqlResourcesDir
@@ -395,14 +396,6 @@ public class SqlToyContextProperties implements Serializable {
         this.cacheType = cacheType;
     }
 
-    public boolean isPageOverToFirst() {
-        return pageOverToFirst;
-    }
-
-    public void setPageOverToFirst(boolean pageOverToFirst) {
-        this.pageOverToFirst = pageOverToFirst;
-    }
-
     /**
      * @return the dataSourceSelector
      */
@@ -483,5 +476,13 @@ public class SqlToyContextProperties implements Serializable {
 
     public void setDesensitizeProvider(String desensitizeProvider) {
         this.desensitizeProvider = desensitizeProvider;
+    }
+
+    public String getCustomFilterHandler() {
+        return customFilterHandler;
+    }
+
+    public void setCustomFilterHandler(String customFilterHandler) {
+        this.customFilterHandler = customFilterHandler;
     }
 }

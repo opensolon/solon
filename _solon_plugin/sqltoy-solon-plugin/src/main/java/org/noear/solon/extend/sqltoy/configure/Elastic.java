@@ -41,5 +41,4 @@ public class Elastic implements Serializable {
     public void setEndpoints(List<ElasticConfig> endpoints) {
         this.endpoints = endpoints;
     }
-
 }

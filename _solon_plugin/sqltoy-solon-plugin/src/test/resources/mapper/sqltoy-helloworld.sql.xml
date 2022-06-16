@@ -10,4 +10,16 @@
 			where #[t.FRUIT_NAME like :fruitName]
 			]]></value>
 	</sql>
+	<mql id="sqltoy_mongo_find"
+		 fields="transId,merchantCode,transCode,transCode:transCodeName,transDate,agentOrg,transType,transType:transTypeName,transAmt"
+		 collection="fact_trans_details">
+		<value>
+			<![CDATA[
+			{
+				<#>transType:@(:transType)</#>
+				<#>,transAmt:{$gt:@(:transAmt)}</#>
+			}
+			]]>
+		</value>
+	</mql>
 </sqltoy>
