@@ -1,7 +1,11 @@
 package com.sqltoy.helloworld;
 
 import com.sqltoy.helloworld.vo.FruitOrderVO;
+
+import org.noear.solon.data.annotation.Tran;
+import org.noear.solon.extend.sqltoy.annotation.Param;
 import org.noear.solon.extend.sqltoy.annotation.Sql;
+import org.sagacity.sqltoy.dao.SqlToyLazyDao;
 import org.sagacity.sqltoy.model.Page;
 
 /**
@@ -19,7 +23,17 @@ public interface FruitMapper {
     //通过方法名映射
     Page<FruitOrderVO> helloworld_search_fruitOrder(Page page, FruitOrderVO params);
     //直接写sql
-    @Sql("select TOTAL_AMT from sqltoy_fruit_order where #[TOTAL_AMT = :totalAmt]")
-    Page<Long> countOrder(FruitOrderVO params);
+    @Sql("select TOTAL_AMT from sqltoy_fruit_order where #[FRUIT_NAME = :fruitName]")
+    Page<String> countOrder(String fruitName);
+    @Sql("select TOTAL_AMT from sqltoy_fruit_order where #[FRUIT_NAME in (:names)]")
+    Page<String> allIn(String[] names);
+    @Sql("select TOTAL_AMT from sqltoy_fruit_order where #[FRUIT_NAME = :fruit.fruitName]")
+    Page<String> countOrder1(@Param FruitOrderVO fruit);
+
+    /**
+     * 可获取默认的dao,加入任意名字的String类型参数，可获取指定数据源名称的dao
+     * @return
+     */
+    SqlToyLazyDao dao();
 
 }
