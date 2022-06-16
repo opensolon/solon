@@ -6,7 +6,6 @@ import org.beetl.sql.core.SQLManagerBuilder;
 import org.beetl.sql.core.db.*;
 import org.beetl.sql.core.nosql.*;
 import org.noear.solon.Utils;
-import org.noear.solon.core.Aop;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.ValHolder;
 import org.noear.solon.core.event.EventBus;
@@ -51,16 +50,10 @@ class DbManager {
             for (int i = 0, len = slaveAry.length; i < len; i++) {
                 ValHolder<Integer> valHolder = new ValHolder<>(i);
 
-                Aop.getAsyn(slaveAry[i], dsBw -> {
+                //todo::此处不能用同步，有些源可能还没构建好 //不过异常，没法检查了
+                bw.context().getWrapAsyn(slaveAry[i], dsBw -> {
                     slaves[valHolder.value] = dsBw.raw();
                 });
-
-//                //todo::此处不能用同步，有些源可能还没构建好 //不过异常，没法检查了
-//                slaves[i] = Aop.get(slaveAry[i]);
-//
-//                if (slaves[i] == null) {
-//                    throw new RuntimeException("DbManager: This data source does not exist: " + slaveAry[i]);
-//                }
             }
 
             cs = new DbConnectionSource(master, slaves);
