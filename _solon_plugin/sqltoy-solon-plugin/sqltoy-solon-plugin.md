@@ -140,11 +140,10 @@ public interface DemoMapper {
     @Sql("DELETE FROM T_USER WHERE USER_NAME=:username")
     long deleteUser1(String username);
     /**
-     * 返回值为SqlToyLazyDao的方法可获取默认的dao,加入任意名字的String类型参数，可获取指定数据源名称的dao
+     * 返回值为SqlToyLazyDao的方法可获取默认的dao
      * @return
      */
     SqlToyLazyDao dao();
-    SqlToyLazyDao dao(String dataSourceName);
 }
 
 ```

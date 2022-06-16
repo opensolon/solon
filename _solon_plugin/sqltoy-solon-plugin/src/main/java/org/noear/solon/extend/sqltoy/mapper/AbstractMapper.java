@@ -31,17 +31,4 @@ public abstract class AbstractMapper {
 
         return (T) ConvertUtil.to(type, val.toString());
     }
-
-    protected SqlToyLazyDao _getDao(String dataSource) {
-        if (dataSource == null) {
-            return dao;
-        }
-
-        Object ds = Aop.context().getBean(dataSource);
-        if (ds == null || !(ds instanceof DataSource)) {
-            return dao;
-        }
-
-        return DbManager.getDao((DataSource) ds);
-    }
 }
