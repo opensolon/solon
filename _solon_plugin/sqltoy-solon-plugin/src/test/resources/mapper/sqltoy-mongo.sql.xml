@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sqltoy xmlns="http://www.sagframe.com/schema/sqltoy"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.sagframe.com/schema/sqltoy http://www.sagframe.com/schema/sqltoy/sqltoy.xsd">
+
+    <!-- 注意transType:transTypeName 表示将transType 查询值另起别名 transTypeName 存放,便于后面缓存翻译映射 -->
+    <mql id="sqltoy_mongo_find"
+         fields="transId,merchantCode,transCode,transCode:transCodeName,transDate,agentOrg,transType,transType:transTypeName,transAmt"
+         collection="fact_trans_details">
+        <!-- 缓存对别名列进行翻译,original-columns指向依据的代码列 -->
+        <!-- 这里不同于sql中可以直接select trans_type,trans_type as transTypeName from table -->
+        <!-- mongo里面实际上是:select trans_type from table -->
+        <translate cache="dictKeyName" cache-type="TRANS_CODE"
+                   columns="transCodeName" original-columns="transCode" />
+        <translate cache="dictKeyName" cache-type="TRANS_TYPE"
+                   columns="transTypeName" original-columns="transType" />
+        <!-- 安全脱敏 -->
+        <secure-mask columns="merchantCode" type="bank-card" />
+        <value>
+			<![CDATA[
+            {
+				<#>transType:@(:transType)</#>
+				<#>,transAmt:{$gt:@(:transAmt)}</#>
+            }
+            ]]>
+		</value>
+    </mql>
+
+    <!-- fields针对例如group多个字段时可以这样设置  fields="_id[transCode,colName:aliasName],count,totalAmt" -->
+    <mql id="sqltoy_mongo_agg"
+         fields="_id.transCode:transCode,count,totalAmt"
+         collection="fact_trans_details">
+        <translate cache="dictKeyName" cache-type="TRANS_CODE"
+                   columns="transCode" />
+        <value>
+			<![CDATA[
+            [
+				 {
+            $group: {
+            _id: {transCode:"$transCode"},
+            count: { $sum: 1 },
+            totalAmt:{$sum:"$transAmt"}
+            }
+            },
+            {$match:
+            {
+            <#>transType:@(:transType)</#>
+            <#>,transAmt:{$gt:@(:transAmt)}</#>
+            }
+            }
+            ]
+            ]]>
+		</value>
+    </mql>
+</sqltoy>
