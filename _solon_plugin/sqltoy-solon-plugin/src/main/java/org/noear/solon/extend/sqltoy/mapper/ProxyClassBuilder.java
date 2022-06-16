@@ -91,16 +91,6 @@ public class ProxyClassBuilder {
         }
         source.append("){\n\t");
         if(retType== SqlToyLazyDao.class){
-            Class[] paramTypes = method.getParameterTypes();
-            Parameter[] methodParameters = method.getParameters();
-            for(int i=0;i<paramTypes.length;i++){
-                Class pt=paramTypes[i];
-                if(pt==String.class){
-                    source.append("return _getDao("+methodParameters[i].getName()+");\n");
-                    source.append("}\n");
-                    return;
-                }
-            }
             source.append("return dao;\n");
             source.append("}\n");
             return;
