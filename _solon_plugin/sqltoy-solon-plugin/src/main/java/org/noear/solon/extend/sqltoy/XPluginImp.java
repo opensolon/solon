@@ -4,6 +4,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
+import org.noear.solon.core.event.EventBus;
 import org.noear.solon.data.cache.CacheService;
 import org.noear.solon.extend.sqltoy.annotation.Db;
 import org.noear.solon.extend.sqltoy.configure.SqlToyContextProperties;
@@ -43,7 +44,6 @@ public class XPluginImp implements Plugin {
         }
 
         try {
-
             final SqlToyContext sqlToyContext = new SqlToyContextBuilder(properties, context).build();
 
             if ("solon".equals(properties.getCacheType()) || properties.getCacheType() == null) {
@@ -63,9 +63,9 @@ public class XPluginImp implements Plugin {
 
             context.beanInjectorAdd(Db.class, new DbInjector());
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
+            EventBus.push(e); //转到事件总线
         }
-
     }
 
     private void initSqlToy(SqlToyContext sqlToyContext) throws Exception {
