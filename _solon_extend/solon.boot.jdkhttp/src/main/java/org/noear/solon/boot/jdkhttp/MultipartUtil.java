@@ -2,8 +2,10 @@ package org.noear.solon.boot.jdkhttp;
 
 
 import com.sun.net.httpserver.HttpExchange;
+import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.jdkhttp.uploadfile.HttpMultipart;
 import org.noear.solon.boot.jdkhttp.uploadfile.HttpMultipartCollection;
+import org.noear.solon.boot.util.LimitedInputStream;
 import org.noear.solon.core.handle.UploadedFile;
 
 import java.io.ByteArrayInputStream;
@@ -36,7 +38,7 @@ class MultipartUtil {
 
         UploadedFile f1 = new UploadedFile();
         f1.contentType = part.getHeaders().get("Content-Type");
-        f1.content = read(part.getBody());
+        f1.content = read(new LimitedInputStream(part.getBody(), ServerProps.request_maxFileSize));
         f1.contentSize = f1.content.available();
         f1.name = part.getFilename();
         int idx = f1.name.lastIndexOf(".");
