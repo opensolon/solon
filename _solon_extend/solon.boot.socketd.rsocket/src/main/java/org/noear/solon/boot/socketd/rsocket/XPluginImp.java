@@ -2,6 +2,7 @@ package org.noear.solon.boot.socketd.rsocket;
 
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
+import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.prop.SocketSignalProps;
 import org.noear.solon.core.*;
 import org.noear.solon.core.util.PrintUtil;
@@ -35,6 +36,9 @@ public class XPluginImp implements Plugin {
     }
 
     private void start0(SolonApp app) {
+        //初始化属性
+        ServerProps.init();
+
         long time_start = System.currentTimeMillis();
 
         PrintUtil.info("Server:main: java.net.ServerSocket(rsocket-socketd)");

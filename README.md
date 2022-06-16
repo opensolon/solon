@@ -49,7 +49,7 @@
 * 自建 IOC & AOP容器，支持 Web、Data、Job、Remoting、Cloud 等任何开发场景
 * 集合 Handler + Context 和 Listener + Message 两种架构模式；强调插件式扩展；适应不同的应用场景
 * 插件可扩展可切换：启动插件，扩展插件，序列化插件，数据插件，会话状态插件，视图插件(可共存) 等...
-* 支持 GrallVm Native 打包
+* 支持 GraalVm Native 打包
 * 体验与 Spring Boot 相近，迁移成本低： [《Solon 特性简集，相较于 Springboot 有什么区别？》](https://my.oschina.net/noear/blog/4863844)
 
 
@@ -70,7 +70,7 @@
 <parent>
     <groupId>org.noear</groupId>
     <artifactId>solon-parent</artifactId>
-    <version>1.8.3-M2</version>
+    <version>1.8.3-M3</version>
 </parent>
 
 <dependencies>

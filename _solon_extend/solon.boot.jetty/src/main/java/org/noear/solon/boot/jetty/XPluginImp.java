@@ -59,8 +59,10 @@ public final class XPluginImp implements Plugin {
     }
 
     private void start0(SolonApp app) throws Throwable{
-        Class<?> jspClz = Utils.loadClass("org.eclipse.jetty.jsp.JettyJspServlet");
+        //初始化属性
+        ServerProps.init();
 
+        Class<?> jspClz = Utils.loadClass("org.eclipse.jetty.jsp.JettyJspServlet");
 
         HttpSignalProps props = new HttpSignalProps();
         String _host = props.getHost();

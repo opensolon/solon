@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.noear</groupId>
         <artifactId>solon-parent</artifactId>
-        <version>1.8.3-M2</version>
+        <version>1.8.3-M3</version>
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
@@ -24,7 +24,7 @@
         <dependency>
             <groupId>com.ibeetl</groupId>
             <artifactId>beetlsql</artifactId>
-            <version>3.14.2-RELEASE</version>
+            <version>3.14.4-RELEASE</version>
         </dependency>
 
         <!-- test -->
