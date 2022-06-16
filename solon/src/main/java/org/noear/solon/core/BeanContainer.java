@@ -269,6 +269,10 @@ public abstract class BeanContainer {
         return bw == null ? null : bw.get();
     }
 
+    public <T> T getBeanOrNew(Class<T> type){
+        return wrapAndPut(type).get();
+    }
+
     public <T> void getBeanAsyn(Object nameOrType, Consumer<T> callback) {
         getWrapAsyn(nameOrType, (bw) -> {
             callback.accept(bw.get());
@@ -387,6 +391,11 @@ public abstract class BeanContainer {
             //
             // @Inject //使用 type, 注入BEAN
             //
+            if(AopContext.class.isAssignableFrom(varH.getType())){
+                varH.setValue(this);
+                return;
+            }
+
             if(varH.getGenericType() != null){
                 getWrapAsyn(varH.getGenericType().getTypeName(), (bw) -> {
                     varH.setValue(bw.get());

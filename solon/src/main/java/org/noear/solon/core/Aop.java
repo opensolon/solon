@@ -108,7 +108,7 @@ public class Aop {
      * @param type bean type
      */
     public static <T> T getOrNew(Class<T> type) {
-        return wrapAndPut(type).get();
+        return ac.getBeanOrNew(type);
     }
 
     /**

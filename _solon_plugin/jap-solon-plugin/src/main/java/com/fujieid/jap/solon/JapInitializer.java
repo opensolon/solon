@@ -13,7 +13,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Init;
 import org.noear.solon.annotation.Inject;
-import org.noear.solon.core.Aop;
+import org.noear.solon.core.AopContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,6 +34,9 @@ public class JapInitializer {
     @Inject
     JapMfaService japMfaService;
 
+    @Inject
+    AopContext context;
+
     /**
      * 初始化
      */
@@ -49,20 +52,20 @@ public class JapInitializer {
 
         // 启用 Simple
         if(japProperties.getSimpleConfig() != null) {
-            Aop.wrapAndPut(SimpleStrategy.class, new SimpleStrategy(japUserService, japProperties.getJapConfig()));
+            context.wrapAndPut(SimpleStrategy.class, new SimpleStrategy(japUserService, japProperties.getJapConfig()));
             Solon.app().add(japProperties.getAuthPath(), SimpleController.class);
         }
 
         // 启用 Social
         if(japProperties.getCredentials() != null) {
-            Aop.wrapAndPut(SocialStrategy.class, new FixedSocialStrategy(japUserService, japProperties.getJapConfig()));
+            context.wrapAndPut(SocialStrategy.class, new FixedSocialStrategy(japUserService, japProperties.getJapConfig()));
             Solon.app().add(japProperties.getAuthPath(), SocialController.class);
         }
 
         // 启用 Mfa
         if(japMfaService != null) {
             JapMfa japMfa = new JapMfa(japMfaService);
-            Aop.wrapAndPut(JapMfa.class, japMfa);
+            context.wrapAndPut(JapMfa.class, japMfa);
             Solon.app().add(japProperties.getAuthPath(), MfaController.class);
         }
     }

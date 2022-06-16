@@ -6,7 +6,8 @@ import net.hasor.web.startup.RuntimeFilter;
 import net.hasor.web.startup.RuntimeListener;
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.Configuration;
-import org.noear.solon.core.Aop;
+import org.noear.solon.annotation.Inject;
+import org.noear.solon.core.AopContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,6 +27,9 @@ public class HasorWebConfiguration implements ServletContainerInitializer {
     private static final Logger logger = LoggerFactory.getLogger(HasorWebConfiguration.class);
     private String filterPath = "/*";
     private int filterOrder = 0;
+
+    @Inject
+    private AopContext context;
 
     public HasorWebConfiguration() {
         this(Solon.app().source().getAnnotation(EnableHasorWeb.class));
@@ -50,7 +54,7 @@ public class HasorWebConfiguration implements ServletContainerInitializer {
         AppContext appContext = initAppContext(servletContext);
 
         //将AppContext注入容器
-        Aop.wrapAndPut(AppContext.class,appContext);
+        context.wrapAndPut(AppContext.class,appContext);
 
         //注册 listener
         RuntimeListener listener = new RuntimeListener(appContext);

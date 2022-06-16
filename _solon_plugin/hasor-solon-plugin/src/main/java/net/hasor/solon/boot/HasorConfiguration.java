@@ -6,7 +6,8 @@ import net.hasor.utils.ExceptionUtils;
 import net.hasor.utils.StringUtils;
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.Configuration;
-import org.noear.solon.core.Aop;
+import org.noear.solon.annotation.Inject;
+import org.noear.solon.core.AopContext;
 import org.noear.solon.core.event.EventListener;
 import org.noear.solon.core.event.BeanLoadEndEvent;
 import org.slf4j.Logger;
@@ -23,6 +24,9 @@ import java.io.IOException;
 @Configuration
 public class HasorConfiguration implements EventListener<BeanLoadEndEvent> {
     private static Logger logger = LoggerFactory.getLogger(HasorConfiguration.class);
+
+    @Inject
+    private AopContext context;
 
     public HasorConfiguration() {
         this(Solon.app().source().getAnnotation(EnableHasor.class));
@@ -45,11 +49,11 @@ public class HasorConfiguration implements EventListener<BeanLoadEndEvent> {
         // 处理startWith
         for (Class<? extends Module> startWith : enableHasor.startWith()) {
             if(startWith.getAnnotations().length > 0) {
-                Aop.getAsyn(startWith, (bw) -> {
+                context.getWrapAsyn(startWith, (bw) -> {
                     buildConfig.addModules(bw.get());
                 });
             }else{
-                buildConfig.addModules(Aop.getOrNew(startWith));
+                buildConfig.addModules(context.getBeanOrNew(startWith));
             }
         }
 
@@ -60,9 +64,9 @@ public class HasorConfiguration implements EventListener<BeanLoadEndEvent> {
         if (enableHasor.scanPackages().length != 0) {
             for (String p : enableHasor.scanPackages()) {
                 if (p.endsWith(".*")) {
-                    Aop.context().beanScan(p.substring(0, p.length() - 2));
+                    context.beanScan(p.substring(0, p.length() - 2));
                 } else {
-                    Aop.context().beanScan(p);
+                    context.beanScan(p);
                 }
             }
         }
@@ -83,7 +87,7 @@ public class HasorConfiguration implements EventListener<BeanLoadEndEvent> {
         //
         if (Solon.app().source().getAnnotation(EnableHasorWeb.class) == null) {
             //所有bean加载完成之后，手动注入AppContext
-            Aop.wrapAndPut(AppContext.class, initAppContext());
+            context.wrapAndPut(AppContext.class, initAppContext());
         }
     }
 

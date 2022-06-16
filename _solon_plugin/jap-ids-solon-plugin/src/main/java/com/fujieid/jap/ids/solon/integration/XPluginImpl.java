@@ -27,7 +27,7 @@ public class XPluginImpl implements Plugin {
 
         JapIds.registerContext(idsContext);
 
-        Aop.wrapAndPut(IdsContext.class, context);
+        context.wrapAndPut(IdsContext.class, idsContext);
 
         //添加控制器
         Solon.app().add(IdsProps.BAST_PATH, ApprovalController.class);
