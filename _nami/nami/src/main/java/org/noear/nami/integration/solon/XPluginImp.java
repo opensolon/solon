@@ -22,7 +22,7 @@ public class XPluginImp implements Plugin {
     @Override
     public void start(AopContext context) {
         if (NamiConfigurationDefault.proxy == null) {
-            NamiConfigurationDefault.proxy = new NamiConfigurationSolon();
+            NamiConfigurationDefault.proxy = new NamiConfigurationSolon(context);
         }
 
         context.beanInjectorAdd(NamiClient.class, (varH, anno) -> {

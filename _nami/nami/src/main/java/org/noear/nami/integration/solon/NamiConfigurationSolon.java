@@ -3,7 +3,7 @@ package org.noear.nami.integration.solon;
 import org.noear.nami.*;
 import org.noear.nami.annotation.NamiClient;
 import org.noear.solon.Utils;
-import org.noear.solon.core.Aop;
+import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Bridge;
 import org.noear.solon.core.LoadBalance;
 import org.noear.solon.core.event.EventBus;
@@ -15,12 +15,15 @@ import org.noear.solon.core.event.EventBus;
 public final class NamiConfigurationSolon implements NamiConfiguration {
 
     private NamiConfiguration custom;
+    private AopContext context;
 
-    public NamiConfigurationSolon() {
+    public NamiConfigurationSolon(AopContext context) {
+        this.context = context;
+
         //
         //如果有定制的NamiConfiguration, 则用之
         //
-        Aop.getAsyn(NamiConfiguration.class, (bw) -> {
+        context.getWrapAsyn(NamiConfiguration.class, (bw) -> {
             custom = bw.raw();
         });
 
@@ -47,7 +50,7 @@ public final class NamiConfigurationSolon implements NamiConfiguration {
             builder.upstream(upstream::getServer);
         } else {
             //尝试从Ioc容器获取
-            Aop.getAsyn(client.name(), (bw) -> {
+            context.getWrapAsyn(client.name(), (bw) -> {
                 LoadBalance tmp = bw.raw();
                 builder.upstream(tmp::getServer);
             });
