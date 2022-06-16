@@ -19,7 +19,15 @@ public class SolonMongoQuery implements MongoQuery {
     @Override
     public <T> List<T> find(String query, Class<T> entityClass, String collectionName, Long skip, Integer limit) {
         MongoCollection<Document> collection=getCollection(collectionName);
-        FindIterable<T> findIterable = collection.find(BsonDocument.parse(query),entityClass).skip(skip.intValue()).limit(limit);
+        FindIterable<T> findIterable = collection.find(BsonDocument.parse(query),entityClass);
+
+        if(skip!=null){
+            findIterable.skip(skip.intValue());
+        }
+        if(limit!=null){
+            findIterable.limit(limit);
+        }
+
         MongoCursor<T> cur= findIterable.iterator();
 
         List<T> data=new ArrayList<>();

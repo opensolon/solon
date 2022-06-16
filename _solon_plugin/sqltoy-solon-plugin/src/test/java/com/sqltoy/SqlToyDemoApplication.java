@@ -1,19 +1,26 @@
 package com.sqltoy;
 
+import com.mongodb.client.MongoDatabase;
 import com.sqltoy.helloworld.FruitMapper;
 import com.sqltoy.helloworld.service.FruitOrderService;
 
 import com.sqltoy.helloworld.vo.FruitOrderVO;
+import org.bson.Document;
 import org.noear.solon.Solon;
 
 import org.noear.solon.core.Aop;
 import org.noear.solon.extend.sqltoy.DbManager;
 import org.sagacity.sqltoy.dao.SqlToyLazyDao;
 import org.sagacity.sqltoy.model.Page;
+import org.sagacity.sqltoy.utils.BeanUtil;
 
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
 
 public class SqlToyDemoApplication {
@@ -39,5 +46,14 @@ public class SqlToyDemoApplication {
   FruitOrderVO fu = new FruitOrderVO();
   fu.setFruitName("test");
   System.out.println(fm.countOrder1(fu).getRows());
+//  MongoDatabase db=Aop.get(MongoDatabase.class);
+//  //db.createCollection("fact_trans_details");
+//  Document doc=new Document("_id", new Random().nextInt(100));
+//  doc.append("transType","test123");
+//
+//  db.getCollection("fact_trans_details").insertOne(doc);
+//
+//  List li= dao.mongo().sql("sqltoy_mongo_find").names("transType").values("test").resultType(Map.class).find();
+//  System.out.println(li);
  }
 }
