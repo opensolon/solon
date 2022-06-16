@@ -54,7 +54,7 @@ public class XPluginImp implements Plugin {
         DataSource ds = dsBw.get();
         Class<?> clz = varH.getType();
 
-        //@Db("db1") LambdaTemplate ;
+        //@Db("db1") LambdaTemplate ; //顺序别乱变
         if (LambdaTemplate.class.isAssignableFrom(varH.getType())) {
             LambdaTemplate accessor = new LambdaTemplate(new DynamicConnectionImpl(ds));
 
