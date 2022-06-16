@@ -12,9 +12,11 @@ import org.noear.solon.core.Props;
 import java.util.Arrays;
 
 /**
- * 如果 XPluginImp 类里有导入 mongodb 的类；而没有引入 mongodb 的包会出错（暂时转到这里）
+ * MongoClient 初始化器（用于拆分 XPluginImp 类）
  *
- * @author noear 2022/6/16 created
+ * @author 夜の孤城
+ * @author noear
+ * @since 1.8
  */
 class SqlToyMongoInit {
     public static void tryBuildMongoDbClient(AopContext context) {
