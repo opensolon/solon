@@ -4,8 +4,11 @@ import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.SolonBuilder;
 import org.noear.solon.Utils;
+import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Import;
+import org.noear.solon.annotation.Inject;
 import org.noear.solon.cloud.CloudClient;
+import org.noear.solon.core.AopContext;
 import org.noear.solon.core.ExtendLoader;
 import org.noear.solon.core.handle.ContextPathFilter;
 import org.noear.solon.core.handle.MethodType;
@@ -26,6 +29,7 @@ import java.nio.charset.Charset;
 import java.util.Locale;
 import java.util.Properties;
 
+@Component
 @EnableAsync
 @Import(value = TestImport.class, scanPackages = "webapp")
 //@EnableCron4j
@@ -33,6 +37,9 @@ import java.util.Properties;
 public class TestApp {
 
     static Logger logger = LoggerFactory.getLogger(TestApp.class);
+
+    @Inject
+    AopContext aopContext;
 
     public static void main(String[] args) throws Exception {
         System.out.println("Default Charset=" + Charset.defaultCharset());
