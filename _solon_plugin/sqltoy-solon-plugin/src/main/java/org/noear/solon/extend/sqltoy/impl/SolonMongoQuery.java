@@ -61,6 +61,4 @@ public class SolonMongoQuery implements MongoQuery {
     public void initialize(SqlToyContext sqlToyContext) {
        db=sqlToyContext.getAppContext().getBean(MongoDatabase.class);
     }
-
-
 }
