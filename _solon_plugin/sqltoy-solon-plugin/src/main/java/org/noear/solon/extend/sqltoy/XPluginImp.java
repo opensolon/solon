@@ -16,6 +16,7 @@ import org.sagacity.sqltoy.SqlToyContext;
  *
  * @author 夜の孤城
  * @since 1.5
+ * @since 1.8
  */
 public class XPluginImp implements Plugin {
     AopContext context;
