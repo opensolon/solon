@@ -16,7 +16,7 @@ import java.util.Arrays;
  *
  * @author noear 2022/6/16 created
  */
-class DbMongoInit {
+class SqlToyMongoInit {
     public static void tryBuildMongoDbClient(AopContext context) {
         Class<?> mongoClz = Utils.loadClass(context.getClassLoader(), "com.mongodb.client.MongoDatabase");
 

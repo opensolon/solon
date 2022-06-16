@@ -29,7 +29,7 @@ public class XPluginImp implements Plugin {
         Class<?> mongoClz = Utils.loadClass(context.getClassLoader(), "com.mongodb.client.MongoDatabase");
 
         if (mongoClz == null) {
-            DbMongoInit.tryBuildMongoDbClient(context);
+            SqlToyMongoInit.tryBuildMongoDbClient(context);
         }
 
         //尝试初始化 rdb
