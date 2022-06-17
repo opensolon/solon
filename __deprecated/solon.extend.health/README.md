@@ -9,14 +9,6 @@ Author noear，iYarnFog
 - 🌈 一行代码添加检查点，侵入性极低。
 - 📦 开箱即用的高质量组件。
 
-## 📦 安装
-
-```xml
-<dependency>
-    <groupId>org.noear</groupId>
-    <artifactId>solon.extend.health</artifactId>
-</dependency>
-```
 
 ## ⚙️ 配置
 

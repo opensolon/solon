@@ -13,7 +13,7 @@ import org.noear.solon.cloud.service.CloudDiscoveryObserverEntity;
 import org.noear.solon.cloud.service.CloudDiscoveryService;
 import org.noear.solon.cloud.utils.IntervalUtils;
 import org.noear.solon.core.event.EventBus;
-import org.noear.solon.extend.health.HealthHandler;
+import org.noear.solon.health.HealthHandler;
 
 import java.util.*;
 
