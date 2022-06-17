@@ -5,7 +5,7 @@ import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.data.cache.CacheServiceSupplier;
-import org.noear.solon.async.AsyncManager;
+import org.noear.solon.extend.async.AsyncManager;
 
 import java.util.HashMap;
 import java.util.Map;

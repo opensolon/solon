@@ -11,7 +11,6 @@ import org.noear.solon.extend.async.annotation.Async;
  * @author noear
  * @since 1.6
  */
-@Deprecated
 public class AsyncInterceptor implements Interceptor {
     @Override
     public Object doIntercept(Invocation inv) throws Throwable {

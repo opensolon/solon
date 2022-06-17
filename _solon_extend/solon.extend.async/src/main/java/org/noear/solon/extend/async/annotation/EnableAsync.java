@@ -8,7 +8,6 @@ import java.lang.annotation.*;
  * @author noear
  * @since 1.6
  */
-@Deprecated
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented

@@ -8,7 +8,6 @@ import java.util.concurrent.Future;
  * @author noear
  * @since 1.5
  */
-@Deprecated
 @FunctionalInterface
 public interface AsyncExecutor {
     /**

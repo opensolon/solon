@@ -7,7 +7,6 @@ import org.noear.solon.core.event.EventBus;
  * @author noear
  * @since 1.6
  */
-@Deprecated
 public class InvocationRunnable implements Runnable {
     Invocation invocation;
 
