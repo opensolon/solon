@@ -29,13 +29,13 @@
         <!-- 静态文件支持组件 -->
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.extend.staticfiles</artifactId>
+            <artifactId>solon.web.staticfiles</artifactId>
         </dependency>
 
         <!-- 跨域处理组件 -->
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.extend.cors</artifactId>
+            <artifactId>solon.web.cors</artifactId>
         </dependency>
     </dependencies>
 
