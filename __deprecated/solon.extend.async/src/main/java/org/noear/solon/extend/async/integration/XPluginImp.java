@@ -10,6 +10,7 @@ import org.noear.solon.extend.async.annotation.EnableAsync;
  * @author noear
  * @since 1.6
  */
+@Deprecated
 public class XPluginImp implements Plugin {
     @Override
     public void start(AopContext context) {

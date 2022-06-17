@@ -8,6 +8,7 @@ import java.util.concurrent.Future;
  * @author noear
  * @since 1.6
  */
+@Deprecated
 public class AsyncManager {
     private static AsyncExecutor executor = new AsyncExecutorDefault();
 

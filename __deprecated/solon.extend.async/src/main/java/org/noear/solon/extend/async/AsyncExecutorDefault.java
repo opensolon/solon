@@ -10,6 +10,7 @@ import java.util.concurrent.Future;
  * @author noear
  * @since 1.6
  */
+@Deprecated
 public class AsyncExecutorDefault implements AsyncExecutor {
     ExecutorService pools;
 
