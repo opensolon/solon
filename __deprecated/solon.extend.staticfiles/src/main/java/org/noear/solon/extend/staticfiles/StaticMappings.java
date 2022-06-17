@@ -10,6 +10,7 @@ import java.util.Map;
  * @author noear
  * @since 1.0
  * */
+@Deprecated
 public class StaticMappings {
     static final Map<StaticRepository, StaticLocation> locationMap = new HashMap<>();
 

@@ -8,6 +8,7 @@ import org.noear.solon.core.Plugin;
 import org.noear.solon.core.handle.HandlerPipeline;
 import org.noear.solon.extend.staticfiles.repository.ClassPathStaticRepository;
 
+@Deprecated
 public class XPluginImp implements Plugin {
     @Override
     public void start(AopContext context) {

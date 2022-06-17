@@ -11,6 +11,7 @@ import java.lang.annotation.*;
  * @author noear
  * @since 1.3
  */
+@Deprecated
 @Options //添加 Options
 @Inherited
 @Before({CrossOriginInterceptor.class})

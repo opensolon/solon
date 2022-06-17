@@ -6,6 +6,7 @@ import org.noear.solon.Solon;
  * @author noear
  * @since 1.3
  */
+@Deprecated
 class XPluginProp {
     static final String PROP_ENABLE = "solon.staticfiles.enable";
     static final String PROP_MAX_AGE = "solon.staticfiles.maxAge";

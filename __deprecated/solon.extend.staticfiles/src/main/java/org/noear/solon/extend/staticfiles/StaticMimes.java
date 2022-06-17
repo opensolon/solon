@@ -11,6 +11,7 @@ import java.util.Map;
  * @since 1.0
  * @since 1.6
  * */
+@Deprecated
 public class StaticMimes {
     static final Map<String, String> mimeMap = new HashMap<>();
 

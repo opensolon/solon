@@ -12,6 +12,7 @@ import java.net.URL;
  * @author noear
  * @since 1.5
  */
+@Deprecated
 public class ExtendStaticRepository implements StaticRepository {
     String location;
 

@@ -14,6 +14,7 @@ import java.util.*;
  * @author noear
  * @since 1.0
  * */
+@Deprecated
 public class StaticResourceHandler implements Handler {
     private static final String CACHE_CONTROL = "Cache-Control";
     private static final String LAST_MODIFIED = "Last-Modified";

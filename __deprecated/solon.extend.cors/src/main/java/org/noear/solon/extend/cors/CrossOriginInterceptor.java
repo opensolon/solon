@@ -12,6 +12,7 @@ import java.util.Map;
  * @author noear
  * @since 1.3
  */
+@Deprecated
 public class CrossOriginInterceptor implements Handler {
     Map<CrossOrigin, CrossHandler> handlerMap = new HashMap<>();
 

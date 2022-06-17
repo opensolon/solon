@@ -8,6 +8,7 @@ import java.net.URL;
  * @author noear
  * @since 1.5
  */
+@Deprecated
 public interface StaticRepository {
     URL find(String path) throws Exception;
 }

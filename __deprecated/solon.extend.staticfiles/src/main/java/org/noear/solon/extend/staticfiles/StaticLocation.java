@@ -6,6 +6,7 @@ package org.noear.solon.extend.staticfiles;
  * @author noear
  * @since 1.0
  * */
+@Deprecated
 public class StaticLocation {
     /**
      * 路径前缀
