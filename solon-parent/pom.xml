@@ -333,9 +333,16 @@
                 <version>${solon.ver}</version>
             </dependency>
 
+            <!-- @Deprecated -->
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.extend.health</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.health</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
 
