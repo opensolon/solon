@@ -302,27 +302,39 @@
                 <artifactId>solon.auth</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
+
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.extend.hotplug</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
+
+            <!-- @Deprecated -->
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.extend.cors</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.web.cors</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.extend.async</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
+
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.extend.health</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
 
+            <!-- @Deprecated -->
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.extend.servlet</artifactId>
@@ -334,6 +346,7 @@
                 <version>${solon.ver}</version>
             </dependency>
 
+            <!-- @Deprecated -->
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.extend.staticfiles</artifactId>
@@ -345,6 +358,7 @@
                 <version>${solon.ver}</version>
             </dependency>
 
+            <!-- @Deprecated -->
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.extend.properties.yaml</artifactId>
