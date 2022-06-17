@@ -1,3 +1,6 @@
+#### 1.8.4-M1
+
+
 #### 1.8.3
 * 添加 solon.extend.config 属性配置支持
 * 添加 ContextPathFilter 类，摸拟 contextPath 特性

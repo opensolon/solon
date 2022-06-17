@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.noear</groupId>
         <artifactId>solon-parent</artifactId>
-        <version>1.8.3</version>
+        <version>1.8.4-M1</version>
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
@@ -31,7 +31,7 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.extend.properties.yaml</artifactId>
+            <artifactId>solon.config.yaml</artifactId>
         </dependency>
 
         <dependency>
