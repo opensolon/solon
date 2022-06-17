@@ -33,7 +33,10 @@
         <module>../../_solon_extend/solon.sessionstate.redisson</module>
 
 
+        <!-- @Deprecated -->
         <module>../../_solon_extend/solon.extend.aspect</module>
+
+        <module>../../_solon_extend/solon.aspect</module>
 
         <!-- @Deprecated -->
         <module>../../_solon_extend/solon.extend.staticfiles</module>
