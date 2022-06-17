@@ -34,35 +34,35 @@
 
 
         <!-- @Deprecated -->
-        <module>../../_solon_extend/solon.extend.aspect</module>
+        <module>../../__deprecated/solon.extend.aspect</module>
         <module>../../_solon_extend/solon.aspect</module>
 
         <!-- @Deprecated -->
-        <module>../../_solon_extend/solon.extend.staticfiles</module>
+        <module>../../__deprecated/solon.extend.staticfiles</module>
         <module>../../_solon_extend/solon.web.staticfiles</module>
 
         <!-- @Deprecated -->
-        <module>../../_solon_extend/solon.extend.servlet</module>
+        <module>../../__deprecated/solon.extend.servlet</module>
         <module>../../_solon_extend/solon.web.servlet</module>
 
         <!-- @Deprecated -->
-        <module>../../_solon_extend/solon.extend.sessionstate.redis</module>
+        <module>../../__deprecated/solon.extend.sessionstate.redis</module>
         <!-- @Deprecated -->
-        <module>../../_solon_extend/solon.extend.sessionstate.local</module>
+        <module>../../__deprecated/solon.extend.sessionstate.local</module>
         <!-- @Deprecated -->
-        <module>../../_solon_extend/solon.extend.sessionstate.jwt</module>
+        <module>../../__deprecated/solon.extend.sessionstate.jwt</module>
 
         <!-- @Deprecated -->
-        <module>../../_solon_extend/solon.extend.properties.yaml</module>
+        <module>../../__deprecated/solon.extend.properties.yaml</module>
         <module>../../_solon_extend/solon.config.yaml</module>
 
 
         <!-- @Deprecated -->
-        <module>../../_solon_extend/solon.extend.cors</module>
+        <module>../../__deprecated/solon.extend.cors</module>
         <module>../../_solon_extend/solon.web.cors</module>
 
         <!-- @Deprecated -->
-        <module>../../_solon_extend/solon.extend.health</module>
+        <module>../../__deprecated/solon.extend.health</module>
         <module>../../_solon_extend/solon.health</module>
 
         <module>../../_solon_extend/solon.extend.stop</module>
