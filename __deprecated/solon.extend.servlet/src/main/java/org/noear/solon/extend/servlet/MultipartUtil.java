@@ -14,6 +14,7 @@ import java.util.*;
  * @author noear
  * @since 1.2
  * */
+@Deprecated
 class MultipartUtil {
 
     public static void buildParamsAndFiles(SolonServletContext context) throws IOException, ServletException {

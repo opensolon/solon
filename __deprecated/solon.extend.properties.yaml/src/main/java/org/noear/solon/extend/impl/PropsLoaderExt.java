@@ -18,6 +18,7 @@ import java.util.Properties;
  * @author noear
  * @since 1.5
  */
+@Deprecated
 public class PropsLoaderExt extends PropsLoader {
 
     @Override

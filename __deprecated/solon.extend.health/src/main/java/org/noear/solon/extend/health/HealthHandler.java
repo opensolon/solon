@@ -12,6 +12,7 @@ import org.noear.solon.core.handle.Handler;
  * @author iYarnFog
  * @since 1.5
  */
+@Deprecated
 public class HealthHandler implements Handler {
 
     /**

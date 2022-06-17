@@ -20,6 +20,7 @@ import java.util.*;
  * @author noear
  * @since 1.2
  * */
+@Deprecated
 public class SolonServletContext extends Context {
     private HttpServletRequest _request;
     private HttpServletResponse _response;

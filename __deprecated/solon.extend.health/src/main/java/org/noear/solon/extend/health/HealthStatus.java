@@ -6,6 +6,7 @@ package org.noear.solon.extend.health;
  * @author iYarnFog
  * @since 1.5
  */
+@Deprecated
 public enum HealthStatus {
     /**
      * 在线

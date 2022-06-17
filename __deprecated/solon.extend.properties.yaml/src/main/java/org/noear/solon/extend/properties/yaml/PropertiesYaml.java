@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+@Deprecated
 public class PropertiesYaml extends Properties {
     public synchronized void loadYml(InputStream inputStream) {
         Yaml yaml = new Yaml();

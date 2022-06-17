@@ -1,5 +1,6 @@
 package org.noear.solon.extend.aspect.asm;
 
+@Deprecated
 public class MethodBean {
 
     public int access;

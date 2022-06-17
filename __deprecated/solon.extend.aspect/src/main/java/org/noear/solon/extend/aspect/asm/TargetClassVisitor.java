@@ -9,6 +9,7 @@ import org.objectweb.asm.Opcodes;
 import java.util.ArrayList;
 import java.util.List;
 
+@Deprecated
 public class TargetClassVisitor extends ClassVisitor {
 
     private boolean isFinal;

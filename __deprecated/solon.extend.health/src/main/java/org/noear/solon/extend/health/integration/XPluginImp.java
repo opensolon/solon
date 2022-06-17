@@ -9,6 +9,7 @@ import org.noear.solon.extend.health.HealthHandler;
  * @author iYarnFog
  * @since 1.5
  */
+@Deprecated
 public class XPluginImp implements Plugin {
     @Override
     public void start(AopContext context) {

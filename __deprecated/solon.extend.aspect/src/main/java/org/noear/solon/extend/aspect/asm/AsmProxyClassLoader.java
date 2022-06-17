@@ -6,6 +6,7 @@ import org.noear.solon.core.JarClassLoader;
  * @author noear
  * @since 1.5
  */
+@Deprecated
 public class AsmProxyClassLoader extends ClassLoader {
     private static AsmProxyClassLoader global = new AsmProxyClassLoader();
     public static AsmProxyClassLoader global() {

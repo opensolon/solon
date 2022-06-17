@@ -8,6 +8,7 @@ import java.io.Serializable;
  * @author iYarnFog
  * @since 1.5
  */
+@Deprecated
 public class HealthCheckResult implements Serializable {
     private HealthStatus status = HealthStatus.UP;
     private Object details;

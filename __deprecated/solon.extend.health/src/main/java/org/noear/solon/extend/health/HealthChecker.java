@@ -13,6 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @since 1.5
  * @date 2021/10/01 19:37
  */
+@Deprecated
 public class HealthChecker {
     private static final Map<String, HealthIndicator> indicatorMap = new ConcurrentHashMap<>();
 

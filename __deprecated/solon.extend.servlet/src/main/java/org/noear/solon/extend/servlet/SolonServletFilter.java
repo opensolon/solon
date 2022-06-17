@@ -15,6 +15,7 @@ import java.io.IOException;
  * @author noear
  * @since 1.2
  * */
+@Deprecated
 public class SolonServletFilter implements Filter {
     public static Handler onFilterStart;
     public static Handler onFilterError;

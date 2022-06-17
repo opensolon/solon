@@ -4,6 +4,7 @@ import javax.servlet.Servlet;
 import javax.servlet.annotation.WebServlet;
 import java.util.Objects;
 
+@Deprecated
 public class ServletHolder {
     public final WebServlet anno;
     public final Servlet servlet;

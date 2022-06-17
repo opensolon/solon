@@ -17,6 +17,7 @@ import java.util.*;
  * @author noear
  * @since 1.2
  */
+@Deprecated
 public class SolonServletInstaller {
     Set<ServletContainerInitializer> initializers = new LinkedHashSet<>();
     Set<FilterHodler> filters = new LinkedHashSet<>();

@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Deprecated
 public class AsmProxy {
     public static final int ASM_VERSION = Opcodes.ASM8;
     public static final int ASM_JDK_VERSION = Opcodes.V1_8;

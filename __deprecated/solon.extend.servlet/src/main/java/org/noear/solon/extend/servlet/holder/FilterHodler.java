@@ -4,6 +4,7 @@ import javax.servlet.Filter;
 import javax.servlet.annotation.WebFilter;
 import java.util.Objects;
 
+@Deprecated
 public class FilterHodler {
     public final WebFilter anno;
     public final Filter filter;

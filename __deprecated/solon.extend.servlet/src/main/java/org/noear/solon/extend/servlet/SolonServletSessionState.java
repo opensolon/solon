@@ -9,6 +9,7 @@ import java.util.*;
  * @author noear
  * @since 1.6
  */
+@Deprecated
 public class SolonServletSessionState implements SessionState {
     private HttpServletRequest _request;
     public SolonServletSessionState(HttpServletRequest request){

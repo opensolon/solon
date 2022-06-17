@@ -13,6 +13,7 @@ import java.util.Properties;
  * @author noear
  * @since 1.6
  */
+@Deprecated
 public class PropsConverterExt extends PropsConverter {
     @Override
     public <T> T convert(Properties props, T target, Class<T> targetClz, Type targetType) {
