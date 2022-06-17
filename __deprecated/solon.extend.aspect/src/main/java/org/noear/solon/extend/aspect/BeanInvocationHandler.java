@@ -14,6 +14,7 @@ import java.lang.reflect.Method;
  * @author noear
  * @since 1.5
  * */
+@Deprecated
 public class BeanInvocationHandler implements InvocationHandler {
     private Object bean;
     private Object proxy;

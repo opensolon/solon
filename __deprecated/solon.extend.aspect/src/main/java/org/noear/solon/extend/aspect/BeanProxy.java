@@ -9,6 +9,7 @@ import java.lang.reflect.InvocationHandler;
  * @author noear
  * @since 1.6
  */
+@Deprecated
 class BeanProxy implements BeanWrap.Proxy {
     static final BeanProxy global = new BeanProxy();
 

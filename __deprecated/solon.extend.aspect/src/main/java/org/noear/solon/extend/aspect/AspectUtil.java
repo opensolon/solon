@@ -18,6 +18,7 @@ import java.util.function.Predicate;
  * @author noear
  * @since 1.5
  * */
+@Deprecated
 public class AspectUtil {
     /**
      * 绑定

@@ -161,7 +161,7 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.extend.aspect</artifactId>
+            <artifactId>solon.aspect</artifactId>
         </dependency>
 
         <dependency>

@@ -8,6 +8,7 @@ import org.noear.solon.extend.aspect.annotation.Dao;
 import org.noear.solon.extend.aspect.annotation.Repository;
 import org.noear.solon.extend.aspect.annotation.Service;
 
+@Deprecated
 public class XPluginImp implements Plugin {
     @Override
     public void start(AopContext context) {
