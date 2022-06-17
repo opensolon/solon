@@ -65,15 +65,18 @@
         <module>../../__deprecated/solon.extend.health</module>
         <module>../../_solon_extend/solon.health</module>
 
+        <!-- @Deprecated -->
+        <module>../../__deprecated/solon.extend.async</module>
+        <module>../../_solon_extend/solon.async</module>
+
+        <module>../../__deprecated/solon.extend.retry</module>
+
         <module>../../_solon_extend/solon.extend.stop</module>
         <module>../../_solon_extend/solon.extend.jsr330</module>
         <module>../../_solon_extend/solon.extend.jsr303</module>
         <module>../../_solon_extend/solon.extend.graalvm</module>
-        <module>../../_solon_extend/solon.extend.async</module>
-        <module>../../_solon_extend/solon.extend.retry</module>
 
         <module>../../_solon_extend/solon.extend.schedule</module>
-
 
         <module>../../_solon_extend/solon.extend.hotplug</module>
     </modules>
