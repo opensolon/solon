@@ -334,12 +334,6 @@
                 <version>${solon.ver}</version>
             </dependency>
 
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>solon.async</artifactId>
-                <version>${solon.ver}</version>
-            </dependency>
-
             <!-- @Deprecated -->
             <dependency>
                 <groupId>org.noear</groupId>
