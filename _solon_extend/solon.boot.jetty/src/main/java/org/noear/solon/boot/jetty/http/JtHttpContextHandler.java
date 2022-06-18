@@ -5,7 +5,7 @@ import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.jetty.XPluginImp;
-import org.noear.solon.net.servlet.SolonServletContext;
+import org.noear.solon.web.servlet.SolonServletContext;
 import org.noear.solon.core.event.EventBus;
 
 import javax.servlet.http.HttpServletRequest;

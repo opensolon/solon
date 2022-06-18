@@ -1,7 +1,7 @@
 package org.noear.solon.boot.undertow.http;
 
 import io.undertow.servlet.api.ServletContainerInitializerInfo;
-import org.noear.solon.net.servlet.SolonServletInstaller;
+import org.noear.solon.web.servlet.SolonServletInstaller;
 
 import javax.servlet.*;
 import java.util.*;

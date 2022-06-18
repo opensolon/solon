@@ -1,7 +1,7 @@
 package test1;
 
 import org.junit.Test;
-import org.noear.solon.net.staticfiles.StaticMimes;
+import org.noear.solon.web.staticfiles.StaticMimes;
 
 public class SpeetTest2 {
     long time_start;

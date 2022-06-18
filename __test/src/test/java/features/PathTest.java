@@ -3,8 +3,8 @@ package features;
 import org.junit.Test;
 import org.noear.solon.core.util.PathAnalyzer;
 import org.noear.solon.core.util.PathUtil;
-import org.noear.solon.net.staticfiles.StaticMappings;
-import org.noear.solon.net.staticfiles.repository.FileStaticRepository;
+import org.noear.solon.web.staticfiles.StaticMappings;
+import org.noear.solon.web.staticfiles.repository.FileStaticRepository;
 
 public class PathTest {
     @Test

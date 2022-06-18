@@ -2,7 +2,7 @@ package org.noear.solon.boot.jetty.http;
 
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.jetty.XPluginImp;
-import org.noear.solon.net.servlet.SolonServletHandler;
+import org.noear.solon.web.servlet.SolonServletHandler;
 import org.noear.solon.core.handle.Context;
 
 public class JtHttpContextServletHandler extends SolonServletHandler {
