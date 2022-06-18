@@ -65,6 +65,10 @@
         <module>../../__deprecated/solon.extend.health</module>
         <module>../../_solon_extend/solon.net.health</module>
 
+        <!-- @Deprecated -->
+        <module>../../__deprecated/solon.extend.hotplug</module>
+        <module>../../_solon_extend/solon.hotplug</module>
+
         <module>../../_solon_extend/solon.extend.async</module>
         <module>../../_solon_extend/solon.extend.retry</module>
         <module>../../_solon_extend/solon.extend.stop</module>
@@ -74,7 +78,7 @@
 
         <module>../../_solon_extend/solon.extend.schedule</module>
 
-        <module>../../_solon_extend/solon.extend.hotplug</module>
+
     </modules>
 
 
