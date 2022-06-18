@@ -1,4 +1,4 @@
-package org.noear.solon.extend.grpc;
+package org.noear.solon.extend.grpc.annotation;
 
 import java.lang.annotation.*;
 

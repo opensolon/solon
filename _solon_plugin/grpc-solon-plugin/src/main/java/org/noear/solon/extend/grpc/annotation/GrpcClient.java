@@ -1,5 +1,7 @@
 package org.noear.solon.extend.grpc.annotation;
 
+import io.grpc.netty.NegotiationType;
+
 import java.lang.annotation.*;
 
 /**
@@ -11,6 +13,10 @@ import java.lang.annotation.*;
 @Documented
 public @interface GrpcClient {
     String value() default "";
+
     String name() default "";
+
     String groupt() default "";
+
+    NegotiationType negotiationType() default NegotiationType.PLAINTEXT;
 }
