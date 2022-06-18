@@ -16,6 +16,7 @@ import java.util.*;
  * @author noear
  * @since 1.8
  */
+@Deprecated
 public class PluginManager {
     static final Map<String, PluginInfo> pluginMap = new HashMap<>();
 

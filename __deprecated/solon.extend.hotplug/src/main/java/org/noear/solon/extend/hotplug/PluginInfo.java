@@ -8,6 +8,7 @@ import java.io.File;
  * @author noear
  * @since 1.8
  */
+@Deprecated
 public class PluginInfo {
     /**
      * 插件名

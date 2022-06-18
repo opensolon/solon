@@ -16,6 +16,7 @@ import java.util.List;
  * @author noear
  * @since 1.8
  */
+@Deprecated
 public class PluginPackage {
     /**
      * 包文件
