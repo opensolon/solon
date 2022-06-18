@@ -3,6 +3,7 @@ package org.noear.solon.boot.smarthttp;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
+import org.noear.solon.boot.ServerConstants;
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.prop.HttpSignalProps;
 import org.noear.solon.boot.smarthttp.http.SmartHttpContextHandler;
@@ -15,6 +16,7 @@ import org.noear.solon.core.util.PrintUtil;
 import org.noear.solon.socketd.SessionManager;
 import org.smartboot.http.server.HttpBootstrap;
 import org.smartboot.http.server.HttpServerConfiguration;
+import org.smartboot.socket.extension.plugins.SslPlugin;
 
 public final class XPluginImp implements Plugin {
     private static Signal _signal;
@@ -59,11 +61,18 @@ public final class XPluginImp implements Plugin {
 
         SmartHttpContextHandler _handler = new SmartHttpContextHandler();
 
+
         _server = new HttpBootstrap();
         HttpServerConfiguration _config = _server.configuration();
         if (Utils.isNotEmpty(_host)) {
             _config.host(_host);
         }
+
+//        if (System.getProperty(ServerConstants.SSL_KEYSTORE) != null) {
+//            SslPlugin sslPlugin = new SslPlugin();
+//            sslPlugin.initForServer(null,null,null,null);
+//            _config.addPlugin(sslPlugin);
+//        }
 
         _config.bannerEnabled(false);
         _config.readBufferSize(1024 * 8); //默认: 8k

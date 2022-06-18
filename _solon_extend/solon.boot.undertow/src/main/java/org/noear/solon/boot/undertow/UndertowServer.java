@@ -73,7 +73,7 @@ class UndertowServer extends UndertowServerBase implements ServerLifecycle {
             builder.addHttpListener(port, host);
         } else {
             //https
-            builder.addHttpsListener(port, host, SslContextFactory.createSslContext());
+            builder.addHttpsListener(port, host, SslContextFactory.create());
         }
 
         if (app.enableWebSocket()) {
