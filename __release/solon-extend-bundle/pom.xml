@@ -39,11 +39,11 @@
 
         <!-- @Deprecated -->
         <module>../../__deprecated/solon.extend.staticfiles</module>
-        <module>../../_solon_extend/solon.web.staticfiles</module>
+        <module>../../_solon_extend/solon.net.staticfiles</module>
 
         <!-- @Deprecated -->
         <module>../../__deprecated/solon.extend.servlet</module>
-        <module>../../_solon_extend/solon.web.servlet</module>
+        <module>../../_solon_extend/solon.net.servlet</module>
 
         <!-- @Deprecated -->
         <module>../../__deprecated/solon.extend.sessionstate.redis</module>
@@ -59,11 +59,11 @@
 
         <!-- @Deprecated -->
         <module>../../__deprecated/solon.extend.cors</module>
-        <module>../../_solon_extend/solon.web.cors</module>
+        <module>../../_solon_extend/solon.net.cors</module>
 
         <!-- @Deprecated -->
         <module>../../__deprecated/solon.extend.health</module>
-        <module>../../_solon_extend/solon.health</module>
+        <module>../../_solon_extend/solon.net.health</module>
 
         <module>../../_solon_extend/solon.extend.async</module>
         <module>../../_solon_extend/solon.extend.retry</module>

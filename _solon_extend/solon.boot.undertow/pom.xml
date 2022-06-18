@@ -28,7 +28,7 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.web.servlet</artifactId>
+            <artifactId>solon.net.servlet</artifactId>
         </dependency>
 
         <!-- server core begin -->

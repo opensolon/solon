@@ -323,7 +323,7 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.web.cors</artifactId>
+                <artifactId>solon.net.cors</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
 
@@ -343,7 +343,7 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.health</artifactId>
+                <artifactId>solon.net.health</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
 
@@ -355,7 +355,7 @@
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.web.servlet</artifactId>
+                <artifactId>solon.net.servlet</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
 
@@ -367,7 +367,7 @@
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.web.staticfiles</artifactId>
+                <artifactId>solon.net.staticfiles</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
 

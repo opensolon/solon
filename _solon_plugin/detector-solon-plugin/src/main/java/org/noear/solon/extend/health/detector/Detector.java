@@ -2,7 +2,7 @@ package org.noear.solon.extend.health.detector;
 
 import org.noear.solon.core.Lifecycle;
 import org.noear.solon.core.handle.Result;
-import org.noear.solon.health.HealthIndicator;
+import org.noear.solon.net.health.HealthIndicator;
 
 import java.util.Map;
 

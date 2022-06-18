@@ -2,7 +2,7 @@ package org.noear.solon.boot.jetty.http;
 
 import org.eclipse.jetty.util.component.AbstractLifeCycle;
 import org.eclipse.jetty.util.component.LifeCycle;
-import org.noear.solon.web.servlet.SolonServletInstaller;
+import org.noear.solon.net.servlet.SolonServletInstaller;
 
 import javax.servlet.*;
 import java.util.*;
