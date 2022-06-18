@@ -22,6 +22,7 @@
 
     <modules>
 
+        <module>../../_solon_extend/solon.cache.caffeine</module>
         <module>../../_solon_extend/solon.cache.jedis</module>
         <module>../../_solon_extend/solon.cache.spymemcached</module>
         <module>../../_solon_extend/solon.cache.redisson</module>
