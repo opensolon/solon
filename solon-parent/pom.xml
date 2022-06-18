@@ -126,6 +126,12 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>solon.cache.caffeine</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>solon.cache.redisson</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
