@@ -3,6 +3,7 @@ package org.noear.solon.extend.grpc.integration;
 import io.grpc.BindableService;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
+import io.grpc.ServerServiceDefinition;
 import org.noear.solon.Solon;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
@@ -44,7 +45,13 @@ public class XPluginImp implements Plugin {
                 .forPort(XPluginProps.serverPort);
 
         serviceMap.forEach((k, v) -> {
-            serverBuilder.addService((BindableService) v);
+            if (v instanceof BindableService) {
+                serverBuilder.addService((BindableService) v);
+            }
+
+            if (v instanceof ServerServiceDefinition) {
+                serverBuilder.addService((ServerServiceDefinition) v);
+            }
         });
 
 
