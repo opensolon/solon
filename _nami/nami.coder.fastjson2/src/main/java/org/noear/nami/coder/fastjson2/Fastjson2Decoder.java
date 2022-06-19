@@ -13,9 +13,9 @@ import java.lang.reflect.Type;
  * @author noear
  * @since 1.9
  */
-public class FastjsonDecoder implements Decoder {
+public class Fastjson2Decoder implements Decoder {
 
-    public static final FastjsonDecoder instance = new FastjsonDecoder();
+    public static final Fastjson2Decoder instance = new Fastjson2Decoder();
 
 
     @Override

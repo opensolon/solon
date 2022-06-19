@@ -13,22 +13,21 @@ import java.nio.charset.StandardCharsets;
  * @author noear
  * @since 1.9
  */
-public class FastjsonTypeEncoder implements Encoder {
-    public static final FastjsonTypeEncoder instance = new FastjsonTypeEncoder();
+public class Fastjson2Encoder implements Encoder {
+    public static final Fastjson2Encoder instance = new Fastjson2Encoder();
+
 
     @Override
     public String enctype() {
-        return Constants.CONTENT_TYPE_JSON_TYPE;
+        return Constants.CONTENT_TYPE_JSON;
     }
 
     @Override
     public byte[] encode(Object obj) {
         return JSON.toJSONString(obj,
                         JSONWriter.Feature.BrowserCompatible,
-                        JSONWriter.Feature.WriteClassName,
                         JSONWriter.Feature.ReferenceDetection)
                 .getBytes(StandardCharsets.UTF_8);
-
     }
 
     @Override
