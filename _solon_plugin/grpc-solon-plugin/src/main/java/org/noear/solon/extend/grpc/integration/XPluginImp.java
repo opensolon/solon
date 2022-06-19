@@ -16,10 +16,15 @@ import java.util.Map;
 
 // https://zhuanlan.zhihu.com/p/464658805
 
+/**
+ * @author noear
+ * @since 1.9
+ * */
 public class XPluginImp implements Plugin {
     Server server;
 
     Map<Class<?>, Object> serviceMap;
+    Map<Class<?>, Object> clientMap;
 
     @Override
     public void start(AopContext context) {

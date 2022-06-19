@@ -1,5 +1,6 @@
 #### 1.9.0-M1
-
+* 新增 grpc-solon-plugin 插件
+* 新增 solon.cache.caffeine 插件
 
 #### 1.8.3
 * 添加 solon.extend.config 属性配置支持

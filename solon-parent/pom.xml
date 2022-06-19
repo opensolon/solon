@@ -63,6 +63,9 @@
 
         <hazelcast.ver>5.1</hazelcast.ver>
         <lombok.ver>1.18.20</lombok.ver>
+
+        <protobuf.ver>3.19.4</protobuf.ver>
+        <grpc.ver>1.26.0</grpc.ver>
     </properties>
 
 

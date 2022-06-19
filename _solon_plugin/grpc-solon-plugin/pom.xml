@@ -14,10 +14,6 @@
     <artifactId>grpc-solon-plugin</artifactId>
     <packaging>jar</packaging>
 
-    <properties>
-        <protobuf.version>3.19.4</protobuf.version>
-        <grpc.version>1.26.0</grpc.version>
-    </properties>
 
     <dependencies>
         <dependency>
@@ -28,13 +24,13 @@
         <dependency>
             <groupId>com.google.protobuf</groupId>
             <artifactId>protobuf-java</artifactId>
-            <version>${protobuf.version}</version>
+            <version>${protobuf.ver}</version>
         </dependency>
 
         <dependency>
             <groupId>io.grpc</groupId>
             <artifactId>grpc-all</artifactId>
-            <version>${grpc.version}</version>
+            <version>${grpc.ver}</version>
         </dependency>
     </dependencies>
 </project>
