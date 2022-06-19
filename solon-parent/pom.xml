@@ -1198,8 +1198,6 @@
                 <artifactId>slf4j-simple</artifactId>
                 <version>${slf4j.ver}</version>
             </dependency>
-
-            
         </dependencies>
     </dependencyManagement>
 
