@@ -12,6 +12,10 @@ import java.lang.reflect.ParameterizedType;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * @author noear
+ * @since 1.9
+ * */
 public class Fastjson2JsonActionExecutor extends ActionExecutorDefault {
     private static final String label = "/json";
 
@@ -74,9 +78,9 @@ public class Fastjson2JsonActionExecutor extends ActionExecutorDefault {
                     //支持泛型的转换 如：Map<T>
                     ParameterizedType gp=p.getGenericType();
                     if(gp!=null){
-                        return tmp.toJavaObject(gp);
+                        return tmp.to(gp);
                     }
-                    return tmp.toJavaObject(pt);
+                    return tmp.to(pt);
                    // return tmp.toJavaObject(pt);
                 }
             }
@@ -92,10 +96,10 @@ public class Fastjson2JsonActionExecutor extends ActionExecutorDefault {
             ParameterizedType gp = p.getGenericType();
             if (gp != null) {
                 //转换带泛型的集合
-                return  tmp.toJavaObject(gp);
+                return  tmp.to(gp);
             }
             //不仅可以转换为List 还可以转换成Set
-            return tmp.toJavaObject(p.getType());
+            return tmp.to(p.getType());
         }
 
         return bodyObj;

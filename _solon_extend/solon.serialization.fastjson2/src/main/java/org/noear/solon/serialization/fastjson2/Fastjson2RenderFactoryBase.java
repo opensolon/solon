@@ -9,7 +9,7 @@ import org.noear.solon.serialization.JsonRenderFactory;
  * Json 渲染器工厂基类
  *
  * @author noear
- * @since 1.5
+ * @since 1.9
  */
 public abstract class Fastjson2RenderFactoryBase implements JsonRenderFactory {
 

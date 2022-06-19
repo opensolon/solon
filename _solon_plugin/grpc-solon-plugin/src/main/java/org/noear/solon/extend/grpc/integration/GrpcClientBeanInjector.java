@@ -28,11 +28,12 @@ public class GrpcClientBeanInjector implements BeanInjector<GrpcClient> {
     public void doInject(VarHolder varH, GrpcClient anno) {
         Method method;
         Object grpcCli = clientMap.get(varH.getType());
+        String target = Utils.annoAlias(anno.value(), anno.name());
 
         if (grpcCli != null) {
             varH.setValue(grpcCli);
         } else {
-            ManagedChannel grpcChannel = ManagedChannelBuilder.forTarget(anno.name()).usePlaintext().build();
+            ManagedChannel grpcChannel = ManagedChannelBuilder.forTarget(target).usePlaintext().build();
             Class<?> grpcClz = Utils.loadClass(varH.getType().getName().split("\\$")[0]);
 
             try {
