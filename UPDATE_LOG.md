@@ -1,6 +1,15 @@
 #### 1.9.0-M1
 * 新增 grpc-solon-plugin 插件
 * 新增 solon.cache.caffeine 插件
+* 新增 solon.serialization.fastjson2 插件
+* 新增 nami.coder.fastjson2 插件
+* 更名 solon.extend.aspect          => solon.aspect          [有感-] //ok //ok
+* 更名 solon.extend.health          => solon.health          [有感-] //ok //ok
+* 更名 solon.extend.hotplug         => solon.hotplug         [有感-]
+* 更名 solon.extend.properties.yaml => solon.config.yaml     [无感] //ok //ok
+* 更名 solon.extend.servlet         => solon.web.servlet     [无感] //ok //ok
+* 更名 solon.extend.staticfiles     => solon.web.staticfiles [有感+] //ok //ok-
+* 更名 solon.extend.cors            => solon.web.cors        [有感-] //ok //ok
 
 #### 1.8.3
 * 添加 solon.extend.config 属性配置支持
