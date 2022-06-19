@@ -189,22 +189,25 @@ public class HttpTest extends HttpTestBase {
 
     @Test
     public void test2g() throws IOException {
-        assert path("/demo2/param/array_str?aaa=1&aaa=2&aaa=中文")
-                .get().equals("[\"1\",\"2\",\"中文\"]");
+        String json = path("/demo2/param/array_str?aaa=1&aaa=2&aaa=中文")
+                .get();
+
+        assert ONode.load(json).toJson().equals("[\"1\",\"2\",\"中文\"]");
     }
 
     @Test
     public void test2g_2() throws IOException {
-        assert path("/demo2/param/array_str?aaa=1,2,中文")
-                .get().equals("[\"1\",\"2\",\"中文\"]");
+        String json = path("/demo2/param/array_str?aaa=1,2,中文").get();
+        assert ONode.load(json).toJson().equals("[\"1\",\"2\",\"中文\"]");
     }
 
     @Test
     public void test2g_3() throws IOException {
-        assert path("/demo2/param/array_str")
+        String json = path("/demo2/param/array_str")
                 .data("aaa", "1,2,中文")
-                .post()
-                .equals("[\"1\",\"2\",\"中文\"]");
+                .post();
+
+        assert ONode.load(json).toJson().equals("[\"1\",\"2\",\"中文\"]");
     }
 
     @Test
@@ -236,16 +239,30 @@ public class HttpTest extends HttpTestBase {
 
     @Test
     public void test2j() throws IOException {
-        assert path("/demo2/param/model?id=1&name=xxx&sex=2&date=2019-12-1&aaa=1&aaa=2")
-                .get().equals("{\"id\":1,\"name\":\"xxx\",\"sex\":2,\"date\":1575129600000,\"aaa\":[1,2]}");
+        String json = path("/demo2/param/model?id=1&name=xxx&sex=2&date=2019-12-1&aaa=1&aaa=2")
+                .get();
+
+        //assert .equals("{\"id\":1,\"name\":\"xxx\",\"sex\":2,\"date\":1575129600000,\"aaa\":[1,2]}");
+
+        ONode oNode = ONode.load(json);
+
+        assert oNode.get("id").getInt() == 1;
+        assert oNode.get("aaa").count() == 2;
+        assert oNode.get("sex").getInt() == 2;
     }
 
     @Test
     public void test2j_2() throws IOException {
         String json = "{\"id\":1,\"name\":\"xxx\",\"sex\":2,\"date\":\"2019-11-11T11:11:11\",\"aaa\":[1,2]}";
 
-        assert path("/demo2/param/model").bodyTxt(json, "application/json")
-                .post().equals("{\"id\":1,\"name\":\"xxx\",\"sex\":2,\"date\":1573441871000,\"aaa\":[1,2]}");
+        String json2 = path("/demo2/param/model").bodyTxt(json, "application/json")
+                .post();
+
+        ONode oNode = ONode.load(json2);
+
+        assert oNode.get("id").getInt() == 1;
+        assert oNode.get("aaa").count() == 2;
+        assert oNode.get("sex").getInt() == 2;
     }
 
     @Test
@@ -296,7 +313,9 @@ public class HttpTest extends HttpTestBase {
 
     @Test
     public void test61() throws IOException {
-        assert path("/demo6/aop").get().equals("{\"rockapi12\":\"我是：Rockservice1\",\"rockapi11\":\"我是：Rockservice1\",\"rockapi2\":\"我是：Rockservice2\",\"rockapi132\":\"我是：Rockservice3\"}");
+        String json = path("/demo6/aop").get();
+
+        assert ONode.load(json).toJson().equals("{\"rockapi12\":\"我是：Rockservice1\",\"rockapi11\":\"我是：Rockservice1\",\"rockapi2\":\"我是：Rockservice2\",\"rockapi132\":\"我是：Rockservice3\"}");
     }
 
     @Test
@@ -333,7 +352,9 @@ public class HttpTest extends HttpTestBase {
 
     @Test
     public void test83() throws IOException {
-        assert ONode.loadStr(path("/demo8/config_system").get()).select("file.separator").getString().equals("/");
+        String json = path("/demo8/config_system").get();
+        String val = ONode.loadStr(json).select("file.separator").getString();
+        assert val.equals("/") || val.equals("\\/");
     }
 
     @Test
