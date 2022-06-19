@@ -842,6 +842,12 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>grpc-solon-plugin</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>dubbo-solon-plugin</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
