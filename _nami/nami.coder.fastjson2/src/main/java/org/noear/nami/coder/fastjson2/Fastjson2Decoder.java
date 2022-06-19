@@ -1,12 +1,15 @@
 package org.noear.nami.coder.fastjson2;
 
 import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.JSONReader;
 import org.noear.nami.Context;
 import org.noear.nami.Decoder;
 import org.noear.nami.Result;
 import org.noear.nami.common.Constants;
 
 import java.lang.reflect.Type;
+
+import static com.alibaba.fastjson2.JSONReader.Feature.SupportAutoType;
 
 
 /**
@@ -33,8 +36,12 @@ public class Fastjson2Decoder implements Decoder {
                 return (T) str;
             }
 
+            if ("null".equals(str)) {
+                return null;
+            }
+
             if (str.contains("\"stackTrace\":[{")) {
-                returnVal = JSON.parseObject(str, Throwable.class);
+                returnVal = JSON.parseObject(str, Throwable.class, JSONReader.Feature.SupportAutoType);
             } else {
                 returnVal = JSON.parseObject(str, type);
             }
