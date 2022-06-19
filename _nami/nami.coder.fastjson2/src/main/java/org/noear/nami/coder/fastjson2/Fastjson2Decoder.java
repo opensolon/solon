@@ -43,7 +43,7 @@ public class Fastjson2Decoder implements Decoder {
             if (str.contains("\"stackTrace\":[{")) {
                 returnVal = JSON.parseObject(str, Throwable.class, JSONReader.Feature.SupportAutoType);
             } else {
-                returnVal = JSON.parseObject(str, type);
+                returnVal = JSON.parseObject(str, type, JSONReader.Feature.SupportAutoType);
             }
         } catch (Throwable ex) {
             returnVal = ex;
