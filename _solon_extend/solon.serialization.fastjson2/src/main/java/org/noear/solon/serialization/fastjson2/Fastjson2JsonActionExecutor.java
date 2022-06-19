@@ -16,7 +16,7 @@ import java.util.List;
  * Json 动作执行器
  *
  * @author noear
- * @author desire
+ * @author 夜の孤城
  * @since 1.9
  * */
 public class Fastjson2JsonActionExecutor extends ActionExecutorDefault {
