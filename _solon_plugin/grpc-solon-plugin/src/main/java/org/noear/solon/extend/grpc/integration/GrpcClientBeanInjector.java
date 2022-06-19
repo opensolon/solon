@@ -11,33 +11,50 @@ import org.noear.solon.core.VarHolder;
 import org.noear.solon.extend.grpc.annotation.GrpcClient;
 
 import java.lang.reflect.Method;
+import java.util.Map;
 
 /**
  * @author noear
  * @since 1.9
  */
 public class GrpcClientBeanInjector implements BeanInjector<GrpcClient> {
+    Map<Class<?>, Object> clientMap;
+
+    public GrpcClientBeanInjector(Map<Class<?>, Object> clientMap) {
+        this.clientMap = clientMap;
+    }
+
     @Override
     public void doInject(VarHolder varH, GrpcClient anno) {
-        ManagedChannel grpcChannel = ManagedChannelBuilder.forTarget(anno.name()).usePlaintext().build();
-        Class<?> grpcClz = Utils.loadClass(varH.getType().getName().split("\\$")[0]);
+        Method method;
+        Object grpcCli = clientMap.get(varH.getType());
 
-        try {
-            if (AbstractBlockingStub.class.isAssignableFrom(varH.getType())) {
-                Method method = grpcClz.getDeclaredMethod("newBlockingStub", Channel.class);
-                Object grpcCli = method.invoke(null, new Object[]{grpcChannel});
-                varH.setValue(grpcCli);
-            }
+        if (grpcCli != null) {
+            varH.setValue(grpcCli);
+        } else {
+            ManagedChannel grpcChannel = ManagedChannelBuilder.forTarget(anno.name()).usePlaintext().build();
+            Class<?> grpcClz = Utils.loadClass(varH.getType().getName().split("\\$")[0]);
 
-            if (AbstractFutureStub.class.isAssignableFrom(varH.getType())) {
-                Method method = grpcClz.getDeclaredMethod("newFutureStub", Channel.class);
-                Object grpcCli = method.invoke(null, new Object[]{grpcChannel});
-                varH.setValue(grpcCli);
+            try {
+                if (AbstractBlockingStub.class.isAssignableFrom(varH.getType())) {
+                    method = grpcClz.getDeclaredMethod("newBlockingStub", Channel.class);
+                    grpcCli = method.invoke(null, new Object[]{grpcChannel});
+                }
+
+                if (AbstractFutureStub.class.isAssignableFrom(varH.getType())) {
+                    method = grpcClz.getDeclaredMethod("newFutureStub", Channel.class);
+                    grpcCli = method.invoke(null, new Object[]{grpcChannel});
+                }
+
+                if (grpcCli != null) {
+                    clientMap.put(varH.getType(), grpcCli);
+                    varH.setValue(grpcCli);
+                }
+            } catch (RuntimeException e) {
+                throw e;
+            } catch (Throwable e) {
+                throw new IllegalStateException(e);
             }
-        } catch (RuntimeException e) {
-            throw e;
-        } catch (Throwable e) {
-            throw new IllegalStateException(e);
         }
     }
 }
