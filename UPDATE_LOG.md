@@ -1,3 +1,6 @@
+#### 1.9.0-M1
+
+
 #### 1.8.3
 * 添加 solon.extend.config 属性配置支持
 * 添加 ContextPathFilter 类，摸拟 contextPath 特性
@@ -6,6 +9,7 @@
 * 插件 sqltoy-solon-plugin 升级为 sqltoy 5.2.0
 * 插件 weed3-solon-plugin 升级 weed3 3.4.26
 * 插件 beetlsql-solon-plugin 升级 beetlsql 3.14.4-RELEASE
+* 插件 solon-api, solon-web 默认改用 jdkhttp
 * snack3 升为 3.2.29
 
 #### 1.8.2

@@ -16,7 +16,7 @@ import java.security.cert.CertificateException;
  * @since 1.6
  */
 public class SslContextFactory {
-    public static SSLContext createSslContext() throws IOException {
+    public static SSLContext create() throws IOException {
         String keyStoreName = System.getProperty(ServerConstants.SSL_KEYSTORE);
         String keyStoreType = System.getProperty(ServerConstants.SSL_KEYSTORE_TYPE);
         String keyStorePassword = System.getProperty(ServerConstants.SSL_KEYSTORE_PASSWORD);

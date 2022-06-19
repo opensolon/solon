@@ -92,7 +92,7 @@ public final class XPluginImp implements Plugin {
 
         if (System.getProperty(ServerConstants.SSL_KEYSTORE) != null) {
             // enable SSL if configured
-            _server.setServerSocketFactory(SslContextFactory.createSslContext().getServerSocketFactory());
+            _server.setServerSocketFactory(SslContextFactory.create().getServerSocketFactory());
         }
 
         HTTPServer.VirtualHost host = _server.getVirtualHost(null);

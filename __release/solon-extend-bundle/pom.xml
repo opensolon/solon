@@ -6,7 +6,7 @@
 
     <groupId>org.noear.bundle</groupId>
     <artifactId>solon-extend-bundle</artifactId>
-    <version>1.8.3</version>
+    <version>1.9.0-M1</version>
     <packaging>pom</packaging>
 
 
@@ -22,6 +22,7 @@
 
     <modules>
 
+        <module>../../_solon_extend/solon.cache.caffeine</module>
         <module>../../_solon_extend/solon.cache.jedis</module>
         <module>../../_solon_extend/solon.cache.spymemcached</module>
         <module>../../_solon_extend/solon.cache.redisson</module>
@@ -33,30 +34,52 @@
         <module>../../_solon_extend/solon.sessionstate.redisson</module>
 
 
-        <module>../../_solon_extend/solon.extend.aspect</module>
-        <module>../../_solon_extend/solon.extend.staticfiles</module>
-
-        <module>../../_solon_extend/solon.extend.servlet</module>
+        <!-- @Deprecated -->
+        <module>../../__deprecated/solon.extend.aspect</module>
+        <module>../../_solon_extend/solon.aspect</module>
 
         <!-- @Deprecated -->
-        <module>../../_solon_extend/solon.extend.sessionstate.redis</module>
-        <module>../../_solon_extend/solon.extend.sessionstate.local</module>
-        <module>../../_solon_extend/solon.extend.sessionstate.jwt</module>
+        <module>../../__deprecated/solon.extend.staticfiles</module>
+        <module>../../_solon_extend/solon.web.staticfiles</module>
 
-        <module>../../_solon_extend/solon.extend.properties.yaml</module>
+        <!-- @Deprecated -->
+        <module>../../__deprecated/solon.extend.servlet</module>
+        <module>../../_solon_extend/solon.web.servlet</module>
+
+        <!-- @Deprecated -->
+        <module>../../__deprecated/solon.extend.sessionstate.redis</module>
+        <!-- @Deprecated -->
+        <module>../../__deprecated/solon.extend.sessionstate.local</module>
+        <!-- @Deprecated -->
+        <module>../../__deprecated/solon.extend.sessionstate.jwt</module>
+
+        <!-- @Deprecated -->
+        <module>../../__deprecated/solon.extend.properties.yaml</module>
+        <module>../../_solon_extend/solon.config.yaml</module>
+
+
+        <!-- @Deprecated -->
+        <module>../../__deprecated/solon.extend.cors</module>
+        <module>../../_solon_extend/solon.web.cors</module>
+
+        <!-- @Deprecated -->
+        <module>../../__deprecated/solon.extend.health</module>
+        <module>../../_solon_extend/solon.health</module>
+
+        <!-- @Deprecated -->
+        <module>../../__deprecated/solon.extend.hotplug</module>
+        <module>../../_solon_extend/solon.hotplug</module>
+
+        <module>../../_solon_extend/solon.extend.async</module>
+        <module>../../_solon_extend/solon.extend.retry</module>
         <module>../../_solon_extend/solon.extend.stop</module>
         <module>../../_solon_extend/solon.extend.jsr330</module>
         <module>../../_solon_extend/solon.extend.jsr303</module>
-        <module>../../_solon_extend/solon.extend.cors</module>
-        <module>../../_solon_extend/solon.extend.health</module>
         <module>../../_solon_extend/solon.extend.graalvm</module>
-        <module>../../_solon_extend/solon.extend.async</module>
-        <module>../../_solon_extend/solon.extend.retry</module>
 
         <module>../../_solon_extend/solon.extend.schedule</module>
 
 
-        <module>../../_solon_extend/solon.extend.hotplug</module>
     </modules>
 
 

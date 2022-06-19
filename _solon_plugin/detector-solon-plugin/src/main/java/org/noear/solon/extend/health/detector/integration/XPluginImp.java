@@ -4,7 +4,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
-import org.noear.solon.extend.health.HealthChecker;
+import org.noear.solon.health.HealthChecker;
 import org.noear.solon.extend.health.detector.*;
 
 import java.util.Arrays;

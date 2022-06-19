@@ -111,7 +111,7 @@ public final class XPluginImp implements Plugin {
     }
 
     private void addSslConfig(HttpsServer httpsServer) throws IOException {
-        SSLContext sslContext = SslContextFactory.createSslContext();
+        SSLContext sslContext = SslContextFactory.create();
 
         httpsServer.setHttpsConfigurator(new HttpsConfigurator(sslContext) {
             public void configure(HttpsParameters params) {

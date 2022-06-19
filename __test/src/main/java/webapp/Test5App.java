@@ -1,8 +1,8 @@
 package webapp;
 
 import org.noear.solon.Solon;
-import org.noear.solon.extend.hotplug.PluginManager;
-import org.noear.solon.extend.hotplug.PluginPackage;
+import org.noear.solon.hotplug.PluginManager;
+import org.noear.solon.hotplug.PluginPackage;
 
 import java.io.File;
 

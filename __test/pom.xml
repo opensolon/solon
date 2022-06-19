@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.noear</groupId>
         <artifactId>solon-parent</artifactId>
-        <version>1.8.3</version>
+        <version>1.9.0-M1</version>
         <relativePath>../solon-parent/pom.xml</relativePath>
     </parent>
 
@@ -34,12 +34,12 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.extend.hotplug</artifactId>
+            <artifactId>solon.hotplug</artifactId>
         </dependency>
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.extend.health</artifactId>
+            <artifactId>solon.health</artifactId>
         </dependency>
 
         <dependency>
@@ -59,16 +59,13 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.extend.cors</artifactId>
+            <artifactId>solon.web.cors</artifactId>
         </dependency>
 
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon.extend.async</artifactId>
         </dependency>
-
-
-
 
         <dependency>
             <groupId>org.noear</groupId>
@@ -141,7 +138,7 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.extend.staticfiles</artifactId>
+            <artifactId>solon.web.staticfiles</artifactId>
         </dependency>
 
         <dependency>
@@ -151,7 +148,7 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.extend.properties.yaml</artifactId>
+            <artifactId>solon.config.yaml</artifactId>
         </dependency>
 
         <dependency>
@@ -161,7 +158,7 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.extend.aspect</artifactId>
+            <artifactId>solon.aspect</artifactId>
         </dependency>
 
         <dependency>

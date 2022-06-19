@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.noear</groupId>
         <artifactId>solon-parent</artifactId>
-        <version>1.8.3</version>
+        <version>1.9.0-M1</version>
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
@@ -30,7 +30,7 @@
         <!-- 加强的动态代理支持组件 -->
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.extend.aspect</artifactId>
+            <artifactId>solon.aspect</artifactId>
         </dependency>
 
         <!-- 验证扩展组件 -->
@@ -48,7 +48,7 @@
         <!-- yml配置支持组件 -->
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.extend.properties.yaml</artifactId>
+            <artifactId>solon.config.yaml</artifactId>
         </dependency>
     </dependencies>
 

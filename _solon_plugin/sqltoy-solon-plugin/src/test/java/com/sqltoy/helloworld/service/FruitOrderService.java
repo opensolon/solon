@@ -1,18 +1,12 @@
 package com.sqltoy.helloworld.service;
 
 import com.sqltoy.helloworld.FruitMapper;
-import org.noear.solon.annotation.Inject;
 import org.noear.solon.data.annotation.Tran;
-import org.noear.solon.extend.aspect.annotation.Service;
+import org.noear.solon.aspect.annotation.Service;
 import org.noear.solon.extend.sqltoy.annotation.Db;
-import org.sagacity.sqltoy.SqlToyContext;
 import org.sagacity.sqltoy.dao.SqlToyLazyDao;
 import org.sagacity.sqltoy.model.Page;
 import com.sqltoy.helloworld.vo.FruitOrderVO;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * 水果订单服务
