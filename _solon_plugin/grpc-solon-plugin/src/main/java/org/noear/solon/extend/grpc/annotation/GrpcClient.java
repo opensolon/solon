@@ -16,7 +16,7 @@ public @interface GrpcClient {
 
     String name() default "";
 
-    String groupt() default "";
+    String group() default "";
 
     NegotiationType negotiationType() default NegotiationType.PLAINTEXT;
 }
