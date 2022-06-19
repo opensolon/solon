@@ -12,6 +12,13 @@ import java.lang.reflect.ParameterizedType;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * Json 动作执行器
+ *
+ * @author noear
+ * @author desire
+ * @since 1.5
+ */
 public class FastjsonJsonActionExecutor extends ActionExecutorDefault {
     private static final String label = "/json";
 
