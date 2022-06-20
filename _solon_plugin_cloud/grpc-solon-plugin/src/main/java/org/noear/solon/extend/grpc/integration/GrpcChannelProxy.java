@@ -46,6 +46,7 @@ public class GrpcChannelProxy extends Channel {
     private Channel getChannel() {
         String server = upstream.getServer();
         Channel real = channelMap.get(server);
+
         if (real == null) {
             synchronized (server.intern()) {
                 real = channelMap.get(server);
