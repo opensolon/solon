@@ -4,6 +4,8 @@ import io.grpc.*;
 import org.noear.solon.Utils;
 import org.noear.solon.core.LoadBalance;
 
+import java.net.URI;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -48,7 +50,10 @@ public class GrpcChannelProxy extends Channel {
             synchronized (server.intern()) {
                 real = channelMap.get(server);
                 if (real == null) {
-                    real = ManagedChannelBuilder.forTarget(server).usePlaintext().build();
+                    URI uri = URI.create(server);
+                    real = ManagedChannelBuilder.forAddress(uri.getHost(), uri.getPort())
+                            .usePlaintext()
+                            .build();
                     channelMap.put(server, real);
                 }
             }
