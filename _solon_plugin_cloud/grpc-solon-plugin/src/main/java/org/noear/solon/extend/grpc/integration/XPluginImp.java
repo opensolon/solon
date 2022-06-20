@@ -40,6 +40,8 @@ public class XPluginImp implements Plugin {
         }
 
         serviceMap = new HashMap<>();
+        clientMap = new HashMap<>();
+
         context.beanBuilderAdd(GrpcService.class, new GrpcServiceBeanBuilder(serviceMap));
         context.beanInjectorAdd(GrpcClient.class, new GrpcClientBeanInjector(clientMap));
 
