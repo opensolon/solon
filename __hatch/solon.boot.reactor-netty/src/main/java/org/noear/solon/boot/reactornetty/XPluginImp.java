@@ -9,11 +9,14 @@ import reactor.netty.DisposableServer;
 import reactor.netty.http.HttpProtocol;
 import reactor.netty.http.server.HttpServer;
 
+/**
+ * https://projectreactor.io/docs/netty/release/reference/index.html#http-server
+ * */
 public class XPluginImp implements Plugin {
     DisposableServer _server = null;
 
     public static String solon_boot_ver() {
-        return "reactor-netty 0.9.1/" + Solon.cfg().version();
+        return "reactor-netty-http 1.0.20/" + Solon.cfg().version();
     }
 
     @Override
@@ -31,7 +34,7 @@ public class XPluginImp implements Plugin {
         long time_start = System.currentTimeMillis();
 
         try {
-            PrintUtil.info("Server:main: Reactornetty 0.9(reactor-netty)");
+            PrintUtil.info("Server:main: Reactor netty 1.0.20(reactor-netty-http)");
 
             RnHttpHandler handler = new RnHttpHandler();
 
@@ -51,8 +54,8 @@ public class XPluginImp implements Plugin {
 
             long time_end = System.currentTimeMillis();
 
-            PrintUtil.info("Connector:main: reactor-netty: Started ServerConnector@{HTTP/1.1,[http/1.1]}{http://localhost:" + app.port() + "}");
-            PrintUtil.info("Server:main: reactor-netty: Started @" + (time_end - time_start) + "ms");
+            PrintUtil.info("Connector:main: reactor-netty-http: Started ServerConnector@{HTTP/1.1,[http/1.1]}{http://localhost:" + app.port() + "}");
+            PrintUtil.info("Server:main: reactor-netty-http: Started @" + (time_end - time_start) + "ms");
         } catch (Throwable ex) {
             throw new RuntimeException(ex);
         }
@@ -64,7 +67,7 @@ public class XPluginImp implements Plugin {
             _server.dispose();
             _server = null;
 
-            PrintUtil.info("Server:main: reactor-netty: Has Stopped " + solon_boot_ver());
+            PrintUtil.info("Server:main: reactor-netty-http: Has Stopped " + solon_boot_ver());
         }
     }
 }

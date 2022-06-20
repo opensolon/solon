@@ -113,7 +113,7 @@ public class RnHttpContext extends Context {
 
     @Override
     public InputStream bodyAsStream() throws IOException {
-        return new ByteArrayInputStream(_request.receiveContent().blockFirst().content().array());
+        return _request.receive().asInputStream().blockFirst();
     }
 
     @Override
