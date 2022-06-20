@@ -5,7 +5,6 @@ import org.noear.solon.Utils;
 import org.noear.solon.core.LoadBalance;
 
 import java.net.URI;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
