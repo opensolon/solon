@@ -5,8 +5,9 @@ import io.grpc.Server;
 import io.grpc.ServerBuilder;
 import io.grpc.ServerServiceDefinition;
 import org.noear.solon.Solon;
-import org.noear.solon.core.AopContext;
-import org.noear.solon.core.Plugin;
+import org.noear.solon.SolonApp;
+import org.noear.solon.core.*;
+import org.noear.solon.core.util.PrintUtil;
 import org.noear.solon.extend.grpc.annotation.EnableGrpc;
 import org.noear.solon.extend.grpc.annotation.GrpcClient;
 import org.noear.solon.extend.grpc.annotation.GrpcService;
@@ -21,6 +22,12 @@ import java.util.Map;
  * @since 1.9
  * */
 public class XPluginImp implements Plugin {
+    private static Signal _signal;
+
+    public static Signal signal() {
+        return _signal;
+    }
+
     Server server;
 
     Map<Class<?>, Object> serviceMap;
@@ -37,17 +44,32 @@ public class XPluginImp implements Plugin {
         context.beanInjectorAdd(GrpcClient.class, new GrpcClientBeanInjector(clientMap));
 
         context.beanOnloaded(ctx -> {
-            startForServer(ctx);
+            try {
+                startForServer(Solon.app());
+            } catch (RuntimeException e) {
+                throw e;
+            } catch (Throwable e) {
+                throw new IllegalStateException(e);
+            }
         });
     }
 
-    private void startForServer(AopContext context) {
+    private void startForServer(SolonApp app) throws Throwable {
         if (serviceMap.size() == 0) {
             return;
         }
 
+        GrpcSignalProps props = new GrpcSignalProps(25000);
+        String _host = props.getHost();
+        int _port = props.getPort();
+        String _name = props.getName();
+
+        long time_start = System.currentTimeMillis();
+
+        PrintUtil.info("Server:main: io.grpc.Server(grpc)");
+
         ServerBuilder serverBuilder = ServerBuilder
-                .forPort(XPluginProps.serverPort);
+                .forPort(_port);
 
         serviceMap.forEach((k, v) -> {
             if (v instanceof BindableService) {
@@ -60,13 +82,15 @@ public class XPluginImp implements Plugin {
         });
 
 
-        try {
-            server = serverBuilder.build().start();
-        } catch (RuntimeException e) {
-            throw e;
-        } catch (Throwable e) {
-            throw new IllegalStateException(e);
-        }
+        server = serverBuilder.build().start();
+
+        _signal = new SignalSim(_name, _port, "http", SignalType.HTTP);
+        app.signalAdd(_signal);
+
+        long time_end = System.currentTimeMillis();
+
+        PrintUtil.info("Connector:main: grpc: Started ServerConnector@{grpc://localhost:" + _port + "}");
+        PrintUtil.info("Server:main: grpc: Started @" + (time_end - time_start) + "ms");
     }
 
     @Override
