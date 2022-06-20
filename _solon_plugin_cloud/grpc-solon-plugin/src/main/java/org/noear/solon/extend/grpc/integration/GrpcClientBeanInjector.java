@@ -1,8 +1,6 @@
 package org.noear.solon.extend.grpc.integration;
 
 import io.grpc.Channel;
-import io.grpc.ManagedChannel;
-import io.grpc.ManagedChannelBuilder;
 import io.grpc.stub.AbstractBlockingStub;
 import io.grpc.stub.AbstractFutureStub;
 import org.noear.solon.Utils;
@@ -28,12 +26,12 @@ public class GrpcClientBeanInjector implements BeanInjector<GrpcClient> {
     public void doInject(VarHolder varH, GrpcClient anno) {
         Method method;
         Object grpcCli = clientMap.get(varH.getType());
-        String target = Utils.annoAlias(anno.value(), anno.name());
+        String name = Utils.annoAlias(anno.value(), anno.name());
 
         if (grpcCli != null) {
             varH.setValue(grpcCli);
         } else {
-            ManagedChannel grpcChannel = ManagedChannelBuilder.forTarget(target).usePlaintext().build();
+            Channel grpcChannel = new GrpcChannelProxy(anno.group(), name);
             Class<?> grpcClz = Utils.loadClass(varH.getType().getName().split("\\$")[0]);
 
             try {
