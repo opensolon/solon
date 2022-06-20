@@ -56,6 +56,8 @@
         <module>../../_solon_plugin_cloud/opentracing-solon-plugin</module>
         <module>../../_solon_plugin_cloud/jaeger-solon-plugin</module>
 
+        <module>../../_solon_plugin_cloud/grpc-solon-plugin</module>
+
     </modules>
 
 

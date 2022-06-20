@@ -33,8 +33,6 @@
         <module>../../_solon_plugin/feign-solon-plugin</module>
         <module>../../_solon_plugin/forest-solon-plugin</module>
 
-        <module>../../_solon_plugin/grpc-solon-plugin</module>
-
         <module>../../_solon_plugin/graphql-solon-plugin</module>
         <module>../../_solon_plugin/hasor-solon-plugin</module>
         <module>../../_solon_plugin/hasordb-solon-plugin</module>
