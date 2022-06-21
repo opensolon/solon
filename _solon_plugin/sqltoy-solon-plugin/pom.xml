@@ -16,7 +16,7 @@
 
 
     <properties>
-        <sqltoy.ver>5.2.0</sqltoy.ver>
+        <sqltoy.ver>5.2.1</sqltoy.ver>
         <caffeine.ver>2.9.2</caffeine.ver>
         <mongo.version>3.12.11</mongo.version>
     </properties>

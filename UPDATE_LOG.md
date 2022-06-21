@@ -8,7 +8,7 @@
 * 更名 solon.extend.hotplug[弃用]         => solon.hotplug[新增]         [有感-]
 * 更名 solon.extend.properties.yaml[弃用] => solon.config.yaml[新增]     [无感]  //ok //ok
 * 更名 solon.extend.servlet[弃用]         => solon.web.servlet[新增]     [无感]  //ok //ok
-* 更名 solon.extend.staticfiles[弃用]     => solon.web.staticfiles[新增] [有感+] //ok //ok-
+* 更名 solon.extend.staticfiles[弃用]     => solon.web.staticfiles[新增] [有感-] //ok //ok-
 * 更名 solon.extend.cors[弃用]            => solon.web.cors[新增]        [有感-] //ok //ok-
 
 #### 1.8.3
