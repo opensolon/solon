@@ -1,14 +1,7 @@
 package org.noear.solon.validation;
 
-import org.noear.solon.core.Aop;
 import org.noear.solon.core.aspect.Interceptor;
 import org.noear.solon.core.aspect.Invocation;
-import org.noear.solon.core.handle.*;
-import org.noear.solon.core.wrap.ParamWrap;
-import org.noear.solon.ext.DataThrowable;
-import org.noear.solon.validation.annotation.Validated;
-
-import java.lang.annotation.Annotation;
 
 /**
  * 实体验证拦截器

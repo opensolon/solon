@@ -12,7 +12,6 @@ import org.noear.solon.socketd.client.jdksocket.BioSocketSession;
 
 import java.io.IOException;
 import java.net.Inet4Address;
-import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.ExecutorService;

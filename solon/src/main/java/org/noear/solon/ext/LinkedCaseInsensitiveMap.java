@@ -1,6 +1,5 @@
 package org.noear.solon.ext;
 
-import org.noear.solon.Solon;
 import org.noear.solon.core.NvMap;
 
 import java.io.Serializable;
