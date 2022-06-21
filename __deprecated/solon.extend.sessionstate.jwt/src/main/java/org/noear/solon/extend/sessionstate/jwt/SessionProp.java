@@ -2,6 +2,7 @@ package org.noear.solon.extend.sessionstate.jwt;
 
 import org.noear.solon.Solon;
 
+@Deprecated
 class SessionProp {
     public static int session_timeout = 0;
     public static String session_state_domain;

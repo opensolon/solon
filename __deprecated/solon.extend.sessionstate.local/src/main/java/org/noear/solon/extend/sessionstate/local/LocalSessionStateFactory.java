@@ -7,6 +7,7 @@ import org.noear.solon.core.handle.SessionStateFactory;
 /**
  * @author noear 2021/2/14 created
  */
+@Deprecated
 public class LocalSessionStateFactory implements SessionStateFactory {
     private static LocalSessionStateFactory instance;
     public static LocalSessionStateFactory getInstance() {

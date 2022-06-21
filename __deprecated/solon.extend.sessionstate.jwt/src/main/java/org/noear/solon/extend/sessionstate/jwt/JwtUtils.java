@@ -15,6 +15,7 @@ import java.util.Date;
  * @author noear
  * @since 1.3
  */
+@Deprecated
 public class JwtUtils {
     private static String TOKEN_HEADER = "Bearer ";
     private static Key key = null;

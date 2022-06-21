@@ -8,6 +8,7 @@ import java.util.concurrent.*;
 /**
  * 定时存储器（做为Session存储方案）
  * */
+@Deprecated
 class ScheduledStore {
     private int _defaultSeconds;
 

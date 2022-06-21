@@ -6,6 +6,7 @@ import org.noear.solon.core.Bridge;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.util.PrintUtil;
 
+@Deprecated
 public class XPluginImp implements Plugin {
     @Override
     public void start(AopContext context) {

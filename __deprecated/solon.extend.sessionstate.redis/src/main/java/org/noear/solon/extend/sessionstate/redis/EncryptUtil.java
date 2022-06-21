@@ -5,6 +5,7 @@ import org.noear.solon.core.event.EventBus;
 
 import java.security.MessageDigest;
 
+@Deprecated
 class EncryptUtil {
     private static final char[] _hexDigits = new char[]{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
 

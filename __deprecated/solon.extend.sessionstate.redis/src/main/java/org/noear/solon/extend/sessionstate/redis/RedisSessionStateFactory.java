@@ -11,6 +11,7 @@ import java.util.Properties;
 /**
  * @author noear 2021/2/14 created
  */
+@Deprecated
 public class RedisSessionStateFactory implements SessionStateFactory {
     private static RedisSessionStateFactory instance;
     public static RedisSessionStateFactory getInstance() {

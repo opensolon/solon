@@ -10,6 +10,7 @@ import org.noear.solon.core.util.PrintUtil;
  * @author noear
  * @since 1.3
  */
+@Deprecated
 public class XPluginImp implements Plugin {
     @Override
     public void start(AopContext context) {

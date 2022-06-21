@@ -10,6 +10,7 @@ import java.util.Collection;
 /**
  * 它会是个单例，不能有上下文数据
  * */
+@Deprecated
 public class LocalSessionState extends SessionStateBase {
     private static int _expiry = 60 * 60 * 2;
     private static String _domain = null;

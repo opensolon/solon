@@ -9,6 +9,7 @@ import org.noear.solon.core.handle.SessionStateFactory;
  * @author noear
  * @since 1.3
  */
+@Deprecated
 public class JwtSessionStateFactory implements SessionStateFactory {
     private static JwtSessionStateFactory instance;
 

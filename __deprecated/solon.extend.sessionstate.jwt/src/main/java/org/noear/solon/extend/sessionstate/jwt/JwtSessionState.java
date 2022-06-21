@@ -13,6 +13,7 @@ import java.util.ServiceConfigurationError;
  * @author noear
  * @since 1.3
  */
+@Deprecated
 public class JwtSessionState extends SessionStateBase {
     /**
      * 单位：秒
