@@ -139,7 +139,3 @@ stritems:
 strmap:
   id1: 1
   id2: 2
-
-
-server.ssl.keyStore: "/Users/noear/Downloads/h5-noear-org-0621101256/tomcat/h5-noear-org-0621101256.jks" #或 "demo.pfx"
-server.ssl.keyPassword: "123456"
