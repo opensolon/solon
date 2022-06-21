@@ -13,7 +13,7 @@ import org.noear.solon.core.ExtendLoader;
 import org.noear.solon.core.handle.ContextPathFilter;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.extend.async.annotation.EnableAsync;
-import org.noear.solon.net.cors.CrossHandler;
+import org.noear.solon.web.cors.CrossHandler;
 import org.noear.solon.web.staticfiles.StaticMappings;
 import org.noear.solon.web.staticfiles.repository.ExtendStaticRepository;
 import org.noear.solon.web.staticfiles.repository.FileStaticRepository;

@@ -1,9 +1,9 @@
-package org.noear.solon.net.cors;
+package org.noear.solon.web.cors;
 
 import org.noear.solon.core.handle.Action;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Handler;
-import org.noear.solon.net.cors.annotation.CrossOrigin;
+import org.noear.solon.web.cors.annotation.CrossOrigin;
 
 import java.util.HashMap;
 import java.util.Map;

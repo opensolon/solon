@@ -2,7 +2,7 @@ package webapp.demo2_mvc;
 
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Mapping;
-import org.noear.solon.net.cors.annotation.CrossOrigin;
+import org.noear.solon.web.cors.annotation.CrossOrigin;
 
 /**
  * @author noear 2021/5/22 created

@@ -1,9 +1,9 @@
-package org.noear.solon.net.cors.annotation;
+package org.noear.solon.web.cors.annotation;
 
 import org.noear.solon.annotation.Before;
 import org.noear.solon.annotation.Note;
 import org.noear.solon.annotation.Options;
-import org.noear.solon.net.cors.CrossOriginInterceptor;
+import org.noear.solon.web.cors.CrossOriginInterceptor;
 
 import java.lang.annotation.*;
 

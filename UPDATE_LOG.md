@@ -4,12 +4,12 @@
 * 新增 solon.serialization.fastjson2 插件
 * 新增 nami.coder.fastjson2 插件
 * 更名 solon.extend.aspect[弃用]          => solon.aspect[新增]          [有感-] //ok //ok
-* 更名 solon.extend.health[弃用]          => solon.health[新增]          [有感-] //ok //ok
+* 更名 solon.extend.health[弃用]          => solon.health[新增]          [有感+] //ok //ok
 * 更名 solon.extend.hotplug[弃用]         => solon.hotplug[新增]         [有感-]
 * 更名 solon.extend.properties.yaml[弃用] => solon.config.yaml[新增]     [无感]  //ok //ok
 * 更名 solon.extend.servlet[弃用]         => solon.web.servlet[新增]     [无感]  //ok //ok
 * 更名 solon.extend.staticfiles[弃用]     => solon.web.staticfiles[新增] [有感+] //ok //ok-
-* 更名 solon.extend.cors[弃用]            => solon.web.cors[新增]        [有感-] //ok //ok
+* 更名 solon.extend.cors[弃用]            => solon.web.cors[新增]        [有感-] //ok //ok-
 
 #### 1.8.3
 * 添加 solon.extend.config 属性配置支持

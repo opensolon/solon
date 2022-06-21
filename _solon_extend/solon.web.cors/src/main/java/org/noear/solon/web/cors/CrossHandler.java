@@ -1,11 +1,11 @@
-package org.noear.solon.net.cors;
+package org.noear.solon.web.cors;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Handler;
 import org.noear.solon.core.handle.MethodType;
-import org.noear.solon.net.cors.annotation.CrossOrigin;
+import org.noear.solon.web.cors.annotation.CrossOrigin;
 
 /**
  * 跨域处理
