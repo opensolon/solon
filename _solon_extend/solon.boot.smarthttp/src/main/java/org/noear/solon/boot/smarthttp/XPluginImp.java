@@ -73,14 +73,14 @@ public final class XPluginImp implements Plugin {
             _config.host(_host);
         }
 
-        if (System.getProperty(ServerConstants.SSL_KEYSTORE) != null) {
-            SSLContext sslContext = SslContextFactory.create();
-
-            SslPlugin sslPlugin = new SslPlugin(() -> sslContext, (Consumer<SSLEngine>) sslEngine -> {
-                sslEngine.setUseClientMode(false);
-            });
-            _config.addPlugin(sslPlugin);
-        }
+//        if (System.getProperty(ServerConstants.SSL_KEYSTORE) != null) {
+//            SSLContext sslContext = SslContextFactory.create();
+//
+//            SslPlugin sslPlugin = new SslPlugin(() -> sslContext, (Consumer<SSLEngine>) sslEngine -> {
+//                sslEngine.setUseClientMode(false);
+//            });
+//            _config.addPlugin(sslPlugin);
+//        }
 
         _config.bannerEnabled(false);
         _config.readBufferSize(1024 * 8); //默认: 8k

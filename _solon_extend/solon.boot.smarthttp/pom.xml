@@ -26,9 +26,21 @@
         </dependency>
 
         <dependency>
+            <groupId>org.smartboot.socket</groupId>
+            <artifactId>aio-pro</artifactId>
+            <version>1.5.17</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.smartboot.http</groupId>
             <artifactId>smart-http-server</artifactId>
-            <version>1.1.14-SNAPSHOT</version>
+            <version>1.1.13</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.smartboot.socket</groupId>
+                    <artifactId>aio-pro</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
 
@@ -39,34 +51,16 @@
         </dependency>
     </dependencies>
 
-    <repositories>
-        <repository>
-            <id>alimaven</id>
-            <name>aliyun maven</name>
-            <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
-        </repository>
-        <repository>
-            <id>sonatype-nexus-snapshots</id>
-            <name>Sonatype Nexus Snapshots</name>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-        </repository>
-    </repositories>
-    <pluginRepositories>
-        <pluginRepository>
-            <id>alimaven</id>
-            <name>aliyun maven</name>
-            <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
-        </pluginRepository>
-        <pluginRepository>
-            <id>sonatype-nexus-snapshots</id>
-            <name>Sonatype Nexus Snapshots</name>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </pluginRepository>
-    </pluginRepositories>
+<!--    <repositories>-->
+<!--        <repository>-->
+<!--            <id>alimaven</id>-->
+<!--            <name>aliyun maven</name>-->
+<!--            <url>http://maven.aliyun.com/nexus/content/groups/public/</url>-->
+<!--        </repository>-->
+<!--        <repository>-->
+<!--            <id>sonatype-nexus-snapshots</id>-->
+<!--            <name>Sonatype Nexus Snapshots</name>-->
+<!--            <url>https://oss.sonatype.org/content/repositories/snapshots</url>-->
+<!--        </repository>-->
+<!--    </repositories>-->
 </project>
