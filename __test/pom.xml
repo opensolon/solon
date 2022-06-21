@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.noear</groupId>
         <artifactId>solon-parent</artifactId>
-        <version>1.9.0-M1</version>
+        <version>1.9.0</version>
         <relativePath>../solon-parent/pom.xml</relativePath>
     </parent>
 
@@ -216,10 +216,10 @@
 <!--            <artifactId>solon.boot.socketd.smartsocket</artifactId>-->
 <!--        </dependency>-->
 
-                    <dependency>
-                        <groupId>org.noear</groupId>
-                        <artifactId>solon.boot.jdkhttp</artifactId>
-                    </dependency>
+<!--                    <dependency>-->
+<!--                        <groupId>org.noear</groupId>-->
+<!--                        <artifactId>solon.boot.jdkhttp</artifactId>-->
+<!--                    </dependency>-->
 
 <!--                <dependency>-->
 <!--                    <groupId>org.noear</groupId>-->
@@ -227,10 +227,10 @@
 <!--                </dependency>-->
 
 
-<!--        <dependency>-->
-<!--            <groupId>org.noear</groupId>-->
-<!--            <artifactId>solon.boot.smarthttp</artifactId>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.boot.smarthttp</artifactId>
+        </dependency>
 
 
 

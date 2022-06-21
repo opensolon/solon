@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.noear</groupId>
         <artifactId>solon-parent</artifactId>
-        <version>1.9.0-M1</version>
+        <version>1.9.0</version>
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
@@ -26,21 +26,9 @@
         </dependency>
 
         <dependency>
-            <groupId>org.smartboot.socket</groupId>
-            <artifactId>aio-pro</artifactId>
-            <version>1.5.17</version>
-        </dependency>
-
-        <dependency>
             <groupId>org.smartboot.http</groupId>
             <artifactId>smart-http-server</artifactId>
-            <version>1.1.13</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.smartboot.socket</groupId>
-                    <artifactId>aio-pro</artifactId>
-                </exclusion>
-            </exclusions>
+            <version>1.1.14-SNAPSHOT</version>
         </dependency>
 
 
@@ -50,4 +38,35 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
+    <repositories>
+        <repository>
+            <id>alimaven</id>
+            <name>aliyun maven</name>
+            <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+        </repository>
+        <repository>
+            <id>sonatype-nexus-snapshots</id>
+            <name>Sonatype Nexus Snapshots</name>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </repository>
+    </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>alimaven</id>
+            <name>aliyun maven</name>
+            <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+        </pluginRepository>
+        <pluginRepository>
+            <id>sonatype-nexus-snapshots</id>
+            <name>Sonatype Nexus Snapshots</name>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
 </project>
