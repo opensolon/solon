@@ -23,7 +23,7 @@
         <dependency>
             <groupId>net.hasor</groupId>
             <artifactId>dbvisitor</artifactId>
-            <version>5.0.0</version>
+            <version>5.0.1</version>
         </dependency>
 
     </dependencies>
