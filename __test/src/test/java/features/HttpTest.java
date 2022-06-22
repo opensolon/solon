@@ -353,8 +353,9 @@ public class HttpTest extends HttpTestBase {
     @Test
     public void test83() throws IOException {
         String json = path("/demo8/config_system").get();
-        String val = ONode.loadStr(json).get("file.separator").getString();
+        String val = ONode.loadStr(json).select("file.separator").getString();
 
+        System.out.println(val);
         assert val.equals("/") || val.equals("\\/");
     }
 
