@@ -47,6 +47,7 @@ public final class SolonProps extends Props {
 
     private String appName;
     private String appGroup;
+    private String appNamespace;
     private String appTitle;
 
     public SolonProps() {
@@ -156,6 +157,7 @@ public final class SolonProps extends Props {
         //8.应用基础信息
         appName = getArg("app.name");  //6.应用名
         appGroup = getArg("app.group"); //6.1.应用组
+        appNamespace = getArg("app.namespace"); //6.1.应用组
         appTitle = getArg("app.title"); //6.1.应用标题
 
         return this;
@@ -385,6 +387,13 @@ public final class SolonProps extends Props {
      */
     public String appGroup() {
         return appGroup;
+    }
+
+    /**
+     * 命名空间
+     * */
+    public String appNamespace() {
+        return appNamespace;
     }
 
     /**
