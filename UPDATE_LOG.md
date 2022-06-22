@@ -1,5 +1,8 @@
 #### 1.9.1-M1
 * 增加 namespace 配置
+* activerecord 升为 5.0.0
+* enjoy 升为 5.0.0
+* beetlsql 升为 3.14.5-RELEASE
 
 #### 1.9.0
 * 新增 grpc-solon-plugin 插件
