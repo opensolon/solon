@@ -17,11 +17,10 @@ import org.noear.solon.core.util.PrintUtil;
 import org.noear.solon.socketd.SessionManager;
 import org.smartboot.http.server.HttpBootstrap;
 import org.smartboot.http.server.HttpServerConfiguration;
+import org.smartboot.http.server.impl.Request;
 import org.smartboot.socket.extension.plugins.SslPlugin;
 
 import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLEngine;
-import java.util.function.Consumer;
 
 public final class XPluginImp implements Plugin {
     private static Signal _signal;
@@ -73,14 +72,14 @@ public final class XPluginImp implements Plugin {
             _config.host(_host);
         }
 
-//        if (System.getProperty(ServerConstants.SSL_KEYSTORE) != null) {
-//            SSLContext sslContext = SslContextFactory.create();
-//
-//            SslPlugin sslPlugin = new SslPlugin(() -> sslContext, (Consumer<SSLEngine>) sslEngine -> {
-//                sslEngine.setUseClientMode(false);
-//            });
-//            _config.addPlugin(sslPlugin);
-//        }
+        if (System.getProperty(ServerConstants.SSL_KEYSTORE) != null) {
+            SSLContext sslContext = SslContextFactory.create();
+
+            SslPlugin<Request> sslPlugin = new SslPlugin<>(() -> sslContext, sslEngine -> {
+                sslEngine.setUseClientMode(false);
+            });
+            _config.addPlugin(sslPlugin);
+        }
 
         _config.bannerEnabled(false);
         _config.readBufferSize(1024 * 8); //默认: 8k
