@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.net.Inet4Address;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -70,8 +71,12 @@ class BioServer implements ServerLifecycle {
         new Thread(() -> {
             try {
                 start0(host, port);
-            } catch (Exception ex) {
-                throw new RuntimeException(ex);
+            } catch (SocketException e) {
+                if (e.getMessage().contains("closed") == false) {
+                    throw new IllegalStateException(e);
+                }
+            } catch (Exception e) {
+                throw new IllegalStateException(e);
             }
         }).start();
     }
