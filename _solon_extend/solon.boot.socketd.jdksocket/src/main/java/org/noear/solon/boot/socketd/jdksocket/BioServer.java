@@ -67,9 +67,13 @@ class BioServer implements ServerLifecycle {
 
     @Override
     public void start(String host, int port) throws Throwable {
-        start0(host, port);
-
-        Thread.currentThread().join();
+        new Thread(() -> {
+            try {
+                start0(host, port);
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
+            }
+        }).start();
     }
 
     @Override
