@@ -81,6 +81,8 @@ public final class XPluginImp implements Plugin {
             _config.addPlugin(sslPlugin);
         }
 
+        _config.debug(Solon.cfg().isDebugMode());
+
         _config.bannerEnabled(false);
         _config.readBufferSize(1024 * 8); //默认: 8k
         _config.threadNum(Runtime.getRuntime().availableProcessors() + 2);
