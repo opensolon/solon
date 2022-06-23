@@ -39,6 +39,10 @@ public class CloudDiscoveryServiceNacosImp implements CloudDiscoveryService {
             properties.put("password", password);
         }
 
+        if (Utils.isNotEmpty(Solon.cfg().appNamespace())) {
+            properties.put("namespace", Solon.cfg().appNamespace());
+        }
+
         unstable = true;
 //        unstable = NacosProps.instance.getDiscoveryUnstable()
 //                || Solon.cfg().isFilesMode()

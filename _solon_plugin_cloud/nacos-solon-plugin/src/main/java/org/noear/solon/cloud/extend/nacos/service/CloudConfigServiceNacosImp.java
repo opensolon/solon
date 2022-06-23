@@ -42,10 +42,14 @@ public class CloudConfigServiceNacosImp implements CloudConfigService {
             properties.put("password", password);
         }
 
+        if (Utils.isNotEmpty(Solon.cfg().appNamespace())) {
+            properties.put("namespace", Solon.cfg().appNamespace());
+        }
+
         try {
             real = ConfigFactory.createConfigService(properties);
-        } catch (NacosException ex) {
-            throw new RuntimeException(ex);
+        } catch (NacosException e) {
+            throw new IllegalStateException(e);
         }
     }
 

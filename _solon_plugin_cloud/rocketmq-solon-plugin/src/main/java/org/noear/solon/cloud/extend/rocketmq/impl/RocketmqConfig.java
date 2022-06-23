@@ -10,33 +10,34 @@ import org.noear.solon.cloud.extend.rocketmq.RocketmqProps;
  * @since 1.3
  */
 public class RocketmqConfig {
-    private CloudProps cloudProps;
     /**
      * 生产组
      */
-    protected String producerGroup;
+    private String producerGroup;
 
     /**
      * 消费组
      */
-    protected String consumerGroup;
+    private String consumerGroup;
 
-    protected String server;
+    private String server;
 
-    protected String namespace;
+    private String namespace;
 
-    protected long timeout;
+    private long timeout;
 
     public RocketmqConfig(CloudProps cloudProps) {
-        this.cloudProps = cloudProps;
-
         server = cloudProps.getEventServer();
 
         timeout = cloudProps.getEventPublishTimeout();
 
-        namespace = getEventNamespace();
-        producerGroup = getEventProducerGroup();
-        consumerGroup = getEventConsumerGroup();
+        namespace = cloudProps.getProp(RocketmqProps.PROP_EVENT_namespace);
+        producerGroup = cloudProps.getProp(RocketmqProps.PROP_EVENT_producerGroup);
+        consumerGroup = cloudProps.getProp(RocketmqProps.PROP_EVENT_consumerGroup);
+
+        if(Utils.isEmpty(namespace)){
+            namespace = Solon.cfg().appNamespace();
+        }
 
         if (Utils.isEmpty(producerGroup)) {
             producerGroup = "DEFAULT";
@@ -50,21 +51,30 @@ public class RocketmqConfig {
     /**
      * 命名空间
      */
-    public String getEventNamespace() {
-        return cloudProps.getProp(RocketmqProps.PROP_EVENT_namespace);
+    public String getNamespace() {
+        return namespace;
     }
 
     /**
      * 消费组
      */
-    public String getEventConsumerGroup() {
-        return cloudProps.getProp(RocketmqProps.PROP_EVENT_consumerGroup);
+    public String getConsumerGroup() {
+        return consumerGroup;
     }
 
     /**
      * 产品组
      */
-    public String getEventProducerGroup() {
-        return cloudProps.getProp(RocketmqProps.PROP_EVENT_producerGroup);
+    public String getProducerGroup() {
+        return producerGroup;
+    }
+
+
+    public String getServer() {
+        return server;
+    }
+
+    public long getTimeout() {
+        return timeout;
     }
 }

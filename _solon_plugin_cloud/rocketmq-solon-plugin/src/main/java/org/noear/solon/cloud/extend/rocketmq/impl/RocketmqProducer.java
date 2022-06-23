@@ -9,7 +9,6 @@ import org.apache.rocketmq.common.message.Message;
 import org.apache.rocketmq.remoting.exception.RemotingException;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudProps;
-import org.noear.solon.cloud.extend.rocketmq.RocketmqProps;
 import org.noear.solon.cloud.model.Event;
 
 import java.util.Properties;
@@ -39,17 +38,17 @@ public class RocketmqProducer {
 
             producer = new DefaultMQProducer();
             //服务地址
-            producer.setNamesrvAddr(cfg.server);
+            producer.setNamesrvAddr(cfg.getServer());
             //生产组
-            producer.setProducerGroup(cfg.producerGroup);
+            producer.setProducerGroup(cfg.getProducerGroup());
             //命名空间
-            if (Utils.isNotEmpty(cfg.namespace)) {
-                producer.setNamespace(cfg.namespace);
+            if (Utils.isNotEmpty(cfg.getNamespace())) {
+                producer.setNamespace(cfg.getNamespace());
             }
 
             //发送超时时间，默认3000 单位ms
-            if (cfg.timeout > 0) {
-                producer.setSendMsgTimeout((int) cfg.timeout);
+            if (cfg.getTimeout() > 0) {
+                producer.setSendMsgTimeout((int) cfg.getTimeout());
             }
             //失败后重试2次
             producer.setRetryTimesWhenSendFailed(2);

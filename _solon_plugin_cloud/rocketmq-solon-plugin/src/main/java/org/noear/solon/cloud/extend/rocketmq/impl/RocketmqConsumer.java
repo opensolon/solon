@@ -36,12 +36,12 @@ public class RocketmqConsumer {
             consumer = new DefaultMQPushConsumer();
 
             //服务地址
-            consumer.setNamesrvAddr(cfg.server);
+            consumer.setNamesrvAddr(cfg.getServer());
             //消费组
-            consumer.setConsumerGroup(cfg.consumerGroup);
+            consumer.setConsumerGroup(cfg.getConsumerGroup());
             //命名空间
-            if (Utils.isNotEmpty(cfg.namespace)) {
-                consumer.setNamespace(cfg.namespace);
+            if (Utils.isNotEmpty(cfg.getNamespace())) {
+                consumer.setNamespace(cfg.getNamespace());
             }
 
 
