@@ -15,7 +15,7 @@
     <packaging>jar</packaging>
 
     <properties>
-        <dubbo.ver>3.0.6</dubbo.ver>
+        <dubbo.version>3.0.8</dubbo.version>
     </properties>
 
     <dependencies>
@@ -23,11 +23,23 @@
             <groupId>org.noear</groupId>
             <artifactId>solon</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.config.yaml</artifactId>
+            <scope>test</scope>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>logback-solon-plugin</artifactId>
+            <scope>test</scope>
+            <optional>true</optional>
+        </dependency>
 
         <dependency>
             <groupId>org.apache.dubbo</groupId>
             <artifactId>dubbo</artifactId>
-            <version>${dubbo.ver}</version>
+            <version>${dubbo.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>javax.servlet</groupId>
@@ -60,7 +72,12 @@
                 </exclusion>
             </exclusions>
         </dependency>
-
+        <dependency>
+            <groupId>org.apache.dubbo</groupId>
+            <artifactId>dubbo-remoting-zookeeper-curator5</artifactId>
+            <version>${dubbo.version}</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
 </project>
