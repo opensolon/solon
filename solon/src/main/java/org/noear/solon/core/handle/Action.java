@@ -118,7 +118,7 @@ public class Action extends HandlerAide implements Handler {
         }
 
         //支持path变量
-        if (path != null && path.indexOf("{") >= 0) {
+        if (path != null && path.contains("{")) {
             pathKeys = new ArrayList<>();
             Matcher pm = PathUtil.pathKeyExpr.matcher(path);
             while (pm.find()) {

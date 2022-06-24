@@ -42,7 +42,7 @@ public class AopContext extends BeanContainer {
         initialize();
     }
 
-    private Map<Method, MethodWrap> methodCached = new HashMap<>();
+    private final Map<Method, MethodWrap> methodCached = new HashMap<>();
 
     public MethodWrap methodGet(Method method) {
         MethodWrap mw = methodCached.get(method);
@@ -403,7 +403,7 @@ public class AopContext extends BeanContainer {
         });
     }
 
-    private Set<Class<?>> tryCreateCached = new HashSet<>();
+    private final Set<Class<?>> tryCreateCached = new HashSet<>();
 
     protected void tryCreateBean0(Class<?> clz, BiConsumerEx<BeanBuilder, Annotation> consumer) {
         Annotation[] annS = clz.getDeclaredAnnotations();
@@ -537,7 +537,7 @@ public class AopContext extends BeanContainer {
     //加载完成标志
     private boolean loadDone;
     //加载事件
-    private Set<RankEntity<Consumer<AopContext>>> loadEvents = new LinkedHashSet<>();
+    private final Set<RankEntity<Consumer<AopContext>>> loadEvents = new LinkedHashSet<>();
 
     //::bean事件处理
 
@@ -551,7 +551,7 @@ public class AopContext extends BeanContainer {
 
     @Note("添加bean加载完成事件")
     public void beanOnloaded(int index, Consumer<AopContext> fun) {
-        loadEvents.add(new RankEntity(fun, index));
+        loadEvents.add(new RankEntity<>(fun, index));
 
         //如果已加载完成，则直接返回
         if (loadDone) {
