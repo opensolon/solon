@@ -43,7 +43,7 @@ public class PluginImpl implements Plugin {
     private void initialize() {
         // 应用配置
         ApplicationConfig application = Solon.cfg()
-                .getBean(String.format("%s.application", PluginImpl.CONFIGURATION_KEY_PREFIX), ApplicationConfig.class);
+                .getBean(String.format("%s.application", CONFIGURATION_KEY_PREFIX), ApplicationConfig.class);
         // 如果没有设置应用名称则注入进去
         if (application.getName() == null) {
             application.setName(
@@ -52,10 +52,10 @@ public class PluginImpl implements Plugin {
         }
         // 注册中心
         Registries registries = Solon.cfg()
-                .getBean(String.format("%s.registries", PluginImpl.CONFIGURATION_KEY_PREFIX), Registries.class);
+                .getBean(String.format("%s.registries", CONFIGURATION_KEY_PREFIX), Registries.class);
         // 协议
         ProtocolConfig protocol = Solon.cfg()
-                .getBean(String.format("%s.protocol", PluginImpl.CONFIGURATION_KEY_PREFIX), ProtocolConfig.class);
+                .getBean(String.format("%s.protocol", CONFIGURATION_KEY_PREFIX), ProtocolConfig.class);
 
         DubboBootstrap.getInstance()
                 .application(application)
@@ -155,6 +155,7 @@ public class PluginImpl implements Plugin {
     @Override
     public void stop() {
         boolean already = DubboBootstrap.getInstance().isStopped() && DubboBootstrap.getInstance().isStopping();
+
         if (!already) {
             DubboBootstrap.getInstance()
                     .stop();
