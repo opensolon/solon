@@ -1,23 +1,30 @@
 package org.noear.solon.extend.dubbo3.integration;
 
-import org.apache.dubbo.common.constants.CommonConstants;
-import org.apache.dubbo.config.*;
+import org.apache.dubbo.common.utils.StringUtils;
+import org.apache.dubbo.config.ApplicationConfig;
+import org.apache.dubbo.config.ProtocolConfig;
+import org.apache.dubbo.config.ReferenceConfig;
+import org.apache.dubbo.config.ServiceConfig;
 import org.apache.dubbo.config.annotation.DubboReference;
 import org.apache.dubbo.config.annotation.DubboService;
 import org.apache.dubbo.config.bootstrap.DubboBootstrap;
 import org.apache.dubbo.config.spring.context.annotation.EnableDubbo;
 import org.noear.solon.Solon;
+import org.noear.solon.Utils;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
+import org.noear.solon.extend.dubbo3.entities.Registries;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author iYing
  */
 public class PluginImpl implements Plugin {
+
+    public static final String CONFIGURATION_KEY_PREFIX = "dubbo";
 
     private final Map<Class<?>, Object> references = new ConcurrentHashMap<>();
 
@@ -33,17 +40,26 @@ public class PluginImpl implements Plugin {
     }
 
     private void initialize() {
-        ApplicationConfig applicationConfig = new ApplicationConfig("dubbo-demo-api-provider");
-        applicationConfig.setQosEnable(false);
-        applicationConfig.setCompiler("jdk");
-        Map<String, String> m = new HashMap<>(1);
-        m.put("proxy", "jdk");
-        applicationConfig.setParameters(m);
+        // 应用配置
+        ApplicationConfig application = Solon.cfg()
+                .getBean(String.format("%s.application", PluginImpl.CONFIGURATION_KEY_PREFIX), ApplicationConfig.class);
+        // 如果没有设置应用名称则注入进去
+        if (application.getName() == null) {
+            application.setName(
+                    Solon.cfg().appGroup() + "§" + Solon.cfg().appName()
+            );
+        }
+        // 注册中心
+        Registries registries = Solon.cfg()
+                .getBean(String.format("%s.registries", PluginImpl.CONFIGURATION_KEY_PREFIX), Registries.class);
+        // 协议
+        ProtocolConfig protocol = Solon.cfg()
+                .getBean(String.format("%s.protocol", PluginImpl.CONFIGURATION_KEY_PREFIX), ProtocolConfig.class);
 
         DubboBootstrap.getInstance()
-                .application(new ApplicationConfig("dubbo-demo-triple-api-provider"))
-                .registry(new RegistryConfig("zookeeper://127.0.0.1:2181"))
-                .protocol(new ProtocolConfig(CommonConstants.TRIPLE, -1));
+                .application(application)
+                .registries(registries)
+                .protocol(protocol);
     }
 
     private void register(AopContext context) {
@@ -56,6 +72,12 @@ public class PluginImpl implements Plugin {
                 config.setInterface(clazz);
                 config.setRef(beanWrap.get());
 
+                Properties properties = Solon.cfg()
+                        .getProp("dubbo.services." + config.getInterface());
+                if (properties.size() > 0) {
+                    Utils.bindTo(properties, config);
+                }
+
                 DubboBootstrap.getInstance()
                         .service(config);
             }
@@ -65,12 +87,54 @@ public class PluginImpl implements Plugin {
             if (holder.getType().isInterface()) {
                 Object proxy = this.references.computeIfAbsent(holder.getType(), mapping -> {
                     ReferenceConfig<?> config = new ReferenceConfig<>();
-                    config.setInterface(holder.getType().getName());
+                    // 配置映射 | !Warning! 未经验证的值写入，如 "" 和 null 可能会造成不可预测的后果
+                    config.setInterface(annotation.interfaceClass() == void.class ? holder.getType() : annotation.interfaceClass());
+                    if (StringUtils.isNotBlank(annotation.interfaceName())) {
+                        config.setInterface(annotation.interfaceName());
+                    }
+                    config.setVersion(annotation.version());
+                    config.setGroup(annotation.group());
+                    config.setUrl(annotation.url());
+                    config.setClient(annotation.client());
                     config.setCheck(annotation.check());
-                    config.setProtocol(annotation.protocol());
+                    config.setInit(annotation.init());
                     config.setLazy(annotation.lazy());
+                    // annotation.stubEvent() 无对应值
+                    config.setReconnect(annotation.reconnect());
+                    config.setSticky(annotation.sticky());
+                    config.setProxy(annotation.proxy());
+                    config.setProtocol(annotation.protocol());
                     config.setTimeout(annotation.timeout());
-
+                    config.setStub(annotation.stub());
+                    config.setCluster(annotation.cluster());
+                    config.setConnections(annotation.connections());
+                    config.setCallbacks(annotation.callbacks());
+                    config.setOnconnect(annotation.onconnect());
+                    config.setOndisconnect(annotation.ondisconnect());
+                    config.setOwner(annotation.owner());
+                    config.setLayer(annotation.layer());
+                    config.setRetries(annotation.retries());
+                    config.setLoadbalance(annotation.loadbalance());
+                    config.setAsync(annotation.async());
+                    config.setActives(annotation.actives());
+                    config.setSent(annotation.sent());
+                    config.setMock(annotation.mock());
+                    config.setValidation(annotation.validation());
+                    config.setTimeout(annotation.timeout());
+                    config.setCache(annotation.cache());
+//                    config.setFilter(annotation.filter());
+//                    config.setListener(annotation.listener());
+//                    config.setParameters(annotation.parameters());
+//                    config.setConsumer(annotation.consumer());
+//                    config.setRegistry(annotation.registry());
+                    config.setProtocol(annotation.protocol());
+                    config.setTag(annotation.tag());
+                    config.setMerger(annotation.merger());
+//                    config.setMethods(annotation.methods());
+                    config.setId(annotation.id());
+//                    config.setProvidedBy(annotation.providedBy());
+                    config.setScope(annotation.scope());
+                    // 注册引用
                     DubboBootstrap.getInstance()
                             .reference(config);
 
