@@ -22,7 +22,7 @@ public class MapPutTest {
         System.out.println("times: " + (System.currentTimeMillis() - start));
     }
 
-    private Object get1(String key) {
+    private Object get1(String key) { //5
         Object val = cached.get(key);
         if (val == null) {
             synchronized (key.intern()) {
@@ -37,7 +37,7 @@ public class MapPutTest {
         return val;
     }
 
-    private Object get2(String key) {
+    private Object get2(String key) { //48
         return cached.computeIfAbsent("test", k -> k + ":1");
     }
 }
