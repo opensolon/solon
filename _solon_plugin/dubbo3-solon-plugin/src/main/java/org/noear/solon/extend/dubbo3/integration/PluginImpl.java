@@ -8,11 +8,12 @@ import org.apache.dubbo.config.ServiceConfig;
 import org.apache.dubbo.config.annotation.DubboReference;
 import org.apache.dubbo.config.annotation.DubboService;
 import org.apache.dubbo.config.bootstrap.DubboBootstrap;
-import org.apache.dubbo.config.spring.context.annotation.EnableDubbo;
+
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
+import org.noear.solon.extend.dubbo3.EnableDubbo;
 import org.noear.solon.extend.dubbo3.entities.Registries;
 
 import java.util.Map;
