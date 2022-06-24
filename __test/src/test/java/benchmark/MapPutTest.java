@@ -25,10 +25,12 @@ public class MapPutTest {
     private Object get1(String key) {
         Object val = cached.get(key);
         if (val == null) {
-            val = cached.get(key);
+            synchronized (key.intern()) {
+                val = cached.get(key);
 
-            if (val == null) {
-                cached.putIfAbsent(key, key + ":1");
+                if (val == null) {
+                    cached.putIfAbsent(key, key + ":1");
+                }
             }
         }
 
