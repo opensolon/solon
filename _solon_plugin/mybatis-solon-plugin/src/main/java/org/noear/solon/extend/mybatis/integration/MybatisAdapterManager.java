@@ -42,10 +42,10 @@ public class MybatisAdapterManager {
                 if (db == null) {
                     db = buildAdapter(bw);
 
-                    dbMap.putIfAbsent(bw.name(), db);
+                    dbMap.put(bw.name(), db);
 
                     if (bw.typed()) {
-                        dbMap.putIfAbsent("", db);
+                        dbMap.put("", db);
                     }
                 }
             }

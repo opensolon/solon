@@ -6,6 +6,7 @@ import java.util.LinkedList;
 
 /**
  * @author iYing
+ * @since 1.9
  */
 public class Registries extends LinkedList<RegistryConfig> {
 }

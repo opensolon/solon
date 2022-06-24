@@ -29,7 +29,7 @@ public class MapPutTest {
                 val = cached.get(key);
 
                 if (val == null) {
-                    cached.putIfAbsent(key, key + ":1");
+                    cached.put(key, key + ":1");
                 }
             }
         }

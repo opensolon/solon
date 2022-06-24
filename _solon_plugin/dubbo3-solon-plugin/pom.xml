@@ -23,18 +23,6 @@
             <groupId>org.noear</groupId>
             <artifactId>solon</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.config.yaml</artifactId>
-            <scope>test</scope>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>logback-solon-plugin</artifactId>
-            <scope>test</scope>
-            <optional>true</optional>
-        </dependency>
 
         <dependency>
             <groupId>org.apache.dubbo</groupId>
@@ -72,6 +60,13 @@
                 </exclusion>
             </exclusions>
         </dependency>
+
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
         <dependency>
             <groupId>org.apache.dubbo</groupId>
             <artifactId>dubbo-remoting-zookeeper-curator5</artifactId>

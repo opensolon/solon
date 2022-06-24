@@ -26,12 +26,15 @@ public class ClassWrap {
     public static ClassWrap get(Class<?> clz) {
         ClassWrap cw = cached.get(clz);
         if (cw == null) {
-            cw = new ClassWrap(clz);
-            ClassWrap l = cached.putIfAbsent(clz, cw);
-            if (l != null) {
-                cw = l;
+            synchronized (clz){
+                cw = cached.get(clz);
+                if (cw == null) {
+                    cw = new ClassWrap(clz);
+                    cached.put(clz, cw);
+                }
             }
         }
+
         return cw;
     }
 

@@ -31,10 +31,10 @@ class DbManager {
                     DataSource ds = bw.raw();
                     db = new DbContext(ds);
 
-                    dbMap.putIfAbsent(bw.name(), db);
+                    dbMap.put(bw.name(), db);
 
                     if (bw.typed()) {
-                        dbMap.putIfAbsent("", db);
+                        dbMap.put("", db);
                     }
 
                     //初始化元信息（可起到热链接的作用）

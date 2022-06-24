@@ -49,7 +49,7 @@ public class XPluginImp implements Plugin {
                     obj = cached.get(anno);
                     if (obj == null) {
                         obj = Nami.builder().create(varH.getType(), anno);
-                        cached.putIfAbsent(anno, obj);
+                        cached.put(anno, obj);
                     }
                 }
             }
