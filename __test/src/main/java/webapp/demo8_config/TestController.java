@@ -8,6 +8,8 @@ import org.noear.solon.annotation.Mapping;
 import org.noear.solon.core.handle.Context;
 import webapp.models.UserModel;
 
+import java.util.Hashtable;
+
 @Controller
 public class TestController {
     @Inject
@@ -28,7 +30,10 @@ public class TestController {
 
     @Mapping("/demo8/config_system")
     public void test3(Context c) throws Throwable{
-        c.render(System.getProperties());
+        Hashtable hashtable = new Hashtable();
+        hashtable.putAll(System.getProperties());
+
+        c.render(hashtable);
     }
 
     @Mapping("/demo8/user")
