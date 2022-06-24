@@ -3,8 +3,8 @@
 * 新增 solon.cache.caffeine 插件
 * 新增 solon.serialization.fastjson2 插件
 * 新增 nami.coder.fastjson2 插件
-* 更名 solon.extend.aspect[弃用]          => solon.aspect[新增]          [有感-] 
-* 更名 solon.extend.health[弃用]          => solon.health[新增]          [有感+] 
+* 更名 solon.extend.aspect[弃用]          => solon.aspect[新增]          [无感+] 
+* 更名 solon.extend.health[弃用]          => solon.health[新增]          [有感-] 
 * 更名 solon.extend.hotplug[弃用]         => solon.hotplug[新增]         [有感-]
 * 更名 solon.extend.properties.yaml[弃用] => solon.config.yaml[新增]     [无感]  
 * 更名 solon.extend.servlet[弃用]         => solon.web.servlet[新增]     [无感]  
