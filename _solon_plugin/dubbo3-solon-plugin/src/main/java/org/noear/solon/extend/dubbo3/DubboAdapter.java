@@ -12,6 +12,7 @@ import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class DubboAdapter {
+
     protected ApplicationConfig application;
     protected Map<String, ReferenceConfig> refMap = new ConcurrentHashMap<>();
 
@@ -165,4 +166,5 @@ public class DubboAdapter {
 
         return cfg.get();
     }
+
 }
