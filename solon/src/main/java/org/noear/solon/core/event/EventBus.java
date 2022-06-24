@@ -44,7 +44,7 @@ public final class EventBus {
     private static void push0(Object event) {
         if (event instanceof Throwable) {
 
-            if (Solon.app().enableErrorAutoprint()) {
+            if (Solon.app() == null || Solon.app().enableErrorAutoprint()) {
                 ((Throwable) event).printStackTrace();
             }
 
@@ -94,8 +94,8 @@ public final class EventBus {
     /**
      * 取消事件订阅
      *
-     * @param listener  事件监听者
-     * */
+     * @param listener 事件监听者
+     */
     public synchronized static <T> void unsubscribe(EventListener<T> listener) {
         sThrow.remove(listener);
         sOther.remove(listener);
