@@ -25,6 +25,10 @@ public class XPluginImp implements Plugin {
     private void loadAppenderConfig() {
         Properties props = Solon.cfg().getProp("solon.logging.appender");
 
+        //初始化
+        AppenderManager.getInstance();
+
+        //注册添加器
         if (props.size() > 0) {
             props.forEach((k, v) -> {
                 String key = (String) k;
