@@ -1,4 +1,4 @@
-package test2;
+package test2.genericity1;
 
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.Component;

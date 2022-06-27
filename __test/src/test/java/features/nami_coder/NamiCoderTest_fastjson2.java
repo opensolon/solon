@@ -1,6 +1,6 @@
 package features.nami_coder;
 
-import model.UserModel;
+import features.model.UserModel;
 import org.junit.Test;
 import org.noear.nami.Result;
 import org.noear.nami.coder.fastjson2.Fastjson2Decoder;

@@ -1,8 +1,11 @@
-package test3;
+package test2.genericity2;
 
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.*;
 
+/**
+ * 测试范围注入
+ * */
 @Configuration
 public class DemoApp {
 

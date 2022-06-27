@@ -1,6 +1,6 @@
 package test1;
 
-import model.UserModel;
+import features.model.UserModel;
 import org.junit.Test;
 import org.noear.solon.core.wrap.ClassWrap;
 

@@ -9,7 +9,7 @@ import java.util.Date;
  * @author noear 2022/6/26 created
  */
 @Slf4j
-@Scheduled(cron = "* * * * * ? *")
+@Scheduled(cron = "* * * * * ? *", concurrent = true)
 public class Job1 implements Runnable {
     @Override
     public void run() {

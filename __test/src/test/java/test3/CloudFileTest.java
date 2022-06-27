@@ -1,4 +1,4 @@
-package cloud;
+package test3;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,7 +19,7 @@ import java.util.Base64;
  */
 @RunWith(SolonJUnit4ClassRunner.class)
 @SolonTest(webapp.TestApp.class)
-public class FileTest {
+public class CloudFileTest {
     @Test
     public void test() {
         if (CloudClient.file() == null) {
