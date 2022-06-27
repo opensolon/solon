@@ -1,6 +1,6 @@
 package features.nami_coder;
 
-import features.model.UserModel;
+import model.UserModel;
 import org.junit.Test;
 import org.noear.nami.coder.protostuff.ProtostuffDeoder;
 import org.noear.nami.coder.protostuff.ProtostuffEncoder;

@@ -1,6 +1,6 @@
 package features;
 
-import features.model.UserModel;
+import model.UserModel;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.noear.snack.ONode;

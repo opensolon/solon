@@ -1,4 +1,4 @@
-package features.model;
+package model;
 
 import lombok.Data;
 
