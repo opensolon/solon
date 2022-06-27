@@ -20,6 +20,7 @@ public class HttpUploadTest extends HttpTestBase {
     @Test
     public void upload() throws IOException {
         InputStream inputStream = new ByteArrayInputStream("test".getBytes(StandardCharsets.UTF_8));
+
         assert path("/demo3/upload/f1")
                 .data("file", "装修-水电-视频.mp4", inputStream, "video/mp4")
                 .post().contains("成功：装修-水电-视频.mp4");
@@ -42,6 +43,7 @@ public class HttpUploadTest extends HttpTestBase {
     @Test
     public void upload_empty() throws IOException {
         InputStream inputStream = new ByteArrayInputStream("test".getBytes(StandardCharsets.UTF_8));
+
         assert path("/demo3/upload/f11")
                 .data("file", "装修-水电-视频.mp4", inputStream, "video/mp4")
                 .data("userName", "noear")
@@ -49,6 +51,7 @@ public class HttpUploadTest extends HttpTestBase {
 
 
         inputStream = new ByteArrayInputStream("test".getBytes(StandardCharsets.UTF_8));
+
         assert path("/demo3/upload/f11_2")
                 .data("file", "装修-水电-视频.mp4", inputStream, "video/mp4")
                 .data("userName", "noear")
@@ -58,6 +61,7 @@ public class HttpUploadTest extends HttpTestBase {
     @Test
     public void upload_param() throws IOException {
         InputStream inputStream = new ByteArrayInputStream("test".getBytes(StandardCharsets.UTF_8));
+
         assert path("/demo3/upload/f12")
                 .data("file", "装修-水电-视频.mp4", inputStream, "video/mp4")
                 .data("userName", "noear")
@@ -67,6 +71,7 @@ public class HttpUploadTest extends HttpTestBase {
     @Test
     public void upload_param_1() throws IOException {
         InputStream inputStream = new ByteArrayInputStream("test".getBytes(StandardCharsets.UTF_8));
+
         assert path("/demo3/upload/f12_1")
                 .data("file", "装修-水电-视频.mp4", inputStream, "video/mp4")
                 .data("userName", "noear")
@@ -76,6 +81,7 @@ public class HttpUploadTest extends HttpTestBase {
     @Test
     public void upload_param_2() throws IOException {
         InputStream inputStream = new ByteArrayInputStream("test".getBytes(StandardCharsets.UTF_8));
+
         assert path("/demo3/upload/f13")
                 .data("file", "装修-水电-视频.mp4", inputStream, "video/mp4")
                 .data("userName", "noear")
