@@ -1,6 +1,5 @@
 package org.noear.solon.boot.tomcat;
 
-
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
@@ -56,7 +55,7 @@ public final class XPluginImp implements Plugin {
         });
     }
 
-    private void start0(SolonApp app) throws Throwable{
+    private void start0(SolonApp app) throws Throwable {
         //初始化属性
         ServerProps.init();
 
@@ -68,9 +67,9 @@ public final class XPluginImp implements Plugin {
         String _name = props.getName();
 
         if (jspClz == null) {
-            _server = new TomcatServerAddJsp();
-        }else{
             _server = new TomcatServer();
+        } else {
+            _server = new TomcatServerAddJsp();
         }
 
         long time_start = System.currentTimeMillis();
@@ -99,7 +98,7 @@ public final class XPluginImp implements Plugin {
             _server.stop();
             _server = null;
 
-            System.out.println("solon.Server:main: Has Stopped " + solon_boot_ver());
+            PrintUtil.info("Server:main: tomcat: Has Stopped " + solon_boot_ver());
         }
     }
 }
