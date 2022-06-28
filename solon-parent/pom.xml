@@ -38,6 +38,7 @@
 
         <jetty.ver>9.4.46.v20220331</jetty.ver>
         <undertow.ver>2.2.17.Final</undertow.ver>
+        <tomcat.ver>9.0.64</tomcat.ver>
 
         <snakeyaml.ver>1.29</snakeyaml.ver>
 
@@ -216,6 +217,12 @@
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.boot.smarthttp</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.boot.tomcat</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
 

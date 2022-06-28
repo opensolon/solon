@@ -14,10 +14,6 @@
     <artifactId>solon.boot.tomcat</artifactId>
     <packaging>jar</packaging>
 
-    <properties>
-        <tomcat.version>9.0.64</tomcat.version>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
@@ -33,7 +29,7 @@
         <dependency>
             <groupId>org.apache.tomcat.embed</groupId>
             <artifactId>tomcat-embed-core</artifactId>
-            <version>${tomcat.version}</version>
+            <version>${tomcat.ver}</version>
         </dependency>
         <!-- server core end -->
 
@@ -41,7 +37,7 @@
         <dependency>
             <groupId>org.apache.tomcat.embed</groupId>
             <artifactId>tomcat-embed-jasper</artifactId>
-            <version>${tomcat.version}</version>
+            <version>${tomcat.ver}</version>
             <scope>provided</scope>
         </dependency>
         <!--jsp ended -->
