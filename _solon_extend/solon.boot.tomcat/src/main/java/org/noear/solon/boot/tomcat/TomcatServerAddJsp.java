@@ -22,7 +22,7 @@ import java.net.URLClassLoader;
  * @Description : Yukai is so handsome xxD
  */
 public class TomcatServerAddJsp implements ServerLifecycle {
-    private static Tomcat tomcat;
+    private Tomcat tomcat;
 
     @Override
     public void start(String host,  int port) throws Throwable {
@@ -62,26 +62,22 @@ public class TomcatServerAddJsp implements ServerLifecycle {
 
 
     //以XApp为依据的相对路径获取  获取JSP文件路径..
-    protected File getJspDir() {
+    protected File getJspDir() throws Throwable {
 
-        URLClassLoader jspClassLoader = new URLClassLoader(new URL[0], JarClassLoader.global());
+        //URLClassLoader jspClassLoader = new URLClassLoader(new URL[0], JarClassLoader.global());
 
-        try {
-
-            String dirroot = Utils.getResource("/").toString();
-            //System.out.println("jspDir is "+dirroot);
-            File dir = new File(URI.create(dirroot));
-            //System.out.println("jspFile is "+dir);
-            if (!dir.exists()) {
-                dirroot = dirroot + "src/main/webapp";
-                dir = new File(URI.create(dirroot));
-            }
-            //InputStream resource_stream = jspClassLoader.getResourceAsStream("");
-            //System.out.println("res_stream:"+resource_stream);
-            return dir;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        String dirroot = Utils.getResource("/").toString();
+        //System.out.println("jspDir is "+dirroot);
+        File dir = new File(URI.create(dirroot));
+        //System.out.println("jspFile is "+dir);
+        if (!dir.exists()) {
+            dirroot = dirroot + "src/main/webapp";
+            dir = new File(URI.create(dirroot));
         }
+        //InputStream resource_stream = jspClassLoader.getResourceAsStream("");
+        //System.out.println("res_stream:"+resource_stream);
+        return dir;
+
     }
 
     //算是较为满意的获取被注解的Servlet包下路径

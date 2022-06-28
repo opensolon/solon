@@ -2,8 +2,6 @@ package org.noear.solon.boot.tomcat;
 
 import org.apache.catalina.Context;
 import org.apache.catalina.startup.Tomcat;
-import org.noear.solon.Solon;
-import org.noear.solon.SolonApp;
 import org.noear.solon.boot.ServerLifecycle;
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.tomcat.http.TCHttpContextHandler;
@@ -15,7 +13,7 @@ import org.noear.solon.boot.tomcat.http.TCHttpContextHandler;
  * @Description : Yukai is so handsome xxD
  */
 public class TomcatServer implements ServerLifecycle {
-    private static Tomcat tomcat;
+    private Tomcat tomcat;
 
     @Override
     public void start(String host, int port) throws Throwable {
@@ -23,7 +21,7 @@ public class TomcatServer implements ServerLifecycle {
         tomcat.setBaseDir(System.getProperty("java.io.tmpdir"));
         tomcat.setPort(port);
         //context configuration start 开始上下文相关配置
-        Context context = stepContext(tomcat, Solon.app());
+        Context context = stepContext();
 
         //**************session time setting start Session时间相关*****************
         if (ServerProps.session_timeout > 0) {
@@ -35,7 +33,7 @@ public class TomcatServer implements ServerLifecycle {
         tomcat.start();
     }
 
-    protected Context stepContext(Tomcat tomcat, SolonApp app) {
+    protected Context stepContext() throws Throwable{
         String servletName = "solon";
         tomcat.addServlet("/", servletName, new TCHttpContextHandler());
 
