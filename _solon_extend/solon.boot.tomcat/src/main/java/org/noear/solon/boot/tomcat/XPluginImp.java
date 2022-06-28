@@ -32,11 +32,6 @@ public final class XPluginImp implements Plugin {
             return;
         }
 
-        if (Solon.app().enableHttp() == false) {
-            return;
-        }
-
-
         context.beanBuilderAdd(WebFilter.class, (clz, bw, ano) -> {
         });
         context.beanBuilderAdd(WebServlet.class, (clz, bw, ano) -> {
