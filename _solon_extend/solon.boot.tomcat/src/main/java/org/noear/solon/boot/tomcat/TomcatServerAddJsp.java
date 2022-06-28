@@ -1,6 +1,5 @@
 package org.noear.solon.boot.tomcat;
 
-import org.apache.catalina.LifecycleException;
 import org.apache.catalina.WebResourceRoot;
 import org.apache.catalina.core.StandardContext;
 import org.apache.catalina.startup.Tomcat;
@@ -26,11 +25,13 @@ public class TomcatServerAddJsp implements ServerLifecycle {
     private static Tomcat tomcat;
 
     @Override
-    public void start(String host,  int port) {
+    public void start(String host,  int port) throws Throwable {
         final String KEY = "io.message";
-        Tomcat tomcat = getInstance();
+
+        tomcat = new Tomcat();
         tomcat.setPort(port);
         tomcat.setBaseDir(System.getProperty("java.io.tmpdir"));
+
         File root = getJspDir();
         //  root = new File("");
         System.setProperty("org.apache.catalina.startup.EXIT_ON_INIT_FAILURE", "true");
@@ -45,6 +46,7 @@ public class TomcatServerAddJsp implements ServerLifecycle {
             e.printStackTrace();
         }
         ctx.setAllowCasualMultipartParsing(true);
+
         // Declare an alternative location for your "WEB-INF/classes" dir
         // Servlet 3.0 annotation will work
         //识别Servlet注解，让JSP与动作分发不冲突xxxDDDD
@@ -54,26 +56,10 @@ public class TomcatServerAddJsp implements ServerLifecycle {
                 additionWebInfClassesFolder.getAbsolutePath(), "/"));
         ctx.setResources(resources);
 
-        try {
-            tomcat.start();
-        } catch (LifecycleException e) {
-            e.printStackTrace();
-        }
 
-        //Tomcat运行需要进入阻塞阶段，这里新开一个线程维护
-        new Thread(() -> tomcat.getServer().await()).start();
+        tomcat.start();
     }
 
-    public static Tomcat getInstance() {
-        synchronized (TomcatServer.class) {
-            if (tomcat == null) {
-                synchronized (TomcatServer.class) {
-                    tomcat = new Tomcat();
-                }
-            }
-        }
-        return tomcat;
-    }
 
     //以XApp为依据的相对路径获取  获取JSP文件路径..
     protected File getJspDir() {
