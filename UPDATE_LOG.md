@@ -10,6 +10,7 @@
 * beetlsql 升为 3.14.5-RELEASE
 * dbvisitor 升为 5.0.1
 * sqltoy 升为 5.2.2
+* smart-http 升为 1.1.5
 
 #### 1.9.0
 * 新增 grpc-solon-plugin 插件
