@@ -49,4 +49,13 @@ public interface CacheService {
 
         return (T) obj;
     }
+
+    /**
+     * 缓存标签管理器
+     *
+     * @since 1.9
+     * */
+    default CacheTags tags(){
+        return new CacheTags(this);
+    }
 }

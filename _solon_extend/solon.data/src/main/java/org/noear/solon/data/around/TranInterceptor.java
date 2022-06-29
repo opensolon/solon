@@ -4,7 +4,7 @@ import org.noear.solon.core.ValHolder;
 import org.noear.solon.core.aspect.Invocation;
 import org.noear.solon.data.annotation.Tran;
 import org.noear.solon.core.aspect.Interceptor;
-import org.noear.solon.data.tran.TranExecutorImp;
+import org.noear.solon.data.tran.TranUtils;
 
 /**
  * 事务拦截器
@@ -18,7 +18,7 @@ public class TranInterceptor implements Interceptor {
         ValHolder val0 = new ValHolder();
 
         Tran anno = inv.method().getAnnotation(Tran.class);
-        TranExecutorImp.global.execute(anno, () -> {
+        TranUtils.tran(anno, () -> {
             val0.value = inv.invoke();
         });
 

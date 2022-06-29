@@ -4,6 +4,9 @@ import org.noear.solon.data.tranImp.DbTran;
 
 /**
  * 事务管理器
+ *
+ * @author noear
+ * @since 1.0
  * */
 public final class TranManager {
     private static final ThreadLocal<DbTran> _tl_tran = new ThreadLocal();

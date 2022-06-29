@@ -1,5 +1,8 @@
 package org.noear.solon.data.tran;
 
+import org.noear.solon.data.annotation.Tran;
+import org.noear.solon.ext.RunnableEx;
+
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -30,5 +33,12 @@ public interface TranExecutor {
      */
     default Connection getConnection(DataSource ds) throws SQLException {
         return ds.getConnection();
+    }
+
+    /**
+     * 执行
+     * */
+    default void execute(Tran meta, RunnableEx runnable) throws Throwable{
+
     }
 }

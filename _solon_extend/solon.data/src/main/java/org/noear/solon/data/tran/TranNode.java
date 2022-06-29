@@ -4,6 +4,9 @@ import org.noear.solon.ext.RunnableEx;
 
 /**
  * 事务节点
+ *
+ * @author noear
+ * @since 1.0
  * */
 public interface TranNode {
     /**
