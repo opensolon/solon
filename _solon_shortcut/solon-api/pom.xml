@@ -23,7 +23,7 @@
         <!-- Http 启动器 -->
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.boot.jdkhttp</artifactId>
+            <artifactId>solon.boot.jlhttp</artifactId>
         </dependency>
 
         <!-- 静态文件支持组件 -->

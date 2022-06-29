@@ -11,6 +11,7 @@ import org.noear.solon.boot.ssl.SslContextFactory;
 import org.noear.solon.core.*;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.PrintUtil;
+import org.noear.solon.ext.NamedThreadFactory;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLEngine;
@@ -98,7 +99,7 @@ public final class XPluginImp implements Plugin {
         HttpContext httpContext = _server.createContext("/", new JdkHttpContextHandler());
         httpContext.getFilters().add(new ParameterFilter());
 
-        _server.setExecutor(Executors.newCachedThreadPool());
+        _server.setExecutor(Executors.newCachedThreadPool(new NamedThreadFactory("jdkhttp-")));
         _server.start();
 
         _signal = new SignalSim(_name, _port, "http", SignalType.HTTP);
