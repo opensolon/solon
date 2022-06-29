@@ -227,15 +227,15 @@
 <!--                </dependency>-->
 
 
-<!--        <dependency>-->
-<!--            <groupId>org.noear</groupId>-->
-<!--            <artifactId>solon.boot.smarthttp</artifactId>-->
-<!--        </dependency>-->
-
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.boot.tomcat</artifactId>
+            <artifactId>solon.boot.smarthttp</artifactId>
         </dependency>
+
+<!--        <dependency>-->
+<!--            <groupId>org.noear</groupId>-->
+<!--            <artifactId>solon.boot.tomcat</artifactId>-->
+<!--        </dependency>-->
 
 
 
@@ -420,7 +420,6 @@
         <dependency>
             <groupId>com.squareup.okhttp3</groupId>
             <artifactId>okhttp</artifactId>
-            <version>3.14.8</version>
         </dependency>
 
         <dependency>
