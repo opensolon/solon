@@ -20,7 +20,7 @@ public class XPluginImp implements Plugin {
     private DubboBootstrap bootstrap;
 
     @Override
-    public void start(AopContext context) throws Throwable{
+    public void start(AopContext context){
         if (Solon.app().source().getAnnotation(EnableDubbo.class) == null) {
             return;
         }
@@ -31,8 +31,6 @@ public class XPluginImp implements Plugin {
         this.register(context);
 
         bootstrap.start();
-
-        Thread.currentThread().join();
     }
 
     private void initialize() {
