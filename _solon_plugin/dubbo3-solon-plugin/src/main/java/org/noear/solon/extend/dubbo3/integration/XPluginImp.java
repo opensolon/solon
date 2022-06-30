@@ -1,9 +1,6 @@
 package org.noear.solon.extend.dubbo3.integration;
 
-import org.apache.dubbo.config.ApplicationConfig;
-import org.apache.dubbo.config.ProtocolConfig;
-import org.apache.dubbo.config.ReferenceConfig;
-import org.apache.dubbo.config.ServiceConfig;
+import org.apache.dubbo.config.*;
 import org.apache.dubbo.config.annotation.DubboReference;
 import org.apache.dubbo.config.annotation.DubboService;
 import org.apache.dubbo.config.bootstrap.DubboBootstrap;
@@ -44,15 +41,15 @@ public class XPluginImp implements Plugin {
         }
 
         // 注册中心
-        Registries registries = Solon.cfg()
-                .getBean("dubbo.registry", Registries.class);
+        RegistryConfig registry = Solon.cfg()
+                .getBean("dubbo.registry", RegistryConfig.class);
 
         // 协议
         ProtocolConfig protocol = Solon.cfg()
                 .getBean("dubbo.protocol", ProtocolConfig.class);
 
         bootstrap.application(application)
-                .registries(registries)
+                .registry(registry)
                 .protocol(protocol);
     }
 
