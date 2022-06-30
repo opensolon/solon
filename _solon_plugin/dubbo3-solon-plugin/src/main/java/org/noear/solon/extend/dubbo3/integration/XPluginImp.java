@@ -3,6 +3,8 @@ package org.noear.solon.extend.dubbo3.integration;
 import org.apache.dubbo.config.*;
 import org.apache.dubbo.config.annotation.DubboReference;
 import org.apache.dubbo.config.annotation.DubboService;
+import org.apache.dubbo.config.annotation.Reference;
+import org.apache.dubbo.config.annotation.Service;
 import org.apache.dubbo.config.bootstrap.DubboBootstrap;
 
 import org.noear.solon.Solon;
@@ -76,16 +78,39 @@ public class XPluginImp implements Plugin {
                 holder.setValue(config.get());
             }
         }));
+
+        //兼容旧的
+
+
+        context.beanBuilderAdd(Service.class, ((clazz, bw, anno) -> {
+            Class<?>[] interfaces = bw.clz().getInterfaces();
+
+            if (interfaces.length > 0) {
+                ServiceConfig<?> config = new ServiceConfig<>(new ServiceAnno(anno));
+                config.setInterface(clazz);
+                config.setRef(bw.get());
+
+                bootstrap.service(config);
+            }
+        }));
+
+        context.beanInjectorAdd(Reference.class, ((holder, anno) -> {
+            if (holder.getType().isInterface()) {
+                ReferenceConfig<?> config = new ReferenceConfig<>(new ReferenceAnno(anno));
+
+                // 注册引用
+                bootstrap.reference(config);
+
+                holder.setValue(config.get());
+            }
+        }));
     }
 
     @Override
     public void stop() {
         if (bootstrap != null) {
-            boolean already = bootstrap.isStopped() && bootstrap.isStopping();
-
-            if (!already) {
-                bootstrap.stop();
-            }
+            bootstrap.stop();
+            bootstrap = null;
         }
     }
 }
