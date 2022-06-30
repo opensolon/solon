@@ -8,6 +8,8 @@ import org.noear.solon.Solon;
 import java.lang.annotation.Annotation;
 
 /**
+ * 用于配置表达式支持 @DubboService(group="${xxx}")
+ *
  * @author noear
  * @since 1.9
  */

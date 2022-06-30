@@ -13,19 +13,11 @@ import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.extend.dubbo3.EnableDubbo;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
 /**
  * @author iYing
  * @since 1.9
  */
 public class XPluginImp implements Plugin {
-    static final String dubbo_application = "dubbo.application";
-    static final String dubbo_registry = "dubbo.registry";
-    static final String dubbo_protocol = "dubbo.protocol";
-
-    private final Map<Class<?>, Object> references = new ConcurrentHashMap<>();
     private DubboBootstrap bootstrap;
 
     @Override
@@ -45,19 +37,19 @@ public class XPluginImp implements Plugin {
     private void initialize() {
         // 应用配置
         ApplicationConfig application = Solon.cfg()
-                .getBean(dubbo_application, ApplicationConfig.class);
+                .getBean("dubbo.application", ApplicationConfig.class);
         // 如果没有设置应用名称则注入进去
         if (application.getName() == null) {
-            application.setName(
-                    Solon.cfg().appGroup() + "§" + Solon.cfg().appName()
-            );
+            application.setName(Solon.cfg().appGroup() + "-" + Solon.cfg().appName());
         }
+
         // 注册中心
         Registries registries = Solon.cfg()
-                .getBean(dubbo_registry, Registries.class);
+                .getBean("dubbo.registry", Registries.class);
+
         // 协议
         ProtocolConfig protocol = Solon.cfg()
-                .getBean(dubbo_protocol, ProtocolConfig.class);
+                .getBean("dubbo.protocol", ProtocolConfig.class);
 
         bootstrap.application(application)
                 .registries(registries)
@@ -66,8 +58,7 @@ public class XPluginImp implements Plugin {
 
     private void register(AopContext context) {
         context.beanBuilderAdd(DubboService.class, ((clazz, bw, anno) -> {
-            Class<?>[] interfaces = bw.clz()
-                    .getInterfaces();
+            Class<?>[] interfaces = bw.clz().getInterfaces();
 
             if (interfaces.length > 0) {
                 ServiceConfig<?> config = new ServiceConfig<>(new DubboServiceAnno(anno));
@@ -80,16 +71,12 @@ public class XPluginImp implements Plugin {
 
         context.beanInjectorAdd(DubboReference.class, ((holder, anno) -> {
             if (holder.getType().isInterface()) {
-                Object proxy = this.references.computeIfAbsent(holder.getType(), mapping -> {
-                    ReferenceConfig<?> config = new ReferenceConfig<>(new DubboReferenceAnno(anno));
+                ReferenceConfig<?> config = new ReferenceConfig<>(new DubboReferenceAnno(anno));
 
-                    // 注册引用
-                    bootstrap.reference(config);
+                // 注册引用
+                bootstrap.reference(config);
 
-                    return config.get();
-                });
-
-                holder.setValue(proxy);
+                holder.setValue(config.get());
             }
         }));
     }
