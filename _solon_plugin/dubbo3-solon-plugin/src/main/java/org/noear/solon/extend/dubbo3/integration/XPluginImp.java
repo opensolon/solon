@@ -45,32 +45,47 @@ public class XPluginImp implements Plugin {
             application.setName(Solon.cfg().appGroup() + "-" + Solon.cfg().appName());
         }
 
+        bootstrap.application(application);
+
+
         // 注册中心
-        RegistryConfig registry = Solon.cfg()
-                .getBean("dubbo.registry", RegistryConfig.class);
-        if (registry == null) {
-            registry = new RegistryConfig();
-        }
-        if (registry.getAddress() == null) {
-            registry.setAddress("A/N");
+        Registries registries = Solon.cfg()
+                .getBean("dubbo.registries", Registries.class);
+        if(registries != null && registries.size() > 0){
+            bootstrap.registries(registries);
+        }else {
+            RegistryConfig registry = Solon.cfg()
+                    .getBean("dubbo.registry", RegistryConfig.class);
+            if (registry == null) {
+                registry = new RegistryConfig();
+            }
+            if (registry.getAddress() == null) {
+                registry.setAddress("A/N");
+            }
+
+            bootstrap.registry(registry);
         }
 
-        // 协议
-        ProtocolConfig protocol = Solon.cfg()
-                .getBean("dubbo.protocol", ProtocolConfig.class);
-        if (protocol == null) {
-            protocol = new ProtocolConfig();
-        }
-        if (protocol.getName() == null) {
-            protocol.setName("dubbo");
-            int port = Solon.cfg().serverPort() + 20000;
-            protocol.setPort(port);
-        }
+        Protocols protocols = Solon.cfg()
+                .getBean("dubbo.protocols", Protocols.class);
+        if(protocols != null && protocols.size() > 0){
+            bootstrap.protocols(protocols);
+        }else{
+            // 协议
+            ProtocolConfig protocol = Solon.cfg()
+                    .getBean("dubbo.protocol", ProtocolConfig.class);
+            if (protocol == null) {
+                protocol = new ProtocolConfig();
+            }
+            if (protocol.getName() == null) {
+                protocol.setName("dubbo");
+                int port = Solon.cfg().serverPort() + 20000;
+                protocol.setPort(port);
+            }
 
 
-        bootstrap.application(application)
-                .registry(registry)
-                .protocol(protocol);
+            bootstrap.protocol(protocol);
+        }
     }
 
     private void register(AopContext context) {
