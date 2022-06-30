@@ -14,7 +14,8 @@ import org.noear.water.track.TrackBuffer;
 public class CloudMetricServiceWaterImp implements CloudMetricService {
     @Override
     public void addCount(String group, String category, String item, long num) {
-        TrackBuffer.singleton().appendCount(group, category, item, num);
+        WaterClient.Track.trackCount(group, category, item, num);
+
     }
 
     @Override

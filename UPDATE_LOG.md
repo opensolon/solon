@@ -1,4 +1,4 @@
-#### 1.9.1-M1
+#### 1.9.1
 * 新增 dubbo3-solon-plugin 插件
 * 
 * 增加 namespace 配置
