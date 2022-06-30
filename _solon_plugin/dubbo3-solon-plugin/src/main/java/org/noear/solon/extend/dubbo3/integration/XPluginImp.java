@@ -51,9 +51,9 @@ public class XPluginImp implements Plugin {
         // 注册中心
         Registries registries = Solon.cfg()
                 .getBean("dubbo.registries", Registries.class);
-        if(registries != null && registries.size() > 0){
+        if (registries != null && registries.size() > 0) {
             bootstrap.registries(registries);
-        }else {
+        } else {
             RegistryConfig registry = Solon.cfg()
                     .getBean("dubbo.registry", RegistryConfig.class);
             if (registry == null) {
@@ -66,12 +66,12 @@ public class XPluginImp implements Plugin {
             bootstrap.registry(registry);
         }
 
+        //协议
         Protocols protocols = Solon.cfg()
                 .getBean("dubbo.protocols", Protocols.class);
-        if(protocols != null && protocols.size() > 0){
+        if (protocols != null && protocols.size() > 0) {
             bootstrap.protocols(protocols);
-        }else{
-            // 协议
+        } else {
             ProtocolConfig protocol = Solon.cfg()
                     .getBean("dubbo.protocol", ProtocolConfig.class);
             if (protocol == null) {
@@ -85,6 +85,13 @@ public class XPluginImp implements Plugin {
 
 
             bootstrap.protocol(protocol);
+        }
+
+        //消费者
+        ConsumerConfig consumer = Solon.cfg()
+                .getBean("dubbo.consumer", ConsumerConfig.class);
+        if (consumer != null) {
+            bootstrap.consumer(consumer);
         }
     }
 
@@ -116,7 +123,7 @@ public class XPluginImp implements Plugin {
             }
         }));
 
-        //兼容旧的
+        //todo:兼容旧的
 
 
         context.beanBuilderAdd(Service.class, ((clz, bw, anno) -> {
