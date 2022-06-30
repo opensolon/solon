@@ -1,6 +1,5 @@
 package org.noear.solon.core;
 
-import org.noear.solon.Solon;
 import org.noear.solon.SolonProps;
 import org.noear.solon.Utils;
 
@@ -83,11 +82,7 @@ public class PluginEntity {
         init();
 
         if (plugin != null) {
-            try {
-                plugin.start(context);
-            } catch (Throwable e) {
-                throw new IllegalStateException(e);
-            }
+            plugin.start(context);
         }
     }
 
