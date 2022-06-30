@@ -1,8 +1,6 @@
 package org.noear.solon.extend.dubbo.integration;
 
 import org.apache.dubbo.config.*;
-import org.apache.dubbo.config.annotation.DubboReference;
-import org.apache.dubbo.config.annotation.DubboService;
 import org.apache.dubbo.config.annotation.Reference;
 import org.apache.dubbo.config.annotation.Service;
 import org.apache.dubbo.config.bootstrap.DubboBootstrap;
@@ -69,40 +67,14 @@ public class XPluginImp implements Plugin {
     }
 
     private void register(AopContext context) {
-        context.beanBuilderAdd(DubboService.class, ((clz, bw, anno) -> {
-            Class<?>[] interfaces = clz.getInterfaces();
-
-            if (interfaces.length > 0) {
-                ServiceConfig<?> config = new ServiceConfig<>(new DubboServiceAnno(anno));
-                config.setInterface(interfaces[0]);
-                config.setRef(bw.get());
-                config.export();
-
-                bootstrap.service(config);
-            }
-        }));
-
-        context.beanInjectorAdd(DubboReference.class, ((holder, anno) -> {
-            if (holder.getType().isInterface()) {
-                ReferenceConfig<?> config = new ReferenceConfig<>(new DubboReferenceAnno(anno));
-                config.setInterface(holder.getType());
-
-                // 注册引用
-                bootstrap.reference(config);
-
-                holder.setValue(config.get());
-            }
-        }));
-
-        //兼容旧的
-
-
         context.beanBuilderAdd(Service.class, ((clz, bw, anno) -> {
             Class<?>[] interfaces = clz.getInterfaces();
 
             if (interfaces.length > 0) {
                 ServiceConfig<?> config = new ServiceConfig<>(new ServiceAnno(anno));
-                config.setInterface(interfaces[0]);
+                if (config.getInterface() == null) {
+                    config.setInterface(interfaces[0]);
+                }
                 config.setRef(bw.get());
                 config.export();
 

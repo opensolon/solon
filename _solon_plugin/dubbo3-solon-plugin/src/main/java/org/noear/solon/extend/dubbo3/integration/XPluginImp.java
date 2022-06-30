@@ -78,7 +78,9 @@ public class XPluginImp implements Plugin {
 
             if (interfaces.length > 0) {
                 ServiceConfig<?> config = new ServiceConfig<>(new DubboServiceAnno(anno));
-                config.setInterface(interfaces[0]);
+                if (config.getInterface() == null) {
+                    config.setInterface(interfaces[0]);
+                }
                 config.setRef(bw.get());
                 config.export();
 
@@ -106,7 +108,9 @@ public class XPluginImp implements Plugin {
 
             if (interfaces.length > 0) {
                 ServiceConfig<?> config = new ServiceConfig<>(new ServiceAnno(anno));
-                config.setInterface(interfaces[0]);
+                if (config.getInterface() == null) {
+                    config.setInterface(interfaces[0]);
+                }
                 config.setRef(bw.get());
                 config.export();
 
