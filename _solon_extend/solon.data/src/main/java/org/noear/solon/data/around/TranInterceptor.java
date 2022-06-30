@@ -18,7 +18,7 @@ public class TranInterceptor implements Interceptor {
         ValHolder val0 = new ValHolder();
 
         Tran anno = inv.method().getAnnotation(Tran.class);
-        TranUtils.tran(anno, () -> {
+        TranUtils.execute(anno, () -> {
             val0.value = inv.invoke();
         });
 

@@ -6,7 +6,7 @@ import org.noear.solon.data.tran.TranPolicy;
 import java.lang.annotation.Annotation;
 
 /**
- * 事务注解实体（主要争取Jdbc的）
+ * 事务注解类
  *
  * @author noear
  * @since 1.9

@@ -9,7 +9,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 事务注解（主要争取Jdbc的）
+ * 事务注解
  *
  * 注意：针对 Controller、Service、Dao 等所有基于MethodWrap运行的目标，才有效
  *

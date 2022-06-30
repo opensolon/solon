@@ -22,9 +22,9 @@ public class TranUtils {
     }
 
     /**
-     * 开始事件
+     * 执行事务
      * */
-    public static void tran(Tran tran, RunnableEx runnable) throws Throwable {
+    public static void execute(Tran tran, RunnableEx runnable) throws Throwable {
         executor.execute(tran, runnable);
     }
 

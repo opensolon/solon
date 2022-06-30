@@ -37,6 +37,8 @@ public interface TranExecutor {
 
     /**
      * 执行
+     *
+     * @since 1.9
      * */
     default void execute(Tran meta, RunnableEx runnable) throws Throwable{
 
