@@ -13,7 +13,7 @@ public interface Plugin {
     /**
      * 启动 （stop 可通过: app.onStop(..) 实现）
      */
-    void start(AopContext context);
+    void start(AopContext context) throws Throwable;
 
     /**
      * 预停目

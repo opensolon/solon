@@ -83,7 +83,11 @@ public class PluginEntity {
         init();
 
         if (plugin != null) {
-            plugin.start(context);
+            try {
+                plugin.start(context);
+            } catch (Throwable e) {
+                throw new IllegalStateException(e);
+            }
         }
     }
 
@@ -96,8 +100,8 @@ public class PluginEntity {
         if (plugin != null) {
             try {
                 plugin.prestop();
-            } catch (Throwable ex) {
-                //ex.printStackTrace();
+            } catch (Throwable e) {
+                //e.printStackTrace();
             }
         }
     }
@@ -111,8 +115,8 @@ public class PluginEntity {
         if (plugin != null) {
             try {
                 plugin.stop();
-            } catch (Throwable ex) {
-                //ex.printStackTrace();
+            } catch (Throwable e) {
+                //e.printStackTrace();
             }
         }
     }
