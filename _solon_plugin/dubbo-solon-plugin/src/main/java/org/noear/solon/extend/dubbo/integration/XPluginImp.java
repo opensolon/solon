@@ -33,7 +33,6 @@ public class XPluginImp implements Plugin {
         // 应用配置
         ApplicationConfig application = Solon.cfg()
                 .getBean("dubbo.application", ApplicationConfig.class);
-        // 如果没有设置应用名称则注入进去
         if (application.getName() == null) {
             application.setName(Solon.cfg().appGroup() + "-" + Solon.cfg().appName());
         }
@@ -41,10 +40,19 @@ public class XPluginImp implements Plugin {
         // 注册中心
         RegistryConfig registry = Solon.cfg()
                 .getBean("dubbo.registry", RegistryConfig.class);
+        if(registry.getAddress() == null){
+            registry.setAddress("A/N");
+        }
 
         // 协议
         ProtocolConfig protocol = Solon.cfg()
                 .getBean("dubbo.protocol", ProtocolConfig.class);
+        if(protocol.getName() == null){
+            protocol.setName("dubbo");
+            int port = Solon.cfg().serverPort() + 20000;
+            protocol.setPort(port);
+        }
+
 
         bootstrap.application(application)
                 .registry(registry)
