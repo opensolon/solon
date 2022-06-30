@@ -68,6 +68,8 @@
 
         <protobuf.ver>3.19.2</protobuf.ver>
         <grpc.ver>1.46.0</grpc.ver>
+        <dubbo2.ver>2.7.15</dubbo2.ver>
+        <dubbo3.ver>3.0.9</dubbo3.ver>
     </properties>
 
 

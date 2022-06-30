@@ -14,10 +14,6 @@
     <artifactId>dubbo-solon-plugin</artifactId>
     <packaging>jar</packaging>
 
-    <properties>
-        <dubbo.ver>2.7.15</dubbo.ver>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
@@ -27,7 +23,7 @@
         <dependency>
             <groupId>org.apache.dubbo</groupId>
             <artifactId>dubbo</artifactId>
-            <version>${dubbo.ver}</version>
+            <version>${dubbo2.ver}</version>
             <exclusions>
                 <exclusion>
                     <groupId>javax.servlet</groupId>

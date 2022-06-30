@@ -14,7 +14,7 @@
     <packaging>jar</packaging>
 
     <properties>
-        <nacos.ver>2.0.2</nacos.ver>
+        <nacos.ver>2.1.0</nacos.ver>
     </properties>
 
     <dependencies>
