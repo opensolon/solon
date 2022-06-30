@@ -56,12 +56,12 @@ public class XPluginImp implements Plugin {
     }
 
     private void register(AopContext context) {
-        context.beanBuilderAdd(DubboService.class, ((clazz, bw, anno) -> {
-            Class<?>[] interfaces = bw.clz().getInterfaces();
+        context.beanBuilderAdd(DubboService.class, ((clz, bw, anno) -> {
+            Class<?>[] interfaces = clz.getInterfaces();
 
             if (interfaces.length > 0) {
                 ServiceConfig<?> config = new ServiceConfig<>(new DubboServiceAnno(anno));
-                config.setInterface(clazz);
+                config.setInterface(interfaces[0]);
                 config.setRef(bw.get());
 
                 bootstrap.service(config);
@@ -82,12 +82,12 @@ public class XPluginImp implements Plugin {
         //兼容旧的
 
 
-        context.beanBuilderAdd(Service.class, ((clazz, bw, anno) -> {
-            Class<?>[] interfaces = bw.clz().getInterfaces();
+        context.beanBuilderAdd(Service.class, ((clz, bw, anno) -> {
+            Class<?>[] interfaces = clz.getInterfaces();
 
             if (interfaces.length > 0) {
                 ServiceConfig<?> config = new ServiceConfig<>(new ServiceAnno(anno));
-                config.setInterface(clazz);
+                config.setInterface(interfaces[0]);
                 config.setRef(bw.get());
 
                 bootstrap.service(config);
