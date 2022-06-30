@@ -31,6 +31,7 @@ public class XPluginImp implements Plugin {
         this.register(context);
 
         bootstrap.start();
+        startBlock();
     }
 
     private void initialize() {
@@ -132,10 +133,37 @@ public class XPluginImp implements Plugin {
     }
 
     @Override
-    public void stop() {
+    public void prestop() throws Throwable {
         if (bootstrap != null) {
             bootstrap.stop();
             bootstrap = null;
+        }
+    }
+
+    @Override
+    public void stop() {
+        stopBlock();
+    }
+
+
+    private Thread blockThread = null;
+
+    public void startBlock() {
+        if (blockThread == null) {
+            blockThread = new Thread(() -> {
+                try {
+                    System.in.read();
+                } catch (Exception ex) {
+                }
+            });
+            blockThread.start();
+        }
+    }
+
+    public void stopBlock() {
+        if (blockThread != null) {
+            blockThread.interrupt();
+            blockThread = null;
         }
     }
 }
