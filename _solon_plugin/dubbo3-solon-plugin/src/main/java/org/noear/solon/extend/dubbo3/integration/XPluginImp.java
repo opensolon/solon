@@ -80,6 +80,7 @@ public class XPluginImp implements Plugin {
                 ServiceConfig<?> config = new ServiceConfig<>(new DubboServiceAnno(anno));
                 config.setInterface(interfaces[0]);
                 config.setRef(bw.get());
+                config.export();
 
                 bootstrap.service(config);
             }
@@ -107,6 +108,7 @@ public class XPluginImp implements Plugin {
                 ServiceConfig<?> config = new ServiceConfig<>(new ServiceAnno(anno));
                 config.setInterface(interfaces[0]);
                 config.setRef(bw.get());
+                config.export();
 
                 bootstrap.service(config);
             }
