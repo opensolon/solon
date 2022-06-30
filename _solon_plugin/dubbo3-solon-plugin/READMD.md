@@ -16,5 +16,8 @@ dubbo:
   protocol:
     name: dubbo
     port: 20880 #def = ${server.port + 20000}
+  consumer:
+    check: false
+    timeout: 3000
 
 ```
