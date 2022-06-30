@@ -1,4 +1,4 @@
-package org.noear.solon.extend.dubbo;
+package org.noear.solon.extend.dubbo.integration;
 
 import org.apache.dubbo.config.*;
 import org.apache.dubbo.config.annotation.Reference;
@@ -11,22 +11,22 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class DubboAdapter {
+class DubboManager {
     protected ApplicationConfig application;
     protected Map<String, ReferenceConfig> refMap = new ConcurrentHashMap<>();
 
-    private static DubboAdapter _global;
+    private static DubboManager _global;
 
-    public static DubboAdapter global() {
+    public static DubboManager global() {
         if (_global == null) {
-            _global = new DubboAdapter();
+            _global = new DubboManager();
         }
 
         return _global;
     }
 
 
-    private DubboAdapter() {
+    private DubboManager() {
 
         // 当前应用配置
         //
@@ -102,27 +102,6 @@ public class DubboAdapter {
         }
     }
 
-    private Thread blockThread = null;
-
-    public void startBlock() {
-        if (blockThread == null) {
-            blockThread = new Thread(() -> {
-                try {
-                    System.in.read();
-                } catch (Exception ex) {
-                }
-            });
-            blockThread.start();
-        }
-    }
-
-    public void stopBlock() {
-        if (blockThread != null) {
-            blockThread.interrupt();
-            blockThread = null;
-        }
-    }
-
     public void regService(ServiceConfig cfg) {
         Properties prop = Solon.cfg().getProp("dubbo.service." + cfg.getInterface());
         if (prop.size() > 0) {
@@ -130,7 +109,6 @@ public class DubboAdapter {
         }
 
         cfg.export();
-        startBlock();
     }
 
     public <T> T getService(Class<T> clz, Reference ref) {

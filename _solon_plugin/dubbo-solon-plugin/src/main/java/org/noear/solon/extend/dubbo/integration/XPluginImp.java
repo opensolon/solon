@@ -6,12 +6,10 @@ import org.apache.dubbo.config.annotation.Service;
 import org.noear.solon.Solon;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
-import org.noear.solon.extend.dubbo.DubboAdapter;
 import org.noear.solon.extend.dubbo.EnableDubbo;
 
 
 public class XPluginImp implements Plugin {
-    DubboAdapter _server;
 
     @Override
     public void start(AopContext context) {
@@ -19,7 +17,7 @@ public class XPluginImp implements Plugin {
             return;
         }
 
-        _server = DubboAdapter.global();
+        DubboManager _manager = DubboManager.global();
 
         //支持duboo.Service注解
         context.beanBuilderAdd(Service.class, ((clz, bw, anno) -> {
@@ -32,27 +30,16 @@ public class XPluginImp implements Plugin {
                 cfg.setRef(bw.raw());
 
                 // 暴露及注册服务
-                _server.regService(cfg);
+                _manager.regService(cfg);
             }
         }));
 
         //支持dubbo.Reference注入
         context.beanInjectorAdd(Reference.class, ((fwT, anno) -> {
             if (fwT.getType().isInterface()) {
-                Object raw = _server.getService(fwT.getType(), new ReferenceAnno(anno));
+                Object raw = _manager.getService(fwT.getType(), new ReferenceAnno(anno));
                 fwT.setValue(raw);
             }
         }));
-    }
-
-
-    @Override
-    public void stop() throws Throwable {
-        if (_server == null) {
-            return;
-        }
-
-        _server.stopBlock();
-        _server = null;
     }
 }
