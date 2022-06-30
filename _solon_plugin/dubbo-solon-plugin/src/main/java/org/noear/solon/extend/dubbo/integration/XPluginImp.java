@@ -37,7 +37,7 @@ public class XPluginImp implements Plugin {
         //支持dubbo.Reference注入
         context.beanInjectorAdd(Reference.class, ((fwT, anno) -> {
             if (fwT.getType().isInterface()) {
-                Object raw = _manager.getService(fwT.getType(), new ReferenceAnno(anno));
+                Object raw = _manager.getReference(fwT.getType(), new ReferenceAnno(anno));
                 fwT.setValue(raw);
             }
         }));

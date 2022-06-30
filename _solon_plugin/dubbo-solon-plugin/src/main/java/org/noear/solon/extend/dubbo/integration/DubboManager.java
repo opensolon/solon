@@ -111,7 +111,7 @@ class DubboManager {
         cfg.export();
     }
 
-    public <T> T getService(Class<T> clz, Reference ref) {
+    public <T> T getReference(Class<T> clz, Reference ref) {
         //生成带版本号的key
         String clzKey = null;
         if (ref == null) {
