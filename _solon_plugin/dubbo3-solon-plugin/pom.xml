@@ -72,10 +72,17 @@
 
         <dependency>
             <groupId>org.apache.dubbo</groupId>
-            <artifactId>dubbo-remoting-zookeeper-curator5</artifactId>
+            <artifactId>dubbo-registry-zookeeper</artifactId>
             <version>${dubbo3.ver}</version>
             <scope>test</scope>
         </dependency>
+
+<!--        <dependency>-->
+<!--            <groupId>org.apache.dubbo</groupId>-->
+<!--            <artifactId>dubbo-registry-nacos</artifactId>-->
+<!--            <version>${dubbo3.ver}</version>-->
+<!--            <scope>test</scope>-->
+<!--        </dependency>-->
     </dependencies>
 
 </project>
