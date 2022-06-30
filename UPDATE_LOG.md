@@ -1,9 +1,8 @@
 #### 1.9.1
 * 新增 dubbo3-solon-plugin 插件
 * 
-* 增加 namespace 配置 -ok
-* 增加 cache 手动控制能力  -ok
-* 增加 tran 手动控制能力 -ok
+* 增加 namespace 配置
+* 增加 tran 手动控制能力
 * 
 * activerecord 升为 5.0.0
 * enjoy 升为 5.0.0
