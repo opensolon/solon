@@ -1,6 +1,6 @@
 package demo.client;
 
-import demo7014.protocol.HelloService;
+import demo.protocol.HelloService;
 import org.apache.dubbo.config.annotation.DubboReference;
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.Controller;

@@ -1,6 +1,6 @@
 package demo.server;
 
-import demo7014.protocol.HelloService;
+import demo.protocol.HelloService;
 import org.apache.dubbo.config.annotation.DubboService;
 
 @DubboService(group = "demo")
