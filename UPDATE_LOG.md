@@ -1,5 +1,6 @@
 #### 1.9.1
 * 新增 dubbo3-solon-plugin 插件
+* 简化 dubbo-solon-plugin 插件的适配
 * 
 * 增加 namespace 配置
 * 增加 tran 手动控制能力
