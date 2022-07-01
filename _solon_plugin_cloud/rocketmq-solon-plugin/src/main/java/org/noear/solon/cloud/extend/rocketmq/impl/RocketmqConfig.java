@@ -28,16 +28,12 @@ public class RocketmqConfig {
 
     public RocketmqConfig(CloudProps cloudProps) {
         server = cloudProps.getEventServer();
-
         timeout = cloudProps.getEventPublishTimeout();
+        namespace = Solon.cfg().appNamespace();
 
-        namespace = cloudProps.getProp(RocketmqProps.PROP_EVENT_namespace);
         producerGroup = cloudProps.getProp(RocketmqProps.PROP_EVENT_producerGroup);
         consumerGroup = cloudProps.getProp(RocketmqProps.PROP_EVENT_consumerGroup);
 
-        if(Utils.isEmpty(namespace)){
-            namespace = Solon.cfg().appNamespace();
-        }
 
         if (Utils.isEmpty(producerGroup)) {
             producerGroup = "DEFAULT";
