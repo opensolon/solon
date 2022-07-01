@@ -4,13 +4,14 @@
 * 增加 namespace 配置
 * 增加 tran 手动控制能力
 * 
-* activerecord 升为 5.0.0
-* enjoy 升为 5.0.0
-* beetlsql 升为 3.14.5-RELEASE
-* dbvisitor 升为 5.0.1
-* sqltoy 升为 5.2.2
-* smart-http 升为 1.1.5
+* 插件 activerecord-solon-plugin 升级 activerecord 为 5.0.0
+* 插件 solon.view.enjoy 升级 enjoy 为 5.0.0
+* 插件 beetlsql-solon-plugin 升级 beetlsql 为 3.14.5-RELEASE
+* 插件 dbvisitor-solon-plugin 升级 dbvisitor 为 5.0.1
+* 插件 sqltoy-solon-plugin 升级 sqltoy 为 5.2.2
+* 插件 solon.boot.smarthttp 升级 smart-http 为 1.1.5
 * 插件 nacos2-solon-plugin 升级 nacos-client 为 2.1.0
+* 插件 water-solon-plugin 升级 water 为 2.8.0
 
 #### 1.9.0
 * 新增 grpc-solon-plugin 插件
