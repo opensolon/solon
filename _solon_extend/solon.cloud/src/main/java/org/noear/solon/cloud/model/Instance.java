@@ -61,7 +61,6 @@ public class Instance implements Serializable {
     public Instance protocol(String protocol) {
         if (Utils.isNotEmpty(protocol)) {
             this.protocol = protocol;
-            this.metaPut("protocol", protocol);
             _uri = null;
         }
 

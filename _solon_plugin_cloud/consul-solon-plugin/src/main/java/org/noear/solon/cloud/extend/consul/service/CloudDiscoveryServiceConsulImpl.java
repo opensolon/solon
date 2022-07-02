@@ -106,8 +106,10 @@ public class CloudDiscoveryServiceConsulImpl extends TimerTask implements CloudD
 
     private void registerLocalCheck(Instance instance, NewService newService) {
         if (Utils.isNotEmpty(healthCheckInterval)) {
-            if ("http".equals(instance.protocol())) {
-                String checkUrl = "http://" + instance.address();
+            String protocol = Utils.annoAlias(instance.protocol(),"http");
+
+            if (protocol.startsWith("http")) {
+                String checkUrl = protocol+"://" + instance.address();
                 if (HealthHandler.HANDLER_PATH.startsWith("/")) {
                     checkUrl = checkUrl + HealthHandler.HANDLER_PATH;
                 } else {
@@ -124,7 +126,7 @@ public class CloudDiscoveryServiceConsulImpl extends TimerTask implements CloudD
                 newService.setCheck(check);
             }
 
-            if ("tcp".equals(instance.protocol()) || "ws".equals(instance.protocol())) {
+            if (protocol.startsWith("tcp") || protocol.startsWith("ws")) {
                 NewService.Check check = new NewService.Check();
                 check.setInterval(healthCheckInterval);
                 check.setTcp(instance.address());
