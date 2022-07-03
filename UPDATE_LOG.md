@@ -1,3 +1,6 @@
+#### 1.9.2
+
+
 #### 1.9.1
 * 新增 dubbo3-solon-plugin 插件
 * 简化 dubbo-solon-plugin 插件的适配
