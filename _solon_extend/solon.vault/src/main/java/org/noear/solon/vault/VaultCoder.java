@@ -1,4 +1,4 @@
-package org.noear.solon.guard;
+package org.noear.solon.vault;
 
 /**
  * 脱敏编码器
@@ -6,7 +6,7 @@ package org.noear.solon.guard;
  * @author noear
  * @since 1.9
  */
-public interface GuardCoder {
+public interface VaultCoder {
     /**
      * 加密
      * */

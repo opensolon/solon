@@ -1,8 +1,8 @@
-package org.noear.solon.guard;
+package org.noear.solon.vault;
 
 import org.noear.solon.Utils;
 import org.noear.solon.core.Aop;
-import org.noear.solon.guard.impl.AesGuardCoder;
+import org.noear.solon.vault.impl.AesVaultCoder;
 
 /**
  * 脱敏工具
@@ -10,15 +10,15 @@ import org.noear.solon.guard.impl.AesGuardCoder;
  * @author noear
  * @since 1.9
  */
-public class GuardUtils {
+public class VaultUtils {
     public static final String TAG_PREFIX = "ENC(";
     public static final String TAG_SUFFIX = ")";
 
-    static GuardCoder guardCoder = new AesGuardCoder();
+    static VaultCoder guardCoder = new AesVaultCoder();
 
     static {
         //尝试从容器中获取
-        Aop.getAsyn(GuardCoder.class, bw -> {
+        Aop.getAsyn(VaultCoder.class, bw -> {
             guardCoder = bw.get();
         });
     }
@@ -26,8 +26,8 @@ public class GuardUtils {
     /**
      * 设置编码器
      */
-    public static void setGuardCoder(GuardCoder guardCoder) {
-        GuardUtils.guardCoder = guardCoder;
+    public static void setGuardCoder(VaultCoder guardCoder) {
+        VaultUtils.guardCoder = guardCoder;
     }
 
     /**

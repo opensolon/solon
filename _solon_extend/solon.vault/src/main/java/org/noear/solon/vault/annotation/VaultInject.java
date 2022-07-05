@@ -1,4 +1,4 @@
-package org.noear.solon.guard.annotation;
+package org.noear.solon.vault.annotation;
 
 import java.lang.annotation.*;
 
@@ -12,7 +12,7 @@ import java.lang.annotation.*;
 @Target({ElementType.FIELD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface GuardInject {
+public @interface VaultInject {
     String value();
     boolean autoRefreshed() default false;
 }

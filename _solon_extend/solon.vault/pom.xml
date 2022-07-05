@@ -10,7 +10,7 @@
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>solon.guard</artifactId>
+    <artifactId>solon.vault</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>

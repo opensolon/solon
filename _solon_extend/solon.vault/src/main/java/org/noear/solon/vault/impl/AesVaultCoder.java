@@ -1,7 +1,7 @@
-package org.noear.solon.guard.impl;
+package org.noear.solon.vault.impl;
 
 import org.noear.solon.Solon;
-import org.noear.solon.guard.GuardCoder;
+import org.noear.solon.vault.VaultCoder;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
@@ -12,14 +12,14 @@ import java.util.Base64;
  * @author noear
  * @since 1.9
  */
-public class AesGuardCoder implements GuardCoder {
+public class AesVaultCoder implements VaultCoder {
 
     private final String charset = "UTF-8";
 
     private final String algorithm = "AES/ECB/PKCS5Padding";
     private final String password;
 
-    public AesGuardCoder() {
+    public AesVaultCoder() {
         this.password = Solon.cfg().get("solon.guard.password");
     }
 

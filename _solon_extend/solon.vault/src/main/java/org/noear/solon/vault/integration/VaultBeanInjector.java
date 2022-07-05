@@ -1,10 +1,10 @@
-package org.noear.solon.guard.integration;
+package org.noear.solon.vault.integration;
 
 import org.noear.solon.Utils;
 import org.noear.solon.core.*;
 import org.noear.solon.core.util.ConvertUtil;
-import org.noear.solon.guard.GuardUtils;
-import org.noear.solon.guard.annotation.GuardInject;
+import org.noear.solon.vault.VaultUtils;
+import org.noear.solon.vault.annotation.VaultInject;
 
 import java.util.Properties;
 
@@ -14,9 +14,9 @@ import java.util.Properties;
  * @author noear
  * @since 1.9
  */
-public class GuardBeanInjector implements BeanInjector<GuardInject> {
+public class VaultBeanInjector implements BeanInjector<VaultInject> {
     @Override
-    public void doInject(VarHolder varH, GuardInject anno) {
+    public void doInject(VarHolder varH, VaultInject anno) {
         beanInject(varH, anno.value(), anno.autoRefreshed());
     }
 
@@ -98,15 +98,15 @@ public class GuardBeanInjector implements BeanInjector<GuardInject> {
     }
 
     private String guardDo(String val){
-        return GuardUtils.decrypt(val);
+        return VaultUtils.decrypt(val);
     }
 
     private Properties guardDo(Properties props){
         props.forEach((k,v)->{
             if(v instanceof String){
                 String val = (String) v;
-                if(GuardUtils.isEncrypted(val)){
-                    String val2 = GuardUtils.decrypt(val);
+                if(VaultUtils.isEncrypted(val)){
+                    String val2 = VaultUtils.decrypt(val);
                     props.put(k, val2);
                 }
             }

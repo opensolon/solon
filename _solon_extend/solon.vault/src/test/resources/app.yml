@@ -12,7 +12,11 @@ test:
   password2: "ENC(EDcAudiu9svcqKQ9L8k+Ug==)"
 
 test.db1:
-  pwd: "123456"
+  url: ""
+  username: "root"
+  password: "123456"
 
 test.db2:
-  pwd: "ENC(XgRqh3C00JmkjsPi4mPySA==)"
+  url: ""
+  username: "ENC(xo1zJjGXUouQ/CZac55HZA==)"
+  password: "ENC(XgRqh3C00JmkjsPi4mPySA==)"
