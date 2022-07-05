@@ -1,4 +1,4 @@
-package org.noear.solon.vault.impl;
+package org.noear.solon.vault.coder;
 
 import org.noear.solon.Solon;
 import org.noear.solon.vault.VaultCoder;

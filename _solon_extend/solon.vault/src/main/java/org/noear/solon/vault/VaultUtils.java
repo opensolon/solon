@@ -2,7 +2,7 @@ package org.noear.solon.vault;
 
 import org.noear.solon.Utils;
 import org.noear.solon.core.Aop;
-import org.noear.solon.vault.impl.AesVaultCoder;
+import org.noear.solon.vault.coder.AesVaultCoder;
 
 /**
  * 脱敏工具
@@ -24,14 +24,7 @@ public class VaultUtils {
     }
 
     /**
-     * 设置编码器
-     */
-    public static void setGuardCoder(VaultCoder guardCoder) {
-        VaultUtils.guardCoder = guardCoder;
-    }
-
-    /**
-     * 已加密
+     * 是否已加密
      */
     public static boolean isEncrypted(String str) {
         return str.startsWith(TAG_PREFIX) && str.endsWith(TAG_SUFFIX);
@@ -44,7 +37,6 @@ public class VaultUtils {
         if (Utils.isEmpty(str)) {
             return str;
         }
-
 
         try {
             String tmp = guardCoder.encrypt(str);
@@ -63,14 +55,9 @@ public class VaultUtils {
             return str;
         }
 
-
         try {
-            if (isEncrypted(str)) {
-                str = str.substring(TAG_PREFIX.length(), str.length() - TAG_SUFFIX.length());
-                return guardCoder.decrypt(str);
-            } else {
-                return str;
-            }
+            str = str.substring(TAG_PREFIX.length(), str.length() - TAG_SUFFIX.length());
+            return guardCoder.decrypt(str);
         } catch (Exception e) {
             throw new IllegalStateException(e);
         }

@@ -31,7 +31,7 @@ public class VaultBeanInjector implements BeanInjector<VaultInject> {
 
             if (autoRefreshed && varH.isField()) {
                 varH.context().getProps().onChange((key, val) -> {
-                    if(key.startsWith(name2)){
+                    if (key.startsWith(name2)) {
                         beanInjectConfig(varH, name2);
                     }
                 });
@@ -39,7 +39,7 @@ public class VaultBeanInjector implements BeanInjector<VaultInject> {
         }
     }
 
-    private void beanInjectConfig(VarHolder varH, String name){
+    private void beanInjectConfig(VarHolder varH, String name) {
         if (Properties.class == varH.getType()) {
             //如果是 Properties
             Properties val = varH.context().getProps().getProp(name);
@@ -52,7 +52,7 @@ public class VaultBeanInjector implements BeanInjector<VaultInject> {
             //2.然后尝试获取配置
             String def = null;
             int defIdx = name.indexOf(":");
-            if(defIdx > 0) {
+            if (defIdx > 0) {
                 if (name.length() > defIdx + 1) {
                     def = name.substring(defIdx + 1).trim();
                 } else {
@@ -63,7 +63,7 @@ public class VaultBeanInjector implements BeanInjector<VaultInject> {
 
             String val = varH.context().getProps().get(name);
 
-            if(def != null) {
+            if (def != null) {
                 if (Utils.isEmpty(val)) {
                     val = def;
                 }
@@ -97,15 +97,19 @@ public class VaultBeanInjector implements BeanInjector<VaultInject> {
         }
     }
 
-    private String guardDo(String val){
-        return VaultUtils.decrypt(val);
+    private String guardDo(String str) {
+        if (VaultUtils.isEncrypted(str)) {
+            return VaultUtils.decrypt(str);
+        } else {
+            return str;
+        }
     }
 
-    private Properties guardDo(Properties props){
-        props.forEach((k,v)->{
-            if(v instanceof String){
+    private Properties guardDo(Properties props) {
+        props.forEach((k, v) -> {
+            if (v instanceof String) {
                 String val = (String) v;
-                if(VaultUtils.isEncrypted(val)){
+                if (VaultUtils.isEncrypted(val)) {
                     String val2 = VaultUtils.decrypt(val);
                     props.put(k, val2);
                 }
