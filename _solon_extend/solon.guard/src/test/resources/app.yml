@@ -1,0 +1,18 @@
+
+
+solon.app:
+  group: demo
+  name: demoapp
+
+solon.guard:
+  password: "liylU9PhDq63tk1C"
+
+test:
+  password1: "abc"
+  password2: "ENC(EDcAudiu9svcqKQ9L8k+Ug==)"
+
+test.db1:
+  pwd: "123456"
+
+test.db2:
+  pwd: "ENC(XgRqh3C00JmkjsPi4mPySA==)"

@@ -38,6 +38,8 @@
         <module>../../__deprecated/solon.extend.aspect</module>
         <module>../../_solon_extend/solon.aspect</module>
 
+        <module>../../_solon_extend/solon.guard</module>
+
         <!-- @Deprecated -->
         <module>../../__deprecated/solon.extend.staticfiles</module>
         <module>../../_solon_extend/solon.web.staticfiles</module>
