@@ -4,11 +4,11 @@
 #### 1、添加配置
 
 ```yaml
-solon.guard:
+solon.vault:
   password: "liylU9PhDq63tk1C"
 ```
 
-也可以通过运行时添加：`java -Dsolon.guard.password=liylU9PhDq63tk1C -jar demoapp.jar`
+也可以通过运行时添加：`java -Dsolon.vault.password=liylU9PhDq63tk1C -jar demoapp.jar`
 
 #### 2、使用工具生成密文
 
@@ -26,7 +26,7 @@ public class TestApp {
 #### 3、使用生产的密文，进行敏感数据的配置
 
 ```yaml
-solon.guard:
+solon.vault:
   password: "liylU9PhDq63tk1C"
 
 test.db1:

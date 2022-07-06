@@ -4,7 +4,7 @@ solon.app:
   group: demo
   name: demoapp
 
-solon.guard:
+solon.vault:
   password: "liylU9PhDq63tk1C"
 
 test:

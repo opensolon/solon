@@ -20,7 +20,7 @@ public class AesVaultCoder implements VaultCoder {
     private final String password;
 
     public AesVaultCoder() {
-        this.password = Solon.cfg().get("solon.guard.password");
+        this.password = Solon.cfg().get("solon.vault.password");
     }
 
     /**
