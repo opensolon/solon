@@ -6,7 +6,7 @@
 
     <groupId>org.noear.bundle</groupId>
     <artifactId>solon-render-bundle</artifactId>
-    <version>1.9.2-M1</version>
+    <version>1.9.2-M2</version>
     <packaging>pom</packaging>
 
 
