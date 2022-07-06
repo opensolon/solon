@@ -1579,7 +1579,7 @@ public class HTTPServer {
             try {
                 method = tokens[0];
                 // must remove '//' prefix which constructor parses as host name
-                uri = new URI(trimDuplicates(tokens[1], '/'));
+                uri = new URI(tokens[1]); //todo: new URI(trimDuplicates(tokens[1], '/'));
                 version = tokens[2]; // RFC2616#2.1: allow implied LWS; RFC7230#3.1.1: disallow it
             } catch (URISyntaxException use) {
                 throw new IOException("invalid URI: " + use.getMessage());
