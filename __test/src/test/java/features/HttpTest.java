@@ -183,8 +183,10 @@ public class HttpTest extends HttpTestBase {
     @Test
     public void test2e() throws IOException {
         assert path("/demo2/param/d/*?name=中文").get().equals("中文");
+        assert path("/demo2/param/d/*?name=https://a.a.a/b/c/_xxx").get().equals("https://a.a.a/b/c/_xxx");
 
         assert path("/demo2/param/d/*").data("name", "中文").post().equals("中文");
+        assert path("/demo2/param/d/*").data("name", "https://a.a.a/b/c/_xxx").post().equals("https://a.a.a/b/c/_xxx");
     }
 
     @Test
