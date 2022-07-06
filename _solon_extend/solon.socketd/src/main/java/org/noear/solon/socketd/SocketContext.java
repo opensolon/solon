@@ -83,6 +83,8 @@ public class SocketContext extends ContextEmpty {
         }
     }
 
+
+    private URI _uri;
     @Override
     public URI uri() {
         if (_uri == null) {
@@ -90,13 +92,6 @@ public class SocketContext extends ContextEmpty {
         }
 
         return _uri;
-    }
-
-    private URI _uri;
-
-    @Override
-    public String path() {
-        return uri().getPath();
     }
 
 

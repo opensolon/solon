@@ -50,11 +50,6 @@ public class ContextEmpty extends Context {
     }
 
     @Override
-    public String path() {
-        return null;
-    }
-
-    @Override
     public String url() {
         return null;
     }

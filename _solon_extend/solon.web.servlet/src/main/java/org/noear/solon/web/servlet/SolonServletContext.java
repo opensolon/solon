@@ -79,6 +79,8 @@ public class SolonServletContext extends Context {
         return _request.getProtocol();
     }
 
+    private URI _uri;
+
     @Override
     public URI uri() {
         if (_uri == null) {
@@ -86,13 +88,6 @@ public class SolonServletContext extends Context {
         }
 
         return _uri;
-    }
-
-    private URI _uri;
-
-    @Override
-    public String path() {
-        return uri().getPath();
     }
 
     private String _url;

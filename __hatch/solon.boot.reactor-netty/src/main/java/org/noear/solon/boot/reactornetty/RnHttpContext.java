@@ -77,11 +77,6 @@ public class RnHttpContext extends Context {
         return _uri;
     }
 
-    @Override
-    public String path() {
-        return uri().getPath();
-    }
-
     private String _url;
     @Override
     public String url() {

@@ -198,6 +198,20 @@ public class Utils {
     }
 
     /**
+     * 去除重复字符
+     * */
+    public static String trimDuplicates(String str, char c) {
+        int start = 0;
+        while ((start = str.indexOf(c, start) + 1) > 0) {
+            int end;
+            for (end = start; end < str.length() && str.charAt(end) == c; end++) ;
+            if (end > start)
+                str = str.substring(0, start) + str.substring(end);
+        }
+        return str;
+    }
+
+    /**
      * 检查字符串是否为空
      *
      * @param s 字符串
