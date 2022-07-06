@@ -193,11 +193,7 @@ public abstract class Context {
      */
     private String path;
     public String path() {
-        if(url() == null){
-            return null;
-        }
-
-        if (path == null) {
+        if (path == null && url() != null) {
             path = uri().getPath();
 
             if (path.contains("//")) {

@@ -36,7 +36,7 @@ public class HttpTest extends HttpTestBase {
     @Test
     public void test11_2() throws IOException {
         assert path("/demo1//run0/?str=").head() == 200;
-        assert path("//demo1//run1/*").head() == 200;
+        assert path("/demo1//run2//ip").head() == 200;
 
         //NumberUtils.isNumber()
     }
