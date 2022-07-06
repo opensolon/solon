@@ -12,6 +12,7 @@ import org.sagacity.sqltoy.integration.AppContext;
 import org.sagacity.sqltoy.integration.ConnectionFactory;
 import org.sagacity.sqltoy.plugins.FilterHandler;
 import org.sagacity.sqltoy.plugins.IUnifyFieldsHandler;
+import org.sagacity.sqltoy.plugins.OverTimeSqlHandler;
 import org.sagacity.sqltoy.plugins.TypeHandler;
 import org.sagacity.sqltoy.plugins.datasource.DataSourceSelector;
 import org.sagacity.sqltoy.plugins.secure.DesensitizeProvider;
@@ -308,6 +309,17 @@ class SqlToyContextBuilder {
             else if (customFilterHandler.contains(".")) {
                 sqlToyContext.setCustomFilterHandler(
                         (FilterHandler) Class.forName(customFilterHandler).getDeclaredConstructor().newInstance());
+            }
+        }
+
+        // 自定义sql执行超时处理器
+        String overTimeSqlHandler = properties.getOverTimeSqlHandler();
+        if (StringUtil.isNotBlank(overTimeSqlHandler)) {
+            if (appContext.containsBean(overTimeSqlHandler)) {
+                sqlToyContext.setOverTimeSqlHandler((OverTimeSqlHandler) appContext.getBean(overTimeSqlHandler));
+            } // 包名和类名称
+            else if (overTimeSqlHandler.contains(".")) {
+                sqlToyContext.setOverTimeSqlHandler((OverTimeSqlHandler) Class.forName(overTimeSqlHandler).getDeclaredConstructor().newInstance());
             }
         }
 
