@@ -34,10 +34,16 @@ public class HttpTest extends HttpTestBase {
     }
 
     @Test
+    public void test11_2() throws IOException {
+        assert path("/demo1//run0/?str=").head() == 404;
+
+        //NumberUtils.isNumber()
+    }
+
+    @Test
     public void test12_get() throws IOException {
         assert path("/demo1/run1/*").get().equals("http://localhost:8080/demo1/run1/*");
     }
-
 
     @Test
     public void test12_post() throws IOException {
