@@ -350,6 +350,7 @@ public class SolonApp extends RouterAdapter {
 
             if (stopped) {
                 x.status(403);
+                x.setHandled(true);
             } else {
                 new FilterChainNode(filterList()).doFilter(x);
             }
@@ -381,8 +382,24 @@ public class SolonApp extends RouterAdapter {
         }
     }
 
-    protected void doFilter(Context ctx, FilterChain chain) throws Throwable {
-        _handler.handle(ctx);
+    protected void doFilter(Context x, FilterChain chain) throws Throwable {
+        try {
+            _handler.handle(x);
+
+            if (x.getHandled() == false) { //@since: 1.9
+                x.status(404);
+                x.setHandled(true);
+            }
+        } catch (Throwable e) { //@since: 1.9
+            if (x.getHandled() == false) {
+                if (x.status() < 400) {
+                    x.status(500);
+                }
+                x.setHandled(true);
+            }
+
+            throw e;
+        }
     }
 
     /**
