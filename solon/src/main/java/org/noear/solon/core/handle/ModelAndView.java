@@ -1,5 +1,6 @@
 package org.noear.solon.core.handle;
 
+import java.io.Serializable;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -28,8 +29,9 @@ import java.util.Map;
  * @author noear
  * @since 1.0
  * */
-public class ModelAndView extends LinkedHashMap{
-    private transient String view;
+public class ModelAndView implements Serializable {
+    private String view;
+    private Map<String, Object> model = new LinkedHashMap<>();
 
     public ModelAndView(){super();}
     public ModelAndView(String view) {
@@ -40,9 +42,10 @@ public class ModelAndView extends LinkedHashMap{
         this(view);
 
         if (model != null) {
-            this.putAll(model);
+            this.model.putAll(model);
         }
     }
+
 
     /** 视图 */
     public String view() {
@@ -54,16 +57,27 @@ public class ModelAndView extends LinkedHashMap{
     }
 
     /** 模型 */
-    public Map<String, Object> model() { return this; }
+    public Map<String, Object> model() { return model; }
 
-    @Override
+    public void put(String key, Object value){
+        model.put(key, value);
+    }
+
+    public void putIfAbsent(String key, Object value){
+        model.putIfAbsent(key, value);
+    }
+
+    public void putAll(Map<String, ?> values){
+        model.putAll(values);
+    }
+
     public void clear() {
-        super.clear();
+        model.clear();
         view = null;
     }
 
     /** 是否为空 */
     public boolean isEmpty() {
-        return view == null && size()==0;
+        return view == null && model.size()==0;
     }
 }

@@ -184,7 +184,7 @@ public class ThymeleafRender implements Render {
 
         org.thymeleaf.context.Context context = new org.thymeleaf.context.Context();
         context.setVariables(_sharedVariable);
-        context.setVariables(mv);
+        context.setVariables(mv.model());
 
         if (ctx.getLocale() != null) {
             context.setLocale(ctx.getLocale());

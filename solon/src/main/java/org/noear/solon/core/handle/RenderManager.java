@@ -152,8 +152,9 @@ public class RenderManager implements Render {
                 //如果没有则用默认渲染器
                 //
                 return _def.renderAndReturn(mv, ctx);
+            } else {
+                data = mv.model();
             }
-
         }
 
         Render render = resolveRander(ctx);
@@ -210,6 +211,8 @@ public class RenderManager implements Render {
                 //
                 _def.render(mv, ctx);
                 return;
+            } else {
+                data = mv.model();
             }
         }
 
