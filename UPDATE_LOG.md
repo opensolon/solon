@@ -1,7 +1,7 @@
 #### 1.9.2
-* 新增 solon.vault 插件
-* 增加 请求上下文路径去重处理
-* 解决 jlhttp 的 queryString 里不能出现多个 / 的问题
+* 新增 solon.vault 插件（可对敏感配置进行加密处理）
+* 增加 请求上下文路径对'/'去重处理
+* 解决 jlhttp 的 queryString 里不能出现多个'/'的问题（最好还是编码下）
 
 #### 1.9.1
 * 新增 dubbo3-solon-plugin 插件
