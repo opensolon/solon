@@ -31,7 +31,7 @@ import java.util.Map;
  * */
 public class ModelAndView implements Serializable {
     private String view;
-    private Map<String, Object> model = new LinkedHashMap<>();
+    private Map model = new LinkedHashMap<>();
 
     public ModelAndView(){super();}
     public ModelAndView(String view) {
