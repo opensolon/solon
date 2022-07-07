@@ -3,6 +3,7 @@
 * 增加 请求上下文路径对'/'去重处理
 * 解决 jlhttp 的 queryString 里不能出现多个'/'的问题（最好还是编码下）
 * 简化 用户层面响应状态的处理
+* 调整 ModelAndView 为非Map类
 
 #### 1.9.1
 * 新增 dubbo3-solon-plugin 插件
