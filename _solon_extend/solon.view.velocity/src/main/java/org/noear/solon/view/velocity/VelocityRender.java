@@ -23,6 +23,12 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Velocity 视图渲染器
+ *
+ * @author noear
+ * @since 1.0
+ * */
 public class VelocityRender implements Render {
     private static VelocityRender _global;
 

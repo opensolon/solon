@@ -20,6 +20,12 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Thymeleaf 视图渲染器
+ *
+ * @author noear
+ * @since 1.0
+ * */
 public class ThymeleafRender implements Render {
     private static ThymeleafRender _global;
 
