@@ -67,8 +67,8 @@ public class ModelAndView implements Serializable {
         model.putIfAbsent(key, value);
     }
 
-    public void putAll(Map<String, ?> values){
-        model.putAll(values);
+    public void putAll(Map<String, ?> keyValues){
+        model.putAll(keyValues);
     }
 
     public void clear() {
