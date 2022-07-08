@@ -459,11 +459,12 @@ public abstract class BeanContainer {
         }
     }
 
-    protected void beanInjectProperties(Class<?> clz, BeanWrap bw){
+    protected void beanInjectProperties(Class<?> clz, Object obj){
         Inject typeInj = clz.getAnnotation(Inject.class);
+
         if (typeInj != null && Utils.isNotEmpty(typeInj.value())) {
             if (typeInj.value().startsWith("${")) {
-                Utils.injectProperties(bw.raw(), getProps().getPropByExpr(typeInj.value()));
+                Utils.injectProperties(obj, getProps().getPropByExpr(typeInj.value()));
             }
         }
     }
