@@ -391,10 +391,10 @@ public class SolonApp extends RouterAdapter {
                     x.status(404);
                 }
                 x.setHandled(true);
-
-                //40x...
-                doStatus(x);
             }
+
+            //40x...
+            doStatus(x);
         } catch (Throwable e) { //@since: 1.9
             if(x.errors == null){
                 x.errors = e;
@@ -405,17 +405,17 @@ public class SolonApp extends RouterAdapter {
                     x.status(500);
                 }
                 x.setHandled(true);
-
-                //40x,50x...
-                doStatus(x);
             }
+
+            //40x,50x...
+            doStatus(x);
 
             throw e;
         }
     }
 
     protected void doStatus(Context x) throws Throwable{
-        if (x.status() >= 400) {
+        if (x.status() >= 400 && _statusHandlers.size() > 0) {
             Handler h = _statusHandlers.get(x.status());
             if (h != null) {
                 x.status(200);
