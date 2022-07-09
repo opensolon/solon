@@ -400,6 +400,14 @@ public class SolonApp extends RouterAdapter {
 
             throw e;
         }
+
+        if (x.status() >= 400) {
+            Handler h = _statusHandlers.get(x.status());
+            if (h != null) {
+                x.status(200);
+                h.handle(x);
+            }
+        }
     }
 
     /**
@@ -416,6 +424,13 @@ public class SolonApp extends RouterAdapter {
      */
     public SolonApp onError(EventListener<Throwable> handler) {
         return onEvent(Throwable.class, handler);
+    }
+
+    private Map<Integer, Handler> _statusHandlers = new HashMap<>();
+
+    public SolonApp onStatus(Integer code, Handler handler){
+        _statusHandlers.put(code, handler);
+        return this;
     }
 
 

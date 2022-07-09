@@ -78,6 +78,8 @@ public class TestApp {
 
             x.filter(new ContextPathFilter("/test/"));
 
+            //x.onStatus(404, c->c.render("404了"));
+
             x.onEvent(JsonRenderFactory.class, e->{
                System.out.println("JsonRenderFactory event: xxxxx: " + e.getClass().getSimpleName());
             });
