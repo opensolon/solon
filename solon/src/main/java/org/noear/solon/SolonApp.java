@@ -391,20 +391,20 @@ public class SolonApp extends RouterAdapter {
                     x.status(404);
                 }
                 x.setHandled(true);
-            }
 
-            //40x...
-            doStatus(x);
+                //40x...
+                doStatus(x);
+            }
         } catch (Throwable e) { //@since: 1.9
             if (x.getHandled() == false) {
                 if (x.status() < 400) {
                     x.status(500);
                 }
                 x.setHandled(true);
-            }
 
-            //40x,50x...
-            doStatus(x);
+                //40x,50x...
+                doStatus(x);
+            }
 
             throw e;
         }
