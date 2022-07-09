@@ -387,7 +387,9 @@ public class SolonApp extends RouterAdapter {
             _handler.handle(x);
 
             if (x.getHandled() == false) { //@since: 1.9
-                x.status(404);
+                if (x.status() < 400) {
+                    x.status(404);
+                }
                 x.setHandled(true);
             }
 
