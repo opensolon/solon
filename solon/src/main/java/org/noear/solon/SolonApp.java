@@ -389,6 +389,8 @@ public class SolonApp extends RouterAdapter {
             if (x.getHandled() == false) { //@since: 1.9
                 x.status(404);
                 x.setHandled(true);
+
+                doStatus(x);
             }
         } catch (Throwable e) { //@since: 1.9
             if (x.getHandled() == false) {
@@ -396,11 +398,15 @@ public class SolonApp extends RouterAdapter {
                     x.status(500);
                 }
                 x.setHandled(true);
+
+                doStatus(x);
             }
 
             throw e;
         }
+    }
 
+    protected void doStatus(Context x) throws Throwable{
         if (x.status() >= 400) {
             Handler h = _statusHandlers.get(x.status());
             if (h != null) {
