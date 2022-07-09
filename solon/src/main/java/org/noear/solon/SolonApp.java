@@ -396,6 +396,10 @@ public class SolonApp extends RouterAdapter {
                 doStatus(x);
             }
         } catch (Throwable e) { //@since: 1.9
+            if(x.errors == null){
+                x.errors = e;
+            }
+
             if (x.getHandled() == false) {
                 if (x.status() < 400) {
                     x.status(500);
