@@ -75,7 +75,7 @@
 <parent>
     <groupId>org.noear</groupId>
     <artifactId>solon-parent</artifactId>
-    <version>1.9.2-M8</version>
+    <version>1.9.2-M9</version>
 </parent>
 
 <dependencies>
