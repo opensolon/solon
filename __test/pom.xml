@@ -221,10 +221,10 @@
 <!--                        <artifactId>solon.boot.jdkhttp</artifactId>-->
 <!--                    </dependency>-->
 
-<!--                <dependency>-->
-<!--                    <groupId>org.noear</groupId>-->
-<!--                    <artifactId>solon.boot.jlhttp</artifactId>-->
-<!--                </dependency>-->
+                <dependency>
+                    <groupId>org.noear</groupId>
+                    <artifactId>solon.boot.jlhttp</artifactId>
+                </dependency>
 
 
 <!--        <dependency>-->
@@ -239,15 +239,15 @@
 
 
 
-                <dependency>
-                    <groupId>org.noear</groupId>
-                    <artifactId>solon.boot.undertow</artifactId>
-                </dependency>
+<!--                <dependency>-->
+<!--                    <groupId>org.noear</groupId>-->
+<!--                    <artifactId>solon.boot.undertow</artifactId>-->
+<!--                </dependency>-->
 
-                <dependency>
-                    <groupId>org.noear</groupId>
-                    <artifactId>solon.boot.undertow.add.jsp</artifactId>
-                </dependency>
+<!--                <dependency>-->
+<!--                    <groupId>org.noear</groupId>-->
+<!--                    <artifactId>solon.boot.undertow.add.jsp</artifactId>-->
+<!--                </dependency>-->
 
 
 
