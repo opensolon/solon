@@ -8,6 +8,7 @@ import org.noear.solon.core.Aop;
 import org.noear.solon.core.*;
 import org.noear.solon.core.route.RouterAdapter;
 import org.noear.solon.core.util.PrintUtil;
+import org.noear.solon.ext.DataThrowable;
 
 import java.lang.annotation.Annotation;
 import java.util.*;
@@ -353,7 +354,17 @@ public class SolonApp extends RouterAdapter {
                 x.setHandled(true);
             } else {
                 new FilterChainNode(filterList()).doFilter(x);
+
+                if (x.getHandled() == false) { //@since: 1.9
+                    if (x.status() < 400) {
+                        x.status(404);
+                    }
+                    x.setHandled(true);
+                }
             }
+
+            //40x,50x...
+            doStatus(x);
         } catch (Throwable ex) {
             ex = Utils.throwableUnwrap(ex);
 
@@ -372,8 +383,15 @@ public class SolonApp extends RouterAdapter {
 
             //如果未渲染，尝试渲染
             if (x.getRendered() == false) {
-                if (Solon.cfg().isDebugMode()) {
-                    x.output(ex);
+                //40x,50x...
+                try {
+                    if (doStatus(x) == false) {
+                        if (Solon.cfg().isDebugMode()) {
+                            x.output(ex);
+                        }
+                    }
+                } catch (Throwable e) {
+                    EventBus.push(e);
                 }
             }
         } finally {
@@ -383,45 +401,20 @@ public class SolonApp extends RouterAdapter {
     }
 
     protected void doFilter(Context x, FilterChain chain) throws Throwable {
-        try {
-            _handler.handle(x);
-
-            if (x.getHandled() == false) { //@since: 1.9
-                if (x.status() < 400) {
-                    x.status(404);
-                }
-                x.setHandled(true);
-            }
-
-            //40x...
-            doStatus(x);
-        } catch (Throwable e) { //@since: 1.9
-            if(x.errors == null){
-                x.errors = e;
-            }
-
-            if (x.getHandled() == false) {
-                if (x.status() < 400) {
-                    x.status(500);
-                }
-                x.setHandled(true);
-            }
-
-            //40x,50x...
-            doStatus(x);
-
-            throw e;
-        }
+        _handler.handle(x);
     }
 
-    protected void doStatus(Context x) throws Throwable{
+    protected boolean doStatus(Context x) throws Throwable{
         if (x.status() >= 400 && _statusHandlers.size() > 0) {
             Handler h = _statusHandlers.get(x.status());
             if (h != null) {
                 x.status(200);
                 h.handle(x);
+                return true;
             }
         }
+
+        return false;
     }
 
     /**
@@ -442,6 +435,9 @@ public class SolonApp extends RouterAdapter {
 
     private Map<Integer, Handler> _statusHandlers = new HashMap<>();
 
+    /**
+     * 订阅异常状态
+     * */
     public SolonApp onStatus(Integer code, Handler handler){
         _statusHandlers.put(code, handler);
         return this;
