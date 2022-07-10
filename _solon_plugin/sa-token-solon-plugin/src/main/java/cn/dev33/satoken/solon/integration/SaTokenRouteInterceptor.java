@@ -1,6 +1,7 @@
 package cn.dev33.satoken.solon.integration;
 
 import cn.dev33.satoken.exception.BackResultException;
+import cn.dev33.satoken.exception.SaTokenException;
 import cn.dev33.satoken.exception.StopMatchException;
 import cn.dev33.satoken.router.SaRouteFunction;
 import cn.dev33.satoken.solon.model.SaRequestForSolon;

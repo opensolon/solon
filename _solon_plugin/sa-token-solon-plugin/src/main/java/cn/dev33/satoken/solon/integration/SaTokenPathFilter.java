@@ -1,7 +1,6 @@
 package cn.dev33.satoken.solon.integration;
 
 
-import cn.dev33.satoken.exception.BackResultException;
 import cn.dev33.satoken.exception.SaTokenException;
 import cn.dev33.satoken.exception.StopMatchException;
 import cn.dev33.satoken.filter.SaFilterAuthStrategy;
@@ -162,7 +161,7 @@ public class SaTokenPathFilter implements Filter {
 
         } catch (StopMatchException e) {
             // 停止匹配，进入Controller
-        } catch (BackResultException e) {
+        } catch (SaTokenException e) {
             // 停止匹配，向前端输出结果
             ctx.contentType("text/plain; charset=utf-8");
             ctx.output(e.getMessage());
