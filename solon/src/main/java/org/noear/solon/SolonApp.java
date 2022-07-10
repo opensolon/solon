@@ -390,8 +390,10 @@ public class SolonApp extends RouterAdapter {
                             x.output(ex);
                         }
                     }
+                } catch (RuntimeException e) {
+                    throw e;
                 } catch (Throwable e) {
-                    EventBus.push(e);
+                    throw new RuntimeException(e);
                 }
             }
         } finally {

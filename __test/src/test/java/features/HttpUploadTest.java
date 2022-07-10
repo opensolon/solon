@@ -40,23 +40,23 @@ public class HttpUploadTest extends HttpTestBase {
         assert rst.contains("测试2.mp4");
     }
 
-    @Test
-    public void upload_empty() throws IOException {
-        InputStream inputStream = new ByteArrayInputStream("test".getBytes(StandardCharsets.UTF_8));
-
-        assert path("/demo3/upload/f11")
-                .data("file", "装修-水电-视频.mp4", inputStream, "video/mp4")
-                .data("userName", "noear")
-                .post().contains("我没接数据：）");
-
-
-        inputStream = new ByteArrayInputStream("test".getBytes(StandardCharsets.UTF_8));
-
-        assert path("/demo3/upload/f11_2")
-                .data("file", "装修-水电-视频.mp4", inputStream, "video/mp4")
-                .data("userName", "noear")
-                .post().contains("noear");
-    }
+//    @Test
+//    public void upload_empty() throws IOException {
+//        InputStream inputStream = new ByteArrayInputStream("test".getBytes(StandardCharsets.UTF_8));
+//
+//        assert path("/demo3/upload/f11")
+//                .data("file", "装修-水电-视频.mp4", inputStream, "video/mp4")
+//                .data("userName", "noear")
+//                .post().contains("我没接数据：）");
+//
+//
+//        inputStream = new ByteArrayInputStream("test".getBytes(StandardCharsets.UTF_8));
+//
+//        assert path("/demo3/upload/f11_2")
+//                .data("file", "装修-水电-视频.mp4", inputStream, "video/mp4")
+//                .data("userName", "noear")
+//                .post().contains("noear");
+//    }
 
     @Test
     public void upload_param() throws IOException {
