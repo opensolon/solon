@@ -6,6 +6,7 @@
 * 简化 用户层面响应状态的处理
 * 调整 ModelAndView 为非Map类
 * 增加 实体接收 UploadedFile 的支持
+* 调整 Context::autoMultipart 默认为 true
 
 #### 1.9.1
 * 新增 dubbo3-solon-plugin 插件
