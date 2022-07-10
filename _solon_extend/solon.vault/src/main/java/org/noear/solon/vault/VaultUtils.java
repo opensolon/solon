@@ -42,8 +42,8 @@ public class VaultUtils {
             String tmp = guardCoder.encrypt(str);
 
             return TAG_PREFIX + tmp + TAG_SUFFIX;
-        } catch (Exception e) {
-            throw new IllegalStateException(e);
+        } catch (Throwable e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -58,8 +58,8 @@ public class VaultUtils {
         try {
             str = str.substring(TAG_PREFIX.length(), str.length() - TAG_SUFFIX.length());
             return guardCoder.decrypt(str);
-        } catch (Exception e) {
-            throw new IllegalStateException(e);
+        } catch (Throwable e) {
+            throw new RuntimeException(e);
         }
     }
 }

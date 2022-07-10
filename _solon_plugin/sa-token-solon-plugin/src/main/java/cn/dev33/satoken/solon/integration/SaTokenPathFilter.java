@@ -7,6 +7,7 @@ import cn.dev33.satoken.exception.StopMatchException;
 import cn.dev33.satoken.filter.SaFilterAuthStrategy;
 import cn.dev33.satoken.filter.SaFilterErrorStrategy;
 import cn.dev33.satoken.router.SaRouter;
+import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Filter;
 import org.noear.solon.core.handle.FilterChain;
@@ -166,6 +167,9 @@ public class SaTokenPathFilter implements Filter {
             ctx.contentType("text/plain; charset=utf-8");
             ctx.output(e.getMessage());
             return;
+        } catch (Throwable e) {
+            // 异常解包
+            throw Utils.throwableUnwrap(e);
         }
 
         // 执行

@@ -87,7 +87,7 @@ public class XPluginImp implements Plugin {
             bossGroup.shutdownGracefully();
             wokerGroup.shutdownGracefully();
 
-            throw new IllegalStateException(e);
+            throw new RuntimeException(e);
         }
     }
 
