@@ -8,7 +8,7 @@ import org.noear.solon.Solon;
 public class Test1App {
     public static void main(String[] args) {
         Solon.start(Test1App.class, args, app -> {
-            app.filter((ctx, chain) -> {
+            app.filter(-1, (ctx, chain) -> {
                 if (ctx.path().endsWith(".html")) {
                     ctx.pathNew(ctx.path().substring(0, ctx.path().length() - 5));
                 }
@@ -17,6 +17,7 @@ public class Test1App {
                     ctx.pathNew(ctx.path().substring(0, ctx.path().length() - 3));
                 }
 
+                chain.doFilter(ctx);
             });
         });
     }
