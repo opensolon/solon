@@ -160,7 +160,7 @@ public class SaTokenPathFilter implements Filter {
             });
 
         } catch (StopMatchException e) {
-
+            // 停止匹配，进入Controller
         } catch (BackResultException e) {
             // 停止匹配，向前端输出结果
             ctx.contentType("text/plain; charset=utf-8");
