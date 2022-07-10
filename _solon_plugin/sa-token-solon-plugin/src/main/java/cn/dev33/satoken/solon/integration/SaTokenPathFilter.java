@@ -169,7 +169,7 @@ public class SaTokenPathFilter implements Filter {
             return;
         } catch (Throwable e) {
             // 异常解包
-            throw Utils.throwableUnwrap(e);
+            throw Utils.throwableUnwrap(e); //solon 的最后层还有保底处理
         }
 
         // 执行
