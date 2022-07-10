@@ -2,6 +2,7 @@ package webapp.demo3_upload;
 
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Mapping;
+import org.noear.solon.annotation.Post;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.handle.UploadedFile;
@@ -80,6 +81,20 @@ public class UploadController {
         }
 
         return userName + ": " + file.name + "- " + file.contentSize;
+    }
+
+    @Post
+    @Mapping(path = "f13_2", multipart = true)
+    public String test_f13_s(UploadModel um) throws Exception {
+        if (um.userName == null) {
+            return "userName is null";
+        }
+
+        if (um.file == null) {
+            return "file is null";
+        }
+
+        return um.userName + ": " + um.file.name + "- " + um.file.contentSize;
     }
 
     //支持上传文件参数
