@@ -75,10 +75,10 @@ class BioServer implements ServerLifecycle {
                 throw e;
             } catch (SocketException e) {
                 if (e.getMessage().contains("closed") == false) {
-                    throw new IllegalStateException(e);
+                    throw new RuntimeException(e);
                 }
             } catch (Throwable e) {
-                throw new IllegalStateException(e);
+                throw new RuntimeException(e);
             }
         }).start();
     }

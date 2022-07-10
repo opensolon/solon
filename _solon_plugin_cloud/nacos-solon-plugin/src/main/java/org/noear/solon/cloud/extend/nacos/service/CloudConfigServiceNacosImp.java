@@ -49,7 +49,7 @@ public class CloudConfigServiceNacosImp implements CloudConfigService {
         try {
             real = ConfigFactory.createConfigService(properties);
         } catch (NacosException e) {
-            throw new IllegalStateException(e);
+            throw new RuntimeException(e);
         }
     }
 
