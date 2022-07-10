@@ -75,7 +75,7 @@ formattest:
 
 server:
   request:
-    maxBodySize: 2000mb
+    maxBodySize: 2mb
     maxHeaderSize: 200kb
     autoMultipart: false
   session:

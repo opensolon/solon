@@ -5,7 +5,7 @@ import com.sun.net.httpserver.HttpExchange;
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.jdkhttp.uploadfile.HttpMultipart;
 import org.noear.solon.boot.jdkhttp.uploadfile.HttpMultipartCollection;
-import org.noear.solon.boot.util.LimitedInputStream;
+import org.noear.solon.boot.io.LimitedInputStream;
 import org.noear.solon.core.handle.UploadedFile;
 
 import java.io.ByteArrayInputStream;
