@@ -25,12 +25,12 @@ public class SaTokenPathFilter implements Filter {
     /**
      * 拦截路由
      */
-    private List<String> includeList = new ArrayList<>();
+    protected List<String> includeList = new ArrayList<>();
 
     /**
      * 放行路由
      */
-    private List<String> excludeList = new ArrayList<>();
+    protected List<String> excludeList = new ArrayList<>();
 
     /**
      * 添加 [拦截路由]
