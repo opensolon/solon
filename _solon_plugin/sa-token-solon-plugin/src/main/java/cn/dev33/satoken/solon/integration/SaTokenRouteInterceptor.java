@@ -54,7 +54,6 @@ public class SaTokenRouteInterceptor implements Handler {
 			// 停止匹配，进入Controller
 		} catch (BackResultException e) {
 			// 停止匹配，向前端输出结果
-			// 停止匹配，向前端输出结果
 			ctx.contentType("text/plain; charset=utf-8");
 			ctx.output(e.getMessage());
 			ctx.setHandled(true);
