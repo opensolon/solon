@@ -202,7 +202,7 @@ public class JdkHttpContext extends Context {
             } catch (RuntimeException e) {
                 throw e;
             } catch (Throwable e) {
-                throw new IllegalStateException(e);
+                throw new RuntimeException(e);
             }
         }
 
