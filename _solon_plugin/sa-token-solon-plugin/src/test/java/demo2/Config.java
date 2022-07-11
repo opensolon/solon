@@ -1,7 +1,7 @@
 package demo2;
 
 import cn.dev33.satoken.router.SaRouter;
-import cn.dev33.satoken.solon.integration.SaTokenRouteInterceptor;
+import cn.dev33.satoken.solon.integration.SaTokenPathInterceptor;
 import cn.dev33.satoken.stp.StpUtil;
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.Bean;
@@ -14,7 +14,7 @@ import org.noear.solon.annotation.Configuration;
 public class Config {
     @Bean
     public void saTokenPathInterceptor() {
-        Solon.app().before(new SaTokenRouteInterceptor()
+        Solon.app().before(new SaTokenPathInterceptor()
                 .setFunction((req, res, e) -> {
                     SaRouter.match("/**", StpUtil::checkLogin);
                     // 根据路由划分模块，不同模块不同鉴权
