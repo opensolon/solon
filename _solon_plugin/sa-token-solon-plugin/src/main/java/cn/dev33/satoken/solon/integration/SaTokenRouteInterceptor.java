@@ -55,9 +55,14 @@ public class SaTokenRouteInterceptor implements Handler {
 			function.run(new SaRequestForSolon(), new SaResponseForSolon(), ctx);
 		} catch (StopMatchException e) {
 
-		} catch (BackResultException e) {
+		} catch (SaTokenException e) {
 			// 1. 获取异常处理策略结果
-			Object result = error.run(e);
+			Object result;
+			if (e instanceof BackResultException) {
+				result = e.getMessage();
+			} else {
+				result = error.run(e);
+			}
 
 			// 2. 写入输出流
 			if (result != null) {
