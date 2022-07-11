@@ -6,6 +6,15 @@ import org.noear.solon.Solon;
  * @author noear 2022/7/11 created
  */
 public class App {
+    /**
+     * a-bef [f]
+     * b-bef [f]
+     * c-bef [f1]
+     * get [h]
+     * c-aft
+     * b-aft
+     * a-aft
+     * */
     public static void main(String[] args){
         Solon.start(App.class, args, app->{
            app.get("/",ctx -> {
