@@ -69,8 +69,6 @@ public class SaTokenRouteInterceptor implements Handler {
 				ctx.render(result);
 				ctx.setHandled(true);
 				return;
-			} else {
-				throw e;
 			}
 		}
 	}

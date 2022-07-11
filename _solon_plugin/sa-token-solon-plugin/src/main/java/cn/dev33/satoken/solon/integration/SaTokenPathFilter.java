@@ -180,8 +180,6 @@ public class SaTokenPathFilter implements Filter {
                 ctx.render(result);
                 ctx.setHandled(true);
                 return;
-            } else {
-                throw e;
             }
         } catch (Throwable e) {
             // 异常解包
