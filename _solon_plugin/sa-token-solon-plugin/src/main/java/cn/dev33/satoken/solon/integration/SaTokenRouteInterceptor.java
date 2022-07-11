@@ -65,11 +65,11 @@ public class SaTokenRouteInterceptor implements Handler {
 			}
 
 			// 2. 写入输出流
-			if (result != null) {
+			if(result != null) {
 				ctx.render(result);
-				ctx.setHandled(true);
-				return;
 			}
+			ctx.setHandled(true);
+			return;
 		}
 	}
 }

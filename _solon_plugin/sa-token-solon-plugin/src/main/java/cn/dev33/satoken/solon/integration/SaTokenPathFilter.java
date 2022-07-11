@@ -176,11 +176,11 @@ public class SaTokenPathFilter implements Filter {
             }
 
             // 2. 写入输出流
-            if (result != null) {
+            if(result != null) {
                 ctx.render(result);
-                ctx.setHandled(true);
-                return;
             }
+            ctx.setHandled(true);
+            return;
         } catch (Throwable e) {
             // 异常解包
             throw Utils.throwableUnwrap(e); //solon 的最后层还有保底处理
