@@ -34,6 +34,6 @@ public class Log4j2Test {
         log.info("你好 {}!", "world!");
         log.warn("你不好 {}!", "world!");
 
-        log.error("出错了", new RuntimeException());
+        log.error("出错了", new IllegalStateException());
     }
 }

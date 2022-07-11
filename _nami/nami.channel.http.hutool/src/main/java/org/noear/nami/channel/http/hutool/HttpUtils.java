@@ -84,7 +84,7 @@ class HttpUtils {
             case "DELETE":_builder.method(Method.DELETE);break;
             case "PATCH":_builder.method(Method.PATCH);break;
             case "OPTIONS":_builder.method(Method.OPTIONS);break;
-            default: throw new RuntimeException("This method is not supported");
+            default: throw new IllegalStateException("This method is not supported");
         }
 
         return  _builder.execute();

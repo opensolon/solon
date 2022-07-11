@@ -83,7 +83,7 @@ public class IdWorker {
 
             System.err.printf(
                     "clock is moving backwards. Rejecting requests until %d.", lastTimestamp);
-            throw new RuntimeException(
+            throw new IllegalStateException(
                     String.format("Clock moved backwards. Refusing to generate id for %d milliseconds",
                             lastTimestamp - timestamp));
         }

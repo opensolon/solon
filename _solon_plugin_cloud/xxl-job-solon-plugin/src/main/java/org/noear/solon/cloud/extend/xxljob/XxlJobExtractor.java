@@ -18,10 +18,10 @@ class XxlJobExtractor implements BeanExtractor<XxlJob> {
         String name = anno.value();
 
         if (name.trim().length() == 0) {
-            throw new RuntimeException("xxl-job method-jobhandler name invalid, for[" + bw.clz() + "#" + method.getName() + "] .");
+            throw new IllegalStateException("xxl-job method-jobhandler name invalid, for[" + bw.clz() + "#" + method.getName() + "] .");
         }
         if (XxlJobExecutor.loadJobHandler(name) != null) {
-            throw new RuntimeException("xxl-job jobhandler[" + name + "] naming conflicts.");
+            throw new IllegalStateException("xxl-job jobhandler[" + name + "] naming conflicts.");
         }
 
 
@@ -36,7 +36,7 @@ class XxlJobExtractor implements BeanExtractor<XxlJob> {
                 initMethod = bw.clz().getDeclaredMethod(anno.init());
                 initMethod.setAccessible(true);
             } catch (NoSuchMethodException e) {
-                throw new RuntimeException("xxl-job method-jobhandler initMethod invalid, for[" + bw.clz() + "#" + method.getName() + "] .");
+                throw new IllegalStateException("xxl-job method-jobhandler initMethod invalid, for[" + bw.clz() + "#" + method.getName() + "] .");
             }
         }
         if (anno.destroy().trim().length() > 0) {
@@ -44,7 +44,7 @@ class XxlJobExtractor implements BeanExtractor<XxlJob> {
                 destroyMethod = bw.clz().getDeclaredMethod(anno.destroy());
                 destroyMethod.setAccessible(true);
             } catch (NoSuchMethodException e) {
-                throw new RuntimeException("xxl-job method-jobhandler destroyMethod invalid, for[" + bw.clz() + "#" + method.getName() + "] .");
+                throw new IllegalStateException("xxl-job method-jobhandler destroyMethod invalid, for[" + bw.clz() + "#" + method.getName() + "] .");
             }
         }
 

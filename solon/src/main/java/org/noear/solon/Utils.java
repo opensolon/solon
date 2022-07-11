@@ -156,7 +156,7 @@ public class Utils {
             } else if (th instanceof UndeclaredThrowableException) {
                 th = ((UndeclaredThrowableException) th).getUndeclaredThrowable();
             } else if (th.getClass() == RuntimeException.class) {
-                if (th.getMessage() == null && th.getCause() != null) {
+                if (th.getCause() != null) {
                     th = th.getCause();
                 } else {
                     break;

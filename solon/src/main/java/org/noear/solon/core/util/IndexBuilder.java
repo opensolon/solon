@@ -49,7 +49,7 @@ public class IndexBuilder {
 					}
 				}
 
-				throw new RuntimeException("Dependency loops are not supported: " + link);
+				throw new IllegalStateException("Dependency loops are not supported: " + link);
 			}
 		}
 

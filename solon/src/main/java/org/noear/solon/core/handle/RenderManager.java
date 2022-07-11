@@ -96,7 +96,7 @@ public class RenderManager implements Render {
         if (render == null) {
             PrintUtil.warn("solon: " + clzName + " not exists!");
             return;
-            //throw new RuntimeException(classSimpleName + " not exists!");
+            //throw new IllegalStateException(classSimpleName + " not exists!");
         }
 
         _mapping.put(suffix, render);

@@ -413,7 +413,7 @@ public abstract class BeanContainer {
             Properties val = Utils.loadProperties(Utils.getResource(getClassLoader(),url));
 
             if (val == null) {
-                throw new RuntimeException(name + "  failed to load!");
+                throw new IllegalStateException(name + "  failed to load!");
             }
 
             if (Properties.class == varH.getType()) {

@@ -55,7 +55,7 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
 
         mappingAnno = this.getClass().getAnnotation(Mapping.class);
         if (mappingAnno == null) {
-            throw new RuntimeException("No Mapping!");
+            throw new IllegalStateException("No Mapping!");
         }
 
         mapping = Utils.annoAlias(mappingAnno.value(), mappingAnno.path());

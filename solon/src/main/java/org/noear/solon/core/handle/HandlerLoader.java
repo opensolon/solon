@@ -96,7 +96,7 @@ public class HandlerLoader extends HandlerAide {
      */
     protected void loadHandlerDo(HandlerSlots slots) {
         if (bMapping == null) {
-            throw new RuntimeException(bw.clz().getName() + " No @Mapping!");
+            throw new IllegalStateException(bw.clz().getName() + " No @Mapping!");
         }
 
         Handler handler = bw.raw();
