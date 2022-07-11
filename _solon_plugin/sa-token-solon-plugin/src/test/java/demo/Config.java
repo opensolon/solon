@@ -37,7 +37,15 @@ public class Config {
                 .addInclude("/**").addExclude("/favicon.ico")
 
                 // 认证函数: 每次请求执行
-                .setAuth(r -> SaRouter.match("/**", StpUtil::checkLogin))
+                .setAuth(s -> {
+                    SaRouter.match("/**", StpUtil::checkLogin);
+
+                    // 根据路由划分模块，不同模块不同鉴权
+                    SaRouter.match("/user/**", r -> StpUtil.checkPermission("user"));
+                    SaRouter.match("/admin/**", r -> StpUtil.checkPermission("admin"));
+                    SaRouter.match("/goods/**", r -> StpUtil.checkPermission("goods"));
+                    SaRouter.match("/orders/**", r -> StpUtil.checkPermission("orders"));
+                })
 
                 // 异常处理函数：每次认证函数发生异常时执行此函数
                 .setError(e -> {
