@@ -14,14 +14,22 @@ import org.noear.solon.annotation.Configuration;
 public class Config {
     @Bean
     public void saTokenPathInterceptor() {
-        Solon.app().before(new SaTokenRouteInterceptor((req, res, e) -> {
-            SaRouter.match("/**", StpUtil::checkLogin);
-            // 根据路由划分模块，不同模块不同鉴权
-            SaRouter.match("/user/**", r -> StpUtil.checkPermission("user"));
-            SaRouter.match("/admin/**", r -> StpUtil.checkPermission("admin"));
-            SaRouter.match("/goods/**", r -> StpUtil.checkPermission("goods"));
-            SaRouter.match("/orders/**", r -> StpUtil.checkPermission("orders"));
-        }));
+        Solon.app().before(new SaTokenRouteInterceptor()
+                .setFunction((req, res, e) -> {
+                    SaRouter.match("/**", StpUtil::checkLogin);
+                    // 根据路由划分模块，不同模块不同鉴权
+                    SaRouter.match("/user/**", r -> StpUtil.checkPermission("user"));
+                    SaRouter.match("/admin/**", r -> StpUtil.checkPermission("admin"));
+                    SaRouter.match("/goods/**", r -> StpUtil.checkPermission("goods"));
+                    SaRouter.match("/orders/**", r -> StpUtil.checkPermission("orders"));
+                })
+                .setError(e -> {
+                    System.out.println("---------- sa全局异常 ");
+                    System.out.println(e.getMessage());
+                    StpUtil.login(123);
+                    return e.getMessage();
+                })
+        );
     }
 
     @Bean

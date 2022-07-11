@@ -1,7 +1,9 @@
 package cn.dev33.satoken.solon.integration;
 
 import cn.dev33.satoken.exception.BackResultException;
+import cn.dev33.satoken.exception.SaTokenException;
 import cn.dev33.satoken.exception.StopMatchException;
+import cn.dev33.satoken.filter.SaFilterErrorStrategy;
 import cn.dev33.satoken.router.SaRouteFunction;
 import cn.dev33.satoken.solon.model.SaRequestForSolon;
 import cn.dev33.satoken.solon.model.SaResponseForSolon;
@@ -21,43 +23,56 @@ public class SaTokenRouteInterceptor implements Handler {
 	protected SaRouteFunction function = (req, res, handler) -> StpUtil.checkLogin();
 
 	/**
-	 * 创建一个路由拦截器
+	 * 异常处理函数：每次[认证函数]发生异常时执行此函数
 	 */
-	public SaTokenRouteInterceptor() {
-	}
+	protected SaFilterErrorStrategy error = e -> {
+		if (e instanceof SaTokenException) {
+			throw (SaTokenException) e;
+		} else {
+			throw new SaTokenException(e);
+		}
+	};
 
 	/**
-	 * 创建, 并指定[执行函数]
+	 * 写入[异常处理函数]：每次[认证函数]发生异常时执行此函数
 	 *
-	 * @param function [执行函数]
+	 * @param error see note
+	 * @return 对象自身
 	 */
-	public SaTokenRouteInterceptor(SaRouteFunction function) {
-		this.function = function;
+	public SaTokenRouteInterceptor setError(SaFilterErrorStrategy error) {
+		if (error != null) {
+			this.error = error;
+		}
+
+		return this;
 	}
 
-	/**
-	 * 静态方法快速构建一个
-	 *
-	 * @param function 自定义模式下的执行函数
-	 * @return sa路由拦截器
-	 */
-	public static SaTokenRouteInterceptor newInstance(SaRouteFunction function) {
-		return new SaTokenRouteInterceptor(function);
-	}
+	public SaTokenRouteInterceptor setFunction(SaRouteFunction function) {
+		if (function != null) {
+			this.function = function;
+		}
 
+		return this;
+	}
 
 	@Override
 	public void handle(Context ctx) throws Throwable {
 		try {
 			function.run(new SaRequestForSolon(), new SaResponseForSolon(), ctx);
 		} catch (StopMatchException e) {
-			// 停止匹配，进入Controller
+
 		} catch (BackResultException e) {
-			// 停止匹配，向前端输出结果
-			ctx.output(e.getMessage());
-			ctx.setHandled(true);
-			ctx.setRendered(true);
-			return;
+			// 1. 获取异常处理策略结果
+			Object result = error.run(e);
+
+			// 2. 写入输出流
+			if (result != null) {
+				ctx.render(result);
+				ctx.setHandled(true);
+				return;
+			} else {
+				throw e;
+			}
 		}
 	}
 }

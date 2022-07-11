@@ -100,13 +100,13 @@ public class SaTokenPathFilter implements Filter {
     /**
      * 认证函数：每次请求执行
      */
-    public SaFilterAuthStrategy auth = r -> {
+    protected SaFilterAuthStrategy auth = r -> {
     };
 
     /**
      * 异常处理函数：每次[认证函数]发生异常时执行此函数
      */
-    public SaFilterErrorStrategy error = e -> {
+    protected SaFilterErrorStrategy error = e -> {
         if (e instanceof SaTokenException) {
             throw (SaTokenException) e;
         } else {
@@ -117,7 +117,7 @@ public class SaTokenPathFilter implements Filter {
     /**
      * 前置函数：在每次[认证函数]之前执行
      */
-    public SaFilterAuthStrategy beforeAuth = r -> {
+    protected SaFilterAuthStrategy beforeAuth = r -> {
     };
 
     /**
