@@ -40,18 +40,12 @@ public class SaTokenRouteInterceptor implements Handler {
 	 * @return 对象自身
 	 */
 	public SaTokenRouteInterceptor setError(SaFilterErrorStrategy error) {
-		if (error != null) {
-			this.error = error;
-		}
-
+		this.error = error;
 		return this;
 	}
 
 	public SaTokenRouteInterceptor setFunction(SaRouteFunction function) {
-		if (function != null) {
-			this.function = function;
-		}
-
+		this.function = function;
 		return this;
 	}
 
