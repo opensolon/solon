@@ -165,16 +165,20 @@ public class SaTokenPathFilter implements Filter {
         } catch (SaTokenException e) {
             // 1. 获取异常处理策略结果
             Object result;
-            if(e instanceof BackResultException){
+            if (e instanceof BackResultException) {
                 result = e.getMessage();
-            }else{
+            } else {
                 result = error.run(e);
             }
 
             // 2. 写入输出流
-            ctx.render(result);
-            ctx.setHandled(true);
-            return;
+            if (result != null) {
+                ctx.render(result);
+                ctx.setHandled(true);
+                return;
+            } else {
+                throw e;
+            }
         } catch (Throwable e) {
             // 异常解包
             throw Utils.throwableUnwrap(e); //solon 的最后层还有保底处理
