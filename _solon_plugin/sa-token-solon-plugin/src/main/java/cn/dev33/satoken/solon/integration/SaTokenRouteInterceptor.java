@@ -13,7 +13,7 @@ import org.noear.solon.core.handle.Handler;
  * sa-token基于路由的拦截式鉴权 
  * @author kong
  */
-public class SaTokenRouterInterceptor implements Handler {
+public class SaTokenRouteInterceptor implements Handler {
 
 	/**
 	 * 每次进入拦截器的[执行函数]，默认为登录校验
@@ -23,7 +23,7 @@ public class SaTokenRouterInterceptor implements Handler {
 	/**
 	 * 创建一个路由拦截器
 	 */
-	public SaTokenRouterInterceptor() {
+	public SaTokenRouteInterceptor() {
 	}
 
 	/**
@@ -31,7 +31,7 @@ public class SaTokenRouterInterceptor implements Handler {
 	 *
 	 * @param function [执行函数]
 	 */
-	public SaTokenRouterInterceptor(SaRouteFunction function) {
+	public SaTokenRouteInterceptor(SaRouteFunction function) {
 		this.function = function;
 	}
 
@@ -41,8 +41,8 @@ public class SaTokenRouterInterceptor implements Handler {
 	 * @param function 自定义模式下的执行函数
 	 * @return sa路由拦截器
 	 */
-	public static SaTokenRouterInterceptor newInstance(SaRouteFunction function) {
-		return new SaTokenRouterInterceptor(function);
+	public static SaTokenRouteInterceptor newInstance(SaRouteFunction function) {
+		return new SaTokenRouteInterceptor(function);
 	}
 
 

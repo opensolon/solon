@@ -8,9 +8,9 @@ import org.noear.solon.core.aspect.Invocation;
  * @author noear
  * @since 1.4
  */
-public class SaTokenAnnoInterceptor implements Interceptor {
+public class SaTokenAnnotationInterceptor implements Interceptor {
     
-	public static final SaTokenAnnoInterceptor INSTANCE = new SaTokenAnnoInterceptor();
+	public static final SaTokenAnnotationInterceptor INSTANCE = new SaTokenAnnotationInterceptor();
 
     @Override
     public Object doIntercept(Invocation inv) throws Throwable {
