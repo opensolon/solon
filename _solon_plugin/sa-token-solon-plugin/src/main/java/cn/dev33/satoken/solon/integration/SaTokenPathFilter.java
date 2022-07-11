@@ -161,13 +161,19 @@ public class SaTokenPathFilter implements Filter {
             });
 
         } catch (StopMatchException e) {
-            // 停止匹配，进入Controller
-        } catch (BackResultException e) {
-            // 停止匹配，向前端输出结果
-            ctx.contentType("text/plain; charset=utf-8");
-            ctx.output(e.getMessage());
+
+        } catch (SaTokenException e) {
+            // 1. 获取异常处理策略结果
+            Object result;
+            if(e instanceof BackResultException){
+                result = e.getMessage();
+            }else{
+                result = error.run(e);
+            }
+
+            // 2. 写入输出流
+            ctx.render(result);
             ctx.setHandled(true);
-            ctx.setRendered(true);
             return;
         } catch (Throwable e) {
             // 异常解包
