@@ -165,6 +165,8 @@ public class SaTokenPathFilter implements Filter {
             // 停止匹配，向前端输出结果
             ctx.contentType("text/plain; charset=utf-8");
             ctx.output(e.getMessage());
+            ctx.setHandled(true);
+            ctx.setRendered(true);
             return;
         } catch (Throwable e) {
             // 异常解包

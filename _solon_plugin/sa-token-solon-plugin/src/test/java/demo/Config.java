@@ -5,7 +5,7 @@ import cn.dev33.satoken.config.SaTokenConfig;
 import cn.dev33.satoken.dao.SaTokenDao;
 import cn.dev33.satoken.router.SaRouter;
 import cn.dev33.satoken.solon.dao.SaTokenDaoOfRedis;
-import cn.dev33.satoken.solon.integration.SaTokenRouteInterceptor;
+import cn.dev33.satoken.solon.integration.SaTokenPathInterceptor;
 import cn.dev33.satoken.stp.StpUtil;
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.Bean;
@@ -32,7 +32,7 @@ public class Config {
 
     @Bean
     public void saTokenRouteInterceptor() {
-        Solon.app().before(SaTokenRouteInterceptor.newInstance((req, res, o) -> {
+        Solon.app().before(SaTokenPathInterceptor.newInstance((req, res, o) -> {
             // 根据路由划分模块，不同模块不同鉴权
             SaRouter.match("/user/**", r -> StpUtil.checkPermission("user"));
             SaRouter.match("/admin/**", r -> StpUtil.checkPermission("admin"));

@@ -1,7 +1,6 @@
 package cn.dev33.satoken.solon.integration;
 
 import cn.dev33.satoken.exception.BackResultException;
-import cn.dev33.satoken.exception.SaTokenException;
 import cn.dev33.satoken.exception.StopMatchException;
 import cn.dev33.satoken.router.SaRouteFunction;
 import cn.dev33.satoken.solon.model.SaRequestForSolon;
@@ -14,7 +13,7 @@ import org.noear.solon.core.handle.Handler;
  * sa-token基于路由的拦截式鉴权 
  * @author kong
  */
-public class SaTokenRouteInterceptor implements Handler {
+public class SaTokenPathInterceptor implements Handler {
 
 	/**
 	 * 每次进入拦截器的[执行函数]，默认为登录校验
@@ -24,26 +23,27 @@ public class SaTokenRouteInterceptor implements Handler {
 	/**
 	 * 创建一个路由拦截器
 	 */
-	public SaTokenRouteInterceptor() {
+	public SaTokenPathInterceptor() {
 	}
 
 	/**
 	 * 创建, 并指定[执行函数]
+	 *
 	 * @param function [执行函数]
 	 */
-	public SaTokenRouteInterceptor(SaRouteFunction function) {
+	public SaTokenPathInterceptor(SaRouteFunction function) {
 		this.function = function;
 	}
 
 	/**
-	 * 静态方法快速构建一个 
+	 * 静态方法快速构建一个
+	 *
 	 * @param function 自定义模式下的执行函数
-	 * @return sa路由拦截器 
+	 * @return sa路由拦截器
 	 */
-	public static SaTokenRouteInterceptor newInstance(SaRouteFunction function) {
-		return new SaTokenRouteInterceptor(function);
+	public static SaTokenPathInterceptor newInstance(SaRouteFunction function) {
+		return new SaTokenPathInterceptor(function);
 	}
-	
 
 
 	@Override
@@ -57,6 +57,7 @@ public class SaTokenRouteInterceptor implements Handler {
 			ctx.contentType("text/plain; charset=utf-8");
 			ctx.output(e.getMessage());
 			ctx.setHandled(true);
+			ctx.setRendered(true);
 			return;
 		}
 	}
