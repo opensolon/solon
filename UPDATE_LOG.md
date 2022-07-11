@@ -2,11 +2,12 @@
 * 新增 solon.vault 插件（可对敏感配置进行加密处理）
 * 增加 请求上下文路径对'/'去重处理
 * 增加 状态码快捷代理模式 app.onStatus(code,handler);
-* 解决 jlhttp 的 queryString 里不能出现多个'/'的问题（最好还是编码下）
-* 简化 用户层面响应状态的处理
-* 调整 ModelAndView 为非Map类
 * 增加 实体接收 UploadedFile 的支持
+* 解决 jlhttp 的 queryString 里不能出现多个'/'的问题（最好还是编码下）
+* 调整 ModelAndView 为非Map类
 * 调整 Context::autoMultipart 默认为 true
+* 简化 用户层面响应状态的处理
+* 优化 sa-token-solon-plugin 适配
 
 #### 1.9.1
 * 新增 dubbo3-solon-plugin 插件
