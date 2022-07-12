@@ -6,7 +6,6 @@
 * 解决 jlhttp 的 queryString 里不能出现多个'/'的问题（最好还是编码下）
 * 调整 ModelAndView 为非Map类
 * 调整 Context::autoMultipart 默认为 true
-* 简化 用户层面响应状态的处理
 * 优化 sa-token-solon-plugin 适配
 
 #### 1.9.1
