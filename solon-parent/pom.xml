@@ -1361,7 +1361,6 @@
         <module>../_solon_extend/solon.boot.smarthttp</module>
         <module>../_solon_extend/solon.boot.jetty</module>
         <module>../_solon_extend/solon.boot.undertow</module>
-        <module>../_solon_extend/solon.boot.vertx</module>
         <module>../_solon_extend/solon.boot.tomcat</module>
 
         <module>../_solon_extend/solon.boot.websocket</module>
