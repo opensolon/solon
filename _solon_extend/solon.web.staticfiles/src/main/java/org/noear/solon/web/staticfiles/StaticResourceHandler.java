@@ -78,9 +78,8 @@ public class StaticResourceHandler implements Handler {
                 ctx.headerSet(LAST_MODIFIED, modified_time.toString());
             }
 
-            ctx.contentType(conentType);
-
             try (InputStream stream = uri.openStream()) {
+                ctx.contentType(conentType);
                 ctx.status(200);
                 ctx.output(stream);
             }
