@@ -54,7 +54,7 @@
         <hikaricp.ver>4.0.3</hikaricp.ver>
 
         <slf4j.ver>1.7.36</slf4j.ver>
-        <log4j.ver>2.17.2</log4j.ver>
+        <log4j.ver>2.18.0</log4j.ver>
         <logback.ver>1.2.11</logback.ver>
 
         <netty.ver>4.1.50.Final</netty.ver>
