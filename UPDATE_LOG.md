@@ -1,4 +1,4 @@
-#### 1.9.3
+#### 1.9.3-M2
 * 解决 solon.web.staticfiles 扩展仓库的文件被读取后不能删除的问题
 * 插件 solon.validation 增加分组验证支持
 * 插件 aws-s3-solon-plugin 升级 aws-java-sdk-s3 为 1.12.261
