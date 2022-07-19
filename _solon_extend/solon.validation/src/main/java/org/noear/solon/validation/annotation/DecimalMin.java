@@ -13,4 +13,9 @@ public @interface DecimalMin {
     double value();
 
     String message() default "";
+
+    /**
+     * 校验分组
+     * */
+    Class<?>[] groups() default {};
 }

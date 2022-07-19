@@ -19,4 +19,9 @@ public @interface Pattern {
      * 提示消息
      * */
     String message() default "";
+
+    /**
+     * 校验分组
+     * */
+    Class<?>[] groups() default {};
 }

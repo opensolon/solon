@@ -15,4 +15,9 @@ public @interface NoRepeatSubmit {
     int seconds() default 1;
 
     String message() default "";
+
+    /**
+     * 校验分组
+     * */
+    Class<?>[] groups() default {};
 }

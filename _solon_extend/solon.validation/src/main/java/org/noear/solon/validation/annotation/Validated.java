@@ -1,5 +1,7 @@
 package org.noear.solon.validation.annotation;
 
+import org.noear.solon.annotation.Alias;
+
 import java.lang.annotation.*;
 
 /**
@@ -10,5 +12,6 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface Validated {
+    @Alias("groups")
     Class<?>[] value() default {};
 }

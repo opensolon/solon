@@ -16,4 +16,9 @@ public @interface Size {
     int max() default Integer.MAX_VALUE;
 
     String message() default "";
+
+    /**
+     * 校验分组
+     * */
+    Class<?>[] groups() default {};
 }
