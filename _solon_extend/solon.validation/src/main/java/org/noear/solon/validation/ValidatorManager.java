@@ -306,6 +306,10 @@ public class ValidatorManager {
 
                 if (valid != null) {
 
+                    if(inGroup(valid.groups(anno), groups) == false){
+                        continue;
+                    }
+
                     tmp.setLength(0);
                     Result rst = valid.validateOfValue(anno, field.get(obj), tmp);
 
@@ -347,5 +351,25 @@ public class ValidatorManager {
                 throw new RuntimeException(ex);
             }
         }
+    }
+
+    private static boolean inGroup(Class<?>[] annoGroups, Class<?>[] groups) {
+        if (annoGroups == null || annoGroups.length == 0) {
+            return true;
+        }
+
+        if (groups == null || groups.length == 0) {
+            return true;
+        }
+
+        for(Class<?> g1 : groups){
+            for(Class<?> g2: annoGroups){
+                if(g1 == g2){
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }
