@@ -11,7 +11,7 @@ import java.lang.annotation.Annotation;
  * @author noear
  * @since 1.0
  * */
-//@FunctionalInterface
+@FunctionalInterface
 public interface Validator<T extends Annotation> {
     default String message(T anno) {
         return "";
