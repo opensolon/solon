@@ -306,7 +306,7 @@ public class ValidatorManager {
 
                 if (valid != null) {
 
-                    if(inGroup(valid.groups(anno), groups) == false){
+                    if (inGroup(valid.groups(anno), groups) == false) {
                         continue;
                     }
 
@@ -356,20 +356,20 @@ public class ValidatorManager {
     private static boolean inGroup(Class<?>[] annoGroups, Class<?>[] groups) {
         if (annoGroups == null || annoGroups.length == 0) {
             return true;
-        }
-
-        if (groups == null || groups.length == 0) {
-            return true;
-        }
-
-        for(Class<?> g1 : groups){
-            for(Class<?> g2: annoGroups){
-                if(g1 == g2){
-                    return true;
+        } else {
+            if (groups == null || groups.length == 0) {
+                return false;
+            } else {
+                for (Class<?> g1 : groups) {
+                    for (Class<?> g2 : annoGroups) {
+                        if (g1 == g2) {
+                            return true;
+                        }
+                    }
                 }
+
+                return false;
             }
         }
-
-        return false;
     }
 }
