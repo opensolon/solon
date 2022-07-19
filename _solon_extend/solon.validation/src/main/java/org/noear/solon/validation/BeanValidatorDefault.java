@@ -18,6 +18,6 @@ public class BeanValidatorDefault implements BeanValidator {
      */
     @Override
     public Result validate(Object obj, Class<?>... groups) {
-        return ValidatorManager.validateOfEntity(obj);
+        return ValidatorManager.validateOfEntity(obj, groups);
     }
 }

@@ -18,6 +18,11 @@ public interface Validator<T extends Annotation> {
     }
 
     /**
+     * 驱
+     * */
+    default Class<?>[] groups(T anno){return null;}
+
+    /**
      * 验证值
      *
      * @param anno 验证注解

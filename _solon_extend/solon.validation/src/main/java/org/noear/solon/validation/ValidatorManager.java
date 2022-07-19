@@ -240,27 +240,27 @@ public class ValidatorManager {
      * 执行实体的验证处理
      */
     @Note("执行实体的验证处理")
-    public static Result validateOfEntity(Object obj) {
+    public static Result validateOfEntity(Object obj, Class<?>[] groups) {
         try {
             if (obj instanceof Collection) {
-                return validateOfEntityAry(obj);
+                return validateOfEntityAry(obj, groups);
             } else if (obj instanceof Map) {
-                return validateOfEntityMap(obj);
+                return validateOfEntityMap(obj, groups);
             } else {
-                return validateOfEntityOne(obj);
+                return validateOfEntityOne(obj, groups);
             }
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private static Result validateOfEntityAry(Object obj) {
+    private static Result validateOfEntityAry(Object obj, Class<?>[] groups) {
         Iterator iterator = ((Collection) obj).iterator();
         while (iterator.hasNext()) {
             Object val2 = iterator.next();
 
             if (val2 != null) {
-                Result rst = validateOfEntity(val2);
+                Result rst = validateOfEntity(val2, groups);
 
                 if (rst.getCode() != Result.SUCCEED_CODE) {
                     return rst;
@@ -271,13 +271,13 @@ public class ValidatorManager {
         return Result.succeed();
     }
 
-    private static Result validateOfEntityMap(Object obj) {
+    private static Result validateOfEntityMap(Object obj, Class<?>[] groups) {
         Iterator iterator = ((Map) obj).values().iterator();
         while (iterator.hasNext()) {
             Object val2 = iterator.next();
 
             if (val2 != null) {
-                Result rst = validateOfEntity(val2);
+                Result rst = validateOfEntity(val2, groups);
 
                 if (rst.getCode() != Result.SUCCEED_CODE) {
                     return rst;
@@ -288,7 +288,7 @@ public class ValidatorManager {
         return Result.succeed();
     }
 
-    private static Result validateOfEntityOne(Object obj) throws IllegalAccessException {
+    private static Result validateOfEntityOne(Object obj, Class<?>[] groups) throws IllegalAccessException {
         if (obj == null) {
             //null，由 @NotNull 来验证
             return Result.succeed();
@@ -305,6 +305,7 @@ public class ValidatorManager {
                 Validator valid = ValidatorManager.get(anno.annotationType());
 
                 if (valid != null) {
+
                     tmp.setLength(0);
                     Result rst = valid.validateOfValue(anno, field.get(obj), tmp);
 
