@@ -24,6 +24,11 @@ public class PatternValidator implements Validator<Pattern> {
     }
 
     @Override
+    public Class<?>[] groups(Pattern anno) {
+        return anno.groups();
+    }
+
+    @Override
     public Result validateOfValue(Pattern anno, Object val0, StringBuilder tmp) {
         if (val0 != null && val0 instanceof String == false) {
             return Result.failure();

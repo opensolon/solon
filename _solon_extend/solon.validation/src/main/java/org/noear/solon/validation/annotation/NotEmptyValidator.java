@@ -19,6 +19,11 @@ public class NotEmptyValidator implements Validator<NotEmpty> {
     }
 
     @Override
+    public Class<?>[] groups(NotEmpty anno) {
+        return anno.groups();
+    }
+
+    @Override
     public Result validateOfValue(NotEmpty anno, Object val0, StringBuilder tmp) {
         if (val0 instanceof String == false) {
             return Result.failure();

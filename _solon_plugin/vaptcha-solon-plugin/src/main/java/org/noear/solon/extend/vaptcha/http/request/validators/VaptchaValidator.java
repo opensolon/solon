@@ -30,6 +30,11 @@ public class VaptchaValidator implements Validator<Vaptcha> {
         return annotation.message();
     }
 
+    @Override
+    public Class<?>[] groups(Vaptcha anno) {
+        return anno.groups();
+    }
+
 
     /**
      * 校验实体的字段
@@ -53,7 +58,7 @@ public class VaptchaValidator implements Validator<Vaptcha> {
     }
 
     private boolean verify(Vaptcha annotation, iVaptcha vaptcha) {
-        Result<?> result0 = ValidatorManager.validateOfEntity(vaptcha);
+        Result<?> result0 = ValidatorManager.validateOfEntity(vaptcha, null);
         if (result0.getCode() == Result.FAILURE_CODE) {
             return false;
         }

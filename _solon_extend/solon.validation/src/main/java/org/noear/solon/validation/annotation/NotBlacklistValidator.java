@@ -25,6 +25,11 @@ public class NotBlacklistValidator implements Validator<NotBlacklist> {
     }
 
     @Override
+    public Class<?>[] groups(NotBlacklist anno) {
+        return anno.groups();
+    }
+
+    @Override
     public Result validateOfContext(Context ctx, NotBlacklist anno, String name, StringBuilder tmp) {
         if (checker.check(anno, ctx)) {
             return Result.succeed();

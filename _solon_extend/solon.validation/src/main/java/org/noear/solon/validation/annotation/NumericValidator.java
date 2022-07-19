@@ -20,6 +20,11 @@ public class NumericValidator implements Validator<Numeric> {
     }
 
     @Override
+    public Class<?>[] groups(Numeric anno) {
+        return anno.groups();
+    }
+
+    @Override
     public Result validateOfValue(Numeric anno, Object val0, StringBuilder tmp) {
         if (val0 != null && val0 instanceof String == false) {
             return Result.failure();

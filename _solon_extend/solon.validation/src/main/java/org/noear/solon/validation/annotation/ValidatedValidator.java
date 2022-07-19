@@ -25,6 +25,11 @@ public class ValidatedValidator implements Validator<Validated> {
     }
 
     @Override
+    public Class<?>[] groups(Validated anno) {
+        return anno.value();
+    }
+
+    @Override
     public Result validateOfValue(Validated anno, Object val, StringBuilder tmp) {
         return validator.validate(val, anno.value());
     }

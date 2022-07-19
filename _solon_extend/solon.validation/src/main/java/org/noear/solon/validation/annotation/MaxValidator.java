@@ -19,6 +19,11 @@ public class MaxValidator implements Validator<Max> {
     }
 
     @Override
+    public Class<?>[] groups(Max anno) {
+        return anno.groups();
+    }
+
+    @Override
     public Result validateOfValue(Max anno, Object val0, StringBuilder tmp) {
         if (val0 instanceof Number == false) {
             return Result.failure();

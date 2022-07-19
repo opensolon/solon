@@ -20,6 +20,11 @@ public class SizeValidator implements Validator<Size> {
     }
 
     @Override
+    public Class<?>[] groups(Size anno) {
+        return anno.groups();
+    }
+
+    @Override
     public Result validateOfValue(Size anno, Object val0, StringBuilder tmp) {
         if (val0 != null && val0 instanceof Collection == false) {
             return Result.failure();

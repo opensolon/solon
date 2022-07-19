@@ -26,6 +26,11 @@ public class WhitelistValidator implements Validator<Whitelist> {
     }
 
     @Override
+    public Class<?>[] groups(Whitelist anno) {
+        return anno.groups();
+    }
+
+    @Override
     public Result validateOfContext(Context ctx, Whitelist anno, String name, StringBuilder tmp) {
         if (checker.check(anno, ctx)) {
             return Result.succeed();

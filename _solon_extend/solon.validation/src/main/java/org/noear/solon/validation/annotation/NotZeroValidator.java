@@ -20,6 +20,11 @@ public class NotZeroValidator implements Validator<NotZero> {
     }
 
     @Override
+    public Class<?>[] groups(NotZero anno) {
+        return anno.groups();
+    }
+
+    @Override
     public Result validateOfValue(NotZero anno, Object val0, StringBuilder tmp) {
         if (val0 instanceof Number == false) {
             return Result.failure();

@@ -19,6 +19,11 @@ public class MinValidator implements Validator<Min> {
     }
 
     @Override
+    public Class<?>[] groups(Min anno) {
+        return anno.groups();
+    }
+
+    @Override
     public Result validateOfValue(Min anno, Object val0, StringBuilder tmp) {
         if (val0 instanceof Number == false) {
             return Result.failure();

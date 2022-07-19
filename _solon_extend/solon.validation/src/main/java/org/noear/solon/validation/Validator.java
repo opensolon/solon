@@ -11,16 +11,17 @@ import java.lang.annotation.Annotation;
  * @author noear
  * @since 1.0
  * */
-@FunctionalInterface
+//@FunctionalInterface
 public interface Validator<T extends Annotation> {
     default String message(T anno) {
         return "";
     }
 
     /**
-     * 驱
+     * 校验分组
      * */
     default Class<?>[] groups(T anno){return null;}
+
 
     /**
      * 验证值
