@@ -15,11 +15,11 @@ public interface CloudMetricService {
      * @param group 组
      * @param category 类别
      * @param item 项目
-     * @param num 数值
+     * @param val 数值
      */
-    void addCount(String group, String category, String item, long num);
-    default void addCount(String category, String item, long num) {
-        addCount(Solon.cfg().appName(), category, item, num);
+    void addCount(String group, String category, String item, long val);
+    default void addCount(String category, String item, long val) {
+        addCount(Solon.cfg().appName(), category, item, val);
     }
 
     /**
@@ -28,11 +28,11 @@ public interface CloudMetricService {
      * @param group 组
      * @param category 类别
      * @param item 项目
-     * @param num 数值
+     * @param val 数值
      */
-    void addMeter(String group, String category, String item, long num);
-    default void addMeter(String category, String item, long num) {
-        addMeter(Solon.cfg().appName(), category, item, num);
+    void addMeter(String group, String category, String item, long val);
+    default void addMeter(String category, String item, long val) {
+        addMeter(Solon.cfg().appName(), category, item, val);
     }
 
     /**
@@ -41,10 +41,10 @@ public interface CloudMetricService {
      * @param group 组
      * @param category 类别
      * @param item 项目
-     * @param val 值
+     * @param val 数值
      */
-    void addGauge(String group, String category, String item, Object val);
-    default void addGauge(String category, String item, Object val) {
+    void addGauge(String group, String category, String item, long val);
+    default void addGauge(String category, String item, long val) {
         addGauge(Solon.cfg().appName(), category, item, val);
     }
 }
