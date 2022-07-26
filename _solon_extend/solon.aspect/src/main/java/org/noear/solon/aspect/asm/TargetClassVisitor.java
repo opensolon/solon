@@ -53,7 +53,9 @@ public class TargetClassVisitor extends ClassVisitor {
             MethodBean methodBean = new MethodBean(access, name, descriptor);
             declaredMethods.add(methodBean);
             if ((access & Opcodes.ACC_PUBLIC) == Opcodes.ACC_PUBLIC) {
-                methods.add(methodBean);
+                if (!methods.contains(methodBean)) { //todo:避免出现重复的
+                    methods.add(methodBean);
+                }
             }
         }
         return super.visitMethod(access, name, descriptor, signature, exceptions);
