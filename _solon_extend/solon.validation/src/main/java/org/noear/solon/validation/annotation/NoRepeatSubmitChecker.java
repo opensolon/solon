@@ -15,6 +15,8 @@ public interface NoRepeatSubmitChecker {
      * @param ctx 上下文
      * @param submitHash 提交内容的哈希
      * @param limitSeconds 限制秒数
+     *
+     * @return 没有重复
      * */
     boolean check(NoRepeatSubmit anno, Context ctx,  String submitHash, int limitSeconds);
 }

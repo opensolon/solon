@@ -11,6 +11,8 @@ public interface WhitelistChecker {
     /**
      * @param anno 注解
      * @param ctx 上下文
+     *
+     * @return 是白名单
      * */
     boolean check(Whitelist anno, Context ctx);
 }
