@@ -28,6 +28,8 @@ import java.util.function.Predicate;
 public abstract class BeanContainer {
     private final Props props;
     private final ClassLoader classLoader;
+    private Map<Object,Object> attrs = new HashMap<>();
+
 
     public BeanContainer(ClassLoader classLoader, Props props) {
         this.classLoader = classLoader;
@@ -40,6 +42,10 @@ public abstract class BeanContainer {
         } else {
             return props;
         }
+    }
+
+    public Map<Object, Object> getAttrs() {
+        return attrs;
     }
 
     public ClassLoader getClassLoader() {
@@ -100,6 +106,7 @@ public abstract class BeanContainer {
         beanWrapSet.clear();
         beans.clear();
         clzMapping.clear();
+        attrs.clear();
 
 //        beanBuilders.clear();
 //        beanInjectors.clear();

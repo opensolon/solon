@@ -1,6 +1,7 @@
 package org.noear.solon.aspect.asm;
 
 
+import org.noear.solon.core.AopContext;
 import org.objectweb.asm.*;
 
 import java.io.InputStream;
@@ -52,7 +53,8 @@ public class AsmProxy {
      * @param targetParam       被代理对象的某一个构造器的参数，用于实例化构造器
      * @return
      */
-    public static Object newProxyInstance(InvocationHandler invocationHandler,
+    public static Object newProxyInstance(AopContext context,
+                                          InvocationHandler invocationHandler,
                                           Class<?> targetClass,
                                           Constructor<?> targetConstructor,
                                           Object... targetParam) {
@@ -60,7 +62,12 @@ public class AsmProxy {
             throw new IllegalArgumentException("argument is null");
         }
 
-        AsmProxyClassLoader classLoader = new AsmProxyClassLoader(targetClass.getClassLoader());
+        //确定代理类加载器
+        AsmProxyClassLoader classLoader = (AsmProxyClassLoader)context.getAttrs().get(AsmProxyClassLoader.class);
+        if(classLoader == null) {
+            classLoader = new AsmProxyClassLoader(context.getClassLoader());
+            context.getAttrs().put(AsmProxyClassLoader.class, classLoader);
+        }
 
         try {
             // 查看是否有缓存
