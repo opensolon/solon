@@ -28,7 +28,7 @@ import java.util.function.Predicate;
 public abstract class BeanContainer {
     private final Props props;
     private final ClassLoader classLoader;
-    private Map<Object,Object> attrs = new HashMap<>();
+    private Map<Class<?>,Object> attrs = new HashMap<>();
 
 
     public BeanContainer(ClassLoader classLoader, Props props) {
@@ -44,7 +44,7 @@ public abstract class BeanContainer {
         }
     }
 
-    public Map<Object, Object> getAttrs() {
+    public Map<Class<?>, Object> getAttrs() {
         return attrs;
     }
 
