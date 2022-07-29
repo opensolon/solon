@@ -1,8 +1,9 @@
 #### 1.9.4
-* 解决 @Service 重写虚拟函数时会出错的问题（下普通类的重写也会出错，也要改）
-* 解决 websocket 可能会发一次空数据的情况(1.9.2 出现的)
+* 解决 @Service 类重写基类函数时会出错的问题
+* 解决 Websocket 可能会发一次空数据的情况(1.9.2 出现的)
 * 解决 NamedThreadFactory 前缀处理错误
 * 解决 @Mapping("GET hello?age=12") String sayHello(String name)，会出现两个?的问题
+* 调整 solon-api 快捷包增加 solon.sessionstate.local 插件
 
 #### 1.9.3
 * 解决 solon.web.staticfiles 扩展仓库的文件被读取后不能删除的问题
