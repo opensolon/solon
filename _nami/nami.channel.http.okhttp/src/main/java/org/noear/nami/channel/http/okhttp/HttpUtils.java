@@ -127,7 +127,7 @@ class HttpUtils {
             case "HEAD":_builder.method("HEAD",null);break;
             case "OPTIONS":_builder.method("OPTIONS",null);break;
             case "TRACE":_builder.method("TRACE",null);break;
-            default: throw new RuntimeException("This method is not supported");
+            default: throw new IllegalStateException("This method is not supported");
         }
 
         Call call = httpClient.newCall(_builder.build());

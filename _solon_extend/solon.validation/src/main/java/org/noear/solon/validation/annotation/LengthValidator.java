@@ -21,6 +21,11 @@ public class LengthValidator implements Validator<Length> {
     }
 
     @Override
+    public Class<?>[] groups(Length anno) {
+        return anno.groups();
+    }
+
+    @Override
     public Result validateOfValue(Length anno, Object val0, StringBuilder tmp) {
         if (val0 != null && val0 instanceof String == false) {
             return Result.failure();

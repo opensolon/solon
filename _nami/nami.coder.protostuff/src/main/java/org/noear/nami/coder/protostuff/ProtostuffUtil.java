@@ -26,7 +26,7 @@ public class ProtostuffUtil {
         } catch (RuntimeException e) {
             throw e;
         } catch (Throwable e) {
-            throw new IllegalStateException(e.getMessage());
+            throw new RuntimeException(e);
         } finally {
             if (buffer != null) {
                 buffer.clear();
@@ -42,7 +42,7 @@ public class ProtostuffUtil {
         } catch (RuntimeException e) {
             throw e;
         } catch (Throwable e) {
-            throw new IllegalStateException(e.getMessage(), e);
+            throw new RuntimeException(e);
         }
     }
 

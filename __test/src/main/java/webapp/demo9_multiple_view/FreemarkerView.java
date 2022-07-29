@@ -9,10 +9,11 @@ import org.noear.solon.core.handle.ModelAndView;
  * */
 
 @Controller
-public class FreemarkerView extends ViewBase{
+public class FreemarkerView extends ViewBase {
     @Mapping("/demo9/view/ftl")
-    public ModelAndView view() {
-        ModelAndView model = new ModelAndView("freemarker.ftl");
+    public ModelAndView view(ModelAndView model) {
+        model.view("freemarker.ftl");
+
         model.put("title", "dock");
         model.put("msg", "你好 world!");
 

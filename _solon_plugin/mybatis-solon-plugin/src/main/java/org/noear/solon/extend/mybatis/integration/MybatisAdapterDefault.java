@@ -179,7 +179,7 @@ public class MybatisAdapterDefault implements MybatisAdapter {
         });
 
         if (mappers.size() == 0) {
-            throw new RuntimeException("Please add the mappers configuration!");
+            throw new IllegalStateException("Please add the mappers configuration!");
         }
     }
 

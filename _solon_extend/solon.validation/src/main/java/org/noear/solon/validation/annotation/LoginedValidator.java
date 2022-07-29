@@ -29,6 +29,11 @@ public class LoginedValidator implements Validator<Logined> {
     }
 
     @Override
+    public Class<?>[] groups(Logined anno) {
+        return anno.groups();
+    }
+
+    @Override
     public Result validateOfContext(Context ctx, Logined anno, String name, StringBuilder tmp) {
         String userKeyName = anno.value();
         if(Utils.isEmpty(userKeyName)){

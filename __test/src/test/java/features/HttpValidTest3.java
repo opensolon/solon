@@ -73,4 +73,16 @@ public class HttpValidTest3 extends HttpTestBase {
         data.put("field30","333-23333");
         assert path("/demo2/valid/bean3").data(data).post().contains("OK");
     }
+
+    @Test
+    public void test_bean4() throws IOException {
+        assert path("/demo2/valid/bean4?mobile=x&password=x&id=1").get().equals("OK");
+        assert path("/demo2/valid/bean4?mobile=x&password=x").get().equals("OK");
+    }
+
+    @Test
+    public void test_bean4_update() throws IOException {
+        assert path("/demo2/valid/bean4_update?mobile=x&password=x&id=1").get().equals("OK");
+        assert path("/demo2/valid/bean4_update?mobile=x&password=x").get().equals("OK") == false;
+    }
 }

@@ -20,6 +20,12 @@ import java.io.PrintWriter;
 import java.net.URI;
 import java.net.URL;
 
+/**
+ * Enjoy 视图渲染器
+ *
+ * @author noear
+ * @since 1.0
+ * */
 public class EnjoyRender implements Render {
 
     private static EnjoyRender _global;

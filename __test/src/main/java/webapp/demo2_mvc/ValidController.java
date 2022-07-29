@@ -170,4 +170,14 @@ public class ValidController {
     public String bean3(@Validated ValidModel3 model) {
         return "OK";
     }
+
+    @Mapping("bean4")
+    public String bean4(@Validated ValidModel4 model) {
+        return "OK";
+    }
+
+    @Mapping("bean4_update")
+    public String bean4_update(@Validated(UpdateModel.class) ValidModel4 model) {
+        return "OK";
+    }
 }

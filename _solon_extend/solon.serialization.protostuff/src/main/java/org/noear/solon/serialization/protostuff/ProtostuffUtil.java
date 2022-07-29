@@ -24,8 +24,8 @@ public class ProtostuffUtil {
             Schema schema = WRAPPER_SCHEMA;
 
             return ProtostuffIOUtil.toByteArray(serializerObj, schema, buffer);
-        } catch (Exception e) {
-            throw new IllegalStateException(e.getMessage());
+        } catch (Throwable e) {
+            throw new RuntimeException(e);
         } finally {
             buffer.clear();
         }
@@ -37,8 +37,8 @@ public class ProtostuffUtil {
             DataWrapper<T> wrapper = new DataWrapper<>();
             ProtostuffIOUtil.mergeFrom(data, wrapper, WRAPPER_SCHEMA);
             return wrapper.getData();
-        } catch (Exception e) {
-            throw new IllegalStateException(e.getMessage(), e);
+        } catch (Throwable e) {
+            throw new RuntimeException(e);
         }
     }
 

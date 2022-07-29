@@ -413,7 +413,7 @@ public abstract class BeanContainer {
             Properties val = Utils.loadProperties(Utils.getResource(getClassLoader(),url));
 
             if (val == null) {
-                throw new RuntimeException(name + "  failed to load!");
+                throw new IllegalStateException(name + "  failed to load!");
             }
 
             if (Properties.class == varH.getType()) {
@@ -459,11 +459,12 @@ public abstract class BeanContainer {
         }
     }
 
-    protected void beanInjectProperties(Class<?> clz, BeanWrap bw){
+    protected void beanInjectProperties(Class<?> clz, Object obj){
         Inject typeInj = clz.getAnnotation(Inject.class);
+
         if (typeInj != null && Utils.isNotEmpty(typeInj.value())) {
             if (typeInj.value().startsWith("${")) {
-                Utils.injectProperties(bw.raw(), getProps().getPropByExpr(typeInj.value()));
+                Utils.injectProperties(obj, getProps().getPropByExpr(typeInj.value()));
             }
         }
     }

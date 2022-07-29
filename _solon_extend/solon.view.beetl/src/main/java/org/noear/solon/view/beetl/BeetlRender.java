@@ -21,6 +21,12 @@ import java.io.OutputStream;
 import java.net.URI;
 import java.net.URL;
 
+/**
+ * Beetl 视图渲染器
+ *
+ * @author noear
+ * @since 1.0
+ * */
 public class BeetlRender implements Render {
 
     private static BeetlRender _global;

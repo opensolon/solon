@@ -1,12 +1,12 @@
 package org.noear.solon.core.wrap;
 
 import org.noear.solon.core.handle.Context;
+import org.noear.solon.core.handle.UploadedFile;
 import org.noear.solon.core.util.ConvertUtil;
 
 import java.lang.reflect.*;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -176,7 +176,11 @@ public class ClassWrap {
                         Object val = ConvertUtil.to(p, p.getType(), key, val0, ctx);
                         argsV[i] = val;
                     } else {
-                        argsV[i] = null;
+                        if(p.getType() == UploadedFile.class){
+                            argsV[i] = ctx.file(key);//如果是 UploadedFile
+                        }else {
+                            argsV[i] = null;
+                        }
                     }
                 }
 
@@ -185,13 +189,13 @@ public class ClassWrap {
             } else {
                 Object obj = clz().newInstance();
 
-                fill(obj, data, ctx);
+                doFill(obj, data, ctx);
 
                 return (T) obj;
             }
         } catch (RuntimeException ex) {
             throw ex;
-        } catch (Exception ex) {
+        } catch (Throwable ex) {
             throw new RuntimeException(ex);
         }
     }
@@ -202,7 +206,13 @@ public class ClassWrap {
      * @param data 填充数据
      */
     public void fill(Object bean, Function<String, String> data) {
-        fill(bean, data, null);
+        try {
+            doFill(bean, data, null);
+        } catch (RuntimeException ex) {
+            throw ex;
+        } catch (Throwable ex) {
+            throw new RuntimeException(ex);
+        }
     }
 
     /**
@@ -211,17 +221,24 @@ public class ClassWrap {
      * @param data 填充数据
      * @param ctx  上下文
      */
-    private void fill(Object bean, Function<String, String> data, Context ctx) {
+    private void doFill(Object bean, Function<String, String> data, Context ctx) throws Exception {
         for (Map.Entry<String, FieldWrap> kv : fieldAllWrapsMap.entrySet()) {
             String key = kv.getKey();
             String val0 = data.apply(key);
 
-            if (val0 != null) {
-                FieldWrap fw = kv.getValue();
+            FieldWrap fw = kv.getValue();
 
+            if (val0 != null) {
                 //将 string 转为目标 type，并为字段赋值
                 Object val = ConvertUtil.to(fw.field, fw.type, key, val0, ctx);
                 fw.setValue(bean, val);
+            } else {
+                if (ctx != null && fw.type == UploadedFile.class) {
+                    UploadedFile file1 = ctx.file(key);
+                    if (file1 != null) {
+                        fw.setValue(bean, file1);
+                    }
+                }
             }
         }
     }

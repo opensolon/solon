@@ -192,8 +192,8 @@ public class JlHttpContext extends Context {
                 _paramMap.putAll(_request.getParams());
             } catch (RuntimeException e) {
                 throw e;
-            } catch (Exception e) {
-                throw new IllegalStateException(e);
+            } catch (Throwable e) {
+                throw new RuntimeException(e);
             }
         }
 

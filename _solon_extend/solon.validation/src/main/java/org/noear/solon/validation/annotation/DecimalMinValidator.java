@@ -19,6 +19,11 @@ public class DecimalMinValidator implements Validator<DecimalMin> {
     }
 
     @Override
+    public Class<?>[] groups(DecimalMin anno) {
+        return anno.groups();
+    }
+
+    @Override
     public Result validateOfValue(DecimalMin anno, Object val0, StringBuilder tmp) {
         if (val0 instanceof Double == false) {
             return Result.failure();

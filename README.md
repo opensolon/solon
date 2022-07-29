@@ -45,7 +45,7 @@
 
 更现代感的应用开发框架。**更快、更小、更少、更自由！**
 
-支持jdk8+；主框架0.1mb；组合不同的插件应对不同需求；方便定制；快速开发。
+支持jdk8、jdk11、jdk17+；主框架0.1mb；组合不同的插件应对不同需求；方便定制；快速开发。
 
 * 克制、简洁、开放、生态
 * Http、WebSocket、Socket 三种信号统一的开发体验（俗称：三源合一）
@@ -55,6 +55,7 @@
 * 集合 Handler + Context 和 Listener + Message 两种架构模式；强调插件式扩展；适应不同的应用场景
 * 插件可扩展可切换：启动插件，扩展插件，序列化插件，数据插件，会话状态插件，视图插件(可共存) 等...
 * 支持 GraalVm Native 打包
+* 允许 业务插件 热插、热拨
 * 体验与 Spring Boot 相近，迁移成本低： [《Solon 特性简集，相较于 Springboot 有什么区别？》](https://my.oschina.net/noear/blog/4863844)
 
 
@@ -75,7 +76,7 @@
 <parent>
     <groupId>org.noear</groupId>
     <artifactId>solon-parent</artifactId>
-    <version>1.9.2-M3</version>
+    <version>1.9.4-M2</version>
 </parent>
 
 <dependencies>

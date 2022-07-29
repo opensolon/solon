@@ -31,7 +31,7 @@ public class PluginManager {
         }
     }
 
-    public synchronized Collection<PluginInfo> getPlugins(){
+    public synchronized static Collection<PluginInfo> getPlugins(){
         return pluginMap.values();
     }
 

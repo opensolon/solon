@@ -6,6 +6,7 @@ import org.noear.solon.core.handle.Handler;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.web.staticfiles.integration.XPluginProp;
 
+import java.io.InputStream;
 import java.net.URL;
 import java.util.Date;
 
@@ -77,10 +78,11 @@ public class StaticResourceHandler implements Handler {
                 ctx.headerSet(LAST_MODIFIED, modified_time.toString());
             }
 
-            ctx.contentType(conentType);
-
-            ctx.status(200);
-            ctx.output(uri.openStream());
+            try (InputStream stream = uri.openStream()) {
+                ctx.contentType(conentType);
+                ctx.status(200);
+                ctx.output(stream);
+            }
         }
     }
 

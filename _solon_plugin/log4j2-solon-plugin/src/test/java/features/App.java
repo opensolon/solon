@@ -23,6 +23,6 @@ public class App {
 
 //    @Init
 //    public void init() {
-//        throw new RuntimeException("测试一下");
+//        throw new IllegalStateException("测试一下");
 //    }
 }

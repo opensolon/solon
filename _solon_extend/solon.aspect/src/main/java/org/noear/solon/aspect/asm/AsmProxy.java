@@ -60,7 +60,7 @@ public class AsmProxy {
             throw new IllegalArgumentException("argument is null");
         }
 
-        AsmProxyClassLoader classLoader = AsmProxyClassLoader.global();
+        AsmProxyClassLoader classLoader = new AsmProxyClassLoader(targetClass.getClassLoader());
 
         try {
             // 查看是否有缓存

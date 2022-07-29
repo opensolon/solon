@@ -1,7 +1,23 @@
+#### 1.9.4-M2
+* 解决 @Service 重写虚拟函数时会出错的问题（下普通类的重写也会出错，也要改）
+* 解决 ctx.param() 表单解析时，检查是否为表单
+
+#### 1.9.3
+* 解决 solon.web.staticfiles 扩展仓库的文件被读取后不能删除的问题
+* 插件 solon.validation 增加分组验证支持
+* 插件 aws-s3-solon-plugin 升级 aws-java-sdk-s3 为 1.12.261
+* 插件 sqltoy-solon-plugin 升级 sqltoy 为 5.2.3
+* 插件 water-solon-plugin 升级 water 为 2.8.1
+
 #### 1.9.2
 * 新增 solon.vault 插件（可对敏感配置进行加密处理）
 * 增加 请求上下文路径对'/'去重处理
+* 增加 状态码快捷代理模式 app.onStatus(code,handler);
+* 增加 实体接收 UploadedFile 的支持
 * 解决 jlhttp 的 queryString 里不能出现多个'/'的问题（最好还是编码下）
+* 调整 ModelAndView 为非Map类
+* 调整 Context::autoMultipart 默认为 true
+* 优化 sa-token-solon-plugin 适配
 
 #### 1.9.1
 * 新增 dubbo3-solon-plugin 插件

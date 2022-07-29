@@ -4,7 +4,7 @@ package org.noear.solon.boot.smarthttp.http;
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.smarthttp.http.uploadfile.HttpMultipart;
 import org.noear.solon.boot.smarthttp.http.uploadfile.HttpMultipartCollection;
-import org.noear.solon.boot.util.LimitedInputStream;
+import org.noear.solon.boot.io.LimitedInputStream;
 import org.noear.solon.core.handle.UploadedFile;
 import org.smartboot.http.server.HttpRequest;
 

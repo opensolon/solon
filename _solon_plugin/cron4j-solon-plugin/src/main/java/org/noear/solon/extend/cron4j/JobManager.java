@@ -54,7 +54,7 @@ public final class JobManager {
 
         if (Task.class.isAssignableFrom(bw.clz())) {
             if (cronx.indexOf(" ") < 0) {
-                throw new RuntimeException("Job cronx only supported Runnable：" + bw.clz().getName());
+                throw new IllegalStateException("Job cronx only supported Runnable：" + bw.clz().getName());
             }
         }
 

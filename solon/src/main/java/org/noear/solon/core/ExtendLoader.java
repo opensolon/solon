@@ -185,7 +185,7 @@ public class ExtendLoader {
 
                 if (path.endsWith(".yml")) {
                     if (PropsLoader.global().isSupport(path) == false) {
-                        throw new RuntimeException("Do not support the *.yml");
+                        throw new IllegalStateException("Do not support the *.yml");
                     }
 
                     Solon.cfg().loadAdd(file.toURI().toURL());

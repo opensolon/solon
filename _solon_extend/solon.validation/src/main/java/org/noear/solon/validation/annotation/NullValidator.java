@@ -18,6 +18,11 @@ public class NullValidator implements Validator<Null> {
     }
 
     @Override
+    public Class<?>[] groups(Null anno) {
+        return anno.groups();
+    }
+
+    @Override
     public Result validateOfValue(Null anno, Object val, StringBuilder tmp) {
         if (val != null) {
             return Result.failure();

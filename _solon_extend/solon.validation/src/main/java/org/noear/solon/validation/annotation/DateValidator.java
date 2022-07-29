@@ -21,6 +21,11 @@ public class DateValidator implements Validator<Date> {
         return anno.message();
     }
 
+    @Override
+    public Class<?>[] groups(Date anno) {
+        return anno.groups();
+    }
+
     /**
      * 校验实体的字段
      * */

@@ -19,6 +19,11 @@ public class NotNullValidator implements Validator<NotNull> {
     }
 
     @Override
+    public Class<?>[] groups(NotNull anno) {
+        return anno.groups();
+    }
+
+    @Override
     public Result validateOfValue(NotNull anno, Object val, StringBuilder tmp) {
         if (val == null) {
             return Result.failure();

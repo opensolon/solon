@@ -6,6 +6,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
+import webapp.models.TestModel;
 
 import java.util.Map;
 
@@ -47,5 +48,14 @@ public class InjectTest {
         assert "512m/-/en_US".equals(formattest);
 
         assert "${aaaa.bbb}".equals(formattest2);
+    }
+
+    @Inject
+    TestModel testModel;
+
+    @Test
+    public void test3(){
+        System.out.println(testModel.getTestname());
+        assert testModel.getTestname() != null;
     }
 }

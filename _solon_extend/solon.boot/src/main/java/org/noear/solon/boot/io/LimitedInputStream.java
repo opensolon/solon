@@ -1,4 +1,4 @@
-package org.noear.solon.boot.util;
+package org.noear.solon.boot.io;
 
 import java.io.Closeable;
 import java.io.FilterInputStream;
@@ -20,7 +20,7 @@ public class LimitedInputStream extends FilterInputStream implements Closeable {
     }
 
     protected void raiseError(long pSizeMax, long pCount) throws IOException {
-        throw new IOException("The input stream is too large: " + pSizeMax);
+        throw new LimitedInputException("The input stream is too large: " + pSizeMax);
     }
 
 

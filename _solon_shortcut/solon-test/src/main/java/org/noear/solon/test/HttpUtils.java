@@ -328,7 +328,7 @@ public class HttpUtils {
                 _builder.method("TRACE", null);
                 break;
             default:
-                throw new RuntimeException("This method is not supported");
+                throw new IllegalStateException("This method is not supported");
         }
 
         if (_callAsync) {

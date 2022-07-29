@@ -29,6 +29,11 @@ public class NoRepeatSubmitValidator implements Validator<NoRepeatSubmit> {
     }
 
     @Override
+    public Class<?>[] groups(NoRepeatSubmit anno) {
+        return anno.groups();
+    }
+
+    @Override
     public Result validateOfContext(Context ctx, NoRepeatSubmit anno, String name, StringBuilder tmp) {
         if (checker == null) {
             throw new IllegalArgumentException("Missing NoRepeatSubmitChecker Setting");

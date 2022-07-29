@@ -91,7 +91,7 @@ public class AopContext extends BeanContainer {
 
         //注册 @Configuration 构建器
         beanBuilderAdd(Configuration.class, (clz, bw, anno) -> {
-            beanInjectProperties(clz, bw);
+            beanInjectProperties(clz, bw.raw());
 
             for (Method m : ClassWrap.get(bw.clz()).getMethods()) {
                 Bean m_an = m.getAnnotation(Bean.class);
@@ -275,6 +275,9 @@ public class AopContext extends BeanContainer {
         }
 
         ClassWrap clzWrap = ClassWrap.get(obj.getClass());
+
+        //todo: 支持类注入 //可能影响启动速度
+        //beanInjectProperties(clzWrap.clz(), obj);
 
         //支持父类注入
         for (Map.Entry<String, FieldWrap> kv : clzWrap.getFieldAllWraps().entrySet()) {

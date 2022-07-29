@@ -15,6 +15,13 @@ import java.io.IOException;
 @SolonTest(webapp.TestApp.class)
 public class ViewTest extends HttpTestBase {
     @Test
+    public void test90() throws IOException {
+        String rst = path("/demo9/view/json").get();
+        assert  rst.indexOf("dock") > 0;
+        assert  rst.indexOf("你好") > 0;
+    }
+
+    @Test
     public void test91() throws IOException {
         String rst = path("/demo9/view/beetl").get();
         assert  rst.indexOf("beetl::") > 0;
