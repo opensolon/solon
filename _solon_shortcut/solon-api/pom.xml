@@ -26,12 +26,6 @@
             <artifactId>solon.boot.jlhttp</artifactId>
         </dependency>
 
-        <!-- 本地SessionSate支持组件 -->
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.sessionstate.local</artifactId>
-        </dependency>
-
         <!-- 静态文件支持组件 -->
         <dependency>
             <groupId>org.noear</groupId>
