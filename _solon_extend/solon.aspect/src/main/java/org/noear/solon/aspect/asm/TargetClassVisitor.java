@@ -52,8 +52,9 @@ public class TargetClassVisitor extends ClassVisitor {
             }
             MethodBean methodBean = new MethodBean(access, name, descriptor);
             declaredMethods.add(methodBean);
-            if ((access & Opcodes.ACC_PUBLIC) == Opcodes.ACC_PUBLIC) {
-                if ((access & Opcodes.ACC_ABSTRACT) != Opcodes.ACC_ABSTRACT) {
+            if ((access & Opcodes.ACC_PUBLIC) == Opcodes.ACC_PUBLIC
+                    && (access & Opcodes.ACC_ABSTRACT) != Opcodes.ACC_ABSTRACT) {
+                if (methods.contains(methodBean) == false) {
                     methods.add(methodBean);
                 }
             }
