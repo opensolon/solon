@@ -345,6 +345,7 @@ public class SolonApp extends RouterAdapter {
      * 统一代理入口(异常时，自动500处理)
      */
     public void tryHandle(Context x) {
+        //todo: 修改此处代码时，要注意对websocket的影响
         try {
             //设置当前线程上下文
             ContextUtil.currentSet(x);
