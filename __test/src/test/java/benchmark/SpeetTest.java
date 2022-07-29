@@ -1,4 +1,4 @@
-package test1;
+package benchmark;
 
 import model.UserModel;
 import org.junit.Test;

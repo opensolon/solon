@@ -1,4 +1,4 @@
-package test1;
+package benchmark;
 
 import org.junit.Test;
 import org.noear.solon.web.staticfiles.StaticMimes;
