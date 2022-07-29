@@ -2,6 +2,7 @@
 * 解决 @Service 重写虚拟函数时会出错的问题（下普通类的重写也会出错，也要改）
 * 解决 ctx.param() 表单解析时，检查是否为表单
 * 解决 websocket 可能会发一次空数据的情况
+* 解决 NamedThreadFactory 前缀处理错误
 
 #### 1.9.3
 * 解决 solon.web.staticfiles 扩展仓库的文件被读取后不能删除的问题

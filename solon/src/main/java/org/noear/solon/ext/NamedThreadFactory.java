@@ -21,9 +21,9 @@ public class NamedThreadFactory implements ThreadFactory {
 
     public NamedThreadFactory(String namePrefix) {
         if (Utils.isEmpty(namePrefix)) {
-            this.namePrefix = namePrefix;
-        } else {
             this.namePrefix = this.getClass().getSimpleName() + "-";
+        } else {
+            this.namePrefix = namePrefix;
         }
     }
 
