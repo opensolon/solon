@@ -351,7 +351,6 @@ public class SolonApp extends RouterAdapter {
 
             if (stopped) {
                 x.status(403);
-                x.setHandled(true);
             } else {
                 new FilterChainNode(filterList()).doFilter(x);
 
@@ -359,7 +358,6 @@ public class SolonApp extends RouterAdapter {
                     if (x.status() < 400) {
                         x.status(404);
                     }
-                    x.setHandled(true);
                 }
             }
 
@@ -378,7 +376,6 @@ public class SolonApp extends RouterAdapter {
                 if (x.status() < 400) {
                     x.status(500);
                 }
-                x.setHandled(true);
             }
 
             //如果未渲染，尝试渲染
@@ -411,6 +408,7 @@ public class SolonApp extends RouterAdapter {
             Handler h = _statusHandlers.get(x.status());
             if (h != null) {
                 x.status(200);
+                x.setHandled(true);
                 h.handle(x);
                 return true;
             }
