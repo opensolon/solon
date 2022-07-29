@@ -20,7 +20,7 @@ public class NamedThreadFactory implements ThreadFactory {
     private int priority = Thread.NORM_PRIORITY;
 
     public NamedThreadFactory(String namePrefix) {
-        if (Utils.isEmpty(namePrefix)) {
+        if (!Utils.isEmpty(namePrefix)) {
             this.namePrefix = namePrefix;
         } else {
             this.namePrefix = this.getClass().getSimpleName() + "-";
