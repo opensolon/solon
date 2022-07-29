@@ -1,6 +1,7 @@
 package webapp.demo2_mvc;
 
 import org.noear.solon.annotation.*;
+import org.noear.solon.core.handle.Context;
 import webapp.dso.AsyncTask;
 import webapp.models.RegisterUsername;
 import webapp.models.UserD;
@@ -55,5 +56,11 @@ public class Param4Controller {
     public RegisterUsername test_body2(RegisterUsername user) throws IOException {
         asyncTask.test();
         return user;
+    }
+
+    @Mapping("test")
+    public String test(Context ctx) throws IOException {
+        ctx.paramMap();
+        return ctx.body();
     }
 }
