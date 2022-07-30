@@ -2,7 +2,7 @@
 * 解决 @Service 类重写基类函数时会出错的问题
 * 解决 Websocket 可能会发一次空数据的情况(1.9.2 出现的)
 * 解决 NamedThreadFactory 前缀处理错误
-* 解决 @Mapping("GET hello?age=12") String sayHello(String name)，会出现两个?的问题
+* 解决 Nami @Mapping("GET hello?age=12") String sayHello(String name)，会出现两个?的问题
 
 #### 1.9.3
 * 解决 solon.web.staticfiles 扩展仓库的文件被读取后不能删除的问题
