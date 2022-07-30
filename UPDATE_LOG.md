@@ -1,5 +1,5 @@
 #### 1.9.4
-* 解决 @Service 类重写基类函数时会出错的问题???
+* 解决 @Service 类重写基类函数时会出错的问题
 * 解决 Websocket 可能会发一次空数据的情况(1.9.2 出现的)
 * 解决 NamedThreadFactory 前缀处理错误
 * 解决 @Mapping("GET hello?age=12") String sayHello(String name)，会出现两个?的问题
