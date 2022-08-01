@@ -41,8 +41,8 @@ public class TestApp {
 
     }
 
-    @Mapping("/")
-    public Object home() {
+    @Mapping("/t1")
+    public Object t1() {
         Map<String, Object> data = new LinkedHashMap<>();
         data.put("time1", LocalDateTime.now());
         data.put("time2", LocalDate.now());
@@ -51,8 +51,14 @@ public class TestApp {
         return data;
     }
 
-    @Mapping("/hello")
-    public Object hello(String name) {
-        return name;
+    @Mapping("/t2")
+    public Object t2() {
+       return new TestModel();
+    }
+
+    public static class TestModel{
+        public LocalDateTime time1 = LocalDateTime.now();
+        public LocalDate time2 = LocalDate.now();
+        public Date time3 = new Date();
     }
 }
