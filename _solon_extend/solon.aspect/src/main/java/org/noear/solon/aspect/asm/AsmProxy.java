@@ -1,6 +1,7 @@
 package org.noear.solon.aspect.asm;
 
 
+import org.noear.solon.core.AopContext;
 import org.objectweb.asm.*;
 
 import java.io.InputStream;
@@ -30,7 +31,7 @@ public class AsmProxy {
     /**
      * 缓存已经生成的代理类的Class，key值根据 classLoader 和 targetClass 共同决定
      */
-    private static void saveProxyClassCache(AsmProxyClassLoader classLoader, Class<?> targetClass, Class<?> proxyClass) {
+    private static void saveProxyClassCache(ClassLoader classLoader, Class<?> targetClass, Class<?> proxyClass) {
         String key = classLoader.toString() + "_" + targetClass.getName();
         proxyClassCache.put(key, proxyClass);
     }
@@ -38,7 +39,7 @@ public class AsmProxy {
     /**
      * 从缓存中取得代理类的Class，如果没有则返回 null
      */
-    private static Class<?> getProxyClassCache(AsmProxyClassLoader classLoader, Class<?> targetClass) {
+    private static Class<?> getProxyClassCache(ClassLoader classLoader, Class<?> targetClass) {
         String key = classLoader.toString() + "_" + targetClass.getName();
         return proxyClassCache.get(key);
     }
@@ -52,7 +53,8 @@ public class AsmProxy {
      * @param targetParam       被代理对象的某一个构造器的参数，用于实例化构造器
      * @return
      */
-    public static Object newProxyInstance(InvocationHandler invocationHandler,
+    public static Object newProxyInstance(AopContext context,
+                                          InvocationHandler invocationHandler,
                                           Class<?> targetClass,
                                           Constructor<?> targetConstructor,
                                           Object... targetParam) {
@@ -60,7 +62,12 @@ public class AsmProxy {
             throw new IllegalArgumentException("argument is null");
         }
 
-        AsmProxyClassLoader classLoader = AsmProxyClassLoader.global();
+        //确定代理类加载器
+        AsmProxyClassLoader classLoader = (AsmProxyClassLoader)context.getAttrs().get(AsmProxyClassLoader.class);
+        if(classLoader == null) {
+            classLoader = new AsmProxyClassLoader(context.getClassLoader());
+            context.getAttrs().put(AsmProxyClassLoader.class, classLoader);
+        }
 
         try {
             // 查看是否有缓存

@@ -27,6 +27,11 @@ public class HttpTest2 extends HttpTestBase {
         assert path("/demo1/run3/*?@=1").get().equals("@=1");
     }
 
+    @Test
+    public void test404() throws IOException {
+        assert path("/demo1/hello/").head() == 404;
+    }
+
 //    @Test
 //    public void test3() throws IOException {
 //        if (Utils.loadClass("javax.servlet.http.HttpServletRequest") != null) {

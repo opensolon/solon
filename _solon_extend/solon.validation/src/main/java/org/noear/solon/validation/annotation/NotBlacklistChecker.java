@@ -12,6 +12,8 @@ public interface NotBlacklistChecker {
     /**
      * @param anno 注解
      * @param ctx 上下文
+     *
+     * @return 不是黑名单
      * */
     boolean check(NotBlacklist anno, Context ctx);
 }

@@ -22,7 +22,10 @@ public class HttpChannel implements Channel {
 
         //0.尝试重构url
         if (is_get && ctx.args.size() > 0) {
-            StringBuilder sb = new StringBuilder(ctx.url).append("?");
+            StringBuilder sb = new StringBuilder(ctx.url);
+            //如果URL中含有固定参数,应该用'&'添加参数
+            sb.append(ctx.url.contains("?") ? "&" : "?");
+
             ctx.args.forEach((k, v) -> {
                 if (v != null) {
                     sb.append(k).append("=")

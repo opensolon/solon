@@ -40,7 +40,7 @@ public class TargetClassVisitor extends ClassVisitor {
 
     @Override
     public MethodVisitor visitMethod(int access, String name, String descriptor, String signature, String[] exceptions) {
-        if ("<init>".equals(name)){
+        if ("<init>".equals(name)) {
             // 构造方法
             MethodBean constructor = new MethodBean(access, name, descriptor);
             constructors.add(constructor);
@@ -52,10 +52,14 @@ public class TargetClassVisitor extends ClassVisitor {
             }
             MethodBean methodBean = new MethodBean(access, name, descriptor);
             declaredMethods.add(methodBean);
-            if ((access & Opcodes.ACC_PUBLIC) == Opcodes.ACC_PUBLIC) {
-                methods.add(methodBean);
+            if ((access & Opcodes.ACC_PUBLIC) == Opcodes.ACC_PUBLIC
+                    && (access & Opcodes.ACC_ABSTRACT) != Opcodes.ACC_ABSTRACT) {
+                if (methods.contains(methodBean) == false) {
+                    methods.add(methodBean);
+                }
             }
         }
+
         return super.visitMethod(access, name, descriptor, signature, exceptions);
     }
 

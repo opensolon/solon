@@ -351,7 +351,6 @@ public class SolonApp extends RouterAdapter {
 
             if (stopped) {
                 x.status(403);
-                x.setHandled(true);
             } else {
                 new FilterChainNode(filterList()).doFilter(x);
 
@@ -359,7 +358,7 @@ public class SolonApp extends RouterAdapter {
                     if (x.status() < 400) {
                         x.status(404);
                     }
-                    x.setHandled(true);
+                    //x.setHandled(true);  //todo: 不能加，对websocket有影响
                 }
             }
 
@@ -411,6 +410,7 @@ public class SolonApp extends RouterAdapter {
             Handler h = _statusHandlers.get(x.status());
             if (h != null) {
                 x.status(200);
+                x.setHandled(true);
                 h.handle(x);
                 return true;
             }

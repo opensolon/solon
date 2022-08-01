@@ -37,7 +37,7 @@ public class BeanInvocationHandler implements InvocationHandler {
             this.context = ctx;
             this.handler = handler;
             this.bean = bean;
-            this.proxy = AsmProxy.newProxyInstance(this, clazz, constructor, constructorParam);
+            this.proxy = AsmProxy.newProxyInstance(context,this, clazz, constructor, constructorParam);
         } catch (RuntimeException ex) {
             throw ex;
         } catch (Throwable ex) {
