@@ -1,8 +1,8 @@
 package net.hasor.dbvisitor.solon.integration;
 
+import net.hasor.dbvisitor.dal.mapper.BaseMapper;
 import net.hasor.dbvisitor.dal.repository.DalRegistry;
 import net.hasor.dbvisitor.dal.repository.RefMapper;
-import net.hasor.dbvisitor.dal.session.BaseMapper;
 import net.hasor.dbvisitor.dal.session.DalSession;
 import net.hasor.dbvisitor.jdbc.core.JdbcTemplate;
 import net.hasor.dbvisitor.lambda.LambdaTemplate;
