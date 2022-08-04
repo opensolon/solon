@@ -56,9 +56,7 @@ public class StaticResourceHandler implements Handler {
         //找资源
         URL uri = StaticMappings.find(path);
 
-        if (uri == null) {
-            return;
-        } else {
+        if (uri != null) {
             ctx.setHandled(true);
 
             String modified_since = ctx.header("If-Modified-Since");
