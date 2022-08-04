@@ -10,8 +10,8 @@
         <version>1.10.0-M1</version>
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
-    
-    <artifactId>solon.web.cors</artifactId>
+
+    <artifactId>solon.mvc</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>
@@ -22,15 +22,21 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.mvc</artifactId>
+            <artifactId>solon-test</artifactId>
+            <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.boot.jlhttp</artifactId>
+            <artifactId>solon.logging.impl</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>
-
 
 </project>
