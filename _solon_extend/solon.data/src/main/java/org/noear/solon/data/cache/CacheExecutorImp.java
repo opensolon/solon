@@ -6,7 +6,7 @@ import org.noear.solon.data.annotation.Cache;
 import org.noear.solon.data.annotation.CachePut;
 import org.noear.solon.data.annotation.CacheRemove;
 import org.noear.solon.data.util.InvKeys;
-import org.noear.solon.ext.SupplierEx;
+import org.noear.solon.core.util.SupplierEx;
 
 /**
  * 缓存执行器

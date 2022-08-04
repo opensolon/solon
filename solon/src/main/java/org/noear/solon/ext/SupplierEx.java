@@ -6,6 +6,7 @@ package org.noear.solon.ext;
  * @author noear
  * @since 1.0
  * */
-public interface SupplierEx<T> {
-    T get() throws Throwable;
+@Deprecated
+@FunctionalInterface
+public interface SupplierEx<T> extends org.noear.solon.core.util.SupplierEx<T>{
 }

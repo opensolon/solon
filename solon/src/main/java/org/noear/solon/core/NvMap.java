@@ -2,7 +2,7 @@ package org.noear.solon.core;
 
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Context;
-import org.noear.solon.ext.LinkedCaseInsensitiveMap;
+import org.noear.solon.core.util.LinkedCaseInsensitiveMap;
 
 import java.util.Arrays;
 import java.util.List;

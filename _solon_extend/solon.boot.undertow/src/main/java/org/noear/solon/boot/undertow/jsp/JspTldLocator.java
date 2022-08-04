@@ -39,7 +39,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.core.JarClassLoader;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.ScanUtil;
-import org.noear.solon.ext.SupplierEx;
+import org.noear.solon.core.util.SupplierEx;
 
 /**
  * Jsp Tld 定位器

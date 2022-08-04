@@ -6,7 +6,7 @@ package org.noear.solon.ext;
  * @author noear
  * @since 1.0
  * */
+@Deprecated
 @FunctionalInterface
-public interface BiConsumerEx<T1,T2> {
-    void accept(T1 t1, T2 t2) throws Throwable;
+public interface BiConsumerEx<T1,T2> extends org.noear.solon.core.util.BiConsumerEx<T1,T2>{
 }

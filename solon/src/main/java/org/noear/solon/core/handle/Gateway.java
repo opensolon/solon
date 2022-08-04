@@ -9,7 +9,7 @@ import org.noear.solon.core.route.RoutingDefault;
 import org.noear.solon.core.route.RoutingTable;
 import org.noear.solon.core.route.RoutingTableDefault;
 import org.noear.solon.core.util.PathUtil;
-import org.noear.solon.ext.DataThrowable;
+import org.noear.solon.core.util.DataThrowable;
 
 import java.util.*;
 import java.util.function.Predicate;

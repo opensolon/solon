@@ -4,7 +4,7 @@ import org.noear.solon.core.JarClassLoader;
 import org.noear.solon.core.NvMap;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.PrintUtil;
-import org.noear.solon.ext.ConsumerEx;
+import org.noear.solon.core.util.ConsumerEx;
 
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;

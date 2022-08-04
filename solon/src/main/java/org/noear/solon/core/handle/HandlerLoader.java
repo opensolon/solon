@@ -5,7 +5,7 @@ import org.noear.solon.annotation.*;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.util.PathUtil;
-import org.noear.solon.ext.ConsumerEx;
+import org.noear.solon.core.util.ConsumerEx;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;

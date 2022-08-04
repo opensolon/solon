@@ -6,7 +6,7 @@ import org.noear.solon.boot.ServerLifecycle;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.core.util.PrintUtil;
-import org.noear.solon.ext.NamedThreadFactory;
+import org.noear.solon.core.util.NamedThreadFactory;
 import org.noear.solon.socketd.client.jdksocket.BioReceiver;
 import org.noear.solon.socketd.client.jdksocket.BioSocketSession;
 

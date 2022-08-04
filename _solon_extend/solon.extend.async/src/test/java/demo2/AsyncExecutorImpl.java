@@ -1,7 +1,7 @@
 package demo2;
 
 import org.noear.solon.annotation.Component;
-import org.noear.solon.ext.NamedThreadFactory;
+import org.noear.solon.core.util.NamedThreadFactory;
 import org.noear.solon.extend.async.AsyncExecutor;
 
 import java.util.concurrent.*;

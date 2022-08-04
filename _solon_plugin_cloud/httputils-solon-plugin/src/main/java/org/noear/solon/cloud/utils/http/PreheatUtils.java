@@ -1,7 +1,7 @@
 package org.noear.solon.cloud.utils.http;
 
 import org.noear.solon.Solon;
-import org.noear.solon.ext.ConsumerEx;
+import org.noear.solon.core.util.ConsumerEx;
 
 /**
  * 预热工具

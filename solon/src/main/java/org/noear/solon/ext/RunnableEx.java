@@ -6,6 +6,7 @@ package org.noear.solon.ext;
  * @author noear
  * @since 1.0
  * */
-public interface RunnableEx {
-    void run() throws Throwable;
+@Deprecated
+@FunctionalInterface
+public interface RunnableEx extends org.noear.solon.core.util.RunnableEx{
 }

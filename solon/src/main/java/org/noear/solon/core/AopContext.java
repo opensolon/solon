@@ -10,7 +10,7 @@ import org.noear.solon.core.message.Listener;
 import org.noear.solon.core.util.GenericUtil;
 import org.noear.solon.core.util.RankEntity;
 import org.noear.solon.core.wrap.*;
-import org.noear.solon.ext.BiConsumerEx;
+import org.noear.solon.core.util.BiConsumerEx;
 import org.noear.solon.core.util.ScanUtil;
 
 import java.lang.annotation.Annotation;

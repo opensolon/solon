@@ -1,6 +1,6 @@
 package org.noear.solon.extend.async;
 
-import org.noear.solon.ext.NamedThreadFactory;
+import org.noear.solon.core.util.NamedThreadFactory;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;

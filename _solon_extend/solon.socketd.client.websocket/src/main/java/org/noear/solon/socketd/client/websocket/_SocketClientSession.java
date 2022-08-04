@@ -7,7 +7,7 @@ import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
-import org.noear.solon.ext.RunnableEx;
+import org.noear.solon.core.util.RunnableEx;
 import org.noear.solon.socketd.Connector;
 import org.noear.solon.socketd.ProtocolManager;
 import org.noear.solon.socketd.SessionBase;

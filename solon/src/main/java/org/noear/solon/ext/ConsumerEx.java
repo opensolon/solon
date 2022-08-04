@@ -6,7 +6,7 @@ package org.noear.solon.ext;
  * @author noear
  * @since 1.0
  * */
+@Deprecated
 @FunctionalInterface
-public interface ConsumerEx<T> {
-    void accept(T t) throws Throwable;
+public interface ConsumerEx<T> extends org.noear.solon.core.util.ConsumerEx<T>{
 }

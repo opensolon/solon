@@ -1,4 +1,6 @@
 #### 1.9.5
+* 调整 org.noear.solon.ext.* 的工具类到 org.noear.solon.core.util.*
+* 插件 beetlsql-solon-plugin 升级 beetlsql 为 3.17.1-RELEASE
 
 #### 1.9.4
 * 解决 @Service 类重写基类函数时会出错的问题

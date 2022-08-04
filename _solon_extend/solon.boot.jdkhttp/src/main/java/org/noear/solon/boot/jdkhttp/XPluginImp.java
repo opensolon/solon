@@ -11,7 +11,7 @@ import org.noear.solon.boot.ssl.SslContextFactory;
 import org.noear.solon.core.*;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.PrintUtil;
-import org.noear.solon.ext.NamedThreadFactory;
+import org.noear.solon.core.util.NamedThreadFactory;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLEngine;

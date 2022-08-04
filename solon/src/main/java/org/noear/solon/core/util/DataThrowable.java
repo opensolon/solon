@@ -1,4 +1,4 @@
-package org.noear.solon.ext;
+package org.noear.solon.core.util;
 
 
 import java.io.Serializable;

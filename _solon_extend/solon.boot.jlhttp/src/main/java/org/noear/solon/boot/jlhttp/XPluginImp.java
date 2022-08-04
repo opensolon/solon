@@ -10,7 +10,7 @@ import org.noear.solon.boot.ssl.SslContextFactory;
 import org.noear.solon.core.*;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.util.PrintUtil;
-import org.noear.solon.ext.NamedThreadFactory;
+import org.noear.solon.core.util.NamedThreadFactory;
 
 import java.util.concurrent.Executors;
 

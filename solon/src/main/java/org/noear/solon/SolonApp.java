@@ -8,7 +8,6 @@ import org.noear.solon.core.Aop;
 import org.noear.solon.core.*;
 import org.noear.solon.core.route.RouterAdapter;
 import org.noear.solon.core.util.PrintUtil;
-import org.noear.solon.ext.DataThrowable;
 
 import java.lang.annotation.Annotation;
 import java.util.*;

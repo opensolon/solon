@@ -10,7 +10,7 @@ import org.noear.solon.core.handle.Result;
 import org.noear.solon.core.wrap.ClassWrap;
 import org.noear.solon.core.wrap.FieldWrap;
 import org.noear.solon.core.wrap.ParamWrap;
-import org.noear.solon.ext.DataThrowable;
+import org.noear.solon.core.util.DataThrowable;
 import org.noear.solon.validation.annotation.*;
 
 import java.lang.annotation.Annotation;

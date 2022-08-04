@@ -1,6 +1,6 @@
 package org.noear.solon.data.tran;
 
-import org.noear.solon.ext.RunnableEx;
+import org.noear.solon.core.util.RunnableEx;
 
 /**
  * 事务节点

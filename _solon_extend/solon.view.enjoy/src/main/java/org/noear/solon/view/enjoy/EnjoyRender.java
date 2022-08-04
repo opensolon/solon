@@ -11,7 +11,7 @@ import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.Render;
 import org.noear.solon.core.handle.ModelAndView;
 import org.noear.solon.core.handle.Context;
-import org.noear.solon.ext.SupplierEx;
+import org.noear.solon.core.util.SupplierEx;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
