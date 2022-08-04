@@ -3,6 +3,7 @@ package org.noear.solon.ext;
 /**
  * 双参数消费者
  *
+ * @deprecated 1.10
  * @author noear
  * @since 1.0
  * */
