@@ -1,5 +1,7 @@
 package org.noear.solon.i18n;
 
+import org.noear.solon.core.Props;
+
 import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.Map;
@@ -28,12 +30,23 @@ public class I18nService {
     }
 
     /**
-     * 转换为Map数据
+     * 转换为 Map 数据
+     *
+     * @param locale 地域与语言
+     * @deprecated 1.10
+     */
+    @Deprecated
+    public Map<String, String> toMap(Locale locale) {
+        return getBundle(locale).toMap();
+    }
+
+    /**
+     * 转换为 Props 数据
      *
      * @param locale 地域与语言
      */
-    public Map<String, String> toMap(Locale locale) {
-        return getBundle(locale).toMap();
+    public Props toProps(Locale locale) {
+        return getBundle(locale).toProps();
     }
 
 

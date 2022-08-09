@@ -16,6 +16,7 @@ public interface I18nBundle {
 
     /**
      * 转换为Map数据
+     *
      * @deprecated 1.10
      */
     @Deprecated
@@ -24,15 +25,11 @@ public interface I18nBundle {
     /**
      * 转换为Props数据
      */
-    default Props toProps(){
-        Props tmp = new Props();
-        tmp.putAll(toMap());
-        return tmp;
-    }
+    Props toProps();
 
     /**
      * 当前地区
-     * */
+     */
     Locale locale();
 
     /**
@@ -45,7 +42,7 @@ public interface I18nBundle {
     /**
      * 获取国际化内容并格式化
      *
-     * @param key 配置键
+     * @param key  配置键
      * @param args 参数
      */
     default String getAndFormat(String key, Object... args) {

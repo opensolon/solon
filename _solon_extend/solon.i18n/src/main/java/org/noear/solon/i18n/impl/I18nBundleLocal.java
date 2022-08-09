@@ -55,6 +55,7 @@ public class I18nBundleLocal implements I18nBundle {
     /**
      * 转换为Map数据
      */
+    @Deprecated
     @Override
     public synchronized Map<String, String> toMap() {
         return (Map)bundle;

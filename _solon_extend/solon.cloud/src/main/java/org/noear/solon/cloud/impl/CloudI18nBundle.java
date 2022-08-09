@@ -20,6 +20,7 @@ public class CloudI18nBundle implements I18nBundle {
         this.locale = locale;
     }
 
+    @Deprecated
     @Override
     public Map<String, String> toMap() {
         return (Map)pack.getData();

@@ -42,7 +42,7 @@ public class MessageTest {
 
     @Test
     public void test2() {
-        Map map = I18nUtil.getMessageBundle(Solon.cfg().locale()).toMap();
+        Map map = I18nUtil.getMessageBundle(Solon.cfg().locale()).toProps();
         assert map.size() == 2;
 
         System.out.println(map);
