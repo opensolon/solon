@@ -16,7 +16,9 @@ public interface I18nBundle {
 
     /**
      * 转换为Map数据
+     * @deprecated 1.10
      */
+    @Deprecated
     Map<String, String> toMap();
 
     /**

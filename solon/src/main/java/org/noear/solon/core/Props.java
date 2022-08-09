@@ -28,6 +28,11 @@ public class Props extends Properties {
         super(defaults);
     }
 
+    public Props(Map<String,String> data) {
+        super();
+        putAll(data);
+    }
+
     @Override
     public synchronized int size() {
         if (defaults == null) {

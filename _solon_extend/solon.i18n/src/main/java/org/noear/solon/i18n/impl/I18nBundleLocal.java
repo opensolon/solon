@@ -17,7 +17,6 @@ public class I18nBundleLocal implements I18nBundle {
     Props bundle = new Props();
     String bundleName;
     Locale locale;
-    Map<String, String> map;
 
     public I18nBundleLocal(String bundleName, Locale locale) {
         if (locale == null) {
@@ -58,16 +57,7 @@ public class I18nBundleLocal implements I18nBundle {
      */
     @Override
     public synchronized Map<String, String> toMap() {
-        if (map == null) {
-            map = new LinkedHashMap<>();
-
-            for (Object k : bundle.keySet()) {
-                String key = (String) k;
-                map.put(key, get(key));
-            }
-        }
-
-        return map;
+        return (Map)bundle;
     }
 
     @Override

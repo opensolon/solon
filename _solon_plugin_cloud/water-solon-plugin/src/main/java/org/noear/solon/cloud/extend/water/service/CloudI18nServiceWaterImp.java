@@ -2,6 +2,7 @@ package org.noear.solon.cloud.extend.water.service;
 
 import org.noear.solon.cloud.model.Pack;
 import org.noear.solon.cloud.service.CloudI18nService;
+import org.noear.solon.core.Props;
 import org.noear.solon.core.event.EventBus;
 import org.noear.water.WaterClient;
 
@@ -40,7 +41,7 @@ public class CloudI18nServiceWaterImp implements CloudI18nService {
                 if (pack == null) {
                     pack = new Pack(locale);
                     Map<String, String> data = WaterClient.I18n.getI18n(group, packName, pack.getLang());
-                    pack.setData(data);
+                    pack.setData(new Props(data));
                 }
 
                 packMap.put(packKey, pack);
@@ -58,7 +59,7 @@ public class CloudI18nServiceWaterImp implements CloudI18nService {
         if (pack != null) {
             try {
                 Map<String, String> data = WaterClient.I18n.getI18nNoCache(group, packName, pack.getLang());
-                pack.setData(data);
+                pack.setData(new Props(data));
             } catch (Throwable e) {
                 EventBus.push(e);
             }

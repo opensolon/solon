@@ -3,6 +3,7 @@
 * 插件 beetlsql-solon-plugin 升级 beetlsql 为 3.17.1-RELEASE
 * 插件 dbvisitor-solon-plugin 升级 dbvisitor 为 5.1.0
 * 插件 sentinel-solon-plugin 升级 sentinel 为 1.8.4
+* 增加 国际化配置 转 map,list,entity 的支持
 
 #### 1.9.4
 * 解决 @Service 类重写基类函数时会出错的问题

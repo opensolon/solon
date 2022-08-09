@@ -1,6 +1,7 @@
 package org.noear.solon.cloud.impl;
 
 import org.noear.solon.cloud.model.Pack;
+import org.noear.solon.core.Props;
 import org.noear.solon.i18n.I18nBundle;
 
 import java.util.Locale;
@@ -21,6 +22,11 @@ public class CloudI18nBundle implements I18nBundle {
 
     @Override
     public Map<String, String> toMap() {
+        return (Map)pack.getData();
+    }
+
+    @Override
+    public Props toProps() {
         return pack.getData();
     }
 

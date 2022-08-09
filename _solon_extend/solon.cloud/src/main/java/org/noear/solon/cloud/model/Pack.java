@@ -1,5 +1,7 @@
 package org.noear.solon.cloud.model;
 
+import org.noear.solon.core.Props;
+
 import java.util.Locale;
 import java.util.Map;
 
@@ -13,14 +15,14 @@ public class Pack {
     private final Locale locale;
     private final String lang;
 
-    Map<String, String> data;
+    private Props data;
 
     public Pack(Locale locale) {
         this.locale = locale;
         this.lang = locale.toString();
     }
 
-    public void setData(Map<String, String> data) {
+    public void setData(Props data) {
         this.data = data;
     }
 
@@ -32,7 +34,7 @@ public class Pack {
         return lang;
     }
 
-    public Map<String, String> getData() {
+    public Props getData() {
         return data;
     }
 }
