@@ -150,7 +150,6 @@ public class MybatisAdapterDefault implements MybatisAdapter {
                             if (val.endsWith("*.xml")) {
                                 String dir = val.substring(0, val.length() - 6);
                                 ScanUtil.scan(dir, n -> n.endsWith(".xml"))
-                                        .stream()
                                         .forEach(uri -> {
                                             addMapperByXml(uri);
                                         });
@@ -241,13 +240,11 @@ public class MybatisAdapterDefault implements MybatisAdapter {
         try {
             // resource 配置方式
             ErrorContext.instance().resource(uri);
-            /**
-             * 读取mapper文件
-             */
+
+            //读取mapper文件
             InputStream stream = Resources.getResourceAsStream(uri);
-            /**
-             * mapper映射文件都是通过XMLMapperBuilder解析
-             */
+
+            //mapper映射文件都是通过XMLMapperBuilder解析
             XMLMapperBuilder mapperParser = new XMLMapperBuilder(stream, getConfiguration(), uri, getConfiguration().getSqlFragments());
             mapperParser.parse();
         } catch (Exception e) {
