@@ -1,5 +1,7 @@
 package org.noear.solon.i18n;
 
+import org.noear.solon.core.Props;
+
 import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.Map;
@@ -16,6 +18,15 @@ public interface I18nBundle {
      * 转换为Map数据
      */
     Map<String, String> toMap();
+
+    /**
+     * 转换为Props数据
+     */
+    default Props toProps(){
+        Props tmp = new Props();
+        tmp.putAll(toMap());
+        return tmp;
+    }
 
     /**
      * 当前地区

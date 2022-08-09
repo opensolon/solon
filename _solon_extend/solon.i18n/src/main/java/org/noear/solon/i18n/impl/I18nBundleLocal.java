@@ -2,6 +2,7 @@ package org.noear.solon.i18n.impl;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
+import org.noear.solon.core.Props;
 import org.noear.solon.i18n.I18nBundle;
 
 import java.util.*;
@@ -13,7 +14,7 @@ import java.util.*;
  * @since 1.5
  */
 public class I18nBundleLocal implements I18nBundle {
-    Properties bundle;
+    Props bundle = new Props();
     String bundleName;
     Locale locale;
     Map<String, String> map;
@@ -29,32 +30,26 @@ public class I18nBundleLocal implements I18nBundle {
         String bundleName2 = bundleName.replace(".", "/");
 
         //加载默认配置
-        bundle = loadProperties(bundleName2, new String[]{".properties", ".yml"});
-        if (bundle == null) {
-            bundle = new Properties();
+        Properties tmp = loadProperties(bundleName2, new String[]{".properties", ".yml"});
+        if (tmp != null) {
+            //如果有，替换掉默认配置
+            bundle.putAll(tmp);
         }
 
         //加载地区配置
-        Properties tmp = null;
 
         //尝试加(语言)的配置
         tmp = loadProperties(bundleName2 + "_" + locale.getLanguage(), new String[]{".properties", ".yml"});
-
         if (tmp != null) {
             //如果有，替换掉默认配置
-            tmp.forEach((k, v) -> {
-                bundle.put(k, v);
-            });
+            bundle.putAll(tmp);
         }
 
         //尝试(语言_国家)的配置
         tmp = loadProperties(bundleName2 + "_" + locale, new String[]{".properties", ".yml"});
-
         if (tmp != null) {
             //如果有，替换掉默认配置
-            tmp.forEach((k, v) -> {
-                bundle.put(k, v);
-            });
+            bundle.putAll(tmp);
         }
     }
 
@@ -73,6 +68,11 @@ public class I18nBundleLocal implements I18nBundle {
         }
 
         return map;
+    }
+
+    @Override
+    public Props toProps() {
+        return bundle;
     }
 
     @Override
