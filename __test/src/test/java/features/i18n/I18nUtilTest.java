@@ -8,6 +8,7 @@ import org.noear.solon.i18n.I18nUtil;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
 
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -40,5 +41,13 @@ public class I18nUtilTest {
     public void test3() {
         assert "xxx".equals(service.get(Locale.CHINA, "login.name"));
         assert "登录".equals(service.get(Locale.JAPAN, "login.title"));
+    }
+
+    @Test
+    public void test4(){
+         List list = service.toProps(Locale.CHINA).getBean("site.urls", List.class);
+
+         assert list!=null;
+         assert list.size() == 2;
     }
 }
