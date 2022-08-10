@@ -1,8 +1,8 @@
 <h1 align="center" style="text-align:center;">
-  Solon
+  Solon for java
 </h1>
 <p align="center">
-	<strong>轻量级应用开发框架 for java</strong>
+	<strong>一个轻量级应用开发框架</strong>
 </p>
 <p align="center">
 	<a href="https://solon.noear.org/">https://solon.noear.org</a>
