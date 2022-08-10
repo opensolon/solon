@@ -2,7 +2,7 @@
   Solon
 </h1>
 <p align="center">
-	<strong>A lightweight Java application development framework</strong>
+	<strong>轻量级应用开发框架 for java</strong>
 </p>
 <p align="center">
 	<a href="https://solon.noear.org/">https://solon.noear.org</a>
