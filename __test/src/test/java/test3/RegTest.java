@@ -2,6 +2,7 @@ package test3;
 
 import org.junit.Test;
 
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -17,7 +18,7 @@ public class RegTest {
     //表达式预编译
     static Pattern exprPattern = Pattern.compile(expr, Pattern.CASE_INSENSITIVE);
 
-    String[] text = {"981 3 4981341",
+    String[] text = {"太阳981 3 4981341中国人",
             "234",
             "qef",
             "898一二三四五六12398",
@@ -72,5 +73,14 @@ public class RegTest {
         System.out.println("耗时：" + (System.currentTimeMillis() - start) + "ms");
     }
 
+    @Test
+    public void test3() {
+        String val = text[0];
+        Matcher mat = exprPattern.matcher(val);
+        boolean rst = mat.find();
 
+        System.out.println(0 + ": " + val + " === " + rst);
+        System.out.println(mat.group());
+        System.out.println(val.replace(mat.group(),"<t>"+mat.group()+"</t>"));
+    }
 }
