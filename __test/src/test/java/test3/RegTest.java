@@ -14,7 +14,7 @@ public class RegTest {
     //([\d零一二三四五六七八九十]+\w*|\s|yi|er|san|sang|shan|shang|si|shi|wu|lu|qi|ba|jiu|shi|ling|zero|one|two|three|four|five|six|seven|eight|nine|ten){7,}
 
     //表达式
-    static String expr = "([\\d零一二三四五六七八九十]+\\w*|\\s|yi|er|san|sang|shan|shang|si|shi|wu|lu|qi|ba|jiu|shi|ling|zero|one|two|three|four|five|six|seven|eight|nine|ten){7,}";
+    static String expr = "([\\d零一二三四五六七八九十①②③④⑤⑥⑦⑧⑨壹贰叁肆伍陆柒捌玖]+\\w*|\\s|yi|er|san|sang|shan|shang|si|shi|wu|lu|qi|ba|jiu|shi|ling|zero|one|two|three|four|five|six|seven|eight|nine|ten){7,}";
     //表达式预编译
     static Pattern exprPattern = Pattern.compile(expr, Pattern.CASE_INSENSITIVE);
 
