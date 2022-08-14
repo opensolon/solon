@@ -1,11 +1,10 @@
 package demo;
 
-import org.apache.ibatis.ext.solon.Db;
+import org.apache.ibatis.solon.annotation.Db;
 import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.core.BeanWrap;
-import org.noear.solon.extend.mybatis.MybatisAdapter;
 
 import javax.sql.DataSource;
 
@@ -24,9 +23,7 @@ public class Config {
     }
 
     @Bean("db1")
-    public void db1Adapter(@Db("db1") MybatisAdapter adapter) {
-        if(adapter == null){
-            return;
-        }
+    public void db1Adapter(@Db("db1") org.apache.ibatis.session.Configuration cfg) {
+        cfg.addInterceptor(null);
     }
 }
