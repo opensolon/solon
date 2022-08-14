@@ -1,4 +1,4 @@
-#### 1.10.0
+#### 1.10.1
 * 插件 beetlsql-solon-plugin 升级 beetlsql 为 3.17.1-RELEASE
 * 插件 dbvisitor-solon-plugin 升级 dbvisitor 为 5.1.0
 * 插件 sentinel-solon-plugin 升级 sentinel 为 1.8.4

@@ -180,6 +180,12 @@ public class MybatisAdapterDefault implements MybatisAdapter {
         if (mappers.size() == 0) {
             throw new IllegalStateException("Please add the mappers configuration!");
         }
+
+        //for plugins section
+        List<Interceptor> interceptors = MybatisPluginUtils.resolve(dsProps, "plugins");
+        for (Interceptor itp : interceptors) {
+            getConfiguration().addInterceptor(itp);
+        }
     }
 
     /**
