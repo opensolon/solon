@@ -13,7 +13,7 @@ mybatis.db1:
     - "mybatis/db1/*.xml"         #或支持mapper *.xml 资源地址     
 
 # 配置全局插件
-mybatis.plugin:
+mybatis.plugins:
     - pagehelper:
         class: com.github.pagehelper.PageHelper
         dialect: mysql
