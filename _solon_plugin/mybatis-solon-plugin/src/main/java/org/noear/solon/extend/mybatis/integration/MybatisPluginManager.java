@@ -6,6 +6,8 @@ import org.noear.solon.Solon;
 import java.util.List;
 
 /**
+ * 插件管理器
+ *
  * @author noear
  * @since 1.5
  */

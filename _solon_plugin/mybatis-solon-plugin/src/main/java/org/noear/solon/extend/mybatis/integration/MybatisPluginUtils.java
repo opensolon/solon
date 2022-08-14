@@ -1,7 +1,6 @@
 package org.noear.solon.extend.mybatis.integration;
 
 import org.apache.ibatis.plugin.Interceptor;
-import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.Props;
 
@@ -10,6 +9,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * 插件解析工具
+ *
  * @author noear
  * @since 1.10
  */
