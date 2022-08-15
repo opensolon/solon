@@ -2,6 +2,7 @@ package org.noear.solon.auth;
 
 import org.noear.solon.auth.annotation.Logical;
 import org.noear.solon.core.Aop;
+import org.noear.solon.core.handle.Context;
 
 /**
  * 提供手动授权控制支持
@@ -17,16 +18,29 @@ public class AuthUtil {
     public static final String MESSAGE_OF_ROLES = "No role granted";
 
     private static AuthAdapter adapter = new AuthAdapter();
+    private static AuthAdapterSupplier adapterSupplier;
 
     static {
         //如果容器里有，优先用容器的
         Aop.getAsyn(AuthAdapter.class, bw -> {
             adapter = bw.raw();
         });
+
+        Aop.getAsyn(AuthAdapterSupplier.class, bw->{
+            adapterSupplier = bw.get();
+        });
     }
 
     public static AuthAdapter adapter() {
-        return adapter;
+        if (adapterSupplier == null) {
+            return adapter;
+        } else {
+            return adapterSupplier.get(Context.current());
+        }
+    }
+
+    public static void adapter(AuthAdapterSupplier supplier) {
+        adapterSupplier = supplier;
     }
 
     /**
