@@ -50,6 +50,10 @@ public class AuthUtil {
         adapterSuppliers.sort(Comparator.comparingInt(e -> -e.pathPrefix().length()));
     }
 
+    public static void adapterRemove(AuthAdapterSupplier supplier) {
+        adapterSuppliers.remove(supplier);
+    }
+
     /**
      * 验证是否有Ip授权
      */
