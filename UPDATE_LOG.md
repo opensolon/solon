@@ -1,6 +1,7 @@
 #### 1.10.1
 * 插件 sqltoy-solon-plugin 升级 sqltoy 为 5.2.8
-* 增加 mybatis.db1.plugins 配置节
+* 插件 solon.auth 增加多账号体系验证
+* 插件 mybatis-solon-plugin 增加 mybatis.db1.plugins 配置节
 
 #### 1.10.0
 * 插件 beetlsql-solon-plugin 升级 beetlsql 为 3.17.1-RELEASE
