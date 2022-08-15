@@ -21,23 +21,20 @@ import java.util.Map;
 public class TestApp {
     public static void main(String[] args) {
         Solon.start(TestApp.class, args, app -> {
-            initMvcJsonCustom();
+            app.onEvent(SnackRenderFactory.class, factory -> initMvcJsonCustom(factory));
         });
     }
 
     /**
      * 初始化json定制（需要在插件运行前定制）
      */
-    private static void initMvcJsonCustom() {
+    private static void initMvcJsonCustom(SnackRenderFactory factory) {
         //通过转换器，做简单类型的定制
-        SnackRenderFactory.global
-                .addConvertor(Date.class, s -> s.getTime());
+        factory.addConvertor(Date.class, s -> s.getTime());
 
-        SnackRenderFactory.global
-                .addConvertor(LocalDate.class, s -> s.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        factory.addConvertor(LocalDate.class, s -> s.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 
-        SnackRenderFactory.global
-                .addConvertor(LocalDateTime.class, s -> s.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
+        factory.addConvertor(LocalDateTime.class, s -> s.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
 
     }
 

@@ -24,26 +24,22 @@ import java.util.Map;
 public class TestApp {
     public static void main(String[] args) {
         Solon.start(TestApp.class, args, app -> {
-            initMvcJsonCustom();
+            app.onEvent(JacksonRenderFactory.class, factory->initMvcJsonCustom(factory));
         });
     }
 
     /**
      * 初始化json定制（需要在插件运行前定制）
      */
-    private static void initMvcJsonCustom() {
+    private static void initMvcJsonCustom(JacksonRenderFactory factory) {
         //通过转换器，做简单类型的定制
-        JacksonRenderFactory.global
-                .addConvertor(Date.class, s -> s.getTime());
+        factory.addConvertor(Date.class, s -> s.getTime());
 
-        JacksonRenderFactory.global
-                .addConvertor(LocalDate.class, s -> s.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        factory.addConvertor(LocalDate.class, s -> s.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 
-        JacksonRenderFactory.global
-                .addConvertor(LocalDateTime.class, s -> s.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
+        factory.addConvertor(LocalDateTime.class, s -> s.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
 
-        JacksonRenderFactory.global
-                .addEncoder(Date.class, new JsonSerializer<Date>() {
+        factory.addEncoder(Date.class, new JsonSerializer<Date>() {
                     @Override
                     public void serialize(Date date, JsonGenerator out, SerializerProvider sp) throws IOException {
                         out.writeNumber(date.getTime());

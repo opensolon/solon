@@ -20,27 +20,23 @@ import java.util.Map;
 public class TestApp {
     public static void main(String[] args) {
         Solon.start(TestApp.class, args, app -> {
-            initMvcJsonCustom();
+            app.onEvent(GsonRenderFactory.class, factory -> initMvcJsonCustom(factory));
         });
     }
 
     /**
      * 初始化json定制（需要在插件运行前定制）
      */
-    private static void initMvcJsonCustom() {
+    private static void initMvcJsonCustom(GsonRenderFactory factory) {
         //通过转换器，做简单类型的定制
-        GsonRenderFactory.global
-                .addConvertor(Date.class, s -> s.getTime());
+        factory.addConvertor(Date.class, s -> s.getTime());
 
-        GsonRenderFactory.global
-                .addConvertor(LocalDate.class, s -> s.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        factory.addConvertor(LocalDate.class, s -> s.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 
-        GsonRenderFactory.global
-                .addConvertor(LocalDateTime.class, s -> s.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
+        factory.addConvertor(LocalDateTime.class, s -> s.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
 
 
-        GsonRenderFactory.global
-                .addEncoder(Date.class, (source, type, jsc) -> {
+        factory.addEncoder(Date.class, (source, type, jsc) -> {
                     return new JsonPrimitive(source.getTime());
                 });
 
