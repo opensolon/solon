@@ -9,7 +9,7 @@ import org.noear.solon.serialization.JsonConverter;
  */
 public abstract class GsonRenderFactoryBase implements JsonRenderFactory {
 
-    protected abstract GsonBuilder config();
+    public abstract GsonBuilder config();
 
     /**
      * 添加编码器

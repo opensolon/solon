@@ -36,7 +36,7 @@ public class JacksonRenderTypedFactory extends JacksonRenderFactoryBase {
     }
 
     @Override
-    protected ObjectMapper config() {
+    public ObjectMapper config() {
         return config;
     }
 }

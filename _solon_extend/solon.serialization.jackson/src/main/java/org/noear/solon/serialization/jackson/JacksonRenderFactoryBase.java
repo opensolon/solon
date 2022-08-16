@@ -15,7 +15,7 @@ import java.io.IOException;
  */
 public abstract class JacksonRenderFactoryBase implements JsonRenderFactory {
 
-    protected abstract ObjectMapper config();
+    public abstract ObjectMapper config();
 
     protected SimpleModule module;
 

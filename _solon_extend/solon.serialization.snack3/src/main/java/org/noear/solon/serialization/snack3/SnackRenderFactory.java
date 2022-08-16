@@ -25,7 +25,7 @@ public class SnackRenderFactory extends SnackRenderFactoryBase {
     }
 
     @Override
-    protected Options config() {
+    public Options config() {
         return config;
     }
 

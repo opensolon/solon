@@ -13,7 +13,7 @@ import org.noear.solon.serialization.JsonConverter;
  */
 public abstract class SnackRenderFactoryBase implements JsonRenderFactory {
 
-    protected abstract Options config();
+    public abstract Options config();
 
     /**
      * 添加编码器

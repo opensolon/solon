@@ -35,7 +35,7 @@ public class GsonRenderFactory extends GsonRenderFactoryBase {
 
 
     @Override
-    protected GsonBuilder config() {
+    public GsonBuilder config() {
         return config;
     }
 }

@@ -31,7 +31,7 @@ public class FastjsonRenderTypedFactory extends FastjsonRenderFactoryBase {
     }
 
     @Override
-    protected SerializeConfig config() {
+    public SerializeConfig config() {
         if (config == null) {
             config = new SerializeConfig();
         }

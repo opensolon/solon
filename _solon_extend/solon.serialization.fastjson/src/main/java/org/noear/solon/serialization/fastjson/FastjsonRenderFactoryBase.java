@@ -16,7 +16,7 @@ import java.math.BigDecimal;
  * @since 1.5
  */
 public abstract class FastjsonRenderFactoryBase implements JsonRenderFactory {
-    protected abstract SerializeConfig config();
+    public abstract SerializeConfig config();
 
     public <T> void addEncoder(Class<T> clz, ObjectSerializer encoder) {
         config().put(clz, encoder);
