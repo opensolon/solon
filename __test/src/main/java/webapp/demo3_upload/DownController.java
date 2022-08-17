@@ -37,14 +37,14 @@ public class DownController {
 
     @Mapping("f3")
     public File down2() {
-        String filePath = Utils.getResource("static/debug.htm").getFile();
+        String filePath = Utils.getResource("WEB-INF/static/debug.htm").getFile();
 
         return new File(filePath);
     }
 
     @Mapping("f4")
     public void down3(Context ctx) throws IOException {
-        String filePath = Utils.getResource("static/debug.htm").getFile();
+        String filePath = Utils.getResource("WEB-INF/static/debug.htm").getFile();
 
         File file = new File(filePath);
 
