@@ -33,6 +33,10 @@ public class XPluginImp implements Plugin {
             StaticMappings.add("/", new ClassPathStaticRepository(XPluginProp.RES_STATIC_LOCATION));
         }
 
+        if (Utils.getResource(XPluginProp.RES_WEB_INF_STATIC_LOCATION) != null) {
+            StaticMappings.add("/", new ClassPathStaticRepository(XPluginProp.RES_WEB_INF_STATIC_LOCATION));
+        }
+
         //尝试启动静态代理（也可能在后面动态添加仓库）
 
         //1.加载自定义的mime
