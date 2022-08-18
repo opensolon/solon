@@ -1,7 +1,7 @@
 #### 1.10.1
 * 插件 sqltoy-solon-plugin 升级 sqltoy 为 5.2.8
-* 插件 solon.auth 增加多账号体系验证
-* 插件 mybatis-solon-plugin 增加 mybatis.db1.plugins 配置节
+* 插件 solon.auth 增加多账号体系验证支持
+* 插件 mybatis-solon-plugin 增加 mybatis.xxx.plugins 配置节
 * 增加 支持 WEB-INF/static/ 做为静态文件目录（与 static/ 并存，二选一）
 
 #### 1.10.0
