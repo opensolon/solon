@@ -449,8 +449,9 @@ public class AopContext extends BeanContainer {
 
         if (size2 == 0) {
             //0.没有参数
-            Object raw = mWrap.invoke(bw.raw(), new Object[]{});
-            tryBuildBean0(mWrap, anno, raw);
+            tryBuildBeanDo(anno, mWrap, bw, new Object[]{});
+//            Object raw = mWrap.invoke(bw.raw(), new Object[]{});
+//            tryBuildBean0(mWrap, anno, raw);
         } else {
             //1.构建参数
             VarGather gather = new VarGather(bw, size2, (args2) -> {
@@ -458,8 +459,9 @@ public class AopContext extends BeanContainer {
                     //
                     //变量收集完成后，会回调此处
                     //
-                    Object raw = mWrap.invoke(bw.raw(), args2);
-                    tryBuildBean0(mWrap, anno, raw);
+                    tryBuildBeanDo(anno, mWrap, bw, args2);
+//                    Object raw = mWrap.invoke(bw.raw(), args2);
+//                    tryBuildBean0(mWrap, anno, raw);
                 } catch (Throwable e) {
                     e = Utils.throwableUnwrap(e);
                     if (e instanceof RuntimeException) {
@@ -475,6 +477,22 @@ public class AopContext extends BeanContainer {
                 VarHolder p2 = gather.add(p1.getParameter());
                 tryParameterInject(p2, p1.getParameter());
             }
+        }
+    }
+
+    protected void tryBuildBeanDo(Bean anno, MethodWrap mWrap, BeanWrap bw, Object[] args)throws Exception {
+        if (anno.async()) {
+            Utils.pools.submit(() -> {
+                try {
+                    Object raw = mWrap.invoke(bw.raw(), args);
+                    tryBuildBean0(mWrap, anno, raw);
+                } catch (Throwable e) {
+                    EventBus.push(e);
+                }
+            });
+        } else {
+            Object raw = mWrap.invoke(bw.raw(), args);
+            tryBuildBean0(mWrap, anno, raw);
         }
     }
 
