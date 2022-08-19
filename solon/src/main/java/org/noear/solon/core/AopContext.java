@@ -481,7 +481,7 @@ public class AopContext extends BeanContainer {
     }
 
     protected void tryBuildBeanDo(Bean anno, MethodWrap mWrap, BeanWrap bw, Object[] args)throws Exception {
-        if (anno.async()) {
+        if (anno.concurrent()) {
             Utils.pools.submit(() -> {
                 try {
                     Object raw = mWrap.invoke(bw.raw(), args);
