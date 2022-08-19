@@ -1,7 +1,8 @@
 package org.noear.solon.cloud.utils;
 
 /**
- * @author noear 2021/1/28 created
+ * @author noear
+ * @since 1.3.1
  */
 public class ExpirationUtils {
     public static long getExpiration(int times){
