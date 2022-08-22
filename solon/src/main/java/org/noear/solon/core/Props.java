@@ -142,10 +142,10 @@ public class Props extends Properties {
      */
     public <T> T getBean(String keyStarts, Class<T> clz) {
         if (Utils.isEmpty(keyStarts)) {
-            return PropsConverter.global().convert(this, null, clz, null);
+            return PropsConverter.global().convert(this, clz);
         } else {
             Properties props = getProp(keyStarts);
-            return PropsConverter.global().convert(props, null, clz, null);
+            return PropsConverter.global().convert(props, clz);
         }
     }
 

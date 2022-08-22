@@ -50,4 +50,8 @@ public class PropsConverter {
             return target;
         }
     }
+
+    public <T> T convert(Properties props,  Class<T> targetClz) {
+        return convert(props, null, targetClz, null);
+    }
 }
