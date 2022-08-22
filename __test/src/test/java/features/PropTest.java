@@ -2,6 +2,7 @@ package features;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.noear.solon.Solon;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
@@ -57,5 +58,16 @@ public class PropTest {
         assert strmap != null;
         assert strmap.size() == 2;
         assert strmap.get("id1").equals("1");
+    }
+
+    @Test
+    public void test2() {
+        List<String> list1 = Solon.cfg().getBean("stritems", List.class);
+        List<String> list2 = Solon.cfg().getList("stritems");
+
+        assert list1 != null;
+        assert list2 != null;
+
+        assert list1.size() == list2.size();
     }
 }
