@@ -51,7 +51,7 @@ public class PropsConverter {
         }
     }
 
-    public <T> T convert(Properties props,  Class<T> targetClz) {
+    public <T> T convert(Properties props, Class<T> targetClz) {
         return convert(props, null, targetClz, null);
     }
 }
