@@ -53,6 +53,11 @@ public class TestApp {
        return new TestModel();
     }
 
+    @Mapping("/hello")
+    public Object hello(String name) {
+        return name;
+    }
+
     public static class TestModel{
         public LocalDateTime time1 = LocalDateTime.now();
         public LocalDate time2 = LocalDate.now();
