@@ -184,13 +184,18 @@ public class Props extends Properties {
         return map;
     }
 
-//    public List<String> getList(String keyStarts) {
-//        List<String> ary = new ArrayList<>();
-//        doFind(keyStarts + "[", (k, v) -> {
-//            ary.add(v);
-//        });
-//        return ary;
-//    }
+    /**
+     * 查找 keyStarts 开头的所有配置；并生成一个新的 List
+     *
+     * @param keyStarts key 的开始字符
+     */
+    public List<String> getList(String keyStarts) {
+        List<String> ary = new ArrayList<>();
+        doFind(keyStarts + "[", (k, v) -> {
+            ary.add(v);
+        });
+        return ary;
+    }
 
     private void doFind(String keyStarts, BiConsumer<String, String> setFun) {
         String key2 = keyStarts;
