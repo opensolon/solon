@@ -9,6 +9,8 @@ import webapp.models.UserModel;
 import webapp.models.UserModelEx;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author noear 2020/12/20 created
@@ -62,5 +64,18 @@ public class Param4Controller {
     public String test(Context ctx) throws IOException {
         ctx.paramMap();
         return ctx.body();
+    }
+
+
+    //?id=3&aaa[0]=1&aaa[1]=2
+    @Get
+    @Mapping("test2")
+    public Map test2(Context ctx) throws IOException {
+        UserModel user = ctx.paramMap().getBean(UserModel.class);
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("id", user.getId());
+        map.put("aaa", user.getAaa());
+        return map;
     }
 }

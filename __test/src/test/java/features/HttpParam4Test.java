@@ -156,4 +156,15 @@ public class HttpParam4Test extends HttpTestBase {
 
         assert body.equals(body2);
     }
+
+    @Test
+    public void test2() throws IOException {
+        String body2 = path("/demo2/param4/test2?id=3&aaa[0]=1&aaa[1]=2").get();
+
+        ONode oNode = ONode.loadStr(body2);
+
+        assert oNode.get("id").getInt() == 3;
+        assert oNode.get("aaa").get(0).getInt() == 1;
+        assert oNode.get("aaa").get(1).getInt() == 2;
+    }
 }

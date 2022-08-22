@@ -103,10 +103,14 @@ public class NvMap extends LinkedCaseInsensitiveMap<String> {
     }
 
     public boolean getBool(String key, boolean def) {
-        if(containsKey(key)){
-            return Boolean.parseBoolean(get(key)) ;
-        }else{
+        if (containsKey(key)) {
+            return Boolean.parseBoolean(get(key));
+        } else {
             return def;
         }
+    }
+
+    public <T> T getBean(Class<T> clz) {
+        return PropsConverter.global().convert(new Props(this), clz);
     }
 }
