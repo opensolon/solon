@@ -273,6 +273,19 @@ public abstract class BeanContainer {
     }
 
     /**
+     * 订阅 bean 包装
+     *
+     * @param baseType 基类类型
+     * */
+    public void subWrap(Class<?> baseType, Consumer<BeanWrap> callback) {
+        EventBus.subscribe(BeanWrap.class, (e)->{
+            if(baseType.isAssignableFrom(e.clz())){
+                callback.accept(e);
+            }
+        });
+    }
+
+    /**
      * 获取 Bean
      *
      * @param nameOrType 名字或类型
@@ -300,6 +313,15 @@ public abstract class BeanContainer {
         getWrapAsyn(nameOrType, (bw) -> {
             callback.accept(bw.get());
         });
+    }
+
+    /**
+     * 订阅 Bean
+     *
+     * @param baseType 类型
+     * */
+    public <T> void subBean(Class<T> baseType, Consumer<T> callback) {
+        EventBus.subscribe(baseType, callback::accept);
     }
 
     /**
