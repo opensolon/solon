@@ -16,7 +16,7 @@ import org.noear.solon.test.SolonTest;
 public class TestDemo extends HttpTestBase {
     @Test
     public void test0() throws Exception{
-        String json = path("/").get();
+        String json = path("/t1").get();
         ONode oNode = ONode.loadStr(json);
 
         assert  oNode.get("time1").getString().length() == 16;
