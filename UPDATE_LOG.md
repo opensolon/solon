@@ -5,7 +5,6 @@
 * 插件 mybatis-solon-plugin 增加 mybatis.xxx.plugins 配置节
 * 增加 支持 WEB-INF/static/ 做为静态文件目录（与 static/ 并存，二选一）
 * 增加 BeanContainer::subBean、BeanContainer::subWrap
-* 增加 @Bean::concurrent 属性，支持并发运行
 
 #### 1.10.0
 * 插件 beetlsql-solon-plugin 升级 beetlsql 为 3.17.1-RELEASE

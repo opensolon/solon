@@ -481,19 +481,8 @@ public class AopContext extends BeanContainer {
     }
 
     protected void tryBuildBeanDo(Bean anno, MethodWrap mWrap, BeanWrap bw, Object[] args)throws Exception {
-        if (anno.concurrent()) {
-            Utils.pools.submit(() -> {
-                try {
-                    Object raw = mWrap.invoke(bw.raw(), args);
-                    tryBuildBean0(mWrap, anno, raw);
-                } catch (Throwable e) {
-                    EventBus.push(e);
-                }
-            });
-        } else {
-            Object raw = mWrap.invoke(bw.raw(), args);
-            tryBuildBean0(mWrap, anno, raw);
-        }
+        Object raw = mWrap.invoke(bw.raw(), args);
+        tryBuildBean0(mWrap, anno, raw);
     }
 
     protected void tryParameterInject(VarHolder varH, Parameter p) {
