@@ -9,6 +9,7 @@ import webapp.demo6_aop.Bean2;
 
 @RunWith(SolonJUnit4ClassRunner.class)
 @SolonTest(webapp.TestApp.class)
+//@SolonTest(value = webapp.TestApp.class, args = "-server.port=9001")
 public class AopTest {
     @Inject
     Bean2 bean2;

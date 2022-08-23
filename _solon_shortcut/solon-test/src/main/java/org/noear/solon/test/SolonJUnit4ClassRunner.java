@@ -27,6 +27,8 @@ public class SolonJUnit4ClassRunner extends BlockJUnit4ClassRunner {
             args.add("-debug=1");
         }
 
+        String[] argsStr = args.toArray(new String[args.size()]);
+
         if (anno != null) {
             if (appCached.contains(anno.getClass())) {
                 return;
@@ -38,9 +40,9 @@ public class SolonJUnit4ClassRunner extends BlockJUnit4ClassRunner {
                 Method main = getMain(anno);
 
                 if (main != null && Modifier.isStatic(main.getModifiers())) {
-                    main.invoke(null, args.toArray());
+                    main.invoke(null, new Object[]{argsStr});
                 } else {
-                    Solon.start(anno.value(), args.toArray(new String[args.size()]));
+                    Solon.start(anno.value(), argsStr);
                 }
             } catch (Throwable ex) {
                 Utils.throwableUnwrap(ex).printStackTrace();
@@ -56,7 +58,7 @@ public class SolonJUnit4ClassRunner extends BlockJUnit4ClassRunner {
                 }
             }
         } else {
-            Solon.start(klass, args.toArray(new String[args.size()]));
+            Solon.start(klass, argsStr);
         }
 
     }
