@@ -2,12 +2,13 @@
 * 插件 sqltoy-solon-plugin 升级 sqltoy 为 5.2.9
 * 插件 beetlsql-solon-plugin 升级 beetlsql 为 3.18.0
 * 插件 solon.auth 增加多账号体系验证支持
-* 插件 mybatis-solon-plugin 增加 mybatis.xxx.plugins 配置节
-* 增加 支持 WEB-INF/static/ 做为静态文件目录（与 static/ 并存，二选一）
-* 增加 BeanContainer::subBean、BeanContainer::subWrap
-* 增加 支持 Props::getBean(start),start 为空
-* 增加 支持 NvMap::getBean(clz) 接口
-* 增加 @SolonTest::args 启动参数支持
+* 插件 solon-test 增加 @SolonTest::args 启动参数支持
+* 插件 mybatis-solon-plugin 增加数据源 plugins 配置节支持
+* 插件 solon.web.staticfiles 增加 WEB-INF/static/ 做为静态文件目录支持（与 static/ 并存，二选一）
+* 增加 BeanContainer::subBean 订阅 bean
+* 增加 BeanContainer::subWrap 订阅 beanwrap
+* 增加 Props::getBean(start),start 为空支持
+* 增加 NvMap::getBean(clz) 接口支持
 
 #### 1.10.0
 * 插件 beetlsql-solon-plugin 升级 beetlsql 为 3.17.1-RELEASE
