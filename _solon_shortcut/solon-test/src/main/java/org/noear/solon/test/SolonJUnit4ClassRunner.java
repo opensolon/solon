@@ -8,8 +8,7 @@ import org.noear.solon.core.Aop;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 
 public class SolonJUnit4ClassRunner extends BlockJUnit4ClassRunner {
@@ -18,14 +17,20 @@ public class SolonJUnit4ClassRunner extends BlockJUnit4ClassRunner {
         super(klass);
 
         SolonTest anno = klass.getAnnotation(SolonTest.class);
-        String[] debugArgs = new String[]{"-debug=1"};
+        List<String> args = new ArrayList<>();
 
+        if (anno.args().length > 0) {
+            args.addAll(Arrays.asList(anno.args()));
+        }
+
+        if (anno.debug()) {
+            args.add("-debug=1");
+        }
 
         if (anno != null) {
-
-            if(appCached.contains(anno.getClass())){
+            if (appCached.contains(anno.getClass())) {
                 return;
-            }else {
+            } else {
                 appCached.add(anno.getClass());
             }
 
@@ -33,17 +38,9 @@ public class SolonJUnit4ClassRunner extends BlockJUnit4ClassRunner {
                 Method main = getMain(anno);
 
                 if (main != null && Modifier.isStatic(main.getModifiers())) {
-                    if (anno.debug()) {
-                        main.invoke(null, new Object[]{debugArgs});
-                    } else {
-                        main.invoke(null, new Object[0]);
-                    }
+                    main.invoke(null, args.toArray());
                 } else {
-                    if (anno.debug()) {
-                        Solon.start(anno.value(), debugArgs);
-                    } else {
-                        Solon.start(anno.value(), new String[]{});
-                    }
+                    Solon.start(anno.value(), args.toArray(new String[args.size()]));
                 }
             } catch (Throwable ex) {
                 Utils.throwableUnwrap(ex).printStackTrace();
@@ -59,7 +56,7 @@ public class SolonJUnit4ClassRunner extends BlockJUnit4ClassRunner {
                 }
             }
         } else {
-            Solon.start(klass, debugArgs);
+            Solon.start(klass, args.toArray(new String[args.size()]));
         }
 
     }

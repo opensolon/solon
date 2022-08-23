@@ -14,6 +14,9 @@ public @interface SolonTest {
     @Note("延迟秒数")
     int delay() default 1;
 
+    @Note("启动参数")
+    String[] args() default {};
+
     @Note("是否调试模式")
     boolean debug() default true;
 }
