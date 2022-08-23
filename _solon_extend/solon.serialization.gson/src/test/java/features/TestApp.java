@@ -40,6 +40,8 @@ public class TestApp {
                     return new JsonPrimitive(source.getTime());
                 });
 
+        //factory.config().addDeserializationExclusionStrategy()
+
     }
 
     @Mapping("/")

@@ -45,6 +45,9 @@ public class TestApp {
                         out.writeNumber(date.getTime());
                     }
                 });
+
+
+        //factory.config().addHandler();
     }
 
     @Mapping("/")

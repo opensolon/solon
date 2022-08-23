@@ -42,5 +42,7 @@ public class DemoApp {
                 Feature.StringNullAsEmpty,
                 Feature.QuoteFieldNames,
                 Feature.SerializeNulls);
+
+        //factory.config().add()
     }
 }

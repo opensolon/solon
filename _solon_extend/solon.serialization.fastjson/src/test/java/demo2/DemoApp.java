@@ -40,5 +40,7 @@ public class DemoApp {
         factory.setFeatures(SerializerFeature.BrowserCompatible,
                 SerializerFeature.DisableCircularReferenceDetect,
                 SerializerFeature.WriteMapNullValue);
+
+        //factory.config().addFilter();
     }
 }
