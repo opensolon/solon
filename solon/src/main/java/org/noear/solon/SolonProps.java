@@ -108,8 +108,11 @@ public final class SolonProps extends Props {
             loadInit(Utils.getResource("app-" + env + ".yml"), sysPropOrg);
         }
 
-        //4.3.加载扩展配置 solon.extend.config
-        String extConfig = getArg("extend.config");
+        //4.3.加载扩展配置 solon.config //or solon.extend.config
+        String extConfig = getArg("config");
+        if(Utils.isEmpty(extConfig)){
+            extConfig = getArg("extend.config");//兼容旧的
+        }
         if(Utils.isNotEmpty(extConfig)) {
             loadInit(new File(extConfig).toURI().toURL(), sysPropOrg);
         }
