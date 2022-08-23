@@ -1,5 +1,6 @@
 package labs;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.net.URI;
@@ -21,12 +22,6 @@ public class UriTest {
 
     @Test
     public void test2(){
-        URI uri = URI.create(null);
-        System.out.println(uri);
-        System.out.println(uri.getHost());
-        System.out.println(uri.getPath());
-
-        assert "".equals(uri.getHost());
-        assert uri.getPath() == null;
+        Assert.assertThrows(NullPointerException.class, () -> URI.create(null));
     }
 }
