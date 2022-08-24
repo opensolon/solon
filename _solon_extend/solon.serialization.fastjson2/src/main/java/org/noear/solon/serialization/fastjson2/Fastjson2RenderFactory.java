@@ -15,6 +15,7 @@ import org.noear.solon.serialization.StringSerializerRender;
 public class Fastjson2RenderFactory extends Fastjson2RenderFactoryBase {
     public static final Fastjson2RenderFactory global = new Fastjson2RenderFactory();
 
+    private ObjectWriterProvider config;
     private JSONWriter.Feature[] features;
 
     private Fastjson2RenderFactory(){
@@ -26,7 +27,7 @@ public class Fastjson2RenderFactory extends Fastjson2RenderFactoryBase {
 
     @Override
     public Render create() {
-        return new StringSerializerRender(false, new Fastjson2Serializer(features));
+        return new StringSerializerRender(false, new Fastjson2Serializer(config,features));
     }
 
     /**
@@ -38,6 +39,10 @@ public class Fastjson2RenderFactory extends Fastjson2RenderFactoryBase {
 
     @Override
     public ObjectWriterProvider config() {
-        return JSONFactory.getDefaultObjectWriterProvider();
+        if(config == null){
+            config = new ObjectWriterProvider();
+        }
+
+        return config;
     }
 }
