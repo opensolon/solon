@@ -19,7 +19,6 @@ public class Fastjson2Serializer implements StringSerializer {
 
     @Override
     public String serialize(Object obj) throws IOException {
-
         return JSON.toJSONString(obj, features);
     }
 }
