@@ -14,10 +14,10 @@ import org.noear.solon.serialization.JsonRenderFactory;
  */
 public abstract class Fastjson2RenderFactoryBase implements JsonRenderFactory {
 
-    public abstract ObjectWriterProvider getObjectWriterProvider();
+    public abstract ObjectWriterProvider config();
 
     public <T> void addEncoder(Class<T> clz, ObjectWriter encoder) {
-        getObjectWriterProvider().register(clz, encoder);
+        config().register(clz, encoder);
     }
 
 

@@ -31,7 +31,7 @@ public class Fastjson2RenderTypedFactory extends Fastjson2RenderFactoryBase {
     }
 
     @Override
-    public ObjectWriterProvider getObjectWriterProvider() {
+    public ObjectWriterProvider config() {
         return JSONFactory.getDefaultObjectWriterProvider();
     }
 
