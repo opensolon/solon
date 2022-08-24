@@ -1,3 +1,7 @@
+#### 1.10.2
+* 增加 solon.config 配置项（与 solon.extend.config 同）
+* 修复 solon-test 
+
 #### 1.10.1
 * 插件 sqltoy-solon-plugin 升级 sqltoy 为 5.2.9
 * 插件 beetlsql-solon-plugin 升级 beetlsql 为 3.18.0
