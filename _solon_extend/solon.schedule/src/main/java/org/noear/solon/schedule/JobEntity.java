@@ -24,7 +24,7 @@ class JobEntity extends Thread {
     /**
      * 固定延时
      */
-     long fixedDelay;
+    final long fixedDelay;
     /**
      * 执行函数
      */
@@ -80,10 +80,9 @@ class JobEntity extends Thread {
     /**
      * 重置调度时间
      * */
-    protected void reset(CronExpressionPlus cron, long fixedRate, long fixedDelay){
+    protected void reset(CronExpressionPlus cron, long fixedRate){
         this.cron = cron;
         this.fixedRate = fixedRate;
-        this.fixedDelay = fixedDelay;
     }
 
     /**

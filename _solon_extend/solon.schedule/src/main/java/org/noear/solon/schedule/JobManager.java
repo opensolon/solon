@@ -107,11 +107,11 @@ public class JobManager {
         }
     }
 
-    public static void reset(String name, long fixedRate, long fixedDelay){
+    public static void reset(String name, long fixedRate){
         JobEntity jobEntity = jobEntityMap.get(name);
 
         if(jobEntity != null) {
-            jobEntity.reset(null, fixedRate, fixedDelay);
+            jobEntity.reset(null, fixedRate);
         }
     }
 
@@ -120,7 +120,7 @@ public class JobManager {
 
         if(jobEntity != null) {
             CronExpressionPlus cronX = CronUtils.get(cron);
-            jobEntity.reset(cronX, 0, 0);
+            jobEntity.reset(cronX, 0);
         }
     }
 

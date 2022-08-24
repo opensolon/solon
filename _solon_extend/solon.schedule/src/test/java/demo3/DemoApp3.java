@@ -22,12 +22,12 @@ public class DemoApp3 {
 
             app.get("/reset",ctx->{
                 //修改job1的时间 //表达式从数据库或配置读取
-                JobManager.reset("Job1", "0/1 * * * * * ?");
+                JobManager.reset("Job1", "* * * * * ? *");
             });
 
             app.get("/reset2",ctx->{
                 //修改job1的时间 //表达式从数据库或配置读取
-                JobManager.reset("Job1", 10,0);
+                JobManager.reset("Job1", 10*1000);
             });
         });
     }
