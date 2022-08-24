@@ -17,19 +17,19 @@ public class SolonJUnit4ClassRunner extends BlockJUnit4ClassRunner {
         super(klass);
 
         SolonTest anno = klass.getAnnotation(SolonTest.class);
-        List<String> args = new ArrayList<>();
-
-        if (anno.args().length > 0) {
-            args.addAll(Arrays.asList(anno.args()));
-        }
-
-        if (anno.debug()) {
-            args.add("-debug=1");
-        }
-
-        String[] argsStr = args.toArray(new String[args.size()]);
 
         if (anno != null) {
+            List<String> args = new ArrayList<>();
+            if (anno.args().length > 0) {
+                args.addAll(Arrays.asList(anno.args()));
+            }
+
+            if (anno.debug()) {
+                args.add("-debug=1");
+            }
+
+            String[] argsStr = args.toArray(new String[args.size()]);
+
             if (appCached.contains(anno.getClass())) {
                 return;
             } else {
@@ -58,7 +58,7 @@ public class SolonJUnit4ClassRunner extends BlockJUnit4ClassRunner {
                 }
             }
         } else {
-            Solon.start(klass, argsStr);
+            Solon.start(klass, new String[0]);
         }
 
     }
