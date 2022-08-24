@@ -2,7 +2,7 @@
 * 增加 solon.config 配置项（与 solon.extend.config 同）
 * 修复 solon-test 
 
-#### 1.10.1
+#### 1.10.2-M1
 * 插件 sqltoy-solon-plugin 升级 sqltoy 为 5.2.9
 * 插件 beetlsql-solon-plugin 升级 beetlsql 为 3.18.0
 * 插件 solon.auth 增加多账号体系验证支持
