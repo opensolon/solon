@@ -1,7 +1,7 @@
 #### 1.10.2
 * 增加 solon.config 配置项（与 solon.extend.config 同）
 * 修复 solon-test 
-* 插件 solon.schedule 增加动态修改调度时间的支持
+* 插件 solon.schedule 增加动态修改调度时间的支持??
 
 #### 1.10.2-M1
 * 插件 sqltoy-solon-plugin 升级 sqltoy 为 5.2.9
