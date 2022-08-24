@@ -26,7 +26,7 @@
 		<img src="https://img.shields.io/github/stars/noear/solon.svg?logo=github" alt="github star"/>
 	</a>
     <br />
-    <a target="_blank" href="https://gitee.com/noear/solon">
+    <a>
         <img src="https://img.shields.io/github/languages/code-size/noear/solon" alt="code size in bytes">
     </a>
 </p>
