@@ -58,9 +58,8 @@ public class SolonJUnit4ClassRunner extends BlockJUnit4ClassRunner {
                 }
             }
         } else {
-            Solon.start(klass, new String[0]);
+            Solon.start(klass, new String[]{"-debug=1"});
         }
-
     }
 
     private Method getMain(SolonTest anno) {
