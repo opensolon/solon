@@ -16,15 +16,15 @@ class JobEntity extends Thread {
     /**
      * 调度表达式
      */
-    final CronExpressionPlus cron;
+     CronExpressionPlus cron;
     /**
      * 固定频率
      */
-    final long fixedRate;
+     long fixedRate;
     /**
      * 固定延时
      */
-    final long fixedDelay;
+     long fixedDelay;
     /**
      * 执行函数
      */
@@ -75,6 +75,15 @@ class JobEntity extends Thread {
         if (Utils.isNotEmpty(name)) {
             setName("Job:" + name);
         }
+    }
+
+    /**
+     * 重置调度时间
+     * */
+    protected void reset(CronExpressionPlus cron, long fixedRate, long fixedDelay){
+        this.cron = cron;
+        this.fixedRate = fixedRate;
+        this.fixedDelay = fixedDelay;
     }
 
     /**

@@ -107,6 +107,23 @@ public class JobManager {
         }
     }
 
+    public static void reset(String name, long fixedRate, long fixedDelay){
+        JobEntity jobEntity = jobEntityMap.get(name);
+
+        if(jobEntity != null) {
+            jobEntity.reset(null, fixedRate, fixedDelay);
+        }
+    }
+
+    public static void reset(String name, String cron) throws ParseException{
+        JobEntity jobEntity = jobEntityMap.get(name);
+
+        if(jobEntity != null) {
+            CronExpressionPlus cronX = CronUtils.get(cron);
+            jobEntity.reset(cronX, 0, 0);
+        }
+    }
+
     /**
      * 获取执行函数
      * */
