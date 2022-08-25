@@ -15,18 +15,19 @@ public class DemoApp3 {
     public static void main(String[] args) {
         Solon.start(DemoApp3.class, args, app -> {
 //            app.onEvent(BeanLoadEndEvent.class, e -> {
-//
-//                //修改job1的时间 //表达式从数据库或配置读取
+//                //容器加载完成后，读取数据库的值，修改配置
+//                //修改job1的时间
 //                JobManager.reset("job1", "0/1 * * * * * ?");
 //            });
 
             app.get("/reset",ctx->{
-                //修改job1的时间 //表达式从数据库或配置读取
+                //通过接口或事件，直接修改配置
+                //修改job1的时间
                 JobManager.reset("Job1", "* * * * * ? *");
             });
 
             app.get("/reset2",ctx->{
-                //修改job1的时间 //表达式从数据库或配置读取
+                //修改job1的时间
                 JobManager.reset("Job1", 10*1000);
             });
         });

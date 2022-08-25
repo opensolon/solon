@@ -83,6 +83,7 @@ class JobEntity extends Thread {
     protected void reset(CronExpressionPlus cron, long fixedRate){
         this.cron = cron;
         this.fixedRate = fixedRate;
+        this.baseTime = new Date(System.currentTimeMillis() + sleepMillis);
     }
 
     /**
