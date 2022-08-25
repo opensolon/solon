@@ -16,11 +16,11 @@ class JobEntity extends Thread {
     /**
      * 调度表达式
      */
-     CronExpressionPlus cron;
+     private CronExpressionPlus cron;
     /**
      * 固定频率
      */
-     long fixedRate;
+     private long fixedRate;
     /**
      * 固定延时
      */
