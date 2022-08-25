@@ -6,7 +6,7 @@
 
     <groupId>org.noear</groupId>
     <artifactId>solon-parent</artifactId>
-    <version>1.10.2-M1</version>
+    <version>${revision}</version>
     <packaging>pom</packaging>
 
     <name>${project.artifactId}</name>
@@ -14,6 +14,8 @@
     <url>https://github.com/noear/solon</url>
 
     <properties>
+        <revision>1.10.2-M1</revision>
+
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
