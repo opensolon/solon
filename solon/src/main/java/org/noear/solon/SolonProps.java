@@ -111,6 +111,7 @@ public final class SolonProps extends Props {
         //4.3.加载扩展配置 solon.config //or solon.extend.config
         String extConfig = getArg("config");
         if(Utils.isEmpty(extConfig)){
+            //@Deprecated
             extConfig = getArg("extend.config");//兼容旧的
         }
         if(Utils.isNotEmpty(extConfig)) {
