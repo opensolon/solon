@@ -3,7 +3,7 @@
 * 插件 solon-test 优化注解处理
 * 插件 solon.schedule 增加动态修改调度时间的支持??
 
-#### 1.10.2-M1
+#### 1.10.1
 * 插件 sqltoy-solon-plugin 升级 sqltoy 为 5.2.9
 * 插件 beetlsql-solon-plugin 升级 beetlsql 为 3.18.0
 * 插件 solon.auth 增加多账号体系验证支持
