@@ -14,11 +14,9 @@ import org.noear.solon.validation.Validator;
 public class ValidatedValidator implements Validator<Validated> {
     public static final ValidatedValidator instance = new ValidatedValidator();
 
-    private BeanValidator validator;
+    private BeanValidator validator = new BeanValidatorDefault();
 
     public ValidatedValidator() {
-        validator = new BeanValidatorDefault();
-
         Aop.getAsyn(BeanValidator.class, bw -> {
             validator = bw.get();
         });

@@ -29,15 +29,6 @@ import java.util.Map;
  * @since 1.0
  * */
 public class ValidatorManager {
-    private static BeanValidator validator;
-
-    static {
-        validator = new BeanValidatorDefault();
-
-        Aop.getAsyn(BeanValidator.class, bw -> {
-            validator = bw.get();
-        });
-    }
 
     /**
      * 设定非重复提交检测器
