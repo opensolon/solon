@@ -13,10 +13,6 @@
     <artifactId>nacos-solon-plugin</artifactId>
     <packaging>jar</packaging>
 
-    <properties>
-        <nacos.ver>1.4.3</nacos.ver>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
@@ -26,7 +22,7 @@
         <dependency>
             <groupId>com.alibaba.nacos</groupId>
             <artifactId>nacos-client</artifactId>
-            <version>${nacos.ver}</version>
+            <version>${nacos1.ver}</version>
         </dependency>
 
     </dependencies>
