@@ -9,8 +9,8 @@ import org.noear.solon.serialization.StringSerializerRender;
 /**
  * Json 渲染器工厂
  *
- * @author noear
- * @since 1.9
+ * @author 暮城留风
+ * @since 1.10
  */
 public class Fastjson2RenderFactory extends Fastjson2RenderFactoryBase {
     public static final Fastjson2RenderFactory global = new Fastjson2RenderFactory();
