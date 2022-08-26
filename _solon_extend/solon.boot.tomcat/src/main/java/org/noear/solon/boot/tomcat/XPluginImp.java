@@ -14,6 +14,7 @@ import javax.servlet.annotation.WebListener;
 import javax.servlet.annotation.WebServlet;
 
 public final class XPluginImp implements Plugin {
+    public static final String TOMCAT_VER = "tomcat 9.0.64";
     private static Signal _signal;
 
     public static Signal signal() {
@@ -23,7 +24,7 @@ public final class XPluginImp implements Plugin {
     private ServerLifecycle _server = null;
 
     public static String solon_boot_ver() {
-        return "tomcat 8.5/" + Solon.cfg().version();
+        return TOMCAT_VER + "/" + Solon.cfg().version();
     }
 
     @Override
@@ -68,7 +69,7 @@ public final class XPluginImp implements Plugin {
         }
 
         long time_start = System.currentTimeMillis();
-        PrintUtil.info("Server:main: Tomcat 8.5(tomcat)");
+        PrintUtil.info("Server:main: " + TOMCAT_VER + "(tomcat)");
 
         _server.start(_host, _port);
         _signal = new SignalSim(_name, _port, "http", SignalType.HTTP);
