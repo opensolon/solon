@@ -98,8 +98,12 @@ public abstract class SessionBase implements Session {
                 if (Utils.isNotEmpty(query)) {
                     String[] ss = query.split("&");
                     for (String kv : ss) {
-                        String[] s = kv.split("=");
-                        paramMap.put(s[0], s[1]);
+                        int index=kv.indexOf('=');
+                        if(index>-1){
+                            paramMap.put(kv.substring(0,index),kv.substring(index+1));
+                        }else{
+                            paramMap.put(kv, null);
+                        }
                     }
                 }
             }
@@ -107,8 +111,6 @@ public abstract class SessionBase implements Session {
 
         return paramMap;
     }
-
-
     private Map<String,Object> attrMap = null;
     public Map<String,Object> attrMap(){
         if(attrMap == null){
