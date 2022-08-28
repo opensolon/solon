@@ -88,20 +88,26 @@ public abstract class SessionBase implements Session {
     }
 
     private NvMap paramMap;
+    /**
+     * @auth 非著名职业BUG撰写师
+     * @since 1.10
+     * */
     public NvMap paramMap() {
         if (paramMap == null) {
             paramMap = new NvMap();
 
-            if(uri() != null) {
+            if (uri() != null) {
                 String query = uri().getQuery();
 
                 if (Utils.isNotEmpty(query)) {
                     String[] ss = query.split("&");
+
                     for (String kv : ss) {
-                        int index=kv.indexOf('=');
-                        if(index>-1){
-                            paramMap.put(kv.substring(0,index),kv.substring(index+1));
-                        }else{
+                        int index = kv.indexOf('=');
+
+                        if (index > -1) {
+                            paramMap.put(kv.substring(0, index), kv.substring(index + 1));
+                        } else {
                             paramMap.put(kv, null);
                         }
                     }
