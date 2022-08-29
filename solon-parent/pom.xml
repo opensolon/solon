@@ -224,11 +224,17 @@
                 <version>${revision}</version>
             </dependency>
 
-<!--            <dependency>-->
-<!--                <groupId>org.noear</groupId>-->
-<!--                <artifactId>solon.boot.tomcat</artifactId>-->
-<!--                <version>${revision}</version>-->
-<!--            </dependency>-->
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.boot.tomcat</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.boot.tomcat.add.jsp</artifactId>
+                <version>${revision}</version>
+            </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
@@ -1390,6 +1396,7 @@
         <module>../_solon_extend/solon.boot.jetty</module>
         <module>../_solon_extend/solon.boot.undertow</module>
         <module>../_solon_extend/solon.boot.tomcat</module>
+        <module>../_solon_extend/solon.boot.tomcat.add.jsp</module>
 
         <module>../_solon_extend/solon.boot.websocket</module>
 

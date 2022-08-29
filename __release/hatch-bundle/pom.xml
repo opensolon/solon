@@ -37,7 +37,6 @@
 
 <!--        <module>../../__hatch/solon.boot.rapidoid-http-fast</module>-->
 <!--        <module>../../__hatch/solon.boot.jdkudp</module>-->
-<!--        <module>../../__hatch/solon.boot.tomcat</module>-->
     </modules>
 
 
