@@ -34,7 +34,7 @@ public abstract class TomcatServerBase implements ServerLifecycle {
         //define context type : jsp/non-jsp
         stepContext();
 
-        startTom();
+        _server.start();
     }
 
 
@@ -73,10 +73,6 @@ public abstract class TomcatServerBase implements ServerLifecycle {
         }
     }
 
-    protected void startTom() throws LifecycleException, InterruptedException {
-        _server.start();
-        //_server.getServer();//.await();
-    }
 
     //算是较为满意的获取被注解的Servlet包下路径
     protected static File getServletFolder() {
