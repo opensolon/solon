@@ -26,10 +26,6 @@ import static org.noear.solon.boot.tomcat.XPluginImp.solon_boot_ver;
  **/
 public abstract class TomcatServerBase implements ServerLifecycle {
     protected Tomcat _server;
-    private static final String TOMCAT_PREFIX = "tomcat-";
-    private final ExecutorService _executor = Executors.newSingleThreadExecutor(new NamedThreadFactory(TOMCAT_PREFIX));
-
-
 
     @Override
     public void start(String host, int port) throws Throwable {
@@ -79,11 +75,7 @@ public abstract class TomcatServerBase implements ServerLifecycle {
 
     protected void startTom() throws LifecycleException, InterruptedException {
         _server.start();
-        _executor.execute(() -> {
-            _server.getServer().await();
-        });
-        //给org.apache.catalina.Server.await 点时间
-        Thread.sleep(1);
+        //_server.getServer();//.await();
     }
 
     //算是较为满意的获取被注解的Servlet包下路径

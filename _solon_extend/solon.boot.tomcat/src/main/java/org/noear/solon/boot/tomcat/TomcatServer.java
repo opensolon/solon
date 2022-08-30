@@ -13,6 +13,7 @@ import org.noear.solon.boot.tomcat.http.TCHttpContextHandler;
  */
 public class TomcatServer extends TomcatServerBase {
 
+    @Override
     protected Context stepContext() {
         //context configuration start 开始上下文相关配置
         //1.初始化上下文
