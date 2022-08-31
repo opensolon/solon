@@ -231,26 +231,11 @@
 <!--                    <artifactId>solon.boot.jlhttp</artifactId>-->
 <!--                </dependency>-->
 
-<!--
 
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon.boot.smarthttp</artifactId>
         </dependency>
--->
-
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.boot.tomcat</artifactId>
-        </dependency>
-
-        <!--jsp started-->
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.boot.tomcat.add.jsp</artifactId>
-        </dependency>
-        <!--jsp ended -->
-
 
 
 <!--                <dependency>-->

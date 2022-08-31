@@ -35,6 +35,10 @@
 
         <module>../../__hatch/solon.boot.reactor-netty</module>
 
+
+        <module>../../__hatch/solon.boot.tomcat</module>
+        <module>../../__hatch/solon.boot.tomcat.add.jsp</module>
+
 <!--        <module>../../__hatch/solon.boot.rapidoid-http-fast</module>-->
 <!--        <module>../../__hatch/solon.boot.jdkudp</module>-->
     </modules>
