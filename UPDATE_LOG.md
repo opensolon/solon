@@ -4,7 +4,18 @@
 * 完善 solon.serialization.fastjson2 插件
 * 增加 solon.config 配置项（与 solon.extend.config 同）
 * 插件 solon-test 优化注解处理
-* 插件 solon.schedule 增加动态修改调度时间的支持??
+* 插件 solon.schedule 增加动态修改调度时间的支持
+* 相关引用升级：
+  * snack3 升级为：3.2.35
+  * fastjson 升级为：1.2.83
+  * fastjson2 升级为：2.0.12
+  * hutool 升级为：5.8.5
+  * undertow 升级为：2.2.19.Final
+  * snakeyaml 升级为：1.30
+  * grpc 升级为：1.49.0
+  * dubbo3 升级为：3.0.11
+  * rsocket 升级为：1.1.2
+  * netty 升级为：4.1.68.Final
 
 #### 1.10.1
 * 插件 sqltoy-solon-plugin 升级 sqltoy 为 5.2.9
