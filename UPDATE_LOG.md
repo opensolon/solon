@@ -1,6 +1,4 @@
 #### 1.10.2
-* 新增 solon.boot.tomcat 插件
-* 新增 solon.boot.tomcat.add.jsp 插件
 * 完善 solon.serialization.fastjson2 插件
 * 增加 solon.config 配置项（与 solon.extend.config 同）
 * 插件 solon-test 优化注解处理
