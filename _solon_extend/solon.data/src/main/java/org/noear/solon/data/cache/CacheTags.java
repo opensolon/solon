@@ -10,6 +10,7 @@ import java.util.List;
  * @since 1.0
  * */
 public class CacheTags {
+    private static final String TAG_SECONDS  ="{{s}}:";
     private CacheService _cache;
 
     public CacheTags(CacheService caching) {
@@ -22,16 +23,35 @@ public class CacheTags {
      * @param tag            标签
      * @param targetCacheKey 目标缓存键
      */
-    public void add(String tag, String targetCacheKey) {
+    public void add(String tag, String targetCacheKey, int refSeconds) {
         String tagKey = _tagKey(tag);
 
         List<String> cacheKeyList = _get(tagKey);
         if (cacheKeyList.contains(targetCacheKey))
             return;
 
+        int seconds = refSeconds;
+        if (cacheKeyList.size() > 0) {
+            String secondsStr = cacheKeyList.get(0);
+            if (secondsStr.startsWith(TAG_SECONDS)) {
+                seconds = Integer.parseInt(secondsStr.substring(TAG_SECONDS.length()));
+
+                if (refSeconds > seconds) {
+                    seconds = refSeconds;
+                    cacheKeyList.remove(0);
+                    cacheKeyList.add(0, TAG_SECONDS + seconds);
+                }
+            }else{
+                cacheKeyList.add(0, TAG_SECONDS + seconds);
+            }
+        }else{
+            cacheKeyList.add(0, TAG_SECONDS + seconds);
+        }
+
+
         cacheKeyList.add(targetCacheKey);
 
-        _set(tagKey, cacheKeyList);
+        _set(tagKey, cacheKeyList, seconds);
     }
 
     /**
@@ -102,8 +122,8 @@ public class CacheTags {
      * @param tagKey 标签键
      * @param value 标签键列表
      * */
-    protected void _set(String tagKey, List<String> value) {
-        _cache.store(tagKey, value, 0);
+    protected void _set(String tagKey, List<String> value, int seconds) {
+        _cache.store(tagKey, value, seconds);
     }
 
     /**

@@ -3,6 +3,7 @@
 * 增加 solon.config 配置项（与 solon.extend.config 同）
 * 插件 solon-test 优化注解处理
 * 插件 solon.schedule 增加动态修改调度时间的支持
+* 插件 solon.data 优化 tag 的缓存时间
 * 相关引用升级版本：
   * snack3 升级为：3.2.35
   * fastjson 升级为：1.2.83
