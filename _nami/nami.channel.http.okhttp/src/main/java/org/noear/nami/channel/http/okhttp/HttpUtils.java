@@ -25,6 +25,8 @@ class HttpUtils {
             .readTimeout(10, TimeUnit.SECONDS)
             .dispatcher(httpClientDispatcher.get())
             .addInterceptor(HttpInterceptor.instance)
+            .sslSocketFactory(SSLClient.getSSLSocketFactory(), SSLClient.getX509TrustManager())
+            .hostnameVerifier(SSLClient.defaultHostnameVerifier)
             .build();
 
     public static HttpUtils http(String url){
