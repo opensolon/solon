@@ -39,12 +39,15 @@ public class CacheTags {
                 if (refSeconds > seconds) {
                     seconds = refSeconds;
                     cacheKeyList.remove(0);
+                    //时间不同时
                     cacheKeyList.add(0, TAG_SECONDS + seconds);
                 }
             }else{
+                //不存在时间时
                 cacheKeyList.add(0, TAG_SECONDS + seconds);
             }
         }else{
+            //第一次时
             cacheKeyList.add(0, TAG_SECONDS + seconds);
         }
 
@@ -64,8 +67,11 @@ public class CacheTags {
 
         List<String> cacheKeyList = _get(tagKey);
 
-        for (String cacheKey : cacheKeyList)
-            _cache.remove(cacheKey);
+        for (String cacheKey : cacheKeyList) {
+            if (cacheKey.startsWith(TAG_SECONDS) == false) {
+                _cache.remove(cacheKey);
+            }
+        }
 
         _cache.remove(tagKey);
 
@@ -85,17 +91,20 @@ public class CacheTags {
         List<String> cacheKeyList = _get(tagKey);
 
         for (String cacheKey : cacheKeyList) {
-            Object temp = _cache.get(cacheKey);
-            if (temp != null) {
-                //如果之前有缓存，则：
-                //
-                if (newValue == null) {
-                    //如果值为null，则删除
-                    _cache.remove(cacheKey);
-                } else {
-                    //类型一样才更新 //避免引起莫名的错
-                    if (newValue.getClass() == temp.getClass()) {
-                        _cache.store(cacheKey, newValue, seconds);
+            if (cacheKey.startsWith(TAG_SECONDS) == false) {
+                Object temp = _cache.get(cacheKey);
+
+                if (temp != null) {
+                    //如果之前有缓存，则：
+                    //
+                    if (newValue == null) {
+                        //如果值为null，则删除
+                        _cache.remove(cacheKey);
+                    } else {
+                        //类型一样才更新 //避免引起莫名的错
+                        if (newValue.getClass() == temp.getClass()) {
+                            _cache.store(cacheKey, newValue, seconds);
+                        }
                     }
                 }
             }
