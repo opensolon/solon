@@ -288,10 +288,20 @@ public abstract class BeanContainer {
     /**
      * 获取 Bean
      *
-     * @param nameOrType 名字或类型
+     * @param name 名字
      * */
-    public <T> T getBean(Object nameOrType) {
-        BeanWrap bw = getWrap(nameOrType);
+    public <T> T getBean(String name) {
+        BeanWrap bw = getWrap(name);
+        return bw == null ? null : bw.get();
+    }
+
+    /**
+     * 获取 Bean
+     *
+     * @param type 类型
+     * */
+    public <T> T getBean(Class<T> type) {
+        BeanWrap bw = getWrap(type);
         return bw == null ? null : bw.get();
     }
 
@@ -307,10 +317,21 @@ public abstract class BeanContainer {
     /**
      * 异步获取 Bean
      *
-     * @param nameOrType 名字或类型
+     * @param name 名字
      * */
-    public <T> void getBeanAsyn(Object nameOrType, Consumer<T> callback) {
-        getWrapAsyn(nameOrType, (bw) -> {
+    public <T> void getBeanAsyn(String name, Consumer<T> callback) {
+        getWrapAsyn(name, (bw) -> {
+            callback.accept(bw.get());
+        });
+    }
+
+    /**
+     * 异步获取 Bean
+     *
+     * @param type 类型
+     * */
+    public <T> void getBeanAsyn(Class<T> type, Consumer<T> callback) {
+        getWrapAsyn(type, (bw) -> {
             callback.accept(bw.get());
         });
     }
