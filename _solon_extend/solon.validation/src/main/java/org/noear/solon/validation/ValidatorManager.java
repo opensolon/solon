@@ -325,6 +325,8 @@ public class ValidatorManager {
 
     /**
      * 执行错误处理
+     *
+     * @return 当为 true，则以 DataThrowable 抛出；否则用 AuthorizationException 抛出。
      */
     @Note("执行错误处理")
     public static boolean failureDo(Context ctx, Annotation ano, Result result, String message) {
