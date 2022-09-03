@@ -67,7 +67,7 @@ public class CacheExecutorImp {
 
                         //4.添加缓存标签
                         for (String tag : tags.split(",")) {
-                            ct.add(tag, key);
+                            ct.add(tag, key, anno.seconds());
                         }
                     }
                 }
