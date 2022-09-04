@@ -17,6 +17,10 @@ public class Context {
      */
     public final Config config;
     /**
+     * 目标
+     * */
+    public final Object target;
+    /**
      * 函数
      */
     public final Method method;
@@ -49,8 +53,9 @@ public class Context {
     public Object body;
 
 
-    public Context(Config config, Method method, String action, String url) {
+    public Context(Config config, Object target, Method method, String action, String url) {
         this.config = config;
+        this.target = target;
         this.method = method;
         this.action = action;
         this.url = url;

@@ -247,7 +247,7 @@ public class NamiHandler implements InvocationHandler {
 
         //执行调用
         Object rst = new Nami(config)
-                .method(method)
+                .method(proxy, method)
                 .action(act)
                 .url(url, fun)
                 .call(headers, args, body)
