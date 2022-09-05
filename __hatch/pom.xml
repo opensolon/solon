@@ -8,7 +8,7 @@
         <groupId>org.noear</groupId>
         <artifactId>solon-parent</artifactId>
         <version>${revision}</version>
-        <relativePath>../../solon-parent/pom.xml</relativePath>
+        <relativePath>../solon-parent/pom.xml</relativePath>
     </parent>
 
     <groupId>org.noear.bundle</groupId>
@@ -28,16 +28,16 @@
 
 
     <modules>
-        <module>../../__hatch/nami.coder.thrift</module>
+        <module>nami.coder.thrift</module>
 
-        <module>../../__hatch/solon.serialization.thrift</module>
-        <module>../../__hatch/solon.serialization.avro</module>
+        <module>solon.serialization.thrift</module>
+        <module>solon.serialization.avro</module>
 
-        <module>../../__hatch/solon.boot.reactor-netty</module>
+        <module>solon.boot.reactor-netty</module>
 
 
-        <module>../../__hatch/solon.boot.tomcat</module>
-        <module>../../__hatch/solon.boot.tomcat.add.jsp</module>
+        <module>solon.boot.tomcat</module>
+        <module>solon.boot.tomcat.add.jsp</module>
 
 <!--        <module>../../__hatch/solon.boot.rapidoid-http-fast</module>-->
 <!--        <module>../../__hatch/solon.boot.jdkudp</module>-->
