@@ -12,7 +12,7 @@
     </parent>
 
     <groupId>org.noear.bundle</groupId>
-    <artifactId>hatch-bundle</artifactId>
+    <artifactId>__hatch</artifactId>
     <packaging>pom</packaging>
 
 
