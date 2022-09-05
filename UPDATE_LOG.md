@@ -5,18 +5,17 @@
 * 插件 solon-test 优化注解处理
 * 插件 solon.schedule 增加动态修改调度时间的支持
 * 插件 solon.data 优化 tag 的缓存时间处理
-* 相关引用升级版本：
-  * snack3 升级为：3.2.35
-  * fastjson 升级为：1.2.83
-  * fastjson2 升级为：2.0.12
-  * hutool 升级为：5.8.5
-  * undertow 升级为：2.2.19.Final
-  * snakeyaml 升级为：1.30
-  * mybatis 升级为：3.5.10
-  * grpc 升级为：1.49.0
-  * dubbo3 升级为：3.0.11
-  * rsocket 升级为：1.1.2
-  * netty 升级为：4.1.68.Final
+* 插件 solon.config.yaml 升级 snakeyaml 为：1.30
+* 插件 solon.serialization.snack3 升级 snack3 为：3.2.35
+* 插件 solon.serialization.fastjson 升级 fastjson 为：1.2.83
+* 插件 solon.serialization.fastjson2 升级 fastjson2 为：2.0.12
+* 插件 solon.boot.undertow 升级 undertow 为：2.2.19.Final
+* 插件 nami.channel.socketd.rsocket 升级 rsocket 为：1.1.2
+* 插件 nami.channel.socketd.netty 升级 netty 为：4.1.68.Final
+* 插件 nami.channel.http.hutool 升级 hutool 为：5.8.5
+* 插件 mybatis-solon-plugin 升级 mybatis 为：3.5.10
+* 插件 grpc-solon-plugin 升级 grpc 为：1.49.0
+* 插件 dubbo3-solon-plugin 升级 dubbo3 为：3.0.11
 
 #### 1.10.1
 * 插件 sqltoy-solon-plugin 升级 sqltoy 为 5.2.9
