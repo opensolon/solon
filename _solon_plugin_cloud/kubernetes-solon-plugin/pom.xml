@@ -11,7 +11,7 @@
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>k8s-config-solon-plugin</artifactId>
+    <artifactId>kubernetes-solon-plugin</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>

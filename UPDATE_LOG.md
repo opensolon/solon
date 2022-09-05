@@ -1,4 +1,6 @@
 #### 1.10.3
+* 新增 k8s-config-solon-plugin 插件
+* 新增 jmdns-solon-plugin 插件
 
 #### 1.10.2
 * 完善 solon.serialization.fastjson2 插件
