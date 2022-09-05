@@ -2,9 +2,9 @@
 * 完善 solon.serialization.fastjson2 插件
 * 增加 solon.config 配置项（与 solon.extend.config 同）
 * 增加 nami.Invocation::target 用于获取代理
-* 插件 solon-test 优化注解处理
-* 插件 solon.schedule 增加动态修改调度时间的支持
-* 插件 solon.data 优化 tag 的缓存时间处理
+* 增加 solon.schedule 插件动态修改调度时间的支持
+* 优化 solon-test 插件的注解处理
+* 优化 solon.data 插件 tag 的缓存时间处理
 * 插件 solon.config.yaml 升级 snakeyaml 为：1.30
 * 插件 solon.serialization.snack3 升级 snack3 为：3.2.35
 * 插件 solon.serialization.fastjson 升级 fastjson 为：1.2.83
