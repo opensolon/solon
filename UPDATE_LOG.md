@@ -1,3 +1,5 @@
+#### 1.10.3
+
 #### 1.10.2
 * 完善 solon.serialization.fastjson2 插件
 * 增加 solon.config 配置项（与 solon.extend.config 同）
