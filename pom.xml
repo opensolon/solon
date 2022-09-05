@@ -21,8 +21,6 @@
     <modules>
         <module>solon-parent</module>
 
-        <module>__release/hatch-bundle</module>
-
         <module>__release/nami-bundle</module>
         <module>__release/socketd-bundle</module>
         <module>__release/solon-extend-bundle</module>
@@ -31,5 +29,7 @@
         <module>__release/solon-render-bundle</module>
 
         <module>__test</module>
+
+        <module>__hatch</module>
     </modules>
 </project>
