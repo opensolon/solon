@@ -64,6 +64,9 @@
 
         <module>../../_solon_plugin_cloud/grpc-solon-plugin</module>
 
+        <module>../../_solon_plugin_cloud/k8s-config-solon-plugin</module>
+        <module>../../_solon_plugin_cloud/jmdns-solon-plugin</module>
+
     </modules>
 
 
