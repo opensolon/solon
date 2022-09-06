@@ -66,6 +66,14 @@ public class XPluginImp implements Plugin {
             bootstrap.registry(registry);
         }
 
+
+        //提供者
+        ProviderConfig provider = Solon.cfg()
+                .getBean("dubbo.provider", ProviderConfig.class);
+        if (provider != null) {
+            bootstrap.provider(provider);
+        }
+
         //协议
         Protocols protocols = Solon.cfg()
                 .getBean("dubbo.protocols", Protocols.class);
