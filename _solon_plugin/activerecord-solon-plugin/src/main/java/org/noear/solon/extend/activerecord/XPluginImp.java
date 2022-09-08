@@ -25,19 +25,24 @@ public class XPluginImp implements Plugin {
 
     @Override
     public void start(AopContext context) {
+
+        context.subWrap(DataSource.class,bw->{
+            initActiveRecord(bw.raw(), bw.name());
+        });
+
         context.beanBuilderAdd(Table.class, (clz, wrap, anno) -> {
             if (wrap.raw() instanceof Model) {
                 tableMap.put(anno, (Class<? extends Model<?>>) clz);
             }
         });
 
-        context.beanOnloaded((ctx) -> {
-            ctx.beanForeach(bw -> {
-                if (bw.raw() instanceof DataSource) {
-                    initActiveRecord(bw.raw(), bw.name());
-                }
-            });
-        });
+//        context.beanOnloaded((ctx) -> {
+//            ctx.beanForeach(bw -> {
+//                if (bw.raw() instanceof DataSource) {
+//                    initActiveRecord(bw.raw(), bw.name());
+//                }
+//            });
+//        });
     }
 
     private void initActiveRecord(DataSource ds, String name) {

@@ -48,7 +48,7 @@ public class BioConnector extends ConnectorBase<Socket> {
     }
 
     void startReceive(Session session, Socket socket) {
-        Utils.pools.submit(() -> {
+        Utils.async(() -> {
             while (true) {
                 if (socket.isClosed()) {
                     Solon.app().listener().onClose(session);
@@ -59,7 +59,7 @@ public class BioConnector extends ConnectorBase<Socket> {
                     Message message = BioReceiver.receive(socket);
 
                     if (message != null) {
-                        Utils.pools.execute(() -> {
+                        Utils.async(() -> {
                             try {
                                 Solon.app().listener().onMessage(session, message);
                             } catch (Throwable ex) {

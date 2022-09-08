@@ -12,9 +12,7 @@ import java.lang.reflect.UndeclaredThrowableException;
 import java.net.*;
 import java.security.MessageDigest;
 import java.util.*;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.*;
 import java.util.function.Function;
 
 /**
@@ -26,11 +24,25 @@ import java.util.function.Function;
 @Note("内部专用工具（外部项目不建议使用，随时可能会变动）")
 public class Utils {
     public static final FileNameMap mimeMap = URLConnection.getFileNameMap();
+    @Deprecated
     public static final ExecutorService pools = Executors.newCachedThreadPool();
     public static final ScheduledExecutorService scheduled = Executors.newScheduledThreadPool(Runtime.getRuntime().availableProcessors());
 
     private static final char[] HEX_DIGITS = new char[]{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
 
+    /**
+     * 异步执行
+     * */
+    public static Future<?> async(Runnable task){
+        return pools.submit(task);
+    }
+
+    /**
+     * 异步执行
+     * */
+    public static <T> Future<T> async(Callable<T> task){
+        return pools.submit(task);
+    }
 
     /**
      * Ping 一个地址

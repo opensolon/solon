@@ -25,7 +25,7 @@ public class BreakerTest extends HttpTestBase {
         CountDownLatch downLatch = new CountDownLatch(5);
 
         for (int i = 0; i < 5; i++) {
-            Utils.pools.submit(() -> {
+            Utils.async(() -> {
                 try {
                     path("/demox/test").get();
 
@@ -46,7 +46,7 @@ public class BreakerTest extends HttpTestBase {
         CountDownLatch downLatch = new CountDownLatch(105);
 
         for (int i = 0; i < 105; i++) {
-            Utils.pools.submit(() -> {
+            Utils.async(() -> {
                 try {
                     serviceDemo.test();
                     log.debug("ok");

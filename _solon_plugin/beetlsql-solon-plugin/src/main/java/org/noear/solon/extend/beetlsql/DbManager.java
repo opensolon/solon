@@ -7,6 +7,7 @@ import org.beetl.sql.core.db.*;
 import org.beetl.sql.core.nosql.*;
 import org.noear.solon.Utils;
 import org.noear.solon.core.BeanWrap;
+import org.noear.solon.core.Props;
 import org.noear.solon.core.ValHolder;
 import org.noear.solon.core.event.EventBus;
 
@@ -21,6 +22,8 @@ import java.util.concurrent.ConcurrentHashMap;
  * @since 2020-09-01
  * */
 class DbManager {
+    private static final String TAG ="beetlsql";
+
     private static final String ATTR_dialect = "dialect";
     private static final String ATTR_slaves  = "slaves";
 
@@ -66,6 +69,15 @@ class DbManager {
         String dataSourceId = "ds-" + (bw.name() == null ? "" : bw.name());
         builder.setName(dataSourceId);
 
+        //支持配置注入
+        if(Utils.isNotEmpty(bw.name())) {
+            Props props1 = bw.context().getProps().getProp(TAG + "." + bw.name());
+            if (props1.size() > 0) {
+                Utils.injectProperties(builder, props1);
+            }
+        }
+
+        //支持特性加持
         buildStyle(bw, builder);
 
         //推到事件中心，用于扩展

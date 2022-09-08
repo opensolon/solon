@@ -107,7 +107,7 @@ public class RsSocketSession extends SessionBase {
 
     @Override
     public void sendAsync(String message) {
-        Utils.pools.submit(() -> {
+        Utils.async(() -> {
             try {
                 send(message);
             } catch (Throwable e) {
@@ -118,7 +118,7 @@ public class RsSocketSession extends SessionBase {
 
     @Override
     public void sendAsync(Message message) {
-        Utils.pools.submit(() -> {
+        Utils.async(() -> {
             try {
                 send(message);
             } catch (Throwable e) {

@@ -165,7 +165,7 @@ class JobEntity extends Thread {
 
     private void exec() {
         if (concurrent) {
-            Utils.pools.submit(this::exec0);
+            Utils.async(this::exec0);
         } else {
             exec0();
         }

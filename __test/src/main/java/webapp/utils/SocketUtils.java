@@ -98,7 +98,7 @@ public class SocketUtils {
         SocketMessageWrap msgD = new SocketMessageWrap(Message.wrap(uri, null,message));
         msgD.handler = callback;
 
-        Utils.pools.submit(()->{
+        Utils.async(()->{
             get(uri).sendDo(msgD, (m) -> {
                 msgD.handler.accept(msgD.res, msgD.err);
             });

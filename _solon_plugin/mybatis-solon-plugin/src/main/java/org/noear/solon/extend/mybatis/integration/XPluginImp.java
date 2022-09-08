@@ -1,7 +1,6 @@
 package org.noear.solon.extend.mybatis.integration;
 
 import org.apache.ibatis.session.SqlSession;
-import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.*;
 import org.noear.solon.extend.mybatis.MybatisAdapter;
@@ -12,7 +11,9 @@ public class XPluginImp implements Plugin {
     @Override
     public void start(AopContext context) {
 
-        Solon.app().onEvent(BeanWrap.class, new DsEventListener());
+        context.subWrap(DataSource.class, bw->{
+            MybatisAdapterManager.register(bw);
+        });
 
         //for @Deprecated
         context.beanBuilderAdd(org.apache.ibatis.ext.solon.Db.class, (clz, wrap, anno) -> {

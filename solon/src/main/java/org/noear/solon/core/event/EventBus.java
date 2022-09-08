@@ -24,7 +24,7 @@ public final class EventBus {
      */
     public static void pushAsyn(Object event) {
         if (event != null) {
-            Utils.pools.submit(() -> {
+            Utils.async(() -> {
                 push0(event);
             });
         }
