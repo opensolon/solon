@@ -1,10 +1,8 @@
 package org.noear.solon.cloud.extend.rabbitmq;
 
-import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudManager;
 import org.noear.solon.cloud.extend.rabbitmq.service.CloudEventServiceRabbitmqImp;
-import org.noear.solon.core.Aop;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
 
