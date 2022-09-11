@@ -1,5 +1,5 @@
 #### 1.10.3
-* 新增 k8s-config-solon-plugin 插件
+* 新增 kubernetes-config-solon-plugin 插件
 * 新增 jmdns-solon-plugin 插件
 * 插件 beetlsql-solon-plugin 增加 beetlsql.db1 配置方式构建  SQLManagerBuilder ???
 * 添加 Solon.context() ，Aop 开始标为弃用
