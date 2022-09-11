@@ -349,9 +349,17 @@ public abstract class BeanContainer {
      * 包装
      */
     public BeanWrap wrap(Class<?> type, Object bean) {
+        return wrap(type, bean, null);
+    }
+
+    public BeanWrap wrap(Class<?> type, Object bean, String name) {
         BeanWrap wrap = getWrap(type);
         if (wrap == null) {
             wrap = wrapCreate(type, bean);
+
+            if(Utils.isNotEmpty(name)){
+                wrap.nameSet(name);
+            }
         }
 
         return wrap;
