@@ -352,6 +352,9 @@ public abstract class BeanContainer {
         return wrap(type, bean, null);
     }
 
+    /**
+     * 包装
+     */
     public BeanWrap wrap(Class<?> type, Object bean, String name) {
         BeanWrap wrap = getWrap(type);
         if (wrap == null) {
