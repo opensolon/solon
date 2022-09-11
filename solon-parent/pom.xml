@@ -955,6 +955,12 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>kubernetes-solon-plugin</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>water-solon-plugin</artifactId>
                 <version>${revision}</version>
             </dependency>

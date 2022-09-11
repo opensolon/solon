@@ -1,5 +1,6 @@
 package org.noear.solon;
 
+import org.noear.solon.core.AopContext;
 import org.noear.solon.core.JarClassLoader;
 import org.noear.solon.core.NvMap;
 import org.noear.solon.core.event.EventBus;
@@ -30,6 +31,14 @@ public class Solon {
     private static SolonApp app;
     //全局默认编码
     private static String encoding = "utf-8";
+    private final static AopContext ac = new AopContext();
+
+    /**
+     * 获取全局的Aop上下文
+     */
+    public static AopContext context() {
+        return ac;
+    }
 
     @Deprecated
     public static SolonApp global() {

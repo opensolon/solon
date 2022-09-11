@@ -3,13 +3,12 @@ package test2.genericity1;
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Inject;
-import org.noear.solon.core.Aop;
 
 public class DemoApp {
     public static void main(String[] args) throws Exception {
         Solon.start(DemoApp.class, args, app->app.enableHttp(false));
-        Parent o = Aop.get(S1.class);
-        Parent o2 = Aop.get(S2.class);
+        Parent o = Solon.context().getBean(S1.class);
+        Parent o2 = Solon.context().getBean(S2.class);
 
         o.hello();
         o2.hello();

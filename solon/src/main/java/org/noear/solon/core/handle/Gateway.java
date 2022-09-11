@@ -1,5 +1,6 @@
 package org.noear.solon.core.handle;
 
+import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.Mapping;
 import org.noear.solon.annotation.Note;
@@ -260,7 +261,7 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
      */
     @Note("添加接口")
     public void addBeans(Predicate<BeanWrap> where, boolean remoting) {
-        Aop.context().beanOnloaded((ctx) -> {
+        Solon.context().beanOnloaded((ctx) -> {
             ctx.beanForeach(bw -> {
                 if (where.test(bw)) {
                     if (remoting) {

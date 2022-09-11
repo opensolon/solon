@@ -4,7 +4,6 @@ import org.noear.solon.core.event.*;
 import org.noear.solon.core.event.EventListener;
 import org.noear.solon.core.handle.*;
 import org.noear.solon.annotation.Import;
-import org.noear.solon.core.Aop;
 import org.noear.solon.core.*;
 import org.noear.solon.core.route.RouterAdapter;
 import org.noear.solon.core.util.PrintUtil;
@@ -114,7 +113,7 @@ public class SolonApp extends RouterAdapter {
         //1.1.尝试启动插件（顺序不能乱） //不能用forEach，以免当中有插进来
         List<PluginEntity> plugs = cfg().plugs();
         for (int i = 0, len = plugs.size(); i < len; i++) {
-            plugs.get(i).start(Aop.context());
+            plugs.get(i).start(Solon.context());
         }
 
         //event::1.x.推送Plugin load end事件
@@ -126,7 +125,7 @@ public class SolonApp extends RouterAdapter {
 
         //2.2.通过源扫描bean
         if (source() != null) {
-            Aop.context().beanScan(source());
+            Solon.context().beanScan(source());
         }
 
         //event::2.x.推送Bean load end事件
@@ -140,7 +139,7 @@ public class SolonApp extends RouterAdapter {
         });
 
         //3.1.标识上下文加载完成
-        Aop.context().beanLoaded();
+        Solon.context().beanLoaded();
 
         //event::4.x.推送App load end事件
         EventBus.push(AppLoadEndEvent.instance);
@@ -154,9 +153,9 @@ public class SolonApp extends RouterAdapter {
 
         for (Annotation a1 : _source.getAnnotations()) {
             if (a1 instanceof Import) {
-                Aop.context().beanImport((Import) a1);
+                Solon.context().beanImport((Import) a1);
             } else {
-                Aop.context().beanImport(a1.annotationType().getAnnotation(Import.class));
+                Solon.context().beanImport(a1.annotationType().getAnnotation(Import.class));
             }
         }
     }
@@ -287,7 +286,7 @@ public class SolonApp extends RouterAdapter {
      */
     public void plug(Plugin plugin) {
         PluginEntity p = new PluginEntity(plugin);
-        p.start(Aop.context());
+        p.start(Solon.context());
         cfg().plugs().add(p);
     }
 

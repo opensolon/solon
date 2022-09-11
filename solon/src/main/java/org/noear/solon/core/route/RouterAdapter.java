@@ -1,6 +1,6 @@
 package org.noear.solon.core.route;
 
-import org.noear.solon.core.Aop;
+import org.noear.solon.Solon;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.handle.*;
 import org.noear.solon.core.message.Listener;
@@ -182,14 +182,14 @@ public abstract class RouterAdapter implements HandlerSlots{
     }
 
     public void add(String expr, Class<?> clz) {
-        BeanWrap bw = Aop.wrapAndPut(clz);
+        BeanWrap bw = Solon.context().wrapAndPut(clz);
         if (bw != null) {
             new HandlerLoader(bw, expr).load(this);
         }
     }
 
     public void add(String expr, Class<?> clz, boolean remoting) {
-        BeanWrap bw = Aop.wrapAndPut(clz);
+        BeanWrap bw = Solon.context().wrapAndPut(clz);
         if (bw != null) {
             new HandlerLoader(bw, expr, remoting).load(this);
         }

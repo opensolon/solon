@@ -1,16 +1,16 @@
 package net.hasor.solon.boot;
 
 import net.hasor.core.TypeSupplier;
-import org.noear.solon.core.Aop;
+import org.noear.solon.Solon;
 
 public class SolonTypeSupplier implements TypeSupplier {
     @Override
     public <T> T get(Class<? extends T> aClass) {
-        return Aop.get(aClass);
+        return Solon.context().getBean(aClass);
     }
 
     @Override
     public <T> boolean test(Class<? extends T> targetType) {
-        return Aop.context().getWrap(targetType) != null;
+        return Solon.context().getWrap(targetType) != null;
     }
 }

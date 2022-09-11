@@ -4,7 +4,6 @@ import com.fujieid.jap.ids.JapIds;
 import com.fujieid.jap.ids.context.IdsContext;
 import com.fujieid.jap.ids.solon.IdsProps;
 import org.noear.solon.Solon;
-import org.noear.solon.core.Aop;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
 import com.fujieid.jap.ids.solon.http.ErrorFilter;

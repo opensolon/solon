@@ -4,7 +4,6 @@ import demo.dso.service.UserService;
 import org.apache.ibatis.session.Configuration;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonBuilder;
-import org.noear.solon.core.Aop;
 
 /**
  * @author noear 2021/7/12 created
@@ -28,7 +27,7 @@ public class DemoApp {
         Solon.start(DemoApp.class, args);
 
         //test
-        UserService userService = Aop.get(UserService.class);
+        UserService userService = Solon.context().getBean(UserService.class);
         assert userService.getUserList() != null;
     }
 }

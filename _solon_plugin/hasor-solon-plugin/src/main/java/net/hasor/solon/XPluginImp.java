@@ -3,8 +3,6 @@ package net.hasor.solon;
 import net.hasor.core.DimModule;
 import net.hasor.core.Module;
 import net.hasor.solon.boot.BuildConfig;
-import org.noear.solon.SolonApp;
-import org.noear.solon.core.Aop;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
 

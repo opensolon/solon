@@ -1,11 +1,9 @@
 package webapp.demo6_aop;
 
 import org.noear.solon.Solon;
-import org.noear.solon.SolonApp;
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Mapping;
 import org.noear.solon.annotation.Inject;
-import org.noear.solon.core.Aop;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -39,12 +37,12 @@ public class TestController extends TestControllerBase{
 
         map.put("rockapi132", rockapi132.test());
 
-        TestModel tmp = Aop.getOrNew(TestModel.class);
+        TestModel tmp = Solon.context().getBeanOrNew(TestModel.class);
         if("12".equals(tmp.name) == false){
             return "出错了";
         }
 
-        if("test".equals(Aop.context().getWrap(TestModel.class).tag()) == false){
+        if("test".equals(Solon.context().getWrap(TestModel.class).tag()) == false){
             return "出错了";
         }
 

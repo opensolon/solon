@@ -1,8 +1,8 @@
 package org.noear.solon.core.handle;
 
+import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.*;
-import org.noear.solon.core.Aop;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.util.PathUtil;
 import org.noear.solon.core.util.ConsumerEx;
@@ -201,15 +201,15 @@ public class HandlerLoader extends HandlerAide {
     protected void loadControllerAide(Set<MethodType> methodSet) {
         for (Annotation anno : bw.clz().getAnnotations()) {
             if (anno instanceof Before) {
-                addDo(((Before) anno).value(), (b) -> this.before(Aop.getOrNew(b)));
+                addDo(((Before) anno).value(), (b) -> this.before(Solon.context().getBeanOrNew(b)));
             } else if (anno instanceof After) {
-                addDo(((After) anno).value(), (f) -> this.after(Aop.getOrNew(f)));
+                addDo(((After) anno).value(), (f) -> this.after(Solon.context().getBeanOrNew(f)));
             } else {
                 for (Annotation anno2 : anno.annotationType().getAnnotations()) {
                     if (anno2 instanceof Before) {
-                        addDo(((Before) anno2).value(), (b) -> this.before(Aop.getOrNew(b)));
+                        addDo(((Before) anno2).value(), (b) -> this.before(Solon.context().getBeanOrNew(b)));
                     } else if (anno2 instanceof After) {
-                        addDo(((After) anno2).value(), (f) -> this.after(Aop.getOrNew(f)));
+                        addDo(((After) anno2).value(), (f) -> this.after(Solon.context().getBeanOrNew(f)));
                     } else if (anno2 instanceof Options) {
                         //用于支持 Cors
                         methodSet.add(MethodType.OPTIONS);
@@ -222,15 +222,15 @@ public class HandlerLoader extends HandlerAide {
     protected void loadActionAide(Method method, Action action, Set<MethodType> methodSet) {
         for (Annotation anno : method.getAnnotations()) {
             if (anno instanceof Before) {
-                addDo(((Before) anno).value(), (b) -> action.before(Aop.getOrNew(b)));
+                addDo(((Before) anno).value(), (b) -> action.before(Solon.context().getBeanOrNew(b)));
             } else if (anno instanceof After) {
-                addDo(((After) anno).value(), (f) -> action.after(Aop.getOrNew(f)));
+                addDo(((After) anno).value(), (f) -> action.after(Solon.context().getBeanOrNew(f)));
             } else {
                 for (Annotation anno2 : anno.annotationType().getAnnotations()) {
                     if (anno2 instanceof Before) {
-                        addDo(((Before) anno2).value(), (b) -> action.before(Aop.getOrNew(b)));
+                        addDo(((Before) anno2).value(), (b) -> action.before(Solon.context().getBeanOrNew(b)));
                     } else if (anno2 instanceof After) {
-                        addDo(((After) anno2).value(), (f) -> action.after(Aop.getOrNew(f)));
+                        addDo(((After) anno2).value(), (f) -> action.after(Solon.context().getBeanOrNew(f)));
                     } else if (anno2 instanceof Options) {
                         //用于支持 Cors
                         if (methodSet.contains(MethodType.HTTP) == false &&

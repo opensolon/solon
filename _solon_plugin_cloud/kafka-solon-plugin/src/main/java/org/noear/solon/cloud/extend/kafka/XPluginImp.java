@@ -3,7 +3,6 @@ package org.noear.solon.cloud.extend.kafka;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudManager;
 import org.noear.solon.cloud.extend.kafka.service.CloudEventServiceKafkaImp;
-import org.noear.solon.core.Aop;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
 

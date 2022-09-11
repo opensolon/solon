@@ -1,10 +1,8 @@
 package features;
 
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.noear.solon.Solon;
 import org.noear.solon.Utils;
-import org.noear.solon.core.Aop;
 import org.noear.solon.test.HttpTestBase;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
@@ -42,7 +40,7 @@ public class BreakerTest extends HttpTestBase {
 
 //    @Test
     public void test2() throws Exception{
-        BreakerServiceDemo serviceDemo = Aop.getOrNew(BreakerServiceDemo.class);
+        BreakerServiceDemo serviceDemo = Solon.context().getBeanOrNew(BreakerServiceDemo.class);
         CountDownLatch downLatch = new CountDownLatch(105);
 
         for (int i = 0; i < 105; i++) {

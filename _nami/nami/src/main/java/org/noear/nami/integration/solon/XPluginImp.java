@@ -3,9 +3,7 @@ package org.noear.nami.integration.solon;
 import org.noear.nami.*;
 import org.noear.nami.annotation.NamiClient;
 import org.noear.nami.common.InfoUtils;
-import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
-import org.noear.solon.core.Aop;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
 

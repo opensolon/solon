@@ -1,7 +1,6 @@
 package org.noear.solon.extend.mybatis.integration;
 
 import org.noear.solon.Utils;
-import org.noear.solon.core.Aop;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.util.ScanUtil;
 import org.noear.solon.extend.mybatis.MybatisAdapter;

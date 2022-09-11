@@ -1,10 +1,8 @@
 package org.noear.solon.cloud.extend.pulsar;
 
-import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudManager;
 import org.noear.solon.cloud.extend.pulsar.service.CloudEventServicePulsarImp;
-import org.noear.solon.core.Aop;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
 
