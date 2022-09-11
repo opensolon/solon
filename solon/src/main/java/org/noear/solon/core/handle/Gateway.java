@@ -239,7 +239,7 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
      */
     @Note("添加前置拦截器")
     public <T extends Handler> void before(Class<T> interceptorClz) {
-        super.before(Aop.getOrNew(interceptorClz));
+        super.before(Solon.context().getBeanOrNew(interceptorClz));
     }
 
 
@@ -248,7 +248,7 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
      */
     @Note("添加后置拦截器")
     public <T extends Handler> void after(Class<T> interceptorClz) {
-        super.after(Aop.getOrNew(interceptorClz));
+        super.after(Solon.context().getBeanOrNew(interceptorClz));
     }
 
     @Note("添加接口")
@@ -280,7 +280,7 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
     @Note("添加接口")
     public void add(Class<?> beanClz) {
         if (beanClz != null) {
-            BeanWrap bw = Aop.wrapAndPut(beanClz);
+            BeanWrap bw = Solon.context().wrapAndPut(beanClz);
 
             add(bw, bw.remoting());
         }
@@ -292,7 +292,7 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
     @Note("添加接口")
     public void add(String path, Class<?> beanClz) {
         if (beanClz != null) {
-            BeanWrap bw = Aop.wrapAndPut(beanClz);
+            BeanWrap bw = Solon.context().wrapAndPut(beanClz);
 
             add(path, bw, bw.remoting());
         }
@@ -304,7 +304,7 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
     @Note("添加接口")
     public void add(Class<?> beanClz, boolean remoting) {
         if (beanClz != null) {
-            add(Aop.wrapAndPut(beanClz), remoting);
+            add(Solon.context().wrapAndPut(beanClz), remoting);
         }
     }
 
@@ -314,7 +314,7 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
     @Note("添加接口")
     public void add(String path, Class<?> beanClz, boolean remoting) {
         if (beanClz != null) {
-            add(path, Aop.wrapAndPut(beanClz), remoting);
+            add(path, Solon.context().wrapAndPut(beanClz), remoting);
         }
     }
 
