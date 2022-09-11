@@ -3,7 +3,6 @@ package features;
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Inject;
-import org.noear.solon.core.Aop;
 import org.noear.solon.extend.aspect.AspectUtil;
 import thirdparty.Demo;
 
@@ -24,6 +23,6 @@ public class DemoApp {
             AspectUtil.attachByScan("thirdparty", DemoHandler.global);
         });
 
-        Aop.get(DemoApp.class).demo.test();
+        Solon.context().getBean(DemoApp.class).demo.test();
     }
 }

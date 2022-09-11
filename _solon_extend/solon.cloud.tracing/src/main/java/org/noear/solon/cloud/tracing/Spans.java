@@ -2,8 +2,8 @@ package org.noear.solon.cloud.tracing;
 
 import io.opentracing.Span;
 import io.opentracing.Tracer;
+import org.noear.solon.Solon;
 import org.noear.solon.cloud.tracing.integration.SpanSimulate;
-import org.noear.solon.core.Aop;
 
 import java.util.function.Consumer;
 
@@ -17,7 +17,7 @@ public class Spans {
     private static Tracer tracer;
 
     static {
-        Aop.getAsyn(Tracer.class, bw -> {
+        Solon.context().getWrapAsyn(Tracer.class, bw -> {
             tracer = bw.raw();
         });
     }

@@ -1,10 +1,9 @@
 package org.noear.solon.cloud.impl;
 
+import org.noear.solon.Solon;
 import org.noear.solon.cloud.CloudJobHandler;
 import org.noear.solon.cloud.CloudJobInterceptor;
 import org.noear.solon.cloud.service.CloudJobService;
-import org.noear.solon.core.Aop;
-import org.noear.solon.core.handle.Handler;
 
 /**
  * @author noear
@@ -16,7 +15,7 @@ public class CloudJobServiceManagerImpl implements CloudJobServiceManager {
 
     public CloudJobServiceManagerImpl(CloudJobService service) {
         this.service = service;
-        Aop.getAsyn(CloudJobInterceptor.class, bw -> {
+        Solon.context().getWrapAsyn(CloudJobInterceptor.class, bw -> {
             jobInterceptor = bw.get();
         });
     }

@@ -2,9 +2,7 @@ package org.noear.solon.view.velocity;
 
 import org.apache.velocity.runtime.directive.Directive;
 import org.noear.solon.Solon;
-import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
-import org.noear.solon.core.Aop;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.handle.RenderManager;

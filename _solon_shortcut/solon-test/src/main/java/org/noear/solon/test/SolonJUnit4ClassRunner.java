@@ -4,7 +4,6 @@ import org.junit.runners.BlockJUnit4ClassRunner;
 import org.junit.runners.model.InitializationError;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
-import org.noear.solon.core.Aop;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -73,7 +72,7 @@ public class SolonJUnit4ClassRunner extends BlockJUnit4ClassRunner {
     @Override
     protected Object createTest() throws Exception {
         Object tmp = super.createTest();
-        Aop.inject(tmp);
+        Solon.context().beanInject(tmp);
         return tmp;
     }
 }

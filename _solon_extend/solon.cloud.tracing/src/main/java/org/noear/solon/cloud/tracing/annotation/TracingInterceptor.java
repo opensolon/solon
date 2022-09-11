@@ -3,8 +3,8 @@ package org.noear.solon.cloud.tracing.annotation;
 import io.opentracing.Scope;
 import io.opentracing.Span;
 import io.opentracing.Tracer;
+import org.noear.solon.Solon;
 import org.noear.solon.Utils;
-import org.noear.solon.core.Aop;
 import org.noear.solon.core.aspect.Interceptor;
 import org.noear.solon.core.aspect.Invocation;
 import org.noear.solon.data.util.InvKeys;
@@ -17,7 +17,7 @@ public class TracingInterceptor implements Interceptor {
     private Tracer tracer;
 
     public TracingInterceptor() {
-        Aop.getAsyn(Tracer.class, bw -> {
+        Solon.context().getWrapAsyn(Tracer.class, bw -> {
             tracer = bw.raw();
         });
     }

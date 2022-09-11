@@ -1,7 +1,7 @@
 package org.noear.solon.vault;
 
+import org.noear.solon.Solon;
 import org.noear.solon.Utils;
-import org.noear.solon.core.Aop;
 import org.noear.solon.vault.coder.AesVaultCoder;
 
 /**
@@ -18,7 +18,7 @@ public class VaultUtils {
 
     static {
         //尝试从容器中获取
-        Aop.getAsyn(VaultCoder.class, bw -> {
+        Solon.context().getWrapAsyn(VaultCoder.class, bw -> {
             guardCoder = bw.get();
         });
     }

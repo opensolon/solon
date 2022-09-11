@@ -2,7 +2,6 @@ package org.noear.solon.validation;
 
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.Note;
-import org.noear.solon.core.Aop;
 import org.noear.solon.core.aspect.Invocation;
 import org.noear.solon.core.handle.Action;
 import org.noear.solon.core.handle.Context;

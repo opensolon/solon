@@ -1,5 +1,6 @@
 package org.noear.solon.cloud.impl;
 
+import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudEventHandler;
 import org.noear.solon.cloud.CloudEventInterceptor;
@@ -7,7 +8,6 @@ import org.noear.solon.cloud.annotation.EventLevel;
 import org.noear.solon.cloud.exception.CloudEventException;
 import org.noear.solon.cloud.model.Event;
 import org.noear.solon.cloud.service.CloudEventServicePlus;
-import org.noear.solon.core.Aop;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,7 +24,7 @@ public class CloudEventServiceManagerImpl implements CloudEventServiceManager {
     CloudEventInterceptor eventInterceptor;
 
     public CloudEventServiceManagerImpl() {
-        Aop.getAsyn(CloudEventInterceptor.class, bw -> {
+        Solon.context().getWrapAsyn(CloudEventInterceptor.class, bw -> {
             eventInterceptor = bw.raw();
         });
     }

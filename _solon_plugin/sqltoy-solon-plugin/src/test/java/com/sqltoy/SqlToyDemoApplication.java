@@ -1,18 +1,14 @@
 package com.sqltoy;
 
-import com.mongodb.client.MongoDatabase;
 import com.sqltoy.helloworld.FruitMapper;
 import com.sqltoy.helloworld.service.FruitOrderService;
 
 import com.sqltoy.helloworld.vo.FruitOrderVO;
-import org.bson.Document;
 import org.noear.solon.Solon;
 
-import org.noear.solon.core.Aop;
 import org.noear.solon.extend.sqltoy.DbManager;
 import org.sagacity.sqltoy.dao.SqlToyLazyDao;
 import org.sagacity.sqltoy.model.Page;
-import org.sagacity.sqltoy.utils.BeanUtil;
 
 import javax.sql.DataSource;
 import java.io.IOException;
@@ -28,7 +24,7 @@ public class SqlToyDemoApplication {
   Solon.start(SqlToyDemoApplication.class, args);
 
 
-  FruitOrderService service = Aop.get(FruitOrderService.class);
+  FruitOrderService service = Solon.context().getBean(FruitOrderService.class);
 
   FruitOrderVO fruitOrderVO = new FruitOrderVO();
   fruitOrderVO.setFruitName("test");
@@ -40,8 +36,8 @@ public class SqlToyDemoApplication {
   Page<FruitOrderVO> page = service.searchFruitOrder(new Page(), fruitOrderVO);
   System.out.println(page);
 
-  SqlToyLazyDao dao = DbManager.getDao(Aop.get(DataSource.class));
-  FruitMapper fm = DbManager.getMapper(Aop.get(DataSource.class), FruitMapper.class);
+  SqlToyLazyDao dao = DbManager.getDao(Solon.context().getBean(DataSource.class));
+  FruitMapper fm = DbManager.getMapper(Solon.context().getBean(DataSource.class), FruitMapper.class);
   System.out.println(fm.countOrder(null).getRows());
   FruitOrderVO fu = new FruitOrderVO();
   fu.setFruitName("test");

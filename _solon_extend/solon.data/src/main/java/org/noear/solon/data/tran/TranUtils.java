@@ -1,7 +1,7 @@
 package org.noear.solon.data.tran;
 
+import org.noear.solon.Solon;
 import org.noear.solon.annotation.Note;
-import org.noear.solon.core.Aop;
 import org.noear.solon.data.annotation.Tran;
 import org.noear.solon.core.util.RunnableEx;
 
@@ -18,7 +18,7 @@ import java.sql.SQLException;
 public class TranUtils {
     private static TranExecutor executor = ()->false;
     static {
-        Aop.getAsyn(TranExecutor.class, bw -> executor = bw.raw());
+        Solon.context().getWrapAsyn(TranExecutor.class, bw -> executor = bw.raw());
     }
 
     /**

@@ -5,7 +5,6 @@ import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.cache.redisson.RedissonCacheService;
-import org.noear.solon.core.Aop;
 import org.noear.solon.data.cache.CacheService;
 
 /**
@@ -16,7 +15,7 @@ public class App {
     public static void main(String[] args) throws Exception {
         Solon.start(App.class, args);
 
-        CacheService cacheService = Aop.get(CacheService.class);
+        CacheService cacheService = Solon.context().getBean(CacheService.class);
 
         cacheService.store("test", "1", 1);
         assert "1".equals(cacheService.get("test"));

@@ -1,8 +1,6 @@
 package org.noear.solon.extend.sqltoy.mapper;
 
-import org.noear.solon.core.Aop;
 import org.noear.solon.core.util.ConvertUtil;
-import org.noear.solon.extend.sqltoy.DbManager;
 import org.sagacity.sqltoy.dao.SqlToyLazyDao;
 
 import javax.sql.DataSource;

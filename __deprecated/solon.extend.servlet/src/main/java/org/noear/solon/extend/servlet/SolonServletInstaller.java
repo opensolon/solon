@@ -1,9 +1,9 @@
 package org.noear.solon.extend.servlet;
 
+import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.extend.servlet.holder.FilterHodler;
 import org.noear.solon.extend.servlet.holder.ServletHolder;
-import org.noear.solon.core.Aop;
 
 import javax.servlet.*;
 import javax.servlet.ServletContext;
@@ -25,7 +25,7 @@ public class SolonServletInstaller {
     Set<ServletHolder> servlets = new LinkedHashSet<>();
 
     public SolonServletInstaller() {
-        Aop.context().beanForeach((bw) -> {
+        Solon.context().beanForeach((bw) -> {
             if (bw.raw() instanceof ServletContainerInitializer) {
                 initializers.add(bw.raw());
             }

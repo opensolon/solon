@@ -10,7 +10,6 @@ import io.opentracing.tag.Tags;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.utils.LocalUtils;
-import org.noear.solon.core.Aop;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Filter;
 import org.noear.solon.core.handle.FilterChain;
@@ -30,7 +29,7 @@ public class SolonFilterTracing implements Filter {
 
     public SolonFilterTracing(String excluded) {
         //跟踪器注入
-        Aop.getAsyn(Tracer.class, bw -> {
+        Solon.context().getWrapAsyn(Tracer.class, bw -> {
             tracer = bw.raw();
         });
 

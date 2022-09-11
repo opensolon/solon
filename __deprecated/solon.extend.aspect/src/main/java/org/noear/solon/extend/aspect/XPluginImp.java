@@ -1,7 +1,6 @@
 package org.noear.solon.extend.aspect;
 
 import org.noear.solon.Utils;
-import org.noear.solon.core.Aop;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.extend.aspect.annotation.Dao;

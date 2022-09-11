@@ -11,7 +11,7 @@ import org.noear.solon.core.Plugin;
 public class AppPluginImp implements Plugin {
     @Override
     public void start(AopContext context) {
-        //Aop.context().beanAroundAdd();
+        //Solon.context().beanAroundAdd();
 
         Solon.app().onEvent(Configuration.class, cfg -> {
             System.out.println("%%%%%%%%%%%%%%%%%%");

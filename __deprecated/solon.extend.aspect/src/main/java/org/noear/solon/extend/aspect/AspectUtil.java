@@ -1,7 +1,7 @@
 package org.noear.solon.extend.aspect;
 
+import org.noear.solon.Solon;
 import org.noear.solon.Utils;
-import org.noear.solon.core.Aop;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.JarClassLoader;
 import org.noear.solon.core.util.ScanUtil;
@@ -65,7 +65,7 @@ public class AspectUtil {
             tryAttachCached.add(clz);
         }
 
-        Aop.wrapAndPut(clz).proxySet(new BeanProxy(handler));
+        Solon.context().wrapAndPut(clz).proxySet(new BeanProxy(handler));
     }
 
     /**

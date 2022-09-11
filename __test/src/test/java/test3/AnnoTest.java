@@ -1,10 +1,10 @@
 package test3;
 
 import org.junit.Test;
+import org.noear.solon.Solon;
 import org.noear.solon.annotation.Around;
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Mapping;
-import org.noear.solon.core.Aop;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.aspect.InterceptorEntity;
 import org.noear.solon.validation.annotation.Valid;
@@ -32,7 +32,7 @@ public class AnnoTest {
 
         time_start = System.currentTimeMillis();
         for (int i = 0; i < count; i++) {
-            xxx2(Aop.context(), anno);
+            xxx2(Solon.context(), anno);
         }
         time_span = System.currentTimeMillis() - time_start;
         System.out.println("xxx2: " + time_span); //性能 10 倍之差

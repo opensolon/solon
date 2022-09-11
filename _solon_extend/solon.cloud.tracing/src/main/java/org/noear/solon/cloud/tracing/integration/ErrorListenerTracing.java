@@ -2,8 +2,8 @@ package org.noear.solon.cloud.tracing.integration;
 
 import io.opentracing.Span;
 import io.opentracing.Tracer;
+import org.noear.solon.Solon;
 import org.noear.solon.Utils;
-import org.noear.solon.core.Aop;
 import org.noear.solon.core.event.EventListener;
 
 /**
@@ -16,7 +16,7 @@ public class ErrorListenerTracing implements EventListener<Throwable> {
     private Tracer tracer;
 
     public ErrorListenerTracing() {
-        Aop.getAsyn(Tracer.class, bw -> {
+        Solon.context().getWrapAsyn(Tracer.class, bw -> {
             tracer = bw.raw();
         });
     }

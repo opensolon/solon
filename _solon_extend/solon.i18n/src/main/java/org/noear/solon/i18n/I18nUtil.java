@@ -1,6 +1,6 @@
 package org.noear.solon.i18n;
 
-import org.noear.solon.core.Aop;
+import org.noear.solon.Solon;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.i18n.impl.I18nBundleFactoryLocal;
 import org.noear.solon.i18n.impl.LocaleResolverHeader;
@@ -48,11 +48,11 @@ public class I18nUtil {
     }
 
     static {
-        Aop.getAsyn(I18nBundleFactory.class, bw -> {
+        Solon.context().getWrapAsyn(I18nBundleFactory.class, bw -> {
             bundleFactory = bw.raw();
         });
 
-        Aop.getAsyn(LocaleResolver.class, bw -> {
+        Solon.context().getWrapAsyn(LocaleResolver.class, bw -> {
             localeResolver = bw.raw();
         });
     }

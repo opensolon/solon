@@ -4,7 +4,6 @@ import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Inject;
-import org.noear.solon.core.Aop;
 import org.noear.solon.schedule.JobManager;
 
 import java.time.LocalDateTime;
@@ -46,7 +45,7 @@ public class DemoApp2 {
         };
         JobManager.add("job2", "0/10 * * * * ? *", false, job2);
 
-        Runnable job3 = Aop.getOrNew(Job3.class); //如果不存在自动生成bean
+        Runnable job3 = Solon.context().getBeanOrNew(Job3.class); //如果不存在自动生成bean
         JobManager.add("job3", 1000, false, job3);
 
         JobManager.start();

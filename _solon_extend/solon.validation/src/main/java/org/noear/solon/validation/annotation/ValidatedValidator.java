@@ -1,6 +1,6 @@
 package org.noear.solon.validation.annotation;
 
-import org.noear.solon.core.Aop;
+import org.noear.solon.Solon;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Result;
 import org.noear.solon.validation.BeanValidator;
@@ -17,7 +17,7 @@ public class ValidatedValidator implements Validator<Validated> {
     private BeanValidator validator = new BeanValidatorDefault();
 
     public ValidatedValidator() {
-        Aop.getAsyn(BeanValidator.class, bw -> {
+        Solon.context().getWrapAsyn(BeanValidator.class, bw -> {
             validator = bw.get();
         });
     }

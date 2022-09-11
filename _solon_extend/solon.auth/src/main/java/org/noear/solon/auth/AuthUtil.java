@@ -1,7 +1,7 @@
 package org.noear.solon.auth;
 
+import org.noear.solon.Solon;
 import org.noear.solon.auth.annotation.Logical;
-import org.noear.solon.core.Aop;
 import org.noear.solon.core.handle.Context;
 
 import java.util.ArrayList;
@@ -26,7 +26,7 @@ public class AuthUtil {
 
     static {
         //如果容器里有，优先用容器的
-        Aop.getAsyn(AuthAdapter.class, bw -> {
+        Solon.context().getWrapAsyn(AuthAdapter.class, bw -> {
             adapter = bw.raw();
         });
     }

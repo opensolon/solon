@@ -11,8 +11,8 @@ import org.noear.nami.Filter;
 import org.noear.nami.Invocation;
 import org.noear.nami.Result;
 import org.noear.nami.common.TextUtils;
+import org.noear.solon.Solon;
 import org.noear.solon.Utils;
-import org.noear.solon.core.Aop;
 
 /**
  * Nami 过滤器适配
@@ -24,7 +24,7 @@ public class NamiFilterTracing implements Filter {
     private Tracer tracer;
 
     public NamiFilterTracing() {
-        Aop.getAsyn(Tracer.class, bw -> {
+        Solon.context().getWrapAsyn(Tracer.class, bw -> {
             tracer = bw.raw();
         });
     }

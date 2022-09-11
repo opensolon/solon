@@ -1,7 +1,5 @@
 package org.noear.solon.validation;
 
-import org.noear.solon.SolonApp;
-import org.noear.solon.core.Aop;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.validation.annotation.LoginedChecker;
