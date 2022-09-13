@@ -3,6 +3,7 @@
 * 新增 jmdns-solon-plugin 插件
 * 插件 beetlsql-solon-plugin 增加 beetlsql.db1 配置方式构建  SQLManagerBuilder ???
 * 插件 solon.cache.jedis 添加 CloudLockServiceJedisImpl 类
+* 插件 solon.serialization.fastjson2 升级 fastjson2 为：2.0.13
 * 添加 Solon.context() ，Aop 开始标为弃用
 * 添加 @Rollback 注解，用于测试时回滚
 * 添加 SolonJUnit4ClassRunner 运行的单测，支持动态代理
