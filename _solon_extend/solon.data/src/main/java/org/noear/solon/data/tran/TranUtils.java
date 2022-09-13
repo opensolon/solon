@@ -33,13 +33,13 @@ public class TranUtils {
     /**
      * 回滚事务
      * */
-    public static void rollback(RunnableEx runnable) {
+    public static void rollback(RunnableEx runnable) throws Throwable{
         rollback(null, runnable);
     }
     /**
      * 回滚事务
      * */
-    public static void rollback(Tran tran, RunnableEx runnable) {
+    public static void rollback(Tran tran, RunnableEx runnable) throws Throwable {
         if (tran == null) {
             tran = new TranAnno();
         }
@@ -47,12 +47,12 @@ public class TranUtils {
         try {
             execute(tran, () -> {
                 runnable.run();
-                throw new SQLException();
+                throw new RollbackException();
             });
         } catch (Throwable e) {
             e = Utils.throwableUnwrap(e);
             if (e instanceof RollbackException == false) {
-                throw new RuntimeException(e);
+                throw e;
             }
         }
     }
