@@ -123,7 +123,7 @@ public class SaTokenDaoOfSession implements SaTokenDao {
      * 搜索数据
      */
     @Override
-    public List<String> searchData(String prefix, String keyword, int start, int size) {
-        return SaFoxUtil.searchList(Context.current().sessionState().sessionKeys(), prefix, keyword, start, size);
+    public List<String> searchData(String prefix, String keyword, int start, int size, boolean sortType) {
+        return SaFoxUtil.searchList(Context.current().sessionState().sessionKeys(), prefix, keyword, start, size, sortType);
     }
 }

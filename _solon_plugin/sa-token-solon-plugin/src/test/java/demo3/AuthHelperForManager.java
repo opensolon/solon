@@ -8,7 +8,7 @@ import cn.dev33.satoken.stp.StpUtil;
  *
  * @author 多仔ヾ
  **/
-public class AuthHelperForManager extends StpUtil {
+public class AuthHelperForManager {
 
     /** 账户类型标识 **/
     public static final String TYPE = "manager";
