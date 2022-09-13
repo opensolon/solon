@@ -12,6 +12,6 @@ test:
 
 beetlsql.db1:
   dbStyle: "org.beetl.sql.core.nosql.PrestoStyle"
-  inters: 
+  interceptorList: 
     - "org.beetl.sql.ext.DebugInterceptor"
 ```

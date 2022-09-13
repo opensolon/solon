@@ -47,12 +47,12 @@ public class SaContextForSolon implements SaTokenContext {
         return  PathAnalyzer.get(pattern).matches(path);
     }
 
-	/**
-	 * 此上下文是否有效 
-	 * @return / 
-	 */
-	public boolean isValid() {
-		return Context.current() != null;
-	}
-	
+    /**
+     * 此上下文是否有效
+     * @return /
+     */
+    public boolean isValid() {
+        return Context.current() != null;
+    }
+
 }
