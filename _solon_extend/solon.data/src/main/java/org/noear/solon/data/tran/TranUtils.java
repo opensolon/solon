@@ -1,9 +1,11 @@
 package org.noear.solon.data.tran;
 
 import org.noear.solon.Solon;
+import org.noear.solon.Utils;
 import org.noear.solon.annotation.Note;
 import org.noear.solon.data.annotation.Tran;
 import org.noear.solon.core.util.RunnableEx;
+import org.noear.solon.data.annotation.TranAnno;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -26,6 +28,33 @@ public class TranUtils {
      * */
     public static void execute(Tran tran, RunnableEx runnable) throws Throwable {
         executor.execute(tran, runnable);
+    }
+
+    /**
+     * 回滚事务
+     * */
+    public static void rollback(RunnableEx runnable) {
+        rollback(null, runnable);
+    }
+    /**
+     * 回滚事务
+     * */
+    public static void rollback(Tran tran, RunnableEx runnable) {
+        if (tran == null) {
+            tran = new TranAnno();
+        }
+
+        try {
+            execute(tran, () -> {
+                runnable.run();
+                throw new SQLException();
+            });
+        } catch (Throwable e) {
+            e = Utils.throwableUnwrap(e);
+            if (e instanceof RollbackException == false) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     /**

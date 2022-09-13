@@ -4,6 +4,7 @@ import org.junit.runners.BlockJUnit4ClassRunner;
 import org.junit.runners.model.InitializationError;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
+import org.noear.solon.aspect.BeanProxy;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -73,6 +74,9 @@ public class SolonJUnit4ClassRunner extends BlockJUnit4ClassRunner {
     protected Object createTest() throws Exception {
         Object tmp = super.createTest();
         Solon.context().beanInject(tmp);
+
+        tmp = BeanProxy.getGlobal().getProxy(Solon.context(),tmp);
+
         return tmp;
     }
 }

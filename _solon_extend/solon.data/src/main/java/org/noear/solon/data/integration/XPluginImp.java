@@ -4,6 +4,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.core.*;
 import org.noear.solon.data.annotation.*;
 import org.noear.solon.data.cache.*;
+import org.noear.solon.data.tran.RollbackInterceptor;
 import org.noear.solon.data.tran.TranExecutor;
 import org.noear.solon.data.around.CacheInterceptor;
 import org.noear.solon.data.around.CachePutInterceptor;
@@ -22,6 +23,8 @@ public class XPluginImp implements Plugin {
             context.wrapAndPut(TranExecutor.class, TranExecutorImp.global);
 
             context.beanAroundAdd(Tran.class, new TranInterceptor(), 120);
+
+            context.beanAroundAdd(Rollback.class, new RollbackInterceptor(), 120);
         }
 
         //添加缓存控制支持
