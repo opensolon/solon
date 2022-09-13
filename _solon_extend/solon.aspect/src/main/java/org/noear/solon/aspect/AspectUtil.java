@@ -29,7 +29,7 @@ public class AspectUtil {
         if (bw.proxy() instanceof AspectUtil) {
             return false;
         } else {
-            bw.proxySet(BeanProxy.global);
+            bw.proxySet(BeanProxy.getGlobal());
             bw.context().beanRegister(bw, name, typed);
             return true;
         }

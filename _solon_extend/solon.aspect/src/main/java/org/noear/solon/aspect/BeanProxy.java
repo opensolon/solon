@@ -10,7 +10,7 @@ import java.lang.reflect.InvocationHandler;
  * @since 1.6
  */
 public class BeanProxy implements BeanWrap.Proxy {
-    static final BeanProxy global = new BeanProxy();
+    private static final BeanProxy global = new BeanProxy();
 
     public static BeanProxy getGlobal() {
         return global;
