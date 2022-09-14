@@ -9,7 +9,7 @@ import org.noear.solon.core.Plugin;
  */
 public class XPluginImp implements Plugin {
     //
-    // https://www.cnblogs.com/zenghm/p/12849240.html
+    // https://vimsky.com/examples/detail/java-method-javax.jmdns.JmDNS.registerService.html
     //
     @Override
     public void start(AopContext context) {
