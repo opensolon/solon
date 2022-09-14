@@ -22,8 +22,6 @@ mybatis.db1:
     - "webapp/dso/db1/mapp.class" #或支持mapper class 资源地址(要求 xml 同包同名)
     - "mybatis/db1/mapp.xml"      #或支持mapper xml 资源地址
     - "mybatis/db1/*.xml"         #或支持mapper *.xml 资源地址   
-  config:
-    typeHandlerRegistry:
 
 # 配置全局插件
 mybatis.plugin:
@@ -58,7 +56,7 @@ public class MybatisExtConfiguration {
 
     //调整 db1 的配置，或添加插件
     @Bean
-    public void db1_cfg(@Db("db1") org.apache.ibatis.session.Configuration cfg) {
+    public void db1_cfg(@Db("db1") MybatisConfiguration cfg) {
         //扩展
         //cfg.addInterceptor(...);
         cfg.setCacheEnabled(false);
