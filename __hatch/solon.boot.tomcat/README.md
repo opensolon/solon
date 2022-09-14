@@ -5,4 +5,4 @@
 3. 支持 websocket（是否开始看 Solon.app.enableWebSockt ）
 
 
-具体，可参考 solon.boot.jetty 和 solon.boot.undertow
+细节，可参考 solon.boot.jetty 和 solon.boot.undertow
