@@ -21,7 +21,9 @@ mybatis.db1:
     - "webapp.dso.db1"            #或支持包名(要求 xml 同包同名)
     - "webapp/dso/db1/mapp.class" #或支持mapper class 资源地址(要求 xml 同包同名)
     - "mybatis/db1/mapp.xml"      #或支持mapper xml 资源地址
-    - "mybatis/db1/*.xml"         #或支持mapper *.xml 资源地址    
+    - "mybatis/db1/*.xml"         #或支持mapper *.xml 资源地址   
+  config:
+    typeHandlerRegistry:
 
 # 配置全局插件
 mybatis.plugin:

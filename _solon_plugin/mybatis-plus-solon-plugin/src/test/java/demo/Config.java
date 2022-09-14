@@ -1,5 +1,6 @@
 package demo;
 
+import com.baomidou.mybatisplus.core.MybatisConfiguration;
 import com.baomidou.mybatisplus.core.config.GlobalConfig;
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import demo.dso.MetaObjectHandlerImpl;
@@ -24,10 +25,15 @@ public class Config {
 //        return plusInterceptor;
 //    }
 
-//    @Bean
-//    public void db1_ext(@Db("db1") GlobalConfig globalConfig) {
-//        MetaObjectHandler metaObjectHandler = new MetaObjectHandlerImpl();
-//
-//        globalConfig.setMetaObjectHandler(metaObjectHandler);
-//    }
+    @Bean
+    public void db1_ext(@Db("db1") GlobalConfig globalConfig) {
+        MetaObjectHandler metaObjectHandler = new MetaObjectHandlerImpl();
+
+        globalConfig.setMetaObjectHandler(metaObjectHandler);
+    }
+
+    public void db1_ext2(@Db("db1") MybatisConfiguration config){
+        config.getTypeHandlerRegistry().register("xxx");
+        config.setDefaultEnumTypeHandler(null);
+    }
 }
