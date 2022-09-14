@@ -16,11 +16,15 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.cloud</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>org.jmdns</groupId>
             <artifactId>jmdns</artifactId>
             <version>3.5.5</version>
         </dependency>
-        <!-- https://www.cnblogs.com/zenghm/p/12849240.html -->
     </dependencies>
 
 </project>
