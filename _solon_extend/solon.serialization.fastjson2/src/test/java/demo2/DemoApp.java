@@ -1,6 +1,7 @@
 package demo2;
 
 import com.alibaba.fastjson2.JSONWriter;
+import com.alibaba.fastjson2.annotation.JSONField;
 import org.noear.solon.Solon;
 import org.noear.solon.serialization.fastjson2.Fastjson2RenderFactory;
 
@@ -12,6 +13,8 @@ import java.util.Date;
  * @author noear 2021/10/12 created
  */
 public class DemoApp {
+    @JSONField(format = "yyyy-MM-dd")
+    public Date date;
     public static void main(String[] args) {
         Solon.start(DemoApp.class, args, app -> {
             app.onEvent(Fastjson2RenderFactory.class, e -> {
