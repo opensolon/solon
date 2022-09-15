@@ -888,6 +888,12 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>forest-solon-plugin</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>hasor-solon-plugin</artifactId>
                 <version>${revision}</version>
             </dependency>
