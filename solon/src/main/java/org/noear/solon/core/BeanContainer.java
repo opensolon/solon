@@ -147,10 +147,16 @@ public abstract class BeanContainer {
         beanBuilders.put(anno, builder);
     }
 
+    /**
+     * 添加注入处理
+     * */
     public <T extends Annotation> void beanInjectorAdd(Class<T> anno, BeanInjector<T> injector) {
         beanInjectors.put(anno, injector);
     }
 
+    /**
+     * 添加提取处理
+     * */
     public <T extends Annotation> void beanExtractorAdd(Class<T> anno, BeanExtractor<T> extractor) {
         beanExtractors.put(anno, extractor);
     }

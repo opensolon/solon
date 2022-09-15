@@ -25,6 +25,7 @@ import java.io.IOException;
 public class CloudFileServiceKodoImp implements CloudFileService {
 
     protected final String bucketDef;
+    protected final String regionId;
     protected final String accessKey;
     protected final String secretKey;
     protected final String endpoint;
@@ -34,7 +35,12 @@ public class CloudFileServiceKodoImp implements CloudFileService {
     protected final BucketManager bucketManager;
 
     public CloudFileServiceKodoImp(CloudProps cloudProps) {
+        this(cloudProps, null);
+    }
+
+    public CloudFileServiceKodoImp(CloudProps cloudProps, Region region) {
         bucketDef = cloudProps.getFileBucket();
+        regionId  = cloudProps.getFileRegionId();
         accessKey = cloudProps.getFileAccessKey();
         secretKey = cloudProps.getFileSecretKey();
         endpoint = cloudProps.getFileEndpoint();
@@ -42,11 +48,56 @@ public class CloudFileServiceKodoImp implements CloudFileService {
         auth = Auth.create(accessKey, secretKey);
 
         //构造一个带指定 Region 对象的配置类
-        Configuration cfg = new Configuration(Region.region0());
+        Configuration cfg = buildConfig(region);
+
         //...其他参数参考类注释
         uploadManager = new UploadManager(cfg);
         bucketManager = new BucketManager(auth, cfg);
     }
+
+    public Configuration buildConfig(Region region) {
+        if (region != null) {
+            return new Configuration(region);
+        }
+
+        switch (regionId) {
+            case "z0":
+                return new Configuration(Region.region0());
+            case "huadong":
+                return new Configuration(Region.huadong());
+
+            case "cn-east-2":
+                return new Configuration(Region.regionCnEast2());
+            case "zhejiang2":
+                return new Configuration(Region.huadongZheJiang2());
+
+            case "z1":
+                return new Configuration(Region.region1());
+            case "huabei":
+                return new Configuration(Region.huabei());
+
+            case "z2":
+                return new Configuration(Region.region2());
+            case "huanan":
+                return new Configuration(Region.huanan());
+
+            case "na0":
+                return new Configuration(Region.regionNa0());
+            case "beimei":
+                return new Configuration(Region.beimei());
+
+            case "as0":
+            case "xinjiapo":
+                return new Configuration(Region.xinjiapo());
+
+            case "fog-cn-east-1":
+                return new Configuration(Region.regionFogCnEast1());
+
+            default:
+                return new Configuration();
+        }
+    }
+
 
     @Override
     public Media get(String bucket, String key) throws CloudFileException {
