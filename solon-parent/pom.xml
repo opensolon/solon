@@ -967,6 +967,12 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>jmdns-solon-plugin</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>water-solon-plugin</artifactId>
                 <version>${revision}</version>
             </dependency>
