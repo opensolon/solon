@@ -1,8 +1,8 @@
 package org.noear.nami;
 
-import org.noear.nami.annotation.Ignore;
 import org.noear.nami.annotation.NamiClient;
 
+import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.function.Supplier;
 
@@ -25,7 +25,7 @@ public class NamiBuilder {
 
     /**
      * @param timeout 超时（单位：秒）
-     * */
+     */
     public NamiBuilder timeout(int timeout) {
         _config.setTimeout(timeout);
         return this;
@@ -33,7 +33,7 @@ public class NamiBuilder {
 
     /**
      * @param heartbeat 心跳（单为：秒）
-     * */
+     */
     public NamiBuilder heartbeat(int heartbeat) {
         _config.setHeartbeat(heartbeat);
         return this;
@@ -106,7 +106,6 @@ public class NamiBuilder {
     }
 
 
-
     /**
      * 添加拦截器
      */
@@ -117,7 +116,7 @@ public class NamiBuilder {
 
     /**
      * 设置头
-     * */
+     */
     public NamiBuilder headerSet(String name, String val) {
         _config.setHeader(name, val);
         return this;
@@ -150,27 +149,26 @@ public class NamiBuilder {
 
         NamiHandler handler = new NamiHandler(clz, _config, client);
 
-        Object instance=  Proxy.newProxyInstance(
+        Object instance = Proxy.newProxyInstance(
                 clz.getClassLoader(),
                 new Class[]{clz},
                 handler);
 
-        //接口本身作为Filter的处理
-        if(instance instanceof Filter){
-            Filter filterable=(Filter) instance;
+        //::支持接口本身作为Filter的处理
+        //@since 1.10
+        //@author 夜の孤城
+        if (instance instanceof Filter) {
+            Filter filterable = (Filter) instance;
+
             try {
-                if(!clz.getMethod("doFilter",Invocation.class).isDefault()){
-                    throw new NamiException("接口 "+clz.getName() +" 的 doFilter(Invocation) 方法不是default方法");
+                if (!clz.getMethod("doFilter", Invocation.class).isDefault()) {
+                    throw new NamiException("Interface " + clz.getName() + " does not have a default void doFilter(Invocation inv)");
                 }
             } catch (NoSuchMethodException e) {
                 throw new NamiException(e);
             }
-            _config.filterAdd((inv)->{
-                if(inv.method==null||inv.method.isAnnotationPresent(Ignore.class)){
-                    return inv.invoke();
-                }
-                return filterable.doFilter(inv);
-            });
+
+            _config.filterAdd(filterable);
         }
 
         return instance;
