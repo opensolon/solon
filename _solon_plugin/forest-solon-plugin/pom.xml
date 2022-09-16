@@ -26,9 +26,11 @@
             <artifactId>forest-core</artifactId>
             <version>1.5.26</version>
         </dependency>
+
         <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
+            <groupId>org.noear</groupId>
+            <artifactId>solon-test</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 

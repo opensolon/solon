@@ -10,6 +10,6 @@ import com.dtflys.forest.annotation.*;
 @ForestClient
 //@BaseRequest(baseURL = "upstream://test")
 public interface TestGiteeApi {
-    @Get(url="upstream://test")
+    @Get(url="upstream://gitee")
     String search(@Query("q") String q);
 }
