@@ -1,5 +1,6 @@
 package org.noear.nami;
 
+import org.noear.nami.annotation.Ignore;
 import org.noear.nami.annotation.NamiClient;
 
 import java.lang.reflect.Proxy;
@@ -120,9 +121,29 @@ public class NamiBuilder {
 
         NamiHandler handler = new NamiHandler(clz, _config, client);
 
-        return Proxy.newProxyInstance(
+        Object instance=  Proxy.newProxyInstance(
                 clz.getClassLoader(),
                 new Class[]{clz},
                 handler);
+
+        //接口本身作为Filter的处理
+        if(instance instanceof Filter){
+            Filter filterable=(Filter) instance;
+            try {
+                if(!clz.getMethod("doFilter",Invocation.class).isDefault()){
+                    throw new NamiException("接口 "+clz.getName() +" 的 doFilter(Invocation) 方法不是default方法");
+                }
+            } catch (NoSuchMethodException e) {
+                throw new NamiException(e);
+            }
+            _config.filterAdd((inv)->{
+                if(inv.method==null||inv.method.isAnnotationPresent(Ignore.class)){
+                    return inv.invoke();
+                }
+                return filterable.doFilter(inv);
+            });
+        }
+
+        return instance;
     }
 }
