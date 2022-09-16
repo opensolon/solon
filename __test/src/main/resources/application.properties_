@@ -1,0 +1,25 @@
+demo6.test.aaa = 121212
+demo6.test.bbb = 12
+
+demo8.test.url = jdbc:mysql://127.0.0.1/user
+demo8.test.username = root
+demo8.test.paasword = 12
+
+username=noear
+paasword=1234
+
+solon.view.mapping.htm = BeetlRender
+solon.view.mapping.html = EnjoyRender
+
+water.host=http://waterapi:9371
+water.adapter.service_name=1212
+water.adapter.alarm_mobile=18658857337
+water.adapter.msg_subscriber_id=bbb
+water.adapter.msg_signature_key=
+water.adapter.cache_service=webapp.dao.CacheUtil.data2
+
+server.session.state.redis.server=redis.io:6379
+server.session.state.redis.password=1234
+server.session.state.redis.db=31
+server.session.state.redis.maxTotal=200
+

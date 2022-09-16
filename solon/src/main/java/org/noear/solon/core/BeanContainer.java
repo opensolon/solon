@@ -7,13 +7,14 @@ import org.noear.solon.annotation.Inject;
 import org.noear.solon.annotation.Note;
 import org.noear.solon.core.aspect.Interceptor;
 import org.noear.solon.core.aspect.InterceptorEntity;
+import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.HandlerLoader;
-import org.noear.solon.core.wrap.ClassWrap;
 import org.noear.solon.core.util.ConvertUtil;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiConsumer;
 import java.util.function.BiPredicate;
 import java.util.function.Consumer;
@@ -26,6 +27,36 @@ import java.util.function.Predicate;
  * @since 1.0
  * */
 public abstract class BeanContainer {
+    private final Props props;
+    private final ClassLoader classLoader;
+    private Map<Class<?>,Object> attrs = new HashMap<>();
+
+
+    public BeanContainer(ClassLoader classLoader, Props props) {
+        this.classLoader = classLoader;
+        this.props = props;
+    }
+
+    public Props getProps() {
+        if (props == null) {
+            return Solon.cfg();
+        } else {
+            return props;
+        }
+    }
+
+    public Map<Class<?>, Object> getAttrs() {
+        return attrs;
+    }
+
+    public ClassLoader getClassLoader() {
+        if (classLoader == null) {
+            return JarClassLoader.global();
+        } else {
+            return classLoader;
+        }
+    }
+
     //////////////////////////
     //
     // 容器存储
@@ -34,15 +65,16 @@ public abstract class BeanContainer {
     /**
      * bean包装库
      */
-    protected final Map<Class<?>, BeanWrap> beanWraps = new ConcurrentHashMap<>();
+    private final Map<Class<?>, BeanWrap> beanWraps = new HashMap<>();
+    private final Set<BeanWrap> beanWrapSet = new HashSet<>();
     /**
      * bean库
      */
-    protected final Map<String, BeanWrap> beans = new ConcurrentHashMap<>();
+    private final Map<String, BeanWrap> beans = new HashMap<>();
     /**
      * clz mapping
      */
-    protected final Map<Class<?>, Class<?>> clzMapping = new ConcurrentHashMap<>();
+    private final Map<Class<?>, Class<?>> clzMapping = new HashMap<>();
 
     //启动时写入
     /**
@@ -62,26 +94,49 @@ public abstract class BeanContainer {
      * */
     protected final Map<Class<?>, InterceptorEntity> beanInterceptors = new HashMap<>();
 
+
+
     /**
-     * 容器制复能力
+     * bean订阅者
+     */
+    protected final Set<SubscriberEntity> beanSubscribers = new LinkedHashSet<>();
+
+
+    public void clear(){
+        beanWraps.clear();
+        beanWrapSet.clear();
+        beans.clear();
+        clzMapping.clear();
+        attrs.clear();
+
+//        beanBuilders.clear();
+//        beanInjectors.clear();
+//        beanExtractors.clear();
+//        beanInterceptors.clear();
+//
+//        beanSubscribers.clear();
+    }
+
+    /**
+     * 容器能力制复到另一个容器
      * */
-    public void copy(BeanContainer container){
-        container.beanBuilders.forEach((k,v)->{
-            beanBuilders.putIfAbsent(k,v);
+    public void copyTo(BeanContainer container) {
+        beanBuilders.forEach((k, v) -> {
+            container.beanBuilders.putIfAbsent(k, v);
         });
 
         //用于跨容器复制
-        container.beanInjectors.forEach((k,v)->{
-            beanInjectors.putIfAbsent(k,v);
+        beanInjectors.forEach((k, v) -> {
+            container.beanInjectors.putIfAbsent(k, v);
         });
 
         //用于跨容器复制
-        container.beanInterceptors.forEach((k, v) -> {
-            beanInterceptors.putIfAbsent(k, v);
+        beanInterceptors.forEach((k, v) -> {
+            container.beanInterceptors.putIfAbsent(k, v);
         });
 
-        container.beanExtractors.forEach((k, v) -> {
-            beanExtractors.putIfAbsent(k, v);
+        beanExtractors.forEach((k, v) -> {
+            container.beanExtractors.putIfAbsent(k, v);
         });
     }
 
@@ -92,10 +147,16 @@ public abstract class BeanContainer {
         beanBuilders.put(anno, builder);
     }
 
+    /**
+     * 添加注入处理
+     * */
     public <T extends Annotation> void beanInjectorAdd(Class<T> anno, BeanInjector<T> injector) {
         beanInjectors.put(anno, injector);
     }
 
+    /**
+     * 添加提取处理
+     * */
     public <T extends Annotation> void beanExtractorAdd(Class<T> anno, BeanExtractor<T> extractor) {
         beanExtractors.put(anno, extractor);
     }
@@ -129,12 +190,6 @@ public abstract class BeanContainer {
     // bean 对内通知体系
     //
     /////////////////////////
-
-    /**
-     * bean订阅者
-     */
-    protected final Set<SubscriberEntity> beanSubscribers = new LinkedHashSet<>();
-
     /**
      * bean订阅
      */
@@ -169,7 +224,7 @@ public abstract class BeanContainer {
      *
      * @param wrap 如果raw为null，拒绝注册
      */
-    public void putWrap(String name, BeanWrap wrap) {
+    public synchronized void putWrap(String name, BeanWrap wrap) {
         if (Utils.isEmpty(name) == false && wrap.raw() != null) {
             if (beans.containsKey(name) == false) {
                 beans.put(name, wrap);
@@ -183,16 +238,21 @@ public abstract class BeanContainer {
      *
      * @param wrap 如果raw为null，拒绝注册
      */
-    public void putWrap(Class<?> type, BeanWrap wrap) {
+    public synchronized void putWrap(Class<?> type, BeanWrap wrap) {
         if (type != null && wrap.raw() != null) {
             //
             //wrap.raw()==null, 说明它是接口；等它完成代理再注册；以@Db为例，可以看一下
             //
             if (beanWraps.containsKey(type) == false) {
                 beanWraps.put(type, wrap);
+                beanWrapSet.add(wrap);
                 beanNotice(type, wrap);
             }
         }
+    }
+
+    public boolean hasWrap(Object nameOrType) {
+        return getWrap(nameOrType) != null;
     }
 
     /**
@@ -218,22 +278,123 @@ public abstract class BeanContainer {
         }
     }
 
-    public <T> T getBean(Object nameOrType) {
-        BeanWrap bw = getWrap(nameOrType);
+    /**
+     * 订阅 bean 包装
+     *
+     * @param baseType 基类类型
+     * */
+    public void subWrap(Class<?> baseType, Consumer<BeanWrap> callback) {
+        EventBus.subscribe(BeanWrap.class, (e)->{
+            if(baseType.isAssignableFrom(e.clz())){
+                callback.accept(e);
+            }
+        });
+    }
+
+    /**
+     * 获取 Bean
+     *
+     * @param name 名字
+     * */
+    public <T> T getBean(String name) {
+        BeanWrap bw = getWrap(name);
         return bw == null ? null : bw.get();
+    }
+
+    /**
+     * 获取 Bean
+     *
+     * @param type 类型
+     * */
+    public <T> T getBean(Class<T> type) {
+        BeanWrap bw = getWrap(type);
+        return bw == null ? null : bw.get();
+    }
+
+    /**
+     * 获取 或创建 bean
+     *
+     * @param type 类型
+     * */
+    public <T> T getBeanOrNew(Class<T> type){
+        return wrapAndPut(type).get();
+    }
+
+    /**
+     * 异步获取 Bean
+     *
+     * @param name 名字
+     * */
+    public <T> void getBeanAsyn(String name, Consumer<T> callback) {
+        getWrapAsyn(name, (bw) -> {
+            callback.accept(bw.get());
+        });
+    }
+
+    /**
+     * 异步获取 Bean
+     *
+     * @param type 类型
+     * */
+    public <T> void getBeanAsyn(Class<T> type, Consumer<T> callback) {
+        getWrapAsyn(type, (bw) -> {
+            callback.accept(bw.get());
+        });
+    }
+
+    /**
+     * 订阅 Bean
+     *
+     * @param baseType 类型
+     * */
+    public <T> void subBean(Class<T> baseType, Consumer<T> callback) {
+        EventBus.subscribe(baseType, callback::accept);
     }
 
     /**
      * 包装
      */
     public BeanWrap wrap(Class<?> type, Object bean) {
+        return wrap(type, bean, null);
+    }
+
+    /**
+     * 包装
+     */
+    public BeanWrap wrap(Class<?> type, Object bean, String name) {
         BeanWrap wrap = getWrap(type);
         if (wrap == null) {
-            wrap = new BeanWrap(type, bean);
+            wrap = wrapCreate(type, bean);
+
+            if(Utils.isNotEmpty(name)){
+                wrap.nameSet(name);
+            }
         }
 
         return wrap;
     }
+
+    /**
+     * 包装并推入
+     * */
+    public BeanWrap wrapAndPut(Class<?> type) {
+        return wrapAndPut(type, null);
+    }
+
+    /**
+     * 包装并推入
+     * */
+    public BeanWrap wrapAndPut(Class<?> type, Object bean) {
+        BeanWrap wrap = getWrap(type);
+        if (wrap == null) {
+            wrap = wrapCreate(type, bean);
+            putWrap(type, wrap);
+        }
+
+        return wrap;
+    }
+
+    protected abstract BeanWrap wrapCreate(Class<?> type, Object bean);
 
     //////////////////////////
     //
@@ -245,21 +406,7 @@ public abstract class BeanContainer {
      * 尝试BEAN注册（按名字和类型存入容器；并进行类型印射）
      */
     public void beanRegister(BeanWrap bw, String name, boolean typed) {
-        beanRegister0(bw, name, typed);
-
-        //如果是remoting状态，同时加载到 Solon 路由器
-        if (bw.remoting()) {
-            HandlerLoader bww = new HandlerLoader(bw);
-            if (bww.mapping() != null) {
-                //
-                //如果没有xmapping，则不进行web注册
-                //
-                bww.load(Solon.global());
-            }
-        }
-    }
-
-    private void beanRegister0(BeanWrap bw, String name, boolean typed) {
+        //按名字注册
         if (Utils.isNotEmpty(name)) {
             //有name的，只用name注入
             //
@@ -270,9 +417,29 @@ public abstract class BeanContainer {
             }
         }
 
+        //按类型注册
         putWrap(bw.clz(), bw);
         putWrap(bw.clz().getName(), bw);
 
+        //尝试Bean的基类注册
+        beanRegisterSup0(bw);
+
+        //尝试Remoting处理。如果是，则加载到 Solon 路由器
+        if (bw.remoting()) {
+            HandlerLoader bww = new HandlerLoader(bw);
+            if (bww.mapping() != null) {
+                //
+                //如果没有xmapping，则不进行web注册
+                //
+                bww.load(Solon.app());
+            }
+        }
+    }
+
+    /**
+     * 尝试Bean的基类注册
+     * */
+    protected void beanRegisterSup0(BeanWrap bw) {
         //如果有父级接口，则建立关系映射
         Class<?>[] list = bw.clz().getInterfaces();
         for (Class<?> c : list) {
@@ -280,6 +447,13 @@ public abstract class BeanContainer {
                 //建立关系映射
                 clzMapping.putIfAbsent(c, bw.clz());
                 putWrap(c, bw);
+            }
+        }
+
+        Type[] list2 = bw.clz().getGenericInterfaces(); //有可能跟 getInterfaces() 一样
+        for (Type t : list2) {
+            if (t instanceof ParameterizedType) { //有可能不是 ParameterizedType
+                putWrap(t.getTypeName(), bw);
             }
         }
     }
@@ -300,18 +474,29 @@ public abstract class BeanContainer {
             //
             // @Inject //使用 type, 注入BEAN
             //
-            getWrapAsyn(varH.getType(), (bw) -> {
-                varH.setValue(bw.get());
-            });
+            if(AopContext.class.isAssignableFrom(varH.getType())){
+                varH.setValue(this);
+                return;
+            }
+
+            if(varH.getGenericType() != null){
+                getWrapAsyn(varH.getGenericType().getTypeName(), (bw) -> {
+                    varH.setValue(bw.get());
+                });
+            }else{
+                getWrapAsyn(varH.getType(), (bw) -> {
+                    varH.setValue(bw.get());
+                });
+            }
         } else if (name.startsWith("${classpath:")) {
             //
             // @Inject("${classpath:user.yml}") //注入配置文件
             //
             String url = name.substring(12, name.length() - 1);
-            Properties val = Utils.loadProperties(Utils.getResource(url));
+            Properties val = Utils.loadProperties(Utils.getResource(getClassLoader(),url));
 
             if (val == null) {
-                throw new RuntimeException(name + "  failed to load!");
+                throw new IllegalStateException(name + "  failed to load!");
             }
 
             if (Properties.class == varH.getType()) {
@@ -325,10 +510,9 @@ public abstract class BeanContainer {
                 });
                 varH.setValue(val2);
             } else {
-                Object val2 = ClassWrap.get(varH.getType()).newBy(val);
+                Object val2 = PropsConverter.global().convert(val, null, varH.getType(), varH.getGenericType());
                 varH.setValue(val2);
             }
-
         } else if (name.startsWith("${")) {
             //
             // @Inject("${xxx}") //注入配置 ${xxx} or ${xxx:def},只适合单值
@@ -338,7 +522,7 @@ public abstract class BeanContainer {
             beanInjectConfig(varH, name2);
 
             if (autoRefreshed && varH.isField()) {
-                Solon.cfg().onChange((key, val) -> {
+                getProps().onChange((key, val) -> {
                     if(key.startsWith(name2)){
                         beanInjectConfig(varH, name2);
                     }
@@ -358,11 +542,12 @@ public abstract class BeanContainer {
         }
     }
 
-    protected void beanInjectProperties(Class<?> clz, BeanWrap bw){
+    protected void beanInjectProperties(Class<?> clz, Object obj){
         Inject typeInj = clz.getAnnotation(Inject.class);
+
         if (typeInj != null && Utils.isNotEmpty(typeInj.value())) {
             if (typeInj.value().startsWith("${")) {
-                Utils.injectProperties(bw.raw(), Solon.cfg().getPropByExpr(typeInj.value()));
+                Utils.injectProperties(obj, getProps().getPropByExpr(typeInj.value()));
             }
         }
     }
@@ -370,41 +555,40 @@ public abstract class BeanContainer {
     private void beanInjectConfig(VarHolder varH, String name){
         if (Properties.class == varH.getType()) {
             //如果是 Properties
-            Properties val = Solon.cfg().getProp(name);
+            Properties val = getProps().getProp(name);
             varH.setValue(val);
-        } else if (Map.class == varH.getType()) {
-            //如果是 Map
-            Map val = Solon.cfg().getXmap(name);
-            varH.setValue(val);
-        } else if(List.class == varH.getType()){
-            //如果是 List
-            List ary = Solon.cfg().getList(name);
-            varH.setValue(ary);
         } else {
             //2.然后尝试获取配置
             String def = null;
-            if(name.contains(":")) {
-                def = name.split(":")[1].trim();
-                name = name.split(":")[0].trim();
+            int defIdx = name.indexOf(":");
+            if(defIdx > 0) {
+                if (name.length() > defIdx + 1) {
+                    def = name.substring(defIdx + 1).trim();
+                } else {
+                    def = "";
+                }
+                name = name.substring(0, defIdx).trim();
             }
 
-            String val = Solon.cfg().get(name);
+            String val = getProps().get(name);
 
-            if(val == null){
-                val = def;
+            if(def != null) {
+                if (Utils.isEmpty(val)) {
+                    val = def;
+                }
             }
 
             if (val == null) {
                 Class<?> pt = varH.getType();
 
-                if (pt.getName().startsWith("java.") || pt.isArray() || pt.isPrimitive()) {
+                if (pt.getName().startsWith("java.lang.") || pt.isPrimitive()) {
                     //如果是java基础类型，则不注入配置值
                 } else {
                     //尝试转为实体
-                    Properties val0 = Solon.cfg().getProp(name);
+                    Properties val0 = getProps().getProp(name);
                     if (val0.size() > 0) {
                         //如果找到配置了
-                        Object val2 = ClassWrap.get(pt).newBy(val0);
+                        Object val2 = PropsConverter.global().convert(val0, null, pt, varH.getGenericType());
                         varH.setValue(val2);
                     }
                 }
@@ -434,7 +618,8 @@ public abstract class BeanContainer {
      */
     @Note("遍历bean包装库")
     public void beanForeach(Consumer<BeanWrap> action) {
-        beanWraps.forEach((k, bw) -> {
+        //相关于 beanWraps ，不会出现重复的 // 复制一下，避免 ConcurrentModificationException
+        new ArrayList<>(beanWrapSet).forEach(bw -> {
             action.accept(bw);
         });
     }

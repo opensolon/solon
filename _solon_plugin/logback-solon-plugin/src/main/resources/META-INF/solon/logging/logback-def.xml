@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE configuration>
+<configuration scan="true" scanPeriod="60 seconds" debug="false">
+    <conversionRule conversionWord="tags" converterClass="ch.qos.logback.solon.SolonTagsConverter" />
+
+    <solonProperty name="APP_NAME" source="solon.app.name"
+                   defaultValue="solon" />
+
+
+    <solonProperty name="CONSOLE_LOG_PATTERN" source="solon.logging.appender.console.pattern"
+                   defaultValue="%highlight(%-5level %d{yyyy-MM-dd HH:mm:ss.SSS} [-%t][*%X{traceId}]%tags[%logger{20}]:) %n%msg%n" />
+
+    <solonProperty name="CONSOLE_LOG_LEVEL" source="solon.logging.appender.console.level"
+                   defaultValue="TRACE" />
+
+
+    <solonProperty name="FILE_LOG_NAME" source="solon.logging.appender.file.name"
+                   defaultValue="logs/${APP_NAME}" />
+
+    <solonProperty name="FILE_LOG_PATTERN" source="solon.logging.appender.file.pattern"
+                   defaultValue="%-5level %d{yyyy-MM-dd HH:mm:ss.SSS} [-%t][*%X{traceId}]%tags[%logger{20}]: %n%msg%n" />
+
+    <solonProperty name="FILE_LOG_LEVEL" source="solon.logging.appender.file.level"
+                   defaultValue="INFO" />
+    <solonProperty name="FILE_LOG_MAX_HISTORY" source="solon.logging.appender.file.maxHistory"
+                   defaultValue="7" />
+    <solonProperty name="FILE_LOG_MAX_FILE_SIZE" source="solon.logging.appender.file.maxFileSize"
+                   defaultValue="10 MB" />
+
+
+    <solonProperty name="CLOUD_LOG_LEVEL" source="solon.logging.appender.cloud.level"
+                   defaultValue="INFO" />
+
+
+    <solonProperty name="LOGGER_ROOT_LEVEL" source="solon.logging.logger.root.level"
+                   defaultValue="TRACE" />
+
+
+
+    <appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>${CONSOLE_LOG_LEVEL}</level>
+        </filter>
+        <encoder>
+            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="File" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>${FILE_LOG_LEVEL}</level>
+        </filter>
+
+        <File>${FILE_LOG_NAME}.log</File>
+        <append>true</append>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${FILE_LOG_NAME}_%d{yyyy-MM-dd}_%i.log</fileNamePattern>
+            <maxHistory>${FILE_LOG_MAX_HISTORY}</maxHistory>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>${FILE_LOG_MAX_FILE_SIZE}</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${FILE_LOG_PATTERN}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <appender name="Cloud" class="ch.qos.logback.solon.SolonCloudAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>${CLOUD_LOG_LEVEL}</level>
+        </filter>
+    </appender>
+
+    <root>
+        <level value="${LOGGER_ROOT_LEVEL}" />
+        <appender-ref ref="Console"/>
+        <appender-ref ref="File"/>
+        <appender-ref ref="Cloud"/>
+    </root>
+
+</configuration>

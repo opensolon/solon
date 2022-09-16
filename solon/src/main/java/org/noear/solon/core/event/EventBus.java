@@ -3,9 +3,7 @@ package org.noear.solon.core.event;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 /**
  * 监听器（内部类，外部不要使用）
@@ -15,26 +13,25 @@ import java.util.List;
  * */
 public final class EventBus {
     //异常订阅者
-    private static List<HH> sThrow = new ArrayList<>();
+    private static Map<Object, HH> sThrow = new HashMap<>();
     //其它订阅者
-    private static List<HH> sOther = new ArrayList<>();
+    private static Map<Object, HH> sOther = new HashMap<>();
 
     /**
-     * 异步推送事件
+     * 异步推送事件（一般不推荐）
      *
      * @param event 事件（可以是任何对象）
      */
-    @Deprecated
     public static void pushAsyn(Object event) {
         if (event != null) {
-            Utils.pools.submit(() -> {
+            Utils.async(() -> {
                 push0(event);
             });
         }
     }
 
     /**
-     * 推送事件
+     * 同步推送事件
      *
      * @param event 事件（可以是任何对象）
      */
@@ -47,25 +44,30 @@ public final class EventBus {
     private static void push0(Object event) {
         if (event instanceof Throwable) {
 
-            if (Solon.global().enableErrorAutoprint()) {
+            if (Solon.app() == null || Solon.app().enableErrorAutoprint()) {
                 ((Throwable) event).printStackTrace();
             }
 
             //异常分发
-            push1(sThrow, event);
+            push1(sThrow.values(), event, false);
         } else {
             //其它事件分发
-            push1(sOther, event);
+            push1(sOther.values(), event, true);
         }
     }
 
-    private static void push1(Collection<HH> hhs, Object event) {
+    private static void push1(Collection<HH> hhs, Object event, boolean thrown) {
         for (HH h1 : hhs) {
             if (h1.t.isInstance(event)) {
                 try {
                     h1.l.onEvent(event);
-                } catch (Throwable ex) {
-                    ex.printStackTrace();
+                } catch (Throwable e) {
+                    if (thrown) {
+                        EventBus.push(e);
+                    } else {
+                        //此处不能再转发异常
+                        e.printStackTrace();
+                    }
                 }
             }
         }
@@ -77,12 +79,26 @@ public final class EventBus {
      * @param eventType 事件类型
      * @param listener  事件监听者
      */
-    public static <T> void subscribe(Class<T> eventType, EventListener<T> listener) {
+    public synchronized static <T> void subscribe(Class<T> eventType, EventListener<T> listener) {
         if (Throwable.class.isAssignableFrom(eventType)) {
-            sThrow.add(new HH(eventType, listener));
+            sThrow.putIfAbsent(listener, new HH(eventType, listener));
+
+            if (Solon.app() != null) {
+                Solon.app().enableErrorAutoprint(false);
+            }
         } else {
-            sOther.add(new HH(eventType, listener));
+            sOther.putIfAbsent(listener, new HH(eventType, listener));
         }
+    }
+
+    /**
+     * 取消事件订阅
+     *
+     * @param listener 事件监听者
+     */
+    public synchronized static <T> void unsubscribe(EventListener<T> listener) {
+        sThrow.remove(listener);
+        sOther.remove(listener);
     }
 
     /**

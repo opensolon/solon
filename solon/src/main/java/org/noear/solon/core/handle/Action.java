@@ -1,9 +1,12 @@
 package org.noear.solon.core.handle;
 
 import org.noear.solon.Utils;
+import org.noear.solon.annotation.Consumes;
+import org.noear.solon.annotation.Produces;
 import org.noear.solon.core.*;
 import org.noear.solon.core.event.EventBus;
-import org.noear.solon.ext.DataThrowable;
+import org.noear.solon.core.util.PathUtil;
+import org.noear.solon.core.util.DataThrowable;
 import org.noear.solon.core.wrap.MethodWrap;
 import org.noear.solon.core.util.PathAnalyzer;
 import org.noear.solon.annotation.Mapping;
@@ -12,7 +15,6 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * mvc:动作
@@ -38,16 +40,17 @@ public class Action extends HandlerAide implements Handler {
     private String mConsumes;
     //action name
     private final String mName;
+    private final String mFullName;//包类的 Mapping，去掉 / 开头
     //action remoting
     private final boolean mRemoting;
     private final Mapping mMapping;
+
+    private boolean mMultipart;
 
     //path 分析器
     private PathAnalyzer pathAnalyzer;//路径分析器
     //path key 列表
     private List<String> pathKeys;
-    //path key 表达式
-    private static Pattern pathKeyExpr = Pattern.compile("\\{([^\\\\}]+)\\}");
 
     public Action(BeanWrap bWrap, Method method) {
         this(bWrap, null, method, null, null, false, null);
@@ -59,7 +62,7 @@ public class Action extends HandlerAide implements Handler {
 
         method.setAccessible(true);
 
-        mWrap = MethodWrap.get(method);
+        mWrap = bWrap.context().methodGet(method);
         mRemoting = remoting;
         mMapping = mapping;
         bRender = render;
@@ -75,16 +78,49 @@ public class Action extends HandlerAide implements Handler {
             mName = method.getName();
             mIsMain = true;
         } else {
-            mProduces = mapping.produces();
-            mConsumes = mapping.consumes();
+            Produces producesAnno = method.getAnnotation(Produces.class);
+            Consumes consumesAnno = method.getAnnotation(Consumes.class);
+
+            if (producesAnno == null) {
+                mProduces = mapping.produces();
+            } else {
+                mProduces = producesAnno.value();
+            }
+
+            if (consumesAnno == null) {
+                mConsumes = mapping.consumes();
+            } else {
+                mConsumes = consumesAnno.value();
+            }
+
+            mMultipart = mapping.multipart();
             mName = Utils.annoAlias(mapping.value(), mapping.path());
             mIsMain = !(mapping.after() || mapping.before());
         }
 
+        if (Utils.isEmpty(path)) {
+            mFullName = mName;
+        } else {
+            if (path.startsWith("/")) {
+                mFullName = path.substring(1);
+            } else {
+                mFullName = path;
+            }
+        }
+
+        //支持多分片申明
+        if (mMultipart == false) {
+            for (Class<?> clz : method.getParameterTypes()) {
+                if (UploadedFile.class.isAssignableFrom(clz)) {
+                    mMultipart = true;
+                }
+            }
+        }
+
         //支持path变量
-        if (path != null && path.indexOf("{") >= 0) {
+        if (path != null && path.contains("{")) {
             pathKeys = new ArrayList<>();
-            Matcher pm = pathKeyExpr.matcher(path);
+            Matcher pm = PathUtil.pathKeyExpr.matcher(path);
             while (pm.find()) {
                 pathKeys.add(pm.group(1));
             }
@@ -102,6 +138,10 @@ public class Action extends HandlerAide implements Handler {
         return mName;
     }
 
+    public String fullName() {
+        return mFullName;
+    }
+
     /**
      * 映射（可能为Null）
      */
@@ -117,9 +157,9 @@ public class Action extends HandlerAide implements Handler {
     }
 
     /**
-     * 控制器类包装
+     * 控制类包装器
      */
-    public BeanWrap bean() {
+    public BeanWrap controller() {
         return bWrap;
     }
 
@@ -137,6 +177,7 @@ public class Action extends HandlerAide implements Handler {
         return mConsumes;
     }
 
+
     @Override
     public void handle(Context x) throws Throwable {
         if (Utils.isNotEmpty(mConsumes)) {
@@ -144,6 +185,10 @@ public class Action extends HandlerAide implements Handler {
                 x.status(415);
                 return;
             }
+        }
+
+        if (mMultipart) {
+            x.autoMultipart(true);
         }
 
         invoke(x, null);
@@ -229,7 +274,7 @@ public class Action extends HandlerAide implements Handler {
 
                 //获取path var
                 if (pathAnalyzer != null) {
-                    Matcher pm = pathAnalyzer.matcher(c.path());
+                    Matcher pm = pathAnalyzer.matcher(c.pathNew());
                     if (pm.find()) {
                         for (int i = 0, len = pathKeys.size(); i < len; i++) {
                             c.paramSet(pathKeys.get(i), pm.group(i + 1));//不采用group name,可解决_的问题
@@ -257,7 +302,7 @@ public class Action extends HandlerAide implements Handler {
             e = Utils.throwableUnwrap(e);
 
             if (e instanceof DataThrowable) {
-                DataThrowable ex = (DataThrowable)e;
+                DataThrowable ex = (DataThrowable) e;
                 if (ex.data() == null) {
                     renderDo(ex, c);
                 } else {

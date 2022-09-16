@@ -44,6 +44,8 @@ public class Config {
 
     //请求超时设置
     private int timeout;
+    //请求心跳频率
+    private int heartbeat;
     //编码器
     private Encoder encoder;
     //解码器
@@ -69,6 +71,14 @@ public class Config {
 
     public void setTimeout(int timeout) {
         this.timeout = timeout;
+    }
+
+    public int getHeartbeat() {
+        return heartbeat;
+    }
+
+    public void setHeartbeat(int heartbeat) {
+        this.heartbeat = heartbeat;
     }
 
     /**

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.noear</groupId>
+        <artifactId>solon-parent</artifactId>
+        <version>${revision}</version>
+        <relativePath>../../solon-parent/pom.xml</relativePath>
+    </parent>
+
+    <groupId>org.noear.hatch</groupId>
+    <artifactId>solon.boot.reactor-netty</artifactId>
+    <packaging>jar</packaging>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.boot</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.projectreactor.netty</groupId>
+            <artifactId>reactor-netty-http</artifactId>
+            <version>1.0.22</version>
+        </dependency>
+    </dependencies>
+</project>

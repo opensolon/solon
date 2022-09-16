@@ -1,8 +1,7 @@
 package org.noear.solon.core.wrap;
 
-import org.noear.solon.Utils;
 import org.noear.solon.annotation.*;
-import org.noear.solon.core.Aop;
+import org.noear.solon.core.AopContext;
 import org.noear.solon.core.aspect.Interceptor;
 import org.noear.solon.core.aspect.InterceptorEntity;
 import org.noear.solon.core.aspect.Invocation;
@@ -11,6 +10,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
+import java.lang.reflect.Type;
 import java.util.*;
 
 /**
@@ -22,38 +22,24 @@ import java.util.*;
  * @since 1.0
  * */
 public class MethodWrap implements Interceptor, MethodHolder {
-    private static Map<Method, MethodWrap> cached = new HashMap<>();
 
-    public static MethodWrap get(Method method) {
-        MethodWrap mw = cached.get(method);
-        if (mw == null) {
-            synchronized (method) {
-                mw = cached.get(method);
-                if (mw == null) {
-                    mw = new MethodWrap(method);
-                    cached.put(method, mw);
-                }
-            }
-        }
+    public MethodWrap(AopContext ctx, Method m) {
+        context = ctx;
 
-        return mw;
-    }
-
-
-    protected MethodWrap(Method m) {
         entityClz = m.getDeclaringClass();
 
         method = m;
         parameters = paramsWrap(m.getParameters());
         annotations = m.getAnnotations();
         arounds = new ArrayList<>();
+        aroundsIdx = new HashSet<>();
 
-        //scan cless @Around
-        for (Annotation anno : entityClz.getAnnotations()) {
+        //scan method @Around （优先）
+        for (Annotation anno : annotations) {
             if (anno instanceof Around) {
                 doAroundAdd((Around) anno);
             } else {
-                InterceptorEntity ie = Aop.context().beanAroundGet(anno.annotationType());
+                InterceptorEntity ie = context.beanAroundGet(anno.annotationType());
                 if (ie != null) {
                     doAroundAdd(ie);
                 } else {
@@ -62,12 +48,12 @@ public class MethodWrap implements Interceptor, MethodHolder {
             }
         }
 
-        //scan method @Around
-        for (Annotation anno : annotations) {
+        //scan cless @Around
+        for (Annotation anno : entityClz.getAnnotations()) {
             if (anno instanceof Around) {
                 doAroundAdd((Around) anno);
             } else {
-                InterceptorEntity ie = Aop.context().beanAroundGet(anno.annotationType());
+                InterceptorEntity ie = context.beanAroundGet(anno.annotationType());
                 if (ie != null) {
                     doAroundAdd(ie);
                 } else {
@@ -78,7 +64,7 @@ public class MethodWrap implements Interceptor, MethodHolder {
 
         if (arounds.size() > 0) {
             //排序（顺排）
-            arounds.sort(Comparator.comparing(x -> x.index));
+            arounds.sort(Comparator.comparing(x -> x.getIndex()));
         }
 
         arounds.add(new InterceptorEntity(0, this));
@@ -96,15 +82,23 @@ public class MethodWrap implements Interceptor, MethodHolder {
 
     private void doAroundAdd(Around a) {
         if (a != null) {
-            arounds.add(new InterceptorEntity(a.index(), Aop.getOrNew(a.value())));
+            doAroundAdd(new InterceptorEntity(a.index(), context.wrapAndPut(a.value()).get()));
         }
     }
 
     private void doAroundAdd(InterceptorEntity i) {
         if (i != null) {
+            if(aroundsIdx.contains(i.getReal())){
+                //去重处理
+                return;
+            }
+
+            aroundsIdx.add(i.getReal());
             arounds.add(i);
         }
     }
+
+    private final AopContext context;
 
     //实体类型
     private final Class<?> entityClz;
@@ -116,6 +110,7 @@ public class MethodWrap implements Interceptor, MethodHolder {
     private final Annotation[] annotations;
     //函数包围列表（扩展切点）
     private final List<InterceptorEntity> arounds;
+    private final Set<Interceptor> aroundsIdx;
 
 
     /**
@@ -140,6 +135,13 @@ public class MethodWrap implements Interceptor, MethodHolder {
     }
 
     /**
+     * 获取函数泛型类型
+     */
+    public Type getGenericReturnType() {
+        return method.getGenericReturnType();
+    }
+
+    /**
      * 获取函数参数
      */
     public ParamWrap[] getParamWraps() {
@@ -161,7 +163,23 @@ public class MethodWrap implements Interceptor, MethodHolder {
     }
 
 
-    //::XInterceptorChain
+    /**
+     * 检测是否存在注解
+     * */
+    public boolean isAnnotationPresent(Class<? extends Annotation> annotationClass) {
+        return method.isAnnotationPresent(annotationClass);
+    }
+
+    /**
+     * 获取包围处理
+     */
+    public List<InterceptorEntity> getArounds() {
+        return Collections.unmodifiableList(arounds);
+    }
+
+    /**
+     * 拦截处理
+     */
     @Override
     public Object doIntercept(Invocation inv) throws Exception {
         return invoke(inv.target(), inv.args());

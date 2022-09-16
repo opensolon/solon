@@ -3,13 +3,9 @@ package org.noear.solon;
 import org.noear.solon.core.event.*;
 import org.noear.solon.core.event.EventListener;
 import org.noear.solon.core.handle.*;
-import org.noear.solon.core.route.Router;
-import org.noear.solon.core.route.RouterDefault;
-import org.noear.solon.core.route.RouterHandler;
 import org.noear.solon.annotation.Import;
-import org.noear.solon.core.Aop;
 import org.noear.solon.core.*;
-import org.noear.solon.core.message.Listener;
+import org.noear.solon.core.route.RouterAdapter;
 import org.noear.solon.core.util.PrintUtil;
 
 import java.lang.annotation.Annotation;
@@ -32,34 +28,31 @@ import java.util.function.Consumer;
  * @author noear
  * @since 1.0
  * */
-public class SolonApp implements HandlerSlots {
+public class SolonApp extends RouterAdapter {
     private final SolonProps _prop; //属性配置
     private final Class<?> _source; //应用加载源
     private final long _startupTime;
 
-    private List<FilterEntity> _filterList = new ArrayList<>();
     protected boolean stopped = false;
 
-    protected SolonApp(Class<?> source, NvMap args) {
+    protected SolonApp(Class<?> source, NvMap args) throws Exception{
         _startupTime = System.currentTimeMillis();
         _source = source;
 
         //初始化配置
         _prop = new SolonProps().load(source, args);
 
-        //顺序不能换
-        _router = new RouterDefault();
-        _routerHandler = new RouterHandler(_router);
-        _filterList.add(new FilterEntity(Integer.MAX_VALUE, this::doFilter));
+        //初始化路由
+        initRouter(this::doFilter);
 
-        _handler = _routerHandler;
+        _handler = routerHandler();
 
         enableJarIsolation(_prop.getBool("solon.extend.isolation", false));
     }
 
     /**
      * 初始化等待
-     * */
+     */
     protected void initAwait() {
         String addr = cfg().get("solon.start.ping");
         if (Utils.isNotEmpty(addr)) {
@@ -82,7 +75,7 @@ public class SolonApp implements HandlerSlots {
 
     /**
      * 初始化（不能合在构建函数里）
-     * */
+     */
     protected void init() {
         List<ClassLoader> loaderList;
 
@@ -112,7 +105,7 @@ public class SolonApp implements HandlerSlots {
 
     /**
      * 运行应用
-     * */
+     */
     protected void run() {
         //event::0.x.推送App init end事件
         EventBus.push(AppInitEndEvent.instance);
@@ -120,7 +113,7 @@ public class SolonApp implements HandlerSlots {
         //1.1.尝试启动插件（顺序不能乱） //不能用forEach，以免当中有插进来
         List<PluginEntity> plugs = cfg().plugs();
         for (int i = 0, len = plugs.size(); i < len; i++) {
-            plugs.get(i).start();
+            plugs.get(i).start(Solon.context());
         }
 
         //event::1.x.推送Plugin load end事件
@@ -132,7 +125,7 @@ public class SolonApp implements HandlerSlots {
 
         //2.2.通过源扫描bean
         if (source() != null) {
-            Aop.context().beanScan(source());
+            Solon.context().beanScan(source());
         }
 
         //event::2.x.推送Bean load end事件
@@ -146,7 +139,7 @@ public class SolonApp implements HandlerSlots {
         });
 
         //3.1.标识上下文加载完成
-        Aop.context().beanLoaded();
+        Solon.context().beanLoaded();
 
         //event::4.x.推送App load end事件
         EventBus.push(AppLoadEndEvent.instance);
@@ -160,38 +153,36 @@ public class SolonApp implements HandlerSlots {
 
         for (Annotation a1 : _source.getAnnotations()) {
             if (a1 instanceof Import) {
-                Aop.context().beanImport((Import) a1);
+                Solon.context().beanImport((Import) a1);
             } else {
-                Aop.context().beanImport(a1.annotationType().getAnnotation(Import.class));
+                Solon.context().beanImport(a1.annotationType().getAnnotation(Import.class));
             }
         }
     }
 
 
-
-
     //////////////////////////////////
 
-    private final Map<Integer,Signal> signals = new LinkedHashMap<>();
+    private final Map<Integer, Signal> signals = new LinkedHashMap<>();
 
 
     /**
      * 添加信号
-     * */
+     */
     public void signalAdd(Signal instance) {
         signals.putIfAbsent(instance.port(), instance);
     }
 
     /**
      * 获取信号
-     * */
+     */
     public Signal signalGet(int port) {
         return signals.get(port);
     }
 
     /**
      * 获取信号记录
-     * */
+     */
     public Collection<Signal> signals() {
         return Collections.unmodifiableCollection(signals.values());
     }
@@ -202,52 +193,31 @@ public class SolonApp implements HandlerSlots {
 
     /**
      * 共享变量（一般用于插件之间）
-     * */
-    private final Set<BiConsumer<String,Object>> _onSharedAdd_event=new HashSet<>();
-    private final Map<String,Object> _shared=new HashMap<>();
-    private Map<String,Object> _shared_unmod;
+     */
+    private final Set<BiConsumer<String, Object>> _onSharedAdd_event = new HashSet<>();
+    private final Map<String, Object> _shared = new HashMap<>();
+    private Map<String, Object> _shared_unmod;
 
     /**
      * 获取类加载器
-     * */
-    public ClassLoader classLoader(){
+     */
+    public ClassLoader classLoader() {
         return JarClassLoader.global();
     }
 
     /**
-     * 根据源扫描bean
-     * */
-    public void beanScan(Class<?> source){
-        Aop.context().beanScan(source);
-    }
-
-    /**
-     * 根据包扫描bean
-     * */
-    public void beanScan(String basePackage){
-        Aop.context().beanScan(basePackage);
-    }
-
-    /**
-     * 根据类型构建bean
-     * */
-    public BeanWrap beanMake(Class<?> clz){
-        return Aop.context().beanMake(clz);
-    }
-
-    /**
      * 添加共享对象
-     * */
-    public void sharedAdd(String key,Object obj) {
+     */
+    public void sharedAdd(String key, Object obj) {
         _shared.put(key, obj);
-        _onSharedAdd_event.forEach(fun->{
-            fun.accept(key,obj);
+        _onSharedAdd_event.forEach(fun -> {
+            fun.accept(key, obj);
         });
     }
 
     /**
      * 获取共享对象（异步获取）
-     * */
+     */
     public <T> void sharedGet(String key, Consumer<T> event) {
         Object tmp = _shared.get(key);
         if (tmp != null) {
@@ -263,16 +233,16 @@ public class SolonApp implements HandlerSlots {
 
     /**
      * 共享对象添加事件
-     * */
-    public void onSharedAdd(BiConsumer<String,Object> event){
+     */
+    public void onSharedAdd(BiConsumer<String, Object> event) {
         _onSharedAdd_event.add(event);
     }
 
     /**
      * 共享对象
-     * */
-    public Map<String,Object> shared(){
-        if(_shared_unmod == null) {
+     */
+    public Map<String, Object> shared() {
+        if (_shared_unmod == null) {
             _shared_unmod = Collections.unmodifiableMap(_shared);
         }
 
@@ -280,37 +250,25 @@ public class SolonApp implements HandlerSlots {
     }
 
 
-
-
-    private RouterHandler _routerHandler;
-    private Router _router; //与函数同名，_开头
     /**
-     * 路由器
+     * 从启动开启已运行时间
      */
-    public Router router() {
-        return _router;
-    }
-    public void routerSet(Router router) {
-        if (router != null) {
-            _router = router;
-            _routerHandler.bind(router);
-        }
-    }
-
-
-
-    protected long elapsedTimes(){
+    protected long elapsedTimes() {
         return System.currentTimeMillis() - _startupTime;
     }
 
 
-    public Class<?> source(){
+    /**
+     * 启动入口类
+     */
+    public Class<?> source() {
         return _source;
     }
 
     /**
      * 获取端口
      */
+    @Deprecated
     public int port() {
         return _prop.serverPort();
     }
@@ -328,195 +286,41 @@ public class SolonApp implements HandlerSlots {
      */
     public void plug(Plugin plugin) {
         PluginEntity p = new PluginEntity(plugin);
-        p.start();
+        p.start(Solon.context());
         cfg().plugs().add(p);
     }
 
     /**
      * 添加插件（只有执行前添加才有效）
+     *
      * @param priority 优先级（越大越优化）
-     * @param plugin 插件
-     * */
+     * @param plugin   插件
+     */
     public void pluginAdd(int priority, Plugin plugin) {
         PluginEntity p = new PluginEntity(plugin, priority);
         cfg().plugs().add(p);
         cfg().plugsSort();
     }
 
-    ///////////////////////////////////////////////
-    //
-    // 以下为web handler 有关
-    //
-    //////////////////////////////////////////////
-
     /**
-     * 添加过滤器（按先进后出策略执行）
+     * 拨出插件
      *
-     * @param filter 过滤器
+     * @param pluginClz 插件类
      * */
-    public void filter(Filter filter) {
-        filter(0, filter);
-    }
-
-    public void filter(int index, Filter filter) {
-        _filterList.add(new FilterEntity(index, filter));
-        _filterList.sort(Comparator.comparingInt(f -> f.index));
-    }
-
-    /**
-     * 前置监听
-     */
-    public void before(Handler handler) {
-        before("**", MethodType.ALL, handler);
-    }
-
-    public void before(int index,Handler handler) {
-        before("**", MethodType.ALL, index, handler);
-    }
-
-    public void before(String expr,  Handler handler) {
-        before(expr, MethodType.ALL, handler);
-    }
-
-    public void before(String expr, MethodType method, Handler handler) {
-        _router.add(expr, Endpoint.before, method, handler);
-    }
-    @Override
-    public void before(String expr, MethodType method, int index, Handler handler) {
-        _router.add(expr, Endpoint.before, method, index, handler);
-    }
-
-    /**
-     * 后置监听
-     */
-    public void after(Handler handler) {
-        after("**", MethodType.ALL, handler);
-    }
-
-    public void after(String expr, Handler handler) {
-        after(expr, MethodType.ALL, handler);
-    }
-
-    public void after(String expr, MethodType method, Handler handler) {
-        _router.add(expr, Endpoint.after, method, handler);
-    }
-    @Override
-    public void after(String expr, MethodType method, int index, Handler handler) {
-        _router.add(expr, Endpoint.after, method, index, handler);
-    }
-
-    /**
-     * 主体监听
-     */
-    @Override
-    public void add(String expr, MethodType method, Handler handler) {
-        _router.add(expr, Endpoint.main, method, handler);
-    }
-
-    public void add(String expr, Class<?> clz) {
-        BeanWrap bw = Aop.wrapAndPut(clz);
-        if (bw != null) {
-            new HandlerLoader(bw, expr).load(this);
+    public PluginEntity pluginPop(Class<?> pluginClz) {
+        PluginEntity tmp = null;
+        for (PluginEntity pe : cfg().plugs()) {
+            if (pluginClz.isInstance(pe.getPlugin())) {
+                tmp = pe;
+                break;
+            }
         }
-    }
 
-    public void add(String expr, Class<?> clz, boolean remoting) {
-        BeanWrap bw = Aop.wrapAndPut(clz);
-        if (bw != null) {
-            new HandlerLoader(bw, expr, remoting).load(this);
+        if (tmp != null) {
+            cfg().plugs().remove(tmp);
         }
-    }
 
-
-    /**
-     * 添加所有方法监听
-     */
-    public void all(String path, Handler handler) {
-        add(path, MethodType.ALL, handler);
-    }
-
-    /**
-     * 添加HTTP所有方法的监听（GET,POST,PUT,PATCH,DELETE,HEAD）
-     */
-    public void http(String path, Handler handler) {
-        add(path, MethodType.HTTP, handler);
-    }
-
-    /**
-     * 添加HEAD方法的监听
-     */
-    public void head(String path, Handler handler) {
-        add(path, MethodType.HEAD, handler);
-    }
-
-    /**
-     * 添加GET方法的监听（REST.select 从服务端获取一或多项资源）
-     */
-    public void get(String path, Handler handler) {
-        add(path, MethodType.GET, handler);
-    }
-
-    /**
-     * 添加POST方法的监听（REST.create 在服务端新建一项资源）
-     */
-    public void post(String path, Handler handler) {
-        add(path, MethodType.POST, handler);
-    }
-
-    /**
-     * 添加PUT方法的监听（REST.update 客户端提供改变后的完整资源）
-     */
-    public void put(String path, Handler handler) {
-        add(path, MethodType.PUT, handler);
-    }
-
-    /**
-     * 添加PATCH方法的监听（REST.update 客户端提供改变的属性）
-     */
-    public void patch(String path, Handler handler) {
-        add(path, MethodType.PATCH, handler);
-    }
-
-    /**
-     * 添加DELETE方法的监听（REST.delete 从服务端删除资源）
-     */
-    public void delete(String path, Handler handler) {
-        add(path, MethodType.DELETE, handler);
-    }
-
-    /**
-     * 添加web socket方法的监听
-     */
-    public void ws(String path, Handler handler){
-        add(path, MethodType.WEBSOCKET, handler);
-    }
-
-    /**
-     * 添加web socket方法的监听
-     */
-    public void ws(String path, Listener listener){
-        _router.add(path, MethodType.WEBSOCKET, listener);
-    }
-
-    /**
-     * 添加socket方法的监听
-     */
-    public void socket(String path, Handler handler){
-        add(path, MethodType.SOCKET, handler);
-    }
-
-    /**
-     * 添加socket方法的监听
-     */
-    public void socket(String path, Listener listener){
-        _router.add(path, MethodType.SOCKET, listener);
-    }
-
-    /**
-     * 添加监听
-     * */
-    public void listen(String path, Listener listener) {
-        _router.add(path, MethodType.ALL, listener);
+        return tmp;
     }
 
     /**
@@ -535,10 +339,9 @@ public class SolonApp implements HandlerSlots {
     }
 
 
-
     /**
      * 统一代理入口(异常时，自动500处理)
-     * */
+     */
     public void tryHandle(Context x) {
         try {
             //设置当前线程上下文
@@ -547,8 +350,18 @@ public class SolonApp implements HandlerSlots {
             if (stopped) {
                 x.status(403);
             } else {
-                new FilterChainNode(_filterList).doFilter(x);
+                new FilterChainNode(filterList()).doFilter(x);
+
+                if (x.getHandled() == false) { //@since: 1.9
+                    if (x.status() < 400) {
+                        x.status(404);
+                    }
+                    //x.setHandled(true);  //todo: 不能加，对websocket有影响
+                }
             }
+
+            //40x,50x...
+            doStatus(x);
         } catch (Throwable ex) {
             ex = Utils.throwableUnwrap(ex);
 
@@ -567,8 +380,17 @@ public class SolonApp implements HandlerSlots {
 
             //如果未渲染，尝试渲染
             if (x.getRendered() == false) {
-                if (Solon.cfg().isDebugMode()) {
-                    x.output(ex);
+                //40x,50x...
+                try {
+                    if (doStatus(x) == false) {
+                        if (Solon.cfg().isDebugMode()) {
+                            x.output(ex);
+                        }
+                    }
+                } catch (RuntimeException e) {
+                    throw e;
+                } catch (Throwable e) {
+                    throw new RuntimeException(e);
                 }
             }
         } finally {
@@ -577,13 +399,27 @@ public class SolonApp implements HandlerSlots {
         }
     }
 
-    protected void doFilter(Context ctx, FilterChain chain) throws Throwable{
-        _handler.handle(ctx);
+    protected void doFilter(Context x, FilterChain chain) throws Throwable {
+        _handler.handle(x);
+    }
+
+    protected boolean doStatus(Context x) throws Throwable{
+        if (x.status() >= 400 && _statusHandlers.size() > 0) {
+            Handler h = _statusHandlers.get(x.status());
+            if (h != null) {
+                x.status(200);
+                x.setHandled(true);
+                h.handle(x);
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
      * 订阅事件
-     * */
+     */
     public <T> SolonApp onEvent(Class<T> type, EventListener<T> handler) {
         EventBus.subscribe(type, handler);
         return this;
@@ -592,9 +428,27 @@ public class SolonApp implements HandlerSlots {
 
     /**
      * 订阅异常事件
-     * */
+     */
     public SolonApp onError(EventListener<Throwable> handler) {
         return onEvent(Throwable.class, handler);
+    }
+
+    private Map<Integer, Handler> _statusHandlers = new HashMap<>();
+
+    /**
+     * 订阅异常状态
+     * */
+    public SolonApp onStatus(Integer code, Handler handler){
+        _statusHandlers.put(code, handler);
+        return this;
+    }
+
+
+    /**
+     * 锁住线程（如果有需要，建议在启动程序的最后调用）
+     */
+    public void block() throws InterruptedException {
+        Thread.currentThread().join();
     }
 
 
@@ -602,28 +456,29 @@ public class SolonApp implements HandlerSlots {
 
     /**
      * 是否已启用 Http 信号接入
-     * */
-    public boolean enableHttp(){
+     */
+    public boolean enableHttp() {
         return _enableHttp;
     }
 
     /**
      * 启用 Http 信号接入
-     * */
-    public SolonApp enableHttp(boolean enable){
+     */
+    public SolonApp enableHttp(boolean enable) {
         _enableHttp = enable;
         return this;
     }
 
     private boolean _enableWebSocket = false;
-    public boolean enableWebSocket(){
+
+    public boolean enableWebSocket() {
         return _enableWebSocket;
     }
 
     /**
      * 启用 WebSocket 信号接入
-     * */
-    public SolonApp enableWebSocket(boolean enable){
+     */
+    public SolonApp enableWebSocket(boolean enable) {
         _enableWebSocket = enable;
         return this;
     }
@@ -632,14 +487,14 @@ public class SolonApp implements HandlerSlots {
 
     /**
      * 是否已启用 WebSocket as SockteD 信号接入
-     * */
-    public boolean enableWebSocketD(){
+     */
+    public boolean enableWebSocketD() {
         return _enableWebSocketD;
     }
 
     /**
      * 启用 WebSocket as SockteD 信号接入
-     * */
+     */
     public SolonApp enableWebSocketD(boolean enable) {
         _enableWebSocketD = enable;
         if (enable) {
@@ -652,30 +507,32 @@ public class SolonApp implements HandlerSlots {
 
     /**
      * 是否已启用 Socket as SockteD 信号接入
-     * */
-    public boolean enableSocketD(){
+     */
+    public boolean enableSocketD() {
         return _enableSocketD;
     }
 
     /**
      * 启用 Socket as SockteD 信号接入
-     * */
-    public SolonApp enableSocketD(boolean enable){
+     */
+    public SolonApp enableSocketD(boolean enable) {
         _enableSocketD = enable;
         return this;
     }
 
     private boolean _enableTransaction = true;
+
     /**
      * 是否已启用事务
-     * */
-    public boolean enableTransaction(){
+     */
+    public boolean enableTransaction() {
         return _enableTransaction;
     }
+
     /**
      * 启用事务
-     * */
-    public SolonApp enableTransaction(boolean enable){
+     */
+    public SolonApp enableTransaction(boolean enable) {
         _enableTransaction = enable;
         return this;
     }
@@ -684,15 +541,15 @@ public class SolonApp implements HandlerSlots {
 
     /**
      * 是否已启用缓存
-     * */
-    public boolean enableCaching(){
+     */
+    public boolean enableCaching() {
         return _enableCaching;
     }
 
     /**
      * 启用缓存
-     * */
-    public SolonApp enableCaching(boolean enable){
+     */
+    public SolonApp enableCaching(boolean enable) {
         _enableCaching = enable;
         return this;
     }
@@ -701,31 +558,32 @@ public class SolonApp implements HandlerSlots {
 
     /**
      * 是否已启用静态文件服务
-     * */
-    public boolean enableStaticfiles(){
+     */
+    public boolean enableStaticfiles() {
         return _enableStaticfiles;
     }
 
     /**
      * 启用静态文件服务
-     * */
-    public SolonApp enableStaticfiles(boolean enable){
+     */
+    public SolonApp enableStaticfiles(boolean enable) {
         _enableStaticfiles = enable;
         return this;
     }
 
     private boolean _enableErrorAutoprint = true;
+
     /**
      * 是否已启用异常自动打印
-     * */
-    public boolean enableErrorAutoprint(){
+     */
+    public boolean enableErrorAutoprint() {
         return _enableErrorAutoprint;
     }
 
     /**
      * 启用异常自动打印
-     * */
-    public void enableErrorAutoprint(boolean enable){
+     */
+    public void enableErrorAutoprint(boolean enable) {
         _enableErrorAutoprint = enable;
     }
 
@@ -734,15 +592,15 @@ public class SolonApp implements HandlerSlots {
 
     /**
      * 是否已启用会话状态
-     * */
-    public boolean enableSessionState(){
+     */
+    public boolean enableSessionState() {
         return _enableSessionState;
     }
 
     /**
      * 启用会话状态
-     * */
-    public SolonApp enableSessionState(boolean enable){
+     */
+    public SolonApp enableSessionState(boolean enable) {
         _enableSessionState = enable;
         return this;
     }
@@ -752,30 +610,32 @@ public class SolonApp implements HandlerSlots {
 
     /**
      * 是否已启用扩展Jar隔离
-     * */
-    public boolean enableJarIsolation(){
+     */
+    public boolean enableJarIsolation() {
         return _enableJarIsolation;
     }
 
     /**
      * 启用扩展Jar隔离
-     * */
-    private SolonApp enableJarIsolation(boolean enable){
+     */
+    private SolonApp enableJarIsolation(boolean enable) {
         _enableJarIsolation = enable;
         return this;
     }
 
     private boolean _enableSafeStop = false;
+
     /**
      * 是否已启用安全停止
-     * */
+     */
     public boolean enableSafeStop() {
         return _enableSafeStop;
     }
+
     /**
      * 启用安全停止
-     * */
-    public void enableSafeStop(boolean enable){
+     */
+    public void enableSafeStop(boolean enable) {
         _enableSafeStop = enable;
     }
 }

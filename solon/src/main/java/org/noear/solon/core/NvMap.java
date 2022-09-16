@@ -2,7 +2,7 @@ package org.noear.solon.core;
 
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Context;
-import org.noear.solon.ext.LinkedCaseInsensitiveMap;
+import org.noear.solon.core.util.LinkedCaseInsensitiveMap;
 
 import java.util.Arrays;
 import java.util.List;
@@ -48,19 +48,14 @@ public class NvMap extends LinkedCaseInsensitiveMap<String> {
         NvMap d = new NvMap();
 
         if (args != null) {
-            int len = args.size();
-
-            for (int i = 0; i < len; i++) {
-                String arg = args.get(i).replaceAll("-*", "");
-
-                if (arg.indexOf("=") > 0) {
-                    String[] ss = arg.split("=");
-                    d.put(ss[0], ss[1]);
+            for (String arg : args) {
+                int index = arg.indexOf('=');
+                if (index > 0) {
+                    String name = arg.substring(0, index);
+                    String value = arg.substring(index + 1);
+                    d.put(name.replaceAll("^-*", ""), value);
                 } else {
-                    if (i + 1 < len) {
-                        d.put(arg, args.get(i + 1));
-                    }
-                    i++;
+                    d.put(arg.replaceAll("^-*", ""), "");
                 }
             }
         }
@@ -108,10 +103,14 @@ public class NvMap extends LinkedCaseInsensitiveMap<String> {
     }
 
     public boolean getBool(String key, boolean def) {
-        if(containsKey(key)){
-            return Boolean.parseBoolean(get(key)) ;
-        }else{
+        if (containsKey(key)) {
+            return Boolean.parseBoolean(get(key));
+        } else {
             return def;
         }
+    }
+
+    public <T> T getBean(Class<T> clz) {
+        return PropsConverter.global().convert(new Props(this), clz);
     }
 }

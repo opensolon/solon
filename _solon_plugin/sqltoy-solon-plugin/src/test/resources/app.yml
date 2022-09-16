@@ -1,0 +1,26 @@
+sqltoy:
+    # 多个路径用逗号分隔(请务必看仔细)
+    sqlResourcesDir: classpath:mapper
+    # 默认为false，debug模式将打印执行sql,并自动检测sql文件更新并重新加载
+    debug: true
+    # 出现重复sqlId是否抛出异常终止启动,默认值为true
+    #breakWhenSqlRepeat: true
+    scriptCheckIntervalSeconds: -1
+
+datasource:
+   driver-class-name: com.mysql.cj.jdbc.Driver
+   username: root
+   password: root
+   # 注意characterEncoding=utf-8 参数,在mysql6~7 版本下不设置like 中文时会无法匹配
+   jdbcUrl: jdbc:mysql://127.0.0.1:3306/quickstart?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8&useSSL=false&allowPublicKeyRetrieval=true
+
+datasource_tow:
+  driver-class-name: com.mysql.cj.jdbc.Driver
+  username: root
+  password: root
+  # 注意characterEncoding=utf-8 参数,在mysql6~7 版本下不设置like 中文时会无法匹配
+  jdbcUrl: jdbc:mysql://127.0.0.1:3306/demo?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8&useSSL=false&allowPublicKeyRetrieval=true
+data:
+  mongodb:
+
+

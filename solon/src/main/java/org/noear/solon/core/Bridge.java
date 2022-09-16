@@ -45,10 +45,10 @@ public class Bridge {
     //
     // SessionState 对接 //与函数同名，_开头
     //
-    private static SessionStateFactory _sessionStateFactory = (ctx)->new SessionStateDefault();
+    private static SessionStateFactory _sessionStateFactory = (ctx) -> new SessionStateEmpty();
     private static boolean sessionStateUpdated;
 
-    public static SessionStateFactory sessionStateFactory(){
+    public static SessionStateFactory sessionStateFactory() {
         return _sessionStateFactory;
     }
 
@@ -63,7 +63,7 @@ public class Bridge {
             if (sessionStateUpdated == false) {
                 sessionStateUpdated = true;
 
-                Solon.global().before("**", MethodType.HTTP, (c) -> {
+                Solon.app().before("**", MethodType.HTTP, (c) -> {
                     c.sessionState().sessionRefresh();
                 });
             }
@@ -79,11 +79,10 @@ public class Bridge {
     }
 
 
-
     //
     // UpstreamFactory 对接
     //
-    private static LoadBalance.Factory _upstreamFactory = (g,s)->null;
+    private static LoadBalance.Factory _upstreamFactory = (g, s) -> null;
 
     /**
      * 获取负载工厂
@@ -115,7 +114,7 @@ public class Bridge {
     /**
      * 动作执行库
      */
-    private static Set<ActionExecutor> _actionExecutors = new HashSet<>();
+    private static Map<Class<?>, ActionExecutor> _actionExecutors = new HashMap<>();
 
     /**
      * 获取默认的Action执行器
@@ -139,8 +138,8 @@ public class Bridge {
      * 获取所有Action执行器
      */
     @Note("获取所有Action执行器")
-    public static Set<ActionExecutor> actionExecutors() {
-        return Collections.unmodifiableSet(_actionExecutors);
+    public static Collection<ActionExecutor> actionExecutors() {
+        return Collections.unmodifiableCollection(_actionExecutors.values());
     }
 
     /**
@@ -149,7 +148,12 @@ public class Bridge {
     @Note("添加Action执行器")
     public static void actionExecutorAdd(ActionExecutor e) {
         if (e != null) {
-            _actionExecutors.add(e);
+            _actionExecutors.put(e.getClass(), e);
         }
+    }
+
+    @Note("移除Action执行器")
+    public static void actionExecutorRemove(Class<?> clz){
+        _actionExecutors.remove(clz);
     }
 }

@@ -1,7 +1,5 @@
 package org.noear.solon.core.util;
 
-import org.noear.solon.Utils;
-import org.noear.solon.annotation.Param;
 import org.noear.solon.core.handle.Context;
 
 import java.lang.reflect.AnnotatedElement;
@@ -9,7 +7,6 @@ import java.lang.reflect.Array;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -32,7 +29,7 @@ public class ConvertUtil {
      * @param val     值
      * @param ctx     通用上下文
      */
-    public static Object to(AnnotatedElement element, Class<?> type, String key, String val, Context ctx) throws ClassCastException {
+    public static Object to(AnnotatedElement element,  Class<?> type, String key, String val, Context ctx) throws ClassCastException {
         if (String.class == (type)) {
             return val;
         }
@@ -41,82 +38,40 @@ public class ConvertUtil {
             return null;
         }
 
-        Object rst = tryTo(type, val);
+        Object rst = null;
 
-        if (rst != null) {
+        if (rst == null && Date.class == type) {
+            try {
+                rst = DateAnalyzer.getGlobal().parse(val);
+            } catch (ParseException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        if (rst == null && type.isArray()) {
+            String[] ary = null;
+            if (ctx == null) {
+                ary = val.split(",");
+            } else {
+                ary = ctx.paramValues(key);
+                if (ary == null || ary.length == 1) {
+                    //todo:可能有兼容问题("?aaa=1,2&aaa=3,4,5,6"，只传第一部份时会有歧意)
+                    ary = val.split(",");
+                }
+            }
+
+            rst = tryToArray(ary, type);
+        }
+
+        if (rst == null) {
+            rst = tryTo(type, val);
+        }
+
+        if (rst == null) {
+            throw new ClassCastException("Unsupported type:" + type.getName());
+        } else {
             return rst;
         }
-
-        if (Date.class == (type) && element != null) {
-            Param xd = element.getAnnotation(Param.class);
-
-            try {
-                if (xd != null && Utils.isEmpty(xd.format()) == false) {
-                    return new SimpleDateFormat(xd.format()).parse(val);
-                } else {
-                    return DateUtil.parse(val);
-                }
-            } catch (ParseException ex) {
-                throw new RuntimeException(ex);
-            }
-        }
-
-        if (type.isArray()) {
-            if (ctx == null) {
-                return null;
-            } else {
-                String[] ary = ctx.paramValues(key);
-                if (ary == null) {
-                    return null;
-                }
-
-                int len = ary.length;
-
-                if (is(String[].class, type)) {
-                    return ary;
-                } else if (is(short[].class, type)) {
-                    short[] ary2 = new short[len];
-                    for (int i = 0; i < len; i++) {
-                        ary2[i] = Short.parseShort(ary[i]);
-                    }
-                    return ary2;
-                } else if (is(int[].class, type)) {
-                    int[] ary2 = new int[len];
-                    for (int i = 0; i < len; i++) {
-                        ary2[i] = Integer.parseInt(ary[i]);
-                    }
-                    return ary2;
-                } else if (is(long[].class, type)) {
-                    long[] ary2 = new long[len];
-                    for (int i = 0; i < len; i++) {
-                        ary2[i] = Long.parseLong(ary[i]);
-                    }
-                    return ary2;
-                } else if (is(float[].class, type)) {
-                    float[] ary2 = new float[len];
-                    for (int i = 0; i < len; i++) {
-                        ary2[i] = Float.parseFloat(ary[i]);
-                    }
-                    return ary2;
-                } else if (is(double[].class, type)) {
-                    double[] ary2 = new double[len];
-                    for (int i = 0; i < len; i++) {
-                        ary2[i] = Double.parseDouble(ary[i]);
-                    }
-                    return ary2;
-                } else if (is(Object[].class, type)) {
-                    Class<?> c = type.getComponentType();
-                    Object[] ary2 = (Object[]) Array.newInstance(c, len);
-                    for (int i = 0; i < len; i++) {
-                        ary2[i] = tryTo(c, ary[i]);
-                    }
-                    return ary2;
-                }
-            }
-        }
-
-
-        throw new ClassCastException("不支持类型:" + type.getName());
     }
 
     /**
@@ -142,7 +97,7 @@ public class ConvertUtil {
 
         if (Date.class == (type)) {
             try {
-                return DateUtil.parse(val);
+                return DateAnalyzer.getGlobal().parse(val);
             } catch (RuntimeException ex) {
                 throw ex;
             } catch (Throwable ex) {
@@ -152,6 +107,55 @@ public class ConvertUtil {
 
 
         throw new ClassCastException("不支持类型:" + type.getName());
+    }
+
+
+
+    private static Object tryToArray(String[] ary, Class<?> type){
+        int len = ary.length;
+
+        if (is(String[].class, type)) {
+            return ary;
+        } else if (is(short[].class, type)) {
+            short[] ary2 = new short[len];
+            for (int i = 0; i < len; i++) {
+                ary2[i] = Short.parseShort(ary[i]);
+            }
+            return ary2;
+        } else if (is(int[].class, type)) {
+            int[] ary2 = new int[len];
+            for (int i = 0; i < len; i++) {
+                ary2[i] = Integer.parseInt(ary[i]);
+            }
+            return ary2;
+        } else if (is(long[].class, type)) {
+            long[] ary2 = new long[len];
+            for (int i = 0; i < len; i++) {
+                ary2[i] = Long.parseLong(ary[i]);
+            }
+            return ary2;
+        } else if (is(float[].class, type)) {
+            float[] ary2 = new float[len];
+            for (int i = 0; i < len; i++) {
+                ary2[i] = Float.parseFloat(ary[i]);
+            }
+            return ary2;
+        } else if (is(double[].class, type)) {
+            double[] ary2 = new double[len];
+            for (int i = 0; i < len; i++) {
+                ary2[i] = Double.parseDouble(ary[i]);
+            }
+            return ary2;
+        } else if (is(Object[].class, type)) {
+            Class<?> c = type.getComponentType();
+            Object[] ary2 = (Object[]) Array.newInstance(c, len);
+            for (int i = 0; i < len; i++) {
+                ary2[i] = tryTo(c, ary[i]);
+            }
+            return ary2;
+        }
+
+        return null;
     }
 
     /**

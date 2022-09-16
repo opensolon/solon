@@ -1,5 +1,6 @@
 package org.noear.solon.core.util;
 
+import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.NvMap;
 
@@ -61,7 +62,7 @@ public class PathUtil {
         }
     }
 
-    private static Pattern _pkr = Pattern.compile("\\{([^\\\\}]+)\\}");
+    public static final Pattern pathKeyExpr = Pattern.compile("\\{([^\\\\}]+)\\}");
 
     /**
      * 将路径根据表达式转成map
@@ -73,12 +74,12 @@ public class PathUtil {
         if (expr.indexOf("{") >= 0) {
             String path2 = null;
             try {
-                path2 = URLDecoder.decode(path, "utf-8");
+                path2 = URLDecoder.decode(path, Solon.encoding());
             } catch (Throwable ex) {
                 path2 = path;
             }
 
-            Matcher pm = _pkr.matcher(expr);
+            Matcher pm = pathKeyExpr.matcher(expr);
 
             List<String> _pks = new ArrayList<>();
 

@@ -1,5 +1,6 @@
 package org.noear.solon.core;
 
+import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 
 import java.util.List;
@@ -29,17 +30,11 @@ import java.util.function.Predicate;
  * @author noear
  * @since 1.0
  * */
+@Deprecated
 public class Aop {
-
-    private static AopContext ac = new AopContext();
-
-    /**
-     * 获取Aop上下文
-     */
     public static AopContext context() {
-        return ac;
+        return Solon.context();
     }
-
 
     //::bean包装
 
@@ -50,7 +45,7 @@ public class Aop {
      * @param bean 实例
      */
     public static BeanWrap wrap(Class<?> type, Object bean) {
-        return ac.wrap(type, bean);
+        return Solon.context().wrap(type, bean);
     }
 
     /**
@@ -69,13 +64,7 @@ public class Aop {
      * @param bean 实例
      */
     public static BeanWrap wrapAndPut(Class<?> type, Object bean) {
-        BeanWrap wrap = ac.getWrap(type);
-        if (wrap == null) {
-            wrap = new BeanWrap(type, bean);
-            ac.putWrap(type, wrap);
-        }
-
-        return wrap;
+        return Solon.context().wrapAndPut(type, bean);
     }
 
     //::bean获取
@@ -86,7 +75,7 @@ public class Aop {
      * @param nameOrType bean name or type
      */
     public static boolean has(Object nameOrType) {
-        return ac.getWrap(nameOrType) != null;
+        return Solon.context().hasWrap(nameOrType);
     }
 
 
@@ -96,8 +85,7 @@ public class Aop {
      * @param name bean name
      */
     public static <T> T get(String name) {
-        BeanWrap bw = ac.getWrap(name);
-        return bw == null ? null : bw.get();
+        return Solon.context().getBean(name);
     }
 
     /**
@@ -105,9 +93,8 @@ public class Aop {
      *
      * @param type bean type
      */
-    public static <T> T get(Class<?> type) {
-        BeanWrap bw = ac.getWrap(type);
-        return bw == null ? null : bw.get();
+    public static <T> T get(Class<T> type) {
+        return Solon.context().getBean(type);
     }
 
     /**
@@ -115,8 +102,8 @@ public class Aop {
      *
      * @param type bean type
      */
-    public static <T> T getOrNew(Class<?> type) {
-        return wrapAndPut(type).get();
+    public static <T> T getOrNew(Class<T> type) {
+        return Solon.context().getBeanOrNew(type);
     }
 
     /**
@@ -125,7 +112,7 @@ public class Aop {
      * @param name bean name
      */
     public static void getAsyn(String name, Consumer<BeanWrap> callback) {
-        ac.getWrapAsyn(name, callback);
+        Solon.context().getWrapAsyn(name, callback);
     }
 
     /**
@@ -134,7 +121,7 @@ public class Aop {
      * @param type bean type
      */
     public static void getAsyn(Class<?> type, Consumer<BeanWrap> callback) { //FieldWrapTmp fwT,
-        ac.getWrapAsyn(type, callback);
+        Solon.context().getWrapAsyn(type, callback);
     }
 
 
@@ -146,7 +133,7 @@ public class Aop {
      * @param bean 实例
      */
     public static <T> T inject(T bean) {
-        ac.beanInject(bean);
+        Solon.context().beanInject(bean);
         return bean;
     }
 
@@ -164,8 +151,12 @@ public class Aop {
     /**
      * 添加Onloaded事件
      */
-    public static void beanOnloaded(Runnable fun) {
-        ac.beanOnloaded(fun);
+    public static void beanOnloaded(Consumer<AopContext> fun) {
+        Solon.context().beanOnloaded(fun);
+    }
+
+    public static void beanOnloaded(int index,Consumer<AopContext> fun) {
+        Solon.context().beanOnloaded(index, fun);
     }
 
     /**
@@ -174,7 +165,7 @@ public class Aop {
      * @param action 执行动作
      */
     public static void beanForeach(BiConsumer<String, BeanWrap> action) {
-        ac.beanForeach(action);
+        Solon.context().beanForeach(action);
     }
 
     /**
@@ -183,7 +174,7 @@ public class Aop {
      * @param action 执行动作
      */
     public static void beanForeach(Consumer<BeanWrap> action) {
-        ac.beanForeach(action);
+        Solon.context().beanForeach(action);
     }
 
     /**
@@ -192,7 +183,7 @@ public class Aop {
      * @param filter 过滤
      */
     public static List<BeanWrap> beanFind(BiPredicate<String, BeanWrap> filter) {
-        return ac.beanFind(filter);
+        return Solon.context().beanFind(filter);
     }
 
     /**
@@ -201,6 +192,6 @@ public class Aop {
      * @param filter 过滤
      */
     public static List<BeanWrap> beanFind(Predicate<BeanWrap> filter) {
-        return ac.beanFind(filter);
+        return Solon.context().beanFind(filter);
     }
 }

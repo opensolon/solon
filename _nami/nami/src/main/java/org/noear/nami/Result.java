@@ -125,7 +125,7 @@ public class Result {
         }
 
         if (code >= 400) {
-            throw new RuntimeException(code + " 错误：" + bodyString);
+            throw new IllegalStateException(code + " 错误：" + bodyString);
         } else {
             return bodyString;
         }

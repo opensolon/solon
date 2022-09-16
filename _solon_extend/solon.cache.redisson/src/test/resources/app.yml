@@ -1,0 +1,4 @@
+test.rd1:
+  server: "redis://localhost:6379"
+  password: 123456
+  db: 1

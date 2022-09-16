@@ -14,28 +14,35 @@ public class ProtostuffUtil {
 
     //序列化对象
     public static <T> byte[] serialize(T obj) {
-        LinkedBuffer buffer = LinkedBuffer.allocate();
+        LinkedBuffer buffer = null;
 
         try {
+            buffer = LinkedBuffer.allocate();
+
             Object serializerObj = DataWrapper.builder(obj);
             Schema schema = WRAPPER_SCHEMA;
 
             return ProtostuffIOUtil.toByteArray(serializerObj, schema, buffer);
-        } catch (Exception e) {
-            throw new IllegalStateException(e.getMessage());
+        } catch (RuntimeException e) {
+            throw e;
+        } catch (Throwable e) {
+            throw new RuntimeException(e);
         } finally {
-            buffer.clear();
+            if (buffer != null) {
+                buffer.clear();
+            }
         }
     }
-
 
     public static <T> T deserialize(byte[] data) {
         try {
             DataWrapper<T> wrapper = new DataWrapper<>();
             ProtostuffIOUtil.mergeFrom(data, wrapper, WRAPPER_SCHEMA);
             return wrapper.getData();
-        } catch (Exception e) {
-            throw new IllegalStateException(e.getMessage(), e);
+        } catch (RuntimeException e) {
+            throw e;
+        } catch (Throwable e) {
+            throw new RuntimeException(e);
         }
     }
 

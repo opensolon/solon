@@ -1,3 +1,439 @@
+#### 1.10.3
+* 新增 kubernetes-config-solon-plugin 插件
+* 新增 jmdns-solon-plugin 插件
+* 新增 feign-solon-plugin 插件
+* 插件 beetlsql-solon-plugin 增加 beetlsql.db1 配置方式构建  SQLManagerBuilder
+* 插件 solon.cache.jedis 添加 CloudLockServiceJedisImpl 类
+* 插件 solon.serialization.fastjson2 升级 fastjson2 为：2.0.13
+* 添加 Solon.context() ，Aop 开始标为弃用
+* 添加 @Rollback 注解，用于测试时回滚
+* 添加 SolonJUnit4ClassRunner 运行的单测，支持动态代理
+* 插件 qiniu-kodo-solon-plugin 升级 qiniu-java-sdk 为 7.11.0
+* 插件 qiniu-kodo-solon-plugin 增加 regionId 配置项支持
+
+#### 1.10.2
+* 完善 solon.serialization.fastjson2 插件
+* 增加 solon.config 配置项（与 solon.extend.config 同）
+* 增加 nami.Invocation::target 用于获取代理
+* 增加 solon.schedule 插件动态修改调度时间的支持
+* 优化 solon-test 插件的注解处理
+* 优化 solon.data 插件 tag 的缓存时间处理
+* 插件 solon.config.yaml 升级 snakeyaml 为：1.30
+* 插件 solon.serialization.snack3 升级 snack3 为：3.2.35
+* 插件 solon.serialization.fastjson 升级 fastjson 为：1.2.83
+* 插件 solon.serialization.fastjson2 升级 fastjson2 为：2.0.12
+* 插件 solon.boot.undertow 升级 undertow 为：2.2.19.Final
+* 插件 nami.channel.socketd.rsocket 升级 rsocket 为：1.1.2
+* 插件 nami.channel.socketd.netty 升级 netty 为：4.1.68.Final
+* 插件 nami.channel.http.hutool 升级 hutool 为：5.8.5
+* 插件 mybatis-solon-plugin 升级 mybatis 为：3.5.10
+* 插件 grpc-solon-plugin 升级 grpc 为：1.49.0
+* 插件 dubbo3-solon-plugin 升级 dubbo3 为：3.0.11
+
+#### 1.10.1
+* 插件 sqltoy-solon-plugin 升级 sqltoy 为 5.2.9
+* 插件 beetlsql-solon-plugin 升级 beetlsql 为 3.18.0
+* 插件 solon.auth 增加多账号体系验证支持
+* 插件 solon-test 增加 @SolonTest::args 启动参数支持
+* 插件 mybatis-solon-plugin 增加数据源 plugins 配置节支持
+* 插件 solon.web.staticfiles 增加 WEB-INF/static/ 做为静态文件目录支持（与 static/ 并存，二选一）
+* 增加 BeanContainer::subBean 订阅 bean
+* 增加 BeanContainer::subWrap 订阅 beanwrap
+* 增加 Props::getBean(start),start 为空支持
+* 增加 NvMap::getBean(clz) 接口支持
+
+#### 1.10.0
+* 插件 beetlsql-solon-plugin 升级 beetlsql 为 3.17.1-RELEASE
+* 插件 dbvisitor-solon-plugin 升级 dbvisitor 为 5.1.0
+* 插件 sentinel-solon-plugin 升级 sentinel 为 1.8.4
+* 调整 org.noear.solon.ext.* 的工具类到 org.noear.solon.core.util.*
+* 增加 国际化配置 转 map,list,entity 的支持
+
+#### 1.9.4
+* 解决 @Service 类重写基类函数时会出错的问题
+* 解决 Websocket 可能会发一次空数据的情况(1.9.2 出现的)
+* 解决 NamedThreadFactory 前缀处理错误
+* 解决 Nami @Mapping("GET hello?age=12") String sayHello(String name)，会出现两个?的问题
+
+#### 1.9.3
+* 解决 solon.web.staticfiles 扩展仓库的文件被读取后不能删除的问题
+* 插件 solon.validation 增加分组验证支持
+* 插件 aws-s3-solon-plugin 升级 aws-java-sdk-s3 为 1.12.261
+* 插件 sqltoy-solon-plugin 升级 sqltoy 为 5.2.3
+* 插件 water-solon-plugin 升级 water 为 2.8.1
+
+#### 1.9.2
+* 新增 solon.vault 插件（可对敏感配置进行加密处理）
+* 增加 请求上下文路径对'/'去重处理
+* 增加 状态码快捷代理模式 app.onStatus(code,handler);
+* 增加 实体接收 UploadedFile 的支持
+* 解决 jlhttp 的 queryString 里不能出现多个'/'的问题（最好还是编码下）
+* 调整 ModelAndView 为非Map类
+* 调整 Context::autoMultipart 默认为 true
+* 优化 sa-token-solon-plugin 适配
+
+#### 1.9.1
+* 新增 dubbo3-solon-plugin 插件
+* 简化 dubbo-solon-plugin 插件的适配
+*
+* 增加 namespace 配置
+* 增加 tran 手动控制能力
+*
+* 插件 activerecord-solon-plugin 升级 activerecord 为 5.0.0
+* 插件 solon.view.enjoy 升级 enjoy 为 5.0.0
+* 插件 beetlsql-solon-plugin 升级 beetlsql 为 3.14.5-RELEASE
+* 插件 dbvisitor-solon-plugin 升级 dbvisitor 为 5.0.1
+* 插件 sqltoy-solon-plugin 升级 sqltoy 为 5.2.2
+* 插件 solon.boot.smarthttp 升级 smart-http 为 1.1.5
+* 插件 nacos2-solon-plugin 升级 nacos-client 为 2.1.0
+* 插件 water-solon-plugin 升级 water 为 2.8.0（需要 water server 2.8.0 支持）
+
+#### 1.9.0
+* 新增 grpc-solon-plugin 插件
+* 新增 solon.cache.caffeine 插件
+* 新增 solon.serialization.fastjson2 插件
+* 新增 nami.coder.fastjson2 插件
+* 更名 solon.extend.aspect[弃用]          => solon.aspect[新增]          [无感+] 
+* 更名 solon.extend.health[弃用]          => solon.health[新增]          [有感-] 
+* 更名 solon.extend.hotplug[弃用]         => solon.hotplug[新增]         [有感-]
+* 更名 solon.extend.properties.yaml[弃用] => solon.config.yaml[新增]     [无感]  
+* 更名 solon.extend.servlet[弃用]         => solon.web.servlet[新增]     [无感]  
+* 更名 solon.extend.staticfiles[弃用]     => solon.web.staticfiles[新增] [有感-]
+* 更名 solon.extend.cors[弃用]            => solon.web.cors[新增]        [有感-]
+
+#### 1.8.3
+* 添加 solon.extend.config 属性配置支持
+* 添加 ContextPathFilter 类，摸拟 contextPath 特性
+* 修复 @Inject("${list}") List<CfgItem> list ，数据不对的问题
+* 插件 solon.boot.jdkhttp，添加 ssl 支持（尝试替代 jlhttp ）
+* 插件 sqltoy-solon-plugin 升级为 sqltoy 5.2.0
+* 插件 weed3-solon-plugin 升级 weed3 3.4.26
+* 插件 beetlsql-solon-plugin 升级 beetlsql 3.14.4-RELEASE
+* 插件 solon-api, solon-web 默认改用 jdkhttp
+* snack3 升为 3.2.29
+
+#### 1.8.2
+* 添加 server.host 和 server.?.host 支持
+* 添加 StaticMappings::remove 接口
+* 添加 EventBus::unsubscribe 接口
+* fastjson 升为 1.2.83
+* hutool 升为：5.8.1
+* jetty 升为：9.4.46.v20220331
+* undertow 升为：2.2.17.Final
+* jackson 升为：2.13.3
+* gson 升为：2.9.0
+
+#### 1.8.0
+* 新增 solon.extend.hotplug 插件（插件热插拨和管理支持）
+* 调整 AopContext ，更具隔离性
+* 调整 AopContext::beanOnloaded 参数由 Runnable 改为：Consumer<AopContext>
+* 调整 Plugin::start 参数由 SolonApp 改为：AopContext
+* 修复 @Cache 在函数里有逗号时无法删除缓存的问题
+* 修复 Gateway 对默认接口识别失效的问题
+* 修复 rocketmq-solon-plugin ，消费异常时仍返回成功的问题
+* 优化 rabbitmq-solon-plugin ，消费异常时的处理
+
+#### 1.7.8
+* 取消 Mapping::before,after,index 的弃用标注
+
+#### 1.7.7
+* 增加 Action::fullName() 接口
+* 增加 Gateway 对类 Mapping 注解的支持
+* 插件 sa-token-solon-plugin 升级 sa-token 为 1.3.0
+* 添加 Consumes 和 Produces 注解。作为 Mapping 的副词
+* 添加 mybatis-solon-plugin 对 res/*.xml 的配置支持
+* 过期 Mapping::before,after,index
+
+#### 1.7.6
+* 插件 sa-token-solon-plugin 支持 SaTokenConfig 注入
+* 插件 opentracing-solon-plugin 重新调整
+* 插件 solon-test 调整 HttpUtils。支持超时
+* 添加 solon.cloud.tracing 插件，并添加 @Tracking 注解
+* 添加 jaeger-solon-plugin 插件
+* 增加 Context::bodyNew() 的应用范围
+* 增加 method 拦截器的去重处理
+* 取消 window 下彩色打印符输出。window 不支持
+* snack3 升级为：3.2.22。支持 yaml 对象数组注入
+
+#### 1.7.5
+* 增加 NamiBuilder::heartbeat 接口
+* 增加 MethodHolder::getArounds 接口
+* 插件 httputils-solon-plugin
+  * 增加 upstream 检查
+  * 增加 address 检查
+  * 增加 url 检查
+* 插件 nami.channel.http.hutool 增加超时支持
+* 插件 httputils-solon-plugin 增加超时支持
+
+#### 1.7.4
+* 插件 httputils-solon-plugin 增加对服务上游和地址的检测
+* 增加 NamiBuilder::timeout 接口
+* weed3 升级为：3.4.25
+* redisx 升级为：1.4.3
+
+#### 1.7.3
+* 新增 SessionStateBase
+* 调整 session-id-key 可配置 "server.session.cookieName"
+* 增加 配置注入支持 string 按需转换为 object(bean)
+* snack3 升级为：3.2.21
+* weed3 升级为：3.4.24
+* redisx 升级为：1.4.2
+* sqltoy 升级为：5.1.31
+* beetlsql 升级为：3.14
+* water 升级为：2.6.2
+
+#### 1.7.2
+* 新增 hasordb-solon-plugin 插件
+* 新增 solon.cache.redisson 插件
+* 新增 solon.sessionstate.redisson 插件
+* 新增 solon.sessionstate.jedis 插件（替代旧的 solon.extend.sessionstate.redis）
+* 新增 solon.sessionstate.local 插件（替代旧的 solon.extend.sessionstate.local）
+* 添加 CloudBreakerService /root 配置支持(可支持动态创建)
+* 添加 MethodWrap::getArounds() 接口
+* 调整 Action::bean() 更名为 controller()
+* 调整 Gateway 内部路由改为 RoutingTable 接口，支持 method（之前为 Map）
+* 调整 属性注入的异常透传机制
+* 插件 beetlsql-solon-plugin 升级 beetlsql 为 3.14.0
+* snack3 升级为：3.2.20
+* redisx 升级为：1.4.1
+* 新增 solon-maven-plugin 打包插件[试用阶段]
+* 新增 solon-swagger-knife4j 文档插件[试用阶段]
+
+#### 1.7.1
+* 函数名 handler 更名为：handle
+  * 调整 CloudConfigHandler:handler 更名为：handle
+  * 调整 CloudDiscoveryHandler:handler 更名为：handle
+  * 调整 CloudEventHandler:handler 更名为：handle
+* 函数名 doInterceptor 更名为：doIntercept
+  * 调整 CloudEventInterceptor:doInterceptor 更名为：doIntercept
+  * 调整 CloudJobInterceptor:doInterceptor 更名为：doIntercept
+* 增加 Solon Cloud 国际化接口规范
+* water 升级为：2.6.0
+  * 添加 ak/sk 适配
+  * 添加 多语言 适配
+
+
+#### 1.7.0
+* 添加 mybatis-plus-solon-plugin 对 globalConfig 的配置支持
+* snack3 升级为：3.2.18
+* water 升级为：2.5.10
+
+#### 1.6.36
+* 插件 solon.extend.sessionstate.jwt 忽略 ServiceConfigurationError 抛出
+* 添加 CloudJobInterceptor，提供 job 的拦截机制 
+* 添加 CloudEventInterceptor，提供 event 的拦截机制
+* 调整 Gateway 的缺省处理设定方式
+* 调整 CloudJobHandler 为 job 的强制接口，之前 Handler 即可
+* 调整 HttpUtils 增加短处理和长处理的切换支持
+
+#### 1.6.35
+* 添加 SocketContext::SessionState 接口支持
+* 添加 Session::pathNew() 接口支持
+* 添加 SolonApp::listenBefore, SolonApp::listenAfter 接口，以提供 Listener 过滤的支持
+* 添加 sa-token-solon-plugin 插件对 dao 适配[实验方案]
+  * SaTokenDaoOfRedis
+  * SaTokenDaoOfSession
+* 新增 mybatis-plus-extension-solon-plugin 插件
+
+#### 1.6.34
+* 插件 mybatis-solon-plugin 
+  * 增加 bean 方式添加拦截截器
+  * 增加 mybatis.xxx.configuration 配置节支持
+* 统一日志配置体验 
+  * 增加 root 等级配置，做为 logger 的默认等级!!!
+  * 统一 root,logger,appender 的 level 关系
+  * 包括 solon.logging.impl, log4j2-solon-plugin, logback-solon-plugin
+* 统一文件上传限制配置体验
+  * 插件 solon.boot.jlhttp 增加文件上传大小限制
+  * 插件 solon.boot.smarthttp 增加文件上传大小限制
+  * 插件 solon.boot.jetty 增加文件上传大小限制
+  * 增加 "server.request.maxFileSize" 配置（其默认值为 maxBodySize；可以只用 fileSize）
+* 优化 Multipart 安全机制
+  * 增加 Multipart 解析改为延迟按需加载模式（不然内存可能被人刷暴了）!!!
+  * 增加 Context::autoMultipart() 接口，控制在参数解析时自动解析分片内容
+  * 增加 Mapping::multipart 属性，用于显示申明分片处理（默认为自动）
+* 新增 nacos2-solon-plugin 插件
+* 新增 dubbo3-solon-plugin 插件
+
+#### 1.6.33
+* 插件 solon.schedule 添加 纯手工控制能力
+* 取消 非泛型基类的 typeName 注册
+* 插件 dubbo-solon-plugin 的注解添加属性模板支持
+* 优化 Bean 的泛型基类在容器的注册
+
+#### 1.6.32
+* 修复 solon.boot.jetty 的 websocket 在多线程发时，会出错的问题
+* 修复 solon.boot.jlhttp 可能会产生2个 Content-Encoding 头的问题
+* 增加 WebSocket Session::sendAsync() 接口，支持跨线程发消息
+* 增加 server.ssl.* 专属ssl配置属性
+* 插件 solon.boot.undertow，增加 ssl 支持
+* 插件 solon.boot.jetty，增加 ssl 支持
+
+#### 1.6.31 --invalid
+
+#### 1.6.30
+* smart-http-server 升级到：1.1.12
+* jlhttp 增加 maxHeaderSize, maxBodySize 设置支持 **
+* solon boot 相关的公共配置，独立为 solon.boot 模块
+* 新增 solon.boot.jetty.add.servlet 插件
+* 插件 mybatisplus-solon-plugin 更名为：mybatis-plus-solon-plugin
+* 修复 mybatis-solon-plugin 关于事务的适配问题（在分页插件使用时，造成连接池耗尽）
+
+#### 1.6.29
+* 增加 对函数参数注解验证（之前只支持上下文参数验证）
+* 增加 配置对复杂结构类的注入支持
+* 增加 多级复杂泛型注入的支持
+
+#### 1.6.27 --invalid
+
+#### 1.6.26 --invalid
+* 增加 jap-ids-solon-plugin 插件
+* 增加 jap-solon-plugin 插件
+* 插件 mybatisplus-solon-plugin，升级  mybatis-plus 为 3.5.1
+* 插件 solon.extend.staticfiles 新增 10 个默认 mime
+* 修复 mybatis-solon-plugin 没有自动关闭会话的问题
+* 优化 配置对复杂结构类的支持
+
+#### 1.6.25 --invalid
+* 调整 @CacheRemove key 为 keys
+* 调整 @Param 的作用范围
+* 新增 @Header 以支持头变量注入
+* 新增 @PathVar 以方便文档框架识别
+* 新增 配置对复杂结构类的支持
+
+#### 1.6.24
+* 调整 water job 的 name 处理
+
+#### 1.6.23
+* 调整 solon.schedule 调度策略 
+
+#### 1.6.22
+* 插件 solon.boot.smarthttp，升级 smart-http 到 1.1.11
+* 插件 solon.socketd.client.smartsocket，升级 smart-socket 到 1.5.15
+* 添加 SolonApp::pluginPop 接口
+
+#### 1.6.21
+* 增加 server.request.maxRequestSize 支持配置： -1(不限)
+* 插件 solon.extend.staticfiles，增加更多默认mime，及支持jdk自带的 "mime" 表；并优化性能
+* 插件 solon.boot.jetty，调整 "org.eclipse.jetty.server.Request.maxFormContentSize" 配置的同步方式
+
+#### 1.6.20
+* 修复 当未设定server.port时，启动参数将无法指定
+
+#### 1.6.19
+* 增加 接口 AspectUtil.attach(T,handler)；可以强制为一个类绑上代理
+* 增加 接口 AspectUtil.attachByScan(basePackage,handler)；可以强制为一批类绑上代理
+* 调整 接口动态代理的实现逻辑，以适应jdk19之后的权限处理
+* 调整 启动参数的处理时机
+* 拆分 BeanProxy 为 BeanProxy 和 AspectUtil
+
+#### 1.6.17
+* 增强 注入泛型推断能力
+* 增加 泛型基类注册
+* 增加 泛型类 typeName 自动注册和注入。
+* 取消 @Inject 对函数的支持，以免让人误用
+* 修复 @Inject 的初始化链当中，当自己注入自己时会异常的问题
+* 调整 Aop.get(Class<?>) 改为：Aop.get(Class<T>)
+
+#### 1.6.16
+* mybatis 升为 3.5.9
+* mybatis-plus 升为 3.5.0
+* sqlhelper-mybatis  升为 3.6.9
+* pagehelper 升为 5.3.0
+* 修复 redis 单词拼写错误（maxTotaol -> maxTotal）
+* 修复 启动参数值会丢失"-"的问题
+* 修复 sessionstate.redis 不能反序列化对象的问题
+* 修复 json post 空值时，不会触发实体验证机制
+* 增加 注入泛型推断支持。泛型一般为两种（ParameterizedType 和 TypeVariable）
+* 增加 国际化配置 支持 yml 格式
+
+#### 1.6.15
+* 修复 当主应用配置有变量时，应用环境配置无法替换的问题
+* 优化 Aop.beanForeach ，进行去重处理
+* 新增 三种日期格式自动解析
+* @Service 增加 name, typed 属性
+* 优化 sqltoy-solon-plugin 插件
+* 新增 solon.extend.async 插件
+* 增加对 kotlin data class 和 jdk14+ record 的序列化与反序列化支持
+  * 目前  solon,snack3,weed3 都支持
+
+#### 1.6.14
+* 修复 上传多个同名name的文件时，只能取到一个的问题
+* 新增 @Init 为依赖注入自动排顺序
+
+#### 1.6.13
+* 增加 Socket Session 路径变量支持
+* 增加 静态文件插件 资源仓库不包括前缀的支持
+* 优化 本地服务配置发现机制
+* 调整 当配置文件不支持解析时，抛出异常
+
+#### 1.6.12
+* 修复 solon.boot.websocket 插件，带参数时无法正确路由的问题
+* 修复 solon.serialization.jackson 插件，body 为空时，会出错的问题
+* 调整 ctx.path() 的应用，全改为 ctx.pathNew()
+* 升级 log4j 为 2.17.1
+* 升级 snack3 为 3.2.7 ，支持成员类反序列化
+* 升级 jackson 为 2.13.1
+* 升级 aws-java-sdk-s3 为 1.12.132
+* 升级 beetl 为 3.9.3
+* 升级 beetlsql 为 3.12.6
+* 调整 logback-solon-plugin, log4j2-solon-plugin，启动异常退出能记录日志
+* 调整 yaml、json 配置的 的 null 值默认转为空字符串（与 properties 保持一至）
+* 新增 配置文件 "占位符" 任意使用（之前只能出现一个占位符）
+
+#### 1.6.11
+* 增加 ModelAndView 注入支持 ##
+* 修复 jlhttp 上传的文件名可能乱码 ##
+* 升级 beetlsql 到 3.12.5
+* 升级 weed3 到 3.4.12
+* 升级 snack3 到 3.2.6 ##
+* 新增 solon.schedule 插件 ##
+* 插件 quartz-solon-plugin 排除关于 quartz 对线程池的依赖
+
+#### 1.6.10
+* snack3 升级为 3.2.4，增加泛型传导支持
+* solon.cloud 移除 solon.logging.impl 依赖
+
+#### 1.6.9
+* 增加 log4j2-solon-plugin,logback-solon-plugin 对记录器等级的应用配置支持
+* 增加 JsonRenderFactory 的事件扩展支持
+* 增加 Mvc 数组参数注入时，自动以,号分离为数组
+* 增加 @Init::index 属性
+* 增加 容器扫描去重处理
+* 取消 @Param::format 属性（自动处理增加17种格式
+
+#### 1.6.8
+* 增加 @Init 私有函数支持
+* 增加 @Bean 私有函数支持
+* 增加 @Inject("${xxx:}")，默认值为空的支持
+* 增加 StringSerializerRender 对 renderAndReturn 的支持
+* 增加 Context::renderAndReturn 支持非视图数据
+* 增加 模板引擎配置 扩展机制
+* 调整 EventListener 充许 onEvent 抛出异常
+* 调整 初始化失败时，自动停掉所有插件并结束进程
+* 增加 上下文特性，自动做为模板变量 **
+* 增加 Context::sessionRemove 接口 **
+* 新增 log4j2-solon-plugin 插件 **
+* 新增 logback-solon-plugin 插件 **
+
+#### 1.6.7
+* 增加 Context::sessionAsInt, Context::sessionAsLong, Context::sessionAsDouble 接口
+* 修复 solon.extend.stop 用户ip获取错误
+* 优化 配置注入"${xxx:def}"的兼容性，def有":"符也没关系了
+* 增加 mybatisplus-solon-plugin 为 globalConfig 注入内容的入口
+* 集成包 solon-api 默认添加 solon.extend.cors 插件
+* 增加 主体流注入支持（@Body InputStream body） 
+* 取消 solon.cache 插件，由 solon.data 插件集成相关功能，并提供工厂扩展机制
+
+#### 1.6.6
+* 增加 @Body 注解，注入 body string 支持
+* 增加 @Validated List<?> 验证模式支持
+* 修复 solon.boot.socketd.websocket，去掉 session.path() 多余内容
+* 修复 sockted sessionBase::paramMap()，当 query=null 时会出错的问题
+* 插件 solon.boot.smarthttp，升级 smart-http 为 1.1.10
+* 插件 weed3-solon-plugin，升级 weed 为 3.4.10
+* 依赖 snack3 升级为 3.2.2
+
 #### 1.6.5
 * 修复 water-solon-plugin ，不能处理缓存更新通知的问题（之前的版改出了问题）
 

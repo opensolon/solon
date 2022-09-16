@@ -1,13 +1,14 @@
 package org.noear.solon.core.wrap;
 
+import org.noear.solon.core.AopContext;
 import org.noear.solon.core.VarHolder;
 import org.noear.solon.core.event.EventBus;
+import org.noear.solon.core.util.GenericUtil;
+import org.noear.solon.core.util.ParameterizedTypeImpl;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
+import java.lang.reflect.*;
+import java.util.Map;
 
 /**
  * 字段包装
@@ -38,6 +39,10 @@ public class FieldWrap {
      * 字段泛型类型（可能为null）
      */
     public final ParameterizedType genericType;
+    /**
+     * 字段是否只读
+     * */
+    public final boolean readonly;
 
     /**
      * 值设置器
@@ -48,20 +53,57 @@ public class FieldWrap {
      */
     private Method _getter;
 
-    public FieldWrap(Class<?> clz, Field f1) {
+    protected FieldWrap(Class<?> clz, Field f1, boolean isFinal) {
         entityClz = clz;
         field = f1;
         annoS = f1.getDeclaredAnnotations();
-
-        type = f1.getType();
-        Type tmp = f1.getGenericType();
-        if (tmp instanceof ParameterizedType) {
-            genericType = (ParameterizedType) tmp;
-        } else {
-            genericType = null;
-        }
+        readonly = isFinal;
 
         field.setAccessible(true);
+
+        Type tmp = f1.getGenericType();
+        if (tmp instanceof TypeVariable) {
+            //如果是类型变量，则重新构建类型
+            Map<String, Type> gMap = GenericUtil.getGenericInfo(clz);
+            Type typeH = gMap.get(tmp.getTypeName());
+
+            if (typeH instanceof ParameterizedType) {
+                //以防外万一
+                genericType = (ParameterizedType) typeH;
+                type = (Class<?>) ((ParameterizedType) typeH).getRawType();
+            } else {
+                genericType = null;
+                type = (Class<?>) typeH;
+            }
+        } else {
+            type = f1.getType();
+
+            if (tmp instanceof ParameterizedType) {
+                ParameterizedType gt0 = (ParameterizedType) tmp;
+
+                Map<String, Type> gMap = GenericUtil.getGenericInfo(clz);
+                Type[] gArgs = gt0.getActualTypeArguments();
+                boolean gChanged = false;
+
+                for (int i = 0; i < gArgs.length; i++) {
+                    Type t1 = gArgs[i];
+                    if (t1 instanceof TypeVariable) {
+                        //尝试转换参数类型
+                        gArgs[i] = gMap.get(t1.getTypeName());
+                        gChanged = true;
+                    }
+                }
+
+                if (gChanged) {
+                    genericType = new ParameterizedTypeImpl((Class<?>) gt0.getRawType(), gArgs, gt0.getOwnerType());
+                } else {
+                    genericType = gt0;
+                }
+            } else {
+                genericType = null;
+            }
+        }
+
         _setter = doFindSetter(clz, f1);
         _getter = dofindGetter(clz, f1);
     }
@@ -69,8 +111,8 @@ public class FieldWrap {
     /**
      * 获取自身的临时对象
      */
-    public VarHolder holder(Object obj) {
-        return new VarHolderOfField(this, obj);
+    public VarHolder holder(AopContext ctx, Object obj) {
+        return new VarHolderOfField(ctx, this, obj);
     }
 
     /**
@@ -88,12 +130,19 @@ public class FieldWrap {
      * 设置字段的值
      */
     public void setValue(Object tObj, Object val) {
+        setValue(tObj, val, false);
+    }
+    public void setValue(Object tObj, Object val, boolean disFun) {
+        if (readonly){
+            return;
+        }
+
         try {
             if (val == null) {
                 return;
             }
 
-            if (_setter == null) {
+            if (_setter == null || disFun) {
                 field.set(tObj, val);
             } else {
                 _setter.invoke(tObj, new Object[]{val});

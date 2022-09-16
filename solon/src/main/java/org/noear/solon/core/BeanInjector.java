@@ -7,7 +7,7 @@ import java.lang.annotation.Annotation;
  *
  * <pre><code>
  * //@Db 注入器添加
- * Aop.context().beanInjectorAdd(Db.classs, (varH, anno)->{
+ * Solon.context().beanInjectorAdd(Db.classs, (varH, anno)->{
  *     ...
  * });
  *

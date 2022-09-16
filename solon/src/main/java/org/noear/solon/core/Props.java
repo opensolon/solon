@@ -4,9 +4,8 @@ import org.noear.solon.SolonProps;
 import org.noear.solon.Utils;
 import org.noear.solon.core.wrap.ClassWrap;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
+import java.net.URL;
+import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
@@ -29,6 +28,20 @@ public class Props extends Properties {
         super(defaults);
     }
 
+    public Props(Map<String,String> data) {
+        super();
+        putAll(data);
+    }
+
+    @Override
+    public synchronized int size() {
+        if (defaults == null) {
+            return super.size();
+        } else {
+            return super.size() + defaults.size();
+        }
+    }
+
     /**
      * 获取某项配置
      */
@@ -48,6 +61,9 @@ public class Props extends Properties {
         return get(name);
     }
 
+    /**
+     * @param expr 兼容 ${key} or key
+     */
     public String getByParse(String expr) {
         if (Utils.isEmpty(expr)) {
             return expr;
@@ -124,8 +140,13 @@ public class Props extends Properties {
      *
      * @param keyStarts key 的开始字符
      */
-    public <T> T getBean(String keyStarts, Class<T> type) {
-        return ClassWrap.get(type).newBy(getProp(keyStarts));
+    public <T> T getBean(String keyStarts, Class<T> clz) {
+        if (Utils.isEmpty(keyStarts)) {
+            return PropsConverter.global().convert(this, clz);
+        } else {
+            Properties props = getProp(keyStarts);
+            return PropsConverter.global().convert(props, clz);
+        }
     }
 
     /**
@@ -136,6 +157,11 @@ public class Props extends Properties {
     public Props getProp(String keyStarts) {
         Props prop = new Props();
         doFind(keyStarts + ".", prop::put);
+        if (prop.size() == 0) {
+            doFind(keyStarts + "[", (k, v) -> {
+                prop.put("[" + k, v);
+            });
+        }
         return prop;
     }
 
@@ -162,6 +188,11 @@ public class Props extends Properties {
         return map;
     }
 
+    /**
+     * 查找 keyStarts 开头的所有配置；并生成一个新的 List
+     *
+     * @param keyStarts key 的开始字符
+     */
     public List<String> getList(String keyStarts) {
         List<String> ary = new ArrayList<>();
         doFind(keyStarts + "[", (k, v) -> {
@@ -214,6 +245,124 @@ public class Props extends Properties {
                     action.accept(k, v);
                 }
             });
+        }
+    }
+
+    ////
+
+    private Set<BiConsumer<String, String>> _changeEvent = new HashSet<>();
+
+    /**
+     * 添加变更事件
+     */
+    public void onChange(BiConsumer<String, String> event) {
+        _changeEvent.add(event);
+    }
+
+    /**
+     * 设置应用属性
+     */
+    @Override
+    public synchronized Object put(Object key, Object value) {
+        Object obj = super.put(key, value);
+
+        if (key instanceof String && value instanceof String) {
+            _changeEvent.forEach(event -> {
+                event.accept((String) key, (String) value);
+            });
+        }
+
+        return obj;
+    }
+
+    ////
+
+    /**
+     * 加载配置（用于扩展加载）
+     *
+     * @param url 配置地址
+     */
+    public void loadAdd(URL url) {
+        if (url != null) {
+            Properties props = Utils.loadProperties(url);
+            loadAdd(props);
+        }
+    }
+
+    public void loadAdd(Properties props) {
+        loadAddDo(props, false);
+    }
+
+    /**
+     * 加载配置（用于扩展加载）
+     *
+     * @param props 配置地址
+     */
+    protected void loadAddDo(Properties props, boolean toSystem) {
+        if (props != null) {
+            for (Map.Entry<Object, Object> kv : props.entrySet()) {
+                Object k1 = kv.getKey();
+                Object v1 = kv.getValue();
+
+                if (k1 instanceof String) {
+                    String key = (String) k1;
+
+                    if (Utils.isEmpty(key)) {
+                        continue;
+                    }
+
+                    if (v1 instanceof String) {
+                        // db1.url=xxx
+                        // db1.jdbcUrl=${db1.url}
+                        // db1.jdbcUrl=jdbc:mysql:${db1.server}
+                        // db1.jdbcUrl=jdbc:mysql:${db1.server}/${db1.db}
+                        String v1Str = (String) v1;
+                        int symStart = 0;
+
+                        while (true) {
+                            symStart = v1Str.indexOf("${", symStart);
+                            if (symStart >= 0) {
+                                int symEnd = v1Str.indexOf("}", symStart + 1);
+                                if (symEnd > symStart) {
+                                    String tmpK = v1Str.substring(symStart + 2, symEnd);
+
+                                    String tmpV2 = props.getProperty(tmpK);
+                                    if (tmpV2 == null) {
+                                        tmpV2 = getProperty(tmpK);
+                                    }
+
+                                    if (tmpV2 == null) {
+                                        symStart = symEnd;
+                                    } else {
+                                        if (symStart > 0) {
+                                            //确定左侧部分
+                                            tmpV2 = v1Str.substring(0, symStart) + tmpV2;
+                                        }
+                                        symStart = tmpV2.length();
+                                        v1Str = tmpV2 + v1Str.substring(symEnd + 1);
+                                    }
+                                } else {
+                                    //找不到 "}"，则终止
+                                    break;
+                                }
+                            } else {
+                                //找不到 "${"，则终止
+                                break;
+                            }
+                        }
+
+                        v1 = v1Str;
+                    }
+
+                    if (v1 != null) {
+                        if (toSystem) {
+                            System.getProperties().put(k1, v1);
+                        }
+
+                        put(k1, v1);
+                    }
+                }
+            }
         }
     }
 }

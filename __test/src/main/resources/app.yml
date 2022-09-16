@@ -1,0 +1,159 @@
+demo6:
+  test:
+    aaa: 121212
+    bbb: 12
+
+demo8.test:
+  url: jdbc:mysql://127.0.0.1/user
+  username: root
+  paasword: 12
+
+
+cache1:
+  driverType: local
+
+username: noear
+paasword: 1234
+
+testname: xxx
+testpath: "D:/abc-1-2.12/xx.xml"
+
+server.port: 8080
+
+solon.env: test
+
+solon.app:
+  name: testapp
+  group: test
+
+solon.drift: 1
+
+solon.extend: "!app_ext"
+
+solon.locale: "en_US"
+
+solon.cloud.local:
+  breaker:
+    root: 1
+  discovery:
+    service:
+      local:
+        - "http://localhost:8080"
+      demo:
+        - "http://localhost:8080"
+      localrpc:
+        - "tcp://localhost:28080"
+
+
+solon.health.detector: "cpu,disk,jvm,memory,os,qps"
+
+
+solon.logging.appender:
+  console:
+    enable: true
+  test:
+    class: webapp.demox_log_breaker.TestAppender
+    level: TRACE
+
+solon.logging.logger:
+  "org.apache.*":
+    level: INFO
+  "org.eclipse.*":
+    level: INFO
+
+solon.socketd:
+  readBufferSize: "512"
+  writeBufferSize: "128"
+  connectTimeout: "60s"
+  socketTimeout: "60s"
+
+
+formattest:
+  text: "${solon.socketd.readBufferSize}m/-/${solon.locale}"
+  text2: "${aaaa.bbb}"
+
+
+server:
+  request:
+    maxBodySize: 2000mb
+    maxHeaderSize: 200kb
+    autoMultipart: false
+  session:
+    timeout: 7200 #单位秒；（可不配，默认：7200）
+    cookieName: "i8Vn"
+    state:
+      redis:
+        server: localhost:6379
+        password: 123456
+        db: 3
+        maxTotal: 200
+        minIdle: 3
+
+#特殊信息输出
+solon.output.meta: 1
+
+solon.stop:
+  enable: true
+  path: /demox/_stop
+  host: localhost
+
+solon.quartz.QuartzRun1:
+  cron7x: "0 0/1 * * * ? *"
+  enable: true
+
+solon.cron4j.Cron4jRun1:
+  cron5x: "*/1 * * * *"
+  enable: true
+
+custom:
+  li:
+    - 12
+    - 13
+
+app.dict:
+  name: 张三
+  age: 8
+  codes: {dev: "develop", test: "test"}
+  likes:
+    - 素描
+    - 摄影
+
+cfgitems:
+  - id: 1
+    name: id1
+  - id: 2
+    name: id2
+
+cfgmap:
+  cfg1:
+    id: 1
+    name: id1
+  cfg2:
+    id: 2
+    name: id2
+
+stritems:
+  - id1
+  - id2
+
+strmap:
+  id1: 1
+  id2: 2
+
+
+# sa-token配置
+sa-token:
+  # token名称 (同时也是cookie名称)
+  token-name: satoken
+  # token有效期，单位s 默认30天, -1代表永不过期
+  timeout: 2592000
+  # token临时有效期 (指定时间内无操作就视为token过期) 单位: 秒
+  activity-timeout: -1
+  # 是否允许同一账号并发登录 (为true时允许一起登录, 为false时新登录挤掉旧登录)
+  allow-concurrent-login: true
+  # 在多人登录同一账号时，是否共用一个token (为true时所有登录共用一个token, 为false时每次登录新建一个token)
+  is-share: true
+  # token风格
+  token-style: uuid
+  # 是否输出操作日志
+  is-log: false

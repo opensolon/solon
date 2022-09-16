@@ -20,49 +20,7 @@ public class ContextEmpty extends Context {
     }
 
     public ContextEmpty(){
-        sessionStateInit(new SessionState() {
-            @Override
-            public String sessionId() {
-                return null;
-            }
-
-            @Override
-            public String sessionChangeId() {
-                return null;
-            }
-
-            @Override
-            public Object sessionGet(String key) {
-                return sessionMap().get(key);
-            }
-
-            @Override
-            public void sessionSet(String key, Object val) {
-                sessionMap().put(key,val);
-            }
-
-            @Override
-            public void sessionClear() {
-                sessionMap().clear();
-            }
-
-            @Override
-            public void sessionReset() {
-                sessionMap().clear();
-            }
-        });
-    }
-
-
-
-
-    private Map<String,Object> sessionMap = null;
-    public Map<String,Object> sessionMap(){
-        if(sessionMap == null){
-            sessionMap = new HashMap<>();
-        }
-
-        return sessionMap;
+        sessionState = new SessionStateEmpty();
     }
 
 
@@ -88,11 +46,6 @@ public class ContextEmpty extends Context {
 
     @Override
     public URI uri() {
-        return null;
-    }
-
-    @Override
-    public String path() {
         return null;
     }
 

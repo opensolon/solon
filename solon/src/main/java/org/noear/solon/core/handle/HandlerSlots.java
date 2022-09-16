@@ -4,6 +4,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.annotation.Mapping;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * 通用处理接口接收槽
@@ -25,7 +26,7 @@ public interface HandlerSlots {
      * */
     void add(String expr, MethodType method, Handler handler);
 
-    default void add(Mapping mapping, List<MethodType> methodTypes, Handler handler){
+    default void add(Mapping mapping, Set<MethodType> methodTypes, Handler handler){
         String path = Utils.annoAlias(mapping.value(), mapping.path());
 
         for (MethodType m1 : methodTypes) {

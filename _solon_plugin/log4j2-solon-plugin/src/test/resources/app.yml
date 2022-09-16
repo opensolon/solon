@@ -1,0 +1,20 @@
+solon.app:
+  name: demoapp
+
+solon.logging.appender:
+  console:
+    level: DEBUG
+  file:
+    level: INFO
+  cloud:
+    level: INFO
+
+
+solon.logging:
+  logger:
+    "root":
+      level: WARN
+    "features":
+      level: INFO
+
+

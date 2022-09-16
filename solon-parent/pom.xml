@@ -6,7 +6,7 @@
 
     <groupId>org.noear</groupId>
     <artifactId>solon-parent</artifactId>
-    <version>1.6.6-m1</version>
+    <version>${revision}</version>
     <packaging>pom</packaging>
 
     <name>${project.artifactId}</name>
@@ -14,49 +14,64 @@
     <url>https://github.com/noear/solon</url>
 
     <properties>
+        <revision>1.10.3-M3</revision>
+
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
 
-        <solon.ver>1.6.6-m1</solon.ver>
+        <snack3.ver>3.2.35</snack3.ver>
+        <weed3.ver>3.4.29</weed3.ver>
+        <water.ver>2.8.2</water.ver>
+        <luffy.ver>1.3.4</luffy.ver>
+        <redisx.ver>1.4.3</redisx.ver>
+        <redisson.ver>3.17.0</redisson.ver>
 
-        <snack3.ver>3.2.0</snack3.ver>
-        <weed3.ver>3.4.10</weed3.ver>
-        <water.ver>2.5.1</water.ver>
-        <luffy.ver>1.1.11</luffy.ver>
-        <redisx.ver>1.3.1</redisx.ver>
-
-        <fastjson.ver>1.2.75</fastjson.ver>
-        <jedis.ver>3.6.3</jedis.ver>
+        <fastjson.ver>1.2.83</fastjson.ver>
+        <fastjson2.ver>2.0.13</fastjson2.ver>
         <okhttp.ver>3.14.9</okhttp.ver>
-        <hutool.ver>5.5.6</hutool.ver>
+        <hutool.ver>5.8.5</hutool.ver>
 
         <asm.ver>9.2</asm.ver>
 
         <servlet.ver>4.0.1</servlet.ver>
 
-        <jetty.ver>9.4.40.v20210413</jetty.ver>
-        <undertow.ver>2.2.7.Final</undertow.ver>
+        <jetty.ver>9.4.46.v20220331</jetty.ver>
+        <undertow.ver>2.2.19.Final</undertow.ver>
+        <tomcat.ver>9.0.64</tomcat.ver>
 
-        <jackson.ver>2.10.5</jackson.ver>
+        <snakeyaml.ver>1.30</snakeyaml.ver>
+
+        <jackson.ver>2.13.3</jackson.ver>
+        <gson.ver>2.9.0</gson.ver>
         <hessian.ver>4.0.65</hessian.ver>
         <protostuff.ver>1.7.4</protostuff.ver>
 
         <junit.ver>4.13.1</junit.ver>
 
-        <mybatis.ver>3.5.7</mybatis.ver>
+        <mybatis.ver>3.5.10</mybatis.ver>
 
         <hikaricp.ver>4.0.3</hikaricp.ver>
 
-        <slf4j.ver>1.7.30</slf4j.ver>
+        <slf4j.ver>1.7.36</slf4j.ver>
+        <log4j.ver>2.18.0</log4j.ver>
+        <logback.ver>1.2.11</logback.ver>
 
-        <netty.ver>4.1.48.Final</netty.ver>
-        <rsocket.ver>1.1.0</rsocket.ver>
+        <netty.ver>4.1.68.Final</netty.ver>
+        <rsocket.ver>1.1.2</rsocket.ver>
 
         <springboot.ver>2.0.4.RELEASE</springboot.ver>
         <spring.ver>5.0.8.RELEASE</spring.ver>
 
-        <dubbo.ver>2.7.5</dubbo.ver>
+        <hazelcast.ver>5.1</hazelcast.ver>
+        <lombok.ver>1.18.20</lombok.ver>
+
+        <protobuf.ver>3.19.4</protobuf.ver>
+        <grpc.ver>1.49.0</grpc.ver>
+        <dubbo2.ver>2.7.5</dubbo2.ver>
+        <dubbo3.ver>3.0.11</dubbo3.ver>
+        <nacos1.ver>1.4.4</nacos1.ver>
+        <nacos2.ver>2.1.1</nacos2.ver>
     </properties>
 
 
@@ -74,6 +89,34 @@
             <organization>noear.org</organization>
             <organizationUrl>http://www.noear.org</organizationUrl>
         </developer>
+        <developer>
+            <name>夜の孤城</name>
+        </developer>
+        <developer>
+            <name>馒头虫/瓢虫</name>
+            <url> https://www.jianshu.com/u/ec230216606c</url>
+        </developer>
+        <developer>
+            <name>iYarnFog</name>
+            <email>1340761826@qq.com</email>
+            <organization>iying.top</organization>
+            <organizationUrl>https://i.iying.top/</organizationUrl>
+        </developer>
+        <developer>
+            <name>cym1102</name>
+        </developer>
+        <developer>
+            <name>tomsun28</name>
+        </developer>
+        <developer>
+            <name>brucelwl</name>
+            <email>841326226@qq.com</email>
+        </developer>
+        <developer>
+            <name>YukaiTang</name>
+            <email>2420177044@qq.com</email>
+            <url> https://blog.csdn.net/fanduifandui</url>
+        </developer>
     </developers>
     <scm>
         <connection>scm:git:git@github.com:noear/solon.git</connection>
@@ -85,455 +128,612 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.ver}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.cache.caffeine</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.cache.redisson</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.cache.jedis</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.cache.spymemcached</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.socketd</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
 
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.socketd.client.jdksocket</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.socketd.client.netty</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.socketd.client.rsocket</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.socketd.client.smartsocket</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.socketd.client.websocket</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.boot</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.boot.jdkhttp</artifactId>
+                <version>${revision}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.boot.jlhttp</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.boot.smarthttp</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.boot.jetty</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.boot.jetty.add.jsp</artifactId>
-                <version>${solon.ver}</version>
-                <type>jar</type>
+                <version>${revision}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>solon.boot.jetty.add.servlet</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>solon.boot.jetty.add.websocket</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.boot.undertow</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.boot.undertow.add.jsp</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.boot.websocket</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.boot.socketd.jdksocket</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.boot.socketd.netty</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.boot.socketd.rsocket</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.boot.socketd.smartsocket</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.boot.socketd.websocket</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.extend.aspect</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.aspect</artifactId>
+                <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.extend.graalvm</artifactId>
-                <version>${solon.ver}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>solon.extend.hotdev</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.validation</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.data</artifactId>
-                <version>${solon.ver}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>solon.cache</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.auth</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.extend.cors</artifactId>
-                <version>${solon.ver}</version>
+                <artifactId>solon.vault</artifactId>
+                <version>${revision}</version>
             </dependency>
+
+            <!-- @Deprecated -->
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.extend.health</artifactId>
-                <version>${solon.ver}</version>
+                <artifactId>solon.extend.hotplug</artifactId>
+                <version>${revision}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.extend.servlet</artifactId>
-                <version>${solon.ver}</version>
+                <artifactId>solon.hotplug</artifactId>
+                <version>${revision}</version>
             </dependency>
+
+            <!-- @Deprecated -->
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.extend.cors</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.web.cors</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <!-- @Deprecated -->
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.extend.async</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <!-- @Deprecated -->
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.extend.health</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.health</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <!-- @Deprecated -->
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.extend.servlet</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.web.servlet</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <!-- @Deprecated -->
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.extend.staticfiles</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.web.staticfiles</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <!-- @Deprecated -->
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.extend.properties.yaml</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>solon.config.yaml</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>solon.extend.stop</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.extend.jsr330</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
                 <!-- javax.inject impl -->
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.extend.jsr303</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
                 <!-- javax.validation impl -->
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.extend.schedule</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>solon.schedule</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <!-- @Deprecated -->
+                <groupId>org.noear</groupId>
                 <artifactId>solon.extend.sessionstate.redis</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
             <dependency>
+                <!-- @Deprecated -->
                 <groupId>org.noear</groupId>
                 <artifactId>solon.extend.sessionstate.local</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <!-- @Deprecated -->
+                <groupId>org.noear</groupId>
+                <artifactId>solon.extend.sessionstate.jwt</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.sessionstate.redisson</artifactId>
+                <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.extend.sessionstate.jwt</artifactId>
-                <version>${solon.ver}</version>
+                <artifactId>solon.sessionstate.jedis</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.sessionstate.local</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.sessionstate.jwt</artifactId>
+                <version>${revision}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.i18n</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
 
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.logging</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.logging.impl</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.serialization</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.serialization.fastjson</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.serialization.fastjson2</artifactId>
+                <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.serialization.gson</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.serialization.jackson</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.serialization.snack3</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.serialization.hessian</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.serialization.protostuff</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
 
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.view.freemarker</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.view.jsp</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.view.velocity</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.view.thymeleaf</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.view.enjoy</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.view.beetl</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
 
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.cloud</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.cloud.tracing</artifactId>
+                <version>${revision}</version>
             </dependency>
 
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>nami</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>nami.channel.http.okhttp</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>nami.channel.http.hutool</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>nami.channel.socketd</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>nami.channel.socketd.jdksocket</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>nami.channel.socketd.netty</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>nami.channel.socketd.rsocket</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>nami.channel.socketd.smartsocket</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>nami.channel.socketd.websocket</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>nami.coder.fastjson</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>nami.coder.fastjson2</artifactId>
+                <version>${revision}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>nami.coder.snack3</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>nami.coder.jackson</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>nami.coder.hessian</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>nami.coder.protostuff</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon-lib</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon-api</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon-rpc</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear.solon</groupId>
                 <artifactId>solon-beetl-web</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear.solon</groupId>
                 <artifactId>solon-enjoy-web</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon-web</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon-cloud</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-cloud-alibaba</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-cloud-water</artifactId>
+                <version>${revision}</version>
             </dependency>
 
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon-test</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
 
+            <dependency>
+                <groupId>org.yaml</groupId>
+                <artifactId>snakeyaml</artifactId>
+                <version>${snakeyaml.ver}</version>
+            </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
@@ -562,147 +762,219 @@
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>captcha-solon-plugin</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>jap-solon-plugin</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>jap-ids-solon-plugin</artifactId>
+                <version>${revision}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>detector-solon-plugin</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>consul-solon-plugin</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>beetlsql-solon-plugin</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>weed3-solon-plugin</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>sqltoy-solon-plugin</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>luffy-solon-plugin</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>mybatis-solon-plugin</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>mybatis-sqlhelper-solon-plugin</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>mybatis-pagehelper-solon-plugin</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>mybatisplus-solon-plugin</artifactId>
-                <version>${solon.ver}</version>
+                <artifactId>mybatis-plus-solon-plugin</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>mybatis-plus-extension-solon-plugin</artifactId>
+                <version>${revision}</version>
             </dependency>
 
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>activerecord-solon-plugin</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>cron4j-solon-plugin</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>quartz-solon-plugin</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>grpc-solon-plugin</artifactId>
+                <version>${revision}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>dubbo-solon-plugin</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>dubbo3-solon-plugin</artifactId>
+                <version>${revision}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>feign-solon-plugin</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>forest-solon-plugin</artifactId>
+                <version>${revision}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>hasor-solon-plugin</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>dbvisitor-solon-plugin</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>hasordb-solon-plugin</artifactId>
+                <version>${revision}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon-springboot-starter</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>aliyun-oss-solon-plugin</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>aws-s3-solon-plugin</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>qiniu-kodo-solon-plugin</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>minio-solon-plugin</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>minio7-solon-plugin</artifactId>
+                <version>${revision}</version>
             </dependency>
 
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>nacos-solon-plugin</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>nacos2-solon-plugin</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>kubernetes-solon-plugin</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>jmdns-solon-plugin</artifactId>
+                <version>${revision}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>water-solon-plugin</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
 
 
@@ -710,104 +982,117 @@
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>rabbitmq-solon-plugin</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>rocketmq-solon-plugin</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>mqtt-solon-plugin</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>pulsar-solon-plugin</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>cloudevent-plus-solon-plugin</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>guava-solon-plugin</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>sentinel-solon-plugin</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>snowflake-id-solon-plugin</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>zookeeper-solon-plugin</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>kafka-solon-plugin</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>semaphore-solon-plugin</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>sureness-solon-plugin</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>sa-token-solon-plugin</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>xxl-job-solon-plugin</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>opentracing-solon-plugin</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>jaeger-solon-plugin</artifactId>
+                <version>${revision}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>httputils-solon-plugin</artifactId>
-                <version>${solon.ver}</version>
+                <version>${revision}</version>
             </dependency>
 
-<!--            <dependency>-->
-<!--                <groupId>org.noear</groupId>-->
-<!--                <artifactId>shiro-solon-plugin</artifactId>-->
-<!--                <version>${solon.ver}</version>-->
-<!--            </dependency>-->
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>log4j2-solon-plugin</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>logback-solon-plugin</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
 
 
             <!-- //////////// servlet ////////////  -->
@@ -941,10 +1226,9 @@
                 <artifactId>slf4j-simple</artifactId>
                 <version>${slf4j.ver}</version>
             </dependency>
-
-            
         </dependencies>
     </dependencyManagement>
+
 
     <profiles>
         <profile>
@@ -1059,7 +1343,51 @@
                 </configuration>
             </plugin>
 
+            <!-- 版本号管理 -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>flatten-maven-plugin</artifactId>
+                <version>1.2.7</version>
+                <configuration>
+                    <updatePomFile>true</updatePomFile>
+                    <flattenMode>resolveCiFriendliesOnly</flattenMode>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>flatten</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>flatten</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>flatten.clean</id>
+                        <phase>clean</phase>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
+
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.noear</groupId>
+                    <artifactId>solon-maven-plugin</artifactId>
+                    <version>${revision}</version>
+                    <executions>
+                        <execution>
+                            <phase>package</phase>
+                            <goals>
+                                <goal>repackage</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
     </build>
 
 
@@ -1067,40 +1395,46 @@
 
         <module>../solon</module>
 
-        <module>../_extend/solon.boot.jlhttp</module>
-        <module>../_extend/solon.boot.smarthttp</module>
-        <module>../_extend/solon.boot.jetty</module>
-        <module>../_extend/solon.boot.undertow</module>
+        <module>../_solon_extend/solon.boot</module>
+        <module>../_solon_extend/solon.boot.jdkhttp</module>
+        <module>../_solon_extend/solon.boot.jlhttp</module>
+        <module>../_solon_extend/solon.boot.smarthttp</module>
+        <module>../_solon_extend/solon.boot.jetty</module>
+        <module>../_solon_extend/solon.boot.undertow</module>
 
-        <module>../_extend/solon.boot.websocket</module>
+        <module>../_solon_extend/solon.boot.websocket</module>
+
+        <module>../_solon_extend/solon.data</module>
+        <module>../_solon_extend/solon.auth</module>
+        <module>../_solon_extend/solon.schedule</module>
+        <module>../_solon_extend/solon.validation</module>
 
 
-        <module>../_extend/solon.validation</module>
-        <module>../_extend/solon.data</module>
-        <module>../_extend/solon.auth</module>
+        <module>../_solon_extend/solon.boot.jetty.add.jsp</module>
+        <module>../_solon_extend/solon.boot.jetty.add.servlet</module>
+        <module>../_solon_extend/solon.boot.jetty.add.websocket</module>
+        <module>../_solon_extend/solon.boot.undertow.add.jsp</module>
 
+        <module>../_solon_extend/solon.i18n</module>
 
-        <module>../_extend/solon.boot.jetty.add.jsp</module>
-        <module>../_extend/solon.boot.jetty.add.websocket</module>
-        <module>../_extend/solon.boot.undertow.add.jsp</module>
+        <module>../_solon_extend/solon.logging</module>
+        <module>../_solon_extend/solon.logging.impl</module>
 
-        <module>../_extend/solon.i18n</module>
+        <module>../_solon_extend/solon.cloud</module>
+        <module>../_solon_extend/solon.cloud.tracing</module>
 
-        <module>../_extend/solon.logging</module>
-        <module>../_extend/solon.logging.impl</module>
+        <module>../_solon_shortcut/solon-beetl-web</module>
+        <module>../_solon_shortcut/solon-enjoy-web</module>
+        <module>../_solon_shortcut/solon-lib</module>
+        <module>../_solon_shortcut/solon-api</module>
 
-        <module>../_extend/solon.cloud</module>
+        <module>../_solon_shortcut/solon-web</module>
+        <module>../_solon_shortcut/solon-rpc</module>
+        <module>../_solon_shortcut/solon-cloud</module>
+        <module>../_solon_shortcut/solon-cloud-alibaba</module>
+        <module>../_solon_shortcut/solon-cloud-water</module>
 
-        <module>../_extend/solon-beetl-web</module>
-        <module>../_extend/solon-enjoy-web</module>
-        <module>../_extend/solon-lib</module>
-        <module>../_extend/solon-api</module>
-
-        <module>../solon-web</module>
-        <module>../solon-rpc</module>
-        <module>../solon-cloud</module>
-
-        <module>../solon-test</module>
+        <module>../_solon_shortcut/solon-test</module>
 
     </modules>
 

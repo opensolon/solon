@@ -19,9 +19,9 @@ public enum MethodType {
 
     HEAD("HEAD", SignalType.HTTP), //相当于GET，但不返回内容
 
+    OPTIONS("OPTIONS", SignalType.HTTP), //获取服务器支持的HTTP请求方法
 
     TRACE("TRACE", SignalType.HTTP),//回馈服务器收到的请求，用于远程诊断服务器。
-    OPTIONS("OPTIONS", SignalType.HTTP), //获取服务器支持的HTTP请求方法
     CONNECT("CONNECT", SignalType.HTTP),//用于代理进行传输
 
     /** http general all */

@@ -1,5 +1,7 @@
 package org.noear.solon.core.handle;
 
+import java.util.Collection;
+
 /**
  * Session 状态器接口
  *
@@ -40,6 +42,11 @@ public interface SessionState {
     String sessionChangeId();
 
     /**
+     * 获取SESSION键名集合
+     * */
+    Collection<String> sessionKeys();
+
+    /**
      * 获取SESSION状态
      */
     Object sessionGet(String key);
@@ -48,6 +55,11 @@ public interface SessionState {
      * 设置SESSION状态
      */
     void sessionSet(String key, Object val);
+
+    /**
+     * 移除SESSION状态
+     */
+    void sessionRemove(String key);
 
     /**
      * 清除SESSION状态
@@ -59,6 +71,9 @@ public interface SessionState {
      * */
     void sessionReset();
 
+    /**
+     * 获取会话令牌（如： solon.extend.sessionstate.jwt 插件支持）
+     * */
     default String sessionToken() {
         throw new UnsupportedOperationException();
     }

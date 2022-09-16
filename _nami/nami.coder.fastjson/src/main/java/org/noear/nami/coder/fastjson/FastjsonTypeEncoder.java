@@ -11,9 +11,6 @@ import java.nio.charset.StandardCharsets;
 
 
 public class FastjsonTypeEncoder implements Encoder {
-    static {
-        ParserConfig.getGlobalInstance().setAutoTypeSupport(true);
-    }
 
     public static final FastjsonTypeEncoder instance = new FastjsonTypeEncoder();
 

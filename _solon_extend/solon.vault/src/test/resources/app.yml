@@ -1,0 +1,22 @@
+
+
+solon.app:
+  group: demo
+  name: demoapp
+
+solon.vault:
+  password: "liylU9PhDq63tk1C"
+
+test:
+  password1: "abc"
+  password2: "ENC(EDcAudiu9svcqKQ9L8k+Ug==)"
+
+test.db1:
+  url: ""
+  username: "root"
+  password: "123456"
+
+test.db2:
+  url: ""
+  username: "ENC(xo1zJjGXUouQ/CZac55HZA==)"
+  password: "ENC(XgRqh3C00JmkjsPi4mPySA==)"

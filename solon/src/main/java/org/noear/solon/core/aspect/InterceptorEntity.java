@@ -10,12 +10,20 @@ public class InterceptorEntity implements Interceptor{
     /**
      * 顺排序位（排完后，按先进后出策略执行）
      */
-    public final int index;
+    private final int index;
     private final Interceptor real;
 
     public InterceptorEntity(int index, Interceptor real) {
         this.index = index;
         this.real = real;
+    }
+
+    public int getIndex() {
+        return index;
+    }
+
+    public Interceptor getReal() {
+        return real;
     }
 
     /**

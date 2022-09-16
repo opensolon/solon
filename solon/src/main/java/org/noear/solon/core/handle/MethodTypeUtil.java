@@ -2,7 +2,7 @@ package org.noear.solon.core.handle;
 
 import org.noear.solon.annotation.*;
 
-import java.util.List;
+import java.util.Set;
 import java.util.function.Predicate;
 
 /**
@@ -10,7 +10,7 @@ import java.util.function.Predicate;
  * @since 1.3
  */
 public class MethodTypeUtil {
-    public static List<MethodType> findAndFill(List<MethodType> list, Predicate<Class> checker) {
+    public static Set<MethodType> findAndFill(Set<MethodType> list, Predicate<Class> checker) {
         if (checker.test(Get.class)) {
             list.add(MethodType.GET);
         }
@@ -33,6 +33,10 @@ public class MethodTypeUtil {
 
         if (checker.test(Head.class)) {
             list.add(MethodType.HEAD);
+        }
+
+        if (checker.test(Options.class)) {
+            list.add(MethodType.OPTIONS);
         }
 
         if (checker.test(Http.class)) {

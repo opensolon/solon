@@ -1,14 +1,11 @@
 package org.noear.solon;
 
-import org.noear.solon.core.JarClassLoader;
-import org.noear.solon.core.NvMap;
-import org.noear.solon.core.PluginEntity;
-import org.noear.solon.core.Props;
-import org.noear.solon.core.util.ScanUtil;
+import org.noear.solon.core.*;
+import org.noear.solon.core.util.PluginUtil;
 
+import java.io.File;
 import java.net.URL;
 import java.util.*;
-import java.util.function.BiConsumer;
 
 /**
  * 统一配置加载器
@@ -30,9 +27,6 @@ import java.util.function.BiConsumer;
  * @since 1.0
  * */
 public final class SolonProps extends Props {
-    private static final String FILE_ENCODING = "file.encoding";
-    private static final String FILE_ENCODING_DEF = "utf-8";
-
     private NvMap args;
     private Class<?> source;
     private URL sourceLocation;
@@ -44,6 +38,8 @@ public final class SolonProps extends Props {
     private boolean isSetupMode;//是否为安装蕈式
     private boolean isAloneMode;//是否为独立蕈式（即独立运行模式）
 
+    private String env;
+
     private Locale locale;
 
     private String extend;
@@ -51,6 +47,7 @@ public final class SolonProps extends Props {
 
     private String appName;
     private String appGroup;
+    private String appNamespace;
     private String appTitle;
 
     public SolonProps() {
@@ -62,7 +59,7 @@ public final class SolonProps extends Props {
      *
      * @param args 启用参数
      */
-    public SolonProps load(Class<?> source, NvMap args) {
+    public SolonProps load(Class<?> source, NvMap args) throws Exception{
         //1.接收启动参数
         this.args = args;
         //1.1.应用源
@@ -70,19 +67,32 @@ public final class SolonProps extends Props {
         //1.2.应用源位置
         this.sourceLocation = source.getProtectionDomain().getCodeSource().getLocation();
 
-        //2.加载文件配置
-        //@Deprecated
-        loadInit(Utils.getResource("application.properties"));
-        //@Deprecated
-        loadInit(Utils.getResource("application.yml"));
-        loadInit(Utils.getResource("app.properties"));
-        loadInit(Utils.getResource("app.yml"));
 
-        //2.1.加载环境变量（支持弹性容器设置的环境变量）
+        //2.同步启动参数到系统属性
+        this.args.forEach((k, v) -> {
+            if (k.contains(".")) {
+                System.setProperty(k,v);
+            }
+        });
+
+        //3.获取原始系统属性原始副本
+        Properties sysPropOrg = new Properties();
+        System.getProperties().forEach((k, v) -> sysPropOrg.put(k, v));
+
+
+        //4.加载文件配置
+        //@Deprecated
+        loadInit(Utils.getResource("application.properties"), sysPropOrg);
+        //@Deprecated
+        loadInit(Utils.getResource("application.yml"), sysPropOrg);
+        loadInit(Utils.getResource("app.properties"), sysPropOrg);
+        loadInit(Utils.getResource("app.yml"), sysPropOrg);
+
+        //4.1.加载环境变量（支持弹性容器设置的环境变量）
         loadEnv("solon.");
 
-        //2.2.加载环境配置(例：env=pro 或 env=debug)
-        String env = getArg("env");
+        //4.2.加载环境配置(例：env=pro 或 env=debug)
+        env = getArg("env");
 
         if (Utils.isEmpty(env)) {
             //@Deprecated
@@ -91,22 +101,25 @@ public final class SolonProps extends Props {
 
         if (Utils.isNotEmpty(env)) {
             //@Deprecated
-            loadInit(Utils.getResource("application-" + env + ".properties"));
+            loadInit(Utils.getResource("application-" + env + ".properties"), sysPropOrg);
             //@Deprecated
-            loadInit(Utils.getResource("application-" + env + ".yml"));
-            loadInit(Utils.getResource("app-" + env + ".properties"));
-            loadInit(Utils.getResource("app-" + env + ".yml"));
+            loadInit(Utils.getResource("application-" + env + ".yml"), sysPropOrg);
+            loadInit(Utils.getResource("app-" + env + ".properties"), sysPropOrg);
+            loadInit(Utils.getResource("app-" + env + ".yml"), sysPropOrg);
         }
 
-        //3.同步启动参数
-        this.args.forEach((k, v) -> {
-            if (k.contains(".")) {
-                this.setProperty(k, v);
-                System.setProperty(k, v);
-            }
-        });
+        //4.3.加载扩展配置 solon.config //or solon.extend.config
+        String extConfig = getArg("config");
+        if(Utils.isEmpty(extConfig)){
+            //@Deprecated
+            extConfig = getArg("extend.config");//兼容旧的
+        }
+        if(Utils.isNotEmpty(extConfig)) {
+            loadInit(new File(extConfig).toURI().toURL(), sysPropOrg);
+        }
 
-        //4.初始化模式状态
+
+        //5.初始化模式状态
 
         //是否为文件模式
         isFilesMode = (sourceLocation.getPath().endsWith(".jar") == false
@@ -131,12 +144,12 @@ public final class SolonProps extends Props {
         }
 
 
-        //5.确定扩展文件夹
+        //6.确定扩展文件夹
         extend = getArg("extend");
         extendFilter = getArg("extend.filter");//5.1.扩展文件夹过滤器
 
 
-        //6.确定地区配置
+        //7.确定地区配置
         String localeStr = getArg("locale");
         if (Utils.isNotEmpty(localeStr)) {
             locale = Utils.toLocale(localeStr);
@@ -145,9 +158,10 @@ public final class SolonProps extends Props {
             locale = Locale.getDefault();
         }
 
-        //7.应用基础信息
+        //8.应用基础信息
         appName = getArg("app.name");  //6.应用名
         appGroup = getArg("app.group"); //6.1.应用组
+        appNamespace = getArg("app.namespace"); //6.1.应用组
         appTitle = getArg("app.title"); //6.1.应用标题
 
         return this;
@@ -158,7 +172,7 @@ public final class SolonProps extends Props {
      * 获取启动参数
      *
      * @param name 参数名
-     * */
+     */
     private String getArg(String name) {
         return getArg(name, null);
     }
@@ -167,8 +181,8 @@ public final class SolonProps extends Props {
      * 获取启动参数
      *
      * @param name 参数名
-     * @param def 默认值
-     * */
+     * @param def  默认值
+     */
     private String getArg(String name, String def) {
         //尝试去启动参数取
         String tmp = args.get(name);
@@ -188,91 +202,45 @@ public final class SolonProps extends Props {
      * 加载环境变量
      *
      * @param keyStarts key 的开始字符
-     * */
+     */
     public SolonProps loadEnv(String keyStarts) {
         System.getenv().forEach((k, v) -> {
             if (k.startsWith(keyStarts)) {
                 setProperty(k, v); //可以替换系统属性 update by: 2021-11-05,noear
-                System.setProperty(k,v);
+                System.setProperty(k, v);
             }
         });
 
         return this;
     }
 
+
     /**
      * 加载配置（用于扩展加载）
      *
      * @param url 配置地址
      */
-    public SolonProps loadAdd(URL url) {
-        if (url != null) {
-            Properties props = Utils.loadProperties(url);
-            loadAdd(props);
-        }
-
-        return this;
-    }
-
-    /**
-     * 加载配置（用于扩展加载）
-     *
-     * @param url 配置地址
-     * */
-    public SolonProps loadAdd(String url) {
-        return loadAdd(Utils.getResource(url));
+    public void loadAdd(String url) {
+         loadAdd(Utils.getResource(url));
     }
 
     /**
      * 加载配置（用于扩展加载）
      *
      * @param props 配置地址
-     * */
-    public SolonProps loadAdd(Properties props) {
-        if (props != null) {
-            for (Map.Entry<Object, Object> kv : props.entrySet()) {
-                Object k1 = kv.getKey();
-                Object v1 = kv.getValue();
-
-                if (k1 instanceof String) {
-                    String key = (String) k1;
-
-                    if (Utils.isEmpty(key)) {
-                        continue;
-                    }
-
-                    if (v1 instanceof String) {
-                        // db1.url=xxx
-                        // db1.jdbcUrl=${db1.url}
-                        String tmpV = (String) v1;
-                        if (tmpV.startsWith("${") && tmpV.endsWith("}")) {
-                            String tmpK = tmpV.substring(2, tmpV.length() - 1);
-                            tmpV = props.getProperty(tmpK);
-                            if (tmpV == null) {
-                                tmpV = getProperty(tmpK);
-                            }
-                            v1 = tmpV;
-                        }
-                    }
-
-                    if (v1 != null) {
-                        System.getProperties().put(kv.getKey(), v1);
-                        put(kv.getKey(), v1);
-                    }
-                }
-            }
-        }
-
-        return this;
+     */
+    @Override
+    public void loadAdd(Properties props) {
+        loadAddDo(props, true);
     }
 
     /**
      * 加载初始化配置
-     *
+     * <p>
      * 1.优先使用 system properties；可以在启动时修改配置
      * 2.之后同时更新 system properties 和 solon cfg
-     * */
-    protected void loadInit(URL url) {
+     */
+    protected void loadInit(URL url, Properties sysPropOrg) {
         if (url != null) {
             Properties props = Utils.loadProperties(url);
 
@@ -281,7 +249,7 @@ public final class SolonProps extends Props {
                 return;
             }
 
-            for (Map.Entry kv : System.getProperties().entrySet()) {
+            for (Map.Entry kv : sysPropOrg.entrySet()) {
                 if (kv.getKey() instanceof String) {
                     String key = (String) kv.getKey();
 
@@ -305,82 +273,28 @@ public final class SolonProps extends Props {
      */
     protected void plugsScan(List<ClassLoader> classLoaders) {
         for (ClassLoader classLoader : classLoaders) {
-            //3.查找插件配置（如果出错，让它抛出异常）
-            ScanUtil.scan(classLoader, "META-INF/solon", n -> n.endsWith(".properties") || n.endsWith(".yml"))
-                    .stream()
-                    .map(k -> Utils.getResource(classLoader, k))
-                    .forEach(url -> plugsScanMapDo(classLoader, url));
+            //扫描配置
+            PluginUtil.scanPlugins(classLoader, null ,plugs::add);
         }
 
         //扫描主配置
-        plugsScanLoadDo(JarClassLoader.global(), this);
+        PluginUtil.findPlugins(JarClassLoader.global(), this, plugs::add);
 
         //插件排序
         plugsSort();
     }
 
-    /**
-     * 插件扫描，根据某个资源地址扫描
-     *
-     * @param url 资源地址
-     */
-    private void plugsScanMapDo(ClassLoader classLoader, URL url) {
-        Props p = new Props(Utils.loadProperties(url));
-        plugsScanLoadDo(classLoader, p);
-    }
-
-    private void plugsScanLoadDo(ClassLoader classLoader, Props p) {
-        String pluginStr = p.get("solon.plugin");
-
-        if (Utils.isNotEmpty(pluginStr)) {
-            int priority = p.getInt("solon.plugin.priority", 0);
-            String[] plugins = pluginStr.trim().split(",");
-
-            for (String clzName : plugins) {
-                if (clzName.length() > 0) {
-                    PluginEntity ent = new PluginEntity(classLoader, clzName.trim());
-                    ent.priority = priority;
-                    plugs.add(ent);
-                }
-            }
-        }
-    }
-
-    private Set<BiConsumer<String, String>> _changeEvent = new HashSet<>();
-
-    /**
-     * 添加变更事件
-     */
-    public void onChange(BiConsumer<String, String> event) {
-        _changeEvent.add(event);
-    }
-
-    /**
-     * 设置应用属性
-     * */
-    @Override
-    public synchronized Object put(Object key, Object value) {
-        Object obj = super.put(key, value);
-
-        if (key instanceof String && value instanceof String) {
-            _changeEvent.forEach(event -> {
-                event.accept((String) key, (String) value);
-            });
-        }
-
-        return obj;
-    }
 
     /**
      * 应用源
-     * */
+     */
     public Class<?> source() {
         return source;
     }
 
     /**
      * 应用源位置
-     * */
+     */
     public URL sourceLocation() {
         return sourceLocation;
     }
@@ -401,8 +315,8 @@ public final class SolonProps extends Props {
 
     /**
      * 对插件列表排序
-     * */
-    public void plugsSort(){
+     */
+    public void plugsSort() {
         if (plugs.size() > 0) {
             //进行优先级顺排（数值要倒排）
             //
@@ -412,6 +326,7 @@ public final class SolonProps extends Props {
 
 
     private int serverPort;
+
     /**
      * 获取应用主端口(默认:8080)
      */
@@ -423,22 +338,30 @@ public final class SolonProps extends Props {
         return serverPort;
     }
 
-    private String fileEncoding;
+    private String serverHost;
     /**
-     * 获取应用文件编码
-     * */
-    public String fileEncoding() {
-        if (fileEncoding == null) {
-            fileEncoding = get(FILE_ENCODING, FILE_ENCODING_DEF);
+     * 获取应用主端口(默认:8080)
+     */
+    public String serverHost() {
+        if (serverHost == null) {
+            serverHost = get("server.host", "");
         }
 
-        return fileEncoding;
+        return serverHost;
+    }
+
+
+    /**
+     * 环境
+     */
+    public String env() {
+        return env;
     }
 
     /**
      * 地区
-     * */
-    public Locale locale(){
+     */
+    public Locale locale() {
         return locale;
     }
 
@@ -471,8 +394,15 @@ public final class SolonProps extends Props {
     }
 
     /**
-     * 应用标题
+     * 命名空间
      * */
+    public String appNamespace() {
+        return appNamespace;
+    }
+
+    /**
+     * 应用标题
+     */
     public String appTitle() {
         return appTitle;
     }
@@ -482,7 +412,7 @@ public final class SolonProps extends Props {
      * 框架版本号
      */
     public String version() {
-        return "1.6.6-m1";
+        return "1.10.3-M3";
     }
 
     /**
@@ -494,8 +424,10 @@ public final class SolonProps extends Props {
 
     /**
      * 是否为安装模式
-     * */
-    public boolean isSetupMode(){ return isSetupMode; }
+     */
+    public boolean isSetupMode() {
+        return isSetupMode;
+    }
 
     /**
      * 是否为文件运行模式（否则为包执行模式）
@@ -503,9 +435,10 @@ public final class SolonProps extends Props {
     public boolean isFilesMode() {
         return isFilesMode;
     }
+
     /**
      * 设置文件运行模式
-     * */
+     */
     public void isFilesMode(boolean isFilesMode) {
         this.isFilesMode = isFilesMode;
     }
@@ -516,24 +449,25 @@ public final class SolonProps extends Props {
     public boolean isDriftMode() {
         return isDriftMode;
     }
+
     /**
      * 设置漂移模式
-     * */
-    public void isDriftMode(boolean isDriftMode){
+     */
+    public void isDriftMode(boolean isDriftMode) {
         this.isDriftMode = isDriftMode;
     }
 
     /**
      * 是否为独立模式
-     * */
+     */
     public boolean isAloneMode() {
         return isAloneMode;
     }
 
     /**
      * 设置独立模式
-     * */
-    public void isAloneMode(boolean isAloneMode){
+     */
+    public void isAloneMode(boolean isAloneMode) {
         this.isAloneMode = isAloneMode;
     }
 
@@ -543,10 +477,11 @@ public final class SolonProps extends Props {
     public boolean isWhiteMode() {
         return isWhiteMode;
     }
+
     /**
      * 设置白名单模式
-     * */
-    public void isWhiteMode(boolean isWhiteMode){
+     */
+    public void isWhiteMode(boolean isWhiteMode) {
         this.isWhiteMode = isWhiteMode;
     }
 }

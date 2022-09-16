@@ -15,7 +15,7 @@ import java.util.Map;
  * @since 1.2
  */
 public class MethodWrap {
-    private static Map<Method, MethodWrap> cached = new HashMap<>();
+    private static final Map<Method, MethodWrap> cached = new HashMap<>();
 
     public static MethodWrap get(Method method) {
         MethodWrap mw = cached.get(method);

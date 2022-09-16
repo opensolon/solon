@@ -118,6 +118,23 @@ public abstract class Context {
     }
 
     /**
+     * ::默认不自动处理；仅在取文件时解析
+     * */
+    private boolean allowMultipart = true;
+    /**
+     * 是否自动解析分段内容
+     * */
+    public boolean autoMultipart() {
+        return allowMultipart;
+    }
+    /**
+     * 设置是否自动解析分段内容
+     * */
+    public void autoMultipart(boolean auto) {
+        this.allowMultipart = auto;
+    }
+
+    /**
      * 是否为分段内容
      */
     public boolean isMultipart() {
@@ -174,7 +191,18 @@ public abstract class Context {
     /**
      * 获取请求的URI路径
      */
-    public abstract String path();
+    private String path;
+    public String path() {
+        if (path == null && url() != null) {
+            path = uri().getPath();
+
+            if (path.contains("//")) {
+                path = Utils.trimDuplicates(path, '/');
+            }
+        }
+
+        return path;
+    }
 
     /**
      * 设置新路径
@@ -505,16 +533,7 @@ public abstract class Context {
      */
     public abstract NvMap headerMap();
 
-    private SessionState sessionState;
-
-    /**
-     * 初始化 sessionState 对象
-     * */
-    protected void sessionStateInit(SessionState sessionState) {
-        if (sessionState().replaceable()) {
-            this.sessionState = sessionState;
-        }
-    }
+    protected SessionState sessionState;
 
     /**
      * 获取 sessionState
@@ -544,16 +563,119 @@ public abstract class Context {
     }
 
     /**
-     * 获取 session 状态
+     * 获取 session 状态（类型转换，存在风险）
      *
      * @param name 状态名
      */
+    @Note("泛型转换，存在转换风险")
     public final <T> T session(String name, T def) {
         Object tmp = session(name);
         if (tmp == null) {
             return def;
         } else {
             return (T) tmp;
+        }
+    }
+
+    /**
+     * 获取 session 状态，并以 int 型输出
+     *
+     * @since 1.6
+     * @param name 状态名
+     */
+    public final int sessionAsInt(String name){
+        return sessionAsInt(name, 0);
+    }
+
+    /**
+     * 获取 session 状态，并以 int 型输出
+     *
+     * @since 1.6
+     * @param name 状态名
+     */
+    public final int sessionAsInt(String name, int def) {
+        Object tmp = session(name);
+        if (tmp == null) {
+            return def;
+        } else {
+            if (tmp instanceof Number) {
+                return ((Number) tmp).intValue();
+            } else if (tmp instanceof String) {
+                String str = (String) tmp;
+                if (str.length() > 0) {
+                    return Integer.parseInt(str);
+                }
+            }
+
+            return def;
+        }
+    }
+
+    /**
+     * 获取 session 状态，并以 long 型输出
+     *
+     * @since 1.6
+     * @param name 状态名
+     */
+    public final long sessionAsLong(String name){
+        return sessionAsLong(name, 0L);
+    }
+
+    /**
+     * 获取 session 状态，并以 long 型输出
+     *
+     * @since 1.6
+     * @param name 状态名
+     */
+    public final long sessionAsLong(String name, long def) {
+        Object tmp = session(name);
+        if (tmp == null) {
+            return def;
+        } else {
+            if (tmp instanceof Number) {
+                return ((Number) tmp).longValue();
+            } else if (tmp instanceof String) {
+                String str = (String) tmp;
+                if (str.length() > 0) {
+                    return Long.parseLong(str);
+                }
+            }
+
+            return def;
+        }
+    }
+
+    /**
+     * 获取 session 状态，并以 double 型输出
+     *
+     * @since 1.6
+     * @param name 状态名
+     */
+    public final double sessionAsDouble(String name) {
+        return sessionAsDouble(name, 0.0D);
+    }
+
+    /**
+     * 获取 session 状态，并以 double 型输出
+     *
+     * @since 1.6
+     * @param name 状态名
+     */
+    public final double sessionAsDouble(String name, double def) {
+        Object tmp = session(name);
+        if (tmp == null) {
+            return def;
+        } else {
+            if (tmp instanceof Number) {
+                return ((Number) tmp).doubleValue();
+            } else if (tmp instanceof String) {
+                String str = (String) tmp;
+                if (str.length() > 0) {
+                    return Double.parseDouble(str);
+                }
+            }
+
+            return def;
         }
     }
 
@@ -565,6 +687,15 @@ public abstract class Context {
      */
     public final void sessionSet(String name, Object val) {
         sessionState().sessionSet(name, val);
+    }
+
+    /**
+     * 移除 session 状态
+     *
+     * @param name 状态名
+     * */
+    public final void  sessionRemove(String name){
+        sessionState().sessionRemove(name);
     }
 
     /**
@@ -681,7 +812,7 @@ public abstract class Context {
         }
 
         if (Utils.isNotEmpty(file.name)) {
-            String fileName = URLEncoder.encode(file.name,Solon.cfg().fileEncoding());
+            String fileName = URLEncoder.encode(file.name, Solon.encoding());
             headerSet("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
         }
 
@@ -693,7 +824,7 @@ public abstract class Context {
      */
     public void outputAsFile(File file) throws IOException {
         if (Utils.isNotEmpty(file.getName())) {
-            String fileName = URLEncoder.encode(file.getName(), Solon.cfg().fileEncoding());
+            String fileName = URLEncoder.encode(file.getName(), Solon.encoding());
             headerSet("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
         }
 
@@ -755,9 +886,10 @@ public abstract class Context {
     public abstract void redirect(String url, int code);
 
     @Note("转发")
-    public void forward(String pathNew){
+    public void forward(String pathNew) {
         pathNew(pathNew);
-        Solon.global().tryHandle(this);
+
+        Solon.app().tryHandle(this);
         setHandled(true);
         setRendered(true);
     }
@@ -856,8 +988,8 @@ public abstract class Context {
     /**
      * 渲染数据并返回
      * */
-    public final String renderAndReturn(ModelAndView modelAndView) throws Throwable {
-        return RenderManager.global.renderAndReturn(modelAndView, this);
+    public final String renderAndReturn(Object obj) throws Throwable {
+        return RenderManager.global.renderAndReturn(obj, this);
     }
 
     private boolean _remoting;

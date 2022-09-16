@@ -1,12 +1,16 @@
 package org.noear.solon.core.handle;
 
+import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.Mapping;
 import org.noear.solon.annotation.Note;
 import org.noear.solon.core.*;
 import org.noear.solon.core.event.EventBus;
+import org.noear.solon.core.route.RoutingDefault;
+import org.noear.solon.core.route.RoutingTable;
+import org.noear.solon.core.route.RoutingTableDefault;
 import org.noear.solon.core.util.PathUtil;
-import org.noear.solon.ext.DataThrowable;
+import org.noear.solon.core.util.DataThrowable;
 
 import java.util.*;
 import java.util.function.Predicate;
@@ -37,16 +41,22 @@ import java.util.function.Predicate;
  * */
 public abstract class Gateway extends HandlerAide implements Handler, Render {
     private Handler mainDef;
-    private final Map<String, Handler> main = new HashMap<>();
+    private final RoutingTable<Handler> mainRouting;
     private final String mapping;
     private Mapping mappingAnno;
     private List<FilterEntity> filterList = new ArrayList<>();
 
     public Gateway() {
+        this(new RoutingTableDefault<>());
+    }
+
+    public Gateway(RoutingTable<Handler> routingTable) {
         super();
+        mainRouting = routingTable;
+
         mappingAnno = this.getClass().getAnnotation(Mapping.class);
         if (mappingAnno == null) {
-            throw new RuntimeException("No Mapping!");
+            throw new IllegalStateException("No Mapping!");
         }
 
         mapping = Utils.annoAlias(mappingAnno.value(), mappingAnno.path());
@@ -169,7 +179,7 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
             if (is_action) {
                 if (allowReadyController()) {
                     //提前准备控制器?（通过拦截器产生的参数，需要懒加载）
-                    obj = ((Action) m).bean().get();
+                    obj = ((Action) m).controller().get();
                     c.attrSet("controller", obj);
                 }
 
@@ -204,7 +214,7 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
         } catch (Throwable e) {
             e = Utils.throwableUnwrap(e);
             if (e instanceof DataThrowable) {
-                DataThrowable ex = (DataThrowable)e;
+                DataThrowable ex = (DataThrowable) e;
                 if (ex.data() == null) {
                     render(ex, c);
                 } else {
@@ -229,7 +239,7 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
      */
     @Note("添加前置拦截器")
     public <T extends Handler> void before(Class<T> interceptorClz) {
-        super.before(Aop.getOrNew(interceptorClz));
+        super.before(Solon.context().getBeanOrNew(interceptorClz));
     }
 
 
@@ -238,7 +248,7 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
      */
     @Note("添加后置拦截器")
     public <T extends Handler> void after(Class<T> interceptorClz) {
-        super.after(Aop.getOrNew(interceptorClz));
+        super.after(Solon.context().getBeanOrNew(interceptorClz));
     }
 
     @Note("添加接口")
@@ -251,8 +261,8 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
      */
     @Note("添加接口")
     public void addBeans(Predicate<BeanWrap> where, boolean remoting) {
-        Aop.beanOnloaded(() -> {
-            Aop.beanForeach(bw -> {
+        Solon.context().beanOnloaded((ctx) -> {
+            ctx.beanForeach(bw -> {
                 if (where.test(bw)) {
                     if (remoting) {
                         add(bw, remoting); //强制为 remoting
@@ -270,7 +280,7 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
     @Note("添加接口")
     public void add(Class<?> beanClz) {
         if (beanClz != null) {
-            BeanWrap bw = Aop.wrapAndPut(beanClz);
+            BeanWrap bw = Solon.context().wrapAndPut(beanClz);
 
             add(bw, bw.remoting());
         }
@@ -282,7 +292,7 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
     @Note("添加接口")
     public void add(String path, Class<?> beanClz) {
         if (beanClz != null) {
-            BeanWrap bw = Aop.wrapAndPut(beanClz);
+            BeanWrap bw = Solon.context().wrapAndPut(beanClz);
 
             add(path, bw, bw.remoting());
         }
@@ -294,7 +304,7 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
     @Note("添加接口")
     public void add(Class<?> beanClz, boolean remoting) {
         if (beanClz != null) {
-            add(Aop.wrapAndPut(beanClz), remoting);
+            add(Solon.context().wrapAndPut(beanClz), remoting);
         }
     }
 
@@ -304,7 +314,7 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
     @Note("添加接口")
     public void add(String path, Class<?> beanClz, boolean remoting) {
         if (beanClz != null) {
-            add(path, Aop.wrapAndPut(beanClz), remoting);
+            add(path, Solon.context().wrapAndPut(beanClz), remoting);
         }
     }
 
@@ -332,23 +342,27 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
             return;
         }
 
-        HandlerLoader uw = new HandlerLoader(beanWp, mapping, remoting, this, allowActionMapping());
+        Mapping bMapping = beanWp.clz().getAnnotation(Mapping.class);
+        String bPath = null;
+        if (bMapping != null) {
+            bPath = Utils.annoAlias(bMapping.value(), bMapping.path());
+        }
 
-        uw.load((p1, m, h) -> {
-            if (h instanceof Action) {
-                Action h2 = (Action) h;
+        HandlerLoader uw = new HandlerLoader(beanWp, bPath, remoting, this, allowActionMapping());
 
-                if (Utils.isEmpty(h2.name())) {
-                    mainDef = h2;
-                } else {
-                    if (path == null) {
-                        add(h2.name(), h2);
-                    } else {
-                        add(PathUtil.mergePath(path, h2.name()), h2);
-                    }
-                }
+        uw.load((expr, method, handler) -> {
+            if (path == null) {
+                addDo(expr, method, handler);
+            } else {
+                addDo(PathUtil.mergePath(path, expr), method, handler);
             }
         });
+    }
+
+
+    @Note("添加缺少处理")
+    public void add(Handler handler) {
+        addDo("", MethodType.ALL, handler);
     }
 
     /**
@@ -356,30 +370,45 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
      */
     @Note("添加二级路径处理")
     public void add(String path, Handler handler) {
-        addDo(path, handler);
+        addDo(path, MethodType.ALL, handler);
     }
 
 
     /**
+     * 添加二级路径处理
+     */
+    @Note("添加二级路径处理")
+    public void add(String path, MethodType method, Handler handler) {
+        addDo(path, method, handler);
+    }
+
+    /**
      * 添加接口
      */
-    protected void addDo(String path, Handler handler) {
+    protected void addDo(String path, MethodType method, Handler handler) {
+        if (Utils.isEmpty(path) || "/".equals(path)) {
+            mainDef = handler;
+            return;
+        }
+
         //addPath 已处理 path1= null 的情况
         if (allowPathMerging()) {
-            main.put(PathUtil.mergePath(mapping, path).toUpperCase(), handler);
+            String path2 = PathUtil.mergePath(mapping, path);
+            mainRouting.add(new RoutingDefault<>(path2, method, handler));
         } else {
-            main.put(path.toUpperCase(), handler);
+            mainRouting.add(new RoutingDefault<>(path, method, handler));
         }
     }
 
     /**
      * 获取接口
      */
-    protected Handler getDo(String path) {
+    protected Handler getDo(Context c, String path) {
         if (path == null) {
             return null;
         } else {
-            return main.get(path);
+            MethodType method = MethodType.valueOf(c.method());
+            return mainRouting.matchOne(path, method);
         }
     }
 
@@ -387,11 +416,11 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
      * 查找接口
      */
     protected Handler find(Context c) throws Throwable {
-        return findDo(c, c.pathNew().toUpperCase());
+        return findDo(c, c.pathNew());
     }
 
     protected Handler findDo(Context c, String path) throws Throwable {
-        Handler h = getDo(path);
+        Handler h = getDo(c, path);
 
         if (h == null) {
             mainDef.handle(c);
@@ -399,7 +428,7 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
             return mainDef;
         } else {
             if (h instanceof Action) {
-                c.attrSet("handler_name", ((Action) h).name());
+                c.attrSet("handler_name", ((Action) h).fullName());
             }
             return h;
         }

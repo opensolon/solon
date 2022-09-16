@@ -30,6 +30,7 @@ public class Nami {
 
     private String _url;
     private String _action = "POST";
+    private Object _target;
     private Method _method;
     private final Config _config;
 
@@ -48,8 +49,9 @@ public class Nami {
     /**
      * 设置请求方法
      */
-    public Nami method(Method method) {
+    public Nami method(Object target, Method method) {
         if (method != null) {
+            _target = target;
             _method = method;
         }
         return this;
@@ -116,7 +118,7 @@ public class Nami {
 
     public Nami call(Map<String, String> headers, Map args, Object body) {
         try {
-            Invocation invocation = new Invocation(_config, _method, _action, _url, this::callDo);
+            Invocation invocation = new Invocation(_config, _target,_method, _action, _url, this::callDo);
 
 
             if (headers != null) {

@@ -1,7 +1,7 @@
 package org.noear.solon;
 
 import org.noear.solon.annotation.Note;
-import org.noear.solon.core.event.EventBus;
+import org.noear.solon.core.util.PrintUtil;
 import org.noear.solon.core.wrap.ClassWrap;
 import org.noear.solon.core.*;
 
@@ -12,9 +12,7 @@ import java.lang.reflect.UndeclaredThrowableException;
 import java.net.*;
 import java.security.MessageDigest;
 import java.util.*;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.*;
 import java.util.function.Function;
 
 /**
@@ -26,11 +24,25 @@ import java.util.function.Function;
 @Note("内部专用工具（外部项目不建议使用，随时可能会变动）")
 public class Utils {
     public static final FileNameMap mimeMap = URLConnection.getFileNameMap();
+    @Deprecated
     public static final ExecutorService pools = Executors.newCachedThreadPool();
     public static final ScheduledExecutorService scheduled = Executors.newScheduledThreadPool(Runtime.getRuntime().availableProcessors());
 
     private static final char[] HEX_DIGITS = new char[]{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
 
+    /**
+     * 异步执行
+     * */
+    public static Future<?> async(Runnable task){
+        return pools.submit(task);
+    }
+
+    /**
+     * 异步执行
+     * */
+    public static <T> Future<T> async(Callable<T> task){
+        return pools.submit(task);
+    }
 
     /**
      * Ping 一个地址
@@ -156,7 +168,7 @@ public class Utils {
             } else if (th instanceof UndeclaredThrowableException) {
                 th = ((UndeclaredThrowableException) th).getUndeclaredThrowable();
             } else if (th.getClass() == RuntimeException.class) {
-                if (th.getMessage() == null && th.getCause() != null) {
+                if (th.getCause() != null) {
                     th = th.getCause();
                 } else {
                     break;
@@ -195,6 +207,20 @@ public class Utils {
         }
 
         return false;
+    }
+
+    /**
+     * 去除重复字符
+     * */
+    public static String trimDuplicates(String str, char c) {
+        int start = 0;
+        while ((start = str.indexOf(c, start) + 1) > 0) {
+            int end;
+            for (end = start; end < str.length() && str.charAt(end) == c; end++) ;
+            if (end > start)
+                str = str.substring(0, start) + str.substring(end);
+        }
+        return str;
     }
 
     /**
@@ -414,7 +440,7 @@ public class Utils {
      * @param name 资源名称
      */
     public static String getResourceAsString(String name) throws IOException {
-        return getResourceAsString(JarClassLoader.global(), name, "utf-8");
+        return getResourceAsString(JarClassLoader.global(), name, Solon.encoding());
     }
 
     /**
@@ -547,8 +573,7 @@ public class Utils {
      * @param propS 属性集
      */
     public static <T> T injectProperties(T obj, Properties propS) {
-        ClassWrap.get(obj.getClass()).fill(obj, propS::getProperty);
-        return obj;
+        return PropsConverter.global().convert(propS, obj, null, null);
     }
 
     /**
@@ -579,12 +604,17 @@ public class Utils {
             return extend;
         }
 
+        PrintUtil.info("Extend org: " + extend);
+
         URL temp = Utils.getResource("");
 
         if (temp == null) {
             return null;
         } else {
             String uri = temp.toString();
+
+            PrintUtil.info("Resource root: " + uri);
+
             if (uri.startsWith("file:/")) {
                 int idx = uri.lastIndexOf("/target/");
                 if (idx > 0) {
@@ -627,7 +657,7 @@ public class Utils {
      * 将 source:Properties 数据，绑定到 target:bean
      */
     public static void bindTo(Properties source, Object target) {
-        bindTo((k) -> source.getProperty(k), target);
+        injectProperties(target, source);
     }
 
     /**
@@ -638,7 +668,7 @@ public class Utils {
             return;
         }
 
-        ClassWrap.get(target.getClass()).fill(target, source, null);
+        ClassWrap.get(target.getClass()).fill(target, source);
     }
 
     /**

@@ -1,13 +1,15 @@
 package org.noear.solon.core;
 
-import org.noear.solon.annotation.Init;
-import org.noear.solon.annotation.Singleton;
-import org.noear.solon.core.wrap.ClassWrap;
-
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
+
+import org.noear.solon.annotation.Init;
+import org.noear.solon.annotation.Singleton;
+import org.noear.solon.core.util.IndexBuilder;
+import org.noear.solon.core.wrap.ClassWrap;
 
 /**
  * Bean 包装
@@ -46,12 +48,15 @@ public class BeanWrap {
     // bean clz 的注解（算是缓存起来）
     private final Annotation[] annotations;
 
+    private final AopContext context;
 
-    public BeanWrap(Class<?> clz){
-        this(clz, null);
+
+    public BeanWrap(AopContext context,Class<?> clz) {
+        this(context,clz, null);
     }
 
-    public BeanWrap(Class<?> clz, Object raw) {
+    public BeanWrap(AopContext context,Class<?> clz, Object raw) {
+        this.context = context;
         this.clz = clz;
 
         Singleton ano = clz.getAnnotation(Singleton.class);
@@ -67,33 +72,37 @@ public class BeanWrap {
         }
     }
 
-    public BeanWrap(Class<?> clz, Object raw, String[] attrs) {
-        this(clz, raw);
+    public BeanWrap(AopContext context,Class<?> clz, Object raw, String[] attrs) {
+        this(context,clz, raw);
         attrsSet(attrs);
     }
 
-    public Proxy proxy(){
+    public AopContext context() {
+        return context;
+    }
+
+    public Proxy proxy() {
         return proxy;
     }
 
     //设置代理
-    public void proxySet(BeanWrap.Proxy proxy){
+    public void proxySet(BeanWrap.Proxy proxy) {
         this.proxy = proxy;
 
-        if(raw != null){
+        if (raw != null) {
             //如果_raw存在，则进行代理转换
-            raw = proxy.getProxy(raw);
+            raw = proxy.getProxy(context(), raw);
         }
     }
 
     /**
      * 是否为单例
-     * */
-    public boolean singleton(){
+     */
+    public boolean singleton() {
         return singleton;
     }
 
-    public void singletonSet(boolean singleton){
+    public void singletonSet(boolean singleton) {
         this.singleton = singleton;
     }
 
@@ -121,26 +130,43 @@ public class BeanWrap {
     public <T> T raw() {
         return (T) raw;
     }
+
     protected void rawSet(Object raw) {
         this.raw = raw;
     }
-    /**
-     * bean 标签
-     * */
-    public String name(){ return name; }
-    protected void nameSet(String name){ this.name = name; }
 
     /**
      * bean 标签
-     * */
-    public String tag(){ return tag; }
-    protected void tagSet(String tag){ this.tag = tag; }
+     */
+    public String name() {
+        return name;
+    }
+
+    protected void nameSet(String name) {
+        this.name = name;
+    }
+
+    /**
+     * bean 标签
+     */
+    public String tag() {
+        return tag;
+    }
+
+    protected void tagSet(String tag) {
+        this.tag = tag;
+    }
 
     /**
      * bean 特性
-     * */
-    public String[] attrs(){ return attrs; }
-    protected void attrsSet(String[] attrs){ this.attrs = attrs; }
+     */
+    public String[] attrs() {
+        return attrs;
+    }
+
+    protected void attrsSet(String[] attrs) {
+        this.attrs = attrs;
+    }
 
     public String attrGet(String name) {
         if (attrs == null) {
@@ -163,18 +189,23 @@ public class BeanWrap {
 
     /**
      * bean 是否有类型化标识
-     * */
-    public boolean typed(){return typed;}
-    protected void typedSet(boolean typed){
-        this.typed = typed; }
+     */
+    public boolean typed() {
+        return typed;
+    }
+
+    protected void typedSet(boolean typed) {
+        this.typed = typed;
+    }
 
     /**
      * 注解
-     * */
+     */
     public Annotation[] annotations() {
         return annotations;
     }
-    public <T extends Annotation> T annotationGet(Class<T> annClz){
+
+    public <T extends Annotation> T annotationGet(Class<T> annClz) {
         return clz.getAnnotation(annClz);
     }
 
@@ -191,15 +222,15 @@ public class BeanWrap {
 
     /**
      * bean 初始化
-     * */
-    public void init(Object bean) {
+     */
+    protected void init(Object bean) {
         //a.注入
-        Aop.inject(bean);
+        context.beanInject(bean);
 
         //b.调用初始化函数
         if (clzInit != null) {
             if (clzInitDelay) {
-                Aop.beanOnloaded(() -> {
+                context.beanOnloaded(IndexBuilder.buildIndex(clz), (ctx) -> {
                     initInvokeDo(bean);
                 });
             } else {
@@ -207,6 +238,7 @@ public class BeanWrap {
             }
         }
     }
+
 
     protected void initInvokeDo(Object bean) {
         try {
@@ -234,7 +266,7 @@ public class BeanWrap {
             init(bean);
 
             if (proxy != null) {
-                bean = proxy.getProxy(bean);
+                bean = proxy.getProxy(context(), bean);
             }
 
             return bean;
@@ -247,7 +279,7 @@ public class BeanWrap {
 
     /**
      * 尝试构建初始化函数
-     * */
+     */
     protected void tryBuildInit() {
         if (clzInit != null) {
             return;
@@ -264,8 +296,9 @@ public class BeanWrap {
             Init initAnno = m.getAnnotation(Init.class);
             if (initAnno != null) {
                 if (m.getParameters().length == 0) {
-                    //只接收没有参数的
+                    //只接收没有参数的，支持非公有函数
                     clzInit = m;
+                    clzInit.setAccessible(true);
                     clzInitDelay = initAnno.delay();
                 }
                 break;
@@ -278,12 +311,25 @@ public class BeanWrap {
      *
      * @author noear
      * @since 1.0
-     * */
+     */
     @FunctionalInterface
     public interface Proxy {
         /**
          * 获取代理
-         * */
-        Object getProxy(Object bean);
+         */
+        Object getProxy(AopContext ctx, Object bean);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof BeanWrap)) return false;
+        BeanWrap beanWrap = (BeanWrap) o;
+        return clz.equals(beanWrap.clz);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(clz);
     }
 }

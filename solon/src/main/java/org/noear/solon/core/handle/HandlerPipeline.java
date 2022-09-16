@@ -1,5 +1,8 @@
 package org.noear.solon.core.handle;
 
+import org.noear.solon.core.message.Listener;
+import org.noear.solon.core.message.ListenerPipeline;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -12,8 +15,19 @@ import java.util.List;
 public class HandlerPipeline implements Handler {
     private List<Handler> chain = new LinkedList<>();
 
+    /**
+     * 下一步
+     * */
     public HandlerPipeline next(Handler handler) {
         chain.add(handler);
+        return this;
+    }
+
+    /**
+     * 上一步
+     * */
+    public HandlerPipeline prev(Handler handler) {
+        chain.add(0, handler);
         return this;
     }
 

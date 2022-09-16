@@ -5,8 +5,10 @@ import org.noear.solon.core.handle.Endpoint;
 import org.noear.solon.core.handle.Handler;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.message.Listener;
+import org.noear.solon.core.message.ListenerHolder;
 import org.noear.solon.core.message.Session;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -21,13 +23,13 @@ public class RouterDefault implements Router{
     private final RoutingTable<Listener> routesL;
 
     public RouterDefault() {
-        routesH = new RoutingTable[3];
+        routesH = new RoutingTableDefault[3];
 
-        routesH[0] = new RoutingTable<>();//before:0
-        routesH[1] = new RoutingTable<>();//main
-        routesH[2] = new RoutingTable<>();//after:2
+        routesH[0] = new RoutingTableDefault<>();//before:0
+        routesH[1] = new RoutingTableDefault<>();//main
+        routesH[2] = new RoutingTableDefault<>();//after:2
 
-        routesL = new RoutingTable<>();
+        routesL = new RoutingTableDefault<>();
     }
 
     /**
@@ -51,6 +53,13 @@ public class RouterDefault implements Router{
         }
     }
 
+    @Override
+    public void remove(String pathPrefix) {
+        routesH[Endpoint.before.code].remove(pathPrefix);
+        routesH[Endpoint.main.code].remove(pathPrefix);
+        routesH[Endpoint.after.code].remove(pathPrefix);
+    }
+
     /**
      * 获取某个处理点的所有路由记录
      *
@@ -58,8 +67,8 @@ public class RouterDefault implements Router{
      * @return 处理点的所有路由记录
      * */
     @Override
-    public List<Routing<Handler>> getAll(Endpoint endpoint){
-        return Collections.unmodifiableList(routesH[endpoint.code]);
+    public Collection<Routing<Handler>> getAll(Endpoint endpoint){
+        return routesH[endpoint.code].getAll();
     }
 
 
@@ -107,7 +116,9 @@ public class RouterDefault implements Router{
      */
     @Override
     public void add(String path, MethodType method, int index, Listener listener) {
-        routesL.add(new RoutingDefault<>(path, method, index, listener));
+        Listener lh = new ListenerHolder(path, listener);
+
+        routesL.add(new RoutingDefault<>(path, method, index, lh));
     }
 
     /**
@@ -118,12 +129,23 @@ public class RouterDefault implements Router{
      */
     @Override
     public Listener matchOne(Session session) {
-        String path = session.path();
+        String path = session.pathNew();
 
         if (path == null) {
             return null;
         } else {
             return routesL.matchOne(path, session.method());
+        }
+    }
+
+    @Override
+    public List<Listener> matchAll(Session session) {
+        String path = session.pathNew();
+
+        if (path == null) {
+            return null;
+        } else {
+            return routesL.matchAll(path, session.method());
         }
     }
 

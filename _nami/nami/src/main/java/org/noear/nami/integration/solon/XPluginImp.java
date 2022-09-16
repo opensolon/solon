@@ -3,9 +3,8 @@ package org.noear.nami.integration.solon;
 import org.noear.nami.*;
 import org.noear.nami.annotation.NamiClient;
 import org.noear.nami.common.InfoUtils;
-import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
-import org.noear.solon.core.Aop;
+import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
 
 import java.util.LinkedHashMap;
@@ -19,12 +18,12 @@ public class XPluginImp implements Plugin {
     private Map<NamiClient, Object> cached = new LinkedHashMap<>();
 
     @Override
-    public void start(SolonApp app) {
+    public void start(AopContext context) {
         if (NamiConfigurationDefault.proxy == null) {
-            NamiConfigurationDefault.proxy = new NamiConfigurationSolon();
+            NamiConfigurationDefault.proxy = new NamiConfigurationSolon(context);
         }
 
-        Aop.context().beanInjectorAdd(NamiClient.class, (varH, anno) -> {
+        context.beanInjectorAdd(NamiClient.class, (varH, anno) -> {
             if (varH.getType().isInterface() == false) {
                 return;
             }
@@ -48,7 +47,7 @@ public class XPluginImp implements Plugin {
                     obj = cached.get(anno);
                     if (obj == null) {
                         obj = Nami.builder().create(varH.getType(), anno);
-                        cached.putIfAbsent(anno, obj);
+                        cached.put(anno, obj);
                     }
                 }
             }

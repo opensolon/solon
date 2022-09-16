@@ -1,8 +1,8 @@
 package org.noear.solon.core.message;
 
 import org.noear.solon.core.NvMap;
-import org.noear.solon.core.Signal;
 import org.noear.solon.core.handle.MethodType;
+import org.noear.solon.core.util.PathUtil;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.function.BiConsumer;
 
 /**
- * SocketD 会话（为 Message + Listener 架构服务 ）
+ * 会话（为 Message + Listener 架构服务 ）
  *
  * @author noear
  * @since 1.0
@@ -39,6 +39,24 @@ public interface Session {
      * 路径（socket 可能为null）
      */
     String path();
+
+    /**
+     * 设置新路径
+     */
+    void pathNew(String pathNew);
+
+    /**
+     * 获取新路径，不存在则返回原路径
+     */
+    String pathNew();
+
+
+    /**
+     * 获取请求的URI路径变量,根据路径表达式
+     */
+    default NvMap pathMap(String expr) {
+        return PathUtil.pathVarMap(pathNew(), expr);
+    }
 
     /**
      * 请求头
@@ -70,6 +88,22 @@ public interface Session {
      */
     NvMap paramMap();
 
+
+
+    /**
+     * 获取特性
+     * */
+    default Object attr(String name){ return attrMap().get(name); }
+    /**
+     * 设置特性
+     * */
+    default void attrSet(String name, Object value){ attrMap().put(name, value);}
+    /**
+     * 特性集合
+     * */
+    Map<String,Object> attrMap();
+
+
     /**
      * 标识（为特定业务提供帮助）
      */
@@ -80,6 +114,15 @@ public interface Session {
      */
     void flagSet(int flag);
 
+    /**
+     * 发送消息
+     */
+    void sendAsync(String message);
+
+    /**
+     * 发送消息
+     */
+    void sendAsync(Message message);
 
     /**
      * 发送消息
@@ -90,6 +133,7 @@ public interface Session {
      * 发送消息
      */
     void send(Message message);
+
 
     /**
      * 发送消息并等待响应

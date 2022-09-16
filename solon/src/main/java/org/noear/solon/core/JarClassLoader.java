@@ -164,6 +164,17 @@ public class JarClassLoader extends URLClassLoader {
         }
     }
 
+    @Override
+    public void close() throws IOException {
+        super.close();
+
+        for (JarURLConnection jarURL : cachedMap.values()) {
+            jarURL.getJarFile().close();
+        }
+
+        cachedMap.clear();
+    }
+
     /**
      * 加载类
      *

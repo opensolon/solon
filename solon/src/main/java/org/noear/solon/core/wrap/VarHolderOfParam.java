@@ -1,10 +1,12 @@
 package org.noear.solon.core.wrap;
 
+import org.noear.solon.core.AopContext;
 import org.noear.solon.core.VarHolder;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Parameter;
 import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 
 /**
  * 参数变量容器 临时对象
@@ -15,19 +17,36 @@ import java.lang.reflect.ParameterizedType;
  * @since 1.0
  * */
 public class VarHolderOfParam implements VarHolder {
-    protected Parameter p;
+    private final Parameter p;
+    private final ParameterizedType genericType;
+    private final AopContext ctx;
+
     protected Object val;
     protected boolean done;
     protected Runnable onDone;
 
-    public VarHolderOfParam(Parameter p, Runnable onDone){
+    public VarHolderOfParam(AopContext ctx,Parameter p, Runnable onDone) {
+        this.ctx = ctx;
         this.p = p;
         this.onDone = onDone;
+
+        //简化处理 //只在 @Bean 时有用；不会有复杂的泛型
+        Type tmp = p.getParameterizedType();
+        if (tmp instanceof ParameterizedType) {
+            genericType = (ParameterizedType) tmp;
+        } else {
+            genericType = null;
+        }
+    }
+
+    @Override
+    public AopContext context() {
+        return ctx;
     }
 
     @Override
     public ParameterizedType getGenericType() {
-        return (ParameterizedType)p.getParameterizedType();
+        return genericType;
     }
 
     @Override

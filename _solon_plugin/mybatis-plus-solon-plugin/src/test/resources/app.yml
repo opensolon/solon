@@ -1,0 +1,25 @@
+server:
+  port: 6040
+
+# 配置数据源
+dataSource:
+  db1:
+    # 与数据库名可用保持一致
+    schema: flowersay
+    jdbcUrl: jdbc:mysql://172.16.0.3:3306/flowersay?useUnicode=true&characterEncoding=utf8&autoReconnect=true&rewriteBatchedStatements=true
+    driverClassName: com.mysql.cj.jdbc.Driver
+    username: root
+    password: 123456
+
+mybatis:
+  db1:
+    mappers:
+      - "demo.mappers"
+    configuration:
+      cacheEnabled: false
+      mapUnderscoreToCamelCase: true
+    globalConfig:
+      banner: false
+      metaObjectHandler: "demo.dso.MetaObjectHandlerImpl"
+      dbConfig:
+        logicDeleteField: "deleted"

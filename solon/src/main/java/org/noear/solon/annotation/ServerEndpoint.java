@@ -8,7 +8,7 @@ import java.lang.annotation.*;
  * 监听处理端点（为 Message + Listener 架构，提供容器化支持）
  *
  * <pre><code>
- * @ServerEndpoint(value = "/demoe/websocket")
+ * @ServerEndpoint(value = "/demoe/websocket/{id}")
  * public class SocketListenerImp implements Listener {
  *     @Override
  *     public void onMessage(Session session, Message message) {

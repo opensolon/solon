@@ -1,5 +1,6 @@
 package org.noear.solon.core;
 
+import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.util.PrintUtil;
 
@@ -69,11 +70,11 @@ public class PropsLoader {
             PrintUtil.info(url);
 
             Properties tmp = new Properties();
-            tmp.load(new InputStreamReader(url.openStream()));
+            tmp.load(new InputStreamReader(url.openStream(), Solon.encoding()));
             return tmp;
         }
 
-        return null;
+        throw new IllegalStateException("This profile is not supported: " + fileName);
     }
 
     /**

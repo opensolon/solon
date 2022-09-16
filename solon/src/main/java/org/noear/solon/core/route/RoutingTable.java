@@ -2,51 +2,58 @@ package org.noear.solon.core.route;
 
 import org.noear.solon.core.handle.MethodType;
 
-import java.util.ArrayList;
-import java.util.Comparator;
+import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * 路由表
  *
  * @author noear
- * @since 1.0
- * */
-public class RoutingTable<T> extends ArrayList<Routing<T>> {
-    public RoutingTable() {
-        super();
-    }
+ * @since 1.7
+ */
+public interface RoutingTable<T> {
+    /**
+     * 添加路由记录
+     *
+     * @param routing 路由
+     */
+    void add(Routing<T> routing);
+
+    /**
+     * 添加路由记录
+     *
+     * @param routing 路由
+     * @param index 索引位置
+     */
+    void add(int index, Routing<T> routing);
+
+    void remove(String pathPrefix);
+
+    /**
+     * 获取所有路由记录
+     * */
+    Collection<Routing<T>> getAll();
 
     /**
      * 区配一个目标
      *
-     * @param path 路径
+     * @param path   路径
      * @param method 方法
      * @return 一个区配的目标
      */
-    public T matchOne(String path, MethodType method) {
-        for (Routing<T> l : this) {
-            if (l.matches(method, path)) {
-                return l.target();
-            }
-        }
-
-        return null;
-    }
+    T matchOne(String path, MethodType method);
 
     /**
      * 区配多个目标
      *
-     * @param path 路径
+     * @param path   路径
      * @param method 方法
      * @return 一批区配的目标
      */
-    public List<T> matchAll(String path, MethodType method) {
-        return this.stream()
-                .filter(l -> l.matches(method, path))
-                .sorted(Comparator.comparingInt(l -> l.index()))
-                .map(l -> l.target())
-                .collect(Collectors.toList());
-    }
+    List<T> matchAll(String path, MethodType method);
+
+    /**
+     * 清空
+     * */
+    void clear();
 }

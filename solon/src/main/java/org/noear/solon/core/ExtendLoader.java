@@ -88,7 +88,7 @@ public class ExtendLoader {
     public static boolean loadJar(List<ClassLoader> loaders, File file) {
         try {
             //启用了扩展隔离或者强制隔离
-            if (Solon.global().enableJarIsolation() || file.getName().startsWith("!")) {
+            if (Solon.app().enableJarIsolation() || file.getName().startsWith("!")) {
                 loaders.add(JarClassLoader.loadJar(file));
             } else {
                 JarClassLoader.global().addJar(file);
@@ -185,7 +185,7 @@ public class ExtendLoader {
 
                 if (path.endsWith(".yml")) {
                     if (PropsLoader.global().isSupport(path) == false) {
-                        throw new RuntimeException("Do not support the *.yml");
+                        throw new IllegalStateException("Do not support the *.yml");
                     }
 
                     Solon.cfg().loadAdd(file.toURI().toURL());

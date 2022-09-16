@@ -1,11 +1,12 @@
 package org.noear.solon;
 
+import org.noear.solon.core.AopContext;
 import org.noear.solon.core.JarClassLoader;
 import org.noear.solon.core.NvMap;
+import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.PrintUtil;
-import org.noear.solon.ext.ConsumerEx;
+import org.noear.solon.core.util.ConsumerEx;
 
-import javax.rmi.CORBA.Util;
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
 
@@ -27,28 +28,59 @@ public class Solon {
     //默认停止延时
     private static int stopDelay = 10;
     //全局实例
-    private static SolonApp global;
+    private static SolonApp app;
+    //全局默认编码
+    private static String encoding = "utf-8";
+    private final static AopContext ac = new AopContext();
+
+    /**
+     * 获取全局的Aop上下文
+     */
+    public static AopContext context() {
+        return ac;
+    }
+
+    @Deprecated
+    public static SolonApp global() {
+        return app;
+    }
 
     /**
      * 全局实例
      */
-    public static SolonApp global() {
-        return global;
+    public static SolonApp app() {
+        return app;
     }
 
     /**
      * 应用配置
-     * */
-    public static SolonProps cfg(){
-        return global().cfg();
+     */
+    public static SolonProps cfg() {
+        return app().cfg();
     }
 
+    /**
+     * 全局默认编码
+     */
+    public static String encoding() {
+        return encoding;
+    }
+
+    /**
+     * 全局默认编码设置
+     */
+    public static void encodingSet(String charset) {
+        //只能在初始化之前设置
+        if (app == null && Utils.isNotEmpty(charset)) {
+            encoding = charset;
+        }
+    }
 
     /**
      * 启动应用（全局只启动一个）
      *
      * @param source 主应用包（用于定制Bean所在包）
-     * @param args 启动参数
+     * @param args   启动参数
      */
     public static SolonApp start(Class<?> source, String[] args) {
         return start(source, args, null);
@@ -57,10 +89,10 @@ public class Solon {
     /**
      * 启动应用（全局只启动一个）
      *
-     * @param source 主应用包（用于定制Bean所在包）
-     * @param args 启动参数
+     * @param source     主应用包（用于定制Bean所在包）
+     * @param args       启动参数
      * @param initialize 实始化函数
-     * */
+     */
     public static SolonApp start(Class<?> source, String[] args, ConsumerEx<SolonApp> initialize) {
         //1.初始化应用，加载配置
         NvMap argx = NvMap.from(args);
@@ -70,14 +102,22 @@ public class Solon {
     /**
      * 启动应用（全局只启动一个）
      *
-     * @param source 主应用包（用于定制Bean所在包）
-     * @param argx 启动参数
+     * @param source     主应用包（用于定制Bean所在包）
+     * @param argx       启动参数
      * @param initialize 实始化函数
-     * */
+     */
     public static SolonApp start(Class<?> source, NvMap argx, ConsumerEx<SolonApp> initialize) {
-        if (global != null) {
-            return global;
+        if (app != null) {
+            return app;
         }
+
+        //设置文件编码
+        if (Utils.isNotEmpty(encoding)) {
+            System.setProperty("file.encoding", encoding);
+        }
+
+        //设置 headless 默认值
+        System.getProperties().putIfAbsent("java.awt.headless","true");
 
         //确定PID
         RuntimeMXBean rb = ManagementFactory.getRuntimeMXBean();
@@ -89,37 +129,44 @@ public class Solon {
 
         PrintUtil.info("App", "Start loading");
 
-        //1.创建全局应用
-        global = new SolonApp(source, argx);
 
-        //2.0.内部初始化等待（尝试ping等待）
-        global.initAwait();
+        try {
+            //1.创建全局应用及配置
+            app = new SolonApp(source, argx);
 
-        //2.1.内部初始化（如配置等，顺序不能乱）
-        global.init();
+            //2.0.内部初始化等待（尝试ping等待）
+            app.initAwait();
 
-        //2.2.自定义初始化
-        if (initialize != null) {
-            try {
-                initialize.accept(global);
-            } catch (Throwable ex) {
-                ex = Utils.throwableUnwrap(ex);
-                if (ex instanceof RuntimeException) {
-                    throw (RuntimeException) ex;
-                } else {
-                    throw new RuntimeException(ex);
-                }
+            //2.1.内部初始化（如配置等，顺序不能乱）
+            app.init();
+
+            //2.2.自定义初始化
+            if (initialize != null) {
+                initialize.accept(app);
             }
+
+            //3.运行应用（运行插件、扫描Bean等）
+            app.run();
+
+        } catch (Throwable ex) {
+            //显示异常信息
+            ex = Utils.throwableUnwrap(ex);
+            EventBus.push(ex);
+
+            if (app.enableErrorAutoprint() == false) {
+                ex.printStackTrace();
+            }
+
+            //4.停止服务并退出（主要是停止插件）
+            Solon.stop0(true, 0);
+            return null;
         }
 
-        //3.运行应用（运行插件、扫描Bean等）
-        global.run();
 
-
-        //4.初始化安全停止
+        //5.初始化安全停止
         stopDelay = Solon.cfg().getInt("solon.stop.delay", 10);
 
-        if (global.enableSafeStop()) {
+        if (app.enableSafeStop()) {
             //添加关闭勾子
             Runtime.getRuntime().addShutdownHook(new Thread(() -> Solon.stop0(false, stopDelay)));
         } else {
@@ -127,23 +174,23 @@ public class Solon {
         }
 
         //启动完成
-        PrintUtil.info("App", "End loading elapsed=" + global.elapsedTimes() + "ms pid=" + pid);
+        PrintUtil.info("App", "End loading elapsed=" + app.elapsedTimes() + "ms pid=" + pid);
 
-        return global;
+        return app;
     }
 
     /**
      * 设置停止延时时间（单位：秒）
      *
      * @param delay 延迟时间（单位：秒）
-     * */
-    public static void stopDelaySet(int delay){
+     */
+    public static void stopDelaySet(int delay) {
         stopDelay = delay;
     }
 
     /**
      * 停止应用
-     * */
+     */
     public static void stop() {
         stop(stopDelay);
     }
@@ -152,13 +199,13 @@ public class Solon {
      * 停止应用
      *
      * @param delay 延迟时间（单位：秒）
-     * */
+     */
     public static void stop(int delay) {
         new Thread(() -> stop0(true, delay)).start();
     }
 
     private static void stop0(boolean exit, int delay) {
-        if (Solon.global() == null) {
+        if (Solon.app() == null) {
             return;
         }
 
@@ -183,7 +230,7 @@ public class Solon {
                 sleep0(delay1);
             }
 
-            Solon.global().stopped = true;
+            Solon.app().stopped = true;
 
             //二段暂停
             if (delay2 > 0) {
@@ -200,7 +247,7 @@ public class Solon {
             Solon.cfg().plugs().forEach(p -> p.prestop());
 
             //2.标停
-            Solon.global().stopped = true;
+            Solon.app().stopped = true;
             //3.停止
             Solon.cfg().plugs().forEach(p -> p.stop());
         }
@@ -212,7 +259,7 @@ public class Solon {
         }
     }
 
-    private static void sleep0(int seconds){
+    private static void sleep0(int seconds) {
         try {
             Thread.sleep(seconds * 1000);
         } catch (InterruptedException ex) {

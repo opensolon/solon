@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.noear</groupId>
+        <artifactId>solon-parent</artifactId>
+        <version>${revision}</version>
+        <relativePath>../../solon-parent/pom.xml</relativePath>
+    </parent>
+
+    <artifactId>sqltoy-solon-plugin</artifactId>
+    <packaging>jar</packaging>
+
+
+    <properties>
+        <sqltoy.ver>5.2.9</sqltoy.ver>
+        <caffeine.ver>2.9.2</caffeine.ver>
+        <mongo.version>3.12.11</mongo.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.data</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>redisx</artifactId>
+            <scope>provided</scope>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.aspect</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.mongodb</groupId>
+            <artifactId>mongo-java-driver</artifactId>
+            <version>${mongo.version}</version>
+            <scope>provided</scope>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>liquor</artifactId>
+            <version>1.0.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.sagframe</groupId>
+            <artifactId>sagacity-sqltoy</artifactId>
+            <version>${sqltoy.ver}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+<!--        <dependency>-->
+<!--            <groupId>com.github.ben-manes.caffeine</groupId>-->
+<!--            <artifactId>caffeine</artifactId>-->
+<!--            <version>${caffeine.ver}</version>-->
+<!--            <scope>provided</scope>-->
+<!--        </dependency>-->
+
+        <!-- test... -->
+        <dependency>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
+            <version>3.3.1</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.28</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+</project>

@@ -8,7 +8,7 @@ import java.lang.reflect.ParameterizedType;
  *
  * <pre><code>
  * //@Db 注入器添加
- * Aop.context().beanInjectorAdd(Db.classs, (varH, anno)->{
+ * Solon.context().beanInjectorAdd(Db.classs, (varH, anno)->{
  *     ...
  * });
  * </code></pre>
@@ -17,6 +17,7 @@ import java.lang.reflect.ParameterizedType;
  * @since 1.0
  * */
 public interface VarHolder {
+    AopContext context();
 
     ParameterizedType getGenericType();
 

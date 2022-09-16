@@ -1,9 +1,0 @@
-t5_undertow.test.noear.org
-
-t4_nettyhttp.test.noear.org
-
-t3_smarthttp.test.noear.org
-
-t2_jlhttp.test.noear.org
-
-t1_jetty.test.noear.org

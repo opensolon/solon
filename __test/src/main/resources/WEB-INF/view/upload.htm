@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>upload demo</title>
+</head>
+<body>
+<form enctype="multipart/form-data" action="/demo2/param/g" method="post">
+    <input type="text" name="title" value="bbb">
+    <br>
+    <input type="file" name="file" multiple>
+    <br>
+    <button type="submit">上传</button>
+</form>
+
+<hr>
+
+<form action="/demo2/param/f" method="post">
+    <input type="text" name="aaa" value="1"><br>
+    <input type="text" name="aaa" value="2"><br>
+    <input type="text" name="ccc" value="ccc"><br>
+    <button type="submit">提交</button>
+</form>
+
+</body>
+</html>

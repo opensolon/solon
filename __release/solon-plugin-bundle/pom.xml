@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.noear</groupId>
+        <artifactId>solon-parent</artifactId>
+        <version>${revision}</version>
+        <relativePath>../../solon-parent/pom.xml</relativePath>
+    </parent>
+
+    <groupId>org.noear.bundle</groupId>
+    <artifactId>solon-plugin-bundle</artifactId>
+    <packaging>pom</packaging>
+
+    <name>${project.artifactId}</name>
+    <description>Java project for solon</description>
+    <url>https://github.com/noear/solon</url>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>1.8</java.version>
+    </properties>
+
+
+    <modules>
+        <module>../../_solon_plugin/solon-springboot-starter</module>
+
+        <module>../../_solon_plugin/detector-solon-plugin</module>
+
+        <module>../../_solon_plugin/beetlsql-solon-plugin</module>
+
+        <module>../../_solon_plugin/cron4j-solon-plugin</module>
+        <module>../../_solon_plugin/dubbo-solon-plugin</module>
+        <module>../../_solon_plugin/dubbo3-solon-plugin</module>
+        <module>../../_solon_plugin/feign-solon-plugin</module>
+        <module>../../_solon_plugin/forest-solon-plugin</module>
+
+        <module>../../_solon_plugin/graphql-solon-plugin</module>
+        <module>../../_solon_plugin/hasor-solon-plugin</module>
+        <module>../../_solon_plugin/hasordb-solon-plugin</module>
+        <module>../../_solon_plugin/dbvisitor-solon-plugin</module>
+
+        <module>../../_solon_plugin/luffy-solon-plugin</module>
+
+        <module>../../_solon_plugin/jap-ids-solon-plugin</module>
+        <module>../../_solon_plugin/jap-solon-plugin</module>
+
+        <module>../../_solon_plugin/weed3-solon-plugin</module>
+
+        <module>../../_solon_plugin/sqltoy-solon-plugin</module>
+
+        <module>../../_solon_plugin/mybatis-solon-plugin</module>
+        <module>../../_solon_plugin/mybatis-sqlhelper-solon-plugin</module>
+        <module>../../_solon_plugin/mybatis-pagehelper-solon-plugin</module>
+
+        <module>../../_solon_plugin/mybatis-plus-solon-plugin</module>
+        <module>../../_solon_plugin/mybatis-plus-extension-solon-plugin</module>
+
+        <module>../../_solon_plugin/activerecord-solon-plugin</module>
+
+        <module>../../_solon_plugin/quartz-solon-plugin</module>
+
+        <module>../../_solon_plugin/shiro-solon-plugin</module>
+        <module>../../_solon_plugin/sureness-solon-plugin</module>
+        <module>../../_solon_plugin/sa-token-solon-plugin</module>
+
+        <module>../../_solon_plugin/captcha-solon-plugin</module>
+        <module>../../_solon_plugin/vaptcha-solon-plugin</module>
+
+
+        <module>../../_solon_plugin/log4j2-solon-plugin</module>
+        <module>../../_solon_plugin/logback-solon-plugin</module>
+
+
+        <module>../../_solon_plugin/dynamic-tp-solon-plugin</module>
+
+        <module>../../_solon_plugin/bean-searcher-solon-plugin</module>
+
+<!--        <module>../../_solon_plugin/hazelcast-solon-plugin</module>-->
+
+        <module>../../_solon_plugin/solon-maven-plugin</module>
+    </modules>
+
+
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>noear</name>
+            <email>noear@live.cn</email>
+            <organization>noear.org</organization>
+            <organizationUrl>http://www.noear.org</organizationUrl>
+        </developer>
+    </developers>
+    <scm>
+        <connection>scm:git:git@github.com:noear/solon.git</connection>
+        <developerConnection>scm:git:git@github.com:noear/solon.git</developerConnection>
+        <url>https://github.com/noear/solon</url>
+    </scm>
+
+
+    <profiles>
+        <profile>
+            <id>release</id>
+            <build>
+                <plugins>
+                    <!-- GPG -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.5</version>
+                        <executions>
+                            <execution>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+
+                    <!-- Source -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <version>3.0.1</version>
+                        <configuration>
+                            <attach>true</attach>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <phase>compile</phase>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <!-- Javadoc -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>2.10.3</version>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                                <configuration>
+                                    <additionalparam>-Xdoclint:none</additionalparam>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <plugin>
+                        <groupId>org.sonatype.plugins</groupId>
+                        <artifactId>nexus-staging-maven-plugin</artifactId>
+                        <version>1.6.8</version>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <serverId>oss</serverId>
+                            <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                            <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+
+            <distributionManagement>
+                <snapshotRepository>
+                    <id>oss</id>
+                    <name>snapshots</name>
+                    <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+                </snapshotRepository>
+                <repository>
+                    <id>oss</id>
+                    <name>releases</name>
+                    <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+                </repository>
+            </distributionManagement>
+        </profile>
+    </profiles>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <compilerArgument>-parameters</compilerArgument>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>3.3.0</version>
+                <configuration>
+                    <finalName>${project.artifactId}</finalName>
+                    <appendAssemblyId>false</appendAssemblyId>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                </configuration>
+            </plugin>
+
+        </plugins>
+    </build>
+</project>

@@ -8,7 +8,7 @@ import java.util.UUID;
 import java.util.function.Function;
 
 /**
- * SocketD 消息包（实现 Message + Listener 架构）
+ * 消息包（实现 Message + Listener 架构）
  *
  * 格式一：{flag + body}
  * 格式二：{flag + key + resourceDescriptor + header + body}

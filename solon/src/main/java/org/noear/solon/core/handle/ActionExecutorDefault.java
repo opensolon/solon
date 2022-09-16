@@ -5,6 +5,7 @@ import org.noear.solon.core.wrap.MethodWrap;
 import org.noear.solon.core.util.ConvertUtil;
 import org.noear.solon.core.wrap.ParamWrap;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -22,8 +23,8 @@ public class ActionExecutorDefault implements ActionExecutor {
      * 是否匹配
      *
      * @param ctx 上下文
-     * @param ct 内容类型
-     * */
+     * @param ct  内容类型
+     */
     @Override
     public boolean matched(Context ctx, String ct) {
         return true;
@@ -32,10 +33,10 @@ public class ActionExecutorDefault implements ActionExecutor {
     /**
      * 执行
      *
-     * @param ctx 上下文
-     * @param obj 控制器
+     * @param ctx   上下文
+     * @param obj   控制器
      * @param mWrap 函数包装器
-     * */
+     */
     @Override
     public Object execute(Context ctx, Object obj, MethodWrap mWrap) throws Throwable {
         List<Object> args = buildArgs(ctx, mWrap.getParamWraps());
@@ -61,7 +62,11 @@ public class ActionExecutorDefault implements ActionExecutor {
                 //如果是 Context 类型，直接加入参数
                 //
                 args.add(ctx);
-            } else if(Locale.class.isAssignableFrom(pt)){
+            } else if (ModelAndView.class.isAssignableFrom(pt)) {
+                //如果是 ModelAndView 类型，直接加入参数
+                //
+                args.add(new ModelAndView());
+            } else if (Locale.class.isAssignableFrom(pt)) {
                 //如果是 Locale 类型，直接加入参数
                 //
                 args.add(ctx.getLocale());
@@ -74,7 +79,22 @@ public class ActionExecutorDefault implements ActionExecutor {
             } else if (pt.getTypeName().equals("javax.servlet.http.HttpServletResponse")) {
                 args.add(ctx.response());
             } else {
-                Object tv = changeValue(ctx, p, i, pt, bodyObj);
+                Object tv = null;
+
+
+                if (p.requireBody()) {
+                    //需要 body 数据
+                    if (String.class.equals(pt)) {
+                        tv = ctx.bodyNew();
+                    } else if (InputStream.class.equals(pt)) {
+                        tv = ctx.bodyAsStream();
+                    }
+                }
+
+                if (tv == null) {
+                    //尝试数据转换
+                    tv = changeValue(ctx, p, i, pt, bodyObj);
+                }
 
                 if (tv == null) {
                     //
@@ -129,9 +149,15 @@ public class ActionExecutorDefault implements ActionExecutor {
      * 尝试将值按类型转换
      */
     protected Object changeValue(Context ctx, ParamWrap p, int pi, Class<?> pt, Object bodyObj) throws Exception {
-        String pn = p.getName();    //参数名
-        String pv = ctx.param(pn);  //参数值
-        Object tv = null;           //目标值
+        String pn = p.getName();  //参数名
+        String pv = null;         //参数值
+        Object tv = null;         //目标值
+
+        if (p.requireHeader()) {
+            pv = ctx.header(pn);
+        } else {
+            pv = ctx.param(pn);
+        }
 
         if (pv == null) {
             pv = p.defaultValue();
@@ -172,14 +198,8 @@ public class ActionExecutorDefault implements ActionExecutor {
      */
     private Object changeEntityDo(Context ctx, String name, Class<?> type) throws Exception {
         ClassWrap clzW = ClassWrap.get(type);
-
         Map<String, String> map = ctx.paramMap();
-        Object obj = type.newInstance();
 
-        if (map.size() > 0) {
-            clzW.fill(obj, map::get, ctx);
-        }
-
-        return obj;
+        return clzW.newBy(map::get, ctx);
     }
 }

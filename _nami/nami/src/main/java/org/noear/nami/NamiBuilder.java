@@ -22,11 +22,20 @@ public class NamiBuilder {
         _config = config;
     }
 
+
     /**
-     * 设置负载代理
-     */
-    public NamiBuilder upstream(Supplier<String> upstream) {
-        _config.setUpstream(upstream);
+     * @param timeout 超时（单位：秒）
+     * */
+    public NamiBuilder timeout(int timeout) {
+        _config.setTimeout(timeout);
+        return this;
+    }
+
+    /**
+     * @param heartbeat 心跳（单为：秒）
+     * */
+    public NamiBuilder heartbeat(int heartbeat) {
+        _config.setHeartbeat(heartbeat);
         return this;
     }
 
@@ -47,20 +56,56 @@ public class NamiBuilder {
     }
 
     /**
-     * 设置头
-     * */
-    public NamiBuilder headerSet(String name, String val) {
-        _config.setHeader(name, val);
-        return this;
-    }
-
-    /**
      * 设置反序列器
      */
     public NamiBuilder channel(Channel channel) {
         _config.setChannel(channel);
         return this;
     }
+
+
+    /**
+     * 设置负载代理
+     */
+    public NamiBuilder upstream(Supplier<String> upstream) {
+        _config.setUpstream(upstream);
+        return this;
+    }
+
+
+    /**
+     * 设置服务端地址
+     */
+    public NamiBuilder url(String url) {
+        _config.setUrl(url);
+        return this;
+    }
+
+    /**
+     * 设置服务名字
+     */
+    public NamiBuilder name(String name) {
+        _config.setName(name);
+        return this;
+    }
+
+    /**
+     * 设置服务路径
+     */
+    public NamiBuilder path(String path) {
+        _config.setPath(path);
+        return this;
+    }
+
+    /**
+     * 设置服务分组
+     */
+    public NamiBuilder group(String group) {
+        _config.setGroup(group);
+        return this;
+    }
+
+
 
     /**
      * 添加拦截器
@@ -70,27 +115,11 @@ public class NamiBuilder {
         return this;
     }
 
-
     /**
-     * 设置服务端
-     */
-    public NamiBuilder url(String url) {
-        _config.setUrl(url);
-        return this;
-    }
-
-    public NamiBuilder name(String name) {
-        _config.setName(name);
-        return this;
-    }
-
-    public NamiBuilder path(String path) {
-        _config.setPath(path);
-        return this;
-    }
-
-    public NamiBuilder group(String group) {
-        _config.setGroup(group);
+     * 设置头
+     * */
+    public NamiBuilder headerSet(String name, String val) {
+        _config.setHeader(name, val);
         return this;
     }
 

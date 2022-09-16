@@ -3,7 +3,7 @@ package org.noear.solon;
 import org.noear.solon.annotation.Note;
 import org.noear.solon.core.NvMap;
 import org.noear.solon.core.event.*;
-import org.noear.solon.ext.ConsumerEx;
+import org.noear.solon.core.util.ConsumerEx;
 
 /**
  * SolonApp 构建器

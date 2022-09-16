@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.noear</groupId>
+        <artifactId>solon-parent</artifactId>
+        <version>${revision}</version>
+        <relativePath>../../solon-parent/pom.xml</relativePath>
+    </parent>
+
+    <artifactId>jap-solon-plugin</artifactId>
+    <packaging>jar</packaging>
+
+    <properties>
+        <jap-version>1.0.7</jap-version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.logging</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.config.yaml</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.data</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jooq</groupId>
+            <artifactId>joor-java-8</artifactId>
+            <version>0.9.14</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fujieid</groupId>
+            <artifactId>jap-social</artifactId>
+            <version>${jap-version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fujieid</groupId>
+            <artifactId>jap-simple</artifactId>
+            <version>${jap-version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fujieid</groupId>
+            <artifactId>jap-mfa</artifactId>
+            <version>${jap-version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.boot.jetty</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+</project>

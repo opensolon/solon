@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.noear</groupId>
+        <artifactId>solon-parent</artifactId>
+        <version>${revision}</version>
+        <relativePath>../../solon-parent/pom.xml</relativePath>
+    </parent>
+
+    <artifactId>solon.boot.undertow</artifactId>
+    <packaging>jar</packaging>
+
+
+    <dependencies>
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.boot</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.socketd</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.web.servlet</artifactId>
+        </dependency>
+
+        <!-- server core begin -->
+        <dependency>
+            <groupId>io.undertow</groupId>
+            <artifactId>undertow-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.undertow</groupId>
+            <artifactId>undertow-servlet</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.jboss.spec.javax.servlet</groupId>
+                    <artifactId>jboss-servlet-api_4.0_spec</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+        </dependency>
+        <!-- server core end -->
+
+        <!--jsp try start-->
+        <dependency>
+            <groupId>io.undertow.jastow</groupId>
+            <artifactId>jastow</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>io.undertow</groupId>
+                    <artifactId>undertow-core</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>io.undertow</groupId>
+                    <artifactId>undertow-servlet</artifactId>
+                </exclusion>
+            </exclusions>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jboss.metadata</groupId>
+            <artifactId>jboss-metadata-common</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jboss.metadata</groupId>
+            <artifactId>jboss-metadata-web</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jboss.spec.javax.servlet.jsp</groupId>
+            <artifactId>jboss-jsp-api_2.3_spec</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <!--jsp try end-->
+    </dependencies>
+
+</project>

@@ -1,17 +1,15 @@
 package org.noear.solon.core.handle;
 
+import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.*;
-import org.noear.solon.core.Aop;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.util.PathUtil;
-import org.noear.solon.ext.ConsumerEx;
+import org.noear.solon.core.util.ConsumerEx;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * 通用处理接口加载器（根据bean加载）
@@ -71,7 +69,7 @@ public class HandlerLoader extends HandlerAide {
     }
 
     /**
-     * 加载 XAction 到目标容器
+     * 加载 Action 到目标容器
      *
      * @param slots 接收加载结果的容器（槽）
      */
@@ -80,7 +78,7 @@ public class HandlerLoader extends HandlerAide {
     }
 
     /**
-     * 加载 XAction 到目标容器
+     * 加载 Action 到目标容器
      *
      * @param all   加载全部函数（一般 remoting 会全部加载）
      * @param slots 接收加载结果的容器（槽）
@@ -98,13 +96,13 @@ public class HandlerLoader extends HandlerAide {
      */
     protected void loadHandlerDo(HandlerSlots slots) {
         if (bMapping == null) {
-            throw new RuntimeException(bw.clz().getName() + " No @Mapping!");
+            throw new IllegalStateException(bw.clz().getName() + " No @Mapping!");
         }
 
         Handler handler = bw.raw();
-        List<MethodType> v0 = MethodTypeUtil.findAndFill(new ArrayList<>(), t -> bw.annotationGet(t) != null);
+        Set<MethodType> v0 = MethodTypeUtil.findAndFill(new HashSet<>(), t -> bw.annotationGet(t) != null);
         if (v0.size() == 0) {
-            v0 = Arrays.asList(bMapping.method());
+            v0 = new HashSet<>(Arrays.asList(bMapping.method()));
         }
 
         slots.add(bMapping, v0, handler);
@@ -112,7 +110,7 @@ public class HandlerLoader extends HandlerAide {
 
 
     /**
-     * 加载 XAction 处理
+     * 加载 Action 处理
      */
     protected void loadActionDo(HandlerSlots slots, boolean all) {
         String m_path;
@@ -121,17 +119,19 @@ public class HandlerLoader extends HandlerAide {
             bPath = "";
         }
 
-        loadControllerAide();
+        Set<MethodType> b_method = new HashSet<>();
 
-        List<MethodType> m_method;
+        loadControllerAide(b_method);
+
+        Set<MethodType> m_method;
         Mapping m_map;
         int m_index = 0;
 
-        //只支持public函数为XAction
+        //只支持 public 函数为 Action
         for (Method method : bw.clz().getDeclaredMethods()) {
             m_map = method.getAnnotation(Mapping.class);
             m_index = 0;
-            m_method = new ArrayList<>();
+            m_method = new HashSet<>();
 
             //获取 action 的methodTypes
             MethodTypeUtil.findAndFill(m_method, t -> method.getAnnotation(t) != null);
@@ -142,7 +142,7 @@ public class HandlerLoader extends HandlerAide {
 
                 if (m_method.size() == 0) {
                     //如果没有找到，则用Mapping上自带的
-                    m_method = Arrays.asList(m_map.method());
+                    m_method.addAll(Arrays.asList(m_map.method()));
                 }
                 m_index = m_map.index();
             } else {
@@ -158,7 +158,7 @@ public class HandlerLoader extends HandlerAide {
                     if (bMapping == null) {
                         m_method.add(MethodType.HTTP);
                     } else {
-                        m_method = Arrays.asList(bMapping.method());
+                        m_method.addAll(Arrays.asList(bMapping.method()));
                     }
                 }
             }
@@ -169,7 +169,14 @@ public class HandlerLoader extends HandlerAide {
 
                 Action action = createAction(bw, method, m_map, newPath, bRemoting);
 
-                loadActionAide(method, action);
+                //m_method 必须之前已准备好，不再动  //用于支持 Cors
+                loadActionAide(method, action, m_method);
+                if (b_method.size() > 0 &&
+                        m_method.contains(MethodType.HTTP) == false &&
+                        m_method.contains(MethodType.ALL) == false) {
+                    //用于支持 Cors
+                    m_method.addAll(b_method);
+                }
 
                 for (MethodType m1 : m_method) {
                     if (m_map == null) {
@@ -191,36 +198,45 @@ public class HandlerLoader extends HandlerAide {
     }
 
 
-    protected void loadControllerAide() {
+    protected void loadControllerAide(Set<MethodType> methodSet) {
         for (Annotation anno : bw.clz().getAnnotations()) {
             if (anno instanceof Before) {
-                addDo(((Before) anno).value(), (b) -> this.before(Aop.getOrNew(b)));
+                addDo(((Before) anno).value(), (b) -> this.before(Solon.context().getBeanOrNew(b)));
             } else if (anno instanceof After) {
-                addDo(((After) anno).value(), (f) -> this.after(Aop.getOrNew(f)));
+                addDo(((After) anno).value(), (f) -> this.after(Solon.context().getBeanOrNew(f)));
             } else {
                 for (Annotation anno2 : anno.annotationType().getAnnotations()) {
                     if (anno2 instanceof Before) {
-                        addDo(((Before) anno2).value(), (b) -> this.before(Aop.getOrNew(b)));
+                        addDo(((Before) anno2).value(), (b) -> this.before(Solon.context().getBeanOrNew(b)));
                     } else if (anno2 instanceof After) {
-                        addDo(((After) anno2).value(), (f) -> this.after(Aop.getOrNew(f)));
+                        addDo(((After) anno2).value(), (f) -> this.after(Solon.context().getBeanOrNew(f)));
+                    } else if (anno2 instanceof Options) {
+                        //用于支持 Cors
+                        methodSet.add(MethodType.OPTIONS);
                     }
                 }
             }
         }
     }
 
-    protected void loadActionAide(Method method, Action action) {
+    protected void loadActionAide(Method method, Action action, Set<MethodType> methodSet) {
         for (Annotation anno : method.getAnnotations()) {
             if (anno instanceof Before) {
-                addDo(((Before) anno).value(), (b) -> action.before(Aop.getOrNew(b)));
+                addDo(((Before) anno).value(), (b) -> action.before(Solon.context().getBeanOrNew(b)));
             } else if (anno instanceof After) {
-                addDo(((After) anno).value(), (f) -> action.after(Aop.getOrNew(f)));
+                addDo(((After) anno).value(), (f) -> action.after(Solon.context().getBeanOrNew(f)));
             } else {
                 for (Annotation anno2 : anno.annotationType().getAnnotations()) {
                     if (anno2 instanceof Before) {
-                        addDo(((Before) anno2).value(), (b) -> action.before(Aop.getOrNew(b)));
+                        addDo(((Before) anno2).value(), (b) -> action.before(Solon.context().getBeanOrNew(b)));
                     } else if (anno2 instanceof After) {
-                        addDo(((After) anno2).value(), (f) -> action.after(Aop.getOrNew(f)));
+                        addDo(((After) anno2).value(), (f) -> action.after(Solon.context().getBeanOrNew(f)));
+                    } else if (anno2 instanceof Options) {
+                        //用于支持 Cors
+                        if (methodSet.contains(MethodType.HTTP) == false &&
+                                methodSet.contains(MethodType.ALL) == false) {
+                            methodSet.add(MethodType.OPTIONS);
+                        }
                     }
                 }
             }
@@ -228,7 +244,7 @@ public class HandlerLoader extends HandlerAide {
     }
 
     /**
-     * 构建 XAction
+     * 构建 Action
      */
     protected Action createAction(BeanWrap bw, Method method, Mapping mp, String path, boolean remoting) {
         if (allowMapping) {

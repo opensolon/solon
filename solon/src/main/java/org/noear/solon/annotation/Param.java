@@ -10,18 +10,20 @@ import java.lang.annotation.*;
  * @author noear
  * @since 1.0
  * */
-@Target({ElementType.FIELD,ElementType.PARAMETER})
+@Target({ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface Param {
     /**
      * 参数名
      * */
-    String name() default "";
+    @Alias("name")
+    String value() default "";
     /**
-     * 格式（主要为日期之类的服务）
+     * 参数名
      * */
-    String format() default "";
+    @Alias("value")
+    String name() default "";
     /**
      * 必须的(只做标识，不做检查)
      * */

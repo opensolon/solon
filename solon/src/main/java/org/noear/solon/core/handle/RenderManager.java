@@ -2,9 +2,10 @@ package org.noear.solon.core.handle;
 
 import org.noear.solon.Utils;
 import org.noear.solon.core.util.PrintUtil;
-import org.noear.solon.ext.DataThrowable;
+import org.noear.solon.core.util.DataThrowable;
 
 import java.io.File;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -77,7 +78,7 @@ public class RenderManager implements Render {
         //suffix=.ftl
         _mapping.put(suffix, render);
 
-        PrintUtil.info("View: mapping: " + suffix + "=" + render.getClass().getSimpleName());
+        PrintUtil.info("View: mapping: " + suffix + "=" + render.getName());
     }
 
     /**
@@ -95,7 +96,7 @@ public class RenderManager implements Render {
         if (render == null) {
             PrintUtil.warn("solon: " + clzName + " not exists!");
             return;
-            //throw new RuntimeException(classSimpleName + " not exists!");
+            //throw new IllegalStateException(classSimpleName + " not exists!");
         }
 
         _mapping.put(suffix, render);
@@ -139,6 +140,11 @@ public class RenderManager implements Render {
                     if (render != null) {
                         //如果找到对应的渲染器
                         //
+                        //同步上下文特性
+                        ctx.attrMap().forEach((k, v) -> {
+                            mv.putIfAbsent(k, v);
+                        });
+                        //视图渲染
                         return render.renderAndReturn(mv, ctx);
                     }
                 }
@@ -146,12 +152,22 @@ public class RenderManager implements Render {
                 //如果没有则用默认渲染器
                 //
                 return _def.renderAndReturn(mv, ctx);
+            } else {
+                data = mv.model();
             }
-
         }
 
-        throw new IllegalArgumentException("RenderAndReturn: Only support ModelAndView data");
+        Render render = resolveRander(ctx);
+
+        if (render != null) {
+            return render.renderAndReturn(data, ctx);
+        } else {
+            //最后只有 def
+            //
+            return _def.renderAndReturn(data, ctx);
+        }
     }
+
 
     /**
      * 渲染
@@ -181,6 +197,11 @@ public class RenderManager implements Render {
                     if (render != null) {
                         //如果找到对应的渲染器
                         //
+                        //同步上下文特性
+                        ctx.attrMap().forEach((k, v) -> {
+                            mv.putIfAbsent(k, v);
+                        });
+                        //视图渲染
                         render.render(mv, ctx);
                         return;
                     }
@@ -190,6 +211,8 @@ public class RenderManager implements Render {
                 //
                 _def.render(mv, ctx);
                 return;
+            } else {
+                data = mv.model();
             }
         }
 
@@ -204,6 +227,28 @@ public class RenderManager implements Render {
             return;
         }
 
+        if(data instanceof InputStream) {
+            ctx.output((InputStream) data);
+            return;
+        }
+
+        Render render = resolveRander(ctx);
+
+        if (render != null) {
+            render.render(data, ctx);
+        } else {
+            //最后只有 def
+            //
+            _def.render(data, ctx);
+        }
+    }
+
+    /**
+     * 分析出渲染器
+     *
+     * @since 1.6
+     * */
+    private Render resolveRander(Context ctx){
         //@json
         //@type_json
         //@xml
@@ -213,7 +258,7 @@ public class RenderManager implements Render {
         Render render = null;
         String mode = ctx.header("X-Serialization");
 
-        if(Utils.isEmpty(mode)){
+        if (Utils.isEmpty(mode)) {
             mode = ctx.attr("@render");
         }
 
@@ -235,12 +280,6 @@ public class RenderManager implements Render {
             render = _mapping.get("@json");
         }
 
-        if (render != null) {
-            render.render(data, ctx);
-        } else {
-            //最后只有 def
-            //
-            _def.render(data, ctx);
-        }
+        return render;
     }
 }

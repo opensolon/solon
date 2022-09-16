@@ -9,20 +9,24 @@ import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Supplier;
 
 class HttpUtils {
-    private final static Dispatcher dispatcher() {
+    private final static Supplier<Dispatcher> httpClientDispatcher = () -> {
         Dispatcher temp = new Dispatcher();
         temp.setMaxRequests(20000);
         temp.setMaxRequestsPerHost(10000);
         return temp;
-    }
+    };
 
     private final static OkHttpClient httpClient = new OkHttpClient.Builder()
-            .connectTimeout(60*5, TimeUnit.SECONDS)
-            .writeTimeout(60*5, TimeUnit.SECONDS)
-            .readTimeout(60*5, TimeUnit.SECONDS)
-            .dispatcher(dispatcher())
+            .connectTimeout(10, TimeUnit.SECONDS)
+            .writeTimeout(10, TimeUnit.SECONDS)
+            .readTimeout(10, TimeUnit.SECONDS)
+            .dispatcher(httpClientDispatcher.get())
+            .addInterceptor(HttpInterceptor.instance)
+            .sslSocketFactory(SSLClient.getSSLSocketFactory(), SSLClient.getX509TrustManager())
+            .hostnameVerifier(SSLClient.defaultHostnameVerifier)
             .build();
 
     public static HttpUtils http(String url){
@@ -95,6 +99,14 @@ class HttpUtils {
         return this;
     }
 
+    public HttpUtils timeout(int timeoutSeconds) {
+        if (timeoutSeconds > 0) {
+            _builder.tag(HttpTimeout.class, new HttpTimeout(timeoutSeconds));
+        }
+
+        return this;
+    }
+
 
     //@XNote("执行请求，返回响应对象")
     public Response exec(String mothod) throws Exception {
@@ -117,7 +129,7 @@ class HttpUtils {
             case "HEAD":_builder.method("HEAD",null);break;
             case "OPTIONS":_builder.method("OPTIONS",null);break;
             case "TRACE":_builder.method("TRACE",null);break;
-            default: throw new RuntimeException("This method is not supported");
+            default: throw new IllegalStateException("This method is not supported");
         }
 
         Call call = httpClient.newCall(_builder.build());

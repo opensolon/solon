@@ -60,6 +60,11 @@ public @interface NamiClient {
     int timeout() default 0;
 
     /**
+     * 心跳（单为：秒）
+     * */
+    int heartbeat() default 0;
+
+    /**
      * 指定配置器
      * */
     Class<? extends NamiConfiguration> configuration() default NamiConfigurationDefault.class;

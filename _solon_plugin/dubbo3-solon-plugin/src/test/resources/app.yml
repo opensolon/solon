@@ -1,0 +1,13 @@
+solon:
+  app:
+    group: flowersay
+    name: gateway
+
+dubbo:
+  application:
+    owner: iYing
+  registry:
+    address: zookeeper://192.168.133.129:2181
+  protocol:
+    name: dubbo
+    port: 20880
