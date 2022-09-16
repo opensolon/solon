@@ -8,7 +8,7 @@ import com.dtflys.forest.annotation.*;
  * @BaseRequest(baseURL = "upstream://test") 使用配置的upstream
  */
 @ForestClient
-//@BaseRequest(baseURL = "upstream://test")
+//@BaseRequest(baseURL = "upstream://gitee")
 public interface TestGiteeApi {
     @Get(url="upstream://gitee")
     String search(@Query("q") String q);
