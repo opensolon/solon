@@ -63,14 +63,14 @@ public class CrossFilter implements Filter {
 
     @Override
     public void doFilter(Context ctx, FilterChain chain) throws Throwable {
-        doFilter0(ctx, chain);
+        doFilter0(ctx);
 
         if(ctx.getHandled() == false){
             chain.doFilter(ctx);
         }
     }
 
-    protected void doFilter0(Context ctx, FilterChain chain) throws Throwable {
+    protected void doFilter0(Context ctx) throws Throwable {
         if(ctx.getHandled()){
             return;
         }
