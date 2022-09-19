@@ -2,7 +2,7 @@
 * 新增 kubernetes-config-solon-plugin 插件
 * 新增 jmdns-solon-plugin 插件
 * 新增 feign-solon-plugin 插件
-* 插件 beetlsql-solon-plugin 增加 beetlsql.db1 配置方式构建  SQLManagerBuilder
+* 插件 beetlsql-solon-plugin 增加 beetlsql.db1 配置方式构建  SQLManagerBuilder；并增加三个快捷配置
 * 插件 solon.cache.jedis 添加 CloudLockServiceJedisImpl 类
 * 插件 solon.serialization.fastjson2 升级 fastjson2 为：2.0.13
 * 添加 Solon.context() ，Aop 开始标为弃用
