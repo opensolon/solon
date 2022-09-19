@@ -43,8 +43,20 @@ class DbManager {
     private SQLManager build(BeanWrap bw) {
         DbConnectionSource cs = null;
         DataSource master = bw.raw();
+        Props dsProps;
 
-        String slaves_str = bw.attrGet(ATTR_slaves);
+        if(Utils.isNotEmpty(bw.name())) {
+            dsProps = bw.context().getProps().getProp(TAG + "." + bw.name());
+        }else{
+            dsProps = new Props();
+        }
+
+        //从库
+        String slaves_str = dsProps.get(ATTR_slaves);
+        dsProps.remove(ATTR_slaves);
+        if(Utils.isEmpty(slaves_str)) {
+            slaves_str = bw.attrGet(ATTR_slaves);
+        }
 
         if (Utils.isNotEmpty(slaves_str)) {
             String[] slaveAry = slaves_str.split(",");
@@ -64,21 +76,26 @@ class DbManager {
             cs = new DbConnectionSource(master, null);
         }
 
+        //方言
+        String dialect_str = dsProps.get(ATTR_dialect);
+        dsProps.remove(ATTR_dialect);
+        if(Utils.isEmpty(slaves_str)) {
+            dialect_str = bw.attrGet(ATTR_dialect);
+        }
+
         SQLManagerBuilder builder = SQLManager.newBuilder(cs);
         //as bean name
         String dataSourceId = "ds-" + (bw.name() == null ? "" : bw.name());
         builder.setName(dataSourceId);
 
+        //支持特性加持
+        buildStyle(builder, dialect_str);
+
         //支持配置注入
-        if(Utils.isNotEmpty(bw.name())) {
-            Props props1 = bw.context().getProps().getProp(TAG + "." + bw.name());
-            if (props1.size() > 0) {
-                Utils.injectProperties(builder, props1);
-            }
+        if (dsProps.size() > 0) {
+            Utils.injectProperties(builder, dsProps);
         }
 
-        //支持特性加持
-        buildStyle(bw, builder);
 
         //推到事件中心，用于扩展
         EventBus.push(builder);
@@ -137,9 +154,7 @@ class DbManager {
         get(bw);
     }
 
-    private void buildStyle(BeanWrap bw, SQLManagerBuilder builder) {
-        String dialect = bw.attrGet(ATTR_dialect);
-
+    private void buildStyle(SQLManagerBuilder builder, String dialect) {
         if (Utils.isNotEmpty(dialect)) {
             DBStyle style = null;
 
