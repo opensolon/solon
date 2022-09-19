@@ -20,7 +20,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
 
-        <snack3.ver>3.2.35</snack3.ver>
+        <snack3.ver>3.2.37</snack3.ver>
         <weed3.ver>3.4.29</weed3.ver>
         <water.ver>2.8.2</water.ver>
         <luffy.ver>1.3.4</luffy.ver>
