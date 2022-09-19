@@ -46,10 +46,10 @@ public class XPluginImp implements Plugin {
             BeanWrap defBw = ctx.getWrap(DataSource.class);
 
             if (defBw != null) {
-                DbManager.global().dynamicBuild(defBw);
+                DbManager.dynamicBuild(defBw);
 
-                if (DbManager.global().dynamicGet() != null) {
-                    ctx.wrapAndPut(SQLManager.class, DbManager.global().dynamicGet());
+                if (DbManager.dynamicGet() != null) {
+                    ctx.wrapAndPut(SQLManager.class, DbManager.dynamicGet());
                 }
             }
         });
@@ -88,7 +88,7 @@ public class XPluginImp implements Plugin {
     }
 
     private void create0(Class<?> clz, BeanWrap dsBw) {
-        Object raw = DbManager.global().get(dsBw).getMapper(clz);
+        Object raw = DbManager.get(dsBw).getMapper(clz);
 
         if (raw != null) {
             dsBw.context().wrapAndPut(clz, raw);
@@ -99,7 +99,7 @@ public class XPluginImp implements Plugin {
      * 字段注入
      */
     private void inject0(VarHolder varH, BeanWrap dsBw, String annoValue) {
-        SQLManager tmp = DbManager.global().get(dsBw);
+        SQLManager tmp = DbManager.get(dsBw);
 
         if (varH.getType().isInterface()) {
             Object mapper = tmp.getMapper(varH.getType());

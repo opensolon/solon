@@ -5,6 +5,7 @@ import org.beetl.sql.core.SQLManager;
 import org.beetl.sql.core.SQLManagerBuilder;
 import org.beetl.sql.core.db.*;
 import org.beetl.sql.core.nosql.*;
+import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.Props;
@@ -21,41 +22,92 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author noear
  * @since 2020-09-01
  * */
-class DbManager {
-    private static final String TAG ="beetlsql";
+public class DbManager {
+    private static final String TAG = "beetlsql";
 
     private static final String ATTR_dialect = "dialect";
-    private static final String ATTR_slaves  = "slaves";
-    private static final String ATTR_debug  = "debug";
+    private static final String ATTR_slaves = "slaves";
+    private static final String ATTR_debug = "debug";
 
-    private static DbManager _global = new DbManager();
 
-    public static DbManager global() {
-        return _global;
+    private static final Map<String, SQLManager> cached = new ConcurrentHashMap<>();
+    private static ConditionalSQLManager dynamic;
+
+
+    /**
+     * 获取动态管理器
+     */
+    public static ConditionalSQLManager dynamicGet() {
+        return dynamic;
     }
 
+    public static void dynamicBuild(BeanWrap def) {
+        SQLManager master = get(def);
+        if (master == null) {
+            for (Map.Entry<String, SQLManager> kv : cached.entrySet()) {
+                master = kv.getValue();
+                break;
+            }
+        }
 
-    private final Map<String, SQLManager> cached = new ConcurrentHashMap<>();
-    private ConditionalSQLManager dynamic;
+        if (master != null) {
+            dynamic = new ConditionalSQLManager(master, cached);
+        }
+    }
+
+    public static SQLManager get(String dsName) {
+        BeanWrap dsWrap = Solon.context().getWrap(dsName);
+        return get(dsWrap);
+    }
+
+    /**
+     * 获取管理器
+     */
+    public static SQLManager get(BeanWrap dsWrap) {
+        if (dsWrap == null) {
+            return null;
+        }
+
+        SQLManager tmp = cached.get(dsWrap.name());
+        if (tmp == null) {
+            synchronized (dsWrap.name().intern()) {
+                tmp = cached.get(dsWrap.name());
+                if (tmp == null) {
+                    tmp = build(dsWrap);
+
+                    cached.put(dsWrap.name(), tmp);
+                }
+            }
+        }
+
+        return tmp;
+    }
+
+    /**
+     * 注册管理器
+     */
+    public static void reg(BeanWrap bw) {
+        get(bw);
+    }
 
     /**
      * 构建
      */
-    private SQLManager build(BeanWrap bw) {
+    private static SQLManager build(BeanWrap bw) {
         DbConnectionSource cs = null;
         DataSource master = bw.raw();
         Props dsProps;
 
-        if(Utils.isNotEmpty(bw.name())) {
+        if (Utils.isNotEmpty(bw.name())) {
             dsProps = bw.context().getProps().getProp(TAG + "." + bw.name());
-        }else{
+        } else {
             dsProps = new Props();
         }
 
         //从库
         String slaves_str = dsProps.get(ATTR_slaves);
         dsProps.remove(ATTR_slaves);
-        if(Utils.isEmpty(slaves_str)) {
+        if (Utils.isEmpty(slaves_str)) {
             slaves_str = bw.attrGet(ATTR_slaves);
         }
 
@@ -80,7 +132,7 @@ class DbManager {
         //方言
         String dialect_str = dsProps.get(ATTR_dialect);
         dsProps.remove(ATTR_dialect);
-        if(Utils.isEmpty(slaves_str)) {
+        if (Utils.isEmpty(slaves_str)) {
             dialect_str = bw.attrGet(ATTR_dialect);
         }
 
@@ -95,7 +147,7 @@ class DbManager {
         //支持配置注入
         if (dsProps.size() > 0) {
             //处理调试模式
-            if(dsProps.getBool(ATTR_debug, false)){
+            if (dsProps.getBool(ATTR_debug, false)) {
                 builder.addInterDebug();
             }
             dsProps.remove(ATTR_debug);
@@ -109,58 +161,7 @@ class DbManager {
         return builder.build();
     }
 
-    /**
-     * 获取动态管理器
-     */
-    public ConditionalSQLManager dynamicGet() {
-        return dynamic;
-    }
-
-    public void dynamicBuild(BeanWrap def) {
-        SQLManager master = get(def);
-        if (master == null) {
-            for (Map.Entry<String, SQLManager> kv : cached.entrySet()) {
-                master = kv.getValue();
-                break;
-            }
-        }
-
-        if (master != null) {
-            dynamic = new ConditionalSQLManager(master, cached);
-        }
-    }
-
-    /**
-     * 获取管理器
-     */
-    public SQLManager get(BeanWrap bw) {
-        if (bw == null) {
-            return null;
-        }
-
-        SQLManager tmp = cached.get(bw.name());
-        if (tmp == null) {
-            synchronized (bw.name().intern()) {
-                tmp = cached.get(bw.name());
-                if (tmp == null) {
-                    tmp = build(bw);
-
-                    cached.put(bw.name(), tmp);
-                }
-            }
-        }
-
-        return tmp;
-    }
-
-    /**
-     * 注册管理器
-     */
-    public void reg(BeanWrap bw) {
-        get(bw);
-    }
-
-    private void buildStyle(SQLManagerBuilder builder, String dialect) {
+    private static void buildStyle(SQLManagerBuilder builder, String dialect) {
         if (Utils.isNotEmpty(dialect)) {
             DBStyle style = null;
 

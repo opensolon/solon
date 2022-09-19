@@ -10,7 +10,7 @@ class DsEventListener implements EventListener<BeanWrap> {
     @Override
     public void onEvent(BeanWrap bw) {
         if (bw.raw() instanceof DataSource) {
-            DbManager.global().get(bw);
+            DbManager.reg(bw);
         }
     }
 }
