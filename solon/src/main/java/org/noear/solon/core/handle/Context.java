@@ -816,6 +816,11 @@ public abstract class Context {
             headerSet("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
         }
 
+        //输出大小
+        if(file.content instanceof ByteArrayInputStream) {
+            headerSet("Content-Length", String.valueOf(file.content.available()));
+        }
+
         Utils.transferTo(file.content, outputStream());
     }
 
@@ -823,10 +828,14 @@ public abstract class Context {
      * 输出为文件
      */
     public void outputAsFile(File file) throws IOException {
+        //输出文件名
         if (Utils.isNotEmpty(file.getName())) {
             String fileName = URLEncoder.encode(file.getName(), Solon.encoding());
             headerSet("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
         }
+
+        //输出大小
+        headerSet("Content-Length", String.valueOf(file.length()));
 
         try (InputStream ins = new FileInputStream(file)) {
             Utils.transferTo(ins, outputStream());
