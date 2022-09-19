@@ -26,6 +26,7 @@ class DbManager {
 
     private static final String ATTR_dialect = "dialect";
     private static final String ATTR_slaves  = "slaves";
+    private static final String ATTR_debug  = "debug";
 
     private static DbManager _global = new DbManager();
 
@@ -93,9 +94,14 @@ class DbManager {
 
         //支持配置注入
         if (dsProps.size() > 0) {
+            //处理调试模式
+            if(dsProps.getBool(ATTR_debug, false)){
+                builder.addInterDebug();
+            }
+            dsProps.remove(ATTR_debug);
+
             Utils.injectProperties(builder, dsProps);
         }
-
 
         //推到事件中心，用于扩展
         EventBus.push(builder);
