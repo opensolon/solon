@@ -27,7 +27,7 @@ public class DbManager {
 
     private static final String ATTR_dialect = "dialect";
     private static final String ATTR_slaves = "slaves";
-    private static final String ATTR_debug = "debug";
+    private static final String ATTR_dev = "dev";
 
 
     private static final Map<String, SQLManager> cached = new ConcurrentHashMap<>();
@@ -147,10 +147,10 @@ public class DbManager {
         //支持配置注入
         if (dsProps.size() > 0) {
             //处理调试模式
-            if (dsProps.getBool(ATTR_debug, false)) {
+            if (dsProps.getBool(ATTR_dev, false)) {
                 builder.addInterDebug();
             }
-            dsProps.remove(ATTR_debug);
+            dsProps.remove(ATTR_dev);
 
             Utils.injectProperties(builder, dsProps);
         }

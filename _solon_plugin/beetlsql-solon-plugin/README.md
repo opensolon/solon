@@ -14,7 +14,7 @@ test:
 beetlsql.db1:
   dialect: "mysql" #快捷配置
   slaves: "db2,db3"  #快捷配置
-  debug: true  #快捷配置
+  dev: true  #快捷配置
   nc: "org.wisecloud.common.db.beetlsql.JPANameConversion"
   dbStyle: "org.beetl.sql.core.db.MySqlStyle" #与 dialect 效果相同
   interceptorList: 
