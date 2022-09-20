@@ -233,9 +233,10 @@ public class NamiHandler implements InvocationHandler {
                 //处理path参数不为String类型时报错的问题
                 //String val = (String) args.get(kv.getValue());
                 //
-                Object arg=args.get(kv.getValue());
-                if(arg!=null){
-                    String val=arg.toString();
+                Object arg = args.get(kv.getValue());
+
+                if (arg != null) {
+                    String val = arg.toString();
                     fun = fun.replace(kv.getKey(), val);
                     args.remove(kv.getValue());
                 }
