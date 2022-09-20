@@ -53,25 +53,25 @@ public class BeanWrap {
     private final AopContext context;
 
 
-    public BeanWrap(AopContext context,Class<?> clz) {
-        this(context,clz, null);
+    public BeanWrap(AopContext context, Class<?> clz) {
+        this(context, clz, null);
     }
 
-    public BeanWrap(AopContext context,Class<?> clz, Object raw) {
-        this(context,clz, null,null);
-    }
-
-    /**
-     * @since 1.10
-     * */
-    public BeanWrap(AopContext context,Class<?> clz, Object raw, String name) {
-        this(context,clz, null,null, false);
+    public BeanWrap(AopContext context, Class<?> clz, Object raw) {
+        this(context, clz, raw, null);
     }
 
     /**
      * @since 1.10
-     * */
-    public BeanWrap(AopContext context,Class<?> clz, Object raw, String name, boolean typed) {
+     */
+    public BeanWrap(AopContext context, Class<?> clz, Object raw, String name) {
+        this(context, clz, raw, name, false);
+    }
+
+    /**
+     * @since 1.10
+     */
+    public BeanWrap(AopContext context, Class<?> clz, Object raw, String name, boolean typed) {
         this.context = context;
         this.clz = clz;
         this.name = name;
