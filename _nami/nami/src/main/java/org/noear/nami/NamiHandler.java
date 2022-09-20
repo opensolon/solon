@@ -229,9 +229,13 @@ public class NamiHandler implements InvocationHandler {
             Map<String, String> pathKeys = buildPathKeys(fun);
 
             for (Map.Entry<String, String> kv : pathKeys.entrySet()) {
-                String val = (String) args.get(kv.getValue());
-
-                if (val != null) {
+                //
+                //处理path参数不为String类型时报错的问题
+                //String val = (String) args.get(kv.getValue());
+                //
+                Object arg=args.get(kv.getValue());
+                if(arg!=null){
+                    String val=arg.toString();
                     fun = fun.replace(kv.getKey(), val);
                     args.remove(kv.getValue());
                 }
