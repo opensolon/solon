@@ -49,7 +49,7 @@ public class IndexBuilder {
 					}
 				}
 
-				throw new IllegalStateException("Dependency loops are not supported: " + link);
+				throw new IllegalStateException("@Init does not support dependency loops: " + link);
 			}
 		}
 
@@ -81,7 +81,6 @@ public class IndexBuilder {
 			map.put(clazz.getName(), maxIndex + 1);
 			return maxIndex + 1;
 		}
-
 	}
 
 	/**
@@ -93,6 +92,7 @@ public class IndexBuilder {
 	private static List<Class<?>> findRelateClass(Class<?> clazz) {
 		List<Class<?>> clazzList = new ArrayList<>();
 		Field[] fields = clazz.getDeclaredFields();
+
 		for (Field field : fields) {
 			if (field.isAnnotationPresent(Inject.class)) {
 				Inject inject = field.getAnnotation(Inject.class);
@@ -109,6 +109,7 @@ public class IndexBuilder {
 				clazzList.add(field.getType());
 			}
 		}
+
 		return clazzList;
 	}
 
@@ -119,6 +120,11 @@ public class IndexBuilder {
 	 * @return 是否循环依赖
 	 */
 	private static boolean isLoopRelate(Class<?> clazz, String topName) {
+		if(classStack.contains(clazz.getName())){
+			classStack.add(clazz.getName());
+			return true;
+		}
+
 		classStack.add(clazz.getName()); // 入栈
 
 		//寻找依赖类

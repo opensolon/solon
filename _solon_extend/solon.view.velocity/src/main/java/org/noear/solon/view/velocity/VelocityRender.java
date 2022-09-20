@@ -71,6 +71,10 @@ public class VelocityRender implements Render {
         //通过事件扩展
         EventBus.push(provider);
 
+        Solon.app().shared().forEach((k, v) -> {
+            putVariable(k, v);
+        });
+
         Solon.app().onSharedAdd((k, v) -> {
             putVariable(k, v);
         });

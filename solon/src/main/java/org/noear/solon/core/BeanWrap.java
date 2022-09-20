@@ -252,7 +252,8 @@ public class BeanWrap {
         //b.调用初始化函数
         if (clzInit != null) {
             if (clzInitDelay) {
-                context.beanOnloaded(IndexBuilder.buildIndex(clz), (ctx) -> {
+                int clzInitIndex = IndexBuilder.buildIndex(clz);
+                context.beanOnloaded(clzInitIndex, (ctx) -> {
                     initInvokeDo(bean);
                 });
             } else {
