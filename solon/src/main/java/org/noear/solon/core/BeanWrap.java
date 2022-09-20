@@ -38,8 +38,10 @@ public class BeanWrap {
     // bean tag
     private String tag;
     // bean 申明的属性
+    @Deprecated
     private String[] attrs;
     // bean 申明的属性Map形态
+    @Deprecated
     private Map<String, String> attrMap;
     // bean 是否按注册类型
     private boolean typed;
@@ -56,8 +58,24 @@ public class BeanWrap {
     }
 
     public BeanWrap(AopContext context,Class<?> clz, Object raw) {
+        this(context,clz, null,null);
+    }
+
+    /**
+     * @since 1.10
+     * */
+    public BeanWrap(AopContext context,Class<?> clz, Object raw, String name) {
+        this(context,clz, null,null, false);
+    }
+
+    /**
+     * @since 1.10
+     * */
+    public BeanWrap(AopContext context,Class<?> clz, Object raw, String name, boolean typed) {
         this.context = context;
         this.clz = clz;
+        this.name = name;
+        this.typed = typed;
 
         Singleton ano = clz.getAnnotation(Singleton.class);
         singleton = (ano == null || ano.value()); //默认为单例
@@ -72,10 +90,11 @@ public class BeanWrap {
         }
     }
 
-    public BeanWrap(AopContext context,Class<?> clz, Object raw, String[] attrs) {
-        this(context,clz, raw);
-        attrsSet(attrs);
-    }
+//    @Deprecated
+//    public BeanWrap(AopContext context,Class<?> clz, Object raw, String name, String[] attrs) {
+//        this(context,clz, raw, name);
+//        attrsSet(attrs);
+//    }
 
     public AopContext context() {
         return context;
@@ -160,14 +179,17 @@ public class BeanWrap {
     /**
      * bean 特性
      */
+    @Deprecated
     public String[] attrs() {
         return attrs;
     }
 
+    @Deprecated
     protected void attrsSet(String[] attrs) {
         this.attrs = attrs;
     }
 
+    @Deprecated
     public String attrGet(String name) {
         if (attrs == null) {
             return null;
