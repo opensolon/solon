@@ -12,6 +12,7 @@
 * 插件 qiniu-kodo-solon-plugin 增加 regionId 配置项支持
 * 插件 nami 支持接口自己是 Filter
 * 调整 文件下载增加内容长度输出
+* 调整 标注 @Bean::attrs 属性为弃用
 
 #### 1.10.2
 * 完善 solon.serialization.fastjson2 插件
