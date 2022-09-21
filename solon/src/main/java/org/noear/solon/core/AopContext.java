@@ -147,6 +147,7 @@ public class AopContext extends BeanContainer {
             //单例，进行事件通知
             if (bw.singleton()) {
                 EventBus.push(bw.raw());
+                EventBus.push(bw);
             }
         });
 
