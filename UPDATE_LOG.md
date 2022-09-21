@@ -1,18 +1,22 @@
-#### 1.10.3
+#### 1.10.4
 * 新增 kubernetes-config-solon-plugin 插件
 * 新增 jmdns-solon-plugin 插件
-* 新增 feign-solon-plugin 插件
+
+#### 1.10.3
+* 新增 forest-solon-plugin 插件
 * 插件 beetlsql-solon-plugin 增加 beetlsql.db1 配置方式构建  SQLManagerBuilder；并增加三个快捷配置
 * 插件 solon.cache.jedis 添加 CloudLockServiceJedisImpl 类
+* 插件 solon.data 添加 CacheTagsService 接口，提供手动缓存控制便利性
 * 插件 solon.serialization.fastjson2 升级 fastjson2 为：2.0.13
+* 插件 qiniu-kodo-solon-plugin 升级 qiniu-java-sdk 为 7.11.0
+* 插件 qiniu-kodo-solon-plugin 增加 regionId 配置项支持
+* 插件 nami 支持接口自己是 Filter，并增加非字符串类型的 pathVar 支持
 * 添加 Solon.context() ，Aop 开始标为弃用
 * 添加 @Rollback 注解，用于测试时回滚
 * 添加 SolonJUnit4ClassRunner 运行的单测，支持动态代理
-* 插件 qiniu-kodo-solon-plugin 升级 qiniu-java-sdk 为 7.11.0
-* 插件 qiniu-kodo-solon-plugin 增加 regionId 配置项支持
-* 插件 nami 支持接口自己是 Filter
-* 调整 文件下载增加内容长度输出
+* 调整 Context.outputAsFile() 自动输出文件长度
 * 调整 标注 @Bean::attrs 属性为弃用
+* 调整 @Init 循环依赖的处理逻辑
 
 #### 1.10.2
 * 完善 solon.serialization.fastjson2 插件
