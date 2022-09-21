@@ -5,18 +5,25 @@ import org.junit.runners.model.InitializationError;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.aspect.BeanProxy;
+import org.noear.solon.core.event.AppInitEndEvent;
+import org.noear.solon.core.event.EventBus;
+import org.noear.solon.test.annotation.TestPropertySource;
 
+import java.io.File;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.net.MalformedURLException;
 import java.util.*;
 
 
 public class SolonJUnit4ClassRunner extends BlockJUnit4ClassRunner {
-    static Set<Class<?>> appCached = new HashSet<>();
+    private static final String TAG_classpath = "classpath:";
+    private static Set<Class<?>> appCached = new HashSet<>();
     public SolonJUnit4ClassRunner(Class<?> klass) throws InitializationError {
         super(klass);
 
         SolonTest anno = klass.getAnnotation(SolonTest.class);
+        TestPropertySource propAnno = klass.getAnnotation(TestPropertySource.class);
 
         if (anno != null) {
             List<String> args = new ArrayList<>();
@@ -40,9 +47,16 @@ public class SolonJUnit4ClassRunner extends BlockJUnit4ClassRunner {
                 Method main = getMain(anno);
 
                 if (main != null && Modifier.isStatic(main.getModifiers())) {
+                    EventBus.subscribe(AppInitEndEvent.class, e->{
+                        //加载测试配置
+                        addPropertySource(propAnno);
+                    });
                     main.invoke(null, new Object[]{argsStr});
                 } else {
-                    Solon.start(anno.value(), argsStr);
+                    Solon.start(anno.value(), argsStr, app -> {
+                        //加载测试配置
+                        addPropertySource(propAnno);
+                    });
                 }
             } catch (Throwable ex) {
                 Utils.throwableUnwrap(ex).printStackTrace();
@@ -58,7 +72,28 @@ public class SolonJUnit4ClassRunner extends BlockJUnit4ClassRunner {
                 }
             }
         } else {
-            Solon.start(klass, new String[]{"-debug=1"});
+            Solon.start(klass, new String[]{"-debug=1"}, app -> {
+                //加载测试配置
+                addPropertySource(propAnno);
+            });
+        }
+    }
+
+    private void addPropertySource(TestPropertySource propertySource) {
+        if (propertySource == null) {
+            return;
+        }
+
+        for (String uri : propertySource.value()) {
+            if (uri.startsWith(TAG_classpath)) {
+                Solon.cfg().loadAdd(uri.substring(TAG_classpath.length()));
+            } else {
+                try {
+                    Solon.cfg().loadAdd(new File(uri).toURI().toURL());
+                } catch (MalformedURLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
         }
     }
 
