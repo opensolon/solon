@@ -779,6 +779,12 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>liteflow-solon-plugin</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>detector-solon-plugin</artifactId>
                 <version>${revision}</version>
             </dependency>
