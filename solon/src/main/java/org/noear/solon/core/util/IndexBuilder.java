@@ -26,7 +26,7 @@ public class IndexBuilder {
 	 * @return 顺序index
 	 */
 	public static int buildIndex(Class<?> clazz) {
-		return buildIndex(clazz, true);
+		return buildIndexDo(clazz, true);
 	}
 
 	/**
@@ -36,7 +36,7 @@ public class IndexBuilder {
 	 * @param stackTop 是否为查找栈顶
 	 * @return 顺序index
 	 */
-	private static int buildIndex(Class<?> clazz, Boolean stackTop) {
+	private static int buildIndexDo(Class<?> clazz, Boolean stackTop) {
 		if (stackTop) {
 			classStack.clear();
 
@@ -68,13 +68,24 @@ public class IndexBuilder {
 			// 找到依赖类中最大的index
 			Integer maxIndex = null;
 			for (Class<?> clazzRelate : clazzList) {
-				Integer index = buildIndex(clazzRelate, false);
+				// 避免进入死循环
+				if (classStack.contains(clazzRelate.getName())) {
+					continue;
+				} else {
+					classStack.add(clazzRelate.getName());
+				}
+
+				int index = buildIndexDo(clazzRelate, false);
 
 				if (maxIndex == null) {
 					maxIndex = index;
 				} else if (maxIndex < index) {
 					maxIndex = index;
 				}
+			}
+
+			if (maxIndex == null) {
+				maxIndex = 0;
 			}
 
 			// 返回maxIndex + 1
@@ -121,8 +132,7 @@ public class IndexBuilder {
 	 */
 	private static boolean isLoopRelate(Class<?> clazz, String topName) {
 		if(classStack.contains(clazz.getName())){
-			classStack.add(clazz.getName());
-			return true;
+			return false;
 		}
 
 		classStack.add(clazz.getName()); // 入栈

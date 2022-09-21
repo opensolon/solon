@@ -1,14 +1,16 @@
-package test4;
+package initTest.test3;
 
 import org.noear.solon.annotation.Component;
-import org.noear.solon.annotation.Init;
 import org.noear.solon.annotation.Inject;
 
 /**
  * @author noear 2022/9/20 created
  */
 @Component
-public class ClassA {
+public class ClassC {
     @Inject
     ClassB classB;
+
+    @Inject
+    ClassD classD;
 }

@@ -1,4 +1,4 @@
-package test4;
+package initTest.test3;
 
 import org.noear.solon.Solon;
 

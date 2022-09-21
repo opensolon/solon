@@ -1,6 +1,7 @@
-package test4;
+package initTest.test3;
 
 import org.noear.solon.annotation.Component;
+import org.noear.solon.annotation.Init;
 import org.noear.solon.annotation.Inject;
 
 /**
