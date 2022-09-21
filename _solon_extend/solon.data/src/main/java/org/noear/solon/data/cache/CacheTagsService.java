@@ -3,9 +3,11 @@ package org.noear.solon.data.cache;
 import java.util.function.Supplier;
 
 /**
+ * 支持标签的缓存服务
+ *
  * @author 胡高
+ * @since 1.10
  */
-@SuppressWarnings("unchecked")
 public interface CacheTagsService extends CacheService {
 
     /**

@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 支持标签的缓存服务实现
+ *
  * @author 胡高
+ * @since 1.10
  */
-@SuppressWarnings("unchecked")
 public class CacheTagsServiceImpl implements CacheTagsService {
 
     private static final String TAG_SECONDS  ="{{s}}:";
