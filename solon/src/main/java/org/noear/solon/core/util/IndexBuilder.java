@@ -16,8 +16,8 @@ import org.noear.solon.annotation.Inject;
  */
 public class IndexBuilder {
 
-	private static final Map<String, Integer> map = new HashMap<>();
-	private static final ArrayList<String> classStack = new ArrayList<>();
+	private final Map<String, Integer> map = new HashMap<>();
+	private final ArrayList<String> classStack = new ArrayList<>();
 
 	/**
 	 * 获取bean的初始化index
@@ -25,7 +25,7 @@ public class IndexBuilder {
 	 * @param clazz bean类
 	 * @return 顺序index
 	 */
-	public static int buildIndex(Class<?> clazz) {
+	public int buildIndex(Class<?> clazz) {
 		return buildIndexDo(clazz, true);
 	}
 
@@ -36,7 +36,7 @@ public class IndexBuilder {
 	 * @param stackTop 是否为查找栈顶
 	 * @return 顺序index
 	 */
-	private static int buildIndexDo(Class<?> clazz, Boolean stackTop) {
+	private int buildIndexDo(Class<?> clazz, Boolean stackTop) {
 		if (stackTop) {
 			classStack.clear();
 
@@ -100,7 +100,7 @@ public class IndexBuilder {
 	 * @param clazz
 	 * @return 依赖类集合
 	 */
-	private static List<Class<?>> findRelateClass(Class<?> clazz) {
+	private List<Class<?>> findRelateClass(Class<?> clazz) {
 		List<Class<?>> clazzList = new ArrayList<>();
 		Field[] fields = clazz.getDeclaredFields();
 
@@ -112,7 +112,7 @@ public class IndexBuilder {
 					continue;
 				}
 
-				if(clazz.equals(field.getType())){
+				if (clazz.equals(field.getType())) {
 					//自己注入自己，略过
 					continue;
 				}
@@ -130,8 +130,8 @@ public class IndexBuilder {
 	 * @param clazz
 	 * @return 是否循环依赖
 	 */
-	private static boolean isLoopRelate(Class<?> clazz, String topName) {
-		if(classStack.contains(clazz.getName())){
+	private boolean isLoopRelate(Class<?> clazz, String topName) {
+		if (classStack.contains(clazz.getName())) {
 			return false;
 		}
 
