@@ -12,25 +12,9 @@
     </parent>
 
     <groupId>org.noear.bundle</groupId>
-    <artifactId>socketd-bundle</artifactId>
+    <artifactId>solon-boot-bundle</artifactId>
     <packaging>pom</packaging>
 
-
-    <modules>
-        <module>../../_solon_extend/solon.socketd</module>
-
-        <module>../../_solon_boot/solon.boot.socketd.jdksocket</module>
-        <module>../../_solon_boot/solon.boot.socketd.netty</module>
-        <module>../../_solon_boot/solon.boot.socketd.smartsocket</module>
-        <module>../../_solon_boot/solon.boot.socketd.rsocket</module>
-        <module>../../_solon_boot/solon.boot.socketd.websocket</module>
-
-        <module>../../_solon_extend/solon.socketd.client.jdksocket</module>
-        <module>../../_solon_extend/solon.socketd.client.netty</module>
-        <module>../../_solon_extend/solon.socketd.client.rsocket</module>
-        <module>../../_solon_extend/solon.socketd.client.smartsocket</module>
-        <module>../../_solon_extend/solon.socketd.client.websocket</module>
-    </modules>
 
     <name>${project.artifactId}</name>
     <description>Java project for solon</description>
@@ -41,6 +25,28 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
     </properties>
+
+    <modules>
+
+        <module>../../_solon_boot/solon.boot</module>
+        <module>../../_solon_boot/solon.boot.jdkhttp</module>
+        <module>../../_solon_boot/solon.boot.jlhttp</module>
+        <module>../../_solon_boot/solon.boot.smarthttp</module>
+        <module>../../_solon_boot/solon.boot.jetty</module>
+        <module>../../_solon_boot/solon.boot.undertow</module>
+        <module>../../_solon_boot/solon.boot.tomcat</module>
+
+        <module>../../_solon_boot/solon.boot.websocket</module>
+
+
+        <module>../../_solon_boot/solon.boot.jetty.add.jsp</module>
+        <module>../../_solon_boot/solon.boot.jetty.add.servlet</module>
+        <module>../../_solon_boot/solon.boot.jetty.add.websocket</module>
+        <module>../../_solon_boot/solon.boot.undertow.add.jsp</module>
+        <module>../../_solon_boot/solon.boot.tomcat.add.jsp</module>
+
+    </modules>
+
 
     <licenses>
         <license>

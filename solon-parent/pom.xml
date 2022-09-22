@@ -1413,27 +1413,10 @@
 
         <module>../solon</module>
 
-        <module>../_solon_extend/solon.boot</module>
-        <module>../_solon_extend/solon.boot.jdkhttp</module>
-        <module>../_solon_extend/solon.boot.jlhttp</module>
-        <module>../_solon_extend/solon.boot.smarthttp</module>
-        <module>../_solon_extend/solon.boot.jetty</module>
-        <module>../_solon_extend/solon.boot.undertow</module>
-        <module>../_solon_extend/solon.boot.tomcat</module>
-
-        <module>../_solon_extend/solon.boot.websocket</module>
-
         <module>../_solon_extend/solon.data</module>
         <module>../_solon_extend/solon.auth</module>
         <module>../_solon_extend/solon.schedule</module>
         <module>../_solon_extend/solon.validation</module>
-
-
-        <module>../_solon_extend/solon.boot.jetty.add.jsp</module>
-        <module>../_solon_extend/solon.boot.jetty.add.servlet</module>
-        <module>../_solon_extend/solon.boot.jetty.add.websocket</module>
-        <module>../_solon_extend/solon.boot.undertow.add.jsp</module>
-        <module>../_solon_extend/solon.boot.tomcat.add.jsp</module>
 
         <module>../_solon_extend/solon.i18n</module>
 

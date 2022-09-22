@@ -23,6 +23,7 @@
 
         <module>__release/nami-bundle</module>
         <module>__release/socketd-bundle</module>
+        <module>__release/solon-boot-bundle</module>
         <module>__release/solon-extend-bundle</module>
         <module>__release/solon-plugin-bundle</module>
         <module>__release/solon-plugin-cloud-bundle</module>
