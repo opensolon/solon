@@ -1,6 +1,7 @@
 #### 1.10.4
 * 新增 kubernetes-config-solon-plugin 插件
 * 新增 jmdns-solon-plugin 插件
+* 新增 liteflow-solon-plugin 插件
 
 #### 1.10.3
 * 新增 forest-solon-plugin 插件
