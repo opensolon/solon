@@ -193,7 +193,7 @@ public abstract class BeanContainer {
     /**
      * bean订阅
      */
-    public void beanSubscribe(Object nameOrType, Consumer<BeanWrap> callback) {
+    protected void beanSubscribe(Object nameOrType, Consumer<BeanWrap> callback) {
         if (nameOrType != null) {
             beanSubscribers.add(new SubscriberEntity(nameOrType, callback));
         }
@@ -202,7 +202,7 @@ public abstract class BeanContainer {
     /**
      * bean通知
      */
-    public void beanNotice(Object nameOrType, BeanWrap wrap) {
+    protected void beanNotice(Object nameOrType, BeanWrap wrap) {
         if (wrap.raw() == null) {
             return;
         }
@@ -355,20 +355,9 @@ public abstract class BeanContainer {
      * 包装
      */
     public BeanWrap wrap(Class<?> type, Object bean) {
-        return wrap(type, bean, null);
-    }
-
-    /**
-     * 包装
-     */
-    public BeanWrap wrap(Class<?> type, Object bean, String name) {
         BeanWrap wrap = getWrap(type);
         if (wrap == null) {
             wrap = wrapCreate(type, bean);
-
-            if(Utils.isNotEmpty(name)){
-                wrap.nameSet(name);
-            }
         }
 
         return wrap;
