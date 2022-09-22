@@ -16,6 +16,7 @@
 * 添加 SolonJUnit4ClassRunner 运行的单测，支持动态代理
 * 调整 Context.outputAsFile() 自动输出文件长度
 * 调整 标注 @Bean::attrs 属性为弃用
+* 调整 标注 @Component::attrs 属性为弃用
 * 调整 @Init 循环依赖的处理逻辑
 
 #### 1.10.2
