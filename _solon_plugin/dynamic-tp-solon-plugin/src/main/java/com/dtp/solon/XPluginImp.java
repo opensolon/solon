@@ -1,6 +1,5 @@
 package com.dtp.solon;
 
-import org.noear.solon.SolonApp;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
 
