@@ -32,6 +32,9 @@ public @interface Bean {
     @Note("标签，用于快速查找")
     String tag() default "";
 
+    /**
+     * @deprecated 1.10
+     * */
     @Deprecated
     @Note("特性，用于辅助配置")
     String[] attrs() default {};

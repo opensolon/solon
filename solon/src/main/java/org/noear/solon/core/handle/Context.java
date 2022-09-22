@@ -917,6 +917,9 @@ public abstract class Context {
         statusDoSet(status);
     }
 
+    /**
+     * @deprecated 1.8
+     * */
     @Deprecated
     public void statusSet(int status){
         statusDoSet(status);

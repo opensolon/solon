@@ -12,6 +12,7 @@ import java.lang.annotation.*;
  * @Db("db1") SqlSession session;
  * @Db("db1") Mapper mapper;
  * @see org.apache.ibatis.solon.annotation.Db
+ * @deprecated 1.8
  * */
 @Note("switch to: org.apache.ibatis.solon.annotation.Db")
 @Deprecated

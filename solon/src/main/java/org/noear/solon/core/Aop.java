@@ -29,6 +29,7 @@ import java.util.function.Predicate;
  *
  * @author noear
  * @since 1.0
+ * @deprecated 1.10
  * */
 @Deprecated
 public class Aop {

@@ -10,6 +10,7 @@ import java.lang.annotation.*;
 /**
  * @author noear
  * @since 1.3
+ * @deprecated 1.9
  */
 @Deprecated
 @Options //添加 Options

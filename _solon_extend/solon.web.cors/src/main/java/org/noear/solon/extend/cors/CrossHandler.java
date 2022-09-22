@@ -12,6 +12,7 @@ import org.noear.solon.extend.cors.annotation.CrossOrigin;
  *
  * @author noear
  * @since 1.3
+ * @deprecated 1.9
  */
 @Deprecated
 public class CrossHandler implements Handler {

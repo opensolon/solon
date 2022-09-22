@@ -24,6 +24,9 @@ import java.util.function.Function;
 @Note("内部专用工具（外部项目不建议使用，随时可能会变动）")
 public class Utils {
     public static final FileNameMap mimeMap = URLConnection.getFileNameMap();
+    /**
+     * @deprecated 1.10
+     * */
     @Deprecated
     public static final ExecutorService pools = Executors.newCachedThreadPool();
     public static final ScheduledExecutorService scheduled = Executors.newScheduledThreadPool(Runtime.getRuntime().availableProcessors());
@@ -142,6 +145,7 @@ public class Utils {
      * 包装异常
      *
      * @param ex 异常
+     * @deprecated 1.8
      */
     @Deprecated
     public static RuntimeException throwableWrap(Throwable ex) {

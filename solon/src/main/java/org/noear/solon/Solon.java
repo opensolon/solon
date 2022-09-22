@@ -40,6 +40,9 @@ public class Solon {
         return ac;
     }
 
+    /**
+     * @deprecated 1.8
+     * */
     @Deprecated
     public static SolonApp global() {
         return app;

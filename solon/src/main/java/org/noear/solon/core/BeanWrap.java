@@ -38,9 +38,11 @@ public class BeanWrap {
     // bean tag
     private String tag;
     // bean 申明的属性
+    // @deprecated 1.10
     @Deprecated
     private String[] attrs;
     // bean 申明的属性Map形态
+    // @deprecated 1.10
     @Deprecated
     private Map<String, String> attrMap;
     // bean 是否按注册类型
@@ -89,12 +91,6 @@ public class BeanWrap {
             this.raw = raw;
         }
     }
-
-//    @Deprecated
-//    public BeanWrap(AopContext context,Class<?> clz, Object raw, String name, String[] attrs) {
-//        this(context,clz, raw, name);
-//        attrsSet(attrs);
-//    }
 
     public AopContext context() {
         return context;
@@ -178,17 +174,24 @@ public class BeanWrap {
 
     /**
      * bean 特性
+     * @deprecated 1.10
      */
     @Deprecated
     public String[] attrs() {
         return attrs;
     }
 
+    /**
+     * @deprecated 1.10
+     * */
     @Deprecated
     protected void attrsSet(String[] attrs) {
         this.attrs = attrs;
     }
 
+    /**
+     * @deprecated 1.10
+     * */
     @Deprecated
     public String attrGet(String name) {
         if (attrs == null) {

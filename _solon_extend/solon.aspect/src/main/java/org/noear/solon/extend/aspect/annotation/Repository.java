@@ -10,6 +10,7 @@ import java.lang.annotation.*;
  *
  * @author noear
  * @since 1.5
+ * @deprecated 1.9
  */
 @Deprecated
 @Target({ElementType.TYPE})

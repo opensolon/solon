@@ -267,6 +267,8 @@ public class SolonApp extends RouterAdapter {
 
     /**
      * 获取端口
+     *
+     * @deprecated 1.8
      */
     @Deprecated
     public int port() {

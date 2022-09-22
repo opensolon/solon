@@ -13,6 +13,7 @@ import java.lang.annotation.*;
  *
  * @author noear
  * @since 2020-09-01
+ * @deprecated 1.8
  * @see org.beetl.sql.solon.annotation.Db
  * */
 @Note("switch to: org.beetl.sql.solon.annotation.Db")

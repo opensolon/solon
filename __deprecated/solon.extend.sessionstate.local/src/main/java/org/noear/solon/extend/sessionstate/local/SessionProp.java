@@ -1,7 +1,6 @@
 package org.noear.solon.extend.sessionstate.local;
 
 import org.noear.solon.Solon;
-import org.noear.solon.SolonApp;
 
 @Deprecated
 class SessionProp {

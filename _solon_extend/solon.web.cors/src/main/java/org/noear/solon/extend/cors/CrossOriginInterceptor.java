@@ -11,6 +11,7 @@ import java.util.Map;
 /**
  * @author noear
  * @since 1.3
+ * @deprecated 1.9
  */
 @Deprecated
 public class CrossOriginInterceptor implements Handler {
