@@ -1413,6 +1413,10 @@
 
         <module>../solon</module>
 
+        <module>../_solon_extend/solon.aspect</module>
+        <module>../_solon_extend/solon.vault</module>
+        <module>../_solon_extend/solon.config.yaml</module>
+
         <module>../_solon_extend/solon.data</module>
         <module>../_solon_extend/solon.auth</module>
         <module>../_solon_extend/solon.schedule</module>

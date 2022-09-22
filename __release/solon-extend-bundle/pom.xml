@@ -42,9 +42,7 @@
 
         <!-- @Deprecated -->
         <module>../../__deprecated/solon.extend.aspect</module>
-        <module>../../_solon_extend/solon.aspect</module>
 
-        <module>../../_solon_extend/solon.vault</module>
 
         <!-- @Deprecated -->
         <module>../../__deprecated/solon.extend.staticfiles</module>
@@ -63,7 +61,6 @@
 
         <!-- @Deprecated -->
         <module>../../__deprecated/solon.extend.properties.yaml</module>
-        <module>../../_solon_extend/solon.config.yaml</module>
 
 
         <!-- @Deprecated -->
