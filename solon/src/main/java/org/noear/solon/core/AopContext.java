@@ -357,7 +357,7 @@ public class AopContext extends BeanContainer {
     }
 
     /**
-     * ::制造当前 bean 及对应处理
+     * ::制造 bean 及对应处理
      */
     public BeanWrap beanMake(Class<?> clz) {
         //包装

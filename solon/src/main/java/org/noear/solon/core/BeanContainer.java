@@ -616,7 +616,7 @@ public abstract class BeanContainer {
     /**
      * 查找Bean
      */
-    @Note("查找bean库 (拿到的是bean包装)")
+    @Note("查找bean包装库")
     public List<BeanWrap> beanFind(BiPredicate<String, BeanWrap> condition) {
         List<BeanWrap> list = new ArrayList<>();
         beanForeach((k, v) -> {
