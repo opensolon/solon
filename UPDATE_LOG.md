@@ -12,7 +12,7 @@
 * 插件 qiniu-kodo-solon-plugin 升级 qiniu-java-sdk 为 7.11.0
 * 插件 qiniu-kodo-solon-plugin 增加 regionId 配置项支持
 * 插件 nami 支持接口自己是 Filter，并增加非字符串类型的 pathVar 支持
-* 插件 solon-test 添加 TestPropertySource 注解
+* 插件 solon-test 添加 @TestPropertySource 注解
 * 添加 Solon.context() ，Aop 开始标为弃用
 * 添加 @Rollback 注解，用于测试时回滚
 * 添加 SolonJUnit4ClassRunner 运行的单测，支持动态代理
