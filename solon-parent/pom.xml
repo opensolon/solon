@@ -699,13 +699,13 @@
             </dependency>
 
             <dependency>
-                <groupId>org.noear.solon</groupId>
+                <groupId>org.noear</groupId>
                 <artifactId>solon-beetl-web</artifactId>
                 <version>${revision}</version>
             </dependency>
 
             <dependency>
-                <groupId>org.noear.solon</groupId>
+                <groupId>org.noear</groupId>
                 <artifactId>solon-enjoy-web</artifactId>
                 <version>${revision}</version>
             </dependency>
