@@ -6,7 +6,7 @@ import org.noear.solon.boot.undertow.XPluginImp;
 import org.noear.solon.core.handle.Context;
 
 //Servlet模式
-public class UtHandlerJspHandler extends SolonServletHandler {
+public class UtHandlerHandler extends SolonServletHandler {
     @Override
     protected void preHandle(Context ctx) {
         if (ServerProps.output_meta) {
