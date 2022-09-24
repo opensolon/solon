@@ -27,7 +27,11 @@ public class VaultUtils {
      * 是否已加密
      */
     public static boolean isEncrypted(String str) {
-        return str.startsWith(TAG_PREFIX) && str.endsWith(TAG_SUFFIX);
+        if (str == null) {
+            return false;
+        } else {
+            return str.startsWith(TAG_PREFIX) && str.endsWith(TAG_SUFFIX);
+        }
     }
 
     /**
