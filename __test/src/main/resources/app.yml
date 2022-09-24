@@ -141,6 +141,14 @@ strmap:
   id2: 2
 
 
+solon.vault:
+  password: "liylU9PhDq63tk1C"
+
+vault.test.db1:
+  url: "..."
+  username: "ENC(xo1zJjGXUouQ/CZac55HZA==)"
+  password: "ENC(XgRqh3C00JmkjsPi4mPySA==)"
+
 # sa-token配置
 sa-token:
   # token名称 (同时也是cookie名称)

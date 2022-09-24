@@ -123,6 +123,11 @@
 
         <dependency>
             <groupId>org.noear</groupId>
+            <artifactId>solon.vault</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.noear</groupId>
             <artifactId>solon.logging.impl</artifactId>
         </dependency>
 
@@ -419,6 +424,13 @@
         <dependency>
             <groupId>com.squareup.okhttp3</groupId>
             <artifactId>okhttp</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
+            <version>4.0.3</version>
+            <scope>test</scope>
         </dependency>
 
         <dependency>
