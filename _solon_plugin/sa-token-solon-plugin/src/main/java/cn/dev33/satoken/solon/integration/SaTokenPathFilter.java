@@ -21,6 +21,7 @@ import java.util.List;
  * @author noear
  * @since 1.9
  */
+@Deprecated
 public class SaTokenPathFilter implements Filter {
 
     // ------------------------ 设置此过滤器 拦截 & 放行 的路由
