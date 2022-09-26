@@ -12,6 +12,7 @@ import java.lang.reflect.Method;
  * @author noear
  * @since 1.4
  */
+@Deprecated
 public class SaTokenAnnotationInterceptor implements Interceptor {
 
     public static final SaTokenAnnotationInterceptor INSTANCE = new SaTokenAnnotationInterceptor();
