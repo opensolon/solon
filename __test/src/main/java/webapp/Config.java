@@ -1,15 +1,9 @@
 package webapp;
 
-import cn.dev33.satoken.SaManager;
-import cn.dev33.satoken.config.SaTokenConfig;
-import cn.dev33.satoken.router.SaRouter;
-import cn.dev33.satoken.solon.integration.SaTokenPathFilter;
-import cn.dev33.satoken.stp.StpUtil;
 import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.core.BeanWrap;
-import org.noear.solon.core.handle.Filter;
 import org.noear.solon.data.cache.CacheServiceSupplier;
 import org.noear.solon.extend.async.AsyncManager;
 

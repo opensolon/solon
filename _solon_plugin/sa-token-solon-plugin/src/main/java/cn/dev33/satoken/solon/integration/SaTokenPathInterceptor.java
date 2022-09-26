@@ -170,7 +170,10 @@ public class SaTokenPathInterceptor implements Handler {
 		try {
 			//注处处理
 			Action action = ctx.action();
-			if(action != null){
+
+			if(isAnnotation && action != null){
+				ctx.attrSet("_SaTokenPathInterceptor", "1");
+
 				// 获取此请求对应的 Method 处理函数
 				Method method = action.method().getMethod();
 
@@ -181,6 +184,8 @@ public class SaTokenPathInterceptor implements Handler {
 
 				// 注解校验
 				SaStrategy.me.checkMethodAnnotation.accept(method);
+			}else{
+				ctx.attrSet("_SaTokenPathInterceptor", "0");
 			}
 
 			//路径规则处理

@@ -5,8 +5,10 @@ import cn.dev33.satoken.config.SaTokenConfig;
 import cn.dev33.satoken.dao.SaTokenDao;
 import cn.dev33.satoken.router.SaRouter;
 import cn.dev33.satoken.solon.dao.SaTokenDaoOfRedis;
-import cn.dev33.satoken.solon.integration.SaTokenPathFilter;
+//import cn.dev33.satoken.solon.integration.SaTokenPathFilter;
+import cn.dev33.satoken.solon.integration.SaTokenPathInterceptor;
 import cn.dev33.satoken.stp.StpUtil;
+import org.noear.solon.Solon;
 import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
@@ -30,9 +32,9 @@ public class Config {
         SaManager.setConfig(saTokenConfig);
     }
 
-    @Bean(index = 1) //优先级可以排后些
-    public Filter saTokenFilter() {
-        return new SaTokenPathFilter()
+    @Bean //优先级可以排后些
+    public void saTokenFilter() {
+        Solon.app().before(new SaTokenPathInterceptor()
                 // 指定 [拦截路由] 与 [放行路由]
                 .addInclude("/**").addExclude("/favicon.ico")
 
@@ -53,6 +55,7 @@ public class Config {
                     System.out.println(e.getMessage());
                     StpUtil.login(123);
                     return e.getMessage();
-                });
+                })
+        );
     }
 }
