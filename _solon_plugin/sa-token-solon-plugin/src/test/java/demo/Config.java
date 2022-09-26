@@ -30,7 +30,7 @@ public class Config {
         SaManager.setConfig(saTokenConfig);
     }
 
-    @Bean
+    @Bean(index = 1) //优先级可以排后些
     public Filter saTokenFilter() {
         return new SaTokenPathFilter()
                 // 指定 [拦截路由] 与 [放行路由]
