@@ -2,6 +2,7 @@
 * 新增 kubernetes-config-solon-plugin 插件
 * 新增 jmdns-solon-plugin 插件
 * 新增 liteflow-solon-plugin 插件
+* 调整 路由器增加 action 预处理
 
 #### 1.10.3
 * 新增 forest-solon-plugin 插件

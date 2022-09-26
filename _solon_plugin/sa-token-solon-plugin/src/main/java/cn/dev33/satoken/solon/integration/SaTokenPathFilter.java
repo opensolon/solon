@@ -16,6 +16,8 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
+ * sa-token 基于路由的过滤式鉴权
+ *
  * @author noear
  * @since 1.9
  */

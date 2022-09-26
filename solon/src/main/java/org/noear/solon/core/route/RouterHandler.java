@@ -1,6 +1,7 @@
 package org.noear.solon.core.route;
 
 import org.noear.solon.core.event.EventBus;
+import org.noear.solon.core.handle.Action;
 import org.noear.solon.core.handle.Endpoint;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Handler;
@@ -37,13 +38,19 @@ public class RouterHandler implements Handler {
         boolean _throwabled = false;
 
         try {
+            //预处理 action
+            Handler mainHandler = router.matchOne(ctx, Endpoint.main);
+            if(mainHandler instanceof Action){
+                ctx.attrSet("action", mainHandler);
+            }
+
             //前置处理（支持多代理）
             handleMultiple(ctx, Endpoint.before);
 
             //主体处理
             if (ctx.getHandled() == false) {
                 //（仅支持唯一代理）
-                _handled = handleOne(ctx, Endpoint.main);
+                _handled = handleMain(mainHandler, ctx);
                 //（设定处理状态，便于 after 获取状态）
                 ctx.setHandled(_handled);
             }
@@ -74,9 +81,7 @@ public class RouterHandler implements Handler {
     /**
      * 唯一处理（用于主处理）
      */
-    protected boolean handleOne(Context ctx, Endpoint endpoint) throws Throwable {
-        Handler h = router.matchOne(ctx, endpoint);
-
+    protected boolean handleMain(Handler h,Context ctx) throws Throwable {
         if (h != null) {
             h.handle(ctx);
             return ctx.status() != 404;
