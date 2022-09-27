@@ -995,6 +995,12 @@
                 <version>${revision}</version>
             </dependency>
 
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>jedis-lock-solon-plugin</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
 
 
             <dependency>

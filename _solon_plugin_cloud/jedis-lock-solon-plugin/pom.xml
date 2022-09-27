@@ -11,19 +11,19 @@
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>solon.cache.jedis</artifactId>
+    <artifactId>jedis-lock-solon-plugin</artifactId>
     <packaging>jar</packaging>
 
 
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.data</artifactId>
+            <artifactId>redisx</artifactId>
         </dependency>
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>redisx</artifactId>
+            <artifactId>solon.cloud</artifactId>
         </dependency>
     </dependencies>
 

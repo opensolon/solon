@@ -200,10 +200,10 @@ public class XPluginImp implements Plugin {
     }
 
     public  String getEventReceive() {
-        return cloudProps.getProp(WaterProps.PROP_EVENT_receive);
+        return cloudProps.getValue(WaterProps.PROP_EVENT_receive);
     }
 
     public  void setEventReceive(String value) {
-        cloudProps.setProp(WaterProps.PROP_EVENT_receive, value);
+        cloudProps.setValue(WaterProps.PROP_EVENT_receive, value);
     }
 }

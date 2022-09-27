@@ -31,8 +31,8 @@ public class RocketmqConfig {
         timeout = cloudProps.getEventPublishTimeout();
         namespace = Solon.cfg().appNamespace();
 
-        producerGroup = cloudProps.getProp(RocketmqProps.PROP_EVENT_producerGroup);
-        consumerGroup = cloudProps.getProp(RocketmqProps.PROP_EVENT_consumerGroup);
+        producerGroup = cloudProps.getValue(RocketmqProps.PROP_EVENT_producerGroup);
+        consumerGroup = cloudProps.getValue(RocketmqProps.PROP_EVENT_consumerGroup);
 
 
         if (Utils.isEmpty(producerGroup)) {

@@ -145,13 +145,13 @@ public class CloudEventServicePulsarImp implements CloudEventServicePlus {
      * 消费组
      */
     public String getEventConsumerGroup() {
-        return cloudProps.getProp(PulsarProps.PROP_EVENT_consumerGroup);
+        return cloudProps.getValue(PulsarProps.PROP_EVENT_consumerGroup);
     }
 
     /**
      * 产品组
      */
     public String getEventProducerGroup() {
-        return cloudProps.getProp(PulsarProps.PROP_EVENT_producerGroup);
+        return cloudProps.getValue(PulsarProps.PROP_EVENT_producerGroup);
     }
 }

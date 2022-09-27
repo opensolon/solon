@@ -275,6 +275,12 @@ public class Props extends Properties {
         return obj;
     }
 
+    public synchronized void putIfNotNull(Object key, Object value) {
+        if (key != null && value != null) {
+            this.put(key, value);
+        }
+    }
+
     ////
 
     /**

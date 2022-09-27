@@ -94,13 +94,13 @@ public class RabbitConfig {
      * 交换机
      */
     public String getEventExchange() {
-        return cloudProps.getProp(RabbitmqProps.PROP_EVENT_exchange);
+        return cloudProps.getValue(RabbitmqProps.PROP_EVENT_exchange);
     }
 
     /**
      * 队列
      */
     public String getEventQueue() {
-        return cloudProps.getProp(RabbitmqProps.PROP_EVENT_queue);
+        return cloudProps.getValue(RabbitmqProps.PROP_EVENT_queue);
     }
 }

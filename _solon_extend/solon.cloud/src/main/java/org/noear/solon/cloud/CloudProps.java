@@ -2,6 +2,7 @@ package org.noear.solon.cloud;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
+import org.noear.solon.core.Props;
 
 import java.util.Properties;
 
@@ -56,6 +57,7 @@ public class CloudProps {
 
     //锁服务相关
     private String LOCK_ENABLE = "solon.cloud.@@.lock.enable";
+    private String LOCK_SERVER = "solon.cloud.@@.lock.server";
 
     //日志总线服务相关
     private String LOG_ENABLE = "solon.cloud.@@.log.enable";
@@ -309,6 +311,15 @@ public class CloudProps {
         return Solon.cfg().getBool(LOCK_ENABLE, true);
     }
 
+    public String getLockServer() {
+        String tmp = Solon.cfg().get(LOCK_SERVER);
+        if (Utils.isEmpty(tmp)) {
+            return getServer();
+        } else {
+            return tmp;
+        }
+    }
+
 
     //
     //日志总线服务相关
@@ -419,11 +430,33 @@ public class CloudProps {
         }
     }
 
-    public String getProp(String name) {
+    /**
+     * 获取值
+     * */
+    public String getValue(String name) {
         return Solon.cfg().get(ROOT + name); //"solon.cloud.@@.";
     }
 
-    public void setProp(String name, String value) {
+
+
+    /**
+     * 设置值
+     * */
+    public void setValue(String name, String value) {
         Solon.cfg().setProperty(ROOT + name, value); //"solon.cloud.@@.";
+    }
+
+    /**
+     * 获取所有属性
+     * */
+    public Props getProp(){
+        return Solon.cfg().getProp(ROOT.substring(0,ROOT.length()-1));
+    }
+
+    /**
+     * 获取所有某一块属性
+     * */
+    public Props getProp(String keyStarts) {
+        return Solon.cfg().getProp(ROOT + keyStarts);
     }
 }

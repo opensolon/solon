@@ -1,9 +1,13 @@
-package org.noear.solon.cache.jedis;
+package org.noear.solon.cloud.extend.jedis.service;
 
 import org.noear.redisx.RedisClient;
+import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.service.CloudLockService;
+import org.noear.solon.core.Props;
 
 /**
+ * 分布式锁适配
+ *
  * @author noear
  * @since 1.10
  */
@@ -12,6 +16,24 @@ public class CloudLockServiceJedisImpl implements CloudLockService {
 
     public CloudLockServiceJedisImpl(RedisClient client) {
         this.client = client;
+    }
+
+    public CloudLockServiceJedisImpl(CloudProps cloudProps) {
+        Props props = cloudProps.getProp("lock");
+
+        if (props.contains("server") == false) {
+            props.putIfNotNull("server", cloudProps.getServer());
+        }
+
+        if (props.contains("user") == false) {
+            props.putIfNotNull("user", cloudProps.getUsername());
+        }
+
+        if (props.contains("password") == false) {
+            props.putIfNotNull("password", cloudProps.getPassword());
+        }
+
+        this.client = new RedisClient(props);
     }
 
     @Override
