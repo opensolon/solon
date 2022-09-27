@@ -997,7 +997,7 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>jedis-lock-solon-plugin</artifactId>
+                <artifactId>jedis-solon-cloud-plugin</artifactId>
                 <version>${revision}</version>
             </dependency>
 
