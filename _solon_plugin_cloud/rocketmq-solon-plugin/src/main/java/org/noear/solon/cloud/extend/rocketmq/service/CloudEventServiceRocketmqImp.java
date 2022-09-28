@@ -41,6 +41,10 @@ public class CloudEventServiceRocketmqImp implements CloudEventServicePlus {
             throw new IllegalArgumentException("Event missing content");
         }
 
+        if (Utils.isEmpty(event.key())) {
+            event.key(Utils.guid());
+        }
+
         //new topic
         String topicNew;
         if (Utils.isEmpty(event.group())) {

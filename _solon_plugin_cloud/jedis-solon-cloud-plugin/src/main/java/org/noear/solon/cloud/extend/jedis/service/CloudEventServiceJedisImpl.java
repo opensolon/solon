@@ -2,11 +2,15 @@ package org.noear.solon.cloud.extend.jedis.service;
 
 import org.noear.redisx.RedisClient;
 import org.noear.snack.ONode;
+import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudEventHandler;
 import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.annotation.EventLevel;
 import org.noear.solon.cloud.exception.CloudEventException;
+import org.noear.solon.cloud.extend.jedis.JedisProps;
+import org.noear.solon.cloud.extend.jedis.impl.JedisEventConsumer;
 import org.noear.solon.cloud.model.Event;
+import org.noear.solon.cloud.service.CloudEventObserverManger;
 import org.noear.solon.cloud.service.CloudEventServicePlus;
 import org.noear.solon.core.Props;
 
@@ -44,13 +48,58 @@ public class CloudEventServiceJedisImpl implements CloudEventServicePlus {
 
     @Override
     public boolean publish(Event event) throws CloudEventException {
-        client.open(s -> s.publish(event.topic(), ONode.stringify(event)));
+        if (Utils.isEmpty(event.topic())) {
+            throw new IllegalArgumentException("Event missing topic");
+        }
+
+        if (Utils.isEmpty(event.content())) {
+            throw new IllegalArgumentException("Event missing content");
+        }
+
+        if (Utils.isEmpty(event.key())) {
+            event.key(Utils.guid());
+        }
+
+        //new topic
+        String topicNew;
+        if (Utils.isEmpty(event.group())) {
+            topicNew = event.topic();
+        } else {
+            topicNew = event.group() + JedisProps.GROUP_SPLIT_MART + event.topic();
+        }
+
+        client.open(s -> s.publish(topicNew, ONode.stringify(event)));
         return true;
     }
 
+    CloudEventObserverManger observerManger = new CloudEventObserverManger();
+
     @Override
     public void attention(EventLevel level, String channel, String group, String topic, CloudEventHandler observer) {
-        client.open(s -> s.subscribe(new JedisPubSubImpl(channel, group, topic, observer), topic));
+        //new topic
+        String topicNew;
+        if (Utils.isEmpty(group)) {
+            topicNew = topic;
+        } else {
+            topicNew = group + JedisProps.GROUP_SPLIT_MART + topic;
+        }
+
+        observerManger.add(topicNew, level, group, topic, observer);
+    }
+
+    public void subscribe() {
+        try {
+            if (observerManger.topicSize() > 0) {
+                String[] topicAll = new String[observerManger.topicAll().size()];
+                observerManger.topicAll().toArray(topicAll);
+
+                Utils.async(() -> {
+                    client.open(s -> s.subscribe(new JedisEventConsumer(cloudProps, observerManger), topicAll));
+                });
+            }
+        } catch (Throwable ex) {
+            throw new RuntimeException(ex);
+        }
     }
 
     @Override

@@ -23,6 +23,8 @@ public class XPluginImp implements Plugin {
         if (JedisProps.instance.getEventEnable() && Utils.isNotEmpty(JedisProps.instance.getEventServer())) {
             CloudEventServiceJedisImpl eventServiceImp = new CloudEventServiceJedisImpl(JedisProps.instance);
             CloudManager.register(eventServiceImp);
+
+            context.beanOnloaded(ctx -> eventServiceImp.subscribe());
         }
     }
 }
