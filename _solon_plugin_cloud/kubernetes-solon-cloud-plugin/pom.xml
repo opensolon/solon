@@ -11,7 +11,7 @@
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>jmdns-solon-plugin</artifactId>
+    <artifactId>kubernetes-solon-cloud-plugin</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>
@@ -21,9 +21,9 @@
         </dependency>
 
         <dependency>
-            <groupId>org.jmdns</groupId>
-            <artifactId>jmdns</artifactId>
-            <version>3.5.8</version>
+            <groupId>io.kubernetes</groupId>
+            <artifactId>client-java</artifactId>
+            <version>14.0.0</version>
         </dependency>
     </dependencies>
 

@@ -917,13 +917,13 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>kubernetes-solon-plugin</artifactId>
+                <artifactId>kubernetes-solon-cloud-plugin</artifactId>
                 <version>${revision}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>jmdns-solon-plugin</artifactId>
+                <artifactId>jmdns-solon-cloud-plugin</artifactId>
                 <version>${revision}</version>
             </dependency>
 

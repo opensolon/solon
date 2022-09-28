@@ -1,10 +1,12 @@
 #### 1.10.4
-* 新增 kubernetes-config-solon-plugin 插件
-* 新增 jmdns-solon-plugin 插件
 * 新增 liteflow-solon-plugin 插件
+* 新增 kubernetes-solon-cloud-plugin 插件
+* 新增 jmdns-solon-cloud-plugin 插件
+* 新增 jedis-solon-cloud-plugin 插件
 * 调整 路由器增加 action 预处理
 * 插件 sa-token-solon-plugin 优化 SaTokenPathInterceptor 代码
 * 插件 solon.validation 没有设定出错处理时，默认抛异常
+* 插件 solon.auth 没有设定出错处理时，默认抛异常
 
 #### 1.10.3
 * 新增 forest-solon-plugin 插件
