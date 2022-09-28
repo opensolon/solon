@@ -2,6 +2,8 @@ package org.noear.solon.auth;
 
 import org.noear.solon.core.handle.Result;
 
+import java.lang.annotation.Annotation;
+
 /**
  * 验证状态
  *

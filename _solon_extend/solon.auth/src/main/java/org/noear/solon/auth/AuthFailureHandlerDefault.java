@@ -12,6 +12,6 @@ import org.noear.solon.core.handle.Result;
 public class AuthFailureHandlerDefault implements AuthFailureHandler {
     @Override
     public void onFailure(Context ctx, Result rst) throws Throwable {
-        throw new AuthException(rst.getCode(), rst.getDescription());
+        throw new AuthException((AuthStatus) rst.getData(), rst.getDescription());
     }
 }

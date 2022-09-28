@@ -1,6 +1,7 @@
 package org.noear.solon.auth.interceptor;
 
 import org.noear.solon.auth.AuthException;
+import org.noear.solon.auth.AuthStatus;
 import org.noear.solon.auth.AuthUtil;
 import org.noear.solon.core.aspect.Interceptor;
 import org.noear.solon.core.aspect.Invocation;
@@ -36,7 +37,7 @@ public abstract class AbstractInterceptor<T extends Annotation> implements Inter
                     AuthUtil.adapter().failure().onFailure(ctx, rst);
                     throw new DataThrowable();
                 } else {
-                    throw new AuthException(rst.getCode(), rst.getDescription());
+                    throw new AuthException((AuthStatus) rst.getData(), rst.getDescription());
                 }
             }
         }

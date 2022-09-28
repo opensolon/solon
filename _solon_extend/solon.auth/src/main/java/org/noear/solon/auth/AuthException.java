@@ -7,17 +7,14 @@ package org.noear.solon.auth;
  * @since 1.4
  */
 public class AuthException extends RuntimeException {
-    private final int code;
+    private final AuthStatus status;
 
-    /**
-     * 状态码
-     * */
-    public int getCode() {
-        return code;
+    public AuthStatus getStatus() {
+        return status;
     }
 
-    public AuthException(int code, String message) {
+    public AuthException(AuthStatus status, String message) {
         super(message);
-        this.code = code;
+        this.status = status;
     }
 }
