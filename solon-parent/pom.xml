@@ -1357,36 +1357,6 @@
 
         <module>../solon</module>
 
-        <module>../_solon_extend/solon.aspect</module>
-        <module>../_solon_extend/solon.vault</module>
-        <module>../_solon_extend/solon.config.yaml</module>
-
-        <module>../_solon_extend/solon.data</module>
-        <module>../_solon_extend/solon.auth</module>
-        <module>../_solon_extend/solon.schedule</module>
-        <module>../_solon_extend/solon.validation</module>
-
-        <module>../_solon_extend/solon.i18n</module>
-
-        <module>../_solon_extend/solon.logging</module>
-        <module>../_solon_extend/solon.logging.impl</module>
-
-        <module>../_solon_extend/solon.cloud</module>
-        <module>../_solon_extend/solon.cloud.tracing</module>
-
-        <module>../_solon_shortcut/solon-beetl-web</module>
-        <module>../_solon_shortcut/solon-enjoy-web</module>
-        <module>../_solon_shortcut/solon-lib</module>
-        <module>../_solon_shortcut/solon-api</module>
-
-        <module>../_solon_shortcut/solon-web</module>
-        <module>../_solon_shortcut/solon-rpc</module>
-        <module>../_solon_shortcut/solon-cloud</module>
-        <module>../_solon_shortcut/solon-cloud-alibaba</module>
-        <module>../_solon_shortcut/solon-cloud-water</module>
-
-        <module>../_solon_shortcut/solon-test</module>
-
     </modules>
 
 </project>

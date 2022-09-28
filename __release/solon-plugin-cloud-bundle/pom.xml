@@ -41,13 +41,11 @@
         <module>../../_solon_plugin_cloud/qiniu-kodo-solon-plugin</module>
         <module>../../_solon_plugin_cloud/minio-solon-plugin</module>
         <module>../../_solon_plugin_cloud/minio7-solon-plugin</module>
-        <module>../../_solon_plugin_cloud/fastdfs-solon-plugin</module>
 
         <module>../../_solon_plugin_cloud/rabbitmq-solon-plugin</module>
         <module>../../_solon_plugin_cloud/rocketmq-solon-plugin</module>
         <module>../../_solon_plugin_cloud/mqtt-solon-plugin</module>
         <module>../../_solon_plugin_cloud/kafka-solon-plugin</module>
-        <module>../../_solon_plugin_cloud/pulsar-solon-plugin</module>
 
 
         <module>../../_solon_plugin_cloud/guava-solon-plugin</module>
@@ -64,9 +62,7 @@
 
         <module>../../_solon_plugin_cloud/grpc-solon-plugin</module>
 
-        <module>../../_solon_plugin_cloud/kubernetes-solon-cloud-plugin</module>
-        <module>../../_solon_plugin_cloud/jmdns-solon-cloud-plugin</module>
-        <module>../../_solon_plugin_cloud/jedis-solon-cloud-plugin</module>
+
 
     </modules>
 

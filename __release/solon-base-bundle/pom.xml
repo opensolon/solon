@@ -12,8 +12,9 @@
     </parent>
 
     <groupId>org.noear.bundle</groupId>
-    <artifactId>solon-plugin-bundle</artifactId>
+    <artifactId>solon-base-bundle</artifactId>
     <packaging>pom</packaging>
+
 
     <name>${project.artifactId}</name>
     <description>Java project for solon</description>
@@ -25,51 +26,38 @@
         <java.version>1.8</java.version>
     </properties>
 
-
     <modules>
-        <module>../../_solon_plugin/solon-springboot-starter</module>
 
-        <module>../../_solon_plugin/detector-solon-plugin</module>
+        <module>../../_solon_extend/solon.aspect</module>
+        <module>../../_solon_extend/solon.vault</module>
+        <module>../../_solon_extend/solon.config.yaml</module>
 
-        <module>../../_solon_plugin/beetlsql-solon-plugin</module>
+        <module>../../_solon_extend/solon.data</module>
+        <module>../../_solon_extend/solon.auth</module>
+        <module>../../_solon_extend/solon.schedule</module>
+        <module>../../_solon_extend/solon.validation</module>
 
-        <module>../../_solon_plugin/cron4j-solon-plugin</module>
-        <module>../../_solon_plugin/dubbo-solon-plugin</module>
-        <module>../../_solon_plugin/dubbo3-solon-plugin</module>
-        <module>../../_solon_plugin/feign-solon-plugin</module>
-        <module>../../_solon_plugin/forest-solon-plugin</module>
+        <module>../../_solon_extend/solon.i18n</module>
 
-        <module>../../_solon_plugin/hasordb-solon-plugin</module>
-        <module>../../_solon_plugin/dbvisitor-solon-plugin</module>
+        <module>../../_solon_extend/solon.logging</module>
+        <module>../../_solon_extend/solon.logging.impl</module>
 
-        <module>../../_solon_plugin/luffy-solon-plugin</module>
+        <module>../../_solon_extend/solon.cloud</module>
+        <module>../../_solon_extend/solon.cloud.tracing</module>
 
+        <module>../../_solon_shortcut/solon-beetl-web</module>
+        <module>../../_solon_shortcut/solon-enjoy-web</module>
+        <module>../../_solon_shortcut/solon-lib</module>
+        <module>../../_solon_shortcut/solon-api</module>
 
-        <module>../../_solon_plugin/weed3-solon-plugin</module>
+        <module>../../_solon_shortcut/solon-web</module>
+        <module>../../_solon_shortcut/solon-rpc</module>
+        <module>../../_solon_shortcut/solon-cloud</module>
+        <module>../../_solon_shortcut/solon-cloud-alibaba</module>
+        <module>../../_solon_shortcut/solon-cloud-water</module>
 
-        <module>../../_solon_plugin/sqltoy-solon-plugin</module>
+        <module>../../_solon_shortcut/solon-test</module>
 
-        <module>../../_solon_plugin/mybatis-solon-plugin</module>
-        <module>../../_solon_plugin/mybatis-sqlhelper-solon-plugin</module>
-        <module>../../_solon_plugin/mybatis-pagehelper-solon-plugin</module>
-
-        <module>../../_solon_plugin/mybatis-plus-solon-plugin</module>
-        <module>../../_solon_plugin/mybatis-plus-extension-solon-plugin</module>
-
-        <module>../../_solon_plugin/activerecord-solon-plugin</module>
-
-        <module>../../_solon_plugin/quartz-solon-plugin</module>
-
-        <module>../../_solon_plugin/shiro-solon-plugin</module>
-        <module>../../_solon_plugin/sa-token-solon-plugin</module>
-
-        <module>../../_solon_plugin/captcha-solon-plugin</module>
-        <module>../../_solon_plugin/vaptcha-solon-plugin</module>
-
-        <module>../../_solon_plugin/log4j2-solon-plugin</module>
-        <module>../../_solon_plugin/logback-solon-plugin</module>
-
-        <module>../../_solon_plugin/solon-maven-plugin</module>
     </modules>
 
 
