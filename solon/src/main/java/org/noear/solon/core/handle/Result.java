@@ -153,6 +153,14 @@ public class Result<T> implements Serializable {
         return new Result<>(code, description);
     }
 
+    /**
+     * 失败的结果
+     */
+    @Note("失败的结果")
+    public static <T> Result<T> failure(int code, String description, T data) {
+        return new Result<>(code, description, data);
+    }
+
     @Note("失败的结果")
     public static <T> Result<T> failure(String description) {
         return new Result<>(FAILURE_CODE, description);

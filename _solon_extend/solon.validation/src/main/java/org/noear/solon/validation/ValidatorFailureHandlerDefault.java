@@ -16,37 +16,23 @@ class ValidatorFailureHandlerDefault implements ValidatorFailureHandler {
 
     @Override
     public boolean onFailure(Context ctx, Annotation anno, Result rst, String msg) throws Throwable {
-        ctx.setHandled(true);
-
-        if (rst.getCode() > 400 && rst.getCode() < 500) {
-            ctx.status(rst.getCode());
-        } else {
-            ctx.status(400);
-        }
-
-        if (ctx.getRendered() == false) {
-
-            if (Utils.isEmpty(msg)) {
-                if (Utils.isEmpty(rst.getDescription())) {
-                    msg = new StringBuilder(100)
-                            .append("@")
-                            .append(anno.annotationType().getSimpleName())
-                            .append(" verification failed")
-                            .toString();
-                } else {
-                    msg = new StringBuilder(100)
-                            .append("@")
-                            .append(anno.annotationType().getSimpleName())
-                            .append(" verification failed: ")
-                            .append(rst.getDescription())
-                            .toString();
-                }
+        if (Utils.isEmpty(msg)) {
+            if (Utils.isEmpty(rst.getDescription())) {
+                msg = new StringBuilder(100)
+                        .append("@")
+                        .append(anno.annotationType().getSimpleName())
+                        .append(" verification failed")
+                        .toString();
+            } else {
+                msg = new StringBuilder(100)
+                        .append("@")
+                        .append(anno.annotationType().getSimpleName())
+                        .append(" verification failed: ")
+                        .append(rst.getDescription())
+                        .toString();
             }
-
-            ctx.render(Result.failure(rst.getCode(), msg));
-
         }
 
-        return true;
+        throw new ValidatorException(rst.getCode(), msg, anno, rst);
     }
 }

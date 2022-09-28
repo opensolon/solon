@@ -20,7 +20,7 @@ import java.util.List;
  *
  * @author noear
  * @since 1.9
- * @deprecated 1.10
+ * @deprecated 1.10，改用 SaTokenPathInterceptor
  * @see SaTokenPathInterceptor
  */
 @Deprecated

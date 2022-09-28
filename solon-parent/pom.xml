@@ -306,11 +306,6 @@
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.extend.aspect</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.noear</groupId>
                 <artifactId>solon.aspect</artifactId>
                 <version>${revision}</version>
             </dependency>
@@ -340,25 +335,12 @@
                 <version>${revision}</version>
             </dependency>
 
-            <!-- @Deprecated -->
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>solon.extend.hotplug</artifactId>
-                <version>${revision}</version>
-            </dependency>
-
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.hotplug</artifactId>
                 <version>${revision}</version>
             </dependency>
 
-            <!-- @Deprecated -->
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>solon.extend.cors</artifactId>
-                <version>${revision}</version>
-            </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
@@ -366,19 +348,12 @@
                 <version>${revision}</version>
             </dependency>
 
-            <!-- @Deprecated -->
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.extend.async</artifactId>
                 <version>${revision}</version>
             </dependency>
 
-            <!-- @Deprecated -->
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>solon.extend.health</artifactId>
-                <version>${revision}</version>
-            </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
@@ -386,36 +361,18 @@
                 <version>${revision}</version>
             </dependency>
 
-            <!-- @Deprecated -->
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>solon.extend.servlet</artifactId>
-                <version>${revision}</version>
-            </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.web.servlet</artifactId>
                 <version>${revision}</version>
             </dependency>
 
-            <!-- @Deprecated -->
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>solon.extend.staticfiles</artifactId>
-                <version>${revision}</version>
-            </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.web.staticfiles</artifactId>
                 <version>${revision}</version>
             </dependency>
 
-            <!-- @Deprecated -->
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>solon.extend.properties.yaml</artifactId>
-                <version>${revision}</version>
-            </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.config.yaml</artifactId>
@@ -448,25 +405,6 @@
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.schedule</artifactId>
-                <version>${revision}</version>
-            </dependency>
-
-            <dependency>
-                <!-- @Deprecated -->
-                <groupId>org.noear</groupId>
-                <artifactId>solon.extend.sessionstate.redis</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <!-- @Deprecated -->
-                <groupId>org.noear</groupId>
-                <artifactId>solon.extend.sessionstate.local</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <!-- @Deprecated -->
-                <groupId>org.noear</groupId>
-                <artifactId>solon.extend.sessionstate.jwt</artifactId>
                 <version>${revision}</version>
             </dependency>
 

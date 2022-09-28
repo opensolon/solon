@@ -17,7 +17,7 @@ public class AuthAdapter {
     private String loginUrl;
     private AuthRuleHandler authRuleHandler;
     private AuthProcessor authProcessor;
-    private AuthFailureHandler authFailure = (ctx, rst) -> ctx.render(rst);
+    private AuthFailureHandler authFailure = new AuthFailureHandlerDefault();
 
     //=================//=================//=================
 

@@ -11,7 +11,7 @@ import java.lang.reflect.Method;
 /**
  * @author noear
  * @since 1.4
- * @deprecated 1.10
+ * @deprecated 1.10，改用 SaTokenPathInterceptor
  */
 @Deprecated
 public class SaTokenAnnotationInterceptor implements Interceptor {

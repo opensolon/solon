@@ -1,5 +1,6 @@
 package org.noear.solon.auth.interceptor;
 
+import org.noear.solon.auth.AuthStatus;
 import org.noear.solon.auth.AuthUtil;
 import org.noear.solon.auth.annotation.AuthPath;
 import org.noear.solon.core.handle.Context;
@@ -27,7 +28,7 @@ public class PathInterceptor extends AbstractInterceptor<AuthPath> {
             if (AuthUtil.verifyPath(ctx.pathNew(), ctx.method())) {
                 return Result.succeed();
             } else {
-                return Result.failure(403, AuthUtil.MESSAGE_OF_PATH);
+                return AuthStatus.OF_PATH.toResult();
             }
         }
     }

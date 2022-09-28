@@ -1,5 +1,6 @@
 package org.noear.solon.auth.interceptor;
 
+import org.noear.solon.auth.AuthStatus;
 import org.noear.solon.auth.AuthUtil;
 import org.noear.solon.auth.annotation.AuthLogined;
 import org.noear.solon.core.handle.Result;
@@ -21,7 +22,7 @@ public class LoginedInterceptor extends AbstractInterceptor<AuthLogined> {
         if (AuthUtil.verifyLogined()) {
             return Result.succeed();
         } else {
-            return Result.failure(401, AuthUtil.MESSAGE_OF_LOGINED);
+            return AuthStatus.OF_LOGINED.toResult();
         }
     }
 }

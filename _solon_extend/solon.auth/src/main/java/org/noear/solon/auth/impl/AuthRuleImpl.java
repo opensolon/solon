@@ -1,5 +1,6 @@
 package org.noear.solon.auth.impl;
 
+import org.noear.solon.auth.AuthStatus;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Result;
 import org.noear.solon.core.util.PathAnalyzer;
@@ -138,7 +139,7 @@ public class AuthRuleImpl implements AuthRule {
             String ip = ctx.realIp();
             if (AuthUtil.verifyIp(ip) == false) {
                 //验证失败的
-                failureDo(ctx, Result.failure(403, ip + AuthUtil.MESSAGE_OF_IP));
+                failureDo(ctx, AuthStatus.OF_IP.toResult(ip));
                 return;
             }
         }
@@ -151,7 +152,7 @@ public class AuthRuleImpl implements AuthRule {
             if (AuthUtil.verifyLogined() == false) {
                 //未登录的，跳到登录页
                 if (AuthUtil.adapter().loginUrl() == null) {
-                    failureDo(ctx, Result.failure(401, AuthUtil.MESSAGE_OF_LOGINED));
+                    failureDo(ctx, AuthStatus.OF_LOGINED.toResult());
                 } else {
                     ctx.redirect(AuthUtil.adapter().loginUrl());
                     ctx.setHandled(true);
@@ -167,7 +168,7 @@ public class AuthRuleImpl implements AuthRule {
             //验证路径与方式权限
             if (AuthUtil.verifyPath(path, ctx.method()) == false) {
                 //验证失败的
-                failureDo(ctx, Result.failure(403, AuthUtil.MESSAGE_OF_PATH));
+                failureDo(ctx, AuthStatus.OF_PATH.toResult());
                 return;
             }
         }
@@ -185,7 +186,7 @@ public class AuthRuleImpl implements AuthRule {
 
             if (isOk == false) {
                 //验证失败的
-                failureDo(ctx, Result.failure(403, AuthUtil.MESSAGE_OF_PERMISSIONS));
+                failureDo(ctx, AuthStatus.OF_PERMISSIONS.toResult());
                 return;
             }
         }
@@ -203,7 +204,7 @@ public class AuthRuleImpl implements AuthRule {
 
             if (isOk == false) {
                 //验证失败的
-                failureDo(ctx, Result.failure(403, AuthUtil.MESSAGE_OF_ROLES));
+                failureDo(ctx, AuthStatus.OF_ROLES.toResult());
                 return;
             }
         }

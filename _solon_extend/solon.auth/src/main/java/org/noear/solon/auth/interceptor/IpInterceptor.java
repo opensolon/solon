@@ -1,5 +1,6 @@
 package org.noear.solon.auth.interceptor;
 
+import org.noear.solon.auth.AuthStatus;
 import org.noear.solon.auth.AuthUtil;
 import org.noear.solon.auth.annotation.AuthIp;
 import org.noear.solon.core.handle.Context;
@@ -29,7 +30,7 @@ public class IpInterceptor extends AbstractInterceptor<AuthIp> {
             if (AuthUtil.verifyIp(ip)) {
                 return Result.succeed();
             } else {
-                return Result.failure(403, ip + AuthUtil.MESSAGE_OF_IP);
+                return AuthStatus.OF_IP.toResult(ip);
             }
         }
     }

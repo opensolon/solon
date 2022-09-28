@@ -15,12 +15,6 @@ import java.util.List;
  * @since 1.4
  */
 public class AuthUtil {
-    public static final String MESSAGE_OF_IP = " , this ip unauthorized";
-    public static final String MESSAGE_OF_LOGINED = "Unauthorized";
-    public static final String MESSAGE_OF_PATH = "Forbidden";
-    public static final String MESSAGE_OF_PERMISSIONS = "No permission granted";
-    public static final String MESSAGE_OF_ROLES = "No role granted";
-
     private static AuthAdapter adapter = new AuthAdapter();
     private static List<AuthAdapterSupplier> adapterSuppliers = new ArrayList<>();
 

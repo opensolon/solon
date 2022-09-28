@@ -20,7 +20,7 @@ public abstract class AbstractInterceptor<T extends Annotation> implements Inter
     public Object doIntercept(Invocation inv) throws Throwable {
         T anno = inv.method().getAnnotation(type());
 
-        if(anno == null){
+        if (anno == null) {
             anno = inv.method().getMethod().getDeclaringClass().getAnnotation(type());
         }
 
@@ -36,7 +36,7 @@ public abstract class AbstractInterceptor<T extends Annotation> implements Inter
                     AuthUtil.adapter().failure().onFailure(ctx, rst);
                     throw new DataThrowable();
                 } else {
-                    throw new AuthException(rst.getDescription());
+                    throw new AuthException(rst.getCode(), rst.getDescription());
                 }
             }
         }
