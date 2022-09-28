@@ -8,7 +8,6 @@
 * 插件 sa-token-solon-plugin 优化 SaTokenPathInterceptor 代码
 * 插件 solon.validation 没有设定出错处理时，默认抛异常
 * 插件 solon.auth 没有设定出错处理时，默认抛异常
-* 插件 solon.view.beetl 升级 beetl 到 3.11.0
 * 调整 core 路由器增加 action 预处理
 
 #### 1.10.3
