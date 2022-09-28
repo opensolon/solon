@@ -2,10 +2,8 @@ package org.noear.solon.auth;
 
 import org.noear.solon.core.handle.Result;
 
-import java.lang.annotation.Annotation;
-
 /**
- * 验证状态
+ * 认证状态
  *
  * @author noear
  * @since 1.10
@@ -30,11 +28,19 @@ public enum AuthStatus {
         return message;
     }
 
+    /**
+     * 转为结果对象
+     * */
     public Result toResult() {
         return Result.failure(code, message, this);
     }
 
-    public Result toResult(String txt) {
-        return Result.failure(code, txt + message, this);
+    /**
+     * 转为结果对象
+     *
+     * @param note 摘要
+     * */
+    public Result toResult(String note) {
+        return Result.failure(code, note + message, this);
     }
 }
