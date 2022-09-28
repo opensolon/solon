@@ -12,6 +12,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import redis.clients.jedis.JedisPubSub;
 
+import java.io.IOException;
+
 /**
  * @author noear
  * @since 1.10
@@ -34,8 +36,16 @@ public class JedisEventConsumer extends JedisPubSub {
             event.channel(eventChannelName);
 
             onReceive(event);
-        }catch (Throwable e){
-            EventBus.push(e);
+        }catch (Throwable ex){
+            ex = Utils.throwableUnwrap(ex);
+
+            EventBus.push(ex);
+
+            if (ex instanceof RuntimeException) {
+                throw (RuntimeException) ex;
+            } else {
+                throw new RuntimeException(ex);
+            }
         }
     }
 
