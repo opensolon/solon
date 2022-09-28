@@ -14,7 +14,7 @@
     <url>https://github.com/noear/solon</url>
 
     <properties>
-        <revision>1.10.4-M2</revision>
+        <revision>1.10.4</revision>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>

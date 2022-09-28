@@ -21,15 +21,15 @@ public class CloudLockServiceJedisImpl implements CloudLockService {
     public CloudLockServiceJedisImpl(CloudProps cloudProps) {
         Props props = cloudProps.getProp("lock");
 
-        if (props.contains("server") == false) {
+        if (props.get("server") == null) {
             props.putIfNotNull("server", cloudProps.getServer());
         }
 
-        if (props.contains("user") == false) {
+        if (props.get("user") == null) {
             props.putIfNotNull("user", cloudProps.getUsername());
         }
 
-        if (props.contains("password") == false) {
+        if (props.get("password") == null) {
             props.putIfNotNull("password", cloudProps.getPassword());
         }
 

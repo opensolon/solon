@@ -27,15 +27,15 @@ public class CloudEventServiceJedisImpl implements CloudEventServicePlus {
     public CloudEventServiceJedisImpl(CloudProps cloudProps) {
         Props props = cloudProps.getProp("event");
 
-        if (props.contains("server") == false) {
+        if (props.get("server") == null) {
             props.putIfNotNull("server", cloudProps.getServer());
         }
 
-        if (props.contains("user") == false) {
+        if (props.get("user") == null) {
             props.putIfNotNull("user", cloudProps.getUsername());
         }
 
-        if (props.contains("password") == false) {
+        if (props.get("password") == null) {
             props.putIfNotNull("password", cloudProps.getPassword());
         }
 
