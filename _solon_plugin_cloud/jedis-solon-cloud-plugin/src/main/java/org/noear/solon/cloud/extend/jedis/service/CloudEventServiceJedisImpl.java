@@ -22,11 +22,8 @@ import org.noear.solon.core.Props;
  */
 public class CloudEventServiceJedisImpl implements CloudEventServicePlus {
     private final RedisClient client;
-    private CloudProps cloudProps;
+    private final CloudProps cloudProps;
 
-    public CloudEventServiceJedisImpl(RedisClient client) {
-        this.client = client;
-    }
 
     public CloudEventServiceJedisImpl(CloudProps cloudProps) {
         Props props = cloudProps.getProp("event");
@@ -44,6 +41,7 @@ public class CloudEventServiceJedisImpl implements CloudEventServicePlus {
         }
 
         this.client = new RedisClient(props);
+        this.cloudProps = cloudProps;
     }
 
     @Override
