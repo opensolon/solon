@@ -1,13 +1,15 @@
 
+集群订阅时，接收时需要加锁（不然每个节点，都会收到）；没有 ACK（不适合原子性业务）
+
 #### 配置
 
 ```yaml
 #完整配置示例
 solon.cloud.jedis:
+  server: "localhost:6379"
+  password: "123456"
   lock:
-    server: "localhost:6379"
     db: 0 #默认为 0，可不配置
-    password: ""
     maxTotal: 200 #默认为 200，可不配
 ```
 
