@@ -890,7 +890,7 @@
 
             <!-- for solon cloud -->
             <dependency>
-                <!-- deprecated -->
+                <!-- deprecated (1.10) -->
                 <groupId>org.noear</groupId>
                 <artifactId>consul-solon-plugin</artifactId>
                 <version>${revision}</version>
@@ -903,7 +903,7 @@
             </dependency>
 
             <dependency>
-                <!-- deprecated -->
+                <!-- deprecated (1.10) -->
                 <groupId>org.noear</groupId>
                 <artifactId>grpc-solon-plugin</artifactId>
                 <version>${revision}</version>
@@ -916,7 +916,7 @@
             </dependency>
 
             <dependency>
-                <!-- deprecated -->
+                <!-- deprecated (1.10) -->
                 <groupId>org.noear</groupId>
                 <artifactId>aliyun-oss-solon-plugin</artifactId>
                 <version>${revision}</version>
@@ -929,7 +929,7 @@
             </dependency>
 
             <dependency>
-                <!-- deprecated -->
+                <!-- deprecated (1.10) -->
                 <groupId>org.noear</groupId>
                 <artifactId>aws-s3-solon-plugin</artifactId>
                 <version>${revision}</version>
@@ -942,7 +942,7 @@
             </dependency>
 
             <dependency>
-                <!-- deprecated -->
+                <!-- deprecated (1.10) -->
                 <groupId>org.noear</groupId>
                 <artifactId>qiniu-kodo-solon-plugin</artifactId>
                 <version>${revision}</version>
@@ -955,7 +955,7 @@
             </dependency>
 
             <dependency>
-                <!-- deprecated -->
+                <!-- deprecated (1.10) -->
                 <groupId>org.noear</groupId>
                 <artifactId>minio-solon-plugin</artifactId>
                 <version>${revision}</version>
@@ -968,7 +968,7 @@
             </dependency>
 
             <dependency>
-                <!-- deprecated -->
+                <!-- deprecated (1.10) -->
                 <groupId>org.noear</groupId>
                 <artifactId>minio7-solon-plugin</artifactId>
                 <version>${revision}</version>
@@ -982,7 +982,7 @@
 
 
             <dependency>
-                <!-- deprecated -->
+                <!-- deprecated (1.10) -->
                 <groupId>org.noear</groupId>
                 <artifactId>nacos-solon-plugin</artifactId>
                 <version>${revision}</version>
@@ -996,7 +996,7 @@
             </dependency>
 
             <dependency>
-                <!-- deprecated -->
+                <!-- deprecated (1.10) -->
                 <groupId>org.noear</groupId>
                 <artifactId>nacos2-solon-plugin</artifactId>
                 <version>${revision}</version>
@@ -1009,7 +1009,7 @@
             </dependency>
 
             <dependency>
-                <!-- deprecated -->
+                <!-- deprecated (1.10) -->
                 <groupId>org.noear</groupId>
                 <artifactId>water-solon-plugin</artifactId>
                 <version>${revision}</version>
@@ -1044,7 +1044,7 @@
 
 
             <dependency>
-                <!-- deprecated -->
+                <!-- deprecated (1.10) -->
                 <groupId>org.noear</groupId>
                 <artifactId>rabbitmq-solon-plugin</artifactId>
                 <version>${revision}</version>
@@ -1057,7 +1057,7 @@
             </dependency>
 
             <dependency>
-                <!-- deprecated -->
+                <!-- deprecated (1.10) -->
                 <groupId>org.noear</groupId>
                 <artifactId>rocketmq-solon-plugin</artifactId>
                 <version>${revision}</version>
@@ -1070,7 +1070,7 @@
             </dependency>
 
             <dependency>
-                <!-- deprecated -->
+                <!-- deprecated (1.10) -->
                 <groupId>org.noear</groupId>
                 <artifactId>mqtt-solon-plugin</artifactId>
                 <version>${revision}</version>
@@ -1083,7 +1083,7 @@
             </dependency>
 
             <dependency>
-                <!-- deprecated -->
+                <!-- deprecated (1.10) -->
                 <groupId>org.noear</groupId>
                 <artifactId>pulsar-solon-plugin</artifactId>
                 <version>${revision}</version>
@@ -1097,7 +1097,7 @@
 
 
             <dependency>
-                <!-- deprecated -->
+                <!-- deprecated (1.10) -->
                 <groupId>org.noear</groupId>
                 <artifactId>guava-solon-plugin</artifactId>
                 <version>${revision}</version>
@@ -1110,7 +1110,7 @@
             </dependency>
 
             <dependency>
-                <!-- deprecated -->
+                <!-- deprecated (1.10) -->
                 <groupId>org.noear</groupId>
                 <artifactId>sentinel-solon-plugin</artifactId>
                 <version>${revision}</version>
@@ -1123,7 +1123,7 @@
             </dependency>
 
             <dependency>
-                <!-- deprecated -->
+                <!-- deprecated (1.10) -->
                 <groupId>org.noear</groupId>
                 <artifactId>snowflake-id-solon-plugin</artifactId>
                 <version>${revision}</version>
@@ -1136,7 +1136,7 @@
             </dependency>
 
             <dependency>
-                <!-- deprecated -->
+                <!-- deprecated (1.10) -->
                 <groupId>org.noear</groupId>
                 <artifactId>zookeeper-solon-plugin</artifactId>
                 <version>${revision}</version>
@@ -1149,7 +1149,7 @@
             </dependency>
 
             <dependency>
-                <!-- deprecated -->
+                <!-- deprecated (1.10) -->
                 <groupId>org.noear</groupId>
                 <artifactId>kafka-solon-plugin</artifactId>
                 <version>${revision}</version>
@@ -1162,7 +1162,7 @@
             </dependency>
 
             <dependency>
-                <!-- deprecated -->
+                <!-- deprecated (1.10) -->
                 <groupId>org.noear</groupId>
                 <artifactId>semaphore-solon-plugin</artifactId>
                 <version>${revision}</version>
@@ -1176,7 +1176,7 @@
 
 
             <dependency>
-                <!-- deprecated -->
+                <!-- deprecated (1.10) -->
                 <groupId>org.noear</groupId>
                 <artifactId>xxl-job-solon-plugin</artifactId>
                 <version>${revision}</version>
@@ -1189,7 +1189,7 @@
             </dependency>
 
             <dependency>
-                <!-- deprecated -->
+                <!-- deprecated (1.10) -->
                 <groupId>org.noear</groupId>
                 <artifactId>opentracing-solon-plugin</artifactId>
                 <version>${revision}</version>
@@ -1202,7 +1202,7 @@
             </dependency>
 
             <dependency>
-                <!-- deprecated -->
+                <!-- deprecated (1.10) -->
                 <groupId>org.noear</groupId>
                 <artifactId>jaeger-solon-plugin</artifactId>
                 <version>${revision}</version>
@@ -1215,7 +1215,7 @@
             </dependency>
 
             <dependency>
-                <!-- deprecated -->
+                <!-- deprecated (1.10) -->
                 <groupId>org.noear</groupId>
                 <artifactId>httputils-solon-plugin</artifactId>
                 <version>${revision}</version>
