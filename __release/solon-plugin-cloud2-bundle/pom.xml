@@ -65,10 +65,11 @@
 
         <module>../../_solon_plugin_cloud2/pulsar-solon-cloud-plugin</module>
 
-        <module>../../_solon_plugin_cloud2/fastdfs-solon-cloud-plugin</module>
         <module>../../_solon_plugin_cloud2/kubernetes-solon-cloud-plugin</module>
         <module>../../_solon_plugin_cloud2/jmdns-solon-cloud-plugin</module>
         <module>../../_solon_plugin_cloud2/jedis-solon-cloud-plugin</module>
+
+        <module>../../_solon_plugin_cloud2/fastdfs-solon-cloud-plugin</module>
         <module>../../_solon_plugin_cloud2/etcd-solon-cloud-plugin</module>
     </modules>
 
