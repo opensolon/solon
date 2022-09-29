@@ -12,7 +12,7 @@
     </parent>
 
     <groupId>org.noear.bundle</groupId>
-    <artifactId>solon-plugin2-bundle</artifactId>
+    <artifactId>solon-plugin-cloud2-bundle</artifactId>
     <packaging>pom</packaging>
 
     <name>${project.artifactId}</name>
@@ -27,22 +27,13 @@
 
 
     <modules>
-        <module>../../_solon_plugin/jap-ids-solon-plugin</module>
-        <module>../../_solon_plugin/jap-solon-plugin</module>
+        <module>../../_solon_plugin_cloud/pulsar-solon-plugin</module>
 
-        <module>../../_solon_plugin/graphql-solon-plugin</module>
-        <module>../../_solon_plugin/hasor-solon-plugin</module>
-
-        <module>../../_solon_plugin/sureness-solon-plugin</module>
-        <module>../../_solon_plugin/liteflow-solon-plugin</module>
-        <module>../../_solon_plugin/dynamic-tp-solon-plugin</module>
-        <module>../../_solon_plugin/bean-searcher-solon-plugin</module>
-
-        <!--        <module>../../_solon_plugin/hazelcast-solon-plugin</module>-->
-
-
-
-
+        <module>../../_solon_plugin_cloud/fastdfs-solon-cloud-plugin</module>
+        <module>../../_solon_plugin_cloud/kubernetes-solon-cloud-plugin</module>
+        <module>../../_solon_plugin_cloud/jmdns-solon-cloud-plugin</module>
+        <module>../../_solon_plugin_cloud/jedis-solon-cloud-plugin</module>
+        <module>../../_solon_plugin_cloud/etcd-solon-cloud-plugin</module>
     </modules>
 
 

@@ -30,6 +30,7 @@
         <module>__release/solon-plugin-bundle</module>
         <module>__release/solon-plugin2-bundle</module>
         <module>__release/solon-plugin-cloud-bundle</module>
+        <module>__release/solon-plugin-cloud2-bundle</module>
         <module>__release/solon-render-bundle</module>
 
         <module>__test</module>

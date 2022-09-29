@@ -2,6 +2,7 @@
 * 新增 liteflow-solon-plugin 插件
 * 新增 kubernetes-solon-cloud-plugin 插件
 * 新增 jmdns-solon-cloud-plugin 插件
+* 新增 solon.cloud.eventplus 插件，替代 cloudevent-plus-solon-plugin 插件
 
 #### 1.10.4
 * 新增 jedis-solon-cloud-plugin 插件

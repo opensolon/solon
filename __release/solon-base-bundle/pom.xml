@@ -43,6 +43,7 @@
         <module>../../_solon_extend/solon.logging.impl</module>
 
         <module>../../_solon_extend/solon.cloud</module>
+        <module>../../_solon_extend/solon.cloud.eventplus</module>
         <module>../../_solon_extend/solon.cloud.tracing</module>
 
         <module>../../_solon_shortcut/solon-beetl-web</module>

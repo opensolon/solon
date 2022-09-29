@@ -11,7 +11,7 @@
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>fastdfs-solon-plugin</artifactId>
+    <artifactId>fastdfs-solon-cloud-plugin</artifactId>
     <packaging>jar</packaging>
 
 
