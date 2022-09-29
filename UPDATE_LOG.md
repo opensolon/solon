@@ -5,10 +5,12 @@
 
 #### 1.10.4
 * 新增 jedis-solon-cloud-plugin 插件
-* 插件 sa-token-solon-plugin 优化 SaTokenPathInterceptor 代码
-* 插件 solon.validation 没有设定出错处理时，默认抛异常
-* 插件 solon.auth 没有设定出错处理时，默认抛异常
-* 调整 core 路由器增加 action 预处理
+* 插件 sa-token-solon-plugin 调整 SaTokenPathInterceptor 同时支持注解、路径规则处理
+* 插件 solon.validation 增加异常上抛模式处理校验失败
+* 插件 solon.auth 增加异常上抛模式处理认证失败
+* 调整 core 路由器增加 action 预处理，会带来很多便利
+* hutool 升为：5.8.8
+* snack3 升为：3.2.29
 
 #### 1.10.3
 * 新增 forest-solon-plugin 插件
