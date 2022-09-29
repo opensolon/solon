@@ -1,0 +1,5 @@
+solon.cloud.aws.s3.file:
+  bucket: "xxx"
+  regionId: "ap-southeast-1"
+  accessKey: "xxx"
+  secretKey: "xxx"

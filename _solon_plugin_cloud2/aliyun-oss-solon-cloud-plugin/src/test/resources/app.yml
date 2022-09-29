@@ -1,0 +1,5 @@
+solon.cloud.aliyun.oss.file:
+  bucket: "xxx"
+  endpoint: "oss-cn-hangzhou.aliyuncs.com"
+  accessKey: "xxx"
+  secretKey: "xxx"

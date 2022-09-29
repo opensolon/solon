@@ -528,6 +528,12 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>solon.cloud.eventplus</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>solon.cloud.tracing</artifactId>
                 <version>${revision}</version>
             </dependency>

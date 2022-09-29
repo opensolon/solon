@@ -27,13 +27,49 @@
 
 
     <modules>
-        <module>../../_solon_plugin_cloud/pulsar-solon-plugin</module>
+        <module>../../_solon_plugin_cloud2/httputils-solon-cloud-plugin</module>
 
-        <module>../../_solon_plugin_cloud/fastdfs-solon-cloud-plugin</module>
-        <module>../../_solon_plugin_cloud/kubernetes-solon-cloud-plugin</module>
-        <module>../../_solon_plugin_cloud/jmdns-solon-cloud-plugin</module>
-        <module>../../_solon_plugin_cloud/jedis-solon-cloud-plugin</module>
-        <module>../../_solon_plugin_cloud/etcd-solon-cloud-plugin</module>
+        <module>../../_solon_plugin_cloud2/water-solon-cloud-plugin</module>
+        <module>../../_solon_plugin_cloud2/consul-solon-cloud-plugin</module>
+        <module>../../_solon_plugin_cloud2/nacos2-solon-cloud-plugin</module>
+        <module>../../_solon_plugin_cloud2/nacos-solon-cloud-plugin</module>
+        <module>../../_solon_plugin_cloud2/zookeeper-solon-cloud-plugin</module>
+
+        <module>../../_solon_plugin_cloud2/aliyun-oss-solon-cloud-plugin</module>
+        <module>../../_solon_plugin_cloud2/aws-s3-solon-cloud-plugin</module>
+        <module>../../_solon_plugin_cloud2/qiniu-kodo-solon-cloud-plugin</module>
+        <module>../../_solon_plugin_cloud2/minio-solon-cloud-plugin</module>
+        <module>../../_solon_plugin_cloud2/minio7-solon-cloud-plugin</module>
+
+        <module>../../_solon_plugin_cloud2/rabbitmq-solon-cloud-plugin</module>
+        <module>../../_solon_plugin_cloud2/rocketmq-solon-cloud-plugin</module>
+        <module>../../_solon_plugin_cloud2/mqtt-solon-cloud-plugin</module>
+        <module>../../_solon_plugin_cloud2/kafka-solon-cloud-plugin</module>
+
+
+        <module>../../_solon_plugin_cloud2/guava-solon-cloud-plugin</module>
+        <module>../../_solon_plugin_cloud2/sentinel-solon-cloud-plugin</module>
+        <module>../../_solon_plugin_cloud2/semaphore-solon-cloud-plugin</module>
+
+        <module>../../_solon_plugin_cloud2/snowflake-id-solon-cloud-plugin</module>
+
+
+        <module>../../_solon_plugin_cloud2/xxl-job-solon-cloud-plugin</module>
+
+        <module>../../_solon_plugin_cloud2/opentracing-solon-cloud-plugin</module>
+        <module>../../_solon_plugin_cloud2/jaeger-solon-cloud-plugin</module>
+
+        <module>../../_solon_plugin_cloud2/grpc-solon-cloud-plugin</module>
+
+
+
+        <module>../../_solon_plugin_cloud2/pulsar-solon-cloud-plugin</module>
+
+        <module>../../_solon_plugin_cloud2/fastdfs-solon-cloud-plugin</module>
+        <module>../../_solon_plugin_cloud2/kubernetes-solon-cloud-plugin</module>
+        <module>../../_solon_plugin_cloud2/jmdns-solon-cloud-plugin</module>
+        <module>../../_solon_plugin_cloud2/jedis-solon-cloud-plugin</module>
+        <module>../../_solon_plugin_cloud2/etcd-solon-cloud-plugin</module>
     </modules>
 
 
