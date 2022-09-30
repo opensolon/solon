@@ -24,8 +24,11 @@ public class MethodBean {
             return false;
         }
         MethodBean bean = (MethodBean) obj;
-        if (access == bean.access
-                && methodName != null
+
+        //access == bean.access //不管访问性，因为代理需要的只是 public
+        //                &&
+
+        if (methodName != null
                 && bean.methodName != null
                 && methodName.equals(bean.methodName)
                 && methodDesc != null
