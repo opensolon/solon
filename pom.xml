@@ -19,7 +19,6 @@
     </properties>
 
     <modules>
-        <module>solon-dependencies</module>
         <module>solon-parent</module>
 
         <module>__release/nami-bundle</module>
