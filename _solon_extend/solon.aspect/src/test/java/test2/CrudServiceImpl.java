@@ -27,4 +27,13 @@ public abstract class CrudServiceImpl<M extends BaseMapper<T>, T extends BaseEnt
         //T t = toSource(e);
         return update(e);
     }
+
+    @Override
+    public E update(T t) {
+        if (t == null) {
+            return null;
+        }
+
+        return null;
+    }
 }
