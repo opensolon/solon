@@ -279,11 +279,22 @@ public abstract class BeanContainer {
     }
 
     /**
-     * 订阅 bean 包装
+     * 订阅某类型的 bean 包装
      *
-     * @param baseType 基类类型
+     * @param baseType 基类
+     * @deprecated 1.10
      * */
+    @Deprecated
     public void subWrap(Class<?> baseType, Consumer<BeanWrap> callback) {
+        subWrapsOfType(baseType, callback);
+    }
+
+    /**
+     * 订阅某类型的 bean 包装
+     *
+     * @param baseType 基类
+     * */
+    public void subWrapsOfType(Class<?> baseType, Consumer<BeanWrap> callback) {
         EventBus.subscribe(BeanWrap.class, (e)->{
             if(baseType.isAssignableFrom(e.clz())){
                 callback.accept(e);
@@ -309,6 +320,24 @@ public abstract class BeanContainer {
     public <T> T getBean(Class<T> type) {
         BeanWrap bw = getWrap(type);
         return bw == null ? null : bw.get();
+    }
+
+
+    /**
+     * 获取某类型的 bean
+     *
+     * @param baseType 基类
+     * */
+    public <T> List<T> getBeansOfType(Class<T> baseType) {
+        List<T> beans = new ArrayList<>();
+
+        beanForeach(bw -> {
+            if (baseType.isAssignableFrom(bw.clz())) {
+                beans.add(bw.raw());
+            }
+        });
+
+        return beans;
     }
 
     /**
@@ -345,9 +374,20 @@ public abstract class BeanContainer {
     /**
      * 订阅 Bean
      *
-     * @param baseType 类型
+     * @param baseType 基类
+     * @deprecated 1.10
      * */
+    @Deprecated
     public <T> void subBean(Class<T> baseType, Consumer<T> callback) {
+        subBeansOfType(baseType, callback);
+    }
+
+    /**
+     * 订阅某类型的 Bean
+     *
+     * @param baseType 基类
+     * */
+    public <T> void subBeansOfType(Class<T> baseType, Consumer<T> callback) {
         EventBus.subscribe(baseType, callback::accept);
     }
 
