@@ -11,7 +11,7 @@ public class XPluginImp implements Plugin {
     @Override
     public void start(AopContext context) {
 
-        context.subWrap(DataSource.class, bw->{
+        context.subWrapsOfType(DataSource.class, bw->{
             MybatisAdapterManager.register(bw);
         });
 

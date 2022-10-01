@@ -20,6 +20,6 @@ public class XPluginImp implements Plugin {
         context.beanAroundAdd(AuthPermissions.class, new PermissionsInterceptor());
         context.beanAroundAdd(AuthRoles.class, new RolesInterceptor());
 
-        context.subBean(AuthAdapterSupplier.class, e -> AuthUtil.adapterAdd(e));
+        context.subBeansOfType(AuthAdapterSupplier.class, e -> AuthUtil.adapterAdd(e));
     }
 }

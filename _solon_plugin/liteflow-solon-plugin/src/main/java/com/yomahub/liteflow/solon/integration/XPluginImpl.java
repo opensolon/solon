@@ -33,7 +33,7 @@ public class XPluginImpl implements Plugin {
         }
 
         //订阅 NodeComponent 组件
-        context.subWrap(NodeComponent.class, bw -> {
+        context.subWrapsOfType(NodeComponent.class, bw -> {
             NodeComponent node1 = bw.raw();
 
             if (Utils.isNotEmpty(bw.name())) {
