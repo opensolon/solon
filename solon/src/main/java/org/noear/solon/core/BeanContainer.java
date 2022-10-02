@@ -388,7 +388,10 @@ public abstract class BeanContainer {
      * @param baseType 基类
      * */
     public <T> void subBeansOfType(Class<T> baseType, Consumer<T> callback) {
-        EventBus.subscribe(baseType, callback::accept);
+        subWrapsOfType(baseType, (bw) -> {
+            callback.accept(bw.get());
+        });
+        //EventBus.subscribe(baseType, callback::accept);
     }
 
     /**
