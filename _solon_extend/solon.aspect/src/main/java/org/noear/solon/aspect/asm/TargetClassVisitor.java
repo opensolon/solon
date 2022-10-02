@@ -50,10 +50,15 @@ public class TargetClassVisitor extends ClassVisitor {
                     || (access & Opcodes.ACC_STATIC) == Opcodes.ACC_STATIC) {
                 return super.visitMethod(access, name, descriptor, signature, exceptions);
             }
+
             MethodBean methodBean = new MethodBean(access, name, descriptor);
-            declaredMethods.add(methodBean);
             if ((access & Opcodes.ACC_PUBLIC) == Opcodes.ACC_PUBLIC
                     && (access & Opcodes.ACC_ABSTRACT) != Opcodes.ACC_ABSTRACT) {
+
+                if (declaredMethods.contains(methodBean) == false) {
+                    declaredMethods.add(methodBean);
+                }
+
                 if (methods.contains(methodBean) == false) {
                     methods.add(methodBean);
                 }
