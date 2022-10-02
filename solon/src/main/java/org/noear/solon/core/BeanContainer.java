@@ -391,7 +391,6 @@ public abstract class BeanContainer {
         subWrapsOfType(baseType, (bw) -> {
             callback.accept(bw.get());
         });
-        //EventBus.subscribe(baseType, callback::accept);
     }
 
     /**
