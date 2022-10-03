@@ -31,7 +31,7 @@ public class XPluginImp implements Plugin {
         if (Solon.app().enableCaching()) {
             CacheLib.cacheServiceAddIfAbsent("", LocalCacheService.instance);
 
-            Solon.app().onEvent(BeanWrap.class, new CacheServiceEventListener());
+            context.subWrapsOfType(CacheService.class, new CacheServiceWrapConsumer());
 
             context.beanOnloaded((ctx) -> {
                 if (ctx.hasWrap(CacheService.class) == false) {

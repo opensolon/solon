@@ -7,7 +7,6 @@ import org.noear.solon.annotation.Inject;
 import org.noear.solon.annotation.Note;
 import org.noear.solon.core.aspect.Interceptor;
 import org.noear.solon.core.aspect.InterceptorEntity;
-import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.HandlerLoader;
 import org.noear.solon.core.util.ConvertUtil;
 
@@ -97,9 +96,13 @@ public abstract class BeanContainer {
 
 
     /**
-     * bean订阅者
+     * bean 订阅者
      */
     protected final Set<SubscriberEntity> beanSubscribers = new LinkedHashSet<>();
+    /**
+     * wrap 外部消费者
+     */
+    protected final Set<Consumer<BeanWrap>> wrapExternalConsumers = new LinkedHashSet<>();
 
 
     public void clear(){
@@ -108,6 +111,8 @@ public abstract class BeanContainer {
         beans.clear();
         clzMapping.clear();
         attrs.clear();
+
+        wrapExternalConsumers.clear();
 
 //        beanBuilders.clear();
 //        beanInjectors.clear();
@@ -191,7 +196,7 @@ public abstract class BeanContainer {
     //
     /////////////////////////
     /**
-     * bean订阅
+     * bean 订阅
      */
     protected void beanSubscribe(Object nameOrType, Consumer<BeanWrap> callback) {
         if (nameOrType != null) {
@@ -200,7 +205,14 @@ public abstract class BeanContainer {
     }
 
     /**
-     * bean通知
+     * wrap 订阅
+     * */
+    protected void wrapSubscribe(Consumer<BeanWrap> callback) {
+        wrapExternalConsumers.add(callback);
+    }
+
+    /**
+     * bean 通知，偏向对内
      */
     protected void beanNotice(Object nameOrType, BeanWrap wrap) {
         if (wrap.raw() == null) {
@@ -212,6 +224,16 @@ public abstract class BeanContainer {
             if (s1.key.equals(nameOrType)) {
                 s1.callback.accept(wrap);
             }
+        });
+    }
+
+    /**
+     * wrap 发布，偏向对外 （只支持 @Bean 和 @Component 的 wrap）
+     * */
+    protected void wrapPublish(BeanWrap wrap){
+        //避免在forEach时，对它进行add
+        new ArrayList<>(wrapExternalConsumers).forEach(s1 -> {
+            s1.accept(wrap);
         });
     }
 
@@ -295,11 +317,17 @@ public abstract class BeanContainer {
      * @param baseType 基类
      * */
     public void subWrapsOfType(Class<?> baseType, Consumer<BeanWrap> callback) {
-        EventBus.subscribe(BeanWrap.class, (e)->{
-            if(baseType.isAssignableFrom(e.clz())){
+        wrapSubscribe((e) -> {
+            if (baseType.isAssignableFrom(e.clz())) {
                 callback.accept(e);
             }
         });
+
+//        EventBus.subscribe(BeanWrap.class, (e)->{
+//            if(baseType.isAssignableFrom(e.clz())){
+//                callback.accept(e);
+//            }
+//        });
     }
 
     /**
@@ -391,6 +419,7 @@ public abstract class BeanContainer {
         subWrapsOfType(baseType, (bw) -> {
             callback.accept(bw.get());
         });
+//        EventBus.subscribe(baseType,callback::accept);
     }
 
     /**

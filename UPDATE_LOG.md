@@ -3,6 +3,7 @@
 * 新增 kubernetes-solon-cloud-plugin 插件
 * 新增 jmdns-solon-cloud-plugin 插件
 * 新增 solon.cloud.eventplus 插件，替代 cloudevent-plus-solon-plugin 插件
+* 调整 AopContext 内部的基类订阅，改由内部机制实现
 
 #### 1.10.4
 * 新增 jedis-solon-cloud-plugin 插件

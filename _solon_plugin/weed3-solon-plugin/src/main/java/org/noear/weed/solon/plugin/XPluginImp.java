@@ -6,6 +6,8 @@ import org.noear.weed.WeedConfig;
 import org.noear.weed.annotation.Db;
 import org.noear.weed.xml.XmlSqlLoader;
 
+import javax.sql.DataSource;
+
 /**
  * @author noear
  * @since 1.3
@@ -14,7 +16,9 @@ public class XPluginImp implements Plugin {
     @Override
     public void start(AopContext context) {
         // 事件监听，用于时实初始化
-        Solon.app().onEvent(BeanWrap.class, new DsEventListener());
+        context.subWrapsOfType(DataSource.class, bw->{
+            DbManager.global().reg(bw);
+        });
 
         // 切换Weed的链接工厂，交于Solon托管这
         WeedConfig.connectionFactory = new DsConnectionFactoryImpl();

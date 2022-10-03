@@ -1,6 +1,6 @@
 @startuml
 start
-:1.实例化 Solon.global() 并加载配置;
+:1.实例化 Solon.app() 并加载配置;
 :2.加载扩展文件夹;
 :3.扫描插件并排序;
 :4.运行builder函数;

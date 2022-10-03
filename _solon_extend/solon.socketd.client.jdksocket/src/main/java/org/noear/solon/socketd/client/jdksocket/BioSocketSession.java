@@ -21,10 +21,10 @@ import java.util.*;
  *
  * <pre><code>
  * public void test() throws Throwable{
- *     String root = "tcp://localhost:" + (20000 + Solon.global().port());
+ *     String root = "tcp://localhost:" + (20000 + Solon.cfg().serverPort());
  *     Message message =  Message.wrap(root + "/demog/中文/1", "Hello 世界!".getBytes());
  *
- *     Socket socket = new Socket("localhost", Solon.global().port() + 20000);
+ *     Socket socket = new Socket("localhost", Solon.cfg().serverPort() + 20000);
  *
  *     Session session = _SocketSession.get(socket);
  *     Message rst = session.sendAndResponse(message);
