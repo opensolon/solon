@@ -128,58 +128,63 @@ public class ServiceImpl<M extends BaseMapper<T>, T> implements IService<T> {
     }
 
     protected <E> boolean executeBatch(Collection<E> list, BiConsumer<SqlSession, E> consumer) {
-        return this.executeBatch(list, 1000, consumer);
+        return executeBatch(list, DEFAULT_BATCH_SIZE, consumer);
     }
 
     public boolean removeById(Serializable id) {
-        TableInfo tableInfo = TableInfoHelper.getTableInfo(this.getEntityClass());
-        return tableInfo.isWithLogicDelete() && tableInfo.isWithUpdateFill() ? this.removeById(id, true) : SqlHelper.retBool(this.getBaseMapper().deleteById(id));
+        TableInfo tableInfo = TableInfoHelper.getTableInfo(getEntityClass());
+        if (tableInfo.isWithLogicDelete() && tableInfo.isWithUpdateFill()) {
+            return removeById(id, true);
+        }
+        return SqlHelper.retBool(getBaseMapper().deleteById(id));
     }
 
     @Tran
-    public boolean removeByIds(Collection<T> list) {
+    public boolean removeByIds(Collection<?> list) {
         if (CollectionUtils.isEmpty(list)) {
             return false;
-        } else {
-            TableInfo tableInfo = TableInfoHelper.getTableInfo(this.getEntityClass());
-            return tableInfo.isWithLogicDelete() && tableInfo.isWithUpdateFill() ? this.removeBatchByIds(list, true) : SqlHelper.retBool(this.getBaseMapper().deleteBatchIds(list));
         }
+        TableInfo tableInfo = TableInfoHelper.getTableInfo(getEntityClass());
+        if (tableInfo.isWithLogicDelete() && tableInfo.isWithUpdateFill()) {
+            return removeBatchByIds(list, true);
+        }
+        return SqlHelper.retBool(getBaseMapper().deleteBatchIds(list));
     }
 
     public boolean removeById(Serializable id, boolean useFill) {
-        TableInfo tableInfo = TableInfoHelper.getTableInfo(this.entityClass);
-        if (useFill && tableInfo.isWithLogicDelete() && !this.entityClass.isAssignableFrom(id.getClass())) {
-            T instance = tableInfo.newInstance();
-            tableInfo.setPropertyValue(instance, tableInfo.getKeyProperty(), new Object[]{id});
-            return this.removeById(instance);
-        } else {
-            return SqlHelper.retBool(this.getBaseMapper().deleteById(id));
+        TableInfo tableInfo = TableInfoHelper.getTableInfo(entityClass);
+        if (useFill && tableInfo.isWithLogicDelete()) {
+            if (!entityClass.isAssignableFrom(id.getClass())) {
+                T instance = tableInfo.newInstance();
+                tableInfo.setPropertyValue(instance, tableInfo.getKeyProperty(), id);
+                return removeById(instance);
+            }
         }
+        return SqlHelper.retBool(getBaseMapper().deleteById(id));
     }
 
     @Tran
-    public boolean removeBatchByIds(Collection<T> list, int batchSize) {
-        TableInfo tableInfo = TableInfoHelper.getTableInfo(this.entityClass);
-        return this.removeBatchByIds(list, batchSize, tableInfo.isWithLogicDelete() && tableInfo.isWithUpdateFill());
+    public boolean removeBatchByIds(Collection<?> list, int batchSize) {
+        TableInfo tableInfo = TableInfoHelper.getTableInfo(entityClass);
+        return removeBatchByIds(list, batchSize, tableInfo.isWithLogicDelete() && tableInfo.isWithUpdateFill());
     }
 
     @Tran
-    public boolean removeBatchByIds(Collection<T> list, int batchSize, boolean useFill) {
-        String sqlStatement = this.getSqlStatement(SqlMethod.DELETE_BY_ID);
-        TableInfo tableInfo = TableInfoHelper.getTableInfo(this.entityClass);
-        return this.executeBatch(list, batchSize, (sqlSession, e) -> {
+    public boolean removeBatchByIds(Collection<?> list, int batchSize, boolean useFill) {
+        String sqlStatement = getSqlStatement(SqlMethod.DELETE_BY_ID);
+        TableInfo tableInfo = TableInfoHelper.getTableInfo(entityClass);
+        return executeBatch(list, batchSize, (sqlSession, e) -> {
             if (useFill && tableInfo.isWithLogicDelete()) {
-                if (this.entityClass.isAssignableFrom(e.getClass())) {
+                if (entityClass.isAssignableFrom(e.getClass())) {
                     sqlSession.update(sqlStatement, e);
                 } else {
                     T instance = tableInfo.newInstance();
-                    tableInfo.setPropertyValue(instance, tableInfo.getKeyProperty(), new Object[]{e});
+                    tableInfo.setPropertyValue(instance, tableInfo.getKeyProperty(), e);
                     sqlSession.update(sqlStatement, instance);
                 }
             } else {
                 sqlSession.update(sqlStatement, e);
             }
-
         });
     }
 }
