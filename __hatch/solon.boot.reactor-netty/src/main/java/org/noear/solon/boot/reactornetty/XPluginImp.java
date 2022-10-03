@@ -44,7 +44,7 @@ public class XPluginImp implements Plugin {
             _server = HttpServer.create()
                     .compress(true)
                     .protocol(HttpProtocol.HTTP11)
-                    .port(app.port())
+                    .port(app.cfg().serverPort())
                     .handle(handler)
                     .bindNow();
 
@@ -54,7 +54,7 @@ public class XPluginImp implements Plugin {
 
             long time_end = System.currentTimeMillis();
 
-            PrintUtil.info("Connector:main: reactor-netty-http: Started ServerConnector@{HTTP/1.1,[http/1.1]}{http://localhost:" + app.port() + "}");
+            PrintUtil.info("Connector:main: reactor-netty-http: Started ServerConnector@{HTTP/1.1,[http/1.1]}{http://localhost:" + app.cfg().serverPort() + "}");
             PrintUtil.info("Server:main: reactor-netty-http: Started @" + (time_end - time_start) + "ms");
         } catch (Throwable ex) {
             throw new RuntimeException(ex);
