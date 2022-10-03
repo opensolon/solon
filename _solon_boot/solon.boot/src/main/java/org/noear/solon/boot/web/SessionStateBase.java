@@ -6,6 +6,8 @@ import org.noear.solon.boot.ServerProps;
 import org.noear.solon.core.handle.SessionState;
 
 /**
+ * 会话状态基类
+ *
  * @author noear
  * @since 1.7
  */

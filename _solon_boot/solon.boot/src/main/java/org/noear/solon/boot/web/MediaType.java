@@ -1,6 +1,8 @@
 package org.noear.solon.boot.web;
 
 /**
+ * 媒体类型
+ *
  * @author noear
  * @since 1.10
  */
