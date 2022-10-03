@@ -9,7 +9,6 @@ import javax.sql.DataSource;
 
 @Configuration
 public class Config {
-    //@Bean(value = "db1",attrs = {"dialect=sqlserver", "slaves=db2"})
     @Bean(value = "db1")
     public DataSource sqlSessionFactory1(@Inject("${test.db1}") HikariDataSource dataSource) throws Exception{
        return dataSource;

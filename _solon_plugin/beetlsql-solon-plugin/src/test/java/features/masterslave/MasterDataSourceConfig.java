@@ -11,7 +11,7 @@ import javax.sql.DataSource;
 @Configuration
 public class MasterDataSourceConfig {
 
-    @Bean(attrs = "slaves=slaveDs1,slaveDs2")
+    @Bean(name = "db1", typed = true)
     public DataSource master(@Inject("${db1}") HikariDataSource ds) {
         return ds;
     }

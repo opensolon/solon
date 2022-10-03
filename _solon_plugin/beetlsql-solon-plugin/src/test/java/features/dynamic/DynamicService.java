@@ -1,7 +1,7 @@
 package features.dynamic;
 
 import org.beetl.sql.core.SQLManager;
-import org.beetl.sql.ext.solon.Db;
+import org.beetl.sql.solon.annotation.Db;
 import org.noear.solon.data.annotation.Tran;
 import org.noear.solon.aspect.annotation.Service;
 
