@@ -28,7 +28,7 @@ public final class NamiConfigurationSolon implements NamiConfiguration {
         });
 
         //订阅拦截器
-        EventBus.subscribe(Filter.class, it -> {
+        context.subBeansOfType(Filter.class, it -> {
             NamiManager.reg(it);
         });
     }

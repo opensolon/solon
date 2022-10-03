@@ -146,8 +146,8 @@ public class AopContext extends BeanContainer {
 
             //单例，进行事件通知
             if (bw.singleton()) {
-                EventBus.push(bw.raw()); //@deprecated
-                EventBus.push(bw); //@deprecated
+                //EventBus.push(bw.raw()); //@deprecated
+                //EventBus.push(bw); //@deprecated
                 wrapPublish(bw);
             }
         });
@@ -515,7 +515,7 @@ public class AopContext extends BeanContainer {
                 m_bw = (BeanWrap) raw;
             } else {
                 //@Bean 动态构建的bean, 可通过事件广播进行扩展
-                EventBus.push(raw);//@deprecated
+                //EventBus.push(raw);//@deprecated
 
                 //动态构建的bean，都用新生成wrap（否则会类型混乱）
                 m_bw = wrapCreate(beanClz, raw);
@@ -540,7 +540,7 @@ public class AopContext extends BeanContainer {
             }
 
             //@Bean 动态产生的 beanWrap（含 name,tag,attrs），进行事件通知
-            EventBus.push(m_bw); //@deprecated
+            //EventBus.push(m_bw); //@deprecated
             wrapPublish(m_bw);
         }
     }
