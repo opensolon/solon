@@ -22,7 +22,7 @@ package org.noear.solon.core.event;
  * Solon.app().onEvent(ComAdaptor.class,(oc)->{ ... });
  *
  * //推送事件
- * XEventBus.push(new ComAdaptor());
+ * EventBus.push(new ComAdaptor());
  * </code></pre>
  * @author noear
  * @since 1.0

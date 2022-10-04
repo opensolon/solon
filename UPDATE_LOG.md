@@ -5,14 +5,14 @@
 
 #### 1.10.5
 * 新增 solon.cloud.eventplus 插件，替代 cloudevent-plus-solon-plugin 插件
-* 调整 solon cloud 插件重新命名为：xxx-solon-cloud-plugin（旧插件仍可使用）
+* 调整 solon cloud 插件重新命名为：***-solon-cloud-plugin（旧插件仍可使用）
 * 调整 AopContext 内部对象的订阅，从 EventBus 转为内部机制实现；实现边界效应，为热插拨提供更好的隔离
   * 原 EventBus.subscribe(BeanWrap.class, ...) 会失效
 * 调整 mybatis-plus-extension-solon-plugin/IService 部分接口
 * 增加 AopContext::subWrapsOfType
 * 增加 AopContext::subBeansOfType
 * 增加 AopContext::getBeansOfType
-* 增加 MediaType 类
+* 增加 MimeType 类
 
 #### 1.10.4
 * 新增 jedis-solon-cloud-plugin 插件
