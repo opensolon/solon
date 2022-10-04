@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.noear</groupId>
         <artifactId>solon-parent</artifactId>
-        <version>${revision}</version>
+        <version>1.10.5</version>
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
