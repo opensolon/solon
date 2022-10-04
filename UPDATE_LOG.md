@@ -8,10 +8,10 @@
 * 调整 solon cloud 插件重新命名为：***-solon-cloud-plugin（旧插件仍可使用）
 * 调整 AopContext 内部对象的订阅，从 EventBus 转为内部机制实现；实现边界效应，为热插拨提供更好的隔离
   * 原 EventBus.subscribe(BeanWrap.class, ...) 会失效
-* 调整 mybatis-plus-extension-solon-plugin/IService 部分接口
-* 增加 AopContext::subWrapsOfType
-* 增加 AopContext::subBeansOfType
-* 增加 AopContext::getBeansOfType
+* 调整 mybatis-plus-extension-solon-plugin IService 部分接口与实现（向下兼容）
+* 增加 AopContext::subWrapsOfType 接口
+* 增加 AopContext::subBeansOfType 接口
+* 增加 AopContext::getBeansOfType 接口
 * 增加 MimeType 类
 
 #### 1.10.4
