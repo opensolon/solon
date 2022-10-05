@@ -22,7 +22,10 @@
 		<img src="https://img.shields.io/badge/JDK-11-green.svg" alt="jdk-11" />
 	</a>
     <a target="_blank" href="https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html">
-		<img src="https://img.shields.io/badge/JDK-17+-green.svg" alt="jdk-17+" />
+		<img src="https://img.shields.io/badge/JDK-17-green.svg" alt="jdk-17" />
+	</a>
+    <a target="_blank" href="https://www.oracle.com/java/technologies/javase/jdk19-archive-downloads.html">
+		<img src="https://img.shields.io/badge/JDK-19-green.svg" alt="jdk-19" />
 	</a>
     <br />
     <a target="_blank" href='https://gitee.com/noear/solon/stargazers'>
