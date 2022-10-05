@@ -18,10 +18,10 @@
     <a target="_blank" href="https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html">
 		<img src="https://img.shields.io/badge/JDK-8-green.svg" alt="jdk-8" />
 	</a>
-    <a target="_blank" href="https://www.oracle.com/java/technologies/javase/javase-jdk11-downloads.html">
+    <a target="_blank" href="https://www.oracle.com/java/technologies/javase/jdk11-archive-downloads.html">
 		<img src="https://img.shields.io/badge/JDK-11-green.svg" alt="jdk-11" />
 	</a>
-    <a target="_blank" href="https://www.oracle.com/java/technologies/javase/javase-jdk17-downloads.html">
+    <a target="_blank" href="https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html">
 		<img src="https://img.shields.io/badge/JDK-17+-green.svg" alt="jdk-17+" />
 	</a>
     <br />
