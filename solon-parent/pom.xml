@@ -1239,6 +1239,24 @@
                 <version>${solon.ver}</version>
             </dependency>
 
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>easypoi-web-solon</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>easypoi-wps-solon</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>easypoi-solon-plugin</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+
 
 
             <!-- //////////// servlet ////////////  -->

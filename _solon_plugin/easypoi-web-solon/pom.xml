@@ -1,0 +1,35 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.noear</groupId>
+		<artifactId>solon-parent</artifactId>
+		<version>1.10.6-M2</version>
+		<relativePath>../../solon-parent/pom.xml</relativePath>
+	</parent>
+
+	<artifactId>easypoi-web-solon</artifactId>
+	<packaging>jar</packaging>
+
+	<dependencies>
+		<!--solon -->
+		<dependency>
+			<groupId>org.noear</groupId>
+			<artifactId>solon</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.itextpdf</groupId>
+			<artifactId>itext7-core</artifactId>
+			<version>7.1.12</version>
+			<type>pom</type>
+			<optional>true</optional>
+		</dependency>
+
+		<dependency>
+			<groupId>cn.afterturn</groupId>
+			<artifactId>easypoi-base</artifactId>
+			<version>4.4.0</version>
+		</dependency>
+	</dependencies>
+</project>
