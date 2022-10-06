@@ -744,6 +744,9 @@ public abstract class Context {
 
     protected abstract void contentTypeDoSet(String contentType);
 
+    public void contentLength(long size) {
+        headerSet("Content-Length", String.valueOf(size));
+    }
 
     /**
      * 输出 字节数组
@@ -818,7 +821,7 @@ public abstract class Context {
 
         //输出大小
         if(file.content instanceof ByteArrayInputStream) {
-            headerSet("Content-Length", String.valueOf(file.content.available()));
+            contentLength(file.content.available());
         }
 
         Utils.transferTo(file.content, outputStream());
@@ -835,7 +838,7 @@ public abstract class Context {
         }
 
         //输出大小
-        headerSet("Content-Length", String.valueOf(file.length()));
+        contentLength(file.length());
 
         try (InputStream ins = new FileInputStream(file)) {
             Utils.transferTo(ins, outputStream());
