@@ -724,13 +724,21 @@ public abstract class Context {
     /**
      * 设置内容类型
      */
-    public void contentType(String contentType) {
+    public void contentTypeSet(String contentType) {
         contentTypeDoSet(contentType);
 
         //只记录非默认值
         if (ContextUtil.contentTypeDef.equals(contentType) == false) {
             contentTypeNew = contentType;
         }
+    }
+
+    /**
+     * @deprecated 1.10
+     * */
+    @Deprecated
+    public void contentType(String contentType) {
+        contentTypeSet(contentType);
     }
 
     /**
@@ -744,7 +752,7 @@ public abstract class Context {
 
     protected abstract void contentTypeDoSet(String contentType);
 
-    public void contentLength(long size) {
+    public void contentLengthSet(long size) {
         headerSet("Content-Length", String.valueOf(size));
     }
 
@@ -784,7 +792,7 @@ public abstract class Context {
      * 输出为json文本
      */
     public void outputAsJson(String json) {
-        contentType("application/json;charset=utf-8");
+        contentTypeSet("application/json;charset=utf-8");
         output(json);
     }
 
@@ -792,7 +800,7 @@ public abstract class Context {
      * 输出为html文本
      */
     public void outputAsHtml(String html) {
-        contentType("text/html;charset=utf-8");
+        contentTypeSet("text/html;charset=utf-8");
         if (html.startsWith("<") == false) {
             StringBuilder sb = new StringBuilder();
             sb.append("<!doctype html>");
@@ -811,7 +819,7 @@ public abstract class Context {
      */
     public void outputAsFile(DownloadedFile file) throws IOException {
         if (Utils.isNotEmpty(file.contentType)) {
-            contentType(file.contentType);
+            contentTypeSet(file.contentType);
         }
 
         if (Utils.isNotEmpty(file.name)) {
@@ -821,7 +829,7 @@ public abstract class Context {
 
         //输出大小
         if(file.content instanceof ByteArrayInputStream) {
-            contentLength(file.content.available());
+            contentLengthSet(file.content.available());
         }
 
         Utils.transferTo(file.content, outputStream());
@@ -838,7 +846,7 @@ public abstract class Context {
         }
 
         //输出大小
-        contentLength(file.length());
+        contentLengthSet(file.length());
 
         try (InputStream ins = new FileInputStream(file)) {
             Utils.transferTo(ins, outputStream());

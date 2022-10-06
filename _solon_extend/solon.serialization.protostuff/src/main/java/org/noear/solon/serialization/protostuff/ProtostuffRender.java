@@ -1,12 +1,9 @@
 package org.noear.solon.serialization.protostuff;
 
 import org.noear.solon.core.handle.Context;
-import org.noear.solon.core.handle.ModelAndView;
 import org.noear.solon.core.handle.Render;
 
 import java.util.Base64;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 /**
  * @author noear
@@ -26,7 +23,7 @@ public class ProtostuffRender implements Render {
             ctx.headerSet("solon.serialization", "ProtostuffRender");
         }
 
-        ctx.contentType("application/protobuf");
+        ctx.contentTypeSet("application/protobuf");
         ctx.output(serializeDo(obj));
     }
 

@@ -132,7 +132,7 @@ public class SocketContext extends ContextEmpty {
     }
 
     @Override
-    public void contentType(String contentType) {
+    public void contentTypeSet(String contentType) {
         headerSet("Content-Type", contentType);
     }
 

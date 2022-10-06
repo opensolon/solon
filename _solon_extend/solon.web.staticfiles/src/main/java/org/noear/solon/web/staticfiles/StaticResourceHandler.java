@@ -77,7 +77,7 @@ public class StaticResourceHandler implements Handler {
             }
 
             try (InputStream stream = uri.openStream()) {
-                ctx.contentType(conentType);
+                ctx.contentTypeSet(conentType);
                 ctx.status(200);
                 ctx.output(stream);
             }

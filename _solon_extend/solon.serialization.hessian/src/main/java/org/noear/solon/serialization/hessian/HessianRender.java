@@ -32,7 +32,7 @@ public class HessianRender implements Render {
             ctx.headerSet("solon.serialization", "HessianRender");
         }
 
-        ctx.contentType("application/hessian");
+        ctx.contentTypeSet("application/hessian");
 
         if (obj instanceof ModelAndView) {
             ctx.output(serializeDo(new LinkedHashMap((Map) obj)));

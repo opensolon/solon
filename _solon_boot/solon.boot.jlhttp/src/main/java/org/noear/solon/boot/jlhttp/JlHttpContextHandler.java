@@ -25,7 +25,7 @@ public class JlHttpContextHandler implements HTTPServer.ContextHandler {
     private int handleDo(HTTPServer.Request request, HTTPServer.Response response) throws IOException {
         JlHttpContext ctx = new JlHttpContext(request, response);
 
-        ctx.contentType("text/plain;charset=UTF-8");
+        ctx.contentTypeSet("text/plain;charset=UTF-8");
 
         if (ServerProps.output_meta) {
             ctx.headerSet("Solon-Boot", XPluginImp.solon_boot_ver());

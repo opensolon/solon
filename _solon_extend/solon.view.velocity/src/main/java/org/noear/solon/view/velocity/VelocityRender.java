@@ -199,7 +199,7 @@ public class VelocityRender implements Render {
 
     public void render_mav(ModelAndView mv, Context ctx, SupplierEx<OutputStream> outputStream) throws Throwable {
         if (ctx.contentTypeNew() == null) {
-            ctx.contentType("text/html;charset=utf-8");
+            ctx.contentTypeSet("text/html;charset=utf-8");
         }
 
         if (XPluginImp.output_meta) {

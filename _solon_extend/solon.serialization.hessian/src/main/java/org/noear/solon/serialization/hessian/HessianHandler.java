@@ -33,7 +33,7 @@ public class HessianHandler implements Handler {
             InputStream is = ctx.bodyAsStream();
             OutputStream os = ctx.outputStream();
 
-            ctx.contentType("x-application/hessian");
+            ctx.contentTypeSet("x-application/hessian");
 
             _homeSkeleton.invoke(is, os, _serializerFactory);
         } catch (RuntimeException e) {

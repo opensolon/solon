@@ -22,7 +22,7 @@ public class SolonServletHandler extends HttpServlet {
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         SolonServletContext ctx = new SolonServletContext(request, response);
-        ctx.contentType("text/plain;charset=UTF-8");
+        ctx.contentTypeSet("text/plain;charset=UTF-8");
 
         preHandle(ctx);
 
