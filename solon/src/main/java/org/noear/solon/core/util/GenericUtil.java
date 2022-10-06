@@ -61,7 +61,9 @@ public class GenericUtil {
                 classes.add(aClass);
                 for (Type type0 : aClass.getGenericInterfaces()) {
                     if (type0 instanceof ParameterizedType) {
-                        getGenericInterfaces((Class<?>) ((ParameterizedType) type0).getRawType(), classes);
+                        Class<?> clazz0 = (Class<?>) ((ParameterizedType) type0).getRawType();
+                        classes.add(clazz0);
+                        getGenericInterfaces(clazz0, classes);
                     }
                 }
             }
