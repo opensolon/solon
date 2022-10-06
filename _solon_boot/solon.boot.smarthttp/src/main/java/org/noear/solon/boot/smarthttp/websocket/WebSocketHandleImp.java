@@ -32,7 +32,7 @@ public class WebSocketHandleImp extends WebSocketDefaultHandler {
     public void handleTextMessage(WebSocketRequest request, WebSocketResponse response, String data) {
         try {
             Session session = _SocketServerSession.get(request, response);
-            Message message = Message.wrap(request.getRequestURI(),null, data);
+            Message message = Message.wrap(request.getRequestURI(), null, data);
 
             Solon.app().listener().onMessage(session, message.isString(true));
         } catch (Throwable ex) {
@@ -60,10 +60,11 @@ public class WebSocketHandleImp extends WebSocketDefaultHandler {
     }
 
     @Override
-    public void onError(Throwable error) {
-        EventBus.push(error);
-//        if (listener != null) {
-//            listener.onError(_SocketSession.get(request,response), error);
-//        }
+    public void onError(WebSocketRequest request, Throwable error) {
+        _SocketServerSession session = _SocketServerSession.getOnly(request);
+
+        if (session != null) {
+            Solon.app().listener().onError(session, error);
+        }
     }
 }

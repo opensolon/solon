@@ -5,6 +5,8 @@
 * 修复 mybatis-plugin 配置 mappers 为 xml 时，不能通过 @Inject 注入的问题
 * 修复 GenericUtil 不能获取多重继承的泛型
 * 调整 Action 的异常推送逻辑
+* 升级 smartsocket 为 1.5.22
+* 升级 smarthttp 为 1.1.16
 
 #### 1.10.5
 * 新增 solon.cloud.eventplus 插件，替代 cloudevent-plus-solon-plugin 插件
