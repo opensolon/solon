@@ -29,6 +29,10 @@ import java.util.function.Function;
  */
 public class ServiceImpl<M extends BaseMapper<T>, T> implements IService<T> {
     protected Log log = LogFactory.getLog(this.getClass());
+
+    /**
+     * 配置的 mappers 会扫描进容器，所以用 @Inject 反而利于多数据源
+     * */
     @Inject
     protected M baseMapper;
     protected Class<T> entityClass = this.currentModelClass();
