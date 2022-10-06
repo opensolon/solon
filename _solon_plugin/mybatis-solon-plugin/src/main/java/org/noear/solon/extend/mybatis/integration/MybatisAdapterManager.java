@@ -76,9 +76,23 @@ public class MybatisAdapterManager {
             adapter = adapterFactory.create(bw, Solon.cfg().getProp("mybatis." + bw.name()));
         }
 
-        //就扫一次
-        MybatisMapperScanner.mapperScan(bw, adapter);
+        mapperBinding(bw, adapter);
 
         return adapter;
+    }
+
+    private static void mapperBinding(BeanWrap dsBw, MybatisAdapter adapter) {
+        for (Class<?> clz : adapter.getConfiguration().getMapperRegistry().getMappers()) {
+            mapperBindingDo(dsBw, adapter, clz);
+        }
+    }
+
+    private static void mapperBindingDo(BeanWrap dsBw, MybatisAdapter adapter, Class<?> clz) {
+        if (clz != null && clz.isInterface()) {
+            Object mapper = adapter.getMapperProxy(clz);
+
+            //进入容器，用于 @Inject 注入
+            dsBw.context().putWrap(clz, dsBw.context().wrap(clz, mapper));
+        }
     }
 }
