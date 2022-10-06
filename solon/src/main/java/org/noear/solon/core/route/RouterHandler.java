@@ -1,6 +1,5 @@
 package org.noear.solon.core.route;
 
-import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.Action;
 import org.noear.solon.core.handle.Endpoint;
 import org.noear.solon.core.handle.Context;
@@ -58,7 +57,6 @@ public class RouterHandler implements Handler {
             _throwabled = true;
             if (ctx.errors == null) {
                 ctx.errors = e; //如果内部已经做了，就不需要了
-                EventBus.push(e);
             }
             throw e;
         } finally {

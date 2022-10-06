@@ -34,11 +34,11 @@ public class HandlerInterceptorSolon implements HandlerInterceptor {
     }
 
     @Override
-    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
-        if (ex != null) {
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception e) throws Exception {
+        if (e != null) {
             Context ctx = Context.current();
             if (ctx != null) {
-                ctx.errors = ex;
+                ctx.errors = e;
             }
         }
     }

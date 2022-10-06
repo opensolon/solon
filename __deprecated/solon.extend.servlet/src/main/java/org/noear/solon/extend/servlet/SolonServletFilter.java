@@ -50,11 +50,11 @@ public class SolonServletFilter implements Filter {
                     //如果未处理，则传递过滤链
                     filterChain.doFilter(request, response);
                 }
-            } catch (Throwable err) {
-                ctx.errors = err;
+            } catch (Throwable e) {
+                ctx.errors = e;
                 doFilterError(ctx);
 
-                throw err;
+                throw e;
             } finally {
                 //过滤结束
                 doFilterEnd(ctx);

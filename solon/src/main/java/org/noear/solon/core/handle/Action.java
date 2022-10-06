@@ -365,16 +365,14 @@ public class Action extends HandlerAide implements Handler {
 
             if (obj instanceof Throwable) {
                 if (c.remoting()) {
-                    //
                     //尝试推送异常，不然没机会记录；也可对后继做控制
-                    //
                     EventBus.push(obj);
 
                     if (c.getRendered() == false) {
                         c.render(obj);
                     }
                 } else {
-                    c.setHandled(false); //透传到上传，让Filter 可以统一处理未知异常
+                    c.setHandled(false); //传递给 filter, 可以统一处理未知异常
                     throw (Throwable) obj;
                 }
             } else {

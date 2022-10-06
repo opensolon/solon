@@ -367,10 +367,8 @@ public class SolonApp extends RouterAdapter {
         } catch (Throwable ex) {
             ex = Utils.throwableUnwrap(ex);
 
-            //推送事件
-            if (ex.equals(x.errors) == false) {
-                EventBus.push(ex);
-            }
+            //推送异常事件 //todo: Action -> Gateway? -> RouterHandler -> SolonApp!
+            EventBus.push(ex);
 
             //如果未处理，尝试处理
             if (x.getHandled() == false) {

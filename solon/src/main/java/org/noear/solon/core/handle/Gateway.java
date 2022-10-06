@@ -115,7 +115,22 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
         }
 
         c.result = obj;
-        c.render(obj);
+
+        if (obj instanceof Throwable) {
+            if (c.remoting()) {
+                //尝试推送异常，不然没机会记录；也可对后继做控制
+                EventBus.push(obj);
+
+                if (c.getRendered() == false) {
+                    c.render(obj);
+                }
+            } else {
+                c.setHandled(false); //传递给 filter, 可以统一处理未知异常
+                throw (Throwable) obj;
+            }
+        } else {
+            c.render(obj);
+        }
     }
 
     /**
@@ -155,10 +170,6 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
             } else {
                 c.errors = e;
 
-                //1.推送事件（先于渲染，可做自定义渲染）
-                EventBus.push(e);
-
-                //2.渲染
                 if (c.result == null) {
                     render(e, c);
                 } else {
