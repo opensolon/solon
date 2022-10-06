@@ -1,12 +1,21 @@
-#### 1.10.6
+#### 1.10.7
 * 新增 liteflow-solon-plugin 插件
+* 新增 easy-trans-solon-plugin 插件
+* 新增 dynamic-datasource-solon-plugin 插件
+* 新增 knife4j-solon-plugin 插件
 * 新增 kubernetes-solon-cloud-plugin 插件
 * 新增 jmdns-solon-cloud-plugin 插件
-* 修复 mybatis-plugin 配置 mappers 为 xml 时，不能通过 @Inject 注入的问题
+
+
+#### 1.10.6
+* 修复 mybatis-plugin 配置 mappers 为 xml 时，不能通过 @Inject 注入 mapper 的问题
 * 修复 GenericUtil 不能获取多重继承的泛型
-* 调整 Action 的异常推送逻辑
+* 优化 Action 内部异常处理逻辑
+* 优化 Gateway 内部异常处理逻辑
+* 优化 RouterHandler 内部异常处理逻辑
 * 升级 smartsocket 为 1.5.22
 * 升级 smarthttp 为 1.1.16
+* 升级 beetlsql 为
 
 #### 1.10.5
 * 新增 solon.cloud.eventplus 插件，替代 cloudevent-plus-solon-plugin 插件
