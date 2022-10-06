@@ -14,7 +14,6 @@ import org.apache.ibatis.logging.Log;
 import org.apache.ibatis.logging.LogFactory;
 import org.apache.ibatis.session.SqlSession;
 import org.noear.solon.annotation.Inject;
-import org.noear.solon.core.util.GenericUtil;
 import org.noear.solon.data.annotation.Tran;
 
 import java.io.Serializable;
