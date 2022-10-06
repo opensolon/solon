@@ -2,6 +2,7 @@
 * 新增 liteflow-solon-plugin 插件
 * 新增 kubernetes-solon-cloud-plugin 插件
 * 新增 jmdns-solon-cloud-plugin 插件
+* 修复 mybatis-plugin 配置 mappers 为 xml 时，不能注入的问题
 
 #### 1.10.5
 * 新增 solon.cloud.eventplus 插件，替代 cloudevent-plus-solon-plugin 插件
