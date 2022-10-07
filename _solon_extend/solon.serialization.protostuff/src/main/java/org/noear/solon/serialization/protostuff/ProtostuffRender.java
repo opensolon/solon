@@ -23,7 +23,7 @@ public class ProtostuffRender implements Render {
             ctx.headerSet("solon.serialization", "ProtostuffRender");
         }
 
-        ctx.contentTypeSet("application/protobuf");
+        ctx.contentType("application/protobuf");
         ctx.output(serializeDo(obj));
     }
 

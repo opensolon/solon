@@ -193,7 +193,7 @@ public class BeetlRender implements Render {
 
     private void render_mav(ModelAndView mv, Context ctx, SupplierEx<OutputStream> outputStream) throws Throwable {
         if (ctx.contentTypeNew() == null) {
-            ctx.contentTypeSet("text/html;charset=utf-8");
+            ctx.contentType("text/html;charset=utf-8");
         }
 
         if (XPluginImp.output_meta) {

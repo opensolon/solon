@@ -28,7 +28,7 @@ public class JdkHttpContextHandler implements HttpHandler {
         try {
             //初始化好后，再处理；异常时，可以获取上下文
             //
-            ctx.contentTypeSet("text/plain;charset=UTF-8");
+            ctx.contentType("text/plain;charset=UTF-8");
 
             if (ServerProps.output_meta) {
                 ctx.headerSet("Solon-Boot", XPluginImp.solon_boot_ver());

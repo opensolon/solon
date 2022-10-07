@@ -288,7 +288,7 @@ public class Action extends HandlerAide implements Handler {
 
                     //设定输出产品（放在这个位置正好）
                     if (Utils.isEmpty(mProduces) == false) {
-                        c.contentTypeSet(mProduces);
+                        c.contentType(mProduces);
                     }
 
                     renderDo(tmp, c);

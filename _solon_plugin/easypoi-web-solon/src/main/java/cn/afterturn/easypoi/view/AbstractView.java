@@ -27,7 +27,7 @@ public abstract   class AbstractView  {
 
     protected void writeToResponse(Context ctx, ByteArrayOutputStream baos) throws IOException {
         ctx.contentType(this.getContentType());
-        ctx.headerSet("Content-Length", String.valueOf(baos.size()));
+        ctx.contentLength(baos.size());
         OutputStream out = ctx.outputStream();
         baos.writeTo(out);
         out.flush();

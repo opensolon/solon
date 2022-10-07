@@ -36,7 +36,7 @@ public class JtHttpContextHandler extends AbstractHandler {
         SolonServletContext ctx = new SolonServletContext(request, response);
         ctx.attrSet("signal", XPluginImp.signal());
 
-        ctx.contentTypeSet("text/plain;charset=UTF-8");
+        ctx.contentType("text/plain;charset=UTF-8");
         if (ServerProps.output_meta) {
             ctx.headerSet("Solon-Boot", XPluginImp.solon_boot_ver());
         }
