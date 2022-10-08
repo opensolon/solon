@@ -33,7 +33,7 @@ public class JlHttpContextHandler implements HTTPServer.ContextHandler {
 
         Solon.app().tryHandle(ctx);
 
-        if (ctx.getHandled() && ctx.status() >= 200) {
+        if (ctx.getHandled() || ctx.status() >= 200) {
             ctx.commit();
 
             return 0;

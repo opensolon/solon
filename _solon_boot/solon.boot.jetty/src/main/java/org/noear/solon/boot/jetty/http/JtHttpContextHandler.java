@@ -43,7 +43,7 @@ public class JtHttpContextHandler extends AbstractHandler {
 
         Solon.app().tryHandle(ctx);
 
-        if (ctx.getHandled() && ctx.status() >= 200) {
+        if (ctx.getHandled() || ctx.status() >= 200) {
             baseRequest.setHandled(true);
         } else {
             response.setStatus(404);

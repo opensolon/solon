@@ -36,7 +36,7 @@ public class JdkHttpContextHandler implements HttpHandler {
 
             Solon.app().tryHandle(ctx);
 
-            if (ctx.getHandled() && ctx.status() >= 200) {
+            if (ctx.getHandled() || ctx.status() >= 200) {
                 ctx.commit();
             } else {
                 ctx.status(404);
