@@ -7,7 +7,6 @@ import cn.afterturn.easypoi.wps.entity.resreq.WpsFileHistoryResponse;
 import cn.afterturn.easypoi.wps.entity.resreq.WpsFileResponse;
 import cn.afterturn.easypoi.wps.entity.resreq.WpsUserRequest;
 import org.noear.solon.core.handle.UploadedFile;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -147,7 +146,7 @@ public interface IEasyPoiWpsViewService extends IEasyPoiWpsService {
      * @return
      */
     default WpsFileEntity fileSave(String fileId, String userId, UploadedFile file) {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -176,7 +175,7 @@ public interface IEasyPoiWpsViewService extends IEasyPoiWpsService {
      * @return
      */
     default String getDownLoadUrl(String filepath, Integer version) {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -187,7 +186,7 @@ public interface IEasyPoiWpsViewService extends IEasyPoiWpsService {
      * @param name
      */
     default void rename(String fileId, String userId, String name) {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -197,6 +196,6 @@ public interface IEasyPoiWpsViewService extends IEasyPoiWpsService {
      * @return
      */
     default WpsFileHistoryResponse getHistory(WpsFileHistoryRequest req) {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 }
