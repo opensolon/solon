@@ -1,7 +1,7 @@
 package org.noear.solon.test;
 
-import org.junit.runners.BlockJUnit4ClassRunner;
-import org.junit.runners.model.InitializationError;
+import org.junit.Assert;
+import org.junit.jupiter.api.extension.*;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.aspect.BeanProxy;
@@ -10,19 +10,40 @@ import org.noear.solon.core.event.EventBus;
 import org.noear.solon.test.annotation.TestPropertySource;
 
 import java.io.File;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.net.MalformedURLException;
 import java.util.*;
 
-
-public class SolonJUnit4ClassRunner extends BlockJUnit4ClassRunner {
+/**
+ * @author noear
+ * @since 1.10
+ */
+public class SolonJUnit5Extension implements TestInstanceFactory {
+    private static final ExtensionContext.Namespace NAMESPACE = ExtensionContext.Namespace.create(new Object[]{SolonJUnit5Extension.class});
     private static final String TAG_classpath = "classpath:";
     private static Set<Class<?>> appCached = new HashSet<>();
-    public SolonJUnit4ClassRunner(Class<?> klass) throws InitializationError {
-        super(klass);
 
-        initDo(klass);
+    @Override
+    public Object createTestInstance(TestInstanceFactoryContext factory, ExtensionContext extensionContext) throws TestInstantiationException {
+        //init
+        initDo(factory.getTestClass());
+
+        //create
+        Object tmp = null;
+
+        try {
+            tmp = getOnlyConstructor(factory.getTestClass()).newInstance();
+        } catch (Exception e) {
+            throw new TestInstantiationException("Test class instantiation failed: " + factory.getTestClass().getName());
+        }
+
+        Solon.context().beanInject(tmp);
+
+        tmp = BeanProxy.getGlobal().getProxy(Solon.context(), tmp);
+
+        return tmp;
     }
 
     private void initDo(Class<?> klass){
@@ -109,13 +130,9 @@ public class SolonJUnit4ClassRunner extends BlockJUnit4ClassRunner {
         }
     }
 
-    @Override
-    protected Object createTest() throws Exception {
-        Object tmp = super.createTest();
-        Solon.context().beanInject(tmp);
-
-        tmp = BeanProxy.getGlobal().getProxy(Solon.context(),tmp);
-
-        return tmp;
+    private Constructor<?> getOnlyConstructor(Class clazz) {
+        Constructor<?>[] constructors = clazz.getConstructors();
+        Assert.assertEquals(1L, (long) constructors.length);
+        return constructors[0];
     }
 }

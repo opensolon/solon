@@ -11,6 +11,8 @@
 * 新增 easypoi-solon-plugin 插件
 * 新增 easypoi-web-plugin 插件
 * 新增 easypoi-wps-plugin 插件
+* 添加 solon-test 对 junit5 支持
+* 添加 view 相关插件可单独实例化使用的支持
 * 修复 mybatis-plugin 配置 mappers 为 xml 时，不能通过 @Inject 注入 mapper 的问题
 * 修复 GenericUtil 不能获取多重继承的泛型类型
 * 优化 Action、Gateway、RouterHandler 内部异常处理逻辑；不再强调用 event 控制输出
