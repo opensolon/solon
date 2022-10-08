@@ -34,7 +34,7 @@ public class SolonJUnit5Extension implements TestInstanceFactory {
         Object tmp = null;
 
         try {
-            tmp = getOnlyConstructor(factory.getTestClass()).newInstance();
+            tmp = Utils.newInstance(factory.getTestClass());
         } catch (Exception e) {
             throw new TestInstantiationException("Test class instantiation failed: " + factory.getTestClass().getName());
         }
@@ -135,11 +135,5 @@ public class SolonJUnit5Extension implements TestInstanceFactory {
         } catch (Exception ex) {
             return null;
         }
-    }
-
-    private Constructor<?> getOnlyConstructor(Class clazz) {
-        Constructor<?>[] constructors = clazz.getConstructors();
-        Assert.assertEquals(1L, (long) constructors.length);
-        return constructors[0];
     }
 }
