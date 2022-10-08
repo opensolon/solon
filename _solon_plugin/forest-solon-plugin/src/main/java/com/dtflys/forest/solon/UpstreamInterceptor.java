@@ -14,6 +14,7 @@ import org.noear.solon.core.LoadBalance;
  */
 public class UpstreamInterceptor implements Interceptor {
 
+    @Override
     public boolean beforeExecute(ForestRequest request) {
         if ("upstream".equals(request.getScheme())) {
             //尝试从工厂获取
