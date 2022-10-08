@@ -46,7 +46,14 @@ public class SolonJUnit5Extension implements TestInstanceFactory {
         return tmp;
     }
 
+    private Class<?> klassCached;
     private void initDo(Class<?> klass){
+        if(klassCached == null){
+            klassCached = klass;
+        }else{
+            return;
+        }
+
         SolonTest anno = klass.getAnnotation(SolonTest.class);
         TestPropertySource propAnno = klass.getAnnotation(TestPropertySource.class);
 
