@@ -393,14 +393,9 @@ public class Utils {
 
     public static <T> T newInstance(Class<?> clz, Properties prop) throws Exception {
         if (prop == null) {
-            return (T) clz.getConstructor().newInstance();
+            return (T) clz.getDeclaredConstructor().newInstance();
         } else {
-            Constructor<?> cos = clz.getConstructor(Properties.class);
-            if (cos == null) {
-                return null;
-            } else {
-                return (T) cos.newInstance(prop);
-            }
+            return (T) clz.getConstructor(Properties.class).newInstance(prop);
         }
     }
 
