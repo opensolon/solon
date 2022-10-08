@@ -18,7 +18,7 @@
 * 升级 smartsocket 为 1.5.22
 * 升级 smarthttp 为 1.1.16
 * 升级 redisx 为 1.1.4
-* 
+* 升级 beetl 为 3.12.0
 
 #### 1.10.5
 * 新增 solon.cloud.eventplus 插件，替代 cloudevent-plus-solon-plugin 插件
