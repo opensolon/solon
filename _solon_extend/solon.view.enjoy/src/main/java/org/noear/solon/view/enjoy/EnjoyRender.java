@@ -7,6 +7,7 @@ import com.jfinal.template.source.ClassPathSourceFactory;
 import com.jfinal.template.source.FileSourceFactory;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
+import org.noear.solon.core.JarClassLoader;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.Render;
 import org.noear.solon.core.handle.ModelAndView;
@@ -43,10 +44,15 @@ public class EnjoyRender implements Render {
     Engine provider_debug = null;
 
     private String _baseUri = "/WEB-INF/view/";
+    private ClassLoader classLoader;
 
     //不要要入参，方便后面多视图混用
     //
     public EnjoyRender() {
+        this(JarClassLoader.global());
+    }
+    public EnjoyRender(ClassLoader classLoader) {
+        this.classLoader = classLoader;
 
         String baseUri = Solon.cfg().get("slon.mvc.view.prefix");
 
@@ -119,7 +125,7 @@ public class EnjoyRender implements Render {
 
         try {
             provider.setBaseTemplatePath(_baseUri);
-            provider.setSourceFactory(new ClassPathSourceFactory());
+            provider.setSourceFactory(new ClassPathSourceFactory2(classLoader));
 
             //通过事件扩展
             EventBus.push(provider);

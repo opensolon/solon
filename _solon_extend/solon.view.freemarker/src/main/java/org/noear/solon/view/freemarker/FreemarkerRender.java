@@ -36,10 +36,16 @@ public class FreemarkerRender implements Render {
     Configuration provider_debug;
 
     private String _baseUri = "/WEB-INF/view/";
+    private ClassLoader classLoader;
 
     //不要要入参，方便后面多视图混用
     //
     public FreemarkerRender() {
+        this(JarClassLoader.global());
+    }
+    public FreemarkerRender(ClassLoader classLoader) {
+        this.classLoader = classLoader;
+
         String baseUri = Solon.cfg().get("slon.mvc.view.prefix");
 
         if (Utils.isEmpty(baseUri) == false) {
@@ -113,7 +119,7 @@ public class FreemarkerRender implements Render {
         provider.setDefaultEncoding("utf-8");
 
         try {
-            provider.setClassLoaderForTemplateLoading(JarClassLoader.global(), _baseUri);
+            provider.setClassLoaderForTemplateLoading(classLoader, _baseUri);
         } catch (Exception ex) {
             EventBus.push(ex);
         }

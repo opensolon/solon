@@ -45,10 +45,16 @@ public class BeetlRender implements Render {
     GroupTemplate provider_debug = null;
 
     private String _baseUri = "/WEB-INF/view/";
+    private ClassLoader classLoader;
 
     //不要要入参，方便后面多视图混用
     //
-    public BeetlRender() {
+    public BeetlRender(){
+        this(JarClassLoader.global());
+    }
+
+    public BeetlRender(ClassLoader classLoader) {
+        this.classLoader = classLoader;
 
         try {
             cfg = Configuration.defaultConfiguration();
@@ -121,7 +127,7 @@ public class BeetlRender implements Render {
         }
 
         try {
-            ClasspathResourceLoader loader = new ClasspathResourceLoader(JarClassLoader.global(), _baseUri);
+            ClasspathResourceLoader loader = new ClasspathResourceLoader(classLoader, _baseUri);
             provider = new GroupTemplate(loader, cfg);
 
             //通过事件扩展
