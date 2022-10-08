@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.noear</groupId>
         <artifactId>solon-parent</artifactId>
-        <version>1.10.6-M4</version>
+        <version>1.10.6</version>
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
@@ -18,13 +18,13 @@
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>nami.channel.socketd</artifactId>
-            <version>1.10.6-M4</version>
+            <version>1.10.6</version>
         </dependency>
 
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon.socketd.client.netty</artifactId>
-            <version>1.10.6-M4</version>
+            <version>1.10.6</version>
         </dependency>
     </dependencies>
 
