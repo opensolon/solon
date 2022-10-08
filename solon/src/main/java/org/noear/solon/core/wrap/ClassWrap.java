@@ -1,5 +1,6 @@
 package org.noear.solon.core.wrap;
 
+import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.UploadedFile;
 import org.noear.solon.core.util.ConvertUtil;
@@ -187,7 +188,7 @@ public class ClassWrap {
                 Object obj = recordConstructor().newInstance(argsV);
                 return (T) obj;
             } else {
-                Object obj = clz().newInstance();
+                Object obj = Utils.newInstance(clz());
 
                 doFill(obj, data, ctx);
 

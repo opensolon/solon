@@ -1,5 +1,7 @@
 package org.noear.nami;
 
+import org.noear.solon.Utils;
+
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
@@ -95,7 +97,7 @@ public class NamiManager {
             synchronized (clz) {
                 tmp = configuratorMap.get(clz);
                 if (tmp == null) {
-                    tmp = clz.newInstance();
+                    tmp = Utils.newInstance(clz);
                     configuratorMap.put(clz, tmp);
                 }
             }

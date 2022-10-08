@@ -120,7 +120,7 @@ public class Handler extends URLStreamHandler {
 		for (String handlerClassName : FALLBACK_HANDLERS) {
 			try {
 				Class<?> handlerClass = Class.forName(handlerClassName);
-				this.fallbackHandler = (URLStreamHandler) handlerClass.newInstance();
+				this.fallbackHandler = (URLStreamHandler) handlerClass.getDeclaredConstructor().newInstance();
 				return this.fallbackHandler;
 			}
 			catch (Exception ex) {

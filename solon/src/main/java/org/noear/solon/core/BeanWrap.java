@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+import org.noear.solon.Utils;
 import org.noear.solon.annotation.Init;
 import org.noear.solon.annotation.Singleton;
 import org.noear.solon.core.util.IndexBuilder;
@@ -286,7 +287,7 @@ public class BeanWrap {
 
         try {
             //1.构造
-            Object bean = clz.newInstance();
+            Object bean = Utils.newInstance(clz);
 
             //2.初始化
             init(bean);
