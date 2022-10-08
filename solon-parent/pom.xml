@@ -46,7 +46,9 @@
         <hessian.ver>4.0.65</hessian.ver>
         <protostuff.ver>1.7.4</protostuff.ver>
 
-        <junit.ver>4.13.1</junit.ver>
+        <junit4.ver>4.13.1</junit4.ver>
+        <junit5.ver>5.8.2</junit5.ver>
+        <mockito.ver>3.3.3</mockito.ver>
 
         <mybatis.ver>3.5.10</mybatis.ver>
 
