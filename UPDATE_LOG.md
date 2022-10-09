@@ -20,9 +20,10 @@
 * 优化 clz.newInstance() [jdk9 已弃用] 统一改为 Utils.newInstance(clz)
 * 升级 smartsocket 为 1.5.22
 * 升级 smarthttp 为 1.1.16
-* 升级 redisx 为 1.1.4
+* 升级 redisx 为 1.4.4
 * 升级 beetl 为 3.12.0
 * 升级 snack3 为 3.2.41
+* 升级 weed3 为 3.4.30
 
 #### 1.10.5
 * 新增 solon.cloud.eventplus 插件，替代 cloudevent-plus-solon-plugin 插件
