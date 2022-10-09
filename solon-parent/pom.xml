@@ -39,7 +39,7 @@
         <undertow.ver>2.2.19.Final</undertow.ver>
         <tomcat.ver>9.0.64</tomcat.ver>
 
-        <snakeyaml.ver>1.30</snakeyaml.ver>
+        <snakeyaml.ver>1.31</snakeyaml.ver>
 
         <jackson.ver>2.13.3</jackson.ver>
         <gson.ver>2.9.0</gson.ver>
