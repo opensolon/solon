@@ -375,7 +375,7 @@ public class SolonApp extends RouterAdapter {
                 if (x.status() < 400) {
                     x.status(500);
                 }
-                x.setHandled(true);
+                //x.setHandled(true); 不再需要
             }
 
             //如果未渲染，尝试渲染
@@ -427,7 +427,7 @@ public class SolonApp extends RouterAdapter {
 
 
     /**
-     * 订阅异常事件
+     * 订阅未处理异常事件
      */
     public SolonApp onError(EventListener<Throwable> handler) {
         return onEvent(Throwable.class, handler);
