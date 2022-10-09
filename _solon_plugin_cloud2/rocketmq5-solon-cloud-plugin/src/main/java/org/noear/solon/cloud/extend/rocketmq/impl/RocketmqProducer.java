@@ -65,7 +65,7 @@ public class RocketmqProducer {
         //发送消息，需要关注发送结果，并捕获失败等异常。
         SendReceipt sendReceipt = producer.send(message);
 
-        if (sendReceipt.getMessageId() != null) {
+        if (sendReceipt != null) {
             return true;
         } else {
             return false;
