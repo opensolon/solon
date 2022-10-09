@@ -44,6 +44,7 @@
 
         <module>../../_solon_plugin_cloud2/rabbitmq-solon-cloud-plugin</module>
         <module>../../_solon_plugin_cloud2/rocketmq-solon-cloud-plugin</module>
+        <module>../../_solon_plugin_cloud2/rocketmq5-solon-cloud-plugin</module>
         <module>../../_solon_plugin_cloud2/mqtt-solon-cloud-plugin</module>
         <module>../../_solon_plugin_cloud2/kafka-solon-cloud-plugin</module>
 
