@@ -27,6 +27,12 @@ public class HttpTest extends HttpTestBase {
     }
 
     @Test
+    public void test_404() throws IOException {
+        assert path("/debug000.htm").execAsCode("GET") == 404;
+        assert path("/debug0/c00").execAsCode("GET") == 404;
+    }
+
+    @Test
     public void test11() throws IOException {
         assert path("/demo1/run0/?str=").get().equals("不是null(ok)");
 
