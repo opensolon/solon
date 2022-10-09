@@ -17,7 +17,7 @@
 * 修复 GenericUtil 不能获取多重继承的泛型类型
 * 优化 Action、Gateway、RouterHandler 内部异常处理逻辑；不再强调用 event 控制输出
 * 优化 Server 最终输出逻辑：(ctx.getHandled() || ctx.status() >= 200)
-* 优化 clz.newInstance() [已被弃用] 统一改为 Utils.newInstance(clz)
+* 优化 clz.newInstance() [jdk9 已弃用] 统一改为 Utils.newInstance(clz)
 * 升级 smartsocket 为 1.5.22
 * 升级 smarthttp 为 1.1.16
 * 升级 redisx 为 1.1.4
