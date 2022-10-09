@@ -5,6 +5,8 @@
 * 新增 knife4j-solon-plugin 插件
 * 新增 kubernetes-solon-cloud-plugin 插件
 * 新增 jmdns-solon-cloud-plugin 插件
+* 升级 snakeyaml 为 1.32
+* 升级 graphql 为 18.3
 
 
 #### 1.10.6
