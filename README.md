@@ -1,5 +1,7 @@
 <h1 align="center" style="text-align:center;">
-  Solon for java
+<img src="icon.png" width="128" />
+<br />
+Solon for java
 </h1>
 <p align="center">
 	<strong>更现代感的，轻量级应用开发框架</strong>
