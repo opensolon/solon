@@ -7,8 +7,11 @@ import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.core.util.StrUtil;
 import com.yomahub.liteflow.exception.ConfigErrorException;
 import com.yomahub.liteflow.spi.PathContentParser;
+import org.noear.solon.Utils;
 
+import java.io.File;
 import java.net.URI;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -21,26 +24,18 @@ public class SolonPathContentParser implements PathContentParser {
             throw new ConfigErrorException("rule source must not be null");
         }
 
-        List<URI> allResource = new ArrayList<>();
+        List<URL> allResource = new ArrayList<>();
         for (String path : pathList) {
-            String locationPattern;
-
-            //如果path是绝对路径且这个文件存在时，我们认为这是一个本地文件路径，而并非classpath路径
-            if (FileUtil.isAbsolutePath(path) && FileUtil.isFile(path)){
-                locationPattern = ResourceUtils.FILE_URL_PREFIX + path;
+            //如果 path 是绝对路径且这个文件存在时，我们认为这是一个本地文件路径，而并非classpath路径
+            if (FileUtil.isAbsolutePath(path) && FileUtil.isFile(path)) {
+                allResource.add(new File(path).toURI().toURL());
             } else {
-                if (!path.startsWith(ResourceUtils.CLASSPATH_URL_PREFIX) && !path.startsWith(ResourceUtils.CLASSPATH_ALL_URL_PREFIX)) {
-                    locationPattern = ResourceUtils.CLASSPATH_URL_PREFIX + path;
-                }else{
-                    locationPattern = path;
+                if (path.startsWith(ResourceUtils.CLASSPATH_URL_PREFIX)) {
+                    path = path.substring(ResourceUtils.CLASSPATH_URL_PREFIX.length());
                 }
-            }
 
-            URI resource = URI.create(locationPattern);
-            if (resource == null) {
-                throw new ConfigErrorException("config error,please check rule source property");
+                allResource.add(Utils.getResource(path));
             }
-            allResource.add(resource);
         }
 
         //如果有多个资源，检查资源都是同一个类型，如果出现不同类型的配置，则抛出错误提示
@@ -52,8 +47,8 @@ public class SolonPathContentParser implements PathContentParser {
 
         //转换成内容List
         List<String> contentList = new ArrayList<>();
-        for (URI resource : allResource) {
-            String content = IoUtil.read(resource.toURL().openStream(), CharsetUtil.CHARSET_UTF_8);
+        for (URL resource : allResource) {
+            String content = IoUtil.read(resource.openStream(), CharsetUtil.CHARSET_UTF_8);
             if (StrUtil.isNotBlank(content)){
                 contentList.add(content);
             }

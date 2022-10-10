@@ -1,5 +1,6 @@
 package com.yomahub.liteflow.solon.integration;
 
+import com.yomahub.liteflow.annotation.LiteflowComponent;
 import com.yomahub.liteflow.core.NodeComponent;
 import com.yomahub.liteflow.flow.FlowBus;
 import com.yomahub.liteflow.solon.LiteflowProperty;
@@ -42,6 +43,11 @@ public class XPluginImpl implements Plugin {
             }
 
             FlowBus.addSpringScanNode(node1.getNodeId(), node1);
+        });
+
+        //注册 LiteflowComponent 组件注解
+        context.beanBuilderAdd(LiteflowComponent.class, (clz, bw, anno) -> {
+
         });
 
         //扫描相关组件

@@ -14,8 +14,7 @@ public class SolonAware implements ContextAware {
     @Override
     public <T> T getBean(String name) {
         try{
-            T t = (T) Solon.context().getBean(name);
-            return t;
+            return Solon.context().getBean(name);
         }catch (Exception e){
             return null;
         }
@@ -24,8 +23,7 @@ public class SolonAware implements ContextAware {
     @Override
     public <T> T getBean(Class<T> clazz) {
         try{
-            T t = Solon.context().getBean(clazz);
-            return t;
+            return Solon.context().getBean(clazz);
         }catch (Exception e){
             return null;
         }
@@ -33,8 +31,7 @@ public class SolonAware implements ContextAware {
 
     private <T> T getBean(String beanName, Class<T> clazz) {
         try{
-            T t = Solon.context().getBean(beanName);
-            return t;
+            return Solon.context().getBean(beanName);
         }catch (Exception e){
             return null;
         }
