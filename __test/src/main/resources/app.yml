@@ -135,6 +135,10 @@ cfgmap:
 stritems:
   - id1
   - id2
+  - ida
+  - id_
+  - idb
+  - d0
 
 strmap:
   id1: 1

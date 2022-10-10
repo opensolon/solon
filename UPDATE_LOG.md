@@ -7,6 +7,7 @@
 * 新增 jmdns-solon-cloud-plugin 插件
 * 升级 snakeyaml 为 1.32
 * 升级 graphql 为 18.3
+* 优化 Solon.cfg().getList() 实现排序支持
 
 
 #### 1.10.6

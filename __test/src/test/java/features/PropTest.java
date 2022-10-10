@@ -68,6 +68,11 @@ public class PropTest {
         assert list1 != null;
         assert list2 != null;
 
+        for (int size = list1.size(), i = 0; i < size; i++) {
+            assert list1.get(i).equals(list2.get(i));
+        }
+
+
         assert list1.size() == list2.size();
     }
 }

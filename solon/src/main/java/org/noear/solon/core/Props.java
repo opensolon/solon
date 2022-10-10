@@ -194,11 +194,11 @@ public class Props extends Properties {
      * @param keyStarts key 的开始字符
      */
     public List<String> getList(String keyStarts) {
-        List<String> ary = new ArrayList<>();
+        Map<String,String> sortMap = new TreeMap<>();
         doFind(keyStarts + "[", (k, v) -> {
-            ary.add(v);
+            sortMap.put(k, v);
         });
-        return ary;
+        return new ArrayList<>(sortMap.values());
     }
 
     private void doFind(String keyStarts, BiConsumer<String, String> setFun) {
