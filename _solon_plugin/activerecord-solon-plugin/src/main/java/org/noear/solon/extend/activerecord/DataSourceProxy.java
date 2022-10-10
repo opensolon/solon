@@ -1,13 +1,14 @@
 package org.noear.solon.extend.activerecord;
 
-import org.noear.solon.data.tran.TranUtils;
-
-import javax.sql.DataSource;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.SQLFeatureNotSupportedException;
 import java.util.logging.Logger;
+
+import javax.sql.DataSource;
+
+import org.noear.solon.data.tran.TranUtils;
 
 /**
  * 数据源代理（实现与Solon事务对接）
@@ -25,49 +26,49 @@ public class DataSourceProxy implements DataSource {
     @Override
     public Connection getConnection() throws SQLException {
         if (TranUtils.inTrans()) {
-            return TranUtils.getConnection(ds);
+            return TranUtils.getConnection(this.ds);
         } else {
-            return ds.getConnection();
+            return this.ds.getConnection();
         }
     }
 
     @Override
     public Connection getConnection(String username, String password) throws SQLException {
-        return ds.getConnection(username, password);
-    }
-
-    @Override
-    public <T> T unwrap(Class<T> iface) throws SQLException {
-        return ds.unwrap(iface);
-    }
-
-    @Override
-    public boolean isWrapperFor(Class<?> iface) throws SQLException {
-        return ds.isWrapperFor(iface);
-    }
-
-    @Override
-    public PrintWriter getLogWriter() throws SQLException {
-        return ds.getLogWriter();
-    }
-
-    @Override
-    public void setLogWriter(PrintWriter out) throws SQLException {
-        ds.setLogWriter(out);
-    }
-
-    @Override
-    public void setLoginTimeout(int seconds) throws SQLException {
-        ds.setLoginTimeout(seconds);
+        return this.ds.getConnection(username, password);
     }
 
     @Override
     public int getLoginTimeout() throws SQLException {
-        return ds.getLoginTimeout();
+        return this.ds.getLoginTimeout();
+    }
+
+    @Override
+    public PrintWriter getLogWriter() throws SQLException {
+        return this.ds.getLogWriter();
     }
 
     @Override
     public Logger getParentLogger() throws SQLFeatureNotSupportedException {
-        return ds.getParentLogger();
+        return this.ds.getParentLogger();
+    }
+
+    @Override
+    public boolean isWrapperFor(Class<?> iface) throws SQLException {
+        return this.ds.isWrapperFor(iface);
+    }
+
+    @Override
+    public void setLoginTimeout(int seconds) throws SQLException {
+        this.ds.setLoginTimeout(seconds);
+    }
+
+    @Override
+    public void setLogWriter(PrintWriter out) throws SQLException {
+        this.ds.setLogWriter(out);
+    }
+
+    @Override
+    public <T> T unwrap(Class<T> iface) throws SQLException {
+        return this.ds.unwrap(iface);
     }
 }

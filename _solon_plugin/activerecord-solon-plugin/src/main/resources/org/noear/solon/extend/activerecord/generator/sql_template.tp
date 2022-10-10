@@ -1,0 +1,47 @@
+#set(modelName = tableMeta.modelName)
+#set(asName = tableMeta.name.substring(0, 1))
+#("#")namespace("#(classPrefix + tableMeta.modelName + classSuffix)")
+
+#("#")sql("countBy") #("#")#("#")#("#") 统计满足条件的记录数
+    SELECT COUNT(*) FROM `#(tableMeta.name)` #("#")@whereFor()
+#("#")end
+
+
+#("#")sql("deleteBy") #("#")#("#")#("#") 删除满足条件的记录
+    DELETE FROM `#(tableMeta.name)` #("#")@whereFor()
+#("#")end
+
+
+#("#")sql("findBy") #("#")#("#")#("#") 查找满足条件的记录列表, 并按指定条件排序
+    SELECT * FROM `#(tableMeta.name)` #("#")@whereFor()
+    #("#")if(orderColumn)ORDER BY #("#")(orderColumn)#("#")if(orderDirection) #("#")(orderDirection)#("#")end#("#")end
+#("#")end
+
+
+#("#")sql("paginateBy") #("#")#("#")#("#") 查找满足条件的分页记录, 并按指定条件排序
+    SELECT * FROM `#(tableMeta.name)` #("#")@whereFor()
+    #("#")if(orderColumn)ORDER BY #("#")(orderColumn)#("#")if(orderDirection) #("#")(orderDirection)#("#")end#("#")end
+#("#")end
+
+
+#("#")sql("save") #("#")#("#")#("#") 保存 #(modelName) 记录
+    INSERT INTO `#(tableMeta.name)` (#for(cm : tableMeta.columnMetas)#if(cm.attrName != tableMeta.primaryKey)#set(argName = javaKeyword.contains(cm.attrName) ? '_' + cm.attrName : cm.attrName)`#(cm.name)`#if(!for.last), #end#end#end) VALUES (#for(cm : tableMeta.columnMetas)#if(cm.attrName != tableMeta.primaryKey)#set(argName = javaKeyword.contains(cm.attrName) ? '_' + cm.attrName : cm.attrName)#("#")para(model.#(argName))#if(!for.last), #end#end#end)
+#("#")end
+
+
+#("#")sql("update") #("#")#("#")#("#") 更新 #(modelName) 记录
+    UPDATE `#(tableMeta.name)` #for(cm : tableMeta.columnMetas)#set(argName = javaKeyword.contains(cm.attrName) ? '_' + cm.attrName : cm.attrName)#if(for.first)SET #else, #end `#(cm.name)` = #("#")para(model.#(argName))#end #(" WHERE") `#(tableMeta.primaryKey)` = #for(cm : tableMeta.columnMetas)#set(argName = javaKeyword.contains(cm.attrName) ? '_' + cm.attrName : cm.attrName)#if(cm.attrName == tableMeta.primaryKey)#("#")para(model.#(argName))#end#end#(" ")
+#("#")end
+
+
+#("### ********************")
+#("###") WHERE 条件，可在此处修改查询条件，如:`name` LIKE #("#")para(name, "like")
+#("### ********************")
+#("#")define whereFor()
+WHERE TRUE
+#for(cm : tableMeta.columnMetas)#set(argName = javaKeyword.contains(cm.attrName) ? '_' + cm.attrName : cm.attrName)    #("#")if(#(argName))AND `#(cm.name)` = #("#")para(#(argName))#("#")end
+#end
+#("#")end
+
+
+#("#")end

@@ -1,17 +1,19 @@
 package org.noear.solon.extend.activerecord;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+import javax.sql.DataSource;
+
+import org.noear.solon.data.tran.TranUtils;
+
 import com.jfinal.kit.LogKit;
 import com.jfinal.plugin.activerecord.Config;
 import com.jfinal.plugin.activerecord.IContainerFactory;
 import com.jfinal.plugin.activerecord.cache.ICache;
 import com.jfinal.plugin.activerecord.dialect.Dialect;
-import org.noear.solon.data.tran.TranUtils;
-
-import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 
 /**
  * 配置实现（实现与Solon事务对接）
@@ -20,14 +22,6 @@ import java.sql.Statement;
  * @since 1.4
  */
 class ConfigImpl extends Config {
-    public ConfigImpl(String name, DataSource dataSource, int transactionLevel) {
-        super(name, dataSource, transactionLevel);
-    }
-
-    public ConfigImpl(String name, DataSource dataSource, Dialect dialect, boolean showSql, boolean devMode, int transactionLevel, IContainerFactory containerFactory, ICache cache) {
-        super(name, dataSource, dialect, showSql, devMode, transactionLevel, containerFactory, cache);
-    }
-
     public ConfigImpl(String name, DataSource dataSource) {
         super(name, dataSource);
     }
@@ -36,9 +30,12 @@ class ConfigImpl extends Config {
         super(name, dataSource, dialect);
     }
 
-    @Override
-    public boolean isInTransaction() {
-        return TranUtils.inTrans() || super.isInTransaction();
+    public ConfigImpl(String name, DataSource dataSource, Dialect dialect, boolean showSql, boolean devMode, int transactionLevel, IContainerFactory containerFactory, ICache cache) {
+        super(name, dataSource, dialect, showSql, devMode, transactionLevel, containerFactory, cache);
+    }
+
+    public ConfigImpl(String name, DataSource dataSource, int transactionLevel) {
+        super(name, dataSource, transactionLevel);
     }
 
     @Override
@@ -47,22 +44,6 @@ class ConfigImpl extends Config {
             return;
         }
         super.close(conn);
-    }
-
-    @Override
-    public void close(Statement st, Connection conn) {
-        if (TranUtils.inTrans()) {
-            if (st != null) {
-                try {
-                    st.close();
-                } catch (SQLException e) {
-                    LogKit.error(e.getMessage(), e);
-                }
-            }
-            return;
-        }
-
-        super.close(st, conn);
     }
 
     @Override
@@ -86,5 +67,26 @@ class ConfigImpl extends Config {
         }
 
         super.close(rs, st, conn);
+    }
+
+    @Override
+    public void close(Statement st, Connection conn) {
+        if (TranUtils.inTrans()) {
+            if (st != null) {
+                try {
+                    st.close();
+                } catch (SQLException e) {
+                    LogKit.error(e.getMessage(), e);
+                }
+            }
+            return;
+        }
+
+        super.close(st, conn);
+    }
+
+    @Override
+    public boolean isInTransaction() {
+        return TranUtils.inTrans() || super.isInTransaction();
     }
 }

@@ -6,23 +6,20 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import com.jfinal.plugin.activerecord.DbKit;
+
 /**
- * 表注解
+ * 数据库注解
  *
- * @author noear
- * @since 1.4
+ * @author 胡高 (https://gitee.com/gollyhu)
+ * @since 1.10.7
  */
 @Inherited
-@Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Table {
+@Target({ElementType.FIELD, ElementType.PARAMETER, ElementType.TYPE})
+public @interface Db {
     /**
-     * 表名
-     * */
-    String name();
-    /**
-     * 主键
-     * */
-    String primaryKey() default "id";
+     * 数据源Bean实例名称
+     */
+    String value() default DbKit.MAIN_CONFIG_NAME;
 }
-
