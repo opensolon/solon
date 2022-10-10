@@ -2,10 +2,7 @@ package com.yomahub.liteflow.solon.integration;
 
 import com.yomahub.liteflow.core.NodeComponent;
 import com.yomahub.liteflow.flow.FlowBus;
-import com.yomahub.liteflow.solon.LiteflowMonitorProperty;
 import com.yomahub.liteflow.solon.LiteflowProperty;
-import com.yomahub.liteflow.solon.config.LiteflowMainAutoConfiguration;
-import com.yomahub.liteflow.solon.config.LiteflowPropertyAutoConfiguration;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.AopContext;
@@ -49,14 +46,5 @@ public class XPluginImpl implements Plugin {
 
         //扫描相关组件
         context.beanScan(LiteflowProperty.class);
-
-//        context.beanOnloaded((ctx) -> {
-//            context.beanScan(LiteflowProperty.class);
-//        });
-//
-//        context.beanMake(LiteflowMonitorProperty.class);
-//        context.beanMake(LiteflowProperty.class);
-//        context.beanMake(LiteflowMainAutoConfiguration.class);
-//        context.beanMake(LiteflowPropertyAutoConfiguration.class);
     }
 }
