@@ -12,8 +12,8 @@
 
 #### 1.10.6
 * 新增 easypoi-solon-plugin 插件
-* 新增 easypoi-web-plugin 插件
-* 新增 easypoi-wps-plugin 插件
+* 新增 easypoi-web-solon 插件
+* 新增 easypoi-wps-solon 插件
 * 添加 solon-test 对 junit5 支持（使用时注意 junit5 与 juint4 注解的区别）
 * 添加 view 相关插件可单独实例化使用的支持
 * 修复 mybatis-plugin 配置 mappers 为 xml 时，不能通过 @Inject 注入 mapper 的问题
