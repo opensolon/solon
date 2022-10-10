@@ -1,3 +1,3 @@
 
 
-liteflow.rule-source: "classpath:demo/flow.xml"
+liteflow.rule-source: "demo/flow.xml"

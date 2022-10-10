@@ -1,5 +1,6 @@
 package demo.nodes;
 
+import com.yomahub.liteflow.annotation.LiteflowComponent;
 import com.yomahub.liteflow.core.NodeComponent;
 import org.noear.solon.annotation.Component;
 
