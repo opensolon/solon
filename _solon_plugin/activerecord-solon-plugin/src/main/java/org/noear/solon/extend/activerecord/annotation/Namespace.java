@@ -7,22 +7,18 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 表注解
+ * 命名空间注解
  *
- * @author noear
- * @since 1.4
+ * @author 胡高 (https://gitee.com/gollyhu)
+ * @since 1.10.7
  */
 @Inherited
-@Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Table {
+@Target({ElementType.METHOD,  ElementType.TYPE})
+public @interface Namespace {
     /**
-     * 表名
-     * */
-    String name();
-    /**
-     * 主键
-     * */
-    String primaryKey() default "id";
-}
+     * 命名空间
+     */
+    String value();
 
+}
