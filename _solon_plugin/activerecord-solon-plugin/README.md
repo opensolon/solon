@@ -5,7 +5,9 @@
 
 #### 介绍
 
-基于Solon框架（https://gitee.com/noear/solon）的 ActiveRecord 的框架适配，以提供ORM支持。
+​	基于Solon框架（https://gitee.com/noear/solon）的 ActiveRecord 的框架适配，以提供ORM支持。
+
+​	此说明文档中的示例及源码来自于专有Demo：https://gitee.com/gollyhu/activerecord-solon-plugin-demo
 
 
 
