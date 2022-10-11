@@ -5,36 +5,8 @@
 
 #### 介绍
 
-​	基于Solon框架（https://gitee.com/noear/solon）的 ActiveRecord 的框架适配，以提供ORM支持。
 
 ​	此说明文档中的示例及源码来自于专有Demo：https://gitee.com/gollyhu/activerecord-solon-plugin-demo
-
-
-
-#### 配置示例
-
-```yaml
-demo.db1:
-  schema: rock
-  jdbcUrl: jdbc:mysql://localhost:3306/jfinal_demo?useSSL=false
-  driverClassName: com.mysql.jdbc.Driver
-  username: root
-  password: 123456
-```
-
-
-
-
-#### 安装教程
-
-1.  引入插件
-``` xml
-<dependency>
-    <groupId>io.github.gollyhu</groupId>
-    <artifactId>activerecord-solon-plugin</artifactId>
-    <version>1.0.0</version>
-</dependency>
-```
 
 
 
@@ -91,7 +63,7 @@ demo.db1:
    @Configuration
    public class Config {
    
-       @Bean // 不指定数据源名称，则采用默认数据源
+       @Bean(name="db1", typed=true) // typed=true 为默认数据源
        public DataSource db1(@Inject("${demo.db1}") HikariDataSource dataSource) {
            return dataSource;
        }
@@ -109,6 +81,7 @@ demo.db1:
 4. 应用示例
 
    ```java
+   @Valid
    @Controller
    @Mapping("/blog")
    public class BlogController {
