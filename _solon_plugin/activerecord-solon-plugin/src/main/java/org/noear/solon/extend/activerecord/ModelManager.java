@@ -14,7 +14,7 @@ import com.jfinal.plugin.activerecord.Model;
  * @author 胡高 (https://gitee.com/gollyhu)
  * @date 2022/08/16
  */
-public class ModelSingtonManager {
+public class ModelManager {
     static Map<Class<? extends Model<?>>, Model<?>> modelMap = new HashMap<>();
     static Map<Table, Class<? extends Model<?>>> tableMap = new LinkedHashMap<>();
 

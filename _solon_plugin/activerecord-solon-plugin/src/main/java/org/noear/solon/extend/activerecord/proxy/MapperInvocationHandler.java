@@ -1,5 +1,7 @@
 package org.noear.solon.extend.activerecord.proxy;
 
+import java.lang.invoke.MethodHandles;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 
@@ -13,9 +15,10 @@ import com.jfinal.plugin.activerecord.Model;
  */
 public class MapperInvocationHandler implements InvocationHandler {
 
+    private MethodHandles.Lookup lookup;
     private String db;
 
-    public MapperInvocationHandler(Class<? extends Model<?>> clz, String db) {
+    public MapperInvocationHandler(Class<?> clz, String db) {
         MapperContextParser.parse(clz);
         this.db = db;
     }
@@ -25,12 +28,25 @@ public class MapperInvocationHandler implements InvocationHandler {
      */
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        MapperMethodContext context = MapperMethodContextManager.getMethodContext(method);
-        if (null == context) {
-            throw new RuntimeException("method not resolved yet.");
+        Class caller = method.getDeclaringClass();
+
+        if (method.isDefault()) {
+            //用于处理默认函数（包括：toString()）
+            if (this.lookup == null) {
+                Constructor<MethodHandles.Lookup> constructor = MethodHandles.Lookup.class.getDeclaredConstructor(Class.class, Integer.TYPE);
+                constructor.setAccessible(true);
+                this.lookup = constructor.newInstance(caller, MethodHandles.Lookup.PRIVATE);
+            }
+
+            return this.lookup.unreflectSpecial(method, caller).bindTo(proxy).invokeWithArguments(args);
+        } else {
+
+            MapperMethodContext context = MapperMethodContextManager.getMethodContext(method);
+            if (null == context) {
+                throw new RuntimeException("method not resolved yet.");
+            }
+
+            return MapperMethodInvoker.invoke(context, this.db, args);
         }
-
-        return MapperMethodInvoker.invoke(context, this.db, args);
     }
-
 }

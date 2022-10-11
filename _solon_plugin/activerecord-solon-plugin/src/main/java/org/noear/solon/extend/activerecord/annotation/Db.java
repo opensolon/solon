@@ -6,7 +6,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import com.jfinal.plugin.activerecord.DbKit;
 
 /**
  * 数据库注解
@@ -21,5 +20,5 @@ public @interface Db {
     /**
      * 数据源Bean实例名称
      */
-    String value() default DbKit.MAIN_CONFIG_NAME;
+    String value() default "";
 }

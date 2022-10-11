@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.noear.solon.core.util.ConvertUtil;
-import org.noear.solon.extend.activerecord.ModelSingtonManager;
+import org.noear.solon.extend.activerecord.ModelManager;
 
 import com.jfinal.kit.TypeKit;
 import com.jfinal.plugin.activerecord.Db;
@@ -79,7 +79,7 @@ public final class MapperMethodInvoker {
     private static Object invokeList(MapperMethodContext context, String db, Map<Object, Object> argsMap) {
         if (Model.class.isAssignableFrom(context.getReturnClz())) {
             // 处理List<Model>
-            Model<?> m = ModelSingtonManager.getModel((Class<? extends Model<?>>)context.getReturnClz());
+            Model<?> m = ModelManager.getModel((Class<? extends Model<?>>)context.getReturnClz());
 
             if (context.isSqlStatement()) {
                 return m.use(db).templateByString(context.getSql(), argsMap).find();
@@ -121,7 +121,7 @@ public final class MapperMethodInvoker {
          * 处理Model
          */
         if (Model.class.isAssignableFrom(context.getReturnClz())) {
-            Model<?> m = ModelSingtonManager.getModel((Class<? extends Model<?>>)context.getReturnClz());
+            Model<?> m = ModelManager.getModel((Class<? extends Model<?>>)context.getReturnClz());
             if (context.isSqlStatement()) {
                 return m.use(db).templateByString(context.getSql(), argsMap).findFirst();
             } else {
@@ -167,7 +167,7 @@ public final class MapperMethodInvoker {
 
         if (Model.class.isAssignableFrom(context.getReturnClz())) {
             // 处理List<Model>
-            Model<?> m = ModelSingtonManager.getModel((Class<? extends Model<?>>)context.getReturnClz());
+            Model<?> m = ModelManager.getModel((Class<? extends Model<?>>)context.getReturnClz());
 
             if (context.isSqlStatement()) {
                 return m.use(db).templateByString(context.getSql(), argsMap).paginate(pageNumber, pageSize);

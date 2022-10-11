@@ -11,7 +11,6 @@ import org.noear.solon.core.util.GenericUtil;
 import org.noear.solon.extend.activerecord.annotation.Namespace;
 import org.noear.solon.extend.activerecord.annotation.Sql;
 
-import com.jfinal.plugin.activerecord.Model;
 import com.jfinal.plugin.activerecord.Page;
 
 /**
@@ -45,7 +44,7 @@ public class MapperContextParser {
      * @param method
      * @return
      */
-    private static String getSql(Class<? extends Model<?>> clz, Method method, boolean isSqlStatement) {
+    private static String getSql(Class<?> clz, Method method, boolean isSqlStatement) {
         if (isSqlStatement) {
             String sql = method.getAnnotation(Sql.class).value().trim();
             return sql.substring(1, sql.length() - 1).trim();
@@ -119,7 +118,7 @@ public class MapperContextParser {
      * @param clz
      *            类Class
      */
-    public static void parse(Class<? extends Model<?>> clz) {
+    public static void parse(Class<?> clz) {
         Map<Method, MapperMethodContext> contextMap = MapperMethodContextManager.getContextMap(clz);
         if (null != contextMap) {
             return;
@@ -151,7 +150,7 @@ public class MapperContextParser {
      *            方法实例
      * @return 方法的Context对象
      */
-    private static MapperMethodContext parseDaoMethod(Class<? extends Model<?>> clz, Method method) {
+    private static MapperMethodContext parseDaoMethod(Class<?> clz, Method method) {
         MapperMethodContext context = MapperMethodContextManager.getMethodContext(method);
         if (null != context) {
             return context;
