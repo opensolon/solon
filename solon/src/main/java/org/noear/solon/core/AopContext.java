@@ -22,11 +22,13 @@ import java.util.*;
 import java.util.function.Consumer;
 
 /**
- * Aop 上下文（不直接使用；由 Aop 提供 AopContext 的手动使用模式）
+ * Aop 上下文（Solon.context() 为全局对象；热插拨的插件，会产生独立的上下文）
  *
- * 主要实现两个动作：
+ * 主要实现四个动作：
  * 1.bean 构建
  * 2.bean 注入（字段 或 参数）
+ * 3.bean 提取
+ * 4.bean 拦截
  *
  * @author noear
  * @since 1.0
@@ -176,7 +178,7 @@ public class AopContext extends BeanContainer {
 
         //注册 @Inject 注入器
         beanInjectorAdd(Inject.class, ((fwT, anno) -> {
-            beanInject(fwT, anno.value(), anno.autoRefreshed());
+            beanInject(fwT, anno.value(), anno.required(), anno.autoRefreshed());
         }));
     }
 

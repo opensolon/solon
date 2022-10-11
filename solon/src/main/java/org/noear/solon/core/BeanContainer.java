@@ -526,10 +526,10 @@ public abstract class BeanContainer {
      * @param name 名字（bean name || config ${name}）
      */
     public void beanInject(VarHolder varH, String name) {
-        beanInject(varH, name, false);
+        beanInject(varH, name, false,false);
     }
 
-    protected void beanInject(VarHolder varH, String name, boolean autoRefreshed) {
+    protected void beanInject(VarHolder varH, String name, boolean required, boolean autoRefreshed) {
         if (Utils.isEmpty(name)) {
             //
             // @Inject //使用 type, 注入BEAN
@@ -540,6 +540,7 @@ public abstract class BeanContainer {
             }
 
             if(varH.getGenericType() != null){
+                //如果是泛型
                 getWrapAsyn(varH.getGenericType().getTypeName(), (bw) -> {
                     varH.setValue(bw.get());
                 });
@@ -579,12 +580,12 @@ public abstract class BeanContainer {
             //
             String name2 = name.substring(2, name.length() - 1).trim();
 
-            beanInjectConfig(varH, name2);
+            beanInjectConfig(varH, name2, required);
 
             if (autoRefreshed && varH.isField()) {
                 getProps().onChange((key, val) -> {
                     if(key.startsWith(name2)){
-                        beanInjectConfig(varH, name2);
+                        beanInjectConfig(varH, name2,required);
                     }
                 });
             }
@@ -612,10 +613,15 @@ public abstract class BeanContainer {
         }
     }
 
-    private void beanInjectConfig(VarHolder varH, String name){
+    private void beanInjectConfig(VarHolder varH, String name, boolean required){
         if (Properties.class == varH.getType()) {
             //如果是 Properties
             Properties val = getProps().getProp(name);
+
+            if(required && val.size() == 0){
+                throw new IllegalStateException("Missing property config: " +name);
+            }
+
             varH.setValue(val);
         } else {
             //2.然后尝试获取配置
@@ -650,6 +656,10 @@ public abstract class BeanContainer {
                         //如果找到配置了
                         Object val2 = PropsConverter.global().convert(val0, null, pt, varH.getGenericType());
                         varH.setValue(val2);
+                    }else{
+                        if(required){
+                            throw new IllegalStateException("Missing property config: " +name);
+                        }
                     }
                 }
             } else {

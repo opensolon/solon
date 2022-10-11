@@ -17,7 +17,7 @@ public class EasyPoiUserController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EasyPoiUserController.class);
 
-    @Inject(required = false)
+    @Inject
     private IEasyPoiWpsUserService userService;
 
     /**

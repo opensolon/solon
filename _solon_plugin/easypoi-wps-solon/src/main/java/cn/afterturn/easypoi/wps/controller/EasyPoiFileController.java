@@ -22,7 +22,7 @@ public class EasyPoiFileController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EasyPoiFileController.class);
 
-    @Inject(required = false)
+    @Inject
     private IEasyPoiWpsViewService easyPoiWpsService;
 
     /**

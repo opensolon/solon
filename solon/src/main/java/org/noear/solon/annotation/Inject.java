@@ -51,7 +51,8 @@ public @interface Inject {
     /**
      * 必需要（暂时没用）
      * */
-    boolean required() default true;
+    @Note("配置注入时才检查")
+    boolean required() default false;
     /**
      * 自动刷新
      * */
