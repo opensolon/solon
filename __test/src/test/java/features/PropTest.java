@@ -41,7 +41,7 @@ public class PropTest {
         System.out.println(stritems);
 
         assert stritems != null;
-        assert stritems.size() == 2;
+        assert stritems.size() >= 2;
         assert stritems.get(0).equals("id1");
     }
 
