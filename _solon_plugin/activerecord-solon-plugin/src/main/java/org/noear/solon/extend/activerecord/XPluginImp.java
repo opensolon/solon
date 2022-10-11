@@ -42,6 +42,10 @@ public class XPluginImp implements Plugin {
                     } else {
                         // 指定名称的数据源
                         dataSourceMap.put(name, bw.raw());
+
+                        if(bw.typed()){
+                            dataSourceMap.put(DbKit.MAIN_CONFIG_NAME, bw.raw());
+                        }
                     }
                 }
             });
