@@ -52,7 +52,7 @@ public @interface Inject {
      * 必需的
      * */
     @Note("配置注入时才检查")
-    boolean required() default false;
+    boolean required() default true;
     /**
      * 自动刷新
      * */
