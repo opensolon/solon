@@ -5,7 +5,9 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 
+import com.jfinal.plugin.activerecord.DbKit;
 import com.jfinal.plugin.activerecord.Model;
+import org.noear.solon.Utils;
 
 /**
  * 每个 Mapper 接口对应一个 InvocationHandler
@@ -20,7 +22,12 @@ public class MapperInvocationHandler implements InvocationHandler {
 
     public MapperInvocationHandler(Class<?> clz, String db) {
         MapperContextParser.parse(clz);
-        this.db = db;
+
+        if(Utils.isEmpty(db)){
+            this.db = DbKit.MAIN_CONFIG_NAME;
+        }else {
+            this.db = db;
+        }
     }
 
     /* (non-Javadoc)
