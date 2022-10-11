@@ -1,4 +1,4 @@
-package org.noear.solon.extend.activerecord;
+package org.noear.solon.extend.activerecord.impl;
 
 import java.io.PrintWriter;
 import java.sql.Connection;
@@ -16,10 +16,10 @@ import org.noear.solon.data.tran.TranUtils;
  * @author noear
  * @since 1.4
  */
-public class DataSourceProxy implements DataSource {
+public class DataSourceProxyImpl implements DataSource {
     private DataSource ds;
 
-    public DataSourceProxy(DataSource ds) {
+    public DataSourceProxyImpl(DataSource ds) {
         this.ds = ds;
     }
 

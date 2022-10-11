@@ -1,4 +1,4 @@
-package org.noear.solon.extend.activerecord;
+package org.noear.solon.extend.activerecord.impl;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -21,7 +21,7 @@ import com.jfinal.plugin.activerecord.dialect.Dialect;
  * @author noear
  * @since 1.4
  */
-class ConfigImpl extends Config {
+public class ConfigImpl extends Config {
     public ConfigImpl(String name, DataSource dataSource) {
         super(name, dataSource);
     }

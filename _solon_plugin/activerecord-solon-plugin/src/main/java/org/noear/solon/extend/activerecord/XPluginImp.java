@@ -10,8 +10,8 @@ import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.extend.activerecord.annotation.Db;
 import org.noear.solon.extend.activerecord.annotation.Table;
-import org.noear.solon.extend.activerecord.impl.DbBeanInjector;
-import org.noear.solon.extend.activerecord.impl.TableBeanBuilder;
+import org.noear.solon.extend.activerecord.impl.DbBeanInjectorImpl;
+import org.noear.solon.extend.activerecord.impl.TableBeanBuilderImpl;
 
 import com.jfinal.plugin.activerecord.DbKit;
 
@@ -24,10 +24,10 @@ public class XPluginImp implements Plugin {
     @Override
     public void start(AopContext context) {
         // 构建Bean时的Table标签
-        context.beanBuilderAdd(Table.class, new TableBeanBuilder());
+        context.beanBuilderAdd(Table.class, new TableBeanBuilderImpl());
 
         // 注入Bean时的Db标签
-        context.beanInjectorAdd(Db.class,new DbBeanInjector());
+        context.beanInjectorAdd(Db.class,new DbBeanInjectorImpl());
 
         // 通过DataSource类型获取Bean实例
         context.beanOnloaded((ctx) -> {

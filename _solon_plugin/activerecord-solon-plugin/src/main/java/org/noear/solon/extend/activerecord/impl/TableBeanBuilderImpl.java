@@ -10,7 +10,7 @@ import org.noear.solon.extend.activerecord.annotation.Table;
  * @author noear
  * @since 1.10
  */
-public class TableBeanBuilder implements BeanBuilder<Table> {
+public class TableBeanBuilderImpl implements BeanBuilder<Table> {
     @Override
     public void doBuild(Class<?> clz, BeanWrap bw, Table anno) throws Throwable {
         if (!(bw.raw() instanceof Model)) {

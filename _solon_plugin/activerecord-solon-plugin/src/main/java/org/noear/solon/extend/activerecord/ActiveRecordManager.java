@@ -8,6 +8,8 @@ import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.ScanUtil;
 import org.noear.solon.extend.activerecord.annotation.Db;
 import org.noear.solon.extend.activerecord.annotation.Table;
+import org.noear.solon.extend.activerecord.impl.ConfigImpl;
+import org.noear.solon.extend.activerecord.impl.DataSourceProxyImpl;
 
 import javax.sql.DataSource;
 import java.util.HashMap;
@@ -28,7 +30,7 @@ public class ActiveRecordManager {
     public static void start(Map<String, DataSource> dsMap) {
         for (Map.Entry<String, DataSource> entry : dsMap.entrySet()) {
             // 构建配置
-            DataSource dsp = new DataSourceProxy(entry.getValue());
+            DataSource dsp = new DataSourceProxyImpl(entry.getValue());
             Config cfg = new ConfigImpl(entry.getKey(), dsp, DbKit.DEFAULT_TRANSACTION_LEVEL);
 
             // 构建arp

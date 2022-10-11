@@ -1,6 +1,5 @@
 package org.noear.solon.extend.activerecord.impl;
 
-import com.jfinal.plugin.activerecord.Model;
 import org.noear.solon.Utils;
 import org.noear.solon.core.BeanInjector;
 import org.noear.solon.core.VarHolder;
@@ -14,7 +13,7 @@ import java.lang.reflect.Proxy;
  * @author noear
  * @since 1.10
  */
-public class DbBeanInjector implements BeanInjector<Db> {
+public class DbBeanInjectorImpl implements BeanInjector<Db> {
     @Override
     public void doInject(VarHolder varH, Db anno) {
         if (Utils.isEmpty(anno.value())) {
