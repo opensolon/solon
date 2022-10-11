@@ -5,9 +5,11 @@
 * 新增 knife4j-solon-plugin 插件
 * 新增 kubernetes-solon-cloud-plugin 插件
 * 新增 jmdns-solon-cloud-plugin 插件
+* 插件 activerecord-solon-plugin，增加 模板 + mapper 风格支持（由用户 糊搞 pr）
 * 升级 snakeyaml 为 1.32
 * 升级 graphql 为 18.3
 * 优化 Solon.cfg().getList() 实现排序支持
+* 恢复 @Init(index) 手动控制属性
 
 
 #### 1.10.6

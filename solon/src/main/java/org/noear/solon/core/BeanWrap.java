@@ -28,6 +28,8 @@ public class BeanWrap {
     private Method clzInit;
     // bean clz init method delay
     private boolean clzInitDelay;
+    // bean clz init method index
+    private int clzInitIndex;
     // bean raw（初始实例）
     private Object raw;
     // 是否为单例
@@ -256,7 +258,12 @@ public class BeanWrap {
         //b.调用初始化函数
         if (clzInit != null) {
             if (clzInitDelay) {
-                int clzInitIndex = new IndexBuilder().buildIndex(clz);
+
+                if(clzInitIndex == 0) {
+                    //如果为0，则自动识别
+                    clzInitIndex = new IndexBuilder().buildIndex(clz);
+                }
+
                 context.beanOnloaded(clzInitIndex, (ctx) -> {
                     initInvokeDo(bean);
                 });
@@ -327,6 +334,7 @@ public class BeanWrap {
                     clzInit = m;
                     clzInit.setAccessible(true);
                     clzInitDelay = initAnno.delay();
+                    clzInitIndex = initAnno.index();
                 }
                 break;
             }
