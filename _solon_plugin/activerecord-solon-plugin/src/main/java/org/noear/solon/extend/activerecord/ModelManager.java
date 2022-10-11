@@ -28,10 +28,6 @@ public class ModelManager {
         return modelMap.get(clz);
     }
 
-    public static Class<? extends Model<?>> getModelClass(Table table) {
-        return tableMap.get(table);
-    }
-
     public static Map<Table, Class<? extends Model<?>>> getModelClassMap() {
         return tableMap;
     }
