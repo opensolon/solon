@@ -14,6 +14,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * ActiveRecordPlugin 管理器
+ *
  * @author noear
  * @since 1.10
  */

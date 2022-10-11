@@ -9,7 +9,7 @@ import org.noear.solon.extend.activerecord.annotation.Table;
 import com.jfinal.plugin.activerecord.Model;
 
 /**
- * Model 单例管理器
+ * Model 管理器
  *
  * @author 胡高 (https://gitee.com/gollyhu)
  * @date 2022/08/16
