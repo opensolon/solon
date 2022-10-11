@@ -18,6 +18,11 @@ import java.util.concurrent.Executors;
 @Configuration
 public class Config {
 
+//    @Bean
+//    public void error(@Inject("${xxxyyyzzz}") String tmp){
+//
+//    }
+
     @Bean(value = "map1", typed = true)
     public Map<String, Object> map() {
         Map<String, Object> map = new HashMap<>();
