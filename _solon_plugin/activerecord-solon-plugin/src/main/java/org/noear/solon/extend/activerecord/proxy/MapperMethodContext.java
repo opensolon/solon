@@ -3,7 +3,7 @@ package org.noear.solon.extend.activerecord.proxy;
 import java.lang.reflect.Parameter;
 
 /**
- * Dao 中各方法上下文
+ * Mapper 中各方法上下文
  *
  * @author 胡高 (https://gitee.com/gollyhu)
  * @since 1.10.7

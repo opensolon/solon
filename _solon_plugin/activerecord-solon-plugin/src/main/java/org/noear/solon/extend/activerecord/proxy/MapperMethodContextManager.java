@@ -8,7 +8,7 @@ import java.util.Map;
 import com.jfinal.plugin.activerecord.Model;
 
 /**
- * Dao 方法上下文管理器
+ * Mapper 方法上下文管理器
  *
  * @author 胡高 (https://gitee.com/gollyhu)
  * @since 1.10.7

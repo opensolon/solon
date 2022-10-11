@@ -6,7 +6,7 @@ import java.lang.reflect.Method;
 import com.jfinal.plugin.activerecord.Model;
 
 /**
- * 每个Dao接口对应一个InvocationHandler
+ * 每个 Mapper 接口对应一个 InvocationHandler
  *
  * @author 胡高 (https://gitee.com/gollyhu)
  * @since 1.10.7

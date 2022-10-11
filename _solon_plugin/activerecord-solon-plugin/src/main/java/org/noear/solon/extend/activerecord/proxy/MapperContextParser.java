@@ -15,7 +15,7 @@ import com.jfinal.plugin.activerecord.Model;
 import com.jfinal.plugin.activerecord.Page;
 
 /**
- * Dao接口解析器
+ * Mapper 接口解析器
  *
  * @author 胡高 (https://gitee.com/gollyhu)
  * @since 1.10.7

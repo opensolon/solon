@@ -12,7 +12,7 @@ import com.jfinal.plugin.activerecord.Model;
 import com.jfinal.plugin.activerecord.Record;
 
 /**
- * Dao 方法执行器
+ * Mapper 方法执行器
  *
  * @author 胡高 (https://gitee.com/gollyhu)
  * @since 1.10.7
