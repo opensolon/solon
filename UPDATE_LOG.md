@@ -10,6 +10,7 @@
 * 优化 easypoi-solon-plugin 插件
 * 优化 activerecord-solon-plugin 插件，增加 模板 + mapper 风格支持（由用户 糊搞 pr）
 * 优化 Solon.cfg().getList() 实现排序支持
+* 修复 solon.boot.smarthttp 插件，websocket 的 sesion.uri() 里没带 queryString 的问题
 * 恢复 @Init(index) 手动控制属性
 * 恢复 @Inject(required) 属性支持，默认为 true，且仅对配置注入有效
 * 升级 snakeyaml 为 1.32
