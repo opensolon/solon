@@ -36,6 +36,9 @@ public abstract class BeanContainer {
         this.props = props;
     }
 
+    /**
+     * 获取属性
+     * */
     public Props getProps() {
         if (props == null) {
             return Solon.cfg();
@@ -44,10 +47,16 @@ public abstract class BeanContainer {
         }
     }
 
+    /**
+     * 获取特性
+     * */
     public Map<Class<?>, Object> getAttrs() {
         return attrs;
     }
 
+    /**
+     * 获取类加载器
+     * */
     public ClassLoader getClassLoader() {
         if (classLoader == null) {
             return JarClassLoader.global();
@@ -98,7 +107,7 @@ public abstract class BeanContainer {
     /**
      * bean 订阅者
      */
-    protected final Set<SubscriberEntity> beanSubscribers = new LinkedHashSet<>();
+    protected final Map<Object,Set<Consumer<BeanWrap>>> beanSubscribers = new HashMap<>();
     /**
      * wrap 外部消费者
      */
@@ -200,14 +209,21 @@ public abstract class BeanContainer {
      */
     protected void beanSubscribe(Object nameOrType, Consumer<BeanWrap> callback) {
         if (nameOrType != null) {
-            beanSubscribers.add(new SubscriberEntity(nameOrType, callback));
+            synchronized (beanSubscribers) {
+                Set<Consumer<BeanWrap>> tmp = beanSubscribers.get(nameOrType);
+                if (tmp == null) {
+                    tmp = new LinkedHashSet<>();
+                    beanSubscribers.put(nameOrType, tmp);
+                }
+                tmp.add(callback);
+            }
         }
     }
 
     /**
-     * wrap 订阅
+     * wrap 外部订阅
      * */
-    protected void wrapSubscribe(Consumer<BeanWrap> callback) {
+    protected void wrapExternalSubscribe(Consumer<BeanWrap> callback) {
         wrapExternalConsumers.add(callback);
     }
 
@@ -219,12 +235,15 @@ public abstract class BeanContainer {
             return;
         }
 
-        //避免在forEach时，对它进行add
-        new ArrayList<>(beanSubscribers).forEach(s1 -> {
-            if (s1.key.equals(nameOrType)) {
-                s1.callback.accept(wrap);
+        synchronized (beanSubscribers) {
+            //避免在forEach时，对它进行add
+            Set<Consumer<BeanWrap>> tmp = beanSubscribers.get(nameOrType);
+            if (tmp != null) {
+                tmp.forEach(s1 -> {
+                    s1.accept(wrap);
+                });
             }
-        });
+        }
     }
 
     /**
@@ -317,7 +336,7 @@ public abstract class BeanContainer {
      * @param baseType 基类
      * */
     public void subWrapsOfType(Class<?> baseType, Consumer<BeanWrap> callback) {
-        wrapSubscribe((e) -> {
+        wrapExternalSubscribe((e) -> {
             if (baseType.isAssignableFrom(e.clz())) {
                 callback.accept(e);
             }
@@ -726,18 +745,5 @@ public abstract class BeanContainer {
         });
 
         return list;
-    }
-
-    /**
-     * Bean 订阅者
-     */
-    class SubscriberEntity {
-        public Object key; //第2优先
-        public Consumer<BeanWrap> callback;
-
-        public SubscriberEntity(Object key, Consumer<BeanWrap> callback) {
-            this.key = key;
-            this.callback = callback;
-        }
     }
 }
