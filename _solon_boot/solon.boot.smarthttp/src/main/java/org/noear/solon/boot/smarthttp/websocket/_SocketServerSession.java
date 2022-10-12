@@ -75,7 +75,16 @@ public class _SocketServerSession extends SessionBase {
     @Override
     public URI uri() {
         if (_uri == null) {
-            _uri = URI.create(((WebSocketRequestImpl) request).getRequestURL());
+            WebSocketRequestImpl tmp = (WebSocketRequestImpl) request;
+            if (Utils.isEmpty(tmp.getQueryString())) {
+                _uri = URI.create(tmp.getRequestURL());
+            } else {
+                if (tmp.getRequestURL().contains("?")) {
+                    _uri = URI.create(tmp.getRequestURL());
+                } else {
+                    _uri = URI.create(tmp.getRequestURL() + "?" + tmp.getQueryString());
+                }
+            }
         }
 
         return _uri;
