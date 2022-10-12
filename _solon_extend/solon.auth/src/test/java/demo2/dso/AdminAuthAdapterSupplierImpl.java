@@ -1,4 +1,4 @@
-package demo.dso;
+package demo2.dso;
 
 import org.noear.solon.annotation.Component;
 import org.noear.solon.auth.AuthAdapter;
