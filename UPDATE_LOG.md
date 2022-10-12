@@ -13,6 +13,7 @@
 * 修复 solon.boot.smarthttp 插件，websocket 的 sesion.uri() 里没带 queryString 的问题
 * 恢复 @Init(index) 手动控制属性
 * 恢复 @Inject(required) 属性支持，默认为 true，且仅对配置注入有效
+* 调整 solon.auth 使用 AuthAdapterSupplier 时，未找到匹配则抛异常
 * 升级 snakeyaml 为 1.32
 * 升级 graphql 为 18.3
 * 升级 snack3 为 3.2.44
