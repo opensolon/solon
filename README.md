@@ -169,7 +169,7 @@ public class App implements HelloService{
 
 * 官网地址：[https://solon.noear.org](https://solon.noear.org)
 * 官网配套演示：[https://gitee.com/noear/solon-examples](https://gitee.com/noear/solon-examples)
-* 项目单测：[_test](./_test/) 
+* 项目单测：[__test](./__test/) 
 * 项目更多功能示例：[solon_demo](https://gitee.com/noear/solon_demo) 、 [solon_api_demo](https://gitee.com/noear/solon_api_demo)  、 [solon_rpc_demo](https://gitee.com/noear/solon_rpc_demo) 、 [solon_socketd_demo](https://gitee.com/noear/solon_socketd_demo) 、 [solon_cloud_demo](https://gitee.com/noear/solon_cloud_demo) 、 [solon_auth_demo](https://gitee.com/noear/solon_auth_demo)
 
 
