@@ -452,6 +452,17 @@ public abstract class BeanContainer {
 
         return wrap;
     }
+    /**
+     * 包装
+     */
+    public BeanWrap wrap(String name, Object bean) {
+        BeanWrap wrap = getWrap(name);
+        if (wrap == null) {
+            wrap = wrapCreate(bean.getClass(), bean, name);
+        }
+
+        return wrap;
+    }
 
     /**
      * 包装并推入
