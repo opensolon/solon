@@ -447,7 +447,7 @@ public abstract class BeanContainer {
     public BeanWrap wrap(Class<?> type, Object bean) {
         BeanWrap wrap = getWrap(type);
         if (wrap == null) {
-            wrap = wrapCreate(type, bean);
+            wrap = wrapCreate(type, bean, null);
         }
 
         return wrap;
@@ -466,14 +466,14 @@ public abstract class BeanContainer {
     public BeanWrap wrapAndPut(Class<?> type, Object bean) {
         BeanWrap wrap = getWrap(type);
         if (wrap == null) {
-            wrap = wrapCreate(type, bean);
+            wrap = wrapCreate(type, bean, null);
             putWrap(type, wrap);
         }
 
         return wrap;
     }
 
-    protected abstract BeanWrap wrapCreate(Class<?> type, Object bean);
+    protected abstract BeanWrap wrapCreate(Class<?> type, Object bean, String name);
 
     //////////////////////////
     //

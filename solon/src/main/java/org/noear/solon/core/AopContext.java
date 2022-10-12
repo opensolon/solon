@@ -72,8 +72,8 @@ public class AopContext extends BeanContainer {
     }
 
     @Override
-    protected BeanWrap wrapCreate(Class<?> type, Object bean) {
-        return new BeanWrap(this, type, bean);
+    protected BeanWrap wrapCreate(Class<?> type, Object bean, String name) {
+        return new BeanWrap(this, type, bean, name);
     }
 
     public AopContext copy() {
@@ -520,7 +520,7 @@ public class AopContext extends BeanContainer {
                 EventBus.push(raw);//@deprecated
 
                 //动态构建的bean，都用新生成wrap（否则会类型混乱）
-                m_bw = wrapCreate(beanClz, raw);
+                m_bw = wrapCreate(beanClz, raw, null);
                 m_bw.attrsSet(anno.attrs());
             }
 
