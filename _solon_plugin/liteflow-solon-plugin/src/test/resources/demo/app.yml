@@ -1,3 +1,5 @@
 
 
-liteflow.rule-source: "demo/flow.xml"
+liteflow:
+  rule-source: "demo/flow.xml"
+  parse-on-start: true

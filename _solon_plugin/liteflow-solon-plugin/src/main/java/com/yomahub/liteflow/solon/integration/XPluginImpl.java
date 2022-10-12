@@ -9,6 +9,8 @@ import org.noear.solon.Utils;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 /**
@@ -16,6 +18,9 @@ import java.util.Properties;
  * @since 2.9
  */
 public class XPluginImpl implements Plugin {
+
+    public static Map<String, NodeComponent> nodeComponentMap = new HashMap<>();
+
     @Override
     public void start(AopContext context) {
         //加载默认配置
@@ -35,14 +40,15 @@ public class XPluginImpl implements Plugin {
 
         //订阅 NodeComponent 组件
         context.subWrapsOfType(NodeComponent.class, bw -> {
-            NodeComponent node1 = bw.raw();
+//            NodeComponent node1 = bw.raw();
+//
+//            if (Utils.isNotEmpty(bw.name())) {
+//                node1.setName(bw.name());
+//                node1.setNodeId(bw.name());
+//            }
 
-            if (Utils.isNotEmpty(bw.name())) {
-                node1.setName(bw.name());
-                node1.setNodeId(bw.name());
-            }
-
-            FlowBus.addSpringScanNode(node1.getNodeId(), node1);
+            nodeComponentMap.put(bw.name(), bw.raw());
+            //FlowBus.addSpringScanNode(bw.name(), bw.raw());
         });
 
         context.beanBuilderAdd(LiteflowComponent.class, (clz, bw, anno) -> {
@@ -59,6 +65,8 @@ public class XPluginImpl implements Plugin {
         });
 
         //扫描相关组件
-        context.beanScan(LiteflowProperty.class);
+        context.beanOnloaded((ctx)->{
+            context.beanScan(LiteflowProperty.class);
+        });
     }
 }
