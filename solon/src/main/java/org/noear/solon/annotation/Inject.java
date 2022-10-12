@@ -51,11 +51,11 @@ public @interface Inject {
     /**
      * 必需的
      * */
-    @Note("配置注入时才检查")
+    @Note("配置注入时有效")
     boolean required() default true;
     /**
      * 自动刷新
      * */
-    @Note("单例才有自动刷新的必要")
+    @Note("配置注入时有效，且单例才有自动刷新的必要")
     boolean autoRefreshed() default false;
 }
