@@ -26,16 +26,18 @@ public class AuthUtil {
     }
 
     public static AuthAdapter adapter() {
-        if (adapterSuppliers.size() >0) {
+        if (adapterSuppliers.size() > 0) {
             Context ctx = Context.current();
-            for(AuthAdapterSupplier a1 : adapterSuppliers){
-                if(ctx.pathNew().startsWith(a1.pathPrefix())){
+            for (AuthAdapterSupplier a1 : adapterSuppliers) {
+                if (ctx.pathNew().startsWith(a1.pathPrefix())) {
                     return a1.adapter();
                 }
             }
-        }
 
-        return adapter;
+            throw new IllegalStateException("Unsupported auth path: " + ctx.pathNew());
+        } else {
+            return adapter;
+        }
     }
 
     public static void adapterAdd(AuthAdapterSupplier supplier) {

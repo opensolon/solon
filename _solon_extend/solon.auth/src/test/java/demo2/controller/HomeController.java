@@ -6,15 +6,14 @@ import org.noear.solon.annotation.Mapping;
 /**
  * @author noear 2022/10/12 created
  */
-@Mapping("user")
 @Controller
-public class UserController {
-    @Mapping("login")
-    public String login(){
+public class HomeController {
+    @Mapping("/")
+    public String home(){
         return "ok";
     }
 
-    @Mapping("test")
+    @Mapping("/test")
     public String test(){
         return "ok";
     }

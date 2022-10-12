@@ -13,8 +13,8 @@ public class UserAuthAdapterSupplierImpl implements AuthAdapterSupplier {
 
     public UserAuthAdapterSupplierImpl(){
         userAuth = new AuthAdapter()
-                .loginUrl("/login") //设定登录地址，未登录时自动跳转
-                .addRule(b -> b.exclude("/login**").exclude("/_run/**").exclude("/admin/**").verifyPath()) //添加规则
+                .loginUrl("/user/login") //设定登录地址，未登录时自动跳转
+                .addRule(b -> b.include("/user/**").exclude("/user/login**").verifyPath()) //添加规则
                 .processor(new UserAuthProcessorImpl()) //设定认证处理器
                 .failure((ctx, rst) -> { //设定默认的验证失败处理
                     ctx.render(rst);
@@ -23,7 +23,7 @@ public class UserAuthAdapterSupplierImpl implements AuthAdapterSupplier {
 
     @Override
     public String pathPrefix() {
-        return "/";
+        return "/user/";
     }
 
     public AuthAdapter adapter(){
