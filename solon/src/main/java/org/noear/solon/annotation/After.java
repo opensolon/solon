@@ -5,7 +5,7 @@ import java.lang.annotation.*;
 
 
 /**
- * 触发器：后置处理（争对 XController 或 XAction 的拦截器）
+ * 触发器：后置处理（争对 Controller 或 Action 的拦截器）
  *
  * <pre><code>
  * @Before({StartHandler.class, IpHandler.class})
