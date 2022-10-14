@@ -2,6 +2,7 @@ package org.noear.solon;
 
 import org.noear.solon.core.*;
 import org.noear.solon.core.util.PluginUtil;
+import org.noear.solon.core.util.PrintUtil;
 
 import java.io.File;
 import java.net.URL;
@@ -116,8 +117,10 @@ public final class SolonProps extends Props {
         }
         if(Utils.isNotEmpty(extConfig)) {
             File extConfigFile = new File(extConfig);
-            if(extConfigFile.exists()) {
+            if (extConfigFile.exists()) {
                 loadInit(extConfigFile.toURI().toURL(), sysPropOrg);
+            } else {
+                PrintUtil.warn("No external connfig file: " + extConfig);
             }
         }
 
@@ -415,7 +418,7 @@ public final class SolonProps extends Props {
      * 框架版本号
      */
     public String version() {
-        return "1.10.7-M2";
+        return "1.10.7-M3";
     }
 
     /**
