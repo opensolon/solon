@@ -115,7 +115,10 @@ public final class SolonProps extends Props {
             extConfig = getArg("extend.config");//兼容旧的
         }
         if(Utils.isNotEmpty(extConfig)) {
-            loadInit(new File(extConfig).toURI().toURL(), sysPropOrg);
+            File extConfigFile = new File(extConfig);
+            if(extConfigFile.exists()) {
+                loadInit(extConfigFile.toURI().toURL(), sysPropOrg);
+            }
         }
 
 
