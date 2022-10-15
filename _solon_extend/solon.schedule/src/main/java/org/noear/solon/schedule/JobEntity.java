@@ -110,6 +110,8 @@ class JobEntity extends Thread {
                     e = Utils.throwableUnwrap(e);
                     EventBus.push(new ScheduledException(e));
                 }
+            }else{
+                break;
             }
         }
     }
