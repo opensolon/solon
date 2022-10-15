@@ -7,8 +7,8 @@ import org.noear.solon.cloud.extend.water.service.CloudI18nServiceWaterImp;
 import org.noear.solon.cloud.model.Event;
 import org.noear.solon.logging.utils.TagsMDC;
 import org.noear.water.WW;
-import org.noear.weed.WeedConfig;
-import org.noear.weed.cache.ICacheServiceEx;
+import org.noear.wood.WoodConfig;
+import org.noear.wood.cache.ICacheServiceEx;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -86,13 +86,13 @@ public class HandlerCacheUpdate implements CloudEventHandler {
         if (tag.indexOf(".") > 0) {
             String[] ss = tag.split("\\.");
             if (ss.length == 2) {
-                ICacheServiceEx cache = WeedConfig.libOfCache.get(ss[0]);
+                ICacheServiceEx cache = WoodConfig.libOfCache.get(ss[0]);
                 if (cache != null) {
                     cache.clear(ss[1]);
                 }
             }
         } else {
-            for (ICacheServiceEx cache : WeedConfig.libOfCache.values()) {
+            for (ICacheServiceEx cache : WoodConfig.libOfCache.values()) {
                 cache.clear(tag);
             }
         }
