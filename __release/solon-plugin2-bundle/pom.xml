@@ -27,6 +27,8 @@
 
 
     <modules>
+        <module>../../_solon_plugin/wood-solon-plugin</module>
+
         <module>../../_solon_plugin/jap-ids-solon-plugin</module>
         <module>../../_solon_plugin/jap-solon-plugin</module>
 
