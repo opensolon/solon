@@ -650,7 +650,7 @@ public abstract class BeanContainer {
             Properties val = getProps().getProp(name);
 
             if(required && val.size() == 0){
-                throw new IllegalStateException("Missing required property: " +name);
+                throw new IllegalStateException("Missing required property: '" +name+"'");
             }
 
             varH.setValue(val);
@@ -681,7 +681,7 @@ public abstract class BeanContainer {
                 if (pt.getName().startsWith("java.lang.") || pt.isPrimitive()) {
                     //如果是java基础类型，则不注入配置值
                     if(required){
-                        throw new IllegalStateException("Missing required property: " +name);
+                        throw new IllegalStateException("Missing required property: '" +name+"'");
                     }
                 } else {
                     //尝试转为实体
@@ -692,7 +692,7 @@ public abstract class BeanContainer {
                         varH.setValue(val2);
                     }else{
                         if(required){
-                            throw new IllegalStateException("Missing required property: " +name);
+                            throw new IllegalStateException("Missing required property: '" +name+"'");
                         }
                     }
                 }
