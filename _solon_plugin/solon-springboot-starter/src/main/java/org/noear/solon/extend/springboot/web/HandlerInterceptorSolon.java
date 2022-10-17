@@ -27,18 +27,18 @@ import javax.servlet.http.HttpServletResponse;
 public class HandlerInterceptorSolon implements HandlerInterceptor {
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
-        Context ctx = Context.current();
-        if (ctx != null) {
-            ctx.result = modelAndView;
+        Context c = Context.current();
+        if (c != null) {
+            c.result = modelAndView;
         }
     }
 
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception e) throws Exception {
         if (e != null) {
-            Context ctx = Context.current();
-            if (ctx != null) {
-                ctx.errors = e;
+            Context c = Context.current();
+            if (c != null) {
+                c.errors = e;
             }
         }
     }

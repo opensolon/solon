@@ -30,9 +30,9 @@ public class ResponseBodyAdviceSolon implements ResponseBodyAdvice {
     @Override
     public Object beforeBodyWrite(Object o, MethodParameter methodParameter, MediaType mediaType, Class aClass, ServerHttpRequest serverHttpRequest, ServerHttpResponse serverHttpResponse) {
         if (o != null) {
-            Context ctx = Context.current();
-            if (ctx != null) {
-                ctx.result = o;
+            Context c = Context.current();
+            if (c != null) {
+                c.result = o;
             }
         }
 

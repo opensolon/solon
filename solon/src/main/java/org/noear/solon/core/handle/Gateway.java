@@ -106,15 +106,13 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
      */
     @Override
     public void render(Object obj, Context c) throws Throwable {
-        if (c.getRendered()) {
-            return;
-        }
-
         if (obj instanceof DataThrowable) {
             return;
         }
 
-        c.result = obj;
+        if (c.getRendered() == false) {
+            c.result = obj;
+        }
 
         if (obj instanceof Throwable) {
             if (c.remoting()) {
@@ -129,7 +127,9 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
                 throw (Throwable) obj;
             }
         } else {
-            c.render(obj);
+            if (c.getRendered() == false) {
+                c.render(obj);
+            }
         }
     }
 
@@ -169,12 +169,7 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
                 }
             } else {
                 c.errors = e;
-
-                if (c.result == null) {
-                    render(e, c);
-                } else {
-                    render(c.result, c);
-                }
+                render(e, c);
             }
         }
     }

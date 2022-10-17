@@ -228,12 +228,7 @@ public class Action extends HandlerAide implements Handler {
                 }
             } else {
                 c.errors = e;
-
-                if (c.result == null) {
-                    renderDo(e, c);
-                } else {
-                    renderDo(c.result, c);
-                }
+                renderDo(e, c);
             }
         }
     }
@@ -351,11 +346,10 @@ public class Action extends HandlerAide implements Handler {
         //
         //可以通过before关掉render
         //
-        if (c.getRendered()) {
-            return;
+        if (c.getRendered() == false) {
+            c.result = obj;
         }
 
-        c.result = obj;
 
         if (bRender == null) {
             //没有代理时，跳过 DataThrowable
@@ -376,7 +370,9 @@ public class Action extends HandlerAide implements Handler {
                     throw (Throwable) obj;
                 }
             } else {
-                c.render(obj);
+                if (c.getRendered() == false) {
+                    c.render(obj);
+                }
             }
         } else {
             bRender.render(obj, c);
