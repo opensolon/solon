@@ -11,9 +11,9 @@
     <!-- 增加国内镜像加速 -->
     <repositories>
         <repository>
-            <id>central</id>
-            <name>aliyun maven</name>
-            <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+            <id>tencent</id>
+            <name>tencent maven</name>
+            <url>http://mirrors.cloud.tencent.com/nexus/repository/maven-public/</url>
             <layout>default</layout>
             <!-- 是否开启发布版构件下载 -->
             <releases>
@@ -25,7 +25,7 @@
             </snapshots>
         </repository>
         <repository>
-            <id>repo1-maven</id>
+            <id>repo1</id>
             <name>repo1 maven</name>
             <url>https://repo1.maven.org/maven2/</url>
             <layout>default</layout>
