@@ -123,6 +123,7 @@ public abstract class BeanContainer {
 
         wrapExternalConsumers.clear();
 
+        //内部关系，不能清除
 //        beanBuilders.clear();
 //        beanInjectors.clear();
 //        beanExtractors.clear();
