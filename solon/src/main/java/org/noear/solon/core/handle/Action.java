@@ -375,6 +375,7 @@ public class Action extends HandlerAide implements Handler {
                 }
             }
         } else {
+            //是否再渲染或处理，由代理内部控制
             bRender.render(obj, c);
         }
     }
