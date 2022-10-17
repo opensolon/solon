@@ -1,6 +1,7 @@
 package org.noear.solon.cloud.annotation;
 
 import org.noear.solon.annotation.Alias;
+import org.noear.solon.annotation.Note;
 
 import java.lang.annotation.*;
 
@@ -25,6 +26,12 @@ public @interface CloudEvent {
      * */
     @Alias("value")
     String topic() default "";
+
+    /**
+     * 标签
+     * */
+    @Note("Rocketmq requested")
+    String tag() default "";
 
     /**
      * 订阅级别

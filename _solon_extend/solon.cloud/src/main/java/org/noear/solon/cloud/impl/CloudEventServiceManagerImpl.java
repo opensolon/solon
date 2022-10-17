@@ -31,7 +31,7 @@ public class CloudEventServiceManagerImpl implements CloudEventServiceManager {
 
     /**
      * 获取拦截器
-     * */
+     */
     public CloudEventInterceptor getEventInterceptor() {
         return eventInterceptor;
     }
@@ -111,13 +111,13 @@ public class CloudEventServiceManagerImpl implements CloudEventServiceManager {
      * @param observer 观察者
      */
     @Override
-    public void attention(EventLevel level, String channel, String group, String topic, CloudEventHandler observer) {
+    public void attention(EventLevel level, String channel, String group, String topic, String tag, CloudEventHandler observer) {
         CloudEventServicePlus tmp = getOrThrow(channel);
 
         if (Utils.isEmpty(group)) {
             group = tmp.getGroup();
         }
 
-        tmp.attention(level, channel, group, topic, observer);
+        tmp.attention(level, channel, group, topic, tag, observer);
     }
 }

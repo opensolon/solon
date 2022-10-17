@@ -22,11 +22,12 @@ public interface CloudEventService {
     /**
      * 关注事件（相当于订阅）
      *
-     * @param level 事件级别
-     * @param channel 通道
-     * @param group 分组
-     * @param topic 主题
+     * @param level    事件级别
+     * @param channel  通道
+     * @param group    分组
+     * @param topic    主题
+     * @param tag      标签（Rocketmq requested）
      * @param observer 观察者
      */
-    void attention(EventLevel level, String channel, String group, String topic, CloudEventHandler observer);
+    void attention(EventLevel level, String channel, String group, String topic, String tag, CloudEventHandler observer);
 }

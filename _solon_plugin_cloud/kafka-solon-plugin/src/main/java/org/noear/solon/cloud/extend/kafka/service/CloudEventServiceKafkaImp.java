@@ -126,7 +126,7 @@ public class CloudEventServiceKafkaImp implements CloudEventServicePlus {
     CloudEventObserverManger observerManger = new CloudEventObserverManger();
 
     @Override
-    public void attention(EventLevel level, String channel, String group, String topic, CloudEventHandler observer) {
+    public void attention(EventLevel level, String channel, String group, String topic, String tag, CloudEventHandler observer) {
         observerManger.add(topic, level, group, topic, observer);
     }
 
