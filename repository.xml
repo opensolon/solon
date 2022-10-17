@@ -3,6 +3,11 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
+    <!--
+     使用时，可以项目的 pom.xml 里添加 repositories 内容
+     -->
+
     <!-- 增加国内镜像加速 -->
     <repositories>
         <repository>
