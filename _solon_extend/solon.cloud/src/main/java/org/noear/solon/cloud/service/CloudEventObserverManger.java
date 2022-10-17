@@ -39,10 +39,10 @@ public class CloudEventObserverManger {
     /**
      * 添加主题事件处理
      */
-    public void add(String topic, EventLevel level, String group, String topicRaw, CloudEventHandler observer) {
+    public void add(String topic, EventLevel level, String group, String topicRaw, String tag, CloudEventHandler observer) {
         EventObserver eventObserver = observerMap.get(topic);
         if (eventObserver == null) {
-            eventObserver = new EventObserver(level, group, topicRaw);
+            eventObserver = new EventObserver(level, group, topicRaw, tag);
             observerMap.put(topic, eventObserver);
         }
 

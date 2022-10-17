@@ -97,7 +97,7 @@ public class CloudEventServicePulsarImp implements CloudEventServicePlus {
             topicNew = group + PulsarProps.GROUP_SPLIT_MART + topic;
         }
 
-        observerManger.add(topicNew, level, group, topic, observer);
+        observerManger.add(topicNew, level, group, topic, tag, observer);
     }
 
     public void subscribe() {
