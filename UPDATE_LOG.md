@@ -1,10 +1,14 @@
-#### 1.10.8
-* 新增 easy-trans-solon-plugin 插件
+#### 规划
 * 新增 dynamic-datasource-solon-plugin 插件
 * 新增 knife4j-solon-plugin 插件
 * 新增 liteflow-solon-plugin 插件
 * 新增 kubernetes-solon-cloud-plugin 插件
 * 新增 jmdns-solon-cloud-plugin 插件
+
+#### 1.10.8
+* 修复 渲染器执行异常时，异常消失的问题
+* 调整 运行完成后，提供未注入的对象???
+* 调整 增加线程池公共配置???
 
 #### 1.10.7
 * 新增 wood-cloud-plugin 插件
