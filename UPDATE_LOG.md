@@ -20,7 +20,6 @@
 * 升级 snakeyaml 为 1.32
 * 升级 graphql 为 18.3
 * 升级 snack3 为 3.2.44
-* 升级 weed3 为 3.4.31
 * 升级 water 为 2.9.0
 
 
@@ -40,7 +39,6 @@
 * 升级 redisx 为 1.4.4
 * 升级 beetl 为 3.12.0
 * 升级 snack3 为 3.2.41
-* 升级 weed3 为 3.4.30
 
 #### 1.10.5
 * 新增 solon.cloud.eventplus 插件，替代 cloudevent-plus-solon-plugin 插件
@@ -176,7 +174,6 @@
 * 修复 @Inject("${list}") List<CfgItem> list ，数据不对的问题
 * 插件 solon.boot.jdkhttp，添加 ssl 支持（尝试替代 jlhttp ）
 * 插件 sqltoy-solon-plugin 升级为 sqltoy 5.2.0
-* 插件 weed3-solon-plugin 升级 weed3 3.4.26
 * 插件 beetlsql-solon-plugin 升级 beetlsql 3.14.4-RELEASE
 * 插件 solon-api, solon-web 默认改用 jdkhttp
 * snack3 升为 3.2.29
@@ -237,7 +234,6 @@
 #### 1.7.4
 * 插件 httputils-solon-plugin 增加对服务上游和地址的检测
 * 增加 NamiBuilder::timeout 接口
-* weed3 升级为：3.4.25
 * redisx 升级为：1.4.3
 
 #### 1.7.3
@@ -245,7 +241,6 @@
 * 调整 session-id-key 可配置 "server.session.cookieName"
 * 增加 配置注入支持 string 按需转换为 object(bean)
 * snack3 升级为：3.2.21
-* weed3 升级为：3.4.24
 * redisx 升级为：1.4.2
 * sqltoy 升级为：5.1.31
 * beetlsql 升级为：3.14
@@ -424,7 +419,7 @@
 * 优化 sqltoy-solon-plugin 插件
 * 新增 solon.extend.async 插件
 * 增加对 kotlin data class 和 jdk14+ record 的序列化与反序列化支持
-  * 目前  solon,snack3,weed3 都支持
+  * 目前  solon,snack3 都支持
 
 #### 1.6.14
 * 修复 上传多个同名name的文件时，只能取到一个的问题
@@ -454,7 +449,6 @@
 * 增加 ModelAndView 注入支持 ##
 * 修复 jlhttp 上传的文件名可能乱码 ##
 * 升级 beetlsql 到 3.12.5
-* 升级 weed3 到 3.4.12
 * 升级 snack3 到 3.2.6 ##
 * 新增 solon.schedule 插件 ##
 * 插件 quartz-solon-plugin 排除关于 quartz 对线程池的依赖
@@ -500,7 +494,6 @@
 * 修复 solon.boot.socketd.websocket，去掉 session.path() 多余内容
 * 修复 sockted sessionBase::paramMap()，当 query=null 时会出错的问题
 * 插件 solon.boot.smarthttp，升级 smart-http 为 1.1.10
-* 插件 weed3-solon-plugin，升级 weed 为 3.4.10
 * 依赖 snack3 升级为 3.2.2
 
 #### 1.6.5
@@ -578,11 +571,9 @@
 #### 1.5.56
 * 插件 water-solon-plugin 升级 water 2.3.0
 * 简化接口 Utils::getResourceAsString(name)
-* 插件 weed3-solon-puglin 升级 weed 3.4.8
 
 #### 1.5.55
 * 插件 solon.boot.smarthttp 升级 smart-http 为 1.1.9
-* 插件 weed3-solon-puglin 升级 weed 3.4.7
 * 修复 solon.extend.staticfiles 增加本地绝对位置时无效的问题
 * 增加 app.before(index, handler) 接口
 * 增加 app.cfg().isAloneMode() 接口（独立运行模式）
@@ -614,7 +605,6 @@
 
 #### 1.5.46
 * 插件 aws-s3-solon-plugin，改为基于 rest api 适配（极大缩小包）
-* 插件 weed3-solon-plugin，weed3 升级为 3.4.0
 
 #### 1.5.45
 * 去掉 redisx-solon-plugin 插件（做为独立项目发展）
@@ -693,7 +683,6 @@
 * 增加 captcha-solon-plugin 插件
 
 #### 1.5.26
-* 插件 weed3-solon-plugin，升级 weed3 为 3.3.22
 * 修复 Auth 注解在控制器上无效的问题
 * 修复 Servelt 的 session 不能清空的问题
 * 会话状态接口增加重置能力
@@ -893,7 +882,6 @@
 * CloudEvent 支持 ${xx}配置
 * CloudJob 支持 ${xx}配置
 * CloudBreaker 支持 ${xx}配置
-* 升级 weed3；支持 jar in jar 打包模式
 * 增加 env 启动参数切换配置文件；例：java -jar xxx.jar -env=test
 * 调整 优先使用 system prop，并盖掉 solon prop；之后同时更新 system prop 和 solon prop（才能让 java -Dxxx.xxx=xxx 有效果）
 * 调整 solon auth 设计
@@ -911,7 +899,6 @@
 * 增加 CloudMetricService 接口定义
 * 增加 water-solon-plugin 插件件对 CloudMetricService 接口的适配
 * 升级 water.client
-* 升级 weed3
 
 #### 1.4.5
 * 增加 activerecord-solon-plugin 多数据源支持与事务支持
