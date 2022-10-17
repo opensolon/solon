@@ -20,7 +20,7 @@ import java.lang.annotation.Target;
  * </pre>
  *
  * @author 胡高 (https://gitee.com/gollyhu)
- * @since 1.10.7
+ * @since 1.10
  */
 @Inherited
 @Retention(RetentionPolicy.RUNTIME)

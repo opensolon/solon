@@ -9,7 +9,7 @@ import java.util.Map;
  * Mapper 方法上下文管理器
  *
  * @author 胡高 (https://gitee.com/gollyhu)
- * @since 1.10.7
+ * @since 1.10
  */
 public class MapperMethodContextManager {
 

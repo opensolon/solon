@@ -15,7 +15,7 @@ import com.jfinal.plugin.activerecord.Record;
  * Mapper 方法执行器
  *
  * @author 胡高 (https://gitee.com/gollyhu)
- * @since 1.10.7
+ * @since 1.10
  */
 @SuppressWarnings("unchecked")
 public final class MapperMethodInvoker {

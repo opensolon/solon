@@ -6,7 +6,7 @@ import java.lang.reflect.Parameter;
  * Mapper 中各方法上下文
  *
  * @author 胡高 (https://gitee.com/gollyhu)
- * @since 1.10.7
+ * @since 1.10
  */
 public class MapperMethodContext {
     private String sql;

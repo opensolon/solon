@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
  * 命名空间注解
  *
  * @author 胡高 (https://gitee.com/gollyhu)
- * @since 1.10.7
+ * @since 1.10
  */
 @Inherited
 @Retention(RetentionPolicy.RUNTIME)

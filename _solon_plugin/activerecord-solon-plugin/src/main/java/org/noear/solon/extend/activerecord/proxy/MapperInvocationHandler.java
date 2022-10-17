@@ -13,7 +13,7 @@ import org.noear.solon.Utils;
  * 每个 Mapper 接口对应一个 InvocationHandler
  *
  * @author 胡高 (https://gitee.com/gollyhu)
- * @since 1.10.7
+ * @since 1.10
  */
 public class MapperInvocationHandler implements InvocationHandler {
 

@@ -17,7 +17,7 @@ import com.jfinal.plugin.activerecord.Page;
  * Mapper 接口解析器
  *
  * @author 胡高 (https://gitee.com/gollyhu)
- * @since 1.10.7
+ * @since 1.10
  */
 public class MapperContextParser {
     private static Class<?> getReturnClass(Method method, boolean isReturnList, boolean isReturnPage) {
