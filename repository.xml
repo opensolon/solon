@@ -8,18 +8,15 @@
      使用时，可以项目的 pom.xml 里添加 repositories 内容
      -->
 
-    <!-- 增加国内镜像加速 -->
     <repositories>
         <repository>
             <id>tencent</id>
             <name>tencent maven</name>
             <url>http://mirrors.cloud.tencent.com/nexus/repository/maven-public/</url>
             <layout>default</layout>
-            <!-- 是否开启发布版构件下载 -->
             <releases>
                 <enabled>true</enabled>
             </releases>
-            <!-- 是否开启快照版构件下载 -->
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
@@ -29,11 +26,9 @@
             <name>repo1 maven</name>
             <url>https://repo1.maven.org/maven2/</url>
             <layout>default</layout>
-            <!-- 是否开启发布版构件下载 -->
             <releases>
                 <enabled>true</enabled>
             </releases>
-            <!-- 是否开启快照版构件下载 -->
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
