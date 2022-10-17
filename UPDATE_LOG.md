@@ -9,6 +9,7 @@
 * 修复 渲染器执行异常时，异常消失的问题
 * 调整 运行完成后，提供未注入的对象???
 * 调整 增加线程池公共配置???
+* 调整 SolonCloudEventBus 添加关注参数 tag，以适配 rocketmq  的 tag 过滤需求
 
 #### 1.10.7
 * 新增 wood-cloud-plugin 插件
