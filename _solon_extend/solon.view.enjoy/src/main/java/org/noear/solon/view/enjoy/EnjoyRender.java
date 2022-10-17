@@ -88,6 +88,7 @@ public class EnjoyRender implements Render {
         }
 
         provider_debug = Engine.create("debug");
+        provider_debug.setDevMode(true);
 
 
         String rootdir = rooturi.toString().replace("target/classes/", "");
@@ -122,6 +123,7 @@ public class EnjoyRender implements Render {
         }
 
         provider = Engine.use();
+        provider.setDevMode(Solon.cfg().isDebugMode());
 
         try {
             provider.setBaseTemplatePath(_baseUri);
