@@ -10,7 +10,7 @@ public class NamiGlobal {
     /**
      * 最大连接数
      */
-    static int maxConnections = 20000;
+    static int maxConnections = 10000;
     /**
      * 连接超时（单位：秒）
      */
