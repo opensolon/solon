@@ -101,7 +101,7 @@ class HttpUtils {
 
     public HttpUtils timeout(int timeoutSeconds) {
         if (timeoutSeconds > 0) {
-            _builder.tag(HttpTimeout.class, new HttpTimeout(timeoutSeconds));
+            _builder.tag(TimeoutProps.class, new TimeoutProps(timeoutSeconds));
         }
 
         return this;

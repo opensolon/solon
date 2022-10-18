@@ -99,9 +99,9 @@ public class CloudEventServiceWaterImp implements CloudEventServicePlus {
         }
 
         if (level == EventLevel.instance) {
-            instanceObserverManger.add(topicNew, level, group, topic, observer);
+            instanceObserverManger.add(topicNew, level, group, topic, tag, observer);
         } else {
-            clusterObserverManger.add(topicNew, level, group, topic, observer);
+            clusterObserverManger.add(topicNew, level, group, topic, tag, observer);
         }
     }
 

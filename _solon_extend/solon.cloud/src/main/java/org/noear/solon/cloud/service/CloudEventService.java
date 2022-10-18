@@ -30,4 +30,8 @@ public interface CloudEventService {
      * @param observer 观察者
      */
     void attention(EventLevel level, String channel, String group, String topic, String tag, CloudEventHandler observer);
+
+    default void attention(EventLevel level, String channel, String group, String topic, CloudEventHandler observer) {
+        attention(level, channel, group, topic, "", observer);
+    }
 }

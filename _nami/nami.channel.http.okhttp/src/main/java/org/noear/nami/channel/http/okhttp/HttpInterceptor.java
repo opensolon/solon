@@ -17,7 +17,7 @@ public class HttpInterceptor implements Interceptor {
 
     @Override
     public Response intercept(Chain chain) throws IOException {
-        HttpTimeout timeout = chain.request().tag(HttpTimeout.class);
+        TimeoutProps timeout = chain.request().tag(TimeoutProps.class);
 
         if (timeout != null) {
             if (timeout.connectTimeout > 0) {

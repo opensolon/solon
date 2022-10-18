@@ -1,5 +1,6 @@
 package org.noear.nami.channel.http.hutool;
 
+import cn.hutool.core.net.url.UrlBuilder;
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
 import cn.hutool.http.Method;
@@ -25,7 +26,7 @@ class HttpUtils {
 
     private HttpRequest _builder;
     public HttpUtils(String url){
-        _builder = new HttpRequest(url);
+        _builder = new HttpRequest(UrlBuilder.ofHttp(url));
     }
 
 
