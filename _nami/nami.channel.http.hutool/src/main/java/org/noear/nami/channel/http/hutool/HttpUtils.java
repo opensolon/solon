@@ -5,6 +5,7 @@ import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
 import cn.hutool.http.Method;
 import org.noear.nami.NamiException;
+import org.noear.nami.NamiGlobal;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -25,8 +26,11 @@ class HttpUtils {
     }
 
     private HttpRequest _builder;
-    public HttpUtils(String url){
+    public HttpUtils(String url) {
         _builder = new HttpRequest(UrlBuilder.ofHttp(url));
+
+        _builder.setConnectionTimeout(NamiGlobal.getConnectTimeout() * 1000);
+        _builder.setReadTimeout(NamiGlobal.getReadTimeout() * 1000);
     }
 
 

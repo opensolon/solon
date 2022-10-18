@@ -2,6 +2,7 @@ package org.noear.nami.channel.http.okhttp;
 
 import okhttp3.*;
 import org.noear.nami.NamiException;
+import org.noear.nami.NamiGlobal;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -14,15 +15,15 @@ import java.util.function.Supplier;
 class HttpUtils {
     private final static Supplier<Dispatcher> httpClientDispatcher = () -> {
         Dispatcher temp = new Dispatcher();
-        temp.setMaxRequests(20000);
-        temp.setMaxRequestsPerHost(10000);
+        temp.setMaxRequests(NamiGlobal.getMaxConnections());
+        temp.setMaxRequestsPerHost(NamiGlobal.getMaxConnections());
         return temp;
     };
 
-    private final static OkHttpClient httpClient = new OkHttpClient.Builder()
-            .connectTimeout(10, TimeUnit.SECONDS)
-            .writeTimeout(10, TimeUnit.SECONDS)
-            .readTimeout(10, TimeUnit.SECONDS)
+    private final static OkHttpClient httpClientDefault = new OkHttpClient.Builder()
+            .connectTimeout(NamiGlobal.getConnectTimeout(), TimeUnit.SECONDS)
+            .writeTimeout(NamiGlobal.getWriteTimeout(), TimeUnit.SECONDS)
+            .readTimeout(NamiGlobal.getReadTimeout(), TimeUnit.SECONDS)
             .dispatcher(httpClientDispatcher.get())
             .addInterceptor(HttpInterceptor.instance)
             .sslSocketFactory(SSLClient.getSSLSocketFactory(), SSLClient.getX509TrustManager())
@@ -46,8 +47,18 @@ class HttpUtils {
     private Map<String,String> _form;
 
     private Request.Builder _builder;
+    private OkHttpClient _client;
     public HttpUtils(String url){
+        this(httpClientDefault, url);
+    }
+
+    public HttpUtils(OkHttpClient client,String url) {
         _builder = new Request.Builder().url(url);
+        _client = client;
+
+        if (_client == null) {
+            _client = httpClientDefault;
+        }
     }
 
 
@@ -132,7 +143,7 @@ class HttpUtils {
             default: throw new IllegalStateException("This method is not supported");
         }
 
-        Call call = httpClient.newCall(_builder.build());
+        Call call = _client.newCall(_builder.build());
         return call.execute();
     }
 
