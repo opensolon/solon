@@ -6,6 +6,8 @@ import org.noear.nami.NamiConfigurationDefault;
 import java.lang.annotation.*;
 
 /**
+ * Nami 客户端
+ *
  * @author noear
  * @since 1.0
  * */
@@ -13,14 +15,6 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface NamiClient {
-    /**
-     * uri:
-     * 1. http://x.x.x/x/x/ (url)
-     * 2. name:/x/x/ (name:path)
-     * 3. name
-     * */
-    //@Deprecated
-    //String value() default "";
 
     /**
      * 完整的url地址（url）
@@ -33,12 +27,12 @@ public @interface NamiClient {
     String group() default "";
 
     /**
-     * 服务名（name + path）
+     * 服务名
      * */
     String name() default "";
 
     /**
-     * 路径（name + path）
+     * 路径
      * */
     String path() default "";
 

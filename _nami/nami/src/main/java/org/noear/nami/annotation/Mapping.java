@@ -3,6 +3,8 @@ package org.noear.nami.annotation;
 import java.lang.annotation.*;
 
 /**
+ * 请求映射
+ *
  * @author noear
  * @since 1.1
  * */

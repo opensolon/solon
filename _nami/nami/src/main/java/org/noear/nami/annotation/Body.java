@@ -5,6 +5,8 @@ import org.noear.nami.common.Constants;
 import java.lang.annotation.*;
 
 /**
+ * 指定参数转为Body
+ *
  * @author noear
  * @since 1.2
  */
