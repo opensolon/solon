@@ -43,6 +43,20 @@ public class HttpParam4Test extends HttpTestBase {
     }
 
     @Test
+    public void json2_2() throws IOException {
+        //走json通过，这个格式OK
+        String json = "[{id:1,name:'noear',date:'2021-12-12T12:12:12'}]";
+
+        String json2 = path("/demo2/param4/json2").bodyJson(json).post();
+
+        ONode oNode2 = ONode.loadStr(json2);
+
+        assert oNode2.isArray();
+        assert oNode2.get(0).get("id").getInt() == 1;
+        assert new Datetime(oNode2.get(0).get("date").getDate()).getYear() > 2000;
+    }
+
+    @Test
     public void param() throws IOException {
         //走param，@Param 的格式化会起效果
         String json2 = path("/demo2/param4/param")

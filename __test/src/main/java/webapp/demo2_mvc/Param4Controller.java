@@ -10,6 +10,7 @@ import webapp.models.UserModelEx;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -28,6 +29,13 @@ public class Param4Controller {
         asyncTask.test();
 
         return user;
+    }
+
+    @Mapping("json2")
+    public List<UserModel> test_json2(List<UserModel> list) throws IOException {
+        asyncTask.test();
+
+        return list;
     }
 
     @Mapping("param")
