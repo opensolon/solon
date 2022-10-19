@@ -58,6 +58,15 @@ public class SolonJUnit5Extension implements TestInstanceFactory {
         TestPropertySource propAnno = klass.getAnnotation(TestPropertySource.class);
 
         if (anno != null) {
+            if(anno.properties().length > 0) {
+                for (String tmp : anno.properties()) {
+                    String[] kv = tmp.split("=");
+                    if (kv.length == 2) {
+                        System.setProperty(kv[0], kv[1]);
+                    }
+                }
+            }
+
             List<String> args = new ArrayList<>();
             if (anno.args().length > 0) {
                 args.addAll(Arrays.asList(anno.args()));

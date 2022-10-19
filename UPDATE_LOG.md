@@ -11,6 +11,7 @@
 * 调整 增加线程池公共配置???
 * 调整 SolonCloudEventBus 添加关注参数 tag，以适配 rocketmq  的 tag 过滤需求
 * 添加 NamiGlobal 类，做为 nami 的全局设置
+* 添加 SolonTest::properties 属性
 
 #### 1.10.7
 * 新增 wood-cloud-plugin 插件

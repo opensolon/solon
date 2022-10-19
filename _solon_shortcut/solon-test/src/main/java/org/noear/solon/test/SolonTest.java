@@ -14,8 +14,17 @@ public @interface SolonTest {
     @Note("延迟秒数")
     int delay() default 1;
 
+    /**
+     * 例：--app.name=demoapp
+     * */
     @Note("启动参数")
     String[] args() default {};
+
+    /**
+     * 例：solon.app.name=demoapp
+     * */
+    @Note("应用属性")
+    String[] properties() default {};
 
     @Note("是否调试模式")
     boolean debug() default true;
