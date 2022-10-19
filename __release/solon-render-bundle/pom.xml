@@ -28,25 +28,24 @@
 
 
     <modules>
-        <module>../../_solon_extend/solon.serialization</module>
+        <module>../../_solon_render/solon.serialization</module>
 
-        <module>../../_solon_extend/solon.serialization.snack3</module>
-        <module>../../_solon_extend/solon.serialization.fastjson</module>
-        <module>../../_solon_extend/solon.serialization.fastjson2</module>
-        <module>../../_solon_extend/solon.serialization.jackson</module>
-        <module>../../_solon_extend/solon.serialization.gson</module>
-        <module>../../_solon_extend/solon.serialization.hessian</module>
-        <module>../../_solon_extend/solon.serialization.hessian-lite</module>
-        <module>../../_solon_extend/solon.serialization.protostuff</module>
+        <module>../../_solon_render/solon.serialization.snack3</module>
+        <module>../../_solon_render/solon.serialization.fastjson</module>
+        <module>../../_solon_render/solon.serialization.fastjson2</module>
+        <module>../../_solon_render/solon.serialization.jackson</module>
+        <module>../../_solon_render/solon.serialization.gson</module>
+        <module>../../_solon_render/solon.serialization.hessian</module>
+        <module>../../_solon_render/solon.serialization.hessian-lite</module>
+        <module>../../_solon_render/solon.serialization.protostuff</module>
 
-        <module>../../_solon_extend/solon.view.freemarker</module>
-        <module>../../_solon_extend/solon.view.jsp</module>
-        <module>../../_solon_extend/solon.view.velocity</module>
-        <module>../../_solon_extend/solon.view.thymeleaf</module>
+        <module>../../_solon_render/solon.view.freemarker</module>
+        <module>../../_solon_render/solon.view.jsp</module>
+        <module>../../_solon_render/solon.view.velocity</module>
+        <module>../../_solon_render/solon.view.thymeleaf</module>
 
-        <module>../../_solon_extend/solon.view.enjoy</module>
-        <module>../../_solon_extend/solon.view.beetl</module>
-        <!--        <module>../../solon.view.rocker</module>-->
+        <module>../../_solon_render/solon.view.enjoy</module>
+        <module>../../_solon_render/solon.view.beetl</module>
     </modules>
 
 
