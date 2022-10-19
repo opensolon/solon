@@ -1,6 +1,5 @@
 package org.noear.solon.extend.vaptcha;
 
-import org.noear.solon.SolonApp;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.extend.vaptcha.http.request.validators.Vaptcha;

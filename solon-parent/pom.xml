@@ -41,6 +41,7 @@
         <tomcat.ver>9.0.64</tomcat.ver>
 
         <snakeyaml.ver>1.32</snakeyaml.ver>
+        <swagger.ver>1.6.2</swagger.ver>
 
         <jackson.ver>2.13.3</jackson.ver>
         <gson.ver>2.9.0</gson.ver>
@@ -687,6 +688,8 @@
                 <version>${solon.ver}</version>
             </dependency>
 
+
+
             <dependency>
                 <groupId>org.yaml</groupId>
                 <artifactId>snakeyaml</artifactId>
@@ -877,6 +880,12 @@
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>sureness-solon-plugin</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>swagger-solon-plugin</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
 

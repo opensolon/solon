@@ -48,6 +48,8 @@
         <module>../../_solon_plugin/easypoi-wps-solon</module>
 
 
+        <module>../../_solon_plugin/swagger-solon-plugin</module>
+
     </modules>
 
 
