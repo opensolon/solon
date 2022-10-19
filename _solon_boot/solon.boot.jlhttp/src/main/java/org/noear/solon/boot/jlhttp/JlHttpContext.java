@@ -348,9 +348,6 @@ public class JlHttpContext extends Context {
         }
     }
 
-    //protected ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-
-
     @Override
     public void headerSet(String key, String val) {
         _response.getHeaders().replace(key, val);

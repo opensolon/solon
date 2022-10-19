@@ -28,7 +28,8 @@ public class JdkHttpContext extends Context {
     }
 
     private boolean _loadMultipartFormData = false;
-    private void loadMultipartFormData() throws IOException{
+
+    private void loadMultipartFormData() throws IOException {
         if (_loadMultipartFormData) {
             return;
         } else {
@@ -188,7 +189,7 @@ public class JdkHttpContext extends Context {
             _paramMap = new NvMap();
 
             try {
-                if(autoMultipart()) {
+                if (autoMultipart()) {
                     loadMultipartFormData();
                 }
 
@@ -307,14 +308,22 @@ public class JdkHttpContext extends Context {
     }
 
 
+    private ByteArrayOutputStream _outputStreamTmp;
+
     @Override
     public OutputStream outputStream() throws IOException {
-        sendHeaders();
+        sendHeaders(false);
 
         if (_allows_write) {
             return _exchange.getResponseBody();
         } else {
-            return new ByteArrayOutputStream();
+            if (_outputStreamTmp == null) {
+                _outputStreamTmp = new ByteArrayOutputStream();
+            } else {
+                _outputStreamTmp.reset();
+            }
+
+            return _outputStreamTmp;
         }
     }
 
@@ -412,8 +421,6 @@ public class JdkHttpContext extends Context {
 
     @Override
     public void flush() throws IOException {
-        sendHeaders();
-
         if (_allows_write) {
             outputStream().flush();
         }
@@ -421,29 +428,28 @@ public class JdkHttpContext extends Context {
 
     @Override
     protected void commit() throws IOException {
-        sendHeaders();
-
-        if (!_allows_write) {
-            outputStream().close();
-        }
+        sendHeaders(true);
     }
 
     private boolean _allows_write = true;
     private boolean _headers_sent = false;
 
-    private void sendHeaders() throws IOException {
+    private void sendHeaders(boolean isCommit) throws IOException {
         if (!_headers_sent) {
             _headers_sent = true;
+
+            if ("HEAD".equals(method())) {
+                _allows_write = false;
+            }
 
             if (sessionState() != null) {
                 sessionState().sessionPublish();
             }
 
-            if ("HEAD".equals(method())) {
-                _allows_write = false;
-                _exchange.sendResponseHeaders(_status, -1);
+            if (isCommit || _allows_write == false) {
+                _exchange.sendResponseHeaders(status(), -1);
             } else {
-                _exchange.sendResponseHeaders(_status, 0);
+                _exchange.sendResponseHeaders(status(), 0);
             }
         }
     }
