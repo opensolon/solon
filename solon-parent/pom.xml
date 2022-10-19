@@ -45,7 +45,7 @@
 
         <jackson.ver>2.13.3</jackson.ver>
         <gson.ver>2.9.0</gson.ver>
-        <hessian.ver>4.0.65</hessian.ver>
+        <hessian.ver>4.0.66</hessian.ver>
         <protostuff.ver>1.7.4</protostuff.ver>
 
         <junit4.ver>4.13.1</junit4.ver>

@@ -13,6 +13,7 @@
 * 添加 NamiGlobal 类，做为 nami 的全局设置
 * 添加 SolonTest::properties 属性
 * 修复 solon.boot.jlhttp 的 302 跳转在 firefox 下特别慢的原因
+* 升级 hessian 为 4.0.66
 
 #### 1.10.7
 * 新增 wood-cloud-plugin 插件
