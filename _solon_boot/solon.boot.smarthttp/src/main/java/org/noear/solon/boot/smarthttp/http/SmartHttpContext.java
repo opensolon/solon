@@ -29,7 +29,8 @@ public class SmartHttpContext extends Context {
     }
 
     private boolean _loadMultipartFormData = false;
-    private void loadMultipartFormData() throws IOException{
+
+    private void loadMultipartFormData() throws IOException {
         if (_loadMultipartFormData) {
             return;
         } else {
@@ -155,7 +156,7 @@ public class SmartHttpContext extends Context {
             _paramMap = new NvMap();
 
             try {
-                if(autoMultipart()) {
+                if (autoMultipart()) {
                     loadMultipartFormData();
                 }
 
@@ -264,15 +265,33 @@ public class SmartHttpContext extends Context {
     }
 
 
+    private ByteArrayOutputStream _outputStreamTmp;
+
     @Override
     public OutputStream outputStream() throws IOException {
-        return _outputStream;
+        sendHeaders(false);
+
+        if (_allows_write) {
+            return _response.getOutputStream();
+        } else {
+            if (_outputStreamTmp == null) {
+                _outputStreamTmp = new ByteArrayOutputStream();
+            } else {
+                _outputStreamTmp.reset();
+            }
+
+            return _outputStreamTmp;
+        }
     }
 
     @Override
     public void output(byte[] bytes) {
         try {
-            OutputStream out = _outputStream;
+            OutputStream out = outputStream();
+
+            if (!_allows_write) {
+                return;
+            }
 
             out.write(bytes);
         } catch (Throwable ex) {
@@ -283,19 +302,21 @@ public class SmartHttpContext extends Context {
     @Override
     public void output(InputStream stream) {
         try {
-            OutputStream out = _outputStream;
+            OutputStream out = outputStream();
 
-            byte[] buff = new byte[100];
-            int rc = 0;
-            while ((rc = stream.read(buff, 0, 100)) > 0) {
-                out.write(buff, 0, rc);
+            if (!_allows_write) {
+                return;
+            }
+
+            int len = 0;
+            byte[] buf = new byte[512]; //0.5k
+            while ((len = stream.read(buf)) != -1) {
+                out.write(buf, 0, len);
             }
         } catch (Throwable ex) {
             throw new RuntimeException(ex);
         }
     }
-
-    protected ByteArrayOutputStream _outputStream = new ByteArrayOutputStream();
 
 
     @Override
@@ -353,38 +374,46 @@ public class SmartHttpContext extends Context {
     @Override
     protected void statusDoSet(int status) {
         _status = status;
-        //_response.setHttpStatus(HttpStatus.valueOf(status));
     }
 
     @Override
     public void flush() throws IOException {
-        //不用实现
+        if (_allows_write) {
+            outputStream().flush();
+        }
     }
 
     @Override
     protected void commit() throws IOException {
-        _response.setHttpStatus(HttpStatus.valueOf(status()));
-
-        sendHeaders();
-
-        if ("HEAD".equals(method())) {
-            _response.setContentLength(0);
-        } else {
-            OutputStream out = _response.getOutputStream();
-            _response.setContentLength(_outputStream.size());
-            _outputStream.writeTo(out);
-            //_response.close();
+        if (!_headers_sent) {
+            //
+            // 因为header 里没有设内容长度；所有必须要有输出!!
+            //
+            sendHeaders(true);
         }
     }
 
     private boolean _headers_sent = false;
+    private boolean _allows_write = true;
 
-    private void sendHeaders() throws IOException {
+    private void sendHeaders(boolean isCommit) throws IOException {
         if (!_headers_sent) {
             _headers_sent = true;
 
+            if ("HEAD".equals(method())) {
+                _allows_write = false;
+            }
+
             if (sessionState() != null) {
                 sessionState().sessionPublish();
+            }
+
+            _response.setHttpStatus(HttpStatus.valueOf(status()));
+
+            if ("HEAD".equals(method())) {
+                _response.setContentLength(0);
+            } else {
+                _response.setContentLength(isCommit ? 0 : -1);
             }
         }
     }
