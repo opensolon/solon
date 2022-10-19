@@ -1727,7 +1727,7 @@ public class HTTPServer {
                 throw new IOException("headers were already sent");
             if (!headers.contains("Date"))
                 headers.add("Date", formatDate(System.currentTimeMillis()));
-            headers.add("Server", "JLHTTP/2.6");
+            //headers.add("Server", "JLHTTP/2.6");//todo: 不要输出产品标识
             out.write(getBytes("HTTP/1.1 ", Integer.toString(status), " ", statuses[status]));
             out.write(CRLF);
             headers.writeTo(out);

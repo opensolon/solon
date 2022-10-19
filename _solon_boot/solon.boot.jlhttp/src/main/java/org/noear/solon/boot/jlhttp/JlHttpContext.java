@@ -25,7 +25,8 @@ public class JlHttpContext extends Context {
     }
 
     private boolean _loadMultipartFormData = false;
-    private void loadMultipartFormData() throws IOException{
+
+    private void loadMultipartFormData() throws IOException {
         if (_loadMultipartFormData) {
             return;
         } else {
@@ -69,9 +70,10 @@ public class JlHttpContext extends Context {
     }
 
     private URI _uri;
+
     @Override
     public URI uri() {
-        if(_uri == null) {
+        if (_uri == null) {
             _uri = URI.create(url());
         }
 
@@ -185,7 +187,7 @@ public class JlHttpContext extends Context {
             _paramMap = new NvMap();
 
             try {
-                if(autoMultipart()) {
+                if (autoMultipart()) {
                     loadMultipartFormData();
                 }
 
@@ -297,7 +299,7 @@ public class JlHttpContext extends Context {
 
     @Override
     public OutputStream outputStream() throws IOException {
-        sendHeaders();
+        sendHeaders(false);
 
         if (_allows_write) {
             return _response.getBody();
@@ -316,8 +318,8 @@ public class JlHttpContext extends Context {
     public void output(byte[] bytes) {
         try {
             OutputStream out = outputStream();
-            
-            if(!_allows_write){
+
+            if (!_allows_write) {
                 return;
             }
 
@@ -332,7 +334,7 @@ public class JlHttpContext extends Context {
         try {
             OutputStream out = outputStream();
 
-            if(!_allows_write){
+            if (!_allows_write) {
                 return;
             }
 
@@ -417,31 +419,26 @@ public class JlHttpContext extends Context {
     //jlhttp 需要先输出 header ，但是 header 后面可能会有变化；所以不直接使用  response.getOutputStream()
     @Override
     protected void commit() throws IOException {
-        //_response.getOutputStream().close(); //length=-1后，不需要colose()；而且性能大大提搞
-
-        //sendHeaders(); //output时，会自动 sendHeaders
-
-        if (!_response.headersSent()) {
-            //
-            // 因为header 里没有设内容长度；所有必须要有输出!!
-            //
-            output("");
-        }
+        sendHeaders(true);
     }
 
     private boolean _allows_write = true;
-    private void sendHeaders() throws IOException {
+
+    private void sendHeaders(boolean isCommit) throws IOException {
         if (!_response.headersSent()) {
-            if("HEAD".equals(method())) {
+            if ("HEAD".equals(method())) {
                 _allows_write = false;
             }
 
-            if(sessionState() != null){
+            if (sessionState() != null) {
                 sessionState().sessionPublish();
             }
 
-            //_response.sendHeaders(status()); //不能用这个；
-            _response.sendHeaders(status(), -1, -1, null, null, null);
+            if (isCommit || _allows_write == false) {
+                _response.sendHeaders(status(), 0, -1, null, null, null);
+            } else {
+                _response.sendHeaders(status(), -1, -1, null, null, null);
+            }
         }
     }
 }
