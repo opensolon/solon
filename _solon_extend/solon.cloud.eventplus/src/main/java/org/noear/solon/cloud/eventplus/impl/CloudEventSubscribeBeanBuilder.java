@@ -44,7 +44,7 @@ public class CloudEventSubscribeBeanBuilder implements BeanBuilder<CloudEventSub
                 CloudEventHandlerProxy hadnler2 = new CloudEventHandlerProxy(bw.raw(), entityClz);
 
                 CloudManager.register(anno2, hadnler2);
-                CloudClient.event().attention(anno2.level(), anno2.channel(), group, topic, anno2.tag(), hadnler2);
+                CloudClient.event().attention(anno2.level(), anno2.channel(), group, topic, hadnler2);
             }
         }
     }

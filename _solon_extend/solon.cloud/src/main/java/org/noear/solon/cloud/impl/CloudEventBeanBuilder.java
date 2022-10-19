@@ -32,7 +32,7 @@ public class CloudEventBeanBuilder implements BeanBuilder<CloudEvent> {
                 String group = Solon.cfg().getByParse(anno.group());
 
                 //关注事件
-                CloudClient.event().attention(anno.level(), anno.channel(), group, topic, anno.tag(), bw.raw());
+                CloudClient.event().attention(anno.level(), anno.channel(), group, topic, bw.raw());
             }
         }
     }
