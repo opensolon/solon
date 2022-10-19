@@ -293,6 +293,7 @@ public class JlHttpContext extends Context {
         headerSet("Content-Type", contentType);
     }
 
+    private ByteArrayOutputStream _outputStreamTmp;
 
     @Override
     public OutputStream outputStream() throws IOException {
@@ -300,8 +301,14 @@ public class JlHttpContext extends Context {
 
         if (_allows_write) {
             return _response.getBody();
-        }else{
-            return new ByteArrayOutputStream();
+        } else {
+            if (_outputStreamTmp == null) {
+                _outputStreamTmp = new ByteArrayOutputStream();
+            } else {
+                _outputStreamTmp.reset();
+            }
+
+            return _outputStreamTmp;
         }
     }
 
