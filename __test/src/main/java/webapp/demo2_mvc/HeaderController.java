@@ -16,4 +16,14 @@ public class HeaderController {
         ctx.cookieSet("cookie1", "1");
         ctx.cookieSet("cookie2", "2");
     }
+
+    @Mapping("/demo2/redirect/")
+    public void redirect(Context ctx) throws Exception {
+        ctx.redirect("/demo2/redirect/page");
+    }
+
+    @Mapping("/demo2/redirect/page")
+    public String redirect_page(Context ctx) throws Exception {
+        return "我是跳转过来的!";
+    }
 }
