@@ -1,8 +1,8 @@
-package org.noear.nami.coder.hessian;
+package org.noear.nami.coder.hessian_lite;
 
-import com.caucho.hessian.io.Hessian2Input;
-import org.noear.nami.Decoder;
+import com.alibaba.com.caucho.hessian.io.Hessian2Input;
 import org.noear.nami.Context;
+import org.noear.nami.Decoder;
 import org.noear.nami.Result;
 import org.noear.nami.common.Constants;
 
@@ -10,13 +10,13 @@ import java.io.ByteArrayInputStream;
 import java.lang.reflect.Type;
 
 /**
- * Hessian 解码器
+ * HessianLite 解码器
  *
  * @author noear
- * @since 1.2
+ * @since 1.10
  * */
-public class HessianDecoder implements Decoder {
-    public static final HessianDecoder instance = new HessianDecoder();
+public class HessianLiteDecoder implements Decoder {
+    public static final HessianLiteDecoder instance = new HessianLiteDecoder();
 
     @Override
     public String enctype() {

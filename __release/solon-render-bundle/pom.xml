@@ -36,6 +36,7 @@
         <module>../../_solon_extend/solon.serialization.jackson</module>
         <module>../../_solon_extend/solon.serialization.gson</module>
         <module>../../_solon_extend/solon.serialization.hessian</module>
+        <module>../../_solon_extend/solon.serialization.hessian-lite</module>
         <module>../../_solon_extend/solon.serialization.protostuff</module>
 
         <module>../../_solon_extend/solon.view.freemarker</module>

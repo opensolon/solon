@@ -46,6 +46,7 @@
         <jackson.ver>2.13.3</jackson.ver>
         <gson.ver>2.9.0</gson.ver>
         <hessian.ver>4.0.66</hessian.ver>
+        <hessian-lite.ver>3.2.13</hessian-lite.ver>
         <protostuff.ver>1.7.4</protostuff.ver>
 
         <junit4.ver>4.13.1</junit4.ver>
@@ -486,6 +487,11 @@
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>solon.serialization.hessian-lite</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>solon.serialization.protostuff</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
@@ -618,6 +624,12 @@
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>nami.coder.hessian</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>nami.coder.hessian-lite</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
 

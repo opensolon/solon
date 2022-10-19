@@ -11,7 +11,7 @@
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>nami.coder.hessian</artifactId>
+    <artifactId>nami.coder.hessian-lite</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>
@@ -26,9 +26,9 @@
         </dependency>
 
         <dependency>
-            <groupId>com.caucho</groupId>
-            <artifactId>hessian</artifactId>
-            <version>${hessian.ver}</version>
+            <groupId>com.alibaba</groupId>
+            <artifactId>hessian-lite</artifactId>
+            <version>${hessian-lite.ver}</version>
         </dependency>
     </dependencies>
 
