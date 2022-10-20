@@ -385,12 +385,7 @@ public class SmartHttpContext extends Context {
 
     @Override
     protected void commit() throws IOException {
-        if (!_headers_sent) {
-            //
-            // 因为header 里没有设内容长度；所有必须要有输出!!
-            //
-            sendHeaders(true);
-        }
+        sendHeaders(true);
     }
 
     private boolean _headers_sent = false;
@@ -410,10 +405,10 @@ public class SmartHttpContext extends Context {
 
             _response.setHttpStatus(HttpStatus.valueOf(status()));
 
-            if ("HEAD".equals(method())) {
+            if (isCommit || _allows_write == false) {
                 _response.setContentLength(0);
             } else {
-                _response.setContentLength(isCommit ? 0 : -1);
+                _response.setContentLength(-1);
             }
         }
     }
