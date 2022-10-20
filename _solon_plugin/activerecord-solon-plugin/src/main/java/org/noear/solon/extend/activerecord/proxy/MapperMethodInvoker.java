@@ -111,7 +111,7 @@ public final class MapperMethodInvoker {
          */
         if (null == context.getReturnClz() || void.class == context.getReturnClz()) {
             if (context.isSqlStatement()) {
-                return Db.use(db).template(context.getSql(), argsMap).update();
+                return Db.use(db).templateByString(context.getSql(), argsMap).update();
             } else {
                 return Db.use(db).template(context.getSql(), argsMap).update();
             }

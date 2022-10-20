@@ -81,10 +81,30 @@
 4. 应用示例
 
    ```java
-   @Valid
    @Controller
    @Mapping("/blog")
    public class BlogController {
+       
+       @Inject
+       BlogService blogService;
+   
+       @Mapping("/add")
+       public ModelAndView add(Context ctx) {
+           return new ModelAndView("/blog/add.html");
+       }
+   
+       @Mapping("/delete/{id}")
+       public void delete(Context ctx, Integer id) {
+           this.blogService.deleteById(id);
+           ctx.redirect("/blog");
+       }
+   
+       @Mapping("/edit/{id}")
+       public ModelAndView edit(Context ctx, Integer id) {
+           ModelAndView mav = new ModelAndView("/blog/edit.html");
+           mav.put("blog", this.blogService.findById(id));
+           return mav;
+       }
    
        @Mapping
        public ModelAndView index(Context ctx) {
@@ -98,23 +118,30 @@
            return mav;
        }
    
+       /**
+        * save 与 update 的业务逻辑在实际应用中也应该放在 serivce 之中，
+        * 并要对数据进正确性进行验证，在此仅为了偷懒
+        */
        @NotEmpty({"title", "content"})
        @Mapping("/save")
        public void save(Context ctx, @Validated Blog blog) {
-           com.jfinal.plugin.activerecord.Db.use(DbKit.MAIN_CONFIG_NAME).save("blog", blog.toRecord());
+           this.blogService.save(blog);
            ctx.redirect("/blog");
        }
    
+       /**
+        * save 与 update 的业务逻辑在实际应用中也应该放在 serivce 之中，
+        * 并要对数据进正确性进行验证，在此仅为了偷懒
+        */
        @NotEmpty({"id", "title", "content"})
        @Mapping("/update")
        public void update(Context ctx, @Validated Blog blog) {
-           com.jfinal.plugin.activerecord.Db.use(DbKit.MAIN_CONFIG_NAME).update("blog", blog.toRecord());
+           this.blogService.update(blog);
            ctx.redirect("/blog");
        }
-   
    }
    ```
-
+   
    
 
 #### 代码生成
@@ -202,13 +229,13 @@ public class _Generator {
         List<Blog> findBy(Blog model);
     
         @Sql("findByMap")
-        List<Blog> findBy(Map<?, ?> map);
+        List<Blog> findBy(Map<String, ?> map);
     
         @Sql("findByModel")
         List<Blog> findBy(Blog model, String orderColumn, String orderDirection);
     
         @Sql("findByMap")
-        List<Blog> findBy(Map<?, ?> map, String orderColumn, String orderDirection);
+        List<Blog> findBy(Map<String, ?> map, String orderColumn, String orderDirection);
         
         ......
     }
@@ -230,13 +257,13 @@ public class _Generator {
         List<Blog2> findBy(Blog2 model);
     
         @Sql("findByMap")
-        List<Blog2> findBy(Map<?, ?> map);
+        List<Blog2> findBy(Map<String, ?> map);
     
         @Sql("findByModel")
         List<Blog2> findBy(Blog2 model, String orderColumn, String orderDirection);
     
         @Sql("findByMap")
-        List<Blog2> findBy(Map<?, ?> map, String orderColumn, String orderDirection);
+        List<Blog2> findBy(Map<String, ?> map, String orderColumn, String orderDirection);
     
         ......
     }
@@ -480,5 +507,36 @@ public class _Generator {
       ......
   }
   ```
+
+​	Mapper只是接口类，它并没有实现，本插件实现了接口与SQL模板直接打通的功能。每一个接口方法上的@Sql注解都对应Sql模板中的同名查询，也可直接通过“{ }”包裹的语句来显示指定查询。
+
+​	Mapper最适用的场景为 _**复杂查询**_、_**报表查询**_ 等，测试用例中，BlogMapperTest.java（调用方） --> BlogMapper.java（接口） --> BlogMapper.sql（SQL模板）形成了一个调用链。
+
+​	Mapper的使用做了简化，也有一些约定：
+
+ 1. @Sql中以“{ }”包裹的语句则为显示声明查询语句，不需要与SQL模板对应
+
+    ```java
+    @Sql("{ SELECT COUNT(*) FROM blog }")
+    long count();
+    ```
+
+ 2. 非查询语句一定要使用指定isUpdate = true、
+
+    ```java
+    @Sql(value = "{ DELETE FROM blog WHERE id IN #para(ids, 'in') }", isUpdate = true)
+    deleteByIds(Object... ids);
+    ```
+
+ 3. 自动识别返回类型：List<>，Page<>，Model，Record，Object，void
+
+ 4. 分页参数的约定
+
+    ActiveRecord的分页口比较特殊，自动为不同的数据库自动拼装页号和页大小参数。此插件也做了相应的适配，只需要在返回类型为Page<>的接口定义pageNumber和pageSize即可。如果没有定义，则会以pageNumber=1和pageSize=10的默认值获取分页记录，因此一定要记得加上这两个参数。
+
+    ```java
+    @Sql("paginateBy")
+    Page<Blog> paginateBy(int pageNumber, int pageSize, Map<String, ?> map);
+    ```
 
   
