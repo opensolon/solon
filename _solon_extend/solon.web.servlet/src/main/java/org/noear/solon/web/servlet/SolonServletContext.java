@@ -327,6 +327,7 @@ public class SolonServletContext extends Context {
     @Override
     public void redirect(String url) {
         try {
+            //相对路径时，可能支持 context-path
             _response.sendRedirect(url);
         } catch (Throwable ex) {
             throw new RuntimeException(ex);
@@ -335,8 +336,12 @@ public class SolonServletContext extends Context {
 
     @Override
     public void redirect(String url, int code) {
-        statusDoSet(code);
-        _response.setHeader("Location", url);
+        if (code == 302) {
+            redirect(url);
+        } else {
+            statusDoSet(code);
+            _response.setHeader("Location", url);
+        }
     }
 
     @Override
