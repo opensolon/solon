@@ -88,6 +88,11 @@ public class HttpTest extends HttpTestBase {
     }
 
     @Test
+    public void test15_run12() throws IOException {
+        assert path("/demo1/run12/test?a=1").get().equals("你好；你好2；");
+    }
+
+    @Test
     public void test16() throws IOException {
         String rst = path("/demo1/run2/ip").get();
         assert rst.equals("0:0:0:0:0:0:0:1") || rst.equals("127.0.0.1");
