@@ -4,18 +4,21 @@
 * 新增 liteflow-solon-plugin 插件
 * 新增 kubernetes-solon-cloud-plugin 插件
 * 新增 jmdns-solon-cloud-plugin 插件
-
-#### 1.10.8
-* 修复 渲染器执行异常时，异常消失的问题
 * 调整 运行完成后，提供未注入的对象???
 * 调整 增加线程池公共配置???
-* 调整 SolonCloudEventBus 添加关注参数 tag，以适配 rocketmq  的 tag 过滤需求
+
+#### 1.10.8
+* 新增 solon.serialization.hessian-lite 插件
+* 新增 nami.coder.hessian-lite 插件
+* 调整 solon.web.servlet 插件，更适合 war 容器开发
+* 修复 solon 渲染器执行异常时，异常消失的问题
 * 添加 NamiGlobal 类，做为 nami 的全局设置
 * 添加 SolonTest::properties 属性
 * 优化 solon.boot.smarthttp 适配
 * 优化 solon.boot.jdkhttp 适配
 * 优化 solon.boot.jlhttp 适配，同时修复 302 跳转在 firefox 下特别慢的原因
 * 升级 hessian 为 4.0.66
+* 升级 smart-htt 为 1.1.17
 
 #### 1.10.7
 * 新增 wood-cloud-plugin 插件
