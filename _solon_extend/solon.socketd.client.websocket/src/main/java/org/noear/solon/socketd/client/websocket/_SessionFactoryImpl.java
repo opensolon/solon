@@ -1,7 +1,6 @@
 package org.noear.solon.socketd.client.websocket;
 
 import org.java_websocket.WebSocket;
-import org.noear.solon.Utils;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.socketd.Connector;
 import org.noear.solon.socketd.SessionFactory;
