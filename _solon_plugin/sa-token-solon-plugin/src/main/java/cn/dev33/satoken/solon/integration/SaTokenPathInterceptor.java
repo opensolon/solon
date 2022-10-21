@@ -18,7 +18,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * sa-token 基于路由的拦截式鉴权（增加了注解的处理）
+ * sa-token 基于路由的拦截式鉴权（增加了注解的处理）；使用优先级要高些
  *
  * @author noear
  * @since 1.10

@@ -17,7 +17,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * sa-token 基于路由的拦截式鉴权（增加了注解的处理）
+ * sa-token 基于路由的过滤式鉴权（增加了注解的处理）；使用优先级要低些
  *
  * @author noear
  * @since 1.10
@@ -165,29 +165,32 @@ public class SaTokenPathFilter implements Filter {
 	@Override
 	public void doFilter(Context ctx, FilterChain chain) throws Throwable {
 		try {
-			//注处处理
+			//查找当前主处理
 			Handler mainHandler = Solon.app().router().matchMain(ctx);
-			Action action = (mainHandler instanceof Action ? (Action) mainHandler : null);
 
-			if (isAnnotation && action != null) {
-				// 获取此请求对应的 Method 处理函数
-				Method method = action.method().getMethod();
+			//如果是静态文件，则不处理
+			if (mainHandler != null) {
+				Action action = (mainHandler instanceof Action ? (Action) mainHandler : null);
 
-				// 如果此 Method 或其所属 Class 标注了 @SaIgnore，则忽略掉鉴权
-				if (SaStrategy.me.isAnnotationPresent.apply(method, SaIgnore.class)) {
-					return;
+				if (isAnnotation && action != null) {
+					// 获取此请求对应的 Method 处理函数
+					Method method = action.method().getMethod();
+
+					// 如果此 Method 或其所属 Class 标注了 @SaIgnore，则忽略掉鉴权
+					if (SaStrategy.me.isAnnotationPresent.apply(method, SaIgnore.class)) {
+						return;
+					}
+
+					// 注解校验
+					SaStrategy.me.checkMethodAnnotation.accept(method);
 				}
 
-				// 注解校验
-				SaStrategy.me.checkMethodAnnotation.accept(method);
+				//路径规则处理
+				SaRouter.match(includeList).notMatch(excludeList).check(r -> {
+					beforeAuth.run(mainHandler);
+					auth.run(mainHandler);
+				});
 			}
-
-			//路径规则处理
-			SaRouter.match(includeList).notMatch(excludeList).check(r -> {
-				beforeAuth.run(mainHandler);
-				auth.run(mainHandler);
-			});
-
 		} catch (StopMatchException e) {
 
 		} catch (SaTokenException e) {
