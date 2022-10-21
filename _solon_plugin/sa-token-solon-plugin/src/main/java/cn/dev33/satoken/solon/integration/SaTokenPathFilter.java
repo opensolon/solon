@@ -168,7 +168,7 @@ public class SaTokenPathFilter implements Filter {
 			//查找当前主处理
 			Handler mainHandler = Solon.app().router().matchMain(ctx);
 
-			//如果是静态文件，则不处理
+			//如果是静态文件，则不处理（静态文件，不在路由中）
 			if (mainHandler != null) {
 				Action action = (mainHandler instanceof Action ? (Action) mainHandler : null);
 
