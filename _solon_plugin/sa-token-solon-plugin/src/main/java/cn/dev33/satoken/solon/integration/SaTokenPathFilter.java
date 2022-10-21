@@ -8,9 +8,8 @@ import cn.dev33.satoken.filter.SaFilterAuthStrategy;
 import cn.dev33.satoken.filter.SaFilterErrorStrategy;
 import cn.dev33.satoken.router.SaRouter;
 import cn.dev33.satoken.strategy.SaStrategy;
-import org.noear.solon.core.handle.Action;
-import org.noear.solon.core.handle.Context;
-import org.noear.solon.core.handle.Handler;
+import org.noear.solon.Solon;
+import org.noear.solon.core.handle.*;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -23,7 +22,7 @@ import java.util.List;
  * @author noear
  * @since 1.10
  */
-public class SaTokenPathInterceptor implements Handler {
+public class SaTokenPathFilter implements Filter {
 	/**
 	 * 是否打开注解鉴权
 	 */
@@ -47,7 +46,7 @@ public class SaTokenPathInterceptor implements Handler {
 	 * @param paths 路由
 	 * @return 对象自身
 	 */
-	public SaTokenPathInterceptor addInclude(String... paths) {
+	public SaTokenPathFilter addInclude(String... paths) {
 		includeList.addAll(Arrays.asList(paths));
 		return this;
 	}
@@ -58,7 +57,7 @@ public class SaTokenPathInterceptor implements Handler {
 	 * @param paths 路由
 	 * @return 对象自身
 	 */
-	public SaTokenPathInterceptor addExclude(String... paths) {
+	public SaTokenPathFilter addExclude(String... paths) {
 		excludeList.addAll(Arrays.asList(paths));
 		return this;
 	}
@@ -69,7 +68,7 @@ public class SaTokenPathInterceptor implements Handler {
 	 * @param pathList 路由集合
 	 * @return 对象自身
 	 */
-	public SaTokenPathInterceptor setIncludeList(List<String> pathList) {
+	public SaTokenPathFilter setIncludeList(List<String> pathList) {
 		includeList = pathList;
 		return this;
 	}
@@ -80,7 +79,7 @@ public class SaTokenPathInterceptor implements Handler {
 	 * @param pathList 路由集合
 	 * @return 对象自身
 	 */
-	public SaTokenPathInterceptor setExcludeList(List<String> pathList) {
+	public SaTokenPathFilter setExcludeList(List<String> pathList) {
 		excludeList = pathList;
 		return this;
 	}
@@ -135,7 +134,7 @@ public class SaTokenPathInterceptor implements Handler {
 	 * @param auth see note
 	 * @return 对象自身
 	 */
-	public SaTokenPathInterceptor setAuth(SaFilterAuthStrategy auth) {
+	public SaTokenPathFilter setAuth(SaFilterAuthStrategy auth) {
 		this.auth = auth;
 		return this;
 	}
@@ -146,7 +145,7 @@ public class SaTokenPathInterceptor implements Handler {
 	 * @param error see note
 	 * @return 对象自身
 	 */
-	public SaTokenPathInterceptor setError(SaFilterErrorStrategy error) {
+	public SaTokenPathFilter setError(SaFilterErrorStrategy error) {
 		this.error = error;
 		return this;
 	}
@@ -157,24 +156,25 @@ public class SaTokenPathInterceptor implements Handler {
 	 * @param beforeAuth see note
 	 * @return 对象自身
 	 */
-	public SaTokenPathInterceptor setBeforeAuth(SaFilterAuthStrategy beforeAuth) {
+	public SaTokenPathFilter setBeforeAuth(SaFilterAuthStrategy beforeAuth) {
 		this.beforeAuth = beforeAuth;
 		return this;
 	}
 
 
 	@Override
-	public void handle(Context ctx) throws Throwable {
+	public void doFilter(Context ctx, FilterChain chain) throws Throwable {
 		try {
 			//注处处理
-			Action action = ctx.action();
+			Handler mainHandler = Solon.app().router().matchMain(ctx);
+			Action action = (mainHandler instanceof Action ? (Action) mainHandler : null);
 
-			if(isAnnotation && action != null){
+			if (isAnnotation && action != null) {
 				// 获取此请求对应的 Method 处理函数
 				Method method = action.method().getMethod();
 
 				// 如果此 Method 或其所属 Class 标注了 @SaIgnore，则忽略掉鉴权
-				if(SaStrategy.me.isAnnotationPresent.apply(method, SaIgnore.class)) {
+				if (SaStrategy.me.isAnnotationPresent.apply(method, SaIgnore.class)) {
 					return;
 				}
 
@@ -184,8 +184,8 @@ public class SaTokenPathInterceptor implements Handler {
 
 			//路径规则处理
 			SaRouter.match(includeList).notMatch(excludeList).check(r -> {
-				beforeAuth.run(action);
-				auth.run(action);
+				beforeAuth.run(mainHandler);
+				auth.run(mainHandler);
 			});
 
 		} catch (StopMatchException e) {
@@ -200,10 +200,13 @@ public class SaTokenPathInterceptor implements Handler {
 			}
 
 			// 2. 写入输出流
-			if(result != null) {
+			if (result != null) {
 				ctx.render(result);
 			}
 			ctx.setHandled(true);
+			return;
 		}
+
+		chain.doFilter(ctx);
 	}
 }

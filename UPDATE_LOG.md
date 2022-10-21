@@ -7,7 +7,11 @@
 * 调整 运行完成后，提供未注入的对象???
 * 调整 增加线程池公共配置???
 
-#### 1.10.9-M1
+
+#### 1.10.9
+* 调整 SokcteD 可以不依赖 Nami 运行
+
+#### 1.10.8
 * 新增 solon.serialization.hessian-lite 插件
 * 新增 nami.coder.hessian-lite 插件
 * 调整 solon.web.servlet 插件，更适合 war 容器开发

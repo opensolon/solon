@@ -94,6 +94,10 @@ public interface Router {
      */
     Handler matchOne(Context ctx, Endpoint endpoint);
 
+    default Handler matchMain(Context ctx){
+        return matchOne(ctx, Endpoint.main);
+    }
+
     /**
      * 区配多个处理（根据上下文）
      *

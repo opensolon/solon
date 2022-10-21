@@ -38,7 +38,7 @@ public class RouterHandler implements Handler {
 
         try {
             //预处理 action
-            Handler mainHandler = router.matchOne(ctx, Endpoint.main);
+            Handler mainHandler = router.matchMain(ctx);
             if(mainHandler instanceof Action){
                 ctx.attrSet("action", mainHandler);
             }
