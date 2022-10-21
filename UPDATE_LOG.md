@@ -18,7 +18,7 @@
 * 优化 solon.boot.jdkhttp 适配
 * 优化 solon.boot.jlhttp 适配，同时修复 302 跳转在 firefox 下特别慢的原因
 * 升级 hessian 为 4.0.66
-* 升级 smart-htt 为 1.1.17
+* 升级 smart-http 为 1.1.17
 
 #### 1.10.7
 * 新增 wood-cloud-plugin 插件
