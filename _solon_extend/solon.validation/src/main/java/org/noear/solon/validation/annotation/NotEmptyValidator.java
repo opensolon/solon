@@ -5,6 +5,8 @@ import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Result;
 import org.noear.solon.validation.Validator;
 
+import java.util.Collection;
+
 /**
  *
  * @author noear
@@ -25,17 +27,25 @@ public class NotEmptyValidator implements Validator<NotEmpty> {
 
     @Override
     public Result validateOfValue(NotEmpty anno, Object val0, StringBuilder tmp) {
-        if (val0 instanceof String == false) {
-            return Result.failure();
+        if (val0 instanceof String) {
+            String val = (String) val0;
+
+            if (Utils.isEmpty(val)) {
+                return Result.failure();
+            } else {
+                return Result.succeed();
+            }
+        } else if (val0 instanceof Collection) {
+            Collection val = (Collection) val0;
+
+            if (val.size() == 0) {
+                return Result.failure();
+            } else {
+                return Result.succeed();
+            }
         }
 
-        String val = (String) val0;
-
-        if (Utils.isEmpty(val)) {
-            return Result.failure();
-        } else {
-            return Result.succeed();
-        }
+        return Result.failure();
     }
 
     @Override

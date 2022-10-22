@@ -12,6 +12,7 @@
 * 调整 SokcteD 可以不依赖 Nami 运行
 * 增加 @Bean + @Mapping(支持限定词) 构建 Handler
 * 增加 router::matchMain 接口
+* 增加 @NotEmpty 对集合的校验支持
 
 #### 1.10.8
 * 新增 solon.serialization.hessian-lite 插件
