@@ -14,10 +14,7 @@ import org.noear.solon.core.util.BiConsumerEx;
 import org.noear.solon.core.util.ScanUtil;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
+import java.lang.reflect.*;
 import java.util.*;
 import java.util.function.Consumer;
 
@@ -110,7 +107,7 @@ public class AopContext extends BeanContainer {
             }
 
             //添加bean形态处理
-            addBeanShape(clz, bw, 0);
+            addBeanShape(clz, bw, 0,clz);
 
             //尝试导入
             for (Annotation a1 : clz.getAnnotations()) {
@@ -138,7 +135,7 @@ public class AopContext extends BeanContainer {
             bw.typedSet(anno.typed());
 
             //添加bean形态处理
-            addBeanShape(clz, bw, anno.index());
+            addBeanShape(clz, bw, anno.index(), clz);
 
             //注册到容器
             beanRegister(bw, beanName, anno.typed());
@@ -185,7 +182,7 @@ public class AopContext extends BeanContainer {
     /**
      * 添加bean的不同形态
      */
-    private void addBeanShape(Class<?> clz, BeanWrap bw, int index) {
+    private void addBeanShape(Class<?> clz, BeanWrap bw, int index, AnnotatedElement annoEl) {
         //Plugin
         if (Plugin.class.isAssignableFrom(clz)) {
             //如果是插件，则插入
@@ -206,10 +203,10 @@ public class AopContext extends BeanContainer {
 
         //Handler
         if (Handler.class.isAssignableFrom(clz)) {
-            Mapping mapping = clz.getAnnotation(Mapping.class);
+            Mapping mapping = annoEl.getAnnotation(Mapping.class);
             if (mapping != null) {
                 Handler handler = bw.raw();
-                Set<MethodType> v0 = MethodTypeUtil.findAndFill(new HashSet<>(), t -> bw.annotationGet(t) != null);
+                Set<MethodType> v0 = MethodTypeUtil.findAndFill(new HashSet<>(), t -> annoEl.getAnnotation(t) != null);
                 if (v0.size() == 0) {
                     v0 = new HashSet<>(Arrays.asList(mapping.method()));
                 }
@@ -531,7 +528,7 @@ public class AopContext extends BeanContainer {
             m_bw.typedSet(anno.typed());
 
             //添加bean形态处理
-            addBeanShape(m_bw.clz(), m_bw, anno.index());
+            addBeanShape(m_bw.clz(), m_bw, anno.index(), mWrap.getMethod());
 
             //注册到容器
             beanRegister(m_bw, beanName, anno.typed());
