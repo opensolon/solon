@@ -45,7 +45,6 @@ public abstract class SolonServletContextListener implements ServletContextListe
             registration.addMapping("/*");
         });
 
-
         //3.执行Main函数
         Method mainMethod = getMain();
         if (mainMethod != null && Modifier.isStatic(mainMethod.getModifiers())) {
