@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 public class AsmProxy {
-    public static final int ASM_VERSION = Opcodes.ASM8;
+    public static final int ASM_VERSION = Opcodes.ASM9;
     public static final int ASM_JDK_VERSION = Opcodes.V1_8;
 
     // 动态生成代理类的前缀
