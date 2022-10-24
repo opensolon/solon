@@ -17,7 +17,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <java.ver>17</java.ver>
+        <java.ver>19</java.ver>
 
         <solon.ver>1.10.9-M1</solon.ver>
         <snack3.ver>3.2.44</snack3.ver>
