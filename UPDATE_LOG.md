@@ -13,6 +13,8 @@
 * 增加 @Bean + @Mapping(支持限定词) 构建 Handler
 * 增加 router::matchMain 接口
 * 增加 @NotEmpty 对集合的校验支持
+* 升级 pagehelper 为 5.3.1
+* 升级 sqltoy 为 5.2.17
 
 #### 1.10.8
 * 新增 solon.serialization.hessian-lite 插件
@@ -26,7 +28,6 @@
 * 优化 solon.boot.jlhttp 适配，同时修复 302 跳转在 firefox 下特别慢的原因
 * 升级 hessian 为 4.0.66
 * 升级 smart-http 为 1.1.17
-* 升级 pagehelper 为 5.3.1
 
 #### 1.10.7
 * 新增 wood-cloud-plugin 插件
