@@ -33,7 +33,7 @@ public class RouterHandler implements Handler {
             return;
         }
 
-        boolean _handled = false;
+        boolean _mainHandled = false;
         boolean _throwabled = false;
 
         try {
@@ -49,9 +49,12 @@ public class RouterHandler implements Handler {
             //主体处理
             if (ctx.getHandled() == false) {
                 //（仅支持唯一代理）
-                _handled = handleMain(mainHandler, ctx);
                 //（设定处理状态，便于 after 获取状态）
-                ctx.setHandled(_handled);
+                if(mainHandler != null) {
+                    _mainHandled = true;
+                    ctx.setHandled(true);
+                    handleMain(mainHandler, ctx);
+                }
             }
         } catch (Throwable e) {
             _throwabled = true;
@@ -66,7 +69,7 @@ public class RouterHandler implements Handler {
             //汇总状态
             if (_throwabled == false) {
                 if (ctx.status() < 1) {
-                    if (_handled) {
+                    if (_mainHandled) {
                         ctx.status(200);
                     } else {
                         ctx.status(404);
