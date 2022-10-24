@@ -1,11 +1,13 @@
 package org.noear.solon.web.servlet;
 
 import org.noear.solon.Solon;
+import org.noear.solon.Utils;
 import org.noear.solon.core.event.AppInitEndEvent;
 import org.noear.solon.core.event.AppLoadEndEvent;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.ContextPathFilter;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.ServletRegistration;
@@ -18,7 +20,7 @@ import java.lang.reflect.Modifier;
  * @author noear
  * @since 1.10
  */
-public abstract class SolonServletContextListener implements ServletContextListener {
+public class SolonServletContextListener implements ServletContextListener {
     /**
      * 对接 web.xml
      */
@@ -46,13 +48,26 @@ public abstract class SolonServletContextListener implements ServletContextListe
         });
 
         //3.执行Main函数
-        invokeMain(new String[0]);
+        invokeMain(sce.getServletContext(), new String[0]);
     }
 
-    protected void invokeMain(String[] strArgs) throws RuntimeException {
+    /**
+     * 调用主函数（支持主类配置）
+     * */
+    private void invokeMain(ServletContext sc, String[] strArgs) throws RuntimeException {
+        Class<?> mainClass = this.getClass();
+        String mainClassStr = sc.getInitParameter("solonMainClass");
+        if(Utils.isNotEmpty(mainClassStr)) {
+            mainClass = Utils.loadClass(mainClassStr);
+
+            if (mainClass == null) {
+                throw new IllegalStateException("The main class was not found: '" + mainClassStr + "'");
+            }
+        }
+
         Method mainMethod = null;
         try {
-            mainMethod = this.getClass().getMethod("main", String[].class);
+            mainMethod = mainClass.getMethod("main", String[].class);
         } catch (Exception ex) {
             mainMethod = null;
         }
