@@ -1,18 +1,12 @@
 package org.noear.solon.maven.plugin;
 
-import org.apache.commons.compress.archivers.examples.Archiver;
-import org.apache.maven.archiver.MavenArchiver;
 import org.apache.maven.artifact.Artifact;
-import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.plugins.annotations.*;
 import org.apache.maven.project.MavenProject;
-import org.apache.maven.project.MavenProjectHelper;
-import org.codehaus.plexus.archiver.jar.ManifestException;
-import org.codehaus.plexus.archiver.war.WarArchiver;
 import org.noear.solon.maven.plugin.tools.tool.ArtifactsLibraries;
 import org.noear.solon.maven.plugin.tools.tool.Libraries;
 

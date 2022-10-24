@@ -6,7 +6,8 @@ import java.util.Map;
 
 
 /**
- * @author noear 2022/10/7 created
+ * @author noear
+ * @since 1.10
  */
 public class ResponseEntity<T> {
     T body;
