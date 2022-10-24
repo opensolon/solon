@@ -95,9 +95,9 @@ public interface Router {
     Handler matchOne(Context ctx, Endpoint endpoint);
 
     default Handler matchMain(Context ctx) {
-        Handler tmp = ctx.attr("_MainHandler");
-        if (tmp == null) {
-            tmp = matchOne(ctx, Endpoint.main);
+        //不能从缓存里取，不然 pathNew 会有问题
+        Handler tmp = matchOne(ctx, Endpoint.main);
+        if (tmp != null) {
             ctx.attrSet("_MainHandler", tmp);
         }
 
