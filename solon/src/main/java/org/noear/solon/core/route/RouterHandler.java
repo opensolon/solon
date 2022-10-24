@@ -27,50 +27,37 @@ public class RouterHandler implements Handler {
 
 
     @Override
-    public void handle(Context ctx) throws Throwable {
+    public void handle(Context x) throws Throwable {
         //可能上级链已完成处理
-        if (ctx.getHandled()) {
+        if (x.getHandled()) {
             return;
         }
 
-        Handler mainHandler = router.matchMain(ctx);
-        boolean _throwabled = false;
+        Handler mainHandler = router.matchMain(x);
 
         try {
             //预处理 action
             if (mainHandler instanceof Action) {
-                ctx.attrSet("action", mainHandler);
+                x.attrSet("action", mainHandler);
             }
 
             //前置处理（支持多代理）
-            handleMultiple(ctx, Endpoint.before);
+            handleMultiple(x, Endpoint.before);
 
             //主体处理
-            if (ctx.getHandled() == false) {
+            if (x.getHandled() == false) {
                 //（仅支持唯一代理）
                 //（设定处理状态，便于 after 获取状态）
-                ctx.setHandled(handleMain(mainHandler, ctx));
+                x.setHandled(handleMain(mainHandler, x));
             }
         } catch (Throwable e) {
-            _throwabled = true;
-            if (ctx.errors == null) {
-                ctx.errors = e; //如果内部已经做了，就不需要了
+            if (x.errors == null) {
+                x.errors = e; //如果内部已经做了，就不需要了
             }
             throw e;
         } finally {
             //后置处理（支持多代理）
-            handleMultiple(ctx, Endpoint.after); //前后不能反 （后置处理由内部进行状态控制）
-
-            //汇总状态
-            if (_throwabled == false) {
-                if (ctx.status() < 1) {
-                    if (mainHandler != null) {
-                        ctx.status(200);
-                    } else {
-                        ctx.status(404);
-                    }
-                }
-            }
+            handleMultiple(x, Endpoint.after); //前后不能反 （后置处理由内部进行状态控制）
         }
     }
 

@@ -186,7 +186,7 @@ public class ContextEmpty extends Context {
 
     }
 
-    private int status = 0;
+    private int status = 200;
     @Override
     public int status() {
         return status;
