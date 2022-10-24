@@ -16,7 +16,8 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <java.version>1.8</java.version>
+
+        <java.ver>17</java.ver>
 
         <solon.ver>1.10.9-M1</solon.ver>
         <snack3.ver>3.2.44</snack3.ver>
@@ -32,7 +33,7 @@
         <okhttp.ver>3.14.9</okhttp.ver>
         <hutool.ver>5.8.8</hutool.ver>
 
-        <asm.ver>9.4</asm.ver>
+        <asm.ver>9.2</asm.ver>
 
         <servlet.ver>4.0.1</servlet.ver>
 
@@ -1518,8 +1519,8 @@
                 <version>3.8.1</version>
                 <configuration>
                     <compilerArgument>-parameters</compilerArgument>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>${java.ver}</source>
+                    <target>${java.ver}</target>
                     <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>

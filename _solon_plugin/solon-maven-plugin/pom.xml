@@ -29,7 +29,7 @@
         <dependency>
             <groupId>org.apache.maven</groupId>
             <artifactId>maven-plugin-api</artifactId>
-            <version>3.8.4</version>
+            <version>3.8.6</version>
         </dependency>
 
         <dependency>
@@ -41,7 +41,7 @@
         <dependency>
             <groupId>org.apache.maven</groupId>
             <artifactId>maven-core</artifactId>
-            <version>3.2.5</version>
+            <version>3.8.6</version>
         </dependency>
 
         <dependency>
@@ -54,7 +54,7 @@
         <dependency>
             <groupId>org.javassist</groupId>
             <artifactId>javassist</artifactId>
-            <version>3.29.0-GA</version>
+            <version>3.29.2-GA</version>
         </dependency>
 
     </dependencies>
@@ -64,7 +64,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-plugin-plugin</artifactId>
-                <version>3.5.2</version>
+                <version>3.6.4</version>
             </plugin>
         </plugins>
     </build>

@@ -10,6 +10,7 @@
 
 #### 1.10.9
 * 调整 SokcteD 可以不依赖 Nami 运行
+* 插件 sa-token-solon-plugin 优化 SaTokenPathFilter 的实现逻辑
 * 增加 @Bean + @Mapping(支持限定词) 构建 Handler
 * 增加 router::matchMain 接口
 * 增加 @NotEmpty 对集合的校验支持

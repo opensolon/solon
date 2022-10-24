@@ -13,8 +13,8 @@
             <version>3.8.1</version>
             <configuration>
                 <compilerArgument>-parameters</compilerArgument>
-                <source>1.8</source>
-                <target>1.8</target>
+                <source>${java.ver}</source>
+                <target>${java.ver}</target>
                 <encoding>UTF-8</encoding>
             </configuration>
         </plugin>
@@ -46,8 +46,8 @@
             <version>3.8.1</version>
             <configuration>
                 <compilerArgument>-parameters</compilerArgument> 
-                <source>1.8</source>
-                <target>1.8</target>
+                <source>${java.ver}</source>
+                <target>${java.ver}</target>
                 <encoding>UTF-8</encoding>
             </configuration>
         </plugin>

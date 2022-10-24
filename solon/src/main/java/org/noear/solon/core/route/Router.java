@@ -94,8 +94,14 @@ public interface Router {
      */
     Handler matchOne(Context ctx, Endpoint endpoint);
 
-    default Handler matchMain(Context ctx){
-        return matchOne(ctx, Endpoint.main);
+    default Handler matchMain(Context ctx) {
+        Handler tmp = ctx.attr("_MainHandler");
+        if (tmp == null) {
+            tmp = matchOne(ctx, Endpoint.main);
+            ctx.attrSet("_MainHandler", tmp);
+        }
+
+        return tmp;
     }
 
     /**
