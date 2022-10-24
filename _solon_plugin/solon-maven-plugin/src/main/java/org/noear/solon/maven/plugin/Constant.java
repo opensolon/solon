@@ -8,7 +8,9 @@ public class Constant {
 
     public static final String LIB_PATH = "BOOT-INF/lib/";
 
-    public static final String CLASS_PATH = "BOOT-INF/classes";
+    public static final String WAR_LIB_PATH = "WEB-INF/lib/";
+
+    public static final String JAR_CLASS_PATH = "BOOT-INF/classes";
 
     public static final String JAR_TOOL = "Solon-Jar-Build-Tool";
 

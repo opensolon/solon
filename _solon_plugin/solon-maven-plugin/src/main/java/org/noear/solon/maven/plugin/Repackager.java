@@ -32,7 +32,7 @@ public class Repackager {
 
     private Layout layout;
 
-    private Log logger;
+    private final Log logger;
 
     public Repackager(File source, Log logger, String mainClass) throws Exception {
         this.logger = logger;
@@ -277,12 +277,6 @@ public class Repackager {
         if (!file.renameTo(dest)) {
             throw new IllegalStateException(
                     "Unable to rename '" + file + "' to '" + dest + "'");
-        }
-    }
-
-    private void deleteFile(File file) {
-        if (!file.delete()) {
-            throw new IllegalStateException("Unable to delete '" + file + "'");
         }
     }
 

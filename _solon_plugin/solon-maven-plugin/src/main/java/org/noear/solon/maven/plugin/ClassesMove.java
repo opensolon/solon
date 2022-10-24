@@ -8,7 +8,7 @@ import java.util.jar.JarFile;
 import java.util.jar.JarOutputStream;
 import java.util.zip.ZipEntry;
 
-import static org.noear.solon.maven.plugin.Constant.CLASS_PATH;
+import static org.noear.solon.maven.plugin.Constant.JAR_CLASS_PATH;
 
 public class ClassesMove {
 
@@ -28,7 +28,7 @@ public class ClassesMove {
             //删除原来的jar
             deleteFile(file.getAbsolutePath());
 
-            jar(file.getAbsolutePath(),file1);
+            jar(file.getAbsolutePath(), file1);
             //删除历史
             deleteDirectory(file1.getAbsolutePath());
             //打包新的文件
@@ -40,7 +40,7 @@ public class ClassesMove {
     private static void jar(String jarFileName, File f) throws Exception {
         FileOutputStream fileOutputStream = new FileOutputStream(jarFileName);
         JarOutputStream out = new JarOutputStream(fileOutputStream);
-        jar(out, f, CLASS_PATH);
+        jar(out, f, JAR_CLASS_PATH);
         out.flush();
         out.close();
         fileOutputStream.flush();

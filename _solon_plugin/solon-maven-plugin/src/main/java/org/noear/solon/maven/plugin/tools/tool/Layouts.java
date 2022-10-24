@@ -33,7 +33,24 @@ public final class Layouts {
 		if (file.getName().toLowerCase(Locale.ENGLISH).endsWith(".jar")) {
 			return new Jar();
 		}
+		if (file.getName().toLowerCase(Locale.ENGLISH).endsWith(".war")) {
+			return new War();
+		}
 		throw new IllegalStateException("Unable to deduce layout for '" + file + "'");
+	}
+
+
+	public static class War implements RepackagingLayout {
+
+		@Override
+		public String getLibraryDestination(String libraryName, LibraryScope scope) {
+			return Constant.WAR_LIB_PATH;
+		}
+
+		@Override
+		public String getRepackagedClassesLocation() {
+			return "";
+		}
 	}
 
 	/**
