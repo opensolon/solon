@@ -12,8 +12,6 @@ public class Constant {
 
     public static final String JAR_CLASS_PATH = "BOOT-INF/classes";
 
-    public static final String WAR_CLASS_PATH = "";
-
     public static final String JAR_TOOL = "Solon-Jar-Build-Tool";
 
     public static final String JAR_TOOL_VALUE = "Solon-Jar-Plugin";

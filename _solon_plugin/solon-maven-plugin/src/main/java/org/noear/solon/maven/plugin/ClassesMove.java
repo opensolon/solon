@@ -9,8 +9,6 @@ import java.util.jar.JarOutputStream;
 import java.util.zip.ZipEntry;
 
 import static org.noear.solon.maven.plugin.Constant.JAR_CLASS_PATH;
-import static org.noear.solon.maven.plugin.Constant.WAR_CLASS_PATH;
-import static org.noear.solon.maven.plugin.RepackageMojo.PLUGIN_TYPE;
 
 public class ClassesMove {
 
@@ -42,7 +40,7 @@ public class ClassesMove {
     private static void jar(String jarFileName, File f) throws Exception {
         FileOutputStream fileOutputStream = new FileOutputStream(jarFileName);
         JarOutputStream out = new JarOutputStream(fileOutputStream);
-        jar(out, f, PLUGIN_TYPE==PluginType.JAR?JAR_CLASS_PATH:WAR_CLASS_PATH);
+        jar(out, f, JAR_CLASS_PATH);
         out.flush();
         out.close();
         fileOutputStream.flush();

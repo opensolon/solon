@@ -47,7 +47,6 @@ public class RepackageMojo extends AbstractMojo {
 
     public static PluginType PLUGIN_TYPE;
 
-
     private final Log logger = getLog();
 
     @Override
@@ -68,8 +67,7 @@ public class RepackageMojo extends AbstractMojo {
                 }
             } else if ("war".equalsIgnoreCase(packaging)) {
                 PLUGIN_TYPE=PluginType.WAR;
-                //移动数据
-                ClassesMove.change(project.getArtifact().getFile());
+                //默认就是war了
             }
         } else {
             throw new MojoExecutionException("打包方式不是JAR或者WAR类型");
