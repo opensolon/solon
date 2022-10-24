@@ -9,13 +9,14 @@
 
 
 #### 1.10.9
-* 调整 SokcteD 可以不依赖 Nami 运行
 * 插件 sa-token-solon-plugin 优化 SaTokenPathFilter 的实现逻辑
 * 增加 @Bean + @Mapping(支持限定词) 构建 Handler
 * 增加 router::matchMain 接口
-* 增加 @NotEmpty 对集合的校验支持
-* 优化 war 开发与打包，更简洁
-* 优化 请求链路的状态码处理逻辑
+* 增强 @NotEmpty 对集合的校验支持
+* 增强 war 开发与打包能力（更简洁）
+* 调整 SokcteD 可以不依赖 Nami 独立运行
+* 调整 ContextPathFilter 自动补齐'/'结尾（使用时优先级要极高）
+* 调整 请求链路的状态码处理逻辑
 * 升级 pagehelper 为 5.3.1
 * 升级 sqltoy 为 5.2.17
 * 升级 asm 为 9.4 （更好的兼容 jdk19）
