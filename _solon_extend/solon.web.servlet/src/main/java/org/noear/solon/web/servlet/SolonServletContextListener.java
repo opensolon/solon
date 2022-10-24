@@ -46,10 +46,20 @@ public abstract class SolonServletContextListener implements ServletContextListe
         });
 
         //3.执行Main函数
-        Method mainMethod = getMain();
+        invokeMain(new String[0]);
+    }
+
+    protected void invokeMain(String[] strArgs) throws RuntimeException {
+        Method mainMethod = null;
+        try {
+            mainMethod = this.getClass().getMethod("main", String[].class);
+        } catch (Exception ex) {
+            mainMethod = null;
+        }
+
         if (mainMethod != null && Modifier.isStatic(mainMethod.getModifiers())) {
             try {
-                mainMethod.invoke(null, new Object[]{new String[0]});
+                mainMethod.invoke(null, new Object[]{strArgs});
             } catch (Throwable e) {
                 if (e instanceof RuntimeException) {
                     throw (RuntimeException) e;
@@ -59,14 +69,6 @@ public abstract class SolonServletContextListener implements ServletContextListe
             }
         } else {
             throw new IllegalStateException("The main function was not found for: " + this.getClass().getName());
-        }
-    }
-
-    private Method getMain() {
-        try {
-            return this.getClass().getMethod("main", String[].class);
-        } catch (Exception ex) {
-            return null;
         }
     }
 }
