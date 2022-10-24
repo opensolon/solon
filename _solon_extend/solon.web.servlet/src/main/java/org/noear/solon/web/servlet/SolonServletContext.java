@@ -17,6 +17,7 @@ import java.nio.charset.Charset;
 import java.util.*;
 
 /**
+ * SServlet，适配为 Context
  * @author noear
  * @since 1.2
  * */

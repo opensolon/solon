@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
+ * Servlet Filter，适配为 Solon 入口
+ *
  * @author noear
  * @since 1.2
  * */

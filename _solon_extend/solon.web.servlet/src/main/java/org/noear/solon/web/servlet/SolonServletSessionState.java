@@ -8,6 +8,8 @@ import java.util.Collections;
 import java.util.Enumeration;
 
 /**
+ * Servlet，适配为 SessionState 接口
+ *
  * @author noear
  * @since 1.6
  */

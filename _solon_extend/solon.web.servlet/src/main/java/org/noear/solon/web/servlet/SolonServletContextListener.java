@@ -13,7 +13,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
 /**
- * Solon Servlet 容器应用基类
+ * Servlet 上下文监听器（一般做为 Servlet 容器应用的基类）
  *
  * @author noear
  * @since 1.10
