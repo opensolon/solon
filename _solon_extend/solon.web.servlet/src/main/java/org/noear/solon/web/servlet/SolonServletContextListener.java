@@ -56,12 +56,12 @@ public class SolonServletContextListener implements ServletContextListener {
      * */
     private void invokeMain(ServletContext sc, String[] strArgs) throws RuntimeException {
         Class<?> mainClass = this.getClass();
-        String mainClassStr = sc.getInitParameter("solonMainClass");
+        String mainClassStr = sc.getInitParameter("solonStartClass");
         if(Utils.isNotEmpty(mainClassStr)) {
             mainClass = Utils.loadClass(mainClassStr);
 
             if (mainClass == null) {
-                throw new IllegalStateException("The main class was not found: '" + mainClassStr + "'");
+                throw new IllegalStateException("The start class was not found: '" + mainClassStr + "'");
             }
         }
 
