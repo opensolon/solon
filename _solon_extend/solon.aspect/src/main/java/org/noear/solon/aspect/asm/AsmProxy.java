@@ -162,6 +162,7 @@ public class AsmProxy {
      */
     private static void newClass(ClassWriter writer, String newClassName, String targetClassName) throws Exception {
         int access = Opcodes.ACC_PUBLIC | Opcodes.ACC_FINAL;
+
         writer.visit(ASM_JDK_VERSION, access, newClassName, null, targetClassName, null);
     }
 
