@@ -355,7 +355,7 @@ public class SolonApp extends RouterAdapter {
                 new FilterChainNode(filterList()).doFilter(x);
 
                 if (x.getHandled() == false) { //@since: 1.9
-                    if (x.status() < 400) {
+                    if (x.status() == 200 && x.attr("_MainHandler") == null) {//@since: 1.10
                         x.status(404);
                     }
                     //x.setHandled(true);  //todo: 不能加，对websocket有影响

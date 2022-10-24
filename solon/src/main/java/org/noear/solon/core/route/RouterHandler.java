@@ -33,13 +33,12 @@ public class RouterHandler implements Handler {
             return;
         }
 
-        boolean _mainHandled = false;
+        Handler mainHandler = router.matchMain(ctx);
         boolean _throwabled = false;
 
         try {
             //预处理 action
-            Handler mainHandler = router.matchMain(ctx);
-            if(mainHandler instanceof Action){
+            if (mainHandler instanceof Action) {
                 ctx.attrSet("action", mainHandler);
             }
 
@@ -50,11 +49,7 @@ public class RouterHandler implements Handler {
             if (ctx.getHandled() == false) {
                 //（仅支持唯一代理）
                 //（设定处理状态，便于 after 获取状态）
-                if(mainHandler != null) {
-                    _mainHandled = true;
-                    ctx.setHandled(true);
-                    handleMain(mainHandler, ctx);
-                }
+                ctx.setHandled(handleMain(mainHandler, ctx));
             }
         } catch (Throwable e) {
             _throwabled = true;
@@ -69,7 +64,7 @@ public class RouterHandler implements Handler {
             //汇总状态
             if (_throwabled == false) {
                 if (ctx.status() < 1) {
-                    if (_mainHandled) {
+                    if (mainHandler != null) {
                         ctx.status(200);
                     } else {
                         ctx.status(404);
