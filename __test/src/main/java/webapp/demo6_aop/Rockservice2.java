@@ -1,9 +1,8 @@
 package webapp.demo6_aop;
 
-import org.noear.solon.annotation.Bean;
-import org.noear.solon.annotation.Component;
+import org.noear.solon.aspect.annotation.Service;
 
-@Component("rs2")
+@Service("rs2")
 public class Rockservice2 implements Rockapi {
 
     @Override

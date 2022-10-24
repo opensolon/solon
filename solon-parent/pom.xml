@@ -32,7 +32,7 @@
         <okhttp.ver>3.14.9</okhttp.ver>
         <hutool.ver>5.8.8</hutool.ver>
 
-        <asm.ver>9.2</asm.ver>
+        <asm.ver>9.4</asm.ver>
 
         <servlet.ver>4.0.1</servlet.ver>
 

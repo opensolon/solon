@@ -15,6 +15,7 @@
 * 增加 @NotEmpty 对集合的校验支持
 * 升级 pagehelper 为 5.3.1
 * 升级 sqltoy 为 5.2.17
+* 升级 asm 为 9.4
 
 #### 1.10.8
 * 新增 solon.serialization.hessian-lite 插件
