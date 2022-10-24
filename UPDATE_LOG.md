@@ -14,7 +14,7 @@
 * 增加 router::matchMain 接口
 * 增强 @NotEmpty 对集合的校验支持
 * 增强 war 开发与打包能力（更简洁）
-* 调整 SokcteD 可以不依赖 Nami 独立运行
+* 调整 SokcteD 接口可以不依赖 Nami 独立运行
 * 调整 ContextPathFilter 自动补齐'/'结尾（使用时优先级要极高）
 * 调整 请求链路的状态码处理逻辑，避免特殊的404出错
 * 升级 pagehelper 为 5.3.1
