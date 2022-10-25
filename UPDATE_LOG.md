@@ -4,6 +4,8 @@
 * 新增 liteflow-solon-plugin 插件
 * 新增 kubernetes-solon-cloud-plugin 插件
 * 新增 jmdns-solon-cloud-plugin 插件
+* 新增 swagger-solon-plugin 插件
+* 新增 shiro-solon-plugin 插件
 * 调整 运行完成后，提供未注入的对象???
 * 调整 增加线程池公共配置???
 
