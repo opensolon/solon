@@ -16,6 +16,11 @@ public class SmartHttpContextHandler extends HttpServerHandler {
     @Override
     public void handle(HttpRequest request, HttpResponse response) throws IOException {
         try {
+            if ("PRI".equals(request.getMethod())) {
+                response.setHttpStatus(HttpStatus.METHOD_NOT_ALLOWED);
+                return;
+            }
+
             SmartHttpContext ctx = new SmartHttpContext(request, response);
 
             ctx.contentType("text/plain;charset=UTF-8");
