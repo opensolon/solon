@@ -103,7 +103,7 @@ public class MybatisAdapterDefault implements MybatisAdapter {
     }
 
     protected void initDo() {
-        //for typeAliases section
+        //for typeAliases & typeHandlers section
         dsProps.forEach((k, v) -> {
             if (k instanceof String && v instanceof String) {
                 String key = (String) k;
@@ -125,6 +125,26 @@ public class MybatisAdapterDefault implements MybatisAdapter {
                         } else {
                             //package
                             getConfiguration().getTypeAliasRegistry().registerAliases(val);
+                        }
+                    }
+                }
+
+                if (key.startsWith("typeHandlers[") || key.equals("typeHandlers")) {
+                    for (String val : valStr.split(",")) {
+                        val = val.trim();
+                        if (val.length() == 0) {
+                            continue;
+                        }
+
+                        if (val.endsWith(".class")) {
+                            //type class
+                            Class<?> clz = Utils.loadClass(val.substring(0, val.length() - 6));
+                            if (clz != null) {
+                                getConfiguration().getTypeHandlerRegistry().register(clz);
+                            }
+                        } else {
+                            //package
+                            getConfiguration().getTypeHandlerRegistry().register(val);
                         }
                     }
                 }
