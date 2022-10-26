@@ -18,10 +18,11 @@ public final class EventBus {
     private static Map<Object, HH> sOther = new HashMap<>();
 
     /**
-     * 异步推送事件（一般不推荐）
+     * 异步推送事件（一般不推荐）；如果需要异常自己处理
      *
      * @param event 事件（可以是任何对象）
      */
+    @Deprecated
     public static void pushAsyn(Object event) {
         if (event != null) {
             Utils.async(() -> {

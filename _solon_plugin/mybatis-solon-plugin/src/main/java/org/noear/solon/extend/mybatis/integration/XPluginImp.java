@@ -40,11 +40,11 @@ public class XPluginImp implements Plugin {
         }
 
         if (Utils.isEmpty(annoValue)) {
-            wrap.context().getWrapAsyn(DataSource.class, (dsBw) -> {
+            wrap.context().getWrapAsync(DataSource.class, (dsBw) -> {
                 create0(clz, dsBw);
             });
         } else {
-            wrap.context().getWrapAsyn(annoValue, (dsBw) -> {
+            wrap.context().getWrapAsync(annoValue, (dsBw) -> {
                 if (dsBw.raw() instanceof DataSource) {
                     create0(clz, dsBw);
                 }
@@ -54,11 +54,11 @@ public class XPluginImp implements Plugin {
 
     private void injectorAddDo(VarHolder varH, String annoValue) {
         if (Utils.isEmpty(annoValue)) {
-            varH.context().getWrapAsyn(DataSource.class, (dsBw) -> {
+            varH.context().getWrapAsync(DataSource.class, (dsBw) -> {
                 inject0(varH, dsBw);
             });
         } else {
-            varH.context().getWrapAsyn(annoValue, (dsBw) -> {
+            varH.context().getWrapAsync(annoValue, (dsBw) -> {
                 if (dsBw.raw() instanceof DataSource) {
                     inject0(varH, dsBw);
                 }

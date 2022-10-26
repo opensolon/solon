@@ -23,11 +23,11 @@ public class XPluginImp implements Plugin {
     public void start(AopContext context) {
         context.beanInjectorAdd(Db.class, (varH, anno) -> {
             if (Utils.isEmpty(anno.value())) {
-                varH.context().getWrapAsyn(DataSource.class, (dsBw) -> {
+                varH.context().getWrapAsync(DataSource.class, (dsBw) -> {
                     inject0(varH, dsBw);
                 });
             } else {
-                varH.context().getWrapAsyn(anno.value(), (dsBw) -> {
+                varH.context().getWrapAsync(anno.value(), (dsBw) -> {
                     if (dsBw.raw() instanceof DataSource) {
                         inject0(varH, dsBw);
                     }

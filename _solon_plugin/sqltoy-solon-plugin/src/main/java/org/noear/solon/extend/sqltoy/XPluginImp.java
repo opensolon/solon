@@ -47,7 +47,7 @@ public class XPluginImp implements Plugin {
             final SqlToyContext sqlToyContext = new SqlToyContextBuilder(properties, context).build();
 
             if ("solon".equals(properties.getCacheType()) || properties.getCacheType() == null) {
-                context.getWrapAsyn(CacheService.class, bw -> {
+                context.getWrapAsync(CacheService.class, bw -> {
                     sqlToyContext.setTranslateCacheManager(new SolonTranslateCacheManager(bw.get()));
                     try {
                         DbManager.setContext(sqlToyContext);

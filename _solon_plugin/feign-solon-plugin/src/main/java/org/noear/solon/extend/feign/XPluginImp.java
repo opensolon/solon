@@ -50,7 +50,7 @@ public class XPluginImp implements Plugin {
                 FeignTarget target = new FeignTarget(clz, anno.name(), anno.path(), upstream);
                 consumer.accept(builder.target(target));
             } else {
-                ctx.getWrapAsyn(anno.name(), (bw) -> {
+                ctx.getWrapAsync(anno.name(), (bw) -> {
                     LoadBalance tmp = bw.raw();
                     FeignTarget target = new FeignTarget(clz, anno.name(), anno.path(), tmp);
                     consumer.accept(builder.target(target));

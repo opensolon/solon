@@ -20,7 +20,7 @@ public class AuthUtil {
 
     static {
         //如果容器里有，优先用容器的
-        Solon.context().getWrapAsyn(AuthAdapter.class, bw -> {
+        Solon.context().getWrapAsync(AuthAdapter.class, bw -> {
             adapter = bw.raw();
         });
     }

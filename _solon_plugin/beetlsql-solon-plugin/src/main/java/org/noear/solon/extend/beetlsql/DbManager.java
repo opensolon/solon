@@ -119,7 +119,7 @@ public class DbManager {
                 ValHolder<Integer> valHolder = new ValHolder<>(i);
 
                 //todo::此处不能用同步，有些源可能还没构建好 //不过异常，没法检查了
-                bw.context().getWrapAsyn(slaveAry[i], dsBw -> {
+                bw.context().getWrapAsync(slaveAry[i], dsBw -> {
                     slaves[valHolder.value] = dsBw.raw();
                 });
             }

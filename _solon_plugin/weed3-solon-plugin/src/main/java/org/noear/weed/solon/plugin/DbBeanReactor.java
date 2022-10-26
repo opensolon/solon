@@ -20,11 +20,11 @@ public class DbBeanReactor implements BeanBuilder<Db>, BeanInjector<Db> {
         }
 
         if (Utils.isEmpty(anno.value())) {
-            wrap.context().getWrapAsyn(DataSource.class, (dsBw) -> {
+            wrap.context().getWrapAsync(DataSource.class, (dsBw) -> {
                 create0(clz, dsBw);
             });
         } else {
-            wrap.context().getWrapAsyn(anno.value(), (dsBw) -> {
+            wrap.context().getWrapAsync(anno.value(), (dsBw) -> {
                 if (dsBw.raw() instanceof DataSource) {
                     create0(clz, dsBw);
                 }
@@ -35,11 +35,11 @@ public class DbBeanReactor implements BeanBuilder<Db>, BeanInjector<Db> {
     @Override
     public void doInject(VarHolder varH, Db anno) {
         if (Utils.isEmpty(anno.value())) {
-            varH.context().getWrapAsyn(DataSource.class, (dsBw) -> {
+            varH.context().getWrapAsync(DataSource.class, (dsBw) -> {
                 inject0(varH, dsBw);
             });
         } else {
-            varH.context().getWrapAsyn(anno.value(), (dsBw) -> {
+            varH.context().getWrapAsync(anno.value(), (dsBw) -> {
                 if (dsBw.raw() instanceof DataSource) {
                     inject0(varH, dsBw);
                 }

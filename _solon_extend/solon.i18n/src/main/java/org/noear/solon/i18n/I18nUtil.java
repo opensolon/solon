@@ -48,11 +48,11 @@ public class I18nUtil {
     }
 
     static {
-        Solon.context().getWrapAsyn(I18nBundleFactory.class, bw -> {
+        Solon.context().getWrapAsync(I18nBundleFactory.class, bw -> {
             bundleFactory = bw.raw();
         });
 
-        Solon.context().getWrapAsyn(LocaleResolver.class, bw -> {
+        Solon.context().getWrapAsync(LocaleResolver.class, bw -> {
             localeResolver = bw.raw();
         });
     }

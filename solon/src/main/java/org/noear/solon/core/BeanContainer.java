@@ -310,7 +310,11 @@ public abstract class BeanContainer {
         }
     }
 
+    @Deprecated
     public void getWrapAsyn(Object nameOrType, Consumer<BeanWrap> callback) {
+        getWrapAsync(nameOrType, callback);
+    }
+    public void getWrapAsync(Object nameOrType, Consumer<BeanWrap> callback) {
         BeanWrap bw = getWrap(nameOrType);
 
         if (bw == null || bw.raw() == null) {
@@ -397,13 +401,23 @@ public abstract class BeanContainer {
         return wrapAndPut(type).get();
     }
 
+    @Deprecated
+    public <T> void getBeanAsyn(String name, Consumer<T> callback) {
+        getBeanAsync(name, callback);
+    }
+
+    @Deprecated
+    public <T> void getBeanAsyn(Class<T> type, Consumer<T> callback) {
+        getBeanAsync(type, callback);
+    }
+
     /**
      * 异步获取 Bean
      *
      * @param name 名字
      * */
-    public <T> void getBeanAsyn(String name, Consumer<T> callback) {
-        getWrapAsyn(name, (bw) -> {
+    public <T> void getBeanAsync(String name, Consumer<T> callback) {
+        getWrapAsync(name, (bw) -> {
             callback.accept(bw.get());
         });
     }
@@ -413,8 +427,8 @@ public abstract class BeanContainer {
      *
      * @param type 类型
      * */
-    public <T> void getBeanAsyn(Class<T> type, Consumer<T> callback) {
-        getWrapAsyn(type, (bw) -> {
+    public <T> void getBeanAsync(Class<T> type, Consumer<T> callback) {
+        getWrapAsync(type, (bw) -> {
             callback.accept(bw.get());
         });
     }
@@ -572,11 +586,11 @@ public abstract class BeanContainer {
 
             if(varH.getGenericType() != null){
                 //如果是泛型
-                getWrapAsyn(varH.getGenericType().getTypeName(), (bw) -> {
+                getWrapAsync(varH.getGenericType().getTypeName(), (bw) -> {
                     varH.setValue(bw.get());
                 });
             }else{
-                getWrapAsyn(varH.getType(), (bw) -> {
+                getWrapAsync(varH.getType(), (bw) -> {
                     varH.setValue(bw.get());
                 });
             }
@@ -624,7 +638,7 @@ public abstract class BeanContainer {
             //
             // @Inject("xxx") //使用 name, 注入BEAN
             //
-            getWrapAsyn(name, (bw) -> {
+            getWrapAsync(name, (bw) -> {
                 if(BeanWrap.class.isAssignableFrom(varH.getType())){
                     varH.setValue(bw);
                 }else{

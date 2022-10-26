@@ -17,7 +17,7 @@ public class Spans {
     private static Tracer tracer;
 
     static {
-        Solon.context().getWrapAsyn(Tracer.class, bw -> {
+        Solon.context().getWrapAsync(Tracer.class, bw -> {
             tracer = bw.raw();
         });
     }

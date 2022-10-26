@@ -39,7 +39,7 @@ public class MybatisAdapterPlus extends MybatisAdapterDefault {
 
         this.factoryBuilderPlus = new MybatisSqlSessionFactoryBuilder();
 
-        dsWrap.context().getWrapAsyn(MybatisSqlSessionFactoryBuilder.class, bw -> {
+        dsWrap.context().getWrapAsync(MybatisSqlSessionFactoryBuilder.class, bw -> {
             factoryBuilderPlus = bw.raw();
         });
     }

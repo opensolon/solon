@@ -23,11 +23,11 @@ class DbInjector implements BeanInjector<Db> {
     public void doInject(VarHolder varH, Db anno) {
         String v = anno.value();
         if (v.equals("")) {
-            varH.context().getWrapAsyn(DataSource.class, bw -> {
+            varH.context().getWrapAsync(DataSource.class, bw -> {
                 inject(bw.get(), varH);
             });
         } else {
-            varH.context().getWrapAsyn(v, bw -> {
+            varH.context().getWrapAsync(v, bw -> {
                 inject(bw.get(), varH);
             });
         }
@@ -41,7 +41,7 @@ class DbInjector implements BeanInjector<Db> {
             return;
         }
 
-        varH.context().getWrapAsyn(SqlToyContext.class, bw -> {
+        varH.context().getWrapAsync(SqlToyContext.class, bw -> {
             if (type.equals(SqlToyLazyDao.class)) {
                 varH.setValue(DbManager.getDao(dataSource));
                 return;

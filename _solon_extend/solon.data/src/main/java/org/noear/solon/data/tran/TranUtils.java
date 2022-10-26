@@ -20,7 +20,7 @@ import java.sql.SQLException;
 public class TranUtils {
     private static TranExecutor executor = ()->false;
     static {
-        Solon.context().getWrapAsyn(TranExecutor.class, bw -> executor = bw.raw());
+        Solon.context().getWrapAsync(TranExecutor.class, bw -> executor = bw.raw());
     }
 
     /**

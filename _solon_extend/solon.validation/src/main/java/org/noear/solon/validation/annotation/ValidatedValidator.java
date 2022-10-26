@@ -17,7 +17,7 @@ public class ValidatedValidator implements Validator<Validated> {
     private BeanValidator validator = new BeanValidatorDefault();
 
     public ValidatedValidator() {
-        Solon.context().getWrapAsyn(BeanValidator.class, bw -> {
+        Solon.context().getWrapAsync(BeanValidator.class, bw -> {
             validator = bw.get();
         });
     }

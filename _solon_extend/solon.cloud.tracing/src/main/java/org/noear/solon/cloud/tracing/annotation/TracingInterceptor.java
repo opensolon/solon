@@ -17,7 +17,7 @@ public class TracingInterceptor implements Interceptor {
     private Tracer tracer;
 
     public TracingInterceptor() {
-        Solon.context().getWrapAsyn(Tracer.class, bw -> {
+        Solon.context().getWrapAsync(Tracer.class, bw -> {
             tracer = bw.raw();
         });
     }

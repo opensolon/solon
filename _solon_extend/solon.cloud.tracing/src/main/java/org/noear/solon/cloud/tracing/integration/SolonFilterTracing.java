@@ -29,7 +29,7 @@ public class SolonFilterTracing implements Filter {
 
     public SolonFilterTracing(String excluded) {
         //跟踪器注入
-        Solon.context().getWrapAsyn(Tracer.class, bw -> {
+        Solon.context().getWrapAsync(Tracer.class, bw -> {
             tracer = bw.raw();
         });
 

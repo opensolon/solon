@@ -113,7 +113,7 @@ public class Aop {
      * @param name bean name
      */
     public static void getAsyn(String name, Consumer<BeanWrap> callback) {
-        Solon.context().getWrapAsyn(name, callback);
+        Solon.context().getWrapAsync(name, callback);
     }
 
     /**
@@ -122,7 +122,7 @@ public class Aop {
      * @param type bean type
      */
     public static void getAsyn(Class<?> type, Consumer<BeanWrap> callback) { //FieldWrapTmp fwT,
-        Solon.context().getWrapAsyn(type, callback);
+        Solon.context().getWrapAsync(type, callback);
     }
 
 

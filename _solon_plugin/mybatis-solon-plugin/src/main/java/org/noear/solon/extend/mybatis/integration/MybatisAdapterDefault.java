@@ -87,7 +87,7 @@ public class MybatisAdapterDefault implements MybatisAdapter {
         //2.初始化（顺序不能乱）
         initDo();
 
-        dsWrap.context().getWrapAsyn(SqlSessionFactoryBuilder.class, bw -> {
+        dsWrap.context().getWrapAsync(SqlSessionFactoryBuilder.class, bw -> {
             factoryBuilder = bw.raw();
         });
     }

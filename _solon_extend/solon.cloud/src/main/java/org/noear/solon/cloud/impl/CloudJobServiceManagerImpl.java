@@ -15,7 +15,7 @@ public class CloudJobServiceManagerImpl implements CloudJobServiceManager {
 
     public CloudJobServiceManagerImpl(CloudJobService service) {
         this.service = service;
-        Solon.context().getWrapAsyn(CloudJobInterceptor.class, bw -> {
+        Solon.context().getWrapAsync(CloudJobInterceptor.class, bw -> {
             jobInterceptor = bw.get();
         });
     }

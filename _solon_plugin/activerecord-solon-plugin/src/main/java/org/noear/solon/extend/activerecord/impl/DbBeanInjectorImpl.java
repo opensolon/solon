@@ -17,11 +17,11 @@ public class DbBeanInjectorImpl implements BeanInjector<Db> {
     @Override
     public void doInject(VarHolder varH, Db anno) {
         if (Utils.isEmpty(anno.value())) {
-            varH.context().getWrapAsyn(DataSource.class, (dsBw) -> {
+            varH.context().getWrapAsync(DataSource.class, (dsBw) -> {
                 this.injectDo(varH, anno.value());
             });
         } else {
-            varH.context().getWrapAsyn(anno.value(), (dsBw) -> {
+            varH.context().getWrapAsync(anno.value(), (dsBw) -> {
                 this.injectDo(varH, anno.value());
             });
         }

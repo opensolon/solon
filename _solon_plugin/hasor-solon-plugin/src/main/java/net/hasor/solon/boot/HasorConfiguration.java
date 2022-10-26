@@ -49,7 +49,7 @@ public class HasorConfiguration implements EventListener<BeanLoadEndEvent> {
         // 处理startWith
         for (Class<? extends Module> startWith : enableHasor.startWith()) {
             if(startWith.getAnnotations().length > 0) {
-                context.getWrapAsyn(startWith, (bw) -> {
+                context.getWrapAsync(startWith, (bw) -> {
                     buildConfig.addModules(bw.get());
                 });
             }else{
