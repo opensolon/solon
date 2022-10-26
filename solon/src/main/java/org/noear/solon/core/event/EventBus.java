@@ -24,6 +24,15 @@ public final class EventBus {
      */
     @Deprecated
     public static void pushAsyn(Object event) {
+        pushAsync(event);
+    }
+
+    /**
+     * 异步推送事件（一般不推荐）；
+     *
+     * @param event 事件（可以是任何对象）
+     */
+    public static void pushAsync(Object event) {
         if (event != null) {
             Utils.async(() -> {
                 push0(event);
