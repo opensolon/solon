@@ -9,6 +9,10 @@
 * 调整 运行完成后，提供未注入的对象???
 * 调整 增加线程池公共配置???
 
+#### 1.10.10
+
+* 调整 getBeanAsyn, getWarpAsyn 为弃用
+* 新增 getBeanAsync,getWarpAsync
 
 #### 1.10.9
 * 插件 sa-token-solon-plugin 优化 SaTokenPathFilter 的实现逻辑
