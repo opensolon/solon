@@ -58,13 +58,10 @@ public class VarHolderOfField implements VarHolder {
     }
 
     @Override
-    public AnnotatedElement getElement(){
-        return fw.field;
+    public String getFullName() {
+        return fw.entityClz.getName() + "::" + fw.field.getName();
     }
 
-    public Class<?> getDeclaringClass(){
-        return fw.entityClz;
-    }
 
     /**
      * 设置字段的值

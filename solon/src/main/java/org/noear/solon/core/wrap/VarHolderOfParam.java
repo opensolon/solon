@@ -4,10 +4,7 @@ import org.noear.solon.core.AopContext;
 import org.noear.solon.core.VarHolder;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.AnnotatedElement;
-import java.lang.reflect.Parameter;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
+import java.lang.reflect.*;
 
 /**
  * 参数变量容器 临时对象
@@ -66,15 +63,10 @@ public class VarHolderOfParam implements VarHolder {
     }
 
     @Override
-    public AnnotatedElement getElement() {
-        return p;
+    public String getFullName() {
+        Executable e = p.getDeclaringExecutable();
+        return e.getDeclaringClass().getName() + "::" + e.getName() + "::" + p.getName();
     }
-
-    @Override
-    public Class<?> getDeclaringClass() {
-        return p.getDeclaringExecutable().getDeclaringClass();
-    }
-
 
     @Override
     public void setValue(Object val) {

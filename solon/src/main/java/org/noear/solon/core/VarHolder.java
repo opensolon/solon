@@ -1,7 +1,6 @@
 package org.noear.solon.core;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.ParameterizedType;
 
 /**
@@ -38,14 +37,9 @@ public interface VarHolder {
     Annotation[] getAnnoS();
 
     /**
-     * 目标
+     * 获取完成名字
      * */
-    AnnotatedElement getElement();
-
-    /**
-     * 目标申明类
-     * */
-    Class<?> getDeclaringClass();
+    String getFullName();
 
     /**
      * 设值
