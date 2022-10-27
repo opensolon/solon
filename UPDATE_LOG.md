@@ -16,6 +16,7 @@
 * 插件 mybatis-solon-plugin 增加对 typeHandlers 配置节的支持
 * 调整 AopContext::getBeanAsyn, AopContext::getWarpAsyn, EventBus::pushAsyn 为弃用
 * 新增 AopContext::getBeanAsync,AopContext::getWarpAsync,EventBus::pushAsync
+* 增加 注入异常时，显示目标详情
 * 升级 snack3 为 3.2.45
 
 #### 1.10.9
