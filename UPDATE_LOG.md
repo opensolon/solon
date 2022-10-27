@@ -11,9 +11,10 @@
 
 #### 1.10.10
 * 插件 solon.sessionstate.jwt 增加实体设置支持，并支持自动类型回转（自定义了序列化）
+* 插件 solon.boot.smarthttp 对 PRI 请求输出 501 状态码
+* 插件 mybatis-solon-plugin 增加对 typeHandlers 配置节的支持
 * 调整 getBeanAsyn, getWarpAsyn 为弃用
 * 新增 getBeanAsync,getWarpAsync
-* 调整 solon.boot.smarthttp 对 PRI 请求输出 501 状态码
 * 升级 snack3 为 3.2.45
 
 #### 1.10.9
