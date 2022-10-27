@@ -28,7 +28,7 @@ import java.util.function.Predicate;
 public abstract class BeanContainer {
     private final Props props;
     private final ClassLoader classLoader;
-    private Map<Class<?>,Object> attrs = new HashMap<>();
+    private Map<Class<?>, Object> attrs = new HashMap<>();
 
 
     public BeanContainer(ClassLoader classLoader, Props props) {
@@ -38,7 +38,7 @@ public abstract class BeanContainer {
 
     /**
      * 获取属性
-     * */
+     */
     public Props getProps() {
         if (props == null) {
             return Solon.cfg();
@@ -49,14 +49,14 @@ public abstract class BeanContainer {
 
     /**
      * 获取特性
-     * */
+     */
     public Map<Class<?>, Object> getAttrs() {
         return attrs;
     }
 
     /**
      * 获取类加载器
-     * */
+     */
     public ClassLoader getClassLoader() {
         if (classLoader == null) {
             return JarClassLoader.global();
@@ -99,22 +99,21 @@ public abstract class BeanContainer {
     protected final Map<Class<?>, BeanExtractor<?>> beanExtractors = new HashMap<>();
     /**
      * bean 拦截器
-     * */
+     */
     protected final Map<Class<?>, InterceptorEntity> beanInterceptors = new HashMap<>();
-
 
 
     /**
      * bean 订阅者
      */
-    protected final Map<Object,Set<Consumer<BeanWrap>>> beanSubscribers = new HashMap<>();
+    protected final Map<Object, Set<Consumer<BeanWrap>>> beanSubscribers = new HashMap<>();
     /**
      * wrap 外部消费者
      */
     protected final Set<Consumer<BeanWrap>> wrapExternalConsumers = new LinkedHashSet<>();
 
 
-    public void clear(){
+    public void clear() {
         beanWraps.clear();
         beanWrapSet.clear();
         beans.clear();
@@ -134,7 +133,7 @@ public abstract class BeanContainer {
 
     /**
      * 容器能力制复到另一个容器
-     * */
+     */
     public void copyTo(BeanContainer container) {
         beanBuilders.forEach((k, v) -> {
             container.beanBuilders.putIfAbsent(k, v);
@@ -164,14 +163,14 @@ public abstract class BeanContainer {
 
     /**
      * 添加注入处理
-     * */
+     */
     public <T extends Annotation> void beanInjectorAdd(Class<T> anno, BeanInjector<T> injector) {
         beanInjectors.put(anno, injector);
     }
 
     /**
      * 添加提取处理
-     * */
+     */
     public <T extends Annotation> void beanExtractorAdd(Class<T> anno, BeanExtractor<T> extractor) {
         beanExtractors.put(anno, extractor);
     }
@@ -180,22 +179,22 @@ public abstract class BeanContainer {
      * 添加环绕处理
      *
      * @param index 执行顺序
-     * */
+     */
     public <T extends Annotation> void beanAroundAdd(Class<T> anno, Interceptor interceptor, int index) {
         beanInterceptors.put(anno, new InterceptorEntity(index, interceptor));
     }
 
     /**
      * 添加环绕处理
-     * */
+     */
     public <T extends Annotation> void beanAroundAdd(Class<T> anno, Interceptor interceptor) {
         beanAroundAdd(anno, interceptor, 0);
     }
 
     /**
      * 获取环绕处理
-     * */
-    public <T extends Annotation> InterceptorEntity beanAroundGet(Class<T> anno){
+     */
+    public <T extends Annotation> InterceptorEntity beanAroundGet(Class<T> anno) {
         return beanInterceptors.get(anno);
     }
 
@@ -205,6 +204,7 @@ public abstract class BeanContainer {
     // bean 对内通知体系
     //
     /////////////////////////
+
     /**
      * bean 订阅
      */
@@ -223,7 +223,7 @@ public abstract class BeanContainer {
 
     /**
      * wrap 外部订阅
-     * */
+     */
     protected void wrapExternalSubscribe(Consumer<BeanWrap> callback) {
         wrapExternalConsumers.add(callback);
     }
@@ -249,8 +249,8 @@ public abstract class BeanContainer {
 
     /**
      * wrap 发布，偏向对外 （只支持 @Bean 和 @Component 的 wrap）
-     * */
-    protected void wrapPublish(BeanWrap wrap){
+     */
+    protected void wrapPublish(BeanWrap wrap) {
         //避免在forEach时，对它进行add
         new ArrayList<>(wrapExternalConsumers).forEach(s1 -> {
             s1.accept(wrap);
@@ -314,6 +314,7 @@ public abstract class BeanContainer {
     public void getWrapAsyn(Object nameOrType, Consumer<BeanWrap> callback) {
         getWrapAsync(nameOrType, callback);
     }
+
     public void getWrapAsync(Object nameOrType, Consumer<BeanWrap> callback) {
         BeanWrap bw = getWrap(nameOrType);
 
@@ -329,7 +330,7 @@ public abstract class BeanContainer {
      *
      * @param baseType 基类
      * @deprecated 1.10
-     * */
+     */
     @Deprecated
     public void subWrap(Class<?> baseType, Consumer<BeanWrap> callback) {
         subWrapsOfType(baseType, callback);
@@ -339,7 +340,7 @@ public abstract class BeanContainer {
      * 订阅某类型的 bean 包装
      *
      * @param baseType 基类
-     * */
+     */
     public void subWrapsOfType(Class<?> baseType, Consumer<BeanWrap> callback) {
         wrapExternalSubscribe((e) -> {
             if (baseType.isAssignableFrom(e.clz())) {
@@ -358,7 +359,7 @@ public abstract class BeanContainer {
      * 获取 Bean
      *
      * @param name 名字
-     * */
+     */
     public <T> T getBean(String name) {
         BeanWrap bw = getWrap(name);
         return bw == null ? null : bw.get();
@@ -368,7 +369,7 @@ public abstract class BeanContainer {
      * 获取 Bean
      *
      * @param type 类型
-     * */
+     */
     public <T> T getBean(Class<T> type) {
         BeanWrap bw = getWrap(type);
         return bw == null ? null : bw.get();
@@ -379,7 +380,7 @@ public abstract class BeanContainer {
      * 获取某类型的 bean
      *
      * @param baseType 基类
-     * */
+     */
     public <T> List<T> getBeansOfType(Class<T> baseType) {
         List<T> beans = new ArrayList<>();
 
@@ -396,8 +397,8 @@ public abstract class BeanContainer {
      * 获取 或创建 bean
      *
      * @param type 类型
-     * */
-    public <T> T getBeanOrNew(Class<T> type){
+     */
+    public <T> T getBeanOrNew(Class<T> type) {
         return wrapAndPut(type).get();
     }
 
@@ -415,7 +416,7 @@ public abstract class BeanContainer {
      * 异步获取 Bean
      *
      * @param name 名字
-     * */
+     */
     public <T> void getBeanAsync(String name, Consumer<T> callback) {
         getWrapAsync(name, (bw) -> {
             callback.accept(bw.get());
@@ -426,7 +427,7 @@ public abstract class BeanContainer {
      * 异步获取 Bean
      *
      * @param type 类型
-     * */
+     */
     public <T> void getBeanAsync(Class<T> type, Consumer<T> callback) {
         getWrapAsync(type, (bw) -> {
             callback.accept(bw.get());
@@ -438,7 +439,7 @@ public abstract class BeanContainer {
      *
      * @param baseType 基类
      * @deprecated 1.10
-     * */
+     */
     @Deprecated
     public <T> void subBean(Class<T> baseType, Consumer<T> callback) {
         subBeansOfType(baseType, callback);
@@ -448,7 +449,7 @@ public abstract class BeanContainer {
      * 订阅某类型的 Bean
      *
      * @param baseType 基类
-     * */
+     */
     public <T> void subBeansOfType(Class<T> baseType, Consumer<T> callback) {
         subWrapsOfType(baseType, (bw) -> {
             callback.accept(bw.get());
@@ -467,6 +468,7 @@ public abstract class BeanContainer {
 
         return wrap;
     }
+
     /**
      * 包装
      */
@@ -481,14 +483,14 @@ public abstract class BeanContainer {
 
     /**
      * 包装并推入
-     * */
+     */
     public BeanWrap wrapAndPut(Class<?> type) {
         return wrapAndPut(type, null);
     }
 
     /**
      * 包装并推入
-     * */
+     */
     public BeanWrap wrapAndPut(Class<?> type, Object bean) {
         BeanWrap wrap = getWrap(type);
         if (wrap == null) {
@@ -543,7 +545,7 @@ public abstract class BeanContainer {
 
     /**
      * 尝试Bean的基类注册
-     * */
+     */
     protected void beanRegisterSup0(BeanWrap bw) {
         //如果有父级接口，则建立关系映射
         Class<?>[] list = bw.clz().getInterfaces();
@@ -571,10 +573,20 @@ public abstract class BeanContainer {
      * @param name 名字（bean name || config ${name}）
      */
     public void beanInject(VarHolder varH, String name) {
-        beanInject(varH, name, false,false);
+        beanInject(varH, name, false, false);
     }
 
     protected void beanInject(VarHolder varH, String name, boolean required, boolean autoRefreshed) {
+        try {
+            beanInjectDo(varH, name, required, autoRefreshed);
+        } catch (InjectionException e) {
+            throw e;
+        } catch (Throwable e) {
+            throw new InjectionException("Injection failed: " + varH.getFullName(), e);
+        }
+    }
+
+    private void beanInjectDo(VarHolder varH, String name, boolean required, boolean autoRefreshed) {
         if (Utils.isEmpty(name)) {
             //
             // @Inject //使用 type, 注入BEAN
