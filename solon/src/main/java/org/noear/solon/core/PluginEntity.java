@@ -30,6 +30,9 @@ public class PluginEntity {
      */
     private Plugin plugin;
 
+    /**
+     * 插件属性（申明插件类与优先级）
+     * */
     private Properties props;
 
     public PluginEntity(ClassLoader classLoader, String className, Properties props) {
