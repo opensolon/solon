@@ -581,7 +581,7 @@ public abstract class BeanContainer {
             //
             if(varH.getType() == null) { //检查类型问题
                 if (required) {
-                    throw new InjectionException("Invalid type injection: " + varH.getFullName());
+                    throw new InjectionException("Unrecognized type，injection failed: " + varH.getFullName());
                 } else {
                     return;
                 }
