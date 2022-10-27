@@ -17,7 +17,7 @@ public class SmartHttpContextHandler extends HttpServerHandler {
     public void handle(HttpRequest request, HttpResponse response) throws IOException {
         try {
             if ("PRI".equals(request.getMethod())) {
-                response.setHttpStatus(HttpStatus.METHOD_NOT_ALLOWED);
+                response.setHttpStatus(HttpStatus.NOT_IMPLEMENTED);
                 return;
             }
 
