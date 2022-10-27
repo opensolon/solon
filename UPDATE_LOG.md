@@ -13,7 +13,7 @@
 * 插件 solon.sessionstate.jwt 增加实体设置支持，并支持自动类型回转（自定义了序列化）
 * 调整 getBeanAsyn, getWarpAsyn 为弃用
 * 新增 getBeanAsync,getWarpAsync
-* 调整 solon.boot.smarthttp 对 RPI 请求输出 501 状态码
+* 调整 solon.boot.smarthttp 对 PRI 请求输出 501 状态码
 * 升级 snack3 为 3.2.45
 
 #### 1.10.9
