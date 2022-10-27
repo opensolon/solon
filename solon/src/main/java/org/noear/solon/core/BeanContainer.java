@@ -7,12 +7,12 @@ import org.noear.solon.annotation.Inject;
 import org.noear.solon.annotation.Note;
 import org.noear.solon.core.aspect.Interceptor;
 import org.noear.solon.core.aspect.InterceptorEntity;
+import org.noear.solon.core.exception.InjectionException;
 import org.noear.solon.core.handle.HandlerLoader;
 import org.noear.solon.core.util.ConvertUtil;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
+import java.lang.reflect.*;
 import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.BiPredicate;
@@ -579,6 +579,19 @@ public abstract class BeanContainer {
             //
             // @Inject //使用 type, 注入BEAN
             //
+            if(varH.getType() == null) {
+                //检查类型问题
+                if (varH.isField()) {
+                    Field field = (Field) varH.getElement();
+
+                    throw new InjectionException("Field injection failed: " + varH.getDeclaringClass().getName() + "::" + field.getName());
+                } else {
+                    Parameter param = (Parameter) varH.getElement();
+                    Executable executable = param.getDeclaringExecutable();
+                    throw new InjectionException("Parameter injection failed: " + varH.getDeclaringClass().getName() + "::" + executable.getName() + "::" + param.getName());
+                }
+            }
+
             if(AopContext.class.isAssignableFrom(varH.getType())){
                 varH.setValue(this);
                 return;
