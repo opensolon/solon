@@ -48,16 +48,6 @@ public class PluginPackage {
             //进行优先级顺排（数值要倒排）
             //
             plugins.sort(Comparator.comparingInt(PluginEntity::getPriority).reversed());
-
-            //尝试加载插件配置
-            //
-            plugins.forEach(pe -> {
-                if (pe.getProps().size() > 1) {
-                    context.getProps().loadAdd(pe.getProps());
-                    context.getProps().remove("solon.plugin");
-                    context.getProps().remove("solon.plugin.priority");
-                }
-            });
         }
     }
 
