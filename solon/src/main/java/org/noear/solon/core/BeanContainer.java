@@ -48,6 +48,13 @@ public abstract class BeanContainer {
     }
 
     /**
+     * 添加属性
+     * */
+    public void addProps(String resourceName) {
+        getProps().loadAdd(classLoader.getResource(resourceName));
+    }
+
+    /**
      * 获取特性
      */
     public Map<Class<?>, Object> getAttrs() {
