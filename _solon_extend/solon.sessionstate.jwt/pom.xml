@@ -15,7 +15,7 @@
     <packaging>jar</packaging>
 
     <properties>
-        <jjwt.ver>0.11.2</jjwt.ver>
+        <jjwt.ver>0.11.5</jjwt.ver>
     </properties>
 
 
@@ -23,6 +23,11 @@
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon.boot</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>snack3</artifactId>
         </dependency>
 
         <dependency>
@@ -38,9 +43,14 @@
         </dependency>
 
         <dependency>
-            <groupId>io.jsonwebtoken</groupId>
-            <artifactId>jjwt-orgjson</artifactId>
-            <version>${jjwt.ver}</version>
+            <groupId>org.noear</groupId>
+            <artifactId>solon-api</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon-test</artifactId>
+            <scope>test</scope>
         </dependency>
 
     </dependencies>

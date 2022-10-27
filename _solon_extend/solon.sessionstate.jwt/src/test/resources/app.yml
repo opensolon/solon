@@ -1,0 +1,6 @@
+#Jwt 令牌变量名；（可不配，默认：TOKEN）
+server.session.state.jwt.name: "TOKEN"
+#Jwt 密钥（使用 JwtUtils.createKey() 生成）；（可不配，默认：xxx）
+server.session.state.jwt.secret: "E3F9N2kRDQf55pnJPnFoo5+ylKmZQ7AXmWeOVPKbEd8="
+#Jwt 充许使用Header传递；（可不配，默认：使用 Cookie 传递）；true，则使用 header 传递
+server.session.state.jwt.allowUseHeader: false

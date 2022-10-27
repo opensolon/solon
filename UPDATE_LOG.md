@@ -13,6 +13,8 @@
 
 * 调整 getBeanAsyn, getWarpAsyn 为弃用
 * 新增 getBeanAsync,getWarpAsync
+* 插件 solon.sessionstate.jwt 增加实体设置支持，并支持自动类型回转（自定义了序列化）
+* 升级 snack3 为 3.2.45
 
 #### 1.10.9
 * 插件 sa-token-solon-plugin 优化 SaTokenPathFilter 的实现逻辑
