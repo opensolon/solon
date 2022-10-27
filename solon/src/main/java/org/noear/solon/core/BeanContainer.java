@@ -579,9 +579,12 @@ public abstract class BeanContainer {
             //
             // @Inject //使用 type, 注入BEAN
             //
-            if(varH.getType() == null) {
-                //检查类型问题
-                throw new InjectionException("Type injection failed: " + varH.getFullName());
+            if(varH.getType() == null) { //检查类型问题
+                if (required) {
+                    throw new InjectionException("Invalid type injection: " + varH.getFullName());
+                } else {
+                    return;
+                }
             }
 
             if(AopContext.class.isAssignableFrom(varH.getType())){
