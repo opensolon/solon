@@ -19,9 +19,14 @@ import java.util.function.Function;
  * @since 1.0
  * */
 public class Props extends Properties {
-
+    private ClassLoader classLoader;
     public Props() {
         super();
+    }
+
+    public Props(ClassLoader classLoader) {
+        super();
+        this.classLoader = classLoader;
     }
 
     public Props(Properties defaults) {
@@ -282,6 +287,19 @@ public class Props extends Properties {
     }
 
     ////
+
+    /**
+     * 加载配置（用于扩展加载）
+     *
+     * @param url 配置地址
+     */
+    public void loadAdd(String url) {
+        if (classLoader == null) {
+            loadAdd(Utils.getResource(url));
+        } else {
+            loadAdd(Utils.getResource(classLoader, url));
+        }
+    }
 
     /**
      * 加载配置（用于扩展加载）

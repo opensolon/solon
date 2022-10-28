@@ -224,15 +224,6 @@ public final class SolonProps extends Props {
     /**
      * 加载配置（用于扩展加载）
      *
-     * @param url 配置地址
-     */
-    public void loadAdd(String url) {
-         loadAdd(Utils.getResource(url));
-    }
-
-    /**
-     * 加载配置（用于扩展加载）
-     *
      * @param props 配置地址
      */
     @Override

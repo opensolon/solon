@@ -42,7 +42,7 @@ public class PluginPackage {
         this.file = file;
         this.plugins = plugins;
         this.classLoader = classLoader;
-        this.context = Solon.context().copy(classLoader, new Props());
+        this.context = Solon.context().copy(classLoader, new Props(classLoader));
 
         if (plugins.size() > 0) {
             //进行优先级顺排（数值要倒排）
