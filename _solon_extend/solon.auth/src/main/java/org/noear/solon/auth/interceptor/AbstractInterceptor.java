@@ -22,7 +22,7 @@ public abstract class AbstractInterceptor<T extends Annotation> implements Inter
         T anno = inv.method().getAnnotation(type());
 
         if (anno == null) {
-            anno = inv.method().getMethod().getDeclaringClass().getAnnotation(type());
+            anno = inv.target().getClass().getAnnotation(type());
         }
 
         if (anno != null) {
