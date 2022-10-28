@@ -9,6 +9,7 @@ import org.noear.solon.core.util.ConsumerEx;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.*;
 
 /**
@@ -129,6 +130,11 @@ public class HandlerLoader extends HandlerAide {
 
         //只支持 public 函数为 Action
         for (Method method : bw.clz().getDeclaredMethods()) {
+            //只允许 public
+            if(Modifier.isPublic(method.getModifiers()) == false){
+                continue;
+            }
+
             m_map = method.getAnnotation(Mapping.class);
             m_index = 0;
             m_method = new HashSet<>();

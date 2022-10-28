@@ -267,7 +267,7 @@ public abstract class BeanContainer {
      * @param wrap 如果raw为null，拒绝注册
      */
     public synchronized void putWrap(String name, BeanWrap wrap) {
-        if (Utils.isEmpty(name) == false && wrap.raw() != null) {
+        if (Utils.isNotEmpty(name) && wrap.raw() != null) {
             if (beans.containsKey(name) == false) {
                 beans.put(name, wrap);
                 beanNotice(name, wrap);
