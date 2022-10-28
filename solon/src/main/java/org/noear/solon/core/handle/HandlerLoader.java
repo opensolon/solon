@@ -136,17 +136,19 @@ public class HandlerLoader extends HandlerAide {
         int m_index = 0;
 
 
-
         //只支持 public 函数为 Action
         for (Method method : findMethods(bw.clz())) {
-            //只允许 public
-            if(Modifier.isPublic(method.getModifiers()) == false){
-                continue;
-            }
-
             m_map = method.getAnnotation(Mapping.class);
             m_index = 0;
             m_method = new HashSet<>();
+
+
+            //如果没有注解，则只允许 public
+            if (m_map == null) {
+                if (Modifier.isPublic(method.getModifiers()) == false) {
+                    continue;
+                }
+            }
 
             //获取 action 的methodTypes
             MethodTypeUtil.findAndFill(m_method, t -> method.getAnnotation(t) != null);

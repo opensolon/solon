@@ -18,6 +18,7 @@
 * 新增 AopContext::getBeanAsync,AopContext::getWarpAsync,EventBus::pushAsync
 * 增加 注入异常时，显示目标详情
 * 增加 HandlerLoader::findMethods 可重写
+* 提示 Action 只有当前类申明的公有函数才被接受（即 getDeclaredMethods）
 * 调整 solon.hotplug 取消直接加载插件配置为属性的机制；以保持 AopContext 统一处理机的制
 * 升级 snack3 为 3.2.45
 
