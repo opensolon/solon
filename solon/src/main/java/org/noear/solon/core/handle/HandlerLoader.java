@@ -109,6 +109,13 @@ public class HandlerLoader extends HandlerAide {
         slots.add(bMapping, v0, handler);
     }
 
+    /**
+     * 查找 method
+     * */
+    protected Method[] findMethods(Class<?> clz){
+        return clz.getDeclaredMethods();
+    }
+
 
     /**
      * 加载 Action 处理
@@ -128,8 +135,10 @@ public class HandlerLoader extends HandlerAide {
         Mapping m_map;
         int m_index = 0;
 
+
+
         //只支持 public 函数为 Action
-        for (Method method : bw.clz().getDeclaredMethods()) {
+        for (Method method : findMethods(bw.clz())) {
             //只允许 public
             if(Modifier.isPublic(method.getModifiers()) == false){
                 continue;
