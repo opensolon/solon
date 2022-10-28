@@ -142,7 +142,6 @@ public class HandlerLoader extends HandlerAide {
             m_index = 0;
             m_method = new HashSet<>();
 
-
             //如果没有注解，则只允许 public
             if (m_map == null) {
                 if (Modifier.isPublic(method.getModifiers()) == false) {
@@ -150,7 +149,7 @@ public class HandlerLoader extends HandlerAide {
                 }
             }
 
-            //获取 action 的methodTypes
+            //获取 action 的 methodTypes
             MethodTypeUtil.findAndFill(m_method, t -> method.getAnnotation(t) != null);
 
             //构建path and method
