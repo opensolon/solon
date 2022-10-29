@@ -24,7 +24,6 @@
         <module>../../_solon_render/solon.serialization.jackson</module>
         <module>../../_solon_render/solon.serialization.gson</module>
         <module>../../_solon_render/solon.serialization.hessian</module>
-        <module>../../_solon_render/solon.serialization.hessian-lite</module>
         <module>../../_solon_render/solon.serialization.protostuff</module>
 
         <module>../../_solon_render/solon.view.freemarker</module>
