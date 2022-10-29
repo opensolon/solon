@@ -466,7 +466,9 @@ public class Utils {
     public static String getResourceAsString(ClassLoader classLoader, String name, String charset) throws IOException {
         URL url = getResource(classLoader, name);
         if (url != null) {
-            return transferToString(url.openStream(), charset);
+            try (InputStream in = url.openStream()) {
+                return transferToString(in, charset);
+            }
         } else {
             return null;
         }

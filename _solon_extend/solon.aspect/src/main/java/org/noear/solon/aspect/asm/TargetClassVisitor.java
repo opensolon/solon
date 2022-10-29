@@ -6,6 +6,9 @@ import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,14 +19,17 @@ public class TargetClassVisitor extends ClassVisitor {
     private List<MethodBean> declaredMethods = new ArrayList<>();
     private List<MethodBean> constructors = new ArrayList<>();
 
-    public TargetClassVisitor() {
+    private final ClassLoader classLoader;
+
+    public TargetClassVisitor(ClassLoader classLoader) {
         super(AsmProxy.ASM_VERSION);
+        this.classLoader = classLoader;
     }
 
     @Override
     public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
         super.visit(version, access, name, signature, superName, interfaces);
-        if ((access & Opcodes.ACC_FINAL) == Opcodes.ACC_FINAL){
+        if ((access & Opcodes.ACC_FINAL) == Opcodes.ACC_FINAL) {
             isFinal = true;
         }
         if (superName != null) {
@@ -84,11 +90,20 @@ public class TargetClassVisitor extends ClassVisitor {
         return constructors;
     }
 
-    private List<MethodBean> initMethodBeanByParent(String superName){
+    private List<MethodBean> initMethodBeanByParent(String superName) {
         try {
-            if (superName != null && !superName.isEmpty()){
-                ClassReader reader = new ClassReader(superName);
-                TargetClassVisitor visitor = new TargetClassVisitor();
+            if (superName != null && !superName.isEmpty()) {
+                URL superNameUrl = classLoader.getSystemResource(superName.replace('.', '/') + ".class");
+                if (superNameUrl == null) {
+                    throw new IOException("Class not found: " + superName);
+                }
+
+                ClassReader reader;
+                try (InputStream in = superNameUrl.openStream()) {
+                    reader = new ClassReader(in);
+                }
+
+                TargetClassVisitor visitor = new TargetClassVisitor(classLoader);
                 reader.accept(visitor, ClassReader.SKIP_DEBUG);
                 List<MethodBean> beans = new ArrayList<>();
                 for (MethodBean methodBean : visitor.methods) {
@@ -104,9 +119,10 @@ public class TargetClassVisitor extends ClassVisitor {
                 }
                 return beans;
             }
-        }catch (Exception ex) {
+        } catch (Exception ex) {
             EventBus.push(ex);
         }
+
         return null;
     }
 }

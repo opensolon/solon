@@ -84,7 +84,7 @@ public class AsmProxy {
                 reader = new ClassReader(resourceStream);
             }
 
-            TargetClassVisitor targetClassVisitor = new TargetClassVisitor();
+            TargetClassVisitor targetClassVisitor = new TargetClassVisitor(classLoader);
             reader.accept(targetClassVisitor, ClassReader.SKIP_DEBUG);
             // 判断是否是FINAL的
             if (targetClassVisitor.isFinal()) {
