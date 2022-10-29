@@ -22,6 +22,7 @@
 * 调整 solon.hotplug 取消直接加载插件配置为属性的机制；以保持 AopContext 统一处理机的制
 * 调整 solon.serialization.hessian 改依赖为 sofa-hessian
 * 调整 nami.coder.hessian 改依赖为 sofa-hessian
+* 调整 solon.aspect 增强对热插拨的支持
 * 升级 snack3 为 3.2.45
 
 #### 1.10.9
