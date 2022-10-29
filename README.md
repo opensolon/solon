@@ -86,7 +86,7 @@ Solon for java
 <parent>
     <groupId>org.noear</groupId>
     <artifactId>solon-parent</artifactId>
-    <version>1.10.10-M3</version>
+    <version>1.10.10-M4</version>
 </parent>
 
 <dependencies>
