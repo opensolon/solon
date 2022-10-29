@@ -29,11 +29,14 @@ public class TargetClassVisitor extends ClassVisitor {
     @Override
     public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
         super.visit(version, access, name, signature, superName, interfaces);
+
         if ((access & Opcodes.ACC_FINAL) == Opcodes.ACC_FINAL) {
             isFinal = true;
         }
+
         if (superName != null) {
             List<MethodBean> beans = initMethodBeanByParent(superName);
+
             if (beans != null && !beans.isEmpty()) {
                 for (MethodBean bean : beans) {
                     if (!methods.contains(bean)) {
