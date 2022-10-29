@@ -23,9 +23,9 @@
         </dependency>
 
         <dependency>
-            <groupId>com.caucho</groupId>
+            <groupId>com.alipay.sofa</groupId>
             <artifactId>hessian</artifactId>
-            <version>${hessian.ver}</version>
+            <version>${hessian-sofa.ver}</version>
         </dependency>
     </dependencies>
 
