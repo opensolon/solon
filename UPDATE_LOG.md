@@ -28,6 +28,7 @@
 * 升级 enjoy 为 5.0.3
 * 升级 activerecord 为 5.0.3
 * 升级 beetlsql 为 3.19.2-RELEASE
+* 升级 sa-token 为 1.32.0
 
 #### 1.10.9
 * 插件 sa-token-solon-plugin 优化 SaTokenPathFilter 的实现逻辑
