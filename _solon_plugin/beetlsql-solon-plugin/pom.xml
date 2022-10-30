@@ -24,21 +24,19 @@
         <dependency>
             <groupId>com.ibeetl</groupId>
             <artifactId>beetlsql</artifactId>
-            <version>3.18.0-RELEASE</version>
+            <version>3.19.2-RELEASE</version>
         </dependency>
 
         <!-- test -->
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon-lib</artifactId>
-            <version>1.10.10-M4</version>
             <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon-test</artifactId>
-            <version>1.10.10-M4</version>
             <scope>test</scope>
         </dependency>
 
