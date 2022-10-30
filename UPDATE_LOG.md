@@ -15,7 +15,7 @@
 * 插件 solon.boot.smarthttp 对 PRI 请求输出 501 状态码
 * 插件 mybatis-solon-plugin 增加对 typeHandlers 配置节的支持
 * 调整 AopContext::getBeanAsyn, AopContext::getWarpAsyn, EventBus::pushAsyn 为弃用
-* 新增 AopContext::getBeanAsync,AopContext::getWarpAsync,EventBus::pushAsync
+* 增加 AopContext::getBeanAsync,AopContext::getWarpAsync,EventBus::pushAsync
 * 增加 注入异常时，显示目标详情
 * 增加 ASM 代理失败时，显示目标详情
 * 增加 HandlerLoader::findMethods 可重写
