@@ -165,7 +165,7 @@ public class HandlerLoader extends HandlerAide {
                 m_path = method.getName();
 
                 if (m_method.size() == 0) {
-                    //获取 controller 的methodTypes
+                    //获取 controller 的 methodTypes
                     MethodTypeUtil.findAndFill(m_method, t -> bw.clz().getAnnotation(t) != null);
                 }
 
