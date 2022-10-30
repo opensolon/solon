@@ -21,9 +21,9 @@
 * 增加 HandlerLoader::findMethods 可重写
 * 提示 Action 只有当前类申明的公有函数才被接受（即 getDeclaredMethods）
 * 调整 solon.hotplug 取消直接加载插件配置为属性的机制；以保持 AopContext 统一处理机的制
+* 调整 solon.aspect 增强对热插拨的代理类支持
 * 调整 solon.serialization.hessian 改依赖为 sofa-hessian
 * 调整 nami.coder.hessian 改依赖为 sofa-hessian
-* 调整 solon.aspect 增强对热插拨的代理类支持
 * 升级 snack3 为 3.2.45
 * 升级 enjoy 为 5.0.3
 * 升级 activerecord 为 5.0.3
