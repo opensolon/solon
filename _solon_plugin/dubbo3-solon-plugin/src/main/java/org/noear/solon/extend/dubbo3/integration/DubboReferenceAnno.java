@@ -368,6 +368,11 @@ public class DubboReferenceAnno implements DubboReference, Reference {
     }
 
     @Override
+    public int providerPort() {
+        return anno.providerPort();
+    }
+
+    @Override
     public String scope() {
         return anno.scope();
     }
@@ -375,6 +380,11 @@ public class DubboReferenceAnno implements DubboReference, Reference {
     @Override
     public boolean referAsync() {
         return anno.referAsync();
+    }
+
+    @Override
+    public boolean unloadClusterRelated() {
+        return anno.unloadClusterRelated();
     }
 
     @Override
