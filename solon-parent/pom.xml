@@ -59,7 +59,7 @@
         <hikaricp.ver>4.0.3</hikaricp.ver>
 
         <slf4j.ver>1.7.36</slf4j.ver>
-        <log4j.ver>2.18.0</log4j.ver>
+        <log4j.ver>2.19.0</log4j.ver>
         <logback.ver>1.2.11</logback.ver>
 
         <netty.ver>4.1.68.Final</netty.ver>
@@ -74,9 +74,9 @@
         <protobuf.ver>3.19.4</protobuf.ver>
         <grpc.ver>1.49.0</grpc.ver>
         <dubbo2.ver>2.7.5</dubbo2.ver>
-        <dubbo3.ver>3.0.11</dubbo3.ver>
+        <dubbo3.ver>3.1.1</dubbo3.ver>
         <nacos1.ver>1.4.4</nacos1.ver>
-        <nacos2.ver>2.1.1</nacos2.ver>
+        <nacos2.ver>2.1.2</nacos2.ver>
     </properties>
 
 
