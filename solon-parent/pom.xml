@@ -6,7 +6,7 @@
 
     <groupId>org.noear</groupId>
     <artifactId>solon-parent</artifactId>
-    <version>1.10.10-M4</version>
+    <version>1.10.10</version>
     <packaging>pom</packaging>
 
     <name>${project.artifactId}</name>
@@ -19,7 +19,7 @@
 
         <java.ver>1.8</java.ver>
 
-        <solon.ver>1.10.10-M4</solon.ver>
+        <solon.ver>1.10.10</solon.ver>
         <snack3.ver>3.2.45</snack3.ver>
         <weed3.ver>3.4.31</weed3.ver>
         <wood.ver>1.0.1</wood.ver>
@@ -29,9 +29,9 @@
         <redisson.ver>3.17.0</redisson.ver>
 
         <fastjson.ver>1.2.83</fastjson.ver>
-        <fastjson2.ver>2.0.15</fastjson2.ver>
+        <fastjson2.ver>2.0.17</fastjson2.ver>
         <okhttp.ver>3.14.9</okhttp.ver>
-        <hutool.ver>5.8.8</hutool.ver>
+        <hutool.ver>5.8.9</hutool.ver>
 
         <asm.ver>9.4</asm.ver>
 
@@ -45,16 +45,16 @@
         <swagger.ver>1.6.2</swagger.ver>
 
         <jackson.ver>2.13.3</jackson.ver>
-        <gson.ver>2.9.0</gson.ver>
+        <gson.ver>2.10</gson.ver>
         <hessian.ver>4.0.66</hessian.ver>
         <hessian-sofa.ver>4.0.4</hessian-sofa.ver>
-        <protostuff.ver>1.7.4</protostuff.ver>
+        <protostuff.ver>1.8.0</protostuff.ver>
 
         <junit4.ver>4.13.1</junit4.ver>
         <junit5.ver>5.8.2</junit5.ver>
         <mockito.ver>3.3.3</mockito.ver>
 
-        <mybatis.ver>3.5.10</mybatis.ver>
+        <mybatis.ver>3.5.11</mybatis.ver>
 
         <hikaricp.ver>4.0.3</hikaricp.ver>
 
