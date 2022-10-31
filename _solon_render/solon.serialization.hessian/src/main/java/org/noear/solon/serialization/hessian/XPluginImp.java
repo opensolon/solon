@@ -16,7 +16,7 @@ public class XPluginImp implements Plugin {
 
         HessianRender render = new HessianRender();
 
-        //XRenderManager.register(render);
+        //RenderManager.register(render);
         RenderManager.mapping("@hessian",render);
 
         //支持 hessian 内容类型执行

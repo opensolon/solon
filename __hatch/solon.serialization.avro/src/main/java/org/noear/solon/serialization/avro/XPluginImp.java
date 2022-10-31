@@ -13,7 +13,7 @@ public class XPluginImp implements Plugin {
     public void start(AopContext context) {
         output_meta = Solon.cfg().getInt("solon.output.meta", 0) > 0;
 
-        //XRenderManager.register(render);
+        //RenderManager.register(render);
         RenderManager.mapping("@avro", new AvroStringRender());
     }
 }
