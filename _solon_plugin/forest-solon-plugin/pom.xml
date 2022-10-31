@@ -29,6 +29,12 @@
 
         <dependency>
             <groupId>org.noear</groupId>
+            <artifactId>solon.serialization.jackson</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.noear</groupId>
             <artifactId>solon-test</artifactId>
             <scope>test</scope>
         </dependency>
