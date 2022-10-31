@@ -10,6 +10,10 @@
 * 调整 增加线程池公共配置???
 * 增加 更多友好的异常分类???
 
+#### 1.10.11
+* 插件 solon.serialization.fastjson，调整 FastjsonRenderFactory 默认去掉 DisableCircularReferenceDetect 特性
+* 插件 solon.serialization.fastjson2，调整 Fastjson2RenderFactory 默认去掉 DisableCircularReferenceDetect 特性
+
 #### 1.10.10
 * 插件 solon.sessionstate.jwt 增加实体设置支持，并支持自动类型回转（自定义了序列化）
 * 插件 solon.boot.smarthttp 对 PRI 请求输出 501 状态码
