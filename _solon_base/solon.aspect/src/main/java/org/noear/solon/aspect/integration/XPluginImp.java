@@ -28,28 +28,5 @@ public class XPluginImp implements Plugin {
 
             AspectUtil.binding(bw, beanName, anno.typed());
         });
-
-        //兼容处理
-        startOld(context);
-    }
-
-    private void startOld(AopContext context) {
-        context.beanBuilderAdd(org.noear.solon.extend.aspect.annotation.Dao.class, (clz, bw, anno) -> {
-            String beanName = Utils.annoAlias(anno.value(), anno.name());
-
-            AspectUtil.binding(bw, beanName, anno.typed());
-        });
-
-        context.beanBuilderAdd(org.noear.solon.extend.aspect.annotation.Service.class, (clz, bw, anno) -> {
-            String beanName = Utils.annoAlias(anno.value(), anno.name());
-
-            AspectUtil.binding(bw, beanName, anno.typed());
-        });
-
-        context.beanBuilderAdd(org.noear.solon.extend.aspect.annotation.Repository.class, (clz, bw, anno) -> {
-            String beanName = Utils.annoAlias(anno.value(), anno.name());
-
-            AspectUtil.binding(bw, beanName, anno.typed());
-        });
     }
 }
