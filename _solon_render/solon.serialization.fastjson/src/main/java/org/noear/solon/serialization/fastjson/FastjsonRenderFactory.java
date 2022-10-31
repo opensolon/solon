@@ -24,7 +24,6 @@ public class FastjsonRenderFactory extends FastjsonRenderFactoryBase {
     private FastjsonRenderFactory() {
         features = new HashSet<>();
         features.add(SerializerFeature.BrowserCompatible);
-        features.add(SerializerFeature.DisableCircularReferenceDetect);
     }
 
     @Override

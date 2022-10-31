@@ -5,6 +5,7 @@ import okhttp3.internal.Util;
 import okio.BufferedSink;
 import okio.Okio;
 import okio.Source;
+import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.core.LoadBalance;
@@ -652,7 +653,7 @@ public class HttpUtils {
 
     public static String urlEncode(String s) {
         try {
-            return URLEncoder.encode(s, "UTF-8");
+            return URLEncoder.encode(s, Solon.encoding());
         } catch (UnsupportedEncodingException e) {
             throw new UnsupportedOperationException(e);
         }

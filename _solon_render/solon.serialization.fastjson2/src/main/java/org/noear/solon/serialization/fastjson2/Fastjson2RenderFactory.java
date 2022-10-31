@@ -25,7 +25,6 @@ public class Fastjson2RenderFactory extends Fastjson2RenderFactoryBase {
     private Fastjson2RenderFactory() {
         features = new HashSet<>();
         features.add(JSONWriter.Feature.BrowserCompatible);
-        features.add(JSONWriter.Feature.ReferenceDetection);
     }
 
     @Override
