@@ -53,7 +53,6 @@
         <module>../../_solon_plugin_cloud/grpc-solon-cloud-plugin</module>
 
 
-
         <module>../../_solon_plugin_cloud/pulsar-solon-cloud-plugin</module>
 
         <module>../../_solon_plugin_cloud/kubernetes-solon-cloud-plugin</module>

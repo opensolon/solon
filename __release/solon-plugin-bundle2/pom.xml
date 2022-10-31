@@ -28,13 +28,9 @@
         <module>../../_solon_plugin/liteflow-solon-plugin</module>
         <module>../../_solon_plugin/dynamic-tp-solon-plugin</module>
 
-        <!--        <module>../../_solon_plugin/hazelcast-solon-plugin</module>-->
-
-
         <module>../../_solon_plugin/easypoi-solon-plugin</module>
         <module>../../_solon_plugin/easypoi-web-solon</module>
         <module>../../_solon_plugin/easypoi-wps-solon</module>
-
 
         <module>../../_solon_plugin/swagger-solon-plugin</module>
     </modules>
