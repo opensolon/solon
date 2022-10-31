@@ -1,6 +1,8 @@
 package webapp;
 
+import org.noear.snack.core.Feature;
 import org.noear.solon.Solon;
+import org.noear.solon.serialization.snack3.SnackRenderFactory;
 
 /**
  * @author noear 2022/7/5 created
@@ -18,6 +20,16 @@ public class Test1App {
                 }
 
                 chain.doFilter(ctx);
+            });
+
+            app.onEvent(SnackRenderFactory.class, factory -> {
+                factory.setFeatures(Feature.OrderedField,
+                        Feature.WriteDateUseTicks,
+                        Feature.TransferCompatible,
+                        Feature.StringNullAsEmpty,
+                        Feature.QuoteFieldNames,
+                        Feature.SerializeNulls,
+                        Feature.BrowserCompatible);
             });
         });
     }

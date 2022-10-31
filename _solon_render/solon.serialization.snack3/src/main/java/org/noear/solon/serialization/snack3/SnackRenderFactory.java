@@ -15,7 +15,8 @@ public class SnackRenderFactory extends SnackRenderFactoryBase {
     public static final SnackRenderFactory global = new SnackRenderFactory();
 
     private final Options config;
-    private SnackRenderFactory(){
+
+    private SnackRenderFactory() {
         config = Options.def();
     }
 
@@ -31,8 +32,22 @@ public class SnackRenderFactory extends SnackRenderFactoryBase {
 
     /**
      * 重新设置特性
-     * */
+     */
     public void setFeatures(Feature... features) {
         config.setFeatures(features);
+    }
+
+    /**
+     * 添加特性
+     * */
+    public void addFeatures(Feature... features) {
+        config.add(features);
+    }
+
+    /**
+     * 移除特性
+     * */
+    public void removeFeatures(Feature... features) {
+        config.remove(features);
     }
 }

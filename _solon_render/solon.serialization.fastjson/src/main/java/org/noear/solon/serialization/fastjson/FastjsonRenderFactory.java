@@ -5,6 +5,10 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 import org.noear.solon.core.handle.Render;
 import org.noear.solon.serialization.StringSerializerRender;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Json 渲染器工厂
  *
@@ -15,18 +19,17 @@ public class FastjsonRenderFactory extends FastjsonRenderFactoryBase {
     public static final FastjsonRenderFactory global = new FastjsonRenderFactory();
 
     private SerializeConfig config;
-    private SerializerFeature[] features;
+    private Set<SerializerFeature> features;
 
-    private FastjsonRenderFactory(){
-        features = new SerializerFeature[]{
-                SerializerFeature.BrowserCompatible,
-                SerializerFeature.DisableCircularReferenceDetect
-        };
+    private FastjsonRenderFactory() {
+        features = new HashSet<>();
+        features.add(SerializerFeature.BrowserCompatible);
+        features.add(SerializerFeature.DisableCircularReferenceDetect);
     }
 
     @Override
     public Render create() {
-        return new StringSerializerRender(false, new FastjsonSerializer(config, features));
+        return new StringSerializerRender(false, new FastjsonSerializer(config, features.toArray(new SerializerFeature[features.size()])));
     }
 
     @Override
@@ -40,8 +43,23 @@ public class FastjsonRenderFactory extends FastjsonRenderFactoryBase {
 
     /**
      * 重新设置特性
-     * */
+     */
     public void setFeatures(SerializerFeature... features) {
-        this.features = features;
+        this.features.clear();
+        this.features.addAll(Arrays.asList(features));
+    }
+
+    /**
+     * 添加特性
+     * */
+    public void addFeatures(SerializerFeature... features) {
+        this.features.addAll(Arrays.asList(features));
+    }
+
+    /**
+     * 移除特性
+     * */
+    public void removeFeatures(SerializerFeature... features) {
+        this.features.removeAll(Arrays.asList(features));
     }
 }
