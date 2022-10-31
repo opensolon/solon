@@ -6,10 +6,10 @@ import org.noear.solon.web.servlet.SolonServletInstaller;
 import javax.servlet.*;
 import java.util.*;
 
-public class UtContainerInitializerProxy implements ServletContainerInitializer {
+public class UtContainerInitializer implements ServletContainerInitializer {
     SolonServletInstaller initializer;
 
-    public UtContainerInitializerProxy() {
+    public UtContainerInitializer() {
         initializer = new SolonServletInstaller();
     }
 
@@ -19,6 +19,6 @@ public class UtContainerInitializerProxy implements ServletContainerInitializer 
     }
 
     public static ServletContainerInitializerInfo info() {
-        return new ServletContainerInitializerInfo(UtContainerInitializerProxy.class, null);
+        return new ServletContainerInitializerInfo(UtContainerInitializer.class, null);
     }
 }

@@ -5,7 +5,7 @@ import io.undertow.servlet.util.DefaultClassIntrospector;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerProps;
-import org.noear.solon.boot.undertow.http.UtContainerInitializerProxy;
+import org.noear.solon.boot.undertow.http.UtContainerInitializer;
 
 import javax.servlet.MultipartConfigElement;
 import java.io.FileNotFoundException;
@@ -25,7 +25,7 @@ abstract class UndertowServerBase {
                 .setClassIntrospecter(DefaultClassIntrospector.INSTANCE);
 
         //添加容器初始器
-        builder.addServletContainerInitializer(UtContainerInitializerProxy.info());
+        builder.addServletContainerInitializer(UtContainerInitializer.info());
         builder.setEagerFilterInit(true);
 
         if (ServerProps.session_timeout > 0) {

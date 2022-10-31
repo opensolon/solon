@@ -10,7 +10,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerConstants;
 import org.noear.solon.boot.ServerProps;
-import org.noear.solon.boot.jetty.http.JtContainerInitializerProxy;
+import org.noear.solon.boot.jetty.http.JtContainerInitializer;
 import org.noear.solon.boot.jetty.http.JtHttpContextHandler;
 import org.noear.solon.boot.jetty.http.JtHttpContextServletHandler;
 
@@ -83,7 +83,7 @@ class JettyServerBase {
         }
 
         //添加容器初始器
-        handler.addLifeCycleListener(new JtContainerInitializerProxy(handler.getServletContext()));
+        handler.addLifeCycleListener(new JtContainerInitializer(handler.getServletContext()));
 
         return handler;
     }
