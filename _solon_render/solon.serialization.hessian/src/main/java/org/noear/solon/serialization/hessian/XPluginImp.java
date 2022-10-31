@@ -1,10 +1,10 @@
 package org.noear.solon.serialization.hessian;
 
 import org.noear.solon.Solon;
-import org.noear.solon.SolonApp;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Bridge;
 import org.noear.solon.core.Plugin;
+import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.RenderManager;
 
 public class XPluginImp implements Plugin {
@@ -18,6 +18,11 @@ public class XPluginImp implements Plugin {
 
         //XRenderManager.register(render);
         RenderManager.mapping("@hessian",render);
-        Bridge.actionExecutorAdd(new HessianActionExecutor());
+
+        //支持 hessian 内容类型执行
+        HessianActionExecutor executor = new HessianActionExecutor();
+        EventBus.push(executor);
+
+        Bridge.actionExecutorAdd(executor);
     }
 }

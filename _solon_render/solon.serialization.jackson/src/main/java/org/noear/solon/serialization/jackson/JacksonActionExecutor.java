@@ -13,8 +13,6 @@ import java.util.Collection;
 import java.util.List;
 
 public class JacksonActionExecutor extends ActionExecutorDefault {
-    static final JacksonActionExecutor global = new JacksonActionExecutor();
-
     private static final String label = "/json";
 
     private final ObjectMapper mapper_type = new ObjectMapper();

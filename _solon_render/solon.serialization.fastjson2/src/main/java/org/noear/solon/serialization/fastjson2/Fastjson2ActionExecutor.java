@@ -1,9 +1,6 @@
-package org.noear.solon.serialization.fastjson;
+package org.noear.solon.serialization.fastjson2;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.parser.ParserConfig;
+import com.alibaba.fastjson2.*;
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.ActionExecutorDefault;
 import org.noear.solon.core.handle.Context;
@@ -18,19 +15,14 @@ import java.util.List;
  *
  * @author noear
  * @author 夜の孤城
- * @since 1.5
- */
-public class FastjsonJsonActionExecutor extends ActionExecutorDefault {
-    static final FastjsonJsonActionExecutor global = new FastjsonJsonActionExecutor();
-
+ * @author 暮城留风
+ * @since 1.9
+ * */
+public class Fastjson2ActionExecutor extends ActionExecutorDefault {
     private static final String label = "/json";
 
-    private final ParserConfig config = ParserConfig.getGlobalInstance();
-
-    /**
-     * 反序列化配置
-     * */
-    public ParserConfig config(){
+    private final JSONReader.Context config = JSONFactory.createReadContext();
+    public JSONReader.Context config(){
         return config;
     }
 
@@ -48,7 +40,7 @@ public class FastjsonJsonActionExecutor extends ActionExecutorDefault {
         String json = ctx.bodyNew();
 
         if (Utils.isNotEmpty(json)) {
-            return JSON.parse(json);
+            return JSON.parse(json, config);
         } else {
             return null;
         }
@@ -93,9 +85,9 @@ public class FastjsonJsonActionExecutor extends ActionExecutorDefault {
                     //支持泛型的转换 如：Map<T>
                     ParameterizedType gp=p.getGenericType();
                     if(gp!=null){
-                        return tmp.toJavaObject(gp);
+                        return tmp.to(gp);
                     }
-                    return tmp.toJavaObject(pt);
+                    return tmp.to(pt);
                    // return tmp.toJavaObject(pt);
                 }
             }
@@ -111,10 +103,10 @@ public class FastjsonJsonActionExecutor extends ActionExecutorDefault {
             ParameterizedType gp = p.getGenericType();
             if (gp != null) {
                 //转换带泛型的集合
-                return  tmp.toJavaObject(gp);
+                return  tmp.to(gp);
             }
             //不仅可以转换为List 还可以转换成Set
-            return tmp.toJavaObject(p.getType());
+            return tmp.to(p.getType());
         }
 
         return bodyObj;

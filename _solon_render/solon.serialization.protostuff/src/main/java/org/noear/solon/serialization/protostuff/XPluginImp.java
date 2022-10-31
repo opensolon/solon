@@ -1,10 +1,10 @@
 package org.noear.solon.serialization.protostuff;
 
 import org.noear.solon.Solon;
-import org.noear.solon.SolonApp;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Bridge;
 import org.noear.solon.core.Plugin;
+import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.RenderManager;
 
 /**
@@ -20,6 +20,11 @@ public class XPluginImp implements Plugin {
         ProtostuffRender render = new ProtostuffRender();
 
         RenderManager.mapping("@protobuf",render);
-        Bridge.actionExecutorAdd(new ProtostuffActionExecutor());
+
+        //支持 protostuff 内容类型执行
+        ProtostuffActionExecutor executor = new ProtostuffActionExecutor();
+        EventBus.push(executor);
+
+        Bridge.actionExecutorAdd(executor);
     }
 }

@@ -20,9 +20,10 @@ public class XPluginImp implements Plugin {
         RenderManager.mapping("@json", JacksonRenderFactory.global.create());
         RenderManager.mapping("@type_json", JacksonRenderTypedFactory.global.create());
 
-        //支持Json内容类型执行
-        EventBus.push(JacksonActionExecutor.global);
+        //支持 json 内容类型执行
+        JacksonActionExecutor executor = new JacksonActionExecutor();
+        EventBus.push(executor);
 
-        Bridge.actionExecutorAdd(JacksonActionExecutor.global);
+        Bridge.actionExecutorAdd(executor);
     }
 }

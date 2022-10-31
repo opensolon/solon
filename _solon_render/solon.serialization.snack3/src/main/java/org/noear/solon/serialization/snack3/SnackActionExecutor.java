@@ -17,8 +17,8 @@ import java.util.List;
  * @author noear
  * @since 1.0
  * */
-public class SnackJsonActionExecutor extends ActionExecutorDefault {
-    static final SnackJsonActionExecutor global = new SnackJsonActionExecutor();
+public class SnackActionExecutor extends ActionExecutorDefault {
+    static final SnackActionExecutor global = new SnackActionExecutor();
 
     private static final String label = "/json";
 

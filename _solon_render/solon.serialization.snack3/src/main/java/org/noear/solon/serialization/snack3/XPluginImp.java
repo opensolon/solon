@@ -20,9 +20,9 @@ public class XPluginImp implements Plugin {
         RenderManager.mapping("@json", SnackRenderFactory.global.create());
         RenderManager.mapping("@type_json", SnackRenderTypedFactory.global.create());
 
-        //支持Json内容类型执行
-        EventBus.push(SnackJsonActionExecutor.global);
+        //支持 json 内容类型执行
+        EventBus.push(SnackActionExecutor.global);
 
-        Bridge.actionExecutorAdd(SnackJsonActionExecutor.global);
+        Bridge.actionExecutorAdd(SnackActionExecutor.global);
     }
 }
