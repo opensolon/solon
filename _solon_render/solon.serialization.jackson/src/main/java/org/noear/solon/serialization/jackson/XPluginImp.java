@@ -21,6 +21,8 @@ public class XPluginImp implements Plugin {
         RenderManager.mapping("@type_json", JacksonRenderTypedFactory.global.create());
 
         //支持Json内容类型执行
-        Bridge.actionExecutorAdd(new JacksonActionExecutor());
+        EventBus.push(JacksonActionExecutor.global);
+
+        Bridge.actionExecutorAdd(JacksonActionExecutor.global);
     }
 }

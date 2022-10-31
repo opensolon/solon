@@ -13,9 +13,15 @@ import java.util.Collection;
 import java.util.List;
 
 public class JacksonActionExecutor extends ActionExecutorDefault {
+    static final JacksonActionExecutor global = new JacksonActionExecutor();
+
     private static final String label = "/json";
 
-    ObjectMapper mapper_type = new ObjectMapper();
+    private final ObjectMapper mapper_type = new ObjectMapper();
+
+    public ObjectMapper config(){
+        return mapper_type;
+    }
 
     public JacksonActionExecutor() {
         mapper_type.enable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
