@@ -21,6 +21,8 @@ public class XPluginImp implements Plugin {
         RenderManager.mapping("@type_json", SnackRenderTypedFactory.global.create());
 
         //支持Json内容类型执行
-        Bridge.actionExecutorAdd(new SnackJsonActionExecutor());
+        EventBus.push(SnackJsonActionExecutor.global);
+
+        Bridge.actionExecutorAdd(SnackJsonActionExecutor.global);
     }
 }

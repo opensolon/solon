@@ -1,6 +1,7 @@
 package org.noear.solon.serialization.snack3;
 
 import org.noear.snack.ONode;
+import org.noear.snack.core.Options;
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.ActionExecutorDefault;
 import org.noear.solon.core.handle.Context;
@@ -17,7 +18,18 @@ import java.util.List;
  * @since 1.0
  * */
 public class SnackJsonActionExecutor extends ActionExecutorDefault {
+    static final SnackJsonActionExecutor global = new SnackJsonActionExecutor();
+
     private static final String label = "/json";
+
+    private Options config = Options.def();
+
+    /**
+     * 序列化配置
+     * */
+    public Options config(){
+        return config;
+    }
 
     @Override
     public boolean matched(Context ctx, String ct) {
@@ -33,7 +45,7 @@ public class SnackJsonActionExecutor extends ActionExecutorDefault {
         String json = ctx.bodyNew();
 
         if (Utils.isNotEmpty(json)) {
-            return ONode.loadStr(json);
+            return ONode.loadStr(json, config);
         } else {
             return null;
         }
