@@ -49,12 +49,12 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>snowflake-id-solon-plugin</artifactId>
+            <artifactId>snowflake-id-solon-cloud-plugin</artifactId>
         </dependency>
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>httputils-solon-plugin</artifactId>
+            <artifactId>httputils-solon-cloud-plugin</artifactId>
         </dependency>
 
         <dependency>
@@ -133,21 +133,21 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>aliyun-oss-solon-plugin</artifactId>
+            <artifactId>aliyun-oss-solon-cloud-plugin</artifactId>
         </dependency>
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>aws-s3-solon-plugin</artifactId>
+            <artifactId>aws-s3-solon-cloud-plugin</artifactId>
         </dependency>
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>guava-solon-plugin</artifactId>
+            <artifactId>guava-solon-cloud-plugin</artifactId>
         </dependency>
 
         <!--        <dependency>-->
         <!--            <groupId>org.noear</groupId>-->
-        <!--            <artifactId>sentinel-solon-plugin</artifactId>-->
+        <!--            <artifactId>sentinel-solon-cloud-plugin</artifactId>-->
         <!--        </dependency>-->
 
         <dependency>

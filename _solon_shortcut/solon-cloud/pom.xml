@@ -23,7 +23,7 @@
         <!-- 注册与发现组件 -->
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>consul-solon-plugin</artifactId>
+            <artifactId>consul-solon-cloud-plugin</artifactId>
         </dependency>
     </dependencies>
 

@@ -23,7 +23,7 @@
         <!-- 注册与发现组件 -->
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>water-solon-plugin</artifactId>
+            <artifactId>water-solon-cloud-plugin</artifactId>
         </dependency>
     </dependencies>
 

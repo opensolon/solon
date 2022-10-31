@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.noear</groupId>
+        <artifactId>solon-parent</artifactId>
+        <version>1.10.11-M1</version>
+        <relativePath>../../solon-parent/pom.xml</relativePath>
+    </parent>
+
+    <groupId>org.noear.bundle</groupId>
+    <artifactId>solon-base-render-bundle</artifactId>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>../../_solon_base_render/solon.serialization</module>
+
+        <module>../../_solon_base_render/solon.serialization.snack3</module>
+        <module>../../_solon_base_render/solon.serialization.fastjson</module>
+        <module>../../_solon_base_render/solon.serialization.fastjson2</module>
+        <module>../../_solon_base_render/solon.serialization.jackson</module>
+        <module>../../_solon_base_render/solon.serialization.gson</module>
+        <module>../../_solon_base_render/solon.serialization.hessian</module>
+        <module>../../_solon_base_render/solon.serialization.protostuff</module>
+
+        <module>../../_solon_base_render/solon.view.freemarker</module>
+        <module>../../_solon_base_render/solon.view.jsp</module>
+        <module>../../_solon_base_render/solon.view.velocity</module>
+        <module>../../_solon_base_render/solon.view.thymeleaf</module>
+
+        <module>../../_solon_base_render/solon.view.enjoy</module>
+        <module>../../_solon_base_render/solon.view.beetl</module>
+    </modules>
+</project>

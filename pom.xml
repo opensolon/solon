@@ -24,12 +24,13 @@
         <module>__release/socketd-bundle</module>
 
         <module>__release/solon-base-bundle</module>
+        <module>__release/solon-base-render-bundle</module>
+
         <module>__release/solon-boot-bundle</module>
         <module>__release/solon-extend-bundle</module>
         <module>__release/solon-plugin-bundle</module>
         <module>__release/solon-plugin2-bundle</module>
         <module>__release/solon-plugin-cloud-bundle</module>
-        <module>__release/solon-render-bundle</module>
 
         <module>__test</module>
 
