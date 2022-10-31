@@ -22,10 +22,10 @@ public class SnackJsonActionExecutor extends ActionExecutorDefault {
 
     private static final String label = "/json";
 
-    private Options config = Options.def();
+    private final Options config = Options.def();
 
     /**
-     * 序列化配置
+     * 反序列化配置
      * */
     public Options config(){
         return config;

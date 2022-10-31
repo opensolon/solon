@@ -3,6 +3,7 @@ package org.noear.solon.serialization.fastjson;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.parser.ParserConfig;
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.ActionExecutorDefault;
 import org.noear.solon.core.handle.Context;
@@ -20,7 +21,18 @@ import java.util.List;
  * @since 1.5
  */
 public class FastjsonJsonActionExecutor extends ActionExecutorDefault {
+    static final FastjsonJsonActionExecutor global = new FastjsonJsonActionExecutor();
+
     private static final String label = "/json";
+
+    private final ParserConfig config = ParserConfig.getGlobalInstance();
+
+    /**
+     * 反序列化配置
+     * */
+    public ParserConfig config(){
+        return config;
+    }
 
     @Override
     public boolean matched(Context ctx, String ct) {

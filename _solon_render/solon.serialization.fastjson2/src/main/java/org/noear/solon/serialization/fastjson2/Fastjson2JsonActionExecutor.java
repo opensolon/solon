@@ -1,8 +1,6 @@
 package org.noear.solon.serialization.fastjson2;
 
-import com.alibaba.fastjson2.JSON;
-import com.alibaba.fastjson2.JSONArray;
-import com.alibaba.fastjson2.JSONObject;
+import com.alibaba.fastjson2.*;
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.ActionExecutorDefault;
 import org.noear.solon.core.handle.Context;
@@ -21,7 +19,14 @@ import java.util.List;
  * @since 1.9
  * */
 public class Fastjson2JsonActionExecutor extends ActionExecutorDefault {
+    static final Fastjson2JsonActionExecutor global = new Fastjson2JsonActionExecutor();
+
     private static final String label = "/json";
+
+    private final JSONReader.Context config = JSONFactory.createReadContext();
+    public JSONReader.Context config(){
+        return config;
+    }
 
     @Override
     public boolean matched(Context ctx, String ct) {
@@ -37,7 +42,7 @@ public class Fastjson2JsonActionExecutor extends ActionExecutorDefault {
         String json = ctx.bodyNew();
 
         if (Utils.isNotEmpty(json)) {
-            return JSON.parse(json);
+            return JSON.parse(json, config);
         } else {
             return null;
         }

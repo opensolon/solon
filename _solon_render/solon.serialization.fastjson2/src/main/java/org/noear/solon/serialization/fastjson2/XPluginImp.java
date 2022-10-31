@@ -21,6 +21,8 @@ public class XPluginImp implements Plugin {
         RenderManager.mapping("@type_json", Fastjson2RenderTypedFactory.global.create());
 
         //支持Json内容类型执行
-        Bridge.actionExecutorAdd(new Fastjson2JsonActionExecutor());
+        EventBus.push(Fastjson2JsonActionExecutor.global);
+
+        Bridge.actionExecutorAdd(Fastjson2JsonActionExecutor.global);
     }
 }
