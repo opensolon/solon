@@ -21,7 +21,6 @@
         <module>solon-parent</module>
 
         <module>__release/nami-bundle</module>
-        <module>__release/socketd-bundle</module>
 
         <module>__release/solon-base-bundle</module>
         <module>__release/solon-base-render-bundle</module>
