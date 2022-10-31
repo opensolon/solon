@@ -34,5 +34,14 @@
         <module>../../_nami/nami.coder.jackson</module>
         <module>../../_nami/nami.coder.hessian</module>
         <module>../../_nami/nami.coder.protostuff</module>
+
+
+        <module>../../_solon_extend/solon.socketd</module>
+
+        <module>../../_solon_extend/solon.socketd.client.jdksocket</module>
+        <module>../../_solon_extend/solon.socketd.client.netty</module>
+        <module>../../_solon_extend/solon.socketd.client.rsocket</module>
+        <module>../../_solon_extend/solon.socketd.client.smartsocket</module>
+        <module>../../_solon_extend/solon.socketd.client.websocket</module>
     </modules>
 </project>
