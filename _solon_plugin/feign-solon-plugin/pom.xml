@@ -25,7 +25,7 @@
         <dependency>
             <groupId>com.netflix.feign</groupId>
             <artifactId>feign-core</artifactId>
-            <version>8.18.0</version>
+            <version>${feign.ver}</version>
         </dependency>
     </dependencies>
 

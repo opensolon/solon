@@ -1,8 +1,11 @@
-package org.noear.solon.extend.feign;
+package feign.solon.integration;
 
 import feign.Feign;
 import feign.Request;
 import feign.Retryer;
+import feign.solon.EnableFeignClient;
+import feign.solon.FeignClient;
+import feign.solon.FeignConfiguration;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.*;

@@ -1,4 +1,4 @@
-package org.noear.solon.extend.feign;
+package feign.solon.integration;
 
 import feign.Request;
 import feign.RequestTemplate;

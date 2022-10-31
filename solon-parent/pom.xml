@@ -77,6 +77,8 @@
         <dubbo3.ver>3.1.1</dubbo3.ver>
         <nacos1.ver>1.4.4</nacos1.ver>
         <nacos2.ver>2.1.2</nacos2.ver>
+
+        <feign.ver>8.18.0</feign.ver>
     </properties>
 
 
