@@ -10,7 +10,7 @@ import org.noear.solon.core.handle.Context;
 @Controller
 public class HomeController {
     @Mapping("/")
-    public void home(Context ctx){
-        ctx.forward("/index.html");
+    public void home(UserDto userDto) {
+        System.out.println(userDto.toString());
     }
 }
