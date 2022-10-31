@@ -57,7 +57,5 @@
 
         <module>../../_solon_plugin/log4j2-solon-plugin</module>
         <module>../../_solon_plugin/logback-solon-plugin</module>
-
-        <module>../../_solon_plugin/solon-maven-plugin</module>
     </modules>
 </project>
