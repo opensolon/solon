@@ -37,10 +37,6 @@ public class DemoApp {
         });
 
         //示例3：重置序列化特性（例，添加序列化null的特性）
-        factory.setFeatures(SerializerFeature.BrowserCompatible,
-                SerializerFeature.DisableCircularReferenceDetect,
-                SerializerFeature.WriteMapNullValue);
-
-        //factory.config().addFilter();
+        factory.addFeatures(SerializerFeature.WriteMapNullValue);
     }
 }
