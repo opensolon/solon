@@ -1,4 +1,4 @@
-package GenericInjectTest;
+package testGenericInject;
 
 import org.noear.solon.annotation.Inject;
 
