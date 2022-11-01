@@ -18,7 +18,7 @@ public class ViewTest extends HttpTestBase {
     public void test90() throws IOException {
         String rst = path("/demo9/view/json").get();
         assert  rst.indexOf("dock") > 0;
-        assert  rst.indexOf("你好") > 0;
+        assert  rst.indexOf("world") > 0;
     }
 
     @Test

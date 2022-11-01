@@ -11,11 +11,11 @@
 * 增加 更多友好的异常分类???
 
 #### 1.10.11
-* 清理 -solon-plugin 的 solon cloud 插件包
-* 清理 solon.aspect 插件的弃用包（给新手造成了迷惑） 
+* 清理 ???-solon-plugin 的 solon cloud 插件包（正试由 xxx-solon-cloud-plugin 替代）
+* 清理 solon.aspect 插件的弃用包，弃用包给新手造成了迷惑
 * 插件 solon.serialization.fastjson，调整 FastjsonRenderFactory 默认去掉 DisableCircularReferenceDetect 特性
 * 插件 solon.serialization.fastjson2，调整 Fastjson2RenderFactory 默认去掉 DisableCircularReferenceDetect 特性
-* 调整 XxxActionExecutor 类全部进入事件总线，并增加部分定制能力
+* 调整 ???ActionExecutor 类全部进入事件总线，并增加部分定制能力
 
 #### 1.10.10
 * 插件 solon.sessionstate.jwt 增加实体设置支持，并支持自动类型回转（自定义了序列化）
