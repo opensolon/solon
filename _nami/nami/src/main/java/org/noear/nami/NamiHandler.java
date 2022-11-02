@@ -135,7 +135,7 @@ public class NamiHandler implements InvocationHandler {
         MethodWrap methodWrap = MethodWrap.get(method);
 
         //默认函数调用
-        if (method.isDefault()) {
+        if (method.isDefault()||method.getDeclaringClass()==Object.class) {
             MethodHandle defaultMethodHandle = methodHandleMap.computeIfAbsent(method, key -> {
                 MethodHandle methodHandle = MethodHandlesUtil.getSpecialMethodHandle(method);
                 return methodHandle.bindTo(proxy);
