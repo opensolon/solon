@@ -4,13 +4,11 @@ import org.noear.nami.annotation.Mapping;
 import org.noear.nami.annotation.NamiClient;
 import org.noear.nami.common.*;
 
-import java.lang.invoke.MethodHandle;
 import java.lang.reflect.*;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -118,9 +116,6 @@ public class NamiHandler implements InvocationHandler {
         config.init();
     }
 
-
-    //protected MethodHandles.Lookup lookup;
-    private ConcurrentHashMap<Method, MethodHandle> methodHandleMap = new ConcurrentHashMap<>();
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] vals) throws Throwable {
