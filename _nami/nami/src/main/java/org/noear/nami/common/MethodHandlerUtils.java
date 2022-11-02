@@ -1,7 +1,5 @@
 package org.noear.nami.common;
 
-import org.noear.solon.core.util.JavaUtil;
-
 import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationHandler;
@@ -21,7 +19,7 @@ public class MethodHandlerUtils {
         //
         //JDK16+ 新增InvocationHandler.invokeDefault()
         //
-        if (JavaUtil.JAVA_MAJOR_VERSION >= 16) {
+        if (JavaUtils.JAVA_MAJOR_VERSION >= 16) {
             // https://bugs.java.com/bugdatabase/view_bug.do?bug_id=8253870
             Method[] ms = InvocationHandler.class.getMethods();
 
@@ -33,7 +31,7 @@ public class MethodHandlerUtils {
             }
             if (invokeDefaultMethod == null) {
                 //不可能发生
-                throw new UnsupportedOperationException("The current java " + JavaUtil.JAVA_MAJOR_VERSION + " is not found: invokeDefault");
+                throw new UnsupportedOperationException("The current java " + JavaUtils.JAVA_MAJOR_VERSION + " is not found: invokeDefault");
             }
         }
     }
@@ -49,7 +47,7 @@ public class MethodHandlerUtils {
     public static Object invokeDefault(Object proxy, Method method, Object[] args) throws Throwable {
         // https://dzone.com/articles/correct-reflective-access-to-interface-default-methods
         // https://gist.github.com/lukaseder/f47f5a0d156bf7b80b67da9d14422d4a
-        if (JavaUtil.JAVA_MAJOR_VERSION <= 15) {
+        if (JavaUtils.JAVA_MAJOR_VERSION <= 15) {
             final Constructor<MethodHandles.Lookup> constructor = MethodHandles.Lookup.class.getDeclaredConstructor(Class.class);
             constructor.setAccessible(true);
 
