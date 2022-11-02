@@ -1,4 +1,4 @@
-package org.noear.solon.extend.activerecord.proxy;
+package org.noear.nami.common;
 
 import org.noear.solon.core.util.JavaUtil;
 
@@ -11,7 +11,7 @@ import java.lang.reflect.Method;
  * @author noear
  * @since 1.10
  */
-public class InvocationHandlerUtils {
+public class MethodHandlerUtils {
     /**
      * java16+ 支持调用default method的方法
      */

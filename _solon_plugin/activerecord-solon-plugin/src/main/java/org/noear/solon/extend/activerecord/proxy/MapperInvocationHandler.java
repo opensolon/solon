@@ -1,12 +1,9 @@
 package org.noear.solon.extend.activerecord.proxy;
 
-import java.lang.invoke.MethodHandles;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 
 import com.jfinal.plugin.activerecord.DbKit;
-import com.jfinal.plugin.activerecord.Model;
 import org.noear.solon.Utils;
 
 /**
@@ -16,16 +13,14 @@ import org.noear.solon.Utils;
  * @since 1.10
  */
 public class MapperInvocationHandler implements InvocationHandler {
-
-    private MethodHandles.Lookup lookup;
     private String db;
 
     public MapperInvocationHandler(Class<?> clz, String db) {
         MapperContextParser.parse(clz);
 
-        if(Utils.isEmpty(db)){
+        if (Utils.isEmpty(db)) {
             this.db = DbKit.MAIN_CONFIG_NAME;
-        }else {
+        } else {
             this.db = db;
         }
     }
@@ -35,17 +30,9 @@ public class MapperInvocationHandler implements InvocationHandler {
      */
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        Class caller = method.getDeclaringClass();
-
-        if (method.isDefault()) {
+        if (method.isDefault() || method.getDeclaringClass() == Object.class) {
             //用于处理默认函数（包括：toString()）
-            if (this.lookup == null) {
-                Constructor<MethodHandles.Lookup> constructor = MethodHandles.Lookup.class.getDeclaredConstructor(Class.class, Integer.TYPE);
-                constructor.setAccessible(true);
-                this.lookup = constructor.newInstance(caller, MethodHandles.Lookup.PRIVATE);
-            }
-
-            return this.lookup.unreflectSpecial(method, caller).bindTo(proxy).invokeWithArguments(args);
+            return MethodHandlerUtils.invokeDefault(proxy, method, args);
         } else {
 
             MapperMethodContext context = MapperMethodContextManager.getMethodContext(method);

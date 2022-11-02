@@ -5,7 +5,6 @@ import org.noear.nami.annotation.NamiClient;
 import org.noear.nami.common.*;
 
 import java.lang.invoke.MethodHandle;
-import java.lang.invoke.MethodHandles;
 import java.lang.reflect.*;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -50,7 +49,7 @@ public class NamiHandler implements InvocationHandler {
         }
     }
 
-    private void init() throws Exception{
+    private void init() throws Exception {
         //1.运行配置器
         if (client != null) {
             //尝试添加全局拦截器
@@ -131,17 +130,12 @@ public class NamiHandler implements InvocationHandler {
             throw new NamiException("NamiClient: Not found upstream: " + clz0.getName());
         }
 
+        //默认函数调用
+        if (method.isDefault() || method.getDeclaringClass() == Object.class) {
+            return MethodHandlerUtils.invokeDefault(proxy, method, vals);
+        }
 
         MethodWrap methodWrap = MethodWrap.get(method);
-
-        //默认函数调用
-        if (method.isDefault()||method.getDeclaringClass()==Object.class) {
-            MethodHandle defaultMethodHandle = methodHandleMap.computeIfAbsent(method, key -> {
-                MethodHandle methodHandle = MethodHandlesUtil.getSpecialMethodHandle(method);
-                return methodHandle.bindTo(proxy);
-            });
-            return defaultMethodHandle.invokeWithArguments(vals);
-        }
 
         //构建 headers
         Map<String, String> headers = new HashMap<>(headers0);
@@ -186,7 +180,7 @@ public class NamiHandler implements InvocationHandler {
         }
 
         //处理附加信息
-        Map<String,String> contextMap = NamiAttachment.getData();
+        Map<String, String> contextMap = NamiAttachment.getData();
         if (contextMap.size() > 0) {
             headers.putAll(contextMap);
         }
