@@ -62,5 +62,15 @@ public @interface NamiClient {
      * 指定配置器
      * */
     Class<? extends NamiConfiguration> configuration() default NamiConfigurationDefault.class;
+
+    /**
+     * 容错处理
+     * */
+    Class<?> fallback() default void.class;
+
+    /**
+     * 容错处理工厂
+     * */
+    Class<?> fallbackFactory() default void.class;
 }
 
