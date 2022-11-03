@@ -16,6 +16,7 @@
 * 插件 solon.serialization.fastjson，调整 FastjsonRenderFactory 默认去掉 DisableCircularReferenceDetect 特性
 * 插件 solon.serialization.fastjson2，调整 Fastjson2RenderFactory 默认去掉 DisableCircularReferenceDetect 特性
 * 调整 ???ActionExecutor 类全部进入事件总线，并增加部分定制能力
+* 添加 .map 到 mime 类型表
 
 #### 1.10.10
 * 插件 solon.sessionstate.jwt 增加实体设置支持，并支持自动类型回转（自定义了序列化）
