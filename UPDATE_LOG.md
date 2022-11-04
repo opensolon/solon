@@ -19,6 +19,7 @@
 * 增加 Nami 异常时，显示目标详情
 * 增加 Signal 对 host 的支持
 * 增加 server.host 在注册上的应用支持
+* 添加 LogUtil，并提供切换为 Slf4j 接口的支持
 * 添加 .map 到 mime 类型表
 
 #### 1.10.10
