@@ -1,5 +1,8 @@
 package org.noear.solon.core.util;
 
+import org.noear.solon.Utils;
+import org.noear.solon.core.PropsLoader;
+
 /**
  * 日志打印小工具（仅限内部使用）
  *
@@ -7,7 +10,7 @@ package org.noear.solon.core.util;
  * @since 1.10
  * */
 public class LogUtil {
-    private static LogUtil global = new LogUtil();
+    private static LogUtil global;
     public static LogUtil global() {
         return global;
     }
@@ -21,26 +24,38 @@ public class LogUtil {
         }
     }
 
-    public  void trace(Object content) {
+    static {
+        //（静态扩展约定：org.noear.solon.extend.impl.XxxxExt）
+        LogUtil tmp = Utils.newInstance("org.noear.solon.extend.impl.LogUtilExt");
+
+        if (tmp == null) {
+            global = new LogUtil();
+        } else {
+            global = tmp;
+        }
+    }
+
+
+    public  void trace(String content) {
         System.out.print("[Solon] ");
         PrintUtil.greenln(content);
     }
 
-    public  void debug(Object content) {
+    public  void debug(String content) {
         System.out.print("[Solon] ");
         PrintUtil.blueln(content);
     }
 
-    public  void info(Object content) {
+    public  void info(String content) {
         System.out.println("[Solon] " + content);
     }
 
-    public  void warn(Object content) {
+    public  void warn(String content) {
         System.out.print("[Solon] ");
         PrintUtil.yellowln(content);
     }
 
-    public  void error(Object content) {
+    public  void error(String content) {
         System.out.print("[Solon] ");
         PrintUtil.redln(content);
     }

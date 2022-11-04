@@ -5,8 +5,7 @@ import org.noear.solon.logging.appender.ConsoleAppender;
 import org.noear.solon.logging.event.Appender;
 import org.noear.solon.logging.event.LogEvent;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 添加器管理员
@@ -32,11 +31,11 @@ public class AppenderManager {
         return instance;
     }
 
-    protected Map<String, AppenderHolder> appenderMap = new LinkedHashMap<>();
-
+    private Map<String, AppenderHolder> appenderMap = new LinkedHashMap<>();
 
     private AppenderManager() {
-        register("console", new ConsoleAppender());
+        //不能用 register，否则 LogUtil.global() 会死循环
+        registerDo("console", new ConsoleAppender());
     }
 
     /**
@@ -46,9 +45,13 @@ public class AppenderManager {
      * @param appender 添加器
      */
     public void register(String name, Appender appender) {
-        appenderMap.putIfAbsent(name, new AppenderHolder(name, appender));
+        registerDo(name, appender);
 
         LogUtil.global().trace("Logging: LogAppender registered from the " + appender.getClass().getTypeName() + "#" + name);
+    }
+
+    private void registerDo(String name, Appender appender) {
+        appenderMap.putIfAbsent(name, new AppenderHolder(name, appender));
     }
 
     /**
