@@ -50,4 +50,77 @@ public class PrintUtil {
             System.out.print(ANSI_RESET);
         }
     }
+
+    ////////////////////////
+
+    /**
+     * @deprecated 1.10
+     * */
+    @Deprecated
+    public static void debug(Object content) {
+        System.out.print("[Solon] ");
+        PrintUtil.blueln(content);
+    }
+
+    /**
+     * @deprecated 1.10
+     * */
+    @Deprecated
+    public static void debug(String label, Object content) {
+        System.out.print("[Solon] ");
+        PrintUtil.blueln(label + ": " + content);
+    }
+
+    /**
+     * @deprecated 1.10
+     * */
+    @Deprecated
+    public static void info(Object content) {
+        System.out.println("[Solon] " + content);
+    }
+
+    /**
+     * @deprecated 1.10
+     * */
+    @Deprecated
+    public static void info(String label, Object content) {
+        System.out.print("[Solon] ");
+        PrintUtil.greenln(label + ": " + content);
+    }
+
+    /**
+     * @deprecated 1.10
+     * */
+    @Deprecated
+    public static void warn(Object content) {
+        System.out.print("[Solon] ");
+        PrintUtil.yellowln(content);
+    }
+
+    /**
+     * @deprecated 1.10
+     * */
+    @Deprecated
+    public static void warn(String label, Object content) {
+        System.out.print("[Solon] ");
+        PrintUtil.yellowln(label + ": " + content);
+    }
+
+    /**
+     * @deprecated 1.10
+     * */
+    @Deprecated
+    public static void error(Object content) {
+        System.out.print("[Solon] ");
+        PrintUtil.redln(content);
+    }
+
+    /**
+     * @deprecated 1.10
+     * */
+    @Deprecated
+    public static void error(String label, Object content) {
+        System.out.print("[Solon] ");
+        PrintUtil.redln(label + ": " + content);
+    }
 }

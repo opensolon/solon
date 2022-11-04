@@ -1,4 +1,4 @@
-package org.noear.solon.extend.impl;
+package org.noear.solon.logging.utils;
 
 import org.noear.solon.Solon;
 import org.noear.solon.core.util.LogUtil;
@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
  * @author noear
  * @since 1.10
  */
-public class LogUtilExt extends LogUtil {
+public class LogUtilToSlf4j extends LogUtil {
     static final Logger log = LoggerFactory.getLogger(Solon.class);
 
     @Override
