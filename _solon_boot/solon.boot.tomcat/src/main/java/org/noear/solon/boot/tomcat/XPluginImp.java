@@ -69,7 +69,7 @@ public final class XPluginImp implements Plugin {
         }
 
         long time_start = System.currentTimeMillis();
-        LogUtil.info("Server:main: " + TOMCAT_VER + "(tomcat)");
+        LogUtil.global().info("Server:main: " + TOMCAT_VER + "(tomcat)");
 
         _server.start(_host, _port);
         _signal = new SignalSim(_name, _host, _port, "http", SignalType.HTTP);
@@ -85,7 +85,7 @@ public final class XPluginImp implements Plugin {
 
         System.out.println(connectorInfo + "}{http://localhost:" + _port + "}");
 
-        LogUtil.info("Server:main: tomcat: Started @" + (time_end - time_start) + "ms");
+        LogUtil.global().info("Server:main: tomcat: Started @" + (time_end - time_start) + "ms");
     }
 
     @Override
@@ -94,7 +94,7 @@ public final class XPluginImp implements Plugin {
             _server.stop();
             _server = null;
 
-            LogUtil.info("Server:main: tomcat: Has Stopped " + solon_boot_ver());
+            LogUtil.global().info("Server:main: tomcat: Has Stopped " + solon_boot_ver());
         }
     }
 }

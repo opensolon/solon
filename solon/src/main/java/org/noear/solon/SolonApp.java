@@ -59,11 +59,11 @@ public class SolonApp extends RouterAdapter {
             try {
                 while (true) {
                     if (Utils.ping(addr)) {
-                        LogUtil.trace("App: Start ping succeed: " + addr);
+                        LogUtil.global().trace("App: Start ping succeed: " + addr);
                         Thread.sleep(1000); //成功也再等1s
                         break;
                     } else {
-                        LogUtil.trace("App: Start ping failure: " + addr);
+                        LogUtil.global().trace("App: Start ping failure: " + addr);
                         Thread.sleep(2000);
                     }
                 }

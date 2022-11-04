@@ -108,7 +108,7 @@ public final class XPluginImp implements Plugin {
             SessionManager.register(new _SessionManagerImpl());
         }
 
-        LogUtil.info("Server:main: SmartHttpServer 1.1(smarthttp)");
+        LogUtil.global().info("Server:main: SmartHttpServer 1.1(smarthttp)");
 
 
         _server.setPort(_port);
@@ -124,12 +124,12 @@ public final class XPluginImp implements Plugin {
 
         String connectorInfo = "solon.connector:main: smarthttp: Started ServerConnector@{HTTP/1.1,[http/1.1]";
         if (app.enableWebSocket()) {
-            LogUtil.info(connectorInfo + "[WebSocket]}{0.0.0.0:" + _port + "}");
+            LogUtil.global().info(connectorInfo + "[WebSocket]}{0.0.0.0:" + _port + "}");
         }
 
-        LogUtil.info(connectorInfo + "}{http://localhost:" + _port + "}");
+        LogUtil.global().info(connectorInfo + "}{http://localhost:" + _port + "}");
 
-        LogUtil.info("Server:main: smarthttp: Started @" + (time_end - time_start) + "ms");
+        LogUtil.global().info("Server:main: smarthttp: Started @" + (time_end - time_start) + "ms");
     }
 
     @Override
@@ -138,7 +138,7 @@ public final class XPluginImp implements Plugin {
             _server.shutdown();
             _server = null;
 
-            LogUtil.info("Server:main: smarthttp: Has Stopped " + solon_boot_ver());
+            LogUtil.global().info("Server:main: smarthttp: Has Stopped " + solon_boot_ver());
         }
     }
 }

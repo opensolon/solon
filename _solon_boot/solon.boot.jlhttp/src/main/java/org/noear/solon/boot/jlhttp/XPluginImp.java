@@ -110,7 +110,7 @@ public final class XPluginImp implements Plugin {
                 MethodType.PATCH.name,
                 MethodType.OPTIONS.name);
 
-        LogUtil.info("Server:main: JlHttpServer 2.6(jlhttp)");
+        LogUtil.global().info("Server:main: JlHttpServer 2.6(jlhttp)");
 
 
         _server.setExecutor(Executors.newCachedThreadPool(new NamedThreadFactory("jlhttp-")));
@@ -126,8 +126,8 @@ public final class XPluginImp implements Plugin {
 
         long time_end = System.currentTimeMillis();
 
-        LogUtil.info("Connector:main: jlhttp: Started ServerConnector@{HTTP/1.1,[http/1.1]}{http://localhost:" + _port + "}");
-        LogUtil.info("Server:main: jlhttp: Started @" + (time_end - time_start) + "ms");
+        LogUtil.global().info("Connector:main: jlhttp: Started ServerConnector@{HTTP/1.1,[http/1.1]}{http://localhost:" + _port + "}");
+        LogUtil.global().info("Server:main: jlhttp: Started @" + (time_end - time_start) + "ms");
     }
 
     @Override
@@ -136,7 +136,7 @@ public final class XPluginImp implements Plugin {
             _server.stop();
             _server = null;
 
-            LogUtil.info("Server:main: jlhttp: Has Stopped " + solon_boot_ver());
+            LogUtil.global().info("Server:main: jlhttp: Has Stopped " + solon_boot_ver());
         }
     }
 }

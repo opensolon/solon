@@ -63,10 +63,10 @@ public class GraalvmUtil {
             }
 
             if (Solon.cfg().isDebugMode()) {
-                LogUtil.info("load reflect-config completed: " + resources.toString());
+                LogUtil.global().info("load reflect-config completed: " + resources.toString());
             }
         } catch (Exception e) {
-            LogUtil.warn("read reflect-config error :" + e.getLocalizedMessage());
+            LogUtil.global().warn("read reflect-config error :" + e.getLocalizedMessage());
             EventBus.push(e);
         }
     }
@@ -96,10 +96,10 @@ public class GraalvmUtil {
             }
 
             if (Solon.cfg().isDebugMode()) {
-                LogUtil.info("load resource-config completed: " + resources.toString());
+                LogUtil.global().info("load resource-config completed: " + resources.toString());
             }
         } catch (Exception e) {
-            LogUtil.warn("read resource-config.json error :" + e.getLocalizedMessage());
+            LogUtil.global().warn("read resource-config.json error :" + e.getLocalizedMessage());
             EventBus.push(e);
         }
     }

@@ -26,7 +26,7 @@ public class WsServer extends WebSocketServer {
 
     @Override
     public void onStart() {
-        LogUtil.info("Server:Websocket onStart...");
+        LogUtil.global().info("Server:Websocket onStart...");
     }
 
     @Override

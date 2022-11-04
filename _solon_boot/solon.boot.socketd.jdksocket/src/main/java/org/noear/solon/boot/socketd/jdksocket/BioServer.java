@@ -30,7 +30,7 @@ class BioServer implements ServerLifecycle {
         }
 
 
-        LogUtil.info("Server started, waiting for customer connection...");
+        LogUtil.global().info("Server started, waiting for customer connection...");
 
         while (true) {
             Socket socket = server.accept();

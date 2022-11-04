@@ -72,7 +72,7 @@ public class ExtendLoader {
                 path = extend;
 
                 //打印
-                LogUtil.trace("Extend: " + path);
+                LogUtil.global().trace("Extend: " + path);
 
                 //加载扩展内容
                 instance.loadFile(loaders, new File(path), filter);
@@ -180,7 +180,7 @@ public class ExtendLoader {
                 if (path.endsWith(".properties")) {
                     Solon.cfg().loadAdd(file.toURI().toURL());
 
-                    LogUtil.trace("loaded: " + path);
+                    LogUtil.global().trace("loaded: " + path);
                     return;
                 }
 
@@ -191,7 +191,7 @@ public class ExtendLoader {
 
                     Solon.cfg().loadAdd(file.toURI().toURL());
 
-                    LogUtil.trace("loaded: " + path);
+                    LogUtil.global().trace("loaded: " + path);
                     return;
                 }
             } catch (Throwable ex) {

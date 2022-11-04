@@ -47,7 +47,7 @@ public final class XPluginImp implements Plugin {
 
         long time_start = System.currentTimeMillis();
 
-        LogUtil.info("Server:main: SmartSocket 1.5(smartsocket-socketd)");
+        LogUtil.global().info("Server:main: SmartSocket 1.5(smartsocket-socketd)");
 
 
         SocketSignalProps props = new SocketSignalProps(20000);
@@ -76,8 +76,8 @@ public final class XPluginImp implements Plugin {
 
             long time_end = System.currentTimeMillis();
 
-            LogUtil.info("Connector:main: smartsocket-socketd: Started ServerConnector@{[Socket]}{0.0.0.0:" + _port + "}");
-            LogUtil.info("Server:main: smartsocket-socketd: Started @" + (time_end - time_start) + "ms");
+            LogUtil.global().info("Connector:main: smartsocket-socketd: Started ServerConnector@{[Socket]}{0.0.0.0:" + _port + "}");
+            LogUtil.global().info("Server:main: smartsocket-socketd: Started @" + (time_end - time_start) + "ms");
         } catch (RuntimeException e) {
             throw e;
         } catch (Throwable e) {
@@ -91,7 +91,7 @@ public final class XPluginImp implements Plugin {
             _server.shutdown();
             _server = null;
 
-            LogUtil.info("Server:main: smartsocket-socketd: Has Stopped " + solon_boot_ver());
+            LogUtil.global().info("Server:main: smartsocket-socketd: Has Stopped " + solon_boot_ver());
         }
     }
 }

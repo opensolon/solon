@@ -60,8 +60,8 @@ public class RenderManager implements Render {
         _lib.put(render.getClass().getSimpleName(), render);
         _lib.put(render.getClass().getName(), render);
 
-        LogUtil.trace("View: load: " + render.getClass().getSimpleName());
-        LogUtil.trace("View: load: " + render.getClass().getName());
+        LogUtil.global().trace("View: load: " + render.getClass().getSimpleName());
+        LogUtil.global().trace("View: load: " + render.getClass().getName());
     }
 
     /**
@@ -78,7 +78,7 @@ public class RenderManager implements Render {
         //suffix=.ftl
         _mapping.put(suffix, render);
 
-        LogUtil.trace("View: mapping: " + suffix + "=" + render.getName());
+        LogUtil.global().trace("View: mapping: " + suffix + "=" + render.getName());
     }
 
     /**
@@ -94,14 +94,14 @@ public class RenderManager implements Render {
 
         Render render = _lib.get(clzName);
         if (render == null) {
-            LogUtil.warn("solon: " + clzName + " not exists!");
+            LogUtil.global().warn("solon: " + clzName + " not exists!");
             return;
             //throw new IllegalStateException(classSimpleName + " not exists!");
         }
 
         _mapping.put(suffix, render);
 
-        LogUtil.trace("View: mapping: " + suffix + "=" + clzName);
+        LogUtil.global().trace("View: mapping: " + suffix + "=" + clzName);
     }
 
     /**

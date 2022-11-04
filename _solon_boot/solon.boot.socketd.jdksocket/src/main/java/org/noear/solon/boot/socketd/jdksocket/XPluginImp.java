@@ -47,7 +47,7 @@ public class XPluginImp implements Plugin {
 
         long time_start = System.currentTimeMillis();
 
-        LogUtil.info("Server:main: java.net.ServerSocket(jdksocket-socketd)");
+        LogUtil.global().info("Server:main: java.net.ServerSocket(jdksocket-socketd)");
 
 
         SocketSignalProps props = new SocketSignalProps(20000);
@@ -64,8 +64,8 @@ public class XPluginImp implements Plugin {
 
         long time_end = System.currentTimeMillis();
 
-        LogUtil.info("Connector:main: jdksocket-socketd: Started ServerConnector@{[Socket]}{0.0.0.0:" + _port + "}");
-        LogUtil.info("Server:main: jdksocket-socketd: Started @" + (time_end - time_start) + "ms");
+        LogUtil.global().info("Connector:main: jdksocket-socketd: Started ServerConnector@{[Socket]}{0.0.0.0:" + _port + "}");
+        LogUtil.global().info("Server:main: jdksocket-socketd: Started @" + (time_end - time_start) + "ms");
     }
 
     @Override

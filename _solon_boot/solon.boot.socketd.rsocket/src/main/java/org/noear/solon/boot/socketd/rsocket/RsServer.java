@@ -28,7 +28,7 @@ class RsServer implements ServerLifecycle {
                 .bind(transport)
                 .block();
 
-        LogUtil.info("Server started, waiting for customer connection...");
+        LogUtil.global().info("Server started, waiting for customer connection...");
     }
 
     @Override

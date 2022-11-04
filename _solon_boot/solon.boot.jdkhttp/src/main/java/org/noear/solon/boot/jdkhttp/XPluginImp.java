@@ -76,7 +76,7 @@ public final class XPluginImp implements Plugin {
 
         long time_start = System.currentTimeMillis();
 
-        LogUtil.info("Server:main: Sun.net.HttpServer(jdkhttp)");
+        LogUtil.global().info("Server:main: Sun.net.HttpServer(jdkhttp)");
 
 
         if (System.getProperty(ServerConstants.SSL_KEYSTORE) != null) {
@@ -107,8 +107,8 @@ public final class XPluginImp implements Plugin {
 
         long time_end = System.currentTimeMillis();
 
-        LogUtil.info("Connector:main: jdkhttp: Started ServerConnector@{HTTP/1.1,[http/1.1]}{http://localhost:" + _port + "}");
-        LogUtil.info("Server:main: jdkhttp: Started @" + (time_end - time_start) + "ms");
+        LogUtil.global().info("Connector:main: jdkhttp: Started ServerConnector@{HTTP/1.1,[http/1.1]}{http://localhost:" + _port + "}");
+        LogUtil.global().info("Server:main: jdkhttp: Started @" + (time_end - time_start) + "ms");
     }
 
     private void addSslConfig(HttpsServer httpsServer) throws IOException {
@@ -143,6 +143,6 @@ public final class XPluginImp implements Plugin {
 
         _server.stop(0);
         _server = null;
-        LogUtil.info("Server:main: jdkhttp: Has Stopped " + solon_boot_ver());
+        LogUtil.global().info("Server:main: jdkhttp: Has Stopped " + solon_boot_ver());
     }
 }
