@@ -52,7 +52,7 @@ public final class XPluginImp implements Plugin {
         //初始化属性
         ServerProps.init();
 
-        HttpSignalProps props = HttpSignalProps.getInstance();
+        HttpSignalProps props = new HttpSignalProps();
         String _host = props.getHost();
         int _port = props.getPort();
         String _name = props.getName();
@@ -70,7 +70,7 @@ public final class XPluginImp implements Plugin {
 
         _server.start(_host, _port);
 
-        _signal = new SignalSim(_name, _port, "http", SignalType.HTTP);
+        _signal = new SignalSim(_name, _host, _port, "http", SignalType.HTTP);
 
         app.signalAdd(_signal);
 

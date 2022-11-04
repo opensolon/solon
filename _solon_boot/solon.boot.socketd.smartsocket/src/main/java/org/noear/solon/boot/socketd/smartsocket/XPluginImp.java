@@ -71,7 +71,7 @@ public final class XPluginImp implements Plugin {
             }
             _server.start();
 
-            _signal = new SignalSim(_name, _port, "tcp", SignalType.SOCKET);
+            _signal = new SignalSim(_name, _host, _port, "tcp", SignalType.SOCKET);
             app.signalAdd(_signal);
 
             long time_end = System.currentTimeMillis();

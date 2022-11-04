@@ -67,7 +67,7 @@ public class XPluginImp implements Plugin {
 
         _server.start();
 
-        _signal = new SignalSim(_name, _port, "ws", SignalType.WEBSOCKET);
+        _signal = new SignalSim(_name, _host, _port, "ws", SignalType.WEBSOCKET);
 
         app.signalAdd(_signal);
 

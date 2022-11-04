@@ -5,6 +5,7 @@ package org.noear.solon.core;
  * @since 1.3
  */
 public class SignalSim implements Signal {
+    private String host;
     private int port;
     private String protocol;
     private SignalType type;
@@ -13,6 +14,11 @@ public class SignalSim implements Signal {
     @Override
     public String name() {
         return name;
+    }
+
+    @Override
+    public String host() {
+        return host;
     }
 
     @Override
@@ -30,8 +36,9 @@ public class SignalSim implements Signal {
         return type;
     }
 
-    public SignalSim(String name, int port, String protocol, SignalType type) {
+    public SignalSim(String name, String host, int port, String protocol, SignalType type) {
         this.name = name;
+        this.host = host;
         this.port = port;
         this.protocol = protocol.toLowerCase();
         this.type = type;

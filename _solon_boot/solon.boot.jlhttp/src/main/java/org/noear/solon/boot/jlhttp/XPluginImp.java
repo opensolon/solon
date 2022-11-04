@@ -20,18 +20,19 @@ import java.util.concurrent.Executors;
 
 public final class XPluginImp implements Plugin {
     private static Signal _signal;
-    public static Signal signal(){
+
+    public static Signal signal() {
         return _signal;
     }
 
     private HTTPServer _server = null;
 
-    public static String solon_boot_ver(){
+    public static String solon_boot_ver() {
         return "jlhttp 2.6/" + Solon.cfg().version();
     }
 
     @Override
-    public  void start(AopContext context) {
+    public void start(AopContext context) {
         if (Solon.app().enableHttp() == false) {
             return;
         }
@@ -62,13 +63,13 @@ public final class XPluginImp implements Plugin {
         });
     }
 
-    private void start0(SolonApp app) throws Throwable{
+    private void start0(SolonApp app) throws Throwable {
         //初始化属性
         ServerProps.init();
 
         _server = new HTTPServer();
 
-        HttpSignalProps props = HttpSignalProps.getInstance();
+        HttpSignalProps props = new HttpSignalProps();
         String _host = props.getHost();
         int _port = props.getPort();
         String _name = props.getName();
@@ -119,7 +120,7 @@ public final class XPluginImp implements Plugin {
         }
         _server.start();
 
-        _signal = new SignalSim(_name, _port, "http", SignalType.HTTP);
+        _signal = new SignalSim(_name, _host, _port, "http", SignalType.HTTP);
 
         app.signalAdd(_signal);
 
@@ -131,7 +132,7 @@ public final class XPluginImp implements Plugin {
 
     @Override
     public void stop() throws Throwable {
-        if(_server != null) {
+        if (_server != null) {
             _server.stop();
             _server = null;
 

@@ -39,8 +39,9 @@ public class Instance implements Serializable {
 
     /**
      * 服务和地址(service@ip:port)
-     * */
+     */
     private String serviceAndAddress;
+
     public String serviceAndAddress() {
         if (serviceAndAddress == null) {
             serviceAndAddress = service() + "@" + address();
@@ -68,6 +69,7 @@ public class Instance implements Serializable {
     }
 
     private transient String _uri;
+
     public String uri() {
         if (_uri == null) {
             if (Utils.isEmpty(protocol)) {
@@ -161,10 +163,11 @@ public class Instance implements Serializable {
 
     /**
      * 用于序列化
-     * */
-    public Instance(){
+     */
+    public Instance() {
 
     }
+
     public Instance(String service, String address) {
         if (Utils.isEmpty(service)) {
             this.service = Solon.cfg().appName();
@@ -180,16 +183,20 @@ public class Instance implements Serializable {
 
     public static Instance local() {
         if (local == null) {
-            local = localNew(new SignalSim(Solon.cfg().appName(), Solon.cfg().serverPort(), "http", SignalType.HTTP));
+            local = localNew(new SignalSim(Solon.cfg().appName(), Solon.cfg().serverHost(), Solon.cfg().serverPort(), "http", SignalType.HTTP));
         }
 
         return local;
     }
 
     public static Instance localNew(Signal signal) {
-        Instance n1 = new Instance(
-                signal.name(),
-                LocalUtils.getLocalAddress() + ":" + signal.port());
+
+        Instance n1 = null;
+        if (Utils.isEmpty(signal.host())) {
+            n1 = new Instance(signal.name(), signal.host() + ":" + signal.port());
+        } else {
+            n1 = new Instance(signal.name(), LocalUtils.getLocalAddress() + ":" + signal.port());
+        }
 
         n1.protocol(signal.protocol());
 

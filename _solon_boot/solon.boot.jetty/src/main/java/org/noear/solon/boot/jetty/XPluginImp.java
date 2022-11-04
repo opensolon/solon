@@ -59,13 +59,13 @@ public final class XPluginImp implements Plugin {
         });
     }
 
-    private void start0(SolonApp app) throws Throwable{
+    private void start0(SolonApp app) throws Throwable {
         //初始化属性
         ServerProps.init();
 
         Class<?> jspClz = Utils.loadClass("org.eclipse.jetty.jsp.JettyJspServlet");
 
-        HttpSignalProps props = HttpSignalProps.getInstance();
+        HttpSignalProps props = new HttpSignalProps();
         String _host = props.getHost();
         int _port = props.getPort();
         String _name = props.getName();
@@ -81,7 +81,7 @@ public final class XPluginImp implements Plugin {
         PrintUtil.info("Server:main: Jetty 9.4(jetty)");
 
         _server.start(_host, _port);
-        _signal = new SignalSim(_name, _port, "http", SignalType.HTTP);
+        _signal = new SignalSim(_name, _host, _port, "http", SignalType.HTTP);
 
         app.signalAdd(_signal);
 

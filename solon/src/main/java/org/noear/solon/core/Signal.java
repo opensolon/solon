@@ -11,6 +11,11 @@ public interface Signal {
     String name();
 
     /**
+     * 主机
+     * */
+    String host();
+
+    /**
      * 信号端口
      * */
     int port();
