@@ -17,6 +17,7 @@
 * 插件 solon.serialization.fastjson2，调整 Fastjson2RenderFactory 默认去掉 DisableCircularReferenceDetect 特性
 * 调整 ???ActionExecutor 类全部进入事件总线，并增加部分定制能力
 * 增加 Nami 异常时，显示目标详情
+* 增加 Signal 对 host 的支持
 * 增加 server.host 在注册上的应用支持
 * 添加 .map 到 mime 类型表
 

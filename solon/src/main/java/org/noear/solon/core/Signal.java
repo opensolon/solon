@@ -1,6 +1,8 @@
 package org.noear.solon.core;
 
 /**
+ * 信号
+ *
  * @author noear
  * @since 1.3
  */
