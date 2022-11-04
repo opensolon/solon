@@ -111,8 +111,9 @@ public class SolonApp extends RouterAdapter {
         EventBus.push(AppInitEndEvent.instance);
 
         //1.0.尝式预加载 logging
-        Utils.tryStart("ch.qos.logback.solon.integration.XPluginImp");
-        Utils.tryStart("org.apache.logging.log4j.solon.integration.XPluginImp");
+        if (Utils.tryStart("ch.qos.logback.solon.integration.XPluginImp") == false) {
+            Utils.tryStart("org.apache.logging.log4j.solon.integration.XPluginImp");
+        }
 
         //1.1.尝试启动插件（顺序不能乱） //不能用forEach，以免当中有插进来
         List<PluginEntity> plugs = cfg().plugs();

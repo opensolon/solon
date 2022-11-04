@@ -350,10 +350,13 @@ public class Utils {
         }
     }
 
-    public static void tryStart(String pluginClassName) {
+    public static boolean tryStart(String pluginClassName) {
         Plugin tmp = newInstance(pluginClassName);
         if (tmp != null) {
             tmp.start(Solon.context());
+            return true;
+        } else {
+            return false;
         }
     }
 
