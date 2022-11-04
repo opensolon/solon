@@ -69,7 +69,7 @@
         <spring.ver>5.0.8.RELEASE</spring.ver>
 
         <hazelcast.ver>5.1</hazelcast.ver>
-        <lombok.ver>1.18.20</lombok.ver>
+        <lombok.ver>1.18.24</lombok.ver>
 
         <protobuf.ver>3.19.4</protobuf.ver>
         <grpc.ver>1.49.0</grpc.ver>
