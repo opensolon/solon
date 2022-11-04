@@ -28,6 +28,18 @@
             <groupId>com.ecwid.consul</groupId>
             <artifactId>consul-api</artifactId>
             <version>${consul.ver}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>log4j-over-slf4j</artifactId>
+            <version>${slf4j.ver}</version>
         </dependency>
 
         <dependency>

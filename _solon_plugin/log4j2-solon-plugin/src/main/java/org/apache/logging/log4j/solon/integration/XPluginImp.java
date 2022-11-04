@@ -65,7 +65,7 @@ public class XPluginImp implements Plugin {
                 lctx.updateLoggers();
             }
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new IllegalStateException(e);
         }
     }
 }

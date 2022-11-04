@@ -63,7 +63,7 @@ public class XPluginImp implements Plugin {
                 }
             }
         } catch (JoranException e) {
-            throw new RuntimeException(e);
+            throw new IllegalStateException(e);
         }
     }
 }
