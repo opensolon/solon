@@ -10,6 +10,12 @@ import org.noear.solon.boot.ServerSignalProps;
  * @since 1.8
  */
 public class HttpSignalProps implements ServerSignalProps {
+    private static final HttpSignalProps instance = new HttpSignalProps();
+
+    public static HttpSignalProps getInstance() {
+        return instance;
+    }
+
     private String name;
     private int port;
     private String host;
