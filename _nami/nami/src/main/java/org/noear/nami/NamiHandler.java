@@ -187,7 +187,14 @@ public class NamiHandler implements InvocationHandler {
             url = config.getUpstream().get();
 
             if (url == null) {
-                throw new NamiException("NamiClient: Upstream not found server!");
+                StringBuilder buf = new StringBuilder();
+                buf.append("NamiClient: Upstream not found server instance: ").append(clz0.getName());
+
+                if (TextUtils.isEmpty(config.getName())) {
+                    buf.append(": '").append(config.getName()).append("'");
+                }
+
+                throw new NamiException(buf.toString());
             }
 
             if (url.indexOf("://") < 0) {
