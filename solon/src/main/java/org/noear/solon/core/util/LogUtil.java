@@ -10,7 +10,7 @@ import org.noear.solon.core.PropsLoader;
  * @since 1.10
  * */
 public class LogUtil {
-    private static LogUtil global;
+    private static LogUtil global = new LogUtil();
     public static LogUtil global() {
         return global;
     }
@@ -21,17 +21,6 @@ public class LogUtil {
     public static void globalSet(LogUtil instance) {
         if(instance != null) {
             LogUtil.global = instance;
-        }
-    }
-
-    static {
-        //（静态扩展约定：org.noear.solon.extend.impl.XxxxExt）
-        LogUtil tmp = Utils.newInstance("org.noear.solon.extend.impl.LogUtilExt");
-
-        if (tmp == null) {
-            global = new LogUtil();
-        } else {
-            global = tmp;
         }
     }
 
