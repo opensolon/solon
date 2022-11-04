@@ -16,6 +16,7 @@
 * 插件 solon.serialization.fastjson，调整 FastjsonRenderFactory 默认去掉 DisableCircularReferenceDetect 特性
 * 插件 solon.serialization.fastjson2，调整 Fastjson2RenderFactory 默认去掉 DisableCircularReferenceDetect 特性
 * 调整 ???ActionExecutor 类全部进入事件总线，并增加部分定制能力
+* 增加 Nami 异常时，显示目标详情
 * 添加 .map 到 mime 类型表
 
 #### 1.10.10
@@ -25,7 +26,7 @@
 * 调整 AopContext::getBeanAsyn, AopContext::getWarpAsyn, EventBus::pushAsyn 为弃用
 * 增加 AopContext::getBeanAsync,AopContext::getWarpAsync,EventBus::pushAsync
 * 增加 注入异常时，显示目标详情
-* 增加 ASM 代理失败时，显示目标详情
+* 增加 ASM 代理异常时，显示目标详情
 * 增加 HandlerLoader::findMethods 可重写
 * 提示 Action 只有当前类申明的公有函数才被接受（即 getDeclaredMethods）
 * 调整 solon.hotplug 取消直接加载插件配置为属性的机制；以保持 AopContext 统一处理机的制
