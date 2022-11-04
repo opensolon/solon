@@ -65,7 +65,7 @@ public final class XPluginImp implements Plugin {
 
         Class<?> jspClz = Utils.loadClass("org.eclipse.jetty.jsp.JettyJspServlet");
 
-        HttpSignalProps props = new HttpSignalProps();
+        HttpSignalProps props = HttpSignalProps.getInstance();
         String _host = props.getHost();
         int _port = props.getPort();
         String _name = props.getName();

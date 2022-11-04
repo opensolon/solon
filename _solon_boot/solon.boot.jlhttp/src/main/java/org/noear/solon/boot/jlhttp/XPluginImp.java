@@ -68,7 +68,7 @@ public final class XPluginImp implements Plugin {
 
         _server = new HTTPServer();
 
-        HttpSignalProps props = new HttpSignalProps();
+        HttpSignalProps props = HttpSignalProps.getInstance();
         String _host = props.getHost();
         int _port = props.getPort();
         String _name = props.getName();
