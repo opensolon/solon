@@ -25,7 +25,7 @@ import java.util.*;
  * @since 1.2
  */
 public class CloudDiscoveryServiceConsulImpl extends TimerTask implements CloudDiscoveryService {
-    private ConsulClient real;
+    private ConsulClient client;
     private String token;
 
     private long refreshInterval;
@@ -52,9 +52,9 @@ public class CloudDiscoveryServiceConsulImpl extends TimerTask implements CloudD
         String[] ss = server.split(":");
 
         if (ss.length == 1) {
-            real = new ConsulClient(ss[0]);
+            client = new ConsulClient(ss[0]);
         } else {
-            real = new ConsulClient(ss[0], Integer.parseInt(ss[1]));
+            client = new ConsulClient(ss[0], Integer.parseInt(ss[1]));
         }
     }
 
@@ -95,13 +95,13 @@ public class CloudDiscoveryServiceConsulImpl extends TimerTask implements CloudD
         //
         // 注册服务
         //
-        real.agentServiceRegister(newService, token);
+        client.agentServiceRegister(newService, token);
     }
 
     @Override
     public void registerState(String group, Instance instance, boolean health) {
         String serviceId = instance.service() + "-" + instance.address();
-        real.agentServiceSetMaintenance(serviceId, health);
+        client.agentServiceSetMaintenance(serviceId, health);
     }
 
     private void registerLocalCheck(Instance instance, NewService newService) {
@@ -143,7 +143,7 @@ public class CloudDiscoveryServiceConsulImpl extends TimerTask implements CloudD
     @Override
     public void deregister(String group, Instance instance) {
         String serviceId = instance.service() + "-" + instance.address();
-        real.agentServiceDeregister(serviceId);
+        client.agentServiceDeregister(serviceId);
     }
 
     /**
@@ -176,7 +176,7 @@ public class CloudDiscoveryServiceConsulImpl extends TimerTask implements CloudD
 
     private void run0() {
         Map<String,Discovery> discoveryTmp = new HashMap<>();
-        Response<Map<String, Service>> services = real.getAgentServices();
+        Response<Map<String, Service>> services = client.getAgentServices();
 
         for (Map.Entry<String, Service> kv : services.getValue().entrySet()) {
             Service service = kv.getValue();
