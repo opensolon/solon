@@ -6,7 +6,6 @@ import org.noear.solon.core.wrap.ClassWrap;
 import org.noear.solon.core.*;
 
 import java.io.*;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.UndeclaredThrowableException;
 import java.net.*;
@@ -23,7 +22,7 @@ import java.util.function.Function;
  * */
 @Note("内部专用工具（外部项目不建议使用，随时可能会变动）")
 public class Utils {
-    public static final FileNameMap mimeMap = URLConnection.getFileNameMap();
+    private static final FileNameMap mimeMap = URLConnection.getFileNameMap();
     /**
      * @deprecated 1.10
      * */

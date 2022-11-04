@@ -49,6 +49,7 @@ public class StaticResourceHandler implements Handler {
             conentType = Utils.mime(suffix);
         }
 
+        //说明没有支持的mime
         if (Utils.isEmpty(conentType)) {
             return;
         }
@@ -87,8 +88,10 @@ public class StaticResourceHandler implements Handler {
     private static final Date modified_time = new Date();
 
 
+    /**
+     * 尝试查找路径的后缀名
+     */
     private String findByExtName(String path) {
-        String ext = "";
         int pos = path.lastIndexOf(35);
         if (pos > 0) {
             path = path.substring(0, pos - 1);
@@ -97,10 +100,11 @@ public class StaticResourceHandler implements Handler {
         pos = path.lastIndexOf(46);
         pos = Math.max(pos, path.lastIndexOf(47));
         pos = Math.max(pos, path.lastIndexOf(63));
-        if (pos != -1 && path.charAt(pos) == '.') {
-            ext = path.substring(pos).toLowerCase();
-        }
 
-        return ext;
+        if (pos != -1 && path.charAt(pos) == '.') {
+            return path.substring(pos).toLowerCase();
+        } else {
+            return null;
+        }
     }
 }
