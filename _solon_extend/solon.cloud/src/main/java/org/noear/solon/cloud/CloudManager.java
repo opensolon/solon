@@ -107,7 +107,7 @@ public class CloudManager {
      */
     public static void register(CloudBreakerService service) {
         breakerService = service;
-        LogUtil.trace("Cloud: CloudBreakerService registered from the " + service.getClass().getTypeName());
+        LogUtil.global().trace("Cloud: CloudBreakerService registered from the " + service.getClass().getTypeName());
     }
 
     /**
@@ -115,7 +115,7 @@ public class CloudManager {
      */
     public static void register(CloudConfigService service) {
         configService = service;
-        LogUtil.trace("Cloud: CloudConfigService registered from the " + service.getClass().getTypeName());
+        LogUtil.global().trace("Cloud: CloudConfigService registered from the " + service.getClass().getTypeName());
     }
 
     /**
@@ -123,7 +123,7 @@ public class CloudManager {
      */
     public static void register(CloudDiscoveryService service) {
         discoveryService = service;
-        LogUtil.trace("Cloud: CloudDiscoveryService registered from the " + service.getClass().getTypeName());
+        LogUtil.global().trace("Cloud: CloudDiscoveryService registered from the " + service.getClass().getTypeName());
     }
 
     /**
@@ -132,9 +132,9 @@ public class CloudManager {
     public static void register(CloudEventServicePlus service) {
         eventServiceManager.register(service);
         if (Utils.isEmpty(service.getChannel())) {
-            LogUtil.trace("Cloud: CloudEventService registered from the " + service.getClass().getTypeName());
+            LogUtil.global().trace("Cloud: CloudEventService registered from the " + service.getClass().getTypeName());
         } else {
-            LogUtil.trace("Cloud: CloudEventService registered from the " + service.getClass().getTypeName() + " as &" + service.getChannel());
+            LogUtil.global().trace("Cloud: CloudEventService registered from the " + service.getClass().getTypeName() + " as &" + service.getChannel());
         }
     }
 
@@ -143,7 +143,7 @@ public class CloudManager {
      */
     public static void register(CloudLockService service) {
         lockService = service;
-        LogUtil.trace("Cloud: CloudLockService registered from the " + service.getClass().getTypeName());
+        LogUtil.global().trace("Cloud: CloudLockService registered from the " + service.getClass().getTypeName());
     }
 
     /**
@@ -151,7 +151,7 @@ public class CloudManager {
      */
     public static void register(CloudLogService service) {
         logService = service;
-        LogUtil.trace("Cloud: CloudLogService registered from the " + service.getClass().getTypeName());
+        LogUtil.global().trace("Cloud: CloudLogService registered from the " + service.getClass().getTypeName());
     }
 
     /**
@@ -159,7 +159,7 @@ public class CloudManager {
      */
     public static void register(CloudListService service) {
         listService = service;
-        LogUtil.trace("Cloud: CloudListService registered from the " + service.getClass().getTypeName());
+        LogUtil.global().trace("Cloud: CloudListService registered from the " + service.getClass().getTypeName());
     }
 
     /**
@@ -167,7 +167,7 @@ public class CloudManager {
      */
     public static void register(CloudFileService service) {
         fileService = service;
-        LogUtil.trace("Cloud: CloudFileService registered from the " + service.getClass().getTypeName());
+        LogUtil.global().trace("Cloud: CloudFileService registered from the " + service.getClass().getTypeName());
     }
 
     /**
@@ -175,7 +175,7 @@ public class CloudManager {
      */
     public static void register(CloudI18nService service) {
         i18nService = service;
-        LogUtil.trace("Cloud: CloudI18nService registered from the " + service.getClass().getTypeName());
+        LogUtil.global().trace("Cloud: CloudI18nService registered from the " + service.getClass().getTypeName());
     }
 
 
@@ -184,7 +184,7 @@ public class CloudManager {
      */
     public static void register(CloudTraceService service) {
         traceService = service;
-        LogUtil.trace("Cloud: CloudTraceService registered from the " + service.getClass().getTypeName());
+        LogUtil.global().trace("Cloud: CloudTraceService registered from the " + service.getClass().getTypeName());
     }
 
     /**
@@ -192,7 +192,7 @@ public class CloudManager {
      */
     public static void register(CloudMetricService service) {
         metricService = service;
-        LogUtil.trace("Cloud: CloudMetricService registered from the " + service.getClass().getTypeName());
+        LogUtil.global().trace("Cloud: CloudMetricService registered from the " + service.getClass().getTypeName());
     }
 
     /**
@@ -200,7 +200,7 @@ public class CloudManager {
      */
     public static void register(CloudJobService service) {
         jobServiceManager = new CloudJobServiceManagerImpl(service);
-        LogUtil.trace("Cloud: CloudJobService registered from the " + service.getClass().getTypeName());
+        LogUtil.global().trace("Cloud: CloudJobService registered from the " + service.getClass().getTypeName());
     }
 
     /**
@@ -209,7 +209,7 @@ public class CloudManager {
     public static void register(CloudIdServiceFactory factory) {
         idServiceFactory = factory;
         idServiceDef = factory.create();
-        LogUtil.trace("Cloud: CloudIdServiceFactory registered from the " + factory.getClass().getTypeName());
+        LogUtil.global().trace("Cloud: CloudIdServiceFactory registered from the " + factory.getClass().getTypeName());
     }
 
     protected static CloudBreakerService breakerService() {

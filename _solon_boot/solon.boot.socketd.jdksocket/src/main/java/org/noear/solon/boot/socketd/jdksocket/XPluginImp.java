@@ -76,6 +76,6 @@ public class XPluginImp implements Plugin {
 
         _server.stop();
         _server = null;
-        LogUtil.info("Server:main: jdksocket-socketd: Has Stopped " + solon_boot_ver());
+        LogUtil.global().info("Server:main: jdksocket-socketd: Has Stopped " + solon_boot_ver());
     }
 }

@@ -68,7 +68,7 @@ public class XPluginImp implements Plugin {
 
         long time_start = System.currentTimeMillis();
 
-        LogUtil.info("Server:main: io.grpc.Server(grpc)");
+        LogUtil.global().info("Server:main: io.grpc.Server(grpc)");
 
         ServerBuilder serverBuilder = ServerBuilder
                 .forPort(_port);
@@ -91,8 +91,8 @@ public class XPluginImp implements Plugin {
 
         long time_end = System.currentTimeMillis();
 
-        LogUtil.info("Connector:main: grpc: Started ServerConnector@{grpc://localhost:" + _port + "}");
-        LogUtil.info("Server:main: grpc: Started @" + (time_end - time_start) + "ms");
+        LogUtil.global().info("Connector:main: grpc: Started ServerConnector@{grpc://localhost:" + _port + "}");
+        LogUtil.global().info("Server:main: grpc: Started @" + (time_end - time_start) + "ms");
     }
 
     @Override
