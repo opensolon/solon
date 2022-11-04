@@ -59,9 +59,11 @@ solon.logging.appender:
     level: TRACE
 
 solon.logging.logger:
-  "org.apache.*":
+  "org.apache":
     level: INFO
-  "org.eclipse.*":
+  "org.eclipse":
+    level: INFO
+  "org.thymeleaf":
     level: INFO
 
 solon.socketd:
