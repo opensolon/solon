@@ -3,6 +3,7 @@ package org.noear.solon.core;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.event.EventBus;
+import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.core.util.PrintUtil;
 
 import java.io.File;
@@ -71,7 +72,7 @@ public class ExtendLoader {
                 path = extend;
 
                 //打印
-                PrintUtil.blueln("Extend: " + path);
+                LogUtil.trace("Extend: " + path);
 
                 //加载扩展内容
                 instance.loadFile(loaders, new File(path), filter);
@@ -179,7 +180,7 @@ public class ExtendLoader {
                 if (path.endsWith(".properties")) {
                     Solon.cfg().loadAdd(file.toURI().toURL());
 
-                    PrintUtil.blueln("loaded: " + path);
+                    LogUtil.trace("loaded: " + path);
                     return;
                 }
 
@@ -190,7 +191,7 @@ public class ExtendLoader {
 
                     Solon.cfg().loadAdd(file.toURI().toURL());
 
-                    PrintUtil.blueln("loaded: " + path);
+                    LogUtil.trace("loaded: " + path);
                     return;
                 }
             } catch (Throwable ex) {
