@@ -9,7 +9,7 @@ import org.noear.solon.boot.prop.HttpSignalProps;
 import org.noear.solon.boot.ssl.SslContextFactory;
 import org.noear.solon.core.*;
 import org.noear.solon.core.handle.MethodType;
-import org.noear.solon.core.util.PrintUtil;
+import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.core.util.NamedThreadFactory;
 
 import java.util.concurrent.Executors;
@@ -110,7 +110,7 @@ public final class XPluginImp implements Plugin {
                 MethodType.PATCH.name,
                 MethodType.OPTIONS.name);
 
-        PrintUtil.info("Server:main: JlHttpServer 2.6(jlhttp)");
+        LogUtil.info("Server:main: JlHttpServer 2.6(jlhttp)");
 
 
         _server.setExecutor(Executors.newCachedThreadPool(new NamedThreadFactory("jlhttp-")));
@@ -126,8 +126,8 @@ public final class XPluginImp implements Plugin {
 
         long time_end = System.currentTimeMillis();
 
-        PrintUtil.info("Connector:main: jlhttp: Started ServerConnector@{HTTP/1.1,[http/1.1]}{http://localhost:" + _port + "}");
-        PrintUtil.info("Server:main: jlhttp: Started @" + (time_end - time_start) + "ms");
+        LogUtil.info("Connector:main: jlhttp: Started ServerConnector@{HTTP/1.1,[http/1.1]}{http://localhost:" + _port + "}");
+        LogUtil.info("Server:main: jlhttp: Started @" + (time_end - time_start) + "ms");
     }
 
     @Override
@@ -136,7 +136,7 @@ public final class XPluginImp implements Plugin {
             _server.stop();
             _server = null;
 
-            PrintUtil.info("Server:main: jlhttp: Has Stopped " + solon_boot_ver());
+            LogUtil.info("Server:main: jlhttp: Has Stopped " + solon_boot_ver());
         }
     }
 }

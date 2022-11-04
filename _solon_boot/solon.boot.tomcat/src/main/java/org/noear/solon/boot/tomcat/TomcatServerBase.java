@@ -5,7 +5,7 @@ import org.apache.catalina.startup.Tomcat;
 import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerLifecycle;
 import org.noear.solon.boot.ServerProps;
-import org.noear.solon.core.util.PrintUtil;
+import org.noear.solon.core.util.LogUtil;
 
 import java.io.File;
 import java.net.URISyntaxException;
@@ -39,7 +39,7 @@ public abstract class TomcatServerBase implements ServerLifecycle {
             _server = null;
         }
 
-        PrintUtil.info("Server:main: tomcat: Has Stopped " + solon_boot_ver());
+        LogUtil.info("Server:main: tomcat: Has Stopped " + solon_boot_ver());
     }
 
 

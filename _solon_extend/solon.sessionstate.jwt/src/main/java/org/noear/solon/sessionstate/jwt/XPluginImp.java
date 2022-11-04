@@ -4,7 +4,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Bridge;
 import org.noear.solon.core.Plugin;
-import org.noear.solon.core.util.PrintUtil;
+import org.noear.solon.core.util.LogUtil;
 
 /**
  * @author noear
@@ -25,6 +25,6 @@ public class XPluginImp implements Plugin {
 
         Bridge.sessionStateFactorySet(JwtSessionStateFactory.getInstance());
 
-        PrintUtil.info("Session","solon: Jwt session state plugin is loaded");
+        LogUtil.info("Session: Jwt session state plugin is loaded");
     }
 }

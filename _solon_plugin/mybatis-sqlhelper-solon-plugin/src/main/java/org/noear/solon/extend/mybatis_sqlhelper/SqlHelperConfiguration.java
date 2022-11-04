@@ -10,7 +10,7 @@ import org.apache.ibatis.session.Configuration;
 import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.core.event.EventListener;
-import org.noear.solon.core.util.PrintUtil;
+import org.noear.solon.core.util.LogUtil;
 
 /**
  * SqlHelper 分布插件配置器（添加拦截器）
@@ -38,7 +38,7 @@ public class SqlHelperConfiguration implements EventListener<Configuration> {
             return;
         }
 
-        PrintUtil.info("Start to customize mybatis configuration with mybatis-sqlhelper-solon-plugin");
+        LogUtil.info("Start to customize mybatis configuration with mybatis-sqlhelper-solon-plugin");
         configuration.setDefaultScriptingLanguage(CustomScriptLanguageDriver.class);
 
         SqlHelperMybatisPlugin plugin = new SqlHelperMybatisPlugin();
@@ -46,7 +46,7 @@ public class SqlHelperConfiguration implements EventListener<Configuration> {
         plugin.setInstrumentorConfig(sqlInstrumentConfig);
         plugin.init();
 
-        PrintUtil.info(String.format("Add interceptor {0} to mybatis configuration", plugin));
+        LogUtil.info(String.format("Add interceptor {0} to mybatis configuration", plugin));
         configuration.addInterceptor(plugin);
     }
 }

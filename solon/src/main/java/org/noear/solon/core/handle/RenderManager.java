@@ -1,7 +1,7 @@
 package org.noear.solon.core.handle;
 
 import org.noear.solon.Utils;
-import org.noear.solon.core.util.PrintUtil;
+import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.core.util.DataThrowable;
 
 import java.io.File;
@@ -60,8 +60,8 @@ public class RenderManager implements Render {
         _lib.put(render.getClass().getSimpleName(), render);
         _lib.put(render.getClass().getName(), render);
 
-        PrintUtil.info("View: load: " + render.getClass().getSimpleName());
-        PrintUtil.info("View: load: " + render.getClass().getName());
+        LogUtil.info("View: load: " + render.getClass().getSimpleName());
+        LogUtil.info("View: load: " + render.getClass().getName());
     }
 
     /**
@@ -78,7 +78,7 @@ public class RenderManager implements Render {
         //suffix=.ftl
         _mapping.put(suffix, render);
 
-        PrintUtil.info("View: mapping: " + suffix + "=" + render.getName());
+        LogUtil.info("View: mapping: " + suffix + "=" + render.getName());
     }
 
     /**
@@ -94,14 +94,14 @@ public class RenderManager implements Render {
 
         Render render = _lib.get(clzName);
         if (render == null) {
-            PrintUtil.warn("solon: " + clzName + " not exists!");
+            LogUtil.warn("solon: " + clzName + " not exists!");
             return;
             //throw new IllegalStateException(classSimpleName + " not exists!");
         }
 
         _mapping.put(suffix, render);
 
-        PrintUtil.info("View: mapping: " + suffix + "=" + clzName);
+        LogUtil.info("View: mapping: " + suffix + "=" + clzName);
     }
 
     /**

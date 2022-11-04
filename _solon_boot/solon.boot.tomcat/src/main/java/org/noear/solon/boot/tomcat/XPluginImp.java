@@ -7,7 +7,7 @@ import org.noear.solon.boot.ServerLifecycle;
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.prop.HttpSignalProps;
 import org.noear.solon.core.*;
-import org.noear.solon.core.util.PrintUtil;
+import org.noear.solon.core.util.LogUtil;
 
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.annotation.WebListener;
@@ -69,7 +69,7 @@ public final class XPluginImp implements Plugin {
         }
 
         long time_start = System.currentTimeMillis();
-        PrintUtil.info("Server:main: " + TOMCAT_VER + "(tomcat)");
+        LogUtil.info("Server:main: " + TOMCAT_VER + "(tomcat)");
 
         _server.start(_host, _port);
         _signal = new SignalSim(_name, _host, _port, "http", SignalType.HTTP);
@@ -85,7 +85,7 @@ public final class XPluginImp implements Plugin {
 
         System.out.println(connectorInfo + "}{http://localhost:" + _port + "}");
 
-        PrintUtil.info("Server:main: tomcat: Started @" + (time_end - time_start) + "ms");
+        LogUtil.info("Server:main: tomcat: Started @" + (time_end - time_start) + "ms");
     }
 
     @Override
@@ -94,7 +94,7 @@ public final class XPluginImp implements Plugin {
             _server.stop();
             _server = null;
 
-            PrintUtil.info("Server:main: tomcat: Has Stopped " + solon_boot_ver());
+            LogUtil.info("Server:main: tomcat: Has Stopped " + solon_boot_ver());
         }
     }
 }

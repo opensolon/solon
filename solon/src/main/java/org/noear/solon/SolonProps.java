@@ -1,8 +1,8 @@
 package org.noear.solon;
 
 import org.noear.solon.core.*;
+import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.core.util.PluginUtil;
-import org.noear.solon.core.util.PrintUtil;
 
 import java.io.File;
 import java.net.URL;
@@ -120,7 +120,7 @@ public final class SolonProps extends Props {
             if (extConfigFile.exists()) {
                 loadInit(extConfigFile.toURI().toURL(), sysPropOrg);
             } else {
-                PrintUtil.warn("No external connfig file: " + extConfig);
+                LogUtil.warn("No external connfig file: " + extConfig);
             }
         }
 

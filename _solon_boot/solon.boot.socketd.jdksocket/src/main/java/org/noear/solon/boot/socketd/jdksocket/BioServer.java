@@ -5,7 +5,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerLifecycle;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
-import org.noear.solon.core.util.PrintUtil;
+import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.core.util.NamedThreadFactory;
 import org.noear.solon.socketd.client.jdksocket.BioReceiver;
 import org.noear.solon.socketd.client.jdksocket.BioSocketSession;
@@ -30,7 +30,7 @@ class BioServer implements ServerLifecycle {
         }
 
 
-        PrintUtil.info("Server started, waiting for customer connection...");
+        LogUtil.info("Server started, waiting for customer connection...");
 
         while (true) {
             Socket socket = server.accept();

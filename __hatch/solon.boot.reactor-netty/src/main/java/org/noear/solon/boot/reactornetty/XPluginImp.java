@@ -4,7 +4,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
-import org.noear.solon.core.util.PrintUtil;
+import org.noear.solon.core.util.LogUtil;
 import reactor.netty.DisposableServer;
 import reactor.netty.http.HttpProtocol;
 import reactor.netty.http.server.HttpServer;
@@ -34,7 +34,7 @@ public class XPluginImp implements Plugin {
         long time_start = System.currentTimeMillis();
 
         try {
-            PrintUtil.info("Server:main: Reactor netty 1.0.20(reactor-netty-http)");
+            LogUtil.info("Server:main: Reactor netty 1.0.20(reactor-netty-http)");
 
             RnHttpHandler handler = new RnHttpHandler();
 
@@ -54,8 +54,8 @@ public class XPluginImp implements Plugin {
 
             long time_end = System.currentTimeMillis();
 
-            PrintUtil.info("Connector:main: reactor-netty-http: Started ServerConnector@{HTTP/1.1,[http/1.1]}{http://localhost:" + app.cfg().serverPort() + "}");
-            PrintUtil.info("Server:main: reactor-netty-http: Started @" + (time_end - time_start) + "ms");
+            LogUtil.info("Connector:main: reactor-netty-http: Started ServerConnector@{HTTP/1.1,[http/1.1]}{http://localhost:" + app.cfg().serverPort() + "}");
+            LogUtil.info("Server:main: reactor-netty-http: Started @" + (time_end - time_start) + "ms");
         } catch (Throwable ex) {
             throw new RuntimeException(ex);
         }
@@ -67,7 +67,7 @@ public class XPluginImp implements Plugin {
             _server.dispose();
             _server = null;
 
-            PrintUtil.info("Server:main: reactor-netty-http: Has Stopped " + solon_boot_ver());
+            LogUtil.info("Server:main: reactor-netty-http: Has Stopped " + solon_boot_ver());
         }
     }
 }

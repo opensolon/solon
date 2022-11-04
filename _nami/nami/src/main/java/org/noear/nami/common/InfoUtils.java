@@ -2,7 +2,7 @@ package org.noear.nami.common;
 
 import org.noear.nami.annotation.NamiClient;
 import org.noear.solon.Utils;
-import org.noear.solon.core.util.PrintUtil;
+import org.noear.solon.core.util.LogUtil;
 
 /**
  * @author noear
@@ -31,6 +31,6 @@ public class InfoUtils {
             buf.append(")");
         }
 
-        PrintUtil.info("Nami", buf.toString());
+        LogUtil.info("Nami: " + buf);
     }
 }

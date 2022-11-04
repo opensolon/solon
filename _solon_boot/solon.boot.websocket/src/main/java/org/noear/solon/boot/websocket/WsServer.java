@@ -7,7 +7,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
-import org.noear.solon.core.util.PrintUtil;
+import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.socketd.ProtocolManager;
 
 import java.net.InetAddress;
@@ -26,7 +26,7 @@ public class WsServer extends WebSocketServer {
 
     @Override
     public void onStart() {
-        PrintUtil.info("Server:Websocket onStart...");
+        LogUtil.info("Server:Websocket onStart...");
     }
 
     @Override

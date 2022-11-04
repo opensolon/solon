@@ -7,10 +7,10 @@ import org.noear.solon.cloud.annotation.CloudJob;
 import org.noear.solon.cloud.impl.*;
 import org.noear.solon.cloud.trace.NamiTraceFilter;
 import org.noear.solon.core.*;
+import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.logging.AppenderManager;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
-import org.noear.solon.core.util.PrintUtil;
 import org.noear.solon.cloud.annotation.CloudConfig;
 import org.noear.solon.cloud.annotation.CloudEvent;
 import org.noear.solon.cloud.model.Instance;
@@ -79,7 +79,7 @@ public class XPluginImp implements Plugin {
                     Instance instance = Instance.localNew(signal);
 
                     CloudClient.discovery().deregister(Solon.cfg().appGroup(), instance);
-                    PrintUtil.info("Cloud", "Service deregistered " + instance.service() + "@" + instance.uri());
+                    LogUtil.info("Cloud: Service deregistered " + instance.service() + "@" + instance.uri());
                 }
             }
         }

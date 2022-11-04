@@ -8,7 +8,7 @@ import org.noear.solon.cloud.model.Instance;
 import org.noear.solon.cloud.service.*;
 import org.noear.solon.core.Signal;
 import org.noear.solon.core.event.AppLoadEndEvent;
-import org.noear.solon.core.util.PrintUtil;
+import org.noear.solon.core.util.LogUtil;
 
 import java.util.Properties;
 
@@ -115,14 +115,14 @@ public class CloudClient {
             for (Signal signal : Solon.app().signals()) {
                 Instance instance = Instance.localNew(signal);
                 CloudClient.discovery().register(Solon.cfg().appGroup(), instance);
-                PrintUtil.info("Cloud", "Service registered " + instance.service() + "@" + instance.uri());
+                LogUtil.info("Cloud: Service registered " + instance.service() + "@" + instance.uri());
             }
         });
 
         Solon.app().onEvent(Signal.class, signal -> {
             Instance instance = Instance.localNew(signal);
             CloudClient.discovery().register(Solon.cfg().appGroup(), instance);
-            PrintUtil.info("Cloud", "Service registered " + instance.service() + "@" + instance.uri());
+            LogUtil.info("Cloud: Service registered " + instance.service() + "@" + instance.uri());
         });
     }
 

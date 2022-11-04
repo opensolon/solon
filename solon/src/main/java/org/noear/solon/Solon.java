@@ -4,7 +4,7 @@ import org.noear.solon.core.AopContext;
 import org.noear.solon.core.JarClassLoader;
 import org.noear.solon.core.NvMap;
 import org.noear.solon.core.event.EventBus;
-import org.noear.solon.core.util.PrintUtil;
+import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.core.util.ConsumerEx;
 
 import java.lang.management.ManagementFactory;
@@ -130,7 +130,7 @@ public class Solon {
         //绑定类加载器（即替换当前线程[即主线程]的类加载器）
         JarClassLoader.bindingThread();
 
-        PrintUtil.info("App", "Start loading");
+        LogUtil.info("App: Start loading");
 
 
         try {
@@ -177,7 +177,7 @@ public class Solon {
         }
 
         //启动完成
-        PrintUtil.info("App", "End loading elapsed=" + app.elapsedTimes() + "ms pid=" + pid);
+        LogUtil.info("App: End loading elapsed=" + app.elapsedTimes() + "ms pid=" + pid);
 
         return app;
     }
@@ -217,11 +217,11 @@ public class Solon {
 
             String hint = "(1.prestop 2.delay 3.stop)";
 
-            PrintUtil.info("App", "Security to stop: begin..." + hint);
+            LogUtil.info("App: Security to stop: begin..." + hint);
 
             //1.预停止
             Solon.cfg().plugs().forEach(p -> p.prestop());
-            PrintUtil.info("App", "Security to stop: 1 completed " + hint);
+            LogUtil.info("App: Security to stop: 1 completed " + hint);
 
 
             //2.延时标停
@@ -240,11 +240,11 @@ public class Solon {
                 sleep0(delay2);
             }
 
-            PrintUtil.info("App", "Security to stop: 2 completed " + hint);
+            LogUtil.info("App: Security to stop: 2 completed " + hint);
 
             //3.停止
             Solon.cfg().plugs().forEach(p -> p.stop());
-            PrintUtil.info("App", "Security to stop: 3 completed " + hint);
+            LogUtil.info("App: Security to stop: 3 completed " + hint);
         } else {
             //1.预停止
             Solon.cfg().plugs().forEach(p -> p.prestop());

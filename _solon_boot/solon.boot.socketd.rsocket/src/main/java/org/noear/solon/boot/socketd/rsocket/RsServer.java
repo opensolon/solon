@@ -6,7 +6,7 @@ import io.rsocket.transport.netty.server.CloseableChannel;
 import io.rsocket.transport.netty.server.TcpServerTransport;
 import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerLifecycle;
-import org.noear.solon.core.util.PrintUtil;
+import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.socketd.client.rsocket.RsAcceptor;
 
 import java.io.IOException;
@@ -28,7 +28,7 @@ class RsServer implements ServerLifecycle {
                 .bind(transport)
                 .block();
 
-        PrintUtil.info("Server started, waiting for customer connection...");
+        LogUtil.info("Server started, waiting for customer connection...");
     }
 
     @Override

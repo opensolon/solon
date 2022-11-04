@@ -4,7 +4,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.cloud.CloudJobHandler;
 import org.noear.solon.cloud.model.JobHolder;
 import org.noear.solon.cloud.service.CloudJobService;
-import org.noear.solon.core.util.PrintUtil;
+import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.logging.utils.TagsMDC;
 import org.noear.water.WaterClient;
 import org.noear.water.model.JobM;
@@ -53,7 +53,7 @@ public class CloudJobServiceWaterImp implements CloudJobService {
 
         jobMap.put(name, jobHolder);
         TagsMDC.tag0("CloudJob");
-        PrintUtil.warn("CloudJob", "Handler registered name:" + name + ", class:" + handler.getClass().getName());
+        LogUtil.info("CloudJob: Handler registered name:" + name + ", class:" + handler.getClass().getName());
         TagsMDC.tag0("");
         return true;
     }

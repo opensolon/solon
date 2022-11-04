@@ -13,7 +13,7 @@ import org.noear.solon.boot.smarthttp.websocket._SessionManagerImpl;
 import org.noear.solon.boot.ssl.SslContextFactory;
 import org.noear.solon.core.*;
 import org.noear.solon.core.event.EventBus;
-import org.noear.solon.core.util.PrintUtil;
+import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.socketd.SessionManager;
 import org.smartboot.http.server.HttpBootstrap;
 import org.smartboot.http.server.HttpServerConfiguration;
@@ -108,7 +108,7 @@ public final class XPluginImp implements Plugin {
             SessionManager.register(new _SessionManagerImpl());
         }
 
-        PrintUtil.info("Server:main: SmartHttpServer 1.1(smarthttp)");
+        LogUtil.info("Server:main: SmartHttpServer 1.1(smarthttp)");
 
 
         _server.setPort(_port);
@@ -124,12 +124,12 @@ public final class XPluginImp implements Plugin {
 
         String connectorInfo = "solon.connector:main: smarthttp: Started ServerConnector@{HTTP/1.1,[http/1.1]";
         if (app.enableWebSocket()) {
-            PrintUtil.info(connectorInfo + "[WebSocket]}{0.0.0.0:" + _port + "}");
+            LogUtil.info(connectorInfo + "[WebSocket]}{0.0.0.0:" + _port + "}");
         }
 
-        PrintUtil.info(connectorInfo + "}{http://localhost:" + _port + "}");
+        LogUtil.info(connectorInfo + "}{http://localhost:" + _port + "}");
 
-        PrintUtil.info("Server:main: smarthttp: Started @" + (time_end - time_start) + "ms");
+        LogUtil.info("Server:main: smarthttp: Started @" + (time_end - time_start) + "ms");
     }
 
     @Override
@@ -138,7 +138,7 @@ public final class XPluginImp implements Plugin {
             _server.shutdown();
             _server = null;
 
-            PrintUtil.info("Server:main: smarthttp: Has Stopped " + solon_boot_ver());
+            LogUtil.info("Server:main: smarthttp: Has Stopped " + solon_boot_ver());
         }
     }
 }

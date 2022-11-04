@@ -1,7 +1,7 @@
 package org.noear.solon;
 
 import org.noear.solon.annotation.Note;
-import org.noear.solon.core.util.PrintUtil;
+import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.core.wrap.ClassWrap;
 import org.noear.solon.core.*;
 
@@ -608,7 +608,7 @@ public class Utils {
             return extend;
         }
 
-        PrintUtil.info("Extend org: " + extend);
+        LogUtil.info("Extend org: " + extend);
 
         URL temp = Utils.getResource("");
 
@@ -617,7 +617,7 @@ public class Utils {
         } else {
             String uri = temp.toString();
 
-            PrintUtil.info("Resource root: " + uri);
+            LogUtil.info("Resource root: " + uri);
 
             if (uri.startsWith("file:/")) {
                 int idx = uri.lastIndexOf("/target/");

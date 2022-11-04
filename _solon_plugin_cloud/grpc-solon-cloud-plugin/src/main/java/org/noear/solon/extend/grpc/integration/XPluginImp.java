@@ -7,7 +7,7 @@ import io.grpc.ServerServiceDefinition;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.core.*;
-import org.noear.solon.core.util.PrintUtil;
+import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.extend.grpc.annotation.EnableGrpc;
 import org.noear.solon.extend.grpc.annotation.GrpcClient;
 import org.noear.solon.extend.grpc.annotation.GrpcService;
@@ -68,7 +68,7 @@ public class XPluginImp implements Plugin {
 
         long time_start = System.currentTimeMillis();
 
-        PrintUtil.info("Server:main: io.grpc.Server(grpc)");
+        LogUtil.info("Server:main: io.grpc.Server(grpc)");
 
         ServerBuilder serverBuilder = ServerBuilder
                 .forPort(_port);
@@ -91,8 +91,8 @@ public class XPluginImp implements Plugin {
 
         long time_end = System.currentTimeMillis();
 
-        PrintUtil.info("Connector:main: grpc: Started ServerConnector@{grpc://localhost:" + _port + "}");
-        PrintUtil.info("Server:main: grpc: Started @" + (time_end - time_start) + "ms");
+        LogUtil.info("Connector:main: grpc: Started ServerConnector@{grpc://localhost:" + _port + "}");
+        LogUtil.info("Server:main: grpc: Started @" + (time_end - time_start) + "ms");
     }
 
     @Override

@@ -60,19 +60,19 @@ public abstract class OutputStreamAppender extends AppenderSimple {
             //
             switch (level) {
                 case ERROR:
-                    redln(title);
+                    PrintUtil.redln(title);
                     break;
                 case WARN:
-                    yellowln(title);
+                    PrintUtil.yellowln(title);
                     break;
                 case DEBUG:
-                    blueln(title);
+                    PrintUtil.blueln(title);
                     break;
                 case TRACE:
-                    purpleln(title);
+                    PrintUtil.purpleln(title);
                     break;
                 default:
-                    greenln(title);
+                    PrintUtil.greenln(title);
                     break;
             }
 
@@ -83,35 +83,6 @@ public abstract class OutputStreamAppender extends AppenderSimple {
             } else {
                 out.println(ONode.stringify(content));
             }
-        }
-    }
-
-    protected void greenln(Object txt) {
-        colorln(PrintUtil.ANSI_GREEN , txt);
-    }
-
-    protected void blueln(Object txt) {
-        colorln(PrintUtil.ANSI_BLUE , txt);
-    }
-
-    protected void redln(String txt) {
-        colorln(PrintUtil.ANSI_RED , txt);
-    }
-
-    protected void yellowln(Object txt) {
-        colorln(PrintUtil.ANSI_YELLOW , txt);
-    }
-
-    protected void purpleln(Object txt) {
-        colorln(PrintUtil.ANSI_PURPLE , txt);
-    }
-
-    protected void colorln(String color, Object s) {
-        if (PrintUtil.IS_WINDOWS) {
-            out.println(s);
-        } else {
-            out.println(color + s);
-            out.print(PrintUtil.ANSI_RESET);
         }
     }
 }

@@ -4,7 +4,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Bridge;
 import org.noear.solon.core.Plugin;
-import org.noear.solon.core.util.PrintUtil;
+import org.noear.solon.core.util.LogUtil;
 
 public class XPluginImp implements Plugin {
     @Override
@@ -33,6 +33,6 @@ public class XPluginImp implements Plugin {
 
         Bridge.sessionStateFactorySet(RedissonSessionStateFactory.getInstance());
 
-        PrintUtil.info("Session","solon: Redis session state plugin is loaded");
+        LogUtil.info("Session: Redis session state plugin is loaded");
     }
 }

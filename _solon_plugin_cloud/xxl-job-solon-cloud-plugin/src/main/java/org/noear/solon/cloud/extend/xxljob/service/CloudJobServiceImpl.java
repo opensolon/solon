@@ -4,7 +4,8 @@ import com.xxl.job.core.executor.XxlJobExecutor;
 import org.noear.solon.cloud.CloudJobHandler;
 import org.noear.solon.cloud.model.JobHolder;
 import org.noear.solon.cloud.service.CloudJobService;
-import org.noear.solon.core.handle.Handler;
+import org.noear.solon.core.util.LogUtil;
+import org.noear.solon.logging.utils.TagsMDC;
 
 /**
  * @author noear
@@ -18,6 +19,10 @@ public class CloudJobServiceImpl implements CloudJobService {
         JobHolder jobHolder = new JobHolder(name, cron7x, description, handler);
 
         XxlJobExecutor.registJobHandler(name, new IJobHandlerImpl(jobHolder));
+
+        TagsMDC.tag0("CloudJob");
+        LogUtil.info("CloudJob: Handler registered name:" + name + ", class:" + handler.getClass().getName());
+        TagsMDC.tag0("");
         return true;
     }
 

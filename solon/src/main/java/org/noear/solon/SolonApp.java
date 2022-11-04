@@ -6,7 +6,7 @@ import org.noear.solon.core.handle.*;
 import org.noear.solon.annotation.Import;
 import org.noear.solon.core.*;
 import org.noear.solon.core.route.RouterAdapter;
-import org.noear.solon.core.util.PrintUtil;
+import org.noear.solon.core.util.LogUtil;
 
 import java.lang.annotation.Annotation;
 import java.util.*;
@@ -59,11 +59,11 @@ public class SolonApp extends RouterAdapter {
             try {
                 while (true) {
                     if (Utils.ping(addr)) {
-                        PrintUtil.info("App", "Start ping succeed: " + addr);
+                        LogUtil.info("App: Start ping succeed: " + addr);
                         Thread.sleep(1000); //成功也再等1s
                         break;
                     } else {
-                        PrintUtil.info("App", "Start ping failure: " + addr);
+                        LogUtil.info("App: Start ping failure: " + addr);
                         Thread.sleep(2000);
                     }
                 }

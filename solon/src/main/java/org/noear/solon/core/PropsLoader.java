@@ -2,7 +2,7 @@ package org.noear.solon.core;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
-import org.noear.solon.core.util.PrintUtil;
+import org.noear.solon.core.util.LogUtil;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -67,7 +67,7 @@ public class PropsLoader {
         String fileName = url.toString();
 
         if (fileName.endsWith(".properties")) {
-            PrintUtil.info(url);
+            LogUtil.info(url);
 
             Properties tmp = new Properties();
             tmp.load(new InputStreamReader(url.openStream(), Solon.encoding()));

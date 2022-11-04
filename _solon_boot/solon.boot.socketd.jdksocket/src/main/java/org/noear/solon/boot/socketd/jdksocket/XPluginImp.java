@@ -5,7 +5,7 @@ import org.noear.solon.SolonApp;
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.prop.SocketSignalProps;
 import org.noear.solon.core.*;
-import org.noear.solon.core.util.PrintUtil;
+import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.socketd.SessionManager;
 
 public class XPluginImp implements Plugin {
@@ -47,7 +47,7 @@ public class XPluginImp implements Plugin {
 
         long time_start = System.currentTimeMillis();
 
-        PrintUtil.info("Server:main: java.net.ServerSocket(jdksocket-socketd)");
+        LogUtil.info("Server:main: java.net.ServerSocket(jdksocket-socketd)");
 
 
         SocketSignalProps props = new SocketSignalProps(20000);
@@ -64,8 +64,8 @@ public class XPluginImp implements Plugin {
 
         long time_end = System.currentTimeMillis();
 
-        PrintUtil.info("Connector:main: jdksocket-socketd: Started ServerConnector@{[Socket]}{0.0.0.0:" + _port + "}");
-        PrintUtil.info("Server:main: jdksocket-socketd: Started @" + (time_end - time_start) + "ms");
+        LogUtil.info("Connector:main: jdksocket-socketd: Started ServerConnector@{[Socket]}{0.0.0.0:" + _port + "}");
+        LogUtil.info("Server:main: jdksocket-socketd: Started @" + (time_end - time_start) + "ms");
     }
 
     @Override
@@ -76,6 +76,6 @@ public class XPluginImp implements Plugin {
 
         _server.stop();
         _server = null;
-        PrintUtil.info("Server:main: jdksocket-socketd: Has Stopped " + solon_boot_ver());
+        LogUtil.info("Server:main: jdksocket-socketd: Has Stopped " + solon_boot_ver());
     }
 }

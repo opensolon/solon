@@ -6,7 +6,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.prop.WebSocketSignalProps;
 import org.noear.solon.core.*;
-import org.noear.solon.core.util.PrintUtil;
+import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.socketd.SessionManager;
 
 import java.net.Inet4Address;
@@ -56,7 +56,7 @@ public class XPluginImp implements Plugin {
         long time_start = System.currentTimeMillis();
 
 
-        PrintUtil.info("Server:main: org.java_websocket 1.5.0(websocket)");
+        LogUtil.info("Server:main: org.java_websocket 1.5.0(websocket)");
 
 
         if (Utils.isEmpty(_host)) {
@@ -73,8 +73,8 @@ public class XPluginImp implements Plugin {
 
         long time_end = System.currentTimeMillis();
 
-        PrintUtil.info("Connector:main: websocket: Started ServerConnector@{HTTP/1.1,[WebSocket]}{0.0.0.0:" + _port + "}");
-        PrintUtil.info("Server:main: websocket: Started @" + (time_end - time_start) + "ms");
+        LogUtil.info("Connector:main: websocket: Started ServerConnector@{HTTP/1.1,[WebSocket]}{0.0.0.0:" + _port + "}");
+        LogUtil.info("Server:main: websocket: Started @" + (time_end - time_start) + "ms");
     }
 
     @Override
@@ -83,7 +83,7 @@ public class XPluginImp implements Plugin {
             _server.stop();
             _server = null;
 
-            PrintUtil.info("Server:main: websocket: Has Stopped " + solon_boot_ver());
+            LogUtil.info("Server:main: websocket: Has Stopped " + solon_boot_ver());
         }
     }
 }

@@ -1,6 +1,6 @@
 package org.noear.solon.logging;
 
-import org.noear.solon.core.util.PrintUtil;
+import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.logging.appender.ConsoleAppender;
 import org.noear.solon.logging.event.Appender;
 import org.noear.solon.logging.event.LogEvent;
@@ -48,7 +48,7 @@ public class AppenderManager {
     public void register(String name, Appender appender) {
         appenderMap.putIfAbsent(name, new AppenderHolder(name, appender));
 
-        PrintUtil.info("Logging", "LogAppender registered from the " + appender.getClass().getTypeName() + "#" + name);
+        LogUtil.info("Logging: LogAppender registered from the " + appender.getClass().getTypeName() + "#" + name);
     }
 
     /**

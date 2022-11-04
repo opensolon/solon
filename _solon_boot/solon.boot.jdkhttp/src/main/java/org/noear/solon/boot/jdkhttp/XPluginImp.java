@@ -10,7 +10,7 @@ import org.noear.solon.boot.prop.HttpSignalProps;
 import org.noear.solon.boot.ssl.SslContextFactory;
 import org.noear.solon.core.*;
 import org.noear.solon.core.event.EventBus;
-import org.noear.solon.core.util.PrintUtil;
+import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.core.util.NamedThreadFactory;
 
 import javax.net.ssl.SSLContext;
@@ -76,7 +76,7 @@ public final class XPluginImp implements Plugin {
 
         long time_start = System.currentTimeMillis();
 
-        PrintUtil.info("Server:main: Sun.net.HttpServer(jdkhttp)");
+        LogUtil.info("Server:main: Sun.net.HttpServer(jdkhttp)");
 
 
         if (System.getProperty(ServerConstants.SSL_KEYSTORE) != null) {
@@ -107,8 +107,8 @@ public final class XPluginImp implements Plugin {
 
         long time_end = System.currentTimeMillis();
 
-        PrintUtil.info("Connector:main: jdkhttp: Started ServerConnector@{HTTP/1.1,[http/1.1]}{http://localhost:" + _port + "}");
-        PrintUtil.info("Server:main: jdkhttp: Started @" + (time_end - time_start) + "ms");
+        LogUtil.info("Connector:main: jdkhttp: Started ServerConnector@{HTTP/1.1,[http/1.1]}{http://localhost:" + _port + "}");
+        LogUtil.info("Server:main: jdkhttp: Started @" + (time_end - time_start) + "ms");
     }
 
     private void addSslConfig(HttpsServer httpsServer) throws IOException {
@@ -143,6 +143,6 @@ public final class XPluginImp implements Plugin {
 
         _server.stop(0);
         _server = null;
-        PrintUtil.info("Server:main: jdkhttp: Has Stopped " + solon_boot_ver());
+        LogUtil.info("Server:main: jdkhttp: Has Stopped " + solon_boot_ver());
     }
 }

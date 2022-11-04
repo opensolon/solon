@@ -9,7 +9,7 @@ import org.noear.solon.cloud.tracing.integration.NamiFilterTracing;
 import org.noear.solon.cloud.tracing.integration.ErrorListenerTracing;
 import org.noear.solon.cloud.tracing.integration.SolonFilterTracing;
 import org.noear.solon.cloud.tracing.service.TracerFactory;
-import org.noear.solon.core.util.PrintUtil;
+import org.noear.solon.core.util.LogUtil;
 
 /**
  * 跟踪管理器
@@ -48,7 +48,7 @@ public class TracingManager {
         try {
             Solon.context().wrapAndPut(Tracer.class, service.create());
 
-            PrintUtil.info("Cloud", "TracerFactory registered from the " + service.getClass().getTypeName());
+            LogUtil.info("Cloud: TracerFactory registered from the " + service.getClass().getTypeName());
         } catch (RuntimeException e) {
             throw e;
         } catch (Throwable e) {

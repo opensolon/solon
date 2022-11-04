@@ -5,7 +5,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.ExtendLoader;
 import org.noear.solon.core.event.EventBus;
-import org.noear.solon.core.util.PrintUtil;
+import org.noear.solon.core.util.LogUtil;
 
 import java.io.*;
 import java.net.URL;
@@ -63,10 +63,10 @@ public class GraalvmUtil {
             }
 
             if (Solon.cfg().isDebugMode()) {
-                PrintUtil.info("load reflect-config completed: ", resources.toString());
+                LogUtil.info("load reflect-config completed: " + resources.toString());
             }
         } catch (Exception e) {
-            PrintUtil.warn("read reflect-config error :" + e.getLocalizedMessage());
+            LogUtil.warn("read reflect-config error :" + e.getLocalizedMessage());
             EventBus.push(e);
         }
     }
@@ -96,10 +96,10 @@ public class GraalvmUtil {
             }
 
             if (Solon.cfg().isDebugMode()) {
-                PrintUtil.info("load resource-config completed: ", resources.toString());
+                LogUtil.info("load resource-config completed: " + resources.toString());
             }
         } catch (Exception e) {
-            PrintUtil.warn("read resource-config.json error :" + e.getLocalizedMessage());
+            LogUtil.warn("read resource-config.json error :" + e.getLocalizedMessage());
             EventBus.push(e);
         }
     }
