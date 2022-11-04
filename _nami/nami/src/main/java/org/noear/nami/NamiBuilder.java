@@ -144,7 +144,7 @@ public class NamiBuilder {
         }
 
         if (clz.isInterface() == false) {
-            throw new NamiException("NamiClient only support interfaces");
+            throw new NamiException("NamiClient only support interfaces: " + clz.getName());
         }
 
         NamiHandler handler = new NamiHandler(clz, _config, client);
@@ -162,7 +162,7 @@ public class NamiBuilder {
 
             try {
                 if (!clz.getMethod("doFilter", Invocation.class).isDefault()) {
-                    throw new NamiException("Interface " + clz.getName() + " does not have a default void doFilter(Invocation inv)");
+                    throw new NamiException("There is no default doFilter(Invocation inv): " + clz.getName());
                 }
             } catch (NoSuchMethodException e) {
                 throw new NamiException(e);

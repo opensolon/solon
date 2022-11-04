@@ -1,6 +1,7 @@
 package org.noear.nami;
 
 import org.noear.nami.common.Constants;
+import org.noear.nami.common.TextUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -157,7 +158,14 @@ public class Nami {
         }
 
         if (channel == null) {
-            throw new NamiException("There are no channels available");
+            StringBuilder buf = new StringBuilder();
+            buf.append("There is no channel available for the request: ");
+            if (TextUtils.isNotEmpty(_config.getName())) {
+                buf.append("'").append(_config.getName()).append("'");
+            }
+            buf.append(": ").append(inv.url);
+
+            throw new NamiException(buf.toString());
         }
 
         if (inv.body == null) {

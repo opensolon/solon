@@ -122,7 +122,14 @@ public class NamiHandler implements InvocationHandler {
 
         //检查upstream
         if (TextUtils.isEmpty(config.getUrl()) && config.getUpstream() == null) {
-            throw new NamiException("NamiClient: Not found upstream: " + clz0.getName());
+            StringBuilder buf = new StringBuilder();
+            buf.append("NamiClient: Not found upstream: ").append(clz0.getName());
+
+            if (TextUtils.isEmpty(config.getName())) {
+                buf.append(": '").append(config.getName()).append("'");
+            }
+
+            throw new NamiException(buf.toString());
         }
 
         //默认函数调用
