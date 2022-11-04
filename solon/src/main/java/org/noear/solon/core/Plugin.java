@@ -9,9 +9,14 @@ package org.noear.solon.core;
 @FunctionalInterface
 public interface Plugin {
     /**
+     * 初始化
+     * */
+    default void init(AopContext context) throws Throwable{}
+
+    /**
      * 启动 （stop 可通过: app.onStop(..) 实现）
      */
-    void start(AopContext context);
+    void start(AopContext context) throws Throwable;
 
     /**
      * 预停止

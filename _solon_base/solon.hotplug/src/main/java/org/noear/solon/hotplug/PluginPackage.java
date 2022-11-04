@@ -89,6 +89,10 @@ public class PluginPackage {
      */
     public synchronized PluginPackage start() {
         for (PluginEntity p1 : plugins) {
+            p1.init(context);
+        }
+
+        for (PluginEntity p1 : plugins) {
             p1.start(context);
         }
         context.beanLoaded();

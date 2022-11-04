@@ -79,13 +79,32 @@ public class PluginEntity {
     }
 
     /**
+     * 初始化
+     */
+    public void init(AopContext context) {
+        init();
+
+        if (plugin != null) {
+            try {
+                plugin.init(context);
+            } catch (Throwable e) {
+                throw new IllegalStateException(e);
+            }
+        }
+    }
+
+    /**
      * 启动
      */
     public void start(AopContext context) {
         init();
 
         if (plugin != null) {
-            plugin.start(context);
+            try {
+                plugin.start(context);
+            } catch (Throwable e) {
+                throw new IllegalStateException(e);
+            }
         }
     }
 

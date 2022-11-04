@@ -21,7 +21,12 @@ import java.net.URL;
  */
 public class XPluginImp implements Plugin {
     @Override
-    public void start(AopContext context) {
+    public void init(AopContext context) throws Throwable {
+        start(context);
+    }
+
+    @Override
+    public void start(AopContext context) throws Throwable{
         URL url = Utils.getResource("logback.xml");
         if (url == null) {
             //尝试环境加载

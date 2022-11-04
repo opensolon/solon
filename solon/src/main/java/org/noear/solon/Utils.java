@@ -350,16 +350,6 @@ public class Utils {
         }
     }
 
-    public static boolean tryStart(String pluginClassName) {
-        Plugin tmp = newInstance(pluginClassName);
-        if (tmp != null) {
-            tmp.start(Solon.context());
-            return true;
-        } else {
-            return false;
-        }
-    }
-
     /**
      * 根据类名实例化一个对象
      *

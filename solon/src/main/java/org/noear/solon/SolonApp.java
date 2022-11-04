@@ -106,22 +106,25 @@ public class SolonApp extends RouterAdapter {
     /**
      * 运行应用
      */
-    protected void run() {
+    protected void run() throws Throwable{
         //event::0.x.推送App init end事件
         EventBus.push(AppInitEndEvent.instance);
 
-        //1.0.尝式预加载 logging
-        if (Utils.tryStart("ch.qos.logback.solon.integration.XPluginImp") == false) {
-            Utils.tryStart("org.apache.logging.log4j.solon.integration.XPluginImp");
+        List<PluginEntity> plugs = cfg().plugs();
+        //1.0.尝式初始化插件 //一般插件不需要
+        for (int i = 0, len = plugs.size(); i < len; i++) {
+            plugs.get(i).init(Solon.context());
         }
 
+        //event::1.0.x推送Plugin init end事件
+        EventBus.push(PluginInitEndEvent.instance);
+
         //1.1.尝试启动插件（顺序不能乱） //不能用forEach，以免当中有插进来
-        List<PluginEntity> plugs = cfg().plugs();
         for (int i = 0, len = plugs.size(); i < len; i++) {
             plugs.get(i).start(Solon.context());
         }
 
-        //event::1.x.推送Plugin load end事件
+        //event::1.1.x推送Plugin load end事件
         EventBus.push(PluginLoadEndEvent.instance);
 
 
@@ -293,6 +296,7 @@ public class SolonApp extends RouterAdapter {
      */
     public void plug(Plugin plugin) {
         PluginEntity p = new PluginEntity(plugin);
+        p.init(Solon.context());
         p.start(Solon.context());
         cfg().plugs().add(p);
     }
