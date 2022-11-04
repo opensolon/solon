@@ -1,7 +1,5 @@
 package org.noear.solon.core.util;
 
-import org.noear.solon.core.PropsLoader;
-
 /**
  * 日志打印小工具（仅限内部使用）
  *
@@ -9,11 +7,14 @@ import org.noear.solon.core.PropsLoader;
  * @since 1.10
  * */
 public class LogUtil {
-    private static LogUtil global;
+    private static LogUtil global = new LogUtil();
     public static LogUtil global() {
         return global;
     }
 
+    /**
+     * 全局打印工具（用于改改日志实现）
+     * */
     public static void globalSet(LogUtil instance) {
         if(instance != null) {
             LogUtil.global = instance;
