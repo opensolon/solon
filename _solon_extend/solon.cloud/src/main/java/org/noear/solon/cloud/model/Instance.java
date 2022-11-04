@@ -193,9 +193,9 @@ public class Instance implements Serializable {
 
         Instance n1 = null;
         if (Utils.isEmpty(signal.host())) {
-            n1 = new Instance(signal.name(), signal.host() + ":" + signal.port());
-        } else {
             n1 = new Instance(signal.name(), LocalUtils.getLocalAddress() + ":" + signal.port());
+        } else {
+            n1 = new Instance(signal.name(), signal.host() + ":" + signal.port());
         }
 
         n1.protocol(signal.protocol());
