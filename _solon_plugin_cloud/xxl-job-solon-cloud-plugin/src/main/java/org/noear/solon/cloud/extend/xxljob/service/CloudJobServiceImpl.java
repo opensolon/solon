@@ -21,7 +21,7 @@ public class CloudJobServiceImpl implements CloudJobService {
         XxlJobExecutor.registJobHandler(name, new IJobHandlerImpl(jobHolder));
 
         TagsMDC.tag0("CloudJob");
-        LogUtil.info("CloudJob: Handler registered name:" + name + ", class:" + handler.getClass().getName());
+        LogUtil.trace("CloudJob: Handler registered name:" + name + ", class:" + handler.getClass().getName());
         TagsMDC.tag0("");
         return true;
     }

@@ -48,7 +48,7 @@ public class AppenderManager {
     public void register(String name, Appender appender) {
         appenderMap.putIfAbsent(name, new AppenderHolder(name, appender));
 
-        LogUtil.info("Logging: LogAppender registered from the " + appender.getClass().getTypeName() + "#" + name);
+        LogUtil.trace("Logging: LogAppender registered from the " + appender.getClass().getTypeName() + "#" + name);
     }
 
     /**

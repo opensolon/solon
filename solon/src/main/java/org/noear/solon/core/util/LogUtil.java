@@ -9,7 +9,7 @@ package org.noear.solon.core.util;
 public class LogUtil {
     public static void trace(Object content) {
         System.out.print("[Solon] ");
-        PrintUtil.blueln(content);
+        PrintUtil.greenln(content);
     }
 
     public static void debug(Object content) {
