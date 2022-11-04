@@ -51,6 +51,9 @@ solon.health.detector: "cpu,disk,jvm,memory,os,qps"
 solon.logging.appender:
   console:
     enable: true
+    pattern: "%d{yyyy-MM-dd HH:mm:ss} %-5level %magenta(${PID:-}) %white(---) %-20(%yellow([%20.20thread])) %-55(%cyan(%.32logger{30}:%L)) %msg%n"
+  file:
+    enable: false
   test:
     class: webapp.demox_log_breaker.TestAppender
     level: TRACE
