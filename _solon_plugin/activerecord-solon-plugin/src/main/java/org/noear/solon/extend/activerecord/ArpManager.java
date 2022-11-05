@@ -4,6 +4,8 @@ import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
 import com.jfinal.plugin.activerecord.Config;
 import com.jfinal.plugin.activerecord.DbKit;
 import com.jfinal.plugin.activerecord.Model;
+import org.noear.solon.Utils;
+import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.ScanUtil;
 import org.noear.solon.extend.activerecord.annotation.Db;
@@ -12,7 +14,9 @@ import org.noear.solon.extend.activerecord.impl.ConfigImpl;
 import org.noear.solon.extend.activerecord.impl.DataSourceProxyImpl;
 
 import javax.sql.DataSource;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -21,39 +25,74 @@ import java.util.Map;
  * @author noear
  * @since 1.10
  */
-public class ActiveRecordManager {
+public class ArpManager {
     private static Map<String, ActiveRecordPlugin> arpMap = new HashMap<>();
+
+    /**
+     * 添加数据源
+     * */
+    public static void add(BeanWrap bw) {
+        String name = bw.name();
+        if (Utils.isEmpty(bw.name())) {
+            name = DbKit.MAIN_CONFIG_NAME;
+        }
+
+        addDo(name, bw.raw());
+
+        if (bw.typed()) {
+            addDo(DbKit.MAIN_CONFIG_NAME, bw.raw());
+        }
+    }
+
+    /**
+     * 获取 ActiveRecordPlugin
+     * */
+    public static ActiveRecordPlugin get(String name) {
+        if (Utils.isEmpty(name)) {
+            name = DbKit.MAIN_CONFIG_NAME;
+        }
+
+        return arpMap.get(name);
+    }
+
+    private static void addDo(String name, DataSource ds){
+        if(arpMap.containsKey(name)){
+            return;
+        }
+
+        // 构建配置
+        DataSource arpDs = new DataSourceProxyImpl(ds);
+        Config arpCfg = new ConfigImpl(name, arpDs, DbKit.DEFAULT_TRANSACTION_LEVEL);
+
+        // 构建arp
+        ActiveRecordPlugin arp = new ActiveRecordPlugin(arpCfg);
+
+        arpMap.put(name, arp);
+    }
 
 
     /**
      * 开始构建 ActiveRecordPlugin 服务
      * */
-    public static void start(Map<String, DataSource> dsMap) {
-        for (Map.Entry<String, DataSource> entry : dsMap.entrySet()) {
-            // 构建配置
-            DataSource dsp = new DataSourceProxyImpl(entry.getValue());
-            Config cfg = new ConfigImpl(entry.getKey(), dsp, DbKit.DEFAULT_TRANSACTION_LEVEL);
+    public static void start() {
+        List<String> sqlUrls = new ArrayList<>();
 
-            // 构建arp
-            ActiveRecordPlugin arp = new ActiveRecordPlugin(cfg);
+        // 添加SQL模板映射
+        ScanUtil.scan("sql", n -> n.endsWith(".sql")).forEach(url -> {
+            sqlUrls.add(url);
+        });
 
-            // arp.getEngine().setSourceFactory(new ClassPathSourceFactory());
-
+        for (ActiveRecordPlugin arp : arpMap.values()) {
             // 添加表映射
             addTableMapping(arp);
 
-            // 添加SQL模板映射
-            ScanUtil.scan("sql", n -> n.endsWith(".sql")).forEach(url -> {
-                arp.addSqlTemplate(url);
-            });
+            sqlUrls.forEach(url -> arp.addSqlTemplate(url));
 
             // 发布事件，以便扩展
             EventBus.push(arp);
 
             // 启动 arp
             arp.start();
-
-            arpMap.put(cfg.getName(), arp);
         }
     }
 
@@ -61,8 +100,8 @@ public class ActiveRecordManager {
      * 停止 ActiveRecordPlugin 实例
      * */
     public static void stop() throws Throwable {
-        for (Map.Entry<String, ActiveRecordPlugin> entry : arpMap.entrySet()) {
-            entry.getValue().stop();
+        for (ActiveRecordPlugin arp : arpMap.values()) {
+            arp.stop();
         }
     }
 

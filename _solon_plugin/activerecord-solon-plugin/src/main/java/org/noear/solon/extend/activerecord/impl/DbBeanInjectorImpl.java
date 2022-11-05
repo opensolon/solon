@@ -1,10 +1,12 @@
 package org.noear.solon.extend.activerecord.impl;
 
+import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
 import com.jfinal.plugin.activerecord.DbKit;
 import com.jfinal.plugin.activerecord.DbPro;
 import org.noear.solon.Utils;
 import org.noear.solon.core.BeanInjector;
 import org.noear.solon.core.VarHolder;
+import org.noear.solon.extend.activerecord.ArpManager;
 import org.noear.solon.extend.activerecord.annotation.Db;
 import org.noear.solon.extend.activerecord.proxy.MapperInvocationHandler;
 
@@ -40,6 +42,13 @@ public class DbBeanInjectorImpl implements BeanInjector<Db> {
             }
 
             varH.setValue(com.jfinal.plugin.activerecord.Db.use(annoValue));
+            return;
+        }
+
+        //如果是 ActiveRecordPlugin
+        if(ActiveRecordPlugin.class.isAssignableFrom(varH.getType())){
+            ActiveRecordPlugin arp = ArpManager.get(annoValue);
+            varH.setValue(arp);
             return;
         }
 
