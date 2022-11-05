@@ -89,7 +89,7 @@ public class PluginPackage {
      */
     public synchronized PluginPackage start() {
         for (PluginEntity p1 : plugins) {
-            p1.init(context);
+            p1.init();
         }
 
         for (PluginEntity p1 : plugins) {

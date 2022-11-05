@@ -81,12 +81,12 @@ public class PluginEntity {
     /**
      * 初始化
      */
-    public void init(AopContext context) {
-        init();
+    public void init() {
+        initInstance();
 
         if (plugin != null) {
             try {
-                plugin.init(context);
+                plugin.init();
             } catch (Throwable e) {
                 throw new IllegalStateException(e);
             }
@@ -97,7 +97,7 @@ public class PluginEntity {
      * 启动
      */
     public void start(AopContext context) {
-        init();
+        initInstance();
 
         if (plugin != null) {
             try {
@@ -112,7 +112,7 @@ public class PluginEntity {
      * 预停止
      */
     public void prestop() {
-        init();
+        initInstance();
 
         if (plugin != null) {
             try {
@@ -127,7 +127,7 @@ public class PluginEntity {
      * 停止
      */
     public void stop() {
-        init();
+        initInstance();
 
         if (plugin != null) {
             try {
@@ -141,7 +141,7 @@ public class PluginEntity {
     /**
      * 初始化
      */
-    private void init() {
+    private void initInstance() {
         if (plugin == null) {
             if (classLoader != null) {
                 plugin = Utils.newInstance(classLoader, className);
