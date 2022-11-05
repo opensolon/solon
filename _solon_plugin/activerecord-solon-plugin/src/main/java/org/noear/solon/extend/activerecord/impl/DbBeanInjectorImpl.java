@@ -22,11 +22,11 @@ public class DbBeanInjectorImpl implements BeanInjector<Db> {
     public void doInject(VarHolder varH, Db anno) {
         if (Utils.isEmpty(anno.value())) {
             varH.context().getWrapAsync(DataSource.class, (dsBw) -> {
-                this.injectDo(varH, anno.value());
+                this.injectDo(varH, anno.value(), dsBw.raw());
             });
         } else {
             varH.context().getWrapAsync(anno.value(), (dsBw) -> {
-                this.injectDo(varH, anno.value());
+                this.injectDo(varH, anno.value(), dsBw.raw());
             });
         }
     }
@@ -34,27 +34,27 @@ public class DbBeanInjectorImpl implements BeanInjector<Db> {
     /**
      * 字段注入
      */
-    private void injectDo(VarHolder varH, String annoValue) {
+    private void injectDo(VarHolder varH, String name, DataSource ds) {
         //如果是 DbPro
         if (DbPro.class.isAssignableFrom(varH.getType())) {
-            if (Utils.isEmpty(annoValue)) {
-                annoValue = DbKit.MAIN_CONFIG_NAME;
+            if (Utils.isEmpty(name)) {
+                name = DbKit.MAIN_CONFIG_NAME;
             }
 
-            varH.setValue(com.jfinal.plugin.activerecord.Db.use(annoValue));
+            varH.setValue(com.jfinal.plugin.activerecord.Db.use(name));
             return;
         }
 
         //如果是 ActiveRecordPlugin
-        if(ActiveRecordPlugin.class.isAssignableFrom(varH.getType())){
-            ActiveRecordPlugin arp = ArpManager.get(annoValue);
+        if (ActiveRecordPlugin.class.isAssignableFrom(varH.getType())) {
+            ActiveRecordPlugin arp = ArpManager.getOrAdd(name, ds);
             varH.setValue(arp);
             return;
         }
 
         //如果是 interface，则为 Mapper 代理
         if (varH.getType().isInterface()) {
-            MapperInvocationHandler handler = new MapperInvocationHandler(varH.getType(), annoValue);
+            MapperInvocationHandler handler = new MapperInvocationHandler(varH.getType(), name);
 
             Object obj = Proxy.newProxyInstance(varH.context().getClassLoader(),
                     new Class[]{varH.getType()},

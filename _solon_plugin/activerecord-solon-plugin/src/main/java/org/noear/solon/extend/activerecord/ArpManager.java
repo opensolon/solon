@@ -44,6 +44,20 @@ public class ArpManager {
         }
     }
 
+    public static ActiveRecordPlugin getOrAdd(String name, DataSource ds){
+        if (Utils.isEmpty(name)) {
+            name = DbKit.MAIN_CONFIG_NAME;
+        }
+
+        ActiveRecordPlugin arp = arpMap.get(name);
+        if(arp == null){
+            addDo(name, ds);
+            arp = arpMap.get(name);
+        }
+
+        return arp;
+    }
+
     /**
      * 获取 ActiveRecordPlugin
      * */
@@ -55,7 +69,7 @@ public class ArpManager {
         return arpMap.get(name);
     }
 
-    private static void addDo(String name, DataSource ds){
+    private synchronized static void addDo(String name, DataSource ds){
         if(arpMap.containsKey(name)){
             return;
         }
