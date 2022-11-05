@@ -26,7 +26,7 @@ import java.util.TimerTask;
 public class CloudConfigServiceConsulImpl extends TimerTask implements CloudConfigService {
     private final String DEFAULT_GROUP = "DEFAULT_GROUP";
 
-    private ConsulClient real;
+    private ConsulClient client;
     private String token;
 
     private long refreshInterval;
@@ -41,9 +41,9 @@ public class CloudConfigServiceConsulImpl extends TimerTask implements CloudConf
         String[] ss = server.split(":");
 
         if (ss.length == 1) {
-            real = new ConsulClient(ss[0]);
+            client = new ConsulClient(ss[0]);
         } else {
-            real = new ConsulClient(ss[0], Integer.parseInt(ss[1]));
+            client = new ConsulClient(ss[0], Integer.parseInt(ss[1]));
         }
     }
 
@@ -73,7 +73,7 @@ public class CloudConfigServiceConsulImpl extends TimerTask implements CloudConf
 
         String cfgKey = group + "/" + key;
 
-        GetValue newV = real.getKVValue(cfgKey, token).getValue();
+        GetValue newV = client.getKVValue(cfgKey, token).getValue();
 
         if (newV != null) {
             Config oldV = configMap.get(cfgKey);
@@ -104,7 +104,7 @@ public class CloudConfigServiceConsulImpl extends TimerTask implements CloudConf
 
         String cfgKey = group + "/" + key;
 
-        return real.setKVValue(cfgKey, value).getValue();
+        return client.setKVValue(cfgKey, value).getValue();
     }
 
     @Override
@@ -119,7 +119,7 @@ public class CloudConfigServiceConsulImpl extends TimerTask implements CloudConf
 
         String cfgKey = group + "/" + key;
 
-        real.deleteKVValue(cfgKey).getValue();
+        client.deleteKVValue(cfgKey).getValue();
         return true;
     }
 
@@ -156,7 +156,7 @@ public class CloudConfigServiceConsulImpl extends TimerTask implements CloudConf
 
             String cfgKey = entity.group + "/" + entity.key;
 
-            GetValue newV = real.getKVValue(cfgKey, token).getValue();
+            GetValue newV = client.getKVValue(cfgKey, token).getValue();
 
             if (newV != null) {
                 Config oldV = configMap.get(cfgKey);
