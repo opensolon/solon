@@ -2,11 +2,10 @@
 
 
 
-
 #### 介绍
 
 
-​	此说明文档中的示例及源码来自于专有Demo：https://gitee.com/gollyhu/activerecord-solon-plugin-demo
+此说明文档中的示例及源码来自于专有Demo：https://gitee.com/gollyhu/activerecord-solon-plugin-demo
 
 
 

@@ -24,6 +24,7 @@ import java.util.Map;
 public class ActiveRecordManager {
     private static Map<String, ActiveRecordPlugin> arpMap = new HashMap<>();
 
+
     /**
      * 开始构建 ActiveRecordPlugin 服务
      * */

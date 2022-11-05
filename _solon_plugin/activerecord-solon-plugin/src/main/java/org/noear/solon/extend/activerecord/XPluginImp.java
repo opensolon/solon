@@ -49,6 +49,7 @@ public class XPluginImp implements Plugin {
                     }
                 }
             });
+
             // 如果上面没有找到任何数据源，则未命名的DataSource就是主数据源
             if (dataSourceMap.size() == 0) {
                 ctx.beanForeach(bw -> {
@@ -69,5 +70,4 @@ public class XPluginImp implements Plugin {
         // 循环停止ActiveRecordPlugin
         ActiveRecordManager.stop();
     }
-
 }

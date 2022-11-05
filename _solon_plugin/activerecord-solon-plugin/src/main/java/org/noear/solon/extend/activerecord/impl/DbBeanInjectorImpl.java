@@ -1,5 +1,7 @@
 package org.noear.solon.extend.activerecord.impl;
 
+import com.jfinal.plugin.activerecord.DbKit;
+import com.jfinal.plugin.activerecord.DbPro;
 import org.noear.solon.Utils;
 import org.noear.solon.core.BeanInjector;
 import org.noear.solon.core.VarHolder;
@@ -31,12 +33,26 @@ public class DbBeanInjectorImpl implements BeanInjector<Db> {
      * 字段注入
      */
     private void injectDo(VarHolder varH, String annoValue) {
-        MapperInvocationHandler handler = new MapperInvocationHandler(varH.getType(), annoValue);
+        //如果是 DbPro
+        if (DbPro.class.isAssignableFrom(varH.getType())) {
+            if (Utils.isEmpty(annoValue)) {
+                annoValue = DbKit.MAIN_CONFIG_NAME;
+            }
 
-        Object obj = Proxy.newProxyInstance(varH.context().getClassLoader(),
-                new Class[]{varH.getType()},
-                handler);
+            varH.setValue(com.jfinal.plugin.activerecord.Db.use(annoValue));
+            return;
+        }
 
-        varH.setValue(obj);
+        //如果是 interface，则为 Mapper 代理
+        if (varH.getType().isInterface()) {
+            MapperInvocationHandler handler = new MapperInvocationHandler(varH.getType(), annoValue);
+
+            Object obj = Proxy.newProxyInstance(varH.context().getClassLoader(),
+                    new Class[]{varH.getType()},
+                    handler);
+
+            varH.setValue(obj);
+            return;
+        }
     }
 }

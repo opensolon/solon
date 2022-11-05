@@ -34,11 +34,11 @@ public class SqlHelperConfiguration implements EventListener<Configuration> {
 
     @Override
     public void onEvent(Configuration configuration) {
-        if(sqlInstrumentConfig == null || paginationPluginConfig == null){
+        if (sqlInstrumentConfig == null || paginationPluginConfig == null) {
             return;
         }
 
-        LogUtil.global().info("Start to customize mybatis configuration with mybatis-sqlhelper-solon-plugin");
+        LogUtil.global().trace("Mybatis: Start to customize mybatis configuration with mybatis-sqlhelper-solon-plugin");
         configuration.setDefaultScriptingLanguage(CustomScriptLanguageDriver.class);
 
         SqlHelperMybatisPlugin plugin = new SqlHelperMybatisPlugin();
@@ -46,7 +46,7 @@ public class SqlHelperConfiguration implements EventListener<Configuration> {
         plugin.setInstrumentorConfig(sqlInstrumentConfig);
         plugin.init();
 
-        LogUtil.global().info(String.format("Add interceptor {0} to mybatis configuration", plugin));
+        LogUtil.global().trace("Mybatis: The interceptor has been added: " + SqlHelperMybatisPlugin.class);
         configuration.addInterceptor(plugin);
     }
 }
