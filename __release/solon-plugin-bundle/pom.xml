@@ -22,7 +22,6 @@
 
         <module>../../_solon_plugin/beetlsql-solon-plugin</module>
 
-        <module>../../_solon_plugin/cron4j-solon-plugin</module>
         <module>../../_solon_plugin/dubbo-solon-plugin</module>
         <module>../../_solon_plugin/dubbo3-solon-plugin</module>
         <module>../../_solon_plugin/feign-solon-plugin</module>
@@ -30,11 +29,6 @@
 
         <module>../../_solon_plugin/hasordb-solon-plugin</module>
         <module>../../_solon_plugin/dbvisitor-solon-plugin</module>
-
-        <module>../../_solon_plugin/luffy-solon-plugin</module>
-
-
-        <module>../../_solon_plugin/weed3-solon-plugin</module>
 
         <module>../../_solon_plugin/sqltoy-solon-plugin</module>
 
@@ -46,8 +40,6 @@
         <module>../../_solon_plugin/mybatis-plus-extension-solon-plugin</module>
 
         <module>../../_solon_plugin/activerecord-solon-plugin</module>
-
-        <module>../../_solon_plugin/quartz-solon-plugin</module>
 
         <module>../../_solon_plugin/shiro-solon-plugin</module>
         <module>../../_solon_plugin/sa-token-solon-plugin</module>
