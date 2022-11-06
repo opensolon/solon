@@ -58,8 +58,6 @@ public class TestApp {
         }
 
 
-        //LogUtil.globalSet(new LogUtilToSlf4j());
-
         Locale.setDefault(Locale.SIMPLIFIED_CHINESE);
 
         //构建方式
@@ -75,6 +73,8 @@ public class TestApp {
         }).onAppLoadEnd(e -> {
             System.out.println("4.应用全加载完成了");
         }).start(TestApp.class, args, x -> {
+            LogUtil.globalSet(new LogUtilToSlf4j());
+
             x.enableSocketD(true);
             x.enableWebSocket(true);
             x.pluginAdd(1, new AppPluginImp());
