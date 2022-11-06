@@ -38,7 +38,7 @@ public class SqlHelperConfiguration implements EventListener<Configuration> {
             return;
         }
 
-        LogUtil.global().trace("Mybatis: Start to customize mybatis configuration with mybatis-sqlhelper-solon-plugin");
+        LogUtil.global().info("Mybatis: Start to customize mybatis configuration with mybatis-sqlhelper-solon-plugin");
         configuration.setDefaultScriptingLanguage(CustomScriptLanguageDriver.class);
 
         SqlHelperMybatisPlugin plugin = new SqlHelperMybatisPlugin();
@@ -46,7 +46,7 @@ public class SqlHelperConfiguration implements EventListener<Configuration> {
         plugin.setInstrumentorConfig(sqlInstrumentConfig);
         plugin.init();
 
-        LogUtil.global().trace("Mybatis: The interceptor has been added: " + SqlHelperMybatisPlugin.class);
+        LogUtil.global().info("Mybatis: The interceptor has been added: " + SqlHelperMybatisPlugin.class);
         configuration.addInterceptor(plugin);
     }
 }

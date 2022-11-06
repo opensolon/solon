@@ -47,7 +47,7 @@ public class AppenderManager {
     public void register(String name, Appender appender) {
         registerDo(name, appender);
 
-        LogUtil.global().trace("Logging: LogAppender registered from the " + appender.getClass().getTypeName() + "#" + name);
+        LogUtil.global().warn("Logging: LogAppender registered from the " + appender.getClass().getTypeName() + "#" + name);
     }
 
     private void registerDo(String name, Appender appender) {

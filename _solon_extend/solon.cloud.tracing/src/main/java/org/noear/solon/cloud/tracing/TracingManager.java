@@ -48,7 +48,7 @@ public class TracingManager {
         try {
             Solon.context().wrapAndPut(Tracer.class, service.create());
 
-            LogUtil.global().trace("Cloud: TracerFactory registered from the " + service.getClass().getTypeName());
+            LogUtil.global().warn("Cloud: TracerFactory registered from the " + service.getClass().getTypeName());
         } catch (RuntimeException e) {
             throw e;
         } catch (Throwable e) {

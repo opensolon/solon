@@ -115,14 +115,14 @@ public class CloudClient {
             for (Signal signal : Solon.app().signals()) {
                 Instance instance = Instance.localNew(signal);
                 CloudClient.discovery().register(Solon.cfg().appGroup(), instance);
-                LogUtil.global().trace("Cloud: Service registered " + instance.service() + "@" + instance.uri());
+                LogUtil.global().warn("Cloud: Service registered " + instance.service() + "@" + instance.uri());
             }
         });
 
         Solon.app().onEvent(Signal.class, signal -> {
             Instance instance = Instance.localNew(signal);
             CloudClient.discovery().register(Solon.cfg().appGroup(), instance);
-            LogUtil.global().trace("Cloud: Service registered " + instance.service() + "@" + instance.uri());
+            LogUtil.global().warn("Cloud: Service registered " + instance.service() + "@" + instance.uri());
         });
     }
 

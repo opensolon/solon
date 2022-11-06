@@ -25,6 +25,6 @@ public class XPluginImp implements Plugin {
 
         Bridge.sessionStateFactorySet(JwtSessionStateFactory.getInstance());
 
-        LogUtil.global().trace("Session: Jwt session state plugin is loaded");
+        LogUtil.global().warn("Session: Jwt session state plugin is loaded");
     }
 }

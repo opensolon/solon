@@ -58,6 +58,7 @@ public class TestApp {
         }
 
 
+
         Locale.setDefault(Locale.SIMPLIFIED_CHINESE);
 
         //构建方式

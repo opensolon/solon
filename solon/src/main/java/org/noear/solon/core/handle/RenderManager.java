@@ -60,8 +60,8 @@ public class RenderManager implements Render {
         _lib.put(render.getClass().getSimpleName(), render);
         _lib.put(render.getClass().getName(), render);
 
-        LogUtil.global().trace("View: load: " + render.getClass().getSimpleName());
-        LogUtil.global().trace("View: load: " + render.getClass().getName());
+        LogUtil.global().warn("View: load: " + render.getClass().getSimpleName());
+        LogUtil.global().warn("View: load: " + render.getClass().getName());
     }
 
     /**
@@ -78,7 +78,7 @@ public class RenderManager implements Render {
         //suffix=.ftl
         _mapping.put(suffix, render);
 
-        LogUtil.global().trace("View: mapping: " + suffix + "=" + render.getName());
+        LogUtil.global().warn("View: mapping: " + suffix + "=" + render.getName());
     }
 
     /**
@@ -101,7 +101,7 @@ public class RenderManager implements Render {
 
         _mapping.put(suffix, render);
 
-        LogUtil.global().trace("View: mapping: " + suffix + "=" + clzName);
+        LogUtil.global().warn("View: mapping: " + suffix + "=" + clzName);
     }
 
     /**

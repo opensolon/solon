@@ -59,11 +59,11 @@ public class SolonApp extends RouterAdapter {
             try {
                 while (true) {
                     if (Utils.ping(addr)) {
-                        LogUtil.global().trace("App: Start ping succeed: " + addr);
+                        LogUtil.global().warn("App: Start ping succeed: " + addr);
                         Thread.sleep(1000); //成功也再等1s
                         break;
                     } else {
-                        LogUtil.global().trace("App: Start ping failure: " + addr);
+                        LogUtil.global().warn("App: Start ping failure: " + addr);
                         Thread.sleep(2000);
                     }
                 }
@@ -119,7 +119,7 @@ public class SolonApp extends RouterAdapter {
         //event::1.0.x推送Plugin init end事件
         EventBus.push(PluginInitEndEvent.instance);
 
-        LogUtil.global().trace("App: Plugin startup");
+        LogUtil.global().warn("App: Plugin startup");
 
         //1.1.尝试启动插件（顺序不能乱） //不能用forEach，以免当中有插进来
         for (int i = 0, len = plugs.size(); i < len; i++) {
@@ -130,7 +130,7 @@ public class SolonApp extends RouterAdapter {
         EventBus.push(PluginLoadEndEvent.instance);
 
 
-        LogUtil.global().trace("App: Bean start scanning");
+        LogUtil.global().warn("App: Bean start scanning");
 
         //2.1.通过注解导入bean（一般是些配置器）
         importTry();

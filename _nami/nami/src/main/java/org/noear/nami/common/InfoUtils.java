@@ -31,6 +31,6 @@ public class InfoUtils {
             buf.append(")");
         }
 
-        LogUtil.global().trace("Nami: " + buf);
+        LogUtil.global().warn("Nami: " + buf);
     }
 }
