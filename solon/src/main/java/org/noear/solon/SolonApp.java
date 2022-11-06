@@ -119,7 +119,7 @@ public class SolonApp extends RouterAdapter {
         //event::1.0.x推送Plugin init end事件
         EventBus.push(PluginInitEndEvent.instance);
 
-        LogUtil.global().trace("App: Plugin start loading");
+        LogUtil.global().trace("App: Plugin starting up");
 
         //1.1.尝试启动插件（顺序不能乱） //不能用forEach，以免当中有插进来
         for (int i = 0, len = plugs.size(); i < len; i++) {
