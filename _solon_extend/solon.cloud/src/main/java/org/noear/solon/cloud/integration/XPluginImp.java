@@ -8,6 +8,7 @@ import org.noear.solon.cloud.impl.*;
 import org.noear.solon.cloud.trace.NamiTraceFilter;
 import org.noear.solon.core.*;
 import org.noear.solon.core.util.LogUtil;
+import org.noear.solon.logging.AppenderHolder;
 import org.noear.solon.logging.AppenderManager;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
@@ -21,6 +22,12 @@ import org.noear.solon.cloud.model.Instance;
  * @since 1.2
  */
 public class XPluginImp implements Plugin {
+    @Override
+    public void init() throws Throwable {
+        //设置日志添加器（为了早点打印日志）
+        AppenderManager.getInstance().register("cloud", new CloudLogAppender());
+    }
+
     @Override
     public void start(AopContext context) {
         context.beanInjectorAdd(CloudConfig.class, CloudConfigBeanInjector.instance);
@@ -51,8 +58,14 @@ public class XPluginImp implements Plugin {
         }
 
         if (CloudClient.log() != null) {
-            //设置日志添加器
-            AppenderManager.getInstance().register("cloud", new CloudLogAppender());
+            //配置日志添加器
+            AppenderHolder appenderHolder = AppenderManager.getInstance().get("cloud");
+            if (appenderHolder == null) {
+                //说明初始化未添加
+                AppenderManager.getInstance().register("cloud", new CloudLogAppender());
+            } else {
+                appenderHolder.restart();
+            }
         }
 
         if (CloudClient.trace() == null) {

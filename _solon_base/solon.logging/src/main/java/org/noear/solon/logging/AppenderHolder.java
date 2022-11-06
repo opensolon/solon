@@ -97,6 +97,23 @@ public final class AppenderHolder {
     }
 
     /**
+     * 重新启动生命周期（即重置等级与可用）
+     * */
+    public void restart(){
+        if (Solon.app() != null) {
+            String levelStr = Solon.cfg().get("solon.logging.appender." + getName() + ".level");
+
+            //设置级别
+            setLevel(Level.of(levelStr, real.getDefaultLevel()));
+
+            //是否启用
+            enable = Solon.cfg().getBool("solon.logging.appender." + getName() + ".enable", true);
+        } else {
+            setLevel(real.getDefaultLevel());
+        }
+    }
+
+    /**
      * 停止生命周期
      * */
     public void stop(){

@@ -19,6 +19,8 @@ public class CloudLogAppender extends AppenderBase {
 
     @Override
     public void append(LogEvent logEvent) {
-        CloudClient.log().append(logEvent);
+        if (CloudClient.log() != null) {
+            CloudClient.log().append(logEvent);
+        }
     }
 }
