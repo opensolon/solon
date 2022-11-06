@@ -32,8 +32,7 @@ public class LogUtil {
 
 
     public  void trace(String content) {
-        System.out.print("[Solon] ");
-        PrintUtil.greenln(content);
+        solonTrace(content);
     }
 
     public  void debug(String content) {
@@ -42,7 +41,7 @@ public class LogUtil {
     }
 
     public  void info(String content) {
-        System.out.println("[Solon] " + content);
+        solonInfo(content);
     }
 
     public  void warn(String content) {
