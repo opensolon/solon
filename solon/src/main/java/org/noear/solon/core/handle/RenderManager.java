@@ -78,7 +78,7 @@ public class RenderManager implements Render {
         //suffix=.ftl
         _mapping.put(suffix, render);
 
-        LogUtil.global().warn("View: mapping: " + suffix + "=" + render.getName());
+        LogUtil.global().info("View: mapping: " + suffix + "=" + render.getName());
     }
 
     /**
@@ -101,7 +101,7 @@ public class RenderManager implements Render {
 
         _mapping.put(suffix, render);
 
-        LogUtil.global().warn("View: mapping: " + suffix + "=" + clzName);
+        LogUtil.global().info("View: mapping: " + suffix + "=" + clzName);
     }
 
     /**
