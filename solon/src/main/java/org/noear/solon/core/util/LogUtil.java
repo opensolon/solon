@@ -30,6 +30,10 @@ public class LogUtil {
         System.out.println("[Solon] " + content);
     }
 
+    public  static void solonWarn(String content) {
+        System.out.print("[Solon] ");
+        PrintUtil.yellowln(content);
+    }
 
     public  void trace(String content) {
         solonTrace(content);
@@ -45,8 +49,7 @@ public class LogUtil {
     }
 
     public  void warn(String content) {
-        System.out.print("[Solon] ");
-        PrintUtil.yellowln(content);
+        solonWarn(content);
     }
 
     public  void error(String content) {
