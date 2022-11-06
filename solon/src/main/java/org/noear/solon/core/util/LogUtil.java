@@ -1,8 +1,5 @@
 package org.noear.solon.core.util;
 
-import org.noear.solon.Utils;
-import org.noear.solon.core.PropsLoader;
-
 /**
  * 日志打印小工具（仅限内部使用）
  *
