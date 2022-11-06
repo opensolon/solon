@@ -21,6 +21,15 @@ public class LogUtil {
         }
     }
 
+    public static void solonTrace(String content) {
+        System.out.print("[Solon] ");
+        PrintUtil.greenln(content);
+    }
+
+    public static void solonInfo(String content) {
+        System.out.println("[Solon] " + content);
+    }
+
 
     public  void trace(String content) {
         System.out.print("[Solon] ");
