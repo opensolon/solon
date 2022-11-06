@@ -608,7 +608,7 @@ public class Utils {
             return extend;
         }
 
-        LogUtil.solonInfo("Extend org: " + extend);
+        LogUtil.solonInfo("Extend config: " + extend);
 
         URL temp = Utils.getResource("");
 
