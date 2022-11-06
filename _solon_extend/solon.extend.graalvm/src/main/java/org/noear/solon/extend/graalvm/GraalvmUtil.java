@@ -66,7 +66,7 @@ public class GraalvmUtil {
                 LogUtil.global().info("reflect-config: load completed: " + resources.toString());
             }
         } catch (Exception e) {
-            LogUtil.global().warn("reflect-config: read error :" + e.getLocalizedMessage());
+            LogUtil.global().warn("reflect-config: read error: " + e.getLocalizedMessage());
             EventBus.push(e);
         }
     }
@@ -99,7 +99,7 @@ public class GraalvmUtil {
                 LogUtil.global().info("resource-config: load completed: " + resources.toString());
             }
         } catch (Exception e) {
-            LogUtil.global().warn("resource-config: read error :" + e.getLocalizedMessage());
+            LogUtil.global().warn("resource-config: read error: " + e.getLocalizedMessage());
             EventBus.push(e);
         }
     }
