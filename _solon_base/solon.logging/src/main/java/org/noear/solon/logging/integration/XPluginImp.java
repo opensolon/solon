@@ -18,11 +18,12 @@ import java.util.Properties;
  */
 public class XPluginImp implements Plugin {
     @Override
-    public void start(AopContext context) {
-        loadAppenderConfig();
+    public void init() throws Throwable {
+        AppenderManager.getInstance();
     }
 
-    private void loadAppenderConfig() {
+    @Override
+    public void start(AopContext context) {
         Properties props = Solon.cfg().getProp("solon.logging.appender");
 
         //初始化
