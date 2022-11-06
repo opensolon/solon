@@ -97,9 +97,9 @@ public final class AppenderHolder {
     }
 
     /**
-     * 重新启动生命周期（即重置等级与可用）
+     * 重置状态（等级与可用）
      * */
-    public void restart(){
+    public void reset(){
         if (Solon.app() != null) {
             String levelStr = Solon.cfg().get("solon.logging.appender." + getName() + ".level");
 

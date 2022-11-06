@@ -64,7 +64,7 @@ public class XPluginImp implements Plugin {
                 //说明初始化未添加
                 AppenderManager.getInstance().register("cloud", new CloudLogAppender());
             } else {
-                appenderHolder.restart();
+                appenderHolder.reset();
             }
         }
 
