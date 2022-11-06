@@ -180,7 +180,7 @@ public class ExtendLoader {
                 if (path.endsWith(".properties")) {
                     Solon.cfg().loadAdd(file.toURI().toURL());
 
-                    LogUtil.global().warn("loaded: " + path);
+                    LogUtil.global().info("loaded: " + path);
                     return;
                 }
 
@@ -191,7 +191,7 @@ public class ExtendLoader {
 
                     Solon.cfg().loadAdd(file.toURI().toURL());
 
-                    LogUtil.global().warn("loaded: " + path);
+                    LogUtil.global().info("loaded: " + path);
                     return;
                 }
             } catch (Throwable ex) {

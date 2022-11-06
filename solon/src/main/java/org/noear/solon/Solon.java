@@ -130,7 +130,7 @@ public class Solon {
         //绑定类加载器（即替换当前线程[即主线程]的类加载器）
         JarClassLoader.bindingThread();
 
-        LogUtil.solonWarn("App: Start loading");
+        LogUtil.solonInfo("App: Start loading");
 
         try {
             //1.创建全局应用及配置
@@ -176,7 +176,7 @@ public class Solon {
         }
 
         //启动完成
-        LogUtil.global().warn("App: End loading elapsed=" + app.elapsedTimes() + "ms pid=" + pid);
+        LogUtil.global().info("App: End loading elapsed=" + app.elapsedTimes() + "ms pid=" + pid);
 
         return app;
     }
@@ -216,11 +216,11 @@ public class Solon {
 
             String hint = "(1.prestop 2.delay 3.stop)";
 
-            LogUtil.global().warn("App: Security to stop: begin..." + hint);
+            LogUtil.global().info("App: Security to stop: begin..." + hint);
 
             //1.预停止
             Solon.cfg().plugs().forEach(p -> p.prestop());
-            LogUtil.global().warn("App: Security to stop: 1 completed " + hint);
+            LogUtil.global().info("App: Security to stop: 1 completed " + hint);
 
 
             //2.延时标停
@@ -239,11 +239,11 @@ public class Solon {
                 sleep0(delay2);
             }
 
-            LogUtil.global().warn("App: Security to stop: 2 completed " + hint);
+            LogUtil.global().info("App: Security to stop: 2 completed " + hint);
 
             //3.停止
             Solon.cfg().plugs().forEach(p -> p.stop());
-            LogUtil.global().warn("App: Security to stop: 3 completed " + hint);
+            LogUtil.global().info("App: Security to stop: 3 completed " + hint);
         } else {
             //1.预停止
             Solon.cfg().plugs().forEach(p -> p.prestop());

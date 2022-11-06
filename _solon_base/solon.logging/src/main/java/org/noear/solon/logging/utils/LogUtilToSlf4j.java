@@ -14,26 +14,26 @@ public class LogUtilToSlf4j extends LogUtil {
 
     @Override
     public void trace(String content) {
-        log.trace("[Solon] " + content);
+        log.trace(content);
     }
 
     @Override
     public void debug(String content) {
-        log.debug("[Solon] " + content);
+        log.debug(content);
     }
 
     @Override
     public void info(String content) {
-        log.info("[Solon] " + content);
+        log.info(content);
     }
 
     @Override
     public void warn(String content) {
-        log.warn("[Solon] " + content);
+        log.warn(content);
     }
 
     @Override
     public void error(String content) {
-        log.error("[Solon] " + content);
+        log.error(content);
     }
 }
