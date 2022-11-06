@@ -60,8 +60,8 @@ public class RenderManager implements Render {
         _lib.put(render.getClass().getSimpleName(), render);
         _lib.put(render.getClass().getName(), render);
 
-        LogUtil.global().warn("View: load: " + render.getClass().getSimpleName());
-        LogUtil.global().warn("View: load: " + render.getClass().getName());
+        LogUtil.global().info("View: load: " + render.getClass().getSimpleName());
+        LogUtil.global().info("View: load: " + render.getClass().getName());
     }
 
     /**

@@ -41,7 +41,7 @@ public final class AppenderHolder {
             meta.put("enable", enable);
 
             //打印无信息
-            LogUtil.solonWarn("Logging: " + getName() + " " + meta);
+            LogUtil.solonInfo("Logging: " + getName() + " " + meta);
         } else {
             setLevel(real.getDefaultLevel());
         }
