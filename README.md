@@ -66,8 +66,7 @@ Solon for java
 * 插件可扩展可切换：启动插件，扩展插件，序列化插件，数据插件，会话状态插件，视图插件(可共存) 等...
 * 支持 GraalVm Native 打包
 * 允许 业务插件 热插、热拨
-* 体验与 Spring Boot 相近，迁移成本低： [《Solon 特性简集，相较于 Springboot 有什么区别？》](https://my.oschina.net/noear/blog/4863844)
-
+* 没有 Spring，也没有 Servlet；完全独立自主的生态
 
 
 ## Solon Cloud
