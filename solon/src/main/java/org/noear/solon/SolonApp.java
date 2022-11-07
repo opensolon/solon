@@ -119,7 +119,7 @@ public class SolonApp extends RouterAdapter {
         //event::1.0.x推送Plugin init end事件
         EventBus.push(PluginInitEndEvent.instance);
 
-        LogUtil.global().info("App: Plugin startup");
+        LogUtil.global().info("App: Plugin starting");
 
         //1.1.尝试启动插件（顺序不能乱） //不能用forEach，以免当中有插进来
         for (int i = 0, len = plugs.size(); i < len; i++) {
@@ -130,7 +130,7 @@ public class SolonApp extends RouterAdapter {
         EventBus.push(PluginLoadEndEvent.instance);
 
 
-        LogUtil.global().info("App: Bean start scanning");
+        LogUtil.global().info("App: Bean scanning");
 
         //2.1.通过注解导入bean（一般是些配置器）
         importTry();
