@@ -119,7 +119,6 @@ public class NamiHandler implements InvocationHandler {
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] vals) throws Throwable {
-
         //检查upstream
         if (TextUtils.isEmpty(config.getUrl()) && config.getUpstream() == null) {
             StringBuilder buf = new StringBuilder();
@@ -133,7 +132,11 @@ public class NamiHandler implements InvocationHandler {
         }
 
         //默认函数调用
-        if (method.isDefault() || method.getDeclaringClass() == Object.class) {
+        if(method.getDeclaringClass() == Object.class){
+            return MethodHandlerUtils.invokeObject(clz0,proxy, method, vals);
+        }
+
+        if (method.isDefault()) {
             return MethodHandlerUtils.invokeDefault(proxy, method, vals);
         }
 

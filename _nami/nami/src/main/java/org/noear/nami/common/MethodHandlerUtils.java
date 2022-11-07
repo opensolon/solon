@@ -10,8 +10,6 @@ import java.lang.reflect.Method;
  * @since 1.10
  */
 public class MethodHandlerUtils {
-    private static final int ALLOWED_MODES = MethodHandles.Lookup.PRIVATE | MethodHandles.Lookup.PROTECTED
-            | MethodHandles.Lookup.PACKAGE | MethodHandles.Lookup.PUBLIC;
     /**
      * java16+ 支持调用default method的方法
      */
@@ -39,45 +37,43 @@ public class MethodHandlerUtils {
     }
 
     /**
-     * 若jdk版本在1.8以上，且被调用的方法是默认方法，直接调用默认实现
-     *
-     * @param proxy
-     * @param method
-     * @param args
-     * @return
+     * 在代理模式下调用接口的默认的函数
      */
     public static Object invokeDefault(Object proxy, Method method, Object[] args) throws Throwable {
         // https://dzone.com/articles/correct-reflective-access-to-interface-default-methods
         // https://gist.github.com/lukaseder/f47f5a0d156bf7b80b67da9d14422d4a
         if (JavaUtils.JAVA_MAJOR_VERSION <= 15) {
-            //调用 default 和 object.class 的函数
             final Constructor<MethodHandles.Lookup> constructor = MethodHandles.Lookup.class
-                    .getDeclaredConstructor(Class.class, int.class);
+                    .getDeclaredConstructor(Class.class);
             constructor.setAccessible(true);
 
             final Class<?> clazz = method.getDeclaringClass();
-            return constructor.newInstance(clazz, ALLOWED_MODES)
+            return constructor.newInstance(clazz)
                     .in(clazz)
                     .unreflectSpecial(method, clazz)
                     .bindTo(proxy)
                     .invokeWithArguments(args);
         } else {
-            if (method.getDeclaringClass().equals(Object.class)) {
-                //调用 object.class 的函数
-                final Constructor<MethodHandles.Lookup> constructor = MethodHandles.Lookup.class
-                        .getDeclaredConstructor(Class.class);
-                constructor.setAccessible(true);
+            Method invoke = invokeDefaultMethod;
+            return invoke.invoke(null, proxy, method, args);
+        }
+    }
 
-                final Class<?> clazz = method.getDeclaringClass();
-                return constructor.newInstance(clazz)
-                        .in(clazz)
-                        .unreflectSpecial(method, clazz)
-                        .bindTo(proxy)
-                        .invokeWithArguments(args);
-            } else {
-                Method invoke = invokeDefaultMethod;
-                return invoke.invoke(null, proxy, method, args);
-            }
+    /**
+     * 在代理模式下调用 Object 的默认的函数
+     */
+    public static Object invokeObject(Class<?> interfaceClz, Object proxy, Method method, Object[] args) {
+        String name = method.getName();
+
+        switch (name) {
+            case "toString":
+                return interfaceClz.getName() + ".$Proxy";
+            case "hashCode":
+                return System.identityHashCode(proxy);
+            case "equals":
+                return proxy == args[0];
+            default:
+                throw new UnsupportedOperationException("Unsupported operation: " + interfaceClz.getName() + "::" + method.getName());
         }
     }
 }

@@ -16,7 +16,13 @@ public class NamiDefaultTest {
 
     @Test
     public void test() {
+        System.out.println(gitHub.hashCode());
         assert gitHub.hashCode() > 0;
+
+        System.out.println(gitHub.hello());
         assert "hello".equals(gitHub.hello());
+
+        System.out.println(gitHub.toString());
+        assert "GitHub".equals(gitHub.toString());
     }
 }
