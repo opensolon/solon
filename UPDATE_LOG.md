@@ -12,6 +12,7 @@
 
 #### 1.10.13
 * 新增 thrift-solon-cloud-plugin 插件
+* 优化 LogUtil 接口设计
 
 
 #### 1.10.13-M1
