@@ -15,7 +15,7 @@ public class MethodHandlerUtils {
     /**
      * java16+ 支持调用default method的方法
      */
-    public static Method invokeDefaultMethod = null;
+    private static Method invokeDefaultMethod = null;
 
     static {
         //
@@ -50,6 +50,7 @@ public class MethodHandlerUtils {
         // https://dzone.com/articles/correct-reflective-access-to-interface-default-methods
         // https://gist.github.com/lukaseder/f47f5a0d156bf7b80b67da9d14422d4a
         if (JavaUtils.JAVA_MAJOR_VERSION <= 15) {
+            //调用 default 和 object.class 的函数
             final Constructor<MethodHandles.Lookup> constructor = MethodHandles.Lookup.class
                     .getDeclaredConstructor(Class.class, int.class);
             constructor.setAccessible(true);
@@ -62,6 +63,7 @@ public class MethodHandlerUtils {
                     .invokeWithArguments(args);
         } else {
             if (method.getDeclaringClass().equals(Object.class)) {
+                //调用 object.class 的函数
                 final Constructor<MethodHandles.Lookup> constructor = MethodHandles.Lookup.class
                         .getDeclaredConstructor(Class.class);
                 constructor.setAccessible(true);
