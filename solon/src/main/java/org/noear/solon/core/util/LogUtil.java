@@ -21,11 +21,11 @@ public class LogUtil {
         }
     }
 
-    public static void solonInfo(String content) {
+    public void solonInfo(String content) {
         System.out.println("[Solon] " + content);
     }
 
-    public  static void solonWarn(String content) {
+    public void solonWarn(String content) {
         System.out.print("[Solon] ");
         PrintUtil.yellowln(content);
     }

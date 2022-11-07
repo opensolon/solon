@@ -608,7 +608,7 @@ public class Utils {
             return extend;
         }
 
-        LogUtil.solonInfo("Extend config: " + extend);
+        LogUtil.global().solonInfo("Extend config: " + extend);
 
         URL temp = Utils.getResource("");
 
@@ -617,7 +617,7 @@ public class Utils {
         } else {
             String uri = temp.toString();
 
-            LogUtil.solonInfo("Resource root: " + uri);
+            LogUtil.global().solonInfo("Resource root: " + uri);
 
             if (uri.startsWith("file:/")) {
                 int idx = uri.lastIndexOf("/target/");

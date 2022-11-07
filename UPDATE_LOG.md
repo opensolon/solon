@@ -10,6 +10,10 @@
 * 调整 增加线程池公共配置???
 * 增加 更多友好的异常分类???
 
+#### 1.10.13
+* 新增 thrift-solon-cloud-plugin 插件
+
+
 #### 1.10.12
 * 清理 ???-solon-plugin 的 solon cloud 插件包（正试由 xxx-solon-cloud-plugin 替代）
 * 清理 solon.aspect 插件的弃用包，弃用包给新手造成了迷惑
