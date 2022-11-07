@@ -131,13 +131,14 @@ public class NamiHandler implements InvocationHandler {
             throw new NamiException(buf.toString());
         }
 
-        //默认函数调用
-        if(method.getDeclaringClass() == Object.class){
-            return MethodHandlerUtils.invokeObject(clz0,proxy, method, vals);
-        }
-
+        //调用 Default 函数
         if (method.isDefault()) {
             return MethodHandlerUtils.invokeDefault(proxy, method, vals);
+        }
+
+        //调用 Object 函数
+        if(method.getDeclaringClass() == Object.class){
+            return MethodHandlerUtils.invokeObject(clz0,proxy, method, vals);
         }
 
         MethodWrap methodWrap = MethodWrap.get(method);

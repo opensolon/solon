@@ -23,6 +23,6 @@ public class NamiDefaultTest {
         assert "hello".equals(gitHub.hello());
 
         System.out.println(gitHub.toString());
-        assert "GitHub".equals(gitHub.toString());
+        assert (GitHub.class.getName() + ".$Proxy").equals(gitHub.toString());
     }
 }

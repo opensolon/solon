@@ -14,9 +14,11 @@ import org.noear.solon.Utils;
  */
 public class MapperInvocationHandler implements InvocationHandler {
     private String db;
+    private Class<?> clz;
 
     public MapperInvocationHandler(Class<?> clz, String db) {
         MapperContextParser.parse(clz);
+        this.clz = clz;
 
         if (Utils.isEmpty(db)) {
             this.db = DbKit.MAIN_CONFIG_NAME;
@@ -30,17 +32,22 @@ public class MapperInvocationHandler implements InvocationHandler {
      */
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        if (method.isDefault() || method.getDeclaringClass() == Object.class) {
-            //用于处理默认函数（包括：toString()）
+        //调用 Default 函数
+        if (method.isDefault()) {
             return MethodHandlerUtils.invokeDefault(proxy, method, args);
-        } else {
-
-            MapperMethodContext context = MapperMethodContextManager.getMethodContext(method);
-            if (null == context) {
-                throw new RuntimeException("method not resolved yet.");
-            }
-
-            return MapperMethodInvoker.invoke(context, this.db, args);
         }
+
+        //调用 Object 函数
+        if (method.getDeclaringClass() == Object.class) {
+            return MethodHandlerUtils.invokeObject(clz, proxy, method, args);
+        }
+
+
+        MapperMethodContext context = MapperMethodContextManager.getMethodContext(method);
+        if (null == context) {
+            throw new RuntimeException("method not resolved yet.");
+        }
+
+        return MapperMethodInvoker.invoke(context, this.db, args);
     }
 }
