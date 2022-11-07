@@ -6,6 +6,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
+ * 把内核日志转到 Slf4j 接口
+ *
  * @author noear
  * @since 1.10
  */
