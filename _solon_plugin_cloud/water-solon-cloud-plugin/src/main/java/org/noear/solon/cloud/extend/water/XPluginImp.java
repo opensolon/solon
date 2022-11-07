@@ -113,6 +113,10 @@ public class XPluginImp implements Plugin {
 
         }
 
+        if (cloudProps.getLogEnable()) {
+            CloudManager.register(new CloudLogServiceWaterImp(cloudProps));
+        }
+
         if(cloudProps.getI18nEnable()){
             i18nServiceImp = new CloudI18nServiceWaterImp();
             CloudManager.register(i18nServiceImp);
@@ -129,10 +133,6 @@ public class XPluginImp implements Plugin {
                     clientTimer.schedule(discoveryServiceImp, interval, interval);
                 }
             }
-        }
-
-        if (cloudProps.getLogEnable()) {
-            CloudManager.register(new CloudLogServiceWaterImp(cloudProps));
         }
 
         if (cloudProps.getEventEnable()) {
