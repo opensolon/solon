@@ -14,7 +14,7 @@
 * 新增 thrift-solon-cloud-plugin 插件
 
 
-#### 1.10.12
+#### 1.10.13-M1
 * 清理 ???-solon-plugin 的 solon cloud 插件包（正试由 xxx-solon-cloud-plugin 替代）
 * 清理 solon.aspect 插件的弃用包，弃用包给新手造成了迷惑
 * 插件 solon.serialization.fastjson，调整 FastjsonRenderFactory 默认去掉 DisableCircularReferenceDetect 特性
