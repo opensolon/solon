@@ -14,4 +14,8 @@ public interface GitHub {
 
     @Mapping("POST /repos/{owner}/{repo}/issues")
     void createIssue(@Body Issue issue, String owner, String repo);
+
+    default String hello(){
+        return "hello";
+    }
 }

@@ -10,6 +10,8 @@ import java.lang.reflect.Method;
  * @since 1.10
  */
 public class MethodHandlerUtils {
+    private static final int ALLOWED_MODES = MethodHandles.Lookup.PRIVATE | MethodHandles.Lookup.PROTECTED
+            | MethodHandles.Lookup.PACKAGE | MethodHandles.Lookup.PUBLIC;
     /**
      * java16+ 支持调用default method的方法
      */
@@ -48,18 +50,32 @@ public class MethodHandlerUtils {
         // https://dzone.com/articles/correct-reflective-access-to-interface-default-methods
         // https://gist.github.com/lukaseder/f47f5a0d156bf7b80b67da9d14422d4a
         if (JavaUtils.JAVA_MAJOR_VERSION <= 15) {
-            final Constructor<MethodHandles.Lookup> constructor = MethodHandles.Lookup.class.getDeclaredConstructor(Class.class);
+            final Constructor<MethodHandles.Lookup> constructor = MethodHandles.Lookup.class
+                    .getDeclaredConstructor(Class.class, int.class);
             constructor.setAccessible(true);
 
             final Class<?> clazz = method.getDeclaringClass();
-            return constructor.newInstance(clazz)
+            return constructor.newInstance(clazz, ALLOWED_MODES)
                     .in(clazz)
                     .unreflectSpecial(method, clazz)
                     .bindTo(proxy)
                     .invokeWithArguments(args);
         } else {
-            Method invoke = invokeDefaultMethod;
-            return invoke.invoke(null, proxy, method, args);
+            if (method.getDeclaringClass().equals(Object.class)) {
+                final Constructor<MethodHandles.Lookup> constructor = MethodHandles.Lookup.class
+                        .getDeclaredConstructor(Class.class);
+                constructor.setAccessible(true);
+
+                final Class<?> clazz = method.getDeclaringClass();
+                return constructor.newInstance(clazz)
+                        .in(clazz)
+                        .unreflectSpecial(method, clazz)
+                        .bindTo(proxy)
+                        .invokeWithArguments(args);
+            } else {
+                Method invoke = invokeDefaultMethod;
+                return invoke.invoke(null, proxy, method, args);
+            }
         }
     }
 }
