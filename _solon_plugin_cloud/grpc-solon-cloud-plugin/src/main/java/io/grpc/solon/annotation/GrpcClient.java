@@ -1,4 +1,4 @@
-package org.noear.solon.extend.grpc.annotation;
+package io.grpc.solon.annotation;
 
 import io.grpc.netty.NegotiationType;
 

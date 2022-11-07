@@ -1,4 +1,4 @@
-package org.noear.solon.extend.grpc.integration;
+package io.grpc.solon.integration;
 
 import io.grpc.Channel;
 import io.grpc.stub.AbstractBlockingStub;
@@ -6,7 +6,7 @@ import io.grpc.stub.AbstractFutureStub;
 import org.noear.solon.Utils;
 import org.noear.solon.core.BeanInjector;
 import org.noear.solon.core.VarHolder;
-import org.noear.solon.extend.grpc.annotation.GrpcClient;
+import io.grpc.solon.annotation.GrpcClient;
 
 import java.lang.reflect.Method;
 import java.util.Map;

@@ -1,16 +1,16 @@
-package org.noear.solon.extend.grpc.integration;
+package io.grpc.solon.integration;
 
 import io.grpc.BindableService;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
 import io.grpc.ServerServiceDefinition;
+import io.grpc.solon.annotation.EnableGrpc;
+import io.grpc.solon.annotation.GrpcService;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.core.*;
 import org.noear.solon.core.util.LogUtil;
-import org.noear.solon.extend.grpc.annotation.EnableGrpc;
-import org.noear.solon.extend.grpc.annotation.GrpcClient;
-import org.noear.solon.extend.grpc.annotation.GrpcService;
+import io.grpc.solon.annotation.GrpcClient;
 
 import java.util.HashMap;
 import java.util.Map;

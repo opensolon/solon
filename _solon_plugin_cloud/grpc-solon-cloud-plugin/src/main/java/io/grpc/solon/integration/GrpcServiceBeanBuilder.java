@@ -1,8 +1,8 @@
-package org.noear.solon.extend.grpc.integration;
+package io.grpc.solon.integration;
 
 import org.noear.solon.core.BeanBuilder;
 import org.noear.solon.core.BeanWrap;
-import org.noear.solon.extend.grpc.annotation.GrpcService;
+import io.grpc.solon.annotation.GrpcService;
 
 import java.util.Map;
 

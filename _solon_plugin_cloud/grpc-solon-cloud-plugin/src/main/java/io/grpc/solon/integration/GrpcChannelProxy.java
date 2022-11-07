@@ -1,4 +1,4 @@
-package org.noear.solon.extend.grpc.integration;
+package io.grpc.solon.integration;
 
 import io.grpc.*;
 import org.noear.solon.Utils;
