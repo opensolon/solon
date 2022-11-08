@@ -6,19 +6,17 @@ import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerConstants;
 import org.noear.solon.boot.ServerProps;
-import org.noear.solon.boot.prop.HttpSignalProps;
+import org.noear.solon.boot.prop.impl.HttpServerProps;
 import org.noear.solon.boot.ssl.SslContextFactory;
 import org.noear.solon.core.*;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.LogUtil;
-import org.noear.solon.core.util.NamedThreadFactory;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLEngine;
 import javax.net.ssl.SSLParameters;
 import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.util.concurrent.*;
 
 public final class XPluginImp implements Plugin {
     private static Signal _signal;
@@ -69,7 +67,7 @@ public final class XPluginImp implements Plugin {
         //初始化属性
         ServerProps.init();
 
-        HttpSignalProps props = new HttpSignalProps();
+        HttpServerProps props = new HttpServerProps();
         String _host = props.getHost();
         int _port = props.getPort();
         String _name = props.getName();

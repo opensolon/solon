@@ -5,7 +5,7 @@ import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerConstants;
 import org.noear.solon.boot.ServerProps;
-import org.noear.solon.boot.prop.HttpSignalProps;
+import org.noear.solon.boot.prop.impl.HttpServerProps;
 import org.noear.solon.boot.smarthttp.http.SmartHttpContextHandler;
 import org.noear.solon.boot.smarthttp.http.FormContentFilter;
 import org.noear.solon.boot.smarthttp.websocket.WebSocketHandleImp;
@@ -56,7 +56,7 @@ public final class XPluginImp implements Plugin {
         //初始化属性
         ServerProps.init();
 
-        HttpSignalProps props = new HttpSignalProps();
+        HttpServerProps props = new HttpServerProps();
         String _host = props.getHost();
         int _port = props.getPort();
         String _name = props.getName();

@@ -1,17 +1,17 @@
-package org.noear.solon.boot.prop;
+package org.noear.solon.boot.prop.impl;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerConstants;
-import org.noear.solon.boot.ServerExecutorProps;
-import org.noear.solon.boot.ServerSignalProps;
+import org.noear.solon.boot.prop.ServerExecutorProps;
+import org.noear.solon.boot.prop.ServerSignalProps;
 
 /**
  * @author noear
  * @since 1.8
  */
-public class SocketSignalProps extends BaseSignalProps implements ServerSignalProps, ServerExecutorProps {
-    public SocketSignalProps(int portBase) {
+public class SocketServerProps extends BaseServerProps implements ServerSignalProps, ServerExecutorProps {
+    public SocketServerProps(int portBase) {
         name = Solon.cfg().get(ServerConstants.SERVER_SOCKET_NAME);
         port = Solon.cfg().getInt(ServerConstants.SERVER_SOCKET_PORT, 0);
         host = Solon.cfg().get(ServerConstants.SERVER_SOCKET_HOST);

@@ -3,7 +3,7 @@ package org.noear.solon.boot.socketd.jdksocket;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.boot.ServerProps;
-import org.noear.solon.boot.prop.SocketSignalProps;
+import org.noear.solon.boot.prop.impl.SocketServerProps;
 import org.noear.solon.core.*;
 import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.socketd.SessionManager;
@@ -50,7 +50,7 @@ public class XPluginImp implements Plugin {
         LogUtil.global().info("Server:main: java.net.ServerSocket(jdksocket-socketd)");
 
 
-        SocketSignalProps props = new SocketSignalProps(20000);
+        SocketServerProps props = new SocketServerProps(20000);
         String _host = props.getHost();
         int _port = props.getPort();
         String _name = props.getName();

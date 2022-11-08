@@ -14,7 +14,7 @@ import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.jetty.http.JtContainerInitializer;
 import org.noear.solon.boot.jetty.http.JtHttpContextHandler;
 import org.noear.solon.boot.jetty.http.JtHttpContextServletHandler;
-import org.noear.solon.boot.prop.HttpSignalProps;
+import org.noear.solon.boot.prop.impl.HttpServerProps;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -24,9 +24,9 @@ import java.util.concurrent.ExecutorService;
 
 abstract class JettyServerBase implements ServerLifecycle {
     protected ExecutorService executor;
-    protected HttpSignalProps props = new HttpSignalProps();
+    protected HttpServerProps props = new HttpServerProps();
 
-    public HttpSignalProps getProps() {
+    public HttpServerProps getProps() {
         return props;
     }
 

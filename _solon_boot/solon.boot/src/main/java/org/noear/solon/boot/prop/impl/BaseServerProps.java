@@ -1,12 +1,12 @@
-package org.noear.solon.boot.prop;
+package org.noear.solon.boot.prop.impl;
 
-import org.noear.solon.boot.ServerExecutorProps;
-import org.noear.solon.boot.ServerSignalProps;
+import org.noear.solon.boot.prop.ServerExecutorProps;
+import org.noear.solon.boot.prop.ServerSignalProps;
 
 /**
  * @author noear 2022/11/8 created
  */
-public abstract class BaseSignalProps implements ServerSignalProps, ServerExecutorProps {
+public abstract class BaseServerProps implements ServerSignalProps, ServerExecutorProps {
     protected String name;
     protected int port;
     protected String host;

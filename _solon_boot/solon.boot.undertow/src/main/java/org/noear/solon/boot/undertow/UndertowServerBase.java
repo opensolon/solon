@@ -6,7 +6,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerLifecycle;
 import org.noear.solon.boot.ServerProps;
-import org.noear.solon.boot.prop.HttpSignalProps;
+import org.noear.solon.boot.prop.impl.HttpServerProps;
 import org.noear.solon.boot.undertow.http.UtContainerInitializer;
 
 import javax.servlet.MultipartConfigElement;
@@ -15,9 +15,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 abstract class UndertowServerBase implements ServerLifecycle {
-    protected HttpSignalProps props = new HttpSignalProps();
+    protected HttpServerProps props = new HttpServerProps();
 
-    public HttpSignalProps getProps() {
+    public HttpServerProps getProps() {
         return props;
     }
 

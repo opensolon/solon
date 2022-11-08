@@ -1,4 +1,4 @@
-package org.noear.solon.boot;
+package org.noear.solon.boot.prop;
 
 import org.noear.solon.core.util.NamedThreadFactory;
 

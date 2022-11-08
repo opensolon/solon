@@ -1,4 +1,4 @@
-package org.noear.solon.boot;
+package org.noear.solon.boot.prop;
 
 /**
  * 服务信号属性
@@ -6,7 +6,7 @@ package org.noear.solon.boot;
  * @author noear
  * @since 1.8
  */
-public interface ServerSignalProps extends ServerExecutorProps {
+public interface ServerSignalProps {
     /**
      * 名称
      */

@@ -5,7 +5,7 @@ import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerLifecycle;
 import org.noear.solon.boot.ServerProps;
-import org.noear.solon.boot.prop.HttpSignalProps;
+import org.noear.solon.boot.prop.impl.HttpServerProps;
 import org.noear.solon.core.*;
 import org.noear.solon.core.util.LogUtil;
 
@@ -57,7 +57,7 @@ public final class XPluginImp implements Plugin {
 
         Class<?> jspClz = Utils.loadClass("org.apache.jasper.servlet.JspServlet");
 
-        HttpSignalProps props = new HttpSignalProps();
+        HttpServerProps props = new HttpServerProps();
         String _host = props.getHost();
         int _port = props.getPort();
         String _name = props.getName();

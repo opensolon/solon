@@ -2,7 +2,7 @@ package io.grpc.solon.integration;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
-import org.noear.solon.boot.ServerSignalProps;
+import org.noear.solon.boot.prop.ServerSignalProps;
 
 /**
  * @author noear

@@ -3,9 +3,8 @@ package org.noear.solon.boot.undertow;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
-import org.noear.solon.boot.ServerLifecycle;
 import org.noear.solon.boot.ServerProps;
-import org.noear.solon.boot.prop.HttpSignalProps;
+import org.noear.solon.boot.prop.impl.HttpServerProps;
 import org.noear.solon.core.*;
 import org.noear.solon.core.util.LogUtil;
 
@@ -64,7 +63,7 @@ public final class XPluginImp implements Plugin {
             _server = new UndertowServerAddJsp();
         }
 
-        HttpSignalProps props = _server.getProps();
+        HttpServerProps props = _server.getProps();
         String _host = props.getHost();
         int _port = props.getPort();
         String _name = props.getName();
