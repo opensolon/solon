@@ -53,7 +53,7 @@ public final class XPluginImp implements Plugin {
             } catch (RuntimeException e) {
                 throw e;
             } catch (Throwable e) {
-                throw new RuntimeException(e);
+                throw new IllegalStateException(e);
             }
         });
     }

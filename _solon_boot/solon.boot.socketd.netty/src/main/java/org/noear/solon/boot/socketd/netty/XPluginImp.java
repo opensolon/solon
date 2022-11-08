@@ -55,13 +55,13 @@ public class XPluginImp implements Plugin {
         String _name = props.getName();
 
 
-        EventLoopGroup bossGroup = new NioEventLoopGroup();
-        EventLoopGroup wokerGroup = new NioEventLoopGroup(props.getCoreThreads(), props.getNioExecutor("netty-"));
+        EventLoopGroup parentGroup = new NioEventLoopGroup();
+        EventLoopGroup childGroup = new NioEventLoopGroup(); //props.getCoreThreads(), props.getNioExecutor("netty-")
 
         try {
             ServerBootstrap bootstrap = new ServerBootstrap();
             //在服务器端的handler()方法表示对bossGroup起作用，而childHandler表示对wokerGroup起作用
-            bootstrap.group(bossGroup, wokerGroup)
+            bootstrap.group(parentGroup, childGroup)
                     .channel(NioServerSocketChannel.class)
                     .childHandler(new NioChannelInitializer(() -> new NioServerProcessor()));
 
@@ -79,15 +79,15 @@ public class XPluginImp implements Plugin {
             LogUtil.global().info("Connector:main: netty-socketd: Started ServerConnector@{[Socket]}{0.0.0.0:" + _port + "}");
             LogUtil.global().info("Server:main: netty-socketd: Started @" + (time_end - time_start) + "ms");
         } catch (RuntimeException e) {
-            bossGroup.shutdownGracefully();
-            wokerGroup.shutdownGracefully();
+            parentGroup.shutdownGracefully();
+            childGroup.shutdownGracefully();
 
             throw e;
         } catch (Throwable e) {
-            bossGroup.shutdownGracefully();
-            wokerGroup.shutdownGracefully();
+            parentGroup.shutdownGracefully();
+            childGroup.shutdownGracefully();
 
-            throw new RuntimeException(e);
+            throw new IllegalStateException(e);
         }
     }
 
