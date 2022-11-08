@@ -810,16 +810,17 @@ public abstract class Context {
      * 输出为文件
      */
     public void outputAsFile(DownloadedFile file) throws IOException {
-        if (Utils.isNotEmpty(file.contentType)) {
-            contentType(file.contentType);
-        }
-
         if (Utils.isNotEmpty(file.name)) {
             String fileName = URLEncoder.encode(file.name, Solon.encoding());
             headerSet("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
         }
 
-        //输出大小
+        //输出内容类型
+        if (Utils.isNotEmpty(file.contentType)) {
+            contentType(file.contentType);
+        }
+
+        //输出内容大小
         if (file.content instanceof ByteArrayInputStream) {
             contentLength(file.content.available());
         }
@@ -843,7 +844,13 @@ public abstract class Context {
             headerSet("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
         }
 
-        //输出大小
+        //输出内容类型
+        String contentType = Utils.mime(file.getName());
+        if (Utils.isNotEmpty(contentType)) {
+            contentType(contentType);
+        }
+
+        //输出内容大小
         contentLength(file.length());
 
         try (InputStream ins = new FileInputStream(file)) {

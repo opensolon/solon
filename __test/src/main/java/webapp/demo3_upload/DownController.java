@@ -3,13 +3,11 @@ package webapp.demo3_upload;
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Mapping;
+import org.noear.solon.boot.web.MimeType;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.DownloadedFile;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 
 /**
@@ -19,7 +17,7 @@ import java.nio.charset.StandardCharsets;
 @Controller
 public class DownController {
     @Mapping("f1")
-    public DownloadedFile down() {
+    public DownloadedFile down1() {
         InputStream stream = new ByteArrayInputStream("{code:1}".getBytes(StandardCharsets.UTF_8));
 
         //使用 InputStream 实例化
@@ -27,7 +25,7 @@ public class DownController {
     }
 
     @Mapping("f2")
-    public DownloadedFile down12() {
+    public DownloadedFile down2() {
         byte[] bytes = "test".getBytes(StandardCharsets.UTF_8);
 
         //使用 byte[] 实例化
@@ -36,14 +34,22 @@ public class DownController {
     }
 
     @Mapping("f3")
-    public File down2() {
+    public File down3() {
         String filePath = Utils.getResource("WEB-INF/static/debug.htm").getFile();
 
         return new File(filePath);
     }
 
+    @Mapping("f3_2")
+    public DownloadedFile down3_2() throws Exception{
+        String filePath = Utils.getResource("WEB-INF/static/debug.htm").getFile();
+
+        File file = new File(filePath);
+        return new DownloadedFile(MimeType.TEXT_HTML_VALUE,new FileInputStream(file), file.getName());
+    }
+
     @Mapping("f4")
-    public void down3(Context ctx) throws IOException {
+    public void down4(Context ctx) throws IOException {
         String filePath = Utils.getResource("WEB-INF/static/debug.htm").getFile();
 
         File file = new File(filePath);
