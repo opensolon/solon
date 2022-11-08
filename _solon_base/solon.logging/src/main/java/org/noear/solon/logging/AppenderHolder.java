@@ -1,6 +1,7 @@
 package org.noear.solon.logging;
 
 import org.noear.solon.Solon;
+import org.noear.solon.Utils;
 import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.logging.event.Appender;
 import org.noear.solon.logging.event.Level;
@@ -40,8 +41,8 @@ public final class AppenderHolder {
             meta.put("level", getLevel().name());
             meta.put("enable", enable);
 
-            //打印无信息
-            LogUtil.global().solonInfo("Logging: " + getName() + " " + meta);
+            //打印须异步（不然可能死循环）
+            LogUtil.global().infoAsync("Logging: " + getName() + " " + meta);
         } else {
             setLevel(real.getDefaultLevel());
         }

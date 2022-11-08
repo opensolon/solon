@@ -1,5 +1,7 @@
 package org.noear.solon.core.util;
 
+import org.noear.solon.Utils;
+
 /**
  * 日志打印小工具（仅限内部使用）
  *
@@ -21,8 +23,10 @@ public class LogUtil {
         }
     }
 
-    public void solonInfo(String content) {
-        System.out.println("[Solon] " + content);
+    public void infoAsync(String content) {
+        Utils.async(() -> {
+            info(content);
+        });
     }
 
 
@@ -37,7 +41,7 @@ public class LogUtil {
     }
 
     public  void info(String content) {
-        solonInfo(content);
+        System.out.println("[Solon] " + content);
     }
 
     public  void warn(String content) {

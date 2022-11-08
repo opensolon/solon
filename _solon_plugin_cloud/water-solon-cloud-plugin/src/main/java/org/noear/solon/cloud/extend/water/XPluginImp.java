@@ -30,10 +30,13 @@ public class XPluginImp implements Plugin {
 
     CloudProps cloudProps;
 
-    @Override
-    public void start(AopContext context) {
+    private boolean initDo() throws Throwable{
         if (Utils.isEmpty(WaterProps.instance.getServer())) {
-            return;
+            return false;
+        }
+
+        if(cloudProps != null){
+            return true;
         }
 
         cloudProps = WaterProps.instance;
@@ -71,15 +74,16 @@ public class XPluginImp implements Plugin {
             WaterAddress.setLogApiUrl(logServer);
         }
 
+        return true;
+    }
 
-        //2.初始化服务
-        CloudDiscoveryServiceWaterImp discoveryServiceImp = null;
-        CloudConfigServiceWaterImp configServiceImp = null;
-        CloudEventServiceWaterImp eventServiceImp = new CloudEventServiceWaterImp(cloudProps);
-        CloudI18nServiceWaterImp i18nServiceImp = null;
+    @Override
+    public void init() throws Throwable {
+        if(initDo() == false){
+            return;
+        }
+
         CloudTraceServiceWaterImp traceServiceImp = new CloudTraceServiceWaterImp();
-        CloudMetricServiceWaterImp metricServiceImp = new CloudMetricServiceWaterImp();
-
         WaterClient.localHostSet(Instance.local().address());
         WaterClient.localServiceSet(Instance.local().service());
         WaterSetting.water_trace_id_supplier(traceServiceImp::getTraceId);
@@ -91,7 +95,26 @@ public class XPluginImp implements Plugin {
         }
 
         if (cloudProps.getMetricEnable()) {
-            CloudManager.register(metricServiceImp);
+            CloudManager.register(new CloudMetricServiceWaterImp());
+        }
+    }
+
+    @Override
+    public void start(AopContext context) throws Throwable{
+        if(initDo() == false){
+            return;
+        }
+
+
+        //2.初始化服务
+        CloudDiscoveryServiceWaterImp discoveryServiceImp = null;
+        CloudConfigServiceWaterImp configServiceImp = null;
+        CloudEventServiceWaterImp eventServiceImp = new CloudEventServiceWaterImp(cloudProps);
+        CloudI18nServiceWaterImp i18nServiceImp = null;
+
+
+        if (cloudProps.getLogEnable()) {
+            CloudManager.register(new CloudLogServiceWaterImp(cloudProps));
         }
 
         if (cloudProps.getConfigEnable()) {
@@ -111,10 +134,6 @@ public class XPluginImp implements Plugin {
             CloudClient.configLoad(cloudProps.getConfigLoadGroup(),
                     cloudProps.getConfigLoadKey());
 
-        }
-
-        if (cloudProps.getLogEnable()) {
-            CloudManager.register(new CloudLogServiceWaterImp(cloudProps));
         }
 
         if(cloudProps.getI18nEnable()){

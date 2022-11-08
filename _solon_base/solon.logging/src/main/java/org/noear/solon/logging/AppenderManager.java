@@ -1,5 +1,6 @@
 package org.noear.solon.logging;
 
+import org.noear.solon.Utils;
 import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.logging.appender.ConsoleAppender;
 import org.noear.solon.logging.event.Appender;
@@ -47,7 +48,8 @@ public class AppenderManager {
     public void register(String name, Appender appender) {
         registerDo(name, appender);
 
-        LogUtil.global().solonInfo("Logging: LogAppender registered from the " + appender.getClass().getTypeName() + "#" + name);
+        //打印须异步（不然可能死循环）
+        LogUtil.global().infoAsync("Logging: LogAppender registered from the " + appender.getClass().getTypeName() + "#" + name);
     }
 
     private void registerDo(String name, Appender appender) {
