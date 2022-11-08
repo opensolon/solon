@@ -155,12 +155,7 @@ public class SocketContext extends ContextEmpty {
     @Override
     public void output(InputStream stream) {
         try {
-            byte[] buff = new byte[100];
-            int rc = 0;
-            while ((rc = stream.read(buff, 0, 100)) > 0) {
-                _outputStream.write(buff, 0, rc);
-            }
-
+            Utils.transferTo(stream, _outputStream);
         } catch (Throwable ex) {
             throw new RuntimeException(ex);
         }

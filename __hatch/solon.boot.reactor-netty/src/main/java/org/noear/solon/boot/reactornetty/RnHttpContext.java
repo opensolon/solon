@@ -223,7 +223,8 @@ public class RnHttpContext extends Context {
     @Override
     public void output(byte[] bytes) {
         try {
-            OutputStream out = _outputStream;
+            OutputStream out = outputStream();
+
             out.write(bytes);
         }catch (Throwable ex){
             throw new RuntimeException(ex);
@@ -233,14 +234,9 @@ public class RnHttpContext extends Context {
     @Override
     public void output(InputStream stream) {
         try {
-            OutputStream out = _outputStream;
+            OutputStream out = outputStream();
 
-            byte[] buff = new byte[100];
-            int rc = 0;
-            while ((rc = stream.read(buff, 0, 100)) > 0) {
-                out.write(buff, 0, rc);
-            }
-
+            Utils.transferTo(stream, out);
         }catch (Throwable ex){
             throw new RuntimeException(ex);
         }

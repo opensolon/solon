@@ -338,11 +338,7 @@ public class JlHttpContext extends Context {
                 return;
             }
 
-            int len = 0;
-            byte[] buf = new byte[512]; //0.5k
-            while ((len = stream.read(buf)) != -1) {
-                out.write(buf, 0, len);
-            }
+            Utils.transferTo(stream, out);
         } catch (Throwable ex) {
             throw new RuntimeException(ex);
         }
