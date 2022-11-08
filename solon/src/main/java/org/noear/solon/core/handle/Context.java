@@ -820,9 +820,12 @@ public abstract class Context {
         }
 
         //输出大小
-        int fileLength = file.content.available();
-        if (fileLength > 0) {
-            contentLength(fileLength);
+        if (file.content instanceof ByteArrayInputStream) {
+            contentLength(file.content.available());
+        }
+
+        if (file.content instanceof FileInputStream) {
+            contentLength(file.content.available());
         }
 
         synchronized (file.content) {
