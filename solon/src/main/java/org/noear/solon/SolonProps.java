@@ -120,7 +120,7 @@ public final class SolonProps extends Props {
             if (extConfigFile.exists()) {
                 loadInit(extConfigFile.toURI().toURL(), sysPropOrg);
             } else {
-                LogUtil.global().solonWarn("Props: No external connfig file: " + extConfig);
+                LogUtil.global().warn("Props: No external connfig file: " + extConfig);
             }
         }
 
