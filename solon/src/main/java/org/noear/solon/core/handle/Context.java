@@ -821,12 +821,9 @@ public abstract class Context {
         }
 
         //输出内容大小
-        if (file.content instanceof ByteArrayInputStream) {
-            contentLength(file.content.available());
-        }
-
-        if (file.content instanceof FileInputStream) {
-            contentLength(file.content.available());
+        int contentSize = file.content.available();
+        if (contentSize > 0) {
+            contentLength(contentSize);
         }
 
         try (InputStream ins = file.content) {

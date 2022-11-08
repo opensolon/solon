@@ -4,7 +4,6 @@ import org.eclipse.jetty.server.handler.ContextHandler;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
-import org.noear.solon.boot.ServerLifecycle;
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.jetty.http.FormContentFilter;
 import org.noear.solon.boot.prop.HttpSignalProps;
@@ -22,7 +21,7 @@ public final class XPluginImp implements Plugin {
         return _signal;
     }
 
-    private ServerLifecycle _server = null;
+    private JettyServerBase _server = null;
 
 
     public static String solon_boot_ver() {
@@ -65,17 +64,17 @@ public final class XPluginImp implements Plugin {
 
         Class<?> jspClz = Utils.loadClass("org.eclipse.jetty.jsp.JettyJspServlet");
 
-        HttpSignalProps props = new HttpSignalProps();
-        String _host = props.getHost();
-        int _port = props.getPort();
-        String _name = props.getName();
-
 
         if (jspClz == null) {
             _server = new JettyServer();
         } else {
             _server = new JettyServerAddJsp();
         }
+
+        HttpSignalProps props = _server.getProps();
+        String _host = props.getHost();
+        int _port = props.getPort();
+        String _name = props.getName();
 
         long time_start = System.currentTimeMillis();
         LogUtil.global().info("Server:main: Jetty 9.4(jetty)");

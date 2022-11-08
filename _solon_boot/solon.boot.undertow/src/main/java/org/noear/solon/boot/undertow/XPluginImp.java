@@ -19,7 +19,7 @@ public final class XPluginImp implements Plugin {
         return _signal;
     }
 
-    private ServerLifecycle _server = null;
+    private UndertowServerBase _server = null;
     public static String solon_boot_ver(){
         return "undertow 2.1/" + Solon.cfg().version();
     }
@@ -52,10 +52,6 @@ public final class XPluginImp implements Plugin {
         //初始化属性
         ServerProps.init();
 
-        HttpSignalProps props = new HttpSignalProps();
-        String _host = props.getHost();
-        int _port = props.getPort();
-        String _name = props.getName();
 
         long time_start = System.currentTimeMillis();
         LogUtil.global().info("Server:main: Undertow 2.2.17(undertow)");
@@ -67,6 +63,11 @@ public final class XPluginImp implements Plugin {
         } else {
             _server = new UndertowServerAddJsp();
         }
+
+        HttpSignalProps props = _server.getProps();
+        String _host = props.getHost();
+        int _port = props.getPort();
+        String _name = props.getName();
 
         _server.start(_host, _port);
 

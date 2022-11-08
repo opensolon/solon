@@ -64,6 +64,10 @@ class UndertowServer extends UndertowServerBase implements ServerLifecycle {
             builder.setServerOption(UndertowOptions.MAX_ENTITY_SIZE, (long) ServerProps.request_maxFileSize);
         }
 
+        builder.setIoThreads(props.getCoreThreads());
+        builder.setWorkerThreads(props.getMaxThreads(false));
+
+
         if(Utils.isEmpty(host)){
             host = "0.0.0.0";
         }

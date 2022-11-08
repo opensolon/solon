@@ -11,12 +11,12 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * 路由适配器
+ * 路由包装器（更简单的使用路由）
  *
  * @author noear
  * @since 1.8
  */
-public abstract class RouterAdapter implements HandlerSlots{
+public abstract class RouterWrapper implements HandlerSlots{
     private Router _router;
     private RouterHandler _routerHandler;
     private List<FilterEntity> _filterList = new ArrayList<>();

@@ -5,7 +5,7 @@ import org.noear.solon.core.event.EventListener;
 import org.noear.solon.core.handle.*;
 import org.noear.solon.annotation.Import;
 import org.noear.solon.core.*;
-import org.noear.solon.core.route.RouterAdapter;
+import org.noear.solon.core.route.RouterWrapper;
 import org.noear.solon.core.util.LogUtil;
 
 import java.lang.annotation.Annotation;
@@ -28,7 +28,7 @@ import java.util.function.Consumer;
  * @author noear
  * @since 1.0
  * */
-public class SolonApp extends RouterAdapter {
+public class SolonApp extends RouterWrapper {
     private final SolonProps _prop; //属性配置
     private final Class<?> _source; //应用加载源
     private final long _startupTime;

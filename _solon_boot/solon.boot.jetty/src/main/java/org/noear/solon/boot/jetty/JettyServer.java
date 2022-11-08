@@ -2,6 +2,7 @@ package org.noear.solon.boot.jetty;
 
 import org.eclipse.jetty.server.*;
 import org.eclipse.jetty.server.session.DefaultSessionIdManager;
+import org.eclipse.jetty.util.thread.QueuedThreadPool;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
@@ -18,6 +19,7 @@ class JettyServer extends JettyServerBase implements ServerLifecycle {
     @Override
     public void start(String host, int port) throws Throwable {
         setup(Solon.app(), host, port);
+
         _server.start();
     }
 
@@ -32,7 +34,9 @@ class JettyServer extends JettyServerBase implements ServerLifecycle {
     protected void setup(SolonApp app, String host, int port) throws IOException {
         Class<?> wsClz = Utils.loadClass("org.eclipse.jetty.websocket.server.WebSocketHandler");
 
-        _server = new Server();
+        QueuedThreadPool threadPool = new QueuedThreadPool(props.getMaxThreads(true), props.getCoreThreads(), (int)props.getIdleTimeout());
+
+        _server = new Server(threadPool);
 
 
         //有配置的链接器

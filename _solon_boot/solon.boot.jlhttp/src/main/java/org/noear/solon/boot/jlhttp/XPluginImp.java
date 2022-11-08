@@ -111,9 +111,8 @@ public final class XPluginImp implements Plugin {
                 MethodType.OPTIONS.name);
 
         LogUtil.global().info("Server:main: JlHttpServer 2.6(jlhttp)");
-
-
-        _server.setExecutor(Executors.newCachedThreadPool(new NamedThreadFactory("jlhttp-")));
+        
+        _server.setExecutor(props.executor("jlhttp-"));
         _server.setPort(_port);
         if (Utils.isNotEmpty(_host)) {
             _server.setHost(_host);

@@ -85,7 +85,7 @@ public final class XPluginImp implements Plugin {
 
         _config.bannerEnabled(false);
         _config.readBufferSize(1024 * 8); //默认: 8k
-        _config.threadNum(Runtime.getRuntime().availableProcessors() + 2);
+        _config.threadNum(props.getCoreThreads());
 
 
         if (ServerProps.request_maxHeaderSize != 0) {
@@ -100,6 +100,7 @@ public final class XPluginImp implements Plugin {
         //HttpServerConfiguration
         EventBus.push(_config);
 
+        _handler.setExecutor(props.executor("smarthttp-"));
         _server.httpHandler(_handler);
 
         if (app.enableWebSocket()) {

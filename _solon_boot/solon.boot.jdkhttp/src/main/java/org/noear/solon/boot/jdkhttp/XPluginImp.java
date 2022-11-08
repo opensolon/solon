@@ -18,7 +18,7 @@ import javax.net.ssl.SSLEngine;
 import javax.net.ssl.SSLParameters;
 import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.util.concurrent.Executors;
+import java.util.concurrent.*;
 
 public final class XPluginImp implements Plugin {
     private static Signal _signal;
@@ -99,7 +99,7 @@ public final class XPluginImp implements Plugin {
         HttpContext httpContext = _server.createContext("/", new JdkHttpContextHandler());
         httpContext.getFilters().add(new ParameterFilter());
 
-        _server.setExecutor(Executors.newCachedThreadPool(new NamedThreadFactory("jdkhttp-")));
+        _server.setExecutor(props.executor("jdkhttp-"));
         _server.start();
 
         _signal = new SignalSim(_name, _host, _port, "http", SignalType.HTTP);

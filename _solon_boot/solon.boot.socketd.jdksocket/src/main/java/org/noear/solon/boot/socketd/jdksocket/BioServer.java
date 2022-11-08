@@ -20,7 +20,11 @@ import java.util.concurrent.Executors;
 
 class BioServer implements ServerLifecycle {
     private ServerSocket server;
-    private ExecutorService pool = Executors.newCachedThreadPool(new NamedThreadFactory("jdksocket-"));
+    private ExecutorService executor;
+
+    public void setExecutor(ExecutorService executor) {
+        this.executor = executor;
+    }
 
     private void start0(String host, int port) throws IOException {
         if (Utils.isEmpty(host)) {
@@ -38,7 +42,7 @@ class BioServer implements ServerLifecycle {
             Session session = BioSocketSession.get(socket);
             Solon.app().listener().onOpen(session);
 
-            pool.execute(() -> {
+            executor.execute(() -> {
                 while (true) {
                     if (socket.isClosed()) {
                         Solon.app().listener().onClose(session);
@@ -50,7 +54,7 @@ class BioServer implements ServerLifecycle {
                         Message message = BioReceiver.receive(socket);
 
                         if (message != null) {
-                            pool.execute(() -> {
+                            executor.execute(() -> {
                                 try {
                                     Solon.app().listener().onMessage(session, message);
                                 } catch (Throwable ex) {

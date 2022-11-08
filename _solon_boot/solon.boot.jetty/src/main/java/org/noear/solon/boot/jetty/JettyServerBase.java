@@ -9,17 +9,31 @@ import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerConstants;
+import org.noear.solon.boot.ServerLifecycle;
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.jetty.http.JtContainerInitializer;
 import org.noear.solon.boot.jetty.http.JtHttpContextHandler;
 import org.noear.solon.boot.jetty.http.JtHttpContextServletHandler;
+import org.noear.solon.boot.prop.HttpSignalProps;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.concurrent.ExecutorService;
 
-class JettyServerBase {
+abstract class JettyServerBase implements ServerLifecycle {
+    protected ExecutorService executor;
+    protected HttpSignalProps props = new HttpSignalProps();
+
+    public HttpSignalProps getProps() {
+        return props;
+    }
+
+    public void setExecutor(ExecutorService executor) {
+        this.executor = executor;
+    }
+
     /**
      * 创建连接器（支持https）
      *

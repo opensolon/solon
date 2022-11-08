@@ -4,7 +4,9 @@ import io.undertow.servlet.api.DeploymentInfo;
 import io.undertow.servlet.util.DefaultClassIntrospector;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
+import org.noear.solon.boot.ServerLifecycle;
 import org.noear.solon.boot.ServerProps;
+import org.noear.solon.boot.prop.HttpSignalProps;
 import org.noear.solon.boot.undertow.http.UtContainerInitializer;
 
 import javax.servlet.MultipartConfigElement;
@@ -12,7 +14,13 @@ import java.io.FileNotFoundException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-abstract class UndertowServerBase {
+abstract class UndertowServerBase implements ServerLifecycle {
+    protected HttpSignalProps props = new HttpSignalProps();
+
+    public HttpSignalProps getProps() {
+        return props;
+    }
+
     protected DeploymentInfo initDeploymentInfo() {
         MultipartConfigElement configElement = new MultipartConfigElement(System.getProperty("java.io.tmpdir"));
 

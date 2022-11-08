@@ -6,19 +6,19 @@ package org.noear.solon.boot;
  * @author noear
  * @since 1.8
  */
-public interface ServerSignalProps {
+public interface ServerSignalProps extends ServerExecutorProps {
     /**
      * 名称
-     * */
+     */
     String getName();
 
     /**
      * 主机
-     * */
+     */
     String getHost();
 
     /**
      * 端口
-     * */
+     */
     int getPort();
 }
