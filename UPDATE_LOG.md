@@ -13,6 +13,8 @@
 #### 1.10.13
 * 新增 thrift-solon-cloud-plugin 插件
 * 优化 LogUtil 接口设计
+* 修复 Nami 代理调用 Object 函数时会出错的问题
+* 修复 DownloadedFile 输出，没有关流的问题
 
 
 #### 1.10.13-M1
