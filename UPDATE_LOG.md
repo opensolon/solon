@@ -19,14 +19,14 @@
 
 
 #### 1.10.12
-* 清理 ???-solon-plugin 的 solon cloud 插件包（正试由 ???-solon-cloud-plugin 替代）
+* 清理 xxx-solon-plugin 的 solon cloud 插件包（正试由 xxx-solon-cloud-plugin 替代）
 * 清理 solon.aspect 插件的弃用包，弃用包给新手造成了迷惑
 * 插件 solon.serialization.fastjson，调整 FastjsonRenderFactory 默认去掉 DisableCircularReferenceDetect 特性
 * 插件 solon.serialization.fastjson2，调整 Fastjson2RenderFactory 默认去掉 DisableCircularReferenceDetect 特性
 * 插件 consul-solon-cloud-plugin 调整日志为 slf4j 接口
 * 插件 zookeeper-solon-cloud-plugin 调整日志为 slf4j 接口
 * 插件 activerecord-solon-plugin @Db 增加 ActiveRecordPlugin 和 DbPro 注入类型
-* 调整 ???ActionExecutor 类全部进入事件总线，并增加部分定制能力
+* 调整 XxxActionExecutor 类全部进入事件总线，并增加部分定制能力
 * 调整 Core 增加日志插件的预启动处理，面后仍然再启动一次用于尝试加载配置服务的数据
 * 增加 Nami 异常时，显示目标详情
 * 增加 Signal 对 host 的支持
