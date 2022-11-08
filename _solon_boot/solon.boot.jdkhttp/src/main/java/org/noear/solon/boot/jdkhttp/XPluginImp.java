@@ -97,7 +97,7 @@ public final class XPluginImp implements Plugin {
         HttpContext httpContext = _server.createContext("/", new JdkHttpContextHandler());
         httpContext.getFilters().add(new ParameterFilter());
 
-        _server.setExecutor(props.executor("jdkhttp-"));
+        _server.setExecutor(props.getBioExecutor("jdkhttp-"));
         _server.start();
 
         _signal = new SignalSim(_name, _host, _port, "http", SignalType.HTTP);

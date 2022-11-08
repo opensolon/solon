@@ -32,8 +32,15 @@ public interface ServerExecutorProps {
     /**
      * 获取一个执行器
      */
-    default ExecutorService executor(String namePrefix) {
+    default ExecutorService getBioExecutor(String namePrefix) {
         return new ThreadPoolExecutor(getCoreThreads(), getMaxThreads(true),
+                getIdleTimeout(), TimeUnit.MILLISECONDS,
+                new SynchronousQueue<>(), //BlockingQueue //SynchronousQueue
+                new NamedThreadFactory(namePrefix));
+    }
+
+    default ExecutorService getNioExecutor(String namePrefix) {
+        return new ThreadPoolExecutor(getCoreThreads(), getMaxThreads(false),
                 getIdleTimeout(), TimeUnit.MILLISECONDS,
                 new SynchronousQueue<>(), //BlockingQueue //SynchronousQueue
                 new NamedThreadFactory(namePrefix));

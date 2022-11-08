@@ -56,7 +56,7 @@ public class XPluginImp implements Plugin {
 
 
         EventLoopGroup bossGroup = new NioEventLoopGroup();
-        EventLoopGroup wokerGroup = new NioEventLoopGroup();
+        EventLoopGroup wokerGroup = new NioEventLoopGroup(props.getCoreThreads(), props.getNioExecutor("netty-"));
 
         try {
             ServerBootstrap bootstrap = new ServerBootstrap();

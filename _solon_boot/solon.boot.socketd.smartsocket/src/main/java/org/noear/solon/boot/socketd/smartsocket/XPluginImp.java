@@ -62,6 +62,7 @@ public final class XPluginImp implements Plugin {
                 _server = new AioQuickServer(_host, _port, AioProtocol.instance, new AioServerProcessor());
             }
 
+            _server.setThreadNum(props.getCoreThreads());
             _server.setBannerEnabled(false);
             if (SocketProps.readBufferSize() > 0) {
                 _server.setReadBufferSize(SocketProps.readBufferSize());

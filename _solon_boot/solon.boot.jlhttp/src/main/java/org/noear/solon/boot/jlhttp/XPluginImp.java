@@ -109,7 +109,7 @@ public final class XPluginImp implements Plugin {
 
         LogUtil.global().info("Server:main: JlHttpServer 2.6(jlhttp)");
         
-        _server.setExecutor(props.executor("jlhttp-"));
+        _server.setExecutor(props.getBioExecutor("jlhttp-"));
         _server.setPort(_port);
         if (Utils.isNotEmpty(_host)) {
             _server.setHost(_host);

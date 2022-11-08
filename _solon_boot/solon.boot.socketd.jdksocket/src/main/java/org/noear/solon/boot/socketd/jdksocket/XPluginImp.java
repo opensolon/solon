@@ -57,7 +57,7 @@ public class XPluginImp implements Plugin {
 
 
         _server = new BioServer();
-        _server.setExecutor(props.executor("jdksocket-"));
+        _server.setExecutor(props.getBioExecutor("jdksocket-"));
         _server.start(_host, _port);
 
         _signal = new SignalSim(_name, _host, _port, "tcp", SignalType.SOCKET);
