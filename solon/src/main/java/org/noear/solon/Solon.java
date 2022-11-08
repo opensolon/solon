@@ -130,7 +130,7 @@ public class Solon {
         //绑定类加载器（即替换当前线程[即主线程]的类加载器）
         JarClassLoader.bindingThread();
 
-        LogUtil.global().solonInfo("App: Start loading");
+        LogUtil.global().info("App: Start loading");
 
         try {
             //1.创建全局应用及配置
