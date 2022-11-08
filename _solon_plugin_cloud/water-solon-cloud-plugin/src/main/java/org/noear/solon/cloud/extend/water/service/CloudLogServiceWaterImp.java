@@ -11,6 +11,7 @@ import org.noear.solon.logging.event.LogEvent;
 import org.noear.water.dso.LogPipeline;
 import org.noear.water.model.LogM;
 import org.noear.water.utils.Datetime;
+import org.noear.water.utils.IDUtils;
 import org.noear.water.utils.LogHelper;
 
 /**
@@ -52,6 +53,7 @@ public class CloudLogServiceWaterImp implements CloudLogService {
 
         LogM log = new LogM();
 
+        log.log_id = SnowflakeUtil.genId();
         log.group = Solon.cfg().appGroup();
         log.service = Solon.cfg().appName();
 

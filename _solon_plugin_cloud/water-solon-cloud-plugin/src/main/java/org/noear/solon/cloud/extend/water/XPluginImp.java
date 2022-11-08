@@ -88,14 +88,12 @@ public class XPluginImp implements Plugin {
         WaterClient.localServiceSet(Instance.local().service());
         WaterSetting.water_trace_id_supplier(traceServiceImp::getTraceId);
 
-
-        //这个要放最上面
-        if (cloudProps.getTraceEnable()) {
-            CloudManager.register(traceServiceImp);
+        if (cloudProps.getLogEnable()) {
+            CloudManager.register(new CloudLogServiceWaterImp(cloudProps));
         }
 
-        if (cloudProps.getMetricEnable()) {
-            CloudManager.register(new CloudMetricServiceWaterImp());
+        if (cloudProps.getTraceEnable()) {
+            CloudManager.register(traceServiceImp);
         }
     }
 
@@ -112,10 +110,10 @@ public class XPluginImp implements Plugin {
         CloudEventServiceWaterImp eventServiceImp = new CloudEventServiceWaterImp(cloudProps);
         CloudI18nServiceWaterImp i18nServiceImp = null;
 
-
-        if (cloudProps.getLogEnable()) {
-            CloudManager.register(new CloudLogServiceWaterImp(cloudProps));
+        if (cloudProps.getMetricEnable()) {
+            CloudManager.register(new CloudMetricServiceWaterImp());
         }
+
 
         if (cloudProps.getConfigEnable()) {
             configServiceImp = new CloudConfigServiceWaterImp(cloudProps);
