@@ -829,8 +829,8 @@ public abstract class Context {
             contentLength(file.content.available());
         }
 
-        synchronized (file.content) {
-            Utils.transferTo(file.content, outputStream());
+        try (InputStream ins = file.content) {
+            output(ins);
         }
     }
 
@@ -854,7 +854,7 @@ public abstract class Context {
         contentLength(file.length());
 
         try (InputStream ins = new FileInputStream(file)) {
-            Utils.transferTo(ins, outputStream());
+            output(ins);
         }
     }
 
