@@ -147,6 +147,28 @@ public abstract class SessionBase implements Session {
 
     //////////////////////////////////////////
 
+    @Override
+    public void sendAsync(String message) {
+        CompletableFuture.runAsync(() -> {
+            try {
+                send(message);
+            } catch (Throwable e) {
+                EventBus.push(e);
+            }
+        });
+    }
+
+    @Override
+    public void sendAsync(Message message) {
+        CompletableFuture.runAsync(() -> {
+            try {
+                send(message);
+            } catch (Throwable e) {
+                EventBus.push(e);
+            }
+        });
+    }
+
 
     @Override
     public void send(Message message) {
