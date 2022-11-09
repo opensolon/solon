@@ -149,7 +149,7 @@ public abstract class SessionBase implements Session {
 
     @Override
     public void sendAsync(String message) {
-        CompletableFuture.runAsync(() -> {
+        Utils.async(() -> {
             try {
                 send(message);
             } catch (Throwable e) {
@@ -160,7 +160,7 @@ public abstract class SessionBase implements Session {
 
     @Override
     public void sendAsync(Message message) {
-        CompletableFuture.runAsync(() -> {
+        Utils.async(() -> {
             try {
                 send(message);
             } catch (Throwable e) {

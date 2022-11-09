@@ -167,7 +167,7 @@ class JobEntity extends Thread {
 
     private void exec() {
         if (concurrent) {
-            Utils.async(this::exec0);
+            Utils.parallel(this::exec0);
         } else {
             exec0();
         }

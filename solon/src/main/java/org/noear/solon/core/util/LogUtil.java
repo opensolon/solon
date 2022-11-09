@@ -1,6 +1,6 @@
 package org.noear.solon.core.util;
 
-import java.util.concurrent.CompletableFuture;
+import org.noear.solon.Utils;
 
 /**
  * 日志打印小工具（仅限内部使用）
@@ -24,7 +24,7 @@ public class LogUtil {
     }
 
     public void infoAsync(String content) {
-        CompletableFuture.runAsync(() -> {
+        Utils.async(() -> {
             info(content);
         });
     }

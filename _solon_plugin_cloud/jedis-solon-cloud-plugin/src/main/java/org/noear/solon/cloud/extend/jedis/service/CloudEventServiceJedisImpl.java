@@ -14,8 +14,6 @@ import org.noear.solon.cloud.service.CloudEventObserverManger;
 import org.noear.solon.cloud.service.CloudEventServicePlus;
 import org.noear.solon.core.Props;
 
-import java.util.concurrent.CompletableFuture;
-
 /**
  * 分布式事件适配
  *
@@ -94,7 +92,7 @@ public class CloudEventServiceJedisImpl implements CloudEventServicePlus {
                 observerManger.topicAll().toArray(topicAll);
 
                 //用异步处理
-                CompletableFuture.runAsync(() -> {
+                Utils.async(() -> {
                     client.open(s -> s.subscribe(new JedisEventConsumer(cloudProps, observerManger), topicAll));
                 });
             }

@@ -33,17 +33,24 @@ public class Utils {
     private static final char[] HEX_DIGITS = new char[]{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
 
     /**
-     * 异步执行
+     * 并行执行
      * */
-    public static Future<?> async(Runnable task){
+    public static Future<?> parallel(Runnable task){
+        return pools.submit(task);
+    }
+
+    /**
+     * 并行执行
+     * */
+    public static <T> Future<T> parallel(Callable<T> task){
         return pools.submit(task);
     }
 
     /**
      * 异步执行
      * */
-    public static <T> Future<T> async(Callable<T> task){
-        return pools.submit(task);
+    public static Future<?> async(Runnable task){
+        return CompletableFuture.runAsync(task);
     }
 
     /**
