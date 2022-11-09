@@ -8,6 +8,7 @@ import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
 import webapp.demox_log_breaker.BreakerServiceDemo;
 
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
 
 /**
@@ -23,7 +24,7 @@ public class BreakerTest extends HttpTestBase {
         CountDownLatch downLatch = new CountDownLatch(5);
 
         for (int i = 0; i < 5; i++) {
-            Utils.async(() -> {
+            CompletableFuture.runAsync(() -> {
                 try {
                     path("/demox/test").get();
 
@@ -44,7 +45,7 @@ public class BreakerTest extends HttpTestBase {
         CountDownLatch downLatch = new CountDownLatch(105);
 
         for (int i = 0; i < 105; i++) {
-            Utils.async(() -> {
+            CompletableFuture.runAsync(() -> {
                 try {
                     serviceDemo.test();
                     log.debug("ok");

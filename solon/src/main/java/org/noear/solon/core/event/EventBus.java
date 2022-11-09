@@ -1,9 +1,9 @@
 package org.noear.solon.core.event;
 
 import org.noear.solon.Solon;
-import org.noear.solon.Utils;
 
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * 监听器（内部类，外部不要使用）
@@ -34,7 +34,7 @@ public final class EventBus {
      */
     public static void pushAsync(Object event) {
         if (event != null) {
-            Utils.async(() -> {
+            CompletableFuture.runAsync(() -> {
                 push0(event);
             });
         }

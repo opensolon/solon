@@ -87,28 +87,6 @@ public class _SocketClientSession extends SessionBase {
     }
 
     @Override
-    public void sendAsync(String message) {
-        Utils.async(() -> {
-            try {
-                send(message);
-            } catch (Throwable e) {
-                EventBus.push(e);
-            }
-        });
-    }
-
-    @Override
-    public void sendAsync(Message message) {
-        Utils.async(() -> {
-            try {
-                send(message);
-            } catch (Throwable e) {
-                EventBus.push(e);
-            }
-        });
-    }
-
-    @Override
     public void send(String message) {
         synchronized (this) {
             try {
