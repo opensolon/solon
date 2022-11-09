@@ -94,6 +94,7 @@ public class _SocketServerSession extends SessionBase {
 
     @Override
     public void sendAsync(Message message) {
+        //用于打印
         super.send(message);
 
         if (Solon.app().enableWebSocketD()) {
