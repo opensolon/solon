@@ -1,7 +1,5 @@
 package webapp.utils;
 
-
-import org.noear.solon.Utils;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.socketd.ProtocolManager;
 
@@ -91,19 +89,18 @@ public class SocketUtils {
     }
 
     public static void send(String uri, byte[] message, BiConsumer<Message,Throwable> callback) throws Throwable {
-        if(message == null){
+        if (message == null) {
             return;
         }
 
-        SocketMessageWrap msgD = new SocketMessageWrap(Message.wrap(uri, null,message));
+        SocketMessageWrap msgD = new SocketMessageWrap(Message.wrap(uri, null, message));
         msgD.handler = callback;
 
-        CompletableFuture.runAsync(()->{
+        CompletableFuture.runAsync(() -> {
             get(uri).sendDo(msgD, (m) -> {
                 msgD.handler.accept(msgD.res, msgD.err);
             });
         });
-
     }
 
     private Socket connector;
