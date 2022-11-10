@@ -59,13 +59,7 @@ public class BioConnector extends ConnectorBase<Socket> {
                     Message message = BioReceiver.receive(socket);
 
                     if (message != null) {
-                        Utils.parallel(() -> {
-                            try {
-                                Solon.app().listener().onMessage(session, message);
-                            } catch (Throwable ex) {
-                                Solon.app().listener().onError(session, ex);
-                            }
-                        });
+                        Solon.app().listener().onMessage(session, message);
                     }
                 } catch (Exception ex) {
                     Solon.app().listener().onError(session, ex);
