@@ -25,7 +25,7 @@ public class RouterListener implements Listener{
     /**
      * 消息处理线程池
      * */
-    static final ExecutorService executors = Executors.newCachedThreadPool();
+    static final ExecutorService executor = Executors.newCachedThreadPool();
 
 
     //
@@ -36,7 +36,7 @@ public class RouterListener implements Listener{
      * */
     @Override
     public void onOpen(Session session) {
-        executors.submit(() -> {
+        executor.submit(() -> {
             onOpen0(session);
         });
     }
@@ -70,7 +70,7 @@ public class RouterListener implements Listener{
         //
         //线程池处理，免得被卡住
         //
-        executors.submit(() -> {
+        executor.submit(() -> {
             onMessage0(session, message);
         });
     }
@@ -125,7 +125,7 @@ public class RouterListener implements Listener{
      * */
     @Override
     public void onClose(Session session) {
-        executors.submit(() -> {
+        executor.submit(() -> {
             onClose0(session);
         });
     }
@@ -152,7 +152,7 @@ public class RouterListener implements Listener{
      * */
     @Override
     public void onError(Session session, Throwable error) {
-        executors.submit(() -> {
+        executor.submit(() -> {
             onError0(session, error);
         });
     }
