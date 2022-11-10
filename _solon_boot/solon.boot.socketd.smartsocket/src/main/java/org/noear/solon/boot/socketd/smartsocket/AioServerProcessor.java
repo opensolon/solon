@@ -14,17 +14,22 @@ import org.smartboot.socket.transport.AioSession;
 class AioServerProcessor implements MessageProcessor<Message> {
     @Override
     public void process(AioSession session, Message message) {
+        Session session1 = null;
         try {
-            Session session1 = AioSocketSession.get(session);
+            session1 = AioSocketSession.get(session);
 
             Solon.app().listener().onMessage(session1, message);
-        } catch (Throwable ex) {
-            EventBus.push(ex);
+        } catch (Throwable e) {
+            if (session1 == null) {
+                EventBus.push(e);
+            } else {
+                Solon.app().listener().onError(session1, e);
+            }
         }
     }
 
     @Override
-    public void stateEvent(AioSession session, StateMachineEnum state, Throwable throwable) {
+    public void stateEvent(AioSession session, StateMachineEnum state, Throwable e) {
 
         switch (state) {
             case NEW_SESSION:
@@ -41,9 +46,8 @@ class AioServerProcessor implements MessageProcessor<Message> {
             case INPUT_EXCEPTION:
             case ACCEPT_EXCEPTION:
             case OUTPUT_EXCEPTION:
-                Solon.app().listener().onError(AioSocketSession.get(session), throwable);
+                Solon.app().listener().onError(AioSocketSession.get(session), e);
                 break;
         }
-
     }
 }
