@@ -114,8 +114,9 @@ public class RouterListener implements Listener{
                 SocketContextHandler.instance.handle(session, message);
             }
         } catch (Throwable ex) {
-            onError0(session, ex);
-            EventBus.push(ex);
+            if (onError0(session, ex) == false) {
+                EventBus.push(ex);
+            }
         }
     }
 
@@ -156,20 +157,26 @@ public class RouterListener implements Listener{
         });
     }
 
-    private void onError0(Session session, Throwable error) {
+    private boolean onError0(Session session, Throwable error) {
         try {
+            boolean handled = false;
             //路由监听模式（起到过滤器作用）
             Listener sl = get(session);
             if (sl != null) {
+                handled = true;
                 sl.onError(session, error);
             }
 
             //实例监听者
             if (session.listener() != null) {
+                handled = true;
                 session.listener().onError(session, error);
             }
+
+            return handled;
         } catch (Throwable ex) {
             EventBus.push(ex);
+            return true;
         }
     }
 

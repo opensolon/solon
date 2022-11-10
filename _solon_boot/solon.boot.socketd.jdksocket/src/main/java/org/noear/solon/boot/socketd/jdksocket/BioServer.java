@@ -6,7 +6,6 @@ import org.noear.solon.boot.ServerLifecycle;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.core.util.LogUtil;
-import org.noear.solon.core.util.NamedThreadFactory;
 import org.noear.solon.socketd.client.jdksocket.BioReceiver;
 import org.noear.solon.socketd.client.jdksocket.BioSocketSession;
 
@@ -16,7 +15,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 class BioServer implements ServerLifecycle {
     private ServerSocket server;
@@ -52,15 +50,8 @@ class BioServer implements ServerLifecycle {
 
                     try {
                         Message message = BioReceiver.receive(socket);
-
                         if (message != null) {
-                            executor.execute(() -> {
-                                try {
-                                    Solon.app().listener().onMessage(session, message);
-                                } catch (Throwable ex) {
-                                    Solon.app().listener().onError(session, ex);
-                                }
-                            });
+                            Solon.app().listener().onMessage(session, message);
                         }
                     } catch (Throwable ex) {
                         Solon.app().listener().onError(session, ex);

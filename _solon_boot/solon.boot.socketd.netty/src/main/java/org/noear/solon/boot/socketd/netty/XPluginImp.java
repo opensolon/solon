@@ -56,11 +56,10 @@ public class XPluginImp implements Plugin {
 
 
         EventLoopGroup parentGroup = new NioEventLoopGroup();
-        EventLoopGroup childGroup = new NioEventLoopGroup(); //props.getCoreThreads(), props.getNioExecutor("netty-")
+        EventLoopGroup childGroup = new NioEventLoopGroup();
 
         try {
             ServerBootstrap bootstrap = new ServerBootstrap();
-            //在服务器端的handler()方法表示对bossGroup起作用，而childHandler表示对wokerGroup起作用
             bootstrap.group(parentGroup, childGroup)
                     .channel(NioServerSocketChannel.class)
                     .childHandler(new NioChannelInitializer(() -> new NioServerProcessor()));
