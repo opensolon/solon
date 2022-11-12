@@ -6,12 +6,12 @@
 * 新增 jmdns-solon-cloud-plugin 插件
 * 新增 swagger-solon-plugin 插件
 * 新增 shiro-solon-plugin 插件
+* 新增 thrift-solon-cloud-plugin 插件
 * 调整 运行完成后，提供未注入的对象???
 * 调整 增加线程池公共配置???
 * 增加 更多友好的异常分类???
 
 #### 1.10.13
-* 新增 thrift-solon-cloud-plugin 插件
 * 优化 LogUtil 接口设计
 * 统一 Server 适配的线程池控制，并提供配置支持
 * 修复 Nami 代理调用 Object 函数时会出错的问题
