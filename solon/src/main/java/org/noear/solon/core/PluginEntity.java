@@ -103,7 +103,7 @@ public class PluginEntity {
             try {
                 plugin.start(context);
             } catch (Throwable e) {
-                throw new IllegalStateException(e);
+                throw new IllegalStateException("Plugin start failed", e);
             }
         }
     }
