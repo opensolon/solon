@@ -12,7 +12,7 @@
 * 增加 更多友好的异常分类???
 
 #### 1.10.14
-* 增加 (@Body Map<String,Object> map) 支持
+* 增加 (@Body Map<String,Object> map) ，用于注入 ctx.paramMap()
 
 #### 1.10.13
 * 优化 LogUtil 接口设计
