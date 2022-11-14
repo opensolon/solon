@@ -45,6 +45,6 @@ public abstract class AppenderBase implements Appender{
      * */
     @Override
     public void stop() {
-        Appender.super.stop();
+
     }
 }
