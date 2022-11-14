@@ -88,6 +88,8 @@ public class ActionExecutorDefault implements ActionExecutor {
                         tv = ctx.bodyNew();
                     } else if (InputStream.class.equals(pt)) {
                         tv = ctx.bodyAsStream();
+                    } else if (Map.class.equals(pt)) {
+                        tv = ctx.paramMap();
                     }
                 }
 
