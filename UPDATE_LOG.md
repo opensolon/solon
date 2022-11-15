@@ -12,7 +12,8 @@
 * 增加 更多友好的异常分类???
 
 #### 1.10.14
-* 增加 (@Body Map<String,Object> map) ，用于注入 ctx.paramMap()
+* 插件 core 增加 (@Body Map map) ，用于注入 ctx.paramMap()
+* 插件 solon.auth 增加 AuthAdapterSupplier 的 pathPrefix 对 adapter 规则有相同限制效果
 
 #### 1.10.13
 * 优化 LogUtil 接口设计
