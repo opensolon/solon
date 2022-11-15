@@ -9,6 +9,7 @@ import org.noear.solon.Solon;
 public class XPluginProp {
     static final String PROP_ENABLE = "solon.staticfiles.enable";
     static final String PROP_MAX_AGE = "solon.staticfiles.maxAge";
+    static final String PROP_MAPPINGS = "solon.staticfiles.mappings";
 
     static final String RES_STATIC_LOCATION = "static/";
     static final String RES_WEB_INF_STATIC_LOCATION = "WEB-INF/static/";

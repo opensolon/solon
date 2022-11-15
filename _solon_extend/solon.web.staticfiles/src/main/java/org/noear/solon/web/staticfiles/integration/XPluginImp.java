@@ -10,6 +10,12 @@ import org.noear.solon.web.staticfiles.StaticMappings;
 import org.noear.solon.web.staticfiles.StaticMimes;
 import org.noear.solon.web.staticfiles.StaticResourceHandler;
 import org.noear.solon.web.staticfiles.repository.ClassPathStaticRepository;
+import org.noear.solon.web.staticfiles.repository.ExtendStaticRepository;
+import org.noear.solon.web.staticfiles.repository.FileStaticRepository;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class XPluginImp implements Plugin {
     @Override
@@ -50,5 +56,35 @@ public class XPluginImp implements Plugin {
         HandlerPipeline pipeline = new HandlerPipeline();
         pipeline.next(new StaticResourceHandler()).next(Solon.app().handlerGet());
         Solon.app().handlerSet(pipeline);
+
+        //3.添加印射
+        List<Map> mapList = Solon.cfg().getBean(XPluginProp.PROP_MAPPINGS, ArrayList.class);
+        if (mapList != null) {
+            for (Map map : mapList) {
+                String path = (String) map.get("path");
+                String repository = (String) map.get("repository");
+
+                if (Utils.isEmpty(path) || Utils.isEmpty(repository)) {
+                    continue;
+                }
+
+                if (path.startsWith("/") == false) {
+                    path = "/" + path;
+                }
+
+                if (path.endsWith("/") == false) {
+                    path = path + "/";
+                }
+
+                if (repository.startsWith(":")) {
+                    StaticMappings.add(path, false, new ExtendStaticRepository());
+                } else if (repository.startsWith("classpath:")) {
+                    repository = repository.substring(10);
+                    StaticMappings.add(path, false, new ClassPathStaticRepository(repository));
+                } else {
+                    StaticMappings.add(path, false, new FileStaticRepository(repository));
+                }
+            }
+        }
     }
 }
