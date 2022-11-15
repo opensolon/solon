@@ -41,6 +41,10 @@ public class AuthUtil {
     }
 
     public static void adapterAdd(AuthAdapterSupplier supplier) {
+        //绑定规则的路径前缀
+        supplier.adapter().setRulePathPrefix(supplier.pathPrefix());
+
+        //添加到集合
         adapterSuppliers.add(supplier);
         //排除，短的在后（用负数反一反）
         adapterSuppliers.sort(Comparator.comparingInt(e -> -e.pathPrefix().length()));

@@ -15,6 +15,7 @@ import java.util.function.Consumer;
  */
 public class AuthAdapter {
     private String loginUrl;
+    private String authRulePathPrefix;
     private AuthRuleHandler authRuleHandler;
     private AuthProcessor authProcessor;
     private AuthFailureHandler authFailure = new AuthFailureHandlerDefault();
@@ -73,10 +74,25 @@ public class AuthAdapter {
     private synchronized void addRuleDo(AuthRule rule) {
         if (authRuleHandler == null) {
             authRuleHandler = new AuthRuleHandler();
+            authRuleHandler.setPathPrefix(authRulePathPrefix);
+
             Solon.app().before(authRuleHandler);
         }
 
-        authRuleHandler.rules().add(rule);
+        authRuleHandler.addRule(rule);
+    }
+
+    /**
+     * 设置规则路径前缀（用于支持 AuthAdapterSupplier 的前缀特性）
+     *
+     * @param pathPrefix 路径前缀
+     * */
+    protected void setRulePathPrefix(String pathPrefix) {
+        authRulePathPrefix = pathPrefix;
+
+        if (authRuleHandler != null) {
+            authRuleHandler.setPathPrefix(authRulePathPrefix);
+        }
     }
 
     //=================//=================//=================
