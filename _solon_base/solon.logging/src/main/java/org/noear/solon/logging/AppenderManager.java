@@ -14,28 +14,19 @@ import java.util.*;
  * @since 1.3
  */
 public class AppenderManager {
-    private static AppenderManager instance;
 
-    /**
-     * 获取单例
-     */
-    public static AppenderManager getInstance() {
-        if (instance == null) {
-            synchronized (AppenderManager.class) {
-                if (instance == null) {
-                    instance = new AppenderManager();
-                }
-            }
-        }
+    private static Map<String, AppenderHolder> appenderMap = new HashMap<>();
 
-        return instance;
-    }
-
-    private Map<String, AppenderHolder> appenderMap = new LinkedHashMap<>();
-
-    private AppenderManager() {
+    static {
         //不能用 register，否则 LogUtil.global() 会死循环
         registerDo("console", new ConsoleAppender());
+    }
+
+    /**
+     * 初始化
+     * */
+    public static void init(){
+        //为触发 static
     }
 
     /**
@@ -44,21 +35,21 @@ public class AppenderManager {
      * @param name     名称
      * @param appender 添加器
      */
-    public void register(String name, Appender appender) {
+    public static void register(String name, Appender appender) {
         registerDo(name, appender);
 
         //打印须异步（不然可能死循环）
         LogUtil.global().infoAsync("Logging: LogAppender registered from the " + appender.getClass().getTypeName() + "#" + name);
     }
 
-    private void registerDo(String name, Appender appender) {
+    private static void registerDo(String name, Appender appender) {
         appenderMap.putIfAbsent(name, new AppenderHolder(name, appender));
     }
 
     /**
      * 获取添加器
      */
-    public AppenderHolder get(String name) {
+    public static AppenderHolder get(String name) {
         return appenderMap.get(name);
     }
 
@@ -67,7 +58,7 @@ public class AppenderManager {
      *
      * @param logEvent 日志事件
      */
-    public void append(LogEvent logEvent) {
+    public static void append(LogEvent logEvent) {
         for (AppenderHolder appender : appenderMap.values()) {
             appender.append(logEvent);
         }
@@ -76,7 +67,7 @@ public class AppenderManager {
     /**
      * 停止生命周期
      */
-    public void stop() {
+    public static void stop() {
         for (AppenderHolder appender : appenderMap.values()) {
             appender.stop();
         }

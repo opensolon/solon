@@ -382,6 +382,6 @@ public class SolonLogger implements Logger {
                 System.currentTimeMillis(),
                 Thread.currentThread().getName(), throwable);
 
-        AppenderManager.getInstance().append(logEvent);
+        AppenderManager.append(logEvent);
     }
 }

@@ -35,7 +35,7 @@ public final  class SolonCloudAppender extends AbstractAppender {
     @Override
     public void append(LogEvent e) {
         if (appender == null) {
-            appender = AppenderManager.getInstance().get("cloud");
+            appender = AppenderManager.get("cloud");
 
             if (appender == null) {
                 return;

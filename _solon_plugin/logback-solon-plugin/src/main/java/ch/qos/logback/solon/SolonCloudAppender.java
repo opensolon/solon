@@ -22,7 +22,7 @@ public class SolonCloudAppender extends AppenderBase<ILoggingEvent> {
     @Override
     protected void append(ILoggingEvent e) {
         if (appender == null) {
-            appender = AppenderManager.getInstance().get("cloud");
+            appender = AppenderManager.get("cloud");
 
             if (appender == null) {
                 return;

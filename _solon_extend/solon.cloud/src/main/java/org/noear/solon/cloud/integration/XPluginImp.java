@@ -25,7 +25,7 @@ public class XPluginImp implements Plugin {
     @Override
     public void init() throws Throwable {
         //设置日志添加器（为了早点打印日志）
-        AppenderManager.getInstance().register("cloud", new CloudLogAppender());
+        AppenderManager.register("cloud", new CloudLogAppender());
     }
 
     @Override
@@ -59,10 +59,10 @@ public class XPluginImp implements Plugin {
 
         if (CloudClient.log() != null) {
             //配置日志添加器
-            AppenderHolder appenderHolder = AppenderManager.getInstance().get("cloud");
+            AppenderHolder appenderHolder = AppenderManager.get("cloud");
             if (appenderHolder == null) {
                 //说明初始化未添加
-                AppenderManager.getInstance().register("cloud", new CloudLogAppender());
+                AppenderManager.register("cloud", new CloudLogAppender());
             } else {
                 appenderHolder.reset();
             }

@@ -19,7 +19,7 @@ import java.util.Properties;
 public class XPluginImp implements Plugin {
     @Override
     public void init() throws Throwable {
-        AppenderManager.getInstance();
+        AppenderManager.init();
     }
 
     @Override
@@ -27,7 +27,7 @@ public class XPluginImp implements Plugin {
         Properties props = Solon.cfg().getProp("solon.logging.appender");
 
         //初始化
-        AppenderManager.getInstance();
+        AppenderManager.init();
 
         //注册添加器
         if (props.size() > 0) {
@@ -39,7 +39,7 @@ public class XPluginImp implements Plugin {
                     Appender appender = Utils.newInstance(val);
                     if (appender != null) {
                         String name = key.substring(0, key.length() - 6);
-                        AppenderManager.getInstance().register(name, appender);
+                        AppenderManager.register(name, appender);
                     }
                 }
             });
@@ -56,6 +56,6 @@ public class XPluginImp implements Plugin {
 
     @Override
     public void stop() throws Throwable {
-        AppenderManager.getInstance().stop();
+        AppenderManager.stop();
     }
 }
