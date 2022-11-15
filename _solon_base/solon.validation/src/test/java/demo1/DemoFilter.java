@@ -6,6 +6,7 @@ import org.noear.solon.core.handle.Filter;
 import org.noear.solon.core.handle.FilterChain;
 import org.noear.solon.core.handle.Result;
 import org.noear.solon.validation.ValidatorException;
+import org.noear.solon.validation.annotation.Logined;
 
 
 /**
@@ -18,7 +19,11 @@ public class DemoFilter implements Filter {
         try {
             chain.doFilter(ctx);
         } catch (ValidatorException e) {
-            ctx.render(Result.failure(e.getCode(), e.getMessage()));
+            if(e.getAnnotation() instanceof Logined){
+                ctx.status(401);
+            }else {
+                ctx.render(Result.failure(e.getCode(), e.getMessage()));
+            }
         }
     }
 }
