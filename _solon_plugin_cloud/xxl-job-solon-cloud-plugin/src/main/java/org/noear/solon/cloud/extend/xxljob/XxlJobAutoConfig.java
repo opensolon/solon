@@ -73,7 +73,11 @@ public class XxlJobAutoConfig {
         }
 
         if (Utils.isEmpty(accessToken)) {
-            accessToken = XxlJobProps.instance.getPassword();
+            accessToken = XxlJobProps.instance.getToken();
+            if (Utils.isEmpty(accessToken)) {
+                //兼容旧的
+                accessToken = XxlJobProps.instance.getPassword();
+            }
         }
 
 

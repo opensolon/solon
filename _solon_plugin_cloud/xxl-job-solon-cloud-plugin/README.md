@@ -12,7 +12,7 @@ solon.cloud.xxljob:
 
 ### xxl-job admin address list, （默认：${solon.cloud.xxljob.server}）
 #xxl.job.admin.addresses: "${solon.cloud.xxljob.server}"
-### xxl-job access token （默认：${solon.cloud.xxljob.password}）
+### xxl-job access token （默认：${solon.cloud.xxljob.token}）
 #xxl.job.accessToken:
 ### xxl-job executor appname（默认：${solon.app.name}）
 #xxl.job.executor.appname:
