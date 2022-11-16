@@ -17,6 +17,7 @@
 * 插件 solon.web.staticfiles 增加位置印射配置支持
 * 插件 logback-solon-plugin, log4j-solon-plugin 增加自定义 Appender
 * 插件 sa-token-solon-plugin 允许没有 sa-token 配置
+* 修复 xxl-job-solon-cloud-plugin 没配置时会出错的问题
 
 #### 1.10.13
 * 优化 LogUtil 接口设计
