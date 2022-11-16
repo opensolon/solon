@@ -14,8 +14,6 @@
         <Property name="FILE_LOG_MAX_HISTORY">${sys:solon.logging.appender.file.maxHistory:-7}</Property>
         <Property name="FILE_LOG_MAX_FILE_SIZE">${sys:solon.logging.appender.file.maxFileSize:-10 MB}</Property>
 
-        <Property name="CLOUD_LOG_LEVEL">${sys:solon.logging.appender.cloud.level:-INFO}</Property>
-
         <Property name="LOGGER_ROOT_LEVEL">${sys:solon.logging.logger.root.level:-TRACE}</Property>
     </Properties>
     <Appenders>
@@ -38,15 +36,15 @@
             </Policies>
             <DefaultRolloverStrategy max="${FILE_LOG_MAX_HISTORY}"/>
         </RollingFile>
-        <Cloud name="Cloud">
-            <ThresholdFilter level="${CLOUD_LOG_LEVEL}" onMatch="ACCEPT" onMismatch="DENY"/>
-        </Cloud>
+        <Solon name="Solon">
+            <ThresholdFilter level="TRACE" onMatch="ACCEPT" onMismatch="DENY"/>
+        </Solon>
     </Appenders>
     <Loggers>
         <Root level="${LOGGER_ROOT_LEVEL}">
             <AppenderRef ref="Console" />
             <AppenderRef ref="File" />
-            <AppenderRef ref="Cloud" />
+            <AppenderRef ref="Solon" />
         </Root>
     </Loggers>
 </Configuration>

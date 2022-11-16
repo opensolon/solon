@@ -15,11 +15,12 @@ import java.util.*;
  */
 public class AppenderManager {
 
-    private static Map<String, AppenderHolder> appenderMap = new HashMap<>();
+    private static Map<String,AppenderHolder> appenderMap = new HashMap<>();
+    private static List<AppenderHolder> appenderValues = new ArrayList<>();
 
     static {
         //不能用 register，否则 LogUtil.global() 会死循环
-        registerDo("console", new ConsoleAppender());
+        registerDo("console", new ConsoleAppender(), true);
     }
 
     /**
@@ -35,15 +36,20 @@ public class AppenderManager {
      * @param name     名称
      * @param appender 添加器
      */
-    public static void register(String name, Appender appender) {
-        registerDo(name, appender);
+    public synchronized static void register(String name, Appender appender) {
+        registerDo(name, appender, false);
 
         //打印须异步（不然可能死循环）
         LogUtil.global().infoAsync("Logging: LogAppender registered from the " + appender.getClass().getTypeName() + "#" + name);
     }
 
-    private static void registerDo(String name, Appender appender) {
-        appenderMap.putIfAbsent(name, new AppenderHolder(name, appender));
+    private static void registerDo(String name, Appender appender, boolean printed) {
+        if (appenderMap.containsKey(name) == false) {
+            AppenderHolder holder = new AppenderHolder(name, appender, printed);
+
+            appenderMap.put(name, holder);
+            appenderValues.add(holder);
+        }
     }
 
     /**
@@ -59,8 +65,25 @@ public class AppenderManager {
      * @param logEvent 日志事件
      */
     public static void append(LogEvent logEvent) {
-        for (AppenderHolder appender : appenderMap.values()) {
+        //用 i ，避免使用时动态添加而异常
+        for (int i = 0, len = appenderValues.size(); i < len; i++) {
+            AppenderHolder appender = appenderValues.get(i);
             appender.append(logEvent);
+        }
+    }
+
+    /**
+     * 添加日志事件（接收日志事件的入口，不支持打印的）
+     *
+     * @param logEvent 日志事件
+     */
+    public static void appendNotPrinted(LogEvent logEvent) {
+        //用 i ，避免使用时动态添加而异常
+        for (int i = 0, len = appenderValues.size(); i < len; i++) {
+            AppenderHolder appender = appenderValues.get(i);
+            if (appender.printed() == false) {
+                appender.append(logEvent);
+            }
         }
     }
 
@@ -68,7 +91,7 @@ public class AppenderManager {
      * 停止生命周期
      */
     public static void stop() {
-        for (AppenderHolder appender : appenderMap.values()) {
+        for (AppenderHolder appender : appenderValues) {
             appender.stop();
         }
     }

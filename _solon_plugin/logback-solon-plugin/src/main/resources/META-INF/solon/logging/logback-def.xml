@@ -28,11 +28,6 @@
     <solonProperty name="FILE_LOG_MAX_FILE_SIZE" source="solon.logging.appender.file.maxFileSize"
                    defaultValue="10 MB" />
 
-
-    <solonProperty name="CLOUD_LOG_LEVEL" source="solon.logging.appender.cloud.level"
-                   defaultValue="INFO" />
-
-
     <solonProperty name="LOGGER_ROOT_LEVEL" source="solon.logging.logger.root.level"
                    defaultValue="TRACE" />
 
@@ -67,9 +62,9 @@
         </encoder>
     </appender>
 
-    <appender name="Cloud" class="ch.qos.logback.solon.SolonCloudAppender">
+    <appender name="Solon" class="ch.qos.logback.solon.SolonAppender">
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-            <level>${CLOUD_LOG_LEVEL}</level>
+            <level>TRACE</level>
         </filter>
     </appender>
 
@@ -77,7 +72,7 @@
         <level value="${LOGGER_ROOT_LEVEL}" />
         <appender-ref ref="Console"/>
         <appender-ref ref="File"/>
-        <appender-ref ref="Cloud"/>
+        <appender-ref ref="Solon"/>
     </root>
 
 </configuration>

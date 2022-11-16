@@ -12,7 +12,6 @@ import org.apache.logging.log4j.core.config.plugins.PluginFactory;
 import org.apache.logging.log4j.core.layout.PatternLayout;
 import org.apache.logging.log4j.spi.StandardLevel;
 import org.apache.logging.log4j.util.ReadOnlyStringMap;
-import org.noear.solon.logging.AppenderHolder;
 import org.noear.solon.logging.AppenderManager;
 import org.noear.solon.logging.event.Level;
 
@@ -21,28 +20,17 @@ import java.io.Serializable;
 
 /**
  * @author noear
- * @since 1.4
+ * @since 1.10
  */
-@Deprecated
-@Plugin(name="Cloud", category="Core", elementType="appender", printObject=true)
-public final  class SolonCloudAppender extends AbstractAppender {
+@Plugin(name="Solon", category="Core", elementType="appender", printObject=true)
+public final  class SolonAppender extends AbstractAppender {
 
-    protected SolonCloudAppender(String name, Filter filter, Layout<? extends Serializable> layout, boolean ignoreExceptions) {
+    protected SolonAppender(String name, Filter filter, Layout<? extends Serializable> layout, boolean ignoreExceptions) {
         super(name, filter, layout, ignoreExceptions, Property.EMPTY_ARRAY);
     }
 
-    AppenderHolder appender;
-
     @Override
     public void append(LogEvent e) {
-        if (appender == null) {
-            appender = AppenderManager.get("cloud");
-
-            if (appender == null) {
-                return;
-            }
-        }
-
         Level level;
 
         int eLevel = e.getLevel().intLevel();
@@ -69,11 +57,11 @@ public final  class SolonCloudAppender extends AbstractAppender {
                 e.getThreadName(),
                 e.getThrown());
 
-        appender.append(event);
+        AppenderManager.appendNotPrinted(event);
     }
 
     @PluginFactory
-    public static SolonCloudAppender createAppender(
+    public static SolonAppender createAppender(
             @PluginAttribute("name") String name,
             @PluginElement("Layout") Layout<? extends Serializable> layout,
             @PluginElement("Filter") final Filter filter,
@@ -88,6 +76,6 @@ public final  class SolonCloudAppender extends AbstractAppender {
             layout = PatternLayout.createDefaultLayout();
         }
 
-        return new SolonCloudAppender(name, filter, layout, true);
+        return new SolonAppender(name, filter, layout, true);
     }
 }

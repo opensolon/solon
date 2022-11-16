@@ -4,7 +4,6 @@ import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.classic.spi.IThrowableProxy;
 import ch.qos.logback.classic.spi.ThrowableProxyUtil;
 import ch.qos.logback.core.AppenderBase;
-import org.noear.solon.logging.AppenderHolder;
 import org.noear.solon.logging.AppenderManager;
 import org.noear.solon.logging.event.Level;
 import org.noear.solon.logging.event.LogEvent;
@@ -13,23 +12,12 @@ import static ch.qos.logback.classic.Level.*;
 
 /**
  * @author noear
- * @since 1.4
+ * @since 1.10
  */
-@Deprecated
-public class SolonCloudAppender extends AppenderBase<ILoggingEvent> {
-
-    AppenderHolder appender;
+public class SolonAppender extends AppenderBase<ILoggingEvent> {
 
     @Override
     protected void append(ILoggingEvent e) {
-        if (appender == null) {
-            appender = AppenderManager.get("cloud");
-
-            if (appender == null) {
-                return;
-            }
-        }
-
         Level level = Level.INFO;
 
         switch (e.getLevel().toInt()) {
@@ -69,6 +57,6 @@ public class SolonCloudAppender extends AppenderBase<ILoggingEvent> {
                 null);
 
 
-        appender.append(event);
+        AppenderManager.appendNotPrinted(event);
     }
 }

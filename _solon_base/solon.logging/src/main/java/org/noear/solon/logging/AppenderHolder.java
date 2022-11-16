@@ -17,11 +17,20 @@ import java.util.Map;
  * @since 1.3
  */
 public final class AppenderHolder {
-    Appender real;
+    private Appender real;
+    private boolean printed;
 
-    public AppenderHolder(String name, Appender real) {
+    /**
+     * 打印的
+     * */
+    protected boolean printed(){
+        return printed;
+    }
+
+    public AppenderHolder(String name, Appender real, boolean printed) {
         this.real = real;
         this.name = name;
+        this.printed = printed;
 
         //设置名称
         real.setName(name);
