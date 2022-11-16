@@ -20,59 +20,59 @@ import org.slf4j.LoggerFactory;
 public class XxlJobAutoConfig {
     private static final Logger logger = LoggerFactory.getLogger(XxlJobAutoConfig.class);
 
-    @Inject("${xxl.job.admin.addresses}")
+    @Inject(value = "${xxl.job.admin.addresses}", required = false)
     private String adminAddresses;
 
-    @Inject("${xxl.job.accessToken}")
+    @Inject(value = "${xxl.job.accessToken}", required = false)
     private String accessToken;
 
-    @Inject("${xxl.job.executor.appname}")
+    @Inject(value = "${xxl.job.executor.appname}", required = false)
     private String appname;
 
-    @Inject("${xxl.job.executor.address}")
+    @Inject(value = "${xxl.job.executor.address}", required = false)
     private String address;
 
-    @Inject("${xxl.job.executor.ip}")
+    @Inject(value = "${xxl.job.executor.ip}", required = false)
     private String ip;
 
-    @Inject("${xxl.job.executor.port}")
+    @Inject(value = "${xxl.job.executor.port}", required = false)
     private int port;
 
-    @Inject("${xxl.job.executor.logpath}")
+    @Inject(value = "${xxl.job.executor.logpath}", required = false)
     private String logPath;
 
-    @Inject("${xxl.job.executor.logretentiondays}")
+    @Inject(value = "${xxl.job.executor.logretentiondays}", required = false)
     private int logRetentionDays;
 
     @Bean
     public XxlJobExecutor xxlJobExecutor() {
         logger.info(">>>>>>>>>>> xxl-job config init.");
 
-        if(Utils.isEmpty(adminAddresses)){
+        if (Utils.isEmpty(adminAddresses)) {
             adminAddresses = XxlJobProps.instance.getJobServer();
         }
 
-        if(Utils.isEmpty(appname)){
+        if (Utils.isEmpty(appname)) {
             appname = Solon.cfg().appName();
         }
 
-        if(Utils.isEmpty(ip)){
+        if (Utils.isEmpty(ip)) {
             ip = LocalUtils.getLocalAddress();
         }
 
-        if(port < 1000){
+        if (port < 1000) {
             port = 9999;
         }
 
-        if(logRetentionDays < 1){
+        if (logRetentionDays < 1) {
             logRetentionDays = 30;
         }
 
-        if(Utils.isEmpty(logPath)){
+        if (Utils.isEmpty(logPath)) {
             logPath = "/data/applogs/xxl-job/jobhandler";
         }
 
-        if(Utils.isEmpty(accessToken)) {
+        if (Utils.isEmpty(accessToken)) {
             accessToken = XxlJobProps.instance.getPassword();
         }
 
