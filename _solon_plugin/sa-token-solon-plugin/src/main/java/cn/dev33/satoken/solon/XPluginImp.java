@@ -11,6 +11,7 @@ import cn.dev33.satoken.id.SaIdUtil;
 import cn.dev33.satoken.json.SaJsonTemplate;
 import cn.dev33.satoken.listener.SaTokenEventCenter;
 import cn.dev33.satoken.listener.SaTokenListener;
+import cn.dev33.satoken.log.SaLog;
 import cn.dev33.satoken.same.SaSameTemplate;
 import cn.dev33.satoken.sign.SaSignTemplate;
 import cn.dev33.satoken.solon.model.SaContextForSolon;
@@ -30,19 +31,31 @@ public class XPluginImp implements Plugin {
 
     @Override
     public void start(AopContext context) {
-        //集成初始化
+        // Sa-Token 日志输出 Bean
+        context.getBeanAsync(SaLog.class, bean -> {
+            SaManager.setLog(bean);
+        });
 
+
+        //注入其它 Bean
+        context.beanOnloaded(c -> {
+            beanInitDo(c);
+        });
+    }
+
+    private void beanInitDo(AopContext context) {
         // 注入上下文Bean
         SaManager.setSaTokenContext(new SaContextForSolon());
 
         //注入配置Bean
         SaTokenConfig saTokenConfig = Solon.cfg().getBean("sa-token", SaTokenConfig.class);
-        SaManager.setConfig(saTokenConfig);
+        if (saTokenConfig != null) {
+            SaManager.setConfig(saTokenConfig);
+        }
 
         context.getBeanAsync(SaTokenConfig.class, bean -> {
             SaManager.setConfig(bean);
         });
-
 
         // 注入Dao Bean
         context.getBeanAsync(SaTokenDao.class, bean -> {
@@ -55,7 +68,7 @@ public class XPluginImp implements Plugin {
         });
 
         // 注入侦听器 Bean
-        context.subBeansOfType(SaTokenListener.class, sl -> {
+        context.subBean(SaTokenListener.class, sl -> {
             SaTokenEventCenter.registerListener(sl);
         });
 
@@ -80,7 +93,7 @@ public class XPluginImp implements Plugin {
             SaIdUtil.saIdTemplate = bean;
         });
 
-        // Sa-Token Same-Token 模块 Bean //用于替代 SaIdTemplate
+        // Sa-Token Same-Token 模块 Bean
         context.getBeanAsync(SaSameTemplate.class, bean -> {
             SaManager.setSaSameTemplate(bean);
         });

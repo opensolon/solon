@@ -1,5 +1,6 @@
 package webapp;
 
+import cn.dev33.satoken.SaManager;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.SolonBuilder;
@@ -91,6 +92,8 @@ public class TestApp {
             StaticMappings.add("/ext",false, new ExtendStaticRepository());
             StaticMappings.add("/sa-token",new FileStaticRepository("/Users/noear/Downloads/"));
         });
+
+        SaManager.getConfig();
 
         //NamiAttachment.put("lang","en_US");
 

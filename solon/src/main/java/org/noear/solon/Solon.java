@@ -31,13 +31,23 @@ public class Solon {
     private static SolonApp app;
     //全局默认编码
     private static String encoding = "utf-8";
-    private final static AopContext ac = new AopContext();
+    //版本号
+    private static final String version = "1.10.14";
+    //容器上下文
+    private static final AopContext ac = new AopContext();
 
     /**
      * 获取全局的Aop上下文
      */
     public static AopContext context() {
         return ac;
+    }
+
+    /**
+     * 获取框架版本号
+     * */
+    public static String version(){
+        return version;
     }
 
     /**
@@ -120,7 +130,7 @@ public class Solon {
         }
 
         //设置 headless 默认值
-        System.getProperties().putIfAbsent("java.awt.headless","true");
+        System.getProperties().putIfAbsent("java.awt.headless", "true");
 
         //确定PID
         RuntimeMXBean rb = ManagementFactory.getRuntimeMXBean();
@@ -176,7 +186,7 @@ public class Solon {
         }
 
         //启动完成
-        LogUtil.global().info("App: End loading elapsed=" + app.elapsedTimes() + "ms pid=" + pid);
+        LogUtil.global().info("App: End loading elapsed=" + app.elapsedTimes() + "ms pid=" + pid + " v=" + version());
 
         return app;
     }
