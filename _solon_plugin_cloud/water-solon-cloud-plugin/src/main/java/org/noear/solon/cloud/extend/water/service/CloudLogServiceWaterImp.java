@@ -4,14 +4,12 @@ import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.cloud.CloudProps;
-import org.noear.solon.cloud.extend.water.WaterProps;
 import org.noear.solon.cloud.model.Instance;
 import org.noear.solon.cloud.service.CloudLogService;
 import org.noear.solon.logging.event.LogEvent;
 import org.noear.water.dso.LogPipeline;
 import org.noear.water.model.LogM;
 import org.noear.water.utils.Datetime;
-import org.noear.water.utils.IDUtils;
 import org.noear.water.utils.LogHelper;
 
 /**

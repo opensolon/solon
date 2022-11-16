@@ -20,7 +20,7 @@ import org.slf4j.MDC;
 public class Log4j2Test {
 
     @Test
-    public void test1() {
+    public void test1() throws Exception{
         Logger log = LoggerFactory.getLogger(Log4j2Test.class);
 
         MDC.put("traceId", Utils.guid());
@@ -35,5 +35,7 @@ public class Log4j2Test {
         log.warn("你不好 {}!", "world!");
 
         log.error("出错了", new IllegalStateException());
+
+        Thread.sleep(100);
     }
 }

@@ -8,6 +8,9 @@ solon.logging.appender:
     level: INFO
   cloud:
     level: INFO
+  json:
+    level: DEBUG
+    class: "features.AppenderImpl"
 
 
 solon.logging:
@@ -15,6 +18,4 @@ solon.logging:
     "root":
       level: WARN
     "features":
-      level: INFO
-
-
+      level: TRACE

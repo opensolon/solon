@@ -18,7 +18,7 @@ import org.slf4j.MDC;
 public class LogbackTest {
 
     @Test
-    public void test1() {
+    public void test1() throws Exception{
         Logger log = LoggerFactory.getLogger(LogbackTest.class);
 
         MDC.put("traceId", Utils.guid());
@@ -33,5 +33,7 @@ public class LogbackTest {
         log.warn("你不好 {}!", "world!");
 
         log.error("出错了", new IllegalStateException());
+
+        Thread.sleep(100);
     }
 }

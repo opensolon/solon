@@ -15,6 +15,7 @@
 * 插件 core 增加 (@Body NvMap map) ，用于注入 ctx.paramMap()
 * 插件 solon.auth 增加 AuthAdapterSupplier 的 pathPrefix 对 adapter 规则有相同限制效果
 * 插件 solon.web.staticfiles 增加位置印射配置支持
+* 插件 logback-solon-plugin, log4j-solon-plugin 增加自定义 Appender
 
 #### 1.10.13
 * 优化 LogUtil 接口设计

@@ -14,6 +14,7 @@ import static ch.qos.logback.classic.Level.*;
 /**
  * @author noear
  * @since 1.4
+ * @deprecated 1.10
  */
 @Deprecated
 public class SolonCloudAppender extends AppenderBase<ILoggingEvent> {

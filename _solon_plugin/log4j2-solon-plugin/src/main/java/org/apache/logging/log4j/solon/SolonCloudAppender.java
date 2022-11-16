@@ -12,6 +12,7 @@ import org.apache.logging.log4j.core.config.plugins.PluginFactory;
 import org.apache.logging.log4j.core.layout.PatternLayout;
 import org.apache.logging.log4j.spi.StandardLevel;
 import org.apache.logging.log4j.util.ReadOnlyStringMap;
+import org.noear.solon.Utils;
 import org.noear.solon.logging.AppenderHolder;
 import org.noear.solon.logging.AppenderManager;
 import org.noear.solon.logging.event.Level;
@@ -22,6 +23,7 @@ import java.io.Serializable;
 /**
  * @author noear
  * @since 1.4
+ * @deprecated 1.10
  */
 @Deprecated
 @Plugin(name="Cloud", category="Core", elementType="appender", printObject=true)
@@ -58,16 +60,28 @@ public final  class SolonCloudAppender extends AbstractAppender {
             level = Level.ERROR;
         }
 
+        String message = e.getMessage().getFormattedMessage();
+        Throwable throwable = e.getMessage().getThrowable();
+        if (throwable != null) {
+            String errorStr = Utils.throwableToString(throwable);
+
+            if (message.contains("{}")) {
+                message = message.replace("{}", errorStr);
+            } else {
+                message = message + "\n" + errorStr;
+            }
+        }
+
         ReadOnlyStringMap eData = e.getContextData();
 
         org.noear.solon.logging.event.LogEvent event = new org.noear.solon.logging.event.LogEvent(
                 e.getLoggerName(),
                 level,
                 (eData == null ? null : eData.toMap()),
-                e.getMessage(),
+                message,
                 e.getTimeMillis(),
                 e.getThreadName(),
-                e.getThrown());
+                null);
 
         appender.append(event);
     }
