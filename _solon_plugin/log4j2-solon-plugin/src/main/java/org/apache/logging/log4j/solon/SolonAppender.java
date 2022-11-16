@@ -68,7 +68,7 @@ public final  class SolonAppender extends AbstractAppender {
                 message,
                 e.getTimeMillis(),
                 e.getThreadName(),
-                null);
+                throwable);
 
         AppenderManager.appendNotPrinted(event);
     }

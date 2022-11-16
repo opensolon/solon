@@ -81,7 +81,7 @@ public final  class SolonCloudAppender extends AbstractAppender {
                 message,
                 e.getTimeMillis(),
                 e.getThreadName(),
-                null);
+                throwable);
 
         appender.append(event);
     }
