@@ -59,6 +59,10 @@ public class AppenderManager {
         return appenderMap.get(name);
     }
 
+    public static int count(){
+        return appenderValues.size();
+    }
+
     /**
      * 添加日志事件（接收日志事件的入口）
      *

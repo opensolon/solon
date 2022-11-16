@@ -18,6 +18,11 @@ public class SolonAppender extends AppenderBase<ILoggingEvent> {
 
     @Override
     protected void append(ILoggingEvent e) {
+        //solon console 1个，所以最少2个起
+        if (AppenderManager.count() < 2) {
+            return;
+        }
+
         Level level = Level.INFO;
 
         switch (e.getLevel().toInt()) {

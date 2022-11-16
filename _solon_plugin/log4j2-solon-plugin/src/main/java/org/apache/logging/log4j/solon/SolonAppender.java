@@ -32,6 +32,11 @@ public final  class SolonAppender extends AbstractAppender {
 
     @Override
     public void append(LogEvent e) {
+        //solon console 1个，所以最少2个起
+        if (AppenderManager.count() < 2) {
+            return;
+        }
+
         Level level;
 
         int eLevel = e.getLevel().intLevel();
