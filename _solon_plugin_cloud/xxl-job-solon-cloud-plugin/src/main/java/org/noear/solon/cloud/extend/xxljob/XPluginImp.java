@@ -19,24 +19,30 @@ public class XPluginImp implements Plugin {
             return;
         }
 
-        if (XxlJobProps.instance.getJobEnable()) {
-            //注册Job服务
-            CloudManager.register(CloudJobServiceImpl.instance);
-
-            //注册构建器和提取器
-            context.beanExtractorAdd(XxlJob.class, new XxlJobExtractor());
-
-            //构建自动配置
-            context.beanMake(XxlJobAutoConfig.class);
-
-            context.beanOnloaded((ctx) -> {
-                try {
-                    XxlJobExecutor executor = ctx.wrapAndPut(XxlJobExecutor.class).get();
-                    executor.start();
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-            });
+        if (XxlJobProps.instance.getJobEnable() == false) {
+            return;
         }
+
+        ///////////////////////////////////////////////////
+
+        //注册Job服务
+        CloudManager.register(CloudJobServiceImpl.instance);
+
+        //注册构建器和提取器
+        context.beanExtractorAdd(XxlJob.class, new XxlJobExtractor());
+
+        //构建自动配置
+        context.beanMake(XxlJobAutoConfig.class);
+
+        context.beanOnloaded((ctx) -> {
+            try {
+                XxlJobExecutor executor = ctx.getBean(XxlJobExecutor.class);
+                executor.start();
+            } catch (RuntimeException e) {
+                throw e;
+            } catch (Throwable e) {
+                throw new IllegalStateException(e);
+            }
+        });
     }
 }
