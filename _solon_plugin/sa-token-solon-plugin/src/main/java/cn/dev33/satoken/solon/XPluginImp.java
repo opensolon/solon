@@ -11,6 +11,7 @@ import cn.dev33.satoken.id.SaIdUtil;
 import cn.dev33.satoken.json.SaJsonTemplate;
 import cn.dev33.satoken.listener.SaTokenEventCenter;
 import cn.dev33.satoken.listener.SaTokenListener;
+import cn.dev33.satoken.log.SaLog;
 import cn.dev33.satoken.same.SaSameTemplate;
 import cn.dev33.satoken.sign.SaSignTemplate;
 import cn.dev33.satoken.solon.model.SaContextForSolon;
@@ -30,6 +31,19 @@ public class XPluginImp implements Plugin {
 
     @Override
     public void start(AopContext context) {
+        // Sa-Token 日志输出 Bean
+        context.getBeanAsync(SaLog.class, bean -> {
+            SaManager.setLog(bean);
+        });
+
+
+        //注入其它 Bean
+        context.beanOnloaded(c -> {
+            beanInitDo(c);
+        });
+    }
+
+    private void beanInitDo(AopContext context) {
         // 注入上下文Bean
         SaManager.setSaTokenContext(new SaContextForSolon());
 

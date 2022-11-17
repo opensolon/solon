@@ -10,7 +10,6 @@ import org.sagacity.sqltoy.dao.SqlToyLazyDao;
 import org.sagacity.sqltoy.model.Page;
 import org.sagacity.sqltoy.utils.StringUtil;
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
@@ -107,7 +106,7 @@ public class ProxyClassBuilder {
         //有任意空白都认为不是ID
         if (spaceIndex == -1) {
             try {
-                SqlToyConfig cfg = context.getScriptLoader().getSqlConfig(sqlIdOrSql, null, "");
+                SqlToyConfig cfg = context.getScriptLoader().getSqlConfig(sqlIdOrSql, null, "",false);
                 if (cfg == null) {
                     throw new IllegalArgumentException("请检查 sqlId \"" + sqlIdOrSql + "\" 是否存在!");
                 }
