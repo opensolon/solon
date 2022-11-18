@@ -11,14 +11,14 @@
 * 增加 更多友好的异常分类???
 
 #### 1.10.14
-* 插件 core 增加 (@Body NvMap map) ，用于注入 ctx.paramMap()
 * 插件 solon.auth 增加 AuthAdapterSupplier 的 pathPrefix 对 adapter 规则有相同限制效果
 * 插件 solon.web.staticfiles 增加位置印射配置支持
 * 插件 logback-solon-plugin, log4j-solon-plugin 增加自定义 Appender
 * 插件 sa-token-solon-plugin 允许没有 sa-token 配置
 * 修复 xxl-job-solon-cloud-plugin 没配置时会出错的问题
 * 增加 服务线程池公共配置
-* 增加 @Cookie 注解，用于简化获取 cookie
+* 增加 @Body Map<String,String> paramMap 支持，用于注入 ctx.paramMap()
+* 增加 @Cookie("Token") String token 支持，用于注入 ctx.cookie()
 * 升级 sa-token 为 1.33.0
 * 长级 sqltoy 为 5.2.21
 
