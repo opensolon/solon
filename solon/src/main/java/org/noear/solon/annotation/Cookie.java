@@ -15,12 +15,12 @@ import java.lang.annotation.*;
 @Documented
 public @interface Cookie {
     /**
-     * 参数名
+     * 名字
      * */
     @Alias("name")
     String value() default "";
     /**
-     * 参数名
+     * 名字
      * */
     @Alias("value")
     String name() default "";
@@ -28,7 +28,6 @@ public @interface Cookie {
      * 必须的(只做标识，不做检查)
      * */
     boolean required() default false;
-
     /**
      * 默认值
      * */

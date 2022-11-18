@@ -25,6 +25,11 @@ public class ParamController {
         return token;
     }
 
+    @Mapping("cookie")
+    public String test_cookie(@Cookie("Test-Token") String token) throws IOException {
+        return token;
+    }
+
     @Mapping("int")
     public Object test_int(int num) throws IOException {
         return num; //没有传入时，默认为0

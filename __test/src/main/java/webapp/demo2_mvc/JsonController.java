@@ -66,6 +66,15 @@ public class JsonController {
         }
     }
 
+    @Mapping("/cookie2")
+    public Integer cookie2(@Cookie("p") String p) {
+        if (Utils.isEmpty(p)) {
+            return 0;
+        } else {
+            return p.length();
+        }
+    }
+
     @Mapping("/cookie")
     public Integer cookie(Context ctx) {
         String p = ctx.cookie("p");

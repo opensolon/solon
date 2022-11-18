@@ -171,6 +171,15 @@ public class HttpTest extends HttpTestBase {
     }
 
     @Test
+    public void test2d_cookie() throws IOException {
+        Map<String, String> cookieMap = new HashMap<>();
+        cookieMap.put("Test-Token", "demo");
+
+        assert path("/demo2/param/cookie").cookies(cookieMap).get().equals("demo");
+        assert path("/demo2/param/cookie").cookies(cookieMap).data("test", "test").post().equals("demo");
+    }
+
+    @Test
     public void test2d_2() throws IOException {
         assert path("/demo2/param/body").bodyTxt("name=xxx").post().equals("name=xxx");
         assert path("/demo2/param/body?name=xxx").get().equals("");

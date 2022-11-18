@@ -6,10 +6,7 @@ import org.noear.solon.test.HttpTestBase;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 
 /**
  * @author noear 2020/12/24 created

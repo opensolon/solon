@@ -8,19 +8,19 @@ import java.lang.annotation.*;
  * 请求 Header（主要修饰参数，很少用到）
  *
  * @author noear
- * @since 1.0
+ * @since 1.6
  * */
 @Target({ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface Header {
     /**
-     * 参数名
+     * 名字
      * */
     @Alias("name")
     String value() default "";
     /**
-     * 参数名
+     * 名字
      * */
     @Alias("value")
     String name() default "";
@@ -28,7 +28,6 @@ public @interface Header {
      * 必须的(只做标识，不做检查)
      * */
     boolean required() default false;
-
     /**
      * 默认值
      * */
