@@ -46,6 +46,8 @@ public class ActionExecutorDefault implements ActionExecutor {
 
     /**
      * 构建执行参数
+     *
+     * @param ctx   上下文
      */
     protected List<Object> buildArgs(Context ctx, ParamWrap[] pSet) throws Exception {
         List<Object> args = new ArrayList<>(pSet.length);
@@ -151,15 +153,9 @@ public class ActionExecutorDefault implements ActionExecutor {
      * 尝试将值按类型转换
      */
     protected Object changeValue(Context ctx, ParamWrap p, int pi, Class<?> pt, Object bodyObj) throws Exception {
-        String pn = p.getName();  //参数名
-        String pv = null;         //参数值
-        Object tv = null;         //目标值
-
-        if (p.requireHeader()) {
-            pv = ctx.header(pn);
-        } else {
-            pv = ctx.param(pn);
-        }
+        String pn = p.getName();        //参数名
+        String pv = p.getValue(ctx);    //参数值
+        Object tv = null;               //目标值
 
         if (pv == null) {
             pv = p.defaultValue();

@@ -5,15 +5,15 @@ import org.noear.solon.core.Constants;
 import java.lang.annotation.*;
 
 /**
- * 请求 Header（主要修饰参数，很少用到）
+ * 请求 Cookie（主要修饰参数，很少用到）
  *
  * @author noear
- * @since 1.0
+ * @since 1.10
  * */
 @Target({ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface Header {
+public @interface Cookie {
     /**
      * 参数名
      * */
