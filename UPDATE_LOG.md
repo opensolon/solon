@@ -8,7 +8,6 @@
 * 新增 shiro-solon-plugin 插件
 * 新增 thrift-solon-cloud-plugin 插件
 * 调整 运行完成后，提供未注入的对象???
-* 调整 增加线程池公共配置???
 * 增加 更多友好的异常分类???
 
 #### 1.10.14
@@ -18,6 +17,8 @@
 * 插件 logback-solon-plugin, log4j-solon-plugin 增加自定义 Appender
 * 插件 sa-token-solon-plugin 允许没有 sa-token 配置
 * 修复 xxl-job-solon-cloud-plugin 没配置时会出错的问题
+* 增加 服务线程池公共配置
+* 增加 @Cookie 注解，用于简化获取 cookie
 * 升级 sa-token 为 1.33.0
 * 长级 sqltoy 为 5.2.21
 
