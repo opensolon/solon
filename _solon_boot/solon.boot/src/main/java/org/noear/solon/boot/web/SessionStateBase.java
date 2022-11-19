@@ -5,7 +5,6 @@ import org.noear.solon.boot.ServerConstants;
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.SessionState;
-import org.noear.solon.core.util.LogUtil;
 
 /**
  * 会话状态基类
@@ -41,8 +40,7 @@ public abstract class SessionStateBase implements SessionState {
     }
 
     protected void cookieSet(String key, String val) {
-        if (ctx.uri() == null) {
-            LogUtil.global().warn("The cookie set failed: url=" + ctx.url());
+        if (ctx.url() == null) {
             return;
         }
 

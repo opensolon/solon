@@ -19,6 +19,7 @@
 * 增加 服务线程池公共配置
 * 增加 @Body Map<String,String> paramMap 支持，用于注入 ctx.paramMap()
 * 增加 @Cookie("Token") String token 支持，用于注入 ctx.cookie()
+* 调整 SessionStateBase 对 cookieSet 的处理
 * 升级 sa-token 为 1.33.0
 * 长级 sqltoy 为 5.2.21
 
