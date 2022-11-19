@@ -16,6 +16,7 @@ public class XPluginImp implements Plugin {
         if (Bridge.sessionStateFactory().priority() >= JedisSessionStateFactory.SESSION_STATE_PRIORITY) {
             return;
         }
+
         /*
          *
          * server.session.state.redis:
@@ -25,7 +26,6 @@ public class XPluginImp implements Plugin {
          * maxTotal: 200
          *
          * */
-        SessionProp.init();
 
         if (JedisSessionStateFactory.getInstance().redisClient() == null) {
             return;

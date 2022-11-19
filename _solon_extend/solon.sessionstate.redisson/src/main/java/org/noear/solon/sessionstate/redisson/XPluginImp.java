@@ -25,7 +25,6 @@ public class XPluginImp implements Plugin {
          * maxTotal: 200
          *
          * */
-        SessionProp.init();
 
         if (RedissonSessionStateFactory.getInstance().redisClient() == null) {
             return;
