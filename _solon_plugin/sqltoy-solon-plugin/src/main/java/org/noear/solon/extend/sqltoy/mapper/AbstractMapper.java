@@ -3,8 +3,6 @@ package org.noear.solon.extend.sqltoy.mapper;
 import org.noear.solon.core.util.ConvertUtil;
 import org.sagacity.sqltoy.dao.SqlToyLazyDao;
 
-import javax.sql.DataSource;
-
 /**
  * @author 夜の孤城
  * @since 1.5
