@@ -11,7 +11,7 @@
 * 增加 更多友好的异常分类???
 
 #### 1.11.1
-* 增加 Props::loadIfAbsent
+* 增加 Props::loadAddIfAbsent
 
 #### 1.11.0
 * 清理 xxx-solon-plugin 的 solon cloud 插件包（正试由 xxx-solon-cloud-plugin 替代）
@@ -20,8 +20,8 @@
 * 插件 logback-solon-plugin, log4j-solon-plugin 增加自定义 Appender
 * 插件 sa-token-solon-plugin 允许没有 sa-token 配置
 * 修复 xxl-job-solon-cloud-plugin 没配置时会出错的问题
-* 增加 @Body Map<String,String> paramMap 支持，用于注入 ctx.paramMap()
-* 增加 @Cookie("Token") String token 支持，用于注入 ctx.cookie()
+* 增加 @Body Map<String,String> paramMap 注入方式支持，用于注入 ctx.paramMap()
+* 增加 @Cookie("Token") String token 注入方式支持，用于注入 ctx.cookie()
 * 调整 SessionStateBase 对 cookieSet 的处理
 * 升级 sa-token 为 1.33.0
 * 长级 sqltoy 为 5.2.21
