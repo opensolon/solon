@@ -2,6 +2,12 @@ package org.noear.solon.boot.web;
 
 import org.noear.solon.Solon;
 
+/**
+ * 会话状态基本属性
+ *
+ * @author noear
+ * @since 1.10
+ */
 public class SessionProp {
     public final static int session_timeout;
     public final static String session_state_domain;
