@@ -20,6 +20,7 @@ import java.util.function.Function;
  * */
 public class Props extends Properties {
     private ClassLoader classLoader;
+
     public Props() {
         super();
     }
@@ -33,7 +34,7 @@ public class Props extends Properties {
         super(defaults);
     }
 
-    public Props(Map<String,String> data) {
+    public Props(Map<String, String> data) {
         super();
         putAll(data);
     }
@@ -199,7 +200,7 @@ public class Props extends Properties {
      * @param keyStarts key 的开始字符
      */
     public List<String> getList(String keyStarts) {
-        Map<String,String> sortMap = new TreeMap<>();
+        Map<String, String> sortMap = new TreeMap<>();
         doFind(keyStarts + "[", (k, v) -> {
             sortMap.put(k, v);
         });
@@ -313,8 +314,44 @@ public class Props extends Properties {
         }
     }
 
+    /**
+     * 加载配置（用于扩展加载）
+     */
     public void loadAdd(Properties props) {
-        loadAddDo(props, false);
+        loadAddDo(props, false, false);
+    }
+
+
+    /**
+     * 加载配置（用于扩展加载）
+     *
+     * @param url 配置地址
+     */
+    public void loadAddIfAbsent(String url) {
+        if (classLoader == null) {
+            loadAddIfAbsent(Utils.getResource(url));
+        } else {
+            loadAddIfAbsent(Utils.getResource(classLoader, url));
+        }
+    }
+
+    /**
+     * 加载配置（用于扩展加载）
+     *
+     * @param url 配置地址
+     */
+    public void loadAddIfAbsent(URL url) {
+        if (url != null) {
+            Properties props = Utils.loadProperties(url);
+            loadAddIfAbsent(props);
+        }
+    }
+
+    /**
+     * 加载配置（用于扩展加载）
+     */
+    public void loadAddIfAbsent(Properties props) {
+        loadAddDo(props, false, true);
     }
 
     /**
@@ -322,11 +359,18 @@ public class Props extends Properties {
      *
      * @param props 配置地址
      */
-    protected void loadAddDo(Properties props, boolean toSystem) {
+    protected void loadAddDo(Properties props, boolean toSystem, boolean addIfAbsent) {
         if (props != null) {
             for (Map.Entry<Object, Object> kv : props.entrySet()) {
                 Object k1 = kv.getKey();
                 Object v1 = kv.getValue();
+
+                if (addIfAbsent) {
+                    //如果已存在，则不盖掉
+                    if (containsKey(k1)) {
+                        continue;
+                    }
+                }
 
                 if (k1 instanceof String) {
                     String key = (String) k1;

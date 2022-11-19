@@ -228,7 +228,7 @@ public final class SolonProps extends Props {
      */
     @Override
     public void loadAdd(Properties props) {
-        loadAddDo(props, true);
+        loadAddDo(props, true, false);
     }
 
     /**
