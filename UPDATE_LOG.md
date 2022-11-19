@@ -10,6 +10,9 @@
 * 调整 运行完成后，提供未注入的对象???
 * 增加 更多友好的异常分类???
 
+#### 1.11.1
+* 增加 Props::loadIfAbsent
+
 #### 1.11.0
 * 清理 xxx-solon-plugin 的 solon cloud 插件包（正试由 xxx-solon-cloud-plugin 替代）
 * 插件 solon.auth 增加 AuthAdapterSupplier 的 pathPrefix 对 adapter 规则有相同限制效果
