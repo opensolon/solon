@@ -107,7 +107,7 @@ public class ProxyClassBuilder {
         if (spaceIndex == -1) {
             try {
                 //todo: 参数 blankToNull 是最近新加的（true 兼容旧的；false 更原生）；
-                SqlToyConfig cfg = context.getScriptLoader().getSqlConfig(sqlIdOrSql, null, "", false);
+                SqlToyConfig cfg = context.getScriptLoader().getSqlConfig(sqlIdOrSql, null, "", true);
                 if (cfg == null) {
                     throw new IllegalArgumentException("请检查 sqlId \"" + sqlIdOrSql + "\" 是否存在!");
                 }
