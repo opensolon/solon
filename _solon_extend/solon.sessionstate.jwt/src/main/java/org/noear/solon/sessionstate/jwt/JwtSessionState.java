@@ -5,6 +5,7 @@ import io.jsonwebtoken.impl.DefaultClaims;
 import org.noear.solon.Utils;
 import org.noear.solon.boot.web.SessionStateBase;
 import org.noear.solon.core.handle.Context;
+import org.noear.solon.core.util.LogUtil;
 
 import java.util.Collection;
 import java.util.ServiceConfigurationError;
@@ -45,6 +46,11 @@ public class JwtSessionState extends SessionStateBase {
     }
     @Override
     protected void cookieSet(String key, String val) {
+        if (ctx.uri() == null) {
+            LogUtil.global().warn("The cookie set failed: url=" + ctx.url());
+            return;
+        }
+
         if (SessionProp.session_state_domain_auto) {
             if (_domain != null) {
                 if (ctx.uri().getHost().indexOf(_domain) < 0) { //非安全域
