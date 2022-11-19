@@ -89,7 +89,7 @@ public class ProxyClassBuilder {
             source.append(p.toString());
         }
         source.append("){\n\t");
-        if(retType== SqlToyLazyDao.class){
+        if (retType == SqlToyLazyDao.class) {
             source.append("return dao;\n");
             source.append("}\n");
             return;
@@ -106,7 +106,8 @@ public class ProxyClassBuilder {
         //有任意空白都认为不是ID
         if (spaceIndex == -1) {
             try {
-                SqlToyConfig cfg = context.getScriptLoader().getSqlConfig(sqlIdOrSql, null, "",false);
+                //todo: 参数 blankToNull 是最近新加的（true 兼容旧的；false 更原生）；
+                SqlToyConfig cfg = context.getScriptLoader().getSqlConfig(sqlIdOrSql, null, "", false);
                 if (cfg == null) {
                     throw new IllegalArgumentException("请检查 sqlId \"" + sqlIdOrSql + "\" 是否存在!");
                 }
@@ -133,16 +134,16 @@ public class ProxyClassBuilder {
 
         Map<String, Integer> namedParamIdxMap = new HashMap<>();
 
-        boolean hasNamedparam=false;
+        boolean hasNamedparam = false;
         for (int i = 0; i < paramTypes.length; i++) {
             Param param = methodParameters[i].getAnnotation(Param.class);
-            if(param!=null){
-                hasNamedparam=true;
+            if (param != null) {
+                hasNamedparam = true;
                 break;
             }
             Class paramType = paramTypes[i];
-            if(isPrimitive(paramType)||List.class.isAssignableFrom(paramType)||paramType.isArray()||paramType.isEnum()){
-                hasNamedparam=true;
+            if (isPrimitive(paramType) || List.class.isAssignableFrom(paramType) || paramType.isArray() || paramType.isEnum()) {
+                hasNamedparam = true;
                 break;
             }
         }
@@ -164,8 +165,8 @@ public class ProxyClassBuilder {
                     paramName = methodParameters[i].getName();
                 }
                 namedParamIdxMap.put(paramName, i);
-            } else if(hasNamedparam){
-                if(!Page.class.isAssignableFrom(paramType)){
+            } else if (hasNamedparam) {
+                if (!Page.class.isAssignableFrom(paramType)) {
                     namedParamIdxMap.put(methodParameters[i].getName(), i);
                 }
             }
@@ -354,6 +355,7 @@ public class ProxyClassBuilder {
 
     /**
      * 获取范型类型
+     *
      * @param method
      * @return
      */
@@ -366,6 +368,7 @@ public class ProxyClassBuilder {
             return null;
         }
     }
+
     private static final Set<Class> primitiveTypes = new HashSet(Arrays.asList(new Class[]{
             String.class,
             Date.class,
