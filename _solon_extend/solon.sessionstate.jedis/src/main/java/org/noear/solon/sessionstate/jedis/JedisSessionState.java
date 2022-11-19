@@ -4,7 +4,6 @@ import org.noear.redisx.RedisClient;
 import org.noear.solon.Utils;
 import org.noear.solon.boot.web.SessionStateBase;
 import org.noear.solon.core.handle.Context;
-import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.data.cache.Serializer;
 
 import java.util.Collection;
@@ -13,55 +12,14 @@ import java.util.Collection;
  * 它会是个单例，不能有上下文数据
  * */
 public class JedisSessionState extends SessionStateBase {
-    private static int _expiry = 60 * 60 * 2;
-    private static String _domain = null;
 
-    static {
-        if (SessionProp.session_timeout > 0) {
-            _expiry = SessionProp.session_timeout;
-        }
-
-        if (SessionProp.session_state_domain != null) {
-            _domain = SessionProp.session_state_domain;
-        }
-    }
-
-
-    private Context ctx;
     private RedisClient redisClient;
     private Serializer<String> serializer;
 
     protected JedisSessionState(Context ctx) {
-        this.ctx = ctx;
+        super(ctx);
         this.serializer = JavabinSerializer.instance;
         this.redisClient = JedisSessionStateFactory.getInstance().redisClient();
-    }
-
-    //
-    // cookies control
-    //
-    @Override
-    protected String cookieGet(String key) {
-        return ctx.cookie(key);
-    }
-
-    @Override
-    protected void cookieSet(String key, String val) {
-        if (ctx.uri() == null) {
-            LogUtil.global().warn("The cookie set failed: url=" + ctx.url());
-            return;
-        }
-
-        if (SessionProp.session_state_domain_auto) {
-            if (_domain != null) {
-                if (ctx.uri().getHost().indexOf(_domain) < 0) { //非安全域
-                    ctx.cookieSet(key, val, null, _expiry);
-                    return;
-                }
-            }
-        }
-
-        ctx.cookieSet(key, val, _domain, _expiry);
     }
 
     //

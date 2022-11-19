@@ -5,7 +5,6 @@ import io.jsonwebtoken.impl.DefaultClaims;
 import org.noear.solon.Utils;
 import org.noear.solon.boot.web.SessionStateBase;
 import org.noear.solon.core.handle.Context;
-import org.noear.solon.core.util.LogUtil;
 
 import java.util.Collection;
 import java.util.ServiceConfigurationError;
@@ -15,54 +14,10 @@ import java.util.ServiceConfigurationError;
  * @since 1.3
  */
 public class JwtSessionState extends SessionStateBase {
-    /**
-     * 单位：秒
-     * */
-    private static int _expiry = 60 * 60 * 2;
-    private static String _domain = null;
-
-    static {
-        if (SessionProp.session_timeout > 0) {
-            _expiry = SessionProp.session_timeout;
-        }
-
-        if (SessionProp.session_state_domain != null) {
-            _domain = SessionProp.session_state_domain;
-        }
-    }
-
-    private Context ctx;
 
     protected JwtSessionState(Context ctx) {
-        this.ctx = ctx;
+        super(ctx);
     }
-
-    //
-    // cookies control
-    //
-    @Override
-    protected String cookieGet(String key) {
-        return ctx.cookie(key);
-    }
-    @Override
-    protected void cookieSet(String key, String val) {
-        if (ctx.uri() == null) {
-            LogUtil.global().warn("The cookie set failed: url=" + ctx.url());
-            return;
-        }
-
-        if (SessionProp.session_state_domain_auto) {
-            if (_domain != null) {
-                if (ctx.uri().getHost().indexOf(_domain) < 0) { //非安全域
-                    ctx.cookieSet(key, val, null, _expiry);
-                    return;
-                }
-            }
-        }
-
-        ctx.cookieSet(key, val, _domain, _expiry);
-    }
-
 
     //
     // session control
