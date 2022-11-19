@@ -29,7 +29,6 @@
 * 修复 DownloadedFile 输出，没有关流的问题
 * 调整 部分插件的异步处理
 
-
 #### 1.10.12
 * 清理 xxx-solon-plugin 的 solon cloud 插件包（正试由 xxx-solon-cloud-plugin 替代）
 * 清理 solon.aspect 插件的弃用包，弃用包给新手造成了迷惑
