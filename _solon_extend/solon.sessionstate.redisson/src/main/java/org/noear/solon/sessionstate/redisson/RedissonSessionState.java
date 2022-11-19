@@ -3,6 +3,7 @@ package org.noear.solon.sessionstate.redisson;
 import org.noear.solon.Utils;
 import org.noear.solon.boot.web.SessionStateBase;
 import org.noear.solon.core.handle.Context;
+import org.noear.solon.core.util.LogUtil;
 import org.redisson.api.RMapCache;
 import org.redisson.api.RedissonClient;
 
@@ -13,8 +14,8 @@ import java.util.concurrent.TimeUnit;
  * 它会是个单例，不能有上下文数据
  * */
 public class RedissonSessionState extends SessionStateBase {
-    private static int _expiry =  60 * 60 * 2;
-    private static String _domain=null;
+    private static int _expiry = 60 * 60 * 2;
+    private static String _domain = null;
 
     static {
         if (SessionProp.session_timeout > 0) {
@@ -29,7 +30,8 @@ public class RedissonSessionState extends SessionStateBase {
 
     private Context ctx;
     private RedissonClient redisClient;
-    protected RedissonSessionState(Context ctx){
+
+    protected RedissonSessionState(Context ctx) {
         this.ctx = ctx;
         this.redisClient = RedissonSessionStateFactory.getInstance().redisClient();
     }
@@ -38,14 +40,20 @@ public class RedissonSessionState extends SessionStateBase {
     // cookies control
     //
     @Override
-    protected  String cookieGet(String key){
+    protected String cookieGet(String key) {
         return ctx.cookie(key);
     }
+
     @Override
-    protected  void   cookieSet(String key, String val) {
+    protected void cookieSet(String key, String val) {
+        if (ctx.uri() == null) {
+            LogUtil.global().warn("The cookie set failed: url=" + ctx.url());
+            return;
+        }
+
         if (SessionProp.session_state_domain_auto) {
             if (_domain != null) {
-                if(ctx.uri().getHost().indexOf(_domain) < 0){ //非安全域
+                if (ctx.uri().getHost().indexOf(_domain) < 0) { //非安全域
                     ctx.cookieSet(key, val, null, _expiry);
                     return;
                 }
@@ -61,11 +69,11 @@ public class RedissonSessionState extends SessionStateBase {
 
     @Override
     public String sessionId() {
-        String _sessionId = ctx.attr("sessionId",null);
+        String _sessionId = ctx.attr("sessionId", null);
 
-        if(_sessionId == null){
+        if (_sessionId == null) {
             _sessionId = sessionIdGet(false);
-            ctx.attrSet("sessionId",_sessionId);
+            ctx.attrSet("sessionId", _sessionId);
         }
 
         return _sessionId;
