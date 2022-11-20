@@ -6,7 +6,7 @@
 
     <groupId>org.noear</groupId>
     <artifactId>solon-parent</artifactId>
-    <version>1.11.0</version>
+    <version>1.11.1-M1</version>
     <packaging>pom</packaging>
 
     <name>${project.artifactId}</name>
@@ -19,7 +19,7 @@
 
         <java.ver>1.8</java.ver>
 
-        <solon.ver>1.11.0</solon.ver>
+        <solon.ver>1.11.1-M1</solon.ver>
         <snack3.ver>3.2.46</snack3.ver>
         <weed3.ver>3.4.31</weed3.ver>
         <wood.ver>1.0.2</wood.ver>
