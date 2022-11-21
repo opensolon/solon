@@ -12,6 +12,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * 云端配置（本地摸拟实现）
+ *
  * @author noear
  * @since 1.10
  */

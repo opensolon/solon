@@ -10,6 +10,8 @@ import java.util.Locale;
 import java.util.Properties;
 
 /**
+ * 云端国际化（本地摸拟实现）
+ *
  * @author noear
  * @since 1.10
  */

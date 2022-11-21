@@ -11,6 +11,8 @@ import org.noear.solon.logging.utils.TagsMDC;
 import java.text.ParseException;
 
 /**
+ * 云端定时任务（本地摸拟实现）
+ *
  * @author noear
  * @since 1.10
  */

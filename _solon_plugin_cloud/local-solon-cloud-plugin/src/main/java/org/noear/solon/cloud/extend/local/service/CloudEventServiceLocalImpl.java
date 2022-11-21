@@ -14,6 +14,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
+ * 云端事件（本地摸拟实现）
+ *
  * @author noear
  * @since 1.10
  */
