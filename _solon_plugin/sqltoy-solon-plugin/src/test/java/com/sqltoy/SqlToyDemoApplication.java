@@ -33,15 +33,15 @@ public class SqlToyDemoApplication {
   fruitOrderVO.setSalePrice(new BigDecimal(1));
   fruitOrderVO.setTotalAmt(new BigDecimal(1));
 
-  Page<FruitOrderVO> page = service.searchFruitOrder(new Page(), fruitOrderVO);
-  System.out.println(page);
+//  Page<FruitOrderVO> page = service.searchFruitOrder(new Page(), fruitOrderVO);
+//  System.out.println(page);
 
   SqlToyLazyDao dao = DbManager.getDao(Solon.context().getBean(DataSource.class));
-  FruitMapper fm = DbManager.getMapper(Solon.context().getBean(DataSource.class), FruitMapper.class);
-  System.out.println(fm.countOrder(null).getRows());
-  FruitOrderVO fu = new FruitOrderVO();
-  fu.setFruitName("test");
-  System.out.println(fm.countOrder1(fu).getRows());
+  //FruitMapper fm = DbManager.getMapper(Solon.context().getBean(DataSource.class), FruitMapper.class);
+  //System.out.println(fm.countOrder(null).getRows());
+  ///FruitOrderVO fu = new FruitOrderVO();
+  ///fu.setFruitName("test");
+  //System.out.println(fm.countOrder1(fu).getRows());
 //  MongoDatabase db=Aop.get(MongoDatabase.class);
 //  //db.createCollection("fact_trans_details");
 //  Document doc=new Document("_id", new Random().nextInt(100));
