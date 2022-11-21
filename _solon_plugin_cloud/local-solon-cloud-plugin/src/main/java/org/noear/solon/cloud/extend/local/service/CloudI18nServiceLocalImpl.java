@@ -28,17 +28,28 @@ public class CloudI18nServiceLocalImpl implements CloudI18nService {
         }
 
 
-        String i18nKey = String.format(I18N_KEY_FORMAT, group, packName, locale.toString());
+        String bundleName;
+        Properties tmp;
 
-        Properties i18nProp = Utils.loadProperties(i18nKey);
 
-        Pack tmp = new Pack(locale);
-        tmp.setData(new Props());
 
-        if (i18nProp != null) {
-            tmp.getData().putAll(i18nProp);
+        Pack pack = new Pack(locale);
+        pack.setData(new Props());
+
+        bundleName = String.format(I18N_KEY_FORMAT, group, packName, locale.getLanguage());
+        tmp = Utils.loadProperties(bundleName);
+
+        if (tmp != null) {
+            pack.getData().putAll(tmp);
         }
 
-        return tmp;
+        bundleName = String.format(I18N_KEY_FORMAT, group, packName, locale);
+        tmp = Utils.loadProperties(bundleName);
+
+        if (tmp != null) {
+            pack.getData().putAll(tmp);
+        }
+
+        return pack;
     }
 }
