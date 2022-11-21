@@ -1,6 +1,5 @@
 package org.noear.solon.cloud.extend.local.service;
 
-import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudEventHandler;
 import org.noear.solon.cloud.annotation.EventLevel;
@@ -76,13 +75,23 @@ public class CloudEventServiceLocalImpl implements CloudEventServicePlus {
         observerManger.add(topicNew, level, group, topic, observer);
     }
 
+    private String channel;
+    private String group;
+
     @Override
     public String getChannel() {
-        return "local";
+        if (channel == null) {
+            channel = LocalProps.instance.getEventChannel();
+        }
+        return channel;
     }
 
     @Override
     public String getGroup() {
-        return Solon.cfg().appGroup();
+        if (group == null) {
+            group = LocalProps.instance.getEventGroup();
+        }
+
+        return group;
     }
 }

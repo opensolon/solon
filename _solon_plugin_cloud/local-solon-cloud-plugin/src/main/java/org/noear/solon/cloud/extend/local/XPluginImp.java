@@ -2,6 +2,7 @@ package org.noear.solon.cloud.extend.local;
 
 import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.cloud.CloudManager;
+import org.noear.solon.cloud.extend.local.impl.job.JobManager;
 import org.noear.solon.cloud.extend.local.service.*;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
@@ -33,6 +34,12 @@ public class XPluginImp implements Plugin {
 
         if (LocalProps.instance.getJobEnable()) {
             CloudManager.register(new CloudJobServiceLocalImpl());
+
+            context.beanOnloaded(c->{
+                if(JobManager.count() > 0){
+                    JobManager.start();
+                }
+            });
         }
 
         if (LocalProps.instance.getListEnable()) {
@@ -42,5 +49,10 @@ public class XPluginImp implements Plugin {
         if (LocalProps.instance.getMetricEnable()) {
             CloudManager.register(new CloudMetricServiceLocalImpl());
         }
+    }
+
+    @Override
+    public void stop() throws Throwable {
+        JobManager.stop();
     }
 }

@@ -97,6 +97,13 @@ public class JobManager {
     }
 
     /**
+     * 任务数量
+     * */
+    public static int count(){
+        return jobEntityMap.size();
+    }
+
+    /**
      * 移除计划任务
      *
      * @param name 任务名称
