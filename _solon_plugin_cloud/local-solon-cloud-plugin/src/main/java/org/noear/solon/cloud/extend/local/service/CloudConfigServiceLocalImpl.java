@@ -31,6 +31,7 @@ public class CloudConfigServiceLocalImpl implements CloudConfigService {
             }
         }
 
+
         String configKey = String.format(CONFIG_KEY_FORMAT, group, name);
         Config configVal = configMap.get(configKey);
 
