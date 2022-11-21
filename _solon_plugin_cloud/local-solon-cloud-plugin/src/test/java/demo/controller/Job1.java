@@ -15,7 +15,9 @@ import java.util.Date;
 public class Job1 implements CloudJobHandler {
     @Override
     public void handle(Context ctx) throws Throwable {
-        System.out.println("定时任务：job1:" + new Date());
+        System.out.println("云端定时任务：job1:" + new Date());
+
+        //发送云端事件
         CloudClient.event().publish(new Event("demo.event1", "test"));
     }
 }

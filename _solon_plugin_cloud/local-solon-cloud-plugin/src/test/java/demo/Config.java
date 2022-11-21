@@ -15,7 +15,7 @@ import java.util.Properties;
 public class Config {
     @Bean
     public void init1(@CloudConfig("demo-db") Properties props) {
-        System.out.println("配置服务直接注入的：" + props);
+        System.out.println("云端配置服务直接注入的：" + props);
     }
 
     //将 i18n 切换为云端服务

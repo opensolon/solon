@@ -11,7 +11,7 @@ import org.noear.solon.cloud.model.Event;
 public class Event1 implements CloudEventHandler {
     @Override
     public boolean handle(Event event) throws Throwable {
-        System.out.println("事件打印: " + event);
+        System.out.println("云端事件打印: " + event);
         return true;
     }
 }
