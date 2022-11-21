@@ -20,6 +20,10 @@ public class XPluginImp implements Plugin {
             CloudManager.register(new CloudEventServiceLocalImpl());
         }
 
+        if (LocalProps.instance.getI18nEnable()) {
+            CloudManager.register(new CloudI18nServiceLocalImpl());
+        }
+
         if (LocalProps.instance.getJobEnable()) {
             CloudManager.register(new CloudJobServiceLocalImpl());
         }

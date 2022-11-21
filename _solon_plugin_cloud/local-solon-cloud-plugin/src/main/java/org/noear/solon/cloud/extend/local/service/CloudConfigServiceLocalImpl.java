@@ -1,5 +1,6 @@
 package org.noear.solon.cloud.extend.local.service;
 
+import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudConfigHandler;
 import org.noear.solon.cloud.exception.CloudConfigException;
@@ -15,11 +16,22 @@ import java.util.Map;
  * @since 1.10
  */
 public class CloudConfigServiceLocalImpl implements CloudConfigService {
+    static final String DEFAULT_GROUP = "DEFAULT_GROUP";
+    static final String CONFIG_KEY_FORMAT = "config@%s:%s";
+
     Map<String, Config> configMap = new HashMap<>();
 
     @Override
     public Config pull(String group, String name) {
-        String configKey = String.format("config:%s:%s", group, name);
+        if (Utils.isEmpty(group)) {
+            group = Solon.cfg().appGroup();
+
+            if (Utils.isEmpty(group)) {
+                group = DEFAULT_GROUP;
+            }
+        }
+
+        String configKey = String.format(CONFIG_KEY_FORMAT, group, name);
         Config configVal = configMap.get(configKey);
 
         if (configVal == null) {
@@ -28,7 +40,7 @@ public class CloudConfigServiceLocalImpl implements CloudConfigService {
 
                 if (configVal == null) {
                     try {
-                        String resourceKey = "META-INF/cloud/" + configKey;
+                        String resourceKey = "META-INF/solon-cloud/" + configKey;
                         String value = Utils.getResourceAsString(resourceKey);
 
                         configVal = new Config(group, name, value, 0);
@@ -45,7 +57,15 @@ public class CloudConfigServiceLocalImpl implements CloudConfigService {
 
     @Override
     public boolean push(String group, String name, String value) {
-        String configKey = String.format("config:%s:%s", group, name);
+        if (Utils.isEmpty(group)) {
+            group = Solon.cfg().appGroup();
+
+            if (Utils.isEmpty(group)) {
+                group = DEFAULT_GROUP;
+            }
+        }
+
+        String configKey = String.format(CONFIG_KEY_FORMAT, group, name);
         Config configVal = pull(group, name);
 
         synchronized (configMap) {
@@ -64,7 +84,15 @@ public class CloudConfigServiceLocalImpl implements CloudConfigService {
 
     @Override
     public boolean remove(String group, String name) {
-        String configKey = String.format("config:%s:%s", group, name);
+        if (Utils.isEmpty(group)) {
+            group = Solon.cfg().appGroup();
+
+            if (Utils.isEmpty(group)) {
+                group = DEFAULT_GROUP;
+            }
+        }
+
+        String configKey = String.format(CONFIG_KEY_FORMAT, group, name);
         configMap.remove(configKey);
         return true;
     }
