@@ -17,7 +17,7 @@
 #### 1.11.0
 * 清理 xxx-solon-plugin 的 solon cloud 插件包（正试由 xxx-solon-cloud-plugin 替代）
 * 插件 solon.auth 增加 AuthAdapterSupplier 的 pathPrefix 对 adapter 规则有相同限制效果
-* 插件 solon.web.staticfiles 增加位置印射配置支持
+* 插件 solon.web.staticfiles 增加位置映射配置支持
 * 插件 logback-solon-plugin, log4j-solon-plugin 增加自定义 Appender
 * 插件 sa-token-solon-plugin 允许没有 sa-token 配置
 * 修复 xxl-job-solon-cloud-plugin 没配置时会出错的问题
