@@ -1,5 +1,6 @@
 package org.noear.solon.cloud.extend.local;
 
+import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.cloud.CloudManager;
 import org.noear.solon.cloud.extend.local.service.*;
 import org.noear.solon.core.AopContext;
@@ -14,6 +15,12 @@ public class XPluginImp implements Plugin {
     public void start(AopContext context) throws Throwable {
         if (LocalProps.instance.getConfigEnable()) {
             CloudManager.register(new CloudConfigServiceLocalImpl());
+
+            //配置加载
+            CloudClient.configLoad(LocalProps.instance.getConfigLoad());
+
+            CloudClient.configLoad(LocalProps.instance.getConfigLoadGroup(),
+                    LocalProps.instance.getConfigLoadKey());
         }
 
         if (LocalProps.instance.getEventEnable()) {

@@ -1,0 +1,8 @@
+
+solon.app:
+  group: demo
+  name: demoapp
+
+solon.cloud.local:
+  config:
+    load: "demoapp.yml"
