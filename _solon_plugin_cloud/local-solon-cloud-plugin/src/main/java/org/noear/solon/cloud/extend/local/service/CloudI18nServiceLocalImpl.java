@@ -32,24 +32,39 @@ public class CloudI18nServiceLocalImpl implements CloudI18nService {
         Properties tmp;
 
 
-
         Pack pack = new Pack(locale);
         pack.setData(new Props());
 
         bundleName = String.format(I18N_KEY_FORMAT, group, packName, locale.getLanguage());
-        tmp = Utils.loadProperties(bundleName);
+        tmp = getProps(bundleName);
 
         if (tmp != null) {
             pack.getData().putAll(tmp);
         }
 
         bundleName = String.format(I18N_KEY_FORMAT, group, packName, locale);
-        tmp = Utils.loadProperties(bundleName);
+        tmp = getProps(bundleName);
 
         if (tmp != null) {
             pack.getData().putAll(tmp);
         }
 
         return pack;
+    }
+
+    private Properties getProps(String uri) {
+        try {
+            String txt = Utils.getResourceAsString(uri);
+
+            if (Utils.isEmpty(txt)) {
+                return null;
+            } else {
+                return Utils.buildProperties(txt);
+            }
+        } catch (RuntimeException e) {
+            throw e;
+        } catch (Throwable e) {
+            throw new RuntimeException(e);
+        }
     }
 }
