@@ -35,7 +35,7 @@ public class CloudI18nServiceLocalImpl implements CloudI18nService {
         Pack tmp = new Pack(locale);
         tmp.setData(new Props());
 
-        if (i18nProp == null) {
+        if (i18nProp != null) {
             tmp.getData().putAll(i18nProp);
         }
 
