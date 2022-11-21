@@ -7,33 +7,66 @@ import org.noear.solon.cloud.model.Config;
 import org.noear.solon.cloud.service.CloudConfigService;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author noear
  * @since 1.10
  */
 public class CloudConfigServiceLocalImpl implements CloudConfigService {
+    Map<String, Config> configMap = new HashMap<>();
+
     @Override
     public Config pull(String group, String name) {
-        String configKey = String.format("META-INF/cloud/config/%s/%s");
+        String configKey = String.format("config:%s:%s", group, name);
+        Config configVal = configMap.get(configKey);
 
-        try {
-            String value = Utils.getResourceAsString(configKey);
+        if (configVal == null) {
+            synchronized (configMap) {
+                configVal = configMap.get(configKey);
 
-            return new Config(group, name, value, 0);
-        } catch (IOException e) {
-            throw new CloudConfigException(e);
+                if (configVal == null) {
+                    try {
+                        String resourceKey = "META-INF/cloud/" + configKey;
+                        String value = Utils.getResourceAsString(resourceKey);
+
+                        configVal = new Config(group, name, value, 0);
+                        configMap.put(configKey, configVal);
+                    } catch (IOException e) {
+                        throw new CloudConfigException(e);
+                    }
+                }
+            }
         }
+
+        return configVal;
     }
 
     @Override
     public boolean push(String group, String name, String value) {
-        return false;
+        String configKey = String.format("config:%s:%s", group, name);
+        Config configVal = pull(group, name);
+
+        synchronized (configMap) {
+            if (configVal == null) {
+                configVal = new Config(group, name, value, 0);
+                configMap.put(configKey, configVal);
+            }
+
+            if (configVal != null) {
+                configVal.updateValue(value, configVal.version() + 1);
+            }
+        }
+
+        return true;
     }
 
     @Override
     public boolean remove(String group, String name) {
-        return false;
+        String configKey = String.format("config:%s:%s", group, name);
+        configMap.remove(configKey);
+        return true;
     }
 
     @Override
