@@ -50,10 +50,10 @@ class DbInjector implements BeanInjector<Db> {
                 varH.setValue(DbManager.getService(bw.context(), dataSource));
                 return;
             }
-            if (type.isInterface()) {
-                varH.setValue(DbManager.getMapper(dataSource, type));
-                return;
-            }
+//            if (type.isInterface()) {
+//                varH.setValue(DbManager.getMapper(dataSource, type));
+//                return;
+//            }
         });
     }
 }

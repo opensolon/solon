@@ -43,6 +43,10 @@ public class SqlToyContextProperties implements Serializable {
      * 具体的sql.xml 文件资源
      */
     private String[] sqlResources;
+    /**
+     * 需要重复执行查询的数据库
+     */
+    private String[] redoDataSources;
 
     /**
      * es的配置
@@ -132,6 +136,11 @@ public class SqlToyContextProperties implements Serializable {
     private boolean breakWhenSqlRepeat = true;
 
     /**
+     * map类型的resultType标题转驼峰模式(默认为true)
+     */
+    private Boolean humpMapResultTypeLabel;
+
+    /**
      * 连接管理的实现扩展定义
      */
     private String connectionFactory;
@@ -166,6 +175,33 @@ public class SqlToyContextProperties implements Serializable {
      * sql执行超时处理器
      */
     private String overTimeSqlHandler;
+
+
+    /**
+     * 获取MetaData的列标题处理策略：default:不做处理;upper:转大写;lower
+     */
+    private String columnLabelUpperOrLower = "default";
+
+    /**
+     * 自定义sql拦截加工处理器
+     */
+    private String[] sqlInterceptors;
+
+    /**
+     * 拆分merge into 为updateAll 和 saveAllIgnoreExist 两步操作(1、seata分布式事务不支持merge)
+     */
+    private boolean splitMergeInto = false;
+
+    /**
+     * 数据修改提示的记录数量阈值，默认2000条
+     */
+    private int updateTipCount = 2000;
+
+    /**
+     * executeSql变更操作型sql执行空白参数是否默认转为null
+     */
+    private boolean executeSqlBlankToNull = true;
+
 
     /**
      * @return the sqlResourcesDir
@@ -498,5 +534,61 @@ public class SqlToyContextProperties implements Serializable {
 
     public void setOverTimeSqlHandler(String overTimeSqlHandler) {
         this.overTimeSqlHandler = overTimeSqlHandler;
+    }
+
+    public String getColumnLabelUpperOrLower() {
+        return columnLabelUpperOrLower;
+    }
+
+    public void setColumnLabelUpperOrLower(String columnLabelUpperOrLower) {
+        this.columnLabelUpperOrLower = columnLabelUpperOrLower;
+    }
+
+    public String[] getSqlInterceptors() {
+        return sqlInterceptors;
+    }
+
+    public void setSqlInterceptors(String[] sqlInterceptors) {
+        this.sqlInterceptors = sqlInterceptors;
+    }
+
+    public boolean isSplitMergeInto() {
+        return splitMergeInto;
+    }
+
+    public void setSplitMergeInto(boolean splitMergeInto) {
+        this.splitMergeInto = splitMergeInto;
+    }
+
+    public int getUpdateTipCount() {
+        return updateTipCount;
+    }
+
+    public void setUpdateTipCount(int updateTipCount) {
+        this.updateTipCount = updateTipCount;
+    }
+
+    public boolean isExecuteSqlBlankToNull() {
+        return executeSqlBlankToNull;
+    }
+
+    public void setExecuteSqlBlankToNull(boolean executeSqlBlankToNull) {
+        this.executeSqlBlankToNull = executeSqlBlankToNull;
+    }
+
+    public Boolean getHumpMapResultTypeLabel() {
+        return humpMapResultTypeLabel;
+    }
+
+    public void setHumpMapResultTypeLabel(Boolean humpMapResultTypeLabel) {
+        this.humpMapResultTypeLabel = humpMapResultTypeLabel;
+    }
+
+    public String[] getRedoDataSources() {
+        return redoDataSources;
+    }
+
+    public void setRedoDataSources(String[] redoDataSources) {
+        this.redoDataSources = redoDataSources;
     }
 }

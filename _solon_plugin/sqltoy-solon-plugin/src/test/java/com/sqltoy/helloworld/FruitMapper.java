@@ -15,6 +15,8 @@ import org.sagacity.sqltoy.model.Page;
  * 返回值分为Page,List,Entity和直接值(如：Integer等)，当其中Page,List的类型为直接值或返回值类型为直接值时,具体类型由sql中查询结果决定
  * 参数可有0～2个,两个参数时其中一个为Page,另外一个为Map或Entity,顺序不限
  * 当为default方法时，直接调用default方法
+ *
+ * @deprecated Mapper实现已移除
  */
 public interface FruitMapper {
     //通过注解映射
