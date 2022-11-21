@@ -11,6 +11,7 @@
 * 增加 更多友好的异常分类???
 
 #### 1.11.1
+* 新增 local-solon-cloud-plugin 插件
 * 增加 Props::loadAddIfAbsent
 * 升级 sqltoy 为 5.2.22
 

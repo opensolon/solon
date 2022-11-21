@@ -17,6 +17,7 @@
 
     <modules>
         <module>../../_solon_plugin_cloud/httputils-solon-cloud-plugin</module>
+        <module>../../_solon_plugin_cloud/local-solon-cloud-plugin</module>
 
         <module>../../_solon_plugin_cloud/water-solon-cloud-plugin</module>
         <module>../../_solon_plugin_cloud/consul-solon-cloud-plugin</module>
