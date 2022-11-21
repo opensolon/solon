@@ -24,7 +24,7 @@
 * 增加 @Cookie("Token") String token 注入方式支持，用于注入 ctx.cookie()
 * 调整 SessionStateBase 对 cookieSet 的处理
 * 升级 sa-token 为 1.33.0
-* 长级 sqltoy 为 5.2.21
+* 升级 sqltoy 为 5.2.21
 
 #### 1.10.13
 * 优化 LogUtil 接口设计
