@@ -903,6 +903,12 @@
             <!-- for solon cloud -->
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>local-solon-cloud-plugin</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>consul-solon-cloud-plugin</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
