@@ -6,7 +6,7 @@ import org.noear.solon.cloud.service.CloudMetricService;
  * 云端度量（本地摸拟实现）
  *
  * @author noear
- * @since 1.10
+ * @since 1.11
  */
 public class CloudMetricServiceLocalImpl implements CloudMetricService {
     @Override

@@ -13,7 +13,7 @@ import java.util.Properties;
  * 云端国际化（本地摸拟实现）
  *
  * @author noear
- * @since 1.10
+ * @since 1.11
  */
 public class CloudI18nServiceLocalImpl implements CloudI18nService {
     static final String DEFAULT_GROUP = "DEFAULT_GROUP";

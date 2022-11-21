@@ -15,7 +15,7 @@ import java.util.Map;
  * 云端配置（本地摸拟实现）
  *
  * @author noear
- * @since 1.10
+ * @since 1.11
  */
 public class CloudConfigServiceLocalImpl implements CloudConfigService {
     static final String DEFAULT_GROUP = "DEFAULT_GROUP";
