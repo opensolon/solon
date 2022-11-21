@@ -1,8 +1,6 @@
 package org.noear.solon.extend.sqltoy;
 
 import org.noear.solon.core.AopContext;
-import org.noear.solon.extend.sqltoy.mapper.AbstractMapper;
-import org.noear.solon.extend.sqltoy.mapper.ProxyClassBuilder;
 import org.sagacity.sqltoy.SqlToyContext;
 import org.sagacity.sqltoy.dao.SqlToyLazyDao;
 import org.sagacity.sqltoy.dao.impl.SqlToyLazyDaoImpl;
@@ -18,8 +16,6 @@ import java.util.Map;
 public class DbManager {
     private static Map<DataSource, SqlToyLazyDao> daoMap = new HashMap<>();
     private static Map<DataSource, SqlToyCRUDService> serviceMap = new HashMap<>();
-    private static Map<DataSource, Map<Class, Object>> mapperMap = new HashMap<>();
-    private static Map<Class, Class> proxyClassMap = new HashMap<>();
     private static SqlToyContext context;
 
     public static void setContext(SqlToyContext context) {
@@ -50,38 +46,6 @@ public class DbManager {
         }
         return service;
     }
-
-    public static synchronized <T> T getMapper(DataSource dataSource, Class<T> type) {
-        T mapper = null;
-        Map<Class, Object> mapSubMap = mapperMap.get(dataSource);
-        if (mapSubMap == null) {
-            mapSubMap = new HashMap<>();
-            mapperMap.put(dataSource, mapSubMap);
-        }
-
-        mapper = (T) mapSubMap.get(type);
-
-        if (mapper == null) {
-            Class targetType = proxyClassMap.get(type);
-            if (targetType == null) {
-                ProxyClassBuilder cb = new ProxyClassBuilder(context, type);
-                targetType = cb.compile();
-                proxyClassMap.put(type, targetType);
-            }
-            try {
-                AbstractMapper m = (AbstractMapper) targetType.newInstance();
-                m.setDao(getDao(dataSource));
-                mapper = (T) m;
-                mapSubMap.put(type, mapper);
-            } catch (InstantiationException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
-        }
-        return mapper;
-    }
-
     public static Map<DataSource, SqlToyCRUDService> getServiceMap() {
         return serviceMap;
     }
