@@ -12,6 +12,7 @@
 
 #### 1.11.1
 * 增加 Props::loadAddIfAbsent
+* 升级 sqltoy 为 5.2.22
 
 #### 1.11.0
 * 清理 xxx-solon-plugin 的 solon cloud 插件包（正试由 xxx-solon-cloud-plugin 替代）
