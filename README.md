@@ -113,8 +113,8 @@ public class App{
         Solon.start(App.class,args);
     }
   
-    //限定 WebSocket 方法类型
-    @WebSocket
+    //限定 Socket 方法类型
+    @Socket
     @Mapping("/")
     public String hello(String name){
         return "Hello " + name;
