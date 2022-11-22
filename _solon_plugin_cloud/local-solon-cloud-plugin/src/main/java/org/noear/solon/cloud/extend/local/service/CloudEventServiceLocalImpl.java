@@ -14,7 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * 云端事件（本地摸拟实现）
+ * 云端事件（本地摸拟实现。不支持ACK，不支持延时。最好还是引入消息队列的适配框架）
  *
  * @author noear
  * @since 1.11
