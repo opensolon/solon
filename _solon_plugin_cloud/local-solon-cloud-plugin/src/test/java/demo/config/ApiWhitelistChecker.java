@@ -11,7 +11,7 @@ import org.noear.solon.validation.annotation.WhitelistChecker;
  * 提供 Whitelist 的检查能力
  */
 @Component
-public class Api1WhitelistChecker implements WhitelistChecker {
+public class ApiWhitelistChecker implements WhitelistChecker {
     @Override
     public boolean check(Whitelist anno, Context ctx) {
         String listName = anno.value();
