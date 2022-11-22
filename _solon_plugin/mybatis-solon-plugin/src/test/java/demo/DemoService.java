@@ -1,7 +1,6 @@
 package demo;
 
 import org.apache.ibatis.session.SqlSession;
-import org.noear.solon.aspect.annotation.Service;
 import org.noear.solon.extend.mybatis.Mybatis;
 
 /**
@@ -13,6 +12,6 @@ public class DemoService {
         UserMapper tmp = Mybatis.use("db1").getMapper(UserMapper.class);
 
         //手动拿session
-        SqlSession session = Mybatis.use("db2").getFactory().openSession();
+        SqlSession session = Mybatis.use("db2").openSession();
     }
 }
