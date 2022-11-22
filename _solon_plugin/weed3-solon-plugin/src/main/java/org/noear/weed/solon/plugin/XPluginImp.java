@@ -1,6 +1,5 @@
 package org.noear.weed.solon.plugin;
 
-import org.noear.solon.Solon;
 import org.noear.solon.core.*;
 import org.noear.weed.WeedConfig;
 import org.noear.weed.annotation.Db;
