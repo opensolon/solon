@@ -9,7 +9,7 @@ import org.noear.solon.core.handle.Context;
 import java.util.Date;
 
 /**
- * @author noear 2022/11/21 created
+ * 云端调度的定时任务（本地实现时，就在本地调试了）
  */
 @CloudJob(name = "job1",cron7x = "* * * * * ?")
 public class Job1 implements CloudJobHandler {
