@@ -12,7 +12,8 @@
 
 #### 1.11.1
 * 新增 local-solon-cloud-plugin 插件
-* 增加 Props::loadAddIfAbsent
+* 增加 Props::loadAddIfAbsent 接口
+* 增加 Mybatis::use 接口
 * 升级 sqltoy 为 5.2.22
 
 #### 1.11.0
