@@ -1,5 +1,10 @@
-支持 solon cloud 能力（src/test，提供了所有能力的演示）：
+local-solon-cloud-plugin 是 solon cloud 标准的本地模拟实现。（src/test，提供了所有能力的演示）：
 
+场景定位：
+* 统一使用 solon cloud 接口进行项目开发
+* 只需要切换配置；就可以在 "本地单体服务" 和 "分布式服务（或微服务）"之间自由切换
+
+能力说明：
 
 ### 1、云端配置服务（本地模拟）
 
@@ -10,6 +15,24 @@
 * META-INF/solon-cloud/config@demo:demoapp.yml
 
 
+**两种应用：**
+
+可以通过配置加载配置
+```yaml
+solon.cloud.local:
+  config:
+    load: "demoapp.yml"
+```
+可以通过注解直接注入
+```java
+@Configuration
+public class Config {
+    @Bean
+    public void init1(@CloudConfig("demo-db") Properties props) {
+        System.out.println("云端配置服务直接注入的：" + props);
+    }
+}
+```
 
 ### 2、云端事件服务（本地模拟）
 
