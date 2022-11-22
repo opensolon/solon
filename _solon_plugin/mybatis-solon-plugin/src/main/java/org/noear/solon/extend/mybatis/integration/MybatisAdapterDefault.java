@@ -229,11 +229,6 @@ public class MybatisAdapterDefault implements MybatisAdapter {
     }
 
     @Override
-    public List<String> getMappers() {
-        return mappers;
-    }
-
-    @Override
     public void injectTo(VarHolder varH) {
         //@Db("db1") MybatisAdapter adapter;
         if (MybatisAdapter.class.isAssignableFrom(varH.getType())) {

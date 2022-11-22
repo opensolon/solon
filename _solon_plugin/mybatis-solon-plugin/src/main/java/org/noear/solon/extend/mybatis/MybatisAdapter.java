@@ -7,7 +7,6 @@ import org.noear.solon.core.VarHolder;
 import org.noear.solon.extend.mybatis.integration.MybatisMapperInterceptor;
 
 import java.lang.reflect.Proxy;
-import java.util.List;
 
 /**
  * 适配器
@@ -19,11 +18,6 @@ import java.util.List;
  * @since 1.5
  * */
 public interface MybatisAdapter {
-
-    /**
-     * 获取 Mapper 配置获取
-     */
-    List<String> getMappers();
 
     /**
      * 获取配置器
