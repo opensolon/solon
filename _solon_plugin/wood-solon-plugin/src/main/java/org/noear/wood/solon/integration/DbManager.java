@@ -29,7 +29,7 @@ class DbManager {
                 db = dbMap.get(bw.name());
                 if (db == null) {
                     DataSource ds = bw.raw();
-                    db = new DbContext(ds);
+                    db = new DbContext(ds).nameSet(bw.name());
 
                     dbMap.put(bw.name(), db);
 
