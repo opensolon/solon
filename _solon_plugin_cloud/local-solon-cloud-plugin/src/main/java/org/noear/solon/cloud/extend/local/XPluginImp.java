@@ -24,6 +24,10 @@ public class XPluginImp implements Plugin {
                     LocalProps.instance.getConfigLoadKey());
         }
 
+        if (LocalProps.instance.getDiscoveryEnable()) {
+            CloudManager.register(new CloudDiscoveryServiceLocalImpl());
+        }
+
         if (LocalProps.instance.getEventEnable()) {
             CloudManager.register(new CloudEventServiceLocalImpl());
         }

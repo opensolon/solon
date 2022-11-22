@@ -37,11 +37,15 @@ public class Config {
 }
 ```
 
-### 2、云端事件服务（本地模拟）
+### 2、云端注册与发现服务（本地模拟）
+
+让服务注册有地方去，也有地方可获取（即发现）
+
+### 3、云端事件服务（本地模拟）
 
 本地摸拟实现。不支持ACK，不支持延时。最好还是引入消息队列的适配框架
 
-### 3、云端国际化配置服务（本地模拟）
+### 4、云端国际化配置服务（本地模拟）
 
 内容格式支持： yml, properties, json （不能有手缀名，为了更好的支持中文）<br/>
 文件地址格式： META-INF/solon-cloud/i18n@{group}:{name}-{locale}，例示：
@@ -50,12 +54,12 @@ public class Config {
 * META-INF/solon-cloud/i18n@demo:demoapp-en_US
 
 
-### 4、云端定时任务调度服务（本地模拟）
+### 5、云端定时任务调度服务（本地模拟）
 
 时间到就会启动新的执行（不管上次是否执行完成了）
 
 
-### 5、云端名单服务（本地模拟）
+### 6、云端名单服务（本地模拟）
 
 内容格式支持： json <br/>
 文件地址格式： META-INF/solon-cloud/list@{name}-{type}.json，例示：
@@ -63,6 +67,6 @@ public class Config {
 * META-INF/solon-cloud/list@whitelist-ip.json
 
 
-### 6、云端度量服务（本地模拟）
+### 7、云端度量服务（本地模拟）
 
 一个空服务。只为已有调用不出错
