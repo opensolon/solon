@@ -30,6 +30,10 @@ public class MybatisAdapterManager {
      */
     private static Map<String, MybatisAdapter> dbMap = new ConcurrentHashMap<>();
 
+    public static MybatisAdapter getOnly(String name){
+        return dbMap.get(name);
+    }
+
     /**
      * 获取适配器
      */
@@ -89,7 +93,7 @@ public class MybatisAdapterManager {
 
     private static void mapperBindingDo(BeanWrap dsBw, MybatisAdapter adapter, Class<?> clz) {
         if (clz != null && clz.isInterface()) {
-            Object mapper = adapter.getMapperProxy(clz);
+            Object mapper = adapter.getMapper(clz);
 
             //进入容器，用于 @Inject 注入
             dsBw.context().putWrap(clz, dsBw.context().wrap(clz, mapper));

@@ -255,7 +255,7 @@ public class MybatisAdapterDefault implements MybatisAdapter {
 
         //@Db("db1") UserMapper userMapper;
         if (varH.getType().isInterface()) {
-            Object mapper = this.getMapperProxy(varH.getType());
+            Object mapper = this.getMapper(varH.getType());
 
             varH.setValue(mapper);
             return;
