@@ -10,10 +10,10 @@ import org.noear.solon.data.datasource.DynamicDataSourceHolder;
  * @author noear
  * @since 1.11
  */
-public class TargetDataSourceInterceptor implements Interceptor {
+public class DynamicDsInterceptor implements Interceptor {
     @Override
     public Object doIntercept(Invocation inv) throws Throwable {
-        TargetDataSource anno = inv.method().getAnnotation(TargetDataSource.class);
+        DynamicDs anno = inv.method().getAnnotation(DynamicDs.class);
 
         if (anno == null) {
             return inv.invoke();

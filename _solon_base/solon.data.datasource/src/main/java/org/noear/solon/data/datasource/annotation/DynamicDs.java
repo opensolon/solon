@@ -13,9 +13,9 @@ import java.lang.annotation.Target;
  * @author noear
  * @since 1.11
  */
-@Around(TargetDataSourceInterceptor.class)
+@Around(DynamicDsInterceptor.class)
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface TargetDataSource {
+public @interface DynamicDs {
     String value() default "";
 }

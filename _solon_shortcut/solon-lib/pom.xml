@@ -21,10 +21,16 @@
             <artifactId>solon</artifactId>
         </dependency>
 
-        <!-- 提供事务支持 -->
+        <!-- 提供事务、缓存支持 -->
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon.data</artifactId>
+        </dependency>
+
+        <!-- 提供事务支持 -->
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.data.datasource</artifactId>
         </dependency>
 
         <!-- 加强的动态代理支持组件 -->
