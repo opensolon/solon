@@ -14,7 +14,7 @@ import java.util.Properties;
  * 动态数据源
  *
  * @author noear
- * @since 1.10
+ * @since 1.11
  */
 public class DynamicDataSource extends AbstractRoutingDataSource {
     public DynamicDataSource(Properties props) {

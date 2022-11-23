@@ -8,7 +8,7 @@ import org.noear.solon.data.datasource.DynamicDataSourceHolder;
  * 动态数据源切换
  *
  * @author noear
- * @since 1.10
+ * @since 1.11
  */
 public class TargetDataSourceInterceptor implements Interceptor {
     @Override

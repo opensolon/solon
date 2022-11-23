@@ -11,7 +11,7 @@ import java.lang.annotation.Target;
  * 切换目标数据源
  *
  * @author noear
- * @since 1.10
+ * @since 1.11
  */
 @Around(TargetDataSourceInterceptor.class)
 @Target(ElementType.METHOD)

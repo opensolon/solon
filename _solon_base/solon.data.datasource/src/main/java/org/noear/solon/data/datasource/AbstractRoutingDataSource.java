@@ -14,7 +14,7 @@ import java.util.logging.Logger;
  * 可路由数据源
  *
  * @author noear
- * @since 1.10
+ * @since 1.11
  */
 public abstract class AbstractRoutingDataSource implements DataSource {
     protected DataSource defaultTargetDataSource;

@@ -4,7 +4,7 @@ package org.noear.solon.data.datasource;
  * 动态数据源切换
  *
  * @author noear
- * @since 1.10
+ * @since 1.11
  */
 public class DynamicDataSourceHolder {
     static ThreadLocal<String> targetThreadLocal = new ThreadLocal<>();
