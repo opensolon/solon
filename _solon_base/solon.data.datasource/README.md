@@ -51,7 +51,7 @@ public class UserService{
     }
     
     public void getUserList2(){
-        DynamicDsHolder.set("db_user_2"); //使用 db_user 动态源内的 db_user_2 源
+        DynamicDsHolder.setCurrent("db_user_2"); //使用 db_user 动态源内的 db_user_2 源
         userMapper.selectUserList();
     }
 }

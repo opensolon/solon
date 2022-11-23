@@ -94,6 +94,6 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
 
     @Override
     protected String determineCurrentKey() {
-        return DynamicDsHolder.get();
+        return DynamicDsUtils.getCurrent();
     }
 }

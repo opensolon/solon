@@ -6,7 +6,7 @@ package org.noear.solon.data.datasource;
  * @author noear
  * @since 1.11
  */
-public class DynamicDsHolder {
+public class DynamicDsUtils {
     static ThreadLocal<String> targetThreadLocal = new ThreadLocal<>();
 
     /**
@@ -19,14 +19,14 @@ public class DynamicDsHolder {
     /**
      * 获取
      */
-    public static String get() {
+    public static String getCurrent() {
         return targetThreadLocal.get();
     }
 
     /**
      * 设置
      */
-    public static void set(String dsBeanName) {
+    public static void setCurrent(String dsBeanName) {
         if (dsBeanName == null) {
             targetThreadLocal.remove();
         } else {
