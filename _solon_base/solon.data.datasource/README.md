@@ -3,13 +3,13 @@ DynamicDataSource 使用示例
 
 配置示例（致少要有：type, strict, default）
 
-* type: 设定数据源类型
+* type: 设定数据源实现类型（一般用链接池 hikari,druid 之类）
 * strict: 设定严格模式（默认：false）。启用后在未匹配到指定数据源时候会抛出异常, 不启用则使用默认数据源.
 * default: 动态数据源的默认源
 
 ```yaml
 demo.ds.db_user:
-  type: "com.alibaba.druid.pool.DruidDataSource" 
+  type: "com.zaxxer.hikari.HikariDataSource" 
   strict: true
   default: 
     url: "xxx"
