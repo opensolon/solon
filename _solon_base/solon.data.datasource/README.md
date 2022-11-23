@@ -4,6 +4,7 @@
 ```yaml
 demo.ds.db_user:
   type: "com.alibaba.druid.pool.DruidDataSource"
+  strict: true
   default: #动态数据源的默认源
     url: "xxx"
     username: "xxx"

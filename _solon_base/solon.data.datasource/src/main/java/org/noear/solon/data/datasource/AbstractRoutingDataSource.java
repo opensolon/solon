@@ -21,9 +21,14 @@ public abstract class AbstractRoutingDataSource implements DataSource {
     protected Map<String, DataSource> targetDataSources;
 
     /**
+     * 严格模式（启用后在未匹配到指定数据源时候会抛出异常,不启用则使用默认数据源.）
+     * */
+    private boolean strict;
+
+    /**
      * 初始化
      * */
-    protected void init(DataSource defaultDataSource, Map<String, DataSource> dataSourceMap) {
+    protected void init(DataSource defaultDataSource, Map<String, DataSource> dataSourceMap, boolean strict) {
         if (dataSourceMap == null || dataSourceMap.size() == 0) {
             throw new IllegalArgumentException("Property 'targetDataSources' is required");
         }
@@ -32,6 +37,7 @@ public abstract class AbstractRoutingDataSource implements DataSource {
             throw new IllegalArgumentException("Property 'defaultTargetDataSource' is required");
         }
 
+        this.strict = strict;
         this.targetDataSources = dataSourceMap;
         this.defaultTargetDataSource = defaultDataSource;
     }
@@ -54,7 +60,11 @@ public abstract class AbstractRoutingDataSource implements DataSource {
             DataSource tmp = targetDataSources.get(targetKey);
 
             if (tmp == null) {
-                throw new IllegalStateException("Cannot determine target DataSource for key [" + targetKey + "]");
+                if (strict) {
+                    throw new IllegalStateException("Cannot determine target DataSource for key [" + targetKey + "]");
+                } else {
+                    tmp = defaultTargetDataSource;
+                }
             }
 
             return tmp;

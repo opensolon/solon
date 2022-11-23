@@ -2,7 +2,8 @@ package org.noear.solon.data.datasource.annotation;
 
 import org.noear.solon.core.aspect.Interceptor;
 import org.noear.solon.core.aspect.Invocation;
-import org.noear.solon.data.datasource.DynamicDataSourceHolder;
+import org.noear.solon.data.datasource.DynamicDsHolder;
+import org.noear.solon.data.datasource.annotation.DynamicDs;
 
 /**
  * 动态数据源切换
@@ -19,14 +20,14 @@ public class DynamicDsInterceptor implements Interceptor {
             return inv.invoke();
         } else {
             //备份
-            String backup = DynamicDataSourceHolder.get();
+            String backup = DynamicDsHolder.get();
 
             try {
-                DynamicDataSourceHolder.set(anno.value());
+                DynamicDsHolder.set(anno.value());
                 return inv.invoke();
             } finally {
                 //还原
-                DynamicDataSourceHolder.set(backup);
+                DynamicDsHolder.set(backup);
             }
         }
     }

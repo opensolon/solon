@@ -6,7 +6,7 @@ package org.noear.solon.data.datasource;
  * @author noear
  * @since 1.11
  */
-public class DynamicDataSourceHolder {
+public class DynamicDsHolder {
     static ThreadLocal<String> targetThreadLocal = new ThreadLocal<>();
 
     /**

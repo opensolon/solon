@@ -1,7 +1,8 @@
 
 
 demo.ds.db_user:
-  type: "com.alibaba.druid.pool.DruidDataSource"
+  type: "com.alibaba.druid.pool.DruidDataSource" #设定数据源类型
+  strict: true #设定严格模式（默认：false）。启用后在未匹配到指定数据源时候会抛出异常, 不启用则使用默认数据源.
   default: #动态数据源的默认源
     url: "xxx"
     username: "xxx"
@@ -15,6 +16,7 @@ demo.ds.db_user:
 
 demo.ds.db_order:
   type: "com.alibaba.druid.pool.DruidDataSource"
+  strict: true
   default:  #动态数据源的默认源
     url: "xxx"
     username: "xxx"

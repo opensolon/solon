@@ -8,7 +8,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 切换目标数据源
+ * 切换动态数据源
  *
  * @author noear
  * @since 1.11

@@ -24,14 +24,17 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
         }
 
         //::类型
-        String type = props.getProperty("type");
+        String typeStr = props.getProperty("type");
+        String strictStr = props.getProperty("strict", "false");
 
-        if (Utils.isEmpty(type)) {
+        if (Utils.isEmpty(typeStr)) {
             //缺少类型配置
             throw new IllegalStateException("Missing type configuration");
         }
         props.remove("type");
-        Class<?> typeClz = Utils.loadClass(type);
+        props.remove("strict");
+
+        Class<?> typeClz = Utils.loadClass(typeStr);
 
         if (DataSource.class.isAssignableFrom(typeClz)) {
             throw new IllegalStateException("Type configuration not is data source");
@@ -57,8 +60,11 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
 
         Map<String, DataSource> dataSourceMap = new HashMap<>();
         groupProps.forEach((key, prop) -> {
-            DataSource source = (DataSource) PropsConverter.global().convert(prop, typeClz);
-            dataSourceMap.put(key, source);
+            if (prop.size() > 1) {
+                //超过1个以上的，才可能是数据源属性
+                DataSource source = (DataSource) PropsConverter.global().convert(prop, typeClz);
+                dataSourceMap.put(key, source);
+            }
         });
 
 
@@ -66,11 +72,15 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
         DataSource defSource = dataSourceMap.get("default");
 
         //::初始化
-        init(defSource, dataSourceMap);
+        init(defSource, dataSourceMap, Boolean.parseBoolean(strictStr));
     }
 
     public DynamicDataSource(DataSource defaultTargetDataSource, Map<String, DataSource> targetDataSources) {
-        init(defaultTargetDataSource, targetDataSources);
+        init(defaultTargetDataSource, targetDataSources, false);
+    }
+
+    public DynamicDataSource(DataSource defaultTargetDataSource, Map<String, DataSource> targetDataSources, boolean strict) {
+        init(defaultTargetDataSource, targetDataSources, strict);
     }
 
 
@@ -84,6 +94,6 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
 
     @Override
     protected String determineCurrentKey() {
-        return DynamicDataSourceHolder.get();
+        return DynamicDsHolder.get();
     }
 }
