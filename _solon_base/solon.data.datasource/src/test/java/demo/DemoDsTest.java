@@ -6,7 +6,6 @@ import org.noear.solon.annotation.Inject;
 import org.noear.solon.data.datasource.DynamicDataSource;
 
 import javax.sql.DataSource;
-import java.util.Map;
 
 /**
  * @author noear 2022/11/23 created

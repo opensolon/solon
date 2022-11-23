@@ -333,6 +333,11 @@
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>solon.data.datasource</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>solon.auth</artifactId>
                 <version>${solon.ver}</version>
             </dependency>

@@ -1,5 +1,7 @@
 package org.noear.solon.data.datasource.annotation;
 
+import org.noear.solon.annotation.Around;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -11,6 +13,7 @@ import java.lang.annotation.Target;
  * @author noear
  * @since 1.10
  */
+@Around(TargetDataSourceInterceptor.class)
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface TargetDataSource {
