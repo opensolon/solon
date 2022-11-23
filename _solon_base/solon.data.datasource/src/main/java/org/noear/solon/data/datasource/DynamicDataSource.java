@@ -36,7 +36,7 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
 
         Class<?> typeClz = Utils.loadClass(typeStr);
 
-        if (DataSource.class.isAssignableFrom(typeClz)) {
+        if (typeClz == null || typeClz.isAssignableFrom(DataSource.class) == false) {
             throw new IllegalStateException("Type configuration not is data source");
         }
 

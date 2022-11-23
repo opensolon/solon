@@ -12,12 +12,12 @@ demo.ds.db_user:
   type: "com.zaxxer.hikari.HikariDataSource" 
   strict: true
   default: 
-    url: "xxx"
+    jdbcUrl: "xxx" #属性名要与 type 类的属性对上
     username: "xxx"
     paasword: "xxx"
     driverClassName: "xx"
   db_user_2:
-    url: "xxx"
+    jdbcUrl: "xxx" #属性名要与 type 类的属性对上
     username: "xxx"
     paasword: "xxx"
     driverClassName: "xx"
