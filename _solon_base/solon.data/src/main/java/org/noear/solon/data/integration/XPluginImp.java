@@ -4,6 +4,8 @@ import org.noear.solon.Solon;
 import org.noear.solon.core.*;
 import org.noear.solon.data.annotation.*;
 import org.noear.solon.data.cache.*;
+import org.noear.solon.data.datasource.annotation.TargetDataSource;
+import org.noear.solon.data.datasource.annotation.TargetDataSourceInterceptor;
 import org.noear.solon.data.tran.RollbackInterceptor;
 import org.noear.solon.data.tran.TranExecutor;
 import org.noear.solon.data.around.CacheInterceptor;
@@ -17,6 +19,9 @@ public class XPluginImp implements Plugin {
     public void start(AopContext context) {
         //注册缓存工厂
         CacheLib.cacheFactoryAdd("local", new LocalCacheFactoryImpl());
+
+        //多数据源切换
+        context.beanAroundAdd(TargetDataSource.class, new TargetDataSourceInterceptor());
 
         //添加事务控制支持
         if (Solon.app().enableTransaction()) {

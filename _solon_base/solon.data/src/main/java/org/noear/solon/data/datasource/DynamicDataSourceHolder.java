@@ -11,22 +11,26 @@ public class DynamicDataSourceHolder {
 
     /**
      * 清除
-     * */
-    public static void clear(){
+     */
+    public static void clear() {
         targetThreadLocal.remove();
     }
 
     /**
      * 获取
-     * */
-    public static String get(){
+     */
+    public static String get() {
         return targetThreadLocal.get();
     }
 
     /**
      * 设置
-     * */
-    public static void set(String dsBeanName){
-        targetThreadLocal.set(dsBeanName);
+     */
+    public static void set(String dsBeanName) {
+        if (dsBeanName == null) {
+            targetThreadLocal.remove();
+        } else {
+            targetThreadLocal.set(dsBeanName);
+        }
     }
 }

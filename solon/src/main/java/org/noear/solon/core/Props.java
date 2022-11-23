@@ -147,12 +147,8 @@ public class Props extends Properties {
      * @param keyStarts key 的开始字符
      */
     public <T> T getBean(String keyStarts, Class<T> clz) {
-        if (Utils.isEmpty(keyStarts)) {
-            return PropsConverter.global().convert(this, clz);
-        } else {
-            Properties props = getProp(keyStarts);
-            return PropsConverter.global().convert(props, clz);
-        }
+        Properties props = getProp(keyStarts);
+        return PropsConverter.global().convert(props, clz);
     }
 
     /**
@@ -161,14 +157,45 @@ public class Props extends Properties {
      * @param keyStarts key 的开始字符
      */
     public Props getProp(String keyStarts) {
-        Props prop = new Props();
-        doFind(keyStarts + ".", prop::put);
-        if (prop.size() == 0) {
-            doFind(keyStarts + "[", (k, v) -> {
-                prop.put("[" + k, v);
-            });
+        if (Utils.isEmpty(keyStarts)) {
+            return this;
+        } else {
+            Props prop = new Props();
+
+            doFind(keyStarts + ".", prop::put);
+            if (prop.size() == 0) {
+                doFind(keyStarts + "[", (k, v) -> {
+                    prop.put("[" + k, v);
+                });
+            }
+
+            return prop;
         }
-        return prop;
+    }
+
+    /**
+     * 查找 keyStarts 开头的所有配置；并生成一个新的分组的配置集
+     *
+     * @param keyStarts key 的开始字符
+     */
+    public Map<String, Props> getGroupedProp(String keyStarts) {
+        Props rootProps = getProp(keyStarts);
+
+        Set<String> groups = new HashSet<>();
+        for (Object key : rootProps.keySet()) {
+            if (key instanceof String) {
+                groups.add(((String) key).split("\\.")[0]);
+            }
+        }
+
+        Map<String, Props> groupProps = new HashMap<>();
+
+        for (String group : groups) {
+            Props tmp = rootProps.getProp(group);
+            groupProps.put(group, tmp);
+        }
+
+        return groupProps;
     }
 
     /**

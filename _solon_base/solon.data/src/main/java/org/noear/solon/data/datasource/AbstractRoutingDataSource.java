@@ -20,7 +20,10 @@ public abstract class AbstractRoutingDataSource implements DataSource {
     protected DataSource defaultTargetDataSource;
     protected Map<String, DataSource> targetDataSources;
 
-    public AbstractRoutingDataSource(DataSource defaultTargetDataSource, Map<String, DataSource> targetDataSources) {
+    /**
+     * 初始化
+     * */
+    protected void initDo(DataSource defaultTargetDataSource, Map<String, DataSource> targetDataSources) {
         this.targetDataSources = targetDataSources;
         this.defaultTargetDataSource = defaultTargetDataSource;
     }
