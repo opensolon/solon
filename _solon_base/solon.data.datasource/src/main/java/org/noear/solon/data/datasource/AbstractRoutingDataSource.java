@@ -23,9 +23,17 @@ public abstract class AbstractRoutingDataSource implements DataSource {
     /**
      * 初始化
      * */
-    protected void initDo(DataSource defaultTargetDataSource, Map<String, DataSource> targetDataSources) {
-        this.targetDataSources = targetDataSources;
-        this.defaultTargetDataSource = defaultTargetDataSource;
+    protected void init(DataSource defaultDataSource, Map<String, DataSource> dataSourceMap) {
+        if (dataSourceMap == null || dataSourceMap.size() == 0) {
+            throw new IllegalArgumentException("Property 'targetDataSources' is required");
+        }
+
+        if (defaultDataSource == null) {
+            throw new IllegalArgumentException("Property 'defaultTargetDataSource' is required");
+        }
+
+        this.targetDataSources = dataSourceMap;
+        this.defaultTargetDataSource = defaultDataSource;
     }
 
     /**

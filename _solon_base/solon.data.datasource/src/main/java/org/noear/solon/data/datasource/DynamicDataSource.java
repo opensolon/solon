@@ -20,7 +20,7 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
     public DynamicDataSource(Properties props) {
         if (props == null || props.size() == 0) {
             //缺少配置
-            throw new IllegalStateException("DynamicDataSource missing configuration");
+            throw new IllegalStateException("Missing dynamic data source configuration");
         }
 
         //::类型
@@ -28,13 +28,13 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
 
         if (Utils.isEmpty(type)) {
             //缺少类型配置
-            throw new IllegalStateException("DynamicDataSource missing type configuration");
+            throw new IllegalStateException("Missing type configuration");
         }
         props.remove("type");
         Class<?> typeClz = Utils.loadClass(type);
 
         if (DataSource.class.isAssignableFrom(typeClz)) {
-            throw new IllegalStateException("DynamicDataSource type not is DataSource");
+            throw new IllegalStateException("Type configuration not is data source");
         }
 
 
@@ -51,7 +51,7 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
 
         if (groupProps.size() == 0) {
             //缺少数据源配置
-            throw new IllegalStateException("DynamicDataSource missing ds configuration");
+            throw new IllegalStateException("Missing dynamic data source configuration");
         }
 
 
@@ -65,13 +65,12 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
         //::获取默认数据源
         DataSource defSource = dataSourceMap.get("default");
 
-
         //::初始化
-        initDo(defSource, dataSourceMap);
+        init(defSource, dataSourceMap);
     }
 
     public DynamicDataSource(DataSource defaultTargetDataSource, Map<String, DataSource> targetDataSources) {
-        initDo(defaultTargetDataSource, targetDataSources);
+        init(defaultTargetDataSource, targetDataSources);
     }
 
 
