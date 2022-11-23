@@ -12,22 +12,14 @@ demo.ds.db_user:
     username: "xxx"
     paasword: "xxx"
     driverClassName: "xx"
+  db_user_3:
+    url: "xxx"
+    username: "xxx"
+    paasword: "xxx"
+    driverClassName: "xx"
+  db_user_4:
+    url: "xxx"
+    username: "xxx"
+    paasword: "xxx"
+    driverClassName: "xx"
 
-demo.ds.db_order:
-  type: "com.alibaba.druid.pool.DruidDataSource"
-  strict: true
-  default:  #动态数据源的默认源
-    url: "xxx"
-    username: "xxx"
-    paasword: "xxx"
-    driverClassName: "xx"
-  db_order_2:
-    url: "xxx"
-    username: "xxx"
-    paasword: "xxx"
-    driverClassName: "xx"
-  db_order_3:
-    url: "xxx"
-    username: "xxx"
-    paasword: "xxx"
-    driverClassName: "xx"

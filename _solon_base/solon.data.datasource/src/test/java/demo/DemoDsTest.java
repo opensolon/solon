@@ -1,9 +1,13 @@
 package demo;
 
+import demo.dso.UserMapper;
 import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
+import org.noear.solon.aspect.annotation.Service;
 import org.noear.solon.data.datasource.DynamicDataSource;
+import org.noear.solon.data.datasource.DynamicDsHolder;
+import org.noear.solon.data.datasource.annotation.DynamicDs;
 
 import javax.sql.DataSource;
 
@@ -13,15 +17,27 @@ import javax.sql.DataSource;
 
 public class DemoDsTest {
     @Configuration
-    public class ConfigDemo {
+    public class Config {
         @Bean("db_user")
         public DataSource dsUser(@Inject("$demo.ds.db_user}") DynamicDataSource dataSource) {
             return dataSource;
         }
-
-        @Bean("db_order")
-        public DataSource dsOrder(@Inject("$demo.ds.db_order}") DynamicDataSource dataSource) {
-            return dataSource;
+    }
+    @Service
+    public class UserService{
+        @Db("db_user")
+        UserMapper userMapper;
+        @DynamicDs //使用默认源
+        public void addUser(){
+            userMapper.inserUser();
+        }
+        @DynamicDs("db_user_1") //使用 db_user_1 源
+        public void getUserList(){
+            userMapper.selectUserList();
+        }
+        public void getUserList2(){
+            DynamicDsHolder.set("db_user_2"); //使用 db_user_2 源
+            userMapper.selectUserList();
         }
     }
 }
