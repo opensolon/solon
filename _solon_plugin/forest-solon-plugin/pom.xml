@@ -24,7 +24,7 @@
         <dependency>
             <groupId>com.dtflys.forest</groupId>
             <artifactId>forest-core</artifactId>
-            <version>1.5.26</version>
+            <version>1.5.28</version>
         </dependency>
 
         <dependency>
