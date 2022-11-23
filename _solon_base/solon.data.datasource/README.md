@@ -26,5 +26,33 @@ demo.ds.db_user:
 代码示使你
 
 ```java
+//配置数据源 bean
+@Configuration
+public class Config {
+    @Bean("db_user")
+    public DataSource dsUser(@Inject("$demo.ds.db_user}") DynamicDataSource dataSource) {
+        return dataSource;
+    }
+}
 
+@Service
+public class UserService{
+    @Db("db_user")
+    UserMapper userMapper;
+    
+    @DynamicDs //使用 db_user 动态源内的 默认源
+    public void addUser(){
+        userMapper.inserUser();
+    }
+    
+    @DynamicDs("db_user_1") //使用 db_user 动态源内的 db_user_1 源
+    public void getUserList(){
+        userMapper.selectUserList();
+    }
+    
+    public void getUserList2(){
+        DynamicDsHolder.set("db_user_2"); //使用 db_user 动态源内的 db_user_2 源
+        userMapper.selectUserList();
+    }
+}
 ```
