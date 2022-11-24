@@ -3,6 +3,8 @@ package org.noear.solon.data.datasource;
 import org.noear.solon.Utils;
 
 import javax.sql.DataSource;
+import java.io.Closeable;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -16,13 +18,13 @@ import java.util.logging.Logger;
  * @author noear
  * @since 1.11
  */
-public abstract class AbstractRoutingDataSource implements DataSource {
+public abstract class AbstractRoutingDataSource implements DataSource, Closeable {
     private DataSource defaultTargetDataSource;
     private Map<String, DataSource> targetDataSources;
 
     /**
      * 严格模式（启用后在未匹配到指定数据源时候会抛出异常,不启用则使用默认数据源.）
-     * */
+     */
     private boolean strict;
 
     public void setTargetDataSources(Map<String, DataSource> targetDataSources) {
@@ -120,5 +122,22 @@ public abstract class AbstractRoutingDataSource implements DataSource {
     @Override
     public Logger getParentLogger() throws SQLFeatureNotSupportedException {
         return determineCurrentTarget().getParentLogger();
+    }
+
+    @Override
+    public void close() throws IOException {
+        if (defaultTargetDataSource != null) {
+            if (defaultTargetDataSource instanceof Closeable) {
+                ((Closeable) defaultTargetDataSource).close();
+            }
+        }
+
+        if (targetDataSources != null) {
+            for (DataSource ds : targetDataSources.values()) {
+                if (ds instanceof Closeable) {
+                    ((Closeable) ds).close();
+                }
+            }
+        }
     }
 }
