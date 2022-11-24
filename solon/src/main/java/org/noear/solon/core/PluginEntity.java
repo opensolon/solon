@@ -102,6 +102,8 @@ public class PluginEntity {
         if (plugin != null) {
             try {
                 plugin.start(context);
+            } catch (RuntimeException e) {
+                throw e;
             } catch (Throwable e) {
                 throw new IllegalStateException("Plugin start failed", e);
             }
