@@ -7,6 +7,7 @@ import org.noear.solon.core.util.PluginUtil;
 import java.io.File;
 import java.net.URL;
 import java.util.*;
+import java.util.function.Predicate;
 
 /**
  * 统一配置加载器
@@ -60,7 +61,7 @@ public final class SolonProps extends Props {
      *
      * @param args 启用参数
      */
-    public SolonProps load(Class<?> source, NvMap args) throws Exception{
+    public SolonProps load(Class<?> source, NvMap args) throws Exception {
         //1.接收启动参数
         this.args = args;
         //1.1.应用源
@@ -72,7 +73,7 @@ public final class SolonProps extends Props {
         //2.同步启动参数到系统属性
         this.args.forEach((k, v) -> {
             if (k.contains(".")) {
-                System.setProperty(k,v);
+                System.setProperty(k, v);
             }
         });
 
@@ -90,7 +91,7 @@ public final class SolonProps extends Props {
         loadInit(Utils.getResource("app.yml"), sysPropOrg);
 
         //4.1.加载环境变量（支持弹性容器设置的环境变量）
-        loadEnv("solon.");
+        loadEnv(k -> k.startsWith("solon.") || k.startsWith("server."));
 
         //4.2.加载环境配置(例：env=pro 或 env=debug)
         env = getArg("env");
@@ -111,11 +112,11 @@ public final class SolonProps extends Props {
 
         //4.3.加载扩展配置 solon.config //or solon.extend.config
         String extConfig = getArg("config");
-        if(Utils.isEmpty(extConfig)){
+        if (Utils.isEmpty(extConfig)) {
             //@Deprecated
             extConfig = getArg("extend.config");//兼容旧的
         }
-        if(Utils.isNotEmpty(extConfig)) {
+        if (Utils.isNotEmpty(extConfig)) {
             File extConfigFile = new File(extConfig);
             if (extConfigFile.exists()) {
                 loadInit(extConfigFile.toURI().toURL(), sysPropOrg);
@@ -210,8 +211,12 @@ public final class SolonProps extends Props {
      * @param keyStarts key 的开始字符
      */
     public SolonProps loadEnv(String keyStarts) {
+        return loadEnv(k -> k.startsWith(keyStarts));
+    }
+
+    public SolonProps loadEnv(Predicate<String> predicate) {
         System.getenv().forEach((k, v) -> {
-            if (k.startsWith(keyStarts)) {
+            if (predicate.test(k)) {
                 setProperty(k, v); //可以替换系统属性 update by: 2021-11-05,noear
                 System.setProperty(k, v);
             }
@@ -433,7 +438,7 @@ public final class SolonProps extends Props {
      * 框架版本号
      */
     public String version() {
-        return "1.11.1-M4";
+        return "1.11.1-M5";
     }
 
     /**

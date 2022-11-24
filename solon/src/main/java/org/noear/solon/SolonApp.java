@@ -55,6 +55,7 @@ public class SolonApp extends RouterWrapper {
      */
     protected void initAwait() {
         String addr = cfg().get("solon.start.ping");
+
         if (Utils.isNotEmpty(addr)) {
             try {
                 while (true) {
@@ -67,8 +68,8 @@ public class SolonApp extends RouterWrapper {
                         Thread.sleep(2000);
                     }
                 }
-            } catch (Exception e) {
-                throw new RuntimeException(e);
+            } catch (Throwable e) {
+                throw new IllegalStateException(e);
             }
         }
     }
