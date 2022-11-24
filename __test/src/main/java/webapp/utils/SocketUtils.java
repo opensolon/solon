@@ -25,7 +25,7 @@ public class SocketUtils {
         URI uri1 = URI.create(uri);
 
         if("tcp".equals(uri1.getScheme()) == false) {
-            throw new RuntimeException("Only [s] scheme is supported");
+            throw new IllegalStateException("Only [s] scheme is supported");
         }
 
         Map<String, SocketUtils> clientMap = threadLocal.get();
@@ -54,7 +54,7 @@ public class SocketUtils {
         URI uri1 = URI.create(uri);
 
         if("tcp".equals(uri1.getScheme()) == false) {
-            throw new RuntimeException("Only [s] scheme is supported");
+            throw new IllegalStateException("Only [s] scheme is supported");
         }
 
         return new SocketUtils(uri1.getHost(), uri1.getPort());
