@@ -20,6 +20,8 @@ testpath: "D:/abc-1-2.12/xx.xml"
 
 server.port: 8080
 
+server.contextPath: "/test/"
+
 solon.env: test
 
 solon.app:

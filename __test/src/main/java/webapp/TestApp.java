@@ -81,8 +81,6 @@ public class TestApp {
             x.enableWebSocket(true);
             x.pluginAdd(1, new AppPluginImp());
 
-            x.filter(new ContextPathFilter("/test/"));
-
             //x.onStatus(404, c->c.render("404了"));
 
             x.onEvent(JsonRenderFactory.class, e->{
