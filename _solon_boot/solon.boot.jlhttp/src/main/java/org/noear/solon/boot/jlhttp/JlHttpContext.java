@@ -381,12 +381,8 @@ public class JlHttpContext extends Context {
 
     @Override
     public void redirect(String url, int code) {
-        try {
-            statusDoSet(code);
-            headerSet("Location", url);
-        } catch (Throwable ex) {
-            throw new RuntimeException(ex);
-        }
+        headerSet("Location", url);
+        statusDoSet(code);
     }
 
     @Override
