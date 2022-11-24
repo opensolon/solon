@@ -19,7 +19,7 @@ import java.util.Map;
  */
 public class CloudConfigServiceLocalImpl implements CloudConfigService {
     static final String DEFAULT_GROUP = "DEFAULT_GROUP";
-    static final String CONFIG_KEY_FORMAT = "config@%s:%s";
+    static final String CONFIG_KEY_FORMAT = "config@%s_%s";
 
     Map<String, Config> configMap = new HashMap<>();
 

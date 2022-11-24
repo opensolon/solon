@@ -17,7 +17,7 @@ import java.util.Properties;
  */
 public class CloudI18nServiceLocalImpl implements CloudI18nService {
     static final String DEFAULT_GROUP = "DEFAULT_GROUP";
-    static final String I18N_KEY_FORMAT = "META-INF/solon-cloud/i18n@%s:%s-%s";
+    static final String I18N_KEY_FORMAT = "META-INF/solon-cloud/i18n@%s_%s-%s";
 
     @Override
     public Pack pull(String group, String packName, Locale locale) {

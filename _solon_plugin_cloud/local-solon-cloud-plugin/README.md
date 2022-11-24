@@ -12,10 +12,10 @@ local-solon-cloud-plugin 是 solon cloud 标准的本地模拟实现。（src/te
 ### 1、云端配置服务（本地模拟）
 
 内容格式支持： yml, properties, json （后缀做为name的一部分，可有可无）<br/>
-文件地址格式： META-INF/solon-cloud/config@{group}:{name}，例示：
+文件地址格式： META-INF/solon-cloud/config@{group}_{name}，例示：
 
-* META-INF/solon-cloud/config@demo:demo-db
-* META-INF/solon-cloud/config@demo:demoapp.yml
+* META-INF/solon-cloud/config@demo_demo-db
+* META-INF/solon-cloud/config@demo_demoapp.yml
 
 
 **两种应用：**
@@ -48,10 +48,10 @@ public class Config {
 ### 4、云端国际化配置服务（本地模拟）
 
 内容格式支持： yml, properties, json （不能有手缀名，为了更好的支持中文）<br/>
-文件地址格式： META-INF/solon-cloud/i18n@{group}:{name}-{locale}，例示：
+文件地址格式： META-INF/solon-cloud/i18n@{group}_{name}-{locale}，例示：
 
-* META-INF/solon-cloud/i18n@demo:demoapp-zh_CN
-* META-INF/solon-cloud/i18n@demo:demoapp-en_US
+* META-INF/solon-cloud/i18n@demo_demoapp-zh_CN
+* META-INF/solon-cloud/i18n@demo_demoapp-en_US
 
 
 ### 5、云端定时任务调度服务（本地模拟）
