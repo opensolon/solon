@@ -15,6 +15,7 @@
 * 增加 Props::loadAddIfAbsent 接口
 * 增加 Mybatis::use 接口
 * 增加 DynamicDataSource 接口
+* 修复 quartz-solon-plugin，当 cron7x="10d" 时，会变成10秒的问题
 * 升级 sqltoy 为 5.2.22
 * 升级 forest 为 1.5.28
 * 升级 snakeyaml 为 1.33
