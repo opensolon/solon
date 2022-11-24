@@ -19,6 +19,8 @@
 * 升级 forest 为 1.5.28
 * 升级 snakeyaml 为 1.33
 * 升级 jackson 为 2.14.1
+* 升级 snack3 为 3.2.47
+* 升级 wood 为 1.0.5
 
 #### 1.11.0
 * 清理 xxx-solon-plugin 的 solon cloud 插件包（正试由 xxx-solon-cloud-plugin 替代）
