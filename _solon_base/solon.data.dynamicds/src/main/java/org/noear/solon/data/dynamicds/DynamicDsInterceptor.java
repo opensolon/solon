@@ -1,4 +1,4 @@
-package org.noear.solon.data.datasource.dynamic.annotation;
+package org.noear.solon.data.dynamicds;
 
 import org.noear.solon.core.aspect.Interceptor;
 import org.noear.solon.core.aspect.Invocation;

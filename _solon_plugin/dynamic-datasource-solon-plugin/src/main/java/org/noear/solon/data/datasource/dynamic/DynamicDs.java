@@ -1,4 +1,4 @@
-package org.noear.solon.data.datasource.dynamic.annotation;
+package org.noear.solon.data.datasource.dynamic;
 
 import org.noear.solon.annotation.Around;
 

@@ -20,8 +20,6 @@
 
         <module>../../_solon_plugin/luffy-solon-plugin</module>
 
-        <module>../../_solon_plugin/dynamic-datasource-solon-plugin</module>
-
         <module>../../_solon_plugin/weed3-solon-plugin</module>
         <module>../../_solon_plugin/wood-solon-plugin</module>
 

@@ -2,7 +2,6 @@ package org.noear.solon.data.datasource.dynamic;
 
 import org.noear.solon.data.datasource.AbstractRoutingDataSource;
 import org.noear.solon.data.datasource.DsUtils;
-import org.noear.solon.data.datasource.dynamic.annotation.DynamicDsHolder;
 
 import javax.sql.DataSource;
 import java.util.Map;
