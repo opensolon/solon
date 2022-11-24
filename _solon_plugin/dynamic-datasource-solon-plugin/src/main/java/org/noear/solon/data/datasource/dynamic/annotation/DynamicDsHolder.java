@@ -1,4 +1,4 @@
-package org.noear.solon.data.datasource.dynamic;
+package org.noear.solon.data.datasource.dynamic.annotation;
 
 /**
  * 动态数据源切换

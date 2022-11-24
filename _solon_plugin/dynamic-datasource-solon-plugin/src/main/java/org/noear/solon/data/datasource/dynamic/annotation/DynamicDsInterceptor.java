@@ -2,7 +2,6 @@ package org.noear.solon.data.datasource.dynamic.annotation;
 
 import org.noear.solon.core.aspect.Interceptor;
 import org.noear.solon.core.aspect.Invocation;
-import org.noear.solon.data.datasource.dynamic.DynamicDsHolder;
 
 /**
  * 动态数据源切换
