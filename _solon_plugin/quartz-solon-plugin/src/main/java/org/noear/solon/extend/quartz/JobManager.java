@@ -110,7 +110,7 @@ public final class JobManager {
                 ssb.withIntervalInHours((int) period);
                 break;
             case DAYS:
-                ssb.withIntervalInSeconds((int) period);
+                ssb.withIntervalInHours((int) (period * 24));
                 break;
             default:
                 return;
