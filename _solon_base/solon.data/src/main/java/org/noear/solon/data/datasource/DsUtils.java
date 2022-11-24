@@ -38,6 +38,9 @@ public class DsUtils {
         return buildDsMap(props, typeClz);
     }
 
+    /**
+     * 构建数据源字典
+     */
     public static Map<String, DataSource> buildDsMap(Properties props, Class<?> typeClz) {
         //::数据源构建
         Props rootProps;
