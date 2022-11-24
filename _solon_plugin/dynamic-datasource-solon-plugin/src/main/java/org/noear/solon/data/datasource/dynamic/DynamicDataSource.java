@@ -35,7 +35,6 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
         setStrict(Boolean.parseBoolean(strictStr));
         setTargetDataSources(dataSourceMap);
         setDefaultTargetDataSource(defSource);
-        checkPropertiesSet();
     }
 
 

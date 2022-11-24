@@ -26,10 +26,18 @@ public abstract class AbstractRoutingDataSource implements DataSource {
     private boolean strict;
 
     public void setTargetDataSources(Map<String, DataSource> targetDataSources) {
+        if (targetDataSources == null || targetDataSources.size() == 0) {
+            throw new IllegalArgumentException("Property 'targetDataSources' is required");
+        }
+
         this.targetDataSources = targetDataSources;
     }
 
     public void setDefaultTargetDataSource(DataSource defaultTargetDataSource) {
+        if (defaultTargetDataSource == null) {
+            throw new IllegalArgumentException("Property 'defaultTargetDataSource' is required");
+        }
+
         this.defaultTargetDataSource = defaultTargetDataSource;
     }
 
@@ -37,18 +45,6 @@ public abstract class AbstractRoutingDataSource implements DataSource {
         this.strict = strict;
     }
 
-    /**
-     * 检查属性设置
-     * */
-    public void checkPropertiesSet(){
-        if (targetDataSources == null || targetDataSources.size() == 0) {
-            throw new IllegalArgumentException("Property 'targetDataSources' is required");
-        }
-
-        if (defaultTargetDataSource == null) {
-            throw new IllegalArgumentException("Property 'defaultTargetDataSource' is required");
-        }
-    }
 
     /**
      * 确定当前数据源键
