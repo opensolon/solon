@@ -72,9 +72,9 @@ public class CloudEventServiceManagerImpl implements CloudEventServiceManager {
 
         if (tmp == null) {
             if (Utils.isEmpty(channel)) {
-                throw new RuntimeException("CloudEventService does not exist");
+                throw new IllegalStateException("CloudEventService does not exist");
             } else {
-                throw new RuntimeException("CloudEventService does not exist channel &" + channel);
+                throw new IllegalStateException("CloudEventService does not exist channel &" + channel);
             }
         }
 
