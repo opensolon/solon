@@ -9,7 +9,7 @@
 * 调整 运行完成后，提供未注入的对象???
 * 增加 更多友好的异常分类???
 
-#### 1.11.1
+#### 1.11.2
 * 新增 local-solon-cloud-plugin 插件
 * 新增 solon.data.dynamic 插件（提供 dynamic-datasource 支持）
 * 增加 Props::loadAddIfAbsent 接口
