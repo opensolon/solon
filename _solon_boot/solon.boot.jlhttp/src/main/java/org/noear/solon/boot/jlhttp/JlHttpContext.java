@@ -1,5 +1,6 @@
 package org.noear.solon.boot.jlhttp;
 
+import org.noear.solon.boot.web.RedirectUtils;
 import org.noear.solon.core.NvMap;
 import org.noear.solon.Utils;
 import org.noear.solon.core.event.EventBus;
@@ -375,12 +376,9 @@ public class JlHttpContext extends Context {
     }
 
     @Override
-    public void redirect(String url) {
-        redirect(url, 302);
-    }
-
-    @Override
     public void redirect(String url, int code) {
+        url = RedirectUtils.getRedirectPath(url);
+
         headerSet("Location", url);
         statusDoSet(code);
     }

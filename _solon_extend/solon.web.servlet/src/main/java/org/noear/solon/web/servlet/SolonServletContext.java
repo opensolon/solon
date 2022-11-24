@@ -1,6 +1,7 @@
 package org.noear.solon.web.servlet;
 
 import org.noear.solon.Utils;
+import org.noear.solon.boot.web.RedirectUtils;
 import org.noear.solon.core.NvMap;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.UploadedFile;
@@ -323,12 +324,9 @@ public class SolonServletContext extends Context {
     }
 
     @Override
-    public void redirect(String url) {
-        redirect(url, 302);
-    }
-
-    @Override
     public void redirect(String url, int code) {
+        url = RedirectUtils.getRedirectPath(url);
+
         headerSet("Location", url);
         statusDoSet(code);
     }

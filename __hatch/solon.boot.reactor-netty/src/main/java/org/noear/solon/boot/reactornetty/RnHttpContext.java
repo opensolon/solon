@@ -6,6 +6,7 @@ import io.netty.handler.codec.http.*;
 import io.netty.handler.codec.http.cookie.ServerCookieDecoder;
 import io.netty.handler.codec.http.cookie.Cookie;
 import org.noear.solon.Utils;
+import org.noear.solon.boot.web.RedirectUtils;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.UploadedFile;
 import org.noear.solon.core.NvMap;
@@ -275,12 +276,9 @@ public class RnHttpContext extends Context {
     }
 
     @Override
-    public void redirect(String url) {
-        redirect(url, 302);
-    }
-
-    @Override
     public void redirect(String url, int code) {
+        url = RedirectUtils.getRedirectPath(url);
+
         headerSet("Location", url);
         statusDoSet(code);
     }

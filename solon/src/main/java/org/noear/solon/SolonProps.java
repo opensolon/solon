@@ -353,7 +353,19 @@ public final class SolonProps extends Props {
      */
     public String serverContextPath() {
         if (serverContextPath == null) {
-            serverContextPath = get("server.contextPath", "");
+            serverContextPath = get("server.contextPath", "").trim();
+
+            if (serverContextPath.length() > 0) {
+                //确保是 / 开头
+                if (serverContextPath.startsWith("/") == false) {
+                    serverContextPath = "/" + serverContextPath;
+                }
+
+                //确保是 / 结尾
+                if (serverContextPath.endsWith("/") == false) {
+                    serverContextPath = serverContextPath + "/";
+                }
+            }
         }
 
         return serverContextPath;

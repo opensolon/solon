@@ -902,7 +902,9 @@ public abstract class Context {
      * 跳转地址
      */
     @Note("跳转地址")
-    public abstract void redirect(String url);
+    public void redirect(String url) {
+        redirect(url, 302);
+    }
 
     @Note("跳转地址")
     public abstract void redirect(String url, int code);

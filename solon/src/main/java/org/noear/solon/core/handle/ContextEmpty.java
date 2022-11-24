@@ -177,11 +177,6 @@ public class ContextEmpty extends Context {
     }
 
     @Override
-    public void redirect(String url) {
-
-    }
-
-    @Override
     public void redirect(String url, int code) {
 
     }
