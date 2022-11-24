@@ -438,7 +438,7 @@ public final class SolonProps extends Props {
      * 框架版本号
      */
     public String version() {
-        return "1.11.1-M5";
+        return "1.11.1";
     }
 
     /**
