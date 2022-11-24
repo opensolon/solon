@@ -105,7 +105,7 @@ public class SolonApp extends RouterWrapper {
 
         //3.尝试设置 context-path
         if (Utils.isNotEmpty(cfg().serverContextPath())) {
-            this.filter(-999, new ContextPathFilter(cfg().serverContextPath()));
+            this.filter(-99, new ContextPathFilter(cfg().serverContextPath()));
         }
     }
 
