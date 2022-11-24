@@ -29,6 +29,10 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
         DataSource defSource = dataSourceMap.get("default");
 
         if (defSource == null) {
+            defSource = dataSourceMap.get("master");
+        }
+
+        if (defSource == null) {
             throw new IllegalStateException("Missing default data source configuration");
         }
 
