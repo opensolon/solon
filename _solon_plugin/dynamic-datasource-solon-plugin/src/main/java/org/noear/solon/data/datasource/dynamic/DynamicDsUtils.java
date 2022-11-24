@@ -1,4 +1,4 @@
-package org.noear.solon.data.datasource;
+package org.noear.solon.data.datasource.dynamic;
 
 import org.noear.solon.Utils;
 import org.noear.solon.core.Props;

@@ -5,9 +5,9 @@ import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.aspect.annotation.Service;
-import org.noear.solon.data.datasource.DynamicDataSource;
-import org.noear.solon.data.datasource.DynamicDsUtils;
-import org.noear.solon.data.datasource.annotation.DynamicDs;
+import org.noear.solon.data.dynamicds.DynamicDataSource;
+import org.noear.solon.data.dynamicds.DynamicDsUtils;
+import org.noear.solon.data.datasource.dynamic.annotation.DynamicDs;
 
 import javax.sql.DataSource;
 

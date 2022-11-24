@@ -17,29 +17,37 @@ import java.util.logging.Logger;
  * @since 1.11
  */
 public abstract class AbstractRoutingDataSource implements DataSource {
-    protected DataSource defaultTargetDataSource;
-    protected Map<String, DataSource> targetDataSources;
+    private DataSource defaultTargetDataSource;
+    private Map<String, DataSource> targetDataSources;
 
     /**
      * 严格模式（启用后在未匹配到指定数据源时候会抛出异常,不启用则使用默认数据源.）
      * */
     private boolean strict;
 
+    public void setTargetDataSources(Map<String, DataSource> targetDataSources) {
+        this.targetDataSources = targetDataSources;
+    }
+
+    public void setDefaultTargetDataSource(DataSource defaultTargetDataSource) {
+        this.defaultTargetDataSource = defaultTargetDataSource;
+    }
+
+    public void setStrict(boolean strict) {
+        this.strict = strict;
+    }
+
     /**
-     * 初始化
+     * 检查属性设置
      * */
-    protected void init(DataSource defaultDataSource, Map<String, DataSource> dataSourceMap, boolean strict) {
-        if (dataSourceMap == null || dataSourceMap.size() == 0) {
+    public void checkPropertiesSet(){
+        if (targetDataSources == null || targetDataSources.size() == 0) {
             throw new IllegalArgumentException("Property 'targetDataSources' is required");
         }
 
-        if (defaultDataSource == null) {
+        if (defaultTargetDataSource == null) {
             throw new IllegalArgumentException("Property 'defaultTargetDataSource' is required");
         }
-
-        this.strict = strict;
-        this.targetDataSources = dataSourceMap;
-        this.defaultTargetDataSource = defaultDataSource;
     }
 
     /**

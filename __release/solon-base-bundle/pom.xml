@@ -21,7 +21,6 @@
         <module>../../_solon_base/solon.config.yaml</module>
 
         <module>../../_solon_base/solon.data</module>
-        <module>../../_solon_base/solon.data.datasource</module>
         <module>../../_solon_base/solon.auth</module>
         <module>../../_solon_base/solon.schedule</module>
         <module>../../_solon_base/solon.validation</module>

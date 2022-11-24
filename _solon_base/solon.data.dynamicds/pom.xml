@@ -11,13 +11,13 @@
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>solon.data.datasource</artifactId>
+    <artifactId>solon.data.dynamicds</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon</artifactId>
+            <artifactId>solon.data</artifactId>
         </dependency>
 
         <dependency>

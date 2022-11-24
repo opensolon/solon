@@ -1,7 +1,8 @@
-package org.noear.solon.data.datasource;
+package org.noear.solon.data.dynamicds;
+
+import org.noear.solon.data.datasource.AbstractRoutingDataSource;
 
 import javax.sql.DataSource;
-import java.util.Collections;
 import java.util.Map;
 import java.util.Properties;
 
@@ -31,25 +32,10 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
         }
 
         //::初始化
-        init(defSource, dataSourceMap, Boolean.parseBoolean(strictStr));
-    }
-
-
-
-    public DynamicDataSource(DataSource defaultTargetDataSource, Map<String, DataSource> targetDataSources) {
-        init(defaultTargetDataSource, targetDataSources, false);
-    }
-
-    public DynamicDataSource(DataSource defaultTargetDataSource, Map<String, DataSource> targetDataSources, boolean strict) {
-        init(defaultTargetDataSource, targetDataSources, strict);
-    }
-
-
-    /**
-     * 获取数据源集合
-     */
-    public Map<String, DataSource> getDataSourceMap() {
-        return Collections.unmodifiableMap(targetDataSources);
+        setStrict(Boolean.parseBoolean(strictStr));
+        setTargetDataSources(dataSourceMap);
+        setDefaultTargetDataSource(defSource);
+        checkPropertiesSet();
     }
 
 

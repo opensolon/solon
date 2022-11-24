@@ -1,8 +1,8 @@
-package org.noear.solon.data.datasource.annotation;
+package org.noear.solon.data.datasource.dynamic.annotation;
 
 import org.noear.solon.core.aspect.Interceptor;
 import org.noear.solon.core.aspect.Invocation;
-import org.noear.solon.data.datasource.DynamicDsUtils;
+import org.noear.solon.data.datasource.dynamic.DynamicDsUtils;
 
 /**
  * 动态数据源切换
