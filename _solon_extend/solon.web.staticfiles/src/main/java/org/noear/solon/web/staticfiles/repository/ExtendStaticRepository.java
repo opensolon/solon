@@ -18,7 +18,7 @@ public class ExtendStaticRepository implements StaticRepository {
     public ExtendStaticRepository() {
         String path = ExtendLoader.path();
         if (path == null) {
-            throw new RuntimeException("No extension directory exists");
+            throw new IllegalStateException("No extension directory exists");
         }
 
         location = (path + "static");

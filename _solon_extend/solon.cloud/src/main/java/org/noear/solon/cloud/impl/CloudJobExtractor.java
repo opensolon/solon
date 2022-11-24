@@ -32,10 +32,10 @@ public class CloudJobExtractor implements BeanExtractor<CloudJob> {
         String description = Solon.cfg().getByParse(anno.description());
 
         if (name.trim().length() == 0) {
-            throw new RuntimeException("CloudJob name invalid, for[" + bw.clz() + "#" + method.getName() + "] .");
+            throw new IllegalStateException("CloudJob name invalid, for[" + bw.clz() + "#" + method.getName() + "] .");
         }
         if (CloudClient.job().isRegistered(name)) {
-            throw new RuntimeException("CloudJob[" + name + "] naming conflicts.");
+            throw new IllegalStateException("CloudJob[" + name + "] naming conflicts.");
         }
 
         //method,必须返回为void
