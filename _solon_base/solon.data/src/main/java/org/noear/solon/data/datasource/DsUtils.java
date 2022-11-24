@@ -18,9 +18,9 @@ import java.util.Properties;
 public class DsUtils {
 
     /**
-     * 构建数据源字典
-     */
-    public static Map<String, DataSource> buildDsMap(Properties props) {
+     * 解析类型
+     * */
+    private static Class<?> resolveType(Properties props){
         //::类型
         String typeStr = props.getProperty("type");
         if (Utils.isEmpty(typeStr)) {
@@ -34,6 +34,24 @@ public class DsUtils {
             throw new IllegalStateException("Type configuration not is data source");
         }
 
+        return typeClz;
+    }
+
+    public static DataSource buildDs(Properties props) {
+        Class<?> typeClz = resolveType(props);
+
+        return  buildDs(props, typeClz);
+    }
+
+    public static DataSource buildDs(Properties props, Class<?> typeClz) {
+        return  (DataSource) PropsConverter.global().convert(props, typeClz);
+    }
+
+    /**
+     * 构建数据源字典
+     */
+    public static Map<String, DataSource> buildDsMap(Properties props) {
+        Class<?> typeClz = resolveType(props);
 
         return buildDsMap(props, typeClz);
     }
