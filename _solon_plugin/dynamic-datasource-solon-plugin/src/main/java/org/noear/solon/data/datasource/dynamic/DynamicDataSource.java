@@ -1,6 +1,7 @@
 package org.noear.solon.data.datasource.dynamic;
 
 import org.noear.solon.data.datasource.AbstractRoutingDataSource;
+import org.noear.solon.data.datasource.DsUtils;
 
 import javax.sql.DataSource;
 import java.util.Map;
@@ -22,7 +23,7 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
         String strictStr = props.getProperty("strict", "false");
         props.remove("strict");
 
-        Map<String, DataSource> dataSourceMap = DynamicDsUtils.buildDsMap(props);
+        Map<String, DataSource> dataSourceMap = DsUtils.buildDsMap(props);
 
         //::获取默认数据源
         DataSource defSource = dataSourceMap.get("default");

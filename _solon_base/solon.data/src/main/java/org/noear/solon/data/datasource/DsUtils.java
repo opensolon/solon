@@ -1,4 +1,4 @@
-package org.noear.solon.data.datasource.dynamic;
+package org.noear.solon.data.datasource;
 
 import org.noear.solon.Utils;
 import org.noear.solon.core.Props;
@@ -10,12 +10,12 @@ import java.util.Map;
 import java.util.Properties;
 
 /**
- * 动态数据源工具
+ * 数据源工具
  *
  * @author noear
  * @since 1.11
  */
-public class DynamicDsUtils {
+public class DsUtils {
 
     /**
      * 构建数据源字典
@@ -52,7 +52,7 @@ public class DynamicDsUtils {
 
         if (groupProps.size() == 0) {
             //缺少数据源配置
-            throw new IllegalStateException("Missing dynamic data source configuration");
+            throw new IllegalStateException("Missing data source configuration");
         }
 
 
