@@ -14,10 +14,17 @@ public class ContextPathFilter implements Filter {
      * @param path '/demo/'
      */
     public ContextPathFilter(String path, boolean forced) {
+        String newPath = null;
         if (path.endsWith("/")) {
-            this.path = path;
+            newPath = path;
         } else {
-            this.path = path + "/";
+            newPath = path + "/";
+        }
+
+        if (newPath.startsWith("/")) {
+            this.path = newPath;
+        } else {
+            this.path = "/" + newPath;
         }
 
         this.forced = forced;

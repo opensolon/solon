@@ -905,6 +905,7 @@ public abstract class Context {
     public abstract void redirect(String url);
 
     @Note("跳转地址")
+    @Deprecated
     public abstract void redirect(String url, int code);
 
     @Note("转发")

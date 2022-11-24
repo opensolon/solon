@@ -101,12 +101,18 @@ public class SolonApp extends RouterWrapper {
 
         //2.尝试扫描插件
         cfg().plugsScan(loaderList);
+
+        //3.尝试设置 context-path
+        if (Utils.isNotEmpty(cfg().serverContextPath())) {
+            this.filter(-999, new ContextPathFilter(cfg().serverContextPath()));
+        }
     }
 
     /**
      * 运行应用
      */
     protected void run() throws Throwable{
+
         //event::0.x.推送App init end事件
         EventBus.push(AppInitEndEvent.instance);
 

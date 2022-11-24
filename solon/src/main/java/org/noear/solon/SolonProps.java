@@ -347,6 +347,18 @@ public final class SolonProps extends Props {
         return serverHost;
     }
 
+    private String serverContextPath;
+    /**
+     * 获取应用主上下文路径
+     */
+    public String serverContextPath() {
+        if (serverContextPath == null) {
+            serverContextPath = get("server.contextPath", "");
+        }
+
+        return serverContextPath;
+    }
+
 
     /**
      * 环境
