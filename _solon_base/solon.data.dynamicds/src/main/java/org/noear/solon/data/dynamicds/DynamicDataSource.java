@@ -13,7 +13,7 @@ import java.util.Properties;
  * @author noear
  * @since 1.11
  */
-public class DynamicDataSource extends AbstractRoutingDataSource {
+public class DynamicDataSource extends AbstractRoutingDataSource implements DataSource{
     public DynamicDataSource(Properties props) {
         if (props == null || props.size() == 0) {
             //缺少配置
