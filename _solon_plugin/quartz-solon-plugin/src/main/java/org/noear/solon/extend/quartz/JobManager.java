@@ -85,13 +85,15 @@ public final class JobManager {
                 .usingJobData("__jobID", jobEntity.jobID)
                 .build();
 
-        Trigger trigger = TriggerBuilder.newTrigger()
-                .withIdentity(jobEntity.jobID, "solon")
-                .startNow()
-                .withSchedule(CronScheduleBuilder.cronSchedule(cronx))
-                .build();
+        if (_server.checkExists(jobDetail.getKey()) == false) {
+            Trigger trigger = TriggerBuilder.newTrigger()
+                    .withIdentity(jobEntity.jobID, "solon")
+                    .startNow()
+                    .withSchedule(CronScheduleBuilder.cronSchedule(cronx))
+                    .build();
 
-        _server.scheduleJob(jobDetail, trigger);
+            _server.scheduleJob(jobDetail, trigger);
+        }
     }
 
     private static void addFuture(JobEntity jobEntity, long period, TimeUnit unit) throws Exception {
@@ -121,12 +123,14 @@ public final class JobManager {
                 .usingJobData("__jobID", jobEntity.jobID)
                 .build();
 
-        Trigger trigger = TriggerBuilder.newTrigger()
-                .withIdentity(jobEntity.jobID, "solon")
-                .startNow()
-                .withSchedule(ssb.repeatForever())
-                .build();
+        if (_server.checkExists(jobDetail.getKey()) == false) {
+            Trigger trigger = TriggerBuilder.newTrigger()
+                    .withIdentity(jobEntity.jobID, "solon")
+                    .startNow()
+                    .withSchedule(ssb.repeatForever())
+                    .build();
 
-        _server.scheduleJob(jobDetail, trigger);
+            _server.scheduleJob(jobDetail, trigger);
+        }
     }
 }
