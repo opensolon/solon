@@ -12,4 +12,14 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface PathVar {
+    /**
+     * 名字
+     * */
+    @Alias("name")
+    String value() default "";
+    /**
+     * 名字
+     * */
+    @Alias("value")
+    String name() default "";
 }

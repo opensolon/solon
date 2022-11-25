@@ -1,10 +1,7 @@
 package org.noear.solon.core.wrap;
 
 import org.noear.solon.Utils;
-import org.noear.solon.annotation.Body;
-import org.noear.solon.annotation.Cookie;
-import org.noear.solon.annotation.Header;
-import org.noear.solon.annotation.Param;
+import org.noear.solon.annotation.*;
 import org.noear.solon.core.Constants;
 import org.noear.solon.core.handle.Context;
 
@@ -35,8 +32,10 @@ public class ParamWrap {
 
         if (resolveBody() == false) {
             if (resolveParam() == false) {
-                if (resolveHeader() == false) {
-                    resolveCookie();
+                if (resolvePathVar() == false) {
+                    if (resolveHeader() == false) {
+                        resolveCookie();
+                    }
                 }
             }
         }
@@ -131,6 +130,22 @@ public class ParamWrap {
 
         required = paramAnno.required();
 
+        return true;
+    }
+
+    private boolean resolvePathVar() {
+        PathVar paramAnno = parameter.getAnnotation(PathVar.class);
+
+        if (paramAnno == null) {
+            return false;
+        }
+
+        String name2 = Utils.annoAlias(paramAnno.value(), paramAnno.name());
+        if (Utils.isNotEmpty(name2)) {
+            name = name2;
+        }
+
+        required = true;
         return true;
     }
 
