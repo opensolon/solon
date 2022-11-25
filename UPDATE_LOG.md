@@ -1,4 +1,4 @@
-#### 规划
+#### 后续（可以提 Issue 增加需求）
 * 新增 knife4j-solon-plugin 插件
 * 新增 liteflow-solon-plugin 插件
 * 新增 kubernetes-solon-cloud-plugin 插件
