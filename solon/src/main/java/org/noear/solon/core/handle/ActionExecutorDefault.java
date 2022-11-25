@@ -1,5 +1,6 @@
 package org.noear.solon.core.handle;
 
+import org.noear.solon.core.NvMap;
 import org.noear.solon.core.wrap.ClassWrap;
 import org.noear.solon.core.wrap.MethodWrap;
 import org.noear.solon.core.util.ConvertUtil;
@@ -90,8 +91,8 @@ public class ActionExecutorDefault implements ActionExecutor {
                         tv = ctx.bodyNew();
                     } else if (InputStream.class.equals(pt)) {
                         tv = ctx.bodyAsStream();
-                    } else if (Map.class.equals(pt)) {
-                        tv = ctx.paramMap();
+                    } else if (Map.class.equals(pt) && bodyObj instanceof NvMap) {
+                        tv = bodyObj;
                     }
                 }
 
@@ -146,7 +147,7 @@ public class ActionExecutorDefault implements ActionExecutor {
      * 尝试将body转换为特定对象
      */
     protected Object changeBody(Context ctx) throws Exception {
-        return null;
+        return ctx.paramMap();
     }
 
     /**

@@ -62,6 +62,24 @@ public class Param4Controller {
         return bodyStr;
     }
 
+    @Mapping("body_map")
+    public int test_body_map(@Body Map<String,String> bodyMap) throws IOException {
+        asyncTask.test();
+        return bodyMap.size();
+    }
+
+    @Mapping("body_val")
+    public int test_body_val(@Body Map<String,String> name) throws IOException {
+        asyncTask.test();
+        return name.size();
+    }
+
+    @Mapping("val")
+    public Object test_val(String name) throws IOException {
+        asyncTask.test();
+        return name;
+    }
+
     @Mapping("body2")
     public RegisterUsername test_body2(RegisterUsername user) throws IOException {
         asyncTask.test();

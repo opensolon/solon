@@ -27,20 +27,28 @@ public class ProtostuffActionExecutor extends ActionExecutorDefault {
         return ProtostuffUtil.deserialize(ctx.bodyAsBytes());
     }
 
+    /**
+     * @since 1.11 增加 requireBody 支持
+     * */
     @Override
     protected Object changeValue(Context ctx, ParamWrap p, int pi, Class<?> pt, Object bodyObj) throws Exception {
+        if (p.requireBody() == false && ctx.paramMap().containsKey(p.getName())) {
+            //有可能是path、queryString变量
+            return super.changeValue(ctx, p, pi, pt, bodyObj);
+        }
+
         if (bodyObj == null) {
             return null;
         } else {
+            if (p.requireBody()) {
+                return bodyObj;
+            }
+
             if (bodyObj instanceof Map) {
                 Map<String, Object> tmp = (Map<String, Object>) bodyObj;
 
                 if (tmp.containsKey(p.getName())) {
                     return tmp.get(p.getName());
-                } else if (ctx.paramMap().containsKey(p.getName())) {
-                    //有可能是path变量
-                    //
-                    return super.changeValue(ctx, p, pi, pt, bodyObj);
                 }
             }
 

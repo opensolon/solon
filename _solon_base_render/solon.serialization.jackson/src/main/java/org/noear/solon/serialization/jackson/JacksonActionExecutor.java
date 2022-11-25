@@ -8,7 +8,6 @@ import org.noear.solon.core.handle.ActionExecutorDefault;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.wrap.ParamWrap;
 
-import java.lang.reflect.ParameterizedType;
 import java.util.Collection;
 import java.util.List;
 
@@ -50,10 +49,13 @@ public class JacksonActionExecutor extends ActionExecutorDefault {
         }
     }
 
+    /**
+     * @since 1.11 增加 requireBody 支持
+     * */
     @Override
     protected Object changeValue(Context ctx, ParamWrap p, int pi, Class<?> pt, Object bodyObj) throws Exception {
-
-        if (ctx.paramMap().containsKey(p.getName())) {
+        if (p.requireBody() == false && ctx.paramMap().containsKey(p.getName())) {
+            //有可能是path、queryString变量
             return super.changeValue(ctx, p, pi, pt, bodyObj);
         }
 
@@ -64,23 +66,30 @@ public class JacksonActionExecutor extends ActionExecutorDefault {
         JsonNode tmp = (JsonNode) bodyObj;
 
         if (tmp.isObject()) {
-            if (tmp.has(p.getName())) {
-                JsonNode m1 = tmp.get(p.getName());
-
-                return mapper_type.readValue(mapper_type.treeAsTokens(m1), new TypeReferenceImp<>(p));
-            } else if (ctx.paramMap().containsKey(p.getName())) {
-                //有可能是path变量
+            if (p.requireBody() == false) {
                 //
+                //如果没有 body 要求；尝试找按属性找
+                //
+                if (tmp.has(p.getName())) {
+                    JsonNode m1 = tmp.get(p.getName());
+
+                    return mapper_type.readValue(mapper_type.treeAsTokens(m1), new TypeReferenceImp<>(p));
+                }
+            }
+
+            //尝试 body 转换
+            if (pt.isPrimitive() || pt.getTypeName().startsWith("java.lang.")) {
                 return super.changeValue(ctx, p, pi, pt, bodyObj);
             } else {
-                if(List.class.isAssignableFrom(p.getType())){
+                if (List.class.isAssignableFrom(p.getType())) {
                     return null;
                 }
 
-                if(p.getType().isArray()){
+                if (p.getType().isArray()) {
                     return null;
                 }
 
+                //支持泛型的转换 如：Map<T>
                 return mapper_type.readValue(mapper_type.treeAsTokens(tmp), new TypeReferenceImp<>(p));
             }
         }

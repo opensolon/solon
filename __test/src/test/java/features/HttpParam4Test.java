@@ -148,6 +148,42 @@ public class HttpParam4Test extends HttpTestBase {
     }
 
     @Test
+    public void body_map() throws IOException {
+        String body = "{name:'noear'}";
+        String body2;
+
+        body2 = path("/demo2/param4/body_map").data("name","noear").post();
+        assert "1".equals(body2);
+
+        body2 = path("/demo2/param4/body_map").bodyJson(body).post();
+        assert "1".equals(body2);
+    }
+
+    @Test
+    public void body_val() throws IOException {
+        String body = "{name:'noear'}";
+        String body2;
+
+        body2 = path("/demo2/param4/body_val").data("name","noear").post();
+        assert "1".equals(body2);
+
+        body2 = path("/demo2/param4/body_val").bodyJson(body).post();
+        assert "1".equals(body2);
+    }
+
+    @Test
+    public void val() throws IOException {
+        String body = "{name:'noear'}";
+        String body2;
+
+        body2 = path("/demo2/param4/val").data("name","noear").post();
+        assert "noear".equals(body2);
+
+        body2 = path("/demo2/param4/val").bodyJson(body).post();
+        assert "noear".equals(body2);
+    }
+
+    @Test
     public void body2() throws IOException {
         String body = "{username:'noear',confirmPassword:'123456'}";
 

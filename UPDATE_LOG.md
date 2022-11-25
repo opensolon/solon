@@ -17,6 +17,7 @@
 * 增加 server.context-path 配置支持
 * 修复 quartz-solon-plugin，当 cron7x="10d" 时，会变成10秒的问题
 * 调整 subBeansOfType, subWarpsOfType 获取现有的，从而可以无视时间
+* 修复 @Body 对 from 与 json 之间的兼容性
 * 升级 sqltoy 为 5.2.22
 * 升级 forest 为 1.5.28
 * 升级 snakeyaml 为 1.33
