@@ -137,7 +137,7 @@ public class HttpParam4Test extends HttpTestBase {
 
     @Test
     public void body() throws IOException {
-        String body = "{name:'noear'}";
+        String body = "{\"name\":\"noear\"}";
 
         String body2 = path("/demo2/param4/body").bodyJson(body).post();
         assert body.equals(body2);
@@ -149,7 +149,7 @@ public class HttpParam4Test extends HttpTestBase {
 
     @Test
     public void body_map() throws IOException {
-        String body = "{name:'noear'}";
+        String body = "{\"name\":\"noear\"}";
         String body2;
 
         body2 = path("/demo2/param4/body_map").data("name","noear").post();
