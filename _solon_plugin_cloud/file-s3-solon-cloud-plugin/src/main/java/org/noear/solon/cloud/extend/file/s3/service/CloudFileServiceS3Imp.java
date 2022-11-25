@@ -8,7 +8,7 @@ import org.noear.solon.core.handle.Result;
 
 /**
  * @author noear
- * @since 1.10
+ * @since 1.11
  */
 public class CloudFileServiceS3Imp implements CloudFileService {
     public CloudFileServiceS3Imp(CloudProps cloudProps){
