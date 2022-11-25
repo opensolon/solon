@@ -13,12 +13,13 @@
 #### 1.11.3
 * 新增 local-solon-cloud-plugin 插件
 * 新增 solon.data.dynamic 插件（提供 dynamic-datasource 支持）
+* 修复 quartz-solon-plugin 插件，当 cron7x="10d" 时，会变成10秒的问题
+* 增加 mybatis-solon-plugin 插件 Mybatis::use 接口
 * 增加 Props::loadAddIfAbsent 接口
-* 增加 Mybatis::use 接口
 * 增加 server.context-path 配置支持
-* 修复 quartz-solon-plugin，当 cron7x="10d" 时，会变成10秒的问题
 * 调整 subBeansOfType, subWarpsOfType 获取现有的，从而可以无视时间
-* 修复 @Body 对 from 与 json 之间的兼容性；优化执行器对 @Body 的处理
+* 优化 @Body 对 from 与 json 之间的兼容性
+* 优化 内容类型执行器对 @Body 的处理
 * 升级 sqltoy 为 5.2.22
 * 升级 forest 为 1.5.28
 * 升级 snakeyaml 为 1.33
