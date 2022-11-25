@@ -9,19 +9,21 @@
 * 调整 运行完成后，提供未注入的对象???
 * 增加 更多友好的异常分类???
 
-#### 1.11.2
+#### 1.11.3
 * 新增 local-solon-cloud-plugin 插件
 * 新增 solon.data.dynamic 插件（提供 dynamic-datasource 支持）
 * 增加 Props::loadAddIfAbsent 接口
 * 增加 Mybatis::use 接口
 * 增加 server.context-path 配置支持
 * 修复 quartz-solon-plugin，当 cron7x="10d" 时，会变成10秒的问题
+* 调整 subBeansOfType, subWarpsOfType 获取现有的，从而可以无视时间
 * 升级 sqltoy 为 5.2.22
 * 升级 forest 为 1.5.28
 * 升级 snakeyaml 为 1.33
 * 升级 jackson 为 2.14.1
 * 升级 snack3 为 3.2.48
 * 升级 wood 为 1.0.5
+* 升级 fastjson2 2.0.19
 
 #### 1.11.0
 * 清理 xxx-solon-plugin 的 solon cloud 插件包（正试由 xxx-solon-cloud-plugin 替代）

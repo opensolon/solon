@@ -342,17 +342,19 @@ public abstract class BeanContainer {
      * @param baseType 基类
      */
     public void subWrapsOfType(Class<?> baseType, Consumer<BeanWrap> callback) {
-        wrapExternalSubscribe((e) -> {
-            if (baseType.isAssignableFrom(e.clz())) {
-                callback.accept(e);
+        //获取现有的
+        beanForeach(bw -> {
+            if (baseType.isAssignableFrom(bw.clz())) {
+                callback.accept(bw);
             }
         });
 
-//        EventBus.subscribe(BeanWrap.class, (e)->{
-//            if(baseType.isAssignableFrom(e.clz())){
-//                callback.accept(e);
-//            }
-//        });
+        //获取未来的
+        wrapExternalSubscribe((bw) -> {
+            if (baseType.isAssignableFrom(bw.clz())) {
+                callback.accept(bw);
+            }
+        });
     }
 
     /**
