@@ -13,7 +13,7 @@
 #### 1.11.4
 * 新增 elastic-job-solon-plugin 分布式定时任务
 * 插件 solon.schedule 增加配置支持
-* 插件 quartz-solon-plugin 增中 jdbc 驱动
+* 插件 quartz-solon-plugin 增中 jdbc 持久化支持（代码微调整）
 * 测试 nami 的使用
 
 #### 1.11.3
