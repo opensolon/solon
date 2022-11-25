@@ -75,4 +75,12 @@ public class PropTest {
 
         assert list1.size() == list2.size();
     }
+
+    @Test
+    public void test3() {
+        Solon.cfg().setProperty("ifAbsent.test", "1");
+        Solon.cfg().loadAddIfAbsent("IfAbsent.yml");//ifAbsent.test=2 不会生效
+
+        assert Solon.cfg().get("ifAbsent.test").equals("1");
+    }
 }
