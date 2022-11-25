@@ -10,6 +10,10 @@
 * 增加 更多友好的异常分类???
 * 增加 便利的原生编译机制
 
+#### 1.11.4
+* 插件 solon.schedule 增加配置支持
+* 测试 nami 的使用
+
 #### 1.11.3
 * 新增 local-solon-cloud-plugin 插件
 * 新增 solon.data.dynamic 插件（提供 dynamic-datasource 支持）
