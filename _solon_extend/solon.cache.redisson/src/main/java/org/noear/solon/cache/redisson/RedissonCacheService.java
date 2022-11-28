@@ -15,7 +15,8 @@ import java.util.concurrent.TimeUnit;
 public class RedissonCacheService implements CacheService {
     protected String _cacheKeyHead;
     protected int _defaultSeconds;
-    protected final RedissonClient redissonClient;
+
+    protected final RedissonClient client;
 
     public RedissonCacheService(Properties prop){
         this(prop, prop.getProperty("keyHeader"), 0);
@@ -45,21 +46,28 @@ public class RedissonCacheService implements CacheService {
             _cacheKeyHead = Solon.cfg().appName();
         }
 
-        redissonClient = RedissonBuilder.build(prop);
+        client = RedissonBuilder.build(prop);
+    }
+
+    /**
+     * 获取 RedisClient
+     * */
+    public RedissonClient client(){
+        return client;
     }
 
     @Override
     public void store(String key, Object obj, int seconds) {
-        redissonClient.getBucket(key).set(obj,seconds, TimeUnit.SECONDS);
+        client.getBucket(key).set(obj,seconds, TimeUnit.SECONDS);
     }
 
     @Override
     public Object get(String key) {
-        return redissonClient.getBucket(key).get();
+        return client.getBucket(key).get();
     }
 
     @Override
     public void remove(String key) {
-        redissonClient.getBucket(key).delete();
+        client.getBucket(key).delete();
     }
 }
