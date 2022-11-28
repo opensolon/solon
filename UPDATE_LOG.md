@@ -14,6 +14,9 @@
 * 新增 elastic-job-solon-plugin 分布式定时任务
 * 插件 solon.schedule 增加配置支持
 * 插件 quartz-solon-plugin 增中 jdbc 持久化支持（代码微调整）
+* 增加 enableWebSocketMvc，enableSocketMvc
+* 开放 CacheService 内部的 client
+* 增加 mybatis-solon-plugin 插件对 Mappers 有无的检查并提示
 * 测试 nami 的使用
 
 #### 1.11.3
