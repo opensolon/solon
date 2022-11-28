@@ -201,6 +201,10 @@ public class MybatisAdapterDefault implements MybatisAdapter {
             throw new IllegalStateException("Please add the mappers configuration!");
         }
 
+        if (config.getMapperRegistry().getMappers().size() == 0) {
+            throw new IllegalStateException("Please check the mappers configuration!");
+        }
+
         //for plugins section
         List<Interceptor> interceptors = MybatisPluginUtils.resolve(dsProps, "plugins");
         for (Interceptor itp : interceptors) {
