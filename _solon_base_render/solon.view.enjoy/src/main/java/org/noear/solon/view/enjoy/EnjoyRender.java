@@ -165,6 +165,21 @@ public class EnjoyRender implements Render {
             EventBus.push(ex);
         }
     }
+    
+    /**
+     * 添加共享模板函数
+     * */
+    public void putFunction(String path) {
+        try {
+            provider.addSharedFunction(path);
+
+            if(provider_debug != null){
+                provider_debug.addSharedFunction(path);
+            }
+        } catch (Exception ex) {
+            EventBus.push(ex);
+        }
+    }
 
     @Override
     public void render(Object obj, Context ctx) throws Throwable {
