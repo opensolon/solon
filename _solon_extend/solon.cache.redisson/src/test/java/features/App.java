@@ -1,10 +1,7 @@
 package features;
 
 import org.noear.solon.Solon;
-import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Configuration;
-import org.noear.solon.annotation.Inject;
-import org.noear.solon.cache.redisson.RedissonCacheService;
 import org.noear.solon.data.cache.CacheService;
 
 /**
@@ -31,10 +28,5 @@ public class App {
         assert userM.id == ((UserM)cacheService.get("test")).id;
         Thread.sleep(2000);
         assert cacheService.get("test") == null;
-    }
-
-    @Bean
-    public CacheService cacheService(@Inject("${test.rd1}") RedissonCacheService cacheService) {
-        return cacheService;
     }
 }
