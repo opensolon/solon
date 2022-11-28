@@ -20,6 +20,10 @@ public class SocketContextHandler {
             return;
         }
 
+        if(message.getHandled()){
+            return;
+        }
+
         //没有资源描述的，不进入Handler体系
         if (Utils.isEmpty(message.resourceDescriptor())) {
             return;
