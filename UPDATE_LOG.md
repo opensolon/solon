@@ -18,6 +18,7 @@
 * 开放 CacheService 内部的 client
 * 增加 mybatis-solon-plugin 插件对 Mappers 有无的检查并提示
 * 测试 nami 的使用
+* 升级 smart-http 为 1.1.18
 
 #### 1.11.3
 * 新增 local-solon-cloud-plugin 插件
