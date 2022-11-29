@@ -5,7 +5,7 @@ import org.noear.solon.core.Plugin;
 
 /**
  * @author noear
- * @since 1.10
+ * @since 1.11
  */
 public class XPluginImp implements Plugin {
     @Override
