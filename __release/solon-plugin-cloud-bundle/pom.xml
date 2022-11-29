@@ -64,5 +64,6 @@
         <module>../../_solon_plugin_cloud/etcd-solon-cloud-plugin</module>
 
         <module>../../_solon_plugin_cloud/file-s3-solon-cloud-plugin</module>
+        <module>../../_solon_plugin_cloud/polaris-solon-cloud-plugin</module>
     </modules>
 </project>
