@@ -109,6 +109,11 @@ public class ValidController {
         return "OK";
     }
 
+    @Mapping("null2")
+    public String nullx2(@Null String val1, @Null String val2) {
+        return "OK";
+    }
+
     @Mapping("patt")
     public String patt(@Pattern(value = "\\d{3}-\\d+", message = "test") String val1, @Pattern(value = "\\d{3}-\\d+$", message = "demo") String val2) {
         return "OK";
@@ -124,6 +129,11 @@ public class ValidController {
     @NotZero({"val1", "val2"})
     @Mapping("nzero")
     public String nzero(int val1, int val2) {
+        return "OK";
+    }
+
+    @Mapping("nzero2")
+    public String nzero2(@NotZero int val1, @NotZero int val2) {
         return "OK";
     }
 

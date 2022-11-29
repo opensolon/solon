@@ -143,9 +143,19 @@ public class HttpValidTest extends HttpTestBase {
     @Test
     public void test2v_nzero() throws IOException {
         assert path("/demo2/valid/nzero?val1=1&val2=2").get().equals("OK");
+        assert path("/demo2/valid/nzero?val1=0&val2=0").get().equals("OK") == false;
         assert path("/demo2/valid/nzero?val1=1&val2=2.0").get().equals("OK") == false;
         assert path("/demo2/valid/nzero?val1=1&val2=").get().equals("OK") == false;
         assert path("/demo2/valid/nzero?val1=11").get().equals("OK") == false;
+    }
+
+    @Test
+    public void test2v_nzero2() throws IOException {
+        assert path("/demo2/valid/nzero2?val1=1&val2=2").get().equals("OK");
+        assert path("/demo2/valid/nzero2?val1=0&val2=0").get().equals("OK") == false;
+        assert path("/demo2/valid/nzero2?val1=1&val2=2.0").get().equals("OK") == false;
+        assert path("/demo2/valid/nzero2?val1=1&val2=").get().equals("OK") == false;
+        assert path("/demo2/valid/nzero2?val1=11").get().equals("OK") == false;
     }
 
     @Test
@@ -157,6 +167,13 @@ public class HttpValidTest extends HttpTestBase {
 
     @Test
     public void test2v_null2() throws IOException {
+        assert path("/demo2/valid/null2?val1=1&val2=2").get().equals("OK") == false;
+        assert path("/demo2/valid/null2?val1=1&val2=").get().equals("OK") == false;
+        assert path("/demo2/valid/null2").get().equals("OK");
+    }
+
+    @Test
+    public void test2v_null_2() throws IOException {
         assert path("/demo2/valid/null").get().equals("OK");
     }
 
