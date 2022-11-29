@@ -1,0 +1,68 @@
+solon.cloud.file.s3.file:
+  default-platform: 'huawei' #默认使用的存储平台
+  #本地存储前缀 需跟controller 里面的path一致
+  local-prefix: 'file'
+  configs:
+    - enable: 'Y'  #启用存储
+      # 配置key
+      configKey: 'huawei'
+      # 访问站点
+      endpoint: 'obs.cn-southwest-2.myhuaweicloud.com'
+      # 自定义域名
+      domain: ''
+      # 前缀
+      prefix: ''
+      # ACCESS_KEY
+      accessKey: 'xxxx'
+      # SECRET_KEY
+      secretKey: 'xxx'
+      # 对象存储空间名
+      bucketName: 'demo'
+      # 存储区域
+      region: ''
+      # 是否https（Y=是,N=否）
+      isHttps: 'Y'
+      # 是否本地存储 （Y=是,N=否）
+      isLocal: 'N'
+      # 本地文件存储路径
+      localFilePath: ''
+
+    - enable: 'Y'  #启用存储
+      # 配置key
+      configKey: 'bitiful'
+      # 访问站点
+      endpoint: 's3.ladydaily.com'
+      # 自定义域名
+      domain: ''
+      # 前缀
+      prefix: ''
+      # ACCESS_KEY
+      accessKey: 'xxx'
+      # SECRET_KEY
+      secretKey: 'xxx'
+      # 对象存储空间名
+      bucketName: 'demo'
+      # 存储区域
+      region: ''
+      # 是否https（Y=是,N=否）
+      isHttps: 'Y'
+      # 是否本地存储 （Y=是,N=否）
+      isLocal: 'N'
+      # 本地文件存储路径
+      localFilePath: ''
+
+    - enable: 'Y'  #启用存储
+      # 配置key
+      configKey: 'local'
+      # 访问站点
+      endpoint: '127.0.0.1'
+      # 自定义域名
+      domain: ''
+      # 前缀
+      prefix: ''
+      # 是否https（Y=是,N=否）
+      isHttps: 'Y'
+      # 是否本地存储 （Y=是,N=否）
+      isLocal: 'Y'
+      # 本地文件存储路径
+      localFilePath: 'D:/img'
