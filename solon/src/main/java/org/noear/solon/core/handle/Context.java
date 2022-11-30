@@ -810,23 +810,23 @@ public abstract class Context {
      * 输出为文件
      */
     public void outputAsFile(DownloadedFile file) throws IOException {
-        if (Utils.isNotEmpty(file.name)) {
-            String fileName = URLEncoder.encode(file.name, Solon.encoding());
+        if (Utils.isNotEmpty(file.getName())) {
+            String fileName = URLEncoder.encode(file.getName(), Solon.encoding());
             headerSet("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
         }
 
         //输出内容类型
-        if (Utils.isNotEmpty(file.contentType)) {
-            contentType(file.contentType);
+        if (Utils.isNotEmpty(file.getContentType())) {
+            contentType(file.getContentType());
         }
 
         //输出内容大小
-        int contentSize = file.content.available();
+        int contentSize = file.getContent().available();
         if (contentSize > 0) {
             contentLength(contentSize);
         }
 
-        try (InputStream ins = file.content) {
+        try (InputStream ins = file.getContent()) {
             output(ins);
         }
     }

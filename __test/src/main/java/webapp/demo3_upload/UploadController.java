@@ -16,9 +16,9 @@ public class UploadController {
     public String test_f1(Context ctx, UploadedFile file, UploadedFile file2) throws Exception {
         if (file != null) {
             if (file2 == null) {
-                return "成功：" + file.name + ": " + file.contentSize + "; null";
+                return "成功：" + file.getName() + ": " + file.getContentSize() + "; null";
             } else {
-                return "成功：" + file.name + ": " + file.contentSize + "; " + file2.name + ": " + file2.contentSize;
+                return "成功：" + file.getName() + ": " + file.getContentSize() + "; " + file2.getName() + ": " + file2.getContentSize();
             }
         }
 
@@ -53,7 +53,7 @@ public class UploadController {
             return "file is null";
         }
 
-        return userName + ": " + file.name + "- " + file.contentSize;
+        return userName + ": " + file.getName() + "- " + file.getContentSize();
     }
 
     @Mapping(path = "f12_1", method = MethodType.POST, multipart = true)
@@ -67,7 +67,7 @@ public class UploadController {
             return "file is null";
         }
 
-        return userName + ": " + file.name + "- " + file.contentSize;
+        return userName + ": " + file.getName() + "- " + file.getContentSize();
     }
 
     @Mapping(path = "f13", method = MethodType.POST)
@@ -80,7 +80,7 @@ public class UploadController {
             return "file is null";
         }
 
-        return userName + ": " + file.name + "- " + file.contentSize;
+        return userName + ": " + file.getName() + "- " + file.getContentSize();
     }
 
     @Post
@@ -94,7 +94,7 @@ public class UploadController {
             return "file is null";
         }
 
-        return um.userName + ": " + um.file.name + "- " + um.file.contentSize;
+        return um.userName + ": " + um.file.getName() + "- " + um.file.getContentSize();
     }
 
     //支持上传文件参数

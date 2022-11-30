@@ -8,6 +8,7 @@ import io.netty.handler.codec.http.multipart.InterfaceHttpData;
 import org.noear.solon.core.handle.UploadedFile;
 
 import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -51,13 +52,13 @@ class HttpRequestParser {
             List<InterfaceHttpData> parmList = decoder.getBodyHttpDatas();
 
             for (InterfaceHttpData p1 : parmList) {
-                if(p1.getHttpDataType() == InterfaceHttpData.HttpDataType.Attribute){
+                if (p1.getHttpDataType() == InterfaceHttpData.HttpDataType.Attribute) {
                     //参数
                     //
                     Attribute a1 = (Attribute) p1;
 
                     List<String> tmp = parmMap.get(a1.getName());
-                    if(tmp == null){
+                    if (tmp == null) {
                         tmp = new ArrayList<>();
                         parmMap.put(a1.getName(), tmp);
                     }
@@ -66,27 +67,29 @@ class HttpRequestParser {
                     continue;
                 }
 
-                if(p1.getHttpDataType() == InterfaceHttpData.HttpDataType.FileUpload){
+                if (p1.getHttpDataType() == InterfaceHttpData.HttpDataType.FileUpload) {
                     //文件
                     //
                     FileUpload f0 = (FileUpload) p1;
 
                     List<UploadedFile> tmp = fileMap.get(p1.getName());
-                    if(tmp == null){
+                    if (tmp == null) {
                         tmp = new ArrayList<>();
                         fileMap.put(p1.getName(), tmp);
                     }
 
-                    UploadedFile f1 = new UploadedFile();
-                    f1.contentType = f0.getContentType();
-                    f1.content = new FileInputStream(f0.getFile());
-                    f1.contentSize = f1.content.available();
-                    f1.name = f0.getFilename();
 
-                    int idx = f1.name.lastIndexOf(".");
-                    if(idx>0){
-                        f1.extension = f1.name.substring(idx+1);
+                    String contentType = f0.getContentType();
+                    InputStream content = new FileInputStream(f0.getFile());
+                    int contentSize = content.available();
+                    String name = f0.getFilename();
+                    String extension = null;
+                    int idx = name.lastIndexOf(".");
+                    if (idx > 0) {
+                        extension = name.substring(idx + 1);
                     }
+
+                    UploadedFile f1 = new UploadedFile(contentType, contentSize, content, name, extension);
 
                     tmp.add(f1);
                 }
