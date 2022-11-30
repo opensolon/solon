@@ -12,22 +12,14 @@ import java.io.IOException;
  * @since 1.11
  */
 public class CloudLocalUtils {
-    private static String location;
-
-    public static String getLocation() {
-        if (location == null) {
-            location = LocalProps.instance.getValue("location", "");
-        }
-
-        return location;
-    }
+    private static final String server = LocalProps.instance.getServer();
 
     public static String getValue(String key) throws IOException {
-        if (Utils.isEmpty(getLocation())) {
+        if (Utils.isEmpty(server)) {
             String resourceKey = "META-INF/solon-cloud/" + key;
             return Utils.getResourceAsString(resourceKey);
         } else {
-            File resourceFile = new File(getLocation(), key);
+            File resourceFile = new File(server, key);
             return Utils.transferToString(new FileInputStream(resourceFile));
         }
     }
