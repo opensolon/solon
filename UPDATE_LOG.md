@@ -15,7 +15,7 @@
 * 新增 file-s3-solon-plugin 插件
 * 插件 solon.schedule 增加配置支持
 * 插件 quartz-solon-plugin 增中 jdbc 持久化支持（代码微调整）!ok
-* 插件 local-solon-cloud-plugin 添加 location 配置支持 !ok
+* 插件 local-solon-cloud-plugin 添加 server 配置支持（只能指向本地） !ok
 * 增加 enableWebSocketMvc，enableSocketMvc !ok
 * 开放 CacheService 内部的 client !ok
 * 增加 mybatis-solon-plugin 插件对 Mappers 有无的检查并提示 !ok
