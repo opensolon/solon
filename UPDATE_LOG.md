@@ -19,6 +19,7 @@
 * 增加 enableWebSocketMvc，enableSocketMvc !ok
 * 开放 CacheService 内部的 client !ok
 * 增加 mybatis-solon-plugin 插件对 Mappers 有无的检查并提示 !ok
+* 增加 DownloadedFile,UploadedFile 获取属性，原字段标为弃用（后面会改为私有）
 * 测试 nami 的使用
 * 升级 smart-http 为 1.1.18 !ok
 
