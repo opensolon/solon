@@ -23,12 +23,33 @@ import java.io.*;
 public class UploadedFile extends DownloadedFile{
     /**
      * 内容大小
+     *
+     * @deprecated 1.11
      */
+    @Deprecated
     public long contentSize;
     /**
      * 扩展名（例：jpg）
+     *
+     * @deprecated 1.11
      */
+    @Deprecated
     public String extension;
+
+
+    /**
+     * 内容大小
+     * */
+    public long getContentSize() {
+        return contentSize;
+    }
+
+    /**
+     * 扩展名（例：jpg）
+     * */
+    public String getExtension() {
+        return extension;
+    }
 
     public UploadedFile(){
         super();
