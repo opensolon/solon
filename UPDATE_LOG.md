@@ -12,14 +12,15 @@
 
 #### 1.11.4
 * 新增 elastic-job-solon-plugin 分布式定时任务
+* 新增 file-s3-solon-plugin 插件
 * 插件 solon.schedule 增加配置支持
-* 插件 quartz-solon-plugin 增中 jdbc 持久化支持（代码微调整）
-* 插件 local-solon-cloud-plugin 添加 location 配置支持
-* 增加 enableWebSocketMvc，enableSocketMvc
-* 开放 CacheService 内部的 client
-* 增加 mybatis-solon-plugin 插件对 Mappers 有无的检查并提示
+* 插件 quartz-solon-plugin 增中 jdbc 持久化支持（代码微调整）!ok
+* 插件 local-solon-cloud-plugin 添加 location 配置支持 !ok
+* 增加 enableWebSocketMvc，enableSocketMvc !ok
+* 开放 CacheService 内部的 client !ok
+* 增加 mybatis-solon-plugin 插件对 Mappers 有无的检查并提示 !ok
 * 测试 nami 的使用
-* 升级 smart-http 为 1.1.18
+* 升级 smart-http 为 1.1.18 !ok
 
 #### 1.11.4-M1
 * 新增 local-solon-cloud-plugin 插件
