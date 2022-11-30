@@ -79,6 +79,7 @@
         <nacos2.ver>2.1.2</nacos2.ver>
 
         <feign.ver>8.18.0</feign.ver>
+        <aws.s3.ver>1.12.347</aws.s3.ver>
     </properties>
 
 
