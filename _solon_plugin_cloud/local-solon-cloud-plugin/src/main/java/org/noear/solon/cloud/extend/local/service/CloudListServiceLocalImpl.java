@@ -1,7 +1,7 @@
 package org.noear.solon.cloud.extend.local.service;
 
 import org.noear.snack.ONode;
-import org.noear.solon.Utils;
+import org.noear.solon.cloud.extend.local.impl.CloudLocalUtils;
 import org.noear.solon.cloud.service.CloudListService;
 
 import java.io.IOException;
@@ -17,7 +17,7 @@ import java.util.Map;
  * @since 1.11
  */
 public class CloudListServiceLocalImpl implements CloudListService {
-    static final String LIST_KEY_FORMAT = "META-INF/solon-cloud/list@%s-%s.json";
+    static final String LIST_KEY_FORMAT = "list@%s-%s.json";
     Map<String, List<String>> listMap = new HashMap<>();
 
     @Override
@@ -44,14 +44,14 @@ public class CloudListServiceLocalImpl implements CloudListService {
                 listVal = listMap.get(listKey);
 
                 if (listVal == null) {
-                    String json = Utils.getResourceAsString(listKey);
+                    String value2 = CloudLocalUtils.getValue(listKey);
 
-                    if (json == null) {
+                    if (value2 == null) {
                         listVal = new ArrayList<>();
                     } else {
                         listVal = new ArrayList<>();
 
-                        ONode oNode = ONode.load(json);
+                        ONode oNode = ONode.load(value2);
                         if (oNode.isArray()) {
                             for (ONode o1 : oNode.ary()) {
                                 listVal.add(o1.getString());

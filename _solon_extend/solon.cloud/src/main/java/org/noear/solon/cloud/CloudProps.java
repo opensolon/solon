@@ -437,6 +437,10 @@ public class CloudProps {
         return Solon.cfg().get(ROOT + name); //"solon.cloud.@@.";
     }
 
+    public String getValue(String name, String def) {
+        return Solon.cfg().get(ROOT + name, def); //"solon.cloud.@@.";
+    }
+
 
 
     /**

@@ -2,6 +2,7 @@ package org.noear.solon.cloud.extend.local.service;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
+import org.noear.solon.cloud.extend.local.impl.CloudLocalUtils;
 import org.noear.solon.cloud.model.Pack;
 import org.noear.solon.cloud.service.CloudI18nService;
 import org.noear.solon.core.Props;
@@ -17,7 +18,7 @@ import java.util.Properties;
  */
 public class CloudI18nServiceLocalImpl implements CloudI18nService {
     static final String DEFAULT_GROUP = "DEFAULT_GROUP";
-    static final String I18N_KEY_FORMAT = "META-INF/solon-cloud/i18n@%s_%s-%s";
+    static final String I18N_KEY_FORMAT = "i18n@%s_%s-%s";
 
     @Override
     public Pack pull(String group, String packName, Locale locale) {
@@ -30,22 +31,22 @@ public class CloudI18nServiceLocalImpl implements CloudI18nService {
         }
 
 
-        String bundleName;
+        String i18nKey;
         Properties tmp;
 
 
         Pack pack = new Pack(locale);
         pack.setData(new Props());
 
-        bundleName = String.format(I18N_KEY_FORMAT, group, packName, locale.getLanguage());
-        tmp = getProps(bundleName);
+        i18nKey = String.format(I18N_KEY_FORMAT, group, packName, locale.getLanguage());
+        tmp = getI18nProps(i18nKey);
 
         if (tmp != null) {
             pack.getData().putAll(tmp);
         }
 
-        bundleName = String.format(I18N_KEY_FORMAT, group, packName, locale);
-        tmp = getProps(bundleName);
+        i18nKey = String.format(I18N_KEY_FORMAT, group, packName, locale);
+        tmp = getI18nProps(i18nKey);
 
         if (tmp != null) {
             pack.getData().putAll(tmp);
@@ -54,14 +55,14 @@ public class CloudI18nServiceLocalImpl implements CloudI18nService {
         return pack;
     }
 
-    private Properties getProps(String uri) {
+    private Properties getI18nProps(String i18nKey) {
         try {
-            String txt = Utils.getResourceAsString(uri);
+            String value2 = CloudLocalUtils.getValue(i18nKey);
 
-            if (Utils.isEmpty(txt)) {
+            if (Utils.isEmpty(value2)) {
                 return null;
             } else {
-                return Utils.buildProperties(txt);
+                return Utils.buildProperties(value2);
             }
         } catch (RuntimeException e) {
             throw e;

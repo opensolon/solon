@@ -4,6 +4,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudConfigHandler;
 import org.noear.solon.cloud.exception.CloudConfigException;
+import org.noear.solon.cloud.extend.local.impl.CloudLocalUtils;
 import org.noear.solon.cloud.model.Config;
 import org.noear.solon.cloud.service.CloudConfigService;
 
@@ -43,10 +44,9 @@ public class CloudConfigServiceLocalImpl implements CloudConfigService {
 
                 if (configVal == null) {
                     try {
-                        String resourceKey = "META-INF/solon-cloud/" + configKey;
-                        String value = Utils.getResourceAsString(resourceKey);
+                        String value2 = CloudLocalUtils.getValue(configKey);
 
-                        configVal = new Config(group, name, value, 0);
+                        configVal = new Config(group, name, value2, 0);
                         configMap.put(configKey, configVal);
                     } catch (IOException e) {
                         throw new CloudConfigException(e);

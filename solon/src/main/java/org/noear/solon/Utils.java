@@ -480,6 +480,10 @@ public class Utils {
         }
     }
 
+    public static String transferToString(InputStream ins) throws IOException {
+        return transferToString(ins, Solon.encoding());
+    }
+
     /**
      * 将输入流转换为字符串
      *
