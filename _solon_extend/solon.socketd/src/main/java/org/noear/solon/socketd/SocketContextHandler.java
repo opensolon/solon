@@ -3,6 +3,7 @@ package org.noear.solon.socketd;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.event.EventBus;
+import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
 
@@ -22,6 +23,18 @@ public class SocketContextHandler {
 
         if(message.getHandled()){
             return;
+        }
+
+        if(Solon.app().enableWebSocketMvc() == false) {
+            if (session.method() == MethodType.WEBSOCKET) {
+                return;
+            }
+        }
+
+        if(Solon.app().enableSocketMvc() == false) {
+            if (session.method() == MethodType.SOCKET) {
+                return;
+            }
         }
 
         //没有资源描述的，不进入Handler体系
