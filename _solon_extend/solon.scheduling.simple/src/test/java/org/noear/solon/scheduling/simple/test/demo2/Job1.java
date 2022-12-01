@@ -13,7 +13,8 @@ import java.util.Date;
 public class Job1 implements Runnable {
     @Override
     public void run() {
-        System.out.println(new Date());
+        log.debug(new Date() + ": 1/2 * * * * ?");
+
         try {
             Thread.sleep(1000 * 2);
         } catch (Throwable e) {

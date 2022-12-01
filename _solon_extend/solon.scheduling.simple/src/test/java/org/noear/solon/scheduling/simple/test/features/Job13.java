@@ -13,6 +13,6 @@ import java.util.Date;
 public class Job13 implements Runnable {
     @Override
     public void run() {
-        log.info(new Date() + ": 1s");
+        log.debug(new Date() + ": 1s");
     }
 }

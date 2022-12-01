@@ -19,7 +19,7 @@ public class JobOfMethod {
 
     @Scheduled(cron = "1s")
     public void job22() {
-        System.out.println("job3:: " + new Date());
+        log.debug(new Date() + ": 1s");
     }
 
     @Scheduled(cron = "0/10 * * * * ? *", zone = "+00")
