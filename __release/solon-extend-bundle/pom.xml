@@ -46,7 +46,7 @@
         <module>../../_solon_extend/solon.extend.schedule</module>
 
         <module>../../_solon_extend/solon.scheduling</module>
-        <module>../../_solon_extend/solon.scheduling.local</module>
+        <module>../../_solon_extend/solon.scheduling.simple</module>
         <module>../../_solon_extend/solon.scheduling.quartz</module>
     </modules>
 </project>

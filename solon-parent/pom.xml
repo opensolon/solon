@@ -429,7 +429,7 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.scheduling.local</artifactId>
+                <artifactId>solon.scheduling.simple</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
 
