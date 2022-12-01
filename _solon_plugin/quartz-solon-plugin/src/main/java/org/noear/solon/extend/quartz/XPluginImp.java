@@ -5,6 +5,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.event.AppLoadEndEvent;
+import org.quartz.Job;
 
 import java.util.Properties;
 
@@ -16,28 +17,30 @@ public class XPluginImp implements Plugin {
         }
 
         context.beanBuilderAdd(Quartz.class, (clz, bw, anno) -> {
-            String cronx = anno.cron7x();
-            String name = anno.name();
-            boolean enable = anno.enable();
+            if (bw.raw() instanceof Job || bw.raw() instanceof Runnable) {
+                String cronx = anno.cron7x();
+                String name = anno.name();
+                boolean enable = anno.enable();
 
-            if (Utils.isNotEmpty(name)) {
-                Properties prop = Solon.cfg().getProp("solon.quartz." + name);
+                if (Utils.isNotEmpty(name)) {
+                    Properties prop = Solon.cfg().getProp("solon.quartz." + name);
 
-                if (prop.size() > 0) {
-                    String cronxTmp = prop.getProperty("cron7x");
-                    String enableTmp = prop.getProperty("enable");
+                    if (prop.size() > 0) {
+                        String cronxTmp = prop.getProperty("cron7x");
+                        String enableTmp = prop.getProperty("enable");
 
-                    if ("false".equals(enableTmp)) {
-                        enable = false;
-                    }
+                        if ("false".equals(enableTmp)) {
+                            enable = false;
+                        }
 
-                    if (Utils.isNotEmpty(cronxTmp)) {
-                        cronx = cronxTmp;
+                        if (Utils.isNotEmpty(cronxTmp)) {
+                            cronx = cronxTmp;
+                        }
                     }
                 }
-            }
 
-            JobManager.register(name, cronx, enable, bw);
+                JobManager.addJob(name, cronx, enable, bw);
+            }
         });
 
         Solon.app().onEvent(AppLoadEndEvent.class, e -> {

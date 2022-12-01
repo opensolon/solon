@@ -9,9 +9,10 @@ import java.util.Date;
 /**
  * @author noear 2022/11/24 created
  */
-@EnableQuartz
-public class Demo {
-    public static void main(String[] args) {
-        Solon.start(Demo.class, args);
+@Quartz(cron7x = "7d")
+public class Job1 implements Runnable {
+    @Override
+    public void run() {
+        System.out.println(new Date());
     }
 }

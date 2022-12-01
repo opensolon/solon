@@ -12,53 +12,72 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public final class JobManager {
-    static Scheduler _server = null;
+    static Scheduler _scheduler = null;
     static Map<String, JobEntity> jobMap = new HashMap<>();
 
     static {
         Solon.context().getBeanAsync(Scheduler.class, bean -> {
-            if (_server == null) {
-                _server = bean;
+            if (_scheduler == null) {
+                _scheduler = bean;
             }
         });
     }
 
-    private static void init() throws SchedulerException {
-        if (_server == null) {
+    private static void tryInitScheduler() throws SchedulerException {
+        if (_scheduler == null) {
             synchronized (JobManager.class) {
-                if (_server == null) {
+                if (_scheduler == null) {
                     //默认使用：直接本地调用
                     SchedulerFactory schedulerFactory = new StdSchedulerFactory();
-                    _server = schedulerFactory.getScheduler();
+                    _scheduler = schedulerFactory.getScheduler();
                 }
             }
         }
     }
 
+    /**
+     * 开始
+     * */
     protected static void start() throws SchedulerException {
-        if (_server != null) {
-            _server.start();
+        tryInitScheduler();
+
+        for(JobEntity jobEntity: jobMap.values()){
+            regJob(jobEntity);
+        }
+
+        if (_scheduler != null) {
+            _scheduler.start();
         }
     }
 
+    /**
+     * 停止
+     * */
     protected static void stop() throws SchedulerException {
-        if (_server != null) {
-            _server.shutdown();
+        if (_scheduler != null) {
+            _scheduler.shutdown();
 
-            _server = null;
+            _scheduler = null;
         }
     }
 
-    protected static void register(String name, String cronx, boolean enable, BeanWrap bw) throws Exception {
+    /**
+     * 添加 job
+     * */
+    protected static void addJob(String name, String cronx, boolean enable, BeanWrap bw) throws Exception {
         if (enable == false) {
             return;
         }
 
         if (Runnable.class.isAssignableFrom(bw.clz()) || Job.class.isAssignableFrom(bw.clz())) {
-            JobManager.addJob(new JobEntity(name, cronx, enable, bw));
+            JobEntity jobEntity = new JobEntity(name, cronx, enable, bw);
+            jobMap.putIfAbsent(jobEntity.jobID, jobEntity);
         }
     }
 
+    /**
+     * 获取 job
+     * */
     protected static JobEntity getJob(String jobID) {
         if (Utils.isEmpty(jobID)) {
             return null;
@@ -68,54 +87,52 @@ public final class JobManager {
     }
 
     /**
-     *
+     * 注册 job（on start）
      */
-    protected static void addJob(JobEntity jobEntity) throws Exception {
-        jobMap.putIfAbsent(jobEntity.jobID, jobEntity);
-
+    private static void regJob(JobEntity jobEntity) throws SchedulerException {
         if (jobEntity.cronx.indexOf(" ") < 0) {
             if (jobEntity.cronx.endsWith("ms")) {
                 long period = Long.parseLong(jobEntity.cronx.substring(0, jobEntity.cronx.length() - 2));
-                addJobByPeriod(jobEntity, period, TimeUnit.MILLISECONDS);
+                regJobByPeriod(jobEntity, period, TimeUnit.MILLISECONDS);
             } else if (jobEntity.cronx.endsWith("s")) {
                 long period = Long.parseLong(jobEntity.cronx.substring(0, jobEntity.cronx.length() - 1));
-                addJobByPeriod(jobEntity, period, TimeUnit.SECONDS);
+                regJobByPeriod(jobEntity, period, TimeUnit.SECONDS);
             } else if (jobEntity.cronx.endsWith("m")) {
                 long period = Long.parseLong(jobEntity.cronx.substring(0, jobEntity.cronx.length() - 1));
-                addJobByPeriod(jobEntity, period, TimeUnit.MINUTES);
+                regJobByPeriod(jobEntity, period, TimeUnit.MINUTES);
             } else if (jobEntity.cronx.endsWith("h")) {
                 long period = Long.parseLong(jobEntity.cronx.substring(0, jobEntity.cronx.length() - 1));
-                addJobByPeriod(jobEntity, period, TimeUnit.HOURS);
+                regJobByPeriod(jobEntity, period, TimeUnit.HOURS);
             } else if (jobEntity.cronx.endsWith("d")) {
                 long period = Long.parseLong(jobEntity.cronx.substring(0, jobEntity.cronx.length() - 1));
-                addJobByPeriod(jobEntity, period, TimeUnit.DAYS);
+                regJobByPeriod(jobEntity, period, TimeUnit.DAYS);
             }
         } else {
-            addJobByCronx(jobEntity, jobEntity.cronx);
+            regJobByCronx(jobEntity, jobEntity.cronx);
         }
     }
 
-    private static void addJobByCronx(JobEntity jobEntity, String cronx) throws Exception {
-        init();
+    private static void regJobByCronx(JobEntity jobEntity, String cronx) throws SchedulerException {
+        tryInitScheduler();
 
         JobDetail jobDetail = JobBuilder.newJob(QuartzProxy.class)
                 .withIdentity(jobEntity.jobID, "solon")
                 .usingJobData("__jobID", jobEntity.jobID)
                 .build();
 
-        if (_server.checkExists(jobDetail.getKey()) == false) {
+        if (_scheduler.checkExists(jobDetail.getKey()) == false) {
             Trigger trigger = TriggerBuilder.newTrigger()
                     .withIdentity(jobEntity.jobID, "solon")
                     .startNow()
                     .withSchedule(CronScheduleBuilder.cronSchedule(cronx))
                     .build();
 
-            _server.scheduleJob(jobDetail, trigger);
+            _scheduler.scheduleJob(jobDetail, trigger);
         }
     }
 
-    private static void addJobByPeriod(JobEntity jobEntity, long period, TimeUnit unit) throws Exception {
-        init();
+    private static void regJobByPeriod(JobEntity jobEntity, long period, TimeUnit unit) throws SchedulerException {
+        tryInitScheduler();
 
         SimpleScheduleBuilder ssb = SimpleScheduleBuilder.simpleSchedule();
         switch (unit) {
@@ -143,14 +160,14 @@ public final class JobManager {
                 .usingJobData("__jobID", jobEntity.jobID)
                 .build();
 
-        if (_server.checkExists(jobDetail.getKey()) == false) {
+        if (_scheduler.checkExists(jobDetail.getKey()) == false) {
             Trigger trigger = TriggerBuilder.newTrigger()
                     .withIdentity(jobEntity.jobID, "solon")
                     .startNow()
                     .withSchedule(ssb.repeatForever())
                     .build();
 
-            _server.scheduleJob(jobDetail, trigger);
+            _scheduler.scheduleJob(jobDetail, trigger);
         }
     }
 }
