@@ -25,7 +25,10 @@ public class ScheduledHelper {
      */
     public static void configScheduled(ScheduledAnno warpper) {
         if (warpper.cron().length() < 6 || warpper.cron().indexOf(" ") < 0) {
-            warpper.fixedRate(fixedRate(warpper.cron()));
+            if (warpper.fixedRate() == 0) {
+                warpper.fixedRate(fixedRate(warpper.cron()));
+            }
+
             warpper.cron("");
         }
 

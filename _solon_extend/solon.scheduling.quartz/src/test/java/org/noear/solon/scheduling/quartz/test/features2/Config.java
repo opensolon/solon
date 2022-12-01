@@ -1,4 +1,4 @@
-package org.noear.solon.scheduling.quartz.test;
+package org.noear.solon.scheduling.quartz.test.features2;
 
 import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Configuration;

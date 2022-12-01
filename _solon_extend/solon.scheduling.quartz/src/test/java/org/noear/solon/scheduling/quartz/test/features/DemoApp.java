@@ -1,14 +1,14 @@
-package org.noear.solon.scheduling.quartz.test;
+package org.noear.solon.scheduling.quartz.test.features;
 
 import org.noear.solon.Solon;
 import org.noear.solon.scheduling.annotation.EnableScheduling;
 
 /**
- * @author noear 2022/12/1 created
+ * @author noear 2021/12/28 created
  */
 @EnableScheduling
-public class App {
+public class DemoApp {
     public static void main(String[] args) {
-        Solon.start(App.class, args);
+        Solon.start(DemoApp.class, args);
     }
 }

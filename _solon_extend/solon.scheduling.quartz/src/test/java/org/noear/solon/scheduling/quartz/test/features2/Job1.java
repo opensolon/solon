@@ -1,5 +1,6 @@
-package org.noear.solon.scheduling.quartz.test;
+package org.noear.solon.scheduling.quartz.test.features2;
 
+import lombok.extern.slf4j.Slf4j;
 import org.noear.solon.scheduling.annotation.Scheduled;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
@@ -10,11 +11,12 @@ import java.util.Date;
 /**
  * @author noear 2022/12/1 created
  */
+@Slf4j
 @Scheduled(cron = "* * * * * ? ")
-public class BeanJob2 implements Job {
+public class Job1 implements Job {
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
-        System.out.println("job2:: " + context.getJobDetail().getKey().getName());
-        System.out.println("job2:: " + new Date());
+        log.debug("job1:: " + context.getJobDetail().getKey().getName());
+        log.debug("job1:: " + new Date());
     }
 }
