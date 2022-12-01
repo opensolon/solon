@@ -37,11 +37,11 @@ public final class JobManager {
 
     /**
      * 开始
-     * */
+     */
     protected static void start() throws SchedulerException {
         tryInitScheduler();
 
-        for(JobEntity jobEntity: jobMap.values()){
+        for (JobEntity jobEntity : jobMap.values()) {
             regJob(jobEntity);
         }
 
@@ -52,7 +52,7 @@ public final class JobManager {
 
     /**
      * 停止
-     * */
+     */
     protected static void stop() throws SchedulerException {
         if (_scheduler != null) {
             _scheduler.shutdown();
@@ -63,7 +63,7 @@ public final class JobManager {
 
     /**
      * 添加 job
-     * */
+     */
     protected static void addJob(String name, String cronx, boolean enable, BeanWrap bw) throws Exception {
         if (enable == false) {
             return;
@@ -77,7 +77,7 @@ public final class JobManager {
 
     /**
      * 获取 job
-     * */
+     */
     protected static JobEntity getJob(String jobID) {
         if (Utils.isEmpty(jobID)) {
             return null;
@@ -121,10 +121,12 @@ public final class JobManager {
                 .build();
 
         if (_scheduler.checkExists(jobDetail.getKey()) == false) {
+            CronScheduleBuilder builder = CronScheduleBuilder.cronSchedule(cronx);
+
             Trigger trigger = TriggerBuilder.newTrigger()
                     .withIdentity(jobEntity.jobID, "solon")
                     .startNow()
-                    .withSchedule(CronScheduleBuilder.cronSchedule(cronx))
+                    .withSchedule(builder)
                     .build();
 
             _scheduler.scheduleJob(jobDetail, trigger);
@@ -134,37 +136,39 @@ public final class JobManager {
     private static void regJobByPeriod(JobEntity jobEntity, long period, TimeUnit unit) throws SchedulerException {
         tryInitScheduler();
 
-        SimpleScheduleBuilder ssb = SimpleScheduleBuilder.simpleSchedule();
-        switch (unit) {
-            case MILLISECONDS:
-                ssb.withIntervalInMilliseconds(period);
-                break;
-            case SECONDS:
-                ssb.withIntervalInSeconds((int) period);
-                break;
-            case MINUTES:
-                ssb.withIntervalInMinutes((int) period);
-                break;
-            case HOURS:
-                ssb.withIntervalInHours((int) period);
-                break;
-            case DAYS:
-                ssb.withIntervalInHours((int) (period * 24));
-                break;
-            default:
-                return;
-        }
-
         JobDetail jobDetail = JobBuilder.newJob(QuartzProxy.class)
                 .withIdentity(jobEntity.jobID, "solon")
                 .usingJobData("__jobID", jobEntity.jobID)
                 .build();
 
         if (_scheduler.checkExists(jobDetail.getKey()) == false) {
+            SimpleScheduleBuilder builder = SimpleScheduleBuilder.simpleSchedule();
+            switch (unit) {
+                case MILLISECONDS:
+                    builder.withIntervalInMilliseconds(period);
+                    break;
+                case SECONDS:
+                    builder.withIntervalInSeconds((int) period);
+                    break;
+                case MINUTES:
+                    builder.withIntervalInMinutes((int) period);
+                    break;
+                case HOURS:
+                    builder.withIntervalInHours((int) period);
+                    break;
+                case DAYS:
+                    builder.withIntervalInHours((int) (period * 24));
+                    break;
+                default:
+                    return;
+            }
+
+            builder.repeatForever();
+
             Trigger trigger = TriggerBuilder.newTrigger()
                     .withIdentity(jobEntity.jobID, "solon")
                     .startNow()
-                    .withSchedule(ssb.repeatForever())
+                    .withSchedule(builder)//
                     .build();
 
             _scheduler.scheduleJob(jobDetail, trigger);
