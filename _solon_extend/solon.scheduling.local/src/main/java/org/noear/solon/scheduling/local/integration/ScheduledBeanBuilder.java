@@ -26,7 +26,7 @@ public class ScheduledBeanBuilder implements BeanBuilder<Scheduled>, BeanExtract
             ScheduledHelper.configScheduled(warpper);
 
 
-            JobManager.add(name, anno, bw.raw());
+            JobManager.add(name, warpper, bw.raw());
         }
     }
 
@@ -42,6 +42,6 @@ public class ScheduledBeanBuilder implements BeanBuilder<Scheduled>, BeanExtract
         ScheduledWarpper warpper = new ScheduledWarpper(anno);
         ScheduledHelper.configScheduled(warpper);
 
-        JobManager.add(name, anno, runnable);
+        JobManager.add(name, warpper, runnable);
     }
 }
