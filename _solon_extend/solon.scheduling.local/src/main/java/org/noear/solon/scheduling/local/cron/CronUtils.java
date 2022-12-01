@@ -21,7 +21,15 @@ public class CronUtils {
      *
      * @param cron 支持：0 * * * * ? * 或 0 * * * * ? * +80
      */
-    public static CronExpressionPlus get(String cron) throws ParseException {
+    public static CronExpressionPlus get(String cron) {
+        try {
+            return get0(cron);
+        } catch (ParseException e) {
+            throw new IllegalArgumentException("Cron parsing failed: " + cron, e);
+        }
+    }
+
+    private static CronExpressionPlus get0(String cron) throws ParseException {
         CronExpressionPlus expr = cached.get(cron);
 
         if (expr == null) {
@@ -65,7 +73,7 @@ public class CronUtils {
      */
     public static boolean isValid(String cron) {
         try {
-            return get(cron) != null;
+            return get0(cron) != null;
         } catch (ParseException e) {
             return false;
         }

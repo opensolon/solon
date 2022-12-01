@@ -3,9 +3,12 @@ package org.noear.solon.scheduling.local;
 import org.noear.solon.Utils;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.scheduling.ScheduledException;
+import org.noear.solon.scheduling.annotation.Scheduled;
 import org.noear.solon.scheduling.local.cron.CronExpressionPlus;
+import org.noear.solon.scheduling.local.cron.CronUtils;
 
 import java.util.Date;
+import java.util.TimeZone;
 
 /**
  * 任务实体（内部使用）
@@ -13,7 +16,7 @@ import java.util.Date;
  * @author noear
  * @since 1.6
  */
-class JobHolder extends Thread {
+public class JobHolder extends Thread {
     /**
      * 调度表达式
      */
@@ -21,20 +24,11 @@ class JobHolder extends Thread {
     /**
      * 固定频率
      */
-     private long fixedRate;
-    /**
-     * 固定延时
-     */
-    final long fixedDelay;
+     private Scheduled anno;
     /**
      * 执行函数
      */
     final Runnable runnable;
-    /**
-     * 是否并发执行（时间到了，新启一个线程执行；不管之前有没有执行完成）
-     */
-    final boolean concurrent;
-
 
     /**
      * 是否取消任务
@@ -56,20 +50,15 @@ class JobHolder extends Thread {
     private Date nextTime;
 
 
-    public JobHolder(String name, long fixedRate, long fixedDelay, boolean concurrent, Runnable runnable) {
-        this(name, null, fixedRate, fixedDelay, concurrent, runnable);
-    }
+    public JobHolder(String name, Scheduled anno, Runnable runnable) {
+        this.cron = CronUtils.get(anno.cron7x());
 
-    public JobHolder(String name, CronExpressionPlus cron, boolean concurrent, Runnable runnable) {
-        this(name, cron, 0, 0, concurrent, runnable);
-    }
+        if (Utils.isNotEmpty(anno.zone())) {
+            this.cron.setTimeZone(TimeZone.getTimeZone(anno.zone()));
+        }
 
-    private JobHolder(String name, CronExpressionPlus cron, long fixedRate, long fixedDelay, boolean concurrent, Runnable runnable) {
-        this.cron = cron;
-        this.fixedRate = fixedRate;
-        this.fixedDelay = fixedDelay;
+        this.anno = anno;
         this.runnable = runnable;
-        this.concurrent = concurrent;
 
         this.baseTime = new Date();
 
@@ -81,9 +70,14 @@ class JobHolder extends Thread {
     /**
      * 重置调度时间
      * */
-    protected void reset(CronExpressionPlus cron, long fixedRate){
-        this.cron = cron;
-        this.fixedRate = fixedRate;
+    protected void reset(Scheduled anno) {
+        if (Utils.isEmpty(anno.cron7x())) {
+            this.cron = null;
+        } else {
+            this.cron = CronUtils.get(anno.cron7x());
+        }
+
+        this.anno = anno;
         this.baseTime = new Date(System.currentTimeMillis() + sleepMillis);
     }
 
@@ -99,8 +93,8 @@ class JobHolder extends Thread {
      */
     @Override
     public void run() {
-        if (fixedDelay > 0) {
-            sleep0(fixedDelay);
+        if (anno.fixedDelay() > 0) {
+            sleep0(anno.fixedDelay());
         }
 
         while (true) {
@@ -121,16 +115,16 @@ class JobHolder extends Thread {
      * 调度
      */
     private void scheduling() throws Throwable {
-        if (fixedRate > 0) {
+        if (anno.fixedRate() > 0) {
             //按固定频率调度
             sleepMillis = System.currentTimeMillis() - baseTime.getTime();
 
-            if (sleepMillis >= fixedRate) {
+            if (sleepMillis >= anno.fixedRate()) {
                 baseTime = new Date();
                 exec();
 
                 //重新设定休息时间
-                sleepMillis = fixedRate;
+                sleepMillis = anno.fixedRate();
             } else {
                 //时间还未到（一般，第一次才会到这里来）
                 sleepMillis = 100;
@@ -150,7 +144,7 @@ class JobHolder extends Thread {
                     exec();
 
                     //重新设定休息时间
-                    if (concurrent) {
+                    if (anno.concurrent()) {
                         sleepMillis = System.currentTimeMillis() - nextTime.getTime();
                     } else {
                         baseTime = new Date();
@@ -167,7 +161,7 @@ class JobHolder extends Thread {
 
 
     private void exec() {
-        if (concurrent) {
+        if (anno.concurrent()) {
             Utils.parallel(this::exec0);
         } else {
             exec0();
@@ -176,7 +170,7 @@ class JobHolder extends Thread {
 
     private void exec0() {
         try {
-            if (concurrent) {
+            if (anno.concurrent()) {
                 Thread.currentThread().setName(getName());
             }
 
