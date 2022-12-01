@@ -19,8 +19,8 @@ public class JobManager {
     /**
      * 添加计划任务
      *
-     * @param name       任务名称
-     * @param runnable   运行函数
+     * @param name     任务名称
+     * @param runnable 运行函数
      */
     public static void add(String name, Scheduled anno, Runnable runnable) {
         addDo(name, new JobHolder(name, anno, runnable));
@@ -41,6 +41,18 @@ public class JobManager {
         }
     }
 
+    public static void reset(String name, String cron) {
+
+    }
+
+    public static void reset(String name, long fixedRate) {
+
+    }
+
+    public static void remove(String name){
+
+    }
+
     /**
      * 检查计划任务是否存在
      *
@@ -52,8 +64,8 @@ public class JobManager {
 
     /**
      * 任务数量
-     * */
-    public static int count(){
+     */
+    public static int count() {
         return jobEntityMap.size();
     }
 

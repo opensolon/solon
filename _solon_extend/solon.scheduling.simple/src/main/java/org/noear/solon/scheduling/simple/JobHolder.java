@@ -69,6 +69,10 @@ public class JobHolder extends Thread {
         }
     }
 
+    public Scheduled getAnno() {
+        return anno;
+    }
+
     /**
      * 重置调度时间
      * */

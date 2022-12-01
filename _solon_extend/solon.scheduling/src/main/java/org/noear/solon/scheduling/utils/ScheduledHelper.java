@@ -2,7 +2,7 @@ package org.noear.solon.scheduling.utils;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
-import org.noear.solon.scheduling.ScheduledWarpper;
+import org.noear.solon.scheduling.ScheduledAnno;
 
 import java.util.Properties;
 
@@ -14,7 +14,7 @@ public class ScheduledHelper {
     /**
      * 配置加持
      */
-    public static void configScheduled(ScheduledWarpper warpper) {
+    public static void configScheduled(ScheduledAnno warpper) {
         if (warpper.cron().length() < 6 || warpper.cron().indexOf(" ") < 0) {
             warpper.fixedRate(fixedRate(warpper.cron()));
             warpper.cron("");

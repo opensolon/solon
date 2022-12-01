@@ -1,4 +1,4 @@
-package org.noear.solon.scheduling.simple.test;
+package org.noear.solon.scheduling.simple.test.features;
 
 import org.noear.solon.Solon;
 import org.noear.solon.scheduling.annotation.EnableScheduling;

@@ -4,7 +4,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.core.BeanBuilder;
 import org.noear.solon.core.BeanExtractor;
 import org.noear.solon.core.BeanWrap;
-import org.noear.solon.scheduling.ScheduledWarpper;
+import org.noear.solon.scheduling.ScheduledAnno;
 import org.noear.solon.scheduling.annotation.Scheduled;
 import org.noear.solon.scheduling.simple.JobManager;
 import org.noear.solon.scheduling.simple.MethodRunnable;
@@ -22,7 +22,7 @@ public class ScheduledBeanBuilder implements BeanBuilder<Scheduled>, BeanExtract
         if (Runnable.class.isAssignableFrom(clz)) {
             String name = Utils.annoAlias(anno.name(), clz.getSimpleName());
 
-            ScheduledWarpper warpper = new ScheduledWarpper(anno);
+            ScheduledAnno warpper = new ScheduledAnno(anno);
             ScheduledHelper.configScheduled(warpper);
 
 
@@ -39,7 +39,7 @@ public class ScheduledBeanBuilder implements BeanBuilder<Scheduled>, BeanExtract
         MethodRunnable runnable = new MethodRunnable(bw.raw(), method);
         String name = Utils.annoAlias(anno.name(), method.getName());
 
-        ScheduledWarpper warpper = new ScheduledWarpper(anno);
+        ScheduledAnno warpper = new ScheduledAnno(anno);
         ScheduledHelper.configScheduled(warpper);
 
         JobManager.add(name, warpper, runnable);

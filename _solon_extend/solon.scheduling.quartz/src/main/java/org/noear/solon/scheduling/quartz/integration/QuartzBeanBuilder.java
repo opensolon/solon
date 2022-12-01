@@ -3,7 +3,7 @@ package org.noear.solon.scheduling.quartz.integration;
 import org.noear.solon.core.BeanBuilder;
 import org.noear.solon.core.BeanExtractor;
 import org.noear.solon.core.BeanWrap;
-import org.noear.solon.scheduling.ScheduledWarpper;
+import org.noear.solon.scheduling.ScheduledAnno;
 import org.noear.solon.scheduling.annotation.Scheduled;
 import org.noear.solon.scheduling.quartz.JobManager;
 import org.noear.solon.scheduling.utils.ScheduledHelper;
@@ -23,7 +23,7 @@ public class QuartzBeanBuilder implements BeanBuilder<Scheduled>, BeanExtractor<
             throw new IllegalStateException("Quartz job only supports Runnable or Job types!");
         }
 
-        ScheduledWarpper warpper = new ScheduledWarpper(anno);
+        ScheduledAnno warpper = new ScheduledAnno(anno);
         ScheduledHelper.configScheduled(warpper);
 
 
@@ -43,7 +43,7 @@ public class QuartzBeanBuilder implements BeanBuilder<Scheduled>, BeanExtractor<
             }
         }
 
-        ScheduledWarpper warpper = new ScheduledWarpper(anno);
+        ScheduledAnno warpper = new ScheduledAnno(anno);
         ScheduledHelper.configScheduled(warpper);
 
         JobManager.addJob(warpper.name(), warpper, new MethodJob(bw.raw(), method));

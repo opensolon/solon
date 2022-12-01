@@ -10,7 +10,7 @@ import java.lang.annotation.Annotation;
  * @author noear
  * @since 1.11
  */
-public class ScheduledWarpper implements Scheduled {
+public class ScheduledAnno implements Scheduled {
     private String name = "";
     private String cron = "";
     private String zone = "";
@@ -21,11 +21,11 @@ public class ScheduledWarpper implements Scheduled {
 
     private boolean enable = true;
 
-    public ScheduledWarpper() {
+    public ScheduledAnno() {
 
     }
 
-    public ScheduledWarpper(Scheduled anno) {
+    public ScheduledAnno(Scheduled anno) {
         this.name = anno.name();
         this.cron = anno.cron();
         this.zone = anno.zone();
@@ -37,7 +37,7 @@ public class ScheduledWarpper implements Scheduled {
         this.enable = anno.enable();
     }
 
-    public ScheduledWarpper name(String name) {
+    public ScheduledAnno name(String name) {
         if (name == null) {
             name = "";
         }
@@ -46,7 +46,7 @@ public class ScheduledWarpper implements Scheduled {
         return this;
     }
 
-    public ScheduledWarpper cron(String cron) {
+    public ScheduledAnno cron(String cron) {
         if (cron == null) {
             cron = "";
         }
@@ -55,7 +55,7 @@ public class ScheduledWarpper implements Scheduled {
         return this;
     }
 
-    public ScheduledWarpper zone(String zone) {
+    public ScheduledAnno zone(String zone) {
         if (zone == null) {
             zone = "";
         }
@@ -64,22 +64,22 @@ public class ScheduledWarpper implements Scheduled {
         return this;
     }
 
-    public ScheduledWarpper fixedRate(long fixedRate) {
+    public ScheduledAnno fixedRate(long fixedRate) {
         this.fixedRate = fixedRate;
         return this;
     }
 
-    public ScheduledWarpper fixedDelay(long fixedDelay) {
+    public ScheduledAnno fixedDelay(long fixedDelay) {
         this.fixedDelay = fixedDelay;
         return this;
     }
 
-    public ScheduledWarpper concurrent(boolean concurrent) {
+    public ScheduledAnno concurrent(boolean concurrent) {
         this.concurrent = concurrent;
         return this;
     }
 
-    public ScheduledWarpper enable(boolean enable) {
+    public ScheduledAnno enable(boolean enable) {
         this.enable = enable;
         return this;
     }
