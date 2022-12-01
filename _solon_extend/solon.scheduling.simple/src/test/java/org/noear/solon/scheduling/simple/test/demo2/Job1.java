@@ -9,7 +9,7 @@ import java.util.Date;
  * @author noear 2022/10/15 created
  */
 @Slf4j
-@Scheduled(fixedRate = 1000 * 1)
+@Scheduled(cron = "1/2 * * * * ?")
 public class Job1 implements Runnable {
     @Override
     public void run() {

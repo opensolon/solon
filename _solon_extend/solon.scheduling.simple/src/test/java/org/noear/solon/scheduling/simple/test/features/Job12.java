@@ -1,4 +1,4 @@
-package org.noear.solon.scheduling.simple.test.demo1;
+package org.noear.solon.scheduling.simple.test.features;
 
 import lombok.extern.slf4j.Slf4j;
 import org.noear.solon.scheduling.annotation.Scheduled;
