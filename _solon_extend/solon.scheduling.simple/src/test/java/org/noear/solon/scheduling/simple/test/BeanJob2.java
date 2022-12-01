@@ -11,6 +11,6 @@ import java.util.Date;
 public class BeanJob2 implements Runnable {
     @Override
     public void run() {
-        System.out.println("job1:: " + new Date());
+        System.out.println("job2:: " + new Date());
     }
 }
