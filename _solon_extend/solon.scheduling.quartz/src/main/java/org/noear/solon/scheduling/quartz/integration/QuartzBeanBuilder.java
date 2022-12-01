@@ -24,7 +24,7 @@ public class QuartzBeanBuilder implements BeanBuilder<Scheduled>, BeanExtractor<
             throw new IllegalStateException("Quartz job only supports Runnable or Job types!");
         }
 
-        String cronx = anno.cron7x();
+        String cronx = anno.cron();
         String name = anno.name();
         boolean enable = anno.enable();
 
@@ -61,7 +61,7 @@ public class QuartzBeanBuilder implements BeanBuilder<Scheduled>, BeanExtractor<
             }
         }
 
-        String cronx = anno.cron7x();
+        String cronx = anno.cron();
         String name = anno.name();
         boolean enable = anno.enable();
 

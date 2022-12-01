@@ -51,7 +51,7 @@ public class JobHolder extends Thread {
 
 
     public JobHolder(String name, Scheduled anno, Runnable runnable) {
-        this.cron = CronUtils.get(anno.cron7x());
+        this.cron = CronUtils.get(anno.cron());
 
         if (Utils.isNotEmpty(anno.zone())) {
             this.cron.setTimeZone(TimeZone.getTimeZone(anno.zone()));
@@ -71,10 +71,10 @@ public class JobHolder extends Thread {
      * 重置调度时间
      * */
     protected void reset(Scheduled anno) {
-        if (Utils.isEmpty(anno.cron7x())) {
+        if (Utils.isEmpty(anno.cron())) {
             this.cron = null;
         } else {
-            this.cron = CronUtils.get(anno.cron7x());
+            this.cron = CronUtils.get(anno.cron());
         }
 
         this.anno = anno;

@@ -25,7 +25,7 @@ public @interface Scheduled {
      * cron 表达式
      */
     @Note("支持7位（秒，分，时，日期ofM，月，星期ofW，年）")
-    String cron7x() default "";
+    String cron() default "";
 
     /**
      * 时区

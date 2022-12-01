@@ -11,12 +11,12 @@ import java.util.Date;
  */
 @Component
 public class MethodJob {
-    @Scheduled(cron7x = "1s")
+    @Scheduled(cron = "1s")
     public void job3() {
         System.out.println("job3:: " + new Date());
     }
 
-    @Scheduled(cron7x = "* * * * * ? ")
+    @Scheduled(cron = "* * * * * ? ")
     public void job4(JobExecutionContext context) {
         System.out.println("job4:: " + context.getJobDetail().getKey().getName());
         System.out.println("job4:: " + new Date());

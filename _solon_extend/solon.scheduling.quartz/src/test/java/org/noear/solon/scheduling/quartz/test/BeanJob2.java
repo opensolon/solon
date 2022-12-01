@@ -10,7 +10,7 @@ import java.util.Date;
 /**
  * @author noear 2022/12/1 created
  */
-@Scheduled(cron7x = "* * * * * ? ")
+@Scheduled(cron = "* * * * * ? ")
 public class BeanJob2 implements Job {
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
