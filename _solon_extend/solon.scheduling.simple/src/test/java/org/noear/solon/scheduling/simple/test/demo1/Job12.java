@@ -10,7 +10,7 @@ import java.util.Date;
  */
 @Slf4j
 @Scheduled(cron = "0/10 * * * * ? *")
-public class Job2 implements Runnable {
+public class Job12 implements Runnable {
     @Override
     public void run() {
         log.info(new Date() + ": 0/10 * * * * ? *");

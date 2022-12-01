@@ -10,7 +10,7 @@ import java.util.Date;
  */
 @Slf4j
 @Scheduled(fixedRate = 1000 * 3)
-public class Job1 implements Runnable {
+public class Job11 implements Runnable {
     @Override
     public void run() {
         log.info(new Date() + ": 1000*3");

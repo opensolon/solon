@@ -11,24 +11,29 @@ import java.util.Date;
  */
 @Slf4j
 @Component
-public class JobBean {
+public class JobOfMethod {
     @Scheduled(fixedRate = 1000 * 3)
-    public void job11(){
+    public void job21() {
         log.debug(new Date() + ": 1000*3");
     }
 
+    @Scheduled(cron = "1s")
+    public void job22() {
+        System.out.println("job3:: " + new Date());
+    }
+
     @Scheduled(cron = "0/10 * * * * ? *", zone = "+00")
-    public void job12(){
+    public void job23() {
         log.debug(new Date() + ": 0/10 * * * * ? *");
     }
 
     @Scheduled(cron = "0/10 * * * * ? *", zone = "CET")
-    public void job13(){
+    public void job24() {
         log.debug(new Date() + ": 0/10 * * * * ? *");
     }
 
     @Scheduled(cron = "0/10 * * * * ? *", zone = "Asia/Shanghai")
-    public void job14(){
+    public void job25() {
         log.debug(new Date() + ": 0/10 * * * * ? *");
     }
 }
