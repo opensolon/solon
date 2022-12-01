@@ -11,6 +11,15 @@ import java.util.Properties;
  * @since 1.11
  */
 public class ScheduledHelper {
+    public static void resetScheduled(ScheduledAnno warpper) {
+        if (warpper.cron().length() < 6 || warpper.cron().indexOf(" ") < 0) {
+            warpper.fixedRate(fixedRate(warpper.cron()));
+            warpper.cron("");
+        } else {
+            warpper.fixedRate(0L);
+        }
+    }
+
     /**
      * 配置加持
      */
