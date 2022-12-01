@@ -12,10 +12,11 @@ import org.quartz.JobExecutionException;
 public class QuartzProxy implements Job {
     @Override
     public void execute(JobExecutionContext ctx) throws JobExecutionException {
-        JobEntity jobEntity = JobManager.getJob(ctx.getJobDetail().getJobDataMap().getString("__jobID"));
+        String jobId = ctx.getJobDetail().getJobDataMap().getString("__jobID");
+        Job jobReal = JobManager.getJob(jobId);
 
-        if (jobEntity != null) {
-            jobEntity.execute(ctx);
+        if (jobReal != null) {
+            jobReal.execute(ctx);
         }
     }
 }

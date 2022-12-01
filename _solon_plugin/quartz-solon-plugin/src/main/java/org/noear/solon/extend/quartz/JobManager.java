@@ -1,9 +1,8 @@
 package org.noear.solon.extend.quartz;
 
 
-import org.noear.solon.Solon;
 import org.noear.solon.Utils;
-import org.noear.solon.core.BeanWrap;
+import org.noear.solon.extend.quartz.wrap.AbstractJob;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 
@@ -15,12 +14,11 @@ public final class JobManager {
     static Scheduler _scheduler = null;
     static Map<String, JobEntity> jobMap = new HashMap<>();
 
-    static {
-        Solon.context().getBeanAsync(Scheduler.class, bean -> {
-            if (_scheduler == null) {
-                _scheduler = bean;
-            }
-        });
+    public static void setScheduler(Scheduler scheduler) {
+        //如果已存在，则不可替换
+        if (_scheduler == null) {
+            _scheduler = scheduler;
+        }
     }
 
     private static void tryInitScheduler() throws SchedulerException {
@@ -38,7 +36,7 @@ public final class JobManager {
     /**
      * 开始
      */
-    protected static void start() throws SchedulerException {
+    public static void start() throws SchedulerException {
         tryInitScheduler();
 
         for (JobEntity jobEntity : jobMap.values()) {
@@ -53,7 +51,7 @@ public final class JobManager {
     /**
      * 停止
      */
-    protected static void stop() throws SchedulerException {
+    public static void stop() throws SchedulerException {
         if (_scheduler != null) {
             _scheduler.shutdown();
 
@@ -64,21 +62,21 @@ public final class JobManager {
     /**
      * 添加 job
      */
-    protected static void addJob(String name, String cronx, boolean enable, BeanWrap bw) throws Exception {
+    public static void addJob(String name, String cronx, boolean enable, AbstractJob job) throws Exception {
         if (enable == false) {
             return;
         }
 
-        if (Runnable.class.isAssignableFrom(bw.clz()) || Job.class.isAssignableFrom(bw.clz())) {
-            JobEntity jobEntity = new JobEntity(name, cronx, enable, bw);
-            jobMap.putIfAbsent(jobEntity.jobID, jobEntity);
+        if (jobMap.containsKey(job.getJobId()) == false) {
+            JobEntity jobEntity = new JobEntity(name, cronx, enable, job);
+            jobMap.put(jobEntity.jobID, jobEntity);
         }
     }
 
     /**
      * 获取 job
      */
-    protected static JobEntity getJob(String jobID) {
+    public static JobEntity getJob(String jobID) {
         if (Utils.isEmpty(jobID)) {
             return null;
         } else {
