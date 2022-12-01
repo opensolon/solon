@@ -1,6 +1,7 @@
 package org.noear.solon.extend.quartz;
 
 
+import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.BeanWrap;
 import org.quartz.*;
@@ -14,18 +15,33 @@ public final class JobManager {
     static Scheduler _server = null;
     static Map<String, JobEntity> jobMap = new HashMap<>();
 
-    protected static void init() throws SchedulerException {
-        SchedulerFactory schedulerFactory = new StdSchedulerFactory();
+    static {
+        Solon.context().getBeanAsync(Scheduler.class, bean -> {
+            if (_server == null) {
+                _server = bean;
+            }
+        });
+    }
 
-        _server = schedulerFactory.getScheduler();
+    private static void init() throws SchedulerException {
+        if (_server == null) {
+            synchronized (JobManager.class) {
+                if (_server == null) {
+                    //默认使用：直接本地调用
+                    SchedulerFactory schedulerFactory = new StdSchedulerFactory();
+                    _server = schedulerFactory.getScheduler();
+                }
+            }
+        }
     }
 
     protected static void start() throws SchedulerException {
-        _server.start();
+        if (_server != null) {
+            _server.start();
+        }
     }
 
     protected static void stop() throws SchedulerException {
-
         if (_server != null) {
             _server.shutdown();
 
@@ -60,26 +76,28 @@ public final class JobManager {
         if (jobEntity.cronx.indexOf(" ") < 0) {
             if (jobEntity.cronx.endsWith("ms")) {
                 long period = Long.parseLong(jobEntity.cronx.substring(0, jobEntity.cronx.length() - 2));
-                addFuture(jobEntity, period, TimeUnit.MILLISECONDS);
+                addJobByPeriod(jobEntity, period, TimeUnit.MILLISECONDS);
             } else if (jobEntity.cronx.endsWith("s")) {
                 long period = Long.parseLong(jobEntity.cronx.substring(0, jobEntity.cronx.length() - 1));
-                addFuture(jobEntity, period, TimeUnit.SECONDS);
+                addJobByPeriod(jobEntity, period, TimeUnit.SECONDS);
             } else if (jobEntity.cronx.endsWith("m")) {
                 long period = Long.parseLong(jobEntity.cronx.substring(0, jobEntity.cronx.length() - 1));
-                addFuture(jobEntity, period, TimeUnit.MINUTES);
+                addJobByPeriod(jobEntity, period, TimeUnit.MINUTES);
             } else if (jobEntity.cronx.endsWith("h")) {
                 long period = Long.parseLong(jobEntity.cronx.substring(0, jobEntity.cronx.length() - 1));
-                addFuture(jobEntity, period, TimeUnit.HOURS);
+                addJobByPeriod(jobEntity, period, TimeUnit.HOURS);
             } else if (jobEntity.cronx.endsWith("d")) {
                 long period = Long.parseLong(jobEntity.cronx.substring(0, jobEntity.cronx.length() - 1));
-                addFuture(jobEntity, period, TimeUnit.DAYS);
+                addJobByPeriod(jobEntity, period, TimeUnit.DAYS);
             }
         } else {
-            addSchedule(jobEntity, jobEntity.cronx);
+            addJobByCronx(jobEntity, jobEntity.cronx);
         }
     }
 
-    private static void addSchedule(JobEntity jobEntity, String cronx) throws Exception {
+    private static void addJobByCronx(JobEntity jobEntity, String cronx) throws Exception {
+        init();
+
         JobDetail jobDetail = JobBuilder.newJob(QuartzProxy.class)
                 .withIdentity(jobEntity.jobID, "solon")
                 .usingJobData("__jobID", jobEntity.jobID)
@@ -96,7 +114,9 @@ public final class JobManager {
         }
     }
 
-    private static void addFuture(JobEntity jobEntity, long period, TimeUnit unit) throws Exception {
+    private static void addJobByPeriod(JobEntity jobEntity, long period, TimeUnit unit) throws Exception {
+        init();
+
         SimpleScheduleBuilder ssb = SimpleScheduleBuilder.simpleSchedule();
         switch (unit) {
             case MILLISECONDS:
