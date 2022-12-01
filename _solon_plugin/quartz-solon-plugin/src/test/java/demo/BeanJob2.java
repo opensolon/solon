@@ -11,10 +11,10 @@ import java.util.Date;
  * @author noear 2022/12/1 created
  */
 @Quartz(cron7x = "* * * * * ? ")
-public class Job2 implements Job {
+public class BeanJob2 implements Job {
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
-        System.out.println("job2:: " + context);
+        System.out.println("job2:: " + context.getJobDetail().getKey().getName());
         System.out.println("job2:: " + new Date());
     }
 }

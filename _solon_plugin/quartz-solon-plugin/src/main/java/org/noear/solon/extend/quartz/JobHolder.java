@@ -8,7 +8,7 @@ import org.quartz.JobExecutionException;
 /**
  * Quartz job 实体
  * */
-public class JobEntity implements Job {
+public class JobHolder implements Job {
     public final String name;
     /**
      * cron4 or 100ms,2s,1m,1h,1d(ms:毫秒；s:秒；m:分；h:小时；d:天)
@@ -19,7 +19,7 @@ public class JobEntity implements Job {
     public final AbstractJob job;
     public final String jobID;
 
-    public JobEntity(String name, String cronx, boolean enable, AbstractJob job) {
+    public JobHolder(String name, String cronx, boolean enable, AbstractJob job) {
         this.name = name;
         this.cronx = cronx;
         this.enable = enable;

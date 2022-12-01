@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
 
 public final class JobManager {
     static Scheduler _scheduler = null;
-    static Map<String, JobEntity> jobMap = new HashMap<>();
+    static Map<String, JobHolder> jobMap = new HashMap<>();
 
     public static void setScheduler(Scheduler scheduler) {
         //如果已存在，则不可替换
@@ -39,7 +39,7 @@ public final class JobManager {
     public static void start() throws SchedulerException {
         tryInitScheduler();
 
-        for (JobEntity jobEntity : jobMap.values()) {
+        for (JobHolder jobEntity : jobMap.values()) {
             regJob(jobEntity);
         }
 
@@ -68,7 +68,7 @@ public final class JobManager {
         }
 
         if (jobMap.containsKey(job.getJobId()) == false) {
-            JobEntity jobEntity = new JobEntity(name, cronx, enable, job);
+            JobHolder jobEntity = new JobHolder(name, cronx, enable, job);
             jobMap.put(jobEntity.jobID, jobEntity);
         }
     }
@@ -76,7 +76,7 @@ public final class JobManager {
     /**
      * 获取 job
      */
-    public static JobEntity getJob(String jobID) {
+    public static JobHolder getJob(String jobID) {
         if (Utils.isEmpty(jobID)) {
             return null;
         } else {
@@ -87,7 +87,7 @@ public final class JobManager {
     /**
      * 注册 job（on start）
      */
-    private static void regJob(JobEntity jobEntity) throws SchedulerException {
+    private static void regJob(JobHolder jobEntity) throws SchedulerException {
         if (jobEntity.cronx.indexOf(" ") < 0) {
             if (jobEntity.cronx.endsWith("ms")) {
                 long period = Long.parseLong(jobEntity.cronx.substring(0, jobEntity.cronx.length() - 2));
@@ -110,12 +110,11 @@ public final class JobManager {
         }
     }
 
-    private static void regJobByCronx(JobEntity jobEntity, String cronx) throws SchedulerException {
+    private static void regJobByCronx(JobHolder jobEntity, String cronx) throws SchedulerException {
         tryInitScheduler();
 
         JobDetail jobDetail = JobBuilder.newJob(QuartzProxy.class)
                 .withIdentity(jobEntity.jobID, "solon")
-                .usingJobData("__jobID", jobEntity.jobID)
                 .build();
 
         if (_scheduler.checkExists(jobDetail.getKey()) == false) {
@@ -131,12 +130,11 @@ public final class JobManager {
         }
     }
 
-    private static void regJobByPeriod(JobEntity jobEntity, long period, TimeUnit unit) throws SchedulerException {
+    private static void regJobByPeriod(JobHolder jobEntity, long period, TimeUnit unit) throws SchedulerException {
         tryInitScheduler();
 
         JobDetail jobDetail = JobBuilder.newJob(QuartzProxy.class)
                 .withIdentity(jobEntity.jobID, "solon")
-                .usingJobData("__jobID", jobEntity.jobID)
                 .build();
 
         if (_scheduler.checkExists(jobDetail.getKey()) == false) {

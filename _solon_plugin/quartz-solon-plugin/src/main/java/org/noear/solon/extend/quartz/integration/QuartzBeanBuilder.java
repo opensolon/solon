@@ -22,30 +22,32 @@ import java.util.Properties;
 public class QuartzBeanBuilder implements BeanBuilder<Quartz>, BeanExtractor<Quartz> {
     @Override
     public void doBuild(Class<?> clz, BeanWrap bw, Quartz anno) throws Throwable {
-        if (bw.raw() instanceof Job || bw.raw() instanceof Runnable) {
-            String cronx = anno.cron7x();
-            String name = anno.name();
-            boolean enable = anno.enable();
+        if (!(bw.raw() instanceof Job) && !(bw.raw() instanceof Runnable)) {
+            throw new IllegalStateException("Quartz job only supports Runnable or Job types!");
+        }
 
-            if (Utils.isNotEmpty(name)) {
-                Properties prop = Solon.cfg().getProp("solon.quartz." + name);
+        String cronx = anno.cron7x();
+        String name = anno.name();
+        boolean enable = anno.enable();
 
-                if (prop.size() > 0) {
-                    String cronxTmp = prop.getProperty("cron7x");
-                    String enableTmp = prop.getProperty("enable");
+        if (Utils.isNotEmpty(name)) {
+            Properties prop = Solon.cfg().getProp("solon.quartz." + name);
 
-                    if ("false".equals(enableTmp)) {
-                        enable = false;
-                    }
+            if (prop.size() > 0) {
+                String cronxTmp = prop.getProperty("cron7x");
+                String enableTmp = prop.getProperty("enable");
 
-                    if (Utils.isNotEmpty(cronxTmp)) {
-                        cronx = cronxTmp;
-                    }
+                if ("false".equals(enableTmp)) {
+                    enable = false;
+                }
+
+                if (Utils.isNotEmpty(cronxTmp)) {
+                    cronx = cronxTmp;
                 }
             }
-
-            JobManager.addJob(name, cronx, enable, new BeanJob(bw.raw()));
         }
+
+        JobManager.addJob(name, cronx, enable, new BeanJob(bw.raw()));
     }
 
     @Override
