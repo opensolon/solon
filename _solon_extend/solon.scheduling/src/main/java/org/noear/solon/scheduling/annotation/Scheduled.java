@@ -43,11 +43,6 @@ public @interface Scheduled {
     long fixedDelay() default 0;
 
     /**
-     * 可并发执行
-     * */
-    boolean concurrent() default false;
-
-    /**
      * 是否启用
      * */
     boolean enable() default true;

@@ -20,11 +20,11 @@ public class JobHolder extends Thread {
     /**
      * 调度表达式
      */
-     private CronExpressionPlus cron;
+    private CronExpressionPlus cron;
     /**
      * 固定频率
      */
-     private Scheduled anno;
+    private Scheduled anno;
     /**
      * 执行函数
      */
@@ -51,7 +51,7 @@ public class JobHolder extends Thread {
 
 
     public JobHolder(String name, Scheduled anno, Runnable runnable) {
-        if(anno.fixedRate() == 0) {
+        if (anno.fixedRate() == 0) {
             this.cron = CronUtils.get(anno.cron());
 
             if (Utils.isNotEmpty(anno.zone())) {
@@ -67,24 +67,6 @@ public class JobHolder extends Thread {
         if (Utils.isNotEmpty(name)) {
             setName("Job:" + name);
         }
-    }
-
-    public Scheduled getAnno() {
-        return anno;
-    }
-
-    /**
-     * 重置调度时间
-     * */
-    protected void reset(Scheduled anno) {
-        if (Utils.isEmpty(anno.cron())) {
-            this.cron = null;
-        } else {
-            this.cron = CronUtils.get(anno.cron());
-        }
-
-        this.anno = anno;
-        this.baseTime = new Date(System.currentTimeMillis() + sleepMillis);
     }
 
     /**
@@ -111,7 +93,7 @@ public class JobHolder extends Thread {
                     e = Utils.throwableUnwrap(e);
                     EventBus.push(new ScheduledException(e));
                 }
-            }else{
+            } else {
                 break;
             }
         }
@@ -150,14 +132,7 @@ public class JobHolder extends Thread {
                     exec();
 
                     //重新设定休息时间
-                    if (anno.concurrent()) {
-                        sleepMillis = System.currentTimeMillis() - nextTime.getTime();
-                    } else {
-                        baseTime = new Date();
-
-                        nextTime = cron.getNextValidTimeAfter(baseTime);
-                        sleepMillis = System.currentTimeMillis() - nextTime.getTime();
-                    }
+                    sleepMillis = System.currentTimeMillis() - nextTime.getTime();
                 }
             }
 
@@ -167,19 +142,11 @@ public class JobHolder extends Thread {
 
 
     private void exec() {
-        if (anno.concurrent()) {
-            Utils.parallel(this::exec0);
-        } else {
-            exec0();
-        }
+        Utils.parallel(this::exec0);
     }
 
     private void exec0() {
         try {
-            if (anno.concurrent()) {
-                Thread.currentThread().setName(getName());
-            }
-
             runnable.run();
         } catch (Throwable e) {
             EventBus.push(e);

@@ -17,7 +17,6 @@ public class ScheduledAnno implements Scheduled {
 
     private long fixedRate = 0;
     private long fixedDelay = 0;
-    private boolean concurrent = false;
 
     private boolean enable = true;
 
@@ -32,7 +31,6 @@ public class ScheduledAnno implements Scheduled {
 
         this.fixedRate = anno.fixedRate();
         this.fixedDelay = anno.fixedDelay();
-        this.concurrent = anno.concurrent();
 
         this.enable = anno.enable();
     }
@@ -74,11 +72,6 @@ public class ScheduledAnno implements Scheduled {
         return this;
     }
 
-    public ScheduledAnno concurrent(boolean concurrent) {
-        this.concurrent = concurrent;
-        return this;
-    }
-
     public ScheduledAnno enable(boolean enable) {
         this.enable = enable;
         return this;
@@ -108,11 +101,6 @@ public class ScheduledAnno implements Scheduled {
     @Override
     public long fixedDelay() {
         return fixedDelay;
-    }
-
-    @Override
-    public boolean concurrent() {
-        return concurrent;
     }
 
     @Override
