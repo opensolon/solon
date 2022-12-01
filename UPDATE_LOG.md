@@ -14,7 +14,7 @@
 * 新增 elastic-job-solon-plugin 分布式定时任务
 * 新增 file-s3-solon-plugin 插件
 * 插件 solon.schedule 增加配置支持
-* 插件 quartz-solon-plugin 增中 jdbc 持久化支持（代码微调整）!ok
+* 插件 quartz-solon-plugin 增加函数执行支持，增加持久化和远程管理支持（代码微调整）!ok
 * 插件 local-solon-cloud-plugin 添加 server 配置支持（只能指向本地） !ok
 * 增加 enableWebSocketMvc，enableSocketMvc !ok
 * 开放 CacheService 内部的 client !ok
