@@ -1,6 +1,5 @@
 package org.noear.solon.extend.quartz;
 
-import org.noear.solon.extend.quartz.wrap.AbstractJob;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;

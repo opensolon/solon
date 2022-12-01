@@ -1,4 +1,4 @@
-package org.noear.solon.extend.quartz.wrap;
+package org.noear.solon.extend.quartz;
 
 import org.quartz.Job;
 

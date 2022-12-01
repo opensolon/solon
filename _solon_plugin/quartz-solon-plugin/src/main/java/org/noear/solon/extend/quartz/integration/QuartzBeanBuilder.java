@@ -7,8 +7,6 @@ import org.noear.solon.core.BeanExtractor;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.extend.quartz.JobManager;
 import org.noear.solon.extend.quartz.Quartz;
-import org.noear.solon.extend.quartz.wrap.BeanJob;
-import org.noear.solon.extend.quartz.wrap.MethodJob;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 

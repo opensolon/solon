@@ -2,7 +2,6 @@ package org.noear.solon.extend.quartz;
 
 
 import org.noear.solon.Utils;
-import org.noear.solon.extend.quartz.wrap.AbstractJob;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 
