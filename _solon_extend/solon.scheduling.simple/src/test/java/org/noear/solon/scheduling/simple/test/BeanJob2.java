@@ -7,7 +7,7 @@ import java.util.Date;
 /**
  * @author noear 2022/11/24 created
  */
-@Scheduled(cron = "* * * * * ? ")
+@Scheduled(cron = "* * * * * ?")
 public class BeanJob2 implements Runnable {
     @Override
     public void run() {
