@@ -5,6 +5,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.core.BeanBuilder;
 import org.noear.solon.core.BeanExtractor;
 import org.noear.solon.core.BeanWrap;
+import org.noear.solon.scheduling.ScheduledWarpper;
 import org.noear.solon.scheduling.annotation.Scheduled;
 import org.noear.solon.scheduling.quartz.JobManager;
 import org.quartz.Job;
@@ -24,28 +25,11 @@ public class QuartzBeanBuilder implements BeanBuilder<Scheduled>, BeanExtractor<
             throw new IllegalStateException("Quartz job only supports Runnable or Job types!");
         }
 
-        String cronx = anno.cron();
-        String name = anno.name();
-        boolean enable = anno.enable();
+        ScheduledWarpper warpper = new ScheduledWarpper(anno);
+        configScheduledWarpper(warpper);
 
-        if (Utils.isNotEmpty(name)) {
-            Properties prop = Solon.cfg().getProp("solon.scheduling." + name);
 
-            if (prop.size() > 0) {
-                String cronxTmp = prop.getProperty("cron7x");
-                String enableTmp = prop.getProperty("enable");
-
-                if ("false".equals(enableTmp)) {
-                    enable = false;
-                }
-
-                if (Utils.isNotEmpty(cronxTmp)) {
-                    cronx = cronxTmp;
-                }
-            }
-        }
-
-        JobManager.addJob(name, cronx, enable, new BeanJob(bw.raw()));
+        JobManager.addJob(warpper.name(), warpper, new BeanJob(bw.raw()));
     }
 
     @Override
@@ -61,27 +45,31 @@ public class QuartzBeanBuilder implements BeanBuilder<Scheduled>, BeanExtractor<
             }
         }
 
-        String cronx = anno.cron();
-        String name = anno.name();
-        boolean enable = anno.enable();
+        ScheduledWarpper warpper = new ScheduledWarpper(anno);
+        configScheduledWarpper(warpper);
 
-        if (Utils.isNotEmpty(name)) {
-            Properties prop = Solon.cfg().getProp("solon.scheduling." + name);
+        JobManager.addJob(warpper.name(), warpper, new MethodJob(bw.raw(), method));
+    }
+
+    /**
+     * 配置加持
+     */
+    private void configScheduledWarpper(ScheduledWarpper warpper) {
+        if (Utils.isNotEmpty(warpper.name())) {
+            Properties prop = Solon.cfg().getProp("solon.scheduling." + warpper.name());
 
             if (prop.size() > 0) {
-                String cronxTmp = prop.getProperty("cron7x");
+                String cronTmp = prop.getProperty("cron");
                 String enableTmp = prop.getProperty("enable");
 
                 if ("false".equals(enableTmp)) {
-                    enable = false;
+                    warpper.enable(false);
                 }
 
-                if (Utils.isNotEmpty(cronxTmp)) {
-                    cronx = cronxTmp;
+                if (Utils.isNotEmpty(cronTmp)) {
+                    warpper.cron(cronTmp);
                 }
             }
         }
-
-        JobManager.addJob(name, cronx, enable, new MethodJob(bw.raw(), method));
     }
 }

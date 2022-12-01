@@ -1,5 +1,6 @@
 package org.noear.solon.scheduling.quartz;
 
+import org.noear.solon.scheduling.annotation.Scheduled;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -12,16 +13,14 @@ public class JobHolder implements Job {
     /**
      * cron4 or 100ms,2s,1m,1h,1d(ms:毫秒；s:秒；m:分；h:小时；d:天)
      */
-    public final String cronx;
-    public final boolean enable;
+    public final Scheduled anno;
 
     public final AbstractJob job;
     public final String jobID;
 
-    public JobHolder(String name, String cronx, boolean enable, AbstractJob job) {
+    public JobHolder(String name, Scheduled anno,AbstractJob job) {
         this.name = name;
-        this.cronx = cronx;
-        this.enable = enable;
+        this.anno = anno;
 
         this.job = job;
         this.jobID = job.getJobId();

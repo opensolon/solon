@@ -2,6 +2,7 @@ package org.noear.solon.scheduling.quartz;
 
 
 import org.noear.solon.Utils;
+import org.noear.solon.scheduling.annotation.Scheduled;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 
@@ -61,13 +62,13 @@ public final class JobManager {
     /**
      * 添加 job
      */
-    public static void addJob(String name, String cronx, boolean enable, AbstractJob job) throws Exception {
-        if (enable == false) {
+    public static void addJob(String name, Scheduled anno, AbstractJob job) throws Exception {
+        if (anno.enable() == false) {
             return;
         }
 
         if (jobMap.containsKey(job.getJobId()) == false) {
-            JobHolder jobEntity = new JobHolder(name, cronx, enable, job);
+            JobHolder jobEntity = new JobHolder(name, anno, job);
             jobMap.put(jobEntity.jobID, jobEntity);
         }
     }
@@ -87,25 +88,10 @@ public final class JobManager {
      * 注册 job（on start）
      */
     private static void regJob(JobHolder jobEntity) throws SchedulerException {
-        if (jobEntity.cronx.indexOf(" ") < 0) {
-            if (jobEntity.cronx.endsWith("ms")) {
-                long period = Long.parseLong(jobEntity.cronx.substring(0, jobEntity.cronx.length() - 2));
-                regJobByPeriod(jobEntity, period, TimeUnit.MILLISECONDS);
-            } else if (jobEntity.cronx.endsWith("s")) {
-                long period = Long.parseLong(jobEntity.cronx.substring(0, jobEntity.cronx.length() - 1));
-                regJobByPeriod(jobEntity, period, TimeUnit.SECONDS);
-            } else if (jobEntity.cronx.endsWith("m")) {
-                long period = Long.parseLong(jobEntity.cronx.substring(0, jobEntity.cronx.length() - 1));
-                regJobByPeriod(jobEntity, period, TimeUnit.MINUTES);
-            } else if (jobEntity.cronx.endsWith("h")) {
-                long period = Long.parseLong(jobEntity.cronx.substring(0, jobEntity.cronx.length() - 1));
-                regJobByPeriod(jobEntity, period, TimeUnit.HOURS);
-            } else if (jobEntity.cronx.endsWith("d")) {
-                long period = Long.parseLong(jobEntity.cronx.substring(0, jobEntity.cronx.length() - 1));
-                regJobByPeriod(jobEntity, period, TimeUnit.DAYS);
-            }
+        if (Utils.isEmpty(jobEntity.anno.cron())) {
+            regJobByFixedRate(jobEntity, jobEntity.anno.fixedRate());
         } else {
-            regJobByCronx(jobEntity, jobEntity.cronx);
+            regJobByCronx(jobEntity, jobEntity.anno.cron());
         }
     }
 
@@ -129,7 +115,7 @@ public final class JobManager {
         }
     }
 
-    private static void regJobByPeriod(JobHolder jobEntity, long period, TimeUnit unit) throws SchedulerException {
+    private static void regJobByFixedRate(JobHolder jobEntity, long milliseconds) throws SchedulerException {
         tryInitScheduler();
 
         JobDetail jobDetail = JobBuilder.newJob(QuartzProxy.class)
@@ -138,26 +124,7 @@ public final class JobManager {
 
         if (_scheduler.checkExists(jobDetail.getKey()) == false) {
             SimpleScheduleBuilder builder = SimpleScheduleBuilder.simpleSchedule();
-            switch (unit) {
-                case MILLISECONDS:
-                    builder.withIntervalInMilliseconds(period);
-                    break;
-                case SECONDS:
-                    builder.withIntervalInSeconds((int) period);
-                    break;
-                case MINUTES:
-                    builder.withIntervalInMinutes((int) period);
-                    break;
-                case HOURS:
-                    builder.withIntervalInHours((int) period);
-                    break;
-                case DAYS:
-                    builder.withIntervalInHours((int) (period * 24));
-                    break;
-                default:
-                    return;
-            }
-
+            builder.withIntervalInMilliseconds(milliseconds);
             builder.repeatForever();
 
             Trigger trigger = TriggerBuilder.newTrigger()

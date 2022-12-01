@@ -10,48 +10,64 @@ import java.lang.annotation.Annotation;
  * @author noear
  * @since 1.11
  */
-public class ScheduledAnno implements Scheduled {
+public class ScheduledWarpper implements Scheduled {
     private String name = "";
     private String cron = "";
     private String zone = "";
 
-    private int fixedRate = 0;
-    private int fixedDelay = 0;
+    private long fixedRate = 0;
+    private long fixedDelay = 0;
     private boolean concurrent = false;
 
     private boolean enable = true;
 
-    public ScheduledAnno name(String name){
+    public ScheduledWarpper(){
+
+    }
+
+    public ScheduledWarpper(Scheduled anno){
+        this.name = anno.name();
+        this.cron = anno.cron();
+        this.zone = anno.zone();
+
+        this.fixedRate = anno.fixedRate();
+        this.fixedDelay = anno.fixedDelay();
+        this.concurrent = anno.concurrent();
+
+        this.enable = anno.enable();
+    }
+
+    public ScheduledWarpper name(String name){
         this.name = name;
         return this;
     }
 
-    public ScheduledAnno cron(String cron){
+    public ScheduledWarpper cron(String cron){
         this.cron = cron;
         return this;
     }
 
-    public ScheduledAnno zone(String zone){
+    public ScheduledWarpper zone(String zone){
         this.zone = zone;
         return this;
     }
 
-    public ScheduledAnno fixedRate(int fixedRate){
+    public ScheduledWarpper fixedRate(int fixedRate){
         this.fixedRate = fixedRate;
         return this;
     }
 
-    public ScheduledAnno fixedDelay(int fixedDelay){
+    public ScheduledWarpper fixedDelay(int fixedDelay){
         this.fixedDelay = fixedDelay;
         return this;
     }
 
-    public ScheduledAnno concurrent(boolean concurrent){
+    public ScheduledWarpper concurrent(boolean concurrent){
         this.concurrent = concurrent;
         return this;
     }
 
-    public ScheduledAnno enable(boolean enable){
+    public ScheduledWarpper enable(boolean enable){
         this.enable = enable;
         return this;
     }
