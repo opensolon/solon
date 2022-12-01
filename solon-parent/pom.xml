@@ -423,6 +423,24 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>solon.scheduling</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.scheduling.local</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.scheduling.quartz</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>solon.sessionstate.redisson</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
