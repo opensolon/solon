@@ -1,18 +1,16 @@
 package org.noear.solon.scheduling.quartz.integration;
 
-import org.noear.solon.Solon;
-import org.noear.solon.Utils;
 import org.noear.solon.core.BeanBuilder;
 import org.noear.solon.core.BeanExtractor;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.scheduling.ScheduledWarpper;
 import org.noear.solon.scheduling.annotation.Scheduled;
 import org.noear.solon.scheduling.quartz.JobManager;
+import org.noear.solon.scheduling.utils.ScheduledHelper;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 
 import java.lang.reflect.Method;
-import java.util.Properties;
 
 /**
  * @author noear
@@ -26,7 +24,7 @@ public class QuartzBeanBuilder implements BeanBuilder<Scheduled>, BeanExtractor<
         }
 
         ScheduledWarpper warpper = new ScheduledWarpper(anno);
-        configScheduledWarpper(warpper);
+        ScheduledHelper.configScheduled(warpper);
 
 
         JobManager.addJob(warpper.name(), warpper, new BeanJob(bw.raw()));
@@ -46,30 +44,10 @@ public class QuartzBeanBuilder implements BeanBuilder<Scheduled>, BeanExtractor<
         }
 
         ScheduledWarpper warpper = new ScheduledWarpper(anno);
-        configScheduledWarpper(warpper);
+        ScheduledHelper.configScheduled(warpper);
 
         JobManager.addJob(warpper.name(), warpper, new MethodJob(bw.raw(), method));
     }
 
-    /**
-     * 配置加持
-     */
-    private void configScheduledWarpper(ScheduledWarpper warpper) {
-        if (Utils.isNotEmpty(warpper.name())) {
-            Properties prop = Solon.cfg().getProp("solon.scheduling." + warpper.name());
 
-            if (prop.size() > 0) {
-                String cronTmp = prop.getProperty("cron");
-                String enableTmp = prop.getProperty("enable");
-
-                if ("false".equals(enableTmp)) {
-                    warpper.enable(false);
-                }
-
-                if (Utils.isNotEmpty(cronTmp)) {
-                    warpper.cron(cronTmp);
-                }
-            }
-        }
-    }
 }

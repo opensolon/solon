@@ -52,12 +52,12 @@ public class ScheduledWarpper implements Scheduled {
         return this;
     }
 
-    public ScheduledWarpper fixedRate(int fixedRate){
+    public ScheduledWarpper fixedRate(long fixedRate){
         this.fixedRate = fixedRate;
         return this;
     }
 
-    public ScheduledWarpper fixedDelay(int fixedDelay){
+    public ScheduledWarpper fixedDelay(long fixedDelay){
         this.fixedDelay = fixedDelay;
         return this;
     }

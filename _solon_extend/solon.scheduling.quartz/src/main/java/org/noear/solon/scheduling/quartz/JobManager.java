@@ -8,7 +8,6 @@ import org.quartz.impl.StdSchedulerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 public final class JobManager {
     static Scheduler _scheduler = null;
