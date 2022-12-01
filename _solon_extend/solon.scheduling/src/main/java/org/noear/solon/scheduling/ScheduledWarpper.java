@@ -21,11 +21,11 @@ public class ScheduledWarpper implements Scheduled {
 
     private boolean enable = true;
 
-    public ScheduledWarpper(){
+    public ScheduledWarpper() {
 
     }
 
-    public ScheduledWarpper(Scheduled anno){
+    public ScheduledWarpper(Scheduled anno) {
         this.name = anno.name();
         this.cron = anno.cron();
         this.zone = anno.zone();
@@ -37,37 +37,49 @@ public class ScheduledWarpper implements Scheduled {
         this.enable = anno.enable();
     }
 
-    public ScheduledWarpper name(String name){
+    public ScheduledWarpper name(String name) {
+        if (name == null) {
+            name = "";
+        }
+
         this.name = name;
         return this;
     }
 
-    public ScheduledWarpper cron(String cron){
+    public ScheduledWarpper cron(String cron) {
+        if (cron == null) {
+            cron = "";
+        }
+
         this.cron = cron;
         return this;
     }
 
-    public ScheduledWarpper zone(String zone){
+    public ScheduledWarpper zone(String zone) {
+        if (zone == null) {
+            zone = "";
+        }
+
         this.zone = zone;
         return this;
     }
 
-    public ScheduledWarpper fixedRate(long fixedRate){
+    public ScheduledWarpper fixedRate(long fixedRate) {
         this.fixedRate = fixedRate;
         return this;
     }
 
-    public ScheduledWarpper fixedDelay(long fixedDelay){
+    public ScheduledWarpper fixedDelay(long fixedDelay) {
         this.fixedDelay = fixedDelay;
         return this;
     }
 
-    public ScheduledWarpper concurrent(boolean concurrent){
+    public ScheduledWarpper concurrent(boolean concurrent) {
         this.concurrent = concurrent;
         return this;
     }
 
-    public ScheduledWarpper enable(boolean enable){
+    public ScheduledWarpper enable(boolean enable) {
         this.enable = enable;
         return this;
     }

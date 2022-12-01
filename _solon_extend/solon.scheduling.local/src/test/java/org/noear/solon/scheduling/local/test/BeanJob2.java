@@ -7,8 +7,8 @@ import java.util.Date;
 /**
  * @author noear 2022/11/24 created
  */
-@Scheduled(cron = "1s")
-public class BeanJob1 implements Runnable {
+@Scheduled(cron = "* * * * * ? ")
+public class BeanJob2 implements Runnable {
     @Override
     public void run() {
         System.out.println("job1:: " + new Date());

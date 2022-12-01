@@ -10,9 +10,13 @@ import java.util.Date;
  */
 @Component
 public class MethodJob {
-    @Scheduled(cron = "* * * * * ?")
+    @Scheduled(cron = "1s")
     public void job3() {
         System.out.println("job3:: " + new Date());
     }
 
+    @Scheduled(cron = "* * * * * ? ")
+    public void job4() {
+        System.out.println("job4:: " + new Date());
+    }
 }

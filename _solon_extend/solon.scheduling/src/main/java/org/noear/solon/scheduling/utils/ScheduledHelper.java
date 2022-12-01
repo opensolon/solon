@@ -15,6 +15,11 @@ public class ScheduledHelper {
      * 配置加持
      */
     public static void configScheduled(ScheduledWarpper warpper) {
+        if (warpper.cron().length() < 6 || warpper.cron().indexOf(" ") < 0) {
+            warpper.fixedRate(fixedRate(warpper.cron()));
+            warpper.cron("");
+        }
+
         if (Utils.isNotEmpty(warpper.name())) {
             Properties prop = Solon.cfg().getProp("solon.scheduling." + warpper.name());
 
@@ -30,7 +35,7 @@ public class ScheduledHelper {
                     if (cronTmp.length() > 6 && cronTmp.contains(" ")) {
                         warpper.cron(cronTmp);
                     } else {
-                        warpper.fixedDelay(fixedDelay(cronTmp));
+                        warpper.fixedRate(fixedRate(cronTmp));
                     }
 
                 }
@@ -38,7 +43,7 @@ public class ScheduledHelper {
         }
     }
 
-    public static long fixedDelay(String cronx) {
+    public static long fixedRate(String cronx) {
         if (cronx.endsWith("ms")) {
             long period = Long.parseLong(cronx.substring(0, cronx.length() - 2));
             return period;

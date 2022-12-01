@@ -32,6 +32,10 @@ public class ScheduledBeanBuilder implements BeanBuilder<Scheduled>, BeanExtract
 
     @Override
     public void doExtract(BeanWrap bw, Method method, Scheduled anno) throws Throwable {
+        if (method.getParameterCount() > 0) {
+            throw new IllegalStateException("Scheduling local job not supports parameter!");
+        }
+
         MethodRunnable runnable = new MethodRunnable(bw.raw(), method);
         String name = Utils.annoAlias(anno.name(), method.getName());
 

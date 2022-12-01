@@ -51,10 +51,12 @@ public class JobHolder extends Thread {
 
 
     public JobHolder(String name, Scheduled anno, Runnable runnable) {
-        this.cron = CronUtils.get(anno.cron());
+        if(anno.fixedRate() == 0) {
+            this.cron = CronUtils.get(anno.cron());
 
-        if (Utils.isNotEmpty(anno.zone())) {
-            this.cron.setTimeZone(TimeZone.getTimeZone(anno.zone()));
+            if (Utils.isNotEmpty(anno.zone())) {
+                this.cron.setTimeZone(TimeZone.getTimeZone(anno.zone()));
+            }
         }
 
         this.anno = anno;
