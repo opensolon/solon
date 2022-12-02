@@ -40,7 +40,7 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.logging.impl</artifactId>
+            <artifactId>solon.logging.simple</artifactId>
             <scope>test</scope>
         </dependency>
 

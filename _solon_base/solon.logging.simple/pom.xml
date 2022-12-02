@@ -11,31 +11,18 @@
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>solon.schedule</artifactId>
+    <artifactId>solon.logging.simple</artifactId>
     <packaging>jar</packaging>
-
 
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon</artifactId>
+            <artifactId>solon.logging</artifactId>
         </dependency>
 
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon-api</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.logging.simple</artifactId>
             <scope>test</scope>
         </dependency>
 

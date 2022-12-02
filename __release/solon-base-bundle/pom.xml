@@ -30,6 +30,7 @@
 
         <module>../../_solon_base/solon.logging</module>
         <module>../../_solon_base/solon.logging.impl</module>
+        <module>../../_solon_base/solon.logging.simple</module>
 
 
         <module>../../_solon_base/solon.health</module>

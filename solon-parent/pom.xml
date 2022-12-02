@@ -480,6 +480,11 @@
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>solon.logging.simple</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>solon.serialization</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
