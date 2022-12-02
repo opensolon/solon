@@ -14,6 +14,6 @@ import org.noear.solon.test.SolonTest;
 public class StaticTest extends HttpTestBase {
     @Test
     public void file() throws Exception {
-        assert path("/file-a/a.html").get().equals("a");
+        assert path("/file-a/a.htm").get().equals("a");
     }
 }
