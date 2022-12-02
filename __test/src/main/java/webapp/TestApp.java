@@ -18,6 +18,7 @@ import org.noear.solon.extend.async.annotation.EnableAsync;
 import org.noear.solon.logging.utils.LogUtilToSlf4j;
 import org.noear.solon.web.cors.CrossHandler;
 import org.noear.solon.web.staticfiles.StaticMappings;
+import org.noear.solon.web.staticfiles.repository.ClassPathStaticRepository;
 import org.noear.solon.web.staticfiles.repository.ExtendStaticRepository;
 import org.noear.solon.web.staticfiles.repository.FileStaticRepository;
 import org.noear.solon.serialization.JsonRenderFactory;
@@ -87,7 +88,8 @@ public class TestApp {
                System.out.println("JsonRenderFactory event: xxxxx: " + e.getClass().getSimpleName());
             });
 
-            StaticMappings.add("/ext",false, new ExtendStaticRepository());
+            StaticMappings.add("/file-a/", new ClassPathStaticRepository("static_test"));
+            StaticMappings.add("/ext", new ExtendStaticRepository());
             StaticMappings.add("/sa-token",new FileStaticRepository("/Users/noear/Downloads/"));
         });
 
