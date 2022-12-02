@@ -14,17 +14,27 @@
     <packaging>jar</packaging>
 
     <dependencies>
+
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon.cloud</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>com.alibaba.nacos</groupId>
-            <artifactId>nacos-client</artifactId>
-            <version>${nacos1.ver}</version>
+       <dependency>
+            <groupId>com.tencent.polaris</groupId>
+            <artifactId>polaris-all</artifactId>
+            <version>${polaris.ver}</version>
         </dependency>
 
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.13.2</version>
+            <scope>test</scope>
+        </dependency>
+
+
     </dependencies>
+
 
 </project>
