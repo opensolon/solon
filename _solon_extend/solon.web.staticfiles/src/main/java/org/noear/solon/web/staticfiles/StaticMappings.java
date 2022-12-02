@@ -65,8 +65,12 @@ public class StaticMappings {
         for (StaticLocation m : locationMap.values()) {
             if (path.startsWith(m.pathPrefix)) {
                 if (m.repositoryIncPrefix) {
-                    rst = m.repository.find(path);
+                    //path = /demo/file.htm
+                    //relativePath = demo/file.htm （没有'/'开头）
+                    rst = m.repository.find(path.substring(1));
                 } else {
+                    //path = /demo/file.htm
+                    //relativePath = demo/file.htm （没有'/'开头）
                     rst = m.repository.find(path.substring(m.pathPrefix.length()));
                 }
 

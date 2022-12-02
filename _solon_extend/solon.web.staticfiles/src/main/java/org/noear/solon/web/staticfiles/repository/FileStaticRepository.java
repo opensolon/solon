@@ -36,9 +36,12 @@ public class FileStaticRepository implements StaticRepository {
         this.location = location;
     }
 
+    /**
+     * @param relativePath 例：demo/file.htm （没有'/'开头）
+     * */
     @Override
-    public URL find(String path) throws Exception {
-        File file = new File(location, path);
+    public URL find(String relativePath) throws Exception {
+        File file = new File(location, relativePath);
 
         if (file.exists()) {
             return file.toURI().toURL();

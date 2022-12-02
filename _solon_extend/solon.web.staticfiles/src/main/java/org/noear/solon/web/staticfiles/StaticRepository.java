@@ -9,5 +9,8 @@ import java.net.URL;
  * @since 1.5
  */
 public interface StaticRepository {
-    URL find(String path) throws Exception;
+    /**
+     * @param relativePath 例：demo/file.htm （没有'/'开头）
+     * */
+    URL find(String relativePath) throws Exception;
 }

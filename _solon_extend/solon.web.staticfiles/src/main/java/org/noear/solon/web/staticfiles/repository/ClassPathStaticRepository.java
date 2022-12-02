@@ -45,12 +45,13 @@ public class ClassPathStaticRepository implements StaticRepository {
         }
 
         // 去掉头尾的 "/"
-        if (location.endsWith("/")) {
-            location = location.substring(0, location.length() - 1);
-        }
-
         if (location.startsWith("/")) {
             location = location.substring(1);
+        }
+
+        //尾部加上 "/"（确保'/'结尾）
+        if (location.endsWith("/") == false) {
+            location = location + "/";
         }
 
         this.location = location;
@@ -69,10 +70,13 @@ public class ClassPathStaticRepository implements StaticRepository {
         }
     }
 
+    /**
+     * @param relativePath 例：demo/file.htm （没有'/'开头）
+     * */
     @Override
-    public URL find(String path) throws Exception {
+    public URL find(String relativePath) throws Exception {
         if (locationDebug != null) {
-            URI uri = URI.create(locationDebug + path);
+            URI uri = URI.create(locationDebug + relativePath);
             File file = new File(uri);
 
             if (file.exists()) {
@@ -80,6 +84,6 @@ public class ClassPathStaticRepository implements StaticRepository {
             }
         }
 
-        return Utils.getResource(classLoader, location + path);
+        return Utils.getResource(classLoader, location + relativePath);
     }
 }
