@@ -27,7 +27,7 @@ public class StaticMappings {
      * @param repository 资源仓库
      */
     public synchronized static void add(String pathPrefix, StaticRepository repository) {
-        add(pathPrefix, true, repository);
+        add(pathPrefix, false, repository);
     }
 
     /**
