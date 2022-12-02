@@ -1,9 +1,6 @@
 package org.noear.solon.core.route;
 
-import org.noear.solon.core.handle.Context;
-import org.noear.solon.core.handle.Endpoint;
-import org.noear.solon.core.handle.Handler;
-import org.noear.solon.core.handle.MethodType;
+import org.noear.solon.core.handle.*;
 import org.noear.solon.core.message.Listener;
 import org.noear.solon.core.message.ListenerHolder;
 import org.noear.solon.core.message.Session;
@@ -83,7 +80,7 @@ public class RouterDefault implements Router{
     @Override
     public Handler matchOne(Context ctx, Endpoint endpoint) {
         String pathNew = ctx.pathNew();
-        MethodType method = MethodType.valueOf(ctx.method());
+        MethodType method = MethodTypeUtil.valueOf(ctx.method());
 
         return routesH[endpoint.code].matchOne(pathNew, method);
     }
@@ -98,7 +95,7 @@ public class RouterDefault implements Router{
     @Override
     public List<Handler> matchAll(Context ctx, Endpoint endpoint) {
         String pathNew = ctx.pathNew();
-        MethodType method = MethodType.valueOf(ctx.method());
+        MethodType method = MethodTypeUtil.valueOf(ctx.method());
 
         return routesH[endpoint.code].matchAll(pathNew, method);
     }

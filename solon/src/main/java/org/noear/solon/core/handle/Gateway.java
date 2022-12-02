@@ -413,7 +413,7 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
         if (path == null) {
             return null;
         } else {
-            MethodType method = MethodType.valueOf(c.method());
+            MethodType method = MethodTypeUtil.valueOf(c.method());
             return mainRouting.matchOne(path, method);
         }
     }
