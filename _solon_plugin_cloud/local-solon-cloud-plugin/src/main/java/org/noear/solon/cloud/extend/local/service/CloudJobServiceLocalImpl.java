@@ -20,7 +20,7 @@ public class CloudJobServiceLocalImpl implements CloudJobService {
     @Override
     public boolean register(String name, String cron7x, String description, CloudJobHandler handler) {
         try {
-            JobManager.add(name, cron7x, true, new CloudJobRunnable(handler));
+            JobManager.add(name, cron7x, new CloudJobRunnable(handler));
 
             TagsMDC.tag0("CloudJob");
             LogUtil.global().info("CloudJob: Handler registered name:" + name + ", class:" + handler.getClass().getName());

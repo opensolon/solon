@@ -26,9 +26,9 @@ public class JobManager {
      * @param cron     cron 表达式
      * @param runnable 运行函数
      */
-    public static void add(String name, String cron, boolean concurrent, Runnable runnable) throws ParseException {
+    public static void add(String name, String cron, Runnable runnable) throws ParseException {
         CronExpressionPlus cronX = CronUtils.get(cron);
-        addDo(name, new JobEntity(name, cronX, concurrent, runnable));
+        addDo(name, new JobEntity(name, cronX, runnable));
     }
 
     /**
@@ -46,7 +46,7 @@ public class JobManager {
             cronX.setTimeZone(TimeZone.getTimeZone(zone));
         }
 
-        addDo(name, new JobEntity(name, cronX, concurrent, runnable));
+        addDo(name, new JobEntity(name, cronX, runnable));
     }
 
     /**
@@ -56,8 +56,8 @@ public class JobManager {
      * @param fixedRate 固定间隔毫秒数
      * @param runnable  运行函数
      */
-    public static void add(String name, long fixedRate, boolean concurrent, Runnable runnable) {
-        addDo(name, new JobEntity(name, fixedRate, 0, concurrent, runnable));
+    public static void add(String name, long fixedRate, Runnable runnable) {
+        addDo(name, new JobEntity(name, fixedRate, 0, runnable));
     }
 
     /**
@@ -68,8 +68,8 @@ public class JobManager {
      * @param fixedDelay 固定延迟毫秒数
      * @param runnable   运行函数
      */
-    public static void add(String name, long fixedRate, long fixedDelay, boolean concurrent, Runnable runnable) {
-        addDo(name, new JobEntity(name, fixedRate, fixedDelay, concurrent, runnable));
+    public static void add(String name, long fixedRate, long fixedDelay, Runnable runnable) {
+        addDo(name, new JobEntity(name, fixedRate, fixedDelay, runnable));
     }
 
     /**
@@ -98,8 +98,8 @@ public class JobManager {
 
     /**
      * 任务数量
-     * */
-    public static int count(){
+     */
+    public static int count() {
         return jobEntityMap.size();
     }
 
@@ -116,18 +116,18 @@ public class JobManager {
         }
     }
 
-    public static void reset(String name, long fixedRate){
+    public static void reset(String name, long fixedRate) {
         JobEntity jobEntity = jobEntityMap.get(name);
 
-        if(jobEntity != null) {
+        if (jobEntity != null) {
             jobEntity.reset(null, fixedRate);
         }
     }
 
-    public static void reset(String name, String cron) throws ParseException{
+    public static void reset(String name, String cron) throws ParseException {
         JobEntity jobEntity = jobEntityMap.get(name);
 
-        if(jobEntity != null) {
+        if (jobEntity != null) {
             CronExpressionPlus cronX = CronUtils.get(cron);
             jobEntity.reset(cronX, 0);
         }
@@ -135,7 +135,7 @@ public class JobManager {
 
     /**
      * 获取执行函数
-     * */
+     */
     public static Runnable getRunnable(String name) {
         JobEntity jobEntity = jobEntityMap.get(name);
         if (jobEntity != null) {

@@ -47,6 +47,7 @@
 
 
         <module>../../_solon_plugin_cloud/xxl-job-solon-cloud-plugin</module>
+        <module>../../_solon_plugin_cloud/quartz-solon-cloud-plugin</module>
 
         <module>../../_solon_plugin_cloud/opentracing-solon-cloud-plugin</module>
         <module>../../_solon_plugin_cloud/jaeger-solon-cloud-plugin</module>

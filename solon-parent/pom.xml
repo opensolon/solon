@@ -81,6 +81,7 @@
 
         <feign.ver>8.18.0</feign.ver>
         <aws.s3.ver>1.12.347</aws.s3.ver>
+        <quartz.ver>2.3.2</quartz.ver>
     </properties>
 
 

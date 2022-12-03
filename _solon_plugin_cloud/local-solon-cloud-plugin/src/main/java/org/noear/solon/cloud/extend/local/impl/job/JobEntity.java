@@ -17,11 +17,11 @@ class JobEntity extends Thread {
     /**
      * 调度表达式
      */
-     private CronExpressionPlus cron;
+    private CronExpressionPlus cron;
     /**
      * 固定频率
      */
-     private long fixedRate;
+    private long fixedRate;
     /**
      * 固定延时
      */
@@ -30,10 +30,6 @@ class JobEntity extends Thread {
      * 执行函数
      */
     final Runnable runnable;
-    /**
-     * 是否并发执行（时间到了，新启一个线程执行；不管之前有没有执行完成）
-     */
-    final boolean concurrent;
 
 
     /**
@@ -56,20 +52,19 @@ class JobEntity extends Thread {
     private Date nextTime;
 
 
-    public JobEntity(String name, long fixedRate, long fixedDelay, boolean concurrent, Runnable runnable) {
-        this(name, null, fixedRate, fixedDelay, concurrent, runnable);
+    public JobEntity(String name, long fixedRate, long fixedDelay, Runnable runnable) {
+        this(name, null, fixedRate, fixedDelay, runnable);
     }
 
-    public JobEntity(String name, CronExpressionPlus cron, boolean concurrent, Runnable runnable) {
-        this(name, cron, 0, 0, concurrent, runnable);
+    public JobEntity(String name, CronExpressionPlus cron, Runnable runnable) {
+        this(name, cron, 0, 0, runnable);
     }
 
-    private JobEntity(String name, CronExpressionPlus cron, long fixedRate, long fixedDelay, boolean concurrent, Runnable runnable) {
+    private JobEntity(String name, CronExpressionPlus cron, long fixedRate, long fixedDelay, Runnable runnable) {
         this.cron = cron;
         this.fixedRate = fixedRate;
         this.fixedDelay = fixedDelay;
         this.runnable = runnable;
-        this.concurrent = concurrent;
 
         this.baseTime = new Date();
 
@@ -80,8 +75,8 @@ class JobEntity extends Thread {
 
     /**
      * 重置调度时间
-     * */
-    protected void reset(CronExpressionPlus cron, long fixedRate){
+     */
+    protected void reset(CronExpressionPlus cron, long fixedRate) {
         this.cron = cron;
         this.fixedRate = fixedRate;
         this.baseTime = new Date(System.currentTimeMillis() + sleepMillis);
@@ -111,7 +106,7 @@ class JobEntity extends Thread {
                     e = Utils.throwableUnwrap(e);
                     EventBus.push(new CloudJobException(e));
                 }
-            }else{
+            } else {
                 break;
             }
         }
@@ -150,14 +145,7 @@ class JobEntity extends Thread {
                     exec();
 
                     //重新设定休息时间
-                    if (concurrent) {
-                        sleepMillis = System.currentTimeMillis() - nextTime.getTime();
-                    } else {
-                        baseTime = new Date();
-
-                        nextTime = cron.getNextValidTimeAfter(baseTime);
-                        sleepMillis = System.currentTimeMillis() - nextTime.getTime();
-                    }
+                    sleepMillis = System.currentTimeMillis() - nextTime.getTime();
                 }
             }
 
@@ -167,19 +155,12 @@ class JobEntity extends Thread {
 
 
     private void exec() {
-        if (concurrent) {
-            Utils.parallel(this::exec0);
-        } else {
-            exec0();
-        }
+
+        Utils.parallel(this::exec0);
     }
 
     private void exec0() {
         try {
-            if (concurrent) {
-                Thread.currentThread().setName(getName());
-            }
-
             runnable.run();
         } catch (Throwable e) {
             EventBus.push(e);
