@@ -1,8 +1,12 @@
-package org.noear.solon.web.webdav;
+package org.noear.solon.web.webdav.impl;
 
 import java.io.IOException;
 import java.io.InputStream;
 
+/**
+ * 分片文件流
+ * @author 阿范
+ */
 public class ShardingInputStream extends InputStream {
     private InputStream in;
     private long length;

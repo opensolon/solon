@@ -5,14 +5,20 @@ import java.util.List;
 
 /**
  * webdav文件系统
- *  @author 阿范
+ *
+ * @author 阿范
  */
 public interface FileSystem {
     FileInfo fileInfo(String reqPath);
+
     String fileMime(FileInfo fi);
+
     List<FileInfo> fileList(String reqPath);
+
     String findEtag(String reqPath, FileInfo fi);
-    InputStream fileInputStream(String reqPath, long start,long length);
+
+    InputStream fileInputStream(String reqPath, long start, long length);
+
     boolean putFile(String reqPath, InputStream in);
 
     boolean del(String reqPath);
@@ -22,4 +28,6 @@ public interface FileSystem {
     boolean move(String reqPath, String descPath);
 
     boolean mkdir(String reqPath);
+
+    String fileUrl(String reqPath);
 }
