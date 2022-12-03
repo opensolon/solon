@@ -21,6 +21,7 @@
 * 增加 mybatis-solon-plugin 插件对 Mappers 有无的检查并提示 !ok
 * 增加 DownloadedFile,UploadedFile 获取属性，原字段标为弃用（后面会改为私有）
 * 测试 nami 的使用
+* 调整 jdkhttp,jlhttp 不限制 method
 * 升级 smart-http 为 1.1.18 !ok
 
 #### 1.11.4-M2
