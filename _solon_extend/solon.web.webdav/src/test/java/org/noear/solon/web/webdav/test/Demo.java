@@ -32,7 +32,7 @@ public class Demo {
         };
 
         Solon.start(Demo.class, args, app -> {
-            app.webdav("/webdav", handler);
+            app.http("/webdav", handler);
         });
     }
 }
