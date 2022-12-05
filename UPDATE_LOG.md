@@ -25,7 +25,7 @@
 * 调整 maxTheads 配置，支持部数模式 x16（表示cpu核数的16倍）
 * 升级 smart-http 为 1.1.18 !ok
 
-#### 1.11.4-M2
+#### 1.11.3
 * 新增 local-solon-cloud-plugin 插件
 * 新增 solon.data.dynamic 插件（提供 dynamic-datasource 支持）
 * 修复 quartz-solon-plugin 插件，当 cron7x="10d" 时，会变成10秒的问题
