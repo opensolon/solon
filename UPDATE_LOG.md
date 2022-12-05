@@ -13,22 +13,22 @@
 #### 1.11.4
 * 新增 elastic-job-solon-plugin 分布式定时任务
 * 新增 file-s3-solon-plugin 插件
-* 新增 solon.logging.simple 插件（替代 solon.logging.impl）
-* 新增 solon.scheduling 插件
-* 新增 solon.scheduling.simple 插件（替代 solon.schedule；更标准化）
-* 新增 solon.scheduling.quartz 插件
-* 新增 quartz-solon-cloud-plugin 插件
-* 插件 solon.schedule 增加配置支持
+* 新增 solon.logging.simple 插件（替代 solon.logging.impl） !ok
+* 新增 solon.scheduling 插件 !ok
+* 新增 solon.scheduling.simple 插件（替代 solon.schedule；更标准化）!ok
+* 新增 solon.scheduling.quartz 插件 !ok
+* 新增 quartz-solon-cloud-plugin 插件 !ok
 * 插件 quartz-solon-plugin 增加函数执行支持，增加持久化和远程管理支持（代码微调整）!ok
 * 插件 local-solon-cloud-plugin 添加 server 配置支持（只能指向本地） !ok
 * 增加 enableWebSocketMvc，enableSocketMvc !ok
 * 开放 CacheService 内部的 client !ok
 * 增加 mybatis-solon-plugin 插件对 Mappers 有无的检查并提示 !ok
-* 增加 DownloadedFile,UploadedFile 获取属性，原字段标为弃用（后面会改为私有）
+* 增加 DownloadedFile,UploadedFile 获取属性，原字段标为弃用（后面会改为私有）!ok
 * 测试 nami 的使用
-* 调整 jdkhttp,jlhttp 不限制 method
-* 调整 maxTheads 配置，支持部数模式 x16（表示cpu核数的16倍）
+* 调整 jlhttp 不限制 method
+* 调整 maxTheads 配置，支持部数模式 x16（表示cpu核数的16倍）!ok
 * 升级 smart-http 为 1.1.18 !ok
+* 修复 ervlet 使用 cookieRemove() 移除 cookie 时，遗留空值 cookie 的问题!ok
 
 #### 1.11.3
 * 新增 local-solon-cloud-plugin 插件
