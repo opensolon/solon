@@ -7,7 +7,7 @@ import org.noear.solon.boot.prop.ServerSignalProps;
 
 /**
  * @author noear
- * @since 1.11
+ * @since 1.10
  */
 public abstract class BaseServerProps implements ServerSignalProps, ServerExecutorProps {
     private String PROP_NAME = "server.@@.name";

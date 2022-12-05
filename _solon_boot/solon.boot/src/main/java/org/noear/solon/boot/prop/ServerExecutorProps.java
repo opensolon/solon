@@ -8,7 +8,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 /**
- * 执行器属性
+ * 服务执行属性
  *
  * @author noear
  * @since 1.10
