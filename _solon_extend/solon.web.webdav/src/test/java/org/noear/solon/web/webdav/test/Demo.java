@@ -30,19 +30,9 @@ public class Demo {
                 return "/webdav";
             }
         };
-        Solon.start(Demo.class,args,app -> {
-            app.filter((ctx, chain) -> {
-                if(ctx.uri().getPath().startsWith("/webdav")){
-                    handler.handle(ctx);
-                    ctx.setHandled(true);
-                }else{
-                    try{
-                        MethodType.valueOf(ctx.method());
-                        chain.doFilter(ctx);
-                    }catch (Exception e){
-                    }
-                }
-            });
+
+        Solon.start(Demo.class, args, app -> {
+            app.http("/webdav", handler);
         });
     }
 }
