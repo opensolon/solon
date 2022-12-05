@@ -210,6 +210,10 @@ public abstract class RouterWrapper implements HandlerSlots{
         add(path, MethodType.HTTP, handler);
     }
 
+    public void webdav(String path, Handler handler){
+        add(path, MethodType.WEBDAV, handler);
+    }
+
     /**
      * 添加HEAD方法的处理
      */
