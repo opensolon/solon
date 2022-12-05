@@ -312,7 +312,7 @@ public class SolonServletContext extends Context {
             c.setPath(path);
         }
 
-        if (maxAge > 0) {
+        if (maxAge >= 0) {
             c.setMaxAge(maxAge);
         }
 
