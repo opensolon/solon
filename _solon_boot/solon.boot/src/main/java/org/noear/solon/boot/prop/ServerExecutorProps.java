@@ -30,7 +30,7 @@ public interface ServerExecutorProps {
     long getIdleTimeout();
 
     /**
-     * 获取一个执行器
+     * 获取一个执行器（Bio 一级执行器）
      */
     default ExecutorService getBioExecutor(String namePrefix) {
         return new ThreadPoolExecutor(getCoreThreads(), getMaxThreads(true),
@@ -39,8 +39,12 @@ public interface ServerExecutorProps {
                 new NamedThreadFactory(namePrefix));
     }
 
-    default ExecutorService getNioExecutor(String namePrefix) {
-        return new ThreadPoolExecutor(getCoreThreads(), getMaxThreads(false),
+    /**
+     * 获取一个执行器（Nio 二级执行器）
+     * */
+    default ExecutorService getNioExecutor2(String namePrefix) {
+        //二级执行器，core 为 0
+        return new ThreadPoolExecutor(0, getMaxThreads(false),
                 getIdleTimeout(), TimeUnit.MILLISECONDS,
                 new SynchronousQueue<>(), //BlockingQueue //SynchronousQueue
                 new NamedThreadFactory(namePrefix));

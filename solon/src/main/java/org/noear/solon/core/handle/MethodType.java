@@ -24,6 +24,11 @@ public enum MethodType {
     TRACE("TRACE", SignalType.HTTP),//回馈服务器收到的请求，用于远程诊断服务器。
     CONNECT("CONNECT", SignalType.HTTP),//用于代理进行传输
 
+
+    WEBDAV("WEBDAV", SignalType.HTTP),
+
+    UNKNOWN("UNKNOWN", SignalType.HTTP), //未知
+
     /**
      * http general all
      */
@@ -38,11 +43,6 @@ public enum MethodType {
      * socket listen
      */
     SOCKET("SOCKET", SignalType.SOCKET),
-
-    /**
-     * unknown
-     */
-    UNKNOWN("UNKNOWN", SignalType.ALL),
 
     ALL("ALL", SignalType.ALL);
 
