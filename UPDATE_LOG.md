@@ -13,6 +13,11 @@
 #### 1.11.4
 * 新增 elastic-job-solon-plugin 分布式定时任务
 * 新增 file-s3-solon-plugin 插件
+* 新增 solon.logging.simple 插件（替代 solon.logging.impl）
+* 新增 solon.scheduling 插件
+* 新增 solon.scheduling.simple 插件（替代 solon.schedule；更标准化）
+* 新增 solon.scheduling.quartz 插件
+* 新增 quartz-solon-cloud-plugin 插件
 * 插件 solon.schedule 增加配置支持
 * 插件 quartz-solon-plugin 增加函数执行支持，增加持久化和远程管理支持（代码微调整）!ok
 * 插件 local-solon-cloud-plugin 添加 server 配置支持（只能指向本地） !ok
