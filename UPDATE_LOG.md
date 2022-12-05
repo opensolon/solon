@@ -43,7 +43,7 @@
 * 升级 wood 为 1.0.5
 * 升级 fastjson2 2.0.19
 
-#### 1.11.0
+#### 1.11.0（2022.11）
 * 清理 xxx-solon-plugin 的 solon cloud 插件包（正试由 xxx-solon-cloud-plugin 替代）
 * 插件 solon.auth 增加 AuthAdapterSupplier 的 pathPrefix 对 adapter 规则有相同限制效果
 * 插件 solon.web.staticfiles 增加位置映射配置支持
@@ -638,7 +638,7 @@
 * Nami 增加 interface 默认函数的支持
 * 允许 Size，Length 注解的数据为Null。交由 NotNull 负责
 
-#### 1.6.1
+#### 1.6.1 （2021.11）
 * 增加 @Inject("ds1") BeanWrap bw; 模式
 * 优化 mybatis-solon-plugin 的适配方案
 * 优化 water-solon-plugin 任务调试的安全机制
@@ -1243,7 +1243,7 @@
 * 增加Socket异步回调支持
 * 增加SocketD，提供双向RPC快捷方式（D：double）
 
-##### 1.2 更新记录
+##### 1.2 更新记录（2020.11）
 * 所有类去掉X前缀
 * org.noear.solon.core 下的目录类重新组织结构
 * 新增：
@@ -1414,11 +1414,11 @@
 * solon.extend.staticfiles 增加开关控制；可动态关掉
 * Context添加headerAdd(k,v)
 
-##### 1.0.4 更新记录::
+##### 1.0.4 更新记录
 * 添加XConfiguration,BeanBuilder，用于动态构建XBean
 * 完成所有模板引擎的调试模式
 
-##### 1.0.3 更新记录::
+##### 1.0.3 更新记录（2019.11）
 * 增加渲染管理器，通过它来实现多模板引擎共存效果
 * 添加XSessionState接口，以实现session 可切换效果（如切换为分布式Session）
 * 优化路径路由器
