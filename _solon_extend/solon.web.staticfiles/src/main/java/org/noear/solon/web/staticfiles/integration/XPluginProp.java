@@ -1,6 +1,7 @@
 package org.noear.solon.web.staticfiles.integration;
 
 import org.noear.solon.Solon;
+import org.noear.solon.Utils;
 
 /**
  * @author noear
@@ -9,6 +10,7 @@ import org.noear.solon.Solon;
 public class XPluginProp {
     static final String PROP_ENABLE = "solon.staticfiles.enable";
     static final String PROP_MAX_AGE = "solon.staticfiles.maxAge";
+    static final String PROP_CACHE_MAX_AGE = "solon.staticfiles.cacheMaxAge";
     static final String PROP_MAPPINGS = "solon.staticfiles.mappings";
 
     static final String RES_STATIC_LOCATION = "static/";
@@ -26,12 +28,22 @@ public class XPluginProp {
     /**
      * 客户端缓存秒数
      */
-    public static int maxAge() {
+    public static int cacheMaxAge() {
         if (maxAge < 0) {
             if (Solon.cfg().isDebugMode()) {
                 maxAge = 0;
             } else {
-                maxAge = Solon.cfg().getInt(PROP_MAX_AGE, 600);//10m
+                String tmp = Solon.cfg().get(PROP_CACHE_MAX_AGE);
+                if (Utils.isEmpty(tmp)) {
+                    //弃用
+                    tmp = Solon.cfg().get(PROP_MAX_AGE);
+                }
+
+                if (Utils.isEmpty(tmp)) {
+                    tmp = "600";//10m;
+                }
+
+                maxAge = Integer.parseInt(tmp);
             }
         }
 

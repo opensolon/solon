@@ -6,7 +6,7 @@ solon.mime.json: "application/json"
 
 solon.staticfiles:
   enabled: true
-  maxAge: 6000
+  cacheMaxAge: 6000
   mappings:
     - path: "/img/"
       repository: "/data/sss/app/" #表示磁盘目录地址

@@ -32,7 +32,7 @@ public class XPluginImp implements Plugin {
         }
 
         //加载一个配置
-        XPluginProp.maxAge();
+        XPluginProp.cacheMaxAge();
 
         //尝试添加默认静态资源地址
         if (Utils.getResource(XPluginProp.RES_STATIC_LOCATION) != null) {

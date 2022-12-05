@@ -63,17 +63,17 @@ public class StaticResourceHandler implements Handler {
             String modified_since = ctx.header("If-Modified-Since");
             String modified_now = modified_time.toString();
 
-            if (modified_since != null && XPluginProp.maxAge() > 0) {
+            if (modified_since != null && XPluginProp.cacheMaxAge() > 0) {
                 if (modified_since.equals(modified_now)) {
-                    ctx.headerSet(CACHE_CONTROL, "max-age=" + XPluginProp.maxAge());//单位秒
+                    ctx.headerSet(CACHE_CONTROL, "max-age=" + XPluginProp.cacheMaxAge());//单位秒
                     ctx.headerSet(LAST_MODIFIED, modified_now);
                     ctx.status(304);
                     return;
                 }
             }
 
-            if (XPluginProp.maxAge() > 0) {
-                ctx.headerSet(CACHE_CONTROL, "max-age=" + XPluginProp.maxAge());//单位秒
+            if (XPluginProp.cacheMaxAge() > 0) {
+                ctx.headerSet(CACHE_CONTROL, "max-age=" + XPluginProp.cacheMaxAge());//单位秒
                 ctx.headerSet(LAST_MODIFIED, modified_time.toString());
             }
 
