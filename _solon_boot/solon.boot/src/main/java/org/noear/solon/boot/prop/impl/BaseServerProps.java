@@ -77,8 +77,22 @@ public abstract class BaseServerProps implements ServerSignalProps, ServerExecut
     ////////////////////////////////
 
     private void initExecutorProps(){
-        coreThreads = Solon.cfg().getInt(PROP_CORETHREADS, 0);
         idleTimeout = Solon.cfg().getLong(PROP_IDLETIMEOUT, 0L);
+
+        //支持：16 或 x16（倍数）
+        String coreThreadsStr = Solon.cfg().get(PROP_CORETHREADS);
+        if (Utils.isNotEmpty(coreThreadsStr)) {
+            if (coreThreadsStr.startsWith("x")) {
+                //倍数模式
+                if (coreThreadsStr.length() > 1) {
+                    coreThreads = getCoreNum() * Integer.parseInt(coreThreadsStr.substring(1));
+                } else {
+                    coreThreads = 0;
+                }
+            } else {
+                coreThreads = Integer.parseInt(coreThreadsStr);
+            }
+        }
 
         //支持：16 或 x16（倍数）
         String maxThreadsStr = Solon.cfg().get(PROP_MAXTHREADS);
