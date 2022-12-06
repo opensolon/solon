@@ -105,8 +105,7 @@ public final class XPluginImp implements Plugin {
                 MethodType.PUT.name,
                 MethodType.DELETE.name,
                 MethodType.PATCH.name,
-                MethodType.OPTIONS.name,
-                MethodType.WEBDAV.name);
+                MethodType.OPTIONS.name);
 
         LogUtil.global().info("Server:main: JlHttpServer 2.6(jlhttp)");
         

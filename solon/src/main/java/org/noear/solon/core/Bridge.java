@@ -10,7 +10,7 @@ import java.util.*;
  * 内部扩展桥接器
  *
  * <pre><code>
- * //示例：替换 SessionState 服务 (solon.extend.sessionstate.redis: org.noear.solon.extend.sessionstate.redis.XPluginImp.class)
+ * //示例：替换 SessionState 服务 (solon.sessionstate.redis: org.noear.solon.sessionstate.redis.XPluginImp.class)
  * public class PluginImp implements Plugin{
  *     @Override
  *     public void start(Solon app) {
@@ -25,7 +25,7 @@ import java.util.*;
  *     }
  * }
  *
- * //示例：替换 TranExecutor 服务 (solon.extend.data: org.noear.solon.extend.data.XPluginImp.class)
+ * //示例：替换 TranExecutor 服务 (solon.data: org.noear.solon.data.XPluginImp.class)
  * public class PluginImp implements Plugin{
  *     @Override
  *     public void start(Solon app) {
