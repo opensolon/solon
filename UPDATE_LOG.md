@@ -27,8 +27,9 @@
 * 测试 nami 的使用
 * 调整 jlhttp 不限制 method
 * 调整 maxTheads 配置，支持部数模式 x16（表示cpu核数的16倍）!ok
-* 升级 smart-http 为 1.1.18 !ok
 * 修复 servletContext 使用 cookieRemove() 移除 cookie 时，遗留空值 cookie 的问题!ok
+* 升级 smart-http 为 1.1.18 !ok
+* 升级 wood 为 1.0.6
 
 #### 1.11.3
 * 新增 local-solon-cloud-plugin 插件
