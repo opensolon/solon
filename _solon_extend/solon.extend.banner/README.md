@@ -9,10 +9,7 @@
 
 Basic extension plug-in, display solon banner with version
 
-
-
 #### 2、Configuration reference
-
 
 ```yml
 #Whether to enable, the default is true
@@ -21,4 +18,3 @@ solon.banner.enable: true
 solon.banner.mode: "console"
 
 ```
-
