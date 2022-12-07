@@ -497,7 +497,7 @@ public class Utils {
 
         ByteArrayOutputStream outs = transferTo(ins, new ByteArrayOutputStream());
 
-        if (charset == null) {
+        if (Utils.isEmpty(charset)) {
             return outs.toString();
         } else {
             return outs.toString(charset);

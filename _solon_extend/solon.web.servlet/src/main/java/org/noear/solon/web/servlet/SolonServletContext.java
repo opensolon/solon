@@ -1,9 +1,9 @@
 package org.noear.solon.web.servlet;
 
 import org.noear.solon.Utils;
+import org.noear.solon.boot.web.ContextBase;
 import org.noear.solon.boot.web.RedirectUtils;
 import org.noear.solon.core.NvMap;
-import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.UploadedFile;
 
 import javax.servlet.ServletException;
@@ -22,7 +22,7 @@ import java.util.*;
  * @author noear
  * @since 1.2
  * */
-public class SolonServletContext extends Context {
+public class SolonServletContext extends ContextBase {
     private HttpServletRequest _request;
     private HttpServletResponse _response;
     protected Map<String, List<UploadedFile>> _fileMap;
@@ -112,6 +112,7 @@ public class SolonServletContext extends Context {
     public String contentType() {
         return _request.getContentType();
     }
+
 
     @Override
     public String queryString() {

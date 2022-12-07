@@ -1,5 +1,6 @@
 package org.noear.solon.boot.jlhttp;
 
+import org.noear.solon.boot.web.ContextBase;
 import org.noear.solon.boot.web.RedirectUtils;
 import org.noear.solon.core.NvMap;
 import org.noear.solon.Utils;
@@ -14,7 +15,7 @@ import java.io.OutputStream;
 import java.net.URI;
 import java.util.*;
 
-public class JlHttpContext extends Context {
+public class JlHttpContext extends ContextBase {
     private HTTPServer.Request _request;
     private HTTPServer.Response _response;
     protected Map<String, List<UploadedFile>> _fileMap;
@@ -135,6 +136,7 @@ public class JlHttpContext extends Context {
     public String contentType() {
         return header("Content-Type");
     }
+
 
     @Override
     public String queryString() {

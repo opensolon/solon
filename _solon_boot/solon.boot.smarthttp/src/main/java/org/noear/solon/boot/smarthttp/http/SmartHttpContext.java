@@ -1,10 +1,10 @@
 package org.noear.solon.boot.smarthttp.http;
 
+import org.noear.solon.boot.web.ContextBase;
 import org.noear.solon.boot.web.RedirectUtils;
 import org.noear.solon.core.NvMap;
 import org.noear.solon.Utils;
 import org.noear.solon.core.event.EventBus;
-import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.UploadedFile;
 import org.smartboot.http.common.Cookie;
 import org.smartboot.http.common.enums.HttpStatus;
@@ -18,7 +18,7 @@ import java.io.OutputStream;
 import java.net.URI;
 import java.util.*;
 
-public class SmartHttpContext extends Context {
+public class SmartHttpContext extends ContextBase {
     private HttpRequest _request;
     private HttpResponse _response;
     protected Map<String, List<UploadedFile>> _fileMap;
@@ -109,6 +109,7 @@ public class SmartHttpContext extends Context {
     public String contentType() {
         return header("Content-Type");
     }
+
 
     @Override
     public String queryString() {

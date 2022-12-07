@@ -65,6 +65,11 @@ public class ContextEmpty extends Context {
     }
 
     @Override
+    public String contentCharset() {
+        return null;
+    }
+
+    @Override
     public String queryString() {
         return null;
     }
@@ -134,6 +139,66 @@ public class ContextEmpty extends Context {
             headerMap = new NvMap();
         }
         return headerMap;
+    }
+
+    @Override
+    public String sessionId() {
+        return null;
+    }
+
+    @Override
+    public Object session(String name) {
+        return null;
+    }
+
+    @Override
+    public <T> T session(String name, T def) {
+        return null;
+    }
+
+    @Override
+    public int sessionAsInt(String name) {
+        return 0;
+    }
+
+    @Override
+    public int sessionAsInt(String name, int def) {
+        return 0;
+    }
+
+    @Override
+    public long sessionAsLong(String name) {
+        return 0;
+    }
+
+    @Override
+    public long sessionAsLong(String name, long def) {
+        return 0;
+    }
+
+    @Override
+    public double sessionAsDouble(String name) {
+        return 0;
+    }
+
+    @Override
+    public double sessionAsDouble(String name, double def) {
+        return 0;
+    }
+
+    @Override
+    public void sessionSet(String name, Object val) {
+
+    }
+
+    @Override
+    public void sessionRemove(String name) {
+
+    }
+
+    @Override
+    public void sessionClear() {
+
     }
 
     @Override
