@@ -8,6 +8,7 @@ import com.tencent.polaris.factory.ConfigAPIFactory;
 import com.tencent.polaris.factory.api.DiscoveryAPIFactory;
 import com.tencent.polaris.factory.config.ConfigurationImpl;
 import org.noear.solon.Solon;
+import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudDiscoveryHandler;
 import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.model.Discovery;
@@ -21,18 +22,19 @@ import java.util.Objects;
 
 
 public class CloudDiscoveryServicePolarisImp implements CloudDiscoveryService {
-
-
-    private String namespace ;
-    private ConfigurationImpl configuration;
+    private ProviderAPI providerAPI;
+    private ConsumerAPI consumerAPI;
 
     public CloudDiscoveryServicePolarisImp(CloudProps cloudProps) {
+        String server = cloudProps.getDiscoveryServer();
 
-        String address =  cloudProps.getProp("global").getProp("discovery").get("address",null);
-        namespace = cloudProps.getProp("global").get("namespace", Solon.cfg().appNamespace());
+        ConfigurationImpl configuration = (ConfigurationImpl) ConfigAPIFactory.defaultConfig();
 
-        configuration = (ConfigurationImpl) ConfigAPIFactory.defaultConfig();
-        configuration.getGlobal().getServerConnector().setAddresses(Arrays.asList(address));
+        configuration.getGlobal().getServerConnector()
+                .setAddresses(Arrays.asList(server));
+
+        providerAPI = DiscoveryAPIFactory.createProviderAPIByConfig(configuration);
+        consumerAPI = DiscoveryAPIFactory.createConsumerAPIByConfig(configuration);
     }
 
     /**
@@ -61,7 +63,7 @@ public class CloudDiscoveryServicePolarisImp implements CloudDiscoveryService {
         }
 
         InstanceRegisterRequest request = new InstanceRegisterRequest();
-        request.setNamespace(namespace);
+        request.setNamespace(Solon.cfg().appNamespace());
         request.setWeight((int) instance.weight());
         request.setMetadata(instance.meta());
         request.setService(instance.service());
@@ -69,11 +71,7 @@ public class CloudDiscoveryServicePolarisImp implements CloudDiscoveryService {
         request.setPort(Integer.parseInt(ss[1]));
         request.setProtocol(instance.protocol());
 
-        try (ProviderAPI providerAPI = DiscoveryAPIFactory.createProviderAPIByConfig(configuration)) {
-            InstanceRegisterResponse response = providerAPI.registerInstance(request);
-            // System.out.println(  "北极星注册实例结果:  " + response);
-        }
-
+        providerAPI.registerInstance(request);
     }
 
     /**
@@ -90,14 +88,13 @@ public class CloudDiscoveryServicePolarisImp implements CloudDiscoveryService {
             throw new IllegalArgumentException("Instance.address error");
         }
         InstanceDeregisterRequest deregisterRequest = new InstanceDeregisterRequest();
-        deregisterRequest.setNamespace(namespace);
+
+        deregisterRequest.setNamespace(Solon.cfg().appNamespace());
         deregisterRequest.setService(instance.service());
         deregisterRequest.setHost(ss[0]);
         deregisterRequest.setPort(Integer.parseInt(ss[1]));
-        try (ProviderAPI providerAPI = DiscoveryAPIFactory.createProviderAPIByConfig(configuration)) {
-            providerAPI.deRegister(deregisterRequest);
-            // System.out.println(  "北极星销毁实例结果:: [" + instance.service() + "] ");
-        }
+
+        providerAPI.deRegister(deregisterRequest);
     }
 
     /**
@@ -109,24 +106,24 @@ public class CloudDiscoveryServicePolarisImp implements CloudDiscoveryService {
     public Discovery find(String group, String service) {
         Discovery discovery = new Discovery(service);
 
-        GetAllInstancesRequest allInstancesRequest = new GetAllInstancesRequest();
-        allInstancesRequest.setNamespace(namespace);
-        allInstancesRequest.setService(service);
+        GetHealthyInstancesRequest request = new GetHealthyInstancesRequest();
 
-        try(ConsumerAPI consumerAPI =DiscoveryAPIFactory.createConsumerAPIByConfig(configuration)) {
+        request.setNamespace(Solon.cfg().appNamespace());
+        request.setService(service);
 
-            InstancesResponse instancesResponse = consumerAPI.getAllInstance(allInstancesRequest);
+        InstancesResponse instancesResponse = consumerAPI.getHealthyInstances(request);
 
-            if (Objects.isNull(instancesResponse) || instancesResponse.getInstances().length > 0) {
-                return  discovery;
-            }
+        if (Objects.isNull(instancesResponse) || instancesResponse.getInstances().length > 0) {
+            return discovery;
+        }
 
-            for (com.tencent.polaris.api.pojo.Instance instance : instancesResponse.getInstances()) {
+        for (com.tencent.polaris.api.pojo.Instance instance : instancesResponse.getInstances()) {
+            //只关注健康的
+            if (instance.isHealthy()) {
                 discovery.instanceAdd(new Instance(service,
                         instance.getHost() + ":" + instance.getPort())
                         .weight(instance.getWeight())
                         .protocol(instance.getProtocol())
-                        .tagsAdd("healthy:" + instance.isHealthy())
                         .metaPutAll(instance.getMetadata()));
             }
         }
@@ -143,31 +140,32 @@ public class CloudDiscoveryServicePolarisImp implements CloudDiscoveryService {
      */
     @Override
     public void attention(String group, String service, CloudDiscoveryHandler observer) {
-        // System.out.println(String.format( "  北极星监听 namespace:[%s],group:[%s],service:[%s] ", namespace,group,service));
+        if (Utils.isEmpty(group)) {
+            group = Solon.cfg().appGroup();
+        }
+
         CloudDiscoveryObserverEntity entity = new CloudDiscoveryObserverEntity(group,service, observer);
 
         WatchServiceRequest request = WatchServiceRequest.builder()
-                .namespace(namespace)
+                .namespace(Solon.cfg().appNamespace())
                 .service(service)
                 .listeners(Collections.singletonList(event -> {
                     Discovery discovery = new Discovery(service);
-                    for (com.tencent.polaris.api.pojo.Instance instance : event.getAllInstances()) { 
-                        if(instance.isHealthy()){
+
+                    for (com.tencent.polaris.api.pojo.Instance instance : event.getAllInstances()) {
+                        if (instance.isHealthy()) {
                             discovery.instanceAdd(new Instance(service,
                                     instance.getHost() + ":" + instance.getPort())
                                     .weight(instance.getWeight())
                                     .protocol(instance.getProtocol())
-                                    .tagsAdd("healthy:" + instance.isHealthy())
                                     .metaPutAll(instance.getMetadata()));
                         }
                     }
+
                     entity.handle(discovery);
                 }))
                 .build();
-        try(ConsumerAPI consumerAPI =DiscoveryAPIFactory.createConsumerAPIByConfig(configuration)) {
-            WatchServiceResponse response = consumerAPI.watchService(request);
-            // System.out.println( "  北极星监听实例 : "+ response.toString());
-        }
 
+        consumerAPI.watchService(request);
     }
 }
