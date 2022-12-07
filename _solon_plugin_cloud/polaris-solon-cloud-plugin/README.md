@@ -21,7 +21,7 @@ solon.cloud.polaris:
 #### 已完成
 + 配置中心 读取,监听
 + 注册中心 监听,拉取,注册,删除
-+ 差异性记录
++ 差异性记录（这个应该不存在了...by noear）
     + 在 polaris 中的group指的是配置文件的文件组,属于一个namespace,里面可有多文件,yml/xml/txt/properties等等
     + 相对的 namespace 更像是 nacos 的group
 + solon例子
