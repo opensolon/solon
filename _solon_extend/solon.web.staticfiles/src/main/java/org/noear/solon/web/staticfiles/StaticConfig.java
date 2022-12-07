@@ -9,7 +9,8 @@ import org.noear.solon.Utils;
  */
 public class StaticConfig {
     public static final String PROP_ENABLE = "solon.staticfiles.enable";
-    public static final String PROP_MAX_AGE = "solon.staticfiles.maxAge";
+    @Deprecated
+    private static final String PROP_MAX_AGE = "solon.staticfiles.maxAge";
     public static final String PROP_CACHE_MAX_AGE = "solon.staticfiles.cacheMaxAge";
     public static final String PROP_MAPPINGS = "solon.staticfiles.mappings";
 
@@ -24,7 +25,7 @@ public class StaticConfig {
         } else {
             String tmp = Solon.cfg().get(PROP_CACHE_MAX_AGE);
             if (Utils.isEmpty(tmp)) {
-                //弃用
+                //@Deprecated
                 tmp = Solon.cfg().get(PROP_MAX_AGE);
             }
 
