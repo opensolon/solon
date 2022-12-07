@@ -32,7 +32,7 @@ class SolonBannerPrinter{
 		}
 
 				
-		sb.append(SOLON_BOOT).append(padding.toString()).append(version).append("\r\n");;
+		sb.append(SOLON_BOOT).append(padding.toString()).append(version).append("\r\n");
 		return sb.toString();
 	}
 
