@@ -22,7 +22,7 @@
 
         <dependency>
             <groupId>cn.hutool</groupId>
-            <artifactId>hutool-all</artifactId>
+            <artifactId>hutool-core</artifactId>
             <version>5.8.3</version>
             <scope>provided</scope>
         </dependency>

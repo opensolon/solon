@@ -3,7 +3,7 @@ package org.noear.solon.web.webdav.impl;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.crypto.SecureUtil;
+import org.noear.solon.Utils;
 import org.noear.solon.web.webdav.FileInfo;
 import org.noear.solon.web.webdav.FileSystem;
 
@@ -17,6 +17,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * webdav本地文件系统实现
+ *
  * @author 阿范
  */
 public class LocalFileSystem implements FileSystem {
@@ -105,7 +106,7 @@ public class LocalFileSystem implements FileSystem {
     @Override
     public String findEtag(String path, FileInfo fi) {
         path = realPath(path);
-        return "W/\"" + SecureUtil.md5(fi.update() + path) + "\"";
+        return "W/\"" + Utils.md5(fi.update() + path) + "\"";
     }
 
     @Override

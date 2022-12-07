@@ -13,7 +13,7 @@ import org.noear.solon.web.webdav.impl.LocalFileSystem;
  */
 public class Demo {
     public static void main(String[] args) {
-        FileSystem fileSystem = new LocalFileSystem("D:\\webos");
+        FileSystem fileSystem = new LocalFileSystem("/Users/fansheng/webos_drive");
         Handler handler = new AbstractHandler(true) {
             @Override
             public String user(Context ctx) {
