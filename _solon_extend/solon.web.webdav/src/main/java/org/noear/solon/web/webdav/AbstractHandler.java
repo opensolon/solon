@@ -3,15 +3,13 @@ package org.noear.solon.web.webdav;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.date.DateUtil;
-import cn.hutool.core.util.ArrayUtil;
-import cn.hutool.core.util.IdUtil;
-import cn.hutool.core.util.StrUtil;
-import cn.hutool.core.util.URLUtil;
+import cn.hutool.core.util.*;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Handler;
 
 import java.io.InputStream;
 import java.util.List;
+import java.util.Map;
 
 /**
  * webdav抽象拦截器
@@ -48,72 +46,78 @@ public abstract class AbstractHandler implements Handler {
 
     @Override
     public void handle(Context ctx) {
-        ctx.contentType("text/xml; charset=UTF-8");
-        ctx.headerSet("Pragma", "no-cache");
-        ctx.headerSet("Cache-Control", "no-cache");
-        ctx.headerSet("X-DAV-BY", "webos");
-        ctx.headerSet("Access-Control-Allow-Origin", "*");
-        ctx.headerSet("Access-Control-Allow-Methods", "GET, POST, OPTIONS, DELETE, HEAD, MOVE, COPY, PUT, MKCOL, PROPFIND, PROPPATCH, LOCK, UNLOCK");
-        ctx.headerSet("Access-Control-Allow-Headers","ETag, Content-Type, Content-Length, Accept-Encoding, X-Requested-with, Origin, Authorization");
-        ctx.headerSet("Access-Control-Allow-Credentials","true");
-        ctx.headerSet("Access-Control-Max-Age","3600");
-        if (StrUtil.isBlank(this.user(ctx))) {
-            ctx.headerSet("WWW-Authenticate", "Basic realm=\"webos\"");
-            ctx.status(HttpStatus.UNAUTHORIZED.value());
-            return;
-        }
-        int status = HttpStatus.BAD_REQUEST.value();
-        if (this.fileSystem() == null) {
-            status = HttpStatus.INTERNAL_SERVER_ERROR.value();
-        } else {
-            try {
-                switch (ctx.method()) {
-                    case "OPTIONS":
-                        status = this.handleOptions(ctx);
-                        break;
-                    case "GET":
-                    case "HEAD":
-                    case "POST":
-                        status = this.handleGetHeadPost(ctx);
-                        break;
-                    case "DELETE":
-                        status = this.handleDelete(ctx);
-                        break;
-                    case "PUT":
-                        status = this.handlePut(ctx);
-                        break;
-                    case "MKCOL":
-                        status = this.handleMkcol(ctx);
-                        break;
-                    case "COPY":
-                    case "MOVE":
-                        status = this.handleCopyMove(ctx);
-                        break;
-                    case "LOCK":
-                        status = this.handleLock(ctx);
-                        break;
-                    case "UNLOCK":
-                        status = this.handleUnlock(ctx);
-                        break;
-                    case "PROPFIND":
-                        status = this.handlePropfind(ctx);
-                        break;
-                    case "PROPPATCH":
-                        status = this.handleProppatch(ctx);
-                        break;
-                }
-            } catch (WebDavActionException e) {
-                //e.printStackTrace();
-                status = e.getCode();
-            } catch (Exception e) {
-                //e.printStackTrace();
-                status = HttpStatus.BAD_REQUEST.value();
+        try{
+            ctx.contentType("text/xml; charset=UTF-8");
+            ctx.headerSet("Pragma", "no-cache");
+            ctx.headerSet("Cache-Control", "no-cache");
+            ctx.headerSet("X-DAV-BY", "webos");
+            ctx.headerSet("Access-Control-Allow-Origin", "*");
+            ctx.headerSet("Access-Control-Allow-Methods", "GET, POST, OPTIONS, DELETE, HEAD, MOVE, COPY, PUT, MKCOL, PROPFIND, PROPPATCH, LOCK, UNLOCK");
+            ctx.headerSet("Access-Control-Allow-Headers","ETag, Content-Type, Content-Length, Accept-Encoding, X-Requested-with, Origin, Authorization");
+            ctx.headerSet("Access-Control-Allow-Credentials","true");
+            ctx.headerSet("Access-Control-Max-Age","3600");
+            if (StrUtil.isBlank(this.user(ctx))) {
+                ctx.headerSet("WWW-Authenticate", "Basic realm=\"webos\"");
+                ctx.status(401);
+                return;
             }
+            int status = 400;
+            if (this.fileSystem() == null) {
+                status = 500;
+            } else {
+                try {
+                    switch (ctx.method()) {
+                        case "OPTIONS":
+                            status = this.handleOptions(ctx);
+                            break;
+                        case "GET":
+                        case "HEAD":
+                        case "POST":
+                            status = this.handleGetHeadPost(ctx);
+                            break;
+                        case "DELETE":
+                            status = this.handleDelete(ctx);
+                            break;
+                        case "PUT":
+                            status = this.handlePut(ctx);
+                            break;
+                        case "MKCOL":
+                        case "KCOL":
+                            status = this.handleMkcol(ctx);
+                            break;
+                        case "COPY":
+                        case "MOVE":
+                        case "OVE":
+                            status = this.handleCopyMove(ctx);
+                            break;
+                        case "LOCK":
+                            status = this.handleLock(ctx);
+                            break;
+                        case "UNLOCK":
+                            status = this.handleUnlock(ctx);
+                            break;
+                        case "PROPFIND":
+                            status = this.handlePropfind(ctx);
+                            break;
+                        case "PROPPATCH":
+                            status = this.handleProppatch(ctx);
+                            break;
+                    }
+                } catch (WebDavActionException e) {
+                    //e.printStackTrace();
+                    status = e.getCode();
+                } catch (Exception e) {
+                    //e.printStackTrace();
+                    status = 400;
+                }
+            }
+            if (status == 0) {
+                status = 200;
+            }
+            ctx.status(status);
+        }catch (Exception e){
+
         }
-        if (status == 0) {
-            status = HttpStatus.OK.value();
-        }
-        ctx.status(status);
     }
 
     private int handleProppatch(Context ctx) {
@@ -137,7 +141,7 @@ public abstract class AbstractHandler implements Handler {
                 "\t\t</D:response>\n" +
                 "</D:multistatus>\n";
         ctx.output(StrUtil.format(template, href));
-        return HttpStatus.MULTI_STATUS.value();
+            return 207;
     }
 
     private int parseDepth(String s) {
@@ -156,14 +160,14 @@ public abstract class AbstractHandler implements Handler {
         String reqPath = this.stripPrefix(ctx.path());
         FileInfo fi = this.fileSystem().fileInfo(reqPath);
         if (fi == null) {
-            return HttpStatus.NOT_FOUND.value();
+            return 404;
         }
         int depth = -1;
         String hdr = ctx.header("Depth");
         if (StrUtil.isNotBlank(hdr)) {
             depth = parseDepth(hdr);
             if (depth == -2) {
-                return HttpStatus.BAD_REQUEST.value();
+                return 400;
             }
         }
         if (depth == -1) {
@@ -172,7 +176,7 @@ public abstract class AbstractHandler implements Handler {
         String itemResponse = this.toItemResponse(reqPath, fi);
         if (!fi.isDir() || depth == 0) {
             ctx.output(this.toItemListResponse(itemResponse));
-            return HttpStatus.MULTI_STATUS.value();
+            return 207;
         }
         List<FileInfo> childs = this.fileSystem().fileList(reqPath);
         List<String> list = CollUtil.newArrayList(itemResponse);
@@ -184,7 +188,7 @@ public abstract class AbstractHandler implements Handler {
         }
         String out = this.toItemListResponse(ArrayUtil.toArray(list, String.class));
         ctx.output(out);
-        return HttpStatus.MULTI_STATUS.value();
+        return 207;
     }
 
     private String toItemListResponse(String... itemResponse) {
@@ -215,8 +219,8 @@ public abstract class AbstractHandler implements Handler {
         href = URLUtil.encode(href);
         return StrUtil.format(template,
                 href,
-                DateUtil.parseDateTime(fi.update()).toJdkDate().toString(),
-                DateUtil.parseDateTime(fi.create()).toString("yyyy-MM-dd'T'HH:mm:ss'Z'"),
+                DateUtil.parse(fi.update()).toJdkDate().toString(),
+                DateUtil.parse(fi.create()).toString("yyyy-MM-dd'T'HH:mm:ss'Z'"),
                 fi.size(),
                 fi.isDir() ? "<D:collection/>" : "",
                 this.fileSystem().fileMime(fi)
@@ -224,56 +228,69 @@ public abstract class AbstractHandler implements Handler {
     }
 
     private int handleUnlock(Context ctx) {
-        return HttpStatus.NO_CONTENT.value();
+        String token = StrUtil.subBetween(ctx.header("Lock-Token"),"<",">");
+        return 204;
     }
 
     private int handleLock(Context ctx) {
-        String token = IdUtil.fastSimpleUUID();
-        ctx.headerSet("Lock-Token", token);
-        ctx.output(StrUtil.format("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" +
-                        "<D:prop xmlns:D=\"DAV:\"><D:lockdiscovery><D:activelock>\n" +
-                        "	<D:locktype><D:write/></D:locktype>\n" +
-                        "	<D:lockscope><D:exclusive/></D:lockscope>\n" +
-                        "	<D:depth>infinity</D:depth>\n" +
-                        "	<D:owner>{}</D:owner>\n" +
-                        "	<D:locktoken><D:href>{}</D:href></D:locktoken>\n" +
-                        "</D:activelock></D:lockdiscovery></D:prop>",
-                user(ctx), token));
-        return HttpStatus.CREATED.value();
+        try{
+            Map map = XmlUtil.xmlToMap(ctx.body());
+            String lockscope = StrUtil.subBetween(XmlUtil.mapToXmlStr((Map)map.get("D:lockscope")),"<xml>","</xml>");
+            String locktype = StrUtil.subBetween(XmlUtil.mapToXmlStr((Map)map.get("D:locktype")),"<xml>","</xml>");
+            String owner = StrUtil.subBetween(XmlUtil.mapToXmlStr((Map)map.get("D:owner")),"<xml>","</xml>");
+            String token = IdUtil.fastSimpleUUID();
+            ctx.headerSet("Lock-Token", "<"+token+">");
+            ctx.output(StrUtil.format("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" +
+                            "<D:prop xmlns:D=\"DAV:\"><D:lockdiscovery><D:activelock>\n" +
+                            "	<D:locktype>{}</D:locktype>\n" +
+                            "	<D:lockscope>{}</D:lockscope>\n" +
+                            "	<D:depth>infinity</D:depth>\n" +
+                            "	<D:owner>{}</D:owner>\n" +
+                            "	<D:timeout>Infinite</D:timeout>\n" +
+                            "	<D:locktoken><D:href>{}</D:href></D:locktoken>\n" +
+                            "</D:activelock></D:lockdiscovery></D:prop>",
+                    locktype,lockscope,owner, token));
+            return 200;
+        }catch (Exception e){
+            return 400;
+        }
     }
 
     private int handleCopyMove(Context ctx) {
         String reqPath = stripPrefix(ctx.path());
         String descPath = stripPrefix(ctx.header("Destination"));
         if (StrUtil.equals(reqPath, descPath)) {
-            return HttpStatus.FORBIDDEN.value();
+            return 403;
         }
-        boolean flag;
-        if (ctx.method().equals("COPY")) {
+        boolean flag = false;
+        if (ctx.method().equals("COPY") || ctx.method().equals("OPY")) {
             flag = this.fileSystem().copy(reqPath, descPath);
-        } else {
+        } else if(ctx.method().equals("MOVE") || ctx.method().equals("OVE")) {
             flag = this.fileSystem().move(reqPath, descPath);
         }
-        return flag ? HttpStatus.CREATED.value() : HttpStatus.NOT_FOUND.value();
+        return flag ? 201 : 404;
     }
 
     private int handleMkcol(Context ctx) {
         String reqPath = stripPrefix(ctx.path());
         boolean flag = this.fileSystem().mkdir(reqPath);
-        return flag ? HttpStatus.CREATED.value() : HttpStatus.METHOD_NOT_ALLOWED.value();
+        return flag ? 201 : 405;
     }
 
     private int handlePut(Context ctx) throws Exception {
+        if(StrUtil.isBlank(ctx.header("If"))){
+            return 200;
+        }
         String reqPath = stripPrefix(ctx.path());
         boolean flag = this.fileSystem().putFile(reqPath, ctx.bodyAsStream());
-        return flag ? HttpStatus.CREATED.value() : HttpStatus.METHOD_NOT_ALLOWED.value();
+        return flag ? 204 : 405;
     }
 
     private int handleDelete(Context ctx) {
         String reqPath = stripPrefix(ctx.path());
         boolean flag = this.fileSystem().del(reqPath);
         if (!flag) {
-            return HttpStatus.FORBIDDEN.value();
+            return 403;
         }
         return 0;
     }
@@ -293,17 +310,17 @@ public abstract class AbstractHandler implements Handler {
         }
         FileInfo fi = this.fileSystem().fileInfo(reqPath);
         if (fi == null) {
-            return HttpStatus.NOT_FOUND.value();
+            return 404;
         }
         if (fi.isDir()) {
-            return HttpStatus.METHOD_NOT_ALLOWED.value();
+            return 405;
         }
         String etag = this.fileSystem().findEtag(reqPath, fi);
         if (StrUtil.isBlank(etag)) {
-            return HttpStatus.INTERNAL_SERVER_ERROR.value();
+            return 500;
         }
         ctx.headerSet("ETag", etag);
-        ctx.headerSet("Last-Modified", DateUtil.parseDateTime(fi.update()).toJdkDate().toString());
+        ctx.headerSet("Last-Modified", DateUtil.parse(fi.update()).toJdkDate().toString());
         int type = 3;
         if (StrUtil.equals(ctx.method(), "HEAD")) {
             type = 1;
@@ -335,7 +352,7 @@ public abstract class AbstractHandler implements Handler {
         }
         ctx.headerSet("Content-Length", Convert.toStr(end - start + 1));
         if (type == 1) {
-            return HttpStatus.OK.value();
+            return 200;
         }
         long length = end - start + 1;
         InputStream resIn;
@@ -351,7 +368,7 @@ public abstract class AbstractHandler implements Handler {
 
         }
         if (type == 2) {
-            return HttpStatus.PARTIAL_CONTENT.value();
+            return 206;
         }
         return 0;
     }
@@ -377,7 +394,7 @@ public abstract class AbstractHandler implements Handler {
         p = URLUtil.decode(p);
         int index = p.indexOf(this.prefix());
         if (index == -1) {
-            throw new WebDavActionException(HttpStatus.NOT_FOUND.value());
+            throw new WebDavActionException(404);
         }
         String r = p.substring(index + this.prefix().length());
         if (r.length() < p.length()) {
@@ -389,6 +406,6 @@ public abstract class AbstractHandler implements Handler {
             }
             return r;
         }
-        throw new WebDavActionException(HttpStatus.NOT_FOUND.value());
+        throw new WebDavActionException(404);
     }
 }
