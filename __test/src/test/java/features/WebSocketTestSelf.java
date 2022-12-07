@@ -2,11 +2,17 @@ package features;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.noear.solon.core.message.Listener;
+import org.noear.solon.core.message.Message;
+import org.noear.solon.core.message.Session;
+import org.noear.solon.socketd.SocketD;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
 import webapp.demoe_websocket.WsDemoClient;
 
 import java.net.URI;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 
 @RunWith(SolonJUnit4ClassRunner.class)
 @SolonTest(webapp.TestApp.class)
@@ -35,4 +41,29 @@ public class WebSocketTestSelf {
 
         Thread.sleep(100);
     }
+
+    @Test
+    public void test_async_message3_self_ws() throws Throwable {
+        Session session = SocketD.createSession("ws://127.0.0.1:8080/demoe/websocket/12", true);
+
+        CompletableFuture<Boolean> check = new CompletableFuture<>();
+        session.listener(new Listener() {
+            @Override
+            public void onMessage(Session session, Message message) {
+                System.out.println("异步发送-ws-self::实例监到，收到了：" + message);
+                check.complete(true);
+            }
+        });
+
+
+        //异步发
+        session.sendAsync("test0");
+        session.sendAsync("test1");
+        session.sendAsync("test2");
+        session.sendAsync("test3");
+
+        assert check.get(2, TimeUnit.SECONDS);
+    }
 }
+
+

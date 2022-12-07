@@ -68,26 +68,5 @@ public class SocketAsyncTest {
         assert check.get(2, TimeUnit.SECONDS);
     }
 
-    @Test
-    public void test_async_message3_self_ws() throws Throwable {
-        Session session = SocketD.createSession("ws://127.0.0.1:8080/demoe/websocket/12", true);
 
-        CompletableFuture<Boolean> check = new CompletableFuture<>();
-        session.listener(new Listener() {
-            @Override
-            public void onMessage(Session session, Message message) {
-                System.out.println("异步发送-ws-self::实例监到，收到了：" + message);
-                check.complete(true);
-            }
-        });
-
-
-        //异步发
-        session.sendAsync("test0");
-        session.sendAsync("test1");
-        session.sendAsync("test2");
-        session.sendAsync("test3");
-
-        assert check.get(2, TimeUnit.SECONDS);
-    }
 }
