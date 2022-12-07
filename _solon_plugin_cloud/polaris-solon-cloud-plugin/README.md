@@ -6,17 +6,16 @@
 solon:
   app:
     namespace: default
-    group: fileGroup
-  cloud:
-    polaris:
-      global:
-        discovery:
-          enable: true
-          address: 127.0.0.1:8091
-        config:
-          enable: true
-          address: 127.0.0.1:8093
-          file: server1.yml
+    group: demo
+    name: demoapp
+    
+solon.cloud.polaris:
+  server: 127.0.0.1:8091
+  discovery:
+    enable: true
+  config:
+    enable: true
+    load: server1.yml
 ```
 
 #### 已完成

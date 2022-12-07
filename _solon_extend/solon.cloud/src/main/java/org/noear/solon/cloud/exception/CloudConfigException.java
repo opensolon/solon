@@ -5,6 +5,10 @@ package org.noear.solon.cloud.exception;
  * @since 1.10
  */
 public class CloudConfigException extends RuntimeException{
+    public CloudConfigException(String message){
+        super(message);
+    }
+
     public CloudConfigException(Throwable cause){
         super(cause);
     }

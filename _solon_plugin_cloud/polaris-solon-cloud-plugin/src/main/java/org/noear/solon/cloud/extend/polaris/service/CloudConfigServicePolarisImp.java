@@ -8,6 +8,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudConfigHandler;
 import org.noear.solon.cloud.CloudProps;
+import org.noear.solon.cloud.exception.CloudConfigException;
 import org.noear.solon.cloud.model.Config;
 import org.noear.solon.cloud.service.CloudConfigObserverEntity;
 import org.noear.solon.cloud.service.CloudConfigService;
@@ -18,22 +19,22 @@ public class CloudConfigServicePolarisImp implements CloudConfigService {
 
     private Map<CloudConfigHandler, CloudConfigObserverEntity> observerMap = new HashMap<>();
     private ConfigFileService configFileService;
-    private String namespace ;
-    private String fileName ;
+    private String namespace;
 
 
     public CloudConfigServicePolarisImp(CloudProps cloudProps) {
+        String server = cloudProps.getConfigServer();
+        namespace = Solon.cfg().appNamespace();
 
+        ConfigurationImpl configuration = (ConfigurationImpl) ConfigAPIFactory.defaultConfig();
 
-        String server = cloudProps.getServer();
-        namespace = cloudProps.getProp("global").get("namespace", Solon.cfg().appNamespace());
-        fileName = cloudProps.getProp("global").getProp("config").get("file");
-        String address =  cloudProps.getProp("global").getProp("config").get("address", namespace);
+        configuration.getGlobal().getSystem().getConfigCluster()
+                .setNamespace(namespace);
+        configuration.getGlobal().getSystem().getConfigCluster()
+                .setService(server);
 
-        ConfigurationImpl configuration = (ConfigurationImpl)ConfigAPIFactory.defaultConfig();
-        configuration.getGlobal().getSystem().getConfigCluster().setNamespace(namespace);
-        configuration.getGlobal().getSystem().getConfigCluster().setService(server);
-        configuration.getConfigFile().getServerConnector().setAddresses(Arrays.asList(address));
+        configuration.getConfigFile().getServerConnector()
+                .setAddresses(Arrays.asList(server));
 
         this.configFileService = ConfigFileServiceFactory.createConfigFileService(configuration);
 
@@ -48,11 +49,12 @@ public class CloudConfigServicePolarisImp implements CloudConfigService {
      */
     @Override
     public Config pull(String group, String name) {
-        group = Utils.isEmpty(group) ? Solon.cfg().appGroup() : group;
+        if (Utils.isEmpty(group)) {
+            group = Solon.cfg().appGroup();
+        }
 
-        String value = configFileService.getConfigYamlFile(namespace, group, fileName).getProperty(name, "");
-        // System.out.println(String.format(" 北极星配置拉取 group:[%s],fileName:[%s],name:[%s],value:[%s]", group,fileName,name,value));
-        return new Config(group, name, value, 0);
+        ConfigFile configFile = configFileService.getConfigFile(namespace, group, name);
+        return new Config(group, name, configFile.getContent(), 0);
     }
 
     /**
@@ -65,7 +67,7 @@ public class CloudConfigServicePolarisImp implements CloudConfigService {
      */
     @Override
     public boolean push(String group, String name, String value) {
-        throw new RuntimeException("暂未实现");
+        throw new CloudConfigException("Polaris does not support config push");
     }
 
     /**
@@ -75,7 +77,7 @@ public class CloudConfigServicePolarisImp implements CloudConfigService {
      */
     @Override
     public boolean remove(String group, String name) {
-        throw new RuntimeException("暂未实现");
+        throw new CloudConfigException("Polaris does not support config remove");
     }
 
     /**
@@ -91,18 +93,18 @@ public class CloudConfigServicePolarisImp implements CloudConfigService {
             return;
         }
 
-        group = Utils.isEmpty(group) ? Solon.cfg().appGroup() : group;
+        if (Utils.isEmpty(group)) {
+            group = Solon.cfg().appGroup();
+        }
 
         CloudConfigObserverEntity entity = new CloudConfigObserverEntity(group, name, observer);
         observerMap.put(observer, entity);
 
-        ConfigKVFile configFile = configFileService.getConfigYamlFile(namespace, group, fileName);
 
-        configFile.addChangeListener((ConfigKVFileChangeListener) event -> {
-            Set<String> changedKeys = event.changedKeys();
-            if (Objects.nonNull(changedKeys) && changedKeys.contains(name)) {
-                entity.handle(new Config(entity.group, entity.key, event.getPropertyNewValue(name), 0));
-            }
+        ConfigFile configFile = configFileService.getConfigFile(namespace, group, name);
+
+        configFile.addChangeListener(event -> {
+            entity.handle(new Config(entity.group, entity.key, event.getNewValue(), System.currentTimeMillis()));
         });
     }
 }

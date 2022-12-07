@@ -57,7 +57,7 @@ public class CloudConfigServiceNacosImp implements CloudConfigService {
      * 获取配置
      */
     @Override
-    public Config pull(String group, String key) {
+    public Config pull(String group, String name) {
         if (Utils.isEmpty(group)) {
             group = Solon.cfg().appGroup();
         }
@@ -66,8 +66,8 @@ public class CloudConfigServiceNacosImp implements CloudConfigService {
 
         try {
             group = groupReview(group);
-            String value = real.getConfig(key, group, 3000);
-            return new Config(group, key, value, 0);
+            String value = real.getConfig(name, group, 3000);
+            return new Config(group, name, value, 0);
         } catch (NacosException ex) {
             throw new RuntimeException(ex);
         }
@@ -77,7 +77,7 @@ public class CloudConfigServiceNacosImp implements CloudConfigService {
      * 设置配置
      */
     @Override
-    public boolean push(String group, String key, String value) {
+    public boolean push(String group, String name, String value) {
         if (Utils.isEmpty(group)) {
             group = Solon.cfg().appGroup();
         }
@@ -86,7 +86,7 @@ public class CloudConfigServiceNacosImp implements CloudConfigService {
 
         try {
             group = groupReview(group);
-            return real.publishConfig(key, group, value);
+            return real.publishConfig(name, group, value);
         } catch (NacosException ex) {
             throw new RuntimeException(ex);
         }
@@ -96,7 +96,7 @@ public class CloudConfigServiceNacosImp implements CloudConfigService {
      * 移除配置
      */
     @Override
-    public boolean remove(String group, String key) {
+    public boolean remove(String group, String name) {
         if (Utils.isEmpty(group)) {
             group = Solon.cfg().appGroup();
         }
@@ -104,7 +104,7 @@ public class CloudConfigServiceNacosImp implements CloudConfigService {
         //boolean removeConfig(String dataId, String group) throws NacosException
         try {
             group = groupReview(group);
-            return real.removeConfig(key, group);
+            return real.removeConfig(name, group);
         } catch (NacosException ex) {
             throw new RuntimeException(ex);
         }
@@ -116,7 +116,7 @@ public class CloudConfigServiceNacosImp implements CloudConfigService {
      * 关注配置
      */
     @Override
-    public void attention(String group, String key, CloudConfigHandler observer) {
+    public void attention(String group, String name, CloudConfigHandler observer) {
         if (observerMap.containsKey(observer)) {
             return;
         }
@@ -125,12 +125,12 @@ public class CloudConfigServiceNacosImp implements CloudConfigService {
             group = Solon.cfg().appGroup();
         }
 
-        CloudConfigObserverEntity entity = new CloudConfigObserverEntity(group, key, observer);
+        CloudConfigObserverEntity entity = new CloudConfigObserverEntity(group, name, observer);
         observerMap.put(observer, entity);
 
         try {
             group = groupReview(group);
-            real.addListener(key, group, new Listener() {
+            real.addListener(name, group, new Listener() {
                 @Override
                 public Executor getExecutor() {
                     return null;
