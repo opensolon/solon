@@ -25,11 +25,13 @@
 * 增加 mybatis-solon-plugin 插件对 Mappers 有无的检查并提示 !ok
 * 增加 DownloadedFile,UploadedFile 获取属性，原字段标为弃用（后面会改为私有）!ok
 * 调整 solon.schedule 插件，名字重复的处理 //要解决名字重复问题
+* 调整 solon.web.staticfiles 插件，允许 maxAge=-1 （从而取消 URLConnection 的缓存）!ok
 * 调整 solon.cache.* 插件，开放 CacheService 内部的 client !ok
 * 调整 jlhttp 不限制 method
 * 调整 coreTheads,maxTheads 配置，支持部数模式 x16（表示cpu核数的16倍）!ok
 * 调整 ctx.body() 优先采用 request content-type 上的编码 !ok
 * 修复 servletContext 使用 cookieRemove() 移除 cookie 时，遗留空值 cookie 的问题!ok
+* 修复 调试模式下，静态文件会缓存的问题 !ok
 * 测试 nami 的使用 !ok
 * 升级 smart-http 为 1.1.18 !ok
 * 升级 wood 为 1.0.6 !ok
