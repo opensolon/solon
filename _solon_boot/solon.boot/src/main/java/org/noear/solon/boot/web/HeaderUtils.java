@@ -1,11 +1,17 @@
 package org.noear.solon.boot.web;
 
+import org.noear.solon.Utils;
+
 /**
  * @author noear
  * @since 1.11
  */
 public class HeaderUtils {
     public static String extractQuotedValueFromHeader(String header, String key) {
+        if(Utils.isEmpty(header)){
+            return null;
+        }
+
         int keypos = 0;
         int pos = -1;
         boolean whiteSpace = true;
