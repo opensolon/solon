@@ -15,7 +15,7 @@ public abstract class ContextBase extends Context {
     @Override
     public String contentCharset() {
         if (contentCharset == null) {
-            contentCharset = HeaderUtils.extractQuotedValueFromHeader(contentCharset(), "charset");
+            contentCharset = HeaderUtils.extractQuotedValueFromHeader(contentType(), "charset");
 
             if (Utils.isEmpty(contentCharset)) {
                 contentCharset = ServerProps.request_encoding;
