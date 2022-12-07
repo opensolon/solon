@@ -9,6 +9,7 @@ import org.noear.solon.core.handle.HandlerPipeline;
 import org.noear.solon.web.staticfiles.StaticMappings;
 import org.noear.solon.web.staticfiles.StaticMimes;
 import org.noear.solon.web.staticfiles.StaticResourceHandler;
+import org.noear.solon.web.staticfiles.StaticConfig;
 import org.noear.solon.web.staticfiles.repository.ClassPathStaticRepository;
 import org.noear.solon.web.staticfiles.repository.ExtendStaticRepository;
 import org.noear.solon.web.staticfiles.repository.FileStaticRepository;
@@ -27,20 +28,20 @@ public class XPluginImp implements Plugin {
             return;
         }
 
-        if (XPluginProp.enable() == false) {
+        if (StaticConfig.isEnable() == false) {
             return;
         }
 
         //加载一个配置
-        XPluginProp.cacheMaxAge();
+        StaticConfig.getCacheMaxAge();
 
         //尝试添加默认静态资源地址
-        if (Utils.getResource(XPluginProp.RES_STATIC_LOCATION) != null) {
-            StaticMappings.add("/", new ClassPathStaticRepository(XPluginProp.RES_STATIC_LOCATION));
+        if (Utils.getResource(StaticConfig.RES_STATIC_LOCATION) != null) {
+            StaticMappings.add("/", new ClassPathStaticRepository(StaticConfig.RES_STATIC_LOCATION));
         }
 
-        if (Utils.getResource(XPluginProp.RES_WEB_INF_STATIC_LOCATION) != null) {
-            StaticMappings.add("/", new ClassPathStaticRepository(XPluginProp.RES_WEB_INF_STATIC_LOCATION));
+        if (Utils.getResource(StaticConfig.RES_WEB_INF_STATIC_LOCATION) != null) {
+            StaticMappings.add("/", new ClassPathStaticRepository(StaticConfig.RES_WEB_INF_STATIC_LOCATION));
         }
 
         //尝试启动静态代理（也可能在后面动态添加仓库）
@@ -58,7 +59,7 @@ public class XPluginImp implements Plugin {
         Solon.app().handlerSet(pipeline);
 
         //3.添加印射
-        List<Map> mapList = Solon.cfg().getBean(XPluginProp.PROP_MAPPINGS, ArrayList.class);
+        List<Map> mapList = Solon.cfg().getBean(StaticConfig.PROP_MAPPINGS, ArrayList.class);
         if (mapList != null) {
             for (Map map : mapList) {
                 String path = (String) map.get("path");

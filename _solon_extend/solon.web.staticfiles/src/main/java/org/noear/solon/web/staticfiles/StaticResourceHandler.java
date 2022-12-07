@@ -4,7 +4,6 @@ import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Handler;
 import org.noear.solon.core.handle.MethodType;
-import org.noear.solon.web.staticfiles.integration.XPluginProp;
 
 import java.io.InputStream;
 import java.net.URL;
@@ -64,22 +63,22 @@ public class StaticResourceHandler implements Handler {
             String modified_since = ctx.header("If-Modified-Since");
             String modified_now = modified_time.toString();
 
-            if (modified_since != null && XPluginProp.cacheMaxAge() > 0) {
+            if (modified_since != null && StaticConfig.getCacheMaxAge() > 0) {
                 if (modified_since.equals(modified_now)) {
-                    ctx.headerSet(CACHE_CONTROL, "max-age=" + XPluginProp.cacheMaxAge());//单位秒
+                    ctx.headerSet(CACHE_CONTROL, "max-age=" + StaticConfig.getCacheMaxAge());//单位秒
                     ctx.headerSet(LAST_MODIFIED, modified_now);
                     ctx.status(304);
                     return;
                 }
             }
 
-            if (XPluginProp.cacheMaxAge() > 0) {
-                ctx.headerSet(CACHE_CONTROL, "max-age=" + XPluginProp.cacheMaxAge());//单位秒
+            if (StaticConfig.getCacheMaxAge() > 0) {
+                ctx.headerSet(CACHE_CONTROL, "max-age=" + StaticConfig.getCacheMaxAge());//单位秒
                 ctx.headerSet(LAST_MODIFIED, modified_time.toString());
             }
 
 
-            if (XPluginProp.cacheMaxAge() < 0) {
+            if (StaticConfig.getCacheMaxAge() < 0) {
                 //说明不需要 uri 缓存; 或者是调试模式
                 URLConnection connection = uri.openConnection();
                 connection.setUseCaches(false);
