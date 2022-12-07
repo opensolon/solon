@@ -1,6 +1,5 @@
 package org.noear.solon.cloud.extend.polaris.service;
 
-
 import com.tencent.polaris.api.core.ConsumerAPI;
 import com.tencent.polaris.api.core.ProviderAPI;
 import com.tencent.polaris.api.rpc.*;
@@ -16,12 +15,17 @@ import org.noear.solon.cloud.model.Instance;
 import org.noear.solon.cloud.service.CloudDiscoveryObserverEntity;
 import org.noear.solon.cloud.service.CloudDiscoveryService;
 
+import java.io.Closeable;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Objects;
 
-
-public class CloudDiscoveryServicePolarisImp implements CloudDiscoveryService {
+/**
+ * @author 何荣振
+ * @since 1.11
+ * */
+public class CloudDiscoveryServicePolarisImp implements CloudDiscoveryService , Closeable {
     private ProviderAPI providerAPI;
     private ConsumerAPI consumerAPI;
 
@@ -144,7 +148,7 @@ public class CloudDiscoveryServicePolarisImp implements CloudDiscoveryService {
             group = Solon.cfg().appGroup();
         }
 
-        CloudDiscoveryObserverEntity entity = new CloudDiscoveryObserverEntity(group,service, observer);
+        CloudDiscoveryObserverEntity entity = new CloudDiscoveryObserverEntity(group, service, observer);
 
         WatchServiceRequest request = WatchServiceRequest.builder()
                 .namespace(Solon.cfg().appNamespace())
@@ -167,5 +171,16 @@ public class CloudDiscoveryServicePolarisImp implements CloudDiscoveryService {
                 .build();
 
         consumerAPI.watchService(request);
+    }
+
+    @Override
+    public void close() throws IOException {
+        if (consumerAPI != null) {
+            consumerAPI.close();
+        }
+
+        if (providerAPI != null) {
+            providerAPI.close();
+        }
     }
 }

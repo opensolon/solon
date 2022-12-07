@@ -13,9 +13,15 @@ import org.noear.solon.cloud.model.Config;
 import org.noear.solon.cloud.service.CloudConfigObserverEntity;
 import org.noear.solon.cloud.service.CloudConfigService;
 
+import java.io.Closeable;
+import java.io.IOException;
 import java.util.*;
 
-public class CloudConfigServicePolarisImp implements CloudConfigService {
+/**
+ * @author 何荣振
+ * @since 1.11
+ * */
+public class CloudConfigServicePolarisImp implements CloudConfigService , Closeable {
     private Map<CloudConfigHandler, CloudConfigObserverEntity> observerMap = new HashMap<>();
     private ConfigFileService real;
 
@@ -103,5 +109,10 @@ public class CloudConfigServicePolarisImp implements CloudConfigService {
         configFile.addChangeListener(event -> {
             entity.handle(new Config(entity.group, entity.key, event.getNewValue(), System.currentTimeMillis()));
         });
+    }
+
+    @Override
+    public void close() throws IOException {
+
     }
 }

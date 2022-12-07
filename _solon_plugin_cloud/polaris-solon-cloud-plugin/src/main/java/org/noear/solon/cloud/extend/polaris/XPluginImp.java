@@ -7,20 +7,36 @@ import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
 
 /**
- * @author noear
+ * @author 何荣振
  * @since 1.11
  */
 public class XPluginImp implements Plugin {
+    CloudConfigServicePolarisImp cloudConfigServicePolarisImp;
+    CloudDiscoveryServicePolarisImp cloudDiscoveryServicePolarisImp;
+
     @Override
     public void start(AopContext context) throws Throwable {
         //1.登记配置服务
         if (PolarisProps.instance.getConfigEnable()) {
-            CloudManager.register(new CloudConfigServicePolarisImp(PolarisProps.instance));
+            cloudConfigServicePolarisImp = new CloudConfigServicePolarisImp(PolarisProps.instance);
+            CloudManager.register(cloudConfigServicePolarisImp);
         }
 
         //2.登记发现服务
         if (PolarisProps.instance.getDiscoveryEnable()) {
-            CloudManager.register(new CloudDiscoveryServicePolarisImp(PolarisProps.instance));
+            cloudDiscoveryServicePolarisImp = new CloudDiscoveryServicePolarisImp(PolarisProps.instance);
+            CloudManager.register(cloudDiscoveryServicePolarisImp);
+        }
+    }
+
+    @Override
+    public void stop() throws Throwable {
+        if (cloudConfigServicePolarisImp != null) {
+            cloudConfigServicePolarisImp.close();
+        }
+
+        if (cloudDiscoveryServicePolarisImp != null) {
+            cloudDiscoveryServicePolarisImp.close();
         }
     }
 }
