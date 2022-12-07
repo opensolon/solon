@@ -15,7 +15,7 @@ solon.cloud.polaris:
     enable: true
   config:
     enable: true
-    load: server1.yml
+    load: "server1.yml"
 ```
 
 #### 已完成
