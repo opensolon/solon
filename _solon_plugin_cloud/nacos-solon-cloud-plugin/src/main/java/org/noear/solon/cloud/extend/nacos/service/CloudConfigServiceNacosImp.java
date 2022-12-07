@@ -24,9 +24,8 @@ import java.util.concurrent.Executor;
  * @since 1.2
  */
 public class CloudConfigServiceNacosImp implements CloudConfigService {
-
-
-    ConfigService real;
+    private Map<CloudConfigHandler, CloudConfigObserverEntity> observerMap = new HashMap<>();
+    private ConfigService real;
 
     public CloudConfigServiceNacosImp(CloudProps cloudProps) {
         String server = cloudProps.getConfigServer();
@@ -109,8 +108,6 @@ public class CloudConfigServiceNacosImp implements CloudConfigService {
             throw new RuntimeException(ex);
         }
     }
-
-    private Map<CloudConfigHandler, CloudConfigObserverEntity> observerMap = new HashMap<>();
 
     /**
      * 关注配置

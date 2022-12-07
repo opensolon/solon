@@ -16,27 +16,24 @@ import org.noear.solon.cloud.service.CloudConfigService;
 import java.util.*;
 
 public class CloudConfigServicePolarisImp implements CloudConfigService {
-
     private Map<CloudConfigHandler, CloudConfigObserverEntity> observerMap = new HashMap<>();
-    private ConfigFileService configFileService;
-    private String namespace;
+    private ConfigFileService real;
 
 
     public CloudConfigServicePolarisImp(CloudProps cloudProps) {
         String server = cloudProps.getConfigServer();
-        namespace = Solon.cfg().appNamespace();
 
         ConfigurationImpl configuration = (ConfigurationImpl) ConfigAPIFactory.defaultConfig();
 
         configuration.getGlobal().getSystem().getConfigCluster()
-                .setNamespace(namespace);
+                .setNamespace(Solon.cfg().appNamespace());
         configuration.getGlobal().getSystem().getConfigCluster()
                 .setService(server);
 
         configuration.getConfigFile().getServerConnector()
                 .setAddresses(Arrays.asList(server));
 
-        this.configFileService = ConfigFileServiceFactory.createConfigFileService(configuration);
+        this.real = ConfigFileServiceFactory.createConfigFileService(configuration);
 
     }
 
@@ -53,7 +50,7 @@ public class CloudConfigServicePolarisImp implements CloudConfigService {
             group = Solon.cfg().appGroup();
         }
 
-        ConfigFile configFile = configFileService.getConfigFile(namespace, group, name);
+        ConfigFile configFile = real.getConfigFile(Solon.cfg().appNamespace(), group, name);
         return new Config(group, name, configFile.getContent(), 0);
     }
 
@@ -101,7 +98,7 @@ public class CloudConfigServicePolarisImp implements CloudConfigService {
         observerMap.put(observer, entity);
 
 
-        ConfigFile configFile = configFileService.getConfigFile(namespace, group, name);
+        ConfigFile configFile = real.getConfigFile(Solon.cfg().appNamespace(), group, name);
 
         configFile.addChangeListener(event -> {
             entity.handle(new Config(entity.group, entity.key, event.getNewValue(), System.currentTimeMillis()));
