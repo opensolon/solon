@@ -42,6 +42,7 @@ public class OnsConsumer {
                 subscription.setExpression("*");
                 subscriptionTable.put(subscription, handler);
             }
+
             consumer.setSubscriptionTable(subscriptionTable);
             consumer.start();
         }
