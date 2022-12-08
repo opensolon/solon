@@ -4,6 +4,7 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.*;
+import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Handler;
 
@@ -18,13 +19,16 @@ import java.util.Map;
  */
 public abstract class AbstractHandler implements Handler {
     private boolean range;
-    public AbstractHandler(boolean range){
+
+    public AbstractHandler(boolean range) {
         this.range = range;
     }
+
     /**
      * 获取用户名
      * 获取不到返回空
      * 表示未登录
+     *
      * @param ctx
      * @return
      */
@@ -46,16 +50,16 @@ public abstract class AbstractHandler implements Handler {
 
     @Override
     public void handle(Context ctx) {
-        try{
+        try {
             ctx.contentType("text/xml; charset=UTF-8");
             ctx.headerSet("Pragma", "no-cache");
             ctx.headerSet("Cache-Control", "no-cache");
             ctx.headerSet("X-DAV-BY", "webos");
             ctx.headerSet("Access-Control-Allow-Origin", "*");
             ctx.headerSet("Access-Control-Allow-Methods", "GET, POST, OPTIONS, DELETE, HEAD, MOVE, COPY, PUT, MKCOL, PROPFIND, PROPPATCH, LOCK, UNLOCK");
-            ctx.headerSet("Access-Control-Allow-Headers","ETag, Content-Type, Content-Length, Accept-Encoding, X-Requested-with, Origin, Authorization");
-            ctx.headerSet("Access-Control-Allow-Credentials","true");
-            ctx.headerSet("Access-Control-Max-Age","3600");
+            ctx.headerSet("Access-Control-Allow-Headers", "ETag, Content-Type, Content-Length, Accept-Encoding, X-Requested-with, Origin, Authorization");
+            ctx.headerSet("Access-Control-Allow-Credentials", "true");
+            ctx.headerSet("Access-Control-Max-Age", "3600");
             if (StrUtil.isBlank(this.user(ctx))) {
                 ctx.headerSet("WWW-Authenticate", "Basic realm=\"webos\"");
                 ctx.status(401);
@@ -115,7 +119,7 @@ public abstract class AbstractHandler implements Handler {
                 status = 200;
             }
             ctx.status(status);
-        }catch (Exception e){
+        } catch (Exception e) {
 
         }
     }
@@ -141,7 +145,7 @@ public abstract class AbstractHandler implements Handler {
                 "\t\t</D:response>\n" +
                 "</D:multistatus>\n";
         ctx.output(StrUtil.format(template, href));
-            return 207;
+        return 207;
     }
 
     private int parseDepth(String s) {
@@ -182,7 +186,7 @@ public abstract class AbstractHandler implements Handler {
         List<String> list = CollUtil.newArrayList(itemResponse);
         if (CollUtil.isNotEmpty(childs)) {
             for (FileInfo info : childs) {
-                String tmp = StrUtil.isBlank(reqPath)?info.name():reqPath + "/" + info.name();
+                String tmp = StrUtil.isBlank(reqPath) ? info.name() : reqPath + "/" + info.name();
                 list.add(this.toItemResponse(tmp, info));
             }
         }
@@ -199,7 +203,7 @@ public abstract class AbstractHandler implements Handler {
         for (String tmp : itemResponse) {
             sb.append(tmp);
         }
-        return StrUtil.format(template,sb.toString());
+        return StrUtil.format(template, sb.toString());
     }
 
     private String toItemResponse(String reqPath, FileInfo fi) {
@@ -215,7 +219,7 @@ public abstract class AbstractHandler implements Handler {
                 "\t<D:status>HTTP/1.1 200 OK</D:status>\n" +
                 "</D:propstat>\n" +
                 "\t</D:response>";
-        String href = StrUtil.isBlank(reqPath)?this.prefix():this.prefix() + "/" + reqPath;
+        String href = StrUtil.isBlank(reqPath) ? this.prefix() : this.prefix() + "/" + reqPath;
         href = URLUtil.encode(href);
         return StrUtil.format(template,
                 href,
@@ -228,30 +232,30 @@ public abstract class AbstractHandler implements Handler {
     }
 
     private int handleUnlock(Context ctx) {
-        String token = StrUtil.subBetween(ctx.header("Lock-Token"),"<",">");
+        String token = StrUtil.subBetween(ctx.header("Lock-Token"), "<", ">");
         return 204;
     }
 
     private int handleLock(Context ctx) {
-        try{
+        try {
             Map map = XmlUtil.xmlToMap(ctx.body());
-            String lockscope = StrUtil.subBetween(XmlUtil.mapToXmlStr((Map)map.get("D:lockscope")),"<xml>","</xml>");
-            String locktype = StrUtil.subBetween(XmlUtil.mapToXmlStr((Map)map.get("D:locktype")),"<xml>","</xml>");
-            String owner = StrUtil.subBetween(XmlUtil.mapToXmlStr((Map)map.get("D:owner")),"<xml>","</xml>");
+            String lockscope = StrUtil.subBetween(XmlUtil.mapToXmlStr((Map) map.get("D:lockscope")), "<xml>", "</xml>");
+            String locktype = StrUtil.subBetween(XmlUtil.mapToXmlStr((Map) map.get("D:locktype")), "<xml>", "</xml>");
+            String owner = StrUtil.subBetween(XmlUtil.mapToXmlStr((Map) map.get("D:owner")), "<xml>", "</xml>");
             String token = IdUtil.fastSimpleUUID();
-            ctx.headerSet("Lock-Token", "<"+token+">");
+            ctx.headerSet("Lock-Token", "<" + token + ">");
             ctx.output(StrUtil.format("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" +
                             "<D:prop xmlns:D=\"DAV:\"><D:lockdiscovery><D:activelock>\n" +
-                            "	<D:locktype>{}</D:locktype>\n" +
-                            "	<D:lockscope>{}</D:lockscope>\n" +
-                            "	<D:depth>infinity</D:depth>\n" +
-                            "	<D:owner>{}</D:owner>\n" +
-                            "	<D:timeout>Infinite</D:timeout>\n" +
-                            "	<D:locktoken><D:href>{}</D:href></D:locktoken>\n" +
+                            "\t<D:locktype>{}</D:locktype>\n" +
+                            "\t<D:lockscope>{}</D:lockscope>\n" +
+                            "\t<D:depth>infinity</D:depth>\n" +
+                            "\t<D:owner>{}</D:owner>\n" +
+                            "\t<D:timeout>Infinite</D:timeout>\n" +
+                            "\t<D:locktoken><D:href>{}</D:href></D:locktoken>\n" +
                             "</D:activelock></D:lockdiscovery></D:prop>",
-                    locktype,lockscope,owner, token));
+                    locktype, lockscope, owner, token));
             return 200;
-        }catch (Exception e){
+        } catch (Exception e) {
             return 400;
         }
     }
@@ -265,7 +269,7 @@ public abstract class AbstractHandler implements Handler {
         boolean flag = false;
         if (ctx.method().equals("COPY") || ctx.method().equals("OPY")) {
             flag = this.fileSystem().copy(reqPath, descPath);
-        } else if(ctx.method().equals("MOVE") || ctx.method().equals("OVE")) {
+        } else if (ctx.method().equals("MOVE") || ctx.method().equals("OVE")) {
             flag = this.fileSystem().move(reqPath, descPath);
         }
         return flag ? 201 : 404;
@@ -278,7 +282,7 @@ public abstract class AbstractHandler implements Handler {
     }
 
     private int handlePut(Context ctx) throws Exception {
-        if(StrUtil.isBlank(ctx.header("If"))){
+        if (StrUtil.isBlank(ctx.header("If"))) {
             return 200;
         }
         String reqPath = stripPrefix(ctx.path());
@@ -298,7 +302,7 @@ public abstract class AbstractHandler implements Handler {
     private int handleGetHeadPost(Context ctx) {
         String reqPath = stripPrefix(ctx.path());
         String url = this.fileSystem().fileUrl(reqPath);
-        if(StrUtil.isNotBlank(url)){
+        if (StrUtil.isNotBlank(url)) {
             ctx.headerSet("Location", url);
             ctx.headerSet("Access-Control-Allow-Origin", "*");
             ctx.headerSet("Access-Control-Allow-Credentials", "true");
