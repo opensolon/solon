@@ -18,11 +18,9 @@ public class OnsProps {
 
     public static final String PROP_EVENT_messageModel = "event.messageModel";
 
-    public static final String PROP_EVENT_EnableConsoleLog = "event.enableConsoleLog";
+    public static final String PROP_EVENT_sendMsgTimeoutMillis = "event.sendMsgTimeoutMillis";
 
-    public static final String PROP_EVENT_SendMsgTimeoutMillis = "event.sendMsgTimeoutMillis";
-
-    public static final String PROP_EVENT_ConsumeThreadNums = "event.consumeThreadNums";
+    public static final String PROP_EVENT_consumeThreadNums = "event.consumeThreadNums";
 
     public static final String PROP_EVENT_maxReconsumeTimes = "event.maxReconsumeTimes";
 

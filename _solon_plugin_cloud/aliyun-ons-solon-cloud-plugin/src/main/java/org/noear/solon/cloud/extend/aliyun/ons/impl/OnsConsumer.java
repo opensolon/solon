@@ -5,7 +5,8 @@ import com.aliyun.openservices.ons.api.bean.ConsumerBean;
 import com.aliyun.openservices.ons.api.bean.Subscription;
 import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.service.CloudEventObserverManger;
-import org.noear.solon.core.util.LogUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,6 +16,8 @@ import java.util.Map;
  * @since 1.11
  */
 public class OnsConsumer {
+    static Logger log = LoggerFactory.getLogger(OnsConsumer.class);
+
     private OnsConfig cfg;
     private ConsumerBean consumer;
     private OnsConsumerHandler handler;
@@ -27,6 +30,7 @@ public class OnsConsumer {
         if (consumer != null) {
             return;
         }
+
         synchronized (this) {
             if (consumer != null) {
                 return;
@@ -42,15 +46,14 @@ public class OnsConsumer {
                 subscription.setTopic(topic);
                 subscription.setExpression("*");
                 subscriptionTable.put(subscription, handler);
-                if (cfg.getEnableConsoleLog()) {
-                    LogUtil.global().info("rocketMq onsConsumer subscribe [" + topic + "] ok!");
-                }
+
+                log.debug("Ons consumer subscribe [" + topic + "] ok!");
             }
+
             consumer.setSubscriptionTable(subscriptionTable);
             consumer.start();
-            if (cfg.getEnableConsoleLog()) {
-                LogUtil.global().info("rocketMq onsConsumer [" + consumer.isStarted() + "]!");
-            }
+
+            log.debug("Ons consumer started: " + consumer.isStarted() + "!");
         }
     }
 }

@@ -26,17 +26,15 @@ public class OnsConfig {
 
     private String messageModel;
 
-    private Boolean enableConsoleLog;
-
     private Integer consumeThreadNums;
 
     private Integer maxReconsumeTimes;
 
     public OnsConfig(CloudProps cloudProps) {
         server = cloudProps.getEventServer();
-        timeout = Integer.valueOf(cloudProps.getValue(OnsProps.PROP_EVENT_SendMsgTimeoutMillis, "3000"));
+        timeout = Integer.valueOf(cloudProps.getValue(OnsProps.PROP_EVENT_sendMsgTimeoutMillis, "3000"));
 
-        consumeThreadNums = Integer.valueOf(cloudProps.getValue(OnsProps.PROP_EVENT_ConsumeThreadNums, "20"));
+        consumeThreadNums = Integer.valueOf(cloudProps.getValue(OnsProps.PROP_EVENT_consumeThreadNums, "20"));
         maxReconsumeTimes = Integer.valueOf(cloudProps.getValue(OnsProps.PROP_EVENT_maxReconsumeTimes, "16"));
 
         producerGroup = cloudProps.getValue(OnsProps.PROP_EVENT_producerGroup);
@@ -45,9 +43,7 @@ public class OnsConfig {
         accessKey = cloudProps.getValue(OnsProps.PROP_EVENT_accessKey);
         secretKey = cloudProps.getValue(OnsProps.PROP_EVENT_secretKey);
 
-
-        enableConsoleLog = Boolean.valueOf(cloudProps.getValue(OnsProps.PROP_EVENT_EnableConsoleLog, "true"));
-        messageModel = cloudProps.getValue(OnsProps.PROP_EVENT_MessageModel, PropertyValueConst.CLUSTERING);
+        messageModel = cloudProps.getValue(OnsProps.PROP_EVENT_messageModel, PropertyValueConst.CLUSTERING);
 
 
         if (Utils.isEmpty(producerGroup)) {
@@ -86,9 +82,5 @@ public class OnsConfig {
 
         properties.put(PropertyKeyConst.NAMESRV_ADDR, server);
         return properties;
-    }
-
-    public Boolean getEnableConsoleLog() {
-        return enableConsoleLog;
     }
 }
