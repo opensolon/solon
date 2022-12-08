@@ -36,6 +36,7 @@
 * 测试 nami 做为注解式 http 客户端的使用 !ok
 * 升级 smart-http 为 1.1.19 !ok
 * 升级 wood 为 1.0.7 !ok
+* 升级 sqltoy 为 5.2.25 !ok
 
 #### 1.11.3
 * 新增 local-solon-cloud-plugin 插件
