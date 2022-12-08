@@ -5,6 +5,7 @@ import com.aliyun.openservices.ons.api.bean.ConsumerBean;
 import com.aliyun.openservices.ons.api.bean.Subscription;
 import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.service.CloudEventObserverManger;
+import org.noear.solon.core.util.LogUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,7 +32,7 @@ public class OnsConsumer {
                 return;
             }
 
-            handler = new OnsConsumerHandler(cloudProps, observerManger);
+            handler = new OnsConsumerHandler(cfg, cloudProps, observerManger);
             consumer = new ConsumerBean();
             consumer.setProperties(cfg.getConsumerProperties());
 
@@ -41,10 +42,15 @@ public class OnsConsumer {
                 subscription.setTopic(topic);
                 subscription.setExpression("*");
                 subscriptionTable.put(subscription, handler);
+                if (cfg.getEnableConsoleLog()) {
+                    LogUtil.global().info("rocketMq onsConsumer subscribe [" + topic + "] ok!");
+                }
             }
-
             consumer.setSubscriptionTable(subscriptionTable);
             consumer.start();
+            if (cfg.getEnableConsoleLog()) {
+                LogUtil.global().info("rocketMq onsConsumer [" + consumer.isStarted() + "]!");
+            }
         }
     }
 }

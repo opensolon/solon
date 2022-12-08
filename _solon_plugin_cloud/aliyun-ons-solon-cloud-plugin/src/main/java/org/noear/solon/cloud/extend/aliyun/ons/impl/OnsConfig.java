@@ -26,9 +26,18 @@ public class OnsConfig {
 
     private String messageModel;
 
+    private Boolean enableConsoleLog;
+
+    private Integer consumeThreadNums;
+
+    private Integer maxReconsumeTimes;
+
     public OnsConfig(CloudProps cloudProps) {
         server = cloudProps.getEventServer();
-        timeout = cloudProps.getEventPublishTimeout();
+        timeout = Integer.valueOf(cloudProps.getValue(OnsProps.PROP_EVENT_SendMsgTimeoutMillis, "3000"));
+
+        consumeThreadNums = Integer.valueOf(cloudProps.getValue(OnsProps.PROP_EVENT_ConsumeThreadNums, "20"));
+        maxReconsumeTimes = Integer.valueOf(cloudProps.getValue(OnsProps.PROP_EVENT_maxReconsumeTimes, "16"));
 
         producerGroup = cloudProps.getValue(OnsProps.PROP_EVENT_producerGroup);
         consumerGroup = cloudProps.getValue(OnsProps.PROP_EVENT_consumerGroup);
@@ -36,7 +45,10 @@ public class OnsConfig {
         accessKey = cloudProps.getValue(OnsProps.PROP_EVENT_accessKey);
         secretKey = cloudProps.getValue(OnsProps.PROP_EVENT_secretKey);
 
-        messageModel = cloudProps.getValue(OnsProps.PROP_EVENT_messageModel, PropertyValueConst.CLUSTERING);
+
+        enableConsoleLog = Boolean.valueOf(cloudProps.getValue(OnsProps.PROP_EVENT_EnableConsoleLog, "true"));
+        messageModel = cloudProps.getValue(OnsProps.PROP_EVENT_MessageModel, PropertyValueConst.CLUSTERING);
+
 
         if (Utils.isEmpty(producerGroup)) {
             producerGroup = "DEFAULT";
@@ -55,9 +67,10 @@ public class OnsConfig {
 
     public Properties getConsumerProperties() {
         Properties consumer = getProperties();
-        consumer.put(PropertyKeyConst.ConsumeTimeout, timeout);
         consumer.put(PropertyKeyConst.GROUP_ID, consumerGroup);
         consumer.put(PropertyKeyConst.MessageModel, messageModel);
+        consumer.put(PropertyKeyConst.ConsumeThreadNums, consumeThreadNums);
+        consumer.put(PropertyKeyConst.MaxReconsumeTimes, maxReconsumeTimes);
         return consumer;
     }
 
@@ -73,5 +86,9 @@ public class OnsConfig {
 
         properties.put(PropertyKeyConst.NAMESRV_ADDR, server);
         return properties;
+    }
+
+    public Boolean getEnableConsoleLog() {
+        return enableConsoleLog;
     }
 }
