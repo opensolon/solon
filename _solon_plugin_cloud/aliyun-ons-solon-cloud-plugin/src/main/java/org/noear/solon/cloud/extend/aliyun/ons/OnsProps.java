@@ -18,6 +18,14 @@ public class OnsProps {
 
     public static final String PROP_EVENT_MessageModel = "event.messageModel";
 
+    public static final String PROP_EVENT_EnableConsoleLog = "event.enableConsoleLog";
+
+    public static final String PROP_EVENT_SendMsgTimeoutMillis = "event.sendMsgTimeoutMillis";
+
+    public static final String PROP_EVENT_ConsumeThreadNums = "event.consumeThreadNums";
+
+    public static final String PROP_EVENT_maxReconsumeTimes = "event.maxReconsumeTimes";
+
 
     public static final CloudProps instance = new CloudProps("aliyun.ons");
 }

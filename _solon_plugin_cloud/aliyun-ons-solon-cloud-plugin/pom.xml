@@ -30,7 +30,7 @@
         <dependency>
             <groupId>com.aliyun.openservices</groupId>
             <artifactId>ons-client</artifactId>
-            <version>2.0.3.Final</version>
+            <version>1.8.8.5.Final</version>
         </dependency>
     </dependencies>
 
