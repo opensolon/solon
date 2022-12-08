@@ -11,6 +11,7 @@ import org.noear.solon.cloud.extend.aliyun.ons.OnsProps;
 import org.noear.solon.cloud.model.Event;
 import org.noear.solon.cloud.service.CloudEventObserverManger;
 import org.noear.solon.core.event.EventBus;
+import org.noear.solon.core.util.LogUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,15 +26,20 @@ public class OnsConsumerHandler implements MessageListener {
     CloudEventObserverManger observerManger;
     String eventChannelName;
 
-    public OnsConsumerHandler(CloudProps cloudProps, CloudEventObserverManger observerManger) {
+    OnsConfig onsConfig;
+
+    public OnsConsumerHandler(OnsConfig onsConfig, CloudProps cloudProps, CloudEventObserverManger observerManger) {
         this.observerManger = observerManger;
+        this.onsConfig = onsConfig;
         eventChannelName = cloudProps.getEventChannel();
     }
 
     @Override
     public Action consume(Message message, ConsumeContext consumeContext) {
         boolean isOk = true;
-
+        if (onsConfig.getEnableConsoleLog()) {
+            LogUtil.global().info("rocketMq Consume Message ok! topic:[" + message.getTopic() + "] msgId:[" + message.getMsgID() + "]");
+        }
         try {
             String topicNew = message.getTopic();
             String group = null;
