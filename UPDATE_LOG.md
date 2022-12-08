@@ -33,7 +33,7 @@
 * 调整 ctx.body() 优先采用 request content-type 上的编码 !ok
 * 修复 servletContext 使用 cookieRemove() 移除 cookie 时，遗留空值 cookie 的问题!ok
 * 修复 调试模式下，静态文件会缓存的问题 !ok
-* 测试 nami 的使用 !ok
+* 测试 nami 做为注解式 http 客户端的使用 !ok
 * 升级 smart-http 为 1.1.19 !ok
 * 升级 wood 为 1.0.7 !ok
 
