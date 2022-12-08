@@ -19,17 +19,17 @@
 * 新增 solon.scheduling 插件 !ok
 * 新增 solon.scheduling.simple 插件（替代 solon.schedule；更标准化）!ok //要解决名字重复问题
 * 新增 solon.scheduling.quartz 插件（替代 quartz-solon-plugin；更标准化）!ok
-* 插件 quartz-solon-plugin 增加函数执行支持，增加持久化和远程管理支持（代码微调整）!ok
 * 新增 quartz-solon-cloud-plugin 插件 !ok
+* 插件 quartz-solon-plugin 增加函数执行支持，增加持久化和远程管理支持（代码微调整）!ok
 * 插件 local-solon-cloud-plugin 添加 server 配置支持（只能指向本地） !ok
-* 增加 enableWebSocketMvc，enableSocketMvc !ok
+* 插件 solon.web.staticfiles 插件，允许 maxAge=-1 配置（从而取消 URLConnection 的缓存）!ok
+* 插件 solon.schedule 插件，调整自动任务名字处理，避免重复 //要解决名字重复问题 ???
+* 插件 solon.boot.jlhttp 调整server代码，不再限制 method !ok
+* 插件 solon.boot 调整 coreTheads,maxTheads 配置，支持部数模式 x16（表示cpu核数的16倍）!ok
+* 增加 enableWebSocketMvc，enableSocketMvc 开关控制 !ok
 * 增加 mybatis-solon-plugin 插件对 Mappers 有无的检查并提示 !ok
 * 增加 DownloadedFile,UploadedFile 获取属性，原字段标为弃用（后面会改为私有）!ok
-* 调整 solon.schedule 插件，名字重复的处理 //要解决名字重复问题
-* 调整 solon.web.staticfiles 插件，允许 maxAge=-1 （从而取消 URLConnection 的缓存）!ok
-* 调整 solon.cache.* 插件，开放 CacheService 内部的 client !ok
-* 调整 jlhttp 不限制 method
-* 调整 coreTheads,maxTheads 配置，支持部数模式 x16（表示cpu核数的16倍）!ok
+* 调整 solon.cache.* 插件，开放 CacheService 内部的 client !ok 
 * 调整 ctx.body() 优先采用 request content-type 上的编码 !ok
 * 修复 servletContext 使用 cookieRemove() 移除 cookie 时，遗留空值 cookie 的问题!ok
 * 修复 调试模式下，静态文件会缓存的问题 !ok
