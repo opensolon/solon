@@ -26,6 +26,12 @@
             <artifactId>solon-test</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>com.aliyun.openservices</groupId>
+            <artifactId>ons-client</artifactId>
+            <version>2.0.3.Final</version>
+        </dependency>
     </dependencies>
 
 </project>
