@@ -5,7 +5,7 @@ import com.aliyun.openservices.ons.api.PropertyValueConst;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudProps;
-import org.noear.solon.cloud.extend.aliyun.ons.RocketmqProps;
+import org.noear.solon.cloud.extend.aliyun.ons.OnsProps;
 
 import java.util.Properties;
 
@@ -37,11 +37,11 @@ public class OnsConfig {
     public OnsConfig(CloudProps cloudProps) {
         server = cloudProps.getEventServer();
         timeout = cloudProps.getEventPublishTimeout();
-        producerGroup = cloudProps.getValue(RocketmqProps.PROP_EVENT_producerGroup);
-        consumerGroup = cloudProps.getValue(RocketmqProps.PROP_EVENT_consumerGroup);
-        accessKey = cloudProps.getValue(RocketmqProps.PROP_EVENT_accessKey);
-        secretKey = cloudProps.getValue(RocketmqProps.PROP_EVENT_secretKey);
-        messageModel = cloudProps.getValue(RocketmqProps.PROP_EVENT_MessageModel, PropertyValueConst.CLUSTERING);
+        producerGroup = cloudProps.getValue(OnsProps.PROP_EVENT_producerGroup);
+        consumerGroup = cloudProps.getValue(OnsProps.PROP_EVENT_consumerGroup);
+        accessKey = cloudProps.getValue(OnsProps.PROP_EVENT_accessKey);
+        secretKey = cloudProps.getValue(OnsProps.PROP_EVENT_secretKey);
+        messageModel = cloudProps.getValue(OnsProps.PROP_EVENT_MessageModel, PropertyValueConst.CLUSTERING);
         if (Utils.isEmpty(producerGroup)) {
             producerGroup = "DEFAULT";
         }

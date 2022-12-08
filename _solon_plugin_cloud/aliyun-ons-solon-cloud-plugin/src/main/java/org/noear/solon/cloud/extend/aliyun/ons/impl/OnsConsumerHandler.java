@@ -7,7 +7,7 @@ import com.aliyun.openservices.ons.api.MessageListener;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudEventHandler;
 import org.noear.solon.cloud.CloudProps;
-import org.noear.solon.cloud.extend.aliyun.ons.RocketmqProps;
+import org.noear.solon.cloud.extend.aliyun.ons.OnsProps;
 import org.noear.solon.cloud.model.Event;
 import org.noear.solon.cloud.service.CloudEventObserverManger;
 import org.noear.solon.core.event.EventBus;
@@ -38,9 +38,9 @@ public class OnsConsumerHandler implements MessageListener {
             String topicNew = message.getTopic();
             String group = null;
             String topic = null;
-            if (topicNew.contains(RocketmqProps.GROUP_SPLIT_MART)) {
-                group = topicNew.split(RocketmqProps.GROUP_SPLIT_MART)[0];
-                topic = topicNew.split(RocketmqProps.GROUP_SPLIT_MART)[1];
+            if (topicNew.contains(OnsProps.GROUP_SPLIT_MART)) {
+                group = topicNew.split(OnsProps.GROUP_SPLIT_MART)[0];
+                topic = topicNew.split(OnsProps.GROUP_SPLIT_MART)[1];
             } else {
                 topic = topicNew;
             }

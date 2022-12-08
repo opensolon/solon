@@ -13,12 +13,12 @@ import org.noear.solon.core.Plugin;
 public class XPluginImp implements Plugin {
     @Override
     public void start(AopContext context) {
-        if (Utils.isEmpty(RocketmqProps.instance.getEventServer())) {
+        if (Utils.isEmpty(OnsProps.instance.getEventServer())) {
             return;
         }
 
-        if (RocketmqProps.instance.getEventEnable()) {
-            CloudEventServiceOnsImp eventServiceImp = new CloudEventServiceOnsImp(RocketmqProps.instance);
+        if (OnsProps.instance.getEventEnable()) {
+            CloudEventServiceOnsImp eventServiceImp = new CloudEventServiceOnsImp(OnsProps.instance);
             CloudManager.register(eventServiceImp);
 
             context.beanOnloaded(ctx -> eventServiceImp.subscribe());

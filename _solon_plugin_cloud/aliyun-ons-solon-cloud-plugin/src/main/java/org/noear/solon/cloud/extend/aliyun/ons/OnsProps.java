@@ -6,7 +6,7 @@ import org.noear.solon.cloud.CloudProps;
  * @author cgy
  * @since 1.11.3
  */
-public class RocketmqProps {
+public class OnsProps {
     public static final String GROUP_SPLIT_MART = "--";
 
     public static final String PROP_EVENT_consumerGroup = "event.consumerGroup";
@@ -19,5 +19,5 @@ public class RocketmqProps {
     public static final String PROP_EVENT_MessageModel = "event.messageModel";
 
 
-    public static final CloudProps instance = new CloudProps("rocketmq");
+    public static final CloudProps instance = new CloudProps("aliyun.ons");
 }

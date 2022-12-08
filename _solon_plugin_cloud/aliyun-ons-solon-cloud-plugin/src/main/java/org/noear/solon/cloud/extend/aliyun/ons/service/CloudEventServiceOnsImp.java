@@ -5,7 +5,7 @@ import org.noear.solon.cloud.CloudEventHandler;
 import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.annotation.EventLevel;
 import org.noear.solon.cloud.exception.CloudEventException;
-import org.noear.solon.cloud.extend.aliyun.ons.RocketmqProps;
+import org.noear.solon.cloud.extend.aliyun.ons.OnsProps;
 import org.noear.solon.cloud.extend.aliyun.ons.impl.OnsConfig;
 import org.noear.solon.cloud.extend.aliyun.ons.impl.OnsConsumer;
 import org.noear.solon.cloud.extend.aliyun.ons.impl.OnsProducer;
@@ -50,7 +50,7 @@ public class CloudEventServiceOnsImp implements CloudEventServicePlus {
         if (Utils.isEmpty(event.group())) {
             topicNew = event.topic();
         } else {
-            topicNew = event.group() + RocketmqProps.GROUP_SPLIT_MART + event.topic();
+            topicNew = event.group() + OnsProps.GROUP_SPLIT_MART + event.topic();
         }
 
         topicNew = topicNew.replace(".", "_");
@@ -74,7 +74,7 @@ public class CloudEventServiceOnsImp implements CloudEventServicePlus {
         if (Utils.isEmpty(group)) {
             topicNew = topic;
         } else {
-            topicNew = group + RocketmqProps.GROUP_SPLIT_MART + topic;
+            topicNew = group + OnsProps.GROUP_SPLIT_MART + topic;
         }
 
         observerManger.add(topicNew, level, group, topic, observer);
