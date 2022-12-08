@@ -11,7 +11,7 @@ class SolonBannerPrinter{
 											, "              /____/ \\____/ /_____/\\____/ /_/ |_/   "
 											, "                                                         ", };
 
-	private static final String SOLON_BOOT = " ~~ Solon ~~ ";
+	private static final String SOLON_STR = " ~~ Solon ~~ ";
 
 	private static final int STRAP_LINE_SIZE = 57;
 
@@ -27,12 +27,12 @@ class SolonBannerPrinter{
 	
 		
 		StringBuilder padding = new StringBuilder();
-		while (padding.length() < STRAP_LINE_SIZE - (version.length() + SOLON_BOOT.length())) {
+		while (padding.length() < STRAP_LINE_SIZE - (version.length() + SOLON_STR.length())) {
 			padding.append(" ");
 		}
 
 				
-		sb.append(SOLON_BOOT).append(padding.toString()).append(version).append("\r\n");;
+		sb.append(SOLON_STR).append(padding.toString()).append(version).append("\r\n");;
 		return sb.toString();
 	}
 
