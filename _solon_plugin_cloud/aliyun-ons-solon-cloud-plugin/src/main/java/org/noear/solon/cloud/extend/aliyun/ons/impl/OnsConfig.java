@@ -11,9 +11,9 @@ import java.util.Properties;
 
 /**
  * @author cgy
- * @since 1.11.3
+ * @since 1.11
  */
-public class RocketmqConfig {
+public class OnsConfig {
     /**
      * 生产组
      */
@@ -34,7 +34,7 @@ public class RocketmqConfig {
 
     private String messageModel;
 
-    public RocketmqConfig(CloudProps cloudProps) {
+    public OnsConfig(CloudProps cloudProps) {
         server = cloudProps.getEventServer();
         timeout = cloudProps.getEventPublishTimeout();
         producerGroup = cloudProps.getValue(RocketmqProps.PROP_EVENT_producerGroup);

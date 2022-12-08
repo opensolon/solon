@@ -11,14 +11,14 @@ import java.util.Map;
 
 /**
  * @author cgy
- * @since 1.11.3
+ * @since 1.11
  */
-public class RocketmqConsumer {
-    private RocketmqConfig cfg;
+public class OnsConsumer {
+    private OnsConfig cfg;
     private ConsumerBean consumer;
-    private RocketmqConsumerHandler handler;
+    private OnsConsumerHandler handler;
 
-    public RocketmqConsumer(RocketmqConfig config) {
+    public OnsConsumer(OnsConfig config) {
         cfg = config;
     }
 
@@ -31,7 +31,7 @@ public class RocketmqConsumer {
                 return;
             }
 
-            handler = new RocketmqConsumerHandler(cloudProps, observerManger);
+            handler = new OnsConsumerHandler(cloudProps, observerManger);
             consumer = new ConsumerBean();
             consumer.setProperties(cfg.getConsumerProperties());
 

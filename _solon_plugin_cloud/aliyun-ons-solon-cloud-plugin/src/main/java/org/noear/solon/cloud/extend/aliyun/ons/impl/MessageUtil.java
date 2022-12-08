@@ -8,7 +8,7 @@ import java.nio.charset.StandardCharsets;
 
 /**
  * @author cgy
- * @since 1.11.3
+ * @since 1.11
  */
 class MessageUtil {
     public static Message buildNewMessage(Event event, String topic) {

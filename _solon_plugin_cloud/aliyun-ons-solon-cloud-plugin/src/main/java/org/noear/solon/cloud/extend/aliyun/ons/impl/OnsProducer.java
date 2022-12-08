@@ -9,13 +9,13 @@ import org.noear.solon.cloud.model.Event;
 
 /**
  * @author cgy
- * @since 1.11.3
+ * @since 1.11
  */
-public class RocketmqProducer {
-    RocketmqConfig cfg;
+public class OnsProducer {
+    OnsConfig cfg;
     Producer producer;
 
-    public RocketmqProducer(RocketmqConfig config) {
+    public OnsProducer(OnsConfig config) {
         cfg = config;
     }
 

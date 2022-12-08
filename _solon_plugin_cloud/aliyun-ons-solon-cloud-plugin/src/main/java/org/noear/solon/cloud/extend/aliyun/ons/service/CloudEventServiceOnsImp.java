@@ -6,29 +6,29 @@ import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.annotation.EventLevel;
 import org.noear.solon.cloud.exception.CloudEventException;
 import org.noear.solon.cloud.extend.aliyun.ons.RocketmqProps;
-import org.noear.solon.cloud.extend.aliyun.ons.impl.RocketmqConfig;
-import org.noear.solon.cloud.extend.aliyun.ons.impl.RocketmqConsumer;
-import org.noear.solon.cloud.extend.aliyun.ons.impl.RocketmqProducer;
+import org.noear.solon.cloud.extend.aliyun.ons.impl.OnsConfig;
+import org.noear.solon.cloud.extend.aliyun.ons.impl.OnsConsumer;
+import org.noear.solon.cloud.extend.aliyun.ons.impl.OnsProducer;
 import org.noear.solon.cloud.model.Event;
 import org.noear.solon.cloud.service.CloudEventObserverManger;
 import org.noear.solon.cloud.service.CloudEventServicePlus;
 
 /**
- * @author noear
- * @since 1.2
+ * @author cgy
+ * @since 1.11
  */
-public class CloudEventServiceRocketmqImp implements CloudEventServicePlus {
+public class CloudEventServiceOnsImp implements CloudEventServicePlus {
     private CloudProps cloudProps;
-    private RocketmqProducer producer;
-    private RocketmqConsumer consumer;
+    private OnsProducer producer;
+    private OnsConsumer consumer;
 
-    public CloudEventServiceRocketmqImp(CloudProps cloudProps) {
+    public CloudEventServiceOnsImp(CloudProps cloudProps) {
         this.cloudProps = cloudProps;
 
-        RocketmqConfig config = new RocketmqConfig(cloudProps);
+        OnsConfig config = new OnsConfig(cloudProps);
 
-        producer = new RocketmqProducer(config);
-        consumer = new RocketmqConsumer(config);
+        producer = new OnsProducer(config);
+        consumer = new OnsConsumer(config);
     }
 
     @Override

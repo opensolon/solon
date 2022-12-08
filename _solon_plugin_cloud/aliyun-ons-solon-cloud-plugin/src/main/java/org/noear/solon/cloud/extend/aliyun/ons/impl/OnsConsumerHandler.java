@@ -17,15 +17,15 @@ import org.slf4j.LoggerFactory;
 
 /**
  * @author cgy
- * @since 1.11.3
+ * @since 1.11
  */
-public class RocketmqConsumerHandler implements MessageListener {
-    static Logger log = LoggerFactory.getLogger(RocketmqConsumerHandler.class);
+public class OnsConsumerHandler implements MessageListener {
+    static Logger log = LoggerFactory.getLogger(OnsConsumerHandler.class);
 
     CloudEventObserverManger observerManger;
     String eventChannelName;
 
-    public RocketmqConsumerHandler(CloudProps cloudProps, CloudEventObserverManger observerManger) {
+    public OnsConsumerHandler(CloudProps cloudProps, CloudEventObserverManger observerManger) {
         this.observerManger = observerManger;
         eventChannelName = cloudProps.getEventChannel();
     }
