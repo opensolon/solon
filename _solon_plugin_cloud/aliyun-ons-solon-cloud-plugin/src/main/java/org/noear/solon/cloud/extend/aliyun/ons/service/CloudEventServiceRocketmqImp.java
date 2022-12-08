@@ -1,14 +1,14 @@
-package org.noear.solon.cloud.extend.aliyun.rocketmq.service;
+package org.noear.solon.cloud.extend.aliyun.ons.service;
 
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudEventHandler;
 import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.annotation.EventLevel;
 import org.noear.solon.cloud.exception.CloudEventException;
-import org.noear.solon.cloud.extend.aliyun.rocketmq.RocketmqProps;
-import org.noear.solon.cloud.extend.aliyun.rocketmq.impl.RocketmqConfig;
-import org.noear.solon.cloud.extend.aliyun.rocketmq.impl.RocketmqConsumer;
-import org.noear.solon.cloud.extend.aliyun.rocketmq.impl.RocketmqProducer;
+import org.noear.solon.cloud.extend.aliyun.ons.RocketmqProps;
+import org.noear.solon.cloud.extend.aliyun.ons.impl.RocketmqConfig;
+import org.noear.solon.cloud.extend.aliyun.ons.impl.RocketmqConsumer;
+import org.noear.solon.cloud.extend.aliyun.ons.impl.RocketmqProducer;
 import org.noear.solon.cloud.model.Event;
 import org.noear.solon.cloud.service.CloudEventObserverManger;
 import org.noear.solon.cloud.service.CloudEventServicePlus;

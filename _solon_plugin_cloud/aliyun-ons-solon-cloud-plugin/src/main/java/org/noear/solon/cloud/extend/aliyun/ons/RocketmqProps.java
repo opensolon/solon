@@ -1,4 +1,4 @@
-package org.noear.solon.cloud.extend.aliyun.rocketmq;
+package org.noear.solon.cloud.extend.aliyun.ons;
 
 import org.noear.solon.cloud.CloudProps;
 

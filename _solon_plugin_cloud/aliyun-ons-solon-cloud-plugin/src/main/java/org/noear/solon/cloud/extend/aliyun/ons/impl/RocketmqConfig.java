@@ -1,11 +1,11 @@
-package org.noear.solon.cloud.extend.aliyun.rocketmq.impl;
+package org.noear.solon.cloud.extend.aliyun.ons.impl;
 
 import com.aliyun.openservices.ons.api.PropertyKeyConst;
 import com.aliyun.openservices.ons.api.PropertyValueConst;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudProps;
-import org.noear.solon.cloud.extend.aliyun.rocketmq.RocketmqProps;
+import org.noear.solon.cloud.extend.aliyun.ons.RocketmqProps;
 
 import java.util.Properties;
 

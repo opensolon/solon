@@ -10,7 +10,7 @@
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>aliyun-rocketmq-solon-cloud-plugin</artifactId>
+    <artifactId>aliyun-ons-solon-cloud-plugin</artifactId>
     <packaging>jar</packaging>
 
 

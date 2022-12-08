@@ -1,8 +1,8 @@
-package org.noear.solon.cloud.extend.aliyun.rocketmq;
+package org.noear.solon.cloud.extend.aliyun.ons;
 
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudManager;
-import org.noear.solon.cloud.extend.aliyun.rocketmq.service.CloudEventServiceRocketmqImp;
+import org.noear.solon.cloud.extend.aliyun.ons.service.CloudEventServiceRocketmqImp;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
 

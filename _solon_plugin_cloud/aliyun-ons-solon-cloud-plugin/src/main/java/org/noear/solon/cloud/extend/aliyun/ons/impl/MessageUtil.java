@@ -1,4 +1,4 @@
-package org.noear.solon.cloud.extend.aliyun.rocketmq.impl;
+package org.noear.solon.cloud.extend.aliyun.ons.impl;
 
 import com.aliyun.openservices.ons.api.Message;
 import org.noear.solon.Utils;
