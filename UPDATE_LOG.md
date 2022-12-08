@@ -13,7 +13,8 @@
 #### 1.11.4
 * 新增 elastic-job-solon-plugin 分布式定时任务 ???
 * 新增 file-s3-solon-plugin 插件 ???
-* 新增 solon.web.webdav 插件 ???
+* 新增 aliyun-ons-solon-cloud-plugin 插件 ???
+* 新增 solon.web.webdav 插件 !ok
 * 新增 solon.logging.simple 插件（替代 solon.logging.impl） !ok
 * 新增 solon.scheduling 插件 !ok
 * 新增 solon.scheduling.simple 插件（替代 solon.schedule；更标准化）!ok //要解决名字重复问题
@@ -33,8 +34,8 @@
 * 修复 servletContext 使用 cookieRemove() 移除 cookie 时，遗留空值 cookie 的问题!ok
 * 修复 调试模式下，静态文件会缓存的问题 !ok
 * 测试 nami 的使用 !ok
-* 升级 smart-http 为 1.1.18 !ok
-* 升级 wood 为 1.0.6 !ok
+* 升级 smart-http 为 1.1.19 !ok
+* 升级 wood 为 1.0.7 !ok
 
 #### 1.11.3
 * 新增 local-solon-cloud-plugin 插件
