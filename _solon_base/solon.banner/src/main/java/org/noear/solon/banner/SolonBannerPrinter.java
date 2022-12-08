@@ -2,6 +2,10 @@ package org.noear.solon.banner;
 
 import org.noear.solon.Solon;
 
+/**
+ * @author pmg1991
+ * @since 1.11
+ * */
 class SolonBannerPrinter{
 
 	private static final String[] BANNER = {  "              ____________________ ____________   __"
