@@ -16,7 +16,7 @@ public class OnsProps {
 
     public static final String PROP_EVENT_secretKey = "event.secretKey";
 
-    public static final String PROP_EVENT_MessageModel = "event.messageModel";
+    public static final String PROP_EVENT_messageModel = "event.messageModel";
 
 
     public static final CloudProps instance = new CloudProps("aliyun.ons");

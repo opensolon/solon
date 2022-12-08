@@ -36,7 +36,7 @@ public class OnsConfig {
         accessKey = cloudProps.getValue(OnsProps.PROP_EVENT_accessKey);
         secretKey = cloudProps.getValue(OnsProps.PROP_EVENT_secretKey);
 
-        messageModel = cloudProps.getValue(OnsProps.PROP_EVENT_MessageModel, PropertyValueConst.CLUSTERING);
+        messageModel = cloudProps.getValue(OnsProps.PROP_EVENT_messageModel, PropertyValueConst.CLUSTERING);
 
         if (Utils.isEmpty(producerGroup)) {
             producerGroup = "DEFAULT";
