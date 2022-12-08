@@ -98,14 +98,16 @@ public final class XPluginImp implements Plugin {
 
         host.setDirectoryIndex(null);
 
-        host.addContext("/", _handler,
-                MethodType.HEAD.name,
-                MethodType.GET.name,
-                MethodType.POST.name,
-                MethodType.PUT.name,
-                MethodType.DELETE.name,
-                MethodType.PATCH.name,
-                MethodType.OPTIONS.name);
+        host.addContext("/", _handler,"*");
+
+
+//        MethodType.HEAD.name,
+//                MethodType.GET.name,
+//                MethodType.POST.name,
+//                MethodType.PUT.name,
+//                MethodType.DELETE.name,
+//                MethodType.PATCH.name,
+//                MethodType.OPTIONS.name
 
         LogUtil.global().info("Server:main: JlHttpServer 2.6(jlhttp)");
         

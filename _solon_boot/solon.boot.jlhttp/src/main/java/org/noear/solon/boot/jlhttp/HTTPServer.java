@@ -2240,25 +2240,40 @@ public class HTTPServer {
      * @throws IOException if and error occurs
      */
     protected void handleMethod(Request req, Response resp) throws IOException {
+        //todo: 去掉 methods 相关的限制 by noear,2022-12-08
         String method = req.getMethod();
-        Map<String, ContextHandler> handlers = req.getContext().getHandlers();
-        // RFC 2616#5.1.1 - GET and HEAD must be supported
-        if (method.equals("GET") || handlers.containsKey(method)) {
+
+        if (method.equals("TRACE")) { // default TRACE handler
+            handleTrace(req, resp);
+        }else {
             serve(req, resp); // method is handled by context handler (or 404)
-        } else if (method.equals("HEAD")) { // default HEAD handler
+        }
+
+        //todo: 这段代码，没机会进入了 by noear,2022-12-08
+        /*
+        // RFC 2616#5.1.1 - GET and HEAD must be supported
+        if (method.equals("HEAD")) { // default HEAD handler
             req.method = "GET"; // identical to a GET
             resp.setDiscardBody(true); // process normally but discard body
             serve(req, resp);
         } else if (method.equals("TRACE")) { // default TRACE handler
             handleTrace(req, resp);
         } else {
-            Set<String> methods = new LinkedHashSet<String>();
-            methods.addAll(Arrays.asList("GET", "HEAD", "TRACE", "OPTIONS")); // built-in methods
+
+
+
             // "*" is a special server-wide (no-context) request supported by OPTIONS
-            boolean isServerOptions = req.getPath().equals("*") && method.equals("OPTIONS");
-            methods.addAll(isServerOptions ? req.getVirtualHost().getMethods() : handlers.keySet());
-            resp.getHeaders().add("Allow", join(", ", methods));
-            if (method.equals("OPTIONS")) { // default OPTIONS handler
+            boolean isOptions = method.equals("OPTIONS");
+
+            if(isOptions) {
+                Set<String> methods = new LinkedHashSet<String>();
+                methods.addAll(Arrays.asList("GET", "HEAD", "TRACE", "OPTIONS")); // built-in methods
+                Map<String, ContextHandler> handlers = req.getContext().getHandlers();
+                methods.addAll(isOptions ? req.getVirtualHost().getMethods() : handlers.keySet());
+                resp.getHeaders().add("Allow", join(", ", methods));
+            }
+
+            if (isOptions) { // default OPTIONS handler
                 resp.getHeaders().add("Content-Length", "0"); // RFC2616#9.2
                 resp.sendHeaders(200);
             } else if (req.getVirtualHost().getMethods().contains(method)) {
@@ -2267,6 +2282,7 @@ public class HTTPServer {
                 resp.sendError(501); // unsupported method
             }
         }
+        */
     }
 
     /**
@@ -2295,15 +2311,18 @@ public class HTTPServer {
      */
     protected void serve(Request req, Response resp) throws IOException {
         // get context handler to handle request
-        ContextHandler handler = req.getContext().getHandlers().get(req.getMethod());
+        ContextHandler handler = req.getContext().getHandlers().get("*");
         if (handler == null) {
             resp.sendError(404);
             return;
         }
         // serve request
-        int status = 404;
+        int status = handler.serve(req, resp);
+
+        //todo: 不支持目录首页 by noear,2022-12-08
+
         // add directory index if necessary
-        String path = req.getPath();
+        /*String path = req.getPath();
         if (path.endsWith("/")) {
             String index = req.getVirtualHost().getDirectoryIndex();
             if (index != null) {
@@ -2313,7 +2332,8 @@ public class HTTPServer {
             }
         }
         if (status == 404)
-            status = handler.serve(req, resp);
+            status = handler.serve(req, resp);*/
+
         if (status > 0)
             resp.sendError(status);
     }

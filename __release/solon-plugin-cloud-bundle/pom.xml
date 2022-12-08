@@ -37,6 +37,7 @@
         <module>../../_solon_plugin_cloud/rocketmq5-solon-cloud-plugin</module>
         <module>../../_solon_plugin_cloud/mqtt-solon-cloud-plugin</module>
         <module>../../_solon_plugin_cloud/kafka-solon-cloud-plugin</module>
+        <module>../../_solon_plugin_cloud/aliyun-rocketmq-solon-cloud-plugin</module>
 
 
         <module>../../_solon_plugin_cloud/guava-solon-cloud-plugin</module>
