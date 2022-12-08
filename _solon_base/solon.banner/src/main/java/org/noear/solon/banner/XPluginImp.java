@@ -14,7 +14,7 @@ import org.noear.solon.core.util.LogUtil;
  * */
 public class XPluginImp implements Plugin {
 	@Override
-	public void init() throws Throwable {
+	public void start(AopContext context) throws Throwable {
 		boolean enable = Solon.cfg().getBool("solon.banner.enable", true);
 
 		if (enable) {
@@ -48,10 +48,5 @@ public class XPluginImp implements Plugin {
 
 			}
 		}
-	}
-
-	@Override
-	public void start(AopContext context) throws Throwable {
-
 	}
 }
