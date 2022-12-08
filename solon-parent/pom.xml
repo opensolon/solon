@@ -995,6 +995,12 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>polaris-solon-cloud-plugin</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>water-solon-cloud-plugin</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
@@ -1026,6 +1032,18 @@
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>rocketmq-solon-cloud-plugin</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>rocketmq5-solon-cloud-plugin</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>aliyun-ons-solon-cloud-plugin</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
 
