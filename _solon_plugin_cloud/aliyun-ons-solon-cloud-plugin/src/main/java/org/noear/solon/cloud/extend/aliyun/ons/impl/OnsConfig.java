@@ -14,14 +14,7 @@ import java.util.Properties;
  * @since 1.11
  */
 public class OnsConfig {
-    /**
-     * 生产组
-     */
     private String producerGroup;
-
-    /**
-     * 消费组
-     */
     private String consumerGroup;
 
     private String server;
@@ -29,7 +22,6 @@ public class OnsConfig {
     private long timeout;
 
     private String accessKey;
-
     private String secretKey;
 
     private String messageModel;
@@ -37,11 +29,15 @@ public class OnsConfig {
     public OnsConfig(CloudProps cloudProps) {
         server = cloudProps.getEventServer();
         timeout = cloudProps.getEventPublishTimeout();
+
         producerGroup = cloudProps.getValue(OnsProps.PROP_EVENT_producerGroup);
         consumerGroup = cloudProps.getValue(OnsProps.PROP_EVENT_consumerGroup);
+
         accessKey = cloudProps.getValue(OnsProps.PROP_EVENT_accessKey);
         secretKey = cloudProps.getValue(OnsProps.PROP_EVENT_secretKey);
+
         messageModel = cloudProps.getValue(OnsProps.PROP_EVENT_MessageModel, PropertyValueConst.CLUSTERING);
+
         if (Utils.isEmpty(producerGroup)) {
             producerGroup = "DEFAULT";
         }
@@ -67,8 +63,14 @@ public class OnsConfig {
 
     public Properties getProperties() {
         Properties properties = new Properties();
-        properties.put(PropertyKeyConst.AccessKey, accessKey);
-        properties.put(PropertyKeyConst.SecretKey, secretKey);
+
+        if (Utils.isNotEmpty(accessKey)) {
+            properties.put(PropertyKeyConst.AccessKey, accessKey);
+        }
+        if (Utils.isNotEmpty(secretKey)) {
+            properties.put(PropertyKeyConst.SecretKey, secretKey);
+        }
+
         properties.put(PropertyKeyConst.NAMESRV_ADDR, server);
         return properties;
     }
