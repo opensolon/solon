@@ -17,7 +17,7 @@ solon.banner.enable: true
 #Where to print the banner , values console/log/both
 solon.banner.mode: "console"
 #Path to banner resource file
-solon.banner.path: "/static/banner.txt"
+solon.banner.path: "banner.txt"
 
 ```
 

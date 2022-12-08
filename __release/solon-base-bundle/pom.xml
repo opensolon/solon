@@ -20,6 +20,8 @@
         <module>../../_solon_base/solon.vault</module>
         <module>../../_solon_base/solon.config.yaml</module>
 
+        <module>../../_solon_base/solon.banner</module>
+
         <module>../../_solon_base/solon.data</module>
         <module>../../_solon_base/solon.data.dynamicds</module>
         <module>../../_solon_base/solon.auth</module>
