@@ -27,10 +27,13 @@ public interface StaticRepository {
      */
     default void preheat(String relativePath, boolean useCaches) throws Exception {
         URL url = find(relativePath);
-        URLConnection connection = url.openConnection();
-        connection.setUseCaches(useCaches);
-        try (InputStream stream = connection.getInputStream()) {
-            Utils.transferToString(stream);
+
+        if (url != null) {
+            URLConnection connection = url.openConnection();
+            connection.setUseCaches(useCaches);
+            try (InputStream stream = connection.getInputStream()) {
+                Utils.transferToString(stream);
+            }
         }
     }
 }
