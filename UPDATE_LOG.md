@@ -22,7 +22,8 @@
 * 新增 quartz-solon-cloud-plugin 插件 !ok
 * 插件 quartz-solon-plugin 增加函数执行支持，增加持久化和远程管理支持（代码微调整）!ok
 * 插件 local-solon-cloud-plugin 添加 server 配置支持（只能指向本地） !ok
-* 插件 solon.web.staticfiles 插件，允许 maxAge=-1 配置（从而取消 URLConnection 的缓存）!ok
+* 插件 solon.web.staticfiles 允许 maxAge=-1 配置（从而取消 URLConnection 的缓存）!ok
+* 插件 solon.web.staticfiles 增加资源仓库预热支持
 * 插件 solon.schedule 插件，调整自动任务名字处理，避免重复 //要解决名字重复问题 ???
 * 插件 solon.boot.jlhttp 调整server代码，不再限制 method !ok
 * 插件 solon.boot 调整 coreTheads,maxTheads 配置，支持部数模式 x16（表示cpu核数的16倍）!ok
