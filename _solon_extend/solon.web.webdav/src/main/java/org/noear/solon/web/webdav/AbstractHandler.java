@@ -231,7 +231,8 @@ public abstract class AbstractHandler implements Handler {
     }
 
     private int handleUnlock(Context ctx) {
-        String token = StrUtil.subBetween(ctx.header("Lock-Token"), "<", ">");
+        //todo: 说是无用删掉，by noear 2022-12
+        //String token = StrUtil.subBetween(ctx.header("Lock-Token"), "<", ">");
         return 204;
     }
 
