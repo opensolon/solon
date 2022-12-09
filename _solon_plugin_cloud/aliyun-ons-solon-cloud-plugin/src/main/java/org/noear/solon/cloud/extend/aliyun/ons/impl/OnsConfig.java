@@ -65,7 +65,9 @@ public class OnsConfig {
         consumer.put(PropertyKeyConst.GROUP_ID, consumerGroup);
         //只能是集群模式
         consumer.put(PropertyKeyConst.MessageModel, PropertyValueConst.CLUSTERING);
+        //实例的消费线程数
         consumer.put(PropertyKeyConst.ConsumeThreadNums, consumeThreadNums);
+        //设置消息消费失败的最大重试次数
         consumer.put(PropertyKeyConst.MaxReconsumeTimes, maxReconsumeTimes);
         return consumer;
     }
