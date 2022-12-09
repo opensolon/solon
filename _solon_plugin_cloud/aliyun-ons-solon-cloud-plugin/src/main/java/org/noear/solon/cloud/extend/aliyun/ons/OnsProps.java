@@ -12,10 +12,6 @@ public class OnsProps {
     public static final String PROP_EVENT_consumerGroup = "event.consumerGroup";
     public static final String PROP_EVENT_producerGroup = "event.producerGroup";
 
-    public static final String PROP_EVENT_accessKey = "event.accessKey";
-
-    public static final String PROP_EVENT_secretKey = "event.secretKey";
-
     public static final String PROP_EVENT_messageModel = "event.messageModel";
 
     public static final String PROP_EVENT_sendMsgTimeoutMillis = "event.sendMsgTimeoutMillis";

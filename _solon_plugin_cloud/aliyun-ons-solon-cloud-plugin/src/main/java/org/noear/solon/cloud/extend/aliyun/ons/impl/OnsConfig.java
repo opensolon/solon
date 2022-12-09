@@ -32,6 +32,9 @@ public class OnsConfig {
 
     public OnsConfig(CloudProps cloudProps) {
         server = cloudProps.getEventServer();
+        accessKey = cloudProps.getEventAccessKey();
+        secretKey = cloudProps.getEventSecretKey();
+
         timeout = Integer.valueOf(cloudProps.getValue(OnsProps.PROP_EVENT_sendMsgTimeoutMillis, "3000"));
 
         consumeThreadNums = Integer.valueOf(cloudProps.getValue(OnsProps.PROP_EVENT_consumeThreadNums, "20"));
@@ -40,15 +43,12 @@ public class OnsConfig {
         producerGroup = cloudProps.getValue(OnsProps.PROP_EVENT_producerGroup);
         consumerGroup = cloudProps.getValue(OnsProps.PROP_EVENT_consumerGroup);
 
-        accessKey = cloudProps.getValue(OnsProps.PROP_EVENT_accessKey);
-        secretKey = cloudProps.getValue(OnsProps.PROP_EVENT_secretKey);
-
         messageModel = cloudProps.getValue(OnsProps.PROP_EVENT_messageModel, PropertyValueConst.CLUSTERING);
-
 
         if (Utils.isEmpty(producerGroup)) {
             producerGroup = "DEFAULT";
         }
+
         if (Utils.isEmpty(consumerGroup)) {
             consumerGroup = Solon.cfg().appGroup() + "_" + Solon.cfg().appName();
         }
