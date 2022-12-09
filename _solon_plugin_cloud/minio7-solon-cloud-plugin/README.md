@@ -21,16 +21,14 @@ Author noear，iYarnFog
 ## ⚙️ 配置
 
 ```yaml
-solon:
-  cloud:
-    minio:
-      file:
-        enable: true                  #是否启用（默认：启用）
-        endpoint: 'https://play.min.io'
-        regionId: 'us-west-1'
-        bucket: 'asiatrip'
-        accessKey: 'Q3AM3UQ867SPQQA43P2F'
-        secretKey: 'zuf+tfteSlswRu7BJ86wekitnifILbZam1KYY3TG'
+solon.cloud.minio:
+  accessKey: 'Q3AM3UQ***'
+  secretKey: 'zuf+tfteSlswRu7BJ86w***'
+  file:
+    enable: true                  #是否启用（默认：启用）
+    endpoint: 'https://play.min.io'
+    regionId: 'us-west-1'
+    bucket: 'asiatrip'
 ```
 
 ## 🔨 示例

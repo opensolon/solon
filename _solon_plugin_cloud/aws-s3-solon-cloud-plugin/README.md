@@ -3,10 +3,10 @@
 
 ```yaml
 solon.cloud.aws.s3:
+  accessKey: "ak..."
+  secretKey: "sk..."
   file:
     enable: true                  #是否启用（默认：启用）
     bucket: "demo.bucket"
     regionId: "ap-southeast-1"
-    accessKey: "ak..."
-    secretKey: "sk..."
 ```

@@ -10,9 +10,10 @@ solon.app:
 
 solon.cloud.aliyun.ons:
   server: http://MQ_IN**************.mq.cn-qingdao.aliyuncs.com:80   #TCP地址
+  accessKey: LTAI5t6tC2**********
+  secretKey: MLaRt1yTRdfzt2***********
   event:
-    accessKey: LTAI5t6tC2**********
-    secretKey: MLaRt1yTRdfzt2***********
+    enable: true                  #是否启用（默认：启用）
     producerGroup: GID_TEST
     consumerGroup: GID_TEST
     sendMsgTimeoutMillis: 5000     #默认：3000 消息发送的超时时间/毫秒
