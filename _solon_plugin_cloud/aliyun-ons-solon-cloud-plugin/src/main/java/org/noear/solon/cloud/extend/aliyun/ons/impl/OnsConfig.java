@@ -63,6 +63,7 @@ public class OnsConfig {
     public Properties getConsumerProperties() {
         Properties consumer = getProperties();
         consumer.put(PropertyKeyConst.GROUP_ID, consumerGroup);
+        //只能是集群模式
         consumer.put(PropertyKeyConst.MessageModel, PropertyValueConst.CLUSTERING);
         consumer.put(PropertyKeyConst.ConsumeThreadNums, consumeThreadNums);
         consumer.put(PropertyKeyConst.MaxReconsumeTimes, maxReconsumeTimes);

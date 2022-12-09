@@ -16,7 +16,7 @@ solon.cloud.aliyun.ons:
     enable: true                  #是否启用（默认：启用）
     producerGroup: GID_TEST
     consumerGroup: GID_TEST
-    publishTimeout: 3000     #默认 3000 消息发送的超时时间/毫秒
+    publishTimeout: 3000     #默认 3000 事件发布超时/毫秒
     consumeThreadNums: 20    #默认 20 实例的消费线程数
     maxReconsumeTimes: 16    #默认 16 设置消息消费失败的最大重试次数
 
