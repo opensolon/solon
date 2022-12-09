@@ -24,10 +24,11 @@ public class OnsConfig {
     private String accessKey;
     private String secretKey;
 
-    private String messageModel;
 
+    //默认20 实例的消费线程数
     private Integer consumeThreadNums;
 
+    //默认16 设置消息消费失败的最大重试次数
     private Integer maxReconsumeTimes;
 
     public OnsConfig(CloudProps cloudProps) {
@@ -35,15 +36,13 @@ public class OnsConfig {
         accessKey = cloudProps.getEventAccessKey();
         secretKey = cloudProps.getEventSecretKey();
 
-        timeout = Integer.valueOf(cloudProps.getValue(OnsProps.PROP_EVENT_sendMsgTimeoutMillis, "3000"));
+        timeout = cloudProps.getEventPublishTimeout();
 
         consumeThreadNums = Integer.valueOf(cloudProps.getValue(OnsProps.PROP_EVENT_consumeThreadNums, "20"));
         maxReconsumeTimes = Integer.valueOf(cloudProps.getValue(OnsProps.PROP_EVENT_maxReconsumeTimes, "16"));
 
         producerGroup = cloudProps.getValue(OnsProps.PROP_EVENT_producerGroup);
         consumerGroup = cloudProps.getValue(OnsProps.PROP_EVENT_consumerGroup);
-
-        messageModel = cloudProps.getValue(OnsProps.PROP_EVENT_messageModel, PropertyValueConst.CLUSTERING);
 
         if (Utils.isEmpty(producerGroup)) {
             producerGroup = "DEFAULT";
@@ -64,7 +63,7 @@ public class OnsConfig {
     public Properties getConsumerProperties() {
         Properties consumer = getProperties();
         consumer.put(PropertyKeyConst.GROUP_ID, consumerGroup);
-        consumer.put(PropertyKeyConst.MessageModel, messageModel);
+        consumer.put(PropertyKeyConst.MessageModel, PropertyValueConst.CLUSTERING);
         consumer.put(PropertyKeyConst.ConsumeThreadNums, consumeThreadNums);
         consumer.put(PropertyKeyConst.MaxReconsumeTimes, maxReconsumeTimes);
         return consumer;

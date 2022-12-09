@@ -294,7 +294,11 @@ public class CloudProps {
     }
 
     public long getEventPublishTimeout() {
-        return Solon.cfg().getLong(EVENT_PUBLISH_TIMEOUT, 0L);
+        return getEventPublishTimeout(3000L);
+    }
+
+    public long getEventPublishTimeout(long def) {
+        return Solon.cfg().getLong(EVENT_PUBLISH_TIMEOUT, def);
     }
 
     public String getEventChannel() {
