@@ -22,6 +22,8 @@ public class CloudProps {
     private String USERNAME = "solon.cloud.@@.username";
     private String PASSWORD = "solon.cloud.@@.password";
     private String ALARM = "solon.cloud.@@.alarm";
+    private String ACCESS_KEY = "solon.cloud.@@.accessKey";
+    private String SECRET_KEY = "solon.cloud.@@.secretKey";
 
     //配置服务相关
     private String CONFIG_ENABLE = "solon.cloud.@@.config.enable";
@@ -53,6 +55,8 @@ public class CloudProps {
     private String EVENT_CONSUMER = "solon.cloud.@@.event.consumer"; //配置组
     private String EVENT_PRODUCER = "solon.cloud.@@.event.producer"; //配置组
     private String EVENT_CLIENT = "solon.cloud.@@.event.client"; //配置组
+    private String EVENT_ACCESS_KEY = "solon.cloud.@@.event.accessKey";
+    private String EVENT_SECRET_KEY = "solon.cloud.@@.event.secretKey";
 
 
     //锁服务相关
@@ -107,6 +111,9 @@ public class CloudProps {
         USERNAME = USERNAME.replace("@@", frame);
         PASSWORD = PASSWORD.replace("@@", frame);
         ALARM = ALARM.replace("@@", frame);
+        ACCESS_KEY = ACCESS_KEY.replace("@@", frame);
+        SECRET_KEY = SECRET_KEY.replace("@@", frame);
+
 
         CONFIG_ENABLE = CONFIG_ENABLE.replace("@@", frame);
         CONFIG_SERVER = CONFIG_SERVER.replace("@@", frame);
@@ -134,6 +141,8 @@ public class CloudProps {
         EVENT_CONSUMER = EVENT_CONSUMER.replace("@@", frame);
         EVENT_PRODUCER = EVENT_PRODUCER.replace("@@", frame);
         EVENT_CLIENT = EVENT_CLIENT.replace("@@", frame);
+        EVENT_ACCESS_KEY = EVENT_ACCESS_KEY.replace("@@", frame);
+        EVENT_SECRET_KEY = EVENT_SECRET_KEY.replace("@@", frame);
 
         LOCK_ENABLE = LOCK_ENABLE.replace("@@", frame);
 
@@ -186,6 +195,14 @@ public class CloudProps {
 
     public String getAlarm() {
         return Solon.cfg().get(ALARM);
+    }
+
+    public String getAccessKey() {
+        return Solon.cfg().get(ACCESS_KEY);
+    }
+
+    public String getSecretKey() {
+        return Solon.cfg().get(SECRET_KEY);
     }
 
     //
@@ -304,6 +321,26 @@ public class CloudProps {
         return Solon.cfg().getProp(EVENT_CLIENT);
     }
 
+    public String getEventAccessKey() {
+        String tmp = Solon.cfg().get(EVENT_ACCESS_KEY);
+
+        if (Utils.isEmpty(tmp)) {
+            return getAccessKey();
+        } else {
+            return tmp;
+        }
+    }
+
+    public String getEventSecretKey() {
+        String tmp = Solon.cfg().get(EVENT_SECRET_KEY);
+
+        if (Utils.isEmpty(tmp)) {
+            return getSecretKey();
+        } else {
+            return tmp;
+        }
+    }
+
     //
     //锁服务相关
     //
@@ -382,11 +419,23 @@ public class CloudProps {
     }
 
     public String getFileAccessKey() {
-        return Solon.cfg().get(FILE_ACCESS_KEY);
+        String tmp = Solon.cfg().get(FILE_ACCESS_KEY);
+
+        if (Utils.isEmpty(tmp)) {
+            return getAccessKey();
+        } else {
+            return tmp;
+        }
     }
 
     public String getFileSecretKey() {
-        return Solon.cfg().get(FILE_SECRET_KEY);
+        String tmp = Solon.cfg().get(FILE_SECRET_KEY);
+
+        if (Utils.isEmpty(tmp)) {
+            return getSecretKey();
+        } else {
+            return tmp;
+        }
     }
 
     //
