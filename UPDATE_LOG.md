@@ -13,33 +13,33 @@
 #### 1.11.5
 * 新增 elastic-job-solon-plugin 分布式定时任务 ???
 * 新增 file-s3-solon-plugin 插件 ???
-* 新增 aliyun-ons-solon-cloud-plugin 插件 !ok
+* 新增 aliyun-ons-solon-cloud-plugin 插件 
 
 #### 1.11.4
-* 新增 solon.web.webdav 插件 !ok
-* 新增 solon.logging.simple 插件（替代 solon.logging.impl） !ok
-* 新增 solon.scheduling 插件 !ok
-* 新增 solon.scheduling.simple 插件（替代 solon.schedule；更标准化）!ok //要解决名字重复问题
-* 新增 solon.scheduling.quartz 插件（替代 quartz-solon-plugin；更标准化）!ok
-* 新增 quartz-solon-cloud-plugin 插件 !ok
-* 插件 quartz-solon-plugin 增加函数执行支持，增加持久化和远程管理支持（代码微调整）!ok
-* 插件 local-solon-cloud-plugin 添加 server 配置支持（只能指向本地） !ok
-* 插件 solon.web.staticfiles 允许 maxAge=-1 配置（从而取消 URLConnection 的缓存）!ok
+* 新增 solon.web.webdav 插件 
+* 新增 solon.logging.simple 插件（替代 solon.logging.impl） 
+* 新增 solon.scheduling 插件 
+* 新增 solon.scheduling.simple 插件（替代 solon.schedule；更标准化） //要解决名字重复问题
+* 新增 solon.scheduling.quartz 插件（替代 quartz-solon-plugin；更标准化）
+* 新增 quartz-solon-cloud-plugin 插件 
+* 插件 quartz-solon-plugin 增加函数执行支持，增加持久化和远程管理支持（代码微调整）
+* 插件 local-solon-cloud-plugin 添加 server 配置支持（只能指向本地） 
+* 插件 solon.web.staticfiles 允许 maxAge=-1 配置（从而取消 URLConnection 的缓存）
 * 插件 solon.web.staticfiles 增加资源仓库预热支持
 * 插件 solon.schedule 插件，调整自动任务名字处理，避免重复 //要解决名字重复问题 ???
-* 插件 solon.boot.jlhttp 调整server代码，不再限制 method !ok
-* 插件 solon.boot 调整 coreTheads,maxTheads 配置，支持部数模式 x16（表示cpu核数的16倍）!ok
-* 增加 enableWebSocketMvc，enableSocketMvc 开关控制 !ok
-* 增加 mybatis-solon-plugin 插件对 Mappers 有无的检查并提示 !ok
-* 增加 DownloadedFile,UploadedFile 获取属性，原字段标为弃用（后面会改为私有）!ok
-* 调整 solon.cache.* 插件，开放 CacheService 内部的 client !ok 
-* 调整 ctx.body() 优先采用 request content-type 上的编码 !ok
-* 修复 servletContext 使用 cookieRemove() 移除 cookie 时，遗留空值 cookie 的问题!ok
-* 修复 调试模式下，静态文件会缓存的问题 !ok
-* 测试 nami 做为注解式 http 客户端的使用 !ok
-* 升级 smart-http 为 1.1.19 !ok
-* 升级 wood 为 1.0.7 !ok
-* 升级 sqltoy 为 5.2.25 !ok
+* 插件 solon.boot.jlhttp 调整server代码，不再限制 method 
+* 插件 solon.boot 调整 coreTheads,maxTheads 配置，支持部数模式 x16（表示cpu核数的16倍）
+* 增加 enableWebSocketMvc，enableSocketMvc 开关控制 
+* 增加 mybatis-solon-plugin 插件对 Mappers 有无的检查并提示 
+* 增加 DownloadedFile,UploadedFile 获取属性，原字段标为弃用（后面会改为私有）
+* 调整 solon.cache.* 插件，开放 CacheService 内部的 client  
+* 调整 ctx.body() 优先采用 request content-type 上的编码 
+* 修复 servletContext 使用 cookieRemove() 移除 cookie 时，遗留空值 cookie 的问题
+* 修复 调试模式下，静态文件会缓存的问题 
+* 测试 nami 做为注解式 http 客户端的使用 
+* 升级 smart-http 为 1.1.19 
+* 升级 wood 为 1.0.7 
+* 升级 sqltoy 为 5.2.25 
 
 #### 1.11.3
 * 新增 local-solon-cloud-plugin 插件
