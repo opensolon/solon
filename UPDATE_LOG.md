@@ -10,10 +10,12 @@
 * 增加 更多友好的异常分类???
 * 增加 便利的原生编译机制
 
-#### 1.11.4
+#### 1.11.5
 * 新增 elastic-job-solon-plugin 分布式定时任务 ???
 * 新增 file-s3-solon-plugin 插件 ???
-* 新增 aliyun-ons-solon-cloud-plugin 插件 ???
+
+#### 1.11.4
+* 新增 aliyun-ons-solon-cloud-plugin 插件 !ok
 * 新增 solon.web.webdav 插件 !ok
 * 新增 solon.logging.simple 插件（替代 solon.logging.impl） !ok
 * 新增 solon.scheduling 插件 !ok
