@@ -139,7 +139,7 @@ public final class SolonProps extends Props {
         //是否为调试模式
         isSetupMode = "1".equals(getArg("setup")); //安装模式
         //是否为白名单模式
-        isWhiteMode = "1".equals(getArg("white")); //安全模式（即白名单模式）//todo:默认不再为1, update by 2021.11.4-M49
+        isWhiteMode = "1".equals(getArg("white")); //安全模式（即白名单模式）//todo:默认不再为1, update by 2021.11.49
         //是否为漂移模式
         isDriftMode = "1".equals(getArg("drift")); //漂移模式（即ip会变,如k8s部署）
         //是否为独立模式
@@ -438,7 +438,7 @@ public final class SolonProps extends Props {
      * 框架版本号
      */
     public String version() {
-        return "1.11.4-M4";
+        return "1.11.4";
     }
 
     /**
