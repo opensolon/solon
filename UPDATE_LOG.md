@@ -10,10 +10,11 @@
 * 增加 更多友好的异常分类???
 * 增加 便利的原生编译机制
 
-#### 1.11.5
+#### 1.12.0
 * 新增 elastic-job-solon-plugin 分布式定时任务 ???
 * 新增 file-s3-solon-plugin 插件 ???
-* 新增 aliyun-ons-solon-cloud-plugin 插件 
+* 新增 aliyun-ons-solon-cloud-plugin 插件 ???
+* 增加 rocketmq tag 过滤支持
 
 #### 1.11.4
 * 新增 solon.web.webdav 插件 
