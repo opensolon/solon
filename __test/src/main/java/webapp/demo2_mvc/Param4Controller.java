@@ -3,10 +3,7 @@ package webapp.demo2_mvc;
 import org.noear.solon.annotation.*;
 import org.noear.solon.core.handle.Context;
 import webapp.dso.AsyncTask;
-import webapp.models.RegisterUsername;
-import webapp.models.UserD;
-import webapp.models.UserModel;
-import webapp.models.UserModelEx;
+import webapp.models.*;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -84,6 +81,12 @@ public class Param4Controller {
     public RegisterUsername test_body2(RegisterUsername user) throws IOException {
         asyncTask.test();
         return user;
+    }
+
+    @Mapping("body2_t")
+    public Object test_body2_t(PageRequest<UserModel> request) throws IOException {
+        UserModel userModel = request.getData();
+        return request;
     }
 
     @Mapping("test")

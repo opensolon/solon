@@ -197,6 +197,19 @@ public class HttpParam4Test extends HttpTestBase {
     }
 
     @Test
+    public void body2_t() throws IOException {
+        String body = "{page:1,pageSize:3,data:{id:5,name:'noear'}}";
+
+        System.out.println(body);
+        String body2 = path("/demo2/param4/body2_t").bodyJson(body).post();
+        ONode oNode = ONode.loadStr(body2);
+
+
+        assert oNode.get("page").getInt() == 1;
+        assert oNode.get("data").get("id").getInt() == 5;
+    }
+
+    @Test
     public void test() throws IOException {
         String body = "hello";
 
