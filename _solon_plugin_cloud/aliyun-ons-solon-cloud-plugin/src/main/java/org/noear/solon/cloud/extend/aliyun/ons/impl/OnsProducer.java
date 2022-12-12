@@ -15,11 +15,11 @@ import org.slf4j.LoggerFactory;
 public class OnsProducer {
     static Logger log = LoggerFactory.getLogger(OnsProducer.class);
 
-    OnsConfig cfg;
+    OnsConfig config;
     Producer producer;
 
     public OnsProducer(OnsConfig config) {
-        cfg = config;
+        this.config = config;
     }
 
     private void init() {
@@ -30,7 +30,7 @@ public class OnsProducer {
             if (producer != null) {
                 return;
             }
-            producer = ONSFactory.createProducer(cfg.getProducerProperties());
+            producer = ONSFactory.createProducer(config.getProducerProperties());
             producer.start();
 
             log.debug("Ons producer started: " + producer.isStarted());

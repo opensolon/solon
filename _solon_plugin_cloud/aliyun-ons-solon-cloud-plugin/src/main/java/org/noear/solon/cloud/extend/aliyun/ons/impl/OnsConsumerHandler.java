@@ -6,7 +6,6 @@ import com.aliyun.openservices.ons.api.Message;
 import com.aliyun.openservices.ons.api.MessageListener;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudEventHandler;
-import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.extend.aliyun.ons.OnsProps;
 import org.noear.solon.cloud.model.Event;
 import org.noear.solon.cloud.service.CloudEventObserverManger;
@@ -23,14 +22,12 @@ public class OnsConsumerHandler implements MessageListener {
     static Logger log = LoggerFactory.getLogger(OnsConsumerHandler.class);
 
     CloudEventObserverManger observerManger;
-    String eventChannelName;
 
-    OnsConfig onsConfig;
+    OnsConfig config;
 
-    public OnsConsumerHandler(OnsConfig onsConfig, CloudProps cloudProps, CloudEventObserverManger observerManger) {
+    public OnsConsumerHandler(OnsConfig config, CloudEventObserverManger observerManger) {
         this.observerManger = observerManger;
-        this.onsConfig = onsConfig;
-        eventChannelName = cloudProps.getEventChannel();
+        this.config = config;
     }
 
     @Override
@@ -51,10 +48,11 @@ public class OnsConsumerHandler implements MessageListener {
             }
 
             Event event = new Event(topic, new String(message.getBody()));
+            event.key(message.getKey());
             event.tags(message.getTag());
-            event.key(String.join(",", message.getKey()));
             event.times(message.getReconsumeTimes());
-            event.channel(eventChannelName);
+            event.channel(config.getChannelName());
+
             if (Utils.isNotEmpty(group)) {
                 event.group(group);
             }
@@ -79,7 +77,16 @@ public class OnsConsumerHandler implements MessageListener {
         boolean isOk = true;
         CloudEventHandler handler = null;
 
-        handler = observerManger.getByTopic(topicNew);
+        if (Utils.isEmpty(event.tags())) {
+            handler = observerManger.getByTopicAndTag(topicNew, "*");
+        } else {
+            handler = observerManger.getByTopicAndTag(topicNew, event.tags());
+
+            if (handler == null) {
+                handler = observerManger.getByTopicAndTag(topicNew, "*");
+            }
+        }
+
         if (handler != null) {
             isOk = handler.handle(event);
         } else {

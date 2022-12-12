@@ -23,7 +23,6 @@ class MessageUtil {
                 event.tags(),
                 event.key(),
                 event.content().getBytes(StandardCharsets.UTF_8));
-        message.setKey(event.key());
 
         if (event.scheduled() != null) {
             long delayTimestamp = event.scheduled().getTime() - System.currentTimeMillis();

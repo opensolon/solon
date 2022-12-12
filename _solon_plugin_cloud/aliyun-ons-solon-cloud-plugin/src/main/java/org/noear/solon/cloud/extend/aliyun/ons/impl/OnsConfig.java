@@ -14,35 +14,44 @@ import java.util.Properties;
  * @since 1.11
  */
 public class OnsConfig {
+    private static final String PROP_EVENT_consumerGroup = "event.consumerGroup";
+    private static final String PROP_EVENT_producerGroup = "event.producerGroup";
+
+    private static final String PROP_EVENT_consumeThreadNums = "event.consumeThreadNums";
+    private static final String PROP_EVENT_maxReconsumeTimes = "event.maxReconsumeTimes";
+
+    private final String channelName;
+    private final String server;
+
+    private final long timeout;
+
     private String producerGroup;
     private String consumerGroup;
 
-    private String server;
-
-    private long timeout;
-
-    private String accessKey;
-    private String secretKey;
+    private final String accessKey;
+    private final String secretKey;
 
 
     //默认20 实例的消费线程数
-    private Integer consumeThreadNums;
+    private final int consumeThreadNums;
 
     //默认16 设置消息消费失败的最大重试次数
-    private Integer maxReconsumeTimes;
+    private final int maxReconsumeTimes;
 
     public OnsConfig(CloudProps cloudProps) {
         server = cloudProps.getEventServer();
+        channelName = cloudProps.getEventChannel();
+
         accessKey = cloudProps.getEventAccessKey();
         secretKey = cloudProps.getEventSecretKey();
 
         timeout = cloudProps.getEventPublishTimeout();
 
-        consumeThreadNums = Integer.valueOf(cloudProps.getValue(OnsProps.PROP_EVENT_consumeThreadNums, "20"));
-        maxReconsumeTimes = Integer.valueOf(cloudProps.getValue(OnsProps.PROP_EVENT_maxReconsumeTimes, "16"));
+        consumeThreadNums = Integer.valueOf(cloudProps.getValue(PROP_EVENT_consumeThreadNums, "20"));
+        maxReconsumeTimes = Integer.valueOf(cloudProps.getValue(PROP_EVENT_maxReconsumeTimes, "16"));
 
-        producerGroup = cloudProps.getValue(OnsProps.PROP_EVENT_producerGroup);
-        consumerGroup = cloudProps.getValue(OnsProps.PROP_EVENT_consumerGroup);
+        producerGroup = cloudProps.getValue(PROP_EVENT_producerGroup);
+        consumerGroup = cloudProps.getValue(PROP_EVENT_consumerGroup);
 
         if (Utils.isEmpty(producerGroup)) {
             producerGroup = "DEFAULT";
@@ -51,6 +60,10 @@ public class OnsConfig {
         if (Utils.isEmpty(consumerGroup)) {
             consumerGroup = Solon.cfg().appGroup() + "_" + Solon.cfg().appName();
         }
+    }
+
+    public String getChannelName() {
+        return channelName;
     }
 
     public Properties getProducerProperties() {

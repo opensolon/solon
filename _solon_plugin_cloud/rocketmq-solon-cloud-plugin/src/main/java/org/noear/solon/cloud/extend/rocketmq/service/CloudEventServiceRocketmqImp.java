@@ -77,6 +77,10 @@ public class CloudEventServiceRocketmqImp implements CloudEventServicePlus {
             topicNew = group + RocketmqProps.GROUP_SPLIT_MARK + topic;
         }
 
+        if (Utils.isEmpty(tag)) {
+            tag = "*";
+        }
+
         observerManger.add(topicNew, level, group, topic, tag, observer);
     }
 

@@ -13,20 +13,21 @@ import org.noear.solon.cloud.service.CloudEventObserverManger;
 import java.time.Duration;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author noear
  * @since 1.3
  */
 public class RocketmqConsumer {
-    private RocketmqConfig cfg;
+    private RocketmqConfig config;
 
     ClientServiceProvider serviceProvider;
     private PushConsumer consumer;
     private RocketmqConsumerHandler handler;
 
     public RocketmqConsumer(RocketmqConfig config) {
-        cfg = config;
+        this.config = config;
     }
 
     public void init(CloudProps cloudProps, CloudEventObserverManger observerManger) throws ClientException {
@@ -39,34 +40,42 @@ public class RocketmqConsumer {
                 return;
             }
 
-            handler = new RocketmqConsumerHandler(cloudProps, observerManger);
+            handler = new RocketmqConsumerHandler(config, observerManger);
 
             serviceProvider = ClientServiceProvider.loadService();
 
             ClientConfigurationBuilder builder = ClientConfiguration.newBuilder();
 
             //服务地址
-            builder.setEndpoints(cfg.getServer());
+            builder.setEndpoints(config.getServer());
 
             //发送超时时间，默认3000 单位ms
-            if (cfg.getTimeout() > 0) {
-                builder.setRequestTimeout(Duration.ofMillis(cfg.getTimeout()));
+            if (config.getTimeout() > 0) {
+                builder.setRequestTimeout(Duration.ofMillis(config.getTimeout()));
             }
 
             ClientConfiguration configuration = builder.build();
 
 
-            Map<String,FilterExpression> subscriptionExpressions = new LinkedHashMap<>();
+            Map<String, FilterExpression> subscriptionExpressions = new LinkedHashMap<>();
             //要消费的topic，可使用tag进行简单过滤
-            for (String topic : observerManger.topicAll()) {
-                subscriptionExpressions.put(topic, FilterExpression.SUB_ALL);
+            for (Map.Entry<String, Set<String>> kv : observerManger.topicTags().entrySet()) {
+                String topic = kv.getKey();
+                Set<String> tags = kv.getValue();
+
+                //支持 tag 过滤
+                if (tags.contains("*")) {
+                    subscriptionExpressions.put(topic, FilterExpression.SUB_ALL);
+                } else {
+                    subscriptionExpressions.put(topic, new FilterExpression(String.join("||", tags)));
+                }
             }
 
             PushConsumerBuilder consumerBuilder = serviceProvider.newPushConsumerBuilder()
                     .setClientConfiguration(configuration)
                     //消费组
-                    .setConsumerGroup(cfg.getConsumerGroup())
-                    //.setConsumptionThreadCount(1)
+                    .setConsumerGroup(config.getConsumerGroup())
+                    .setConsumptionThreadCount(config.getConsumeThreadNums())
                     .setSubscriptionExpressions(subscriptionExpressions)
                     .setMessageListener(handler);
 

@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author cgy
@@ -18,12 +19,11 @@ import java.util.Map;
 public class OnsConsumer {
     static Logger log = LoggerFactory.getLogger(OnsConsumer.class);
 
-    private OnsConfig cfg;
+    private OnsConfig config;
     private ConsumerBean consumer;
-    private OnsConsumerHandler handler;
 
     public OnsConsumer(OnsConfig config) {
-        cfg = config;
+        this.config = config;
     }
 
     public void init(CloudProps cloudProps, CloudEventObserverManger observerManger) {
@@ -36,15 +36,24 @@ public class OnsConsumer {
                 return;
             }
 
-            handler = new OnsConsumerHandler(cfg, cloudProps, observerManger);
             consumer = new ConsumerBean();
-            consumer.setProperties(cfg.getConsumerProperties());
+            consumer.setProperties(config.getConsumerProperties());
 
-            Map<Subscription, MessageListener> subscriptionTable = new HashMap<Subscription, MessageListener>(observerManger.topicSize());
-            for (String topic : observerManger.topicAll()) {
+            OnsConsumerHandler handler = new OnsConsumerHandler(config, observerManger);
+
+            Map<Subscription, MessageListener> subscriptionTable = new HashMap<>();
+            for (Map.Entry<String, Set<String>> kv : observerManger.topicTags().entrySet()) {
+                String topic = kv.getKey();
+                Set<String> tags = kv.getValue();
+
                 Subscription subscription = new Subscription();
                 subscription.setTopic(topic);
-                subscription.setExpression("*");
+                if (tags.contains("*")) {
+                    subscription.setExpression("*");
+                } else {
+                    subscription.setExpression(String.join("||", tags));
+                }
+
                 subscriptionTable.put(subscription, handler);
 
                 log.debug("Ons consumer subscribe [" + topic + "] ok!");

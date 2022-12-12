@@ -21,12 +21,12 @@ import org.slf4j.LoggerFactory;
 public class RocketmqConsumerHandler implements MessageListener {
     static Logger log = LoggerFactory.getLogger(RocketmqConsumerHandler.class);
 
-    CloudEventObserverManger observerManger;
-    String eventChannelName;
+    private final CloudEventObserverManger observerManger;
+    private final RocketmqConfig config;
 
-    public RocketmqConsumerHandler(CloudProps cloudProps, CloudEventObserverManger observerManger) {
+    public RocketmqConsumerHandler(RocketmqConfig config, CloudEventObserverManger observerManger) {
         this.observerManger = observerManger;
-        eventChannelName = cloudProps.getEventChannel();
+        this.config = config;
     }
 
 
@@ -48,8 +48,8 @@ public class RocketmqConsumerHandler implements MessageListener {
             Event event = new Event(topic, new String(message.getBody().array()));
             event.tags(message.getTag().get());
             event.key(String.join(",", message.getKeys()));
-            //event.times(message.getReconsumeTimes());
-            event.channel(eventChannelName);
+            event.times(message.getDeliveryAttempt());
+            event.channel(config.getChannelName());
             if (Utils.isNotEmpty(group)) {
                 event.group(group);
             }
@@ -75,7 +75,16 @@ public class RocketmqConsumerHandler implements MessageListener {
         boolean isOk = true;
         CloudEventHandler handler = null;
 
-        handler = observerManger.getByTopic(topicNew);
+        if (Utils.isEmpty(event.tags())) {
+            handler = observerManger.getByTopicAndTag(topicNew, "*");
+        } else {
+            handler = observerManger.getByTopicAndTag(topicNew, event.tags());
+
+            if (handler == null) {
+                handler = observerManger.getByTopicAndTag(topicNew, "*");
+            }
+        }
+
         if (handler != null) {
             isOk = handler.handle(event);
         } else {
