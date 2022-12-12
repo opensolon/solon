@@ -1,4 +1,4 @@
-package org.noear.solon.scheduling.simple;
+package org.noear.solon.scheduling.simple.integration;
 
 import org.noear.solon.Utils;
 import org.noear.solon.scheduling.ScheduledException;

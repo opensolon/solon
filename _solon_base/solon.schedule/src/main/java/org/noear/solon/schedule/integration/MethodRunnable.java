@@ -1,6 +1,7 @@
-package org.noear.solon.schedule;
+package org.noear.solon.schedule.integration;
 
 import org.noear.solon.Utils;
+import org.noear.solon.schedule.ScheduledException;
 
 import java.lang.reflect.Method;
 

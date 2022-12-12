@@ -7,7 +7,6 @@ import org.noear.solon.core.BeanWrap;
 import org.noear.solon.scheduling.ScheduledAnno;
 import org.noear.solon.scheduling.annotation.Scheduled;
 import org.noear.solon.scheduling.simple.JobManager;
-import org.noear.solon.scheduling.simple.MethodRunnable;
 import org.noear.solon.scheduling.utils.ScheduledHelper;
 
 import java.lang.reflect.Method;

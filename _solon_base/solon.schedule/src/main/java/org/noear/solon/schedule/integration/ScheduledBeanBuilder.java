@@ -5,7 +5,6 @@ import org.noear.solon.core.BeanBuilder;
 import org.noear.solon.core.BeanExtractor;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.schedule.JobManager;
-import org.noear.solon.schedule.MethodRunnable;
 import org.noear.solon.schedule.annotation.Scheduled;
 
 import java.lang.reflect.Method;
