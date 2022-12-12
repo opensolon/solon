@@ -1,6 +1,5 @@
 package org.noear.solon.cloud.extend.quartz;
 
-import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudManager;
 import org.noear.solon.cloud.extend.quartz.service.CloudJobServiceImpl;
 import org.noear.solon.core.AopContext;

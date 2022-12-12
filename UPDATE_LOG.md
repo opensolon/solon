@@ -17,8 +17,8 @@
 * 优化 solon.scheduling.simple 插件，//要解决名字重复问题 ???
 * 优化 solon.schedule 插件，//要解决名字重复问题 ???
 * 优化 solon.scheduling.quartz
-* 优化 quartz-solon-cloud-plugin（server 是不存在的，要控制下）
-* 优化 quartz-solon-plugin
+* 优化 quartz-solon-cloud-plugin，取消对 server 配置的依赖 !ok
+* 优化 quartz-solon-plugin，支持注解在函数上
 * 优化 local-solon-cloud-plugin（增加本地 file 支持）
 * 增加 rocketmq tag 过滤支持
 * 升级 snack3 为 3.2.49

@@ -22,7 +22,7 @@ public class JobQuartzProxy implements Job {
         CloudJobHandler jobReal = JobManager.getJob(jobId);
 
         if (jobReal != null) {
-            Context ctx = Context.current(); //可能是从上层代理已生成
+            Context ctx = Context.current(); //可能是从上层代理已生成, v1.11
             if (ctx == null) {
                 ctx = new ContextEmpty();
                 ContextUtil.currentSet(ctx);
