@@ -1,14 +1,12 @@
-package org.noear.solon.scheduling.simple.integration;
+package org.noear.solon.schedule.integration;
 
 import org.noear.solon.Utils;
 import org.noear.solon.core.BeanBuilder;
 import org.noear.solon.core.BeanExtractor;
 import org.noear.solon.core.BeanWrap;
-import org.noear.solon.scheduling.ScheduledAnno;
-import org.noear.solon.scheduling.annotation.Scheduled;
-import org.noear.solon.scheduling.simple.JobManager;
-import org.noear.solon.scheduling.simple.MethodRunnable;
-import org.noear.solon.scheduling.utils.ScheduledHelper;
+import org.noear.solon.schedule.JobManager;
+import org.noear.solon.schedule.MethodRunnable;
+import org.noear.solon.schedule.annotation.Scheduled;
 
 import java.lang.reflect.Method;
 
@@ -25,12 +23,11 @@ public class ScheduledBeanBuilder implements BeanBuilder<Scheduled>, BeanExtract
                 name = clz.getName();
             }
 
-
-            ScheduledAnno warpper = new ScheduledAnno(anno);
-            ScheduledHelper.configScheduled(warpper);
-
-
-            JobManager.add(name, warpper, bw.raw());
+            if (anno.fixedRate() > 0) {
+                JobManager.add(name, anno.fixedRate(), anno.fixedDelay(), anno.concurrent(), bw.raw());
+            } else {
+                JobManager.add(name, anno.cron(), anno.zone(), anno.concurrent(), bw.raw());
+            }
         }
     }
 
@@ -47,9 +44,10 @@ public class ScheduledBeanBuilder implements BeanBuilder<Scheduled>, BeanExtract
 
         MethodRunnable runnable = new MethodRunnable(bw.raw(), method);
 
-        ScheduledAnno warpper = new ScheduledAnno(anno);
-        ScheduledHelper.configScheduled(warpper);
-
-        JobManager.add(name, warpper, runnable);
+        if (anno.fixedRate() > 0) {
+            JobManager.add(name, anno.fixedRate(), anno.fixedDelay(), anno.concurrent(), runnable);
+        } else {
+            JobManager.add(name, anno.cron(), anno.zone(), anno.concurrent(), runnable);
+        }
     }
 }
