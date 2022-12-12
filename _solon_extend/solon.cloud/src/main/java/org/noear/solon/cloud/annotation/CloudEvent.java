@@ -28,6 +28,11 @@ public @interface CloudEvent {
     String topic() default "";
 
     /**
+     * 标签
+     * */
+    String tag() default "";
+
+    /**
      * 订阅级别
      * */
     EventLevel level() default EventLevel.cluster;

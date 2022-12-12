@@ -118,8 +118,8 @@ public class CloudEventServiceMqttImp implements CloudEventServicePlus {
     CloudEventObserverManger observerMap = new CloudEventObserverManger();
 
     @Override
-    public void attention(EventLevel level, String channel, String group, String topic, CloudEventHandler observer) {
-        observerMap.add(topic, level, group, topic, observer);
+    public void attention(EventLevel level, String channel, String group, String topic, String tag, CloudEventHandler observer) {
+        observerMap.add(topic, level, group, topic, tag, observer);
     }
 
     public void subscribe() {

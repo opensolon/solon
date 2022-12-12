@@ -30,12 +30,12 @@ public class XPluginImp implements Plugin {
 
     CloudProps cloudProps;
 
-    private boolean initDo() throws Throwable{
+    private boolean initDo() throws Throwable {
         if (Utils.isEmpty(WaterProps.instance.getServer())) {
             return false;
         }
 
-        if(cloudProps != null){
+        if (cloudProps != null) {
             return true;
         }
 
@@ -79,7 +79,7 @@ public class XPluginImp implements Plugin {
 
     @Override
     public void init() throws Throwable {
-        if(initDo() == false){
+        if (initDo() == false) {
             return;
         }
 
@@ -98,8 +98,8 @@ public class XPluginImp implements Plugin {
     }
 
     @Override
-    public void start(AopContext context) throws Throwable{
-        if(initDo() == false){
+    public void start(AopContext context) throws Throwable {
+        if (initDo() == false) {
             return;
         }
 
@@ -134,7 +134,7 @@ public class XPluginImp implements Plugin {
 
         }
 
-        if(cloudProps.getI18nEnable()){
+        if (cloudProps.getI18nEnable()) {
             i18nServiceImp = new CloudI18nServiceWaterImp();
             CloudManager.register(i18nServiceImp);
         }
@@ -168,13 +168,13 @@ public class XPluginImp implements Plugin {
 
             if (discoveryServiceImp != null || i18nServiceImp != null) {
                 //关注缓存更新事件
-                eventServiceImp.attention(EventLevel.instance, "", "", WW.msg_ucache_topic,
+                eventServiceImp.attention(EventLevel.instance, "", "", "", WW.msg_ucache_topic,
                         new HandlerCacheUpdate(discoveryServiceImp, i18nServiceImp));
             }
 
             if (configServiceImp != null) {
                 //关注配置更新事件
-                eventServiceImp.attention(EventLevel.instance, "", "", WW.msg_uconfig_topic,
+                eventServiceImp.attention(EventLevel.instance, "", "", "", WW.msg_uconfig_topic,
                         new HandlerConfigUpdate(configServiceImp));
             }
 
@@ -216,11 +216,11 @@ public class XPluginImp implements Plugin {
         }
     }
 
-    public  String getEventReceive() {
+    public String getEventReceive() {
         return cloudProps.getValue(WaterProps.PROP_EVENT_receive);
     }
 
-    public  void setEventReceive(String value) {
+    public void setEventReceive(String value) {
         cloudProps.setValue(WaterProps.PROP_EVENT_receive, value);
     }
 }
