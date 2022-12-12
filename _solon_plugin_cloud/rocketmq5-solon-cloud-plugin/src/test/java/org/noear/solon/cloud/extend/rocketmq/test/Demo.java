@@ -1,4 +1,4 @@
-package org.noear.solon.cloud.extend.aliyun.ons.test;
+package org.noear.solon.cloud.extend.rocketmq.test;
 
 import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.cloud.CloudEventHandler;
