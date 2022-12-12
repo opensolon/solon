@@ -10,18 +10,21 @@
 * 增加 更多友好的异常分类???
 * 增加 便利的原生编译机制
 
-#### 1.11.5
+#### 1.11.6
 * 新增 elastic-job-solon-plugin 分布式定时任务 ???
 * 新增 file-s3-solon-plugin 插件 ???
 * 新增 aliyun-ons-solon-cloud-plugin 插件 ???
-* 插件 solon.scheduling.simple 优化名字可能重复问题 !ok
-* 插件 solon.schedule 优化名字可能重复问题 !ok
-* 优化 solon.scheduling.quartz 插件 !ok
-* 优化 quartz-solon-cloud-plugin，取消对 server 配置的依赖 !ok
-* 优化 quartz-solon-plugin，支持注解在函数上
-* 优化 local-solon-cloud-plugin（增加本地 file 支持，必须配置 server）!ok
 * 增加 rocketmq tag 过滤支持 ???
-* 升级 snack3 为 3.2.49 !ok
+
+
+#### 1.11.5
+* 插件 solon.scheduling.simple 优化名字可能重复问题
+* 插件 solon.schedule 优化名字可能重复问题 
+* 优化 solon.scheduling.quartz 插件 
+* 优化 quartz-solon-cloud-plugin，取消对 server 配置的依赖 
+* 优化 quartz-solon-plugin，支持注解在函数上
+* 优化 local-solon-cloud-plugin（增加本地 file 支持，必须配置 server）
+* 升级 snack3 为 3.2.50
 
 #### 1.11.4
 * 新增 solon.web.webdav 插件 
