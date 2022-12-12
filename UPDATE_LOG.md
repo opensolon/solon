@@ -13,11 +13,12 @@
 #### 1.11.6
 * 新增 elastic-job-solon-plugin 分布式定时任务 ???
 * 新增 file-s3-solon-plugin 插件 ???
-* 新增 aliyun-ons-solon-cloud-plugin 插件 ???
-* 增加 rocketmq tag 过滤支持 ???
 
 
 #### 1.11.5
+* 插件 aliyun-ons-solon-cloud-plugin 增加 tag 过滤支持
+* 插件 rocketmq-solon-cloud-plugin 增加 tag 过滤支持
+* 插件 rocketmq5-solon-cloud-plugin 增加 tag 过滤支持
 * 插件 solon.scheduling.simple 优化名字可能重复问题
 * 插件 solon.schedule 优化名字可能重复问题 
 * 优化 solon.scheduling.quartz 插件 
