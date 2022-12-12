@@ -14,12 +14,14 @@
 * 新增 elastic-job-solon-plugin 分布式定时任务 ???
 * 新增 file-s3-solon-plugin 插件 ???
 * 新增 aliyun-ons-solon-cloud-plugin 插件 ???
-* 优化 solon.scheduling.simple
+* 优化 solon.scheduling.simple 插件，调整自动任务名字处理，避免重复 //要解决名字重复问题 ???
+* 优化 solon.schedule 插件，调整自动任务名字处理，避免重复 //要解决名字重复问题 ???
 * 优化 solon.scheduling.quartz
 * 优化 quartz-solon-cloud-plugin（server 是不存在的，要控制下）
 * 优化 quartz-solon-plugin
 * 优化 local-solon-cloud-plugin（增加本地 file 支持）
 * 增加 rocketmq tag 过滤支持
+* 升级 snack3 为 3.2.49
 
 #### 1.11.4
 * 新增 solon.web.webdav 插件 
@@ -32,7 +34,6 @@
 * 插件 local-solon-cloud-plugin 添加 server 配置支持（只能指向本地，存放数据） 
 * 插件 solon.web.staticfiles 允许 maxAge=-1 配置（从而取消 URLConnection 的缓存）
 * 插件 solon.web.staticfiles 增加资源仓库预热支持
-* 插件 solon.schedule 插件，调整自动任务名字处理，避免重复 //要解决名字重复问题 ???
 * 插件 solon.boot.jlhttp 调整server代码，不再限制 method 
 * 插件 solon.boot 调整 coreTheads,maxTheads 配置，支持部数模式 x16（表示cpu核数的16倍）
 * 增加 enableWebSocketMvc，enableSocketMvc 开关控制 
