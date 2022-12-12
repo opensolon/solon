@@ -54,7 +54,7 @@ public class CloudEventServiceLocalImpl implements CloudEventServicePlus {
         }
 
 
-        CloudEventHandler eventHandler = observerManger.get(topicNew);
+        CloudEventHandler eventHandler = observerManger.getByTopic(topicNew);
         if (eventHandler == null) {
             eventHandler.handle(event);
         } else {

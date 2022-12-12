@@ -184,7 +184,7 @@ public class CloudEventServiceKafkaImp implements CloudEventServicePlus {
         boolean isOk = true;
         CloudEventHandler handler = null;
 
-        handler = observerManger.get(event.topic());
+        handler = observerManger.getByTopic(event.topic());
         if (handler != null) {
             isOk = handler.handle(event);
         } else {

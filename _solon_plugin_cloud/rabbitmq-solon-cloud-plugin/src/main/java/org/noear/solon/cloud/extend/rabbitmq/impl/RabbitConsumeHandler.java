@@ -95,10 +95,10 @@ public class RabbitConsumeHandler extends DefaultConsumer {
         if (Utils.isEmpty(event.group())) {
             topicNew = event.topic();
         } else {
-            topicNew = event.group() + RabbitmqProps.GROUP_SPLIT_MART + event.topic();
+            topicNew = event.group() + RabbitmqProps.GROUP_SPLIT_MARK + event.topic();
         }
 
-        handler = observerManger.get(topicNew);
+        handler = observerManger.getByTopic(topicNew);
         if (handler != null) {
             isOk = handler.handle(event);
         } else {

@@ -7,7 +7,7 @@ import org.noear.solon.cloud.CloudProps;
  * @since 1.11
  */
 public class OnsProps {
-    public static final String GROUP_SPLIT_MART = "--";
+    public static final String GROUP_SPLIT_MARK = "--";
 
     public static final String PROP_EVENT_consumerGroup = "event.consumerGroup";
     public static final String PROP_EVENT_producerGroup = "event.producerGroup";

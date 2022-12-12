@@ -54,7 +54,7 @@ class MqttCallbackImp implements MqttCallback {
                     .retained(message.isRetained())
                     .channel(eventChannelName);
 
-            CloudEventHandler handler = observerManger.get(topic);
+            CloudEventHandler handler = observerManger.getByTopic(topic);
 
             if (handler != null) {
                 handler.handle(event);

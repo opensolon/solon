@@ -63,7 +63,7 @@ public class CloudEventServiceJedisImpl implements CloudEventServicePlus {
         if (Utils.isEmpty(event.group())) {
             topicNew = event.topic();
         } else {
-            topicNew = event.group() + JedisProps.GROUP_SPLIT_MART + event.topic();
+            topicNew = event.group() + JedisProps.GROUP_SPLIT_MARK + event.topic();
         }
 
         client.open(s -> s.publish(topicNew, ONode.stringify(event)));
@@ -79,7 +79,7 @@ public class CloudEventServiceJedisImpl implements CloudEventServicePlus {
         if (Utils.isEmpty(group)) {
             topicNew = topic;
         } else {
-            topicNew = group + JedisProps.GROUP_SPLIT_MART + topic;
+            topicNew = group + JedisProps.GROUP_SPLIT_MARK + topic;
         }
 
         observerManger.add(topicNew, level, group, topic, tag, observer);

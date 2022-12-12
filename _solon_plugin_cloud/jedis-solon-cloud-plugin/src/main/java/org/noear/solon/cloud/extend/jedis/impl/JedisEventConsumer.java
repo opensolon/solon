@@ -12,8 +12,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import redis.clients.jedis.JedisPubSub;
 
-import java.io.IOException;
-
 /**
  * @author noear
  * @since 1.10
@@ -70,10 +68,10 @@ public class JedisEventConsumer extends JedisPubSub {
         if (Utils.isEmpty(event.group())) {
             topicNew = event.topic();
         } else {
-            topicNew = event.group() + JedisProps.GROUP_SPLIT_MART + event.topic();
+            topicNew = event.group() + JedisProps.GROUP_SPLIT_MARK + event.topic();
         }
 
-        handler = observerManger.get(topicNew);
+        handler = observerManger.getByTopic(topicNew);
         if (handler != null) {
             isOk = handler.handle(event);
         } else {

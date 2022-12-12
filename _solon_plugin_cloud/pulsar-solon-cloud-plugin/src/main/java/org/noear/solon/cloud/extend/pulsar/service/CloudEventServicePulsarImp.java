@@ -58,7 +58,7 @@ public class CloudEventServicePulsarImp implements CloudEventServicePlus {
         if (Utils.isEmpty(event.group())) {
             topicNew = event.topic();
         } else {
-            topicNew = event.group() + PulsarProps.GROUP_SPLIT_MART + event.topic();
+            topicNew = event.group() + PulsarProps.GROUP_SPLIT_MARK + event.topic();
         }
 
         byte[] event_data = ONode.stringify(event).getBytes(StandardCharsets.UTF_8);
@@ -94,7 +94,7 @@ public class CloudEventServicePulsarImp implements CloudEventServicePlus {
         if (Utils.isEmpty(group)) {
             topicNew = topic;
         } else {
-            topicNew = group + PulsarProps.GROUP_SPLIT_MART + topic;
+            topicNew = group + PulsarProps.GROUP_SPLIT_MARK + topic;
         }
 
         observerManger.add(topicNew, level, group, topic, tag, observer);

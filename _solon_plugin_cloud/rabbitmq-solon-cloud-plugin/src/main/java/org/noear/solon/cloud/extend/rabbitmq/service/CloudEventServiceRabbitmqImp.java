@@ -65,7 +65,7 @@ public class CloudEventServiceRabbitmqImp implements CloudEventServicePlus {
         if (Utils.isEmpty(event.group())) {
             topicNew = event.topic();
         } else {
-            topicNew = event.group() + RabbitmqProps.GROUP_SPLIT_MART + event.topic();
+            topicNew = event.group() + RabbitmqProps.GROUP_SPLIT_MARK + event.topic();
         }
 
         try {
@@ -84,7 +84,7 @@ public class CloudEventServiceRabbitmqImp implements CloudEventServicePlus {
         if (Utils.isEmpty(group)) {
             topicNew = topic;
         } else {
-            topicNew = group + RabbitmqProps.GROUP_SPLIT_MART + topic;
+            topicNew = group + RabbitmqProps.GROUP_SPLIT_MARK + topic;
         }
 
         observerManger.add(topicNew, level, group, topic, tag, observer);

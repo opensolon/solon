@@ -50,7 +50,7 @@ public class CloudEventServiceRocketmqImp implements CloudEventServicePlus {
         if (Utils.isEmpty(event.group())) {
             topicNew = event.topic();
         } else {
-            topicNew = event.group() + RocketmqProps.GROUP_SPLIT_MART + event.topic();
+            topicNew = event.group() + RocketmqProps.GROUP_SPLIT_MARK + event.topic();
         }
 
         topicNew = topicNew.replace(".", "_");
@@ -74,7 +74,7 @@ public class CloudEventServiceRocketmqImp implements CloudEventServicePlus {
         if (Utils.isEmpty(group)) {
             topicNew = topic;
         } else {
-            topicNew = group + RocketmqProps.GROUP_SPLIT_MART + topic;
+            topicNew = group + RocketmqProps.GROUP_SPLIT_MARK + topic;
         }
 
         observerManger.add(topicNew, level, group, topic, tag, observer);

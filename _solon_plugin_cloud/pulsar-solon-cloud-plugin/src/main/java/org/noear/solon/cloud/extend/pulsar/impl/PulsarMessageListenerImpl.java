@@ -87,10 +87,10 @@ public class PulsarMessageListenerImpl implements MessageListener<byte[]> {
         if (Utils.isEmpty(event.group())) {
             topicNew = event.topic();
         } else {
-            topicNew = event.group() + PulsarProps.GROUP_SPLIT_MART + event.topic();
+            topicNew = event.group() + PulsarProps.GROUP_SPLIT_MARK + event.topic();
         }
 
-        handler = observerManger.get(topicNew);
+        handler = observerManger.getByTopic(topicNew);
         if (handler != null) {
             isOk = handler.handle(event);
         } else {

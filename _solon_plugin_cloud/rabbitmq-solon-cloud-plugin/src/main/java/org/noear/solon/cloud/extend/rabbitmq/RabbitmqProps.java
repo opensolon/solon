@@ -7,7 +7,7 @@ import org.noear.solon.cloud.CloudProps;
  * @since 1.2
  */
 public class RabbitmqProps {
-    public static final String GROUP_SPLIT_MART = ":";
+    public static final String GROUP_SPLIT_MARK = ":";
 
     public static final String PROP_EVENT_virtualHost = "event.virtualHost";
     public static final String PROP_EVENT_exchange = "event.exchange";

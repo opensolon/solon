@@ -174,13 +174,13 @@ public class CloudEventServiceWaterImp implements CloudEventServicePlus {
 
         event.channel(eventChannelName);
 
-        entity = instanceObserverManger.get(topicNew);
+        entity = instanceObserverManger.getByTopic(topicNew);
         if (entity != null) {
             isHandled = true;
             isOk = entity.handle(event);
         }
 
-        entity = clusterObserverManger.get(topicNew);
+        entity = clusterObserverManger.getByTopic(topicNew);
         if (entity != null) {
             isHandled = true;
             isOk = isOk && entity.handle(event); //两个都成功，才是成功

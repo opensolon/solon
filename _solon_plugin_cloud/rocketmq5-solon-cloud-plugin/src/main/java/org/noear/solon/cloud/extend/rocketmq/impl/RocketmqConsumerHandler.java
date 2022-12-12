@@ -38,9 +38,9 @@ public class RocketmqConsumerHandler implements MessageListener {
             String topicNew = message.getTopic();
             String group = null;
             String topic = null;
-            if (topicNew.contains(RocketmqProps.GROUP_SPLIT_MART)) {
-                group = topicNew.split(RocketmqProps.GROUP_SPLIT_MART)[0];
-                topic = topicNew.split(RocketmqProps.GROUP_SPLIT_MART)[1];
+            if (topicNew.contains(RocketmqProps.GROUP_SPLIT_MARK)) {
+                group = topicNew.split(RocketmqProps.GROUP_SPLIT_MARK)[0];
+                topic = topicNew.split(RocketmqProps.GROUP_SPLIT_MARK)[1];
             } else {
                 topic = topicNew;
             }
@@ -75,7 +75,7 @@ public class RocketmqConsumerHandler implements MessageListener {
         boolean isOk = true;
         CloudEventHandler handler = null;
 
-        handler = observerManger.get(topicNew);
+        handler = observerManger.getByTopic(topicNew);
         if (handler != null) {
             isOk = handler.handle(event);
         } else {
