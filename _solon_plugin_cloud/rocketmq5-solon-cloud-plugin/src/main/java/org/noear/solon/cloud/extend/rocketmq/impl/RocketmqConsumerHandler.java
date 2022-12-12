@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 /**
  * @author noear
  * @since 1.3
+ * @since 1.11
  */
 public class RocketmqConsumerHandler implements MessageListener {
     static Logger log = LoggerFactory.getLogger(RocketmqConsumerHandler.class);

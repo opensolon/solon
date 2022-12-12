@@ -18,11 +18,11 @@ import java.util.Properties;
  * @since 1.3
  */
 public class RocketmqProducer {
-    RocketmqConfig cfg;
+    final RocketmqConfig config;
     DefaultMQProducer producer;
 
     public RocketmqProducer(RocketmqConfig config) {
-        cfg = config;
+        this.config = config;
     }
 
     private void init(CloudProps cloudProps) throws MQClientException {
@@ -38,17 +38,17 @@ public class RocketmqProducer {
 
             producer = new DefaultMQProducer();
             //服务地址
-            producer.setNamesrvAddr(cfg.getServer());
+            producer.setNamesrvAddr(config.getServer());
             //生产组
-            producer.setProducerGroup(cfg.getProducerGroup());
+            producer.setProducerGroup(config.getProducerGroup());
             //命名空间
-            if (Utils.isNotEmpty(cfg.getNamespace())) {
-                producer.setNamespace(cfg.getNamespace());
+            if (Utils.isNotEmpty(config.getNamespace())) {
+                producer.setNamespace(config.getNamespace());
             }
 
             //发送超时时间，默认3000 单位ms
-            if (cfg.getTimeout() > 0) {
-                producer.setSendMsgTimeout((int) cfg.getTimeout());
+            if (config.getTimeout() > 0) {
+                producer.setSendMsgTimeout((int) config.getTimeout());
             }
             //失败后重试2次
             producer.setRetryTimesWhenSendFailed(2);

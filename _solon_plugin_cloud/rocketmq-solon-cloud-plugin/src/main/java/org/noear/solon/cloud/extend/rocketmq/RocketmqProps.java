@@ -9,8 +9,5 @@ import org.noear.solon.cloud.CloudProps;
 public class RocketmqProps {
     public static final String GROUP_SPLIT_MARK = "--";
 
-    public static final String PROP_EVENT_consumerGroup = "event.consumerGroup";
-    public static final String PROP_EVENT_producerGroup = "event.producerGroup";
-
     public static final CloudProps instance = new CloudProps("rocketmq");
 }

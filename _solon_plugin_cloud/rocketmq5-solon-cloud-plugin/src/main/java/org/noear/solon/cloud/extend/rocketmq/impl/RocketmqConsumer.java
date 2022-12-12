@@ -18,6 +18,7 @@ import java.util.Set;
 /**
  * @author noear
  * @since 1.3
+ * @since 1.11
  */
 public class RocketmqConsumer {
     private RocketmqConfig config;

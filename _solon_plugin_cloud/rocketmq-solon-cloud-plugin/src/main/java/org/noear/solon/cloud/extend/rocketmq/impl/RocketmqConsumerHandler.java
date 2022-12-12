@@ -6,7 +6,6 @@ import org.apache.rocketmq.client.consumer.listener.MessageListenerConcurrently;
 import org.apache.rocketmq.common.message.MessageExt;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudEventHandler;
-import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.extend.rocketmq.RocketmqProps;
 import org.noear.solon.cloud.model.Event;
 import org.noear.solon.cloud.service.CloudEventObserverManger;
@@ -19,16 +18,17 @@ import java.util.List;
 /**
  * @author noear
  * @since 1.3
+ * @since 1.11
  */
 public class RocketmqConsumerHandler implements MessageListenerConcurrently {
     static Logger log = LoggerFactory.getLogger(RocketmqConsumerHandler.class);
 
-    CloudEventObserverManger observerManger;
-    String eventChannelName;
+    final CloudEventObserverManger observerManger;
+    final RocketmqConfig  config;
 
-    public RocketmqConsumerHandler(CloudProps cloudProps, CloudEventObserverManger observerManger) {
+    public RocketmqConsumerHandler(RocketmqConfig config, CloudEventObserverManger observerManger) {
         this.observerManger = observerManger;
-        eventChannelName =cloudProps.getEventChannel();
+        this.config =config;
     }
 
 
@@ -52,7 +52,7 @@ public class RocketmqConsumerHandler implements MessageListenerConcurrently {
                 event.tags(message.getTags());
                 event.key(message.getKeys());
                 event.times(message.getReconsumeTimes());
-                event.channel(eventChannelName);
+                event.channel(config.getChannelName());
                 if(Utils.isNotEmpty(group)){
                     event.group(group);
                 }
@@ -78,7 +78,16 @@ public class RocketmqConsumerHandler implements MessageListenerConcurrently {
         boolean isOk = true;
         CloudEventHandler handler = null;
 
-        handler = observerManger.getByTopic(topicNew);
+        if (Utils.isEmpty(event.tags())) {
+            handler = observerManger.getByTopicAndTag(topicNew, "*");
+        } else {
+            handler = observerManger.getByTopicAndTag(topicNew, event.tags());
+
+            if (handler == null) {
+                handler = observerManger.getByTopicAndTag(topicNew, "*");
+            }
+        }
+
         if (handler != null) {
             isOk = handler.handle(event);
         }else{

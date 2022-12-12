@@ -5,7 +5,6 @@ import com.aliyun.openservices.ons.api.PropertyValueConst;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudProps;
-import org.noear.solon.cloud.extend.aliyun.ons.OnsProps;
 
 import java.util.Properties;
 
@@ -32,10 +31,10 @@ public class OnsConfig {
     private final String secretKey;
 
 
-    //默认20 实例的消费线程数
+    //实例的消费线程数，0表示默认
     private final int consumeThreadNums;
 
-    //默认16 设置消息消费失败的最大重试次数
+    //设置消息消费失败的最大重试次数，0表示默认
     private final int maxReconsumeTimes;
 
     public OnsConfig(CloudProps cloudProps) {
@@ -47,8 +46,8 @@ public class OnsConfig {
 
         timeout = cloudProps.getEventPublishTimeout();
 
-        consumeThreadNums = Integer.valueOf(cloudProps.getValue(PROP_EVENT_consumeThreadNums, "20"));
-        maxReconsumeTimes = Integer.valueOf(cloudProps.getValue(PROP_EVENT_maxReconsumeTimes, "16"));
+        consumeThreadNums = Integer.valueOf(cloudProps.getValue(PROP_EVENT_consumeThreadNums, "0"));
+        maxReconsumeTimes = Integer.valueOf(cloudProps.getValue(PROP_EVENT_maxReconsumeTimes, "0"));
 
         producerGroup = cloudProps.getValue(PROP_EVENT_producerGroup);
         consumerGroup = cloudProps.getValue(PROP_EVENT_consumerGroup);
@@ -67,25 +66,29 @@ public class OnsConfig {
     }
 
     public Properties getProducerProperties() {
-        Properties producer = getProperties();
+        Properties producer = getBaseProperties();
         producer.put(PropertyKeyConst.GROUP_ID, producerGroup);
         producer.put(PropertyKeyConst.SendMsgTimeoutMillis, timeout);
         return producer;
     }
 
     public Properties getConsumerProperties() {
-        Properties consumer = getProperties();
+        Properties consumer = getBaseProperties();
         consumer.put(PropertyKeyConst.GROUP_ID, consumerGroup);
         //只能是集群模式
         consumer.put(PropertyKeyConst.MessageModel, PropertyValueConst.CLUSTERING);
         //实例的消费线程数
-        consumer.put(PropertyKeyConst.ConsumeThreadNums, consumeThreadNums);
+        if (consumeThreadNums > 0) {
+            consumer.put(PropertyKeyConst.ConsumeThreadNums, consumeThreadNums);
+        }
         //设置消息消费失败的最大重试次数
-        consumer.put(PropertyKeyConst.MaxReconsumeTimes, maxReconsumeTimes);
+        if (maxReconsumeTimes > 0) {
+            consumer.put(PropertyKeyConst.MaxReconsumeTimes, maxReconsumeTimes);
+        }
         return consumer;
     }
 
-    public Properties getProperties() {
+    public Properties getBaseProperties() {
         Properties properties = new Properties();
 
         if (Utils.isNotEmpty(accessKey)) {
