@@ -1,9 +1,11 @@
 package org.noear.solon.cloud.extend.quartz;
 
+import org.noear.solon.Solon;
 import org.noear.solon.cloud.CloudManager;
 import org.noear.solon.cloud.extend.quartz.service.CloudJobServiceImpl;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
+import org.noear.solon.core.event.AppLoadEndEvent;
 
 /**
  * @author noear
@@ -19,14 +21,8 @@ public class XPluginImp implements Plugin {
         //注册Job服务
         CloudManager.register(CloudJobServiceImpl.instance);
 
-        context.beanOnloaded((ctx) -> {
-            try {
-                CloudJobServiceImpl.instance.start();
-            } catch (RuntimeException e) {
-                throw e;
-            } catch (Throwable e) {
-                throw new IllegalStateException(e);
-            }
+        Solon.app().onEvent(AppLoadEndEvent.class, e -> {
+            CloudJobServiceImpl.instance.start();
         });
     }
 }

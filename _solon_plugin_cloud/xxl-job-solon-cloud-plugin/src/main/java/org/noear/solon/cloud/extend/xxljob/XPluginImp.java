@@ -2,11 +2,13 @@ package org.noear.solon.cloud.extend.xxljob;
 
 import com.xxl.job.core.executor.XxlJobExecutor;
 import com.xxl.job.core.handler.annotation.XxlJob;
+import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudManager;
 import org.noear.solon.cloud.extend.xxljob.service.CloudJobServiceImpl;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
+import org.noear.solon.core.event.AppLoadEndEvent;
 
 /**
  * @author noear
@@ -34,15 +36,9 @@ public class XPluginImp implements Plugin {
         //构建自动配置
         context.beanMake(XxlJobAutoConfig.class);
 
-        context.beanOnloaded((ctx) -> {
-            try {
-                XxlJobExecutor executor = ctx.getBean(XxlJobExecutor.class);
-                executor.start();
-            } catch (RuntimeException e) {
-                throw e;
-            } catch (Throwable e) {
-                throw new IllegalStateException(e);
-            }
+        Solon.app().onEvent(AppLoadEndEvent.class, e -> {
+            XxlJobExecutor executor = context.getBean(XxlJobExecutor.class);
+            executor.start();
         });
     }
 }
