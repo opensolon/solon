@@ -96,7 +96,7 @@ public class CloudEventObserverManger {
         EventObserver eventObserver = topicAndTagObserverMap.get(topicAndTag);
         if (eventObserver == null) {
             eventObserver = new EventObserver(level, group, topicRaw, tag);
-            topicAndTagObserverMap.put(topic, eventObserver);
+            topicAndTagObserverMap.put(topicAndTag, eventObserver);
         }
 
         eventObserver.addHandler(observer);
