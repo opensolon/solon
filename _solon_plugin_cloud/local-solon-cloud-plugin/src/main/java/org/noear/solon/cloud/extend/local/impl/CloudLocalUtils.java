@@ -20,7 +20,11 @@ public class CloudLocalUtils {
             return Utils.getResourceAsString(resourceKey);
         } else {
             File resourceFile = new File(server, key);
-            return Utils.transferToString(new FileInputStream(resourceFile));
+            if (resourceFile.exists()) {
+                return Utils.transferToString(new FileInputStream(resourceFile));
+            } else {
+                return null;
+            }
         }
     }
 }

@@ -19,8 +19,8 @@
 * 优化 solon.scheduling.quartz
 * 优化 quartz-solon-cloud-plugin，取消对 server 配置的依赖 !ok
 * 优化 quartz-solon-plugin，支持注解在函数上
-* 优化 local-solon-cloud-plugin（增加本地 file 支持）
-* 增加 rocketmq tag 过滤支持
+* 优化 local-solon-cloud-plugin（增加本地 file 支持）???
+* 增加 rocketmq tag 过滤支持 ???
 * 升级 snack3 为 3.2.49
 
 #### 1.11.4

@@ -4,5 +4,6 @@ solon.app:
   name: demoapp
 
 solon.cloud.local:
+  server: "/Users/noear/Downloads/local-solon_cloud"
   config:
     load: "demoapp.yml"
