@@ -1,6 +1,7 @@
 package org.noear.solon.cloud.eventplus;
 
 import org.noear.snack.ONode;
+import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.cloud.annotation.CloudEvent;
@@ -47,9 +48,13 @@ public interface CloudEventEntity {
             throw new IllegalArgumentException("The entity is missing (@CloudEvent) annotations: " + this.getClass().getName());
         }
 
-        String topic = Utils.annoAlias(anno2.value(), anno2.topic());
+        //支持${xxx}配置
+        String topic2 = Solon.cfg().getByParse(Utils.annoAlias(anno2.value(), anno2.topic()));
+        //支持${xxx}配置
+        String group2 = Solon.cfg().getByParse(anno2.group());
+
         String content = ONode.stringify(this);
 
-        return CloudClient.event().publish(new Event(topic, content).channel(anno2.channel()).group(anno2.group()));
+        return CloudClient.event().publish(new Event(topic2, content).group(group2).tags(anno2.tag()).channel(anno2.channel()));
     }
 }
