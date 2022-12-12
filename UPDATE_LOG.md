@@ -14,8 +14,8 @@
 * 新增 elastic-job-solon-plugin 分布式定时任务 ???
 * 新增 file-s3-solon-plugin 插件 ???
 * 新增 aliyun-ons-solon-cloud-plugin 插件 ???
-* 优化 solon.scheduling.simple 插件，//要解决名字重复问题 ???
-* 优化 solon.schedule 插件，//要解决名字重复问题 ???
+* 优化 solon.scheduling.simple 插件，//要解决名字重复问题 !ok
+* 优化 solon.schedule 插件，//要解决名字重复问题 !ok
 * 优化 solon.scheduling.quartz
 * 优化 quartz-solon-cloud-plugin，取消对 server 配置的依赖 !ok
 * 优化 quartz-solon-plugin，支持注解在函数上
