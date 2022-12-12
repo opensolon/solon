@@ -13,10 +13,6 @@ import org.noear.solon.core.Plugin;
 public class XPluginImp implements Plugin {
     @Override
     public void start(AopContext context) throws Throwable {
-        if (Utils.isEmpty(QuartzProps.instance.getServer())) {
-            return;
-        }
-
         if (QuartzProps.instance.getJobEnable() == false) {
             return;
         }

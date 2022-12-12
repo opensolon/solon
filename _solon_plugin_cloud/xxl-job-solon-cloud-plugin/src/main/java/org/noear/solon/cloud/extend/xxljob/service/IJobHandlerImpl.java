@@ -19,20 +19,14 @@ class IJobHandlerImpl extends IJobHandler {
 
     @Override
     public void execute() throws Exception {
-        Context ctx = Context.current();
+        Context ctx = Context.current(); //可能是从上层代理已生成
+        if (ctx == null) {
+            ctx = new ContextEmpty();
+            ContextUtil.currentSet(ctx);
+        }
 
         try {
-            if (ctx == null) {
-                ctx = new ContextEmpty();
-                try {
-                    ContextUtil.currentSet(ctx);
-                    real.handle(ctx);
-                } finally {
-                    ContextUtil.currentSet(ctx);
-                }
-            } else {
-                real.handle(ctx);
-            }
+            real.handle(ctx);
         } catch (Throwable e) {
             if (e instanceof Exception) {
                 throw (Exception) e;
