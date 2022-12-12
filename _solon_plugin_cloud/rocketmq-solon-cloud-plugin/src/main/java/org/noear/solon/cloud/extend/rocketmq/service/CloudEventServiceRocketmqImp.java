@@ -1,5 +1,6 @@
 package org.noear.solon.cloud.extend.rocketmq.service;
 
+import org.apache.rocketmq.client.exception.MQClientException;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudEventHandler;
 import org.noear.solon.cloud.CloudProps;
@@ -86,7 +87,11 @@ public class CloudEventServiceRocketmqImp implements CloudEventServicePlus {
 
     public void subscribe() {
         if (observerManger.topicSize() > 0) {
-            consumer.init(cloudProps, observerManger);
+            try {
+                consumer.init(cloudProps, observerManger);
+            } catch (MQClientException e) {
+                throw new IllegalStateException(e);
+            }
         }
     }
 
