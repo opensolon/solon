@@ -577,6 +577,12 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>solon.cloud.httputils</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>solon.cloud.tracing</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
