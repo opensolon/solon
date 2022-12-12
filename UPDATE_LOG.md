@@ -10,10 +10,15 @@
 * 增加 更多友好的异常分类???
 * 增加 便利的原生编译机制
 
-#### 1.12.0
+#### 1.11.5
 * 新增 elastic-job-solon-plugin 分布式定时任务 ???
 * 新增 file-s3-solon-plugin 插件 ???
 * 新增 aliyun-ons-solon-cloud-plugin 插件 ???
+* 优化 solon.scheduling.simple
+* 优化 solon.scheduling.quartz
+* 优化 quartz-solon-cloud-plugin（server 是不存在的，要控制下）
+* 优化 quartz-solon-plugin
+* 优化 local-solon-cloud-plugin（增加本地 file 支持）
 * 增加 rocketmq tag 过滤支持
 
 #### 1.11.4
@@ -24,7 +29,7 @@
 * 新增 solon.scheduling.quartz 插件（替代 quartz-solon-plugin；更标准化）
 * 新增 quartz-solon-cloud-plugin 插件 
 * 插件 quartz-solon-plugin 增加函数执行支持，增加持久化和远程管理支持（代码微调整）
-* 插件 local-solon-cloud-plugin 添加 server 配置支持（只能指向本地） 
+* 插件 local-solon-cloud-plugin 添加 server 配置支持（只能指向本地，存放数据） 
 * 插件 solon.web.staticfiles 允许 maxAge=-1 配置（从而取消 URLConnection 的缓存）
 * 插件 solon.web.staticfiles 增加资源仓库预热支持
 * 插件 solon.schedule 插件，调整自动任务名字处理，避免重复 //要解决名字重复问题 ???

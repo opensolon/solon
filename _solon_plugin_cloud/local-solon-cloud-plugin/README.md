@@ -23,6 +23,7 @@ local-solon-cloud-plugin 是 solon cloud 标准的本地模拟实现。（src/te
 可以通过配置加载配置
 ```yaml
 solon.cloud.local:
+  server: "/users/demo_cloud/" #指定存放目录
   config:
     load: "demoapp.yml"
 ```
