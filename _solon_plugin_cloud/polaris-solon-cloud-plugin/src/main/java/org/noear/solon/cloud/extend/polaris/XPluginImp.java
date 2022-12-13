@@ -1,5 +1,6 @@
 package org.noear.solon.cloud.extend.polaris;
 
+import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.cloud.CloudManager;
 import org.noear.solon.cloud.extend.polaris.service.CloudConfigServicePolarisImp;
 import org.noear.solon.cloud.extend.polaris.service.CloudDiscoveryServicePolarisImp;
@@ -20,6 +21,9 @@ public class XPluginImp implements Plugin {
         if (PolarisProps.instance.getConfigEnable()) {
             cloudConfigServicePolarisImp = new CloudConfigServicePolarisImp(PolarisProps.instance);
             CloudManager.register(cloudConfigServicePolarisImp);
+
+            //1.1.加载配置
+            CloudClient.configLoad(PolarisProps.instance.getConfigLoad());
         }
 
         //2.登记发现服务

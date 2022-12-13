@@ -41,9 +41,6 @@ public class XPluginImp implements Plugin {
 
             //1.1.加载配置
             CloudClient.configLoad(KubernetesProps.instance.getConfigLoad());
-
-            CloudClient.configLoad(KubernetesProps.instance.getConfigLoadGroup(),
-                    KubernetesProps.instance.getConfigLoadKey());
         }
     }
 }

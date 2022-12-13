@@ -21,9 +21,6 @@ public class XPluginImp implements Plugin {
 
             //配置加载
             CloudClient.configLoad(LocalProps.instance.getConfigLoad());
-
-            CloudClient.configLoad(LocalProps.instance.getConfigLoadGroup(),
-                    LocalProps.instance.getConfigLoadKey());
         }
 
         if (LocalProps.instance.getDiscoveryEnable()) {
