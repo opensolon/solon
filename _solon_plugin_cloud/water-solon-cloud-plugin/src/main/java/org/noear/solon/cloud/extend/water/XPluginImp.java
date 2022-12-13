@@ -128,10 +128,6 @@ public class XPluginImp implements Plugin {
 
             //配置加载
             CloudClient.configLoad(cloudProps.getConfigLoad());
-
-            CloudClient.configLoad(cloudProps.getConfigLoadGroup(),
-                    cloudProps.getConfigLoadKey());
-
         }
 
         if (cloudProps.getI18nEnable()) {
