@@ -32,13 +32,12 @@ public class CloudConfigServicePolarisImp implements CloudConfigService , Closea
 
         ConfigurationImpl configuration = (ConfigurationImpl) ConfigAPIFactory.defaultConfig();
 
-            configuration.getGlobal().getSystem().getConfigCluster()
-                    .setNamespace(namespace);
+        configuration.getGlobal().getSystem().getConfigCluster()
+                .setNamespace(namespace);
         configuration.getConfigFile().getServerConnector()
                 .setAddresses(Arrays.asList(server));
 
         this.real = ConfigFileServiceFactory.createConfigFileService(configuration);
-
     }
 
     /**
