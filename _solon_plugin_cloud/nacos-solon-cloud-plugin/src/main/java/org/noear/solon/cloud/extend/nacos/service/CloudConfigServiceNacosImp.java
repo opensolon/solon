@@ -34,9 +34,11 @@ public class CloudConfigServiceNacosImp implements CloudConfigService {
 
         Properties properties = new Properties();
         properties.put("serverAddr", server);
+
         if (Utils.isNotEmpty(username)) {
             properties.put("username", username);
         }
+
         if (Utils.isNotEmpty(password)) {
             properties.put("password", password);
         }
@@ -48,7 +50,7 @@ public class CloudConfigServiceNacosImp implements CloudConfigService {
         try {
             real = ConfigFactory.createConfigService(properties);
         } catch (NacosException e) {
-            throw new RuntimeException(e);
+            throw new IllegalStateException(e);
         }
     }
 

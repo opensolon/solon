@@ -22,8 +22,8 @@ import java.util.Properties;
  * @since 1.2
  */
 public class CloudDiscoveryServiceNacosImp implements CloudDiscoveryService {
-    NamingService real;
-    boolean unstable;
+    private NamingService real;
+    private boolean unstable;
 
     public CloudDiscoveryServiceNacosImp(CloudProps cloudProps) {
         String server = cloudProps.getDiscoveryServer();
@@ -32,9 +32,11 @@ public class CloudDiscoveryServiceNacosImp implements CloudDiscoveryService {
 
         Properties properties = new Properties();
         properties.put("serverAddr", server);
+
         if (Utils.isNotEmpty(username)) {
             properties.put("username", username);
         }
+
         if (Utils.isNotEmpty(password)) {
             properties.put("password", password);
         }
