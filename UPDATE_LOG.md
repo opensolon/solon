@@ -16,29 +16,29 @@
 
 
 #### 1.11.5
-* 插件 aliyun-ons-solon-cloud-plugin 增加 tag 过滤支持
+* 新增 aliyun-ons-solon-cloud-plugin 插件，且支持 tag 过滤支持
+* 新增 rocketmq5-solon-cloud-plugin 插件，且支持 tag 过滤支持
 * 插件 rocketmq-solon-cloud-plugin 增加 tag 过滤支持
-* 插件 rocketmq5-solon-cloud-plugin 增加 tag 过滤支持
-* 插件 solon.scheduling.simple 优化名字可能重复问题
-* 插件 solon.schedule 优化名字可能重复问题 
-* 优化 solon.scheduling.quartz 插件 
-* 优化 quartz-solon-cloud-plugin，取消对 server 配置的依赖 
-* 优化 quartz-solon-plugin，支持注解在函数上
+* 插件 solon.scheduling.simple 优化名字可能重复的问题
+* 插件 solon.schedule 优化名字可能重复的问题 
+* 插件 local-solon-cloud-plugin 增加 cloud file 的模拟实现
+* 调整 quartz-solon-cloud-plugin，取消对 server 配置的依赖
+* 调整 quartz-solon-plugin，支持任务注解在函数上
 * 优化 local-solon-cloud-plugin（增加本地 file 支持，必须配置 server）
 * 升级 snack3 为 3.2.50
 
 #### 1.11.4
-* 新增 solon.web.webdav 插件 
+* 新增 solon.web.webdav 插件（类似于网盘的能力）
 * 新增 solon.logging.simple 插件（替代 solon.logging.impl） 
 * 新增 solon.scheduling 插件 
 * 新增 solon.scheduling.simple 插件（替代 solon.schedule；更标准化）
 * 新增 solon.scheduling.quartz 插件（替代 quartz-solon-plugin；更标准化）
-* 新增 quartz-solon-cloud-plugin 插件 
-* 插件 quartz-solon-plugin 增加函数执行支持，增加持久化和远程管理支持（代码微调整）
+* 新增 quartz-solon-cloud-plugin 插件（基于 solon cloud job 标准适配） 
+* 插件 quartz-solon-plugin 增加函数执行支持，增加持久化和远程管理支持
 * 插件 local-solon-cloud-plugin 添加 server 配置支持（只能指向本地，存放数据） 
 * 插件 solon.web.staticfiles 允许 maxAge=-1 配置（从而取消 URLConnection 的缓存）
 * 插件 solon.web.staticfiles 增加资源仓库预热支持
-* 插件 solon.boot.jlhttp 调整server代码，不再限制 method 
+* 插件 solon.boot.jlhttp 调整server代码，不再限制 method（用于支持 webdav）
 * 插件 solon.boot 调整 coreTheads,maxTheads 配置，支持部数模式 x16（表示cpu核数的16倍）
 * 增加 enableWebSocketMvc，enableSocketMvc 开关控制 
 * 增加 mybatis-solon-plugin 插件对 Mappers 有无的检查并提示 
