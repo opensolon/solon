@@ -30,9 +30,8 @@ class ConvertUtil {
                 }
 
                 Instance instance = new Instance(service, t1.address)
-                        .protocol(t1.protocol)
                         .weight(t1.weight)
-                        .metaPutAll(meta);
+                        .metaPutAll(meta); //会自动处理 protocol
 
                 d2.instanceAdd(instance);
             });

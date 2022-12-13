@@ -156,7 +156,7 @@ public class CloudDiscoveryServiceNacosImp implements CloudDiscoveryService {
                 Instance n1 = new Instance(service,
                         i1.getIp() + ":" + i1.getPort())
                         .weight(i1.getWeight())
-                        .metaPutAll(i1.getMetadata());
+                        .metaPutAll(i1.getMetadata()); //会自动处理 protocol
 
                 discovery.instanceAdd(n1);
             }
