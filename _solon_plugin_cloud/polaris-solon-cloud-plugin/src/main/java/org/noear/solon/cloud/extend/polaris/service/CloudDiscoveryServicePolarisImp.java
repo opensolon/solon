@@ -35,10 +35,8 @@ public class CloudDiscoveryServicePolarisImp implements CloudDiscoveryService , 
 
         ConfigurationImpl configuration = (ConfigurationImpl) ConfigAPIFactory.defaultConfig();
 
-        if(Utils.isNotEmpty(namespace)) {
-            configuration.getGlobal().getSystem().getConfigCluster()
-                    .setNamespace(namespace);
-        }
+        configuration.getGlobal().getSystem().getConfigCluster()
+                .setNamespace(namespace);
         configuration.getGlobal().getServerConnector()
                 .setAddresses(Arrays.asList(server));
 
