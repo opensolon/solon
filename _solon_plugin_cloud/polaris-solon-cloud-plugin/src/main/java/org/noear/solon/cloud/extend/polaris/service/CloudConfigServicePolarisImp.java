@@ -28,13 +28,16 @@ public class CloudConfigServicePolarisImp implements CloudConfigService , Closea
 
     public CloudConfigServicePolarisImp(CloudProps cloudProps) {
         String server = cloudProps.getConfigServer();
+        String namespace = Solon.cfg().appNamespace();
 
         ConfigurationImpl configuration = (ConfigurationImpl) ConfigAPIFactory.defaultConfig();
 
-        configuration.getGlobal().getSystem().getConfigCluster()
-                .setNamespace(Solon.cfg().appNamespace());
-        configuration.getGlobal().getSystem().getConfigCluster()
-                .setService(server);
+        if(Utils.isNotEmpty(namespace)) {
+            configuration.getGlobal().getSystem().getConfigCluster()
+                    .setNamespace(namespace);
+        }
+        configuration.getGlobal().getServerConnector()
+                .setAddresses(Arrays.asList(server));
 
         configuration.getConfigFile().getServerConnector()
                 .setAddresses(Arrays.asList(server));

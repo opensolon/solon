@@ -31,9 +31,14 @@ public class CloudDiscoveryServicePolarisImp implements CloudDiscoveryService , 
 
     public CloudDiscoveryServicePolarisImp(CloudProps cloudProps) {
         String server = cloudProps.getDiscoveryServer();
+        String namespace = Solon.cfg().appNamespace();
 
         ConfigurationImpl configuration = (ConfigurationImpl) ConfigAPIFactory.defaultConfig();
 
+        if(Utils.isNotEmpty(namespace)) {
+            configuration.getGlobal().getSystem().getConfigCluster()
+                    .setNamespace(namespace);
+        }
         configuration.getGlobal().getServerConnector()
                 .setAddresses(Arrays.asList(server));
 
