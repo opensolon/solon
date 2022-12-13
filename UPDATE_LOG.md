@@ -1,6 +1,5 @@
 #### 后续（可以提 Issue 增加需求）
 * 新增 knife4j-solon-plugin 插件
-* 新增 liteflow-solon-plugin 插件
 * 新增 kubernetes-solon-cloud-plugin 插件
 * 新增 jmdns-solon-cloud-plugin 插件
 * 新增 swagger-solon-plugin 插件
@@ -13,6 +12,8 @@
 #### 1.11.6
 * 新增 elastic-job-solon-plugin 分布式定时任务 ???
 * 新增 file-s3-solon-plugin 插件 ???
+* 新增 polaris-solon-cloud-plugin 插件 ???
+* 新增 liteflow-solon-plugin 插件 ???
 
 
 #### 1.11.5
