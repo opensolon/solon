@@ -2,20 +2,23 @@
 #### 配置示例
 
 ```yml
+solon.app:
+  name: "demoapp"
+  group: "demo"
+  namespace: "default"
 
-solon:
-  app:
-    namespace: default
-    group: demo
-    name: demoapp
-    
 solon.cloud.polaris:
-  server: 127.0.0.1:8091
-  discovery:
-    enable: true
+  username: polaris        #polaris链接账号
+  password: polaris        #polaris链接密码
   config:
-    enable: true
-    load: "server1.yml"
+    load: "demoapp.yml"
+    server: localhost:8093   #polaris配置服务地址
+    serverConnector: # 映射 ConnectorConfigImpl 的字段
+      persistEnable: false
+  discovery:
+    server: localhost:8091   #polaris发现服务地址
+    serverConnector: # 映射 ServerConnectorConfigImpl 的字段
+      protocol: "grpc"
 ```
 
 #### 已完成

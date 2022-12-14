@@ -1,9 +1,13 @@
 package org.noear.solon.cloud.extend.polaris.service;
 
+import com.tencent.polaris.api.config.configuration.ConnectorConfig;
+import com.tencent.polaris.api.config.global.ClusterConfig;
 import com.tencent.polaris.configuration.api.core.*;
 import com.tencent.polaris.configuration.factory.ConfigFileServiceFactory;
 import com.tencent.polaris.factory.ConfigAPIFactory;
 import com.tencent.polaris.factory.config.ConfigurationImpl;
+import com.tencent.polaris.factory.config.configuration.ConnectorConfigImpl;
+import com.tencent.polaris.factory.config.global.ClusterConfigImpl;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudConfigHandler;
@@ -12,6 +16,7 @@ import org.noear.solon.cloud.exception.CloudConfigException;
 import org.noear.solon.cloud.model.Config;
 import org.noear.solon.cloud.service.CloudConfigObserverEntity;
 import org.noear.solon.cloud.service.CloudConfigService;
+import org.noear.solon.core.Props;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -22,6 +27,8 @@ import java.util.*;
  * @since 1.11
  * */
 public class CloudConfigServicePolarisImp implements CloudConfigService , Closeable {
+    static final String PROP_serverConnector = "config.serverConnector";
+
     private Map<CloudConfigHandler, CloudConfigObserverEntity> observerMap = new HashMap<>();
     private ConfigFileService real;
 
@@ -32,10 +39,16 @@ public class CloudConfigServicePolarisImp implements CloudConfigService , Closea
 
         ConfigurationImpl configuration = (ConfigurationImpl) ConfigAPIFactory.defaultConfig();
 
-        configuration.getGlobal().getSystem().getConfigCluster()
-                .setNamespace(namespace);
-        configuration.getConfigFile().getServerConnector()
-                .setAddresses(Arrays.asList(server));
+        //集群设置
+        ClusterConfigImpl clusterConfig = configuration.getGlobal().getSystem().getConfigCluster();
+        clusterConfig.setNamespace(namespace);
+
+        //配置连接设置(8093)
+        Props connectorProps = cloudProps.getProp(PROP_serverConnector); //支持配置注入
+        ConnectorConfigImpl connectorConfig = configuration.getConfigFile().getServerConnector();
+        connectorConfig.setAddresses(Arrays.asList(server));
+        //注入本置
+        Utils.injectProperties(connectorConfig, connectorProps);
 
         this.real = ConfigFileServiceFactory.createConfigFileService(configuration);
     }

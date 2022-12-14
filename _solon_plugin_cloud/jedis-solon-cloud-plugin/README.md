@@ -1,6 +1,11 @@
 
 集群订阅时，接收时需要加锁（不然每个节点，都会收到）；没有 ACK（不适合原子性业务）
 
+#### 能力
+
+* CloudEventServicePlus
+* CloudLockService
+
 #### 配置
 
 ```yaml

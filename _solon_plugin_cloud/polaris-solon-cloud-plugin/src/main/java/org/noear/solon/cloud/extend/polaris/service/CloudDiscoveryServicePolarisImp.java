@@ -6,6 +6,8 @@ import com.tencent.polaris.api.rpc.*;
 import com.tencent.polaris.factory.ConfigAPIFactory;
 import com.tencent.polaris.factory.api.DiscoveryAPIFactory;
 import com.tencent.polaris.factory.config.ConfigurationImpl;
+import com.tencent.polaris.factory.config.global.ClusterConfigImpl;
+import com.tencent.polaris.factory.config.global.ServerConnectorConfigImpl;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudDiscoveryHandler;
@@ -14,6 +16,7 @@ import org.noear.solon.cloud.model.Discovery;
 import org.noear.solon.cloud.model.Instance;
 import org.noear.solon.cloud.service.CloudDiscoveryObserverEntity;
 import org.noear.solon.cloud.service.CloudDiscoveryService;
+import org.noear.solon.core.Props;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -26,6 +29,8 @@ import java.util.Objects;
  * @since 1.11
  * */
 public class CloudDiscoveryServicePolarisImp implements CloudDiscoveryService , Closeable {
+    static final String PROP_serverConnector = "discovery.serverConnector";
+
     private ProviderAPI providerAPI;
     private ConsumerAPI consumerAPI;
 
@@ -35,10 +40,16 @@ public class CloudDiscoveryServicePolarisImp implements CloudDiscoveryService , 
 
         ConfigurationImpl configuration = (ConfigurationImpl) ConfigAPIFactory.defaultConfig();
 
-        configuration.getGlobal().getSystem().getConfigCluster()
-                .setNamespace(namespace);
-        configuration.getGlobal().getServerConnector()
-                .setAddresses(Arrays.asList(server));
+        //集群设置
+        ClusterConfigImpl clusterConfig = configuration.getGlobal().getSystem().getConfigCluster();
+        clusterConfig.setNamespace(namespace);
+
+        //发现连接设置(8091)
+        Props connectorProps = cloudProps.getProp(PROP_serverConnector); //支持配置注入
+        ServerConnectorConfigImpl connectorConfig = configuration.getGlobal().getServerConnector();
+        connectorConfig.setAddresses(Arrays.asList(server));
+        //注入本置
+        Utils.injectProperties(connectorConfig, connectorProps);
 
         providerAPI = DiscoveryAPIFactory.createProviderAPIByConfig(configuration);
         consumerAPI = DiscoveryAPIFactory.createConsumerAPIByConfig(configuration);
