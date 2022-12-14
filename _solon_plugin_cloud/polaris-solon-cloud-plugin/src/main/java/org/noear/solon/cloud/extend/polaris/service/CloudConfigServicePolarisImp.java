@@ -42,11 +42,15 @@ public class CloudConfigServicePolarisImp implements CloudConfigService , Closea
         clusterConfig.setNamespace(namespace);
 
         //配置连接设置(8093)
-        Props connectorProps = cloudProps.getProp(PROP_serverConnector); //支持配置注入
         ConnectorConfigImpl connectorConfig = configuration.getConfigFile().getServerConnector();
         connectorConfig.setAddresses(Arrays.asList(server));
-        //注入本置
-        Utils.injectProperties(connectorConfig, connectorProps);
+        //注入配置
+        Props connectorProps = cloudProps.getProp(PROP_serverConnector); //支持配置注入
+        if (connectorProps.size() > 0) {
+            Utils.injectProperties(connectorConfig, connectorProps);
+        } else {
+            connectorConfig.setPersistEnable(false);
+        }
 
         this.real = ConfigFileServiceFactory.createConfigFileService(configuration);
     }
