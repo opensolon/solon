@@ -11,6 +11,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudConfigHandler;
 import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.exception.CloudConfigException;
+import org.noear.solon.cloud.extend.polaris.PolarisProps;
 import org.noear.solon.cloud.model.Config;
 import org.noear.solon.cloud.service.CloudConfigObserverEntity;
 import org.noear.solon.cloud.service.CloudConfigService;
@@ -31,10 +32,11 @@ public class CloudConfigServicePolarisImp implements CloudConfigService , Closea
     private ConfigFileService real;
 
 
-    public CloudConfigServicePolarisImp(ConfigurationImpl cfgImpl, CloudProps cloudProps) {
+    public CloudConfigServicePolarisImp(CloudProps cloudProps) {
         String server = cloudProps.getConfigServer();
         String namespace = Solon.cfg().appNamespace();
 
+        ConfigurationImpl cfgImpl = PolarisProps.getCfgImpl();
 
         //配置集群设置
         ClusterConfigImpl clusterConfig = cfgImpl.getGlobal().getSystem().getConfigCluster();

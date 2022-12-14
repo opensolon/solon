@@ -19,7 +19,6 @@ public class XPluginImp implements Plugin {
 
     @Override
     public void start(AopContext context) throws Throwable {
-        ConfigurationImpl configuration = (ConfigurationImpl) ConfigAPIFactory.defaultConfig();
 
         //1.登记配置服务
         if (PolarisProps.instance.getConfigEnable()) {

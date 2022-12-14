@@ -13,6 +13,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudDiscoveryHandler;
 import org.noear.solon.cloud.CloudProps;
+import org.noear.solon.cloud.extend.polaris.PolarisProps;
 import org.noear.solon.cloud.model.Discovery;
 import org.noear.solon.cloud.model.Instance;
 import org.noear.solon.cloud.service.CloudDiscoveryObserverEntity;
@@ -37,9 +38,11 @@ public class CloudDiscoveryServicePolarisImp implements CloudDiscoveryService , 
     private ProviderAPI providerAPI;
     private ConsumerAPI consumerAPI;
 
-    public CloudDiscoveryServicePolarisImp(ConfigurationImpl cfgImpl, CloudProps cloudProps) {
+    public CloudDiscoveryServicePolarisImp(CloudProps cloudProps) {
         String server = cloudProps.getDiscoveryServer();
         String namespace = Solon.cfg().appNamespace();
+
+        ConfigurationImpl cfgImpl = PolarisProps.getCfgImpl();
 
         //发现集群设置
         ClusterConfigImpl clusterConfig = cfgImpl.getGlobal().getSystem().getDiscoverCluster();
