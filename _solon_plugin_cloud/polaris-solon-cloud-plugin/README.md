@@ -18,7 +18,7 @@ solon.cloud.polaris:
     server: localhost:8091   #polaris发现服务地址
 ```
 
-需要更复杂的配置，请资源 resources/polaris.yml 进行配置
+需要更复杂的配置，请通过资源 resources/polaris.yml 进行配置
 （具体参考：https://github.com/polarismesh/polaris-java/blob/main/polaris-common/polaris-config-default/src/main/resources/conf/default-config.yml）
 
 #### 已完成
