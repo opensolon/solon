@@ -18,7 +18,6 @@
 * 插件 nacos2-solon-cloud-plugin 增加 namespace 支持 !ok
 * 取消 config.loadGroup, config.loadKey 配置 !ok
 
-
 #### 1.11.5
 * 新增 aliyun-ons-solon-cloud-plugin 插件，且支持 tag 过滤支持
 * 新增 rocketmq5-solon-cloud-plugin 插件，且支持 tag 过滤支持
