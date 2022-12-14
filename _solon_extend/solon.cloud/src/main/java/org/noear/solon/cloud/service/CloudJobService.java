@@ -3,7 +3,7 @@ package org.noear.solon.cloud.service;
 import org.noear.solon.cloud.CloudJobHandler;
 
 /**
- * 云端任务服务
+ * 云端定时任务服务
  *
  * @author noear
  * @since 1.3
