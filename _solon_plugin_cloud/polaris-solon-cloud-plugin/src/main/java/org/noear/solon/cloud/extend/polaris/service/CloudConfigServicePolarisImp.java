@@ -2,7 +2,6 @@ package org.noear.solon.cloud.extend.polaris.service;
 
 import com.tencent.polaris.configuration.api.core.*;
 import com.tencent.polaris.configuration.factory.ConfigFileServiceFactory;
-import com.tencent.polaris.factory.ConfigAPIFactory;
 import com.tencent.polaris.factory.config.ConfigurationImpl;
 import com.tencent.polaris.factory.config.configuration.ConnectorConfigImpl;
 import com.tencent.polaris.factory.config.global.ClusterConfigImpl;
@@ -15,7 +14,6 @@ import org.noear.solon.cloud.extend.polaris.PolarisProps;
 import org.noear.solon.cloud.model.Config;
 import org.noear.solon.cloud.service.CloudConfigObserverEntity;
 import org.noear.solon.cloud.service.CloudConfigService;
-import org.noear.solon.core.Props;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -26,8 +24,6 @@ import java.util.*;
  * @since 1.11
  * */
 public class CloudConfigServicePolarisImp implements CloudConfigService , Closeable {
-    static final String PROP_serverConnector = "config.serverConnector";
-
     private Map<CloudConfigHandler, CloudConfigObserverEntity> observerMap = new HashMap<>();
     private ConfigFileService real;
 
@@ -46,13 +42,7 @@ public class CloudConfigServicePolarisImp implements CloudConfigService , Closea
         //配置连接设置(8093)
         ConnectorConfigImpl connectorConfig = cfgImpl.getConfigFile().getServerConnector();
         connectorConfig.setAddresses(Arrays.asList(server));
-        //注入配置
-        Props connectorProps = cloudProps.getProp(PROP_serverConnector); //支持配置注入
-        if (connectorProps.size() > 0) {
-            Utils.injectProperties(connectorConfig, connectorProps);
-        } else {
-            connectorConfig.setPersistEnable(false);
-        }
+
 
         this.real = ConfigFileServiceFactory.createConfigFileService(cfgImpl);
     }

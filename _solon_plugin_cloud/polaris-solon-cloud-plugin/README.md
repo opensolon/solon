@@ -1,6 +1,7 @@
 
 #### 配置示例
 
+
 ```yml
 solon.app:
   name: "demoapp"
@@ -11,15 +12,14 @@ solon.cloud.polaris:
   username: polaris        #polaris链接账号
   password: polaris        #polaris链接密码
   config:
-    load: "demoapp.yml"
     server: localhost:8093   #polaris配置服务地址
-    serverConnector: # 映射 ConnectorConfigImpl 的字段（默认不用配置）
-      persistEnable: false
+    load: "demoapp.yml"
   discovery:
     server: localhost:8091   #polaris发现服务地址
-    serverConnector: # 映射 ServerConnectorConfigImpl 的字段（默认不用配置）
-      protocol: "grpc" 
 ```
+
+需要更复杂的配置，请资源 resources/polaris.yml 进行配置
+（具体参考：https://github.com/polarismesh/polaris-java/blob/main/polaris-common/polaris-config-default/src/main/resources/conf/default-config.yml）
 
 #### 已完成
 + 配置中心 读取,监听

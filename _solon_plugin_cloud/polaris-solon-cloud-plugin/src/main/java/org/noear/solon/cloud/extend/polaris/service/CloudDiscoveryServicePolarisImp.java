@@ -5,10 +5,8 @@ import com.tencent.polaris.api.core.ProviderAPI;
 import com.tencent.polaris.api.rpc.*;
 import com.tencent.polaris.factory.api.DiscoveryAPIFactory;
 import com.tencent.polaris.factory.config.ConfigurationImpl;
-import com.tencent.polaris.factory.config.consumer.ConsumerConfigImpl;
 import com.tencent.polaris.factory.config.global.ClusterConfigImpl;
 import com.tencent.polaris.factory.config.global.ServerConnectorConfigImpl;
-import com.tencent.polaris.factory.config.provider.ProviderConfigImpl;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudDiscoveryHandler;
@@ -18,7 +16,6 @@ import org.noear.solon.cloud.model.Discovery;
 import org.noear.solon.cloud.model.Instance;
 import org.noear.solon.cloud.service.CloudDiscoveryObserverEntity;
 import org.noear.solon.cloud.service.CloudDiscoveryService;
-import org.noear.solon.core.Props;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -31,10 +28,6 @@ import java.util.Objects;
  * @since 1.11
  * */
 public class CloudDiscoveryServicePolarisImp implements CloudDiscoveryService , Closeable {
-    static final String PROP_serverConnector = "discovery.serverConnector";
-    static final String PROP_provider = "discovery.provider";
-    static final String PROP_consumer = "discovery.consumer";
-
     private ProviderAPI providerAPI;
     private ConsumerAPI consumerAPI;
 
@@ -48,31 +41,9 @@ public class CloudDiscoveryServicePolarisImp implements CloudDiscoveryService , 
         ClusterConfigImpl clusterConfig = cfgImpl.getGlobal().getSystem().getDiscoverCluster();
         clusterConfig.setNamespace(namespace);
 
-
-        //发现提供方设置
-        ProviderConfigImpl providerConfig = cfgImpl.getProvider();
-        Props providerConfigProps = cloudProps.getProp(PROP_provider);
-        if (providerConfigProps.size() > 0) {
-            Utils.injectProperties(providerConfig, providerConfigProps);
-        }
-
-
-        //发现消费方设置
-        ConsumerConfigImpl consumerConfig = cfgImpl.getConsumer();
-        Props consumerConfigProps = cloudProps.getProp(PROP_consumer);
-        if (consumerConfigProps.size() > 0) {
-            Utils.injectProperties(consumerConfig, consumerConfigProps);
-        } else {
-            consumerConfig.getLocalCache().setPersistEnable(false);
-        }
-
-
         //发现连接设置(8091)
         ServerConnectorConfigImpl connectorConfig = cfgImpl.getGlobal().getServerConnector();
         connectorConfig.setAddresses(Arrays.asList(server));
-        //注入本置
-        Props connectorProps = cloudProps.getProp(PROP_serverConnector); //支持配置注入
-        Utils.injectProperties(connectorConfig, connectorProps);
 
         providerAPI = DiscoveryAPIFactory.createProviderAPIByConfig(cfgImpl);
         consumerAPI = DiscoveryAPIFactory.createConsumerAPIByConfig(cfgImpl);
