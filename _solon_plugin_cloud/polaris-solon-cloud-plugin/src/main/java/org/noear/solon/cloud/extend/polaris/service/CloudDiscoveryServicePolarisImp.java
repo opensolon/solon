@@ -43,7 +43,9 @@ public class CloudDiscoveryServicePolarisImp implements CloudDiscoveryService , 
 
         //发现连接设置(8091)
         ServerConnectorConfigImpl connectorConfig = cfgImpl.getGlobal().getServerConnector();
-        connectorConfig.setAddresses(Arrays.asList(server));
+        if (connectorConfig.getAddresses() == null || connectorConfig.getAddresses().size() == 0) {
+            connectorConfig.setAddresses(Arrays.asList(server));
+        }
 
         providerAPI = DiscoveryAPIFactory.createProviderAPIByConfig(cfgImpl);
         consumerAPI = DiscoveryAPIFactory.createConsumerAPIByConfig(cfgImpl);
