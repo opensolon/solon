@@ -19,7 +19,7 @@ solon.cloud.polaris:
 ```
 
 需要更复杂的配置，请通过资源 resources/polaris.yml 进行配置
-（具体参考：https://github.com/polarismesh/polaris-java/blob/main/polaris-common/polaris-config-default/src/main/resources/conf/default-config.yml）
+具体参考：https://github.com/polarismesh/polaris-java/blob/main/polaris-common/polaris-config-default/src/main/resources/conf/default-config.yml
 
 #### 已完成
 + 配置中心 读取,监听
