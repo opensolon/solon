@@ -40,8 +40,8 @@ public class CloudDiscoveryServicePolarisImp implements CloudDiscoveryService , 
 
         ConfigurationImpl configuration = (ConfigurationImpl) ConfigAPIFactory.defaultConfig();
 
-        //集群设置
-        ClusterConfigImpl clusterConfig = configuration.getGlobal().getSystem().getConfigCluster();
+        //发现集群设置
+        ClusterConfigImpl clusterConfig = configuration.getGlobal().getSystem().getDiscoverCluster();
         clusterConfig.setNamespace(namespace);
 
         //发现连接设置(8091)

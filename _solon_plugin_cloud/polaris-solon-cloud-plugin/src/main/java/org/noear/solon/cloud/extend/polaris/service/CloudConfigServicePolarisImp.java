@@ -1,7 +1,5 @@
 package org.noear.solon.cloud.extend.polaris.service;
 
-import com.tencent.polaris.api.config.configuration.ConnectorConfig;
-import com.tencent.polaris.api.config.global.ClusterConfig;
 import com.tencent.polaris.configuration.api.core.*;
 import com.tencent.polaris.configuration.factory.ConfigFileServiceFactory;
 import com.tencent.polaris.factory.ConfigAPIFactory;
@@ -39,7 +37,7 @@ public class CloudConfigServicePolarisImp implements CloudConfigService , Closea
 
         ConfigurationImpl configuration = (ConfigurationImpl) ConfigAPIFactory.defaultConfig();
 
-        //集群设置
+        //配置集群设置
         ClusterConfigImpl clusterConfig = configuration.getGlobal().getSystem().getConfigCluster();
         clusterConfig.setNamespace(namespace);
 
