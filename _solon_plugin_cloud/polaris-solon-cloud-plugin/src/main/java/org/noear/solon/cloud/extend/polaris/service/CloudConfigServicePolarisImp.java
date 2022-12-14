@@ -31,18 +31,18 @@ public class CloudConfigServicePolarisImp implements CloudConfigService , Closea
     private ConfigFileService real;
 
 
-    public CloudConfigServicePolarisImp(CloudProps cloudProps) {
+    public CloudConfigServicePolarisImp(ConfigurationImpl cfgImpl, CloudProps cloudProps) {
         String server = cloudProps.getConfigServer();
         String namespace = Solon.cfg().appNamespace();
 
-        ConfigurationImpl configuration = (ConfigurationImpl) ConfigAPIFactory.defaultConfig();
 
         //配置集群设置
-        ClusterConfigImpl clusterConfig = configuration.getGlobal().getSystem().getConfigCluster();
+        ClusterConfigImpl clusterConfig = cfgImpl.getGlobal().getSystem().getConfigCluster();
         clusterConfig.setNamespace(namespace);
 
+
         //配置连接设置(8093)
-        ConnectorConfigImpl connectorConfig = configuration.getConfigFile().getServerConnector();
+        ConnectorConfigImpl connectorConfig = cfgImpl.getConfigFile().getServerConnector();
         connectorConfig.setAddresses(Arrays.asList(server));
         //注入配置
         Props connectorProps = cloudProps.getProp(PROP_serverConnector); //支持配置注入
@@ -52,7 +52,7 @@ public class CloudConfigServicePolarisImp implements CloudConfigService , Closea
             connectorConfig.setPersistEnable(false);
         }
 
-        this.real = ConfigFileServiceFactory.createConfigFileService(configuration);
+        this.real = ConfigFileServiceFactory.createConfigFileService(cfgImpl);
     }
 
     /**

@@ -3,7 +3,6 @@ package org.noear.solon.cloud.extend.polaris.service;
 import com.tencent.polaris.api.core.ConsumerAPI;
 import com.tencent.polaris.api.core.ProviderAPI;
 import com.tencent.polaris.api.rpc.*;
-import com.tencent.polaris.factory.ConfigAPIFactory;
 import com.tencent.polaris.factory.api.DiscoveryAPIFactory;
 import com.tencent.polaris.factory.config.ConfigurationImpl;
 import com.tencent.polaris.factory.config.consumer.ConsumerConfigImpl;
@@ -38,19 +37,17 @@ public class CloudDiscoveryServicePolarisImp implements CloudDiscoveryService , 
     private ProviderAPI providerAPI;
     private ConsumerAPI consumerAPI;
 
-    public CloudDiscoveryServicePolarisImp(CloudProps cloudProps) {
+    public CloudDiscoveryServicePolarisImp(ConfigurationImpl cfgImpl, CloudProps cloudProps) {
         String server = cloudProps.getDiscoveryServer();
         String namespace = Solon.cfg().appNamespace();
 
-        ConfigurationImpl configuration = (ConfigurationImpl) ConfigAPIFactory.defaultConfig();
-
         //发现集群设置
-        ClusterConfigImpl clusterConfig = configuration.getGlobal().getSystem().getDiscoverCluster();
+        ClusterConfigImpl clusterConfig = cfgImpl.getGlobal().getSystem().getDiscoverCluster();
         clusterConfig.setNamespace(namespace);
 
 
         //发现提供方设置
-        ProviderConfigImpl providerConfig = configuration.getProvider();
+        ProviderConfigImpl providerConfig = cfgImpl.getProvider();
         Props providerConfigProps = cloudProps.getProp(PROP_provider);
         if (providerConfigProps.size() > 0) {
             Utils.injectProperties(providerConfig, providerConfigProps);
@@ -58,7 +55,7 @@ public class CloudDiscoveryServicePolarisImp implements CloudDiscoveryService , 
 
 
         //发现消费方设置
-        ConsumerConfigImpl consumerConfig = configuration.getConsumer();
+        ConsumerConfigImpl consumerConfig = cfgImpl.getConsumer();
         Props consumerConfigProps = cloudProps.getProp(PROP_consumer);
         if (consumerConfigProps.size() > 0) {
             Utils.injectProperties(consumerConfig, consumerConfigProps);
@@ -68,14 +65,14 @@ public class CloudDiscoveryServicePolarisImp implements CloudDiscoveryService , 
 
 
         //发现连接设置(8091)
-        ServerConnectorConfigImpl connectorConfig = configuration.getGlobal().getServerConnector();
+        ServerConnectorConfigImpl connectorConfig = cfgImpl.getGlobal().getServerConnector();
         connectorConfig.setAddresses(Arrays.asList(server));
         //注入本置
         Props connectorProps = cloudProps.getProp(PROP_serverConnector); //支持配置注入
         Utils.injectProperties(connectorConfig, connectorProps);
 
-        providerAPI = DiscoveryAPIFactory.createProviderAPIByConfig(configuration);
-        consumerAPI = DiscoveryAPIFactory.createConsumerAPIByConfig(configuration);
+        providerAPI = DiscoveryAPIFactory.createProviderAPIByConfig(cfgImpl);
+        consumerAPI = DiscoveryAPIFactory.createConsumerAPIByConfig(cfgImpl);
     }
 
     /**

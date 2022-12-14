@@ -1,5 +1,7 @@
 package org.noear.solon.cloud.extend.polaris;
 
+import com.tencent.polaris.factory.ConfigAPIFactory;
+import com.tencent.polaris.factory.config.ConfigurationImpl;
 import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.cloud.CloudManager;
 import org.noear.solon.cloud.extend.polaris.service.CloudConfigServicePolarisImp;
@@ -17,6 +19,8 @@ public class XPluginImp implements Plugin {
 
     @Override
     public void start(AopContext context) throws Throwable {
+        ConfigurationImpl configuration = (ConfigurationImpl) ConfigAPIFactory.defaultConfig();
+
         //1.登记配置服务
         if (PolarisProps.instance.getConfigEnable()) {
             cloudConfigServicePolarisImp = new CloudConfigServicePolarisImp(PolarisProps.instance);
