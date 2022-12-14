@@ -13,12 +13,12 @@ solon.cloud.polaris:
   config:
     load: "demoapp.yml"
     server: localhost:8093   #polaris配置服务地址
-    serverConnector: # 映射 ConnectorConfigImpl 的字段
+    serverConnector: # 映射 ConnectorConfigImpl 的字段（默认不用配置）
       persistEnable: false
   discovery:
     server: localhost:8091   #polaris发现服务地址
-    serverConnector: # 映射 ServerConnectorConfigImpl 的字段
-      protocol: "grpc"
+    serverConnector: # 映射 ServerConnectorConfigImpl 的字段（默认不用配置）
+      protocol: "grpc" 
 ```
 
 #### 已完成
