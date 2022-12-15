@@ -4,14 +4,12 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.clients.producer.*;
-import org.apache.kafka.common.serialization.StringDeserializer;
-import org.apache.kafka.common.serialization.StringSerializer;
-import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudEventHandler;
 import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.annotation.EventLevel;
 import org.noear.solon.cloud.exception.CloudEventException;
+import org.noear.solon.cloud.extend.kafka.impl.KafkaConfig;
 import org.noear.solon.cloud.model.Event;
 import org.noear.solon.cloud.service.CloudEventObserverManger;
 import org.noear.solon.cloud.service.CloudEventServicePlus;
@@ -32,21 +30,12 @@ import java.util.concurrent.TimeUnit;
 public class CloudEventServiceKafkaImp implements CloudEventServicePlus {
     static Logger log = LoggerFactory.getLogger(CloudEventServiceKafkaImp.class);
 
-
-    private final CloudProps cloudProps;
+    private final KafkaConfig config;
     private KafkaProducer<String, String> producer;
     private KafkaConsumer<String, String> consumer;
 
-    private long timeout;
-    private String server;
-    String eventChannelName;
-
     public CloudEventServiceKafkaImp(CloudProps cloudProps) {
-        this.cloudProps = cloudProps;
-
-        this.timeout = cloudProps.getEventPublishTimeout();
-        this.server = cloudProps.getEventServer();
-        this.eventChannelName = cloudProps.getEventChannel();
+        this.config = new KafkaConfig(cloudProps);
     }
 
     private synchronized void initProducer() {
@@ -54,24 +43,8 @@ public class CloudEventServiceKafkaImp implements CloudEventServicePlus {
             return;
         }
 
-        Properties config = new Properties();
-
-        config.put("bootstrap.servers", server);
-        config.put("key.serializer", StringSerializer.class.getName());
-        config.put("value.serializer", StringSerializer.class.getName());
-        config.put("acks", "all");
-        config.put("retries", 0);
-        config.put("batch.size", 16384); //默认是16384Bytes，即16kB
-
-        //绑定定制属性
-        Properties props = cloudProps.getEventProducerProps();
-        if (props.size() > 0) {
-            props.forEach((k, v) -> {
-                config.put(k, v);
-            });
-        }
-
-        producer = new KafkaProducer<>(config);
+        Properties properties = config.getProducerProperties();
+        producer = new KafkaProducer<>(properties);
     }
 
     private synchronized void initConsumer() {
@@ -79,29 +52,9 @@ public class CloudEventServiceKafkaImp implements CloudEventServicePlus {
             return;
         }
 
-        Properties config = new Properties();
-
-        config.put("bootstrap.servers", server);
-        config.put("key.deserializer", StringDeserializer.class.getName());
-        config.put("value.deserializer", StringDeserializer.class.getName());
-        config.put("group.id", Solon.cfg().appGroup() + "_" + Solon.cfg().appName());
-        config.put("enable.auto.commit", "true");
-        config.put("auto.commit.interval.ms", "1000");
-        config.put("session.timeout.ms", "30000");
-        config.put("max.poll.records", 100);
-        config.put("auto.offset.reset", "earliest");
-
-        //绑定定制属性
-        Properties props = cloudProps.getEventConsumerProps();
-        if (props.size() > 0) {
-            props.forEach((k, v) -> {
-                config.put(k, v);
-            });
-        }
-
-        consumer = new KafkaConsumer<>(config);
+        Properties properties = config.getConsumerProperties();
+        consumer = new KafkaConsumer<>(properties);
     }
-
 
     @Override
     public boolean publish(Event event) throws CloudEventException {
@@ -111,10 +64,10 @@ public class CloudEventServiceKafkaImp implements CloudEventServicePlus {
             event.key(Utils.guid());
         }
 
-        Future<RecordMetadata> future = producer.send(new ProducerRecord<String, String>(event.topic(), event.key(), event.content()));
-        if (timeout > 0 && event.qos() > 0) {
+        Future<RecordMetadata> future = producer.send(new ProducerRecord<>(event.topic(), event.key(), event.content()));
+        if (config.getTimeout() > 0 && event.qos() > 0) {
             try {
-                future.get(timeout, TimeUnit.MICROSECONDS);
+                future.get(config.getTimeout(), TimeUnit.MICROSECONDS);
             } catch (Exception e) {
                 throw new CloudEventException(e);
             }
@@ -161,7 +114,7 @@ public class CloudEventServiceKafkaImp implements CloudEventServicePlus {
                 for (ConsumerRecord<String, String> record : records) {
                     Event event = new Event(record.topic(), record.value())
                             .key(record.key())
-                            .channel(eventChannelName);
+                            .channel(config.getEventChannel());
 
                     isOk = isOk && onReceive(event);
                 }
@@ -195,23 +148,13 @@ public class CloudEventServiceKafkaImp implements CloudEventServicePlus {
         return isOk;
     }
 
-    private String channel;
-    private String group;
-
     @Override
     public String getChannel() {
-        if (channel == null) {
-            channel = cloudProps.getEventChannel();
-        }
-        return channel;
+        return config.getEventChannel();
     }
 
     @Override
     public String getGroup() {
-        if (group == null) {
-            group = cloudProps.getEventGroup();
-        }
-
-        return group;
+        return config.getEventGroup();
     }
 }

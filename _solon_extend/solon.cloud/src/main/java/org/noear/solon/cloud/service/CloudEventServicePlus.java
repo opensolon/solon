@@ -14,7 +14,7 @@ public interface CloudEventServicePlus extends CloudEventService{
     String getChannel();
 
     /**
-     * 获取默认分组配置
+     * 获取默认分组配置（即给所有的发送和订阅加上分组）
      * */
     String getGroup();
 }

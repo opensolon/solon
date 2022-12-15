@@ -47,9 +47,9 @@ public class CloudProps {
     private String EVENT_PREFETCH_COUNT = "solon.cloud.@@.event.prefetchCount";
     private String EVENT_PUBLISH_TIMEOUT = "solon.cloud.@@.event.publishTimeout";
 
-    private String EVENT_CHANNEL = "solon.cloud.@@.event.channel"; //通道
+    private String EVENT_CHANNEL = "solon.cloud.@@.event.channel"; //虚拟通道（在客户端，可以多通道路由）
     private String EVENT_BROKER = "solon.cloud.@@.event.broker"; //broker
-    private String EVENT_GROUP = "solon.cloud.@@.event.group"; //虚拟分组
+    private String EVENT_GROUP = "solon.cloud.@@.event.group"; //虚拟分组 //默认分组配置（即给所有的发送和订阅加上分组）
     private String EVENT_CONSUMER = "solon.cloud.@@.event.consumer"; //配置组
     private String EVENT_PRODUCER = "solon.cloud.@@.event.producer"; //配置组
     private String EVENT_CLIENT = "solon.cloud.@@.event.client"; //配置组
