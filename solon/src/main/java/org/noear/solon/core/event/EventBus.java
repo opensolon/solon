@@ -41,7 +41,7 @@ public final class EventBus {
     }
 
     /**
-     * 同步推送事件
+     * 同步推送事件（不具有事务回滚传导性；异常会内部吃掉）
      *
      * @param event 事件（可以是任何对象）
      */
