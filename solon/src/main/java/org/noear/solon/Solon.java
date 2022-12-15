@@ -151,13 +151,13 @@ public class Solon {
             //3.运行应用（运行插件、扫描Bean等）
             app.run();
 
-        } catch (Throwable ex) {
+        } catch (Throwable e) {
             //显示异常信息
-            ex = Utils.throwableUnwrap(ex);
-            EventBus.push(ex);
+            e = Utils.throwableUnwrap(e);
+            EventBus.push(e);
 
             if (app.enableErrorAutoprint() == false) {
-                ex.printStackTrace();
+                e.printStackTrace();
             }
 
             //4.停止服务并退出（主要是停止插件）

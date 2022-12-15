@@ -59,17 +59,17 @@ public class RabbitConsumeHandler extends DefaultConsumer {
                 getChannel().basicAck(envelope.getDeliveryTag(), false);
             }
 
-        } catch (Throwable ex) {
-            ex = Utils.throwableUnwrap(ex);
+        } catch (Throwable e) {
+            e = Utils.throwableUnwrap(e);
 
-            EventBus.push(ex);
+            EventBus.push(e);
 
-            if (ex instanceof RuntimeException) {
-                throw (RuntimeException) ex;
-            } else if (ex instanceof IOException) {
-                throw (IOException) ex;
+            if (e instanceof RuntimeException) {
+                throw (RuntimeException) e;
+            } else if (e instanceof IOException) {
+                throw (IOException) e;
             } else {
-                throw new RuntimeException(ex);
+                throw new RuntimeException(e);
             }
         }
     }

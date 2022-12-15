@@ -17,6 +17,7 @@
 * 新增 nacos2-solon-cloud-plugin 插件 !ok
 * 插件 nacos2-solon-cloud-plugin 增加 namespace 支持 !ok
 * 取消 config.loadGroup, config.loadKey 配置 !ok
+* 调整 EventBus:push 非异常消息，允许透传异常
 
 #### 1.11.5
 * 新增 aliyun-ons-solon-cloud-plugin 插件，且支持 tag 过滤支持

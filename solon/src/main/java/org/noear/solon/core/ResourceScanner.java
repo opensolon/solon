@@ -47,8 +47,8 @@ public class ResourceScanner {
                 //3.尝试扫描
                 scanDo(roots.nextElement(), path, filter, urls);
             }
-        } catch (IOException ex) {
-            EventBus.push(ex);
+        } catch (IOException e) {
+            EventBus.push(e);
         }
 
         return urls;
