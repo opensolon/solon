@@ -71,8 +71,8 @@ public class JspTldLocator {
                             });
                         }
                     }
-                } catch (Throwable ex) {
-                    EventBus.push(ex);
+                } catch (Throwable e) {
+                    EventBus.push(e);
                 }
             }
         }
@@ -83,8 +83,8 @@ public class JspTldLocator {
             ScanUtil.scan(JarClassLoader.global(), webinfo_path, n -> n.endsWith(".tld")).forEach((uri) -> {
                 loadTagLibraryInfo(tagLibInfos, () -> Utils.getResource(uri).openStream());
             });
-        } catch (Throwable ex) {
-            EventBus.push(ex);
+        } catch (Throwable e) {
+            EventBus.push(e);
         }
 
         return tagLibInfos;

@@ -35,10 +35,10 @@ public class HandlerReceive implements Handler, MessageHandler {
 
             String rst = WaterClient.Message.receiveMessage(ctx::param, eventService.getSeal(), this);
             ctx.output(rst);
-        } catch (Throwable ex) {
-            ex = Utils.throwableUnwrap(ex);
-            EventBus.push(ex);
-            ctx.output(ex);
+        } catch (Throwable e) {
+            e = Utils.throwableUnwrap(e);
+            EventBus.push(e);
+            ctx.output(e);
         }
     }
 

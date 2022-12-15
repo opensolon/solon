@@ -12,10 +12,10 @@ public class JlHttpContextHandler implements HTTPServer.ContextHandler {
     public int serve(HTTPServer.Request request, HTTPServer.Response response) throws IOException {
         try {
             return handleDo(request, response);
-        } catch (Throwable ex) {
+        } catch (Throwable e) {
             //context 初始化时，可能会出错
             //
-            EventBus.push( ex);
+            EventBus.push(e);
 
             response.sendHeaders(500);
             return 0;

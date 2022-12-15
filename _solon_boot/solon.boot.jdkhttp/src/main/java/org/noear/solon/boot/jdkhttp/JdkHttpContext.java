@@ -128,8 +128,8 @@ public class JdkHttpContext extends ContextBase {
     public long contentLength() {
         try {
             return bodyAsStream().available();
-        } catch (Exception ex) {
-            EventBus.push(ex);
+        } catch (Exception e) {
+            EventBus.push(e);
             return 0;
         }
     }
@@ -178,8 +178,8 @@ public class JdkHttpContext extends ContextBase {
             } else {
                 return temp;
             }
-        } catch (Exception ex) {
-            EventBus.push(ex);
+        } catch (Exception e) {
+            EventBus.push(e);
             return def;
         }
     }

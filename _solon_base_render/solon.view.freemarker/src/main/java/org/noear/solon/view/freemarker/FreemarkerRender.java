@@ -103,8 +103,8 @@ public class FreemarkerRender implements Render {
 
             //通过事件扩展
             EventBus.push(provider_debug);
-        } catch (Exception ex) {
-            EventBus.push(ex);
+        } catch (Exception e) {
+            EventBus.push(e);
         }
     }
 
@@ -120,8 +120,8 @@ public class FreemarkerRender implements Render {
 
         try {
             provider.setClassLoaderForTemplateLoading(classLoader, _baseUri);
-        } catch (Exception ex) {
-            EventBus.push(ex);
+        } catch (Exception e) {
+            EventBus.push(e);
         }
 
         provider.setCacheStorage(new freemarker.cache.MruCacheStorage(0, Integer.MAX_VALUE));
@@ -147,8 +147,8 @@ public class FreemarkerRender implements Render {
             if (provider_debug != null) {
                 provider_debug.setSharedVariable(name, value);
             }
-        } catch (Exception ex) {
-            EventBus.push(ex);
+        } catch (Exception e) {
+            EventBus.push(e);
         }
     }
 

@@ -195,10 +195,10 @@ public class FieldWrap {
             if (setFun != null) {
                 return setFun;
             }
-        } catch (NoSuchMethodException ex) {
+        } catch (NoSuchMethodException e) {
             //正常情况，不用管
-        } catch (Throwable ex) {
-            EventBus.push(ex);
+        } catch (Throwable e) {
+            EventBus.push(e);
         }
         return null;
     }

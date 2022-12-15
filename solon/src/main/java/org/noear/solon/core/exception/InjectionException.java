@@ -1,6 +1,8 @@
 package org.noear.solon.core.exception;
 
 /**
+ * 注入异常
+ *
  * @author noear
  * @since 1.10
  */

@@ -13,10 +13,10 @@ public class JdkHttpContextHandler implements HttpHandler {
     public void handle(HttpExchange exchange) {
         try {
             handleDo(exchange);
-        } catch (Throwable ex) {
+        } catch (Throwable e) {
             //context 初始化时，可能会出错
             //
-            EventBus.push(ex);
+            EventBus.push(e);
         } finally {
             exchange.close();
         }
@@ -42,8 +42,8 @@ public class JdkHttpContextHandler implements HttpHandler {
                 ctx.status(404);
                 ctx.commit();
             }
-        } catch (Throwable ex) {
-            EventBus.push(ex);
+        } catch (Throwable e) {
+            EventBus.push(e);
 
             exchange.sendResponseHeaders(500, -1);
         }

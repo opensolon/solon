@@ -23,10 +23,10 @@ public class JtHttpContextHandler extends AbstractHandler {
         try {
             handleDo(baseRequest, request, response);
 
-        } catch (Throwable ex) {
+        } catch (Throwable e) {
             //context 初始化时，可能会出错
             //
-            EventBus.push(ex);
+            EventBus.push(e);
 
             response.setStatus(500);
         }

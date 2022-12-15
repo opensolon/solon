@@ -49,11 +49,11 @@ public class HandlerJob implements Handler {
             try {
                 jobHolder.handle(ctx);
                 ctx.output("OK");
-            } catch (Throwable ex) {
-                ex = Utils.throwableUnwrap(ex);
-                EventBus.push(ex);
+            } catch (Throwable e) {
+                e = Utils.throwableUnwrap(e);
+                EventBus.push(e);
                 ctx.status(500);
-                ctx.output(ex);
+                ctx.output(e);
             }
         }
     }
