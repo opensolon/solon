@@ -28,8 +28,8 @@ class EncryptUtil {
     public static String md5Bytes(byte[] bytes) {
         try {
             return do_hashEncode("MD5", bytes);
-        }catch (Exception ex){
-            EventBus.push(ex);
+        }catch (Exception e){
+            EventBus.push(e);
             return null;
         }
     }
@@ -39,8 +39,8 @@ class EncryptUtil {
         try {
             byte[] btInput = cleanData.getBytes(chaerset);
             return do_hashEncode(algorithm,btInput);
-        } catch (Exception ex) {
-            EventBus.push(ex);
+        } catch (Exception e) {
+            EventBus.push(e);
             return null;
         }
     }

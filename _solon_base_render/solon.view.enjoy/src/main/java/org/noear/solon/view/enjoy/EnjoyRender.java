@@ -112,8 +112,8 @@ public class EnjoyRender implements Render {
 
             //通过事件扩展
             EventBus.push(provider_debug);
-        } catch (Exception ex) {
-            EventBus.push(ex);
+        } catch (Exception e) {
+            EventBus.push(e);
         }
     }
 
@@ -131,8 +131,8 @@ public class EnjoyRender implements Render {
 
             //通过事件扩展
             EventBus.push(provider);
-        } catch (Exception ex) {
-            EventBus.push(ex);
+        } catch (Exception e) {
+            EventBus.push(e);
         }
     }
 
@@ -146,8 +146,8 @@ public class EnjoyRender implements Render {
             if(provider_debug != null){
                 provider_debug.addDirective(name, clz);
             }
-        } catch (Exception ex) {
-            EventBus.push(ex);
+        } catch (Exception e) {
+            EventBus.push(e);
         }
     }
 
@@ -161,8 +161,8 @@ public class EnjoyRender implements Render {
             if(provider_debug != null){
                 provider_debug.addSharedObject(name, value);
             }
-        } catch (Exception ex) {
-            EventBus.push(ex);
+        } catch (Exception e) {
+            EventBus.push(e);
         }
     }
     
@@ -176,8 +176,8 @@ public class EnjoyRender implements Render {
             if(provider_debug != null){
                 provider_debug.addSharedFunction(path);
             }
-        } catch (Exception ex) {
-            EventBus.push(ex);
+        } catch (Exception e) {
+            EventBus.push(e);
         }
     }
 

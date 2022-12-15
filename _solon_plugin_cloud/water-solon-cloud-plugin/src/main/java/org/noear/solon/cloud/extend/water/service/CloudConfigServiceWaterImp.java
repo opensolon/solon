@@ -45,8 +45,8 @@ public class CloudConfigServiceWaterImp extends TimerTask implements CloudConfig
     public void run() {
         try {
             run0();
-        } catch (Throwable ex) {
-            EventBus.push(ex);
+        } catch (Throwable e) {
+            EventBus.push(e);
         }
     }
 
@@ -111,8 +111,8 @@ public class CloudConfigServiceWaterImp extends TimerTask implements CloudConfig
         try {
             WaterClient.Config.set(group, key, value);
             return true;
-        } catch (IOException ex) {
-            EventBus.push(ex);
+        } catch (IOException e) {
+            EventBus.push(e);
             return false;
         }
     }

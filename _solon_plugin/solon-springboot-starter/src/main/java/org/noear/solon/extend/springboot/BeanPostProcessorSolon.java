@@ -20,8 +20,8 @@ public class BeanPostProcessorSolon implements BeanPostProcessor {
                     //支持Solon的注入能力（别的 solon 注入注解就不需要另外适配了）
                     //
                     Solon.context().beanInject(bean);
-                } catch (Throwable ex) {
-                    EventBus.push(ex);
+                } catch (Throwable e) {
+                    EventBus.push(e);
                 }
             }
         }
@@ -45,8 +45,8 @@ public class BeanPostProcessorSolon implements BeanPostProcessor {
                     } else {
                         Solon.context().beanRegister(bw, beanName, true);
                     }
-                } catch (Throwable ex) {
-                    EventBus.push(ex);
+                } catch (Throwable e) {
+                    EventBus.push(e);
                 }
             }
         }

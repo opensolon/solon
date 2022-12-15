@@ -53,8 +53,8 @@ public abstract class DbTranNode implements TranNode {
         for (DbTranNode n1 : children) {
             try {
                 n1.rollback();
-            } catch (Throwable ex) {
-                EventBus.push(ex);
+            } catch (Throwable e) {
+                EventBus.push(e);
             }
         }
     }
@@ -68,8 +68,8 @@ public abstract class DbTranNode implements TranNode {
         for (DbTranNode n1 : children) {
             try {
                 n1.close();
-            } catch (Throwable ex) {
-                EventBus.push(ex);
+            } catch (Throwable e) {
+                EventBus.push(e);
             }
         }
     }

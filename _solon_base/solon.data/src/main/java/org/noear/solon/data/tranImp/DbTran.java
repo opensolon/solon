@@ -103,8 +103,8 @@ public abstract class DbTran extends DbTranNode implements TranNode {
                     // close 后，链接池会对 autoCommit,readOnly 状态进行还原
                     //
                 }
-            } catch (Throwable ex) {
-                EventBus.push(ex);
+            } catch (Throwable e) {
+                EventBus.push(e);
             }
         }
     }

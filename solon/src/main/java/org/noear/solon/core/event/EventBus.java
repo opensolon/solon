@@ -2,6 +2,7 @@ package org.noear.solon.core.event;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
+import org.noear.solon.core.exception.EventException;
 
 import java.util.*;
 
@@ -35,7 +36,11 @@ public final class EventBus {
     public static void pushAsync(Object event) {
         if (event != null) {
             Utils.async(() -> {
-                push0(event);
+                try {
+                    push0(event);
+                } catch (Throwable e) {
+                    push(e);
+                }
             });
         }
     }
@@ -47,11 +52,19 @@ public final class EventBus {
      */
     public static void push(Object event) {
         if (event != null) {
-            push0(event);
+            try {
+                push0(event);
+            } catch (Throwable e) {
+                if (e instanceof RuntimeException) {
+                    throw (RuntimeException) e;
+                } else {
+                    throw new EventException("Event execution failed: " + event.getClass().getName(), e);
+                }
+            }
         }
     }
 
-    private static void push0(Object event) {
+    private static void push0(Object event) throws Throwable {
         if (event instanceof Throwable) {
 
             if (Solon.app() == null || Solon.app().enableErrorAutoprint()) {
@@ -66,16 +79,16 @@ public final class EventBus {
         }
     }
 
-    private static void push1(Collection<HH> hhs, Object event, boolean thrown) {
+    private static void push1(Collection<HH> hhs, Object event, boolean thrown) throws Throwable {
         for (HH h1 : hhs) {
             if (h1.t.isInstance(event)) {
                 try {
                     h1.l.onEvent(event);
                 } catch (Throwable e) {
                     if (thrown) {
-                        EventBus.push(e);
+                        throw e;
                     } else {
-                        //此处不能再转发异常
+                        //此处不能再转发异常 //不然会死循环
                         e.printStackTrace();
                     }
                 }

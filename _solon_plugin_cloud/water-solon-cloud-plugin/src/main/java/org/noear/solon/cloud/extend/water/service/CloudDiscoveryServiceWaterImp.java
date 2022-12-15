@@ -57,8 +57,8 @@ public class CloudDiscoveryServiceWaterImp extends TimerTask implements CloudDis
                 runByFile();
             }
 
-        } catch (Throwable ex) {
-            EventBus.push(ex);
+        } catch (Throwable e) {
+            EventBus.push(e);
         }
     }
 

@@ -18,8 +18,8 @@ class AioClientProcessor implements MessageProcessor<Message> {
     public void process(AioSession s, Message message) {
         try {
             Solon.app().listener().onMessage(session, message);
-        } catch (Throwable ex) {
-            EventBus.push(ex);
+        } catch (Throwable e) {
+            EventBus.push(e);
         }
     }
 
