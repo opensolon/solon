@@ -25,10 +25,6 @@ import java.util.Properties;
 public class CloudFileServiceS3OfSdkImp implements CloudFileService {
     private final String bucketDef;
 
-    private final String accessKey;
-    private final String secretKey;
-    private final String regionId;
-
     private final AmazonS3 client;
     private final AccessControlList acls = new AccessControlList();
 
@@ -43,12 +39,7 @@ public class CloudFileServiceS3OfSdkImp implements CloudFileService {
     }
 
     public CloudFileServiceS3OfSdkImp(String regionId, String bucket, String accessKey, String secretKey) {
-        this.regionId = regionId;
-
         this.bucketDef = bucket;
-
-        this.accessKey = accessKey;
-        this.secretKey = secretKey;
 
         //初始化client
         AWSCredentials awsCredentials = new BasicAWSCredentials(accessKey, secretKey);
