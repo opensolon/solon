@@ -16,10 +16,10 @@ import java.util.Map;
  *
  * @author 阿范
  */
-public abstract class AbstractHandler implements Handler {
+public abstract class WebdavAbstractHandler implements Handler {
     private boolean range;
 
-    public AbstractHandler(boolean range) {
+    public WebdavAbstractHandler(boolean range) {
         this.range = range;
     }
 
