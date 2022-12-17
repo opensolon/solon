@@ -29,40 +29,55 @@ public class BucketUtils {
      * 创建客户端
      * */
     public static AmazonS3 createClient(Properties props) {
-        String endpointStr = props.getProperty("endpoint");
-        URI endpointUri = URI.create(endpointStr);
-
-        String endpoint = endpointUri.getHost();
+        String endpoint =  props.getProperty("endpoint");
         String regionId = props.getProperty("regionId");
 
         String accessKey = props.getProperty("accessKey");
         String secretKey = props.getProperty("secretKey");
 
-        AwsClientBuilder.EndpointConfiguration endpointConfig = new AwsClientBuilder
-                .EndpointConfiguration(endpoint, regionId);
+        return createClient(endpoint, regionId, accessKey, secretKey, props);
+    }
 
+    public static AmazonS3 createClient(String endpoint, String regionId, String accessKey, String secretKey, Properties props) {
+        //初始化client
         AWSCredentials credentials = new BasicAWSCredentials(accessKey, secretKey);
         AWSCredentialsProvider credentialsProvider = new AWSStaticCredentialsProvider(credentials);
         ClientConfiguration clientConfig = new ClientConfiguration();
 
-        if ("http".equals(endpointUri.getScheme())) {
-            clientConfig.setProtocol(Protocol.HTTP);
-        } else {
+        if (Utils.isEmpty(endpoint)) {
             clientConfig.setProtocol(Protocol.HTTPS);
+
+            return AmazonS3ClientBuilder.standard()
+                    .withRegion(regionId)
+                    .withClientConfiguration(clientConfig)
+                    .withCredentials(credentialsProvider)
+                    .build();
+        } else {
+            URI endpointUri = URI.create(endpoint);
+            endpoint = endpointUri.getHost();
+
+            if ("http".equals(endpointUri.getScheme())) {
+                clientConfig.setProtocol(Protocol.HTTP);
+            } else {
+                clientConfig.setProtocol(Protocol.HTTPS);
+            }
+
+            AwsClientBuilder.EndpointConfiguration endpointConfig = new AwsClientBuilder
+                    .EndpointConfiguration(endpoint, regionId);
+
+            //开始构建
+            AmazonS3ClientBuilder builder = AmazonS3Client.builder()
+                    .withEndpointConfiguration(endpointConfig)
+                    .withClientConfiguration(clientConfig)
+                    .withCredentials(credentialsProvider);
+
+            //注入配置
+            if (props != null && props.size() > 0) {
+                Utils.injectProperties(builder, props);
+            }
+
+            return builder.build();
         }
-
-        //开始构建
-        AmazonS3ClientBuilder builder = AmazonS3Client.builder()
-                .withEndpointConfiguration(endpointConfig)
-                .withClientConfiguration(clientConfig)
-                .withCredentials(credentialsProvider);
-
-        //注入配置
-        if (props != null && props.size() > 0) {
-            Utils.injectProperties(builder, props);
-        }
-
-        return builder.build();
     }
 
     /**
