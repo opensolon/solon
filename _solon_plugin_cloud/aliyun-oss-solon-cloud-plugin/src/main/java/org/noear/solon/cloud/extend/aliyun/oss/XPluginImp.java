@@ -1,6 +1,5 @@
 package org.noear.solon.cloud.extend.aliyun.oss;
 
-import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudManager;
 import org.noear.solon.cloud.extend.aliyun.oss.service.CloudFileServiceOssImp;
