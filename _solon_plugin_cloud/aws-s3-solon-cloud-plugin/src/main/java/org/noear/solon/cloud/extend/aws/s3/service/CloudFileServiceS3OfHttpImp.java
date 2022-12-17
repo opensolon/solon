@@ -34,25 +34,16 @@ public class CloudFileServiceS3OfHttpImp implements CloudFileService {
 
 
     public CloudFileServiceS3OfHttpImp(CloudProps cloudProps) {
-        this(
-                cloudProps.getFileRegionId(),
-                cloudProps.getFileBucket(),
-                cloudProps.getFileAccessKey(),
-                cloudProps.getFileSecretKey()
-        );
-    }
+        this.regionId = cloudProps.getFileRegionId();
 
-    public CloudFileServiceS3OfHttpImp(String regionId, String bucket, String accessKey, String secretKey) {
+        this.bucketDef = cloudProps.getFileBucket();
+
+        this.accessKey = cloudProps.getFileAccessKey();
+        this.secretKey = cloudProps.getFileSecretKey();
+
         if(Utils.isEmpty(regionId)){
             throw new IllegalArgumentException("The regionId configuration is missing");
         }
-
-        this.regionId = regionId;
-
-        this.bucketDef = bucket;
-
-        this.accessKey = accessKey;
-        this.secretKey = secretKey;
     }
 
     @Override

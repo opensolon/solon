@@ -1,25 +1,14 @@
 package org.noear.solon.cloud.extend.aws.s3.service;
 
-import com.amazonaws.ClientConfiguration;
-import com.amazonaws.Protocol;
-import com.amazonaws.auth.AWSCredentials;
-import com.amazonaws.auth.AWSCredentialsProvider;
-import com.amazonaws.auth.AWSStaticCredentialsProvider;
-import com.amazonaws.auth.BasicAWSCredentials;
-import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3Client;
-import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.*;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.exception.CloudFileException;
+import org.noear.solon.cloud.extend.aws.s3.utils.BucketUtils;
 import org.noear.solon.cloud.model.Media;
 import org.noear.solon.cloud.service.CloudFileService;
-import org.noear.solon.core.Props;
 import org.noear.solon.core.handle.Result;
-
-import java.net.URI;
 
 /**
  * 云端文件服务（aws s3）
@@ -37,58 +26,8 @@ public class CloudFileServiceS3OfSdkImp implements CloudFileService {
     }
 
     public CloudFileServiceS3OfSdkImp(CloudProps cloudProps) {
-        this(
-                cloudProps.getFileEndpoint(),
-                cloudProps.getFileRegionId(),
-                cloudProps.getFileBucket(),
-                cloudProps.getFileAccessKey(),
-                cloudProps.getFileSecretKey(),
-                cloudProps.getProp()
-        );
-    }
-
-    public CloudFileServiceS3OfSdkImp(String endpoint, String regionId, String bucket, String accessKey, String secretKey, Props props) {
-        this.bucketDef = bucket;
-
-        //初始化client
-        AWSCredentials credentials = new BasicAWSCredentials(accessKey, secretKey);
-        AWSCredentialsProvider credentialsProvider = new AWSStaticCredentialsProvider(credentials);
-        ClientConfiguration clientConfig = new ClientConfiguration();
-
-        if (Utils.isEmpty(endpoint)) {
-            clientConfig.setProtocol(Protocol.HTTPS);
-
-            this.client = AmazonS3ClientBuilder.standard()
-                    .withRegion(regionId)
-                    .withClientConfiguration(clientConfig)
-                    .withCredentials(credentialsProvider)
-                    .build();
-        } else {
-            URI endpointUri = URI.create(endpoint);
-            endpoint = endpointUri.getHost();
-
-            if ("http".equals(endpointUri.getScheme())) {
-                clientConfig.setProtocol(Protocol.HTTP);
-            } else {
-                clientConfig.setProtocol(Protocol.HTTPS);
-            }
-
-            AwsClientBuilder.EndpointConfiguration endpointConfig = new AwsClientBuilder
-                    .EndpointConfiguration(endpoint, regionId);
-
-            //开始构建
-            AmazonS3ClientBuilder builder = AmazonS3Client.builder()
-                    .withEndpointConfiguration(endpointConfig)
-                    .withClientConfiguration(clientConfig)
-                    .withCredentials(credentialsProvider);
-
-            //注入配置
-            if (props != null && props.size() > 0) {
-                Utils.injectProperties(builder, props);
-            }
-
-            this.client = builder.build();
-        }
+        this.bucketDef = cloudProps.getFileBucket();
+        this.client = BucketUtils.createClient(cloudProps.getProp());
     }
 
     @Override
