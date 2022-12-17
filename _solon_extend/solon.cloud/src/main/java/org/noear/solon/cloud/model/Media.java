@@ -60,10 +60,20 @@ public class Media {
 
     /**
      * 主体转为字节数组
-     * */
+     */
     public byte[] bodyAsByts() {
+        return bodyAsByts(false);
+    }
+
+    public byte[] bodyAsByts(boolean autoClose) {
         try {
-            return Utils.transferToBytes(body);
+            if (autoClose) {
+                try (InputStream stream = body) {
+                    return Utils.transferToBytes(stream);
+                }
+            } else {
+                return Utils.transferToBytes(body);
+            }
         } catch (IOException e) {
             throw new CloudFileException(e);
         }
@@ -73,8 +83,18 @@ public class Media {
      * 主体转为字符串
      */
     public String bodyAsString() {
+        return bodyAsString(false);
+    }
+
+    public String bodyAsString(boolean autoClose) {
         try {
-            return Utils.transferToString(body, Solon.encoding());
+            if (autoClose) {
+                try (InputStream stream = body) {
+                    return Utils.transferToString(stream, Solon.encoding());
+                }
+            } else {
+                return Utils.transferToString(body, Solon.encoding());
+            }
         } catch (IOException e) {
             throw new CloudFileException(e);
         }

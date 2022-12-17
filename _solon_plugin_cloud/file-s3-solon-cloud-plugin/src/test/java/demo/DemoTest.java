@@ -39,7 +39,7 @@ public class DemoTest {
 
         //获取
         Media getMedia = CloudClient.file().get(key);
-        String getBodyString = getMedia.bodyAsString();
+        String getBodyString = getMedia.bodyAsString(true);
         System.out.println("getBodyString" + getBodyString);
         assert getBodyString.equals(contentBody);
 
