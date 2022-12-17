@@ -1,8 +1,8 @@
-# 配置示例
+### 配置示例
 
 ```yaml
 solon.cloud.file.s3.file:
-  bucket: 'demo1_bucket' 
+  bucket: 'demo1_bucket' #默认
   buckets:
     demo1_bucket: #所用存储桶( bucket )，必须都先配置好
       endpoint: 'https://obs.cn-southwest-2.myhuaweicloud.com' #通过协议，表达是否使用 https?
@@ -19,7 +19,7 @@ solon.cloud.file.s3.file:
       
 ```
 
-# 文件管理 - 简单示例：上传，下载，删除
+### 文件管理 - 简单示例：上传，下载，删除
 
 ```java
 @Mapping("file")
