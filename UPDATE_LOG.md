@@ -11,8 +11,8 @@
 
 #### 1.11.6
 * 新增 elastic-job-solon-plugin 分布式定时任务 ???
-* 新增 file-s3-solon-plugin 插件 ???
 * 新增 liteflow-solon-plugin 插件 ???
+* 新增 file-s3-solon-plugin 插件 !ok
 * 新增 solon.cloud.httputils 插件 !ok
 * 新增 polaris-solon-cloud-plugin 插件 !ok
 * 新增 nacos2-solon-cloud-plugin 插件 !ok

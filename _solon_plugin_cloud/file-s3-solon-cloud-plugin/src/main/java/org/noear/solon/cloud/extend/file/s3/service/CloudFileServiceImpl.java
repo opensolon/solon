@@ -22,7 +22,7 @@ public class CloudFileServiceImpl implements CloudFileService {
     private Map<String, CloudFileService> bucketServiceMap = new HashMap<>();
 
     public CloudFileServiceImpl(CloudProps cloudProps) {
-        bucketDef = cloudProps.getValue("default");
+        bucketDef = cloudProps.getValue("file.default");
 
         Map<String, Props> propsMap = cloudProps.getProp("file.buckets")
                 .getGroupedProp("");
