@@ -31,7 +31,7 @@ public class DemoTest {
         assert result.getCode() == 200;
 
         Media getMedia = CloudClient.file().get(key);
-        String getBodyString = getMedia.bodyAsString();
+        String getBodyString = getMedia.bodyAsString(true);
         log.info("getMedia body: {}", getBodyString);
         assert getBodyString.equals(contentBody);
 
