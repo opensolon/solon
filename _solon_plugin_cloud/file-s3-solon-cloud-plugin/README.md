@@ -19,10 +19,10 @@ solon.cloud.file.s3.file:
       
 ```
 
-其它 bucket 属性支持
+其它 s3 bucket 属性支持
 ```yml
 demo1_bucket:
-  pathStyleAccessEnabled: false
+  pathStyleAccessEnabled: false #minio 一般要设为 true
   chunkedEncodingDisabled: false
   accelerateModeEnabled: false
   payloadSigningEnabled: false
