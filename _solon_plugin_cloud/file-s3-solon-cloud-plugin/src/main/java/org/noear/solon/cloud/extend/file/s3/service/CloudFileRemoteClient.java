@@ -22,12 +22,12 @@ import java.net.URI;
 import java.util.Properties;
 
 /**
- * CloudFileService 的 s3 实现
+ * CloudFileService 的远程实现（基于 s3 协议）
  *
  * @author 等風來再離開
  * @since 1.11
  */
-public class CloudFileS3Client implements CloudFileService {
+public class CloudFileRemoteClient implements CloudFileService {
     private final AmazonS3 client;
 
     private final String endpoint;
@@ -36,7 +36,7 @@ public class CloudFileS3Client implements CloudFileService {
     private final String accessKey;
     private final String secretKey;
 
-    public CloudFileS3Client(String bucketName, Properties properties) {
+    public CloudFileRemoteClient(String bucketName, Properties properties) {
         String endpointStr = properties.getProperty("endpoint");
         URI endpointUri = URI.create(endpointStr);
 

@@ -13,7 +13,7 @@ import java.io.OutputStream;
 import java.util.Properties;
 
 /**
- * CloudFileService 的 本地 实现
+ * CloudFileService 的本地实现
  *
  * @author 等風來再離開
  * @since 1.11

@@ -12,7 +12,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @author noear
+ * CloudFileService 综合实现
+ *
+ * @author 等風來再離開
  * @since 1.11
  */
 public class CloudFileServiceImpl implements CloudFileService {
@@ -22,19 +24,19 @@ public class CloudFileServiceImpl implements CloudFileService {
     public CloudFileServiceImpl(CloudProps cloudProps) {
         bucketDef = cloudProps.getFileBucket();
 
+        Map<String, Props> propsMap = cloudProps.getProp("file.buckets")
+                .getGroupedProp("");
 
-        Map<String, Props> propsMap = cloudProps.getProp("file").getGroupedProp("buckets");
         for (Map.Entry<String, Props> kv : propsMap.entrySet()) {
             String bucketName = kv.getKey();
             Props props = kv.getValue();
             String endpoint = props.getProperty("endpoint");
 
             if (Utils.isNotEmpty(endpoint)) {
-                if (endpoint.contains("/") && endpoint.contains(":") == false) {
-                    //有 '/' 且没有 ':'
-                    bucketServiceMap.put(bucketName, new CloudFileLocalClient(bucketName, props));
+                if (endpoint.startsWith("http://") || endpoint.startsWith("https://")) {
+                    bucketServiceMap.put(bucketName, new CloudFileRemoteClient(bucketName, props));
                 } else {
-                    bucketServiceMap.put(bucketName, new CloudFileS3Client(bucketName, props));
+                    bucketServiceMap.put(bucketName, new CloudFileLocalClient(bucketName, props));
                 }
             }
         }
