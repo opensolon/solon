@@ -51,7 +51,7 @@ public class CloudFileServiceLocalImpl implements CloudFileService {
                 Utils.transferTo(media.body(), stream);
             }
 
-            return Result.succeed();
+            return Result.succeed(file.getAbsolutePath());
         } catch (Throwable e) {
             throw new CloudFileException(e);
         }
