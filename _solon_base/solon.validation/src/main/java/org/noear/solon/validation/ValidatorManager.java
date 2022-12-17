@@ -101,6 +101,7 @@ public class ValidatorManager {
         register(Pattern.class, PatternValidator.instance);
         register(Length.class, LengthValidator.instance);
         register(Size.class, SizeValidator.instance);
+        register(Range.class, RangeValidator.instance);
 
         register(Whitelist.class, WhitelistValidator.instance);
         register(Logined.class, LoginedValidator.instance);

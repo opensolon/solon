@@ -3,29 +3,29 @@ package org.noear.solon.validation.annotation;
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Result;
-import org.noear.solon.validation.util.StringUtils;
 import org.noear.solon.validation.Validator;
+import org.noear.solon.validation.util.StringUtils;
 
 /**
  *
  * @author noear
- * @since 1.0
+ * @since 1.11
  * */
-public class MaxValidator implements Validator<Max> {
-    public static final MaxValidator instance = new MaxValidator();
+public class RangeValidator implements Validator<Range> {
+    public static final RangeValidator instance = new RangeValidator();
 
     @Override
-    public String message(Max anno) {
+    public String message(Range anno) {
         return anno.message();
     }
 
     @Override
-    public Class<?>[] groups(Max anno) {
+    public Class<?>[] groups(Range anno) {
         return anno.groups();
     }
 
     @Override
-    public Result validateOfValue(Max anno, Object val0, StringBuilder tmp) {
+    public Result validateOfValue(Range anno, Object val0, StringBuilder tmp) {
         if (val0 != null && val0 instanceof Number == false) {
             return Result.failure();
         }
@@ -40,7 +40,7 @@ public class MaxValidator implements Validator<Max> {
     }
 
     @Override
-    public Result validateOfContext(Context ctx, Max anno, String name, StringBuilder tmp) {
+    public Result validateOfContext(Context ctx, Range anno, String name, StringBuilder tmp) {
         String val = ctx.param(name);
 
         //如果为空，算通过（交由 @NotNull 或 @NotEmpty 或 @NotBlank 进一步控制）
@@ -59,12 +59,20 @@ public class MaxValidator implements Validator<Max> {
         }
     }
 
-    private boolean verify(Max anno, Number val) {
+    private boolean verify(Range anno, Number val) {
         //如果为空，算通过（交由 @NotNull 进一步控制）
         if (val == null) {
             return true;
         }
 
-        return val.longValue() <= anno.value();
+        if (anno.min() > 0 && val.longValue() < anno.min()) {
+            return false;
+        }
+
+        if (anno.max() > 0 && val.longValue() > anno.max()) {
+            return false;
+        }
+
+        return true;
     }
 }

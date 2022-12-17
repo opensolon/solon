@@ -18,6 +18,7 @@ public class ValidModel2 {
     @NotEmpty
     @Date("yyyy-MM-dd")
     private String field2;
+    @NotNull
     @DecimalMax(10.0)
     private Double field3;
     @DecimalMin(10.0)
@@ -28,6 +29,7 @@ public class ValidModel2 {
     @NotEmpty
     @Email("\\w+\\@live.cn")
     private String field6;
+    @NotNull
     @Max(10)
     private Integer field7;
     @Min(10)

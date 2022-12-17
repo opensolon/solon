@@ -1,5 +1,6 @@
 package org.noear.solon.validation.annotation;
 
+import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Result;
 import org.noear.solon.validation.util.StringUtils;
@@ -25,13 +26,13 @@ public class MinValidator implements Validator<Min> {
 
     @Override
     public Result validateOfValue(Min anno, Object val0, StringBuilder tmp) {
-        if (val0 instanceof Number == false) {
+        if (val0 != null && val0 instanceof Number == false) {
             return Result.failure();
         }
 
         Number val = (Number) val0;
 
-        if (val == null || val.longValue() < anno.value()) {
+        if (verify(anno, val) == false) {
             return Result.failure();
         } else {
             return Result.succeed();
@@ -42,14 +43,28 @@ public class MinValidator implements Validator<Min> {
     public Result validateOfContext(Context ctx, Min anno, String name, StringBuilder tmp) {
         String val = ctx.param(name);
 
-        if (StringUtils.isInteger(val) == false || Long.parseLong(val) < anno.value()) {
-            tmp.append(',').append(name);
+        //如果为空，算通过（交由 @NotNull 或 @NotEmpty 或 @NotBlank 进一步控制）
+        if (Utils.isEmpty(val)) {
+            return Result.succeed();
         }
 
-        if (tmp.length() > 1) {
-            return Result.failure(tmp.substring(1));
+        if (StringUtils.isInteger(val) == false) {
+            return Result.failure(name);
+        }
+
+        if (verify(anno, Long.parseLong(val)) == false) {
+            return Result.failure(name);
         } else {
             return Result.succeed();
         }
+    }
+
+    private boolean verify(Min anno, Number val) {
+        //如果为空，算通过（交由 @NotNull 进一步控制）
+        if (val == null) {
+            return true;
+        }
+
+        return val.longValue() >= anno.value();
     }
 }

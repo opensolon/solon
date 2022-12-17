@@ -213,7 +213,16 @@ public class HttpValidTest extends HttpTestBase {
         assert path("/demo2/valid/length?val1=111-2&val2=222-2").get().equals("OK");
         assert path("/demo2/valid/length?val1=11-12&val2=").get().equals("OK") == false;
         assert path("/demo2/valid/length?val1=11-12&val2=12121212").get().equals("OK") == false;
-        assert path("/demo2/valid/length").get().equals("OK");
+        assert path("/demo2/valid/length").get().equals("OK") == false;
+    }
+
+    @Test
+    public void test2v_length2() throws IOException {
+        assert path("/demo2/valid/length2?val1=111-2&val2=222-2").get().equals("OK");
+        assert path("/demo2/valid/length2?val1=11-12&val2=").get().equals("OK") == true;
+        assert path("/demo2/valid/length2?val1=11-12&val2=1").get().equals("OK") == false;
+        assert path("/demo2/valid/length2?val1=11-12&val2=12121212").get().equals("OK") == false;
+        assert path("/demo2/valid/length2").get().equals("OK");
     }
 
     @Test

@@ -1,5 +1,6 @@
 package org.noear.solon.validation.annotation;
 
+import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Result;
 import org.noear.solon.validation.util.StringUtils;
@@ -25,13 +26,13 @@ public class DecimalMaxValidator implements Validator<DecimalMax> {
 
     @Override
     public Result validateOfValue(DecimalMax anno, Object val0, StringBuilder tmp) {
-        if (val0 instanceof Double == false) {
+        if (val0 != null && val0 instanceof Number == false) {
             return Result.failure();
         }
 
-        Double val = (Double) val0;
+        Number val = (Number) val0;
 
-        if (val == null || val > anno.value()) {
+        if (verify(anno, val) == false) {
             return Result.failure();
         } else {
             return Result.succeed();
@@ -42,10 +43,28 @@ public class DecimalMaxValidator implements Validator<DecimalMax> {
     public Result validateOfContext(Context ctx, DecimalMax anno, String name, StringBuilder tmp) {
         String val = ctx.param(name);
 
-        if (StringUtils.isNumber(val) == false || Double.parseDouble(val) > anno.value()) {
+        //如果为空，算通过（交由 @NotNull 或 @NotEmpty 或 @NotBlank 进一步控制）
+        if (Utils.isEmpty(val)) {
+            return Result.succeed();
+        }
+
+        if (StringUtils.isNumber(val) == false) {
+            return Result.failure(name);
+        }
+
+        if (verify(anno, Double.parseDouble(val)) == false) {
             return Result.failure(name);
         } else {
             return Result.succeed();
         }
+    }
+
+    private boolean verify(DecimalMax anno, Number val) {
+        //如果为空，算通过（交由 @NotNull 进一步控制）
+        if (val == null) {
+            return true;
+        }
+
+        return val.doubleValue() <= anno.value();
     }
 }

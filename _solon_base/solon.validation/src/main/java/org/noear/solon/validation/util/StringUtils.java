@@ -25,10 +25,16 @@ public class StringUtils {
         }
     }
 
+    /**
+     * 是否会整型
+     * */
     public static boolean isInteger(String str){
         return isNumberDo(str, false);
     }
 
+    /**
+     * 是否为数字
+     * */
     public static boolean isNumber(String str) {
         return isNumberDo(str, true);
     }
