@@ -2,10 +2,9 @@
 * 新增 kubernetes-solon-cloud-plugin 插件
 * 新增 jmdns-solon-cloud-plugin 插件
 * 新增 shiro-solon-plugin 插件
-* 调整 运行完成后，提供未注入的对象???
+* 调整 运行完成后，提供未注入的对象警告???
 * 增加 更多友好的异常分类???
 * 增加 便利的原生编译机制
-
 
 #### 1.11.7
 * 新增 elastic-job-solon-plugin 分布式定时任务 ???
