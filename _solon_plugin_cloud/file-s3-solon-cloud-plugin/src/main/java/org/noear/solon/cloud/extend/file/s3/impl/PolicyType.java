@@ -1,13 +1,14 @@
-package org.noear.solon.cloud.extend.file.s3.enumd;
+package org.noear.solon.cloud.extend.file.s3.impl;
 
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- * minio策略配置
+ * 策略类型（主要用于 minio）
  *
  * @author 等風來再離開
+ * @since 1.11
  */
 @Getter
 @AllArgsConstructor
@@ -32,5 +33,4 @@ public enum PolicyType {
      * 类型
      */
     private final String type;
-
 }

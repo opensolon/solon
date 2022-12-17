@@ -9,12 +9,9 @@ import com.amazonaws.services.s3.model.*;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.exception.CloudFileException;
-import org.noear.solon.cloud.extend.aws.s3.S3Props;
 import org.noear.solon.cloud.model.Media;
 import org.noear.solon.cloud.service.CloudFileService;
 import org.noear.solon.core.handle.Result;
-
-import java.util.Properties;
 
 /**
  * 云端文件服务（aws s3）
@@ -26,7 +23,6 @@ public class CloudFileServiceS3OfSdkImp implements CloudFileService {
     private final String bucketDef;
 
     private final AmazonS3 client;
-    private final AccessControlList acls = new AccessControlList();
 
 
     public CloudFileServiceS3OfSdkImp(CloudProps cloudProps) {
@@ -47,9 +43,6 @@ public class CloudFileServiceS3OfSdkImp implements CloudFileService {
                 .withRegion(regionId)
                 .withCredentials(new AWSStaticCredentialsProvider(awsCredentials))
                 .build();
-
-        //初始化权限控制
-        acls.grantPermission(GroupGrantee.AllUsers, Permission.Read);
     }
 
     @Override
@@ -84,8 +77,8 @@ public class CloudFileServiceS3OfSdkImp implements CloudFileService {
             ObjectMetadata metadata = new ObjectMetadata();
             metadata.setContentType(streamMime);
 
-            PutObjectRequest request = new PutObjectRequest(bucket, key, media.body(), metadata)
-                    .withAccessControlList(acls);
+            PutObjectRequest request = new PutObjectRequest(bucket, key, media.body(), metadata);
+            request.setCannedAcl(CannedAccessControlList.PublicRead);
 
             PutObjectResult tmp = client.putObject(request);
 
