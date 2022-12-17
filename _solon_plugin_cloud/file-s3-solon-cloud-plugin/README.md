@@ -34,6 +34,8 @@ demo1_bucket:
 
 ### 文件管理 - 简单示例：上传，下载，删除
 
+如果需要代码创建 bucket ，可通过 BucketUtils 工具创建
+
 ```java
 @Mapping("file")
 @Controller

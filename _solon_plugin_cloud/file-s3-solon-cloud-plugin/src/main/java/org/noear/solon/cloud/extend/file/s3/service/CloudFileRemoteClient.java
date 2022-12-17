@@ -4,7 +4,7 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.*;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.exception.CloudFileException;
-import org.noear.solon.cloud.extend.file.s3.impl.BucketUtils;
+import org.noear.solon.cloud.extend.file.s3.utils.BucketUtils;
 import org.noear.solon.cloud.model.Media;
 import org.noear.solon.cloud.service.CloudFileService;
 import org.noear.solon.core.Props;

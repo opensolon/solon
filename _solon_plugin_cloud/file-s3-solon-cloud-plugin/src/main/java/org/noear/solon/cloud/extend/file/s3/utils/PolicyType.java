@@ -1,4 +1,4 @@
-package org.noear.solon.cloud.extend.file.s3.impl;
+package org.noear.solon.cloud.extend.file.s3.utils;
 
 
 import lombok.AllArgsConstructor;
