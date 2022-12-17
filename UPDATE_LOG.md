@@ -17,7 +17,7 @@
 * 新增 polaris-solon-cloud-plugin 插件 !ok
 * 新增 nacos2-solon-cloud-plugin 插件 !ok
 * 插件 nacos2-solon-cloud-plugin 增加 namespace 支持 !ok
-* 插件 solon.validation 优化 DecimalMax,DecimalMin,Max,Min,Length 处理，并增加 Range 注解
+* 插件 solon.validation 优化 DecimalMax,DecimalMin,Max,Min,Length 处理，并增加 Range 注解 !ok
 * 取消 config.loadGroup, config.loadKey 配置 !ok
 * 调整 EventBus:push 非异常事件，允许透传异常（从而支持事务回滚传导） !ok
 
