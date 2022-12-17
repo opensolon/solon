@@ -55,7 +55,7 @@ public class PatternValidator implements Validator<Pattern> {
     }
 
     private boolean verify(Pattern anno, String val) {
-        //如果为空，算通过（交由@NotEmpty之类，进一步控制）
+        //如果为空，算通过（交由 @NotNull 或 @NotEmpty 或 @NotBlank 进一步控制）
         if (Utils.isEmpty(val)) {
             return true;
         }
