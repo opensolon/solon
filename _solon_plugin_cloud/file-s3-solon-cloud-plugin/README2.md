@@ -4,13 +4,13 @@
 solon.cloud.file.s3.file:
   bucket: 'huawei' 
   buckets:
-    demo:
+    demo: #所用存储桶，必须都先配置好
       endpoint: 'https://obs.cn-southwest-2.myhuaweicloud.com' #通过协议，表达是否用 https?
       regionId: ''
       accessKey: 'xxxx'
       secretKey: 'xxx'
     demo2:
-      endpoint: '/data/sss/file'
+      endpoint: 'D:/img' # 或 '/data/sss/files'
       
 ```
 

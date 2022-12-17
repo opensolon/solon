@@ -27,6 +27,7 @@ public class CloudFileServiceS3OfSdkImp implements CloudFileService {
 
     public CloudFileServiceS3OfSdkImp(CloudProps cloudProps) {
         this(
+                cloudProps.getFileEndpoint(),
                 cloudProps.getFileRegionId(),
                 cloudProps.getFileBucket(),
                 cloudProps.getFileAccessKey(),
@@ -34,7 +35,7 @@ public class CloudFileServiceS3OfSdkImp implements CloudFileService {
         );
     }
 
-    public CloudFileServiceS3OfSdkImp(String regionId, String bucket, String accessKey, String secretKey) {
+    public CloudFileServiceS3OfSdkImp(String endpoint,String regionId, String bucket, String accessKey, String secretKey) {
         this.bucketDef = bucket;
 
         //初始化client

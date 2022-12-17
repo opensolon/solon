@@ -47,7 +47,8 @@ public class CloudFileS3Client implements CloudFileService {
         this.secretKey = properties.getProperty("secretKey");
 
 
-        AwsClientBuilder.EndpointConfiguration endpointConfig = new AwsClientBuilder.EndpointConfiguration(endpoint, regionId);
+        AwsClientBuilder.EndpointConfiguration endpointConfig = new AwsClientBuilder
+                .EndpointConfiguration(endpoint, regionId);
 
         AWSCredentials credentials = new BasicAWSCredentials(accessKey, secretKey);
         AWSCredentialsProvider credentialsProvider = new AWSStaticCredentialsProvider(credentials);
@@ -59,7 +60,11 @@ public class CloudFileS3Client implements CloudFileService {
             clientConfig.setProtocol(Protocol.HTTP);
         }
 
-        AmazonS3ClientBuilder build = AmazonS3Client.builder().withEndpointConfiguration(endpointConfig).withClientConfiguration(clientConfig).withCredentials(credentialsProvider).disableChunkedEncoding();
+        AmazonS3ClientBuilder build = AmazonS3Client.builder()
+                .withEndpointConfiguration(endpointConfig)
+                .withClientConfiguration(clientConfig)
+                .withCredentials(credentialsProvider)
+                .disableChunkedEncoding();
 
         if (BucketUtils.containsAny(endpoint, BucketUtils.CLOUD_SERVICE)) {
             // minio 使用https限制使用域名访问 需要此配置 站点填域名
