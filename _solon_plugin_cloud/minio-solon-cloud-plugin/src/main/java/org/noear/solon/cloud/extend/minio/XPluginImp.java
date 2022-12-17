@@ -13,11 +13,11 @@ import org.noear.solon.core.Plugin;
 public class XPluginImp implements Plugin {
     @Override
     public void start(AopContext context) {
-        if (Utils.isEmpty(MinioProps.INSTANCE.getFileAccessKey())) {
-            return;
-        }
-
         if (MinioProps.INSTANCE.getFileEnable()) {
+            if (Utils.isEmpty(MinioProps.INSTANCE.getFileAccessKey())) {
+                return;
+            }
+
             CloudManager.register(new CloudFileServiceMinioImp(MinioProps.INSTANCE));
         }
     }

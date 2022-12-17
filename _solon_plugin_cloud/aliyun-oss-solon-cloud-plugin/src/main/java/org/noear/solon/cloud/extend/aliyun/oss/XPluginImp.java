@@ -14,11 +14,11 @@ import org.noear.solon.core.Plugin;
 public class XPluginImp implements Plugin {
     @Override
     public void start(AopContext context) {
-        if (Utils.isEmpty(OssProps.instance.getFileAccessKey())) {
-            return;
-        }
-
         if (OssProps.instance.getFileEnable()) {
+            if (Utils.isEmpty(OssProps.instance.getFileAccessKey())) {
+                return;
+            }
+
             CloudManager.register(new CloudFileServiceOssImp(OssProps.instance));
         }
     }

@@ -16,11 +16,11 @@ public class XPluginImp implements Plugin {
 
     @Override
     public void start(AopContext context) {
-        if (Utils.isEmpty(S3Props.instance.getFileAccessKey())) {
-            return;
-        }
-
         if (S3Props.instance.getFileEnable()) {
+            if (Utils.isEmpty(S3Props.instance.getFileAccessKey())) {
+                return;
+            }
+
             if (Utils.loadClass(AWS_SDK_TAG) == null) {
                 CloudManager.register(new CloudFileServiceS3OfHttpImp(S3Props.instance));
             } else {
