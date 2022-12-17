@@ -20,10 +20,9 @@ import java.io.OutputStream;
  */
 public class CloudFileLocalClient implements CloudFileService {
     private final File root;
-    private final String endpoint;
 
-    public CloudFileLocalClient(String bucketName, Props props) {
-        this.endpoint = props.getProperty("endpoint");
+    public CloudFileLocalClient(Props props) {
+        String endpoint = props.getProperty("endpoint");
 
         this.root = new File(endpoint);
 

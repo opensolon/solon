@@ -32,6 +32,9 @@ public class CloudFileServiceS3OfSdkImp implements CloudFileService {
 
     private final AmazonS3 client;
 
+    public AmazonS3 getClient() {
+        return client;
+    }
 
     public CloudFileServiceS3OfSdkImp(CloudProps cloudProps) {
         this(
@@ -64,14 +67,14 @@ public class CloudFileServiceS3OfSdkImp implements CloudFileService {
             URI endpointUri = URI.create(endpoint);
             endpoint = endpointUri.getHost();
 
-            AwsClientBuilder.EndpointConfiguration endpointConfig = new AwsClientBuilder
-                    .EndpointConfiguration(endpoint, regionId);
-
             if ("http".equals(endpointUri.getScheme())) {
                 clientConfig.setProtocol(Protocol.HTTP);
             } else {
                 clientConfig.setProtocol(Protocol.HTTPS);
             }
+
+            AwsClientBuilder.EndpointConfiguration endpointConfig = new AwsClientBuilder
+                    .EndpointConfiguration(endpoint, regionId);
 
             //开始构建
             AmazonS3ClientBuilder builder = AmazonS3Client.builder()

@@ -19,10 +19,13 @@ import org.noear.solon.core.handle.Result;
 public class CloudFileRemoteClient implements CloudFileService {
     private final AmazonS3 client;
 
-    public CloudFileRemoteClient(String bucketName, Props props) {
-        this.client = BucketUtils.createClient(props);
+    public AmazonS3 getClient() {
+        return client;
     }
 
+    public CloudFileRemoteClient(Props props) {
+        this.client = BucketUtils.createClient(props);
+    }
 
     @Override
     public Media get(String bucket, String key) throws CloudFileException {
