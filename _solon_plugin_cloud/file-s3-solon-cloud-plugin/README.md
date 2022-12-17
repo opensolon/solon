@@ -2,7 +2,7 @@
 
 ```yaml
 solon.cloud.file.s3.file:
-  bucket: 'huawei' 
+  bucket: 'demo1_bucket' 
   buckets:
     demo1_bucket: #所用存储桶( bucket )，必须都先配置好
       endpoint: 'https://obs.cn-southwest-2.myhuaweicloud.com' #通过协议，表达是否使用 https?
