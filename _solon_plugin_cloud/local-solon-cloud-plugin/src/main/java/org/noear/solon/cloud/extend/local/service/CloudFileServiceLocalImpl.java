@@ -62,10 +62,12 @@ public class CloudFileServiceLocalImpl implements CloudFileService {
         try {
             File file = getFile(bucket, key);
             if (file.exists()) {
-                file.delete();
+                if (file.delete() == false) {
+                    return Result.failure();
+                }
             }
 
-            return Result.succeed();
+            return Result.succeed(file.getAbsolutePath());
         } catch (Throwable e) {
             throw new CloudFileException(e);
         }

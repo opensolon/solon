@@ -71,7 +71,9 @@ public class CloudFileLocalClient implements CloudFileService {
         try {
             File file = getFile(bucket, key);
             if (file.exists()) {
-                file.delete();
+                if (file.delete() == false) {
+                    return Result.failure();
+                }
             }
 
             return Result.succeed(file.getAbsolutePath());
