@@ -1,17 +1,12 @@
 package org.noear.solon.cloud.extend.file.s3.utils;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-
 /**
  * 策略类型（主要用于 minio）
  *
  * @author 等風來再離開
  * @since 1.11
  */
-@Getter
-@AllArgsConstructor
 public enum PolicyType {
 
     /**
@@ -33,4 +28,12 @@ public enum PolicyType {
      * 类型
      */
     private final String type;
+
+    public String getType() {
+        return type;
+    }
+
+    PolicyType(String type){
+        this.type = type;
+    }
 }
