@@ -1,17 +1,20 @@
 #### 后续（可以提 Issue 增加需求）
-* 新增 knife4j-solon-plugin 插件
 * 新增 kubernetes-solon-cloud-plugin 插件
 * 新增 jmdns-solon-cloud-plugin 插件
-* 新增 swagger-solon-plugin 插件
 * 新增 shiro-solon-plugin 插件
-* 新增 thrift-solon-cloud-plugin 插件
 * 调整 运行完成后，提供未注入的对象???
 * 增加 更多友好的异常分类???
 * 增加 便利的原生编译机制
 
-#### 1.11.6
+
+#### 1.11.7
 * 新增 elastic-job-solon-plugin 分布式定时任务 ???
+* 新增 thrift-solon-cloud-plugin 插件 ???
 * 新增 liteflow-solon-plugin 插件 ???
+* 新增 swagger-solon-plugin 插件 ???
+* 新增 knife4j-solon-plugin 插件 ???
+
+#### 1.11.6
 * 新增 file-s3-solon-plugin 插件，是一个组合的 cloud file service !ok
 * 新增 solon.cloud.httputils 插件，用于替代 httputils-solon-cloud-plugin !ok
 * 新增 polaris-solon-cloud-plugin 插件，基于腾讯北极星适配 !ok
