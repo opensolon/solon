@@ -138,7 +138,7 @@ public class CloudFileServiceS3OfHttpImp implements CloudFileService {
     }
 
     private String buildUrl(String bucket, String key) {
-        return "http://" + bucket + ".s3." + regionId + ".amazonaws.com" + "/" + key;
+        return "https://" + bucket + ".s3." + regionId + ".amazonaws.com" + "/" + key;
     }
 
     private String hmacSha1(String data, String secretKey) {
