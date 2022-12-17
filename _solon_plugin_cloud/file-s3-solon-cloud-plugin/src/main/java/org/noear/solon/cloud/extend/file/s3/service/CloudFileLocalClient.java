@@ -4,13 +4,13 @@ import org.noear.solon.Utils;
 import org.noear.solon.cloud.exception.CloudFileException;
 import org.noear.solon.cloud.model.Media;
 import org.noear.solon.cloud.service.CloudFileService;
+import org.noear.solon.core.Props;
 import org.noear.solon.core.handle.Result;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
-import java.util.Properties;
 
 /**
  * CloudFileService 的本地实现
@@ -22,8 +22,8 @@ public class CloudFileLocalClient implements CloudFileService {
     private final File root;
     private final String endpoint;
 
-    public CloudFileLocalClient(String bucketName, Properties properties) {
-        this.endpoint = properties.getProperty("endpoint");
+    public CloudFileLocalClient(String bucketName, Props props) {
+        this.endpoint = props.getProperty("endpoint");
 
         this.root = new File(endpoint);
 

@@ -1,25 +1,14 @@
 package org.noear.solon.cloud.extend.file.s3.service;
 
-import com.amazonaws.ClientConfiguration;
-import com.amazonaws.Protocol;
-import com.amazonaws.auth.AWSCredentials;
-import com.amazonaws.auth.AWSCredentialsProvider;
-import com.amazonaws.auth.AWSStaticCredentialsProvider;
-import com.amazonaws.auth.BasicAWSCredentials;
-import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3Client;
-import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.*;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.exception.CloudFileException;
 import org.noear.solon.cloud.extend.file.s3.impl.BucketUtils;
 import org.noear.solon.cloud.model.Media;
 import org.noear.solon.cloud.service.CloudFileService;
+import org.noear.solon.core.Props;
 import org.noear.solon.core.handle.Result;
-
-import java.net.URI;
-import java.util.Properties;
 
 /**
  * CloudFileService 的远程实现（基于 s3 协议）
@@ -30,50 +19,8 @@ import java.util.Properties;
 public class CloudFileRemoteClient implements CloudFileService {
     private final AmazonS3 client;
 
-    private final String endpoint;
-    private final String regionId;
-
-    private final String accessKey;
-    private final String secretKey;
-
-    public CloudFileRemoteClient(String bucketName, Properties properties) {
-        String endpointStr = properties.getProperty("endpoint");
-        URI endpointUri = URI.create(endpointStr);
-
-        this.endpoint = endpointUri.getHost();
-        this.regionId = properties.getProperty("regionId");
-
-        this.accessKey = properties.getProperty("accessKey");
-        this.secretKey = properties.getProperty("secretKey");
-
-
-        AwsClientBuilder.EndpointConfiguration endpointConfig = new AwsClientBuilder
-                .EndpointConfiguration(endpoint, regionId);
-
-        AWSCredentials credentials = new BasicAWSCredentials(accessKey, secretKey);
-        AWSCredentialsProvider credentialsProvider = new AWSStaticCredentialsProvider(credentials);
-        ClientConfiguration clientConfig = new ClientConfiguration();
-
-        if ("https".equals(endpointUri.getScheme())) {
-            clientConfig.setProtocol(Protocol.HTTPS);
-        } else {
-            clientConfig.setProtocol(Protocol.HTTP);
-        }
-
-        AmazonS3ClientBuilder build = AmazonS3Client.builder()
-                .withEndpointConfiguration(endpointConfig)
-                .withClientConfiguration(clientConfig)
-                .withCredentials(credentialsProvider)
-                .disableChunkedEncoding();
-
-        if (BucketUtils.containsAny(endpoint, BucketUtils.CLOUD_SERVICE)) {
-            // minio 使用https限制使用域名访问 需要此配置 站点填域名
-            build.enablePathStyleAccess();
-        }
-
-        this.client = build.build();
-
-        BucketUtils.initBucket(client, bucketName);
+    public CloudFileRemoteClient(String bucketName, Props props) {
+        this.client = BucketUtils.createClient(props);
     }
 
 

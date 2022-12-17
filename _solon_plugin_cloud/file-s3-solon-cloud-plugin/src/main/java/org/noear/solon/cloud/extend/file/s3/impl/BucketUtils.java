@@ -1,8 +1,21 @@
 package org.noear.solon.cloud.extend.file.s3.impl;
 
+import com.amazonaws.ClientConfiguration;
+import com.amazonaws.Protocol;
+import com.amazonaws.auth.AWSCredentials;
+import com.amazonaws.auth.AWSCredentialsProvider;
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.CreateBucketRequest;
+import org.noear.solon.Utils;
+
+import java.net.URI;
+import java.util.Properties;
 
 /**
  * 存储桶工具类
@@ -12,35 +25,66 @@ import com.amazonaws.services.s3.model.CreateBucketRequest;
  * @since 1.11
  */
 public class BucketUtils {
-    public static final String[] CLOUD_SERVICE = new String[]{"aliyun", "qcloud", "qiniu", "huawei"};
-
-    /**
-     * 检查字符串包含情况
+    /***
+     * 创建客户端
      * */
-    public static boolean containsAny(String str, String... str2) {
-        for (String s2 : str2) {
-            if (str.contains(s2)) {
-                return true;
-            }
+    public static AmazonS3 createClient(Properties props) {
+        String endpointStr = props.getProperty("endpoint");
+        URI endpointUri = URI.create(endpointStr);
+
+        String endpoint = endpointUri.getHost();
+        String regionId = props.getProperty("regionId");
+
+        String accessKey = props.getProperty("accessKey");
+        String secretKey = props.getProperty("secretKey");
+
+        AwsClientBuilder.EndpointConfiguration endpointConfig = new AwsClientBuilder
+                .EndpointConfiguration(endpoint, regionId);
+
+        AWSCredentials credentials = new BasicAWSCredentials(accessKey, secretKey);
+        AWSCredentialsProvider credentialsProvider = new AWSStaticCredentialsProvider(credentials);
+        ClientConfiguration clientConfig = new ClientConfiguration();
+
+        if ("http".equals(endpointUri.getScheme())) {
+            clientConfig.setProtocol(Protocol.HTTP);
+        } else {
+            clientConfig.setProtocol(Protocol.HTTPS);
         }
 
-        return false;
+        //开始构建
+        AmazonS3ClientBuilder builder = AmazonS3Client.builder()
+                .withEndpointConfiguration(endpointConfig)
+                .withClientConfiguration(clientConfig)
+                .withCredentials(credentialsProvider);
+
+        //注入配置
+        if (props != null && props.size() > 0) {
+            Utils.injectProperties(builder, props);
+        }
+
+        return builder.build();
     }
 
     /**
-     * 初始化存储桶
+     * 创建存储桶
      */
-    public static void initBucket(AmazonS3 client, String bucketName) {
+    public static boolean createBucket(AmazonS3 client, String bucketName, PolicyType policyType) {
         if (client.doesBucketExistV2(bucketName)) {
-            return;
+            return true;
         }
 
-        String bucketPolicy = buildBucketPolicy(bucketName, PolicyType.READ);
+        if (policyType == null) {
+            policyType = PolicyType.READ;
+        }
+
+        String bucketPolicy = buildBucketPolicy(bucketName, policyType);
 
         CreateBucketRequest createBucketRequest = new CreateBucketRequest(bucketName);
         createBucketRequest.setCannedAcl(CannedAccessControlList.PublicRead);
         client.createBucket(createBucketRequest);
         client.setBucketPolicy(bucketName, bucketPolicy);
+
+        return true;
     }
 
     /**

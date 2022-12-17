@@ -4,7 +4,7 @@
 solon.cloud.file.s3.file:
   default: 'demo1_bucket' #默认
   buckets:
-    demo1_bucket: #所用存储桶( bucket )，必须都先配置好
+    demo1_bucket: #所用存储桶( bucket )，必须都先配置好 //且 bucket 须手动先建好
       endpoint: 'https://obs.cn-southwest-2.myhuaweicloud.com' #通过协议，表达是否使用 https?
       regionId: ''
       accessKey: 'xxxx'
@@ -17,6 +17,19 @@ solon.cloud.file.s3.file:
       accessKey: 'xxxx'
       secretKey: 'xxx'
       
+```
+
+其它 bucket 属性支持
+```yml
+demo1_bucket:
+  pathStyleAccessEnabled: false
+  chunkedEncodingDisabled: false
+  accelerateModeEnabled: false
+  payloadSigningEnabled: false
+  dualstackEnabled: false
+  forceGlobalBucketAccessEnabled: false
+  useArnRegionEnabled: false
+  regionalUsEast1EndpointEnabled: false
 ```
 
 ### 文件管理 - 简单示例：上传，下载，删除
