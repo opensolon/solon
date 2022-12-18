@@ -2,7 +2,7 @@ package org.noear.solon.cloud.extend.minio;
 
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudManager;
-import org.noear.solon.cloud.extend.minio.service.CloudFileServiceMinioImp;
+import org.noear.solon.cloud.extend.minio.service.CloudFileServiceMinioImpl;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
 
@@ -18,7 +18,7 @@ public class XPluginImp implements Plugin {
                 return;
             }
 
-            CloudManager.register(new CloudFileServiceMinioImp(MinioProps.INSTANCE));
+            CloudManager.register(new CloudFileServiceMinioImpl(MinioProps.INSTANCE));
         }
     }
 }

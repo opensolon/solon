@@ -8,15 +8,13 @@ import org.noear.solon.cloud.model.Media;
 import org.noear.solon.cloud.service.CloudFileService;
 import org.noear.solon.core.handle.Result;
 
-import java.io.InputStream;
-
 /**
  * 云端文件服务（minio）
  *
  * @author iYarnFog
  * @since 1.5
  */
-public class CloudFileServiceMinioImp implements CloudFileService {
+public class CloudFileServiceMinioImpl implements CloudFileService {
 
     protected final String bucketDef;
 
@@ -27,7 +25,7 @@ public class CloudFileServiceMinioImp implements CloudFileService {
     protected final MinioClient minioClient;
 
 
-    public CloudFileServiceMinioImp(CloudProps cloudProps) {
+    public CloudFileServiceMinioImpl(CloudProps cloudProps) {
         this(
                 cloudProps.getFileEndpoint(),
                 cloudProps.getFileRegionId(),
@@ -37,7 +35,7 @@ public class CloudFileServiceMinioImp implements CloudFileService {
         );
     }
 
-    public CloudFileServiceMinioImp(String endpoint, String regionId, String bucket, String accessKey, String secretKey) {
+    public CloudFileServiceMinioImpl(String endpoint, String regionId, String bucket, String accessKey, String secretKey) {
         this.endpoint = endpoint;
         this.regionId = regionId;
 
@@ -60,12 +58,12 @@ public class CloudFileServiceMinioImp implements CloudFileService {
         }
 
         try {
-            InputStream obj = minioClient.getObject(GetObjectArgs.builder()
+            GetObjectResponse obj = minioClient.getObject(GetObjectArgs.builder()
                     .bucket(bucket)
                     .object(key)
                     .build());
 
-            return new Media(obj);
+            return new Media(obj, obj.headers().get("Content-Type"));
         } catch (Exception exception) {
             throw new CloudFileException(exception);
         }
