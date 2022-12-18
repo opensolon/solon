@@ -21,7 +21,7 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>httputils-solon-cloud-plugin</artifactId>
+            <artifactId>solon.cloud.httputils</artifactId>
         </dependency>
 
         <dependency>
