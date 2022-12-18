@@ -11,6 +11,7 @@ import org.noear.solon.core.handle.Result;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
+import java.net.URI;
 import java.util.Base64;
 
 /**
@@ -26,14 +27,20 @@ public class CloudFileServiceOfS3HttpImpl implements CloudFileService {
     final static String acl_canonicalized = "x-amz-grant-read:uri=\"http://acs.amazonaws.com/groups/global/AllUsers\"\n";
 
 
-    protected final String bucketDef;
+    private final String bucketDef;
 
-    protected final String accessKey;
-    protected final String secretKey;
-    protected final String regionId;
+    private final String endpoint; //endpoint 或 regionId 必须要有一个
+    private final String regionId;
+
+    private final String accessKey;
+    private final String secretKey;
+
+    protected final boolean isHttps;
 
 
     public CloudFileServiceOfS3HttpImpl(CloudProps cloudProps) {
+        String endpointStr = cloudProps.getFileEndpoint();
+
         this.regionId = cloudProps.getFileRegionId();
 
         this.bucketDef = cloudProps.getFileBucket();
@@ -41,9 +48,25 @@ public class CloudFileServiceOfS3HttpImpl implements CloudFileService {
         this.accessKey = cloudProps.getFileAccessKey();
         this.secretKey = cloudProps.getFileSecretKey();
 
-        if(Utils.isEmpty(regionId)){
-            throw new IllegalArgumentException("The regionId configuration is missing");
+        if (Utils.isEmpty(regionId) && Utils.isEmpty(endpointStr)) {
+            throw new CloudFileException("The 'regionId' and 'endpoint' configuration must have one");
         }
+
+        if (Utils.isEmpty(endpointStr)) {
+            isHttps = true;
+        } else {
+            if (endpointStr.startsWith("http://")) {
+                isHttps = false;
+            } else {
+                isHttps = true;
+            }
+
+            if (endpointStr.contains("://")) {
+                endpointStr = URI.create(endpointStr).getHost();
+            }
+        }
+
+        this.endpoint = endpointStr;
     }
 
     @Override
@@ -138,7 +161,26 @@ public class CloudFileServiceOfS3HttpImpl implements CloudFileService {
     }
 
     private String buildUrl(String bucket, String key) {
-        return "https://" + bucket + ".s3." + regionId + ".amazonaws.com" + "/" + key;
+        StringBuilder buf = new StringBuilder(100);
+        if (isHttps) {
+            buf.append("https://");
+        } else {
+            buf.append("http://");
+        }
+
+        buf.append(bucket).append(".");
+
+        if (Utils.isEmpty(endpoint)) {
+            buf.append("s3.");
+            buf.append(regionId);
+            buf.append(".amazonaws.com/");
+            buf.append(key);
+        } else {
+            buf.append(endpoint);
+            buf.append("/").append(key);
+        }
+
+        return buf.toString();
     }
 
     private String hmacSha1(String data, String secretKey) {

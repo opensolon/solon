@@ -13,6 +13,7 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.CreateBucketRequest;
 import org.noear.solon.Utils;
+import org.noear.solon.cloud.exception.CloudFileException;
 
 import java.net.URI;
 import java.util.Properties;
@@ -34,6 +35,10 @@ public class BucketUtils {
 
         String accessKey = props.getProperty("accessKey");
         String secretKey = props.getProperty("secretKey");
+
+        if (Utils.isEmpty(regionId) && Utils.isEmpty(endpoint)) {
+            throw new CloudFileException("The 'regionId' and 'endpoint' configuration must have one");
+        }
 
         return createClient(endpoint, regionId, accessKey, secretKey, props);
     }
