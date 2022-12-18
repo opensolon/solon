@@ -2,8 +2,8 @@ package org.noear.solon.cloud.extend.aws.s3;
 
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudManager;
-import org.noear.solon.cloud.extend.aws.s3.service.CloudFileServiceS3OfHttpImp;
-import org.noear.solon.cloud.extend.aws.s3.service.CloudFileServiceS3OfSdkImp;
+import org.noear.solon.cloud.extend.aws.s3.service.CloudFileServiceOfS3HttpImpl;
+import org.noear.solon.cloud.extend.aws.s3.service.CloudFileServiceOfS3SdkImpl;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
 
@@ -22,9 +22,9 @@ public class XPluginImp implements Plugin {
             }
 
             if (Utils.loadClass(AWS_SDK_TAG) == null) {
-                CloudManager.register(new CloudFileServiceS3OfHttpImp(S3Props.instance));
+                CloudManager.register(new CloudFileServiceOfS3HttpImpl(S3Props.instance));
             } else {
-                CloudManager.register(new CloudFileServiceS3OfSdkImp(S3Props.instance));
+                CloudManager.register(new CloudFileServiceOfS3SdkImpl(S3Props.instance));
             }
         }
     }

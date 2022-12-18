@@ -18,12 +18,14 @@ import java.io.OutputStream;
  * @author 等風來再離開
  * @since 1.11
  */
-public class CloudFileLocalClient implements CloudFileService {
+public class CloudFileServiceOfLocalImpl implements CloudFileService {
+    private final String bucketDef;
     private final File root;
 
-    public CloudFileLocalClient(Props props) {
+    public CloudFileServiceOfLocalImpl(String bucketDef, Props props) {
         String endpoint = props.getProperty("endpoint");
 
+        this.bucketDef = bucketDef;
         this.root = new File(endpoint);
 
         if (root.exists() == false) {
@@ -33,6 +35,10 @@ public class CloudFileLocalClient implements CloudFileService {
 
     @Override
     public Media get(String bucket, String key) throws CloudFileException {
+        if (Utils.isEmpty(bucket)) {
+            bucket = bucketDef;
+        }
+
         try {
             File file = getFile(bucket, key);
 
@@ -49,6 +55,10 @@ public class CloudFileLocalClient implements CloudFileService {
 
     @Override
     public Result put(String bucket, String key, Media media) throws CloudFileException {
+        if (Utils.isEmpty(bucket)) {
+            bucket = bucketDef;
+        }
+
         try {
             File file = getFile(bucket, key);
             if (file.exists() == false) {
@@ -67,6 +77,10 @@ public class CloudFileLocalClient implements CloudFileService {
 
     @Override
     public Result delete(String bucket, String key) throws CloudFileException {
+        if (Utils.isEmpty(bucket)) {
+            bucket = bucketDef;
+        }
+
         try {
             File file = getFile(bucket, key);
             if (file.exists()) {

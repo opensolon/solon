@@ -17,7 +17,7 @@ import java.util.Base64;
  * @author noear
  * @since 1.5
  */
-public class CloudFileServiceS3OfHttpImp implements CloudFileService {
+public class CloudFileServiceOfS3HttpImpl implements CloudFileService {
     final static String CHARSET_UTF8 = "utf8";
     final static String ALGORITHM = "HmacSHA1";
 
@@ -33,7 +33,7 @@ public class CloudFileServiceS3OfHttpImp implements CloudFileService {
     protected final String regionId;
 
 
-    public CloudFileServiceS3OfHttpImp(CloudProps cloudProps) {
+    public CloudFileServiceOfS3HttpImpl(CloudProps cloudProps) {
         this.regionId = cloudProps.getFileRegionId();
 
         this.bucketDef = cloudProps.getFileBucket();

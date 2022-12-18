@@ -34,9 +34,9 @@ public class CloudFileServiceImpl implements CloudFileService {
 
             if (Utils.isNotEmpty(endpoint)) {
                 if (endpoint.startsWith("http://") || endpoint.startsWith("https://")) {
-                    bucketServiceMap.put(bucketName, new CloudFileRemoteClient(props));
+                    bucketServiceMap.put(bucketName, new CloudFileServiceOfS3SdkImpl(bucketName, props));
                 } else {
-                    bucketServiceMap.put(bucketName, new CloudFileLocalClient(props));
+                    bucketServiceMap.put(bucketName, new CloudFileServiceOfLocalImpl(bucketName, props));
                 }
             }
         }

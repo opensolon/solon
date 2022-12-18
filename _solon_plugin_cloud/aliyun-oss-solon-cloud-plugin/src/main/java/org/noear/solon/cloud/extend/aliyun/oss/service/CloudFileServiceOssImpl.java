@@ -22,7 +22,7 @@ import java.util.Map;
  * @author noear
  * @since 1.3
  */
-public class CloudFileServiceOssImp implements CloudFileService {
+public class CloudFileServiceOssImpl implements CloudFileService {
     private final String bucketDef;
 
     private final String accessKey;
@@ -33,7 +33,7 @@ public class CloudFileServiceOssImp implements CloudFileService {
     protected String ALGORITHM = "HmacSHA1";
 
 
-    public CloudFileServiceOssImp(CloudProps cloudProps) {
+    public CloudFileServiceOssImpl(CloudProps cloudProps) {
         this(
                 cloudProps.getFileEndpoint(),
                 cloudProps.getFileBucket(),
@@ -43,7 +43,7 @@ public class CloudFileServiceOssImp implements CloudFileService {
     }
 
 
-    public CloudFileServiceOssImp(String endpoint, String bucket, String accessKey, String secretKey) {
+    public CloudFileServiceOssImpl(String endpoint, String bucket, String accessKey, String secretKey) {
         if(Utils.isEmpty(endpoint)){
             throw new IllegalArgumentException("The endpoint configuration is missing");
         }
