@@ -14,7 +14,7 @@ Author noear，iYarnFog
 ```xml
 <dependency>
     <groupId>org.noear</groupId>
-    <artifactId>minio-solon-plugin</artifactId>
+    <artifactId>minio-solon-cloud-plugin</artifactId>
 </dependency>
 ```
 
