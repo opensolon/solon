@@ -1,6 +1,5 @@
 package org.noear.solon.test;
 
-import org.junit.Assert;
 import org.junit.jupiter.api.extension.*;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
@@ -8,9 +7,10 @@ import org.noear.solon.aspect.BeanProxy;
 import org.noear.solon.core.event.AppInitEndEvent;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.test.annotation.TestPropertySource;
+import org.noear.solon.test.annotation.TestRollback;
+import org.noear.solon.test.data.TestRollbackInterceptor;
 
 import java.io.File;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.net.MalformedURLException;
@@ -57,6 +57,12 @@ public class SolonJUnit5Extension implements TestInstanceFactory {
         SolonTest anno = klass.getAnnotation(SolonTest.class);
         TestPropertySource propAnno = klass.getAnnotation(TestPropertySource.class);
 
+        EventBus.subscribe(AppInitEndEvent.class, e->{
+            //加载测试配置
+            addPropertySource(propAnno);
+            Solon.context().beanAroundAdd(TestRollback.class, new TestRollbackInterceptor(), 120);
+        });
+
         if (anno != null) {
             if(anno.properties().length > 0) {
                 for (String tmp : anno.properties()) {
@@ -88,16 +94,10 @@ public class SolonJUnit5Extension implements TestInstanceFactory {
                 Method main = getMain(anno);
 
                 if (main != null && Modifier.isStatic(main.getModifiers())) {
-                    EventBus.subscribe(AppInitEndEvent.class, e->{
-                        //加载测试配置
-                        addPropertySource(propAnno);
-                    });
+
                     main.invoke(null, new Object[]{argsStr});
                 } else {
-                    Solon.start(anno.value(), argsStr, app -> {
-                        //加载测试配置
-                        addPropertySource(propAnno);
-                    });
+                    Solon.start(anno.value(), argsStr);
                 }
             } catch (Throwable ex) {
                 Utils.throwableUnwrap(ex).printStackTrace();
@@ -113,10 +113,7 @@ public class SolonJUnit5Extension implements TestInstanceFactory {
                 }
             }
         } else {
-            Solon.start(klass, new String[]{"-debug=1"}, app -> {
-                //加载测试配置
-                addPropertySource(propAnno);
-            });
+            Solon.start(klass, new String[]{"-debug=1"});
         }
     }
 

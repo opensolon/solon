@@ -8,6 +8,8 @@ import org.noear.solon.aspect.BeanProxy;
 import org.noear.solon.core.event.AppInitEndEvent;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.test.annotation.TestPropertySource;
+import org.noear.solon.test.annotation.TestRollback;
+import org.noear.solon.test.data.TestRollbackInterceptor;
 
 import java.io.File;
 import java.lang.reflect.Method;
@@ -28,6 +30,12 @@ public class SolonJUnit4ClassRunner extends BlockJUnit4ClassRunner {
     private void initDo(Class<?> klass){
         SolonTest anno = klass.getAnnotation(SolonTest.class);
         TestPropertySource propAnno = klass.getAnnotation(TestPropertySource.class);
+
+        EventBus.subscribe(AppInitEndEvent.class, e->{
+            //加载测试配置
+            addPropertySource(propAnno);
+            Solon.context().beanAroundAdd(TestRollback.class, new TestRollbackInterceptor(), 120);
+        });
 
         if (anno != null) {
             if(anno.properties().length > 0) {
@@ -61,16 +69,10 @@ public class SolonJUnit4ClassRunner extends BlockJUnit4ClassRunner {
                 Method main = getMain(anno);
 
                 if (main != null && Modifier.isStatic(main.getModifiers())) {
-                    EventBus.subscribe(AppInitEndEvent.class, e->{
-                        //加载测试配置
-                        addPropertySource(propAnno);
-                    });
+
                     main.invoke(null, new Object[]{argsStr});
                 } else {
-                    Solon.start(anno.value(), argsStr, app -> {
-                        //加载测试配置
-                        addPropertySource(propAnno);
-                    });
+                    Solon.start(anno.value(), argsStr);
                 }
             } catch (Throwable ex) {
                 Utils.throwableUnwrap(ex).printStackTrace();
@@ -86,10 +88,7 @@ public class SolonJUnit4ClassRunner extends BlockJUnit4ClassRunner {
                 }
             }
         } else {
-            Solon.start(klass, new String[]{"-debug=1"}, app -> {
-                //加载测试配置
-                addPropertySource(propAnno);
-            });
+            Solon.start(klass, new String[]{"-debug=1"});
         }
     }
 

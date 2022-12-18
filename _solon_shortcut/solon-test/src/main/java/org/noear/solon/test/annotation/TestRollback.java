@@ -1,4 +1,4 @@
-package org.noear.solon.data.annotation;
+package org.noear.solon.test.annotation;
 
 import org.noear.solon.data.tran.TranIsolation;
 import org.noear.solon.data.tran.TranPolicy;
@@ -14,7 +14,7 @@ import java.lang.annotation.Target;
  */
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Rollback {
+public @interface TestRollback {
     /**
      * 事务传导策略
      * */
