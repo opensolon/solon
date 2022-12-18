@@ -19,12 +19,12 @@ import java.util.Base64;
  * @since 1.5
  */
 public class CloudFileServiceOfS3HttpImpl implements CloudFileService {
-    final static String CHARSET_UTF8 = "utf8";
-    final static String ALGORITHM = "HmacSHA1";
+    private final static String CHARSET_UTF8 = "utf8";
+    private final static String ALGORITHM = "HmacSHA1";
 
-    final static String acl_header = "x-amz-grant-read";
-    final static String acl_header_val = "uri=\"http://acs.amazonaws.com/groups/global/AllUsers\"";
-    final static String acl_canonicalized = "x-amz-grant-read:uri=\"http://acs.amazonaws.com/groups/global/AllUsers\"\n";
+    private final static String acl_header = "x-amz-grant-read";
+    private final static String acl_header_val = "uri=\"http://acs.amazonaws.com/groups/global/AllUsers\"";
+    private final static String acl_canonicalized = "x-amz-grant-read:uri=\"http://acs.amazonaws.com/groups/global/AllUsers\"\n";
 
 
     private final String bucketDef;

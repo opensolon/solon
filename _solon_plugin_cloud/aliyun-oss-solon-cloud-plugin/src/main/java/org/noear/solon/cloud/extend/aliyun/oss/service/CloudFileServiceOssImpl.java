@@ -23,14 +23,14 @@ import java.util.Map;
  * @since 1.3
  */
 public class CloudFileServiceOssImpl implements CloudFileService {
+    private static final String CHARSET_UTF8 = "utf8";
+    private static final String ALGORITHM = "HmacSHA1";
+
     private final String bucketDef;
 
     private final String accessKey;
     private final String secretKey;
     private final String endpoint;
-
-    protected String CHARSET_UTF8 = "utf8";
-    protected String ALGORITHM = "HmacSHA1";
 
 
     public CloudFileServiceOssImpl(CloudProps cloudProps) {
@@ -150,9 +150,9 @@ public class CloudFileServiceOssImpl implements CloudFileService {
 
     private String buildUrl(String bucket, String key) {
         if (endpoint.startsWith(bucket)) {
-            return "http://" + endpoint + "/" + key;
+            return "https://" + endpoint + "/" + key;
         } else {
-            return "http://" + bucket + "." + endpoint + "/" + key;
+            return "https://" + bucket + "." + endpoint + "/" + key;
         }
     }
 

@@ -15,15 +15,18 @@ import org.noear.solon.core.handle.Result;
  * @since 1.5
  */
 public class CloudFileServiceMinioImpl implements CloudFileService {
+    private final String bucketDef;
 
-    protected final String bucketDef;
+    private final String endpoint;
+    private final String regionId;
+    private final String accessKey;
+    private final String secretKey;
 
-    protected final String endpoint;
-    protected final String regionId;
-    protected final String accessKey;
-    protected final String secretKey;
-    protected final MinioClient minioClient;
+    private final MinioClient client;
 
+    public MinioClient getClient() {
+        return client;
+    }
 
     public CloudFileServiceMinioImpl(CloudProps cloudProps) {
         this(
@@ -44,7 +47,7 @@ public class CloudFileServiceMinioImpl implements CloudFileService {
         this.accessKey = accessKey;
         this.secretKey = secretKey;
 
-        this.minioClient = MinioClient.builder()
+        this.client = MinioClient.builder()
                 .endpoint(this.endpoint)
                 .region(this.regionId)
                 .credentials(this.accessKey, this.secretKey)
@@ -58,7 +61,7 @@ public class CloudFileServiceMinioImpl implements CloudFileService {
         }
 
         try {
-            GetObjectResponse obj = minioClient.getObject(GetObjectArgs.builder()
+            GetObjectResponse obj = client.getObject(GetObjectArgs.builder()
                     .bucket(bucket)
                     .object(key)
                     .build());
@@ -81,7 +84,7 @@ public class CloudFileServiceMinioImpl implements CloudFileService {
         }
 
         try {
-            ObjectWriteResponse response = this.minioClient.putObject(PutObjectArgs.builder()
+            ObjectWriteResponse response = this.client.putObject(PutObjectArgs.builder()
                     .bucket(bucket)
                     .object(key)
                     .stream(media.body(), media.body().available(), -1)
@@ -101,7 +104,7 @@ public class CloudFileServiceMinioImpl implements CloudFileService {
         }
 
         try {
-            this.minioClient.removeObject(RemoveObjectArgs.builder()
+            this.client.removeObject(RemoveObjectArgs.builder()
                     .bucket(bucket)
                     .object(key)
                     .build());
@@ -109,9 +112,5 @@ public class CloudFileServiceMinioImpl implements CloudFileService {
         } catch (Exception exception) {
             throw new CloudFileException(exception);
         }
-    }
-
-    public MinioClient getMinio() {
-        return this.minioClient;
     }
 }
