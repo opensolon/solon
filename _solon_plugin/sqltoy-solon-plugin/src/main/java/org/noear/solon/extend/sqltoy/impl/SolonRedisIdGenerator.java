@@ -16,23 +16,24 @@ public class SolonRedisIdGenerator implements DistributeIdGenerator {
      */
     private final static String GLOBAL_ID_PREFIX = "SQLTOY_GL_ID:";
     private RedisClient client;
+
     @Override
     public long generateId(String key, int increment, Date expireTime) {
-        String realKey=GLOBAL_ID_PREFIX.concat(key);
+        String realKey = GLOBAL_ID_PREFIX.concat(key);
         RedisAtomic atomic = client.getAtomic(GLOBAL_ID_PREFIX.concat(key));
-        if(expireTime!=null){
-            client.open(s->{
-                s.jedis().pexpireAt(realKey,expireTime.getTime());
+        if (expireTime != null) {
+            client.open(s -> {
+                s.jedis().pexpireAt(realKey, expireTime.getTime());
             });
         }
-        if(increment<1){
+        if (increment < 1) {
             return atomic.increment();
         }
-        return  atomic.incrementBy(increment);
+        return atomic.incrementBy(increment);
     }
 
     @Override
     public void initialize(AppContext appContext) {
-        client=appContext.getBean(RedisClient.class);
+        client = appContext.getBean(RedisClient.class);
     }
 }

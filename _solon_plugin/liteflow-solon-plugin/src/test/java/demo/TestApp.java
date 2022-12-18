@@ -7,7 +7,6 @@ import org.junit.runner.RunWith;
 import org.noear.snack.ONode;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
-import org.noear.solon.test.SolonTest;
 import org.noear.solon.test.annotation.TestPropertySource;
 
 /**

@@ -1,7 +1,6 @@
 package org.noear.solon.extend.sqltoy;
 
 import org.noear.solon.Solon;
-import org.noear.solon.Utils;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.event.EventBus;
@@ -20,18 +19,12 @@ import org.sagacity.sqltoy.SqlToyContext;
  * @since 1.8
  */
 public class XPluginImp implements Plugin {
+
     AopContext context;
 
     @Override
     public void start(AopContext context) {
         this.context = context;
-
-        //尝试初始化 mongodb
-        Class<?> mongoClz = Utils.loadClass(context.getClassLoader(), "com.mongodb.client.MongoDatabase");
-
-        if (mongoClz != null) {
-            SqlToyMongoInit.tryBuildMongoDbClient(context);
-        }
 
         //尝试初始化 rdb
         SqlToyContextProperties properties = context.getProps().getBean("sqltoy", SqlToyContextProperties.class);

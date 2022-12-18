@@ -11,6 +11,7 @@ import java.util.List;
 
 public class SolonMongoQuery implements MongoQuery {
     private MongoDatabase db;
+
     @Override
     public MongoCollection<Document> getCollection(String collectionName) {
         return db.getCollection(collectionName);
@@ -18,21 +19,21 @@ public class SolonMongoQuery implements MongoQuery {
 
     @Override
     public <T> List<T> find(String query, Class<T> entityClass, String collectionName, Long skip, Integer limit) {
-        MongoCollection<Document> collection=getCollection(collectionName);
-        FindIterable<T> findIterable = collection.find(BsonDocument.parse(query),entityClass);
+        MongoCollection<Document> collection = getCollection(collectionName);
+        FindIterable<T> findIterable = collection.find(BsonDocument.parse(query), entityClass);
 
-        if(skip!=null){
+        if (skip != null) {
             findIterable.skip(skip.intValue());
         }
-        if(limit!=null){
+        if (limit != null) {
             findIterable.limit(limit);
         }
 
-        MongoCursor<T> cur= findIterable.iterator();
+        MongoCursor<T> cur = findIterable.iterator();
 
-        List<T> data=new ArrayList<>();
+        List<T> data = new ArrayList<>();
 
-        while (cur.hasNext()){
+        while (cur.hasNext()) {
             data.add(cur.next());
         }
         cur.close();
@@ -42,31 +43,31 @@ public class SolonMongoQuery implements MongoQuery {
 
     @Override
     public long count(String query, String collectionName) {
-        MongoCollection<Document> collection=getCollection(collectionName);
+        MongoCollection<Document> collection = getCollection(collectionName);
         Document sum = new Document();
-        sum.put("$sum",1);
+        sum.put("$sum", 1);
 
         Document count = new Document();
-        count.put("_id",null);
-        count.put("count",sum);
+        count.put("_id", null);
+        count.put("count", sum);
 
         Document group = new Document();
-        group.put("$group",count);
+        group.put("$group", count);
 
         List<Document> list = new ArrayList<Document>();
         list.add(group);
 
-        AggregateIterable iterable =  collection.aggregate(list);
+        AggregateIterable iterable = collection.aggregate(list);
         MongoCursor<Document> cursor = iterable.iterator();
-        while(cursor.hasNext()){
+        while (cursor.hasNext()) {
             Document docu = cursor.next();
-            return (Long)docu.get("count");
+            return (Long) docu.get("count");
         }
         return 0;
     }
 
     @Override
     public void initialize(SqlToyContext sqlToyContext) {
-       db=sqlToyContext.getAppContext().getBean(MongoDatabase.class);
+        db = sqlToyContext.getAppContext().getBean(MongoDatabase.class);
     }
 }
