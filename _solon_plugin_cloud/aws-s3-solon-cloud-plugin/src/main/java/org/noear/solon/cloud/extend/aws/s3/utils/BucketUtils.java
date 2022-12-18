@@ -29,8 +29,8 @@ public class BucketUtils {
      * 创建客户端
      * */
     public static AmazonS3 createClient(Properties props) {
-        String endpoint =  props.getProperty("endpoint");
-        String regionId = props.getProperty("regionId");
+        String endpoint = props.getProperty("endpoint", "");
+        String regionId = props.getProperty("regionId", "");
 
         String accessKey = props.getProperty("accessKey");
         String secretKey = props.getProperty("secretKey");
@@ -53,8 +53,13 @@ public class BucketUtils {
                     .withCredentials(credentialsProvider)
                     .build();
         } else {
-            URI endpointUri = URI.create(endpoint);
-            endpoint = endpointUri.getHost();
+            final URI endpointUri;
+            if (endpoint.contains("://")) {
+                endpointUri = URI.create(endpoint);
+                endpoint = endpointUri.getHost();
+            } else {
+                endpointUri = URI.create("https://" + endpoint);
+            }
 
             if ("http".equals(endpointUri.getScheme())) {
                 clientConfig.setProtocol(Protocol.HTTP);

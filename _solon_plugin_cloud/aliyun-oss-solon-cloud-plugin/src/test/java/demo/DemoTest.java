@@ -26,15 +26,18 @@ public class DemoTest {
     public void test0() {
         long start = System.currentTimeMillis();
 
+        //写入
         Result result = CloudClient.file().put(key, media);
         log.info("put result: {}", result);
         assert result.getCode() == 200;
 
+        //获取
         Media getMedia = CloudClient.file().get(key);
         String getBodyString = getMedia.bodyAsString(true);
         log.info("getMedia body: {}", getBodyString);
         assert getBodyString.equals(contentBody);
 
+        //删除
         result = CloudClient.file().delete(key);
         log.debug("delete result: {}", result);
         assert result.getCode() == 200;

@@ -23,9 +23,7 @@ public class DemoTest {
 
     final String contentBody = "test s3 rest api";
     final Media media = new Media(contentBody);
-    final String key = "a.txt";
-
-    final String bucket = "local";
+    final String key = "test0/test.txt";
 
     @Test
     public void test0() {
@@ -33,21 +31,19 @@ public class DemoTest {
 
         //写入
         Result result = CloudClient.file().put(key, media);
-
-        System.out.println("put result:" + ONode.stringify(result));
+        log.info("put result: {}", result);
         assert result.getCode() == 200;
 
         //获取
         Media getMedia = CloudClient.file().get(key);
         String getBodyString = getMedia.bodyAsString(true);
-        System.out.println("getBodyString" + getBodyString);
+        log.info("getMedia body: {}", getBodyString);
         assert getBodyString.equals(contentBody);
 
         //删除
         result = CloudClient.file().delete(key);
-        System.out.println("delete result:" + ONode.stringify(result));
+        log.debug("delete result: {}", result);
         assert result.getCode() == 200;
-
 
         System.out.println("times: " + (System.currentTimeMillis() - start));
     }
