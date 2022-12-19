@@ -24,7 +24,7 @@
 * 取消 config.loadGroup, config.loadKey 配置 !ok
 * 调整 Rollback 更名为 TestRollback，并转移到 solon-test
 * 调整 EventBus:push 非异常事件，允许透传异常（从而支持事务回滚传导） !ok
-* 长级 sqltoy 为 5.2.27 !ok
+* 长级 sqltoy 为 5.2.28 !ok
 
 #### 1.11.5
 * 新增 aliyun-ons-solon-cloud-plugin 插件，且支持 tag 过滤支持

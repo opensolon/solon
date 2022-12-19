@@ -199,6 +199,11 @@ public class SqlToyCRUDServiceForSolon implements SqlToyCRUDService {
         return this.sqlToyLazyDao.cacheMatchKeys(matchRegex, cacheMatchFilter);
     }
 
+    @Override
+    public String[] cacheMatchKeys(CacheMatchFilter cacheMatchFilter, String... strings) {
+        return this.sqlToyLazyDao.cacheMatchKeys(cacheMatchFilter, strings);
+    }
+
     public <T extends Serializable> List<T> convertType(List sourceList, Class<T> resultType) {
         return this.sqlToyLazyDao.convertType(sourceList, resultType, new String[0]);
     }

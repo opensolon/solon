@@ -15,7 +15,7 @@
     <packaging>jar</packaging>
 
     <properties>
-        <sqltoy.ver>5.2.27</sqltoy.ver>
+        <sqltoy.ver>5.2.28</sqltoy.ver>
     </properties>
 
     <dependencies>
