@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.noear</groupId>
         <artifactId>solon-parent</artifactId>
-        <version>1.11.6-M3</version>
+        <version>1.11.6</version>
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
@@ -24,7 +24,7 @@
         <dependency>
             <groupId>com.yomahub</groupId>
             <artifactId>liteflow-core</artifactId>
-            <version>2.9.0</version>
+            <version>2.9.6</version>
         </dependency>
 
         <dependency>

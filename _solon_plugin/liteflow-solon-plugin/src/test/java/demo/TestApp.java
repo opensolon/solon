@@ -7,6 +7,7 @@ import org.junit.runner.RunWith;
 import org.noear.snack.ONode;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
+import org.noear.solon.test.SolonTest;
 import org.noear.solon.test.annotation.TestPropertySource;
 
 /**
@@ -23,5 +24,7 @@ public class TestApp {
     public void test() throws Exception{
         LiteflowResponse response = flowExecutor.execute2Resp("chain1", "arg");
         System.out.println(ONode.stringify(response));
+
+        assert response.isSuccess();
     }
 }
