@@ -21,17 +21,26 @@ public @interface SolonTest {
     int delay() default 1;
 
     /**
-     * 例：--app.name=demoapp
+     * 环境配置
+     * */
+    @Note("环境配置")
+    String env() default "";
+
+    /**
+     * args（例：--app.name=demoapp）
      * */
     @Note("启动参数")
     String[] args() default {};
 
     /**
-     * 例：solon.app.name=demoapp
+     * 应用属性（例：solon.app.name=demoapp）
      * */
     @Note("应用属性")
     String[] properties() default {};
 
+    /**
+     * 是否调试模式
+     * */
     @Note("是否调试模式")
     boolean debug() default true;
 }

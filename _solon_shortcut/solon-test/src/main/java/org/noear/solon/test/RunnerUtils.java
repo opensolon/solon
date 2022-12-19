@@ -66,18 +66,18 @@ class RunnerUtils {
     }
 
 
-    public static void initRunner(Class<?> klass){
+    public static void initRunner(Class<?> klass) {
         SolonTest anno = klass.getAnnotation(SolonTest.class);
         TestPropertySource propAnno = klass.getAnnotation(TestPropertySource.class);
 
-        EventBus.subscribe(AppInitEndEvent.class, e->{
+        EventBus.subscribe(AppInitEndEvent.class, e -> {
             //加载测试配置
             RunnerUtils.addPropertySource(propAnno);
             Solon.context().beanAroundAdd(TestRollback.class, new TestRollbackInterceptor(), 120);
         });
 
         if (anno != null) {
-            if(anno.properties().length > 0) {
+            if (anno.properties().length > 0) {
                 for (String tmp : anno.properties()) {
                     String[] kv = tmp.split("=");
                     if (kv.length == 2) {
@@ -91,8 +91,14 @@ class RunnerUtils {
                 args.addAll(Arrays.asList(anno.args()));
             }
 
+            //添加调试模式
             if (anno.debug()) {
                 args.add("-debug=1");
+            }
+
+            //添加环境变量
+            if (Utils.isNotEmpty(anno.evn())) {
+                args.add("-evn=" + anno.evn());
             }
 
             String[] argsStr = args.toArray(new String[args.size()]);
