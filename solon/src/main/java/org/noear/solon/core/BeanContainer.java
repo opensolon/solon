@@ -310,6 +310,18 @@ public abstract class BeanContainer {
         }
     }
 
+    public List<BeanWrap> getWrapsOfType(Class<?> baseType) {
+        List<BeanWrap> wraps = new ArrayList<>();
+
+        beanForeach(bw -> {
+            if (baseType.isAssignableFrom(bw.clz())) {
+                wraps.add(bw.raw());
+            }
+        });
+
+        return wraps;
+    }
+
     @Deprecated
     public void getWrapAsyn(Object nameOrType, Consumer<BeanWrap> callback) {
         getWrapAsync(nameOrType, callback);
