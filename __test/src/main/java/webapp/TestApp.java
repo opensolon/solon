@@ -62,6 +62,7 @@ public class TestApp {
 
 
         Locale.setDefault(Locale.SIMPLIFIED_CHINESE);
+        LogUtil.globalSet(new LogUtilToSlf4j());
 
         //构建方式
         SolonApp app = new SolonBuilder().onError(e -> {
@@ -76,7 +77,7 @@ public class TestApp {
         }).onAppLoadEnd(e -> {
             System.out.println("4.应用全加载完成了");
         }).start(TestApp.class, args, x -> {
-            LogUtil.globalSet(new LogUtilToSlf4j());
+
 
             x.enableSocketD(true);
             x.enableWebSocket(true);
