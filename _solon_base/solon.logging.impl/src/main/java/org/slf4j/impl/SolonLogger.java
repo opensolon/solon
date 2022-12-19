@@ -2,6 +2,8 @@ package org.slf4j.impl;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
+import org.noear.solon.core.event.AppInitEndEvent;
+import org.noear.solon.core.event.EventBus;
 import org.noear.solon.logging.AppenderManager;
 import org.noear.solon.logging.LogOptions;
 import org.noear.solon.logging.event.Level;
@@ -28,7 +30,7 @@ public class SolonLogger implements Logger {
         if (Solon.app() != null) {
             loggerLevel = LogOptions.getLoggerLevel(name);
         } else {
-            Solon.context().beanOnloaded((ctx) -> {
+            EventBus.subscribe(AppInitEndEvent.class, e -> {
                 loggerLevel = LogOptions.getLoggerLevel(name);
             });
         }
