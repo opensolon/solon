@@ -9,7 +9,6 @@
 #### 1.11.7
 * 新增 elastic-job-solon-plugin 分布式定时任务 ???
 * 新增 thrift-solon-cloud-plugin 插件 ???
-* 
 * 新增 swagger-solon-plugin 插件 ???
 * 新增 knife4j-solon-plugin 插件 ???
 
