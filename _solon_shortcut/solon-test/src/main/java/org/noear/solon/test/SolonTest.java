@@ -1,5 +1,6 @@
 package org.noear.solon.test;
 
+import org.noear.solon.annotation.Alias;
 import org.noear.solon.annotation.Note;
 
 import java.lang.annotation.*;
@@ -9,7 +10,12 @@ import java.lang.annotation.*;
 @Documented
 public @interface SolonTest {
     @Note("启动类")
-    Class<?> value();
+    @Alias("classes")
+    Class<?> value() default Void.class;
+
+    @Note("启动类")
+    @Alias("value")
+    Class<?> classes() default Void.class;
 
     @Note("延迟秒数")
     int delay() default 1;
