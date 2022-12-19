@@ -21,6 +21,7 @@
 * 插件 nacos2-solon-cloud-plugin 增加 namespace 支持 
 * 插件 forest-solon-plugin 增加 BindingVar 支持
 * 插件 sqltoy-solon-plugin 清除 @Sql、@Param 注解
+* 插件 solon-test 抽取公共处理，并增加 SolonTest::env 环镜配置
 * 插件 solon.validation 优化 DecimalMax,DecimalMin,Max,Min,Length 处理(允许空跳过)，并增加 Range 注解 
 * 取消 config.loadGroup, config.loadKey 配置 
 * 调整 Rollback 更名为 TestRollback，并转移到 solon-test
