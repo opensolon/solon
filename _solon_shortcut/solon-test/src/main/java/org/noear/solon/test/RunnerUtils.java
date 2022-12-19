@@ -97,8 +97,8 @@ class RunnerUtils {
             }
 
             //添加环境变量
-            if (Utils.isNotEmpty(anno.evn())) {
-                args.add("-evn=" + anno.evn());
+            if (Utils.isNotEmpty(anno.env())) {
+                args.add("-env=" + anno.env());
             }
 
             String[] argsStr = args.toArray(new String[args.size()]);
