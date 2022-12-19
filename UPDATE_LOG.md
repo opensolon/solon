@@ -11,6 +11,7 @@
 * 新增 thrift-solon-cloud-plugin 插件 ???
 * 新增 swagger-solon-plugin 插件 ???
 * 新增 knife4j-solon-plugin 插件 ???
+* 插件 sentinel-solon-cloud-plugin 控制台调试
 
 #### 1.11.6
 * 新增 liteflow-solon-plugin 插件 
