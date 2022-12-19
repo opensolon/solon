@@ -31,15 +31,6 @@ public class Solon {
     private static SolonApp app;
     //全局默认编码
     private static String encoding = "utf-8";
-    //容器上下文
-    private static final AopContext ac = new AopContext();
-
-    /**
-     * 获取全局的Aop上下文
-     */
-    public static AopContext context() {
-        return ac;
-    }
 
     /**
      * @deprecated 1.8
@@ -54,6 +45,17 @@ public class Solon {
      */
     public static SolonApp app() {
         return app;
+    }
+
+    /**
+     * 应用上下文
+     */
+    public static AopContext context() {
+        if (app == null) {
+            return null;
+        } else {
+            return app.context();
+        }
     }
 
     /**

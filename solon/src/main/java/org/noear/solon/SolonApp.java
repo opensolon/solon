@@ -29,31 +29,47 @@ import java.util.function.Consumer;
  * @since 1.0
  * */
 public class SolonApp extends RouterWrapper {
-    private final SolonProps _prop; //属性配置
+    private final SolonProps _cfg; //属性配置
+    private final AopContext _context = new AopContext();//容器上下文
+
     private final Class<?> _source; //应用加载源
     private final long _startupTime;
 
     protected boolean stopped = false;
+
+    /**
+     * 获取应用上下文
+     * */
+    public AopContext context(){
+        return _context;
+    }
+
+    /**
+     * 获取应用属性（或配置）
+     */
+    public SolonProps cfg() {
+        return _cfg;
+    }
 
     protected SolonApp(Class<?> source, NvMap args) throws Exception{
         _startupTime = System.currentTimeMillis();
         _source = source;
 
         //初始化配置
-        _prop = new SolonProps().load(source, args);
+        _cfg = new SolonProps().load(source, args);
 
         //初始化路由
         initRouter(this::doFilter);
 
         _handler = routerHandler();
 
-        enableJarIsolation(_prop.getBool("solon.extend.isolation", false));
+        enableJarIsolation(_cfg.getBool("solon.extend.isolation", false));
     }
 
     /**
      * 初始化等待
      */
-    protected void initAwait() {
+    protected void initAwait() throws Throwable{
         String addr = cfg().get("solon.start.ping");
 
         if (Utils.isNotEmpty(addr)) {
@@ -77,7 +93,7 @@ public class SolonApp extends RouterWrapper {
     /**
      * 初始化（不能合在构建函数里）
      */
-    protected void init() {
+    protected void init() throws Throwable{
         List<ClassLoader> loaderList;
 
         //1.尝试加载扩展文件夹
@@ -291,15 +307,10 @@ public class SolonApp extends RouterWrapper {
      */
     @Deprecated
     public int port() {
-        return _prop.serverPort();
+        return _cfg.serverPort();
     }
 
-    /**
-     * 获取属性
-     */
-    public SolonProps cfg() {
-        return _prop;
-    }
+
 
 
     /**
