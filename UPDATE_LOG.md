@@ -14,17 +14,17 @@
 * 新增 knife4j-solon-plugin 插件 ???
 
 #### 1.11.6
-* 新增 liteflow-solon-plugin 插件 !ok
-* 新增 file-s3-solon-plugin 插件，是一个组合的 cloud file service !ok
-* 新增 solon.cloud.httputils 插件，用于替代 httputils-solon-cloud-plugin !ok
-* 新增 polaris-solon-cloud-plugin 插件，基于腾讯北极星适配 !ok
-* 新增 nacos2-solon-cloud-plugin 插件 !ok
-* 插件 nacos2-solon-cloud-plugin 增加 namespace 支持 !ok
-* 插件 solon.validation 优化 DecimalMax,DecimalMin,Max,Min,Length 处理(允许空跳过)，并增加 Range 注解 !ok
-* 取消 config.loadGroup, config.loadKey 配置 !ok
+* 新增 liteflow-solon-plugin 插件 
+* 新增 file-s3-solon-plugin 插件，是一个组合的 cloud file service 
+* 新增 solon.cloud.httputils 插件，用于替代 httputils-solon-cloud-plugin 
+* 新增 polaris-solon-cloud-plugin 插件，基于腾讯北极星适配 
+* 新增 nacos2-solon-cloud-plugin 插件 
+* 插件 nacos2-solon-cloud-plugin 增加 namespace 支持 
+* 插件 solon.validation 优化 DecimalMax,DecimalMin,Max,Min,Length 处理(允许空跳过)，并增加 Range 注解 
+* 取消 config.loadGroup, config.loadKey 配置 
 * 调整 Rollback 更名为 TestRollback，并转移到 solon-test
-* 调整 EventBus:push 非异常事件，允许透传异常（从而支持事务回滚传导） !ok
-* 长级 sqltoy 为 5.2.28 !ok
+* 调整 EventBus:push 非异常事件，允许透传异常（从而支持事务回滚传导） 
+* 升级 sqltoy 为 5.2.28 
 
 #### 1.11.5
 * 新增 aliyun-ons-solon-cloud-plugin 插件，且支持 tag 过滤支持
