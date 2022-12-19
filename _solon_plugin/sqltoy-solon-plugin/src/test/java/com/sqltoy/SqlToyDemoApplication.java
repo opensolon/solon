@@ -1,6 +1,5 @@
 package com.sqltoy;
 
-import com.sqltoy.helloworld.FruitMapper;
 import com.sqltoy.helloworld.service.FruitOrderService;
 
 import com.sqltoy.helloworld.vo.FruitOrderVO;
@@ -8,15 +7,10 @@ import org.noear.solon.Solon;
 
 import org.noear.solon.extend.sqltoy.DbManager;
 import org.sagacity.sqltoy.dao.SqlToyLazyDao;
-import org.sagacity.sqltoy.model.Page;
 
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
 
 
 public class SqlToyDemoApplication {

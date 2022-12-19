@@ -5,7 +5,6 @@ import org.noear.solon.data.annotation.Tran;
 import org.noear.solon.aspect.annotation.Service;
 import org.noear.solon.extend.sqltoy.annotation.Db;
 import org.sagacity.sqltoy.dao.SqlToyLazyDao;
-import org.sagacity.sqltoy.model.Page;
 import com.sqltoy.helloworld.vo.FruitOrderVO;
 
 /**
@@ -22,26 +21,9 @@ public class FruitOrderService {
 	private SqlToyLazyDao sqlToyLazyDao;
 	@Db("tow")
 	private SqlToyLazyDao sqlToyLazyDao2;
-//	@Db
-//	private FruitMapper fruitMapper;
-//	@Db("tow")
-//	private FruitMapper fruitMapper2;
+
 	@Tran
 	public void createFruitOrder(FruitOrderVO fruitOrderVO) {
 		sqlToyLazyDao.save(fruitOrderVO);
 	}
-
-
-//	@Tran
-//	public Page<FruitOrderVO> searchFruitOrder(Page pageModel, FruitOrderVO fruitOrderVO) {
-//
-//		/** 测试数据回滚
-//		Map p=new HashMap();
-//		sqlToyLazyDao2.executeSql("insert into test(name) value('haha2')",p);
-//		sqlToyLazyDao.executeSql("insert into test(name) value('haha1')",p);
-//		System.out.println(1/0);
-//		 **/
-//		//mapper多数据源, fruitMapper2.findOrder(pageModel,fruitOrderVO);
-//		//return fruitMapper.findOrder(pageModel,fruitOrderVO);
-//	}
 }
