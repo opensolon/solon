@@ -37,8 +37,6 @@ import java.util.Map;
  * @since 1.11
  * */
 public class ForestBeanBuilder {
-    private final AopContext applicationContext;
-
     private SolonForestProperties properties;
     private SolonObjectFactory forestObjectFactory;
 
@@ -47,12 +45,10 @@ public class ForestBeanBuilder {
     private ForestConfigurationProperties forestConfigurationProperties;
 
     public ForestBeanBuilder(
-            AopContext applicationContext,
             ForestConfigurationProperties forestConfigurationProperties,
             SolonForestProperties properties,
             SolonObjectFactory forestObjectFactory,
             SolonInterceptorFactory forestInterceptorFactory) {
-        this.applicationContext = applicationContext;
         this.forestConfigurationProperties = forestConfigurationProperties;
         this.properties = properties;
         this.forestObjectFactory = forestObjectFactory;
@@ -64,9 +60,10 @@ public class ForestBeanBuilder {
         String id = forestConfigurationProperties.getBeanId();
         if (StringUtils.isBlank(id)) {
             id = "forestConfiguration";
+            forestConfigurationProperties.setBeanId(id);
         }
 
-        ForestConfiguration forestConfiguration = ForestConfiguration.configuration(id);
+        ForestConfiguration forestConfiguration = ForestConfiguration.createConfiguration();
 
         Class<? extends ForestLogHandler> logHandlerClass = forestConfigurationProperties.getLogHandler();
         ForestLogHandler logHandler = null;
@@ -118,11 +115,9 @@ public class ForestBeanBuilder {
 
         forestConfiguration.setSslKeyStores(sslKeystoreMap);
 
-        BeanWrap beanWrap = applicationContext.wrap(id, forestConfiguration);
-        applicationContext.putWrap(id, beanWrap);
 
 
-        ForestConfiguration configuration = applicationContext.getBean(id);
+        ForestConfiguration configuration = forestConfiguration;
         configuration.setProperties(properties);
         configuration.setForestObjectFactory(forestObjectFactory);
         configuration.setInterceptorFactory(forestInterceptorFactory);

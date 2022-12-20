@@ -9,8 +9,6 @@ import com.dtflys.forest.logging.DefaultLogHandler;
 import com.dtflys.forest.logging.ForestLogHandler;
 import com.dtflys.forest.retryer.BackOffRetryer;
 import com.dtflys.forest.ssl.SSLUtils;
-import org.noear.solon.annotation.Configuration;
-import org.noear.solon.annotation.Inject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,8 +19,6 @@ import java.util.Map;
  * @author noear
  * @since 1.1
  */
-@Inject("${forest}")
-@Configuration
 public class ForestConfigurationProperties {
 
     /**

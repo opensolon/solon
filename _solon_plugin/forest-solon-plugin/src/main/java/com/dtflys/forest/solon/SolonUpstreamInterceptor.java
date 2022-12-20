@@ -2,7 +2,8 @@ package com.dtflys.forest.solon;
 
 import com.dtflys.forest.http.ForestRequest;
 import com.dtflys.forest.interceptor.Interceptor;
-import org.noear.solon.Solon;
+import org.noear.solon.annotation.Inject;
+import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Bridge;
 import org.noear.solon.core.LoadBalance;
 
@@ -14,6 +15,9 @@ import org.noear.solon.core.LoadBalance;
  */
 public class SolonUpstreamInterceptor implements Interceptor {
 
+    @Inject
+    AopContext aopContext;
+
     @Override
     public boolean beforeExecute(ForestRequest request) {
         if ("upstream".equals(request.getScheme())) {
@@ -22,7 +26,7 @@ public class SolonUpstreamInterceptor implements Interceptor {
 
             if (loadBalance == null) {
                 //尝试从容器获取
-                loadBalance = Solon.context().getBean(request.host());
+                loadBalance = aopContext.getBean(request.host());
             }
 
             if (loadBalance == null) {

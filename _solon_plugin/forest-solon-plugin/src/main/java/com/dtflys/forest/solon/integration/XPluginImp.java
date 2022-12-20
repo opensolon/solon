@@ -12,10 +12,14 @@ import com.dtflys.forest.solon.SolonForestVariableValue;
 import com.dtflys.forest.solon.SolonUpstreamInterceptor;
 import com.dtflys.forest.solon.properties.ForestConfigurationProperties;
 import com.dtflys.forest.utils.StringUtils;
+import org.noear.solon.Utils;
 import org.noear.solon.core.AopContext;
+import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.Plugin;
+import org.noear.solon.core.Props;
 
 import java.util.Arrays;
+import java.util.Date;
 
 /**
  * @author 夜の孤城
@@ -24,37 +28,38 @@ import java.util.Arrays;
 public class XPluginImp implements Plugin {
     @Override
     public void start(AopContext context) {
-
         //1.初始 ForestConfiguration
-        configBeanInit(context);
+        ForestConfiguration configuration = configBeanInit(context);
 
         //2.添加 ForestClient 注解支持
         context.beanBuilderAdd(ForestClient.class, (clz, wrap, anno) -> {
-            Object client = Forest.client(clz);
+            Object client = configuration.client(clz);
             wrap.context().wrapAndPut(clz, client);
         });
 
         //3.添加 BindingVar 注解支持
         context.beanExtractorAdd(BindingVar.class, (bw, method, anno) -> {
             String confId = anno.configuration();
-            ForestConfiguration configuration = null;
+            ForestConfiguration config = null;
 
             if (StringUtils.isNotBlank(confId)) {
-                configuration = Forest.config(confId);
+                config = Forest.config(confId);
             } else {
-                configuration = Forest.config();
+                config = configuration;
             }
 
             String varName = anno.value();
             SolonForestVariableValue variableValue = new SolonForestVariableValue(bw.get(), method);
-            configuration.setVariableValue(varName, variableValue);
+            config.setVariableValue(varName, variableValue);
         });
     }
 
-    private void configBeanInit(AopContext context) {
-        ForestConfigurationProperties configurationProperties = context.beanMake(ForestConfigurationProperties.class).get();
+    private ForestConfiguration configBeanInit(AopContext context) {
+        Props forestProps = context.getProps().getProp("forest");
+        ForestConfigurationProperties configurationProperties = new ForestConfigurationProperties();
+        Utils.injectProperties(configurationProperties, forestProps);
 
-        ForestBeanBuilder forestBeanBuilder = new ForestBeanBuilder(context,
+        ForestBeanBuilder forestBeanBuilder = new ForestBeanBuilder(
                 configurationProperties,
                 new SolonForestProperties(context),
                 new SolonObjectFactory(context),
@@ -64,13 +69,17 @@ public class XPluginImp implements Plugin {
         ForestConfiguration config = forestBeanBuilder.build();
 
         //2.添加必要拦截器
-        if(config.getInterceptors() != null){
+        if (config.getInterceptors() != null) {
             config.getInterceptors().add(SolonUpstreamInterceptor.class);
-        }else {
+        } else {
             config.setInterceptors(Arrays.asList(SolonUpstreamInterceptor.class));
         }
 
         //3.注册到容器
-        context.wrapAndPut(ForestConfiguration.class, config);
+        BeanWrap beanWrap = context.wrap(configurationProperties.getBeanId(), config);
+        context.putWrap(ForestConfiguration.class, beanWrap);
+        context.putWrap(configurationProperties.getBeanId(), beanWrap);
+
+        return config;
     }
 }

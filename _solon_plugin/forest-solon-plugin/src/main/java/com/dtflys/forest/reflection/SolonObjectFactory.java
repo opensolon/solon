@@ -28,7 +28,7 @@ public class SolonObjectFactory extends DefaultObjectFactory{
 
         if (bean == null) {
             try {
-                bean = context.getBean(clazz);
+                bean = context.getBeanOrNew(clazz);
             } catch (Throwable ignored) {
             }
 

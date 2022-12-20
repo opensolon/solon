@@ -17,7 +17,7 @@ public class SolonInterceptorFactory extends DefaultInterceptorFactory {
     protected <T extends Interceptor> Interceptor createInterceptor(Class<T> clazz) {
         Interceptor interceptor = null;
         try {
-            interceptor = context.getBean(clazz);
+            interceptor = context.getBeanOrNew(clazz);
         } catch (Throwable th) {
         }
 
