@@ -1,11 +1,8 @@
 package demo3;
 
 import org.noear.solon.Solon;
-import org.noear.solon.core.event.BeanLoadEndEvent;
 import org.noear.solon.schedule.JobManager;
 import org.noear.solon.schedule.annotation.EnableScheduling;
-import org.noear.solon.schedule.cron.CronExpressionPlus;
-import org.noear.solon.schedule.cron.CronUtils;
 
 /**
  * @author noear 2022/6/26 created

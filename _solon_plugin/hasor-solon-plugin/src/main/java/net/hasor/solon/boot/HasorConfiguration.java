@@ -9,7 +9,7 @@ import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.event.EventListener;
-import org.noear.solon.core.event.BeanLoadEndEvent;
+import org.noear.solon.core.event.AppBeanLoadEndEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,7 +22,7 @@ import java.io.IOException;
  * @since 2020.10.10
  * */
 @Configuration
-public class HasorConfiguration implements EventListener<BeanLoadEndEvent> {
+public class HasorConfiguration implements EventListener<AppBeanLoadEndEvent> {
     private static Logger logger = LoggerFactory.getLogger(HasorConfiguration.class);
 
     @Inject
@@ -82,10 +82,10 @@ public class HasorConfiguration implements EventListener<BeanLoadEndEvent> {
     }
 
     @Override
-    public void onEvent(BeanLoadEndEvent beanLoadedEvent) {
+    public void onEvent(AppBeanLoadEndEvent event) {
         //没有EnableHasorWeb时，生成AppContext并注入容器
         //
-        if (Solon.app().source().getAnnotation(EnableHasorWeb.class) == null) {
+        if (event.app().source().getAnnotation(EnableHasorWeb.class) == null) {
             //所有bean加载完成之后，手动注入AppContext
             context.wrapAndPut(AppContext.class, initAppContext());
         }
