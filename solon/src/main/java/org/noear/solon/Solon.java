@@ -82,18 +82,6 @@ public class Solon {
         }
     }
 
-    public static SolonApp startOfTest(Class<?> source, String[] args) throws Throwable{
-        SolonApp tmp = new SolonApp(source, NvMap.from(args));
-
-        if(app == null){
-            app = tmp;
-        }
-
-        tmp.start(null);
-
-        return tmp;
-    }
-
     /**
      * 启动应用（全局只启动一个）
      *
