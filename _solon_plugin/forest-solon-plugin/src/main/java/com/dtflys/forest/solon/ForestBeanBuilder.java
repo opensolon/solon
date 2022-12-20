@@ -189,7 +189,7 @@ public class ForestBeanBuilder {
 
                     if (value != null) {
                         try {
-                            fw.setValue(configuration, value, false);
+                            fw.setValue(converter, value, false);
                         } catch (Throwable e) {
                             e = Utils.throwableUnwrap(e);
 
