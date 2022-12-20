@@ -1,9 +1,8 @@
 package org.noear.solon.aspect;
 
-import org.noear.solon.Solon;
 import org.noear.solon.Utils;
+import org.noear.solon.core.AopContext;
 import org.noear.solon.core.BeanWrap;
-import org.noear.solon.core.JarClassLoader;
 import org.noear.solon.core.util.ScanUtil;
 
 import java.lang.reflect.InvocationHandler;
@@ -52,7 +51,7 @@ public class AspectUtil {
      *
      * @since 1.6
      */
-    public static void attach(Class<?> clz, InvocationHandler handler) {
+    public static void attach(AopContext aopContext, Class<?> clz, InvocationHandler handler) {
         if (clz.isAnnotation() || clz.isInterface() || clz.isEnum() || clz.isPrimitive()) {
             return;
         }
@@ -64,7 +63,7 @@ public class AspectUtil {
             tryAttachCached.add(clz);
         }
 
-        Solon.context().wrapAndPut(clz).proxySet(new BeanProxy(handler));
+        aopContext.wrapAndPut(clz).proxySet(new BeanProxy(handler));
     }
 
     /**
@@ -73,35 +72,25 @@ public class AspectUtil {
      * @param basePackage 基础包名
      * @param handler     拦截代理
      */
-    public static void attachByScan(String basePackage, InvocationHandler handler) {
-        attachByScan(JarClassLoader.global(), basePackage, null, handler);
+    public static void attachByScan(AopContext aopContext, String basePackage, InvocationHandler handler) {
+        attachByScan(aopContext, basePackage, null, handler);
     }
+
 
     /**
      * 为搜索的类，系上拦截代理
      *
-     * @param basePackage 基础包名
-     * @param filter      过滤器
-     * @param handler     拦截代理
-     */
-    public static void attachByScan(String basePackage, Predicate<String> filter, InvocationHandler handler) {
-        attachByScan(JarClassLoader.global(), basePackage, filter, handler);
-    }
-
-    /**
-     * 为搜索的类，系上拦截代理
-     *
-     * @param classLoader 类加载器
+     * @param aopContext  类加载器
      * @param basePackage 基础包名
      * @param filter      过滤器
      * @param handler     拦截代理
      */
-    public static void attachByScan(ClassLoader classLoader, String basePackage, Predicate<String> filter, InvocationHandler handler) {
+    public static void attachByScan(AopContext aopContext, String basePackage, Predicate<String> filter, InvocationHandler handler) {
         if (Utils.isEmpty(basePackage)) {
             return;
         }
 
-        if (classLoader == null) {
+        if (aopContext == null) {
             return;
         }
 
@@ -112,16 +101,16 @@ public class AspectUtil {
         String dir = basePackage.replace('.', '/');
 
         //扫描类文件并处理（采用两段式加载，可以部分bean先处理；剩下的为第二段处理）
-        ScanUtil.scan(classLoader, dir, n -> n.endsWith(".class"))
+        ScanUtil.scan(aopContext.getClassLoader(), dir, n -> n.endsWith(".class"))
                 .stream()
                 .sorted(Comparator.comparing(s -> s.length()))
                 .filter(filter)
                 .forEach(name -> {
                     String className = name.substring(0, name.length() - 6);
 
-                    Class<?> clz = Utils.loadClass(classLoader, className.replace("/", "."));
+                    Class<?> clz = Utils.loadClass(aopContext.getClassLoader(), className.replace("/", "."));
                     if (clz != null) {
-                        attach(clz, handler);
+                        attach(aopContext, clz, handler);
                     }
                 });
     }

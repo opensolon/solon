@@ -32,7 +32,7 @@ package org.noear.solon.core.aspect;
  * }
  *
  * //或者直接注册
- * Solon.context().beanInterceptorAdd(Cache.class, 111, new CacheInterceptor());
+ * context.beanInterceptorAdd(Cache.class, 111, new CacheInterceptor());
  * </code></pre>
  *
  * @author noear

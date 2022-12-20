@@ -20,7 +20,7 @@ public class DemoApp {
             //为一个类绑定拦截代理
             //AspectUtil.attach(Demo.class, DemoHandler.global);
             //为一批类绑定拦截代理
-            AspectUtil.attachByScan("thirdparty", DemoHandler.global);
+            AspectUtil.attachByScan(app.context(), "thirdparty", DemoHandler.global);
         });
 
         Solon.context().getBean(DemoApp.class).demo.test();

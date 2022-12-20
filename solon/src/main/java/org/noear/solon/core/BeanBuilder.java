@@ -7,7 +7,7 @@ import java.lang.annotation.Annotation;
  *
  * <pre><code>
  * //@Cron4j 构建器添加
- * Solon.context().beanBuilderAdd(Cron4j.classs, (clz, bw, anno)->{
+ * context.beanBuilderAdd(Cron4j.classs, (clz, bw, anno)->{
  *     ...
  * });
  *
