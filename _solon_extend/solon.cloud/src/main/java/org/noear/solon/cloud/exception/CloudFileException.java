@@ -5,6 +5,9 @@ package org.noear.solon.cloud.exception;
  * @since 1.3
  */
 public class CloudFileException extends RuntimeException {
+    /**
+     * @since 1.11
+     * */
     public CloudFileException(String message) {
         super(message);
     }
