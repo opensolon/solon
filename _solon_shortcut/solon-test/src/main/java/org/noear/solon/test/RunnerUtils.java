@@ -1,11 +1,12 @@
 package org.noear.solon.test;
 
 import org.noear.solon.Solon;
-import org.noear.solon.SolonTestApp;
+import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.aspect.BeanProxy;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.BeanWrap;
+import org.noear.solon.core.NvMap;
 import org.noear.solon.core.event.AppInitEndEvent;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.test.annotation.TestPropertySource;
@@ -149,7 +150,8 @@ class RunnerUtils {
     private static void startDo(Class<?> mainClz, String[] args, Class<?> klass, boolean isolated) throws Throwable {
         if (mainClz == klass) {
             if (isolated) {
-                new SolonTestApp(mainClz,args).start();
+                SolonApp app = new SolonApp(mainClz, NvMap.from(args));
+                Solon.startIsolatedApp(app);
             } else {
                 Solon.start(mainClz, args);
             }
@@ -160,7 +162,8 @@ class RunnerUtils {
                 main.invoke(null, new Object[]{args});
             } else {
                 if (isolated) {
-                    new SolonTestApp(mainClz,args).start();
+                    SolonApp app = new SolonApp(mainClz, NvMap.from(args));
+                    Solon.startIsolatedApp(app);
                 } else {
                     Solon.start(mainClz, args);
                 }

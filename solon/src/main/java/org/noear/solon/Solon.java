@@ -82,6 +82,14 @@ public class Solon {
         }
     }
 
+    public static void startIsolatedApp(SolonApp isolatedApp) throws Throwable {
+        if (app == null) {
+            app = isolatedApp;
+        }
+
+        isolatedApp.start(null);
+    }
+
     /**
      * 启动应用（全局只启动一个）
      *
