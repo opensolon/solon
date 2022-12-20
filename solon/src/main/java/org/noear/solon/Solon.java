@@ -82,12 +82,12 @@ public class Solon {
         }
     }
 
-    public static void startIsolatedApp(SolonApp isolatedApp) throws Throwable {
+    public static void startIsolatedApp(SolonApp isolatedApp, ConsumerEx<SolonApp> initialize) throws Throwable {
         if (app == null) {
             app = isolatedApp;
         }
 
-        isolatedApp.start(null);
+        isolatedApp.start(initialize);
     }
 
     /**

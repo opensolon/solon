@@ -70,7 +70,7 @@ class RunnerUtils {
         }
     }
 
-    public static Object initTestTarget(AopContext aopContext,Object tmp) {
+    public static Object initTestTarget(AopContext aopContext, Object tmp) {
         //注入
         aopContext.beanInject(tmp);
         //构建临时包装（用于支持提取操作）
@@ -140,23 +140,20 @@ class RunnerUtils {
     }
 
     private static AopContext startDo(Class<?> mainClz, String[] args, Class<?> klass, boolean isolated) throws Throwable {
-        TestPropertySource propAnno = klass.getAnnotation(TestPropertySource.class);
 
-        EventBus.subscribe(AppInitEndEvent.class, event -> {
-            //加载测试配置
-            RunnerUtils.addPropertySource(event.context(), propAnno);
-            event.context().wrapAndPut(klass);
-            event.context().beanAroundAdd(TestRollback.class, new TestRollbackInterceptor(), 120);
-        });
 
         if (mainClz == klass) {
             if (isolated) {
                 SolonApp app = new SolonApp(mainClz, NvMap.from(args));
-                Solon.startIsolatedApp(app);
+                Solon.startIsolatedApp(app, x -> {
+                    initDo(x, klass);
+                });
 
                 return app.context();
             } else {
-                Solon.start(mainClz, args);
+                Solon.start(mainClz, args, x -> {
+                    initDo(x, klass);
+                });
 
                 return Solon.context();
             }
@@ -164,21 +161,44 @@ class RunnerUtils {
             Method main = RunnerUtils.getMainMethod(mainClz);
 
             if (main != null && Modifier.isStatic(main.getModifiers())) {
+                initDo(null, klass);
                 main.invoke(null, new Object[]{args});
 
                 return Solon.context();
             } else {
                 if (isolated) {
                     SolonApp app = new SolonApp(mainClz, NvMap.from(args));
-                    Solon.startIsolatedApp(app);
+                    Solon.startIsolatedApp(app, x -> {
+                        initDo(x, klass);
+                    });
 
                     return app.context();
                 } else {
-                    Solon.start(mainClz, args);
+                    Solon.start(mainClz, args, x -> {
+                        initDo(x, klass);
+                    });
 
                     return Solon.context();
                 }
             }
+        }
+    }
+
+    private static void initDo(SolonApp app, Class<?> klass) {
+        TestPropertySource propAnno = klass.getAnnotation(TestPropertySource.class);
+
+        if (app == null) {
+            EventBus.subscribe(AppInitEndEvent.class, event -> {
+                //加载测试配置
+                RunnerUtils.addPropertySource(event.context(), propAnno);
+                event.context().wrapAndPut(klass);
+                event.context().beanAroundAdd(TestRollback.class, new TestRollbackInterceptor(), 120);
+            });
+        } else {
+            //加载测试配置
+            RunnerUtils.addPropertySource(app.context(), propAnno);
+            app.context().wrapAndPut(klass);
+            app.context().beanAroundAdd(TestRollback.class, new TestRollbackInterceptor(), 120);
         }
     }
 }
