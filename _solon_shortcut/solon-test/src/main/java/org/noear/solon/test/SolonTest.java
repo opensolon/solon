@@ -43,7 +43,4 @@ public @interface SolonTest {
      * */
     @Note("是否调试模式")
     boolean debug() default true;
-
-    @Note("是否隔离模式")
-    boolean isolated() default true;
 }

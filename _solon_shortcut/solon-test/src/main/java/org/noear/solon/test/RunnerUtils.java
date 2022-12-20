@@ -97,19 +97,19 @@ class RunnerUtils {
                 }
             }
 
-            List<String> args = new ArrayList<>();
+            List<String> argsArg = new ArrayList<>();
             if (anno.args().length > 0) {
-                args.addAll(Arrays.asList(anno.args()));
+                argsArg.addAll(Arrays.asList(anno.args()));
             }
 
             //添加调试模式
             if (anno.debug()) {
-                args.add("-debug=1");
+                argsArg.add("-debug=1");
             }
 
             //添加环境变量
             if (Utils.isNotEmpty(anno.env())) {
-                args.add("-env=" + anno.env());
+                argsArg.add("-env=" + anno.env());
             }
 
             Class<?> mainClz = RunnerUtils.getMainClz(anno, klass);
@@ -118,10 +118,7 @@ class RunnerUtils {
                 return appCached.get(mainClz);
             }
 
-            String[] argsStr = args.toArray(new String[args.size()]);
-
-
-            AopContext aopContext = startDo(mainClz, argsStr, klass, anno.isolated());
+            AopContext aopContext = startDo(mainClz, argsArg, klass);
 
             appCached.put(mainClz, aopContext);
             //延迟秒数
@@ -135,51 +132,44 @@ class RunnerUtils {
 
             return aopContext;
         } else {
-            return startDo(klass, new String[]{"-debug=1"}, klass, true);
+            return startDo(klass, Arrays.asList("-debug=1"), klass);
         }
     }
 
-    private static AopContext startDo(Class<?> mainClz, String[] args, Class<?> klass, boolean isolated) throws Throwable {
+    private static AopContext startDo(Class<?> mainClz, List<String> argsArg, Class<?> klass) throws Throwable {
 
 
         if (mainClz == klass) {
-            if (isolated) {
+            argsArg.add("isolated=1");
+            String[] args = argsArg.toArray(new String[argsArg.size()]);
+
+            SolonApp app = new SolonApp(mainClz, NvMap.from(args));
+            Solon.startIsolatedApp(app, x -> {
+                initDo(x, klass);
+            });
+
+            return app.context();
+
+        } else {
+            Method main = RunnerUtils.getMainMethod(mainClz);
+
+            if (main != null && Modifier.isStatic(main.getModifiers())) {
+                String[] args = argsArg.toArray(new String[argsArg.size()]);
+
+                initDo(null, klass);
+                main.invoke(null, new Object[]{args});
+
+                return Solon.context();
+            } else {
+                argsArg.add("isolated=1");
+                String[] args = argsArg.toArray(new String[argsArg.size()]);
+
                 SolonApp app = new SolonApp(mainClz, NvMap.from(args));
                 Solon.startIsolatedApp(app, x -> {
                     initDo(x, klass);
                 });
 
                 return app.context();
-            } else {
-                Solon.start(mainClz, args, x -> {
-                    initDo(x, klass);
-                });
-
-                return Solon.context();
-            }
-        } else {
-            Method main = RunnerUtils.getMainMethod(mainClz);
-
-            if (main != null && Modifier.isStatic(main.getModifiers())) {
-                initDo(null, klass);
-                main.invoke(null, new Object[]{args});
-
-                return Solon.context();
-            } else {
-                if (isolated) {
-                    SolonApp app = new SolonApp(mainClz, NvMap.from(args));
-                    Solon.startIsolatedApp(app, x -> {
-                        initDo(x, klass);
-                    });
-
-                    return app.context();
-                } else {
-                    Solon.start(mainClz, args, x -> {
-                        initDo(x, klass);
-                    });
-
-                    return Solon.context();
-                }
             }
         }
     }
