@@ -6,6 +6,7 @@ import org.noear.solon.core.handle.*;
 import org.noear.solon.annotation.Import;
 import org.noear.solon.core.*;
 import org.noear.solon.core.route.RouterWrapper;
+import org.noear.solon.core.util.ConsumerEx;
 import org.noear.solon.core.util.LogUtil;
 
 import java.lang.annotation.Annotation;
@@ -66,10 +67,30 @@ public class SolonApp extends RouterWrapper {
         enableJarIsolation(_cfg.getBool("solon.extend.isolation", false));
     }
 
+
+    /**
+     * 启动
+     * */
+    protected void start(ConsumerEx<SolonApp> initialize) throws Throwable {
+        //2.0.内部初始化等待（尝试ping等待）
+        initAwait();
+
+        //2.1.内部初始化（如配置等，顺序不能乱）
+        init();
+
+        //2.2.自定义初始化
+        if (initialize != null) {
+            initialize.accept(this);
+        }
+
+        //3.运行应用（运行插件、扫描Bean等）
+        run();
+    }
+
     /**
      * 初始化等待
      */
-    protected void initAwait() throws Throwable{
+    private void initAwait() throws Throwable{
         String addr = cfg().get("solon.start.ping");
 
         if (Utils.isNotEmpty(addr)) {
@@ -93,7 +114,7 @@ public class SolonApp extends RouterWrapper {
     /**
      * 初始化（不能合在构建函数里）
      */
-    protected void init() throws Throwable{
+    private void init() throws Throwable{
         List<ClassLoader> loaderList;
 
         //1.尝试加载扩展文件夹
@@ -125,10 +146,11 @@ public class SolonApp extends RouterWrapper {
         }
     }
 
+
     /**
      * 运行应用
      */
-    protected void run() throws Throwable{
+    private void run() throws Throwable{
 
         //event::0.x.推送App init end事件
         EventBus.push(AppInitEndEvent.instance);

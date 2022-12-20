@@ -82,6 +82,18 @@ public class Solon {
         }
     }
 
+    public static SolonApp startOfTest(Class<?> source, String[] args) throws Throwable{
+        SolonApp tmp = new SolonApp(source, NvMap.from(args));
+
+        if(app == null){
+            app = tmp;
+        }
+
+        tmp.start(null);
+
+        return tmp;
+    }
+
     /**
      * 启动应用（全局只启动一个）
      *
@@ -138,20 +150,7 @@ public class Solon {
         try {
             //1.创建全局应用及配置
             app = new SolonApp(source, argx);
-
-            //2.0.内部初始化等待（尝试ping等待）
-            app.initAwait();
-
-            //2.1.内部初始化（如配置等，顺序不能乱）
-            app.init();
-
-            //2.2.自定义初始化
-            if (initialize != null) {
-                initialize.accept(app);
-            }
-
-            //3.运行应用（运行插件、扫描Bean等）
-            app.run();
+            app.start(initialize);
 
         } catch (Throwable e) {
             //显示异常信息
