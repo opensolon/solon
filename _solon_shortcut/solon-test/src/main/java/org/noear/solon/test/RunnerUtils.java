@@ -97,19 +97,19 @@ class RunnerUtils {
                 }
             }
 
-            List<String> argsArg = new ArrayList<>();
+            List<String> argsAry = new ArrayList<>();
             if (anno.args().length > 0) {
-                argsArg.addAll(Arrays.asList(anno.args()));
+                argsAry.addAll(Arrays.asList(anno.args()));
             }
 
             //添加调试模式
             if (anno.debug()) {
-                argsArg.add("-debug=1");
+                argsAry.add("-debug=1");
             }
 
             //添加环境变量
             if (Utils.isNotEmpty(anno.env())) {
-                argsArg.add("-env=" + anno.env());
+                argsAry.add("-env=" + anno.env());
             }
 
             Class<?> mainClz = RunnerUtils.getMainClz(anno, klass);
@@ -118,7 +118,7 @@ class RunnerUtils {
                 return appCached.get(mainClz);
             }
 
-            AopContext aopContext = startDo(mainClz, argsArg, klass);
+            AopContext aopContext = startDo(mainClz, argsAry, klass);
 
             appCached.put(mainClz, aopContext);
             //延迟秒数
@@ -132,16 +132,18 @@ class RunnerUtils {
 
             return aopContext;
         } else {
-            return startDo(klass, Arrays.asList("-debug=1"), klass);
+            List<String> argsAry = new ArrayList<>();
+            argsAry.add("-debug=1");
+            return startDo(klass, argsAry, klass);
         }
     }
 
-    private static AopContext startDo(Class<?> mainClz, List<String> argsArg, Class<?> klass) throws Throwable {
+    private static AopContext startDo(Class<?> mainClz, List<String> argsAry, Class<?> klass) throws Throwable {
 
 
         if (mainClz == klass) {
-            argsArg.add("isolated=1");
-            String[] args = argsArg.toArray(new String[argsArg.size()]);
+            argsAry.add("isolated=1");
+            String[] args = argsAry.toArray(new String[argsAry.size()]);
 
             SolonApp app = new SolonApp(mainClz, NvMap.from(args));
             Solon.startIsolatedApp(app, x -> {
@@ -154,15 +156,15 @@ class RunnerUtils {
             Method main = RunnerUtils.getMainMethod(mainClz);
 
             if (main != null && Modifier.isStatic(main.getModifiers())) {
-                String[] args = argsArg.toArray(new String[argsArg.size()]);
+                String[] args = argsAry.toArray(new String[argsAry.size()]);
 
                 initDo(null, klass);
                 main.invoke(null, new Object[]{args});
 
                 return Solon.context();
             } else {
-                argsArg.add("isolated=1");
-                String[] args = argsArg.toArray(new String[argsArg.size()]);
+                argsAry.add("isolated=1");
+                String[] args = argsAry.toArray(new String[argsAry.size()]);
 
                 SolonApp app = new SolonApp(mainClz, NvMap.from(args));
                 Solon.startIsolatedApp(app, x -> {
