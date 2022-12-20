@@ -73,12 +73,10 @@ public abstract class BeanContainer {
     /**
      * bean包装库
      */
-    private final Map<Class<?>, BeanWrap> beanWraps = new HashMap<>();
+    private final Map<Class<?>, BeanWrap> beanWrapsOfType = new HashMap<>();
+    private final Map<String, BeanWrap> beanWrapsOfName = new HashMap<>();
     private final Set<BeanWrap> beanWrapSet = new HashSet<>();
-    /**
-     * bean库
-     */
-    private final Map<String, BeanWrap> beans = new HashMap<>();
+
     /**
      * clz mapping
      */
@@ -114,9 +112,10 @@ public abstract class BeanContainer {
 
 
     public void clear() {
-        beanWraps.clear();
+        beanWrapsOfType.clear();
+        beanWrapsOfName.clear();
         beanWrapSet.clear();
-        beans.clear();
+
         clzMapping.clear();
         attrs.clear();
 
@@ -135,20 +134,22 @@ public abstract class BeanContainer {
      * 容器能力制复到另一个容器
      */
     public void copyTo(BeanContainer container) {
+        //构建器
         beanBuilders.forEach((k, v) -> {
             container.beanBuilders.putIfAbsent(k, v);
         });
 
-        //用于跨容器复制
+        //注入器
         beanInjectors.forEach((k, v) -> {
             container.beanInjectors.putIfAbsent(k, v);
         });
 
-        //用于跨容器复制
+        //拦截器
         beanInterceptors.forEach((k, v) -> {
             container.beanInterceptors.putIfAbsent(k, v);
         });
 
+        //提取器
         beanExtractors.forEach((k, v) -> {
             container.beanExtractors.putIfAbsent(k, v);
         });
@@ -268,8 +269,9 @@ public abstract class BeanContainer {
      */
     public synchronized void putWrap(String name, BeanWrap wrap) {
         if (Utils.isNotEmpty(name) && wrap.raw() != null) {
-            if (beans.containsKey(name) == false) {
-                beans.put(name, wrap);
+            if (beanWrapsOfName.containsKey(name) == false) {
+                beanWrapsOfName.put(name, wrap);
+                beanWrapSet.add(wrap);
                 beanNotice(name, wrap);
             }
         }
@@ -285,8 +287,8 @@ public abstract class BeanContainer {
             //
             //wrap.raw()==null, 说明它是接口；等它完成代理再注册；以@Db为例，可以看一下
             //
-            if (beanWraps.containsKey(type) == false) {
-                beanWraps.put(type, wrap);
+            if (beanWrapsOfType.containsKey(type) == false) {
+                beanWrapsOfType.put(type, wrap);
                 beanWrapSet.add(wrap);
                 beanNotice(type, wrap);
             }
@@ -304,9 +306,9 @@ public abstract class BeanContainer {
      */
     public BeanWrap getWrap(Object nameOrType) {
         if (nameOrType instanceof String) {
-            return beans.get(nameOrType);
+            return beanWrapsOfName.get(nameOrType);
         } else {
-            return beanWraps.get(nameOrType);
+            return beanWrapsOfType.get(nameOrType);
         }
     }
 
@@ -763,7 +765,7 @@ public abstract class BeanContainer {
      */
     @Note("遍历bean库 (拿到的是bean包装)")
     public void beanForeach(BiConsumer<String, BeanWrap> action) {
-        beans.forEach(action);
+        beanWrapsOfName.forEach(action);
     }
 
     /**

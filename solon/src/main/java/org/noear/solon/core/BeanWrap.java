@@ -177,6 +177,7 @@ public class BeanWrap {
 
     /**
      * bean 特性
+     *
      * @deprecated 1.10
      */
     @Deprecated
@@ -186,7 +187,7 @@ public class BeanWrap {
 
     /**
      * @deprecated 1.10
-     * */
+     */
     @Deprecated
     protected void attrsSet(String[] attrs) {
         this.attrs = attrs;
@@ -194,7 +195,7 @@ public class BeanWrap {
 
     /**
      * @deprecated 1.10
-     * */
+     */
     @Deprecated
     public String attrGet(String name) {
         if (attrs == null) {
@@ -259,7 +260,7 @@ public class BeanWrap {
         if (clzInit != null) {
             if (clzInitDelay) {
 
-                if(clzInitIndex == 0) {
+                if (clzInitIndex == 0) {
                     //如果为0，则自动识别
                     clzInitIndex = new IndexBuilder().buildIndex(clz);
                 }
@@ -360,11 +361,11 @@ public class BeanWrap {
         if (this == o) return true;
         if (!(o instanceof BeanWrap)) return false;
         BeanWrap beanWrap = (BeanWrap) o;
-        return clz.equals(beanWrap.clz);
+        return clz.equals(beanWrap.clz) && raw == beanWrap.raw;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(clz);
+        return Objects.hash(clz, raw);
     }
 }
