@@ -45,5 +45,5 @@ public @interface SolonTest {
     boolean debug() default true;
 
     @Note("是否隔离模式")
-    boolean isolated() default false;
+    boolean isolated() default true;
 }

@@ -169,7 +169,7 @@ public class SolonApp extends RouterWrapper {
 
         //1.1.尝试启动插件（顺序不能乱） //不能用forEach，以免当中有插进来
         for (int i = 0, len = plugs.size(); i < len; i++) {
-            plugs.get(i).start(Solon.context());
+            plugs.get(i).start(context());
         }
 
         //event::1.1.x推送Plugin load end事件
@@ -183,7 +183,7 @@ public class SolonApp extends RouterWrapper {
 
         //2.2.通过源扫描bean
         if (source() != null) {
-            Solon.context().beanScan(source());
+            context().beanScan(source());
         }
 
         //event::2.x.推送Bean load end事件
@@ -197,7 +197,7 @@ public class SolonApp extends RouterWrapper {
         });
 
         //3.1.标识上下文加载完成
-        Solon.context().beanLoaded();
+        context().beanLoaded();
 
         //event::4.x.推送App load end事件
         EventBus.push(new AppLoadEndEvent(this));
@@ -211,9 +211,9 @@ public class SolonApp extends RouterWrapper {
 
         for (Annotation a1 : _source.getAnnotations()) {
             if (a1 instanceof Import) {
-                Solon.context().beanImport((Import) a1);
+                context().beanImport((Import) a1);
             } else {
-                Solon.context().beanImport(a1.annotationType().getAnnotation(Import.class));
+                context().beanImport(a1.annotationType().getAnnotation(Import.class));
             }
         }
     }
@@ -342,7 +342,7 @@ public class SolonApp extends RouterWrapper {
     public void plug(Plugin plugin) {
         PluginEntity p = new PluginEntity(plugin);
         p.init();
-        p.start(Solon.context());
+        p.start(context());
         cfg().plugs().add(p);
     }
 

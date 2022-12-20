@@ -135,7 +135,7 @@ class RunnerUtils {
 
             return aopContext;
         } else {
-            return startDo(klass, new String[]{"-debug=1"}, klass, false);
+            return startDo(klass, new String[]{"-debug=1"}, klass, true);
         }
     }
 
@@ -191,13 +191,13 @@ class RunnerUtils {
             EventBus.subscribe(AppInitEndEvent.class, event -> {
                 //加载测试配置
                 RunnerUtils.addPropertySource(event.context(), propAnno);
-                event.context().wrapAndPut(klass);
+                //event.context().wrapAndPut(klass);
                 event.context().beanAroundAdd(TestRollback.class, new TestRollbackInterceptor(), 120);
             });
         } else {
             //加载测试配置
             RunnerUtils.addPropertySource(app.context(), propAnno);
-            app.context().wrapAndPut(klass);
+            //app.context().wrapAndPut(klass);
             app.context().beanAroundAdd(TestRollback.class, new TestRollbackInterceptor(), 120);
         }
     }
