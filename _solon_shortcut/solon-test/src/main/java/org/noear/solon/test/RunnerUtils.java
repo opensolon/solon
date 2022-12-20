@@ -25,7 +25,7 @@ import java.util.*;
  */
 class RunnerUtils {
     public static final String TAG_classpath = "classpath:";
-    private static Set<Class<?>> appCached = new HashSet<>();
+    private static Map<Class<?>, AopContext> appCached = new HashMap<>();
 
     public static Class<?> getMainClz(SolonTest anno, Class<?> klass) {
         if (anno == null) {
@@ -70,9 +70,7 @@ class RunnerUtils {
         }
     }
 
-    public static Object initTestTarget(Object tmp) {
-        AopContext aopContext = Solon.context();
-
+    public static Object initTestTarget(AopContext aopContext,Object tmp) {
         //注入
         aopContext.beanInject(tmp);
         //构建临时包装（用于支持提取操作）
@@ -86,16 +84,8 @@ class RunnerUtils {
     }
 
 
-    public static void initRunner(Class<?> klass) throws Throwable {
+    public static AopContext initRunner(Class<?> klass) throws Throwable {
         SolonTest anno = klass.getAnnotation(SolonTest.class);
-        TestPropertySource propAnno = klass.getAnnotation(TestPropertySource.class);
-
-        EventBus.subscribe(AppInitEndEvent.class, event -> {
-            //加载测试配置
-            RunnerUtils.addPropertySource(event.context(), propAnno);
-            event.context().wrapAndPut(klass);
-            event.context().beanAroundAdd(TestRollback.class, new TestRollbackInterceptor(), 120);
-        });
 
         if (anno != null) {
             if (anno.properties().length > 0) {
@@ -122,18 +112,18 @@ class RunnerUtils {
                 args.add("-env=" + anno.env());
             }
 
+            Class<?> mainClz = RunnerUtils.getMainClz(anno, klass);
 
-            if (appCached.contains(anno.getClass())) {
-                return;
-            } else {
-                appCached.add(anno.getClass());
+            if (appCached.containsKey(mainClz)) {
+                return appCached.get(mainClz);
             }
 
             String[] argsStr = args.toArray(new String[args.size()]);
-            Class<?> mainClz = RunnerUtils.getMainClz(anno, klass);
 
-            startDo(mainClz, argsStr, klass, anno.isolated());
 
+            AopContext aopContext = startDo(mainClz, argsStr, klass, anno.isolated());
+
+            appCached.put(mainClz, aopContext);
             //延迟秒数
             if (anno.delay() > 0) {
                 try {
@@ -142,30 +132,51 @@ class RunnerUtils {
 
                 }
             }
+
+            return aopContext;
         } else {
-            startDo(klass, new String[]{"-debug=1"}, klass, false);
+            return startDo(klass, new String[]{"-debug=1"}, klass, false);
         }
     }
 
-    private static void startDo(Class<?> mainClz, String[] args, Class<?> klass, boolean isolated) throws Throwable {
+    private static AopContext startDo(Class<?> mainClz, String[] args, Class<?> klass, boolean isolated) throws Throwable {
+        TestPropertySource propAnno = klass.getAnnotation(TestPropertySource.class);
+
+        EventBus.subscribe(AppInitEndEvent.class, event -> {
+            //加载测试配置
+            RunnerUtils.addPropertySource(event.context(), propAnno);
+            event.context().wrapAndPut(klass);
+            event.context().beanAroundAdd(TestRollback.class, new TestRollbackInterceptor(), 120);
+        });
+
         if (mainClz == klass) {
             if (isolated) {
                 SolonApp app = new SolonApp(mainClz, NvMap.from(args));
                 Solon.startIsolatedApp(app);
+
+                return app.context();
             } else {
                 Solon.start(mainClz, args);
+
+                return Solon.context();
             }
         } else {
             Method main = RunnerUtils.getMainMethod(mainClz);
 
             if (main != null && Modifier.isStatic(main.getModifiers())) {
                 main.invoke(null, new Object[]{args});
+
+                return Solon.context();
             } else {
                 if (isolated) {
                     SolonApp app = new SolonApp(mainClz, NvMap.from(args));
                     Solon.startIsolatedApp(app);
+
+                    return app.context();
                 } else {
                     Solon.start(mainClz, args);
+
+                    return Solon.context();
                 }
             }
         }
