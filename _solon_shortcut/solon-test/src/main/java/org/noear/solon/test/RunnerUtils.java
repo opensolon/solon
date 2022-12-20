@@ -68,7 +68,7 @@ class RunnerUtils {
         }
     }
 
-    public static Object initTestTarget(Object tmp){
+    public static Object initTestTarget(Object tmp) {
         AopContext aopContext = Solon.context();
 
         //注入
@@ -84,7 +84,7 @@ class RunnerUtils {
     }
 
 
-    public static void initRunner(Class<?> klass) {
+    public static void initRunner(Class<?> klass) throws Throwable {
         SolonTest anno = klass.getAnnotation(SolonTest.class);
         TestPropertySource propAnno = klass.getAnnotation(TestPropertySource.class);
 
@@ -120,7 +120,6 @@ class RunnerUtils {
                 args.add("-env=" + anno.env());
             }
 
-            String[] argsStr = args.toArray(new String[args.size()]);
 
             if (appCached.contains(anno.getClass())) {
                 return;
@@ -128,21 +127,10 @@ class RunnerUtils {
                 appCached.add(anno.getClass());
             }
 
+            String[] argsStr = args.toArray(new String[args.size()]);
             Class<?> mainClz = RunnerUtils.getMainClz(anno, klass);
 
-            try {
-                Method main = RunnerUtils.getMainMethod(mainClz);
-
-                if (main != null && Modifier.isStatic(main.getModifiers())) {
-
-                    main.invoke(null, new Object[]{argsStr});
-                } else {
-                    Solon.start(mainClz, argsStr);
-                }
-            } catch (Throwable ex) {
-                Utils.throwableUnwrap(ex).printStackTrace();
-            }
-
+            startDo(mainClz, argsStr, klass);
 
             //延迟秒数
             if (anno.delay() > 0) {
@@ -153,7 +141,22 @@ class RunnerUtils {
                 }
             }
         } else {
-            Solon.start(klass, new String[]{"-debug=1"});
+            startDo(klass, new String[]{"-debug=1"}, klass);
+        }
+    }
+
+    private static void startDo(Class<?> mainClz, String[] args, Class<?> klass) throws Throwable {
+        if (mainClz == klass) {
+            Solon.start(mainClz, args);
+        } else {
+            Method main = RunnerUtils.getMainMethod(mainClz);
+
+            if (main != null && Modifier.isStatic(main.getModifiers())) {
+
+                main.invoke(null, new Object[]{args});
+            } else {
+                Solon.start(mainClz, args);
+            }
         }
     }
 }

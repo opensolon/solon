@@ -10,24 +10,24 @@ import org.noear.solon.Utils;
 public class SolonJUnit5Extension implements TestInstanceFactory {
     @Override
     public Object createTestInstance(TestInstanceFactoryContext factory, ExtensionContext extensionContext) throws TestInstantiationException {
-        //init
-        initDo(factory.getTestClass());
-
 
         try {
+            //init
+            initDo(factory.getTestClass());
+
             //create
             Object tmp = Utils.newInstance(factory.getTestClass());
             RunnerUtils.initTestTarget(tmp);
 
             return tmp;
-        } catch (Exception e) {
+        } catch (Throwable e) {
             throw new TestInstantiationException("Test class instantiation failed: " + factory.getTestClass().getName());
         }
     }
 
     private Class<?> klassCached;
 
-    private void initDo(Class<?> klass) {
+    private void initDo(Class<?> klass) throws Throwable{
         if (klassCached == null) {
             klassCached = klass;
         } else {

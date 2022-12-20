@@ -7,10 +7,14 @@ public class SolonJUnit4ClassRunner extends BlockJUnit4ClassRunner {
     public SolonJUnit4ClassRunner(Class<?> klass) throws InitializationError {
         super(klass);
 
-        initDo(klass);
+        try {
+            initDo(klass);
+        } catch (Throwable e) {
+            throw new InitializationError(e);
+        }
     }
 
-    private void initDo(Class<?> klass) {
+    private void initDo(Class<?> klass) throws Throwable {
         RunnerUtils.initRunner(klass);
     }
 
