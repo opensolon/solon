@@ -8,9 +8,8 @@ import org.noear.solon.SolonApp;
  * @author noear
  * @since 1.10
  * */
-@Deprecated
-public class PluginInitEndEvent extends AppEvent {
-    public PluginInitEndEvent(SolonApp app) {
+public class AppPluginInitEndEvent extends PluginInitEndEvent {
+    public AppPluginInitEndEvent(SolonApp app) {
         super(app);
     }
 }

@@ -31,7 +31,7 @@ import java.util.function.Consumer;
  * */
 public class SolonApp extends RouterWrapper {
     private final SolonProps _cfg; //属性配置
-    private final AopContext _context = new AopContext();//容器上下文
+    private final AopContext _context;//容器上下文
 
     private final Class<?> _source; //应用加载源
     private final long _startupTime;
@@ -58,6 +58,7 @@ public class SolonApp extends RouterWrapper {
 
         //初始化配置
         _cfg = new SolonProps().load(source, args);
+        _context = new AopContext(JarClassLoader.global(), _cfg);
 
         //初始化路由
         initRouter(this::doFilter);
@@ -153,7 +154,7 @@ public class SolonApp extends RouterWrapper {
     private void run() throws Throwable{
 
         //event::0.x.推送App init end事件
-        EventBus.push(AppInitEndEvent.instance);
+        EventBus.push(new AppInitEndEvent(this));
 
         List<PluginEntity> plugs = cfg().plugs();
         //1.0.尝式初始化插件 //一般插件不需要
@@ -162,7 +163,7 @@ public class SolonApp extends RouterWrapper {
         }
 
         //event::1.0.x推送Plugin init end事件
-        EventBus.push(PluginInitEndEvent.instance);
+        EventBus.push(new AppPluginInitEndEvent(this));
 
         LogUtil.global().info("App: Plugin starting");
 
@@ -172,7 +173,7 @@ public class SolonApp extends RouterWrapper {
         }
 
         //event::1.1.x推送Plugin load end事件
-        EventBus.push(PluginLoadEndEvent.instance);
+        EventBus.push(new AppPluginLoadEndEvent(this));
 
 
         LogUtil.global().info("App: Bean scanning");
@@ -186,7 +187,7 @@ public class SolonApp extends RouterWrapper {
         }
 
         //event::2.x.推送Bean load end事件
-        EventBus.push(BeanLoadEndEvent.instance);
+        EventBus.push(new AppBeanLoadEndEvent(this));
 
 
         //3.加载渲染关系
@@ -199,7 +200,7 @@ public class SolonApp extends RouterWrapper {
         Solon.context().beanLoaded();
 
         //event::4.x.推送App load end事件
-        EventBus.push(AppLoadEndEvent.instance);
+        EventBus.push(new AppLoadEndEvent(this));
     }
 
     //通过注解，导入bean

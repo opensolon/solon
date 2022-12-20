@@ -1,6 +1,7 @@
 package org.noear.solon.test;
 
 import org.noear.solon.Solon;
+import org.noear.solon.SolonTestApp;
 import org.noear.solon.Utils;
 import org.noear.solon.aspect.BeanProxy;
 import org.noear.solon.core.AopContext;
@@ -50,17 +51,17 @@ class RunnerUtils {
         }
     }
 
-    public static void addPropertySource(TestPropertySource propertySource) {
+    public static void addPropertySource(AopContext context, TestPropertySource propertySource) {
         if (propertySource == null) {
             return;
         }
 
         for (String uri : propertySource.value()) {
             if (uri.startsWith(TAG_classpath)) {
-                Solon.cfg().loadAdd(uri.substring(TAG_classpath.length()));
+                context.getProps().loadAdd(uri.substring(TAG_classpath.length()));
             } else {
                 try {
-                    Solon.cfg().loadAdd(new File(uri).toURI().toURL());
+                    context.getProps().loadAdd(new File(uri).toURI().toURL());
                 } catch (MalformedURLException e) {
                     throw new RuntimeException(e);
                 }
@@ -88,11 +89,11 @@ class RunnerUtils {
         SolonTest anno = klass.getAnnotation(SolonTest.class);
         TestPropertySource propAnno = klass.getAnnotation(TestPropertySource.class);
 
-        EventBus.subscribe(AppInitEndEvent.class, e -> {
+        EventBus.subscribe(AppInitEndEvent.class, event -> {
             //加载测试配置
-            RunnerUtils.addPropertySource(propAnno);
-            Solon.context().wrapAndPut(klass);
-            Solon.context().beanAroundAdd(TestRollback.class, new TestRollbackInterceptor(), 120);
+            RunnerUtils.addPropertySource(event.context(), propAnno);
+            event.context().wrapAndPut(klass);
+            event.context().beanAroundAdd(TestRollback.class, new TestRollbackInterceptor(), 120);
         });
 
         if (anno != null) {
@@ -130,7 +131,7 @@ class RunnerUtils {
             String[] argsStr = args.toArray(new String[args.size()]);
             Class<?> mainClz = RunnerUtils.getMainClz(anno, klass);
 
-            startDo(mainClz, argsStr, klass);
+            startDo(mainClz, argsStr, klass, anno.isolated());
 
             //延迟秒数
             if (anno.delay() > 0) {
@@ -141,21 +142,28 @@ class RunnerUtils {
                 }
             }
         } else {
-            startDo(klass, new String[]{"-debug=1"}, klass);
+            startDo(klass, new String[]{"-debug=1"}, klass, false);
         }
     }
 
-    private static void startDo(Class<?> mainClz, String[] args, Class<?> klass) throws Throwable {
+    private static void startDo(Class<?> mainClz, String[] args, Class<?> klass, boolean isolated) throws Throwable {
         if (mainClz == klass) {
-            Solon.start(mainClz, args);
+            if (isolated) {
+                new SolonTestApp(mainClz,args).start();
+            } else {
+                Solon.start(mainClz, args);
+            }
         } else {
             Method main = RunnerUtils.getMainMethod(mainClz);
 
             if (main != null && Modifier.isStatic(main.getModifiers())) {
-
                 main.invoke(null, new Object[]{args});
             } else {
-                Solon.start(mainClz, args);
+                if (isolated) {
+                    new SolonTestApp(mainClz,args).start();
+                } else {
+                    Solon.start(mainClz, args);
+                }
             }
         }
     }
