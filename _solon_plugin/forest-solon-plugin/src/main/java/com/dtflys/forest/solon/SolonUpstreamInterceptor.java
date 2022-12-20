@@ -12,7 +12,7 @@ import org.noear.solon.core.LoadBalance;
  * @author 夜の孤城
  * @since 1.10
  */
-public class UpstreamInterceptor implements Interceptor {
+public class SolonUpstreamInterceptor implements Interceptor {
 
     @Override
     public boolean beforeExecute(ForestRequest request) {

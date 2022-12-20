@@ -4,16 +4,18 @@ import com.dtflys.forest.Forest;
 import com.dtflys.forest.annotation.BindingVar;
 import com.dtflys.forest.annotation.ForestClient;
 import com.dtflys.forest.config.ForestConfiguration;
-import com.dtflys.forest.solon.SolonVariableValue;
-import com.dtflys.forest.solon.UpstreamInterceptor;
+import com.dtflys.forest.config.SolonForestProperties;
+import com.dtflys.forest.interceptor.SolonInterceptorFactory;
+import com.dtflys.forest.reflection.SolonObjectFactory;
+import com.dtflys.forest.solon.ForestBeanBuilder;
+import com.dtflys.forest.solon.SolonForestVariableValue;
+import com.dtflys.forest.solon.SolonUpstreamInterceptor;
+import com.dtflys.forest.solon.properties.ForestConfigurationProperties;
 import com.dtflys.forest.utils.StringUtils;
-import org.noear.solon.Solon;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
 
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author 夜の孤城
@@ -22,6 +24,7 @@ import java.util.Map;
 public class XPluginImp implements Plugin {
     @Override
     public void start(AopContext context) {
+
         //1.初始 ForestConfiguration
         configBeanInit(context);
 
@@ -35,31 +38,32 @@ public class XPluginImp implements Plugin {
         context.beanExtractorAdd(BindingVar.class, (bw, method, anno) -> {
             String confId = anno.configuration();
             ForestConfiguration configuration = null;
+
             if (StringUtils.isNotBlank(confId)) {
                 configuration = Forest.config(confId);
             } else {
                 configuration = Forest.config();
             }
+
             String varName = anno.value();
-            SolonVariableValue variableValue = new SolonVariableValue(bw.get(), method);
+            SolonForestVariableValue variableValue = new SolonForestVariableValue(bw.get(), method);
             configuration.setVariableValue(varName, variableValue);
         });
     }
 
     private void configBeanInit(AopContext context) {
-        ForestConfiguration config = Forest.config();
+        ForestConfigurationProperties configurationProperties = context.beanMake(ForestConfigurationProperties.class).get();
 
-        //1.properties
-        Map<String, Object> props = new HashMap<>();
-        for (Map.Entry<Object, Object> entry : Solon.cfg().entrySet()) {
-            props.put(entry.getKey().toString(), entry.getKey());
-        }
-        config.setVariables(props);
+        ForestBeanBuilder forestBeanBuilder = new ForestBeanBuilder(context,
+                configurationProperties,
+                new SolonForestProperties(context),
+                new SolonObjectFactory(context),
+                new SolonInterceptorFactory(context));
 
-        //2.interceptors
-        config.setInterceptors(Arrays.asList(UpstreamInterceptor.class));//.add();
+        //1.构建配转走
+        ForestConfiguration config = forestBeanBuilder.build();
 
-        //3.推进容器，便于进行定制
-        context.wrapAndPut(ForestConfiguration.class, config);
+        //2.添加必要拦截器
+        config.setInterceptors(Arrays.asList(SolonUpstreamInterceptor.class));//.add();
     }
 }

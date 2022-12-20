@@ -14,6 +14,7 @@
 * 
 * 插件 file-s3-solon-plugin 优化兼容处理 ???
 * 插件 aws-s3-solon-plugin 优化兼容处理 ???
+* 插件 forest-solon-plugin 优化兼容处理 ???
 * 插件 sentinel-solon-cloud-plugin 控制台调试
 * 
 * 调整 BeanWrap 的 hashCode 处理；beanWrapsSet 收集内容包括 name 的

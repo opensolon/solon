@@ -1,6 +1,8 @@
-package com.dtflys.forest.solondemo;
+package com.dtflys.forest.solon.demo;
 
-import com.dtflys.forest.annotation.*;
+import com.dtflys.forest.annotation.ForestClient;
+import com.dtflys.forest.annotation.Get;
+import com.dtflys.forest.annotation.Query;
 
 /**
  * @BaseRequest（baseURL ="https://www.gitee.com"）  直接使用值
@@ -8,8 +10,7 @@ import com.dtflys.forest.annotation.*;
  * @BaseRequest(baseURL = "upstream://test") 使用配置的upstream
  */
 @ForestClient
-//@BaseRequest(baseURL = "upstream://gitee")
-public interface TestGiteeApi {
+public interface GiteeApi {
     @Get(url="upstream://gitee")
     String search(@Query("q") String q);
 }

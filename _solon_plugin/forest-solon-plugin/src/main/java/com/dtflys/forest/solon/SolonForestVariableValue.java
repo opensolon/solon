@@ -11,8 +11,7 @@ import java.lang.reflect.Method;
  * @author noear
  * @since 1.11
  */
-
-public class SolonVariableValue implements ForestVariableValue {
+public class SolonForestVariableValue implements ForestVariableValue {
 
     private final static Object[] DEFAULT_ARGUMENTS = new Object[0];
 
@@ -20,7 +19,7 @@ public class SolonVariableValue implements ForestVariableValue {
 
     private final Method method;
 
-    public SolonVariableValue(Object bean, Method method) {
+    public SolonForestVariableValue(Object bean, Method method) {
         this.bean = bean;
         this.method = method;
     }

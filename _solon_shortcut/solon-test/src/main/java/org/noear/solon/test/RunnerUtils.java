@@ -73,6 +73,7 @@ class RunnerUtils {
         EventBus.subscribe(AppInitEndEvent.class, e -> {
             //加载测试配置
             RunnerUtils.addPropertySource(propAnno);
+            Solon.context().wrapAndPut(klass);
             Solon.context().beanAroundAdd(TestRollback.class, new TestRollbackInterceptor(), 120);
         });
 
