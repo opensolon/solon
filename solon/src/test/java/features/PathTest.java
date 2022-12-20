@@ -17,7 +17,6 @@ public class PathTest {
                     System.out.println(bean);
                 });
             });
-
         });
     }
 
