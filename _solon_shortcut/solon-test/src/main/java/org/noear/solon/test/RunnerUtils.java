@@ -2,6 +2,9 @@ package org.noear.solon.test;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
+import org.noear.solon.aspect.BeanProxy;
+import org.noear.solon.core.AopContext;
+import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.event.AppInitEndEvent;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.test.annotation.TestPropertySource;
@@ -63,6 +66,21 @@ class RunnerUtils {
                 }
             }
         }
+    }
+
+    public static Object initTestTarget(Object tmp){
+        AopContext aopContext = Solon.context();
+
+        //注入
+        aopContext.beanInject(tmp);
+        //构建临时包装（用于支持提取操作）
+        BeanWrap beanWrap = new BeanWrap(aopContext, tmp.getClass(), tmp);
+        //尝试提取操作
+        aopContext.beanExtract(beanWrap);
+
+        tmp = BeanProxy.getGlobal().getProxy(aopContext, tmp);
+
+        return tmp;
     }
 
 
