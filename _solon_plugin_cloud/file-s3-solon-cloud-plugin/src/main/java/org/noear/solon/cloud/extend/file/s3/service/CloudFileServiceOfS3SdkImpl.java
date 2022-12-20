@@ -41,9 +41,7 @@ public class CloudFileServiceOfS3SdkImpl implements CloudFileService {
         }
 
         try {
-            GetObjectRequest request = new GetObjectRequest(bucket, key);
-
-            S3Object obj = client.getObject(request);
+            S3Object obj = client.getObject(bucket, key);
 
             return new Media(obj.getObjectContent(), obj.getObjectMetadata().getContentType());
         } catch (Exception ex) {
@@ -65,6 +63,7 @@ public class CloudFileServiceOfS3SdkImpl implements CloudFileService {
         try {
             ObjectMetadata metadata = new ObjectMetadata();
             metadata.setContentType(streamMime);
+            metadata.setContentLength(media.body().available());
 
             PutObjectRequest request = new PutObjectRequest(bucket, key, media.body(), metadata);
             request.setCannedAcl(CannedAccessControlList.PublicRead);
