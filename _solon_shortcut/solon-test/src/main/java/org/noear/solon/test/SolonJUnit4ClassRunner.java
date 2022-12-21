@@ -5,22 +5,32 @@ import org.junit.runners.model.InitializationError;
 import org.noear.solon.core.AopContext;
 
 public class SolonJUnit4ClassRunner extends BlockJUnit4ClassRunner {
-    AopContext aopContext;
+    private Class<?> klassCached;
+    private AopContext aopContext;
+
     public SolonJUnit4ClassRunner(Class<?> klass) throws InitializationError {
         super(klass);
-
-        try {
-            aopContext = RunnerUtils.initRunner(klass);
-        } catch (Throwable e) {
-            throw new InitializationError(e);
-        }
     }
 
     @Override
     protected Object createTest() throws Exception {
-        Object tmp = super.createTest();
-        RunnerUtils.initTestTarget(aopContext, tmp);
+        try {
+            //init
+            Class<?> klass = super.getTestClass().getJavaClass();
+            if (klassCached == null) {
+                klassCached = klass;
+                aopContext = RunnerUtils.initRunner(klass);
+            }
 
-        return tmp;
+            //create
+            Object tmp = super.createTest();
+            RunnerUtils.initTestTarget(aopContext, tmp);
+
+            return tmp;
+        } catch (Exception e) {
+            throw e;
+        } catch (Throwable e) {
+            throw new RuntimeException(e);
+        }
     }
 }
