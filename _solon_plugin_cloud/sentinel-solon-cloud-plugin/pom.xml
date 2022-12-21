@@ -22,7 +22,7 @@
         <dependency>
             <groupId>com.alibaba.csp</groupId>
             <artifactId>sentinel-core</artifactId>
-            <version>1.8.4</version>
+            <version>1.8.6</version>
         </dependency>
     </dependencies>
 
