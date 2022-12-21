@@ -27,8 +27,10 @@ import java.lang.management.RuntimeMXBean;
 public class Solon {
     //默认停止延时
     private static int stopDelay = 10;
-    //全局实例
+    //全局实例（可能会因为测试而切换）
     private static SolonApp app;
+    //全局主实例
+    private static SolonApp appMain;
     //全局默认编码
     private static String encoding = "utf-8";
 
@@ -83,10 +85,7 @@ public class Solon {
     }
 
     public static void startIsolatedApp(SolonApp isolatedApp, ConsumerEx<SolonApp> initialize) throws Throwable {
-        if (app == null) {
-            app = isolatedApp;
-        }
-
+        app = isolatedApp;
         isolatedApp.start(initialize);
     }
 
@@ -121,8 +120,9 @@ public class Solon {
      * @param initialize 实始化函数
      */
     public static SolonApp start(Class<?> source, NvMap argx, ConsumerEx<SolonApp> initialize) {
-        if (app != null) {
-            return app;
+        if (appMain != null) {
+            app = appMain; //有可能被测试给切走了
+            return appMain;
         }
 
         //设置文件编码
@@ -145,7 +145,7 @@ public class Solon {
 
         try {
             //1.创建全局应用及配置
-            app = new SolonApp(source, argx);
+            app = appMain = new SolonApp(source, argx);
             app.start(initialize);
 
         } catch (Throwable e) {
