@@ -6,18 +6,20 @@
 * 增加 更多友好的异常分类???
 * 增加 便利的原生编译机制
 
-#### 1.11.7
+#### 1.11.8
 * 新增 elastic-job-solon-plugin 分布式定时任务 ???
 * 新增 thrift-solon-cloud-plugin 插件 ???
 * 新增 swagger-solon-plugin 插件 ???
 * 新增 knife4j-solon-plugin 插件 ???
-* 
+
+#### 1.11.7
 * 插件 file-s3-solon-plugin 优化兼容处理 ???
 * 插件 aws-s3-solon-plugin 优化兼容处理 ???
-* 插件 forest-solon-plugin 重新深度适配，并支持 solon 的 upstream ???
-* 插件 sentinel-solon-cloud-plugin 控制台调试
-* 
-* 调整 BeanWrap 的 hashCode 处理；beanWrapsSet 收集内容包括 name 的
+* 插件 sentinel-solon-cloud-plugin 控制台调试 ???
+* 插件 forest-solon-plugin 重新深度适配，并支持 solon 的 upstream!ok
+* 修复 sa-token-solon-plugin 不能自动注册多个 StpLogic 的问题
+* 优化 core ，支持测试时多 SolonApp 运行从而实现单测隔离效果
+* 优化 BeanWrap 的 hashCode 处理；beanWrapsSet 收集内容包括 name 的
 
 #### 1.11.6
 * 新增 liteflow-solon-plugin 插件 

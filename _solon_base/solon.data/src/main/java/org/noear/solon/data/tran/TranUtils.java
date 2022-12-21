@@ -1,11 +1,9 @@
 package org.noear.solon.data.tran;
 
 import org.noear.solon.Solon;
-import org.noear.solon.Utils;
 import org.noear.solon.annotation.Note;
 import org.noear.solon.data.annotation.Tran;
 import org.noear.solon.core.util.RunnableEx;
-import org.noear.solon.data.annotation.TranAnno;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
