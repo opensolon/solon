@@ -28,11 +28,16 @@ import java.util.Timer;
 public class XPluginImp implements Plugin {
     private Timer clientTimer = new Timer();
 
-    CloudProps cloudProps;
+    private CloudProps cloudProps;
+    private boolean inited = false;
 
     private boolean initDo(AopContext aopContext) throws Throwable {
         if(cloudProps == null){
             cloudProps = new CloudProps(aopContext,"water");;
+        }
+
+        if(inited){
+            return true;
         }
 
         if(Utils.isEmpty(cloudProps.getServer())){
@@ -72,6 +77,7 @@ public class XPluginImp implements Plugin {
             WaterAddress.setLogApiUrl(logServer);
         }
 
+        inited = true;
         return true;
     }
 
@@ -97,7 +103,7 @@ public class XPluginImp implements Plugin {
 
     @Override
     public void start(AopContext context) throws Throwable {
-        if(Utils.isEmpty(cloudProps.getServer())){
+        if (initDo(context) == false) {
             return;
         }
 
