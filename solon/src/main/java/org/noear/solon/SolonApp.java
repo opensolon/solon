@@ -159,7 +159,7 @@ public class SolonApp extends RouterWrapper {
         List<PluginEntity> plugs = cfg().plugs();
         //1.0.尝式初始化插件 //一般插件不需要
         for (int i = 0, len = plugs.size(); i < len; i++) {
-            plugs.get(i).init();
+            plugs.get(i).init(context());
         }
 
         //event::1.0.x推送Plugin init end事件
@@ -341,7 +341,7 @@ public class SolonApp extends RouterWrapper {
      */
     public void plug(Plugin plugin) {
         PluginEntity p = new PluginEntity(plugin);
-        p.init();
+        p.init(context());
         p.start(context());
         cfg().plugs().add(p);
     }

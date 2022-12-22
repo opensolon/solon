@@ -30,18 +30,14 @@ public class XPluginImp implements Plugin {
 
     CloudProps cloudProps;
 
-    private boolean initDo() throws Throwable {
+    private boolean initDo(AopContext aopContext) throws Throwable {
+        if(cloudProps == null){
+            cloudProps = new CloudProps(aopContext,"water");;
+        }
 
-
-        if (Utils.isEmpty(WaterProps.instance.getServer())) {
+        if(Utils.isEmpty(cloudProps.getServer())){
             return false;
         }
-
-        if (cloudProps != null) {
-            return true;
-        }
-
-        cloudProps = WaterProps.instance;
 
         //1.初始化服务地址
         String server = cloudProps.getServer();
@@ -80,8 +76,8 @@ public class XPluginImp implements Plugin {
     }
 
     @Override
-    public void init() throws Throwable {
-        if (initDo() == false) {
+    public void init(AopContext context) throws Throwable {
+        if (initDo(context) == false) {
             return;
         }
 
@@ -101,10 +97,9 @@ public class XPluginImp implements Plugin {
 
     @Override
     public void start(AopContext context) throws Throwable {
-        if (initDo() == false) {
+        if(Utils.isEmpty(cloudProps.getServer())){
             return;
         }
-
 
         //2.初始化服务
         CloudDiscoveryServiceWaterImp discoveryServiceImp = null;

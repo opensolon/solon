@@ -20,7 +20,7 @@ import java.net.URL;
  */
 public class XPluginImp implements Plugin {
     @Override
-    public void init() throws Throwable {
+    public void init(AopContext context) throws Throwable {
         URL url = Utils.getResource("log4j2.xml");
         if (url == null) {
             //尝试环境加载
@@ -48,7 +48,7 @@ public class XPluginImp implements Plugin {
 
     @Override
     public void start(AopContext context) throws Throwable{
-        init();
+        init(context);
     }
 
     private void initDo(URL url) {

@@ -101,9 +101,9 @@ public class CloudProps {
     private final String frame;
     private final AopContext aopContext;
 
-//    public CloudProps(String frame) {
-//        this(Solon.context(), frame);
-//    }
+    public CloudProps(String frame) {
+        this(Solon.context(), frame);
+    }
     public CloudProps(AopContext aopContext, String frame) {
         this.frame = frame;
         this.aopContext = aopContext;

@@ -18,7 +18,7 @@ import java.util.Properties;
  */
 public class XPluginImp implements Plugin {
     @Override
-    public void init() throws Throwable {
+    public void init(AopContext context) throws Throwable {
         AppenderManager.init();
     }
 

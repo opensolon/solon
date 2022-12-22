@@ -69,7 +69,7 @@ public class PluginEntity {
      * 获取插件
      */
     public Plugin getPlugin() {
-        init();
+        initInstance();
 
         return plugin;
     }
@@ -81,12 +81,12 @@ public class PluginEntity {
     /**
      * 初始化
      */
-    public void init() {
+    public void init(AopContext context) {
         initInstance();
 
         if (plugin != null) {
             try {
-                plugin.init();
+                plugin.init(context);
             } catch (Throwable e) {
                 throw new IllegalStateException(e);
             }

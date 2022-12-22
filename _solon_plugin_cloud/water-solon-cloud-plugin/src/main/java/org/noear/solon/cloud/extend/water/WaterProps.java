@@ -18,6 +18,4 @@ public class WaterProps {
     public static final String PROP_EVENT_seal = "event.seal";
     public static final String PROP_EVENT_receive = "event.receive";
 
-
-    public static final CloudProps instance = new CloudProps(Solon.context(),"water");
 }
