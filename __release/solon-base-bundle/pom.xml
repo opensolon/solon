@@ -52,5 +52,7 @@
         <module>../../_solon_shortcut/solon-cloud-water</module>
 
         <module>../../_solon_shortcut/solon-test</module>
+        <module>../../_solon_shortcut/solon-test-junit4</module>
+        <module>../../_solon_shortcut/solon-test-junit5</module>
     </modules>
 </project>

@@ -733,6 +733,16 @@
                 <artifactId>solon-test</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-test-junit4</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-test-junit5</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
 
 
 
