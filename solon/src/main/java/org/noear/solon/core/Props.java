@@ -2,7 +2,6 @@ package org.noear.solon.core;
 
 import org.noear.solon.SolonProps;
 import org.noear.solon.Utils;
-import org.noear.solon.core.wrap.ClassWrap;
 
 import java.net.URL;
 import java.util.*;
@@ -246,19 +245,6 @@ public class Props extends Properties {
                     String key = keyStr.substring(idx2);
 
                     setFun.accept(key, (String) v);
-                    if (key.contains("-")) {
-                        String[] ss = key.split("-");
-                        StringBuilder sb = new StringBuilder(key.length());
-                        sb.append(ss[0]);
-                        for (int i = 1; i < ss.length; i++) {
-                            if (ss[i].length() > 1) {
-                                sb.append(ss[i].substring(0, 1).toUpperCase()).append(ss[i].substring(1));
-                            } else {
-                                sb.append(ss[i].toUpperCase());
-                            }
-                        }
-                        setFun.accept(sb.toString(), (String) v);
-                    }
                 }
             }
         });
@@ -455,9 +441,30 @@ public class Props extends Properties {
                         }
 
                         put(k1, v1);
+
+
+                        if (key.contains("-")) {
+                            String key2 = buildNewKey(key);
+                            put(key2, v1);
+                        }
                     }
                 }
             }
         }
+    }
+
+    private String buildNewKey(String key) {
+        String[] ss = key.split("-");
+        StringBuilder sb = new StringBuilder(key.length());
+        sb.append(ss[0]);
+        for (int i = 1; i < ss.length; i++) {
+            if (ss[i].length() > 1) {
+                sb.append(ss[i].substring(0, 1).toUpperCase()).append(ss[i].substring(1));
+            } else {
+                sb.append(ss[i].toUpperCase());
+            }
+        }
+
+        return sb.toString();
     }
 }
