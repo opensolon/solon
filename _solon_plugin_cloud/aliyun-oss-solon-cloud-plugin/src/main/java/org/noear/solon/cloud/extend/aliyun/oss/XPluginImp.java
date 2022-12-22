@@ -2,6 +2,7 @@ package org.noear.solon.cloud.extend.aliyun.oss;
 
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudManager;
+import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.extend.aliyun.oss.service.CloudFileServiceOssImpl;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
@@ -13,12 +14,14 @@ import org.noear.solon.core.Plugin;
 public class XPluginImp implements Plugin {
     @Override
     public void start(AopContext context) {
-        if (OssProps.instance.getFileEnable()) {
-            if (Utils.isEmpty(OssProps.instance.getFileAccessKey())) {
+        CloudProps cloudProps = new CloudProps(context,"aliyun.oss");
+
+        if (cloudProps.getFileEnable()) {
+            if (Utils.isEmpty(cloudProps.getFileAccessKey())) {
                 return;
             }
 
-            CloudManager.register(new CloudFileServiceOssImpl(OssProps.instance));
+            CloudManager.register(new CloudFileServiceOssImpl(cloudProps));
         }
     }
 }

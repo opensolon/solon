@@ -5,6 +5,7 @@ import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.cloud.CloudManager;
+import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.core.*;
 import org.noear.solon.cloud.extend.consul.service.CloudConfigServiceConsulImpl;
 import org.noear.solon.cloud.extend.consul.service.CloudDiscoveryServiceConsulImpl;
@@ -23,13 +24,15 @@ public class XPluginImp implements Plugin {
 
     @Override
     public void start(AopContext context) {
-        if (Utils.isEmpty(ConsulProps.instance.getServer())) {
+        CloudProps cloudProps = new CloudProps(context,"consul");
+
+        if (Utils.isEmpty(cloudProps.getServer())) {
             return;
         }
 
         //1.登记配置服务
-        if (ConsulProps.instance.getConfigEnable()) {
-            CloudConfigServiceConsulImpl serviceImp = new CloudConfigServiceConsulImpl(ConsulProps.instance);
+        if (cloudProps.getConfigEnable()) {
+            CloudConfigServiceConsulImpl serviceImp = new CloudConfigServiceConsulImpl(cloudProps);
             CloudManager.register(serviceImp);
 
             if (serviceImp.getRefreshInterval() > 0) {
@@ -38,12 +41,12 @@ public class XPluginImp implements Plugin {
             }
 
             //1.1.加载配置
-            CloudClient.configLoad(ConsulProps.instance.getConfigLoad());
+            CloudClient.configLoad(cloudProps.getConfigLoad());
         }
 
         //2.登记发现服务
-        if (ConsulProps.instance.getDiscoveryEnable()) {
-            CloudDiscoveryServiceConsulImpl serviceImp = new CloudDiscoveryServiceConsulImpl(ConsulProps.instance);
+        if (cloudProps.getDiscoveryEnable()) {
+            CloudDiscoveryServiceConsulImpl serviceImp = new CloudDiscoveryServiceConsulImpl(cloudProps);
             CloudManager.register(serviceImp);
 
             //运行一次，拉取服务列表

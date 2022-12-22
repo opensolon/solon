@@ -2,6 +2,7 @@ package org.noear.solon.cloud.extend.jedis;
 
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudManager;
+import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.extend.jedis.service.CloudEventServiceJedisImpl;
 import org.noear.solon.cloud.extend.jedis.service.CloudLockServiceJedisImpl;
 import org.noear.solon.core.AopContext;
@@ -15,13 +16,15 @@ public class XPluginImp implements Plugin {
 
     @Override
     public void start(AopContext context) {
-        if (JedisProps.instance.getLockEnable() && Utils.isNotEmpty(JedisProps.instance.getLockServer())) {
-            CloudLockServiceJedisImpl lockServiceImp = new CloudLockServiceJedisImpl(JedisProps.instance);
+        CloudProps cloudProps = new CloudProps(context,"jedis");
+
+        if (cloudProps.getLockEnable() && Utils.isNotEmpty(cloudProps.getLockServer())) {
+            CloudLockServiceJedisImpl lockServiceImp = new CloudLockServiceJedisImpl(cloudProps);
             CloudManager.register(lockServiceImp);
         }
 
-        if (JedisProps.instance.getEventEnable() && Utils.isNotEmpty(JedisProps.instance.getEventServer())) {
-            CloudEventServiceJedisImpl eventServiceImp = new CloudEventServiceJedisImpl(JedisProps.instance);
+        if (cloudProps.getEventEnable() && Utils.isNotEmpty(cloudProps.getEventServer())) {
+            CloudEventServiceJedisImpl eventServiceImp = new CloudEventServiceJedisImpl(cloudProps);
             CloudManager.register(eventServiceImp);
 
             context.beanOnloaded(ctx -> eventServiceImp.subscribe());

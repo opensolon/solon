@@ -2,6 +2,7 @@ package org.noear.solon.cloud.extend.aliyun.ons;
 
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudManager;
+import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.extend.aliyun.ons.service.CloudEventServiceOnsImp;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
@@ -13,12 +14,14 @@ import org.noear.solon.core.Plugin;
 public class XPluginImp implements Plugin {
     @Override
     public void start(AopContext context) {
-        if (Utils.isEmpty(OnsProps.instance.getEventServer())) {
+        CloudProps cloudProps = new CloudProps(context,"aliyun.ons");
+
+        if (Utils.isEmpty(cloudProps.getEventServer())) {
             return;
         }
 
-        if (OnsProps.instance.getEventEnable()) {
-            CloudEventServiceOnsImp eventServiceImp = new CloudEventServiceOnsImp(OnsProps.instance);
+        if (cloudProps.getEventEnable()) {
+            CloudEventServiceOnsImp eventServiceImp = new CloudEventServiceOnsImp(cloudProps);
             CloudManager.register(eventServiceImp);
 
             context.beanOnloaded(ctx -> eventServiceImp.subscribe());

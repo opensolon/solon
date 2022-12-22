@@ -1,5 +1,6 @@
 package org.noear.solon.cloud.extend.jmdns;
 
+import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
 
@@ -13,6 +14,6 @@ public class XPluginImp implements Plugin {
     //
     @Override
     public void start(AopContext context) {
-
+        CloudProps cloudProps = new CloudProps(context, "jmdns");
     }
 }

@@ -8,6 +8,4 @@ import org.noear.solon.cloud.CloudProps;
  */
 public class JedisProps {
     public static final String GROUP_SPLIT_MARK = ":";
-
-    public static final CloudProps instance = new CloudProps("jedis");
 }

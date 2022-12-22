@@ -1,6 +1,7 @@
 package org.noear.solon.cloud.extend.file.s3;
 
 import org.noear.solon.cloud.CloudManager;
+import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.extend.file.s3.service.CloudFileServiceImpl;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
@@ -12,8 +13,10 @@ import org.noear.solon.core.Plugin;
 public class XPluginImp implements Plugin {
     @Override
     public void start(AopContext context) {
-        if (S3Props.instance.getFileEnable()) {
-            CloudManager.register(new CloudFileServiceImpl(S3Props.instance));
+        CloudProps cloudProps = new CloudProps(context,"file.s3");
+
+        if (cloudProps.getFileEnable()) {
+            CloudManager.register(new CloudFileServiceImpl(cloudProps));
         }
     }
 }
