@@ -1,8 +1,8 @@
 package org.noear.solon.cloud.extend.nacos;
 
-import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudClient;
+import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.cloud.CloudManager;
@@ -16,21 +16,23 @@ import org.noear.solon.cloud.extend.nacos.service.CloudDiscoveryServiceNacosImp;
 public class XPluginImp implements Plugin {
     @Override
     public void start(AopContext context) {
-        if (Utils.isEmpty(NacosProps.instance.getServer())) {
+        CloudProps cloudProps = new CloudProps(context,"nacos2");
+
+        if (Utils.isEmpty(cloudProps.getServer())) {
             return;
         }
 
         //1.登记配置服务
-        if (NacosProps.instance.getConfigEnable()) {
-            CloudManager.register(new CloudConfigServiceNacosImp(NacosProps.instance));
+        if (cloudProps.getConfigEnable()) {
+            CloudManager.register(new CloudConfigServiceNacosImp(cloudProps));
 
             //1.1.加载配置
-            CloudClient.configLoad(NacosProps.instance.getConfigLoad());
+            CloudClient.configLoad(cloudProps.getConfigLoad());
         }
 
         //2.登记发现服务
-        if (NacosProps.instance.getDiscoveryEnable()) {
-            CloudManager.register(new CloudDiscoveryServiceNacosImp(NacosProps.instance));
+        if (cloudProps.getDiscoveryEnable()) {
+            CloudManager.register(new CloudDiscoveryServiceNacosImp(cloudProps));
         }
     }
 }

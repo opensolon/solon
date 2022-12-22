@@ -2,6 +2,7 @@ package org.noear.solon.cloud.extend.minio;
 
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudManager;
+import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.extend.minio.service.CloudFileServiceMinioImpl;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
@@ -13,12 +14,14 @@ import org.noear.solon.core.Plugin;
 public class XPluginImp implements Plugin {
     @Override
     public void start(AopContext context) {
-        if (MinioProps.INSTANCE.getFileEnable()) {
-            if (Utils.isEmpty(MinioProps.INSTANCE.getFileAccessKey())) {
+        CloudProps cloudProps = new CloudProps(context, "minio");
+
+        if (cloudProps.getFileEnable()) {
+            if (Utils.isEmpty(cloudProps.getFileAccessKey())) {
                 return;
             }
 
-            CloudManager.register(new CloudFileServiceMinioImpl(MinioProps.INSTANCE));
+            CloudManager.register(new CloudFileServiceMinioImpl(cloudProps));
         }
     }
 }
