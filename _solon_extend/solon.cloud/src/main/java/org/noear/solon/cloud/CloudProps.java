@@ -101,6 +101,10 @@ public class CloudProps {
     private final String frame;
     private final AopContext aopContext;
 
+    /**
+     * @deprecated 1.12
+     * */
+    @Deprecated
     public CloudProps(String frame) {
         this(Solon.context(), frame);
     }
