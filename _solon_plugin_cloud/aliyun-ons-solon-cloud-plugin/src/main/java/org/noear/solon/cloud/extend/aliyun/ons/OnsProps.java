@@ -1,7 +1,5 @@
 package org.noear.solon.cloud.extend.aliyun.ons;
 
-import org.noear.solon.cloud.CloudProps;
-
 /**
  * @author cgy
  * @since 1.11
