@@ -167,7 +167,12 @@ public class MybatisAdapterDefault implements MybatisAdapter {
 
                         if (val.endsWith(".xml")) {
                             //mapper xml
-                            if (val.endsWith("*.xml")) {
+                            if (val.contains("**")) {
+                                Utils.resolvePaths(val).forEach(uri->{
+                                    addMapperByXml(uri);
+                                });
+                            } else if (val.endsWith("*.xml")) {
+                                //@Deprecated //将被弃用
                                 String dir = val.substring(0, val.length() - 6);
                                 ScanUtil.scan(dir, n -> n.endsWith(".xml"))
                                         .forEach(uri -> {

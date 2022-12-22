@@ -11,7 +11,6 @@ import org.noear.solon.annotation.Inject;
 import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.ExtendLoader;
-import org.noear.solon.core.handle.ContextPathFilter;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.extend.async.annotation.EnableAsync;
@@ -30,6 +29,7 @@ import webapp.dso.AppPluginImp;
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
+import java.util.List;
 import java.util.Locale;
 import java.util.Properties;
 
@@ -78,7 +78,6 @@ public class TestApp {
             System.out.println("4.应用全加载完成了");
         }).start(TestApp.class, args, x -> {
 
-
             x.enableSocketD(true);
             x.enableWebSocket(true);
             x.pluginAdd(1, new AppPluginImp());
@@ -92,7 +91,14 @@ public class TestApp {
             StaticMappings.add("/file-a/", new ClassPathStaticRepository("static_test"));
             StaticMappings.add("/ext", new ExtendStaticRepository());
             StaticMappings.add("/sa-token",new FileStaticRepository("/Users/noear/Downloads/"));
+
+
+            initApp(x);
         });
+    }
+
+    static void initApp(SolonApp app){
+
 
         SaManager.getConfig();
 
