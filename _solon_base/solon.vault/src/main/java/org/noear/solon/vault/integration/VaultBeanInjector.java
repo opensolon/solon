@@ -30,7 +30,7 @@ public class VaultBeanInjector implements BeanInjector<VaultInject> {
             beanInjectConfig(varH, name2);
 
             if (autoRefreshed && varH.isField()) {
-                varH.context().getProps().onChange((key, val) -> {
+                varH.context().cfg().onChange((key, val) -> {
                     if (key.startsWith(name2)) {
                         beanInjectConfig(varH, name2);
                     }
@@ -42,7 +42,7 @@ public class VaultBeanInjector implements BeanInjector<VaultInject> {
     private void beanInjectConfig(VarHolder varH, String name) {
         if (Properties.class == varH.getType()) {
             //如果是 Properties
-            Properties val = varH.context().getProps().getProp(name);
+            Properties val = varH.context().cfg().getProp(name);
 
             //脱敏处理
             val = guardDo(val);
@@ -61,7 +61,7 @@ public class VaultBeanInjector implements BeanInjector<VaultInject> {
                 name = name.substring(0, defIdx).trim();
             }
 
-            String val = varH.context().getProps().get(name);
+            String val = varH.context().cfg().get(name);
 
             if (def != null) {
                 if (Utils.isEmpty(val)) {
@@ -79,7 +79,7 @@ public class VaultBeanInjector implements BeanInjector<VaultInject> {
                     //如果是java基础类型，则不注入配置值
                 } else {
                     //尝试转为实体
-                    Properties val0 = varH.context().getProps().getProp(name);
+                    Properties val0 = varH.context().cfg().getProp(name);
                     if (val0.size() > 0) {
                         //脱敏处理
                         val0 = guardDo(val0);

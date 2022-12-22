@@ -26,7 +26,7 @@ public class EasyPoiPlugin implements Plugin {
 
     @Override
     public void start(AopContext context) {
-        if(context.getProps().getBool("easy.poi.base.enable",true) == false){
+        if(context.cfg().getBool("easy.poi.base.enable",true) == false){
             return;
         }
 

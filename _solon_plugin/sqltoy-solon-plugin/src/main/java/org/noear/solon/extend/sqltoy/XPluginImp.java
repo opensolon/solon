@@ -27,7 +27,7 @@ public class XPluginImp implements Plugin {
         this.context = context;
 
         //尝试初始化 rdb
-        SqlToyContextProperties properties = context.getProps().getBean("sqltoy", SqlToyContextProperties.class);
+        SqlToyContextProperties properties = context.cfg().getBean("sqltoy", SqlToyContextProperties.class);
         if (properties == null) {
             properties = new SqlToyContextProperties();
         }

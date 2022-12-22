@@ -59,10 +59,10 @@ class RunnerUtils {
 
         for (String uri : propertySource.value()) {
             if (uri.startsWith(TAG_classpath)) {
-                context.getProps().loadAdd(uri.substring(TAG_classpath.length()));
+                context.cfg().loadAdd(uri.substring(TAG_classpath.length()));
             } else {
                 try {
-                    context.getProps().loadAdd(new File(uri).toURI().toURL());
+                    context.cfg().loadAdd(new File(uri).toURI().toURL());
                 } catch (MalformedURLException e) {
                     throw new RuntimeException(e);
                 }

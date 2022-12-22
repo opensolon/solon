@@ -37,14 +37,22 @@ public abstract class BeanContainer {
     }
 
     /**
-     * 获取属性
+     * 获取属性（写法上，更接近 Solon.cfg()）
      */
-    public Props getProps() {
+    public Props cfg() {
         if (props == null) {
             return Solon.cfg();
         } else {
             return props;
         }
+    }
+
+    /**
+     * 获取属性
+     */
+    @Deprecated
+    public Props getProps() {
+        return cfg();
     }
 
     /**
@@ -664,7 +672,7 @@ public abstract class BeanContainer {
             beanInjectConfig(varH, name2, required);
 
             if (autoRefreshed && varH.isField()) {
-                getProps().onChange((key, val) -> {
+                cfg().onChange((key, val) -> {
                     if(key.startsWith(name2)){
                         beanInjectConfig(varH, name2,required);
                     }
@@ -689,7 +697,7 @@ public abstract class BeanContainer {
 
         if (typeInj != null && Utils.isNotEmpty(typeInj.value())) {
             if (typeInj.value().startsWith("${")) {
-                Utils.injectProperties(obj, getProps().getPropByExpr(typeInj.value()));
+                Utils.injectProperties(obj, cfg().getPropByExpr(typeInj.value()));
             }
         }
     }
@@ -698,7 +706,7 @@ public abstract class BeanContainer {
     private void beanInjectConfig(VarHolder varH, String name, boolean required){
         if (Properties.class == varH.getType()) {
             //如果是 Properties
-            Properties val = getProps().getProp(name);
+            Properties val = cfg().getProp(name);
 
             if(required && val.size() == 0){
                 throw new InjectionException("Missing required property: '" +name+"', config injection failed: " + varH.getFullName());
@@ -718,7 +726,7 @@ public abstract class BeanContainer {
                 name = name.substring(0, defIdx).trim();
             }
 
-            String val = getProps().get(name);
+            String val = cfg().get(name);
 
             if(def != null) {
                 if (Utils.isEmpty(val)) {
@@ -736,7 +744,7 @@ public abstract class BeanContainer {
                     }
                 } else {
                     //尝试转为实体
-                    Properties val0 = getProps().getProp(name);
+                    Properties val0 = cfg().getProp(name);
                     if (val0.size() > 0) {
                         //如果找到配置了
                         Object val2 = PropsConverter.global().convert(val0, null, pt, varH.getGenericType());

@@ -19,7 +19,6 @@ import org.noear.solon.core.Plugin;
 import org.noear.solon.core.Props;
 
 import java.util.Arrays;
-import java.util.Date;
 
 /**
  * @author 夜の孤城
@@ -55,7 +54,7 @@ public class XPluginImp implements Plugin {
     }
 
     private ForestConfiguration configBeanInit(AopContext context) {
-        Props forestProps = context.getProps().getProp("forest");
+        Props forestProps = context.cfg().getProp("forest");
         ForestConfigurationProperties configurationProperties = new ForestConfigurationProperties();
         Utils.injectProperties(configurationProperties, forestProps);
 

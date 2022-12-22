@@ -14,6 +14,6 @@ public class SolonForestProperties extends ForestProperties {
 
     @Override
     public String getProperty(String name, String defaultValue) {
-        return context.getProps().getProperty(name, defaultValue);
+        return context.cfg().getProperty(name, defaultValue);
     }
 }

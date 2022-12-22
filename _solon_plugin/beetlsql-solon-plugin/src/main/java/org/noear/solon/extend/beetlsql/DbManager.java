@@ -99,7 +99,7 @@ public class DbManager {
         Props dsProps;
 
         if (Utils.isNotEmpty(bw.name())) {
-            dsProps = bw.context().getProps().getProp(TAG + "." + bw.name());
+            dsProps = bw.context().cfg().getProp(TAG + "." + bw.name());
         } else {
             dsProps = new Props();
         }

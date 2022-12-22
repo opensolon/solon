@@ -3,7 +3,6 @@ package com.yomahub.liteflow.solon.integration;
 import com.yomahub.liteflow.annotation.LiteflowComponent;
 import com.yomahub.liteflow.annotation.LiteflowMethod;
 import com.yomahub.liteflow.core.NodeComponent;
-import com.yomahub.liteflow.enums.LiteFlowMethodEnum;
 import com.yomahub.liteflow.flow.FlowBus;
 import com.yomahub.liteflow.solon.*;
 import com.yomahub.liteflow.solon.config.LiteflowAutoConfiguration;
@@ -27,12 +26,12 @@ public class XPluginImpl implements Plugin {
         Properties defProps = Utils.loadProperties("META-INF/liteflow-default.properties");
         if (defProps != null && defProps.size() > 0) {
             defProps.forEach((k, v) -> {
-                context.getProps().putIfAbsent(k, v);
+                context.cfg().putIfAbsent(k, v);
             });
         }
 
         //是否启用
-        boolean enable = context.getProps().getBool("liteflow.enable", false);
+        boolean enable = context.cfg().getBool("liteflow.enable", false);
 
         if (!enable) {
             return;
