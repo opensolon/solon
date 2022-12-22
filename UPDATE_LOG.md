@@ -19,6 +19,7 @@
 * 插件 forest-solon-plugin 重新深度适配，并支持 solon 的 upstream!ok
 * 修复 sa-token-solon-plugin 不能自动注册多个 StpLogic 的问题
 * 优化 core ，支持测试时多 SolonApp 运行从而实现单测隔离效果
+* 优化 core ，增加 Utils.resolvePaths(expr) 
 * 优化 BeanWrap 的 hashCode 处理；beanWrapsSet 收集内容包括 name 的
 
 #### 1.11.6

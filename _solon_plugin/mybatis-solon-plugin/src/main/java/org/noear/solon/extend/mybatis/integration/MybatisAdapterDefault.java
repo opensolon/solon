@@ -168,6 +168,7 @@ public class MybatisAdapterDefault implements MybatisAdapter {
                         if (val.endsWith(".xml")) {
                             //mapper xml
                             if (val.contains("**")) {
+                                //新方法，替代旧的 *.xml （基于表达式；更自由，更语义化）
                                 Utils.resolvePaths(val).forEach(uri->{
                                     addMapperByXml(uri);
                                 });
