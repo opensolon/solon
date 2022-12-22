@@ -3,6 +3,7 @@ package org.noear.solon.cloud.extend.qiniu.kodo;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudManager;
+import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.extend.qiniu.kodo.service.CloudFileServiceKodoImp;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
@@ -14,12 +15,14 @@ import org.noear.solon.core.Plugin;
 public class XPluginImp implements Plugin {
     @Override
     public void start(AopContext context) {
-        if (Utils.isEmpty(KodoProps.instance.getFileAccessKey())) {
+        CloudProps cloudProps = new CloudProps(context, "qiniu.kodo");
+
+        if (Utils.isEmpty(cloudProps.getFileAccessKey())) {
             return;
         }
 
-        if (KodoProps.instance.getFileEnable()) {
-            CloudManager.register(new CloudFileServiceKodoImp(KodoProps.instance));
+        if (cloudProps.getFileEnable()) {
+            CloudManager.register(new CloudFileServiceKodoImp(cloudProps));
         }
     }
 }

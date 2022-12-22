@@ -2,6 +2,7 @@ package org.noear.solon.cloud.extend.quartz;
 
 import org.noear.solon.Solon;
 import org.noear.solon.cloud.CloudManager;
+import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.extend.quartz.service.CloudJobServiceImpl;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
@@ -14,7 +15,9 @@ import org.noear.solon.core.event.AppLoadEndEvent;
 public class XPluginImp implements Plugin {
     @Override
     public void start(AopContext context) throws Throwable {
-        if (QuartzProps.instance.getJobEnable() == false) {
+        CloudProps cloudProps = new CloudProps(context, "quartz");
+
+        if (cloudProps.getJobEnable() == false) {
             return;
         }
 
