@@ -31,6 +31,8 @@ public class XPluginImp implements Plugin {
     CloudProps cloudProps;
 
     private boolean initDo() throws Throwable {
+
+
         if (Utils.isEmpty(WaterProps.instance.getServer())) {
             return false;
         }

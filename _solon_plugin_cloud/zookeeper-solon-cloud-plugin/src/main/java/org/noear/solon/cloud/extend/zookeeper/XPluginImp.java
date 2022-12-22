@@ -3,6 +3,7 @@ package org.noear.solon.cloud.extend.zookeeper;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.cloud.CloudManager;
+import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.extend.zookeeper.service.CloudConfigServiceZkImp;
 import org.noear.solon.cloud.extend.zookeeper.service.CloudDiscoveryServiceZkImp;
 import org.noear.solon.core.AopContext;
@@ -19,22 +20,24 @@ public class XPluginImp implements Plugin {
 
     @Override
     public void start(AopContext context) {
-        if (Utils.isEmpty(ZkProps.instance.getServer())) {
+        CloudProps cloudProps = new CloudProps(context,"zookeeper");
+
+        if (Utils.isEmpty(cloudProps.getServer())) {
             return;
         }
 
         //1.登记配置服务
-        if (ZkProps.instance.getConfigEnable()) {
-            configServiceZkImp = new CloudConfigServiceZkImp(ZkProps.instance);
+        if (cloudProps.getConfigEnable()) {
+            configServiceZkImp = new CloudConfigServiceZkImp(cloudProps);
             CloudManager.register(configServiceZkImp);
 
             //1.1.加载配置
-            CloudClient.configLoad(ZkProps.instance.getConfigLoad());
+            CloudClient.configLoad(cloudProps.getConfigLoad());
         }
 
         //2.登记发现服务
-        if (ZkProps.instance.getDiscoveryEnable()) {
-            discoveryServiceZkImp = new CloudDiscoveryServiceZkImp(ZkProps.instance);
+        if (cloudProps.getDiscoveryEnable()) {
+            discoveryServiceZkImp = new CloudDiscoveryServiceZkImp(cloudProps);
             CloudManager.register(discoveryServiceZkImp);
         }
     }

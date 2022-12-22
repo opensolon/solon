@@ -12,8 +12,6 @@ import org.noear.solon.logging.utils.TagsMDC;
  * @since 1.4
  */
 public class CloudJobServiceImpl implements CloudJobService {
-    public static final CloudJobService instance = new CloudJobServiceImpl();
-
     @Override
     public boolean register(String name, String cron7x, String description, CloudJobHandler handler) {
         JobHolder jobHolder = new JobHolder(name, cron7x, description, handler);

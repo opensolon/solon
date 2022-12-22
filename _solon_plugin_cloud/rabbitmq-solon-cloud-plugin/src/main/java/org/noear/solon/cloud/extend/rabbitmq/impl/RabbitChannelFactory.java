@@ -17,11 +17,10 @@ import java.util.concurrent.TimeoutException;
  * @since 1.2
  */
 public class RabbitChannelFactory {
-    ConnectionFactory connectionFactory;
-    RabbitConfig config;
+    private ConnectionFactory connectionFactory;
+    private RabbitConfig config;
 
-
-    CloudProps cloudProps;
+    private CloudProps cloudProps;
     public RabbitChannelFactory(CloudProps cloudProps, RabbitConfig cfg) {
         this.cloudProps = cloudProps;
 
@@ -56,6 +55,10 @@ public class RabbitChannelFactory {
 
     public ConnectionFactory getConnectionFactory() {
         return connectionFactory;
+    }
+
+    public CloudProps getCloudProps() {
+        return cloudProps;
     }
 
     public RabbitConfig getConfig() {

@@ -1,7 +1,6 @@
 package org.noear.solon.cloud.extend.local.impl;
 
 import org.noear.solon.Utils;
-import org.noear.solon.cloud.extend.local.LocalProps;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -12,9 +11,8 @@ import java.io.IOException;
  * @since 1.11
  */
 public class CloudLocalUtils {
-    private static final String server = LocalProps.instance.getServer();
 
-    public static String getValue(String key) throws IOException {
+    public static String getValue(String server, String key) throws IOException {
         if (Utils.isEmpty(server)) {
             String resourceKey = "META-INF/solon-cloud/" + key;
             return Utils.getResourceAsString(resourceKey);

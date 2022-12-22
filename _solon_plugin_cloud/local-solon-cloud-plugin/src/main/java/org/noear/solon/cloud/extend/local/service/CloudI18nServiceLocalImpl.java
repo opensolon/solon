@@ -2,6 +2,7 @@ package org.noear.solon.cloud.extend.local.service;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
+import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.extend.local.impl.CloudLocalUtils;
 import org.noear.solon.cloud.model.Pack;
 import org.noear.solon.cloud.service.CloudI18nService;
@@ -19,6 +20,12 @@ import java.util.Properties;
 public class CloudI18nServiceLocalImpl implements CloudI18nService {
     static final String DEFAULT_GROUP = "DEFAULT_GROUP";
     static final String I18N_KEY_FORMAT = "i18n@%s_%s-%s";
+
+    private final String server;
+
+    public CloudI18nServiceLocalImpl(CloudProps cloudProps) {
+        this.server = cloudProps.getServer();
+    }
 
     @Override
     public Pack pull(String group, String packName, Locale locale) {
@@ -57,7 +64,7 @@ public class CloudI18nServiceLocalImpl implements CloudI18nService {
 
     private Properties getI18nProps(String i18nKey) {
         try {
-            String value2 = CloudLocalUtils.getValue(i18nKey);
+            String value2 = CloudLocalUtils.getValue(server, i18nKey);
 
             if (Utils.isEmpty(value2)) {
                 return null;

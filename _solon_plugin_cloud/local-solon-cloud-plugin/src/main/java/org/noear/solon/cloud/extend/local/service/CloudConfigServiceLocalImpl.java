@@ -3,6 +3,7 @@ package org.noear.solon.cloud.extend.local.service;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudConfigHandler;
+import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.exception.CloudConfigException;
 import org.noear.solon.cloud.extend.local.impl.CloudLocalUtils;
 import org.noear.solon.cloud.model.Config;
@@ -22,7 +23,13 @@ public class CloudConfigServiceLocalImpl implements CloudConfigService {
     static final String DEFAULT_GROUP = "DEFAULT_GROUP";
     static final String CONFIG_KEY_FORMAT = "config@%s_%s";
 
-    Map<String, Config> configMap = new HashMap<>();
+    private final Map<String, Config> configMap = new HashMap<>();
+
+    private final String server;
+
+    public CloudConfigServiceLocalImpl(CloudProps cloudProps) {
+        this.server = cloudProps.getServer();
+    }
 
     @Override
     public Config pull(String group, String name) {
@@ -44,7 +51,7 @@ public class CloudConfigServiceLocalImpl implements CloudConfigService {
 
                 if (configVal == null) {
                     try {
-                        String value2 = CloudLocalUtils.getValue(configKey);
+                        String value2 = CloudLocalUtils.getValue(server, configKey);
 
                         configVal = new Config(group, name, value2, 0);
                         configMap.put(configKey, configVal);

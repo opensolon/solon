@@ -1,5 +1,6 @@
 package org.noear.solon.cloud.extend.water;
 
+import org.noear.solon.Solon;
 import org.noear.solon.cloud.CloudProps;
 
 /**
@@ -18,5 +19,5 @@ public class WaterProps {
     public static final String PROP_EVENT_receive = "event.receive";
 
 
-    public static final CloudProps instance = new CloudProps("water");
+    public static final CloudProps instance = new CloudProps(Solon.context(),"water");
 }

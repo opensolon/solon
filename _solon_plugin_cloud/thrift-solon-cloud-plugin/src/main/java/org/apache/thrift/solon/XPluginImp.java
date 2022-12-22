@@ -1,4 +1,4 @@
-package org.apache.thrift.solon.integration;
+package org.apache.thrift.solon;
 
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;

@@ -20,7 +20,7 @@ public class XPluginImp implements Plugin {
         CloudProps cloudProps = new CloudProps(context,"local");
 
         if (cloudProps.getConfigEnable()) {
-            CloudManager.register(new CloudConfigServiceLocalImpl());
+            CloudManager.register(new CloudConfigServiceLocalImpl(cloudProps));
 
             //配置加载
             CloudClient.configLoad(cloudProps.getConfigLoad());
@@ -31,11 +31,11 @@ public class XPluginImp implements Plugin {
         }
 
         if (cloudProps.getEventEnable()) {
-            CloudManager.register(new CloudEventServiceLocalImpl());
+            CloudManager.register(new CloudEventServiceLocalImpl(cloudProps));
         }
 
         if (cloudProps.getI18nEnable()) {
-            CloudManager.register(new CloudI18nServiceLocalImpl());
+            CloudManager.register(new CloudI18nServiceLocalImpl(cloudProps));
         }
 
         if (cloudProps.getJobEnable()) {
@@ -49,7 +49,7 @@ public class XPluginImp implements Plugin {
         }
 
         if (cloudProps.getListEnable()) {
-            CloudManager.register(new CloudListServiceLocalImpl());
+            CloudManager.register(new CloudListServiceLocalImpl(cloudProps));
         }
 
         if (cloudProps.getMetricEnable()) {

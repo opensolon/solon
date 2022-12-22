@@ -30,7 +30,7 @@ public class RabbitProducer {
         this.config = factory.getConfig();
         this.factory = factory;
         this.eventPropsDefault = newEventProps().build();
-        this.timeout = RabbitmqProps.instance.getEventPublishTimeout();
+        this.timeout = factory.getCloudProps().getEventPublishTimeout();
     }
 
     public AMQP.BasicProperties.Builder newEventProps() {

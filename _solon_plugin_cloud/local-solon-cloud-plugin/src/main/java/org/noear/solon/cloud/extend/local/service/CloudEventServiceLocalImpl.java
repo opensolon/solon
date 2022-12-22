@@ -2,6 +2,7 @@ package org.noear.solon.cloud.extend.local.service;
 
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudEventHandler;
+import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.annotation.EventLevel;
 import org.noear.solon.cloud.exception.CloudEventException;
 import org.noear.solon.cloud.exception.CloudJobException;
@@ -21,6 +22,10 @@ import org.slf4j.LoggerFactory;
  */
 public class CloudEventServiceLocalImpl implements CloudEventServicePlus {
     static Logger log = LoggerFactory.getLogger(CloudEventServiceLocalImpl.class);
+    private CloudProps cloudProps;
+    public CloudEventServiceLocalImpl(CloudProps cloudProps){
+        this.cloudProps = cloudProps;
+    }
 
     @Override
     public boolean publish(Event event) throws CloudEventException {
@@ -83,7 +88,7 @@ public class CloudEventServiceLocalImpl implements CloudEventServicePlus {
     @Override
     public String getChannel() {
         if (channel == null) {
-            channel = LocalProps.instance.getEventChannel();
+            channel = cloudProps.getEventChannel();
         }
         return channel;
     }
@@ -91,7 +96,7 @@ public class CloudEventServiceLocalImpl implements CloudEventServicePlus {
     @Override
     public String getGroup() {
         if (group == null) {
-            group = LocalProps.instance.getEventGroup();
+            group = cloudProps.getEventGroup();
         }
 
         return group;

@@ -6,6 +6,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
+import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.utils.LocalUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,12 +45,15 @@ public class XxlJobAutoConfig {
     @Inject(value = "${xxl.job.executor.logretentiondays}", required = false)
     private int logRetentionDays;
 
+    @Inject("xxljob-cloudProps")
+    CloudProps cloudProps;
+
     @Bean
     public XxlJobExecutor xxlJobExecutor() {
         logger.info(">>>>>>>>>>> xxl-job config init.");
 
         if (Utils.isEmpty(adminAddresses)) {
-            adminAddresses = XxlJobProps.instance.getJobServer();
+            adminAddresses = cloudProps.getJobServer();
         }
 
         if (Utils.isEmpty(appname)) {
@@ -73,10 +77,10 @@ public class XxlJobAutoConfig {
         }
 
         if (Utils.isEmpty(accessToken)) {
-            accessToken = XxlJobProps.instance.getToken();
+            accessToken = cloudProps.getToken();
             if (Utils.isEmpty(accessToken)) {
                 //兼容旧的
-                accessToken = XxlJobProps.instance.getPassword();
+                accessToken = cloudProps.getPassword();
             }
         }
 
