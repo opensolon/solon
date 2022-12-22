@@ -2,6 +2,7 @@ package org.noear.solon.cloud;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
+import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Props;
 
 import java.util.Properties;
@@ -98,9 +99,14 @@ public class CloudProps {
     private String JOB_SERVER = "solon.cloud.@@.job.server";
 
     private final String frame;
+    private final AopContext aopContext;
 
     public CloudProps(String frame) {
+        this(Solon.context(), frame);
+    }
+    public CloudProps(AopContext aopContext, String frame) {
         this.frame = frame;
+        this.aopContext = aopContext;
 
         ROOT = ROOT.replace("@@", frame);
 
@@ -174,42 +180,42 @@ public class CloudProps {
     //公共
     //
     public String getServer() {
-        return Solon.cfg().get(SERVER);
+        return aopContext.cfg().get(SERVER);
     }
 
     public String getToken() {
-        return Solon.cfg().get(TOKEN);
+        return aopContext.cfg().get(TOKEN);
     }
 
     public String getUsername() {
-        return Solon.cfg().get(USERNAME);
+        return aopContext.cfg().get(USERNAME);
     }
 
     public String getPassword() {
-        return Solon.cfg().get(PASSWORD);
+        return aopContext.cfg().get(PASSWORD);
     }
 
     public String getAlarm() {
-        return Solon.cfg().get(ALARM);
+        return aopContext.cfg().get(ALARM);
     }
 
     public String getAccessKey() {
-        return Solon.cfg().get(ACCESS_KEY);
+        return aopContext.cfg().get(ACCESS_KEY);
     }
 
     public String getSecretKey() {
-        return Solon.cfg().get(SECRET_KEY);
+        return aopContext.cfg().get(SECRET_KEY);
     }
 
     //
     //配置
     //
     public boolean getConfigEnable() {
-        return Solon.cfg().getBool(CONFIG_ENABLE, true);
+        return aopContext.cfg().getBool(CONFIG_ENABLE, true);
     }
 
     public String getConfigServer() {
-        String tmp = Solon.cfg().get(CONFIG_SERVER);
+        String tmp = aopContext.cfg().get(CONFIG_SERVER);
         if (Utils.isEmpty(tmp)) {
             return getServer();
         } else {
@@ -218,11 +224,11 @@ public class CloudProps {
     }
 
     public String getConfigLoad() {
-        return Solon.cfg().get(CONFIG_LOAD);
+        return aopContext.cfg().get(CONFIG_LOAD);
     }
 
     public String getConfigRefreshInterval(String def) {
-        return Solon.cfg().get(CONFIG_REFRESH_INTERVAL, def);//def:10s
+        return aopContext.cfg().get(CONFIG_REFRESH_INTERVAL, def);//def:10s
     }
 
 
@@ -230,11 +236,11 @@ public class CloudProps {
     //发现
     //
     public boolean getDiscoveryEnable() {
-        return Solon.cfg().getBool(DISCOVERY_ENABLE, true);
+        return aopContext.cfg().getBool(DISCOVERY_ENABLE, true);
     }
 
     public String getDiscoveryServer() {
-        String tmp = Solon.cfg().get(DISCOVERY_SERVER);
+        String tmp = aopContext.cfg().get(DISCOVERY_SERVER);
         if (Utils.isEmpty(tmp)) {
             return getServer();
         } else {
@@ -244,30 +250,30 @@ public class CloudProps {
 
 
     public String getDiscoveryTags() {
-        return Solon.cfg().get(DISCOVERY_TAGS);
+        return aopContext.cfg().get(DISCOVERY_TAGS);
     }
 
     public boolean getDiscoveryUnstable() {
-        return Solon.cfg().getBool(DISCOVERY_UNSTABLE, false);
+        return aopContext.cfg().getBool(DISCOVERY_UNSTABLE, false);
     }
 
     public String getDiscoveryHealthCheckInterval(String def) {
-        return Solon.cfg().get(DISCOVERY_HEALTH_CHECK_INTERVAL, def); //def:5s
+        return aopContext.cfg().get(DISCOVERY_HEALTH_CHECK_INTERVAL, def); //def:5s
     }
 
     public String getDiscoveryRefreshInterval(String def) {
-        return Solon.cfg().get(DISCOVERY_REFRESH_INTERVAL, def);//def:5s
+        return aopContext.cfg().get(DISCOVERY_REFRESH_INTERVAL, def);//def:5s
     }
 
     //
     //事件总线服务相关
     //
     public boolean getEventEnable() {
-        return Solon.cfg().getBool(EVENT_ENABLE, true);
+        return aopContext.cfg().getBool(EVENT_ENABLE, true);
     }
 
     public String getEventServer() {
-        String tmp = Solon.cfg().get(EVENT_SERVER);
+        String tmp = aopContext.cfg().get(EVENT_SERVER);
         if (Utils.isEmpty(tmp)) {
             return getServer();
         } else {
@@ -276,7 +282,7 @@ public class CloudProps {
     }
 
     public int getEventPrefetchCount() {
-        return Solon.cfg().getInt(EVENT_PREFETCH_COUNT, 0);
+        return aopContext.cfg().getInt(EVENT_PREFETCH_COUNT, 0);
     }
 
     public long getEventPublishTimeout() {
@@ -284,35 +290,35 @@ public class CloudProps {
     }
 
     public long getEventPublishTimeout(long def) {
-        return Solon.cfg().getLong(EVENT_PUBLISH_TIMEOUT, def);
+        return aopContext.cfg().getLong(EVENT_PUBLISH_TIMEOUT, def);
     }
 
     public String getEventChannel() {
-        return Solon.cfg().get(EVENT_CHANNEL, "");
+        return aopContext.cfg().get(EVENT_CHANNEL, "");
     }
 
     public String getEventBroker() {
-        return Solon.cfg().get(EVENT_BROKER, "");
+        return aopContext.cfg().get(EVENT_BROKER, "");
     }
 
     public String getEventGroup() {
-        return Solon.cfg().get(EVENT_GROUP, "");
+        return aopContext.cfg().get(EVENT_GROUP, "");
     }
 
     public Properties getEventConsumerProps() {
-        return Solon.cfg().getProp(EVENT_CONSUMER);
+        return aopContext.cfg().getProp(EVENT_CONSUMER);
     }
 
     public Properties getEventProducerProps() {
-        return Solon.cfg().getProp(EVENT_PRODUCER);
+        return aopContext.cfg().getProp(EVENT_PRODUCER);
     }
 
     public Properties getEventClientProps() {
-        return Solon.cfg().getProp(EVENT_CLIENT);
+        return aopContext.cfg().getProp(EVENT_CLIENT);
     }
 
     public String getEventAccessKey() {
-        String tmp = Solon.cfg().get(EVENT_ACCESS_KEY);
+        String tmp = aopContext.cfg().get(EVENT_ACCESS_KEY);
 
         if (Utils.isEmpty(tmp)) {
             return getAccessKey();
@@ -322,7 +328,7 @@ public class CloudProps {
     }
 
     public String getEventSecretKey() {
-        String tmp = Solon.cfg().get(EVENT_SECRET_KEY);
+        String tmp = aopContext.cfg().get(EVENT_SECRET_KEY);
 
         if (Utils.isEmpty(tmp)) {
             return getSecretKey();
@@ -335,11 +341,11 @@ public class CloudProps {
     //锁服务相关
     //
     public boolean getLockEnable() {
-        return Solon.cfg().getBool(LOCK_ENABLE, true);
+        return aopContext.cfg().getBool(LOCK_ENABLE, true);
     }
 
     public String getLockServer() {
-        String tmp = Solon.cfg().get(LOCK_SERVER);
+        String tmp = aopContext.cfg().get(LOCK_SERVER);
         if (Utils.isEmpty(tmp)) {
             return getServer();
         } else {
@@ -352,11 +358,11 @@ public class CloudProps {
     //日志总线服务相关
     //
     public boolean getLogEnable() {
-        return Solon.cfg().getBool(LOG_ENABLE, true);
+        return aopContext.cfg().getBool(LOG_ENABLE, true);
     }
 
     public String getLogServer() {
-        String tmp = Solon.cfg().get(LOG_SERVER);
+        String tmp = aopContext.cfg().get(LOG_SERVER);
         if (Utils.isEmpty(tmp)) {
             return getServer();
         } else {
@@ -365,7 +371,7 @@ public class CloudProps {
     }
 
     public String getLogDefault() {
-        return Solon.cfg().get(LOG_DEFAULT);
+        return aopContext.cfg().get(LOG_DEFAULT);
     }
 
 
@@ -373,19 +379,19 @@ public class CloudProps {
     //链路跟踪服务相关
     //
     public boolean getTraceEnable() {
-        return Solon.cfg().getBool(TRACE_ENABLE, true);
+        return aopContext.cfg().getBool(TRACE_ENABLE, true);
     }
 
 
     public String getTraceExclude() {
-        return Solon.cfg().get(TRACE_EXCLUDE);
+        return aopContext.cfg().get(TRACE_EXCLUDE);
     }
 
     //
     //度量服务相关
     //
     public boolean getMetricEnable() {
-        return Solon.cfg().getBool(METRIC_ENABLE, true);
+        return aopContext.cfg().getBool(METRIC_ENABLE, true);
     }
 
 
@@ -393,23 +399,23 @@ public class CloudProps {
     //文件服务相关
     //
     public boolean getFileEnable() {
-        return Solon.cfg().getBool(FILE_ENABLE, true);
+        return aopContext.cfg().getBool(FILE_ENABLE, true);
     }
 
     public String getFileEndpoint() {
-        return Solon.cfg().get(FILE_ENDPOINT);
+        return aopContext.cfg().get(FILE_ENDPOINT);
     }
 
     public String getFileRegionId() {
-        return Solon.cfg().get(FILE_REGION_ID);
+        return aopContext.cfg().get(FILE_REGION_ID);
     }
 
     public String getFileBucket() {
-        return Solon.cfg().get(FILE_BUCKET);
+        return aopContext.cfg().get(FILE_BUCKET);
     }
 
     public String getFileAccessKey() {
-        String tmp = Solon.cfg().get(FILE_ACCESS_KEY);
+        String tmp = aopContext.cfg().get(FILE_ACCESS_KEY);
 
         if (Utils.isEmpty(tmp)) {
             return getAccessKey();
@@ -419,7 +425,7 @@ public class CloudProps {
     }
 
     public String getFileSecretKey() {
-        String tmp = Solon.cfg().get(FILE_SECRET_KEY);
+        String tmp = aopContext.cfg().get(FILE_SECRET_KEY);
 
         if (Utils.isEmpty(tmp)) {
             return getSecretKey();
@@ -432,36 +438,36 @@ public class CloudProps {
     //国际化服务相关
     //
     public boolean getI18nEnable() {
-        return Solon.cfg().getBool(I18N_ENABLE, true);
+        return aopContext.cfg().getBool(I18N_ENABLE, true);
     }
 
     //
     //ID服务相关
     //
     public boolean getIdEnable() {
-        return Solon.cfg().getBool(ID_ENABLE, true);
+        return aopContext.cfg().getBool(ID_ENABLE, true);
     }
 
     public long getIdStart() {
-        return Solon.cfg().getLong(ID_START, 0L);
+        return aopContext.cfg().getLong(ID_START, 0L);
     }
 
     //
     //LIST服务相关
     //
     public boolean getListEnable() {
-        return Solon.cfg().getBool(LIST_ENABLE, true);
+        return aopContext.cfg().getBool(LIST_ENABLE, true);
     }
 
     //
     //JOB服务相关
     //
     public boolean getJobEnable() {
-        return Solon.cfg().getBool(JOB_ENABLE, true);
+        return aopContext.cfg().getBool(JOB_ENABLE, true);
     }
 
     public String getJobServer() {
-        String tmp = Solon.cfg().get(JOB_SERVER);
+        String tmp = aopContext.cfg().get(JOB_SERVER);
         if (Utils.isEmpty(tmp)) {
             return getServer();
         } else {
@@ -473,11 +479,11 @@ public class CloudProps {
      * 获取值
      * */
     public String getValue(String name) {
-        return Solon.cfg().get(ROOT + name); //"solon.cloud.@@.";
+        return aopContext.cfg().get(ROOT + name); //"solon.cloud.@@.";
     }
 
     public String getValue(String name, String def) {
-        return Solon.cfg().get(ROOT + name, def); //"solon.cloud.@@.";
+        return aopContext.cfg().get(ROOT + name, def); //"solon.cloud.@@.";
     }
 
 
@@ -486,20 +492,20 @@ public class CloudProps {
      * 设置值
      * */
     public void setValue(String name, String value) {
-        Solon.cfg().setProperty(ROOT + name, value); //"solon.cloud.@@.";
+        aopContext.cfg().setProperty(ROOT + name, value); //"solon.cloud.@@.";
     }
 
     /**
      * 获取所有属性
      * */
     public Props getProp(){
-        return Solon.cfg().getProp(ROOT.substring(0,ROOT.length()-1));
+        return aopContext.cfg().getProp(ROOT.substring(0,ROOT.length()-1));
     }
 
     /**
      * 获取所有某一块属性
      * */
     public Props getProp(String keyStarts) {
-        return Solon.cfg().getProp(ROOT + keyStarts);
+        return aopContext.cfg().getProp(ROOT + keyStarts);
     }
 }
