@@ -3,6 +3,7 @@ package org.noear.solon.cloud.extend.local;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.cloud.CloudManager;
+import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.extend.local.impl.job.JobManager;
 import org.noear.solon.cloud.extend.local.service.*;
 import org.noear.solon.core.AopContext;
@@ -16,26 +17,28 @@ import org.noear.solon.core.util.LogUtil;
 public class XPluginImp implements Plugin {
     @Override
     public void start(AopContext context) throws Throwable {
-        if (LocalProps.instance.getConfigEnable()) {
+        CloudProps cloudProps = new CloudProps(context,"local");
+
+        if (cloudProps.getConfigEnable()) {
             CloudManager.register(new CloudConfigServiceLocalImpl());
 
             //配置加载
-            CloudClient.configLoad(LocalProps.instance.getConfigLoad());
+            CloudClient.configLoad(cloudProps.getConfigLoad());
         }
 
-        if (LocalProps.instance.getDiscoveryEnable()) {
+        if (cloudProps.getDiscoveryEnable()) {
             CloudManager.register(new CloudDiscoveryServiceLocalImpl());
         }
 
-        if (LocalProps.instance.getEventEnable()) {
+        if (cloudProps.getEventEnable()) {
             CloudManager.register(new CloudEventServiceLocalImpl());
         }
 
-        if (LocalProps.instance.getI18nEnable()) {
+        if (cloudProps.getI18nEnable()) {
             CloudManager.register(new CloudI18nServiceLocalImpl());
         }
 
-        if (LocalProps.instance.getJobEnable()) {
+        if (cloudProps.getJobEnable()) {
             CloudManager.register(new CloudJobServiceLocalImpl());
 
             context.beanOnloaded(c -> {
@@ -45,17 +48,17 @@ public class XPluginImp implements Plugin {
             });
         }
 
-        if (LocalProps.instance.getListEnable()) {
+        if (cloudProps.getListEnable()) {
             CloudManager.register(new CloudListServiceLocalImpl());
         }
 
-        if (LocalProps.instance.getMetricEnable()) {
+        if (cloudProps.getMetricEnable()) {
             CloudManager.register(new CloudMetricServiceLocalImpl());
         }
 
-        if (LocalProps.instance.getFileEnable()) {
-            if (Utils.isNotEmpty(LocalProps.instance.getServer())) {
-                CloudManager.register(new CloudFileServiceLocalImpl(LocalProps.instance.getServer()));
+        if (cloudProps.getFileEnable()) {
+            if (Utils.isNotEmpty(cloudProps.getServer())) {
+                CloudManager.register(new CloudFileServiceLocalImpl(cloudProps.getServer()));
             } else {
                 LogUtil.global().warn("The local file service cannot be enabled: no server configuration");
             }

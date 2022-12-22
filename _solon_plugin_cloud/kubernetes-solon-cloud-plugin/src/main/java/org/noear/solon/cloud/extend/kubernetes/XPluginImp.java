@@ -4,6 +4,7 @@ package org.noear.solon.cloud.extend.kubernetes;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.cloud.CloudManager;
+import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.extend.kubernetes.service.CloudConfigServiceK8sImpl;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
@@ -25,13 +26,15 @@ public class XPluginImp implements Plugin {
 
     @Override
     public void start(AopContext context) {
-        if (Utils.isEmpty(KubernetesProps.instance.getServer())) {
+        CloudProps cloudProps = new CloudProps(context, "kubernetes");
+
+        if (Utils.isEmpty(cloudProps.getServer())) {
             return;
         }
 
         //1.登记配置服务
-        if (KubernetesProps.instance.getConfigEnable()) {
-            CloudConfigServiceK8sImpl serviceImp = new CloudConfigServiceK8sImpl(KubernetesProps.instance);
+        if (cloudProps.getConfigEnable()) {
+            CloudConfigServiceK8sImpl serviceImp = new CloudConfigServiceK8sImpl(cloudProps);
             CloudManager.register(serviceImp);
 
             if (serviceImp.getRefreshInterval() > 0) {
@@ -40,7 +43,7 @@ public class XPluginImp implements Plugin {
             }
 
             //1.1.加载配置
-            CloudClient.configLoad(KubernetesProps.instance.getConfigLoad());
+            CloudClient.configLoad(cloudProps.getConfigLoad());
         }
     }
 }
