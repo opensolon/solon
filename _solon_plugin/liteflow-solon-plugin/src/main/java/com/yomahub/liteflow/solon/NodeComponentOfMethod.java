@@ -2,6 +2,7 @@ package com.yomahub.liteflow.solon;
 
 import com.yomahub.liteflow.core.NodeComponent;
 import com.yomahub.liteflow.enums.LiteFlowMethodEnum;
+import com.yomahub.liteflow.exception.LiteFlowException;
 import com.yomahub.liteflow.slot.Slot;
 import org.noear.solon.core.BeanWrap;
 
@@ -20,6 +21,25 @@ public class NodeComponentOfMethod extends NodeComponent {
         this.beanWrap = beanWrap;
         this.method = method;
         this.methodEnum = methodEnum;
+
+        if (method.getParameterCount() > 1) {
+            String methodFullName = beanWrap.clz().getName() + "::" + method.getName();
+            throw new LiteFlowException("NodeComponent method parameter cannot be more than one: " + methodFullName);
+        }
+
+        if (method.getReturnType() != Void.class
+                && method.getReturnType() != void.class) {
+            String methodFullName = beanWrap.clz().getName() + "::" + method.getName();
+            throw new LiteFlowException("NodeComponent method returnType can only be void: " + methodFullName);
+        }
+    }
+
+    private void exec() throws Exception {
+        if (method.getParameterCount() == 0) {
+            method.invoke(beanWrap.get());
+        } else {
+            method.invoke(beanWrap.get(), this);
+        }
     }
 
     @Override
@@ -28,14 +48,7 @@ public class NodeComponentOfMethod extends NodeComponent {
             return;
         }
 
-        if (method.getParameterCount() == 0) {
-            method.invoke(beanWrap.get());
-        } else if (method.getParameterCount() == 1) {
-            method.invoke(beanWrap.get(), this);
-        } else {
-            String methodFullName = beanWrap.clz().getName() + "::" + method.getName();
-            throw new RuntimeException("NodeComponent method parameter cannot be more than one: " + methodFullName);
-        }
+        exec();
     }
 
 
@@ -44,12 +57,28 @@ public class NodeComponentOfMethod extends NodeComponent {
         if(methodEnum != LiteFlowMethodEnum.BEFORE_PROCESS){
             return;
         }
+
+        try {
+            exec();
+        } catch (RuntimeException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public <T> void afterProcess(String nodeId, Slot slot) {
-        if(methodEnum != LiteFlowMethodEnum.AFTER_PROCESS){
+        if (methodEnum != LiteFlowMethodEnum.AFTER_PROCESS) {
             return;
+        }
+
+        try {
+            exec();
+        } catch (RuntimeException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -59,6 +88,9 @@ public class NodeComponentOfMethod extends NodeComponent {
         if(methodEnum != LiteFlowMethodEnum.ON_ERROR){
             return;
         }
+
+
+        exec();
     }
 
     @Override
@@ -66,5 +98,7 @@ public class NodeComponentOfMethod extends NodeComponent {
         if(methodEnum != LiteFlowMethodEnum.ON_SUCCESS){
             return;
         }
+
+        exec();
     }
 }
