@@ -1,8 +1,7 @@
-package org.noear.solon.cloud.extend.opentracing.integration;
+package org.noear.solon.cloud.extend.opentracing;
 
-import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
-import org.noear.solon.cloud.extend.opentracing.OpentracingProps;
+import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.tracing.TracingManager;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
@@ -15,14 +14,16 @@ public class XPluginImp implements Plugin {
 
     @Override
     public void start(AopContext context) {
-        if (OpentracingProps.instance.getTraceEnable() == false) {
+        CloudProps cloudProps = new CloudProps(context,"opentracing");
+
+        if (cloudProps.getTraceEnable() == false) {
             return;
         }
 
-        if (Utils.isEmpty(OpentracingProps.instance.getServer())) {
+        if (Utils.isEmpty(cloudProps.getServer())) {
             return;
         }
 
-        TracingManager.enable(OpentracingProps.instance.getTraceExclude());
+        TracingManager.enable(cloudProps.getTraceExclude());
     }
 }

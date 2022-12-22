@@ -23,6 +23,9 @@ import java.util.ArrayList;
  */
 public class CloudEventServicePulsarImp implements CloudEventServicePlus {
 
+    private static final String PROP_EVENT_consumerGroup = "event.consumerGroup";
+    private static final String PROP_EVENT_producerGroup = "event.producerGroup";
+
     private final CloudProps cloudProps;
 
     private PulsarClient client;
@@ -145,13 +148,13 @@ public class CloudEventServicePulsarImp implements CloudEventServicePlus {
      * 消费组
      */
     public String getEventConsumerGroup() {
-        return cloudProps.getValue(PulsarProps.PROP_EVENT_consumerGroup);
+        return cloudProps.getValue(PROP_EVENT_consumerGroup);
     }
 
     /**
      * 产品组
      */
     public String getEventProducerGroup() {
-        return cloudProps.getValue(PulsarProps.PROP_EVENT_producerGroup);
+        return cloudProps.getValue(PROP_EVENT_producerGroup);
     }
 }

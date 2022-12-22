@@ -1,9 +1,8 @@
 package org.noear.solon.cloud.extend.polaris;
 
-import com.tencent.polaris.factory.ConfigAPIFactory;
-import com.tencent.polaris.factory.config.ConfigurationImpl;
 import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.cloud.CloudManager;
+import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.extend.polaris.service.CloudConfigServicePolarisImp;
 import org.noear.solon.cloud.extend.polaris.service.CloudDiscoveryServicePolarisImp;
 import org.noear.solon.core.AopContext;
@@ -19,19 +18,20 @@ public class XPluginImp implements Plugin {
 
     @Override
     public void start(AopContext context) throws Throwable {
+        CloudProps cloudProps = new CloudProps(context,"polaris");
 
         //1.登记配置服务
-        if (PolarisProps.instance.getConfigEnable()) {
-            cloudConfigServicePolarisImp = new CloudConfigServicePolarisImp(PolarisProps.instance);
+        if (cloudProps.getConfigEnable()) {
+            cloudConfigServicePolarisImp = new CloudConfigServicePolarisImp(cloudProps);
             CloudManager.register(cloudConfigServicePolarisImp);
 
             //1.1.加载配置
-            CloudClient.configLoad(PolarisProps.instance.getConfigLoad());
+            CloudClient.configLoad(cloudProps.getConfigLoad());
         }
 
         //2.登记发现服务
-        if (PolarisProps.instance.getDiscoveryEnable()) {
-            cloudDiscoveryServicePolarisImp = new CloudDiscoveryServicePolarisImp(PolarisProps.instance);
+        if (cloudProps.getDiscoveryEnable()) {
+            cloudDiscoveryServicePolarisImp = new CloudDiscoveryServicePolarisImp(cloudProps);
             CloudManager.register(cloudDiscoveryServicePolarisImp);
         }
     }

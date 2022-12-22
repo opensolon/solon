@@ -3,7 +3,6 @@ package org.noear.solon.cloud.extend.polaris;
 import com.tencent.polaris.factory.ConfigAPIFactory;
 import com.tencent.polaris.factory.config.ConfigurationImpl;
 import org.noear.solon.Utils;
-import org.noear.solon.cloud.CloudProps;
 
 import java.net.URL;
 
@@ -12,9 +11,9 @@ import java.net.URL;
  * @since 1.2
  */
 public class PolarisProps {
-    public static final CloudProps instance = new CloudProps("polaris");
 
-    static ConfigurationImpl cfgImpl;
+
+    private static ConfigurationImpl cfgImpl;
 
     public static ConfigurationImpl getCfgImpl() {
         if (cfgImpl == null) {
