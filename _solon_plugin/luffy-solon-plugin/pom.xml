@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.noear</groupId>
         <artifactId>solon-parent</artifactId>
-        <version>1.11.7-M2</version>
+        <version>1.12.0-M1</version>
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
@@ -35,13 +35,13 @@
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon.logging</artifactId>
-            <version>1.11.7-M2</version>
+            <version>1.12.0-M1</version>
         </dependency>
 
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>weed3-solon-plugin</artifactId>
-            <version>1.11.7-M2</version>
+            <version>1.12.0-M1</version>
         </dependency>
     </dependencies>
 
