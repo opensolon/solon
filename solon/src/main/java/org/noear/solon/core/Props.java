@@ -245,6 +245,11 @@ public class Props extends Properties {
                     String key = keyStr.substring(idx2);
 
                     setFun.accept(key, (String) v);
+
+                    if(key.contains("-")){
+                        String camelKey = buildCamelKey(key);
+                        setFun.accept(camelKey, (String) v);
+                    }
                 }
             }
         });
@@ -444,8 +449,8 @@ public class Props extends Properties {
 
 
                         if (key.contains("-")) {
-                            String key2 = buildNewKey(key);
-                            put(key2, v1);
+                            String camelKey = buildCamelKey(key);
+                            put(camelKey, v1);
                         }
                     }
                 }
@@ -453,7 +458,10 @@ public class Props extends Properties {
         }
     }
 
-    private String buildNewKey(String key) {
+    /**
+     * 将 - 转为小驼峰key
+     * */
+    private String buildCamelKey(String key) {
         String[] ss = key.split("-");
         StringBuilder sb = new StringBuilder(key.length());
         sb.append(ss[0]);
