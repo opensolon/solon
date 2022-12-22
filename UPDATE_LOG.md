@@ -17,10 +17,12 @@
 * 插件 aws-s3-solon-plugin 优化兼容处理 ???
 * 插件 sentinel-solon-cloud-plugin 控制台调试
 * 插件 forest-solon-plugin 重新深度适配，并支持 solon 的 upstream!ok
-* 修复 sa-token-solon-plugin 不能自动注册多个 StpLogic 的问题
-* 优化 core ，支持测试时多 SolonApp 运行从而实现单测隔离效果
-* 优化 core ，增加 Utils.resolvePaths(expr) 
-* 优化 BeanWrap 的 hashCode 处理；beanWrapsSet 收集内容包括 name 的
+* 插件 mybatis-solon-plugin 的 xml 配置增加 ** 表达式支持
+* 优化 solon-test 增加更多场景的并发单测支持
+* 优化 sa-token-solon-plugin 解决不能自动注册多个 StpLogic 的问题
+* 优化 core 支持测试时多 SolonApp 运行从而实现单测隔离效果
+* 优化 core 增加 Utils.resolvePaths(expr) 
+* 优化 core 调整BeanWrap 的 hashCode 处理；并增加 beanWrapsSet 对 name 注册收集
 
 #### 1.11.6
 * 新增 liteflow-solon-plugin 插件 

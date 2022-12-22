@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.noear</groupId>
         <artifactId>solon-parent</artifactId>
-        <version>1.11.7-M1</version>
+        <version>1.11.7-M2</version>
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
@@ -18,13 +18,13 @@
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon</artifactId>
-            <version>1.11.7-M1</version>
+            <version>1.11.7-M2</version>
         </dependency>
 
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>nami</artifactId>
-            <version>1.11.7-M1</version>
+            <version>1.11.7-M2</version>
         </dependency>
 
         <dependency>
