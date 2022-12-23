@@ -49,6 +49,7 @@ public abstract class BeanContainer {
 
     /**
      * 获取属性
+     * @deprecated 1.12
      */
     @Deprecated
     public Props getProps() {

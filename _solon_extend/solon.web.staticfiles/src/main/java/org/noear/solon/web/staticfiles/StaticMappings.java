@@ -27,15 +27,7 @@ public class StaticMappings {
      * @param repository 资源仓库
      */
     public synchronized static void add(String pathPrefix, StaticRepository repository) {
-        if (pathPrefix.startsWith("/") == false) {
-            pathPrefix = "/" + pathPrefix;
-        }
-
-        if (pathPrefix.endsWith("/") == false) {
-            pathPrefix = pathPrefix + "/";
-        }
-
-        locationMap.putIfAbsent(repository, new StaticLocation(pathPrefix, repository, false));
+        addDo(pathPrefix, false, repository);
     }
 
     /**
@@ -44,9 +36,14 @@ public class StaticMappings {
      * @param pathPrefix          路径前缀
      * @param repositoryIncPrefix 资源仓库是否包括路径前缀(如果需要 repositoryIncPrefix, 可以用 add("/", repository) 替代)
      * @param repository          资源仓库
+     * @deprecated 1.12
      */
     @Deprecated
     public synchronized static void add(String pathPrefix, boolean repositoryIncPrefix, StaticRepository repository) {
+        addDo(pathPrefix, repositoryIncPrefix, repository);
+    }
+
+    private static void addDo(String pathPrefix, boolean repositoryIncPrefix, StaticRepository repository) {
         if (pathPrefix.startsWith("/") == false) {
             pathPrefix = "/" + pathPrefix;
         }
