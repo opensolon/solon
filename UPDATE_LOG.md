@@ -13,10 +13,14 @@
 * 新增 knife4j-solon-plugin 插件 ???
 
 #### 1.12.0
-* 插件 file-s3-solon-plugin 优化兼容处理 ???
-* 插件 aws-s3-solon-plugin 优化兼容处理 ???
+* 新增 solon.test 插件
+* 新增 solon-test-junit4 插件
+* 新增 solon-test-junit5 插件
+* 插件 file-s3-solon-plugin 优化兼容处理
+* 插件 aws-s3-solon-plugin 优化兼容处理
 * 插件 sentinel-solon-cloud-plugin 控制台调试
 * 插件 forest-solon-plugin 重新深度适配，并支持 solon 的 upstream!ok
+* 插件 liteflow-solon-plugin 重新深度适配
 * 插件 mybatis-solon-plugin 的 xml 配置增加 ** 表达式支持
 * 优化 solon-test 增加更多场景的并发单测支持
 * 优化 sa-token-solon-plugin 解决不能自动注册多个 StpLogic 的问题
