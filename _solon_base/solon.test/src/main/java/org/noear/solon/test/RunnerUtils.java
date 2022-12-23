@@ -143,7 +143,6 @@ public class RunnerUtils {
 
 
         if (mainClz == klass) {
-            argsAry.add("isolated=1");
             String[] args = argsAry.toArray(new String[argsAry.size()]);
 
             SolonTestApp testApp = new SolonTestApp(mainClz, NvMap.from(args));
@@ -164,7 +163,6 @@ public class RunnerUtils {
 
                 return Solon.context();
             } else {
-                argsAry.add("isolated=1");
                 String[] args = argsAry.toArray(new String[argsAry.size()]);
 
                 SolonTestApp testApp = new SolonTestApp(mainClz, NvMap.from(args));

@@ -7,9 +7,9 @@ import org.noear.solon.core.util.ConsumerEx;
  * @author noear
  * @since 1.12
  */
-public class SolonTestApp extends SolonApp{
+public class SolonTestApp extends SolonApp {
     public SolonTestApp(Class<?> source, NvMap args) throws Exception {
-        super(source, args);
+        super(source, args.set("testing", "1"));
         Solon.appSet(this);
     }
 

@@ -32,13 +32,13 @@ public final class SolonProps extends Props {
     private NvMap args;
     private Class<?> source;
     private URL sourceLocation;
-    private boolean isolated;
+    private boolean testing;
     private final List<PluginEntity> plugs = new ArrayList<>();
 
     private boolean isDebugMode;//是否为调试模式
     private boolean isDriftMode;//是否为漂移模式（如k8s环境下,ip会不断变化）
     private boolean isFilesMode;//是否为文件模式
-    private boolean isWhiteMode;//是否为的名单模式
+    private boolean isWhiteMode;//是否为名单模式（白名单模式）
     private boolean isSetupMode;//是否为安装蕈式
     private boolean isAloneMode;//是否为独立蕈式（即独立运行模式）
 
@@ -71,7 +71,7 @@ public final class SolonProps extends Props {
         //1.2.应用源位置
         this.sourceLocation = source.getProtectionDomain().getCodeSource().getLocation();
         //1.3.测试隔离
-        this.isolated = args.containsKey("isolated");
+        this.testing = args.containsKey("testing");
 
         //2.同步启动参数到系统属性
         this.args.forEach((k, v) -> {
@@ -236,7 +236,7 @@ public final class SolonProps extends Props {
      */
     @Override
     public void loadAdd(Properties props) {
-        loadAddDo(props, isolated == false, false);
+        loadAddDo(props, testing == false, false);
     }
 
     /**
