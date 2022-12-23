@@ -52,7 +52,7 @@ public class SolonApp extends RouterWrapper {
         return _cfg;
     }
 
-    public SolonApp(Class<?> source, NvMap args) throws Exception{
+    protected SolonApp(Class<?> source, NvMap args) throws Exception{
         _startupTime = System.currentTimeMillis();
         _source = source;
 

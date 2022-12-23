@@ -50,6 +50,15 @@ public class Solon {
     }
 
     /**
+     * 设置全局实例（仅用内部用，一般用于单测隔离）
+     * */
+    protected static void appSet(SolonApp solonApp){
+        if(solonApp != null){
+            app = solonApp;
+        }
+    }
+
+    /**
      * 应用上下文
      */
     public static AopContext context() {
@@ -82,11 +91,6 @@ public class Solon {
         if (app == null && Utils.isNotEmpty(charset)) {
             encoding = charset;
         }
-    }
-
-    public static void startIsolatedApp(SolonApp isolatedApp, ConsumerEx<SolonApp> initialize) throws Throwable {
-        app = isolatedApp;
-        isolatedApp.start(initialize);
     }
 
     /**
