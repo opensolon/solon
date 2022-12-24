@@ -29,7 +29,6 @@
 * 优化 sa-token-solon-plugin 解决不能自动注册多个 StpLogic 的问题
 * 优化 core 支持测试时多 SolonApp 运行从而实现单测隔离效果
 * 优化 core 增加 Utils.resolvePaths(expr)，用于支持 /a/**/b/*.x 这种路径的解析 
-* 优化 core 调整 Plugin:init 接口
 * 优化 core 调整 BeanWrap 的 hashCode 处理；并增加 beanWrapsSet 对 name 注册收集
 
 #### 1.11.6
