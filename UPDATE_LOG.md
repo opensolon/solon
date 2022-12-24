@@ -23,10 +23,11 @@
 * 调整 AopContext::getProps() 标为弃用，由 AopContext::cfg() 接替
 * 调整 Plugin::init() 为 Plugin::init(AopContext); 为 solon cloud 热插拨增强支持
 * 优化 solon cloud 插件增加对热插拨的支持，以前只能用主程序的配置，现在可以用插件的配置
-* 优化 forest-solon-plugin 重新深度适配，并支持 solon 的 upstream!!!
-* 优化 liteflow-solon-plugin 重新深度适配!!!
-* 优化 solon-test 增加更多场景的并发单测支持
+* 优化 forest-solon-plugin 重新深度适配，并支持 solon 的 upstream !!!
+* 优化 liteflow-solon-plugin 重新深度适配 !!!
+* 优化 solon-test 增加更多场景的并发单测支持 !!!
 * 优化 sa-token-solon-plugin 解决不能自动注册多个 StpLogic 的问题
+* 优化 core 全局 AopContext 由原来的静态变量，改为 SolonApp 的成员；方便单测隔离切换
 * 优化 core 支持测试时多 SolonApp 运行从而实现单测隔离效果
 * 优化 core 增加 Utils.resolvePaths(expr)，用于支持 /a/**/b/*.x 这种路径的解析 
 * 优化 core 调整 BeanWrap 的 hashCode 处理；并增加 beanWrapsSet 对 name 注册收集
