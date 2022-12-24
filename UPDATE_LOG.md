@@ -20,6 +20,8 @@
 * 插件 aws-s3-solon-plugin 优化兼容处理
 * 插件 sentinel-solon-cloud-plugin 控制台调试
 * 插件 mybatis-solon-plugin 的 xml 配置增加 ** 表达式支持
+* 调整 AopContext::getProps() 标为弃用，由 AopContext::cfg() 接替
+* 调整 Plugin::init() 为 Plugin::init(AopContext); 为 solon cloud 热插拨增强支持
 * 优化 solon cloud 插件增加对热插拨的支持，以前只能用主程序的配置，现在可以用插件的配置
 * 优化 forest-solon-plugin 重新深度适配，并支持 solon 的 upstream!!!
 * 优化 liteflow-solon-plugin 重新深度适配!!!
