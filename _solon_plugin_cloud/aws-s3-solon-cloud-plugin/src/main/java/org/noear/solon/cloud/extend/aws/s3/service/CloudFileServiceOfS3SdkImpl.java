@@ -44,9 +44,12 @@ public class CloudFileServiceOfS3SdkImpl implements CloudFileService {
         try {
             S3Object obj = client.getObject(bucket, key);
 
-            return new Media(obj.getObjectContent(), obj.getObjectMetadata().getContentType());
-        } catch (Exception ex) {
-            throw new CloudFileException(ex);
+            String contentType = obj.getObjectMetadata().getContentType();
+            long contentSize = obj.getObjectMetadata().getContentLength();
+
+            return new Media(obj.getObjectContent(), contentType, contentSize);
+        } catch (Exception e) {
+            throw new CloudFileException(e);
         }
     }
 
@@ -72,8 +75,8 @@ public class CloudFileServiceOfS3SdkImpl implements CloudFileService {
             PutObjectResult tmp = client.putObject(request);
 
             return Result.succeed(tmp);
-        } catch (Exception ex) {
-            throw new CloudFileException(ex);
+        } catch (Exception e) {
+            throw new CloudFileException(e);
         }
     }
 

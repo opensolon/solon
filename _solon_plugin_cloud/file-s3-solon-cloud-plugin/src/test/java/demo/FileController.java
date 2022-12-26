@@ -1,6 +1,5 @@
 package demo;
 
-import org.noear.solon.Utils;
 import org.noear.solon.annotation.*;
 import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.cloud.model.Media;
@@ -9,9 +8,6 @@ import org.noear.solon.core.handle.DownloadedFile;
 import org.noear.solon.core.handle.Result;
 import org.noear.solon.core.handle.UploadedFile;
 
-import java.awt.image.ImagingOpException;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 /**
@@ -36,10 +32,8 @@ public class FileController {
         Media media = CloudClient.file().get(bucket, fileName);
 
         //把数据读出来，不然长度可能获取不到
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        Utils.transferTo(media.body(), outputStream);
 
-        return new DownloadedFile(media.contentType(), outputStream.toByteArray(), fileName);
+        return new DownloadedFile(media.contentType(), media.contentSize(), media.body(), fileName);
     }
 
     /**

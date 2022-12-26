@@ -755,7 +755,7 @@ public abstract class Context {
         }
 
         //输出内容大小
-        int contentSize = file.getContent().available();
+        long contentSize = file.getContentSize();
         if (contentSize > 0) {
             contentLength(contentSize);
         }

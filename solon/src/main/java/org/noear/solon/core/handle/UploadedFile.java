@@ -21,13 +21,7 @@ import java.io.*;
  * @update noear 20210506 添加字段访问控制
  * */
 public class UploadedFile extends DownloadedFile{
-    /**
-     * 内容大小
-     *
-     * @deprecated 1.11
-     */
-    @Deprecated
-    public long contentSize;
+
     /**
      * 扩展名（例：jpg）
      *
@@ -35,14 +29,6 @@ public class UploadedFile extends DownloadedFile{
      */
     @Deprecated
     public String extension;
-
-
-    /**
-     * 内容大小
-     * */
-    public long getContentSize() {
-        return contentSize;
-    }
 
     /**
      * 扩展名（例：jpg）
@@ -76,8 +62,7 @@ public class UploadedFile extends DownloadedFile{
      * @param extension 文件后缀名
      * */
     public UploadedFile(String contentType, long contentSize, InputStream content, String name, String extension) {
-        super(contentType, content, name);
-        this.contentSize = contentSize;
+        super(contentType, contentSize, content, name);
         this.extension = extension;
     }
 

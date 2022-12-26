@@ -18,10 +18,16 @@ import java.nio.charset.StandardCharsets;
 public class Media {
     private final InputStream body;
     private final String contentType;
+    private final long contentSize;
 
     public Media(InputStream body, String contentType) {
+        this(body, contentType, 0);
+    }
+
+    public Media(InputStream body, String contentType, long contentSize) {
         this.body = body;
         this.contentType = contentType;
+        this.contentSize = contentSize;
     }
 
     public Media(InputStream body) {
@@ -29,7 +35,7 @@ public class Media {
     }
 
     public Media(byte[] body, String contentType) {
-        this(new ByteArrayInputStream(body), contentType);
+        this(new ByteArrayInputStream(body), contentType, body.length);
     }
 
     public Media(byte[] body) {
@@ -49,6 +55,14 @@ public class Media {
      */
     public String contentType() {
         return contentType;
+    }
+
+    public long contentSize() throws IOException{
+        if (contentSize > 0) {
+            return contentSize;
+        } else {
+            return body.available();
+        }
     }
 
     /**
