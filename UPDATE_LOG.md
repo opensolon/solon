@@ -13,6 +13,7 @@
 * 新增 knife4j-solon-plugin 插件 ???
 * 插件 file-s3-solon-plugin 优化兼容处理
 * 插件 aws-s3-solon-plugin 优化兼容处理
+* 添加 Meda::contentSize() 和 DownloadedFile::getContentSize() 接口
 
 
 #### 1.12.0
