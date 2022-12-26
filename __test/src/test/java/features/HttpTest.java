@@ -200,6 +200,11 @@ public class HttpTest extends HttpTestBase {
         assert path("/demo2/param/int?num=12").get().equals("12");
     }
 
+    @Test
+    public void test2int_2() throws IOException {
+        assert path("/demo2/param/int?num=s").execAsCode("GET") == 500;
+    }
+
 
     @Test
     public void test2e() throws IOException {
