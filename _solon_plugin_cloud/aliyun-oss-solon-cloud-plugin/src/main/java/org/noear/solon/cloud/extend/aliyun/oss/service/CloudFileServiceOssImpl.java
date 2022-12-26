@@ -82,7 +82,7 @@ public class CloudFileServiceOssImpl implements CloudFileService {
                     .header("Authorization", Authorization)
                     .exec("GET").body();
 
-            return new Media(obj.byteStream(), obj.contentType().toString());
+            return new Media(obj.byteStream(), obj.contentType().toString(), obj.contentLength());
         } catch (IOException ex) {
             throw new CloudFileException(ex);
         }

@@ -89,7 +89,7 @@ public class CloudFileServiceMinioImpl implements CloudFileService {
             ObjectWriteResponse response = this.client.putObject(PutObjectArgs.builder()
                     .bucket(bucket)
                     .object(key)
-                    .stream(media.body(), media.body().available(), -1)
+                    .stream(media.body(), media.contentSize(), -1)
                     .contentType(streamMime)
                     .build());
 

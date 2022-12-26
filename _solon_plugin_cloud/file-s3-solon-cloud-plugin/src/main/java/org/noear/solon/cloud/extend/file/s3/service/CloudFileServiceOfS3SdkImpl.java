@@ -66,7 +66,7 @@ public class CloudFileServiceOfS3SdkImpl implements CloudFileService {
         try {
             ObjectMetadata metadata = new ObjectMetadata();
             metadata.setContentType(streamMime);
-            metadata.setContentLength(media.body().available());
+            metadata.setContentLength(media.contentSize());
 
             PutObjectRequest request = new PutObjectRequest(bucket, key, media.body(), metadata);
             request.setCannedAcl(CannedAccessControlList.PublicRead);

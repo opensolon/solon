@@ -90,7 +90,7 @@ public class CloudFileServiceOfS3HttpImpl implements CloudFileService {
                     .header("Authorization", authorization)
                     .exec("GET").body();
 
-            return new Media(obj.byteStream(), obj.contentType().toString());
+            return new Media(obj.byteStream(), obj.contentType().toString(), obj.contentLength());
         } catch (Exception ex) {
             throw new CloudFileException(ex);
         }
