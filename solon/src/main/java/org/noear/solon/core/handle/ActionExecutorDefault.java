@@ -40,7 +40,7 @@ public class ActionExecutorDefault implements ActionExecutor {
      */
     @Override
     public Object execute(Context ctx, Object obj, MethodWrap mWrap) throws Throwable {
-        List<Object> args = buildArgs(ctx, mWrap.getParamWraps());
+        List<Object> args = buildArgs(ctx, mWrap);
         return mWrap.invokeByAspect(obj, args.toArray());
     }
 
@@ -50,7 +50,8 @@ public class ActionExecutorDefault implements ActionExecutor {
      *
      * @param ctx   上下文
      */
-    protected List<Object> buildArgs(Context ctx, ParamWrap[] pSet) throws Exception {
+    protected List<Object> buildArgs(Context ctx, MethodWrap mWrap) throws Exception {
+        ParamWrap[] pSet = mWrap.getParamWraps();
         List<Object> args = new ArrayList<>(pSet.length);
 
         Object bodyObj = changeBody(ctx);
@@ -98,7 +99,12 @@ public class ActionExecutorDefault implements ActionExecutor {
 
                 if (tv == null) {
                     //尝试数据转换
-                    tv = changeValue(ctx, p, i, pt, bodyObj);
+                    try {
+                        tv = changeValue(ctx, p, i, pt, bodyObj);
+                    } catch (Exception e) {
+                        String methodFullName = mWrap.getEntityClz().getName() + "::" + mWrap.getName() + "@" + p.getName();
+                        throw new IllegalArgumentException("Request data conversion failed: " + methodFullName, e);
+                    }
                 }
 
                 if (tv == null) {

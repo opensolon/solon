@@ -120,6 +120,10 @@ public class MethodWrap implements Interceptor, MethodHolder {
         return method.getName();
     }
 
+    public Class<?> getEntityClz() {
+        return entityClz;
+    }
+
     /**
      * 获取函数本身
      */
