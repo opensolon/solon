@@ -13,6 +13,8 @@ import org.noear.solon.test.SolonTest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
+
 /**
  * @author 等風來再離開 2022/11/29 created
  */
@@ -26,7 +28,7 @@ public class DemoTest {
     final String key = "test0/test.txt";
 
     @Test
-    public void test0() {
+    public void test0() throws IOException {
         long start = System.currentTimeMillis();
 
         //写入
@@ -37,7 +39,7 @@ public class DemoTest {
         //获取
         Media getMedia = CloudClient.file().get(key);
         String getBodyString = getMedia.bodyAsString(true);
-        log.info("getMedia body: {}", getBodyString);
+        log.info("getMedia size:{}, body: {}", getMedia.contentSize(), getBodyString);
         assert getBodyString.equals(contentBody);
 
         //删除
