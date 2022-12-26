@@ -19,8 +19,6 @@
 * 新增 solon.test 插件
 * 新增 solon-test-junit4 插件，相对 solon-test 只支持 junit4
 * 新增 solon-test-junit5 插件，相对 solon-test 只支持 junit5
-* 插件 file-s3-solon-plugin 优化兼容处理
-* 插件 aws-s3-solon-plugin 优化兼容处理
 * 插件 sentinel-solon-cloud-plugin 控制台调试
 * 插件 mybatis-solon-plugin 的 xml 配置增加 ** 表达式支持
 * 调整 AopContext::getProps() 标为弃用，由 AopContext::cfg() 接替
