@@ -11,6 +11,9 @@
 * 新增 thrift-solon-cloud-plugin 插件 ???
 * 新增 swagger-solon-plugin 插件 ???
 * 新增 knife4j-solon-plugin 插件 ???
+* 插件 file-s3-solon-plugin 优化兼容处理
+* 插件 aws-s3-solon-plugin 优化兼容处理
+
 
 #### 1.12.0
 * 新增 solon.test 插件
