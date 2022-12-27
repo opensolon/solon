@@ -32,9 +32,9 @@ public class CloudFileServiceFastDFSImpl implements CloudFileService {
         }
         try {
             if (confPath.contains("properties")) {
-                ClientGlobal.initByProperties(confPath);
+                ClientGlobal.initByProperties(Utils.getResource(confPath).getFile());
             } else {
-                ClientGlobal.init(confPath);
+                ClientGlobal.init(Utils.getResource(confPath).getFile());
             }
             TrackerClient trackerClient = new TrackerClient();
             TrackerServer trackerServer = trackerClient.getTrackerServer();
