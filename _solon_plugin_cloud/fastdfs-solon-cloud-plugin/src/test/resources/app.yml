@@ -1,0 +1,7 @@
+solon.app:
+  name: demoapp
+  group: demo
+
+solon.cloud.file.fastdfs:
+  confPath: fdfs_client.conf
+  groupName: group1
