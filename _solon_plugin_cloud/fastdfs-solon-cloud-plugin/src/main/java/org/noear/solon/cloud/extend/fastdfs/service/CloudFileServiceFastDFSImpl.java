@@ -69,7 +69,7 @@ public class CloudFileServiceFastDFSImpl implements CloudFileService {
         }
         String[] result;
         try {
-            result = storageClient.upload_file(bucket, media.body().readAllBytes(), extensionName, null);
+            result = storageClient.upload_file(bucket, media.bodyAsByts(), extensionName, null);
             if (result == null) {
                 throw new CloudFileException("error code: " + storageClient.getErrorCode());
             }
