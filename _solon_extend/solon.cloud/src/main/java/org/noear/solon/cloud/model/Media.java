@@ -72,14 +72,24 @@ public class Media {
         return body;
     }
 
+
+    @Deprecated
+    public byte[] bodyAsByts() {
+        return bodyAsBytes();
+    }
+    @Deprecated
+    public byte[] bodyAsByts(boolean autoClose) {
+        return bodyAsBytes(autoClose);
+    }
+
     /**
      * 主体转为字节数组
      */
-    public byte[] bodyAsByts() {
-        return bodyAsByts(false);
+    public byte[] bodyAsBytes() {
+        return bodyAsBytes(false);
     }
 
-    public byte[] bodyAsByts(boolean autoClose) {
+    public byte[] bodyAsBytes(boolean autoClose) {
         try {
             if (autoClose) {
                 try (InputStream stream = body) {
