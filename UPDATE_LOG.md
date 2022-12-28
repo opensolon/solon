@@ -14,6 +14,7 @@
 * 插件 file-s3-solon-plugin 优化兼容处理
 * 插件 aws-s3-solon-plugin 优化兼容处理
 * 添加 Meda::contentSize() 和 DownloadedFile::getContentSize() 接口
+* 调整 Media::bodyAsByts 标为弃用 新增 Media::bodyAsBytes
 
 
 #### 1.12.0

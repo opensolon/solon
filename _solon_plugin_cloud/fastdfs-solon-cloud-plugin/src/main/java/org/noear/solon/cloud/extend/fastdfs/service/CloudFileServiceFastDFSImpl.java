@@ -27,9 +27,11 @@ public class CloudFileServiceFastDFSImpl implements CloudFileService {
     public CloudFileServiceFastDFSImpl(CloudProps cloudProps) {
         String confPath = cloudProps.getValue("confPath");
         String groupName = cloudProps.getValue("groupName");
+
         if (Utils.isNotEmpty(groupName)) {
             DEFAULT_GROUP_NAME = groupName;
         }
+
         try {
             if (confPath.contains("properties")) {
                 ClientGlobal.initByProperties(Utils.getResource(confPath).getFile());
@@ -50,6 +52,7 @@ public class CloudFileServiceFastDFSImpl implements CloudFileService {
         if (Utils.isEmpty(bucket)) {
             bucket = DEFAULT_GROUP_NAME;
         }
+
         try {
             byte[] resultByte = storageClient.download_file(bucket, key);
             return new Media(resultByte);
@@ -63,10 +66,12 @@ public class CloudFileServiceFastDFSImpl implements CloudFileService {
         if (Utils.isEmpty(bucket)) {
             bucket = DEFAULT_GROUP_NAME;
         }
+
         String extensionName = key.substring(key.lastIndexOf(".") + 1);
         if (Utils.isEmpty(extensionName)) {
             throw new CloudFileException("the file extension must not be empty");
         }
+
         String[] result;
         try {
             result = storageClient.upload_file(bucket, media.bodyAsBytes(), extensionName, null);
@@ -85,6 +90,7 @@ public class CloudFileServiceFastDFSImpl implements CloudFileService {
         if (Utils.isEmpty(bucket)) {
             bucket = DEFAULT_GROUP_NAME;
         }
+
         try {
             storageClient.delete_file(bucket, key);
             return Result.succeed();
