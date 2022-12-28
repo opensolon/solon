@@ -2,15 +2,15 @@
 * 新增 kubernetes-solon-cloud-plugin 插件
 * 新增 jmdns-solon-cloud-plugin 插件
 * 新增 shiro-solon-plugin 插件
+* 新增 elastic-job-solon-plugin 分布式定时任务 ???
+* 新增 thrift-solon-cloud-plugin 插件 ???
+* 新增 swagger-solon-plugin 插件 ???
+* 新增 knife4j-solon-plugin 插件 ???
 * 调整 运行完成后，提供未注入的对象警告???
 * 增加 更多友好的异常分类???
 * 增加 便利的原生编译机制
 
 #### 1.12.1
-* 新增 elastic-job-solon-plugin 分布式定时任务 ???
-* 新增 thrift-solon-cloud-plugin 插件 ???
-* 新增 swagger-solon-plugin 插件 ???
-* 新增 knife4j-solon-plugin 插件 ???
 * 插件 file-s3-solon-plugin 优化兼容处理
 * 插件 aws-s3-solon-plugin 优化兼容处理
 * 添加 Meda::contentSize() 和 DownloadedFile::getContentSize() 接口
@@ -24,6 +24,7 @@
 * 插件 mybatis-solon-plugin 的 xml 配置增加 ** 表达式支持
 * 调整 AopContext::getProps() 标为弃用，由 AopContext::cfg() 接替
 * 调整 Plugin::init() 为 Plugin::init(AopContext); 为 solon cloud 热插拨增强支持 !!!
+* 优化 action parameter 转换失败时的友好提示
 * 优化 solon cloud 插件增加对热插拨的支持，以前只能用主程序的配置，现在可以用插件的配置
 * 优化 forest-solon-plugin 重新深度适配，并支持 solon 的 upstream !!!
 * 优化 liteflow-solon-plugin 重新深度适配 !!!
