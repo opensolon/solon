@@ -36,7 +36,7 @@ public class XPluginImp implements Plugin {
 
             //尝试默认加载
             if (url == null) {
-                url = Utils.getResource("META-INF/solon/logging/logback-def.xml");
+                url = Utils.getResource("META-INF/solon_def/logback-def.xml");
             }
 
             if (url == null) {
