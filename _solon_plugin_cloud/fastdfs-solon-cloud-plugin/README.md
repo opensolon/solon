@@ -9,6 +9,8 @@
 
 ## 插件配置
 
+### 方案1：标准配置 + 内置 fastdfs_def.properties
+
 ```yaml
 solon.cloud.fastdfs:
   file:
@@ -18,7 +20,15 @@ solon.cloud.fastdfs:
     secretKey: "FastDFS1234567890"
 ```
 
-## FastDFS 配置文件
+### 方案2：标准配置 + fastdfs.properties （或 fastdfs.yml）
+
+```yaml
+solon.cloud.fastdfs:
+  file:
+    enable: true             #是否启用（默认：启用）
+    bucket: "group1"         # group 名称
+```
+
 
 ** fastdfs.properties **
 
@@ -40,6 +50,7 @@ fastdfs.connection_pool.max_idle_time=3600
 fastdfs.connection_pool.max_wait_time_in_ms=1000
 ```
 
+## 附件
 
 * https://github.com/happyfish100/fastdfs
 * https://github.com/happyfish100/fastdfs-client-java
