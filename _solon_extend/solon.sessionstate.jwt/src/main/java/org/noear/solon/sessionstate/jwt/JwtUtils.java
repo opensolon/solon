@@ -19,7 +19,10 @@ public class JwtUtils {
     private static String TOKEN_HEADER = "Bearer ";
     private static Key key = null;
 
-    private static Key key() {
+    /**
+     * 根据配置获取签名密钥
+     * */
+    private static Key getKey() {
         if (key == null) {
             synchronized (JwtSessionStateFactory.getInstance()) {
                 if (key == null) {
@@ -42,13 +45,17 @@ public class JwtUtils {
     }
 
     public static String buildJwt(Claims claims, long expire) {
-        return buildJwt(claims, expire, key());
+        return buildJwt(claims, expire, getKey());
     }
 
     /**
      * 构建令牌
+     *
+     * @param claims  数据
+     * @param expire  超时（单位：毫秒）
+     * @param signKey 签名密钥
      */
-    public static String buildJwt(Claims claims, long expire, Key secret) {
+    public static String buildJwt(Claims claims, long expire, Key signKey) {
         JwtBuilder builder;
         if (expire > 0) {
             builder = Jwts.builder()
@@ -66,21 +73,26 @@ public class JwtUtils {
         }
 
         if (Utils.isNotEmpty(SessionProp.session_jwt_prefix)) {
-            return SessionProp.session_jwt_prefix + " " + builder.signWith(secret).compact();
+            return SessionProp.session_jwt_prefix + " " + builder.signWith(signKey).compact();
         } else {
-            return builder.signWith(secret).compact();
+            return builder.signWith(signKey).compact();
         }
     }
 
     /**
      * 解析令牌
+     *
+     * @param token 令牌
      */
     public static Claims parseJwt(String token) {
-        return parseJwt(token, key());
+        return parseJwt(token, getKey());
     }
 
     /**
      * 解析令牌
+     *
+     * @param token   令牌
+     * @param signKey 签名密钥
      */
     public static Claims parseJwt(String token, Key signKey) {
         if (token.startsWith(TOKEN_HEADER)) {
