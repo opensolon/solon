@@ -40,5 +40,6 @@ fastdfs.connection_pool.max_idle_time=3600
 fastdfs.connection_pool.max_wait_time_in_ms=1000
 ```
 
-> https://github.com/happyfish100/fastdfs
-> https://github.com/happyfish100/fastdfs-client-java
+
+* https://github.com/happyfish100/fastdfs
+* https://github.com/happyfish100/fastdfs-client-java
