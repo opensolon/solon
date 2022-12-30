@@ -16,8 +16,8 @@ solon.cloud.fastdfs:
   file:
     enable: true             #是否启用（默认：启用）
     bucket: "group1"         # group 名称
-    endpoint: "10.0.11.201:22122,10.0.11.202:22122"
-    secretKey: "FastDFS1234567890"
+    endpoint: "10.0.11.201:22122,10.0.11.202:22122" # 相当于 fastdfs.tracker_servers
+    secretKey: "FastDFS1234567890" # 相当于 fastdfs.http_secret_key
 ```
 
 ### 方案2：标准配置 + fastdfs.properties （或 fastdfs.yml）
