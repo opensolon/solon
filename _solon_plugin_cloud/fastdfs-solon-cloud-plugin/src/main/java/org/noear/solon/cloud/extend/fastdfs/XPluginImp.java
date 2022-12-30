@@ -12,7 +12,7 @@ import org.noear.solon.core.Plugin;
 public class XPluginImp implements Plugin {
     @Override
     public void start(AopContext context) {
-        CloudProps cloudProps = new CloudProps(context, "file.fastdfs");
+        CloudProps cloudProps = new CloudProps(context, "fastdfs");
 
         if (cloudProps.getFileEnable()) {
             CloudManager.register(new CloudFileServiceFastDFSImpl(cloudProps));

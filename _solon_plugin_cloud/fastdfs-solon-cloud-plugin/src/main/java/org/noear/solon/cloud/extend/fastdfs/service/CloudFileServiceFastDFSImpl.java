@@ -7,41 +7,60 @@ import org.noear.solon.cloud.exception.CloudFileException;
 import org.noear.solon.cloud.model.Media;
 import org.noear.solon.cloud.service.CloudFileService;
 import org.noear.solon.core.handle.Result;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import java.net.URL;
+import java.util.Properties;
 
 /**
  * 云文件服务 FastDFS
  *
  * @author liaocp
+ * @since 1.12
  */
 public class CloudFileServiceFastDFSImpl implements CloudFileService {
+    private final String bucketDef;
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(CloudFileServiceFastDFSImpl.class);
+    private final StorageClient client;
 
-    // default group
-    private static String DEFAULT_GROUP_NAME = "group1";
-
-    private final StorageClient storageClient;
+    /**
+     * 获取真实客户端
+     */
+    public StorageClient getClient() {
+        return client;
+    }
 
     public CloudFileServiceFastDFSImpl(CloudProps cloudProps) {
-        String confPath = cloudProps.getValue("confPath");
-        String groupName = cloudProps.getValue("groupName");
+        bucketDef = cloudProps.getFileBucket();
 
-        if (Utils.isNotEmpty(groupName)) {
-            DEFAULT_GROUP_NAME = groupName;
+        URL propUrl = Utils.getResource("fastdfs.yml");
+        if (propUrl == null) {
+            propUrl = Utils.getResource("fastdfs.properties");
+        }
+
+        if (propUrl == null) {
+            propUrl = Utils.getResource("META-INF/solon_def/fastdfs_def.properties");
+        }
+
+        //检测是否有配置文件
+        if (propUrl == null) {
+            throw new CloudFileException("Missing configuration files: 'fastdfs.properties' or 'fastdfs.yml'");
+        }
+
+        Properties props = Utils.loadProperties(propUrl);
+
+        //构建 servers
+        String servers = props.getProperty("fastdfs.tracker_servers");
+        if (Utils.isEmpty(servers)) {
+            props.setProperty("fastdfs.tracker_servers", cloudProps.getFileEndpoint());
         }
 
         try {
-            if (confPath.contains("properties")) {
-                ClientGlobal.initByProperties(Utils.getResource(confPath).getFile());
-            } else {
-                ClientGlobal.init(Utils.getResource(confPath).getFile());
-            }
+            ClientGlobal.initByProperties(props);
+
             TrackerClient trackerClient = new TrackerClient();
             TrackerServer trackerServer = trackerClient.getTrackerServer();
             StorageServer storageServer = trackerClient.getStoreStorage(trackerServer);
-            storageClient = new StorageClient(trackerServer, storageServer);
+            client = new StorageClient(trackerServer, storageServer);
         } catch (Exception e) {
             throw new CloudFileException(e);
         }
@@ -50,53 +69,60 @@ public class CloudFileServiceFastDFSImpl implements CloudFileService {
     @Override
     public Media get(String bucket, String key) throws CloudFileException {
         if (Utils.isEmpty(bucket)) {
-            bucket = DEFAULT_GROUP_NAME;
+            bucket = bucketDef;
         }
 
         try {
-            byte[] resultByte = storageClient.download_file(bucket, key);
+            byte[] resultByte = client.download_file(bucket, key);
             return new Media(resultByte);
         } catch (Exception e) {
-            throw new CloudFileException("failed to download file from FastDFS");
+            throw new CloudFileException("Cloud file get failure: " + key, e);
         }
     }
 
     @Override
     public Result<Object> put(String bucket, String key, Media media) throws CloudFileException {
         if (Utils.isEmpty(bucket)) {
-            bucket = DEFAULT_GROUP_NAME;
+            bucket = bucketDef;
         }
 
-        String extensionName = key.substring(key.lastIndexOf(".") + 1);
-        if (Utils.isEmpty(extensionName)) {
+        String sufName = null;
+        int sufIdx = key.lastIndexOf(".");
+
+        if (sufIdx > 0) {
+            sufName = key.substring(sufIdx + 1);
+        }
+
+        if (Utils.isEmpty(sufName)) {
             throw new CloudFileException("the file extension must not be empty");
         }
 
         String[] result;
         try {
-            result = storageClient.upload_file(bucket, media.bodyAsBytes(), extensionName, null);
-            if (result == null) {
-                throw new CloudFileException("error code: " + storageClient.getErrorCode());
-            }
+            result = client.upload_file(bucket, media.bodyAsBytes(), sufName, null);
         } catch (Exception e) {
-            LOGGER.error("upload file failed", e);
-            return Result.failure(e.getLocalizedMessage());
+            throw new CloudFileException("Cloud file put failure: " + key, e);
         }
-        return Result.succeed(result);
+
+        if (result == null) {
+            throw new CloudFileException("Cloud file put failure code[" + client.getErrorCode() + "]: " + key);
+        } else {
+            return Result.succeed(result);
+        }
     }
 
     @Override
     public Result<Object> delete(String bucket, String key) throws CloudFileException {
         if (Utils.isEmpty(bucket)) {
-            bucket = DEFAULT_GROUP_NAME;
+            bucket = bucketDef;
         }
 
         try {
-            storageClient.delete_file(bucket, key);
-            return Result.succeed();
+            int tmp = client.delete_file(bucket, key);
+
+            return Result.succeed(tmp);
         } catch (Exception e) {
-            LOGGER.error("failed to delete file", e);
-            throw new CloudFileException("failed to delete file");
+            throw new CloudFileException("Cloud file delete failure: " + key, e);
         }
     }
 }
