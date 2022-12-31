@@ -7,6 +7,7 @@ import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.exception.CloudFileException;
 import org.noear.solon.cloud.model.Media;
 import org.noear.solon.cloud.service.CloudFileService;
+import org.noear.solon.core.AopContext;
 import org.noear.solon.core.handle.Result;
 
 import java.util.Properties;
@@ -31,12 +32,12 @@ public class CloudFileServiceFastDFSImpl implements CloudFileService {
         return client;
     }
 
-    public CloudFileServiceFastDFSImpl(CloudProps cloudProps) {
+    public CloudFileServiceFastDFSImpl(AopContext aopContext, CloudProps cloudProps) {
         bucketDef = cloudProps.getFileBucket();
 
         //构建属性
         Properties props = Utils.loadProperties(DEF_CONFIG_FILE);
-        Properties propsTmp = Solon.cfg().getProp("fastdfs");
+        Properties propsTmp = aopContext.cfg().getProp("fastdfs");
         propsTmp.forEach((key, val) -> {
             props.put("fastdfs." + key, val);
         });

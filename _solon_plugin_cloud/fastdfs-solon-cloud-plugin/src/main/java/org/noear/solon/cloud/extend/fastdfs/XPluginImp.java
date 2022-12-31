@@ -8,6 +8,7 @@ import org.noear.solon.core.Plugin;
 
 /**
  * @author liaocp
+ * @since 1.12
  */
 public class XPluginImp implements Plugin {
     @Override
@@ -15,7 +16,7 @@ public class XPluginImp implements Plugin {
         CloudProps cloudProps = new CloudProps(context, "fastdfs");
 
         if (cloudProps.getFileEnable()) {
-            CloudManager.register(new CloudFileServiceFastDFSImpl(cloudProps));
+            CloudManager.register(new CloudFileServiceFastDFSImpl(context, cloudProps));
         }
     }
 }
