@@ -12,6 +12,7 @@
 ### 方案1：标准配置 + 内置 fastdfs_def.properties
 
 ```yaml
+# 标准配置
 solon.cloud.fastdfs:
   file:
     enable: true             #是否启用（默认：启用）
@@ -23,11 +24,13 @@ solon.cloud.fastdfs:
 ### 方案2：标准配置 + fastdfs 详细配置
 
 ```yaml
+# 标准配置
 solon.cloud.fastdfs:
   file:
     enable: true             #是否启用（默认：启用）
     bucket: "group1"         # group 名称
 
+# fastdfs 详细配置
 fastdfs.charset: UTF-8
 
 fastdfs.connect_timeout_in_seconds: 5
