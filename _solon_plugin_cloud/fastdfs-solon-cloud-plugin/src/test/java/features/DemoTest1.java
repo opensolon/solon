@@ -1,4 +1,4 @@
-package demo;
+package features;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -8,19 +8,16 @@ import org.noear.solon.core.handle.DownloadedFile;
 import org.noear.solon.core.handle.Result;
 import org.noear.solon.core.handle.UploadedFile;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
-import org.noear.solon.test.SolonTest;
+import org.noear.solon.test.annotation.TestPropertySource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
-/**
- * @author 等風來再離開 2022/11/29 created
- */
+@TestPropertySource("app-test1.yml")
 @RunWith(SolonJUnit4ClassRunner.class)
-@SolonTest(DemoApp.class)
-public class DemoTest {
-    static Logger log = LoggerFactory.getLogger(DemoTest.class);
+public class DemoTest1 {
+    static Logger log = LoggerFactory.getLogger(DemoTest1.class);
 
     final String contentBody = "test s3 rest api";
     final Media media = new Media(contentBody);

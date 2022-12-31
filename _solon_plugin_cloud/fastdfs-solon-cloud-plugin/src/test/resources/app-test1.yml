@@ -1,0 +1,11 @@
+solon.app:
+  name: demoapp
+  group: demo
+
+solon.cloud.fastdfs:
+  file:
+    bucket: "group1"         # group 名称
+    endpoint: "192.168.123.166:22122"
+    secretKey: "FastDFS1234567890"
+
+fastdfs.http_tracker_http_port: 8888
