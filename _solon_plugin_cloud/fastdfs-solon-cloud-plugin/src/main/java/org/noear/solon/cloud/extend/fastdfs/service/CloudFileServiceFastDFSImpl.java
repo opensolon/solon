@@ -1,6 +1,7 @@
 package org.noear.solon.cloud.extend.fastdfs.service;
 
 import org.csource.fastdfs.*;
+import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.exception.CloudFileException;
@@ -8,7 +9,6 @@ import org.noear.solon.cloud.model.Media;
 import org.noear.solon.cloud.service.CloudFileService;
 import org.noear.solon.core.handle.Result;
 
-import java.net.URL;
 import java.util.Properties;
 
 /**
@@ -18,6 +18,8 @@ import java.util.Properties;
  * @since 1.12
  */
 public class CloudFileServiceFastDFSImpl implements CloudFileService {
+    static final String DEF_CONFIG_FILE = "META-INF/solon_def/fastdfs_def.properties";
+
     private final String bucketDef;
 
     private final StorageClient client;
@@ -32,27 +34,31 @@ public class CloudFileServiceFastDFSImpl implements CloudFileService {
     public CloudFileServiceFastDFSImpl(CloudProps cloudProps) {
         bucketDef = cloudProps.getFileBucket();
 
-        URL propUrl = Utils.getResource("fastdfs.yml");
-        if (propUrl == null) {
-            propUrl = Utils.getResource("fastdfs.properties");
-        }
-
-        if (propUrl == null) {
-            propUrl = Utils.getResource("META-INF/solon_def/fastdfs_def.properties");
-        }
-
-        //检测是否有配置文件
-        if (propUrl == null) {
-            throw new CloudFileException("Missing configuration files: 'fastdfs.properties' or 'fastdfs.yml'");
-        }
-
-        Properties props = Utils.loadProperties(propUrl);
+        //构建属性
+        Properties props = Utils.loadProperties(DEF_CONFIG_FILE);
+        Properties propsTmp = Solon.cfg().getProp("fastdfs");
+        propsTmp.forEach((key, val) -> {
+            props.put("fastdfs." + key, val);
+        });
 
         //构建 servers
         String servers = props.getProperty("fastdfs.tracker_servers");
         if (Utils.isEmpty(servers)) {
-            props.setProperty("fastdfs.tracker_servers", cloudProps.getFileEndpoint());
+            servers = cloudProps.getFileEndpoint();
+            if (Utils.isNotEmpty(servers)) {
+                props.setProperty("fastdfs.tracker_servers", servers);
+            }
         }
+
+        //构建 secret_key
+        String secret_key = props.getProperty("fastdfs.http_secret_key");
+        if (Utils.isEmpty(secret_key)) {
+            secret_key = cloudProps.getFileSecretKey();
+            if (Utils.isNotEmpty(servers)) {
+                props.setProperty("fastdfs.http_secret_key", secret_key);
+            }
+        }
+
 
         try {
             ClientGlobal.initByProperties(props);
@@ -86,6 +92,7 @@ public class CloudFileServiceFastDFSImpl implements CloudFileService {
             bucket = bucketDef;
         }
 
+        //处理后缀名
         String sufName = null;
         int sufIdx = key.lastIndexOf(".");
 
@@ -94,7 +101,7 @@ public class CloudFileServiceFastDFSImpl implements CloudFileService {
         }
 
         if (Utils.isEmpty(sufName)) {
-            throw new CloudFileException("the file extension must not be empty");
+            throw new CloudFileException("the file extension must not be empty: " + key);
         }
 
         String[] result;
