@@ -18,7 +18,7 @@ import java.util.Properties;
  * @since 1.12
  */
 public class CloudFileServiceFastDFSImpl implements CloudFileService {
-    static final String DEF_CONFIG_FILE = "META-INF/solon_def/fastdfs_def.properties";
+    private static final String DEF_CONFIG_FILE = "META-INF/solon_def/fastdfs_def.properties";
 
     private final String bucketDef;
 
@@ -42,21 +42,15 @@ public class CloudFileServiceFastDFSImpl implements CloudFileService {
         });
 
         //构建 servers
-        String servers = props.getProperty("fastdfs.tracker_servers");
-        if (Utils.isEmpty(servers)) {
-            servers = cloudProps.getFileEndpoint();
-            if (Utils.isNotEmpty(servers)) {
-                props.setProperty("fastdfs.tracker_servers", servers);
-            }
+        String servers = cloudProps.getFileEndpoint();
+        if (Utils.isNotEmpty(servers)) {
+            props.setProperty("fastdfs.tracker_servers", servers);
         }
 
         //构建 secret_key
-        String secret_key = props.getProperty("fastdfs.http_secret_key");
-        if (Utils.isEmpty(secret_key)) {
-            secret_key = cloudProps.getFileSecretKey();
-            if (Utils.isNotEmpty(servers)) {
-                props.setProperty("fastdfs.http_secret_key", secret_key);
-            }
+        String secret_key = cloudProps.getFileSecretKey();
+        if (Utils.isNotEmpty(secret_key)) {
+            props.setProperty("fastdfs.http_secret_key", secret_key);
         }
 
 
