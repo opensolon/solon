@@ -16,7 +16,7 @@
 * 插件 aws-s3-solon-plugin 增加内容大小获取
 * 添加 Meda::contentSize() 和 DownloadedFile::getContentSize() 接口
 * 调整 Media::bodyAsByts 标为弃用 新增 Media::bodyAsBytes
-* 增加 core 对启动类包名的检测
+* 增加 core 对启动类及包名的检测
 
 
 #### 1.12.0
