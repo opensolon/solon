@@ -52,9 +52,15 @@ public class SolonApp extends RouterWrapper {
         return _cfg;
     }
 
-    protected SolonApp(Class<?> source, NvMap args) throws Exception{
+    protected SolonApp(Class<?> source, NvMap args) throws Exception {
         _startupTime = System.currentTimeMillis();
         _source = source;
+
+        //添加启动类检测
+        if (Utils.isEmpty(source.getPackage().getName())) {
+            throw new IllegalStateException("The startup class is missing a package name: " + source.getName());
+        }
+
 
         //初始化配置
         _cfg = new SolonProps().load(source, args);

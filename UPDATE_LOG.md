@@ -11,10 +11,12 @@
 * 增加 便利的原生编译机制
 
 #### 1.12.1
-* 插件 file-s3-solon-plugin 优化兼容处理
-* 插件 aws-s3-solon-plugin 优化兼容处理
+* 新增 fastdfs-solon-cloud-plugin 插件
+* 插件 file-s3-solon-plugin 增加内容大小获取
+* 插件 aws-s3-solon-plugin 增加内容大小获取
 * 添加 Meda::contentSize() 和 DownloadedFile::getContentSize() 接口
 * 调整 Media::bodyAsByts 标为弃用 新增 Media::bodyAsBytes
+* 增加 core 对启动类包名的检测
 
 
 #### 1.12.0
