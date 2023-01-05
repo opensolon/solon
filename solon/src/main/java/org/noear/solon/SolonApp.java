@@ -57,10 +57,14 @@ public class SolonApp extends RouterWrapper {
         _source = source;
 
         //添加启动类检测
+        if(source == null) {
+            throw new IllegalArgumentException("The startup class parameter('source') cannot be null");
+        }
+
+        //添加启动类包名检测
         if (Utils.isEmpty(source.getPackage().getName())) {
             throw new IllegalStateException("The startup class is missing package: " + source.getName());
         }
-
 
         //初始化配置
         _cfg = new SolonProps().load(source, args);
