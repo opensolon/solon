@@ -183,7 +183,10 @@ public class Instance implements Serializable {
 
     public static Instance local() {
         if (local == null) {
-            local = localNew(new SignalSim(Solon.cfg().appName(), Solon.cfg().serverHost(), Solon.cfg().serverPort(), "http", SignalType.HTTP));
+            String _imageHost = Solon.cfg().serverImageHost(false);
+            int _imagePort = Solon.cfg().serverImagePort(false);
+
+            local = localNew(new SignalSim(Solon.cfg().appName(), _imageHost, _imagePort, "http", SignalType.HTTP));
         }
 
         return local;

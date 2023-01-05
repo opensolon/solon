@@ -355,6 +355,42 @@ public final class SolonProps extends Props {
         return serverHost;
     }
 
+
+
+    private Integer serverImagePort;
+
+    /**
+     * 获取应用映像主端口(默认:8080)
+     */
+    public int serverImagePort(boolean raw) {
+        if (serverImagePort == null) {
+            serverImagePort = getInt("server.imagePort", 0);
+        }
+
+        if (raw || serverImagePort > 0) {
+            return serverImagePort;
+        } else {
+            return serverPort();
+        }
+    }
+
+    private String serverImageHost;
+    /**
+     * 获取应用映像主机
+     */
+    public String serverImageHost(boolean raw) {
+        if (serverImageHost == null) {
+            serverImageHost = get("server.imageHost", "");
+        }
+
+        if (raw || Utils.isNotEmpty(serverImageHost)) {
+            return serverImageHost;
+        } else {
+            return serverHost();
+        }
+    }
+
+
     private String serverContextPath;
     /**
      * 获取应用主上下文路径

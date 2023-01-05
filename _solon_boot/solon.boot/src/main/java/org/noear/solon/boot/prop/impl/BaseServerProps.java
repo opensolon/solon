@@ -50,7 +50,7 @@ public abstract class BaseServerProps implements ServerSignalProps, ServerExecut
     }
 
 
-   private void initSignalProps(int portBase){
+   private void initSignalProps(int portBase) {
        name = Solon.cfg().get(PROP_NAME);
        port = Solon.cfg().getInt(PROP_PORT, 0);
        host = Solon.cfg().get(PROP_HOST);
@@ -63,17 +63,25 @@ public abstract class BaseServerProps implements ServerSignalProps, ServerExecut
            port = portBase + Solon.cfg().serverPort();
        }
 
-       if(imagePort < 1){
-           imagePort = port;
-       }
-
-       //
        if (Utils.isEmpty(host)) {
            host = Solon.cfg().serverHost();
        }
 
+       //imageHost + imagePort
+       if (imagePort < 1) {
+           imagePort = Solon.cfg().serverImagePort(true);
+
+           if (imagePort < 1) {
+               imagePort = port;
+           }
+       }
+
        if (Utils.isEmpty(imageHost)) {
-           imageHost = host;
+           imageHost = Solon.cfg().serverImageHost(true);
+
+           if (Utils.isEmpty(imageHost)) {
+               imageHost = host;
+           }
        }
    }
 
