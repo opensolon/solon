@@ -44,15 +44,17 @@ public class XPluginImp implements Plugin {
         LogUtil.global().info("Server:main: java.net.ServerSocket(rsocket-socketd)");
 
         SocketServerProps props = new SocketServerProps(20000);
-        String _host = props.getHost();
-        int _port = props.getPort();
-        String _name = props.getName();
+        final String _host = props.getHost();
+        final int _port = props.getPort();
+        final String _name = props.getName();
 
         try {
             _server = new RsServer();
             _server.start(_host, _port);
 
-            _signal = new SignalSim(_name, _host, _port, "tcp", SignalType.SOCKET);
+            final String _imageHost = props.getImageHost();
+            final int _imagePort = props.getImagePort();
+            _signal = new SignalSim(_name, _imageHost, _imagePort, "tcp", SignalType.SOCKET);
 
             app.signalAdd(_signal);
 

@@ -62,9 +62,9 @@ public class XPluginImp implements Plugin {
         }
 
         GrpcServerProps props = new GrpcServerProps(25000);
-        String _host = props.getHost();
-        int _port = props.getPort();
-        String _name = props.getName();
+        final String _host = props.getHost();
+        final int _port = props.getPort();
+        final String _name = props.getName();
 
         long time_start = System.currentTimeMillis();
 
@@ -85,7 +85,10 @@ public class XPluginImp implements Plugin {
 
         server = serverBuilder.build().start();
 
-        _signal = new SignalSim(_name, _host, _port, "grpc", SignalType.HTTP);
+        final String _imageHost = props.getImageHost();
+        final int _imagePort = props.getImagePort();
+        _signal = new SignalSim(_name, _imageHost, _imagePort, "grpc", SignalType.HTTP);
+
         app.signalAdd(_signal);
 
         long time_end = System.currentTimeMillis();

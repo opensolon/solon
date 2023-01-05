@@ -51,9 +51,9 @@ public final class XPluginImp implements Plugin {
 
 
         SocketServerProps props = new SocketServerProps(20000);
-        String _host = props.getHost();
-        int _port = props.getPort();
-        String _name = props.getName();
+        final String _host = props.getHost();
+        final int _port = props.getPort();
+        final String _name = props.getName();
 
         try {
             if (Utils.isEmpty(_host)) {
@@ -72,7 +72,10 @@ public final class XPluginImp implements Plugin {
             }
             _server.start();
 
-            _signal = new SignalSim(_name, _host, _port, "tcp", SignalType.SOCKET);
+            final String _imageHost = props.getImageHost();
+            final int _imagePort = props.getImagePort();
+            _signal = new SignalSim(_name, _imageHost, _imagePort, "tcp", SignalType.SOCKET);
+
             app.signalAdd(_signal);
 
             long time_end = System.currentTimeMillis();

@@ -58,9 +58,9 @@ public final class XPluginImp implements Plugin {
         Class<?> jspClz = Utils.loadClass("org.apache.jasper.servlet.JspServlet");
 
         HttpServerProps props = new HttpServerProps();
-        String _host = props.getHost();
-        int _port = props.getPort();
-        String _name = props.getName();
+        final String _host = props.getHost();
+        final int _port = props.getPort();
+        final String _name = props.getName();
 
         if (jspClz == null) {
             _server = new TomcatServer();
@@ -72,7 +72,10 @@ public final class XPluginImp implements Plugin {
         LogUtil.global().info("Server:main: " + TOMCAT_VER + "(tomcat)");
 
         _server.start(_host, _port);
-        _signal = new SignalSim(_name, _host, _port, "http", SignalType.HTTP);
+
+        final String _imageHost = props.getImageHost();
+        final int _imagePort = props.getImagePort();
+        _signal = new SignalSim(_name, _imageHost, _imagePort, "http", SignalType.HTTP);
 
         app.signalAdd(_signal);
 

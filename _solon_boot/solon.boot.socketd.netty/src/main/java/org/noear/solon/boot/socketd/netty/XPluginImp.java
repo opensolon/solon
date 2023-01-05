@@ -50,9 +50,9 @@ public class XPluginImp implements Plugin {
         LogUtil.global().info("Server:main: java.net.ServerSocket(netty-socketd)");
 
         SocketServerProps props = new SocketServerProps(20000);
-        String _host = props.getHost();
-        int _port = props.getPort();
-        String _name = props.getName();
+        final String _host = props.getHost();
+        final int _port = props.getPort();
+        final String _name = props.getName();
 
 
         EventLoopGroup parentGroup = new NioEventLoopGroup();
@@ -70,7 +70,10 @@ public class XPluginImp implements Plugin {
                 _server = bootstrap.bind(_host, _port).await();
             }
 
-            _signal = new SignalSim(_name, _host, _port, "tcp", SignalType.SOCKET);
+            final String _imageHost = props.getImageHost();
+            final int _imagePort = props.getImagePort();
+            _signal = new SignalSim(_name, _imageHost, _imagePort,"tcp", SignalType.SOCKET);
+
             app.signalAdd(_signal);
 
             long time_end = System.currentTimeMillis();

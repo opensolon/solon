@@ -49,9 +49,9 @@ public class XPluginImp implements Plugin {
         ServerProps.init();
 
         WebSocketServerProps props = new WebSocketServerProps(10000);
-        String _host = props.getHost();
-        int _port = props.getPort();
-        String _name = props.getName();
+        final String _host = props.getHost();
+        final int _port = props.getPort();
+        final String _name = props.getName();
 
         long time_start = System.currentTimeMillis();
 
@@ -67,7 +67,9 @@ public class XPluginImp implements Plugin {
 
         _server.start();
 
-        _signal = new SignalSim(_name, _host, _port, "ws", SignalType.WEBSOCKET);
+        final String _imageHost = props.getImageHost();
+        final int _imagePort = props.getImagePort();
+        _signal = new SignalSim(_name, _imageHost, _imagePort, "ws", SignalType.WEBSOCKET);
 
         app.signalAdd(_signal);
 

@@ -13,6 +13,8 @@ public abstract class BaseServerProps implements ServerSignalProps, ServerExecut
     private String PROP_NAME = "server.@@.name";
     private String PROP_PORT = "server.@@.port";
     private String PROP_HOST = "server.@@.host";
+    private String PROP_IMAGE_PORT = "server.@@.imagePort";
+    private String PROP_IMAGE_HOST = "server.@@.imageHost";
 
     private String PROP_CORETHREADS = "server.@@.coreThreads";
     private String PROP_MAXTHREADS = "server.@@.maxThreads";
@@ -21,6 +23,8 @@ public abstract class BaseServerProps implements ServerSignalProps, ServerExecut
     private String name;
     private int port;
     private String host;
+    private int imagePort;
+    private String imageHost;
 
     private int coreThreads;
     private int maxThreads;
@@ -30,6 +34,9 @@ public abstract class BaseServerProps implements ServerSignalProps, ServerExecut
         PROP_NAME = PROP_NAME.replace("@@", signalName);
         PROP_PORT = PROP_PORT.replace("@@", signalName);
         PROP_HOST = PROP_HOST.replace("@@", signalName);
+
+        PROP_IMAGE_PORT = PROP_IMAGE_PORT.replace("@@", signalName);
+        PROP_IMAGE_HOST = PROP_IMAGE_HOST.replace("@@", signalName);
 
         PROP_CORETHREADS = PROP_CORETHREADS.replace("@@", signalName);
         PROP_MAXTHREADS = PROP_MAXTHREADS.replace("@@", signalName);
@@ -48,12 +55,25 @@ public abstract class BaseServerProps implements ServerSignalProps, ServerExecut
        port = Solon.cfg().getInt(PROP_PORT, 0);
        host = Solon.cfg().get(PROP_HOST);
 
+       imagePort = Solon.cfg().getInt(PROP_IMAGE_PORT, 0);
+       imageHost = Solon.cfg().get(PROP_IMAGE_HOST);
+
+       //host + port
        if (port < 1) {
            port = portBase + Solon.cfg().serverPort();
        }
 
+       if(imagePort < 1){
+           imagePort = port;
+       }
+
+       //
        if (Utils.isEmpty(host)) {
            host = Solon.cfg().serverHost();
+       }
+
+       if (Utils.isEmpty(imageHost)) {
+           imageHost = host;
        }
    }
 
@@ -73,6 +93,21 @@ public abstract class BaseServerProps implements ServerSignalProps, ServerExecut
         return host;
     }
 
+    /**
+     * @since 1.12
+     * */
+    @Override
+    public int getImagePort() {
+        return imagePort;
+    }
+
+    /**
+     * @since 1.12
+     * */
+    @Override
+    public String getImageHost() {
+        return imageHost;
+    }
 
     ////////////////////////////////
 

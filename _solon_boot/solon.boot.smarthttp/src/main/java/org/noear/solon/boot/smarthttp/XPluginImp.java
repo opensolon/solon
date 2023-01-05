@@ -57,9 +57,9 @@ public final class XPluginImp implements Plugin {
         ServerProps.init();
 
         HttpServerProps props = new HttpServerProps();
-        String _host = props.getHost();
-        int _port = props.getPort();
-        String _name = props.getName();
+        final String _host = props.getHost();
+        final int _port = props.getPort();
+        final String _name = props.getName();
 
         long time_start = System.currentTimeMillis();
 
@@ -115,7 +115,9 @@ public final class XPluginImp implements Plugin {
         _server.setPort(_port);
         _server.start();
 
-        _signal = new SignalSim(_name, _host, _port, "http", SignalType.HTTP);
+        final String _imageHost = props.getImageHost();
+        final int _imagePort = props.getImagePort();
+        _signal = new SignalSim(_name, _imageHost, _imagePort,"http", SignalType.HTTP);
 
         app.signalAdd(_signal);
 
