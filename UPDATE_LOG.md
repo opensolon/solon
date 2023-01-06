@@ -14,7 +14,7 @@
 * 新增 fastdfs-solon-cloud-plugin 插件
 * 插件 file-s3-solon-plugin 增加内容大小获取
 * 插件 aws-s3-solon-plugin 增加内容大小获取
-* 增加 CloudFileService::exists(...) 接口
+* 增加 CloudFileService::exists(...) 和 CloudFileService::getTempUrl(...) 接口
 * 增加 Meda::contentSize() 和 DownloadedFile::getContentSize() 接口
 * 增加 Media::bodyAsBytes() 接口，旧的 Media::bodyAsByts() 标为弃用
 * 增加 core 对启动类及包名的检测
