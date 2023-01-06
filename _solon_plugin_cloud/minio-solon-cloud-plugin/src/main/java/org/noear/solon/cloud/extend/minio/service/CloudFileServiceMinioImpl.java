@@ -55,6 +55,24 @@ public class CloudFileServiceMinioImpl implements CloudFileService {
     }
 
     @Override
+    public boolean exists(String bucket, String key) throws CloudFileException {
+        if (Utils.isEmpty(bucket)) {
+            bucket = bucketDef;
+        }
+
+        try {
+            StatObjectResponse stat = client.statObject(StatObjectArgs.builder()
+                    .bucket(bucket)
+                    .object(key)
+                    .build());
+
+            return stat != null && stat.size() > 0;
+        } catch (Exception exception) {
+            throw new CloudFileException(exception);
+        }
+    }
+
+    @Override
     public Media get(String bucket, String key) throws CloudFileException {
         if (Utils.isEmpty(bucket)) {
             bucket = bucketDef;

@@ -58,6 +58,37 @@ public class CloudFileServiceOssImpl implements CloudFileService {
 
 
     @Override
+    public boolean exists(String bucket, String key) throws CloudFileException {
+        if (Utils.isEmpty(bucket)) {
+            bucket = bucketDef;
+        }
+
+        try {
+            String date = Datetime.Now().toGmtString();
+
+            String objPath = "/" + bucket + "/" + key;
+            String url = buildUrl(bucket, key);
+
+            String Signature = (hmacSha1(buildSignData("HEAD", date, objPath, null), secretKey));
+
+            String Authorization = "OSS " + accessKey + ":" + Signature;
+
+            Map<String, String> head = new HashMap<String, String>();
+            head.put("Date", date);
+            head.put("Authorization", Authorization);
+
+            int code = HttpUtils.http(url)
+                    .header("Date", date)
+                    .header("Authorization", Authorization)
+                    .execAsCode("HEAD");
+
+            return code == 200;
+        } catch (IOException ex) {
+            throw new CloudFileException(ex);
+        }
+    }
+
+    @Override
     public Media get(String bucket, String key) throws CloudFileException {
         if (Utils.isEmpty(bucket)) {
             bucket = bucketDef;

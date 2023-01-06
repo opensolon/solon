@@ -21,6 +21,7 @@ import java.io.IOException;
 
 /**
  * @author noear
+ * @since 1.10
  */
 public class CloudFileServiceKodoImp implements CloudFileService {
 
@@ -98,6 +99,24 @@ public class CloudFileServiceKodoImp implements CloudFileService {
         }
     }
 
+
+    @Override
+    public boolean exists(String bucket, String key) throws CloudFileException {
+        if (Utils.isEmpty(bucket)) {
+            bucket = bucketDef;
+        }
+
+        String baseUrl = buildUrl(key);
+        String downUrl = auth.privateDownloadUrl(baseUrl);
+
+        try {
+            int code = HttpUtils.http(downUrl).execAsCode("HEAD");
+
+            return code == 200;
+        } catch (IOException e) {
+            throw new CloudFileException(e);
+        }
+    }
 
     @Override
     public Media get(String bucket, String key) throws CloudFileException {

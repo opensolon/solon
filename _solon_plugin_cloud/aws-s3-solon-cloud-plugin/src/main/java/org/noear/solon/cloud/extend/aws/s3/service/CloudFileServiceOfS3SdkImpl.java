@@ -36,6 +36,19 @@ public class CloudFileServiceOfS3SdkImpl implements CloudFileService {
     }
 
     @Override
+    public boolean exists(String bucket, String key) throws CloudFileException {
+        if (Utils.isEmpty(bucket)) {
+            bucket = bucketDef;
+        }
+
+        try {
+            return client.doesObjectExist(bucket, key);
+        } catch (Exception e) {
+            throw new CloudFileException(e);
+        }
+    }
+
+    @Override
     public Media get(String bucket, String key) throws CloudFileException {
         if (Utils.isEmpty(bucket)) {
             bucket = bucketDef;

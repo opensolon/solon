@@ -1,6 +1,7 @@
 package org.noear.solon.cloud.extend.minio.service;
 
 import io.minio.*;
+import io.minio.messages.Tags;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.exception.CloudFileException;
@@ -54,6 +55,24 @@ public class CloudFileServiceMinioImpl implements CloudFileService {
                 .region(this.regionId)
                 .credentials(this.accessKey, this.secretKey)
                 .build();
+    }
+
+    @Override
+    public boolean exists(String bucket, String key) throws CloudFileException {
+        if (Utils.isEmpty(bucket)) {
+            bucket = bucketDef;
+        }
+
+        try {
+            ObjectStat stat = client.statObject(StatObjectArgs.builder()
+                    .bucket(bucket)
+                    .object(key)
+                    .build());
+
+            return stat != null && stat.length() > 0;
+        } catch (Exception exception) {
+            throw new CloudFileException(exception);
+        }
     }
 
     @Override

@@ -68,6 +68,22 @@ public class CloudFileServiceFastDFSImpl implements CloudFileService {
     }
 
     @Override
+    public boolean exists(String bucket, String key) throws CloudFileException {
+        if (Utils.isEmpty(bucket)) {
+            bucket = bucketDef;
+        }
+
+        try {
+            FileInfo fileInfo = client.get_file_info(bucket, key);
+
+
+            return fileInfo != null && fileInfo.getFileSize() > 0;
+        } catch (Exception e) {
+            throw new CloudFileException("Cloud file get failure: " + key, e);
+        }
+    }
+
+    @Override
     public Media get(String bucket, String key) throws CloudFileException {
         if (Utils.isEmpty(bucket)) {
             bucket = bucketDef;

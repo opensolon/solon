@@ -70,6 +70,33 @@ public class CloudFileServiceOfS3HttpImpl implements CloudFileService {
     }
 
     @Override
+    public boolean exists(String bucket, String key) throws CloudFileException {
+        if (Utils.isEmpty(bucket)) {
+            bucket = bucketDef;
+        }
+
+        try {
+            String objPath = "/" + bucket + "/" + key;
+            String date = Datetime.Now().toGmtString();
+
+            String stringToSign = buildSignData("HEAD", null, null, date, null, objPath);
+            String signature = hmacSha1(stringToSign, secretKey);
+            String authorization = "AWS " + accessKey + ":" + signature;
+
+            String url = buildUrl(bucket, key);
+
+            int code = HttpUtils.http(url)
+                    .header("Date", date)
+                    .header("Authorization", authorization)
+                    .execAsCode("HEAD");
+
+            return code == 200;
+        } catch (Exception ex) {
+            throw new CloudFileException(ex);
+        }
+    }
+
+    @Override
     public Media get(String bucket, String key) throws CloudFileException {
         if (Utils.isEmpty(bucket)) {
             bucket = bucketDef;

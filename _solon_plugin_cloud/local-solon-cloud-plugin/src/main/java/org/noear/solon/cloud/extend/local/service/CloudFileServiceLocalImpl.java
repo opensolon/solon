@@ -24,6 +24,15 @@ public class CloudFileServiceLocalImpl implements CloudFileService {
     }
 
     @Override
+    public boolean exists(String bucket, String key) throws CloudFileException {
+        try {
+            return getFile(bucket, key).exists();
+        } catch (Throwable e) {
+            throw new CloudFileException(e);
+        }
+    }
+
+    @Override
     public Media get(String bucket, String key) throws CloudFileException {
         try {
             File file = getFile(bucket, key);
