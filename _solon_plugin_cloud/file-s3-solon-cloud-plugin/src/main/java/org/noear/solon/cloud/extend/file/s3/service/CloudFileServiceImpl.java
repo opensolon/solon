@@ -8,6 +8,7 @@ import org.noear.solon.cloud.service.CloudFileService;
 import org.noear.solon.core.Props;
 import org.noear.solon.core.handle.Result;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -60,6 +61,16 @@ public class CloudFileServiceImpl implements CloudFileService {
 
         CloudFileService tmp = getBucketService(bucket);
         return tmp.exists(bucket, key);
+    }
+
+    @Override
+    public String getTempUrl(String bucket, String key, Date expiration) throws CloudFileException {
+        if (Utils.isEmpty(bucket)) {
+            bucket = bucketDef;
+        }
+
+        CloudFileService tmp = getBucketService(bucket);
+        return tmp.getTempUrl(bucket, key, expiration);
     }
 
     @Override

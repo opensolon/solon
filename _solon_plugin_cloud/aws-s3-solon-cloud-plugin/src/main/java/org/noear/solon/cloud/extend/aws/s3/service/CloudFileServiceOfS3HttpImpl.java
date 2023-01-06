@@ -13,6 +13,7 @@ import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import java.net.URI;
 import java.util.Base64;
+import java.util.Date;
 
 /**
  * @author noear
@@ -94,6 +95,11 @@ public class CloudFileServiceOfS3HttpImpl implements CloudFileService {
         } catch (Exception ex) {
             throw new CloudFileException(ex);
         }
+    }
+
+    @Override
+    public String getTempUrl(String bucket, String key, Date expiration) throws CloudFileException, UnsupportedOperationException {
+        throw new UnsupportedOperationException();
     }
 
     @Override

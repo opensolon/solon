@@ -13,6 +13,7 @@ import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.IOException;
 import java.util.Base64;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -86,6 +87,11 @@ public class CloudFileServiceOssImpl implements CloudFileService {
         } catch (IOException ex) {
             throw new CloudFileException(ex);
         }
+    }
+
+    @Override
+    public String getTempUrl(String bucket, String key, Date expiration) throws CloudFileException, UnsupportedOperationException {
+        throw new UnsupportedOperationException();
     }
 
     @Override

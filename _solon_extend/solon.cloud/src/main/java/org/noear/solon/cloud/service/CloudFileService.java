@@ -4,6 +4,8 @@ import org.noear.solon.cloud.exception.CloudFileException;
 import org.noear.solon.cloud.model.Media;
 import org.noear.solon.core.handle.Result;
 
+import java.util.Date;
+
 /**
  * 云端文件服务（分布式文件服务服务）
  *
@@ -28,6 +30,26 @@ public interface CloudFileService {
     default boolean exists(String key) throws CloudFileException {
         return exists(null, key);
     }
+
+
+    /**
+     * 获取文件临时地址
+     *
+     * @param bucket 存储桶
+     * @param key    存储键
+     */
+    String getTempUrl(String bucket, String key, Date expiration) throws CloudFileException, UnsupportedOperationException;
+
+
+    /**
+     * 获取文件临时地址
+     *
+     * @param key 存储键
+     */
+    default String getTempUrl(String key, Date expiration) throws CloudFileException, UnsupportedOperationException {
+        return getTempUrl(null, key, expiration);
+    }
+
 
     /**
      * 获取文件

@@ -1,5 +1,6 @@
 package org.noear.solon.cloud.extend.file.s3.service;
 
+import org.apache.http.MethodNotSupportedException;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.exception.CloudFileException;
 import org.noear.solon.cloud.model.Media;
@@ -11,6 +12,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.util.Date;
 
 /**
  * CloudFileService 的本地实现
@@ -44,6 +46,11 @@ public class CloudFileServiceOfLocalImpl implements CloudFileService {
         } catch (Throwable e) {
             throw new CloudFileException(e);
         }
+    }
+
+    @Override
+    public String getTempUrl(String bucket, String key, Date expiration) throws CloudFileException {
+        throw new UnsupportedOperationException();
     }
 
     @Override

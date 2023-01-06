@@ -1,7 +1,7 @@
 package org.noear.solon.cloud.extend.minio.service;
 
 import io.minio.*;
-import io.minio.messages.Tags;
+import io.minio.http.Method;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.exception.CloudFileException;
@@ -10,6 +10,8 @@ import org.noear.solon.cloud.service.CloudFileService;
 import org.noear.solon.core.handle.Result;
 
 import java.io.InputStream;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 云端文件服务（minio）
@@ -72,6 +74,25 @@ public class CloudFileServiceMinioImpl implements CloudFileService {
             return stat != null && stat.length() > 0;
         } catch (Exception exception) {
             throw new CloudFileException(exception);
+        }
+    }
+
+    @Override
+    public String getTempUrl(String bucket, String key, Date expiration) throws CloudFileException, UnsupportedOperationException {
+
+        long seconds = (expiration.getTime() - System.currentTimeMillis()) / 1000L;
+
+        try {
+            String url = client.getPresignedObjectUrl(GetPresignedObjectUrlArgs.builder()
+                    .bucket(bucket)
+                    .object(key)
+                    .expiry((int) seconds)
+                    .method(Method.GET)
+                    .build());
+
+            return url;
+        } catch (Exception e) {
+            throw new CloudFileException(e);
         }
     }
 

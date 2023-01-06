@@ -1,5 +1,6 @@
 package org.noear.solon.cloud.extend.aws.s3.service;
 
+import com.amazonaws.HttpMethod;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.*;
 import org.noear.solon.Utils;
@@ -9,6 +10,9 @@ import org.noear.solon.cloud.extend.aws.s3.utils.BucketUtils;
 import org.noear.solon.cloud.model.Media;
 import org.noear.solon.cloud.service.CloudFileService;
 import org.noear.solon.core.handle.Result;
+
+import java.net.URL;
+import java.util.Date;
 
 /**
  * 云端文件服务（aws s3）
@@ -43,6 +47,25 @@ public class CloudFileServiceOfS3SdkImpl implements CloudFileService {
 
         try {
             return client.doesObjectExist(bucket, key);
+        } catch (Exception e) {
+            throw new CloudFileException(e);
+        }
+    }
+
+    @Override
+    public String getTempUrl(String bucket, String key, Date expiration) throws CloudFileException {
+        if (Utils.isEmpty(bucket)) {
+            bucket = bucketDef;
+        }
+
+        try {
+            URL url = client.generatePresignedUrl(bucket, key, expiration, HttpMethod.GET);
+
+            if (url == null) {
+                return null;
+            }
+
+            return url.toString();
         } catch (Exception e) {
             throw new CloudFileException(e);
         }

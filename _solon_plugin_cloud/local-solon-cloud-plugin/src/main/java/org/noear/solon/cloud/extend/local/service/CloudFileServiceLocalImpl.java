@@ -7,6 +7,7 @@ import org.noear.solon.cloud.service.CloudFileService;
 import org.noear.solon.core.handle.Result;
 
 import java.io.*;
+import java.util.Date;
 
 /**
  * @author noear
@@ -30,6 +31,11 @@ public class CloudFileServiceLocalImpl implements CloudFileService {
         } catch (Throwable e) {
             throw new CloudFileException(e);
         }
+    }
+
+    @Override
+    public String getTempUrl(String bucket, String key, Date expiration) throws CloudFileException, UnsupportedOperationException {
+        throw new UnsupportedOperationException();
     }
 
     @Override
