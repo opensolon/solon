@@ -13,8 +13,8 @@ public abstract class BaseServerProps implements ServerSignalProps, ServerExecut
     private String PROP_NAME = "server.@@.name";
     private String PROP_PORT = "server.@@.port";
     private String PROP_HOST = "server.@@.host";
-    private String PROP_IMAGE_PORT = "server.@@.imagePort";
-    private String PROP_IMAGE_HOST = "server.@@.imageHost";
+    private String PROP_WRAP_PORT = "server.@@.wrapPort";
+    private String PROP_WRAP_HOST = "server.@@.wrapHost";
 
     private String PROP_CORETHREADS = "server.@@.coreThreads";
     private String PROP_MAXTHREADS = "server.@@.maxThreads";
@@ -23,8 +23,8 @@ public abstract class BaseServerProps implements ServerSignalProps, ServerExecut
     private String name;
     private int port;
     private String host;
-    private int imagePort;
-    private String imageHost;
+    private int wrapPort;
+    private String wrapHost;
 
     private int coreThreads;
     private int maxThreads;
@@ -35,8 +35,8 @@ public abstract class BaseServerProps implements ServerSignalProps, ServerExecut
         PROP_PORT = PROP_PORT.replace("@@", signalName);
         PROP_HOST = PROP_HOST.replace("@@", signalName);
 
-        PROP_IMAGE_PORT = PROP_IMAGE_PORT.replace("@@", signalName);
-        PROP_IMAGE_HOST = PROP_IMAGE_HOST.replace("@@", signalName);
+        PROP_WRAP_PORT = PROP_WRAP_PORT.replace("@@", signalName);
+        PROP_WRAP_HOST = PROP_WRAP_HOST.replace("@@", signalName);
 
         PROP_CORETHREADS = PROP_CORETHREADS.replace("@@", signalName);
         PROP_MAXTHREADS = PROP_MAXTHREADS.replace("@@", signalName);
@@ -55,8 +55,8 @@ public abstract class BaseServerProps implements ServerSignalProps, ServerExecut
        port = Solon.cfg().getInt(PROP_PORT, 0);
        host = Solon.cfg().get(PROP_HOST);
 
-       imagePort = Solon.cfg().getInt(PROP_IMAGE_PORT, 0);
-       imageHost = Solon.cfg().get(PROP_IMAGE_HOST);
+       wrapPort = Solon.cfg().getInt(PROP_WRAP_PORT, 0);
+       wrapHost = Solon.cfg().get(PROP_WRAP_HOST);
 
        //host + port
        if (port < 1) {
@@ -68,19 +68,19 @@ public abstract class BaseServerProps implements ServerSignalProps, ServerExecut
        }
 
        //imageHost + imagePort
-       if (imagePort < 1) {
-           imagePort = Solon.cfg().serverImagePort(true);
+       if (wrapPort < 1) {
+           wrapPort = Solon.cfg().serverWrapPort(true);
 
-           if (imagePort < 1) {
-               imagePort = port;
+           if (wrapPort < 1) {
+               wrapPort = port;
            }
        }
 
-       if (Utils.isEmpty(imageHost)) {
-           imageHost = Solon.cfg().serverImageHost(true);
+       if (Utils.isEmpty(wrapHost)) {
+           wrapHost = Solon.cfg().serverWrapHost(true);
 
-           if (Utils.isEmpty(imageHost)) {
-               imageHost = host;
+           if (Utils.isEmpty(wrapHost)) {
+               wrapHost = host;
            }
        }
    }
@@ -105,16 +105,16 @@ public abstract class BaseServerProps implements ServerSignalProps, ServerExecut
      * @since 1.12
      * */
     @Override
-    public int getImagePort() {
-        return imagePort;
+    public int getWrapPort() {
+        return wrapPort;
     }
 
     /**
      * @since 1.12
      * */
     @Override
-    public String getImageHost() {
-        return imageHost;
+    public String getWrapHost() {
+        return wrapHost;
     }
 
     ////////////////////////////////

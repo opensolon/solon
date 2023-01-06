@@ -8,7 +8,6 @@ import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.prop.impl.HttpServerProps;
 import org.noear.solon.boot.ssl.SslContextFactory;
 import org.noear.solon.core.*;
-import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.util.LogUtil;
 
 //
@@ -118,9 +117,9 @@ public final class XPluginImp implements Plugin {
         }
         _server.start();
 
-        final String _imageHost = props.getImageHost();
-        final int _imagePort = props.getImagePort();
-        _signal = new SignalSim(_name, _imageHost, _imagePort, "http", SignalType.HTTP);
+        final String _wrapHost = props.getWrapHost();
+        final int _wrapPort = props.getWrapPort();
+        _signal = new SignalSim(_name, _wrapHost, _wrapPort, "http", SignalType.HTTP);
 
         app.signalAdd(_signal);
 

@@ -24,17 +24,17 @@ public interface ServerSignalProps {
     int getPort();
 
     /**
-     * 影像主机
+     * 包装主机
      *
      * @since 1.12
      * */
-    String getImageHost();
+    String getWrapHost();
 
     /**
-     * 影像端口
+     * 包装端口
      *
      * @since 1.12
      * */
-    int getImagePort();
+    int getWrapPort();
 
 }

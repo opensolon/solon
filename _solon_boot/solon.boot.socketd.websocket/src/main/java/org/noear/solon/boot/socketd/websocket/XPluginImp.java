@@ -63,9 +63,9 @@ public class XPluginImp implements Plugin {
 
             _server.start();
 
-            final String _imageHost = props.getImageHost();
-            final int _imagePort = props.getImagePort();
-            _signal = new SignalSim(_name, _imageHost, _imagePort, "ws", SignalType.WEBSOCKET);
+            final String _wrapHost = props.getWrapHost();
+            final int _wrapPort = props.getWrapPort();
+            _signal = new SignalSim(_name, _wrapHost, _wrapPort,"ws", SignalType.WEBSOCKET);
 
             app.signalAdd(_signal);
 

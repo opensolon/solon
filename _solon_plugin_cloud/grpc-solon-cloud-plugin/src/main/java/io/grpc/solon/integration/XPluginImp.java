@@ -85,9 +85,9 @@ public class XPluginImp implements Plugin {
 
         server = serverBuilder.build().start();
 
-        final String _imageHost = props.getImageHost();
-        final int _imagePort = props.getImagePort();
-        _signal = new SignalSim(_name, _imageHost, _imagePort, "grpc", SignalType.HTTP);
+        final String _wrapHost = props.getWrapHost();
+        final int _wrapPort = props.getWrapPort();
+        _signal = new SignalSim(_name, _wrapHost, _wrapPort, "grpc", SignalType.HTTP);
 
         app.signalAdd(_signal);
 
