@@ -1050,6 +1050,12 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>activemq-solon-cloud-plugin</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>rabbitmq-solon-cloud-plugin</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
