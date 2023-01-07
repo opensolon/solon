@@ -18,7 +18,7 @@
 * 增加 Meda::contentSize() 和 DownloadedFile::getContentSize() 接口
 * 增加 Media::bodyAsBytes() 接口，旧的 Media::bodyAsByts() 标为弃用
 * 增加 core 对启动类及包名的检测
-* 增加 server.wrapHost, server.wrapPort 配置支持
+* 增加 server.wrapHost, server.wrapPort 配置支持！！！（对 docker 单体注册与发现更友好）
 
 #### 1.12.0
 * 新增 solon.test 插件
