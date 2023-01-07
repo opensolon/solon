@@ -989,6 +989,19 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>file-s3-solon-cloud-plugin</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>fastdfs-solon-cloud-plugin</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+
+
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>qiniu-kodo-solon-cloud-plugin</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
