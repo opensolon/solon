@@ -51,7 +51,7 @@ Solon v1.12.1
 
 <hr />
 
-## Solon
+## 概要
 
 更现代感的应用开发框架。**更快、更小、更少、更自由！**
 
@@ -69,7 +69,7 @@ Solon v1.12.1
 * 没有 Spring，没有 Servlet，没有 JavaEE；独立的轻量生态
 
 
-## Solon 架构
+## 架构图
 
 <img src="solon_schema.png" width="600" />
 
