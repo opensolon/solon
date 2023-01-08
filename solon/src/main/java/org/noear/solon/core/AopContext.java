@@ -297,16 +297,24 @@ public class AopContext extends BeanContainer {
      */
     public void beanImport(Import anno) {
         if (anno != null) {
+            //导入类（beanMake）
             for (Class<?> clz : anno.value()) {
                 beanMake(clz);
             }
 
+            //扫描包（beanScan）
             for (String pkg : anno.scanPackages()) {
                 beanScan(pkg);
             }
 
+            //扫描包（beanScan）
             for (Class<?> src : anno.scanPackageClasses()) {
                 beanScan(src);
+            }
+
+            //导入属性源（cfg().loadAdd）
+            for (String url : anno.propertySource()) {
+                cfg().loadAdd(url);
             }
         }
     }

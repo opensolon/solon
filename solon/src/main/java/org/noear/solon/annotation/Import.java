@@ -33,7 +33,20 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface Import {
+    /**
+     * 导入类（beanMake）
+     * */
     Class<?>[] value() default {};
+    /**
+     * 扫描包（beanScan）
+     * */
     String[] scanPackages() default {};
+    /**
+     * 扫描包（beanScan）
+     * */
     Class<?>[] scanPackageClasses() default {};
+    /**
+     * 导入属性源（cfg().loadAdd）
+     * */
+    String[] propertySource() default {};
 }
