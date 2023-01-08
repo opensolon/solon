@@ -90,8 +90,19 @@ public class AopContext extends BeanContainer {
 
         //注册 @Configuration 构建器
         beanBuilderAdd(Configuration.class, (clz, bw, anno) -> {
+            //尝试导入（可能会导入属性源，或小饼依赖的组件）
+            for (Annotation a1 : clz.getAnnotations()) {
+                if (a1 instanceof Import) {
+                    beanImport((Import) a1);
+                } else {
+                    beanImport(a1.annotationType().getAnnotation(Import.class));
+                }
+            }
+
+            //尝试注入属性
             beanInjectProperties(clz, bw.raw());
 
+            //构建小饼
             for (Method m : ClassWrap.get(bw.clz()).getMethods()) {
                 Bean m_an = m.getAnnotation(Bean.class);
 
@@ -108,15 +119,6 @@ public class AopContext extends BeanContainer {
 
             //添加bean形态处理
             addBeanShape(clz, bw, 0,clz);
-
-            //尝试导入
-            for (Annotation a1 : clz.getAnnotations()) {
-                if (a1 instanceof Import) {
-                    beanImport((Import) a1);
-                } else {
-                    beanImport(a1.annotationType().getAnnotation(Import.class));
-                }
-            }
 
             //注册到容器 //Configuration 不进入二次注册
             //beanRegister(bw,bw.name(),bw.typed());
@@ -297,6 +299,11 @@ public class AopContext extends BeanContainer {
      */
     public void beanImport(Import anno) {
         if (anno != null) {
+            //先导入属性源（cfg().loadAdd）//可能其它组件需要
+            for (String url : anno.propertySource()) {
+                cfg().loadAdd(url);
+            }
+
             //导入类（beanMake）
             for (Class<?> clz : anno.value()) {
                 beanMake(clz);
@@ -310,11 +317,6 @@ public class AopContext extends BeanContainer {
             //扫描包（beanScan）
             for (Class<?> src : anno.scanPackageClasses()) {
                 beanScan(src);
-            }
-
-            //导入属性源（cfg().loadAdd）
-            for (String url : anno.propertySource()) {
-                cfg().loadAdd(url);
             }
         }
     }
