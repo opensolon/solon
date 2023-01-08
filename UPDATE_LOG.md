@@ -10,6 +10,9 @@
 * 增加 更多友好的异常分类???
 * 增加 便利的原生编译机制
 
+#### 1.12.2
+* 增加 @Import::propertySource 导入属性源
+
 #### 1.12.1
 * 新增 fastdfs-solon-cloud-plugin 插件
 * 插件 file-s3-solon-plugin 增加内容大小获取
