@@ -67,7 +67,7 @@ public class RabbitConsumer {
     }
 
     /**
-     * 申明定时队列
+     * 申明定时队列（即死信队列）
      */
     private void queueDeclareReady() throws IOException {
         Map<String, Object> args = new HashMap<>();
