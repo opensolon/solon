@@ -416,7 +416,7 @@ public class SolonApp extends RouterWrapper {
             if (stopped) {
                 x.status(403);
             } else {
-                new FilterChainNode(filterList()).doFilter(x);
+                new FilterChainImpl(filterList()).doFilter(x);
 
                 if (x.getHandled() == false) { //@since: 1.9
                     if (x.status() <= 200 && x.attr("_MainHandler") == null) {//@since: 1.10

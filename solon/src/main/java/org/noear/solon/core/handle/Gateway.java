@@ -153,7 +153,7 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
     @Override
     public void handle(Context c) throws Throwable {
         try {
-            new FilterChainNode(filterList).doFilter(c);
+            new FilterChainImpl(filterList).doFilter(c);
         } catch (Throwable e) {
             c.setHandled(true); //停止处理
 

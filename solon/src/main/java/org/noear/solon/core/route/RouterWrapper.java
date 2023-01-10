@@ -82,6 +82,13 @@ public abstract class RouterWrapper implements HandlerSlots{
     }
 
     /**
+     * 添加路由拦截器（按先进后出策略执行）
+     * */
+    public void routerInterceptor(int index, RouterInterceptor interceptor){
+        routerHandler().addInterceptor(interceptor, index);
+    }
+
+    /**
      * 添加前置处理
      */
     public void before(Handler handler) {

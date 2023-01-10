@@ -7,6 +7,7 @@ import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.event.EventListener;
 import org.noear.solon.core.handle.*;
 import org.noear.solon.core.message.Listener;
+import org.noear.solon.core.route.RouterInterceptor;
 import org.noear.solon.core.util.GenericUtil;
 import org.noear.solon.core.util.RankEntity;
 import org.noear.solon.core.wrap.*;
@@ -219,6 +220,11 @@ public class AopContext extends BeanContainer {
         //Filter
         if (Filter.class.isAssignableFrom(clz)) {
             Solon.app().filter(index, bw.raw());
+        }
+
+        //RouterInterceptor
+        if(RouterInterceptor.class.isAssignableFrom(clz)){
+            Solon.app().routerInterceptor(index, bw.raw());
         }
     }
 

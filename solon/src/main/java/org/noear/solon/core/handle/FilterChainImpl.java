@@ -8,11 +8,11 @@ import java.util.List;
  * @author noear
  * @since 1.3
  * */
-public class FilterChainNode implements FilterChain {
+public class FilterChainImpl implements FilterChain {
     private final List<FilterEntity> filterList;
     private int index;
 
-    public FilterChainNode(List<FilterEntity> filterList) {
+    public FilterChainImpl(List<FilterEntity> filterList) {
         this.filterList = filterList;
         this.index = 0;
     }

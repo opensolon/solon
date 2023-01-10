@@ -5,9 +5,7 @@ import org.noear.solon.core.message.Listener;
 import org.noear.solon.core.message.ListenerHolder;
 import org.noear.solon.core.message.Session;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author noear
@@ -28,7 +26,6 @@ public class RouterDefault implements Router{
 
         routesL = new RoutingTableDefault<>();
     }
-
     /**
      * 添加路由关系 for Handler
      *
