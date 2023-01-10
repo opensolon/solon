@@ -35,7 +35,7 @@ public class XPluginImp implements Plugin {
         //加载一个配置
         StaticConfig.getCacheMaxAge();
 
-        //尝试添加默认静态资源地址
+        //1.尝试添加默认静态资源地址
         if (Utils.getResource(StaticConfig.RES_STATIC_LOCATION) != null) {
             StaticMappings.add("/", new ClassPathStaticRepository(StaticConfig.RES_STATIC_LOCATION));
         }
@@ -44,21 +44,8 @@ public class XPluginImp implements Plugin {
             StaticMappings.add("/", new ClassPathStaticRepository(StaticConfig.RES_WEB_INF_STATIC_LOCATION));
         }
 
-        //尝试启动静态代理（也可能在后面动态添加仓库）
 
-        //1.加载自定义的mime
-        NvMap mimeTypes = Solon.cfg().getXmap("solon.mime");
-        mimeTypes.forEach((k, v) -> {
-            StaticMimes.add("." + k, v);
-        });
-
-
-        //2.切换代理（让静态文件优先）
-        HandlerPipeline pipeline = new HandlerPipeline();
-        pipeline.next(new StaticResourceHandler()).next(Solon.app().handlerGet());
-        Solon.app().handlerSet(pipeline);
-
-        //3.添加印射
+        //2.添加印射
         List<Map> mapList = Solon.cfg().getBean(StaticConfig.PROP_MAPPINGS, ArrayList.class);
         if (mapList != null) {
             for (Map map : mapList) {
@@ -87,5 +74,19 @@ public class XPluginImp implements Plugin {
                 }
             }
         }
+
+        //尝试启动静态代理（也可能在后面动态添加仓库）
+
+        //3.加载自定义的mime
+        NvMap mimeTypes = Solon.cfg().getXmap("solon.mime");
+        mimeTypes.forEach((k, v) -> {
+            StaticMimes.add("." + k, v);
+        });
+
+
+        //4.切换代理（让静态文件优先）
+        HandlerPipeline pipeline = new HandlerPipeline();
+        pipeline.next(new StaticResourceHandler()).next(Solon.app().handlerGet());
+        Solon.app().handlerSet(pipeline);
     }
 }

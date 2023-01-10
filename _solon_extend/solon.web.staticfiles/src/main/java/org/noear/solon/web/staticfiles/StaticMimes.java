@@ -189,6 +189,9 @@ public class StaticMimes {
         mimeMap.put(".vsd", "application/vnd.visio");
         mimeMap.put(".wav", "audio/x-wav");
         mimeMap.put(".wbmp", "image/vnd.wap.wbmp");
+        mimeMap.put(".weba", "audio/webm");
+        mimeMap.put(".webm", "video/webm");
+        mimeMap.put(".webp", "image/webp");
         mimeMap.put(".wml", "text/vnd.wap.wml");
         mimeMap.put(".wmlc", "application/vnd.wap.wmlc");
         mimeMap.put(".wmls", "text/vnd.wap.wmlsc");
