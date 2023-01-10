@@ -12,6 +12,7 @@
 
 #### 1.12.2
 * 增加 @Import::propertySource 导入属性源
+* 增加 RouterInterceptor 接口
 
 #### 1.12.1
 * 新增 fastdfs-solon-cloud-plugin 插件
