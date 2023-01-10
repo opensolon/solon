@@ -69,7 +69,7 @@ Solon v1.12.2-M1
 * 没有 Spring，没有 Servlet，没有 JavaEE；独立的轻量生态
 
 
-## 架构图
+## 生态架构图
 
 <img src="solon_schema.png" width="600" />
 
