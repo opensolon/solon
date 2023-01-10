@@ -28,7 +28,7 @@ public class HandlerReceive implements Handler, MessageHandler {
     @Override
     public void handle(Context ctx) throws Throwable {
         try {
-            if (MethodType.HEAD.name.equals(ctx.method())) {
+            if (MethodType.HEAD.name.equals(ctx.method()) || ctx.paramMap().size() == 0) {
                 ctx.output("HEAD-OK");
                 return;
             }

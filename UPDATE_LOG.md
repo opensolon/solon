@@ -13,6 +13,8 @@
 #### 1.12.2
 * 增加 @Import::propertySource 导入属性源
 * 增加 RouterInterceptor 接口
+* 调整 water 的 /_run/msg 检测，将无参数情况视为健康检测
+* 修复 water 不能同步更新与配置的问题，//由 1.11.5 添加 tag 支持引起的
 
 #### 1.12.1
 * 新增 fastdfs-solon-cloud-plugin 插件
