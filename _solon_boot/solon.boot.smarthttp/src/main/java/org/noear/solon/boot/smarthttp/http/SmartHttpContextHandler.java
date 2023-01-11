@@ -11,10 +11,8 @@ import org.smartboot.http.server.HttpServerHandler;
 
 import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutorService;
 
 public class SmartHttpContextHandler extends HttpServerHandler {
-
 
     @Override
     public void handle(HttpRequest request, HttpResponse response, CompletableFuture<Object> future) throws IOException {

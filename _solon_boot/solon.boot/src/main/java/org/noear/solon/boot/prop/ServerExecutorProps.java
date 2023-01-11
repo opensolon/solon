@@ -41,7 +41,7 @@ public interface ServerExecutorProps {
      * */
     default ExecutorService getNioExecutor2(String namePrefix) {
         //二级执行器，core 为 0
-        return new ThreadPoolExecutor(0, getMaxThreads(false),
+        return new ThreadPoolExecutor(getCoreThreads(), getMaxThreads(false),
                 getIdleTimeout(), TimeUnit.MILLISECONDS,
                 new LinkedBlockingQueue<>(), //BlockingQueue //SynchronousQueue//LinkedBlockingQueue
                 new NamedThreadFactory(namePrefix));
