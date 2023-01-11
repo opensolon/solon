@@ -1,6 +1,8 @@
 package org.noear.solon.core.route;
 
 import org.noear.solon.core.handle.Context;
+import org.noear.solon.core.handle.Handler;
+import org.noear.solon.lang.Nullable;
 
 import java.util.List;
 
@@ -20,7 +22,7 @@ public class RouterInterceptorChainImpl implements RouterInterceptorChain {
     }
 
     @Override
-    public void doIntercept(Context ctx) throws Throwable {
-        interceptorList.get(index++).interceptor.doIntercept(ctx, this);
+    public void doIntercept(Context ctx, @Nullable Handler mainHandler) throws Throwable {
+        interceptorList.get(index++).interceptor.doIntercept(ctx, mainHandler, this);
     }
 }

@@ -1,6 +1,7 @@
 package org.noear.solon.core.route;
 
 import org.noear.solon.core.handle.*;
+import org.noear.solon.lang.Nullable;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -37,34 +38,6 @@ public class RouterHandler implements Handler, RouterInterceptor {
     }
 
 
-    private void handleDo(Context x) throws Throwable {
-        //可能上级链已完成处理
-        if (x.getHandled()) {
-            return;
-        }
-
-        Handler mainHandler = x.attr("_MainHandler");
-
-        try {
-            //前置处理（支持多代理）
-            handleMultiple(x, Endpoint.before);
-
-            //主体处理
-            if (x.getHandled() == false) {
-                //（仅支持唯一代理）
-                //（设定处理状态，便于 after 获取状态）
-                x.setHandled(handleMain(mainHandler, x));
-            }
-        } catch (Throwable e) {
-            if (x.errors == null) {
-                x.errors = e; //如果内部已经做了，就不需要了
-            }
-            throw e;
-        } finally {
-            //后置处理（支持多代理）
-            handleMultiple(x, Endpoint.after); //前后不能反 （后置处理由内部进行状态控制）
-        }
-    }
 
     /**
      * 唯一处理（用于主处理）
@@ -87,9 +60,37 @@ public class RouterHandler implements Handler, RouterInterceptor {
         }
     }
 
+
+    private void handleDo(Context x, Handler mainHandler) throws Throwable {
+        //可能上级链已完成处理
+        if (x.getHandled()) {
+            return;
+        }
+
+        try {
+            //前置处理（支持多代理）
+            handleMultiple(x, Endpoint.before);
+
+            //主体处理
+            if (x.getHandled() == false) {
+                //（仅支持唯一代理）
+                //（设定处理状态，便于 after 获取状态）
+                x.setHandled(handleMain(mainHandler, x));
+            }
+        } catch (Throwable e) {
+            if (x.errors == null) {
+                x.errors = e; //如果内部已经做了，就不需要了
+            }
+            throw e;
+        } finally {
+            //后置处理（支持多代理）
+            handleMultiple(x, Endpoint.after); //前后不能反 （后置处理由内部进行状态控制）
+        }
+    }
+
     @Override
-    public void doIntercept(Context ctx, RouterInterceptorChain chain) throws Throwable {
-        handleDo(ctx);
+    public void doIntercept(Context ctx, @Nullable Handler mainHandler, RouterInterceptorChain chain) throws Throwable {
+        handleDo(ctx, mainHandler);
     }
 
     @Override
@@ -108,6 +109,6 @@ public class RouterHandler implements Handler, RouterInterceptor {
         }
 
         //执行
-        new RouterInterceptorChainImpl(interceptorList).doIntercept(x);
+        new RouterInterceptorChainImpl(interceptorList).doIntercept(x, mainHandler);
     }
 }
