@@ -11,6 +11,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URLDecoder;
 import java.util.*;
+import java.util.regex.Pattern;
 
 public class ParameterFilter extends Filter {
     @Override
@@ -60,13 +61,16 @@ public class ParameterFilter extends Filter {
         }
     }
 
+    private static final Pattern pattern_and =  Pattern.compile("&");
+    private static final Pattern pattern_eq =  Pattern.compile("=");
+
     private void parseQuery(String query, Map<String, Object> parameters) throws UnsupportedEncodingException {
 
         if (query != null && query.length() > 0) {
-            String pairs[] = query.split("&");
+            String pairs[] = pattern_and.split(query); //query.split("&");
 
             for (String pair : pairs) {
-                String param[] = pair.split("=");
+                String param[] = pattern_eq.split(pair); //pair.split("=");
 
                 String key = null;
                 String value = null;
