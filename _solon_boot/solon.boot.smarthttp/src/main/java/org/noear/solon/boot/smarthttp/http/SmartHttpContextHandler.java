@@ -15,23 +15,16 @@ import java.util.concurrent.ExecutorService;
 
 public class SmartHttpContextHandler extends HttpServerHandler {
 
-    private ExecutorService executor;
-
-    public void setExecutor(ExecutorService executor) {
-        this.executor = executor;
-    }
 
     @Override
     public void handle(HttpRequest request, HttpResponse response, CompletableFuture<Object> future) throws IOException {
-        executor.submit(() -> {
-            try {
-                handleDo(request, response);
-            } catch (Throwable e) {
-                e.printStackTrace();
-            } finally {
-                future.complete(this);
-            }
-        });
+        try {
+            handleDo(request, response);
+        } catch (Throwable e) {
+            e.printStackTrace();
+        } finally {
+            future.complete(this);
+        }
     }
 
     private void handleDo(HttpRequest request, HttpResponse response){

@@ -2,10 +2,7 @@ package org.noear.solon.boot.prop;
 
 import org.noear.solon.core.util.NamedThreadFactory;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.SynchronousQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 /**
  * 服务执行属性
@@ -46,7 +43,7 @@ public interface ServerExecutorProps {
         //二级执行器，core 为 0
         return new ThreadPoolExecutor(0, getMaxThreads(false),
                 getIdleTimeout(), TimeUnit.MILLISECONDS,
-                new SynchronousQueue<>(), //BlockingQueue //SynchronousQueue
+                new LinkedBlockingQueue<>(), //BlockingQueue //SynchronousQueue//LinkedBlockingQueue
                 new NamedThreadFactory(namePrefix));
     }
 }

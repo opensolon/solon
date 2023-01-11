@@ -36,7 +36,7 @@ public class RouterListener implements Listener{
      * */
     @Override
     public void onOpen(Session session) {
-        executor.submit(() -> {
+        executor.execute(() -> {
             onOpen0(session);
         });
     }
@@ -70,7 +70,7 @@ public class RouterListener implements Listener{
         //
         //线程池处理，免得被卡住
         //
-        executor.submit(() -> {
+        executor.execute(() -> {
             onMessage0(session, message);
         });
     }
@@ -125,7 +125,7 @@ public class RouterListener implements Listener{
      * */
     @Override
     public void onClose(Session session) {
-        executor.submit(() -> {
+        executor.execute(() -> {
             onClose0(session);
         });
     }
@@ -152,7 +152,7 @@ public class RouterListener implements Listener{
      * */
     @Override
     public void onError(Session session, Throwable error) {
-        executor.submit(() -> {
+        executor.execute(() -> {
             onError0(session, error);
         });
     }

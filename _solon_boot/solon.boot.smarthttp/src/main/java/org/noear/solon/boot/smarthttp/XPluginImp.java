@@ -100,7 +100,6 @@ public final class XPluginImp implements Plugin {
         //HttpServerConfiguration
         EventBus.push(_config);
 
-        _handler.setExecutor(props.getNioExecutor2("smarthttp-"));
         _server.httpHandler(_handler);
 
         if (app.enableWebSocket()) {

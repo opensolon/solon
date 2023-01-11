@@ -40,7 +40,7 @@ class BioServer implements ServerLifecycle {
             Session session = BioSocketSession.get(socket);
             Solon.app().listener().onOpen(session);
 
-            executor.submit(() -> {
+            executor.execute(() -> {
                 while (true) {
                     if (socket.isClosed()) {
                         Solon.app().listener().onClose(session);
