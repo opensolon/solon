@@ -23,7 +23,7 @@ public class SmartHttpContextHandler extends HttpServerHandler {
 
     @Override
     public void handle(HttpRequest request, HttpResponse response, CompletableFuture<Object> future) throws IOException {
-        executor.execute(() -> {
+        executor.submit(() -> {
             try {
                 handleDo(request, response);
             } catch (Throwable e) {
