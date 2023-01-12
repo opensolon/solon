@@ -11,6 +11,7 @@ import java.util.concurrent.*;
  * @since 1.10
  */
 public interface ServerExecutorProps {
+    boolean isIoBound();
     /**
      * 核心线程数
      */
@@ -33,17 +34,6 @@ public interface ServerExecutorProps {
         return new ThreadPoolExecutor(getCoreThreads(), getMaxThreads(true),
                 getIdleTimeout(), TimeUnit.MILLISECONDS,
                 new SynchronousQueue<>(), //BlockingQueue //SynchronousQueue
-                new NamedThreadFactory(namePrefix));
-    }
-
-    /**
-     * 获取一个执行器（Nio 二级执行器）
-     * */
-    default ExecutorService getNioExecutor2(String namePrefix) {
-        //二级执行器，core 为 0
-        return new ThreadPoolExecutor(getCoreThreads(), getMaxThreads(false),
-                getIdleTimeout(), TimeUnit.MILLISECONDS,
-                new LinkedBlockingQueue<>(), //BlockingQueue //SynchronousQueue//LinkedBlockingQueue
                 new NamedThreadFactory(namePrefix));
     }
 }

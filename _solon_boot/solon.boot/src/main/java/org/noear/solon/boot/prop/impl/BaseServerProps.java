@@ -16,9 +16,10 @@ public abstract class BaseServerProps implements ServerSignalProps, ServerExecut
     private String PROP_WRAP_PORT = "server.@@.wrapPort";
     private String PROP_WRAP_HOST = "server.@@.wrapHost";
 
-    private String PROP_CORETHREADS = "server.@@.coreThreads";
-    private String PROP_MAXTHREADS = "server.@@.maxThreads";
-    private String PROP_IDLETIMEOUT = "server.@@.idleTimeout";
+    private String PROP_IO_BOUND = "server.@@.ioBound";
+    private String PROP_CORE_THREADS = "server.@@.coreThreads";
+    private String PROP_MAX_THREADS = "server.@@.maxThreads";
+    private String PROP_IDLE_TIMEOUT = "server.@@.idleTimeout";
 
     private String name;
     private int port;
@@ -26,6 +27,7 @@ public abstract class BaseServerProps implements ServerSignalProps, ServerExecut
     private int wrapPort;
     private String wrapHost;
 
+    private boolean ioBound;
     private int coreThreads;
     private int maxThreads;
     private long idleTimeout;
@@ -38,9 +40,10 @@ public abstract class BaseServerProps implements ServerSignalProps, ServerExecut
         PROP_WRAP_PORT = PROP_WRAP_PORT.replace("@@", signalName);
         PROP_WRAP_HOST = PROP_WRAP_HOST.replace("@@", signalName);
 
-        PROP_CORETHREADS = PROP_CORETHREADS.replace("@@", signalName);
-        PROP_MAXTHREADS = PROP_MAXTHREADS.replace("@@", signalName);
-        PROP_IDLETIMEOUT = PROP_IDLETIMEOUT.replace("@@", signalName);
+        PROP_IO_BOUND = PROP_IO_BOUND.replace("@@", signalName);
+        PROP_CORE_THREADS = PROP_CORE_THREADS.replace("@@", signalName);
+        PROP_MAX_THREADS = PROP_MAX_THREADS.replace("@@", signalName);
+        PROP_IDLE_TIMEOUT = PROP_IDLE_TIMEOUT.replace("@@", signalName);
 
         //
         initSignalProps(portBase);
@@ -120,10 +123,11 @@ public abstract class BaseServerProps implements ServerSignalProps, ServerExecut
     ////////////////////////////////
 
     private void initExecutorProps(){
-        idleTimeout = Solon.cfg().getLong(PROP_IDLETIMEOUT, 0L);
+        ioBound = Solon.cfg().getBool(PROP_IO_BOUND, true);
+        idleTimeout = Solon.cfg().getLong(PROP_IDLE_TIMEOUT, 0L);
 
         //支持：16 或 x16（倍数）
-        String coreThreadsStr = Solon.cfg().get(PROP_CORETHREADS);
+        String coreThreadsStr = Solon.cfg().get(PROP_CORE_THREADS);
         if (Utils.isNotEmpty(coreThreadsStr)) {
             if (coreThreadsStr.startsWith("x")) {
                 //倍数模式
@@ -138,7 +142,7 @@ public abstract class BaseServerProps implements ServerSignalProps, ServerExecut
         }
 
         //支持：16 或 x16（倍数）
-        String maxThreadsStr = Solon.cfg().get(PROP_MAXTHREADS);
+        String maxThreadsStr = Solon.cfg().get(PROP_MAX_THREADS);
         if (Utils.isNotEmpty(maxThreadsStr)) {
             if (maxThreadsStr.startsWith("x")) {
                 //倍数模式
@@ -151,6 +155,11 @@ public abstract class BaseServerProps implements ServerSignalProps, ServerExecut
                 maxThreads = Integer.parseInt(maxThreadsStr);
             }
         }
+    }
+
+    @Override
+    public boolean isIoBound() {
+        return ioBound;
     }
 
     /**

@@ -65,7 +65,11 @@ class UndertowServer extends UndertowServerBase implements ServerLifecycle {
         }
 
         builder.setIoThreads(props.getCoreThreads());
-        builder.setWorkerThreads(props.getMaxThreads(false));
+        if(props.isIoBound()) {
+            builder.setWorkerThreads(props.getMaxThreads(true));
+        }else{
+            builder.setWorkerThreads(props.getMaxThreads(false));
+        }
 
 
         if(Utils.isEmpty(host)){

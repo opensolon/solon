@@ -65,6 +65,10 @@ public final class XPluginImp implements Plugin {
 
         SmartHttpContextHandler _handler = new SmartHttpContextHandler();
 
+        if(props.isIoBound()) {
+            //如果是io密集型的，加二段线程池
+            _handler.setExecutor(props.getBioExecutor("smarthttp-"));
+        }
 
         _server = new HttpBootstrap();
         HttpServerConfiguration _config = _server.configuration();

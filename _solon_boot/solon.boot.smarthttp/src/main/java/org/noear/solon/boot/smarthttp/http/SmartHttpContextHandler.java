@@ -11,11 +11,27 @@ import org.smartboot.http.server.HttpServerHandler;
 
 import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
 
 public class SmartHttpContextHandler extends HttpServerHandler {
+    private ExecutorService executor;
+
+    public void setExecutor(ExecutorService executor) {
+        this.executor = executor;
+    }
 
     @Override
     public void handle(HttpRequest request, HttpResponse response, CompletableFuture<Object> future) throws IOException {
+        if (executor == null) {
+            handle0(request, response, future);
+        } else {
+            executor.execute(() -> {
+                handle0(request, response, future);
+            });
+        }
+    }
+
+    private void handle0(HttpRequest request, HttpResponse response, CompletableFuture<Object> future){
         try {
             handleDo(request, response);
         } catch (Throwable e) {
