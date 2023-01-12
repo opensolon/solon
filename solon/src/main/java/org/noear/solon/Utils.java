@@ -24,6 +24,8 @@ import java.util.regex.Pattern;
  * */
 @Note("内部专用工具（外部项目不建议使用，随时可能会变动）")
 public class Utils {
+    public static final String TAG_classpath = "classpath:";
+
     private static final FileNameMap mimeMap = URLConnection.getFileNameMap();
     /**
      * @deprecated 1.10

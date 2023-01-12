@@ -4,6 +4,8 @@ import org.noear.solon.SolonProps;
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.PropertySource;
 
+import java.io.File;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.*;
 import java.util.function.BiConsumer;
@@ -327,7 +329,15 @@ public class Props extends Properties {
         }
 
         for (String url : propertySource.value()) {
-            loadAdd(url);
+            if (url.startsWith(Utils.TAG_classpath)) {
+                loadAdd(url.substring(Utils.TAG_classpath.length()));
+            } else {
+                try {
+                    loadAdd(new File(url).toURI().toURL());
+                } catch (MalformedURLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
         }
     }
 

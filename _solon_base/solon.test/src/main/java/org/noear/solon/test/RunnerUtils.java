@@ -25,7 +25,6 @@ import java.util.*;
  * @since 1.11
  */
 public class RunnerUtils {
-    public static final String TAG_classpath = "classpath:";
     private static Map<Class<?>, AopContext> appCached = new HashMap<>();
 
     public static Class<?> getMainClz(SolonTest anno, Class<?> klass) {
@@ -59,8 +58,8 @@ public class RunnerUtils {
         }
 
         for (String uri : propertySource.value()) {
-            if (uri.startsWith(TAG_classpath)) {
-                context.cfg().loadAdd(uri.substring(TAG_classpath.length()));
+            if (uri.startsWith(Utils.TAG_classpath)) {
+                context.cfg().loadAdd(uri.substring(Utils.TAG_classpath.length()));
             } else {
                 try {
                     context.cfg().loadAdd(new File(uri).toURI().toURL());
