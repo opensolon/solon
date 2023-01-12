@@ -70,9 +70,9 @@ public class TestApp {
         }).onAppInitEnd(e -> {
             StaticMappings.add("/", new ExtendStaticRepository());
             System.out.println("1.初始化完成");
-        }).onPluginLoadEnd(e -> {
+        }).onAppPluginLoadEnd(e -> {
             System.out.println("2.插件加载完成了");
-        }).onBeanLoadEnd(e -> {
+        }).onAppBeanLoadEnd(e -> {
             System.out.println("3.Bean扫描并加载完成");
         }).onAppLoadEnd(e -> {
             System.out.println("4.应用全加载完成了");

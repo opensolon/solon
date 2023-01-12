@@ -40,6 +40,12 @@ public class SolonBuilder {
      * 订阅插件加载结束事件
      * */
     @Note("2.")
+    public SolonBuilder onAppPluginLoadEnd(EventListener<AppPluginLoadEndEvent> handler) {
+        return onEvent(AppPluginLoadEndEvent.class, handler);
+    }
+
+    @Note("2.")
+    @Deprecated
     public SolonBuilder onPluginLoadEnd(EventListener<PluginLoadEndEvent> handler) {
         return onEvent(PluginLoadEndEvent.class, handler);
     }
@@ -48,6 +54,12 @@ public class SolonBuilder {
      * 订阅Bean加载结束事件
      * */
     @Note("3.")
+    public SolonBuilder onAppBeanLoadEnd(EventListener<AppBeanLoadEndEvent> handler) {
+        return onEvent(AppBeanLoadEndEvent.class, handler);
+    }
+
+    @Note("3.")
+    @Deprecated
     public SolonBuilder onBeanLoadEnd(EventListener<BeanLoadEndEvent> handler) {
         return onEvent(BeanLoadEndEvent.class, handler);
     }

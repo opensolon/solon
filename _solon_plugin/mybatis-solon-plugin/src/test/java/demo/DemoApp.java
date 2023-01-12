@@ -13,7 +13,7 @@ public class DemoApp {
                     //添加插件
                     //c.addInterceptor();
                 })
-                .onPluginLoadEnd(e->{
+                .onAppPluginLoadEnd(e->{
                     //重新定义 SqlSessionFactoryBuilder（没有需要，最好别动它...）
                     //Aop.wrapAndPut(SqlSessionFactoryBuilder.class, new SqlSessionFactoryBuilderImpl());
                 })
