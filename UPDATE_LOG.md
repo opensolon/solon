@@ -16,7 +16,7 @@
 * 增加 server.???.ioBound 是否为io密集型配置支持（默认为true）
 * 增加 solon.app.safeStop 是否安全停止配置支持（之前只能用接口）
 * 调整 water 的 /_run/msg 检测，将无参数情况视为健康检测
-* 修复 water 不能同步更新与配置的问题，//由 1.11.5 添加 tag 支持引起的
+* 修复 water 适配不能同步更新与配置的问题，//由 1.11.5 添加 tag 支持引起的
 * 升级 sa-token 为 1.34.0
 * 升级 sqltoy 为 5.2.30
 * 升级 water.client 为 2.9.3
