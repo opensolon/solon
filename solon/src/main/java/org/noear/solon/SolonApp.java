@@ -729,6 +729,7 @@ public class SolonApp extends RouterWrapper {
     /**
      * 是否已启用安全停止
      */
+    @Deprecated
     public boolean enableSafeStop() {
         return _enableSafeStop;
     }
@@ -736,6 +737,7 @@ public class SolonApp extends RouterWrapper {
     /**
      * 启用安全停止
      */
+    @Deprecated
     public void enableSafeStop(boolean enable) {
         _enableSafeStop = enable;
     }

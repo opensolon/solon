@@ -42,6 +42,8 @@ public final class SolonProps extends Props {
     private boolean isSetupMode;//是否为安装蕈式
     private boolean isAloneMode;//是否为独立蕈式（即独立运行模式）
 
+    private boolean enableSafeStop;
+
     private String env;
 
     private Locale locale;
@@ -173,6 +175,9 @@ public final class SolonProps extends Props {
         appGroup = getArg("app.group"); //6.1.应用组
         appNamespace = getArg("app.namespace"); //6.1.应用组
         appTitle = getArg("app.title"); //6.1.应用标题
+
+        //9.特性控制
+        enableSafeStop = "1".equals(getArg("app.safeStop")); //是否安全停止
 
         return this;
     }
@@ -548,5 +553,17 @@ public final class SolonProps extends Props {
      */
     public void isWhiteMode(boolean isWhiteMode) {
         this.isWhiteMode = isWhiteMode;
+    }
+
+
+    /**
+     * 是否启用安全停止
+     * */
+    public boolean enableSafeStop(){
+        return enableSafeStop || Solon.app().enableSafeStop();
+    }
+
+    public void enableSafeStop(boolean enable){
+        enableSafeStop = enable;
     }
 }

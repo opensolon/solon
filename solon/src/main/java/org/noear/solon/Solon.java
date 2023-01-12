@@ -168,9 +168,9 @@ public class Solon {
 
 
         //5.初始化安全停止
-        stopDelay = Solon.cfg().getInt("solon.stop.delay", 10);
+        stopDelay = app.cfg().getInt("solon.stop.delay", 10);
 
-        if (app.enableSafeStop()) {
+        if (app.cfg().enableSafeStop()) {
             //添加关闭勾子
             Runtime.getRuntime().addShutdownHook(new Thread(() -> Solon.stop0(false, stopDelay)));
         } else {

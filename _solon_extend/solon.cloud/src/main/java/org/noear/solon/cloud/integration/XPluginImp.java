@@ -82,7 +82,7 @@ public class XPluginImp implements Plugin {
 
     @Override
     public void prestop() throws Throwable {
-        if (Solon.app().enableSafeStop() == false) {
+        if (Solon.cfg().enableSafeStop() == false) {
             return;
         }
 
