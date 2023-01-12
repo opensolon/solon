@@ -1,7 +1,7 @@
 <h1 align="center" style="text-align:center;">
 <img src="solon_icon.png" width="128" />
 <br />
-Solon v1.12.2-M2
+Solon v1.12.2
 </h1>
 <p align="center">
 	<strong>更现代感的，轻量级应用开发框架</strong>
@@ -79,7 +79,7 @@ Solon v1.12.2-M2
 <parent>
     <groupId>org.noear</groupId>
     <artifactId>solon-parent</artifactId>
-    <version>1.12.2-M2</version>
+    <version>1.12.2</version>
 </parent>
 
 <dependencies>

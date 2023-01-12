@@ -19,6 +19,7 @@
 * 修复 water 不能同步更新与配置的问题，//由 1.11.5 添加 tag 支持引起的
 * 升级 sa-token 为 1.34.0
 * 升级 sqltoy 为 5.2.30
+* 升级 water.client 为 2.9.3
 
 #### 1.12.1
 * 新增 fastdfs-solon-cloud-plugin 插件
