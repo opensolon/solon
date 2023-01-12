@@ -91,6 +91,9 @@ public class AopContext extends BeanContainer {
 
         //注册 @Configuration 构建器
         beanBuilderAdd(Configuration.class, (clz, bw, anno) -> {
+            //尝试导入注解配置（先导）//v1.12
+            cfg().loadAdd(clz.getAnnotation(PropertySource.class));
+
             //尝试导入（可能会导入属性源，或小饼依赖的组件）
             for (Annotation a1 : clz.getAnnotations()) {
                 if (a1 instanceof Import) {
@@ -99,6 +102,7 @@ public class AopContext extends BeanContainer {
                     beanImport(a1.annotationType().getAnnotation(Import.class));
                 }
             }
+
 
             //尝试注入属性
             beanInjectProperties(clz, bw.raw());
@@ -305,11 +309,6 @@ public class AopContext extends BeanContainer {
      */
     public void beanImport(Import anno) {
         if (anno != null) {
-            //先导入属性源（cfg().loadAdd）//可能其它组件需要
-            for (String url : anno.propertySource()) {
-                cfg().loadAdd(url);
-            }
-
             //导入类（beanMake）
             for (Class<?> clz : anno.value()) {
                 beanMake(clz);

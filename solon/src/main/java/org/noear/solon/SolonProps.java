@@ -1,5 +1,6 @@
 package org.noear.solon;
 
+import org.noear.solon.annotation.PropertySource;
 import org.noear.solon.core.*;
 import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.core.util.PluginUtil;
@@ -115,7 +116,12 @@ public final class SolonProps extends Props {
             loadInit(Utils.getResource("app-" + env + ".yml"), sysPropOrg);
         }
 
-        //4.3.加载扩展配置 solon.config //or solon.extend.config
+
+        //4.3.加载注解配置（优于固定配置）/v1.12
+        loadAdd(source.getAnnotation(PropertySource.class));
+
+
+        //4.4.加载扩展配置 solon.config //or solon.extend.config
         String extConfig = getArg("config");
         if (Utils.isEmpty(extConfig)) {
             //@Deprecated

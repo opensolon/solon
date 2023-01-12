@@ -45,8 +45,4 @@ public @interface Import {
      * 扫描包（beanScan）
      * */
     Class<?>[] scanPackageClasses() default {};
-    /**
-     * 导入属性源（cfg().loadAdd）
-     * */
-    String[] propertySource() default {};
 }

@@ -2,6 +2,7 @@ package org.noear.solon.core;
 
 import org.noear.solon.SolonProps;
 import org.noear.solon.Utils;
+import org.noear.solon.annotation.PropertySource;
 
 import java.net.URL;
 import java.util.*;
@@ -317,6 +318,16 @@ public class Props extends Properties {
             loadAdd(Utils.getResource(url));
         } else {
             loadAdd(Utils.getResource(classLoader, url));
+        }
+    }
+
+    public void loadAdd(PropertySource propertySource) {
+        if (propertySource == null) {
+            return;
+        }
+
+        for (String url : propertySource.value()) {
+            loadAdd(url);
         }
     }
 

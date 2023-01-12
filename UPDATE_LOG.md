@@ -11,7 +11,7 @@
 * 增加 便利的原生编译机制
 
 #### 1.12.2
-* 增加 @Import::propertySource 导入属性源
+* 增加 @PropertySource 导入属性资源注解（以前只能用接口导入）
 * 增加 RouterInterceptor 接口
 * 增加 server.???.ioBound 是否为io密集型配置支持（默认为true）
 * 增加 solon.app.safeStop 是否安全停止配置支持（之前只能用接口）

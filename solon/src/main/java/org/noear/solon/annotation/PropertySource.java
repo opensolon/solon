@@ -1,15 +1,15 @@
-package org.noear.solon.test.annotation;
+package org.noear.solon.annotation;
 
 import java.lang.annotation.*;
 
 /**
  * @author noear
- * @since 1.10
+ * @since 1.12
  */
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Inherited
-public @interface TestPropertySource {
+public @interface PropertySource {
     String[] value();
 }
