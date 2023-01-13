@@ -11,8 +11,9 @@
 * 增加 便利的原生编译机制
 
 #### 1.12.3
-* TestRollback 可能有问题？？？
+* 修复 solon.test :: @TestRollback 事务回滚坏掉的问题（v1.12.0 出现的）
 * 增加 sa-token 拦截的新适配方式，旧的标为弃用
+* 增加 solon.serialization json 适配插件的快捷配置支持
 
 #### 1.12.2
 * 增加 @PropertySource 导入属性资源注解（以前只能用接口导入）
