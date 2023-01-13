@@ -1,7 +1,7 @@
 package demo2;
 
 import cn.dev33.satoken.router.SaRouter;
-import cn.dev33.satoken.solon.integration.SaTokenPathInterceptor;
+import cn.dev33.satoken.solon.integration.SaTokenInterceptor;
 import cn.dev33.satoken.stp.StpUtil;
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.Bean;
@@ -12,9 +12,9 @@ import org.noear.solon.annotation.Configuration;
  */
 @Configuration
 public class Config {
-    @Bean
-    public void saTokenPathInterceptor() {
-        Solon.app().before(new SaTokenPathInterceptor()
+    @Bean(index = -100)
+    public SaTokenInterceptor saTokenInterceptor() {
+        return new SaTokenInterceptor()
                 // 指定 [拦截路由] 与 [放行路由]
                 .addInclude("/**").addExclude("/favicon.ico")
 
@@ -35,13 +35,12 @@ public class Config {
                     System.out.println(e.getMessage());
                     StpUtil.login(123);
                     return e.getMessage();
-                })
-        );
+                });
     }
 
     @Bean
-    public void saTokenPathInterceptor2() {
-        Solon.app().before((ctx) -> {
+    public void saTokenPathInterceptor() {
+        Solon.app().before(-100, (ctx) -> {
             SaRouter.match("/**", StpUtil::checkLogin);
             // 根据路由划分模块，不同模块不同鉴权
             SaRouter.match("/user/**", r -> StpUtil.checkPermission("user"));
