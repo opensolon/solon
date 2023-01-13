@@ -11,11 +11,11 @@ import org.noear.solon.core.handle.Render;
 public interface JsonRenderFactory {
     /**
      * 添加数据转换器（用于简单场景）
-     * */
+     */
     <T> void addConvertor(Class<T> clz, JsonConverter<T> converter);
 
     /**
      * 创建渲染器
-     * */
+     */
     Render create();
 }

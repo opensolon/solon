@@ -1,6 +1,5 @@
 package org.noear.solon.serialization.snack3;
 
-import org.noear.snack.core.Feature;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.AopContext;
@@ -10,6 +9,9 @@ import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.RenderManager;
 import org.noear.solon.serialization.prop.JsonProps;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.TimeZone;
 
 public class XPluginImp implements Plugin {
@@ -37,12 +39,15 @@ public class XPluginImp implements Plugin {
 
     private void bindProps(SnackRenderFactory factory, JsonProps jsonProps) {
         if (Utils.isNotEmpty(jsonProps.dateAsFormat)) {
-            factory.config().add(Feature.WriteDateUseFormat);
-            factory.config().setDateFormat(jsonProps.dateAsFormat);
+            factory.addConvertor(Date.class, e -> {
+                DateFormat df = new SimpleDateFormat(jsonProps.dateAsFormat);
 
-            if (Utils.isNotEmpty(jsonProps.dateAsTimeZone)) {
-                factory.config().setTimeZone(TimeZone.getTimeZone(jsonProps.dateAsTimeZone));
-            }
+                if (Utils.isNotEmpty(jsonProps.dateAsTimeZone)) {
+                    df.setTimeZone(TimeZone.getTimeZone(jsonProps.dateAsTimeZone));
+                }
+
+                return df.format(e);
+            });
         }
 
         if (jsonProps.longAsString) {

@@ -10,7 +10,9 @@ import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.RenderManager;
 import org.noear.solon.serialization.prop.JsonProps;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.TimeZone;
 
 public class XPluginImp implements Plugin {
@@ -39,12 +41,15 @@ public class XPluginImp implements Plugin {
 
     private void bindProps(JacksonRenderFactory factory, JsonProps jsonProps) {
         if (Utils.isNotEmpty(jsonProps.dateAsFormat)) {
-            factory.config().configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-            factory.config().setDateFormat(new SimpleDateFormat(jsonProps.dateAsFormat));
+            factory.addConvertor(Date.class, e -> {
+                DateFormat df = new SimpleDateFormat(jsonProps.dateAsFormat);
 
-            if (Utils.isNotEmpty(jsonProps.dateAsTimeZone)) {
-                factory.config().setTimeZone(TimeZone.getTimeZone(jsonProps.dateAsTimeZone));
-            }
+                if (Utils.isNotEmpty(jsonProps.dateAsTimeZone)) {
+                    df.setTimeZone(TimeZone.getTimeZone(jsonProps.dateAsTimeZone));
+                }
+
+                return df.format(e);
+            });
         }
 
         if (jsonProps.longAsString) {
