@@ -1,18 +1,13 @@
 package org.noear.solon.serialization.fastjson;
 
 import org.noear.solon.Solon;
-import org.noear.solon.Utils;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Bridge;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.RenderManager;
 import org.noear.solon.serialization.prop.JsonProps;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.TimeZone;
+import org.noear.solon.serialization.prop.JsonPropsUtil;
 
 public class XPluginImp implements Plugin {
     public static boolean output_meta = false;
@@ -23,7 +18,7 @@ public class XPluginImp implements Plugin {
         JsonProps jsonProps = JsonProps.create(context);
 
         //绑定属性
-        bindProps(FastjsonRenderFactory.global, jsonProps);
+        JsonPropsUtil.apply(FastjsonRenderFactory.global, jsonProps);
 
         //事件扩展
         EventBus.push(FastjsonRenderFactory.global);
@@ -38,29 +33,4 @@ public class XPluginImp implements Plugin {
         Bridge.actionExecutorAdd(executor);
     }
 
-    private void bindProps(FastjsonRenderFactory factory, JsonProps jsonProps){
-        if (Utils.isNotEmpty(jsonProps.dateAsFormat)) {
-            factory.addConvertor(Date.class, e -> {
-                DateFormat df = new SimpleDateFormat(jsonProps.dateAsFormat);
-
-                if (Utils.isNotEmpty(jsonProps.dateAsTimeZone)) {
-                    df.setTimeZone(TimeZone.getTimeZone(jsonProps.dateAsTimeZone));
-                }
-
-                return df.format(e);
-            });
-        }
-
-        if (jsonProps.longAsString) {
-            factory.addConvertor(Long.class, e -> String.valueOf(e));
-        }
-
-        if (jsonProps.intAsString) {
-            factory.addConvertor(Integer.class, e -> String.valueOf(e));
-        }
-
-        if (jsonProps.boolAsInt) {
-            factory.addConvertor(Boolean.class, e -> (e ? 1 : 0));
-        }
-    }
 }
