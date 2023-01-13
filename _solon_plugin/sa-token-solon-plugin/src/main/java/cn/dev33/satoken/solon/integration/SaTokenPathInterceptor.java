@@ -8,6 +8,7 @@ import cn.dev33.satoken.filter.SaFilterAuthStrategy;
 import cn.dev33.satoken.filter.SaFilterErrorStrategy;
 import cn.dev33.satoken.router.SaRouter;
 import cn.dev33.satoken.strategy.SaStrategy;
+import org.noear.solon.annotation.Note;
 import org.noear.solon.core.handle.Action;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Handler;
@@ -23,6 +24,7 @@ import java.util.List;
  * @author noear
  * @since 1.10
  */
+@Note("推荐：由 SaTokenInterceptor 替代")
 @Deprecated
 public class SaTokenPathInterceptor implements Handler {
 	/**
