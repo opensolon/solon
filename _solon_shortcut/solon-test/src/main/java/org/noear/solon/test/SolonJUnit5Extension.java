@@ -25,7 +25,7 @@ public class SolonJUnit5Extension implements TestInstanceFactory {
 
             //create
             Object tmp = Utils.newInstance(factory.getTestClass());
-            RunnerUtils.initTestTarget(aopContext, tmp);
+            tmp = RunnerUtils.initTestTarget(aopContext, tmp);
 
             return tmp;
         } catch (Throwable e) {

@@ -60,7 +60,9 @@ public class TestRollbackInterceptor implements Interceptor {
             });
         } catch (Throwable e) {
             e = Utils.throwableUnwrap(e);
-            if (e instanceof TestRollbackException == false) {
+            if (e instanceof TestRollbackException) {
+                System.out.println("@TestRollback: the transaction has been rolled back!");
+            } else {
                 throw e;
             }
         }
