@@ -169,9 +169,15 @@ public class SaTokenPathInterceptor implements Handler {
 	@Override
 	public void handle(Context ctx) throws Throwable {
 		try {
-			//注解处理
 			Action action = ctx.action();
 
+			//1.路径规则处理
+			SaRouter.match(includeList).notMatch(excludeList).check(r -> {
+				beforeAuth.run(action);
+				auth.run(action);
+			});
+
+			//2.验证注解处理
 			if(isAnnotation && action != null){
 				// 获取此请求对应的 Method 处理函数
 				Method method = action.method().getMethod();
@@ -184,12 +190,6 @@ public class SaTokenPathInterceptor implements Handler {
 				// 注解校验
 				SaStrategy.me.checkMethodAnnotation.accept(method);
 			}
-
-			//路径规则处理
-			SaRouter.match(includeList).notMatch(excludeList).check(r -> {
-				beforeAuth.run(action);
-				auth.run(action);
-			});
 		} catch (StopMatchException e) {
 
 		} catch (SaTokenException e) {

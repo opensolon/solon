@@ -171,10 +171,15 @@ public class SaTokenFilter implements Filter { //之所以改名，为了跟 SaT
 		try {
 			//查找当前主处理
 			Handler mainHandler = Solon.app().router().matchMain(ctx);
-
-			//注解处理
 			Action action = (mainHandler instanceof Action ? (Action) mainHandler : null);
 
+			//1.路径规则处理（包括了静态文件）
+			SaRouter.match(includeList).notMatch(excludeList).check(r -> {
+				beforeAuth.run(mainHandler);
+				auth.run(mainHandler);
+			});
+
+			//2.验证注解处理
 			if (isAnnotation && action != null) {
 				// 获取此请求对应的 Method 处理函数
 				Method method = action.method().getMethod();
@@ -187,12 +192,6 @@ public class SaTokenFilter implements Filter { //之所以改名，为了跟 SaT
 				// 注解校验
 				SaStrategy.me.checkMethodAnnotation.accept(method);
 			}
-
-			//路径规则处理（包括了静态文件）
-			SaRouter.match(includeList).notMatch(excludeList).check(r -> {
-				beforeAuth.run(mainHandler);
-				auth.run(mainHandler);
-			});
 		} catch (StopMatchException e) {
 
 		} catch (SaTokenException e) {
