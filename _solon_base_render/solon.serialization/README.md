@@ -4,9 +4,9 @@ Json 序列化输出快捷配置：
 
 ```yaml
 solon.serialization.json:
-  dateAsTimeZone: 'GMT+8'
-  dateAsFormat: 'yyyy-MM-dd HH:mm:ss'
-  longAsString: true
-  intAsString: true
-  boolAsInt: true
+  dateAsFormat: 'yyyy-MM-dd HH:mm:ss' #配置日期格式（默认输出为时间戳）
+  dateAsTimeZone: 'GMT+8' #配置时区
+  longAsString: true #将long型转为字符串输出 （默认为false）
+  intAsString: false #将int型转为字符串输出 （默认为false）
+  boolAsInt: false   #将bool型转为字符串输出 （默认为false）
 ```
