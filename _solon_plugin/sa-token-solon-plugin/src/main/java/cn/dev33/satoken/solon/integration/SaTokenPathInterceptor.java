@@ -169,7 +169,7 @@ public class SaTokenPathInterceptor implements Handler {
 	@Override
 	public void handle(Context ctx) throws Throwable {
 		try {
-			//注处处理
+			//注解处理
 			Action action = ctx.action();
 
 			if(isAnnotation && action != null){
@@ -190,7 +190,6 @@ public class SaTokenPathInterceptor implements Handler {
 				beforeAuth.run(action);
 				auth.run(action);
 			});
-
 		} catch (StopMatchException e) {
 
 		} catch (SaTokenException e) {
