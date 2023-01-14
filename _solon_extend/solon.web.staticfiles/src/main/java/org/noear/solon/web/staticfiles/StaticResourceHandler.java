@@ -105,14 +105,14 @@ public class StaticResourceHandler implements Handler {
      * 尝试查找路径的后缀名
      */
     private String findByExtName(String path) {
-        int pos = path.lastIndexOf(35);
+        int pos = path.lastIndexOf(35); //'#'
         if (pos > 0) {
             path = path.substring(0, pos - 1);
         }
 
-        pos = path.lastIndexOf(46);
-        pos = Math.max(pos, path.lastIndexOf(47));
-        pos = Math.max(pos, path.lastIndexOf(63));
+        pos = path.lastIndexOf(46); //'.'
+        pos = Math.max(pos, path.lastIndexOf(47)); //'/'
+        pos = Math.max(pos, path.lastIndexOf(63)); //'?'
 
         if (pos != -1 && path.charAt(pos) == '.') {
             return path.substring(pos).toLowerCase();

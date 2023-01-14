@@ -57,6 +57,7 @@ public class StaticMimes {
         mimeMap.put(".html", "text/html");
         mimeMap.put(".ief", "image/ief");
         mimeMap.put(".ico", "image/x-icon");
+        mimeMap.put(".icon", "image/x-icon");
         mimeMap.put(".jad", "text/vnd.sun.j2me.app-descriptor");
         mimeMap.put(".jar", "application/java-archive");
         mimeMap.put(".java", "text/x-java-source");
