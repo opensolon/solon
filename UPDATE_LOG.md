@@ -13,7 +13,9 @@
 #### 1.12.3
 * 修复 solon.test :: @TestRollback 事务回滚坏掉的问题（v1.12.0 出现的）
 * 增加 sa-token 拦截的新适配方式，旧的标为弃用
+* 增加 sa-token-dao json 序列化适配（现在有 base64 + json）
 * 增加 solon.serialization json 适配插件的快捷配置支持
+* 调整 安全停止时由 403 改为 503 状态码
 
 #### 1.12.2
 * 增加 @PropertySource 导入属性资源注解（以前只能用接口导入）
