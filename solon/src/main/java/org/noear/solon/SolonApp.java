@@ -414,7 +414,7 @@ public class SolonApp extends RouterWrapper {
             ContextUtil.currentSet(x);
 
             if (stopped) {
-                x.status(403);
+                x.status(503);
             } else {
                 new FilterChainImpl(filterList()).doFilter(x);
 
