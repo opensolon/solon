@@ -34,6 +34,12 @@
 
         <dependency>
             <groupId>org.noear</groupId>
+            <artifactId>snack3</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.noear</groupId>
             <artifactId>solon.auth</artifactId>
             <scope>test</scope>
         </dependency>
