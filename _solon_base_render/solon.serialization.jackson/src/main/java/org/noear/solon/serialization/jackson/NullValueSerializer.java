@@ -72,9 +72,6 @@ public class NullValueSerializer extends JsonSerializer<Object> {
             }
         }
 
-        if (jsonProps.nullAsWriteable) {
-            gen.writeNull();
-            return;
-        }
+        gen.writeNull();
     }
 }
