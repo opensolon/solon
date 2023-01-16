@@ -80,7 +80,7 @@ public class XPluginImp implements Plugin {
 
         //@Db("db1") UserMapper ;
         if (varH.getType().isInterface()) {
-            DalSession accessor = new DalSession(new DynamicConnectionImpl(ds), dalRegistry, null);
+            DalSession accessor = new DalSession(new DynamicConnectionImpl(ds), dalRegistry);
 
             if (clz == BaseMapper.class) {
                 Object obj = accessor.createBaseMapper((Class<?>) varH.getGenericType().getActualTypeArguments()[0]);
