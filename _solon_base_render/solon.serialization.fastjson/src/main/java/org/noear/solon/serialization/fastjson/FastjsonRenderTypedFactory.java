@@ -12,12 +12,10 @@ import org.noear.solon.serialization.StringSerializerRender;
  * @since 1.5
  */
 public class FastjsonRenderTypedFactory extends FastjsonRenderFactoryBase {
-    public static final FastjsonRenderTypedFactory global = new FastjsonRenderTypedFactory();
-
     private SerializeConfig config;
     private SerializerFeature[] features;
 
-    private FastjsonRenderTypedFactory(){
+    public FastjsonRenderTypedFactory(){
         features = new SerializerFeature[]{
                 SerializerFeature.BrowserCompatible,
                 SerializerFeature.WriteClassName,

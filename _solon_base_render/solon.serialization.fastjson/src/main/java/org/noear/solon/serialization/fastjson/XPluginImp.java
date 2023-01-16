@@ -18,20 +18,33 @@ public class XPluginImp implements Plugin {
         output_meta = Solon.cfg().getInt("solon.output.meta", 0) > 0;
         JsonProps jsonProps = JsonProps.create(context);
 
+        //::renderFactory
         //绑定属性
-        applyProps(FastjsonRenderFactory.global, jsonProps);
+        FastjsonRenderFactory renderFactory = new FastjsonRenderFactory();
+        applyProps(renderFactory, jsonProps);
 
         //事件扩展
-        EventBus.push(FastjsonRenderFactory.global);
+        context.wrapAndPut(FastjsonRenderFactory.class, renderFactory);
+        EventBus.push(renderFactory);
 
-        RenderManager.mapping("@json", FastjsonRenderFactory.global.create());
-        RenderManager.mapping("@type_json", FastjsonRenderTypedFactory.global.create());
 
+        //::renderTypedFactory
+        FastjsonRenderTypedFactory renderTypedFactory = new FastjsonRenderTypedFactory();
+        context.wrapAndPut(FastjsonRenderTypedFactory.class, renderTypedFactory);
+
+        context.beanOnloaded((x)->{
+            //晚点加载，给定制更多时机
+            RenderManager.mapping("@json", renderFactory.create());
+            RenderManager.mapping("@type_json", renderTypedFactory.create());
+        });
+
+        //::actionExecutor
         //支持 json 内容类型执行
-        FastjsonActionExecutor executor = new FastjsonActionExecutor();
-        EventBus.push(executor);
+        FastjsonActionExecutor actionExecutor = new FastjsonActionExecutor();
+        context.wrapAndPut(FastjsonActionExecutor.class, actionExecutor);
+        EventBus.push(actionExecutor);
 
-        Bridge.actionExecutorAdd(executor);
+        Bridge.actionExecutorAdd(actionExecutor);
     }
 
     private void applyProps(FastjsonRenderFactory factory, JsonProps jsonProps) {

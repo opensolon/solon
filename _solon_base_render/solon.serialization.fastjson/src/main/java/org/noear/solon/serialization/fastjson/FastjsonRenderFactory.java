@@ -16,12 +16,11 @@ import java.util.Set;
  * @since 1.5
  */
 public class FastjsonRenderFactory extends FastjsonRenderFactoryBase {
-    public static final FastjsonRenderFactory global = new FastjsonRenderFactory();
 
     private SerializeConfig config;
     private Set<SerializerFeature> features;
 
-    private FastjsonRenderFactory() {
+    public FastjsonRenderFactory() {
         features = new HashSet<>();
         features.add(SerializerFeature.BrowserCompatible);
     }
