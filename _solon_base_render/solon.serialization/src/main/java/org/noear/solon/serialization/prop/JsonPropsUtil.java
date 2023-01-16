@@ -13,9 +13,9 @@ import java.util.TimeZone;
  * @since 1.12
  */
 public class JsonPropsUtil {
-    public static void apply(JsonRenderFactory factory, JsonProps jsonProps) {
+    public static boolean apply(JsonRenderFactory factory, JsonProps jsonProps) {
         if (jsonProps == null) {
-            return;
+            return false;
         }
 
         if (Utils.isNotEmpty(jsonProps.dateAsFormat)) {
@@ -41,5 +41,7 @@ public class JsonPropsUtil {
         if (jsonProps.boolAsInt) {
             factory.addConvertor(Boolean.class, e -> (e ? 1 : 0));
         }
+
+        return true;
     }
 }

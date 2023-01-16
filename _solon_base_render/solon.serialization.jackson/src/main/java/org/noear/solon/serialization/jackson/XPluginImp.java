@@ -18,7 +18,7 @@ public class XPluginImp implements Plugin {
         JsonProps jsonProps = JsonProps.create(context);
 
         //绑定属性
-        JsonPropsUtil.apply(JacksonRenderFactory.global, jsonProps);
+        applyProps(JacksonRenderFactory.global, jsonProps);
 
         //事件扩展
         EventBus.push(JacksonRenderFactory.global);
@@ -31,5 +31,14 @@ public class XPluginImp implements Plugin {
         EventBus.push(executor);
 
         Bridge.actionExecutorAdd(executor);
+    }
+
+    private void applyProps(JacksonRenderFactory factory, JsonProps jsonProps) {
+        if (JsonPropsUtil.apply(factory, jsonProps)) {
+            NullValueSerializer typeNullSerializer = new NullValueSerializer(jsonProps);
+
+            factory.config().getSerializerProvider()
+                    .setNullValueSerializer(typeNullSerializer);
+        }
     }
 }

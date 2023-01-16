@@ -1,5 +1,6 @@
 package org.noear.solon.serialization.fastjson2;
 
+import com.alibaba.fastjson2.JSONWriter;
 import org.noear.solon.Solon;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Bridge;
@@ -18,7 +19,7 @@ public class XPluginImp implements Plugin {
         JsonProps jsonProps = JsonProps.create(context);
 
         //绑定属性
-        JsonPropsUtil.apply(Fastjson2RenderFactory.global, jsonProps);
+        applyProps(Fastjson2RenderFactory.global, jsonProps);
 
         //事件扩展
         EventBus.push(Fastjson2RenderFactory.global);
@@ -31,5 +32,25 @@ public class XPluginImp implements Plugin {
         EventBus.push(executor);
 
         Bridge.actionExecutorAdd(executor);
+    }
+
+    private void applyProps(Fastjson2RenderFactory factory, JsonProps jsonProps){
+        if(JsonPropsUtil.apply(factory, jsonProps)){
+            if(jsonProps.nullStringAsEmpty){
+                factory.addFeatures(JSONWriter.Feature.WriteNullStringAsEmpty);
+            }
+
+            if(jsonProps.nullBoolAsFalse){
+                factory.addFeatures(JSONWriter.Feature.WriteNullBooleanAsFalse);
+            }
+
+            if(jsonProps.nullNumberAsZero){
+                factory.addFeatures(JSONWriter.Feature.WriteNullNumberAsZero);
+            }
+
+            if (jsonProps.nullArrayAsEmpty) {
+                factory.addFeatures(JSONWriter.Feature.WriteNullListAsEmpty);
+            }
+        }
     }
 }

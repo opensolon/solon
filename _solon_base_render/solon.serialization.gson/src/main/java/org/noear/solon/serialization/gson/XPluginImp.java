@@ -17,12 +17,18 @@ public class XPluginImp implements Plugin {
         JsonProps jsonProps = JsonProps.create(context);
 
         //绑定属性
-        JsonPropsUtil.apply(GsonRenderFactory.global, jsonProps);
+        applyProps(GsonRenderFactory.global, jsonProps);
 
         //事件扩展
         EventBus.push(GsonRenderFactory.global);
 
         RenderManager.mapping("@json", GsonRenderFactory.global.create());
         RenderManager.mapping("@type_json", GsonRenderTypedFactory.global.create());
+    }
+
+    private void applyProps(GsonRenderFactory factory, JsonProps jsonProps) {
+        if (JsonPropsUtil.apply(factory, jsonProps)) {
+
+        }
     }
 }

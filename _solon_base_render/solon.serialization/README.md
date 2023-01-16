@@ -9,4 +9,8 @@ solon.serialization.json:
   longAsString: true #将long型转为字符串输出 （默认为false）
   intAsString: false #将int型转为字符串输出 （默认为false）
   boolAsInt: false   #将bool型转为字符串输出 （默认为false）
+  nullStringAsEmpty: false
+  nullBoolAsFalse: false
+  nullNumberAsZero: false
+  nullArrayAsEmpty: false
 ```

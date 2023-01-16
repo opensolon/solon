@@ -1,5 +1,6 @@
 package org.noear.solon.serialization.snack3;
 
+import org.noear.snack.core.Feature;
 import org.noear.solon.Solon;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Bridge;
@@ -18,7 +19,7 @@ public class XPluginImp implements Plugin {
         JsonProps jsonProps = JsonProps.create(context);
 
         //绑定属性
-        JsonPropsUtil.apply(SnackRenderFactory.global, jsonProps);
+        applyProps(SnackRenderFactory.global, jsonProps);
 
         //事件扩展
         EventBus.push(SnackRenderFactory.global);
@@ -30,5 +31,25 @@ public class XPluginImp implements Plugin {
         EventBus.push(SnackActionExecutor.global);
 
         Bridge.actionExecutorAdd(SnackActionExecutor.global);
+    }
+
+    private void applyProps(SnackRenderFactory factory, JsonProps jsonProps) {
+        if (JsonPropsUtil.apply(factory, jsonProps)) {
+            if (jsonProps.nullStringAsEmpty) {
+                factory.addFeatures(Feature.StringNullAsEmpty);
+            }
+
+            if (jsonProps.nullBoolAsFalse) {
+                factory.addFeatures(Feature.BooleanNullAsFalse);
+            }
+
+            if (jsonProps.nullNumberAsZero) {
+                factory.addFeatures(Feature.NumberNullAsZero);
+            }
+
+            if (jsonProps.nullArrayAsEmpty) {
+                factory.addFeatures(Feature.ArrayNullAsEmpty);
+            }
+        }
     }
 }
