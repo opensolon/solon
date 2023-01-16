@@ -12,11 +12,10 @@ import org.noear.solon.serialization.StringSerializerRender;
  * @since 1.5
  */
 public class JacksonRenderFactory extends JacksonRenderFactoryBase {
-    public static final JacksonRenderFactory global = new JacksonRenderFactory();
 
     ObjectMapper config = new ObjectMapper();
 
-    private JacksonRenderFactory(){
+    public JacksonRenderFactory(){
         config.enable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
     }
 

@@ -15,11 +15,9 @@ import org.noear.solon.serialization.StringSerializerRender;
  * @since 1.5
  */
 public class JacksonRenderTypedFactory extends JacksonRenderFactoryBase {
-    public static final JacksonRenderTypedFactory global = new JacksonRenderTypedFactory();
-
     ObjectMapper config = new ObjectMapper();
 
-    private JacksonRenderTypedFactory(){
+    public JacksonRenderTypedFactory(){
         config.enable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         config.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         config.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);

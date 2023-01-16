@@ -1,4 +1,8 @@
-package org.noear.solon.serialization.jackson.impl;
+package org.noear.solon.serialization.jackson;
+
+/**
+ * @author noear 2023/1/16 created
+ */
 
 import com.fasterxml.jackson.databind.BeanDescription;
 import com.fasterxml.jackson.databind.SerializationConfig;
@@ -13,9 +17,9 @@ import java.util.List;
  * @author noear
  * @since 1.12
  */
-public class BeanSerializerModifierImpl extends BeanSerializerModifier {
+public class NullBeanSerializerModifierImpl extends BeanSerializerModifier {
     private JsonProps jsonProps;
-    public BeanSerializerModifierImpl(JsonProps jsonProps){
+    public NullBeanSerializerModifierImpl(JsonProps jsonProps){
         this.jsonProps = jsonProps;
     }
 
@@ -24,6 +28,7 @@ public class BeanSerializerModifierImpl extends BeanSerializerModifier {
         //循环所有的beanPropertyWriter
         for (Object beanProperty : beanProperties) {
             BeanPropertyWriter writer = (BeanPropertyWriter) beanProperty;
+
             if (isArrayType(writer)) {
                 writer.assignNullSerializer(new NullValueSerializer(jsonProps,  writer.getType()));
             } else if (isNumberType(writer)) {
