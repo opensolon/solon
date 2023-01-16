@@ -27,8 +27,10 @@ public class XPluginImp implements Plugin {
     }
 
     private void applyProps(GsonRenderFactory factory, JsonProps jsonProps) {
-        if (JsonPropsUtil.apply(factory, jsonProps)) {
+        JsonPropsUtil.apply(factory, jsonProps);
 
-        }
+//        if (JsonPropsUtil.apply(factory, jsonProps)) {
+//
+//        }
     }
 }

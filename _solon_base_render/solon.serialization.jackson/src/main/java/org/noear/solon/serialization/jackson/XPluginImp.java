@@ -6,6 +6,7 @@ import org.noear.solon.core.Bridge;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.RenderManager;
+import org.noear.solon.serialization.jackson.impl.BeanSerializerModifierImpl;
 import org.noear.solon.serialization.prop.JsonProps;
 import org.noear.solon.serialization.prop.JsonPropsUtil;
 
@@ -34,11 +35,13 @@ public class XPluginImp implements Plugin {
     }
 
     private void applyProps(JacksonRenderFactory factory, JsonProps jsonProps) {
-        if (JsonPropsUtil.apply(factory, jsonProps)) {
-            NullValueSerializer typeNullSerializer = new NullValueSerializer(jsonProps);
+        JsonPropsUtil.apply(factory, jsonProps);
 
-            factory.config().getSerializerProvider()
-                    .setNullValueSerializer(typeNullSerializer);
-        }
+//        if (JsonPropsUtil.apply(factory, jsonProps)) {
+//
+//            factory.config()
+//                    .getSerializerFactory()
+//                    .withSerializerModifier(new BeanSerializerModifierImpl(jsonProps));
+//        }
     }
 }

@@ -1,4 +1,4 @@
-package org.noear.solon.serialization.jackson;
+package org.noear.solon.serialization.jackson.impl;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.*;
@@ -12,13 +12,9 @@ import java.util.Collection;
  * @author noear
  * @since 1.12
  */
-public class NullValueSerializer extends JsonSerializer<Object> implements ContextualSerializer {
+public class NullValueSerializer extends JsonSerializer<Object> {
     private Class<?> type;
     private JsonProps jsonProps;
-
-    public NullValueSerializer(JsonProps jsonProps) {
-        this.jsonProps = jsonProps;
-    }
 
     public NullValueSerializer(JsonProps jsonProps, final JavaType type) {
         this.jsonProps = jsonProps;
@@ -66,10 +62,5 @@ public class NullValueSerializer extends JsonSerializer<Object> implements Conte
                 return;
             }
         }
-    }
-
-    @Override
-    public JsonSerializer<?> createContextual(SerializerProvider serializerProvider, BeanProperty beanProperty) throws JsonMappingException {
-        return new NullValueSerializer(jsonProps, beanProperty.getType());
     }
 }
