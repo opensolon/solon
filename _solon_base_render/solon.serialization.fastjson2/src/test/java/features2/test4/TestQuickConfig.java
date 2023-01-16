@@ -3,6 +3,7 @@ package features2.test4;
 import features2.model.UserDo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.noear.solon.annotation.Inject;
 import org.noear.solon.core.handle.ContextEmpty;
 import org.noear.solon.serialization.fastjson2.Fastjson2RenderFactory;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
@@ -18,6 +19,9 @@ import java.util.Map;
 @TestPropertySource("classpath:features2_test4.yml")
 @RunWith(SolonJUnit4ClassRunner.class)
 public class TestQuickConfig {
+    @Inject
+    Fastjson2RenderFactory renderFactory;
+
     @Test
     public void hello2() throws Throwable{
         UserDo userDo = new UserDo();
@@ -31,12 +35,12 @@ public class TestQuickConfig {
         userDo.setMap1(data);
 
         ContextEmpty ctx = new ContextEmpty();
-        Fastjson2RenderFactory.global.create().render(userDo, ctx);
+        renderFactory.create().render(userDo, ctx);
         String output = ctx.attr("output");
 
         System.out.println(output);
 
-        //error: map/null value 还是会输出
-        assert "{\"s0\":\"\",\"s1\":\"noear\",\"b0\":0,\"b1\":1,\"n0\":\"0\",\"n1\":\"1\",\"d0\":0.0,\"d1\":1.0,\"obj0\":null,\"list0\":[],\"map0\":null,\"map1\":{\"null\":null,\"time\":\"2023-01-16 17:39:53\",\"long\":\"12\",\"int\":\"12\"}}".equals(output);
+        //error: int 没转为 string
+        assert "{\"b0\":false,\"b1\":true,\"d0\":0,\"d1\":1.0,\"list0\":[],\"map0\":null,\"map1\":{\"null\":null,\"time\":\"2023-01-16 17:39:53\",\"long\":\"12\",\"int\":12},\"n0\":0,\"n1\":\"1\",\"obj0\":null,\"s0\":\"\",\"s1\":\"noear\"}".equals(output);
     }
 }

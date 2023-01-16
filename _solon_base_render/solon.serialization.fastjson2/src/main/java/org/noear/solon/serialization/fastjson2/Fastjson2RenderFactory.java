@@ -17,12 +17,11 @@ import java.util.Set;
  * @since 1.10
  */
 public class Fastjson2RenderFactory extends Fastjson2RenderFactoryBase {
-    public static final Fastjson2RenderFactory global = new Fastjson2RenderFactory();
 
     private ObjectWriterProvider config;
     private Set<JSONWriter.Feature> features;
 
-    private Fastjson2RenderFactory() {
+    public Fastjson2RenderFactory() {
         features = new HashSet<>();
         features.add(JSONWriter.Feature.BrowserCompatible);
     }
