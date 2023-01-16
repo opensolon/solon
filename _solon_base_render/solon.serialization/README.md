@@ -13,4 +13,5 @@ solon.serialization.json:
   nullBoolAsFalse: false
   nullNumberAsZero: false
   nullArrayAsEmpty: false
+  nullAsWriteable: false
 ```

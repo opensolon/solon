@@ -51,6 +51,10 @@ public class XPluginImp implements Plugin {
             if (jsonProps.nullArrayAsEmpty) {
                 factory.addFeatures(SerializerFeature.WriteNullListAsEmpty);
             }
+
+            if(jsonProps.nullAsWriteable){
+                factory.addFeatures(SerializerFeature.WriteMapNullValue);
+            }
         }
     }
 }

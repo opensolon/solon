@@ -34,22 +34,26 @@ public class XPluginImp implements Plugin {
         Bridge.actionExecutorAdd(executor);
     }
 
-    private void applyProps(Fastjson2RenderFactory factory, JsonProps jsonProps){
-        if(JsonPropsUtil.apply(factory, jsonProps)){
-            if(jsonProps.nullStringAsEmpty){
+    private void applyProps(Fastjson2RenderFactory factory, JsonProps jsonProps) {
+        if (JsonPropsUtil.apply(factory, jsonProps)) {
+            if (jsonProps.nullStringAsEmpty) {
                 factory.addFeatures(JSONWriter.Feature.WriteNullStringAsEmpty);
             }
 
-            if(jsonProps.nullBoolAsFalse){
+            if (jsonProps.nullBoolAsFalse) {
                 factory.addFeatures(JSONWriter.Feature.WriteNullBooleanAsFalse);
             }
 
-            if(jsonProps.nullNumberAsZero){
+            if (jsonProps.nullNumberAsZero) {
                 factory.addFeatures(JSONWriter.Feature.WriteNullNumberAsZero);
             }
 
             if (jsonProps.nullArrayAsEmpty) {
                 factory.addFeatures(JSONWriter.Feature.WriteNullListAsEmpty);
+            }
+
+            if (jsonProps.nullAsWriteable) {
+                factory.addFeatures(JSONWriter.Feature.WriteNulls);
             }
         }
     }

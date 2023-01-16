@@ -35,6 +35,7 @@ public class NullValueSerializer extends JsonSerializer<Object> implements Conte
 
             if (jsonProps.nullBoolAsFalse && type == Boolean.class) {
                 jsonGenerator.writeBoolean(false);
+                return;
             }
 
             if (jsonProps.nullNumberAsZero && CharSequence.class.isAssignableFrom(type)) {
@@ -54,7 +55,13 @@ public class NullValueSerializer extends JsonSerializer<Object> implements Conte
                 if (Collection.class.isAssignableFrom(type) || type.isArray()) {
                     jsonGenerator.writeStartArray();
                     jsonGenerator.writeEndArray();
+                    return;
                 }
+            }
+
+            if (jsonProps.nullAsWriteable) {
+                jsonGenerator.writeNull();
+                return;
             }
         }
     }
