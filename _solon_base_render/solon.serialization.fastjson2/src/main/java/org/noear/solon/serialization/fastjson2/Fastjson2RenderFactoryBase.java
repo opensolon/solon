@@ -30,8 +30,12 @@ public abstract class Fastjson2RenderFactoryBase implements JsonRenderFactory {
             } else if (val instanceof String) {
                 out.writeString((String) val);
             } else if (val instanceof Number) {
-                if (val instanceof Integer || val instanceof Long) {
+                if (val instanceof Long) {
                     out.writeInt64(((Number) val).longValue());
+                } else if (val instanceof Integer) {
+                    out.writeInt32(((Number) val).intValue());
+                } else if (val instanceof Float) {
+                    out.writeDouble(((Number) val).floatValue());
                 } else {
                     out.writeDouble(((Number) val).doubleValue());
                 }

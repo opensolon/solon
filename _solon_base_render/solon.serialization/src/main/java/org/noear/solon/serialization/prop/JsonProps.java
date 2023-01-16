@@ -17,9 +17,11 @@ public class JsonProps implements Serializable {
 
     public String dateAsTimeZone;
     public String dateAsFormat;
+
     public boolean longAsString;
     public boolean intAsString;
     public boolean boolAsInt;
+
     public boolean nullStringAsEmpty;
     public boolean nullBoolAsFalse;
     public boolean nullNumberAsZero;
