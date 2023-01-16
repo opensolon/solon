@@ -18,19 +18,34 @@ public class XPluginImp implements Plugin {
         output_meta = Solon.cfg().getInt("solon.output.meta", 0) > 0;
         JsonProps jsonProps = JsonProps.create(context);
 
+        //::renderFactory
         //绑定属性
-        applyProps(SnackRenderFactory.global, jsonProps);
+        SnackRenderFactory renderFactory = new SnackRenderFactory();
+        applyProps(renderFactory, jsonProps);
 
         //事件扩展
-        EventBus.push(SnackRenderFactory.global);
+        context.wrapAndPut(SnackRenderFactory.class, renderFactory);
+        EventBus.push(renderFactory);
 
-        RenderManager.mapping("@json", SnackRenderFactory.global.create());
-        RenderManager.mapping("@type_json", SnackRenderTypedFactory.global.create());
 
+        //::renderTypedFactory
+        SnackRenderTypedFactory renderTypedFactory = new SnackRenderTypedFactory();
+        context.wrapAndPut(SnackRenderTypedFactory.class, renderTypedFactory);
+
+
+        context.beanOnloaded((x)->{
+            //晚点加载，给定制更多时机
+            RenderManager.mapping("@json", renderFactory.create());
+            RenderManager.mapping("@type_json", renderTypedFactory.create());
+        });
+
+        //::actionExecutor
         //支持 json 内容类型执行
-        EventBus.push(SnackActionExecutor.global);
+        SnackActionExecutor actionExecutor = new SnackActionExecutor();
+        context.wrapAndPut(SnackActionExecutor.class, actionExecutor);
+        EventBus.push(actionExecutor);
 
-        Bridge.actionExecutorAdd(SnackActionExecutor.global);
+        Bridge.actionExecutorAdd(actionExecutor);
     }
 
     private void applyProps(SnackRenderFactory factory, JsonProps jsonProps) {

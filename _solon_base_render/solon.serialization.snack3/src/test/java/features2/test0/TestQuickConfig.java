@@ -4,6 +4,7 @@ import features2.model.UserDo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.noear.snack.ONode;
+import org.noear.solon.annotation.Inject;
 import org.noear.solon.annotation.Mapping;
 import org.noear.solon.core.handle.ContextEmpty;
 import org.noear.solon.serialization.snack3.SnackRenderFactory;
@@ -20,6 +21,10 @@ import java.util.Map;
 @TestPropertySource("classpath:features2_test0.yml")
 @RunWith(SolonJUnit4ClassRunner.class)
 public class TestQuickConfig {
+
+    @Inject
+    SnackRenderFactory renderFactory;
+
     @Test
     public void hello2() throws Throwable{
         UserDo userDo = new UserDo();
@@ -33,7 +38,7 @@ public class TestQuickConfig {
         userDo.setMap1(data);
 
         ContextEmpty ctx = new ContextEmpty();
-        SnackRenderFactory.global.create().render(userDo, ctx);
+        renderFactory.create().render(userDo, ctx);
         String output = ctx.attr("output");
 
         System.out.println(output);

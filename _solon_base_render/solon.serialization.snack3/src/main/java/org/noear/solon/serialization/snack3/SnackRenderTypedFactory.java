@@ -12,11 +12,10 @@ import org.noear.solon.serialization.StringSerializerRender;
  * @since 1.5
  */
 public class SnackRenderTypedFactory extends SnackRenderFactoryBase {
-    public static final SnackRenderTypedFactory global = new SnackRenderTypedFactory();
 
 
     private final Options config;
-    private SnackRenderTypedFactory(){
+    public SnackRenderTypedFactory(){
         config = Options.serialize();
     }
 
