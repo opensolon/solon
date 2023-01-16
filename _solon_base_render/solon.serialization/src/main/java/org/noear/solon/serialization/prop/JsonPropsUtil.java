@@ -30,6 +30,10 @@ public class JsonPropsUtil {
             });
         }
 
+        if(jsonProps.dateAsTicks){
+            factory.addConvertor(Date.class, e -> e.getTime());
+        }
+
         if (jsonProps.longAsString) {
             factory.addConvertor(Long.class, e -> String.valueOf(e));
         }

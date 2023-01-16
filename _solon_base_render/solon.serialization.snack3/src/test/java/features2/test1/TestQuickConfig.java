@@ -3,6 +3,7 @@ package features2.test1;
 import features2.model.UserDo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.noear.snack.ONode;
 import org.noear.solon.core.handle.ContextEmpty;
 import org.noear.solon.serialization.snack3.SnackRenderFactory;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
@@ -36,7 +37,9 @@ public class TestQuickConfig {
 
         System.out.println(output);
 
-        //error: map/null value 还是会输出
-        assert "{\"s1\":\"noear\",\"b1\":true,\"n1\":1,\"d1\":1.0,\"map1\":{\"null\":null,\"time\":\"2023-01-16 17:39:53\",\"long\":12,\"int\":12}}".equals(output);
+        assert ONode.load(output).count() == 5;
+
+        //完美
+        assert "{\"s1\":\"noear\",\"b1\":true,\"n1\":1,\"d1\":1.0,\"map1\":{\"time\":\"2023-01-16 17:39:53\",\"long\":12,\"int\":12}}".equals(output);
     }
 }

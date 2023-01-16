@@ -36,7 +36,7 @@ public class TestQuickConfig {
 
         System.out.println(output);
 
-        //error: map/null value 还是会输出
-        assert "{\"s1\":\"noear\",\"b1\":1,\"n1\":\"1\",\"d1\":1.0,\"map1\":{\"null\":null,\"time\":\"2023-01-16 17:39:53\",\"long\":\"12\",\"int\":\"12\"}}".equals(output);
+        //完美
+        assert "{\"s1\":\"noear\",\"b1\":1,\"n1\":\"1\",\"d1\":1.0,\"map1\":{\"time\":\"2023-01-16 17:39:53\",\"long\":\"12\",\"int\":\"12\"}}".equals(output);
     }
 }
