@@ -2,13 +2,10 @@ package org.noear.solon.core.route;
 
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.BeanWrap;
+import org.noear.solon.core.ChainManager;
 import org.noear.solon.core.handle.*;
 import org.noear.solon.core.message.Listener;
 import org.noear.solon.core.message.ListenerPipeline;
-
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
 
 /**
  * 路由包装器（更简单的使用路由）
@@ -19,24 +16,23 @@ import java.util.List;
 public abstract class RouterWrapper implements HandlerSlots{
     private Router _router;
     private RouterHandler _routerHandler;
-    private List<FilterEntity> _filterList = new ArrayList<>();
+    private ChainManager _chainManager;
 
     public abstract AopContext context();
 
-    protected void initRouter(Filter appFilter){
+    protected void initRouter(Filter appFilter) {
         //顺序不能换
+        _chainManager = new ChainManager();
         _router = new RouterDefault();
         _routerHandler = new RouterHandler(_router);
-        _filterList.add(new FilterEntity(Integer.MAX_VALUE, appFilter));
+
+        _chainManager.addInterceptor(_routerHandler, Integer.MAX_VALUE);
+        _chainManager.addFilter(appFilter, Integer.MAX_VALUE);
     }
 
 
     protected RouterHandler routerHandler(){
         return _routerHandler;
-    }
-
-    protected List<FilterEntity> filterList(){
-        return _filterList;
     }
 
     /**
@@ -46,6 +42,10 @@ public abstract class RouterWrapper implements HandlerSlots{
         return _router;
     }
 
+    public ChainManager chainManager(){ return _chainManager; }
+
+
+    @Deprecated
     public void routerSet(Router router) {
         if (router != null) {
             _router = router;
@@ -77,15 +77,14 @@ public abstract class RouterWrapper implements HandlerSlots{
      * @since 1.5
      */
     public void filter(int index, Filter filter) {
-        _filterList.add(new FilterEntity(index, filter));
-        _filterList.sort(Comparator.comparingInt(f -> f.index));
+        _chainManager.addFilter(filter, index);
     }
 
     /**
      * 添加路由拦截器（按先进后出策略执行）
      * */
     public void routerInterceptor(int index, RouterInterceptor interceptor){
-        routerHandler().addInterceptor(interceptor, index);
+        _chainManager.addInterceptor(interceptor, index);
     }
 
     /**

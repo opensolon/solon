@@ -1,5 +1,6 @@
 package org.noear.solon.core.handle;
 
+import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.Consumes;
 import org.noear.solon.annotation.Produces;
@@ -346,6 +347,8 @@ public class Action extends HandlerAide implements Handler {
         //
         //可以通过before关掉render
         //
+        obj = Solon.app().chainManager().postResult(c, obj);
+
         if (c.getRendered() == false) {
             c.result = obj;
         }

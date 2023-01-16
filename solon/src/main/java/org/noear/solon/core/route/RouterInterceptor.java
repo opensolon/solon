@@ -12,9 +12,16 @@ import org.noear.solon.lang.Nullable;
  */
 public interface RouterInterceptor {
     /**
-     * 拦截
-     * */
+     * 执行拦截
+     */
     void doIntercept(Context ctx,
                      @Nullable Handler mainHandler,
                      RouterInterceptorChain chain) throws Throwable;
+
+    /**
+     * 提交结果（action / render 执行前调用）
+     */
+    default Object postResult(Context ctx, @Nullable Object result) throws Throwable {
+        return result;
+    }
 }

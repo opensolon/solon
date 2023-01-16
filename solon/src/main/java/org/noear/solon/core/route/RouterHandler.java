@@ -1,11 +1,8 @@
 package org.noear.solon.core.route;
 
+import org.noear.solon.Solon;
 import org.noear.solon.core.handle.*;
 import org.noear.solon.lang.Nullable;
-
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
 
 /**
  * Solon router Handler
@@ -15,28 +12,24 @@ import java.util.List;
  * */
 public class RouterHandler implements Handler, RouterInterceptor {
     private Router router;
-    //for handler interceptorList
-    private final List<RouterInterceptorEntity> interceptorList;
 
     public RouterHandler(Router router) {
-        bind(router);
-        interceptorList = new ArrayList<>();
-        addInterceptor(this, Integer.MAX_VALUE);
+        this.router = router;
     }
 
-    public void addInterceptor(RouterInterceptor interceptor, int index) {
-        RouterInterceptorEntity node = new RouterInterceptorEntity(index, interceptor);
-        interceptorList.add(node);
-        interceptorList.sort(Comparator.comparingInt(f -> f.index));
+    //拦截实现
+    @Override
+    public void doIntercept(Context ctx, @Nullable Handler mainHandler, RouterInterceptorChain chain) throws Throwable {
+        handleDo(ctx, mainHandler);
     }
 
     /**
      * 绑定路由器
      */
+    @Deprecated
     public void bind(Router router) {
         this.router = router;
     }
-
 
 
     /**
@@ -89,11 +82,6 @@ public class RouterHandler implements Handler, RouterInterceptor {
     }
 
     @Override
-    public void doIntercept(Context ctx, @Nullable Handler mainHandler, RouterInterceptorChain chain) throws Throwable {
-        handleDo(ctx, mainHandler);
-    }
-
-    @Override
     public void handle(Context x) throws Throwable {
         //可能上级链已完成处理
         if (x.getHandled()) {
@@ -109,6 +97,6 @@ public class RouterHandler implements Handler, RouterInterceptor {
         }
 
         //执行
-        new RouterInterceptorChainImpl(interceptorList).doIntercept(x, mainHandler);
+        Solon.app().chainManager().doIntercept(x, mainHandler);
     }
 }
