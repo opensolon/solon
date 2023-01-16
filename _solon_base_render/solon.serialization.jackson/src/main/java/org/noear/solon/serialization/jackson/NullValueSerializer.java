@@ -28,34 +28,36 @@ public class NullValueSerializer extends JsonSerializer<Object> implements Conte
     @Override
     public void serialize(Object o, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
         if (o == null) {
-            if (jsonProps.nullStringAsEmpty && type == String.class) {
-                jsonGenerator.writeString("");
-                return;
-            }
-
-            if (jsonProps.nullBoolAsFalse && type == Boolean.class) {
-                jsonGenerator.writeBoolean(false);
-                return;
-            }
-
-            if (jsonProps.nullNumberAsZero && CharSequence.class.isAssignableFrom(type)) {
-                if (type == Long.class) {
-                    jsonGenerator.writeNumber(0L);
-                } else if (type == Double.class) {
-                    jsonGenerator.writeNumber(0.0D);
-                } else if (type == Float.class) {
-                    jsonGenerator.writeNumber(0.0F);
-                } else {
-                    jsonGenerator.writeNumber(0);
-                }
-                return;
-            }
-
-            if (jsonProps.nullArrayAsEmpty) {
-                if (Collection.class.isAssignableFrom(type) || type.isArray()) {
-                    jsonGenerator.writeStartArray();
-                    jsonGenerator.writeEndArray();
+            if (type != null) {
+                if (jsonProps.nullStringAsEmpty && type == String.class) {
+                    jsonGenerator.writeString("");
                     return;
+                }
+
+                if (jsonProps.nullBoolAsFalse && type == Boolean.class) {
+                    jsonGenerator.writeBoolean(false);
+                    return;
+                }
+
+                if (jsonProps.nullNumberAsZero && CharSequence.class.isAssignableFrom(type)) {
+                    if (type == Long.class) {
+                        jsonGenerator.writeNumber(0L);
+                    } else if (type == Double.class) {
+                        jsonGenerator.writeNumber(0.0D);
+                    } else if (type == Float.class) {
+                        jsonGenerator.writeNumber(0.0F);
+                    } else {
+                        jsonGenerator.writeNumber(0);
+                    }
+                    return;
+                }
+
+                if (jsonProps.nullArrayAsEmpty) {
+                    if (Collection.class.isAssignableFrom(type) || type.isArray()) {
+                        jsonGenerator.writeStartArray();
+                        jsonGenerator.writeEndArray();
+                        return;
+                    }
                 }
             }
 
