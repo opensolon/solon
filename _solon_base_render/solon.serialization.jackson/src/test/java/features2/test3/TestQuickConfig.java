@@ -40,7 +40,7 @@ public class TestQuickConfig {
 
         System.out.println(output);
 
-        //完美
+        //error 会有多余的 null (和所有 null 打印开启一样)
         assert "{\"s0\":\"\",\"s1\":\"noear\",\"b0\":false,\"b1\":true,\"n0\":0,\"n1\":\"1\",\"d0\":0.0,\"d1\":1.0,\"obj0\":null,\"list0\":[],\"map0\":null,\"map1\":{\"null\":null,\"time\":\"2023-01-16 17:39:53\",\"long\":\"12\",\"int\":\"12\"}}".equals(output);
     }
 }

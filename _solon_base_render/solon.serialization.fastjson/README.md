@@ -1,6 +1,24 @@
 
 
-### 格式化定制
+### 快捷配置（nullXxxAs 会出现多余的null; 但 MapNullValue还不会出现）
+
+```yaml
+solon.serialization.json:
+  dateAsFormat: 'yyyy-MM-dd HH:mm:ss' #配置日期格式（默认输出为时间戳）
+  dateAsTimeZone: 'GMT+8' #配置时区
+  dateAsTicks: false #将date转为毫秒数
+  longAsString: true #将long型转为字符串输出 （默认为false）
+  intAsString: false #将int型转为字符串输出 （默认为false）
+  boolAsInt: false   #将bool型转为字符串输出 （默认为false）
+  nullStringAsEmpty: false
+  nullBoolAsFalse: false
+  nullNumberAsZero: false
+  nullArrayAsEmpty: false
+  nullAsWriteable: false
+```
+
+
+### 高级格式化定制
 
 ```java
 public class DemoApp {
