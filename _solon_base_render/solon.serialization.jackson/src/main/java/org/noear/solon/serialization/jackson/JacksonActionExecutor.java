@@ -11,6 +11,10 @@ import org.noear.solon.core.wrap.ParamWrap;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * @author noear
+ * @since 1.2
+ * */
 public class JacksonActionExecutor extends ActionExecutorDefault {
     private static final String label = "/json";
 

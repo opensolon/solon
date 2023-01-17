@@ -6,7 +6,8 @@ import org.noear.solon.core.wrap.ParamWrap;
 import java.lang.reflect.Type;
 
 /**
- * @author noear 2021/1/17 created
+ * @author noear
+ * @since 1.2
  */
 public class TypeReferenceImp<T> extends TypeReference<T> {
     protected final Type _type2;

@@ -6,7 +6,8 @@ import org.noear.solon.serialization.StringSerializer;
 import java.io.IOException;
 
 /**
- * @author noear 2021/10/11 created
+ * @author noear
+ * @since 1.5
  */
 public class JacksonSerializer implements StringSerializer {
     final ObjectMapper real;

@@ -16,21 +16,31 @@ public class XPluginImp implements Plugin {
         output_meta = Solon.cfg().getInt("solon.output.meta", 0) > 0;
         JsonProps jsonProps = JsonProps.create(context);
 
+        //::renderFactory
         //绑定属性
-        applyProps(GsonRenderFactory.global, jsonProps);
+        GsonRenderFactory renderFactory = new GsonRenderFactory();
+        applyProps(renderFactory, jsonProps);
 
         //事件扩展
-        EventBus.push(GsonRenderFactory.global);
+        context.wrapAndPut(GsonRenderFactory.class, renderFactory);
+        EventBus.push(renderFactory);
 
-        RenderManager.mapping("@json", GsonRenderFactory.global.create());
-        RenderManager.mapping("@type_json", GsonRenderTypedFactory.global.create());
+        //::renderTypedFactory
+        GsonRenderTypedFactory renderTypedFactory = new GsonRenderTypedFactory();
+        context.wrapAndPut(GsonRenderTypedFactory.class, renderTypedFactory);
+
+        context.beanOnloaded(x -> {
+            RenderManager.mapping("@json", renderFactory.create());
+            RenderManager.mapping("@type_json", renderTypedFactory.create());
+        });
     }
 
     private void applyProps(GsonRenderFactory factory, JsonProps jsonProps) {
-        JsonPropsUtil.apply(factory, jsonProps);
+        if (JsonPropsUtil.apply(factory, jsonProps)) {
 
-//        if (JsonPropsUtil.apply(factory, jsonProps)) {
-//
-//        }
+        } else {
+            //默认为时间截
+            factory.config().registerTypeAdapter(java.util.Date.class, new GsonDateSerialize());
+        }
     }
 }

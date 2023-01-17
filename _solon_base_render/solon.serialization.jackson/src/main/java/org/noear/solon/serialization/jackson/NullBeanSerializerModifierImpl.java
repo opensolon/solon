@@ -1,9 +1,5 @@
 package org.noear.solon.serialization.jackson;
 
-/**
- * @author noear 2023/1/16 created
- */
-
 import com.fasterxml.jackson.databind.BeanDescription;
 import com.fasterxml.jackson.databind.SerializationConfig;
 import com.fasterxml.jackson.databind.ser.BeanPropertyWriter;

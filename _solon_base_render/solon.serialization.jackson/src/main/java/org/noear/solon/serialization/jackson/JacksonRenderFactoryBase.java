@@ -11,7 +11,8 @@ import org.noear.solon.serialization.JsonConverter;
 import java.io.IOException;
 
 /**
- * @author noear 2021/10/11 created
+ * @author noear
+ * @since 1.5
  */
 public abstract class JacksonRenderFactoryBase implements JsonRenderFactory {
 
