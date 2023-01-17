@@ -5,8 +5,14 @@ import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.RenderManager;
+import org.noear.solon.serialization.gson.impl.*;
 import org.noear.solon.serialization.prop.JsonProps;
 import org.noear.solon.serialization.prop.JsonPropsUtil;
+
+import java.lang.reflect.Array;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Date;
 
 public class XPluginImp implements Plugin {
     public static boolean output_meta = false;
@@ -36,11 +42,39 @@ public class XPluginImp implements Plugin {
     }
 
     private void applyProps(GsonRenderFactory factory, JsonProps jsonProps) {
+        boolean writeNulls = false;
+
         if (JsonPropsUtil.apply(factory, jsonProps)) {
+            writeNulls = jsonProps.nullAsWriteable ||
+                    jsonProps.nullNumberAsZero ||
+                    jsonProps.nullArrayAsEmpty ||
+                    jsonProps.nullBoolAsFalse ||
+                    jsonProps.nullStringAsEmpty;
+
+            if(jsonProps.nullNumberAsZero){
+                factory.config().registerTypeAdapter(Number.class, new NullNumberSerialize());
+            }
+
+            if(jsonProps.nullArrayAsEmpty){
+                factory.config().registerTypeAdapter(Collection.class, new NullCollectionSerialize());
+                factory.config().registerTypeAdapter(Arrays.class, new NullArraySerialize());
+            }
+
+            if(jsonProps.nullBoolAsFalse){
+                factory.config().registerTypeAdapter(Boolean.class, new NullBooleanSerialize());
+            }
+
+            if(jsonProps.nullStringAsEmpty){
+                factory.config().registerTypeAdapter(String.class, new NullStringSerialize());
+            }
+
+            if (writeNulls) {
+                factory.config().serializeNulls();
+            }
 
         } else {
             //默认为时间截
-            factory.config().registerTypeAdapter(java.util.Date.class, new GsonDateSerialize());
+            factory.config().registerTypeAdapter(Date.class, new GsonDateSerialize());
         }
     }
 }
