@@ -54,9 +54,9 @@ public class NullValueSerializer extends JsonSerializer<Object> {
                 if (type == Long.class) {
                     gen.writeNumber(0L);
                 } else if (type == Double.class) {
-                    gen.writeNumber(0.0D);
+                    gen.writeNumber(0D);
                 } else if (type == Float.class) {
-                    gen.writeNumber(0.0F);
+                    gen.writeNumber(0F);
                 } else {
                     gen.writeNumber(0);
                 }
