@@ -9,7 +9,6 @@ import org.noear.solon.serialization.gson.impl.*;
 import org.noear.solon.serialization.prop.JsonProps;
 import org.noear.solon.serialization.prop.JsonPropsUtil;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
@@ -51,8 +50,19 @@ public class XPluginImp implements Plugin {
                     jsonProps.nullBoolAsFalse ||
                     jsonProps.nullStringAsEmpty;
 
+
+            if (writeNulls) {
+                factory.config().serializeNulls();
+            }
+
             if(jsonProps.nullNumberAsZero){
-                factory.config().registerTypeAdapter(Number.class, new NullNumberSerialize());
+                factory.config().registerTypeAdapter(Short.class, new NullNumberSerialize<Short>());
+                factory.config().registerTypeAdapter(Integer.class, new NullNumberSerialize<Integer>());
+
+                factory.config().registerTypeAdapter(Long.class, new NullLongAdapter(jsonProps));
+
+                factory.config().registerTypeAdapter(Float.class, new NullNumberSerialize<Float>());
+                factory.config().registerTypeAdapter(Double.class, new NullNumberSerialize<Double>());
             }
 
             if(jsonProps.nullArrayAsEmpty){
@@ -61,15 +71,11 @@ public class XPluginImp implements Plugin {
             }
 
             if(jsonProps.nullBoolAsFalse){
-                factory.config().registerTypeAdapter(Boolean.class, new NullBooleanSerialize());
+                factory.config().registerTypeAdapter(Boolean.class, new NullBooleanAdapter(jsonProps));
             }
 
             if(jsonProps.nullStringAsEmpty){
                 factory.config().registerTypeAdapter(String.class, new NullStringSerialize());
-            }
-
-            if (writeNulls) {
-                factory.config().serializeNulls();
             }
 
         } else {

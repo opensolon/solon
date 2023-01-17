@@ -1,16 +1,25 @@
 package org.noear.solon.serialization.gson.impl;
 
 import com.google.gson.*;
+import com.google.gson.internal.bind.TypeAdapters;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
 
-import java.lang.reflect.Type;
+import java.io.IOException;
 
-public class NullStringSerialize implements JsonSerializer<String> {
+public class NullStringSerialize extends TypeAdapter<String> {
 
     @Override
-    public JsonElement serialize(String s, Type type, JsonSerializationContext jsonSerializationContext) {
+    public void write(JsonWriter out, String s) throws IOException {
         if (s == null) {
-            return new JsonPrimitive("");
+            out.value("");
+        } else {
+            out.value(s);
         }
-        return new JsonPrimitive(s);
+    }
+
+    @Override
+    public String read(JsonReader jsonReader) throws IOException {
+        return TypeAdapters.STRING.read(jsonReader);
     }
 }

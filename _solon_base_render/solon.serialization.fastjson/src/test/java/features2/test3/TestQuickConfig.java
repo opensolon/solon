@@ -40,7 +40,7 @@ public class TestQuickConfig {
 
         System.out.println(output);
 
-        //开始出现 null （有 nullAs?? 时，出现了 null）
-        assert "{\"b0\":false,\"b1\":true,\"d0\":0,\"d1\":1.0,\"list0\":[],\"map0\":null,\"map1\":{\"time\":\"2023-01-16 17:39:53\",\"long\":\"12\",\"int\":\"12\"},\"n0\":0,\"n1\":\"1\",\"obj0\":null,\"s0\":\"\",\"s1\":\"noear\"}".equals(output);
+        //开始出现 null （有 nullAs?? 时，出现了 null;  long 型 null 的没有转成字符串 "0"）
+        assert "{\"b0\":false,\"b1\":true,\"d0\":0,\"d1\":1.0,\"list0\":[],\"map0\":null,\"map1\":{\"time\":\"2023-01-16 17:39:53\",\"long\":\"12\",\"int\":12},\"n0\":0,\"n1\":\"1\",\"obj0\":null,\"s0\":\"\",\"s1\":\"noear\"}".equals(output);
     }
 }

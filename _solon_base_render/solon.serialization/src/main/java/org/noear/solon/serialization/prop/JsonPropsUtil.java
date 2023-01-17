@@ -38,10 +38,6 @@ public class JsonPropsUtil {
             factory.addConvertor(Long.class, e -> String.valueOf(e));
         }
 
-        if (jsonProps.intAsString) {
-            factory.addConvertor(Integer.class, e -> String.valueOf(e));
-        }
-
         if (jsonProps.boolAsInt) {
             factory.addConvertor(Boolean.class, e -> (e ? 1 : 0));
         }

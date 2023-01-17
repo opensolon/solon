@@ -46,20 +46,29 @@ public class NullValueSerializer extends JsonSerializer<Object> {
             }
 
             if (jsonProps.nullBoolAsFalse && type == Boolean.class) {
-                gen.writeBoolean(false);
+                if (jsonProps.boolAsInt) {
+                    gen.writeNumber(0);
+                } else {
+                    gen.writeBoolean(false);
+                }
                 return;
             }
 
             if (jsonProps.nullNumberAsZero && Number.class.isAssignableFrom(type)) {
-                if (type == Long.class) {
-                    gen.writeNumber(0L);
-                } else if (type == Double.class) {
-                    gen.writeNumber(0D);
-                } else if (type == Float.class) {
-                    gen.writeNumber(0F);
-                } else {
-                    gen.writeNumber(0);
+                if(jsonProps.longAsString && type == Long.class){
+                    gen.writeString("0");
+                }else{
+                    if (type == Long.class) {
+                        gen.writeNumber(0L);
+                    } else if (type == Double.class) {
+                        gen.writeNumber(0D);
+                    } else if (type == Float.class) {
+                        gen.writeNumber(0F);
+                    } else {
+                        gen.writeNumber(0);
+                    }
                 }
+
                 return;
             }
 

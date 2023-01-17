@@ -20,7 +20,6 @@ public class JsonProps implements Serializable {
     public boolean dateAsTicks;
 
     public boolean longAsString;
-    public boolean intAsString;
     public boolean boolAsInt;
 
     public boolean nullStringAsEmpty;
