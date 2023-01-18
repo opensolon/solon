@@ -27,7 +27,7 @@ import java.util.*;
 public class RunnerUtils {
     private static Map<Class<?>, AopContext> appCached = new HashMap<>();
 
-    public static Class<?> getMainClz(SolonTest anno, Class<?> klass) {
+    private static Class<?> getMainClz(SolonTest anno, Class<?> klass) {
         if (anno == null) {
             return klass;
         }
@@ -44,7 +44,7 @@ public class RunnerUtils {
         }
     }
 
-    public static Method getMainMethod(Class<?> mainClz) {
+    private static Method getMainMethod(Class<?> mainClz) {
         try {
             return mainClz.getMethod("main", String[].class);
         } catch (Exception ex) {
@@ -52,7 +52,7 @@ public class RunnerUtils {
         }
     }
 
-    public static void addPropertySource(AopContext context, TestPropertySource propertySource) {
+    private static void addPropertySource(AopContext context, TestPropertySource propertySource) {
         if (propertySource == null) {
             return;
         }
@@ -70,6 +70,9 @@ public class RunnerUtils {
         }
     }
 
+    /**
+     * 初始化测试目标类
+     * */
     public static Object initTestTarget(AopContext aopContext, Object tmp) {
         //注入
         aopContext.beanInject(tmp);
@@ -86,7 +89,15 @@ public class RunnerUtils {
     }
 
 
+    /**
+     * 初始化测试运行器
+     * */
     public static AopContext initRunner(Class<?> klass) throws Throwable {
+        //添加测试类包名检测（包名为必须要求）
+        if (Utils.isEmpty(klass.getPackage().getName())) {
+            throw new IllegalStateException("The test class is missing package: " + klass.getName());
+        }
+
         SolonTest anno = klass.getAnnotation(SolonTest.class);
 
         if (anno != null) {
