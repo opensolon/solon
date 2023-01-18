@@ -62,7 +62,7 @@ public class SolonApp extends RouterWrapper {
         }
 
         //添加启动类包名检测
-        if (Utils.isEmpty(source.getPackage().getName())) {
+        if (source.getPackage() == null || Utils.isEmpty(source.getPackage().getName())) {
             throw new IllegalStateException("The startup class is missing package: " + source.getName());
         }
 

@@ -94,7 +94,7 @@ public class RunnerUtils {
      * */
     public static AopContext initRunner(Class<?> klass) throws Throwable {
         //添加测试类包名检测（包名为必须要求）
-        if (Utils.isEmpty(klass.getPackage().getName())) {
+        if (klass.getPackage() == null || Utils.isEmpty(klass.getPackage().getName())) {
             throw new IllegalStateException("The test class is missing package: " + klass.getName());
         }
 
