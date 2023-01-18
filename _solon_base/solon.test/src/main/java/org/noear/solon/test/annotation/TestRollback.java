@@ -9,6 +9,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ * 测试回滚
+ *
  * @author noear
  * @since 1.10
  */

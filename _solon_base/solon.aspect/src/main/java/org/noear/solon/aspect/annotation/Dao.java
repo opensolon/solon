@@ -6,7 +6,7 @@ import org.noear.solon.annotation.Note;
 import java.lang.annotation.*;
 
 /**
- * 此注解会使用asm代理机制
+ * 数据访问类注解。此注解会使用asm代理机制
  *
  * @author noear
  * @since 1.1

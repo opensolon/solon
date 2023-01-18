@@ -3,7 +3,7 @@ package org.noear.solon.annotation;
 import java.lang.annotation.*;
 
 /**
- * 做为 @Mapping 的副词用
+ * 做为 @Mapping 的副词用，申明输入内容类型需求
  *
  * @author noear
  * @since 1.7
