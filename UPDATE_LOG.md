@@ -17,7 +17,7 @@
 * 增加 RouterInterceptor::postResult 接口
 * 增加 solon.serialization json 适配插件的快捷配置支持（9项）
 * 调整 安全停止时由 403 改为 503 状态码
-* 升级 snack3 为 3.2.50
+* 升级 snack3 为 3.2.52
 * 升级 dbvisitor 为 5.2.0
 * 升级 fastjson2 为 2.0.23
 
