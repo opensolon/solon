@@ -10,6 +10,11 @@
 * 增加 更多友好的异常分类???
 * 增加 便利的原生编译机制
 
+#### 1.12.4
+* 增加 solon.test 对单测类的包名检测，如果无包则异常提示
+* 增加 MimeType.TEXT_JSON_VALUE 值（比 APPLICATION_JSON_VALUE 简短些）
+* 调整 solon 对包名检测的处理逻辑（保持也 solon.test 一样）
+
 #### 1.12.3
 * 修复 solon.test :: @TestRollback 事务回滚坏掉的问题（v1.12.0 出现的）
 * 增加 sa-token 拦截的新适配方式，旧的标为弃用

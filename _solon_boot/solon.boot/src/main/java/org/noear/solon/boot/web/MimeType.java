@@ -27,6 +27,7 @@ public final class MimeType {
     public static final String MULTIPART_FORM_DATA_VALUE = "multipart/form-data";
     public static final String TEXT_EVENT_STREAM_VALUE = "text/event-stream";
     public static final String TEXT_HTML_VALUE = "text/html";
+    public static final String TEXT_JSON_VALUE = "text/json";
     public static final String TEXT_MARKDOWN_VALUE = "text/markdown";
     public static final String TEXT_PLAIN_VALUE = "text/plain";
     public static final String TEXT_XML_VALUE = "text/xml";
