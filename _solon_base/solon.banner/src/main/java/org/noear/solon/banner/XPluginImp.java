@@ -13,13 +13,15 @@ import org.noear.solon.core.util.LogUtil;
  * @since 1.11
  * */
 public class XPluginImp implements Plugin {
+	String BANNER_DEF_FILE = "META-INF/solon_def/banner-def.txt";
+
 	@Override
 	public void start(AopContext context) throws Throwable {
 		boolean enable = Solon.cfg().getBool("solon.banner.enable", true);
 
 		if (enable) {
 			String mode = Solon.cfg().get("solon.banner.mode", "console");
-			String path = Solon.cfg().get("solon.banner.path", "");
+			String path = Solon.cfg().get("solon.banner.path", BANNER_DEF_FILE);
 
 			String bannerTxt = "";
 			if (Utils.isNotEmpty(path)) {
@@ -32,7 +34,7 @@ public class XPluginImp implements Plugin {
 
 			//Trying to get the banner file Solon
 			if (Utils.isEmpty(bannerTxt)) {
-				bannerTxt = SolonBannerPrinter.printBanner();
+				return;
 			}
 
 			switch (mode) {
