@@ -11,7 +11,7 @@ import java.lang.annotation.*;
  * @author noear
  * @since 1.6
  */
-@Around(value = AsyncInterceptor.class, index = -99)
+@Around(value = AsyncInterceptor.class, index = Integer.MIN_VALUE)
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
