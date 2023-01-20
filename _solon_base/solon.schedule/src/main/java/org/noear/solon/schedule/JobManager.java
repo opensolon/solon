@@ -13,6 +13,7 @@ import java.util.*;
  * @author noear
  * @since 1.6
  */
+@Deprecated
 public class JobManager {
     private static Map<String, JobEntity> jobEntityMap = new HashMap<>();
     private static boolean isStarted = false;

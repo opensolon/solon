@@ -13,6 +13,7 @@ import java.lang.annotation.Target;
  * @author noear
  * @since 1.6
  */
+@Deprecated
 @Target({ElementType.METHOD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Scheduled {
