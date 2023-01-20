@@ -13,6 +13,7 @@ import java.lang.annotation.Target;
  * @author noear
  * @since 1.6
  */
+@Note("由插件 solon.scheduling.simple 替代")
 @Deprecated
 @Target({ElementType.METHOD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)

@@ -1,6 +1,7 @@
 package org.noear.solon.schedule;
 
 import org.noear.solon.Utils;
+import org.noear.solon.annotation.Note;
 import org.noear.solon.schedule.cron.CronExpressionPlus;
 import org.noear.solon.schedule.cron.CronUtils;
 
@@ -13,6 +14,7 @@ import java.util.*;
  * @author noear
  * @since 1.6
  */
+@Note("由插件 solon.scheduling.simple 替代")
 @Deprecated
 public class JobManager {
     private static Map<String, JobEntity> jobEntityMap = new HashMap<>();
