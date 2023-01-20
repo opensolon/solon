@@ -38,7 +38,9 @@ public class PropsLoaderExt extends PropsLoader {
         String fileName = url.toString();
 
         if (fileName.endsWith(".properties")) {
-            LogUtil.global().info(fileName);
+            if(Solon.app() != null && Solon.cfg().isDebugMode()) {
+                LogUtil.global().trace(fileName);
+            }
 
             Properties tmp = new Properties();
             tmp.load(new InputStreamReader(url.openStream(), Solon.encoding()));
@@ -46,7 +48,9 @@ public class PropsLoaderExt extends PropsLoader {
         }
 
         if (fileName.endsWith(".yml")) {
-            LogUtil.global().info(fileName);
+            if(Solon.app() != null && Solon.cfg().isDebugMode()) {
+                LogUtil.global().trace(fileName);
+            }
 
             PropertiesYaml tmp = new PropertiesYaml();
             tmp.loadYml(new InputStreamReader(url.openStream(), Solon.encoding()));

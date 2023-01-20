@@ -67,7 +67,9 @@ public class PropsLoader {
         String fileName = url.toString();
 
         if (fileName.endsWith(".properties")) {
-            LogUtil.global().info(fileName);
+            if(Solon.app() != null && Solon.cfg().isDebugMode()) {
+                LogUtil.global().trace(fileName);
+            }
 
             Properties tmp = new Properties();
             tmp.load(new InputStreamReader(url.openStream(), Solon.encoding()));
