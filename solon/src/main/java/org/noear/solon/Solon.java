@@ -226,7 +226,7 @@ public class Solon {
 
 
             //2.延时标停
-            int delay1 = (int) (delay * 0.2);
+            int delay1 = (int) (delay * 0.3);
             int delay2 = delay - delay1;
 
             //一段暂停
