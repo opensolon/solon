@@ -11,9 +11,15 @@
 * 增加 便利的原生编译机制
 
 #### 1.12.4
+* 插件 solon.extend.async 标为弃用（由 solon.scheduling 替代）
+* 插件 solon.extend.retry 标为弃用
+* 插件 solon.schedule 标为弃用（由 solon.scheduling.simple 替代）
 * 增加 solon.test 对单测类的包名检测，如果无包则异常提示
+* 增加 solon.web.cors 基于路由拦截器的实现,及增强代码复用性
 * 增加 MimeType.TEXT_JSON_VALUE 值（比 APPLICATION_JSON_VALUE 简短些）
 * 调整 solon 对包名检测的处理逻辑（保持也 solon.test 一样）
+* 调整 solon 安全停止时间比较为 3:7
+* 调整 将配置文件加载的打印
 
 #### 1.12.3
 * 修复 solon.test :: @TestRollback 事务回滚坏掉的问题（v1.12.0 出现的）
