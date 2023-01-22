@@ -49,7 +49,7 @@ public class App {
         SolonApp app = Solon.start(App.class, args);
 
         //增加全局处理
-        app.before(new CrossHandler().allowOrigin("*"));
+        app.before(-1, new CrossHandler().allowOrigin("*"));
         
         //或者增某段路径的处理
         app.before("/user/**", new CrossHandler().allowOrigin("*"));

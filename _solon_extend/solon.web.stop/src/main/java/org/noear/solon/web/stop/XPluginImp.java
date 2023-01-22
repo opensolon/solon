@@ -1,4 +1,4 @@
-package org.noear.solon.extend.stop;
+package org.noear.solon.web.stop;
 
 import org.noear.solon.Solon;
 import org.noear.solon.core.AopContext;

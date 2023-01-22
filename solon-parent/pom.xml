@@ -370,6 +370,12 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>solon.web.stop</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>solon.extend.async</artifactId>
                 <version>${solon.ver}</version>
             </dependency>

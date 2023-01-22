@@ -62,7 +62,7 @@ public class TestApp {
 
 
         Locale.setDefault(Locale.SIMPLIFIED_CHINESE);
-        LogUtil.globalSet(new LogUtilToSlf4j());
+        //LogUtil.globalSet(new LogUtilToSlf4j());
 
         //构建方式
         SolonApp app = new SolonBuilder().onError(e -> {
