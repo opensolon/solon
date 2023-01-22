@@ -9,7 +9,7 @@ public class XPluginImp implements Plugin {
     public void start(AopContext context) {
         boolean enable = context.cfg().getBool("solon.stop.enable", false);
         String path = context.cfg().get("solon.stop.path", "/_run/stop/");
-        String host = context.cfg().get("solon.stop.host", "127.0.0.1");
+        String whitelist = context.cfg().get("solon.stop.whitelist", "127.0.0.1");
 
         //单位为秒
         int delay = context.cfg().getInt("solon.stop.delay", 10);
@@ -23,9 +23,9 @@ public class XPluginImp implements Plugin {
                     delay2 = 0;
                 }
 
-                if ("*".equals(host)) {
+                if ("*".equals(whitelist)) {
                     Solon.stop(delay2);
-                } else if (host.equals(c.realIp())) {
+                } else if (whitelist.equals(c.realIp())) {
                     Solon.stop(delay2);
                 }
             });

@@ -15,12 +15,10 @@
 
 
 ```yml
-#是否启用，默认为关闭
-solon.stop.enable: false
-#停止命令路径
-solon.stop.path: "/_run/stop/"
-#有权停目的主机ip，`*` 表示不限主机
-solon.stop.host: "127.0.0.1"
+solon.stop:
+  enable: false           #是否启用。默认为关闭
+  path: "/_run/stop/"     #命令路径。默认为'/_run/stop/'
+  whitelist: "127.0.0.1"  #白名单，`*` 表示不限主机。默认为`127.0.0.1`
 ```
 
 
