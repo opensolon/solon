@@ -4,6 +4,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
+import org.noear.solon.core.util.RunUtil;
 import org.noear.solon.socketd.ConnectorBase;
 import org.noear.solon.socketd.SocketProps;
 
@@ -48,7 +49,7 @@ public class BioConnector extends ConnectorBase<Socket> {
     }
 
     void startReceive(Session session, Socket socket) {
-        Utils.parallel(() -> {
+        RunUtil.parallel(() -> {
             while (true) {
                 if (socket.isClosed()) {
                     Solon.app().listener().onClose(session);

@@ -2,6 +2,7 @@ package org.noear.solon.schedule;
 
 import org.noear.solon.Utils;
 import org.noear.solon.core.event.EventBus;
+import org.noear.solon.core.util.RunUtil;
 import org.noear.solon.schedule.cron.CronExpressionPlus;
 
 import java.util.Date;
@@ -167,7 +168,7 @@ class JobEntity extends Thread {
 
     private void exec() {
         if (concurrent) {
-            Utils.parallel(this::exec0);
+            RunUtil.parallel(this::exec0);
         } else {
             exec0();
         }

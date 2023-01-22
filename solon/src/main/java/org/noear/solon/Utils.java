@@ -2,6 +2,7 @@ package org.noear.solon;
 
 import org.noear.solon.annotation.Note;
 import org.noear.solon.core.util.LogUtil;
+import org.noear.solon.core.util.RunUtil;
 import org.noear.solon.core.util.ScanUtil;
 import org.noear.solon.core.wrap.ClassWrap;
 import org.noear.solon.core.*;
@@ -32,6 +33,10 @@ public class Utils {
      * */
     @Deprecated
     public static final ExecutorService pools = Executors.newCachedThreadPool();
+    /**
+     * @deprecated 1.12
+     * */
+    @Deprecated
     public static final ScheduledExecutorService scheduled = Executors.newScheduledThreadPool(Runtime.getRuntime().availableProcessors());
 
     private static final char[] HEX_DIGITS = new char[]{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
@@ -39,23 +44,28 @@ public class Utils {
     /**
      * 并行执行
      * */
+    @Deprecated
     public static Future<?> parallel(Runnable task){
-        return pools.submit(task);
+        return RunUtil.parallel(task);
     }
 
     /**
      * 并行执行
      * */
+    @Deprecated
     public static <T> Future<T> parallel(Callable<T> task){
-        return pools.submit(task);
+        return RunUtil.parallel(task);
     }
 
     /**
      * 异步执行
      * */
+    @Deprecated
     public static Future<?> async(Runnable task){
-        return CompletableFuture.runAsync(task);
+        return RunUtil.async(task);
     }
+
+
 
     /**
      * Ping 一个地址

@@ -24,7 +24,7 @@ public class LogUtil {
     }
 
     public void infoAsync(String content) {
-        Utils.async(() -> {
+        RunUtil.async(() -> {
             info(content);
         });
     }

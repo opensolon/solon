@@ -2,6 +2,7 @@ package org.noear.solon.scheduling.simple;
 
 import org.noear.solon.Utils;
 import org.noear.solon.core.event.EventBus;
+import org.noear.solon.core.util.RunUtil;
 import org.noear.solon.scheduling.ScheduledException;
 import org.noear.solon.scheduling.annotation.Scheduled;
 import org.noear.solon.scheduling.simple.cron.CronExpressionPlus;
@@ -142,7 +143,7 @@ public class JobHolder extends Thread {
 
 
     private void exec() {
-        Utils.parallel(this::exec0);
+        RunUtil.parallel(this::exec0);
     }
 
     private void exec0() {

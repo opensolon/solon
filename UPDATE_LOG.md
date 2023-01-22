@@ -18,6 +18,7 @@
 * 增加 solon.test 对单测类的包名检测，如果无包则异常提示
 * 增加 solon.web.cors 基于路由拦截器的实现,及增强代码复用性
 * 增加 MimeType.TEXT_JSON_VALUE 值（比 APPLICATION_JSON_VALUE 简短些）
+* 增加 RunUtil 工具类，由 Util 部分接口分离
 * 调整 solon 对包名检测的处理逻辑（保持也 solon.test 一样）
 * 调整 solon 安全停止时间比较为 3:7
 * 调整 在调整模式下才配置文件加载的打印，之前为总打印

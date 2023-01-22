@@ -1,8 +1,8 @@
 package org.noear.solon.scheduling.async;
 
-import org.noear.solon.Utils;
 import org.noear.solon.core.aspect.Interceptor;
 import org.noear.solon.core.aspect.Invocation;
+import org.noear.solon.core.util.RunUtil;
 import org.noear.solon.scheduling.annotation.Async;
 
 /**
@@ -17,7 +17,7 @@ public class AsyncInterceptor implements Interceptor {
         Async anno = inv.method().getAnnotation(Async.class);
 
         if (anno != null) {
-            Utils.async(new AsyncInvocationRunnable(inv));
+            RunUtil.async(new AsyncInvocationRunnable(inv));
             return null;
         } else {
             return inv.invoke();

@@ -4,6 +4,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.cloud.exception.CloudJobException;
 import org.noear.solon.cloud.extend.local.impl.job.cron.CronExpressionPlus;
 import org.noear.solon.core.event.EventBus;
+import org.noear.solon.core.util.RunUtil;
 
 import java.util.Date;
 
@@ -155,8 +156,7 @@ class JobEntity extends Thread {
 
 
     private void exec() {
-
-        Utils.parallel(this::exec0);
+        RunUtil.parallel(this::exec0);
     }
 
     private void exec0() {

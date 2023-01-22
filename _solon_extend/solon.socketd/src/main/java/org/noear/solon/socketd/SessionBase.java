@@ -4,6 +4,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.core.NvMap;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.message.*;
+import org.noear.solon.core.util.RunUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -149,7 +150,7 @@ public abstract class SessionBase implements Session {
 
     @Override
     public void sendAsync(String message) {
-        Utils.async(() -> {
+        RunUtil.async(() -> {
             try {
                 send(message);
             } catch (Throwable e) {
@@ -160,7 +161,7 @@ public abstract class SessionBase implements Session {
 
     @Override
     public void sendAsync(Message message) {
-        Utils.async(() -> {
+        RunUtil.async(() -> {
             try {
                 send(message);
             } catch (Throwable e) {
@@ -301,14 +302,14 @@ public abstract class SessionBase implements Session {
 
             _sendHeartbeatAuto = true;
 
-            Utils.scheduled.scheduleWithFixedDelay(
+            RunUtil.delayAndRepeat(
                     () -> {
                         try {
                             sendHeartbeat();
                         } catch (Throwable ex) {
                             EventBus.push(ex);
                         }
-                    }, 1, intervalSeconds, TimeUnit.SECONDS);
+                    }, intervalSeconds);
         }
     }
 

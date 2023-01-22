@@ -3,6 +3,7 @@ package org.noear.solon.core.event;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.exception.EventException;
+import org.noear.solon.core.util.RunUtil;
 
 import java.util.*;
 
@@ -35,7 +36,7 @@ public final class EventBus {
      */
     public static void pushAsync(Object event) {
         if (event != null) {
-            Utils.async(() -> {
+            RunUtil.async(() -> {
                 try {
                     push0(event);
                 } catch (Throwable e) {

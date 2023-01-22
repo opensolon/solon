@@ -13,6 +13,7 @@ import org.noear.solon.cloud.model.Event;
 import org.noear.solon.cloud.service.CloudEventObserverManger;
 import org.noear.solon.cloud.service.CloudEventServicePlus;
 import org.noear.solon.core.Props;
+import org.noear.solon.core.util.RunUtil;
 
 /**
  * 分布式事件适配
@@ -92,7 +93,7 @@ public class CloudEventServiceJedisImpl implements CloudEventServicePlus {
                 observerManger.topicAll().toArray(topicAll);
 
                 //用异步处理
-                Utils.async(() -> {
+                RunUtil.async(() -> {
                     client.open(s -> s.subscribe(new JedisEventConsumer(cloudProps, observerManger), topicAll));
                 });
             }

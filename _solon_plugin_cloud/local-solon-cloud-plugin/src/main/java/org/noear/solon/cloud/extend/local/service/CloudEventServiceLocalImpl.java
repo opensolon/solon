@@ -11,6 +11,7 @@ import org.noear.solon.cloud.model.Event;
 import org.noear.solon.cloud.service.CloudEventObserverManger;
 import org.noear.solon.cloud.service.CloudEventServicePlus;
 import org.noear.solon.core.event.EventBus;
+import org.noear.solon.core.util.RunUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,7 +39,7 @@ public class CloudEventServiceLocalImpl implements CloudEventServicePlus {
         }
 
         //异步执行
-        Utils.async(() -> {
+        RunUtil.async(() -> {
             try {
                 publishDo(event);
             } catch (Throwable e) {
