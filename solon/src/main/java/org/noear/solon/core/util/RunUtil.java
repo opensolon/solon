@@ -35,14 +35,14 @@ public class RunUtil {
     /**
      * 延迟执行
      */
-    public static ScheduledFuture<?> delay(Runnable task, int seconds) {
-        return scheduledExecutor.schedule(task, seconds, TimeUnit.SECONDS);
+    public static ScheduledFuture<?> delay(Runnable task, long millis) {
+        return scheduledExecutor.schedule(task, millis, TimeUnit.MILLISECONDS);
     }
 
     /**
      * 延迟执行并重复
      */
-    public static ScheduledFuture<?> delayAndRepeat(Runnable task, int seconds) {
-        return scheduledExecutor.scheduleWithFixedDelay(task, 1, seconds, TimeUnit.SECONDS);
+    public static ScheduledFuture<?> delayAndRepeat(Runnable task, long millis) {
+        return scheduledExecutor.scheduleWithFixedDelay(task, 1000, millis, TimeUnit.MILLISECONDS);
     }
 }

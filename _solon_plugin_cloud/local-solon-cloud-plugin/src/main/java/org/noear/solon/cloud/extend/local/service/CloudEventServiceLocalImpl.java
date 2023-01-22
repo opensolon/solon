@@ -5,11 +5,12 @@ import org.noear.solon.cloud.CloudEventHandler;
 import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.annotation.EventLevel;
 import org.noear.solon.cloud.exception.CloudEventException;
-import org.noear.solon.cloud.exception.CloudJobException;
 import org.noear.solon.cloud.extend.local.LocalProps;
+import org.noear.solon.cloud.extend.local.impl.event.EventRunnable;
 import org.noear.solon.cloud.model.Event;
 import org.noear.solon.cloud.service.CloudEventObserverManger;
 import org.noear.solon.cloud.service.CloudEventServicePlus;
+import org.noear.solon.cloud.utils.ExpirationUtils;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.RunUtil;
 import org.slf4j.Logger;
@@ -24,7 +25,8 @@ import org.slf4j.LoggerFactory;
 public class CloudEventServiceLocalImpl implements CloudEventServicePlus {
     static Logger log = LoggerFactory.getLogger(CloudEventServiceLocalImpl.class);
     private CloudProps cloudProps;
-    public CloudEventServiceLocalImpl(CloudProps cloudProps){
+
+    public CloudEventServiceLocalImpl(CloudProps cloudProps) {
         this.cloudProps = cloudProps;
     }
 
@@ -38,19 +40,30 @@ public class CloudEventServiceLocalImpl implements CloudEventServicePlus {
             throw new IllegalArgumentException("Event missing content");
         }
 
-        //异步执行
-        RunUtil.async(() -> {
-            try {
-                publishDo(event);
-            } catch (Throwable e) {
-                EventBus.push(new CloudJobException(e));
-            }
-        });
+        long scheduled_millis = 0L;
+        if (event.scheduled() != null) {
+            scheduled_millis = event.scheduled().getTime() - System.currentTimeMillis();
+        }
+
+        if (scheduled_millis > 0L) {
+            //延迟执行
+            RunUtil.delay(new EventRunnable(this, event), scheduled_millis);
+        } else {
+            //异步执行
+            RunUtil.async(() -> {
+                try {
+                    //派发
+                    distribute(event);
+                } catch (Throwable e) {
+                    EventBus.push(new CloudEventException(e));
+                }
+            });
+        }
 
         return true;
     }
 
-    private void publishDo(Event event) throws Throwable {
+    public void distribute(Event event) throws Throwable {
         //new topic
         String topicNew;
         if (Utils.isEmpty(event.group())) {
@@ -59,17 +72,28 @@ public class CloudEventServiceLocalImpl implements CloudEventServicePlus {
             topicNew = event.group() + LocalProps.GROUP_TOPIC_SPLIT_MART + event.topic();
         }
 
+        boolean isOk = false;
 
-        CloudEventHandler eventHandler = observerManger.getByTopic(topicNew);
-        if (eventHandler == null) {
-            eventHandler.handle(event);
-        } else {
-            //只需要记录一下
-            log.warn("There is no observer for this event topic[{}]", event.topic());
+        try {
+            CloudEventHandler eventHandler = observerManger.getByTopic(topicNew);
+            if (eventHandler != null) {
+                isOk = eventHandler.handle(event);
+            } else {//只需要记录一下
+                log.warn("There is no observer for this event topic[{}]", event.topic());
+            }
+        } catch (Throwable e) {
+            log.error(e.getMessage(), e);
+        }
+
+        if (isOk == false) {
+            //失败后，重新进入延时队列
+            event.times(event.times() + 1);
+            RunUtil.delayAndRepeat(new EventRunnable(this, event), ExpirationUtils.getExpiration(event.times()));
         }
     }
 
     private CloudEventObserverManger observerManger = new CloudEventObserverManger();
+
     @Override
     public void attention(EventLevel level, String channel, String group, String topic, String tag, CloudEventHandler observer) {
         //new topic

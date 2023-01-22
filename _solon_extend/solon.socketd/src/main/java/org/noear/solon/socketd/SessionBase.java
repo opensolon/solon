@@ -309,7 +309,7 @@ public abstract class SessionBase implements Session {
                         } catch (Throwable ex) {
                             EventBus.push(ex);
                         }
-                    }, intervalSeconds);
+                    }, intervalSeconds * 1000);
         }
     }
 
