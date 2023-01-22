@@ -12,6 +12,7 @@
 
 #### 1.12.4
 * 新增 solon.web.stop 插件，替代 solon.extend.stop
+* 插件 local-solon-cloud-plugin 添加事件ACK、重试守护、自动延时、定时事件支持（不能持久化，即重启数据丢失）
 * 插件 solon.extend.async 标为弃用（由 solon.scheduling 替代）
 * 插件 solon.extend.retry 标为弃用
 * 插件 solon.schedule 标为弃用（由 solon.scheduling.simple 替代）

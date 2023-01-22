@@ -88,7 +88,7 @@ public class CloudEventServiceLocalImpl implements CloudEventServicePlus {
         if (isOk == false) {
             //失败后，重新进入延时队列
             event.times(event.times() + 1);
-            RunUtil.delayAndRepeat(new EventRunnable(this, event), ExpirationUtils.getExpiration(event.times()));
+            RunUtil.delay(new EventRunnable(this, event), ExpirationUtils.getExpiration(event.times()));
         }
     }
 
