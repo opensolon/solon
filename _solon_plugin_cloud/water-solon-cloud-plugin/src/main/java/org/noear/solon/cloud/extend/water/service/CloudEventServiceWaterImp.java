@@ -168,22 +168,22 @@ public class CloudEventServiceWaterImp implements CloudEventServicePlus {
      * 处理接收事件
      */
     public boolean onReceive(String topicNew, Event event) throws Throwable {
-        boolean isOk = true;
+        boolean isOk = true; //不能改为 false；下面有 & 操作
         boolean isHandled = false;
-        CloudEventHandler entity = null;
+        CloudEventHandler handler = null;
 
         event.channel(eventChannelName);
 
-        entity = instanceObserverManger.getByTopic(topicNew);
-        if (entity != null) {
+        handler = instanceObserverManger.getByTopic(topicNew);
+        if (handler != null) {
             isHandled = true;
-            isOk = entity.handle(event);
+            isOk = handler.handle(event);
         }
 
-        entity = clusterObserverManger.getByTopic(topicNew);
-        if (entity != null) {
+        handler = clusterObserverManger.getByTopic(topicNew);
+        if (handler != null) {
             isHandled = true;
-            isOk = isOk && entity.handle(event); //两个都成功，才是成功
+            isOk = isOk && handler.handle(event); //两个都成功，才是成功
         }
 
         if (isHandled == false) {
