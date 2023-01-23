@@ -2,7 +2,6 @@ package org.noear.solon;
 
 import org.noear.solon.annotation.Note;
 import org.noear.solon.core.util.LogUtil;
-import org.noear.solon.core.util.RunUtil;
 import org.noear.solon.core.util.ScanUtil;
 import org.noear.solon.core.wrap.ClassWrap;
 import org.noear.solon.core.*;
@@ -13,7 +12,6 @@ import java.lang.reflect.UndeclaredThrowableException;
 import java.net.*;
 import java.security.MessageDigest;
 import java.util.*;
-import java.util.concurrent.*;
 import java.util.function.Function;
 import java.util.regex.Pattern;
 
@@ -28,49 +26,8 @@ public class Utils {
     public static final String TAG_classpath = "classpath:";
 
     private static final FileNameMap mimeMap = URLConnection.getFileNameMap();
-    /**
-     * @deprecated 1.10
-     * */
-    @Deprecated
-    public static final ExecutorService pools = Executors.newCachedThreadPool();
-    /**
-     * @deprecated 1.12
-     * */
-    @Deprecated
-    public static final ScheduledExecutorService scheduled = Executors.newScheduledThreadPool(Runtime.getRuntime().availableProcessors());
 
     private static final char[] HEX_DIGITS = new char[]{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
-
-    /**
-     * 并行执行
-     *
-     * @deprecated 1.12
-     * */
-    @Deprecated
-    public static Future<?> parallel(Runnable task){
-        return RunUtil.parallel(task);
-    }
-
-    /**
-     * 并行执行
-     *
-     * @deprecated 1.12
-     * */
-    @Deprecated
-    public static <T> Future<T> parallel(Callable<T> task){
-        return RunUtil.parallel(task);
-    }
-
-    /**
-     * 异步执行
-     *
-     * @deprecated 1.12
-     * */
-    @Deprecated
-    public static Future<?> async(Runnable task){
-        return RunUtil.async(task);
-    }
-
 
 
     /**

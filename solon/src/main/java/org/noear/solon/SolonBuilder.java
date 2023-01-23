@@ -1,6 +1,5 @@
 package org.noear.solon;
 
-import org.noear.solon.annotation.Note;
 import org.noear.solon.core.NvMap;
 import org.noear.solon.core.event.*;
 import org.noear.solon.core.util.ConsumerEx;
@@ -31,7 +30,6 @@ public class SolonBuilder {
     /**
      * 订阅应用初始化结束事件
      * */
-    @Note("1.")
     public SolonBuilder onAppInitEnd(EventListener<AppInitEndEvent> handler) {
         return onEvent(AppInitEndEvent.class, handler);
     }
@@ -39,35 +37,20 @@ public class SolonBuilder {
     /**
      * 订阅插件加载结束事件
      * */
-    @Note("2.")
     public SolonBuilder onAppPluginLoadEnd(EventListener<AppPluginLoadEndEvent> handler) {
         return onEvent(AppPluginLoadEndEvent.class, handler);
-    }
-
-    @Note("2.")
-    @Deprecated
-    public SolonBuilder onPluginLoadEnd(EventListener<PluginLoadEndEvent> handler) {
-        return onEvent(PluginLoadEndEvent.class, handler);
     }
 
     /**
      * 订阅Bean加载结束事件
      * */
-    @Note("3.")
     public SolonBuilder onAppBeanLoadEnd(EventListener<AppBeanLoadEndEvent> handler) {
         return onEvent(AppBeanLoadEndEvent.class, handler);
-    }
-
-    @Note("3.")
-    @Deprecated
-    public SolonBuilder onBeanLoadEnd(EventListener<BeanLoadEndEvent> handler) {
-        return onEvent(BeanLoadEndEvent.class, handler);
     }
 
     /**
      * 订阅应用加载结束事件
      * */
-    @Note("4.")
     public SolonBuilder onAppLoadEnd(EventListener<AppLoadEndEvent> handler) {
         return onEvent(AppLoadEndEvent.class, handler);
     }
