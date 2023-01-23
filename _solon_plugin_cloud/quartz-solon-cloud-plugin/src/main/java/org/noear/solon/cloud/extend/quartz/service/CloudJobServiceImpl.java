@@ -1,5 +1,7 @@
 package org.noear.solon.cloud.extend.quartz.service;
 
+import org.noear.solon.Solon;
+import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudJobHandler;
 import org.noear.solon.cloud.exception.CloudJobException;
 import org.noear.solon.cloud.extend.quartz.JobManager;
@@ -41,7 +43,9 @@ public class CloudJobServiceImpl implements CloudJobService {
     @Override
     public boolean register(String name, String cron7x, String description, CloudJobHandler handler) {
         JobManager.addJob(name, handler);
-        JobKey jobKey = JobKey.jobKey(name, "solon");
+        String jobGroup = Utils.annoAlias(Solon.cfg().appName(), "solon");
+        JobKey jobKey = JobKey.jobKey(name, jobGroup);
+
 
         try {
             tryInitScheduler();
@@ -50,22 +54,22 @@ public class CloudJobServiceImpl implements CloudJobService {
                 if (cron7x.indexOf(" ") < 0) {
                     if (cron7x.endsWith("ms")) {
                         long period = Long.parseLong(cron7x.substring(0, cron7x.length() - 2));
-                        regJobByPeriod(jobKey, name, description, period, TimeUnit.MILLISECONDS);
+                        regJobByPeriod(jobKey, name, description, period, TimeUnit.MILLISECONDS, jobGroup);
                     } else if (cron7x.endsWith("s")) {
                         long period = Long.parseLong(cron7x.substring(0, cron7x.length() - 1));
-                        regJobByPeriod(jobKey, name, description, period, TimeUnit.SECONDS);
+                        regJobByPeriod(jobKey, name, description, period, TimeUnit.SECONDS, jobGroup);
                     } else if (cron7x.endsWith("m")) {
                         long period = Long.parseLong(cron7x.substring(0, cron7x.length() - 1));
-                        regJobByPeriod(jobKey, name, description, period, TimeUnit.MINUTES);
+                        regJobByPeriod(jobKey, name, description, period, TimeUnit.MINUTES, jobGroup);
                     } else if (cron7x.endsWith("h")) {
                         long period = Long.parseLong(cron7x.substring(0, cron7x.length() - 1));
-                        regJobByPeriod(jobKey, name, description, period, TimeUnit.HOURS);
+                        regJobByPeriod(jobKey, name, description, period, TimeUnit.HOURS, jobGroup);
                     } else if (cron7x.endsWith("d")) {
                         long period = Long.parseLong(cron7x.substring(0, cron7x.length() - 1));
-                        regJobByPeriod(jobKey, name, description, period, TimeUnit.DAYS);
+                        regJobByPeriod(jobKey, name, description, period, TimeUnit.DAYS, jobGroup);
                     }
                 } else {
-                    regJobByCron(jobKey, name, description, cron7x);
+                    regJobByCron(jobKey, name, description, cron7x, jobGroup);
                 }
             }
         } catch (SchedulerException e) {
@@ -91,7 +95,7 @@ public class CloudJobServiceImpl implements CloudJobService {
         }
     }
 
-    private void regJobByCron(JobKey jobKey, String name, String description, String cron) throws SchedulerException {
+    private void regJobByCron(JobKey jobKey, String name, String description, String cron, String jobGroup) throws SchedulerException {
         JobDetail jobDetail = JobBuilder.newJob(JobQuartzProxy.class)
                 .withDescription(description)
                 .withIdentity(jobKey)
@@ -101,7 +105,7 @@ public class CloudJobServiceImpl implements CloudJobService {
         CronScheduleBuilder builder = CronScheduleBuilder.cronSchedule(cron);
 
         Trigger trigger = TriggerBuilder.newTrigger()
-                .withIdentity(name, "solon")
+                .withIdentity(name, jobGroup)
                 .startNow()
                 .withSchedule(builder)
                 .build();
@@ -109,7 +113,7 @@ public class CloudJobServiceImpl implements CloudJobService {
         _scheduler.scheduleJob(jobDetail, trigger);
     }
 
-    private void regJobByPeriod(JobKey jobKey, String name, String description, long period, TimeUnit unit) throws SchedulerException {
+    private void regJobByPeriod(JobKey jobKey, String name, String description, long period, TimeUnit unit, String jobGroup) throws SchedulerException {
         JobDetail jobDetail = JobBuilder.newJob(JobQuartzProxy.class)
                 .withDescription(description)
                 .withIdentity(jobKey)
@@ -141,7 +145,7 @@ public class CloudJobServiceImpl implements CloudJobService {
             builder.repeatForever();
 
             Trigger trigger = TriggerBuilder.newTrigger()
-                    .withIdentity(name, "solon")
+                    .withIdentity(name, jobGroup)
                     .startNow()
                     .withSchedule(builder)//
                     .build();

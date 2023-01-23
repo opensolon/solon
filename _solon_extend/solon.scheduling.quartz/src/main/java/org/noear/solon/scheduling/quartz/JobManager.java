@@ -1,6 +1,7 @@
 package org.noear.solon.scheduling.quartz;
 
 
+import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.scheduling.annotation.Scheduled;
 import org.quartz.*;
@@ -99,25 +100,27 @@ public final class JobManager {
      * 注册 job（on start）
      */
     private static void regJob(JobHolder jobHolder) throws SchedulerException {
+        String jobGroup = Utils.annoAlias(Solon.cfg().appName(), "solon");
+
         if (Utils.isEmpty(jobHolder.anno.cron())) {
-            regJobByFixedRate(jobHolder, jobHolder.anno.fixedRate());
+            regJobByFixedRate(jobHolder, jobHolder.anno.fixedRate(), jobGroup);
         } else {
-            regJobByCron(jobHolder, jobHolder.anno.cron());
+            regJobByCron(jobHolder, jobHolder.anno.cron(), jobGroup);
         }
     }
 
-    private static void regJobByCron(JobHolder jobHolder, String cron) throws SchedulerException {
+    private static void regJobByCron(JobHolder jobHolder, String cron, String jobGroup) throws SchedulerException {
         tryInitScheduler();
 
         JobDetail jobDetail = JobBuilder.newJob(QuartzProxy.class)
-                .withIdentity(jobHolder.name, "solon")
+                .withIdentity(jobHolder.name, jobGroup)
                 .build();
 
         if (_scheduler.checkExists(jobDetail.getKey()) == false) {
             CronScheduleBuilder builder = CronScheduleBuilder.cronSchedule(cron);
 
             Trigger trigger = TriggerBuilder.newTrigger()
-                    .withIdentity(jobHolder.name, "solon")
+                    .withIdentity(jobHolder.name, jobGroup)
                     .startNow()
                     .withSchedule(builder)
                     .build();
@@ -126,11 +129,11 @@ public final class JobManager {
         }
     }
 
-    private static void regJobByFixedRate(JobHolder jobHolder, long milliseconds) throws SchedulerException {
+    private static void regJobByFixedRate(JobHolder jobHolder, long milliseconds, String jobGroup) throws SchedulerException {
         tryInitScheduler();
 
         JobDetail jobDetail = JobBuilder.newJob(QuartzProxy.class)
-                .withIdentity(jobHolder.name, "solon")
+                .withIdentity(jobHolder.name, jobGroup)
                 .build();
 
         if (_scheduler.checkExists(jobDetail.getKey()) == false) {
@@ -139,7 +142,7 @@ public final class JobManager {
             builder.repeatForever();
 
             Trigger trigger = TriggerBuilder.newTrigger()
-                    .withIdentity(jobHolder.name, "solon")
+                    .withIdentity(jobHolder.name, jobGroup)
                     .startNow()
                     .withSchedule(builder)//
                     .build();

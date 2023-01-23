@@ -1,6 +1,7 @@
 package org.noear.solon.extend.quartz;
 
 
+import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
@@ -94,40 +95,42 @@ public final class JobManager {
      * 注册 job（on start）
      */
     private static void regJob(JobHolder jobEntity) throws SchedulerException {
+        String jobGroup = Utils.annoAlias(Solon.cfg().appName(), "solon");
+
         if (jobEntity.cronx.indexOf(" ") < 0) {
             if (jobEntity.cronx.endsWith("ms")) {
                 long period = Long.parseLong(jobEntity.cronx.substring(0, jobEntity.cronx.length() - 2));
-                regJobByPeriod(jobEntity, period, TimeUnit.MILLISECONDS);
+                regJobByPeriod(jobEntity, period, TimeUnit.MILLISECONDS, jobGroup);
             } else if (jobEntity.cronx.endsWith("s")) {
                 long period = Long.parseLong(jobEntity.cronx.substring(0, jobEntity.cronx.length() - 1));
-                regJobByPeriod(jobEntity, period, TimeUnit.SECONDS);
+                regJobByPeriod(jobEntity, period, TimeUnit.SECONDS, jobGroup);
             } else if (jobEntity.cronx.endsWith("m")) {
                 long period = Long.parseLong(jobEntity.cronx.substring(0, jobEntity.cronx.length() - 1));
-                regJobByPeriod(jobEntity, period, TimeUnit.MINUTES);
+                regJobByPeriod(jobEntity, period, TimeUnit.MINUTES, jobGroup);
             } else if (jobEntity.cronx.endsWith("h")) {
                 long period = Long.parseLong(jobEntity.cronx.substring(0, jobEntity.cronx.length() - 1));
-                regJobByPeriod(jobEntity, period, TimeUnit.HOURS);
+                regJobByPeriod(jobEntity, period, TimeUnit.HOURS, jobGroup);
             } else if (jobEntity.cronx.endsWith("d")) {
                 long period = Long.parseLong(jobEntity.cronx.substring(0, jobEntity.cronx.length() - 1));
-                regJobByPeriod(jobEntity, period, TimeUnit.DAYS);
+                regJobByPeriod(jobEntity, period, TimeUnit.DAYS, jobGroup);
             }
         } else {
-            regJobByCron(jobEntity, jobEntity.cronx);
+            regJobByCron(jobEntity, jobEntity.cronx, jobGroup);
         }
     }
 
-    private static void regJobByCron(JobHolder jobEntity, String cron) throws SchedulerException {
+    private static void regJobByCron(JobHolder jobEntity, String cron, String jobGroup) throws SchedulerException {
         tryInitScheduler();
 
         JobDetail jobDetail = JobBuilder.newJob(QuartzProxy.class)
-                .withIdentity(jobEntity.name, "solon")
+                .withIdentity(jobEntity.name, jobGroup)
                 .build();
 
         if (_scheduler.checkExists(jobDetail.getKey()) == false) {
             CronScheduleBuilder builder = CronScheduleBuilder.cronSchedule(cron);
 
             Trigger trigger = TriggerBuilder.newTrigger()
-                    .withIdentity(jobEntity.name, "solon")
+                    .withIdentity(jobEntity.name, jobGroup)
                     .startNow()
                     .withSchedule(builder)
                     .build();
@@ -136,11 +139,11 @@ public final class JobManager {
         }
     }
 
-    private static void regJobByPeriod(JobHolder jobEntity, long period, TimeUnit unit) throws SchedulerException {
+    private static void regJobByPeriod(JobHolder jobEntity, long period, TimeUnit unit, String jobGroup) throws SchedulerException {
         tryInitScheduler();
 
         JobDetail jobDetail = JobBuilder.newJob(QuartzProxy.class)
-                .withIdentity(jobEntity.name, "solon")
+                .withIdentity(jobEntity.name, jobGroup)
                 .build();
 
         if (_scheduler.checkExists(jobDetail.getKey()) == false) {
@@ -168,7 +171,7 @@ public final class JobManager {
             builder.repeatForever();
 
             Trigger trigger = TriggerBuilder.newTrigger()
-                    .withIdentity(jobEntity.name, "solon")
+                    .withIdentity(jobEntity.name, jobGroup)
                     .startNow()
                     .withSchedule(builder)//
                     .build();
