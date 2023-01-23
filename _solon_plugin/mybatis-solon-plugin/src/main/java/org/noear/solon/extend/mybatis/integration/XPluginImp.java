@@ -15,15 +15,6 @@ public class XPluginImp implements Plugin {
             MybatisAdapterManager.register(bw);
         });
 
-        //for @Deprecated
-        context.beanBuilderAdd(org.apache.ibatis.ext.solon.Db.class, (clz, wrap, anno) -> {
-            builderAddDo(clz, wrap,anno.value());
-        });
-
-        context.beanInjectorAdd(org.apache.ibatis.ext.solon.Db.class, (varH, anno) -> {
-            injectorAddDo(varH, anno.value());
-        });
-
         //for new
         context.beanBuilderAdd(org.apache.ibatis.solon.annotation.Db.class, (clz, wrap, anno) -> {
             builderAddDo(clz, wrap,anno.value());
