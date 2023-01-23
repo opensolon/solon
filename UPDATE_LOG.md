@@ -24,9 +24,10 @@
 * 优化 solon.scheduling.simple 对固定频率与固定延时的处理
 * 优化 solon.scheduling.quartz 对 name 的配置支持，及更多异常提醒
 * 优化 quatz-solon-plugin 对 name 的配置支持
+* 调整 quatz 相关适配增加 job group 的支持（使用 solon.app.name）
 * 调整 solon 对包名检测的处理逻辑（保持也 solon.test 一样）
 * 调整 solon 安全停止时间比较为 3:7
-* 调整 在调整模式下才配置文件加载的打印，之前为总打印
+* 调整 在调整模式下才配置文件加载的打印，之前总是打印
 
 #### 1.12.3
 * 修复 solon.test :: @TestRollback 事务回滚坏掉的问题（v1.12.0 出现的）
