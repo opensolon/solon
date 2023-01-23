@@ -8,7 +8,7 @@ import org.noear.solon.SolonApp;
  * @author noear
  * @since 1.1
  * */
-public class AppBeanLoadEndEvent extends BeanLoadEndEvent {
+public class AppBeanLoadEndEvent extends AppEvent {
     public AppBeanLoadEndEvent(SolonApp app) {
         super(app);
     }
