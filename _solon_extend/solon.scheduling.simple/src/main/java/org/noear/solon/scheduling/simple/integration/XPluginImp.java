@@ -19,7 +19,7 @@ public class XPluginImp implements Plugin {
             return;
         }
 
-        ScheduledBeanBuilder scheduledBeanBuilder = new ScheduledBeanBuilder();
+        ScheduledBeanBuilder scheduledBeanBuilder = new ScheduledBeanBuilder(context);
 
         context.beanBuilderAdd(Scheduled.class, scheduledBeanBuilder);
         context.beanExtractorAdd(Scheduled.class, scheduledBeanBuilder);

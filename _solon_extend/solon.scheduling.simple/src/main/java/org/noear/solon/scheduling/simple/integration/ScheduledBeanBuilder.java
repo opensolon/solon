@@ -1,6 +1,8 @@
 package org.noear.solon.scheduling.simple.integration;
 
+import org.noear.solon.Solon;
 import org.noear.solon.Utils;
+import org.noear.solon.core.AopContext;
 import org.noear.solon.core.BeanBuilder;
 import org.noear.solon.core.BeanExtractor;
 import org.noear.solon.core.BeanWrap;
@@ -10,26 +12,30 @@ import org.noear.solon.scheduling.simple.JobManager;
 import org.noear.solon.scheduling.utils.ScheduledHelper;
 
 import java.lang.reflect.Method;
+import java.util.Properties;
 
 /**
  * @author noear
  * @since 1.11
  */
 public class ScheduledBeanBuilder implements BeanBuilder<Scheduled>, BeanExtractor<Scheduled> {
+    private final AopContext context;
+    public ScheduledBeanBuilder(AopContext context){
+        this.context = context;
+    }
+
     @Override
     public void doBuild(Class<?> clz, BeanWrap bw, Scheduled anno) throws Throwable {
         if (Runnable.class.isAssignableFrom(clz)) {
-            String name = anno.name();
-            if (Utils.isEmpty(name)) {
-                name = clz.getName();
-            }
-
-
             ScheduledAnno warpper = new ScheduledAnno(anno);
+
             ScheduledHelper.configScheduled(warpper);
 
+            Runnable job = bw.raw();
+            String jobId = clz.getName();
+            String name = Utils.annoAlias(anno.name(), jobId);
 
-            JobManager.add(name, warpper, bw.raw());
+            JobManager.add(name, warpper, job);
         }
     }
 
@@ -39,16 +45,14 @@ public class ScheduledBeanBuilder implements BeanBuilder<Scheduled>, BeanExtract
             throw new IllegalStateException("Scheduling local job not supports parameter!");
         }
 
-        String name = anno.name();
-        if (Utils.isEmpty(name)) {
-            name = bw.clz().getName() + "::" + method.getName();
-        }
-
-        MethodRunnable runnable = new MethodRunnable(bw.raw(), method);
-
         ScheduledAnno warpper = new ScheduledAnno(anno);
+
         ScheduledHelper.configScheduled(warpper);
 
-        JobManager.add(name, warpper, runnable);
+        MethodRunnable job = new MethodRunnable(bw.raw(), method);
+        String jobId = bw.clz().getName() + "::" + method.getName();
+        String name = Utils.annoAlias(warpper.name(), jobId);
+
+        JobManager.add(name, warpper, job);
     }
 }

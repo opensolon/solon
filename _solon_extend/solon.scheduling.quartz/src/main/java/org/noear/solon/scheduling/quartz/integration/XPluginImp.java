@@ -21,7 +21,7 @@ public class XPluginImp implements Plugin {
             JobManager.setScheduler(bean);
         });
 
-        QuartzBeanBuilder beanBuilder = new QuartzBeanBuilder();
+        QuartzBeanBuilder beanBuilder = new QuartzBeanBuilder(context);
         //获取 Quartz 注解的类
         context.beanBuilderAdd(Scheduled.class, beanBuilder);
 

@@ -1,6 +1,8 @@
 package org.noear.solon.scheduling.quartz.integration;
 
+import org.noear.solon.Solon;
 import org.noear.solon.Utils;
+import org.noear.solon.core.AopContext;
 import org.noear.solon.core.BeanBuilder;
 import org.noear.solon.core.BeanExtractor;
 import org.noear.solon.core.BeanWrap;
@@ -13,12 +15,18 @@ import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 
 import java.lang.reflect.Method;
+import java.util.Properties;
 
 /**
  * @author noear
  * @since 1.11
  */
 public class QuartzBeanBuilder implements BeanBuilder<Scheduled>, BeanExtractor<Scheduled> {
+    private final AopContext context;
+    public QuartzBeanBuilder(AopContext context){
+        this.context = context;
+    }
+
     @Override
     public void doBuild(Class<?> clz, BeanWrap bw, Scheduled anno) throws Throwable {
         if (!(bw.raw() instanceof Job) && !(bw.raw() instanceof Runnable)) {
@@ -26,6 +34,7 @@ public class QuartzBeanBuilder implements BeanBuilder<Scheduled>, BeanExtractor<
         }
 
         ScheduledAnno warpper = new ScheduledAnno(anno);
+
         ScheduledHelper.configScheduled(warpper);
 
         AbstractJob job = new BeanJob(bw.raw());
@@ -49,6 +58,7 @@ public class QuartzBeanBuilder implements BeanBuilder<Scheduled>, BeanExtractor<
         }
 
         ScheduledAnno warpper = new ScheduledAnno(anno);
+
         ScheduledHelper.configScheduled(warpper);
 
         AbstractJob job = new MethodJob(bw.raw(), method);

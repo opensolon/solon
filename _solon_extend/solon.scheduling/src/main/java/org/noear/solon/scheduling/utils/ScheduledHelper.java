@@ -33,23 +33,44 @@ public class ScheduledHelper {
         }
 
         if (Utils.isNotEmpty(warpper.name())) {
-            Properties prop = Solon.cfg().getProp("solon.scheduling." + warpper.name());
+            Properties prop = Solon.cfg().getProp("solon.scheduling.job." + warpper.name());
 
             if (prop.size() > 0) {
-                String cronTmp = prop.getProperty("cron");
-                String enableTmp = prop.getProperty("enable");
+                String enableStr = prop.getProperty("enable");
 
-                if ("false".equals(enableTmp)) {
+                String cronStr = prop.getProperty("cron");
+                String zoneStr = prop.getProperty("zone");
+
+                String fixedRateStr = prop.getProperty("fixedRate");
+                String fixedDelayStr = prop.getProperty("fixedDelay");
+                String initialDelayStr = prop.getProperty("initialDelay");
+
+                if ("false".equals(enableStr)) {
                     warpper.enable(false);
                 }
 
-                if (Utils.isNotEmpty(cronTmp)) {
-                    if (cronTmp.length() > 6 && cronTmp.contains(" ")) {
-                        warpper.cron(cronTmp);
+                if (Utils.isNotEmpty(cronStr)) {
+                    if (cronStr.length() > 6 && cronStr.contains(" ")) {
+                        warpper.cron(cronStr);
                     } else {
-                        warpper.fixedRate(fixedRate(cronTmp));
+                        warpper.fixedRate(fixedRate(cronStr));
                     }
+                }
 
+                if(Utils.isNotEmpty(zoneStr)){
+                    warpper.zone(zoneStr);
+                }
+
+                if (Utils.isNotEmpty(fixedRateStr)) {
+                    warpper.fixedRate(Long.parseLong(fixedRateStr));
+                }
+
+                if (Utils.isNotEmpty(fixedDelayStr)) {
+                    warpper.fixedDelay(Long.parseLong(fixedDelayStr));
+                }
+
+                if (Utils.isNotEmpty(initialDelayStr)) {
+                    warpper.initialDelay(Long.parseLong(initialDelayStr));
                 }
             }
         }
