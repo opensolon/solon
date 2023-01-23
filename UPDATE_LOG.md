@@ -21,9 +21,9 @@
 * 增加 solon.web.cors 基于路由拦截器的实现,及增强代码复用性
 * 增加 MimeType.TEXT_JSON_VALUE 值（比 APPLICATION_JSON_VALUE 简短些）
 * 增加 RunUtil 工具类，由 Util 部分接口分离
-* 优化 solon.scheduling.simple 对固定频率与固定延时的处理
-* 优化 solon.scheduling.quartz 对 name 的配置支持，及更多异常提醒
-* 优化 quatz-solon-plugin 对 name 的配置支持
+* 调整 solon.scheduling.simple 对固定频率与固定延时的处理
+* 调整 solon.scheduling.quartz 对 name 的配置支持，及更多异常提醒
+* 调整 quatz-solon-plugin 对 name 的配置支持
 * 调整 quatz 相关适配增加 job group 的支持（使用 solon.app.name）
 * 调整 solon 对包名检测的处理逻辑（保持也 solon.test 一样）
 * 调整 solon 安全停止时间比较为 3:7
