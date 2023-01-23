@@ -11,8 +11,9 @@
 * 增加 便利的原生编译机制
 
 #### 1.12.4
-* 新增 solon.web.stop 插件，替代 solon.extend.stop
+* 新增 solon.web.stop 插件，替代 solon.extend.stop（原 host 配置，更名为 whitelist）
 * 插件 local-solon-cloud-plugin 添加事件ACK、重试守护、自动延时、定时事件支持（无持久化，即重启数据丢失）
+* 插件 solon.scheduling 添加 @EnableAsync 注解，用于控制异步是否启用
 * 插件 solon.extend.async 标为弃用（由 solon.scheduling 替代）
 * 插件 solon.extend.retry 标为弃用
 * 插件 solon.schedule 标为弃用（由 solon.scheduling.simple 替代）
@@ -20,6 +21,9 @@
 * 增加 solon.web.cors 基于路由拦截器的实现,及增强代码复用性
 * 增加 MimeType.TEXT_JSON_VALUE 值（比 APPLICATION_JSON_VALUE 简短些）
 * 增加 RunUtil 工具类，由 Util 部分接口分离
+* 优化 solon.scheduling.simple 对固定频率与固定延时的处理
+* 优化 solon.scheduling.quartz 对 name 的配置支持，及更多异常提醒
+* 优化 quatz-solon-plugin 对 name 的配置支持
 * 调整 solon 对包名检测的处理逻辑（保持也 solon.test 一样）
 * 调整 solon 安全停止时间比较为 3:7
 * 调整 在调整模式下才配置文件加载的打印，之前为总打印

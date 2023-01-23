@@ -82,7 +82,7 @@ public class MethodWrap implements Interceptor, MethodHolder {
 
     private void doAroundAdd(Around a) {
         if (a != null) {
-            doAroundAdd(new InterceptorEntity(a.index(), context.wrapAndPut(a.value()).get()));
+            doAroundAdd(new InterceptorEntity(a.index(), context.getBeanOrNew(a.value())));
         }
     }
 

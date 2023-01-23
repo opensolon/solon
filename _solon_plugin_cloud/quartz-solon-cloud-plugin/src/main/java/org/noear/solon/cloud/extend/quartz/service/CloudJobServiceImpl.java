@@ -65,7 +65,7 @@ public class CloudJobServiceImpl implements CloudJobService {
                         regJobByPeriod(jobKey, name, description, period, TimeUnit.DAYS);
                     }
                 } else {
-                    regJobByCronx(jobKey, name, description, cron7x);
+                    regJobByCron(jobKey, name, description, cron7x);
                 }
             }
         } catch (SchedulerException e) {
@@ -91,14 +91,14 @@ public class CloudJobServiceImpl implements CloudJobService {
         }
     }
 
-    private void regJobByCronx(JobKey jobKey, String name, String description, String cron7x) throws SchedulerException {
+    private void regJobByCron(JobKey jobKey, String name, String description, String cron) throws SchedulerException {
         JobDetail jobDetail = JobBuilder.newJob(JobQuartzProxy.class)
                 .withDescription(description)
                 .withIdentity(jobKey)
                 .setJobData(new JobDataMap())
                 .build();
 
-        CronScheduleBuilder builder = CronScheduleBuilder.cronSchedule(cron7x);
+        CronScheduleBuilder builder = CronScheduleBuilder.cronSchedule(cron);
 
         Trigger trigger = TriggerBuilder.newTrigger()
                 .withIdentity(name, "solon")
