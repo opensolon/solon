@@ -43,6 +43,8 @@ public class Utils {
 
     /**
      * 并行执行
+     *
+     * @deprecated 1.12
      * */
     @Deprecated
     public static Future<?> parallel(Runnable task){
@@ -51,6 +53,8 @@ public class Utils {
 
     /**
      * 并行执行
+     *
+     * @deprecated 1.12
      * */
     @Deprecated
     public static <T> Future<T> parallel(Callable<T> task){
@@ -59,6 +63,8 @@ public class Utils {
 
     /**
      * 异步执行
+     *
+     * @deprecated 1.12
      * */
     @Deprecated
     public static Future<?> async(Runnable task){

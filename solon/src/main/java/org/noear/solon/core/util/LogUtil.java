@@ -32,7 +32,7 @@ public class LogUtil {
 
     public  void trace(String content) {
         System.out.print("[Solon] ");
-        PrintUtil.greenln(content);
+        PrintUtil.purpleln(content);
     }
 
     public  void debug(String content) {
