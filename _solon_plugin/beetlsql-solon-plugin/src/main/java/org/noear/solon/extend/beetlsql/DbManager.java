@@ -107,9 +107,6 @@ public class DbManager {
         //从库
         String slaves_str = dsProps.get(ATTR_slaves);
         dsProps.remove(ATTR_slaves);
-        if (Utils.isEmpty(slaves_str)) {
-            slaves_str = bw.attrGet(ATTR_slaves);
-        }
 
         if (Utils.isNotEmpty(slaves_str)) {
             String[] slaveAry = slaves_str.split(",");
@@ -132,9 +129,6 @@ public class DbManager {
         //方言
         String dialect_str = dsProps.get(ATTR_dialect);
         dsProps.remove(ATTR_dialect);
-        if (Utils.isEmpty(slaves_str)) {
-            dialect_str = bw.attrGet(ATTR_dialect);
-        }
 
         SQLManagerBuilder builder = SQLManager.newBuilder(cs);
         //as bean name

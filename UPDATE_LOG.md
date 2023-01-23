@@ -11,8 +11,7 @@
 * 增加 便利的原生编译机制
 
 #### 1.13.0
-* 取消 Bean:attr
-* 取消 Component:atte
+* 取消 Bean:attr，Component:attr
 
 #### 1.12.4
 * 新增 solon.web.stop 插件，替代 solon.extend.stop（原 host 配置，更名为 whitelist）
