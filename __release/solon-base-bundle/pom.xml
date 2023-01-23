@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.noear</groupId>
         <artifactId>solon-parent</artifactId>
-        <version>1.13.0-M1</version>
+        <version>2.0.0-M1</version>
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
@@ -25,7 +25,6 @@
         <module>../../_solon_base/solon.data</module>
         <module>../../_solon_base/solon.data.dynamicds</module>
         <module>../../_solon_base/solon.auth</module>
-        <module>../../_solon_base/solon.schedule</module>
         <module>../../_solon_base/solon.test</module>
         <module>../../_solon_base/solon.validation</module>
 

@@ -178,26 +178,6 @@ public class HttpUtils {
     }
 
     /**
-     * 短时间处理
-     *
-     * @deprecated 1.7
-     */
-    @Deprecated
-    public HttpUtils asShortHttp() {
-        return timeout(10, 10, 60);
-    }
-
-    /**
-     * 长时间处理
-     *
-     * @deprecated 1.7
-     */
-    @Deprecated
-    public HttpUtils asLongHttp() {
-        return timeout(30, 60 * 5, 60 * 5);
-    }
-
-    /**
      * 超时设置
      */
     public HttpUtils timeout(int timeoutSeconds) {
@@ -548,23 +528,6 @@ public class HttpUtils {
     public int execAsCode(String mothod) throws IOException {
         return exec(mothod).code();
     }
-
-    /**
-     * @deprecated 1.7
-     * */
-    @Deprecated
-    public String exec2(String mothod) throws IOException {
-        return execAsBody(mothod);
-    }
-
-    /**
-     * @deprecated 1.7
-     * */
-    @Deprecated
-    public int exec3(String mothod) throws IOException {
-        return execAsCode(mothod);
-    }
-
 
     /**
      * 发起GET请求，返回字符串（RESTAPI.select 从服务端获取一或多项资源）
