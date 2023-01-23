@@ -12,8 +12,8 @@ import org.quartz.JobExecutionException;
 public class QuartzProxy implements Job {
     @Override
     public void execute(JobExecutionContext ctx) throws JobExecutionException {
-        String jobId = ctx.getJobDetail().getKey().getName();
-        Job jobReal = JobManager.getJob(jobId);
+        String name = ctx.getJobDetail().getKey().getName();
+        Job jobReal = JobManager.getJob(name);
 
         if (jobReal != null) {
             jobReal.execute(ctx);

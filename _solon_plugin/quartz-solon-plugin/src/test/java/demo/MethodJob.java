@@ -16,7 +16,7 @@ public class MethodJob {
         System.out.println("job3:: " + new Date());
     }
 
-    @Quartz(cron7x = "* * * * * ? ")
+    @Quartz(cron7x = "* * * * * ? ", name = "job4")
     public void job4(JobExecutionContext context){
         System.out.println("job4:: " + context.getJobDetail().getKey().getName());
         System.out.println("job4:: " + new Date());

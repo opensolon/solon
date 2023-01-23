@@ -9,6 +9,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * 任务管理器
+ * */
 public final class JobManager {
     static Scheduler _scheduler = null;
     static Map<String, JobHolder> jobMap = new HashMap<>();
@@ -66,20 +69,24 @@ public final class JobManager {
             return;
         }
 
-        if (jobMap.containsKey(job.getJobId()) == false) {
+        if (Utils.isEmpty(name)) {
+            throw new IllegalArgumentException("The job name cannot be empty!");
+        }
+
+        if (jobMap.containsKey(name) == false) {
             JobHolder jobEntity = new JobHolder(name, cronx, enable, job);
-            jobMap.put(jobEntity.jobID, jobEntity);
+            jobMap.put(name, jobEntity);
         }
     }
 
     /**
      * 获取 job
      */
-    public static JobHolder getJob(String jobID) {
-        if (Utils.isEmpty(jobID)) {
+    public static JobHolder getJob(String name) {
+        if (Utils.isEmpty(name)) {
             return null;
         } else {
-            return jobMap.get(jobID);
+            return jobMap.get(name);
         }
     }
 
@@ -105,22 +112,22 @@ public final class JobManager {
                 regJobByPeriod(jobEntity, period, TimeUnit.DAYS);
             }
         } else {
-            regJobByCronx(jobEntity, jobEntity.cronx);
+            regJobByCron(jobEntity, jobEntity.cronx);
         }
     }
 
-    private static void regJobByCronx(JobHolder jobEntity, String cronx) throws SchedulerException {
+    private static void regJobByCron(JobHolder jobEntity, String cron) throws SchedulerException {
         tryInitScheduler();
 
         JobDetail jobDetail = JobBuilder.newJob(QuartzProxy.class)
-                .withIdentity(jobEntity.jobID, "solon")
+                .withIdentity(jobEntity.name, "solon")
                 .build();
 
         if (_scheduler.checkExists(jobDetail.getKey()) == false) {
-            CronScheduleBuilder builder = CronScheduleBuilder.cronSchedule(cronx);
+            CronScheduleBuilder builder = CronScheduleBuilder.cronSchedule(cron);
 
             Trigger trigger = TriggerBuilder.newTrigger()
-                    .withIdentity(jobEntity.jobID, "solon")
+                    .withIdentity(jobEntity.name, "solon")
                     .startNow()
                     .withSchedule(builder)
                     .build();
@@ -133,7 +140,7 @@ public final class JobManager {
         tryInitScheduler();
 
         JobDetail jobDetail = JobBuilder.newJob(QuartzProxy.class)
-                .withIdentity(jobEntity.jobID, "solon")
+                .withIdentity(jobEntity.name, "solon")
                 .build();
 
         if (_scheduler.checkExists(jobDetail.getKey()) == false) {
@@ -161,7 +168,7 @@ public final class JobManager {
             builder.repeatForever();
 
             Trigger trigger = TriggerBuilder.newTrigger()
-                    .withIdentity(jobEntity.jobID, "solon")
+                    .withIdentity(jobEntity.name, "solon")
                     .startNow()
                     .withSchedule(builder)//
                     .build();

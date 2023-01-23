@@ -5,6 +5,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.core.BeanBuilder;
 import org.noear.solon.core.BeanExtractor;
 import org.noear.solon.core.BeanWrap;
+import org.noear.solon.extend.quartz.AbstractJob;
 import org.noear.solon.extend.quartz.JobManager;
 import org.noear.solon.extend.quartz.Quartz;
 import org.quartz.Job;
@@ -25,11 +26,11 @@ public class QuartzBeanBuilder implements BeanBuilder<Quartz>, BeanExtractor<Qua
         }
 
         String cronx = anno.cron7x();
-        String name = anno.name();
+        String nameOfAnno = anno.name();
         boolean enable = anno.enable();
 
-        if (Utils.isNotEmpty(name)) {
-            Properties prop = Solon.cfg().getProp("solon.quartz." + name);
+        if (Utils.isNotEmpty(nameOfAnno)) {
+            Properties prop = Solon.cfg().getProp("solon.quartz." + nameOfAnno);
 
             if (prop.size() > 0) {
                 String cronxTmp = prop.getProperty("cron7x");
@@ -45,7 +46,10 @@ public class QuartzBeanBuilder implements BeanBuilder<Quartz>, BeanExtractor<Qua
             }
         }
 
-        JobManager.addJob(name, cronx, enable, new BeanJob(bw.raw()));
+        AbstractJob job = new BeanJob(bw.raw());
+        String name = Utils.annoAlias(nameOfAnno, job.getJobId());
+
+        JobManager.addJob(name, cronx, enable, job);
     }
 
     @Override
@@ -62,11 +66,11 @@ public class QuartzBeanBuilder implements BeanBuilder<Quartz>, BeanExtractor<Qua
         }
 
         String cronx = anno.cron7x();
-        String name = anno.name();
+        String nameOfAnno = anno.name();
         boolean enable = anno.enable();
 
-        if (Utils.isNotEmpty(name)) {
-            Properties prop = Solon.cfg().getProp("solon.quartz." + name);
+        if (Utils.isNotEmpty(nameOfAnno)) {
+            Properties prop = Solon.cfg().getProp("solon.quartz." + nameOfAnno);
 
             if (prop.size() > 0) {
                 String cronxTmp = prop.getProperty("cron7x");
@@ -82,6 +86,9 @@ public class QuartzBeanBuilder implements BeanBuilder<Quartz>, BeanExtractor<Qua
             }
         }
 
-        JobManager.addJob(name, cronx, enable, new MethodJob(bw.raw(), method));
+        AbstractJob job = new MethodJob(bw.raw(), method);
+        String name = Utils.annoAlias(nameOfAnno, job.getJobId());
+
+        JobManager.addJob(name, cronx, enable, job);
     }
 }
