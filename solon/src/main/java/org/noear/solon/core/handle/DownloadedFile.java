@@ -13,32 +13,20 @@ import java.io.*;
 public class DownloadedFile {
     /**
      * 内容类型（有些地方会动态构建，所以不能只读）
-     *
-     * @deprecated 1.11
      */
-    @Deprecated
-    public String contentType;
+    private String contentType;
     /**
      * 内容大小
-     *
-     * @deprecated 1.11
      */
-    @Deprecated
-    public long contentSize;
+    private long contentSize;
     /**
      * 内容流
-     *
-     * @deprecated 1.11
      */
-    @Deprecated
-    public InputStream content;
+    private InputStream content;
     /**
      * 文件名（带扩展名，例：demo.jpg）
-     *
-     * @deprecated 1.11
      */
-    @Deprecated
-    public String name;
+    private String name;
 
 
     /**
