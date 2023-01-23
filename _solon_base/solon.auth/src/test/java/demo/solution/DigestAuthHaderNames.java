@@ -4,7 +4,6 @@ package demo.solution;
  * @author noear
  * @since 1.4
  */
-@Deprecated
 public class DigestAuthHaderNames {
     public final String UserName = "username";
     public final String Realm = "realm";

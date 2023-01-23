@@ -184,23 +184,6 @@ public class Utils {
     }
 
     /**
-     * 包装异常
-     *
-     * @param ex 异常
-     * @deprecated 1.8
-     */
-    @Deprecated
-    public static RuntimeException throwableWrap(Throwable ex) {
-        if (ex instanceof RuntimeException) {
-            return (RuntimeException) ex;
-        } else if (ex instanceof Error) {
-            throw (Error) ex;
-        } else {
-            return new RuntimeException(ex);
-        }
-    }
-
-    /**
      * 解包异常
      *
      * @param ex 异常

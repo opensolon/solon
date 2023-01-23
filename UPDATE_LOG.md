@@ -43,7 +43,10 @@
   * 删除 SessionStateBase/cookie[SOLONID2]
 * 调整 mybatis-solon-plugin/
   * 删除 org.apache.ibatis.ext.solon.Db；由 ..solon.annotation.Db 替代
+* 调整 beetlsql-solon-plugin/
   * 删除 org.beetl.sql.ext.solon.Db；由 ..solon.annotation.Db 替代
+* 调整 solon.web.cors/
+  * 删除 ..extend.cores 包；由 ..web.cors 包替代 
 * 删除插件 httputils-solon-cloud-plugin；由 solon.cloud.httputils 替代
 * 删除插件 solon.extend.stop；由 solon.web.stop 替代
 * 删除插件 solon.extend.async；由 solon.scheduling 替代

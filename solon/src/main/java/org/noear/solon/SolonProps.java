@@ -89,10 +89,6 @@ public final class SolonProps extends Props {
 
 
         //4.加载文件配置
-        //@Deprecated
-        loadInit(Utils.getResource("application.properties"), sysPropOrg);
-        //@Deprecated
-        loadInit(Utils.getResource("application.yml"), sysPropOrg);
         loadInit(Utils.getResource("app.properties"), sysPropOrg);
         loadInit(Utils.getResource("app.yml"), sysPropOrg);
 
@@ -102,16 +98,7 @@ public final class SolonProps extends Props {
         //4.2.加载环境配置(例：env=pro 或 env=debug)
         env = getArg("env");
 
-        if (Utils.isEmpty(env)) {
-            //@Deprecated
-            env = getArg("profiles.active");
-        }
-
         if (Utils.isNotEmpty(env)) {
-            //@Deprecated
-            loadInit(Utils.getResource("application-" + env + ".properties"), sysPropOrg);
-            //@Deprecated
-            loadInit(Utils.getResource("application-" + env + ".yml"), sysPropOrg);
             loadInit(Utils.getResource("app-" + env + ".properties"), sysPropOrg);
             loadInit(Utils.getResource("app-" + env + ".yml"), sysPropOrg);
         }
@@ -121,12 +108,9 @@ public final class SolonProps extends Props {
         loadAdd(source.getAnnotation(PropertySource.class));
 
 
-        //4.4.加载扩展配置 solon.config //or solon.extend.config
+        //4.4.加载扩展配置 solon.config
         String extConfig = getArg("config");
-        if (Utils.isEmpty(extConfig)) {
-            //@Deprecated
-            extConfig = getArg("extend.config");//兼容旧的
-        }
+
         if (Utils.isNotEmpty(extConfig)) {
             File extConfigFile = new File(extConfig);
             if (extConfigFile.exists()) {
@@ -488,7 +472,7 @@ public final class SolonProps extends Props {
      * 框架版本号
      */
     public String version() {
-        return "1.13.0-M1";
+        return "2.0.0-M1";
     }
 
     /**
@@ -566,7 +550,7 @@ public final class SolonProps extends Props {
      * 是否启用安全停止
      * */
     public boolean enableSafeStop(){
-        return enableSafeStop || Solon.app().enableSafeStop();
+        return enableSafeStop;
     }
 
     public void enableSafeStop(boolean enable){

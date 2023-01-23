@@ -48,15 +48,6 @@ public abstract class BeanContainer {
     }
 
     /**
-     * 获取属性
-     * @deprecated 1.12
-     */
-    @Deprecated
-    public Props getProps() {
-        return cfg();
-    }
-
-    /**
      * 获取特性
      */
     public Map<Class<?>, Object> getAttrs() {
@@ -333,11 +324,6 @@ public abstract class BeanContainer {
         return wraps;
     }
 
-    @Deprecated
-    public void getWrapAsyn(Object nameOrType, Consumer<BeanWrap> callback) {
-        getWrapAsync(nameOrType, callback);
-    }
-
     public void getWrapAsync(Object nameOrType, Consumer<BeanWrap> callback) {
         BeanWrap bw = getWrap(nameOrType);
 
@@ -346,17 +332,6 @@ public abstract class BeanContainer {
         } else {
             callback.accept(bw);
         }
-    }
-
-    /**
-     * 订阅某类型的 bean 包装
-     *
-     * @param baseType 基类
-     * @deprecated 1.10
-     */
-    @Deprecated
-    public void subWrap(Class<?> baseType, Consumer<BeanWrap> callback) {
-        subWrapsOfType(baseType, callback);
     }
 
     /**
@@ -427,16 +402,6 @@ public abstract class BeanContainer {
         return wrapAndPut(type).get();
     }
 
-    @Deprecated
-    public <T> void getBeanAsyn(String name, Consumer<T> callback) {
-        getBeanAsync(name, callback);
-    }
-
-    @Deprecated
-    public <T> void getBeanAsyn(Class<T> type, Consumer<T> callback) {
-        getBeanAsync(type, callback);
-    }
-
     /**
      * 异步获取 Bean
      *
@@ -457,17 +422,6 @@ public abstract class BeanContainer {
         getWrapAsync(type, (bw) -> {
             callback.accept(bw.get());
         });
-    }
-
-    /**
-     * 订阅 Bean
-     *
-     * @param baseType 基类
-     * @deprecated 1.10
-     */
-    @Deprecated
-    public <T> void subBean(Class<T> baseType, Consumer<T> callback) {
-        subBeansOfType(baseType, callback);
     }
 
     /**

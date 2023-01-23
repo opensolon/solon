@@ -5,7 +5,6 @@ import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.data.cache.CacheServiceSupplier;
-import org.noear.solon.extend.async.AsyncManager;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -49,11 +48,6 @@ public class Config {
         System.out.println("cache::");
     }
 
-    @Bean
-    public void test3() {
-        ExecutorService pools = Executors.newCachedThreadPool();
-        AsyncManager.setExecutor(cmd -> pools.submit(cmd));
-    }
 
 
 //    @Bean

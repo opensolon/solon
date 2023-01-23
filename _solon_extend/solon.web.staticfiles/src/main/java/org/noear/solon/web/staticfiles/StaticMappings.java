@@ -30,19 +30,6 @@ public class StaticMappings {
         addDo(pathPrefix, false, repository);
     }
 
-    /**
-     * 添加印射关系
-     *
-     * @param pathPrefix          路径前缀
-     * @param repositoryIncPrefix 资源仓库是否包括路径前缀(如果需要 repositoryIncPrefix, 可以用 add("/", repository) 替代)
-     * @param repository          资源仓库
-     * @deprecated 1.12
-     */
-    @Deprecated
-    public synchronized static void add(String pathPrefix, boolean repositoryIncPrefix, StaticRepository repository) {
-        addDo(pathPrefix, repositoryIncPrefix, repository);
-    }
-
     private static void addDo(String pathPrefix, boolean repositoryIncPrefix, StaticRepository repository) {
         if (pathPrefix.startsWith("/") == false) {
             pathPrefix = "/" + pathPrefix;

@@ -65,12 +65,12 @@ public class XPluginImp implements Plugin {
                 }
 
                 if (repository.startsWith(":")) {
-                    StaticMappings.add(path, false, new ExtendStaticRepository());
+                    StaticMappings.add(path,  new ExtendStaticRepository());
                 } else if (repository.startsWith(Utils.TAG_classpath)) {
                     repository = repository.substring(10);
-                    StaticMappings.add(path, false, new ClassPathStaticRepository(repository));
+                    StaticMappings.add(path,  new ClassPathStaticRepository(repository));
                 } else {
-                    StaticMappings.add(path, false, new FileStaticRepository(repository));
+                    StaticMappings.add(path,  new FileStaticRepository(repository));
                 }
             }
         }

@@ -11,7 +11,6 @@ import java.util.Base64;
  * @author noear
  * @since 1.4
  */
-@Deprecated
 public class BasicAuth {
     private static final String TYPE = "Basic ";
 

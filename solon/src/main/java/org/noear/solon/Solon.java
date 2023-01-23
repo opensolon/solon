@@ -35,14 +35,6 @@ public class Solon {
     private static String encoding = "utf-8";
 
     /**
-     * @deprecated 1.8
-     * */
-    @Deprecated
-    public static SolonApp global() {
-        return app;
-    }
-
-    /**
      * 全局实例
      */
     public static SolonApp app() {
