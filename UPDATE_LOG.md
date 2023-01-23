@@ -10,6 +10,10 @@
 * 增加 更多友好的异常分类???
 * 增加 便利的原生编译机制
 
+#### 1.13.0
+* 取消 Bean:attr
+* 取消 Component:atte
+
 #### 1.12.4
 * 新增 solon.web.stop 插件，替代 solon.extend.stop（原 host 配置，更名为 whitelist）
 * 插件 local-solon-cloud-plugin 添加事件ACK、重试守护、自动延时、定时事件支持（无持久化，即重启数据丢失）
