@@ -15,8 +15,9 @@ public class ScheduledAnno implements Scheduled {
     private String cron = "";
     private String zone = "";
 
-    private long fixedRate = 0;
-    private long fixedDelay = 0;
+    private long initialDelay = 0L;
+    private long fixedRate = 0L;
+    private long fixedDelay = 0L;
 
     private boolean enable = true;
 
@@ -29,6 +30,7 @@ public class ScheduledAnno implements Scheduled {
         this.cron = anno.cron();
         this.zone = anno.zone();
 
+        this.initialDelay = anno.initialDelay();
         this.fixedRate = anno.fixedRate();
         this.fixedDelay = anno.fixedDelay();
 
@@ -59,6 +61,11 @@ public class ScheduledAnno implements Scheduled {
         }
 
         this.zone = zone;
+        return this;
+    }
+
+    public ScheduledAnno initialDelay(long initialDelay) {
+        this.initialDelay = initialDelay;
         return this;
     }
 
@@ -93,11 +100,25 @@ public class ScheduledAnno implements Scheduled {
         return zone;
     }
 
+    /**
+     * 初次执行延时
+     * */
+    @Override
+    public long initialDelay() {
+        return initialDelay;
+    }
+
+    /**
+     * 固定频率（并行执行）
+     * */
     @Override
     public long fixedRate() {
         return fixedRate;
     }
 
+    /**
+     * 固定延时（串行执行）
+     * */
     @Override
     public long fixedDelay() {
         return fixedDelay;

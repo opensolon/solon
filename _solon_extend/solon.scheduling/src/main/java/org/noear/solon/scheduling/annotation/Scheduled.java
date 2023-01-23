@@ -33,12 +33,17 @@ public @interface Scheduled {
     String zone() default "";
 
     /**
-     * 固定间隔毫秒数
+     * 初次执行前延时（毫秒数）
+     * */
+    long initialDelay() default 0;
+
+    /**
+     * 固定频率（毫秒数）
      */
     long fixedRate() default 0;
 
     /**
-     * 固定延时毫秒数
+     * 固定延时（毫秒数）
      */
     long fixedDelay() default 0;
 

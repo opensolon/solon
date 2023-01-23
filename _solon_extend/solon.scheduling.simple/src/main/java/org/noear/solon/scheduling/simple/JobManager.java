@@ -1,5 +1,6 @@
 package org.noear.solon.scheduling.simple;
 
+import org.noear.solon.Utils;
 import org.noear.solon.scheduling.annotation.Scheduled;
 
 import java.util.HashMap;
@@ -23,6 +24,14 @@ public class JobManager {
      * @param runnable 运行函数
      */
     public static void add(String name, Scheduled anno, Runnable runnable) {
+        if (anno.enable() == false) {
+            return;
+        }
+
+        if (Utils.isEmpty(name)) {
+            throw new IllegalArgumentException("The job name cannot be empty!");
+        }
+
         addDo(name, new JobHolder(name, anno, runnable));
     }
 

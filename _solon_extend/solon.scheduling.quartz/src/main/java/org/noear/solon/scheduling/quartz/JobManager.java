@@ -66,46 +66,58 @@ public final class JobManager {
             return;
         }
 
-        if (jobMap.containsKey(job.getJobId()) == false) {
-            JobHolder jobEntity = new JobHolder(name, anno, job);
-            jobMap.put(jobEntity.jobID, jobEntity);
+        if (Utils.isEmpty(name)) {
+            throw new IllegalArgumentException("The job name cannot be empty!");
+        }
+
+        if (anno.initialDelay() > 0) {
+            throw new IllegalArgumentException("The quartz job unsupported initialDelay!");
+        }
+
+        if (anno.fixedDelay() > 0) {
+            throw new IllegalArgumentException("The quartz job unsupported fixedDelay!");
+        }
+
+        if (jobMap.containsKey(name) == false) {
+            JobHolder jobHolder = new JobHolder(name, anno, job);
+            jobMap.put(name, jobHolder);
         }
     }
 
     /**
      * 获取 job
      */
-    public static JobHolder getJob(String jobID) {
-        if (Utils.isEmpty(jobID)) {
+    public static JobHolder getJob(String name) {
+        if (Utils.isEmpty(name)) {
             return null;
         } else {
-            return jobMap.get(jobID);
+            return jobMap.get(name);
         }
     }
 
     /**
      * 注册 job（on start）
      */
-    private static void regJob(JobHolder jobEntity) throws SchedulerException {
-        if (Utils.isEmpty(jobEntity.anno.cron())) {
-            regJobByFixedRate(jobEntity, jobEntity.anno.fixedRate());
+    private static void regJob(JobHolder jobHolder) throws SchedulerException {
+        if (Utils.isEmpty(jobHolder.anno.cron())) {
+            regJobByFixedRate(jobHolder, jobHolder.anno.fixedRate());
         } else {
-            regJobByCronx(jobEntity, jobEntity.anno.cron());
+            regJobByCron(jobHolder, jobHolder.anno.cron());
         }
     }
 
-    private static void regJobByCronx(JobHolder jobEntity, String cronx) throws SchedulerException {
+    private static void regJobByCron(JobHolder jobHolder, String cron) throws SchedulerException {
         tryInitScheduler();
 
         JobDetail jobDetail = JobBuilder.newJob(QuartzProxy.class)
-                .withIdentity(jobEntity.jobID, "solon")
+                .withIdentity(jobHolder.name, "solon")
                 .build();
 
         if (_scheduler.checkExists(jobDetail.getKey()) == false) {
-            CronScheduleBuilder builder = CronScheduleBuilder.cronSchedule(cronx);
+            CronScheduleBuilder builder = CronScheduleBuilder.cronSchedule(cron);
 
             Trigger trigger = TriggerBuilder.newTrigger()
-                    .withIdentity(jobEntity.jobID, "solon")
+                    .withIdentity(jobHolder.name, "solon")
                     .startNow()
                     .withSchedule(builder)
                     .build();
@@ -114,11 +126,11 @@ public final class JobManager {
         }
     }
 
-    private static void regJobByFixedRate(JobHolder jobEntity, long milliseconds) throws SchedulerException {
+    private static void regJobByFixedRate(JobHolder jobHolder, long milliseconds) throws SchedulerException {
         tryInitScheduler();
 
         JobDetail jobDetail = JobBuilder.newJob(QuartzProxy.class)
-                .withIdentity(jobEntity.jobID, "solon")
+                .withIdentity(jobHolder.name, "solon")
                 .build();
 
         if (_scheduler.checkExists(jobDetail.getKey()) == false) {
@@ -127,7 +139,7 @@ public final class JobManager {
             builder.repeatForever();
 
             Trigger trigger = TriggerBuilder.newTrigger()
-                    .withIdentity(jobEntity.jobID, "solon")
+                    .withIdentity(jobHolder.name, "solon")
                     .startNow()
                     .withSchedule(builder)//
                     .build();

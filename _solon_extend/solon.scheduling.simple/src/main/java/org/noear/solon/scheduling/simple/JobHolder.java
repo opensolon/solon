@@ -82,8 +82,11 @@ public class JobHolder extends Thread {
      */
     @Override
     public void run() {
-        if (anno.fixedDelay() > 0) {
-            sleep0(anno.fixedDelay());
+        if (anno.fixedDelay() > 0 || anno.fixedRate() > 0) {
+            //初始延迟 //只为 fixedDelay 和 fixedRate 服务
+            if (anno.initialDelay() > 0) {
+                sleep0(anno.initialDelay());
+            }
         }
 
         while (true) {
@@ -104,13 +107,17 @@ public class JobHolder extends Thread {
      * 调度
      */
     private void scheduling() throws Throwable {
-        if (anno.fixedRate() > 0) {
-            //按固定频率调度
+        if (anno.fixedDelay() > 0) {
+            //::按固定延时调度（串行调用）
+            exec0(); //同步执行
+            sleep0(anno.fixedDelay());
+        } else if (anno.fixedRate() > 0) {
+            //::按固定频率调度（并行调用）
             sleepMillis = System.currentTimeMillis() - baseTime.getTime();
 
             if (sleepMillis >= anno.fixedRate()) {
                 baseTime = new Date();
-                exec();
+                execAsParallel(); //异步执行
 
                 //重新设定休息时间
                 sleepMillis = anno.fixedRate();
@@ -121,7 +128,7 @@ public class JobHolder extends Thread {
 
             sleep0(sleepMillis);
         } else {
-            //按表达式调度
+            //::按表达式调度（并行调用）
             nextTime = cron.getNextValidTimeAfter(baseTime);
             sleepMillis = System.currentTimeMillis() - nextTime.getTime();
 
@@ -130,7 +137,7 @@ public class JobHolder extends Thread {
                 nextTime = cron.getNextValidTimeAfter(baseTime);
 
                 if (sleepMillis <= 1000) {
-                    exec();
+                    execAsParallel();
 
                     //重新设定休息时间
                     sleepMillis = System.currentTimeMillis() - nextTime.getTime();
@@ -142,10 +149,16 @@ public class JobHolder extends Thread {
     }
 
 
-    private void exec() {
+    /**
+     * 并行执行（即异步执行）
+     */
+    private void execAsParallel() {
         RunUtil.parallel(this::exec0);
     }
 
+    /**
+     * 执行
+     */
     private void exec0() {
         try {
             runnable.run();
@@ -154,14 +167,14 @@ public class JobHolder extends Thread {
         }
     }
 
-    private void sleep0(long sleep) {
-        if (sleep < 0) {
-            sleep = 100;
+    private void sleep0(long millis) {
+        if (millis < 0) {
+            millis = 100;
         }
 
         try {
-            Thread.sleep(sleep);
-        } catch (Exception e) {
+            Thread.sleep(millis);
+        } catch (Throwable e) {
             EventBus.push(e);
         }
     }

@@ -1,10 +1,12 @@
 package org.noear.solon.scheduling.quartz.integration;
 
+import org.noear.solon.Utils;
 import org.noear.solon.core.BeanBuilder;
 import org.noear.solon.core.BeanExtractor;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.scheduling.ScheduledAnno;
 import org.noear.solon.scheduling.annotation.Scheduled;
+import org.noear.solon.scheduling.quartz.AbstractJob;
 import org.noear.solon.scheduling.quartz.JobManager;
 import org.noear.solon.scheduling.utils.ScheduledHelper;
 import org.quartz.Job;
@@ -26,8 +28,11 @@ public class QuartzBeanBuilder implements BeanBuilder<Scheduled>, BeanExtractor<
         ScheduledAnno warpper = new ScheduledAnno(anno);
         ScheduledHelper.configScheduled(warpper);
 
+        AbstractJob job = new BeanJob(bw.raw());
+        String name = Utils.annoAlias(warpper.name(), job.getJobId());
 
-        JobManager.addJob(warpper.name(), warpper, new BeanJob(bw.raw()));
+
+        JobManager.addJob(name, warpper, job);
     }
 
     @Override
@@ -46,8 +51,9 @@ public class QuartzBeanBuilder implements BeanBuilder<Scheduled>, BeanExtractor<
         ScheduledAnno warpper = new ScheduledAnno(anno);
         ScheduledHelper.configScheduled(warpper);
 
-        JobManager.addJob(warpper.name(), warpper, new MethodJob(bw.raw(), method));
+        AbstractJob job = new MethodJob(bw.raw(), method);
+        String name = Utils.annoAlias(warpper.name(), job.getJobId());
+
+        JobManager.addJob(name, warpper, job);
     }
-
-
 }
