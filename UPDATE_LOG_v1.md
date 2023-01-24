@@ -1,3 +1,15 @@
+#### 后续（可以提 Issue 增加需求）
+* 新增 kubernetes-solon-cloud-plugin 插件
+* 新增 jmdns-solon-cloud-plugin 插件
+* 新增 shiro-solon-plugin 插件
+* 新增 elastic-job-solon-plugin 分布式定时任务 ???
+* 新增 thrift-solon-cloud-plugin 插件 ???
+* 新增 swagger-solon-plugin 插件 ???
+* 新增 knife4j-solon-plugin 插件 ???
+* 调整 运行完成后，提供未注入的对象警告???
+* 增加 更多友好的异常分类???
+* 增加 便利的原生编译机制
+
 #### 1.12.4
 * 新增 solon.web.stop 插件，替代 solon.extend.stop（原 host 配置，更名为 whitelist）
 * 插件 local-solon-cloud-plugin 添加事件ACK、重试守护、自动延时、定时事件支持（无持久化，即重启数据丢失）
