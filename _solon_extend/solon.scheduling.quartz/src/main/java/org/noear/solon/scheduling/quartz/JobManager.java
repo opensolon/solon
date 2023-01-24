@@ -71,6 +71,10 @@ public final class JobManager {
             throw new IllegalArgumentException("The job name cannot be empty!");
         }
 
+        if (anno.fixedRate() > 0 && Utils.isNotEmpty(anno.cron())) {
+            throw new IllegalArgumentException("The job cron and fixedRate cannot both have values: " + name);
+        }
+
         if (anno.initialDelay() > 0) {
             throw new IllegalArgumentException("The quartz job unsupported initialDelay!");
         }

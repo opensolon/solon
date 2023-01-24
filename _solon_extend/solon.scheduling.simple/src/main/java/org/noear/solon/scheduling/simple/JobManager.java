@@ -32,6 +32,14 @@ public class JobManager {
             throw new IllegalArgumentException("The job name cannot be empty!");
         }
 
+        if (anno.fixedDelay() > 0 && anno.fixedRate() > 0) {
+            if (Utils.isEmpty(anno.cron())) {
+                throw new IllegalArgumentException("The job fixedDelay and fixedRate cannot both have values: " + name);
+            } else {
+                throw new IllegalArgumentException("The job cron and fixedDelay and fixedRate cannot both have values: " + name);
+            }
+        }
+
         addDo(name, new JobHolder(name, anno, runnable));
     }
 
