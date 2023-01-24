@@ -24,7 +24,7 @@ public class XPluginImp implements Plugin {
     ChannelFuture _server;
 
     public static String solon_boot_ver() {
-        return "netty-socketd/" + Solon.cfg().version();
+        return "netty-socketd/" + Solon.version();
     }
 
     @Override

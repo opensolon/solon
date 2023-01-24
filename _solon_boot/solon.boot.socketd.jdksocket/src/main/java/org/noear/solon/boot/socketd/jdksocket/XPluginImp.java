@@ -18,7 +18,7 @@ public class XPluginImp implements Plugin {
     BioServer _server;
 
     public static String solon_boot_ver() {
-        return "jdksocket-socketd/" + Solon.cfg().version();
+        return "jdksocket-socketd/" + Solon.version();
     }
 
     @Override

@@ -24,7 +24,7 @@ public final class XPluginImp implements Plugin {
     private ServerLifecycle _server = null;
 
     public static String solon_boot_ver() {
-        return TOMCAT_VER + "/" + Solon.cfg().version();
+        return TOMCAT_VER + "/" + Solon.version();
     }
 
     @Override

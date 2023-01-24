@@ -20,7 +20,7 @@ public final class XPluginImp implements Plugin {
 
     private UndertowServerBase _server = null;
     public static String solon_boot_ver(){
-        return "undertow 2.1/" + Solon.cfg().version();
+        return "undertow 2.1/" + Solon.version();
     }
 
     @Override

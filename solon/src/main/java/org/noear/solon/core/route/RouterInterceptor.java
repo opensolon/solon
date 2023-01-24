@@ -10,6 +10,7 @@ import org.noear.solon.lang.Nullable;
  * @author noear
  * @since 1.12
  */
+@FunctionalInterface
 public interface RouterInterceptor {
     /**
      * 执行拦截

@@ -467,14 +467,6 @@ public final class SolonProps extends Props {
         return appTitle;
     }
 
-
-    /**
-     * 框架版本号
-     */
-    public String version() {
-        return "2.0.0-M1";
-    }
-
     /**
      * 是否为调试模式
      */

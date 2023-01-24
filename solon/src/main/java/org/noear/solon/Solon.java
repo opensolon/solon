@@ -76,6 +76,13 @@ public class Solon {
     }
 
     /**
+     * 框架版本号
+     */
+    public static String version() {
+        return "2.0.0-M1";
+    }
+
+    /**
      * 全局默认编码设置
      */
     public static void encodingSet(String charset) {
@@ -170,7 +177,7 @@ public class Solon {
         }
 
         //启动完成
-        LogUtil.global().info("App: End loading elapsed=" + app.elapsedTimes() + "ms pid=" + pid + " v=" + app.cfg().version());
+        LogUtil.global().info("App: End loading elapsed=" + app.elapsedTimes() + "ms pid=" + pid + " v=" + Solon.version());
 
         return app;
     }

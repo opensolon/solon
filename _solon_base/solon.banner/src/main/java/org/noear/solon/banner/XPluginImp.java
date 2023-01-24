@@ -37,6 +37,8 @@ public class XPluginImp implements Plugin {
 				return;
 			}
 
+			bannerTxt = bannerTxt.replace("${solon.version}", Solon.version());
+
 			switch (mode) {
 				case "log":
 					LogUtil.global().info(bannerTxt);

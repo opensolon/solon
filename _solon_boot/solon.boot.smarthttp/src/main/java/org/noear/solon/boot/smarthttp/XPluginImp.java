@@ -32,7 +32,7 @@ public final class XPluginImp implements Plugin {
     HttpBootstrap _server = null;
 
     public static String solon_boot_ver() {
-        return "smart http 1.1/" + Solon.cfg().version();
+        return "smart http 1.1/" + Solon.version();
     }
 
     @Override

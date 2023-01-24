@@ -23,7 +23,7 @@ public final class XPluginImp implements Plugin {
     private AioQuickServer _server = null;
 
     public static String solon_boot_ver() {
-        return "smartsocket-socketd 1.5/" + Solon.cfg().version();
+        return "smartsocket-socketd 1.5/" + Solon.version();
     }
 
     @Override
