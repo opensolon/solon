@@ -1,16 +1,6 @@
-#### 后续（可以提 Issue 增加需求）
-* 新增 kubernetes-solon-cloud-plugin 插件
-* 新增 jmdns-solon-cloud-plugin 插件
-* 新增 shiro-solon-plugin 插件
-* 新增 elastic-job-solon-plugin 分布式定时任务 ???
-* 新增 thrift-solon-cloud-plugin 插件 ???
-* 新增 swagger-solon-plugin 插件 ???
-* 新增 knife4j-solon-plugin 插件 ???
-* 调整 运行完成后，提供未注入的对象警告???
-* 增加 更多友好的异常分类???
-* 增加 便利的原生编译机制
 
-#### 2.0.0
+
+#### v2.0.0
 * 说明：删除的是已弃用多时的代码（建议先升级到 1.12.4，替换所有弃用代码；再升级到 2.0.0）
 * 
 * 调整 solon//
