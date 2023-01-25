@@ -11,7 +11,7 @@
   * 删降 Aop；由 Solon.context() 替代
   * 删除 Bean:attr，Component:attr
   * 删除 BeanLoadEndEvent，PluginLoadEndEvent；由 AppBeanLoadEndEvent，AppPluginLoadEndEvent 替代
-  * 删除 Utils.async()...等几个弃用接口；由 RunUtil 替代
+  * 删除 Utils.parallel()...等几个弃用接口；由 RunUtil 替代
   * 删除 Solon.global()；由 Solon.app() 替代
   * 删除 SolonApp::port()；由 Solon.cfg().serverPort() 替代
   * 删除 SolonApp::enableSafeStop()；由 Solon.cfg().enableSafeStop() 替代
