@@ -10,9 +10,8 @@ import org.noear.solon.web.staticfiles.repository.ClassPathStaticRepository;
 public class DemoApp {
     public static void main(String[] args){
         Solon.start(DemoApp.class, args, app->{
-            StaticMappings.add("/",  new ClassPathStaticRepository("/META-INF/resources/"));
-            //StaticMappings.add("/doc.html",  new ClassPathStaticRepository("/META-INF/resources/"));
-            //StaticMappings.add("/webjars/",  new ClassPathStaticRepository("/META-INF/resources/webjars/"));
+            StaticMappings.add("/doc.html",  new ClassPathStaticRepository("/META-INF/resources/"));
+            StaticMappings.add("/webjars/",  new ClassPathStaticRepository("/META-INF/resources/webjars/"));
         });
     }
 }

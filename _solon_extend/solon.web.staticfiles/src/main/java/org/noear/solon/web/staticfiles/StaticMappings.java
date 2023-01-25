@@ -27,17 +27,15 @@ public class StaticMappings {
      * @param repository 资源仓库
      */
     public synchronized static void add(String pathPrefix, StaticRepository repository) {
-        addDo(pathPrefix, false, repository);
+        addDo(pathPrefix, repository, false);
     }
 
-    private static void addDo(String pathPrefix, boolean repositoryIncPrefix, StaticRepository repository) {
+    protected static void addDo(String pathPrefix, StaticRepository repository, boolean repositoryIncPrefix) {
         if (pathPrefix.startsWith("/") == false) {
             pathPrefix = "/" + pathPrefix;
         }
 
-        if (pathPrefix.endsWith("/") == false) {
-            pathPrefix = pathPrefix + "/";
-        }
+        //1.结尾不能自动加'/'; 2.使用 protected，允许用户同包名扩展
 
         locationMap.putIfAbsent(repository, new StaticLocation(pathPrefix, repository, repositoryIncPrefix));
     }
@@ -64,7 +62,14 @@ public class StaticMappings {
                 } else {
                     //path = /demo/file.htm
                     //relativePath = demo/file.htm （没有'/'开头）
-                    rst = m.repository.find(path.substring(m.pathPrefix.length()));
+                    if (m.pathPrefixAsFile) {
+                        //如果是文件
+                        int idx = m.pathPrefix.lastIndexOf("/");
+                        rst = m.repository.find(m.pathPrefix.substring(idx + 1));
+                    } else {
+                        //如果是路段
+                        rst = m.repository.find(path.substring(m.pathPrefix.length()));
+                    }
                 }
 
                 if (rst != null) {
