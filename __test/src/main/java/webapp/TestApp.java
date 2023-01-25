@@ -89,8 +89,8 @@ public class TestApp {
             });
 
             StaticMappings.add("/file-a/", new ClassPathStaticRepository("static_test"));
-            StaticMappings.add("/ext", new ExtendStaticRepository());
-            StaticMappings.add("/sa-token",new FileStaticRepository("/Users/noear/Downloads/"));
+            StaticMappings.add("/ext/", new ExtendStaticRepository());
+            StaticMappings.add("/sa-token/",new FileStaticRepository("/Users/noear/Downloads/"));
         });
 
         initApp(app);
