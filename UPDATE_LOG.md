@@ -53,5 +53,4 @@
 * 删除插件 solon.extend.jsr330
 * 删除插件 solon.extend.jsr303
 * 
-* 新增 solon.mvc 插件 ???
 * 调整 solon.scheduling/JobManger 添加更多注册时检测
