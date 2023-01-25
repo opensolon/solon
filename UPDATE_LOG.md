@@ -23,10 +23,10 @@
   * 删除 Solon.cfg().version()；由 Solon.version() 替代
   * 删除 EventBus::pushAsyn()；由 pushAsync() 替代
   * 删除 PrintUtil::debug()，::info() 等...；由 LogUtil 替代
-  * 删除 "solon.profiles.active" 配置支持；由 "solon.env" 替代
-  * 删除 "solon.extend.config" 配置支持；由 "solon.config" 替代
-  * 删除 "solon.encoding.request" 配置；由 "server.request.encoding" 替代
-  * 删除 "solon.encoding.response" 配置；由 "server.request.response" 替代
+  * 删除 "solon.profiles.active" 应用配置（只在某版临时出现过）；由 "solon.env" 替代
+  * 删除 "solon.extend.config" 应用配置（只在某版临时出现过）；由 "solon.config" 替代
+  * 删除 "solon.encoding.request" 应用配置（只在某版临时出现过）；由 "server.request.encoding" 替代
+  * 删除 "solon.encoding.response" 应用配置（只在某版临时出现过）；由 "server.request.response" 替代
   * 
   * 调整 DownloadedFile，UploadedFile 字段改为私有，由属性替代
 * 调整 solon.i18n//
