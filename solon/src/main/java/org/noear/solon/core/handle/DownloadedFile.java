@@ -40,11 +40,15 @@ public class DownloadedFile {
     /**
      * 内容大小
      * */
-    public long getContentSize() throws IOException{
+    public long getContentSize() {
         if (contentSize > 0) {
             return contentSize;
         } else {
-            return content.available();
+            try {
+                return content.available();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
