@@ -35,6 +35,7 @@
 * 增加 sa-token-dao json 序列化适配（现在有 base64 + json）
 * 增加 RouterInterceptor::postResult 接口 !!!
 * 增加 solon.serialization json 适配插件的快捷配置支持 !!!
+* 取消 solon.serialization json 渲染工厂的全局单例 
 * 调整 安全停止时由 403 改为 503 状态码
 * 升级 snack3 为 3.2.52
 * 升级 dbvisitor 为 5.2.0

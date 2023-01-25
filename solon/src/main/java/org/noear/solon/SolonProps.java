@@ -89,6 +89,10 @@ public final class SolonProps extends Props {
 
 
         //4.加载文件配置
+        //@Deprecated
+        loadInit(Utils.getResource("application.properties"), sysPropOrg);
+        //@Deprecated
+        loadInit(Utils.getResource("application.yml"), sysPropOrg);
         loadInit(Utils.getResource("app.properties"), sysPropOrg);
         loadInit(Utils.getResource("app.yml"), sysPropOrg);
 
@@ -99,6 +103,10 @@ public final class SolonProps extends Props {
         env = getArg("env");
 
         if (Utils.isNotEmpty(env)) {
+            //@Deprecated
+            loadInit(Utils.getResource("application-" + env + ".properties"), sysPropOrg);
+            //@Deprecated
+            loadInit(Utils.getResource("application-" + env + ".yml"), sysPropOrg);
             loadInit(Utils.getResource("app-" + env + ".properties"), sysPropOrg);
             loadInit(Utils.getResource("app-" + env + ".yml"), sysPropOrg);
         }
