@@ -1,7 +1,5 @@
 package org.noear.solon.cloud.extend.consul;
 
-
-import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.cloud.CloudManager;

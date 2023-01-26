@@ -1,6 +1,5 @@
 package org.noear.solon.cloud.extend.semaphore;
 
-import org.noear.solon.SolonApp;
 import org.noear.solon.cloud.CloudManager;
 import org.noear.solon.cloud.extend.semaphore.impl.CloudBreakerServiceImpl;
 import org.noear.solon.core.AopContext;

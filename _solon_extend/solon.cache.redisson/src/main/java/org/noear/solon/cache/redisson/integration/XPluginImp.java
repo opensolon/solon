@@ -1,6 +1,5 @@
 package org.noear.solon.cache.redisson.integration;
 
-import org.noear.solon.SolonApp;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.data.cache.CacheFactory;
