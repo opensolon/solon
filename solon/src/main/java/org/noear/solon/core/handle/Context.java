@@ -1012,6 +1012,9 @@ public abstract class Context {
         return attr("action");
     }
 
+    /**
+     * 获取当前主处理器
+     * */
     public @Nullable Handler mainHandler(){
         return attr("mainHandler");
     }
