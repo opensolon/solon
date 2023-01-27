@@ -202,7 +202,7 @@ public class Action extends HandlerAide implements Handler {
         c.remotingSet(mRemoting);
 
         try {
-            //预加载控制器，确保所有的处理者可以都可以获取控制器
+            //预加载控制器，确保所有的'处理器'可以都可以获取控制器
             if (obj == null) {
                 obj = bWrap.get();
             }
@@ -241,8 +241,8 @@ public class Action extends HandlerAide implements Handler {
     protected void invoke0(Context c, Object obj) throws Throwable {
 
         /**
-         * 1.确保所有处理者，能拿到控制器
-         * 2.确保后置处理者，能被触发（前面的异常不能影响后置处理）
+         * 1.确保所有'处理器'，能拿到控制器
+         * 2.确保后置'处理器'，能被触发（前面的异常不能影响后置处理）
          * 3.确保最多一次渲染
          * */
 

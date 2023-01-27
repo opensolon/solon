@@ -15,7 +15,7 @@ public interface CloudJobService {
      * @param name 任务名
      * @param cron7x 计划表达式
      * @param description 描述
-     * @param handler 处理者
+     * @param handler 处理器
      */
     boolean register(String name, String cron7x, String description, CloudJobHandler handler);
 
