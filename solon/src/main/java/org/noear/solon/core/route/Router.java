@@ -95,7 +95,7 @@ public interface Router {
         //不能从缓存里取，不然 pathNew 会有问题
         Handler tmp = matchOne(ctx, Endpoint.main);
         if (tmp != null) {
-            ctx.attrSet("_MainHandler", tmp);
+            ctx.attrSet("mainHandler", tmp);
         }
 
         return tmp;
