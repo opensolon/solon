@@ -2,7 +2,7 @@
 
 > 为 Solon 提供 Powerjob 的支持
 > 
-> _since 1.12.5_
+> _since 2.0.0_
 
 ```xml
 <dependency>
@@ -87,4 +87,4 @@ public class DemoJob implements BasicProcessor {
 
 ### Changelog
 
-1. 2023/01/28 - MVP 版本 `solon:1.12.5` ~ `powerjob:4.3.0`
+1. 2023/01/28 - MVP 版本 `solon:2.0.0` ~ `powerjob:4.3.0`

@@ -26,7 +26,7 @@ public class XPluginImp implements Plugin {
         PowerjobProperties properties = context.cfg().getBean("solon.powerjob", PowerjobProperties.class);
 
         if (!properties.isEnabled()) {
-            logger.error("PowerJob is disabled, powerjob will not start.");
+            logger.warn("PowerJob is disabled, powerjob worker will not start.");
             return;
         }
 
@@ -36,7 +36,7 @@ public class XPluginImp implements Plugin {
         }
 
         if (StringUtils.isBlank(properties.getAppName())) {
-            logger.error("PowerJob app Name is empty, powerjob will not start.");
+            logger.error("PowerJob app Name is empty, powerjob worker will not start.");
             return;
         }
 
