@@ -21,7 +21,7 @@ solon.powerjob:
   # If use PowerjobClient to submit a job, you need to set this property.
   password: powerjob123
   # Transport port, default is 27777
-  port: 27777
+  port: 28888
   # transport protocol between server and worker
   protocol: akka
   # Store strategy of H2 database. disk or memory. Default value is disk.
