@@ -6,8 +6,8 @@
 
 ```xml
 <dependency>
-      <groupId>org.noear</groupId>
-      <artifactId>powerjob-solon-plugin</artifactId>
+    <groupId>org.noear</groupId>
+    <artifactId>powerjob-solon-plugin</artifactId>
 </dependency>
 ```
 
@@ -71,6 +71,7 @@ public class DemoApp {
     }
 }
 
+@PowerJob
 public class DemoJob implements BasicProcessor {
 
     ProcessResult process(TaskContext var1) throws Exception {

@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tech.powerjob.client.PowerJobClient;
 import tech.powerjob.common.utils.CommonUtils;
+import tech.powerjob.solon.annotation.PowerJob;
 import tech.powerjob.worker.common.PowerJobWorkerConfig;
 
 /**
@@ -39,6 +40,10 @@ public class XPluginImp implements Plugin {
             logger.error("PowerJob app Name is empty, powerjob worker will not start.");
             return;
         }
+
+        //Add anno support
+        context.beanBuilderAdd(PowerJob.class, new PowerjobBeanBuilder());
+
 
         CommonUtils.requireNonNull(properties.getServerAddress(), "serverAddress can't be empty! " +
                 "if you don't want to enable powerjob, please config program arguments: solon.powerjob.worker.enabled=false");
