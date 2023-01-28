@@ -1,6 +1,7 @@
 package org.noear.solon.extend.powerjob.impl;
 
 import com.google.common.collect.Lists;
+import org.noear.solon.core.AopContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tech.powerjob.worker.PowerJobWorker;
@@ -16,13 +17,21 @@ import java.util.Optional;
  *
  * @see BuiltInSolonProcessorFactory
  * @see tech.powerjob.worker.PowerJobSpringWorker
+ *
+ * @author fzdwx
+ * @since 2.0
  */
 public class PowerjobSolonWorker extends PowerJobWorker {
 
     private static final Logger logger = LoggerFactory.getLogger(PowerjobSolonWorker.class);
 
-    public PowerjobSolonWorker(PowerJobWorkerConfig config) {
+    final BuiltInSolonProcessorFactory processorFactory;
+
+    public PowerjobSolonWorker(AopContext context, PowerJobWorkerConfig config) {
         super(config);
+
+        processorFactory = new BuiltInSolonProcessorFactory(context);
+
         try {
             init();
         } catch (Exception e) {
@@ -32,7 +41,7 @@ public class PowerjobSolonWorker extends PowerJobWorker {
 
     @Override
     public void init() throws Exception {
-        addProcessorFactory(new BuiltInSolonProcessorFactory());
+        addProcessorFactory(processorFactory);
         super.init();
     }
 

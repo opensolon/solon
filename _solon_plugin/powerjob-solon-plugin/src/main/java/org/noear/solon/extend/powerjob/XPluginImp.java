@@ -9,14 +9,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tech.powerjob.client.PowerJobClient;
 import tech.powerjob.common.utils.CommonUtils;
-import tech.powerjob.common.utils.NetUtils;
 import tech.powerjob.worker.common.PowerJobWorkerConfig;
-
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * PowerJob plugin
+ *
+ * @author fzdwx
+ * @since 2.0
  */
 public class XPluginImp implements Plugin {
 
@@ -24,31 +23,40 @@ public class XPluginImp implements Plugin {
 
     @Override
     public void start(AopContext context) throws Throwable {
-        PowerjobProperties worker = PowerjobProperties.get();
+        PowerjobProperties properties = context.cfg().getBean("solon.powerjob", PowerjobProperties.class);
 
-        if (!worker.isEnabled()) {
+        if (!properties.isEnabled()) {
             logger.error("PowerJob is disabled, powerjob will not start.");
             return;
         }
 
-        if (StringUtils.isBlank(worker.getAppName())) {
+        if (StringUtils.isBlank(properties.getAppName())) {
+            //如果没有配置 appName，则使用 solon.app.name 配置
+            properties.setAppName(Solon.cfg().appName());
+        }
+
+        if (StringUtils.isBlank(properties.getAppName())) {
             logger.error("PowerJob app Name is empty, powerjob will not start.");
             return;
         }
 
-        CommonUtils.requireNonNull(worker.getServerAddress(), "serverAddress can't be empty! " +
+        CommonUtils.requireNonNull(properties.getServerAddress(), "serverAddress can't be empty! " +
                 "if you don't want to enable powerjob, please config program arguments: solon.powerjob.worker.enabled=false");
 
-        PowerJobWorkerConfig config = worker.toConfig();
+        PowerJobWorkerConfig config = properties.toConfig();
 
-        if (StringUtils.isNotBlank(worker.getPassword())) {
+        if (StringUtils.isNotBlank(properties.getPassword())) {
             // Create PowerJobClient object
-            Solon.context().beanInject(new PowerJobClient(config.getServerAddress(), config.getAppName(), worker.getPassword()));
+            PowerJobClient client = new PowerJobClient(config.getServerAddress(), config.getAppName(), properties.getPassword());
+            context.beanInject(client);
+            context.wrapAndPut(PowerJobClient.class, client); //包装并注册到容器（如果做为临时变量，会被回收的）
         }
 
         /*
          * Create PowerjobSolonWorker object and inject it into Solon.
          */
-        Solon.context().beanInject(new PowerjobSolonWorker(config));
+        PowerjobSolonWorker worker = new PowerjobSolonWorker(context, config);
+        context.beanInject(worker);
+        context.wrapAndPut(PowerjobSolonWorker.class, worker); //包装并注册到容器（如果做为临时变量，会被回收的）
     }
 }

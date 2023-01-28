@@ -16,14 +16,12 @@ import java.util.List;
 
 /**
  * Powerjob worker properties
+ *
+ * @author fzdwx
+ * @since 2.0
  */
 @Data
 public class PowerjobProperties {
-
-    public static PowerjobProperties get() {
-        return Solon.cfg().getBean("solon.powerjob", PowerjobProperties.class);
-    }
-
     /**
      * Whether to enable PowerJob Worker
      */
