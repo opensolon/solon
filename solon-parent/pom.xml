@@ -82,6 +82,7 @@
         <feign.ver>8.18.0</feign.ver>
         <aws.s3.ver>1.12.347</aws.s3.ver>
         <quartz.ver>2.3.2</quartz.ver>
+        <powerjob.ver>4.3.0</powerjob.ver>
     </properties>
 
 
@@ -725,7 +726,6 @@
             </dependency>
 
 
-
             <dependency>
                 <groupId>org.yaml</groupId>
                 <artifactId>snakeyaml</artifactId>
@@ -862,6 +862,12 @@
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>quartz-solon-plugin</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>powerjob-solon-plugin</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
 
@@ -1171,7 +1177,6 @@
             </dependency>
 
 
-
             <!-- //////////// servlet ////////////  -->
             <!-- //////////// servlet ////////////  -->
             <!-- //////////// servlet ////////////  -->
@@ -1303,6 +1308,20 @@
                 <artifactId>slf4j-simple</artifactId>
                 <version>${slf4j.ver}</version>
             </dependency>
+
+            <!-- powerjob start -->
+            <dependency>
+                <groupId>tech.powerjob</groupId>
+                <artifactId>powerjob-worker</artifactId>
+                <version>${powerjob.ver}</version>
+            </dependency>
+            <dependency>
+                <groupId>tech.powerjob</groupId>
+                <artifactId>powerjob-client</artifactId>
+                <version>${powerjob.ver}</version>
+            </dependency>
+            <!-- powerjob end -->
+
         </dependencies>
     </dependencyManagement>
 

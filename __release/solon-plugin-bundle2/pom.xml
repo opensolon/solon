@@ -25,6 +25,7 @@
 
         <module>../../_solon_plugin/quartz-solon-plugin</module>
         <module>../../_solon_plugin/cron4j-solon-plugin</module>
+        <module>../../_solon_plugin/powerjob-solon-plugin</module>
 
         <module>../../_solon_plugin/jap-ids-solon-plugin</module>
         <module>../../_solon_plugin/jap-solon-plugin</module>
