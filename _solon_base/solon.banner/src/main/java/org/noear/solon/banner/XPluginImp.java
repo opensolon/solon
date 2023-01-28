@@ -6,8 +6,6 @@ import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.util.LogUtil;
 
-import java.io.IOException;
-
 /**
  * @author pmg1991
  * @since 1.11
@@ -21,15 +19,11 @@ public class XPluginImp implements Plugin {
 
 		if (enable) {
 			String mode = Solon.cfg().get("solon.banner.mode", "console");
-			String path = Solon.cfg().get("solon.banner.path", BANNER_DEF_FILE);
+			String path = Solon.cfg().get("solon.banner.path", "banner.txt");
 
-			String bannerTxt = "";
-			if (Utils.isNotEmpty(path)) {
-				try {
-					bannerTxt = Utils.getResourceAsString(path);
-				} catch (IOException e) {
-					throw e;
-				}
+			String bannerTxt = Utils.getResourceAsString(path);
+			if (Utils.isEmpty(bannerTxt)) {
+				bannerTxt = Utils.getResourceAsString(BANNER_DEF_FILE);
 			}
 
 			//Trying to get the banner file Solon

@@ -60,4 +60,6 @@
 * 删除插件 solon.extend.jsr303
 * 
 * 调整 solon.scheduling/JobManger 添加更多注册时检测
+* 调整 solon.banner/banner.txt 自定义默认机制
+* 调整 sa-token-solon-plugin/isPrint 处理机制
 * 调整 nami 添加 ContentTypes 类，提供便利的 content-type 常量
