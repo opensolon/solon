@@ -23,11 +23,17 @@ public class ContextEmpty extends Context {
         sessionState = new SessionStateEmpty();
     }
 
+    private Object request = null;
 
     @Override
     public Object request() {
-        return null;
+        return request;
     }
+
+    public void setRequest(Object request){
+        this.request = request;
+    }
+
 
     @Override
     public String ip() {
@@ -201,9 +207,15 @@ public class ContextEmpty extends Context {
 
     }
 
+    private Object response = null;
+
     @Override
     public Object response() {
-        return null;
+        return response;
+    }
+
+    public void setResponse(Object response) {
+        this.response = response;
     }
 
     @Override
