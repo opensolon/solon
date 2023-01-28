@@ -78,9 +78,9 @@ public class ActionExecutorDefault implements ActionExecutor {
                 //如果是 UploadedFile
                 //
                 args.add(ctx.file(p.getName()));
-            } else if (pt.getTypeName().equals("javax.servlet.http.HttpServletRequest")) {
+            } else if (pt.isInstance(ctx.request())) { //getTypeName().equals("javax.servlet.http.HttpServletRequest")
                 args.add(ctx.request());
-            } else if (pt.getTypeName().equals("javax.servlet.http.HttpServletResponse")) {
+            } else if (pt.isInstance(ctx.response())) { //getTypeName().equals("javax.servlet.http.HttpServletResponse")
                 args.add(ctx.response());
             } else {
                 Object tv = null;
