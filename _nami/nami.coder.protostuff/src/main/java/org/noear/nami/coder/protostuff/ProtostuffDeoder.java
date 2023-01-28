@@ -4,6 +4,7 @@ import org.noear.nami.Decoder;
 import org.noear.nami.Context;
 import org.noear.nami.common.Constants;
 import org.noear.nami.Result;
+import org.noear.nami.common.ContentTypes;
 
 import java.lang.reflect.Type;
 
@@ -17,7 +18,7 @@ public class ProtostuffDeoder implements Decoder {
 
     @Override
     public String enctype() {
-        return Constants.CONTENT_TYPE_PROTOBUF;
+        return ContentTypes.PROTOBUF_VALUE;
     }
 
     @Override
@@ -48,6 +49,6 @@ public class ProtostuffDeoder implements Decoder {
     @Override
     public void pretreatment(Context ctx) {
         ctx.headers.put(Constants.HEADER_SERIALIZATION, Constants.AT_PROTOBUF);
-        ctx.headers.put(Constants.HEADER_ACCEPT, Constants.CONTENT_TYPE_PROTOBUF);
+        ctx.headers.put(Constants.HEADER_ACCEPT, ContentTypes.PROTOBUF_VALUE);
     }
 }

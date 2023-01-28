@@ -4,7 +4,7 @@ import okhttp3.MediaType;
 import okhttp3.Response;
 import org.noear.nami.*;
 import org.noear.nami.common.Constants;
-import org.noear.nami.Result;
+import org.noear.nami.common.ContentTypes;
 
 /**
  * Http 通道
@@ -102,7 +102,7 @@ public class HttpChannel implements Channel {
             String at = ctx.config.getHeader(Constants.HEADER_ACCEPT);
 
             if (at == null) {
-                at = Constants.CONTENT_TYPE_JSON;
+                at = ContentTypes.JSON_VALUE;
             }
 
             ctx.config.setDecoder(NamiManager.getDecoder(at));

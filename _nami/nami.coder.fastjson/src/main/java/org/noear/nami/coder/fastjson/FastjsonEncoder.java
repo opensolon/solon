@@ -1,11 +1,10 @@
 package org.noear.nami.coder.fastjson;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.parser.ParserConfig;
 import com.alibaba.fastjson.serializer.SerializerFeature;
-import org.noear.nami.Encoder;
 import org.noear.nami.Context;
-import org.noear.nami.common.Constants;
+import org.noear.nami.Encoder;
+import org.noear.nami.common.ContentTypes;
 
 import java.nio.charset.StandardCharsets;
 
@@ -17,7 +16,7 @@ public class FastjsonEncoder implements Encoder {
 
     @Override
     public String enctype() {
-        return Constants.CONTENT_TYPE_JSON;
+        return ContentTypes.JSON_VALUE;
     }
 
     @Override
