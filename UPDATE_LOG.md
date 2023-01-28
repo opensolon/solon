@@ -2,7 +2,7 @@
 
 * v0: 2018 ~ 2019 (2y)
 * v1: 2020 ~ 2022 (3y)
-* v2: 2013 ~ 
+* v2: 2023 ~ 
 
 ### v1.x 升到 v2.x 提醒
 
@@ -60,3 +60,4 @@
 * 删除插件 solon.extend.jsr303
 * 
 * 调整 solon.scheduling/JobManger 添加更多注册时检测
+* 调整 nami 添加 ContentTypes 类，提供便利的 content-type 常量

@@ -1,12 +1,12 @@
 package org.noear.solon.banner;
 
-import java.io.IOException;
-
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.util.LogUtil;
+
+import java.io.IOException;
 
 /**
  * @author pmg1991
@@ -16,7 +16,7 @@ public class XPluginImp implements Plugin {
 	String BANNER_DEF_FILE = "META-INF/solon_def/banner-def.txt";
 
 	@Override
-	public void start(AopContext context) throws Throwable {
+	public void init(AopContext context) throws Throwable {
 		boolean enable = Solon.cfg().getBool("solon.banner.enable", true);
 
 		if (enable) {
@@ -52,5 +52,10 @@ public class XPluginImp implements Plugin {
 
 			}
 		}
+	}
+
+	@Override
+	public void start(AopContext context) throws Throwable {
+
 	}
 }
