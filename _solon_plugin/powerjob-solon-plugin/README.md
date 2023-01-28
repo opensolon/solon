@@ -1,7 +1,15 @@
 ## Powerjob Solon Plugin
 
 > 为 Solon 提供 Powerjob 的支持
+> 
 > _since 1.12.5_
+
+```xml
+<dependency>
+      <groupId>org.noear</groupId>
+      <artifactId>powerjob-solon-plugin</artifactId>
+</dependency>
+```
 
 ### 特性
 
