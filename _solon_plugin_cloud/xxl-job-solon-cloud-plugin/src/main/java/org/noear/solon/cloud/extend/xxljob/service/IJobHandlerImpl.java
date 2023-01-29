@@ -1,10 +1,11 @@
 package org.noear.solon.cloud.extend.xxljob.service;
 
+import com.xxl.job.core.context.XxlJobContext;
 import com.xxl.job.core.handler.IJobHandler;
+import org.noear.solon.cloud.model.JobHolder;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.ContextEmpty;
 import org.noear.solon.core.handle.ContextUtil;
-import org.noear.solon.core.handle.Handler;
 
 /**
  * @author noear
@@ -12,10 +13,10 @@ import org.noear.solon.core.handle.Handler;
  * @since 1.11
  */
 class IJobHandlerImpl extends IJobHandler {
-    Handler real;
+    JobHolder jobHolder;
 
-    public IJobHandlerImpl(Handler handler) {
-        real = handler;
+    public IJobHandlerImpl(JobHolder jobHolder) {
+        this.jobHolder = jobHolder;
     }
 
     @Override
@@ -26,8 +27,25 @@ class IJobHandlerImpl extends IJobHandler {
             ContextUtil.currentSet(ctx);
         }
 
+        XxlJobContext jobContext = XxlJobContext.getXxlJobContext();
+
+        if(jobContext != null) {
+            //设置请求对象（mvc 时，可以被注入）
+            if (ctx instanceof ContextEmpty) {
+                ((ContextEmpty) ctx).request(jobContext);
+            }
+
+            //long jobId, String jobParam, String jobLogFileName, int shardIndex, int shardTotal
+            ctx.paramMap().put("jobId", String.valueOf(jobContext.getJobId()));
+            ctx.paramMap().put("jobParam", jobContext.getJobParam());
+            ctx.paramMap().put("jobLogFileName", jobContext.getJobLogFileName());
+            ctx.paramMap().put("shardIndex", String.valueOf(jobContext.getShardIndex()));
+            ctx.paramMap().put("shardTotal", String.valueOf(jobContext.getShardTotal()));
+        }
+
+
         try {
-            real.handle(ctx);
+            jobHolder.handle(ctx);
         } catch (Throwable e) {
             if (e instanceof Exception) {
                 throw (Exception) e;
