@@ -1,8 +1,10 @@
 package org.noear.solon.cloud.extend.powerjob.impl;
 
 import com.google.common.collect.Sets;
+import org.noear.solon.cloud.extend.powerjob.JobBeanManager;
 import org.noear.solon.cloud.extend.powerjob.JobManager;
 import org.noear.solon.core.AopContext;
+import org.noear.solon.core.BeanWrap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tech.powerjob.common.enums.ProcessorType;
@@ -42,24 +44,26 @@ public class ProcessorFactoryOfSolon implements ProcessorFactory {
                     .setProcessor(bean)
                     .setClassLoader(bean.getClass().getClassLoader());
         } catch (Exception e) {
-            log.warn("[ProcessorFactory] load by BuiltInSolonProcessorFactory failed. If you are using Solon, make sure this bean was managed by Solon", e);
+            log.warn("[ProcessorFactory] load by ProcessorFactoryOfSolon failed. If you are using Solon, make sure this bean was managed by Solon", e);
             return null;
         }
     }
 
-    private BasicProcessor getBean(String className) throws Exception {
-        BasicProcessor processorProxy = JobManager.getJob(className);
+    private BasicProcessor getBean(String name) throws Exception {
+        //尝试找 CloudJobHandler 实例
+        BasicProcessor processorProxy = JobManager.getJob(name);
 
-        if (processorProxy == null) {
-            // by type
-            ClassLoader classLoader = context.getClassLoader(); //todo::classLoader 不会为 null
-            Class<?> clz = classLoader.loadClass(className);
-
-            //使用 getBeanOrNew，当没有时会自动创建 bean
-            return (BasicProcessor) context.getBeanOrNew(clz);
-        } else {
-            //by name；如果 JobManager 里有的，用 JobManager 里登记的
+        if (processorProxy != null) {
             return processorProxy;
         }
+
+        //尝试找 BasicProcessor 原生实例
+        BeanWrap beanWrap = JobBeanManager.getJob(name);
+
+        if (beanWrap == null) {
+            throw new IllegalStateException("[ProcessorFactory] Missing processor info： " + name);
+        }
+
+        return beanWrap.get();
     }
 }

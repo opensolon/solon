@@ -66,14 +66,12 @@ public class XPluginImp implements Plugin {
         CloudManager.register(new CloudJobServiceImpl());
 
         CloudJobBeanBuilder.getInstance().addBuilder(BasicProcessor.class, (clz, bw, anno) -> {
+            JobBeanManager.addJob(clz.getName(), bw);
+
             String name = Utils.annoAlias(anno.value(), anno.name());
 
             if (Utils.isNotEmpty(name)) {
-                //使用名字登记（做为单例使用）
-                JobManager.addJob(name, bw.raw());
-            }else{
-                //使用全类名登记（做为单例使用）
-                JobManager.addJob(clz.getName(), bw.raw());
+                JobBeanManager.addJob(name, bw);
             }
         });
     }

@@ -1,4 +1,4 @@
-package org.noear.solon.extend.powerjob;
+package org.noear.solon.cloud.extend.powerjob;
 
 import org.noear.solon.core.BeanWrap;
 
