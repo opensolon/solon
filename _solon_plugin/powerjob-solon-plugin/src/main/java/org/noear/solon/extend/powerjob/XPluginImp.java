@@ -60,7 +60,7 @@ public class XPluginImp implements Plugin {
         }
 
         /*
-         * Create PowerjobSolonWorker object and inject it into Solon.
+         * Create PowerJobWorkerOfSolon object and inject it into Solon.
          */
         PowerJobWorkerOfSolon worker = new PowerJobWorkerOfSolon(context, config);
         context.beanInject(worker);

@@ -8,10 +8,10 @@ import java.util.Map;
 /**
  * 基于 name 任务管理
  *
- * @see org.noear.solon.cloud.extend.powerjob.impl.ProcessorFactoryOfSolon::getBean
+ * @see org.noear.solon.cloud.extend.powerjob.impl.ProcessorFactoryOfSolon#getBean(String)
  *
  * @author noear
- * @since 1.11
+ * @since 2.0
  */
 public class JobManager {
     static Map<String, BasicProcessor> jobMap = new HashMap<>();
