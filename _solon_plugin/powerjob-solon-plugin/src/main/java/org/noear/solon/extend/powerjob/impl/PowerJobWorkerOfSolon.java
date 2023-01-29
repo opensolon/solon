@@ -13,24 +13,24 @@ import java.util.Collections;
 import java.util.Optional;
 
 /**
- * Solon Powerjob worker implementation.
+ * PowerJobWorker 的 solon 实现
  *
- * @see BuiltInSolonProcessorFactory
+ * @see ProcessorFactoryOfSolon
  * @see tech.powerjob.worker.PowerJobSpringWorker
  *
  * @author fzdwx
  * @since 2.0
  */
-public class PowerjobSolonWorker extends PowerJobWorker {
+public class PowerJobWorkerOfSolon extends PowerJobWorker {
 
-    private static final Logger logger = LoggerFactory.getLogger(PowerjobSolonWorker.class);
+    private static final Logger logger = LoggerFactory.getLogger(PowerJobWorkerOfSolon.class);
 
-    final BuiltInSolonProcessorFactory processorFactory;
+    final ProcessorFactoryOfSolon processorFactory;
 
-    public PowerjobSolonWorker(AopContext context, PowerJobWorkerConfig config) {
+    public PowerJobWorkerOfSolon(AopContext context, PowerJobWorkerConfig config) {
         super(config);
 
-        processorFactory = new BuiltInSolonProcessorFactory(context);
+        processorFactory = new ProcessorFactoryOfSolon(context);
 
         try {
             init();

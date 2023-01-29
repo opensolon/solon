@@ -10,4 +10,5 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface PowerJob {
+    String value() default "";
 }

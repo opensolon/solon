@@ -4,7 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.noear.solon.Solon;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
-import org.noear.solon.extend.powerjob.impl.PowerjobSolonWorker;
+import org.noear.solon.extend.powerjob.impl.PowerJobWorkerOfSolon;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tech.powerjob.client.PowerJobClient;
@@ -42,7 +42,7 @@ public class XPluginImp implements Plugin {
         }
 
         //Add anno support
-        context.beanBuilderAdd(PowerJob.class, new PowerjobBeanBuilder());
+        context.beanBuilderAdd(PowerJob.class, new PowerJobBeanBuilder());
 
 
         CommonUtils.requireNonNull(properties.getServerAddress(), "serverAddress can't be empty! " +
@@ -60,8 +60,8 @@ public class XPluginImp implements Plugin {
         /*
          * Create PowerjobSolonWorker object and inject it into Solon.
          */
-        PowerjobSolonWorker worker = new PowerjobSolonWorker(context, config);
+        PowerJobWorkerOfSolon worker = new PowerJobWorkerOfSolon(context, config);
         context.beanInject(worker);
-        context.wrapAndPut(PowerjobSolonWorker.class, worker); //包装并注册到容器（如果做为临时变量，会被回收的）
+        context.wrapAndPut(PowerJobWorkerOfSolon.class, worker); //包装并注册到容器（如果做为临时变量，会被回收的）
     }
 }
