@@ -1131,6 +1131,12 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>powerjob-solon-cloud-plugin</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>quartz-solon-cloud-plugin</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
