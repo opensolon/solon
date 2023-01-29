@@ -83,6 +83,8 @@
         <aws.s3.ver>1.12.347</aws.s3.ver>
         <quartz.ver>2.3.2</quartz.ver>
         <powerjob.ver>4.3.0</powerjob.ver>
+
+        <sa-token.ver>1.34.0</sa-token.ver>
     </properties>
 
 
