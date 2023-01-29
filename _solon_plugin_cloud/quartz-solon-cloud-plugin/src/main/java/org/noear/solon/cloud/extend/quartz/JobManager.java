@@ -1,6 +1,6 @@
 package org.noear.solon.cloud.extend.quartz;
 
-import org.noear.solon.cloud.CloudJobHandler;
+import org.noear.solon.cloud.model.JobHolder;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -10,17 +10,17 @@ import java.util.Map;
  * @since 1.11
  */
 public class JobManager {
-    static Map<String, CloudJobHandler> jobMap = new HashMap<>();
+    static Map<String, JobHolder> jobMap = new HashMap<>();
 
     public static boolean containsJob(String name) {
         return jobMap.containsKey(name);
     }
 
-    public static void addJob(String name, CloudJobHandler handler) {
+    public static void addJob(String name, JobHolder handler) {
         jobMap.put(name, handler);
     }
 
-    public static CloudJobHandler getJob(String name) {
+    public static JobHolder getJob(String name) {
         return jobMap.get(name);
     }
 }
