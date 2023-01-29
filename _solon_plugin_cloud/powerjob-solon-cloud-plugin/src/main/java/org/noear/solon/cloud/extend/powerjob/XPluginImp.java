@@ -55,7 +55,7 @@ public class XPluginImp implements Plugin {
         }
 
         /*
-         * Create PowerjobSolonWorker object and inject it into Solon.
+         * Create PowerJobWorkerOfSolon object and inject it into Solon.
          */
         PowerJobProperties properties = cloudProps.getProp("job").getBean(PowerJobProperties.class);
         PowerJobWorkerConfig config = properties.toConfig(cloudProps);

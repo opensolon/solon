@@ -29,7 +29,7 @@ public class CloudJobBeanBuilder implements BeanBuilder<CloudJob> {
      * @since 2.0
      * */
     public void addBuilder(Class<?> beanClz, BeanBuilder<CloudJob> beanBuilder) {
-        if (builderMap.containsKey(beanClz)) {
+        if (!builderMap.containsKey(beanClz)) {
             builderMap.put(beanClz, beanBuilder);
         }
     }
