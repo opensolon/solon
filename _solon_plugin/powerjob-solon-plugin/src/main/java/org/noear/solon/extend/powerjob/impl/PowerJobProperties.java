@@ -1,8 +1,7 @@
-package org.noear.solon.extend.powerjob;
+package org.noear.solon.extend.powerjob.impl;
 
 
 import lombok.Data;
-import org.noear.solon.Solon;
 import tech.powerjob.common.RemoteConstant;
 import tech.powerjob.common.enums.Protocol;
 import tech.powerjob.common.utils.NetUtils;
@@ -12,7 +11,6 @@ import tech.powerjob.worker.core.processor.ProcessResult;
 import tech.powerjob.worker.core.processor.WorkflowContext;
 
 import java.util.Arrays;
-import java.util.List;
 
 /**
  * Powerjob worker properties
@@ -21,7 +19,7 @@ import java.util.List;
  * @since 2.0
  */
 @Data
-public class PowerjobProperties {
+public class PowerJobProperties {
     /**
      * Whether to enable PowerJob Worker
      */

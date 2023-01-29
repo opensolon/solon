@@ -1,4 +1,4 @@
-package org.noear.solon.cloud.extend.powerjob;
+package org.noear.solon.cloud.extend.powerjob.impl;
 
 
 import lombok.Data;
@@ -21,7 +21,7 @@ import java.util.Arrays;
  * @since 2.0
  */
 @Data
-public class PowerjobProperties {
+public class PowerJobProperties {
     /**
      * Akka port of Powerjob-worker, optional value. Default value of this property is 27777.
      * If multiple PowerJob-worker nodes were deployed, different, unique ports should be assigned.

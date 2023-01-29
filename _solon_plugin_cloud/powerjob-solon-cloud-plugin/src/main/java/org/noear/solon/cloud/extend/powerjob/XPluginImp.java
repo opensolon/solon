@@ -4,6 +4,8 @@ import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudManager;
 import org.noear.solon.cloud.CloudProps;
+import org.noear.solon.cloud.extend.powerjob.impl.PowerJobBeanBuilder;
+import org.noear.solon.cloud.extend.powerjob.impl.PowerJobProperties;
 import org.noear.solon.cloud.extend.powerjob.impl.PowerJobWorkerOfSolon;
 import org.noear.solon.cloud.extend.powerjob.service.CloudJobServiceImpl;
 import org.noear.solon.cloud.impl.CloudJobBeanBuilder;
@@ -55,7 +57,7 @@ public class XPluginImp implements Plugin {
         /*
          * Create PowerjobSolonWorker object and inject it into Solon.
          */
-        PowerjobProperties properties = cloudProps.getProp("job").getBean(PowerjobProperties.class);
+        PowerJobProperties properties = cloudProps.getProp("job").getBean(PowerJobProperties.class);
         PowerJobWorkerConfig config = properties.toConfig(cloudProps);
 
         PowerJobWorkerOfSolon worker = new PowerJobWorkerOfSolon(context, config);
@@ -65,14 +67,7 @@ public class XPluginImp implements Plugin {
 
         CloudManager.register(new CloudJobServiceImpl());
 
-        CloudJobBeanBuilder.getInstance().addBuilder(BasicProcessor.class, (clz, bw, anno) -> {
-            JobBeanManager.addJob(clz.getName(), bw);
-
-            String name = Utils.annoAlias(anno.value(), anno.name());
-
-            if (Utils.isNotEmpty(name)) {
-                JobBeanManager.addJob(name, bw);
-            }
-        });
+        //添加 @CloudJob 支持 BasicProcessor 原生类型
+        CloudJobBeanBuilder.getInstance().addBuilder(BasicProcessor.class, new PowerJobBeanBuilder());
     }
 }

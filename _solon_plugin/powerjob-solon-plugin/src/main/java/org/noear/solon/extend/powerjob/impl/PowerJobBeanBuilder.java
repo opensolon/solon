@@ -1,8 +1,9 @@
-package org.noear.solon.extend.powerjob;
+package org.noear.solon.extend.powerjob.impl;
 
 import org.noear.solon.Utils;
 import org.noear.solon.core.BeanBuilder;
 import org.noear.solon.core.BeanWrap;
+import org.noear.solon.extend.powerjob.JobBeanManager;
 import tech.powerjob.solon.annotation.PowerJob;
 
 /**

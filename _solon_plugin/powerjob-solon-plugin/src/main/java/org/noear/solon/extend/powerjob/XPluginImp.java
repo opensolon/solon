@@ -4,6 +4,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.noear.solon.Solon;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
+import org.noear.solon.extend.powerjob.impl.PowerJobBeanBuilder;
+import org.noear.solon.extend.powerjob.impl.PowerJobProperties;
 import org.noear.solon.extend.powerjob.impl.PowerJobWorkerOfSolon;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +26,7 @@ public class XPluginImp implements Plugin {
 
     @Override
     public void start(AopContext context) throws Throwable {
-        PowerjobProperties properties = context.cfg().getBean("solon.powerjob", PowerjobProperties.class);
+        PowerJobProperties properties = context.cfg().getBean("solon.powerjob", PowerJobProperties.class);
 
         if (!properties.isEnabled()) {
             logger.warn("PowerJob is disabled, powerjob worker will not start.");
