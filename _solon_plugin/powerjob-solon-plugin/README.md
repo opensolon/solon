@@ -83,8 +83,8 @@ public class DemoJob implements BasicProcessor {
 ### 原理
 
 1. 启动 `PowerJobWorkerOfSolon` 与服务的通信
-2. 当有任务调度时，会调用 `ProcessorFactory` 的 `build` 方法，这里是 `BuiltInSolonProcessorFactory`
-3. `BuiltInSolonProcessorFactory` 就是从 Solon Ioc 容器中获取对应的 bean，然后调用 `process` 方法
+2. 当有任务调度时，会调用 `ProcessorFactory` 的 `build` 方法获取容器中的 `bean`，这里是 `ProcessorFactoryOfSolon`
+3. `ProcessorFactoryOfSolon` 就是从 Solon Ioc 容器中获取对应的 bean，然后调用 `process` 方法
 
 ### Changelog
 
