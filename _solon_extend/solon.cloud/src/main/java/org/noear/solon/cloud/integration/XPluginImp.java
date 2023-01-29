@@ -37,8 +37,8 @@ public class XPluginImp implements Plugin {
 
         context.beanAroundAdd(CloudBreaker.class, CloudBreakerInterceptor.instance);
 
-        context.beanExtractorAdd(CloudJob.class, CloudJobExtractor.instance);
-        context.beanBuilderAdd(CloudJob.class, CloudJobBuilder.instance);
+        context.beanExtractorAdd(CloudJob.class, CloudJobBeanExtractor.getInstance());
+        context.beanBuilderAdd(CloudJob.class, CloudJobBeanBuilder.getInstance());
 
         //尝试注册本地发现服务
         LocalDiscoveryResolver.register("");

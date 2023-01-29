@@ -14,8 +14,12 @@ import java.lang.reflect.Method;
  * @author noear
  * @since 1.4
  */
-public class CloudJobExtractor implements BeanExtractor<CloudJob> {
-    public static final CloudJobExtractor instance = new CloudJobExtractor();
+public class CloudJobBeanExtractor implements BeanExtractor<CloudJob> {
+    private static final CloudJobBeanExtractor instance = new CloudJobBeanExtractor();
+
+    public static CloudJobBeanExtractor getInstance() {
+        return instance;
+    }
 
     @Override
     public void doExtract(BeanWrap bw, Method method, CloudJob anno) {
