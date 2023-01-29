@@ -87,8 +87,8 @@ public class DemoApp {
 ### 原理
 
 1. 启动 `PowerJobWorkerOfSolon` 与服务的通信
-2. 当有任务调度时，会调用 `ProcessorFactory` 的 `build` 方法，这里是 `BuiltInSolonProcessorFactory`
-3. `BuiltInSolonProcessorFactory` 就是从 Solon Ioc 容器中获取对应的 bean，然后调用 `process` 方法
+2. 当有任务调度时，会调用 `ProcessorFactory` 的 `build` 方法获取容器中的 `bean`，这里是 `ProcessorFactoryOfSolon`
+3. `ProcessorFactoryOfSolon` 就是从 Solon Ioc 容器中获取对应的 bean，然后调用 `process` 方法
 4. 关于 `@CloudJob` 注解标记的方法可以直接注入 `TaskContext`
     1. `PowerJobProxy`的 `process` 注入参数 
     2. 可以参考 `ActionExecutorDefault#buildArgs` 匹配产生然后 invoke
