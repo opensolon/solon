@@ -23,7 +23,23 @@
         <dependency>
             <groupId>cn.dev33</groupId>
             <artifactId>sa-token-core</artifactId>
-            <version>1.34.0</version>
+            <version>${sa-token.ver}</version>
+        </dependency>
+
+        <!-- OAuth2.0 (optional) -->
+        <dependency>
+            <groupId>cn.dev33</groupId>
+            <artifactId>sa-token-oauth2</artifactId>
+            <version>${sa-token.ver}</version>
+            <optional>true</optional>
+        </dependency>
+
+        <!-- SSO (optional) -->
+        <dependency>
+            <groupId>cn.dev33</groupId>
+            <artifactId>sa-token-sso</artifactId>
+            <version>${sa-token.ver}</version>
+            <optional>true</optional>
         </dependency>
 
         <dependency>

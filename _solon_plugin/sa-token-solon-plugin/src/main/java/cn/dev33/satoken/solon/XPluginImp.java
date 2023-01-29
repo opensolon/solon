@@ -1,5 +1,12 @@
 package cn.dev33.satoken.solon;
 
+import cn.dev33.satoken.solon.oauth2.SaOAuth2AutoConfigure;
+import cn.dev33.satoken.solon.sso.SaSsoAutoConfigure;
+import org.noear.solon.Solon;
+import org.noear.solon.Utils;
+import org.noear.solon.core.AopContext;
+import org.noear.solon.core.Plugin;
+
 import cn.dev33.satoken.SaManager;
 import cn.dev33.satoken.basic.SaBasicTemplate;
 import cn.dev33.satoken.basic.SaBasicUtil;
@@ -17,8 +24,6 @@ import cn.dev33.satoken.stp.StpInterface;
 import cn.dev33.satoken.stp.StpLogic;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.dev33.satoken.temp.SaTempInterface;
-import org.noear.solon.core.AopContext;
-import org.noear.solon.core.Plugin;
 
 /**
  * @author noear
@@ -37,7 +42,21 @@ public class XPluginImp implements Plugin {
         //注入其它 Bean
         context.beanOnloaded(c -> {
             beanInitDo(c);
+            ssoBeanInitDo(c);
+            oauth2BeanInitDo(c);
         });
+    }
+
+    private void ssoBeanInitDo(AopContext context){
+        if (Utils.loadClass("cn.dev33.satoken.sso.SaSsoManager") != null) {
+            context.beanMake(SaSsoAutoConfigure.class);
+        }
+    }
+
+    private void oauth2BeanInitDo(AopContext context){
+        if(Utils.loadClass("cn.dev33.satoken.oauth2.SaOAuth2Manager") != null){
+            context.beanMake(SaOAuth2AutoConfigure.class);
+        }
     }
 
     private void beanInitDo(AopContext context) {
@@ -45,12 +64,9 @@ public class XPluginImp implements Plugin {
         SaManager.setSaTokenContext(new SaContextForSolon());
 
         //注入配置Bean
-        SaTokenConfig saTokenConfig = context.cfg().getBean("sa-token", SaTokenConfig.class);
+        SaTokenConfig saTokenConfig = Solon.cfg().getBean("sa-token", SaTokenConfig.class);
         if (saTokenConfig != null) {
-            saTokenConfig.setIsPrint(context.cfg().getBool("sa-token.isPrint", false));
             SaManager.setConfig(saTokenConfig);
-        }else {
-            SaManager.getConfig().setIsPrint(false);
         }
 
         context.getBeanAsync(SaTokenConfig.class, bean -> {
