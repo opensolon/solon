@@ -30,8 +30,9 @@ public class ContextEmpty extends Context {
         return request;
     }
 
-    public void setRequest(Object request){
+    public ContextEmpty request(Object request){
         this.request = request;
+        return this;
     }
 
 
@@ -214,8 +215,9 @@ public class ContextEmpty extends Context {
         return response;
     }
 
-    public void setResponse(Object response) {
+    public ContextEmpty response(Object response) {
         this.response = response;
+        return this;
     }
 
     @Override
