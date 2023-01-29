@@ -64,7 +64,7 @@ docker-compose up
 
 #### 代码示例
 
-详情代码: [Powerjob solon demo](https://github.com/noear/solon-examples/tree/main/5.Solon-Job/demo5051-powerjob)
+详情代码: [Powerjob solon cloud demo](https://github.com/noear/solon-examples/tree/main/9.Solon-Cloud/demo9064-job_powerjob)
 
 ```java
 import tech.powerjob.worker.core.processor.sdk.BasicProcessor;
