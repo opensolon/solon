@@ -42,8 +42,9 @@ public class CloudJobBeanExtractor implements BeanExtractor<CloudJob> {
             throw new IllegalStateException("CloudJob[" + name + "] naming conflicts.");
         }
 
-        //method,必须返回为void
-        MethodHandler methodHandler = new MethodHandler(bw, method);
+        //method 可以有返回结果
+        method.setAccessible(true);
+        MethodHandler methodHandler = new MethodHandler(bw, method, true);
 
         CloudClient.job().register(name, anno.cron7x(), description, methodHandler::handle);
     }

@@ -33,8 +33,8 @@ public class Action extends HandlerAide implements Handler {
 
     //method 是否为 main endpoint
     private final boolean mIsMain;
-    //method 包装器
-    private final MethodWrap mWrap;
+    //method 处理器
+    private final MethodHandler mHandler;
     //method 相关的 produces（输出产品）
     private String mProduces;
     //method 相关的 consumes（输入产品）
@@ -63,7 +63,7 @@ public class Action extends HandlerAide implements Handler {
 
         method.setAccessible(true);
 
-        mWrap = bWrap.context().methodGet(method);
+        mHandler = new MethodHandler(bWrap, method, false);
         mRemoting = remoting;
         mMapping = mapping;
         bRender = render;
@@ -154,7 +154,7 @@ public class Action extends HandlerAide implements Handler {
      * 函数包装器
      */
     public MethodWrap method() {
-        return mWrap;
+        return mHandler.method();
     }
 
     /**
@@ -165,14 +165,14 @@ public class Action extends HandlerAide implements Handler {
     }
 
     /**
-     * 生产者
+     * 生产者（用于文档生成）
      */
     public String produces() {
         return mProduces;
     }
 
     /**
-     * 消息费
+     * 消息费（用于文档生成）
      */
     public String consumes() {
         return mConsumes;
@@ -274,7 +274,7 @@ public class Action extends HandlerAide implements Handler {
                     }
                 }
 
-                Object tmp = callDo(c, obj, mWrap);
+                Object tmp = mHandler.execute(c, obj);
 
                 //如果是主处理（不支持非主控的返回值；有可能是拦截器）
                 if (mIsMain) {
@@ -318,26 +318,6 @@ public class Action extends HandlerAide implements Handler {
                 }
             }
         }
-    }
-
-    /**
-     * 执行动作（便于重写）
-     */
-    protected Object callDo(Context ctx, Object obj, MethodWrap mWrap) throws Throwable {
-        String ct = ctx.contentType();
-
-        if (ct != null && mWrap.getParamWraps().length > 0) {
-            //
-            //仅有参数时，才执行执行其它执行器
-            //
-            for (ActionExecutor me : Bridge.actionExecutors()) {
-                if (me.matched(ctx, ct)) {
-                    return me.execute(ctx, obj, mWrap);
-                }
-            }
-        }
-
-        return Bridge.actionExecutorDef().execute(ctx, obj, mWrap);
     }
 
     /**
