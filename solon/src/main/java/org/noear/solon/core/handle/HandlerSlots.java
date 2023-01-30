@@ -30,14 +30,14 @@ public interface HandlerSlots {
         String path = Utils.annoAlias(mapping.value(), mapping.path());
 
         for (MethodType m1 : methodTypes) {
-            if (mapping.after() || mapping.before()) {
-                if (mapping.after()) {
+            if (mapping.endpoint() == Endpoint.main) {
+                add(path, m1, handler);
+            }else{
+                if (mapping.endpoint() == Endpoint.after) {
                     after(path, m1, mapping.index(), handler);
                 } else {
                     before(path, m1, mapping.index(), handler);
                 }
-            } else {
-                add(path, m1, handler);
             }
         }
     };

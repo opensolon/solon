@@ -197,14 +197,14 @@ public class HandlerLoader extends HandlerAide {
                     if (m_map == null) {
                         slots.add(newPath, m1, action);
                     } else {
-                        if ((m_map.after() || m_map.before())) {
-                            if (m_map.after()) {
+                        if ((m_map.endpoint() == Endpoint.main)) {
+                            slots.add(newPath, m1, action);
+                        }else{
+                            if (m_map.endpoint() == Endpoint.after) {
                                 slots.after(newPath, m1, m_index, action);
                             } else {
                                 slots.before(newPath, m1, m_index, action);
                             }
-                        } else {
-                            slots.add(newPath, m1, action);
                         }
                     }
                 }

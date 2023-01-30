@@ -96,7 +96,7 @@ public class Action extends HandlerAide implements Handler {
 
             mMultipart = mapping.multipart();
             mName = Utils.annoAlias(mapping.value(), mapping.path());
-            mIsMain = !(mapping.after() || mapping.before());
+            mIsMain = (mapping.endpoint() == Endpoint.main);
         }
 
         if (Utils.isEmpty(path)) {
