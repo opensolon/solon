@@ -104,29 +104,12 @@ public class HandlerLoader extends HandlerAide {
             throw new IllegalStateException(bw.clz().getName() + " No @Mapping!");
         }
 
-        String path = Utils.annoAlias(bMapping.value(), bMapping.path());
         Handler handler = bw.raw();
         Set<MethodType> v0 = MethodTypeUtil.findAndFill(new HashSet<>(), t -> bw.annotationGet(t) != null);
         if (v0.size() == 0) {
             v0 = new HashSet<>(Arrays.asList(bMapping.method()));
         }
-        for(MethodType m0 : v0) {
-            slots.add(path, m0, handler);
-        }
-
-//        Before before = bw.clz().getAnnotation(Before.class);
-//        if(before != null){
-//            for(Class<? extends Handler> clz0 : before.value()){
-//                Solon.app().before(path, bw.context().getBeanOrNew(clz0));
-//            }
-//        }
-//
-//        After after = bw.clz().getAnnotation(After.class);
-//        if(after != null){
-//            for(Class<? extends Handler> clz0 : before.value()){
-//                Solon.app().before(path, bw.context().getBeanOrNew(clz0));
-//            }
-//        }
+        slots.add(bMapping, v0, handler);
     }
 
     /**

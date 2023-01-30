@@ -211,29 +211,12 @@ public class AopContext extends BeanContainer {
         if (Handler.class.isAssignableFrom(clz)) {
             Mapping mapping = annoEl.getAnnotation(Mapping.class);
             if (mapping != null) {
-                String path = Utils.annoAlias(mapping.value(), mapping.path());
                 Handler handler = bw.raw();
                 Set<MethodType> v0 = MethodTypeUtil.findAndFill(new HashSet<>(), t -> annoEl.getAnnotation(t) != null);
                 if (v0.size() == 0) {
                     v0 = new HashSet<>(Arrays.asList(mapping.method()));
                 }
-                for(MethodType m0 : v0) {
-                    Solon.app().add(path, m0, handler);
-                }
-
-//                Before before = clz.getAnnotation(Before.class);
-//                if(before != null){
-//                    for(Class<? extends Handler> clz0 : before.value()){
-//                        Solon.app().before(path, getBeanOrNew(clz0));
-//                    }
-//                }
-//
-//                After after = clz.getAnnotation(After.class);
-//                if(after != null){
-//                    for(Class<? extends Handler> clz0 : before.value()){
-//                        Solon.app().before(path, getBeanOrNew(clz0));
-//                    }
-//                }
+                Solon.app().add(mapping, v0, handler);
             }
         }
 
