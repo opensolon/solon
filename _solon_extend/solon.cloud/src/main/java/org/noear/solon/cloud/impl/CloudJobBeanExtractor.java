@@ -6,7 +6,7 @@ import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.cloud.annotation.CloudJob;
 import org.noear.solon.core.BeanExtractor;
 import org.noear.solon.core.BeanWrap;
-import org.noear.solon.core.handle.Action;
+import org.noear.solon.core.handle.MethodHandler;
 
 import java.lang.reflect.Method;
 
@@ -43,8 +43,8 @@ public class CloudJobBeanExtractor implements BeanExtractor<CloudJob> {
         }
 
         //method,必须返回为void
-        Action action = new Action(bw, method);
+        MethodHandler methodHandler = new MethodHandler(bw, method);
 
-        CloudClient.job().register(name, anno.cron7x(), description, action::handle);
+        CloudClient.job().register(name, anno.cron7x(), description, methodHandler::handle);
     }
 }

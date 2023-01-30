@@ -326,7 +326,7 @@ public class Action extends HandlerAide implements Handler {
     protected Object callDo(Context ctx, Object obj, MethodWrap mWrap) throws Throwable {
         String ct = ctx.contentType();
 
-        if (mWrap.getParamWraps().length > 0) {
+        if (ct != null && mWrap.getParamWraps().length > 0) {
             //
             //仅有参数时，才执行执行其它执行器
             //
