@@ -17,9 +17,11 @@ import tech.powerjob.worker.core.processor.sdk.BasicProcessor;
  */
 public class PowerJobProxy implements BasicProcessor {
     private JobHolder jobHolder;
-    public PowerJobProxy(JobHolder jobHolder){
+
+    public PowerJobProxy(JobHolder jobHolder) {
         this.jobHolder = jobHolder;
     }
+
     @Override
     public ProcessResult process(TaskContext tc) throws Exception {
         if (jobHolder != null) {
@@ -49,7 +51,12 @@ public class PowerJobProxy implements BasicProcessor {
 
             try {
                 jobHolder.handle(ctx);
-                return new ProcessResult(true);
+
+                if (ctx.result instanceof ProcessResult) {
+                    return (ProcessResult) ctx.result;
+                } else {
+                    return new ProcessResult(true);
+                }
             } catch (Throwable e) {
                 throw new CloudJobException("Job execution failed: " + jobHolder.getName(), e);
             }
