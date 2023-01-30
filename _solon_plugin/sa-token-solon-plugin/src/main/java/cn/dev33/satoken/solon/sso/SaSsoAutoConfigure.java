@@ -19,7 +19,7 @@ public class SaSsoAutoConfigure {
      * 获取 SSO 配置Bean
      * */
     @Bean
-    public SaSsoConfig getConfig(@Inject("${sa-token.sso}") SaSsoConfig ssoConfig) {
+    public SaSsoConfig getConfig(@Inject(value = "${sa-token.sso}",required = false) SaSsoConfig ssoConfig) {
         return ssoConfig;
     }
 
