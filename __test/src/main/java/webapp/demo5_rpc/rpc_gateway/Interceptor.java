@@ -1,30 +1,25 @@
 package webapp.demo5_rpc.rpc_gateway;
 
-import org.noear.solon.annotation.After;
-import org.noear.solon.annotation.Before;
-import org.noear.solon.annotation.Controller;
-import org.noear.solon.annotation.Mapping;
 import org.noear.solon.core.handle.Context;
-import org.noear.solon.core.handle.Endpoint;
 import org.noear.solon.core.handle.Handler;
 
 
-@After({Interceptor.ApiIntercepter.class})
-@Before({ Interceptor.AuthInterceptor.class})
-@Controller
+//@After({Interceptor.ApiIntercepter.class})
+//@Before({ Interceptor.AuthInterceptor.class})
+//@Controller
 public class Interceptor {
 
-    @Mapping(value = "/demo52/**",index = 1, endpoint = Endpoint.before)
+    //@Mapping(value = "/demo52/**",index = 1, endpoint = Endpoint.before)
     public void call(Context context, String sev) {
         context.output("XInterceptor1，你被我拦截了(/{sev}/**)!!!\n");
     }
 
-    @Mapping(value = "/demo52/**",index = 3, endpoint = Endpoint.before)
+    //@Mapping(value = "/demo52/**",index = 3, endpoint = Endpoint.before)
     public void call2(Context context, String sev) {
         context.output("XInterceptor3，你被我拦截了(/{sev}/**)!!!\n");
     }
 
-    @Mapping(value = "/demo52/**",index = 2, endpoint = Endpoint.before)
+    //@Mapping(value = "/demo52/**",index = 2, endpoint = Endpoint.before)
     public void call3(Context context, String sev) {
         context.output("XInterceptor2，你被我拦截了(/{sev}/**)!!!\n");
     }

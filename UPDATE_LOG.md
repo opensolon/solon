@@ -29,7 +29,7 @@
   * 删除 Solon.cfg().version()；由 Solon.version() 替代
   * 删除 EventBus::pushAsyn()；由 pushAsync() 替代
   * 删除 PrintUtil::debug()，::info() 等...；由 LogUtil 替代
-  * 删除 @Mapping::before,after 属性；由 endpoint 替代
+  * 删除 @Mapping::before,after,index 属性；由 @Before,@After + Handler 替代
   * 删除 "solon.profiles.active" 应用配置（只在某版临时出现过）；由 "solon.env" 替代
   * 删除 "solon.extend.config" 应用配置（只在某版临时出现过）；由 "solon.config" 替代
   * 删除 "solon.encoding.request" 应用配置（只在某版临时出现过）；由 "server.request.encoding" 替代

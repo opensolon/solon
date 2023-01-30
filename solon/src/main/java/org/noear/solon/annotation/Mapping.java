@@ -1,6 +1,5 @@
 package org.noear.solon.annotation;
 
-import org.noear.solon.core.handle.Endpoint;
 import org.noear.solon.core.handle.MethodType;
 
 import java.lang.annotation.*;
@@ -50,13 +49,4 @@ public @interface Mapping {
      * 是否申明为多分片（否则为自动识别）
      * */
     boolean multipart() default false;
-
-    /**
-     * 顺序位（before 或 after 时有效）
-     * */
-    int index() default 0;
-    /**
-     * 位置
-     * */
-    Endpoint endpoint() default Endpoint.main;
 }
