@@ -1317,7 +1317,7 @@
 
     <profiles>
         <profile>
-            <id>release</id>
+            <id>sonatype-oss-release</id>
             <build>
                 <plugins>
                     <!-- GPG -->
