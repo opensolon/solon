@@ -28,40 +28,16 @@ public class MethodHandler implements Handler {
         this.allowResult = allowResult;
     }
 
-    public MethodWrap method() {
-        return mw;
-    }
-
 
     /**
      * 处理
-     * */
+     */
     @Override
     public void handle(Context c) throws Throwable {
-        Object tmp = execute(c, bw.get());
+        Object tmp = Bridge.actionExecutorDef().execute(c, bw.get(), mw);
 
         if (allowResult) {
             c.result = tmp;
         }
-    }
-
-    /**
-     * 执行
-     */
-    public Object execute(Context c, Object obj) throws Throwable {
-        String ct = c.contentType();
-
-        if (ct != null && mw.getParamWraps().length > 0) {
-            //
-            //仅有参数时，才执行执行其它执行器
-            //
-            for (ActionExecutor me : Bridge.actionExecutors()) {
-                if (me.matched(c, ct)) {
-                    return me.execute(c, obj, mw);
-                }
-            }
-        }
-
-        return Bridge.actionExecutorDef().execute(c, obj, mw);
     }
 }

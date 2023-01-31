@@ -4,9 +4,9 @@ import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.cloud.annotation.CloudJob;
+import org.noear.solon.core.handle.MethodHandler;
 import org.noear.solon.core.BeanExtractor;
 import org.noear.solon.core.BeanWrap;
-import org.noear.solon.core.handle.MethodHandler;
 
 import java.lang.reflect.Method;
 

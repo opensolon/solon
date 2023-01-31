@@ -32,7 +32,7 @@ public class Action extends HandlerAide implements Handler {
     private Render bRender;
 
     //method 处理器
-    private final MethodHandler mHandler;
+    private final MethodWrap mWrap;
     //method 相关的 produces（输出产品）
     private String mProduces;
     //method 相关的 consumes（输入产品）
@@ -61,7 +61,7 @@ public class Action extends HandlerAide implements Handler {
 
         method.setAccessible(true);
 
-        mHandler = new MethodHandler(bWrap, method, false);
+        mWrap = bWrap.context().methodGet(method);
         mRemoting = remoting;
         mMapping = mapping;
         bRender = render;
@@ -150,7 +150,7 @@ public class Action extends HandlerAide implements Handler {
      * 函数包装器
      */
     public MethodWrap method() {
-        return mHandler.method();
+        return mWrap;
     }
 
     /**
@@ -260,7 +260,7 @@ public class Action extends HandlerAide implements Handler {
                 bindPathVarDo(c);
 
                 //执行
-                c.result = mHandler.execute(c, obj);
+                c.result = executeDo(c, obj);
 
                 //设定输出产品（放在这个位置正好）
                 if (Utils.isEmpty(mProduces) == false) {
@@ -307,6 +307,23 @@ public class Action extends HandlerAide implements Handler {
                 }
             }
         }
+    }
+
+    protected Object executeDo(Context c, Object obj) throws Throwable {
+        String ct = c.contentType();
+
+        if (ct != null && mWrap.getParamWraps().length > 0) {
+            //
+            //仅有参数时，才执行执行其它执行器
+            //
+            for (ActionExecutor me : Bridge.actionExecutors()) {
+                if (me.matched(c, ct)) {
+                    return me.execute(c, obj, mWrap);
+                }
+            }
+        }
+
+        return Bridge.actionExecutorDef().execute(c, obj, mWrap);
     }
 
     /**
