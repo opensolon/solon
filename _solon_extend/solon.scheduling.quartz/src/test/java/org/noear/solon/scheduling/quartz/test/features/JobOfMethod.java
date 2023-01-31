@@ -1,8 +1,10 @@
 package org.noear.solon.scheduling.quartz.test.features;
 
 import lombok.extern.slf4j.Slf4j;
+import org.noear.snack.ONode;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.scheduling.annotation.Scheduled;
+import org.quartz.JobExecutionContext;
 
 import java.util.Date;
 
@@ -13,7 +15,8 @@ import java.util.Date;
 @Component
 public class JobOfMethod {
     @Scheduled(fixedRate = 1000 * 3)
-    public void job21() {
+    public void job21(JobExecutionContext context) { //todo: 最好不加，方便与别的插件互换
+        System.out.println(ONode.stringify(context));
         log.debug(new Date() + ": 1000*3");
     }
 
