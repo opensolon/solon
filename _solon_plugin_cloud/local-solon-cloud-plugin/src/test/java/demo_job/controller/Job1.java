@@ -9,7 +9,7 @@ import java.util.Date;
 /**
  * 云端调度的定时任务（本地实现时，就在本地调试了）
  */
-@CloudJob(name = "job1",cron7x = "* * * * * ?")
+@CloudJob(name = "job1",cron7x = "* * * * * ? +07")
 public class Job1 implements CloudJobHandler {
     @Override
     public void handle(Context ctx) throws Throwable {
