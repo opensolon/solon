@@ -62,6 +62,7 @@
 * 删除插件 solon.extend.retry
 * 删除插件 solon.extend.jsr330
 * 删除插件 solon.extend.jsr303
+* 删除插件 solon.logging.impl；由 solon.logging.simple 替代
 *
 * 新增插件 powerjob-solon-plugin
 * 新增插件 powerjob-solon-cloud-plugin（支持 solon cloud job 标准）
