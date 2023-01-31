@@ -29,7 +29,7 @@
   * 删除 Solon.cfg().version()；由 Solon.version() 替代
   * 删除 EventBus::pushAsyn()；由 pushAsync() 替代
   * 删除 PrintUtil::debug()，::info() 等...；由 LogUtil 替代
-  * 删除 @Mapping::before,after,index 属性；由 @Before,@After 或 Solon.app().before(),after() 替代
+  * 删除 @Mapping::before,after,index 属性；由 @Before,@After 或 RouterInterceptor 或 Solon.app().before(),after() 替代
   * 删除 "solon.profiles.active" 应用配置（只在某版临时出现过）；由 "solon.env" 替代
   * 删除 "solon.extend.config" 应用配置（只在某版临时出现过）；由 "solon.config" 替代
   * 删除 "solon.encoding.request" 应用配置（只在某版临时出现过）；由 "server.request.encoding" 替代
@@ -38,6 +38,8 @@
   * 调整 DownloadedFile，UploadedFile 字段改为私有；由属性替代
 * 调整 solon.i18n//
   * 删除 I18nBundle::toMap()；由 ::toProp() 替代
+* 调整 solon.web.cors//
+  * 删除 ..extend.cores 包；由 ..web.cors 包替代
 * 调整 solon.cloud//
   * 删除 Media::bodyAsByts()..；由 ::bodyAsBytes() 替代
 * 调整 solon.cloud.httputils//
@@ -50,8 +52,9 @@
   * 删除 org.apache.ibatis.ext.solon.Db；由 ..solon.annotation.Db 替代
 * 调整 beetlsql-solon-plugin//
   * 删除 org.beetl.sql.ext.solon.Db；由 ..solon.annotation.Db 替代
-* 调整 solon.web.cors//
-  * 删除 ..extend.cores 包；由 ..web.cors 包替代
+* 调整 sa-token-solon-plugin//
+  * 删除 SaTokenPathFilter 类，由 SaTokenFilter 替代
+  * 删除 SaTokenPathInterceptor 类，由 SaTokenInterceptor 替代
 * 删除插件 httputils-solon-cloud-plugin；由 solon.cloud.httputils 替代
 * 删除插件 solon.extend.stop；由 solon.web.stop 替代
 * 删除插件 solon.extend.async；由 solon.scheduling 替代
