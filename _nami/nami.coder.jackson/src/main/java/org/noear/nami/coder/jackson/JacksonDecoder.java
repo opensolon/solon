@@ -5,10 +5,11 @@ import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import org.noear.nami.Decoder;
 import org.noear.nami.Context;
-import org.noear.nami.common.Constants;
+import org.noear.nami.Decoder;
 import org.noear.nami.Result;
+import org.noear.nami.common.Constants;
+import org.noear.nami.common.ContentTypes;
 
 import java.lang.reflect.Type;
 
@@ -34,7 +35,7 @@ public class JacksonDecoder implements Decoder {
 
     @Override
     public String enctype() {
-        return Constants.CONTENT_TYPE_JSON;
+        return ContentTypes.JSON_VALUE;
     }
 
     @Override
@@ -71,6 +72,6 @@ public class JacksonDecoder implements Decoder {
     @Override
     public void pretreatment(Context ctx) {
         ctx.headers.put(Constants.HEADER_SERIALIZATION, Constants.AT_TYPE_JSON);
-        ctx.headers.put(Constants.HEADER_ACCEPT, Constants.CONTENT_TYPE_JSON);
+        ctx.headers.put(Constants.HEADER_ACCEPT, ContentTypes.JSON_VALUE);
     }
 }

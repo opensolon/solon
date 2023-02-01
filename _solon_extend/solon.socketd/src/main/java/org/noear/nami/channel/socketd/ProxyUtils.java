@@ -4,6 +4,7 @@ import org.noear.nami.Decoder;
 import org.noear.nami.Encoder;
 import org.noear.nami.Nami;
 import org.noear.nami.common.Constants;
+import org.noear.nami.common.ContentTypes;
 import org.noear.solon.core.message.Session;
 
 import java.net.URI;
@@ -30,8 +31,8 @@ public class ProxyUtils {
         return Nami.builder()
                 .encoder(encoder)
                 .decoder(decoder)
-                .headerSet(Constants.HEADER_ACCEPT, Constants.CONTENT_TYPE_JSON) //相当于指定默认解码器 //如果指定不同的编码器，会被盖掉
-                .headerSet(Constants.HEADER_CONTENT_TYPE, Constants.CONTENT_TYPE_JSON) //相当于指定默认编码器
+                .headerSet(Constants.HEADER_ACCEPT, ContentTypes.JSON_VALUE) //相当于指定默认解码器 //如果指定不同的编码器，会被盖掉
+                .headerSet(Constants.HEADER_CONTENT_TYPE, ContentTypes.JSON_VALUE) //相当于指定默认编码器
                 .channel(new SocketChannel(sessions))
                 .upstream(() -> server)
                 .create(service);

@@ -1,6 +1,5 @@
 package demo.controller;
 
-import jdk.nashorn.internal.ir.ObjectNode;
 import org.noear.snack.ONode;
 import org.noear.solon.cloud.CloudEventHandler;
 import org.noear.solon.cloud.annotation.CloudEvent;

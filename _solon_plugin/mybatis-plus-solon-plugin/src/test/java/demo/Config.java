@@ -1,9 +1,11 @@
 package demo;
 
 import com.baomidou.mybatisplus.core.MybatisConfiguration;
+import com.baomidou.mybatisplus.core.MybatisSqlSessionFactoryBuilder;
 import com.baomidou.mybatisplus.core.config.GlobalConfig;
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import demo.dso.MetaObjectHandlerImpl;
+import demo.dso.MybatisSqlSessionFactoryBuilderImpl;
 import org.apache.ibatis.solon.annotation.Db;
 import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Configuration;
@@ -32,8 +34,14 @@ public class Config {
         globalConfig.setMetaObjectHandler(metaObjectHandler);
     }
 
+    @Bean
     public void db1_ext2(@Db("db1") MybatisConfiguration config){
         config.getTypeHandlerRegistry().register("xxx");
         config.setDefaultEnumTypeHandler(null);
+    }
+
+    @Bean
+    public MybatisSqlSessionFactoryBuilder factoryBuilderNew(){
+        return new MybatisSqlSessionFactoryBuilderImpl();
     }
 }

@@ -48,7 +48,7 @@ class XxlJobExtractor implements BeanExtractor<XxlJob> {
             }
         }
 
-        // registry jobhandler
+        //提示：不支持CloudJob拦截器
         XxlJobExecutor.registJobHandler(name, new MethodJobHandler(bw.raw(), method, initMethod, destroyMethod));
     }
 }

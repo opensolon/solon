@@ -1,6 +1,6 @@
 package org.noear.solon.cloud.extend.quartz;
 
-import org.noear.solon.cloud.CloudJobHandler;
+import org.noear.solon.cloud.model.JobHolder;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.ContextEmpty;
 import org.noear.solon.core.handle.ContextUtil;
@@ -18,27 +18,31 @@ import java.util.Map;
 public class JobQuartzProxy implements Job {
     @Override
     public void execute(JobExecutionContext jc) throws JobExecutionException {
-        String jobId = jc.getJobDetail().getKey().getName();
-        CloudJobHandler jobReal = JobManager.getJob(jobId);
+        String name = jc.getJobDetail().getKey().getName();
+        JobHolder jobHolder = JobManager.getJob(name);
 
-        if (jobReal != null) {
+        if (jobHolder != null) {
             Context ctx = Context.current(); //可能是从上层代理已生成, v1.11
             if (ctx == null) {
                 ctx = new ContextEmpty();
                 ContextUtil.currentSet(ctx);
             }
 
+            //设置请求对象（mvc 时，可以被注入）
+            if(ctx instanceof ContextEmpty) {
+                ((ContextEmpty) ctx).request(jc);
+            }
+
             for (Map.Entry<String, Object> kv : jc.getJobDetail().getJobDataMap().entrySet()) {
                 if (kv.getValue() != null) {
-                    ctx.attrMap().put(kv.getKey(), kv.getValue());
                     ctx.paramMap().put(kv.getKey(), kv.getValue().toString());
                 }
             }
 
             try {
-                jobReal.handle(ctx);
+                jobHolder.handle(ctx);
             } catch (Throwable e) {
-                throw new JobExecutionException("Job execution failed: " + jobId, e);
+                throw new JobExecutionException("Job execution failed: " + name, e);
             }
         }
     }

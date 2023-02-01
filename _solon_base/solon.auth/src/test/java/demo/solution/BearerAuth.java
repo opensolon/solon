@@ -6,7 +6,6 @@ import org.noear.solon.core.handle.Context;
 /**
  * @author noear 2021/5/27 created
  */
-@Deprecated
 public class BearerAuth {
     private static final String TYPE = "Bearer ";
 

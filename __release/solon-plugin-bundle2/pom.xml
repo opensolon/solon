@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.noear</groupId>
         <artifactId>solon-parent</artifactId>
-        <version>1.12.4</version>
+        <version>2.0.0</version>
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
@@ -25,6 +25,7 @@
 
         <module>../../_solon_plugin/quartz-solon-plugin</module>
         <module>../../_solon_plugin/cron4j-solon-plugin</module>
+        <module>../../_solon_plugin/powerjob-solon-plugin</module>
 
         <module>../../_solon_plugin/jap-ids-solon-plugin</module>
         <module>../../_solon_plugin/jap-solon-plugin</module>

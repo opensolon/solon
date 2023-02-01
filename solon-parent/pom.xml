@@ -6,7 +6,7 @@
 
     <groupId>org.noear</groupId>
     <artifactId>solon-parent</artifactId>
-    <version>1.12.4</version>
+    <version>2.0.0</version>
     <packaging>pom</packaging>
 
     <name>${project.artifactId}</name>
@@ -19,12 +19,12 @@
 
         <java.ver>1.8</java.ver>
 
-        <solon.ver>1.12.4</solon.ver>
+        <solon.ver>2.0.0</solon.ver>
         <snack3.ver>3.2.52</snack3.ver>
         <weed3.ver>3.4.33</weed3.ver>
         <wood.ver>1.0.7</wood.ver>
-        <water.ver>2.9.3</water.ver>
-        <luffy.ver>1.4.3</luffy.ver>
+        <water.ver>2.10.0</water.ver>
+        <luffy.ver>1.5.0</luffy.ver>
         <redisx.ver>1.4.5</redisx.ver>
         <redisson.ver>3.17.0</redisson.ver>
 
@@ -82,6 +82,9 @@
         <feign.ver>8.18.0</feign.ver>
         <aws.s3.ver>1.12.347</aws.s3.ver>
         <quartz.ver>2.3.2</quartz.ver>
+        <powerjob.ver>4.3.0</powerjob.ver>
+
+        <sa-token.ver>1.34.0</sa-token.ver>
     </properties>
 
 
@@ -376,13 +379,6 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.extend.async</artifactId>
-                <version>${solon.ver}</version>
-            </dependency>
-
-
-            <dependency>
-                <groupId>org.noear</groupId>
                 <artifactId>solon.health</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
@@ -407,30 +403,7 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.extend.stop</artifactId>
-                <version>${solon.ver}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>solon.extend.jsr330</artifactId>
-                <version>${solon.ver}</version>
-                <!-- javax.inject impl -->
-            </dependency>
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>solon.extend.jsr303</artifactId>
-                <version>${solon.ver}</version>
-                <!-- javax.validation impl -->
-            </dependency>
-            <dependency>
-                <groupId>org.noear</groupId>
                 <artifactId>solon.extend.schedule</artifactId>
-                <version>${solon.ver}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>solon.schedule</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
 
@@ -483,11 +456,6 @@
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.logging</artifactId>
-                <version>${solon.ver}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>solon.logging.impl</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
             <dependency>
@@ -755,7 +723,6 @@
             </dependency>
 
 
-
             <dependency>
                 <groupId>org.yaml</groupId>
                 <artifactId>snakeyaml</artifactId>
@@ -892,6 +859,12 @@
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>quartz-solon-plugin</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>powerjob-solon-plugin</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
 
@@ -1153,6 +1126,12 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>powerjob-solon-cloud-plugin</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>quartz-solon-cloud-plugin</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
@@ -1166,12 +1145,6 @@
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>jaeger-solon-cloud-plugin</artifactId>
-                <version>${solon.ver}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>httputils-solon-cloud-plugin</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
 
@@ -1205,7 +1178,6 @@
                 <artifactId>easypoi-solon-plugin</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
-
 
 
             <!-- //////////// servlet ////////////  -->
@@ -1345,7 +1317,7 @@
 
     <profiles>
         <profile>
-            <id>release</id>
+            <id>sonatype-oss-release</id>
             <build>
                 <plugins>
                     <!-- GPG -->

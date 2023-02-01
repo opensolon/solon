@@ -1,15 +1,20 @@
 package org.noear.solon.core.handle;
 
 import org.noear.solon.Utils;
-import org.noear.solon.annotation.*;
+import org.noear.solon.annotation.After;
+import org.noear.solon.annotation.Before;
+import org.noear.solon.annotation.Mapping;
+import org.noear.solon.annotation.Options;
 import org.noear.solon.core.BeanWrap;
-import org.noear.solon.core.util.PathUtil;
 import org.noear.solon.core.util.ConsumerEx;
+import org.noear.solon.core.util.PathUtil;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * 通用处理接口加载器（根据bean加载）
@@ -104,7 +109,6 @@ public class HandlerLoader extends HandlerAide {
         if (v0.size() == 0) {
             v0 = new HashSet<>(Arrays.asList(bMapping.method()));
         }
-
         slots.add(bMapping, v0, handler);
     }
 
@@ -132,13 +136,11 @@ public class HandlerLoader extends HandlerAide {
 
         Set<MethodType> m_method;
         Mapping m_map;
-        int m_index = 0;
 
 
         //只支持 public 函数为 Action
         for (Method method : findMethods(bw.clz())) {
             m_map = method.getAnnotation(Mapping.class);
-            m_index = 0;
             m_method = new HashSet<>();
 
             //如果没有注解，则只允许 public
@@ -159,7 +161,6 @@ public class HandlerLoader extends HandlerAide {
                     //如果没有找到，则用Mapping上自带的
                     m_method.addAll(Arrays.asList(m_map.method()));
                 }
-                m_index = m_map.index();
             } else {
                 m_path = method.getName();
 
@@ -197,15 +198,7 @@ public class HandlerLoader extends HandlerAide {
                     if (m_map == null) {
                         slots.add(newPath, m1, action);
                     } else {
-                        if ((m_map.after() || m_map.before())) {
-                            if (m_map.after()) {
-                                slots.after(newPath, m1, m_index, action);
-                            } else {
-                                slots.before(newPath, m1, m_index, action);
-                            }
-                        } else {
-                            slots.add(newPath, m1, action);
-                        }
+                        slots.add(newPath, m1, action);
                     }
                 }
             }

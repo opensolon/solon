@@ -1,6 +1,7 @@
 package org.noear.nami;
 
 import org.noear.nami.common.Constants;
+import org.noear.nami.common.ContentTypes;
 
 import java.util.*;
 import java.util.function.Supplier;
@@ -28,7 +29,7 @@ public class Config {
             }
 
             if (decoder == null) {
-                setDecoder(NamiManager.getDecoder(Constants.CONTENT_TYPE_JSON));
+                setDecoder(NamiManager.getDecoder(ContentTypes.JSON_VALUE));
             }
         }
 

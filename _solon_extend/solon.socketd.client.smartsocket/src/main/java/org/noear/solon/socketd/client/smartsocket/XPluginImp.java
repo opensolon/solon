@@ -1,6 +1,5 @@
 package org.noear.solon.socketd.client.smartsocket;
 
-import org.noear.solon.SolonApp;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.socketd.SessionFactoryManager;

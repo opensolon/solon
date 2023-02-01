@@ -16,7 +16,7 @@ public class XPluginImp implements Plugin {
     DisposableServer _server = null;
 
     public static String solon_boot_ver() {
-        return "reactor-netty-http 1.0.20/" + Solon.cfg().version();
+        return "reactor-netty-http 1.0.20/" + Solon.version();
     }
 
     @Override

@@ -1,8 +1,8 @@
 package org.noear.nami.coder.protostuff;
 
-import org.noear.nami.Encoder;
 import org.noear.nami.Context;
-import org.noear.nami.common.Constants;
+import org.noear.nami.Encoder;
+import org.noear.nami.common.ContentTypes;
 
 /**
  * @author noear
@@ -13,7 +13,7 @@ public class ProtostuffEncoder implements Encoder {
 
     @Override
     public String enctype() {
-        return Constants.CONTENT_TYPE_PROTOBUF;
+        return ContentTypes.PROTOBUF_VALUE;
     }
 
     @Override

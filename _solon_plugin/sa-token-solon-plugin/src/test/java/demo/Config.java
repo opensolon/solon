@@ -5,15 +5,11 @@ import cn.dev33.satoken.config.SaTokenConfig;
 import cn.dev33.satoken.dao.SaTokenDao;
 import cn.dev33.satoken.router.SaRouter;
 import cn.dev33.satoken.solon.dao.SaTokenDaoOfRedis;
-//import cn.dev33.satoken.solon.integration.SaTokenPathFilter;
 import cn.dev33.satoken.solon.integration.SaTokenInterceptor;
-import cn.dev33.satoken.solon.integration.SaTokenPathInterceptor;
 import cn.dev33.satoken.stp.StpUtil;
-import org.noear.solon.Solon;
 import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
-import org.noear.solon.core.handle.Filter;
 
 /**
  * @author noear 2022/3/30 created

@@ -153,6 +153,10 @@ public class Props extends Properties {
         return PropsConverter.global().convert(props, clz);
     }
 
+    public <T> T getBean(Class<T> clz) {
+        return PropsConverter.global().convert(this, clz);
+    }
+
     /**
      * 查找 keyStarts 开头的所有配置；并生成一个新的 配置集
      *
@@ -164,7 +168,15 @@ public class Props extends Properties {
         } else {
             Props prop = new Props();
 
-            doFind(keyStarts + ".", prop::put);
+            doFind(keyStarts + ".", (key, val) -> {
+                prop.put(key, val);
+
+                if (key.contains("-")) {//为带 - 的 key ，增加副本
+                    String camelKey = buildCamelKey(key);
+                    prop.put(camelKey, val);
+                }
+            });
+
             if (prop.size() == 0) {
                 doFind(keyStarts + "[", (k, v) -> {
                     prop.put("[" + k, v);

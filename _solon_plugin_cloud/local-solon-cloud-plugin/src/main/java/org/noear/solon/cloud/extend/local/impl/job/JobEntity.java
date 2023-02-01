@@ -24,10 +24,6 @@ class JobEntity extends Thread {
      */
     private long fixedRate;
     /**
-     * 固定延时
-     */
-    final long fixedDelay;
-    /**
      * 执行函数
      */
     final Runnable runnable;
@@ -53,18 +49,17 @@ class JobEntity extends Thread {
     private Date nextTime;
 
 
-    public JobEntity(String name, long fixedRate, long fixedDelay, Runnable runnable) {
-        this(name, null, fixedRate, fixedDelay, runnable);
+    public JobEntity(String name, long fixedRate, Runnable runnable) {
+        this(name, null, fixedRate, runnable);
     }
 
     public JobEntity(String name, CronExpressionPlus cron, Runnable runnable) {
-        this(name, cron, 0, 0, runnable);
+        this(name, cron, 0,  runnable);
     }
 
-    private JobEntity(String name, CronExpressionPlus cron, long fixedRate, long fixedDelay, Runnable runnable) {
+    private JobEntity(String name, CronExpressionPlus cron, long fixedRate, Runnable runnable) {
         this.cron = cron;
         this.fixedRate = fixedRate;
-        this.fixedDelay = fixedDelay;
         this.runnable = runnable;
 
         this.baseTime = new Date();
@@ -95,10 +90,6 @@ class JobEntity extends Thread {
      */
     @Override
     public void run() {
-        if (fixedDelay > 0) {
-            sleep0(fixedDelay);
-        }
-
         while (true) {
             if (isCanceled == false) {
                 try {
@@ -123,7 +114,7 @@ class JobEntity extends Thread {
 
             if (sleepMillis >= fixedRate) {
                 baseTime = new Date();
-                exec();
+                execAsParallel();
 
                 //重新设定休息时间
                 sleepMillis = fixedRate;
@@ -143,7 +134,7 @@ class JobEntity extends Thread {
                 nextTime = cron.getNextValidTimeAfter(baseTime);
 
                 if (sleepMillis <= 1000) {
-                    exec();
+                    execAsParallel();
 
                     //重新设定休息时间
                     sleepMillis = System.currentTimeMillis() - nextTime.getTime();
@@ -155,7 +146,7 @@ class JobEntity extends Thread {
     }
 
 
-    private void exec() {
+    private void execAsParallel() {
         RunUtil.parallel(this::exec0);
     }
 

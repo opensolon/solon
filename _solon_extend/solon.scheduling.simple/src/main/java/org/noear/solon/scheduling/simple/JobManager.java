@@ -32,6 +32,14 @@ public class JobManager {
             throw new IllegalArgumentException("The job name cannot be empty!");
         }
 
+        if (anno.fixedDelay() > 0 && anno.fixedRate() > 0) {
+            if (Utils.isEmpty(anno.cron())) {
+                throw new IllegalArgumentException("The job fixedDelay and fixedRate cannot both have values: " + name);
+            } else {
+                throw new IllegalArgumentException("The job cron and fixedDelay and fixedRate cannot both have values: " + name);
+            }
+        }
+
         addDo(name, new JobHolder(name, anno, runnable));
     }
 
@@ -55,6 +63,29 @@ public class JobManager {
      */
     public static int count() {
         return jobEntityMap.size();
+    }
+
+    /**
+     * 检查计划任务是否存在
+     *
+     * @param name 任务名称
+     */
+    public static boolean contains(String name) {
+        return jobEntityMap.containsKey(name);
+    }
+
+    /**
+     * 移移计划任务
+     *
+     * @param name 任务名称
+     */
+    public static void remove(String name) {
+        JobHolder jobHolder = jobEntityMap.get(name);
+
+        if (jobHolder != null) {
+            jobHolder.cancel();
+            jobEntityMap.remove(name);
+        }
     }
 
     /**

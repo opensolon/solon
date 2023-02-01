@@ -35,14 +35,6 @@ public class Solon {
     private static String encoding = "utf-8";
 
     /**
-     * @deprecated 1.8
-     * */
-    @Deprecated
-    public static SolonApp global() {
-        return app;
-    }
-
-    /**
      * 全局实例
      */
     public static SolonApp app() {
@@ -81,6 +73,13 @@ public class Solon {
      */
     public static String encoding() {
         return encoding;
+    }
+
+    /**
+     * 框架版本号
+     */
+    public static String version() {
+        return "2.0.0";
     }
 
     /**
@@ -178,7 +177,7 @@ public class Solon {
         }
 
         //启动完成
-        LogUtil.global().info("App: End loading elapsed=" + app.elapsedTimes() + "ms pid=" + pid + " v=" + app.cfg().version());
+        LogUtil.global().info("App: End loading elapsed=" + app.elapsedTimes() + "ms pid=" + pid + " v=" + Solon.version());
 
         return app;
     }

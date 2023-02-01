@@ -45,14 +45,6 @@ public abstract class RouterWrapper implements HandlerSlots{
     public ChainManager chainManager(){ return _chainManager; }
 
 
-    @Deprecated
-    public void routerSet(Router router) {
-        if (router != null) {
-            _router = router;
-            _routerHandler.bind(router);
-        }
-    }
-
 
     ///////////////////////////////////////////////
     //

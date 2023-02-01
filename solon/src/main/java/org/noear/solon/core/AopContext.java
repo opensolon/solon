@@ -138,7 +138,6 @@ public class AopContext extends BeanContainer {
 
             bw.nameSet(beanName);
             bw.tagSet(anno.tag());
-            bw.attrsSet(anno.attrs());
             bw.typedSet(anno.typed());
 
             //添加bean形态处理
@@ -533,7 +532,6 @@ public class AopContext extends BeanContainer {
 
                 //动态构建的bean，都用新生成wrap（否则会类型混乱）
                 m_bw = wrapCreate(beanClz, raw, null);
-                m_bw.attrsSet(anno.attrs());
             }
 
             String beanName = Utils.annoAlias(anno.value(), anno.name());

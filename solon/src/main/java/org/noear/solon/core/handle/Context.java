@@ -3,10 +3,13 @@ package org.noear.solon.core.handle;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.Note;
-import org.noear.solon.core.*;
+import org.noear.solon.core.Bridge;
+import org.noear.solon.core.NdMap;
+import org.noear.solon.core.NvMap;
 import org.noear.solon.core.util.IpUtil;
 import org.noear.solon.core.util.PathUtil;
 import org.noear.solon.core.wrap.ClassWrap;
+import org.noear.solon.lang.Nullable;
 
 import java.io.*;
 import java.math.BigDecimal;
@@ -984,20 +987,20 @@ public abstract class Context {
      * 用于在处理链中透传处理结果
      * */
     @Note("处理结果")
-    public Object result;
+    public @Nullable Object result;
 
     /**
      * 用于在处理链中透传处理错误
      * */
     @Note("处理错误")
-    public Throwable errors;
+    public @Nullable Throwable errors;
 
 
     /**
      * 获取当前控制器
      * */
     @Note("控制器?")
-    public Object controller() {
+    public @Nullable Object controller() {
         return attr("controller");
     }
 
@@ -1005,7 +1008,14 @@ public abstract class Context {
      * 获取当前动作
      * */
     @Note("动作?")
-    public Action action() {
+    public @Nullable Action action() {
         return attr("action");
+    }
+
+    /**
+     * 获取当前主处理器
+     * */
+    public @Nullable Handler mainHandler(){
+        return attr("mainHandler");
     }
 }

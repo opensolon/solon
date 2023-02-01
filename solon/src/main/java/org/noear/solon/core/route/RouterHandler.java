@@ -23,14 +23,6 @@ public class RouterHandler implements Handler, RouterInterceptor {
         handleDo(ctx, mainHandler);
     }
 
-    /**
-     * 绑定路由器
-     */
-    @Deprecated
-    public void bind(Router router) {
-        this.router = router;
-    }
-
 
     /**
      * 唯一处理（用于主处理）

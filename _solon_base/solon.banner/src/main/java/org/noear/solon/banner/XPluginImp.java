@@ -1,7 +1,5 @@
 package org.noear.solon.banner;
 
-import java.io.IOException;
-
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.AopContext;
@@ -16,26 +14,24 @@ public class XPluginImp implements Plugin {
 	String BANNER_DEF_FILE = "META-INF/solon_def/banner-def.txt";
 
 	@Override
-	public void start(AopContext context) throws Throwable {
+	public void init(AopContext context) throws Throwable {
 		boolean enable = Solon.cfg().getBool("solon.banner.enable", true);
 
 		if (enable) {
 			String mode = Solon.cfg().get("solon.banner.mode", "console");
-			String path = Solon.cfg().get("solon.banner.path", BANNER_DEF_FILE);
+			String path = Solon.cfg().get("solon.banner.path", "banner.txt");
 
-			String bannerTxt = "";
-			if (Utils.isNotEmpty(path)) {
-				try {
-					bannerTxt = Utils.getResourceAsString(path);
-				} catch (IOException e) {
-					throw e;
-				}
+			String bannerTxt = Utils.getResourceAsString(path);
+			if (Utils.isEmpty(bannerTxt)) {
+				bannerTxt = Utils.getResourceAsString(BANNER_DEF_FILE);
 			}
 
 			//Trying to get the banner file Solon
 			if (Utils.isEmpty(bannerTxt)) {
 				return;
 			}
+
+			bannerTxt = bannerTxt.replace("${solon.version}", Solon.version());
 
 			switch (mode) {
 				case "log":
@@ -50,5 +46,10 @@ public class XPluginImp implements Plugin {
 
 			}
 		}
+	}
+
+	@Override
+	public void start(AopContext context) throws Throwable {
+
 	}
 }

@@ -3,7 +3,6 @@ package org.noear.solon.core.handle;
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.Mapping;
 
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -15,30 +14,27 @@ import java.util.Set;
 public interface HandlerSlots {
     /**
      * 添加前置处理
-     * */
-    default void before(String expr, MethodType method, int index, Handler handler){}
+     */
+    default void before(String expr, MethodType method, int index, Handler handler) {
+    }
+
     /**
      * 添加后置处理
-     * */
-    default void after(String expr, MethodType method, int index, Handler handler){};
+     */
+    default void after(String expr, MethodType method, int index, Handler handler) {
+    }
+
+
     /**
      * 添加主体处理
-     * */
+     */
     void add(String expr, MethodType method, Handler handler);
 
-    default void add(Mapping mapping, Set<MethodType> methodTypes, Handler handler){
+    default void add(Mapping mapping, Set<MethodType> methodTypes, Handler handler) {
         String path = Utils.annoAlias(mapping.value(), mapping.path());
 
         for (MethodType m1 : methodTypes) {
-            if (mapping.after() || mapping.before()) {
-                if (mapping.after()) {
-                    after(path, m1, mapping.index(), handler);
-                } else {
-                    before(path, m1, mapping.index(), handler);
-                }
-            } else {
-                add(path, m1, handler);
-            }
+            add(path, m1, handler);
         }
-    };
+    }
 }

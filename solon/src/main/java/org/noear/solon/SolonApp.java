@@ -334,19 +334,6 @@ public class SolonApp extends RouterWrapper {
     }
 
     /**
-     * 获取端口
-     *
-     * @deprecated 1.8
-     */
-    @Deprecated
-    public int port() {
-        return _cfg.serverPort();
-    }
-
-
-
-
-    /**
      * 插入插件
      */
     public void plug(Plugin plugin) {
@@ -419,7 +406,7 @@ public class SolonApp extends RouterWrapper {
                 chainManager().doFilter(x);
 
                 if (x.getHandled() == false) { //@since: 1.9
-                    if (x.status() <= 200 && x.attr("_MainHandler") == null) {//@since: 1.10
+                    if (x.status() <= 200 && x.mainHandler() == null) {//@since: 1.10
                         x.status(404);
                     }
                     //x.setHandled(true);  //todo: 不能加，对websocket有影响
@@ -722,23 +709,5 @@ public class SolonApp extends RouterWrapper {
     private SolonApp enableJarIsolation(boolean enable) {
         _enableJarIsolation = enable;
         return this;
-    }
-
-    private boolean _enableSafeStop = false;
-
-    /**
-     * 是否已启用安全停止
-     */
-    @Deprecated
-    public boolean enableSafeStop() {
-        return _enableSafeStop;
-    }
-
-    /**
-     * 启用安全停止
-     */
-    @Deprecated
-    public void enableSafeStop(boolean enable) {
-        _enableSafeStop = enable;
     }
 }

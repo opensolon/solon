@@ -20,12 +20,6 @@ public class ServerProps {
      * */
     public static final String session_cookieName;
     /**
-     * 会话标识 key2（兼容旧策略）
-     * */
-    @Deprecated
-    public static final String session_cookieName2;
-
-    /**
      * 请求编码
      * */
     public static final String request_encoding;
@@ -65,7 +59,6 @@ public class ServerProps {
         output_meta = Solon.cfg().getInt("solon.output.meta", 0) > 0;
 
         session_cookieName = System.getProperty(ServerConstants.SERVER_SESSION_COOKIENAME, "SOLONID");
-        session_cookieName2 = session_cookieName+"2";
 
 
         //
@@ -98,10 +91,7 @@ public class ServerProps {
         }
 
         tmp = Solon.cfg().get("server.request.encoding", "").trim();
-        if (Utils.isEmpty(tmp)) {
-            //兼容旧的配置 //@Deprecated
-            tmp = Solon.cfg().get("solon.encoding.request", "").trim();
-        }
+
         if (Utils.isEmpty(tmp)) {
             request_encoding = Solon.encoding();
         } else {
@@ -119,10 +109,7 @@ public class ServerProps {
         // for response
         //
         tmp = Solon.cfg().get("server.response.encoding", "").trim();
-        if (Utils.isEmpty(tmp)) {
-            //兼容旧的配置  //@Deprecated
-            tmp = Solon.cfg().get("solon.encoding.response", "").trim();
-        }
+
         if (Utils.isEmpty(tmp)) {
             response_encoding = Solon.encoding();
         } else {

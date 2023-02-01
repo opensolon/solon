@@ -17,8 +17,7 @@ import java.util.function.Predicate;
 
 
 /**
- * 本地网关
- * 提供容器，重新组织处理者运行；只支持HASH路由
+ * 本地网关。提供容器，重新组织'处理器'运行；
  *
  * <pre><code>
  * @Mapping("/*")
@@ -181,7 +180,7 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
         //m 不可能为 null；有 _def 打底
         if (m != null) {
             Boolean is_action = m instanceof Action;
-            //预加载控制器，确保所有的处理者可以都可以获取控制器
+            //预加载控制器，确保所有的'处理器'可以都可以获取控制器
             if (is_action) {
                 if (allowReadyController()) {
                     //提前准备控制器?（通过拦截器产生的参数，需要懒加载）

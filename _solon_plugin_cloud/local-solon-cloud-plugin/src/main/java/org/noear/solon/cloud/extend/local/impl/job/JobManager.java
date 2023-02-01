@@ -5,6 +5,7 @@ import org.noear.solon.cloud.extend.local.impl.job.cron.CronExpressionPlus;
 import org.noear.solon.cloud.extend.local.impl.job.cron.CronUtils;
 
 import java.text.ParseException;
+import java.time.ZoneOffset;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TimeZone;
@@ -36,14 +37,19 @@ public class JobManager {
      *
      * @param name     任务名称
      * @param cron     cron 表达式
-     * @param zone     时区
+     * @param zone     时区(+08)
      * @param runnable 运行函数
      */
-    public static void add(String name, String cron, String zone, boolean concurrent, Runnable runnable) throws ParseException {
+    public static void add(String name, String cron, String zone,  Runnable runnable) throws ParseException {
         CronExpressionPlus cronX = CronUtils.get(cron);
 
         if (Utils.isNotEmpty(zone)) {
-            cronX.setTimeZone(TimeZone.getTimeZone(zone));
+            if (zone.contains("+") || zone.contains("-")) {
+                ZoneOffset zoneOffset = ZoneOffset.of(zone);
+                cronX.setTimeZone(TimeZone.getTimeZone(zoneOffset));
+            } else {
+                cronX.setTimeZone(TimeZone.getTimeZone(zone));
+            }
         }
 
         addDo(name, new JobEntity(name, cronX, runnable));
@@ -57,19 +63,7 @@ public class JobManager {
      * @param runnable  运行函数
      */
     public static void add(String name, long fixedRate, Runnable runnable) {
-        addDo(name, new JobEntity(name, fixedRate, 0, runnable));
-    }
-
-    /**
-     * 添加计划任务
-     *
-     * @param name       任务名称
-     * @param fixedRate  固定间隔毫秒数
-     * @param fixedDelay 固定延迟毫秒数
-     * @param runnable   运行函数
-     */
-    public static void add(String name, long fixedRate, long fixedDelay, Runnable runnable) {
-        addDo(name, new JobEntity(name, fixedRate, fixedDelay, runnable));
+        addDo(name, new JobEntity(name, fixedRate,  runnable));
     }
 
     /**

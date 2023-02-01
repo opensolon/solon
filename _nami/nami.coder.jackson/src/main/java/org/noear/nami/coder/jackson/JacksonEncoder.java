@@ -2,9 +2,9 @@ package org.noear.nami.coder.jackson;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import org.noear.nami.Encoder;
 import org.noear.nami.Context;
-import org.noear.nami.common.Constants;
+import org.noear.nami.Encoder;
+import org.noear.nami.common.ContentTypes;
 
 /**
  * @author noear
@@ -21,7 +21,7 @@ public class JacksonEncoder implements Encoder {
 
     @Override
     public String enctype() {
-        return Constants.CONTENT_TYPE_JSON;
+        return ContentTypes.JSON_VALUE;
     }
 
     @Override

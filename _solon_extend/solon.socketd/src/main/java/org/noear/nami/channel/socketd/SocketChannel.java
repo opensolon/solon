@@ -3,11 +3,11 @@ package org.noear.nami.channel.socketd;
 
 import org.noear.nami.*;
 import org.noear.nami.common.Constants;
-import org.noear.nami.Result;
+import org.noear.nami.common.ContentTypes;
 import org.noear.solon.Utils;
 import org.noear.solon.core.message.Message;
-import org.noear.solon.core.message.Session;
 import org.noear.solon.core.message.MessageFlag;
+import org.noear.solon.core.message.Session;
 import org.noear.solon.socketd.annotation.Handshake;
 import org.noear.solon.socketd.util.HeaderUtil;
 
@@ -65,7 +65,7 @@ public class SocketChannel extends SocketChannelBase implements Channel {
         //1.确定编码器
         Encoder encoder = ctx.config.getEncoder();
         if(encoder == null){
-            encoder = NamiManager.getEncoder(Constants.CONTENT_TYPE_JSON);
+            encoder = NamiManager.getEncoder(ContentTypes.JSON_VALUE);
         }
 
         if(encoder == null){

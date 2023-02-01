@@ -3,6 +3,7 @@ package org.noear.nami.channel.socketd;
 import org.noear.nami.Context;
 import org.noear.nami.NamiManager;
 import org.noear.nami.common.Constants;
+import org.noear.nami.common.ContentTypes;
 
 /**
  * Socket 通道基类
@@ -21,7 +22,7 @@ public class SocketChannelBase  {
             String at = ctx.config.getHeader(Constants.HEADER_ACCEPT);
 
             if (at == null) {
-                at = Constants.CONTENT_TYPE_JSON;
+                at = ContentTypes.JSON_VALUE;
             }
 
             ctx.config.setDecoder(NamiManager.getDecoder(at));
@@ -31,7 +32,7 @@ public class SocketChannelBase  {
             String ct = ctx.config.getHeader(Constants.HEADER_CONTENT_TYPE);
 
             if (ct == null) {
-                ct = Constants.CONTENT_TYPE_JSON;
+                ct = ContentTypes.JSON_VALUE;
             }
 
             ctx.config.setEncoder(NamiManager.getEncoder(ct));

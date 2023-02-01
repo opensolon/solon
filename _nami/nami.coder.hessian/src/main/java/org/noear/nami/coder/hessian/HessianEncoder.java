@@ -1,9 +1,9 @@
 package org.noear.nami.coder.hessian;
 
 import com.caucho.hessian.io.Hessian2Output;
-import org.noear.nami.Encoder;
 import org.noear.nami.Context;
-import org.noear.nami.common.Constants;
+import org.noear.nami.Encoder;
+import org.noear.nami.common.ContentTypes;
 
 import java.io.ByteArrayOutputStream;
 
@@ -18,7 +18,7 @@ public class HessianEncoder implements Encoder {
 
     @Override
     public String enctype() {
-        return Constants.CONTENT_TYPE_HESSIAN;
+        return ContentTypes.HESSIAN_VALUE;
     }
 
     @Override

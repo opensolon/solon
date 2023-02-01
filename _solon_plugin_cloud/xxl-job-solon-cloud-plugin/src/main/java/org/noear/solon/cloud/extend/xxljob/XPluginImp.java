@@ -1,12 +1,14 @@
 package org.noear.solon.cloud.extend.xxljob;
 
 import com.xxl.job.core.executor.XxlJobExecutor;
+import com.xxl.job.core.handler.IJobHandler;
 import com.xxl.job.core.handler.annotation.XxlJob;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudManager;
 import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.extend.xxljob.service.CloudJobServiceImpl;
+import org.noear.solon.cloud.impl.CloudJobBeanBuilder;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.Plugin;
@@ -37,6 +39,14 @@ public class XPluginImp implements Plugin {
 
         //注册Job服务
         CloudManager.register(new CloudJobServiceImpl());
+
+        //添加 @CloudJob 对 IJobHandler 类的支持 //@since 2.0
+        CloudJobBeanBuilder.getInstance().addBuilder(IJobHandler.class,(clz, bw, anno) -> {
+            //支持${xxx}配置
+            String name = Solon.cfg().getByParse(Utils.annoAlias(anno.value(), anno.name()));
+            //提示：不支持CloudJob拦截器
+            XxlJobExecutor.registJobHandler(name, bw.raw());
+        });
 
         //注册构建器和提取器
         context.beanExtractorAdd(XxlJob.class, new XxlJobExtractor());

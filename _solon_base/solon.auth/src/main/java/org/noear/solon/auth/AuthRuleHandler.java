@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 验证规则处理者
+ * 验证规则'处理器'
  *
  * @author noear
  * @since 1.4

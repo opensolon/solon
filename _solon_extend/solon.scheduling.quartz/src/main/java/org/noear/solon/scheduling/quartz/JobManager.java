@@ -7,8 +7,10 @@ import org.noear.solon.scheduling.annotation.Scheduled;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 
+import java.time.ZoneOffset;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TimeZone;
 
 public final class JobManager {
     static Scheduler _scheduler = null;
@@ -71,6 +73,10 @@ public final class JobManager {
             throw new IllegalArgumentException("The job name cannot be empty!");
         }
 
+        if (anno.fixedRate() > 0 && Utils.isNotEmpty(anno.cron())) {
+            throw new IllegalArgumentException("The job cron and fixedRate cannot both have values: " + name);
+        }
+
         if (anno.initialDelay() > 0) {
             throw new IllegalArgumentException("The quartz job unsupported initialDelay!");
         }
@@ -105,11 +111,11 @@ public final class JobManager {
         if (Utils.isEmpty(jobHolder.anno.cron())) {
             regJobByFixedRate(jobHolder, jobHolder.anno.fixedRate(), jobGroup);
         } else {
-            regJobByCron(jobHolder, jobHolder.anno.cron(), jobGroup);
+            regJobByCron(jobHolder, jobHolder.anno.cron(), jobHolder.anno.zone(), jobGroup);
         }
     }
 
-    private static void regJobByCron(JobHolder jobHolder, String cron, String jobGroup) throws SchedulerException {
+    private static void regJobByCron(JobHolder jobHolder, String cron, String zone, String jobGroup) throws SchedulerException {
         tryInitScheduler();
 
         JobDetail jobDetail = JobBuilder.newJob(QuartzProxy.class)
@@ -118,6 +124,16 @@ public final class JobManager {
 
         if (_scheduler.checkExists(jobDetail.getKey()) == false) {
             CronScheduleBuilder builder = CronScheduleBuilder.cronSchedule(cron);
+
+            //支持时区配置
+            if (Utils.isNotEmpty(zone)) {
+                if (zone.contains("+") || zone.contains("-")) {
+                    ZoneOffset zoneOffset = ZoneOffset.of(zone);
+                    builder.inTimeZone(TimeZone.getTimeZone(zoneOffset));
+                } else {
+                    builder.inTimeZone(TimeZone.getTimeZone(zone));
+                }
+            }
 
             Trigger trigger = TriggerBuilder.newTrigger()
                     .withIdentity(jobHolder.name, jobGroup)

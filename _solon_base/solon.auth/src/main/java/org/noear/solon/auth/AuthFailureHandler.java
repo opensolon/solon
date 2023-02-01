@@ -4,7 +4,7 @@ import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Result;
 
 /**
- * 认证失败处理者
+ * 认证失败'处理器'
  *
  * @author noear
  * @since 1.4

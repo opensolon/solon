@@ -30,13 +30,6 @@ public @interface Component {
     @Note("标签，用于快速查找")
     String tag() default "";
 
-    /**
-     * @deprecated 1.10
-     * */
-    @Deprecated
-    @Note("特性，用于辅助配置")
-    String[] attrs() default {};
-
     @Note("同时注册类型，仅当名称非空时有效")
     boolean typed() default false;
 

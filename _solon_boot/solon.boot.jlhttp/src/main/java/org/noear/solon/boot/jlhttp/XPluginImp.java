@@ -24,7 +24,7 @@ public final class XPluginImp implements Plugin {
     private HTTPServer _server = null;
 
     public static String solon_boot_ver() {
-        return "jlhttp 2.6/" + Solon.cfg().version();
+        return "jlhttp 2.6/" + Solon.version();
     }
 
     @Override

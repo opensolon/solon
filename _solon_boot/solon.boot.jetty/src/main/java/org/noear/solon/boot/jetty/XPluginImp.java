@@ -25,7 +25,7 @@ public final class XPluginImp implements Plugin {
 
 
     public static String solon_boot_ver() {
-        return "jetty 9.4/" + Solon.cfg().version();
+        return "jetty 9.4/" + Solon.version();
     }
 
 

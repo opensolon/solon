@@ -39,14 +39,6 @@ public class BeanWrap {
     private String name;
     // bean tag
     private String tag;
-    // bean 申明的属性
-    // @deprecated 1.10
-    @Deprecated
-    private String[] attrs;
-    // bean 申明的属性Map形态
-    // @deprecated 1.10
-    @Deprecated
-    private Map<String, String> attrMap;
     // bean 是否按注册类型
     private boolean typed;
     // bean 代理（为ASM代理提供接口支持）
@@ -172,47 +164,6 @@ public class BeanWrap {
 
     protected void tagSet(String tag) {
         this.tag = tag;
-    }
-
-    /**
-     * bean 特性
-     *
-     * @deprecated 1.10
-     */
-    @Deprecated
-    public String[] attrs() {
-        return attrs;
-    }
-
-    /**
-     * @deprecated 1.10
-     */
-    @Deprecated
-    protected void attrsSet(String[] attrs) {
-        this.attrs = attrs;
-    }
-
-    /**
-     * @deprecated 1.10
-     */
-    @Deprecated
-    public String attrGet(String name) {
-        if (attrs == null) {
-            return null;
-        }
-
-        if (attrMap == null) {
-            attrMap = new HashMap<>();
-
-            for (String kv : attrs) {
-                String[] ss = kv.split("=");
-                if (ss.length == 2) {
-                    attrMap.put(ss[0], ss[1]);
-                }
-            }
-        }
-
-        return attrMap.get(name);
     }
 
     /**

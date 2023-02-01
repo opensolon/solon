@@ -1,6 +1,6 @@
 package org.noear.nami;
 
-import org.noear.nami.common.Constants;
+import org.noear.nami.common.ContentTypes;
 import org.noear.nami.common.TextUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -212,7 +212,7 @@ public class Nami {
         Decoder decoder = _config.getDecoder();
 
         if (decoder == null) {
-            decoder = NamiManager.getDecoder(Constants.CONTENT_TYPE_JSON);
+            decoder = NamiManager.getDecoder(ContentTypes.JSON_VALUE);
         }
 
         return decoder.decode(_result, returnType);

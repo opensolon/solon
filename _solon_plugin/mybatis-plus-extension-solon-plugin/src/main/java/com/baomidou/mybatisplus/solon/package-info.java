@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 /**
- * mybatis-plus扩展功能，包括分页，sql解析，spring集成
+ * mybatis-plus扩展功能，包括分页，sql解析，solon集成
  *
  * @author yuxiaobin
  * @since 2018/2/6

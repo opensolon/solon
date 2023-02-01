@@ -4,7 +4,7 @@ import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONWriter;
 import org.noear.nami.Context;
 import org.noear.nami.Encoder;
-import org.noear.nami.common.Constants;
+import org.noear.nami.common.ContentTypes;
 
 import java.nio.charset.StandardCharsets;
 
@@ -18,7 +18,7 @@ public class Fastjson2TypeEncoder implements Encoder {
 
     @Override
     public String enctype() {
-        return Constants.CONTENT_TYPE_JSON_TYPE;
+        return ContentTypes.JSON_TYPE_VALUE;
     }
 
     @Override
