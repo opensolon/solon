@@ -4,7 +4,7 @@
 Solon v2.0.0
 </h1>
 <p align="center">
-	<strong>更高效率的，轻量级应用开发框架</strong>
+	<strong>一个高效的 Java 应用开发框架，更小、更快、更简单！</strong>
 </p>
 <p align="center">
 	<a href="https://solon.noear.org/">https://solon.noear.org</a>
@@ -53,7 +53,7 @@ Solon v2.0.0
 
 ## 介绍
 
-一个高效的应用开发框架。**更快、更小、更简单！**
+**Solon** 是一个高效的 Java 应用开发框架。**更快、更小、更简单！**
 
 支持jdk8、jdk11、jdk17、jdk19；主框架0.1mb；组合不同的插件应对不同需求；方便定制；快速开发。
 
