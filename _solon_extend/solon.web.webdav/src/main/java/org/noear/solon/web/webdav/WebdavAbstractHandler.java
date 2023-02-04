@@ -231,8 +231,6 @@ public abstract class WebdavAbstractHandler implements Handler {
     }
 
     private int handleUnlock(Context ctx) {
-        //todo: 说是无用删掉，by noear 2022-12
-        //String token = StrUtil.subBetween(ctx.header("Lock-Token"), "<", ">");
         return 204;
     }
 
@@ -282,7 +280,14 @@ public abstract class WebdavAbstractHandler implements Handler {
     }
 
     private int handlePut(Context ctx) throws Exception {
-        if (StrUtil.isBlank(ctx.header("If"))) {
+        long length = Convert.toLong(ctx.header("Content-Length"),0L);
+        boolean needLength = true;
+        String chunked = ctx.header("Transfer-Encoding");
+        if(StrUtil.isNotBlank(chunked) && StrUtil.equals(chunked.toLowerCase(),"chunked")){
+            //分片传输
+            needLength = false;
+        }
+        if(needLength && length == 0){
             return 200;
         }
         String reqPath = stripPrefix(ctx.path());
