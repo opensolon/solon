@@ -109,14 +109,13 @@ public class AopContext extends BeanContainer {
                 Bean m_an = m.getAnnotation(Bean.class);
 
                 if (m_an != null) {
-                    //支持非公有函数
-                    m.setAccessible(true);
-                    Condition mCon = m.getAnnotation(Condition.class);
-
                     //增加条件检测
-                    if (mCon != null && ConditionUtil.test(this, mCon) == false) {
+                    if (ConditionUtil.test(this, m) == false) {
                         continue;
                     }
+
+                    //支持非公有函数
+                    m.setAccessible(true);
 
                     MethodWrap mWrap = methodGet(m);
 
@@ -379,6 +378,11 @@ public class AopContext extends BeanContainer {
      * ::制造 bean 及对应处理
      */
     public BeanWrap beanMake(Class<?> clz) {
+        //增加条件检测
+        if(ConditionUtil.test(this, clz) == false) {
+            return null;
+        }
+
         //包装
         BeanWrap bw = wrap(clz, null);
 
@@ -439,10 +443,8 @@ public class AopContext extends BeanContainer {
                 tryCreateCached.add(clz);
             }
 
-            Condition aCon = clz.getAnnotation(Condition.class);
-
             //增加条件检测
-            if(aCon != null && ConditionUtil.test(this, aCon) == false){
+            if(ConditionUtil.test(this, clz) == false){
                 return;
             }
 

@@ -5,6 +5,7 @@ import cn.dev33.satoken.oauth2.config.SaOAuth2Config;
 import cn.dev33.satoken.oauth2.logic.SaOAuth2Template;
 import cn.dev33.satoken.oauth2.logic.SaOAuth2Util;
 import org.noear.solon.annotation.Bean;
+import org.noear.solon.annotation.Condition;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
 
@@ -12,6 +13,7 @@ import org.noear.solon.annotation.Inject;
  * @author noear
  * @since 2.0
  */
+@Condition(hasClass = SaOAuth2Manager.class)
 @Configuration
 public class SaOAuth2AutoConfigure {
     /**
