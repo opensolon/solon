@@ -10,7 +10,8 @@
 * 提醒2：有使用弃用接口的。建议先升级到 1.12.4；替换弃用代码后，再升级到 2.0.0
 
 ### v2.0.1
-插件 beetlsql-solon-plugin 升级 beetlsql 为 3.20.0
+* 插件 beetlsql-solon-plugin 升级 beetlsql 为 3.20.0
+* 增加 @Condition 注解
 
 
 ### v2.0.0

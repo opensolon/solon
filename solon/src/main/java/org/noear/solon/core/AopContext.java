@@ -8,11 +8,8 @@ import org.noear.solon.core.event.EventListener;
 import org.noear.solon.core.handle.*;
 import org.noear.solon.core.message.Listener;
 import org.noear.solon.core.route.RouterInterceptor;
-import org.noear.solon.core.util.GenericUtil;
-import org.noear.solon.core.util.RankEntity;
+import org.noear.solon.core.util.*;
 import org.noear.solon.core.wrap.*;
-import org.noear.solon.core.util.BiConsumerEx;
-import org.noear.solon.core.util.ScanUtil;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
@@ -114,11 +111,19 @@ public class AopContext extends BeanContainer {
                 if (m_an != null) {
                     //支持非公有函数
                     m.setAccessible(true);
+                    Condition mCon = m.getAnnotation(Condition.class);
+
+                    //增加条件检测
+                    if (mCon != null && ConditionUtil.test(this, mCon) == false) {
+                        continue;
+                    }
+
                     MethodWrap mWrap = methodGet(m);
 
                     //有参数的bean，采用线程池处理；所以需要锁等待
                     //
                     tryBuildBean(m_an, mWrap, bw);
+
                 }
             }
 
@@ -432,6 +437,13 @@ public class AopContext extends BeanContainer {
                 return;
             } else {
                 tryCreateCached.add(clz);
+            }
+
+            Condition aCon = clz.getAnnotation(Condition.class);
+
+            //增加条件检测
+            if(aCon != null && ConditionUtil.test(this, aCon) == false){
+                return;
             }
 
             for (Annotation a : annS) {
