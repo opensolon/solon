@@ -5,7 +5,6 @@ import org.noear.solon.annotation.Condition;
 import org.noear.solon.core.AopContext;
 
 import java.lang.reflect.AnnotatedElement;
-import java.lang.reflect.Method;
 
 /**
  * @author noear
@@ -18,11 +17,11 @@ public class ConditionUtil {
         if (anno == null) {
             return true;
         } else {
-            return test(context, element, anno);
+            return test(context, anno);
         }
     }
 
-    private static boolean test(AopContext context, AnnotatedElement element, Condition anno) {
+    private static boolean test(AopContext context, Condition anno) {
         if (Utils.isNotEmpty(anno.hasClassName())) {
             return Utils.loadClass(context.getClassLoader(), anno.hasClassName()) != null;
         }
@@ -30,22 +29,15 @@ public class ConditionUtil {
         if (Utils.isNotEmpty(anno.hasProperty())) {
             String[] kv = anno.hasProperty().split("=");
 
-            if (kv.length != 2) {
-                String fullname;
-                if (element instanceof Method) {
-                    Method method = (Method) element;
-                    fullname = method.getDeclaringClass().getName() + "::" + method.getName();
-                } else {
-                    Class<?> clz = (Class<?>) element;
-                    fullname = clz.getName();
-                }
-                throw new IllegalArgumentException("@Condition hasProperty resolution failed: " + fullname);
+            if (kv.length  >1) {
+                String val = context.cfg().getByParse(kv[0].trim());
+                //值要等于kv[1] （val 可能为 null）
+                return kv[1].trim().equals(val);
+            }else{
+                String val = context.cfg().getByParse(anno.hasProperty());
+                //有值就行
+                return Utils.isEmpty(val);
             }
-
-            String val = context.cfg().getByParse(kv[0].trim());
-
-            //val 可能为 null
-            return kv[1].trim().equals(val);
         }
 
         try {
