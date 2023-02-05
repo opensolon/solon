@@ -1,0 +1,46 @@
+{
+  "server": [
+    {
+      "name": "server.port",
+      "type": "java.lang.Integer"
+    },
+    {
+      "name": "server.host",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "server.wrapPort",
+      "type": "java.lang.Integer"
+    },
+    {
+      "name": "server.wrapHost",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "server.contextPath",
+      "type": "java.lang.String"
+    }
+  ],
+  "server.http": [
+    {
+      "name": "server.http.name",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "server.http.port",
+      "type": "java.lang.Integer"
+    },
+    {
+      "name": "server.http.host",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "server.http.wrapPort",
+      "type": "java.lang.Integer"
+    },
+    {
+      "name": "server.http.wrapHost",
+      "type": "java.lang.String"
+    }
+  ]
+}

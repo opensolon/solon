@@ -1,0 +1,33 @@
+{
+  "server": [
+    {
+      "name": "server.port",
+      "type": "java.lang.Integer",
+      "hints": {
+        "default": "8080"
+      }
+    },
+    {
+      "name": "server.host",
+      "type": "java.lang.String"
+    }
+  ],
+  "server.http": [
+    {
+      "name": "server.http.port",
+      "type": "java.lang.Integer"
+    },
+    {
+      "name": "server.http.host",
+      "type": "java.lang.String",
+      "hints": {
+        "values": [
+          {
+            "value": "1",
+            "description": "xxx"
+          }
+        ]
+      }
+    }
+  ]
+}
