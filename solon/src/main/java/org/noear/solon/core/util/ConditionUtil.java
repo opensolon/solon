@@ -30,11 +30,11 @@ public class ConditionUtil {
             String[] kv = anno.hasProperty().split("=");
 
             if (kv.length  >1) {
-                String val = context.cfg().getByParse(kv[0].trim());
+                String val = context.cfg().getByExpr(kv[0].trim());
                 //值要等于kv[1] （val 可能为 null）
                 return kv[1].trim().equals(val);
             }else{
-                String val = context.cfg().getByParse(anno.hasProperty());
+                String val = context.cfg().getByExpr(anno.hasProperty());
                 //有值就行
                 return Utils.isEmpty(val);
             }

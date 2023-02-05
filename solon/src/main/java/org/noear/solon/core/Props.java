@@ -70,21 +70,21 @@ public class Props extends Properties {
     }
 
     /**
-     * @param expr 兼容 ${key} or key
+     * @param tml 模板： ${key} 或 aaa${key}bbb
      */
-    public String getByParse(String expr) {
-        if (Utils.isEmpty(expr)) {
-            return expr;
+    public String getByParse(String tml) {
+        if (Utils.isEmpty(tml)) {
+            return tml;
         }
 
-        int start = expr.indexOf("${");
+        int start = tml.indexOf("${");
         if (start < 0) {
-            return expr;
+            return tml;
         } else {
-            int end = expr.indexOf("}");
-            String name = expr.substring(start + 2, end);
+            int end = tml.indexOf("}");
+            String name = tml.substring(start + 2, end);
             String value = get(name);
-            return expr.substring(0, start) + value + expr.substring(end + 1);
+            return tml.substring(0, start) + value + tml.substring(end + 1);
         }
     }
 
