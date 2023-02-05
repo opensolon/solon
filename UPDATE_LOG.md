@@ -12,6 +12,7 @@
 ### v2.0.1
 * 插件 beetlsql-solon-plugin 升级 beetlsql 为 3.20.0
 * 增加 @Condition 注解
+* 升级 sqltoy 为 5.2.32
 
 
 ### v2.0.0
