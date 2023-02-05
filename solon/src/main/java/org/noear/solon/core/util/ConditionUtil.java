@@ -36,7 +36,7 @@ public class ConditionUtil {
             }else{
                 String val = context.cfg().getByExpr(anno.hasProperty());
                 //有值就行
-                return Utils.isEmpty(val);
+                return Utils.isNotEmpty(val);
             }
         }
 
