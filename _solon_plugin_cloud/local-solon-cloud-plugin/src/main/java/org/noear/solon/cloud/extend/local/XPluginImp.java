@@ -61,7 +61,9 @@ public class XPluginImp implements Plugin {
         }
 
         if (cloudProps.getFileEnable()) {
-            if (Utils.isNotEmpty(cloudProps.getServer())) {
+            //不是空，并且不是"classpath:"开头
+            if (Utils.isNotEmpty(cloudProps.getServer()) &&
+                    cloudProps.getServer().startsWith(Utils.TAG_classpath) == false) {
                 CloudManager.register(new CloudFileServiceLocalImpl(cloudProps.getServer()));
             } else {
                 LogUtil.global().warn("The local file service cannot be enabled: no server configuration");
