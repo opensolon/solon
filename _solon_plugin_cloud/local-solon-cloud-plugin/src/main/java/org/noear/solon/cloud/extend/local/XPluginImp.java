@@ -19,6 +19,10 @@ public class XPluginImp implements Plugin {
     public void start(AopContext context) throws Throwable {
         CloudProps cloudProps = new CloudProps(context,"local");
 
+        if(Utils.isEmpty(cloudProps.getServer())){
+            return;
+        }
+
         if (cloudProps.getConfigEnable()) {
             CloudManager.register(new CloudConfigServiceLocalImpl(cloudProps));
 
