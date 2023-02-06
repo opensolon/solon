@@ -10,10 +10,12 @@
 * 提醒2：有使用弃用接口的。建议先升级到 1.12.4；替换弃用代码后，再升级到 2.0.0
 
 ### v2.0.1
+* 新增 solon.logging.log4j2（复制于 log4j2-solon-plugin）
+* 新增 solon.logging.logback（复制于 logback-solon-plugin）
 * 插件 beetlsql-solon-plugin 升级 beetlsql 为 3.20.0
+* 插件 sqltoy-solon-plugin 升级 sqltoy 为 5.2.32
+* 插件 dbvisitor-solon-plugin 升级 dbvisitor 为 5.2.1
 * 增加 @Condition 注解
-* 升级 sqltoy 为 5.2.32
-* 升级 dbvisitor 为 5.2.1
 
 
 ### v2.0.0

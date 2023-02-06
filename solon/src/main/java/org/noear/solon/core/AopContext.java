@@ -292,7 +292,7 @@ public class AopContext extends BeanContainer {
 
         ClassWrap clzWrap = ClassWrap.get(obj.getClass());
 
-        //todo: 支持类注入 //可能影响启动速度
+        //支持所有类注入，可能影响启动速度 //目前只支持 @Configuration 类注入
         //beanInjectProperties(clzWrap.clz(), obj);
 
         //支持父类注入
