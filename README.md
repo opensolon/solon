@@ -12,7 +12,7 @@ Solon v2.0.0
 
 <p align="center">
     <a target="_blank" href="https://search.maven.org/search?q=org.noear%20solon">
-        <img src="https://img.shields.io/maven-central/v/org.noear/solon.svg?label=Maven" alt="Maven" />
+        <img src="https://img.shields.io/maven-central/v/org.noear/solon.svg?label=Maven%20Central" alt="Maven" />
     </a>
     <a target="_blank" href="https://www.apache.org/licenses/LICENSE-2.0.txt">
 		<img src="https://img.shields.io/:License-Apache2-blue.svg" alt="Apache 2" />
