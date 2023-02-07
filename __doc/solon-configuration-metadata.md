@@ -7,7 +7,7 @@
 
 * 文件存放位置为插件包的：
 
-resource/META-INF/solon-configuration-metadata.json
+resource/META-INF/solon/solon-configuration-metadata.json
 
 * 总体格式分两个大属性：properties，hints。例：
 
