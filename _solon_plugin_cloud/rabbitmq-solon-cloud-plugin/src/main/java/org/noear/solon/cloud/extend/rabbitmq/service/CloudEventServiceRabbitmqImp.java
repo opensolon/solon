@@ -41,8 +41,8 @@ public class CloudEventServiceRabbitmqImp implements CloudEventServicePlus {
             consumer = new RabbitConsumer(cloudProps, producer, factory);
 
             producer.init();
-        } catch (Exception ex) {
-            throw new RuntimeException(ex);
+        } catch (Exception e) {
+            throw new CloudEventException(e);
         }
     }
 
