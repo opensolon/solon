@@ -4,7 +4,6 @@ import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.BuiltinExchangeType;
 import com.rabbitmq.client.Channel;
 import org.noear.snack.ONode;
-import org.noear.solon.cloud.extend.rabbitmq.RabbitmqProps;
 import org.noear.solon.cloud.model.Event;
 
 import java.io.IOException;
@@ -59,12 +58,12 @@ public class RabbitProducer {
         }
     }
 
-    public boolean publish(Event event, String topic, long ttl) throws Exception {
+    public boolean publish(Event event, String topic, long delay) throws Exception {
         byte[] event_data = ONode.stringify(event).getBytes(StandardCharsets.UTF_8);
 
         AMQP.BasicProperties props;
-        if (ttl > 0) {
-            props = newEventProps().expiration(String.valueOf(ttl)).build();
+        if (delay > 0) {
+            props = newEventProps().expiration(String.valueOf(delay)).build();
         } else {
             props = eventPropsDefault;
         }
@@ -82,13 +81,13 @@ public class RabbitProducer {
      * 发布事件
      */
     public boolean publish(Event event, String topic) throws Exception {
-        long ttl = 0;
+        long delay = 0;
         if (event.scheduled() != null) {
-            ttl = event.scheduled().getTime() - System.currentTimeMillis();
+            delay = event.scheduled().getTime() - System.currentTimeMillis();
         }
 
-        if (ttl > 0) {
-            return publish(event, config.queue_ready, ttl);
+        if (delay > 0) {
+            return publish(event, config.queue_ready, delay);
         } else {
             if (config.exchangeType == BuiltinExchangeType.FANOUT) {
                 return publish(event, "", 0);
