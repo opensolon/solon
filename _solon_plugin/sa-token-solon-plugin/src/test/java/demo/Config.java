@@ -3,9 +3,11 @@ package demo;
 import cn.dev33.satoken.SaManager;
 import cn.dev33.satoken.config.SaTokenConfig;
 import cn.dev33.satoken.dao.SaTokenDao;
+import cn.dev33.satoken.json.SaJsonTemplate;
 import cn.dev33.satoken.router.SaRouter;
 import cn.dev33.satoken.solon.dao.SaTokenDaoOfRedis;
 import cn.dev33.satoken.solon.integration.SaTokenInterceptor;
+import cn.dev33.satoken.solon.json.SaJsonTemplateForSnack3;
 import cn.dev33.satoken.stp.StpUtil;
 import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Configuration;
@@ -27,6 +29,12 @@ public class Config {
         //..
 
         SaManager.setConfig(saTokenConfig);
+    }
+
+    @Bean
+    public SaJsonTemplate saTokenJson() {
+        //把它换成需要的组件
+        return new SaJsonTemplateForSnack3();
     }
 
     @Bean(index = -100) //优先级可以排后些
