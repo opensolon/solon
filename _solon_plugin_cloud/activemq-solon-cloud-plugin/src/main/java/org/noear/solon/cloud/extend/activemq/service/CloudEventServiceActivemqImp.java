@@ -26,26 +26,22 @@ public class CloudEventServiceActivemqImp implements CloudEventServicePlus {
 	 private ActivemqConsumer consumer;
 	
 	public CloudEventServiceActivemqImp(CloudProps cloudProps) {
-		this.cloudProps = cloudProps;
+        this.cloudProps = cloudProps;
 
         ActiveMQConnectionFactory factory = null;
 
-        try {
-            String brokerUrl = "tcp://" + cloudProps.getEventServer();
-            String username = cloudProps.getUsername();
-            String password = cloudProps.getPassword();
-            if (Utils.isEmpty(cloudProps.getUsername())) {
-                factory = new ActiveMQConnectionFactory(brokerUrl);
-            } else {
-                factory = new ActiveMQConnectionFactory(username, password, brokerUrl);
-            }
-
-            producer = new ActivemqProducer(factory);
-            consumer = new ActivemqConsumer(factory, producer);
-        }catch (Exception e){
-            throw new CloudEventException(e);
+        String brokerUrl = "tcp://" + cloudProps.getEventServer();
+        String username = cloudProps.getUsername();
+        String password = cloudProps.getPassword();
+        if (Utils.isEmpty(cloudProps.getUsername())) {
+            factory = new ActiveMQConnectionFactory(brokerUrl);
+        } else {
+            factory = new ActiveMQConnectionFactory(username, password, brokerUrl);
         }
-	}
+
+        producer = new ActivemqProducer(factory);
+        consumer = new ActivemqConsumer(factory, producer);
+    }
 
 	@Override
 	public boolean publish(Event event) throws CloudEventException {
