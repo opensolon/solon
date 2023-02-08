@@ -22,9 +22,15 @@ public class ActivemqProducer {
 		this.factory = factory;
 	}
 
-	public void init() throws JMSException {
-		connection = factory.createConnection();
-		connection.start();
+	private void init() throws JMSException {
+		if (connection == null) {
+			synchronized (factory) {
+				if (connection == null) {
+					connection = factory.createConnection();
+					connection.start();
+				}
+			}
+		}
 	}
 
 	private void close() throws JMSException {
@@ -37,6 +43,8 @@ public class ActivemqProducer {
 	 * 发布事件
 	 */
 	public boolean publish(Event event, String topic) throws Exception {
+		init();
+
 		long delay = 0;
 		if (event.scheduled() != null) {
 			delay = event.scheduled().getTime() - System.currentTimeMillis();

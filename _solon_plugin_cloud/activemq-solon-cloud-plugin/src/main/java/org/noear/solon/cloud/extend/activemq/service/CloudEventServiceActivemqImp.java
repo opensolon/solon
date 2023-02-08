@@ -42,8 +42,6 @@ public class CloudEventServiceActivemqImp implements CloudEventServicePlus {
 
             producer = new ActivemqProducer(factory);
             consumer = new ActivemqConsumer(factory, producer);
-
-            producer.init();
         }catch (Exception e){
             throw new CloudEventException(e);
         }

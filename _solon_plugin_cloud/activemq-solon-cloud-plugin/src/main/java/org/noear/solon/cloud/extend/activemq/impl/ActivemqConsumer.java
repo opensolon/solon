@@ -24,6 +24,10 @@ public class ActivemqConsumer {
 	}
 	
 	public void init(CloudEventObserverManger observerManger) throws JMSException{
+		if(connection != null){
+			return;
+		}
+
 		connection = factory.createConnection();
 		connection.start();		
 		//创建会话
