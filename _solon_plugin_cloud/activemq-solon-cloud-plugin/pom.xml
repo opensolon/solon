@@ -13,28 +13,33 @@
     <artifactId>activemq-solon-cloud-plugin</artifactId>
     <packaging>jar</packaging>
 
-
+    <properties>
+        <activemq.ver>5.15.4</activemq.ver>
+    </properties>
 
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon.cloud</artifactId>
         </dependency>
+
         <dependency>
-        <groupId>org.apache.activemq</groupId>
-        <artifactId>activemq-client</artifactId>
-        <version>5.15.4</version>
-    </dependency>
-    <dependency>
-        <groupId>org.apache.activemq</groupId>
-        <artifactId>activemq-pool</artifactId>
-        <version>5.15.4</version>
-    </dependency>
-    <dependency>
-        <groupId>org.apache.activemq</groupId>
-        <artifactId>activemq-broker</artifactId>
-        <version>5.15.4</version>
-    </dependency>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>activemq-client</artifactId>
+            <version>${activemq.ver}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>activemq-pool</artifactId>
+            <version>${activemq.ver}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>activemq-broker</artifactId>
+            <version>${activemq.ver}</version>
+        </dependency>
 
         <dependency>
             <groupId>org.noear</groupId>

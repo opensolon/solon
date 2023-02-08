@@ -14,6 +14,10 @@ import org.noear.solon.cloud.service.CloudEventServicePlus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * @author liuxuehua12
+ * @since 2.0
+ */
 public class CloudEventServiceActivemqImp implements CloudEventServicePlus {
 	static Logger log = LoggerFactory.getLogger(CloudEventServiceActivemqImp.class);
 	 private CloudProps cloudProps;
@@ -22,9 +26,10 @@ public class CloudEventServiceActivemqImp implements CloudEventServicePlus {
 	
 	public CloudEventServiceActivemqImp(CloudProps cloudProps) {
 		this.cloudProps = cloudProps;
-		
+
+        ActiveMQConnectionFactory factory = null;
+
 		String brokerUrl = "tcp://" + cloudProps.getEventServer();
-		ActiveMQConnectionFactory factory = null;
 		String username = cloudProps.getUsername();
         String password = cloudProps.getPassword();
         if (Utils.isEmpty(cloudProps.getUsername())) {

@@ -8,8 +8,8 @@ import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
 
 /**
- * @author noear
- * @since 1.12
+ * @author liuxuehua12
+ * @since 2.0
  */
 public class XPluginImp implements Plugin {
     @Override

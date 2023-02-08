@@ -1,18 +1,17 @@
 package org.noear.solon.cloud.extend.activemq.impl;
 
-import javax.jms.Connection;
-import javax.jms.Destination;
-import javax.jms.JMSException;
-import javax.jms.MessageProducer;
-import javax.jms.Session;
-import javax.jms.TextMessage;
-
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.noear.snack.ONode;
 import org.noear.solon.cloud.model.Event;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.jms.*;
+
+/**
+ * @author liuxuehua12
+ * @since 2.0
+ */
 public class ActivemqProducer {
 	static Logger log = LoggerFactory.getLogger(ActivemqProducer.class);
 	private ActiveMQConnectionFactory factory;
