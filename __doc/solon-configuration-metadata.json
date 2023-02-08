@@ -57,12 +57,12 @@
       "description": "服务 http 信号包装主机"
     },
     {
-      "name": "server.coreThreads",
+      "name": "server.http.coreThreads",
       "type": "java.lang.Object",
       "description": "服务 http 最小线程数（默认：0表示自动，支持固定值 16 或 倍数 x16）"
     },
     {
-      "name": "server.maxThreads",
+      "name": "server.http.maxThreads",
       "type": "java.lang.Object",
       "description": "服务 http 最大线程数（默认：0表示自动，支持固定值 16 或 倍数 x16）"
     }

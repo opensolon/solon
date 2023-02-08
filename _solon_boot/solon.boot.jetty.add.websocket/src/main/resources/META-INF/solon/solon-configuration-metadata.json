@@ -11,7 +11,7 @@
       "description": "服务 websocket 信号端口"
     },
     {
-      "name": "server.htwebsockettp.host",
+      "name": "server.websocket.host",
       "type": "java.lang.String",
       "description": "服务 websocket 信号主机"
     },

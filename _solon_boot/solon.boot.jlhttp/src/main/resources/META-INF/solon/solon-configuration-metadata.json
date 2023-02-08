@@ -11,7 +11,7 @@
       "description": "服务 http 信号端口"
     },
     {
-      "name": "server.hthttptp.host",
+      "name": "server.http.host",
       "type": "java.lang.String",
       "description": "服务 http 信号主机"
     },
