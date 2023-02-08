@@ -32,8 +32,24 @@ public class ActivemqProducer {
 			connection.close();
 		}
 	}
+
+	/**
+	 * 发布事件
+	 */
+	public boolean publish(Event event, String topic) throws Exception {
+		long delay = 0;
+		if (event.scheduled() != null) {
+			delay = event.scheduled().getTime() - System.currentTimeMillis();
+		}
+
+		if (delay > 0) {
+			return publish(event, topic, delay);
+		} else {
+			return publish(event, topic, 0);
+		}
+	}
 		
-	public boolean publish(Event event, String topic) throws JMSException  {
+	public boolean publish(Event event, String topic, long delay) throws JMSException  {
 		init();
 		//创建会话
         Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
@@ -46,11 +62,6 @@ public class ActivemqProducer {
         TextMessage message = session.createTextMessage(ONode.stringify(event));
 
 		//支持延时消息
-		long delay = 0;
-		if (event.scheduled() != null) {
-			delay = event.scheduled().getTime() - System.currentTimeMillis();
-		}
-
 		if(delay > 0) {
 			message.setLongProperty(ScheduledMessage.AMQ_SCHEDULED_DELAY, delay);
 		}

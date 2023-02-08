@@ -5,6 +5,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudEventHandler;
 import org.noear.solon.cloud.model.Event;
 import org.noear.solon.cloud.service.CloudEventObserverManger;
+import org.noear.solon.cloud.utils.ExpirationUtils;
 import org.noear.solon.core.event.EventBus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,7 +39,7 @@ public class ActivemqConsumeHandler implements MessageListener {
             if (isOk == false) {
                 event.times(event.times() + 1);
                 try {
-                    isOk = producer.publish(event, getTopic(event));
+                    isOk = producer.publish(event, getTopic(event), ExpirationUtils.getExpiration(event.times()));
                 } catch (Throwable ex) {
                     //log.error("re public error:"+ex.getMessage(),ex);
                 }
