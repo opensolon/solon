@@ -17,18 +17,18 @@ public class ActivemqProducer {
 	static Logger log = LoggerFactory.getLogger(ActivemqProducer.class);
 	private ActiveMQConnectionFactory factory;
 	private Connection connection;
-	
-	public ActivemqProducer(ActiveMQConnectionFactory factory){
+
+	public ActivemqProducer(ActiveMQConnectionFactory factory) {
 		this.factory = factory;
 	}
-	
-	private void init() throws JMSException{
+
+	public void init() throws JMSException {
 		connection = factory.createConnection();
-		connection.start();		
+		connection.start();
 	}
-	
-	private void close() throws JMSException{
-		if(connection != null){
+
+	private void close() throws JMSException {
+		if (connection != null) {
 			connection.close();
 		}
 	}
@@ -48,34 +48,30 @@ public class ActivemqProducer {
 			return publish(event, topic, 0);
 		}
 	}
-		
-	public boolean publish(Event event, String topic, long delay) throws JMSException  {
-		init();
+
+	public boolean publish(Event event, String topic, long delay) throws JMSException {
 		//创建会话
-        Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-        //创建一个目标
-        Destination destination = session.createTopic(topic);
-        //创建一个生产者
-        MessageProducer producer = session.createProducer(destination);
+		Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
+		//创建一个目标
+		Destination destination = session.createTopic(topic);
+		//创建一个生产者
+		MessageProducer producer = session.createProducer(destination);
 
 		//创建消息
-        TextMessage message = session.createTextMessage(ONode.stringify(event));
+		TextMessage message = session.createTextMessage(ONode.stringify(event));
 
 		//支持延时消息
-		if(delay > 0) {
+		if (delay > 0) {
 			message.setLongProperty(ScheduledMessage.AMQ_SCHEDULED_DELAY, delay);
 		}
 
-        //发布消息
-        try{
-        	producer.send(destination,message);
-        	return true;
-        }catch(JMSException e){
-        	log.error(e.getMessage(),e);
-        	return false;
-        }finally{
-        	close();
-        }
-    }
-
+		//发布消息
+		try {
+			producer.send(destination, message);
+			return true;
+		} catch (JMSException e) {
+			log.error(e.getMessage(), e);
+			return false;
+		}
+	}
 }

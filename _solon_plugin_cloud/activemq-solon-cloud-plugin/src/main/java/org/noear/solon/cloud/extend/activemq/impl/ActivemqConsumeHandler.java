@@ -3,6 +3,7 @@ package org.noear.solon.cloud.extend.activemq.impl;
 import org.noear.snack.ONode;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudEventHandler;
+import org.noear.solon.cloud.extend.activemq.ActivemqProps;
 import org.noear.solon.cloud.model.Event;
 import org.noear.solon.cloud.service.CloudEventObserverManger;
 import org.noear.solon.cloud.utils.ExpirationUtils;
@@ -35,16 +36,21 @@ public class ActivemqConsumeHandler implements MessageListener {
         TextMessage textmsg = (TextMessage) message;
         try {
             Event event = ONode.deserialize(textmsg.getText(), Event.class);
+
             boolean isOk = onReceive(event);
+
             if (isOk == false) {
                 event.times(event.times() + 1);
                 try {
-                    isOk = producer.publish(event, getTopic(event), ExpirationUtils.getExpiration(event.times()));
+                    isOk = producer.publish(event, getTopicNew(event), ExpirationUtils.getExpiration(event.times()));
                 } catch (Throwable ex) {
                     //log.error("re public error:"+ex.getMessage(),ex);
                 }
             }
 
+            if(isOk){
+                textmsg.acknowledge();
+            }
         } catch (Throwable e) {
             //log.error("onMessage error:"+e.getMessage(),e);
             e = Utils.throwableUnwrap(e);
@@ -63,7 +69,10 @@ public class ActivemqConsumeHandler implements MessageListener {
     private boolean onReceive(Event event) throws Throwable {
         boolean isOk = true;
         CloudEventHandler handler = null;
-        String topicNew = getTopic(event);
+
+        //new topic
+        String topicNew = getTopicNew(event);
+
         handler = observerManger.getByTopic(topicNew);
         if (handler != null) {
             isOk = handler.handle(event);
@@ -75,8 +84,7 @@ public class ActivemqConsumeHandler implements MessageListener {
         return isOk;
     }
 
-    private String getTopic(Event event) {
-        String topicNew = event.topic();
-        return topicNew;
+    private String getTopicNew(Event event){
+        return ActivemqProps.getTopicNew(event);
     }
 }

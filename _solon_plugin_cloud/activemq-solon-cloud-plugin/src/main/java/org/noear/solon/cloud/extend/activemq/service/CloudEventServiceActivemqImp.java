@@ -6,6 +6,7 @@ import org.noear.solon.cloud.CloudEventHandler;
 import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.annotation.EventLevel;
 import org.noear.solon.cloud.exception.CloudEventException;
+import org.noear.solon.cloud.extend.activemq.ActivemqProps;
 import org.noear.solon.cloud.extend.activemq.impl.ActivemqConsumer;
 import org.noear.solon.cloud.extend.activemq.impl.ActivemqProducer;
 import org.noear.solon.cloud.model.Event;
@@ -29,18 +30,23 @@ public class CloudEventServiceActivemqImp implements CloudEventServicePlus {
 
         ActiveMQConnectionFactory factory = null;
 
-		String brokerUrl = "tcp://" + cloudProps.getEventServer();
-		String username = cloudProps.getUsername();
-        String password = cloudProps.getPassword();
-        if (Utils.isEmpty(cloudProps.getUsername())) {
-        	factory = new ActiveMQConnectionFactory(brokerUrl);
-        }else{
-        	factory = new ActiveMQConnectionFactory(username,password,brokerUrl);
+        try {
+            String brokerUrl = "tcp://" + cloudProps.getEventServer();
+            String username = cloudProps.getUsername();
+            String password = cloudProps.getPassword();
+            if (Utils.isEmpty(cloudProps.getUsername())) {
+                factory = new ActiveMQConnectionFactory(brokerUrl);
+            } else {
+                factory = new ActiveMQConnectionFactory(username, password, brokerUrl);
+            }
+
+            producer = new ActivemqProducer(factory);
+            consumer = new ActivemqConsumer(factory, producer);
+
+            producer.init();
+        }catch (Exception e){
+            throw new CloudEventException(e);
         }
-        				
-		producer = new ActivemqProducer(factory);
-		consumer = new ActivemqConsumer(factory,producer);
-		
 	}
 
 	@Override
@@ -58,7 +64,7 @@ public class CloudEventServiceActivemqImp implements CloudEventServicePlus {
         }
 
         //new topic
-        String topicNew = event.topic();
+        String topicNew = ActivemqProps.getTopicNew(event);
         try {
         	boolean re = producer.publish(event, topicNew);
             return re;
@@ -73,7 +79,13 @@ public class CloudEventServiceActivemqImp implements CloudEventServicePlus {
 	public void attention(EventLevel level, String channel, String group,
 			String topic, String tag, CloudEventHandler observer) {
 		//new topic
-        String topicNew = topic;
+        String topicNew;
+        if (Utils.isEmpty(group)) {
+            topicNew = topic;
+        } else {
+            topicNew = group + ActivemqProps.GROUP_SPLIT_MARK + topic;
+        }
+
         observerManger.add(topicNew, level, group, topic, tag, observer);
 
 	}
