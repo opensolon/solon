@@ -17,7 +17,6 @@
 * 插件 dbvisitor-solon-plugin 升级 dbvisitor 为 5.2.1
 * 插件 sa-token-solon-plugin 添加 SaJsonTemplate 实现类
 * 增加 @Condition 注解
-* 增加 插件元信息配置，要求强制隔离的申明？？？
 
 
 ### v2.0.0
