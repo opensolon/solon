@@ -29,21 +29,15 @@ public class CloudEventServiceRabbitmqImp implements CloudEventServicePlus {
     public CloudEventServiceRabbitmqImp(CloudProps cloudProps) {
         this.cloudProps = cloudProps;
 
-        try {
-            RabbitConfig config = new RabbitConfig(cloudProps);
-            config.server = cloudProps.getEventServer();
-            config.username = cloudProps.getUsername();
-            config.password = cloudProps.getPassword();
+        RabbitConfig config = new RabbitConfig(cloudProps);
+        config.server = cloudProps.getEventServer();
+        config.username = cloudProps.getUsername();
+        config.password = cloudProps.getPassword();
 
-            RabbitChannelFactory factory = new RabbitChannelFactory(cloudProps, config);
+        RabbitChannelFactory factory = new RabbitChannelFactory(cloudProps, config);
 
-            producer = new RabbitProducer(factory);
-            consumer = new RabbitConsumer(cloudProps, producer, factory);
-
-            producer.init();
-        } catch (Exception e) {
-            throw new CloudEventException(e);
-        }
+        producer = new RabbitProducer(factory);
+        consumer = new RabbitConsumer(cloudProps, producer, factory);
     }
 
     @Override

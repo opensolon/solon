@@ -42,23 +42,31 @@ public class RabbitProducer {
     /**
      * 初始化
      */
-    public void init() throws IOException, TimeoutException {
-        channel = factory.getChannel();
+    private void init() throws IOException, TimeoutException {
+        if(channel == null) {
+            synchronized (factory){
+                if(channel == null){
+                    channel = factory.getChannel();
 
-        Map<String, Object> args = new HashMap<>();
+                    Map<String, Object> args = new HashMap<>();
 
-        channel.exchangeDeclare(config.exchangeName,
-                config.exchangeType,
-                config.durable,
-                config.autoDelete,
-                config.internal, args);
+                    channel.exchangeDeclare(config.exchangeName,
+                            config.exchangeType,
+                            config.durable,
+                            config.autoDelete,
+                            config.internal, args);
 
-        if (timeout > 0) {
-            channel.confirmSelect();
+                    if (timeout > 0) {
+                        channel.confirmSelect();
+                    }
+                }
+            }
         }
     }
 
     public boolean publish(Event event, String topic, long delay) throws Exception {
+        init();
+
         byte[] event_data = ONode.stringify(event).getBytes(StandardCharsets.UTF_8);
 
         AMQP.BasicProperties props;
