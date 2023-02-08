@@ -48,6 +48,9 @@
   * 调整 DownloadedFile，UploadedFile 字段改为私有；由属性替代
 * 调整 solon.i18n//
   * 删除 I18nBundle::toMap()；由 ::toProp() 替代
+* 调整 solon.web.staticfiles//
+  * 删除 StaticMappings::add(string1,bool2,repository3) 接口；由 StaticMappings::add(string1,repository2) 替代
+  * 说明 string1 ，有'/'结尾表示目录，无'/'结尾表示单文件
 * 调整 solon.web.cors//
   * 删除 ..extend.cores 包；由 ..web.cors 包替代
 * 调整 solon.cloud//
