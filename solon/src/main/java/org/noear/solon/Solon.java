@@ -25,8 +25,6 @@ import java.lang.management.RuntimeMXBean;
  * @since 1.0
  * */
 public class Solon {
-    //默认停止延时
-    private static int stopDelay = 10;
     //全局实例（可能会因为测试而切换）
     private static SolonApp app;
     //全局主实例
@@ -167,11 +165,9 @@ public class Solon {
 
 
         //5.初始化安全停止
-        stopDelay = app.cfg().getInt("solon.stop.delay", 10);
-
-        if (app.cfg().enableSafeStop()) {
+        if (app.cfg().stopSafe()) {
             //添加关闭勾子
-            Runtime.getRuntime().addShutdownHook(new Thread(() -> Solon.stop0(false, stopDelay)));
+            Runtime.getRuntime().addShutdownHook(new Thread(() -> Solon.stop0(false, app.cfg().stopDelay())));
         } else {
             Runtime.getRuntime().addShutdownHook(new Thread(() -> Solon.stop0(false, 0)));
         }
@@ -183,19 +179,10 @@ public class Solon {
     }
 
     /**
-     * 设置停止延时时间（单位：秒）
-     *
-     * @param delay 延迟时间（单位：秒）
-     */
-    public static void stopDelaySet(int delay) {
-        stopDelay = delay;
-    }
-
-    /**
      * 停止应用
      */
     public static void stop() {
-        stop(stopDelay);
+        stop(app.cfg().stopDelay());
     }
 
     /**

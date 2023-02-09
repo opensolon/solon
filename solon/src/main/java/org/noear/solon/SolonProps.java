@@ -43,7 +43,8 @@ public final class SolonProps extends Props {
     private boolean isSetupMode;//是否为安装蕈式
     private boolean isAloneMode;//是否为独立蕈式（即独立运行模式）
 
-    private boolean enableSafeStop;
+    private int stopDelay=10; //停止延迟（秒）
+    private boolean stopSafe;//停止安全的进行
 
     private String env;
 
@@ -175,7 +176,15 @@ public final class SolonProps extends Props {
         appTitle = getArg("app.title"); //6.1.应用标题
 
         //9.特性控制
-        enableSafeStop = "1".equals(getArg("app.safeStop")); //是否安全停止
+        //solon.stop.delay = 10
+        //solon.stop.safe  = 0
+        String stopSafeStr = getArg("stop.safe");
+        if(Utils.isEmpty(stopSafeStr)){
+            //@deprecated
+            stopSafeStr = getArg("app.safeStop");
+        }
+        stopSafe = "1".equals(stopSafeStr); //是否安全停止
+        stopDelay = Integer.parseInt(getArg("stop.delay","10s").replace("s",""));
 
         return this;
     }
@@ -499,8 +508,8 @@ public final class SolonProps extends Props {
     /**
      * 设置文件运行模式
      */
-    public void isFilesMode(boolean isFilesMode) {
-        this.isFilesMode = isFilesMode;
+    public void isFilesMode(boolean value) {
+        this.isFilesMode = value;
     }
 
     /**
@@ -513,8 +522,8 @@ public final class SolonProps extends Props {
     /**
      * 设置漂移模式
      */
-    public void isDriftMode(boolean isDriftMode) {
-        this.isDriftMode = isDriftMode;
+    public void isDriftMode(boolean value) {
+        this.isDriftMode = value;
     }
 
     /**
@@ -527,8 +536,8 @@ public final class SolonProps extends Props {
     /**
      * 设置独立模式
      */
-    public void isAloneMode(boolean isAloneMode) {
-        this.isAloneMode = isAloneMode;
+    public void isAloneMode(boolean value) {
+        this.isAloneMode = value;
     }
 
     /**
@@ -541,19 +550,22 @@ public final class SolonProps extends Props {
     /**
      * 设置白名单模式
      */
-    public void isWhiteMode(boolean isWhiteMode) {
-        this.isWhiteMode = isWhiteMode;
+    public void isWhiteMode(boolean value) {
+        this.isWhiteMode = value;
     }
 
 
     /**
-     * 是否启用安全停止
+     * 停止安全的进行
      * */
-    public boolean enableSafeStop(){
-        return enableSafeStop;
+    public boolean stopSafe(){
+        return stopSafe;
     }
 
-    public void enableSafeStop(boolean enable){
-        enableSafeStop = enable;
+    /**
+     * 停止延时
+     * */
+    public int stopDelay() {
+        return stopDelay;
     }
 }
