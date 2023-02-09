@@ -35,6 +35,13 @@ public class Solon {
     private static String encoding = "utf-8";
 
     /**
+     * 框架版本号
+     */
+    public static String version() {
+        return "2.1.1-M1";
+    }
+
+    /**
      * 全局实例
      */
     public static SolonApp app() {
@@ -75,12 +82,6 @@ public class Solon {
         return encoding;
     }
 
-    /**
-     * 框架版本号
-     */
-    public static String version() {
-        return "2.1.0";
-    }
 
     /**
      * 全局默认编码设置

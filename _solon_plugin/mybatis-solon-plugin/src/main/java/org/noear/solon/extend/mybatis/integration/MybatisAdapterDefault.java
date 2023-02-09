@@ -117,16 +117,10 @@ public class MybatisAdapterDefault implements MybatisAdapter {
                             continue;
                         }
 
-                        if (val.endsWith(".class")) {
-                            //type class
-                            Class<?> clz = Utils.loadClass(val.substring(0, val.length() - 6));
-                            if (clz != null) {
-                                getConfiguration().getTypeAliasRegistry().registerAlias(clz);
-                            }
-                        } else {
-                            //package
-                            getConfiguration().getTypeAliasRegistry().registerAliases(val);
-                        }
+                        //package or type class
+                        ResourceUtil.resolveClasss(val).forEach(clz -> {
+                            getConfiguration().getTypeAliasRegistry().registerAlias(clz);
+                        });
                     }
                 }
 
@@ -137,18 +131,10 @@ public class MybatisAdapterDefault implements MybatisAdapter {
                             continue;
                         }
 
-                        if (val.endsWith(".class")) {
-                            //type class
-                            Class<?> clz = Utils.loadClass(val.substring(0, val.length() - 6));
-                            if (clz != null) {
-                                getConfiguration().getTypeHandlerRegistry().register(clz);
-                            }
-                        } else {
-                            //package
-                            ResourceUtil.resolveClasss(val).forEach(clz->{
-                                getConfiguration().getTypeHandlerRegistry().register(clz);
-                            });
-                        }
+                        //package || type class
+                        ResourceUtil.resolveClasss(val).forEach(clz -> {
+                            getConfiguration().getTypeHandlerRegistry().register(clz);
+                        });
                     }
                 }
             }
@@ -187,17 +173,8 @@ public class MybatisAdapterDefault implements MybatisAdapter {
                             }
 
                             mappers.add(val);
-                        } else if (val.endsWith(".class")) {
-                            //mapper class
-                            val = val.replace("/", ".");
-
-                            Class<?> clz = Utils.loadClass(val.substring(0, val.length() - 6));
-                            if (clz != null) {
-                                getConfiguration().addMapper(clz);
-                                mappers.add(val);
-                            }
                         } else {
-                            //package
+                            //package or mapper class
                             ResourceUtil.resolveClasss(val).forEach(clz -> {
                                 getConfiguration().addMapper(clz);
                             });

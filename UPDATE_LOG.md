@@ -11,6 +11,7 @@
 
 ### v2.1.1
 * 增强 detector-solon-plugin 扩展能力
+* 修复 mybatis-solon-plugin 与 solon-maven-plugin 的兼容性
 
 ### v2.1.0
 * 新增 activemq-solon-cloud-plugin 插件

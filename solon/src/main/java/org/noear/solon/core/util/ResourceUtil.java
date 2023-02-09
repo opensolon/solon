@@ -1,6 +1,7 @@
 package org.noear.solon.core.util;
 
 import org.noear.solon.Utils;
+import org.noear.solon.core.JarClassLoader;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -12,14 +13,43 @@ import java.util.regex.Pattern;
  * @since 2.0
  */
 public class ResourceUtil {
+
+    //a.class
+    //a.*.class
+    //a.**.*.class
+    //a.**.b.*.class
+
+    /**
+     *
+     * @param packExpr 包表达式
+     */
     public static Collection<Class<?>> resolveClasss(String packExpr) {
+        return resolveClasss(JarClassLoader.global(), packExpr);
+    }
+
+    public static Collection<Class<?>> resolveClasss(ClassLoader classLoader, String packExpr) {
         List<Class<?>> clzList = new ArrayList<>();
-        packExpr = packExpr.replace(".", "/") + "/*.class";
-        ResourceUtil.resolvePaths(packExpr).forEach(name -> {
+
+        if (packExpr.indexOf("*") < 0 && packExpr.endsWith(".class")) {
+            String className = packExpr.substring(0, packExpr.length() - 6);
+            Class<?> clz = Utils.loadClass(classLoader, className);
+            if (clz != null) {
+                clzList.add(clz);
+            }
+            return clzList;
+        }
+
+        packExpr = packExpr.replace(".", "/");
+        if (packExpr.endsWith("*.class") == false) {
+            packExpr = packExpr + "/*.class";
+        }
+
+
+        ResourceUtil.resolvePaths(classLoader, packExpr).forEach(name -> {
             String className = name.substring(0, name.length() - 6);
             className = className.replace("/", ".");
 
-            Class<?> clz = Utils.loadClass(className);
+            Class<?> clz = Utils.loadClass(classLoader, className);
             if (clz != null) {
                 clzList.add(clz);
             }
@@ -28,15 +58,20 @@ public class ResourceUtil {
         return clzList;
     }
 
+    //a.xml
+    //a.*.xml
+    //a/**/*.xml
+    //a/**/b/*.xml
+
     /**
-     * 例：
-     * a/?.xml
-     * a/??/?.xml
-     * a/??/b/?.xml
      *
      * @param pathExpr 路径表达式
-     * */
+     */
     public static Collection<String> resolvePaths(String pathExpr) {
+        return resolvePaths(JarClassLoader.global(), pathExpr);
+    }
+
+    public static Collection<String> resolvePaths(ClassLoader classLoader, String pathExpr) {
         List<String> paths = new ArrayList<>();
 
         if (pathExpr.contains("/*") == false) { //说明没有*符
@@ -68,7 +103,7 @@ public class ResourceUtil {
 
         Pattern pattern = Pattern.compile(expr);
 
-        ScanUtil.scan(dir, n -> {
+        ScanUtil.scan(classLoader, dir, n -> {
                     //进行后缀过滤，相对比较快
                     if (sufIdx2 > 0) {
                         return n.endsWith(suf2);
