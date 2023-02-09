@@ -111,6 +111,7 @@ public class BeetlRender implements Render {
         try {
             if (dir != null && dir.exists()) {
                 FileResourceLoader loader = new FileResourceLoader(dir.getAbsolutePath(), Solon.encoding());
+                loader.setAutoCheck(true);
                 provider_debug = new GroupTemplate(loader, cfg);
 
                 //通过事件扩展
