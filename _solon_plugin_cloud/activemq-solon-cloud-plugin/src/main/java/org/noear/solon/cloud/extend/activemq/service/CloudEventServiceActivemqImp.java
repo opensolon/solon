@@ -21,17 +21,21 @@ import org.slf4j.LoggerFactory;
  * @since 2.0
  */
 public class CloudEventServiceActivemqImp implements CloudEventServicePlus {
-	static Logger log = LoggerFactory.getLogger(CloudEventServiceActivemqImp.class);
-	 private CloudProps cloudProps;
-	 private ActivemqProducer producer;
-	 private ActivemqConsumer consumer;
-	
-	public CloudEventServiceActivemqImp(CloudProps cloudProps) {
+    static Logger log = LoggerFactory.getLogger(CloudEventServiceActivemqImp.class);
+    private CloudProps cloudProps;
+    private ActivemqProducer producer;
+    private ActivemqConsumer consumer;
+
+    public CloudEventServiceActivemqImp(CloudProps cloudProps) {
         this.cloudProps = cloudProps;
 
         ActiveMQConnectionFactory factory = null;
 
-        String brokerUrl = "tcp://" + cloudProps.getEventServer();
+        String brokerUrl = cloudProps.getEventServer();
+        if (brokerUrl.indexOf("://") < 0) {
+            brokerUrl = "tcp://" + brokerUrl;
+        }
+
         String username = cloudProps.getUsername();
         String password = cloudProps.getPassword();
         if (Utils.isEmpty(cloudProps.getUsername())) {
@@ -46,7 +50,7 @@ public class CloudEventServiceActivemqImp implements CloudEventServicePlus {
         redeliveryPolicy.setBackOffMultiplier(2);
         redeliveryPolicy.setUseExponentialBackOff(true);
         redeliveryPolicy.setMaximumRedeliveries(-1);//不限次
-        redeliveryPolicy.setMaximumRedeliveryDelay(1000 * 60 * 60 *2);//2小时
+        redeliveryPolicy.setMaximumRedeliveryDelay(1000 * 60 * 60 * 2);//2小时
 
         factory.setRedeliveryPolicy(redeliveryPolicy);
 
@@ -54,8 +58,8 @@ public class CloudEventServiceActivemqImp implements CloudEventServicePlus {
         consumer = new ActivemqConsumer(factory, producer);
     }
 
-	@Override
-	public boolean publish(Event event) throws CloudEventException {
+    @Override
+    public boolean publish(Event event) throws CloudEventException {
         if (Utils.isEmpty(event.topic())) {
             throw new IllegalArgumentException("Event missing topic");
         }
@@ -71,19 +75,19 @@ public class CloudEventServiceActivemqImp implements CloudEventServicePlus {
         //new topic
         String topicNew = ActivemqProps.getTopicNew(event);
         try {
-        	boolean re = producer.publish(event, topicNew);
+            boolean re = producer.publish(event, topicNew);
             return re;
         } catch (Throwable ex) {
             throw new CloudEventException(ex);
         }
-	}
-	
-	CloudEventObserverManger observerManger = new CloudEventObserverManger();
-	
-	@Override
-	public void attention(EventLevel level, String channel, String group,
-			String topic, String tag, CloudEventHandler observer) {
-		//new topic
+    }
+
+    CloudEventObserverManger observerManger = new CloudEventObserverManger();
+
+    @Override
+    public void attention(EventLevel level, String channel, String group,
+                          String topic, String tag, CloudEventHandler observer) {
+        //new topic
         String topicNew;
         if (Utils.isEmpty(group)) {
             topicNew = topic;
@@ -93,8 +97,8 @@ public class CloudEventServiceActivemqImp implements CloudEventServicePlus {
 
         observerManger.add(topicNew, level, group, topic, tag, observer);
 
-	}
-	
+    }
+
     public void subscribe() {
         try {
             if (observerManger.topicSize() > 0) {
@@ -124,5 +128,4 @@ public class CloudEventServiceActivemqImp implements CloudEventServicePlus {
 
         return group;
     }
-
 }
