@@ -71,6 +71,58 @@
       "name": "server.session.state.domain",
       "type": "java.lang.String",
       "description": "设定会话状态的cookie域（默认为当前域名）"
+    },
+    {
+      "name": "server.ssl.keyStore",
+      "type": "java.lang.String",
+      "description": "服务ssl证书（例：demo.jks 或 demo.pfx）"
+    },
+    {
+      "name": "server.ssl.keyPassword",
+      "type": "java.lang.String",
+      "description": "服务ssl证书密码"
+    },
+    {
+      "name": "solon.app.name",
+      "type": "java.lang.String",
+      "description": "应用名称"
+    },
+    {
+      "name": "solon.app.group",
+      "type": "java.lang.String",
+      "description": "应用分组"
+    },
+    {
+      "name": "solon.app.namespace",
+      "type": "java.lang.String",
+      "description": "应用命名空间"
+    },
+    {
+      "name": "solon.app.title",
+      "type": "java.lang.String",
+      "description": "应用标题"
+    },
+    {
+      "name": "solon.app.safeStop",
+      "type": "java.lang.Integer",
+      "defaultValue": 0,
+      "description": "应用是否安全停止"
+    },
+    {
+      "name": "solon.extend",
+      "type": "java.lang.String",
+      "description": "应用体外扩展目录"
+    },
+    {
+      "name": "solon.config",
+      "type": "java.lang.String",
+      "description": "应用体外扩展配置"
+    },
+    {
+      "name": "solon.output.meta",
+      "type": "java.lang.Integer",
+      "defaultValue": 0,
+      "description": "应用是否输出元信息"
     }
   ]
 }
