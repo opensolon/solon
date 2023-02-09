@@ -1,7 +1,7 @@
 <h1 align="center" style="text-align:center;">
 <img src="solon_icon.png" width="128" />
 <br />
-Solon v2.0.0
+Solon v2.1.0
 </h1>
 <p align="center">
 	<strong>一个高效的 Java 应用开发框架，更小、更快、更简单！</strong>
