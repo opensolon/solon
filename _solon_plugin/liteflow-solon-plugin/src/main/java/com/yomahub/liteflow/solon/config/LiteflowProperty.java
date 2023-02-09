@@ -1,9 +1,9 @@
 package com.yomahub.liteflow.solon.config;
 
 
-import org.noear.solon.Utils;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
+import org.noear.solon.core.util.ResourceUtil;
 
 /**
  * 执行流程主要的参数类
@@ -86,7 +86,7 @@ public class LiteflowProperty {
 
     public void setRuleSource(String ruleSource) {
         if (ruleSource.contains("*")) {
-            this.ruleSource = String.join(",", Utils.resolvePaths(ruleSource));
+            this.ruleSource = String.join(",", ResourceUtil.resolvePaths(ruleSource));
         } else {
             this.ruleSource = ruleSource;
         }

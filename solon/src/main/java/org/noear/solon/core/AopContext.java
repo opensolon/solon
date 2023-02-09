@@ -366,8 +366,9 @@ public class AopContext extends BeanContainer {
                 .sorted(Comparator.comparing(s -> s.length()))
                 .forEach(name -> {
                     String className = name.substring(0, name.length() - 6);
+                    className = className.replace("/", ".");
 
-                    Class<?> clz = Utils.loadClass(classLoader, className.replace("/", "."));
+                    Class<?> clz = Utils.loadClass(classLoader, className);
                     if (clz != null) {
                         tryCreateBean(clz);
                     }

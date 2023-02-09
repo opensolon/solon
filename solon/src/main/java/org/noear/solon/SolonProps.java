@@ -566,6 +566,9 @@ public final class SolonProps extends Props {
          stopSafe = value;
     }
 
+    /**
+     * @deprecated 2.0
+     * */
     @Deprecated
     public boolean enableSafeStop(){
         return stopSafe;

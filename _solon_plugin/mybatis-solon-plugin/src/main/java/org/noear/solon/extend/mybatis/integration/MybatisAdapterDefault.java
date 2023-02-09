@@ -15,6 +15,7 @@ import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.Props;
 import org.noear.solon.core.VarHolder;
 import org.noear.solon.core.event.EventBus;
+import org.noear.solon.core.util.ResourceUtil;
 import org.noear.solon.core.util.ScanUtil;
 import org.noear.solon.extend.mybatis.MybatisAdapter;
 import org.noear.solon.extend.mybatis.tran.SolonManagedTransactionFactory;
@@ -144,7 +145,9 @@ public class MybatisAdapterDefault implements MybatisAdapter {
                             }
                         } else {
                             //package
-                            getConfiguration().getTypeHandlerRegistry().register(val);
+                            ResourceUtil.resolveClasss(val).forEach(clz->{
+                                getConfiguration().getTypeHandlerRegistry().register(clz);
+                            });
                         }
                     }
                 }
@@ -169,7 +172,7 @@ public class MybatisAdapterDefault implements MybatisAdapter {
                             //mapper xml
                             if (val.contains("**")) {
                                 //新方法，替代旧的 *.xml （基于表达式；更自由，更语义化）
-                                Utils.resolvePaths(val).forEach(uri->{
+                                ResourceUtil.resolvePaths(val).forEach(uri -> {
                                     addMapperByXml(uri);
                                 });
                             } else if (val.endsWith("*.xml")) {
@@ -195,7 +198,10 @@ public class MybatisAdapterDefault implements MybatisAdapter {
                             }
                         } else {
                             //package
-                            getConfiguration().addMappers(val);
+                            ResourceUtil.resolveClasss(val).forEach(clz -> {
+                                getConfiguration().addMapper(clz);
+                            });
+
                             mappers.add(val);
                         }
                     }

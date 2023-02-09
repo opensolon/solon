@@ -1,11 +1,13 @@
 package org.noear.solon;
 
 import org.noear.solon.annotation.Note;
+import org.noear.solon.core.JarClassLoader;
+import org.noear.solon.core.PropsConverter;
+import org.noear.solon.core.PropsLoader;
 import org.noear.solon.core.util.LogUtil;
+import org.noear.solon.core.util.ResourceUtil;
 import org.noear.solon.core.util.RunUtil;
-import org.noear.solon.core.util.ScanUtil;
 import org.noear.solon.core.wrap.ClassWrap;
-import org.noear.solon.core.*;
 
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
@@ -15,7 +17,6 @@ import java.security.MessageDigest;
 import java.util.*;
 import java.util.concurrent.Future;
 import java.util.function.Function;
-import java.util.regex.Pattern;
 
 /**
  * 内部专用工具（外部项目不建议使用，随时可能会变动）
@@ -128,56 +129,11 @@ public class Utils {
      * a/??/b/?.xml
      *
      * @param pathExpr 路径表达式
+     * @deprecated 2.0
      * */
+    @Deprecated
     public static Collection<String> resolvePaths(String pathExpr) {
-        List<String> paths = new ArrayList<>();
-
-        if (pathExpr.contains("/*") == false) { //说明没有*符
-            paths.add(pathExpr);
-            return paths;
-        }
-
-        //确定目录
-        int dirIdx = pathExpr.indexOf("/*");
-        String dir = pathExpr.substring(0, dirIdx);
-
-        //确定后缀
-        int sufIdx = pathExpr.lastIndexOf(".");
-        String suf = null;
-        if (sufIdx > 0) {
-            suf = pathExpr.substring(sufIdx);
-            if (suf.contains("*")) {
-                sufIdx = -1;
-                suf = null;
-            }
-        }
-
-        int sufIdx2 = sufIdx;
-        String suf2 = suf;
-
-        //匹配表达式
-        String expr = pathExpr.replaceAll("/\\*\\.", "/[^\\.]*\\.");
-        expr = expr.replaceAll("/\\*\\*/", "(/[^/]*)*/");
-
-        Pattern pattern = Pattern.compile(expr);
-
-        ScanUtil.scan(dir, n -> {
-                    //进行后缀过滤，相对比较快
-                    if (sufIdx2 > 0) {
-                        return n.endsWith(suf2);
-                    } else {
-                        return true;
-                    }
-                })
-                .forEach(uri -> {
-                    //再进行表达式过滤
-                    if (pattern.matcher(uri).find()) {
-                        paths.add(uri);
-                    }
-                });
-
-
-        return paths;
+        return ResourceUtil.resolvePaths(pathExpr);
     }
 
     /**
