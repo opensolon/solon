@@ -37,6 +37,7 @@
 
 
         <module>../../_solon_base/solon.health</module>
+        <module>../../_solon_base/solon.health.detector</module>
 
         <module>../../_solon_base/solon.hotplug</module>
 

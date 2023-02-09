@@ -385,6 +385,12 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>solon.health.detector</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>solon.web.servlet</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
