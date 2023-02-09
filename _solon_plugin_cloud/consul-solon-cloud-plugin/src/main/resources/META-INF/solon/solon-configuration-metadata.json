@@ -1,0 +1,65 @@
+{
+  "properties": [
+    {
+      "name": "solon.cloud.consul.server",
+      "type": "java.lang.String",
+      "description": "consul 服务地址"
+    },
+    {
+      "name": "solon.cloud.consul.username",
+      "type": "java.lang.String",
+      "description": "consul 服务连接用户名"
+    },
+    {
+      "name": "solon.cloud.consul.password",
+      "type": "java.lang.String",
+      "description": "consul 服务连接密码"
+    },
+    {
+      "name": "solon.cloud.consul.config.enable",
+      "type": "java.lang.Boolean",
+      "defaultValue": true,
+      "description": "consul config 服务是否启用"
+    },
+    {
+      "name": "solon.cloud.consul.config.server",
+      "type": "java.lang.String",
+      "defaultValue": "${solon.cloud.consul.server}",
+      "description": "consul config 服务地址"
+    },
+    {
+      "name": "solon.cloud.consul.config.load",
+      "type": "java.lang.String",
+      "description": "consul config 服务加载"
+    },
+    {
+      "name": "solon.cloud.consul.config.refreshInterval",
+      "type": "java.lang.String",
+      "description": "consul config 服务刷新间隔"
+    },
+    {
+      "name": "solon.cloud.consul.discovery.enable",
+      "type": "java.lang.Boolean",
+      "defaultValue": true,
+      "description": "consul discovery 服务是否启用"
+    },
+    {
+      "name": "solon.cloud.consul.discovery.server",
+      "type": "java.lang.String",
+      "defaultValue": "${solon.cloud.consul.server}",
+      "description": "consul discovery 服务地址"
+    },
+    {
+      "name": "solon.cloud.consul.discovery.healthCheckInterval",
+      "type": "java.lang.String",
+      "defaultValue": "5s",
+      "description": "consul discovery 服务健康检测刷新"
+    },
+    {
+      "name": "solon.cloud.consul.discovery.refreshInterval",
+      "type": "java.lang.String",
+      "defaultValue": "5s",
+      "description": "consul discovery 服务发现刷新"
+    }
+  ]
+}

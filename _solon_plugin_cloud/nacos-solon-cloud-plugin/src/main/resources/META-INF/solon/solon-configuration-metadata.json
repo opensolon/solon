@@ -1,0 +1,48 @@
+{
+  "properties": [
+    {
+      "name": "solon.cloud.nacos.server",
+      "type": "java.lang.String",
+      "description": "nacos 服务地址"
+    },
+    {
+      "name": "solon.cloud.nacos.username",
+      "type": "java.lang.String",
+      "description": "nacos 服务连接用户名"
+    },
+    {
+      "name": "solon.cloud.nacos.password",
+      "type": "java.lang.String",
+      "description": "nacos 服务连接密码"
+    },
+    {
+      "name": "solon.cloud.nacos.config.enable",
+      "type": "java.lang.Boolean",
+      "defaultValue": true,
+      "description": "nacos config 服务是否启用"
+    },
+    {
+      "name": "solon.cloud.nacos.config.server",
+      "type": "java.lang.String",
+      "defaultValue": "${solon.cloud.nacos.server}",
+      "description": "nacos config 服务地址"
+    },
+    {
+      "name": "solon.cloud.nacos.config.load",
+      "type": "java.lang.String",
+      "description": "nacos config 服务加载"
+    },
+    {
+      "name": "solon.cloud.nacos.discovery.enable",
+      "type": "java.lang.Boolean",
+      "defaultValue": true,
+      "description": "nacos discovery 服务是否启用"
+    },
+    {
+      "name": "solon.cloud.nacos.discovery.server",
+      "type": "java.lang.String",
+      "defaultValue": "${solon.cloud.nacos.server}",
+      "description": "nacos discovery 服务地址"
+    }
+  ]
+}
