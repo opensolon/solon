@@ -31,7 +31,7 @@ public class ActivemqConsumer {
 		connection = factory.createConnection();
 		connection.start();		
 		//创建会话
-        Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+        Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
         handler = new ActivemqConsumeHandler(observerManger,producer);
         
         //订阅所有主题

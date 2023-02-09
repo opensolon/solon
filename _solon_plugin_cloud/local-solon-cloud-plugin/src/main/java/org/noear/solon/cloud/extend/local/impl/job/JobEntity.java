@@ -154,7 +154,7 @@ class JobEntity extends Thread {
         try {
             runnable.run();
         } catch (Throwable e) {
-            EventBus.push(e);
+            EventBus.pushError(e);
         }
     }
 
@@ -166,7 +166,7 @@ class JobEntity extends Thread {
         try {
             Thread.sleep(sleep);
         } catch (Exception e) {
-            EventBus.push(e);
+            EventBus.pushError(e);
         }
     }
 }

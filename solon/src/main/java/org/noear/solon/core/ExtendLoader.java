@@ -4,7 +4,6 @@ import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.LogUtil;
-import org.noear.solon.core.util.PrintUtil;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -97,7 +96,7 @@ public class ExtendLoader {
 
             return true;
         } catch (Throwable e) {
-            EventBus.push(e);
+            EventBus.pushError(e);
             return false;
         }
     }
@@ -107,7 +106,7 @@ public class ExtendLoader {
             JarClassLoader.global().addJar(file);
             return true;
         } catch (Throwable e) {
-            EventBus.push(e);
+            EventBus.pushError(e);
             return false;
         }
     }
@@ -120,7 +119,7 @@ public class ExtendLoader {
             JarClassLoader.global().removeJar(file);
             return true;
         } catch (Throwable e) {
-            EventBus.push(e);
+            EventBus.pushError(e);
             return false;
         }
     }
@@ -195,7 +194,7 @@ public class ExtendLoader {
                     return;
                 }
             } catch (Throwable e) {
-                EventBus.push(e);
+                EventBus.pushError(e);
             }
         }
     }

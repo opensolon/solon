@@ -154,7 +154,7 @@ public abstract class SessionBase implements Session {
             try {
                 send(message);
             } catch (Throwable e) {
-                EventBus.push(e);
+                EventBus.pushError(e);
             }
         });
     }
@@ -165,7 +165,7 @@ public abstract class SessionBase implements Session {
             try {
                 send(message);
             } catch (Throwable e) {
-                EventBus.push(e);
+                EventBus.pushError(e);
             }
         });
     }

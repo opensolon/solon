@@ -123,7 +123,7 @@ public class TargetClassVisitor extends ClassVisitor {
                 return beans;
             }
         } catch (Exception e) {
-            EventBus.push(e);
+            EventBus.pushError(e);
         }
 
         return null;

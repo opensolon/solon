@@ -3,15 +3,14 @@ package org.noear.solon.view.enjoy;
 import com.jfinal.template.Directive;
 import com.jfinal.template.Engine;
 import com.jfinal.template.Template;
-import com.jfinal.template.source.ClassPathSourceFactory;
 import com.jfinal.template.source.FileSourceFactory;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.JarClassLoader;
 import org.noear.solon.core.event.EventBus;
-import org.noear.solon.core.handle.Render;
-import org.noear.solon.core.handle.ModelAndView;
 import org.noear.solon.core.handle.Context;
+import org.noear.solon.core.handle.ModelAndView;
+import org.noear.solon.core.handle.Render;
 import org.noear.solon.core.util.SupplierEx;
 
 import java.io.ByteArrayOutputStream;
@@ -113,7 +112,7 @@ public class EnjoyRender implements Render {
             //通过事件扩展
             EventBus.push(provider_debug);
         } catch (Exception e) {
-            EventBus.push(e);
+            EventBus.pushError(e);
         }
     }
 
@@ -132,7 +131,7 @@ public class EnjoyRender implements Render {
             //通过事件扩展
             EventBus.push(provider);
         } catch (Exception e) {
-            EventBus.push(e);
+            EventBus.pushError(e);
         }
     }
 
@@ -147,7 +146,7 @@ public class EnjoyRender implements Render {
                 provider_debug.addDirective(name, clz);
             }
         } catch (Exception e) {
-            EventBus.push(e);
+            EventBus.pushError(e);
         }
     }
 
@@ -162,7 +161,7 @@ public class EnjoyRender implements Render {
                 provider_debug.addSharedObject(name, value);
             }
         } catch (Exception e) {
-            EventBus.push(e);
+            EventBus.pushError(e);
         }
     }
     
@@ -177,7 +176,7 @@ public class EnjoyRender implements Render {
                 provider_debug.addSharedFunction(path);
             }
         } catch (Exception e) {
-            EventBus.push(e);
+            EventBus.pushError(e);
         }
     }
 

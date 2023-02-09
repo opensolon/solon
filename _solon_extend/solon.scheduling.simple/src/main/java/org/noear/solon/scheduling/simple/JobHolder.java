@@ -163,7 +163,7 @@ public class JobHolder extends Thread {
         try {
             runnable.run();
         } catch (Throwable e) {
-            EventBus.push(e);
+            EventBus.pushError(e);
         }
     }
 
@@ -175,7 +175,7 @@ public class JobHolder extends Thread {
         try {
             Thread.sleep(millis);
         } catch (Throwable e) {
-            EventBus.push(e);
+            EventBus.pushError(e);
         }
     }
 }

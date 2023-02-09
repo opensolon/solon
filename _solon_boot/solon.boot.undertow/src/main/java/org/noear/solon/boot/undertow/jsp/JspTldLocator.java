@@ -1,6 +1,22 @@
 package org.noear.solon.boot.undertow.jsp;
 
 
+import org.apache.jasper.deploy.*;
+import org.jboss.annotation.javaee.Icon;
+import org.jboss.metadata.javaee.spec.DescriptionGroupMetaData;
+import org.jboss.metadata.javaee.spec.ParamValueMetaData;
+import org.jboss.metadata.parser.jsp.TldMetaDataParser;
+import org.jboss.metadata.parser.util.NoopXMLResolver;
+import org.jboss.metadata.web.spec.*;
+import org.noear.solon.Solon;
+import org.noear.solon.Utils;
+import org.noear.solon.core.JarClassLoader;
+import org.noear.solon.core.event.EventBus;
+import org.noear.solon.core.util.ScanUtil;
+import org.noear.solon.core.util.SupplierEx;
+
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
@@ -12,34 +28,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
-
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamReader;
-
-import org.apache.jasper.deploy.FunctionInfo;
-import org.apache.jasper.deploy.TagAttributeInfo;
-import org.apache.jasper.deploy.TagFileInfo;
-import org.apache.jasper.deploy.TagInfo;
-import org.apache.jasper.deploy.TagLibraryInfo;
-import org.apache.jasper.deploy.TagLibraryValidatorInfo;
-import org.apache.jasper.deploy.TagVariableInfo;
-import org.jboss.annotation.javaee.Icon;
-import org.jboss.metadata.javaee.spec.DescriptionGroupMetaData;
-import org.jboss.metadata.javaee.spec.ParamValueMetaData;
-import org.jboss.metadata.parser.jsp.TldMetaDataParser;
-import org.jboss.metadata.parser.util.NoopXMLResolver;
-import org.jboss.metadata.web.spec.AttributeMetaData;
-import org.jboss.metadata.web.spec.FunctionMetaData;
-import org.jboss.metadata.web.spec.TagFileMetaData;
-import org.jboss.metadata.web.spec.TagMetaData;
-import org.jboss.metadata.web.spec.TldMetaData;
-import org.jboss.metadata.web.spec.VariableMetaData;
-import org.noear.solon.Solon;
-import org.noear.solon.Utils;
-import org.noear.solon.core.JarClassLoader;
-import org.noear.solon.core.event.EventBus;
-import org.noear.solon.core.util.ScanUtil;
-import org.noear.solon.core.util.SupplierEx;
 
 /**
  * Jsp Tld 定位器
@@ -72,7 +60,7 @@ public class JspTldLocator {
                         }
                     }
                 } catch (Throwable e) {
-                    EventBus.push(e);
+                    EventBus.pushError(e);
                 }
             }
         }
@@ -84,7 +72,7 @@ public class JspTldLocator {
                 loadTagLibraryInfo(tagLibInfos, () -> Utils.getResource(uri).openStream());
             });
         } catch (Throwable e) {
-            EventBus.push(e);
+            EventBus.pushError(e);
         }
 
         return tagLibInfos;
@@ -140,7 +128,7 @@ public class JspTldLocator {
             }
 
         } catch (Throwable e) {
-            EventBus.push(e);
+            EventBus.pushError(e);
         } finally {
             try {
                 if (is != null) {

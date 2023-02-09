@@ -1,11 +1,10 @@
 package org.noear.solon.boot.jlhttp;
 
+import org.noear.solon.Utils;
 import org.noear.solon.boot.web.ContextBase;
 import org.noear.solon.boot.web.RedirectUtils;
 import org.noear.solon.core.NvMap;
-import org.noear.solon.Utils;
 import org.noear.solon.core.event.EventBus;
-import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.UploadedFile;
 
 import java.io.ByteArrayOutputStream;
@@ -127,7 +126,7 @@ public class JlHttpContext extends ContextBase {
         try {
             return _request.getBody().available();
         } catch (Exception e) {
-            EventBus.push(e);
+            EventBus.pushError(e);
             return 0;
         }
     }
@@ -176,7 +175,7 @@ public class JlHttpContext extends ContextBase {
                 return temp;
             }
         } catch (Exception e) {
-            EventBus.push(e);
+            EventBus.pushError(e);
 
             return def;
         }
@@ -223,7 +222,7 @@ public class JlHttpContext extends ContextBase {
                     list.add(kv[1]);
                 }
             } catch (Exception e) {
-                EventBus.push(e);
+                EventBus.pushError(e);
                 return null;
             }
         }

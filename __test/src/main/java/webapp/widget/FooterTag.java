@@ -13,7 +13,7 @@ public class FooterTag extends TagSupport {
             sb.append("<div>").append("你好 world!").append("</div>");
             pageContext.getOut().write(sb.toString());
         } catch (Exception e) {
-            EventBus.push(e);
+            EventBus.pushError(e);
         }
 
         return super.doStartTag();

@@ -152,7 +152,7 @@ public class Solon {
         } catch (Throwable e) {
             //显示异常信息
             e = Utils.throwableUnwrap(e);
-            EventBus.push(e);
+            EventBus.pushError(e);
 
             if (app.enableErrorAutoprint() == false) {
                 e.printStackTrace();

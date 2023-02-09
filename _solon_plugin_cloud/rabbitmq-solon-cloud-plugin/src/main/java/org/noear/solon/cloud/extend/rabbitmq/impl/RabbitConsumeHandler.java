@@ -62,7 +62,7 @@ public class RabbitConsumeHandler extends DefaultConsumer {
         } catch (Throwable e) {
             e = Utils.throwableUnwrap(e);
 
-            EventBus.push(e);
+            EventBus.pushError(e);
 
             if (e instanceof RuntimeException) {
                 throw (RuntimeException) e;
@@ -74,11 +74,14 @@ public class RabbitConsumeHandler extends DefaultConsumer {
         }
     }
 
+    /**
+     * 处理接收事件（会吃掉异常）
+     * */
     private boolean onReceive(Event event) throws Throwable {
         try {
             return onReceiveDo(event);
         } catch (Throwable e) {
-            EventBus.push(e);
+            EventBus.pushError(e);
             return false;
         }
     }

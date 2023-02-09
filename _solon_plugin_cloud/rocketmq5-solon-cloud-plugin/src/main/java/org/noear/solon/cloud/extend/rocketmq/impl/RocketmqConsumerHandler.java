@@ -59,7 +59,7 @@ public class RocketmqConsumerHandler implements MessageListener {
 
         } catch (Throwable e) {
             isOk = false;
-            EventBus.push(e);
+            EventBus.pushError(e);
         }
 
         if (isOk) {

@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.jms.Message;
 import javax.jms.MessageListener;
+import javax.jms.Session;
 
 /**
  * @author liuxuehua12
@@ -22,12 +23,12 @@ public class ActivemqConsumeHandler implements MessageListener {
     static Logger log = LoggerFactory.getLogger(ActivemqConsumeHandler.class);
 
     private CloudEventObserverManger observerManger;
-    private ActivemqProducer producer;
+    private Session session;
 
-    public ActivemqConsumeHandler(CloudEventObserverManger observerManger, ActivemqProducer producer) {
+    public ActivemqConsumeHandler(CloudEventObserverManger observerManger, Session session) {
         super();
         this.observerManger = observerManger;
-        this.producer = producer;
+        this.session = session;
     }
 
     @Override
@@ -42,11 +43,13 @@ public class ActivemqConsumeHandler implements MessageListener {
 
             if(isOk){
                 textmsg.acknowledge();
+            }else{
+                session.recover();
             }
         } catch (Throwable e) {
-            //log.error("onMessage error:"+e.getMessage(),e);
             e = Utils.throwableUnwrap(e);
-            EventBus.push(e);
+            EventBus.pushError(e);
+
             if (e instanceof RuntimeException) {
                 throw (RuntimeException) e;
             } else {
@@ -56,9 +59,21 @@ public class ActivemqConsumeHandler implements MessageListener {
     }
 
     /**
-     * 处理接收事件（不会吃掉异常）
-     */
+     * 处理接收事件（会吃掉异常）
+     * */
     private boolean onReceive(Event event) throws Throwable {
+        try {
+            return onReceiveDo(event);
+        } catch (Throwable e) {
+            EventBus.pushError(e);
+            return false;
+        }
+    }
+
+    /**
+     * 处理接收事件
+     */
+    private boolean onReceiveDo(Event event) throws Throwable {
         boolean isOk = true;
         CloudEventHandler handler = null;
 

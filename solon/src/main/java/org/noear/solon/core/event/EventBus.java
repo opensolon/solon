@@ -1,11 +1,12 @@
 package org.noear.solon.core.event;
 
 import org.noear.solon.Solon;
-import org.noear.solon.Utils;
 import org.noear.solon.core.exception.EventException;
 import org.noear.solon.core.util.RunUtil;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 监听器（内部类，外部不要使用）
@@ -51,6 +52,16 @@ public final class EventBus {
                 } else {
                     throw new EventException("Event execution failed: " + event.getClass().getName(), e);
                 }
+            }
+        }
+    }
+
+    public static void pushError(Throwable event) {
+        if (event != null) {
+            try {
+                push0(event);
+            } catch (Throwable e) {
+                //不再转发异常，免得死循环
             }
         }
     }

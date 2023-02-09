@@ -130,7 +130,7 @@ public final class XPluginImp implements Plugin {
                     params.setSSLParameters(defaultSSLParameters);
                 } catch (Throwable e) {
                     //"Failed to create HTTPS port"
-                    EventBus.push(e);
+                    EventBus.pushError(e);
                 }
             }
         });

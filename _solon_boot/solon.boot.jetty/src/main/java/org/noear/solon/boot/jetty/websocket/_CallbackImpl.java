@@ -12,7 +12,7 @@ class _CallbackImpl implements WriteCallback {
 
     @Override
     public void writeFailed(Throwable e) {
-        EventBus.push(e);
+        EventBus.pushError(e);
     }
 
     @Override

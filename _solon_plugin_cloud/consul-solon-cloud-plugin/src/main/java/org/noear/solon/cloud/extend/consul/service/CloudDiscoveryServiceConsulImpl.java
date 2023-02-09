@@ -170,7 +170,7 @@ public class CloudDiscoveryServiceConsulImpl extends TimerTask implements CloudD
         try {
             run0();
         } catch (Throwable e) {
-            EventBus.push(e);
+            EventBus.pushError(e);
         }
     }
 
