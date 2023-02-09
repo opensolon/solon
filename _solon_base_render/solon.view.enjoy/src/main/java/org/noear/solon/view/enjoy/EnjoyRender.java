@@ -50,6 +50,7 @@ public class EnjoyRender implements Render {
     public EnjoyRender() {
         this(JarClassLoader.global());
     }
+
     public EnjoyRender(ClassLoader classLoader) {
         this.classLoader = classLoader;
 
@@ -72,17 +73,17 @@ public class EnjoyRender implements Render {
     }
 
     private void forDebug() {
-        if(Solon.cfg().isDebugMode() == false) {
+        if (Solon.cfg().isDebugMode() == false) {
             return;
         }
 
-        if(provider_debug != null){
+        if (provider_debug != null) {
             return;
         }
 
         //添加调试模式
         URL rooturi = Utils.getResource("/");
-        if(rooturi == null){
+        if (rooturi == null) {
             return;
         }
 
@@ -117,7 +118,7 @@ public class EnjoyRender implements Render {
     }
 
     private void forRelease() {
-        if(provider != null){
+        if (provider != null) {
             return;
         }
 
@@ -137,12 +138,12 @@ public class EnjoyRender implements Render {
 
     /**
      * 添加共享指令（自定义标签）
-     * */
+     */
     public void putDirective(String name, Class<? extends Directive> clz) {
         try {
             provider.addDirective(name, clz);
 
-            if(provider_debug != null){
+            if (provider_debug != null) {
                 provider_debug.addDirective(name, clz);
             }
         } catch (Exception e) {
@@ -152,27 +153,27 @@ public class EnjoyRender implements Render {
 
     /**
      * 添加共享变量
-     * */
+     */
     public void putVariable(String name, Object value) {
         try {
             provider.addSharedObject(name, value);
 
-            if(provider_debug != null){
+            if (provider_debug != null) {
                 provider_debug.addSharedObject(name, value);
             }
         } catch (Exception e) {
             EventBus.pushTry(e);
         }
     }
-    
+
     /**
      * 添加共享模板函数
-     * */
+     */
     public void putFunction(String path) {
         try {
             provider.addSharedFunction(path);
 
-            if(provider_debug != null){
+            if (provider_debug != null) {
                 provider_debug.addSharedFunction(path);
             }
         } catch (Exception e) {
@@ -220,13 +221,15 @@ public class EnjoyRender implements Render {
 
         Template template = null;
 
-        if(provider_debug != null) {
-            if (provider_debug.getEngineConfig().getDirective(mv.view()) != null) {
+        if (provider_debug != null) {
+            try {
                 template = provider_debug.getTemplate(mv.view());
+            } catch (Exception e) {
+                //忽略不计
             }
         }
 
-        if(template == null) {
+        if (template == null) {
             template = provider.getTemplate(mv.view());
         }
 

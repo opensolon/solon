@@ -22,6 +22,7 @@
 * 增加 配置元信息 solon-configuration-metadata.json 规范与支持
 * 增加 EventBus.pushTry 接口
 * 增加 solon.view.beetl 对 -debug=1 的支持
+* 增加 solon.view.enjoy 对 -debug=1 的支持
 * 优化 安全停止与延时的配置(增加新的启动参数：stop.safe,和应用配置：solon.stop.safe)
 
 

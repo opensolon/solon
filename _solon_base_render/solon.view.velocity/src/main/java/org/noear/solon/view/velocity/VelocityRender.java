@@ -215,7 +215,7 @@ public class VelocityRender implements Render {
             try {
                 template = provider_debug.getTemplate(view, Solon.encoding());
             } catch (ResourceNotFoundException ex) {
-                //忽略此异常
+                //忽略不计
             }
         }
 

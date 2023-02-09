@@ -211,9 +211,13 @@ public class BeetlRender implements Render {
         Template template = null;
 
         if (provider_debug != null) {
-            template = provider_debug.getTemplate(mv.view());
-            if (template != null && template.program instanceof ErrorGrammarProgram) {
-                template = null;
+            try {
+                template = provider_debug.getTemplate(mv.view());
+                if (template != null && template.program instanceof ErrorGrammarProgram) {
+                    template = null;
+                }
+            }catch (Exception e){
+                //忽略不计
             }
         }
 
