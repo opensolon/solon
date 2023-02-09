@@ -1,6 +1,7 @@
 package org.noear.solon.cloud.extend.activemq.service;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
+import org.apache.activemq.RedeliveryPolicy;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudEventHandler;
 import org.noear.solon.cloud.CloudProps;
@@ -38,6 +39,16 @@ public class CloudEventServiceActivemqImp implements CloudEventServicePlus {
         } else {
             factory = new ActiveMQConnectionFactory(username, password, brokerUrl);
         }
+
+        //增加自动重发策略
+        RedeliveryPolicy redeliveryPolicy = new RedeliveryPolicy();
+        redeliveryPolicy.setInitialRedeliveryDelay(5000);//5s
+        redeliveryPolicy.setBackOffMultiplier(2);
+        redeliveryPolicy.setUseExponentialBackOff(true);
+        redeliveryPolicy.setMaximumRedeliveries(-1);//不限次
+        redeliveryPolicy.setMaximumRedeliveryDelay(1000 * 60 * 60 *2);//2小时
+
+        factory.setRedeliveryPolicy(redeliveryPolicy);
 
         producer = new ActivemqProducer(factory);
         consumer = new ActivemqConsumer(factory, producer);
