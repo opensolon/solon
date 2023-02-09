@@ -123,6 +123,11 @@
       "type": "java.lang.Integer",
       "defaultValue": 0,
       "description": "应用是否输出元信息"
+    },
+    {
+      "name": "solon.env",
+      "type": "java.lang.String",
+      "description": "应用环境配置"
     }
   ]
 }
