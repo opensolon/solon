@@ -1,6 +1,5 @@
 package org.noear.solon.cloud;
 
-import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Props;
@@ -36,10 +35,10 @@ public class CloudProps {
     private String DISCOVERY_ENABLE = "solon.cloud.@@.discovery.enable";
     private String DISCOVERY_SERVER = "solon.cloud.@@.discovery.server";
     private String DISCOVERY_TAGS = "solon.cloud.@@.discovery.tags";
-    private String DISCOVERY_UNSTABLE = "solon.cloud.@@.discovery.unstable";
-    private String DISCOVERY_HEALTH_CHECK_PATH = "solon.cloud.@@.discovery.healthCheckPath";
+    //private String DISCOVERY_UNSTABLE = "solon.cloud.@@.discovery.unstable";
+    //private String DISCOVERY_HEALTH_CHECK_PATH = "solon.cloud.@@.discovery.healthCheckPath";
     private String DISCOVERY_HEALTH_CHECK_INTERVAL = "solon.cloud.@@.discovery.healthCheckInterval";
-    private String DISCOVERY_HEALTH_DETECTOR = "solon.cloud.@@.discovery.healthDetector";
+    //private String DISCOVERY_HEALTH_DETECTOR = "solon.cloud.@@.discovery.healthDetector";
     private String DISCOVERY_REFRESH_INTERVAL = "solon.cloud.@@.discovery.refreshInterval";
 
     //事件总线服务相关
@@ -124,10 +123,10 @@ public class CloudProps {
         DISCOVERY_ENABLE = DISCOVERY_ENABLE.replace("@@", frame);
         DISCOVERY_SERVER = DISCOVERY_SERVER.replace("@@", frame);
         DISCOVERY_TAGS = DISCOVERY_TAGS.replace("@@", frame);
-        DISCOVERY_UNSTABLE = DISCOVERY_UNSTABLE.replace("@@", frame);
-        DISCOVERY_HEALTH_CHECK_PATH = DISCOVERY_HEALTH_CHECK_PATH.replace("@@", frame);
+        //DISCOVERY_UNSTABLE = DISCOVERY_UNSTABLE.replace("@@", frame);
+        //DISCOVERY_HEALTH_CHECK_PATH = DISCOVERY_HEALTH_CHECK_PATH.replace("@@", frame);
         DISCOVERY_HEALTH_CHECK_INTERVAL = DISCOVERY_HEALTH_CHECK_INTERVAL.replace("@@", frame);
-        DISCOVERY_HEALTH_DETECTOR = DISCOVERY_HEALTH_DETECTOR.replace("@@", frame);
+        //DISCOVERY_HEALTH_DETECTOR = DISCOVERY_HEALTH_DETECTOR.replace("@@", frame);
         DISCOVERY_REFRESH_INTERVAL = DISCOVERY_REFRESH_INTERVAL.replace("@@", frame);
 
         EVENT_ENABLE = EVENT_ENABLE.replace("@@", frame);
@@ -246,13 +245,15 @@ public class CloudProps {
     }
 
 
+    @Deprecated
     public String getDiscoveryTags() {
         return aopContext.cfg().get(DISCOVERY_TAGS);
     }
 
-    public boolean getDiscoveryUnstable() {
-        return aopContext.cfg().getBool(DISCOVERY_UNSTABLE, false);
-    }
+//    @Deprecated
+//    public boolean getDiscoveryUnstable() {
+//        return Solon.cfg().isDriftMode(); //aopContext.cfg().getBool(DISCOVERY_UNSTABLE, false);
+//    }
 
     public String getDiscoveryHealthCheckInterval(String def) {
         return aopContext.cfg().get(DISCOVERY_HEALTH_CHECK_INTERVAL, def); //def:5s

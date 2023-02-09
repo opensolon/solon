@@ -33,8 +33,7 @@ public class CloudDiscoveryServiceWaterImp extends TimerTask implements CloudDis
     boolean unstable;
 
     public CloudDiscoveryServiceWaterImp(CloudProps cloudProps) {
-        unstable = cloudProps.getDiscoveryUnstable()
-                || Solon.cfg().isFilesMode()
+        unstable = Solon.cfg().isFilesMode()
                 || Solon.cfg().isDriftMode();
         //checkPathDefault = WaterProps.instance.getDiscoveryHealthCheckPath();
         alarmMobile =cloudProps.getAlarm();

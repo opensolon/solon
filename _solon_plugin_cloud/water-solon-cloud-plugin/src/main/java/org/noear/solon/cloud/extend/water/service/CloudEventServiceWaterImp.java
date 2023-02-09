@@ -37,8 +37,7 @@ public class CloudEventServiceWaterImp implements CloudEventServicePlus {
     public CloudEventServiceWaterImp(CloudProps cloudProps) {
         this.cloudProps = cloudProps;
 
-        this.unstable = cloudProps.getDiscoveryUnstable()
-                || Solon.cfg().isFilesMode()
+        this.unstable = Solon.cfg().isFilesMode()
                 || Solon.cfg().isDriftMode();
 
         this.eventChannelName = cloudProps.getEventChannel();
