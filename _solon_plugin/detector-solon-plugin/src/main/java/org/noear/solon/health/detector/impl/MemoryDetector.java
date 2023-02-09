@@ -1,6 +1,7 @@
-package org.noear.solon.extend.health.detector;
+package org.noear.solon.health.detector.impl;
 
 import com.sun.management.OperatingSystemMXBean;
+import org.noear.solon.health.detector.AbstractDetector;
 
 import java.lang.management.ManagementFactory;
 import java.util.LinkedHashMap;

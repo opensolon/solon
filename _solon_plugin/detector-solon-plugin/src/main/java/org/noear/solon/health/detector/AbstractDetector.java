@@ -1,4 +1,4 @@
-package org.noear.solon.extend.health.detector;
+package org.noear.solon.health.detector;
 
 import org.noear.solon.Utils;
 
@@ -11,6 +11,13 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+
+/**
+ * 检测器虚拟类
+ *
+ * @author noear
+ * @since 1.5
+ * */
 public abstract class AbstractDetector implements Detector{
     public static final long ONE_KB = 1024L;
     public static final long ONE_MB = 1048576L;

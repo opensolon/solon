@@ -1,4 +1,6 @@
-package org.noear.solon.extend.health.detector;
+package org.noear.solon.health.detector.impl;
+
+import org.noear.solon.health.detector.AbstractDetector;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
