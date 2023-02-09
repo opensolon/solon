@@ -5,6 +5,7 @@ import org.beetl.core.GroupTemplate;
 import org.beetl.core.Template;
 import org.beetl.core.resource.ClasspathResourceLoader;
 import org.beetl.core.resource.FileResourceLoader;
+import org.beetl.core.statement.ErrorGrammarProgram;
 import org.beetl.core.tag.Tag;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
@@ -49,7 +50,7 @@ public class BeetlRender implements Render {
 
     //不要要入参，方便后面多视图混用
     //
-    public BeetlRender(){
+    public BeetlRender() {
         this(JarClassLoader.global());
     }
 
@@ -82,7 +83,7 @@ public class BeetlRender implements Render {
     }
 
     private void forDebug() {
-        if(Solon.cfg().isDebugMode() == false) {
+        if (Solon.cfg().isDebugMode() == false) {
             return;
         }
 
@@ -141,7 +142,7 @@ public class BeetlRender implements Render {
 
     /**
      * 添加共享指令（自定义标签）
-     * */
+     */
     public void putDirective(String name, Class<? extends Tag> clz) {
         try {
             provider.registerTag(name, clz);
@@ -156,7 +157,7 @@ public class BeetlRender implements Render {
 
     /**
      * 添加共享变量
-     * */
+     */
     public void putVariable(String name, Object value) {
         try {
             provider.getSharedVars().put(name, value);
@@ -210,8 +211,9 @@ public class BeetlRender implements Render {
         Template template = null;
 
         if (provider_debug != null) {
-            if (provider_debug.hasTemplate(mv.view())) {
-                template = provider_debug.getTemplate(mv.view());
+            template = provider_debug.getTemplate(mv.view());
+            if (template != null && template.program instanceof ErrorGrammarProgram) {
+                template = null;
             }
         }
 
