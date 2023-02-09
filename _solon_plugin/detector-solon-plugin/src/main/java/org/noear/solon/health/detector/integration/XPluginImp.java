@@ -43,7 +43,12 @@ public class XPluginImp implements Plugin {
             DetectorManager.add(detector);
         });
 
+        context.beanOnloaded((x) -> {
+            onLoaded(detectorNames);
+        });
+    }
 
+    private void onLoaded(Set<String> detectorNames) {
         for (String name : detectorNames) {
             if ("*".equals(name)) {
                 for (Detector detector : DetectorManager.all()) {

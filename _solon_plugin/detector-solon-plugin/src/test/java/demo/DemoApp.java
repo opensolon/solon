@@ -4,6 +4,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.health.detector.Detector;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -19,11 +20,11 @@ public class DemoApp implements Detector {
 
     @Override
     public String getName() {
-        return null;
+        return "test";
     }
 
     @Override
     public Map<String, Object> getInfo() {
-        return null;
+        return new LinkedHashMap<>();
     }
 }
