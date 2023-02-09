@@ -1,19 +1,18 @@
 package org.noear.solon.cloud.extend.activemq.impl;
 
+import org.apache.activemq.command.ActiveMQTextMessage;
 import org.noear.snack.ONode;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudEventHandler;
 import org.noear.solon.cloud.extend.activemq.ActivemqProps;
 import org.noear.solon.cloud.model.Event;
 import org.noear.solon.cloud.service.CloudEventObserverManger;
-import org.noear.solon.cloud.utils.ExpirationUtils;
 import org.noear.solon.core.event.EventBus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.jms.Message;
 import javax.jms.MessageListener;
-import javax.jms.TextMessage;
 
 /**
  * @author liuxuehua12
@@ -33,20 +32,13 @@ public class ActivemqConsumeHandler implements MessageListener {
 
     @Override
     public void onMessage(Message message) {
-        TextMessage textmsg = (TextMessage) message;
+        ActiveMQTextMessage textmsg = (ActiveMQTextMessage) message;
         try {
             Event event = ONode.deserialize(textmsg.getText(), Event.class);
+            event.times(textmsg.getRedeliveryCounter());
 
+            //已设置自动延时策略
             boolean isOk = onReceive(event);
-
-            if (isOk == false) {
-                event.times(event.times() + 1);
-                try {
-                    isOk = producer.publish(event, getTopicNew(event), ExpirationUtils.getExpiration(event.times()));
-                } catch (Throwable ex) {
-                    //log.error("re public error:"+ex.getMessage(),ex);
-                }
-            }
 
             if(isOk){
                 textmsg.acknowledge();
@@ -64,7 +56,7 @@ public class ActivemqConsumeHandler implements MessageListener {
     }
 
     /**
-     * 处理接收事件
+     * 处理接收事件（不会吃掉异常）
      */
     private boolean onReceive(Event event) throws Throwable {
         boolean isOk = true;
