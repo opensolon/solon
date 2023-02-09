@@ -5,7 +5,6 @@ import org.apache.rocketmq.client.apis.consumer.MessageListener;
 import org.apache.rocketmq.client.apis.message.MessageView;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudEventHandler;
-import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.extend.rocketmq.RocketmqProps;
 import org.noear.solon.cloud.model.Event;
 import org.noear.solon.cloud.service.CloudEventObserverManger;
@@ -59,7 +58,7 @@ public class RocketmqConsumerHandler implements MessageListener {
 
         } catch (Throwable e) {
             isOk = false;
-            EventBus.pushError(e);
+            EventBus.pushTry(e);
         }
 
         if (isOk) {

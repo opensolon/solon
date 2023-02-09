@@ -48,7 +48,7 @@ public class ActivemqConsumeHandler implements MessageListener {
             }
         } catch (Throwable e) {
             e = Utils.throwableUnwrap(e);
-            EventBus.pushError(e);
+            EventBus.pushTry(e);
 
             if (e instanceof RuntimeException) {
                 throw (RuntimeException) e;
@@ -65,7 +65,7 @@ public class ActivemqConsumeHandler implements MessageListener {
         try {
             return onReceiveDo(event);
         } catch (Throwable e) {
-            EventBus.pushError(e);
+            EventBus.pushTry(e);
             return false;
         }
     }

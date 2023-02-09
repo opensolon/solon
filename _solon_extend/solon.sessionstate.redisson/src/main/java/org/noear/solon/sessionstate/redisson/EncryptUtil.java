@@ -29,7 +29,7 @@ class EncryptUtil {
         try {
             return do_hashEncode("MD5", bytes);
         }catch (Exception e){
-            EventBus.pushError(e);
+            EventBus.pushTry(e);
             return null;
         }
     }
@@ -40,7 +40,7 @@ class EncryptUtil {
             byte[] btInput = cleanData.getBytes(chaerset);
             return do_hashEncode(algorithm,btInput);
         } catch (Exception e) {
-            EventBus.pushError(e);
+            EventBus.pushTry(e);
             return null;
         }
     }

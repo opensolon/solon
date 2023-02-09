@@ -9,7 +9,7 @@
 * 提醒1：之前没有使用弃用接口的，可以直接升级 <br>
 * 提醒2：有使用弃用接口的。建议先升级到 1.12.4；替换弃用代码后，再升级到 2.0.0
 
-### v2.0.1
+### v2.1.0
 * 新增 activemq-solon-cloud-plugin 插件
 * 新增 solon.logging.log4j2（复制于 log4j2-solon-plugin）
 * 新增 solon.logging.logback（复制于 logback-solon-plugin）
@@ -20,6 +20,7 @@
 * 增加 @Condition 注解
 * 增加 配置元信息 solon-configuration-metadata.json 规范与支持
 * 增加 EventBus.pushError 接口
+* 增加 AppPrestopEndEvent，AppPrestopEndEvent 事件
 * 优化 安全停止与延时的配置(增加新的启动参数：stop.safe,和应用配置：solon.stop.safe)
 
 

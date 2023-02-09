@@ -57,7 +57,7 @@ public class XPluginImp implements Plugin {
             context.beanInjectorAdd(Db.class, new DbInjector());
         } catch (Exception e) {
             //e.printStackTrace();
-            EventBus.pushError(e); //转到事件总线
+            EventBus.pushTry(e); //转到事件总线
         }
     }
 

@@ -51,7 +51,7 @@ public class UtWsChannelListener extends AbstractReceiveListener {
             }
 
         } catch (Throwable e) {
-            EventBus.pushError(e);
+            EventBus.pushTry(e);
         }
     }
 

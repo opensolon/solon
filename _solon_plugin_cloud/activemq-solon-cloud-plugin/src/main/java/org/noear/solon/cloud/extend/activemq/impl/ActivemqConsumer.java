@@ -17,36 +17,36 @@ public class ActivemqConsumer {
 	private ActivemqProducer producer;
 	private Connection connection;
 	private ActivemqConsumeHandler handler;
-	
-	public ActivemqConsumer(ActiveMQConnectionFactory factory,ActivemqProducer producer){
+
+	public ActivemqConsumer(ActiveMQConnectionFactory factory, ActivemqProducer producer) {
 		this.factory = factory;
-		this.producer= producer;
+		this.producer = producer;
 	}
-	
-	public void init(CloudEventObserverManger observerManger) throws JMSException{
-		if(connection != null){
+
+	public void init(CloudEventObserverManger observerManger) throws JMSException {
+		if (connection != null) {
 			return;
 		}
 
 		connection = factory.createConnection();
-		connection.start();		
+		connection.start();
 		//创建会话
-        Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
-        handler = new ActivemqConsumeHandler(observerManger,producer);
-        
-        //订阅所有主题
-        for (String topic : observerManger.topicAll()) {
-	        //创建一个目标
-	        Destination destination = session.createTopic(topic);
-	        //创建一个消费者
-	        MessageConsumer consumer = session.createConsumer(destination);
-	        
-	        consumer.setMessageListener(handler);
-        }
+		Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
+		handler = new ActivemqConsumeHandler(observerManger, session);
+
+		//订阅所有主题
+		for (String topic : observerManger.topicAll()) {
+			//创建一个目标
+			Destination destination = session.createTopic(topic);
+			//创建一个消费者
+			MessageConsumer consumer = session.createConsumer(destination);
+
+			consumer.setMessageListener(handler);
+		}
 	}
-	
-	public void close() throws JMSException{
-		if(connection != null){
+
+	public void close() throws JMSException {
+		if (connection != null) {
 			connection.close();
 		}
 	}

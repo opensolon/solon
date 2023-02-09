@@ -126,7 +126,7 @@ public class JlHttpContext extends ContextBase {
         try {
             return _request.getBody().available();
         } catch (Exception e) {
-            EventBus.pushError(e);
+            EventBus.pushTry(e);
             return 0;
         }
     }
@@ -175,7 +175,7 @@ public class JlHttpContext extends ContextBase {
                 return temp;
             }
         } catch (Exception e) {
-            EventBus.pushError(e);
+            EventBus.pushTry(e);
 
             return def;
         }
@@ -222,7 +222,7 @@ public class JlHttpContext extends ContextBase {
                     list.add(kv[1]);
                 }
             } catch (Exception e) {
-                EventBus.pushError(e);
+                EventBus.pushTry(e);
                 return null;
             }
         }

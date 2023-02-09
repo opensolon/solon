@@ -129,7 +129,7 @@ public class JdkHttpContext extends ContextBase {
         try {
             return bodyAsStream().available();
         } catch (Exception e) {
-            EventBus.pushError(e);
+            EventBus.pushTry(e);
             return 0;
         }
     }
@@ -179,7 +179,7 @@ public class JdkHttpContext extends ContextBase {
                 return temp;
             }
         } catch (Exception e) {
-            EventBus.pushError(e);
+            EventBus.pushTry(e);
             return def;
         }
     }

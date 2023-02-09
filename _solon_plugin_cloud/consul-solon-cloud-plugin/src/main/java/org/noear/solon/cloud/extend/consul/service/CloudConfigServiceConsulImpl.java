@@ -145,7 +145,7 @@ public class CloudConfigServiceConsulImpl extends TimerTask implements CloudConf
         try {
             run0();
         } catch (Throwable e) {
-            EventBus.pushError(e);
+            EventBus.pushTry(e);
         }
     }
 

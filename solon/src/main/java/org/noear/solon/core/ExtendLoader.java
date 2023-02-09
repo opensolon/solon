@@ -96,7 +96,7 @@ public class ExtendLoader {
 
             return true;
         } catch (Throwable e) {
-            EventBus.pushError(e);
+            EventBus.pushTry(e);
             return false;
         }
     }
@@ -106,7 +106,7 @@ public class ExtendLoader {
             JarClassLoader.global().addJar(file);
             return true;
         } catch (Throwable e) {
-            EventBus.pushError(e);
+            EventBus.pushTry(e);
             return false;
         }
     }
@@ -119,7 +119,7 @@ public class ExtendLoader {
             JarClassLoader.global().removeJar(file);
             return true;
         } catch (Throwable e) {
-            EventBus.pushError(e);
+            EventBus.pushTry(e);
             return false;
         }
     }
@@ -194,7 +194,7 @@ public class ExtendLoader {
                     return;
                 }
             } catch (Throwable e) {
-                EventBus.pushError(e);
+                EventBus.pushTry(e);
             }
         }
     }

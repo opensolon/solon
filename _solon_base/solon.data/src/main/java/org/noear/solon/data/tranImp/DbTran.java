@@ -104,7 +104,7 @@ public abstract class DbTran extends DbTranNode implements TranNode {
                     //
                 }
             } catch (Throwable e) {
-                EventBus.pushError(e);
+                EventBus.pushTry(e);
             }
         }
     }

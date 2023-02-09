@@ -66,7 +66,7 @@ public class JtResouceLoaderFile implements JtResouceLoader {
                 try {
                     return Utils.transferToString(new FileInputStream(file), Solon.encoding());
                 } catch (IOException e) {
-                    EventBus.pushError(e);
+                    EventBus.pushTry(e);
                     return null;
                 }
             } else {

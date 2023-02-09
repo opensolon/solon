@@ -125,7 +125,7 @@ public class CloudEventServiceKafkaImp implements CloudEventServicePlus {
             } catch (EOFException e) {
                 break;
             } catch (Throwable e) {
-                EventBus.pushError(e);
+                EventBus.pushTry(e);
             }
         }
     }

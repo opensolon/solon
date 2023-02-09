@@ -54,7 +54,7 @@ public abstract class DbTranNode implements TranNode {
             try {
                 n1.rollback();
             } catch (Throwable e) {
-                EventBus.pushError(e);
+                EventBus.pushTry(e);
             }
         }
     }
@@ -69,7 +69,7 @@ public abstract class DbTranNode implements TranNode {
             try {
                 n1.close();
             } catch (Throwable e) {
-                EventBus.pushError(e);
+                EventBus.pushTry(e);
             }
         }
     }

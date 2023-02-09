@@ -38,11 +38,11 @@ public final class EventBus {
     }
 
     /**
-     * 同步推送事件（不具有事务回滚传导性；异常会内部吃掉）
+     * 同步推送事件（会抛异常，可传导事务回滚）
      *
      * @param event 事件（可以是任何对象）
      */
-    public static void push(Object event) {
+    public static void push(Object event) throws RuntimeException{
         if (event != null) {
             try {
                 push0(event);
@@ -55,8 +55,12 @@ public final class EventBus {
             }
         }
     }
-
-    public static void pushError(Throwable event) {
+    /**
+     * 同步推送事件（不抛异常，不具有事务回滚传导性）
+     *
+     * @param event 事件（可以是任何对象）
+     */
+    public static void pushTry(Object event) {
         if (event != null) {
             try {
                 push0(event);

@@ -21,7 +21,7 @@ class AioServerProcessor implements MessageProcessor<Message> {
             Solon.app().listener().onMessage(session1, message);
         } catch (Throwable e) {
             if (session1 == null) {
-                EventBus.pushError(e);
+                EventBus.pushTry(e);
             } else {
                 Solon.app().listener().onError(session1, e);
             }

@@ -51,7 +51,7 @@ public class JedisEventConsumer extends JedisPubSub {
         try {
             return onReceiveDo(event);
         } catch (Throwable e) {
-            EventBus.pushError(e);
+            EventBus.pushTry(e);
             return false;
         }
     }

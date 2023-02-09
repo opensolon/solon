@@ -21,7 +21,7 @@ public class BeanPostProcessorSolon implements BeanPostProcessor {
                     //
                     Solon.context().beanInject(bean);
                 } catch (Throwable e) {
-                    EventBus.pushError(e);
+                    EventBus.pushTry(e);
                 }
             }
         }
@@ -46,7 +46,7 @@ public class BeanPostProcessorSolon implements BeanPostProcessor {
                         Solon.context().beanRegister(bw, beanName, true);
                     }
                 } catch (Throwable e) {
-                    EventBus.pushError(e);
+                    EventBus.pushTry(e);
                 }
             }
         }

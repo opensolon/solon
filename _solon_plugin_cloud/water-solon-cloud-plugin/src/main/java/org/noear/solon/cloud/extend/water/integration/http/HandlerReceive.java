@@ -37,7 +37,7 @@ public class HandlerReceive implements Handler, MessageHandler {
             ctx.output(rst);
         } catch (Throwable e) {
             e = Utils.throwableUnwrap(e);
-            EventBus.pushError(e);
+            EventBus.pushTry(e);
             ctx.output(e);
         }
     }

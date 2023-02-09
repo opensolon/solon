@@ -19,7 +19,7 @@ public class AsyncInvocationRunnable implements Runnable {
         try {
             invocation.invoke();
         } catch (Throwable e) {
-            EventBus.pushError(e);
+            EventBus.pushTry(e);
         }
     }
 }

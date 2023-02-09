@@ -15,7 +15,7 @@ public class JlHttpContextHandler implements HTTPServer.ContextHandler {
         } catch (Throwable e) {
             //context 初始化时，可能会出错
             //
-            EventBus.pushError(e);
+            EventBus.pushTry(e);
 
             response.sendHeaders(500);
             return 0;

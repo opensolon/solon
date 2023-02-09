@@ -3,9 +3,11 @@ package org.noear.solon;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.JarClassLoader;
 import org.noear.solon.core.NvMap;
+import org.noear.solon.core.event.AppPrestopEndEvent;
+import org.noear.solon.core.event.AppStopEndEvent;
 import org.noear.solon.core.event.EventBus;
-import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.core.util.ConsumerEx;
+import org.noear.solon.core.util.LogUtil;
 
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
@@ -77,7 +79,7 @@ public class Solon {
      * 框架版本号
      */
     public static String version() {
-        return "2.0.1-M3";
+        return "2.1.0";
     }
 
     /**
@@ -152,7 +154,7 @@ public class Solon {
         } catch (Throwable e) {
             //显示异常信息
             e = Utils.throwableUnwrap(e);
-            EventBus.pushError(e);
+            EventBus.pushTry(e);
 
             if (app.enableErrorAutoprint() == false) {
                 e.printStackTrace();
@@ -208,6 +210,7 @@ public class Solon {
 
             //1.预停止
             Solon.cfg().plugs().forEach(p -> p.prestop());
+            EventBus.pushTry(new AppPrestopEndEvent(Solon.app()));
             LogUtil.global().info("App: Security to stop: 1 completed " + hint);
 
 
@@ -231,15 +234,18 @@ public class Solon {
 
             //3.停止
             Solon.cfg().plugs().forEach(p -> p.stop());
+            EventBus.pushTry(new AppStopEndEvent(Solon.app()));
             LogUtil.global().info("App: Security to stop: 3 completed " + hint);
         } else {
             //1.预停止
             Solon.cfg().plugs().forEach(p -> p.prestop());
+            EventBus.pushTry(new AppPrestopEndEvent(Solon.app()));
 
             //2.标停
             Solon.app().stopped = true;
             //3.停止
             Solon.cfg().plugs().forEach(p -> p.stop());
+            EventBus.pushTry(new AppStopEndEvent(Solon.app()));
         }
 
 
