@@ -25,8 +25,8 @@ public class CloudDiscoveryObserverEntity implements CloudDiscoveryHandler {
     public void handle(Discovery discovery) {
         try {
             handler.handle(discovery);
-        } catch (Throwable ex) {
-            EventBus.push(ex);
+        } catch (Throwable e) {
+            EventBus.pushTry(e);
         }
     }
 }

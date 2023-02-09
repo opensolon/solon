@@ -17,10 +17,10 @@
 * 插件 sqltoy-solon-plugin 升级 sqltoy 为 5.2.32
 * 插件 dbvisitor-solon-plugin 升级 dbvisitor 为 5.2.1
 * 插件 sa-token-solon-plugin 添加 SaJsonTemplate 实现类
-* 增加 @Condition 注解
+* 增加 @Condition 注解，提供Com类与Bean函数的过滤支持!!!
+* 增加 AppPrestopEndEvent，AppPrestopEndEvent 事件!!!
 * 增加 配置元信息 solon-configuration-metadata.json 规范与支持
-* 增加 EventBus.pushError 接口
-* 增加 AppPrestopEndEvent，AppPrestopEndEvent 事件
+* 增加 EventBus.pushTry 接口
 * 优化 安全停止与延时的配置(增加新的启动参数：stop.safe,和应用配置：solon.stop.safe)
 
 

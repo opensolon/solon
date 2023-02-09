@@ -53,8 +53,8 @@ public class RouterListener implements Listener{
             if (session.listener() != null) {
                 session.listener().onOpen(session);
             }
-        } catch (Throwable ex) {
-            EventBus.push(ex);
+        } catch (Throwable e) {
+            EventBus.pushTry(e);
         }
     }
 
@@ -113,9 +113,9 @@ public class RouterListener implements Listener{
             if (message.getHandled() == false) {
                 SocketContextHandler.instance.handle(session, message);
             }
-        } catch (Throwable ex) {
-            if (onError0(session, ex) == false) {
-                EventBus.push(ex);
+        } catch (Throwable e) {
+            if (onError0(session, e) == false) {
+                EventBus.pushTry(e);
             }
         }
     }
@@ -142,8 +142,8 @@ public class RouterListener implements Listener{
             if (session.listener() != null) {
                 session.listener().onClose(session);
             }
-        } catch (Throwable ex) {
-            EventBus.push(ex);
+        } catch (Throwable e) {
+            EventBus.pushTry(e);
         }
     }
 
@@ -174,8 +174,8 @@ public class RouterListener implements Listener{
             }
 
             return handled;
-        } catch (Throwable ex) {
-            EventBus.push(ex);
+        } catch (Throwable e) {
+            EventBus.pushTry(e);
             return true;
         }
     }

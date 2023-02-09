@@ -69,8 +69,8 @@ public class WsServer extends WebSocketServer {
             Message message = ProtocolManager.decode(data);
 
             Solon.app().listener().onMessage(session, message);
-        } catch (Throwable ex) {
-            EventBus.push(ex);
+        } catch (Throwable e) {
+            EventBus.pushTry(e);
         }
     }
 

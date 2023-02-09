@@ -50,10 +50,10 @@ public class SocketContextHandler {
             if (ctx.getHandled() || ctx.status() != 404) {
                 ctx.commit();
             }
-        } catch (Throwable ex) {
+        } catch (Throwable e) {
             //context 初始化时，可能会出错
             //
-            EventBus.push(ex);
+            EventBus.pushTry(e);
         }
     }
 }

@@ -107,8 +107,8 @@ public class ThymeleafRender implements Render {
 
             //通过事件扩展
             EventBus.push(provider);
-        } catch (Exception ex) {
-            EventBus.push(ex);
+        } catch (Exception e) {
+            EventBus.pushTry(e);
         }
     }
 
@@ -134,8 +134,8 @@ public class ThymeleafRender implements Render {
     public <T extends IDialect> void putDirective(T obj) {
         try {
             provider.addDialect(obj);
-        } catch (Exception ex) {
-            EventBus.push(ex);
+        } catch (Exception e) {
+            EventBus.pushTry(e);
         }
     }
 

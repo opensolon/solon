@@ -116,7 +116,7 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
         if (obj instanceof Throwable) {
             if (c.remoting()) {
                 //尝试推送异常，不然没机会记录；也可对后继做控制
-                EventBus.push(obj);
+                EventBus.pushTry(obj);
 
                 if (c.getRendered() == false) {
                     c.render(obj);

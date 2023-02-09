@@ -131,8 +131,8 @@ public class VelocityRender implements Render {
                 //
                 forRelease();
             }
-        } catch (Exception ex) {
-            EventBus.push(ex);
+        } catch (Exception e) {
+            EventBus.pushTry(e);
         }
     }
 

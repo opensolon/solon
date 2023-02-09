@@ -95,7 +95,7 @@ public class JobHolder extends Thread {
                     scheduling();
                 } catch (Throwable e) {
                     e = Utils.throwableUnwrap(e);
-                    EventBus.push(new ScheduledException(e));
+                    EventBus.pushTry(new ScheduledException(e));
                 }
             } else {
                 break;

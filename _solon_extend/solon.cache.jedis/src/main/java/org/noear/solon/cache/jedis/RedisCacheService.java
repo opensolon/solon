@@ -99,8 +99,8 @@ public class RedisCacheService implements CacheService {
                 }else{
                     client.open((ru) -> ru.key(newKey).expire(_defaultSeconds).set(val));
                 }
-            } catch (Exception ex) {
-                EventBus.push(ex);
+            } catch (Exception e) {
+                EventBus.pushTry(e);
             }
         }
     }
@@ -117,8 +117,8 @@ public class RedisCacheService implements CacheService {
 
             try {
                 return _serializer.deserialize(val);
-            } catch (Exception ex) {
-                EventBus.push(ex);
+            } catch (Exception e) {
+                EventBus.pushTry(e);
                 return null;
             }
         } else {

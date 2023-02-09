@@ -62,8 +62,8 @@ public class UtWsChannelListener extends AbstractReceiveListener {
             Message message = Message.wrap(channel.getUrl(), null, msg.getData());
 
             Solon.app().listener().onMessage(session, message.isString(true));
-        } catch (Throwable ex) {
-            EventBus.push(ex);
+        } catch (Throwable e) {
+            EventBus.pushTry(e);
         }
     }
 

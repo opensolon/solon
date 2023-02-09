@@ -63,9 +63,9 @@ public class JobRunner implements IJobRunner {
                 if (time_end - time_start < jobEntity.getJob().getInterval()) {
                     Thread.sleep(jobEntity.getJob().getInterval());
                 }
-            } catch (Throwable ex) {
+            } catch (Throwable e) {
                 try {
-                    EventBus.push(ex);
+                    EventBus.pushTry(e);
                     Thread.sleep(1000);
                 } catch (Throwable ee) {
                 }

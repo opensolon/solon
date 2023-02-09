@@ -35,8 +35,8 @@ public class WebSocketHandleImp extends WebSocketDefaultHandler {
             Message message = Message.wrap(request.getRequestURI(), null, data);
 
             Solon.app().listener().onMessage(session, message.isString(true));
-        } catch (Throwable ex) {
-            EventBus.push(ex);
+        } catch (Throwable e) {
+            EventBus.pushTry(e);
         }
     }
 
@@ -54,8 +54,8 @@ public class WebSocketHandleImp extends WebSocketDefaultHandler {
 
             Solon.app().listener().onMessage(session, message);
 
-        } catch (Throwable ex) {
-            EventBus.push(ex);
+        } catch (Throwable e) {
+            EventBus.pushTry(e);
         }
     }
 

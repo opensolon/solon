@@ -99,8 +99,8 @@ public class SmartHttpContext extends ContextBase {
     public long contentLength() {
         try {
             return _request.getContentLength();
-        } catch (Exception ex) {
-            EventBus.push(ex);
+        } catch (Exception e) {
+            EventBus.pushTry(e);
             return 0;
         }
     }
@@ -143,8 +143,8 @@ public class SmartHttpContext extends ContextBase {
             } else {
                 return temp;
             }
-        } catch (Exception ex) {
-            EventBus.push(ex);
+        } catch (Exception e) {
+            EventBus.pushTry(e);
 
             return def;
         }

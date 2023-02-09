@@ -111,8 +111,8 @@ public class JwtUtils {
                     .getBody();
         } catch (ExpiredJwtException ex) {
 
-        } catch (Throwable ex) {
-            EventBus.push(ex);
+        } catch (Throwable e) {
+            EventBus.pushTry(e);
         }
 
         return null;

@@ -31,8 +31,8 @@ public class XPluginImp implements Plugin {
                 if (Utils.isNotEmpty(anno.handshakeHeader())) {
                     try {
                         s.sendHandshake(Message.wrapHandshake(anno.handshakeHeader()));
-                    } catch (Throwable ex) {
-                        EventBus.push(ex);
+                    } catch (Throwable e) {
+                        EventBus.pushTry(e);
                     }
                 }
 

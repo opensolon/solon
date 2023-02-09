@@ -63,8 +63,8 @@ public class SmartHttpContextHandler extends HttpServerHandler {
                 ctx.status(404);
                 ctx.commit();
             }
-        } catch (Throwable ex) {
-            EventBus.push(ex);
+        } catch (Throwable e) {
+            EventBus.pushTry(e);
             response.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

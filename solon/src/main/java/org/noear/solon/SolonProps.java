@@ -562,6 +562,10 @@ public final class SolonProps extends Props {
         return stopSafe;
     }
 
+    public void stopSafe(boolean value){
+         stopSafe = value;
+    }
+
     @Deprecated
     public boolean enableSafeStop(){
         return stopSafe;

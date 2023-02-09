@@ -96,7 +96,7 @@ class JobEntity extends Thread {
                     scheduling();
                 } catch (Throwable e) {
                     e = Utils.throwableUnwrap(e);
-                    EventBus.push(new CloudJobException(e));
+                    EventBus.pushTry(new CloudJobException(e));
                 }
             } else {
                 break;

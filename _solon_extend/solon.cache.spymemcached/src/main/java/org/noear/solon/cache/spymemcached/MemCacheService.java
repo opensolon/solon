@@ -88,8 +88,8 @@ public class MemCacheService implements CacheService {
                 }else{
                     _cache.set(newKey, _defaultSeconds, obj);
                 }
-            } catch (Exception ex) {
-                EventBus.push(ex);
+            } catch (Exception e) {
+                EventBus.pushTry(e);
             }
         }
     }
@@ -100,8 +100,8 @@ public class MemCacheService implements CacheService {
             String newKey = newKey(key);
             try {
                 return _cache.get(newKey);
-            } catch (Exception ex) {
-                EventBus.push(ex);
+            } catch (Exception e) {
+                EventBus.pushTry(e);
                 return null;
             }
         } else {

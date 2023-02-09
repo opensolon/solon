@@ -83,8 +83,8 @@ public class SolonServletFilter implements Filter {
         if (h != null) {
             try {
                 h.handle(ctx);
-            } catch (Throwable ex) {
-                EventBus.push(ex);
+            } catch (Throwable e) {
+                EventBus.pushTry(e);
             }
         }
     }

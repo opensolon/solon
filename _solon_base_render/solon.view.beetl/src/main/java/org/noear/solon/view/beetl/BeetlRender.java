@@ -116,8 +116,8 @@ public class BeetlRender implements Render {
                 //通过事件扩展
                 EventBus.push(provider_debug);
             }
-        } catch (Exception ex) {
-            EventBus.push(ex);
+        } catch (Exception e) {
+            EventBus.pushTry(e);
         }
     }
 
@@ -132,8 +132,8 @@ public class BeetlRender implements Render {
 
             //通过事件扩展
             EventBus.push(provider);
-        } catch (Exception ex) {
-            EventBus.push(ex);
+        } catch (Exception e) {
+            EventBus.pushTry(e);
         }
 
     }
@@ -148,8 +148,8 @@ public class BeetlRender implements Render {
             if (provider_debug != null) {
                 provider_debug.registerTag(name, clz);
             }
-        } catch (Exception ex) {
-            EventBus.push(ex);
+        } catch (Exception e) {
+            EventBus.pushTry(e);
         }
     }
 
@@ -163,8 +163,8 @@ public class BeetlRender implements Render {
             if (provider_debug != null) {
                 provider_debug.getSharedVars().put(name, value);
             }
-        } catch (Exception ex) {
-            EventBus.push(ex);
+        } catch (Exception e) {
+            EventBus.pushTry(e);
         }
     }
 

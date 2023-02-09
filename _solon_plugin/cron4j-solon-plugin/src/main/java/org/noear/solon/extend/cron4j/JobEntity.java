@@ -28,8 +28,8 @@ public class JobEntity {
         try {
             Runnable job = beanWrap.raw();
             job.run();
-        } catch (Throwable ex) {
-            EventBus.push(ex);
+        } catch (Throwable e) {
+            EventBus.pushTry(e);
         }
     }
 

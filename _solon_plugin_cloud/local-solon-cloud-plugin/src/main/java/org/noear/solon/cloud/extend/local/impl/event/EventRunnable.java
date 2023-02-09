@@ -24,7 +24,7 @@ public class EventRunnable implements Runnable {
             //派发
             eventService.distribute(event);
         } catch (Throwable e) {
-            EventBus.push(new CloudJobException(e));
+            EventBus.pushTry(new CloudJobException(e));
         }
     }
 }

@@ -37,7 +37,7 @@ public class JedisEventConsumer extends JedisPubSub {
         }catch (Throwable ex){
             ex = Utils.throwableUnwrap(ex);
 
-            EventBus.push(ex);
+            EventBus.pushTry(ex);
 
             if (ex instanceof RuntimeException) {
                 throw (RuntimeException) ex;
