@@ -15,8 +15,8 @@ import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.Props;
 import org.noear.solon.core.VarHolder;
 import org.noear.solon.core.event.EventBus;
+import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.core.util.ResourceUtil;
-import org.noear.solon.core.util.ScanUtil;
 import org.noear.solon.extend.mybatis.MybatisAdapter;
 import org.noear.solon.extend.mybatis.tran.SolonManagedTransactionFactory;
 
@@ -156,20 +156,15 @@ public class MybatisAdapterDefault implements MybatisAdapter {
 
                         if (val.endsWith(".xml")) {
                             //mapper xml
-                            if (val.contains("**")) {
-                                //新方法，替代旧的 *.xml （基于表达式；更自由，更语义化）
-                                ResourceUtil.resolvePaths(val).forEach(uri -> {
-                                    addMapperByXml(uri);
-                                });
-                            } else if (val.endsWith("*.xml")) {
-                                //@Deprecated //将被弃用
-                                String dir = val.substring(0, val.length() - 6);
-                                ScanUtil.scan(dir, n -> n.endsWith(".xml"))
-                                        .forEach(uri -> {
-                                            addMapperByXml(uri);
-                                        });
-                            } else {
-                                addMapperByXml(val);
+
+                            //新方法，替代旧的 *.xml （基于表达式；更自由，更语义化）
+                            ResourceUtil.resolvePaths(val).forEach(uri -> {
+                                addMapperByXml(uri);
+                            });
+
+                            if (val.endsWith("*.xml") && val.indexOf("*") == val.indexOf("*.xml")) {
+                                //@Deprecated //弃用提示
+                                LogUtil.global().warn("启用新表达式提示：'" + val + "' 不包括深度子目录；如有需要可在表达式增加 '/**/'");
                             }
 
                             mappers.add(val);

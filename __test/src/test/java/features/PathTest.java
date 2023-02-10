@@ -3,8 +3,11 @@ package features;
 import org.junit.Test;
 import org.noear.solon.core.util.PathAnalyzer;
 import org.noear.solon.core.util.PathUtil;
+import org.noear.solon.core.util.ResourceUtil;
 import org.noear.solon.web.staticfiles.StaticMappings;
 import org.noear.solon.web.staticfiles.repository.FileStaticRepository;
+
+import java.util.Collection;
 
 public class PathTest {
     @Test
@@ -35,5 +38,28 @@ public class PathTest {
         PathAnalyzer pathAnalyzer = PathAnalyzer.get("/demo2/intercept/*");
 
         assert pathAnalyzer.matches("/demo2/intercept/");
+    }
+
+    @Test
+    public void test10(){
+        Collection<String> paths = ResourceUtil.resolvePaths("static_test/**/dir2/*.htm");
+        System.out.println(String.join(",", paths));
+        assert paths.size() == 1;
+
+        paths = ResourceUtil.resolvePaths("static_test/dir1/*/b.htm");
+        System.out.println(String.join(",", paths));
+        assert paths.size() == 1;
+
+        paths = ResourceUtil.resolvePaths("static_test/dir1/*/*.htm");
+        System.out.println(String.join(",", paths));
+        assert paths.size() == 1;
+
+        paths = ResourceUtil.resolvePaths("static_test/dir1/dir2/*.htm");
+        System.out.println(String.join(",", paths));
+        assert paths.size() == 1;
+
+        paths = ResourceUtil.resolvePaths("static_test/**/*.htm");
+        System.out.println(String.join(",", paths));
+        assert paths.size() == 2;
     }
 }

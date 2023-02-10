@@ -40,7 +40,9 @@ public class ResourceUtil {
         }
 
         packExpr = packExpr.replace(".", "/");
-        if (packExpr.endsWith("*.class") == false) {
+        packExpr = packExpr.replace("/class",".class");//xxx.class 会变成 xxx/class
+
+        if (packExpr.endsWith(".class") == false) {
             packExpr = packExpr + "/*.class";
         }
 
@@ -79,8 +81,13 @@ public class ResourceUtil {
             return paths;
         }
 
-        //确定目录
+        //确定没有星号的起始目录
         int dirIdx = pathExpr.indexOf("/*");
+
+        if(dirIdx<1){
+            throw new IllegalArgumentException("Expressions without a first-level directory are not supported: " +pathExpr);
+        }
+
         String dir = pathExpr.substring(0, dirIdx);
 
         //确定后缀
@@ -100,6 +107,7 @@ public class ResourceUtil {
         //匹配表达式
         String expr = pathExpr.replaceAll("/\\*\\.", "/[^\\.]*\\.");
         expr = expr.replaceAll("/\\*\\*/", "(/[^/]*)*/");
+        expr = expr.replaceAll("/\\*/", "/[^/]+/");
 
         Pattern pattern = Pattern.compile(expr);
 
