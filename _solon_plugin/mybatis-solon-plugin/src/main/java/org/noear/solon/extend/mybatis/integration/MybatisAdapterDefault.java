@@ -164,7 +164,7 @@ public class MybatisAdapterDefault implements MybatisAdapter {
 
                             if (val.endsWith("*.xml") && val.indexOf("*") == val.indexOf("*.xml")) {
                                 //@Deprecated //弃用提示
-                                LogUtil.global().warn("启用新表达式提示：'" + val + "' 不包括深度子目录；如有需要可在表达式增加 '/**/'");
+                                LogUtil.global().warn("Mybatis-新适配表达式提示：'" + val + "' 不包括深度子目录；如有需要可增加'/**/'段");
                             }
 
                             mappers.add(val);
