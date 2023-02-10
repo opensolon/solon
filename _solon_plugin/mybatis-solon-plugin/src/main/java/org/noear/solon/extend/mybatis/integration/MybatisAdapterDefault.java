@@ -118,7 +118,7 @@ public class MybatisAdapterDefault implements MybatisAdapter {
                         }
 
                         //package or type class
-                        ResourceUtil.resolveClasss(val).forEach(clz -> {
+                        ResourceUtil.resolveClasses(val).forEach(clz -> {
                             getConfiguration().getTypeAliasRegistry().registerAlias(clz);
                         });
                     }
@@ -132,7 +132,7 @@ public class MybatisAdapterDefault implements MybatisAdapter {
                         }
 
                         //package || type class
-                        ResourceUtil.resolveClasss(val).forEach(clz -> {
+                        ResourceUtil.resolveClasses(val).forEach(clz -> {
                             getConfiguration().getTypeHandlerRegistry().register(clz);
                         });
                     }
@@ -170,7 +170,7 @@ public class MybatisAdapterDefault implements MybatisAdapter {
                             mappers.add(val);
                         } else {
                             //package or mapper class
-                            ResourceUtil.resolveClasss(val).forEach(clz -> {
+                            ResourceUtil.resolveClasses(val).forEach(clz -> {
                                 getConfiguration().addMapper(clz);
                             });
 

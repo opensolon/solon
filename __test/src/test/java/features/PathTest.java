@@ -41,7 +41,7 @@ public class PathTest {
     }
 
     @Test
-    public void test10(){
+    public void resolvePaths(){
         Collection<String> paths = ResourceUtil.resolvePaths("static_test/**/dir2/*.htm");
         System.out.println(String.join(",", paths));
         assert paths.size() == 1;
@@ -61,5 +61,37 @@ public class PathTest {
         paths = ResourceUtil.resolvePaths("static_test/**/*.htm");
         System.out.println(String.join(",", paths));
         assert paths.size() == 2;
+    }
+
+    @Test
+    public void resolveClasses(){
+        Collection<Class<?>> classes = ResourceUtil.resolveClasses("webapp.**.cache.*.class");
+        System.out.println(classes.size());
+        assert classes.size() == 2;
+
+        classes = ResourceUtil.resolveClasses("webapp.**.cache");
+        System.out.println(classes.size());
+        assert classes.size() == 2;
+
+
+        classes = ResourceUtil.resolveClasses("webapp.dso.cache");
+        System.out.println(classes.size());
+        assert classes.size() == 2;
+
+        classes = ResourceUtil.resolveClasses("webapp.dso.cache.*.class");
+        System.out.println(classes.size());
+        assert classes.size() == 2;
+
+        classes = ResourceUtil.resolveClasses("webapp.dso.*.class");
+        System.out.println(classes.size());
+        assert classes.size() == 16;
+
+        classes = ResourceUtil.resolveClasses("webapp.dso");
+        System.out.println(classes.size());
+        assert classes.size() == 16;
+
+        classes = ResourceUtil.resolveClasses("webapp.dso.*.*.class");
+        System.out.println(classes.size());
+        assert classes.size() == 8;
     }
 }

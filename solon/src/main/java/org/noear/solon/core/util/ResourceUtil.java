@@ -23,11 +23,11 @@ public class ResourceUtil {
      *
      * @param packExpr 包表达式
      */
-    public static Collection<Class<?>> resolveClasss(String packExpr) {
-        return resolveClasss(JarClassLoader.global(), packExpr);
+    public static Collection<Class<?>> resolveClasses(String packExpr) {
+        return resolveClasses(JarClassLoader.global(), packExpr);
     }
 
-    public static Collection<Class<?>> resolveClasss(ClassLoader classLoader, String packExpr) {
+    public static Collection<Class<?>> resolveClasses(ClassLoader classLoader, String packExpr) {
         List<Class<?>> clzList = new ArrayList<>();
 
         if (packExpr.indexOf("*") < 0 && packExpr.endsWith(".class")) {
@@ -105,7 +105,7 @@ public class ResourceUtil {
         String suf2 = suf;
 
         //匹配表达式
-        String expr = pathExpr.replaceAll("/\\*\\.", "/[^\\.]*\\.");
+        String expr = pathExpr.replaceAll("/\\*\\.", "/[^\\./]+\\.");
         expr = expr.replaceAll("/\\*\\*/", "(/[^/]*)*/");
         expr = expr.replaceAll("/\\*/", "/[^/]+/");
 
