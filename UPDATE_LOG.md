@@ -9,11 +9,12 @@
 * 提醒1：之前没有使用弃用接口的，可以直接升级 <br>
 * 提醒2：有使用弃用接口的。建议先升级到 1.12.4；替换弃用代码后，再升级到 2.0.0
 
-### v2.1.1
+### v2.1.2
 * 新增 solon.health.detector 插件
 * 增强 detector-solon-plugin 扩展能力
 * 增强 mybatis-solon-plugin 的 typeAliases,typeHandlers,mappers 表达式配置能力
 * 增加 ResourceUtil 提供资源路径表达式分析能力
+* 调整 local-solon-cloud-plugin 本地文件路径规范
 * 修复 mybatis-solon-plugin 与 solon-maven-plugin 打包插件的兼容性问题
 
 ### v2.1.0
