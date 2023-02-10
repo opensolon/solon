@@ -18,7 +18,7 @@ import java.util.Map;
  * @since 1.11
  */
 public class CloudListServiceLocalImpl implements CloudListService {
-    static final String LIST_KEY_FORMAT = "list@%s-%s.json";
+    static final String LIST_KEY_FORMAT = "list/%s-%s.json";
     Map<String, List<String>> listMap = new HashMap<>();
 
     private final String server;

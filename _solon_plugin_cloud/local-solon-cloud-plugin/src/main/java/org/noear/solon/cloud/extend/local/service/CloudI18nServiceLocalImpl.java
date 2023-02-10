@@ -19,7 +19,7 @@ import java.util.Properties;
  */
 public class CloudI18nServiceLocalImpl implements CloudI18nService {
     static final String DEFAULT_GROUP = "DEFAULT_GROUP";
-    static final String I18N_KEY_FORMAT = "i18n@%s_%s-%s";
+    static final String I18N_KEY_FORMAT = "i18n/%s_%s-%s";
 
     private final String server;
 

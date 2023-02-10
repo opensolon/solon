@@ -17,7 +17,7 @@ public class CloudFileServiceLocalImpl implements CloudFileService {
     private File root;
 
     public CloudFileServiceLocalImpl(String rootDir) {
-        this.root = new File(rootDir, "files");
+        this.root = new File(rootDir, "file");
 
         if (root.exists() == false) {
             root.mkdirs();
