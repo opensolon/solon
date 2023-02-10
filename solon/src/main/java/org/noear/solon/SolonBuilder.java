@@ -56,6 +56,20 @@ public class SolonBuilder {
     }
 
     /**
+     * 订阅应用预停止事件事件
+     * */
+    public SolonBuilder onAppPrestopEndEvent(EventListener<AppPrestopEndEvent> handler) {
+        return onEvent(AppPrestopEndEvent.class, handler);
+    }
+
+    /**
+     * 订阅应用停止事件事件
+     * */
+    public SolonBuilder onAppStopEndEvent(EventListener<AppStopEndEvent> handler) {
+        return onEvent(AppStopEndEvent.class, handler);
+    }
+
+    /**
      * 启动应用（全局只启动一个）
      *
      * @param source 主应用包（用于定制Bean所在包）
