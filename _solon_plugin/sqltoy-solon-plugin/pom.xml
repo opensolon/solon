@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.noear</groupId>
         <artifactId>solon-parent</artifactId>
-        <version>2.1.1-M1</version>
+        <version>2.1.1</version>
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
@@ -15,7 +15,7 @@
     <packaging>jar</packaging>
 
     <properties>
-        <sqltoy.ver>5.2.32</sqltoy.ver>
+        <sqltoy.ver>5.2.33</sqltoy.ver>
     </properties>
 
     <dependencies>
