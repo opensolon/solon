@@ -1,7 +1,6 @@
 package org.noear.solon.boot.web;
 
 import org.noear.solon.Utils;
-import org.noear.solon.boot.ServerProps;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.SessionState;
 
@@ -17,12 +16,12 @@ public abstract class SessionStateBase implements SessionState {
     protected static String _domain = null;
 
     static {
-        if (SessionProp.session_timeout > 0) {
-            _expiry = SessionProp.session_timeout;
+        if (SessionProps.session_timeout > 0) {
+            _expiry = SessionProps.session_timeout;
         }
 
-        if (SessionProp.session_state_domain != null) {
-            _domain = SessionProp.session_state_domain;
+        if (SessionProps.session_cookieDomain != null) {
+            _domain = SessionProps.session_cookieDomain;
         }
     }
 
@@ -43,7 +42,7 @@ public abstract class SessionStateBase implements SessionState {
             return;
         }
 
-        if (SessionProp.session_state_domain_auto) {
+        if (SessionProps.session_cookieDomainAuto) {
             if (_domain != null) {
                 if (ctx.uri().getHost().indexOf(_domain) < 0) { //非安全域
                     ctx.cookieSet(key, val, null, _expiry);
@@ -59,7 +58,7 @@ public abstract class SessionStateBase implements SessionState {
     //
     // sessionId control
     protected String sessionIdGet(boolean reset) {
-        String sid = cookieGet(ServerProps.session_cookieName);
+        String sid = cookieGet(SessionProps.session_cookieName);
 
         if (reset == false) {
             if (Utils.isEmpty(sid) == false && sid.length() > 30) {
@@ -68,16 +67,16 @@ public abstract class SessionStateBase implements SessionState {
         }
 
         sid = Utils.guid();
-        cookieSet(ServerProps.session_cookieName, sid);
+        cookieSet(SessionProps.session_cookieName, sid);
 
         return sid;
     }
 
     protected String sessionIdPush() {
-        String skey = cookieGet(ServerProps.session_cookieName);
+        String skey = cookieGet(SessionProps.session_cookieName);
 
         if (Utils.isNotEmpty(skey)) {
-            cookieSet(ServerProps.session_cookieName, skey);
+            cookieSet(SessionProps.session_cookieName, skey);
         }
 
         return skey;
