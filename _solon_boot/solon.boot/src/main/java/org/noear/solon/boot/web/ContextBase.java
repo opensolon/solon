@@ -11,6 +11,13 @@ import org.noear.solon.core.handle.Context;
  * @since 1.11
  */
 public abstract class ContextBase extends Context {
+
+    @Override
+    public String contentType() {
+        return header(Constants.HEADER_CONTENT_TYPE);
+    }
+
+
     private String contentCharset;
     @Override
     public String contentCharset() {

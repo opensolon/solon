@@ -4,6 +4,7 @@ package features;
 import okhttp3.Response;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.noear.solon.boot.web.Constants;
 import org.noear.solon.test.HttpTestBase;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
@@ -57,5 +58,17 @@ public class HeaderTest extends HttpTestBase {
         List<String> tmp = res.headers("Set-Cookie");
 
         assert tmp.size() >= 2;
+    }
+
+    @Test
+    public void testContentLength() throws Exception {
+        Response res = path("/demo1/header/hello").exec("GET");
+
+        String tmp = res.header(Constants.HEADER_CONTENT_LENGTH);
+        assert tmp != null;
+        long size = Long.parseLong(tmp);
+        byte[] bytes = res.body().bytes();
+        assert size == bytes.length;
+        assert "Hello world!".equals(new String(bytes));
     }
 }

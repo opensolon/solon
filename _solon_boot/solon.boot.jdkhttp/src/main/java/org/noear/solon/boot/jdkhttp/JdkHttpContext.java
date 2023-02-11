@@ -4,6 +4,7 @@ import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import org.noear.solon.Utils;
 import org.noear.solon.boot.web.ContextBase;
+import org.noear.solon.boot.web.Constants;
 import org.noear.solon.boot.web.RedirectUtils;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.UploadedFile;
@@ -53,7 +54,7 @@ public class JdkHttpContext extends ContextBase {
     @Override
     public String ip() {
         if (_ip == null) {
-            _ip = header("X-Forwarded-For");
+            _ip = header(Constants.HEADER_X_FORWARDED_FOR);
 
             if (_ip == null) {
                 _ip = _exchange.getRemoteAddress().getAddress().getHostAddress();
@@ -93,7 +94,7 @@ public class JdkHttpContext extends ContextBase {
 
             if (_url != null) {
                 if (_url.startsWith("/")) {
-                    String host = header("Host");
+                    String host = header(Constants.HEADER_HOST);
 
                     if (host == null) {
                         host = header(":authority");
@@ -133,13 +134,6 @@ public class JdkHttpContext extends ContextBase {
             return 0;
         }
     }
-
-    @Override
-    public String contentType() {
-        return header("Content-Type");
-    }
-
-
 
     @Override
     public String queryString() {
@@ -255,7 +249,7 @@ public class JdkHttpContext extends ContextBase {
         if (_cookieMap == null) {
             _cookieMap = new NvMap();
 
-            String tmp = header("Cookie", "");
+            String tmp = header(Constants.HEADER_COOKIE, "");
             String[] ss = tmp.split(";");
             for (String s : ss) {
                 String[] kv = s.split("=");
@@ -302,12 +296,12 @@ public class JdkHttpContext extends ContextBase {
     protected void contentTypeDoSet(String contentType) {
         if (charset != null) {
             if (contentType.indexOf(";") < 0) {
-                headerSet("Content-Type", contentType + ";charset=" + charset);
+                headerSet(Constants.HEADER_CONTENT_TYPE, contentType + ";charset=" + charset);
                 return;
             }
         }
 
-        headerSet("Content-Type", contentType);
+        headerSet(Constants.HEADER_CONTENT_TYPE, contentType);
     }
 
 
@@ -388,14 +382,14 @@ public class JdkHttpContext extends ContextBase {
             sb.append("domain=").append(domain.toLowerCase()).append(";");
         }
 
-        _exchange.getResponseHeaders().add("Set-Cookie", sb.toString());
+        headerAdd(Constants.HEADER_SET_COOKIE, sb.toString());
     }
 
     @Override
     public void redirect(String url, int code) {
         url = RedirectUtils.getRedirectPath(url);
 
-        headerSet("Location", url);
+        headerSet(Constants.HEADER_LOCATION, url);
         statusDoSet(code);
     }
 
@@ -439,9 +433,15 @@ public class JdkHttpContext extends ContextBase {
             }
 
             if (isCommit || _allows_write == false) {
-                _exchange.sendResponseHeaders(status(), -1);
+                _exchange.sendResponseHeaders(status(), -1L);
             } else {
-                _exchange.sendResponseHeaders(status(), 0);
+                List<String> tmp = _exchange.getResponseHeaders().get(Constants.HEADER_CONTENT_LENGTH);
+
+                if (tmp != null && tmp.size() > 0) {
+                    _exchange.sendResponseHeaders(status(), Long.parseLong(tmp.get(0)));
+                } else {
+                    _exchange.sendResponseHeaders(status(), 0L);
+                }
             }
         }
     }

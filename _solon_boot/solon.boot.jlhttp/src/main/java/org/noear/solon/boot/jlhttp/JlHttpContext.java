@@ -2,6 +2,7 @@ package org.noear.solon.boot.jlhttp;
 
 import org.noear.solon.Utils;
 import org.noear.solon.boot.web.ContextBase;
+import org.noear.solon.boot.web.Constants;
 import org.noear.solon.boot.web.RedirectUtils;
 import org.noear.solon.core.NvMap;
 import org.noear.solon.core.event.EventBus;
@@ -50,7 +51,7 @@ public class JlHttpContext extends ContextBase {
     @Override
     public String ip() {
         if (_ip == null) {
-            _ip = header("X-Forwarded-For");
+            _ip = header(Constants.HEADER_X_FORWARDED_FOR);
 
             if (_ip == null) {
                 _ip = _request.getSocket().getInetAddress().getHostAddress();
@@ -90,7 +91,7 @@ public class JlHttpContext extends ContextBase {
 
             if (_url != null) {
                 if (_url.startsWith("/")) {
-                    String host = header("Host");
+                    String host = header(Constants.HEADER_HOST);
 
                     if (host == null) {
                         host = header(":authority");
@@ -130,13 +131,6 @@ public class JlHttpContext extends ContextBase {
             return 0;
         }
     }
-
-    @Override
-    public String contentType() {
-        return header("Content-Type");
-    }
-
-
     @Override
     public String queryString() {
         return _request.getURI().getQuery();
@@ -289,12 +283,12 @@ public class JlHttpContext extends ContextBase {
     protected void contentTypeDoSet(String contentType) {
         if (charset != null) {
             if (contentType.indexOf(";") < 0) {
-                headerSet("Content-Type", contentType + ";charset=" + charset);
+                headerSet(Constants.HEADER_CONTENT_TYPE, contentType + ";charset=" + charset);
                 return;
             }
         }
 
-        headerSet("Content-Type", contentType);
+        headerSet(Constants.HEADER_CONTENT_TYPE, contentType);
     }
 
     private ByteArrayOutputStream _outputStreamTmp;
@@ -373,14 +367,14 @@ public class JlHttpContext extends ContextBase {
             sb.append("domain=").append(domain.toLowerCase()).append(";");
         }
 
-        _response.getHeaders().add("Set-Cookie", sb.toString());
+        headerAdd(Constants.HEADER_SET_COOKIE, sb.toString());
     }
 
     @Override
     public void redirect(String url, int code) {
         url = RedirectUtils.getRedirectPath(url);
 
-        headerSet("Location", url);
+        headerSet(Constants.HEADER_LOCATION, url);
         statusDoSet(code);
     }
 
@@ -423,9 +417,15 @@ public class JlHttpContext extends ContextBase {
             }
 
             if (isCommit || _allows_write == false) {
-                _response.sendHeaders(status(), 0, -1, null, null, null);
+                _response.sendHeaders(status(), 0L, -1, null, null, null);
             } else {
-                _response.sendHeaders(status(), -1, -1, null, null, null);
+                String tmp = _response.getHeaders().get(Constants.HEADER_CONTENT_LENGTH);
+
+                if (tmp != null) {
+                    _response.sendHeaders(status(), Long.parseLong(tmp), -1, null, null, null);
+                } else {
+                    _response.sendHeaders(status(), -1L, -1, null, null, null);
+                }
             }
         }
     }

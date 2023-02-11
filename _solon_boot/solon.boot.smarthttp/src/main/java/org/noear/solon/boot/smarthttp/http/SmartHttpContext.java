@@ -1,6 +1,7 @@
 package org.noear.solon.boot.smarthttp.http;
 
 import org.noear.solon.boot.web.ContextBase;
+import org.noear.solon.boot.web.Constants;
 import org.noear.solon.boot.web.RedirectUtils;
 import org.noear.solon.core.NvMap;
 import org.noear.solon.Utils;
@@ -54,7 +55,7 @@ public class SmartHttpContext extends ContextBase {
     @Override
     public String ip() {
         if (_ip == null) {
-            _ip = header("X-Forwarded-For");
+            _ip = header(Constants.HEADER_X_FORWARDED_FOR);
 
             if (_ip == null) {
                 _ip = _request.getRemoteAddr();
@@ -104,12 +105,6 @@ public class SmartHttpContext extends ContextBase {
             return 0;
         }
     }
-
-    @Override
-    public String contentType() {
-        return header("Content-Type");
-    }
-
 
     @Override
     public String queryString() {
@@ -212,7 +207,7 @@ public class SmartHttpContext extends ContextBase {
         if (_cookieMap == null) {
             _cookieMap = new NvMap();
 
-            String _cookieMapStr = header("Cookie");
+            String _cookieMapStr = header(Constants.HEADER_COOKIE);
             if (_cookieMapStr != null) {
                 String[] cookies = _cookieMapStr.split(";");
 
@@ -258,12 +253,12 @@ public class SmartHttpContext extends ContextBase {
     protected void contentTypeDoSet(String contentType) {
         if (charset != null) {
             if (contentType.indexOf(";") < 0) {
-                headerSet("Content-Type", contentType + ";charset=" + charset);
+                headerSet(Constants.HEADER_CONTENT_TYPE, contentType + ";charset=" + charset);
                 return;
             }
         }
 
-        headerSet("Content-Type", contentType);
+        headerSet(Constants.HEADER_CONTENT_TYPE, contentType);
     }
 
 
@@ -351,7 +346,7 @@ public class SmartHttpContext extends ContextBase {
     public void redirect(String url, int code) {
         url = RedirectUtils.getRedirectPath(url);
 
-        headerSet("Location", url);
+        headerSet(Constants.HEADER_LOCATION, url);
         statusDoSet(code);
     }
 
@@ -399,7 +394,13 @@ public class SmartHttpContext extends ContextBase {
             if (isCommit || _allows_write == false) {
                 _response.setContentLength(0);
             } else {
-                _response.setContentLength(-1);
+                String tmp = _response.getHeader(Constants.HEADER_CONTENT_LENGTH);
+
+                if (tmp != null) {
+                    _response.setContentLength(Integer.parseInt(tmp));
+                } else {
+                    _response.setContentLength(-1);
+                }
             }
         }
     }
