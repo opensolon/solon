@@ -78,27 +78,23 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
     /**
      * 允许 Action Mapping 申明
      */
-    @Note("允许 Action Mapping 申明")
     protected boolean allowActionMapping() {
         return true;
     }
 
     /**
-     * 充许提前准备控制器
+     * 允许提前准备控制器
      */
-    @Note("充许提前准备控制器")
     protected boolean allowReadyController() {
         return true;
     }
 
     /**
-     * 充许路径合并
+     * 允许路径合并
      */
-    @Note("充许路径合并")
     protected boolean allowPathMerging() {
         return true;
     }
-
 
     /**
      * for Render （用于接管 BeanWebWrap 和 Action 的渲染）
@@ -406,18 +402,6 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
     }
 
     /**
-     * 获取接口
-     */
-    protected Handler getDo(Context c, String path) {
-        if (path == null) {
-            return null;
-        } else {
-            MethodType method = MethodTypeUtil.valueOf(c.method());
-            return mainRouting.matchOne(path, method);
-        }
-    }
-
-    /**
      * 查找接口
      */
     protected Handler find(Context c) throws Throwable {
@@ -425,7 +409,13 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
     }
 
     protected Handler findDo(Context c, String path) throws Throwable {
-        Handler h = getDo(c, path);
+        Handler h;
+
+        if (path == null) { //null 表示直接使用默认处理器
+            h = mainDef;
+        } else {
+            h = getDo(c, path);
+        }
 
         if (h == null) {
             mainDef.handle(c);
@@ -436,6 +426,20 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
                 c.attrSet("handler_name", ((Action) h).fullName());
             }
             return h;
+        }
+    }
+
+
+
+    /**
+     * 获取接口
+     */
+    protected Handler getDo(Context c, String path) {
+        if (path == null) {
+            return null;
+        } else {
+            MethodType method = MethodTypeUtil.valueOf(c.method());
+            return mainRouting.matchOne(path, method);
         }
     }
 }
