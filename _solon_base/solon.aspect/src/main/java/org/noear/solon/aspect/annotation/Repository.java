@@ -1,6 +1,7 @@
 package org.noear.solon.aspect.annotation;
 
 import org.noear.solon.annotation.Alias;
+import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Note;
 
 import java.lang.annotation.*;
@@ -11,6 +12,7 @@ import java.lang.annotation.*;
  * @author noear
  * @since 1.5
  */
+@Component
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
