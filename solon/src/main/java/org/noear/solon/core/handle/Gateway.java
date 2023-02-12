@@ -411,7 +411,7 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
     protected Handler findDo(Context c, String path) throws Throwable {
         Handler h;
 
-        if (path == null) { //null 表示直接使用默认处理器
+        if (path == null) { //null 表示直接使用默认处理器，且不跳过
             h = mainDef;
         } else {
             h = getDo(c, path);

@@ -64,9 +64,10 @@ public class HeaderTest extends HttpTestBase {
     public void testContentLength() throws Exception {
         Response res = path("/demo1/header/hello").exec("GET");
 
-        String tmp = res.header(Constants.HEADER_CONTENT_LENGTH);
+        List<String> tmp = res.headers(Constants.HEADER_CONTENT_LENGTH);
         assert tmp != null;
-        long size = Long.parseLong(tmp);
+        assert tmp.size() == 1;
+        long size = Long.parseLong(tmp.get(0));
         byte[] bytes = res.body().bytes();
         assert size == bytes.length;
         assert "Hello world!".equals(new String(bytes));
