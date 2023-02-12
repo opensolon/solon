@@ -363,6 +363,11 @@ public class SmartHttpContext extends ContextBase {
     }
 
     @Override
+    public void contentLength(long size) {
+        _response.setContentLength((int) size);
+    }
+
+    @Override
     public void flush() throws IOException {
         if (_allows_write) {
             outputStream().flush();
@@ -394,13 +399,7 @@ public class SmartHttpContext extends ContextBase {
             if (isCommit || _allows_write == false) {
                 _response.setContentLength(0);
             } else {
-                String tmp = _response.getHeader(Constants.HEADER_CONTENT_LENGTH);
-
-                if (tmp != null) {
-                    _response.setContentLength(Integer.parseInt(tmp));
-                } else {
-                    _response.setContentLength(-1);
-                }
+                //_response.setContentLength(-1);
             }
         }
     }
