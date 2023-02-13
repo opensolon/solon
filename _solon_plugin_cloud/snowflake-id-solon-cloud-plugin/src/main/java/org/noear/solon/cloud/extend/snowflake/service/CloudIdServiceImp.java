@@ -11,8 +11,8 @@ public class CloudIdServiceImp implements CloudIdService {
 
     private SnowflakeId snowFlakeId;
 
-    public CloudIdServiceImp(String dataBlock, long idStart) {
-        snowFlakeId = new SnowflakeId(dataBlock, idStart);
+    public CloudIdServiceImp(String dataBlock, long workId, long idStart) {
+        snowFlakeId = new SnowflakeId(dataBlock, workId, idStart);
     }
 
     @Override

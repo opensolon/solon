@@ -12,15 +12,22 @@ public class SnowflakeId {
     //默认起始时间 2020-01-01 00:00:00（差不多可以用69年）
     private static final long START_TIME_DEF = 1577808000000L;
 
-    public SnowflakeId(String dataBlock, long startTime) {
+    public SnowflakeId(String dataBlock, long workId, long startTime) {
         if (startTime > 0) {
             this.startTime = startTime;
         } else {
             this.startTime = START_TIME_DEF;
         }
 
-        dataId = getDataId(dataBlock);
-        workId = getWorkId();
+        //只能自动
+        this.dataId = getDataId(dataBlock);
+
+        //可以配置
+        if (workId > 0) {
+            this.workId = workId;
+        } else {
+            this.workId = getWorkId();
+        }
     }
 
     public SnowflakeId(long dataId, long workId) {

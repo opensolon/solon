@@ -16,7 +16,7 @@ public class XPluginImp implements Plugin {
         CloudProps cloudProps = new CloudProps(context,"snowflake");
 
         if (cloudProps.getIdEnable()) {
-            CloudManager.register(new CloudIdServiceFactoryImp(cloudProps.getIdStart()));
+            CloudManager.register(new CloudIdServiceFactoryImp(cloudProps));
         }
     }
 }

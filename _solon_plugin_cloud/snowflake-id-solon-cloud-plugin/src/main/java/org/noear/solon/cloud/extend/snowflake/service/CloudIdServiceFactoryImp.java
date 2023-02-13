@@ -1,5 +1,6 @@
 package org.noear.solon.cloud.extend.snowflake.service;
 
+import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.service.CloudIdService;
 import org.noear.solon.cloud.service.CloudIdServiceFactory;
 
@@ -12,9 +13,11 @@ import java.util.Map;
  */
 public class CloudIdServiceFactoryImp implements CloudIdServiceFactory {
     long idStart;
+    long workId;
 
-    public CloudIdServiceFactoryImp(long idStart) {
-        this.idStart = idStart;
+    public CloudIdServiceFactoryImp(CloudProps cloudProps) {
+        this.idStart = cloudProps.getIdStart();
+        this.workId = Long.parseLong(cloudProps.getValue("workId", "0L"));
     }
 
 
@@ -29,7 +32,7 @@ public class CloudIdServiceFactoryImp implements CloudIdServiceFactory {
             synchronized (block.intern()) {
                 tmp = cached.get(block);
                 if (tmp == null) {
-                    tmp = new CloudIdServiceImp(block, idStart);
+                    tmp = new CloudIdServiceImp(block, workId, idStart);
                     cached.put(block, tmp);
                 }
             }
