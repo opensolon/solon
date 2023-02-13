@@ -17,7 +17,7 @@ public class CloudIdServiceFactoryImp implements CloudIdServiceFactory {
 
     public CloudIdServiceFactoryImp(CloudProps cloudProps) {
         this.idStart = cloudProps.getIdStart();
-        this.workId = Long.parseLong(cloudProps.getValue("workId", "0L"));
+        this.workId = Long.parseLong(cloudProps.getValue("id.workId", "0"));
     }
 
 
