@@ -27,7 +27,17 @@ public interface RoutingTable<T> {
      */
     void add(int index, Routing<T> routing);
 
+    /**
+     * 移除路由记录
+     *
+     * @param pathPrefix 路径前缀
+     */
     void remove(String pathPrefix);
+
+    /**
+     * 数量
+     * */
+    int count();
 
     /**
      * 获取所有路由记录

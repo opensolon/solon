@@ -42,6 +42,11 @@ public class RoutingTableDefault<T> implements RoutingTable<T> {
     }
 
     @Override
+    public int count() {
+        return table.size();
+    }
+
+    @Override
     public Collection<Routing<T>> getAll() {
         return Collections.unmodifiableList(table);
     }

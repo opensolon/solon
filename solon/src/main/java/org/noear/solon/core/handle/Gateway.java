@@ -405,7 +405,12 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
      * 查找接口
      */
     protected Handler find(Context c) throws Throwable {
-        return findDo(c, c.pathNew());
+        if (mainRouting.count() == 0) {
+            //如果没有记录，说明只有一个默认； 则默认是唯一主处理
+            return findDo(c, null);
+        } else {
+            return findDo(c, c.pathNew());
+        }
     }
 
     protected Handler findDo(Context c, String path) throws Throwable {
