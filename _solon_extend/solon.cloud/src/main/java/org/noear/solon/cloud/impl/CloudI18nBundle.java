@@ -5,7 +5,6 @@ import org.noear.solon.core.Props;
 import org.noear.solon.i18n.I18nBundle;
 
 import java.util.Locale;
-import java.util.Map;
 
 /**
  * @author noear
