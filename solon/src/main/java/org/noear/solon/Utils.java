@@ -7,6 +7,7 @@ import org.noear.solon.core.PropsLoader;
 import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.core.util.ResourceUtil;
 import org.noear.solon.core.util.RunUtil;
+import org.noear.solon.core.util.SupplierEx;
 import org.noear.solon.core.wrap.ClassWrap;
 
 import java.io.*;
@@ -307,6 +308,15 @@ public class Utils {
             }
         } else {
             return new Locale(ss[0]);
+        }
+    }
+
+    public static boolean hasClass(SupplierEx<Class<?>> sup) {
+        try {
+            sup.get();
+            return true;
+        } catch (Throwable e) {
+            return false;
         }
     }
 

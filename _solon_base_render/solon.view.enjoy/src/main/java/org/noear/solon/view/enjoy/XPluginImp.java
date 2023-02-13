@@ -3,6 +3,7 @@ package org.noear.solon.view.enjoy;
 import com.jfinal.template.Directive;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
+import org.noear.solon.auth.AuthUtil;
 import org.noear.solon.auth.tags.AuthConstants;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
@@ -10,7 +11,6 @@ import org.noear.solon.core.handle.RenderManager;
 import org.noear.solon.view.enjoy.tags.AuthPermissionsTag;
 import org.noear.solon.view.enjoy.tags.AuthRolesTag;
 
-@SuppressWarnings("unchecked")
 public class XPluginImp implements Plugin {
     public static boolean output_meta = false;
 
@@ -39,7 +39,7 @@ public class XPluginImp implements Plugin {
         RenderManager.register(render);
         RenderManager.mapping(".shtm", render);
 
-        if (Utils.loadClass("org.noear.solon.auth.AuthUtil") != null) {
+        if (Utils.hasClass(() -> AuthUtil.class)) {
             render.putDirective(AuthConstants.TAG_authPermissions, AuthPermissionsTag.class);
             render.putDirective(AuthConstants.TAG_authRoles, AuthRolesTag.class);
         }

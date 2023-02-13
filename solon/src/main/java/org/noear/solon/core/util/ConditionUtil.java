@@ -29,11 +29,11 @@ public class ConditionUtil {
         if (Utils.isNotEmpty(anno.hasProperty())) {
             String[] kv = anno.hasProperty().split("=");
 
-            if (kv.length  >1) {
+            if (kv.length > 1) {
                 String val = context.cfg().getByExpr(kv[0].trim());
                 //值要等于kv[1] （val 可能为 null）
                 return kv[1].trim().equals(val);
-            }else{
+            } else {
                 String val = context.cfg().getByExpr(anno.hasProperty());
                 //有值就行
                 return Utils.isNotEmpty(val);
@@ -43,7 +43,7 @@ public class ConditionUtil {
         try {
             anno.hasClass();
             return true;
-        } catch (TypeNotPresentException e) {
+        } catch (Throwable e) {
             return false;
         }
     }

@@ -3,6 +3,7 @@ package org.noear.solon.view.velocity;
 import org.apache.velocity.runtime.directive.Directive;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
+import org.noear.solon.auth.AuthUtil;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.handle.RenderManager;
@@ -37,7 +38,7 @@ public class XPluginImp implements Plugin {
         RenderManager.register(render);
         RenderManager.mapping(".vm", render);
 
-        if (Utils.loadClass("org.noear.solon.auth.AuthUtil") != null) {
+        if (Utils.hasClass(() -> AuthUtil.class)) {
             render.putDirective(new AuthPermissionsTag());
             render.putDirective(new AuthRolesTag());
         }
