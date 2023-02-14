@@ -7,6 +7,12 @@ import org.thymeleaf.templateresolver.StringTemplateResolver;
 import java.io.StringWriter;
 import java.util.Map;
 
+/**
+ * 建议使用：Context::renderAndReturn
+ *
+ * @deprecated 2.1
+ * */
+@Deprecated
 public class RenderUtil {
     public static String render(String template, Map<String, Object> model) throws Exception {
         TemplateEngine engine = new TemplateEngine();

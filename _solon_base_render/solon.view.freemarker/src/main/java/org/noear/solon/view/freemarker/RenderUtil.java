@@ -7,6 +7,12 @@ import org.noear.solon.Solon;
 
 import java.io.StringWriter;
 
+/**
+ * 建议使用：Context::renderAndReturn
+ *
+ * @deprecated 2.1
+ * */
+@Deprecated
 public class RenderUtil {
     public static String render(String template, Object model) throws Exception {
         StringWriter writer = new StringWriter();
