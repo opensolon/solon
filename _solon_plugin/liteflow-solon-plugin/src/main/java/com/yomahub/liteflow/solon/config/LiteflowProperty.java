@@ -86,7 +86,7 @@ public class LiteflowProperty {
 
     public void setRuleSource(String ruleSource) {
         if (ruleSource.contains("*")) {
-            this.ruleSource = String.join(",", ResourceUtil.resolvePaths(ruleSource));
+            this.ruleSource = String.join(",", ResourceUtil.scanResources(ruleSource));
         } else {
             this.ruleSource = ruleSource;
         }

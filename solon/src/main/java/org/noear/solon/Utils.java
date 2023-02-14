@@ -134,7 +134,7 @@ public class Utils {
      * */
     @Deprecated
     public static Collection<String> resolvePaths(String pathExpr) {
-        return ResourceUtil.resolvePaths(pathExpr);
+        return ResourceUtil.scanResources(pathExpr);
     }
 
     /**

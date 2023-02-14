@@ -9,6 +9,7 @@ import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.apache.ibatis.transaction.TransactionFactory;
+import org.apache.ibatis.type.TypeHandler;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.BeanWrap;
@@ -24,6 +25,7 @@ import javax.sql.DataSource;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Mybatis 适配器默认实现
@@ -117,10 +119,14 @@ public class MybatisAdapterDefault implements MybatisAdapter {
                             continue;
                         }
 
-                        //package or type class
-                        ResourceUtil.resolveClasses(val).forEach(clz -> {
-                            getConfiguration().getTypeAliasRegistry().registerAlias(clz);
-                        });
+                        //package || type class，转为类表达式
+                        String valNew = getClassExpr(val);
+
+                        for (Class<?> clz : ResourceUtil.scanClasses(valNew)) {
+                            if(clz.isInterface() == false) {
+                                getConfiguration().getTypeAliasRegistry().registerAlias(clz);
+                            }
+                        }
                     }
                 }
 
@@ -131,21 +137,17 @@ public class MybatisAdapterDefault implements MybatisAdapter {
                             continue;
                         }
 
-                        //package || type class
-                        ResourceUtil.resolveClasses(val).forEach(clz -> {
-                            getConfiguration().getTypeHandlerRegistry().register(clz);
-                        });
+                        //package || type class，转为类表达式
+                        String valNew = getClassExpr(val);
+
+                        for (Class<?> clz : ResourceUtil.scanClasses(valNew)) {
+                            if (TypeHandler.class.isAssignableFrom(clz)) {
+                                getConfiguration().getTypeHandlerRegistry().register(clz);
+                            }
+                        }
                     }
                 }
-            }
-        });
 
-        //支持包名和xml
-        //for mappers section
-        dsProps.forEach((k, v) -> {
-            if (k instanceof String && v instanceof String) {
-                String key = (String) k;
-                String valStr = (String) v;
 
                 if (key.startsWith("mappers[") || key.equals("mappers")) {
                     for (String val : valStr.split(",")) {
@@ -155,24 +157,24 @@ public class MybatisAdapterDefault implements MybatisAdapter {
                         }
 
                         if (val.endsWith(".xml")) {
-                            //mapper xml
-
-                            //新方法，替代旧的 *.xml （基于表达式；更自由，更语义化）
-                            ResourceUtil.resolvePaths(val).forEach(uri -> {
+                            //mapper xml， 新方法，替代旧的 *.xml （基于表达式；更自由，更语义化）
+                            for (String uri : ResourceUtil.scanResources(val)) {
                                 addMapperByXml(uri);
-                            });
-
-                            if (val.endsWith("*.xml") && val.indexOf("*") == val.indexOf("*.xml")) {
-                                //@Deprecated //弃用提示
-                                LogUtil.global().warn("Mybatis-新适配表达式提示：'" + val + "' 不包括深度子目录；如有需要可增加'/**/'段");
                             }
+
+                            //todo: 兼容提醒:
+                            compatibilityTipsOfXml(val);
 
                             mappers.add(val);
                         } else {
-                            //package or mapper class
-                            ResourceUtil.resolveClasses(val).forEach(clz -> {
-                                getConfiguration().addMapper(clz);
-                            });
+                            //package || type class，转为类表达式
+                            String valNew = getClassExpr(val);
+
+                            for (Class<?> clz : ResourceUtil.scanClasses(valNew)) {
+                                if(clz.isInterface()) {
+                                    getConfiguration().addMapper(clz);
+                                }
+                            }
 
                             mappers.add(val);
                         }
@@ -259,5 +261,32 @@ public class MybatisAdapterDefault implements MybatisAdapter {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private void compatibilityTipsOfXml(String val) {
+        //todo: 兼容提醒:
+        if (val.endsWith("*.xml") && val.indexOf("*") == val.indexOf("*.xml")) {
+            //@Deprecated //弃用提示
+            LogUtil.global().warn("Mybatis-新文件表达式提示：'" + val + "' 不包括深度子目录；如有需要可增加'/**/'段");
+        }
+    }
+
+    private String getClassExpr(String val) {
+        //兼容旧代码: 把包名转为类表达式，但类名保持原态
+
+        if (val.endsWith(".class") == false && val.endsWith(".*")) {
+            int idx = val.lastIndexOf('.');
+            char acr = val.charAt(idx + 1);
+
+            if (acr > 96) { //44=$ 97=a
+                //开头为小写（说明是包）
+                return val + ".*";
+            } else {
+                //开头为大写或$（说明是类）
+                return val;
+            }
+        }
+
+        return val;
     }
 }

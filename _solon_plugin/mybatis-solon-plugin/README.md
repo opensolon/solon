@@ -3,15 +3,22 @@
 
 ```yaml
 # 配置数据源
+demo.db1:
+  # 与数据库名可用保持一致
+  schema: rock
+  jdbcUrl: jdbc:mysql://localhost:3306/rock?useUnicode=true&characterEncoding=utf8&autoReconnect=true&rewriteBatchedStatements=true
+  driverClassName: com.mysql.cj.jdbc.Driver
+  username: root
+  password: 123456
+
 mybatis.db1:
-  typeAliases:
-    - "webapp.model"    #支持包名
-  mappers:
-    - "webapp.dso.db1"            #或支持包名(要求 xml 同包同名)
-    - "webapp/dso/db1/mapp.class" #或支持mapper class 资源地址(要求 xml 同包同名)
-    - "mybatis/db1/mapp.xml"      #或支持mapper xml 资源地址
-    - "mybatis/db1/*.xml"         #或支持mapper *.xml 资源地址   
-    - "mybatis/**/db1/*.xml"         #或支持mapper *.xml 资源地址     
+  typeAliases:  #支持包名 或 类名 //支持 ** 和 *
+    - "webapp.model.*"
+  mappers:      #支持包名 或 类名 或 xml（.xml结尾） //支持 ** 和 *
+    - "webapp.dso.db1.*"
+    - "webapp.dso.db1.DemoMapper"
+    - "mybatis/dso/db1/demoMapper.xml"
+    - "mybatis/**/db1/*.xml"     
 
 # 配置全局插件
 mybatis.plugins:
