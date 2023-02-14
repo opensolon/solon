@@ -5,7 +5,7 @@ import java.lang.annotation.*;
 
 
 /**
- * 触发器：后置处理（针对 Controller 或 Action 的拦截器）
+ * 后置处理（针对 Controller 或 Action ，附加后置处理器）
  *
  * <pre><code>
  * @Before({StartHandler.class, IpHandler.class})

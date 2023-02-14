@@ -5,7 +5,7 @@ import org.noear.solon.core.aspect.Interceptor;
 import java.lang.annotation.*;
 
 /**
- * 触发器：围绕处理（针对 Controller、Service、Dao 等所有基于MethodWrap运行的目标）
+ * 环绕拦截处理（针对 Controller、Service、Dao 等所有基于 MethodWrap 运行的目标，附加拦截器）
  *
  * <pre><code>
  * @Controller

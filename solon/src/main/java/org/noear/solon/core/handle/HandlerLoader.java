@@ -263,7 +263,7 @@ public class HandlerLoader extends HandlerAide {
     }
 
     /**
-     * 附加触发器（前后置处理）
+     * 附加处理
      */
     private static <T> void addDo(T[] ary, ConsumerEx<T> fun) {
         if (ary != null) {
