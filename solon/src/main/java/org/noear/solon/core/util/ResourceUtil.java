@@ -20,7 +20,6 @@ public class ResourceUtil {
     //a.**.b.*.class
 
     /**
-     *
      * @param packExpr 包表达式
      */
     public static Collection<Class<?>> resolveClasses(String packExpr) {
@@ -29,6 +28,11 @@ public class ResourceUtil {
 
     public static Collection<Class<?>> resolveClasses(ClassLoader classLoader, String packExpr) {
         List<Class<?>> clzList = new ArrayList<>();
+
+        if (packExpr.endsWith(".*")) {
+            packExpr = packExpr + ".class";
+        }
+
 
         if (packExpr.indexOf("*") < 0 && packExpr.endsWith(".class")) {
             String className = packExpr.substring(0, packExpr.length() - 6);
@@ -40,7 +44,7 @@ public class ResourceUtil {
         }
 
         packExpr = packExpr.replace(".", "/");
-        packExpr = packExpr.replace("/class",".class");//xxx.class 会变成 xxx/class
+        packExpr = packExpr.replace("/class", ".class");//xxx.class 会变成 xxx/class
 
         if (packExpr.endsWith(".class") == false) {
             packExpr = packExpr + "/*.class";
@@ -66,7 +70,6 @@ public class ResourceUtil {
     //a/**/b/*.xml
 
     /**
-     *
      * @param pathExpr 路径表达式
      */
     public static Collection<String> resolvePaths(String pathExpr) {
@@ -84,8 +87,8 @@ public class ResourceUtil {
         //确定没有星号的起始目录
         int dirIdx = pathExpr.indexOf("/*");
 
-        if(dirIdx<1){
-            throw new IllegalArgumentException("Expressions without a first-level directory are not supported: " +pathExpr);
+        if (dirIdx < 1) {
+            throw new IllegalArgumentException("Expressions without a first-level directory are not supported: " + pathExpr);
         }
 
         String dir = pathExpr.substring(0, dirIdx);
