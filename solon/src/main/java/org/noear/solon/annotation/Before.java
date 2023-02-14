@@ -4,7 +4,7 @@ import org.noear.solon.core.handle.Handler;
 import java.lang.annotation.*;
 
 /**
- * 触发器：前置处理（争对 XController 和 XAction 的拦截器）
+ * 触发器：前置处理（针对 Controller 和 Action 的拦截器）
  *
  * <pre><code>
  * @Before({StartHandler.class, IpHandler.class})
