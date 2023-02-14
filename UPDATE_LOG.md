@@ -9,6 +9,18 @@
 * 提醒1：之前没有使用弃用接口的，可以直接升级 <br>
 * 提醒2：有使用弃用接口的。建议先升级到 1.12.4；替换弃用代码后，再升级到 2.0.0
 
+### v2.1.3
+
+* 插件 solon-maven-plugin 增加 jdk19 支持
+* 插件 snowflake-id-solon-cloud-plugin 增加 workId 可配置
+* 插件 solon.test 增加 AbstractHttpTester 类，名字比 HttpTestBase 顺眼些
+* 插件 solon.test Http 测试器 增加 http(int port) 接口，方便本机所有http端口测试（比如 mock server）
+* 插件 solon-test-junit4 增加 mockito-core 依赖，方便 mock 测试
+* 增加 新的类存在检测方式 Utils.hasClass(() -> AuthUtil.class)
+* 优化 Gateway 根据路由记录数量，自动切换主处理
+* 优化 http 输出长度模式 与 chunked模式 的自动切换
+
+
 ### v2.1.2
 * 新增 solon.health.detector 插件
 * 增强 detector-solon-plugin 扩展能力
