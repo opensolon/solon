@@ -2,13 +2,13 @@ package features;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.noear.solon.test.HttpTestBase;
+import org.noear.solon.test.AbstractHttpTester;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
 
 @RunWith(SolonJUnit4ClassRunner.class)
 @SolonTest(webapp.TestApp.class)
-public class CacheTest3 extends HttpTestBase {
+public class CacheTest3 extends AbstractHttpTester {
     @Test
     public void test1() throws Exception{
         String rst = path("/cache3/").get();

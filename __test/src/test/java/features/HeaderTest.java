@@ -5,7 +5,7 @@ import okhttp3.Response;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.noear.solon.boot.web.Constants;
-import org.noear.solon.test.HttpTestBase;
+import org.noear.solon.test.AbstractHttpTester;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
 
@@ -16,7 +16,7 @@ import java.util.Map;
 
 @RunWith(SolonJUnit4ClassRunner.class)
 @SolonTest(webapp.TestApp.class)
-public class HeaderTest extends HttpTestBase {
+public class HeaderTest extends AbstractHttpTester {
     @Test
     public void test1() throws Exception {
         assert path("/demo1/run0/?str=").get().equals("不是null(ok)");

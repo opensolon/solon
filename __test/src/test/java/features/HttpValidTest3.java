@@ -2,7 +2,7 @@ package features;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.noear.solon.test.HttpTestBase;
+import org.noear.solon.test.AbstractHttpTester;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
 
@@ -15,7 +15,7 @@ import java.util.Map;
  */
 @RunWith(SolonJUnit4ClassRunner.class)
 @SolonTest(webapp.TestApp.class)
-public class HttpValidTest3 extends HttpTestBase {
+public class HttpValidTest3 extends AbstractHttpTester {
     @Test
     public void test0() throws IOException {
         assert path("/demo2/valid/bean3").get().contains("field10");

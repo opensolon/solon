@@ -4,7 +4,7 @@ import okhttp3.Headers;
 import okhttp3.Response;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.noear.solon.test.HttpTestBase;
+import org.noear.solon.test.AbstractHttpTester;
 import org.noear.solon.test.HttpUtils;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
@@ -16,7 +16,7 @@ import java.util.List;
  */
 @RunWith(SolonJUnit4ClassRunner.class)
 @SolonTest(webapp.TestApp.class)
-public class SessionTest extends HttpTestBase {
+public class SessionTest extends AbstractHttpTester {
     @Test
     public void test() throws Exception {
         Response response = path("/demob/session/setval").exec("get");

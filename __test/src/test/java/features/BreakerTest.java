@@ -3,7 +3,7 @@ package features;
 import lombok.extern.slf4j.Slf4j;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
-import org.noear.solon.test.HttpTestBase;
+import org.noear.solon.test.AbstractHttpTester;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
 import webapp.demox_log_breaker.BreakerServiceDemo;
@@ -17,7 +17,7 @@ import java.util.concurrent.CountDownLatch;
 @Slf4j
 //@RunWith(SolonJUnit4ClassRunner.class)
 //@SolonTest(webapp.TestApp.class)
-public class BreakerTest extends HttpTestBase {
+public class BreakerTest extends AbstractHttpTester {
 
 //    @Test
     public void test() throws Exception {

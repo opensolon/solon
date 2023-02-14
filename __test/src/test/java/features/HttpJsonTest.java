@@ -4,7 +4,7 @@ import model.UserModel;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.noear.snack.ONode;
-import org.noear.solon.test.HttpTestBase;
+import org.noear.solon.test.AbstractHttpTester;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
 
@@ -16,7 +16,7 @@ import java.util.List;
  */
 @RunWith(SolonJUnit4ClassRunner.class)
 @SolonTest(webapp.TestApp.class)
-public class HttpJsonTest extends HttpTestBase {
+public class HttpJsonTest extends AbstractHttpTester {
     @Test
     public void json_map() throws Exception {
         ONode oNode = new ONode();

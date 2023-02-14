@@ -2,7 +2,7 @@ package features;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.noear.solon.test.HttpTestBase;
+import org.noear.solon.test.AbstractHttpTester;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
 
@@ -11,7 +11,7 @@ import org.noear.solon.test.SolonTest;
  */
 @RunWith(SolonJUnit4ClassRunner.class)
 @SolonTest(webapp.TestApp.class)
-public class RestTest extends HttpTestBase {
+public class RestTest extends AbstractHttpTester {
     @Test
     public void null0() throws Exception {
         assert path("/demo2a/rest/null").get().equals("");

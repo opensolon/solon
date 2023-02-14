@@ -3,7 +3,7 @@ package features;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.noear.snack.ONode;
-import org.noear.solon.test.HttpTestBase;
+import org.noear.solon.test.AbstractHttpTester;
 import org.noear.solon.test.SolonJUnit5Extension;
 import org.noear.solon.test.SolonTest;
 
@@ -12,7 +12,7 @@ import org.noear.solon.test.SolonTest;
  */
 @ExtendWith(SolonJUnit5Extension.class)
 @SolonTest(webapp.TestApp.class)
-public class BigBodyTest_u5 extends HttpTestBase {
+public class BigBodyTest_u5 extends AbstractHttpTester {
     @Test
     public void test_body() throws Exception {
         //构发大json数据块(20mb)

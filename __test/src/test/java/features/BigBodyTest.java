@@ -4,7 +4,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.noear.snack.ONode;
 import org.noear.solon.Utils;
-import org.noear.solon.test.HttpTestBase;
+import org.noear.solon.test.AbstractHttpTester;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
 
@@ -13,7 +13,7 @@ import org.noear.solon.test.SolonTest;
  */
 @RunWith(SolonJUnit4ClassRunner.class)
 @SolonTest(webapp.TestApp.class)
-public class BigBodyTest extends HttpTestBase {
+public class BigBodyTest extends AbstractHttpTester {
     @Test
     public void test_body() throws Exception {
         //构发大json数据块(20mb)
