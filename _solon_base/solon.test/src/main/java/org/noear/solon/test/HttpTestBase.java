@@ -1,17 +1,8 @@
 package org.noear.solon.test;
 
-import org.noear.solon.Solon;
+/**
+ * @deprecated 2.1
+ * */
+public class HttpTestBase extends  AbstractHttpTester {
 
-public class HttpTestBase {
-    public boolean enablePrint(){
-        return true;
-    }
-
-    public HttpUtils path(String path) {
-        return http("http://localhost:" + Solon.cfg().serverPort() + path);
-    }
-
-    public HttpUtils http(String url) {
-        return HttpUtils.http(url).enablePrintln(enablePrint());
-    }
 }
