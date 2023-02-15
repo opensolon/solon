@@ -9,7 +9,13 @@
     {
       "name": "solon.staticfiles.maxAge",
       "type": "java.lang.Integer",
-      "description": "静态文件的304缓存时长"
+      "defaultValue": 600,
+      "description": "静态文件的304缓存时长（默认为10分钟）"
+    },
+    {
+      "name": "solon.staticfiles.mappings",
+      "type": "org.noear.solon.web.staticfiles.model.MappingItem[]",
+      "description": "静态文件映射（文件或目录）"
     }
   ]
 }
