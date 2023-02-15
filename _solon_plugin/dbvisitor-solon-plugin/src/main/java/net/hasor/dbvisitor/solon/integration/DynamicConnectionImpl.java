@@ -22,4 +22,10 @@ public class DynamicConnectionImpl implements DynamicConnection {
     public Connection getConnection() throws SQLException {
         return TranUtils.getConnection(dataSource);
     }
+
+    @Override
+    public void releaseConnection(Connection conn) throws SQLException {
+        DynamicConnection.super.releaseConnection(conn);
+        conn.close();
+    }
 }
