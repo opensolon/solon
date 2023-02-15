@@ -25,7 +25,8 @@ public class DynamicConnectionImpl implements DynamicConnection {
 
     @Override
     public void releaseConnection(Connection conn) throws SQLException {
-        DynamicConnection.super.releaseConnection(conn);
-        conn.close();
+        if (TranUtils.inTrans() == false) {
+            conn.close();
+        }
     }
 }
