@@ -147,7 +147,16 @@ public class MybatisAdapterDefault implements MybatisAdapter {
                         }
                     }
                 }
+            }
+        });
 
+        //todo: 上面的完成后，才能做下面这个
+
+        //for mappers section
+        dsProps.forEach((k, v) -> {
+            if (k instanceof String && v instanceof String) {
+                String key = (String) k;
+                String valStr = (String) v;
 
                 if (key.startsWith("mappers[") || key.equals("mappers")) {
                     for (String val : valStr.split(",")) {
@@ -274,7 +283,7 @@ public class MybatisAdapterDefault implements MybatisAdapter {
     private String getClassExpr(String val) {
         //兼容旧代码: 把包名转为类表达式，但类名保持原态
 
-        if (val.endsWith(".class") == false && val.endsWith(".*")) {
+        if (val.endsWith(".class") == false && val.endsWith(".*") == false) {
             int idx = val.lastIndexOf('.');
             char acr = val.charAt(idx + 1);
 
