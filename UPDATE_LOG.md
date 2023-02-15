@@ -20,6 +20,7 @@
 * 优化 Gateway 根据路由记录数量，自动切换主处理
 * 优化 http 输出长度模式 与 chunked模式 的自动切换
 * 升级 mockito 为 4.11.0
+* 升级 beetl 为 3.14.1.RELEASE
 
 
 ### v2.1.2
