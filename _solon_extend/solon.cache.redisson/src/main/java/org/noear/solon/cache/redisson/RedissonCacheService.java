@@ -2,6 +2,7 @@ package org.noear.solon.cache.redisson;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
+import org.noear.solon.core.event.EventBus;
 import org.noear.solon.data.cache.CacheService;
 import org.redisson.api.RedissonClient;
 
@@ -23,9 +24,9 @@ public class RedissonCacheService implements CacheService {
     }
 
     public RedissonCacheService(Properties prop, String keyHeader, int defSeconds) {
-        String defSeconds_str = prop.getProperty("defSeconds");
-
         if (defSeconds == 0) {
+            String defSeconds_str = prop.getProperty("defSeconds");
+
             if (Utils.isNotEmpty(defSeconds_str)) {
                 defSeconds = Integer.parseInt(defSeconds_str);
             }
@@ -58,16 +59,38 @@ public class RedissonCacheService implements CacheService {
 
     @Override
     public void store(String key, Object obj, int seconds) {
-        client.getBucket(key).set(obj,seconds, TimeUnit.SECONDS);
+        if(obj == null){
+            return;
+        }
+
+        if (seconds < 1) {
+            seconds = _defaultSeconds;
+        }
+
+        String newKey = newKey(key);
+
+        try {
+            client.getBucket(newKey).set(obj, seconds, TimeUnit.SECONDS);
+        } catch (Throwable e) {
+            EventBus.pushTry(e);
+        }
     }
 
     @Override
     public Object get(String key) {
-        return client.getBucket(key).get();
+        String newKey = newKey(key);
+
+        return client.getBucket(newKey).get();
     }
 
     @Override
     public void remove(String key) {
-        client.getBucket(key).delete();
+        String newKey = newKey(key);
+
+        client.getBucket(newKey).delete();
+    }
+
+    protected String newKey(String key) {
+        return _cacheKeyHead + ":" + Utils.md5(key);
     }
 }
