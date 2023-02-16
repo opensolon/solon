@@ -7,6 +7,7 @@ import com.jfinal.plugin.activerecord.Model;
 import org.noear.solon.Utils;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.event.EventBus;
+import org.noear.solon.core.util.RunnableEx;
 import org.noear.solon.core.util.ScanUtil;
 import org.noear.solon.extend.activerecord.annotation.Db;
 import org.noear.solon.extend.activerecord.annotation.Table;
@@ -14,10 +15,7 @@ import org.noear.solon.extend.activerecord.impl.ConfigImpl;
 import org.noear.solon.extend.activerecord.impl.DataSourceProxyImpl;
 
 import javax.sql.DataSource;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * ActiveRecordPlugin 管理器
@@ -27,6 +25,11 @@ import java.util.Map;
  */
 public class ArpManager {
     private static Map<String, ActiveRecordPlugin> arpMap = new HashMap<>();
+    private static Set<Runnable> startEvents = new LinkedHashSet<>();
+
+    public static void addStartEvent(Runnable event){
+        startEvents.add(event);
+    }
 
     /**
      * 添加数据源
@@ -107,6 +110,10 @@ public class ArpManager {
 
             // 启动 arp
             arp.start();
+        }
+
+        for (Runnable event : startEvents) {
+            event.run();
         }
     }
 

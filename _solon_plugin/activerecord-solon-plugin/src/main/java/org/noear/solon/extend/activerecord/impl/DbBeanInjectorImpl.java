@@ -1,6 +1,7 @@
 package org.noear.solon.extend.activerecord.impl;
 
 import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
+import com.jfinal.plugin.activerecord.Config;
 import com.jfinal.plugin.activerecord.DbKit;
 import com.jfinal.plugin.activerecord.DbPro;
 import org.noear.solon.Utils;
@@ -41,7 +42,15 @@ public class DbBeanInjectorImpl implements BeanInjector<Db> {
                 name = DbKit.MAIN_CONFIG_NAME;
             }
 
-            varH.setValue(com.jfinal.plugin.activerecord.Db.use(name));
+            Config config = DbKit.getConfig(name);
+            if (config != null) {
+                varH.setValue(com.jfinal.plugin.activerecord.Db.use(name));
+            } else {
+                String name2 = name;
+                ArpManager.addStartEvent(() -> {
+                    varH.setValue(com.jfinal.plugin.activerecord.Db.use(name2));
+                });
+            }
             return;
         }
 
