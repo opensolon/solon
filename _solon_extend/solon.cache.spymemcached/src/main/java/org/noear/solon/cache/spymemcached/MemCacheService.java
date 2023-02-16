@@ -23,7 +23,7 @@ public class MemCacheService implements CacheService {
     protected String _cacheKeyHead;
     protected int _defaultSeconds;
 
-    protected final MemcachedClient _cache;
+    protected final MemcachedClient client;
 
     public MemCacheService(Properties prop) {
         this(prop, prop.getProperty("keyHeader"), 0);
@@ -41,7 +41,7 @@ public class MemCacheService implements CacheService {
             }
         }
 
-        if(Utils.isEmpty(keyHeader)){
+        if (Utils.isEmpty(keyHeader)) {
             keyHeader = Solon.cfg().appName();
         }
 
@@ -68,53 +68,52 @@ public class MemCacheService implements CacheService {
                 builder.setAuthDescriptor(ad);
             }
 
-            _cache = new MemcachedClient(builder.build(), AddrUtil.getAddresses(server));
+            client = new MemcachedClient(builder.build(), AddrUtil.getAddresses(server));
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
     }
 
+    public MemcachedClient client() {
+        return client;
+    }
+
     @Override
     public void store(String key, Object obj, int seconds) {
-        if(obj == null){
+        if (obj == null) {
             return;
         }
 
-        if (_cache != null) {
-            String newKey = newKey(key);
-            try {
-                if(seconds > 0) {
-                    _cache.set(newKey, seconds, obj);
-                }else{
-                    _cache.set(newKey, _defaultSeconds, obj);
-                }
-            } catch (Exception e) {
-                EventBus.pushTry(e);
-            }
+        if (seconds < 1) {
+            seconds = _defaultSeconds;
+        }
+
+        String newKey = newKey(key);
+
+        try {
+            client.set(newKey, seconds, obj);
+        } catch (Exception e) {
+            EventBus.pushTry(e);
         }
     }
 
     @Override
     public Object get(String key) {
-        if (_cache != null) {
-            String newKey = newKey(key);
-            try {
-                return _cache.get(newKey);
-            } catch (Exception e) {
-                EventBus.pushTry(e);
-                return null;
-            }
-        } else {
+        String newKey = newKey(key);
+
+        try {
+            return client.get(newKey);
+        } catch (Exception e) {
+            EventBus.pushTry(e);
             return null;
         }
     }
 
     @Override
     public void remove(String key) {
-        if (_cache != null) {
-            String newKey = newKey(key);
-            _cache.delete(newKey);
-        }
+        String newKey = newKey(key);
+
+        client.delete(newKey);
     }
 
 

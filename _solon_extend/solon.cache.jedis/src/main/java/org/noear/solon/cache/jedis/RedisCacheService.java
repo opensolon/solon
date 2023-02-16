@@ -23,7 +23,7 @@ public class RedisCacheService implements CacheService {
     protected final RedisClient client;
 
     public RedisCacheService serializer(Serializer<String> serializer) {
-        if(serializer != null) {
+        if (serializer != null) {
             this._serializer = serializer;
         }
 
@@ -56,7 +56,7 @@ public class RedisCacheService implements CacheService {
             maxTotal = Integer.parseInt(maxTotal_str);
         }
 
-        if(Utils.isEmpty(keyHeader)){
+        if (Utils.isEmpty(keyHeader)) {
             keyHeader = Solon.cfg().appName();
         }
 
@@ -78,66 +78,60 @@ public class RedisCacheService implements CacheService {
 
     /**
      * 获取 RedisClient
-     * */
-    public RedisClient client(){
+     */
+    public RedisClient client() {
         return client;
     }
 
     @Override
     public void store(String key, Object obj, int seconds) {
-        if(obj == null){
+        if (obj == null) {
             return;
         }
 
-        if (client != null) {
-            String newKey = newKey(key);
-            try {
-                String val = _serializer.serialize(obj);
+        String newKey = newKey(key);
 
-                if(seconds > 0) {
-                    client.open((ru) -> ru.key(newKey).expire(seconds).set(val));
-                }else{
-                    client.open((ru) -> ru.key(newKey).expire(_defaultSeconds).set(val));
-                }
-            } catch (Exception e) {
-                EventBus.pushTry(e);
+        try {
+            String val = _serializer.serialize(obj);
+
+            if (seconds > 0) {
+                client.open((ru) -> ru.key(newKey).expire(seconds).set(val));
+            } else {
+                client.open((ru) -> ru.key(newKey).expire(_defaultSeconds).set(val));
             }
+        } catch (Exception e) {
+            EventBus.pushTry(e);
         }
     }
 
     @Override
     public Object get(String key) {
-        if (client != null) {
-            String newKey = newKey(key);
-            String val = client.openAndGet((ru) -> ru.key(newKey).get());
+        String newKey = newKey(key);
+        String val = client.openAndGet((ru) -> ru.key(newKey).get());
 
-            if(val == null){
-                return null;
-            }
+        if (val == null) {
+            return null;
+        }
 
-            try {
-                return _serializer.deserialize(val);
-            } catch (Exception e) {
-                EventBus.pushTry(e);
-                return null;
-            }
-        } else {
+        try {
+            return _serializer.deserialize(val);
+        } catch (Exception e) {
+            EventBus.pushTry(e);
             return null;
         }
     }
 
     @Override
     public void remove(String key) {
-        if (client != null) {
-            String newKey = newKey(key);
-            client.open((ru) -> {
-                ru.key(newKey).delete();
-            });
-        }
+        String newKey = newKey(key);
+
+        client.open((ru) -> {
+            ru.key(newKey).delete();
+        });
     }
 
 
     protected String newKey(String key) {
-        return _cacheKeyHead + "$" + Utils.md5(key);
+        return _cacheKeyHead + ":" + Utils.md5(key);
     }
 }

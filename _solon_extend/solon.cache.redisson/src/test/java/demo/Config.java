@@ -1,4 +1,4 @@
-package features;
+package demo;
 
 import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Configuration;

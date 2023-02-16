@@ -8,14 +8,14 @@ solon.cache1:
   driverType: "memcached"
   keyHeader: "demo" #默认为 ${solon.app.name} ，可不配置
   defSeconds: 30 #默认为 30，可不配置
-  server: "localhost:6379"
+  server: "localhost:11211"
   user: "" #默认为空，可不配置
   password: "" #默认为空，可不配置
 
 
 #简配示例
 solon.cache2:
-  server: "localhost:6379"
+  server: "localhost:11211"
 ```
 
 #### 代码

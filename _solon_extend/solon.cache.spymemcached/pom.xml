@@ -26,6 +26,12 @@
             <artifactId>spymemcached</artifactId>
             <version>2.12.3</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon-test</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
 </project>
