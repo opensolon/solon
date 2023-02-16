@@ -18,6 +18,8 @@
 * 插件 solon-test-junit4 增加 mockito-core 依赖，方便 mock 测试
 * 增加 新的类存在检测方式 Utils.hasClass(() -> AuthUtil.class)
 * 修复 activerecord-solon-pllugin::修复在 ActiveRecordPlugin::start 前不能注入 DbPro 的问题
+* 修复 solon.cache.redisson 默认缓存时间没有生效的问题，及缓存键头没用起来的问题
+* 调整 solon.cache.jedis 缓存键以':'为间隔
 * 优化 solon.test 排除只读类成为代理类
 * 优化 Gateway 根据路由记录数量，自动切换主处理
 * 优化 http 输出长度模式 与 chunked模式 的自动切换
