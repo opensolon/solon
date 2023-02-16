@@ -91,6 +91,10 @@ public class ResourceUtil {
     public static Collection<String> scanResources(ClassLoader classLoader, String resExpr) {
         List<String> paths = new ArrayList<>();
 
+        if (resExpr.startsWith(Utils.TAG_classpath)) {
+            resExpr = resExpr.substring(Utils.TAG_classpath.length());
+        }
+
         if (resExpr.contains("/*") == false) { //说明没有*符
             paths.add(resExpr);
             return paths;

@@ -17,6 +17,8 @@
 * 插件 solon.test Http 测试器 增加 http(int port) 接口，方便本机所有http端口测试（比如 mock server）
 * 插件 solon-test-junit4 增加 mockito-core 依赖，方便 mock 测试
 * 增加 新的类存在检测方式 Utils.hasClass(() -> AuthUtil.class)
+* 修复 activerecord-solon-pllugin::修复在 ActiveRecordPlugin::start 前不能注入 DbPro 的问题
+* 优化 solon.test 排除只读类成为代理类
 * 优化 Gateway 根据路由记录数量，自动切换主处理
 * 优化 http 输出长度模式 与 chunked模式 的自动切换
 * 升级 mockito 为 4.11.0
