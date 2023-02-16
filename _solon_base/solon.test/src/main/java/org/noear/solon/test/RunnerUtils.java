@@ -80,10 +80,13 @@ public class RunnerUtils {
         BeanWrap beanWrap = new BeanWrap(aopContext, tmp.getClass(), tmp);
         //尝试提取操作
         aopContext.beanExtract(beanWrap);
-        //设置代理
-        beanWrap.proxySet(BeanProxy.getGlobal());
+        //设置代理(把 final 排除掉)
+        if (Modifier.isFinal(tmp.getClass().getModifiers()) == false) {
+            beanWrap.proxySet(BeanProxy.getGlobal());
+        }
         //重新获取bean
-        tmp = beanWrap.get();;
+        tmp = beanWrap.get();
+
 
         return tmp;
     }
