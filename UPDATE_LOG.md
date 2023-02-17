@@ -25,6 +25,7 @@
 * 优化 http 输出长度模式 与 chunked模式 的自动切换
 * 升级 mockito 为 4.11.0
 * 升级 beetl 为 3.14.1.RELEASE
+* 升级 sqltoy 为 5.2.34
 
 
 ### v2.1.2
