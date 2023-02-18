@@ -17,7 +17,14 @@ public abstract class AbstractHttpTester {
      * 方便请求当前服务
      */
     public HttpUtils path(String path) {
-        return http("http://localhost:" + Solon.cfg().serverPort() + path);
+        return path(Solon.cfg().serverPort(), path);
+    }
+
+    /**
+     * 方便请求本机服务
+     */
+    public HttpUtils path(int port, String path) {
+        return http("http://localhost:" + port + path);
     }
 
     /**
