@@ -16,28 +16,28 @@ public class XPluginImp implements Plugin {
     public void start(AopContext context) {
 
         //ValidatorFailureHandler
-        context.getWrapAsync(ValidatorFailureHandler.class, (bw) -> {
-            ValidatorManager.setFailureHandler(bw.raw());
+        context.getBeanAsync(ValidatorFailureHandler.class, (bean) -> {
+            ValidatorManager.setFailureHandler(bean);
         });
 
         //NoRepeatSubmitChecker
-        context.getWrapAsync(NoRepeatSubmitChecker.class, (bw) -> {
-            ValidatorManager.setNoRepeatSubmitChecker(bw.raw());
+        context.getBeanAsync(NoRepeatSubmitChecker.class, (bean) -> {
+            ValidatorManager.setNoRepeatSubmitChecker(bean);
         });
 
         //LoginedChecker
-        context.getWrapAsync(LoginedChecker.class, (bw) -> {
-            ValidatorManager.setLoginedChecker(bw.raw());
+        context.getBeanAsync(LoginedChecker.class, (bean) -> {
+            ValidatorManager.setLoginedChecker(bean);
         });
 
         //WhitelistChecker
-        context.getWrapAsync(WhitelistChecker.class, (bw) -> {
-            ValidatorManager.setWhitelistChecker(bw.raw());
+        context.getBeanAsync(WhitelistChecker.class, (bean) -> {
+            ValidatorManager.setWhitelistChecker(bean);
         });
 
         //NotBlacklistChecker
-        context.getWrapAsync(NotBlacklistChecker.class, (bw) -> {
-            ValidatorManager.setNotBlacklistChecker(bw.raw());
+        context.getBeanAsync(NotBlacklistChecker.class, (bean) -> {
+            ValidatorManager.setNotBlacklistChecker(bean);
         });
     }
 }
