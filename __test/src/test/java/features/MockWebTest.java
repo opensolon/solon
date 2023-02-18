@@ -44,6 +44,6 @@ public class MockWebTest extends AbstractHttpTester {
             }
         });
 
-        assert path(server.getPort(), "/v1/login/auth").execAsCode("GET") == 200;
+        assert path(server.getPort(), "/v1/login/auth/").execAsCode("GET") == 200;
     }
 }
