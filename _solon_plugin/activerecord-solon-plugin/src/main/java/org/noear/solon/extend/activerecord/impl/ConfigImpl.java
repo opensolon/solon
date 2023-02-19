@@ -2,14 +2,12 @@ package org.noear.solon.extend.activerecord.impl;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 
 import javax.sql.DataSource;
 
 import org.noear.solon.data.tran.TranUtils;
 
-import com.jfinal.kit.LogKit;
 import com.jfinal.plugin.activerecord.Config;
 import com.jfinal.plugin.activerecord.IContainerFactory;
 import com.jfinal.plugin.activerecord.cache.ICache;
@@ -43,26 +41,13 @@ public class ConfigImpl extends Config {
         if (TranUtils.inTrans()) {
             return;
         }
+
         super.close(conn);
     }
 
     @Override
     public void close(ResultSet rs, Statement st, Connection conn) {
         if (TranUtils.inTrans()) {
-            if (rs != null) {
-                try {
-                    rs.close();
-                } catch (SQLException e) {
-                    LogKit.error(e.getMessage(), e);
-                }
-            }
-            if (st != null) {
-                try {
-                    st.close();
-                } catch (SQLException e) {
-                    LogKit.error(e.getMessage(), e);
-                }
-            }
             return;
         }
 
@@ -72,13 +57,6 @@ public class ConfigImpl extends Config {
     @Override
     public void close(Statement st, Connection conn) {
         if (TranUtils.inTrans()) {
-            if (st != null) {
-                try {
-                    st.close();
-                } catch (SQLException e) {
-                    LogKit.error(e.getMessage(), e);
-                }
-            }
             return;
         }
 

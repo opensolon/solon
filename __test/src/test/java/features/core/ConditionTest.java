@@ -9,6 +9,7 @@ import org.noear.solon.annotation.Inject;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
 import webapp.dso.ConditionConfig;
+import webapp.models.BaseRequest;
 
 /**
  * @author noear 2023/2/5 created
@@ -21,14 +22,26 @@ public class ConditionTest {
     @Inject
     ConditionConfig config;
 
+    @Inject
+    BaseRequest baseRequest;
+
     @Test
-    public void hasPropertyTest(){
+    public void test(){
         assert config.getUsername() != null;
         assert config.getUsername2() == null;
         assert "noear".equals(config.getUsername3());
         assert config.getUsername4() == null;
         assert "noear".equals(config.getUsername5());
 
+        assert "noear".equals(config.getUsername11());
+        assert config.getUsername12() == null;
+
+        assert "noear".equals(config.getUsername21());
+        assert config.getUsername22() == null;
+
         System.out.println(ONode.load(config, Feature.SerializeNulls ));
+
+        assert baseRequest != null;
+        System.out.println(ONode.stringify(baseRequest));
     }
 }

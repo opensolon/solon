@@ -16,6 +16,12 @@ public class ConditionConfig {
     String username4;
     String username5;
 
+    String username11;
+    String username12;
+
+    String username21;
+    String username22;
+
     public String getUsername() {
         return username;
     }
@@ -34,6 +40,22 @@ public class ConditionConfig {
 
     public String getUsername5() {
         return username5;
+    }
+
+    public String getUsername11() {
+        return username11;
+    }
+
+    public String getUsername12() {
+        return username12;
+    }
+
+    public String getUsername21() {
+        return username21;
+    }
+
+    public String getUsername22() {
+        return username22;
     }
 
     @Condition(onProperty = "${username}")
@@ -65,4 +87,31 @@ public class ConditionConfig {
     public void setUsername5(@Inject("${username}") String u1){
         username5 = u1;
     }
+
+    @Condition(onMissingBean = BeanClass1.class)
+    @Bean
+    public void setUsername11(@Inject("${username}") String u1){
+        username11 = u1;
+    }
+
+    @Condition(onMissingBean = DemoService.class)
+    @Bean
+    public void setUsername12(@Inject("${username}") String u1){
+        username12 = u1;
+    }
+
+
+    @Condition(onMissingBeanName = "map1_xxx")
+    @Bean
+    public void setUsername21(@Inject("${username}") String u1){
+        username21 = u1;
+    }
+
+    @Condition(onMissingBeanName = "map1")
+    @Bean
+    public void setUsername22(@Inject("${username}") String u1){
+        username22 = u1;
+    }
+
+
 }
