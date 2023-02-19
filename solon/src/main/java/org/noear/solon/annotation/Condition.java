@@ -11,15 +11,22 @@ import java.lang.annotation.*;
 @Documented
 public @interface Condition {
     /**
-     * 是否有类
-     * */
+     * 有类
+     */
     Class<?> hasClass() default Void.class;
+
     /**
-     * 是否有类名
-     * */
+     * 有类名
+     */
     String hasClassName() default "";
+
     /**
-     * 是否有属性
-     * */
+     * 有属性
+     */
     String hasProperty() default "";
+
+    /**
+     * 缺少 bean
+     * */
+    Class<?> missingBean() default Void.class;
 }

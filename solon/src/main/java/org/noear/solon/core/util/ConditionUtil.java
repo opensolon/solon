@@ -17,13 +17,15 @@ public class ConditionUtil {
         if (anno == null) {
             return true;
         } else {
-            return test(context, anno);
+            return testNo(context, anno) == false;
         }
     }
 
-    private static boolean test(AopContext context, Condition anno) {
+    private static boolean testNo(AopContext context, Condition anno) {
         if (Utils.isNotEmpty(anno.hasClassName())) {
-            return Utils.loadClass(context.getClassLoader(), anno.hasClassName()) != null;
+            if (Utils.loadClass(context.getClassLoader(), anno.hasClassName()) == null) {
+                return true;
+            }
         }
 
         if (Utils.isNotEmpty(anno.hasProperty())) {
@@ -32,19 +34,28 @@ public class ConditionUtil {
             if (kv.length > 1) {
                 String val = context.cfg().getByExpr(kv[0].trim());
                 //值要等于kv[1] （val 可能为 null）
-                return kv[1].trim().equals(val);
+                if (kv[1].trim().equals(val) == false) {
+                    return true;
+                }
             } else {
                 String val = context.cfg().getByExpr(anno.hasProperty());
                 //有值就行
-                return Utils.isNotEmpty(val);
+                if (Utils.isNotEmpty(val) == false) {
+                    return true;
+                }
             }
         }
 
         try {
             anno.hasClass();
-            return true;
         } catch (Throwable e) {
-            return false;
+            return true;
         }
+
+        if (anno.missingBean() != Void.class) {
+            return context.hasWrap(anno.missingBean());
+        }
+
+        return false;
     }
 }
