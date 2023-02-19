@@ -387,9 +387,11 @@ public class AopContext extends BeanContainer {
         //包装
         BeanWrap bw = wrap(clz, null);
 
-        tryCreateBean(bw);
+        tryCreateBean0(bw.clz(), (bb, a) -> {
+            bb.doBuild(bw.clz(), bw, a);
+        });
 
-        //尝试入库
+        //必然入库
         putWrap(clz, bw);
 
         return bw;
@@ -413,23 +415,18 @@ public class AopContext extends BeanContainer {
     }
 
     /**
-     * 尝试生成 bean
+     * 尝试生成 bean，并注册
      */
     protected void tryCreateBean(Class<?> clz) {
-        tryCreateBean0(clz, (c, a) -> {
+        tryCreateBean0(clz, (bb, a) -> {
             //包装
             BeanWrap bw = this.wrap(clz, null);
-            c.doBuild(clz, bw, a);
+            bb.doBuild(clz, bw, a);
             //尝试入库
             this.putWrap(clz, bw);
         });
     }
 
-    protected void tryCreateBean(BeanWrap bw) {
-        tryCreateBean0(bw.clz(), (c, a) -> {
-            c.doBuild(bw.clz(), bw, a);
-        });
-    }
 
     private final Set<Class<?>> tryCreateCached = new HashSet<>();
 
