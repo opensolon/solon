@@ -14,6 +14,7 @@ import org.noear.solon.core.wrap.*;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
 import java.util.*;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 /**
@@ -403,13 +404,17 @@ public class AopContext extends BeanContainer {
 
     /**
      * 尝试生成 bean
-     * */
-    protected void tryCreateBeanOfMethod(BeanWrap bw, Method m, Bean ma) throws Exception{
+     */
+    protected void tryCreateBeanOfMethod(BeanWrap bw, Method m, Bean ma) throws Exception {
         Condition mc = m.getAnnotation(Condition.class);
 
         if (loadDone == false && ConditionUtil.ifMissing(mc)) {
             beanOnloaded((x) -> {
-                tryCreateBeanOfMethod0(bw, m, ma, mc);
+                try {
+                    tryCreateBeanOfMethod0(bw, m, ma, mc);
+                } catch (Exception e) {
+                    throw new IllegalStateException(e);
+                }
             });
         } else {
             tryCreateBeanOfMethod0(bw, m, ma, mc);
@@ -447,8 +452,8 @@ public class AopContext extends BeanContainer {
         }
     }
 
-    private void tryCreateBeanOfClass0(Class<?> clz, Condition cc){
-        if(ConditionUtil.test(this, cc) == false){
+    private void tryCreateBeanOfClass0(Class<?> clz, Condition cc) {
+        if (ConditionUtil.test(this, cc) == false) {
             return;
         }
 
@@ -605,7 +610,7 @@ public class AopContext extends BeanContainer {
     //加载完成标志
     private boolean loadDone;
     //加载事件
-    private final Set<RankEntity<ConsumerEx<AopContext>>> loadEvents = new LinkedHashSet<>();
+    private final Set<RankEntity<Consumer<AopContext>>> loadEvents = new LinkedHashSet<>();
 
     //::bean事件处理
 
@@ -613,25 +618,17 @@ public class AopContext extends BeanContainer {
      * 添加bean加载完成事件
      */
     @Note("添加bean加载完成事件")
-    public void beanOnloaded(ConsumerEx<AopContext> fun) {
+    public void beanOnloaded(Consumer<AopContext> fun) {
         beanOnloaded(0, fun);
     }
 
     @Note("添加bean加载完成事件")
-    public void beanOnloaded(int index, ConsumerEx<AopContext> fun) {
+    public void beanOnloaded(int index, Consumer<AopContext> fun) {
         loadEvents.add(new RankEntity<>(fun, index));
 
         //如果已加载完成，则直接返回
         if (loadDone) {
-            try {
-                fun.accept(this);
-            } catch (Throwable e) {
-                if (e instanceof RuntimeException) {
-                    throw (RuntimeException) e;
-                } else {
-                    throw new IllegalStateException("AopContext onLoaded failed", e);
-                }
-            }
+            fun.accept(this);
         }
     }
 
@@ -642,16 +639,13 @@ public class AopContext extends BeanContainer {
         loadDone = true;
 
         //执行加载事件（不用函数包装，是为了减少代码）
-        List<RankEntity<ConsumerEx<AopContext>>> tmp = loadEvents.stream()
+        List<Consumer<AopContext>> tmp = loadEvents.stream()
                 .sorted(Comparator.comparingInt(m -> m.index))
+                .map(m -> m.target)
                 .collect(Collectors.toList());
 
-        try {
-            for (RankEntity<ConsumerEx<AopContext>> m : tmp) {
-                m.target.accept(this);
-            }
-        } catch (Throwable e) {
-            throw new IllegalStateException("AopContext onLoaded failed", e);
+        for (Consumer<AopContext> m : tmp) {
+            m.accept(this);
         }
     }
 }
