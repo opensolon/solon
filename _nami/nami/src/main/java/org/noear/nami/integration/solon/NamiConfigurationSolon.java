@@ -22,8 +22,8 @@ public final class NamiConfigurationSolon implements NamiConfiguration {
         //
         //如果有定制的NamiConfiguration, 则用之
         //
-        context.getWrapAsync(NamiConfiguration.class, (bw) -> {
-            custom = bw.raw();
+        context.getBeanAsync(NamiConfiguration.class, (bean) -> {
+            custom = bean;
         });
 
         //订阅拦截器

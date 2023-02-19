@@ -24,8 +24,8 @@ public class NamiFilterTracing implements Filter {
     private Tracer tracer;
 
     public NamiFilterTracing() {
-        Solon.context().getWrapAsync(Tracer.class, bw -> {
-            tracer = bw.raw();
+        Solon.context().getBeanAsync(Tracer.class, bean -> {
+            tracer = bean;
         });
     }
 

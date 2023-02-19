@@ -9,6 +9,15 @@
 * 提醒1：之前没有使用弃用接口的，可以直接升级 <br>
 * 提醒2：有使用弃用接口的。建议先升级到 1.12.4；替换弃用代码后，再升级到 2.0.0
 
+### v2.1.4
+
+* solon.validation::改用 getBeanAsync 获取bean实例
+* solon.auth::改用 getBeanAsync 获取bean实例
+* Props::getByParse 增加默认值支持
+* Props::getByExpr 增加默认值支持
+* Condition 注解重新规范条件属性名
+* AopContext 增加 Condition::onMissingBean 条件属性支持
+
 ### v2.1.3
 
 * 插件 solon-maven-plugin 增加 jdk19 支持

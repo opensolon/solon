@@ -16,8 +16,8 @@ public class ErrorListenerTracing implements EventListener<Throwable> {
     private Tracer tracer;
 
     public ErrorListenerTracing() {
-        Solon.context().getWrapAsync(Tracer.class, bw -> {
-            tracer = bw.raw();
+        Solon.context().getBeanAsync(Tracer.class, bean -> {
+            tracer = bean;
         });
     }
 

@@ -24,8 +24,8 @@ public class CloudEventServiceManagerImpl implements CloudEventServiceManager {
     CloudEventInterceptor eventInterceptor;
 
     public CloudEventServiceManagerImpl() {
-        Solon.context().getWrapAsync(CloudEventInterceptor.class, bw -> {
-            eventInterceptor = bw.raw();
+        Solon.context().getBeanAsync(CloudEventInterceptor.class, bean -> {
+            eventInterceptor = bean;
         });
     }
 

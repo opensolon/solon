@@ -18,8 +18,8 @@ public class VaultUtils {
 
     static {
         //尝试从容器中获取
-        Solon.context().getWrapAsync(VaultCoder.class, bw -> {
-            guardCoder = bw.get();
+        Solon.context().getBeanAsync(VaultCoder.class, bean -> {
+            guardCoder = bean;
         });
     }
 

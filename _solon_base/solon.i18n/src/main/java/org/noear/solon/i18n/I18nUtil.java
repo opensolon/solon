@@ -48,12 +48,12 @@ public class I18nUtil {
     }
 
     static {
-        Solon.context().getWrapAsync(I18nBundleFactory.class, bw -> {
-            bundleFactory = bw.raw();
+        Solon.context().getBeanAsync(I18nBundleFactory.class, bean -> {
+            bundleFactory = bean;
         });
 
-        Solon.context().getWrapAsync(LocaleResolver.class, bw -> {
-            localeResolver = bw.raw();
+        Solon.context().getBeanAsync(LocaleResolver.class, bean -> {
+            localeResolver = bean;
         });
     }
 

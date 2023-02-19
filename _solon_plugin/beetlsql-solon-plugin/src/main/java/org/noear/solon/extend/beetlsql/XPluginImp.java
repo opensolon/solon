@@ -103,8 +103,8 @@ public class XPluginImp implements Plugin {
             if (Utils.isNotEmpty(annoValue)) {
                 varH.setValue(tmp);
             } else {
-                dsBw.context().getWrapAsync(SQLManager.class, (bw2) -> {
-                    varH.setValue(bw2.raw());
+                dsBw.context().getBeanAsync(SQLManager.class, (bean) -> {
+                    varH.setValue(bean);
                 });
             }
             return;
