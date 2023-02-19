@@ -30,19 +30,9 @@ public class ConditionUtil {
             String[] kv = anno.hasProperty().split("=");
 
             if (kv.length > 1) {
-                String key = kv[0].trim();
-                if (key.endsWith("!")) { //支持 != 和 =
-                    key = key.substring(0, key.length() - 1).trim();
-                }
-
-                //val 可能为 null
-                String val = context.cfg().getByExpr(key);
-
-                if (anno.hasProperty().contains("!=")) {
-                    return kv[1].trim().equals(val) == false;
-                } else {
-                    return kv[1].trim().equals(val);
-                }
+                String val = context.cfg().getByExpr(kv[0].trim());
+                //值要等于kv[1] （val 可能为 null）
+                return kv[1].trim().equals(val);
             } else {
                 String val = context.cfg().getByExpr(anno.hasProperty());
                 //有值就行

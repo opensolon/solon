@@ -58,15 +58,35 @@ public class Props extends Properties {
     }
 
     /**
-     * @param expr 兼容 ${key} or key
+     * @param expr 兼容 ${key} or key or ${key:def} or key:def
      */
     public String getByExpr(String expr) {
         String name = expr;
+
+        //如果有表达式，去掉符号
         if (name.startsWith("${") && name.endsWith("}")) {
             name = expr.substring(2, name.length() - 1);
         }
 
-        return get(name);
+        //如果有默认值，则获取
+        String def = null;
+        int defIdx = name.indexOf(":");
+        if (defIdx > 0) {
+            if (name.length() > defIdx + 1) {
+                def = name.substring(defIdx + 1).trim();
+            } else {
+                def = "";
+            }
+            name = name.substring(0, defIdx).trim();
+        }
+
+        String val = get(name);
+
+        if (val == null) {
+            return def;
+        } else {
+            return val;
+        }
     }
 
     /**

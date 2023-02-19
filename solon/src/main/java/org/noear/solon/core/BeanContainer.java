@@ -669,25 +669,8 @@ public abstract class BeanContainer {
 
             varH.setValue(val);
         } else {
-            //2.然后尝试获取配置
-            String def = null;
-            int defIdx = name.indexOf(":");
-            if(defIdx > 0) {
-                if (name.length() > defIdx + 1) {
-                    def = name.substring(defIdx + 1).trim();
-                } else {
-                    def = "";
-                }
-                name = name.substring(0, defIdx).trim();
-            }
-
-            String val = cfg().get(name);
-
-            if(def != null) {
-                if (Utils.isEmpty(val)) {
-                    val = def;
-                }
-            }
+            //2.然后尝试获取配置（支持默认值获取）
+            String val = cfg().getByExpr(name);
 
             if (val == null) {
                 Class<?> pt = varH.getType();
