@@ -18,7 +18,7 @@ import java.util.List;
  */
 public class ChainManager {
     /**
-     * 过渠器 节点
+     * 过滤器 节点
      */
     private final List<FilterEntity> _filterNodes = new ArrayList<>();
 
