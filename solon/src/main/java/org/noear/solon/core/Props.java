@@ -103,7 +103,7 @@ public class Props extends Properties {
         } else {
             int end = tml.indexOf("}");
             String name = tml.substring(start + 2, end);
-            String value = get(name);
+            String value = getByExpr(name);//支持默认值表达式
             return tml.substring(0, start) + value + tml.substring(end + 1);
         }
     }
