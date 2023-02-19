@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>org.noear</groupId>
+		<artifactId>solon-parent</artifactId>
+		<version>2.1.4-M1</version>
+		<relativePath>../../solon-parent/pom.xml</relativePath>
+	</parent>
+
+	<artifactId>bean-searcher-solon-plugin</artifactId>
+	<packaging>jar</packaging>
+
+	<properties>
+		<searcher.version>4.0.1</searcher.version>
+		<xjsonkit.version>1.4.2</xjsonkit.version>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>cn.zhxu</groupId>
+			<artifactId>bean-searcher</artifactId>
+			<version>${searcher.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.noear</groupId>
+			<artifactId>solon.data</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>cn.zhxu</groupId>
+			<artifactId>xjsonkit-api</artifactId>
+			<version>${xjsonkit.version}</version>
+			<scope>provided</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<finalName>bean-searcher-boot-starter</finalName>
+	</build>
+	
+</project>

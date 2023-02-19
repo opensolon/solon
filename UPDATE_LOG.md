@@ -11,8 +11,7 @@
 
 ### v2.1.4
 
-* solon.validation::改用 getBeanAsync 获取bean实例
-* solon.auth::改用 getBeanAsync 获取bean实例
+* 新增 bean-searcher-solon-plugin 插件
 * Props::getByParse 增加默认值支持
 * Props::getByExpr 增加默认值支持
 * Condition 注解重新规范条件属性名
