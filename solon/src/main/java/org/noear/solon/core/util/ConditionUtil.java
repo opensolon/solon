@@ -7,13 +7,22 @@ import org.noear.solon.core.AopContext;
 import java.lang.reflect.AnnotatedElement;
 
 /**
+ * 条件检测工具
+ *
  * @author noear
  * @since 2.0
  */
 public class ConditionUtil {
+    /**
+     * 检测条件
+     * */
     public static boolean test(AopContext context, AnnotatedElement element) {
         Condition anno = element.getAnnotation(Condition.class);
 
+        return test(context, anno);
+    }
+
+    public static boolean test(AopContext context, Condition anno){
         if (anno == null) {
             return true;
         } else {
@@ -21,15 +30,29 @@ public class ConditionUtil {
         }
     }
 
+    public static boolean ifMissing(Condition anno) {
+        if (anno == null) {
+            return false;
+        } else {
+            return (anno.onMissingBean() != Void.class) || Utils.isNotEmpty(anno.onMissingBeanName());
+        }
+    }
+
     private static boolean testNo(AopContext context, Condition anno) {
-        if (Utils.isNotEmpty(anno.hasClassName())) {
-            if (Utils.loadClass(context.getClassLoader(), anno.hasClassName()) == null) {
+        try {
+            anno.onClass();
+        } catch (Throwable e) {
+            return true;
+        }
+
+        if (Utils.isNotEmpty(anno.onClassName())) {
+            if (Utils.loadClass(context.getClassLoader(), anno.onClassName()) == null) {
                 return true;
             }
         }
 
-        if (Utils.isNotEmpty(anno.hasProperty())) {
-            String[] kv = anno.hasProperty().split("=");
+        if (Utils.isNotEmpty(anno.onProperty())) {
+            String[] kv = anno.onProperty().split("=");
 
             if (kv.length > 1) {
                 String val = context.cfg().getByExpr(kv[0].trim());
@@ -38,7 +61,7 @@ public class ConditionUtil {
                     return true;
                 }
             } else {
-                String val = context.cfg().getByExpr(anno.hasProperty());
+                String val = context.cfg().getByExpr(anno.onProperty());
                 //有值就行
                 if (Utils.isNotEmpty(val) == false) {
                     return true;
@@ -46,14 +69,16 @@ public class ConditionUtil {
             }
         }
 
-        try {
-            anno.hasClass();
-        } catch (Throwable e) {
-            return true;
+        if (anno.onMissingBean() != Void.class) {
+            if (context.hasWrap(anno.onMissingBean())) {
+                return true;
+            }
         }
 
-        if (anno.missingBean() != Void.class) {
-            return context.hasWrap(anno.missingBean());
+        if (Utils.isNotEmpty(anno.onMissingBeanName())) {
+            if (context.hasWrap(anno.onMissingBeanName())) {
+                return true;
+            }
         }
 
         return false;

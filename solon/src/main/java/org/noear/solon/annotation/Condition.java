@@ -13,20 +13,25 @@ public @interface Condition {
     /**
      * 有类
      */
-    Class<?> hasClass() default Void.class;
+    Class<?> onClass() default Void.class;
 
     /**
      * 有类名
      */
-    String hasClassName() default "";
+    String onClassName() default "";
 
     /**
      * 有属性
      */
-    String hasProperty() default "";
+    String onProperty() default "";
 
     /**
-     * 缺少 bean
+     * 缺少 bean type
      * */
-    Class<?> missingBean() default Void.class;
+    Class<?> onMissingBean() default Void.class;
+
+    /**
+     * 缺少 bean name
+     * */
+    String onMissingBeanName() default "";
 }

@@ -36,31 +36,31 @@ public class ConditionConfig {
         return username5;
     }
 
-    @Condition(hasProperty = "${username}")
+    @Condition(onProperty = "${username}")
     @Bean
     public void setUsername(@Inject("${username}") String u1){
         username = u1;
     }
 
-    @Condition(hasProperty = "${username2}")
+    @Condition(onProperty = "${username2}")
     @Bean
     public void setUsername2(@Inject("${username2}") String u2){
         username2 = u2;
     }
 
-    @Condition(hasProperty = "${username} = noear")
+    @Condition(onProperty = "${username} = noear")
     @Bean
     public void setUsername3(@Inject("${username}") String u1){
         username3 = u1;
     }
 
-    @Condition(hasProperty = "username != noear")
+    @Condition(onProperty = "username != noear")
     @Bean
     public void setUsername4(@Inject("${username}") String u1){
         username4 = u1;
     }
 
-    @Condition(hasProperty = "username = noear")
+    @Condition(onProperty = "username = noear")
     @Bean
     public void setUsername5(@Inject("${username}") String u1){
         username5 = u1;

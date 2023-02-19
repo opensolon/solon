@@ -95,6 +95,7 @@ public class PluginPackage {
         for (PluginEntity p1 : plugins) {
             p1.start(context);
         }
+
         context.beanLoaded();
         started = true;
 
