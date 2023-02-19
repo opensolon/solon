@@ -661,7 +661,7 @@ public abstract class BeanContainer {
     private void beanInjectConfig(VarHolder varH, String name, boolean required){
         if (Properties.class == varH.getType()) {
             //如果是 Properties
-            Properties val = cfg().getProp(name);
+            Props val = cfg().getProp(name);
 
             if(required && val.size() == 0){
                 throw new InjectionException("Missing required property: '" +name+"', config injection failed: " + varH.getFullName());

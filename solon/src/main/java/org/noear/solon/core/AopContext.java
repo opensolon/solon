@@ -14,7 +14,7 @@ import org.noear.solon.core.wrap.*;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
 import java.util.*;
-import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 /**
  * Aop 上下文（ 为全局对象；热插拨的插件，会产生独立的上下文）
@@ -106,28 +106,15 @@ public class AopContext extends BeanContainer {
 
             //构建小饼
             for (Method m : ClassWrap.get(bw.clz()).getMethods()) {
-                Bean m_an = m.getAnnotation(Bean.class);
+                Bean ma = m.getAnnotation(Bean.class);
 
-                if (m_an != null) {
-                    //增加条件检测
-                    if (ConditionUtil.test(this, m) == false) {
-                        continue;
-                    }
-
-                    //支持非公有函数
-                    m.setAccessible(true);
-
-                    MethodWrap mWrap = methodGet(m);
-
-                    //有参数的bean，采用线程池处理；所以需要锁等待
-                    //
-                    tryBuildBean(m_an, mWrap, bw);
-
+                if (ma != null) {
+                    tryCreateBeanOfMethod(bw, m, ma);
                 }
             }
 
             //添加bean形态处理
-            addBeanShape(clz, bw, 0,clz);
+            addBeanShape(clz, bw, 0, clz);
 
             //注册到容器 //Configuration 不进入二次注册
             //beanRegister(bw,bw.name(),bw.typed());
@@ -230,7 +217,7 @@ public class AopContext extends BeanContainer {
         }
 
         //RouterInterceptor
-        if(RouterInterceptor.class.isAssignableFrom(clz)){
+        if (RouterInterceptor.class.isAssignableFrom(clz)) {
             Solon.app().routerInterceptor(index, bw.raw());
         }
     }
@@ -349,7 +336,7 @@ public class AopContext extends BeanContainer {
     /**
      * ::扫描源下的所有 bean 及对应处理
      */
-    public void beanScan(ClassLoader classLoader,String basePackage) {
+    public void beanScan(ClassLoader classLoader, String basePackage) {
         if (Utils.isEmpty(basePackage)) {
             return;
         }
@@ -370,7 +357,7 @@ public class AopContext extends BeanContainer {
 
                     Class<?> clz = Utils.loadClass(classLoader, className);
                     if (clz != null) {
-                        tryCreateBean(clz);
+                        tryCreateBeanOfClass(clz);
                     }
                 });
     }
@@ -380,7 +367,7 @@ public class AopContext extends BeanContainer {
      */
     public BeanWrap beanMake(Class<?> clz) {
         //增加条件检测
-        if(ConditionUtil.test(this, clz) == false) {
+        if (ConditionUtil.test(this, clz) == false) {
             return null;
         }
 
@@ -415,12 +402,60 @@ public class AopContext extends BeanContainer {
     }
 
     /**
+     * 尝试生成 bean
+     * */
+    protected void tryCreateBeanOfMethod(BeanWrap bw, Method m, Bean ma) throws Exception{
+        Condition mc = m.getAnnotation(Condition.class);
+
+        if (loadDone == false && ConditionUtil.ifMissing(mc)) {
+            beanOnloaded((x) -> {
+                tryCreateBeanOfMethod0(bw, m, ma, mc);
+            });
+        } else {
+            tryCreateBeanOfMethod0(bw, m, ma, mc);
+        }
+    }
+
+    private void tryCreateBeanOfMethod0(BeanWrap bw, Method m, Bean ma, Condition mc) throws Exception {
+        //增加条件检测
+        if (ConditionUtil.test(this, mc) == false) {
+            return;
+        }
+
+        //支持非公有函数
+        m.setAccessible(true);
+
+        MethodWrap mWrap = methodGet(m);
+
+        //有参数的bean，采用线程池处理；所以需要锁等待
+        //
+        tryBuildBean(ma, mWrap, bw);
+    }
+
+    /**
      * 尝试生成 bean，并注册
      */
-    protected void tryCreateBean(Class<?> clz) {
+    protected void tryCreateBeanOfClass(Class<?> clz) {
+        Condition cc = clz.getAnnotation(Condition.class);
+
+        if (loadDone == false && ConditionUtil.ifMissing(cc)) {
+            beanOnloaded(x -> {
+                tryCreateBeanOfClass0(clz, cc);
+            });
+        } else {
+            tryCreateBeanOfClass0(clz, cc);
+        }
+    }
+
+    private void tryCreateBeanOfClass0(Class<?> clz, Condition cc){
+        if(ConditionUtil.test(this, cc) == false){
+            return;
+        }
+
         tryCreateBean0(clz, (bb, a) -> {
             //包装
             BeanWrap bw = this.wrap(clz, null);
+            //执行构建
             bb.doBuild(clz, bw, a);
             //尝试入库
             this.putWrap(clz, bw);
@@ -430,7 +465,7 @@ public class AopContext extends BeanContainer {
 
     private final Set<Class<?>> tryCreateCached = new HashSet<>();
 
-    protected void tryCreateBean0(Class<?> clz, BiConsumerEx<BeanBuilder, Annotation> consumer) {
+    private void tryCreateBean0(Class<?> clz, BiConsumerEx<BeanBuilder, Annotation> consumer) {
         Annotation[] annS = clz.getDeclaredAnnotations();
 
         if (annS.length > 0) {
@@ -441,13 +476,9 @@ public class AopContext extends BeanContainer {
                 tryCreateCached.add(clz);
             }
 
-            //增加条件检测
-            if(ConditionUtil.test(this, clz) == false){
-                return;
-            }
-
             for (Annotation a : annS) {
                 BeanBuilder builder = beanBuilders.get(a.annotationType());
+
                 if (builder != null) {
                     try {
                         consumer.accept(builder, a);
@@ -456,7 +487,7 @@ public class AopContext extends BeanContainer {
                         if (e instanceof RuntimeException) {
                             throw (RuntimeException) e;
                         } else {
-                            throw new RuntimeException(e);
+                            throw new IllegalStateException(e);
                         }
                     }
                 }
@@ -507,7 +538,7 @@ public class AopContext extends BeanContainer {
         }
     }
 
-    protected void tryBuildBeanDo(Bean anno, MethodWrap mWrap, BeanWrap bw, Object[] args)throws Exception {
+    protected void tryBuildBeanDo(Bean anno, MethodWrap mWrap, BeanWrap bw, Object[] args) throws Exception {
         Object raw = mWrap.invoke(bw.raw(), args);
         tryBuildBean0(mWrap, anno, raw);
     }
@@ -574,7 +605,7 @@ public class AopContext extends BeanContainer {
     //加载完成标志
     private boolean loadDone;
     //加载事件
-    private final Set<RankEntity<Consumer<AopContext>>> loadEvents = new LinkedHashSet<>();
+    private final Set<RankEntity<ConsumerEx<AopContext>>> loadEvents = new LinkedHashSet<>();
 
     //::bean事件处理
 
@@ -582,17 +613,25 @@ public class AopContext extends BeanContainer {
      * 添加bean加载完成事件
      */
     @Note("添加bean加载完成事件")
-    public void beanOnloaded(Consumer<AopContext> fun) {
+    public void beanOnloaded(ConsumerEx<AopContext> fun) {
         beanOnloaded(0, fun);
     }
 
     @Note("添加bean加载完成事件")
-    public void beanOnloaded(int index, Consumer<AopContext> fun) {
+    public void beanOnloaded(int index, ConsumerEx<AopContext> fun) {
         loadEvents.add(new RankEntity<>(fun, index));
 
         //如果已加载完成，则直接返回
         if (loadDone) {
-            fun.accept(this);
+            try {
+                fun.accept(this);
+            } catch (Throwable e) {
+                if (e instanceof RuntimeException) {
+                    throw (RuntimeException) e;
+                } else {
+                    throw new IllegalStateException("AopContext onLoaded failed", e);
+                }
+            }
         }
     }
 
@@ -603,8 +642,16 @@ public class AopContext extends BeanContainer {
         loadDone = true;
 
         //执行加载事件（不用函数包装，是为了减少代码）
-        loadEvents.stream()
+        List<RankEntity<ConsumerEx<AopContext>>> tmp = loadEvents.stream()
                 .sorted(Comparator.comparingInt(m -> m.index))
-                .forEach(m -> m.target.accept(this));
+                .collect(Collectors.toList());
+
+        try {
+            for (RankEntity<ConsumerEx<AopContext>> m : tmp) {
+                m.target.accept(this);
+            }
+        } catch (Throwable e) {
+            throw new IllegalStateException("AopContext onLoaded failed", e);
+        }
     }
 }
