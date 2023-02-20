@@ -143,7 +143,11 @@ public class VelocityRender implements Render {
 
         provider = new RuntimeInstance();
 
-        String root_path = Utils.getResource(_baseUri).getPath();
+        URL resource = Utils.getResource(_baseUri);
+        if(resource == null){
+            return;
+        }
+        String root_path = resource.getPath();
 
         provider.setProperty(Velocity.FILE_RESOURCE_LOADER_CACHE, true);
         provider.setProperty(Velocity.FILE_RESOURCE_LOADER_PATH, root_path);
