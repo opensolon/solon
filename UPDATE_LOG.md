@@ -16,6 +16,7 @@
 * Props::getByExpr 增加默认值支持
 * Condition 注解重新规范条件属性名
 * AopContext 增加 Condition::onMissingBean 条件属性支持
+* 升级 snack3 为 3.2.54 ，支持 kotlin data
 
 ### v2.1.3
 

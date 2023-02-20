@@ -38,7 +38,7 @@ public class Solon {
      * 框架版本号
      */
     public static String version() {
-        return "2.1.4-M1";
+        return "2.1.4-M2";
     }
 
     /**
