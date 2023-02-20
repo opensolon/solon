@@ -147,6 +147,7 @@ public class VelocityRender implements Render {
         if(resource == null){
             return;
         }
+
         String root_path = resource.getPath();
 
         provider.setProperty(Velocity.FILE_RESOURCE_LOADER_CACHE, true);

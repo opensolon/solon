@@ -59,7 +59,10 @@ public class EnjoyRender implements Render {
         if (Utils.isEmpty(baseUri) == false) {
             _baseUri = baseUri;
         }
+
+        //开始中文支持
         Engine.setChineseExpression(true);
+
         forDebug();
         forRelease();
 
