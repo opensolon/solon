@@ -68,14 +68,14 @@
 * 说明：第一个版只删除弃用代码，不加新功能
 *
 * 调整 solon//
-  * 删降 Aop；由 Solon.context() 替代
+  * 删除 Aop；由 Solon.context() 替代
   * 删除 Bean:attr，Component:attr
   * 删除 BeanLoadEndEvent，PluginLoadEndEvent；由 AppBeanLoadEndEvent，AppPluginLoadEndEvent 替代
   * 删除 Utils.parallel()...等几个弃用接口；由 RunUtil 替代
   * 删除 Solon.global()；由 Solon.app() 替代
   * 删除 SolonApp::port()；由 Solon.cfg().serverPort() 替代
   * 删除 SolonApp::enableSafeStop()；由 Solon.cfg().enableSafeStop() 替代
-  * 删作 AopContext::getProps()；由 ::cfg() 替代
+  * 删除 AopContext::getProps()；由 ::cfg() 替代
   * 删除 AopContext::getWrapAsyn()；由 ::getWrapAsync() 替代
   * 删除 AopContext::subWrap()；由 ::subWrapsOfType() 替代
   * 删除 AopContext::subBean()；由 ::subBeansOfType() 替代
