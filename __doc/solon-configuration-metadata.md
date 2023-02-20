@@ -3,6 +3,7 @@
 
 本方案借签 [string](https://docs.spring.io/spring-boot/docs/2.7.x/reference/html/configuration-metadata.html) 的方案，简化但完全兼容。以便复用一些工具。
 
+
 ### 1、约定
 
 文件存放位置为插件包的：

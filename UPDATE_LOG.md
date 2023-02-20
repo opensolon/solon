@@ -18,6 +18,7 @@
 * AopContext 增加 Condition::onMissingBean 条件属性支持
 * 升级 snack3 为 3.2.54 ，支持 kotlin data
 
+
 ### v2.1.3
 
 * 插件 solon-maven-plugin 增加 jdk19 支持
