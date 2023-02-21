@@ -1,0 +1,65 @@
+apply plugin: 'maven-publish'
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+javadoc {
+    options {
+        encoding "UTF-8"
+        charSet 'UTF-8'
+        author true
+        version true
+        title "Solon Gradle Plugin"
+    }
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            groupId project.group
+            artifactId project.name
+            version project.version
+            description project.description
+
+            from components.java
+
+            artifact sourcesJar
+            artifact javadocJar
+        }
+    }
+
+    repositories {
+        mavenLocal()
+
+        def local = new File("local.properties")
+        if (!local.exists()) return
+
+        def prop = new Properties()
+        prop.load(new FileInputStream(local))
+
+        def centralName = prop.getProperty('maven.publish.central.username')
+        def centralPassword = prop.getProperty('maven.publish.central.password')
+
+        if (isNullOrEmpty(centralName) || isNullOrEmpty(centralPassword)) {
+            return
+        }
+
+        mavenCentral {
+            credentials {
+                username centralName
+                password centralPassword
+            }
+        }
+    }
+}
+
+static boolean isNullOrEmpty(String s) {
+    return s == null || s.isEmpty()
+}
