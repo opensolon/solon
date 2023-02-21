@@ -32,49 +32,55 @@ import org.gradle.api.tasks.Optional;
  */
 public interface SolonArchive extends Task {
 
-	/**
-	 * Returns the fully-qualified name of the application's main class.
-	 * @return the fully-qualified name of the application's main class
-	 */
-	@Input
-	Property<String> getMainClass();
+    /**
+     * Returns the fully-qualified name of the application's main class.
+     *
+     * @return the fully-qualified name of the application's main class
+     */
+    @Input
+    Property<String> getMainClass();
 
 
-	/**
-	 * Returns the classpath that will be included in the archive.
-	 * @return the classpath
-	 */
-	@Optional
-	@Classpath
-	FileCollection getClasspath();
+    /**
+     * Returns the classpath that will be included in the archive.
+     *
+     * @return the classpath
+     */
+    @Optional
+    @Classpath
+    FileCollection getClasspath();
 
-	/**
-	 * Adds files to the classpath to include in the archive. The given {@code classpath}
-	 * is evaluated as per {@link Project#files(Object...)}.
-	 * @param classpath the additions to the classpath
-	 */
-	void classpath(Object... classpath);
+    /**
+     * Adds files to the classpath to include in the archive. The given {@code classpath}
+     * is evaluated as per {@link Project#files(Object...)}.
+     *
+     * @param classpath the additions to the classpath
+     */
+    void classpath(Object... classpath);
 
-	/**
-	 * Sets the classpath to include in the archive. The given {@code classpath} is
-	 * evaluated as per {@link Project#files(Object...)}.
-	 * @param classpath the classpath
-	 */
-	void setClasspath(Object classpath);
+    /**
+     * Sets the classpath to include in the archive. The given {@code classpath} is
+     * evaluated as per {@link Project#files(Object...)}.
+     *
+     * @param classpath the classpath
+     */
+    void setClasspath(Object classpath);
 
-	/**
-	 * Sets the classpath to include in the archive.
-	 * @param classpath the classpath
-	 */
-	void setClasspath(FileCollection classpath);
+    /**
+     * Sets the classpath to include in the archive.
+     *
+     * @param classpath the classpath
+     */
+    void setClasspath(FileCollection classpath);
 
-	/**
-	 * Returns the target Java version of the project (e.g. as provided by the
-	 * {@code targetCompatibility} build property).
-	 * @return the target Java version
-	 */
-	@Input
-	@Optional
-	Property<JavaVersion> getTargetJavaVersion();
+    /**
+     * Returns the target Java version of the project (e.g. as provided by the
+     * {@code targetCompatibility} build property).
+     *
+     * @return the target Java version
+     */
+    @Input
+    @Optional
+    Property<JavaVersion> getTargetJavaVersion();
 
 }
