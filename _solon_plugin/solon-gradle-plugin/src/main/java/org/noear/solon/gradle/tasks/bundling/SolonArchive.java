@@ -29,14 +29,12 @@ import org.gradle.api.tasks.Optional;
  * A Spring Boot "fat" archive task.
  *
  * @author Andy Wilkinson
- * @since 2.0.0
  */
 public interface SolonArchive extends Task {
 
 	/**
 	 * Returns the fully-qualified name of the application's main class.
 	 * @return the fully-qualified name of the application's main class
-	 * @since 2.4.0
 	 */
 	@Input
 	Property<String> getMainClass();
@@ -61,14 +59,12 @@ public interface SolonArchive extends Task {
 	 * Sets the classpath to include in the archive. The given {@code classpath} is
 	 * evaluated as per {@link Project#files(Object...)}.
 	 * @param classpath the classpath
-	 * @since 2.0.7
 	 */
 	void setClasspath(Object classpath);
 
 	/**
 	 * Sets the classpath to include in the archive.
 	 * @param classpath the classpath
-	 * @since 2.0.7
 	 */
 	void setClasspath(FileCollection classpath);
 
