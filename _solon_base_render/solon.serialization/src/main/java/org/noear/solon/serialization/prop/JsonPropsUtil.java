@@ -5,6 +5,10 @@ import org.noear.solon.serialization.JsonRenderFactory;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.TimeZone;
 
@@ -27,6 +31,26 @@ public class JsonPropsUtil {
                 }
 
                 return df.format(e);
+            });
+
+            factory.addConvertor(LocalDateTime.class,e->{
+                DateTimeFormatter df = DateTimeFormatter.ofPattern(jsonProps.dateAsFormat);
+
+                if (Utils.isNotEmpty(jsonProps.dateAsTimeZone)) {
+                    df.withZone(ZoneId.of(jsonProps.dateAsTimeZone));
+                }
+
+                return e.format(df);
+            });
+
+            factory.addConvertor(LocalDate.class, e->{
+                DateTimeFormatter df = DateTimeFormatter.ofPattern(jsonProps.dateAsFormat);
+
+                if (Utils.isNotEmpty(jsonProps.dateAsTimeZone)) {
+                    df.withZone(ZoneId.of(jsonProps.dateAsTimeZone));
+                }
+
+                return e.format(df);
             });
         }
 
