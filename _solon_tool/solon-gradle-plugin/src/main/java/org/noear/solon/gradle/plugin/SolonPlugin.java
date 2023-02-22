@@ -3,6 +3,7 @@ package org.noear.solon.gradle.plugin;
 import org.gradle.api.GradleException;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
+import org.gradle.api.artifacts.Configuration;
 import org.gradle.util.GradleVersion;
 import org.jetbrains.annotations.NotNull;
 import org.noear.solon.gradle.dsl.SolonExtension;
@@ -16,13 +17,21 @@ public class SolonPlugin implements Plugin<Project> {
     public static final String SOLON_JAR_TASK_NAME = "solonJar";
     public static final String SOLON_WAR_TASK_NAME = "solonWar";
 
+    public static final String SOLON_ARCHIVES_CONFIGURATION_NAME = "solonArchives";
+
+    /**
+     * The name of the {@link ResolveMainClassName} task.
+     */
+    public static final String RESOLVE_MAIN_CLASS_NAME_TASK_NAME = "resolveMainClassName";
     public static final String SOLON_EXT_NAME = "solon";
 
     @Override
     public void apply(@NotNull Project project) {
         verifyGradleVersion();
         createExtension(project);
-        registerPluginActions(project);
+
+        Configuration configuration = createBootArchivesConfiguration(project);
+        registerPluginActions(project, configuration);
     }
 
     private void verifyGradleVersion() {
@@ -37,9 +46,17 @@ public class SolonPlugin implements Plugin<Project> {
         project.getExtensions().create(SOLON_EXT_NAME, SolonExtension.class, project);
     }
 
-    private void registerPluginActions(Project project) {
+    private Configuration createBootArchivesConfiguration(Project project) {
+        Configuration bootArchives = project.getConfigurations().create(SOLON_ARCHIVES_CONFIGURATION_NAME);
+        bootArchives.setDescription("Configuration for Solon archive artifacts.");
+        bootArchives.setCanBeResolved(false);
+        return bootArchives;
+    }
 
-        List<PluginApplicationAction> actions = Arrays.asList(new JavaPluginAction(), new WarPluginAction());
+    private void registerPluginActions(Project project, Configuration configuration) {
+        SinglePublishedArtifact artifact = new SinglePublishedArtifact(configuration, project.getArtifacts());
+
+        List<PluginApplicationAction> actions = Arrays.asList(new JavaPluginAction(artifact), new WarPluginAction(artifact), new KotlinPluginAction());
 
         for (PluginApplicationAction action : actions) {
             withPluginClassOfAction(action, (pluginClass) -> project.getPlugins().withType(pluginClass, (plugin) -> action.execute(project)));

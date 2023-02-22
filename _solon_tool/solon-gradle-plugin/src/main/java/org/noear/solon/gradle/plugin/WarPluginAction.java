@@ -27,6 +27,12 @@ import java.util.concurrent.Callable;
  */
 class WarPluginAction implements PluginApplicationAction {
 
+    private final SinglePublishedArtifact singlePublishedArtifact;
+
+    WarPluginAction(SinglePublishedArtifact artifact) {
+        this.singlePublishedArtifact = artifact;
+    }
+
     @Override
     public Class<? extends Plugin<? extends Project>> getPluginClass() {
         return WarPlugin.class;
@@ -35,7 +41,8 @@ class WarPluginAction implements PluginApplicationAction {
     @Override
     public void execute(@NotNull Project project) {
         classifyWarTask(project);
-        configureSolonWarTask(project);
+        TaskProvider<SolonWar> bootWar = configureSolonWarTask(project);
+        configureArtifactPublication(bootWar);
     }
 
     private void classifyWarTask(Project project) {
@@ -43,11 +50,13 @@ class WarPluginAction implements PluginApplicationAction {
                 .configure((war) -> war.getArchiveClassifier().convention("plain"));
     }
 
-    private void configureSolonWarTask(Project project) {
+    private TaskProvider<SolonWar> configureSolonWarTask(Project project) {
         SourceSet mainSourceSet = project.getExtensions().getByType(SourceSetContainer.class)
                 .getByName(SourceSet.MAIN_SOURCE_SET_NAME);
 
         Callable<FileCollection> classpath = mainSourceSet::getRuntimeClasspath;
+        TaskProvider<ResolveMainClassName> resolveMainClassName = project.getTasks()
+                .named(SolonPlugin.RESOLVE_MAIN_CLASS_NAME_TASK_NAME, ResolveMainClassName.class);
 
         TaskProvider<SolonWar> bootWarProvider = project.getTasks().register(SolonPlugin.SOLON_WAR_TASK_NAME,
                 SolonWar.class, (bootWar) -> {
@@ -56,12 +65,17 @@ class WarPluginAction implements PluginApplicationAction {
                             + " content, and the main classes and their dependencies.");
                     bootWar.providedClasspath(providedRuntimeConfiguration(project));
                     bootWar.setClasspath(classpath);
-                    bootWar.getMainClass().convention(PluginApplicationAction.configureResolveMainClassName(project));
+
+                    bootWar.getMainClass()
+                            .convention(resolveMainClassName.flatMap((resolver) -> resolveMainClassName.get().readMainClassName()));
+
                     bootWar.getTargetJavaVersion()
                             .set(project.provider(() -> javaPluginExtension(project).getTargetCompatibility()));
                 });
 
         bootWarProvider.map((Transformer<Object, SolonWar>) war -> Objects.requireNonNull(war.getClasspath()));
+
+        return bootWarProvider;
     }
 
     private FileCollection providedRuntimeConfiguration(Project project) {
@@ -69,6 +83,9 @@ class WarPluginAction implements PluginApplicationAction {
         return configurations.getByName(WarPlugin.PROVIDED_RUNTIME_CONFIGURATION_NAME);
     }
 
+    private void configureArtifactPublication(TaskProvider<SolonWar> bootWar) {
+        this.singlePublishedArtifact.addWarCandidate(bootWar);
+    }
 
     private JavaPluginExtension javaPluginExtension(Project project) {
         return project.getExtensions().getByType(JavaPluginExtension.class);

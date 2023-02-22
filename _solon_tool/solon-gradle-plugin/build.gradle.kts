@@ -13,7 +13,7 @@ plugins {
 }
 
 group = "org.noear"
-version = "0.0.1"
+version = "0.0.2"
 description = "Solon Gradle 插件"
 
 repositories {
@@ -22,8 +22,9 @@ repositories {
 }
 
 dependencies {
-    implementation(kotlin("stdlib-jdk8"))
+    implementation(kotlin("gradle-plugin"))
     implementation(gradleApi())
+    implementation("org.ow2.asm:asm:9.4")
 
     testImplementation(kotlin("test"))
     testImplementation(kotlin("test-junit"))
