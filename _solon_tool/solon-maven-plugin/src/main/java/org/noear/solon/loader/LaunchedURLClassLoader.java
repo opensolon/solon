@@ -120,20 +120,10 @@ public class LaunchedURLClassLoader extends URLClassLoader {
 
 	@Override
 	protected Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundException {
-		if (name.startsWith("org.springframework.boot.loader.jarmode.")) {
-			try {
-				Class<?> result = loadClassInLaunchedClassLoader(name);
-				if (resolve) {
-					resolveClass(result);
-				}
-				return result;
-			}
-			catch (ClassNotFoundException ex) {
-			}
-		}
 		if (this.exploded) {
 			return super.loadClass(name, resolve);
 		}
+
 		Handler.setUseFastConnectionExceptions(true);
 		try {
 			try {
