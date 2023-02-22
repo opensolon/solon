@@ -1,7 +1,7 @@
 <h1 align="center" style="text-align:center;">
 <img src="solon_icon.png" width="128" />
 <br />
-Solon v2.1.3
+Solon v2.1.5-SNAPSHOT
 </h1>
 <p align="center">
 	<strong>一个高效的 Java 应用开发框架，更小、更快、更简单！</strong>
@@ -78,7 +78,7 @@ Solon v2.1.3
 <parent>
     <groupId>org.noear</groupId>
     <artifactId>solon-parent</artifactId>
-    <version>2.1.4</version>
+    <version>2.1.5-SNAPSHOT</version>
 </parent>
 
 <dependencies>
@@ -152,10 +152,6 @@ public class App implements HelloService{
 | org.noear:solon-rpc | solon-api + nami；快速开发RPC应用                            |
 | org.noear:solon-cloud | solon-rpc + consul；快速开发微服务应用                          |
 
-## 快速了解 Solon 架构的材料：
-
-##### [《Solon 的想法与架构笔记》](https://my.oschina.net/noear/blog/4980834)
-##### [《Solon 生态插件清单》](https://my.oschina.net/noear/blog/5053423)
 
 ## 官网及相关示例：
 
