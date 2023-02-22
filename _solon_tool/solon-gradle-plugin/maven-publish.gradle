@@ -38,7 +38,7 @@ publishing {
     repositories {
         mavenLocal()
 
-        def local = new File("local.properties")
+        def local = new File("/Users/noear/.m2/local.properties")
         if (!local.exists()) return
 
         def prop = new Properties()

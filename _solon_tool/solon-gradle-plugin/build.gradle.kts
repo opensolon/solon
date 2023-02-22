@@ -14,7 +14,7 @@ plugins {
 
 group = "org.noear"
 version = "0.0.1"
-description = "Solon Gradle 插件"
+description = "Solon Gradle Plugin"
 
 repositories {
     mavenCentral()
@@ -37,7 +37,7 @@ gradlePlugin {
     plugins {
         create("SolonPlugin") {
             id = "org.noear.solon"
-            displayName = "Solon插件"
+            displayName = "Solon"
             description = project.description
             implementationClass = "org.noear.solon.gradle.plugin.SolonPlugin"
         }
