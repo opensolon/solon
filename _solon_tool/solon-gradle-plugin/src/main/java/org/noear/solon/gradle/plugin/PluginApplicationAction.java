@@ -19,11 +19,6 @@ package org.noear.solon.gradle.plugin;
 import org.gradle.api.Action;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
-import org.gradle.api.plugins.ExtensionContainer;
-import org.gradle.api.plugins.JavaApplication;
-import org.gradle.api.plugins.JavaPluginExtension;
-import org.gradle.api.provider.Property;
-import org.noear.solon.gradle.dsl.SolonExtension;
 
 /**
  * An {@link Action} to be executed on a {@link Project} in response to a particular type
@@ -42,32 +37,4 @@ interface PluginApplicationAction extends Action<Project> {
      * @throws NoClassDefFoundError   if an error occurs when defining the plugin class
      */
     Class<? extends Plugin<? extends Project>> getPluginClass() throws ClassNotFoundException, NoClassDefFoundError;
-
-    static String configureResolveMainClassName(Project project) {
-
-        SolonExtension extension = project.getExtensions()
-                .findByType(SolonExtension.class);
-
-        String mainClassName = extension == null ? null : extension.getMainClass().getOrNull();
-
-        if (mainClassName == null || mainClassName.isEmpty()) {
-            // 也可以配置在 Application 里面
-            return getJavaApplicationMainClass(project.getExtensions());
-        }
-
-        return mainClassName;
-    }
-
-    static JavaPluginExtension javaPluginExtension(Project project) {
-        return project.getExtensions().getByType(JavaPluginExtension.class);
-    }
-
-    static String getJavaApplicationMainClass(ExtensionContainer extensions) {
-        JavaApplication javaApplication = extensions.findByType(JavaApplication.class);
-        if (javaApplication == null) {
-            return null;
-        }
-
-        return javaApplication.getMainClass().getOrNull();
-    }
 }

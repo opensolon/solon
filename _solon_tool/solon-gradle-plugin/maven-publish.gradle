@@ -24,7 +24,7 @@ publishing {
     publications {
         mavenJava(MavenPublication) {
             groupId project.group
-            artifactId project.name
+            artifactId "solon-gradle-plugin"
             version project.version
             description project.description
 

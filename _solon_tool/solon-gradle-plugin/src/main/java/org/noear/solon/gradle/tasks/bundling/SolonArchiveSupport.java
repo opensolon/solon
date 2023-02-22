@@ -39,7 +39,7 @@ class SolonArchiveSupport {
         attributes.putIfAbsent("Main-Class", mainClass);
         attributes.computeIfAbsent("Solon-Version", (name) -> determineSolonVersion());
 
-        attributes.putIfAbsent("Build-Jdk-Spec", jdkVersion);
+        attributes.putIfAbsent("Build-Jdk", jdkVersion);
         attributes.putIfAbsent("Implementation-Title", implementationTitle);
         if (implementationVersion != null) {
             String versionString = implementationVersion.toString();

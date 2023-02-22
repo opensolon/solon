@@ -2,7 +2,7 @@
 
 #### 1.打包插件配置示例
 
-`build.gradle`
+在 `build.gradle` 中使用
 
 ```groovy
 buildscript {
@@ -45,5 +45,73 @@ solonWar{
 
 ```
 
+在 `build.gradle.kts` 中使用
 
+```kotlin
+buildscript {
+    repositories {
+        mavenLocal()
+        maven { setUrl("https://maven.aliyun.com/repository/public") }
+        mavenCentral()
+    }
 
+    dependencies {
+        classpath("org.noear:solon-gradle-plugin:x.y.z")
+    }
+}
+
+// 引用插件
+apply(plugin = "org.noear.solon")
+
+// 统一配置
+extensions.configure(org.noear.solon.gradle.dsl.SolonExtension::class.java) {
+    mainClass.set("com.example.demo.App")
+}
+
+// 单独配置
+tasks.withType<org.noear.solon.gradle.tasks.bundling.SolonJar> {
+    mainClass.set("com.example.demo.App")
+}
+
+tasks.withType<org.noear.solon.gradle.tasks.bundling.SolonWar> {
+    mainClass.set("com.example.demo.App")
+}
+
+```
+
+#### 2. 构建打包
+
+* `gradle solonJar`
+* `gradle solonWar`
+
+#### 3. 更新
+* `0.0.2` 
+  
+  1.  修复未 `build`情况下直接 运行  `gradle solonJar` 报错问题
+  
+  2. 自动扫描 `main` 方法，但是如果有多个的时候仍然需要手动配置，可自行新增注解类`org.noear.solon.autoconfigure.SolonApplication`，将注解添加到启动类上
+  
+    ```java
+    package org.noear.solon.autoconfigure;
+    
+    import java.lang.annotation.ElementType;
+    import java.lang.annotation.Retention;
+    import java.lang.annotation.RetentionPolicy;
+    import java.lang.annotation.Target;
+    
+    @Target(ElementType.TYPE)
+    @Retention(RetentionPolicy.RUNTIME)
+    public @interface SolonApplication {
+    }
+    
+    // 启动类上添加
+    
+    @SolonApplication
+    public class App {
+        public static void main(String[] args) {
+            Solon.start(App.class, args);
+        }
+    }
+    ```
+  
+    
