@@ -16,7 +16,7 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>../../_solon_plugin/solon-maven-plugin</module>
+        <module>../../_solon_tool_plugin/solon-maven-plugin</module>
 
         <module>../../_solon_plugin/luffy-solon-plugin</module>
 
