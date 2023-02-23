@@ -23,6 +23,7 @@ public class DemoApp {
             AspectUtil.attachByScan(app.context(), "thirdparty", DemoHandler.global);
         });
 
-        Solon.context().getBean(DemoApp.class).demo.test();
+        Demo demo1 = Solon.context().getBean(DemoApp.class).demo;
+        demo1.test();
     }
 }

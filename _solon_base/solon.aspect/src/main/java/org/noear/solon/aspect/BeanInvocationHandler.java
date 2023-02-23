@@ -1,13 +1,11 @@
 package org.noear.solon.aspect;
 
-import org.noear.solon.Utils;
+import org.noear.solon.aspect.apt.AptProxy;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.aspect.asm.AsmProxy;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
 
 /**
  * Bean 调用处理
@@ -38,8 +36,7 @@ public class BeanInvocationHandler implements InvocationHandler {
         this.handler = handler;
 
         //支持APT (支持 Graalvm Native  打包)
-        String proxyClassName = clazz.getName() + "$$SolonProxy";
-        this.proxy = Utils.newInstance(context.getClassLoader(), proxyClassName);
+        this.proxy = AptProxy.newProxyInstance(context, this, clazz);
 
         if (this.proxy == null) {
             //支持ASM（兼容旧的包，不支持 Graalvm Native  打包）

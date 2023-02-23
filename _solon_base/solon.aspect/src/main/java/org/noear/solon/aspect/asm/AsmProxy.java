@@ -44,6 +44,13 @@ public class AsmProxy {
         return proxyClassCache.get(key);
     }
 
+    /**
+     * 返回一个动态创建的代理类，此类继承自 targetClass
+     *
+     * @param invocationHandler 代理类中每一个方法调用时的回调接口
+     * @param targetClass       被代理对象
+     * @return 代理实例
+     */
     public static Object newProxyInstance(AopContext context,
                                           InvocationHandler invocationHandler,
                                           Class<?> targetClass) {
@@ -66,7 +73,7 @@ public class AsmProxy {
      * @param targetClass       被代理对象
      * @param targetConstructor 被代理对象的某一个构造器，用于决定代理对象实例化时采用哪一个构造器
      * @param targetParam       被代理对象的某一个构造器的参数，用于实例化构造器
-     * @return
+     * @return 代理实例
      */
     public static Object newProxyInstance(AopContext context,
                                           InvocationHandler invocationHandler,
@@ -249,7 +256,6 @@ public class AsmProxy {
     }
 
 
-
     /**
      * 添加调用 invocationHandler 的 invoke 方法
      */
@@ -297,6 +303,7 @@ public class AsmProxy {
                     || (methodBean.access & Opcodes.ACC_STATIC) == Opcodes.ACC_STATIC) {
                 continue;
             }
+
             // 满足指定的修饰符
             int access = -1;
             if (isPublic) {

@@ -196,6 +196,13 @@ public class ProxyProcessor extends AbstractProcessor {
     }
 
     private void addMethod(TypeSpec.Builder proxyTypeBuilder, ExecutableElement methodElement) {
+        if(methodElement.getModifiers().contains(Modifier.STATIC) ||
+                methodElement.getModifiers().contains(Modifier.PRIVATE)||
+                methodElement.getModifiers().contains(Modifier.FINAL)) {
+            //静态 或 只读 或 私有；不需要重写
+            return;
+        }
+
         TypeName returnTypeName = TypeName.get(methodElement.getReturnType());
 
         StringBuilder methodCodeBuilder = new StringBuilder();
