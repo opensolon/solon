@@ -61,6 +61,8 @@ public class TargetClassVisitor extends ClassVisitor {
             }
 
             MethodBean methodBean = new MethodBean(access, name, descriptor);
+
+            //public 给 declaredMethods + methods
             if ((access & Opcodes.ACC_PUBLIC) == Opcodes.ACC_PUBLIC
                     && (access & Opcodes.ACC_ABSTRACT) != Opcodes.ACC_ABSTRACT) {
 
@@ -70,6 +72,15 @@ public class TargetClassVisitor extends ClassVisitor {
 
                 if (methods.contains(methodBean) == false) {
                     methods.add(methodBean);
+                }
+            }
+
+            //protected 给 declaredMethods
+            if ((access & Opcodes.ACC_PROTECTED) == Opcodes.ACC_PROTECTED
+                    && (access & Opcodes.ACC_ABSTRACT) != Opcodes.ACC_ABSTRACT) {
+
+                if (declaredMethods.contains(methodBean) == false) {
+                    declaredMethods.add(methodBean);
                 }
             }
         }

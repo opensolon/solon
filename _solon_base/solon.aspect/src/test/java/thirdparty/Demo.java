@@ -7,4 +7,8 @@ public class Demo {
     public void test(){
         System.out.println("test");
     }
+
+    protected void test1(){
+        System.out.println("test1");
+    }
 }

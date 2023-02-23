@@ -130,7 +130,7 @@ public class AsmProxy {
             int methodNameIndex = 0;
             methodNameIndex = addMethod(writer, newClassInnerName, targetClass.getMethods(),
                     methods, true, methodNameIndex, methodsMap);
-            addMethod(writer, newClassInnerName, targetClass.getDeclaredMethods(),
+            methodNameIndex = addMethod(writer, newClassInnerName, targetClass.getDeclaredMethods(),
                     declaredMethods, false, methodNameIndex, declaredMethodsMap);
             // 添加静态代码块的初始化
             addStaticInitBlock(writer, targetClassName, newClassInnerName, methodsMap, declaredMethodsMap);
@@ -215,6 +215,7 @@ public class AsmProxy {
             Type[] argumentTypes = Type.getArgumentTypes(constructor.methodDesc);
             MethodVisitor methodVisitor = writer.visitMethod(Opcodes.ACC_PUBLIC, "<init>",
                     constructor.methodDesc, null, null);
+
             methodVisitor.visitCode();
             methodVisitor.visitVarInsn(Opcodes.ALOAD, 0);
 
@@ -242,9 +243,12 @@ public class AsmProxy {
             methodVisitor.visitMethodInsn(Opcodes.INVOKESPECIAL, targetClassInnerName, "<init>", constructor.methodDesc, false);
             methodVisitor.visitInsn(Opcodes.RETURN);
             methodVisitor.visitMaxs(argumentTypes.length + 1, argumentTypes.length + 1);
+
             methodVisitor.visitEnd();
         }
     }
+
+
 
     /**
      * 添加调用 invocationHandler 的 invoke 方法
