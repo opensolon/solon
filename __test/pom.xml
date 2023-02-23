@@ -189,6 +189,12 @@
 
         <dependency>
             <groupId>org.noear</groupId>
+            <artifactId>solon.aspect.apt</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.noear</groupId>
             <artifactId>solon.data</artifactId>
         </dependency>
 

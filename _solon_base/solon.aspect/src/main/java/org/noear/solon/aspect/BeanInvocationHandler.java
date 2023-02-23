@@ -28,7 +28,7 @@ public class BeanInvocationHandler implements InvocationHandler {
 
     /**
      * @since 1.6
-     * @since 2.2
+     * @since 2.1
      */
     public BeanInvocationHandler(AopContext context, Class<?> clazz, Object target, InvocationHandler handler) {
         this.context = context;

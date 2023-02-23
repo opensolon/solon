@@ -8,7 +8,7 @@ import java.lang.reflect.InvocationHandler;
 
 /**
  * @author noear
- * @since 2.2
+ * @since 2.1
  */
 public class AptProxy {
     /**

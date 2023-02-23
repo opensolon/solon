@@ -11,6 +11,7 @@ import javax.annotation.processing.*;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.*;
 import javax.lang.model.type.TypeKind;
+import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
 import javax.tools.Diagnostic;
 import java.io.IOException;
@@ -123,6 +124,15 @@ public class ProxyProcessor extends AbstractProcessor {
             if (element instanceof TypeElement) {
                 //由于是在类上注解，那么获取TypeElement
                 TypeElement typeElement = (TypeElement) element;
+
+                if(typeElement.getModifiers().contains(Modifier.ABSTRACT)){
+                    continue;
+                }
+
+                if(typeElement.getModifiers().contains(Modifier.PUBLIC) == false){
+                    continue;
+                }
+
                 addClass(typeElement);
             }
         }
@@ -151,7 +161,7 @@ public class ProxyProcessor extends AbstractProcessor {
         TypeSpec.Builder proxyTypeBuilder = TypeSpec
                 .classBuilder(proxyClassName)
                 .superclass(supperClassName)
-                .addModifiers(Modifier.PUBLIC);
+                .addModifiers(Modifier.PUBLIC, Modifier.FINAL);
 
         //添加构造函数
         addConstructor(proxyTypeBuilder, typeElement, proxyClassName);
@@ -178,7 +188,7 @@ public class ProxyProcessor extends AbstractProcessor {
 
         //添加构造函数
         MethodSpec.Builder methodBuilder = MethodSpec
-                .methodBuilder(proxyClassName)
+                .constructorBuilder()
                 .addModifiers(Modifier.PUBLIC);
 
 
@@ -278,7 +288,13 @@ public class ProxyProcessor extends AbstractProcessor {
                 .returns(returnTypeName)
                 .addAnnotation(Override.class);
 
+        //添加可抛类型
+        for(TypeMirror tt : methodElement.getThrownTypes()){
+            methodBuilder.addException(TypeName.get(tt));
+        }
 
+
+        //构建代码块和参数
         methodCodeBuilder.append("handler.invoke(this, ")
                 .append(methodFieldName).append(", ")
                 .append("new Object[]{");
