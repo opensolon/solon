@@ -44,6 +44,21 @@ public class AsmProxy {
         return proxyClassCache.get(key);
     }
 
+    public static Object newProxyInstance(AopContext context,
+                                          InvocationHandler invocationHandler,
+                                          Class<?> targetClass) {
+        try {
+            Constructor constructor = targetClass.getConstructor(new Class[]{});
+            Object[] constructorParam = new Object[]{};
+
+            return newProxyInstance(context, invocationHandler, targetClass, constructor, constructorParam);
+        } catch (RuntimeException e) {
+            throw e;
+        } catch (Throwable e) {
+            throw new IllegalStateException("Failed to generate the proxy instance: " + targetClass.getName(), e);
+        }
+    }
+
     /**
      * 返回一个动态创建的代理类，此类继承自 targetClass
      *
@@ -63,8 +78,8 @@ public class AsmProxy {
         }
 
         //确定代理类加载器
-        AsmProxyClassLoader classLoader = (AsmProxyClassLoader)context.getAttrs().get(AsmProxyClassLoader.class);
-        if(classLoader == null) {
+        AsmProxyClassLoader classLoader = (AsmProxyClassLoader) context.getAttrs().get(AsmProxyClassLoader.class);
+        if (classLoader == null) {
             classLoader = new AsmProxyClassLoader(context.getClassLoader());
             context.getAttrs().put(AsmProxyClassLoader.class, classLoader);
         }
@@ -80,7 +95,7 @@ public class AsmProxy {
             // ClassReader reader = new ClassReader(targetClass.getName());//某些情况下直接通过类名可能会获取不到数据
             ClassReader reader = null;
             String resourceName = targetClass.getName().replace('.', '/') + ".class";
-            try(InputStream resourceStream= classLoader.getResourceAsStream(resourceName)) {
+            try (InputStream resourceStream = classLoader.getResourceAsStream(resourceName)) {
                 reader = new ClassReader(resourceStream);
             }
 

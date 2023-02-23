@@ -1,11 +1,13 @@
 package org.noear.solon.aspect;
 
+import org.noear.solon.Utils;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.aspect.asm.AsmProxy;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 
 /**
  * Bean 调用处理
@@ -14,7 +16,7 @@ import java.lang.reflect.Method;
  * @since 1.5
  * */
 public class BeanInvocationHandler implements InvocationHandler {
-    private Object bean;
+    private Object target;
     private Object proxy;
     private InvocationHandler handler;
     private final AopContext context;
@@ -22,26 +24,26 @@ public class BeanInvocationHandler implements InvocationHandler {
     /**
      * @since 1.6
      */
-    public BeanInvocationHandler(AopContext ctx, Object bean, InvocationHandler handler) {
-        this(ctx, bean.getClass(), bean, handler);
+    public BeanInvocationHandler(AopContext context, Object bean, InvocationHandler handler) {
+        this(context, bean.getClass(), bean, handler);
     }
 
     /**
      * @since 1.6
+     * @since 2.2
      */
-    public BeanInvocationHandler(AopContext ctx, Class<?> clazz, Object bean, InvocationHandler handler) {
-        try {
-            Constructor constructor = clazz.getConstructor(new Class[]{});
-            Object[] constructorParam = new Object[]{};
+    public BeanInvocationHandler(AopContext context, Class<?> clazz, Object target, InvocationHandler handler) {
+        this.context = context;
+        this.target = target;
+        this.handler = handler;
 
-            this.context = ctx;
-            this.handler = handler;
-            this.bean = bean;
-            this.proxy = AsmProxy.newProxyInstance(context,this, clazz, constructor, constructorParam);
-        } catch (RuntimeException ex) {
-            throw ex;
-        } catch (Throwable ex) {
-            throw new RuntimeException(ex);
+        //支持APT (支持 Graalvm Native  打包)
+        String proxyClassName = clazz.getName() + "$$SolonProxy";
+        this.proxy = Utils.newInstance(context.getClassLoader(), proxyClassName);
+
+        if (this.proxy == null) {
+            //支持ASM（兼容旧的包，不支持 Graalvm Native  打包）
+            this.proxy = AsmProxy.newProxyInstance(context, this, clazz);
         }
     }
 
@@ -54,11 +56,11 @@ public class BeanInvocationHandler implements InvocationHandler {
         if (handler == null) {
             method.setAccessible(true);
 
-            Object result = context.methodGet(method).invokeByAspect(bean, args);
+            Object result = context.methodGet(method).invokeByAspect(target, args);
 
             return result;
         } else {
-            return handler.invoke(bean, method, args);
+            return handler.invoke(target, method, args);
         }
     }
 }

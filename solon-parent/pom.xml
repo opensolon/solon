@@ -324,6 +324,11 @@
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>solon.aspect.apt</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>solon.extend.graalvm</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
