@@ -48,7 +48,7 @@ public class BeanInvocationHandler implements InvocationHandler {
         //调试时打印信息
         if (Solon.cfg().isDebugMode()) {
             if (this.proxy != null) {
-                LogUtil.global().trace(this.proxy.getClass().getName());
+                LogUtil.global().trace("proxy class:" + this.proxy.getClass().getName());
             }
         }
     }
