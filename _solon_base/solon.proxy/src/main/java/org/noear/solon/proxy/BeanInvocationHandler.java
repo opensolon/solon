@@ -1,5 +1,7 @@
 package org.noear.solon.proxy;
 
+import org.noear.solon.Solon;
+import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.proxy.apt.AptProxy;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.proxy.asm.AsmProxy;
@@ -41,6 +43,13 @@ public class BeanInvocationHandler implements InvocationHandler {
         if (this.proxy == null) {
             //支持ASM（兼容旧的包，不支持 Graalvm Native  打包）
             this.proxy = AsmProxy.newProxyInstance(context, this, clazz);
+        }
+
+        //调试时打印信息
+        if (Solon.cfg().isDebugMode()) {
+            if (this.proxy != null) {
+                LogUtil.global().trace(this.proxy.getClass().getName());
+            }
         }
     }
 

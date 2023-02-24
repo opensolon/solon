@@ -3,8 +3,8 @@ package org.noear.solon.proxy.apt;
 import com.google.auto.service.AutoService;
 import com.squareup.javapoet.*;
 
-import org.noear.solon.aspect.annotation.Dao;
 import org.noear.solon.proxy.annotation.ProxyComponent;
+import org.noear.solon.aspect.annotation.Dao;
 import org.noear.solon.aspect.annotation.Repository;
 import org.noear.solon.aspect.annotation.Service;
 
@@ -16,10 +16,10 @@ import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
 import javax.tools.Diagnostic;
 import java.io.IOException;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.*;
 
 
 /**
@@ -45,6 +45,8 @@ public class AptProxyProcessor extends AbstractProcessor {
      */
     private Messager mMessager;
 
+    private Map<String, Class<? extends Annotation>> mAnnoMap = new LinkedHashMap<>();
+
     /**
      * 初始化，主要用于初始化各个变量
      *
@@ -66,15 +68,14 @@ public class AptProxyProcessor extends AbstractProcessor {
      */
     @Override
     public Set<String> getSupportedAnnotationTypes() {
+        mAnnoMap.clear();
 
-        Set<String> typeSet = new LinkedHashSet<>();
+        mAnnoMap.put(ProxyComponent.class.getCanonicalName(), ProxyComponent.class);
+        mAnnoMap.put(Dao.class.getCanonicalName(), Dao.class);
+        mAnnoMap.put(Service.class.getCanonicalName(), Service.class);
+        mAnnoMap.put(Repository.class.getCanonicalName(), Repository.class);
 
-        typeSet.add(Dao.class.getCanonicalName());
-        typeSet.add(Repository.class.getCanonicalName());
-        typeSet.add(Service.class.getCanonicalName());
-        typeSet.add(ProxyComponent.class.getCanonicalName());
-
-        return typeSet;
+        return mAnnoMap.keySet();
     }
 
     /**
@@ -99,11 +100,16 @@ public class AptProxyProcessor extends AbstractProcessor {
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
 
         if (!annotations.isEmpty()) {
-            //获取Bind注解类型的元素，这里是类类型TypeElement
-            Set<? extends Element> bindElement = roundEnv.getElementsAnnotatedWith(Service.class);
 
             try {
-                generateCode(bindElement);
+                for (TypeElement e : annotations) {
+                    String annoKey = e.asType().toString();
+                    Class<? extends Annotation> annoType = mAnnoMap.get(annoKey);
+
+                    if (annoType != null) {
+                        generateCode(roundEnv.getElementsAnnotatedWith(annoType));
+                    }
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -117,17 +123,25 @@ public class AptProxyProcessor extends AbstractProcessor {
      * @param elements
      */
     private void generateCode(Set<? extends Element> elements) throws IOException {
+        if(elements == null){
+            return;
+        }
+
         for (Element element : elements) {
             if (element instanceof TypeElement) {
                 //由于是在类上注解，那么获取TypeElement
                 TypeElement typeElement = (TypeElement) element;
 
                 if(typeElement.getModifiers().contains(Modifier.ABSTRACT)){
-                    continue;
+                    throw new IllegalStateException("Abstract classes are not supported as proxy components");
+                }
+
+                if(typeElement.getModifiers().contains(Modifier.FINAL)){
+                    throw new IllegalStateException("Final classes are not supported as proxy components");
                 }
 
                 if(typeElement.getModifiers().contains(Modifier.PUBLIC) == false){
-                    continue;
+                    throw new IllegalStateException("Not public classes are not supported as proxy components");
                 }
 
                 addClass(typeElement);

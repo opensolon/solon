@@ -6,6 +6,7 @@ import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.util.ScanUtil;
 
 import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Modifier;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
@@ -20,7 +21,7 @@ import java.util.function.Predicate;
  * */
 public class ProxyUtil {
     /**
-     * 绑定
+     * 绑定代理
      *
      * @param name  注册名字
      * @param typed 注册类型（当 name 不为空时才有效；否则都算 true）
@@ -29,6 +30,23 @@ public class ProxyUtil {
         if (bw.proxy() instanceof ProxyUtil) {
             return false;
         } else {
+            if(bw.clz().isInterface()){
+                throw new IllegalStateException("Interfaces are not supported as proxy components");
+            }
+
+            int modifier = bw.clz().getModifiers();
+            if(Modifier.isFinal(modifier)){
+                throw new IllegalStateException("Final classes are not supported as proxy components");
+            }
+
+            if(Modifier.isAbstract(modifier)){
+                throw new IllegalStateException("Abstract classes are not supported as proxy components");
+            }
+
+            if(Modifier.isPublic(modifier) == false){
+                throw new IllegalStateException("Not public classes are not supported as proxy components");
+            }
+
             bw.proxySet(BeanProxy.getGlobal());
             bw.context().beanRegister(bw, name, typed);
             return true;
@@ -36,7 +54,7 @@ public class ProxyUtil {
     }
 
     /**
-     * 绑定
+     * 绑定代理
      */
     public static boolean binding(BeanWrap bw) {
         return binding(bw, "", false);

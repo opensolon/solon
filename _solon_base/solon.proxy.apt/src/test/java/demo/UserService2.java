@@ -1,14 +1,14 @@
 package demo;
 
-import org.noear.solon.proxy.annotation.ProxyComponent;
+import org.noear.solon.aspect.annotation.Service;
 
 /**
  * @author noear 2023/2/23 created
  */
-@ProxyComponent
-public class UserService {
+@Service
+public class UserService2 {
     private String userName;
-    public UserService(){
+    public UserService2(){
         this.userName = "demo";
     }
 

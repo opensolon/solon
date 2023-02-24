@@ -23,13 +23,14 @@
         <dependency>
             <groupId>com.google.auto.service</groupId>
             <artifactId>auto-service</artifactId>
-            <version>1.0</version>
+            <version>1.0.1</version>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>com.squareup</groupId>
             <artifactId>javapoet</artifactId>
-            <version>1.7.0</version>
+            <version>1.13.0</version>
         </dependency>
 
         <dependency>
