@@ -107,6 +107,10 @@ public class TargetClassVisitor extends ClassVisitor {
     private List<MethodBean> initMethodBeanByParent(String superName) {
         try {
             if (superName != null && !superName.isEmpty()) {
+                if(superName.equals("java/lang/Object")){
+                    return null;
+                }
+
                 URL superNameUrl = classLoader.getResource(superName.replace('.', '/') + ".class");
                 if (superNameUrl == null) {
                     throw new IOException("Class not found: " + superName);
