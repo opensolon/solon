@@ -1,12 +1,12 @@
 package webapp.dso;
 
-import org.noear.solon.aspect.annotation.Service;
+import org.noear.solon.proxy.annotation.ProxyComponent;
 import org.noear.solon.scheduling.annotation.Async;
 
 /**
  * @author noear 2022/1/12 created
  */
-@Service
+@ProxyComponent
 public class AsyncTask {
     @Async
     public void test(){

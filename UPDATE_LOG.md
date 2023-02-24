@@ -9,6 +9,13 @@
 * 提醒1：之前没有使用弃用接口的，可以直接升级 <br>
 * 提醒2：有使用弃用接口的。建议先升级到 1.12.4；替换弃用代码后，再升级到 2.0.0
 
+### v2.2.0
+* 新增 solon.proxy 和 solon.proxy.apt 插件
+* 简化 BeanInvocationHandler 内部代码，并增加 AptProxy 调用
+* 调整 solon.aspect 恢复对 protected 函数的代理
+* 调整 solon.aspect 增加 apt 支持；进而支持 Graalvm Native 打包
+* 调整 dateAsFormat 配置增加对 LocalDate 和 LocalDateTime 的支持
+
 ### v2.1.4
 
 * 新增 bean-searcher-solon-plugin 插件

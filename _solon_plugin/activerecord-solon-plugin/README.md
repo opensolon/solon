@@ -420,7 +420,7 @@ public class _Generator {
   - Provider
 
     ``` java
-    @Service
+    @ProxyComponent
     public class BlogProvider extends BaseProvider<Blog> implements BlogService {
     
         public BlogProvider() {
@@ -429,7 +429,7 @@ public class _Generator {
     
     }
     
-    @Service
+    @ProxyComponent
     public class Blog2Provider extends BaseProvider<Blog2> implements Blog2Service {
     
         public Blog2Provider() {

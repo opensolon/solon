@@ -150,7 +150,7 @@ public interface DemoMapper {
 ```java
 import org.noear.solon.extend.sqltoy.annotation.Db;
 //应用
-@Service
+@ProxyComponent
 public class AppService{
     @Db
     private SqlToyLazyDao sqlToyLazyDao;

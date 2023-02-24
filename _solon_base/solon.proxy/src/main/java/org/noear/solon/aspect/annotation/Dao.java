@@ -7,8 +7,9 @@ import org.noear.solon.annotation.Note;
 import java.lang.annotation.*;
 
 /**
- * 数据访问类注解（支持代理机制，即支持拦截机制）
+ * 数据访问类注解（支持代理机制，即支持拦截机制）；改用 @ProxyComponent
  *
+ * @see org.noear.solon.proxy.annotation.ProxyComponent
  * @author noear
  * @since 1.1
  * @deprecated 2.1

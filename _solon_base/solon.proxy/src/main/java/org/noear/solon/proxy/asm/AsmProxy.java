@@ -16,8 +16,8 @@ public class AsmProxy {
     public static final int ASM_VERSION = Opcodes.ASM9;
     public static final int ASM_JDK_VERSION = Opcodes.V1_8;
 
-    // 动态生成代理类的前缀
-    public static final String PROXY_CLASSNAME_PREFIX = "$Proxy_";
+    // 动态生成代理类的后缀
+    public static final String PROXY_CLASSNAME_SUFFIX ="$$SolonAsmProxy";
     // 字段名
     private static final String FIELD_INVOCATIONHANDLER = "invocationHandler";
     // 方法名
@@ -160,7 +160,7 @@ public class AsmProxy {
      * 生成代理类的类名生成规则
      */
     private static String generateProxyClassName(Class<?> targetClass) {
-        return targetClass.getPackage().getName() + "." + PROXY_CLASSNAME_PREFIX + targetClass.getSimpleName();
+        return targetClass.getPackage().getName() + "." + targetClass.getSimpleName() + PROXY_CLASSNAME_SUFFIX;
     }
 
     /**

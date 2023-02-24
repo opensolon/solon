@@ -1,13 +1,13 @@
 package test4;
 
-import org.noear.solon.aspect.annotation.Service;
+import org.noear.solon.proxy.annotation.ProxyComponent;
 
 /**
  * @Author kevin
  * @Date 2022-10-02 20:55
  * @Description
  */
-@Service
+@ProxyComponent
 public class ProxyService extends AbstractProxyService{
 
   public void init(){

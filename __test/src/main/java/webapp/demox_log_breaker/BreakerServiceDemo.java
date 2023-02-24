@@ -1,12 +1,12 @@
 package webapp.demox_log_breaker;
 
 //import org.noear.solon.cloud.annotation.CloudBreaker;
-import org.noear.solon.aspect.annotation.Service;
+import org.noear.solon.proxy.annotation.ProxyComponent;
 
 /**
  * @author noear 2021/3/14 created
  */
-@Service
+@ProxyComponent
 public class BreakerServiceDemo {
 //    @CloudBreaker("test")
     public String test() throws Exception{

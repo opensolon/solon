@@ -35,7 +35,7 @@ public class Config {
     }
 }
 
-@Service
+@ProxyComponent
 public class UserService{
     @Db("db_user")
     UserMapper userMapper;

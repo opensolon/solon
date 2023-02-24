@@ -2,7 +2,7 @@ package org.noear.solon.extend.sqltoy;
 
 import org.noear.solon.annotation.Singleton;
 import org.noear.solon.data.annotation.Tran;
-import org.noear.solon.aspect.annotation.Service;
+import org.noear.solon.proxy.annotation.ProxyComponent;
 import org.sagacity.sqltoy.dao.SqlToyLazyDao;
 import org.sagacity.sqltoy.model.*;
 import org.sagacity.sqltoy.service.SqlToyCRUDService;
@@ -21,7 +21,7 @@ import java.util.*;
  * @since 1.10
  * */
 @Singleton(false) //因为会被多数据源使用，所以不能是单例
-@Service
+@ProxyComponent
 public class SqlToyCRUDServiceForSolon implements SqlToyCRUDService {
     protected final Logger logger = LoggerFactory.getLogger(SqlToyCRUDServiceImpl.class);
     protected SqlToyLazyDao sqlToyLazyDao;

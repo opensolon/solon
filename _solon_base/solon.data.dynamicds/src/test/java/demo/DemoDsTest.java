@@ -4,10 +4,10 @@ import demo.dso.UserMapper;
 import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
-import org.noear.solon.aspect.annotation.Service;
 import org.noear.solon.data.dynamicds.DynamicDataSource;
 import org.noear.solon.data.dynamicds.DynamicDsUtils;
 import org.noear.solon.data.dynamicds.DynamicDs;
+import org.noear.solon.proxy.annotation.ProxyComponent;
 
 import javax.sql.DataSource;
 
@@ -23,7 +23,7 @@ public class Config {
         return dataSource;
     }
 }
-@Service
+@ProxyComponent
 public class UserService{
     @Db("db_user")
     UserMapper userMapper;

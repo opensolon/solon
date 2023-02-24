@@ -1,11 +1,11 @@
 package demo;
 
-import org.noear.solon.aspect.annotation.Service;
+import org.noear.solon.proxy.annotation.ProxyComponent;
 
 /**
  * @author noear 2022/5/26 created
  */
-@Service
+@ProxyComponent
 public class HelloService {
     public HelloService(){
         System.out.println("service init");

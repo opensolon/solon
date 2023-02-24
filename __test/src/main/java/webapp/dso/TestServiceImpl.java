@@ -1,11 +1,11 @@
 package webapp.dso;
 
-import org.noear.solon.aspect.annotation.Service;
+import org.noear.solon.proxy.annotation.ProxyComponent;
 
 /**
  * @author noear 2022/10/2 created
  */
-@Service
+@ProxyComponent
 public class TestServiceImpl implements TestService{
     @Override
     public void hello() {

@@ -11,6 +11,7 @@ import java.lang.reflect.InvocationHandler;
  * @since 2.1
  */
 public class AptProxy {
+    public static final String PROXY_CLASSNAME_SUFFIX ="$$SolonAptProxy";
     /**
      * 返回一个动态创建的代理类，此类继承自 targetClass（或许是算静态代理类）
      *
@@ -22,7 +23,7 @@ public class AptProxy {
                                           InvocationHandler invocationHandler,
                                           Class<?> targetClass) {
         //支持APT (支持 Graalvm Native  打包)
-        String proxyClassName = targetClass.getName() + "$$SolonProxy";
+        String proxyClassName = targetClass.getName() + PROXY_CLASSNAME_SUFFIX;
         Class<?> proxyClass = Utils.loadClass(context.getClassLoader(), proxyClassName);
 
         if (proxyClass == null) {

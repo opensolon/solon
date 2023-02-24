@@ -24,18 +24,13 @@ import java.util.Set;
 
 /**
  *
- * https://blog.csdn.net/Goals1989/article/details/125446609
- *
- * https://blog.csdn.net/web15085181368/article/details/124874063
- *
- * https://blog.csdn.net/dirksmaller/article/details/103930756
- *
- * @author noear 2023/2/23 created
+ * @author noear
+ * @since 2.2
  */
 @AutoService(Processor.class)
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
 @SupportedAnnotationTypes({"*"})
-public class ProxyProcessor extends AbstractProcessor {
+public class AptProxyProcessor extends AbstractProcessor {
     /**
      * java源文件操作相关类，主要用于生成java源文件
      */
@@ -157,7 +152,7 @@ public class ProxyProcessor extends AbstractProcessor {
 
 
         ClassName supperClassName = ClassName.get(packageName, typeElement.getSimpleName().toString());
-        String proxyClassName = className + "$$SolonProxy";
+        String proxyClassName = className + AptProxy.PROXY_CLASSNAME_SUFFIX;
 
         //生成的类
         TypeSpec.Builder proxyTypeBuilder = TypeSpec

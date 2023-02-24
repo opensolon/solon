@@ -2,14 +2,14 @@ package webapp.dso.cache;
 
 import org.noear.solon.data.annotation.Cache;
 import org.noear.solon.data.annotation.CacheRemove;
-import org.noear.solon.aspect.annotation.Service;
+import org.noear.solon.proxy.annotation.ProxyComponent;
 
 import java.time.LocalDateTime;
 
 /**
  * @author noear 2022/1/15 created
  */
-@Service
+@ProxyComponent
 public class OathServer {
     @Cache(key = "oath_test_${code}", seconds = 2592000)
     public Oauth queryInfoByCode(String code) {

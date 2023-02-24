@@ -26,7 +26,7 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.aspect</artifactId>
+            <artifactId>solon.proxy</artifactId>
         </dependency>
 
         <dependency>
