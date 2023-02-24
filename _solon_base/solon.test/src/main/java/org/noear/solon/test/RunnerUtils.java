@@ -4,7 +4,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.SolonTestApp;
 import org.noear.solon.Utils;
-import org.noear.solon.aspect.BeanProxy;
+import org.noear.solon.proxy.BeanProxy;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.NvMap;

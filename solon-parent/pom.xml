@@ -85,6 +85,8 @@
         <powerjob.ver>4.3.0</powerjob.ver>
 
         <sa-token.ver>1.34.0</sa-token.ver>
+
+        <native.ver>0.9.20</native.ver>
     </properties>
 
 
@@ -324,7 +326,12 @@
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.aspect.apt</artifactId>
+                <artifactId>solon.proxy</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.proxy.apt</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
             <dependency>
@@ -1470,6 +1477,11 @@
                             </goals>
                         </execution>
                     </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.graalvm.buildtools</groupId>
+                    <artifactId>native-maven-plugin</artifactId>
+                    <version>${native.ver}</version>
                 </plugin>
             </plugins>
         </pluginManagement>

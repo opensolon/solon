@@ -11,13 +11,19 @@
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
     
-    <artifactId>solon.aspect</artifactId>
+    <artifactId>solon.proxy</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.proxy</artifactId>
+            <artifactId>solon</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.ow2.asm</groupId>
+            <artifactId>asm</artifactId>
+            <version>${asm.ver}</version>
         </dependency>
     </dependencies>
 

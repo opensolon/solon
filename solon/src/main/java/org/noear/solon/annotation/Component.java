@@ -3,7 +3,7 @@ package org.noear.solon.annotation;
 import java.lang.annotation.*;
 
 /**
- * 通用 组件（不会使用ASM代理）
+ * 普通托管组件（一般情况下，不支持代理机制）
  *
  * <pre><code>
  * //注解在类上
