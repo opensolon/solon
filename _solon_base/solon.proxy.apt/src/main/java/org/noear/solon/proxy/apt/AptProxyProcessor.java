@@ -7,6 +7,7 @@ import org.noear.solon.proxy.annotation.ProxyComponent;
 import org.noear.solon.aspect.annotation.Dao;
 import org.noear.solon.aspect.annotation.Repository;
 import org.noear.solon.aspect.annotation.Service;
+import org.noear.solon.proxy.apt.impl.MethodElementHolder;
 
 import javax.annotation.processing.*;
 import javax.lang.model.SourceVersion;
@@ -14,6 +15,7 @@ import javax.lang.model.element.*;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
+import javax.lang.model.type.TypeVariable;
 import javax.lang.model.util.Elements;
 import javax.tools.Diagnostic;
 import java.io.IOException;
@@ -243,8 +245,10 @@ public class AptProxyProcessor extends AbstractProcessor {
                     .append("\"");
 
             for (VariableElement pe : methodElement.getParameters()) {
+                TypeMirror pet = getRealType(pe.asType());
+
                 codeBuilder.append(",")
-                        .append(pe.asType().toString())
+                        .append(pet.toString())
                         .append(".class");
             }
 
@@ -288,7 +292,7 @@ public class AptProxyProcessor extends AbstractProcessor {
 
         proxyTypeBuilder.addField(Method.class, methodFieldName, Modifier.PRIVATE, Modifier.STATIC);
 
-        TypeName returnTypeName = TypeName.get(methodElement.getReturnType());
+        TypeMirror returnType = getRealType(methodElement.getReturnType());
 
         StringBuilder methodCodeBuilder = new StringBuilder();
 
@@ -298,8 +302,8 @@ public class AptProxyProcessor extends AbstractProcessor {
         MethodSpec.Builder methodBuilder = MethodSpec
                 .methodBuilder(methodElement.getSimpleName().toString())
                 .addModifiers(isPublic ? Modifier.PUBLIC : Modifier.PROTECTED)
-                .returns(returnTypeName)
-                .addAnnotation(Override.class);
+                .addAnnotation(Override.class)
+                .returns(TypeName.get(returnType));
 
         //添加可抛类型
         for (TypeMirror tt : methodElement.getThrownTypes()) {
@@ -312,8 +316,10 @@ public class AptProxyProcessor extends AbstractProcessor {
                 .append(methodFieldName).append(", ")
                 .append("new Object[]{");
 
+        //添加函数参数
         for (VariableElement pe : methodElement.getParameters()) {
-            TypeName paramType = TypeName.get(pe.asType());
+            TypeMirror pet = getRealType(pe.asType());
+            TypeName paramType = TypeName.get(pet);
             String paramName = pe.getSimpleName().toString();
 
             methodBuilder.addParameter(paramType, paramName);
@@ -332,19 +338,19 @@ public class AptProxyProcessor extends AbstractProcessor {
         //添加函数代码
         if (methodElement.getReturnType().getKind() == TypeKind.VOID) {
             methodCodeBuilder.insert(0, "try { \n  ");
-            methodCodeBuilder.append("\n} catch (RuntimeException e) {\n" +
-                    "  throw e;\n" +
-                    "} catch (Throwable e) {\n" +
-                    "  throw new RuntimeException(e);\n" +
+            methodCodeBuilder.append("\n} catch (RuntimeException _ex) {\n" +
+                    "  throw _ex;\n" +
+                    "} catch (Throwable _ex) {\n" +
+                    "  throw new RuntimeException(_ex);\n" +
                     "}\n");
 
             methodBuilder.addCode(methodCodeBuilder.toString());
         } else {
-            methodCodeBuilder.insert(0, "try { \n  return (" + methodElement.getReturnType().toString() + ")");
-            methodCodeBuilder.append("\n} catch (RuntimeException e) {\n" +
-                    "  throw e;\n" +
-                    "} catch (Throwable e) {\n" +
-                    "  throw new RuntimeException(e);\n" +
+            methodCodeBuilder.insert(0, "try { \n  return (" + returnType + ")");
+            methodCodeBuilder.append("\n} catch (RuntimeException _ex) {\n" +
+                    "  throw _ex;\n" +
+                    "} catch (Throwable _ex) {\n" +
+                    "  throw new RuntimeException(_ex);\n" +
                     "}\n");
 
             methodBuilder.addCode(methodCodeBuilder.toString());
@@ -368,8 +374,8 @@ public class AptProxyProcessor extends AbstractProcessor {
         for (Element e : type.getEnclosedElements()) {
             if (e.getKind() == ElementKind.METHOD) {
                 ExecutableElement method = (ExecutableElement) e;
-
-                methodAll.put(e.toString(), method);
+                String methodKey = getMethodKey(method);
+                methodAll.put(methodKey, method);
             }
         }
 
@@ -385,26 +391,23 @@ public class AptProxyProcessor extends AbstractProcessor {
             }
 
             DeclaredType originDt = (DeclaredType) origin;
-            List<? extends TypeMirror> originTypeArgs = originDt.getTypeArguments();
-            Map<String, TypeMirror> originTypeArgMap = new LinkedHashMap<>();
-
             TypeElement originElement = (TypeElement) (originDt.asElement());
 
-            if (originTypeArgs != null && originTypeArgs.size() > 0) {
-                for (int i = 0, size = originElement.getTypeParameters().size(); i < size; i++) {
-                    TypeParameterElement gtKey = originElement.getTypeParameters().get(i);
-                    TypeMirror gtVal = originTypeArgs.get(i);
+            Map<String, TypeMirror> gtArgMap = new LinkedHashMap<>();
 
-                    originTypeArgMap.put(gtKey.toString(), gtVal);
-                }
+            for (int i = 0, size = originDt.getTypeArguments().size(); i < size; i++) {
+                TypeParameterElement gtKey = originElement.getTypeParameters().get(i);
+                TypeMirror gtVal = originDt.getTypeArguments().get(i);
+
+                gtArgMap.put(gtKey.toString(), gtVal);
             }
 
             for (Element e : originElement.getEnclosedElements()) {
                 if (e.getKind() == ElementKind.METHOD) {
                     //需要处理泛型
-                    ExecutableElement method = (ExecutableElement) e;
-
-                    methodAll.put(e.toString(), method);
+                    ExecutableElement method = new MethodElementHolder((ExecutableElement) e, gtArgMap);
+                    String methodKey = getMethodKey(method);
+                    methodAll.put(methodKey, method);
                 }
             }
 
@@ -412,6 +415,31 @@ public class AptProxyProcessor extends AbstractProcessor {
         }
 
         return methodAll;
+    }
+
+    private static TypeMirror getRealType(TypeMirror type){
+        if(type instanceof TypeVariable){
+            return ((TypeVariable) type).getUpperBound();
+        }else{
+            return type;
+        }
+    }
+
+    private static String getMethodKey(ExecutableElement method) {
+        StringBuilder buf = new StringBuilder();
+        buf.append(method.getSimpleName().toString());
+        buf.append("(");
+
+        for (VariableElement pe : method.getParameters()) {
+            TypeMirror pet = getRealType(pe.asType());
+
+            buf.append(pet.toString());
+            buf.append(",");
+        }
+
+        buf.append(")");
+
+        return buf.toString();
     }
 
     /**
