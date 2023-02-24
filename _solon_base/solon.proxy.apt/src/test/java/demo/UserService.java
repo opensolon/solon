@@ -6,12 +6,13 @@ import org.noear.solon.proxy.annotation.ProxyComponent;
  * @author noear 2023/2/23 created
  */
 @ProxyComponent
-public class UserService {
+public class UserService extends UserServiceBase<String>{
     private String userName;
     public UserService(){
         this.userName = "demo";
     }
 
+    @Override
     public String getUserName(){
         return userName;
     }

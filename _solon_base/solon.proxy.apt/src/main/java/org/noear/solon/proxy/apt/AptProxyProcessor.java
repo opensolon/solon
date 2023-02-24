@@ -11,6 +11,7 @@ import org.noear.solon.aspect.annotation.Service;
 import javax.annotation.processing.*;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.*;
+import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
@@ -123,7 +124,7 @@ public class AptProxyProcessor extends AbstractProcessor {
      * @param elements
      */
     private void generateCode(Set<? extends Element> elements) throws IOException {
-        if(elements == null){
+        if (elements == null) {
             return;
         }
 
@@ -132,15 +133,15 @@ public class AptProxyProcessor extends AbstractProcessor {
                 //由于是在类上注解，那么获取TypeElement
                 TypeElement typeElement = (TypeElement) element;
 
-                if(typeElement.getModifiers().contains(Modifier.ABSTRACT)){
+                if (typeElement.getModifiers().contains(Modifier.ABSTRACT)) {
                     throw new IllegalStateException("Abstract classes are not supported as proxy components");
                 }
 
-                if(typeElement.getModifiers().contains(Modifier.FINAL)){
+                if (typeElement.getModifiers().contains(Modifier.FINAL)) {
                     throw new IllegalStateException("Final classes are not supported as proxy components");
                 }
 
-                if(typeElement.getModifiers().contains(Modifier.PUBLIC) == false){
+                if (typeElement.getModifiers().contains(Modifier.PUBLIC) == false) {
                     throw new IllegalStateException("Not public classes are not supported as proxy components");
                 }
 
@@ -149,7 +150,7 @@ public class AptProxyProcessor extends AbstractProcessor {
         }
     }
 
-    private void addClass(TypeElement typeElement) throws IOException{
+    private void addClass(TypeElement typeElement) throws IOException {
         //获取全限定类名
         String className = typeElement.getQualifiedName().toString();
 
@@ -168,18 +169,22 @@ public class AptProxyProcessor extends AbstractProcessor {
         ClassName supperClassName = ClassName.get(packageName, typeElement.getSimpleName().toString());
         String proxyClassName = className + AptProxy.PROXY_CLASSNAME_SUFFIX;
 
+        //获取所有函数
+        Map<String, ExecutableElement> methodAll = getClassMethodAll(typeElement);
+
         //生成的类
         TypeSpec.Builder proxyTypeBuilder = TypeSpec
                 .classBuilder(proxyClassName)
                 .superclass(supperClassName)
                 .addModifiers(Modifier.PUBLIC, Modifier.FINAL);
 
+
         //添加构造函数
         addConstructor(proxyTypeBuilder, typeElement, proxyClassName);
         //添加代理函数
-        addMethodAll(proxyTypeBuilder, typeElement);
+        addMethodAll(proxyTypeBuilder, methodAll);
         //添加静态代码块
-        addStaticBlock(proxyTypeBuilder, typeElement, className);
+        addStaticBlock(proxyTypeBuilder, className, methodAll);
 
         TypeSpec proxyType = proxyTypeBuilder.build();
 
@@ -212,42 +217,40 @@ public class AptProxyProcessor extends AbstractProcessor {
         proxyTypeBuilder.addMethod(methodBuilder.build());
     }
 
-    private void addStaticBlock(TypeSpec.Builder proxyTypeBuilder, TypeElement typeElement, String className){
+
+    private void addStaticBlock(TypeSpec.Builder proxyTypeBuilder, String className, Map<String, ExecutableElement> methodAll) {
         int methodIndex = 0;
 
-        StringBuilder codeBuilder  = new StringBuilder();
+        StringBuilder codeBuilder = new StringBuilder();
 
         codeBuilder.append("try {\n");
 
-        for (Element e : typeElement.getEnclosedElements()) {
-            if (e.getKind() == ElementKind.METHOD) {
-                ExecutableElement methodElement = (ExecutableElement) e;
-                //添加函数
-                if (methodElement.getModifiers().contains(Modifier.STATIC) ||
-                        methodElement.getModifiers().contains(Modifier.PRIVATE) ||
-                        methodElement.getModifiers().contains(Modifier.FINAL)) {
-                    //静态 或 只读 或 私有；不需要重写
-                    continue;
-                }
-                String methodFieldName = "  method" + methodIndex;
-
-                codeBuilder.append(methodFieldName)
-                        .append("=")
-                        .append(className)
-                        .append(".class.getMethod(\"")
-                        .append(methodElement.getSimpleName())
-                        .append("\"");
-
-                for(VariableElement pe : methodElement.getParameters()){
-                    codeBuilder.append(",")
-                            .append(pe.asType().toString())
-                            .append(".class");
-                }
-
-                codeBuilder.append(");\n");
-
-                ++methodIndex;
+        for (ExecutableElement methodElement : methodAll.values()) {
+            //添加函数
+            if (methodElement.getModifiers().contains(Modifier.STATIC) ||
+                    methodElement.getModifiers().contains(Modifier.PRIVATE) ||
+                    methodElement.getModifiers().contains(Modifier.FINAL)) {
+                //静态 或 只读 或 私有；不需要重写
+                continue;
             }
+            String methodFieldName = "  method" + methodIndex;
+
+            codeBuilder.append(methodFieldName)
+                    .append("=")
+                    .append(className)
+                    .append(".class.getMethod(\"")
+                    .append(methodElement.getSimpleName())
+                    .append("\"");
+
+            for (VariableElement pe : methodElement.getParameters()) {
+                codeBuilder.append(",")
+                        .append(pe.asType().toString())
+                        .append(".class");
+            }
+
+            codeBuilder.append(");\n");
+
+            ++methodIndex;
         }
 
         codeBuilder.append("} catch (Throwable e) {\n" +
@@ -260,14 +263,13 @@ public class AptProxyProcessor extends AbstractProcessor {
         proxyTypeBuilder.addStaticBlock(codeBlock);
     }
 
-    private void addMethodAll(TypeSpec.Builder proxyTypeBuilder, TypeElement typeElement){
+
+    private void addMethodAll(TypeSpec.Builder proxyTypeBuilder, Map<String, ExecutableElement> methodAll) {
         int methodIndex = 0;
 
-        for (Element e : typeElement.getEnclosedElements()) {
-            if (e.getKind() == ElementKind.METHOD) {
-                //添加函数
-                methodIndex = addMethod(proxyTypeBuilder, (ExecutableElement) e, methodIndex);
-            }
+        for (ExecutableElement e : methodAll.values()) {
+            //添加函数
+            methodIndex = addMethod(proxyTypeBuilder, e, methodIndex);
         }
     }
 
@@ -300,7 +302,7 @@ public class AptProxyProcessor extends AbstractProcessor {
                 .addAnnotation(Override.class);
 
         //添加可抛类型
-        for(TypeMirror tt : methodElement.getThrownTypes()){
+        for (TypeMirror tt : methodElement.getThrownTypes()) {
             methodBuilder.addException(TypeName.get(tt));
         }
 
@@ -338,7 +340,7 @@ public class AptProxyProcessor extends AbstractProcessor {
 
             methodBuilder.addCode(methodCodeBuilder.toString());
         } else {
-            methodCodeBuilder.insert(0, "try { \n  return ("+methodElement.getReturnType().toString()+")");
+            methodCodeBuilder.insert(0, "try { \n  return (" + methodElement.getReturnType().toString() + ")");
             methodCodeBuilder.append("\n} catch (RuntimeException e) {\n" +
                     "  throw e;\n" +
                     "} catch (Throwable e) {\n" +
@@ -353,8 +355,67 @@ public class AptProxyProcessor extends AbstractProcessor {
         return ++methodIndex;
     }
 
+
     /**
-     * 根据type和package获取类名
+     * 获取类的所有函数（包括父类）
+     *
+     * @param type 类型
+     */
+    private Map<String, ExecutableElement> getClassMethodAll(TypeElement type) {
+        Map<String, ExecutableElement> methodAll = new LinkedHashMap<>();
+
+        //本级优先
+        for (Element e : type.getEnclosedElements()) {
+            if (e.getKind() == ElementKind.METHOD) {
+                ExecutableElement method = (ExecutableElement) e;
+
+                methodAll.put(e.toString(), method);
+            }
+        }
+
+        //再取超类的函数
+        TypeMirror origin = type.getSuperclass();
+        while (true) {
+            if (origin.getKind() != TypeKind.DECLARED) {
+                break;
+            }
+
+            if ("java.lang.Object".equals(origin.toString())) {
+                break;
+            }
+
+            DeclaredType originDt = (DeclaredType) origin;
+            List<? extends TypeMirror> originTypeArgs = originDt.getTypeArguments();
+            Map<String, TypeMirror> originTypeArgMap = new LinkedHashMap<>();
+
+            TypeElement originElement = (TypeElement) (originDt.asElement());
+
+            if (originTypeArgs != null && originTypeArgs.size() > 0) {
+                for (int i = 0, size = originElement.getTypeParameters().size(); i < size; i++) {
+                    TypeParameterElement gtKey = originElement.getTypeParameters().get(i);
+                    TypeMirror gtVal = originTypeArgs.get(i);
+
+                    originTypeArgMap.put(gtKey.toString(), gtVal);
+                }
+            }
+
+            for (Element e : originElement.getEnclosedElements()) {
+                if (e.getKind() == ElementKind.METHOD) {
+                    //需要处理泛型
+                    ExecutableElement method = (ExecutableElement) e;
+
+                    methodAll.put(e.toString(), method);
+                }
+            }
+
+            origin = originElement.getSuperclass();
+        }
+
+        return methodAll;
+    }
+
+    /**
+     * 根据类型和包名获取类名
      *
      * @param type        类型
      * @param packageName 包名
