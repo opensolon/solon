@@ -14,6 +14,10 @@ public class ParamElementHolder implements VariableElement {
     VariableElement real;
     TypeMirror type;
 
+    public VariableElement getReal() {
+        return real;
+    }
+
     public ParamElementHolder(VariableElement real, TypeMirror type) {
         this.real = real;
         this.type = type;

@@ -9,6 +9,7 @@ import org.noear.solon.aspect.annotation.Repository;
 import org.noear.solon.aspect.annotation.Service;
 import org.noear.solon.proxy.apt.impl.Helper;
 import org.noear.solon.proxy.apt.impl.MethodElementHolder;
+import org.noear.solon.proxy.apt.impl.ParamElementHolder;
 
 import javax.annotation.processing.*;
 import javax.lang.model.SourceVersion;
@@ -189,7 +190,7 @@ public class AptProxyProcessor extends AbstractProcessor {
         //添加代理函数
         addMethodAll(proxyTypeBuilder, methodAll);
         //添加静态代码块
-        addStaticBlock(proxyTypeBuilder, className, methodAll);
+        addStaticBlock(proxyTypeBuilder, packageName, className, methodAll);
 
         TypeSpec proxyType = proxyTypeBuilder.build();
 
@@ -223,41 +224,57 @@ public class AptProxyProcessor extends AbstractProcessor {
     }
 
 
-    private void addStaticBlock(TypeSpec.Builder proxyTypeBuilder, String className, Map<String, ExecutableElement> methodAll) {
+    private void addStaticBlock(TypeSpec.Builder proxyTypeBuilder, String packageName, String className, Map<String, ExecutableElement> methodAll) {
         int methodIndex = 0;
 
         StringBuilder codeBuilder = new StringBuilder();
 
         codeBuilder.append("try {\n");
+        codeBuilder.append("  Class<?> clazz = $T.class;\n\n");
 
         for (ExecutableElement methodElement : methodAll.values()) {
             //添加函数
-            if (methodElement.getModifiers().contains(Modifier.STATIC) ||
-                    methodElement.getModifiers().contains(Modifier.PRIVATE) ||
-                    methodElement.getModifiers().contains(Modifier.FINAL)) {
+            if (Helper.allowMethod(methodElement) == false) {
                 //静态 或 只读 或 私有；不需要重写
                 continue;
             }
             String methodFieldName = "  method" + methodIndex;
 
             codeBuilder.append(methodFieldName)
-                    .append("=")
-                    .append(className)
-                    .append(".class.getMethod(\"")
+                    .append("=clazz.getMethod(\"")
                     .append(methodElement.getSimpleName())
                     .append("\"");
 
             for (VariableElement p0 : methodElement.getParameters()) {
-                TypeMirror p1 = Helper.getRealType(p0.asType());
-                String p1Name = p1.toString();
-                int p1NameIdx = p1Name.indexOf("<");
-                if(p1NameIdx > 0){
-                    p1Name = p1Name.substring(0,p1NameIdx);
-                }
+                if(p0 instanceof ParamElementHolder){
+                    ParamElementHolder p0x = (ParamElementHolder)p0;
 
-                codeBuilder.append(",")
-                        .append(p1Name)
-                        .append(".class");
+                    TypeMirror p1 =p0x.getReal().asType();
+                    String p1Name = p1.toString();
+                    int p1NameIdx = p1Name.indexOf("<");
+                    if (p1NameIdx > 0) {
+                        p1Name = p1Name.substring(0, p1NameIdx);
+                    }
+
+                    if(p1 instanceof TypeVariable){
+                        codeBuilder.append(",Object.class");
+                    }else {
+                        codeBuilder.append(",")
+                                .append(p1Name)
+                                .append(".class");
+                    }
+                }else {
+                    TypeMirror p1 = p0.asType();
+                    String p1Name = p1.toString();
+                    int p1NameIdx = p1Name.indexOf("<");
+                    if (p1NameIdx > 0) {
+                        p1Name = p1Name.substring(0, p1NameIdx);
+                    }
+
+                    codeBuilder.append(",")
+                            .append(p1Name)
+                            .append(".class");
+                }
             }
 
             codeBuilder.append(");\n");
@@ -270,7 +287,7 @@ public class AptProxyProcessor extends AbstractProcessor {
                 "}\n");
 
 
-        CodeBlock codeBlock = CodeBlock.of(codeBuilder.toString());
+        CodeBlock codeBlock = CodeBlock.of(codeBuilder.toString(), ClassName.get(packageName, className));
 
         proxyTypeBuilder.addStaticBlock(codeBlock);
     }
@@ -289,9 +306,7 @@ public class AptProxyProcessor extends AbstractProcessor {
      * 添加函数
      */
     private int addMethod(TypeSpec.Builder proxyTypeBuilder, ExecutableElement methodElement, int methodIndex) {
-        if (methodElement.getModifiers().contains(Modifier.STATIC) ||
-                methodElement.getModifiers().contains(Modifier.PRIVATE) ||
-                methodElement.getModifiers().contains(Modifier.FINAL)) {
+        if (Helper.allowMethod(methodElement) == false) {
             //静态 或 只读 或 私有；不需要重写
             return methodIndex;
         }
@@ -320,16 +335,15 @@ public class AptProxyProcessor extends AbstractProcessor {
         }
 
         //添加函数泛型
-        for(TypeParameterElement te : methodElement.getTypeParameters()){
-            if(te.asType() instanceof TypeVariable){
-                TypeVariable tv = (TypeVariable)te.asType();
+        for (TypeParameterElement te : methodElement.getTypeParameters()) {
+            if (te.asType() instanceof TypeVariable) {
+                TypeVariable tv = (TypeVariable) te.asType();
                 methodBuilder.addTypeVariable(TypeVariableName.get(tv));
-            }else{
+            } else {
                 methodBuilder.addTypeVariable(TypeVariableName.get(te.getSimpleName().toString()));
             }
 
         }
-
 
         //构建代码块和参数
         methodCodeBuilder.append("handler.invoke(this, ")
@@ -394,9 +408,11 @@ public class AptProxyProcessor extends AbstractProcessor {
         //本级优先
         for (Element e : type.getEnclosedElements()) {
             if (e.getKind() == ElementKind.METHOD) {
-                ExecutableElement method = (ExecutableElement) e;
-                String methodKey = Helper.getMethodKey(method);
-                methodAll.put(methodKey, method);
+                if (Helper.allowMethod(e)) {
+                    ExecutableElement method = (ExecutableElement) e;
+                    String methodKey = Helper.getMethodKey(method);
+                    methodAll.put(methodKey, method);
+                }
             }
         }
 
@@ -426,9 +442,11 @@ public class AptProxyProcessor extends AbstractProcessor {
             for (Element e : originElement.getEnclosedElements()) {
                 if (e.getKind() == ElementKind.METHOD) {
                     //需要处理泛型
-                    ExecutableElement method = new MethodElementHolder((ExecutableElement) e, gtArgMap);
-                    String methodKey = Helper.getMethodKey(method);
-                    methodAll.put(methodKey, method);
+                    if (Helper.allowMethod(e)) {
+                        ExecutableElement method = new MethodElementHolder((ExecutableElement) e, gtArgMap);
+                        String methodKey = Helper.getMethodKey(method);
+                        methodAll.put(methodKey, method);
+                    }
                 }
             }
 
@@ -437,6 +455,4 @@ public class AptProxyProcessor extends AbstractProcessor {
 
         return methodAll;
     }
-
-
 }

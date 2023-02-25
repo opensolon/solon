@@ -4,9 +4,7 @@ import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeName;
 
-import javax.lang.model.element.ExecutableElement;
-import javax.lang.model.element.TypeElement;
-import javax.lang.model.element.VariableElement;
+import javax.lang.model.element.*;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.type.TypeVariable;
@@ -17,6 +15,18 @@ import java.util.stream.Collectors;
  * @author noear 2023/2/25 created
  */
 public class Helper {
+    public static boolean allowMethod(Element element) {
+        if (element.getModifiers().contains(Modifier.STATIC) ||
+                element.getModifiers().contains(Modifier.FINAL) ||
+                element.getModifiers().contains(Modifier.PRIVATE) ||
+                element.getModifiers().contains(Modifier.PROTECTED)) {
+            //静态 或 只读 或 私有；不需要重写
+            return false;
+        } else {
+            return true;
+        }
+    }
+
     public static TypeName getTypeName(TypeMirror type){
         if (type instanceof DeclaredType) {
             DeclaredType pet2 = (DeclaredType) type;
