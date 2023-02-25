@@ -10,18 +10,23 @@ import java.util.Set;
  * @author noear
  * @since 2.2
  */
-public class ParamElementHolder implements VariableElement {
-    VariableElement real;
+public class TypeParameterElementHolder implements TypeParameterElement {
+    TypeParameterElement real;
     TypeMirror type;
 
-    public ParamElementHolder(VariableElement real, TypeMirror type) {
+    public TypeParameterElementHolder(TypeParameterElement real, TypeMirror type) {
         this.real = real;
         this.type = type;
     }
 
     @Override
-    public Object getConstantValue() {
-        return real.getConstantValue();
+    public Element getGenericElement() {
+        return real.getGenericElement();
+    }
+
+    @Override
+    public List<? extends TypeMirror> getBounds() {
+        return real.getBounds();
     }
 
     @Override

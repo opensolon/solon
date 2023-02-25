@@ -5,7 +5,7 @@ import org.noear.solon.proxy.annotation.ProxyComponent;
 /**
  * @author noear 2022/9/30 created
  */
-@ProxyComponent
+//@ProxyComponent
 public class TagServiceImpl extends CrudServiceImpl<TagDao, Tag, TagDTO, TagConvert> implements TagService {
 
     @Override

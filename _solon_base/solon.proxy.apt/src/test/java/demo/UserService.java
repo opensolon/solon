@@ -5,7 +5,7 @@ import org.noear.solon.proxy.annotation.ProxyComponent;
 /**
  * @author noear 2023/2/23 created
  */
-@ProxyComponent
+//@ProxyComponent
 public class UserService extends UserServiceBase<String>{
     private String userName;
     public UserService(){
