@@ -1,4 +1,4 @@
-package org.noear.solon.proxy.apt.impl;
+package org.noear.solon.proxy.apt.holder;
 
 import javax.lang.model.element.*;
 import javax.lang.model.type.TypeMirror;
@@ -10,22 +10,23 @@ import java.util.Set;
  * @author noear
  * @since 2.2
  */
-public class ParamElementHolder implements VariableElement {
-    VariableElement real;
+public class TypeParameterElementHolder implements TypeParameterElement {
+    TypeParameterElement real;
     TypeMirror type;
 
-    public VariableElement getReal() {
-        return real;
-    }
-
-    public ParamElementHolder(VariableElement real, TypeMirror type) {
+    public TypeParameterElementHolder(TypeParameterElement real, TypeMirror type) {
         this.real = real;
         this.type = type;
     }
 
     @Override
-    public Object getConstantValue() {
-        return real.getConstantValue();
+    public Element getGenericElement() {
+        return real.getGenericElement();
+    }
+
+    @Override
+    public List<? extends TypeMirror> getBounds() {
+        return real.getBounds();
     }
 
     @Override

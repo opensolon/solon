@@ -1,4 +1,4 @@
-package org.noear.solon.proxy.apt.impl;
+package org.noear.solon.proxy.apt.holder;
 
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.Element;
