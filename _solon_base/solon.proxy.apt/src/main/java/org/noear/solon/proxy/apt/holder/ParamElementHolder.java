@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Set;
 
 /**
+ * （增加泛型支持）
+ *
  * @author noear
  * @since 2.2
  */

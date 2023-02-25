@@ -7,14 +7,16 @@ import java.util.List;
 import java.util.Set;
 
 /**
+ * （增加泛型支持）
+ *
  * @author noear
  * @since 2.2
  */
-public class TypeParameterElementHolder implements TypeParameterElement {
+public class TypeParamElementHolder implements TypeParameterElement {
     TypeParameterElement real;
     TypeMirror type;
 
-    public TypeParameterElementHolder(TypeParameterElement real, TypeMirror type) {
+    public TypeParamElementHolder(TypeParameterElement real, TypeMirror type) {
         this.real = real;
         this.type = type;
     }

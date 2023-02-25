@@ -88,6 +88,8 @@ public abstract class AbstractAptProxyProcessor extends AbstractProcessor {
     }
 
     /**
+     * 生成代码
+     *
      * @param elements
      */
     private void generateCode(Set<? extends Element> elements) throws IOException {
@@ -97,27 +99,32 @@ public abstract class AbstractAptProxyProcessor extends AbstractProcessor {
 
         for (Element element : elements) {
             if (element instanceof TypeElement) {
-                //由于是在类上注解，那么获取TypeElement
                 TypeElement typeElement = (TypeElement) element;
 
-                if (typeElement.getModifiers().contains(Modifier.ABSTRACT)) {
-                    throw new IllegalStateException("Abstract classes are not supported as proxy components");
-                }
-
-                if (typeElement.getModifiers().contains(Modifier.FINAL)) {
-                    throw new IllegalStateException("Final classes are not supported as proxy components");
-                }
-
-                if (typeElement.getModifiers().contains(Modifier.PUBLIC) == false) {
-                    throw new IllegalStateException("Not public classes are not supported as proxy components");
-                }
-
+                assertElement(typeElement);
 
                 //构建 java 文件
                 JavaFile javaFile = classFileBuilder.build(processingEnv,typeElement);
                 //写入源文件
                 javaFile.writeTo(processingEnv.getFiler());
             }
+        }
+    }
+
+    /**
+     * 断言（对不支持的情况异常提示）
+     * */
+    private void assertElement(TypeElement typeElement) throws IllegalStateException{
+        if (typeElement.getModifiers().contains(Modifier.ABSTRACT)) {
+            throw new IllegalStateException("Abstract classes are not supported as proxy components");
+        }
+
+        if (typeElement.getModifiers().contains(Modifier.FINAL)) {
+            throw new IllegalStateException("Final classes are not supported as proxy components");
+        }
+
+        if (typeElement.getModifiers().contains(Modifier.PUBLIC) == false) {
+            throw new IllegalStateException("Not public classes are not supported as proxy components");
         }
     }
 }

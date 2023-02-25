@@ -11,6 +11,8 @@ import java.util.Map;
 import java.util.Set;
 
 /**
+ * （增加泛型支持）
+ *
  * @author noear
  * @since 2.2
  */
@@ -30,7 +32,7 @@ public class MethodElementHolder implements ExecutableElement {
                 if(t1Type == null){
                     typeParameters.add(t1);
                 }else{
-                    typeParameters.add(new TypeParameterElementHolder(t1, t1Type));
+                    typeParameters.add(new TypeParamElementHolder(t1, t1Type));
                 }
             } else {
                 typeParameters.add(t1);
@@ -52,6 +54,7 @@ public class MethodElementHolder implements ExecutableElement {
                 if (p2 instanceof DeclaredType) {
                     DeclaredType p3 = (DeclaredType) (p2);
                     TypeMirror p4= new DeclaredTypeHolder(p3, gtArgMap);
+
                     parameters.add(new ParamElementHolder(p1, p4));
                 } else {
                     //List<T>

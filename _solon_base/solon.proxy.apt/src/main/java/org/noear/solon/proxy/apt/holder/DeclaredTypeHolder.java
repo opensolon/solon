@@ -9,7 +9,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @author noear 2023/2/24 created
+ * （增加泛型支持）
+ *
+ * @author noear
+ * @since 2.2
  */
 public class DeclaredTypeHolder implements DeclaredType {
     DeclaredType real;
