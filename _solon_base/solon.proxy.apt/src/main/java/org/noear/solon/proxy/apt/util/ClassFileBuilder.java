@@ -22,23 +22,21 @@ import java.util.Map;
  */
 public class ClassFileBuilder {
     public JavaFile build(ProcessingEnvironment env, TypeElement typeElement) {
-        //获取全限定类名
-        String className = typeElement.getQualifiedName().toString();
-
+        //::1.准备
         //获取包路径
         PackageElement packageElement = env.getElementUtils().getPackageOf(typeElement);
         String packageName = packageElement.getQualifiedName().toString();
 
-        //获取用于生成的类名
-        className = getClassName(typeElement, packageName);
+        //获取类名（支持成员类）
+        String className = getClassName(typeElement, packageName);
 
-
-        ClassName supperClassName = ClassName.get(packageName, typeElement.getSimpleName().toString());
+        ClassName supperClassName = ClassName.get(packageName, className);
         String proxyClassName = className + AptProxy.PROXY_CLASSNAME_SUFFIX;
 
         //获取所有函数
         Map<String, ExecutableElement> methodAll = MethodUtil.findMethodAll(typeElement);
 
+        //::2.开始
         //生成的类
         TypeSpec.Builder proxyTypeBuilder = TypeSpec
                 .classBuilder(proxyClassName)
@@ -53,9 +51,9 @@ public class ClassFileBuilder {
         //添加静态代码块
         addStaticBlock(proxyTypeBuilder, packageName, className, methodAll);
 
-        TypeSpec proxyType = proxyTypeBuilder.build();
 
         //创建javaFile文件对象
+        TypeSpec proxyType = proxyTypeBuilder.build();
         return JavaFile.builder(packageName, proxyType).build();
     }
 
@@ -66,7 +64,6 @@ public class ClassFileBuilder {
         //添加字段
         proxyTypeBuilder.addField(InvocationHandler.class, "handler", Modifier.PRIVATE);
 
-
         //添加构造函数
         MethodSpec.Builder methodBuilder = MethodSpec
                 .constructorBuilder()
@@ -74,7 +71,6 @@ public class ClassFileBuilder {
 
 
         methodBuilder.addParameter(InvocationHandler.class, "handler");
-
         methodBuilder.addStatement("this.handler = handler");
 
         proxyTypeBuilder.addMethod(methodBuilder.build());
@@ -87,7 +83,7 @@ public class ClassFileBuilder {
     private void addStaticBlock(TypeSpec.Builder proxyTypeBuilder, String packageName, String className, Map<String, ExecutableElement> methodAll) {
         int methodIndex = 0;
 
-        StringBuilder codeBuilder = new StringBuilder();
+        StringBuilder codeBuilder = new StringBuilder(150);
 
         codeBuilder.append("try {\n");
         codeBuilder.append("  Class<?> clazz = $T.class;\n\n");
@@ -181,7 +177,7 @@ public class ClassFileBuilder {
         TypeMirror returnType = methodElement.getReturnType();
         TypeName returnTypeName = TypeNameUtil.getTypeName(returnType);
 
-        StringBuilder methodCodeBuilder = new StringBuilder();
+        StringBuilder codeBuilder = new StringBuilder(150);
 
         boolean isPublic = methodElement.getModifiers().contains(Modifier.PUBLIC);
 
@@ -209,7 +205,7 @@ public class ClassFileBuilder {
         }
 
         //构建代码块和参数
-        methodCodeBuilder.append("handler.invoke(this, ")
+        codeBuilder.append("handler.invoke(this, ")
                 .append(methodFieldName).append(", ")
                 .append("new Object[]{");
 
@@ -221,33 +217,33 @@ public class ClassFileBuilder {
             String paramName = pe.getSimpleName().toString();
 
             methodBuilder.addParameter(paramType, paramName);
-            methodCodeBuilder.append(paramName).append(",");
+            codeBuilder.append(paramName).append(",");
         }
 
-        if (methodCodeBuilder.charAt(methodCodeBuilder.length() - 1) == ',') {
-            methodCodeBuilder.setLength(methodCodeBuilder.length() - 1);
+        if (codeBuilder.charAt(codeBuilder.length() - 1) == ',') {
+            codeBuilder.setLength(codeBuilder.length() - 1);
         }
-        methodCodeBuilder.append("});");
+        codeBuilder.append("});");
 
         //添加函数代码
         if (methodElement.getReturnType().getKind() == TypeKind.VOID) {
-            methodCodeBuilder.insert(0, "try { \n  ");
-            methodCodeBuilder.append("\n} catch (RuntimeException _ex) {\n" +
+            codeBuilder.insert(0, "try { \n  ");
+            codeBuilder.append("\n} catch (RuntimeException _ex) {\n" +
                     "  throw _ex;\n" +
                     "} catch (Throwable _ex) {\n" +
                     "  throw new RuntimeException(_ex);\n" +
                     "}\n");
 
-            methodBuilder.addCode(methodCodeBuilder.toString());
+            methodBuilder.addCode(codeBuilder.toString());
         } else {
-            methodCodeBuilder.insert(0, "try { \n  return (" + returnType + ")");
-            methodCodeBuilder.append("\n} catch (RuntimeException _ex) {\n" +
+            codeBuilder.insert(0, "try { \n  return (" + returnType + ")");
+            codeBuilder.append("\n} catch (RuntimeException _ex) {\n" +
                     "  throw _ex;\n" +
                     "} catch (Throwable _ex) {\n" +
                     "  throw new RuntimeException(_ex);\n" +
                     "}\n");
 
-            methodBuilder.addCode(methodCodeBuilder.toString());
+            methodBuilder.addCode(codeBuilder.toString());
         }
 
         proxyTypeBuilder.addMethod(methodBuilder.build());

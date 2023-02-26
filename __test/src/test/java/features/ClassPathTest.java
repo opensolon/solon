@@ -31,55 +31,63 @@ public class ClassPathTest {
 
     @Test
     public void resolveClasses(){
+        //
+        //如果是apt代理，会找到更多的类
+        //
+
         Collection<Class<?>> classes = ResourceUtil.scanClasses("webapp.**.cache.*.class");
         System.out.println(classes.size());
-        assert classes.size() == 2;
+        assert classes.size() >= 2;
 
         classes = ResourceUtil.scanClasses("webapp.**.cache.*");
         System.out.println(classes.size());
-        assert classes.size() == 2;
+        assert classes.size() >= 2;
 
 
         classes = ResourceUtil.scanClasses("webapp.dso.cache.*");
         System.out.println(classes.size());
-        assert classes.size() == 2;
+        assert classes.size() >= 2;
 
         classes = ResourceUtil.scanClasses("webapp.dso.cache.*.class");
         System.out.println(classes.size());
-        assert classes.size() == 2;
+        assert classes.size() >= 2;
 
         classes = ResourceUtil.scanClasses("webapp.dso.*.class");
         System.out.println(classes.size());
-        assert classes.size() == 16;
+        assert classes.size() >= 16;
 
         classes = ResourceUtil.scanClasses("webapp.dso.*");
         System.out.println(classes.size());
-        assert classes.size() == 16;
+        assert classes.size() >= 16;
 
         classes = ResourceUtil.scanClasses("webapp.dso.*.*.class");
         System.out.println(classes.size());
-        assert classes.size() == 8;
+        assert classes.size() >= 8;
     }
 
     @Test
     public void resolveClasses2(){
+        //
+        //如果是apt代理，会找到更多的类
+        //
+
         Collection<Class<?>> classes;
 
         classes = ResourceUtil.scanClasses("webapp.**.cache.*");
         System.out.println(classes.size());
-        assert classes.size() == 2;
+        assert classes.size() >= 2;
 
 
         classes = ResourceUtil.scanClasses("webapp.dso.cache.*");
         System.out.println(classes.size());
-        assert classes.size() == 2;
+        assert classes.size() >= 2;
 
         classes = ResourceUtil.scanClasses("webapp.dso.*");
         System.out.println(classes.size());
-        assert classes.size() == 16;
+        assert classes.size() >= 16;
 
         classes = ResourceUtil.scanClasses("webapp.dso.*.*");
         System.out.println(classes.size());
-        assert classes.size() == 8;
+        assert classes.size() >= 8;
     }
 }

@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Apt 代理处理器
+ * Apt 代理注解处理器基类
  *
  * @author noear
  * @since 2.2
@@ -28,7 +28,7 @@ public abstract class AbstractAptProxyProcessor extends AbstractProcessor {
     /**
      * 支持的注解类型
      */
-    private final Map<String, Class<? extends Annotation>> mAnnoMap = new LinkedHashMap<>();
+    private final Map<String, Class<? extends Annotation>> supportedAnnoMap = new LinkedHashMap<>();
 
     public AbstractAptProxyProcessor() {
         super();
@@ -39,7 +39,7 @@ public abstract class AbstractAptProxyProcessor extends AbstractProcessor {
      * 添加支持的注解
      */
     protected void addSupportedAnnotation(Class<? extends Annotation> annoClz) {
-        mAnnoMap.put(annoClz.getCanonicalName(), annoClz);
+        supportedAnnoMap.put(annoClz.getCanonicalName(), annoClz);
     }
 
     /**
@@ -52,7 +52,7 @@ public abstract class AbstractAptProxyProcessor extends AbstractProcessor {
      */
     @Override
     public Set<String> getSupportedAnnotationTypes() {
-        return mAnnoMap.keySet();
+        return supportedAnnoMap.keySet();
     }
 
     /**
@@ -72,7 +72,7 @@ public abstract class AbstractAptProxyProcessor extends AbstractProcessor {
             try {
                 for (TypeElement e : annotations) {
                     String annoKey = e.asType().toString();
-                    Class<? extends Annotation> annoType = mAnnoMap.get(annoKey);
+                    Class<? extends Annotation> annoType = supportedAnnoMap.get(annoKey);
 
                     if (annoType != null) {
                         generateCode(roundEnv.getElementsAnnotatedWith(annoType));
@@ -115,16 +115,24 @@ public abstract class AbstractAptProxyProcessor extends AbstractProcessor {
      * 断言（对不支持的情况异常提示）
      * */
     private void assertElement(TypeElement typeElement) throws IllegalStateException{
+        //虚拟类不支持
         if (typeElement.getModifiers().contains(Modifier.ABSTRACT)) {
             throw new IllegalStateException("Abstract classes are not supported as proxy components");
         }
 
+        //只读类不支持
         if (typeElement.getModifiers().contains(Modifier.FINAL)) {
             throw new IllegalStateException("Final classes are not supported as proxy components");
         }
 
+        //非公有类不支持
         if (typeElement.getModifiers().contains(Modifier.PUBLIC) == false) {
             throw new IllegalStateException("Not public classes are not supported as proxy components");
+        }
+
+        //泛型类不支持
+        if(typeElement.getTypeParameters().size() > 0){
+            throw new IllegalStateException("Generic type classes are not supported as proxy components");
         }
     }
 }
