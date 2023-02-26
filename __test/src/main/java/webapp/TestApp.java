@@ -8,6 +8,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Import;
 import org.noear.solon.annotation.Inject;
+import org.noear.solon.annotation.SolonMain;
 import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.ExtendLoader;
@@ -38,6 +39,7 @@ import java.util.Properties;
 @Import(value = TestImport.class, scanPackages = "webapp")
 //@EnableCron4j
 //@EnableQuartz
+@SolonMain
 public class TestApp {
 
     static Logger logger = LoggerFactory.getLogger(TestApp.class);
