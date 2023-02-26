@@ -104,7 +104,7 @@ public abstract class AbstractAptProxyProcessor extends AbstractProcessor {
                 assertElement(typeElement);
 
                 //构建 java 文件
-                JavaFile javaFile = classFileBuilder.build(processingEnv,typeElement);
+                JavaFile javaFile = classFileBuilder.build(processingEnv, typeElement);
                 //写入源文件
                 javaFile.writeTo(processingEnv.getFiler());
             }

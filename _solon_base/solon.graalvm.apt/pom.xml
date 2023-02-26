@@ -21,9 +21,8 @@
         </dependency>
 
         <dependency>
-            <groupId>com.squareup</groupId>
-            <artifactId>javapoet</artifactId>
-            <version>1.13.0</version>
+            <groupId>org.noear</groupId>
+            <artifactId>snack3</artifactId>
         </dependency>
 
         <dependency>
