@@ -14,7 +14,6 @@ import java.lang.annotation.*;
  * @since 1.1
  * @deprecated 2.1
  */
-@Deprecated
 @Component
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
