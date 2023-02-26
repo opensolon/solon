@@ -63,6 +63,8 @@ public class AptNativeProcessor extends AbstractProcessor {
 
         //添加 resource-config.json
         addResourceConfig(packageName);
+        //添加 reflect-config.json
+        addReflectConfig(packageName);
     }
 
     /**
@@ -78,15 +80,44 @@ public class AptNativeProcessor extends AbstractProcessor {
 
         ONode oNode = new ONode();
         ONode includesNode = oNode.getOrNew("resources").getOrNew("includes").asArray();
-        includesNode.addNew().set("pattern","app.*\\.yml");
-        includesNode.addNew().set("pattern","app.*\\.properties");
-        includesNode.addNew().set("pattern","META-INF");
-        includesNode.addNew().set("pattern","META-INF/solon");
-        includesNode.addNew().set("pattern","META-INF/solon/.*");
-        includesNode.addNew().set("pattern","META-INF/solon_def/.*");
+        includesNode.addNew().set("pattern", "app.*\\.yml");
+        includesNode.addNew().set("pattern", "app.*\\.properties");
+        includesNode.addNew().set("pattern", "META-INF");
+        includesNode.addNew().set("pattern", "META-INF/solon");
+        includesNode.addNew().set("pattern", "META-INF/solon/.*");
+        includesNode.addNew().set("pattern", "META-INF/solon_def/.*");
 
-        try(Writer writer = fileObject.openWriter()){
+        try (Writer writer = fileObject.openWriter()) {
             writer.write(oNode.toJson());
         }
+    }
+
+    /**
+     * 添加 reflect-config.json
+     */
+    private void addReflectConfig(String packageName) throws IOException {
+        String dir = "META-INF/native-image/" + packageName.replace(".", "/");
+        String fileName = String.join("/", dir, "reflect-config.json");
+
+        FileObject fileObject = processingEnv.getFiler().createResource(StandardLocation.CLASS_OUTPUT,
+                "",
+                fileName);
+
+        ONode oNode = new ONode().asArray();
+
+        oNode.addNew().build(n -> buildReflectNode(n,"org.noear.solon.extend.impl.PropsLoaderExt"));
+        oNode.addNew().build(n -> buildReflectNode(n,"org.noear.solon.extend.impl.PropsConverterExt"));
+
+        try (Writer writer = fileObject.openWriter()) {
+            writer.write(oNode.toJson());
+        }
+    }
+
+    private void buildReflectNode(ONode n, String name) {
+        n.set("name", name)
+                .getOrNew("methods").addNew()
+                .set("name", "<init>")
+                .getOrNew("parameterTypes").asArray();
+
     }
 }
