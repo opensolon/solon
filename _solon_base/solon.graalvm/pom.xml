@@ -11,14 +11,21 @@
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>solon.extend.graalvm</artifactId>
+    <artifactId>solon.graalvm</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>
+
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.graalvm</artifactId>
+            <artifactId>solon</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>snack3</artifactId>
+        </dependency>
+
     </dependencies>
 
 </project>

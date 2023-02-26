@@ -1,7 +1,7 @@
 package org.noear.solon.extend.impl;
 
 import org.noear.solon.core.ResourceScanner;
-import org.noear.solon.extend.graalvm.GraalvmUtil;
+import org.noear.solon.graalvm.GraalvmUtil;
 
 import java.io.IOException;
 import java.net.URL;

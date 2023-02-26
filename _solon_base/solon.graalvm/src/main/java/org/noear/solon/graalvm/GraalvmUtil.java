@@ -1,4 +1,4 @@
-package org.noear.solon.extend.graalvm;
+package org.noear.solon.graalvm;
 
 import org.noear.snack.ONode;
 import org.noear.solon.Solon;
