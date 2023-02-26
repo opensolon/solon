@@ -89,24 +89,38 @@ tasks.withType<org.noear.solon.gradle.tasks.bundling.SolonWar> {
   
   1.  修复未 `build`情况下直接 运行  `gradle solonJar` 报错问题
   
-  2. 自动扫描 `main` 方法，但是如果有多个的时候仍然需要手动配置，可自行新增注解类`org.noear.solon.autoconfigure.SolonApplication`，将注解添加到启动类上
+  2. 自动扫描 `main` 方法，但是如果有多个的时候仍然需要手动配置，~~可自行新增注解类`org.noear.solon.annotation.SolonMain`~~(solon 2.2开始自带此类)，将注解添加到启动类上
   
     ```java
-    package org.noear.solon.autoconfigure;
+    package org.noear.solon.annotation;
     
-    import java.lang.annotation.ElementType;
-    import java.lang.annotation.Retention;
-    import java.lang.annotation.RetentionPolicy;
-    import java.lang.annotation.Target;
+    import java.lang.annotation.*;
     
-    @Target(ElementType.TYPE)
+    /**
+     * Solon 主类（入口类）
+     *
+     * <pre><code>
+     * @SolonMain
+     * public class App{
+     *     public static void main(String[] args){
+     *         Solon.start(App.class, args);
+     *     }
+     * }
+     * </code></pre>
+     *
+     * @author noear
+     * @since 2.2
+     * */
+    @Target({ElementType.TYPE})
     @Retention(RetentionPolicy.RUNTIME)
-    public @interface SolonApplication {
+    @Documented
+    public @interface SolonMain {
+    
     }
     
     // 启动类上添加
     
-    @SolonApplication
+    @SolonMain
     public class App {
         public static void main(String[] args) {
             Solon.start(App.class, args);
