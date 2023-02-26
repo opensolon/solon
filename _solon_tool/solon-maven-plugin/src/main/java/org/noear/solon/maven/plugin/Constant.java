@@ -18,6 +18,8 @@ public class Constant {
 
     public static final String START_CLASS = "Start-Class";
 
+    public static final String START_CLASS_ANNOTATION = "org.noear.solon.annotation.SolonMain";
+
     public static final String HEAD_PACKAGE = "org.noear.solon.loader";
 
     public static final String HEAD_PACKAGE_PATH = "org/noear/solon/loader/";

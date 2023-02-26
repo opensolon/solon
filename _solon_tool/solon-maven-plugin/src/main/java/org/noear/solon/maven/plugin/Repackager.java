@@ -76,6 +76,11 @@ public class Repackager {
                                     if (method.getReturnType().getName().equals("void")) {
                                         logger.info("检查到的启动类：" + ctClass.getName());
                                         mains.add(ctClass.getName());
+
+                                        //有注解的为主类
+                                        if(ctClass.hasAnnotation(Constant.START_CLASS_ANNOTATION)){
+                                            return ctClass.getName();
+                                        }
                                     }
                                 }
                             }
