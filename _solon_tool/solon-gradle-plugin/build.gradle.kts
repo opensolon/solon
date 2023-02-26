@@ -22,7 +22,6 @@ repositories {
 }
 
 dependencies {
-    implementation(kotlin("gradle-plugin"))
     implementation(gradleApi())
     implementation("org.ow2.asm:asm:9.4")
 

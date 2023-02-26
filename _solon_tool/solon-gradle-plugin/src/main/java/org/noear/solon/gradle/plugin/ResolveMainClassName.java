@@ -41,7 +41,7 @@ import java.util.Objects;
 @DisableCachingByDefault(because = "Not worth caching")
 public class ResolveMainClassName extends DefaultTask {
 
-    private static final String SOLON_APPLICATION_CLASS_NAME = "org.noear.solon.autoconfigure.SolonApplication";
+    private static final String SOLON_APPLICATION_CLASS_NAME = "org.noear.solon.annotation.SolonMain";
 
 
     private final RegularFileProperty outputFile;
