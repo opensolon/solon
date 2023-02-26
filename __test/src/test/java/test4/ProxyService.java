@@ -1,6 +1,6 @@
 package test4;
 
-import org.noear.solon.proxy.annotation.ProxyComponent;
+import org.noear.solon.annotation.ProxyComponent;
 
 /**
  * @Author kevin

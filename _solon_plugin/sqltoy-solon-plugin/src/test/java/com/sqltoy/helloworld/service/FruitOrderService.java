@@ -3,7 +3,7 @@ package com.sqltoy.helloworld.service;
 
 import org.noear.solon.data.annotation.Tran;
 import org.noear.solon.extend.sqltoy.annotation.Db;
-import org.noear.solon.proxy.annotation.ProxyComponent;
+import org.noear.solon.annotation.ProxyComponent;
 import org.sagacity.sqltoy.dao.SqlToyLazyDao;
 import com.sqltoy.helloworld.vo.FruitOrderVO;
 

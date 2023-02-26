@@ -1,6 +1,6 @@
 package test2;
 
-import org.noear.solon.proxy.annotation.ProxyComponent;
+import org.noear.solon.annotation.ProxyComponent;
 
 /**
  * @author noear 2022/9/30 created

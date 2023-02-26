@@ -1,7 +1,5 @@
 package demo;
 
-import org.noear.solon.proxy.annotation.ProxyComponent;
-
 /**
  * @author noear 2023/2/23 created
  */

@@ -7,7 +7,7 @@ import org.noear.solon.annotation.Inject;
 import org.noear.solon.data.dynamicds.DynamicDataSource;
 import org.noear.solon.data.dynamicds.DynamicDsUtils;
 import org.noear.solon.data.dynamicds.DynamicDs;
-import org.noear.solon.proxy.annotation.ProxyComponent;
+import org.noear.solon.annotation.ProxyComponent;
 
 import javax.sql.DataSource;
 

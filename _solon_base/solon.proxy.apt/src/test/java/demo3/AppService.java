@@ -3,7 +3,6 @@ package demo3;
 import org.apache.ibatis.solon.annotation.Db;
 import org.noear.solon.data.annotation.Tran;
 import org.noear.solon.data.tran.TranPolicy;
-import org.noear.solon.proxy.annotation.ProxyComponent;
 
 //@ProxyComponent
 public class AppService {

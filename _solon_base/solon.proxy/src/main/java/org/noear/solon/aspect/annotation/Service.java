@@ -3,16 +3,17 @@ package org.noear.solon.aspect.annotation;
 import org.noear.solon.annotation.Alias;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Note;
+import org.noear.solon.annotation.ProxyComponent;
 
 import java.lang.annotation.*;
 
 /**
  * 服务类注解（支持代理机制，即支持拦截机制））；改用 @ProxyComponent
  *
- * @see org.noear.solon.proxy.annotation.ProxyComponent
+ * @see ProxyComponent
  * @author noear
  * @since 1.1
- * @deprecated 2.1
+ * @deprecated 2.2
  */
 @Component
 @Target({ElementType.TYPE})

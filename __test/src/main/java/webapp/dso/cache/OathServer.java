@@ -2,7 +2,7 @@ package webapp.dso.cache;
 
 import org.noear.solon.data.annotation.Cache;
 import org.noear.solon.data.annotation.CacheRemove;
-import org.noear.solon.proxy.annotation.ProxyComponent;
+import org.noear.solon.annotation.ProxyComponent;
 
 import java.time.LocalDateTime;
 

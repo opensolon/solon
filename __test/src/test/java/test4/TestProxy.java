@@ -1,9 +1,8 @@
 package test4;
 
-import org.junit.Test;
 import org.noear.solon.annotation.Init;
 import org.noear.solon.annotation.Inject;
-import org.noear.solon.proxy.annotation.ProxyComponent;
+import org.noear.solon.annotation.ProxyComponent;
 
 /**
  * @Author kevin

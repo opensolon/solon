@@ -1,6 +1,6 @@
 package webapp.dso;
 
-import org.noear.solon.proxy.annotation.ProxyComponent;
+import org.noear.solon.annotation.ProxyComponent;
 import org.noear.solon.scheduling.annotation.Async;
 
 /**

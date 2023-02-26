@@ -4,7 +4,7 @@ import com.google.auto.service.AutoService;
 import org.noear.solon.aspect.annotation.Dao;
 import org.noear.solon.aspect.annotation.Repository;
 import org.noear.solon.aspect.annotation.Service;
-import org.noear.solon.proxy.annotation.ProxyComponent;
+import org.noear.solon.annotation.ProxyComponent;
 
 import javax.annotation.processing.*;
 import javax.lang.model.SourceVersion;

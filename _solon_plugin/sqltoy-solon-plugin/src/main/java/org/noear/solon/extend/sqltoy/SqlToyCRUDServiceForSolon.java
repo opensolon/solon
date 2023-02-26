@@ -2,7 +2,7 @@ package org.noear.solon.extend.sqltoy;
 
 import org.noear.solon.annotation.Singleton;
 import org.noear.solon.data.annotation.Tran;
-import org.noear.solon.proxy.annotation.ProxyComponent;
+import org.noear.solon.annotation.ProxyComponent;
 import org.sagacity.sqltoy.dao.SqlToyLazyDao;
 import org.sagacity.sqltoy.model.*;
 import org.sagacity.sqltoy.service.SqlToyCRUDService;

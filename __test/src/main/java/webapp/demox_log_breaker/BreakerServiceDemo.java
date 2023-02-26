@@ -1,7 +1,7 @@
 package webapp.demox_log_breaker;
 
 //import org.noear.solon.cloud.annotation.CloudBreaker;
-import org.noear.solon.proxy.annotation.ProxyComponent;
+import org.noear.solon.annotation.ProxyComponent;
 
 /**
  * @author noear 2021/3/14 created

@@ -1,4 +1,4 @@
-package org.noear.solon.proxy.annotation;
+package org.noear.solon.annotation;
 
 import org.noear.solon.annotation.Alias;
 import org.noear.solon.annotation.Component;

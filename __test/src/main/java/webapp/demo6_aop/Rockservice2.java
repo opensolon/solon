@@ -1,6 +1,6 @@
 package webapp.demo6_aop;
 
-import org.noear.solon.proxy.annotation.ProxyComponent;
+import org.noear.solon.annotation.ProxyComponent;
 
 @ProxyComponent("rs2")
 public class Rockservice2 implements Rockapi {

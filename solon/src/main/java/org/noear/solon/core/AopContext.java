@@ -149,6 +149,11 @@ public class AopContext extends BeanContainer {
             }
         });
 
+        //注册 @ProxyComponent 构建器
+        beanBuilderAdd(ProxyComponent.class, (clz, bw, anno) -> {
+            LogUtil.global().error("Missing plugin dependency: 'solon.proxy'");
+        });
+
         //注册 @Remoting 构建器
         beanBuilderAdd(Remoting.class, (clz, bw, anno) -> {
             //设置remoting状态
