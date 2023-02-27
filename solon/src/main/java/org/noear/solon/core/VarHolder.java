@@ -42,7 +42,17 @@ public interface VarHolder {
     String getFullName();
 
     /**
-     * 设值
+     * 设置值
      */
     void setValue(Object val);
+
+    /**
+     * 获取值
+     * */
+    Object getValue();
+
+    /**
+     * 是否为完成的
+     * */
+    boolean isDone();
 }

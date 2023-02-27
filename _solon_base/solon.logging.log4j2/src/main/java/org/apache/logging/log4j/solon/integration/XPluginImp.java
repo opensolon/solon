@@ -22,7 +22,7 @@ import java.net.URL;
  */
 public class XPluginImp implements Plugin , InitializingBean {
     @Override
-    public void afterPropertiesSet() throws Throwable {
+    public void afterFieldsInject() throws Throwable {
         URL url = ResourceUtil.getResource("log4j2.xml");
         if (url == null) {
             //尝试环境加载
@@ -50,7 +50,7 @@ public class XPluginImp implements Plugin , InitializingBean {
 
     @Override
     public void start(AopContext context) throws Throwable{
-        afterPropertiesSet();
+        afterFieldsInject();
     }
 
     private void initDo(URL url) {

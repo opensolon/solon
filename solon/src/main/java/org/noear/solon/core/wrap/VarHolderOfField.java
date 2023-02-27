@@ -20,10 +20,16 @@ public class VarHolderOfField implements VarHolder {
     protected final Object obj;
     protected final AopContext ctx;
 
-    public VarHolderOfField(AopContext ctx, FieldWrap fw, Object obj) {
+    protected Object val;
+    protected boolean done;
+    protected Runnable onDone;
+
+    public VarHolderOfField(AopContext ctx, FieldWrap fw, Object obj, Runnable onDone) {
         this.ctx = ctx;
         this.fw = fw;
         this.obj = obj;
+
+        this.onDone = onDone;
     }
 
     @Override
@@ -68,6 +74,25 @@ public class VarHolderOfField implements VarHolder {
      */
     @Override
     public void setValue(Object val) {
-        fw.setValue(obj, val, true);
+        if(val != null) {
+            fw.setValue(obj, val, true);
+        }
+
+        this.val = val;
+        this.done = true;
+
+        if (onDone != null) {
+            onDone.run();
+        }
+    }
+
+    @Override
+    public Object getValue() {
+        return null;
+    }
+
+
+    public boolean isDone() {
+        return done;
     }
 }

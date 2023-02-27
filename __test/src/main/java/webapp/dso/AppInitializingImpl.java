@@ -11,7 +11,7 @@ import org.noear.solon.core.bean.InitializingBean;
 @Component
 public class AppInitializingImpl implements InitializingBean {
     @Override
-    public void afterPropertiesSet() throws Throwable {
+    public void afterFieldsInject() throws Throwable {
         Solon.app().onEvent(Configuration.class, cfg -> {
             System.out.println("%%%%%%%%%%%%%%%%%%");
             cfg.setSetting("classic_compatible", "true");

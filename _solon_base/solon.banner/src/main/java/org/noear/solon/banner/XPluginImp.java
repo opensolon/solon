@@ -16,7 +16,7 @@ public class XPluginImp implements Plugin, InitializingBean {
 	String BANNER_DEF_FILE = "META-INF/solon_def/banner-def.txt";
 
 	@Override
-	public void afterPropertiesSet() throws Throwable {
+	public void afterFieldsInject() throws Throwable {
 		boolean enable = Solon.cfg().getBool("solon.banner.enable", true);
 
 		if (enable) {

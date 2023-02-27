@@ -1,5 +1,7 @@
 package org.noear.solon.core.util;
 
+import org.noear.solon.Utils;
+
 import java.util.concurrent.*;
 
 /**
@@ -10,6 +12,21 @@ public class RunUtil {
     private static final ExecutorService executor = Executors.newCachedThreadPool();
     private static final ScheduledExecutorService scheduledExecutor = Executors.newScheduledThreadPool(Runtime.getRuntime().availableProcessors());
 
+    /**
+     * 运行或异常
+     * */
+    public static void runOrThrow(RunnableEx task){
+        try {
+            task.run();
+        } catch (Throwable e) {
+            e = Utils.throwableUnwrap(e);
+            if (e instanceof RuntimeException) {
+                throw (RuntimeException) e;
+            } else {
+                throw new RuntimeException(e);
+            }
+        }
+    }
 
     /**
      * 并行执行

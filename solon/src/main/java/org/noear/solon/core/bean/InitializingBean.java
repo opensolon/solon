@@ -1,14 +1,14 @@
 package org.noear.solon.core.bean;
 
 /**
- * 可初始化Bean
+ * 可初始化的 Bean
  *
  * @author noear
  * @since 2.2
  */
 public interface InitializingBean {
     /**
-     * 属性注入后
+     * 字段注入后
      * */
-    default void afterPropertiesSet() throws Throwable{}
+    default void afterFieldsInject() throws Throwable{}
 }

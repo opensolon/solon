@@ -111,8 +111,8 @@ public class FieldWrap {
     /**
      * 获取自身的临时对象
      */
-    public VarHolder holder(AopContext ctx, Object obj) {
-        return new VarHolderOfField(ctx, this, obj);
+    public VarHolder holder(AopContext ctx, Object obj, Runnable onDone) {
+        return new VarHolderOfField(ctx, this, obj, onDone);
     }
 
     /**

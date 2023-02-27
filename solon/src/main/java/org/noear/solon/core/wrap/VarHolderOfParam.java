@@ -23,7 +23,7 @@ public class VarHolderOfParam implements VarHolder {
     protected boolean done;
     protected Runnable onDone;
 
-    public VarHolderOfParam(AopContext ctx,Parameter p, Runnable onDone) {
+    public VarHolderOfParam(AopContext ctx, Parameter p, Runnable onDone) {
         this.ctx = ctx;
         this.p = p;
         this.onDone = onDone;
@@ -73,12 +73,12 @@ public class VarHolderOfParam implements VarHolder {
         this.val = val;
         this.done = true;
 
-        if(onDone != null){
+        if (onDone != null) {
             onDone.run();
         }
     }
 
-    public Object getValue(){
+    public Object getValue() {
         return val;
     }
 

@@ -18,28 +18,25 @@ import java.util.function.Consumer;
  * */
 public class VarGather implements Runnable {
     //变量
-    List<VarHolderOfParam> vars;
+    List<VarHolder> vars;
     int varSize;
     //完成时
     Consumer<Object[]> done;
-    BeanWrap bw;
 
-    public VarGather(BeanWrap bw, int varSize, Consumer<Object[]> done) {
-        this.bw = bw;
+    public VarGather(int varSize, Consumer<Object[]> done) {
         this.done = done;
         this.varSize = varSize;
         this.vars = new ArrayList<>(varSize);
     }
 
-    public VarHolder add(Parameter p) {
-        VarHolderOfParam p2 = new VarHolderOfParam(bw.context(), p, this);
-        vars.add(p2);
-        return p2;
+    public void add(VarHolder p) {
+        //VarHolderOfParam p2 = new VarHolderOfParam(bw.context(), p, this);
+        vars.add(p);
     }
 
     @Override
     public void run() {
-        for (VarHolderOfParam p1 : vars) {
+        for (VarHolder p1 : vars) {
             if (p1.isDone() == false) {
                 return;
             }
@@ -50,7 +47,7 @@ public class VarGather implements Runnable {
         }
 
         List<Object> args = new ArrayList<>(vars.size());
-        for (VarHolderOfParam p1 : vars) {
+        for (VarHolder p1 : vars) {
             args.add(p1.getValue());
         }
 

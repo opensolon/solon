@@ -8,5 +8,5 @@ import org.noear.solon.core.Lifecycle;
  * @author noear
  * @since 2.2
  */
-public interface LifecycleBean extends Lifecycle, InitializingBean {
+public interface LifecycleBean extends Lifecycle {
 }

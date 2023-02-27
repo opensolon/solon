@@ -25,7 +25,7 @@ import org.noear.solon.cloud.model.Instance;
  */
 public class XPluginImp implements Plugin , InitializingBean {
     @Override
-    public void afterPropertiesSet() throws Throwable {
+    public void afterFieldsInject() throws Throwable {
         //设置日志添加器（为了早点打印日志）
         AppenderManager.register("cloud", new CloudLogAppender());
     }

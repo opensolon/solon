@@ -305,26 +305,38 @@ public class AopContext extends BeanContainer {
 
         ClassWrap clzWrap = ClassWrap.get(obj.getClass());
 
-        //支持所有类注入，可能影响启动速度 //目前只支持 @Configuration 类注入
-        //beanInjectProperties(clzWrap.clz(), obj);
-
-        //支持父类注入
-        for (Map.Entry<String, FieldWrap> kv : clzWrap.getFieldAllWraps().entrySet()) {
-            Annotation[] annS = kv.getValue().annoS;
-            if (annS.length > 0) {
-                VarHolder varH = kv.getValue().holder(this, obj);
-                tryInject(varH, annS);
-            }
-        }
-
-        //增加 afterPropertiesSet 支持
         if (obj instanceof InitializingBean) {
-            try {
-                ((InitializingBean) obj).afterPropertiesSet();
-            } catch (RuntimeException e) {
-                throw e;
-            } catch (Throwable e) {
-                throw new IllegalStateException(e);
+            List<FieldWrap> fwList = new ArrayList<>();
+
+            //支持父类注入
+            for (Map.Entry<String, FieldWrap> kv : clzWrap.getFieldAllWraps().entrySet()) {
+                Annotation[] annS = kv.getValue().annoS;
+                if (annS.length > 0) {
+                    fwList.add(kv.getValue());
+                }
+            }
+
+            //1.构建参数
+            VarGather gather = new VarGather(fwList.size(), (args2) -> {
+                //变量收集完成后，会回调此处
+                RunUtil.runOrThrow(() -> {
+                    //增加 afterPropertiesSet 支持
+                    ((InitializingBean) obj).afterFieldsInject();
+                });
+            });
+
+            for (FieldWrap fw : fwList) {
+                VarHolder varH = fw.holder(this, obj, gather);
+                tryInject(varH, fw.annoS);
+            }
+        } else {
+            //支持父类注入
+            for (Map.Entry<String, FieldWrap> kv : clzWrap.getFieldAllWraps().entrySet()) {
+                Annotation[] annoS = kv.getValue().annoS;
+                if (annoS.length > 0) {
+                    VarHolder varH = kv.getValue().holder(this, obj, null);
+                    tryInject(varH, annoS);
+                }
             }
         }
     }
@@ -434,6 +446,9 @@ public class AopContext extends BeanContainer {
             BeanInjector bi = beanInjectors.get(a.annotationType());
             if (bi != null) {
                 bi.doInject(varH, a);
+            }else{
+                //如果没有注入器，直接为null。用于触发事件
+                varH.setValue(null);
             }
         }
     }
@@ -549,31 +564,17 @@ public class AopContext extends BeanContainer {
         if (size2 == 0) {
             //0.没有参数
             tryBuildBeanDo(anno, mWrap, bw, new Object[]{});
-//            Object raw = mWrap.invoke(bw.raw(), new Object[]{});
-//            tryBuildBean0(mWrap, anno, raw);
         } else {
             //1.构建参数
-            VarGather gather = new VarGather(bw, size2, (args2) -> {
-                try {
-                    //
-                    //变量收集完成后，会回调此处
-                    //
-                    tryBuildBeanDo(anno, mWrap, bw, args2);
-//                    Object raw = mWrap.invoke(bw.raw(), args2);
-//                    tryBuildBean0(mWrap, anno, raw);
-                } catch (Throwable e) {
-                    e = Utils.throwableUnwrap(e);
-                    if (e instanceof RuntimeException) {
-                        throw (RuntimeException) e;
-                    } else {
-                        throw new RuntimeException(e);
-                    }
-                }
+            VarGather gather = new VarGather( size2, (args2) -> {
+                //变量收集完成后，会回调此处
+                RunUtil.runOrThrow(() -> tryBuildBeanDo(anno, mWrap, bw, args2));
             });
 
             //1.1.添加要收集的参数；并为参数注入（注入是异步的；全部完成后，VarGather 会回调）
             for (ParamWrap p1 : mWrap.getParamWraps()) {
-                VarHolder p2 = gather.add(p1.getParameter());
+                VarHolder p2 = new VarHolderOfParam(bw.context(), p1.getParameter(), gather);
+                gather.add(p2);
                 tryParameterInject(p2, p1.getParameter());
             }
         }
