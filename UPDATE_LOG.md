@@ -30,6 +30,7 @@
 * 增加 apt 代理实现方式（做为 asm 实现的补充），为全功能实现 Graalvm Native 打包提供支持
 * 增加 InitializingBean 接口
 * 增加 LifecycleBean 接口
+* 增加 @Order 注解，原 index() 标为弃用
 * 增加 ClassUtil 工具类
 * sqltoy 升级为 5.2.37
 
