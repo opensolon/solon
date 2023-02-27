@@ -13,8 +13,6 @@ import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.ExtendLoader;
 import org.noear.solon.core.handle.MethodType;
-import org.noear.solon.core.util.LogUtil;
-import org.noear.solon.logging.utils.LogUtilToSlf4j;
 import org.noear.solon.scheduling.annotation.EnableAsync;
 import org.noear.solon.web.cors.CrossHandler;
 import org.noear.solon.web.staticfiles.StaticMappings;
@@ -25,12 +23,10 @@ import org.noear.solon.serialization.JsonRenderFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import webapp.demo6_aop.TestImport;
-import webapp.dso.AppPluginImp;
 
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
-import java.util.List;
 import java.util.Locale;
 import java.util.Properties;
 

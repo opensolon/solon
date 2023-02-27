@@ -9,7 +9,7 @@ import org.noear.solon.core.bean.InitializingBean;
  * @author noear 2021/8/28 created
  */
 @Component
-public class AppPluginImp implements InitializingBean {
+public class AppInitializingImpl implements InitializingBean {
     @Override
     public void afterPropertiesSet() throws Throwable {
         Solon.app().onEvent(Configuration.class, cfg -> {
