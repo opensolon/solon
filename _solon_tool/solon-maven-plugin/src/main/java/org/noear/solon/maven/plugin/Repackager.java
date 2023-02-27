@@ -58,12 +58,15 @@ public class Repackager {
         File f = getFile();
         JarFile jar = new JarFile(f);
         try {
-            Enumeration<JarEntry> enumFiles = jar.entries();
             List<String> mains = new ArrayList<>();
+
+            Enumeration<JarEntry> enumFiles = jar.entries();
             ClassPool classPool= ClassPool.getDefault();
+
             while (enumFiles.hasMoreElements()) {
                 JarEntry entry = enumFiles.nextElement();
                 String classFullName = entry.getName();
+
                 if (classFullName.endsWith(".class")) {
                     try {
                         InputStream inputStream = jar.getInputStream(entry);
@@ -74,11 +77,11 @@ public class Repackager {
                             if (method.getName().equals("main") && method.getParameterTypes().length == 1) {
                                 if (method.getParameterTypes()[0].getName().equals("java.lang.String[]") && Modifier.isStatic(method.getModifiers())) {
                                     if (method.getReturnType().getName().equals("void")) {
-                                        logger.info("检查到的启动类：" + ctClass.getName());
                                         mains.add(ctClass.getName());
 
                                         //有注解的为主类
                                         if(ctClass.hasAnnotation(Constant.START_CLASS_ANNOTATION)){
+                                            logger.info("检查到的启动类：" + ctClass.getName());
                                             return ctClass.getName();
                                         }
                                     }
@@ -90,13 +93,20 @@ public class Repackager {
                 }
             }
 
+
             if (mains.size() > 0) {
                 if (mains.size() == 1) {
+                    logger.info("检查到的启动类：" + mains.get(0));
                     return mains.get(0);
                 }
+
+                //提供选择启动类：
+                logger.info("检查到的启动类：");
+
                 for (int i = 0; i < mains.size(); i++) {
                     logger.info(i + "、" + mains.get(i));
                 }
+
                 logger.info("请选择一个主函数作为启动函数(如：输入0回车)：");
                 String tempMain;
                 Scanner scanner = new Scanner(System.in);
