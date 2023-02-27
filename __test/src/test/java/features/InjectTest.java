@@ -3,6 +3,7 @@ package features;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.noear.solon.Solon;
+import org.noear.solon.Utils;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
@@ -29,6 +30,12 @@ public class InjectTest {
     @Inject("${formattest.text3}")
     String formattest3;
 
+    @Inject("${formattest.text10}")
+    String formattest10;
+
+    @Inject("${formattest.text11}")
+    String formattest11;
+
 
     @Inject
     Map<String, Object> map;
@@ -53,6 +60,11 @@ public class InjectTest {
         assert "".equals(formattest2);
 
         assert "12".equals(formattest3);
+
+        assert Utils.isNotEmpty(formattest10);
+        assert formattest10.contains("jdk") || formattest10.contains("Java");
+
+        assert "11".equals(formattest11);
     }
 
     @Inject
