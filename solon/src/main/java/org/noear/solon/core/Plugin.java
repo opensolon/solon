@@ -11,6 +11,7 @@ public interface Plugin {
     /**
      * 初始化（不允许做Aop相关的事情）
      * */
+    @Deprecated
     default void init(AopContext context) throws Throwable{}
 
     /**

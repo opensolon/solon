@@ -7,6 +7,12 @@ package org.noear.solon.core;
  * @since 1.5
  */
 public interface Lifecycle {
+    /**
+     * 开始
+     * */
     default void start(){}
+    /**
+     * 停止
+     * */
     default void stop(){}
 }
