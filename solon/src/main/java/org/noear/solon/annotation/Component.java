@@ -33,6 +33,6 @@ public @interface Component {
     @Note("同时注册类型，仅当名称非空时有效")
     boolean typed() default false;
 
-    @Note("顺序位，仅某些类型有效")
+    @Deprecated
     int index() default 0;
 }

@@ -38,11 +38,6 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Documented
 public @interface Init {
     /**
-     * 延时执行
-     * */
-    boolean delay() default true;
-
-    /**
      * 执行排序（0表示自动）
      * */
     int index() default 0;
