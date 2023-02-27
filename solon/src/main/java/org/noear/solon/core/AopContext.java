@@ -201,7 +201,7 @@ public class AopContext extends BeanContainer {
         if (Plugin.class.isAssignableFrom(clz)) {
             //如果是插件，则插入
             Solon.app().plug(bw.raw());
-            LogUtil.global().error("Not support 'Plugin' as a component, please use 'LifecycleBean'");
+            LogUtil.global().warn("'Plugin' will be deprecated as a component, please use 'LifecycleBean'");
             return;
         }
 
