@@ -3,6 +3,7 @@ package org.noear.solon.core;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.*;
+import org.noear.solon.core.bean.InitializingBean;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.event.EventListener;
 import org.noear.solon.core.handle.*;
@@ -294,6 +295,17 @@ public class AopContext extends BeanContainer {
             if (annS.length > 0) {
                 VarHolder varH = kv.getValue().holder(this, obj);
                 tryInject(varH, annS);
+            }
+        }
+
+        //增加 afterPropertiesSet 支持
+        if (obj instanceof InitializingBean) {
+            try {
+                ((InitializingBean) obj).afterPropertiesSet();
+            } catch (RuntimeException e) {
+                throw e;
+            } catch (Throwable e) {
+                throw new IllegalStateException(e);
             }
         }
     }
