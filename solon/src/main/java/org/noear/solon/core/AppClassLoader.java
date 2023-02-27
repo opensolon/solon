@@ -25,7 +25,7 @@ public class AppClassLoader extends URLClassLoader {
         AppClassLoader tmp = ClassUtil.newInstance("org.noear.solon.extend.impl.AppClassLoaderEx");
 
         if (tmp == null) {
-            global = new AppClassLoader();
+            global = new JarClassLoader();//为了保持兼容与：JarClassLoader.global()
         } else {
             global = tmp;
         }
