@@ -30,7 +30,7 @@ public class XPluginImp implements Plugin {
 
             context.subWrapsOfType(CacheService.class, new CacheServiceWrapConsumer());
 
-            context.beanOnloaded((ctx) -> {
+            context.onStarted((ctx) -> {
                 if (ctx.hasWrap(CacheService.class) == false) {
                     ctx.wrapAndPut(CacheService.class, LocalCacheService.instance);
                 }

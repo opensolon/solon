@@ -16,7 +16,7 @@ public class XPluginImpl implements Plugin {
         context.beanMake(BeanSearcherProperties.class);
 
         //容器加载完成后再执行，确保用户的 Bean 优先
-        context.beanOnloaded(x -> {
+        context.onStarted(x -> {
             x.beanMake(BeanSearcherAutoConfiguration.class);
         });
     }

@@ -3,7 +3,6 @@ package org.noear.solon.boot.jetty;
 import org.eclipse.jetty.server.handler.ContextHandler;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
-import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.jetty.http.FormContentFilter;
 import org.noear.solon.boot.prop.impl.HttpServerProps;
@@ -48,7 +47,7 @@ public final class XPluginImp implements Plugin {
         context.beanBuilderAdd(WebListener.class, (clz, bw, ano) -> {
         });
 
-        context.beanOnloaded((ctx) -> {
+        context.onStarted((ctx) -> {
             try {
                 start0(Solon.app());
             } catch (RuntimeException e) {

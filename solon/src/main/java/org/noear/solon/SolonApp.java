@@ -207,7 +207,7 @@ public class SolonApp extends RouterWrapper {
         });
 
         //3.1.标识上下文加载完成
-        context().beanLoaded();
+        context().start();
 
         //event::4.x.推送App load end事件
         EventBus.pushTry(new AppLoadEndEvent(this));

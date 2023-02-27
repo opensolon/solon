@@ -7,6 +7,7 @@ import org.noear.solon.annotation.Inject;
 import org.noear.solon.annotation.Note;
 import org.noear.solon.core.aspect.Interceptor;
 import org.noear.solon.core.aspect.InterceptorEntity;
+import org.noear.solon.core.bean.LifecycleBean;
 import org.noear.solon.core.exception.InjectionException;
 import org.noear.solon.core.handle.HandlerLoader;
 import org.noear.solon.core.util.ConvertUtil;
@@ -77,6 +78,7 @@ public abstract class BeanContainer {
     private final Map<Class<?>, BeanWrap> beanWrapsOfType = new HashMap<>();
     private final Map<String, BeanWrap> beanWrapsOfName = new HashMap<>();
     private final Set<BeanWrap> beanWrapSet = new HashSet<>();
+    protected final Set<LifecycleBean> lifecycleBeanSet = new HashSet<>();
 
     /**
      * clz mapping
@@ -116,6 +118,8 @@ public abstract class BeanContainer {
         beanWrapsOfType.clear();
         beanWrapsOfName.clear();
         beanWrapSet.clear();
+
+        lifecycleBeanSet.clear();
 
         clzMapping.clear();
         attrs.clear();
@@ -273,6 +277,9 @@ public abstract class BeanContainer {
             if (beanWrapsOfName.containsKey(name) == false) {
                 beanWrapsOfName.put(name, wrap);
                 beanWrapSet.add(wrap);
+                if(wrap.raw() instanceof LifecycleBean){
+                    lifecycleBeanSet.add(wrap.raw());
+                }
                 beanNotice(name, wrap);
             }
         }
@@ -291,6 +298,9 @@ public abstract class BeanContainer {
             if (beanWrapsOfType.containsKey(type) == false) {
                 beanWrapsOfType.put(type, wrap);
                 beanWrapSet.add(wrap);
+                if(wrap.raw() instanceof LifecycleBean){
+                    lifecycleBeanSet.add(wrap.raw());
+                }
                 beanNotice(type, wrap);
             }
         }

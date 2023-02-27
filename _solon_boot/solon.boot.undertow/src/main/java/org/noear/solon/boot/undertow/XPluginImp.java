@@ -2,7 +2,6 @@ package org.noear.solon.boot.undertow;
 
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
-import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.prop.impl.HttpServerProps;
 import org.noear.solon.core.*;
@@ -37,7 +36,7 @@ public final class XPluginImp implements Plugin {
         context.beanBuilderAdd(WebListener.class, (clz, bw, ano) -> {
         });
 
-        context.beanOnloaded((ctx) -> {
+        context.onStarted((ctx) -> {
             try {
                 start0(Solon.app());
             } catch (RuntimeException e) {

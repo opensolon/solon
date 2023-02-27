@@ -2,7 +2,6 @@ package org.noear.solon.view.enjoy;
 
 import com.jfinal.template.Directive;
 import org.noear.solon.Solon;
-import org.noear.solon.Utils;
 import org.noear.solon.auth.AuthUtil;
 import org.noear.solon.auth.tags.AuthConstants;
 import org.noear.solon.core.AopContext;
@@ -21,7 +20,7 @@ public class XPluginImp implements Plugin {
 
         EnjoyRender render = EnjoyRender.global();
 
-        context.beanOnloaded((ctx) -> {
+        context.onStarted((ctx) -> {
             ctx.beanForeach((k, v) -> {
                 if (k.startsWith("view:")) { //java view widget
                     if (Directive.class.isAssignableFrom(v.clz())) {

@@ -14,7 +14,7 @@ import org.noear.solon.core.event.AppLoadEndEvent;
 public class XPluginImp implements Plugin {
     @Override
     public void start(AopContext context) {
-        context.beanOnloaded((ctx) -> {
+        context.onStarted((ctx) -> {
             ctx.beanForeach((v) -> {
                 if (v.raw() instanceof IJob) {
                     JobManager.register(new JobEntity(v.name(), v.raw()));

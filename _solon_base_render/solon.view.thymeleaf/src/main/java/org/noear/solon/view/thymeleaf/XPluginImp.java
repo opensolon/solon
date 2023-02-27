@@ -1,7 +1,6 @@
 package org.noear.solon.view.thymeleaf;
 
 import org.noear.solon.Solon;
-import org.noear.solon.Utils;
 import org.noear.solon.auth.AuthUtil;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
@@ -21,7 +20,7 @@ public class XPluginImp implements Plugin {
 
         ThymeleafRender render = ThymeleafRender.global();
 
-        context.beanOnloaded((ctx) -> {
+        context.onStarted((ctx) -> {
             ctx.beanForeach((k, v) -> {
                 if (k.startsWith("view:")) { //java view widget
                     if (IDialect.class.isAssignableFrom(v.clz())) {

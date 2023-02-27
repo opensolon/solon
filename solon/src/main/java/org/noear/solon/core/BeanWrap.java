@@ -2,10 +2,7 @@ package org.noear.solon.core;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.Map;
 
-import org.noear.solon.Utils;
 import org.noear.solon.annotation.Init;
 import org.noear.solon.annotation.Singleton;
 import org.noear.solon.core.util.ClassUtil;
@@ -216,7 +213,7 @@ public class BeanWrap {
                     clzInitIndex = new IndexBuilder().buildIndex(clz);
                 }
 
-                context.beanOnloaded(clzInitIndex, (ctx) -> {
+                context.onStarted(clzInitIndex, (ctx) -> {
                     initInvokeDo(bean);
                 });
             } else {

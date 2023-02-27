@@ -4,6 +4,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.*;
 import org.noear.solon.core.bean.InitializingBean;
+import org.noear.solon.core.bean.LifecycleBean;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.event.EventListener;
 import org.noear.solon.core.handle.*;
@@ -30,7 +31,7 @@ import java.util.stream.Collectors;
  * @author noear
  * @since 1.0
  * */
-public class AopContext extends BeanContainer {
+public class AopContext extends BeanContainer implements Lifecycle {
 
     public AopContext() {
         this(null, null);
@@ -63,9 +64,9 @@ public class AopContext extends BeanContainer {
         super.clear();
 
         methodCached.clear();
-        tryCreateCached.clear();
-        loadDone = false;
-        loadEvents.clear();
+        beanCreatedCached.clear();
+        startedEvents.clear();
+        started = false;
     }
 
     @Override
@@ -425,8 +426,8 @@ public class AopContext extends BeanContainer {
     protected void tryCreateBeanOfMethod(BeanWrap bw, Method m, Bean ma) throws Exception {
         Condition mc = m.getAnnotation(Condition.class);
 
-        if (loadDone == false && ConditionUtil.ifMissing(mc)) {
-            beanOnloaded((x) -> {
+        if (started == false && ConditionUtil.ifMissing(mc)) {
+            onStarted((x) -> {
                 try {
                     tryCreateBeanOfMethod0(bw, m, ma, mc);
                 } catch (Exception e) {
@@ -460,8 +461,8 @@ public class AopContext extends BeanContainer {
     protected void tryCreateBeanOfClass(Class<?> clz) {
         Condition cc = clz.getAnnotation(Condition.class);
 
-        if (loadDone == false && ConditionUtil.ifMissing(cc)) {
-            beanOnloaded(x -> {
+        if (started == false && ConditionUtil.ifMissing(cc)) {
+            onStarted(x -> {
                 tryCreateBeanOfClass0(clz, cc);
             });
         } else {
@@ -485,17 +486,17 @@ public class AopContext extends BeanContainer {
     }
 
 
-    private final Set<Class<?>> tryCreateCached = new HashSet<>();
+    private final Set<Class<?>> beanCreatedCached = new HashSet<>();
 
     private void tryCreateBean0(Class<?> clz, BiConsumerEx<BeanBuilder, Annotation> consumer) {
         Annotation[] annS = clz.getDeclaredAnnotations();
 
         if (annS.length > 0) {
             //去重处理
-            if (tryCreateCached.contains(clz)) {
+            if (beanCreatedCached.contains(clz)) {
                 return;
             } else {
-                tryCreateCached.add(clz);
+                beanCreatedCached.add(clz);
             }
 
             for (Annotation a : annS) {
@@ -624,27 +625,42 @@ public class AopContext extends BeanContainer {
 
     /////////
 
-    //加载完成标志
-    private boolean loadDone;
     //加载事件
-    private final Set<RankEntity<Consumer<AopContext>>> loadEvents = new LinkedHashSet<>();
+    private final Set<RankEntity<Consumer<AopContext>>> startedEvents = new LinkedHashSet<>();
 
     //::bean事件处理
 
     /**
      * 添加bean加载完成事件
      */
-    @Note("添加bean加载完成事件")
+    @Deprecated
     public void beanOnloaded(Consumer<AopContext> fun) {
-        beanOnloaded(0, fun);
+        onStarted(fun);
     }
 
-    @Note("添加bean加载完成事件")
+    /**
+     * 添加bean加载完成事件
+     */
+    @Deprecated
     public void beanOnloaded(int index, Consumer<AopContext> fun) {
-        loadEvents.add(new RankEntity<>(fun, index));
+        onStarted(index, fun);
+    }
+
+    /**
+     * 添加bean加载完成事件
+     */
+    public void onStarted(Consumer<AopContext> fun) {
+        onStarted(0, fun);
+    }
+
+    /**
+     * 添加bean加载完成事件
+     */
+    public void onStarted(int index, Consumer<AopContext> fun) {
+        startedEvents.add(new RankEntity<>(fun, index));
 
         //如果已加载完成，则直接返回
-        if (loadDone) {
+        if (started) {
             fun.accept(this);
         }
     }
@@ -652,17 +668,56 @@ public class AopContext extends BeanContainer {
     /**
      * 完成加载时调用，会进行事件通知
      */
+    @Deprecated
     public void beanLoaded() {
-        loadDone = true;
+        start();
+    }
 
-        //执行加载事件（不用函数包装，是为了减少代码）
-        List<Consumer<AopContext>> tmp = loadEvents.stream()
+
+    //已启动标志
+    private boolean started;
+
+    /**
+     * 是否已启动
+     */
+    public boolean isStarted() {
+        return started;
+    }
+
+    /**
+     * 启动
+     */
+    @Override
+    public void start() {
+        started = true;
+
+        //排序（不用函数包装，是为了减少代码）
+        List<Consumer<AopContext>> tmp = startedEvents.stream()
                 .sorted(Comparator.comparingInt(m -> m.index))
                 .map(m -> m.target)
                 .collect(Collectors.toList());
 
+        //执行加载事件
         for (Consumer<AopContext> m : tmp) {
             m.accept(this);
+        }
+
+        //执行生命周期bean
+        for (LifecycleBean b : lifecycleBeanSet) {
+            b.start();
+        }
+    }
+
+    /**
+     * 停止
+     */
+    @Override
+    public void stop() {
+        started = false;
+
+        //执行生命周期bean
+        for (LifecycleBean b : lifecycleBeanSet) {
+            b.stop();
         }
     }
 }

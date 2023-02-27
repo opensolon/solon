@@ -43,7 +43,7 @@ public class XPluginImp implements Plugin {
             DetectorManager.add(detector);
         });
 
-        context.beanOnloaded((x) -> {
+        context.onStarted((x) -> {
             onLoaded(detectorNames);
         });
     }

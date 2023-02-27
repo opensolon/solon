@@ -12,7 +12,7 @@ import org.noear.solon.annotation.Configuration;
 public class PathTest {
     public static void main(String[] args){
         Solon.start(PathTest.class, args, app->{
-            app.context().beanOnloaded(c->{
+            app.context().onStarted(c->{
                 c.subBeansOfType(String.class, bean->{
                     System.out.println(bean);
                 });

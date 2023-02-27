@@ -235,6 +235,7 @@ public class Solon {
 
             //3.停止
             Solon.cfg().plugs().forEach(p -> p.stop());
+            Solon.context().stop();
             EventBus.pushTry(new AppStopEndEvent(Solon.app()));
             LogUtil.global().info("App: Security to stop: 3 completed " + hint);
         } else {
@@ -246,6 +247,7 @@ public class Solon {
             Solon.app().stopped = true;
             //3.停止
             Solon.cfg().plugs().forEach(p -> p.stop());
+            Solon.context().stop();
             EventBus.pushTry(new AppStopEndEvent(Solon.app()));
         }
 

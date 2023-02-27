@@ -2,7 +2,6 @@ package org.noear.solon.boot.tomcat;
 
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
-import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerLifecycle;
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.prop.impl.HttpServerProps;
@@ -41,7 +40,7 @@ public final class XPluginImp implements Plugin {
         context.beanBuilderAdd(WebListener.class, (clz, bw, ano) -> {
         });
 
-        context.beanOnloaded((ctx) -> {
+        context.onStarted((ctx) -> {
             try {
                 start0(Solon.app());
             } catch (RuntimeException e) {

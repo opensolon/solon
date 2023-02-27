@@ -41,7 +41,7 @@ public final class XPluginImp implements Plugin {
             return;
         }
 
-        context.beanOnloaded((ctx) -> {
+        context.onStarted((ctx) -> {
             try {
                 start0(Solon.app());
             } catch (RuntimeException e) {

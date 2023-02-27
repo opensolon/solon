@@ -24,7 +24,7 @@ public class XPluginImp implements Plugin {
             CloudEventServiceKafkaImp eventServiceImp = new CloudEventServiceKafkaImp(cloudProps);
             CloudManager.register(eventServiceImp);
 
-            context.beanOnloaded(ctx -> eventServiceImp.subscribe());
+            context.onStarted(ctx -> eventServiceImp.subscribe());
         }
     }
 }

@@ -32,7 +32,7 @@ public class XPluginImp implements Plugin {
         context.wrapAndPut(Fastjson2RenderTypedFactory.class, renderTypedFactory);
 
 
-        context.beanOnloaded(x -> {
+        context.onStarted(x -> {
             RenderManager.mapping("@json", renderFactory.create());
             RenderManager.mapping("@type_json", renderTypedFactory.create());
         });

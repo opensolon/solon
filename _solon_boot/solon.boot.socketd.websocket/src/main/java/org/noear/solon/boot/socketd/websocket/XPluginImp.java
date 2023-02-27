@@ -33,7 +33,7 @@ public class XPluginImp implements Plugin {
             return;
         }
 
-        context.beanOnloaded((ctx) -> {
+        context.onStarted((ctx) -> {
             start0(Solon.app());
         });
     }

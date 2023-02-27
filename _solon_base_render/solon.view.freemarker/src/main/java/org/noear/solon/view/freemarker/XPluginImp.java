@@ -2,7 +2,6 @@ package org.noear.solon.view.freemarker;
 
 import freemarker.template.TemplateDirectiveModel;
 import org.noear.solon.Solon;
-import org.noear.solon.Utils;
 import org.noear.solon.auth.AuthUtil;
 import org.noear.solon.auth.tags.AuthConstants;
 import org.noear.solon.core.AopContext;
@@ -21,7 +20,7 @@ public class XPluginImp implements Plugin {
 
         FreemarkerRender render = FreemarkerRender.global();
 
-        context.beanOnloaded((ctx) -> {
+        context.onStarted((ctx) -> {
             ctx.beanForeach((k, v) -> {
                 if (k.startsWith("view:") || k.startsWith("ftl:")) {
                     //java view widget

@@ -25,7 +25,6 @@ import javax.sql.DataSource;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Mybatis 适配器默认实现
@@ -76,7 +75,7 @@ public class MybatisAdapterDefault implements MybatisAdapter {
         }
 
         //加载插件（通过Bean）
-        dsWrap.context().beanOnloaded((ctx) -> {
+        dsWrap.context().onStarted((ctx) -> {
             ctx.beanForeach(bw -> {
                 if (bw.raw() instanceof Interceptor) {
                     config.addInterceptor(bw.raw());

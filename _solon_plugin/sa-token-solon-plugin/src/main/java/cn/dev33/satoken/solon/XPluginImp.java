@@ -38,7 +38,7 @@ public class XPluginImp implements Plugin {
 
 
         //注入其它 Bean
-        context.beanOnloaded(c -> {
+        context.onStarted(c -> {
             beanInitDo(c);
             context.beanMake(SaSsoAutoConfigure.class);
             context.beanMake(SaOAuth2AutoConfigure.class);

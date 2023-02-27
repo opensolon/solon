@@ -11,7 +11,7 @@ import java.util.Map;
 /**
  * 监听器（内部类，外部不要使用）
  *
- * @see org.noear.solon.core.AopContext#beanLoaded()
+ * @see org.noear.solon.core.AopContext#start()
  * @see org.noear.solon.SolonApp#onEvent(Class, EventListener)
  * */
 public final class EventBus {
