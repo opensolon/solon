@@ -1,8 +1,8 @@
 package org.noear.solon.core;
 
 import org.noear.solon.SolonProps;
-import org.noear.solon.Utils;
 import org.noear.solon.core.util.ClassUtil;
+import org.noear.solon.lang.Nullable;
 
 import java.util.Properties;
 
@@ -33,7 +33,7 @@ public class PluginEntity {
 
     /**
      * 插件属性（申明插件类与优先级）
-     * */
+     */
     private Properties props;
 
     public PluginEntity(ClassLoader classLoader, String className, Properties props) {
@@ -61,7 +61,7 @@ public class PluginEntity {
 
     /**
      * 设置优先级
-     * */
+     */
     public void setPriority(int priority) {
         this.priority = priority;
     }
@@ -69,9 +69,7 @@ public class PluginEntity {
     /**
      * 获取插件
      */
-    public Plugin getPlugin() {
-        initInstance();
-
+    public @Nullable Plugin getPlugin() {
         return plugin;
     }
 
@@ -83,22 +81,22 @@ public class PluginEntity {
      * 初始化
      */
     public void init(AopContext context) {
-        initInstance();
+        initInstance(context);
 
-        if (plugin != null) {
-            try {
-                plugin.init(context);
-            } catch (Throwable e) {
-                throw new IllegalStateException(e);
-            }
-        }
+//        if (plugin != null) {
+//            try {
+//                plugin.init(context);
+//            } catch (Throwable e) {
+//                throw new IllegalStateException(e);
+//            }
+//        }
     }
 
     /**
      * 启动
      */
     public void start(AopContext context) {
-        initInstance();
+        initInstance(context);
 
         if (plugin != null) {
             try {
@@ -115,8 +113,6 @@ public class PluginEntity {
      * 预停止
      */
     public void prestop() {
-        initInstance();
-
         if (plugin != null) {
             try {
                 plugin.prestop();
@@ -130,8 +126,6 @@ public class PluginEntity {
      * 停止
      */
     public void stop() {
-        initInstance();
-
         if (plugin != null) {
             try {
                 plugin.stop();
@@ -144,10 +138,14 @@ public class PluginEntity {
     /**
      * 初始化
      */
-    private void initInstance() {
+    private void initInstance(AopContext context) {
         if (plugin == null) {
             if (classLoader != null) {
-                plugin = ClassUtil.newInstance(classLoader, className);
+                Class<?> pluginClz = ClassUtil.loadClass(classLoader, className);
+                if (pluginClz != null) {
+                    //可以支持注入了
+                    plugin = context.wrapAndPut(pluginClz).get();
+                }
             }
         }
     }
