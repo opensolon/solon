@@ -82,7 +82,6 @@ public class TestApp {
 
             x.enableSocketD(true);
             x.enableWebSocket(true);
-            x.pluginAdd(1, new AppPluginImp());
 
             //x.onStatus(404, c->c.render("404了"));
 

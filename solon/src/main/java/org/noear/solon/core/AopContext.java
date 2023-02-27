@@ -192,6 +192,7 @@ public class AopContext extends BeanContainer implements Lifecycle {
         if (Plugin.class.isAssignableFrom(clz)) {
             //如果是插件，则插入
             Solon.app().plug(bw.raw());
+            LogUtil.global().error("Not support 'Plugin' as a component, please use 'LifecycleBean'");
             return;
         }
 

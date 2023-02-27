@@ -336,6 +336,7 @@ public class SolonApp extends RouterWrapper {
     /**
      * 插入插件
      */
+    @Deprecated
     public void plug(Plugin plugin) {
         PluginEntity p = new PluginEntity(plugin);
         p.init(context());
@@ -348,32 +349,13 @@ public class SolonApp extends RouterWrapper {
      *
      * @param priority 优先级（越大越优化）
      * @param plugin   插件
+     * @deprecated 2.2
      */
+    @Deprecated
     public void pluginAdd(int priority, Plugin plugin) {
         PluginEntity p = new PluginEntity(plugin, priority);
         cfg().plugs().add(p);
         cfg().plugsSort();
-    }
-
-    /**
-     * 拨出插件
-     *
-     * @param pluginClz 插件类
-     * */
-    public PluginEntity pluginPop(Class<?> pluginClz) {
-        PluginEntity tmp = null;
-        for (PluginEntity pe : cfg().plugs()) {
-            if (pluginClz.isInstance(pe.getPlugin())) {
-                tmp = pe;
-                break;
-            }
-        }
-
-        if (tmp != null) {
-            cfg().plugs().remove(tmp);
-        }
-
-        return tmp;
     }
 
     /**
