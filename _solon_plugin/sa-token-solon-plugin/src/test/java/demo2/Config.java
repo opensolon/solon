@@ -6,13 +6,15 @@ import cn.dev33.satoken.stp.StpUtil;
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Configuration;
+import org.noear.solon.annotation.Order;
 
 /**
  * @author noear 2022/7/11 created
  */
 @Configuration
 public class Config {
-    @Bean(index = -100)
+    @Order(-100)
+    @Bean
     public SaTokenInterceptor saTokenInterceptor() {
         return new SaTokenInterceptor()
                 // 指定 [拦截路由] 与 [放行路由]

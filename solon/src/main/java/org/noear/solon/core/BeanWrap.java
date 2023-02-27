@@ -76,10 +76,6 @@ public class BeanWrap {
         Singleton anoS = clz.getAnnotation(Singleton.class);
         singleton = (anoS == null || anoS.value()); //默认为单例
 
-        //排序
-        Order annO = clz.getAnnotation(Order.class);
-        order = (annO == null ? 0 : annO.value());
-
         annotations = clz.getAnnotations();
 
         tryBuildInit();
