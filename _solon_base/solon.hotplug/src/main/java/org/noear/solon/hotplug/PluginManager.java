@@ -120,7 +120,7 @@ public class PluginManager {
     public synchronized static PluginPackage loadJar(File file) {
         try {
             URL url = file.toURI().toURL();
-            JarClassLoader classLoader = new JarClassLoader(JarClassLoader.global());
+            PluginClassLoader classLoader = new PluginClassLoader(JarClassLoader.global());
             classLoader.addJar(url);
 
             List<PluginEntity> plugins = new ArrayList<>();
@@ -142,7 +142,7 @@ public class PluginManager {
             pluginPackage.prestop();
             pluginPackage.stop();
 
-            JarClassLoader classLoader = (JarClassLoader) pluginPackage.getClassLoader();
+            PluginClassLoader classLoader = pluginPackage.getClassLoader();
 
             classLoader.removeJar(pluginPackage.getFile());
             classLoader.close();

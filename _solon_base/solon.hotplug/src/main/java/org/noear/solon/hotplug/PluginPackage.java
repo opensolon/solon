@@ -25,7 +25,7 @@ public class PluginPackage {
     /**
      * 类加载器
      */
-    private final JarClassLoader classLoader;
+    private final PluginClassLoader classLoader;
     /**
      * 找到的插件
      */
@@ -39,7 +39,7 @@ public class PluginPackage {
      */
     private AopContext context;
 
-    public PluginPackage(File file, JarClassLoader classLoader, List<PluginEntity> plugins) {
+    public PluginPackage(File file, PluginClassLoader classLoader, List<PluginEntity> plugins) {
         this.file = file;
         this.plugins = plugins;
         this.classLoader = classLoader;
@@ -56,7 +56,7 @@ public class PluginPackage {
         return file;
     }
 
-    public ClassLoader getClassLoader() {
+    public PluginClassLoader getClassLoader() {
         return classLoader;
     }
 
