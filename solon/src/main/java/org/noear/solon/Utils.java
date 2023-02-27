@@ -1,7 +1,6 @@
 package org.noear.solon;
 
 import org.noear.solon.annotation.Note;
-import org.noear.solon.core.JarClassLoader;
 import org.noear.solon.core.PropsConverter;
 import org.noear.solon.core.PropsLoader;
 import org.noear.solon.core.util.*;

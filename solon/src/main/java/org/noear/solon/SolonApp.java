@@ -68,7 +68,7 @@ public class SolonApp extends RouterWrapper {
 
         //初始化配置
         _cfg = new SolonProps().load(source, args);
-        _context = new AopContext(new JarClassLoader(JarClassLoader.global()), _cfg);
+        _context = new AopContext(new AppClassLoader(AppClassLoader.global()), _cfg);
 
         //初始化路由
         initRouter(this::doFilter);

@@ -1,6 +1,6 @@
 package org.noear.solon.core.util;
 
-import org.noear.solon.core.JarClassLoader;
+import org.noear.solon.core.AppClassLoader;
 
 import java.util.Properties;
 
@@ -73,7 +73,7 @@ public class ClassUtil {
      * @param prop      属性
      */
     public static <T> T newInstance(String className, Properties prop) {
-        return newInstance(JarClassLoader.global(), className, prop);
+        return newInstance(AppClassLoader.global(), className, prop);
     }
 
     /**

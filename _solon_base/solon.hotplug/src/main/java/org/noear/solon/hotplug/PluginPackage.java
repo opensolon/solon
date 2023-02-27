@@ -1,7 +1,6 @@
 package org.noear.solon.hotplug;
 
 import org.noear.solon.Solon;
-import org.noear.solon.Utils;
 import org.noear.solon.core.*;
 import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.core.util.ResourceUtil;
@@ -26,7 +25,7 @@ public class PluginPackage {
     /**
      * 类加载器
      */
-    private final JarClassLoader classLoader;
+    private final AppClassLoader classLoader;
     /**
      * 找到的插件
      */
@@ -40,7 +39,7 @@ public class PluginPackage {
      */
     private AopContext context;
 
-    public PluginPackage(File file, JarClassLoader classLoader, List<PluginEntity> plugins) {
+    public PluginPackage(File file, AppClassLoader classLoader, List<PluginEntity> plugins) {
         this.file = file;
         this.plugins = plugins;
         this.classLoader = classLoader;

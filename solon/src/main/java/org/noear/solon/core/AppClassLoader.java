@@ -16,16 +16,16 @@ import java.util.*;
  * @author noear
  * @since 1.0
  * */
-public class JarClassLoader extends URLClassLoader {
+public class AppClassLoader extends URLClassLoader {
 
-    private static JarClassLoader global;
+    private static AppClassLoader global;
 
     static {
         //（静态扩展约定：org.noear.solon.extend.impl.XxxxExt）
-        JarClassLoader tmp = ClassUtil.newInstance("org.noear.solon.extend.impl.JarClassLoaderEx");
+        AppClassLoader tmp = ClassUtil.newInstance("org.noear.solon.extend.impl.AppClassLoaderEx");
 
         if (tmp == null) {
-            global = new JarClassLoader();
+            global = new AppClassLoader();
         } else {
             global = tmp;
         }
@@ -34,14 +34,14 @@ public class JarClassLoader extends URLClassLoader {
     /**
      * 获取全局实例
      * */
-    public static JarClassLoader global() {
+    public static AppClassLoader global() {
         return global;
     }
 
     /**
      * 设置全局实例
      * */
-    public static void globalSet(JarClassLoader instance) {
+    public static void globalSet(AppClassLoader instance) {
         if (instance != null) {
             global = instance;
         }
@@ -50,8 +50,8 @@ public class JarClassLoader extends URLClassLoader {
     /**
      * 加载 jar 文件
      * */
-    public static JarClassLoader loadJar(URL url) {
-        JarClassLoader loader = new JarClassLoader();
+    public static AppClassLoader loadJar(URL url) {
+        AppClassLoader loader = new AppClassLoader();
         loader.addJar(url);
 
         return loader;
@@ -60,8 +60,8 @@ public class JarClassLoader extends URLClassLoader {
     /**
      * 加载文件或目录
      * */
-    public static JarClassLoader loadJar(File fileOrDir) {
-        JarClassLoader loader = new JarClassLoader();
+    public static AppClassLoader loadJar(File fileOrDir) {
+        AppClassLoader loader = new AppClassLoader();
         loader.addJar(fileOrDir);
 
         return loader;
@@ -74,14 +74,14 @@ public class JarClassLoader extends URLClassLoader {
 
     private Map<URL, JarURLConnection> cachedMap = new HashMap<>();
 
-    public JarClassLoader() {
+    public AppClassLoader() {
         this(Utils.getClassLoader());
     }
 
     /**
      * @param parent 父加载器
      * */
-    public JarClassLoader(ClassLoader parent) {
+    public AppClassLoader(ClassLoader parent) {
         super(new URL[]{}, parent);
     }
 
@@ -89,7 +89,7 @@ public class JarClassLoader extends URLClassLoader {
      * @param urls 资源组
      * @param parent 父加载器
      * */
-    public JarClassLoader(URL[] urls ,ClassLoader parent) {
+    public AppClassLoader(URL[] urls , ClassLoader parent) {
         super(urls, parent);
     }
 
@@ -212,7 +212,7 @@ public class JarClassLoader extends URLClassLoader {
         URL url =  super.getResource(name);
 
         if (url == null) {
-            url = JarClassLoader.class.getResource(name);
+            url = AppClassLoader.class.getResource(name);
         }
 
         return url;
