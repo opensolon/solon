@@ -124,12 +124,6 @@ public class AopContext extends BeanContainer {
                 }
             }
 
-            //确定顺序位
-            Order annO = clz.getAnnotation(Order.class);
-            if(annO != null) {
-                bw.orderSet(annO.value());
-            }
-
             //添加bean形态处理
             addBeanShape(clz, bw,  clz);
 
@@ -149,15 +143,7 @@ public class AopContext extends BeanContainer {
             bw.typedSet(anno.typed());
 
             //确定顺序位
-            Order annO = clz.getAnnotation(Order.class);
-            if(annO == null) {
-                //兼容旧写法
-                if (anno.index() != 0) {
-                    bw.orderSet(anno.index());
-                }
-            }else{
-                bw.orderSet(annO.value());
-            }
+            bw.indexSet(anno.index());
 
             //添加bean形态处理
             addBeanShape(clz, bw, clz);
@@ -223,7 +209,7 @@ public class AopContext extends BeanContainer {
 
         //LifecycleBean（替代 Plugin，提供组件的生态周期控制）
         if(LifecycleBean.class.isAssignableFrom(clz)){
-            lifecycleBeans.add(new RankEntity<>(bw.raw(), bw.order()));
+            lifecycleBeans.add(new RankEntity<>(bw.raw(), bw.index()));
             return;
         }
 
@@ -253,12 +239,12 @@ public class AopContext extends BeanContainer {
 
         //Filter
         if (Filter.class.isAssignableFrom(clz)) {
-            Solon.app().filter(bw.order(), bw.raw());
+            Solon.app().filter(bw.index(), bw.raw());
         }
 
         //RouterInterceptor
         if (RouterInterceptor.class.isAssignableFrom(clz)) {
-            Solon.app().routerInterceptor(bw.order(), bw.raw());
+            Solon.app().routerInterceptor(bw.index(), bw.raw());
         }
     }
 
@@ -639,15 +625,7 @@ public class AopContext extends BeanContainer {
             m_bw.typedSet(anno.typed());
 
             //确定顺序位
-            Order annO = mWrap.getAnnotation(Order.class);
-            if(annO == null) {
-                //兼容旧写法
-                if (anno.index() != 0) {
-                    m_bw.orderSet(anno.index());
-                }
-            }else{
-                m_bw.orderSet(annO.value());
-            }
+            m_bw.indexSet(anno.index());
 
             //添加bean形态处理
             addBeanShape(m_bw.clz(), m_bw, mWrap.getMethod());
@@ -747,7 +725,7 @@ public class AopContext extends BeanContainer {
 
             //执行加载事件 //支持排序
             List<RankEntity<ConsumerEx<AopContext>>> events = new ArrayList<>(startedEvents);
-            events.sort(Comparator.comparingInt(m -> m.order));
+            events.sort(Comparator.comparingInt(m -> m.index));
 
             for (RankEntity<ConsumerEx<AopContext>> c : events) {
                 c.target.accept(this);
@@ -755,7 +733,7 @@ public class AopContext extends BeanContainer {
 
             //执行生命周期bean //支持排序
             List<RankEntity<LifecycleBean>> beans = new ArrayList<>(lifecycleBeans);
-            beans.sort(Comparator.comparingInt(f -> f.order));
+            beans.sort(Comparator.comparingInt(f -> f.index));
 
             for (RankEntity<LifecycleBean> b : beans) {
                 b.target.start();
@@ -776,7 +754,7 @@ public class AopContext extends BeanContainer {
 
         //执行生命周期bean //支持排序
         List<RankEntity<LifecycleBean>> beans = new ArrayList<>(lifecycleBeans);
-        beans.sort(Comparator.comparingInt(f -> f.order));
+        beans.sort(Comparator.comparingInt(f -> f.index));
 
         for (RankEntity<LifecycleBean> b : beans) {
             try {

@@ -27,12 +27,18 @@ public @interface Component {
     @Alias("value")
     String name() default "";
 
-    @Note("标签，用于快速查找")
+    /**
+     * 标签，用于快速查找
+     * */
     String tag() default "";
 
-    @Note("同时注册类型，仅当名称非空时有效")
+    /**
+     * 同时注册类型，仅当名称非空时有效
+     * */
     boolean typed() default false;
 
-    @Deprecated
+    /**
+     * 排序（只对部分类型有效）
+     * */
     int index() default 0;
 }

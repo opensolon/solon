@@ -8,11 +8,11 @@ import java.util.Objects;
  */
 public class RankEntity<T> {
     public final T target;
-    public final int order;
+    public final int index;
 
     public RankEntity(T t, int i) {
         target = t;
-        order = i;
+        index = i;
     }
 
     @Override

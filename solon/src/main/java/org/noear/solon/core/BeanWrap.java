@@ -4,7 +4,6 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
 import org.noear.solon.annotation.Init;
-import org.noear.solon.annotation.Order;
 import org.noear.solon.annotation.Singleton;
 import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.core.util.IndexBuilder;
@@ -34,8 +33,8 @@ public class BeanWrap {
     private boolean remoting;
     // bean name
     private String name;
-    // bean order
-    private int order;
+    // bean index
+    private int index;
     // bean tag
     private String tag;
     // bean 是否按注册类型
@@ -156,12 +155,12 @@ public class BeanWrap {
         this.name = name;
     }
 
-    public int order(){
-        return order;
+    public int index(){
+        return index;
     }
 
-    public void orderSet(int order) {
-        this.order = order;
+    protected void indexSet(int index) {
+        this.index = index;
     }
 
     /**

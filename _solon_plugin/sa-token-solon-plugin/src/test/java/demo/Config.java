@@ -12,7 +12,6 @@ import cn.dev33.satoken.stp.StpUtil;
 import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
-import org.noear.solon.annotation.Order;
 
 /**
  * @author noear 2022/3/30 created
@@ -38,8 +37,7 @@ public class Config {
         return new SaJsonTemplateForSnack3();
     }
 
-    @Order(-100)
-    @Bean //优先级可以排后些
+    @Bean(index=-100) //优先级可以排后些
     public SaTokenInterceptor saTokenInterceptor() {
         return new SaTokenInterceptor()
                 // 指定 [拦截路由] 与 [放行路由]

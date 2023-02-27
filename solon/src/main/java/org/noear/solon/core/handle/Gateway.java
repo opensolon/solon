@@ -138,9 +138,9 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
         filter(0, filter);
     }
 
-    public void filter(int order, Filter filter) {
-        filterList.add(new RankEntity<>(filter, order));
-        filterList.sort(Comparator.comparingInt(f -> f.order));
+    public void filter(int index, Filter filter) {
+        filterList.add(new RankEntity<>(filter, index));
+        filterList.sort(Comparator.comparingInt(f -> f.index));
     }
 
     /**

@@ -38,7 +38,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Documented
 public @interface Init {
     /**
-     * 执行排序（0表示自动）
+     * 排序（0表示自动）
      * */
     int index() default 0;
 }

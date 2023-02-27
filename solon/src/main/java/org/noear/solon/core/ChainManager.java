@@ -25,9 +25,9 @@ public class ChainManager {
     /**
      * 添加过滤器
      */
-    public synchronized void addFilter(Filter filter, int order) {
-        _filterNodes.add(new RankEntity(filter, order));
-        _filterNodes.sort(Comparator.comparingInt(f -> f.order));
+    public synchronized void addFilter(Filter filter, int index) {
+        _filterNodes.add(new RankEntity(filter, index));
+        _filterNodes.sort(Comparator.comparingInt(f -> f.index));
     }
 
     /**
@@ -48,7 +48,7 @@ public class ChainManager {
      */
     public synchronized void addInterceptor(RouterInterceptor interceptor, int index) {
         _interceptorNodes.add(new RankEntity<>(interceptor, index));
-        _interceptorNodes.sort(Comparator.comparingInt(f -> f.order));
+        _interceptorNodes.sort(Comparator.comparingInt(f -> f.index));
     }
 
     /**

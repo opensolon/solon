@@ -64,19 +64,19 @@ public abstract class RouterWrapper implements HandlerSlots{
     /**
      * 添加过滤器（按先进后出策略执行）
      *
-     * @param order  顺序位
+     * @param index  顺序位
      * @param filter 过滤器
      * @since 1.5
      */
-    public void filter(int order, Filter filter) {
-        _chainManager.addFilter(filter, order);
+    public void filter(int index, Filter filter) {
+        _chainManager.addFilter(filter, index);
     }
 
     /**
      * 添加路由拦截器（按先进后出策略执行）
      * */
-    public void routerInterceptor(int order, RouterInterceptor interceptor){
-        _chainManager.addInterceptor(interceptor, order);
+    public void routerInterceptor(int index, RouterInterceptor interceptor){
+        _chainManager.addInterceptor(interceptor, index);
     }
 
     /**
