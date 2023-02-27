@@ -10,6 +10,7 @@ import org.noear.solon.boot.prop.impl.HttpServerProps;
 import org.noear.solon.boot.ssl.SslContextFactory;
 import org.noear.solon.core.*;
 import org.noear.solon.core.event.EventBus;
+import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.core.util.LogUtil;
 
 import javax.net.ssl.SSLContext;
@@ -38,17 +39,17 @@ public final class XPluginImp implements Plugin {
         }
 
         //如果有jetty插件，就不启动了
-        if (Utils.loadClass("org.noear.solon.boot.jetty.XPluginImp") != null) {
+        if (ClassUtil.loadClass("org.noear.solon.boot.jetty.XPluginImp") != null) {
             return;
         }
 
         //如果有undrtow插件，就不启动了
-        if (Utils.loadClass("org.noear.solon.boot.undertow.XPluginImp") != null) {
+        if (ClassUtil.loadClass("org.noear.solon.boot.undertow.XPluginImp") != null) {
             return;
         }
 
         //如果有smarthttp插件，就不启动了
-        if (Utils.loadClass("org.noear.solon.boot.smarthttp.XPluginImp") != null) {
+        if (ClassUtil.loadClass("org.noear.solon.boot.smarthttp.XPluginImp") != null) {
             return;
         }
 

@@ -20,6 +20,7 @@ import com.dtflys.forest.utils.StringUtils;
 import org.noear.solon.Utils;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.BeanWrap;
+import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.core.wrap.ClassWrap;
 import org.noear.solon.core.wrap.FieldWrap;
 
@@ -247,9 +248,9 @@ public class ForestBeanBuilder {
                                                     String sslSocketFactoryBuilderClass) {
 
 
-        TrustManager trustManager = Utils.newInstance(trustManagerClass);
-        HostnameVerifier hostnameVerifier = Utils.newInstance(hostnameVerifierClass);
-        SSLSocketFactoryBuilder sslSocketFactoryBuilder = Utils.newInstance(sslSocketFactoryBuilderClass);
+        TrustManager trustManager = ClassUtil.newInstance(trustManagerClass);
+        HostnameVerifier hostnameVerifier = ClassUtil.newInstance(hostnameVerifierClass);
+        SSLSocketFactoryBuilder sslSocketFactoryBuilder = ClassUtil.newInstance(sslSocketFactoryBuilderClass);
 
         SSLKeyStore sslKeyStore = new SSLKeyStore(id, keystoreType, filePath, keystorePass, certPass, trustManager, hostnameVerifier, sslSocketFactoryBuilder);
 

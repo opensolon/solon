@@ -3,6 +3,7 @@ package org.noear.solon.core;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.event.EventBus;
+import org.noear.solon.core.util.ResourceUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -40,7 +41,7 @@ public class ResourceScanner {
 
         try {
             //1.查找资源
-            Enumeration<URL> roots = Utils.getResources(classLoader, path);
+            Enumeration<URL> roots = ResourceUtil.getResources(classLoader, path);
 
             //2.资源遍历
             while (roots.hasMoreElements()) {

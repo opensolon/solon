@@ -4,10 +4,7 @@ import org.noear.solon.annotation.Note;
 import org.noear.solon.core.JarClassLoader;
 import org.noear.solon.core.PropsConverter;
 import org.noear.solon.core.PropsLoader;
-import org.noear.solon.core.util.LogUtil;
-import org.noear.solon.core.util.ResourceUtil;
-import org.noear.solon.core.util.RunUtil;
-import org.noear.solon.core.util.SupplierEx;
+import org.noear.solon.core.util.*;
 import org.noear.solon.core.wrap.ClassWrap;
 
 import java.io.*;
@@ -36,7 +33,7 @@ public class Utils {
 
     /**
      * 异步执行
-     * */
+     */
     public static Future<?> async(Runnable task) {
         return RunUtil.async(task);
     }
@@ -62,7 +59,6 @@ public class Utils {
             return InetAddress.getByName(address).isReachable(3000);
         }
     }
-
 
 
     /**
@@ -131,7 +127,7 @@ public class Utils {
      *
      * @param pathExpr 路径表达式
      * @deprecated 2.0
-     * */
+     */
     @Deprecated
     public static Collection<String> resolvePaths(String pathExpr) {
         return ResourceUtil.scanResources(pathExpr);
@@ -206,7 +202,7 @@ public class Utils {
 
     /**
      * 去除重复字符
-     * */
+     */
     public static String trimDuplicates(String str, char c) {
         int start = 0;
         while ((start = str.indexOf(c, start) + 1) > 0) {
@@ -311,26 +307,24 @@ public class Utils {
         }
     }
 
-    public static boolean hasClass(SupplierEx<Class<?>> sup) {
-        try {
-            sup.get();
-            return true;
-        } catch (Throwable e) {
-            return false;
-        }
+
+    /**
+     * @deprecated 2.2
+     */
+    @Deprecated
+    public static boolean hasClass(SupplierEx<Class<?>> test) {
+        return ClassUtil.hasClass(test);
     }
 
     /**
      * 根据字符串加载为一个类
      *
      * @param className 类名称
+     * @deprecated 2.2
      */
+    @Deprecated
     public static Class<?> loadClass(String className) {
-        try {
-            return loadClass(null, className); //Class.forName(className);
-        } catch (Throwable ex) {
-            return null;
-        }
+        return ClassUtil.loadClass(className);
     }
 
     /**
@@ -338,30 +332,30 @@ public class Utils {
      *
      * @param classLoader 类加载器
      * @param className   类名称
+     * @deprecated 2.2
      */
+    @Deprecated
     public static Class<?> loadClass(ClassLoader classLoader, String className) {
-        try {
-            if (classLoader == null) {
-                return Class.forName(className);
-            } else {
-                return classLoader.loadClass(className);
-            }
-        } catch (Throwable ex) {
-            return null;
-        }
+        return ClassUtil.loadClass(classLoader, className);
     }
 
     /**
      * 根据类名实例化一个对象
      *
      * @param className 类名称
+     * @deprecated 2.2
      */
+    @Deprecated
     public static <T> T newInstance(String className) {
-        return newInstance(className, null);
+        return ClassUtil.newInstance(className);
     }
 
+    /**
+     * @deprecated 2.2
+     */
+    @Deprecated
     public static <T> T newInstance(String className, Properties prop) {
-        return newInstance(JarClassLoader.global(), className, prop);
+        return ClassUtil.newInstance(className, prop);
     }
 
     /**
@@ -369,43 +363,46 @@ public class Utils {
      *
      * @param classLoader 类加载器
      * @param className   类名称
+     * @deprecated 2.2
      */
+    @Deprecated
     public static <T> T newInstance(ClassLoader classLoader, String className) {
-        return newInstance(classLoader, className, null);
+        return ClassUtil.newInstance(classLoader, className);
     }
 
+    /**
+     * @deprecated 2.2
+     */
+    @Deprecated
     public static <T> T newInstance(ClassLoader classLoader, String className, Properties prop) {
-        try {
-            Class<?> clz = loadClass(classLoader, className);
-            if (clz == null) {
-                return null;
-            } else {
-                return newInstance(clz, prop);
-            }
-        } catch (Exception ex) {
-            return null;
-        }
+        return ClassUtil.newInstance(classLoader, className, prop);
     }
 
+    /**
+     * @deprecated 2.2
+     */
+    @Deprecated
     public static <T> T newInstance(Class<?> clz) throws Exception {
-        return newInstance(clz, null);
+        return ClassUtil.newInstance(clz);
     }
 
+    /**
+     * @deprecated 2.2
+     */
+    @Deprecated
     public static <T> T newInstance(Class<?> clz, Properties prop) throws Exception {
-        if (prop == null) {
-            return (T) clz.getDeclaredConstructor().newInstance();
-        } else {
-            return (T) clz.getConstructor(Properties.class).newInstance(prop);
-        }
+        return ClassUtil.newInstance(clz, prop);
     }
 
     /**
      * 获取资源URL集
      *
      * @param name 资源名称
+     * @deprecated 2.2
      */
+    @Deprecated
     public static Enumeration<URL> getResources(String name) throws IOException {
-        return getResources(JarClassLoader.global(), name);
+        return ResourceUtil.getResources(name);
     }
 
     /**
@@ -413,18 +410,22 @@ public class Utils {
      *
      * @param classLoader 类加载器
      * @param name        资源名称
+     * @deprecated 2.2
      */
+    @Deprecated
     public static Enumeration<URL> getResources(ClassLoader classLoader, String name) throws IOException {
-        return classLoader.getResources(name);
+        return ResourceUtil.getResources(classLoader, name);
     }
 
     /**
      * 获取资源URL
      *
      * @param name 资源名称
+     * @deprecated 2.2
      */
+    @Deprecated
     public static URL getResource(String name) {
-        return getResource(JarClassLoader.global(), name); //XUtil.class.getResource(name);
+        return ResourceUtil.getResource(name);
     }
 
     /**
@@ -432,18 +433,22 @@ public class Utils {
      *
      * @param classLoader 类加载器
      * @param name        资源名称
+     * @deprecated 2.2
      */
+    @Deprecated
     public static URL getResource(ClassLoader classLoader, String name) {
-        return classLoader.getResource(name); //XUtil.class.getResource(name);
+        return ResourceUtil.getResource(classLoader, name);
     }
 
     /**
      * 获取资源并转为String
      *
      * @param name 资源名称
+     * @deprecated 2.2
      */
+    @Deprecated
     public static String getResourceAsString(String name) throws IOException {
-        return getResourceAsString(JarClassLoader.global(), name, Solon.encoding());
+        return ResourceUtil.getResourceAsString(name);
     }
 
     /**
@@ -451,9 +456,11 @@ public class Utils {
      *
      * @param name    资源名称
      * @param charset 编码
+     * @deprecated 2.2
      */
+    @Deprecated
     public static String getResourceAsString(String name, String charset) throws IOException {
-        return getResourceAsString(JarClassLoader.global(), name, charset);
+        return ResourceUtil.getResourceAsString(name, charset);
     }
 
     /**
@@ -462,16 +469,11 @@ public class Utils {
      * @param classLoader 类加载器
      * @param name        资源名称
      * @param charset     编码
+     * @deprecated 2.2
      */
+    @Deprecated
     public static String getResourceAsString(ClassLoader classLoader, String name, String charset) throws IOException {
-        URL url = getResource(classLoader, name);
-        if (url != null) {
-            try (InputStream in = url.openStream()) {
-                return transferToString(in, charset);
-            }
-        } else {
-            return null;
-        }
+        return ResourceUtil.getResourceAsString(classLoader, name, charset);
     }
 
     public static String transferToString(InputStream ins) throws IOException {
@@ -615,7 +617,7 @@ public class Utils {
 
         LogUtil.global().info("Extend config: " + extend);
 
-        URL temp = Utils.getResource("");
+        URL temp = ResourceUtil.getResource("");
 
         if (temp == null) {
             return null;

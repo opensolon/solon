@@ -12,6 +12,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.JarClassLoader;
 import org.noear.solon.core.event.EventBus;
+import org.noear.solon.core.util.ResourceUtil;
 import org.noear.solon.core.util.ScanUtil;
 import org.noear.solon.core.util.SupplierEx;
 
@@ -69,7 +70,7 @@ public class JspTldLocator {
         //自己的.tld
         try {
             ScanUtil.scan(JarClassLoader.global(), webinfo_path, n -> n.endsWith(".tld")).forEach((uri) -> {
-                loadTagLibraryInfo(tagLibInfos, () -> Utils.getResource(uri).openStream());
+                loadTagLibraryInfo(tagLibInfos, () -> ResourceUtil.getResource(uri).openStream());
             });
         } catch (Throwable e) {
             EventBus.pushTry(e);

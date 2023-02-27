@@ -3,6 +3,7 @@ package org.noear.solon.web.staticfiles.repository;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.JarClassLoader;
+import org.noear.solon.core.util.ResourceUtil;
 import org.noear.solon.web.staticfiles.StaticRepository;
 
 import java.io.File;
@@ -57,7 +58,7 @@ public class ClassPathStaticRepository implements StaticRepository {
         this.location = location;
 
         if (Solon.cfg().isDebugMode()) {
-            URL rooturi = Utils.getResource(classLoader, "/");
+            URL rooturi = ResourceUtil.getResource(classLoader, "/");
 
             if (rooturi != null) {
                 String rootdir = rooturi.toString()
@@ -84,6 +85,6 @@ public class ClassPathStaticRepository implements StaticRepository {
             }
         }
 
-        return Utils.getResource(classLoader, location + relativePath);
+        return ResourceUtil.getResource(classLoader, location + relativePath);
     }
 }

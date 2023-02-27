@@ -6,6 +6,7 @@ import org.noear.solon.annotation.Mapping;
 import org.noear.solon.boot.web.MimeType;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.DownloadedFile;
+import org.noear.solon.core.util.ResourceUtil;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -35,14 +36,14 @@ public class DownController {
 
     @Mapping("f3")
     public File down3() {
-        String filePath = Utils.getResource("WEB-INF/static/debug.htm").getFile();
+        String filePath = ResourceUtil.getResource("WEB-INF/static/debug.htm").getFile();
 
         return new File(filePath);
     }
 
     @Mapping("f3_2")
     public DownloadedFile down3_2() throws Exception{
-        String filePath = Utils.getResource("WEB-INF/static/debug.htm").getFile();
+        String filePath = ResourceUtil.getResource("WEB-INF/static/debug.htm").getFile();
 
         File file = new File(filePath);
         return new DownloadedFile(MimeType.TEXT_HTML_VALUE,new FileInputStream(file), file.getName());
@@ -50,7 +51,7 @@ public class DownController {
 
     @Mapping("f4")
     public void down4(Context ctx) throws IOException {
-        String filePath = Utils.getResource("WEB-INF/static/debug.htm").getFile();
+        String filePath = ResourceUtil.getResource("WEB-INF/static/debug.htm").getFile();
 
         File file = new File(filePath);
 

@@ -6,6 +6,7 @@ import org.noear.solon.core.AopContext;
 import org.noear.solon.core.NvMap;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.handle.HandlerPipeline;
+import org.noear.solon.core.util.ResourceUtil;
 import org.noear.solon.web.staticfiles.StaticMappings;
 import org.noear.solon.web.staticfiles.StaticMimes;
 import org.noear.solon.web.staticfiles.StaticResourceHandler;
@@ -36,11 +37,11 @@ public class XPluginImp implements Plugin {
         StaticConfig.getCacheMaxAge();
 
         //1.尝试添加默认静态资源地址
-        if (Utils.getResource(StaticConfig.RES_STATIC_LOCATION) != null) {
+        if (ResourceUtil.getResource(StaticConfig.RES_STATIC_LOCATION) != null) {
             StaticMappings.add("/", new ClassPathStaticRepository(StaticConfig.RES_STATIC_LOCATION));
         }
 
-        if (Utils.getResource(StaticConfig.RES_WEB_INF_STATIC_LOCATION) != null) {
+        if (ResourceUtil.getResource(StaticConfig.RES_WEB_INF_STATIC_LOCATION) != null) {
             StaticMappings.add("/", new ClassPathStaticRepository(StaticConfig.RES_WEB_INF_STATIC_LOCATION));
         }
 

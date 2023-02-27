@@ -3,6 +3,7 @@ package org.noear.solon.data.datasource;
 import org.noear.solon.Utils;
 import org.noear.solon.core.Props;
 import org.noear.solon.core.PropsConverter;
+import org.noear.solon.core.util.ClassUtil;
 
 import javax.sql.DataSource;
 import java.util.HashMap;
@@ -29,7 +30,7 @@ public class DsUtils {
         }
         props.remove("type");
 
-        Class<?> typeClz = Utils.loadClass(typeStr);
+        Class<?> typeClz = ClassUtil.loadClass(typeStr);
         if (typeClz == null || DataSource.class.isAssignableFrom(typeClz) == false) {
             throw new IllegalStateException("Type configuration not is data source");
         }

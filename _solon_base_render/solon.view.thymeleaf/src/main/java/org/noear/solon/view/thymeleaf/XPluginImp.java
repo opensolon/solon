@@ -6,6 +6,7 @@ import org.noear.solon.auth.AuthUtil;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.handle.RenderManager;
+import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.view.thymeleaf.tags.AuthDialect;
 import org.noear.solon.view.thymeleaf.tags.AuthPermissionsTag;
 import org.noear.solon.view.thymeleaf.tags.AuthRolesTag;
@@ -39,7 +40,7 @@ public class XPluginImp implements Plugin {
         RenderManager.register(render);
         RenderManager.mapping(".html", render);
 
-        if (Utils.hasClass(() -> AuthUtil.class)) {
+        if (ClassUtil.hasClass(() -> AuthUtil.class)) {
             AuthDialect authDialect = new AuthDialect();
             authDialect.addProcessor(new AuthPermissionsTag(authDialect.getPrefix()));
             authDialect.addProcessor(new AuthRolesTag(authDialect.getPrefix()));

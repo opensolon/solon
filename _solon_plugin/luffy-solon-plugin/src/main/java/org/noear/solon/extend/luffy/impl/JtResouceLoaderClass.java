@@ -3,6 +3,7 @@ package org.noear.solon.extend.luffy.impl;
 import org.noear.luffy.model.AFileModel;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
+import org.noear.solon.core.util.ResourceUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -53,6 +54,6 @@ public class JtResouceLoaderClass implements JtResouceLoader {
     }
 
     protected String fileContentGet(String path) throws IOException {
-        return Utils.getResourceAsString("luffy/" + path, Solon.encoding());
+        return ResourceUtil.getResourceAsString("luffy/" + path, Solon.encoding());
     }
 }

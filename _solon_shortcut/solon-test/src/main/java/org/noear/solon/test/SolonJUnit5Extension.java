@@ -3,6 +3,7 @@ package org.noear.solon.test;
 import org.junit.jupiter.api.extension.*;
 import org.noear.solon.Utils;
 import org.noear.solon.core.AopContext;
+import org.noear.solon.core.util.ClassUtil;
 
 /**
  * @author noear
@@ -24,7 +25,7 @@ public class SolonJUnit5Extension implements TestInstanceFactory {
             }
 
             //create
-            Object tmp = Utils.newInstance(factory.getTestClass());
+            Object tmp = ClassUtil.newInstance(factory.getTestClass());
             tmp = RunnerUtils.initTestTarget(aopContext, tmp);
 
             return tmp;

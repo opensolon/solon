@@ -361,7 +361,7 @@ public class AopContext extends BeanContainer {
                     String className = name.substring(0, name.length() - 6);
                     className = className.replace("/", ".");
 
-                    Class<?> clz = Utils.loadClass(classLoader, className);
+                    Class<?> clz = ClassUtil.loadClass(classLoader, className);
                     if (clz != null) {
                         tryCreateBeanOfClass(clz);
                     }

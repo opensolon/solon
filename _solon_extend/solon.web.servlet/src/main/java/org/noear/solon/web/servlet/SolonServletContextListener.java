@@ -6,6 +6,7 @@ import org.noear.solon.core.event.AppInitEndEvent;
 import org.noear.solon.core.event.AppLoadEndEvent;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.ContextPathFilter;
+import org.noear.solon.core.util.ClassUtil;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
@@ -58,7 +59,7 @@ public class SolonServletContextListener implements ServletContextListener {
         Class<?> mainClass = this.getClass();
         String mainClassStr = sc.getInitParameter("solonStartClass");
         if(Utils.isNotEmpty(mainClassStr)) {
-            mainClass = Utils.loadClass(mainClassStr);
+            mainClass = ClassUtil.loadClass(mainClassStr);
 
             if (mainClass == null) {
                 throw new IllegalStateException("The start class was not found: '" + mainClassStr + "'");

@@ -7,6 +7,7 @@ import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.ModelAndView;
 import org.noear.solon.core.handle.Render;
+import org.noear.solon.core.util.ResourceUtil;
 import org.noear.solon.core.util.SupplierEx;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.dialect.IDialect;
@@ -76,7 +77,7 @@ public class ThymeleafRender implements Render {
         }
 
         //添加调试模式
-        URL rooturi = Utils.getResource("/");
+        URL rooturi = ResourceUtil.getResource("/");
         if (rooturi == null) {
             return;
         }

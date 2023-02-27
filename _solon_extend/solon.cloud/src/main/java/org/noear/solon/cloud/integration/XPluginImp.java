@@ -7,6 +7,7 @@ import org.noear.solon.cloud.annotation.CloudJob;
 import org.noear.solon.cloud.impl.*;
 import org.noear.solon.cloud.trace.NamiTraceFilter;
 import org.noear.solon.core.*;
+import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.logging.AppenderHolder;
 import org.noear.solon.logging.AppenderManager;
@@ -74,7 +75,7 @@ public class XPluginImp implements Plugin {
         }
 
         //有些场景会排除掉nami
-        if (Utils.loadClass("org.noear.nami.NamiManager") != null) {
+        if (ClassUtil.loadClass("org.noear.nami.NamiManager") != null) {
             //注册Nami跟踪过滤器
             NamiTraceFilter.register();
         }

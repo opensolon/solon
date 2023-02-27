@@ -5,6 +5,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.handle.RenderManager;
+import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.core.util.LogUtil;
 
 public class XPluginImp implements Plugin {
@@ -14,7 +15,7 @@ public class XPluginImp implements Plugin {
     public void start(AopContext context) {
         output_meta = Solon.cfg().getInt("solon.output.meta", 0) > 0;
 
-        if (Utils.loadClass("javax.servlet.ServletResponse") == null) {
+        if (ClassUtil.loadClass("javax.servlet.ServletResponse") == null) {
             LogUtil.global().warn("View: javax.servlet.ServletResponse not exists! JspRender failed to load.");
             return;
         }

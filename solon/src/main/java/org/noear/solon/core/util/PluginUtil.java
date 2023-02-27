@@ -21,7 +21,7 @@ public class PluginUtil {
                     return n.endsWith(".properties") || n.endsWith(".yml");
                 })
                 .stream()
-                .map(k -> Utils.getResource(classLoader, k))
+                .map(k -> ResourceUtil.getResource(classLoader, k))
                 .filter(url -> {
                     if (Utils.isNotEmpty(limitFile)) {
                         if (url.toString().contains(limitFile) == false) {

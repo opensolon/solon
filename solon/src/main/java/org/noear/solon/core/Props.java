@@ -3,6 +3,7 @@ package org.noear.solon.core;
 import org.noear.solon.SolonProps;
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.PropertySource;
+import org.noear.solon.core.util.ResourceUtil;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -389,9 +390,9 @@ public class Props extends Properties {
      */
     public void loadAdd(String url) {
         if (classLoader == null) {
-            loadAdd(Utils.getResource(url));
+            loadAdd(ResourceUtil.getResource(url));
         } else {
-            loadAdd(Utils.getResource(classLoader, url));
+            loadAdd(ResourceUtil.getResource(classLoader, url));
         }
     }
 
@@ -440,9 +441,9 @@ public class Props extends Properties {
      */
     public void loadAddIfAbsent(String url) {
         if (classLoader == null) {
-            loadAddIfAbsent(Utils.getResource(url));
+            loadAddIfAbsent(ResourceUtil.getResource(url));
         } else {
-            loadAddIfAbsent(Utils.getResource(classLoader, url));
+            loadAddIfAbsent(ResourceUtil.getResource(classLoader, url));
         }
     }
 

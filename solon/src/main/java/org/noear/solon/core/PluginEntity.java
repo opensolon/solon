@@ -2,6 +2,7 @@ package org.noear.solon.core;
 
 import org.noear.solon.SolonProps;
 import org.noear.solon.Utils;
+import org.noear.solon.core.util.ClassUtil;
 
 import java.util.Properties;
 
@@ -146,7 +147,7 @@ public class PluginEntity {
     private void initInstance() {
         if (plugin == null) {
             if (classLoader != null) {
-                plugin = Utils.newInstance(classLoader, className);
+                plugin = ClassUtil.newInstance(classLoader, className);
             }
         }
     }

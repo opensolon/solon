@@ -3,6 +3,7 @@ package org.noear.solon.proxy;
 import org.noear.solon.Utils;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.BeanWrap;
+import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.core.util.ScanUtil;
 
 import java.lang.reflect.InvocationHandler;
@@ -127,7 +128,7 @@ public class ProxyUtil {
                 .forEach(name -> {
                     String className = name.substring(0, name.length() - 6);
 
-                    Class<?> clz = Utils.loadClass(aopContext.getClassLoader(), className.replace("/", "."));
+                    Class<?> clz = ClassUtil.loadClass(aopContext.getClassLoader(), className.replace("/", "."));
                     if (clz != null) {
                         attach(aopContext, clz, handler);
                     }

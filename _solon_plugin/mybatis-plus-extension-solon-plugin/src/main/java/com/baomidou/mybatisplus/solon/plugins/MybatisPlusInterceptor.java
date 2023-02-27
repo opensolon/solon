@@ -29,6 +29,7 @@ import org.apache.ibatis.mapping.SqlCommandType;
 import org.apache.ibatis.plugin.*;
 import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.session.RowBounds;
+import org.noear.solon.core.util.ClassUtil;
 
 import java.sql.Connection;
 import java.util.*;
@@ -139,7 +140,7 @@ public class MybatisPlusInterceptor implements Interceptor {
         PropertyMapper pm = PropertyMapper.newInstance(properties);
         Map<String, Properties> group = pm.group(StringPool.AT);
         group.forEach((k, v) -> {
-            InnerInterceptor innerInterceptor = ClassUtils.newInstance(k);
+            InnerInterceptor innerInterceptor = ClassUtil.newInstance(k);
             innerInterceptor.setProperties(v);
             addInnerInterceptor(innerInterceptor);
         });

@@ -8,6 +8,7 @@ import java.util.Map;
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.Init;
 import org.noear.solon.annotation.Singleton;
+import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.core.util.IndexBuilder;
 import org.noear.solon.core.wrap.ClassWrap;
 
@@ -245,7 +246,7 @@ public class BeanWrap {
 
         try {
             //1.构造
-            Object bean = Utils.newInstance(clz);
+            Object bean = ClassUtil.newInstance(clz);
 
             //2.初始化
             init(bean);

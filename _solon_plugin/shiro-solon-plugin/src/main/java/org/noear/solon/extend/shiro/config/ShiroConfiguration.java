@@ -10,6 +10,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Init;
 import org.noear.solon.annotation.Inject;
+import org.noear.solon.core.util.ResourceUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +43,7 @@ public class ShiroConfiguration {
     }
 
     protected Realm iniRealmFromLocation() {
-        if (Utils.getResource("shiro.ini") == null) {
+        if (ResourceUtil.getResource("shiro.ini") == null) {
             return null;
         }
 

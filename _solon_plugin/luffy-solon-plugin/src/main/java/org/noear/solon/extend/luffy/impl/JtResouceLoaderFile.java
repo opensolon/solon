@@ -4,6 +4,7 @@ import org.noear.luffy.model.AFileModel;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.event.EventBus;
+import org.noear.solon.core.util.ResourceUtil;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -19,7 +20,7 @@ public class JtResouceLoaderFile implements JtResouceLoader {
     private File _baseDir;
 
     public JtResouceLoaderFile() {
-        String rootdir = Utils.getResource("/").toString().replace("target/classes/", "");
+        String rootdir = ResourceUtil.getResource("/").toString().replace("target/classes/", "");
 
         if (rootdir.startsWith("file:")) {
             String dir_str = rootdir + "src/main/resources" + _baseUri;

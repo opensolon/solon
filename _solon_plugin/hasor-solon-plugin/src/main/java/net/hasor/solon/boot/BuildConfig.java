@@ -20,6 +20,7 @@ import net.hasor.core.Module;
 import net.hasor.utils.StringUtils;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
+import org.noear.solon.core.util.ResourceUtil;
 
 import java.io.IOException;
 import java.net.URL;
@@ -76,7 +77,7 @@ public class BuildConfig {
         String config = this.mainConfig;
         if (!StringUtils.isBlank(config)) {
             //config = SystemPropertyUtils.resolvePlaceholders(config);
-            URL resource = Utils.getResource(config); //StringUtils.isNotBlank(config) ? applicationContext.getResource(config) : null;
+            URL resource = ResourceUtil.getResource(config); //StringUtils.isNotBlank(config) ? applicationContext.getResource(config) : null;
             if (resource != null) {
                 hasorBuild.mainSettingWith(resource);
             }

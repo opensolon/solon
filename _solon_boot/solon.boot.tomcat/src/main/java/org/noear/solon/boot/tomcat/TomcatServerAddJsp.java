@@ -6,6 +6,7 @@ import org.apache.catalina.webresources.DirResourceSet;
 import org.apache.catalina.webresources.StandardRoot;
 import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerProps;
+import org.noear.solon.core.util.ResourceUtil;
 
 import java.io.File;
 import java.net.URI;
@@ -53,7 +54,7 @@ public class TomcatServerAddJsp extends TomcatServerBase {
 
     //以XApp为依据的相对路径获取  获取JSP文件路径..
     protected File getJspDir() throws Throwable {
-        String dirroot = Utils.getResource("/").toString();
+        String dirroot = ResourceUtil.getResource("/").toString();
         File dir = new File(URI.create(dirroot));
         if (!dir.exists()) {
             dirroot = dirroot + "src/main/webapp";

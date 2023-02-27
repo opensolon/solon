@@ -1,6 +1,7 @@
 package org.noear.solon.core;
 
 import org.noear.solon.Utils;
+import org.noear.solon.core.util.ClassUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -21,7 +22,7 @@ public class JarClassLoader extends URLClassLoader {
 
     static {
         //（静态扩展约定：org.noear.solon.extend.impl.XxxxExt）
-        JarClassLoader tmp = Utils.newInstance("org.noear.solon.extend.impl.JarClassLoaderEx");
+        JarClassLoader tmp = ClassUtil.newInstance("org.noear.solon.extend.impl.JarClassLoaderEx");
 
         if (tmp == null) {
             global = new JarClassLoader();

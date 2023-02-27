@@ -2,6 +2,7 @@ package org.noear.solon.boot.ssl;
 
 import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerConstants;
+import org.noear.solon.core.util.ResourceUtil;
 
 import javax.net.ssl.*;
 import java.io.FileInputStream;
@@ -44,7 +45,7 @@ public class SslContextFactory {
     private static KeyStore loadKeyStore(final String location, String type, String storePassword)
             throws IOException {
 
-        URL KeyStoreUrl = Utils.getResource(location);
+        URL KeyStoreUrl = ResourceUtil.getResource(location);
         InputStream KeyStoreStream = null;
 
         if (KeyStoreUrl == null) {

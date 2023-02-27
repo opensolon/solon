@@ -7,6 +7,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.core.BeanInjector;
 import org.noear.solon.core.VarHolder;
 import io.grpc.solon.annotation.GrpcClient;
+import org.noear.solon.core.util.ClassUtil;
 
 import java.lang.reflect.Method;
 import java.util.Map;
@@ -32,7 +33,7 @@ public class GrpcClientBeanInjector implements BeanInjector<GrpcClient> {
             varH.setValue(grpcCli);
         } else {
             Channel grpcChannel = new GrpcChannelProxy(anno.group(), name);
-            Class<?> grpcClz = Utils.loadClass(varH.getType().getName().split("\\$")[0]);
+            Class<?> grpcClz = ClassUtil.loadClass(varH.getType().getName().split("\\$")[0]);
 
             try {
                 if (AbstractBlockingStub.class.isAssignableFrom(varH.getType())) {

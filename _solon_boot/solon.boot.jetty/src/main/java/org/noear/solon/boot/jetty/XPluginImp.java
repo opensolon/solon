@@ -8,6 +8,7 @@ import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.jetty.http.FormContentFilter;
 import org.noear.solon.boot.prop.impl.HttpServerProps;
 import org.noear.solon.core.*;
+import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.core.util.LogUtil;
 
 import javax.servlet.annotation.WebFilter;
@@ -62,7 +63,7 @@ public final class XPluginImp implements Plugin {
         //初始化属性
         ServerProps.init();
 
-        Class<?> jspClz = Utils.loadClass("org.eclipse.jetty.jsp.JettyJspServlet");
+        Class<?> jspClz = ClassUtil.loadClass("org.eclipse.jetty.jsp.JettyJspServlet");
 
 
         if (jspClz == null) {

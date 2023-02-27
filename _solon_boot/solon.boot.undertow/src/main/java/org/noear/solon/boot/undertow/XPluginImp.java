@@ -6,6 +6,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.prop.impl.HttpServerProps;
 import org.noear.solon.core.*;
+import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.core.util.LogUtil;
 
 import javax.servlet.annotation.WebFilter;
@@ -55,7 +56,7 @@ public final class XPluginImp implements Plugin {
         long time_start = System.currentTimeMillis();
         LogUtil.global().info("Server:main: Undertow 2.2.17(undertow)");
 
-        Class<?> jspClz = Utils.loadClass("io.undertow.jsp.JspServletBuilder");
+        Class<?> jspClz = ClassUtil.loadClass("io.undertow.jsp.JspServletBuilder");
 
         if (jspClz == null) {
             _server = new UndertowServer();

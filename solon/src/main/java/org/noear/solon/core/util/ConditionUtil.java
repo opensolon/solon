@@ -46,7 +46,7 @@ public class ConditionUtil {
         }
 
         if (Utils.isNotEmpty(anno.onClassName())) {
-            if (Utils.loadClass(context.getClassLoader(), anno.onClassName()) == null) {
+            if (ClassUtil.loadClass(context.getClassLoader(), anno.onClassName()) == null) {
                 return true;
             }
         }

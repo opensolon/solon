@@ -4,6 +4,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
+import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.logging.AppenderManager;
 import org.noear.solon.logging.LogOptions;
 import org.noear.solon.logging.event.Appender;
@@ -36,7 +37,7 @@ public class XPluginImp implements Plugin {
                 String val = (String) v;
 
                 if (key.endsWith(".class")) {
-                    Appender appender = Utils.newInstance(val);
+                    Appender appender = ClassUtil.newInstance(val);
                     if (appender != null) {
                         String name = key.substring(0, key.length() - 6);
                         AppenderManager.register(name, appender);

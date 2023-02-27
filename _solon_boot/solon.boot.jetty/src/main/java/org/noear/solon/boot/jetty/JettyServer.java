@@ -9,6 +9,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerLifecycle;
 import org.noear.solon.boot.jetty.websocket._SessionManagerImpl;
 import org.noear.solon.core.event.EventBus;
+import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.socketd.SessionManager;
 
 import java.io.IOException;
@@ -32,7 +33,7 @@ class JettyServer extends JettyServerBase implements ServerLifecycle {
     }
 
     protected void setup(SolonApp app, String host, int port) throws IOException {
-        Class<?> wsClz = Utils.loadClass("org.eclipse.jetty.websocket.server.WebSocketHandler");
+        Class<?> wsClz = ClassUtil.loadClass("org.eclipse.jetty.websocket.server.WebSocketHandler");
 
         QueuedThreadPool threadPool = new QueuedThreadPool(props.getMaxThreads(true), props.getCoreThreads(), (int)props.getIdleTimeout());
 
@@ -72,7 +73,7 @@ class JettyServer extends JettyServerBase implements ServerLifecycle {
      * 获取Server Handler
      */
     protected Handler buildHandler() throws IOException {
-        if (Utils.loadClass("org.eclipse.jetty.servlet.ServletContextHandler") == null) {
+        if (ClassUtil.loadClass("org.eclipse.jetty.servlet.ServletContextHandler") == null) {
             return getJettyHandler();
         } else {
             //::走Servlet接口（需要多个包）

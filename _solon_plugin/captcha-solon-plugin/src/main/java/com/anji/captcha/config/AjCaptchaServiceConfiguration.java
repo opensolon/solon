@@ -10,6 +10,7 @@ import com.anji.captcha.util.StringUtils;
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Configuration;
+import org.noear.solon.core.util.ResourceUtil;
 import org.noear.solon.core.util.ScanUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -80,7 +81,7 @@ public class AjCaptchaServiceConfiguration {
         try {
             List<URL> resources = ScanUtil.scan(path, n -> n.endsWith(".png"))
                     .stream()
-                    .map(k -> Utils.getResource(k))
+                    .map(k -> ResourceUtil.getResource(k))
                     .collect(Collectors.toList());
 
             for (URL resource : resources) {

@@ -3,6 +3,7 @@ package org.noear.solon.extend.mybatis.integration;
 import org.apache.ibatis.plugin.Interceptor;
 import org.noear.solon.Utils;
 import org.noear.solon.core.Props;
+import org.noear.solon.core.util.ClassUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +44,7 @@ public class MybatisPluginUtils {
 
                 if (name != null) {
                     props = props.getProp(name);
-                    Interceptor plugin = Utils.newInstance(props.get("class"));
+                    Interceptor plugin = ClassUtil.newInstance(props.get("class"));
                     if (plugin == null) {
                         throw new IllegalArgumentException("Mybatis plugin [" + name + "].class load failed");
                     }

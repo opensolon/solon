@@ -6,6 +6,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.core.ExtendLoader;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.LogUtil;
+import org.noear.solon.core.util.ResourceUtil;
 
 import java.io.*;
 import java.net.URL;
@@ -50,7 +51,7 @@ public class GraalvmUtil {
             List<ClassLoader> loaderList = ExtendLoader.load(Solon.cfg().extend(), false);
 
             for (ClassLoader loader : loaderList) {
-                Enumeration<URL> rs = Utils.getResources(loader, "META-INF/native-image/reflect-config.json");
+                Enumeration<URL> rs = ResourceUtil.getResources(loader, "META-INF/native-image/reflect-config.json");
 
                 while (rs.hasMoreElements()) {
                     String s = readFileByLines(rs.nextElement());
@@ -79,7 +80,7 @@ public class GraalvmUtil {
             List<ClassLoader> loaderList = ExtendLoader.load(Solon.cfg().extend(), false);
 
             for (ClassLoader loader : loaderList) {
-                Enumeration<URL> rs = Utils.getResources(loader, "META-INF/native-image/resource-config.json");
+                Enumeration<URL> rs = ResourceUtil.getResources(loader, "META-INF/native-image/resource-config.json");
 
                 while (rs.hasMoreElements()) {
                     String s = readFileByLines(rs.nextElement());

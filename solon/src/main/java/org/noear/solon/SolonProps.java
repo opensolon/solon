@@ -4,6 +4,7 @@ import org.noear.solon.annotation.PropertySource;
 import org.noear.solon.core.*;
 import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.core.util.PluginUtil;
+import org.noear.solon.core.util.ResourceUtil;
 
 import java.io.File;
 import java.net.URL;
@@ -91,11 +92,11 @@ public final class SolonProps extends Props {
 
         //4.加载文件配置
         //@Deprecated
-        loadInit(Utils.getResource("application.properties"), sysPropOrg);
+        loadInit(ResourceUtil.getResource("application.properties"), sysPropOrg);
         //@Deprecated
-        loadInit(Utils.getResource("application.yml"), sysPropOrg);
-        loadInit(Utils.getResource("app.properties"), sysPropOrg);
-        loadInit(Utils.getResource("app.yml"), sysPropOrg);
+        loadInit(ResourceUtil.getResource("application.yml"), sysPropOrg);
+        loadInit(ResourceUtil.getResource("app.properties"), sysPropOrg);
+        loadInit(ResourceUtil.getResource("app.yml"), sysPropOrg);
 
         //4.1.加载环境变量（支持弹性容器设置的环境变量）
         loadEnv(k -> k.startsWith("solon.") || k.startsWith("server."));
@@ -105,11 +106,11 @@ public final class SolonProps extends Props {
 
         if (Utils.isNotEmpty(env)) {
             //@Deprecated
-            loadInit(Utils.getResource("application-" + env + ".properties"), sysPropOrg);
+            loadInit(ResourceUtil.getResource("application-" + env + ".properties"), sysPropOrg);
             //@Deprecated
-            loadInit(Utils.getResource("application-" + env + ".yml"), sysPropOrg);
-            loadInit(Utils.getResource("app-" + env + ".properties"), sysPropOrg);
-            loadInit(Utils.getResource("app-" + env + ".yml"), sysPropOrg);
+            loadInit(ResourceUtil.getResource("application-" + env + ".yml"), sysPropOrg);
+            loadInit(ResourceUtil.getResource("app-" + env + ".properties"), sysPropOrg);
+            loadInit(ResourceUtil.getResource("app-" + env + ".yml"), sysPropOrg);
         }
 
 

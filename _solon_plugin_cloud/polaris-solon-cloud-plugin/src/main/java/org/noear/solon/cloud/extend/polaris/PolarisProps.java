@@ -3,6 +3,7 @@ package org.noear.solon.cloud.extend.polaris;
 import com.tencent.polaris.factory.ConfigAPIFactory;
 import com.tencent.polaris.factory.config.ConfigurationImpl;
 import org.noear.solon.Utils;
+import org.noear.solon.core.util.ResourceUtil;
 
 import java.net.URL;
 
@@ -19,7 +20,7 @@ public class PolarisProps {
         if (cfgImpl == null) {
             cfgImpl = (ConfigurationImpl) ConfigAPIFactory.defaultConfig();
 
-            URL cfgUri = Utils.getResource("polaris.yml");
+            URL cfgUri = ResourceUtil.getResource("polaris.yml");
             if (cfgUri == null) {
                 //如果没有配置文件，把持久化去掉
                 cfgImpl.getConsumer().getLocalCache().setPersistEnable(false);

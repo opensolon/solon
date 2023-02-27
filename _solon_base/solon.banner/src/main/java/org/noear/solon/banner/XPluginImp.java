@@ -5,6 +5,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.util.LogUtil;
+import org.noear.solon.core.util.ResourceUtil;
 
 /**
  * @author pmg1991
@@ -21,9 +22,9 @@ public class XPluginImp implements Plugin {
 			String mode = Solon.cfg().get("solon.banner.mode", "console");
 			String path = Solon.cfg().get("solon.banner.path", "banner.txt");
 
-			String bannerTxt = Utils.getResourceAsString(path);
+			String bannerTxt = ResourceUtil.getResourceAsString(path);
 			if (Utils.isEmpty(bannerTxt)) {
-				bannerTxt = Utils.getResourceAsString(BANNER_DEF_FILE);
+				bannerTxt = ResourceUtil.getResourceAsString(BANNER_DEF_FILE);
 			}
 
 			//Trying to get the banner file Solon

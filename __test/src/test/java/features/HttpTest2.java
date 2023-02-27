@@ -31,7 +31,7 @@ public class HttpTest2 extends AbstractHttpTester {
 
 //    @Test
 //    public void test3() throws IOException {
-//        if (Utils.loadClass("javax.servlet.http.HttpServletRequest") != null) {
+//        if (ClassUtil.loadClass("javax.servlet.http.HttpServletRequest") != null) {
 //            assert path("/demo2/servlet/hello?name=noear").get().equals("Ok");
 //        }
 //    }

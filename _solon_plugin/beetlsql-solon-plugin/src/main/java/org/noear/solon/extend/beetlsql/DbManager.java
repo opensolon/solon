@@ -11,6 +11,7 @@ import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.Props;
 import org.noear.solon.core.ValHolder;
 import org.noear.solon.core.event.EventBus;
+import org.noear.solon.core.util.ClassUtil;
 
 import javax.sql.DataSource;
 import java.util.Map;
@@ -160,7 +161,7 @@ public class DbManager {
             DBStyle style = null;
 
             if (dialect.indexOf(".") > 0) {
-                style = Utils.newInstance(dialect);
+                style = ClassUtil.newInstance(dialect);
 
             } else {
                 dialect = dialect.toLowerCase();

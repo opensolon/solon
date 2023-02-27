@@ -8,6 +8,7 @@ import org.noear.solon.boot.ServerLifecycle;
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.prop.impl.HttpServerProps;
 import org.noear.solon.boot.undertow.http.UtContainerInitializer;
+import org.noear.solon.core.util.ResourceUtil;
 
 import javax.servlet.MultipartConfigElement;
 import java.io.FileNotFoundException;
@@ -59,12 +60,12 @@ abstract class UndertowServerBase implements ServerLifecycle {
     }
 
     protected URL getRootPath() {
-        URL root = Utils.getResource("/");
+        URL root = ResourceUtil.getResource("/");
         if (root != null) {
             return root;
         }
         try {
-            String path = Utils.getResource("").toString();
+            String path = ResourceUtil.getResource("").toString();
             if (path.startsWith("jar:")) {
                 int endIndex = path.indexOf("!");
                 path = path.substring(0, endIndex + 1) + "/";

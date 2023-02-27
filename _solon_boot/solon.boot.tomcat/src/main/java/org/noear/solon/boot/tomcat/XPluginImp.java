@@ -7,6 +7,7 @@ import org.noear.solon.boot.ServerLifecycle;
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.prop.impl.HttpServerProps;
 import org.noear.solon.core.*;
+import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.core.util.LogUtil;
 
 import javax.servlet.annotation.WebFilter;
@@ -55,7 +56,7 @@ public final class XPluginImp implements Plugin {
         //初始化属性
         ServerProps.init();
 
-        Class<?> jspClz = Utils.loadClass("org.apache.jasper.servlet.JspServlet");
+        Class<?> jspClz = ClassUtil.loadClass("org.apache.jasper.servlet.JspServlet");
 
         HttpServerProps props = new HttpServerProps();
         final String _host = props.getHost();

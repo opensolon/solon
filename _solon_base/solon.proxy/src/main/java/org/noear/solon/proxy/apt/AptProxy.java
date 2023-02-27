@@ -2,6 +2,7 @@ package org.noear.solon.proxy.apt;
 
 import org.noear.solon.Utils;
 import org.noear.solon.core.AopContext;
+import org.noear.solon.core.util.ClassUtil;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationHandler;
@@ -24,7 +25,7 @@ public class AptProxy {
                                           Class<?> targetClass) {
         //支持APT (支持 Graalvm Native  打包)
         String proxyClassName = targetClass.getName() + PROXY_CLASSNAME_SUFFIX;
-        Class<?> proxyClass = Utils.loadClass(context.getClassLoader(), proxyClassName);
+        Class<?> proxyClass = ClassUtil.loadClass(context.getClassLoader(), proxyClassName);
 
         if (proxyClass == null) {
             return null;

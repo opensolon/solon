@@ -7,6 +7,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.cloud.model.Media;
 import org.noear.solon.core.handle.Result;
+import org.noear.solon.core.util.ResourceUtil;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
 
@@ -47,7 +48,7 @@ public class CloudFileTest {
         }
 
         String key = "test/" + Utils.guid() + ".png";
-        File val = new File(Utils.getResource("test.png").getFile());
+        File val = new File(ResourceUtil.getResource("test.png").getFile());
         String valMime = Utils.mime(val.getName());
 
         Result result = CloudClient.file().put(key, new Media(new FileInputStream(val), valMime));

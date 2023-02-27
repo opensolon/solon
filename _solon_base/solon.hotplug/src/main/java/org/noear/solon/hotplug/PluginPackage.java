@@ -3,6 +3,8 @@ package org.noear.solon.hotplug;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.*;
+import org.noear.solon.core.util.ClassUtil;
+import org.noear.solon.core.util.ResourceUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -65,23 +67,23 @@ public class PluginPackage {
 
 
     public Class<?> loadClass(String className) {
-        return Utils.loadClass(getClassLoader(), className);
+        return ClassUtil.loadClass(getClassLoader(), className);
     }
 
     public <T> T newInstance(String className) {
-        return Utils.newInstance(getClassLoader(), className);
+        return ClassUtil.newInstance(getClassLoader(), className);
     }
 
     public URL getResource(String name) {
-        return Utils.getResource(getClassLoader(), name);
+        return ResourceUtil.getResource(getClassLoader(), name);
     }
 
     public String getResourceAsString(String name) throws IOException {
-        return Utils.getResourceAsString(getClassLoader(), name, Solon.encoding());
+        return ResourceUtil.getResourceAsString(getClassLoader(), name, Solon.encoding());
     }
 
     public String getResourceAsString(String name, String charset) throws IOException {
-        return Utils.getResourceAsString(getClassLoader(), name, charset);
+        return ResourceUtil.getResourceAsString(getClassLoader(), name, charset);
     }
 
     /**

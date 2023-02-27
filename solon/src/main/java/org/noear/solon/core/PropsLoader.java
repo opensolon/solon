@@ -2,6 +2,7 @@ package org.noear.solon.core;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
+import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.core.util.LogUtil;
 
 import java.io.IOException;
@@ -33,7 +34,7 @@ public class PropsLoader {
 
     static {
         //（静态扩展约定：org.noear.solon.extend.impl.XxxxExt）
-        PropsLoader tmp = Utils.newInstance("org.noear.solon.extend.impl.PropsLoaderExt");
+        PropsLoader tmp = ClassUtil.newInstance("org.noear.solon.extend.impl.PropsLoaderExt");
 
         if (tmp == null) {
             global = new PropsLoader();

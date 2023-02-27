@@ -10,6 +10,7 @@ import org.noear.solon.core.aspect.InterceptorEntity;
 import org.noear.solon.core.exception.InjectionException;
 import org.noear.solon.core.handle.HandlerLoader;
 import org.noear.solon.core.util.ConvertUtil;
+import org.noear.solon.core.util.ResourceUtil;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
@@ -598,7 +599,7 @@ public abstract class BeanContainer {
             // @Inject("${classpath:user.yml}") //注入配置文件
             //
             String url = name.substring(12, name.length() - 1);
-            Properties val = Utils.loadProperties(Utils.getResource(getClassLoader(),url));
+            Properties val = Utils.loadProperties(ResourceUtil.getResource(getClassLoader(),url));
 
             if (val == null) {
                 throw new IllegalStateException(name + "  failed to load!");

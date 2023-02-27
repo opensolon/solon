@@ -2,6 +2,7 @@ package org.noear.solon.extend.sqltoy;
 
 import org.noear.solon.Utils;
 import org.noear.solon.core.AopContext;
+import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.extend.sqltoy.configure.Elastic;
 import org.noear.solon.extend.sqltoy.configure.ElasticConfig;
 import org.noear.solon.extend.sqltoy.configure.SqlToyContextProperties;
@@ -179,7 +180,7 @@ class SqlToyContextBuilder {
                 IUnifyFieldsHandler handler = null;
                 // 类
                 if (unfiyHandler.contains(".")) {
-                    handler = Utils.newInstance(Class.forName(unfiyHandler));
+                    handler = ClassUtil.newInstance(Class.forName(unfiyHandler));
                 } // spring bean名称
                 else if (appContext.containsBean(unfiyHandler)) {
                     handler = (IUnifyFieldsHandler) appContext.getBean(unfiyHandler);
@@ -248,7 +249,7 @@ class SqlToyContextBuilder {
                         (TranslateCacheManager) appContext.getBean(translateCacheManager));
             } // 包名和类名称
             else if (translateCacheManager.contains(".")) {
-                sqlToyContext.setTranslateCacheManager(Utils.newInstance(Class.forName(translateCacheManager)));
+                sqlToyContext.setTranslateCacheManager(ClassUtil.newInstance(translateCacheManager));
             }
         }
 
@@ -259,7 +260,7 @@ class SqlToyContextBuilder {
                 sqlToyContext.setTypeHandler((TypeHandler) appContext.getBean(typeHandler));
             } // 包名和类名称
             else if (typeHandler.contains(".")) {
-                sqlToyContext.setTypeHandler(Utils.newInstance(Class.forName(typeHandler)));
+                sqlToyContext.setTypeHandler(ClassUtil.newInstance(typeHandler));
             }
         }
 
@@ -271,7 +272,7 @@ class SqlToyContextBuilder {
                         .setDataSourceSelector((DataSourceSelector) appContext.getBean(dataSourceSelector));
             } // 包名和类名称
             else if (dataSourceSelector.contains(".")) {
-                sqlToyContext.setDataSourceSelector(Utils.newInstance(Class.forName(dataSourceSelector)));
+                sqlToyContext.setDataSourceSelector(ClassUtil.newInstance(dataSourceSelector));
             }
         }
 
@@ -282,7 +283,7 @@ class SqlToyContextBuilder {
                 sqlToyContext.setConnectionFactory((ConnectionFactory) appContext.getBean(connectionFactory));
             } // 包名和类名称
             else if (connectionFactory.contains(".")) {
-                sqlToyContext.setConnectionFactory(Utils.newInstance(Class.forName(connectionFactory)));
+                sqlToyContext.setConnectionFactory(ClassUtil.newInstance(connectionFactory));
             }
         }
 
@@ -294,7 +295,7 @@ class SqlToyContextBuilder {
                         (FieldsSecureProvider) appContext.getBean(fieldsSecureProvider));
             } // 包名和类名称
             else if (fieldsSecureProvider.contains(".")) {
-                sqlToyContext.setFieldsSecureProvider(Utils.newInstance(Class.forName(fieldsSecureProvider)));
+                sqlToyContext.setFieldsSecureProvider(ClassUtil.newInstance(fieldsSecureProvider));
             }
         }
 
@@ -306,7 +307,7 @@ class SqlToyContextBuilder {
                         .setDesensitizeProvider((DesensitizeProvider) appContext.getBean(desensitizeProvider));
             } // 包名和类名称
             else if (desensitizeProvider.contains(".")) {
-                sqlToyContext.setDesensitizeProvider(Utils.newInstance(Class.forName(desensitizeProvider)));
+                sqlToyContext.setDesensitizeProvider(ClassUtil.newInstance(desensitizeProvider));
             }
         }
 
@@ -317,7 +318,7 @@ class SqlToyContextBuilder {
                 sqlToyContext.setCustomFilterHandler((FilterHandler) appContext.getBean(customFilterHandler));
             } // 包名和类名称
             else if (customFilterHandler.contains(".")) {
-                sqlToyContext.setCustomFilterHandler(Utils.newInstance(Class.forName(customFilterHandler)));
+                sqlToyContext.setCustomFilterHandler(ClassUtil.newInstance(customFilterHandler));
             }
         }
 
@@ -328,7 +329,7 @@ class SqlToyContextBuilder {
                 sqlToyContext.setOverTimeSqlHandler((OverTimeSqlHandler) appContext.getBean(overTimeSqlHandler));
             } // 包名和类名称
             else if (overTimeSqlHandler.contains(".")) {
-                sqlToyContext.setOverTimeSqlHandler(Utils.newInstance(Class.forName(overTimeSqlHandler)));
+                sqlToyContext.setOverTimeSqlHandler(ClassUtil.newInstance(overTimeSqlHandler));
             }
         }
         // 自定义sql拦截处理器
