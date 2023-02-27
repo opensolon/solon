@@ -74,8 +74,6 @@ public class SolonApp extends RouterWrapper {
         initRouter(this::doFilter);
 
         _handler = routerHandler();
-
-        enableJarIsolation(_cfg.getBool("solon.extend.isolation", false));
     }
 
 
@@ -672,24 +670,6 @@ public class SolonApp extends RouterWrapper {
      */
     public SolonApp enableSessionState(boolean enable) {
         _enableSessionState = enable;
-        return this;
-    }
-
-
-    private boolean _enableJarIsolation = false;
-
-    /**
-     * 是否已启用扩展Jar隔离
-     */
-    public boolean enableJarIsolation() {
-        return _enableJarIsolation;
-    }
-
-    /**
-     * 启用扩展Jar隔离
-     */
-    private SolonApp enableJarIsolation(boolean enable) {
-        _enableJarIsolation = enable;
         return this;
     }
 }
