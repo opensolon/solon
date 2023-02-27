@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
  * @author noear
  * @since 1.0
  * */
-public class AopContext extends BeanContainer implements Lifecycle {
+public class AopContext extends BeanContainer {
 
     public AopContext() {
         this(null, null);
@@ -42,7 +42,13 @@ public class AopContext extends BeanContainer implements Lifecycle {
         initialize();
     }
 
+
+    private final Set<RankEntity<LifecycleBean>> lifecycleBeans = new HashSet<>();
+
     private final Map<Method, MethodWrap> methodCached = new HashMap<>();
+
+    //加载事件
+    private final Set<RankEntity<ConsumerEx<AopContext>>> startedEvents = new LinkedHashSet<>();
 
     public MethodWrap methodGet(Method method) {
         MethodWrap mw = methodCached.get(method);
@@ -66,6 +72,9 @@ public class AopContext extends BeanContainer implements Lifecycle {
         methodCached.clear();
         beanCreatedCached.clear();
         startedEvents.clear();
+
+        lifecycleBeans.clear();
+
         started = false;
     }
 
@@ -193,6 +202,12 @@ public class AopContext extends BeanContainer implements Lifecycle {
             //如果是插件，则插入
             Solon.app().plug(bw.raw());
             LogUtil.global().error("Not support 'Plugin' as a component, please use 'LifecycleBean'");
+            return;
+        }
+
+        //LifecycleBean（替代 Plugin，提供组件的生态周期控制）
+        if(LifecycleBean.class.isAssignableFrom(clz)){
+            lifecycleBeans.add(new RankEntity<>(bw.raw(), index));
             return;
         }
 
@@ -626,8 +641,6 @@ public class AopContext extends BeanContainer implements Lifecycle {
 
     /////////
 
-    //加载事件
-    private final Set<RankEntity<Consumer<AopContext>>> startedEvents = new LinkedHashSet<>();
 
     //::bean事件处理
 
@@ -636,7 +649,7 @@ public class AopContext extends BeanContainer implements Lifecycle {
      */
     @Deprecated
     public void beanOnloaded(Consumer<AopContext> fun) {
-        onStarted(fun);
+        beanOnloaded(0,fun::accept);
     }
 
     /**
@@ -644,25 +657,37 @@ public class AopContext extends BeanContainer implements Lifecycle {
      */
     @Deprecated
     public void beanOnloaded(int index, Consumer<AopContext> fun) {
-        onStarted(index, fun);
+        try {
+            onStarted(index, fun::accept);
+        } catch (RuntimeException e) {
+            throw e;
+        } catch (Throwable e) {
+            throw new IllegalStateException(e);
+        }
     }
 
     /**
      * 添加bean加载完成事件
      */
-    public void onStarted(Consumer<AopContext> fun) {
+    public void onStarted(ConsumerEx<AopContext> fun){
         onStarted(0, fun);
     }
 
     /**
      * 添加bean加载完成事件
      */
-    public void onStarted(int index, Consumer<AopContext> fun) {
+    public void onStarted(int index, ConsumerEx<AopContext> fun) {
         startedEvents.add(new RankEntity<>(fun, index));
 
         //如果已加载完成，则直接返回
         if (started) {
-            fun.accept(this);
+            try {
+                fun.accept(this);
+            } catch (RuntimeException e) {
+                throw e;
+            } catch (Throwable e) {
+                throw new IllegalStateException(e);
+            }
         }
     }
 
@@ -686,39 +711,55 @@ public class AopContext extends BeanContainer implements Lifecycle {
     }
 
     /**
-     * 启动
+     * 启动（一般在插件启动之后，应用完成扫描，再执行）
      */
-    @Override
-    public void start() {
+    public void start(){
         started = true;
 
-        //排序（不用函数包装，是为了减少代码）
-        List<Consumer<AopContext>> tmp = startedEvents.stream()
-                .sorted(Comparator.comparingInt(m -> m.index))
-                .map(m -> m.target)
-                .collect(Collectors.toList());
+        try {
+            //执行加载事件 //支持排序
+            List<ConsumerEx<AopContext>> events = startedEvents.stream()
+                    .sorted(Comparator.comparingInt(m -> m.index))
+                    .map(m -> m.target)
+                    .collect(Collectors.toList());
 
-        //执行加载事件
-        for (Consumer<AopContext> m : tmp) {
-            m.accept(this);
-        }
+            for (ConsumerEx<AopContext> c : events) {
+                c.accept(this);
+            }
 
-        //执行生命周期bean
-        for (LifecycleBean b : lifecycleBeanSet) {
-            b.start();
+            //执行生命周期bean //支持排序
+            List<LifecycleBean> beans= lifecycleBeans.stream().sorted(Comparator.comparingInt(m -> m.index))
+                    .map(m -> m.target)
+                    .collect(Collectors.toList());
+
+            for (LifecycleBean b : beans) {
+                b.start();
+            }
+
+        } catch (RuntimeException e) {
+            throw e;
+        } catch (Throwable e) {
+            throw new IllegalStateException("AopContext start failed", e);
         }
     }
 
     /**
-     * 停止
+     * 停止（一般在插件停止之后，再执行）
      */
-    @Override
     public void stop() {
         started = false;
 
-        //执行生命周期bean
-        for (LifecycleBean b : lifecycleBeanSet) {
-            b.stop();
+        //执行生命周期bean //支持排序
+        List<LifecycleBean> beans= lifecycleBeans.stream().sorted(Comparator.comparingInt(m -> m.index))
+                .map(m -> m.target)
+                .collect(Collectors.toList());
+
+        for (LifecycleBean b : beans) {
+            try {
+                b.stop();
+            } catch (Throwable e) {
+                //e.printStackTrace();
+            }
         }
     }
 }

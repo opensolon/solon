@@ -4,6 +4,8 @@ import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
+import org.noear.solon.core.event.AppBeanLoadEndEvent;
+import org.noear.solon.core.event.EventBus;
 import org.noear.solon.health.HealthChecker;
 import org.noear.solon.health.detector.Detector;
 import org.noear.solon.health.detector.DetectorManager;
@@ -43,25 +45,26 @@ public class XPluginImp implements Plugin {
             DetectorManager.add(detector);
         });
 
-        context.onStarted((x) -> {
+        //晚点启动，让扫描时产生的组件可以注册进来
+        EventBus.subscribe(AppBeanLoadEndEvent.class, e -> {
             onLoaded(detectorNames);
         });
     }
 
-    private void onLoaded(Set<String> detectorNames) {
+    private void onLoaded(Set<String> detectorNames) throws Throwable {
         for (String name : detectorNames) {
             if ("*".equals(name)) {
                 for (Detector detector : DetectorManager.all()) {
-                    startDo(detector);
+                    onLoadedDo(detector);
                 }
             } else {
                 Detector detector = DetectorManager.get(name);
-                startDo(detector);
+                onLoadedDo(detector);
             }
         }
     }
 
-    private void startDo(Detector detector) {
+    private void onLoadedDo(Detector detector) throws Throwable {
         if (detector != null) {
             detector.start();
             HealthChecker.addIndicator(detector.getName(), detector);

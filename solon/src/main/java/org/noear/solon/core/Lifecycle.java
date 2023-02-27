@@ -10,9 +10,9 @@ public interface Lifecycle {
     /**
      * 开始
      * */
-    default void start(){}
+    default void start() throws Throwable{}
     /**
      * 停止
      * */
-    default void stop(){}
+    default void stop() throws Throwable{}
 }

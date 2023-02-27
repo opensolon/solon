@@ -20,7 +20,8 @@
 * 调整 Plugin::Init 标为弃用, 并由 InitializingBean 接口接替
 * 调整 Plugin 接口不再做为组件形态，有生命周期需求的可改为 LifecycleBean 接口
 * 调整 Plugin Spi 实例化改为 Bean 模式，之前为不能注入的 New 模式
-* 调整 AopContext 增加 Lifecycle 接口实现
+* 调整 AopContext 增加 start(),stop() 接口
+* 调整 Lifecycle 增加可异常选择
 * 调整 JarClassLoader 标为弃用，由 AppClassLoader 替代
 * 调整 调整打包时主函数的提示信息
 * 增加 应用属性配置内部引用增加默认值支持及环境变量引用
