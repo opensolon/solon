@@ -11,11 +11,13 @@
 
 ### v2.2.0
 * 新增 solon.proxy 和 solon.proxy.apt 插件
+* 新增 solon.graalvm 和 solon.graalvm.apt 插件
 * 实现 apt 代理方式，为全功能实现 Graalvm Native 打包提供支持
 * 简化 BeanInvocationHandler 内部代码，并增加 AptProxy 调用
-* 调整 solon.aspect 恢复对 protected 函数的代理
 * 调整 solon.aspect 增加 apt 支持；进而支持 Graalvm Native 打包
 * 调整 dateAsFormat 配置增加对 LocalDate 和 LocalDateTime 的支持
+* 增加 应用属性配置内部引用增加默认值支持及环境变量引用
+* sqltoy 升级为 5.2.37
 
 ### v2.1.4
 
