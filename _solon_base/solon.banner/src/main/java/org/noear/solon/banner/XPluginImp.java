@@ -4,6 +4,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
+import org.noear.solon.core.bean.InitializingBean;
 import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.core.util.ResourceUtil;
 
@@ -11,11 +12,11 @@ import org.noear.solon.core.util.ResourceUtil;
  * @author pmg1991
  * @since 1.11
  * */
-public class XPluginImp implements Plugin {
+public class XPluginImp implements Plugin, InitializingBean {
 	String BANNER_DEF_FILE = "META-INF/solon_def/banner-def.txt";
 
 	@Override
-	public void init(AopContext context) throws Throwable {
+	public void afterPropertiesSet() throws Throwable {
 		boolean enable = Solon.cfg().getBool("solon.banner.enable", true);
 
 		if (enable) {

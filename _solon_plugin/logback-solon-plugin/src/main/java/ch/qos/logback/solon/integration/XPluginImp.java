@@ -9,6 +9,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
+import org.noear.solon.core.bean.InitializingBean;
 import org.noear.solon.core.util.ResourceUtil;
 import org.noear.solon.logging.LogOptions;
 import org.noear.solon.logging.model.LoggerLevelEntity;
@@ -20,9 +21,9 @@ import java.net.URL;
  * @author noear
  * @since 1.6
  */
-public class XPluginImp implements Plugin {
+public class XPluginImp implements Plugin , InitializingBean {
     @Override
-    public void init(AopContext context) throws Throwable {
+    public void afterPropertiesSet() throws Throwable {
         URL url = ResourceUtil.getResource("logback.xml");
         if (url == null) {
             //尝试环境加载
@@ -50,7 +51,7 @@ public class XPluginImp implements Plugin {
 
     @Override
     public void start(AopContext context) throws Throwable{
-        init(context);
+        afterPropertiesSet();
     }
 
     private void initDo(URL url) {

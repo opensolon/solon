@@ -2,6 +2,7 @@ package org.noear.solon.cloud.extend.water;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
+import org.noear.solon.annotation.Inject;
 import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.cloud.CloudManager;
 import org.noear.solon.cloud.CloudProps;
@@ -14,6 +15,7 @@ import org.noear.solon.cloud.model.Config;
 import org.noear.solon.cloud.model.Instance;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
+import org.noear.solon.core.bean.InitializingBean;
 import org.noear.water.WW;
 import org.noear.water.WaterAddress;
 import org.noear.water.WaterClient;
@@ -25,15 +27,17 @@ import java.util.Timer;
  * @author noear
  * @since 1.2
  */
-public class XPluginImp implements Plugin {
-    private Timer clientTimer = new Timer();
+public class XPluginImp implements Plugin , InitializingBean {
+    @Inject
+    AopContext aopContext;
 
+    private Timer clientTimer = new Timer();
     private CloudProps cloudProps;
     private boolean inited = false;
 
-    private boolean initDo(AopContext aopContext) throws Throwable {
+    private boolean initDo(AopContext context) throws Throwable {
         if(cloudProps == null){
-            cloudProps = new CloudProps(aopContext,"water");;
+            cloudProps = new CloudProps(context,"water");;
         }
 
         if(inited){
@@ -82,8 +86,8 @@ public class XPluginImp implements Plugin {
     }
 
     @Override
-    public void init(AopContext context) throws Throwable {
-        if (initDo(context) == false) {
+    public void afterPropertiesSet() throws Throwable {
+        if (initDo(aopContext) == false) {
             return;
         }
 
