@@ -126,7 +126,7 @@ public class AopContext extends BeanContainer {
             }
 
             //添加bean形态处理
-            addBeanShape(clz, bw, 0, clz);
+            addBeanShape(clz, bw,  clz);
 
             //注册到容器 //Configuration 不进入二次注册
             //beanRegister(bw,bw.name(),bw.typed());
@@ -143,8 +143,12 @@ public class AopContext extends BeanContainer {
             bw.tagSet(anno.tag());
             bw.typedSet(anno.typed());
 
+            if(anno.index() !=0){
+                bw.orderSet(anno.index());
+            }
+
             //添加bean形态处理
-            addBeanShape(clz, bw, anno.index(), clz);
+            addBeanShape(clz, bw, clz);
 
             //注册到容器
             beanRegister(bw, beanName, anno.typed());
@@ -196,7 +200,7 @@ public class AopContext extends BeanContainer {
     /**
      * 添加bean的不同形态
      */
-    private void addBeanShape(Class<?> clz, BeanWrap bw, int index, AnnotatedElement annoEl) {
+    private void addBeanShape(Class<?> clz, BeanWrap bw, AnnotatedElement annoEl) {
         //Plugin
         if (Plugin.class.isAssignableFrom(clz)) {
             //如果是插件，则插入
@@ -207,7 +211,7 @@ public class AopContext extends BeanContainer {
 
         //LifecycleBean（替代 Plugin，提供组件的生态周期控制）
         if(LifecycleBean.class.isAssignableFrom(clz)){
-            lifecycleBeans.add(new RankEntity<>(bw.raw(), index));
+            lifecycleBeans.add(new RankEntity<>(bw.raw(), bw.order()));
             return;
         }
 
@@ -237,12 +241,12 @@ public class AopContext extends BeanContainer {
 
         //Filter
         if (Filter.class.isAssignableFrom(clz)) {
-            Solon.app().filter(index, bw.raw());
+            Solon.app().filter(bw.order(), bw.raw());
         }
 
         //RouterInterceptor
         if (RouterInterceptor.class.isAssignableFrom(clz)) {
-            Solon.app().routerInterceptor(index, bw.raw());
+            Solon.app().routerInterceptor(bw.order(), bw.raw());
         }
     }
 
@@ -622,8 +626,12 @@ public class AopContext extends BeanContainer {
             m_bw.tagSet(anno.tag());
             m_bw.typedSet(anno.typed());
 
+            if(anno.index() !=0){
+                m_bw.orderSet(anno.index());
+            }
+
             //添加bean形态处理
-            addBeanShape(m_bw.clz(), m_bw, anno.index(), mWrap.getMethod());
+            addBeanShape(m_bw.clz(), m_bw, mWrap.getMethod());
 
             //注册到容器
             beanRegister(m_bw, beanName, anno.typed());
@@ -719,7 +727,7 @@ public class AopContext extends BeanContainer {
         try {
             //执行加载事件 //支持排序
             List<ConsumerEx<AopContext>> events = startedEvents.stream()
-                    .sorted(Comparator.comparingInt(m -> m.index))
+                    .sorted(Comparator.comparingInt(m -> m.order))
                     .map(m -> m.target)
                     .collect(Collectors.toList());
 
@@ -728,12 +736,11 @@ public class AopContext extends BeanContainer {
             }
 
             //执行生命周期bean //支持排序
-            List<LifecycleBean> beans= lifecycleBeans.stream().sorted(Comparator.comparingInt(m -> m.index))
-                    .map(m -> m.target)
-                    .collect(Collectors.toList());
+            List<RankEntity<LifecycleBean>> beans = new ArrayList<>(lifecycleBeans);
+            beans.sort(Comparator.comparingInt(f -> f.order));
 
-            for (LifecycleBean b : beans) {
-                b.start();
+            for (RankEntity<LifecycleBean> b : beans) {
+                b.target.start();
             }
 
         } catch (RuntimeException e) {
@@ -749,14 +756,15 @@ public class AopContext extends BeanContainer {
     public void stop() {
         started = false;
 
-        //执行生命周期bean //支持排序
-        List<LifecycleBean> beans= lifecycleBeans.stream().sorted(Comparator.comparingInt(m -> m.index))
-                .map(m -> m.target)
-                .collect(Collectors.toList());
 
-        for (LifecycleBean b : beans) {
+
+        //执行生命周期bean //支持排序
+        List<RankEntity<LifecycleBean>> beans = new ArrayList<>(lifecycleBeans);
+        beans.sort(Comparator.comparingInt(f -> f.order));
+
+        for (RankEntity<LifecycleBean> b : beans) {
             try {
-                b.stop();
+                b.target.stop();
             } catch (Throwable e) {
                 //e.printStackTrace();
             }

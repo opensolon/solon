@@ -4,6 +4,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
 import org.noear.solon.annotation.Init;
+import org.noear.solon.annotation.Order;
 import org.noear.solon.annotation.Singleton;
 import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.core.util.IndexBuilder;
@@ -23,8 +24,6 @@ public class BeanWrap {
     private Class<?> clz;
     // bean clz init method
     private Method clzInit;
-    // bean clz init method delay
-    private boolean clzInitDelay;
     // bean clz init method index
     private int clzInitIndex;
     // bean raw（初始实例）
@@ -35,6 +34,8 @@ public class BeanWrap {
     private boolean remoting;
     // bean name
     private String name;
+    // bean order
+    private int order;
     // bean tag
     private String tag;
     // bean 是否按注册类型
@@ -71,8 +72,14 @@ public class BeanWrap {
         this.name = name;
         this.typed = typed;
 
-        Singleton ano = clz.getAnnotation(Singleton.class);
-        singleton = (ano == null || ano.value()); //默认为单例
+        //单例
+        Singleton anoS = clz.getAnnotation(Singleton.class);
+        singleton = (anoS == null || anoS.value()); //默认为单例
+
+        //排序
+        Order annO = clz.getAnnotation(Order.class);
+        order = (annO == null ? 0 : annO.value());
+
         annotations = clz.getAnnotations();
 
         tryBuildInit();
@@ -153,6 +160,14 @@ public class BeanWrap {
         this.name = name;
     }
 
+    public int order(){
+        return order;
+    }
+
+    public void orderSet(int order) {
+        this.order = order;
+    }
+
     /**
      * bean 标签
      */
@@ -206,19 +221,14 @@ public class BeanWrap {
 
         //b.调用初始化函数
         if (clzInit != null) {
-            if (clzInitDelay) {
-
-                if (clzInitIndex == 0) {
-                    //如果为0，则自动识别
-                    clzInitIndex = new IndexBuilder().buildIndex(clz);
-                }
-
-                context.onStarted(clzInitIndex, (ctx) -> {
-                    initInvokeDo(bean);
-                });
-            } else {
-                initInvokeDo(bean);
+            if (clzInitIndex == 0) {
+                //如果为0，则自动识别
+                clzInitIndex = new IndexBuilder().buildIndex(clz);
             }
+
+            context.onStarted(clzInitIndex, (ctx) -> {
+                initInvokeDo(bean);
+            });
         }
     }
 
@@ -282,7 +292,6 @@ public class BeanWrap {
                     //只接收没有参数的，支持非公有函数
                     clzInit = m;
                     clzInit.setAccessible(true);
-                    clzInitDelay = initAnno.delay();
                     clzInitIndex = initAnno.index();
                 }
                 break;
