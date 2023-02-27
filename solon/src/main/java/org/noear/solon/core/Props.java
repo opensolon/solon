@@ -61,6 +61,10 @@ public class Props extends Properties {
      * @param expr 兼容 ${key} or key or ${key:def} or key:def
      */
     public String getByExpr(String expr) {
+        return getByExpr(expr, null);
+    }
+
+    protected String getByExpr(String expr, Properties props) {
         String name = expr;
 
         //如果有表达式，去掉符号
@@ -80,7 +84,23 @@ public class Props extends Properties {
             name = name.substring(0, defIdx).trim();
         }
 
-        String val = get(name);
+
+        String val = null;
+
+        if (props != null) {
+            //从"目标属性"获取
+            val = props.getProperty(name);
+        }
+
+        if (val == null) {
+            //从"本属性"获取
+            val = get(name);
+
+            if (val == null && Character.isUpperCase(name.charAt(0))) {
+                //从"环镜变量"获取
+                val = System.getenv(name);
+            }
+        }
 
         if (val == null) {
             return def;
@@ -93,18 +113,38 @@ public class Props extends Properties {
      * @param tml 模板： ${key} 或 aaa${key}bbb
      */
     public String getByParse(String tml) {
+        return getByParse(tml, null);
+    }
+
+    protected String getByParse(String tml, Properties props) {
         if (Utils.isEmpty(tml)) {
             return tml;
         }
 
-        int start = tml.indexOf("${");
-        if (start < 0) {
-            return tml;
-        } else {
-            int end = tml.indexOf("}");
-            String name = tml.substring(start + 2, end);
-            String value = getByExpr(name);//支持默认值表达式
-            return tml.substring(0, start) + value + tml.substring(end + 1);
+        int start = 0, end = 0;
+        while (true) {
+            start = tml.indexOf("${", start);
+
+            if (start < 0) {
+                return tml;
+            } else {
+                end = tml.indexOf("}", start);
+
+                if (end < 0) {
+                    throw new IllegalStateException("Invalid template expression: " + tml);
+                }
+
+                String name = tml.substring(start + 2, end);
+                String value = getByExpr(name, props);//支持默认值表达式
+                if (value == null) {
+                    value = "";
+                }
+
+                tml = tml.substring(0, start) + value + tml.substring(end + 1);
+
+                //起始位增量
+                start = start + value.length();
+            }
         }
     }
 
@@ -281,7 +321,7 @@ public class Props extends Properties {
 
                     setFun.accept(key, (String) v);
 
-                    if(key.contains("-")){
+                    if (key.contains("-")) {
                         String camelKey = buildCamelKey(key);
                         setFun.accept(camelKey, (String) v);
                     }
@@ -455,42 +495,7 @@ public class Props extends Properties {
                         // db1.jdbcUrl=${db1.url}
                         // db1.jdbcUrl=jdbc:mysql:${db1.server}
                         // db1.jdbcUrl=jdbc:mysql:${db1.server}/${db1.db}
-                        String v1Str = (String) v1;
-                        int symStart = 0;
-
-                        while (true) {
-                            symStart = v1Str.indexOf("${", symStart);
-                            if (symStart >= 0) {
-                                int symEnd = v1Str.indexOf("}", symStart + 1);
-                                if (symEnd > symStart) {
-                                    String tmpK = v1Str.substring(symStart + 2, symEnd);
-
-                                    String tmpV2 = props.getProperty(tmpK);
-                                    if (tmpV2 == null) {
-                                        tmpV2 = getProperty(tmpK);
-                                    }
-
-                                    if (tmpV2 == null) {
-                                        symStart = symEnd;
-                                    } else {
-                                        if (symStart > 0) {
-                                            //确定左侧部分
-                                            tmpV2 = v1Str.substring(0, symStart) + tmpV2;
-                                        }
-                                        symStart = tmpV2.length();
-                                        v1Str = tmpV2 + v1Str.substring(symEnd + 1);
-                                    }
-                                } else {
-                                    //找不到 "}"，则终止
-                                    break;
-                                }
-                            } else {
-                                //找不到 "${"，则终止
-                                break;
-                            }
-                        }
-
-                        v1 = v1Str;
+                        v1 = getByParse((String) v1, props);
                     }
 
                     if (v1 != null) {
@@ -513,7 +518,7 @@ public class Props extends Properties {
 
     /**
      * 将 - 转为小驼峰key
-     * */
+     */
     private String buildCamelKey(String key) {
         String[] ss = key.split("-");
         StringBuilder sb = new StringBuilder(key.length());

@@ -78,6 +78,7 @@ solon.socketd:
 formattest:
   text: "${solon.socketd.readBufferSize}m/-/${solon.locale}"
   text2: "${aaaa.bbb}"
+  text3: "${aaaa.bbb:12}"
 
 
 server:
