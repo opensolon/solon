@@ -61,7 +61,7 @@ public abstract class BeanContainer {
      */
     public ClassLoader getClassLoader() {
         if (classLoader == null) {
-            return AppClassLoader.global();
+            return JarClassLoader.global();
         } else {
             return classLoader;
         }

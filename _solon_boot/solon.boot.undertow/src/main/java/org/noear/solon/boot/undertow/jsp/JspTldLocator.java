@@ -10,7 +10,7 @@ import org.jboss.metadata.parser.util.NoopXMLResolver;
 import org.jboss.metadata.web.spec.*;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
-import org.noear.solon.core.AppClassLoader;
+import org.noear.solon.core.JarClassLoader;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.ResourceUtil;
 import org.noear.solon.core.util.ScanUtil;
@@ -69,7 +69,7 @@ public class JspTldLocator {
 
         //自己的.tld
         try {
-            ScanUtil.scan(AppClassLoader.global(), webinfo_path, n -> n.endsWith(".tld")).forEach((uri) -> {
+            ScanUtil.scan(JarClassLoader.global(), webinfo_path, n -> n.endsWith(".tld")).forEach((uri) -> {
                 loadTagLibraryInfo(tagLibInfos, () -> ResourceUtil.getResource(uri).openStream());
             });
         } catch (Throwable e) {

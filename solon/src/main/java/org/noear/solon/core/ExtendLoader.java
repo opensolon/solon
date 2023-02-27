@@ -56,7 +56,7 @@ public class ExtendLoader {
     public static List<ClassLoader> load(String extend, boolean autoMake, Predicate<String> filter) {
         List<ClassLoader> loaders = new ArrayList<>();
 
-        loaders.add(AppClassLoader.global());
+        loaders.add(JarClassLoader.global());
 
         if (Utils.isNotEmpty(extend)) {
             if (extend.startsWith("!")) {
@@ -89,9 +89,9 @@ public class ExtendLoader {
         try {
             //启用了扩展隔离或者强制隔离
             if (Solon.app().enableJarIsolation() || file.getName().startsWith("!")) {
-                loaders.add(AppClassLoader.loadJar(file));
+                loaders.add(JarClassLoader.loadJar(file));
             } else {
-                AppClassLoader.global().addJar(file);
+                JarClassLoader.global().addJar(file);
             }
 
             return true;
@@ -103,7 +103,7 @@ public class ExtendLoader {
 
     public static boolean loadJar(File file) {
         try {
-            AppClassLoader.global().addJar(file);
+            JarClassLoader.global().addJar(file);
             return true;
         } catch (Throwable e) {
             EventBus.pushTry(e);
@@ -116,7 +116,7 @@ public class ExtendLoader {
      */
     public static boolean unloadJar(File file) {
         try {
-            AppClassLoader.global().removeJar(file);
+            JarClassLoader.global().removeJar(file);
             return true;
         } catch (Throwable e) {
             EventBus.pushTry(e);

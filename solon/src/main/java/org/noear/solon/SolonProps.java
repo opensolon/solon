@@ -296,7 +296,7 @@ public final class SolonProps extends Props {
         }
 
         //扫描主配置
-        PluginUtil.findPlugins(AppClassLoader.global(), this, plugs::add);
+        PluginUtil.findPlugins(JarClassLoader.global(), this, plugs::add);
 
         //插件排序
         plugsSort();

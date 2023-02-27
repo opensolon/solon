@@ -2,7 +2,7 @@ package org.noear.solon.core.util;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
-import org.noear.solon.core.AppClassLoader;
+import org.noear.solon.core.JarClassLoader;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -25,7 +25,7 @@ public class ResourceUtil {
      * @param name 资源名称
      */
     public static Enumeration<URL> getResources(String name) throws IOException {
-        return getResources(AppClassLoader.global(), name);
+        return getResources(JarClassLoader.global(), name);
     }
 
     /**
@@ -44,7 +44,7 @@ public class ResourceUtil {
      * @param name 资源名称
      */
     public static URL getResource(String name) {
-        return getResource(AppClassLoader.global(), name); //Utils.class.getResource(name);
+        return getResource(JarClassLoader.global(), name); //Utils.class.getResource(name);
     }
 
     /**
@@ -63,7 +63,7 @@ public class ResourceUtil {
      * @param name 资源名称
      */
     public static String getResourceAsString(String name) throws IOException {
-        return getResourceAsString(AppClassLoader.global(), name, Solon.encoding());
+        return getResourceAsString(JarClassLoader.global(), name, Solon.encoding());
     }
 
     /**
@@ -73,7 +73,7 @@ public class ResourceUtil {
      * @param charset 编码
      */
     public static String getResourceAsString(String name, String charset) throws IOException {
-        return getResourceAsString(AppClassLoader.global(), name, charset);
+        return getResourceAsString(JarClassLoader.global(), name, charset);
     }
 
     /**
@@ -110,7 +110,7 @@ public class ResourceUtil {
      * @param clzExpr 类表达式（基于 import 表达式扩展）
      */
     public static Collection<Class<?>> scanClasses(String clzExpr) {
-        return scanClasses(AppClassLoader.global(), clzExpr);
+        return scanClasses(JarClassLoader.global(), clzExpr);
     }
 
     public static Collection<Class<?>> scanClasses(ClassLoader classLoader, String clzExpr) {
@@ -166,7 +166,7 @@ public class ResourceUtil {
      * @param resExpr 资源表达式
      */
     public static Collection<String> scanResources(String resExpr) {
-        return scanResources(AppClassLoader.global(), resExpr);
+        return scanResources(JarClassLoader.global(), resExpr);
     }
 
     public static Collection<String> scanResources(ClassLoader classLoader, String resExpr) {

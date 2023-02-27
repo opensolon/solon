@@ -42,7 +42,7 @@ public class FreemarkerRender implements Render {
     //不要要入参，方便后面多视图混用
     //
     public FreemarkerRender() {
-        this(AppClassLoader.global());
+        this(JarClassLoader.global());
     }
     public FreemarkerRender(ClassLoader classLoader) {
         this.classLoader = classLoader;

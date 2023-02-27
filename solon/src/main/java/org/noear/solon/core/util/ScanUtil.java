@@ -1,6 +1,6 @@
 package org.noear.solon.core.util;
 
-import org.noear.solon.core.AppClassLoader;
+import org.noear.solon.core.JarClassLoader;
 import org.noear.solon.core.ResourceScanner;
 
 import java.util.*;
@@ -43,7 +43,7 @@ public class ScanUtil {
      * @param filter 过滤条件
      */
     public static Set<String> scan(String path, Predicate<String> filter) {
-        return scan(AppClassLoader.global(), path, filter);
+        return scan(JarClassLoader.global(), path, filter);
     }
 
     /**

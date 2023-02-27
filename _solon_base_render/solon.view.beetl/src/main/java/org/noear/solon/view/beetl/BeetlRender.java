@@ -9,7 +9,7 @@ import org.beetl.core.statement.ErrorGrammarProgram;
 import org.beetl.core.tag.Tag;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
-import org.noear.solon.core.AppClassLoader;
+import org.noear.solon.core.JarClassLoader;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.Render;
 import org.noear.solon.core.handle.ModelAndView;
@@ -52,7 +52,7 @@ public class BeetlRender implements Render {
     //不要要入参，方便后面多视图混用
     //
     public BeetlRender() {
-        this(AppClassLoader.global());
+        this(JarClassLoader.global());
     }
 
     public BeetlRender(ClassLoader classLoader) {
