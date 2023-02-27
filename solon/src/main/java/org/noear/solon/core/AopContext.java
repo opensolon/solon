@@ -142,6 +142,7 @@ public class AopContext extends BeanContainer {
             bw.tagSet(anno.tag());
             bw.typedSet(anno.typed());
 
+            //兼容旧写法
             if(anno.index() !=0){
                 bw.orderSet(anno.index());
             }
@@ -625,8 +626,15 @@ public class AopContext extends BeanContainer {
             m_bw.tagSet(anno.tag());
             m_bw.typedSet(anno.typed());
 
-            if(anno.index() !=0){
-                m_bw.orderSet(anno.index());
+            //确定顺序位
+            Order annO = mWrap.getAnnotation(Order.class);
+            if(annO == null) {
+                //兼容旧写法
+                if (anno.index() != 0) {
+                    m_bw.orderSet(anno.index());
+                }
+            }else{
+                m_bw.orderSet(annO.value());
             }
 
             //添加bean形态处理
