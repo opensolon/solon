@@ -445,12 +445,14 @@ public class AopContext extends BeanContainer {
         for (Annotation a : annS) {
             BeanInjector bi = beanInjectors.get(a.annotationType());
             if (bi != null) {
+                //只允许一个注入器有效 //如果有多个略过
                 bi.doInject(varH, a);
-            }else{
-                //如果没有注入器，直接为null。用于触发事件
-                varH.setValue(null);
+                return;
             }
         }
+
+        //如果没有注入器，则为null。用于触发事件
+        varH.setValue(null);
     }
 
     /**
