@@ -10,13 +10,26 @@
 * 提醒2：有使用弃用接口的。建议先升级到 1.12.4；替换弃用代码后，再升级到 2.0.0
 
 ### v2.2.0
-* 新增 solon.proxy 和 solon.proxy.apt 插件
-* 新增 solon.graalvm 和 solon.graalvm.apt 插件
-* 实现 apt 代理方式，为全功能实现 Graalvm Native 打包提供支持
-* 简化 BeanInvocationHandler 内部代码，并增加 AptProxy 调用
+* 新增 solon.proxy 插件
+* 新增 solon.proxy.apt 插件
+* 新增 solon.graalvm 插件
+* 新增 solon.graalvm.apt 插件
+* 调整 BeanInvocationHandler 内部代码，简化并增加 AptProxy 调用
 * 调整 solon.aspect 增加 apt 支持；进而支持 Graalvm Native 打包
 * 调整 dateAsFormat 配置增加对 LocalDate 和 LocalDateTime 的支持
+* 调整 Plugin::Init 标为弃用, 并由 InitializingBean 接口接替
+* 调整 Plugin 接口不再做为组件形态，有生命周期需求的可改为 LifecycleBean 接口
+* 调整 Plugin Spi 实例化改为 Bean 模式，之前为不能注入的 New 模式
+* 调整 AopContext 增加 Lifecycle 接口实现
+* 调整 JarClassLoader 标为弃用，由 AppClassLoader 替代
+* 调整 调整打包时主函数的提示信息
 * 增加 应用属性配置内部引用增加默认值支持及环境变量引用
+* 增加 @ProxyComponent 注解，使用时强依赖于 solon.proxy 插件
+* 增加 @SolonMain 主解，作为 apt 生成 Graalvm Native 元信息配置的入口
+* 增加 apt 代理实现方式（做为 asm 实现的补充），为全功能实现 Graalvm Native 打包提供支持
+* 增加 InitializingBean 接口
+* 增加 LifecycleBean 接口
+* 增加 ClassUtil 工具类
 * sqltoy 升级为 5.2.37
 
 ### v2.1.4
