@@ -7,5 +7,8 @@ package org.noear.solon.core.bean;
  * @since 2.2
  */
 public interface InitializingBean {
-    void afterPropertiesSet() throws Throwable;
+    /**
+     * 属性注入后
+     * */
+    default void afterPropertiesSet() throws Throwable{}
 }
