@@ -17,7 +17,6 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
 import java.util.*;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
 /**
  * Aop 上下文（ 为全局对象；热插拨的插件，会产生独立的上下文）
@@ -725,14 +724,13 @@ public class AopContext extends BeanContainer {
         started = true;
 
         try {
-            //执行加载事件 //支持排序
-            List<ConsumerEx<AopContext>> events = startedEvents.stream()
-                    .sorted(Comparator.comparingInt(m -> m.order))
-                    .map(m -> m.target)
-                    .collect(Collectors.toList());
 
-            for (ConsumerEx<AopContext> c : events) {
-                c.accept(this);
+            //执行加载事件 //支持排序
+            List<RankEntity<ConsumerEx<AopContext>>> events = new ArrayList<>(startedEvents);
+            events.sort(Comparator.comparingInt(m -> m.order));
+
+            for (RankEntity<ConsumerEx<AopContext>> c : events) {
+                c.target.accept(this);
             }
 
             //执行生命周期bean //支持排序
@@ -755,8 +753,6 @@ public class AopContext extends BeanContainer {
      */
     public void stop() {
         started = false;
-
-
 
         //执行生命周期bean //支持排序
         List<RankEntity<LifecycleBean>> beans = new ArrayList<>(lifecycleBeans);
