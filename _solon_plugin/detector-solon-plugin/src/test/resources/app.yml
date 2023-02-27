@@ -1,8 +1,0 @@
-
-solon.app:
-  name: demoapi
-  gorup: demo
-
-
-# 可选: cpu,disk,jvm,memory,os,qps (qps 最好别加)
-solon.health.detector: "*"

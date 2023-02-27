@@ -17,19 +17,7 @@
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.health</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.github.wujiuye</groupId>
-            <artifactId>qps-helper</artifactId>
-            <version>1.1.1-RELEASE</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon-api</artifactId>
-            <scope>test</scope>
+            <artifactId>solon.health.detector</artifactId>
         </dependency>
     </dependencies>
 
