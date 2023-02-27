@@ -11,6 +11,7 @@ import org.noear.solon.core.route.RoutingTable;
 import org.noear.solon.core.route.RoutingTableDefault;
 import org.noear.solon.core.util.PathUtil;
 import org.noear.solon.core.util.DataThrowable;
+import org.noear.solon.core.util.RankEntity;
 
 import java.util.*;
 import java.util.function.Predicate;
@@ -43,7 +44,7 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
     private final RoutingTable<Handler> mainRouting;
     private final String mapping;
     private Mapping mappingAnno;
-    private List<FilterEntity> filterList = new ArrayList<>();
+    private List<RankEntity<Filter>> filterList = new ArrayList<>();
 
     public Gateway() {
         this(new RoutingTableDefault<>());
@@ -63,7 +64,7 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
         //默认为404错误输出
         mainDef = (c) -> c.status(404);
 
-        filterList.add(new FilterEntity(Integer.MAX_VALUE, this::doFilter));
+        filterList.add(new RankEntity<>(this::doFilter, Integer.MAX_VALUE));
 
         register();
     }
@@ -137,9 +138,9 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
         filter(0, filter);
     }
 
-    public void filter(int index, Filter filter) {
-        filterList.add(new FilterEntity(index, filter));
-        filterList.sort(Comparator.comparingInt(f -> f.index));
+    public void filter(int order, Filter filter) {
+        filterList.add(new RankEntity<>(filter, order));
+        filterList.sort(Comparator.comparingInt(f -> f.order));
     }
 
     /**
