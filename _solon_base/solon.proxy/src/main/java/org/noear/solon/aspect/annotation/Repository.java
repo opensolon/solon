@@ -8,12 +8,11 @@ import org.noear.solon.annotation.ProxyComponent;
 import java.lang.annotation.*;
 
 /**
- * 仓库类注解（支持代理机制，即支持拦截机制））；改用 @ProxyComponent
+ * 仓库类注解（未来会弃用，建议改用 @ProxyComponent）
  *
  * @see ProxyComponent
  * @author noear
  * @since 1.5
- * @deprecated 2.1
  */
 @Component
 @Target({ElementType.TYPE})
