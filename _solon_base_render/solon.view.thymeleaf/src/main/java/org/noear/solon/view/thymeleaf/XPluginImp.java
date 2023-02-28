@@ -20,8 +20,8 @@ public class XPluginImp implements Plugin {
 
         ThymeleafRender render = ThymeleafRender.global();
 
-        context.onStarted((ctx) -> {
-            ctx.beanForeach((k, v) -> {
+        context.onStarted(x -> {
+            x.beanForeach((k, v) -> {
                 if (k.startsWith("view:")) { //java view widget
                     if (IDialect.class.isAssignableFrom(v.clz())) {
                         render.putDirective(v.raw());

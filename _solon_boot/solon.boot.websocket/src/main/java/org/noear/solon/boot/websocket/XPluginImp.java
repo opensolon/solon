@@ -33,14 +33,8 @@ public class XPluginImp implements Plugin {
             return;
         }
 
-        context.onStarted((ctx) -> {
-            try {
-                start0(Solon.app());
-            } catch (RuntimeException e) {
-                throw e;
-            } catch (Throwable e) {
-                throw new IllegalStateException(e);
-            }
+        context.onStarted(x -> {
+            start0(Solon.app());
         });
     }
 

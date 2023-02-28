@@ -221,7 +221,7 @@ public class BeanWrap {
                 clzInitIndex = new IndexBuilder().buildIndex(clz);
             }
 
-            context.onStarted(clzInitIndex, (ctx) -> {
+            context.onStarted(clzInitIndex, x -> {
                 initInvokeDo(bean);
             });
         }

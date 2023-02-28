@@ -181,7 +181,7 @@ public class XPluginImp implements Plugin , InitializingBean {
                         new HandlerConfigUpdate(configServiceImp));
             }
 
-            context.onStarted(ctx -> eventServiceImp.subscribe());
+            context.onStarted(x -> eventServiceImp.subscribe());
         }
 
         if (cloudProps.getLockEnable()) {
@@ -195,7 +195,7 @@ public class XPluginImp implements Plugin , InitializingBean {
         if (cloudProps.getJobEnable()) {
             CloudManager.register(CloudJobServiceWaterImp.instance);
 
-            context.onStarted((ctx) -> {
+            context.onStarted(x -> {
                 CloudJobServiceWaterImp.instance.push();
             });
         }

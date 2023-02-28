@@ -30,7 +30,7 @@ public class XPluginImp implements Plugin {
             return;
         }
 
-        context.onStarted((ctx) -> {
+        context.onStarted(x -> {
             start0(Solon.app());
         });
     }

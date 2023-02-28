@@ -33,14 +33,14 @@ public class XPluginImp implements Plugin {
 
         //初始化管理器（主要为了生成动态管理器）
         //
-        context.onStarted((ctx) -> {
-            BeanWrap defBw = ctx.getWrap(DataSource.class);
+        context.onStarted(x -> {
+            BeanWrap defBw = x.getWrap(DataSource.class);
 
             if (defBw != null) {
                 DbManager.dynamicBuild(defBw);
 
                 if (DbManager.dynamicGet() != null) {
-                    ctx.wrapAndPut(SQLManager.class, DbManager.dynamicGet());
+                    x.wrapAndPut(SQLManager.class, DbManager.dynamicGet());
                 }
             }
         });

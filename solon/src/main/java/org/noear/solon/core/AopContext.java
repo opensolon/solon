@@ -463,13 +463,7 @@ public class AopContext extends BeanContainer {
         Condition mc = m.getAnnotation(Condition.class);
 
         if (started == false && ConditionUtil.ifMissing(mc)) {
-            onStarted((x) -> {
-                try {
-                    tryCreateBeanOfMethod0(bw, m, ma, mc);
-                } catch (Exception e) {
-                    throw new IllegalStateException(e);
-                }
-            });
+            onStarted((x) -> tryCreateBeanOfMethod0(bw, m, ma, mc));
         } else {
             tryCreateBeanOfMethod0(bw, m, ma, mc);
         }
@@ -498,9 +492,7 @@ public class AopContext extends BeanContainer {
         Condition cc = clz.getAnnotation(Condition.class);
 
         if (started == false && ConditionUtil.ifMissing(cc)) {
-            onStarted(x -> {
-                tryCreateBeanOfClass0(clz, cc);
-            });
+            onStarted(x -> tryCreateBeanOfClass0(clz, cc));
         } else {
             tryCreateBeanOfClass0(clz, cc);
         }

@@ -30,9 +30,9 @@ public class XPluginImp implements Plugin {
 
             context.subWrapsOfType(CacheService.class, new CacheServiceWrapConsumer());
 
-            context.onStarted((ctx) -> {
-                if (ctx.hasWrap(CacheService.class) == false) {
-                    ctx.wrapAndPut(CacheService.class, LocalCacheService.instance);
+            context.onStarted(x -> {
+                if (x.hasWrap(CacheService.class) == false) {
+                    x.wrapAndPut(CacheService.class, LocalCacheService.instance);
                 }
             });
 

@@ -24,7 +24,7 @@ public class XPluginImp implements Plugin {
             CloudEventServiceRabbitmqImp eventServiceImp = new CloudEventServiceRabbitmqImp(cloudProps);
             CloudManager.register(eventServiceImp);
 
-            context.onStarted(ctx -> eventServiceImp.subscribe());
+            context.onStarted(x -> eventServiceImp.subscribe());
         }
     }
 }

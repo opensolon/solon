@@ -33,7 +33,7 @@ public class XPluginImp implements Plugin {
         context.wrapAndPut(SnackRenderTypedFactory.class, renderTypedFactory);
 
 
-        context.onStarted((x)->{
+        context.onStarted(x ->{
             //晚点加载，给定制更多时机
             RenderManager.mapping("@json", renderFactory.create());
             RenderManager.mapping("@type_json", renderTypedFactory.create());
