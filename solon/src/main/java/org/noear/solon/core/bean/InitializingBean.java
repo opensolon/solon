@@ -8,7 +8,7 @@ package org.noear.solon.core.bean;
  */
 public interface InitializingBean {
     /**
-     * 字段注入后
+     * 注入之后
      * */
-    default void afterFieldsInject() throws Throwable{}
+    default void afterInjection() throws Throwable{}
 }

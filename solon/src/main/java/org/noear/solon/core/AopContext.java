@@ -321,7 +321,7 @@ public class AopContext extends BeanContainer {
                 //变量收集完成后，会回调此处
                 RunUtil.runOrThrow(() -> {
                     //增加 afterPropertiesSet 支持
-                    ((InitializingBean) obj).afterFieldsInject();
+                    ((InitializingBean) obj).afterInjection();
                 });
             });
 

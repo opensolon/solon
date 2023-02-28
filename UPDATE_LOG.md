@@ -15,7 +15,6 @@
 * 新增 solon.graalvm 插件
 * 新增 solon.graalvm.apt 插件
 * 调整 BeanInvocationHandler 内部代码，简化并增加 AptProxy 调用
-* 调整 solon.aspect 增加 apt 支持；进而支持 Graalvm Native 打包
 * 调整 dateAsFormat 配置增加对 LocalDate 和 LocalDateTime 的支持
 * 调整 Plugin::Init 标为弃用, 并由 InitializingBean 接口接替
 * 调整 Plugin 接口不再做为组件形态，有生命周期需求的可改为 LifecycleBean 接口
@@ -30,7 +29,6 @@
 * 增加 apt 代理实现方式（做为 asm 实现的补充），为全功能实现 Graalvm Native 打包提供支持
 * 增加 InitializingBean 接口
 * 增加 LifecycleBean 接口
-* 增加 @Order 注解，原 index() 标为弃用
 * 增加 ClassUtil 工具类
 * sqltoy 升级为 5.2.37
 

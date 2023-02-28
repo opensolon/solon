@@ -86,7 +86,7 @@ public class XPluginImp implements Plugin , InitializingBean {
     }
 
     @Override
-    public void afterFieldsInject() throws Throwable {
+    public void afterInjection() throws Throwable {
         if (initDo(aopContext) == false) {
             return;
         }

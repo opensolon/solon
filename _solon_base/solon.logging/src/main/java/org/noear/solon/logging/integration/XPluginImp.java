@@ -19,7 +19,7 @@ import java.util.Properties;
  */
 public class XPluginImp implements Plugin , InitializingBean {
     @Override
-    public void afterFieldsInject() throws Throwable {
+    public void afterInjection() throws Throwable {
         AppenderManager.init();
     }
 
