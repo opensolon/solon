@@ -206,7 +206,7 @@ public class AopContext extends BeanContainer {
 
         //LifecycleBean（替代 Plugin，提供组件的生态周期控制）
         if (LifecycleBean.class.isAssignableFrom(clz)) {
-            lifecycleBeans.add(new RankEntity<>(bw.raw(), bw.index()));
+            lifecycle(bw.index(), bw.raw());
             return;
         }
 
