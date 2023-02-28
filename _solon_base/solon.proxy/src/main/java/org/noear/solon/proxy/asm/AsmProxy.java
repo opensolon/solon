@@ -89,7 +89,7 @@ public class AsmProxy {
 
             if (proxyClass == null) {
                 //构建新的代理类
-                proxyClass = AsmClassCodeBuilder.build(targetClass, classLoader);
+                proxyClass = ClassCodeBuilder.build(targetClass, classLoader);
                 // 缓存
                 saveProxyClassCache(classLoader, targetClass, proxyClass);
             }

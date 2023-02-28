@@ -13,7 +13,7 @@ import java.util.Map;
  * @author noear
  * @since 2.2
  */
-public class AsmClassCodeBuilder {
+public class ClassCodeBuilder {
     public static final int ASM_JDK_VERSION = Opcodes.V1_8;
 
     // 字段名
@@ -24,7 +24,7 @@ public class AsmClassCodeBuilder {
     private static final String METHOD_INVOKE_DESC = "(Ljava/lang/Object;Ljava/lang/reflect/Method;[Ljava/lang/Object;)Ljava/lang/Object;";
     private static final String METHOD_FIELD_PREFIX = "method";
 
-    public static Class<?> build(Class<?> targetClass, AsmProxyClassLoader classLoader) throws Exception{
+    public static Class<?> build(Class<?> targetClass, AsmProxyClassLoader classLoader) throws Exception {
         // 获取目标类的一些数据
         // ClassReader reader = new ClassReader(targetClass.getName());//某些情况下直接通过类名可能会获取不到数据
         ClassReader reader = null;
@@ -62,12 +62,21 @@ public class AsmClassCodeBuilder {
         Map<Integer, Integer> methodsMap = new HashMap<>();
         Map<Integer, Integer> declaredMethodsMap = new HashMap<>();
         int methodNameIndex = 0;
-        methodNameIndex = addMethod(writer, newClassInnerName, targetClass.getMethods(),
-                methods, true, methodNameIndex, methodsMap);
-        methodNameIndex = addMethod(writer, newClassInnerName, targetClass.getDeclaredMethods(),
-                declaredMethods, false, methodNameIndex, declaredMethodsMap);
+
+        if (methods.size() > 0) {
+            methodNameIndex = addMethod(writer, newClassInnerName, targetClass.getMethods(),
+                    methods, true, methodNameIndex, methodsMap);
+        }
+        if (declaredMethods.size() > 0) {
+            methodNameIndex = addMethod(writer, newClassInnerName, targetClass.getDeclaredMethods(),
+                    declaredMethods, false, methodNameIndex, declaredMethodsMap);
+        }
+
         // 添加静态代码块的初始化
-        addStaticInitBlock(writer, targetClassName, newClassInnerName, methodsMap, declaredMethodsMap);
+        if (methodNameIndex > 0) {
+            addStaticInitBlock(writer, targetClassName, newClassInnerName, methodsMap, declaredMethodsMap);
+        }
+
         // 生成二进制数据
         byte[] bytes = writer.toByteArray();
 
