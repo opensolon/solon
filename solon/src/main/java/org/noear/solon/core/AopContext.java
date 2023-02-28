@@ -324,6 +324,7 @@ public class AopContext extends BeanContainer {
 
                 for (FieldWrap fw : fwList) {
                     VarHolder varH = fw.holder(this, obj, gather);
+                    gather.add(varH);
                     tryInject(varH, fw.annoS);
                 }
             }
@@ -502,7 +503,7 @@ public class AopContext extends BeanContainer {
 
         tryCreateBean0(clz, (bb, a) -> {
             //包装
-            BeanWrap bw = this.wrap(clz, null);
+            BeanWrap bw = this.wrap(clz);
             //执行构建
             bb.doBuild(clz, bw, a);
             //尝试入库
@@ -564,10 +565,16 @@ public class AopContext extends BeanContainer {
             });
 
             //1.1.添加要收集的参数；并为参数注入（注入是异步的；全部完成后，VarGather 会回调）
-            for (ParamWrap p1 : mWrap.getParamWraps()) {
-                VarHolder p2 = new VarHolderOfParam(bw.context(), p1.getParameter(), gather);
-                gather.add(p2);
-                tryParameterInject(p2, p1.getParameter());
+            for (ParamWrap pw : mWrap.getParamWraps()) {
+                VarHolder varH = new VarHolderOfParam(bw.context(), pw.getParameter(), gather);
+                gather.add(varH);
+
+                Annotation[] annoS = pw.getParameter().getDeclaredAnnotations();
+                if (annoS.length == 0) {
+                    beanInject(varH, null);
+                } else {
+                    tryInject(varH, annoS);
+                }
             }
         }
     }
@@ -575,22 +582,6 @@ public class AopContext extends BeanContainer {
     protected void tryBuildBeanDo(Bean anno, MethodWrap mWrap, BeanWrap bw, Object[] args) throws Exception {
         Object raw = mWrap.invoke(bw.raw(), args);
         tryBuildBean0(mWrap, anno, raw);
-    }
-
-    protected void tryParameterInject(VarHolder varH, Parameter p) {
-        Annotation[] annoS = p.getDeclaredAnnotations();
-
-        if (annoS.length == 0) {
-            beanInject(varH, null);
-        } else {
-            for (Annotation anno : annoS) {
-                BeanInjector injector = beanInjectors.get(anno.annotationType());
-                if (injector != null) {
-                    injector.doInject(varH, anno);
-                    break;
-                }
-            }
-        }
     }
 
     protected void tryBuildBean0(MethodWrap mWrap, Bean anno, Object raw) {
