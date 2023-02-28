@@ -6,13 +6,16 @@ package org.noear.solon.core;
  * @author noear
  * @since 1.5
  */
+@FunctionalInterface
 public interface Lifecycle {
     /**
      * 开始
-     * */
-    default void start() throws Throwable{}
+     */
+    void start() throws Throwable;
+
     /**
      * 停止
-     * */
-    default void stop() throws Throwable{}
+     */
+    default void stop() throws Throwable {
+    }
 }

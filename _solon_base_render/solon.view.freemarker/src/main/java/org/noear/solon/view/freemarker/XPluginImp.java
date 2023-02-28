@@ -20,8 +20,8 @@ public class XPluginImp implements Plugin {
 
         FreemarkerRender render = FreemarkerRender.global();
 
-        context.onStarted(x -> {
-            x.beanForeach((k, v) -> {
+        context.lifecycle(() -> {
+            context.beanForeach((k, v) -> {
                 if (k.startsWith("view:") || k.startsWith("ftl:")) {
                     //java view widget
                     if (TemplateDirectiveModel.class.isAssignableFrom(v.clz())) {

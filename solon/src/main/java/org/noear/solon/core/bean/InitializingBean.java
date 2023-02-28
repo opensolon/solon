@@ -6,9 +6,10 @@ package org.noear.solon.core.bean;
  * @author noear
  * @since 2.2
  */
+@FunctionalInterface
 public interface InitializingBean {
     /**
      * 注入之后
      * */
-    default void afterInjection() throws Throwable{}
+    void afterInjection() throws Throwable;
 }

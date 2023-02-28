@@ -263,8 +263,8 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
      */
     @Note("添加接口")
     public void addBeans(Predicate<BeanWrap> where, boolean remoting) {
-        Solon.context().onStarted(x -> {
-            x.beanForeach(bw -> {
+        Solon.context().lifecycle(() -> {
+            Solon.context().beanForeach(bw -> {
                 if (where.test(bw)) {
                     if (remoting) {
                         add(bw, remoting); //强制为 remoting

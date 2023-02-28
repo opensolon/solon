@@ -46,8 +46,6 @@ public class AopContext extends BeanContainer {
 
     private final Map<Method, MethodWrap> methodCached = new HashMap<>();
 
-    //加载事件
-    private final Set<RankEntity<ConsumerEx<AopContext>>> startedEvents = new LinkedHashSet<>();
 
     public MethodWrap methodGet(Method method) {
         MethodWrap mw = methodCached.get(method);
@@ -70,7 +68,6 @@ public class AopContext extends BeanContainer {
 
         methodCached.clear();
         beanCreatedCached.clear();
-        startedEvents.clear();
 
         lifecycleBeans.clear();
 
@@ -125,7 +122,7 @@ public class AopContext extends BeanContainer {
             }
 
             //添加bean形态处理
-            addBeanShape(clz, bw,  clz);
+            addBeanShape(clz, bw, clz);
 
             //注册到容器 //Configuration 不进入二次注册
             //beanRegister(bw,bw.name(),bw.typed());
@@ -208,7 +205,7 @@ public class AopContext extends BeanContainer {
         }
 
         //LifecycleBean（替代 Plugin，提供组件的生态周期控制）
-        if(LifecycleBean.class.isAssignableFrom(clz)){
+        if (LifecycleBean.class.isAssignableFrom(clz)) {
             lifecycleBeans.add(new RankEntity<>(bw.raw(), bw.index()));
             return;
         }
@@ -316,13 +313,13 @@ public class AopContext extends BeanContainer {
                 }
             }
 
-            if(fwList.size() == 0){
+            if (fwList.size() == 0) {
                 //不需要注入
-                RunUtil.runOrThrow(() ->  ((InitializingBean) obj).afterInjection());
-            }else {
+                RunUtil.runOrThrow(() -> ((InitializingBean) obj).afterInjection());
+            } else {
                 //需要注入（可能）
                 VarGather gather = new VarGather(fwList.size(), (args2) -> {
-                    RunUtil.runOrThrow(() ->  ((InitializingBean) obj).afterInjection());
+                    RunUtil.runOrThrow(() -> ((InitializingBean) obj).afterInjection());
                 });
 
                 for (FieldWrap fw : fwList) {
@@ -463,7 +460,7 @@ public class AopContext extends BeanContainer {
         Condition mc = m.getAnnotation(Condition.class);
 
         if (started == false && ConditionUtil.ifMissing(mc)) {
-            onStarted((x) -> tryCreateBeanOfMethod0(bw, m, ma, mc));
+            lifecycle(() -> tryCreateBeanOfMethod0(bw, m, ma, mc));
         } else {
             tryCreateBeanOfMethod0(bw, m, ma, mc);
         }
@@ -492,7 +489,7 @@ public class AopContext extends BeanContainer {
         Condition cc = clz.getAnnotation(Condition.class);
 
         if (started == false && ConditionUtil.ifMissing(cc)) {
-            onStarted(x -> tryCreateBeanOfClass0(clz, cc));
+            lifecycle(() -> tryCreateBeanOfClass0(clz, cc));
         } else {
             tryCreateBeanOfClass0(clz, cc);
         }
@@ -561,7 +558,7 @@ public class AopContext extends BeanContainer {
             tryBuildBeanDo(anno, mWrap, bw, new Object[]{});
         } else {
             //1.构建参数
-            VarGather gather = new VarGather( size2, (args2) -> {
+            VarGather gather = new VarGather(size2, (args2) -> {
                 //变量收集完成后，会回调此处
                 RunUtil.runOrThrow(() -> tryBuildBeanDo(anno, mWrap, bw, args2));
             });
@@ -647,19 +644,23 @@ public class AopContext extends BeanContainer {
 
     /**
      * 添加bean加载完成事件
+     *
+     * @deprecated 2.2
      */
     @Deprecated
     public void beanOnloaded(Consumer<AopContext> fun) {
-        beanOnloaded(0,fun::accept);
+        beanOnloaded(0, fun::accept);
     }
 
     /**
      * 添加bean加载完成事件
+     *
+     * @deprecated 2.2
      */
     @Deprecated
     public void beanOnloaded(int index, Consumer<AopContext> fun) {
         try {
-            onStarted(index, fun::accept);
+            lifecycle(index, () -> fun.accept(this));
         } catch (RuntimeException e) {
             throw e;
         } catch (Throwable e) {
@@ -668,37 +669,34 @@ public class AopContext extends BeanContainer {
     }
 
     /**
-     * 添加bean加载完成事件
-     */
-    public void onStarted(ConsumerEx<AopContext> fun){
-        onStarted(0, fun);
-    }
-
-    /**
-     * 添加bean加载完成事件
-     */
-    public void onStarted(int index, ConsumerEx<AopContext> fun) {
-        startedEvents.add(new RankEntity<>(fun, index));
-
-        //如果已加载完成，则直接返回
-        if (started) {
-            try {
-                fun.accept(this);
-            } catch (RuntimeException e) {
-                throw e;
-            } catch (Throwable e) {
-                throw new IllegalStateException(e);
-            }
-        }
-    }
-
-    /**
      * 完成加载时调用，会进行事件通知
+     *
+     * @deprecated 2.2
      */
     @Deprecated
     public void beanLoaded() {
         start();
     }
+
+    /**
+     * 添加生命周期 bean
+     * */
+    public void lifecycle(LifecycleBean lifecycle) {
+        lifecycle(0, lifecycle);
+    }
+
+    /**
+     * 添加生命周期 bean
+     * */
+    public void lifecycle(int index, LifecycleBean lifecycle) {
+        lifecycleBeans.add(new RankEntity<>(lifecycle, index));
+
+        if (started) {
+            //如果已启动，则执行启动函数
+            RunUtil.runOrThrow(lifecycle::start);
+        }
+    }
+
 
 
     //已启动标志
@@ -714,19 +712,10 @@ public class AopContext extends BeanContainer {
     /**
      * 启动（一般在插件启动之后，应用完成扫描，再执行）
      */
-    public void start(){
+    public void start() {
         started = true;
 
         try {
-
-            //执行加载事件 //支持排序
-            List<RankEntity<ConsumerEx<AopContext>>> events = new ArrayList<>(startedEvents);
-            events.sort(Comparator.comparingInt(m -> m.index));
-
-            for (RankEntity<ConsumerEx<AopContext>> c : events) {
-                c.target.accept(this);
-            }
-
             //执行生命周期bean //支持排序
             List<RankEntity<LifecycleBean>> beans = new ArrayList<>(lifecycleBeans);
             beans.sort(Comparator.comparingInt(f -> f.index));

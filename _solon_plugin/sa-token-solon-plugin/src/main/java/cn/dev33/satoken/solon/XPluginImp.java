@@ -38,8 +38,8 @@ public class XPluginImp implements Plugin {
 
 
         //注入其它 Bean
-        context.onStarted(x -> {
-            beanInitDo(x);
+        context.lifecycle(() -> {
+            beanInitDo(context);
             context.beanMake(SaSsoAutoConfigure.class);
             context.beanMake(SaOAuth2AutoConfigure.class);
         });

@@ -53,7 +53,7 @@ public final class XPluginImp implements Plugin {
             return;
         }
 
-        context.onStarted(x -> {
+        context.lifecycle(() -> {
             start0(Solon.app());
         });
     }

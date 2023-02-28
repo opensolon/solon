@@ -20,8 +20,8 @@ public class XPluginImp implements Plugin {
 
         EnjoyRender render = EnjoyRender.global();
 
-        context.onStarted(x -> {
-            x.beanForeach((k, v) -> {
+        context.lifecycle(() -> {
+            context.beanForeach((k, v) -> {
                 if (k.startsWith("view:")) { //java view widget
                     if (Directive.class.isAssignableFrom(v.clz())) {
                         render.putDirective(k.split(":")[1], (Class<? extends Directive>) v.clz());

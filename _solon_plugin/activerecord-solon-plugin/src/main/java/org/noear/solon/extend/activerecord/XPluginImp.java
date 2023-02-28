@@ -28,7 +28,7 @@ public class XPluginImp implements Plugin {
         });
 
         // 通过DataSource类型获取Bean实例
-        context.onStarted(x -> {
+        context.lifecycle(() -> {
             ArpManager.start();
         });
     }

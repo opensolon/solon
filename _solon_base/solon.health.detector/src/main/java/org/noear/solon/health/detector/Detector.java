@@ -18,6 +18,16 @@ public interface Detector extends HealthIndicator, Lifecycle {
     Map<String, Object> getInfo();
 
     @Override
+    default void start() throws Throwable {
+        //空实现，别删
+    }
+
+    @Override
+    default void stop() throws Throwable {
+        //空实现，别删
+    }
+
+    @Override
     default Result get() {
         return Result.succeed(getInfo());
     }

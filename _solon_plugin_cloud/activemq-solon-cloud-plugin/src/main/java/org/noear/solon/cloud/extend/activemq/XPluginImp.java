@@ -24,7 +24,7 @@ public class XPluginImp implements Plugin {
         	CloudEventServiceActivemqImp eventServiceImp = new CloudEventServiceActivemqImp(cloudProps);
             CloudManager.register(eventServiceImp);
 
-            context.onStarted(x -> eventServiceImp.subscribe());
+            context.lifecycle(() -> eventServiceImp.subscribe());
         }
     }
 }

@@ -47,7 +47,7 @@ public final class XPluginImp implements Plugin {
         context.beanBuilderAdd(WebListener.class, (clz, bw, ano) -> {
         });
 
-        context.onStarted(x -> {
+        context.lifecycle(() -> {
             start0(Solon.app());
         });
     }
