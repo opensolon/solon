@@ -46,10 +46,13 @@ public class ClassFileBuilder {
 
         //添加构造函数
         addConstructor(proxyTypeBuilder, typeElement, proxyClassName);
-        //添加代理函数
-        addMethodAll(proxyTypeBuilder, methodAll);
-        //添加静态代码块
-        addStaticBlock(proxyTypeBuilder, packageName, className, methodAll);
+
+        if(methodAll.size() > 0) {
+            //添加代理函数
+            addMethodAll(proxyTypeBuilder, methodAll);
+            //添加静态代码块
+            addStaticBlock(proxyTypeBuilder, packageName, className, methodAll);
+        }
 
 
         //创建javaFile文件对象
