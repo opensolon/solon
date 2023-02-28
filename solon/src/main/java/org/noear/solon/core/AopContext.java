@@ -308,7 +308,7 @@ public class AopContext extends BeanContainer {
         if (obj instanceof InitializingBean) {
             List<FieldWrap> fwList = new ArrayList<>();
 
-            //支持父类注入
+            //支持父类注入(找到有注解的字段)
             for (Map.Entry<String, FieldWrap> kv : clzWrap.getFieldAllWraps().entrySet()) {
                 Annotation[] annS = kv.getValue().annoS;
                 if (annS.length > 0) {
@@ -316,21 +316,22 @@ public class AopContext extends BeanContainer {
                 }
             }
 
-            //1.构建参数
-            VarGather gather = new VarGather(fwList.size(), (args2) -> {
-                //变量收集完成后，会回调此处
-                RunUtil.runOrThrow(() -> {
-                    //增加 afterPropertiesSet 支持
-                    ((InitializingBean) obj).afterInjection();
+            if(fwList.size() == 0){
+                //不需要注入
+                RunUtil.runOrThrow(() ->  ((InitializingBean) obj).afterInjection());
+            }else {
+                //需要注入（可能）
+                VarGather gather = new VarGather(fwList.size(), (args2) -> {
+                    RunUtil.runOrThrow(() ->  ((InitializingBean) obj).afterInjection());
                 });
-            });
 
-            for (FieldWrap fw : fwList) {
-                VarHolder varH = fw.holder(this, obj, gather);
-                tryInject(varH, fw.annoS);
+                for (FieldWrap fw : fwList) {
+                    VarHolder varH = fw.holder(this, obj, gather);
+                    tryInject(varH, fw.annoS);
+                }
             }
         } else {
-            //支持父类注入
+            //支持父类注入(找到有注解的字段)
             for (Map.Entry<String, FieldWrap> kv : clzWrap.getFieldAllWraps().entrySet()) {
                 Annotation[] annoS = kv.getValue().annoS;
                 if (annoS.length > 0) {

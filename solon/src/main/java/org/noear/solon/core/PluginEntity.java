@@ -152,7 +152,7 @@ public class PluginEntity {
                 Class<?> pluginClz = ClassUtil.loadClass(classLoader, className);
                 if (pluginClz != null) {
                     //可以支持注入了
-                    plugin = context.wrapAndPut(pluginClz).get();
+                    plugin = context.wrap(pluginClz).raw();
                 }
             }
         }
