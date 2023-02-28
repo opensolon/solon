@@ -10,6 +10,12 @@
 * 提醒2：有使用弃用接口的。建议先升级到 1.12.4；替换弃用代码后，再升级到 2.0.0
 
 ### v2.2.0
+* 概要：
+* 1.吸收近期使用需求，增强内核能力（完善 bean 的生命周期；调整 plugin 仅定位为 spi；）
+* 2.兼容的同时增强品牌个性化（增加 @SolonMain，@ProxyComponent 注解）
+* 3.增加 apt 代理实现，增加 apt 生成 native 元信息配置的机制（为 native 简便打包，埋下好的基础 ）
+* 
+* 
 * 新增 solon.proxy 插件
 * 新增 solon.proxy.apt 插件
 * 新增 solon.graalvm 插件
