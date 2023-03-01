@@ -9,6 +9,11 @@
 * 提醒1：之前没有使用弃用接口的，可以直接升级 <br>
 * 提醒2：有使用弃用接口的。建议先升级到 1.12.4；替换弃用代码后，再升级到 2.0.0
 
+### v2.2.1
+
+* mybatis-solon-plugin，取消 mappers 检测异常，改为警告日志
+* ContextPathFilter 增加与 cfg()serverContextPath 同步配置
+
 ### v2.2.0
 
 * 概要：
