@@ -37,11 +37,11 @@ public class XPluginImp implements Plugin {
         StaticConfig.getCacheMaxAge();
 
         //1.尝试添加默认静态资源地址
-        if (ResourceUtil.getResource(StaticConfig.RES_STATIC_LOCATION) != null) {
+        if (ResourceUtil.hasResource(StaticConfig.RES_STATIC_LOCATION)) {
             StaticMappings.add("/", new ClassPathStaticRepository(StaticConfig.RES_STATIC_LOCATION));
         }
 
-        if (ResourceUtil.getResource(StaticConfig.RES_WEB_INF_STATIC_LOCATION) != null) {
+        if (ResourceUtil.hasResource(StaticConfig.RES_WEB_INF_STATIC_LOCATION)) {
             StaticMappings.add("/", new ClassPathStaticRepository(StaticConfig.RES_WEB_INF_STATIC_LOCATION));
         }
 

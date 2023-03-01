@@ -44,7 +44,6 @@ public class EnjoyRender implements Render {
     Engine provider = null;
     Engine provider_debug = null;
 
-    private String _baseUri = "/WEB-INF/view/";
     private ClassLoader classLoader;
 
     //不要要入参，方便后面多视图混用
@@ -55,12 +54,6 @@ public class EnjoyRender implements Render {
 
     public EnjoyRender(ClassLoader classLoader) {
         this.classLoader = classLoader;
-
-        String baseUri = Solon.cfg().get("slon.mvc.view.prefix");
-
-        if (Utils.isEmpty(baseUri) == false) {
-            _baseUri = baseUri;
-        }
 
         //开始中文支持
         Engine.setChineseExpression(true);
@@ -100,10 +93,10 @@ public class EnjoyRender implements Render {
         File dir = null;
 
         if (rootdir.startsWith("file:")) {
-            String dir_str = rootdir + "src/main/resources" + _baseUri;
+            String dir_str = rootdir + "src/main/resources" + ViewConfig.getBaseUri();
             dir = new File(URI.create(dir_str));
             if (!dir.exists()) {
-                dir_str = rootdir + "src/main/webapp" + _baseUri;
+                dir_str = rootdir + "src/main/webapp" + ViewConfig.getBaseUri();
                 dir = new File(URI.create(dir_str));
             }
         }
@@ -130,7 +123,7 @@ public class EnjoyRender implements Render {
         provider.setDevMode(Solon.cfg().isDebugMode());
 
         try {
-            provider.setBaseTemplatePath(_baseUri);
+            provider.setBaseTemplatePath(ViewConfig.getBaseUri());
             provider.setSourceFactory(new ClassPathSourceFactory2(classLoader));
 
             //通过事件扩展

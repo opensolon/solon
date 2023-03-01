@@ -1,7 +1,5 @@
 package org.noear.solon.view.jsp;
 
-import org.noear.solon.Solon;
-import org.noear.solon.Utils;
 import org.noear.solon.core.handle.ModelAndView;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Render;
@@ -20,15 +18,10 @@ public class JspRender implements Render {
         return _global;
     }
 
-    private String _baseUri ="/WEB-INF/view/";
-    //不要要入参，方便后面多视图混用
+    //不要入参，方便后面多视图混用
     //
     public JspRender(){
-        String baseUri = Solon.cfg().get("slon.mvc.view.prefix");
 
-        if(Utils.isEmpty(baseUri)==false) {
-            _baseUri = baseUri;
-        }
     }
 
     @Override
@@ -63,9 +56,9 @@ public class JspRender implements Render {
         if (view.endsWith(".jsp") == true) {
 
             if (view.startsWith("/") == true) {
-                view = _baseUri + view;
+                view = ViewConfig.getBaseUri() + view;
             } else {
-                view = _baseUri + "/" + view;
+                view = ViewConfig.getBaseUri() + "/" + view;
             }
             view = view.replace("//", "/");
         }

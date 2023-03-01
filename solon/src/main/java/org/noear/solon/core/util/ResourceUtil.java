@@ -38,6 +38,14 @@ public class ResourceUtil {
         return classLoader.getResources(name);
     }
 
+    public static boolean hasResource(String name){
+        return getResource(name) != null;
+    }
+
+    public static boolean hasResource(ClassLoader classLoader, String name) {
+        return getResource(classLoader, name) != null;
+    }
+
     /**
      * 获取资源URL
      *

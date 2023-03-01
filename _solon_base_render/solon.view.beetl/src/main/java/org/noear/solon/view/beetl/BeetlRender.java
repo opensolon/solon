@@ -8,7 +8,6 @@ import org.beetl.core.resource.FileResourceLoader;
 import org.beetl.core.statement.ErrorGrammarProgram;
 import org.beetl.core.tag.Tag;
 import org.noear.solon.Solon;
-import org.noear.solon.Utils;
 import org.noear.solon.core.JarClassLoader;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.Render;
@@ -47,7 +46,6 @@ public class BeetlRender implements Render {
     GroupTemplate provider = null;
     GroupTemplate provider_debug = null;
 
-    private String _baseUri = "/WEB-INF/view/";
     private ClassLoader classLoader;
 
     //不要要入参，方便后面多视图混用
@@ -63,13 +61,6 @@ public class BeetlRender implements Render {
             cfg = Configuration.defaultConfiguration();
         } catch (Exception ex) {
             throw new RuntimeException(ex);
-        }
-
-
-        String baseUri = Solon.cfg().get("slon.mvc.view.prefix");
-
-        if (Utils.isEmpty(baseUri) == false) {
-            _baseUri = baseUri;
         }
 
         forDebug();
@@ -103,10 +94,10 @@ public class BeetlRender implements Render {
         File dir = null;
 
         if (rootdir.startsWith("file:")) {
-            String dir_str = rootdir + "src/main/resources" + _baseUri;
+            String dir_str = rootdir + "src/main/resources" + ViewConfig.getBaseUri();
             dir = new File(URI.create(dir_str));
             if (!dir.exists()) {
-                dir_str = rootdir + "src/main/webapp" + _baseUri;
+                dir_str = rootdir + "src/main/webapp" + ViewConfig.getBaseUri();
                 dir = new File(URI.create(dir_str));
             }
         }
@@ -131,7 +122,7 @@ public class BeetlRender implements Render {
         }
 
         try {
-            ClasspathResourceLoader loader = new ClasspathResourceLoader(classLoader, _baseUri);
+            ClasspathResourceLoader loader = new ClasspathResourceLoader(classLoader, ViewConfig.getBaseUri());
             provider = new GroupTemplate(loader, cfg);
 
             //通过事件扩展

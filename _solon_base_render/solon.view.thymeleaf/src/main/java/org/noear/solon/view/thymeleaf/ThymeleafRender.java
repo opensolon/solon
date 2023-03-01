@@ -44,7 +44,6 @@ public class ThymeleafRender implements Render {
 
     private Map<String, Object> _sharedVariable = new HashMap<>();
 
-    private String _baseUri = "/WEB-INF/view/";
     private ClassLoader classLoader;
 
     public ThymeleafRender(){
@@ -53,12 +52,6 @@ public class ThymeleafRender implements Render {
 
     public ThymeleafRender(ClassLoader classLoader) {
         this.classLoader = classLoader;
-
-        String baseUri = Solon.cfg().get("slon.mvc.view.prefix");
-
-        if (Utils.isEmpty(baseUri) == false) {
-            _baseUri = baseUri;
-        }
 
         forDebug();
         forRelease();
@@ -87,10 +80,10 @@ public class ThymeleafRender implements Render {
         File dir = null;
 
         if (rootdir.startsWith("file:")) {
-            String dir_str = rootdir + "src/main/resources" + _baseUri;
+            String dir_str = rootdir + "src/main/resources" + ViewConfig.getBaseUri();
             dir = new File(URI.create(dir_str));
             if (!dir.exists()) {
-                dir_str = rootdir + "src/main/webapp" + _baseUri;
+                dir_str = rootdir + "src/main/webapp" + ViewConfig.getBaseUri();
                 dir = new File(URI.create(dir_str));
             }
         }
@@ -117,7 +110,7 @@ public class ThymeleafRender implements Render {
     private void forRelease() {
         ClassLoaderTemplateResolver _loader = new ClassLoaderTemplateResolver(classLoader);
 
-        _loader.setPrefix(_baseUri);
+        _loader.setPrefix(ViewConfig.getBaseUri());
         _loader.setTemplateMode(TemplateMode.HTML);
         _loader.setCacheable(true);
         _loader.setCharacterEncoding("utf-8");

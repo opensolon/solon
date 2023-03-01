@@ -46,18 +46,9 @@ public class VelocityRender implements Render {
     private RuntimeInstance provider_debug;
     private Map<String, Object> _sharedVariable = new HashMap<>();
 
-    private String _baseUri = "/WEB-INF/view/";
-
     //不要要入参，方便后面多视图混用
     //
     public VelocityRender() {
-        String baseUri = Solon.cfg().get("slon.mvc.view.prefix");
-
-        if (Utils.isEmpty(baseUri) == false) {
-            _baseUri = baseUri;
-        }
-
-
         if (Solon.cfg().isDebugMode()) {
             forDebug();
             forRelease();
@@ -117,10 +108,10 @@ public class VelocityRender implements Render {
         File dir = null;
 
         if (rootdir.startsWith("file:")) {
-            String dir_str = rootdir + "src/main/resources" + _baseUri;
+            String dir_str = rootdir + "src/main/resources" + ViewConfig.getBaseUri();
             dir = new File(URI.create(dir_str));
             if (!dir.exists()) {
-                dir_str = rootdir + "src/main/webapp" + _baseUri;
+                dir_str = rootdir + "src/main/webapp" + ViewConfig.getBaseUri();
                 dir = new File(URI.create(dir_str));
             }
         }
@@ -145,7 +136,7 @@ public class VelocityRender implements Render {
 
         provider = new RuntimeInstance();
 
-        URL resource = ResourceUtil.getResource(_baseUri);
+        URL resource = ResourceUtil.getResource(ViewConfig.getBaseUri());
         if(resource == null){
             return;
         }

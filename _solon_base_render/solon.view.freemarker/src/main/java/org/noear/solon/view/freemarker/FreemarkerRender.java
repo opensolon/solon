@@ -37,7 +37,6 @@ public class FreemarkerRender implements Render {
     Configuration provider;
     Configuration provider_debug;
 
-    private String _baseUri = "/WEB-INF/view/";
     private ClassLoader classLoader;
 
     //不要要入参，方便后面多视图混用
@@ -47,12 +46,6 @@ public class FreemarkerRender implements Render {
     }
     public FreemarkerRender(ClassLoader classLoader) {
         this.classLoader = classLoader;
-
-        String baseUri = Solon.cfg().get("slon.mvc.view.prefix");
-
-        if (Utils.isEmpty(baseUri) == false) {
-            _baseUri = baseUri;
-        }
 
         forDebug();
         forRelease();
@@ -90,10 +83,10 @@ public class FreemarkerRender implements Render {
         File dir = null;
 
         if (rootdir.startsWith("file:")) {
-            String dir_str = rootdir + "src/main/resources" + _baseUri;
+            String dir_str = rootdir + "src/main/resources" + ViewConfig.getBaseUri();
             dir = new File(URI.create(dir_str));
             if (!dir.exists()) {
-                dir_str = rootdir + "src/main/webapp" + _baseUri;
+                dir_str = rootdir + "src/main/webapp" + ViewConfig.getBaseUri();
                 dir = new File(URI.create(dir_str));
             }
         }
@@ -121,7 +114,7 @@ public class FreemarkerRender implements Render {
         provider.setDefaultEncoding("utf-8");
 
         try {
-            provider.setClassLoaderForTemplateLoading(classLoader, _baseUri);
+            provider.setClassLoaderForTemplateLoading(classLoader, ViewConfig.getBaseUri());
         } catch (Exception e) {
             EventBus.pushTry(e);
         }
