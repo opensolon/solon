@@ -70,7 +70,7 @@ Solon v2.2.1-SNAPSHOT
 
 ## 生态架构图
 
-<img src="solon_schema.png" width="600" />
+<img src="solon_schema.png" width="700" />
 
 ## Hello world：
 
