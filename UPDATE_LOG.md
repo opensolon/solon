@@ -13,6 +13,8 @@
 
 * mybatis-solon-plugin，取消 mappers 检测异常，改为警告日志
 * ContextPathFilter 增加与 cfg()serverContextPath 同步配置
+* 模板添加 templates 目录支持
+* 移除 RenderUtil 类
 
 ### v2.2.0
 
