@@ -12,12 +12,9 @@ import org.noear.solon.view.freemarker.tags.AuthPermissionsTag;
 import org.noear.solon.view.freemarker.tags.AuthRolesTag;
 
 public class XPluginImp implements Plugin {
-    public static boolean output_meta = false;
 
     @Override
     public void start(AopContext context) {
-        output_meta = Solon.cfg().getInt("solon.output.meta", 0) > 0;
-
         FreemarkerRender render = FreemarkerRender.global();
 
         context.lifecycle(() -> {

@@ -11,12 +11,9 @@ import org.noear.solon.view.velocity.tags.AuthPermissionsTag;
 import org.noear.solon.view.velocity.tags.AuthRolesTag;
 
 public class XPluginImp implements Plugin {
-    public static boolean output_meta = false;
 
     @Override
     public void start(AopContext context) {
-        output_meta = Solon.cfg().getInt("solon.output.meta", 0) > 0;
-
         VelocityRender render = VelocityRender.global();
 
         context.lifecycle(() -> {

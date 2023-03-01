@@ -5,6 +5,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.core.handle.ModelAndView;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Render;
+import org.noear.solon.view.ViewConfig;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -48,10 +49,9 @@ public class JspRender implements Render {
             ctx.contentType("text/html;charset=utf-8");
         }
 
-        if(XPluginImp.output_meta){
-            ctx.headerSet("Solon-View","JspRender");
+        if (ViewConfig.isOutputMeta()) {
+            ctx.headerSet(ViewConfig.HEADER_VIEW_META, "JspRender");
         }
-
 
         HttpServletResponse response = (HttpServletResponse)ctx.response();
         HttpServletRequest request = (HttpServletRequest)ctx.request();

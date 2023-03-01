@@ -16,6 +16,7 @@ import org.noear.solon.core.handle.ModelAndView;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.util.ResourceUtil;
 import org.noear.solon.core.util.SupplierEx;
+import org.noear.solon.view.ViewConfig;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -205,8 +206,8 @@ public class BeetlRender implements Render {
             ctx.contentType("text/html;charset=utf-8");
         }
 
-        if (XPluginImp.output_meta) {
-            ctx.headerSet("Solon-View", "BeetlRender");
+        if (ViewConfig.isOutputMeta()) {
+            ctx.headerSet(ViewConfig.HEADER_VIEW_META, "BeetlRender");
         }
 
         Template template = null;

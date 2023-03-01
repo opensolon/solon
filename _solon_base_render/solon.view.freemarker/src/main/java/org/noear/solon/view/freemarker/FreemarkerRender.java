@@ -13,6 +13,7 @@ import org.noear.solon.core.handle.ModelAndView;
 import org.noear.solon.core.handle.Render;
 import org.noear.solon.core.util.ResourceUtil;
 import org.noear.solon.core.util.SupplierEx;
+import org.noear.solon.view.ViewConfig;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -187,8 +188,8 @@ public class FreemarkerRender implements Render {
             ctx.contentType("text/html;charset=utf-8");
         }
 
-        if (XPluginImp.output_meta) {
-            ctx.headerSet("Solon-View", "FreemarkerRender");
+        if (ViewConfig.isOutputMeta()) {
+            ctx.headerSet(ViewConfig.HEADER_VIEW_META, "FreemarkerRender");
         }
 
         PrintWriter writer = new PrintWriter(outputStream.get());

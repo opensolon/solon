@@ -12,12 +12,8 @@ import org.noear.solon.view.enjoy.tags.AuthPermissionsTag;
 import org.noear.solon.view.enjoy.tags.AuthRolesTag;
 
 public class XPluginImp implements Plugin {
-    public static boolean output_meta = false;
-
     @Override
     public void start(AopContext context) {
-        output_meta = Solon.cfg().getInt("solon.output.meta", 0) > 0;
-
         EnjoyRender render = EnjoyRender.global();
 
         context.lifecycle(() -> {

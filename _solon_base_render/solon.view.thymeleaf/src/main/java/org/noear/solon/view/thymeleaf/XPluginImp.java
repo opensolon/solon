@@ -12,12 +12,8 @@ import org.noear.solon.view.thymeleaf.tags.AuthRolesTag;
 import org.thymeleaf.dialect.IDialect;
 
 public class XPluginImp implements Plugin {
-    public static boolean output_meta = false;
-
     @Override
     public void start(AopContext context) {
-        output_meta = Solon.cfg().getInt("solon.output.meta", 0) > 0;
-
         ThymeleafRender render = ThymeleafRender.global();
 
         context.lifecycle(() -> {
