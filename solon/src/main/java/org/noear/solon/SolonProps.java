@@ -406,26 +406,40 @@ public final class SolonProps extends Props {
 
     private String serverContextPath;
     /**
-     * 获取应用主上下文路径
+     * 获取服务主上下文路径
      */
     public String serverContextPath() {
         if (serverContextPath == null) {
-            serverContextPath = get("server.contextPath", "").trim();
-
-            if (serverContextPath.length() > 0) {
-                //确保是 / 开头
-                if (serverContextPath.startsWith("/") == false) {
-                    serverContextPath = "/" + serverContextPath;
-                }
-
-                //确保是 / 结尾
-                if (serverContextPath.endsWith("/") == false) {
-                    serverContextPath = serverContextPath + "/";
-                }
-            }
+            String path = get("server.contextPath", "").trim();
+            serverContextPath(path);
         }
 
         return serverContextPath;
+    }
+
+    /**
+     * 设置服务主上下文路径
+     *
+     * @param path 上下文路径
+     * */
+    public void serverContextPath(String path) {
+        if (path == null) {
+            serverContextPath = "";
+        } else {
+            serverContextPath = path;
+        }
+
+        if (serverContextPath.length() > 0) {
+            //确保是 / 开头
+            if (serverContextPath.startsWith("/") == false) {
+                serverContextPath = "/" + serverContextPath;
+            }
+
+            //确保是 / 结尾
+            if (serverContextPath.endsWith("/") == false) {
+                serverContextPath = serverContextPath + "/";
+            }
+        }
     }
 
 

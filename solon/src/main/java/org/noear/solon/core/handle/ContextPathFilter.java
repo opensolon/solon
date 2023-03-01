@@ -1,5 +1,7 @@
 package org.noear.solon.core.handle;
 
+import org.noear.solon.Solon;
+
 /**
  * 提供 ContextPath 类似的功能（优先级要极高）
  *
@@ -28,6 +30,9 @@ public class ContextPathFilter implements Filter {
         }
 
         this.forced = forced;
+
+        //有可能是 ContextPathFilter 是用户手动添加的！需要补一下配置
+        Solon.cfg().serverContextPath(this.path);
     }
 
     public ContextPathFilter(String path) {
