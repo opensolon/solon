@@ -546,6 +546,11 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>solon.view</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>solon.view.freemarker</artifactId>
                 <version>${solon.ver}</version>
             </dependency>

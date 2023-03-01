@@ -26,6 +26,8 @@
         <module>../../_solon_base_render/solon.serialization.hessian</module>
         <module>../../_solon_base_render/solon.serialization.protostuff</module>
 
+        <module>../../_solon_base_render/solon.view</module>
+
         <module>../../_solon_base_render/solon.view.freemarker</module>
         <module>../../_solon_base_render/solon.view.jsp</module>
         <module>../../_solon_base_render/solon.view.velocity</module>

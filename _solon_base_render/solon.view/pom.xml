@@ -11,28 +11,16 @@
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>solon.view.enjoy</artifactId>
+    <artifactId>solon.view</artifactId>
     <packaging>jar</packaging>
+
 
     <dependencies>
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.view</artifactId>
+            <artifactId>solon</artifactId>
         </dependency>
-
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.auth</artifactId>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>com.jfinal</groupId>
-            <artifactId>enjoy</artifactId>
-            <version>5.0.3</version>
-        </dependency>
-
     </dependencies>
 
 </project>
