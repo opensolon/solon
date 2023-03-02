@@ -5,7 +5,6 @@ import freemarker.template.Template;
 import freemarker.template.TemplateDirectiveModel;
 import freemarker.template.TemplateNotFoundException;
 import org.noear.solon.Solon;
-import org.noear.solon.Utils;
 import org.noear.solon.core.*;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.Context;
@@ -83,10 +82,10 @@ public class FreemarkerRender implements Render {
         File dir = null;
 
         if (rootdir.startsWith("file:")) {
-            String dir_str = rootdir + "src/main/resources" + ViewConfig.getBaseUri();
+            String dir_str = rootdir + "src/main/resources" + ViewConfig.getViewPrefix();
             dir = new File(URI.create(dir_str));
             if (!dir.exists()) {
-                dir_str = rootdir + "src/main/webapp" + ViewConfig.getBaseUri();
+                dir_str = rootdir + "src/main/webapp" + ViewConfig.getViewPrefix();
                 dir = new File(URI.create(dir_str));
             }
         }
@@ -114,7 +113,7 @@ public class FreemarkerRender implements Render {
         provider.setDefaultEncoding("utf-8");
 
         try {
-            provider.setClassLoaderForTemplateLoading(classLoader, ViewConfig.getBaseUri());
+            provider.setClassLoaderForTemplateLoading(classLoader, ViewConfig.getViewPrefix());
         } catch (Exception e) {
             EventBus.pushTry(e);
         }

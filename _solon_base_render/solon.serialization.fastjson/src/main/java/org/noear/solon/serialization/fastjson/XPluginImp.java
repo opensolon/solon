@@ -11,11 +11,9 @@ import org.noear.solon.serialization.prop.JsonProps;
 import org.noear.solon.serialization.prop.JsonPropsUtil;
 
 public class XPluginImp implements Plugin {
-    public static boolean output_meta = false;
 
     @Override
     public void start(AopContext context) {
-        output_meta = Solon.cfg().getInt("solon.output.meta", 0) > 0;
         JsonProps jsonProps = JsonProps.create(context);
 
         //::renderFactory

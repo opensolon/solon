@@ -14,11 +14,9 @@ import java.util.Collection;
 import java.util.Date;
 
 public class XPluginImp implements Plugin {
-    public static boolean output_meta = false;
 
     @Override
     public void start(AopContext context) {
-        output_meta = Solon.cfg().getInt("solon.output.meta", 0) > 0;
         JsonProps jsonProps = JsonProps.create(context);
 
         //::renderFactory

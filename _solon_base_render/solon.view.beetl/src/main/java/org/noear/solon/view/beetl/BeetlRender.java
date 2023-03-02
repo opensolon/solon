@@ -94,10 +94,10 @@ public class BeetlRender implements Render {
         File dir = null;
 
         if (rootdir.startsWith("file:")) {
-            String dir_str = rootdir + "src/main/resources" + ViewConfig.getBaseUri();
+            String dir_str = rootdir + "src/main/resources" + ViewConfig.getViewPrefix();
             dir = new File(URI.create(dir_str));
             if (!dir.exists()) {
-                dir_str = rootdir + "src/main/webapp" + ViewConfig.getBaseUri();
+                dir_str = rootdir + "src/main/webapp" + ViewConfig.getViewPrefix();
                 dir = new File(URI.create(dir_str));
             }
         }
@@ -122,7 +122,7 @@ public class BeetlRender implements Render {
         }
 
         try {
-            ClasspathResourceLoader loader = new ClasspathResourceLoader(classLoader, ViewConfig.getBaseUri());
+            ClasspathResourceLoader loader = new ClasspathResourceLoader(classLoader, ViewConfig.getViewPrefix());
             provider = new GroupTemplate(loader, cfg);
 
             //通过事件扩展

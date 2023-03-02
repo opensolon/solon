@@ -8,12 +8,9 @@ import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.RenderManager;
 
 public class XPluginImp implements Plugin {
-    public static boolean output_meta = false;
 
     @Override
     public void start(AopContext context) {
-        output_meta = Solon.cfg().getInt("solon.output.meta", 0) > 0;
-
         HessianRender render = new HessianRender();
 
         //RenderManager.register(render);

@@ -56,9 +56,9 @@ public class JspRender implements Render {
         if (view.endsWith(".jsp") == true) {
 
             if (view.startsWith("/") == true) {
-                view = ViewConfig.getBaseUri() + view;
+                view = ViewConfig.getViewPrefix() + view;
             } else {
-                view = ViewConfig.getBaseUri() + "/" + view;
+                view = ViewConfig.getViewPrefix() + "/" + view;
             }
             view = view.replace("//", "/");
         }

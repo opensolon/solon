@@ -1,7 +1,6 @@
 package org.noear.solon.view.thymeleaf;
 
 import org.noear.solon.Solon;
-import org.noear.solon.Utils;
 import org.noear.solon.core.*;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.Context;
@@ -80,10 +79,10 @@ public class ThymeleafRender implements Render {
         File dir = null;
 
         if (rootdir.startsWith("file:")) {
-            String dir_str = rootdir + "src/main/resources" + ViewConfig.getBaseUri();
+            String dir_str = rootdir + "src/main/resources" + ViewConfig.getViewPrefix();
             dir = new File(URI.create(dir_str));
             if (!dir.exists()) {
-                dir_str = rootdir + "src/main/webapp" + ViewConfig.getBaseUri();
+                dir_str = rootdir + "src/main/webapp" + ViewConfig.getViewPrefix();
                 dir = new File(URI.create(dir_str));
             }
         }
@@ -110,7 +109,7 @@ public class ThymeleafRender implements Render {
     private void forRelease() {
         ClassLoaderTemplateResolver _loader = new ClassLoaderTemplateResolver(classLoader);
 
-        _loader.setPrefix(ViewConfig.getBaseUri());
+        _loader.setPrefix(ViewConfig.getViewPrefix());
         _loader.setTemplateMode(TemplateMode.HTML);
         _loader.setCacheable(true);
         _loader.setCharacterEncoding("utf-8");

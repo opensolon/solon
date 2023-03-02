@@ -20,7 +20,7 @@ public class StringSerializerRender implements Render {
      */
     boolean typed;
 
-    public StringSerializerRender(boolean typed, StringSerializer serializer) {
+    public StringSerializerRender(boolean typed,  StringSerializer serializer) {
         this.typed = typed;
         this.serializer = serializer;
     }
@@ -40,6 +40,10 @@ public class StringSerializerRender implements Render {
      */
     @Override
     public void render(Object obj, Context ctx) throws Throwable {
+        if (SerializationConfig.isOutputMeta()) {
+            ctx.headerAdd("solon.serialization", getName());
+        }
+
         String txt = null;
 
         if (typed) {

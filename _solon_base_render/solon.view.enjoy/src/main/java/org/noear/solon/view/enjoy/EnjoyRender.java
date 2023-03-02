@@ -5,7 +5,6 @@ import com.jfinal.template.Engine;
 import com.jfinal.template.Template;
 import com.jfinal.template.source.FileSourceFactory;
 import org.noear.solon.Solon;
-import org.noear.solon.Utils;
 import org.noear.solon.core.JarClassLoader;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.Context;
@@ -93,10 +92,10 @@ public class EnjoyRender implements Render {
         File dir = null;
 
         if (rootdir.startsWith("file:")) {
-            String dir_str = rootdir + "src/main/resources" + ViewConfig.getBaseUri();
+            String dir_str = rootdir + "src/main/resources" + ViewConfig.getViewPrefix();
             dir = new File(URI.create(dir_str));
             if (!dir.exists()) {
-                dir_str = rootdir + "src/main/webapp" + ViewConfig.getBaseUri();
+                dir_str = rootdir + "src/main/webapp" + ViewConfig.getViewPrefix();
                 dir = new File(URI.create(dir_str));
             }
         }
@@ -123,7 +122,7 @@ public class EnjoyRender implements Render {
         provider.setDevMode(Solon.cfg().isDebugMode());
 
         try {
-            provider.setBaseTemplatePath(ViewConfig.getBaseUri());
+            provider.setBaseTemplatePath(ViewConfig.getViewPrefix());
             provider.setSourceFactory(new ClassPathSourceFactory2(classLoader));
 
             //通过事件扩展

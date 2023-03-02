@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Render;
-import org.noear.solon.serialization.fastjson.XPluginImp;
+import org.noear.solon.serialization.SerializationConfig;
 
 //不要要入参，方便后面多视图混用
 //
@@ -46,8 +46,8 @@ public class FastjsonRender2 implements Render {
             }
         }
 
-        if (XPluginImp.output_meta) {
-            ctx.headerSet("solon.serialization", "FastjsonRender");
+        if (SerializationConfig.isOutputMeta()) {
+            ctx.headerAdd("solon.serialization", "FastjsonRender");
         }
 
         ctx.attrSet("output", txt);

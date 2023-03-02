@@ -17,31 +17,46 @@ public class ViewConfig {
     public static final String HEADER_VIEW_META = "Solon-View";
 
     private static boolean outputMeta;
-    private static String viewBaseUri;
+    private static String viewPrefix;
 
     static {
         outputMeta = Solon.cfg().getInt("solon.output.meta", 0) > 0;
-        viewBaseUri = Solon.cfg().get("solon.view.prefix");
+        viewPrefix = Solon.cfg().get("solon.view.prefix");
 
-        if (Utils.isEmpty(viewBaseUri)) {
+        if (Utils.isEmpty(viewPrefix)) {
             if (ResourceUtil.hasResource(RES_WEB_INF_VIEW_LOCATION)) {
                 //第一优化
-                viewBaseUri = RES_WEB_INF_VIEW_LOCATION;
+                viewPrefix = RES_WEB_INF_VIEW_LOCATION;
             } else if (ResourceUtil.hasResource(RES_VIEW_LOCATION)) {
                 //第二优化
-                viewBaseUri = RES_VIEW_LOCATION;
+                viewPrefix = RES_VIEW_LOCATION;
             } else {
                 //默认
-                viewBaseUri = RES_WEB_INF_VIEW_LOCATION;
+                viewPrefix = RES_WEB_INF_VIEW_LOCATION;
+            }
+        } else {
+            //自动加 "/"
+            if (viewPrefix.startsWith("/") == false) {
+                viewPrefix = "/" + viewPrefix;
+            }
+
+            if (viewPrefix.endsWith("/") == false) {
+                viewPrefix = viewPrefix + "/";
             }
         }
     }
 
+    /**
+     * 是否输出元信息
+     * */
     public static boolean isOutputMeta() {
         return outputMeta;
     }
 
-    public static String getBaseUri() {
-        return viewBaseUri;
+    /**
+     * 获取视图前缀
+     * */
+    public static String getViewPrefix() {
+        return viewPrefix;
     }
 }

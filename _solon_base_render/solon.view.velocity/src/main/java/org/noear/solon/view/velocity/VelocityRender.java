@@ -7,7 +7,6 @@ import org.apache.velocity.exception.ResourceNotFoundException;
 import org.apache.velocity.runtime.RuntimeInstance;
 import org.apache.velocity.runtime.directive.Directive;
 import org.noear.solon.Solon;
-import org.noear.solon.Utils;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.ModelAndView;
 import org.noear.solon.core.handle.Render;
@@ -108,10 +107,10 @@ public class VelocityRender implements Render {
         File dir = null;
 
         if (rootdir.startsWith("file:")) {
-            String dir_str = rootdir + "src/main/resources" + ViewConfig.getBaseUri();
+            String dir_str = rootdir + "src/main/resources" + ViewConfig.getViewPrefix();
             dir = new File(URI.create(dir_str));
             if (!dir.exists()) {
-                dir_str = rootdir + "src/main/webapp" + ViewConfig.getBaseUri();
+                dir_str = rootdir + "src/main/webapp" + ViewConfig.getViewPrefix();
                 dir = new File(URI.create(dir_str));
             }
         }
@@ -136,7 +135,7 @@ public class VelocityRender implements Render {
 
         provider = new RuntimeInstance();
 
-        URL resource = ResourceUtil.getResource(ViewConfig.getBaseUri());
+        URL resource = ResourceUtil.getResource(ViewConfig.getViewPrefix());
         if(resource == null){
             return;
         }

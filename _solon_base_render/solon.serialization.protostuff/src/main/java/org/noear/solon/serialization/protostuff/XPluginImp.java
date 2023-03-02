@@ -12,11 +12,8 @@ import org.noear.solon.core.handle.RenderManager;
  * @since 1.2
  */
 public class XPluginImp implements Plugin {
-    public static boolean output_meta = false;
     @Override
     public void start(AopContext context) {
-        output_meta = Solon.cfg().getInt("solon.output.meta", 0) > 0;
-
         ProtostuffRender render = new ProtostuffRender();
 
         RenderManager.mapping("@protobuf",render);
