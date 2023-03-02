@@ -90,38 +90,31 @@ Solon v2.2.1
 ```
 
 ```java
-//Handler 模式：
+@SolonMain
 public class App{
     public static void main(String[] args){
-        SolonApp app = Solon.start(App.class,args);
-        
-        app.get("/",(c)->c.output("Hello world!"));
+        Solon.start(App.class, args, app->{
+            //Handler 模式：
+            app.get("/hello",(c)->c.output("Hello world!"));
+        });
     }
 }
 
 //Controller 模式：(mvc or rest-api)
 @Controller
-public class App{
-    public static void main(String[] args){
-        Solon.start(App.class,args);
-    }
-  
+public class HelloController{
     //限定 Socket 方法类型
     @Socket
-    @Mapping("/")
+    @Mapping("/mvc/hello")
     public String hello(String name){
         return "Hello " + name;
     }
 }
 
 //Remoting 模式：(rpc)
-@Mapping("/")
+@Mapping("/rpc/")
 @Remoting
-public class App implements HelloService{
-    public static void main(String[] args){
-        Solon.start(App.class,args);
-    }
-
+public class HelloServiceImpl implements HelloService{
     @Override
     public String hello(){
         return "Hello world!";
