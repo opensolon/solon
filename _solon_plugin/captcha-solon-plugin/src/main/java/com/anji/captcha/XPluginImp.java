@@ -14,9 +14,11 @@ import com.anji.captcha.controller.CaptchaController;
 public class XPluginImp implements Plugin {
     @Override
     public void start(AopContext context) {
-        context.beanMake(AjCaptchaProperties.class);
-        context.beanMake(AjCaptchaServiceConfiguration.class);
-        context.beanMake(AjCaptchaStorageConfiguration.class);
-        context.beanMake(CaptchaController.class);
+        context.lifecycle(-99, () -> {
+            context.beanMake(AjCaptchaProperties.class);
+            context.beanMake(AjCaptchaServiceConfiguration.class);
+            context.beanMake(AjCaptchaStorageConfiguration.class);
+            context.beanMake(CaptchaController.class);
+        });
     }
 }
