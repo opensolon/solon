@@ -16,7 +16,7 @@
 * LifecycleBean 增加对 InitializingBean 的继承，使用时简便些
 * 模板添加 templates 目录支持
 * 移除 RenderUtil 类
-* 降低内部手动添加 lifecycle 的执行排序
+* 降低内部手动添加 lifecycle 的执行排序，调为 -99 和 -98
 * 延迟 captcha-solon-plugin 运行时机
 
 
