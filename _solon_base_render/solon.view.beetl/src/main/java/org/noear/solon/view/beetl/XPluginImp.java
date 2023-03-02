@@ -17,7 +17,7 @@ public class XPluginImp implements Plugin {
 
         BeetlRender render = BeetlRender.global();
 
-        context.lifecycle(() -> {
+        context.lifecycle(-99, () -> {
             context.beanForeach((k, v) -> {
                 if (k.startsWith("view:")) { //java view widget
                     if (Tag.class.isAssignableFrom(v.clz())) {

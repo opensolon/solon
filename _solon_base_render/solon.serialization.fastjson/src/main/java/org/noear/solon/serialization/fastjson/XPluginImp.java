@@ -32,7 +32,7 @@ public class XPluginImp implements Plugin {
         FastjsonRenderTypedFactory renderTypedFactory = new FastjsonRenderTypedFactory();
         context.wrapAndPut(FastjsonRenderTypedFactory.class, renderTypedFactory);
 
-        context.lifecycle(() ->{
+        context.lifecycle(-99, () ->{
             //晚点加载，给定制更多时机
             RenderManager.mapping("@json", renderFactory.create());
             RenderManager.mapping("@type_json", renderTypedFactory.create());

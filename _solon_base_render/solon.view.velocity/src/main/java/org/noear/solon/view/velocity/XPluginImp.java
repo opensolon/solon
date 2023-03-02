@@ -16,7 +16,7 @@ public class XPluginImp implements Plugin {
     public void start(AopContext context) {
         VelocityRender render = VelocityRender.global();
 
-        context.lifecycle(() -> {
+        context.lifecycle(-99, () -> {
             context.beanForeach((k, v) -> {
                 if (k.startsWith("view:")) { //java view widget
                     if (v.raw() instanceof Directive) {

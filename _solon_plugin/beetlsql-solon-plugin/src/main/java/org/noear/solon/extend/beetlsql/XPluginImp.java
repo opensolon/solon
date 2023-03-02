@@ -33,7 +33,7 @@ public class XPluginImp implements Plugin {
 
         //初始化管理器（主要为了生成动态管理器）
         //
-        context.lifecycle(() -> {
+        context.lifecycle(-99, () -> {
             BeanWrap defBw = context.getWrap(DataSource.class);
 
             if (defBw != null) {

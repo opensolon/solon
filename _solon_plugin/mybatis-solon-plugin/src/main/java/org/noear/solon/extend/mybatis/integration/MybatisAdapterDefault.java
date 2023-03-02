@@ -75,7 +75,7 @@ public class MybatisAdapterDefault implements MybatisAdapter {
         }
 
         //加载插件（通过Bean）
-        dsWrap.context().lifecycle(() -> {
+        dsWrap.context().lifecycle(-99, () -> {
             dsWrap.context().beanForeach(bw -> {
                 if (bw.raw() instanceof Interceptor) {
                     config.addInterceptor(bw.raw());

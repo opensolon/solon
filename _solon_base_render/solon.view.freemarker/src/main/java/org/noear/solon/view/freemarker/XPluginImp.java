@@ -17,7 +17,7 @@ public class XPluginImp implements Plugin {
     public void start(AopContext context) {
         FreemarkerRender render = FreemarkerRender.global();
 
-        context.lifecycle(() -> {
+        context.lifecycle(-99, () -> {
             context.beanForeach((k, v) -> {
                 if (k.startsWith("view:") || k.startsWith("ftl:")) {
                     //java view widget

@@ -461,7 +461,7 @@ public class AopContext extends BeanContainer {
         Condition mc = m.getAnnotation(Condition.class);
 
         if (started == false && ConditionUtil.ifMissing(mc)) {
-            lifecycle(() -> tryCreateBeanOfMethod0(bw, m, ma, mc));
+            lifecycle(-98, () -> tryCreateBeanOfMethod0(bw, m, ma, mc));
         } else {
             tryCreateBeanOfMethod0(bw, m, ma, mc);
         }
@@ -490,7 +490,7 @@ public class AopContext extends BeanContainer {
         Condition cc = clz.getAnnotation(Condition.class);
 
         if (started == false && ConditionUtil.ifMissing(cc)) {
-            lifecycle(() -> tryCreateBeanOfClass0(clz, cc));
+            lifecycle(-98, () -> tryCreateBeanOfClass0(clz, cc));
         } else {
             tryCreateBeanOfClass0(clz, cc);
         }
@@ -711,6 +711,7 @@ public class AopContext extends BeanContainer {
             List<RankEntity<LifecycleBean>> beans = new ArrayList<>(lifecycleBeans);
             beans.sort(Comparator.comparingInt(f -> f.index));
 
+            //start
             for (RankEntity<LifecycleBean> b : beans) {
                 b.target.start();
             }

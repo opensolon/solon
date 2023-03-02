@@ -34,7 +34,7 @@ public class XPluginImp implements Plugin {
         GsonRenderTypedFactory renderTypedFactory = new GsonRenderTypedFactory();
         context.wrapAndPut(GsonRenderTypedFactory.class, renderTypedFactory);
 
-        context.lifecycle(() -> {
+        context.lifecycle(-99, () -> {
             RenderManager.mapping("@json", renderFactory.create());
             RenderManager.mapping("@type_json", renderTypedFactory.create());
         });

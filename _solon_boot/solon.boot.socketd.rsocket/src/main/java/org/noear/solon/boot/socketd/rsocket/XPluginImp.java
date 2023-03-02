@@ -30,7 +30,7 @@ public class XPluginImp implements Plugin {
             return;
         }
 
-        context.lifecycle(() -> {
+        context.lifecycle(-99, () -> {
             start0(Solon.app());
         });
     }
