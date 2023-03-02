@@ -12,9 +12,13 @@
 ### v2.2.1
 
 * mybatis-solon-plugin，取消 mappers 检测异常，改为警告日志
-* ContextPathFilter 增加与 cfg()serverContextPath 同步配置
+* ContextPathFilter 增加与 cfg().serverContextPath 同步配置
+* LifecycleBean 增加对 InitializingBean 的继承，使用时简便些
 * 模板添加 templates 目录支持
 * 移除 RenderUtil 类
+* 降低内部手动添加 lifecycle 的优先级
+* 延迟 captcha-solon-plugin 运行时机
+
 
 ### v2.2.0
 
