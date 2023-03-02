@@ -1,7 +1,7 @@
 package org.noear.solon.core;
 
 /**
- * 通用插件接口（实现 Plugin 架构；通过Solon ISP进行申明）
+ * 通用插件接口（实现 Plugin 架构；通过Solon SPI进行申明）
  *
  * @author noear
  * @since 1.0
@@ -9,7 +9,7 @@ package org.noear.solon.core;
 @FunctionalInterface
 public interface Plugin {
     /**
-     * 启动 （stop 可通过: app.onStop(..) 实现）
+     * 启动
      */
     void start(AopContext context) throws Throwable;
 
