@@ -206,7 +206,8 @@ public class AopContext extends BeanContainer {
 
         //LifecycleBean（替代 Plugin，提供组件的生态周期控制）
         if (LifecycleBean.class.isAssignableFrom(clz)) {
-            lifecycle(bw.index(), bw.raw());
+            //让注解产生的生命周期，排序晚1个点
+            lifecycle(bw.index() + 1, bw.raw());
             return;
         }
 
@@ -640,7 +641,7 @@ public class AopContext extends BeanContainer {
      */
     @Deprecated
     public void beanOnloaded(Consumer<AopContext> fun) {
-        beanOnloaded(0, fun::accept);
+        beanOnloaded(-1, fun::accept);
     }
 
     /**
