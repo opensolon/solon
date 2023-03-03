@@ -15,7 +15,7 @@
 	<packaging>jar</packaging>
 
 	<properties>
-		<searcher.version>4.0.1</searcher.version>
+		<searcher.version>4.1.0</searcher.version>
 		<xjsonkit.version>1.4.2</xjsonkit.version>
 	</properties>
 
