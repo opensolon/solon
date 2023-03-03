@@ -64,6 +64,10 @@ public class FreemarkerRender implements Render {
             return;
         }
 
+        if (Solon.cfg().isFilesMode() == false) {
+            return;
+        }
+
         if (provider_debug != null) {
             return;
         }

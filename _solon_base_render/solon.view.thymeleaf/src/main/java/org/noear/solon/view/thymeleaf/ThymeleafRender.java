@@ -69,6 +69,10 @@ public class ThymeleafRender implements Render {
             return;
         }
 
+        if (Solon.cfg().isFilesMode() == false) {
+            return;
+        }
+
         //添加调试模式
         URL rooturi = ResourceUtil.getResource("/");
         if (rooturi == null) {

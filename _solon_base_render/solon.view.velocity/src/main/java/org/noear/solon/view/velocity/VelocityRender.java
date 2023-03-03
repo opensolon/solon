@@ -48,12 +48,9 @@ public class VelocityRender implements Render {
     //不要要入参，方便后面多视图混用
     //
     public VelocityRender() {
-        if (Solon.cfg().isDebugMode()) {
-            forDebug();
-            forRelease();
-        } else {
-            forRelease();
-        }
+
+        forDebug();
+        forRelease();
 
         engineInit(provider);
         engineInit(provider_debug);
@@ -73,7 +70,7 @@ public class VelocityRender implements Render {
     }
 
     private void engineInit(RuntimeInstance ve) {
-        if(ve == null){
+        if (ve == null) {
             return;
         }
 
@@ -91,13 +88,21 @@ public class VelocityRender implements Render {
     }
 
     private void forDebug() {
+        if (Solon.cfg().isDebugMode() == false) {
+            return;
+        }
+
+        if (Solon.cfg().isFilesMode() == false) {
+            return;
+        }
+
         if (provider_debug != null) {
             return;
         }
 
         //添加调试模式
         URL rooturi = ResourceUtil.getResource("/");
-        if(rooturi == null){
+        if (rooturi == null) {
             return;
         }
 
@@ -136,7 +141,7 @@ public class VelocityRender implements Render {
         provider = new RuntimeInstance();
 
         URL resource = ResourceUtil.getResource(ViewConfig.getViewPrefix());
-        if(resource == null){
+        if (resource == null) {
             return;
         }
 
@@ -148,7 +153,7 @@ public class VelocityRender implements Render {
 
     /**
      * 添加共享指令（自定义标签）
-     * */
+     */
     public <T extends Directive> void putDirective(T obj) {
         provider.addDirective(obj);
 
@@ -159,7 +164,7 @@ public class VelocityRender implements Render {
 
     /**
      * 添加共享变量
-     * */
+     */
     public void putVariable(String key, Object obj) {
         _sharedVariable.put(key, obj);
     }
