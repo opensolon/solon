@@ -3,15 +3,12 @@ package cn.zhxu.bs.solon;
 import cn.zhxu.bs.*;
 import cn.zhxu.bs.FieldConvertor.BFieldConvertor;
 import cn.zhxu.bs.FieldConvertor.MFieldConvertor;
+import cn.zhxu.bs.convertor.*;
 import cn.zhxu.bs.dialect.*;
 import cn.zhxu.bs.filter.SizeLimitParamFilter;
-import cn.zhxu.bs.group.DefaultGroupResolver;
-import cn.zhxu.bs.group.DefaultParserFactory;
-import cn.zhxu.bs.group.ExprParser;
-import cn.zhxu.bs.group.GroupResolver;
-import cn.zhxu.bs.solon.BeanSearcherProperties.Sql;
-import cn.zhxu.bs.convertor.*;
+import cn.zhxu.bs.group.*;
 import cn.zhxu.bs.implement.*;
+import cn.zhxu.bs.solon.BeanSearcherProperties.Sql;
 import cn.zhxu.bs.util.LRUCache;
 import cn.zhxu.xjson.JsonKit;
 import org.noear.solon.annotation.Bean;
@@ -22,9 +19,11 @@ import org.noear.solon.core.AopContext;
 
 import javax.sql.DataSource;
 import java.time.ZoneId;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
-
 
 
 @Configuration
@@ -164,9 +163,11 @@ public class BeanSearcherAutoConfiguration {
 	@Condition(onMissingBean = ParamResolver.class)
 	public ParamResolver paramResolver(PageExtractor pageExtractor,
 									   FieldOpPool fieldOpPool,
-									   List<ParamFilter> paramFilters,
-									   List<ParamResolver.Convertor> convertors,
 									   GroupResolver groupResolver) {
+
+		List<ParamFilter> paramFilters = context.getBeansOfType(ParamFilter.class);
+		List<FieldConvertor.ParamConvertor> convertors = context.getBeansOfType(FieldConvertor.ParamConvertor.class);
+
 		DefaultParamResolver paramResolver = new DefaultParamResolver(convertors, paramFilters);
 		paramResolver.setPageExtractor(pageExtractor);
 		paramResolver.setFieldOpPool(fieldOpPool);
@@ -187,9 +188,17 @@ public class BeanSearcherAutoConfiguration {
 	}
 
 	@Bean
+	@Condition(onMissingBean = GroupPair.Resolver.class)
+	public GroupPair.Resolver groupPairResolver() {
+		return new GroupPairResolver();
+	}
+
+	@Bean
 	@Condition(onMissingBean = SqlResolver.class)
-	public SqlResolver sqlResolver(Dialect dialect) {
-		return new DefaultSqlResolver(dialect);
+	public SqlResolver sqlResolver(Dialect dialect, GroupPair.Resolver groupPairResolver) {
+		DefaultSqlResolver resolver = new DefaultSqlResolver(dialect);
+		resolver.setGroupPairResolver(groupPairResolver);
+		return resolver;
 	}
 
 	@Bean
@@ -277,14 +286,14 @@ public class BeanSearcherAutoConfiguration {
 	@Bean
 	@Condition(onMissingBean = ListFieldConvertor.class,
 			onProperty = "${bean-searcher.field-convertor.use-list:true}=true")
+	@SuppressWarnings("all")
 	public ListFieldConvertor listFieldConvertor() {
 		List<ListFieldConvertor.Convertor> tmp = context.getBeansOfType(ListFieldConvertor.Convertor.class);
-		List<ListFieldConvertor.Convertor<?>> convertorsProvider = new ArrayList<>();
-		tmp.forEach(c -> convertorsProvider.add(c));
-
+		List<ListFieldConvertor.Convertor<?>> convertors = new ArrayList<>();
+		tmp.forEach(convertors::add);
 		BeanSearcherProperties.FieldConvertor conf = config.getFieldConvertor();
 		ListFieldConvertor convertor = new ListFieldConvertor(conf.getListItemSeparator());
-		ifAvailable(convertorsProvider, convertor::setConvertors);
+		ifAvailable(convertors, convertor::setConvertors);
 		return convertor;
 	}
 
