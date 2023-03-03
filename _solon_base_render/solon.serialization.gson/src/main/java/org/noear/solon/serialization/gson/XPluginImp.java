@@ -1,6 +1,5 @@
 package org.noear.solon.serialization.gson;
 
-import org.noear.solon.Solon;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.event.EventBus;
@@ -74,6 +73,10 @@ public class XPluginImp implements Plugin {
 
             if(jsonProps.nullStringAsEmpty){
                 factory.config().registerTypeAdapter(String.class, new NullStringSerialize());
+            }
+
+            if(jsonProps.enumAsName){
+                factory.config().registerTypeAdapter(Enum.class, new EnumAdapter());
             }
 
         } else {

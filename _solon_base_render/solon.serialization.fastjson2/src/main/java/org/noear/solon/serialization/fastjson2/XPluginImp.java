@@ -70,6 +70,10 @@ public class XPluginImp implements Plugin {
                 factory.addFeatures(JSONWriter.Feature.WriteNullListAsEmpty);
             }
 
+            if(jsonProps.enumAsName){
+                factory.addFeatures(JSONWriter.Feature.WriteEnumsUsingName);
+            }
+
             if (writeNulls) {
                 factory.addFeatures(JSONWriter.Feature.WriteNulls);
             }

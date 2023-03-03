@@ -67,6 +67,10 @@ public class XPluginImp implements Plugin {
             if(jsonProps.nullAsWriteable){
                 factory.addFeatures(SerializerFeature.WriteMapNullValue);
             }
+
+            if(jsonProps.enumAsName){
+                factory.addFeatures(SerializerFeature.WriteEnumUsingName);
+            }
         }
     }
 }

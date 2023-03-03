@@ -27,4 +27,6 @@ public class JsonProps implements Serializable {
     public boolean nullNumberAsZero;
     public boolean nullArrayAsEmpty;
     public boolean nullAsWriteable;
+
+    public boolean enumAsName;
 }

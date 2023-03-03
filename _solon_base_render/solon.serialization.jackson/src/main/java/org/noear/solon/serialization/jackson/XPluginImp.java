@@ -64,6 +64,10 @@ public class XPluginImp implements Plugin {
                         .getSerializerProvider()
                         .setNullValueSerializer(new NullValueSerializer(jsonProps));
             }
+
+            if(jsonProps.enumAsName){
+                factory.config().configure(SerializationFeature.WRITE_ENUMS_USING_TO_STRING,true);
+            }
         }
 
         if (writeNulls == false) {
