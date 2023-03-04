@@ -17,20 +17,20 @@
 
     <dependencies>
         <dependency>
+            <groupId>com.yomahub</groupId>
+            <artifactId>liteflow-solon-plugin</artifactId>
+            <version>2.9.7</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.noear</groupId>
+                    <artifactId>solon</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.yomahub</groupId>
-            <artifactId>liteflow-core</artifactId>
-            <version>2.9.6</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon-test-junit4</artifactId>
-            <scope>test</scope>
         </dependency>
     </dependencies>
 
