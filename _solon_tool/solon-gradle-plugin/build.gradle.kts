@@ -1,11 +1,6 @@
-import java.text.SimpleDateFormat
-import java.util.Date
-
 buildscript {
     repositories {
         mavenLocal()
-        maven { setUrl("https://maven.aliyun.com/repository/public") }
-        maven { setUrl("https://maven.aliyun.com/repository/gradle-plugin") }
         mavenCentral()
         gradlePluginPortal()
     }
@@ -23,7 +18,6 @@ description = "Solon Gradle Plugin"
 
 repositories {
     mavenLocal()
-    maven { setUrl("https://maven.aliyun.com/repository/public") }
     mavenCentral()
 }
 
@@ -69,7 +63,7 @@ mavenPublishing {
     pom {
         name.set("Solon Gradle Plugin")
         description.set(project.description)
-        inceptionYear.set(SimpleDateFormat("yyyy").format(Date()))
+        inceptionYear.set("2023")
         url.set("https://gitee.com/noear/solon")
         licenses {
             license {
