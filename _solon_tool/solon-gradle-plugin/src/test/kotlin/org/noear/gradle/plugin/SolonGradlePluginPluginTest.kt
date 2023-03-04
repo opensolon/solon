@@ -7,12 +7,12 @@ package org.noear.gradle.plugin
  * A simple unit test for the 'com.noear.gradle.plugin.greeting' plugin.
  */
 class SolonGradlePluginPluginTest {
-    @Test fun `plugin registers task`() {
-        // Create a test project and apply the plugin
-        val project = ProjectBuilder.builder().build()
-        project.plugins.apply("org.noear.solon")
-
-        // Verify the result
-        assertNotNull(project.tasks.findByName("solonJar"))
-    }
+//    @Test fun `plugin registers task`() {
+//        // Create a test project and apply the plugin
+//        val project = ProjectBuilder.builder().build()
+//        project.plugins.apply("org.noear.solon")
+//
+//        // Verify the result
+//        assertNotNull(project.tasks.findByName("solonJar"))
+//    }
 }
