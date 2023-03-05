@@ -11,8 +11,6 @@ import java.util.Properties;
  * @author noear
  * @since 1.6
  */
-@Note("更名为：SaTokenDaoOfRedisBase64")
-@Deprecated
 public class SaTokenDaoOfRedis extends SaTokenDaoOfRedisBase64 {
 
     public SaTokenDaoOfRedis(Properties props) {

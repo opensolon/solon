@@ -17,7 +17,8 @@
 * 让默认的 beanOnloaded 生命周期，排序为-1
 * 优化 bean-searcher 适配
 * activerecord 升级为 5.0.4
-* bean-searcher 依赖升为 4.1.0
+* bean-searcher 升级为 4.1.0
+* snack3 升级为 3.2.57
 
 ### v2.2.1
 
