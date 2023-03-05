@@ -50,9 +50,9 @@ public class Solon {
 
     /**
      * 设置全局实例（仅用内部用，一般用于单测隔离）
-     * */
-    protected static void appSet(SolonApp solonApp){
-        if(solonApp != null){
+     */
+    protected static void appSet(SolonApp solonApp) {
+        if (solonApp != null) {
             app = solonApp;
         }
     }
@@ -195,6 +195,16 @@ public class Solon {
      */
     public static void stop(int delay) {
         new Thread(() -> stop0(true, delay)).start();
+    }
+
+    /**
+     * 停止应用（未完成之前，会一直卡住）
+     *
+     * @param exit  是否退出进程
+     * @param delay 延迟时间（单位：秒）
+     */
+    protected static void stopBlock(boolean exit, int delay) {
+        stop0(exit, delay);
     }
 
     private static void stop0(boolean exit, int delay) {
