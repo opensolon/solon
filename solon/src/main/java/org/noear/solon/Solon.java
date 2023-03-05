@@ -251,6 +251,9 @@ public class Solon {
             EventBus.pushTry(new AppStopEndEvent(Solon.app()));
         }
 
+        app = null;
+        appMain = null;
+
 
         //4.直接非正常退出
         if (exit) {
