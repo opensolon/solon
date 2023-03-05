@@ -203,7 +203,7 @@ public class Solon {
      * @param exit  是否退出进程
      * @param delay 延迟时间（单位：秒）
      */
-    protected static void stopBlock(boolean exit, int delay) {
+    public static void stopBlock(boolean exit, int delay) {
         stop0(exit, delay);
     }
 
