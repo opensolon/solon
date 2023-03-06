@@ -18,13 +18,11 @@
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>nami</artifactId>
-            <version>2.2.2-SNAPSHOT</version>
         </dependency>
 
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon.socketd</artifactId>
-            <version>2.2.2-SNAPSHOT</version>
         </dependency>
     </dependencies>
 
