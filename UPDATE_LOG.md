@@ -22,6 +22,7 @@
 * bean-searcher 升级为 4.1.0
 * snack3 升级为 3.2.57
 * hutool 升级为 5.8.14
+* dubbo3 升级为 3.1.7
 
 ### v2.2.1
 

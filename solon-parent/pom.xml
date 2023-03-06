@@ -74,7 +74,7 @@
         <protobuf.ver>3.19.4</protobuf.ver>
         <grpc.ver>1.49.0</grpc.ver>
         <dubbo2.ver>2.7.5</dubbo2.ver>
-        <dubbo3.ver>3.1.1</dubbo3.ver>
+        <dubbo3.ver>3.1.7</dubbo3.ver>
         <nacos1.ver>1.4.4</nacos1.ver>
         <nacos2.ver>2.1.2</nacos2.ver>
         <polaris.ver>1.10.1</polaris.ver>
@@ -150,6 +150,12 @@
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
                 <version>${lombok.ver}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.zaxxer</groupId>
+                <artifactId>HikariCP</artifactId>
+                <version>${hikaricp.ver}</version>
             </dependency>
 
             <dependency>
