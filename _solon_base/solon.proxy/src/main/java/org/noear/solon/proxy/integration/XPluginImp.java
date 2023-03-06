@@ -27,7 +27,7 @@ public class XPluginImp implements Plugin {
             ProxyUtil.binding(bw, beanName, anno.typed());
 
             if(Solon.cfg().isDebugMode()){
-                LogUtil.global().warn("@Dao will be discarded, please use '@ProxyComponent'");
+                LogUtil.global().warn("@Dao will be discarded, suggested use '@ProxyComponent'");
             }
         });
 
@@ -38,7 +38,7 @@ public class XPluginImp implements Plugin {
             ProxyUtil.binding(bw, beanName, anno.typed());
 
             if(Solon.cfg().isDebugMode()){
-                LogUtil.global().warn("@Service will be discarded, please use '@ProxyComponent'");
+                LogUtil.global().warn("@Service will be discarded, suggested use '@ProxyComponent'");
             }
         });
 
@@ -49,7 +49,7 @@ public class XPluginImp implements Plugin {
             ProxyUtil.binding(bw, beanName, anno.typed());
 
             if(Solon.cfg().isDebugMode()){
-                LogUtil.global().warn("@Repository will be discarded, please use '@ProxyComponent'");
+                LogUtil.global().warn("@Repository will be discarded, suggested use '@ProxyComponent'");
             }
         });
     }
