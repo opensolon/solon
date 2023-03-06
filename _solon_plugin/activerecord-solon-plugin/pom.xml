@@ -14,7 +14,6 @@
     <artifactId>activerecord-solon-plugin</artifactId>
     <packaging>jar</packaging>
 
-
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
@@ -24,7 +23,7 @@
         <dependency>
             <groupId>com.jfinal</groupId>
             <artifactId>activerecord</artifactId>
-            <version>5.0.4</version>
+            <version>${activerecord.ver}</version>
         </dependency>
     </dependencies>
 </project>
