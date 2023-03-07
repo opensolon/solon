@@ -6,6 +6,7 @@ solon.logging.appender:
     level: DEBUG
   file:
     level: INFO
+    enable: false
   cloud:
     level: INFO
   json:

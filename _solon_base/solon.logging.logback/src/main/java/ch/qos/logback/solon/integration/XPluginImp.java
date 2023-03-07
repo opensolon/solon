@@ -38,7 +38,13 @@ public class XPluginImp implements Plugin , InitializingBean {
 
             //尝试默认加载
             if (url == null) {
-                url = ResourceUtil.getResource("META-INF/solon_def/logback-def.xml");
+                boolean fileEnable = Solon.cfg().getBool("solon.logging.appender.file.enable", true);
+
+                if(fileEnable) {
+                    url = ResourceUtil.getResource("META-INF/solon_def/logback-def.xml");
+                }else{
+                    url = ResourceUtil.getResource("META-INF/solon_def/logback-def_nofile.xml");
+                }
             }
 
             if (url == null) {
@@ -57,10 +63,10 @@ public class XPluginImp implements Plugin , InitializingBean {
     private void initDo(URL url) {
         try {
             LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
-            SolonConfigurator jc = new SolonConfigurator();
-            jc.setContext(loggerContext);
+            SolonConfigurator configurator = new SolonConfigurator();
+            configurator.setContext(loggerContext);
             loggerContext.reset();
-            jc.doConfigure(url);
+            configurator.doConfigure(url);
 
             //同步 logger level 配置
             if (LogOptions.getLoggerLevels().size() > 0) {

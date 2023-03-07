@@ -37,7 +37,13 @@ public class XPluginImp implements Plugin , InitializingBean {
 
             //尝试默认加载
             if (url == null) {
-                url = ResourceUtil.getResource("META-INF/solon_def/log4j2-def.xml");
+                boolean fileEnable = Solon.cfg().getBool("solon.logging.appender.file.enable", true);
+
+                if(fileEnable) {
+                    url = ResourceUtil.getResource("META-INF/solon_def/log4j2-def.xml");
+                }else{
+                    url = ResourceUtil.getResource("META-INF/solon_def/log4j2-def_nofile.xml");
+                }
             }
 
             if (url == null) {
@@ -59,17 +65,16 @@ public class XPluginImp implements Plugin , InitializingBean {
 
             //同步 logger level 配置
             if (LogOptions.getLoggerLevels().size() > 0) {
-                LoggerContext lctx = LoggerContext.getContext(false);
-                Configuration lcfg = lctx.getConfiguration();
+                LoggerContext context = LoggerContext.getContext(false);
 
                 for (LoggerLevelEntity lle : LogOptions.getLoggerLevels()) {
                     LoggerConfig logger = new LoggerConfig(lle.getLoggerExpr(),
                             Level.valueOf(lle.getLevel().name()),
                             true);
-                    lcfg.addLogger(logger.getName(), logger);
+                    context.getConfiguration().addLogger(logger.getName(), logger);
                 }
 
-                lctx.updateLoggers();
+                context.updateLoggers();
             }
         } catch (Exception e) {
             throw new IllegalStateException(e);
