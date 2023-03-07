@@ -17,26 +17,20 @@
 
     <dependencies>
         <dependency>
+            <groupId>com.dtflys.forest</groupId>
+            <artifactId>forest-solon-plugin</artifactId>
+            <version>1.5.30</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.noear</groupId>
+                    <artifactId>solon</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.dtflys.forest</groupId>
-            <artifactId>forest-core</artifactId>
-            <version>1.5.28</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.serialization.jackson</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon-test</artifactId>
-            <scope>test</scope>
         </dependency>
     </dependencies>
 

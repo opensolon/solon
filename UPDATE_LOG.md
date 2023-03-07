@@ -17,6 +17,8 @@
 * 让默认的 beanOnloaded 生命周期，排序为-1
 * 优化 bean-searcher 适配
 * 添加 Solon::stopBlock 接口
+* 移除 forest-solon-plugin 源码，改引用 com.dtflys.forest:forest-solon-plugin
+* 移除 liteflow-solon-plugin 源码，改引用 com.yomahub:liteflow-solon-plugin
 * 增加 用属性配置控制 solon.logging.log4j2::File 添加器的支持
 * 增加 用属性配置控制 solon.logging.logback::File 添加器的支持
 * Solon::stop 时把 app,appMain置为null
