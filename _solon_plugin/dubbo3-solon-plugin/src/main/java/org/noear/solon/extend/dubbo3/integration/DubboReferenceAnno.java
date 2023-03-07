@@ -373,6 +373,11 @@ public class DubboReferenceAnno implements DubboReference, Reference {
     }
 
     @Override
+    public String providerNamespace() {
+        return anno.providerNamespace();
+    }
+
+    @Override
     public String scope() {
         return anno.scope();
     }
