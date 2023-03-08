@@ -14,11 +14,15 @@
 	<artifactId>bean-searcher-solon-plugin</artifactId>
 	<packaging>jar</packaging>
 
+	<properties>
+		<bs.ver>4.1.1</bs.ver>
+	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>cn.zhxu</groupId>
 			<artifactId>bean-searcher-solon-plugin</artifactId>
-			<version>${bean-searcher.ver}</version>
+			<version>${bs.ver}</version>
 			<exclusions>
 				<exclusion>
 					<artifactId>org.noear</artifactId>

@@ -88,9 +88,6 @@
 
         <mapstruct.ver>1.5.3.Final</mapstruct.ver>
         <native.ver>0.9.22</native.ver>
-
-        <activerecord.ver>5.0.4</activerecord.ver>
-        <bean-searcher.ver>4.1.0</bean-searcher.ver>
     </properties>
 
 

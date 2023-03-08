@@ -14,6 +14,10 @@
     <artifactId>activerecord-solon-plugin</artifactId>
     <packaging>jar</packaging>
 
+    <properties>
+        <activerecord.ver>5.0.4</activerecord.ver>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
