@@ -3,6 +3,8 @@ package org.noear.solon.graalvm.apt;
 import com.google.auto.service.AutoService;
 
 import org.noear.snack.ONode;
+import org.noear.snack.core.Feature;
+import org.noear.snack.core.Options;
 import org.noear.solon.annotation.SolonMain;
 
 import javax.annotation.processing.*;
@@ -26,6 +28,8 @@ import java.util.*;
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
 @SupportedAnnotationTypes({"*"})
 public class AptNativeProcessor extends AbstractProcessor {
+
+    static Options jsonOptions = Options.def().add(Feature.PrettyFormat);
 
     @Override
     public Set<String> getSupportedAnnotationTypes() {
@@ -78,7 +82,7 @@ public class AptNativeProcessor extends AbstractProcessor {
                 "",
                 fileName);
 
-        ONode oNode = new ONode();
+        ONode oNode = new ONode(jsonOptions);
         ONode includesNode = oNode.getOrNew("resources").getOrNew("includes").asArray();
         includesNode.addNew().set("pattern", "app.*\\.yml");
         includesNode.addNew().set("pattern", "app.*\\.properties");
@@ -103,7 +107,7 @@ public class AptNativeProcessor extends AbstractProcessor {
                 "",
                 fileName);
 
-        ONode oNode = new ONode().asArray();
+        ONode oNode = new ONode(jsonOptions).asArray();
 
         oNode.addNew().build(n -> buildReflectNode(n,"org.noear.solon.extend.impl.PropsLoaderExt"));
         oNode.addNew().build(n -> buildReflectNode(n,"org.noear.solon.extend.impl.PropsConverterExt"));
