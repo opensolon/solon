@@ -1,28 +1,28 @@
 package org.noear.solon.cloud.extend.rocketmq.impl;
 
-import org.apache.rocketmq.client.apis.ClientConfiguration;
-import org.apache.rocketmq.client.apis.ClientConfigurationBuilder;
-import org.apache.rocketmq.client.apis.ClientException;
-import org.apache.rocketmq.client.apis.ClientServiceProvider;
+import org.apache.rocketmq.client.apis.*;
 import org.apache.rocketmq.client.apis.message.Message;
 import org.apache.rocketmq.client.apis.producer.Producer;
 import org.apache.rocketmq.client.apis.producer.SendReceipt;
+import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.model.Event;
 
+import java.io.Closeable;
+import java.io.IOException;
 import java.time.Duration;
 
 /**
  * @author noear
  * @since 1.3
  */
-public class RocketmqProducer {
-    RocketmqConfig cfg;
+public class RocketmqProducer implements Closeable {
+    RocketmqConfig config;
     ClientServiceProvider serviceProvider;
     Producer producer;
 
     public RocketmqProducer(RocketmqConfig config) {
-        cfg = config;
+        this.config = config;
     }
 
     private void init(CloudProps cloudProps) throws ClientException {
@@ -41,11 +41,15 @@ public class RocketmqProducer {
             ClientConfigurationBuilder builder = ClientConfiguration.newBuilder();
 
             //服务地址
-            builder.setEndpoints(cfg.getServer());
+            builder.setEndpoints(config.getServer());
+            //账号密码
+            if(Utils.isNotEmpty(config.getAccessKey())) {
+                builder.setCredentialProvider(new StaticSessionCredentialsProvider(config.getAccessKey(), config.getSecretKey()));
+            }
 
             //发送超时时间，默认3000 单位ms
-            if (cfg.getTimeout() > 0) {
-                builder.setRequestTimeout(Duration.ofMillis(cfg.getTimeout()));
+            if (config.getTimeout() > 0) {
+                builder.setRequestTimeout(Duration.ofMillis(config.getTimeout()));
             }
 
             ClientConfiguration configuration = builder.build();
@@ -69,6 +73,13 @@ public class RocketmqProducer {
             return true;
         } else {
             return false;
+        }
+    }
+
+    @Override
+    public void close() throws IOException {
+        if(producer != null){
+            producer.close();
         }
     }
 }

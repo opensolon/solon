@@ -12,19 +12,28 @@ import org.noear.solon.core.Plugin;
  * @since 1.2
  */
 public class XPluginImp implements Plugin {
+    CloudEventServiceRocketmqImp eventService;
+
     @Override
     public void start(AopContext context) {
-        CloudProps cloudProps = new CloudProps(context,"rocketmq");
+        CloudProps cloudProps = new CloudProps(context, "rocketmq");
 
         if (Utils.isEmpty(cloudProps.getEventServer())) {
             return;
         }
 
         if (cloudProps.getEventEnable()) {
-            CloudEventServiceRocketmqImp eventServiceImp = new CloudEventServiceRocketmqImp(cloudProps);
-            CloudManager.register(eventServiceImp);
+            eventService = new CloudEventServiceRocketmqImp(cloudProps);
+            CloudManager.register(eventService);
 
-            context.lifecycle(-99, () -> eventServiceImp.subscribe());
+            context.lifecycle(-99, () -> eventService.subscribe());
+        }
+    }
+
+    @Override
+    public void prestop() throws Throwable {
+        if (eventService != null) {
+            eventService.close();
         }
     }
 }

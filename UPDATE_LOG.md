@@ -12,12 +12,13 @@
 ### v2.2.2
 
 * 新增 bean-searcher-solon-plugin 插件
+* 优化 rocketmq5-solon-cloud-plugin 插件
 * 移除 forest-solon-plugin 源码，改引用 com.dtflys.forest:forest-solon-plugin
 * 移除 liteflow-solon-plugin 源码，改引用 com.yomahub:liteflow-solon-plugin
 * 增加 调试模式下，有拦截器的函数，检查下类是不是动态代理的？？？
 * 增加 调试模式下，模板仅在文件模式下才加载源码提供器
-* 增加 用属性配置控制 solon.logging.log4j2::File 添加器的支持！
-* 增加 用属性配置控制 solon.logging.logback::File 添加器的支持！
+* 增加 用属性配置控制 solon.logging.log4j2::File 添加器是否启用！
+* 增加 用属性配置控制 solon.logging.logback::File 添加器是否启用！
 * 增加 CloudProps 关于 username/password 与 ak/sk 配置互通的支持！
 * 增加 CloudProps 关于 username/password 上下级传导的支持！
 * 增加 Solon::stopBlock 接口
@@ -30,6 +31,7 @@
 * snack3 升级为 3.2.59
 * hutool 升级为 5.8.14
 * dubbo3 升级为 3.1.7
+* rocketmq5-client 升级为 5.0.4
 
 ### v2.2.1
 

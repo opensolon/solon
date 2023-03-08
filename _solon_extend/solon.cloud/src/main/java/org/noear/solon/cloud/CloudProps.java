@@ -327,13 +327,17 @@ public class CloudProps {
         return aopContext.cfg().getBool(EVENT_ENABLE, true);
     }
 
+    private String eventServer;
     public String getEventServer() {
-        String tmp = aopContext.cfg().get(EVENT_SERVER);
-        if (Utils.isEmpty(tmp)) {
-            return getServer();
-        } else {
-            return tmp;
+        if (eventServer == null) {
+            eventServer = aopContext.cfg().get(EVENT_SERVER);
+
+            if (eventServer == null) {
+                eventServer = getServer();
+            }
         }
+
+        return eventServer;
     }
 
     public int getEventPrefetchCount() {

@@ -25,12 +25,16 @@ class MessageUtil {
         messageBuilder.setTopic(topicNew)
                 //设置消息索引键，可根据关键字精确查找某条消息。
                 .setKeys(event.key())
-                //设置消息Tag，用于消费端根据指定Tag过滤消息。
-                .setTag(event.tags())
                 //消息体。
                 .setBody(event.content().getBytes(StandardCharsets.UTF_8));
 
 
+        //设置消息Tag，用于消费端根据指定Tag过滤消息。
+        if (Utils.isNotEmpty(event.tags())) {
+            messageBuilder.setTag(event.tags());
+        }
+
+        //设置超时
         if (event.scheduled() != null) {
             long delayTimestamp = event.scheduled().getTime() - System.currentTimeMillis();
             messageBuilder.setDeliveryTimestamp(delayTimestamp);

@@ -14,11 +14,14 @@ import org.noear.solon.cloud.model.Event;
 import org.noear.solon.cloud.service.CloudEventObserverManger;
 import org.noear.solon.cloud.service.CloudEventServicePlus;
 
+import java.io.Closeable;
+import java.io.IOException;
+
 /**
  * @author noear
  * @since 1.2
  */
-public class CloudEventServiceRocketmqImp implements CloudEventServicePlus {
+public class CloudEventServiceRocketmqImp implements CloudEventServicePlus, Closeable {
     private CloudProps cloudProps;
     private RocketmqProducer producer;
     private RocketmqConsumer consumer;
@@ -113,5 +116,16 @@ public class CloudEventServiceRocketmqImp implements CloudEventServicePlus {
         }
 
         return group;
+    }
+
+    @Override
+    public void close() throws IOException {
+        if (consumer != null) {
+            consumer.close();
+        }
+
+        if (producer != null) {
+            producer.close();
+        }
     }
 }

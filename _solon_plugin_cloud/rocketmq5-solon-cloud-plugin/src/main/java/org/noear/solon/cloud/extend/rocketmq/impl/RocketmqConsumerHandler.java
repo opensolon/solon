@@ -12,6 +12,8 @@ import org.noear.solon.core.event.EventBus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.nio.charset.StandardCharsets;
+
 
 /**
  * @author noear
@@ -45,8 +47,10 @@ public class RocketmqConsumerHandler implements MessageListener {
                 topic = topicNew;
             }
 
-            Event event = new Event(topic, new String(message.getBody().array()));
-            event.tags(message.getTag().get());
+            String content = StandardCharsets.UTF_8.decode(message.getBody()).toString();
+
+            Event event = new Event(topic, content);
+            event.tags(message.getTag().orElse(null));
             event.key(String.join(",", message.getKeys()));
             event.times(message.getDeliveryAttempt());
             event.channel(config.getChannelName());
