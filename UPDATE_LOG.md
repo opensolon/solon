@@ -11,19 +11,20 @@
 
 ### v2.2.2
 
-* 调试模式下，有拦截器的函数，检查下类是不是动态代理的
-* 调试模式下，模板仅在文件模式下才加载源码提供器
-* 让注解产生的生命周期，排序晚1个点
-* 让默认的 beanOnloaded 生命周期，排序为-1
-* 优化 bean-searcher 适配
-* 添加 Solon::stopBlock 接口
+* 新增 bean-searcher-solon-plugin 插件
 * 移除 forest-solon-plugin 源码，改引用 com.dtflys.forest:forest-solon-plugin
 * 移除 liteflow-solon-plugin 源码，改引用 com.yomahub:liteflow-solon-plugin
-* 增加 用属性配置控制 solon.logging.log4j2::File 添加器的支持
-* 增加 用属性配置控制 solon.logging.logback::File 添加器的支持
-* 增加 CloudProps 关于 username/password 与 ak/sk 配置互通的支持
-* 增加 CloudProps 关于 username/password 上下级传导的支持
-* Solon::stop 时把 app,appMain置为null
+* 增加 调试模式下，有拦截器的函数，检查下类是不是动态代理的？？？
+* 增加 调试模式下，模板仅在文件模式下才加载源码提供器
+* 增加 用属性配置控制 solon.logging.log4j2::File 添加器的支持！
+* 增加 用属性配置控制 solon.logging.logback::File 添加器的支持！
+* 增加 CloudProps 关于 username/password 与 ak/sk 配置互通的支持！
+* 增加 CloudProps 关于 username/password 上下级传导的支持！
+* 增加 Solon::stopBlock 接口
+* 调整 Solon::stop 时把 app,appMain置为null
+* 调整 solon.web.static 的目录优先级（支持两个，但只让一个生效）
+* 调整 让注解产生的生命周期，排序晚1个点
+* 调整 让默认的 beanOnloaded 生命周期，排序为-1
 * activerecord 升级为 5.0.4
 * bean-searcher 升级为 4.1.1
 * snack3 升级为 3.2.59
