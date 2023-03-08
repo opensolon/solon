@@ -19,9 +19,12 @@ public class CloudProps {
 
     private String SERVER = "solon.cloud.@@.server";
     private String TOKEN = "solon.cloud.@@.token";
+    private String ALARM = "solon.cloud.@@.alarm";
+
+
     private String USERNAME = "solon.cloud.@@.username";
     private String PASSWORD = "solon.cloud.@@.password";
-    private String ALARM = "solon.cloud.@@.alarm";
+
     private String ACCESS_KEY = "solon.cloud.@@.accessKey";
     private String SECRET_KEY = "solon.cloud.@@.secretKey";
 
@@ -53,7 +56,14 @@ public class CloudProps {
     private String EVENT_CONSUMER = "solon.cloud.@@.event.consumer"; //配置组
     private String EVENT_PRODUCER = "solon.cloud.@@.event.producer"; //配置组
     private String EVENT_CLIENT = "solon.cloud.@@.event.client"; //配置组
+
+    //@deprecated 2.2
+    private String EVENT_USERNAME = "solon.cloud.@@.event.username";
+    //@deprecated 2.2
+    private String EVENT_PASSWORD = "solon.cloud.@@.event.password";
+    //@deprecated 2.2
     private String EVENT_ACCESS_KEY = "solon.cloud.@@.event.accessKey";
+    //@deprecated 2.2
     private String EVENT_SECRET_KEY = "solon.cloud.@@.event.secretKey";
 
 
@@ -80,7 +90,14 @@ public class CloudProps {
     private String FILE_BUCKET = "solon.cloud.@@.file.bucket";
     private String FILE_ENDPOINT = "solon.cloud.@@.file.endpoint";
     private String FILE_REGION_ID = "solon.cloud.@@.file.regionId";
+
+    //@deprecated 2.2
+    private String FILE_USERNAME = "solon.cloud.@@.file.username";
+    //@deprecated 2.2
+    private String FILE_PASSWORD = "solon.cloud.@@.file.password";
+    //@deprecated 2.2
     private String FILE_ACCESS_KEY = "solon.cloud.@@.file.accessKey";
+    //@deprecated 2.2
     private String FILE_SECRET_KEY = "solon.cloud.@@.file.secretKey";
 
     //国际化服务相关
@@ -97,20 +114,19 @@ public class CloudProps {
     private String JOB_ENABLE = "solon.cloud.@@.job.enable";
     private String JOB_SERVER = "solon.cloud.@@.job.server";
 
-    private final String frame;
     private final AopContext aopContext;
 
     public CloudProps(AopContext aopContext, String frame) {
-        this.frame = frame;
         this.aopContext = aopContext;
 
         ROOT = ROOT.replace("@@", frame);
 
         SERVER = SERVER.replace("@@", frame);
         TOKEN = TOKEN.replace("@@", frame);
+        ALARM = ALARM.replace("@@", frame);
+
         USERNAME = USERNAME.replace("@@", frame);
         PASSWORD = PASSWORD.replace("@@", frame);
-        ALARM = ALARM.replace("@@", frame);
         ACCESS_KEY = ACCESS_KEY.replace("@@", frame);
         SECRET_KEY = SECRET_KEY.replace("@@", frame);
 
@@ -139,7 +155,14 @@ public class CloudProps {
         EVENT_CONSUMER = EVENT_CONSUMER.replace("@@", frame);
         EVENT_PRODUCER = EVENT_PRODUCER.replace("@@", frame);
         EVENT_CLIENT = EVENT_CLIENT.replace("@@", frame);
+
+        //@deprecated 2.2
+        EVENT_USERNAME = EVENT_USERNAME.replace("@@", frame);
+        //@deprecated 2.2
+        EVENT_PASSWORD = EVENT_PASSWORD.replace("@@", frame);
+        //@deprecated 2.2
         EVENT_ACCESS_KEY = EVENT_ACCESS_KEY.replace("@@", frame);
+        //@deprecated 2.2
         EVENT_SECRET_KEY = EVENT_SECRET_KEY.replace("@@", frame);
 
         LOCK_ENABLE = LOCK_ENABLE.replace("@@", frame);
@@ -157,7 +180,14 @@ public class CloudProps {
         FILE_ENDPOINT = FILE_ENDPOINT.replace("@@", frame);
         FILE_REGION_ID = FILE_REGION_ID.replace("@@", frame);
         FILE_BUCKET = FILE_BUCKET.replace("@@", frame);
+
+        //@deprecated 2.2
+        FILE_USERNAME = FILE_USERNAME.replace("@@", frame);
+        //@deprecated 2.2
+        FILE_PASSWORD = FILE_PASSWORD.replace("@@", frame);
+        //@deprecated 2.2
         FILE_ACCESS_KEY = FILE_ACCESS_KEY.replace("@@", frame);
+        //@deprecated 2.2
         FILE_SECRET_KEY = FILE_SECRET_KEY.replace("@@", frame);
 
         I18N_ENABLE = I18N_ENABLE.replace("@@", frame);
@@ -183,24 +213,51 @@ public class CloudProps {
         return aopContext.cfg().get(TOKEN);
     }
 
-    public String getUsername() {
-        return aopContext.cfg().get(USERNAME);
-    }
-
-    public String getPassword() {
-        return aopContext.cfg().get(PASSWORD);
-    }
 
     public String getAlarm() {
         return aopContext.cfg().get(ALARM);
     }
 
+
+    private String username;
+    public String getUsername() {
+        if(username == null) {
+            username = aopContext.cfg().get(USERNAME);
+
+            if(username == null) {
+                username = aopContext.cfg().get(ACCESS_KEY); //支持 USERNAME 与 ACCESS_KEY 互用
+            }
+
+            if(username == null){
+                username = "";
+            }
+        }
+
+        return username;
+    }
+
+    private String password;
+    public String getPassword() {
+        if(password == null) {
+            password = aopContext.cfg().get(PASSWORD);
+
+            if(password == null) {
+                password = aopContext.cfg().get(SECRET_KEY); //支持 PASSWORD 与 SECRET_KEY 互用
+            }
+
+            if(password == null){
+                password = "";
+            }
+        }
+
+        return password;
+    }
     public String getAccessKey() {
-        return aopContext.cfg().get(ACCESS_KEY);
+        return getUsername();
     }
 
     public String getSecretKey() {
-        return aopContext.cfg().get(SECRET_KEY);
+        return getPassword();
     }
 
     //
@@ -315,24 +372,48 @@ public class CloudProps {
         return aopContext.cfg().getProp(EVENT_CLIENT);
     }
 
-    public String getEventAccessKey() {
-        String tmp = aopContext.cfg().get(EVENT_ACCESS_KEY);
+    private String eventUsername;
 
-        if (Utils.isEmpty(tmp)) {
-            return getAccessKey();
-        } else {
-            return tmp;
+    public String getEventUsername() {
+        if(eventUsername == null) {
+            eventUsername = aopContext.cfg().get(EVENT_USERNAME);
+
+            if(eventUsername == null){
+                eventUsername = aopContext.cfg().get(EVENT_ACCESS_KEY);
+            }
+
+            if(eventUsername == null){
+                eventUsername = getUsername();
+            }
         }
+
+        return eventUsername;
+    }
+
+    private String eventPassword;
+
+    public String getEventPassword() {
+        if(eventPassword == null) {
+            eventPassword = aopContext.cfg().get(EVENT_PASSWORD);
+
+            if(eventPassword == null){
+                eventPassword = aopContext.cfg().get(EVENT_SECRET_KEY);
+            }
+
+            if(eventPassword == null){
+                eventPassword = getPassword();
+            }
+        }
+
+        return eventPassword;
+    }
+
+    public String getEventAccessKey() {
+        return getEventUsername();
     }
 
     public String getEventSecretKey() {
-        String tmp = aopContext.cfg().get(EVENT_SECRET_KEY);
-
-        if (Utils.isEmpty(tmp)) {
-            return getSecretKey();
-        } else {
-            return tmp;
-        }
+        return getEventPassword();
     }
 
     //
@@ -412,24 +493,51 @@ public class CloudProps {
         return aopContext.cfg().get(FILE_BUCKET);
     }
 
-    public String getFileAccessKey() {
-        String tmp = aopContext.cfg().get(FILE_ACCESS_KEY);
+    private String fileUsername;
 
-        if (Utils.isEmpty(tmp)) {
-            return getAccessKey();
-        } else {
-            return tmp;
+    public String getFileUsername() {
+        if(fileUsername == null) {
+            fileUsername = aopContext.cfg().get(FILE_USERNAME);
+
+            if(fileUsername == null){
+                fileUsername = aopContext.cfg().get(FILE_ACCESS_KEY);
+            }
+
+            if(fileUsername == null){
+                fileUsername = getUsername();
+            }
         }
+
+        return fileUsername;
     }
 
-    public String getFileSecretKey() {
-        String tmp = aopContext.cfg().get(FILE_SECRET_KEY);
+    private String filePassword;
 
-        if (Utils.isEmpty(tmp)) {
-            return getSecretKey();
-        } else {
-            return tmp;
+
+    public String getFilePassword() {
+        if(filePassword == null) {
+            filePassword = aopContext.cfg().get(FILE_PASSWORD);
+
+            if(filePassword == null){
+                filePassword = aopContext.cfg().get(FILE_SECRET_KEY);
+            }
+
+            if(filePassword == null){
+                filePassword = getPassword();
+            }
         }
+
+        return filePassword;
+    }
+
+
+    public String getFileAccessKey() {
+        return getFileUsername();
+    }
+
+
+    public String getFileSecretKey() {
+        return getFilePassword();
     }
 
     //

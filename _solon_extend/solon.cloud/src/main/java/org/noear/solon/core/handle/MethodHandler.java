@@ -7,7 +7,7 @@ import org.noear.solon.core.wrap.MethodWrap;
 import java.lang.reflect.Method;
 
 /**
- * Method Handler
+ * Method Handler（用于处理 Job 之类的简化函数处理）
  *
  * @author noear
  * @since 2.0
