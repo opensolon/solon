@@ -5,6 +5,8 @@ import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.extend.rabbitmq.RabbitmqProps;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Rabbit 配置
@@ -13,6 +15,7 @@ import org.noear.solon.cloud.extend.rabbitmq.RabbitmqProps;
  * @since 1.3
  */
 public class RabbitConfig {
+    static final Logger log = LoggerFactory.getLogger(RabbitConfig.class);
     /**
      * 交换器名称
      */
@@ -87,6 +90,11 @@ public class RabbitConfig {
         queue_normal = queueName + "@normal";
         queue_ready = queueName + "@ready";
         queue_retry = queueName + "@retry";
+
+
+        log.trace("queue_normal=" + queue_normal);
+        log.trace("queue_ready=" + queue_ready);
+        log.trace("queue_retry=" + queue_retry);
     }
 
 

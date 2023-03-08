@@ -8,7 +8,8 @@ import org.noear.solon.cloud.CloudProps;
 import java.util.Properties;
 
 /**
- * @author noear 2022/12/15 created
+ * @author noear
+ * @since 1.11
  */
 public class KafkaConfig {
     private final CloudProps cloudProps;

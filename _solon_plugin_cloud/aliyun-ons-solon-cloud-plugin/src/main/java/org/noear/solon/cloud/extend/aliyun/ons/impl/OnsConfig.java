@@ -5,6 +5,8 @@ import com.aliyun.openservices.ons.api.PropertyValueConst;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudProps;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Properties;
 
@@ -13,6 +15,8 @@ import java.util.Properties;
  * @since 1.11
  */
 public class OnsConfig {
+    static final Logger log = LoggerFactory.getLogger(OnsConfig.class);
+
     private static final String PROP_EVENT_consumerGroup = "event.consumerGroup";
     private static final String PROP_EVENT_producerGroup = "event.producerGroup";
 
@@ -22,13 +26,13 @@ public class OnsConfig {
     private final String channelName;
     private final String server;
 
+    private final String accessKey;
+    private final String secretKey;
+
     private final long timeout;
 
     private String producerGroup;
     private String consumerGroup;
-
-    private final String accessKey;
-    private final String secretKey;
 
 
     //实例的消费线程数，0表示默认
@@ -59,6 +63,10 @@ public class OnsConfig {
         if (Utils.isEmpty(consumerGroup)) {
             consumerGroup = Solon.cfg().appGroup() + "_" + Solon.cfg().appName();
         }
+
+
+        log.trace("producerGroup=" + producerGroup);
+        log.trace("consumerGroup=" + consumerGroup);
     }
 
     public String getChannelName() {
