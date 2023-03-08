@@ -36,6 +36,14 @@ public class BucketUtils {
         String accessKey = props.getProperty("accessKey");
         String secretKey = props.getProperty("secretKey");
 
+        if(accessKey == null){
+            accessKey = props.getProperty("username");
+        }
+
+        if(secretKey == null){
+            secretKey = props.getProperty("password");
+        }
+
         if (Utils.isEmpty(regionId) && Utils.isEmpty(endpoint)) {
             throw new CloudFileException("The 'regionId' and 'endpoint' configuration must have one");
         }

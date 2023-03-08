@@ -31,7 +31,7 @@ public class CloudFileServiceOfS3SdkImpl implements CloudFileService {
 
     public CloudFileServiceOfS3SdkImpl(CloudProps cloudProps) {
         this.bucketDef = cloudProps.getFileBucket();
-        this.client = BucketUtils.createClient(cloudProps.getProp("file"));
+        this.client = BucketUtils.createClient(cloudProps);
     }
 
     public CloudFileServiceOfS3SdkImpl(String bucketDef, AmazonS3 client) {

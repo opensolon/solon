@@ -21,9 +21,11 @@
 * 移除 liteflow-solon-plugin 源码，改引用 com.yomahub:liteflow-solon-plugin
 * 增加 用属性配置控制 solon.logging.log4j2::File 添加器的支持
 * 增加 用属性配置控制 solon.logging.logback::File 添加器的支持
+* 增加 CloudProps 关于 username/password 与 ak/sk 配置互通的支持
+* 增加 CloudProps 关于 username/password 上下级传导的支持
 * Solon::stop 时把 app,appMain置为null
 * activerecord 升级为 5.0.4
-* bean-searcher 升级为 4.1.0
+* bean-searcher 升级为 4.1.1
 * snack3 升级为 3.2.59
 * hutool 升级为 5.8.14
 * dubbo3 升级为 3.1.7

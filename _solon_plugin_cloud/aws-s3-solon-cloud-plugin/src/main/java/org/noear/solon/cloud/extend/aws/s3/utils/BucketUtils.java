@@ -13,6 +13,7 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.CreateBucketRequest;
 import org.noear.solon.Utils;
+import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.exception.CloudFileException;
 
 import java.net.URI;
@@ -29,18 +30,18 @@ public class BucketUtils {
     /***
      * 创建客户端
      * */
-    public static AmazonS3 createClient(Properties props) {
-        String endpoint = props.getProperty("endpoint", "");
-        String regionId = props.getProperty("regionId", "");
+    public static AmazonS3 createClient(CloudProps cloudProps) {
+        String endpoint = cloudProps.getFileEndpoint();
+        String regionId = cloudProps.getFileRegionId();
 
-        String accessKey = props.getProperty("accessKey");
-        String secretKey = props.getProperty("secretKey");
+        String accessKey = cloudProps.getFileAccessKey();
+        String secretKey = cloudProps.getFileSecretKey();
 
         if (Utils.isEmpty(regionId) && Utils.isEmpty(endpoint)) {
             throw new CloudFileException("The 'regionId' and 'endpoint' configuration must have one");
         }
 
-        return createClient(endpoint, regionId, accessKey, secretKey, props);
+        return createClient(endpoint, regionId, accessKey, secretKey, cloudProps.getProp("file"));
     }
 
     public static AmazonS3 createClient(String endpoint, String regionId, String accessKey, String secretKey, Properties props) {
