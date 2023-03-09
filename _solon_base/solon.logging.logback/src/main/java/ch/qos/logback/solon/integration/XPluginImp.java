@@ -17,6 +17,7 @@ import org.noear.solon.logging.model.LoggerLevelEntity;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
@@ -26,60 +27,73 @@ import java.net.URL;
 public class XPluginImp implements Plugin , InitializingBean {
     @Override
     public void afterInjection() throws Throwable {
-        URL url = null;
-
-        //尝试包外定制加载
-        String logConfig = Solon.cfg().get("solon.logging.config");
-        if (Utils.isNotEmpty(logConfig)) {
-            File logConfigFile = new File(logConfig);
-            if (logConfigFile.exists()) {
-                url = logConfigFile.toURI().toURL();
-            } else {
-                LogUtil.global().warn("Props: No log config file: " + logConfig);
-            }
-        }
+        //尝试从配置里获取
+        URL url = getUrlOfConfig();
 
         //尝试包内定制加载
         if (url == null) {
-            url = ResourceUtil.getResource("logback.xml");
+            //检查是否有原生配置文件
+            if (ResourceUtil.hasResource("logback.xml")) {
+                //如果有直接返回（不支持对它进行 Solon 扩展）
+                return;
+            }
         }
 
-        //尝试环境加载
+        //1::尝试应用环境加载
         if (url == null) {
             if (Utils.isNotEmpty(Solon.cfg().env())) {
                 url = ResourceUtil.getResource("logback-solon-" + Solon.cfg().env() + ".xml");
             }
         }
 
-        //尝试应用加载
+        //2::尝试应用加载
         if (url == null) {
             url = ResourceUtil.getResource("logback-solon.xml");
         }
 
-        //尝试默认加载
+        //3::尝试默认加载
         if (url == null) {
             boolean fileEnable = Solon.cfg().getBool("solon.logging.appender.file.enable", true);
 
-            if(fileEnable) {
+            if (fileEnable) {
                 url = ResourceUtil.getResource("META-INF/solon_def/logback-def.xml");
-            }else{
+            } else {
                 url = ResourceUtil.getResource("META-INF/solon_def/logback-def_nofile.xml");
             }
-        }
-
-        if (url == null) {
-            return;
         }
 
         initDo(url);
     }
 
+    /**
+     * 基于配置，获取日志配置文件
+     */
+    private URL getUrlOfConfig() throws MalformedURLException {
+        String logConfig = Solon.cfg().get("solon.logging.config");
+
+        if (Utils.isNotEmpty(logConfig)) {
+            File logConfigFile = new File(logConfig);
+            if (logConfigFile.exists()) {
+                return logConfigFile.toURI().toURL();
+            } else {
+                LogUtil.global().warn("Props: No log config file: " + logConfig);
+            }
+        }
+
+        return null;
+    }
+
     @Override
-    public void start(AopContext context) throws Throwable{
+    public void start(AopContext context) throws Throwable {
+        //容器加载完后，允许再次处理
         afterInjection();
     }
 
     private void initDo(URL url) {
+        if (url == null) {
+            return;
+        }
+
         try {
             LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
             SolonConfigurator configurator = new SolonConfigurator();

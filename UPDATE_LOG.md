@@ -19,6 +19,7 @@
 * 增加 调试模式下，模板仅在文件模式下才加载源码提供器
 * 增加 用属性配置控制 solon.logging.log4j2::File 添加器是否启用！
 * 增加 用属性配置控制 solon.logging.logback::File 添加器是否启用！
+* 增加 "solon.logging.config" 配置支持，可将日志的配置文件移到外部
 * 增加 CloudProps 关于 username/password 与 ak/sk 配置互通的支持！
 * 增加 CloudProps 关于 username/password 上下级传导的支持！
 * 增加 Solon::stopBlock 接口
