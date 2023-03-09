@@ -52,7 +52,7 @@ public class RocketmqConsumerHandler implements MessageListener {
             Event event = new Event(topic, content);
             event.tags(message.getTag().orElse(null));
             event.key(String.join(",", message.getKeys()));
-            event.times(message.getDeliveryAttempt());
+            event.times(message.getDeliveryAttempt() - 1); //它是从1开始的
             event.channel(config.getChannelName());
             if (Utils.isNotEmpty(group)) {
                 event.group(group);
