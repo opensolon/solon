@@ -45,7 +45,6 @@ public class OnsProducer {
         //发送消息，需要关注发送结果，并捕获失败等异常。
         SendResult sendReceipt = producer.send(message);
         if (sendReceipt != null) {
-            log.debug("Ons producer publish message ok! topic:[" + event.topic() + "] msgId:[" + sendReceipt.getMessageId() + "]");
             return true;
         } else {
             return false;
