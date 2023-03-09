@@ -32,6 +32,8 @@
 * hutool 升级为 5.8.14
 * dubbo3 升级为 3.1.7
 * rocketmq5-client 升级为 5.0.4
+* smarthttp 升级为 1.1.22
+* smartsocket 升级为 1.5.25
 
 ### v2.2.1
 
