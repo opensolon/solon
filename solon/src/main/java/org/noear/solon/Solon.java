@@ -157,13 +157,10 @@ public class Solon {
             e = Utils.throwableUnwrap(e);
             EventBus.pushTry(e);
 
-            if (app.enableErrorAutoprint() == false) {
-                e.printStackTrace();
-            }
-
             //4.停止服务并退出（主要是停止插件）
-            Solon.stop0(true, 0);
-            return null;
+            Solon.stop0(false, 0);
+
+            throw new IllegalStateException("SolonApp start failed", e);
         }
 
 

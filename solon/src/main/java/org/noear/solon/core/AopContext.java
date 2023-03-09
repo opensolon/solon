@@ -717,8 +717,6 @@ public class AopContext extends BeanContainer {
                 b.target.start();
             }
 
-        } catch (RuntimeException e) {
-            throw e;
         } catch (Throwable e) {
             throw new IllegalStateException("AopContext start failed", e);
         }
