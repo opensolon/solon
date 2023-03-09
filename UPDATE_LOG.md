@@ -34,6 +34,7 @@
 * rocketmq5-client 升级为 5.0.4
 * smarthttp 升级为 1.1.22
 * smartsocket 升级为 1.5.25
+* ons-client 升级为 1.8.8.8.Final
 
 ### v2.2.1
 

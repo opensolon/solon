@@ -48,7 +48,7 @@ public class OnsConsumerHandler implements MessageListener {
             Event event = new Event(topic, new String(message.getBody()));
             event.key(message.getKey());
             event.tags(message.getTag());
-            event.times(message.getReconsumeTimes() - 1); //它是从1开始的
+            event.times(message.getReconsumeTimes());
             event.channel(config.getChannelName());
 
             if (Utils.isNotEmpty(group)) {
