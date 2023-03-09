@@ -27,7 +27,7 @@
 * 调整 让注解产生的生命周期，排序晚1个点
 * 调整 让默认的 beanOnloaded 生命周期，排序为-1
 * activerecord 升级为 5.0.4
-* bean-searcher 升级为 4.1.1
+* bean-searcher 升级为 4.1.2
 * snack3 升级为 3.2.59
 * hutool 升级为 5.8.14
 * dubbo3 升级为 3.1.7
