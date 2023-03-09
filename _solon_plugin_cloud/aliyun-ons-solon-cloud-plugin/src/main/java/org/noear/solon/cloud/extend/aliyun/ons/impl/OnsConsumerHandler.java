@@ -34,8 +34,6 @@ public class OnsConsumerHandler implements MessageListener {
     public Action consume(Message message, ConsumeContext consumeContext) {
         boolean isOk = true;
 
-        log.debug("Ons Consume Message ok! topic:[" + message.getTopic() + "] msgId:[" + message.getMsgID() + "]");
-
         try {
             String topicNew = message.getTopic();
             String group = null;
@@ -50,7 +48,7 @@ public class OnsConsumerHandler implements MessageListener {
             Event event = new Event(topic, new String(message.getBody()));
             event.key(message.getKey());
             event.tags(message.getTag());
-            event.times(message.getReconsumeTimes());
+            event.times(message.getReconsumeTimes() - 1); //它是从1开始的
             event.channel(config.getChannelName());
 
             if (Utils.isNotEmpty(group)) {

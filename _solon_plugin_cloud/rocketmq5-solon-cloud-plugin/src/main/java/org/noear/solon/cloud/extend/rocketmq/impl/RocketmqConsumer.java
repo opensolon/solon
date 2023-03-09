@@ -7,6 +7,8 @@ import org.apache.rocketmq.client.apis.consumer.PushConsumerBuilder;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.service.CloudEventObserverManger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -21,6 +23,8 @@ import java.util.Set;
  * @since 1.11
  */
 public class RocketmqConsumer implements Closeable {
+    static Logger log = LoggerFactory.getLogger(RocketmqConsumer.class);
+
     private RocketmqConfig config;
 
     ClientServiceProvider serviceProvider;
@@ -65,13 +69,16 @@ public class RocketmqConsumer implements Closeable {
             for (Map.Entry<String, Set<String>> kv : observerManger.topicTags().entrySet()) {
                 String topic = kv.getKey();
                 Set<String> tags = kv.getValue();
+                String tagsExpr = String.join("||", tags);
 
                 //支持 tag 过滤
                 if (tags.contains("*")) {
                     subscriptionExpressions.put(topic, FilterExpression.SUB_ALL);
                 } else {
-                    subscriptionExpressions.put(topic, new FilterExpression(String.join("||", tags)));
+                    subscriptionExpressions.put(topic, new FilterExpression(tagsExpr));
                 }
+
+                log.trace("Rocketmq5 consumer subscribe [" + topic + "(" + tagsExpr + ")] ok!");
             }
 
             PushConsumerBuilder consumerBuilder = serviceProvider.newPushConsumerBuilder();
@@ -92,6 +99,8 @@ public class RocketmqConsumer implements Closeable {
             }
 
             consumer = consumerBuilder.build();
+
+            log.trace("Rocketmq5 consumer started!");
         }
     }
 

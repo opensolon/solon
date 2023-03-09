@@ -45,24 +45,29 @@ public class OnsConsumer {
             for (Map.Entry<String, Set<String>> kv : observerManger.topicTags().entrySet()) {
                 String topic = kv.getKey();
                 Set<String> tags = kv.getValue();
+                String tagsExpr = String.join("||", tags);
 
                 Subscription subscription = new Subscription();
                 subscription.setTopic(topic);
                 if (tags.contains("*")) {
                     subscription.setExpression("*");
                 } else {
-                    subscription.setExpression(String.join("||", tags));
+                    subscription.setExpression(tagsExpr);
                 }
 
                 subscriptionTable.put(subscription, handler);
 
-                log.debug("Ons consumer subscribe [" + topic + "] ok!");
+                log.trace("Ons consumer subscribe [" + topic + "(" + tagsExpr + ")] ok!");
             }
 
             consumer.setSubscriptionTable(subscriptionTable);
             consumer.start();
 
-            log.debug("Ons consumer started: " + consumer.isStarted() + "!");
+            if(consumer.isStarted()) {
+                log.trace("Ons consumer started!");
+            }else{
+                log.warn("Ons consumer start failure!");
+            }
         }
     }
 }

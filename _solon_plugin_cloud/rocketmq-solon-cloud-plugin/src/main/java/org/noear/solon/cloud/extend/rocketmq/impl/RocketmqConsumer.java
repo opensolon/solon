@@ -5,6 +5,8 @@ import org.apache.rocketmq.client.exception.MQClientException;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.service.CloudEventObserverManger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 import java.util.Properties;
@@ -16,6 +18,8 @@ import java.util.Set;
  * @since 1.11
  */
 public class RocketmqConsumer {
+    static Logger log = LoggerFactory.getLogger(RocketmqConsumer.class);
+
     private RocketmqConfig config;
 
     private DefaultMQPushConsumer consumer;
@@ -74,17 +78,22 @@ public class RocketmqConsumer {
             for (Map.Entry<String, Set<String>> kv : observerManger.topicTags().entrySet()) {
                 String topic = kv.getKey();
                 Set<String> tags = kv.getValue();
+                String tagsExpr = String.join("||", tags);
 
                 //支持 tag 过滤
                 if (tags.contains("*")) {
                     consumer.subscribe(topic, "*");
                 } else {
-                    consumer.subscribe(topic, String.join("||", tags));
+                    consumer.subscribe(topic, tagsExpr);
                 }
+
+                log.trace("Rocketmq consumer subscribe [" + topic + "(" + tagsExpr + ")] ok!");
             }
 
             consumer.registerMessageListener(handler);
             consumer.start();
+
+            log.trace("Rocketmq consumer started!");
         }
     }
 }
