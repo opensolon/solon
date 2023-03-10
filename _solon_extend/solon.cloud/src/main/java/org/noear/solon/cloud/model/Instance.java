@@ -3,6 +3,7 @@ package org.noear.solon.cloud.model;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.utils.LocalUtils;
+import org.noear.solon.core.Props;
 import org.noear.solon.core.Signal;
 import org.noear.solon.core.SignalSim;
 import org.noear.solon.core.SignalType;
@@ -203,6 +204,8 @@ public class Instance implements Serializable {
 
         n1.protocol(signal.protocol());
 
+        //添加元信息
+        n1.metaPutAll(getAppMeta());
         n1.metaPutAll(Solon.cfg().argx());
         n1.metaRemove("server.port"); //移除端口元信息
         n1.metaPut("protocol", signal.protocol());
@@ -217,5 +220,25 @@ public class Instance implements Serializable {
         }
 
         return n1;
+    }
+
+    private static Map<String, String> appMeta;
+
+    /**
+     * 获取应用元信息配置
+     * */
+    private static Map<String, String> getAppMeta() {
+        if (appMeta == null) {
+            appMeta = new LinkedHashMap<>();
+
+            Props metsProps = Solon.cfg().getProp("solon.app.meta");
+            for (Map.Entry<Object, Object> kv : metsProps.entrySet()) {
+                if (kv.getKey() instanceof String && kv.getValue() instanceof String) {
+                    appMeta.put((String) kv.getKey(), (String) kv.getValue());
+                }
+            }
+        }
+
+        return appMeta;
     }
 }
