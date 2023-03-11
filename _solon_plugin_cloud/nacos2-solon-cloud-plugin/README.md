@@ -15,24 +15,22 @@ solon.cloud.nacos2:
 
 ```
 
-#### 2. 完整配置示例
+#### 2. 更多配置示例
 
 ```yml
 solon.app:
   group: "demo"
   name: "helloapp"
+  meta:
+    version: "v12" #添加元信息配置
 
 solon.cloud.nacos:
-  server: "localhost:8848"
   username: nacos
   password: nacos
   discovery:
-    server: "localhost:8848"    #发现与注册服务地址（默认为: server）
-    enable: true                #是否启用（默认为: 启用）
-    unstable: true              #不稳定ip?
-    tags: "test"                #添加服务标签
+    server: "localhost:8848,localhost:8847"    #发现与注册服务地址（默认为: server）
+    contextPath: "nacos2" #nacos 上下文配置
   config:
-    server: "localhost:8848"    #配置服务地址（默认为: server）
-    enable: true                #是否启用（默认为: 启用）
-    load: "helloapp.yml"
+    server: "localhost:8831"    #配置服务地址（默认为: server）
+    contextPath: "nacos2"
 ```
