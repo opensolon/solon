@@ -218,6 +218,7 @@ public class Instance implements Serializable {
         if (Utils.isNotEmpty(Solon.cfg().appName())) {
             n1.tagsAdd(Solon.cfg().appName());
         }
+        n1.tagsAddAll(getAppTags());
 
         return n1;
     }
@@ -226,7 +227,7 @@ public class Instance implements Serializable {
 
     /**
      * 获取应用元信息配置
-     * */
+     */
     private static Map<String, String> getAppMeta() {
         if (appMeta == null) {
             appMeta = new LinkedHashMap<>();
@@ -240,5 +241,24 @@ public class Instance implements Serializable {
         }
 
         return appMeta;
+    }
+
+    private static List<String> appTags;
+
+    /**
+     * 获取应用标签
+     */
+    private static List<String> getAppTags() {
+        if (appTags == null) {
+            String tagsStr = Solon.cfg().get("solon.app.tags");
+
+            if (Utils.isNotEmpty(tagsStr)) {
+                appTags = Arrays.asList(tagsStr.split(","));
+            } else {
+                appTags = new ArrayList<>();
+            }
+        }
+
+        return appTags;
     }
 }
