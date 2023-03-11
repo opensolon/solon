@@ -12,31 +12,23 @@ import java.util.Properties;
  * @since 2.2
  */
 public class NacosConfig {
-    public static Properties getServiceProperties(CloudProps cloudProps, String server){
+    public static Properties getServiceProperties(CloudProps cloudProps, Properties properties, String server) {
         String username = cloudProps.getUsername();
         String password = cloudProps.getPassword();
 
 
-        Properties properties = new Properties();
-        if(server.contains("/")){
-            String[] sevAndCxt = server.split("/");
-
-            properties.put(PropertyKeyConst.SERVER_ADDR, sevAndCxt[0]);
-            properties.put(PropertyKeyConst.CONTEXT_PATH, sevAndCxt[1]);
-        }else {
-            properties.put(PropertyKeyConst.SERVER_ADDR, server);
-        }
+        properties.putIfAbsent(PropertyKeyConst.SERVER_ADDR, server);
 
         if (Utils.isNotEmpty(username)) {
-            properties.put(PropertyKeyConst.USERNAME, username);
+            properties.putIfAbsent(PropertyKeyConst.USERNAME, username);
         }
 
         if (Utils.isNotEmpty(password)) {
-            properties.put(PropertyKeyConst.PASSWORD, password);
+            properties.putIfAbsent(PropertyKeyConst.PASSWORD, password);
         }
 
         if (Utils.isNotEmpty(Solon.cfg().appNamespace())) {
-            properties.put(PropertyKeyConst.NAMESPACE, Solon.cfg().appNamespace());
+            properties.putIfAbsent(PropertyKeyConst.NAMESPACE, Solon.cfg().appNamespace());
         }
 
         return properties;

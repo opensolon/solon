@@ -29,7 +29,9 @@ public class CloudDiscoveryServiceNacosImp implements CloudDiscoveryService {
     private String clusterName;
 
     public CloudDiscoveryServiceNacosImp(CloudProps cloudProps) {
-        Properties properties = NacosConfig.getServiceProperties(cloudProps, cloudProps.getDiscoveryServer());
+        Properties properties = NacosConfig.getServiceProperties(cloudProps,
+                cloudProps.getProp("discovery"),
+                cloudProps.getDiscoveryServer());
 
         unstable = true;
 //        unstable = Solon.cfg().isDriftMode() ||

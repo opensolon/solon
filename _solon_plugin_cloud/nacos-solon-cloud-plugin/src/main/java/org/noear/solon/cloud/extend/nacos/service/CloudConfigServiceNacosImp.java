@@ -29,7 +29,9 @@ public class CloudConfigServiceNacosImp implements CloudConfigService {
     private ConfigService real;
 
     public CloudConfigServiceNacosImp(CloudProps cloudProps) {
-        Properties properties = NacosConfig.getServiceProperties(cloudProps, cloudProps.getConfigServer());
+        Properties properties = NacosConfig.getServiceProperties(cloudProps,
+                cloudProps.getProp("config"),
+                cloudProps.getConfigServer());
 
         try {
             real = ConfigFactory.createConfigService(properties);
