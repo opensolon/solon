@@ -1,6 +1,6 @@
 package org.noear.solon.cloud.extend.nacos.impl;
 
-import com.alibaba.nacos.api.annotation.NacosProperties;
+import com.alibaba.nacos.api.PropertyKeyConst;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudProps;
@@ -21,22 +21,22 @@ public class NacosConfig {
         if(server.contains("/")){
             String[] sevAndCxt = server.split("/");
 
-            properties.put(NacosProperties.SERVER_ADDR, sevAndCxt[0]);
-            properties.put(NacosProperties.CONTEXT_PATH, sevAndCxt[1]);
+            properties.put(PropertyKeyConst.SERVER_ADDR, sevAndCxt[0]);
+            properties.put(PropertyKeyConst.CONTEXT_PATH, sevAndCxt[1]);
         }else {
-            properties.put(NacosProperties.SERVER_ADDR, server);
+            properties.put(PropertyKeyConst.SERVER_ADDR, server);
         }
 
         if (Utils.isNotEmpty(username)) {
-            properties.put(NacosProperties.USERNAME, username);
+            properties.put(PropertyKeyConst.USERNAME, username);
         }
 
         if (Utils.isNotEmpty(password)) {
-            properties.put(NacosProperties.PASSWORD, password);
+            properties.put(PropertyKeyConst.PASSWORD, password);
         }
 
         if (Utils.isNotEmpty(Solon.cfg().appNamespace())) {
-            properties.put(NacosProperties.NAMESPACE, Solon.cfg().appNamespace());
+            properties.put(PropertyKeyConst.NAMESPACE, Solon.cfg().appNamespace());
         }
 
         return properties;
