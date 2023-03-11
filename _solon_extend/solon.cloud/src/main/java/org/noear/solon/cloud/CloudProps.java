@@ -37,7 +37,6 @@ public class CloudProps {
     //发现服务相关
     private String DISCOVERY_ENABLE = "solon.cloud.@@.discovery.enable";
     private String DISCOVERY_SERVER = "solon.cloud.@@.discovery.server";
-    private String DISCOVERY_TAGS = "solon.cloud.@@.discovery.tags";
     private String DISCOVERY_CLUSTER_NAME = "solon.cloud.@@.discovery.clusterName";
     //private String DISCOVERY_UNSTABLE = "solon.cloud.@@.discovery.unstable";
     //private String DISCOVERY_HEALTH_CHECK_PATH = "solon.cloud.@@.discovery.healthCheckPath";
@@ -137,7 +136,6 @@ public class CloudProps {
 
         DISCOVERY_ENABLE = DISCOVERY_ENABLE.replace("@@", frame);
         DISCOVERY_SERVER = DISCOVERY_SERVER.replace("@@", frame);
-        DISCOVERY_TAGS = DISCOVERY_TAGS.replace("@@", frame);
         DISCOVERY_CLUSTER_NAME = DISCOVERY_CLUSTER_NAME.replace("@@",frame);
         //DISCOVERY_UNSTABLE = DISCOVERY_UNSTABLE.replace("@@", frame);
         //DISCOVERY_HEALTH_CHECK_PATH = DISCOVERY_HEALTH_CHECK_PATH.replace("@@", frame);
@@ -308,7 +306,7 @@ public class CloudProps {
 
     @Deprecated
     public String getDiscoveryTags() {
-        return aopContext.cfg().get(DISCOVERY_TAGS);
+        return "";
     }
 
     public String getDiscoveryClusterName() {

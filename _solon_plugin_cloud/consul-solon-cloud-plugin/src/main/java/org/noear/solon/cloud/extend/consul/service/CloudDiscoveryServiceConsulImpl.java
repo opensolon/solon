@@ -31,7 +31,6 @@ public class CloudDiscoveryServiceConsulImpl extends TimerTask implements CloudD
     private long refreshInterval;
 
     private String healthCheckInterval;
-    private List<String> tags;
 
     Map<String,Discovery> discoveryMap = new HashMap<>();
     private Map<CloudDiscoveryHandler, CloudDiscoveryObserverEntity> observerMap = new HashMap<>();
@@ -40,13 +39,7 @@ public class CloudDiscoveryServiceConsulImpl extends TimerTask implements CloudD
     public CloudDiscoveryServiceConsulImpl(CloudProps cloudProps) {
         token = cloudProps.getToken();
         refreshInterval = IntervalUtils.getInterval(cloudProps.getDiscoveryRefreshInterval("5s"));
-
         healthCheckInterval = cloudProps.getDiscoveryHealthCheckInterval("5s");
-
-        String tags_str = cloudProps.getDiscoveryTags();
-        if(Utils.isNotEmpty(tags_str)){
-            tags = Arrays.asList(tags_str.split(","));
-        }
 
         String server = cloudProps.getDiscoveryServer();
         String[] ss = server.split(":");
@@ -80,14 +73,6 @@ public class CloudDiscoveryServiceConsulImpl extends TimerTask implements CloudD
 
         if (instance.tags() != null) {
             newService.setTags(instance.tags());
-        }
-
-        if(tags != null) {
-            if (newService.getTags() != null) {
-                newService.getTags().addAll(tags);
-            } else {
-                newService.setTags(tags);
-            }
         }
 
         registerLocalCheck(instance, newService);
