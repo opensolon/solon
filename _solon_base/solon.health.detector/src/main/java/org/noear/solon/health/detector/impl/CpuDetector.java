@@ -2,6 +2,7 @@ package org.noear.solon.health.detector.impl;
 
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.health.detector.AbstractDetector;
+import org.noear.solon.health.detector.util.CmdUtil;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -73,9 +74,9 @@ public class CpuDetector extends AbstractDetector {
     private void readCpuRatioForWindows(Map<String,Object> detectorInfo) throws Exception {
         String[] cmd = { "wmic", "process", "get", "Caption,KernelModeTime,UserModeTime" };
 
-        long[] c0 = readCpuTime(execute(cmd));
+        long[] c0 = readCpuTime(CmdUtil.execute(cmd));
         Thread.sleep(30L);
-        long[] c1 = readCpuTime(execute(cmd));
+        long[] c1 = readCpuTime(CmdUtil.execute(cmd));
         if (c0 != null && c1 != null) {
             long idletime = c1[0] - c0[0];
             long busytime = c1[1] - c0[1];
@@ -93,7 +94,7 @@ public class CpuDetector extends AbstractDetector {
         }
         detectorInfo.put("ratio",100.0F - idle);
         **/
-       String text=this.execute("/bin/sh","-c","ps -A -o %mem | awk '{s+=$1} END {print s}'");
+        String text=CmdUtil.execute("/bin/sh","-c","ps -A -o %mem | awk '{s+=$1} END {print s}'");
         detectorInfo.put("ratio",Float.valueOf(text));
     }
 }

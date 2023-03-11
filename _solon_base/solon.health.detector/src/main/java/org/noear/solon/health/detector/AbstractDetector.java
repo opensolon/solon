@@ -2,9 +2,6 @@ package org.noear.solon.health.detector;
 
 import org.noear.solon.Utils;
 
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.LineNumberReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -31,33 +28,6 @@ public abstract class AbstractDetector implements Detector{
     public abstract String getName();
     public abstract Map<String,Object> getInfo();
 
-    protected String execute(String... command) throws Exception { return execute(false, command); }
-
-    protected String execute(boolean firstLine, String... command) throws Exception {
-        String text = null;
-        InputStream is = null;
-        try {
-            ProcessBuilder builder = new ProcessBuilder(new String[0]);
-            builder.command(command);
-            Process process = builder.start();
-            process.getOutputStream().close();
-            is = process.getInputStream();
-            if (firstLine) {
-                InputStreamReader isr = new InputStreamReader(is);
-                LineNumberReader lnr = new LineNumberReader(isr);
-                text = lnr.readLine();
-                lnr.close();
-                isr.close();
-            } else {
-                text = Utils.transferToString(is,"utf-8");
-            }
-        } finally {
-            if (is != null) {
-                is.close();
-            }
-        }
-        return text;
-    }
     protected List<String[]> matcher(Pattern pattern, String text) throws Exception {
         List<String[]> infos = new ArrayList();
         if (Utils.isNotEmpty(text)) {
@@ -76,6 +46,7 @@ public abstract class AbstractDetector implements Detector{
         }
         return infos;
     }
+
     protected static String formatByteSize(long byteSize) {
         double dataSize = byteSize;
         if (dataSize >= ONE_EB)

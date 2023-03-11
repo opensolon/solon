@@ -2,6 +2,7 @@ package org.noear.solon.health.detector.impl;
 
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.health.detector.AbstractDetector;
+import org.noear.solon.health.detector.util.CmdUtil;
 
 import java.io.File;
 import java.util.HashMap;
@@ -52,7 +53,7 @@ public class DiskDetector extends AbstractDetector {
             }
         } else {
             try {
-                String text = this.execute("df", "-m");
+                String text = CmdUtil.execute("df", "-m");
                 boolean isMac = osName.indexOf("mac os") > -1;
                 List<String[]> disks = this.matcher(isMac ? macDiskPattern : linuxDiskPattern, text);
 
