@@ -1,5 +1,6 @@
 package org.noear.solon.cloud.extend.nacos.service;
 
+import com.alibaba.nacos.api.annotation.NacosProperties;
 import com.alibaba.nacos.api.exception.NacosException;
 import com.alibaba.nacos.api.naming.NamingFactory;
 import com.alibaba.nacos.api.naming.NamingService;
@@ -9,6 +10,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudDiscoveryHandler;
 import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.extend.nacos.impl.InstanceWrap;
+import org.noear.solon.cloud.extend.nacos.impl.NacosConfig;
 import org.noear.solon.cloud.model.Discovery;
 import org.noear.solon.cloud.model.Instance;
 import org.noear.solon.cloud.service.CloudDiscoveryObserverEntity;
@@ -26,29 +28,10 @@ public class CloudDiscoveryServiceNacosImp implements CloudDiscoveryService {
     private boolean unstable;
 
     public CloudDiscoveryServiceNacosImp(CloudProps cloudProps) {
-        String server = cloudProps.getDiscoveryServer();
-        String username = cloudProps.getUsername();
-        String password = cloudProps.getPassword();
+        Properties properties = NacosConfig.getServiceProperties(cloudProps, cloudProps.getDiscoveryServer());
 
-        Properties properties = new Properties();
-        properties.put("serverAddr", server);
-
-        if (Utils.isNotEmpty(username)) {
-            properties.put("username", username);
-        }
-
-        if (Utils.isNotEmpty(password)) {
-            properties.put("password", password);
-        }
-
-        if (Utils.isNotEmpty(Solon.cfg().appNamespace())) {
-            properties.put("namespace", Solon.cfg().appNamespace());
-        }
-
-        unstable = true;
-//        unstable = NacosProps.instance.getDiscoveryUnstable()
-//                || Solon.cfg().isFilesMode()
-//                || Solon.cfg().isDriftMode();
+        unstable = Solon.cfg().isDriftMode() ||
+                Solon.cfg().isDebugMode();
 
         try {
             real = NamingFactory.createNamingService(properties);
@@ -59,7 +42,7 @@ public class CloudDiscoveryServiceNacosImp implements CloudDiscoveryService {
 
     /**
      * 注册服务实例
-     * */
+     */
     @Override
     public void register(String group, Instance instance) {
         registerState(group, instance, true);
@@ -99,7 +82,7 @@ public class CloudDiscoveryServiceNacosImp implements CloudDiscoveryService {
 
     /**
      * 注销服务实例
-     * */
+     */
     @Override
     public void deregister(String group, Instance instance) {
         if (Utils.isEmpty(group)) {
@@ -134,7 +117,7 @@ public class CloudDiscoveryServiceNacosImp implements CloudDiscoveryService {
 
     /**
      * 查询服务实例列表
-     * */
+     */
     @Override
     public Discovery find(String group, String service) {
         if (Utils.isEmpty(group)) {
@@ -169,14 +152,14 @@ public class CloudDiscoveryServiceNacosImp implements CloudDiscoveryService {
 
     /**
      * 关注服务实例列表
-     * */
+     */
     @Override
     public void attention(String group, String service, CloudDiscoveryHandler observer) {
         if (Utils.isEmpty(group)) {
             group = Solon.cfg().appGroup();
         }
 
-        CloudDiscoveryObserverEntity entity = new CloudDiscoveryObserverEntity(group,service, observer);
+        CloudDiscoveryObserverEntity entity = new CloudDiscoveryObserverEntity(group, service, observer);
 
         try {
             if (TextUtils.isEmpty(group)) {

@@ -8,6 +8,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudConfigHandler;
 import org.noear.solon.cloud.CloudProps;
+import org.noear.solon.cloud.extend.nacos.impl.NacosConfig;
 import org.noear.solon.cloud.model.Config;
 import org.noear.solon.cloud.service.CloudConfigObserverEntity;
 import org.noear.solon.cloud.service.CloudConfigService;
@@ -28,24 +29,7 @@ public class CloudConfigServiceNacosImp implements CloudConfigService {
     private ConfigService real;
 
     public CloudConfigServiceNacosImp(CloudProps cloudProps) {
-        String server = cloudProps.getConfigServer();
-        String username = cloudProps.getUsername();
-        String password = cloudProps.getPassword();
-
-        Properties properties = new Properties();
-        properties.put("serverAddr", server);
-
-        if (Utils.isNotEmpty(username)) {
-            properties.put("username", username);
-        }
-
-        if (Utils.isNotEmpty(password)) {
-            properties.put("password", password);
-        }
-
-        if (Utils.isNotEmpty(Solon.cfg().appNamespace())) {
-            properties.put("namespace", Solon.cfg().appNamespace());
-        }
+        Properties properties = NacosConfig.getServiceProperties(cloudProps, cloudProps.getConfigServer());
 
         try {
             real = ConfigFactory.createConfigService(properties);
