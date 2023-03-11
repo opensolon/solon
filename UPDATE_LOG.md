@@ -12,6 +12,12 @@
 ### v2.2.3
 
 * 新增 easy-trans-solon-plugin 插件（引用）
+* 增加 应用元信息 "solon.app.meta" 配置支持
+* 增加 nacos CONTEXT_PATH 配置支持
+* 增加 nacos CLUSTER_NAME 配置支持
+* 增加 HealthHandler 自动注册支持，即组件模式
+* 调整 sa-token的集成逻辑
+* 修正 LOG_SERVER 属性映射缺陷（pr）
 
 ### v2.2.2
 

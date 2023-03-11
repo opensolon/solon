@@ -38,6 +38,7 @@ public class CloudProps {
     private String DISCOVERY_ENABLE = "solon.cloud.@@.discovery.enable";
     private String DISCOVERY_SERVER = "solon.cloud.@@.discovery.server";
     private String DISCOVERY_TAGS = "solon.cloud.@@.discovery.tags";
+    private String DISCOVERY_CLUSTER_NAME = "solon.cloud.@@.discovery.clusterName";
     //private String DISCOVERY_UNSTABLE = "solon.cloud.@@.discovery.unstable";
     //private String DISCOVERY_HEALTH_CHECK_PATH = "solon.cloud.@@.discovery.healthCheckPath";
     private String DISCOVERY_HEALTH_CHECK_INTERVAL = "solon.cloud.@@.discovery.healthCheckInterval";
@@ -137,6 +138,7 @@ public class CloudProps {
         DISCOVERY_ENABLE = DISCOVERY_ENABLE.replace("@@", frame);
         DISCOVERY_SERVER = DISCOVERY_SERVER.replace("@@", frame);
         DISCOVERY_TAGS = DISCOVERY_TAGS.replace("@@", frame);
+        DISCOVERY_CLUSTER_NAME = DISCOVERY_CLUSTER_NAME.replace("@@",frame);
         //DISCOVERY_UNSTABLE = DISCOVERY_UNSTABLE.replace("@@", frame);
         //DISCOVERY_HEALTH_CHECK_PATH = DISCOVERY_HEALTH_CHECK_PATH.replace("@@", frame);
         DISCOVERY_HEALTH_CHECK_INTERVAL = DISCOVERY_HEALTH_CHECK_INTERVAL.replace("@@", frame);
@@ -309,7 +311,12 @@ public class CloudProps {
         return aopContext.cfg().get(DISCOVERY_TAGS);
     }
 
-//    @Deprecated
+    public String getDiscoveryClusterName() {
+        return aopContext.cfg().get(DISCOVERY_CLUSTER_NAME);
+    }
+
+
+    //    @Deprecated
 //    public boolean getDiscoveryUnstable() {
 //        return Solon.cfg().isDriftMode(); //aopContext.cfg().getBool(DISCOVERY_UNSTABLE, false);
 //    }
