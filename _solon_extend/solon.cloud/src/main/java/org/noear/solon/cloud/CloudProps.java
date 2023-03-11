@@ -1,10 +1,9 @@
 package org.noear.solon.cloud;
 
+import java.util.Properties;
 import org.noear.solon.Utils;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Props;
-
-import java.util.Properties;
 
 /**
  * 云服务属性模板
@@ -13,6 +12,7 @@ import java.util.Properties;
  * @since 1.2
  */
 public class CloudProps {
+
     public static String LOG_DEFAULT_LOGGER;
 
     private String ROOT = "solon.cloud.@@.";
@@ -81,7 +81,6 @@ public class CloudProps {
     private String TRACE_EXCLUDE = "solon.cloud.@@.trace.exclude";
 
 
-
     //度量服务相关
     private String METRIC_ENABLE = "solon.cloud.@@.metric.enable";
 
@@ -130,7 +129,6 @@ public class CloudProps {
         ACCESS_KEY = ACCESS_KEY.replace("@@", frame);
         SECRET_KEY = SECRET_KEY.replace("@@", frame);
 
-
         CONFIG_ENABLE = CONFIG_ENABLE.replace("@@", frame);
         CONFIG_SERVER = CONFIG_SERVER.replace("@@", frame);
         CONFIG_LOAD = CONFIG_LOAD.replace("@@", frame);
@@ -166,7 +164,8 @@ public class CloudProps {
         EVENT_SECRET_KEY = EVENT_SECRET_KEY.replace("@@", frame);
 
         LOCK_ENABLE = LOCK_ENABLE.replace("@@", frame);
-
+        LOG_SERVER = LOG_SERVER.replace("@@", frame);
+        
         LOG_ENABLE = LOG_ENABLE.replace("@@", frame);
         LOG_SERVER = LOG_SERVER.replace("@@", frame);
         LOG_DEFAULT = LOG_DEFAULT.replace("@@", frame);
@@ -220,15 +219,16 @@ public class CloudProps {
 
 
     private String username;
+
     public String getUsername() {
-        if(username == null) {
+        if (username == null) {
             username = aopContext.cfg().get(USERNAME);
 
-            if(username == null) {
+            if (username == null) {
                 username = aopContext.cfg().get(ACCESS_KEY); //支持 USERNAME 与 ACCESS_KEY 互用
             }
 
-            if(username == null){
+            if (username == null) {
                 username = "";
             }
         }
@@ -237,21 +237,23 @@ public class CloudProps {
     }
 
     private String password;
+
     public String getPassword() {
-        if(password == null) {
+        if (password == null) {
             password = aopContext.cfg().get(PASSWORD);
 
-            if(password == null) {
+            if (password == null) {
                 password = aopContext.cfg().get(SECRET_KEY); //支持 PASSWORD 与 SECRET_KEY 互用
             }
 
-            if(password == null){
+            if (password == null) {
                 password = "";
             }
         }
 
         return password;
     }
+
     public String getAccessKey() {
         return getUsername();
     }
@@ -328,6 +330,7 @@ public class CloudProps {
     }
 
     private String eventServer;
+
     public String getEventServer() {
         if (eventServer == null) {
             eventServer = aopContext.cfg().get(EVENT_SERVER);
@@ -379,14 +382,14 @@ public class CloudProps {
     private String eventUsername;
 
     public String getEventUsername() {
-        if(eventUsername == null) {
+        if (eventUsername == null) {
             eventUsername = aopContext.cfg().get(EVENT_USERNAME);
 
-            if(eventUsername == null){
+            if (eventUsername == null) {
                 eventUsername = aopContext.cfg().get(EVENT_ACCESS_KEY);
             }
 
-            if(eventUsername == null){
+            if (eventUsername == null) {
                 eventUsername = getUsername();
             }
         }
@@ -397,14 +400,14 @@ public class CloudProps {
     private String eventPassword;
 
     public String getEventPassword() {
-        if(eventPassword == null) {
+        if (eventPassword == null) {
             eventPassword = aopContext.cfg().get(EVENT_PASSWORD);
 
-            if(eventPassword == null){
+            if (eventPassword == null) {
                 eventPassword = aopContext.cfg().get(EVENT_SECRET_KEY);
             }
 
-            if(eventPassword == null){
+            if (eventPassword == null) {
                 eventPassword = getPassword();
             }
         }
@@ -500,14 +503,14 @@ public class CloudProps {
     private String fileUsername;
 
     public String getFileUsername() {
-        if(fileUsername == null) {
+        if (fileUsername == null) {
             fileUsername = aopContext.cfg().get(FILE_USERNAME);
 
-            if(fileUsername == null){
+            if (fileUsername == null) {
                 fileUsername = aopContext.cfg().get(FILE_ACCESS_KEY);
             }
 
-            if(fileUsername == null){
+            if (fileUsername == null) {
                 fileUsername = getUsername();
             }
         }
@@ -519,14 +522,14 @@ public class CloudProps {
 
 
     public String getFilePassword() {
-        if(filePassword == null) {
+        if (filePassword == null) {
             filePassword = aopContext.cfg().get(FILE_PASSWORD);
 
-            if(filePassword == null){
+            if (filePassword == null) {
                 filePassword = aopContext.cfg().get(FILE_SECRET_KEY);
             }
 
-            if(filePassword == null){
+            if (filePassword == null) {
                 filePassword = getPassword();
             }
         }
@@ -587,7 +590,7 @@ public class CloudProps {
 
     /**
      * 获取值
-     * */
+     */
     public String getValue(String name) {
         return aopContext.cfg().get(ROOT + name); //"solon.cloud.@@.";
     }
@@ -597,24 +600,23 @@ public class CloudProps {
     }
 
 
-
     /**
      * 设置值
-     * */
+     */
     public void setValue(String name, String value) {
         aopContext.cfg().setProperty(ROOT + name, value); //"solon.cloud.@@.";
     }
 
     /**
      * 获取所有属性
-     * */
-    public Props getProp(){
-        return aopContext.cfg().getProp(ROOT.substring(0,ROOT.length()-1));
+     */
+    public Props getProp() {
+        return aopContext.cfg().getProp(ROOT.substring(0, ROOT.length() - 1));
     }
 
     /**
      * 获取所有某一块属性
-     * */
+     */
     public Props getProp(String keyStarts) {
         return aopContext.cfg().getProp(ROOT + keyStarts);
     }
