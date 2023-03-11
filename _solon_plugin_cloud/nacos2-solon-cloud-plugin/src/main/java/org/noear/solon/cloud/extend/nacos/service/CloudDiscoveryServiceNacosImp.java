@@ -1,6 +1,5 @@
 package org.noear.solon.cloud.extend.nacos.service;
 
-import com.alibaba.nacos.api.annotation.NacosProperties;
 import com.alibaba.nacos.api.exception.NacosException;
 import com.alibaba.nacos.api.naming.NamingFactory;
 import com.alibaba.nacos.api.naming.NamingService;
