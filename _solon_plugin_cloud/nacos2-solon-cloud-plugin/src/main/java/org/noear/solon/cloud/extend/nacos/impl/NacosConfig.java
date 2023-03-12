@@ -4,6 +4,7 @@ import com.alibaba.nacos.api.PropertyKeyConst;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudProps;
+import org.noear.solon.core.Props;
 
 import java.util.Properties;
 
@@ -15,6 +16,20 @@ public class NacosConfig {
     public static Properties getServiceProperties(CloudProps cloudProps, Properties properties, String server) {
         String username = cloudProps.getUsername();
         String password = cloudProps.getPassword();
+
+        Props parentProps = cloudProps.getProp();
+        parentProps.forEach((k,v)->{
+            if(k instanceof String){
+                String key = (String) k;
+
+                if(key.startsWith(CloudProps.PREFIX_config) ||
+                        key.startsWith(CloudProps.PREFIX_discovery)){
+                    return;
+                }
+
+                properties.putIfAbsent(key, v);
+            }
+        });
 
 
         properties.putIfAbsent(PropertyKeyConst.SERVER_ADDR, server);

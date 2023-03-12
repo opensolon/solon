@@ -12,6 +12,18 @@ import org.noear.solon.core.Props;
  * @since 1.2
  */
 public class CloudProps {
+    public static final String PREFIX_config = "config.";
+    public static final String PREFIX_discovery = "discovery.";
+    public static final String PREFIX_event = "event.";
+    public static final String PREFIX_lock = "lock.";
+    public static final String PREFIX_log = "log.";
+    public static final String PREFIX_trace = "trace.";
+    public static final String PREFIX_metric = "metric.";
+    public static final String PREFIX_file = "file.";
+    public static final String PREFIX_i18n = "i18n.";
+    public static final String PREFIX_id = "id.";
+    public static final String PREFIX_list = "list.";
+    public static final String PREFIX_job = "job.";
 
     public static String LOG_DEFAULT_LOGGER;
 
@@ -136,7 +148,7 @@ public class CloudProps {
 
         DISCOVERY_ENABLE = DISCOVERY_ENABLE.replace("@@", frame);
         DISCOVERY_SERVER = DISCOVERY_SERVER.replace("@@", frame);
-        DISCOVERY_CLUSTER_NAME = DISCOVERY_CLUSTER_NAME.replace("@@",frame);
+        DISCOVERY_CLUSTER_NAME = DISCOVERY_CLUSTER_NAME.replace("@@", frame);
         //DISCOVERY_UNSTABLE = DISCOVERY_UNSTABLE.replace("@@", frame);
         //DISCOVERY_HEALTH_CHECK_PATH = DISCOVERY_HEALTH_CHECK_PATH.replace("@@", frame);
         DISCOVERY_HEALTH_CHECK_INTERVAL = DISCOVERY_HEALTH_CHECK_INTERVAL.replace("@@", frame);
