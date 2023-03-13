@@ -1,3 +1,5 @@
+package fun.asgc.solon.extend.orika;
+
 import ma.glasnost.orika.CustomConverter;
 import ma.glasnost.orika.Mapper;
 import ma.glasnost.orika.MapperFacade;
