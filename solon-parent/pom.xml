@@ -88,7 +88,6 @@
 
         <mapstruct.ver>1.5.3.Final</mapstruct.ver>
         <native.ver>0.9.22</native.ver>
-        <orika.ver>1.5.4</orika.ver>
     </properties>
 
 
@@ -1242,6 +1241,12 @@
                 <version>${solon.ver}</version>
             </dependency>
 
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>orika-solon-plugin</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+
 
             <!-- //////////// servlet ////////////  -->
             <!-- //////////// servlet ////////////  -->
@@ -1384,11 +1389,6 @@
                 <groupId>org.mapstruct</groupId>
                 <artifactId>mapstruct-processor</artifactId>
                 <version>${mapstruct.ver}</version>
-            </dependency>
-            <dependency>
-                <groupId>ma.glasnost.orika</groupId>
-                <artifactId>orika-core</artifactId>
-                <version>${orika.ver}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

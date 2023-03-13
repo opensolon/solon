@@ -14,6 +14,10 @@
     <artifactId>orika-solon-plugin</artifactId>
     <packaging>jar</packaging>
 
+    <properties>
+        <orika.ver>1.5.4</orika.ver>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
@@ -23,6 +27,7 @@
         <dependency>
             <groupId>ma.glasnost.orika</groupId>
             <artifactId>orika-core</artifactId>
+            <version>${orika.ver}</version>
         </dependency>
     </dependencies>
 </project>

@@ -11,6 +11,7 @@
 
 ### v2.2.4
 
+* 新增 orika-solon-plugin 插件
 * fastjson2 升为 2.0.25
 * hutool 升为 5.8.15
 * sqltoy 升为 5.2.38
