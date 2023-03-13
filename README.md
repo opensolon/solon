@@ -78,7 +78,7 @@ Solon v2.2.3
 <parent>
     <groupId>org.noear</groupId>
     <artifactId>solon-parent</artifactId>
-    <version>2.2.3</version>   
+    <version>2.2.4-SNAPSHOT</version>   
 </parent>
 
 <dependencies>
