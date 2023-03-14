@@ -33,6 +33,8 @@
         <module>__release/solon-plugin-bundle2</module>
         <module>__release/solon-plugin-cloud-bundle</module>
 
+        <module>__release/solon-shortcut-bundle</module>
+
         <module>__test</module>
 
         <module>__hatch</module>

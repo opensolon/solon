@@ -12,6 +12,7 @@
 ### v2.2.4
 
 * 新增 orika-solon-plugin 插件
+* 新增 solon-job 插件
 * 增加 VaultUtils::guard 接口
 * 修复 ColonClient.configLoad(g,k) 不能实时同步配置的问题
 * beetlsql 升为 3.20.3-RELEASE

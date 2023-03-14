@@ -46,21 +46,5 @@
         <module>../../_solon_base/solon.health.detector</module>
 
         <module>../../_solon_base/solon.hotplug</module>
-
-
-        <module>../../_solon_shortcut/solon-beetl-web</module>
-        <module>../../_solon_shortcut/solon-enjoy-web</module>
-        <module>../../_solon_shortcut/solon-lib</module>
-        <module>../../_solon_shortcut/solon-api</module>
-
-        <module>../../_solon_shortcut/solon-web</module>
-        <module>../../_solon_shortcut/solon-rpc</module>
-        <module>../../_solon_shortcut/solon-cloud</module>
-        <module>../../_solon_shortcut/solon-cloud-alibaba</module>
-        <module>../../_solon_shortcut/solon-cloud-water</module>
-
-        <module>../../_solon_shortcut/solon-test</module>
-        <module>../../_solon_shortcut/solon-test-junit4</module>
-        <module>../../_solon_shortcut/solon-test-junit5</module>
     </modules>
 </project>
