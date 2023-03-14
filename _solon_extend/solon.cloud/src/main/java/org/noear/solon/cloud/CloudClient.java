@@ -56,7 +56,7 @@ public class CloudClient {
 
             //关注实时更新
             CloudClient.config().attention(group, key, (cfg) -> {
-                Properties properties = config.toProps();
+                Properties properties = cfg.toProps();
                 Solon.cfg().loadAdd(properties);
             });
         }

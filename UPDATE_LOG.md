@@ -13,6 +13,7 @@
 
 * 新增 orika-solon-plugin 插件
 * 增加 VaultUtils::guard 接口
+* 修复 ColonClient.configLoad(g,k) 不能实时同步配置的问题
 * fastjson2 升为 2.0.25
 * hutool 升为 5.8.15
 * sqltoy 升为 5.2.38
