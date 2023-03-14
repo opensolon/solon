@@ -14,9 +14,11 @@
 * 新增 orika-solon-plugin 插件
 * 增加 VaultUtils::guard 接口
 * 修复 ColonClient.configLoad(g,k) 不能实时同步配置的问题
+* beetlsql 升为 3.20.3-RELEASE
 * fastjson2 升为 2.0.25
+* snack3 升为 3.2.60
 * hutool 升为 5.8.15
-* sqltoy 升为 5.2.38
+* sqltoy 升为 5.2.39
 * beetlsql 升为 3.20.3-RELEASE
 
 ### v2.2.3
