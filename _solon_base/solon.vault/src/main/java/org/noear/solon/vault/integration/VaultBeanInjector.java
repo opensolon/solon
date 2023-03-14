@@ -45,7 +45,7 @@ public class VaultBeanInjector implements BeanInjector<VaultInject> {
             Properties val = varH.context().cfg().getProp(name);
 
             //脱敏处理
-            val = guardDo(val);
+            val = VaultUtils.guard(val);
 
             varH.setValue(val);
         } else {
@@ -70,7 +70,7 @@ public class VaultBeanInjector implements BeanInjector<VaultInject> {
             }
 
             //脱敏处理
-            val = guardDo(val);
+            val = VaultUtils.guard(val);
 
             if (val == null) {
                 Class<?> pt = varH.getType();
@@ -82,7 +82,7 @@ public class VaultBeanInjector implements BeanInjector<VaultInject> {
                     Properties val0 = varH.context().cfg().getProp(name);
                     if (val0.size() > 0) {
                         //脱敏处理
-                        val0 = guardDo(val0);
+                        val0 = VaultUtils.guard(val0);
 
                         //如果找到配置了
                         Object val2 = PropsConverter.global().convert(val0, null, pt, varH.getGenericType());
@@ -95,27 +95,5 @@ public class VaultBeanInjector implements BeanInjector<VaultInject> {
                 varH.setValue(val2);
             }
         }
-    }
-
-    private String guardDo(String str) {
-        if (VaultUtils.isEncrypted(str)) {
-            return VaultUtils.decrypt(str);
-        } else {
-            return str;
-        }
-    }
-
-    private Properties guardDo(Properties props) {
-        props.forEach((k, v) -> {
-            if (v instanceof String) {
-                String val = (String) v;
-                if (VaultUtils.isEncrypted(val)) {
-                    String val2 = VaultUtils.decrypt(val);
-                    props.put(k, val2);
-                }
-            }
-        });
-
-        return props;
     }
 }

@@ -4,6 +4,8 @@ import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.vault.coder.AesVaultCoder;
 
+import java.util.Properties;
+
 /**
  * 脱敏工具
  *
@@ -65,5 +67,34 @@ public class VaultUtils {
         } catch (Throwable e) {
             throw new RuntimeException(e);
         }
+    }
+
+
+    /**
+     * 警惕处理
+     * */
+    public static String guard(String str) {
+        if (VaultUtils.isEncrypted(str)) {
+            return VaultUtils.decrypt(str);
+        } else {
+            return str;
+        }
+    }
+
+    /**
+     * 警惕处理
+     * */
+    public static Properties guard(Properties props) {
+        props.forEach((k, v) -> {
+            if (v instanceof String) {
+                String val = (String) v;
+                if (VaultUtils.isEncrypted(val)) {
+                    String val2 = VaultUtils.decrypt(val);
+                    props.put(k, val2);
+                }
+            }
+        });
+
+        return props;
     }
 }
