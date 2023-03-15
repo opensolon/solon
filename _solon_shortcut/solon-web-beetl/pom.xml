@@ -12,7 +12,7 @@
     </parent>
 
     <groupId>org.noear</groupId>
-    <artifactId>solon-enjoy-web</artifactId>
+    <artifactId>solon-web-beetl</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>
@@ -27,16 +27,16 @@
             <artifactId>solon.sessionstate.local</artifactId>
         </dependency>
 
-        <!-- enjoy 模板支持组件 -->
+        <!-- beetl模板支持组件 -->
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.view.enjoy</artifactId>
+            <artifactId>solon.view.beetl</artifactId>
         </dependency>
 
-        <!-- activerecord 支持组件 -->
+        <!-- beetlsql支持组件 -->
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>activerecord-solon-plugin</artifactId>
+            <artifactId>beetlsql-solon-plugin</artifactId>
         </dependency>
 
     </dependencies>

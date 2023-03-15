@@ -12,7 +12,7 @@
     </parent>
 
     <groupId>org.noear</groupId>
-    <artifactId>solon-enjoy-web</artifactId>
+    <artifactId>solon-web-enjoy</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>
