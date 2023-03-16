@@ -304,6 +304,8 @@ public class AopContext extends BeanContainer {
         ClassWrap clzWrap = ClassWrap.get(obj.getClass());
 
         if (obj instanceof InitializingBean) {
+            InitializingBean initBean = (InitializingBean)obj;
+
             List<FieldWrap> fwList = new ArrayList<>();
 
             //支持父类注入(找到有注解的字段)
@@ -316,11 +318,11 @@ public class AopContext extends BeanContainer {
 
             if (fwList.size() == 0) {
                 //不需要注入
-                RunUtil.runOrThrow(() -> ((InitializingBean) obj).afterInjection());
+                RunUtil.runOrThrow(initBean::afterInjection);
             } else {
                 //需要注入（可能）
                 VarGather gather = new VarGather(fwList.size(), (args2) -> {
-                    RunUtil.runOrThrow(() -> ((InitializingBean) obj).afterInjection());
+                    RunUtil.runOrThrow(initBean::afterInjection);
                 });
 
                 for (FieldWrap fw : fwList) {

@@ -1,6 +1,7 @@
 package org.noear.solon.core;
 
 import org.noear.solon.SolonProps;
+import org.noear.solon.core.bean.InitializingBean;
 import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.lang.Nullable;
 
@@ -44,7 +45,7 @@ public class PluginEntity {
 
     /**
      * @deprecated 2.2
-     * */
+     */
     @Deprecated
     public PluginEntity(Plugin plugin) {
         this.plugin = plugin;
@@ -52,7 +53,7 @@ public class PluginEntity {
 
     /**
      * @deprecated 2.2
-     * */
+     */
     @Deprecated
     public PluginEntity(Plugin plugin, int priority) {
         this.plugin = plugin;
@@ -90,22 +91,12 @@ public class PluginEntity {
      */
     public void init(AopContext context) {
         initInstance(context);
-
-//        if (plugin != null) {
-//            try {
-//                plugin.init(context);
-//            } catch (Throwable e) {
-//                throw new IllegalStateException(e);
-//            }
-//        }
     }
 
     /**
      * 启动
      */
     public void start(AopContext context) {
-        initInstance(context);
-
         if (plugin != null) {
             try {
                 plugin.start(context);
@@ -149,10 +140,16 @@ public class PluginEntity {
     private void initInstance(AopContext context) {
         if (plugin == null) {
             if (classLoader != null) {
-                Class<?> pluginClz = ClassUtil.loadClass(classLoader, className);
-                if (pluginClz != null) {
-                    //可以支持注入了
-                    plugin = context.wrap(pluginClz).raw();
+                plugin = ClassUtil.newInstance(classLoader, className);
+
+                if (plugin instanceof InitializingBean) {
+                    try {
+                        ((InitializingBean) plugin).afterInjection();
+                    } catch (RuntimeException e) {
+                        throw e;
+                    } catch (Throwable e) {
+                        throw new IllegalStateException(e);
+                    }
                 }
             }
         }

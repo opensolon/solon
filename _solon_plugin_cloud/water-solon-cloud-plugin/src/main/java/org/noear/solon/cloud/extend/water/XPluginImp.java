@@ -2,7 +2,6 @@ package org.noear.solon.cloud.extend.water;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
-import org.noear.solon.annotation.Inject;
 import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.cloud.CloudManager;
 import org.noear.solon.cloud.CloudProps;
@@ -27,24 +26,21 @@ import java.util.Timer;
  * @author noear
  * @since 1.2
  */
-public class XPluginImp implements Plugin , InitializingBean {
-    @Inject
-    AopContext aopContext;
-
+public class XPluginImp implements Plugin, InitializingBean {
     private Timer clientTimer = new Timer();
     private CloudProps cloudProps;
     private boolean inited = false;
 
     private boolean initDo(AopContext context) throws Throwable {
-        if(cloudProps == null){
-            cloudProps = new CloudProps(context,"water");;
+        if (cloudProps == null) {
+            cloudProps = new CloudProps(context, "water");
         }
 
-        if(inited){
+        if (inited) {
             return true;
         }
 
-        if(Utils.isEmpty(cloudProps.getServer())){
+        if (Utils.isEmpty(cloudProps.getServer())) {
             return false;
         }
 
@@ -87,7 +83,7 @@ public class XPluginImp implements Plugin , InitializingBean {
 
     @Override
     public void afterInjection() throws Throwable {
-        if (initDo(aopContext) == false) {
+        if (initDo(Solon.context()) == false) {
             return;
         }
 
@@ -171,13 +167,13 @@ public class XPluginImp implements Plugin , InitializingBean {
 
             if (discoveryServiceImp != null || i18nServiceImp != null) {
                 //关注缓存更新事件
-                eventServiceImp.attention(EventLevel.instance, "", "",  WW.msg_ucache_topic,"",
+                eventServiceImp.attention(EventLevel.instance, "", "", WW.msg_ucache_topic, "",
                         new HandlerCacheUpdate(discoveryServiceImp, i18nServiceImp));
             }
 
             if (configServiceImp != null) {
                 //关注配置更新事件
-                eventServiceImp.attention(EventLevel.instance, "", "",  WW.msg_uconfig_topic,"",
+                eventServiceImp.attention(EventLevel.instance, "", "", WW.msg_uconfig_topic, "",
                         new HandlerConfigUpdate(configServiceImp));
             }
 

@@ -7,16 +7,12 @@
     <parent>
         <groupId>org.noear</groupId>
         <artifactId>solon-parent</artifactId>
-        <version>2.2.5-SNAPSHOT</version>
+        <version>2.2.5</version>
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
     <artifactId>activerecord-solon-plugin</artifactId>
     <packaging>jar</packaging>
-
-    <properties>
-        <activerecord.ver>5.0.4</activerecord.ver>
-    </properties>
 
     <dependencies>
         <dependency>

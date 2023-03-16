@@ -7,16 +7,12 @@
     <parent>
         <groupId>org.noear</groupId>
         <artifactId>solon-parent</artifactId>
-        <version>2.2.5-SNAPSHOT</version>
+        <version>2.2.5</version>
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
     <artifactId>sqltoy-solon-plugin</artifactId>
     <packaging>jar</packaging>
-
-    <properties>
-        <sqltoy.ver>5.2.39</sqltoy.ver>
-    </properties>
 
     <dependencies>
         <dependency>
