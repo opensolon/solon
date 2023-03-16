@@ -44,8 +44,8 @@
         <snakeyaml.ver>1.33</snakeyaml.ver>
         <swagger.ver>1.6.2</swagger.ver>
 
-        <jackson.ver>2.14.1</jackson.ver>
-        <gson.ver>2.10</gson.ver>
+        <jackson.ver>2.14.2</jackson.ver>
+        <gson.ver>2.10.1</gson.ver>
         <hessian.ver>4.0.66</hessian.ver>
         <hessian-sofa.ver>4.0.4</hessian-sofa.ver>
         <protostuff.ver>1.8.0</protostuff.ver>
