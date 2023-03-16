@@ -5,9 +5,11 @@ import org.noear.solon.Utils;
 import org.noear.solon.core.handle.ActionExecutorDefault;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.wrap.ParamWrap;
+import org.noear.solon.serialization.gson.impl.DateReadAdapter;
 
 import java.lang.reflect.ParameterizedType;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -18,6 +20,10 @@ public class GsonActionExecutor extends ActionExecutorDefault {
     private static final String label = "/json";
 
     private final GsonBuilder config = new GsonBuilder();
+
+    public GsonActionExecutor(){
+        config.registerTypeAdapter(Date.class, new DateReadAdapter());
+    }
 
     public GsonBuilder config() {
         return config;
