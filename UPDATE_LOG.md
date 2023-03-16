@@ -11,6 +11,8 @@
 
 ### v2.2.5
 
+* 增加 GsonActionExecutor 类
+* 修复 FastjsonActionExecutor 配置没启效的问题
 * snack3 升为 3.2.61
 * wood 升为 1.0.8
 

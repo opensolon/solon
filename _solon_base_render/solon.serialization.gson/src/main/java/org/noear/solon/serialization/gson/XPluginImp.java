@@ -1,6 +1,7 @@
 package org.noear.solon.serialization.gson;
 
 import org.noear.solon.core.AopContext;
+import org.noear.solon.core.Bridge;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.RenderManager;
@@ -35,6 +36,14 @@ public class XPluginImp implements Plugin {
             RenderManager.mapping("@json", renderFactory.create());
             RenderManager.mapping("@type_json", renderTypedFactory.create());
         });
+
+        //::actionExecutor
+        //支持 json 内容类型执行
+        GsonActionExecutor actionExecutor = new GsonActionExecutor();
+        context.wrapAndPut(GsonActionExecutor.class, actionExecutor);
+        EventBus.push(actionExecutor);
+
+        Bridge.actionExecutorAdd(actionExecutor);
     }
 
     private void applyProps(GsonRenderFactory factory, JsonProps jsonProps) {
