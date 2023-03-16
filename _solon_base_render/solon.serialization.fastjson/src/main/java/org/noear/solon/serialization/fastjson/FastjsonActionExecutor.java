@@ -23,7 +23,7 @@ import java.util.List;
 public class FastjsonActionExecutor extends ActionExecutorDefault {
     private static final String label = "/json";
 
-    private final ParserConfig config = ParserConfig.getGlobalInstance();
+    private final ParserConfig config = new ParserConfig();
 
     /**
      * 反序列化配置
@@ -46,7 +46,7 @@ public class FastjsonActionExecutor extends ActionExecutorDefault {
         String json = ctx.bodyNew();
 
         if (Utils.isNotEmpty(json)) {
-            return JSON.parse(json);
+            return JSON.parse(json, config);
         } else {
             return null;
         }
