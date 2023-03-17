@@ -19,7 +19,7 @@
         <dependency>
             <groupId>com.yomahub</groupId>
             <artifactId>liteflow-solon-plugin</artifactId>
-            <version>2.9.7</version>
+            <version>${liteflow.ver}</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.noear</groupId>

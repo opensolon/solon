@@ -41,7 +41,7 @@
         <undertow.ver>2.2.19.Final</undertow.ver>
         <tomcat.ver>9.0.64</tomcat.ver>
 
-        <snakeyaml.ver>1.33</snakeyaml.ver>
+        <snakeyaml.ver>2.0</snakeyaml.ver>
         <swagger.ver>1.6.2</swagger.ver>
 
         <jackson.ver>2.14.2</jackson.ver>
@@ -92,6 +92,7 @@
         <activerecord.ver>5.0.4</activerecord.ver>
         <beetlsql.ver>3.20.3-RELEASE</beetlsql.ver>
         <sqltoy.ver>5.2.39</sqltoy.ver>
+        <liteflow.ver>2.10.0</liteflow.ver>
     </properties>
 
 
