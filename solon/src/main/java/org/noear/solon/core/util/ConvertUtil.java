@@ -2,15 +2,17 @@ package org.noear.solon.core.util;
 
 import org.noear.solon.core.handle.Context;
 
-import java.lang.reflect.AnnotatedElement;
-import java.lang.reflect.Array;
+import java.lang.reflect.*;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 类型转换工具
@@ -29,7 +31,7 @@ public class ConvertUtil {
      * @param val     值
      * @param ctx     通用上下文
      */
-    public static Object to(AnnotatedElement element,  Class<?> type, String key, String val, Context ctx) throws ClassCastException {
+    public static Object to(AnnotatedElement element, Class<?> type, String key, String val, Context ctx) throws ClassCastException {
         if (String.class == (type)) {
             return val;
         }
@@ -48,6 +50,7 @@ public class ConvertUtil {
             }
         }
 
+        //转数组
         if (rst == null && type.isArray()) {
             String[] ary = null;
             if (ctx == null) {
@@ -61,6 +64,42 @@ public class ConvertUtil {
             }
 
             rst = tryToArray(ary, type);
+        }
+
+        //转 list
+        if(rst == null && List.class.isAssignableFrom(type)) {
+            String[] ary = null;
+            if (ctx == null) {
+                ary = val.split(",");
+            } else {
+                ary = ctx.paramValues(key);
+                if (ary == null || ary.length == 1) {
+                    //todo:可能有兼容问题("?aaa=1,2&aaa=3,4,5,6"，只传第一部份时会有歧意)
+                    ary = val.split(",");
+                }
+            }
+
+            Type gType =null;
+            if(element instanceof Parameter){
+                gType = ((Parameter)element).getParameterizedType();
+            }else if(element instanceof Field){
+                gType = ((Field)element).getGenericType();
+            }
+
+            if(gType instanceof ParameterizedType){
+                Type gTypeA = ((ParameterizedType)gType).getActualTypeArguments()[0];
+                if(gTypeA instanceof Class){
+                    List ary2 = new ArrayList(ary.length);
+                    for (int i = 0; i < ary.length; i++) {
+                        ary2.add(tryTo((Class<?>) gTypeA, ary[i]));
+                    }
+                    return ary2;
+                }else{
+                    rst = Arrays.asList(ary);
+                }
+            }else{
+                rst = Arrays.asList(ary);
+            }
         }
 
         if (rst == null) {

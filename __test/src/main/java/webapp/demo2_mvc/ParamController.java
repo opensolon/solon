@@ -9,6 +9,7 @@ import webapp.models.UserModel;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 @Singleton(false)
 @Mapping("/demo2/param")
@@ -55,7 +56,7 @@ public class ParamController {
 
     //支持字符串数组参数（暂时只支持字符串数据）
     @Mapping("array_str")
-    public String[] test_f(Context ctx, String[] aaa, String ccc) throws Exception{
+    public Object test_f(Context ctx, List<String> aaa, String ccc) throws Exception{
         return aaa;
     }
 
