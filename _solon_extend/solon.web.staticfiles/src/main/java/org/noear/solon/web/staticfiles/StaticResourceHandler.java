@@ -84,12 +84,14 @@ public class StaticResourceHandler implements Handler {
                 connection.setUseCaches(false);
 
                 try (InputStream stream = connection.getInputStream()) {
+                    ctx.contentLength(stream.available());
                     ctx.contentType(conentType);
                     ctx.status(200);
                     ctx.output(stream);
                 }
             }else{
                 try (InputStream stream = uri.openStream()) {
+                    ctx.contentLength(stream.available());
                     ctx.contentType(conentType);
                     ctx.status(200);
                     ctx.output(stream);
