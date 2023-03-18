@@ -128,31 +128,31 @@ public class HelloServiceImpl implements HelloService{
 
 ###### Main framework:
 
-| 组件 | 说明 |
+| Component package | description |
 | --- | --- |
-| org.noear:solon-parent | 框架版本管理 |
-| org.noear:solon | 主框架 |
-| org.noear:nami | 伴生框架（做为solon remoting 的客户端）|
+| org.noear:solon-parent | Dependent version management |
+| org.noear:solon | Main framework |
+| org.noear:nami | Companion framework (as a client for solon remoting)|
 
 ###### Rapid integration of development kits and interrelationships:
 
-| 组件 | 说明                                                    |
-| --- |-------------------------------------------------------|
-| org.noear:solon-lib | 快速开发基础集成包                                             |
-| org.noear:solon-api | solon-lib + jlhttp boot；快速开发接口应用                       |
-| org.noear:solon-web | solon-api + freemarker + sessionstate；快速开发WEB应用       |
-| org.noear:solon-beetl-web | solon-api + beetl + beetlsql + sessionstate；快速开发WEB应用 |
-| org.noear:solon-enjoy-web | solon-api + enjoy + arp + sessionstate；快速开发WEB应用      |
-| org.noear:solon-rpc | solon-api + nami；快速开发RPC应用                            |
-| org.noear:solon-cloud | solon-rpc + consul；快速开发微服务应用                          |
+| Component package | description                                                                  |
+| --- |------------------------------------------------------------------------------|
+| org.noear:solon-lib | Rapid development of basic integration packages                              |
+| org.noear:solon-api | solon-lib + jlhttp boot；Develop api applications quickly                     |
+| org.noear:solon-web | solon-api + freemarker + sessionstate；Develop web applications quickly       |
+| org.noear:solon-beetl-web | solon-api + beetl + beetlsql + sessionstate；Develop web applications quickly |
+| org.noear:solon-enjoy-web | solon-api + enjoy + arp + sessionstate；Develop web applications quickly      |
+| org.noear:solon-rpc | solon-api + nami；Develop rpc applications quickly                            |
+| org.noear:solon-cloud | solon-rpc + consul；Develop cloud applications quickly                        |
 
 
 ## Official website and related examples:
 
-* 官网地址：[https://solon.noear.org](https://solon.noear.org)
-* 官网配套演示：[https://gitee.com/noear/solon-examples](https://gitee.com/noear/solon-examples)
-* 项目单测：[__test](./__test/) 
-* 项目更多功能示例：[solon_demo](https://gitee.com/noear/solon_demo) 、 [solon_api_demo](https://gitee.com/noear/solon_api_demo)  、 [solon_rpc_demo](https://gitee.com/noear/solon_rpc_demo) 、 [solon_socketd_demo](https://gitee.com/noear/solon_socketd_demo) 、 [solon_cloud_demo](https://gitee.com/noear/solon_cloud_demo) 、 [solon_auth_demo](https://gitee.com/noear/solon_auth_demo)
+* Official website address: [https://solon.noear.org](https://solon.noear.org)
+* Official website supporting demonstration: [https://gitee.com/noear/solon-examples](https://gitee.com/noear/solon-examples)
+* Project unit test: [__test](./__test/) 
+* Example of more functions for the project: [solon_demo](https://gitee.com/noear/solon_demo) 、 [solon_api_demo](https://gitee.com/noear/solon_api_demo)  、 [solon_rpc_demo](https://gitee.com/noear/solon_rpc_demo) 、 [solon_socketd_demo](https://gitee.com/noear/solon_socketd_demo) 、 [solon_cloud_demo](https://gitee.com/noear/solon_cloud_demo) 、 [solon_auth_demo](https://gitee.com/noear/solon_auth_demo)
 
 ## Special thanks to JetBrains for supporting the open source project:
 
