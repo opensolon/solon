@@ -4,7 +4,7 @@
 Solon v2.2.6-SNAPSHOT
 </h1>
 <p align="center">
-	<strong>An efficient Java application development framework, smaller, faster, simpler!</strong>
+	<strong>An efficient Java application development framework - smaller, faster, simpler!</strong>
 </p>
 <p align="center">
 	<a href="https://solon.noear.org/">https://solon.noear.org</a>
@@ -48,33 +48,30 @@ Solon v2.2.6-SNAPSHOT
 
 <hr />
 
-Start 5 ~ 10 times faster; QPS 2 ~ 3 times higher; runtime memory savings of 1/3 ~ 1/2; packaging can be reduced by 1/2 ~ 1/10
+Startup is 5 to 10 times faster; QPS is 2 to 3 times higher; runtime memory is saved by 1/3 to 1/2; packaging can be reduced to 1/2 to 1/10
 
 <hr />
 
-## Introduction:
+## Introduction
 
-**Solon** is an efficient Java application development framework. It also has a rich open ecosystem of plugins, combining different plugins to meet various needs, enabling convenient customization and rapid development.
+**Solon** is an efficient Java application development framework and a rich plug-in open ecosystem, combining different plug-ins to meet different needs, easy to customize, and rapid development:
 
+* **Restrained, concise, open, ecological**
+* Supports JDK8, JDK11, JDK17
+* Http, WebSocket, Socket three signal unified development experience (commonly known as: three-source integration)
+* Supports "annotation" and "manual" modes, freely controlled as needed
+* Not Servlet, can adapt to any basic communication framework (minimum 0.3m running rpc architecture)
+* Built-in IOC/AOP container, supports Web, Data, Job, Remoting, Cloud, and other development scenarios
+* Combines Handler + Context and Listener + Message architectural patterns
+* Emphasizes plug-in extensibility, expandable and swappable, adaptable to different application scenarios
+* Allows business plug-ins for "hot plugging" and "hot unloading"
+* Supports GraalVm Native packaging
+* Not Spring, no Servlet, and unrelated to JavaEE; a new, independent open ecosystem
 
-* **Restraint, simplicity, openness, and ecology**
-* Supports JDK8, JDK11, JDK17, and JDK19
-* Unified development experience for HTTP, WebSocket, and Socket signals
-* Supports both "annotation" and "manual" modes, allowing for free control as needed
-* Not Servlet-based, can be adapted to any basic communication framework (minimum 0.3m running RPC architecture)
-* Built-in IOC/AOP container, supporting Web, Data, Job, Remoting, Cloud, and other development scenarios
-* Two architecture modes: Handler + Context and Listener + Message
-* Emphasizes plugin extension, which can be extended and switched to adapt to different application scenarios
-* Allows service plugins to be hot-inserted or hot-dialed
-* Supports GraalVM Native packaging
-* Not Spring, not Servlets, not JavaEE; a newly independent open ecosystem
-
-
-## Ecological architecture map:
-
+## Ecosystem Architecture Diagram
 <img src="solon_schema.png" width="700" />
 
-## Hello world：
+## Hello World:
 
 ```xml
 <parent>
@@ -96,16 +93,16 @@ Start 5 ~ 10 times faster; QPS 2 ~ 3 times higher; runtime memory savings of 1/3
 public class App{
     public static void main(String[] args){
         Solon.start(App.class, args, app->{
-            //Handler 模式：
+            //Handler mode:
             app.get("/hello",(c)->c.output("Hello world!"));
         });
     }
 }
 
-//Controller 模式：(mvc or rest-api)
+//Controller mode: (mvc or rest-api)
 @Controller
 public class HelloController{
-    //限定 Socket 方法类型
+    //Limit Socket method type
     @Socket
     @Mapping("/mvc/hello")
     public String hello(String name){
@@ -113,7 +110,7 @@ public class HelloController{
     }
 }
 
-//Remoting 模式：(rpc)
+//Remoting mode: (rpc)
 @Mapping("/rpc/")
 @Remoting
 public class HelloServiceImpl implements HelloService{
@@ -124,38 +121,37 @@ public class HelloServiceImpl implements HelloService{
 }
 ```
 
-
-## Main framework and rapid integration development kit：
+## Main framework and quick integration development packages：
 
 ###### Main framework:
 
-| Component package | description |
-| --- | --- |
-| org.noear:solon-parent | Dependent version management |
-| org.noear:solon | Main framework |
-| org.noear:nami | Companion framework (as a client for solon remoting)|
+| Component Package                    | Description                          |
+|------------------------|-----------------------------|
+| org.noear:solon-parent | Dependency version management                      |
+| org.noear:solon        | Main framework                         |
+| org.noear:nami         | Companion framework (as solon remoting's client) |
 
-###### Rapid integration of development kits and interrelationships:
+###### Quick integration development packages and relationships：
 
-| Component package | description                                                                  |
-| --- |------------------------------------------------------------------------------|
-| org.noear:solon-lib | Rapid development of basic integration packages                              |
-| org.noear:solon-api | solon-lib + jlhttp boot；Develop api applications quickly                     |
-| org.noear:solon-web | solon-api + freemarker + sessionstate；Develop web applications quickly       |
-| org.noear:solon-beetl-web | solon-api + beetl + beetlsql + sessionstate；Develop web applications quickly |
-| org.noear:solon-enjoy-web | solon-api + enjoy + arp + sessionstate；Develop web applications quickly      |
-| org.noear:solon-rpc | solon-api + nami；Develop rpc applications quickly                            |
-| org.noear:solon-cloud | solon-rpc + consul；Develop cloud applications quickly                        |
+| Component Package                       | Description                                                    |
+|---------------------------|-------------------------------------------------------|
+| org.noear:solon-lib       | Quick development basic integration package                                             |
+| org.noear:solon-api       | solon-lib + jlhttp boot；quick development of API applications                       |
+| org.noear:solon-web       | solon-api + freemarker + sessionstate；quick development of WEB applications       |
+| org.noear:solon-beetl-web | solon-api + beetl + beetlsql + sessionstate；quick development of WEB applications |
+| org.noear:solon-enjoy-web | solon-api + enjoy + arp + sessionstate；quick development of WEB applications      |
+| org.noear:solon-rpc       | solon-api + nami；quick development of RPC applications                            |
+| org.noear:solon-cloud     | solon-rpc + consul；quick development of microservices applications                          |
 
 
-## Official website and related examples:
+## Official website and related examples：
 
-* Official website address: [https://solon.noear.org](https://solon.noear.org)
-* Official website supporting demonstration: [https://gitee.com/noear/solon-examples](https://gitee.com/noear/solon-examples)
-* Project unit test: [__test](./__test/) 
-* Example of more functions for the project: [solon_demo](https://gitee.com/noear/solon_demo) 、 [solon_api_demo](https://gitee.com/noear/solon_api_demo)  、 [solon_rpc_demo](https://gitee.com/noear/solon_rpc_demo) 、 [solon_socketd_demo](https://gitee.com/noear/solon_socketd_demo) 、 [solon_cloud_demo](https://gitee.com/noear/solon_cloud_demo) 、 [solon_auth_demo](https://gitee.com/noear/solon_auth_demo)
+* Official website address：[https://solon.noear.org](https://solon.noear.org)
+* Official website supporting demos：[https://gitee.com/noear/solon-examples](https://gitee.com/noear/solon-examples)
+* Project unit test：[__test](./__test/)
+* Project more feature examples：[solon_demo](https://gitee.com/noear/solon_demo) 、 [solon_api_demo](https://gitee.com/noear/solon_api_demo)  、 [solon_rpc_demo](https://gitee.com/noear/solon_rpc_demo) 、 [solon_socketd_demo](https://gitee.com/noear/solon_socketd_demo) 、 [solon_cloud_demo](https://gitee.com/noear/solon_cloud_demo) 、 [solon_auth_demo](https://gitee.com/noear/solon_auth_demo)
 
-## Special thanks to JetBrains for supporting the open source project:
+## Special thanks to JetBrains for supporting open-source projects：
 
 <a href="https://jb.gg/OpenSourceSupport">
   <img src="https://user-images.githubusercontent.com/8643542/160519107-199319dc-e1cf-4079-94b7-01b6b8d23aa6.png" align="left" height="100" width="100"  alt="JetBrains">
