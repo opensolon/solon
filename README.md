@@ -52,7 +52,7 @@ Solon v2.2.6-SNAPSHOT
 
 <hr />
 
-## 介绍
+## 介绍：
 
 **Solon** 是一个高效的 Java 应用开发框架；也是一个插件丰富的开放生态，组合不同的插件应对不同需求；方便定制；快速开发：
 
@@ -69,7 +69,7 @@ Solon v2.2.6-SNAPSHOT
 * 不是 Spring，没有 Servlet，也无关 JavaEE；新兴独立的开放生态
 
 
-## 生态架构图
+## 生态架构图：
 
 <img src="solon_schema.png" width="700" />
 
