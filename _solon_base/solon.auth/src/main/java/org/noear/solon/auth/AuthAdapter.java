@@ -1,7 +1,6 @@
 package org.noear.solon.auth;
 
 import org.noear.solon.Solon;
-import org.noear.solon.annotation.Note;
 import org.noear.solon.auth.impl.AuthRuleImpl;
 
 import java.util.Collection;
@@ -45,7 +44,6 @@ public class AuthAdapter {
      *
      * @param builder 规则构建器
      * */
-    @Note("添加一个授权规则")
     public synchronized AuthAdapter addRule(Consumer<AuthRule> builder) {
         AuthRuleImpl rule = new AuthRuleImpl();
         builder.accept(rule);
@@ -110,7 +108,6 @@ public class AuthAdapter {
      *
      * @param processor 认证处理器
      */
-    @Note("设定认证处理器")
     public AuthAdapter processor(AuthProcessor processor) {
         authProcessor = processor;
         return this;
@@ -128,7 +125,6 @@ public class AuthAdapter {
     /**
      * 设定默认的验证出错处理
      * */
-    @Note("设定默认的验证出错处理")
     public AuthAdapter failure(AuthFailureHandler handler) {
         authFailure = handler;
         return this;

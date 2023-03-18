@@ -2,7 +2,6 @@ package org.noear.solon.cloud;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
-import org.noear.solon.annotation.Note;
 import org.noear.solon.cloud.model.Config;
 import org.noear.solon.cloud.model.Instance;
 import org.noear.solon.cloud.service.*;
@@ -23,7 +22,6 @@ public class CloudClient {
     /**
      * 获取 云端断路器服务
      * */
-    @Note("云端断路器服务")
     public static CloudBreakerService breaker(){
         return CloudManager.breakerService();
     }
@@ -32,7 +30,6 @@ public class CloudClient {
     /**
      * 获取 云端配置服务
      */
-    @Note("云端配置服务")
     public static CloudConfigService config() {
         return CloudManager.configService();
     }
@@ -40,7 +37,6 @@ public class CloudClient {
     /**
      * 云端配置服务，加载默认配置
      */
-    @Note("云端配置服务，加载默认配置")
     public static void configLoad(String group, String key) {
         if (CloudClient.config() == null) {
             return;
@@ -65,7 +61,6 @@ public class CloudClient {
     /**
      * 云端配置服务，加载默认配置
      * */
-    @Note("云端配置服务，加载默认配置。g::k,k")
     public static void configLoad(String groupKeySet) {
         if (CloudClient.config() == null) {
             return;
@@ -93,7 +88,6 @@ public class CloudClient {
     /**
      * 获取 云端发现服务
      */
-    @Note("云端发现服务")
     public static CloudDiscoveryService discovery() {
         return CloudManager.discoveryService();
     }
@@ -101,7 +95,6 @@ public class CloudClient {
     /**
      * 云端发现服务，推送本地服务（即注册）
      */
-    @Note("云端发现服务，推送本地服务（即注册）")
     public static void discoveryPush() {
         if (CloudClient.discovery() == null) {
             return;
@@ -129,7 +122,6 @@ public class CloudClient {
     /**
      * 获取 云端事件服务
      */
-    @Note("云端事件服务")
     public static CloudEventService event() {
         return CloudManager.eventService();
     }
@@ -137,7 +129,6 @@ public class CloudClient {
     /**
      * 获取 云端锁服务
      * */
-    @Note("云端锁服务")
     public static CloudLockService lock(){
         return CloudManager.lockService();
     }
@@ -145,7 +136,6 @@ public class CloudClient {
     /**
      * 获取 云端日志服务
      * */
-    @Note("云端日志服务")
     public static CloudLogService log(){
         return CloudManager.logService();
     }
@@ -153,19 +143,16 @@ public class CloudClient {
     /**
      * 获取 云端链路跟踪服务
      * */
-    @Note("云端链路跟踪服务")
     public static CloudTraceService trace() { return CloudManager.traceService();}
 
     /**
      * 获取 云端度量服务
      * */
-    @Note("云端度量服务")
     public static CloudMetricService metric() { return CloudManager.metricService();}
 
     /**
      * 获取 云端名单列表服务
      * */
-    @Note("云端名单列表服务")
     public static CloudListService list(){
         return CloudManager.listService();
     }
@@ -173,7 +160,6 @@ public class CloudClient {
     /**
      * 获取 云端文件服务
      * */
-    @Note("云端文件服务")
     public static CloudFileService file(){
         return CloudManager.fileService();
     }
@@ -181,7 +167,6 @@ public class CloudClient {
     /**
      * 获取 云端国际化服务
      * */
-    @Note("云端国际化服务")
     public static CloudI18nService i18n(){
         return CloudManager.i18nService();
     }
@@ -189,7 +174,6 @@ public class CloudClient {
     /**
      * 获取 云端ID服务
      * */
-    @Note("云端ID服务")
     public static CloudIdService idService(String group, String service){
         return CloudManager.idServiceFactory().create(group, service);
     }
@@ -197,7 +181,6 @@ public class CloudClient {
     /**
      * 获取 云端ID服务
      * */
-    @Note("云端ID服务")
     public static CloudIdService id(){
         return CloudManager.idServiceDef();
     }
@@ -205,7 +188,6 @@ public class CloudClient {
     /**
      * 获取 云端Job服务
      * */
-    @Note("云端Job服务")
     public static CloudJobService job(){
         return CloudManager.jobService();
     }

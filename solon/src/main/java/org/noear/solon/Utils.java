@@ -1,6 +1,5 @@
 package org.noear.solon;
 
-import org.noear.solon.annotation.Note;
 import org.noear.solon.core.PropsConverter;
 import org.noear.solon.core.PropsLoader;
 import org.noear.solon.core.util.*;
@@ -21,7 +20,6 @@ import java.util.function.Function;
  * @author noear
  * @since 1.0
  * */
-@Note("内部专用工具（外部项目不建议使用，随时可能会变动）")
 public class Utils {
     public static final String TAG_classpath = "classpath:";
 

@@ -3,7 +3,6 @@ package org.noear.solon.core.handle;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.Mapping;
-import org.noear.solon.annotation.Note;
 import org.noear.solon.core.*;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.route.RoutingDefault;
@@ -72,7 +71,6 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
     /**
      * 注册相关接口与拦截器
      */
-    @Note("注册相关接口与拦截器")
     protected abstract void register();
 
 
@@ -237,31 +235,30 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
 
 
     /**
-     * 添加前置拦截器
+     * 添加前置处理器
      */
-    @Note("添加前置拦截器")
     public <T extends Handler> void before(Class<T> interceptorClz) {
         super.before(Solon.context().getBeanOrNew(interceptorClz));
     }
 
 
     /**
-     * 添加后置拦截器
+     * 添加后置处理器
      */
-    @Note("添加后置拦截器")
     public <T extends Handler> void after(Class<T> interceptorClz) {
         super.after(Solon.context().getBeanOrNew(interceptorClz));
     }
 
-    @Note("添加接口")
+    /**
+     * 添加接口
+     * */
     public void addBeans(Predicate<BeanWrap> where) {
         addBeans(where, false);
     }
 
     /**
-     * remoting 的 bean 建议一个个添加，并同时添加前缀 path
+     * 添加接口（remoting 的 bean 建议一个个添加，并同时添加前缀 path）
      */
-    @Note("添加接口")
     public void addBeans(Predicate<BeanWrap> where, boolean remoting) {
         Solon.context().lifecycle(-98, () -> {
             Solon.context().beanForeach(bw -> {
@@ -279,7 +276,6 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
     /**
      * 添加接口
      */
-    @Note("添加接口")
     public void add(Class<?> beanClz) {
         if (beanClz != null) {
             BeanWrap bw = Solon.context().wrapAndPut(beanClz);
@@ -291,7 +287,6 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
     /**
      * 添加接口
      */
-    @Note("添加接口")
     public void add(String path, Class<?> beanClz) {
         if (beanClz != null) {
             BeanWrap bw = Solon.context().wrapAndPut(beanClz);
@@ -303,7 +298,6 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
     /**
      * 添加接口（remoting ? 采用@json进行渲染）
      */
-    @Note("添加接口")
     public void add(Class<?> beanClz, boolean remoting) {
         if (beanClz != null) {
             add(Solon.context().wrapAndPut(beanClz), remoting);
@@ -313,19 +307,22 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
     /**
      * 添加接口（remoting ? 采用@json进行渲染）
      */
-    @Note("添加接口")
     public void add(String path, Class<?> beanClz, boolean remoting) {
         if (beanClz != null) {
             add(path, Solon.context().wrapAndPut(beanClz), remoting);
         }
     }
 
-    @Note("添加接口")
+    /**
+     * 添加接口
+     * */
     public void add(BeanWrap beanWp) {
         add(beanWp, beanWp.remoting());
     }
 
-    @Note("添加接口")
+    /**
+     * 添加接口
+     * */
     public void add(String path, BeanWrap beanWp) {
         add(path, beanWp, beanWp.remoting());
     }
@@ -333,12 +330,13 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
     /**
      * 添加接口（适用于，从Aop工厂遍历加入；或者把rpc代理包装成bw）
      */
-    @Note("添加接口")
     public void add(BeanWrap beanWp, boolean remoting) {
         add(null, beanWp, remoting);
     }
 
-    @Note("添加接口")
+    /**
+     * 添加接口
+     * */
     public void add(String path, BeanWrap beanWp, boolean remoting) {
         if (beanWp == null) {
             return;
@@ -361,8 +359,9 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
         });
     }
 
-
-    @Note("添加缺少处理")
+    /**
+     * 添加默认接口处理
+     * */
     public void add(Handler handler) {
         addDo("", MethodType.ALL, handler);
     }
@@ -370,7 +369,6 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
     /**
      * 添加二级路径处理
      */
-    @Note("添加二级路径处理")
     public void add(String path, Handler handler) {
         addDo(path, MethodType.ALL, handler);
     }
@@ -379,7 +377,6 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
     /**
      * 添加二级路径处理
      */
-    @Note("添加二级路径处理")
     public void add(String path, MethodType method, Handler handler) {
         addDo(path, method, handler);
     }

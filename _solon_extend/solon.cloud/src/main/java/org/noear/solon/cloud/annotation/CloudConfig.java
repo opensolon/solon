@@ -1,7 +1,6 @@
 package org.noear.solon.cloud.annotation;
 
 import org.noear.solon.annotation.Alias;
-import org.noear.solon.annotation.Note;
 
 import java.lang.annotation.*;
 
@@ -33,8 +32,7 @@ public @interface CloudConfig {
     String group() default "";
 
     /**
-     * 自动刷新
+     * 是否自动刷新（单例才有自动刷新的必要）
      * */
-    @Note("单例才有自动刷新的必要")
     boolean autoRefreshed() default false;
 }

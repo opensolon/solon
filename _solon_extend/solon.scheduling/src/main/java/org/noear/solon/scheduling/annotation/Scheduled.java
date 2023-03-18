@@ -1,7 +1,5 @@
 package org.noear.solon.scheduling.annotation;
 
-import org.noear.solon.annotation.Note;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -22,9 +20,8 @@ public @interface Scheduled {
     String name() default "";
 
     /**
-     * cron 表达式
+     * cron 表达式 //支持7位（秒，分，时，日期ofM，月，星期ofW，年）
      */
-    @Note("支持7位（秒，分，时，日期ofM，月，星期ofW，年）")
     String cron() default "";
 
     /**

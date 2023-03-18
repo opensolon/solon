@@ -1,7 +1,6 @@
 package org.noear.solon.core;
 
 import org.noear.solon.Solon;
-import org.noear.solon.annotation.Note;
 import org.noear.solon.core.handle.*;
 
 import java.util.*;
@@ -55,7 +54,6 @@ public class Bridge {
     /**
      * 设置Session状态管理器
      */
-    @Note("设置Session状态管理器")
     public static void sessionStateFactorySet(SessionStateFactory ssf) {
         if (ssf != null) {
             _sessionStateFactory = ssf;
@@ -73,7 +71,6 @@ public class Bridge {
     /**
      * 获取Session状态管理器
      */
-    @Note("获取Session状态管理器")
     public static SessionState sessionState(Context ctx) {
         return _sessionStateFactory.create(ctx);
     }
@@ -87,7 +84,6 @@ public class Bridge {
     /**
      * 获取负载工厂
      */
-    @Note("获取负载工厂")
     public static LoadBalance.Factory upstreamFactory() {
         return _upstreamFactory;
     }
@@ -95,7 +91,6 @@ public class Bridge {
     /**
      * 设置负载工厂
      */
-    @Note("设置负载工厂")
     public static void upstreamFactorySet(LoadBalance.Factory uf) {
         if (uf != null) {
             _upstreamFactory = uf;
@@ -119,7 +114,6 @@ public class Bridge {
     /**
      * 获取默认的Action执行器
      */
-    @Note("获取默认的Action执行器")
     public static ActionExecutor actionExecutorDef() {
         return _actionExecutorDef;
     }
@@ -127,7 +121,6 @@ public class Bridge {
     /**
      * 设置默认的Action执行器
      */
-    @Note("设置默认的Action执行器")
     public static void actionExecutorDefSet(ActionExecutor ae) {
         if (ae != null) {
             _actionExecutorDef = ae;
@@ -137,7 +130,6 @@ public class Bridge {
     /**
      * 获取所有Action执行器
      */
-    @Note("获取所有Action执行器")
     public static Collection<ActionExecutor> actionExecutors() {
         return Collections.unmodifiableCollection(_actionExecutors.values());
     }
@@ -145,14 +137,15 @@ public class Bridge {
     /**
      * 添加Action执行器
      */
-    @Note("添加Action执行器")
     public static void actionExecutorAdd(ActionExecutor e) {
         if (e != null) {
             _actionExecutors.put(e.getClass(), e);
         }
     }
 
-    @Note("移除Action执行器")
+    /**
+     * 移除Action执行器
+     * */
     public static void actionExecutorRemove(Class<?> clz){
         _actionExecutors.remove(clz);
     }

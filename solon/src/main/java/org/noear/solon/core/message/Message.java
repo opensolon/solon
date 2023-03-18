@@ -1,7 +1,5 @@
 package org.noear.solon.core.message;
 
-import org.noear.solon.annotation.Note;
-
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
@@ -18,32 +16,32 @@ import java.util.function.Function;
  * @since 1.0
  * */
 public class Message {
+
+    private final int flag;
+
     /**
      * 1.消息标志
      */
-    private final int flag;
-
-    @Note("1.消息标志")
     public int flag() {
         return flag;
     }
 
+
+    private final String key;
+
     /**
      * 2.消息key
      */
-    private final String key;
-
-    @Note("2.消息key")
     public String key() {
         return key;
     }
 
+
+    private final String resourceDescriptor;
+
     /**
      * 3.资源描述
      */
-    private final String resourceDescriptor;
-
-    @Note("3.资源描述")
     public String resourceDescriptor() {
         return resourceDescriptor;
     }
@@ -51,18 +49,20 @@ public class Message {
 
     private final String header;
 
-    @Note("4.消息头")
+    /**
+     * 4.消息头
+     * */
     public String header() {
         return header;
     }
 
 
+    private final byte[] body;
+
+
     /**
      * 5.消息主体
      */
-    private final byte[] body;
-
-    @Note("5.消息主体")
     public byte[] body() {
         return body;
     }

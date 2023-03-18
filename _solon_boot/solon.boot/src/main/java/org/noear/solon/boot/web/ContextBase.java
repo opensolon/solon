@@ -2,7 +2,6 @@ package org.noear.solon.boot.web;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
-import org.noear.solon.annotation.Note;
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.core.handle.Context;
 
@@ -54,11 +53,10 @@ public abstract class ContextBase extends Context {
     }
 
     /**
-     * 获取 session 状态（类型转换，存在风险）
+     * 获取 session 状态（泛型转换，存在风险）
      *
      * @param name 状态名
      */
-    @Note("泛型转换，存在转换风险")
     public final <T> T session(String name, T def) {
         Object tmp = session(name);
         if (tmp == null) {

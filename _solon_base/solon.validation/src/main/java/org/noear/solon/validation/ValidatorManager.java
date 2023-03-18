@@ -1,7 +1,6 @@
 package org.noear.solon.validation;
 
 import org.noear.solon.Utils;
-import org.noear.solon.annotation.Note;
 import org.noear.solon.core.aspect.Invocation;
 import org.noear.solon.core.handle.Action;
 import org.noear.solon.core.handle.Context;
@@ -114,7 +113,6 @@ public class ValidatorManager {
     /**
      * 清除所有验证器
      */
-    @Note("清除所有验证器")
     public static void clear() {
         validMap.clear();
     }
@@ -122,7 +120,6 @@ public class ValidatorManager {
     /**
      * 移除某个类型的验证器
      */
-    @Note("移除某个类型的验证器")
     public static <T extends Annotation> void remove(Class<T> type) {
         validMap.remove(type);
     }
@@ -130,12 +127,13 @@ public class ValidatorManager {
     /**
      * 注册验证器
      */
-    @Note("注册验证器")
     public static <T extends Annotation> void register(Class<T> type, Validator<T> validator) {
         validMap.put(type, validator);
     }
 
-    @Note("移除某个类型的验证器")
+    /**
+     * 移除某个类型的验证器
+     * */
     public static <T extends Annotation> Validator<T> get(Class<T> type) {
         return validMap.get(type);
     }
@@ -143,7 +141,6 @@ public class ValidatorManager {
     /**
      * 执行上下文的验证处理
      */
-    @Note("执行上下文的验证处理")
     public static void validateOfContext(Context ctx, Action action) throws Throwable {
         StringBuilder tmp = new StringBuilder();
 
@@ -181,7 +178,9 @@ public class ValidatorManager {
         return false;
     }
 
-    @Note("执行参数的验证处理")
+    /**
+     * 执行参数的验证处理
+     * */
     public static void validateOfInvocation(Invocation inv) throws Throwable {
         StringBuilder tmp = new StringBuilder();
 
@@ -230,7 +229,6 @@ public class ValidatorManager {
     /**
      * 执行实体的验证处理
      */
-    @Note("执行实体的验证处理")
     public static Result validateOfEntity(Object obj, Class<?>[] groups) {
         try {
             if (obj instanceof Collection) {
@@ -328,7 +326,6 @@ public class ValidatorManager {
      *
      * @return 当为 true，则以 DataThrowable 抛出；否则用 AuthorizationException 抛出。
      */
-    @Note("执行错误处理")
     public static boolean failureDo(Context ctx, Annotation ano, Result result, String message) {
         if (ctx == null) {
             return false;

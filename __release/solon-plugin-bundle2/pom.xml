@@ -47,5 +47,6 @@
         <module>../../_solon_plugin/bean-searcher-solon-plugin</module>
 
         <module>../../_solon_plugin/orika-solon-plugin</module>
+        <module>../../_solon_tool/solon-swagger-knife4j</module>
     </modules>
 </project>

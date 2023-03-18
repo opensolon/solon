@@ -1,6 +1,5 @@
 package org.noear.solon.validation;
 
-import org.noear.solon.annotation.Note;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Result;
 
@@ -15,7 +14,7 @@ import java.lang.annotation.Annotation;
 public interface ValidatorFailureHandler {
     /**
      * @return 是否停止后续检查器
+     * @see ValidatorManager::validateOfContext
      */
-    @Note("@return 是否停止后续检查器")
     boolean onFailure(Context ctx, Annotation ano, Result result, String message) throws Throwable;
 }

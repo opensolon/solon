@@ -1,7 +1,6 @@
 package org.noear.solon.cloud.annotation;
 
 import org.noear.solon.annotation.Alias;
-import org.noear.solon.annotation.Note;
 
 import java.lang.annotation.*;
 

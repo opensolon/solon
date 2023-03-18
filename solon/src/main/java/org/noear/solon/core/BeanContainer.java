@@ -4,7 +4,6 @@ package org.noear.solon.core;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.Inject;
-import org.noear.solon.annotation.Note;
 import org.noear.solon.core.aspect.Interceptor;
 import org.noear.solon.core.aspect.InterceptorEntity;
 import org.noear.solon.core.exception.InjectionException;
@@ -715,7 +714,6 @@ public abstract class BeanContainer {
     /**
      * 遍历bean库 (拿到的是bean包装)
      */
-    @Note("遍历bean库 (拿到的是bean包装)")
     public void beanForeach(BiConsumer<String, BeanWrap> action) {
         beanWrapsOfName.forEach(action);
     }
@@ -723,7 +721,6 @@ public abstract class BeanContainer {
     /**
      * 遍历bean包装库
      */
-    @Note("遍历bean包装库")
     public void beanForeach(Consumer<BeanWrap> action) {
         //相关于 beanWraps ，不会出现重复的 // 复制一下，避免 ConcurrentModificationException
         new ArrayList<>(beanWrapSet).forEach(bw -> {
@@ -732,9 +729,8 @@ public abstract class BeanContainer {
     }
 
     /**
-     * 查找Bean
+     * 查找bean包装
      */
-    @Note("查找bean包装库")
     public List<BeanWrap> beanFind(BiPredicate<String, BeanWrap> condition) {
         List<BeanWrap> list = new ArrayList<>();
         beanForeach((k, v) -> {
@@ -747,9 +743,8 @@ public abstract class BeanContainer {
     }
 
     /**
-     * 查找Bean
+     * 查找bean包装
      */
-    @Note("查找bean包装库")
     public List<BeanWrap> beanFind(Predicate<BeanWrap> condition) {
         List<BeanWrap> list = new ArrayList<>();
         beanForeach((v) -> {
