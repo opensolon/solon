@@ -44,6 +44,7 @@ Solon v2.2.6-SNAPSHOT
 	<img src="https://img.shields.io/badge/QQ交流群-22200020-orange"/></a>
 </p>
 
+##### Language: English | [中文](README.md)
 
 <hr />
 
@@ -51,7 +52,7 @@ Start 5 ~ 10 times faster; qps 2 ~ 3 times higher; Run time memory saving 1/3 ~ 
 
 <hr />
 
-## 介绍
+## Introduce:
 
 **Solon** is an efficient Java application development framework; It is also a rich open ecology of plug-ins, combining different plug-ins to meet different needs; Convenient customization; Rapid development:
 

@@ -44,6 +44,7 @@ Solon v2.2.6-SNAPSHOT
 	<img src="https://img.shields.io/badge/QQ交流群-22200020-orange"/></a>
 </p>
 
+##### 语言： 中文 | [English](README_EN.md)
 
 <hr />
 
