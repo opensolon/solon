@@ -4,7 +4,7 @@
 Solon v2.2.6-SNAPSHOT
 </h1>
 <p align="center">
-	<strong>一个高效的 Java 应用开发框架，更小、更快、更简单！</strong>
+	<strong>An efficient Java application development framework, smaller, faster, simpler!</strong>
 </p>
 <p align="center">
 	<a href="https://solon.noear.org/">https://solon.noear.org</a>
@@ -47,32 +47,32 @@ Solon v2.2.6-SNAPSHOT
 
 <hr />
 
-启动快 5 ～ 10 倍；qps 高 2～ 3 倍；运行时内存节省 1/3 ~ 1/2；打包可以缩到 1/2 ~ 1/10
+Start 5 ~ 10 times faster; qps 2 ~ 3 times higher; Run time memory saving 1/3 ~ 1/2; Packing can be reduced to 1/2 ~ 1/10
 
 <hr />
 
 ## 介绍
 
-**Solon** 是一个高效的 Java 应用开发框架；也是一个插件丰富的开放生态，组合不同的插件应对不同需求；方便定制；快速开发：
+**Solon** is an efficient Java application development framework; It is also a rich open ecology of plug-ins, combining different plug-ins to meet different needs; Convenient customization; Rapid development:
 
-* **克制、简洁、开放、生态**
-* 支持jdk8、jdk11、jdk17、jdk19
-* Http、WebSocket、Socket 三种信号统一的开发体验（俗称：三源合一）
-* 支持“注解”与“手动”两种模式，按需自由操控
-* Not Servlet，可以适配任何基础通讯框架（最小 0.3m 运行rpc架构）
-* 自建 IOC/AOP 容器，支持 Web、Data、Job、Remoting、Cloud 等任何开发场景
-* 集合 Handler + Context 和 Listener + Message 两种架构模式
-* 强调插件式扩展，可扩展可切换；适应不同的应用场景
-* 允许业务插件“热插”、“热拨”
-* 支持 GraalVm Native 打包
-* 不是 Spring，没有 Servlet，也无关 JavaEE；新兴独立的开放生态
+* **Restraint, simplicity, openness and ecology**
+* Supports the jdk8, jdk11, jdk17, and jdk19
+* The unified development experience of Http, WebSocket and Socket signals
+* Support "annotation" and "manual" two modes, as needed free control
+* Not Servlet, can be adapted to any basic communication framework (minimum 0.3m running rpc architecture)
+* Self-built IOC/AOP container, supporting Web, Data, Job, Remoting, Cloud and other development scenarios
+* Set two architecture modes: Handler + Context and Listener + Message
+* It emphasizes plug-in extension, which can be extended and switched. Adapt to different application scenarios
+* Allow service plug-ins to be hot-inserted or hot-dialed.
+* GraalVm Native packaging is supported
+* It's not Spring, it's not servlets, it's not JavaEE; The newly independent open ecology
 
 
-## 生态架构图
+## Ecological architecture map:
 
 <img src="solon_schema.png" width="700" />
 
-## 你好世界：
+## Hello world：
 
 ```xml
 <parent>
@@ -123,9 +123,9 @@ public class HelloServiceImpl implements HelloService{
 ```
 
 
-## 主框架及快速集成开发包：
+## Main framework and rapid integration development kit：
 
-###### 主框架：
+###### Main framework:
 
 | 组件 | 说明 |
 | --- | --- |
@@ -133,7 +133,7 @@ public class HelloServiceImpl implements HelloService{
 | org.noear:solon | 主框架 |
 | org.noear:nami | 伴生框架（做为solon remoting 的客户端）|
 
-###### 快速集成开发包及相互关系：
+###### Rapid integration of development kits and interrelationships:
 
 | 组件 | 说明                                                    |
 | --- |-------------------------------------------------------|
@@ -146,14 +146,14 @@ public class HelloServiceImpl implements HelloService{
 | org.noear:solon-cloud | solon-rpc + consul；快速开发微服务应用                          |
 
 
-## 官网及相关示例：
+## Official website and related examples:
 
 * 官网地址：[https://solon.noear.org](https://solon.noear.org)
 * 官网配套演示：[https://gitee.com/noear/solon-examples](https://gitee.com/noear/solon-examples)
 * 项目单测：[__test](./__test/) 
 * 项目更多功能示例：[solon_demo](https://gitee.com/noear/solon_demo) 、 [solon_api_demo](https://gitee.com/noear/solon_api_demo)  、 [solon_rpc_demo](https://gitee.com/noear/solon_rpc_demo) 、 [solon_socketd_demo](https://gitee.com/noear/solon_socketd_demo) 、 [solon_cloud_demo](https://gitee.com/noear/solon_cloud_demo) 、 [solon_auth_demo](https://gitee.com/noear/solon_auth_demo)
 
-## 特别感谢JetBrains对开源项目支持：
+## Special thanks to JetBrains for supporting the open source project:
 
 <a href="https://jb.gg/OpenSourceSupport">
   <img src="https://user-images.githubusercontent.com/8643542/160519107-199319dc-e1cf-4079-94b7-01b6b8d23aa6.png" align="left" height="100" width="100"  alt="JetBrains">
