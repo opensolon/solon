@@ -128,23 +128,23 @@ public class HelloServiceImpl implements HelloService{
 
 ###### 主框架：
 
-| 组件 | 说明 |
-| --- | --- |
-| org.noear:solon-parent | 框架版本管理 |
-| org.noear:solon | 主框架 |
-| org.noear:nami | 伴生框架（做为solon remoting 的客户端）|
+| 组件包                    | 说明                          |
+|------------------------|-----------------------------|
+| org.noear:solon-parent | 依赖版本管理                      |
+| org.noear:solon        | 主框架                         |
+| org.noear:nami         | 伴生框架（做为solon remoting 的客户端） |
 
 ###### 快速集成开发包及相互关系：
 
-| 组件 | 说明                                                    |
-| --- |-------------------------------------------------------|
-| org.noear:solon-lib | 快速开发基础集成包                                             |
-| org.noear:solon-api | solon-lib + jlhttp boot；快速开发接口应用                       |
-| org.noear:solon-web | solon-api + freemarker + sessionstate；快速开发WEB应用       |
+| 组件包                       | 说明                                                    |
+|---------------------------|-------------------------------------------------------|
+| org.noear:solon-lib       | 快速开发基础集成包                                             |
+| org.noear:solon-api       | solon-lib + jlhttp boot；快速开发接口应用                       |
+| org.noear:solon-web       | solon-api + freemarker + sessionstate；快速开发WEB应用       |
 | org.noear:solon-beetl-web | solon-api + beetl + beetlsql + sessionstate；快速开发WEB应用 |
 | org.noear:solon-enjoy-web | solon-api + enjoy + arp + sessionstate；快速开发WEB应用      |
-| org.noear:solon-rpc | solon-api + nami；快速开发RPC应用                            |
-| org.noear:solon-cloud | solon-rpc + consul；快速开发微服务应用                          |
+| org.noear:solon-rpc       | solon-api + nami；快速开发RPC应用                            |
+| org.noear:solon-cloud     | solon-rpc + consul；快速开发微服务应用                          |
 
 
 ## 官网及相关示例：
