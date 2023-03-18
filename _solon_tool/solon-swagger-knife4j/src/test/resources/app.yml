@@ -1,0 +1,11 @@
+server.port: 8081
+
+solon.app:
+  name: demoapi
+  group: demo
+
+
+swagger.info:
+  title: "在线文档"
+  description: "在线API文档"
+  termsOfService: "https://gitee.com/noear/solon/blob/master/LICENSE"

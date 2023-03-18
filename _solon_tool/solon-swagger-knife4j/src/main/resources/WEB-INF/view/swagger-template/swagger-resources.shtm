@@ -1,0 +1,12 @@
+[
+    #for(resource : swagger_resources.split(","))
+       #set(res = resource.split("#"))
+       #(for.index == 0 ? "" : ",")
+       {
+           "name": "#(res[0].trim())",
+           "url": "/swagger/api?group=#(res[1].trim())",
+           "swaggerVersion": "#(swaggerVersion)",
+           "location": "/swagger/api?group=#(res[1].trim())"
+       }
+    #end
+]
