@@ -3,6 +3,7 @@ package org.noear.solon.core;
 import org.noear.solon.SolonProps;
 import org.noear.solon.core.bean.InitializingBean;
 import org.noear.solon.core.util.ClassUtil;
+import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.lang.Nullable;
 
 import java.util.Properties;
@@ -142,13 +143,17 @@ public class PluginEntity {
             if (classLoader != null) {
                 plugin = ClassUtil.newInstance(classLoader, className);
 
-                if (plugin instanceof InitializingBean) {
-                    try {
-                        ((InitializingBean) plugin).afterInjection();
-                    } catch (RuntimeException e) {
-                        throw e;
-                    } catch (Throwable e) {
-                        throw new IllegalStateException(e);
+                if (plugin == null) {
+                    LogUtil.global().warn("The configured plugin cannot load: " + className);
+                } else {
+                    if (plugin instanceof InitializingBean) {
+                        try {
+                            ((InitializingBean) plugin).afterInjection();
+                        } catch (RuntimeException e) {
+                            throw e;
+                        } catch (Throwable e) {
+                            throw new IllegalStateException(e);
+                        }
                     }
                 }
             }
