@@ -48,25 +48,26 @@ Solon v2.2.6-SNAPSHOT
 
 <hr />
 
-Start 5 ~ 10 times faster; qps 2 ~ 3 times higher; Run time memory saving 1/3 ~ 1/2; Packing can be reduced to 1/2 ~ 1/10
+Start 5 ~ 10 times faster; QPS 2 ~ 3 times higher; runtime memory savings of 1/3 ~ 1/2; packaging can be reduced by 1/2 ~ 1/10
 
 <hr />
 
-## Introduce:
+## Introduction:
 
-**Solon** is an efficient Java application development framework; It is also a rich open ecology of plug-ins, combining different plug-ins to meet different needs; Convenient customization; Rapid development:
+**Solon** is an efficient Java application development framework. It also has a rich open ecosystem of plugins, combining different plugins to meet various needs, enabling convenient customization and rapid development.
 
-* **Restraint, simplicity, openness and ecology**
-* Supports the jdk8, jdk11, jdk17, and jdk19
-* The unified development experience of Http, WebSocket and Socket signals
-* Support "annotation" and "manual" two modes, as needed free control
-* Not Servlet, can be adapted to any basic communication framework (minimum 0.3m running rpc architecture)
-* Self-built IOC/AOP container, supporting Web, Data, Job, Remoting, Cloud and other development scenarios
-* Set two architecture modes: Handler + Context and Listener + Message
-* It emphasizes plug-in extension, which can be extended and switched. Adapt to different application scenarios
-* Allow service plug-ins to be hot-inserted or hot-dialed.
-* GraalVm Native packaging is supported
-* It's not Spring, it's not servlets, it's not JavaEE; The newly independent open ecology
+
+* **Restraint, simplicity, openness, and ecology**
+* Supports JDK8, JDK11, JDK17, and JDK19
+* Unified development experience for HTTP, WebSocket, and Socket signals
+* Supports both "annotation" and "manual" modes, allowing for free control as needed
+* Not Servlet-based, can be adapted to any basic communication framework (minimum 0.3m running RPC architecture)
+* Built-in IOC/AOP container, supporting Web, Data, Job, Remoting, Cloud, and other development scenarios
+* Two architecture modes: Handler + Context and Listener + Message
+* Emphasizes plugin extension, which can be extended and switched to adapt to different application scenarios
+* Allows service plugins to be hot-inserted or hot-dialed
+* Supports GraalVM Native packaging
+* Not Spring, not Servlets, not JavaEE; a newly independent open ecosystem
 
 
 ## Ecological architecture map:
