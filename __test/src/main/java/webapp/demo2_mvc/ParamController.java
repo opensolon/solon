@@ -56,12 +56,22 @@ public class ParamController {
 
     //支持字符串数组参数（暂时只支持字符串数据）
     @Mapping("array_str")
-    public Object test_f(Context ctx, List<String> aaa, String ccc) throws Exception{
+    public Object test_f(Context ctx, String[] aaa, String ccc) throws Exception{
+        return aaa;
+    }
+
+    @Mapping("array_str2")
+    public Object test_f2(Context ctx, List<String> aaa, String ccc) throws Exception{
         return aaa;
     }
 
     @Mapping("array_Int")
     public Object test_f2(Context ctx, Integer[] aaa, String ccc) throws Exception{
+        return aaa;
+    }
+
+    @Mapping("array_Int2")
+    public Object test_f22(Context ctx, Integer[] aaa, String ccc) throws Exception{
         return aaa;
     }
 

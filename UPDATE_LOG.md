@@ -12,8 +12,9 @@
 ### v2.2.6
 * 调整 solon.web.staticfiles 改为固定长度输出
 * 增加 ModelAndView 操作便利性
-* 增加 ids=1,2,3 注入 List<Long> 的支持
-* 添加插件加载失败日志
+* 增加 ids=t1,t2,t3 注入 List<T> 的支持
+* 增加 插件加载失败日志
+* 移除 不必要的 @Note 注释，同时缩减内核大小
 * liteflow 升为 2.10.0
 
 ### v2.2.5

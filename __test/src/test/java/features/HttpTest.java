@@ -244,6 +244,35 @@ public class HttpTest extends AbstractHttpTester {
         assert ONode.load(json).toJson().equals("[\"1\",\"2\",\"中文\"]");
     }
 
+
+
+    @Test
+    public void test2g2() throws IOException {
+        String json = path("/demo2/param/array_str2?aaa=1&aaa=2&aaa=中文")
+                .get();
+
+        assert ONode.load(json).toJson().equals("[\"1\",\"2\",\"中文\"]");
+    }
+
+    @Test
+    public void test2g2_2() throws IOException {
+        String json = path("/demo2/param/array_str2?aaa=1,2,中文").get();
+        assert ONode.load(json).toJson().equals("[\"1\",\"2\",\"中文\"]");
+    }
+
+    @Test
+    public void test2g2_3() throws IOException {
+        String json = path("/demo2/param/array_str2")
+                .data("aaa", "1,2,中文")
+                .post();
+
+        assert ONode.load(json).toJson().equals("[\"1\",\"2\",\"中文\"]");
+    }
+
+
+
+
+
     @Test
     public void test2h() throws IOException {
         assert path("/demo2/param/array_Int?aaa=1&aaa=2&ccc=3")
@@ -264,6 +293,32 @@ public class HttpTest extends AbstractHttpTester {
                 .post()
                 .equals("[1,2]");
     }
+
+
+
+    @Test
+    public void test2h2() throws IOException {
+        assert path("/demo2/param/array_Int2?aaa=1&aaa=2&ccc=3")
+                .get().equals("[1,2]");
+    }
+
+    @Test
+    public void test2h2_2() throws IOException {
+        assert path("/demo2/param/array_Int2?aaa=1,2&ccc=3")
+                .get().equals("[1,2]");
+    }
+
+    @Test
+    public void test2h2_3() throws IOException {
+        assert path("/demo2/param/array_Int2")
+                .data("aaa", "1,2")
+                .data("ccc", "3")
+                .post()
+                .equals("[1,2]");
+    }
+
+
+
 
     @Test
     public void test2i() throws IOException {

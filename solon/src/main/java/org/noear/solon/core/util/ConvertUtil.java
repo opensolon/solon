@@ -259,6 +259,10 @@ public class ConvertUtil {
             return enumOf((Class<Enum>) type, val);
         }
 
+        if(String.class == type){
+            return val;
+        }
+
         return null;
     }
 
