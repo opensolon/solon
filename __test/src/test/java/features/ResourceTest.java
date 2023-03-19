@@ -1,14 +1,21 @@
-package webapp;
+package features;
 
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.noear.solon.core.util.ResourceUtil;
+import org.noear.solon.test.SolonJUnit4ClassRunner;
+import org.noear.solon.test.SolonTest;
 
 import java.util.Collection;
 
 /**
- * @author noear 2022/12/22 created
+ * @author noear 2023/3/19 created
  */
-public class TestApp2 {
-    public static void main(String[] args){
+@RunWith(SolonJUnit4ClassRunner.class)
+@SolonTest(webapp.TestApp.class)
+public class ResourceTest {
+    @Test
+    public void scanResources(){
         Collection<String> paths = ResourceUtil.scanResources("static_test/**/dir2/*.htm");
         System.out.println(String.join(",", paths));
         assert paths.size() == 1;

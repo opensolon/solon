@@ -45,9 +45,11 @@ public class TestApp {
 
     public static void main(String[] args) throws Exception {
         System.out.println("Default Charset=" + Charset.defaultCharset());
-        System.out.println("file.encoding=" + System.getProperty("file.encoding"));
         System.out.println("Default Charset=" + Charset.defaultCharset());
         System.out.println("Default Charset in Use=" + getDefaultCharSet());
+        System.out.println("file.encoding=" + System.getProperty("file.encoding"));
+        System.out.println("user.dir=" + System.getProperty("user.dir"));
+        System.out.println("resource[/]=" + TestApp.class.getResource("/").getPath());
 
         //简化方式
         //SolonApp app = Solon.start(TestApp.class, args, x -> x.enableSocketD(true).enableWebSocket(true));
