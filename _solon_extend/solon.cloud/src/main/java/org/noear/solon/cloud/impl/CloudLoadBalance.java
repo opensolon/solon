@@ -36,6 +36,9 @@ public class CloudLoadBalance implements LoadBalance {
     private final String group;
     private Discovery discovery;
 
+    /**
+     * 一般用于发现服务
+     * */
     public CloudLoadBalance(String group, String service) {
         this.service = service;
         this.group = group;
@@ -49,6 +52,9 @@ public class CloudLoadBalance implements LoadBalance {
         }
     }
 
+    /**
+     * 一般用于本地配置
+     * */
     public CloudLoadBalance(String group, String service, Discovery discovery) {
         this.service = service;
         this.group = group;
@@ -84,9 +90,7 @@ public class CloudLoadBalance implements LoadBalance {
             if (Utils.isNotEmpty(discovery.agent())) {
                 return discovery.agent();
             } else {
-                int count = discovery.clusterSize();
-
-                if (count == 0) {
+                if (discovery.clusterSize() == 0) {
                     return null;
                 } else {
                     return getStrategy().getServer(discovery);
