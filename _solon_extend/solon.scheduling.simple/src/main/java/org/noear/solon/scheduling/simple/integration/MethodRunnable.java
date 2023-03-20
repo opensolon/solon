@@ -2,6 +2,7 @@ package org.noear.solon.scheduling.simple.integration;
 
 import org.noear.solon.Utils;
 import org.noear.solon.core.BeanWrap;
+import org.noear.solon.core.wrap.MethodWrap;
 import org.noear.solon.scheduling.ScheduledException;
 
 import java.lang.reflect.Method;
@@ -14,17 +15,17 @@ import java.lang.reflect.Method;
  */
 public class MethodRunnable implements Runnable {
     private BeanWrap target;
-    private Method method;
+    private MethodWrap method;
 
     public MethodRunnable(BeanWrap target, Method method) {
         this.target = target;
-        this.method = method;
+        this.method = target.context().methodGet(method);
     }
 
     @Override
     public void run() {
         try {
-            method.invoke(target.raw());
+            method.invokeByAspect(target.raw(), new Object[]{});
         } catch (Throwable e) {
             e = Utils.throwableUnwrap(e);
             throw new ScheduledException(e);
