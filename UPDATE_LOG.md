@@ -10,10 +10,10 @@
 * 提醒2：有使用弃用接口的。建议先升级到 1.12.4；替换弃用代码后，再升级到 2.0.0
 
 ### v2.2.6
-* 调整 solon.scheduling.quartz 增加非单例运行支持
-* 调整 solon.scheduling.simple 增加非单例运行支持
+* 调整 solon.scheduling.quartz 增加非单例运行支持，method 支持拦截
+* 调整 solon.scheduling.simple 增加非单例运行支持，method 支持拦截
 * 调整 solon.web.staticfiles 改为固定长度输出
-* 调整 CloudJob 增加非单例运行支持
+* 调整 CloudJob 增加非单例运行支持，method 支持拦截
 * 增加 ModelAndView 操作便利性
 * 增加 CloudLoadBalance 对策略机制的支持，可自定义
 * 增加 CloudClient::loadBalance() 接口
