@@ -12,11 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class JtHttpContextHandler extends AbstractHandler {
-    protected boolean debug;
-
-    public JtHttpContextHandler() {
-        this.debug = Solon.cfg().isDebugMode();
-    }
 
     @Override
     public void handle(String s, Request baseRequest, HttpServletRequest request, HttpServletResponse response) {

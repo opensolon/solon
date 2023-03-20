@@ -134,8 +134,7 @@ abstract class JettyServerBase implements ServerLifecycle {
         }
         String resURL = rootURL.toString();
 
-        boolean isDebug = Solon.cfg().isDebugMode();
-        if (isDebug && (resURL.startsWith("jar:") == false)) {
+        if (Solon.cfg().isDebugMode() && (resURL.startsWith("jar:") == false)) {
             int endIndex = resURL.indexOf("target");
             String debugResURL = resURL.substring(0, endIndex) + "src/main/resources/";
             return new String[]{debugResURL, resURL};
