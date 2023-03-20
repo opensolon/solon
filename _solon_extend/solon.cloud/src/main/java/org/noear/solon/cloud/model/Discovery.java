@@ -16,6 +16,19 @@ public class Discovery implements Serializable {
     private String agent;
     private String policy;
 
+    private transient Object attachment;
+    /*
+     * 附件（一般给策略使用）
+     * */
+    public <T> T attachment() {
+        return (T) attachment;
+    }
+
+    public <T> void attachmentSet(T val){
+        attachment = val;
+    }
+
+
     public Discovery(String service) {
         this.service = service;
         this.cluster = new ArrayList<>();

@@ -80,6 +80,10 @@ public class XPluginImp implements Plugin , InitializingBean {
             //注册Nami跟踪过滤器
             NamiTraceFilter.register();
         }
+
+        context.getBeanAsync(CloudLoadStrategy.class, bean -> {
+            CloudLoadBalance.setStrategy(bean);
+        });
     }
 
     @Override

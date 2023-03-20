@@ -4,7 +4,6 @@ import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.core.LoadBalance;
 import org.noear.solon.cloud.model.Discovery;
-import org.noear.solon.cloud.model.Instance;
 
 /**
  * 负载均衡
@@ -13,13 +12,30 @@ import org.noear.solon.cloud.model.Instance;
  * @since 1.2
  */
 public class CloudLoadBalance implements LoadBalance {
+    private static CloudLoadStrategy strategy = new CloudLoadStrategyDefault();
+
+    /**
+     * 获取负载策略
+     */
+    public static CloudLoadStrategy getStrategy() {
+        return strategy;
+    }
+
+    /**
+     * 设置负载策略
+     */
+    public static void setStrategy(CloudLoadStrategy strategy) {
+        if (strategy != null) {
+            CloudLoadBalance.strategy = strategy;
+        }
+    }
+
+    ////////////////
+
     private final String service;
     private final String group;
     private Discovery discovery;
     private LoadBalance loadBalance;
-
-    private int index = 0;
-    private static final int indexMax = 99999999;
 
     public CloudLoadBalance(String group, String service) {
         this.service = service;
@@ -84,14 +100,7 @@ public class CloudLoadBalance implements LoadBalance {
                 if (count == 0) {
                     return null;
                 } else {
-                    //这里不需要原子性，快就好
-                    if (index > indexMax) {
-                        index = 0;
-                    }
-
-                    Instance instance = discovery.instanceGet(index++ % count);
-
-                    return instance.uri();
+                    return getStrategy().getServer(discovery);
                 }
             }
         }
