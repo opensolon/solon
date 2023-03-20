@@ -1,6 +1,7 @@
 package org.noear.solon.cloud.impl;
 
 import org.noear.solon.Solon;
+import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.cloud.model.Discovery;
 import org.noear.solon.cloud.model.Instance;
 import org.noear.solon.core.Props;
@@ -32,8 +33,7 @@ public class LocalDiscoveryResolver {
         String groupNew = (group == null ? "" : group);
 
         discoveryMap.forEach((service, discovery) -> {
-            CloudLoadBalance loadBalance = new CloudLoadBalance(groupNew, service, discovery);
-            CloudLoadBalanceFactory.instance.register(groupNew, service, loadBalance);
+            CloudClient.loadBalanceFactory().register(groupNew, service, discovery);
         });
     }
 

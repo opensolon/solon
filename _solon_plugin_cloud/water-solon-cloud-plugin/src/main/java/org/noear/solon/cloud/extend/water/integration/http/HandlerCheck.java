@@ -1,8 +1,8 @@
 package org.noear.solon.cloud.extend.water.integration.http;
 
 import org.noear.snack.ONode;
+import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.cloud.impl.CloudLoadBalance;
-import org.noear.solon.cloud.impl.CloudLoadBalanceFactory;
 import org.noear.solon.cloud.model.Discovery;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Handler;
@@ -28,7 +28,7 @@ public class HandlerCheck implements Handler {
             ONode odata = new ONode().asObject();
 
             if ("*".equals(service)) {
-                CloudLoadBalanceFactory.instance.forEach((k, v) -> {
+                CloudClient.loadBalanceFactory().forEach((k, v) -> {
                     ONode n = odata.getOrNew(k);
 
                     n.set("service", k);
@@ -49,7 +49,7 @@ public class HandlerCheck implements Handler {
                 ONode n = odata.getOrNew(service);
                 n.set("service", service);
 
-                CloudLoadBalance v = CloudLoadBalanceFactory.instance.get("",service);
+                CloudLoadBalance v = CloudClient.loadBalanceFactory().get("",service);
 
                 if (v != null) {
                     Discovery d = v.getDiscovery();

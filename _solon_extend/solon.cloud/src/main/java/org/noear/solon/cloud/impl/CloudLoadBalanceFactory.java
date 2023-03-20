@@ -1,5 +1,6 @@
 package org.noear.solon.cloud.impl;
 
+import org.noear.solon.cloud.model.Discovery;
 import org.noear.solon.core.LoadBalance;
 
 import java.util.HashMap;
@@ -13,7 +14,6 @@ import java.util.function.BiConsumer;
  * @since 1.2
  */
 public class CloudLoadBalanceFactory implements LoadBalance.Factory {
-    public static final CloudLoadBalanceFactory instance = new CloudLoadBalanceFactory();
 
     private Map<String, CloudLoadBalance> cached = new HashMap<>();
 
@@ -72,7 +72,7 @@ public class CloudLoadBalanceFactory implements LoadBalance.Factory {
     /**
      * 注册负载均衡
      * */
-    public void register(String group, String service, LoadBalance loadBalance) {
+    public void register(String group, String service, Discovery discovery) {
         if (group == null) {
             group = "";
         }
@@ -86,12 +86,7 @@ public class CloudLoadBalanceFactory implements LoadBalance.Factory {
                 tmp = cached.get(cacheKey);
 
                 if (tmp == null) {
-                    if (loadBalance instanceof CloudLoadBalance) {
-                        tmp = (CloudLoadBalance) loadBalance;
-                    } else {
-                        tmp = new CloudLoadBalance(group, service, loadBalance);
-                    }
-
+                    tmp = new CloudLoadBalance(group, service, discovery);
                     cached.put(cacheKey, tmp);
                 }
             }

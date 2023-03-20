@@ -35,7 +35,6 @@ public class CloudLoadBalance implements LoadBalance {
     private final String service;
     private final String group;
     private Discovery discovery;
-    private LoadBalance loadBalance;
 
     public CloudLoadBalance(String group, String service) {
         this.service = service;
@@ -54,12 +53,6 @@ public class CloudLoadBalance implements LoadBalance {
         this.service = service;
         this.group = group;
         this.discovery = discovery;
-    }
-
-    public CloudLoadBalance(String group, String service, LoadBalance loadBalance) {
-        this.service = service;
-        this.group = group;
-        this.loadBalance = loadBalance;
     }
 
     /**
@@ -85,10 +78,6 @@ public class CloudLoadBalance implements LoadBalance {
 
     @Override
     public String getServer() {
-        if (loadBalance != null) {
-            return loadBalance.getServer();
-        }
-
         if (discovery == null) {
             return null;
         } else {

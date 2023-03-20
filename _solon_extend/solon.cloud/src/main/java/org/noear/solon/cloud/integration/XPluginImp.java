@@ -50,12 +50,12 @@ public class XPluginImp implements Plugin , InitializingBean {
             CloudClient.discoveryPush();
 
             //设置负载工厂
-            Bridge.upstreamFactorySet(CloudLoadBalanceFactory.instance);
+            Bridge.upstreamFactorySet(CloudClient.loadBalanceFactory());
         } else {
             //@since 1.6
-            if (CloudLoadBalanceFactory.instance.count() > 0) {
+            if (CloudClient.loadBalanceFactory().count() > 0) {
                 //设置负载工厂
-                Bridge.upstreamFactorySet(CloudLoadBalanceFactory.instance);
+                Bridge.upstreamFactorySet(CloudClient.loadBalanceFactory());
             }
         }
 

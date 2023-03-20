@@ -2,6 +2,7 @@ package org.noear.solon.cloud;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
+import org.noear.solon.cloud.impl.CloudLoadBalanceFactory;
 import org.noear.solon.cloud.model.Config;
 import org.noear.solon.cloud.model.Instance;
 import org.noear.solon.cloud.service.*;
@@ -18,6 +19,9 @@ import java.util.Properties;
  * @since 1.2
  */
 public class CloudClient {
+    public static CloudLoadBalanceFactory loadBalanceFactory(){
+        return CloudManager.loadBalanceFactory();
+    }
 
     /**
      * 获取 云端断路器服务

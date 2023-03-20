@@ -3,10 +3,7 @@ package org.noear.solon.cloud;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.annotation.CloudConfig;
 import org.noear.solon.cloud.annotation.CloudEvent;
-import org.noear.solon.cloud.impl.CloudEventServiceManager;
-import org.noear.solon.cloud.impl.CloudEventServiceManagerImpl;
-import org.noear.solon.cloud.impl.CloudJobServiceManager;
-import org.noear.solon.cloud.impl.CloudJobServiceManagerImpl;
+import org.noear.solon.cloud.impl.*;
 import org.noear.solon.cloud.service.*;
 import org.noear.solon.core.util.LogUtil;
 
@@ -20,6 +17,12 @@ import java.util.Map;
  * @since 1.2
  */
 public class CloudManager {
+    private static CloudLoadBalanceFactory loadBalanceFactory = new CloudLoadBalanceFactory();
+
+    protected static CloudLoadBalanceFactory loadBalanceFactory() {
+        return loadBalanceFactory;
+    }
+
     /**
      * 云端发现服务
      */
