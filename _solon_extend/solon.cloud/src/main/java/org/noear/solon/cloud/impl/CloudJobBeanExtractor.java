@@ -4,7 +4,6 @@ import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.cloud.annotation.CloudJob;
-import org.noear.solon.core.handle.MethodHandler;
 import org.noear.solon.core.BeanExtractor;
 import org.noear.solon.core.BeanWrap;
 
@@ -29,7 +28,7 @@ public class CloudJobBeanExtractor implements BeanExtractor<CloudJob> {
 
         //支持${xxx}配置
         String name = Solon.cfg().getByParse(anno.value());
-        if(Utils.isEmpty(name)){
+        if (Utils.isEmpty(name)) {
             name = Solon.cfg().getByParse(anno.name());
         }
         //支持${xxx}配置
@@ -44,8 +43,7 @@ public class CloudJobBeanExtractor implements BeanExtractor<CloudJob> {
 
         //method 可以有返回结果
         method.setAccessible(true);
-        MethodHandler methodHandler = new MethodHandler(bw, method, true);
 
-        CloudClient.job().register(name, anno.cron7x(), description, methodHandler::handle);
+        CloudClient.job().register(name, anno.cron7x(), description, new CloudJobMethod(bw, method));
     }
 }

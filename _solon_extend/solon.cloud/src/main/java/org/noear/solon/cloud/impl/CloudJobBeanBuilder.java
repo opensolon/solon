@@ -42,7 +42,7 @@ public class CloudJobBeanBuilder implements BeanBuilder<CloudJob> {
             //支持${xxx}配置
             String description = Solon.cfg().getByParse(anno.description());
 
-            CloudClient.job().register(name, anno.cron7x(), description, bw.raw());
+            CloudClient.job().register(name, anno.cron7x(), description, new CloudJobBean(bw));
         });
     }
 
