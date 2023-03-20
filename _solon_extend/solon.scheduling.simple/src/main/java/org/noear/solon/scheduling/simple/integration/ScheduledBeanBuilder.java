@@ -31,7 +31,7 @@ public class ScheduledBeanBuilder implements BeanBuilder<Scheduled>, BeanExtract
 
             ScheduledHelper.configScheduled(warpper);
 
-            Runnable job = bw.raw();
+            Runnable job = new BeanRunnable(bw);
             String jobId = clz.getName();
             String name = Utils.annoAlias(anno.name(), jobId);
 
@@ -49,7 +49,7 @@ public class ScheduledBeanBuilder implements BeanBuilder<Scheduled>, BeanExtract
 
         ScheduledHelper.configScheduled(warpper);
 
-        MethodRunnable job = new MethodRunnable(bw.raw(), method);
+        Runnable job = new MethodRunnable(bw, method);
         String jobId = bw.clz().getName() + "::" + method.getName();
         String name = Utils.annoAlias(warpper.name(), jobId);
 

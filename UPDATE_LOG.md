@@ -10,6 +10,7 @@
 * 提醒2：有使用弃用接口的。建议先升级到 1.12.4；替换弃用代码后，再升级到 2.0.0
 
 ### v2.2.6
+* 调整 solon.scheduling.simple 增加非单例运行
 * 调整 solon.web.staticfiles 改为固定长度输出
 * 增加 ModelAndView 操作便利性
 * 增加 ids=t1,t2,t3 注入 List<T> 的支持
