@@ -33,7 +33,7 @@ public class LocalDiscoveryResolver {
         String groupNew = (group == null ? "" : group);
 
         discoveryMap.forEach((service, discovery) -> {
-            CloudClient.loadBalanceFactory().register(groupNew, service, discovery);
+            CloudClient.loadBalance().register(groupNew, service, discovery);
         });
     }
 

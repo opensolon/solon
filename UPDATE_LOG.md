@@ -16,6 +16,7 @@
 * 调整 CloudJob 增加非单例运行支持
 * 增加 ModelAndView 操作便利性
 * 增加 CloudLoadBalance 对策略机制的支持，可自定义
+* 增加 CloudClient::loadBalance() 接口
 * 增加 ids=t1,t2,t3 注入 List<T> 的支持
 * 增加 插件加载失败日志
 * 增加 动态代理注解的兼容检测，并打印警告日志

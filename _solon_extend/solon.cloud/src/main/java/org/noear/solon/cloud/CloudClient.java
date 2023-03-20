@@ -19,8 +19,8 @@ import java.util.Properties;
  * @since 1.2
  */
 public class CloudClient {
-    public static CloudLoadBalanceFactory loadBalanceFactory(){
-        return CloudManager.loadBalanceFactory();
+    public static CloudLoadBalanceFactory loadBalance(){
+        return CloudManager.loadBalance();
     }
 
     /**

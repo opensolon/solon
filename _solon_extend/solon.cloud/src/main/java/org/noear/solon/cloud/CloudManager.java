@@ -17,10 +17,10 @@ import java.util.Map;
  * @since 1.2
  */
 public class CloudManager {
-    private static CloudLoadBalanceFactory loadBalanceFactory = new CloudLoadBalanceFactory();
+    private static CloudLoadBalanceFactory loadBalance = new CloudLoadBalanceFactory();
 
-    protected static CloudLoadBalanceFactory loadBalanceFactory() {
-        return loadBalanceFactory;
+    protected static CloudLoadBalanceFactory loadBalance() {
+        return loadBalance;
     }
 
     /**

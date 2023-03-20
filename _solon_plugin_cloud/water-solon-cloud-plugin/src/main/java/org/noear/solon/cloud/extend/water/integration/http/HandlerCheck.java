@@ -28,7 +28,7 @@ public class HandlerCheck implements Handler {
             ONode odata = new ONode().asObject();
 
             if ("*".equals(service)) {
-                CloudClient.loadBalanceFactory().forEach((k, v) -> {
+                CloudClient.loadBalance().forEach((k, v) -> {
                     ONode n = odata.getOrNew(k);
 
                     n.set("service", k);
@@ -49,7 +49,7 @@ public class HandlerCheck implements Handler {
                 ONode n = odata.getOrNew(service);
                 n.set("service", service);
 
-                CloudLoadBalance v = CloudClient.loadBalanceFactory().get("",service);
+                CloudLoadBalance v = CloudClient.loadBalance().get("",service);
 
                 if (v != null) {
                     Discovery d = v.getDiscovery();
