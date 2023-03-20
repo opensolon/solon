@@ -158,22 +158,29 @@ public abstract class BeanContainer {
     /**
      * 添加 bean builder, injector, extractor
      */
-    public <T extends Annotation> void beanBuilderAdd(Class<T> anno, BeanBuilder<T> builder) {
-        beanBuilders.put(anno, builder);
+    public <T extends Annotation> void beanBuilderAdd(Class<T> annoClz, BeanBuilder<T> builder) {
+        beanBuilders.put(annoClz, builder);
     }
 
     /**
      * 添加注入处理
      */
-    public <T extends Annotation> void beanInjectorAdd(Class<T> anno, BeanInjector<T> injector) {
-        beanInjectors.put(anno, injector);
+    public <T extends Annotation> void beanInjectorAdd(Class<T> annoClz, BeanInjector<T> injector) {
+        beanInjectors.put(annoClz, injector);
     }
 
     /**
      * 添加提取处理
      */
-    public <T extends Annotation> void beanExtractorAdd(Class<T> anno, BeanExtractor<T> extractor) {
-        beanExtractors.put(anno, extractor);
+    public <T extends Annotation> void beanExtractorAdd(Class<T> annoClz, BeanExtractor<T> extractor) {
+        beanExtractors.put(annoClz, extractor);
+    }
+
+    /**
+     * 是否有提取处理
+     * */
+    public boolean beanExtractorHas(Class<? extends Annotation> annoClz){
+        return beanExtractors.containsKey(annoClz);
     }
 
     /**
@@ -181,22 +188,22 @@ public abstract class BeanContainer {
      *
      * @param index 执行顺序
      */
-    public <T extends Annotation> void beanAroundAdd(Class<T> anno, Interceptor interceptor, int index) {
-        beanInterceptors.put(anno, new InterceptorEntity(index, interceptor));
+    public <T extends Annotation> void beanAroundAdd(Class<T> annoClz, Interceptor interceptor, int index) {
+        beanInterceptors.put(annoClz, new InterceptorEntity(index, interceptor));
     }
 
     /**
      * 添加环绕处理
      */
-    public <T extends Annotation> void beanAroundAdd(Class<T> anno, Interceptor interceptor) {
-        beanAroundAdd(anno, interceptor, 0);
+    public <T extends Annotation> void beanAroundAdd(Class<T> annoClz, Interceptor interceptor) {
+        beanAroundAdd(annoClz, interceptor, 0);
     }
 
     /**
      * 获取环绕处理
      */
-    public <T extends Annotation> InterceptorEntity beanAroundGet(Class<T> anno) {
-        return beanInterceptors.get(anno);
+    public <T extends Annotation> InterceptorEntity beanAroundGet(Class<T> annoClz) {
+        return beanInterceptors.get(annoClz);
     }
 
 
