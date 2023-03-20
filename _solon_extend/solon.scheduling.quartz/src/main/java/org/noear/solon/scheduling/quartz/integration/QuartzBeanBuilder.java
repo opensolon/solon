@@ -1,6 +1,5 @@
 package org.noear.solon.scheduling.quartz.integration;
 
-import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.BeanBuilder;
@@ -15,7 +14,6 @@ import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 
 import java.lang.reflect.Method;
-import java.util.Properties;
 
 /**
  * @author noear
