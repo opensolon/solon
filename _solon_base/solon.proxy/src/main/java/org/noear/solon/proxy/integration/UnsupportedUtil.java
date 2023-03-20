@@ -17,17 +17,25 @@ import java.lang.reflect.Method;
  * 未支持检测工具
  *
  * @author noear
- * @see 2.2
+ * @since  2.2
  */
 public class UnsupportedUtil {
 
+    /**
+     * 检测不支持情况（日志提示）
+     * */
     public static void check(Class<?> clz, AopContext context, Annotation anno) {
         beanShapeCheck(clz, "@" + anno.annotationType().getSimpleName());
         beanExtractCheck(clz, context);
     }
 
     private static void beahShapeHint(String target, String annoName, Class<?> clz) {
-        LogUtil.global().error("'" + target + "' not support " + annoName + " annotations, please use @Component: " + clz.getName());
+        LogUtil.global().warn("'" + target + "' not support " + annoName + " annotations, please use @Component: " + clz.getName());
+    }
+
+
+    private static void beanExtractHint(String target, Class<?> clz) {
+        LogUtil.global().warn("The '@" + target + "' function supports only class @Component annotations: " + clz.getName());
     }
 
     private static void beanShapeCheck(Class<?> clz, String annoName) {
@@ -60,10 +68,6 @@ public class UnsupportedUtil {
         if (RouterInterceptor.class.isAssignableFrom(clz)) {
             beahShapeHint("RouterInterceptor", annoName, clz);
         }
-    }
-
-    private static void beanExtractHint(String target, Class<?> clz) {
-        LogUtil.global().error("The '@" + target + "' function supports only class @Component annotations: " + clz.getName());
     }
 
     private static void beanExtractCheck(Class<?> clz, AopContext context) {
