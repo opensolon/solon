@@ -24,7 +24,7 @@ public class MethodJob extends AbstractJob {
         this.target = target;
         this.method = target.context().methodGet(method);
         this.isRunnable = method.getParameterCount() == 0;
-        this.jobId = target.getClass().getName() + "::" + method.getName();
+        this.jobId = target.clz().getName() + "::" + method.getName();
     }
 
     @Override

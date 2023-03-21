@@ -19,8 +19,8 @@ public class BeanJob extends AbstractJob {
 
     public BeanJob(BeanWrap target) {
         this.target = target;
-        this.isRunnable = target instanceof Runnable;
-        this.jobId = target.getClass().getName();
+        this.isRunnable = target.raw() instanceof Runnable;
+        this.jobId = target.clz().getName();
     }
 
     @Override
