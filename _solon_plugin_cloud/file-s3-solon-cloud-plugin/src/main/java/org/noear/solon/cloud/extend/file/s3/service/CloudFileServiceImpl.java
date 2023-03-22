@@ -19,11 +19,11 @@ import java.util.Map;
  * @since 1.11
  */
 public class CloudFileServiceImpl implements CloudFileService {
-    private String bucketDef;
     private Map<String, CloudFileService> bucketServiceMap = new HashMap<>();
+    private CloudProps cloudProps;
 
     public CloudFileServiceImpl(CloudProps cloudProps) {
-        bucketDef = cloudProps.getValue("file.default");
+        this.cloudProps = cloudProps;
 
         Map<String, Props> propsMap = cloudProps.getProp("file.buckets")
                 .getGroupedProp("");
@@ -31,19 +31,37 @@ public class CloudFileServiceImpl implements CloudFileService {
         for (Map.Entry<String, Props> kv : propsMap.entrySet()) {
             String bucketName = kv.getKey();
             Props props = kv.getValue();
-            String endpoint = props.getProperty("endpoint");
 
-            if (Utils.isNotEmpty(endpoint)) {
-                if (endpoint.startsWith("http://") || endpoint.startsWith("https://") || endpoint.contains("/") == false) {
-                    bucketServiceMap.put(bucketName, new CloudFileServiceOfS3SdkImpl(bucketName, props));
-                } else {
-                    bucketServiceMap.put(bucketName, new CloudFileServiceOfLocalImpl(bucketName, props));
-                }
+            addBucket(bucketName, props);
+        }
+    }
+
+    /**
+     * 获取默认 bucket
+     * */
+    public String getBucketDef(){
+        return cloudProps.getValue("file.default");
+    }
+
+    /**
+     * 添加 bucket
+     * */
+    public void addBucket(String bucketName, Props props){
+        String endpoint = props.getProperty("endpoint");
+
+        if (Utils.isNotEmpty(endpoint)) {
+            if (endpoint.startsWith("http://") || endpoint.startsWith("https://") || endpoint.contains("/") == false) {
+                bucketServiceMap.put(bucketName, new CloudFileServiceOfS3SdkImpl(bucketName, props));
+            } else {
+                bucketServiceMap.put(bucketName, new CloudFileServiceOfLocalImpl(bucketName, props));
             }
         }
     }
 
-    private CloudFileService getBucketService(String bucket) throws CloudFileException {
+    /**
+     * 获取 bucket service
+     * */
+    public CloudFileService getBucketService(String bucket) throws CloudFileException {
         CloudFileService tmp = bucketServiceMap.get(bucket);
 
         if (tmp == null) {
@@ -56,7 +74,7 @@ public class CloudFileServiceImpl implements CloudFileService {
     @Override
     public boolean exists(String bucket, String key) throws CloudFileException {
         if (Utils.isEmpty(bucket)) {
-            bucket = bucketDef;
+            bucket = getBucketDef();
         }
 
         CloudFileService tmp = getBucketService(bucket);
@@ -66,7 +84,7 @@ public class CloudFileServiceImpl implements CloudFileService {
     @Override
     public String getTempUrl(String bucket, String key, Date expiration) throws CloudFileException {
         if (Utils.isEmpty(bucket)) {
-            bucket = bucketDef;
+            bucket = getBucketDef();
         }
 
         CloudFileService tmp = getBucketService(bucket);
@@ -76,7 +94,7 @@ public class CloudFileServiceImpl implements CloudFileService {
     @Override
     public Media get(String bucket, String key) throws CloudFileException {
         if (Utils.isEmpty(bucket)) {
-            bucket = bucketDef;
+            bucket = getBucketDef();
         }
 
         CloudFileService tmp = getBucketService(bucket);
@@ -89,7 +107,7 @@ public class CloudFileServiceImpl implements CloudFileService {
     @Override
     public Result put(String bucket, String key, Media media) throws CloudFileException {
         if (Utils.isEmpty(bucket)) {
-            bucket = bucketDef;
+            bucket = getBucketDef();
         }
 
         CloudFileService tmp = getBucketService(bucket);
@@ -102,7 +120,7 @@ public class CloudFileServiceImpl implements CloudFileService {
     @Override
     public Result delete(String bucket, String key) throws CloudFileException {
         if (Utils.isEmpty(bucket)) {
-            bucket = bucketDef;
+            bucket = getBucketDef();
         }
 
         CloudFileService tmp = getBucketService(bucket);
