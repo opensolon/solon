@@ -9,6 +9,11 @@
 * 提醒1：之前没有使用弃用接口的，可以直接升级 <br>
 * 提醒2：有使用弃用接口的。建议先升级到 1.12.4；替换弃用代码后，再升级到 2.0.0
 
+### 2.2.7
+
+* 调整 file-s3-solon-cloud-plugin 插件， "file.default"改为动态获取，增加bucket接口
+* sqltoy 升为 5.2.41
+
 ### v2.2.6
 * 调整 solon.scheduling.quartz 增加非单例运行支持，method 支持拦截
 * 调整 solon.scheduling.simple 增加非单例运行支持，method 支持拦截

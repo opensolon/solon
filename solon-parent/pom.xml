@@ -91,7 +91,7 @@
 
         <activerecord.ver>5.0.4</activerecord.ver>
         <beetlsql.ver>3.20.3-RELEASE</beetlsql.ver>
-        <sqltoy.ver>5.2.39</sqltoy.ver>
+        <sqltoy.ver>5.2.41</sqltoy.ver>
         <liteflow.ver>2.10.0</liteflow.ver>
     </properties>
 
