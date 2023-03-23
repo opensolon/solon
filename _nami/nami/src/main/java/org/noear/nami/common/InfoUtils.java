@@ -5,6 +5,8 @@ import org.noear.solon.Utils;
 import org.noear.solon.core.util.LogUtil;
 
 /**
+ * 打印信息
+ *
  * @author noear
  * @since 1.2
  * */

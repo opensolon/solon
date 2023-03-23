@@ -5,7 +5,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Nami 请求附件
+ * Nami 请求附件（通过 ThreadLocal 切换）
  *
  * @author noear
  * @since 1.4

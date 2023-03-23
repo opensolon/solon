@@ -1,6 +1,8 @@
 package org.noear.nami.common;
 
 /**
+ * 文本工具类
+ *
  * @author noear
  * @since 1.2
  */

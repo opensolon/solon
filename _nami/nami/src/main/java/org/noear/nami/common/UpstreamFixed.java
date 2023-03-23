@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.function.Supplier;
 
 /**
+ * 固定上游
+ *
  * @author noear
  * @since 1.2
  */

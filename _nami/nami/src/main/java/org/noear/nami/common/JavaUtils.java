@@ -3,6 +3,8 @@ package org.noear.nami.common;
 import java.io.File;
 
 /**
+ * Java 工具类（获取版本信息）
+ *
  * @author noear
  * @since 1.10
  */

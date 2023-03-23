@@ -1,6 +1,5 @@
 package org.noear.nami;
 
-import org.noear.solon.Utils;
 import org.noear.solon.core.util.ClassUtil;
 
 import java.util.HashMap;

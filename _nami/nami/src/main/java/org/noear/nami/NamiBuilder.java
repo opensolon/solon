@@ -8,6 +8,7 @@ import java.util.function.Supplier;
 
 /**
  * Nami 构建器
+ *
  * @author noear
  * @since 1.0
  */

@@ -8,6 +8,8 @@ import org.noear.solon.core.Bridge;
 import org.noear.solon.core.LoadBalance;
 
 /**
+ * NamiConfiguration 的 solon 实现，实现与 solon LoadBalance 对接及注入处理
+ *
  * @author noear
  * @since 1.2
  * */

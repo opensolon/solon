@@ -1,6 +1,8 @@
 package org.noear.nami.common;
 
 /**
+ * 常量
+ *
  * @author noear
  * @since 1.0
  * */

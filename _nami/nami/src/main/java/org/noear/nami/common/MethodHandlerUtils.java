@@ -6,6 +6,8 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 
 /**
+ * 函数代理工具（用于默认函数的处理跨版本）
+ *
  * @author noear
  * @since 1.10
  */

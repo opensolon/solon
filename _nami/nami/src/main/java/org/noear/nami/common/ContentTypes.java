@@ -1,6 +1,8 @@
 package org.noear.nami.common;
 
 /**
+ * 内容类型
+ *
  * @author noear
  * @since 2.0
  */
