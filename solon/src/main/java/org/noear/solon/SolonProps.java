@@ -6,7 +6,6 @@ import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.core.util.PluginUtil;
 import org.noear.solon.core.util.ResourceUtil;
 
-import java.io.File;
 import java.net.URL;
 import java.util.*;
 import java.util.function.Predicate;
@@ -90,11 +89,23 @@ public final class SolonProps extends Props {
         System.getProperties().forEach((k, v) -> sysPropOrg.put(k, v));
 
 
+        URL appUrl;
+
         //4.加载文件配置
-        //@Deprecated
-        loadInit(ResourceUtil.getResource("application.properties"), sysPropOrg);
-        //@Deprecated
-        loadInit(ResourceUtil.getResource("application.yml"), sysPropOrg);
+        //@Deprecated 2.2
+        appUrl = ResourceUtil.getResource("application.properties");
+        if (appUrl != null) {
+            loadInit(appUrl, sysPropOrg);
+            profileWran("application.properties");
+        }
+
+        //@Deprecated 2.2
+        appUrl = ResourceUtil.getResource("application.yml");
+        if (appUrl != null) {
+            loadInit(appUrl, sysPropOrg);
+            profileWran("application.yml");
+        }
+
         loadInit(ResourceUtil.getResource("app.properties"), sysPropOrg);
         loadInit(ResourceUtil.getResource("app.yml"), sysPropOrg);
 
@@ -105,10 +116,20 @@ public final class SolonProps extends Props {
         env = getArg("env");
 
         if (Utils.isNotEmpty(env)) {
-            //@Deprecated
-            loadInit(ResourceUtil.getResource("application-" + env + ".properties"), sysPropOrg);
-            //@Deprecated
-            loadInit(ResourceUtil.getResource("application-" + env + ".yml"), sysPropOrg);
+            //@Deprecated 2.2
+            appUrl = ResourceUtil.getResource("application-" + env + ".properties");
+            if (appUrl != null) {
+                loadInit(appUrl, sysPropOrg);
+                profileWran("application-" + env + ".properties");
+            }
+
+            //@Deprecated 2.2
+            appUrl = ResourceUtil.getResource("application-" + env + ".yml");
+            if (appUrl != null) {
+                loadInit(appUrl, sysPropOrg);
+                profileWran("application-" + env + ".yml");
+            }
+
             loadInit(ResourceUtil.getResource("app-" + env + ".properties"), sysPropOrg);
             loadInit(ResourceUtil.getResource("app-" + env + ".yml"), sysPropOrg);
         }
@@ -183,14 +204,19 @@ public final class SolonProps extends Props {
         //solon.stop.delay = 10
         //solon.stop.safe  = 0
         String stopSafeStr = getArg("stop.safe");
-        if(Utils.isEmpty(stopSafeStr)){
+        if (Utils.isEmpty(stopSafeStr)) {
             //@deprecated
             stopSafeStr = getArg("app.safeStop");
         }
         stopSafe = "1".equals(stopSafeStr); //是否安全停止
-        stopDelay = Integer.parseInt(getArg("stop.delay","10s").replace("s",""));
+        stopDelay = Integer.parseInt(getArg("stop.delay", "10s").replace("s", ""));
 
         return this;
+    }
+
+    private void profileWran(String file) {
+        String sml = file.replace("application", "app");
+        LogUtil.global().warn("'" + file + "' is deprecated, please use '" + sml + "'");
     }
 
 
@@ -262,30 +288,32 @@ public final class SolonProps extends Props {
      * 2.之后同时更新 system properties 和 solon cfg
      */
     protected void loadInit(URL url, Properties sysPropOrg) {
-        if (url != null) {
-            Properties props = Utils.loadProperties(url);
+        if (url == null) {
+            return;
+        }
 
-            if (props == null) {
-                //说明 url 解析失败了!
-                return;
-            }
+        Properties props = Utils.loadProperties(url);
 
-            for (Map.Entry kv : sysPropOrg.entrySet()) {
-                if (kv.getKey() instanceof String) {
-                    String key = (String) kv.getKey();
+        if (props == null) {
+            //说明 url 解析失败了!
+            return;
+        }
 
-                    if (Utils.isEmpty(key)) {
-                        continue;
-                    }
+        for (Map.Entry kv : sysPropOrg.entrySet()) {
+            if (kv.getKey() instanceof String) {
+                String key = (String) kv.getKey();
 
-                    if (props.containsKey(key)) {
-                        props.put(key, kv.getValue());
-                    }
+                if (Utils.isEmpty(key)) {
+                    continue;
+                }
+
+                if (props.containsKey(key)) {
+                    props.put(key, kv.getValue());
                 }
             }
-
-            loadAdd(props);
         }
+
+        loadAdd(props);
     }
 
 
