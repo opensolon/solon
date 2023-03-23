@@ -13,8 +13,9 @@
 
 * 调整 file-s3-solon-cloud-plugin 插件， "file.default"改为动态获取，增加bucket接口
 * 添加 @Path 替代 @PathVar（简短些），不过这个注解本身意义不大
-* 添加 ResourceUtil::findResource 接口
+* 添加 ResourceUtil::findResource 接口(ssl.keyStore 改用此接口)
 * sqltoy 升为 5.2.41
+* wood 升为 1.0.9
 
 ### v2.2.6
 * 调整 solon.scheduling.quartz 增加非单例运行支持，method 支持拦截

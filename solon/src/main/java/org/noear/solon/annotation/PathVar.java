@@ -7,6 +7,7 @@ import java.lang.annotation.*;
  *
  * @author noear
  * @since 1.0
+ * @deprecated 2.2
  * */
 @Deprecated
 @Target({ElementType.PARAMETER})
