@@ -5,15 +5,13 @@ import org.noear.solon.Utils;
 import org.noear.solon.annotation.PropertySource;
 import org.noear.solon.core.util.ResourceUtil;
 
-import java.io.File;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
 /**
- * 通用属性集合（为 SolonProperties 的基类）
+ * 通用属性集合（为 SolonProps 的基类）
  *
  * 在 Properties 基础上，添加了些方法
  *
@@ -401,16 +399,8 @@ public class Props extends Properties {
             return;
         }
 
-        for (String url : propertySource.value()) {
-            if (url.startsWith(Utils.TAG_classpath)) {
-                loadAdd(url.substring(Utils.TAG_classpath.length()));
-            } else {
-                try {
-                    loadAdd(new File(url).toURI().toURL());
-                } catch (MalformedURLException e) {
-                    throw new RuntimeException(e);
-                }
-            }
+        for (String uri : propertySource.value()) {
+            loadAdd(ResourceUtil.findResource(uri));
         }
     }
 

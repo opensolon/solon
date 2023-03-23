@@ -4,8 +4,11 @@ import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.JarClassLoader;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -22,53 +25,72 @@ public class ResourceUtil {
     /**
      * 获取资源URL集
      *
-     * @param name 资源名称
+     * @param name 内部资源名称
      */
     public static Enumeration<URL> getResources(String name) throws IOException {
-        return getResources(JarClassLoader.global(), name);
+        return getResources(null, name);
     }
 
     /**
      * 获取资源URL集
      *
      * @param classLoader 类加载器
-     * @param name        资源名称
+     * @param name        内部资源名称
      */
     public static Enumeration<URL> getResources(ClassLoader classLoader, String name) throws IOException {
-        return classLoader.getResources(name);
+        if (classLoader == null) {
+            return JarClassLoader.global().getResources(name);
+        } else {
+            return classLoader.getResources(name);
+        }
     }
 
-    public static boolean hasResource(String name){
+    /**
+     * 是否有资源
+     *
+     * @param name 内部资源名称
+     */
+    public static boolean hasResource(String name) {
         return getResource(name) != null;
     }
 
+    /**
+     * 是否有资源
+     *
+     * @param name 内部资源名称
+     */
     public static boolean hasResource(ClassLoader classLoader, String name) {
         return getResource(classLoader, name) != null;
     }
 
+
     /**
      * 获取资源URL
      *
-     * @param name 资源名称
+     * @param name 内部资源名称
      */
     public static URL getResource(String name) {
-        return getResource(JarClassLoader.global(), name); //Utils.class.getResource(name);
+        return getResource(null, name); //Utils.class.getResource(name);
     }
 
     /**
      * 获取资源URL
      *
      * @param classLoader 类加载器
-     * @param name        资源名称
+     * @param name        内部资源名称
      */
     public static URL getResource(ClassLoader classLoader, String name) {
-        return classLoader.getResource(name); //Utils.class.getResource(name);
+        if (classLoader == null) {
+            return JarClassLoader.global().getResource(name);
+        } else {
+            return classLoader.getResource(name); //Utils.class.getResource(name);
+        }
     }
 
     /**
      * 获取资源并转为String
      *
-     * @param name 资源名称
+     * @param name 内部资源名称
      */
     public static String getResourceAsString(String name) throws IOException {
         return getResourceAsString(JarClassLoader.global(), name, Solon.encoding());
@@ -77,7 +99,7 @@ public class ResourceUtil {
     /**
      * 获取资源并转为String
      *
-     * @param name    资源名称
+     * @param name    内部资源名称
      * @param charset 编码
      */
     public static String getResourceAsString(String name, String charset) throws IOException {
@@ -88,7 +110,7 @@ public class ResourceUtil {
      * 获取资源并转为String
      *
      * @param classLoader 类加载器
-     * @param name        资源名称
+     * @param name        内部资源名称
      * @param charset     编码
      */
     public static String getResourceAsString(ClassLoader classLoader, String name, String charset) throws IOException {
@@ -99,6 +121,55 @@ public class ResourceUtil {
             }
         } else {
             return null;
+        }
+    }
+
+
+    /**
+     * 查找资源
+     *
+     * @param uri 资源地址（"classpath:demo.xxx" or "./demo.xxx"）
+     */
+    public static String findResourceAsString(String uri) throws IOException {
+        URL url = findResource(uri);
+        if (url != null) {
+            try (InputStream in = url.openStream()) {
+                return Utils.transferToString(in, Solon.encoding());
+            }
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * 查找资源
+     *
+     * @param uri 资源地址（"classpath:demo.xxx" or "./demo.xxx"）
+     */
+    public static URL findResource(String uri) {
+        return findResource(null, uri);
+    }
+
+    /**
+     * 查找资源
+     *
+     * @param uri 资源地址（"classpath:demo.xxx" or "./demo.xxx"）
+     */
+    public static URL findResource(ClassLoader classLoader, String uri) {
+        if (uri.startsWith(Utils.TAG_classpath)) {
+            return getResource(classLoader, uri.substring(Utils.TAG_classpath.length()));
+        } else {
+            try {
+                File file = new File(uri);
+
+                if (file.exists() == false) {
+                    return null;
+                }
+
+                return file.toURI().toURL();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 

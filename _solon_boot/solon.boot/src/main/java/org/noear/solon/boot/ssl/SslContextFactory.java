@@ -45,16 +45,13 @@ public class SslContextFactory {
     private static KeyStore loadKeyStore(final String location, String type, String storePassword)
             throws IOException {
 
-        URL KeyStoreUrl = ResourceUtil.getResource(location);
-        InputStream KeyStoreStream = null;
+        URL KeyStoreUrl = ResourceUtil.findResource(location);
 
         if (KeyStoreUrl == null) {
-            KeyStoreStream = new FileInputStream(location);
-        } else {
-            KeyStoreStream = KeyStoreUrl.openStream();
+            throw new IllegalStateException("The keyStore file does not exist: " + location);
         }
 
-        try (InputStream stream = KeyStoreStream) {
+        try (InputStream stream = KeyStoreUrl.openStream()) {
             KeyStore loadedKeystore = KeyStore.getInstance(type);
             loadedKeystore.load(stream, storePassword.toCharArray());
             return loadedKeystore;
