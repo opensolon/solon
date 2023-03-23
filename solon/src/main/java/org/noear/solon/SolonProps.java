@@ -118,15 +118,18 @@ public final class SolonProps extends Props {
         loadAdd(source.getAnnotation(PropertySource.class));
 
 
-        //4.4.加载扩展配置 solon.config
-        String extConfig = getArg("config");
+        //4.4.加载扩展配置 solon.config //支持多文件
+        String configVal = getArg("config");
 
-        if (Utils.isNotEmpty(extConfig)) {
-            File extConfigFile = new File(extConfig);
-            if (extConfigFile.exists()) {
-                loadInit(extConfigFile.toURI().toURL(), sysPropOrg);
-            } else {
-                LogUtil.global().warn("Props: No external connfig file: " + extConfig);
+        if (Utils.isNotEmpty(configVal)) {
+            for (String uri : configVal.split(",")) {
+                URL propUrl = ResourceUtil.findResource(uri);
+
+                if (propUrl == null) {
+                    LogUtil.global().warn("Props: No config file: " + uri);
+                } else {
+                    loadInit(propUrl, sysPropOrg);
+                }
             }
         }
 

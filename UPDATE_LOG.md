@@ -14,6 +14,7 @@
 * 调整 file-s3-solon-cloud-plugin 插件， "file.default"改为动态获取，增加bucket接口
 * 添加 @Path 替代 @PathVar（简短些），不过这个注解本身意义不大
 * 添加 ResourceUtil::findResource 接口(ssl.keyStore 改用此接口)
+* 添加 "solon.config" 多文件与内外文件支持
 * sqltoy 升为 5.2.41
 * wood 升为 1.0.9
 

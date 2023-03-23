@@ -1,7 +1,6 @@
 package org.noear.solon.view.velocity;
 
 import org.apache.velocity.runtime.directive.Directive;
-import org.noear.solon.Solon;
 import org.noear.solon.auth.AuthUtil;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
