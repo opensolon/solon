@@ -6,13 +6,12 @@ import java.lang.annotation.*;
  * 路径变量（主要修饰参数，方便生成文档）
  *
  * @author noear
- * @since 1.0
+ * @since 2.2
  * */
-@Deprecated
 @Target({ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface PathVar {
+public @interface Path {
     /**
      * 名字
      * */

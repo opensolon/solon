@@ -22,7 +22,7 @@
         <solon.ver>2.2.7-SNAPSHOT</solon.ver>
         <snack3.ver>3.2.61</snack3.ver>
         <weed3.ver>3.4.33</weed3.ver>
-        <wood.ver>1.0.8</wood.ver>
+        <wood.ver>1.0.9</wood.ver>
         <water.ver>2.10.2</water.ver>
         <luffy.ver>1.6.1</luffy.ver>
         <redisx.ver>1.4.5</redisx.ver>
@@ -93,6 +93,7 @@
         <beetlsql.ver>3.20.3-RELEASE</beetlsql.ver>
         <sqltoy.ver>5.2.41</sqltoy.ver>
         <liteflow.ver>2.10.0</liteflow.ver>
+        <forest.ver>1.5.30</forest.ver>
     </properties>
 
 

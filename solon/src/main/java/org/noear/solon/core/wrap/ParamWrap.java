@@ -33,8 +33,10 @@ public class ParamWrap {
         if (resolveBody() == false) {
             if (resolveParam() == false) {
                 if (resolvePathVar() == false) {
-                    if (resolveHeader() == false) {
-                        resolveCookie();
+                    if (resolvePath() == false) {
+                        if (resolveHeader() == false) {
+                            resolveCookie();
+                        }
                     }
                 }
             }
@@ -133,8 +135,25 @@ public class ParamWrap {
         return true;
     }
 
+    @Deprecated
     private boolean resolvePathVar() {
         PathVar paramAnno = parameter.getAnnotation(PathVar.class);
+
+        if (paramAnno == null) {
+            return false;
+        }
+
+        String name2 = Utils.annoAlias(paramAnno.value(), paramAnno.name());
+        if (Utils.isNotEmpty(name2)) {
+            name = name2;
+        }
+
+        required = true;
+        return true;
+    }
+
+    private boolean resolvePath() {
+        Path paramAnno = parameter.getAnnotation(Path.class);
 
         if (paramAnno == null) {
             return false;

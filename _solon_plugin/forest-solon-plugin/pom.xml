@@ -19,7 +19,7 @@
         <dependency>
             <groupId>com.dtflys.forest</groupId>
             <artifactId>forest-solon-plugin</artifactId>
-            <version>1.5.30</version>
+            <version>${forest.ver}</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.noear</groupId>
