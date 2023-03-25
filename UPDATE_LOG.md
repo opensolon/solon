@@ -16,8 +16,10 @@
 * 增加 ResourceUtil::findResource 接口(ssl.keyStore 改用此接口)
 * 增加 "solon.config" 多文件与内外文件支持
 * 增加 "application.xxx" 配置的弃用警告日志
+* 修复 solon.scheduling.simple 插件，在启动卡时后不能运行 cron=* * * * * ?
 * sqltoy 升为 5.2.41
 * wood 升为 1.0.9
+* snack3 升为 3.2.62
 
 ### v2.2.6
 * 调整 solon.scheduling.quartz 增加非单例运行支持，method 支持拦截

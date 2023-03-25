@@ -17,7 +17,7 @@ import java.util.TimeZone;
  * @author noear
  * @since 1.6
  */
-public class JobHolder extends Thread {
+public class JobHolder extends Thread{
     /**
      * 调度表达式
      */
@@ -63,8 +63,6 @@ public class JobHolder extends Thread {
         this.anno = anno;
         this.runnable = runnable;
 
-        this.baseTime = new Date();
-
         if (Utils.isNotEmpty(name)) {
             setName("Job:" + name);
         }
@@ -75,6 +73,7 @@ public class JobHolder extends Thread {
      */
     public void cancel() {
         isCanceled = true;
+        baseTime = null;
     }
 
     /**
@@ -82,6 +81,10 @@ public class JobHolder extends Thread {
      */
     @Override
     public void run() {
+        if(baseTime == null) {
+            baseTime = new Date();
+        }
+
         if (anno.fixedDelay() > 0 || anno.fixedRate() > 0) {
             //初始延迟 //只为 fixedDelay 和 fixedRate 服务
             if (anno.initialDelay() > 0) {
