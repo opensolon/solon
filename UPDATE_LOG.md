@@ -17,6 +17,8 @@
 * 增加 "solon.config" 多文件与内外文件支持
 * 增加 "application.xxx" 配置的弃用警告日志
 * 修复 solon.scheduling.simple 插件，在启动卡时后不能运行 cron=* * * * * ?
+* 修复 AopContext::ProxyComponent 不能被 copyto 的问题???
+* 优化 请求参数 required 的提示
 * sqltoy 升为 5.2.41
 * wood 升为 1.0.9
 * snack3 升为 3.2.62
