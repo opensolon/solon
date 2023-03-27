@@ -138,7 +138,7 @@ public class ActionExecutorDefault implements ActionExecutor {
                 if (tv == null) {
                     if (p.required()) {
                         ctx.status(400);
-                        throw new IllegalArgumentException("Required parameter @" + p.getName());
+                        throw new IllegalArgumentException(p.requiredHint());
                     }
                 }
 

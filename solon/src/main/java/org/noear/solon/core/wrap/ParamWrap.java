@@ -86,6 +86,16 @@ public class ParamWrap {
         return required;
     }
 
+    public String requiredHint() {
+        if (isRequestHeader) {
+            return "Required header @" + getName();
+        } else if (isRequestCookie) {
+            return "Required cookie @" + getName();
+        } else {
+            return "Required parameter @" + getName();
+        }
+    }
+
     public boolean requireBody() {
         return requireBody;
     }
