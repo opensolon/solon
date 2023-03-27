@@ -138,21 +138,12 @@ public final class SolonProps extends Props {
         //4.3.加载注解配置（优于固定配置）/v1.12
         loadAdd(source.getAnnotation(PropertySource.class));
 
+        //4.4.加载配置 solon.config.load //支持多文件（只支持内部，支持{env}）
+        addConfig(get("solon.config.load"), true, sysPropOrg);
 
-        //4.4.加载扩展配置 solon.config //支持多文件
-        String configVal = getArg("config");
-
-        if (Utils.isNotEmpty(configVal)) {
-            for (String uri : configVal.split(",")) {
-                URL propUrl = ResourceUtil.findResource(uri);
-
-                if (propUrl == null) {
-                    LogUtil.global().warn("Props: No config file: " + uri);
-                } else {
-                    loadInit(propUrl, sysPropOrg);
-                }
-            }
-        }
+        //4.5.加载扩展配置 solon.config.add //支持多文件（支持内部或外部，支持{env}）
+        addConfig(getArg("config"), false, sysPropOrg);//@Deprecated 2.2
+        addConfig(getArg("config.add"), false, sysPropOrg);//替代旧的 solon.config, 与 config.load 配对
 
 
         //5.初始化模式状态
@@ -212,6 +203,22 @@ public final class SolonProps extends Props {
         stopDelay = Integer.parseInt(getArg("stop.delay", "10s").replace("s", ""));
 
         return this;
+    }
+
+    private void addConfig(String vals, boolean isName, Properties sysPropOrg) {
+        if (Utils.isNotEmpty(vals)) {
+            for (String val : vals.split(",")) {
+                val = ResourceUtil.getNameOfEnv(val);
+
+                URL propUrl = (isName ? ResourceUtil.getResource(val) : ResourceUtil.findResource(val));
+
+                if (propUrl == null) {
+                    LogUtil.global().warn("Props: No config file: " + val);
+                } else {
+                    loadInit(propUrl, sysPropOrg);
+                }
+            }
+        }
     }
 
     private void profileWran(String file) {

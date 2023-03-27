@@ -22,6 +22,14 @@ import java.util.regex.Pattern;
  */
 public class ResourceUtil {
 
+    public static String getNameOfEnv(String name) {
+        if (name.contains("${solon.env}")) {
+            return name.replace("${solon.env}", Solon.cfg().env());
+        } else {
+            return name;
+        }
+    }
+
     /**
      * 获取资源URL集
      *
@@ -308,4 +316,6 @@ public class ResourceUtil {
 
         return paths;
     }
+
+
 }

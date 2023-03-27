@@ -384,14 +384,12 @@ public class Props extends Properties {
     /**
      * 加载配置（用于扩展加载）
      *
-     * @param url 配置地址
+     * @param name 资源名
      */
-    public void loadAdd(String url) {
-        if (classLoader == null) {
-            loadAdd(ResourceUtil.getResource(url));
-        } else {
-            loadAdd(ResourceUtil.getResource(classLoader, url));
-        }
+    public void loadAdd(String name) {
+        name = ResourceUtil.getNameOfEnv(name);
+
+        loadAdd(ResourceUtil.getResource(classLoader, name));
     }
 
     public void loadAdd(PropertySource propertySource) {
@@ -400,7 +398,9 @@ public class Props extends Properties {
         }
 
         for (String uri : propertySource.value()) {
-            loadAdd(ResourceUtil.findResource(uri));
+            uri = ResourceUtil.getNameOfEnv(uri);
+
+            loadAdd(ResourceUtil.findResource(classLoader, uri));
         }
     }
 
@@ -427,14 +427,12 @@ public class Props extends Properties {
     /**
      * 加载配置（用于扩展加载）
      *
-     * @param url 配置地址
+     * @param name 资源名
      */
-    public void loadAddIfAbsent(String url) {
-        if (classLoader == null) {
-            loadAddIfAbsent(ResourceUtil.getResource(url));
-        } else {
-            loadAddIfAbsent(ResourceUtil.getResource(classLoader, url));
-        }
+    public void loadAddIfAbsent(String name) {
+        name = ResourceUtil.getNameOfEnv(name);
+
+        loadAddIfAbsent(ResourceUtil.getResource(classLoader, name));
     }
 
     /**
