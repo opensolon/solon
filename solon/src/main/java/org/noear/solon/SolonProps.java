@@ -139,7 +139,7 @@ public final class SolonProps extends Props {
         loadAdd(source.getAnnotation(PropertySource.class));
 
         //4.4.加载配置 solon.config.load //支持多文件（只支持内部，支持{env}）
-        doFind("solon.config.load", (key,val)->{
+        getMap("solon.config.load").forEach((key, val)->{
             if(key.equals("") || key.startsWith("[")) {
                 addConfig(val, true, sysPropOrg);
             }
@@ -489,6 +489,13 @@ public final class SolonProps extends Props {
      */
     public String env() {
         return env;
+    }
+
+    /**
+     * 是否为单测
+     * */
+    public boolean testing(){
+        return testing;
     }
 
     /**

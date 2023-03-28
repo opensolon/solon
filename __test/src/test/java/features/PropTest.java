@@ -30,6 +30,9 @@ public class PropTest {
     @Inject("${strmap}")
     Map<String, String> strmap;
 
+    @Inject("${jdbc.name}")
+    String jdbcName;
+
     @Test
     public void test() {
         System.out.println(cfgitems);
@@ -82,5 +85,9 @@ public class PropTest {
         Solon.cfg().loadAddIfAbsent("IfAbsent.yml");//ifAbsent.test=2 不会生效
 
         assert Solon.cfg().get("ifAbsent.test").equals("1");
+    }
+
+    public void configLoad(){
+        assert "jdbc".equals(jdbcName);
     }
 }

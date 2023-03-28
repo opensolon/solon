@@ -199,7 +199,7 @@ public class SolonApp extends RouterWrapper {
 
 
         //3.加载渲染关系
-        NvMap map = cfg().getXmap("solon.view.mapping");
+        Map<String,String> map = cfg().getMap("solon.view.mapping.");
         map.forEach((k, v) -> {
             RenderManager.mapping("." + k, v);
         });

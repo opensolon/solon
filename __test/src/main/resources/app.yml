@@ -32,6 +32,9 @@ solon.drift: 1
 
 solon.extend: "!app_ext"
 
+solon.config.load:
+  - "jdbc-${solon.env}.yml"
+
 solon.locale: "en_US"
 
 solon.cloud.local:

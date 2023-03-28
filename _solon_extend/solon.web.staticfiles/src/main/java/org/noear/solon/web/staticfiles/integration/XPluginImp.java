@@ -3,7 +3,6 @@ package org.noear.solon.web.staticfiles.integration;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.AopContext;
-import org.noear.solon.core.NvMap;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.handle.HandlerPipeline;
 import org.noear.solon.core.util.ResourceUtil;
@@ -81,7 +80,7 @@ public class XPluginImp implements Plugin {
         //尝试启动静态代理（也可能在后面动态添加仓库）
 
         //3.加载自定义的mime
-        NvMap mimeTypes = Solon.cfg().getXmap("solon.mime");
+        Map<String,String> mimeTypes = Solon.cfg().getMap("solon.mime.");
         mimeTypes.forEach((k, v) -> {
             StaticMimes.add("." + k, v);
         });

@@ -11,7 +11,7 @@ import org.noear.solon.test.SolonTest;
  */
 @RunWith(SolonJUnit4ClassRunner.class)
 @SolonTest(webapp.TestApp.class)
-public class ConfigDefTest {
+public class PropDefTest {
     @Inject("${test.name:noear}")
     String name;
 

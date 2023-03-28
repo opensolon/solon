@@ -294,6 +294,16 @@ public class Props extends Properties {
      *
      * @param keyStarts key 的开始字符
      */
+    public Map<String,String> getMap(String keyStarts) {
+        Map<String, String> map = new LinkedHashMap<>();
+        doFind(keyStarts, map::put);
+        return map;
+    }
+
+    /**
+     * @deprecated 2.2
+     * */
+    @Deprecated
     public NvMap getXmap(String keyStarts) {
         NvMap map = new NvMap();
         doFind(keyStarts + ".", map::put);
@@ -313,7 +323,7 @@ public class Props extends Properties {
         return new ArrayList<>(sortMap.values());
     }
 
-    protected void doFind(String keyStarts, BiConsumer<String, String> setFun) {
+    private void doFind(String keyStarts, BiConsumer<String, String> setFun) {
         String key2 = keyStarts;
         int idx2 = key2.length();
 

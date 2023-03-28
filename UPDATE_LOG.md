@@ -17,6 +17,7 @@
 * 增加 "application.xxx" 配置的弃用警告日志
 * 增加 "solon.config.load"(加载内部) 配置，支持数组配置
 * 增加 "solon.config.add"(添加外部) 配置
+* 增加 Props::getMap 接口，替代 Props::getXmap
 * 调整 file-s3-solon-cloud-plugin 插件， "file.default"改为动态获取，增加bucket接口
 * 调整 maven 版本管理，由 xxx.ver 改为 xxx.version
 * 调整 请求参数 required 的提示
