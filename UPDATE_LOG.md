@@ -21,7 +21,7 @@
 * 调整 maven 版本管理，由 xxx.ver 改为 xxx.version
 * 调整 请求参数 required 的提示
 * 修复 solon.scheduling.simple 插件，在启动卡时后不能运行 cron=* * * * * ?
-* 修复 AopContext::ProxyComponent 不能被 copyto 的问题???
+* 修复 AopContext::ProxyComponent 不能被 copyto 的问题
 * sqltoy 升为 5.2.41
 * wood 升为 1.0.9
 * snack3 升为 3.2.62

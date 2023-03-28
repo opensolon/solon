@@ -136,7 +136,7 @@ public abstract class BeanContainer {
      */
     public void copyTo(BeanContainer container) {
         //ProxyComponent 需要二次赋值
-        beanBuilders.remove(ProxyComponent.class);
+        container.beanBuilders.remove(ProxyComponent.class);
 
         //构建器
         beanBuilders.forEach((k, v) -> {
