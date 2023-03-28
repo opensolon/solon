@@ -23,7 +23,7 @@
        <dependency>
             <groupId>com.tencent.polaris</groupId>
             <artifactId>polaris-all</artifactId>
-            <version>${polaris.ver}</version>
+            <version>${polaris.version}</version>
         </dependency>
 
         <dependency>

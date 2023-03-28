@@ -23,13 +23,13 @@
         <dependency>
             <groupId>tech.powerjob</groupId>
             <artifactId>powerjob-worker</artifactId>
-            <version>${powerjob.ver}</version>
+            <version>${powerjob.version}</version>
         </dependency>
 
         <dependency>
             <groupId>tech.powerjob</groupId>
             <artifactId>powerjob-client</artifactId>
-            <version>${powerjob.ver}</version>
+            <version>${powerjob.version}</version>
         </dependency>
 
         <dependency>

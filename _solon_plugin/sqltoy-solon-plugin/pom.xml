@@ -28,7 +28,7 @@
         <dependency>
             <groupId>com.sagframe</groupId>
             <artifactId>sagacity-sqltoy</artifactId>
-            <version>${sqltoy.ver}</version>
+            <version>${sqltoy.version}</version>
         </dependency>
 
         <dependency>

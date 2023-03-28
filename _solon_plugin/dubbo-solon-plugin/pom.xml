@@ -23,7 +23,7 @@
         <dependency>
             <groupId>org.apache.dubbo</groupId>
             <artifactId>dubbo</artifactId>
-            <version>${dubbo2.ver}</version>
+            <version>${dubbo2.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>javax.servlet</groupId>
@@ -65,14 +65,14 @@
         <dependency>
             <groupId>org.apache.dubbo</groupId>
             <artifactId>dubbo-registry-zookeeper</artifactId>
-            <version>${dubbo2.ver}</version>
+            <version>${dubbo2.version}</version>
             <scope>test</scope>
         </dependency>
 
 <!--        <dependency>-->
 <!--            <groupId>org.apache.dubbo</groupId>-->
 <!--            <artifactId>dubbo-registry-nacos</artifactId>-->
-<!--            <version>${dubbo2.ver}</version>-->
+<!--            <version>${dubbo2.version}</version>-->
 <!--            <scope>test</scope>-->
 <!--        </dependency>-->
 

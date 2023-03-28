@@ -24,7 +24,7 @@
         <dependency>
             <groupId>org.quartz-scheduler</groupId>
             <artifactId>quartz</artifactId>
-            <version>${quartz.ver}</version>
+            <version>${quartz.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>com.zaxxer</groupId>

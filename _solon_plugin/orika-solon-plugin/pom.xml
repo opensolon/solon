@@ -15,7 +15,7 @@
     <packaging>jar</packaging>
 
     <properties>
-        <orika.ver>1.5.4</orika.ver>
+        <orika.version>1.5.4</orika.version>
     </properties>
 
     <dependencies>
@@ -27,7 +27,7 @@
         <dependency>
             <groupId>ma.glasnost.orika</groupId>
             <artifactId>orika-core</artifactId>
-            <version>${orika.ver}</version>
+            <version>${orika.version}</version>
         </dependency>
     </dependencies>
 </project>

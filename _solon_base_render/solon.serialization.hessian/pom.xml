@@ -25,7 +25,7 @@
         <dependency>
             <groupId>com.alipay.sofa</groupId>
             <artifactId>hessian</artifactId>
-            <version>${hessian-sofa.ver}</version>
+            <version>${hessian-sofa.version}</version>
         </dependency>
     </dependencies>
 

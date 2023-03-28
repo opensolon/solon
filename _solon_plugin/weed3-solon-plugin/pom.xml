@@ -23,7 +23,7 @@
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>weed3</artifactId>
-            <version>${weed3.ver}</version>
+            <version>${weed3.version}</version>
         </dependency>
     </dependencies>
 </project>

@@ -19,6 +19,7 @@
 * 增加 "solon.config.load"(加载内部) 和 "solon.config.add"(添加外部) 配置
 * 修复 solon.scheduling.simple 插件，在启动卡时后不能运行 cron=* * * * * ?
 * 修复 AopContext::ProxyComponent 不能被 copyto 的问题???
+* 调整 maven 版本管理，由 xxx.ver 改为 xxx.version
 * 优化 请求参数 required 的提示
 * sqltoy 升为 5.2.41
 * wood 升为 1.0.9

@@ -122,13 +122,13 @@
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-core</artifactId>
-            <version>${hutool.ver}</version>
+            <version>${hutool.version}</version>
         </dependency>
 
         <dependency>
             <groupId>com.squareup.okhttp3</groupId>
             <artifactId>mockwebserver</artifactId>
-            <version>${okhttp.ver}</version>
+            <version>${okhttp.version}</version>
             <scope>test</scope>
         </dependency>
 
@@ -391,7 +391,7 @@
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>weed3</artifactId>
-            <version>${weed3.ver}</version>
+            <version>${weed3.version}</version>
         </dependency>
 
         <dependency>
@@ -472,8 +472,8 @@
                 <version>3.8.1</version>
                 <configuration>
                     <compilerArgument>-parameters</compilerArgument>
-                    <source>${java.ver}</source>
-                    <target>${java.ver}</target>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
                     <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>

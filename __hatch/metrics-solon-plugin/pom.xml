@@ -15,7 +15,7 @@
     <packaging>jar</packaging>
 
     <properties>
-        <metrics.ver>3.1.2</metrics.ver>
+        <metrics.version>3.1.2</metrics.version>
     </properties>
 
     <dependencies>
@@ -27,12 +27,12 @@
         <dependency>
             <groupId>io.dropwizard.metrics</groupId>
             <artifactId>metrics-core</artifactId>
-            <version>${metrics.ver}</version>
+            <version>${metrics.version}</version>
         </dependency>
         <dependency>
             <groupId>io.dropwizard.metrics</groupId>
             <artifactId>metrics-annotation</artifactId>
-            <version>${metrics.ver}</version>
+            <version>${metrics.version}</version>
         </dependency>
     </dependencies>
 </project>

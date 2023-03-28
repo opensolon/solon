@@ -23,7 +23,7 @@
         <dependency>
             <groupId>com.jfinal</groupId>
             <artifactId>activerecord</artifactId>
-            <version>${activerecord.ver}</version>
+            <version>${activerecord.version}</version>
         </dependency>
     </dependencies>
 </project>

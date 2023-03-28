@@ -24,7 +24,7 @@
         <dependency>
             <groupId>com.hazelcast</groupId>
             <artifactId>hazelcast</artifactId>
-            <version>${hazelcast.ver}</version>
+            <version>${hazelcast.version}</version>
         </dependency>
     </dependencies>
 

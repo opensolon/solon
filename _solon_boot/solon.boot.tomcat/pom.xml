@@ -29,7 +29,7 @@
         <dependency>
             <groupId>org.apache.tomcat.embed</groupId>
             <artifactId>tomcat-embed-core</artifactId>
-            <version>${tomcat.ver}</version>
+            <version>${tomcat.version}</version>
         </dependency>
         <!-- server core end -->
 
@@ -37,7 +37,7 @@
         <dependency>
             <groupId>org.apache.tomcat.embed</groupId>
             <artifactId>tomcat-embed-jasper</artifactId>
-            <version>${tomcat.ver}</version>
+            <version>${tomcat.version}</version>
             <scope>provided</scope>
         </dependency>
         <!--jsp ended -->

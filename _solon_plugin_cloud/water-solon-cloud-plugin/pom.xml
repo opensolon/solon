@@ -28,13 +28,13 @@
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>water.client</artifactId>
-            <version>${water.ver}</version>
+            <version>${water.version}</version>
         </dependency>
 
         <dependency>
             <groupId>com.zaxxer</groupId>
             <artifactId>HikariCP</artifactId>
-            <version>${hikaricp.ver}</version>
+            <version>${hikaricp.version}</version>
         </dependency>
 
     </dependencies>
