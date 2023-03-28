@@ -50,7 +50,7 @@ public class Props extends Properties {
     }
 
     /**
-     * 获取某项配置
+     * 获取属性
      */
     public String get(String key) {
         return getProperty(key);
@@ -63,6 +63,9 @@ public class Props extends Properties {
         return getByExpr(expr, null);
     }
 
+    /**
+     * @param expr 兼容 ${key} or key or ${key:def} or key:def
+     */
     protected String getByExpr(String expr, Properties props) {
         String name = expr;
 
@@ -115,6 +118,9 @@ public class Props extends Properties {
         return getByParse(tml, null);
     }
 
+    /**
+     * @param tml 模板： ${key} 或 aaa${key}bbb
+     */
     protected String getByParse(String tml, Properties props) {
         if (Utils.isEmpty(tml)) {
             return tml;
@@ -387,8 +393,6 @@ public class Props extends Properties {
      * @param name 资源名
      */
     public void loadAdd(String name) {
-        name = ResourceUtil.getNameOfEnv(name);
-
         loadAdd(ResourceUtil.getResource(classLoader, name));
     }
 
@@ -398,8 +402,7 @@ public class Props extends Properties {
         }
 
         for (String uri : propertySource.value()) {
-            uri = ResourceUtil.getNameOfEnv(uri);
-
+            uri = getByParse(uri);
             loadAdd(ResourceUtil.findResource(classLoader, uri));
         }
     }
@@ -430,8 +433,6 @@ public class Props extends Properties {
      * @param name 资源名
      */
     public void loadAddIfAbsent(String name) {
-        name = ResourceUtil.getNameOfEnv(name);
-
         loadAddIfAbsent(ResourceUtil.getResource(classLoader, name));
     }
 

@@ -5,10 +5,8 @@ import org.noear.solon.Utils;
 import org.noear.solon.core.JarClassLoader;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -21,14 +19,6 @@ import java.util.regex.Pattern;
  * @since 2.0
  */
 public class ResourceUtil {
-
-    public static String getNameOfEnv(String name) {
-        if (name.contains("${solon.env}")) {
-            return name.replace("${solon.env}", Solon.cfg().env());
-        } else {
-            return name;
-        }
-    }
 
     /**
      * 获取资源URL集

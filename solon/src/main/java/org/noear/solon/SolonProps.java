@@ -213,8 +213,6 @@ public final class SolonProps extends Props {
     private void addConfig(String vals, boolean isName, Properties sysPropOrg) {
         if (Utils.isNotEmpty(vals)) {
             for (String val : vals.split(",")) {
-                val = ResourceUtil.getNameOfEnv(val);
-
                 URL propUrl = (isName ? ResourceUtil.getResource(val) : ResourceUtil.findResource(val));
 
                 if (propUrl == null) {
