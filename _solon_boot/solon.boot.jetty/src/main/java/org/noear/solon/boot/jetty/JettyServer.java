@@ -35,7 +35,7 @@ class JettyServer extends JettyServerBase implements ServerLifecycle {
     protected void setup(SolonApp app, String host, int port) throws IOException {
         Class<?> wsClz = ClassUtil.loadClass("org.eclipse.jetty.websocket.server.WebSocketHandler");
 
-        QueuedThreadPool threadPool = new QueuedThreadPool(props.getMaxThreads(true), props.getCoreThreads(), (int)props.getIdleTimeout());
+        QueuedThreadPool threadPool = new QueuedThreadPool(props.getMaxThreads(true), props.getCoreThreads(), (int) props.getIdleTimeout());
 
         _server = new Server(threadPool);
 
@@ -44,7 +44,7 @@ class JettyServer extends JettyServerBase implements ServerLifecycle {
         ServerConnector connector = getConnector(_server);
         connector.setPort(port);
 
-        if(Utils.isNotEmpty(host)){
+        if (Utils.isNotEmpty(host)) {
             connector.setHost(host);
         }
 
@@ -73,11 +73,12 @@ class JettyServer extends JettyServerBase implements ServerLifecycle {
      * 获取Server Handler
      */
     protected Handler buildHandler() throws IOException {
-        if (ClassUtil.loadClass("org.eclipse.jetty.servlet.ServletContextHandler") == null) {
-            return getJettyHandler();
-        } else {
+        if (ClassUtil.hasClass(() -> org.eclipse.jetty.servlet.ServletContextHandler.class)) {
             //::走Servlet接口（需要多个包）
             return getServletHandler();
+        } else {
+            //::走Handler接口（有些功能力会缺失）
+            return getJettyHandler();
         }
     }
 }
