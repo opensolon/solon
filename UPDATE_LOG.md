@@ -11,17 +11,17 @@
 
 ### 2.2.7
 
-* 调整 file-s3-solon-cloud-plugin 插件， "file.default"改为动态获取，增加bucket接口
 * 增加 @Path 替代 @PathVar（简短些），不过这个注解本身意义不大
 * 增加 ResourceUtil::findResource 接口(ssl.keyStore 改用此接口)
 * 增加 "solon.config" 多文件与内外文件支持
 * 增加 "application.xxx" 配置的弃用警告日志
 * 增加 "solon.config.load"(加载内部) 配置，支持数组配置
 * 增加 "solon.config.add"(添加外部) 配置
+* 调整 file-s3-solon-cloud-plugin 插件， "file.default"改为动态获取，增加bucket接口
+* 调整 maven 版本管理，由 xxx.ver 改为 xxx.version
+* 调整 请求参数 required 的提示
 * 修复 solon.scheduling.simple 插件，在启动卡时后不能运行 cron=* * * * * ?
 * 修复 AopContext::ProxyComponent 不能被 copyto 的问题???
-* 调整 maven 版本管理，由 xxx.ver 改为 xxx.version
-* 优化 请求参数 required 的提示
 * sqltoy 升为 5.2.41
 * wood 升为 1.0.9
 * snack3 升为 3.2.62
