@@ -139,7 +139,12 @@ public final class SolonProps extends Props {
         loadAdd(source.getAnnotation(PropertySource.class));
 
         //4.4.加载配置 solon.config.load //支持多文件（只支持内部，支持{env}）
-        addConfig(get("solon.config.load"), true, sysPropOrg);
+        doFind("solon.config.load", (key,val)->{
+            if(key.equals("") || key.startsWith("[")) {
+                addConfig(val, true, sysPropOrg);
+            }
+        });
+
 
         //4.5.加载扩展配置 solon.config.add //支持多文件（支持内部或外部，支持{env}）
         addConfig(getArg("config"), false, sysPropOrg);//@Deprecated 2.2
