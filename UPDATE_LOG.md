@@ -20,7 +20,8 @@
 * 增加 Props::getMap 接口，替代 Props::getXmap
 * 调整 file-s3-solon-cloud-plugin 插件， "file.default"改为动态获取，增加bucket接口
 * 调整 maven 版本管理，由 xxx.ver 改为 xxx.version
-* 调整 请求参数 required 的提示
+* 优化 请求参数 required 的提示
+* 优化 Props::getProp 减少 forEach 次数
 * 修复 solon.scheduling.simple 插件，在启动卡时后不能运行 cron=* * * * * ?
 * 修复 AopContext::ProxyComponent 不能被 copyto 的问题
 * sqltoy 升为 5.2.41
