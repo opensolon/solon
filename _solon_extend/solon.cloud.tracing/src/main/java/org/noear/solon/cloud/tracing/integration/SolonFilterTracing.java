@@ -18,7 +18,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Solon 过滤器适配
+ * Solon Tracing 过滤器适配
  *
  * @author noear
  * @since 1.4

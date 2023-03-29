@@ -1,4 +1,4 @@
-package org.noear.solon.cloud.tracing.integration;
+package org.noear.solon.extend.dubbo.integration;
 
 import io.opentracing.Scope;
 import io.opentracing.Span;
@@ -6,38 +6,34 @@ import io.opentracing.Tracer;
 import io.opentracing.propagation.Format;
 import io.opentracing.propagation.TextMapAdapter;
 import io.opentracing.tag.Tags;
-import org.noear.nami.Context;
-import org.noear.nami.Filter;
-import org.noear.nami.Invocation;
-import org.noear.nami.Result;
-import org.noear.nami.common.TextUtils;
+import org.apache.dubbo.rpc.*;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 
 /**
- * Nami Tracing 过滤器适配
+ * Dubbo Tracing 过滤器适配
  *
  * @author noear
- * @since 1.4
+ * @since 2.2
  */
-public class NamiFilterTracing implements Filter {
+public class DubboFilterTracing implements Filter {
     private Tracer tracer;
 
-    public NamiFilterTracing() {
+    public DubboFilterTracing() {
         Solon.context().getBeanAsync(Tracer.class, bean -> {
             tracer = bean;
         });
     }
 
     @Override
-    public Result doFilter(Invocation inv) throws Throwable {
+    public Result invoke(Invoker<?> invoker, Invocation invocation) throws RpcException {
         if (tracer == null) {
-            return inv.invoke();
+            return invoker.invoke(invocation);
         } else {
-            Span span = buildSpan(inv);
+            Span span = buildSpan(invoker, invocation);
 
             try (Scope scope = tracer.activateSpan(span)) {
-                return inv.invoke();
+                return invoker.invoke(invocation);
             } catch (Throwable e) {
                 span.log(Utils.throwableToString(e));
                 throw e;
@@ -47,17 +43,16 @@ public class NamiFilterTracing implements Filter {
         }
     }
 
-    public Span buildSpan(Context ctx) {
+    public Span buildSpan(Invoker<?> invoker, Invocation invocation) {
         //构建 Span Name
         StringBuilder operationName = new StringBuilder();
 
-        operationName.append("Nami:");
-        if (TextUtils.isEmpty(ctx.config.getName())) {
-            operationName.append(ctx.url);
-        } else {
-            operationName.append(ctx.config.getName()).append(":");
-            operationName.append(ctx.url);
+        operationName.append("Dubbo:");
+        if (Utils.isNotEmpty(invocation.getServiceName())) {
+            operationName.append(invocation.getServiceName()).append(":");
         }
+        operationName.append(invoker.getInterface().getName()).append(":");
+        operationName.append(invocation.getMethodName());
 
 
         //实例化构建器
@@ -69,7 +64,7 @@ public class NamiFilterTracing implements Filter {
         Span span = spanBuilder.start();
 
         //尝试注入
-        tracer.inject(span.context(), Format.Builtin.HTTP_HEADERS, new TextMapAdapter(ctx.headers));
+        tracer.inject(span.context(), Format.Builtin.TEXT_MAP, new TextMapAdapter(invocation.getAttachments()));
 
         //开始
         return span;
