@@ -10,6 +10,8 @@ import org.apache.dubbo.rpc.*;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 
+import java.net.InetSocketAddress;
+
 /**
  * Dubbo Tracing 过滤器适配
  *
@@ -30,7 +32,7 @@ public class DubboFilterTracing implements Filter {
         if (tracer == null) {
             return invoker.invoke(invocation);
         } else {
-            Span span = buildSpan(invoker, invocation);
+            Span span = buildSpan(invoker, invocation, RpcContext.getContext().isConsumerSide());
 
             try (Scope scope = tracer.activateSpan(span)) {
                 return invoker.invoke(invocation);
@@ -43,11 +45,17 @@ public class DubboFilterTracing implements Filter {
         }
     }
 
-    public Span buildSpan(Invoker<?> invoker, Invocation invocation) {
+    public Span buildSpan(Invoker<?> invoker, Invocation invocation, boolean isConsumerSide) {
         //构建 Span Name
         StringBuilder operationName = new StringBuilder();
-
         operationName.append("Dubbo:");
+
+        if (isConsumerSide == false) {
+            //如果是服务端，添加本地地址
+            InetSocketAddress address = RpcContext.getServerContext().getLocalAddress();
+            operationName.append(address).append(":");
+        }
+
         if (Utils.isNotEmpty(invocation.getServiceName())) {
             operationName.append(invocation.getServiceName()).append(":");
         }
@@ -59,7 +67,11 @@ public class DubboFilterTracing implements Filter {
         Tracer.SpanBuilder spanBuilder = tracer.buildSpan(operationName.toString());
 
         //添加种类标志
-        spanBuilder.withTag(Tags.SPAN_KIND.getKey(), Tags.SPAN_KIND_CLIENT);
+        if (isConsumerSide) {
+            spanBuilder.withTag(Tags.SPAN_KIND.getKey(), Tags.SPAN_KIND_CLIENT);
+        } else {
+            spanBuilder.withTag(Tags.SPAN_KIND.getKey(), Tags.SPAN_KIND_SERVER);
+        }
 
         Span span = spanBuilder.start();
 
