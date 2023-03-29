@@ -77,11 +77,13 @@ public class SolonFilterTracing implements Filter {
 
         //实例化构建器
         StringBuilder operationName = new StringBuilder();
-        operationName.append(ctx.pathNew()).append(" (").append(ctx.uri().getScheme()).append(" ").append(ip).append(":").append(port).append(')');
+        operationName.append(ctx.pathNew()).append(" (").append(ctx.uri().getScheme()).append(" ").append(ctx.method()).append(')');
         Tracer.SpanBuilder spanBuilder = tracer.buildSpan(operationName.toString());
 
         //添加种类标志
         spanBuilder.withTag(Tags.SPAN_KIND.getKey(), Tags.SPAN_KIND_SERVER);
+        spanBuilder.withTag("request.url", ctx.url());
+        spanBuilder.withTag("request.server", ip + ":" + port);
 
         //获取上下文
         SpanContext spanContext = tracer.extract(Format.Builtin.HTTP_HEADERS, new TextMapAdapter(ctx.headerMap()));
