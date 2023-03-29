@@ -69,12 +69,6 @@ public class SolonFilterTracing implements Filter {
     }
 
     public Span buildSpan(Context ctx) {
-        int port = ctx.uri().getPort();
-        if (port < 1) {
-            port = Solon.cfg().serverPort();
-        }
-        String ip = LocalUtils.getLocalAddress();
-
         //实例化构建器
         StringBuilder operationName = new StringBuilder();
         operationName.append(ctx.pathNew()).append(" (").append(ctx.uri().getScheme()).append(" ").append(ctx.method()).append(')');
@@ -82,8 +76,7 @@ public class SolonFilterTracing implements Filter {
 
         //添加种类标志
         spanBuilder.withTag(Tags.SPAN_KIND.getKey(), Tags.SPAN_KIND_SERVER);
-        spanBuilder.withTag("request.url", ctx.url());
-        spanBuilder.withTag("request.server", ip + ":" + port);
+        spanBuilder.withTag("req.url", ctx.url());
 
         //获取上下文
         SpanContext spanContext = tracer.extract(Format.Builtin.HTTP_HEADERS, new TextMapAdapter(ctx.headerMap()));
