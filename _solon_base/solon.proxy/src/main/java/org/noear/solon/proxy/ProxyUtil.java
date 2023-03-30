@@ -31,21 +31,21 @@ public class ProxyUtil {
         if (bw.proxy() instanceof ProxyUtil) {
             return false;
         } else {
-            if(bw.clz().isInterface()){
-                throw new IllegalStateException("Interfaces are not supported as proxy components");
+            if (bw.clz().isInterface()) {
+                throw new IllegalStateException("Interfaces are not supported as proxy components: " + bw.clz().getName());
             }
 
             int modifier = bw.clz().getModifiers();
-            if(Modifier.isFinal(modifier)){
-                throw new IllegalStateException("Final classes are not supported as proxy components");
+            if (Modifier.isFinal(modifier)) {
+                throw new IllegalStateException("Final classes are not supported as proxy components: " + bw.clz().getName());
             }
 
-            if(Modifier.isAbstract(modifier)){
-                throw new IllegalStateException("Abstract classes are not supported as proxy components");
+            if (Modifier.isAbstract(modifier)) {
+                throw new IllegalStateException("Abstract classes are not supported as proxy components: " + bw.clz().getName());
             }
 
-            if(Modifier.isPublic(modifier) == false){
-                throw new IllegalStateException("Not public classes are not supported as proxy components");
+            if (Modifier.isPublic(modifier) == false) {
+                throw new IllegalStateException("Not public classes are not supported as proxy components: " + bw.clz().getName());
             }
 
             bw.proxySet(BeanProxy.getGlobal());

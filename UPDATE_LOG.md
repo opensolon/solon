@@ -15,6 +15,7 @@
 * 增加 solon.boot.jlhttp 插件 JlHttpServer 类，提供可复用支持
 * 增加 solon.boot.jdkhttp 插件 JdkHttpServer 类，提供可复用支持
 * 增加 solon.boot.smarthttp 插件 SmHttpServer 类，提供可复用支持
+* 增加 动态代理时异常时的友好提示
 * 调整 solon.boot.xxx "Server:main:" 打印
 * 优化 solon.cloud.tracing Span 的 name 和 tags
 * 优化 LifecycleBean 组件增加自动排位
