@@ -12,6 +12,7 @@
 ### 2.2.8
 * 添加 DubboFilterTracing
 * 优化 solon.cloud.tracing Span 的 name 和 tags
+* wood 升为 1.1.0
 
 ### 2.2.7
 

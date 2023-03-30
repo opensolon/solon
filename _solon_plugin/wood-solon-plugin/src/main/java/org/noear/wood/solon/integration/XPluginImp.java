@@ -2,6 +2,7 @@ package org.noear.wood.solon.integration;
 
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
+import org.noear.solon.core.util.ClassUtil;
 import org.noear.wood.WoodConfig;
 import org.noear.wood.annotation.Db;
 import org.noear.wood.xml.XmlSqlLoader;
@@ -16,7 +17,7 @@ public class XPluginImp implements Plugin {
     @Override
     public void start(AopContext context) {
         // 事件监听，用于时实初始化
-        context.subWrapsOfType(DataSource.class, bw->{
+        context.subWrapsOfType(DataSource.class, bw -> {
             DbManager.global().reg(bw);
         });
 
@@ -30,6 +31,8 @@ public class XPluginImp implements Plugin {
         context.beanInjectorAdd(Db.class, beanReactor);
 
         // 加载xml sql
-        XmlSqlLoader.tryLoad();
+        if (ClassUtil.hasClass(() -> XmlSqlLoader.class)) {
+            XmlSqlLoader.tryLoad();
+        }
     }
 }
