@@ -76,12 +76,16 @@ public class JobHolder extends Thread{
         baseTime = null;
     }
 
+    public boolean isCanceled(){
+        return isCanceled;
+    }
+
     /**
      * 运行
      */
     @Override
     public void run() {
-        if(baseTime == null) {
+        if (baseTime == null) {
             baseTime = new Date();
         }
 
@@ -93,15 +97,15 @@ public class JobHolder extends Thread{
         }
 
         while (true) {
-            if (isCanceled == false) {
-                try {
-                    scheduling();
-                } catch (Throwable e) {
-                    e = Utils.throwableUnwrap(e);
-                    EventBus.pushTry(new ScheduledException(e));
-                }
-            } else {
+            if (isCanceled) {
                 break;
+            }
+
+            try {
+                scheduling();
+            } catch (Throwable e) {
+                e = Utils.throwableUnwrap(e);
+                EventBus.pushTry(new ScheduledException(e));
             }
         }
     }

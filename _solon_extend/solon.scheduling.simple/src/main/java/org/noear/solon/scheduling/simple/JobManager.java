@@ -40,7 +40,9 @@ public class JobManager {
             }
         }
 
-        addDo(name, new JobHolder(name, anno, runnable));
+        if (contains(name) == false) {
+            addDo(name, new JobHolder(name, anno, runnable));
+        }
     }
 
     /**
@@ -49,7 +51,7 @@ public class JobManager {
      * @param name      任务名称
      * @param jobEntity 任务实体
      */
-    private static void addDo(String name, JobHolder jobEntity) {
+    private static synchronized void addDo(String name, JobHolder jobEntity) {
         jobEntityMap.putIfAbsent(name, jobEntity);
 
         if (isStarted) {
@@ -58,12 +60,6 @@ public class JobManager {
         }
     }
 
-    /**
-     * 任务数量
-     */
-    public static int count() {
-        return jobEntityMap.size();
-    }
 
     /**
      * 检查计划任务是否存在
@@ -89,7 +85,42 @@ public class JobManager {
     }
 
     /**
-     * 开启
+     * 启动计划任务
+     *
+     * @param name 任务名称
+     */
+    public static void start(String name) {
+        JobHolder jobHolder = jobEntityMap.get(name);
+
+        if (jobHolder != null && jobHolder.isCanceled()) {
+            jobHolder.start();
+        }
+    }
+
+    /**
+     * 停止计划任务
+     *
+     * @param name 任务名称
+     */
+    public static void stop(String name) {
+        JobHolder jobHolder = jobEntityMap.get(name);
+
+        if (jobHolder != null && jobHolder.isCanceled() == false) {
+            jobHolder.cancel();
+        }
+    }
+
+    ///////////////////////////////
+
+    /**
+     * 数量
+     */
+    public static int count() {
+        return jobEntityMap.size();
+    }
+
+    /**
+     * 启动
      */
     public static void start() {
         for (JobHolder job : jobEntityMap.values()) {
