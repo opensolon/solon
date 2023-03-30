@@ -18,7 +18,7 @@ public class XPluginImp implements Plugin {
     RsServer _server;
 
     public static String solon_boot_ver() {
-        return "rsocket-socketd/" + Solon.version();
+        return "rsocket-socketd 1.1/" + Solon.version();
     }
 
     @Override
