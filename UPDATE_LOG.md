@@ -10,8 +10,10 @@
 * 提醒2：有使用弃用接口的。建议先升级到 1.12.4；替换弃用代码后，再升级到 2.0.0
 
 ### 2.2.8
-* 添加 DubboFilterTracing
+* 插件 dubbo-solon-plugin 增加 DubboFilterTracing 类
+* 插件 solon.scheduling.simple 增加单计划任务的起停控制
 * 优化 solon.cloud.tracing Span 的 name 和 tags
+* 优化 LifecycleBean 组件增加自动排位
 * wood 升为 1.1.0
 
 ### 2.2.7
