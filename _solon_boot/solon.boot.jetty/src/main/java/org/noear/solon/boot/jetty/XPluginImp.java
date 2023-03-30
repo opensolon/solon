@@ -83,7 +83,6 @@ public final class XPluginImp implements Plugin {
 
         long time_end = System.currentTimeMillis();
 
-        LogUtil.global().info("Server:main: Jetty 9.4(jetty)");
         String connectorInfo = "solon.connector:main: jetty: Started ServerConnector@{HTTP/1.1,[http/1.1]";
         if (app.enableWebSocket()) {
             System.out.println(connectorInfo + "[WebSocket]}{0.0.0.0:" + _port + "}");
@@ -91,7 +90,7 @@ public final class XPluginImp implements Plugin {
 
         System.out.println(connectorInfo + "}{http://localhost:" + _port + "}");
 
-        LogUtil.global().info("Server:main: jetty: Started @" + (time_end - time_start) + "ms");
+        LogUtil.global().info("Server:main: jetty: Started (" + solon_boot_ver() + ") @" + (time_end - time_start) + "ms");
 
         app.before(-9, new FormContentFilter());
     }
@@ -102,7 +101,7 @@ public final class XPluginImp implements Plugin {
             _server.stop();
             _server = null;
 
-            LogUtil.global().info("Server:main: jetty: Has Stopped " + solon_boot_ver());
+            LogUtil.global().info("Server:main: jetty: Has Stopped (" + solon_boot_ver() + ")");
         }
     }
 }

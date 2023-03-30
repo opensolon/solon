@@ -71,7 +71,6 @@ public final class XPluginImp implements Plugin {
 
         long time_end = System.currentTimeMillis();
 
-        LogUtil.global().info("Server:main: Undertow 2.2.17(undertow)");
         String connectorInfo = "solon.connector:main: undertow: Started ServerConnector@{HTTP/1.1,[http/1.1]";
         if (app.enableWebSocket()) {
             System.out.println(connectorInfo + "[WebSocket]}{0.0.0.0:" + _port + "}");

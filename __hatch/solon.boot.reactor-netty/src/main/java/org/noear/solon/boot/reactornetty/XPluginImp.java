@@ -34,8 +34,6 @@ public class XPluginImp implements Plugin {
         long time_start = System.currentTimeMillis();
 
         try {
-            LogUtil.global().info("Server:main: Reactor netty 1.0.20(reactor-netty-http)");
-
             RnHttpHandler handler = new RnHttpHandler();
 
             //
@@ -55,7 +53,7 @@ public class XPluginImp implements Plugin {
             long time_end = System.currentTimeMillis();
 
             LogUtil.global().info("Connector:main: reactor-netty-http: Started ServerConnector@{HTTP/1.1,[http/1.1]}{http://localhost:" + app.cfg().serverPort() + "}");
-            LogUtil.global().info("Server:main: reactor-netty-http: Started @" + (time_end - time_start) + "ms");
+            LogUtil.global().info("Server:main: reactor-netty-http: Started (" + solon_boot_ver() + ") @" + (time_end - time_start) + "ms");
         } catch (Throwable ex) {
             throw new RuntimeException(ex);
         }
@@ -67,7 +65,7 @@ public class XPluginImp implements Plugin {
             _server.dispose();
             _server = null;
 
-            LogUtil.global().info("Server:main: reactor-netty-http: Has Stopped " + solon_boot_ver());
+            LogUtil.global().info("Server:main: reactor-netty-http: Has Stopped (" + solon_boot_ver() + ")");
         }
     }
 }

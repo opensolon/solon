@@ -41,8 +41,6 @@ public class XPluginImp implements Plugin {
 
         long time_start = System.currentTimeMillis();
 
-        LogUtil.global().info("Server:main: java.net.ServerSocket(jdksocket-socketd)");
-
 
         SocketServerProps props = new SocketServerProps(20000);
         final String _host = props.getHost();
@@ -63,7 +61,7 @@ public class XPluginImp implements Plugin {
         long time_end = System.currentTimeMillis();
 
         LogUtil.global().info("Connector:main: jdksocket-socketd: Started ServerConnector@{[Socket]}{0.0.0.0:" + _port + "}");
-        LogUtil.global().info("Server:main: jdksocket-socketd: Started @" + (time_end - time_start) + "ms");
+        LogUtil.global().info("Server:main: jdksocket-socketd: Started (" + solon_boot_ver() + ") @" + (time_end - time_start) + "ms");
     }
 
     @Override
@@ -74,6 +72,6 @@ public class XPluginImp implements Plugin {
 
         _server.stop();
         _server = null;
-        LogUtil.global().info("Server:main: jdksocket-socketd: Has Stopped " + solon_boot_ver());
+        LogUtil.global().info("Server:main: jdksocket-socketd: Has Stopped (" + solon_boot_ver() + ")");
     }
 }

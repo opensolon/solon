@@ -49,10 +49,6 @@ public class XPluginImp implements Plugin {
 
         long time_start = System.currentTimeMillis();
 
-
-        LogUtil.global().info("Server:main: org.java_websocket 1.5.0(websocket)");
-
-
         if (Utils.isEmpty(_host)) {
             _server = new WsServer(_port);
         } else {

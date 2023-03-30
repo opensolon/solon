@@ -93,9 +93,8 @@ public final class XPluginImp implements Plugin {
 
         long time_end = System.currentTimeMillis();
 
-        LogUtil.global().info("Server:main: JlHttpServer 2.6(jlhttp)");
         LogUtil.global().info("Connector:main: jlhttp: Started ServerConnector@{HTTP/1.1,[http/1.1]}{http://localhost:" + _port + "}");
-        LogUtil.global().info("Server:main: jlhttp: Started @" + (time_end - time_start) + "ms");
+        LogUtil.global().info("Server:main: jlhttp: Started ("+solon_boot_ver()+") @" + (time_end - time_start) + "ms");
     }
 
     @Override
@@ -104,7 +103,7 @@ public final class XPluginImp implements Plugin {
             _server.stop();
             _server = null;
 
-            LogUtil.global().info("Server:main: jlhttp: Has Stopped " + solon_boot_ver());
+            LogUtil.global().info("Server:main: jlhttp: Has Stopped (" + solon_boot_ver() +")");
         }
     }
 }

@@ -71,10 +71,8 @@ public final class XPluginImp implements Plugin {
 
         long time_end = System.currentTimeMillis();
 
-
-        LogUtil.global().info("Server:main: Sun.net.HttpServer(jdkhttp)");
         LogUtil.global().info("Connector:main: jdkhttp: Started ServerConnector@{HTTP/1.1,[http/1.1]}{http://localhost:" + _port + "}");
-        LogUtil.global().info("Server:main: jdkhttp: Started @" + (time_end - time_start) + "ms");
+        LogUtil.global().info("Server:main: jdkhttp: Started ("+solon_boot_ver()+") @" + (time_end - time_start) + "ms");
     }
 
 
@@ -86,6 +84,6 @@ public final class XPluginImp implements Plugin {
 
         server.stop();
         server = null;
-        LogUtil.global().info("Server:main: jdkhttp: Has Stopped " + solon_boot_ver());
+        LogUtil.global().info("Server:main: jdkhttp: Has Stopped (" + solon_boot_ver()+")");
     }
 }

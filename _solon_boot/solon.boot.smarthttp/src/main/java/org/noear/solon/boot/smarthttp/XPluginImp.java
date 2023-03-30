@@ -68,9 +68,6 @@ public final class XPluginImp implements Plugin {
 
         long time_end = System.currentTimeMillis();
 
-
-        LogUtil.global().info("Server:main: SmartHttpServer 1.1(smarthttp)");
-
         String connectorInfo = "solon.connector:main: smarthttp: Started ServerConnector@{HTTP/1.1,[http/1.1]";
         if (app.enableWebSocket()) {
             LogUtil.global().info(connectorInfo + "[WebSocket]}{0.0.0.0:" + _port + "}");
@@ -78,7 +75,7 @@ public final class XPluginImp implements Plugin {
 
         LogUtil.global().info(connectorInfo + "}{http://localhost:" + _port + "}");
 
-        LogUtil.global().info("Server:main: smarthttp: Started @" + (time_end - time_start) + "ms");
+        LogUtil.global().info("Server:main: smarthttp: Started (" + solon_boot_ver() + ") @" + (time_end - time_start) + "ms");
     }
 
     @Override
@@ -87,7 +84,7 @@ public final class XPluginImp implements Plugin {
             _server.stop();
             _server = null;
 
-            LogUtil.global().info("Server:main: smarthttp: Has Stopped " + solon_boot_ver());
+            LogUtil.global().info("Server:main: smarthttp: Has Stopped (" + solon_boot_ver() + ")");
         }
     }
 }

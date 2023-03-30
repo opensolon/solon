@@ -41,7 +41,6 @@ public class XPluginImp implements Plugin {
 
         long time_start = System.currentTimeMillis();
 
-        LogUtil.global().info("Server:main: java.net.ServerSocket(rsocket-socketd)");
 
         SocketServerProps props = new SocketServerProps(20000);
         final String _host = props.getHost();
@@ -61,7 +60,7 @@ public class XPluginImp implements Plugin {
             long time_end = System.currentTimeMillis();
 
             LogUtil.global().info("Connector:main: rsocket-socketd: Started ServerConnector@{[Socket]}{0.0.0.0:" + _port + "}");
-            LogUtil.global().info("Server:main: rsocket-socketd: Started @" + (time_end - time_start) + "ms");
+            LogUtil.global().info("Server:main: rsocket-socketd: Started (" + solon_boot_ver() + ") @" + (time_end - time_start) + "ms");
         } catch (RuntimeException e) {
             throw e;
         } catch (Throwable e) {
@@ -77,6 +76,6 @@ public class XPluginImp implements Plugin {
 
         _server.stop();
         _server = null;
-        LogUtil.global().info("Server:main: rsocket-socketd: Has Stopped " + solon_boot_ver());
+        LogUtil.global().info("Server:main: rsocket-socketd: Has Stopped (" + solon_boot_ver() + ")");
     }
 }

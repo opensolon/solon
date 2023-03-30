@@ -62,8 +62,6 @@ public class XPluginImp implements Plugin {
 
         long time_start = System.currentTimeMillis();
 
-        LogUtil.global().info("Server:main: io.grpc.Server(grpc)");
-
         ServerBuilder serverBuilder = ServerBuilder
                 .forPort(_port);
 

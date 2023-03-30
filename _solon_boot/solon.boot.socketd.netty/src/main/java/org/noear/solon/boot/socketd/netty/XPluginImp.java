@@ -17,7 +17,8 @@ import org.noear.solon.socketd.client.netty.NioChannelInitializer;
 
 public class XPluginImp implements Plugin {
     private static Signal _signal;
-    public static Signal signal(){
+
+    public static Signal signal() {
         return _signal;
     }
 
@@ -47,8 +48,6 @@ public class XPluginImp implements Plugin {
 
         long time_start = System.currentTimeMillis();
 
-        LogUtil.global().info("Server:main: java.net.ServerSocket(netty-socketd)");
-
         SocketServerProps props = new SocketServerProps(20000);
         final String _host = props.getHost();
         final int _port = props.getPort();
@@ -64,22 +63,22 @@ public class XPluginImp implements Plugin {
                     .channel(NioServerSocketChannel.class)
                     .childHandler(new NioChannelInitializer(() -> new NioServerProcessor()));
 
-            if(Utils.isEmpty(_host)) {
+            if (Utils.isEmpty(_host)) {
                 _server = bootstrap.bind(_port).await();
-            }else {
+            } else {
                 _server = bootstrap.bind(_host, _port).await();
             }
 
             final String _wrapHost = props.getWrapHost();
             final int _wrapPort = props.getWrapPort();
-            _signal = new SignalSim(_name, _wrapHost, _wrapPort,"tcp", SignalType.SOCKET);
+            _signal = new SignalSim(_name, _wrapHost, _wrapPort, "tcp", SignalType.SOCKET);
 
             app.signalAdd(_signal);
 
             long time_end = System.currentTimeMillis();
 
             LogUtil.global().info("Connector:main: netty-socketd: Started ServerConnector@{[Socket]}{0.0.0.0:" + _port + "}");
-            LogUtil.global().info("Server:main: netty-socketd: Started @" + (time_end - time_start) + "ms");
+            LogUtil.global().info("Server:main: netty-socketd: Started (" + solon_boot_ver() + ") @" + (time_end - time_start) + "ms");
         } catch (RuntimeException e) {
             parentGroup.shutdownGracefully();
             childGroup.shutdownGracefully();
@@ -103,6 +102,6 @@ public class XPluginImp implements Plugin {
         _server.channel().close();
         _server = null;
 
-        LogUtil.global().info("Server:main: netty-socketd: Has Stopped " + solon_boot_ver());
+        LogUtil.global().info("Server:main: netty-socketd: Has Stopped (" + solon_boot_ver() + ")");
     }
 }
