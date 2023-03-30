@@ -1,23 +1,12 @@
 package org.noear.solon.boot.jdkhttp;
 
-import com.sun.net.httpserver.*;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
-import org.noear.solon.Utils;
-import org.noear.solon.boot.ServerConstants;
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.prop.impl.HttpServerProps;
-import org.noear.solon.boot.ssl.SslContextFactory;
 import org.noear.solon.core.*;
-import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.core.util.LogUtil;
-
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLEngine;
-import javax.net.ssl.SSLParameters;
-import java.io.IOException;
-import java.net.InetSocketAddress;
 
 public final class XPluginImp implements Plugin {
     private static Signal _signal;
@@ -26,11 +15,11 @@ public final class XPluginImp implements Plugin {
         return _signal;
     }
 
-    private HttpServer _server = null;
-
     public static String solon_boot_ver() {
         return "jdk http/" + Solon.version();
     }
+
+    JdkHttpServer server;
 
     @Override
     public void start(AopContext context) {
@@ -69,76 +58,34 @@ public final class XPluginImp implements Plugin {
 
         long time_start = System.currentTimeMillis();
 
-        LogUtil.global().info("Server:main: Sun.net.HttpServer(jdkhttp)");
-
-
-        if (System.getProperty(ServerConstants.SSL_KEYSTORE) != null) {
-            // enable SSL if configured
-            if (Utils.isNotEmpty(_host)) {
-                _server = HttpsServer.create(new InetSocketAddress(_host, _port), 0);
-            } else {
-                _server = HttpsServer.create(new InetSocketAddress(_port), 0);
-            }
-
-            addSslConfig((HttpsServer) _server);
-        } else {
-            if (Utils.isNotEmpty(_host)) {
-                _server = HttpServer.create(new InetSocketAddress(_host, _port), 0);
-            } else {
-                _server = HttpServer.create(new InetSocketAddress(_port), 0);
-            }
-        }
-
-        HttpContext httpContext = _server.createContext("/", new JdkHttpContextHandler());
-        httpContext.getFilters().add(new ParameterFilter());
-
-        _server.setExecutor(props.getBioExecutor("jdkhttp-"));
-        _server.start();
-
         final String _wrapHost = props.getWrapHost();
         final int _wrapPort = props.getWrapPort();
         _signal = new SignalSim(_name, _wrapHost, _wrapPort, "http", SignalType.HTTP);
+
+        server = new JdkHttpServer();
+        server.setExecutor(props.getBioExecutor("jdkhttp-"));
+        server.setHandler(new JdkHttpContextHandler());
+        server.start(_host, _port);
 
         app.signalAdd(_signal);
 
         long time_end = System.currentTimeMillis();
 
+
+        LogUtil.global().info("Server:main: Sun.net.HttpServer(jdkhttp)");
         LogUtil.global().info("Connector:main: jdkhttp: Started ServerConnector@{HTTP/1.1,[http/1.1]}{http://localhost:" + _port + "}");
         LogUtil.global().info("Server:main: jdkhttp: Started @" + (time_end - time_start) + "ms");
     }
 
-    private void addSslConfig(HttpsServer httpsServer) throws IOException {
-        SSLContext sslContext = SslContextFactory.create();
-
-        httpsServer.setHttpsConfigurator(new HttpsConfigurator(sslContext) {
-            public void configure(HttpsParameters params) {
-                try {
-                    // Initialise the SSL context
-                    SSLContext c = SSLContext.getDefault();
-                    SSLEngine engine = c.createSSLEngine();
-                    params.setNeedClientAuth(false);
-                    params.setCipherSuites(engine.getEnabledCipherSuites());
-                    params.setProtocols(engine.getEnabledProtocols());
-
-                    // Get the default parameters
-                    SSLParameters defaultSSLParameters = c.getDefaultSSLParameters();
-                    params.setSSLParameters(defaultSSLParameters);
-                } catch (Throwable e) {
-                    //"Failed to create HTTPS port"
-                    EventBus.pushTry(e);
-                }
-            }
-        });
-    }
 
     @Override
     public void stop() throws Throwable {
-        if (_server == null) {
+        if (server == null) {
             return;
         }
 
-        _server.stop(0);
-        _server = null;
+        server.stop();
+        server = null;
         LogUtil.global().info("Server:main: jdkhttp: Has Stopped " + solon_boot_ver());
     }
 }

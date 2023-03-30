@@ -22,7 +22,7 @@ public class JdkHttpContextHandler implements HttpHandler {
         }
     }
 
-    private void handleDo(HttpExchange exchange) throws IOException {
+    protected void handleDo(HttpExchange exchange) throws IOException {
         JdkHttpContext ctx = new JdkHttpContext(exchange); //这里可能会有异常
 
         try {
