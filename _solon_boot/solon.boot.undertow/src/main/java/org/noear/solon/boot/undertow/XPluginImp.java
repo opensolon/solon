@@ -14,13 +14,15 @@ import javax.servlet.annotation.WebServlet;
 
 public final class XPluginImp implements Plugin {
     private static Signal _signal;
-    public static Signal signal(){
+
+    public static Signal signal() {
         return _signal;
     }
 
     private UndertowServerBase _server = null;
-    public static String solon_boot_ver(){
-        return "undertow 2.1/" + Solon.version();
+
+    public static String solon_boot_ver() {
+        return "undertow 2.2.19/" + Solon.version();
     }
 
     @Override
@@ -41,7 +43,7 @@ public final class XPluginImp implements Plugin {
         });
     }
 
-    private void start0(SolonApp app) throws Throwable{
+    private void start0(SolonApp app) throws Throwable {
         //初始化属性
         ServerProps.init();
 
@@ -78,7 +80,7 @@ public final class XPluginImp implements Plugin {
 
         System.out.println(connectorInfo + "}{http://localhost:" + _port + "}");
 
-        LogUtil.global().info("Server:main: undertow: Started @" + (time_end - time_start) + "ms");
+        LogUtil.global().info("Server:main: undertow: Started (" + solon_boot_ver() + ") @" + (time_end - time_start) + "ms");
     }
 
     @Override
@@ -87,7 +89,7 @@ public final class XPluginImp implements Plugin {
             _server.stop();
             _server = null;
 
-            LogUtil.global().info("Server:main: undertow: Has Stopped " + solon_boot_ver());
+            LogUtil.global().info("Server:main: undertow: Has Stopped (" + solon_boot_ver() + ")");
         }
     }
 }

@@ -14,7 +14,6 @@ import javax.servlet.annotation.WebListener;
 import javax.servlet.annotation.WebServlet;
 
 public final class XPluginImp implements Plugin {
-    public static final String TOMCAT_VER = "tomcat 9.0.64";
     private static Signal _signal;
 
     public static Signal signal() {
@@ -24,7 +23,7 @@ public final class XPluginImp implements Plugin {
     private ServerLifecycle _server = null;
 
     public static String solon_boot_ver() {
-        return TOMCAT_VER + "/" + Solon.version();
+        return "tomcat 9.0.64/" + Solon.version();
     }
 
     @Override
@@ -74,7 +73,6 @@ public final class XPluginImp implements Plugin {
 
         long time_end = System.currentTimeMillis();
 
-        LogUtil.global().info("Server:main: " + TOMCAT_VER + "(tomcat)");
         String connectorInfo = "solon.connector:main: tomcat: Started ServerConnector@{HTTP/1.1,[http/1.1]";
         if (app.enableWebSocket()) {
             System.out.println(connectorInfo + "[WebSocket]}{0.0.0.0:" + _port + "}");
@@ -82,7 +80,7 @@ public final class XPluginImp implements Plugin {
 
         System.out.println(connectorInfo + "}{http://localhost:" + _port + "}");
 
-        LogUtil.global().info("Server:main: tomcat: Started @" + (time_end - time_start) + "ms");
+        LogUtil.global().info("Server:main: tomcat: Started (" + solon_boot_ver() + ") @" + (time_end - time_start) + "ms");
     }
 
     @Override
@@ -91,7 +89,7 @@ public final class XPluginImp implements Plugin {
             _server.stop();
             _server = null;
 
-            LogUtil.global().info("Server:main: tomcat: Has Stopped " + solon_boot_ver());
+            LogUtil.global().info("Server:main: tomcat: Has Stopped (" + solon_boot_ver() + ")");
         }
     }
 }

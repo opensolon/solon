@@ -38,8 +38,6 @@ public abstract class TomcatServerBase implements ServerLifecycle {
             _server.stop();
             _server = null;
         }
-
-        LogUtil.global().info("Server:main: tomcat: Has Stopped " + solon_boot_ver());
     }
 
 

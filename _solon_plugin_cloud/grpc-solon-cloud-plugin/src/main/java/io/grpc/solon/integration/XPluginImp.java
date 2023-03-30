@@ -28,6 +28,10 @@ public class XPluginImp implements Plugin {
         return _signal;
     }
 
+    public static String solon_boot_ver() {
+        return "grpc 1.49.0/" + Solon.version();
+    }
+
     Server server;
 
     Map<Class<?>, Object> serviceMap;
@@ -86,7 +90,7 @@ public class XPluginImp implements Plugin {
         long time_end = System.currentTimeMillis();
 
         LogUtil.global().info("Connector:main: grpc: Started ServerConnector@{grpc://localhost:" + _port + "}");
-        LogUtil.global().info("Server:main: grpc: Started @" + (time_end - time_start) + "ms");
+        LogUtil.global().info("Server:main: grpc: Started ("+solon_boot_ver()+") @" + (time_end - time_start) + "ms");
     }
 
     @Override
@@ -94,6 +98,8 @@ public class XPluginImp implements Plugin {
         if (server != null) {
             server.shutdown();
             server = null;
+
+            LogUtil.global().info("Server:main: grpc: Has Stopped (" + solon_boot_ver() + ")");
         }
     }
 }

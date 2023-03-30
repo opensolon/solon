@@ -38,7 +38,7 @@ public class XPluginImp implements Plugin {
         });
     }
 
-    private void start0(SolonApp app) throws Throwable{
+    private void start0(SolonApp app) throws Throwable {
         //初始化属性
         ServerProps.init();
 
@@ -66,7 +66,7 @@ public class XPluginImp implements Plugin {
         long time_end = System.currentTimeMillis();
 
         LogUtil.global().info("Connector:main: websocket: Started ServerConnector@{HTTP/1.1,[WebSocket]}{0.0.0.0:" + _port + "}");
-        LogUtil.global().info("Server:main: websocket: Started @" + (time_end - time_start) + "ms");
+        LogUtil.global().info("Server:main: websocket: Started (" + solon_boot_ver() + ") @" + (time_end - time_start) + "ms");
     }
 
     @Override
@@ -75,7 +75,7 @@ public class XPluginImp implements Plugin {
             _server.stop();
             _server = null;
 
-            LogUtil.global().info("Server:main: websocket: Has Stopped " + solon_boot_ver());
+            LogUtil.global().info("Server:main: websocket: Has Stopped (" + solon_boot_ver() + ")");
         }
     }
 }
