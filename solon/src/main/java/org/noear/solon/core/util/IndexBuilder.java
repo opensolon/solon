@@ -49,7 +49,8 @@ public class IndexBuilder {
 					}
 				}
 
-				throw new IllegalStateException("@Init does not support dependency loops: " + link);
+
+				throw new IllegalStateException("Lifecycle does not support dependency loops: " + link);
 			}
 		}
 
