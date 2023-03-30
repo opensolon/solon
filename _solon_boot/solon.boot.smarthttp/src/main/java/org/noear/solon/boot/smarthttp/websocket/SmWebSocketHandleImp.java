@@ -11,7 +11,7 @@ import org.smartboot.http.server.handler.WebSocketDefaultHandler;
 
 import java.nio.ByteBuffer;
 
-public class WebSocketHandleImp extends WebSocketDefaultHandler {
+public class SmWebSocketHandleImp extends WebSocketDefaultHandler {
 
     @Override
     public void onHandShake(WebSocketRequest request, WebSocketResponse response) {

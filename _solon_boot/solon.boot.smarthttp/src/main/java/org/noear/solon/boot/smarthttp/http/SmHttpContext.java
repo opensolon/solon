@@ -19,12 +19,12 @@ import java.io.OutputStream;
 import java.net.URI;
 import java.util.*;
 
-public class SmartHttpContext extends ContextBase {
+public class SmHttpContext extends ContextBase {
     private HttpRequest _request;
     private HttpResponse _response;
     protected Map<String, List<UploadedFile>> _fileMap;
 
-    public SmartHttpContext(HttpRequest request, HttpResponse response) {
+    public SmHttpContext(HttpRequest request, HttpResponse response) {
         _request = request;
         _response = response;
         _fileMap = new HashMap<>();

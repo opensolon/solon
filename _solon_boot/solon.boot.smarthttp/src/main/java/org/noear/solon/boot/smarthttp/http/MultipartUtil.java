@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 class MultipartUtil {
-    public static void buildParamsAndFiles(SmartHttpContext context) throws IOException{
+    public static void buildParamsAndFiles(SmHttpContext context) throws IOException{
         HttpRequest request = (HttpRequest) context.request();
         HttpMultipartCollection parts = new HttpMultipartCollection(request);
 
@@ -31,7 +31,7 @@ class MultipartUtil {
         }
     }
 
-    private static void doBuildFiles(SmartHttpContext context, HttpMultipart part) throws IOException{
+    private static void doBuildFiles(SmHttpContext context, HttpMultipart part) throws IOException{
         List<UploadedFile> list = context._fileMap.get(part.getName());
         if(list == null){
             list = new ArrayList<>();

@@ -13,8 +13,8 @@ import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 
-public class SmartHttpContextHandler extends HttpServerHandler {
-    private ExecutorService executor;
+public class SmHttpContextHandler extends HttpServerHandler {
+    protected ExecutorService executor;
 
     public void setExecutor(ExecutorService executor) {
         this.executor = executor;
@@ -31,7 +31,7 @@ public class SmartHttpContextHandler extends HttpServerHandler {
         }
     }
 
-    private void handle0(HttpRequest request, HttpResponse response, CompletableFuture<Object> future){
+    protected void handle0(HttpRequest request, HttpResponse response, CompletableFuture<Object> future) {
         try {
             handleDo(request, response);
         } catch (Throwable e) {
@@ -41,14 +41,14 @@ public class SmartHttpContextHandler extends HttpServerHandler {
         }
     }
 
-    private void handleDo(HttpRequest request, HttpResponse response){
+    protected void handleDo(HttpRequest request, HttpResponse response) {
         try {
             if ("PRI".equals(request.getMethod())) {
                 response.setHttpStatus(HttpStatus.NOT_IMPLEMENTED);
                 return;
             }
 
-            SmartHttpContext ctx = new SmartHttpContext(request, response);
+            SmHttpContext ctx = new SmHttpContext(request, response);
 
             ctx.contentType("text/plain;charset=UTF-8");
             if (ServerProps.output_meta) {
