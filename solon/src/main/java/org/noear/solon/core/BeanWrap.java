@@ -7,6 +7,7 @@ import org.noear.solon.annotation.Init;
 import org.noear.solon.annotation.Singleton;
 import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.core.util.IndexBuilder;
+import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.core.wrap.ClassWrap;
 
 /**
@@ -288,6 +289,7 @@ public class BeanWrap {
                     clzInit = m;
                     clzInit.setAccessible(true);
                     clzInitIndex = initAnno.index();
+                    LogUtil.global().warn("@Init will be discarded, suggested use 'LifecycleBean' interface");
                 }
                 break;
             }
