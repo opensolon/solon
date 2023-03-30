@@ -63,7 +63,6 @@ public final class XPluginImp implements Plugin {
         }
 
         long time_start = System.currentTimeMillis();
-        LogUtil.global().info("Server:main: " + TOMCAT_VER + "(tomcat)");
 
         _server.start(_host, _port);
 
@@ -75,6 +74,7 @@ public final class XPluginImp implements Plugin {
 
         long time_end = System.currentTimeMillis();
 
+        LogUtil.global().info("Server:main: " + TOMCAT_VER + "(tomcat)");
         String connectorInfo = "solon.connector:main: tomcat: Started ServerConnector@{HTTP/1.1,[http/1.1]";
         if (app.enableWebSocket()) {
             System.out.println(connectorInfo + "[WebSocket]}{0.0.0.0:" + _port + "}");
