@@ -22,7 +22,7 @@ public class JlHttpContextHandler implements HTTPServer.ContextHandler {
         }
     }
 
-    private int handleDo(HTTPServer.Request request, HTTPServer.Response response) throws IOException {
+    protected int handleDo(HTTPServer.Request request, HTTPServer.Response response) throws IOException {
         JlHttpContext ctx = new JlHttpContext(request, response);
 
         ctx.contentType("text/plain;charset=UTF-8");

@@ -22,11 +22,12 @@ public final class XPluginImp implements Plugin {
         return _signal;
     }
 
-    private HTTPServer _server = null;
 
     public static String solon_boot_ver() {
         return "jlhttp 2.6/" + Solon.version();
     }
+
+    JlHttpServer _server;
 
     @Override
     public void start(AopContext context) {
@@ -58,7 +59,7 @@ public final class XPluginImp implements Plugin {
         //初始化属性
         ServerProps.init();
 
-        _server = new HTTPServer();
+
 
         HttpServerProps props = new HttpServerProps();
         final String _host = props.getHost();
@@ -79,47 +80,20 @@ public final class XPluginImp implements Plugin {
             HTTPServer.MAX_BODY_SIZE = ServerProps.request_maxBodySize;
         }
 
-        JlHttpContextHandler _handler = new JlHttpContextHandler();
-
-
-        if (System.getProperty(ServerConstants.SSL_KEYSTORE) != null) {
-            // enable SSL if configured
-            _server.setServerSocketFactory(SslContextFactory.create().getServerSocketFactory());
-        }
-
-        HTTPServer.VirtualHost host = _server.getVirtualHost(null);
-
-
-        host.setDirectoryIndex(null);
-
-        host.addContext("/", _handler,"*");
-
-
-//        MethodType.HEAD.name,
-//                MethodType.GET.name,
-//                MethodType.POST.name,
-//                MethodType.PUT.name,
-//                MethodType.DELETE.name,
-//                MethodType.PATCH.name,
-//                MethodType.OPTIONS.name
-
-        LogUtil.global().info("Server:main: JlHttpServer 2.6(jlhttp)");
-        
-        _server.setExecutor(props.getBioExecutor("jlhttp-"));
-        _server.setPort(_port);
-        if (Utils.isNotEmpty(_host)) {
-            _server.setHost(_host);
-        }
-        _server.start();
-
         final String _wrapHost = props.getWrapHost();
         final int _wrapPort = props.getWrapPort();
         _signal = new SignalSim(_name, _wrapHost, _wrapPort, "http", SignalType.HTTP);
+
+        _server = new JlHttpServer();
+        _server.setExecutor(props.getBioExecutor("jlhttp-"));
+        _server.setHandler(new JlHttpContextHandler());
+        _server.start(_host, _port);
 
         app.signalAdd(_signal);
 
         long time_end = System.currentTimeMillis();
 
+        LogUtil.global().info("Server:main: JlHttpServer 2.6(jlhttp)");
         LogUtil.global().info("Connector:main: jlhttp: Started ServerConnector@{HTTP/1.1,[http/1.1]}{http://localhost:" + _port + "}");
         LogUtil.global().info("Server:main: jlhttp: Started @" + (time_end - time_start) + "ms");
     }
