@@ -6,6 +6,12 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.StringJoiner;
 
+/**
+ * ParameterizedType 实现
+ *
+ * @author noear
+ * @since 1.6
+ * */
 public class ParameterizedTypeImpl implements ParameterizedType {
     private final Type[] actualTypeArguments;
     private final Class<?> rawType;

@@ -3,6 +3,8 @@ package org.noear.solon.core.util;
 import java.util.Objects;
 
 /**
+ * 排序载体
+ *
  * @author noear
  * @since 1.6
  */

@@ -10,6 +10,12 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * 路由工具
+ *
+ * @author noear
+ * @since 1.2
+ * */
 public class PathUtil {
     /**
      * 合并两个路径

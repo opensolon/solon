@@ -10,6 +10,8 @@ import java.util.Date;
 import java.util.TimeZone;
 
 /**
+ * 日期分析器
+ *
  * @author noear
  * @since 1.5
  */

@@ -15,6 +15,8 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 /**
+ * 资源工具
+ *
  * @author noear
  * @since 2.0
  */

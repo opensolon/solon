@@ -7,6 +7,8 @@ import java.util.Properties;
 import java.util.function.Consumer;
 
 /**
+ * 插件工具
+ *
  * @author noear
  * @since 1.7
  */
