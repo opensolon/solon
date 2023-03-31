@@ -56,10 +56,11 @@ public class DubboFilterTracing implements Filter {
             operationName.append(address).append(":");
         }
 
+        //调用服务名（就是接口名）
         if (Utils.isNotEmpty(invocation.getServiceName())) {
             operationName.append(invocation.getServiceName()).append(":");
         }
-        operationName.append(invoker.getInterface().getName()).append(":");
+        //调用方法名
         operationName.append(invocation.getMethodName());
 
 

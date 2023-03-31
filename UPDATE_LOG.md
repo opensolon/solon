@@ -10,7 +10,7 @@
 * 提醒2：有使用弃用接口的。建议先升级到 1.12.4；替换弃用代码后，再升级到 2.0.0
 
 ### 2.2.8
-* 插件 dubbo-solon-plugin 增加 DubboFilterTracing 类???
+* 插件 dubbo-solon-plugin 增加 DubboFilterTracing 类
 * 插件 solon.scheduling.simple 增加单计划任务的起停控制
 * 增加 solon.boot.jlhttp 插件 JlHttpServer 类，提供可复用支持
 * 增加 solon.boot.jdkhttp 插件 JdkHttpServer 类，提供可复用支持
