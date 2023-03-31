@@ -10,16 +10,17 @@
 * 提醒2：有使用弃用接口的。建议先升级到 1.12.4；替换弃用代码后，再升级到 2.0.0
 
 ### 2.2.8
-* 插件 dubbo-solon-plugin 增加 DubboFilterTracing 类
+* 插件 dubbo-solon-plugin 增加 DubboFilterTracing 类???
 * 插件 solon.scheduling.simple 增加单计划任务的起停控制
 * 增加 solon.boot.jlhttp 插件 JlHttpServer 类，提供可复用支持
 * 增加 solon.boot.jdkhttp 插件 JdkHttpServer 类，提供可复用支持
 * 增加 solon.boot.smarthttp 插件 SmHttpServer 类，提供可复用支持
 * 增加 动态代理时异常时的友好提示
-* 调整 solon.boot.xxx "Server:main:" 打印
+* 优化 solon.boot.xxx "Server:main:" 打印
 * 优化 solon.cloud.tracing Span 的 name 和 tags
 * 优化 LifecycleBean 组件增加自动排位
-* wood 升为 1.1.0
+* wood 升为 1.1.0 （拆分为： wood 和 wood.plus）
+* water 升为 2.20.3 （配套 wood 拆分）
 
 ### 2.2.7
 
