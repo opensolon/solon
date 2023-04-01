@@ -150,7 +150,8 @@ public class HTTPServer {
     public static final byte[] CRLF = { 0x0d, 0x0a };
 
     /** The HTTP status description strings. */
-    protected static final String[] statuses = new String[600];
+    protected static final int statusesMax = 599;
+    protected static final String[] statuses = new String[statusesMax+1];
     /** The HTTP UnknownStatus  */
     private static final String UnknownStatus = "Unknown Status";
     static {
@@ -1729,7 +1730,10 @@ public class HTTPServer {
             if (!headers.contains("Date"))
                 headers.add("Date", formatDate(System.currentTimeMillis()));
             //headers.add("Server", "JLHTTP/2.6");//todo: 不要输出产品标识
-            out.write(getBytes("HTTP/1.1 ", Integer.toString(status), " ",((statuses.length-1) < status || status < 0) ? UnknownStatus : statuses[status]));
+            if (status < 0 || status > statusesMax) {//todo: 解决状态可能会超界的问题
+                status = 0;
+            }
+            out.write(getBytes("HTTP/1.1 ", Integer.toString(status), " ", statuses[status]));
             out.write(CRLF);
             headers.writeTo(out);
             state = 1; // headers sent
