@@ -9,6 +9,8 @@
 * 提醒1：之前没有使用弃用接口的，可以直接升级 <br>
 * 提醒2：有使用弃用接口的。建议先升级到 1.12.4；替换弃用代码后，再升级到 2.0.0
 
+### 2.2.9
+
 ### 2.2.8
 * 插件 dubbo-solon-plugin 增加 DubboFilterTracing 类
 * 插件 solon.scheduling.simple 增加单计划任务的起停控制
@@ -24,7 +26,6 @@
 * water 升为 2.20.3 （配套 wood 拆分）
 
 ### 2.2.7
-
 * 增加 @Path 替代 @PathVar（简短些），不过这个注解本身意义不大
 * 增加 ResourceUtil::findResource 接口(ssl.keyStore 改用此接口)
 * 增加 "application.xxx" 配置的弃用警告日志
