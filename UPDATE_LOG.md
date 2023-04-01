@@ -10,6 +10,8 @@
 * 提醒2：有使用弃用接口的。建议先升级到 1.12.4；替换弃用代码后，再升级到 2.0.0
 
 ### 2.2.9
+* 优化 jlhttp 状态码超界的处理
+* 优化 solon.cloud.tracing @Tracing 增加全类名的记录
 
 ### 2.2.8
 * 插件 dubbo-solon-plugin 增加 DubboFilterTracing 类
