@@ -5,6 +5,7 @@ import org.junit.runner.RunWith;
 import org.noear.solon.test.AbstractHttpTester;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
+import webapp.App;
 
 import java.io.IOException;
 import java.util.LinkedHashMap;
@@ -14,7 +15,7 @@ import java.util.Map;
  * @author noear 2021/9/5 created
  */
 @RunWith(SolonJUnit4ClassRunner.class)
-@SolonTest(webapp.TestApp.class)
+@SolonTest(App.class)
 public class HttpValidTest3 extends AbstractHttpTester {
     @Test
     public void test0() throws IOException {

@@ -6,6 +6,7 @@ import org.noear.snack.ONode;
 import org.noear.solon.test.AbstractHttpTester;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
+import webapp.App;
 import webapp.utils.Datetime;
 
 import java.io.IOException;
@@ -14,7 +15,7 @@ import java.io.IOException;
  * @author noear 2021/6/13 created
  */
 @RunWith(SolonJUnit4ClassRunner.class)
-@SolonTest(webapp.TestApp.class)
+@SolonTest(App.class)
 public class HttpParam4Test extends AbstractHttpTester {
     @Test
     public void json() throws IOException {

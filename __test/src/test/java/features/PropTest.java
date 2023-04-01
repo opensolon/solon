@@ -6,6 +6,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
+import webapp.App;
 import webapp.models.CfgItem;
 
 import java.util.List;
@@ -15,7 +16,7 @@ import java.util.Map;
  * @author noear 2022/6/11 created
  */
 @RunWith(SolonJUnit4ClassRunner.class)
-@SolonTest(webapp.TestApp.class)
+@SolonTest(App.class)
 public class PropTest {
 
     @Inject("${cfgitems}")

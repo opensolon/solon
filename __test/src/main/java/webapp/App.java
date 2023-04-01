@@ -36,9 +36,9 @@ import java.util.Properties;
 //@EnableCron4j
 //@EnableQuartz
 @SolonMain
-public class TestApp {
+public class App {
 
-    static Logger logger = LoggerFactory.getLogger(TestApp.class);
+    static Logger logger = LoggerFactory.getLogger(App.class);
 
     @Inject
     AopContext aopContext;
@@ -49,7 +49,7 @@ public class TestApp {
         System.out.println("Default Charset in Use=" + getDefaultCharSet());
         System.out.println("file.encoding=" + System.getProperty("file.encoding"));
         System.out.println("user.dir=" + System.getProperty("user.dir"));
-        System.out.println("resource[/]=" + TestApp.class.getResource("/").getPath());
+        System.out.println("resource[/]=" + App.class.getResource("/").getPath());
 
         //简化方式
         //SolonApp app = Solon.start(TestApp.class, args, x -> x.enableSocketD(true).enableWebSocket(true));
@@ -76,7 +76,7 @@ public class TestApp {
             System.out.println("3.Bean扫描并加载完成");
         }).onAppLoadEnd(e -> {
             System.out.println("4.应用全加载完成了");
-        }).start(TestApp.class, args, x -> {
+        }).start(App.class, args, x -> {
 
             x.enableSocketD(true);
             x.enableWebSocket(true);
@@ -171,7 +171,7 @@ public class TestApp {
 
         //控制渲染的示例 //即拦截执行结果的机制
         //
-        SolonApp app = Solon.start(TestApp.class, null);
+        SolonApp app = Solon.start(App.class, null);
 
         //开始之前把上下文置为已泻染
         app.before("/user/**", MethodType.HTTP, c -> c.setRendered(true));

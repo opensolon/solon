@@ -7,6 +7,7 @@ import org.noear.solon.i18n.I18nService;
 import org.noear.solon.i18n.I18nUtil;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
+import webapp.App;
 
 import java.util.List;
 import java.util.Locale;
@@ -15,7 +16,7 @@ import java.util.Locale;
  * @author noear 2021/9/19 created
  */
 @RunWith(SolonJUnit4ClassRunner.class)
-@SolonTest(webapp.TestApp.class)
+@SolonTest(App.class)
 public class I18nUtilTest {
     @Test
     public void test() {

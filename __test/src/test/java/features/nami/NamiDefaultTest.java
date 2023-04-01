@@ -5,12 +5,13 @@ import org.junit.runner.RunWith;
 import org.noear.nami.annotation.NamiClient;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
+import webapp.App;
 
 /**
  * @author noear 2022/11/7 created
  */
 @RunWith(SolonJUnit4ClassRunner.class)
-@SolonTest(webapp.TestApp.class)
+@SolonTest(App.class)
 public class NamiDefaultTest {
 
     @NamiClient(url = "https://api.github.com")

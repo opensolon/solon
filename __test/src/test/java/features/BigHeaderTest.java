@@ -3,10 +3,10 @@ package features;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.noear.snack.ONode;
-import org.noear.solon.Utils;
 import org.noear.solon.test.AbstractHttpTester;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
+import webapp.App;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
@@ -17,7 +17,7 @@ import java.util.Map;
  * @author noear 2022/3/1 created
  */
 @RunWith(SolonJUnit4ClassRunner.class)
-@SolonTest(webapp.TestApp.class)
+@SolonTest(App.class)
 public class BigHeaderTest extends AbstractHttpTester {
     @Test
     public void test_header() throws Exception {

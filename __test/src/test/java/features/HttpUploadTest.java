@@ -5,6 +5,7 @@ import org.junit.runner.RunWith;
 import org.noear.solon.test.AbstractHttpTester;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
+import webapp.App;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -15,7 +16,7 @@ import java.nio.charset.StandardCharsets;
  * @author noear 2022/3/22 created
  */
 @RunWith(SolonJUnit4ClassRunner.class)
-@SolonTest(webapp.TestApp.class)
+@SolonTest(App.class)
 public class HttpUploadTest extends AbstractHttpTester {
     @Test
     public void upload() throws IOException {

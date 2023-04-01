@@ -7,6 +7,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
+import webapp.App;
 import webapp.models.TestModel;
 
 import java.util.Map;
@@ -15,7 +16,7 @@ import java.util.Map;
  * @author noear 2021/5/28 created
  */
 @RunWith(SolonJUnit4ClassRunner.class)
-@SolonTest(webapp.TestApp.class)
+@SolonTest(App.class)
 public class InjectTest {
     @Inject(value = "${username}", autoRefreshed = true)
     String username;

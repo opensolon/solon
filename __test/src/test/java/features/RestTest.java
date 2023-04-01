@@ -5,12 +5,13 @@ import org.junit.runner.RunWith;
 import org.noear.solon.test.AbstractHttpTester;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
+import webapp.App;
 
 /**
  * @author noear 2021/11/25 created
  */
 @RunWith(SolonJUnit4ClassRunner.class)
-@SolonTest(webapp.TestApp.class)
+@SolonTest(App.class)
 public class RestTest extends AbstractHttpTester {
     @Test
     public void null0() throws Exception {

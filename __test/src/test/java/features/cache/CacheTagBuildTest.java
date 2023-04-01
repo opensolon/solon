@@ -5,6 +5,7 @@ import org.junit.runner.RunWith;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
+import webapp.App;
 import webapp.dso.cache.OathServer;
 import webapp.dso.cache.Oauth;
 
@@ -12,7 +13,7 @@ import webapp.dso.cache.Oauth;
  * @author noear 2022/1/15 created
  */
 @RunWith(SolonJUnit4ClassRunner.class)
-@SolonTest(webapp.TestApp.class)
+@SolonTest(App.class)
 public class CacheTagBuildTest {
     @Inject
     OathServer oathServer;

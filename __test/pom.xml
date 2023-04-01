@@ -490,7 +490,7 @@
                     </descriptorRefs>
                     <archive>
                         <manifest>
-                            <mainClass>webapp.TestApp</mainClass>
+                            <mainClass>webapp.App</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

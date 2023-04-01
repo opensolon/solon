@@ -9,13 +9,14 @@ import org.noear.solon.annotation.Inject;
 import org.noear.solon.test.AbstractHttpTester;
 import org.noear.solon.test.SolonTest;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
+import webapp.App;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 @RunWith(SolonJUnit4ClassRunner.class)
-@SolonTest(webapp.TestApp.class)
+@SolonTest(App.class)
 public class HttpTest extends AbstractHttpTester {
 
     @Inject("${username}")

@@ -1,6 +1,5 @@
 package features;
 
-import okhttp3.Headers;
 import okhttp3.Response;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -8,6 +7,7 @@ import org.noear.solon.test.AbstractHttpTester;
 import org.noear.solon.test.HttpUtils;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
+import webapp.App;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ import java.util.List;
  * @author noear 2021/2/15 created
  */
 @RunWith(SolonJUnit4ClassRunner.class)
-@SolonTest(webapp.TestApp.class)
+@SolonTest(App.class)
 public class SessionTest extends AbstractHttpTester {
     @Test
     public void test() throws Exception {
