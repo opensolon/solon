@@ -151,10 +151,11 @@ public class HTTPServer {
 
     /** The HTTP status description strings. */
     protected static final String[] statuses = new String[600];
-
+    /** The HTTP UnknownStatus  */
+    private static final String UnknownStatus = "Unknown Status";
     static {
         // initialize status descriptions lookup table
-        Arrays.fill(statuses, "Unknown Status");
+        Arrays.fill(statuses, UnknownStatus);
         statuses[100] = "Continue";
         statuses[200] = "OK";
         statuses[204] = "No Content";
@@ -1728,7 +1729,7 @@ public class HTTPServer {
             if (!headers.contains("Date"))
                 headers.add("Date", formatDate(System.currentTimeMillis()));
             //headers.add("Server", "JLHTTP/2.6");//todo: 不要输出产品标识
-            out.write(getBytes("HTTP/1.1 ", Integer.toString(status), " ", statuses[status]));
+            out.write(getBytes("HTTP/1.1 ", Integer.toString(status), " ",(statuses.length-1) < status ? UnknownStatus : statuses[status]));
             out.write(CRLF);
             headers.writeTo(out);
             state = 1; // headers sent
