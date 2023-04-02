@@ -12,6 +12,9 @@
 ### 2.2.9
 * 优化 jlhttp 状态码超界的处理
 * 优化 solon.cloud.tracing @Tracing 增加全类名的记录
+* 增加 @Inject 注入 bean 的 required 支持???
+* 增加 afterInjection() 后所有 bean 必然可用的支持???
+* 增加 "/WEB-INF/templates/" 后端模板目录约定支持
 
 ### 2.2.8
 * 插件 dubbo-solon-plugin 增加 DubboFilterTracing 类
