@@ -1,18 +1,23 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <parent>
         <groupId>org.noear</groupId>
         <artifactId>solon-parent</artifactId>
-        <version>2.2.8</version>
+        <version>2.2.9-SNAPSHOT</version>
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
+
     <artifactId>weixin-java-cp-solon-plugin</artifactId>
     <packaging>jar</packaging>
+
     <name>weixin-java-cp-solon-plugin</name>
     <description>wxjava,微信企业号/企业微信 Java SDK Solon Plugin</description>
+
     <properties>
         <redisson.version>3.20.1</redisson.version>
     </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
