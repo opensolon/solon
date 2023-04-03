@@ -10,6 +10,8 @@
 * 提醒2：有使用弃用接口的。建议先升级到 1.12.4；替换弃用代码后，再升级到 2.0.0
 
 ### 2.2.9
+* 新增 wxjava-xxx-solon-plugin 插件
+* 插件 solon.serialization.jackson 增加几个默认特性，增强与fastjson的兼容度
 * 优化 jlhttp 状态码超界的处理
 * 优化 solon.cloud.tracing @Tracing 增加全类名的记录
 * 增加 @Inject 注入 bean 的 required 支持???
