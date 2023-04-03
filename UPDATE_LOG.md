@@ -19,6 +19,8 @@
 * 增加 "/WEB-INF/templates/" 后端模板目录约定支持
 * mybatis 升为 3.5.13
 * fastjson2 升为 2.0.26
+* beetl 升为 3.15.1.RELEASE
+* beetlsql 升为 3.21.0-RELEASE
 
 ### 2.2.8
 * 插件 dubbo-solon-plugin 增加 DubboFilterTracing 类
