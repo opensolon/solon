@@ -14,6 +14,7 @@
 * 插件 solon.serialization.jackson 增加几个默认特性，增强与fastjson的兼容度
 * 优化 jlhttp 状态码超界的处理
 * 优化 solon.cloud.tracing @Tracing 增加全类名的记录
+* 优化 时区解析统一由 ZoneId 处理
 * 增加 @Inject 注入 bean 的 required 支持???
 * 增加 afterInjection() 后所有 bean 必然可用的支持???
 * 增加 "/WEB-INF/templates/" 后端模板目录约定支持
@@ -21,6 +22,7 @@
 * fastjson2 升为 2.0.26
 * beetl 升为 3.15.1.RELEASE
 * beetlsql 升为 3.21.0-RELEASE
+* snack3 升为 3.2.63
 
 ### 2.2.8
 * 插件 dubbo-solon-plugin 增加 DubboFilterTracing 类
