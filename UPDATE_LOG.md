@@ -9,21 +9,24 @@
 * 提醒1：之前没有使用弃用接口的，可以直接升级 <br>
 * 提醒2：有使用弃用接口的。建议先升级到 1.12.4；替换弃用代码后，再升级到 2.0.0
 
+### 2.2.10
+* 增加 @Inject 注入 bean 的 required 支持???
+* 增加 afterInjection() 后所有 bean 必然可用的支持???
+
 ### 2.2.9
 * 新增 solon.web.sso 插件
 * 新增 wxjava-xxx-solon-plugin 插件
-* 插件 solon.serialization.jackson 增加几个默认特性，增强与fastjson的兼容度
+* 插件 solon.serialization.jackson 增加几个默认特性，增强与fastjson的兼容度???
+* 插件 solon.serialization.snack3 增加嵌套泛型支持 List<List<Long>>、Map<String,List<Long>>
 * 优化 jlhttp 状态码超界的处理
 * 优化 solon.cloud.tracing @Tracing 增加全类名的记录
 * 优化 时区解析统一由 ZoneId 处理???
-* 增加 @Inject 注入 bean 的 required 支持???
-* 增加 afterInjection() 后所有 bean 必然可用的支持???
 * 增加 "/WEB-INF/templates/" 后端模板目录约定支持
 * mybatis 升为 3.5.13
 * fastjson2 升为 2.0.26
 * beetl 升为 3.15.1.RELEASE
 * beetlsql 升为 3.21.0-RELEASE
-* snack3 升为 3.2.63
+* snack3 升为 3.2.64
 
 ### 2.2.8
 * 插件 dubbo-solon-plugin 增加 DubboFilterTracing 类
