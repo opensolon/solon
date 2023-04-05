@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.noear</groupId>
         <artifactId>solon-parent</artifactId>
-        <version>2.2.8</version>
+        <version>2.2.9</version>
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
@@ -20,7 +20,6 @@
             <artifactId>solon</artifactId>
         </dependency>
 
-
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>luffy.base</artifactId>
@@ -32,16 +31,15 @@
             <artifactId>luffy.executor.s.javascript</artifactId>
             <version>${luffy.version}</version>
         </dependency>
+
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.logging</artifactId>
-            <version>2.2.8</version>
+            <artifactId>solon.logging.simple</artifactId>
         </dependency>
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>weed3-solon-plugin</artifactId>
-            <version>2.2.8</version>
+            <artifactId>wood-solon-plugin</artifactId>
         </dependency>
     </dependencies>
 

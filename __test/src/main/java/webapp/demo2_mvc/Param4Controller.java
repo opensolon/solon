@@ -35,6 +35,17 @@ public class Param4Controller {
         return list;
     }
 
+    @Mapping("json3")
+    public String test_json3(List<List<Long>> list) throws IOException {
+        asyncTask.test();
+
+        if (list != null) {
+            return list.get(0).get(0).getClass().getSimpleName();
+        } else {
+            return "err";
+        }
+    }
+
     @Mapping("param")
     public UserModel test_param(UserModel user) throws IOException {
         asyncTask.test();

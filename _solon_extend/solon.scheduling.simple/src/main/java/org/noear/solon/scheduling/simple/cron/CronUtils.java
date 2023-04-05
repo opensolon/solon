@@ -1,7 +1,7 @@
 package org.noear.solon.scheduling.simple.cron;
 
 import java.text.ParseException;
-import java.time.ZoneOffset;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -44,11 +44,10 @@ public class CronUtils {
 
                     if (tzIdx > 0) {
                         String tz = cron.substring(tzIdx);
-                        ZoneOffset tz2 = ZoneOffset.of(tz);
                         cron = cron.substring(0, tzIdx - 1);
 
                         expr = new CronExpressionPlus(cron);
-                        expr.setTimeZone(TimeZone.getTimeZone(tz2));
+                        expr.setTimeZone(TimeZone.getTimeZone(ZoneId.of(tz)));
                     } else {
                         expr = new CronExpressionPlus(cron);
                     }

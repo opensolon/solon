@@ -10,6 +10,7 @@ import org.noear.solon.core.handle.Result;
 import org.noear.solon.core.util.ResourceUtil;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
+import webapp.App;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -19,7 +20,7 @@ import java.util.Base64;
  * @author noear 2021/4/7 created
  */
 @RunWith(SolonJUnit4ClassRunner.class)
-@SolonTest(webapp.TestApp.class)
+@SolonTest(App.class)
 public class CloudFileTest {
     @Test
     public void test() {

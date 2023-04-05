@@ -7,10 +7,11 @@ import org.noear.solon.Solon;
 import org.noear.solon.socketd.SocketD;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
+import webapp.App;
 import webapp.demoh_socketd.HelloRpcService;
 
 @RunWith(SolonJUnit4ClassRunner.class)
-@SolonTest(webapp.TestApp.class)
+@SolonTest(App.class)
 public class SocketRpcTest {
 
     @Test

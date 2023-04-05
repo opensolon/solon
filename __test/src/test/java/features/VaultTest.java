@@ -3,16 +3,16 @@ package features;
 import com.zaxxer.hikari.HikariDataSource;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.noear.solon.annotation.Inject;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
 import org.noear.solon.vault.annotation.VaultInject;
+import webapp.App;
 
 /**
  * @author noear 2022/9/24 created
  */
 @RunWith(SolonJUnit4ClassRunner.class)
-@SolonTest(webapp.TestApp.class)
+@SolonTest(App.class)
 public class VaultTest {
     @VaultInject("${vault.test.db1}")
     HikariDataSource dsTmp;

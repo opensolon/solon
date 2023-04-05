@@ -7,7 +7,7 @@ import org.noear.solon.scheduling.annotation.Scheduled;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 
-import java.time.ZoneOffset;
+import java.time.ZoneId;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TimeZone;
@@ -127,12 +127,7 @@ public final class JobManager {
 
             //支持时区配置
             if (Utils.isNotEmpty(zone)) {
-                if (zone.contains("+") || zone.contains("-")) {
-                    ZoneOffset zoneOffset = ZoneOffset.of(zone);
-                    builder.inTimeZone(TimeZone.getTimeZone(zoneOffset));
-                } else {
-                    builder.inTimeZone(TimeZone.getTimeZone(zone));
-                }
+                builder.inTimeZone(TimeZone.getTimeZone(ZoneId.of(zone)));
             }
 
             Trigger trigger = TriggerBuilder.newTrigger()

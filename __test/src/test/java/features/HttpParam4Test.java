@@ -6,6 +6,7 @@ import org.noear.snack.ONode;
 import org.noear.solon.test.AbstractHttpTester;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
+import webapp.App;
 import webapp.utils.Datetime;
 
 import java.io.IOException;
@@ -14,7 +15,7 @@ import java.io.IOException;
  * @author noear 2021/6/13 created
  */
 @RunWith(SolonJUnit4ClassRunner.class)
-@SolonTest(webapp.TestApp.class)
+@SolonTest(App.class)
 public class HttpParam4Test extends AbstractHttpTester {
     @Test
     public void json() throws IOException {
@@ -54,6 +55,26 @@ public class HttpParam4Test extends AbstractHttpTester {
         assert oNode2.isArray();
         assert oNode2.get(0).get("id").getInt() == 1;
         assert new Datetime(oNode2.get(0).get("date").getDate()).getYear() > 2000;
+    }
+
+    @Test
+    public void json3() throws IOException {
+        //走json通过，这个格式OK
+        String json = "[[1],[3,4],[5,6,9]]";
+
+        String val = path("/demo2/param4/json3").bodyJson(json).post();
+
+        assert "Long".equals(val);
+    }
+
+    @Test
+    public void json3_2() throws IOException {
+        //走json通过，这个格式OK
+        String json = "{\"list\":[[1],[3,4],[5,6,9]]}";
+
+        String val = path("/demo2/param4/json3").bodyJson(json).post();
+
+        assert "Long".equals(val);
     }
 
     @Test

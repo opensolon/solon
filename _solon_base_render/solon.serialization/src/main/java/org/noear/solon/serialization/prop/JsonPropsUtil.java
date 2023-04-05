@@ -27,7 +27,7 @@ public class JsonPropsUtil {
                 DateFormat df = new SimpleDateFormat(jsonProps.dateAsFormat);
 
                 if (Utils.isNotEmpty(jsonProps.dateAsTimeZone)) {
-                    df.setTimeZone(TimeZone.getTimeZone(jsonProps.dateAsTimeZone));
+                    df.setTimeZone(TimeZone.getTimeZone(ZoneId.of(jsonProps.dateAsTimeZone)));
                 }
 
                 return df.format(e);

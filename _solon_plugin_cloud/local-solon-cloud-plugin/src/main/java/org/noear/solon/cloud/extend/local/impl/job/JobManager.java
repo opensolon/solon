@@ -5,7 +5,7 @@ import org.noear.solon.cloud.extend.local.impl.job.cron.CronExpressionPlus;
 import org.noear.solon.cloud.extend.local.impl.job.cron.CronUtils;
 
 import java.text.ParseException;
-import java.time.ZoneOffset;
+import java.time.ZoneId;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TimeZone;
@@ -44,12 +44,7 @@ public class JobManager {
         CronExpressionPlus cronX = CronUtils.get(cron);
 
         if (Utils.isNotEmpty(zone)) {
-            if (zone.contains("+") || zone.contains("-")) {
-                ZoneOffset zoneOffset = ZoneOffset.of(zone);
-                cronX.setTimeZone(TimeZone.getTimeZone(zoneOffset));
-            } else {
-                cronX.setTimeZone(TimeZone.getTimeZone(zone));
-            }
+            cronX.setTimeZone(TimeZone.getTimeZone(ZoneId.of(zone)));
         }
 
         addDo(name, new JobEntity(name, cronX, runnable));

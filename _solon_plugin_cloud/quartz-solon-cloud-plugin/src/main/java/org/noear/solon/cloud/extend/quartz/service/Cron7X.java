@@ -2,7 +2,7 @@ package org.noear.solon.cloud.extend.quartz.service;
 
 import org.noear.solon.Utils;
 
-import java.time.ZoneOffset;
+import java.time.ZoneId;
 
 /**
  * @author noear
@@ -10,7 +10,7 @@ import java.time.ZoneOffset;
  */
 public class Cron7X {
     private String cron;
-    private ZoneOffset zone;
+    private ZoneId zone;
     private Long interval;
 
     /**
@@ -23,7 +23,7 @@ public class Cron7X {
     /**
      * 时区
      */
-    public ZoneOffset getZone() {
+    public ZoneId getZone() {
         return zone;
     }
 
@@ -63,7 +63,7 @@ public class Cron7X {
 
             if (tzIdx > 0) {
                 String tz = cron7x.substring(tzIdx);
-                tmp.zone = ZoneOffset.of(tz);
+                tmp.zone = ZoneId.of(tz);
                 tmp.cron = cron7x.substring(0, tzIdx - 1);
             } else {
                 tmp.cron = cron7x;

@@ -5,10 +5,11 @@ import org.junit.runner.RunWith;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
+import webapp.App;
 import webapp.demo6_aop.Bean2;
 
 @RunWith(SolonJUnit4ClassRunner.class)
-@SolonTest(webapp.TestApp.class)
+@SolonTest(App.class)
 //@SolonTest(value = webapp.TestApp.class, args = "-server.port=9001")
 public class AopTest {
     @Inject

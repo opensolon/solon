@@ -25,7 +25,7 @@ public class TracingInterceptor implements Interceptor {
 
     @Override
     public Object doIntercept(Invocation inv) throws Throwable {
-        if(tracer == null){
+        if (tracer == null) {
             return inv.invoke();
         }
 
@@ -63,6 +63,8 @@ public class TracingInterceptor implements Interceptor {
 
         //实例化构建器
         Tracer.SpanBuilder spanBuilder = tracer.buildSpan(spanName);
+
+        spanBuilder.withTag("clz.fullname", inv.method().getMethod().getDeclaringClass().getName());
 
         //添加标志
         String tags = InvKeys.buildByTmlAndInv(anno.tags(), inv);

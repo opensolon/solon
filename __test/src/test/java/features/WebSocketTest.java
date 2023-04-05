@@ -4,12 +4,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
+import webapp.App;
 import webapp.demoe_websocket.WsDemoClient;
 
 import java.net.URI;
 
 @RunWith(SolonJUnit4ClassRunner.class)
-@SolonTest(webapp.TestApp.class)
+@SolonTest(App.class)
 public class WebSocketTest {
     @Test
     public void test() throws Throwable {

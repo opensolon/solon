@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.noear</groupId>
         <artifactId>solon-parent</artifactId>
-        <version>2.2.8</version>
+        <version>2.2.9</version>
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
@@ -38,6 +38,7 @@
         <module>../../_solon_extend/solon.web.servlet</module>
         <module>../../_solon_extend/solon.web.cors</module>
         <module>../../_solon_extend/solon.web.stop</module>
+        <module>../../_solon_extend/solon.web.sso</module>
 
         <module>../../_solon_extend/solon.extend.graalvm</module>
 

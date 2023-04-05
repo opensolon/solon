@@ -11,6 +11,7 @@ import org.noear.solon.core.message.Session;
 import org.noear.solon.socketd.SocketD;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
+import webapp.App;
 import webapp.demoh_socketd.HelloRpcService;
 import webapp.utils.ContentTypes;
 
@@ -18,7 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RunWith(SolonJUnit4ClassRunner.class)
-@SolonTest(webapp.TestApp.class)
+@SolonTest(App.class)
 public class SocketResponseTest {
     @Test
     public void test() throws Throwable{

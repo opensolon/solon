@@ -65,6 +65,8 @@ public class AptNativeProcessor extends AbstractProcessor {
         PackageElement packageElement = processingEnv.getElementUtils().getPackageOf(typeElement);
         String packageName = packageElement.getQualifiedName().toString();
 
+        // 添加 native-image.properties
+        addNativeImageProperties(packageName, typeElement.getQualifiedName().toString());
         //添加 resource-config.json
         addResourceConfig(packageName);
         //添加 reflect-config.json
@@ -72,10 +74,37 @@ public class AptNativeProcessor extends AbstractProcessor {
     }
 
     /**
+     * 生成 native-image.properties
+     */
+    private void addNativeImageProperties(String packageName, String applicationClassName) throws IOException {
+        List<String> args = getDefaultNativeImageArguments(applicationClassName);
+        StringBuilder sb = new StringBuilder();
+        sb.append("Args = ");
+        sb.append(String.join(String.format(" \\%n"), args));
+        String dir = getNativeImageDir(packageName);
+        String fileName = String.join("/", dir, "native-image.properties");
+        FileObject fileObject = processingEnv.getFiler().createResource(StandardLocation.CLASS_OUTPUT,
+            "",
+            fileName);
+        try (Writer writer = fileObject.openWriter()) {
+            writer.write(sb.toString());
+        }
+    }
+
+    private List<String> getDefaultNativeImageArguments(String applicationClassName) {
+        List<String> args = new ArrayList<>();
+        args.add("-H:Class=" + applicationClassName);
+        args.add("--report-unsupported-elements-at-runtime");
+        args.add("--no-fallback");
+        args.add("--install-exit-handlers");
+        return args;
+    }
+
+    /**
      * 添加 resource-config.json
      */
     private void addResourceConfig(String packageName) throws IOException {
-        String dir = "META-INF/native-image/" + packageName.replace(".", "/");
+        String dir = getNativeImageDir(packageName);
         String fileName = String.join("/", dir, "resource-config.json");
 
         FileObject fileObject = processingEnv.getFiler().createResource(StandardLocation.CLASS_OUTPUT,
@@ -100,7 +129,7 @@ public class AptNativeProcessor extends AbstractProcessor {
      * 添加 reflect-config.json
      */
     private void addReflectConfig(String packageName) throws IOException {
-        String dir = "META-INF/native-image/" + packageName.replace(".", "/");
+        String dir = getNativeImageDir(packageName);
         String fileName = String.join("/", dir, "reflect-config.json");
 
         FileObject fileObject = processingEnv.getFiler().createResource(StandardLocation.CLASS_OUTPUT,
@@ -115,6 +144,10 @@ public class AptNativeProcessor extends AbstractProcessor {
         try (Writer writer = fileObject.openWriter()) {
             writer.write(oNode.toJson());
         }
+    }
+
+    private String getNativeImageDir(String packageName) {
+        return "META-INF/native-image/" + packageName.replace(".", "/");
     }
 
     private void buildReflectNode(ONode n, String name) {

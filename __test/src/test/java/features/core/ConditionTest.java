@@ -8,6 +8,7 @@ import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
+import webapp.App;
 import webapp.dso.ConditionConfig;
 import webapp.models.BaseRequest;
 
@@ -16,7 +17,7 @@ import webapp.models.BaseRequest;
  */
 @Configuration
 @RunWith(SolonJUnit4ClassRunner.class)
-@SolonTest(webapp.TestApp.class)
+@SolonTest(App.class)
 public class ConditionTest {
 
     @Inject

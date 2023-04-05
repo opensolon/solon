@@ -5,10 +5,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.test.SolonJUnit5Extension;
 import org.noear.solon.test.SolonTest;
+import webapp.App;
 import webapp.demo6_aop.Bean2;
 
 @ExtendWith(SolonJUnit5Extension.class)
-@SolonTest(webapp.TestApp.class)
+@SolonTest(App.class)
 public class AopTest_u5 {
     @Inject
     Bean2 bean2;

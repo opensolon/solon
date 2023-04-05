@@ -8,13 +8,14 @@ import org.noear.nami.annotation.NamiClient;
 import org.noear.nami.coder.snack3.SnackDecoder;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
+import webapp.App;
 import webapp.models.UserModel;
 
 /**
  * @author noear 2021/1/5 created
  */
 @RunWith(SolonJUnit4ClassRunner.class)
-@SolonTest(webapp.TestApp.class)
+@SolonTest(App.class)
 public class HttpParam3Test {
     @Test
     public void nami() {

@@ -9,6 +9,7 @@ import org.noear.solon.core.message.Session;
 import org.noear.solon.socketd.SocketD;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
+import webapp.App;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,7 +20,7 @@ import java.util.concurrent.TimeUnit;
  * @author noear 2022/3/11 created
  */
 @RunWith(SolonJUnit4ClassRunner.class)
-@SolonTest(webapp.TestApp.class)
+@SolonTest(App.class)
 public class SocketAsyncTest {
     @Test
     public void test_async_message() throws Throwable {

@@ -1,7 +1,7 @@
 <h1 align="center" style="text-align:center;">
 <img src="solon_icon.png" width="128" />
 <br />
-Solon v2.2.8
+Solon v2.2.9
 </h1>
 <p align="center">
 	<strong>一个高效的 Java 应用开发框架，更小、更快、更简单！</strong>
@@ -44,7 +44,7 @@ Solon v2.2.8
 	<img src="https://img.shields.io/badge/QQ交流群-22200020-orange"/></a>
 </p>
 
-##### 语言： 中文 | [English](README_EN.md)
+##### 语言： 中文 | [English](README_EN.md) | [日本語](README_JP.md)
 
 <hr />
 
@@ -79,7 +79,7 @@ Solon v2.2.8
 <parent>
     <groupId>org.noear</groupId>
     <artifactId>solon-parent</artifactId>
-    <version>2.2.8</version>   
+    <version>2.2.9</version>   
 </parent>
 
 <dependencies>

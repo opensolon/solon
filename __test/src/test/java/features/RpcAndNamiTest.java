@@ -10,16 +10,15 @@ import org.noear.nami.coder.snack3.SnackDecoder;
 import org.noear.nami.coder.snack3.SnackEncoder;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
+import webapp.App;
 import webapp.demo5_rpc.protocol.UserModel;
 import webapp.demo5_rpc.protocol.UserService;
 import webapp.demo5_rpc.protocol.UserService4;
 import webapp.demo5_rpc.protocol.UserService5;
 import webapp.utils.Datetime;
 
-import java.util.Date;
-
 @RunWith(SolonJUnit4ClassRunner.class)
-@SolonTest(webapp.TestApp.class)
+@SolonTest(App.class)
 public class RpcAndNamiTest {
     //直接指定服务端地址
     @NamiClient(url = "http://localhost:8080/demo5/user/")
