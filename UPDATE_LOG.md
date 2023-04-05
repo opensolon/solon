@@ -21,6 +21,7 @@
 * 优化 jlhttp 状态码超界的处理
 * 优化 solon.cloud.tracing @Tracing 增加全类名的记录
 * 优化 时区解析统一由 ZoneId 处理???
+* 调整 solon.serialization.snack3 从 solon-lib 移到 solon-api，更方便 json 的选择
 * 增加 "/WEB-INF/templates/" 后端模板目录约定支持
 * mybatis 升为 3.5.13
 * fastjson2 升为 2.0.26
