@@ -1,4 +1,0 @@
-# 定义查询的方法
-type Query {
-    findAuthorById(id: Long!):Author
-}
