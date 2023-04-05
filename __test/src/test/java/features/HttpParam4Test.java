@@ -58,6 +58,26 @@ public class HttpParam4Test extends AbstractHttpTester {
     }
 
     @Test
+    public void json3() throws IOException {
+        //走json通过，这个格式OK
+        String json = "[[1],[3,4],[5,6,9]]";
+
+        String val = path("/demo2/param4/json3").bodyJson(json).post();
+
+        assert "Long".equals(val);
+    }
+
+    @Test
+    public void json3_2() throws IOException {
+        //走json通过，这个格式OK
+        String json = "{\"list\":[[1],[3,4],[5,6,9]]}";
+
+        String val = path("/demo2/param4/json3").bodyJson(json).post();
+
+        assert "Long".equals(val);
+    }
+
+    @Test
     public void param() throws IOException {
         //走param，@Param 的格式化会起效果
         String json2 = path("/demo2/param4/param")
