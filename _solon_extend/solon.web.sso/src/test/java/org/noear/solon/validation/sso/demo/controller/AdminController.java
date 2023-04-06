@@ -1,6 +1,7 @@
 package org.noear.solon.validation.sso.demo.controller;
 
 import org.noear.solon.annotation.Controller;
+import org.noear.solon.annotation.Mapping;
 import org.noear.solon.validation.annotation.Logined;
 
 /**
@@ -9,5 +10,8 @@ import org.noear.solon.validation.annotation.Logined;
 @Logined //可以使用验证注解了，并且是基于sso的
 @Controller
 public class AdminController extends BaseController{
-
+    @Mapping("test")
+    public String test(){
+        return "OK";
+    }
 }
