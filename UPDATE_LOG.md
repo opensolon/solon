@@ -14,6 +14,7 @@
 * 增加 afterInjection() 后所有 bean 必然可用的支持???
 * 调整 允许 "solon.scheduling" 的任务在注册时未配置调度???（由后续动态控制）
 * 调整 "@Init will be discarded" 打印时机，改由 debug 时打印
+* 调整 solon.web.sso 插件的用法
 
 ### 2.2.9
 * 新增 solon.web.sso 插件

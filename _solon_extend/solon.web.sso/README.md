@@ -45,13 +45,11 @@ public class Config {
 //登录示意代码
 @Controller
 public class LoginController {
-
     @Mapping("/login")
     public void login(){
         if (loginDo()) {
             //获取登录的用户id
             long userId = 1001;
-
             //更新用户的单点登录标识
             SsoUtil.login(userId);
         }

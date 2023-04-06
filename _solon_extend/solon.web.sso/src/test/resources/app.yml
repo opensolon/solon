@@ -4,7 +4,7 @@
 demo.redis:
   server: "localhost:6379"
   db: 0 #默认为 0，可不配置
-  password: ""
+  password: "123456"
   maxTotaol: 200 #默认为 200，可不配
 
 

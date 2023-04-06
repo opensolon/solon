@@ -12,20 +12,30 @@ import org.noear.solon.web.sso.SsoUtil;
 public class LoginController {
 
     @Mapping("/login")
-    public void login(Context ctx){
+    public String login(Context ctx) {
         if (loginDo()) {
             //获取登录的用户id
             long userId = 1;
 
             //更新用户的单点登录标识
             SsoUtil.login(userId);
+
+            return "OK";
         }
+
+        return "ERROR";
+    }
+
+    @Mapping("logout")
+    public String logout() {
+        SsoUtil.logout();
+        return "OK";
     }
 
     /**
      * 执行真实的登录处理
-     * */
-    private boolean loginDo(){
+     */
+    private boolean loginDo() {
         //...
         return true;
     }
