@@ -19,7 +19,7 @@ public final class XPluginImp implements Plugin {
         return "jdk http/" + Solon.version();
     }
 
-    JdkHttpServer server;
+    JdkHttpServer _server;
 
     @Override
     public void start(AopContext context) {
@@ -62,10 +62,10 @@ public final class XPluginImp implements Plugin {
         final int _wrapPort = props.getWrapPort();
         _signal = new SignalSim(_name, _wrapHost, _wrapPort, "http", SignalType.HTTP);
 
-        server = new JdkHttpServer();
-        server.setExecutor(props.getBioExecutor("jdkhttp-"));
-        server.setHandler(new JdkHttpContextHandler());
-        server.start(_host, _port);
+        _server = new JdkHttpServer();
+        _server.setExecutor(props.getBioExecutor("jdkhttp-"));
+        _server.setHandler(new JdkHttpContextHandler());
+        _server.start(_host, _port);
 
         app.signalAdd(_signal);
 
@@ -78,12 +78,12 @@ public final class XPluginImp implements Plugin {
 
     @Override
     public void stop() throws Throwable {
-        if (server == null) {
+        if (_server == null) {
             return;
         }
 
-        server.stop();
-        server = null;
+        _server.stop();
+        _server = null;
         LogUtil.global().info("Server:main: jdkhttp: Has Stopped (" + solon_boot_ver()+")");
     }
 }
