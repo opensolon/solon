@@ -3,6 +3,7 @@ package org.noear.solon.core;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
+import org.noear.solon.Solon;
 import org.noear.solon.annotation.Init;
 import org.noear.solon.annotation.Singleton;
 import org.noear.solon.core.util.ClassUtil;
@@ -156,7 +157,7 @@ public class BeanWrap {
         this.name = name;
     }
 
-    public int index(){
+    public int index() {
         return index;
     }
 
@@ -289,7 +290,10 @@ public class BeanWrap {
                     clzInit = m;
                     clzInit.setAccessible(true);
                     clzInitIndex = initAnno.index();
-                    LogUtil.global().warn("@Init will be discarded, suggested use 'LifecycleBean' interface");
+
+                    if (Solon.cfg().isDebugMode()) {
+                        LogUtil.global().warn("@Init will be discarded, suggested use 'LifecycleBean' interface");
+                    }
                 }
                 break;
             }
