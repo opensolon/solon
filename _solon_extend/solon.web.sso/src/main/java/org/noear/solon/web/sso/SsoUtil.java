@@ -2,6 +2,7 @@ package org.noear.solon.web.sso;
 
 import org.noear.solon.Solon;
 import org.noear.solon.core.handle.Context;
+import org.noear.solon.web.sso.impl.SsoService;
 
 import java.io.Serializable;
 

@@ -1,8 +1,9 @@
-package org.noear.solon.web.sso;
+package org.noear.solon.web.sso.impl;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Context;
+import org.noear.solon.web.sso.SsoStorage;
 
 import java.io.Serializable;
 

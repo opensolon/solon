@@ -6,7 +6,7 @@ import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.validation.annotation.LoginedChecker;
 import org.noear.solon.web.sso.SsoLoginedChecker;
-import org.noear.solon.web.sso.SsoUtil;
+import org.noear.solon.web.sso.SsoStorage;
 import org.noear.solon.web.sso.impl.SsoStorageOfLocal;
 import org.noear.solon.web.sso.impl.SsoStorageOfRedis;
 
@@ -18,15 +18,18 @@ import org.noear.solon.web.sso.impl.SsoStorageOfRedis;
 @Configuration
 public class Config {
     @Bean
-    public LoginedChecker ssoInit(@Inject("${demo.redis}") RedisClient redisClient) {
-        SsoUtil.setStorage(new SsoStorageOfRedis(redisClient));
+    public SsoStorage ssoStorage(@Inject("${demo.redis}") RedisClient redisClient) {
+        return new SsoStorageOfRedis(redisClient);
+    }
+
+    @Bean
+    public LoginedChecker ssoLoginedChecker() {
         return new SsoLoginedChecker();
     }
 
-// 用本地内存存府，一般用于临时测试
+    // 用本地内存存储，一般用于临时测试
 //    @Bean
-//    public LoginedChecker ssoInit() {
-//        SsoUtil.setStorage(new SsoStorageOfLocal());
-//        return new SsoLoginedChecker();
+//    public SsoStorage ssoStorage() {
+//        return new SsoStorageOfLocal();
 //    }
 }
