@@ -17,8 +17,14 @@ import org.noear.solon.web.sso.impl.SsoStorageOfRedis;
  */
 @Configuration
 public class Config {
+    // 用本地内存存储，一般用于临时测试
+//    @Bean
+//    public SsoStorage ssoStorage1() {
+//        return new SsoStorageOfLocal();
+//    }
+
     @Bean
-    public SsoStorage ssoStorage(@Inject("${demo.redis}") RedisClient redisClient) {
+    public SsoStorage ssoStorage2(@Inject("${demo.redis}") RedisClient redisClient) {
         return new SsoStorageOfRedis(redisClient);
     }
 
@@ -26,10 +32,4 @@ public class Config {
     public LoginedChecker ssoLoginedChecker() {
         return new SsoLoginedChecker();
     }
-
-    // 用本地内存存储，一般用于临时测试
-//    @Bean
-//    public SsoStorage ssoStorage() {
-//        return new SsoStorageOfLocal();
-//    }
 }

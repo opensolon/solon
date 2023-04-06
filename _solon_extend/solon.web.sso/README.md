@@ -27,13 +27,14 @@ demo.redis:
 @Configuration
 public class Config {
     @Bean
-    public SsoService ssoService(@Inject("${demo.redis}") RedisClient redisClient) {
-        return new SsoServiceImpl(redisClient);
+    public SsoStorage ssoStorage(@Inject("${demo.redis}") RedisClient redisClient) {
+        //或者使用 SsoStorageOfLocal 作临时测试
+        return new SsoStorageOfRedis(redisClient);
     }
 
     @Bean
-    public LoginedChecker ssoLoginedChecker(@Inject SsoService ssoService) {
-        return new SsoLoginedChecker(ssoService);
+    public LoginedChecker ssoLoginedChecker() {
+        return new SsoLoginedChecker();
     }
 }
 ```
@@ -44,17 +45,15 @@ public class Config {
 //登录示意代码
 @Controller
 public class LoginController {
-    @Inject
-    SsoService ssoService;
 
     @Mapping("/login")
-    public void login(Context ctx){
+    public void login(){
         if (loginDo()) {
             //获取登录的用户id
-            long userId = 0;
+            long userId = 1001;
 
             //更新用户的单点登录标识
-            ssoService.updateUserSsoKey(ctx, userId);
+            SsoUtil.login(userId);
         }
     }
 }
@@ -63,6 +62,9 @@ public class LoginController {
 @Logined //可以使用验证注解了，并且是基于sso的
 @Controller
 public class AdminController extends BaseController{
-
+    @Mapping("test")
+    public String test(){
+        return "OK";
+    }
 }
 ```
