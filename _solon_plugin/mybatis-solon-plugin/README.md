@@ -17,8 +17,8 @@ mybatis.db1:
   mappers:      #支持包名 或 类名 或 xml（.xml结尾） //支持 ** 和 *
     - "webapp.dso.db1.*"
     - "webapp.dso.db1.DemoMapper"
-    - "mybatis/dso/db1/demoMapper.xml"
-    - "mybatis/**/db1/*.xml"     
+    - "classpath:mybatis/dso/db1/demoMapper.xml"
+    - "classpath:mybatis/**/db1/*.xml"     
 
 # 配置全局插件
 mybatis.plugins:
