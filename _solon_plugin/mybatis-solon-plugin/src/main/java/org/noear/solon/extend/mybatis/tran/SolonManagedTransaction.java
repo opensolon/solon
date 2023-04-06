@@ -48,7 +48,6 @@ public class SolonManagedTransaction implements Transaction {
     @Override
     public void close() throws SQLException {
         if (connection != null && TranUtils.inTrans() == false) {
-            connection.setAutoCommit(true);
             connection.close();
         }
     }
