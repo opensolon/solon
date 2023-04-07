@@ -1,0 +1,7 @@
+server.port: 1080
+
+solon.logging.appender:
+  console:
+    pattern: "[%d] %logger{15} %p - %X{X-TraceId:-} %X{X-SpanId:-} %m%n"
+  file:
+    pattern: "[%d] %logger{15} %p - %X{X-TraceId:-} %X{X-SpanId:-} %m%n"

@@ -37,11 +37,13 @@ public class NamiFilterTracing implements Filter {
             Span span = buildSpan(inv);
 
             try (Scope scope = tracer.activateSpan(span)) {
+                TracingMDCUtils.inject(span);
                 return inv.invoke();
             } catch (Throwable e) {
                 span.log(Utils.throwableToString(e));
                 throw e;
             } finally {
+                TracingMDCUtils.clear();
                 span.finish();
             }
         }
