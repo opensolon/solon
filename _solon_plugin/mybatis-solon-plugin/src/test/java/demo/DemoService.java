@@ -1,7 +1,7 @@
 package demo;
 
 import org.apache.ibatis.session.SqlSession;
-import org.noear.solon.extend.mybatis.Mybatis;
+import org.apache.ibatis.solon.Mybatis;
 
 /**
  * @author noear 2022/11/22 created

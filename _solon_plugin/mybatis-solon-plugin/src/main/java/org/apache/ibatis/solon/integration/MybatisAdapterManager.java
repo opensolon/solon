@@ -1,10 +1,10 @@
-package org.noear.solon.extend.mybatis.integration;
+package org.apache.ibatis.solon.integration;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.BeanWrap;
-import org.noear.solon.extend.mybatis.MybatisAdapter;
-import org.noear.solon.extend.mybatis.MybatisAdapterFactory;
+import org.apache.ibatis.solon.MybatisAdapter;
+import org.apache.ibatis.solon.MybatisAdapterFactory;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

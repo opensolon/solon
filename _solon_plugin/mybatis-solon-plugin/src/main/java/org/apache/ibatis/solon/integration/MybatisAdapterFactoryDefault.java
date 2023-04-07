@@ -1,11 +1,9 @@
-package org.noear.solon.extend.mybatis.integration;
+package org.apache.ibatis.solon.integration;
 
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.Props;
-import org.noear.solon.extend.mybatis.MybatisAdapter;
-import org.noear.solon.extend.mybatis.MybatisAdapterFactory;
-
-import java.util.Properties;
+import org.apache.ibatis.solon.MybatisAdapter;
+import org.apache.ibatis.solon.MybatisAdapterFactory;
 
 /**
  * Mybatis 适配器工厂默认实现

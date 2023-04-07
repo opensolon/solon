@@ -5,8 +5,6 @@ import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.core.BeanWrap;
-import org.noear.solon.extend.mybatis.Mybatis;
-import org.noear.solon.extend.mybatis.MybatisAdapter;
 
 import javax.sql.DataSource;
 

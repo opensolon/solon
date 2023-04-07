@@ -1,4 +1,4 @@
-package org.noear.solon.extend.mybatis.integration;
+package org.apache.ibatis.solon.integration;
 
 import org.apache.ibatis.plugin.Interceptor;
 import org.noear.solon.Solon;

@@ -1,4 +1,4 @@
-package org.noear.solon.extend.mybatis.tran;
+package org.apache.ibatis.solon.tran;
 
 import org.apache.ibatis.session.TransactionIsolationLevel;
 import org.apache.ibatis.transaction.Transaction;

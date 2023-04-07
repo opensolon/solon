@@ -1,10 +1,10 @@
-package org.noear.solon.extend.mybatis;
+package org.apache.ibatis.solon;
 
 import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.noear.solon.core.VarHolder;
-import org.noear.solon.extend.mybatis.integration.MybatisMapperInterceptor;
+import org.apache.ibatis.solon.integration.MybatisMapperInterceptor;
 
 import java.lang.reflect.Proxy;
 

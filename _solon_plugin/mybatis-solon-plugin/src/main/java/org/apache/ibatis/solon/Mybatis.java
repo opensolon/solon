@@ -1,6 +1,6 @@
-package org.noear.solon.extend.mybatis;
+package org.apache.ibatis.solon;
 
-import org.noear.solon.extend.mybatis.integration.MybatisAdapterManager;
+import org.apache.ibatis.solon.integration.MybatisAdapterManager;
 
 /**
  * Mybatis 手动使用接口

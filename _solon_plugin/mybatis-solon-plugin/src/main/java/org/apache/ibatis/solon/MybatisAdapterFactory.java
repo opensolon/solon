@@ -1,9 +1,7 @@
-package org.noear.solon.extend.mybatis;
+package org.apache.ibatis.solon;
 
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.Props;
-
-import java.util.Properties;
 
 /**
  * 适配器工厂
