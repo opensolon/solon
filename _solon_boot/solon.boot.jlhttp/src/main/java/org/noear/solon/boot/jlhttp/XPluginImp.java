@@ -86,7 +86,7 @@ public final class XPluginImp implements Plugin {
 
         _server = new JlHttpServer();
         _server.setExecutor(props.getBioExecutor("jlhttp-"));
-        _server.setHandler(new JlHttpContextHandler());
+        _server.setHandler(Solon.app()::tryHandle);
         _server.start(_host, _port);
 
         app.signalAdd(_signal);

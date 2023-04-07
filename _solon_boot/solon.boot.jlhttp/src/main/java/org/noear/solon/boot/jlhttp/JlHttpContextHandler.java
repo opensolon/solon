@@ -1,12 +1,16 @@
 package org.noear.solon.boot.jlhttp;
 
-import org.noear.solon.Solon;
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.core.event.EventBus;
+import org.noear.solon.core.handle.Handler;
 
 import java.io.IOException;
 
 public class JlHttpContextHandler implements HTTPServer.ContextHandler {
+    private final Handler handler;
+    public JlHttpContextHandler(Handler handler){
+        this.handler = handler;
+    }
 
     @Override
     public int serve(HTTPServer.Request request, HTTPServer.Response response) throws IOException {
@@ -25,20 +29,26 @@ public class JlHttpContextHandler implements HTTPServer.ContextHandler {
     protected int handleDo(HTTPServer.Request request, HTTPServer.Response response) throws IOException {
         JlHttpContext ctx = new JlHttpContext(request, response);
 
-        ctx.contentType("text/plain;charset=UTF-8");
+        try {
+            ctx.contentType("text/plain;charset=UTF-8");
 
-        if (ServerProps.output_meta) {
-            ctx.headerSet("Solon-Boot", XPluginImp.solon_boot_ver());
-        }
+            if (ServerProps.output_meta) {
+                ctx.headerSet("Solon-Boot", XPluginImp.solon_boot_ver());
+            }
 
-        Solon.app().tryHandle(ctx);
+            handler.handle(ctx);
 
-        if (ctx.getHandled() || ctx.status() >= 200) {
-            ctx.commit();
+            if (ctx.getHandled() || ctx.status() >= 200) {
+                ctx.commit();
 
-            return 0;
-        } else {
-            return 404;
+                return 0;
+            } else {
+                return 404;
+            }
+        }catch (Throwable e){
+            EventBus.pushTry(e);
+
+            return 500;
         }
     }
 }
