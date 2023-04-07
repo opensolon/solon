@@ -1,21 +1,18 @@
 package demo;
 
-import com.sun.net.httpserver.HttpExchange;
-import com.sun.net.httpserver.HttpHandler;
 import org.noear.solon.annotation.Component;
-import org.noear.solon.boot.jdkhttp.JdkHttpContextHandler;
 import org.noear.solon.boot.jdkhttp.JdkHttpServer;
 import org.noear.solon.core.bean.LifecycleBean;
+import org.noear.solon.core.handle.Context;
+import org.noear.solon.core.handle.Handler;
 
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.concurrent.Executors;
 
 /**
  * @author noear 2023/4/6 created
  */
 @Component
-public class ServerDemo implements LifecycleBean , HttpHandler {
+public class ServerDemo implements LifecycleBean , Handler {
     JdkHttpServer _server;
 
     @Override
@@ -35,7 +32,7 @@ public class ServerDemo implements LifecycleBean , HttpHandler {
     }
 
     @Override
-    public void handle(HttpExchange httpExchange) throws IOException {
-        httpExchange.getResponseBody().write("Hello world!".getBytes(StandardCharsets.UTF_8));
+    public void handle(Context ctx) throws Throwable {
+        ctx.output("Hello world!");
     }
 }

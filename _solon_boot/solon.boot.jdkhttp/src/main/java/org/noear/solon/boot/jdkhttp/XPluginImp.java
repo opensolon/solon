@@ -64,7 +64,7 @@ public final class XPluginImp implements Plugin {
 
         _server = new JdkHttpServer();
         _server.setExecutor(props.getBioExecutor("jdkhttp-"));
-        _server.setHandler(new JdkHttpContextHandler());
+        _server.setHandler(Solon.app()::tryHandle);
         _server.start(_host, _port);
 
         app.signalAdd(_signal);

@@ -2,13 +2,17 @@ package org.noear.solon.boot.jdkhttp;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import org.noear.solon.Solon;
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.core.event.EventBus;
+import org.noear.solon.core.handle.Handler;
 
 import java.io.IOException;
 
 public class JdkHttpContextHandler implements HttpHandler {
+    private final Handler handler;
+    public JdkHttpContextHandler(Handler handler){
+        this.handler = handler;
+    }
     @Override
     public void handle(HttpExchange exchange) {
         try {
@@ -34,7 +38,7 @@ public class JdkHttpContextHandler implements HttpHandler {
                 ctx.headerSet("Solon-Boot", XPluginImp.solon_boot_ver());
             }
 
-            Solon.app().tryHandle(ctx);
+            handler.handle(ctx);
 
             if (ctx.getHandled() || ctx.status() >= 200) {
                 ctx.commit();

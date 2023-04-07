@@ -5,8 +5,8 @@ import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerConstants;
 import org.noear.solon.boot.ServerLifecycle;
 import org.noear.solon.boot.ssl.SslContextFactory;
-import org.noear.solon.core.Signal;
 import org.noear.solon.core.event.EventBus;
+import org.noear.solon.core.handle.Handler;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLEngine;
@@ -24,10 +24,10 @@ import java.util.concurrent.Executor;
 public class JdkHttpServer implements ServerLifecycle {
     private HttpServer server = null;
     private Executor executor;
-    private HttpHandler handler;
+    private Handler handler;
 
 
-    public void setHandler(HttpHandler handler) {
+    public void setHandler(Handler handler) {
         this.handler = handler;
     }
 
@@ -55,7 +55,7 @@ public class JdkHttpServer implements ServerLifecycle {
             }
         }
 
-        HttpContext httpContext = server.createContext("/", handler);
+        HttpContext httpContext = server.createContext("/", new JdkHttpContextHandler(handler));
         httpContext.getFilters().add(new ParameterFilter());
 
         server.setExecutor(executor);
