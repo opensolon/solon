@@ -20,7 +20,7 @@
         <java.version>1.8</java.version>
 
         <solon.version>2.2.10-SNAPSHOT</solon.version>
-        <snack3.version>3.2.64</snack3.version>
+        <snack3.version>3.2.65</snack3.version>
         <weed3.version>3.4.33</weed3.version>
         <wood.version>1.1.0</wood.version>
         <water.version>2.10.3</water.version>

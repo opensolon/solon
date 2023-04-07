@@ -25,6 +25,7 @@
 * 优化 solon.boot.jlhttp 插件 JlHttpServer 类，实现接口公用性!!!
 * 优化 solon.boot.jdkhttp 插件 JdkHttpServer 类，实现接口公用性!!!
 * 优化 solon.boot.smarthttp 插件 SmHttpServer 类，实现接口公用性!!!
+* snack3 升为 3.2.65
 
 ### 2.2.9
 * 新增 solon.web.sso 插件
