@@ -9,12 +9,14 @@
 * 提醒1：之前没有使用弃用接口的，可以直接升级 <br>
 * 提醒2：有使用弃用接口的。建议先升级到 1.12.4；替换弃用代码后，再升级到 2.0.0
 
-### 2.2.10
-* 新增 mybatis-flex-solon-plugin 插件
-* 插件 solon.cloud.tracing 将 traceId 和 spanId 存入日志全局变量，方便在日志中打印
+### 2.2.11
 * 增加 @Inject 注入 bean 的 required 支持???
 * 增加 afterInjection() 后所有 bean 必然可用的支持???
 * 调整 允许 "solon.scheduling" 的任务在注册时未配置调度???（由后续动态控制）
+
+### 2.2.10
+* 新增 mybatis-flex-solon-plugin 插件
+* 插件 solon.cloud.tracing 将 traceId 和 spanId 存入日志全局变量，方便在日志中打印
 * 调整 "@Init will be discarded" 打印时机，改由 debug 时打印
 * 调整 solon.web.sso 插件的用法
 * 调整 mybatis 相关的适配包名，基于2.0规范
