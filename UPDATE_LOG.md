@@ -17,7 +17,7 @@
 ### 2.2.10
 * 新增 mybatis-flex-solon-plugin 插件
 * 插件 solon.cloud.tracing 将 traceId 和 spanId 存入日志全局变量，方便在日志中打印
-* 插件 solon.scheduling 增加 @Async 扩展机制
+* 插件 solon.scheduling 增加 @Async 运行器创建扩展机制
 * 调整 "@Init will be discarded" 打印时机，改由 debug 时打印
 * 调整 solon.web.sso 插件的用法
 * 调整 mybatis 相关的适配包名，基于2.0规范
@@ -26,7 +26,7 @@
 * 优化 solon.boot.jlhttp 插件 JlHttpServer 类，实现接口公用性!!!
 * 优化 solon.boot.jdkhttp 插件 JdkHttpServer 类，实现接口公用性!!!
 * 优化 solon.boot.smarthttp 插件 SmHttpServer 类，实现接口公用性!!!
-* snack3 升为 3.2.65
+* snack3 升为 3.2.65，支持 File 类型注入
 
 ### 2.2.9
 * 新增 solon.web.sso 插件
