@@ -17,6 +17,7 @@
 * 调整 "@Init will be discarded" 打印时机，改由 debug 时打印
 * 调整 solon.web.sso 插件的用法
 * 调整 mybatis 相关的适配包名，基于2.0规范
+* 调整 @SolonTest 注解为可继承
 * 优化 solon.boot.jlhttp 插件 JlHttpServer 类，实现接口公用性!!!
 * 优化 solon.boot.jdkhttp 插件 JdkHttpServer 类，实现接口公用性!!!
 * 优化 solon.boot.smarthttp 插件 SmHttpServer 类，实现接口公用性!!!
