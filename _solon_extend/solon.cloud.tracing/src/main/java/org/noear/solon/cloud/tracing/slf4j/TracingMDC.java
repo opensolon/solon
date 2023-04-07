@@ -10,8 +10,8 @@ import org.slf4j.MDC;
  * @since 2.2
  */
 public class TracingMDC {
-    private static final String TRACE_ID_NAME = "X-TraceId";
-    private static final String SPAN_ID_NAME = "X-SpanId";
+    public static final String TRACE_ID_NAME = "X-TraceId";
+    public static final String SPAN_ID_NAME = "X-SpanId";
 
     /**
      * 注入 traceId 和 spanId
