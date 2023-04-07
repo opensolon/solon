@@ -15,6 +15,9 @@
 * 调整 允许 "solon.scheduling" 的任务在注册时未配置调度???（由后续动态控制）
 * 调整 "@Init will be discarded" 打印时机，改由 debug 时打印
 * 调整 solon.web.sso 插件的用法
+* 优化 solon.boot.jlhttp 插件 JlHttpServer 类，实现接口公用性!!!
+* 优化 solon.boot.jdkhttp 插件 JdkHttpServer 类，实现接口公用性!!!
+* 优化 solon.boot.smarthttp 插件 SmHttpServer 类，实现接口公用性!!!
 
 ### 2.2.9
 * 新增 solon.web.sso 插件

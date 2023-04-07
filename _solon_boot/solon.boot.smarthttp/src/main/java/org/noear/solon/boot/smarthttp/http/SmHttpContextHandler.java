@@ -1,9 +1,9 @@
 package org.noear.solon.boot.smarthttp.http;
 
-import org.noear.solon.Solon;
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.smarthttp.XPluginImp;
 import org.noear.solon.core.event.EventBus;
+import org.noear.solon.core.handle.Handler;
 import org.smartboot.http.common.enums.HttpStatus;
 import org.smartboot.http.server.HttpRequest;
 import org.smartboot.http.server.HttpResponse;
@@ -11,12 +11,17 @@ import org.smartboot.http.server.HttpServerHandler;
 
 import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 
 public class SmHttpContextHandler extends HttpServerHandler {
-    protected ExecutorService executor;
+    protected Executor executor;
+    private final Handler handler;
+    public SmHttpContextHandler(Handler handler){
+        this.handler = handler;
+    }
 
-    public void setExecutor(ExecutorService executor) {
+    public void setExecutor(Executor executor) {
         this.executor = executor;
     }
 
@@ -55,7 +60,7 @@ public class SmHttpContextHandler extends HttpServerHandler {
                 ctx.headerSet("Solon-Boot", XPluginImp.solon_boot_ver());
             }
 
-            Solon.app().tryHandle(ctx);
+            handler.handle(ctx);
 
             if (ctx.getHandled() || ctx.status() >= 200) {
                 ctx.commit();
@@ -65,6 +70,7 @@ public class SmHttpContextHandler extends HttpServerHandler {
             }
         } catch (Throwable e) {
             EventBus.pushTry(e);
+
             response.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

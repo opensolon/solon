@@ -45,12 +45,6 @@ public final class XPluginImp implements Plugin {
 
         long time_start = System.currentTimeMillis();
 
-        SmHttpContextHandler _handler = new SmHttpContextHandler();
-
-        if (props.isIoBound()) {
-            //如果是io密集型的，加二段线程池
-            _handler.setExecutor(props.getBioExecutor("smarthttp-"));
-        }
 
         final String _wrapHost = props.getWrapHost();
         final int _wrapPort = props.getWrapPort();
@@ -59,7 +53,12 @@ public final class XPluginImp implements Plugin {
         _server = new SmHttpServer();
         _server.setEnableWebSocket(app.enableWebSocket());
         _server.setCoreThreads(props.getCoreThreads());
-        _server.setHandler(_handler);
+        if (props.isIoBound()) {
+            //如果是io密集型的，加二段线程池
+            _server.setWorkExecutor(props.getBioExecutor("smarthttp-"));
+        }
+
+        _server.setHandler(Solon.app()::tryHandle);
         _server.start(_host, _port);
 
         app.signalAdd(_signal);
