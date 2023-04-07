@@ -1,4 +1,4 @@
-package org.noear.solon.extend.mybatis_pagehelper;
+package com.github.pagehelper.solon.integration;
 
 import com.github.pagehelper.PageInterceptor;
 import org.apache.ibatis.plugin.Interceptor;

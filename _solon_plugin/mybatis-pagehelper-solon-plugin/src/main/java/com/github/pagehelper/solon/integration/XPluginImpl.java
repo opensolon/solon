@@ -1,4 +1,4 @@
-package org.noear.solon.extend.mybatis_pagehelper;
+package com.github.pagehelper.solon.integration;
 
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
@@ -7,7 +7,7 @@ import org.noear.solon.core.Plugin;
  * @author noear
  * @since 1.5
  */
-public class XPluginImp implements Plugin {
+public class XPluginImpl implements Plugin {
     @Override
     public void start(AopContext context) {
         context.beanMake(PageHelperConfiguration.class);

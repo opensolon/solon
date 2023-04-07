@@ -1,4 +1,4 @@
-package org.noear.solon.extend.mybatis_pagehelper;
+package com.github.pagehelper.solon.integration;
 
 import org.noear.solon.Solon;
 
