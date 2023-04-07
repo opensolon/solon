@@ -19,7 +19,7 @@ public class ServerDemo implements LifecycleBean , Handler {
     public void start() throws Throwable {
         _server = new JdkHttpServer();
         _server.setExecutor(Executors.newCachedThreadPool());
-        _server.setHandler(this); //如果使用 JdkHttpContextHandler，则转发给 Solon.app()
+        _server.setHandler(this); //如果使用 Solon.app()::tryHandle，则转发给 Solon.app()
         _server.start(null, 8801);
     }
 
