@@ -1,4 +1,4 @@
-package org.noear.solon.extend.mybatis_sqlhelper;
+package com.jn.sqlhelper.mybatis.solon.integration;
 
 import com.jn.sqlhelper.dialect.instrument.SQLInstrumentorConfig;
 import com.jn.sqlhelper.mybatis.MybatisUtils;
