@@ -10,11 +10,13 @@
 * 提醒2：有使用弃用接口的。建议先升级到 1.12.4；替换弃用代码后，再升级到 2.0.0
 
 ### 2.2.10
+* 新增 mybatis-flex-solon-plugin 插件
 * 增加 @Inject 注入 bean 的 required 支持???
 * 增加 afterInjection() 后所有 bean 必然可用的支持???
 * 调整 允许 "solon.scheduling" 的任务在注册时未配置调度???（由后续动态控制）
 * 调整 "@Init will be discarded" 打印时机，改由 debug 时打印
 * 调整 solon.web.sso 插件的用法
+* 调整 mybatis 相关的适配包名，基于2.0规范
 * 优化 solon.boot.jlhttp 插件 JlHttpServer 类，实现接口公用性!!!
 * 优化 solon.boot.jdkhttp 插件 JdkHttpServer 类，实现接口公用性!!!
 * 优化 solon.boot.smarthttp 插件 SmHttpServer 类，实现接口公用性!!!
