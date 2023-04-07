@@ -4,13 +4,15 @@ import org.noear.solon.core.aspect.Invocation;
 import org.noear.solon.core.event.EventBus;
 
 /**
+ * 调用运行器
+ *
  * @author noear
  * @since 1.11
  */
-public class AsyncInvocationRunnable implements Runnable {
-    Invocation invocation;
+public class InvocationRunnable implements Runnable {
+    protected Invocation invocation;
 
-    public AsyncInvocationRunnable(Invocation inv) {
+    public InvocationRunnable(Invocation inv) {
         invocation = inv;
     }
 

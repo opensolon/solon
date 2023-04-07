@@ -9,7 +9,7 @@ import org.noear.solon.scheduling.annotation.Async;
 @ProxyComponent
 public class AsyncTask {
     @Async
-    public void test(){
-        System.out.println(Thread.currentThread().getName());
+    public void test() {
+        System.out.println("++++++++++" + Thread.currentThread().getName());
     }
 }

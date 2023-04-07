@@ -17,6 +17,7 @@
 ### 2.2.10
 * 新增 mybatis-flex-solon-plugin 插件
 * 插件 solon.cloud.tracing 将 traceId 和 spanId 存入日志全局变量，方便在日志中打印
+* 插件 solon.scheduling 增加 @Async 扩展机制
 * 调整 "@Init will be discarded" 打印时机，改由 debug 时打印
 * 调整 solon.web.sso 插件的用法
 * 调整 mybatis 相关的适配包名，基于2.0规范

@@ -1,11 +1,10 @@
 package org.noear.solon.scheduling.async;
 
-import org.noear.solon.Solon;
+import org.noear.solon.core.AopContext;
 import org.noear.solon.core.aspect.Interceptor;
 import org.noear.solon.core.aspect.Invocation;
 import org.noear.solon.core.util.RunUtil;
 import org.noear.solon.scheduling.annotation.Async;
-import org.noear.solon.scheduling.annotation.EnableAsync;
 
 /**
  * 异步执行拦截器
@@ -14,46 +13,32 @@ import org.noear.solon.scheduling.annotation.EnableAsync;
  * @since 1.11
  */
 public class AsyncInterceptor implements Interceptor {
-    boolean enableAsync;
+    InvocationRunnableFactory runnableFactory;
 
-    IAsyncInvocationRunnableFactory runnableFactory;
-
-    public AsyncInterceptor() {
-        enableAsync = Solon.app().source().getAnnotation(EnableAsync.class) != null;
-        if (enableAsync) {
-            Solon.context().getBeanAsync(IAsyncInvocationRunnableFactory.class, it -> {
-                runnableFactory = it;
-            });
-        }
+    public AsyncInterceptor(AopContext context) {
+        context.getBeanAsync(InvocationRunnableFactory.class, bean -> {
+            runnableFactory = bean;
+        });
     }
 
     @Override
     public Object doIntercept(Invocation inv) throws Throwable {
-        if (enableAsync) {
-            Async anno = inv.method().getAnnotation(Async.class);
+        Async anno = inv.method().getAnnotation(Async.class);
 
-            if (anno != null) {
-                Runnable runnable = createAsyncRunnable(inv);
-                RunUtil.async(runnable);
-                return null;
-            } else {
-                return inv.invoke();
-            }
+        if (anno != null) {
+            Runnable runnable = createRunnable(inv);
+            RunUtil.async(runnable);
+            return null;
         } else {
             return inv.invoke();
         }
     }
 
-    private Runnable createAsyncRunnable(Invocation inv) {
+    private Runnable createRunnable(Invocation inv) {
         if (runnableFactory == null) {
-            runnableFactory = new IAsyncInvocationRunnableFactory() {
-                @Override
-                public Runnable create(Invocation inv) {
-                    return new AsyncInvocationRunnable(inv);
-                }
-            };
+            return new InvocationRunnable(inv);
+        } else {
+            return runnableFactory.create(inv);
         }
-
-        return runnableFactory.create(inv);
     }
 }
