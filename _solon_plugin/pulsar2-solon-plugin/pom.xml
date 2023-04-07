@@ -3,24 +3,18 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
+
   <parent>
     <groupId>org.noear</groupId>
     <artifactId>solon-parent</artifactId>
     <version>2.2.10-SNAPSHOT</version>
     <relativePath>../../solon-parent/pom.xml</relativePath>
   </parent>
+
   <artifactId>pulsar2-solon-plugin</artifactId>
   <packaging>jar</packaging>
-  <name>pulsar2-solon-plugin</name>
-  <description>pulsar2.x Solon Plugin</description>
-  <url>https://github.com/apache/pulsar/blob/master/README.md#pulsar-runtime-java-version-recommendation</url>
-  <issueManagement>
-    <system>Github Issue</system>
-    <url>https://github.com/noear/solon/issues</url>
-  </issueManagement>
+
   <properties>
-	<!--<java.version>17</java.version>-->
-    <log4j2.version>2.20.0</log4j2.version>
     <bcpkix-jdk15on.version>1.70</bcpkix-jdk15on.version>
     <guava.version>31.1-jre</guava.version>
     <commons-io.version>2.11.0</commons-io.version>
@@ -28,62 +22,65 @@
     <!--<micrometer.version>1.10.5</micrometer.version>-->
     <reactor.core.version>3.5.4</reactor.core.version>
     <awaitility.version>4.2.0</awaitility.version>
-    <junit-jupiter.version>5.9.2</junit-jupiter.version>
     <testcontainers.version>1.17.6</testcontainers.version>
+    <apache.pulsar.client.version>2.11.0</apache.pulsar.client.version>
   </properties>
+
   <dependencies>
     <dependency>
       <groupId>org.noear</groupId>
       <artifactId>solon</artifactId>
     </dependency>
+
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
       <scope>provided</scope>
     </dependency>
-    <!-- 
-    <dependency>
-      <groupId>io.micrometer</groupId>
-      <artifactId>micrometer-registry-prometheus</artifactId>
-      <version>${micrometer.version}</version>
-    </dependency>
-    -->
+
     <dependency>
       <groupId>org.apache.pulsar</groupId>
       <artifactId>pulsar-client-original</artifactId>
       <version>${apache.pulsar.client.version}</version>
     </dependency>
+
     <dependency>
       <groupId>com.google.protobuf</groupId>
       <artifactId>protobuf-java</artifactId>
       <version>${google.protobuf.version}</version>
     </dependency>
+
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-core</artifactId>
       <version>${reactor.core.version}</version>
     </dependency>
+
     <!--对pulsar2.x依赖的外围组件版本升级-->
     <dependency>
       <groupId>org.bouncycastle</groupId>
       <artifactId>bcpkix-jdk15on</artifactId>
       <version>${bcpkix-jdk15on.version}</version>
     </dependency>
+
     <dependency>
-      <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-slf4j-impl</artifactId>
-      <version>${log4j2.version}</version>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>${slf4j.version}</version>
     </dependency>
+
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
       <version>${guava.version}</version>
     </dependency>
+
     <dependency>
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
       <version>${commons-io.version}</version>
     </dependency>
+
     <!-- pulsar2.x 外围-->
     <!-- test -->
     <dependency>
@@ -92,12 +89,6 @@
       <scope>test</scope>
     </dependency>
 
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-engine</artifactId>
-      <version>${junit-jupiter.version}</version>
-      <scope>test</scope>
-    </dependency>
     <!-- 以下测试组件需要开发测试环境有docker -->
     <!-- https://www.testcontainers.org/supported_docker_environment/ -->
     <dependency>
@@ -106,18 +97,21 @@
       <version>${testcontainers.version}</version>
       <scope>test</scope>
     </dependency>
+
     <dependency>
       <groupId>org.testcontainers</groupId>
       <artifactId>junit-jupiter</artifactId>
       <version>${testcontainers.version}</version>
       <scope>test</scope>
     </dependency>
+
     <dependency>
       <groupId>org.testcontainers</groupId>
       <artifactId>pulsar</artifactId>
       <version>${testcontainers.version}</version>
       <scope>test</scope>
     </dependency>
+
     <dependency>
       <groupId>org.awaitility</groupId>
       <artifactId>awaitility</artifactId>
@@ -125,22 +119,4 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-  
-  <!-- 
-  <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.11.0</version>
-                <configuration>
-                    <compilerArgument>-parameters</compilerArgument>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
-                    <encoding>UTF-8</encoding>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
-    -->
 </project>

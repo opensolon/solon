@@ -20,7 +20,7 @@ Simple steps to start using the library.
 ```xml
 <dependency>
   <groupId>io.github.majusko</groupId>
-  <artifactId>pulsar-java-spring-boot-starter</artifactId>
+  <artifactId>pulsar2-solon-plugin</artifactId>
   <version>1.2.0</version>
 </dependency>
 ```
