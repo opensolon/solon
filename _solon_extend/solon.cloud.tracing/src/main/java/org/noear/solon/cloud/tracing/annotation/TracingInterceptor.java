@@ -5,6 +5,7 @@ import io.opentracing.Span;
 import io.opentracing.Tracer;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
+import org.noear.solon.cloud.tracing.slf4j.TracingMDC;
 import org.noear.solon.core.aspect.Interceptor;
 import org.noear.solon.core.aspect.Invocation;
 import org.noear.solon.data.util.InvKeys;
@@ -43,11 +44,14 @@ public class TracingInterceptor implements Interceptor {
             Span span = buildSpan(inv, anno);
 
             try (Scope scope = tracer.activateSpan(span)) {
+                TracingMDC.inject(span);
+
                 return inv.invoke();
             } catch (Throwable e) {
                 span.log(Utils.throwableToString(e));
                 throw e;
             } finally {
+                TracingMDC.removeSpanId();
                 span.finish();
             }
         }

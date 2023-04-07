@@ -13,6 +13,7 @@ import org.noear.nami.Result;
 import org.noear.nami.common.TextUtils;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
+import org.noear.solon.cloud.tracing.slf4j.TracingMDC;
 
 /**
  * Nami Tracing 过滤器适配
@@ -37,13 +38,14 @@ public class NamiFilterTracing implements Filter {
             Span span = buildSpan(inv);
 
             try (Scope scope = tracer.activateSpan(span)) {
-                TracingMDCUtils.inject(span);
+                TracingMDC.inject(span);
+
                 return inv.invoke();
             } catch (Throwable e) {
                 span.log(Utils.throwableToString(e));
                 throw e;
             } finally {
-                TracingMDCUtils.clear();
+                TracingMDC.removeSpanId();
                 span.finish();
             }
         }

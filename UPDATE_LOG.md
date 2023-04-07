@@ -11,6 +11,7 @@
 
 ### 2.2.10
 * 新增 mybatis-flex-solon-plugin 插件
+* 插件 solon.cloud.tracing 将 traceId 和 spanId 存入日志全局变量，方便在日志中打印
 * 增加 @Inject 注入 bean 的 required 支持???
 * 增加 afterInjection() 后所有 bean 必然可用的支持???
 * 调整 允许 "solon.scheduling" 的任务在注册时未配置调度???（由后续动态控制）
