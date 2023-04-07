@@ -40,6 +40,28 @@
             <version>${opentracing.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon-test-junit4</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon-web</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.logging.logback</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.jaegertracing</groupId>
+            <artifactId>jaeger-client</artifactId>
+            <version>1.7.0</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
 </project>
