@@ -61,7 +61,7 @@ public class MybatisAdapterDefault implements MybatisAdapter {
 
         this.factoryBuilder = new SqlSessionFactoryBuilder();
 
-        DataSource dataSource = dsWrap.raw();
+        DataSource dataSource = getDataSource();
         String dataSourceId = "ds-" + (dsWrap.name() == null ? "" : dsWrap.name());
 
         TransactionFactory tf = new SolonManagedTransactionFactory();
@@ -92,6 +92,10 @@ public class MybatisAdapterDefault implements MybatisAdapter {
         dsWrap.context().getBeanAsync(SqlSessionFactoryBuilder.class, bean -> {
             factoryBuilder = bean;
         });
+    }
+
+    protected DataSource getDataSource(){
+        return dsWrap.raw();
     }
 
     protected void initConfiguration(Environment environment) {
