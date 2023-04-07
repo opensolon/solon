@@ -1,16 +1,16 @@
-package org.noear.solon.extend.mybatisplus.integration;
+package com.baomidou.mybatisplus.solon.integration;
 
 import com.baomidou.mybatisplus.core.toolkit.reflect.GenericTypeUtils;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.util.GenericUtil;
-import org.noear.solon.extend.mybatis.integration.MybatisAdapterManager;
+import org.apache.ibatis.solon.integration.MybatisAdapterManager;
 import org.noear.solon.core.Plugin;
 
 /**
  * @author noear
  * @since 1.5
  */
-public class XPluginImp implements Plugin {
+public class XPluginImpl implements Plugin {
     @Override
     public void start(AopContext context) {
         //

@@ -1,12 +1,12 @@
-package org.noear.solon.extend.mybatisplus.integration;
+package com.baomidou.mybatisplus.solon.integration;
 
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.Props;
-import org.noear.solon.extend.mybatis.MybatisAdapter;
-import org.noear.solon.extend.mybatis.MybatisAdapterFactory;
+import org.apache.ibatis.solon.MybatisAdapter;
+import org.apache.ibatis.solon.MybatisAdapterFactory;
 
 /**
- * 适配器工厂
+ * 适配器工厂 for mybatis-plus
  *
  * @author noear, iYarnFog
  * @since 1.5

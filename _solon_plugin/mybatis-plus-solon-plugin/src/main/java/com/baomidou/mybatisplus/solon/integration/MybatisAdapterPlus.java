@@ -1,4 +1,4 @@
-package org.noear.solon.extend.mybatisplus.integration;
+package com.baomidou.mybatisplus.solon.integration;
 
 import com.baomidou.mybatisplus.core.MybatisConfiguration;
 import com.baomidou.mybatisplus.core.MybatisSqlSessionFactoryBuilder;
@@ -8,7 +8,7 @@ import org.apache.ibatis.mapping.Environment;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.noear.solon.Utils;
 import org.noear.solon.core.*;
-import org.noear.solon.extend.mybatis.integration.MybatisAdapterDefault;
+import org.apache.ibatis.solon.integration.MybatisAdapterDefault;
 
 /**
  * 适配器 for mybatis-plus
@@ -29,6 +29,12 @@ public class MybatisAdapterPlus extends MybatisAdapterDefault {
      */
     protected MybatisAdapterPlus(BeanWrap dsWrap) {
         super(dsWrap);
+
+        this.factoryBuilderPlus = new MybatisSqlSessionFactoryBuilder();
+
+        dsWrap.context().getBeanAsync(MybatisSqlSessionFactoryBuilder.class, bean -> {
+            factoryBuilderPlus = bean;
+        });
     }
 
     /**
