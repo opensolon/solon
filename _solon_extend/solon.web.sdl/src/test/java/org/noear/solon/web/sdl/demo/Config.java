@@ -1,16 +1,14 @@
 package org.noear.solon.web.sdl.demo;
 
-import org.noear.redisx.RedisClient;
 import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Configuration;
-import org.noear.solon.annotation.Inject;
 import org.noear.solon.validation.annotation.LoginedChecker;
 import org.noear.solon.web.sdl.SdlLoginedChecker;
 import org.noear.solon.web.sdl.SdlStorage;
 import org.noear.solon.web.sdl.impl.SdlStorageOfLocal;
 
 /**
- * 主要是为了构建： SsoService 和 SsoLoginedChecker
+ * 主要是为了构建： SdlStorage 和 SdlLoginedChecker
  *
  * @author noear 2023/4/5 created
  */
