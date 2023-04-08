@@ -18,11 +18,11 @@ Simple steps to start using the library.
 #### 1. Add Maven dependency
 
 ```xml
-<dependency>
-  <groupId>io.github.majusko</groupId>
-  <artifactId>pulsar2-solon-plugin</artifactId>
-  <version>1.2.0</version>
-</dependency>
+  <dependency>
+	<groupId>org.noear</groupId>
+	<artifactId>pulsar2-solon-plugin</artifactId>
+	<version>${solon.version}</version>
+  </dependency>
 ```
 
 #### 2. Create your data class
