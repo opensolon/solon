@@ -8,7 +8,7 @@ import org.noear.solon.web.sdl.SdlStorage;
 import java.io.Serializable;
 
 /**
- * 单点登录能力服务
+ * 单设备登录能力服务
  *
  * @author noear
  * @since 2.2
@@ -20,12 +20,12 @@ public class SdlService {
      * @param userId 用户Id
      */
     public void login(SdlStorage storage, Context ctx, Serializable userId) {
-        String userSsoKey = storage.updateUserSdlKey(userId);
+        String userSdlKey = storage.updateUserSdlKey(userId);
 
         ctx.sessionSet(SdlStorage.SESSION_USER_ID, userId);
 
         //设置当前会话的单点登录标识
-        ctx.sessionSet(SdlStorage.SESSION_SDL_KEY, userSsoKey);
+        ctx.sessionSet(SdlStorage.SESSION_SDL_KEY, userSdlKey);
     }
 
     /**
@@ -58,15 +58,15 @@ public class SdlService {
             return true;
         }
 
-        //检测会话中的用户SsoKey
-        String userSsoKey = ctx.session(SdlStorage.SESSION_SDL_KEY, "");
+        //检测会话中的用户SdlKey
+        String userSdlKey = ctx.session(SdlStorage.SESSION_SDL_KEY, "");
 
-        if (Utils.isEmpty(userSsoKey)) {
+        if (Utils.isEmpty(userSdlKey)) {
             return false;
         }
 
-        //检测用户SsoKey是否过时？
-        String userSsoKeyOfUser = storage.getUserSdlKey(userId);
-        return userSsoKey.equals(userSsoKeyOfUser);
+        //检测用户SdlKey是否过时？
+        String userSdlKeyOfUser = storage.getUserSdlKey(userId);
+        return userSdlKey.equals(userSdlKeyOfUser);
     }
 }

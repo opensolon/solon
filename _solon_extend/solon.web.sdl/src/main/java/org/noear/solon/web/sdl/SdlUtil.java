@@ -7,7 +7,7 @@ import org.noear.solon.web.sdl.impl.SdlService;
 import java.io.Serializable;
 
 /**
- * 单点工具类
+ * 单设备工具类
  *
  * @author noear
  * @since 2.2

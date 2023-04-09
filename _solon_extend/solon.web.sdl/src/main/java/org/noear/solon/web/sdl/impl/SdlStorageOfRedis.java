@@ -7,7 +7,7 @@ import org.noear.solon.web.sdl.SdlStorage;
 import java.io.Serializable;
 
 /**
- * 单点登录数据服务 Redis 实现
+ * 单设备登录数据服务 Redis 实现
  *
  * @author noear
  * @since 2.2
@@ -25,14 +25,14 @@ public class SdlStorageOfRedis implements SdlStorage {
     @Override
     public String updateUserSdlKey(Serializable userId) {
         String storageKey = SdlStorage.SESSION_SDL_KEY + ":" + userId;
-        String userSsoKey = Utils.guid();
+        String userSdlKey = Utils.guid();
 
         //设置用户的单点登录标识（当前会话 与 用户的'单点登录标识'，说明当前会话不是最新的登录）
         storage.open(ru -> {
-            ru.key(storageKey).persist().set(userSsoKey);
+            ru.key(storageKey).persist().set(userSdlKey);
         });
 
-        return userSsoKey;
+        return userSdlKey;
     }
 
     /**

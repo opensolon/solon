@@ -5,7 +5,7 @@ import org.noear.solon.validation.annotation.Logined;
 import org.noear.solon.validation.annotation.LoginedChecker;
 
 /**
- * 单点登录检测器
+ * 单设备登录检测器
  *
  * @author noear
  * @since 2.2

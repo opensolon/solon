@@ -13,6 +13,7 @@
 * 增加 @Inject 注入 bean 的 required 支持???
 * 增加 afterInjection() 后所有 bean 必然可用的支持???
 * 调整 允许 "solon.scheduling" 的任务在注册时未配置调度???（由后续动态控制）
+* 调整 solon.web.sso 更名为 solon.web.sdl（之前搞错了）
 * fastjson2 升为 2.0.27
 
 ### 2.2.10
