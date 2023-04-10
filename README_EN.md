@@ -54,7 +54,7 @@ Startup is 5 to 10 times faster; QPS is 2 to 3 times higher; runtime memory is s
 
 ## Introduction:
 
-**Solon** is an efficient Java application development framework and a rich plug-in open ecosystem, combining different plug-ins to meet different needs, easy to customize, and rapid development:
+**Solon** is an efficient Java application development framework; It is also an open ecology with its own interface standards and specifications, combining different ecological plug-ins to meet different needs; Convenient customization; Rapid development:
 
 * **Restrained, concise, open, ecological**
 * Supports JDK8, JDK11, JDK17, JDK20
