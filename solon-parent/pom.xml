@@ -1653,11 +1653,4 @@
             </plugins>
         </pluginManagement>
     </build>
-
-
-    <modules>
-
-        <module>../solon</module>
-
-    </modules>
 </project>
