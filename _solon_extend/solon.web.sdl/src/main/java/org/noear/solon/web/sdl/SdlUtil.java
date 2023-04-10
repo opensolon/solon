@@ -15,6 +15,7 @@ import java.io.Serializable;
 public final class SdlUtil {
     static SdlService service = new SdlService();
     static SdlStorage storage;
+    static boolean    enable = true;
 
     static {
         Solon.context().getBeanAsync(SdlStorage.class, bean -> {
@@ -32,6 +33,14 @@ public final class SdlUtil {
 
 
     /////////////////////////////////////////
+
+    public static void enable(boolean enable){
+        SdlUtil.enable = enable;
+    }
+
+    public static boolean enable(){
+        return enable;
+    }
 
     /**
      * 登录

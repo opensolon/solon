@@ -4,6 +4,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.web.sdl.SdlStorage;
+import org.noear.solon.web.sdl.SdlUtil;
 
 import java.io.Serializable;
 
@@ -53,8 +54,20 @@ public class SdlService {
             return false;
         }
 
-        //为单测增加支持（不然没法跑）
-        if (Solon.cfg().isDebugMode()) {
+        if(userId instanceof Number){
+            //如果是数字，不能小于1
+            if(((Number)userId).longValue() <1){
+                return false;
+            }
+        } else {
+            //如果是别的不能为空
+            if (Utils.isEmpty(userId.toString())) {
+                return false;
+            }
+        }
+
+        //为单测增加支持（不然没法跑） //或者没有启用
+        if (Solon.cfg().isDebugMode() || SdlUtil.enable() == false) {
             return true;
         }
 
