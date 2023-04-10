@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.noear</groupId>
+    <artifactId>solon-parent</artifactId>
+    <version>2.2.11-SNAPSHOT</version>
+    <relativePath>../../solon-parent/pom.xml</relativePath>
+  </parent>
+
+  <artifactId>pulsar2-solon-plugin</artifactId>
+  <packaging>jar</packaging>
+
+  <properties>
+    <bcpkix-jdk15on.version>1.70</bcpkix-jdk15on.version>
+    <guava.version>31.1-jre</guava.version>
+    <commons-io.version>2.11.0</commons-io.version>
+    <google.protobuf.version>3.22.2</google.protobuf.version>
+    <!--<micrometer.version>1.10.5</micrometer.version>-->
+    <reactor.core.version>3.5.4</reactor.core.version>
+    <awaitility.version>4.2.0</awaitility.version>
+    <testcontainers.version>1.17.6</testcontainers.version>
+    <apache.pulsar.client.version>2.11.0</apache.pulsar.client.version>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.noear</groupId>
+      <artifactId>solon</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.pulsar</groupId>
+      <artifactId>pulsar-client-original</artifactId>
+      <version>${apache.pulsar.client.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.google.protobuf</groupId>
+      <artifactId>protobuf-java</artifactId>
+      <version>${google.protobuf.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>io.projectreactor</groupId>
+      <artifactId>reactor-core</artifactId>
+      <version>${reactor.core.version}</version>
+    </dependency>
+
+    <!--对pulsar2.x依赖的外围组件版本升级-->
+    <dependency>
+      <groupId>org.bouncycastle</groupId>
+      <artifactId>bcpkix-jdk15on</artifactId>
+      <version>${bcpkix-jdk15on.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>${slf4j.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <version>${guava.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+      <version>${commons-io.version}</version>
+    </dependency>
+
+    <!-- pulsar2.x 外围-->
+    <!-- test -->
+    <dependency>
+      <groupId>org.noear</groupId>
+      <artifactId>solon-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- 以下测试组件需要开发测试环境有docker -->
+    <!-- https://www.testcontainers.org/supported_docker_environment/ -->
+    <dependency>
+      <groupId>org.testcontainers</groupId>
+      <artifactId>testcontainers</artifactId>
+      <version>${testcontainers.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.testcontainers</groupId>
+      <artifactId>junit-jupiter</artifactId>
+      <version>${testcontainers.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.testcontainers</groupId>
+      <artifactId>pulsar</artifactId>
+      <version>${testcontainers.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.awaitility</groupId>
+      <artifactId>awaitility</artifactId>
+      <version>${awaitility.version}</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+</project>
