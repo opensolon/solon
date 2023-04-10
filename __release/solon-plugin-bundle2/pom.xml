@@ -16,45 +16,30 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>../../_solon_tool/solon-maven-plugin</module>
+        <module>../../_solon_plugin2/captcha-solon-plugin</module>
+        <module>../../_solon_plugin2/cron4j-solon-plugin</module>
+        <module>../../_solon_plugin2/drools-solon-plugin</module>
+        <module>../../_solon_plugin2/easypoi-solon-plugin</module>
+        <module>../../_solon_plugin2/easypoi-web-solon</module>
+        <module>../../_solon_plugin2/easypoi-wps-solon</module>
+        <module>../../_solon_plugin2/hasor-solon-plugin</module>
+        <module>../../_solon_plugin2/hasordb-solon-plugin</module>
+        <module>../../_solon_plugin2/jap-ids-solon-plugin</module>
+        <module>../../_solon_plugin2/jap-solon-plugin</module>
 
-        <module>../../_solon_plugin/luffy-solon-plugin</module>
+        <module>../../_solon_plugin2/luffy-solon-plugin</module>
+        <module>../../_solon_plugin2/orika-solon-plugin</module>
+        <module>../../_solon_plugin2/powerjob-solon-plugin</module>
+        <module>../../_solon_plugin2/pulsar2-solon-plugin</module>
+        <module>../../_solon_plugin2/quartz-solon-plugin</module>
+        <module>../../_solon_plugin2/sureness-solon-plugin</module>
+        <module>../../_solon_plugin2/vaptcha-solon-plugin</module>
 
-        <module>../../_solon_plugin/weed3-solon-plugin</module>
-        <module>../../_solon_plugin/wood-solon-plugin</module>
-
-        <module>../../_solon_plugin/quartz-solon-plugin</module>
-        <module>../../_solon_plugin/cron4j-solon-plugin</module>
-        <module>../../_solon_plugin/powerjob-solon-plugin</module>
-
-        <module>../../_solon_plugin/jap-ids-solon-plugin</module>
-        <module>../../_solon_plugin/jap-solon-plugin</module>
-
-        <module>../../_solon_plugin/graphql-solon-plugin</module>
-        <module>../../_solon_plugin/seata-solon-plugin</module>
-        <module>../../_solon_plugin/hasor-solon-plugin</module>
-
-        <module>../../_solon_plugin/sureness-solon-plugin</module>
-        <module>../../_solon_plugin/liteflow-solon-plugin</module>
-        <module>../../_solon_plugin/dynamic-tp-solon-plugin</module>
-        <module>../../_solon_plugin/easy-trans-solon-plugin</module>
-
-        <module>../../_solon_plugin/easypoi-solon-plugin</module>
-        <module>../../_solon_plugin/easypoi-web-solon</module>
-        <module>../../_solon_plugin/easypoi-wps-solon</module>
-
-        <module>../../_solon_plugin/swagger-solon-plugin</module>
-
-        <module>../../_solon_plugin/bean-searcher-solon-plugin</module>
-
-        <module>../../_solon_plugin/orika-solon-plugin</module>
-
-        <module>../../_solon_plugin/weixin-java-cp-solon-plugin</module>
-        <module>../../_solon_plugin/weixin-java-miniapp-solon-plugin</module>
-        <module>../../_solon_plugin/weixin-java-mp-solon-plugin</module>
-        <module>../../_solon_plugin/weixin-java-open-solon-plugin</module>
-        <module>../../_solon_plugin/weixin-java-pay-solon-plugin</module>
-        <module>../../_solon_plugin/weixin-java-qidian-solon-plugin</module>
-<!--        <module>../../_solon_tool/solon-swagger-knife4j</module>-->
+        <module>../../_solon_plugin2/weixin-java-cp-solon-plugin</module>
+        <module>../../_solon_plugin2/weixin-java-miniapp-solon-plugin</module>
+        <module>../../_solon_plugin2/weixin-java-mp-solon-plugin</module>
+        <module>../../_solon_plugin2/weixin-java-open-solon-plugin</module>
+        <module>../../_solon_plugin2/weixin-java-pay-solon-plugin</module>
+        <module>../../_solon_plugin2/weixin-java-qidian-solon-plugin</module>
     </modules>
 </project>

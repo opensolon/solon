@@ -16,7 +16,8 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>../../_solon_plugin/solon-springboot-starter</module>
+        <module>../../_solon_tool/solon-maven-plugin</module>
+        <module>../../_solon_tool/solon-springboot-starter</module>
 
         <module>../../_solon_plugin/detector-solon-plugin</module>
 
@@ -27,7 +28,6 @@
         <module>../../_solon_plugin/feign-solon-plugin</module>
         <module>../../_solon_plugin/forest-solon-plugin</module>
 
-        <module>../../_solon_plugin/hasordb-solon-plugin</module>
         <module>../../_solon_plugin/dbvisitor-solon-plugin</module>
 
         <module>../../_solon_plugin/sqltoy-solon-plugin</module>
@@ -43,13 +43,24 @@
 
         <module>../../_solon_plugin/activerecord-solon-plugin</module>
 
-        <module>../../_solon_plugin/shiro-solon-plugin</module>
         <module>../../_solon_plugin/sa-token-solon-plugin</module>
-
-        <module>../../_solon_plugin/captcha-solon-plugin</module>
-        <module>../../_solon_plugin/vaptcha-solon-plugin</module>
 
         <module>../../_solon_plugin/log4j2-solon-plugin</module>
         <module>../../_solon_plugin/logback-solon-plugin</module>
+        <module>../../_solon_plugin/weed3-solon-plugin</module>
+        <module>../../_solon_plugin/wood-solon-plugin</module>
+
+        <module>../../_solon_plugin/graphql-solon-plugin</module>
+        <module>../../_solon_plugin/seata-solon-plugin</module>
+
+        <module>../../_solon_plugin/liteflow-solon-plugin</module>
+        <module>../../_solon_plugin/easy-trans-solon-plugin</module>
+
+
+        <module>../../_solon_plugin/swagger-solon-plugin</module>
+
+        <module>../../_solon_plugin/bean-searcher-solon-plugin</module>
+
+        <!--        <module>../../_solon_tool/solon-swagger-knife4j</module>-->
     </modules>
 </project>
