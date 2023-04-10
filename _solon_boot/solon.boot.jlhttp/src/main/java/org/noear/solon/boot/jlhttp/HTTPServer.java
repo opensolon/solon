@@ -1921,28 +1921,38 @@ public class HTTPServer {
                 ServerSocket serv = HTTPServer.this.serv; // keep local to avoid NPE when stopped
                 while (serv != null && !serv.isClosed()) {
                     final Socket sock = serv.accept();
-                    executor.execute(new Runnable() {
-                        public void run() {
-                            try {
-                                try {
-                                    sock.setSoTimeout(socketTimeout);
-                                    sock.setTcpNoDelay(true); // we buffer anyway, so improve latency
-                                    handleConnection(sock.getInputStream(), sock.getOutputStream(), sock);
-                                } finally {
-                                    try {
-                                        // RFC7230#6.6 - close socket gracefully
-                                        // (except SSL socket which doesn't support half-closing)
-                                        if (!(sock instanceof SSLSocket)) {
-                                            sock.shutdownOutput(); // half-close socket (only output)
-                                            transfer(sock.getInputStream(), null, -1); // consume input
-                                        }
-                                    } finally {
-                                        sock.close(); // and finally close socket fully
-                                    }
-                                }
-                            } catch (IOException ignore) {}
+                    try {
+                        executor.execute(new Runnable() {
+                            public void run() {
+                                execute(sock);
+                            }
+                        });
+                    } catch (RejectedExecutionException e) {
+                        //todo: 如果线程满了，同步执行(会卡住，但不会完全死掉)
+                        execute(sock);
+                    }
+                }
+            } catch (IOException ignore) {
+            }
+        }
+
+        private void execute(Socket sock){
+            try {
+                try {
+                    sock.setSoTimeout(socketTimeout);
+                    sock.setTcpNoDelay(true); // we buffer anyway, so improve latency
+                    handleConnection(sock.getInputStream(), sock.getOutputStream(), sock);
+                } finally {
+                    try {
+                        // RFC7230#6.6 - close socket gracefully
+                        // (except SSL socket which doesn't support half-closing)
+                        if (!(sock instanceof SSLSocket)) {
+                            sock.shutdownOutput(); // half-close socket (only output)
+                            transfer(sock.getInputStream(), null, -1); // consume input
                         }
-                    });
+                    } finally {
+                        sock.close(); // and finally close socket fully
+                    }
                 }
             } catch (IOException ignore) {}
         }
