@@ -1,6 +1,9 @@
 package webapp;
 
 import cn.dev33.satoken.SaManager;
+import cn.hutool.core.date.DateTime;
+import cn.hutool.core.date.DateUnit;
+import cn.hutool.core.date.LocalDateTimeUtil;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.SolonBuilder;
@@ -163,6 +166,11 @@ public class App {
         app.ws("/seb/test", (c) -> {
             String msg = c.body();
             c.output("收到了...:" + msg);
+        });
+
+        //web socket 新增心跳服务
+        app.ws("/seb/heartbeat", (c) -> {
+            c.output(String.format("{%s} 收到:{%s} 消息应答。",LocalDateTimeUtil.now(),c.body()));
         });
     }
 
