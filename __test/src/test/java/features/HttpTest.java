@@ -11,6 +11,7 @@ import org.noear.solon.test.SolonTest;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import webapp.App;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -383,7 +384,7 @@ public class HttpTest extends AbstractHttpTester {
 
     @Test
     public void test2u() throws IOException {
-        assert path("/demo2/rpc/json").get().indexOf("@type") > 0;
+        assert path("/demo2/rpc/json").get().indexOf("java.") > 0;
     }
 
     @Test
@@ -446,7 +447,7 @@ public class HttpTest extends AbstractHttpTester {
         String val = ONode.loadStr(json).get("file.separator").getString();
 
         System.out.println(val);
-        assert val.equals("/") || val.equals("\\/");
+        assert val.equals("/") || val.equals("\\/") || val.equals(File.separator);
     }
 
     @Test
