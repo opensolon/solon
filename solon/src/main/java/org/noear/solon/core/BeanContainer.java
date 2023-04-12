@@ -617,22 +617,24 @@ public abstract class BeanContainer {
             Properties val = Utils.loadProperties(ResourceUtil.getResource(getClassLoader(),url));
 
             if (val == null) {
-                throw new IllegalStateException(name + "  failed to load!");
-            }
-
-            if (Properties.class == varH.getType()) {
-                varH.setValue(val);
-            } else if (Map.class == varH.getType()) {
-                Map<String, String> val2 = new HashMap<>();
-                val.forEach((k, v) -> {
-                    if (k instanceof String && v instanceof String) {
-                        val2.put((String) k, (String) v);
-                    }
-                });
-                varH.setValue(val2);
-            } else {
-                Object val2 = PropsConverter.global().convert(val, null, varH.getType(), varH.getGenericType());
-                varH.setValue(val2);
+                if (required) {
+                    throw new IllegalStateException(name + "  failed to load!");
+                }
+            }else {
+                if (Properties.class == varH.getType()) {
+                    varH.setValue(val);
+                } else if (Map.class == varH.getType()) {
+                    Map<String, String> val2 = new HashMap<>();
+                    val.forEach((k, v) -> {
+                        if (k instanceof String && v instanceof String) {
+                            val2.put((String) k, (String) v);
+                        }
+                    });
+                    varH.setValue(val2);
+                } else {
+                    Object val2 = PropsConverter.global().convert(val, null, varH.getType(), varH.getGenericType());
+                    varH.setValue(val2);
+                }
             }
         } else if (name.startsWith("${")) {
             //
@@ -663,14 +665,52 @@ public abstract class BeanContainer {
         }
     }
 
-    protected void beanInjectProperties(Class<?> clz, Object obj){
+    protected void beanInjectProperties(Class<?> clz, Object obj) {
         Inject typeInj = clz.getAnnotation(Inject.class);
 
         if (typeInj != null && Utils.isNotEmpty(typeInj.value())) {
-            if (typeInj.value().startsWith("${")) {
-                Utils.injectProperties(obj, cfg().getPropByExpr(typeInj.value()));
+            String name = typeInj.value();
+
+            if (name.startsWith("${classpath:")) {
+                //
+                // @Inject("${classpath:user.yml}") //注入配置文件
+                //
+                String url = name.substring(12, name.length() - 1);
+                Properties val = Utils.loadProperties(ResourceUtil.getResource(getClassLoader(), url));
+
+                if (val == null) {
+                    if (typeInj.required()) {
+                        throw new IllegalStateException(name + "  failed to load!");
+                    }
+                } else {
+                    Utils.injectProperties(obj, val);
+                }
+            } else if (typeInj.value().startsWith("${")) {
+                //
+                // @Inject("${xxx}") //注入配置 ${xxx} or ${xxx:def},只适合单值
+                //
+                String name2 = name.substring(2, name.length() - 1).trim();
+
+                beanInjectPropertiesDo(name, obj, cfg().getProp(name2), typeInj.required());
+
+                //支持自动刷新
+                if (typeInj.autoRefreshed()) {
+                    cfg().onChange((key, val) -> {
+                        if (key.startsWith(name2)) {
+                            beanInjectPropertiesDo(name, obj, cfg().getProp(name2), typeInj.required());
+                        }
+                    });
+                }
             }
         }
+    }
+
+    private void beanInjectPropertiesDo(String name, Object obj, Properties val, boolean required) {
+        if (required && val.size() == 0) {
+            throw new InjectionException("Missing required property: '" + name + "', config injection failed: " + obj.getClass().getName());
+        }
+
+        Utils.injectProperties(obj, val);
     }
 
 

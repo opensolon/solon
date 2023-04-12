@@ -39,9 +39,10 @@ public class PropsConverter {
     /**
      * 转换
      *
-     * @param props     属性
-     * @param target    目标
-     * @param targetClz 目标类型
+     * @param props      属性
+     * @param target     目标
+     * @param targetClz  目标类
+     * @param targetType 目标类型
      */
     public <T> T convert(Properties props, T target, Class<T> targetClz, Type targetType) {
         if (target == null) {
