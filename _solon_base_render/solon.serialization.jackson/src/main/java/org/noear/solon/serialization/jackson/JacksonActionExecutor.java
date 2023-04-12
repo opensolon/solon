@@ -32,7 +32,7 @@ public class JacksonActionExecutor extends ActionExecutorDefault {
         mapper_type.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
         mapper_type.activateDefaultTypingAsProperty(
                 mapper_type.getPolymorphicTypeValidator(),
-                ObjectMapper.DefaultTyping.OBJECT_AND_NON_CONCRETE, "@type");
+                ObjectMapper.DefaultTyping.JAVA_LANG_OBJECT, "@type");
         // 注册 JavaTimeModule ，以适配 java.time 下的时间类型
         mapper_type.registerModule(new JavaTimeModule());
         // 允许使用未带引号的字段名

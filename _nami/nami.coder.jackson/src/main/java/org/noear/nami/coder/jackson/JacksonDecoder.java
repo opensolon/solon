@@ -32,7 +32,7 @@ public class JacksonDecoder implements Decoder {
         mapper_type.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
         mapper_type.activateDefaultTypingAsProperty(
                 mapper_type.getPolymorphicTypeValidator(),
-                ObjectMapper.DefaultTyping.OBJECT_AND_NON_CONCRETE, "@type");
+                ObjectMapper.DefaultTyping.JAVA_LANG_OBJECT, "@type");
         mapper_type.registerModule(new JavaTimeModule());
         // 允许使用未带引号的字段名
         mapper_type.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);

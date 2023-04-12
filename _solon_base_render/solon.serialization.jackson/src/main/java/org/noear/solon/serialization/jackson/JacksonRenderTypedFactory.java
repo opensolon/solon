@@ -25,7 +25,7 @@ public class JacksonRenderTypedFactory extends JacksonRenderFactoryBase {
         config.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
         config.activateDefaultTypingAsProperty(
                 config.getPolymorphicTypeValidator(),
-                ObjectMapper.DefaultTyping.OBJECT_AND_NON_CONCRETE, "@type");
+                ObjectMapper.DefaultTyping.JAVA_LANG_OBJECT, "@type");
         config.registerModule(new JavaTimeModule());
         // 允许使用未带引号的字段名
         config.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
