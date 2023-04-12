@@ -4,7 +4,7 @@ import okhttp3.Response;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.noear.solon.test.HttpTester;
-import org.noear.solon.test.HttpUtilsOfServer;
+import org.noear.solon.test.HttpUtils;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
 import webapp.App;
@@ -24,7 +24,7 @@ public class SessionTest extends HttpTester {
 
         List<String> cookies = response.headers().values("Set-Cookie");
 
-        HttpUtilsOfServer httpUtils = path("/demob/session/getval");
+        HttpUtils httpUtils = path("/demob/session/getval");
 
         StringBuilder sb = new StringBuilder();
         for (String c1 : cookies) {

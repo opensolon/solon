@@ -21,7 +21,7 @@ public class HttpUtilsOfMock implements HttpUtils {
     TestContext context = new TestContext();
     public HttpUtilsOfMock(String url){
         _url = url;
-        context.url(url);
+        //context.url(url);
     }
     @Override
     public HttpUtils enablePrintln(boolean enable) {
@@ -159,7 +159,7 @@ public class HttpUtilsOfMock implements HttpUtils {
 
     @Override
     public Response exec(String mothod) throws IOException {
-        context.method(mothod);
+        //context.method(mothod);
         Solon.app().tryHandle(context);
 
 

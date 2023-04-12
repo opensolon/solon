@@ -1,9 +1,9 @@
 package test1;
 
 import org.junit.Test;
-import org.noear.solon.test.HttpUtilsOfServer;
+import org.noear.solon.test.HttpTester;
 
-public class NginxHotUpdateTest {
+public class NginxHotUpdateTest extends HttpTester {
     @Test
     public void test1() throws Exception {
         new Thread(() -> {
@@ -18,7 +18,7 @@ public class NginxHotUpdateTest {
 
         while (true) {
             try {
-                HttpUtilsOfServer.http(url).get();
+                http(url).get();
                 System.out.println(System.currentTimeMillis());
             } catch (Throwable ex) {
                 ex.printStackTrace();

@@ -34,17 +34,17 @@ public class HttpUtilsOfServer implements HttpUtils {
             .addInterceptor(HttpInterceptor.instance)
             .build();
 
-    public static HttpUtilsOfServer http(String service, String path) {
+    public static HttpUtils http(String service, String path) {
         String url = LoadBalance.get(service).getServer() + path;
         return http(url);
     }
 
-    public static HttpUtilsOfServer http(String group, String service, String path) {
+    public static HttpUtils http(String group, String service, String path) {
         String url = LoadBalance.get(group, service).getServer() + path;
         return http(url);
     }
 
-    public static HttpUtilsOfServer http(String url) {
+    public static HttpUtils http(String url) {
         return new HttpUtilsOfServer(url);
     }
 
