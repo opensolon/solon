@@ -143,7 +143,8 @@ public class HttpParam4Test extends HttpTester {
         oNode.set("id", "1")
                 .set("name", "noear")
                 .set("icon", "bbb")
-                .set("date", "2021-12-12 12:12:12");
+                .set("date", "2021-12-12");
+
 
         //走param，@Param 的格式化会起效果
         String json2 = path("/demo2/param4/param3").bodyJson(oNode.toJson()).post();
