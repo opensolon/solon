@@ -2,7 +2,7 @@ package features;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.noear.solon.test.AbstractHttpTester;
+import org.noear.solon.test.HttpTester;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
 import webapp.App;
@@ -17,7 +17,7 @@ import java.nio.charset.StandardCharsets;
  */
 @RunWith(SolonJUnit4ClassRunner.class)
 @SolonTest(App.class)
-public class HttpUploadTest extends AbstractHttpTester {
+public class HttpUploadTest extends HttpTester {
     @Test
     public void upload() throws IOException {
         InputStream inputStream = new ByteArrayInputStream("test".getBytes(StandardCharsets.UTF_8));

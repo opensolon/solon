@@ -6,14 +6,14 @@ import okhttp3.mockwebserver.MockWebServer;
 import okhttp3.mockwebserver.RecordedRequest;
 import org.junit.Rule;
 import org.junit.Test;
-import org.noear.solon.test.AbstractHttpTester;
+import org.noear.solon.test.HttpTester;
 
 import java.io.IOException;
 
 /**
  * @author noear 2023/2/14 created
  */
-public class MockWebTest extends AbstractHttpTester {
+public class MockWebTest extends HttpTester {
     public final static String EXPECTED = "{\"status\": \"ok\"}";
     @Rule
     public MockWebServer server = new MockWebServer();

@@ -2,7 +2,7 @@ package features;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.noear.solon.test.AbstractHttpTester;
+import org.noear.solon.test.HttpTester;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
 import webapp.App;
@@ -12,7 +12,7 @@ import webapp.App;
  */
 @RunWith(SolonJUnit4ClassRunner.class)
 @SolonTest(App.class)
-public class HttpPathTest extends AbstractHttpTester {
+public class HttpPathTest extends HttpTester {
     @Test
     public void test0() throws Exception {
         assert path("/demo2/path/test0").get().equals("ok");

@@ -6,7 +6,7 @@ import org.noear.nami.Nami;
 import org.noear.snack.ONode;
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.Inject;
-import org.noear.solon.test.AbstractHttpTester;
+import org.noear.solon.test.HttpTester;
 import org.noear.solon.test.SolonTest;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import webapp.App;
@@ -17,7 +17,7 @@ import java.util.Map;
 
 @RunWith(SolonJUnit4ClassRunner.class)
 @SolonTest(App.class)
-public class HttpTest extends AbstractHttpTester {
+public class HttpTest extends HttpTester {
 
     @Inject("${username}")
     public String username;

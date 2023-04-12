@@ -3,8 +3,8 @@ package features;
 import okhttp3.Response;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.noear.solon.test.AbstractHttpTester;
-import org.noear.solon.test.HttpUtils;
+import org.noear.solon.test.HttpTester;
+import org.noear.solon.test.HttpUtilsOfServer;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
 import webapp.App;
@@ -16,7 +16,7 @@ import java.util.List;
  */
 @RunWith(SolonJUnit4ClassRunner.class)
 @SolonTest(App.class)
-public class SessionTest extends AbstractHttpTester {
+public class SessionTest extends HttpTester {
     @Test
     public void test() throws Exception {
         Response response = path("/demob/session/setval").exec("get");
@@ -24,7 +24,7 @@ public class SessionTest extends AbstractHttpTester {
 
         List<String> cookies = response.headers().values("Set-Cookie");
 
-        HttpUtils httpUtils = path("/demob/session/getval");
+        HttpUtilsOfServer httpUtils = path("/demob/session/getval");
 
         StringBuilder sb = new StringBuilder();
         for (String c1 : cookies) {
