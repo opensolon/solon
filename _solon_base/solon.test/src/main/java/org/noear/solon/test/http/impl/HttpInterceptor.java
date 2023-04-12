@@ -1,4 +1,4 @@
-package org.noear.solon.test.http;
+package org.noear.solon.test.http.impl;
 
 import okhttp3.Interceptor;
 import okhttp3.Response;

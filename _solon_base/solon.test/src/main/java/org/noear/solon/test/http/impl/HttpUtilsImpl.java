@@ -1,4 +1,4 @@
-package org.noear.solon.test.http;
+package org.noear.solon.test.http.impl;
 
 import okhttp3.*;
 import okhttp3.internal.Util;
@@ -19,7 +19,7 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
-public class HttpUtilsOfOkHttp implements HttpUtils {
+public class HttpUtilsImpl implements HttpUtils {
     private final static Supplier<Dispatcher> okhttp_dispatcher = () -> {
         Dispatcher temp = new Dispatcher();
         temp.setMaxRequests(3000);
@@ -50,7 +50,7 @@ public class HttpUtilsOfOkHttp implements HttpUtils {
     private String _url;
     private boolean _enablePrintln = false;
 
-    public HttpUtilsOfOkHttp(String url) {
+    public HttpUtilsImpl(String url) {
         _builder = new Request.Builder().url(url);
         _url = url;
     }

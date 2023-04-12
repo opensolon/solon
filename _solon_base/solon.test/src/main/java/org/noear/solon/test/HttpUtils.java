@@ -3,7 +3,7 @@ package org.noear.solon.test;
 import okhttp3.Response;
 import org.noear.solon.Solon;
 import org.noear.solon.core.LoadBalance;
-import org.noear.solon.test.http.HttpUtilsOfOkHttp;
+import org.noear.solon.test.http.impl.HttpUtilsImpl;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,7 +27,7 @@ public interface HttpUtils {
     }
 
     static HttpUtils http(String url) {
-        return new HttpUtilsOfOkHttp(url);
+        return new HttpUtilsImpl(url);
     }
 
     HttpUtils enablePrintln(boolean enable);
