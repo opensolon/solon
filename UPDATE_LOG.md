@@ -15,6 +15,7 @@
 * 增加 afterInjection() 后所有 bean 必然可用的支持???
 * 增加 jlhttp 对执行器 RejectedExecutionException 异常的处理
 * 调整 允许 "solon.scheduling" 的任务在注册时未配置调度???（由后续动态控制）
+* 调整 根路由支持 remove 监听记录
 * fastjson2 升为 2.0.27
 * beetlsql 升为 3.22.0-RELEASE
 * redisx 升为 1.4.7
