@@ -1,11 +1,12 @@
-package org.noear.solon.test;
+package org.noear.solon.test.http;
 
 import okhttp3.*;
 import okhttp3.internal.Util;
 import okio.BufferedSink;
 import okio.Okio;
 import okio.Source;
-import org.noear.solon.core.LoadBalance;
+import org.noear.solon.test.HttpCallback;
+import org.noear.solon.test.HttpUtils;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -18,7 +19,7 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
-public class HttpUtilsOfServer implements HttpUtils {
+public class HttpUtilsOfOkHttp implements HttpUtils {
     private final static Supplier<Dispatcher> okhttp_dispatcher = () -> {
         Dispatcher temp = new Dispatcher();
         temp.setMaxRequests(3000);
@@ -34,19 +35,6 @@ public class HttpUtilsOfServer implements HttpUtils {
             .addInterceptor(HttpInterceptor.instance)
             .build();
 
-    public static HttpUtils http(String service, String path) {
-        String url = LoadBalance.get(service).getServer() + path;
-        return http(url);
-    }
-
-    public static HttpUtils http(String group, String service, String path) {
-        String url = LoadBalance.get(group, service).getServer() + path;
-        return http(url);
-    }
-
-    public static HttpUtils http(String url) {
-        return new HttpUtilsOfServer(url);
-    }
 
     private Charset _charset;
     private Map<String, String> _cookies;
@@ -62,7 +50,7 @@ public class HttpUtilsOfServer implements HttpUtils {
     private String _url;
     private boolean _enablePrintln = false;
 
-    public HttpUtilsOfServer(String url) {
+    public HttpUtilsOfOkHttp(String url) {
         _builder = new Request.Builder().url(url);
         _url = url;
     }

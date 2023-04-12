@@ -5,6 +5,6 @@ package org.noear.solon.test;
  * @since 2.2
  */
 @Deprecated
-public abstract class AbstractHttpTester extends HttpTester {
+public class AbstractHttpTester extends HttpTester {
 
 }

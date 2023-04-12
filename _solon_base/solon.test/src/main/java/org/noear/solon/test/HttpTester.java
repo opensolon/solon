@@ -8,15 +8,11 @@ import org.noear.solon.Solon;
  * @author noear
  * @since 2.2
  */
-public abstract class HttpTester {
+public class HttpTester {
     public boolean enablePrint() {
         return true;
     }
 
-    public HttpUtils mock(String path){
-        int port = Solon.cfg().serverPort();
-        return new HttpUtilsOfMock("http://localhost:" + port + path);
-    }
 
     /**
      * 请求当前服务
@@ -36,13 +32,13 @@ public abstract class HttpTester {
      * 请求本机服务
      */
     public HttpUtils http(int port) {
-        return HttpUtilsOfServer.http("http://localhost:" + port).enablePrintln(enablePrint());
+        return HttpUtils.http("http://localhost:" + port).enablePrintln(enablePrint());
     }
 
     /**
      * 请求服务
-     * */
+     */
     public HttpUtils http(String url) {
-        return HttpUtilsOfServer.http(url).enablePrintln(enablePrint());
+        return HttpUtils.http(url).enablePrintln(enablePrint());
     }
 }

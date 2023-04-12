@@ -2,6 +2,8 @@ package org.noear.solon.test;
 
 import okhttp3.Response;
 import org.noear.solon.Solon;
+import org.noear.solon.core.LoadBalance;
+import org.noear.solon.test.http.HttpUtilsOfOkHttp;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,6 +16,20 @@ import java.util.Map;
  * @since 2.2
  */
 public interface HttpUtils {
+    static HttpUtils http(String service, String path) {
+        String url = LoadBalance.get(service).getServer() + path;
+        return http(url);
+    }
+
+    static HttpUtils http(String group, String service, String path) {
+        String url = LoadBalance.get(group, service).getServer() + path;
+        return http(url);
+    }
+
+    static HttpUtils http(String url) {
+        return new HttpUtilsOfOkHttp(url);
+    }
+
     HttpUtils enablePrintln(boolean enable);
 
     HttpUtils timeout(int timeoutSeconds);

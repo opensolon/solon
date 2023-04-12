@@ -1,4 +1,4 @@
-package org.noear.solon.test;
+package org.noear.solon.test.http;
 
 /**
  * 超时：单位：秒
