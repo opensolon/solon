@@ -18,8 +18,8 @@
 * 新增 pulsar2-solon-plugin 插件
 * 新增 drools-solon-plugin 插件
 * 新增 solon.web.sdl 插件替代 solon.web.sso（之前名字搞错了）
-* 增加 jlhttp 对执行器 RejectedExecutionException 异常的处理
-* 优化 sa-token sao 适配关于多线程的的时间处理
+* 调整 jlhttp 对执行器 RejectedExecutionException 异常的处理
+* 调整 sa-token sao 适配代码，优化相同key在多线程下的并发问题
 * 调整 根路由支持 remove 监听记录
 * fastjson2 升为 2.0.27
 * beetlsql 升为 3.22.0-RELEASE
