@@ -8,6 +8,8 @@ demo8.test:
   username: root
   paasword: 12
 
+autorefresh:
+  username: a
 
 cache1:
   driverType: local

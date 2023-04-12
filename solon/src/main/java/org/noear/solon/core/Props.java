@@ -23,21 +23,25 @@ public class Props extends Properties {
     private ClassLoader classLoader;
 
     public Props() {
+        //不产生 defaults
         super();
     }
 
     public Props(ClassLoader classLoader) {
+        //不产生 defaults
         super();
         this.classLoader = classLoader;
     }
 
     public Props(Properties defaults) {
-        super(defaults);
+        //不产生 defaults
+        super();
+        super.putAll(defaults);
     }
 
     public Props(Map<String, String> data) {
         super();
-        putAll(data);
+        super.putAll(data);
     }
 
     @Override
