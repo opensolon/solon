@@ -45,7 +45,6 @@
         <swagger.version>1.6.2</swagger.version>
 
         <jackson.version>2.14.2</jackson.version>
-        <jackson-datatype-jsr310.version>2.14.2</jackson-datatype-jsr310.version>
         <gson.version>2.10.1</gson.version>
         <hessian.version>4.0.66</hessian.version>
         <hessian-sofa.version>4.0.4</hessian-sofa.version>

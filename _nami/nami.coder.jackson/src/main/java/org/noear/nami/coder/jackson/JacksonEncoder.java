@@ -2,6 +2,7 @@ package org.noear.nami.coder.jackson;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.noear.nami.Context;
 import org.noear.nami.Encoder;
 import org.noear.nami.common.ContentTypes;
@@ -17,6 +18,7 @@ public class JacksonEncoder implements Encoder {
 
     public JacksonEncoder() {
         mapper.enable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        mapper.registerModule(new JavaTimeModule());
     }
 
     @Override
