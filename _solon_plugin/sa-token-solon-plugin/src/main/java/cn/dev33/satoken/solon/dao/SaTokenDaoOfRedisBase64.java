@@ -40,7 +40,7 @@ public class SaTokenDaoOfRedisBase64 implements SaTokenDao {
      * 写入Value，并设定存活时间 (单位: 秒)
      */
     @Override
-    public void set(String key, String value, long timeout) {
+    public synchronized void set(String key, String value, long timeout) {
         if (timeout == 0 || timeout <= SaTokenDao.NOT_VALUE_EXPIRE) {
             return;
         }
@@ -57,19 +57,17 @@ public class SaTokenDaoOfRedisBase64 implements SaTokenDao {
      */
     @Override
     public void update(String key, String value) {
-        long expire = getTimeout(key);
-        // -2 = 无此键
-        if (expire == SaTokenDao.NOT_VALUE_EXPIRE) {
-            return;
+        if (redisBucket.exists(key)) {
+            long expire = getTimeout(key);
+            this.set(key, value, expire);
         }
-        this.set(key, value, expire);
     }
 
     /**
      * 删除Value
      */
     @Override
-    public void delete(String key) {
+    public synchronized void delete(String key) {
         redisBucket.remove(key);
     }
 
@@ -77,7 +75,7 @@ public class SaTokenDaoOfRedisBase64 implements SaTokenDao {
      * 获取Value的剩余存活时间 (单位: 秒)
      */
     @Override
-    public long getTimeout(String key) {
+    public synchronized long getTimeout(String key) {
         return redisBucket.ttl(key);
     }
 
