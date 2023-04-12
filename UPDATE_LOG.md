@@ -17,6 +17,7 @@
 * 调整 允许 "solon.scheduling" 的任务在注册时未配置调度???（由后续动态控制）
 * fastjson2 升为 2.0.27
 * beetlsql 升为 3.22.0-RELEASE
+* redisx 升为 1.4.7
 
 ### 2.2.10
 * 新增 mybatis-flex-solon-plugin 插件
