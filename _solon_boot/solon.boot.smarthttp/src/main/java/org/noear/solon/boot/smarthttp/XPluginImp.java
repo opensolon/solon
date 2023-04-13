@@ -7,6 +7,7 @@ import org.noear.solon.boot.prop.impl.HttpServerProps;
 import org.noear.solon.boot.smarthttp.http.SmHttpContextHandler;
 import org.noear.solon.boot.smarthttp.http.FormContentFilter;
 import org.noear.solon.core.*;
+import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.LogUtil;
 
 public final class XPluginImp implements Plugin {
@@ -60,6 +61,9 @@ public final class XPluginImp implements Plugin {
 
         _server.setHandler(Solon.app()::tryHandle);
         _server.start(_host, _port);
+
+        //尝试事件扩展
+        EventBus.push(_server);
 
         app.signalAdd(_signal);
 
