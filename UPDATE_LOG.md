@@ -14,6 +14,7 @@
 * 增加 afterInjection() 后所有 bean 必然可用的支持???
 * 调整 允许 "solon.scheduling" 的任务在注册时未配置调度???（由后续动态控制）
 * 添加 Utils::isEmpty(Collection s) 接口
+* 修复 有默认值的配置注入不能自动更新的问题
 * mybatis-flex 升为 1.1.1
 * mybatis-plus 升为 3.5.3.1
 
