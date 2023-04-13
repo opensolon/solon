@@ -22,6 +22,7 @@
 * 插件 solon.boot.jlhttp 优化线程不够时会处理方式
 * 插件 solon.boot.sockted.jdksocket 优化线程不够时会处理方式
 * 插件 solon.boot.smarthttp 优化二级池线程不够时会处理方式
+* 插件 solon-maven-plugin 打包机制，支持 scope system 包编译
 * 增加 @Configuration + @Inject 支持配置变更事件的注入
 * 增加 solon.cloud/Config:_Props 申明为非序列化字段
 * 增加 三个 http server 通过事件扩展的支持，比如定制执行服务

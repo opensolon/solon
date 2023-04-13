@@ -11,13 +11,12 @@ import org.noear.solon.maven.plugin.tools.tool.ArtifactsLibraries;
 import org.noear.solon.maven.plugin.tools.tool.Libraries;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
 //@Mojo(name = "repackage", defaultPhase = LifecyclePhase.PACKAGE, requiresDependencyResolution = ResolutionScope.RUNTIME)
-@Mojo(name = "repackage", defaultPhase = LifecyclePhase.PACKAGE, requiresProject = true, threadSafe = true,
+@Mojo(name = "repackage", defaultPhase = LifecyclePhase.PACKAGE, threadSafe = true,
         requiresDependencyResolution = ResolutionScope.COMPILE_PLUS_RUNTIME,
         requiresDependencyCollection = ResolutionScope.COMPILE_PLUS_RUNTIME)
 public class RepackageMojo extends AbstractMojo {
@@ -58,7 +57,7 @@ public class RepackageMojo extends AbstractMojo {
         logger.info("打包类型：" + packaging);
         if (packaging != null) {
             if ("jar".equalsIgnoreCase(packaging)) {
-                PLUGIN_TYPE=PluginType.JAR;
+                PLUGIN_TYPE = PluginType.JAR;
                 //移动数据
                 ClassesMove.change(project.getArtifact().getFile());
                 //处理依赖
@@ -70,7 +69,7 @@ public class RepackageMojo extends AbstractMojo {
                     throw new MojoExecutionException("write loader exception", e);
                 }
             } else if ("war".equalsIgnoreCase(packaging)) {
-                PLUGIN_TYPE=PluginType.WAR;
+                PLUGIN_TYPE = PluginType.WAR;
                 //默认就是war了
             }
         } else {
@@ -86,10 +85,10 @@ public class RepackageMojo extends AbstractMojo {
             File target = getTargetFile();
             Set<Artifact> artifacts = project.getArtifacts();
             Set<Artifact> packartifacts = new HashSet<>();
-            if(!includeSystemScope){ //如果设置不打包scope system 包 则跳过
-                logger.info("此次打包的includeSystemScope设置是"+includeSystemScope);
-                for(Artifact a:artifacts){
-                    if(a.getScope().equals(Artifact.SCOPE_SYSTEM)){
+            if (!includeSystemScope) { //如果设置不打包scope system 包 则跳过
+                logger.info("此次打包的includeSystemScope设置是" + includeSystemScope);
+                for (Artifact a : artifacts) {
+                    if (a.getScope().equals(Artifact.SCOPE_SYSTEM)) {
                         continue;
                     }
                     packartifacts.add(a);
@@ -115,5 +114,4 @@ public class RepackageMojo extends AbstractMojo {
         String name = this.finalName + classifier + "." + this.project.getArtifact().getArtifactHandler().getExtension();
         return new File(this.outputDirectory, name);
     }
-
 }
