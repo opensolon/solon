@@ -13,14 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.baomidou.mybatisplus.solon.plugins.pagination.dialects;
+package com.baomidou.mybatisplus.solon.incrementer;
 
-/**
- * SQLServer 数据库分页语句组装实现
- *
- * @author hubin
- * @since 2016-03-23
- */
-@Deprecated
-public class SQLServerDialect extends Oracle12cDialect {
+import com.baomidou.mybatisplus.annotation.DbType;
+import com.baomidou.mybatisplus.core.incrementer.IKeyGenerator;
+
+public class FirebirdKeyGenerator implements IKeyGenerator {
+
+    @Override
+    public String executeSql(String incrementerName) {
+        return "SELECT next value for " + incrementerName + " from rdb$database";
+    }
+
+    @Override
+    public DbType dbType() {
+        return DbType.FIREBIRD;
+    }
 }

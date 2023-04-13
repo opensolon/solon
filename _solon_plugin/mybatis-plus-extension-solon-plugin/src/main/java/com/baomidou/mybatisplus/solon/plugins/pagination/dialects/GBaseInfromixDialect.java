@@ -16,11 +16,13 @@
 package com.baomidou.mybatisplus.solon.plugins.pagination.dialects;
 
 /**
- * SQLServer 数据库分页语句组装实现
+ * GBase 8s V8.8 数据库分页语句组装实现
+ * 通用分页版本
  *
- * @author hubin
- * @since 2016-03-23
+ * @author lix lixhbs@163.com
+ * @since 2022年03月28日19:25:46
+ * @deprecated 2022-05-30
  */
 @Deprecated
-public class SQLServerDialect extends Oracle12cDialect {
+public class GBaseInfromixDialect extends GBase8sDialect {
 }

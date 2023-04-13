@@ -13,14 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.baomidou.mybatisplus.solon.plugins.pagination.dialects;
+package com.baomidou.mybatisplus.solon.incrementer;
+
+import com.baomidou.mybatisplus.annotation.DbType;
+import com.baomidou.mybatisplus.core.incrementer.IKeyGenerator;
 
 /**
- * SQLServer 数据库分页语句组装实现
+ * DM Sequence
  *
- * @author hubin
- * @since 2016-03-23
+ * @author cdtjj
+ * @since 2022-04-22
  */
-@Deprecated
-public class SQLServerDialect extends Oracle12cDialect {
+public class DmKeyGenerator implements IKeyGenerator {
+
+    @Override
+    public String executeSql(String incrementerName) {
+        return "SELECT " + incrementerName + ".NEXTVAL FROM DUAL";
+    }
+
+    @Override
+    public DbType dbType() {
+        return DbType.DM;
+    }
 }

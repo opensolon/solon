@@ -13,14 +13,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.baomidou.mybatisplus.solon.plugins.pagination.dialects;
+package com.baomidou.mybatisplus.solon.ddl;
+
+import org.noear.solon.annotation.Inject;
+
+import javax.sql.DataSource;
+import java.util.List;
+import java.util.function.Consumer;
 
 /**
- * SQLServer 数据库分页语句组装实现
+ * 非多数据源 DDL 实现
  *
  * @author hubin
- * @since 2016-03-23
+ * @since 2021-09-23
  */
-@Deprecated
-public class SQLServerDialect extends Oracle12cDialect {
+public class SimpleDdl implements IDdl {
+    @Inject
+    private DataSource dataSource;
+
+    @Override
+    public void runScript(Consumer<DataSource> consumer) {
+        consumer.accept(dataSource);
+    }
+
+    @Override
+    public List<String> getSqlFiles() {
+        return null;
+    }
 }

@@ -23,10 +23,13 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
- * @author noear
- * @since 1.6
+ * 顶级 Service
+ *
+ * @author hubin
+ * @since 2018-06-23
  */
 public interface IService<T> {
+
     /**
      * 默认批次提交数量
      */
@@ -497,11 +500,19 @@ public interface IService<T> {
      * @return LambdaQueryWrapper 的包装类
      */
     default LambdaQueryChainWrapper<T> lambdaQuery() {
-        return ChainWrappers.lambdaQueryChain(getBaseMapper());
+        return ChainWrappers.lambdaQueryChain(getBaseMapper(), getEntityClass());
     }
 
-
-
+    /**
+     * 链式查询 lambda 式
+     * <p>注意：不支持 Kotlin </p>
+     *
+     * @param entity 实体对象
+     * @return LambdaQueryWrapper 的包装类
+     */
+    default LambdaQueryChainWrapper<T> lambdaQuery(T entity) {
+        return ChainWrappers.lambdaQueryChain(getBaseMapper(), entity);
+    }
 
     /**
      * 链式更改 普通

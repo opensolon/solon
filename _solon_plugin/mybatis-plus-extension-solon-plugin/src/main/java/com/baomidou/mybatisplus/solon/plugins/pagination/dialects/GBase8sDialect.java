@@ -15,12 +15,21 @@
  */
 package com.baomidou.mybatisplus.solon.plugins.pagination.dialects;
 
+import com.baomidou.mybatisplus.solon.plugins.pagination.DialectModel;
+
 /**
- * SQLServer 数据库分页语句组装实现
+ * GBase 8s V8.8 数据库分页语句组装实现
+ * 通用分页版本
  *
- * @author hubin
- * @since 2016-03-23
+ * @author liaojinqing
+ * @since 2021-07-20
  */
-@Deprecated
-public class SQLServerDialect extends Oracle12cDialect {
+public class GBase8sDialect implements IDialect {
+
+    @Override
+    public DialectModel buildPaginationSql(String originalSql, long offset, long limit) {
+        StringBuilder sql = new StringBuilder(originalSql)
+            .insert(6, " SKIP " + offset + " FIRST " + limit);
+        return new DialectModel(sql.toString());
+    }
 }

@@ -29,8 +29,8 @@ import com.baomidou.mybatisplus.core.metadata.TableInfo;
 import com.baomidou.mybatisplus.core.metadata.TableInfoHelper;
 import com.baomidou.mybatisplus.core.toolkit.Constants;
 import com.baomidou.mybatisplus.core.toolkit.ExceptionUtils;
+import com.baomidou.mybatisplus.core.toolkit.ReflectionKit;
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
-import com.baomidou.mybatisplus.solon.toolkit.GenericTypeUtil;
 import org.apache.ibatis.executor.Executor;
 import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.mapping.SqlCommandType;
@@ -38,6 +38,7 @@ import org.apache.ibatis.mapping.SqlCommandType;
 import java.lang.reflect.Field;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Map;
@@ -169,12 +170,12 @@ public class OptimisticLockerInnerInterceptor implements InnerInterceptor {
 
     private void setVersionByWrapper(Map<String, Object> map, String msId) {
         Object ew = map.get(Constants.WRAPPER);
-        if (null != ew && ew instanceof AbstractWrapper && ew instanceof Update) {
+        if (ew instanceof AbstractWrapper && ew instanceof Update) {
             Class<?> entityClass = ENTITY_CLASS_CACHE.get(msId);
             if (null == entityClass) {
                 try {
                     final String className = msId.substring(0, msId.lastIndexOf('.'));
-                    entityClass = GenericTypeUtil.getSuperClassGenericType(Class.forName(className), Mapper.class, 0);
+                    entityClass = ReflectionKit.getSuperClassGenericType(Class.forName(className), Mapper.class, 0);
                     ENTITY_CLASS_CACHE.put(msId, entityClass);
                 } catch (ClassNotFoundException e) {
                     throw ExceptionUtils.mpe(e);
@@ -292,6 +293,8 @@ public class OptimisticLockerInnerInterceptor implements InnerInterceptor {
         } else if (Timestamp.class.equals(clazz)) {
             return new Timestamp(System.currentTimeMillis());
         } else if (LocalDateTime.class.equals(clazz)) {
+            return LocalDateTime.now();
+        } else if (Instant.class.equals(clazz)) {
             return LocalDateTime.now();
         }
         //not supported type, return original val.

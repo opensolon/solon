@@ -13,24 +13,41 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.baomidou.mybatisplus.solon.plugins.handler;
+package com.baomidou.mybatisplus.solon.ddl;
 
-import net.sf.jsqlparser.expression.Expression;
+import com.baomidou.mybatisplus.solon.ddl.history.IDdlGenerator;
+
+import javax.sql.DataSource;
+import java.util.List;
+import java.util.function.Consumer;
 
 /**
- * 数据权限处理器
+ * DDL 处理器
  *
  * @author hubin
- * @since 3.4.1 +
+ * @since 2021-06-22
  */
-public interface DataPermissionHandler {
+public interface IDdl {
 
     /**
-     * 获取数据权限 SQL 片段
+     * 执行 SQL 脚本
      *
-     * @param where             待执行 SQL Where 条件表达式
-     * @param mappedStatementId Mybatis MappedStatement Id 根据该参数可以判断具体执行方法
-     * @return JSqlParser 条件表达式，返回的条件表达式会覆盖原有的条件表达式
+     * @param consumer 指定数据源执行
      */
-    Expression getSqlSegment(Expression where, String mappedStatementId);
+    void runScript(Consumer<DataSource> consumer);
+
+    /**
+     * DDL 生成器
+     */
+    default IDdlGenerator getDdlGenerator() {
+        return null;
+    }
+
+    /**
+     * 执行 SQL 脚本
+     * <p>Resources.getResourceAsReader("db/test.sql")</p>
+     *
+     * @return SQL 脚本文件列表
+     */
+    List<String> getSqlFiles();
 }
