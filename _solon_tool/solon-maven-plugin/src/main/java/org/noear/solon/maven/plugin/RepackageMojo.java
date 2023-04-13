@@ -13,6 +13,7 @@ import org.noear.solon.maven.plugin.tools.tool.Libraries;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 //@Mojo(name = "repackage", defaultPhase = LifecyclePhase.PACKAGE, requiresDependencyResolution = ResolutionScope.RUNTIME)
@@ -38,6 +39,12 @@ public class RepackageMojo extends AbstractMojo {
 
     @Parameter
     private String classifier;
+
+    /**
+     * Include system scoped dependencies.
+     */
+    @Parameter(defaultValue = "true")
+    public boolean includeSystemScope;
 
     @Component
     private MavenProject project;
@@ -78,7 +85,19 @@ public class RepackageMojo extends AbstractMojo {
             Repackager repackager = new Repackager(sourceFile, logger, mainClass);
             File target = getTargetFile();
             Set<Artifact> artifacts = project.getArtifacts();
-            Libraries libraries = new ArtifactsLibraries(artifacts, Collections.emptyList(), getLog());
+            Set<Artifact> packartifacts = new HashSet<>();
+            if(!includeSystemScope){ //如果设置不打包scope system 包 则跳过
+                logger.info("此次打包的includeSystemScope设置是"+includeSystemScope);
+                for(Artifact a:artifacts){
+                    if(a.getScope().equals(Artifact.SCOPE_SYSTEM)){
+                        continue;
+                    }
+                    packartifacts.add(a);
+                }
+            } else {
+                packartifacts = artifacts;
+            }
+            Libraries libraries = new ArtifactsLibraries(packartifacts, Collections.emptyList(), getLog());
             repackager.repackage(target, libraries);
         } catch (Exception ex) {
             throw new MojoExecutionException(ex.getMessage(), ex);
