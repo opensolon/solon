@@ -27,7 +27,10 @@ public class AsyncInterceptor implements Interceptor {
 
         if (anno != null) {
             Runnable runnable = createRunnable(inv);
-            RunUtil.async(runnable);
+            if (runnable != null) {
+                RunUtil.async(runnable);
+            }
+
             return null;
         } else {
             return inv.invoke();

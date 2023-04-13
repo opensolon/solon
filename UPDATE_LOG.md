@@ -27,6 +27,7 @@
 * 增加 solon.cloud/Config:_Props 申明为非序列化字段
 * 增加 三个 http server 通过事件扩展的支持，比如定制执行服务
 * 调整 sa-token sao 适配代码，优化相同key在多线程下的并发问题
+* 调整 InvocationRunnableFactory::create 允许返回为 null，即自己直接执行
 * 调整 根路由支持 remove 监听记录
 * fastjson2 升为 2.0.27
 * beetlsql 升为 3.22.0-RELEASE
