@@ -398,8 +398,9 @@ public final class SolonProps extends Props {
     }
 
     private String serverHost;
+    
     /**
-     * 获取应用主端口(默认:8080)
+     * 获取应用主机名
      */
     public String serverHost() {
         if (serverHost == null) {
