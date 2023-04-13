@@ -2,6 +2,7 @@ package org.noear.nami.coder.jackson;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -31,8 +32,12 @@ public class JacksonDecoder implements Decoder {
         mapper_type.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
         mapper_type.activateDefaultTypingAsProperty(
                 mapper_type.getPolymorphicTypeValidator(),
-                ObjectMapper.DefaultTyping.OBJECT_AND_NON_CONCRETE, "@type");
+                ObjectMapper.DefaultTyping.JAVA_LANG_OBJECT, "@type");
         mapper_type.registerModule(new JavaTimeModule());
+        // 允许使用未带引号的字段名
+        mapper_type.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
+        // 允许使用单引号
+        mapper_type.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
     }
 
     @Override

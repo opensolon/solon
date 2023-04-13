@@ -2,6 +2,7 @@ package org.noear.solon.serialization.jackson;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -24,8 +25,12 @@ public class JacksonRenderTypedFactory extends JacksonRenderFactoryBase {
         config.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
         config.activateDefaultTypingAsProperty(
                 config.getPolymorphicTypeValidator(),
-                ObjectMapper.DefaultTyping.OBJECT_AND_NON_CONCRETE, "@type");
+                ObjectMapper.DefaultTyping.JAVA_LANG_OBJECT, "@type");
         config.registerModule(new JavaTimeModule());
+        // 允许使用未带引号的字段名
+        config.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
+        // 允许使用单引号
+        config.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
     }
 
     @Override
