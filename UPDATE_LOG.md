@@ -19,9 +19,9 @@
 * 新增 drools-solon-plugin 插件
 * 新增 solon.web.sdl 插件替代 solon.web.sso（之前名字搞错了）
 * 插件 solon.boot.jetty 增加 jetty-servlet 依赖
-* 优化 solon.boot.jlhttp 线程不够时会处理方式
-* 优化 solon.boot.sockted.jdksocket 线程不够时会处理方式
-* 优化 solon.boot.smarthttp 二级池线程不够时会处理方式
+* 插件 solon.boot.jlhttp 优化线程不够时会处理方式
+* 插件 solon.boot.sockted.jdksocket 优化线程不够时会处理方式
+* 插件 solon.boot.smarthttp 优化二级池线程不够时会处理方式
 * 增加 @Configuration + @Inject 支持配置变更事件的注入
 * 增加 solon.cloud/Config:_Props 申明为非序列化字段
 * 增加 三个 http server 通过事件扩展的支持，比如定制执行服务
