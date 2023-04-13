@@ -18,13 +18,15 @@
 * 新增 pulsar2-solon-plugin 插件
 * 新增 drools-solon-plugin 插件
 * 新增 solon.web.sdl 插件替代 solon.web.sso（之前名字搞错了）
+* 插件 solon.boot.jetty 增加 jetty-servlet 依赖
+* 优化 solon.boot.jlhttp 线程不够时会处理方式
+* 优化 solon.boot.sockted.jdksocket 线程不够时会处理方式
+* 优化 solon.boot.smarthttp 二级池线程不够时会处理方式
 * 增加 @Configuration + @Inject 支持配置变更事件的注入
 * 增加 solon.cloud/Config:_Props 申明为非序列化字段
 * 增加 三个 http server 通过事件扩展的支持，比如定制执行服务
 * 调整 sa-token sao 适配代码，优化相同key在多线程下的并发问题
 * 调整 根路由支持 remove 监听记录
-* 修复 jlhttp 线程不够时会跑死掉的问题!!!
-* 修复 jdksocket 线程不够时会跑死掉的问题!!!
 * fastjson2 升为 2.0.27
 * beetlsql 升为 3.22.0-RELEASE
 * redisx 升为 1.4.7
