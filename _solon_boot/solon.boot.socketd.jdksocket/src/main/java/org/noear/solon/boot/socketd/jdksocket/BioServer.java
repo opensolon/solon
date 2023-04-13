@@ -52,7 +52,7 @@ class BioServer implements ServerLifecycle {
             } catch (Throwable e) {
                 //todo: 确保监听不死
                 log.error(e.getMessage(), e);
-                //todo: 不处理直接关闭，让客户端知道这边吃不消了（或者联系程序员加线程）
+                //todo: 直接关闭，让客户端知道出问题了
                 close(socket);
             }
         }
