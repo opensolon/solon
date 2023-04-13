@@ -1930,6 +1930,8 @@ public class HTTPServer {
                     } catch (RejectedExecutionException e) {
                         //todo: 如果线程满了，同步执行(会卡住，但不会完全死掉)
                         execute(sock);
+                    } catch (Throwable ignore) {
+                        //todo: 确保监听处理不死
                     }
                 }
             } catch (IOException ignore) {
@@ -1954,7 +1956,7 @@ public class HTTPServer {
                         sock.close(); // and finally close socket fully
                     }
                 }
-            } catch (IOException ignore) {}
+            } catch (Throwable ignore) {} //todo: IOException 改为 Throwable
         }
     }
 
