@@ -24,6 +24,7 @@
 * 调整 sa-token sao 适配代码，优化相同key在多线程下的并发问题
 * 调整 根路由支持 remove 监听记录
 * 修复 jlhttp 线程不够时会跑死掉的问题!!!
+* 修复 jdksocket 线程不够时会跑死掉的问题!!!
 * fastjson2 升为 2.0.27
 * beetlsql 升为 3.22.0-RELEASE
 * redisx 升为 1.4.7

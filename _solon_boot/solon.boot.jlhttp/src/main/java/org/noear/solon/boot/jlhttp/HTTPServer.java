@@ -21,6 +21,9 @@
 
 package org.noear.solon.boot.jlhttp;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.*;
 import java.lang.annotation.*;
 import java.lang.reflect.*;
@@ -123,6 +126,7 @@ import javax.net.ssl.SSLSocket;
  * @since  2008-07-24
  */
 public class HTTPServer {
+    static final Logger log = LoggerFactory.getLogger(HTTPServer.class);
 
     protected static int MAX_BODY_SIZE = 2097152; //2m
     protected static int MAX_HEADER_SIZE = 8192;
@@ -1921,20 +1925,27 @@ public class HTTPServer {
                 ServerSocket serv = HTTPServer.this.serv; // keep local to avoid NPE when stopped
                 while (serv != null && !serv.isClosed()) {
                     final Socket sock = serv.accept();
+
                     try {
-                        executor.execute(new Runnable() {
-                            public void run() {
-                                execute(sock);
-                            }
+                        executor.execute(() -> {
+                            execute(sock);
                         });
-                    } catch (RejectedExecutionException e) {
-                        //todo: 如果线程满了，同步执行(会卡住，但不会完全死掉)
-                        execute(sock);
-                    } catch (Throwable ignore) {
-                        //todo: 确保监听处理不死
+                    } catch (Throwable e) {
+                        //todo: 确保监听不死
+                        log.error(e.getMessage(), e);
+                        //todo: 不处理直接关闭，让客户端知道这边吃不消了（或者联系程序员加线程）
+                        close(sock);
                     }
                 }
             } catch (IOException ignore) {
+            }
+        }
+
+        private void close(Socket socket){
+            try{
+                socket.close();
+            }catch (Throwable e){
+
             }
         }
 
