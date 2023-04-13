@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.RejectedExecutionException;
 
 public class SmHttpContextHandler extends HttpServerHandler {
     protected Executor executor;
@@ -30,9 +31,13 @@ public class SmHttpContextHandler extends HttpServerHandler {
         if (executor == null) {
             handle0(request, response, future);
         } else {
-            executor.execute(() -> {
+            try {
+                executor.execute(() -> {
+                    handle0(request, response, future);
+                });
+            } catch (RejectedExecutionException e) {
                 handle0(request, response, future);
-            });
+            }
         }
     }
 
