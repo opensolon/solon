@@ -223,7 +223,8 @@ public class BeanWrap {
                 clzInitIndex = new IndexBuilder().buildIndex(clz);
             }
 
-            context.lifecycle(clzInitIndex, () -> {
+            //保持与 LifecycleBean 相同策略：+1
+            context.lifecycle(clzInitIndex + 1, () -> {
                 initInvokeDo(bean);
             });
         }
