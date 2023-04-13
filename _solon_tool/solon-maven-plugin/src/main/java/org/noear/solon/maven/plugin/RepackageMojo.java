@@ -86,7 +86,7 @@ public class RepackageMojo extends AbstractMojo {
             Set<Artifact> artifacts = project.getArtifacts();
             Set<Artifact> packartifacts = new HashSet<>();
             if (!includeSystemScope) { //如果设置不打包scope system 包 则跳过
-                logger.info("此次打包的includeSystemScope设置是" + includeSystemScope);
+                //logger.info("此次打包的includeSystemScope设置是" + includeSystemScope);
                 for (Artifact a : artifacts) {
                     if (a.getScope().equals(Artifact.SCOPE_SYSTEM)) {
                         continue;
