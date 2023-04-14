@@ -21,6 +21,7 @@
 * mybatis-flex 升为 1.1.1
 * mybatis-plus 升为 3.5.3.1
 * undertow 升为 2.2.24.Final
+* jetty 升为 9.4.51.v20230217
 
 ### 2.2.11
 * 新增 pulsar2-solon-plugin 插件
