@@ -167,6 +167,9 @@ public class SolonApp extends RouterWrapper {
         List<PluginEntity> plugs = cfg().plugs();
         //1.0.尝式初始化插件 //一般插件不需要
         for (int i = 0, len = plugs.size(); i < len; i++) {
+            if (Solon.cfg().isDebugMode()) {
+                LogUtil.global().info("App: plugin init: " + plugs.get(i).getClassName());
+            }
             plugs.get(i).init(context());
         }
 

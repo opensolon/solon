@@ -1,8 +1,10 @@
 package org.noear.solon.core;
 
 import org.noear.solon.Solon;
-import org.noear.solon.Utils;
+import org.noear.solon.aot.NativeDetector;
+import org.noear.solon.aot.graalvm.GraalvmUtil;
 import org.noear.solon.core.event.EventBus;
+import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.core.util.ResourceUtil;
 
 import java.io.File;
@@ -48,9 +50,17 @@ public class ResourceScanner {
                 //3.尝试扫描
                 scanDo(roots.nextElement(), path, filter, urls);
             }
-        } catch (IOException e) {
-            EventBus.pushTry(e);
-        }
+			//3.native image
+			if (NativeDetector.inNativeImage()) {
+				GraalvmUtil.scanResource(path, filter, urls);
+				if (Solon.cfg().isDebugMode()) {
+					LogUtil.global().info("GraalvmUtil scan: " + urls.size() + ", path: " + path);
+				}
+				return urls;
+			}
+		} catch (IOException e) {
+			EventBus.pushTry(e);
+		}
 
         return urls;
     }
