@@ -39,11 +39,6 @@
 		    <version>${simple-java-mail.version}</version>
 		</dependency>
 		<dependency>
-		    <groupId>org.simplejavamail</groupId>
-		    <artifactId>spring-module</artifactId>
-		    <version>${simple-java-mail.version}</version>
-		</dependency>
-		<dependency>
 		    <groupId>com.sun.activation</groupId>
 		    <artifactId>jakarta.activation</artifactId>
 		    <version>${jakarta-activation.version}</version>
