@@ -41,5 +41,8 @@
         <module>../../_solon_plugin2/weixin-java-open-solon-plugin</module>
         <module>../../_solon_plugin2/weixin-java-pay-solon-plugin</module>
         <module>../../_solon_plugin2/weixin-java-qidian-solon-plugin</module>
+
+
+        <module>../../_solon_plugin2/simplejavamail-solon-plugin</module>
     </modules>
 </project>
