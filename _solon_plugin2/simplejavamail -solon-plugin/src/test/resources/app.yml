@@ -1,0 +1,10 @@
+simplejavamail.javaxmail.debug: true
+simplejavamail.smtp.host: 168.192.123.4
+simplejavamail.smtp.port: 25
+simplejavamail.transportstrategy: SMTP
+simplejavamail.smtp.username: 754414405@qq.com
+simplejavamail.smtp.password: 1qazsderfcv
+simplejavamail.defaults.from.name: 754414405
+simplejavamail.defaults.from.address: 754414405@qq.com
+#simplejavamail.proxy.username: <proxy_username>
+#simplejavamail.proxy.password: <proxy_password>
