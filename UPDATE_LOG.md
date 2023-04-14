@@ -14,15 +14,16 @@
 * 增加 afterInjection() 后所有 bean 必然可用的支持???
 * 调整 允许 "solon.scheduling" 的任务在注册时未配置调度???（由后续动态控制）
 * 添加 Utils::isEmpty(Collection s) 接口
-* 修复 有默认值的配置注入不能自动更新的问题
+* 修复 @Inject("${demo:hello}") 有默认值的配置注入不能自动更新的问题
 * mybatis-flex 升为 1.1.1
 * mybatis-plus 升为 3.5.3.1
+* undertow 升为 2.2.24.Final
 
 ### 2.2.11
 * 新增 pulsar2-solon-plugin 插件
 * 新增 drools-solon-plugin 插件
 * 新增 solon.web.sdl 插件替代 solon.web.sso（之前名字搞错了）
-* 插件 solon.boot.jetty 增加 jetty-servlet 依赖
+* 插件 solon.boot.jetty 增加 jetty-servlet 依赖（solon.boot.jetty.add.servlet 就不需要了）
 * 插件 solon.boot.jlhttp 优化线程不够时会处理方式
 * 插件 solon.boot.sockted.jdksocket 优化线程不够时会处理方式
 * 插件 solon.boot.smarthttp 优化二级池线程不够时会处理方式
