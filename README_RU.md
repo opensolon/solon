@@ -44,7 +44,7 @@ Solon v2.2.12-SNAPSHOT
 	<img src="https://img.shields.io/badge/QQ交流群-22200020-orange"/></a>
 </p>
 
-##### 语言： русск | [中文](README.md)  | [English](README_EN.md) | [日本語](README_JP.md)
+##### язык： Русский | [中文](README.md)  | [English](README_EN.md) | [日本語](README_JP.md)
 
 <hr />
 
