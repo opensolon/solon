@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.noear.solon.annotation.Inject;
-import org.noear.solon.aot.ReflectUtil;
 
 /**
  * 构建初始化的index

@@ -21,6 +21,7 @@
 
 package org.noear.solon.boot.jlhttp;
 
+import org.noear.solon.core.util.ReflectUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -1015,7 +1016,7 @@ public class HTTPServer {
         public void addContexts(Object o) throws IllegalArgumentException {
             for (Class<?> c = o.getClass(); c != null; c = c.getSuperclass()) {
                 // add to contexts those with @Context annotation
-                for (Method m : c.getDeclaredMethods()) {
+                for (Method m : ReflectUtil.getDeclaredMethods(c)) {
                     Context context = m.getAnnotation(Context.class);
                     if (context != null) {
                         m.setAccessible(true); // allow access to private method

@@ -3,6 +3,7 @@ package org.noear.solon.aot;
 import org.noear.solon.aot.hint.ExecutableMode;
 import org.noear.solon.aot.hint.MemberCategory;
 import org.noear.solon.core.BeanWrap;
+import org.noear.solon.core.util.ReflectUtil;
 import org.noear.solon.core.wrap.FieldWrap;
 import org.noear.solon.core.wrap.MethodWrap;
 
@@ -23,7 +24,7 @@ public class DefaultAopContextNativeProcessor implements AopContextNativeProcess
             return;
         }
         nativeMetadata.registerDefaultConstructor(beanWrap.clz());
-        for (Field field : beanWrap.clz().getDeclaredFields()) {
+        for (Field field : ReflectUtil.getDeclaredFields(beanWrap.clz())) {
             nativeMetadata.registerField(field);
         }
         nativeMetadata.registerReflection(beanWrap.clz(), MemberCategory.INVOKE_DECLARED_CONSTRUCTORS);

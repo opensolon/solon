@@ -15,6 +15,7 @@ import io.github.majusko.pulsar2.solon.annotation.PulsarConsumer;
 import io.github.majusko.pulsar2.solon.properties.ConsumerProperties;
 import io.github.majusko.pulsar2.solon.properties.PulsarProperties;
 import io.github.majusko.pulsar2.solon.utils.UrlBuildService;
+import org.noear.solon.core.util.ReflectUtil;
 
 public class ConsumerCollector implements BeanExtractor<PulsarConsumer> {
 
@@ -44,7 +45,7 @@ public class ConsumerCollector implements BeanExtractor<PulsarConsumer> {
 			return;
 		}
 		Object bean = bw.raw();
-		Method[] ms = beanClass.getDeclaredMethods();
+		Method[] ms = ReflectUtil.getDeclaredMethods(beanClass);
 		for(Method $:ms) {
 			if (!$.isAnnotationPresent(PulsarConsumer.class)) {
 				IConsumerConst.nonAnnotatedClasses.add(beanClass);

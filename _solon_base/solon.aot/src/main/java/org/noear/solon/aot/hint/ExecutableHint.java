@@ -1,7 +1,7 @@
 package org.noear.solon.aot.hint;
 
 import lombok.Data;
-import org.noear.solon.aot.ReflectUtil;
+import org.noear.solon.core.util.ReflectUtil;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;

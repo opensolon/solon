@@ -2,7 +2,7 @@ package org.noear.solon.aot.graalvm;
 
 import org.noear.snack.ONode;
 import org.noear.solon.Solon;
-import org.noear.solon.aot.ReflectUtil;
+import org.noear.solon.core.util.ReflectUtil;
 import org.noear.solon.aot.hint.ExecutableHint;
 import org.noear.solon.core.ExtendLoader;
 import org.noear.solon.core.event.EventBus;
