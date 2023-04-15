@@ -1,7 +1,5 @@
 package org.noear.solon.maven.plugin;
 
-import sun.misc.Signal;
-
 /**
  * Utilities for working with signal handling.
  *
@@ -10,7 +8,7 @@ import sun.misc.Signal;
  */
 public final class SignalUtils {
 
-    private static final Signal SIG_INT = new Signal("INT");
+    //private static final Signal SIG_INT = new Signal("INT");
 
     private SignalUtils() {
     }
@@ -21,7 +19,8 @@ public final class SignalUtils {
      * @param runnable the runnable to call on SIGINT.
      */
     public static void attachSignalHandler(Runnable runnable) {
-        Signal.handle(SIG_INT, (signal) -> runnable.run());
+        Runtime.getRuntime().addShutdownHook(new Thread(runnable));
+        //Signal.handle(SIG_INT, (signal) -> runnable.run());
     }
 
 }
