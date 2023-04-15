@@ -236,7 +236,8 @@ public class SolonNativeProcessor {
 
         nativeMetadata.registerDefaultConstructor("org.noear.solon.extend.impl.PropsLoaderExt")
                 .registerDefaultConstructor("org.noear.solon.extend.impl.PropsConverterExt")
-                .registerDefaultConstructor("org.noear.solon.extend.impl.AppClassLoaderEx")
+                .registerDefaultConstructor("org.noear.solon.extend.impl.AppClassLoaderExt")
+                .registerDefaultConstructor("org.noear.solon.extend.impl.ReflectionExt")
                 .registerDefaultConstructor("org.noear.solon.extend.impl.ResourceScannerExt");
 
         FileWriter fileWriter = getFileWriter(nativeMetadata, "reflect-config.json");

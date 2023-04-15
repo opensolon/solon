@@ -4,7 +4,7 @@ import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.UploadedFile;
 import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.core.util.ConvertUtil;
-import org.noear.solon.aot.ReflectUtil;
+import org.noear.solon.core.util.ReflectUtil;
 
 import java.lang.reflect.*;
 import java.util.*;
