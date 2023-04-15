@@ -8,10 +8,10 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 /**
- * 反射扩展，native运行时，优先从元数据文件（reflect-config.json）里获取
+ * 反射扩展，native 运行时，优先从元数据文件（reflect-config.json）里获取
  *
  * @author songyinyin
- * @since 2023/4/15 12:16
+ * @since 2.2
  */
 public class ReflectionExt extends Reflection {
 

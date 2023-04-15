@@ -11,6 +11,7 @@ import java.lang.reflect.Method;
  * @author Andy Clement
  * @author Sebastien Deleuze
  * @author Stephane Nicoll
+ * @since 2.2
  */
 public enum MemberCategory {
 

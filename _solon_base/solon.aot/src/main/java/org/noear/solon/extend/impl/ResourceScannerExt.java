@@ -13,7 +13,7 @@ import java.util.function.Predicate;
  * native 运行时，优先从元数据文件（solon-resource.json）里获取
  *
  * @author songyinyin
- * @since 2023/4/15 12:22
+ * @since 2.2
  */
 public class ResourceScannerExt extends ResourceScanner {
 
@@ -27,8 +27,10 @@ public class ResourceScannerExt extends ResourceScanner {
             if (Solon.cfg().isDebugMode()) {
                 LogUtil.global().info("GraalvmUtil scan: " + urls.size() + ", path: " + path);
             }
+
             return urls;
         }
+
         return urls;
     }
 }

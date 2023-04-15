@@ -1,7 +1,5 @@
 package org.noear.solon.aot;
 
-import lombok.Getter;
-import lombok.Setter;
 import org.noear.snack.ONode;
 import org.noear.snack.core.Feature;
 import org.noear.snack.core.Options;
@@ -39,21 +37,37 @@ public class RuntimeNativeMetadata {
 
     private final Options jsonOptions = Options.def().add(Feature.PrettyFormat).add(Feature.OrderedField);
 
-    @Getter
-    @Setter
     private String packageName;
+
+    public String getPackageName() {
+        return packageName;
+    }
+
+    public void setPackageName(String packageName) {
+        this.packageName = packageName;
+    }
 
     private final Map<String, ReflectionHints> reflection = new LinkedHashMap<>();
 
-    @Getter
     private final List<ResourceHint> includes = new ArrayList<>();
+
+    public List<ResourceHint> getIncludes() {
+        return includes;
+    }
+
     private final List<ResourceHint> excludes = new ArrayList<>();
 
     private final List<SerializationHint> serialization = new ArrayList<>();
 
-    @Getter
-    @Setter
     private String applicationClassName;
+
+    public String getApplicationClassName() {
+        return applicationClassName;
+    }
+
+    public void setApplicationClassName(String applicationClassName) {
+        this.applicationClassName = applicationClassName;
+    }
 
     public String getNativeImageDir() {
         return GraalvmUtil.NATIVE_IMAGE_DIR;

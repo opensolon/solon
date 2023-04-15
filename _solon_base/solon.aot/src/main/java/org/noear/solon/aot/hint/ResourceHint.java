@@ -1,17 +1,30 @@
 package org.noear.solon.aot.hint;
 
-import lombok.Data;
-
 /**
  * 资源提示
  *
  * @author songyinyin
- * @since 2023/4/7 14:26
+ * @since 2.2
  */
-@Data
 public class ResourceHint {
 
     private String reachableType;
 
     private String pattern;
+
+    public String getReachableType() {
+        return reachableType;
+    }
+
+    public void setReachableType(String reachableType) {
+        this.reachableType = reachableType;
+    }
+
+    public String getPattern() {
+        return pattern;
+    }
+
+    public void setPattern(String pattern) {
+        this.pattern = pattern;
+    }
 }

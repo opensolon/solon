@@ -1,7 +1,5 @@
 package org.noear.solon.aot;
 
-import lombok.Builder;
-import lombok.SneakyThrows;
 import org.noear.snack.ONode;
 import org.noear.snack.core.Feature;
 import org.noear.snack.core.Options;
@@ -70,11 +68,7 @@ public class SolonNativeProcessor {
         }
 
         Class<?> application = Class.forName(args[0]);
-        Settings build = Settings.builder()
-                .classOutput(Paths.get(args[1]))
-                .groupId(args[2])
-                .artifactId(args[3])
-                .build();
+        Settings build = new Settings(Paths.get(args[1]), args[2], args[3]);
 
         String[] applicationArgs = (args.length > requiredArgs) ? Arrays.copyOfRange(args, requiredArgs, args.length)
                 : new String[0];
@@ -163,27 +157,32 @@ public class SolonNativeProcessor {
         LogUtil.global().info("aot process bean, bean size: " + beanCount.get());
     }
 
-    @SneakyThrows
     private void addSerializationConfig(RuntimeNativeMetadata nativeMetadata) {
-        FileWriter fileWriter = getFileWriter(nativeMetadata, "serialization-config.json");
-        fileWriter.write(nativeMetadata.toSerializationJson());
-        fileWriter.close();
+        try {
+            FileWriter fileWriter = getFileWriter(nativeMetadata, "serialization-config.json");
+            fileWriter.write(nativeMetadata.toSerializationJson());
+            fileWriter.close();
+        }catch (Exception e){
+            throw new RuntimeException(e);
+        }
     }
 
     /**
      * 添加 native-image.properties
      */
-    @SneakyThrows
     private void addNativeImage(RuntimeNativeMetadata nativeMetadata) {
+        try {
+            List<String> args = getDefaultNativeImageArguments(nativeMetadata.getApplicationClassName());
+            StringBuilder sb = new StringBuilder();
+            sb.append("Args = ");
+            sb.append(String.join(String.format(" \\%n"), args));
 
-        List<String> args = getDefaultNativeImageArguments(nativeMetadata.getApplicationClassName());
-        StringBuilder sb = new StringBuilder();
-        sb.append("Args = ");
-        sb.append(String.join(String.format(" \\%n"), args));
-
-        FileWriter fileWriter = getFileWriter(nativeMetadata, "native-image.properties");
-        fileWriter.write(sb.toString());
-        fileWriter.close();
+            FileWriter fileWriter = getFileWriter(nativeMetadata, "native-image.properties");
+            fileWriter.write(sb.toString());
+            fileWriter.close();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -191,58 +190,63 @@ public class SolonNativeProcessor {
      *
      * @see GraalvmUtil#scanResource(String, Predicate, Set)
      */
-    @SneakyThrows
     private void addResourceConfig(RuntimeNativeMetadata nativeMetadata) {
-        nativeMetadata.registerResourceInclude("app.*\\.yml")
-                .registerResourceInclude("app.*\\.properties")
-                .registerResourceInclude("META-INF/solon/.*\\.json")
-                .registerResourceInclude("META-INF/solon/.*\\.properties")
-                .registerResourceInclude("META-INF/solon_def/.*\\.txt")
-                .registerResourceInclude("META-INF/solon_def/.*\\.xml")
-                .registerResourceInclude("META-INF/solon_def/.*\\.properties")
-                .registerResourceInclude(GraalvmUtil.SOLON_RESOURCE)
-                .registerResourceInclude(nativeMetadata.getNativeImageDir() + "/reflect-config.json");
+        try {
+            nativeMetadata.registerResourceInclude("app.*\\.yml")
+                    .registerResourceInclude("app.*\\.properties")
+                    .registerResourceInclude("META-INF/solon/.*\\.json")
+                    .registerResourceInclude("META-INF/solon/.*\\.properties")
+                    .registerResourceInclude("META-INF/solon_def/.*\\.txt")
+                    .registerResourceInclude("META-INF/solon_def/.*\\.xml")
+                    .registerResourceInclude("META-INF/solon_def/.*\\.properties")
+                    .registerResourceInclude(GraalvmUtil.SOLON_RESOURCE)
+                    .registerResourceInclude(nativeMetadata.getNativeImageDir() + "/reflect-config.json");
 
-        List<ResourceHint> includes = nativeMetadata.getIncludes();
-        List<String> allResources = new ArrayList<>();
-        for (ResourceHint include : includes) {
-            for (String allowResource : ALLOW_RESOURCES) {
-                if (!include.getPattern().startsWith(allowResource)) {
-                    continue;
-                }
-                Pattern pattern = Pattern.compile(include.getPattern());
-                Set<String> scanned = ScanUtil.scan(allowResource, path -> pattern.matcher(path).find());
-                if (!scanned.isEmpty()) {
-                    allResources.addAll(scanned);
+            List<ResourceHint> includes = nativeMetadata.getIncludes();
+            List<String> allResources = new ArrayList<>();
+            for (ResourceHint include : includes) {
+                for (String allowResource : ALLOW_RESOURCES) {
+                    if (!include.getPattern().startsWith(allowResource)) {
+                        continue;
+                    }
+                    Pattern pattern = Pattern.compile(include.getPattern());
+                    Set<String> scanned = ScanUtil.scan(allowResource, path -> pattern.matcher(path).find());
+                    if (!scanned.isEmpty()) {
+                        allResources.addAll(scanned);
+                    }
                 }
             }
+
+            FileWriter solonResourceFile = getFileWriter(nativeMetadata, GraalvmUtil.SOLON_RESOURCE_NAME);
+            solonResourceFile.write(ONode.load(allResources, jsonOptions).toJson());
+            solonResourceFile.close();
+
+            FileWriter fileWriter = getFileWriter(nativeMetadata, "resource-config.json");
+            fileWriter.write(nativeMetadata.toResourcesJson());
+            fileWriter.close();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
-
-        FileWriter solonResourceFile = getFileWriter(nativeMetadata, GraalvmUtil.SOLON_RESOURCE_NAME);
-        solonResourceFile.write(ONode.load(allResources, jsonOptions).toJson());
-        solonResourceFile.close();
-
-        FileWriter fileWriter = getFileWriter(nativeMetadata, "resource-config.json");
-        fileWriter.write(nativeMetadata.toResourcesJson());
-        fileWriter.close();
     }
 
 
     /**
      * 添加 reflect-config.json
      */
-    @SneakyThrows
     private void addReflectConfig(RuntimeNativeMetadata nativeMetadata) {
+        try {
+            nativeMetadata.registerDefaultConstructor("org.noear.solon.extend.impl.PropsLoaderExt")
+                    .registerDefaultConstructor("org.noear.solon.extend.impl.PropsConverterExt")
+                    .registerDefaultConstructor("org.noear.solon.extend.impl.AppClassLoaderExt")
+                    .registerDefaultConstructor("org.noear.solon.extend.impl.ReflectionExt")
+                    .registerDefaultConstructor("org.noear.solon.extend.impl.ResourceScannerExt");
 
-        nativeMetadata.registerDefaultConstructor("org.noear.solon.extend.impl.PropsLoaderExt")
-                .registerDefaultConstructor("org.noear.solon.extend.impl.PropsConverterExt")
-                .registerDefaultConstructor("org.noear.solon.extend.impl.AppClassLoaderExt")
-                .registerDefaultConstructor("org.noear.solon.extend.impl.ReflectionExt")
-                .registerDefaultConstructor("org.noear.solon.extend.impl.ResourceScannerExt");
-
-        FileWriter fileWriter = getFileWriter(nativeMetadata, "reflect-config.json");
-        fileWriter.write(nativeMetadata.toReflectionJson());
-        fileWriter.close();
+            FileWriter fileWriter = getFileWriter(nativeMetadata, "reflect-config.json");
+            fileWriter.write(nativeMetadata.toReflectionJson());
+            fileWriter.close();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private List<String> getDefaultNativeImageArguments(String applicationClassName) {
@@ -254,22 +258,25 @@ public class SolonNativeProcessor {
         return args;
     }
 
-    @SneakyThrows
     private FileWriter getFileWriter(RuntimeNativeMetadata nativeMetadata, String configName) {
-        String dir = nativeMetadata.getNativeImageDir();
-        String fileName = String.join("/", dir, configName);
+        try {
+            String dir = nativeMetadata.getNativeImageDir();
+            String fileName = String.join("/", dir, configName);
 
-        File file = new File(settings.classOutput + "/" + fileName);
-        File parentFile = file.getParentFile();
-        if (!parentFile.exists()) {
-            parentFile.mkdirs();
-        }
+            File file = new File(settings.classOutput + "/" + fileName);
+            File parentFile = file.getParentFile();
+            if (!parentFile.exists()) {
+                parentFile.mkdirs();
+            }
 
-        boolean newFile = file.createNewFile();
-        if (newFile) {
-            LogUtil.global().info("create file: " + file.getAbsolutePath());
+            boolean newFile = file.createNewFile();
+            if (newFile) {
+                LogUtil.global().info("create file: " + file.getAbsolutePath());
+            }
+            return new FileWriter(file);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
-        return new FileWriter(file);
     }
 
     private boolean isEmpty(Object[] objects) {
@@ -280,7 +287,6 @@ public class SolonNativeProcessor {
         return !isEmpty(objects);
     }
 
-    @Builder
     public static final class Settings {
 
         private Path classOutput;
@@ -288,6 +294,24 @@ public class SolonNativeProcessor {
         private String groupId;
 
         private String artifactId;
+
+        public Settings(Path classOutput, String groupId, String artifactId){
+            this.classOutput = classOutput;
+            this.groupId = groupId;
+            this.artifactId = artifactId;
+        }
+
+        public Path getClassOutput() {
+            return classOutput;
+        }
+
+        public String getGroupId() {
+            return groupId;
+        }
+
+        public String getArtifactId() {
+            return artifactId;
+        }
     }
 
 }

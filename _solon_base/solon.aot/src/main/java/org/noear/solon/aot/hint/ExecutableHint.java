@@ -1,6 +1,5 @@
 package org.noear.solon.aot.hint;
 
-import lombok.Data;
 import org.noear.solon.core.util.ReflectUtil;
 
 import java.lang.reflect.Constructor;
@@ -14,9 +13,8 @@ import java.util.stream.Collectors;
  * 用来描述 {@link Method} 或者 {@link Constructor}.
  *
  * @author songyinyin
- * @since 2023/4/6 15:26
+ * @since 2.2
  */
-@Data
 public class ExecutableHint {
 
     private String name;
@@ -24,6 +22,18 @@ public class ExecutableHint {
     private List<String> parameterTypes;
 
     private ExecutableMode mode;
+
+    public String getName() {
+        return name;
+    }
+
+    public List<String> getParameterTypes() {
+        return parameterTypes;
+    }
+
+    public ExecutableMode getMode() {
+        return mode;
+    }
 
     public ExecutableHint(String name, Class<?>[] classes, ExecutableMode mode) {
         this.name = name;

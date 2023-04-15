@@ -14,7 +14,7 @@ import java.lang.reflect.Field;
  *
  * @author songyinyin
  * @see org.noear.solon.aot.graalvm.GraalvmUtil
- * @since 2023/4/12 17:49
+ * @since 2.2
  */
 public class DefaultAopContextNativeProcessor implements AopContextNativeProcessor {
 

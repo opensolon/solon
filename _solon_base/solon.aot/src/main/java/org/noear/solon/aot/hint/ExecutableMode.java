@@ -6,6 +6,7 @@ import java.lang.reflect.Executable;
  * Represent the need of reflection for a given {@link Executable}.
  *
  * @author Stephane Nicoll
+ * @since 2.2
  */
 public enum ExecutableMode {
 

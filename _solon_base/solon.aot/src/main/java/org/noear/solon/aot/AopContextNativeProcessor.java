@@ -8,7 +8,7 @@ import org.noear.solon.core.wrap.MethodWrap;
  * aot 阶段，对{@link org.noear.solon.core.AopContext}中的bean、方法、字段添加 native 元数据
  *
  * @author songyinyin
- * @since 2023/4/8 16:47
+ * @since 2.2
  */
 public interface AopContextNativeProcessor {
 
