@@ -7,7 +7,6 @@ import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.core.util.ReflectUtil;
 import org.noear.solon.core.wrap.FieldWrap;
 import org.noear.solon.core.wrap.MethodWrap;
-import org.noear.solon.proxy.apt.AptProxy;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -20,6 +19,8 @@ import java.lang.reflect.Field;
  * @since 2.2
  */
 public class DefaultAopContextNativeProcessor implements AopContextNativeProcessor {
+    public static final String APT_PROXY_CLASSNAME_SUFFIX ="$$SolonAptProxy";
+    public static final String ASM_PROXY_CLASSNAME_SUFFIX ="$$SolonAsmProxy";
 
     @Override
     public void processBean(RuntimeNativeMetadata nativeMetadata, BeanWrap beanWrap) {
@@ -33,7 +34,7 @@ public class DefaultAopContextNativeProcessor implements AopContextNativeProcess
         nativeMetadata.registerReflection(beanWrap.clz(), MemberCategory.INVOKE_DECLARED_CONSTRUCTORS);
 
         // 处理代理类
-        Class<?> proxyClass = ClassUtil.loadClass(ReflectUtil.getClassName(beanWrap.clz()) + AptProxy.PROXY_CLASSNAME_SUFFIX);
+        Class<?> proxyClass = ClassUtil.loadClass(ReflectUtil.getClassName(beanWrap.clz()) + APT_PROXY_CLASSNAME_SUFFIX);
         if (proxyClass != null) {
             Constructor<?>[] declaredConstructors = proxyClass.getDeclaredConstructors();
             for (Constructor<?> declaredConstructor : declaredConstructors) {
