@@ -1,8 +1,3 @@
-[![Maven Central](https://img.shields.io/maven-central/v/org.noear/pulsar2-solon-plugin.svg)](https://search.maven.org/artifact/org.noear/pulsar2-solon-plugin)
-[![Apache 2.0](https://img.shields.io/:license-Apache2-blue.svg)](https://license.coscl.org.cn/Apache2/)
-[![JDK-8+](https://img.shields.io/badge/JDK-8+-green.svg)](https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html)
-[![QQ交流群](https://img.shields.io/badge/QQ交流群-22200020-orange)](https://jq.qq.com/?_wv=1027&k=kjB5JNiC)
-
 # pulsar2-solon-plugin
 
 ## 1、pulsar2 基础使用参考
