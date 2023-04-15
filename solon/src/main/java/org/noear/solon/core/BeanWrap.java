@@ -135,6 +135,13 @@ public class BeanWrap {
         return clz;
     }
 
+	/**
+	 * 初始化bean的方法
+	 */
+	public Method clzInit() {
+		return clzInit;
+	}
+
     /**
      * bean 原始对象
      */

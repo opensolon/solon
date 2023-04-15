@@ -5,6 +5,7 @@ import org.noear.solon.annotation.After;
 import org.noear.solon.annotation.Before;
 import org.noear.solon.annotation.Mapping;
 import org.noear.solon.annotation.Options;
+import org.noear.solon.aot.ReflectUtil;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.util.ConsumerEx;
 import org.noear.solon.core.util.PathUtil;
@@ -116,7 +117,7 @@ public class HandlerLoader extends HandlerAide {
      * 查找 method
      * */
     protected Method[] findMethods(Class<?> clz){
-        return clz.getDeclaredMethods();
+        return ReflectUtil.getDeclaredMethods(clz);
     }
 
 
