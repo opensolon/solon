@@ -1,22 +1,20 @@
 package org.noear.solon.core;
 
 /**
- * A common delegate for detecting a GraalVM native image environment.
+ * 用于检测GraalVM本机映像环境的通用委托。
  *
  * @author Sebastien Deleuze
- * @since 5.3.4
+ * @since 2.2
  */
 public abstract class NativeDetector {
-
-    // See https://github.com/oracle/graal/blob/master/sdk/src/org.graalvm.nativeimage/src/org/graalvm/nativeimage/ImageInfo.java
-    private static final boolean imageCode = (System.getProperty("org.graalvm.nativeimage.imagecode") != null);
-
     public static final String AOT_PROCESSING = "solon.aot.processing";
+    public static final String AOT_IMAGECODE = "org.graalvm.nativeimage.imagecode";
 
+    private static final boolean imageCode = (System.getProperty(AOT_IMAGECODE) != null);
     private static final boolean aotRuntime = (System.getProperty(AOT_PROCESSING) != null);
 
     /**
-     * Returns {@code true} if invoked in the context of image building or during image runtime, else {@code false}.
+     * 是否原生镜像上执行
      */
     public static boolean inNativeImage() {
         return imageCode;

@@ -4,8 +4,10 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 /**
+ * 反射
+ *
  * @author songyinyin
- * @since 2023/4/15 12:03
+ * @since 2.2
  */
 public class Reflection {
 
@@ -23,6 +25,9 @@ public class Reflection {
         return clazz.getDeclaredMethods();
     }
 
+    /**
+     * 获取类的名字
+     * */
     public String getClassName(Class<?> clazz) {
         return clazz.getCanonicalName();
     }

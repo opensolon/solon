@@ -9,7 +9,7 @@ import java.lang.reflect.Method;
  * 反射工具类
  *
  * @author songyinyin
- * @since 2023/4/13 13:54
+ * @since 2.2
  */
 public class ReflectUtil {
 
@@ -42,6 +42,9 @@ public class ReflectUtil {
         return reflection.getDeclaredMethods(clazz);
     }
 
+    /**
+     * 获取类的名字
+     * */
     public static String getClassName(Class<?> clazz) {
         return reflection.getClassName(clazz);
     }
