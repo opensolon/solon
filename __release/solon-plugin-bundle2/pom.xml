@@ -44,5 +44,6 @@
 
 
         <module>../../_solon_plugin2/simplejavamail-solon-plugin</module>
+        <module>../../_solon_plugin2/sms4j-solon-plugin</module>
     </modules>
 </project>

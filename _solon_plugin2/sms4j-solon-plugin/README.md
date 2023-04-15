@@ -1,10 +1,8 @@
-[![Maven Central](https://img.shields.io/maven-central/v/org.noear/drools-solon-plugin.svg)](https://search.maven.org/artifact/org.noear/drools-solon-plugin)
-[![Apache 2.0](https://img.shields.io/:license-Apache2-blue.svg)](https://license.coscl.org.cn/Apache2/)
-[![JDK-8+](https://img.shields.io/badge/JDK-8+-green.svg)](https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html)
-[![QQ交流群](https://img.shields.io/badge/QQ交流群-22200020-orange)](https://jq.qq.com/?_wv=1027&k=kjB5JNiC)
 
 # sms4j-solon-plugin
+
 ## 1、sms4j用法
+
 [sms4j - 官网]([SMS4J | SMS4J (wind.kim)](https://wind.kim/))
 
 - 1）在`pom.xml`中引入依赖
@@ -13,7 +11,6 @@
   <dependency>
 	    <groupId>org.noear</groupId>
 	    <artifactId>sms4j-solon-plugin</artifactId>
-	    <version>1.0.1</version>
   </dependency>
   ```
   

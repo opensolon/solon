@@ -12,7 +12,6 @@
   <dependency>
 	    <groupId>org.noear</groupId>
 	    <artifactId>simplejavamail-solon-plugin</artifactId>
-	    <version>1.0.1</version>
   </dependency>
   ```
   

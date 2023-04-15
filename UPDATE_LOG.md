@@ -16,9 +16,10 @@
 
 ### 2.2.12
 * 新增 simplejavamail-solon-plugin 插件
+* 新增 sms4j-solon-plugin 插件
 * 添加 Utils::isEmpty(Collection s) 接口
 * 修复 @Inject("${demo:hello}") 有默认值的配置注入不能自动更新的问题
-* mybatis-flex 升为 1.1.1
+* mybatis-flex 升为 1.1.3
 * mybatis-plus 升为 3.5.3.1
 * undertow 升为 2.2.24.Final
 * jetty 升为 9.4.51.v20230217
