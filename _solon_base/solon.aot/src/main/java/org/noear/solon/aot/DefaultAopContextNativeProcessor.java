@@ -3,10 +3,13 @@ package org.noear.solon.aot;
 import org.noear.solon.aot.hint.ExecutableMode;
 import org.noear.solon.aot.hint.MemberCategory;
 import org.noear.solon.core.BeanWrap;
+import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.core.util.ReflectUtil;
 import org.noear.solon.core.wrap.FieldWrap;
 import org.noear.solon.core.wrap.MethodWrap;
+import org.noear.solon.proxy.apt.AptProxy;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 
 /**
@@ -20,7 +23,7 @@ public class DefaultAopContextNativeProcessor implements AopContextNativeProcess
 
     @Override
     public void processBean(RuntimeNativeMetadata nativeMetadata, BeanWrap beanWrap) {
-        if (beanWrap.clz().isInterface() || beanWrap.clz().isEnum() || beanWrap.clz().isAnnotation()) {
+        if (beanWrap.clz().isEnum() || beanWrap.clz().isAnnotation()) {
             return;
         }
         nativeMetadata.registerDefaultConstructor(beanWrap.clz());
@@ -28,6 +31,16 @@ public class DefaultAopContextNativeProcessor implements AopContextNativeProcess
             nativeMetadata.registerField(field);
         }
         nativeMetadata.registerReflection(beanWrap.clz(), MemberCategory.INVOKE_DECLARED_CONSTRUCTORS);
+
+        // 处理代理类
+        Class<?> proxyClass = ClassUtil.loadClass(ReflectUtil.getClassName(beanWrap.clz()) + AptProxy.PROXY_CLASSNAME_SUFFIX);
+        if (proxyClass != null) {
+            Constructor<?>[] declaredConstructors = proxyClass.getDeclaredConstructors();
+            for (Constructor<?> declaredConstructor : declaredConstructors) {
+                nativeMetadata.registerConstructor(declaredConstructor, ExecutableMode.INVOKE);
+            }
+            nativeMetadata.registerReflection(proxyClass, MemberCategory.INVOKE_DECLARED_CONSTRUCTORS);
+        }
     }
 
     @Override
