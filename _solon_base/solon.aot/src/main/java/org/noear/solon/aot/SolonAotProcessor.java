@@ -36,7 +36,7 @@ import java.util.regex.Pattern;
  * @author songyinyin
  * @since 2023/4/11 14:11
  */
-public class SolonAppAotProcessor {
+public class SolonAotProcessor {
 
     public static final String AOT_PROCESSING = "solon.aot.processing";
 
@@ -52,7 +52,7 @@ public class SolonAppAotProcessor {
 
     private static final List<String> ALLOW_RESOURCES = Arrays.asList("META-INF", "static", "templates", "sql");
 
-    public SolonAppAotProcessor(Settings settings, String[] applicationArgs, Class<?> applicationClass) {
+    public SolonAotProcessor(Settings settings, String[] applicationArgs, Class<?> applicationClass) {
         this.settings = settings;
         this.applicationArgs = applicationArgs;
         this.applicationClass = applicationClass;
@@ -64,7 +64,7 @@ public class SolonAppAotProcessor {
 
         int requiredArgs = 4;
         if (args.length < requiredArgs) {
-            throw new IllegalArgumentException("Usage: " + SolonAppAotProcessor.class.getName()
+            throw new IllegalArgumentException("Usage: " + SolonAotProcessor.class.getName()
                     + " <applicationName> <classOutput> <groupId> <artifactId> <originalArgs...>");
         }
 
@@ -74,7 +74,7 @@ public class SolonAppAotProcessor {
         String[] applicationArgs = (args.length > requiredArgs) ? Arrays.copyOfRange(args, requiredArgs, args.length)
                 : new String[0];
 
-        new SolonAppAotProcessor(build, applicationArgs, application).process();
+        new SolonAotProcessor(build, applicationArgs, application).process();
     }
 
     public final void process() {
