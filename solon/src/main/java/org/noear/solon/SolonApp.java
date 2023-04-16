@@ -492,7 +492,7 @@ public class SolonApp extends RouterWrapper {
      * 是否已启用 Http 信号接入
      */
     public boolean enableHttp() {
-        return _enableHttp && NativeDetector.isAotRuntime();
+        return _enableHttp && !NativeDetector.isAotRuntime();
     }
 
     /**
@@ -506,7 +506,7 @@ public class SolonApp extends RouterWrapper {
     private boolean _enableWebSocket = false;
 
     public boolean enableWebSocket() {
-        return _enableWebSocket && NativeDetector.isAotRuntime();
+        return _enableWebSocket && !NativeDetector.isAotRuntime();
     }
 
     /**
@@ -540,7 +540,7 @@ public class SolonApp extends RouterWrapper {
      * 是否已启用 WebSocket as SockteD 信号接入
      */
     public boolean enableWebSocketD() {
-        return _enableWebSocketD  && NativeDetector.isAotRuntime();
+        return _enableWebSocketD  && !NativeDetector.isAotRuntime();
     }
 
     /**
@@ -560,7 +560,7 @@ public class SolonApp extends RouterWrapper {
      * 是否已启用 Socket as SockteD 信号接入
      */
     public boolean enableSocketD() {
-        return _enableSocketD  && NativeDetector.isAotRuntime();
+        return _enableSocketD  && !NativeDetector.isAotRuntime();
     }
 
     /**
