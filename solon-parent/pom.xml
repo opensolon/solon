@@ -29,7 +29,7 @@
         <redisson.version>3.17.0</redisson.version>
 
         <fastjson.version>1.2.83</fastjson.version>
-        <fastjson2.version>2.0.27</fastjson2.version>
+        <fastjson2.version>2.0.28</fastjson2.version>
         <okhttp.version>3.14.9</okhttp.version>
         <hutool.version>5.8.16</hutool.version>
 

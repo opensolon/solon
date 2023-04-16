@@ -24,6 +24,7 @@
 * mybatis-plus 升为 3.5.3.1
 * undertow 升为 2.2.24.Final
 * jetty 升为 9.4.51.v20230217
+* fastjson2 升为 2.0.28
 * snack3 升为 3.2.66，支持 Charset 类型注入
 
 ### 2.2.11
