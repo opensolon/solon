@@ -226,7 +226,7 @@ public class RuntimeNativeMetadata {
      */
     public String toReflectionJson() {
         if (reflection.isEmpty()) {
-            return null;
+            return "";
         }
         ONode oNode = new ONode(jsonOptions).asArray();
         for (ReflectionHints hint : reflection.values()) {
@@ -284,7 +284,7 @@ public class RuntimeNativeMetadata {
      */
     public String toResourcesJson() {
         if (includes.isEmpty() && excludes.isEmpty()) {
-            return null;
+            return "";
         }
         ONode oNode = new ONode(jsonOptions);
 
@@ -322,7 +322,7 @@ public class RuntimeNativeMetadata {
      */
     public String toSerializationJson() {
         if (serialization.isEmpty()) {
-            return null;
+            return "";
         }
         ONode oNode = new ONode(jsonOptions).asArray();
         for (SerializationHint hint : serialization) {
