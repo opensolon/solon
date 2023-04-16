@@ -4,6 +4,7 @@ import org.noear.snack.ONode;
 import org.noear.snack.core.Feature;
 import org.noear.snack.core.Options;
 import org.noear.solon.Solon;
+import org.noear.solon.Utils;
 import org.noear.solon.aot.graalvm.GraalvmUtil;
 import org.noear.solon.aot.hint.ExecutableMode;
 import org.noear.solon.aot.hint.ResourceHint;
@@ -136,6 +137,10 @@ public class SolonNativeProcessor {
     private void processBean(AopContext context, RuntimeNativeMetadata nativeMetadata) {
         AtomicInteger beanCount = new AtomicInteger();
         context.beanForeach(beanWrap -> {
+            // aot阶段产生的bean，不需要注册到 native 元数据里
+            if (RuntimeNativeProcessor.class.isAssignableFrom(beanWrap.clz())) {
+                return;
+            }
             beanCount.getAndIncrement();
             if (beanWrap.clzInit() != null) {
                 nativeMetadata.registerMethod(beanWrap.clzInit(), ExecutableMode.INVOKE);
@@ -158,9 +163,13 @@ public class SolonNativeProcessor {
     }
 
     private void addSerializationConfig(RuntimeNativeMetadata nativeMetadata) {
+        String serializationJson = nativeMetadata.toSerializationJson();
+        if (Utils.isEmpty(serializationJson)) {
+            return;
+        }
         try {
             FileWriter fileWriter = getFileWriter(nativeMetadata, "serialization-config.json");
-            fileWriter.write(nativeMetadata.toSerializationJson());
+            fileWriter.write(serializationJson);
             fileWriter.close();
         }catch (Exception e){
             throw new RuntimeException(e);
