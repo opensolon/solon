@@ -9,6 +9,7 @@ import org.noear.solon.aot.graalvm.GraalvmUtil;
 import org.noear.solon.aot.hint.ExecutableMode;
 import org.noear.solon.aot.hint.ResourceHint;
 import org.noear.solon.core.AopContext;
+import org.noear.solon.core.NativeDetector;
 import org.noear.solon.core.PluginEntity;
 import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.core.util.LogUtil;
@@ -37,9 +38,6 @@ import java.util.regex.Pattern;
  * @since 2023/4/11 14:11
  */
 public class SolonAotProcessor {
-
-    public static final String AOT_PROCESSING = "solon.aot.processing";
-
     private AopContextNativeProcessor aopContextNativeProcessor;
 
     private final Options jsonOptions = Options.def().add(Feature.PrettyFormat).add(Feature.OrderedField);
@@ -79,10 +77,10 @@ public class SolonAotProcessor {
 
     public final void process() {
         try {
-            System.setProperty(AOT_PROCESSING, "true");
+            System.setProperty(NativeDetector.AOT_PROCESSING, "true");
             doProcess();
         } finally {
-            System.clearProperty(AOT_PROCESSING);
+            System.clearProperty(NativeDetector.AOT_PROCESSING);
         }
     }
 
