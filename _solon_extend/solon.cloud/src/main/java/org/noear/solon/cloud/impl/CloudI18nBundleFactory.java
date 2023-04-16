@@ -31,7 +31,7 @@ public class CloudI18nBundleFactory implements I18nBundleFactory {
         }
 
         if ("i18n.messages".equals(bundleName)) {
-            bundleName = Solon.cfg().appName();
+            bundleName = null; //null is def
         }
 
         Pack pack = CloudClient.i18n().pull(group, bundleName, locale);

@@ -2,6 +2,7 @@ package org.noear.solon.proxy.asm;
 
 
 import org.noear.solon.core.AopContext;
+import org.noear.solon.core.util.LogUtil;
 import org.objectweb.asm.*;
 
 import java.lang.reflect.Constructor;
@@ -97,6 +98,7 @@ public class AsmProxy {
             // 实例化代理对象
             return newInstance(proxyClass, invocationHandler, targetConstructor, targetParam);
         } catch (Exception e) {
+            LogUtil.global().warn("can not proxy, targetClass: " + targetClass.getCanonicalName());
             e.printStackTrace();
         }
         return null;

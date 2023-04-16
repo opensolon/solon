@@ -134,7 +134,7 @@ public class XPluginImp implements Plugin, InitializingBean {
         }
 
         if (cloudProps.getI18nEnable()) {
-            i18nServiceImp = new CloudI18nServiceWaterImp();
+            i18nServiceImp = new CloudI18nServiceWaterImp(cloudProps);
             CloudManager.register(i18nServiceImp);
         }
 

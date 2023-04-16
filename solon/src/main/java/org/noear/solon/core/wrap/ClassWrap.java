@@ -1,10 +1,10 @@
 package org.noear.solon.core.wrap;
 
-import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.UploadedFile;
 import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.core.util.ConvertUtil;
+import org.noear.solon.core.util.ReflectUtil;
 
 import java.lang.reflect.*;
 import java.util.*;
@@ -59,7 +59,7 @@ public class ClassWrap {
         _recordable = true;
 
         //自己申明的函数
-        methods = clz.getDeclaredMethods();
+        methods = ReflectUtil.getDeclaredMethods(clz);
 
         //所有字段的包装（自己的 + 父类的）
 
@@ -70,7 +70,7 @@ public class ClassWrap {
         doScanAllFields(clz, fieldAllWrapsMap::containsKey, fieldAllWrapsMap::put);
 
         //自己申明的字段
-        for (Field f : clz.getDeclaredFields()) {
+        for (Field f : ReflectUtil.getDeclaredFields(clz)) {
             FieldWrap fw = fieldAllWrapsMap.get(f.getName());
             if (fw != null) {
                 fieldWraps.add(fw);
@@ -253,7 +253,7 @@ public class ClassWrap {
             return;
         }
 
-        for (Field f : clz.getDeclaredFields()) {
+        for (Field f : ReflectUtil.getDeclaredFields(clz)) {
             int mod = f.getModifiers();
 
             if (!Modifier.isStatic(mod)

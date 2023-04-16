@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.TableInfo;
 import com.baomidou.mybatisplus.core.metadata.TableInfoHelper;
 import com.baomidou.mybatisplus.core.toolkit.*;
+import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 import org.apache.ibatis.logging.Log;
 import org.apache.ibatis.reflection.ExceptionUtil;
 import org.apache.ibatis.session.Configuration;
@@ -271,17 +272,33 @@ public class SqlHelper {
      *
      * @param entityClass 实体
      * @param <T>         实体类型
+     * @param <M>         Mapper类型
      * @return Mapper
      */
     @SuppressWarnings("unchecked")
-    public static <T> BaseMapper<T> getMapper(Class<T> entityClass, SqlSession sqlSession) {
-        Optional.ofNullable(entityClass).orElseThrow(() -> ExceptionUtils.mpe("entityClass can't be null!"));
+    public static <T,M extends BaseMapper<T>> M getMapper(Class<T> entityClass, SqlSession sqlSession) {
+        Assert.notNull(entityClass, "entityClass can't be null!");
         TableInfo tableInfo = Optional.ofNullable(TableInfoHelper.getTableInfo(entityClass)).orElseThrow(() -> ExceptionUtils.mpe("Can not find TableInfo from Class: \"%s\".", entityClass.getName()));
+        Class<?> mapperClass = ClassUtils.toClassConfident(tableInfo.getCurrentNamespace());
+        return (M) tableInfo.getConfiguration().getMapper(mapperClass, sqlSession);
+    }
+
+    /**
+     * 通过entityClass获取BaseMapper，再传入lambda使用该mapper，本方法自动释放链接
+     *
+     * @param entityClass 实体类
+     * @param sFunction   lambda操作，例如 {@code m->m.selectList(wrapper)}
+     * @param <T>         实体类的类型
+     * @param <R>         返回值类型
+     * @param <M>         Mapper类型
+     * @return 返回lambda执行结果
+     */
+    public static <T, R,M extends BaseMapper<T>> R execute(Class<T> entityClass, SFunction<M, R> sFunction) {
+        SqlSession sqlSession = SqlHelper.sqlSession(entityClass);
         try {
-            Configuration configuration = tableInfo.getConfiguration();
-            return (BaseMapper<T>) configuration.getMapper(Class.forName(tableInfo.getCurrentNamespace()), sqlSession);
-        } catch (ClassNotFoundException e) {
-            throw ExceptionUtils.mpe(e);
+            return sFunction.apply(SqlHelper.getMapper(entityClass, sqlSession));
+        } finally {
+            sqlSession.close();
         }
     }
 }

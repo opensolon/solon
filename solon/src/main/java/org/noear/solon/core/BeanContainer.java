@@ -645,9 +645,15 @@ public abstract class BeanContainer {
             beanInjectConfig(varH, name2, required);
 
             if (autoRefreshed && varH.isField()) {
+                int defIdx = name2.indexOf(":");
+                if (defIdx > 0) {
+                    name2 = name2.substring(0, defIdx).trim();
+                }
+                String name3 = name2;
+
                 cfg().onChange((key, val) -> {
-                    if(key.startsWith(name2)){
-                        beanInjectConfig(varH, name2,required);
+                    if(key.startsWith(name3)){
+                        beanInjectConfig(varH, name3,required);
                     }
                 });
             }

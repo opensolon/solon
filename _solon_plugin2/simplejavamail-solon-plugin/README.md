@@ -1,0 +1,109 @@
+
+# simplejavamail-solon-plugin
+
+## 1、simplejavamail用法
+
+
+[Simple Java Mail - 官网](https://www.simplejavamail.org/)
+
+- 1）在`pom.xml`中引入依赖
+
+  ```xml
+  <dependency>
+	    <groupId>org.noear</groupId>
+	    <artifactId>simplejavamail-solon-plugin</artifactId>
+  </dependency>
+  ```
+  
+- 2）配置文件和官网的一样 [Simple Java Mail - Configuration](https://www.simplejavamail.org/configuration.html#navigation) 参考如下：
+
+  ```properties
+  simplejavamail.javaxmail.debug=true
+  simplejavamail.transportstrategy=SMTPS
+  simplejavamail.smtp.host=smtp.default.com
+  simplejavamail.smtp.port=25
+  simplejavamail.smtp.username=username
+  simplejavamail.smtp.password=password
+  simplejavamail.custom.sslfactory.class=org.mypackage.ssl.MySSLSocketFactoryClass
+  simplejavamail.proxy.host=proxy.default.com
+  simplejavamail.proxy.port=1080
+  simplejavamail.proxy.username=username proxy
+  simplejavamail.proxy.password=password proxy
+  simplejavamail.proxy.socks5bridge.port=1081
+  simplejavamail.defaults.content.transfer.encoding=BINARY
+  simplejavamail.defaults.subject=Sweet News
+  simplejavamail.defaults.from.name=From Default
+  simplejavamail.defaults.from.address=from@default.com
+  simplejavamail.defaults.replyto.name=Reply-To Default
+  simplejavamail.defaults.replyto.address=reply-to@default.com
+  simplejavamail.defaults.bounceto.name=Bounce-To Default
+  simplejavamail.defaults.bounceto.address=bounce-to@default.com
+  simplejavamail.defaults.to.name=To Default
+  simplejavamail.defaults.to.address=to@default.com
+  simplejavamail.defaults.cc.name=CC Default
+  simplejavamail.defaults.cc.address=cc@default.com
+  simplejavamail.defaults.bcc.name=
+  simplejavamail.defaults.bcc.address=bcc1@default.com;bcc2@default.com
+  simplejavamail.defaults.poolsize=10
+  simplejavamail.defaults.poolsize.keepalivetime=2000
+  simplejavamail.defaults.connectionpool.clusterkey.uuid=38400000-8cf0-11bd-b23e-10b96e4ef00d
+  simplejavamail.defaults.connectionpool.coresize=0
+  simplejavamail.defaults.connectionpool.maxsize=4
+  simplejavamail.defaults.connectionpool.claimtimeout.millis=10000
+  simplejavamail.defaults.connectionpool.expireafter.millis=5000
+  simplejavamail.defaults.connectionpool.loadbalancing.strategy=ROUND_ROBIN
+  simplejavamail.defaults.sessiontimeoutmillis=60000
+  simplejavamail.defaults.trustallhosts=false
+  # following property is ignored when trustallhosts is true:
+  simplejavamail.defaults.trustedhosts=192.168.1.122;mymailserver.com;ix55432y
+  simplejavamail.defaults.verifyserveridentity=true
+  simplejavamail.transport.mode.logging.only=true
+  simplejavamail.opportunistic.tls=false
+  # following properties are used as defaults on Mailer level
+  simplejavamail.smime.signing.keystore=my_keystore.pkcs12
+  simplejavamail.smime.signing.keystore_password=keystore_password
+  simplejavamail.smime.signing.key_alias=key_alias
+  simplejavamail.smime.signing.key_password=key_password
+  simplejavamail.smime.encryption.certificate=x509inStandardPEM.crt
+  simplejavamail.dkim.signing.private_key_file_or_data=my_dkim_key.der # or key as base64
+  simplejavamail.dkim.signing.selector=dkim1
+  simplejavamail.dkim.signing.signing_domain=your-domain.com
+  simplejavamail.dkim.signing.excluded_headers_from_default_signing_list=From
+  simplejavamail.embeddedimages.dynamicresolution.enable.dir=true
+  simplejavamail.embeddedimages.dynamicresolution.enable.url=false
+  simplejavamail.embeddedimages.dynamicresolution.enable.classpath=true
+  simplejavamail.embeddedimages.dynamicresolution.base.dir=/var/opt/static
+  simplejavamail.embeddedimages.dynamicresolution.base.url=
+  simplejavamail.embeddedimages.dynamicresolution.base.classpath=/static
+  simplejavamail.embeddedimages.dynamicresolution.outside.base.dir=true
+  simplejavamail.embeddedimages.dynamicresolution.outside.base.classpath=false
+  simplejavamail.embeddedimages.dynamicresolution.outside.base.url=false
+  simplejavamail.embeddedimages.dynamicresolution.mustbesuccesful=true
+  ```
+  
+- 3）使用注解方式引入Mailer
+
+  ```java
+  @Inject
+  private Mailer mailer;
+  ```
+  
+- 4）参考官网使用 EmailBuilder 进行组装将要发送的邮件，可以选择同步或异步，参考如下：
+
+  ```java
+          Set<String> tos = new HashSet<>();//收件人清单
+  		Set<String> ccs = new HashSet<>();//抄送人清单
+  		Set<String> bccs = new HashSet<>();//密送人清单
+  		String subject="邮件主题";
+  		String content ="邮件正文";
+  		Email mail = EmailBuilder.startingBlank()
+  				.toMultiple(tos)
+  				.ccAddresses(ccs)
+  				.bccAddresses(bccs)
+  				.withSubject(subject)
+  				.appendText(content)
+  				.buildEmail();
+  		mailer.sendMail(mail);//同步发送邮件
+  		mailer.sendMail(mail, true);//异步发送邮件
+  ......
+  ```

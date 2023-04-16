@@ -1,5 +1,8 @@
 package org.noear.solon.cloud.extend.water.service;
 
+import org.noear.solon.Solon;
+import org.noear.solon.Utils;
+import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.model.Pack;
 import org.noear.solon.cloud.service.CloudI18nService;
 import org.noear.solon.core.Props;
@@ -16,12 +19,30 @@ import java.util.concurrent.ConcurrentHashMap;
  * @since 1.6
  */
 public class CloudI18nServiceWaterImp implements CloudI18nService {
-    Map<String, Pack> packMap = new ConcurrentHashMap<>();
+    private String packNameDefault;
+    private Map<String, Pack> packMap = new ConcurrentHashMap<>();
+
+    public CloudI18nServiceWaterImp(CloudProps cloudProps){
+        packNameDefault = cloudProps.getI18nDefault();
+
+        if (Utils.isEmpty(packNameDefault)) {
+            packNameDefault = Solon.cfg().appName();
+        }
+
+        if (Utils.isEmpty(packNameDefault)) {
+            //不能用日志服务（可能会死循环）
+            System.err.println("[WARN] Solon.cloud no default i18n is configured");
+        }
+    }
 
     @Override
-    public Pack pull(String group, String bundleName, Locale locale) {
+    public Pack pull(String group, String packName, Locale locale) {
+        if(Utils.isEmpty(packName)){
+            packName = packNameDefault;
+        }
+
         try {
-            return pullDo(group, bundleName, locale);
+            return pullDo(group, packName, locale);
         } catch (RuntimeException e) {
             throw e;
         } catch (Exception e) {

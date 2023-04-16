@@ -31,7 +31,7 @@ import java.util.function.Predicate;
  */
 @SuppressWarnings({"serial"})
 public class LambdaQueryChainWrapper<T> extends AbstractChainWrapper<T, SFunction<T, ?>, LambdaQueryChainWrapper<T>, LambdaQueryWrapper<T>>
-    implements ChainQuery<T>, Query<LambdaQueryChainWrapper<T>, T, SFunction<T, ?>> {
+        implements ChainQuery<T>, Query<LambdaQueryChainWrapper<T>, T, SFunction<T, ?>> {
 
     private final BaseMapper<T> baseMapper;
 
@@ -39,6 +39,24 @@ public class LambdaQueryChainWrapper<T> extends AbstractChainWrapper<T, SFunctio
         super();
         this.baseMapper = baseMapper;
         super.wrapperChildren = new LambdaQueryWrapper<>();
+    }
+
+    public LambdaQueryChainWrapper(Class<T> entityClass) {
+        super();
+        this.baseMapper = null;
+        super.wrapperChildren = new LambdaQueryWrapper<>(entityClass);
+    }
+
+    public LambdaQueryChainWrapper(BaseMapper<T> baseMapper, T entity) {
+        super();
+        this.baseMapper = baseMapper;
+        super.wrapperChildren = new LambdaQueryWrapper<>(entity);
+    }
+
+    public LambdaQueryChainWrapper(BaseMapper<T> baseMapper, Class<T> entityClass) {
+        super();
+        this.baseMapper = baseMapper;
+        super.wrapperChildren = new LambdaQueryWrapper<>(entityClass);
     }
 
     @SafeVarargs
@@ -62,5 +80,10 @@ public class LambdaQueryChainWrapper<T> extends AbstractChainWrapper<T, SFunctio
     @Override
     public BaseMapper<T> getBaseMapper() {
         return baseMapper;
+    }
+
+    @Override
+    public Class<T> getEntityClass() {
+        return super.wrapperChildren.getEntityClass();
     }
 }

@@ -9,16 +9,30 @@
 * 提醒1：之前没有使用弃用接口的，可以直接升级 <br>
 * 提醒2：有使用弃用接口的。建议先升级到 1.12.4；替换弃用代码后，再升级到 2.0.0
 
-### 2.2.12
+### 2.2.13
 * 增加 @Inject 注入 bean 的 required 支持???
 * 增加 afterInjection() 后所有 bean 必然可用的支持???
 * 调整 允许 "solon.scheduling" 的任务在注册时未配置调度???（由后续动态控制）
+
+### 2.2.12
+* 新增 solon.aot 插件
+* 新增 simplejavamail-solon-plugin 插件
+* 新增 sms4j-solon-plugin 插件
+* 增加 Utils::isEmpty(Collection s) 接口
+* 增加 solon cloud i18n 默认值配置支持
+* 修复 @Inject("${demo:hello}") 有默认值的配置注入不能自动更新的问题
+* mybatis-flex 升为 1.1.3
+* mybatis-plus 升为 3.5.3.1
+* undertow 升为 2.2.24.Final
+* jetty 升为 9.4.51.v20230217
+* fastjson2 升为 2.0.28
+* snack3 升为 3.2.66，支持 Charset 类型注入
 
 ### 2.2.11
 * 新增 pulsar2-solon-plugin 插件
 * 新增 drools-solon-plugin 插件
 * 新增 solon.web.sdl 插件替代 solon.web.sso（之前名字搞错了）
-* 插件 solon.boot.jetty 增加 jetty-servlet 依赖
+* 插件 solon.boot.jetty 增加 jetty-servlet 依赖（solon.boot.jetty.add.servlet 就不需要了）
 * 插件 solon.boot.jlhttp 优化线程不够时会处理方式
 * 插件 solon.boot.sockted.jdksocket 优化线程不够时会处理方式
 * 插件 solon.boot.smarthttp 优化二级池线程不够时会处理方式

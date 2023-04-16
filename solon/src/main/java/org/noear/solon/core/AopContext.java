@@ -62,6 +62,13 @@ public class AopContext extends BeanContainer {
         return mw;
     }
 
+	/**
+	 * 遍历method (拿到的是method包装)
+	 */
+	public void methodForeach(Consumer<MethodWrap> action) {
+		methodCached.values().forEach(action);
+	}
+
     @Override
     public void clear() {
         super.clear();

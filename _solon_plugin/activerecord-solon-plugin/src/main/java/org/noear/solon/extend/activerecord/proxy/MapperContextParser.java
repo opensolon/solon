@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.noear.solon.Utils;
 import org.noear.solon.core.util.GenericUtil;
+import org.noear.solon.core.util.ReflectUtil;
 import org.noear.solon.extend.activerecord.annotation.Namespace;
 import org.noear.solon.extend.activerecord.annotation.Sql;
 
@@ -129,7 +130,7 @@ public class MapperContextParser {
         /*
          * 循环解析所有方法
          */
-        for (Method method : clz.getDeclaredMethods()) {
+        for (Method method : ReflectUtil.getDeclaredMethods(clz)) {
             MapperMethodContext methodContext = parseDaoMethod(clz, method);
             contextMap.put(method, methodContext);
 

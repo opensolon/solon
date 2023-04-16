@@ -1,0 +1,53 @@
+sms:
+   alibaba:
+      #阿里云的accessKey
+      accessKeyId: 您的accessKey
+      #阿里云的accessKeySecret
+      accessKeySecret: 您的accessKeySecret
+      #短信签名
+      signature: 测试签名
+      #模板ID 用于发送固定模板短信使用
+      templateId: SMS_215125134
+      #模板变量 上述模板的变量
+      templateName: code
+      #请求地址 默认为dysmsapi.aliyuncs.com 如无特殊改变可以不用设置
+      requestUrl: dysmsapi.aliyuncs.com
+   huawei:
+      #华为短信appKey
+      appKey: 5N6fvXXXX920HaWhVXXXXXX7fYa
+      #华为短信appSecret
+      app-secret: Wujt7EYzZTBXXXXXXEhSP6XXXX
+      #短信签名
+      signature: 华为短信测试
+      #通道号
+      sender: 8823040504797
+      #模板ID 如果使用自定义模板发送方法可不设定
+      template-id: acXXXXXXXXc274b2a8263479b954c1ab5
+      #华为回调地址，如不需要可不设置或为空
+      statusCallBack:
+      #华为分配的app请求地址
+      url: https://XXXXX.cn-north-4.XXXXXXXX.com:443
+      
+    # 是否开启短信发送限制 默认false
+   restricted: true
+    # 以下设置仅在开启短信发送限制后生效
+    # 是否使用redis进行缓存 默认false
+   redis-cache: false
+    # 单账号每日最大发送量
+   account-max: 20
+    # 单账号每分钟最大发送
+   minute-max: 2
+    #默认厂商配置来源 此处为枚举设置，支持sql和配置文件，默认为从yml配置文件获取，如无需求可不改变
+   #config-type: config_file
+    #启用框架banner打印，默认开启状态
+   is-print: true
+   
+   # 以下数值为默认线程池的配置，可以根据自己的需求进行修改
+  #核心线程池大小
+   corePoolSize: 10
+  #最大线程数
+   maxPoolSize: 30
+  #队列容量
+   queueCapacity: 50
+  #设置线程池关闭的时候等待所有任务都完成再继续销毁其他的Bean
+   shutdownStrategy: true

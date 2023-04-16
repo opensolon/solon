@@ -40,7 +40,7 @@ import java.util.function.Consumer;
  */
 @SuppressWarnings({"unchecked"})
 public abstract class AbstractChainWrapper<T, R, Children extends AbstractChainWrapper<T, R, Children, Param>, Param extends AbstractWrapper<T, R, Param>>
-    extends Wrapper<T> implements Compare<Children, R>, Func<Children, R>, Join<Children>, Nested<Param, Children> {
+        extends Wrapper<T> implements Compare<Children, R>, Func<Children, R>, Join<Children>, Nested<Param, Children> {
 
     protected final Children typedThis = (Children) this;
     /**
@@ -135,12 +135,6 @@ public abstract class AbstractChainWrapper<T, R, Children extends AbstractChainW
     }
 
     @Override
-    public Children notLike(boolean condition, R column, Object val) {
-        getWrapper().notLike(condition, column, val);
-        return typedThis;
-    }
-
-    @Override
     public Children likeLeft(boolean condition, R column, Object val) {
         getWrapper().likeLeft(condition, column, val);
         return typedThis;
@@ -149,6 +143,24 @@ public abstract class AbstractChainWrapper<T, R, Children extends AbstractChainW
     @Override
     public Children likeRight(boolean condition, R column, Object val) {
         getWrapper().likeRight(condition, column, val);
+        return typedThis;
+    }
+
+    @Override
+    public Children notLike(boolean condition, R column, Object val) {
+        getWrapper().notLike(condition, column, val);
+        return typedThis;
+    }
+
+    @Override
+    public Children notLikeLeft(boolean condition, R column, Object val) {
+        getWrapper().notLikeLeft(condition, column, val);
+        return typedThis;
+    }
+
+    @Override
+    public Children notLikeRight(boolean condition, R column, Object val) {
+        getWrapper().notLikeRight(condition, column, val);
         return typedThis;
     }
 
@@ -395,3 +407,4 @@ public abstract class AbstractChainWrapper<T, R, Children extends AbstractChainW
         throw ExceptionUtils.mpe("can not use this method for \"%s\"", "clone");
     }
 }
+

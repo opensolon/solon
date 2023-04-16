@@ -87,6 +87,10 @@ public class PluginEntity {
         return props;
     }
 
+    public String getClassName() {
+        return className;
+    }
+
     /**
      * 初始化
      */

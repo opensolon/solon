@@ -1,0 +1,27 @@
+{
+  "resources": {
+    "includes": [
+      {
+        "pattern": "/"
+      },
+      {
+        "pattern": "app.*\\.yml"
+      },
+      {
+        "pattern": "app.*\\.properties"
+      },
+      {
+        "pattern": "META-INF"
+      },
+      {
+        "pattern": "META-INF/solon"
+      },
+      {
+        "pattern": "META-INF/solon/.*"
+      },
+      {
+        "pattern": "META-INF/solon_def/.*"
+      }
+    ]
+  }
+}

@@ -1,8 +1,8 @@
 package org.noear.solon.core;
 
 import org.noear.solon.Solon;
-import org.noear.solon.Utils;
 import org.noear.solon.core.event.EventBus;
+import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.core.util.ResourceUtil;
 
 import java.io.File;
@@ -48,9 +48,9 @@ public class ResourceScanner {
                 //3.尝试扫描
                 scanDo(roots.nextElement(), path, filter, urls);
             }
-        } catch (IOException e) {
-            EventBus.pushTry(e);
-        }
+		} catch (IOException e) {
+			EventBus.pushTry(e);
+		}
 
         return urls;
     }

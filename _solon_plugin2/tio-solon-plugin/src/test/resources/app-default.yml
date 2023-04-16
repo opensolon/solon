@@ -1,0 +1,17 @@
+tio:
+  core:
+    server:
+      name: tio_test
+      # websocket port default 9876
+      port: 6789
+      heartbeat: true
+      # 心跳时间
+      heartbeat-timeout: 60000
+      ip: 127.0.0.1
+      ip-stat-durations:
+        - 60
+      # SSL 配置
+    ssl:
+      key-store: 1
+      password: 2
+      trust-store: 3
