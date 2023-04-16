@@ -1,11 +1,11 @@
 package demo1;
 
+import org.noear.solon.annotation.Component;
 import org.tio.core.ChannelContext;
 import org.tio.core.TioConfig;
 import org.tio.core.intf.Packet;
 import org.tio.core.stat.IpStat;
 import org.tio.core.stat.IpStatListener;
-import org.tio.solon.annotation.TioServerIpStatListenerAnno;
 
 /**
  * IP 统计监听，需要实现 {@link IpStatListener} 接口
@@ -14,7 +14,7 @@ import org.tio.solon.annotation.TioServerIpStatListenerAnno;
  *
  * @author yangjian
  */
-@TioServerIpStatListenerAnno
+@Component
 public class HelloServerIpStatListener implements IpStatListener {
 
     @Override

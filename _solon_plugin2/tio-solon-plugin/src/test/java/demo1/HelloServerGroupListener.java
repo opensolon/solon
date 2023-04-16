@@ -1,8 +1,8 @@
 package demo1;
 
+import org.noear.solon.annotation.Component;
 import org.tio.core.ChannelContext;
 import org.tio.core.intf.GroupListener;
-import org.tio.solon.annotation.TioServerGroupListenerAnno;
 
 /**
  * Tio group 监听，需要实现 {@link GroupListener} 接口
@@ -11,7 +11,7 @@ import org.tio.solon.annotation.TioServerGroupListenerAnno;
  *
  * @author yangjian
  */
-@TioServerGroupListenerAnno
+@Component
 public class HelloServerGroupListener implements GroupListener {
     @Override
     public void onAfterBind(ChannelContext channelContext, String s) throws Exception {

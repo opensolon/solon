@@ -1,9 +1,5 @@
-[![Maven Central](https://img.shields.io/maven-central/v/org.noear/tio-solon-plugin.svg)](https://search.maven.org/artifact/org.noear/drools-solon-plugin)
-[![Apache 2.0](https://img.shields.io/:license-Apache2-blue.svg)](https://license.coscl.org.cn/Apache2/)
-[![JDK-8+](https://img.shields.io/badge/JDK-8+-green.svg)](https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html)
-[![QQ交流群](https://img.shields.io/badge/QQ交流群-22200020-orange)](https://jq.qq.com/?_wv=1027&k=kjB5JNiC)
-
 # tio-solon-plugin
+
 # 最新版的tio是采用jdk17编译的，不建议在jdk8下运行
 
 ## 1、tio 用法

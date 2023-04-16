@@ -2,13 +2,13 @@ package demo1;
 
 import java.nio.ByteBuffer;
 
+import org.noear.solon.annotation.Component;
 import org.tio.core.ChannelContext;
 import org.tio.core.Tio;
 import org.tio.core.TioConfig;
 import org.tio.core.exception.TioDecodeException;
 import org.tio.core.intf.Packet;
 import org.tio.server.intf.TioServerHandler;
-import org.tio.solon.annotation.TioServerHandlerAnno;
 import org.tio.solon.integration.TioServerMsgHandlerNotFoundException;
 
 /**
@@ -18,10 +18,8 @@ import org.tio.solon.integration.TioServerMsgHandlerNotFoundException;
  *
  * @author yangjian
  */
-@TioServerHandlerAnno
+@Component
 public class HelloServerMsgHandler implements TioServerHandler {
-
-
     /**
      * 解码：把接收到的ByteBuffer，解码成应用可以识别的业务消息包
      * 总的消息结构：消息头 + 消息体
@@ -29,8 +27,7 @@ public class HelloServerMsgHandler implements TioServerHandler {
      * 消息体结构：   对象的json串的byte[]
      */
     @Override
-    public HelloPacket decode(ByteBuffer buffer, int limit, int position, int readableLength, ChannelContext channelContext) throws TioDecodeException
-    {
+    public HelloPacket decode(ByteBuffer buffer, int limit, int position, int readableLength, ChannelContext channelContext) throws TioDecodeException {
         return PacketUtil.decode(buffer, limit, position, readableLength, channelContext);
     }
 
@@ -41,8 +38,7 @@ public class HelloServerMsgHandler implements TioServerHandler {
      * 消息体结构：   对象的json串的byte[]
      */
     @Override
-    public ByteBuffer encode(Packet packet, TioConfig groupContext, ChannelContext channelContext)
-    {
+    public ByteBuffer encode(Packet packet, TioConfig groupContext, ChannelContext channelContext) {
         return PacketUtil.encode(packet, groupContext, channelContext);
     }
 
@@ -64,5 +60,4 @@ public class HelloServerMsgHandler implements TioServerHandler {
         }
         return;
     }
-
 }

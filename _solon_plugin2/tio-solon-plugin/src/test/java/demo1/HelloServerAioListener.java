@@ -1,9 +1,9 @@
 package demo1;
 
+import org.noear.solon.annotation.Component;
 import org.tio.core.ChannelContext;
 import org.tio.core.intf.Packet;
 import org.tio.server.intf.TioServerListener;
-import org.tio.solon.annotation.TioServerListenerAnno;
 
 /**
  * 消息监听，需要实现 {@link ServerAioListener} 接口
@@ -12,10 +12,8 @@ import org.tio.solon.annotation.TioServerListenerAnno;
  *
  * @author yangjian
  */
-@TioServerListenerAnno
+@Component
 public class HelloServerAioListener implements TioServerListener {
-
-
     @Override
     public void onAfterConnected(ChannelContext channelContext, boolean isConnected, boolean isReconnect) throws Exception {
         System.out.println("FUCK");
