@@ -36,7 +36,7 @@ import java.util.regex.Pattern;
  * @author songyinyin
  * @since 2023/4/11 14:11
  */
-public class SolonNativeProcessor {
+public class SolonAppAotProcessor {
 
     public static final String AOT_PROCESSING = "solon.aot.processing";
 
@@ -52,7 +52,7 @@ public class SolonNativeProcessor {
 
     private static final List<String> ALLOW_RESOURCES = Arrays.asList("META-INF", "static", "templates", "sql");
 
-    public SolonNativeProcessor(Settings settings, String[] applicationArgs, Class<?> applicationClass) {
+    public SolonAppAotProcessor(Settings settings, String[] applicationArgs, Class<?> applicationClass) {
         this.settings = settings;
         this.applicationArgs = applicationArgs;
         this.applicationClass = applicationClass;
@@ -64,7 +64,7 @@ public class SolonNativeProcessor {
 
         int requiredArgs = 4;
         if (args.length < requiredArgs) {
-            throw new IllegalArgumentException("Usage: " + SolonNativeProcessor.class.getName()
+            throw new IllegalArgumentException("Usage: " + SolonAppAotProcessor.class.getName()
                     + " <applicationName> <classOutput> <groupId> <artifactId> <originalArgs...>");
         }
 
@@ -74,7 +74,7 @@ public class SolonNativeProcessor {
         String[] applicationArgs = (args.length > requiredArgs) ? Arrays.copyOfRange(args, requiredArgs, args.length)
                 : new String[0];
 
-        new SolonNativeProcessor(build, applicationArgs, application).process();
+        new SolonAppAotProcessor(build, applicationArgs, application).process();
     }
 
     public final void process() {
@@ -115,9 +115,9 @@ public class SolonNativeProcessor {
             nativeMetadata.registerDefaultConstructor(plug.getClassName());
         }
 
-        List<RuntimeNativeProcessor> runtimeNativeProcessors = context.getBeansOfType(RuntimeNativeProcessor.class);
-        for (RuntimeNativeProcessor runtimeNativeProcessor : runtimeNativeProcessors) {
-            runtimeNativeProcessor.process(context, nativeMetadata);
+        List<RuntimeNativeRegistrar> runtimeNativeRegistrars = context.getBeansOfType(RuntimeNativeRegistrar.class);
+        for (RuntimeNativeRegistrar runtimeNativeRegistrar : runtimeNativeRegistrars) {
+            runtimeNativeRegistrar.register(context, nativeMetadata);
         }
 
 
@@ -138,7 +138,7 @@ public class SolonNativeProcessor {
         AtomicInteger beanCount = new AtomicInteger();
         context.beanForeach(beanWrap -> {
             // aot阶段产生的bean，不需要注册到 native 元数据里
-            if (RuntimeNativeProcessor.class.isAssignableFrom(beanWrap.clz())) {
+            if (RuntimeNativeRegistrar.class.isAssignableFrom(beanWrap.clz())) {
                 return;
             }
             beanCount.getAndIncrement();

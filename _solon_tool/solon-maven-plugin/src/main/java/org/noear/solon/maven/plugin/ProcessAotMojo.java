@@ -38,7 +38,7 @@ import java.util.stream.Collectors;
         requiresDependencyCollection = ResolutionScope.COMPILE_PLUS_RUNTIME)
 public class ProcessAotMojo extends AbstractMojo {
 
-    private static final String AOT_PROCESSOR_CLASS_NAME = "org.noear.solon.aot.SolonNativeProcessor";
+    private static final String AOT_PROCESSOR_CLASS_NAME = "org.noear.solon.aot.SolonAppAotProcessor";
 
     /**
      * The current Maven session. This is used for toolchain manager API calls.
