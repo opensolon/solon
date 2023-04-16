@@ -15,6 +15,7 @@
 * 调整 允许 "solon.scheduling" 的任务在注册时未配置调度???（由后续动态控制）
 
 ### 2.2.12
+* 新增 solon.aot 插件
 * 新增 simplejavamail-solon-plugin 插件
 * 新增 sms4j-solon-plugin 插件
 * 增加 Utils::isEmpty(Collection s) 接口
