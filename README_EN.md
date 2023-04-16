@@ -1,7 +1,7 @@
 <h1 align="center" style="text-align:center;">
 <img src="solon_icon.png" width="128" />
 <br />
-Solon v2.2.12
+Solon v2.2.13-SNAPSHOT
 </h1>
 <p align="center">
 	<strong>An efficient Java application development framework - smaller, faster, simpler!</strong>
@@ -78,7 +78,7 @@ Startup is 5 to 10 times faster; QPS is 2 to 3 times higher; runtime memory is s
 <parent>
     <groupId>org.noear</groupId>
     <artifactId>solon-parent</artifactId>
-    <version>2.2.12</version>   
+    <version>2.2.13-SNAPSHOT</version>   
 </parent>
 
 <dependencies>
