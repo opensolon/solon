@@ -14,6 +14,10 @@ public class XPluginImp implements Plugin {
     @Override
     public void start(AopContext context) {
         context.beanBuilderAdd(ProxyComponent.class, (clz, bw, anno) -> {
+            if(NativeDetector.isAotRuntime()){
+                return;
+            }
+
             String beanName = Utils.annoAlias(anno.value(), anno.name());
 
             ProxyUtil.binding(bw, beanName, anno.typed());
@@ -25,6 +29,10 @@ public class XPluginImp implements Plugin {
 
         //@deprecated 2.2
         context.beanBuilderAdd(Dao.class, (clz, bw, anno) -> {
+            if(NativeDetector.isAotRuntime()){
+                return;
+            }
+
             String beanName = Utils.annoAlias(anno.value(), anno.name());
 
             ProxyUtil.binding(bw, beanName, anno.typed());
@@ -37,6 +45,10 @@ public class XPluginImp implements Plugin {
 
         //@deprecated 2.2
         context.beanBuilderAdd(Service.class, (clz, bw, anno) -> {
+            if(NativeDetector.isAotRuntime()){
+                return;
+            }
+
             String beanName = Utils.annoAlias(anno.value(), anno.name());
 
             ProxyUtil.binding(bw, beanName, anno.typed());
@@ -49,6 +61,10 @@ public class XPluginImp implements Plugin {
 
         //@deprecated 2.2
         context.beanBuilderAdd(Repository.class, (clz, bw, anno) -> {
+            if(NativeDetector.isAotRuntime()){
+                return;
+            }
+
             String beanName = Utils.annoAlias(anno.value(), anno.name());
 
             ProxyUtil.binding(bw, beanName, anno.typed());
