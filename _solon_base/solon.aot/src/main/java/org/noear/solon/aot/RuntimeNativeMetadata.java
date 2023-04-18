@@ -37,16 +37,6 @@ public class RuntimeNativeMetadata {
 
     private final Options jsonOptions = Options.def().add(Feature.PrettyFormat).add(Feature.OrderedField);
 
-    private String packageName;
-
-    public String getPackageName() {
-        return packageName;
-    }
-
-    public void setPackageName(String packageName) {
-        this.packageName = packageName;
-    }
-
     private final Map<String, ReflectionHints> reflection = new LinkedHashMap<>();
 
     private final List<ResourceHint> includes = new ArrayList<>();
@@ -68,11 +58,6 @@ public class RuntimeNativeMetadata {
     public void setApplicationClassName(String applicationClassName) {
         this.applicationClassName = applicationClassName;
     }
-
-    public String getNativeImageDir() {
-        return GraalvmUtil.NATIVE_IMAGE_DIR;
-    }
-
 
     /**
      * 注册反射相关

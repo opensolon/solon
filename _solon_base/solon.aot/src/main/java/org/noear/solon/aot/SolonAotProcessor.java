@@ -104,7 +104,6 @@ public class SolonAotProcessor {
 
         RuntimeNativeMetadata nativeMetadata = new RuntimeNativeMetadata();
         nativeMetadata.setApplicationClassName(applicationClass.getCanonicalName());
-        nativeMetadata.setPackageName(settings.groupId + "." + settings.artifactId);
 
         processBean(context, nativeMetadata);
 
@@ -166,10 +165,10 @@ public class SolonAotProcessor {
             return;
         }
         try {
-            FileWriter fileWriter = getFileWriter(nativeMetadata, "serialization-config.json");
+            FileWriter fileWriter = getFileWriter("serialization-config.json");
             fileWriter.write(serializationJson);
             fileWriter.close();
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
@@ -184,7 +183,7 @@ public class SolonAotProcessor {
             sb.append("Args = ");
             sb.append(String.join(String.format(" \\%n"), args));
 
-            FileWriter fileWriter = getFileWriter(nativeMetadata, "native-image.properties");
+            FileWriter fileWriter = getFileWriter("native-image.properties");
             fileWriter.write(sb.toString());
             fileWriter.close();
         } catch (Exception e) {
@@ -206,8 +205,8 @@ public class SolonAotProcessor {
                     .registerResourceInclude("META-INF/solon_def/.*\\.txt")
                     .registerResourceInclude("META-INF/solon_def/.*\\.xml")
                     .registerResourceInclude("META-INF/solon_def/.*\\.properties")
-                    .registerResourceInclude(GraalvmUtil.SOLON_RESOURCE)
-                    .registerResourceInclude(nativeMetadata.getNativeImageDir() + "/reflect-config.json");
+                    .registerResourceInclude(GraalvmUtil.getSolonResourcePath())
+                    .registerResourceInclude(GraalvmUtil.getNativeImageDir() + "/reflect-config.json");
 
             List<ResourceHint> includes = nativeMetadata.getIncludes();
             List<String> allResources = new ArrayList<>();
@@ -224,11 +223,11 @@ public class SolonAotProcessor {
                 }
             }
 
-            FileWriter solonResourceFile = getFileWriter(nativeMetadata, GraalvmUtil.SOLON_RESOURCE_NAME);
+            FileWriter solonResourceFile = getFileWriter(GraalvmUtil.SOLON_RESOURCE_NAME);
             solonResourceFile.write(ONode.load(allResources, jsonOptions).toJson());
             solonResourceFile.close();
 
-            FileWriter fileWriter = getFileWriter(nativeMetadata, "resource-config.json");
+            FileWriter fileWriter = getFileWriter("resource-config.json");
             fileWriter.write(nativeMetadata.toResourcesJson());
             fileWriter.close();
         } catch (Exception e) {
@@ -248,7 +247,7 @@ public class SolonAotProcessor {
                     .registerDefaultConstructor("org.noear.solon.extend.impl.ReflectionExt")
                     .registerDefaultConstructor("org.noear.solon.extend.impl.ResourceScannerExt");
 
-            FileWriter fileWriter = getFileWriter(nativeMetadata, "reflect-config.json");
+            FileWriter fileWriter = getFileWriter("reflect-config.json");
             fileWriter.write(nativeMetadata.toReflectionJson());
             fileWriter.close();
         } catch (Exception e) {
@@ -265,9 +264,9 @@ public class SolonAotProcessor {
         return args;
     }
 
-    private FileWriter getFileWriter(RuntimeNativeMetadata nativeMetadata, String configName) {
+    private FileWriter getFileWriter(String configName) {
         try {
-            String dir = nativeMetadata.getNativeImageDir();
+            String dir = GraalvmUtil.getNativeImageDir();
             String fileName = String.join("/", dir, configName);
 
             File file = new File(settings.classOutput + "/" + fileName);
@@ -302,7 +301,7 @@ public class SolonAotProcessor {
 
         private String artifactId;
 
-        public Settings(Path classOutput, String groupId, String artifactId){
+        public Settings(Path classOutput, String groupId, String artifactId) {
             this.classOutput = classOutput;
             this.groupId = groupId;
             this.artifactId = artifactId;

@@ -2,11 +2,11 @@ package org.noear.solon.aot.graalvm;
 
 import org.noear.snack.ONode;
 import org.noear.solon.Solon;
-import org.noear.solon.core.util.ReflectUtil;
 import org.noear.solon.aot.hint.ExecutableHint;
 import org.noear.solon.core.ExtendLoader;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.LogUtil;
+import org.noear.solon.core.util.ReflectUtil;
 import org.noear.solon.core.util.ResourceUtil;
 
 import java.io.BufferedReader;
@@ -34,7 +34,6 @@ public class GraalvmUtil {
 
     public static final String NATIVE_IMAGE_DIR = "META-INF/native-image";
     public static final String SOLON_RESOURCE_NAME = "solon-resource.json";
-    public static final String SOLON_RESOURCE = NATIVE_IMAGE_DIR + "/" + SOLON_RESOURCE_NAME;
 
     private static final Set<String> resources = new HashSet<>();
     private static final Map<String, Set<String>> classFieldNames = new HashMap<>();
@@ -46,6 +45,21 @@ public class GraalvmUtil {
     static {
         readNativeResourceConfig();
         readNativeReflectConfig();
+    }
+
+    /**
+     * META-INF/native-image + 启动类包名
+     */
+    public static String getNativeImageDir() {
+        String packageName = Solon.cfg().source().getPackage().getName();
+        return NATIVE_IMAGE_DIR + "/" + packageName.replace('.', '/');
+    }
+
+    /**
+     * solon-resource.json 全路径
+     */
+    public static String getSolonResourcePath() {
+        return getNativeImageDir() + "/" + SOLON_RESOURCE_NAME;
     }
 
     /**
@@ -131,7 +145,7 @@ public class GraalvmUtil {
             List<ClassLoader> loaderList = ExtendLoader.load(Solon.cfg().extend(), false);
 
             for (ClassLoader loader : loaderList) {
-                Enumeration<URL> rs = ResourceUtil.getResources(loader, "META-INF/native-image/reflect-config.json");
+                Enumeration<URL> rs = ResourceUtil.getResources(loader, getNativeImageDir() + "/reflect-config.json");
 
                 while (rs.hasMoreElements()) {
                     String s = readFileByLines(rs.nextElement());
@@ -182,8 +196,9 @@ public class GraalvmUtil {
         try {
             List<ClassLoader> loaderList = ExtendLoader.load(Solon.cfg().extend(), false);
 
+            String solonResource = getSolonResourcePath();
             for (ClassLoader loader : loaderList) {
-                Enumeration<URL> rs = ResourceUtil.getResources(loader, SOLON_RESOURCE);
+                Enumeration<URL> rs = ResourceUtil.getResources(loader, solonResource);
 
                 while (rs.hasMoreElements()) {
                     String s = readFileByLines(rs.nextElement());
@@ -196,7 +211,7 @@ public class GraalvmUtil {
             }
 
             if (Solon.cfg().isDebugMode()) {
-                LogUtil.global().info(SOLON_RESOURCE + ": load completed: " + resources);
+                LogUtil.global().info(solonResource + ": load completed: " + resources);
             }
         } catch (Exception e) {
             LogUtil.global().warn("resource-config: read error: " + e.getLocalizedMessage());
