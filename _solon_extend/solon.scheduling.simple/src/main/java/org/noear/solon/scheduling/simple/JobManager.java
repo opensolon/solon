@@ -49,14 +49,14 @@ public class JobManager {
      * 添加计划任务
      *
      * @param name      任务名称
-     * @param jobEntity 任务实体
+     * @param jobHolder 任务实体
      */
-    private static synchronized void addDo(String name, JobHolder jobEntity) {
-        jobMap.putIfAbsent(name, jobEntity);
+    private static synchronized void addDo(String name, JobHolder jobHolder) {
+        jobMap.putIfAbsent(name, jobHolder);
 
         if (isStarted) {
             //如果已开始，则直接开始调度
-            jobEntity.start();
+            jobHolder.start();
         }
     }
 
