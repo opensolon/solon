@@ -207,8 +207,7 @@ public class AopContext extends BeanContainer {
         if (Plugin.class.isAssignableFrom(clz)) {
             //如果是插件，则插入
             Solon.app().plug(bw.raw());
-            LogUtil.global().warn("'Plugin' will be deprecated as a component, please use 'LifecycleBean'");
-            return;
+            LogUtil.global().warn("'Plugin' will be deprecated as a component, please use 'LifecycleBean'");return;
         }
 
         //LifecycleBean（替代 Plugin，提供组件的生态周期控制）
@@ -220,13 +219,11 @@ public class AopContext extends BeanContainer {
             }
 
             lifecycle(index + 1, bw.raw());
-            return;
         }
 
         //EventListener
         if (EventListener.class.isAssignableFrom(clz)) {
             addEventListener(clz, bw);
-            return;
         }
 
         //LoadBalance.Factory
