@@ -12,7 +12,7 @@
         <repository>
             <id>tencent</id>
             <name>tencent maven</name>
-            <url>http://mirrors.cloud.tencent.com/nexus/repository/maven-public/</url>
+            <url>https://mirrors.cloud.tencent.com/nexus/repository/maven-public/</url>
             <layout>default</layout>
             <releases>
                 <enabled>true</enabled>
