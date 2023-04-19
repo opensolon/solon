@@ -28,7 +28,8 @@ public class XPluginImp implements Plugin {
         //获取 Quartz 注解的函数
         context.beanExtractorAdd(Scheduled.class, beanBuilder);
 
-        Solon.app().onEvent(AppLoadEndEvent.class, e -> {
+        //容器加载完后，再启动任务
+        context.lifecycle(99, () -> {
             JobManager.start();
         });
     }

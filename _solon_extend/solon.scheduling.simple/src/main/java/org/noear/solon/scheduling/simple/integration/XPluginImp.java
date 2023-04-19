@@ -24,8 +24,8 @@ public class XPluginImp implements Plugin {
         context.beanBuilderAdd(Scheduled.class, scheduledBeanBuilder);
         context.beanExtractorAdd(Scheduled.class, scheduledBeanBuilder);
 
-        //应用加载完后，再启动任务
-        Solon.app().onEvent(AppLoadEndEvent.class, e -> {
+        //容器加载完后，再启动任务
+        context.lifecycle(99, () -> {
             JobManager.start();
         });
     }

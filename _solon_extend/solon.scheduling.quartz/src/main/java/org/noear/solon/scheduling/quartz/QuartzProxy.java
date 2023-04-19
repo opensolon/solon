@@ -13,7 +13,7 @@ public class QuartzProxy implements Job {
     @Override
     public void execute(JobExecutionContext ctx) throws JobExecutionException {
         String name = ctx.getJobDetail().getKey().getName();
-        Job jobReal = JobManager.getJob(name);
+        Job jobReal = JobManager.get(name);
 
         if (jobReal != null) {
             jobReal.execute(ctx);

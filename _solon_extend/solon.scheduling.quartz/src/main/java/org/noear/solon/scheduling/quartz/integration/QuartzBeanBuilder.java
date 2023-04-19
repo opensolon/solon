@@ -39,7 +39,7 @@ public class QuartzBeanBuilder implements BeanBuilder<Scheduled>, BeanExtractor<
         String name = Utils.annoAlias(warpper.name(), job.getJobId());
 
 
-        JobManager.addJob(name, warpper, job);
+        JobManager.add(name, warpper, job);
     }
 
     @Override
@@ -62,6 +62,6 @@ public class QuartzBeanBuilder implements BeanBuilder<Scheduled>, BeanExtractor<
         AbstractJob job = new MethodJob(bw, method);
         String name = Utils.annoAlias(warpper.name(), job.getJobId());
 
-        JobManager.addJob(name, warpper, job);
+        JobManager.add(name, warpper, job);
     }
 }

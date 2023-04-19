@@ -16,55 +16,11 @@ public final class JobManager {
     static Scheduler _scheduler = null;
     static Map<String, JobHolder> jobMap = new HashMap<>();
 
-    public static void setScheduler(Scheduler scheduler) {
-        //如果已存在，则不可替换
-        if (_scheduler == null) {
-            _scheduler = scheduler;
-        }
-    }
-
-    private static void tryInitScheduler() throws SchedulerException {
-        if (_scheduler == null) {
-            synchronized (JobManager.class) {
-                if (_scheduler == null) {
-                    //默认使用：直接本地调用
-                    SchedulerFactory schedulerFactory = new StdSchedulerFactory();
-                    _scheduler = schedulerFactory.getScheduler();
-                }
-            }
-        }
-    }
-
-    /**
-     * 开始
-     */
-    public static void start() throws SchedulerException {
-        tryInitScheduler();
-
-        for (JobHolder jobEntity : jobMap.values()) {
-            regJob(jobEntity);
-        }
-
-        if (_scheduler != null) {
-            _scheduler.start();
-        }
-    }
-
-    /**
-     * 停止
-     */
-    public static void stop() throws SchedulerException {
-        if (_scheduler != null) {
-            _scheduler.shutdown();
-
-            _scheduler = null;
-        }
-    }
 
     /**
      * 添加 job
      */
-    public static void addJob(String name, Scheduled anno, AbstractJob job) throws Exception {
+    public static void add(String name, Scheduled anno, AbstractJob job) throws Exception {
         if (anno.enable() == false) {
             return;
         }
@@ -92,13 +48,44 @@ public final class JobManager {
     }
 
     /**
+     * 检查计划任务是否存在
+     *
+     * @param name 任务名称
+     */
+    public static boolean contains(String name) {
+        return jobMap.containsKey(name);
+    }
+
+    /**
      * 获取 job
      */
-    public static JobHolder getJob(String name) {
+    public static JobHolder get(String name) {
         if (Utils.isEmpty(name)) {
             return null;
         } else {
             return jobMap.get(name);
+        }
+    }
+
+    /**
+     * 移除 job
+     * */
+    public static void remove(String name) {
+        if(jobMap.containsKey(name) == false){
+            return;
+        }
+
+        String jobGroup = Utils.annoAlias(Solon.cfg().appName(), "solon");
+
+        JobDetail jobDetail = JobBuilder.newJob(QuartzProxy.class)
+                .withIdentity(name, jobGroup)
+                .build();
+
+        try {
+            jobMap.remove(name);
+            _scheduler.resumeJob(jobDetail.getKey());
+        } catch (Exception e) {
+            throw new IllegalArgumentException(e);
         }
     }
 
@@ -159,6 +146,53 @@ public final class JobManager {
                     .build();
 
             _scheduler.scheduleJob(jobDetail, trigger);
+        }
+    }
+
+
+
+    public static void setScheduler(Scheduler scheduler) {
+        //如果已存在，则不可替换
+        if (_scheduler == null) {
+            _scheduler = scheduler;
+        }
+    }
+
+    private static void tryInitScheduler() throws SchedulerException {
+        if (_scheduler == null) {
+            synchronized (JobManager.class) {
+                if (_scheduler == null) {
+                    //默认使用：直接本地调用
+                    SchedulerFactory schedulerFactory = new StdSchedulerFactory();
+                    _scheduler = schedulerFactory.getScheduler();
+                }
+            }
+        }
+    }
+
+    /**
+     * 开始
+     */
+    public static void start() throws SchedulerException {
+        tryInitScheduler();
+
+        for (JobHolder jobEntity : jobMap.values()) {
+            regJob(jobEntity);
+        }
+
+        if (_scheduler != null) {
+            _scheduler.start();
+        }
+    }
+
+    /**
+     * 停止
+     */
+    public static void stop() throws SchedulerException {
+        if (_scheduler != null) {
+            _scheduler.shutdown();
+
+            _scheduler = null;
         }
     }
 }

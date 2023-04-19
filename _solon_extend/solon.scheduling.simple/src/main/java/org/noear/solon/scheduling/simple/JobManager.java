@@ -13,7 +13,7 @@ import java.util.Map;
  * @since 1.6
  */
 public class JobManager {
-    private static Map<String, JobHolder> jobEntityMap = new HashMap<>();
+    private static Map<String, JobHolder> jobMap = new HashMap<>();
     private static boolean isStarted = false;
 
 
@@ -52,7 +52,7 @@ public class JobManager {
      * @param jobEntity 任务实体
      */
     private static synchronized void addDo(String name, JobHolder jobEntity) {
-        jobEntityMap.putIfAbsent(name, jobEntity);
+        jobMap.putIfAbsent(name, jobEntity);
 
         if (isStarted) {
             //如果已开始，则直接开始调度
@@ -67,7 +67,14 @@ public class JobManager {
      * @param name 任务名称
      */
     public static boolean contains(String name) {
-        return jobEntityMap.containsKey(name);
+        return jobMap.containsKey(name);
+    }
+
+    /**
+     * 获取计划任务
+     * */
+    public static JobHolder get(String name){
+        return jobMap.get(name);
     }
 
     /**
@@ -76,11 +83,11 @@ public class JobManager {
      * @param name 任务名称
      */
     public static void remove(String name) {
-        JobHolder jobHolder = jobEntityMap.get(name);
+        JobHolder jobHolder = jobMap.get(name);
 
         if (jobHolder != null) {
             jobHolder.cancel();
-            jobEntityMap.remove(name);
+            jobMap.remove(name);
         }
     }
 
@@ -90,7 +97,7 @@ public class JobManager {
      * @param name 任务名称
      */
     public static void start(String name) {
-        JobHolder jobHolder = jobEntityMap.get(name);
+        JobHolder jobHolder = jobMap.get(name);
 
         if (jobHolder != null && jobHolder.isCanceled()) {
             jobHolder.start();
@@ -103,7 +110,7 @@ public class JobManager {
      * @param name 任务名称
      */
     public static void stop(String name) {
-        JobHolder jobHolder = jobEntityMap.get(name);
+        JobHolder jobHolder = jobMap.get(name);
 
         if (jobHolder != null && jobHolder.isCanceled() == false) {
             jobHolder.cancel();
@@ -113,17 +120,17 @@ public class JobManager {
     ///////////////////////////////
 
     /**
-     * 数量
+     * 计划任务数量
      */
     public static int count() {
-        return jobEntityMap.size();
+        return jobMap.size();
     }
 
     /**
      * 启动
      */
     public static void start() {
-        for (JobHolder job : jobEntityMap.values()) {
+        for (JobHolder job : jobMap.values()) {
             job.start();
         }
         isStarted = true;
@@ -133,7 +140,7 @@ public class JobManager {
      * 停止
      */
     public static void stop() {
-        for (JobHolder job : jobEntityMap.values()) {
+        for (JobHolder job : jobMap.values()) {
             job.cancel();
         }
         isStarted = false;

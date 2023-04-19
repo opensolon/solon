@@ -1,6 +1,5 @@
 package org.noear.solon.scheduling.simple.integration;
 
-import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.BeanBuilder;
@@ -12,7 +11,6 @@ import org.noear.solon.scheduling.simple.JobManager;
 import org.noear.solon.scheduling.utils.ScheduledHelper;
 
 import java.lang.reflect.Method;
-import java.util.Properties;
 
 /**
  * @author noear
