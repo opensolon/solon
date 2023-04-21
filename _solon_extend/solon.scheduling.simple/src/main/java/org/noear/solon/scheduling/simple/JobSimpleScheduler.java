@@ -73,12 +73,17 @@ public class JobSimpleScheduler implements Lifecycle {
 
     @Override
     public void start() throws Throwable {
-        isStarted = true;
+        if(isStarted == false) {
+            thread.start();
+            isStarted = true;
+        }
     }
 
     @Override
     public void stop() throws Throwable {
-        isStarted = false;
+        if (isStarted) {
+            isStarted = false;
+        }
     }
 
 
