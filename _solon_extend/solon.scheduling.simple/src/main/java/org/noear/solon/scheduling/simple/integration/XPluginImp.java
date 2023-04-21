@@ -26,6 +26,7 @@ public class XPluginImp implements Plugin {
             jobManager = context.getBean(JobManager.class);
         } else {
             jobManager = new JobSimpleManager();
+            context.wrapAndPut(JobManager.class, jobManager);
         }
 
         //设置全局管理器
