@@ -1,22 +1,57 @@
 package org.noear.solon.scheduling.quartz;
 
+import org.noear.solon.core.handle.Context;
+import org.noear.solon.core.handle.ContextEmpty;
+import org.noear.solon.core.handle.ContextUtil;
+import org.noear.solon.scheduling.scheduled.JobHolder;
+import org.noear.solon.scheduling.scheduled.JobManager;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
+import java.util.Map;
+
 /**
- * Quartz job 的执行代理
+ * Quartz 任务执行代理
  *
  * @author noear
  * */
 public class QuartzProxy implements Job {
-    @Override
-    public void execute(JobExecutionContext ctx) throws JobExecutionException {
-        String name = ctx.getJobDetail().getKey().getName();
-        Job jobReal = JobManager.get(name);
+    JobManager jobManager;
 
-        if (jobReal != null) {
-            jobReal.execute(ctx);
+    @Override
+    public void execute(JobExecutionContext jc) throws JobExecutionException {
+        if(jobManager == null){
+            return;
+        }
+
+        String name = jc.getJobDetail().getKey().getName();
+        JobHolder jobHolder = jobManager.jobGet(name);
+
+        if (jobHolder != null) {
+            Context ctx = Context.current(); //可能是从上层代理已生成, v1.11
+            if (ctx == null) {
+                ctx = new ContextEmpty();
+                ContextUtil.currentSet(ctx);
+            }
+
+            //设置请求对象（mvc 时，可以被注入）
+            if(ctx instanceof ContextEmpty) {
+                ((ContextEmpty) ctx).request(jc);
+            }
+
+            for (Map.Entry<String, Object> kv : jc.getJobDetail().getJobDataMap().entrySet()) {
+                if (kv.getValue() != null) {
+                    ctx.paramMap().put(kv.getKey(), kv.getValue().toString());
+                }
+            }
+
+            try {
+                jobHolder.setContext(ctx);
+                jobHolder.handle();
+            } catch (Throwable e) {
+                throw new JobExecutionException("Job execution failed: " + name, e);
+            }
         }
     }
 }
