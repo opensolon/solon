@@ -13,7 +13,7 @@ import org.noear.solon.scheduling.simple.JobSimpleManager;
  * @since 1.6
  */
 public class XPluginImp implements Plugin {
-    private JobManager jobManager;
+    private JobSimpleManager jobManager;
 
     @Override
     public void start(AopContext context) {
@@ -22,11 +22,11 @@ public class XPluginImp implements Plugin {
         }
 
         //创建管理器
-        if (context.hasWrap(JobManager.class)) {
-            jobManager = context.getBean(JobManager.class);
+        if (context.hasWrap(JobSimpleManager.class)) {
+            jobManager = context.getBean(JobSimpleManager.class);
         } else {
             jobManager = new JobSimpleManager();
-            context.wrapAndPut(JobManager.class, jobManager);
+            context.wrapAndPut(JobSimpleManager.class, jobManager);
         }
 
         //设置全局管理器

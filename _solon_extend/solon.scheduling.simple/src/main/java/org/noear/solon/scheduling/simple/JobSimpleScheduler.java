@@ -3,7 +3,6 @@ package org.noear.solon.scheduling.simple;
 import org.noear.solon.Utils;
 import org.noear.solon.core.Lifecycle;
 import org.noear.solon.core.event.EventBus;
-import org.noear.solon.core.handle.ContextEmpty;
 import org.noear.solon.core.util.RunUtil;
 import org.noear.solon.scheduling.ScheduledException;
 import org.noear.solon.scheduling.scheduled.JobHolder;
@@ -165,7 +164,7 @@ public class JobSimpleScheduler implements Lifecycle {
      */
     private void exec0() {
         try {
-            jobHolder.handle(new ContextEmpty());
+            jobHolder.handle();
         } catch (Throwable e) {
             EventBus.pushTry(e);
         }

@@ -19,6 +19,7 @@ import java.lang.reflect.Method;
  *
  * @author noear
  * @since 1.11
+ * @since 2.2
  */
 public class JobExtractor implements BeanBuilder<Scheduled>, BeanExtractor<Scheduled> {
     private final JobManager jobManager;
