@@ -64,12 +64,6 @@ public class JobSimpleScheduler implements Lifecycle {
     }
 
     boolean isStarted = false;
-    /**
-     * 是否已启动
-     * */
-    public boolean isStarted() {
-        return isStarted;
-    }
 
     @Override
     public void start() throws Throwable {

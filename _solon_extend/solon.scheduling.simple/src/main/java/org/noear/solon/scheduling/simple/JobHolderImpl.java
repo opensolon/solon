@@ -10,6 +10,7 @@ import org.noear.solon.scheduling.scheduled.JobHolder;
  *
  * @author noear
  * @since 1.6
+ * @since 2.2
  */
 public class JobHolderImpl extends JobHolder {
     protected Lifecycle scheduler;

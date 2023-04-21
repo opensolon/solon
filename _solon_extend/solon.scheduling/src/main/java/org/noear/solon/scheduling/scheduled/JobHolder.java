@@ -9,10 +9,11 @@ import org.noear.solon.scheduling.annotation.Scheduled;
  * @author noear
  * @since 2.2
  */
-public class JobHolder implements JobHandler{
+public class JobHolder{
     protected String name;
     protected Scheduled scheduled;
     protected JobHandler handler;
+    protected Context context;
 
     public JobHolder(String name, Scheduled scheduled, JobHandler handler) {
         this.name = name;
@@ -41,8 +42,24 @@ public class JobHolder implements JobHandler{
         return handler;
     }
 
-    @Override
-    public void handle(Context ctx) throws Throwable {
-        handler.handle(ctx);
+    /**
+     * 获取上下文
+     * */
+    public Context getContext() {
+        return context;
+    }
+
+    /**
+     * 设置上下文
+     * */
+    public void setContext(Context context) {
+        this.context = context;
+    }
+
+    /**
+     * 处理
+     * */
+    public void handle() throws Throwable {
+        handler.handle(context);
     }
 }
