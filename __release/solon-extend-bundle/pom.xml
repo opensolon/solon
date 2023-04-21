@@ -39,7 +39,6 @@
         <module>../../_solon_extend/solon.web.cors</module>
         <module>../../_solon_extend/solon.web.stop</module>
         <module>../../_solon_extend/solon.web.sdl</module>
-        <module>../../_solon_extend/solon.web.xss</module>
 
         <module>../../_solon_extend/solon.extend.graalvm</module>
 
