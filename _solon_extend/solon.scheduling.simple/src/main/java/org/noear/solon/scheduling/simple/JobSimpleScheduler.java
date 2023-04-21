@@ -1,10 +1,12 @@
 package org.noear.solon.scheduling.simple;
 
 import org.noear.solon.Utils;
+import org.noear.solon.core.Lifecycle;
 import org.noear.solon.core.event.EventBus;
+import org.noear.solon.core.handle.ContextEmpty;
 import org.noear.solon.core.util.RunUtil;
 import org.noear.solon.scheduling.ScheduledException;
-import org.noear.solon.scheduling.annotation.Scheduled;
+import org.noear.solon.scheduling.scheduled.JobHolder;
 import org.noear.solon.scheduling.simple.cron.CronExpressionPlus;
 import org.noear.solon.scheduling.simple.cron.CronUtils;
 
@@ -12,29 +14,17 @@ import java.util.Date;
 import java.util.TimeZone;
 
 /**
- * 任务实体（内部使用）
+ * Job 简单调度器
  *
  * @author noear
- * @since 1.6
+ * @since 2.2
  */
-public class JobHolder extends Thread{
+public class JobSimpleScheduler implements Lifecycle {
+    private JobHolder jobHolder;
     /**
      * 调度表达式
      */
     private CronExpressionPlus cron;
-    /**
-     * 固定频率
-     */
-    private Scheduled anno;
-    /**
-     * 执行函数
-     */
-    final Runnable runnable;
-
-    /**
-     * 是否取消任务
-     */
-    private boolean isCanceled;
 
     /**
      * 休息时间
@@ -50,54 +40,62 @@ public class JobHolder extends Thread{
      */
     private Date nextTime;
 
+    /**
+     * 执行线程
+     * */
+    private Thread thread;
 
-    public JobHolder(String name, Scheduled anno, Runnable runnable) {
-        if (Utils.isNotEmpty(anno.cron())) {
-            this.cron = CronUtils.get(anno.cron());
+    public JobSimpleScheduler(JobHolder jobHolder){
+        this.jobHolder = jobHolder;
 
-            if (Utils.isNotEmpty(anno.zone())) {
-                this.cron.setTimeZone(TimeZone.getTimeZone(anno.zone()));
+        if (Utils.isNotEmpty(jobHolder.getScheduled().cron())) {
+            this.cron = CronUtils.get(jobHolder.getScheduled().cron());
+
+            if (Utils.isNotEmpty(jobHolder.getScheduled().zone())) {
+                this.cron.setTimeZone(TimeZone.getTimeZone(jobHolder.getScheduled().zone()));
             }
         }
 
-        this.anno = anno;
-        this.runnable = runnable;
+        thread = new Thread(this::run);
 
-        if (Utils.isNotEmpty(name)) {
-            setName("Job:" + name);
+        if (Utils.isNotEmpty(jobHolder.getName())) {
+            thread.setName("Job:" + jobHolder.getName());
         }
     }
 
+    boolean isStarted = false;
     /**
-     * 取消
-     */
-    public void cancel() {
-        isCanceled = true;
-        baseTime = null;
+     * 是否已启动
+     * */
+    public boolean isStarted() {
+        return isStarted;
     }
 
-    public boolean isCanceled(){
-        return isCanceled;
-    }
-
-    /**
-     * 运行
-     */
     @Override
-    public void run() {
+    public void start() throws Throwable {
+        isStarted = true;
+    }
+
+    @Override
+    public void stop() throws Throwable {
+        isStarted = false;
+    }
+
+
+    private void run() {
         if (baseTime == null) {
             baseTime = new Date();
         }
 
-        if (anno.fixedDelay() > 0 || anno.fixedRate() > 0) {
+        if (jobHolder.getScheduled().fixedDelay() > 0 || jobHolder.getScheduled().fixedRate() > 0) {
             //初始延迟 //只为 fixedDelay 和 fixedRate 服务
-            if (anno.initialDelay() > 0) {
-                sleep0(anno.initialDelay());
+            if (jobHolder.getScheduled().initialDelay() > 0) {
+                sleep0(jobHolder.getScheduled().initialDelay());
             }
         }
 
         while (true) {
-            if (isCanceled) {
+            if (isStarted == false) {
                 break;
             }
 
@@ -114,20 +112,20 @@ public class JobHolder extends Thread{
      * 调度
      */
     private void scheduling() throws Throwable {
-        if (anno.fixedDelay() > 0) {
+        if (jobHolder.getScheduled().fixedDelay() > 0) {
             //::按固定延时调度（串行调用）
             exec0(); //同步执行
-            sleep0(anno.fixedDelay());
-        } else if (anno.fixedRate() > 0) {
+            sleep0(jobHolder.getScheduled().fixedDelay());
+        } else if (jobHolder.getScheduled().fixedRate() > 0) {
             //::按固定频率调度（并行调用）
             sleepMillis = System.currentTimeMillis() - baseTime.getTime();
 
-            if (sleepMillis >= anno.fixedRate()) {
+            if (sleepMillis >= jobHolder.getScheduled().fixedRate()) {
                 baseTime = new Date();
                 execAsParallel(); //异步执行
 
                 //重新设定休息时间
-                sleepMillis = anno.fixedRate();
+                sleepMillis = jobHolder.getScheduled().fixedRate();
             } else {
                 //时间还未到（一般，第一次才会到这里来）
                 sleepMillis = 100;
@@ -168,7 +166,7 @@ public class JobHolder extends Thread{
      */
     private void exec0() {
         try {
-            runnable.run();
+            jobHolder.handle(new ContextEmpty());
         } catch (Throwable e) {
             EventBus.pushTry(e);
         }
