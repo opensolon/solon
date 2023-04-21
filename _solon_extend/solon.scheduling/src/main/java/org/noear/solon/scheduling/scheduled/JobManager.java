@@ -13,7 +13,7 @@ import java.util.Map;
  * @author noear
  * @since 2.2
  */
-public abstract class JobScheduler implements Lifecycle {
+public abstract class JobManager implements Lifecycle {
     Map<String, JobHolder> jobMap = new HashMap<>();
 
     /**
