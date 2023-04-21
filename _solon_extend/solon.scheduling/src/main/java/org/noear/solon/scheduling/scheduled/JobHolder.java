@@ -1,5 +1,6 @@
 package org.noear.solon.scheduling.scheduled;
 
+import org.noear.solon.core.handle.Context;
 import org.noear.solon.scheduling.annotation.Scheduled;
 
 /**
@@ -8,10 +9,10 @@ import org.noear.solon.scheduling.annotation.Scheduled;
  * @author noear
  * @since 2.2
  */
-public class JobHolder {
-    String name;
-    Scheduled scheduled;
-    JobHandler handler;
+public class JobHolder implements JobHandler{
+    protected String name;
+    protected Scheduled scheduled;
+    protected JobHandler handler;
 
     public JobHolder(String name, Scheduled scheduled, JobHandler handler) {
         this.name = name;
@@ -38,5 +39,10 @@ public class JobHolder {
      */
     public JobHandler getHandler() {
         return handler;
+    }
+
+    @Override
+    public void handle(Context ctx) throws Throwable {
+        handler.handle(ctx);
     }
 }
