@@ -1,4 +1,4 @@
-package org.noear.solon.scheduling.simple.integration;
+package org.noear.solon.scheduling.scheduled.manager;
 
 import org.noear.solon.Utils;
 import org.noear.solon.core.BeanBuilder;
@@ -7,7 +7,6 @@ import org.noear.solon.core.BeanWrap;
 import org.noear.solon.scheduling.ScheduledAnno;
 import org.noear.solon.scheduling.annotation.Scheduled;
 import org.noear.solon.scheduling.scheduled.JobHandler;
-import org.noear.solon.scheduling.scheduled.AbstractJobManager;
 import org.noear.solon.scheduling.scheduled.impl.JobBeanImpl;
 import org.noear.solon.scheduling.scheduled.impl.JobMethodImpl;
 import org.noear.solon.scheduling.utils.ScheduledHelper;
@@ -22,9 +21,9 @@ import java.lang.reflect.Method;
  * @since 2.2
  */
 public class JobExtractor implements BeanBuilder<Scheduled>, BeanExtractor<Scheduled> {
-    private final AbstractJobManager jobManager;
+    private final IJobManager jobManager;
 
-    public JobExtractor(AbstractJobManager jobManager) {
+    public JobExtractor(IJobManager jobManager) {
         this.jobManager = jobManager;
     }
 
@@ -35,11 +34,15 @@ public class JobExtractor implements BeanBuilder<Scheduled>, BeanExtractor<Sched
 
             ScheduledHelper.configScheduled(warpper);
 
-            JobHandler job = new JobBeanImpl(bw);
-            String jobId = clz.getName();
-            String name = Utils.annoAlias(anno.name(), jobId);
+            JobHandler handler = new JobBeanImpl(bw);
+            String name = warpper.name();
+            if (Utils.isEmpty(name)) {
+                name = bw.clz().getName();
+            }
 
-            jobManager.jobAdd(name, warpper, job);
+            jobManager.jobAdd(name, warpper, handler);
+        } else {
+            throw new IllegalStateException("Job only supports Runnable or JobHandler types!");
         }
     }
 
@@ -49,10 +52,12 @@ public class JobExtractor implements BeanBuilder<Scheduled>, BeanExtractor<Sched
 
         ScheduledHelper.configScheduled(warpper);
 
-        JobHandler job = new JobMethodImpl(bw, method);
-        String jobId = bw.clz().getName() + "::" + method.getName();
-        String name = Utils.annoAlias(warpper.name(), jobId);
+        JobHandler handler = new JobMethodImpl(bw, method);
+        String name = warpper.name();
+        if (Utils.isEmpty(name)) {
+            name = bw.clz().getName() + "::" + method.getName();
+        }
 
-        jobManager.jobAdd(name, warpper, job);
+        jobManager.jobAdd(name, warpper, handler);
     }
 }

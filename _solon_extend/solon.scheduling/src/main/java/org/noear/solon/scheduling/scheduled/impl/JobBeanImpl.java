@@ -23,6 +23,7 @@ public class JobBeanImpl implements JobHandler {
     public void handle(Context ctx) throws Throwable {
         try {
             Object tagert = beanWrap.get();
+
             if (tagert instanceof Runnable) {
                 ((Runnable) tagert).run();
             } else {

@@ -6,6 +6,7 @@ import org.noear.solon.core.Plugin;
 import org.noear.solon.scheduling.annotation.EnableScheduling;
 import org.noear.solon.scheduling.annotation.Scheduled;
 import org.noear.solon.scheduling.quartz.JobManager;
+import org.noear.solon.scheduling.scheduled.manager.JobExtractor;
 import org.quartz.Scheduler;
 
 public class XPluginImp implements Plugin {
@@ -21,9 +22,9 @@ public class XPluginImp implements Plugin {
         });
 
         //提取任务
-        JobExtractor beanBuilder = new JobExtractor(JobManager.getInstance());
-        context.beanBuilderAdd(Scheduled.class, beanBuilder);
-        context.beanExtractorAdd(Scheduled.class, beanBuilder);
+        JobExtractor jobExtractor = new JobExtractor(JobManager.getInstance());
+        context.beanBuilderAdd(Scheduled.class, jobExtractor);
+        context.beanExtractorAdd(Scheduled.class, jobExtractor);
 
         //容器加载完后，再启动任务
         context.lifecycle(99, () -> {

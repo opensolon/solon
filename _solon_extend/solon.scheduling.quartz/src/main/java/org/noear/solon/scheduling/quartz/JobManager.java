@@ -1,12 +1,13 @@
 package org.noear.solon.scheduling.quartz;
 
 import org.noear.solon.Utils;
-import org.noear.solon.core.handle.Context;
 import org.noear.solon.scheduling.ScheduledException;
 import org.noear.solon.scheduling.annotation.Scheduled;
 import org.noear.solon.scheduling.scheduled.JobHolder;
-import org.noear.solon.scheduling.scheduled.AbstractJobManager;
+import org.noear.solon.scheduling.scheduled.manager.AbstractJobManager;
 import org.quartz.Scheduler;
+
+import java.util.Map;
 
 /**
  * 任务管理器
@@ -16,14 +17,13 @@ import org.quartz.Scheduler;
  */
 public class JobManager extends AbstractJobManager {
     private static JobManager instance = new JobManager();
+
     /**
      * 获取实例
-     * */
-    public static JobManager getInstance(){
+     */
+    public static JobManager getInstance() {
         return instance;
     }
-
-
 
 
     private QuartzSchedulerProxy schedulerProxy;
@@ -37,9 +37,9 @@ public class JobManager extends AbstractJobManager {
     }
 
     @Override
-    public void jobStart(String name, Context ctx) throws ScheduledException {
+    public void jobStart(String name, Map<String, String> data) throws ScheduledException {
         JobHolder holder = jobGet(name);
-        holder.setContext(ctx);
+        holder.setData(data);
 
         schedulerProxy.resume(name);
     }

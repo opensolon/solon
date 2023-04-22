@@ -4,6 +4,8 @@ import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.ContextEmpty;
 import org.noear.solon.scheduling.annotation.Scheduled;
 
+import java.util.Map;
+
 /**
  * 任务持有人
  *
@@ -14,7 +16,7 @@ public class JobHolder implements JobHandler {
     protected String name;
     protected Scheduled scheduled;
     protected JobHandler handler;
-    protected Context context;
+    protected Map<String, String> data;
 
     public JobHolder(String name, Scheduled scheduled, JobHandler handler) {
         this.name = name;
@@ -43,8 +45,12 @@ public class JobHolder implements JobHandler {
         return handler;
     }
 
-    public void setContext(Context context) {
-        this.context = context;
+    public void setData(Map<String, String> data) {
+        this.data = data;
+    }
+
+    public Map<String, String> getData() {
+        return data;
     }
 
     /**
@@ -53,11 +59,11 @@ public class JobHolder implements JobHandler {
     @Override
     public void handle(Context ctx) throws Throwable {
         if (ctx == null) {
-            if (context == null) {
-                ctx = new ContextEmpty();
-            } else {
-                ctx = context;
-            }
+            ctx = new ContextEmpty();
+        }
+
+        if (data != null) {
+            ctx.paramMap().putAll(data);
         }
 
         handler.handle(ctx);
