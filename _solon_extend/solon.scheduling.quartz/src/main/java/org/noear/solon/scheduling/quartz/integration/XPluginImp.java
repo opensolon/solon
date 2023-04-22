@@ -37,7 +37,7 @@ public class XPluginImp implements Plugin {
         context.beanExtractorAdd(Scheduled.class, jobExtractor);
 
         //容器加载完后，再启动任务
-        context.lifecycle(99, () -> {
+        context.lifecycle(Integer.MAX_VALUE, () -> {
             JobManager.getInstance().start();
         });
     }

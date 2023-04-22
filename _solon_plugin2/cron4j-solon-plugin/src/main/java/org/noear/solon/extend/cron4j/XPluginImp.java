@@ -43,7 +43,7 @@ public class XPluginImp implements Plugin {
         });
 
         //应用加载完后，再启动任务
-        Solon.app().onEvent(AppLoadEndEvent.class, e -> {
+        context.lifecycle(Integer.MAX_VALUE, () -> {
             JobManager.start();
         });
     }

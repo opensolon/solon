@@ -32,7 +32,7 @@ public class XPluginImp implements Plugin {
         //获取 Quartz 注解的函数
         context.beanExtractorAdd(Quartz.class, beanBuilder);
 
-        Solon.app().onEvent(AppLoadEndEvent.class, e -> {
+        context.lifecycle(Integer.MAX_VALUE, () -> {
             JobManager.start();
         });
     }
