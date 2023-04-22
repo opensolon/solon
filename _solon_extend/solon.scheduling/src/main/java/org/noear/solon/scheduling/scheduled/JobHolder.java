@@ -1,6 +1,7 @@
 package org.noear.solon.scheduling.scheduled;
 
 import org.noear.solon.core.handle.Context;
+import org.noear.solon.core.handle.ContextEmpty;
 import org.noear.solon.scheduling.annotation.Scheduled;
 
 /**
@@ -9,7 +10,7 @@ import org.noear.solon.scheduling.annotation.Scheduled;
  * @author noear
  * @since 2.2
  */
-public class JobHolder{
+public class JobHolder implements JobHandler {
     protected String name;
     protected Scheduled scheduled;
     protected JobHandler handler;
@@ -42,24 +43,23 @@ public class JobHolder{
         return handler;
     }
 
-    /**
-     * 获取上下文
-     * */
-    public Context getContext() {
-        return context;
-    }
-
-    /**
-     * 设置上下文
-     * */
     public void setContext(Context context) {
         this.context = context;
     }
 
     /**
      * 处理
-     * */
-    public void handle() throws Throwable {
-        handler.handle(context);
+     */
+    @Override
+    public void handle(Context ctx) throws Throwable {
+        if (ctx == null) {
+            if (context == null) {
+                ctx = new ContextEmpty();
+            } else {
+                ctx = context;
+            }
+        }
+
+        handler.handle(ctx);
     }
 }

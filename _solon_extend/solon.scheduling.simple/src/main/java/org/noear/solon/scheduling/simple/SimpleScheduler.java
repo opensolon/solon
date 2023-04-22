@@ -164,7 +164,7 @@ public class SimpleScheduler implements Lifecycle {
      */
     private void exec0() {
         try {
-            jobHolder.handle();
+            jobHolder.handle(null);
         } catch (Throwable e) {
             EventBus.pushTry(e);
         }

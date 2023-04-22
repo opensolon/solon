@@ -1,6 +1,7 @@
 package org.noear.solon.scheduling.simple;
 
 import org.noear.solon.core.handle.Context;
+import org.noear.solon.core.handle.ContextUtil;
 import org.noear.solon.scheduling.ScheduledException;
 import org.noear.solon.scheduling.annotation.Scheduled;
 import org.noear.solon.scheduling.scheduled.JobHandler;
@@ -31,6 +32,8 @@ public class JobManager extends AbstractJobManager {
     @Override
     public void jobStart(String name, Context ctx) throws ScheduledException {
         JobHolder jobHolder = jobGet(name);
+        jobHolder.setContext(ctx);
+
         try {
             ((SimpleJobHolder) jobHolder).getScheduler().start();
         } catch (Throwable e) {
