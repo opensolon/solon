@@ -16,7 +16,7 @@
 * 调整 solon.scheduling.quartz 管理机制
 * 调整 solon.scheduling.simple 管理机制
 * 应用事件，在H-Spi里错过时机了???
-* mybatis-flex 升为 1.1.5
+* mybatis-flex 升为 1.1.7
 
 ### 2.2.12
 * 新增 solon.aot 插件

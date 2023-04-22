@@ -24,7 +24,7 @@
         <dependency>
             <groupId>com.mybatis-flex</groupId>
             <artifactId>mybatis-flex-solon-plugin</artifactId>
-            <version>1.1.5</version>
+            <version>1.1.7</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.noear</groupId>
