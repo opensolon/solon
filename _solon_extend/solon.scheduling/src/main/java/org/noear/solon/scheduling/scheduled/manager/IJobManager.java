@@ -20,7 +20,7 @@ public interface IJobManager extends Lifecycle {
     /**
      * 任务是否存在
      * */
-    boolean jobExist(String name);
+    boolean jobExists(String name);
     /**
      * 任务获取
      * */

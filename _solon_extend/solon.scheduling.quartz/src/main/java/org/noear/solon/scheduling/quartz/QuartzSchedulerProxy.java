@@ -40,6 +40,14 @@ public class QuartzSchedulerProxy implements Lifecycle {
         return JobKey.jobKey(name, jobGroup);
     }
 
+    public boolean exists(String name) {
+        try {
+            return _scheduler.checkExists(getJobKey(name));
+        } catch (Exception e) {
+            throw new IllegalArgumentException(name);
+        }
+    }
+
     /**
      * 移除 job
      */

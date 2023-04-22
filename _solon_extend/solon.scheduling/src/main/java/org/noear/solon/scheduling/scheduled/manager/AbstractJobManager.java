@@ -26,13 +26,20 @@ public abstract class AbstractJobManager implements IJobManager {
     public JobHolder jobAdd(String name, Scheduled scheduled, JobHandler handler) {
         jobAddCheckDo(name, scheduled);
 
-        if (jobExist(name)) {
-            return jobMap.get(name);
-        }else{
-            JobHolder jobHolder = jobWrapDo(name, scheduled, handler);
+        JobHolder jobHolder;
+        if (jobExists(name)) {
+            jobHolder = jobMap.get(name);
+        } else {
+            jobHolder = jobWrapDo(name, scheduled, handler);
             jobMap.put(name, jobHolder);
-            return jobHolder;
         }
+
+        if (isStarted()) {
+            //如果启动，则直接运行
+            jobStart(name, null);
+        }
+
+        return jobHolder;
     }
 
     /**
@@ -66,7 +73,7 @@ public abstract class AbstractJobManager implements IJobManager {
      * 任务是否存在
      */
     @Override
-    public boolean jobExist(String name) {
+    public boolean jobExists(String name) {
         return jobMap.containsKey(name);
     }
 
@@ -85,13 +92,14 @@ public abstract class AbstractJobManager implements IJobManager {
      */
     @Override
     public void jobRemove(String name) throws ScheduledException {
+        jobStop(name);
         jobMap.remove(name);
     }
 
 
 
 
-    boolean isStarted = false;
+    protected boolean isStarted = false;
 
     /**
      * 是否已启动

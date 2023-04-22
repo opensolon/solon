@@ -36,12 +36,15 @@ public class JobManager extends AbstractJobManager {
     @Override
     public void jobStart(String name, Map<String, String> data) throws ScheduledException {
         JobHolder jobHolder = jobGet(name);
-        jobHolder.setData(data);
 
-        try {
-            ((SimpleScheduler) jobHolder.getAttachment()).start();
-        } catch (Throwable e) {
-            throw new ScheduledException(e);
+        if (jobHolder != null) {
+            jobHolder.setData(data);
+
+            try {
+                ((SimpleScheduler) jobHolder.getAttachment()).start();
+            } catch (Throwable e) {
+                throw new ScheduledException(e);
+            }
         }
     }
 
@@ -49,10 +52,12 @@ public class JobManager extends AbstractJobManager {
     public void jobStop(String name) throws ScheduledException {
         JobHolder jobHolder = jobGet(name);
 
-        try {
-            ((SimpleScheduler) jobHolder.getAttachment()).stop();
-        } catch (Throwable e) {
-            throw new ScheduledException(e);
+        if (jobHolder != null) {
+            try {
+                ((SimpleScheduler) jobHolder.getAttachment()).stop();
+            } catch (Throwable e) {
+                throw new ScheduledException(e);
+            }
         }
     }
 
@@ -64,10 +69,14 @@ public class JobManager extends AbstractJobManager {
                 ((SimpleScheduler) jobHolder.getAttachment()).start();
             }
         }
+
+        isStarted = true;
     }
 
     @Override
     public void stop() throws Throwable {
+        isStarted = false;
+
         for (JobHolder jobHolder : jobMap.values()) {
             ((SimpleScheduler) jobHolder.getAttachment()).stop();
         }

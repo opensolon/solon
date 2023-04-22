@@ -39,14 +39,35 @@ public class JobManager extends AbstractJobManager {
     @Override
     public void jobStart(String name, Map<String, String> data) throws ScheduledException {
         JobHolder holder = jobGet(name);
-        holder.setData(data);
 
-        schedulerProxy.resume(name);
+        if (holder != null) {
+            holder.setData(data);
+
+            if (schedulerProxy.exists(name)) {
+                schedulerProxy.resume(name);
+            } else {
+                try {
+                    schedulerProxy.register(holder);
+                } catch (Exception e) {
+                    throw new ScheduledException(e);
+                }
+            }
+        }
     }
 
     @Override
     public void jobStop(String name) throws ScheduledException {
-        schedulerProxy.pause(name);
+        if (jobExists(name)) {
+            schedulerProxy.pause(name);
+        }
+    }
+
+    @Override
+    public void jobRemove(String name) throws ScheduledException {
+        if(jobExists(name)) {
+            super.jobRemove(name);
+            schedulerProxy.remove(name);
+        }
     }
 
     @Override
@@ -60,11 +81,11 @@ public class JobManager extends AbstractJobManager {
         }
 
         if (scheduled.initialDelay() > 0) {
-            throw new IllegalArgumentException("The quartz job unsupported initialDelay!");
+            throw new IllegalArgumentException("The job unsupported initialDelay!");
         }
 
         if (scheduled.fixedDelay() > 0) {
-            throw new IllegalArgumentException("The quartz job unsupported fixedDelay!");
+            throw new IllegalArgumentException("The job unsupported fixedDelay!");
         }
     }
 
@@ -73,12 +94,15 @@ public class JobManager extends AbstractJobManager {
         for (JobHolder holder : jobMap.values()) {
             schedulerProxy.register(holder);
         }
-
         schedulerProxy.start();
+
+        isStarted = true;
     }
 
     @Override
     public void stop() throws Throwable {
+        isStarted = false;
+
         if (schedulerProxy != null) {
             schedulerProxy.stop();
             schedulerProxy = null;
