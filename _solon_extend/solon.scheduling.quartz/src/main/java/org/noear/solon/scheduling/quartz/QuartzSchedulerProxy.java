@@ -21,9 +21,8 @@ public class QuartzSchedulerProxy implements Lifecycle {
 
     @Override
     public void start() throws Throwable {
-        if (_scheduler != null) {
-            _scheduler.start();
-        }
+        tryInitScheduler();
+        _scheduler.start();
     }
 
     @Override
@@ -40,23 +39,33 @@ public class QuartzSchedulerProxy implements Lifecycle {
         return JobKey.jobKey(name, jobGroup);
     }
 
-    public boolean exists(String name) throws SchedulerException{
-        return _scheduler.checkExists(getJobKey(name));
+    public boolean exists(String name) throws SchedulerException {
+        if (_scheduler != null) {
+            return _scheduler.checkExists(getJobKey(name));
+        } else {
+            return false;
+        }
     }
 
     /**
      * 移除 job
      */
     public void remove(String name) throws SchedulerException {
-        _scheduler.resumeJob(getJobKey(name));
+        if (_scheduler != null) {
+            _scheduler.resumeJob(getJobKey(name));
+        }
     }
 
     public void pause(String name) throws SchedulerException {
-        _scheduler.pauseJob(getJobKey(name));
+        if (_scheduler != null) {
+            _scheduler.pauseJob(getJobKey(name));
+        }
     }
 
     public void resume(String name) throws SchedulerException {
-        _scheduler.resumeJob(getJobKey(name));
+        if (_scheduler != null) {
+            _scheduler.resumeJob(getJobKey(name));
+        }
     }
 
 
