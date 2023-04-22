@@ -40,45 +40,23 @@ public class QuartzSchedulerProxy implements Lifecycle {
         return JobKey.jobKey(name, jobGroup);
     }
 
-    public boolean exists(String name) {
-        try {
-            return _scheduler.checkExists(getJobKey(name));
-        } catch (Exception e) {
-            throw new IllegalArgumentException(name);
-        }
+    public boolean exists(String name) throws SchedulerException{
+        return _scheduler.checkExists(getJobKey(name));
     }
 
     /**
      * 移除 job
      */
-    public void remove(String name) {
-        JobKey jobKey = getJobKey(name);
-
-        try {
-            _scheduler.resumeJob(jobKey);
-        } catch (Exception e) {
-            throw new IllegalArgumentException(e);
-        }
+    public void remove(String name) throws SchedulerException {
+        _scheduler.resumeJob(getJobKey(name));
     }
 
-    public void pause(String name) {
-        JobKey jobKey = getJobKey(name);
-
-        try {
-            _scheduler.pauseJob(jobKey);
-        } catch (Exception e) {
-            throw new IllegalArgumentException(e);
-        }
+    public void pause(String name) throws SchedulerException {
+        _scheduler.pauseJob(getJobKey(name));
     }
 
-    public void resume(String name) {
-        JobKey jobKey = getJobKey(name);
-
-        try {
-            _scheduler.resumeJob(jobKey);
-        } catch (Exception e) {
-            throw new IllegalArgumentException(e);
-        }
+    public void resume(String name) throws SchedulerException {
+        _scheduler.resumeJob(getJobKey(name));
     }
 
 

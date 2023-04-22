@@ -43,14 +43,14 @@ public class JobManager extends AbstractJobManager {
         if (holder != null) {
             holder.setData(data);
 
-            if (schedulerProxy.exists(name)) {
-                schedulerProxy.resume(name);
-            } else {
-                try {
+            try {
+                if (schedulerProxy.exists(name)) {
+                    schedulerProxy.resume(name);
+                } else {
                     schedulerProxy.register(holder);
-                } catch (Exception e) {
-                    throw new ScheduledException(e);
                 }
+            } catch (Exception e) {
+                throw new ScheduledException(e);
             }
         }
     }
@@ -58,15 +58,23 @@ public class JobManager extends AbstractJobManager {
     @Override
     public void jobStop(String name) throws ScheduledException {
         if (jobExists(name)) {
-            schedulerProxy.pause(name);
+            try {
+                schedulerProxy.pause(name);
+            } catch (Exception e) {
+                throw new ScheduledException(e);
+            }
         }
     }
 
     @Override
     public void jobRemove(String name) throws ScheduledException {
-        if(jobExists(name)) {
+        if (jobExists(name)) {
             super.jobRemove(name);
-            schedulerProxy.remove(name);
+            try {
+                schedulerProxy.remove(name);
+            } catch (Exception e) {
+                throw new ScheduledException(e);
+            }
         }
     }
 
