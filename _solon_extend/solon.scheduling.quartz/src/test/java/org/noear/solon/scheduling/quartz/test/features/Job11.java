@@ -13,6 +13,6 @@ import java.util.Date;
 public class Job11 implements Runnable {
     @Override
     public void run() {
-        log.debug(new Date() + ": 1000*3");
+        log.warn(new Date() + ": 1000*3");
     }
 }

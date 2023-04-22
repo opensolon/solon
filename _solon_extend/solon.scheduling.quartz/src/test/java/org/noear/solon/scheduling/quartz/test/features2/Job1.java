@@ -16,7 +16,7 @@ import java.util.Date;
 public class Job1 implements Job {
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
-        log.debug("job1:: " + context.getJobDetail().getKey().getName());
-        log.debug("job1:: " + new Date());
+        log.warn("job1:: " + context.getJobDetail().getKey().getName());
+        log.warn("job1:: " + new Date());
     }
 }

@@ -13,6 +13,6 @@ import java.util.Date;
 public class Job12 implements Runnable {
     @Override
     public void run() {
-        log.debug(new Date() + ": 0/10 * * * * ? *");
+        log.warn(new Date() + ": 0/10 * * * * ? *");
     }
 }

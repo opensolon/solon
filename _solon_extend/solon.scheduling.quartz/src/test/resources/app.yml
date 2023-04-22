@@ -1,0 +1,7 @@
+solon.app:
+  name: demoapp
+
+# 以下为默认值，可以都不加(支持"云端配置服务"进行配置，支持写到"云端日志服务")
+solon.logging.appender:
+  console:
+    level: WARN #可根据需要调整级别

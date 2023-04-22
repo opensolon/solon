@@ -15,7 +15,7 @@ import java.util.Date;
 public class JobOfMethod {
     @Scheduled(cron = "* * * * * ? ")
     public void job2(JobExecutionContext context) {
-        log.debug("job2:: " + context.getJobDetail().getKey().getName());
-        log.debug("job2:: " + new Date());
+        log.warn("job2:: " + context.getJobDetail().getKey().getName());
+        log.warn("job2:: " + new Date());
     }
 }
