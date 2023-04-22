@@ -7,7 +7,7 @@ import org.noear.solon.core.BeanWrap;
 import org.noear.solon.scheduling.ScheduledAnno;
 import org.noear.solon.scheduling.annotation.Scheduled;
 import org.noear.solon.scheduling.scheduled.JobHandler;
-import org.noear.solon.scheduling.scheduled.JobManager;
+import org.noear.solon.scheduling.scheduled.AbstractJobManager;
 import org.noear.solon.scheduling.scheduled.impl.JobBeanImpl;
 import org.noear.solon.scheduling.scheduled.impl.JobMethodImpl;
 import org.noear.solon.scheduling.utils.ScheduledHelper;
@@ -22,9 +22,9 @@ import java.lang.reflect.Method;
  * @since 2.2
  */
 public class JobExtractor implements BeanBuilder<Scheduled>, BeanExtractor<Scheduled> {
-    private final JobManager jobManager;
+    private final AbstractJobManager jobManager;
 
-    public JobExtractor(JobManager jobManager) {
+    public JobExtractor(AbstractJobManager jobManager) {
         this.jobManager = jobManager;
     }
 

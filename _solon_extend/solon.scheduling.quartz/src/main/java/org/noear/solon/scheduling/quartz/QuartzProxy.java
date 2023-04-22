@@ -4,7 +4,6 @@ import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.ContextEmpty;
 import org.noear.solon.core.handle.ContextUtil;
 import org.noear.solon.scheduling.scheduled.JobHolder;
-import org.noear.solon.scheduling.scheduled.JobManager;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -15,18 +14,14 @@ import java.util.Map;
  * Quartz 任务执行代理
  *
  * @author noear
+ * @since 1.11
+ * @since 2.2
  * */
 public class QuartzProxy implements Job {
-    JobManager jobManager;
-
     @Override
     public void execute(JobExecutionContext jc) throws JobExecutionException {
-        if(jobManager == null){
-            return;
-        }
-
         String name = jc.getJobDetail().getKey().getName();
-        JobHolder jobHolder = jobManager.jobGet(name);
+        JobHolder jobHolder = JobManager.getInstance().jobGet(name);
 
         if (jobHolder != null) {
             Context ctx = Context.current(); //可能是从上层代理已生成, v1.11

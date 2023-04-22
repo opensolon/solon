@@ -5,7 +5,7 @@ import org.noear.solon.core.handle.Context;
 import org.noear.solon.scheduling.ScheduledException;
 import org.noear.solon.scheduling.annotation.Scheduled;
 import org.noear.solon.scheduling.scheduled.JobHolder;
-import org.noear.solon.scheduling.scheduled.JobManager;
+import org.noear.solon.scheduling.scheduled.AbstractJobManager;
 import org.quartz.Scheduler;
 
 /**
@@ -14,14 +14,25 @@ import org.quartz.Scheduler;
  * @author noear
  * @since 2.2
  */
-public class JobQuartzManager extends JobManager {
-    private QuartzSchedulerProxy schedulerProxy ;
+public class JobManager extends AbstractJobManager {
+    private static JobManager instance = new JobManager();
+    /**
+     * 获取实例
+     * */
+    public static JobManager getInstance(){
+        return instance;
+    }
 
-    public JobQuartzManager(){
+
+
+
+    private QuartzSchedulerProxy schedulerProxy;
+
+    public JobManager() {
         schedulerProxy = new QuartzSchedulerProxy();
     }
 
-    public void setScheduler(Scheduler real){
+    public void setScheduler(Scheduler real) {
         schedulerProxy.setScheduler(real);
     }
 
@@ -59,20 +70,16 @@ public class JobQuartzManager extends JobManager {
 
     @Override
     public void start() throws Throwable {
-        if(schedulerProxy == null) {
-            schedulerProxy = new QuartzSchedulerProxy();
-
-            for (JobHolder holder : jobMap.values()) {
-                schedulerProxy.register(holder);
-            }
-
-            schedulerProxy.start();
+        for (JobHolder holder : jobMap.values()) {
+            schedulerProxy.register(holder);
         }
+
+        schedulerProxy.start();
     }
 
     @Override
     public void stop() throws Throwable {
-        if(schedulerProxy != null){
+        if (schedulerProxy != null) {
             schedulerProxy.stop();
             schedulerProxy = null;
         }

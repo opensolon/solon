@@ -18,7 +18,7 @@ import java.util.TimeZone;
  * @author noear
  * @since 2.2
  */
-public class JobSimpleScheduler implements Lifecycle {
+public class SimpleScheduler implements Lifecycle {
     private JobHolder jobHolder;
     /**
      * 调度表达式
@@ -44,7 +44,7 @@ public class JobSimpleScheduler implements Lifecycle {
      * */
     private Thread thread;
 
-    public JobSimpleScheduler(JobHolder jobHolder){
+    public SimpleScheduler(JobHolder jobHolder){
         this.jobHolder = jobHolder;
 
         if (Utils.isNotEmpty(jobHolder.getScheduled().cron())) {

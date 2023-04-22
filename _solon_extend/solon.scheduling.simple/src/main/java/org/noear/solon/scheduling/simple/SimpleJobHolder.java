@@ -12,12 +12,12 @@ import org.noear.solon.scheduling.scheduled.JobHolder;
  * @since 1.6
  * @since 2.2
  */
-public class JobHolderImpl extends JobHolder {
+public class SimpleJobHolder extends JobHolder {
     protected Lifecycle scheduler;
 
-    public JobHolderImpl(String name, Scheduled scheduled, JobHandler handler) {
+    public SimpleJobHolder(String name, Scheduled scheduled, JobHandler handler) {
         super(name, scheduled, handler);
-        scheduler = new JobSimpleScheduler(this);
+        scheduler = new SimpleScheduler(this);
     }
 
     public Lifecycle getScheduler() {

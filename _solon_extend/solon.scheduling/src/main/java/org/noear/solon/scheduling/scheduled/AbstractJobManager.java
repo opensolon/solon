@@ -15,16 +15,7 @@ import java.util.Map;
  * @author noear
  * @since 2.2
  */
-public abstract class JobManager implements Lifecycle {
-    private static JobManager instance;
-    public static JobManager getInstance(){
-        return instance;
-    }
-
-    public static void setInstance(JobManager instance) {
-        JobManager.instance = instance;
-    }
-
+public abstract class AbstractJobManager implements Lifecycle {
 
     protected Map<String, JobHolder> jobMap = new HashMap<>();
 
