@@ -13,7 +13,6 @@ import org.noear.solon.scheduling.simple.JobManager;
  * @since 1.6
  */
 public class XPluginImp implements Plugin {
-
     @Override
     public void start(AopContext context) {
         if (Solon.app().source().getAnnotation(EnableScheduling.class) == null) {

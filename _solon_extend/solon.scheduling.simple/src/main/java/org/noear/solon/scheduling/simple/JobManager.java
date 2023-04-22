@@ -16,26 +16,30 @@ import java.util.Map;
  */
 public class JobManager extends AbstractJobManager {
     private static JobManager instance = new JobManager();
+
     /**
      * 获取实例
-     * */
-    public static JobManager getInstance(){
+     */
+    public static JobManager getInstance() {
         return instance;
     }
 
 
     @Override
     protected JobHolder jobWrapDo(String name, Scheduled scheduled, JobHandler handler) {
-        return new SimpleJobHolder(name, scheduled, handler);
+        JobHolder jobHolder = new JobHolder(name, scheduled, handler);
+        jobHolder.setAttachment(new SimpleScheduler(jobHolder));
+
+        return jobHolder;
     }
 
     @Override
-    public void jobStart(String name, Map<String,String> data) throws ScheduledException {
+    public void jobStart(String name, Map<String, String> data) throws ScheduledException {
         JobHolder jobHolder = jobGet(name);
         jobHolder.setData(data);
 
         try {
-            ((SimpleJobHolder) jobHolder).getScheduler().start();
+            ((SimpleScheduler) jobHolder.getAttachment()).start();
         } catch (Throwable e) {
             throw new ScheduledException(e);
         }
@@ -46,7 +50,7 @@ public class JobManager extends AbstractJobManager {
         JobHolder jobHolder = jobGet(name);
 
         try {
-            ((SimpleJobHolder) jobHolder).getScheduler().stop();
+            ((SimpleScheduler) jobHolder.getAttachment()).stop();
         } catch (Throwable e) {
             throw new ScheduledException(e);
         }
@@ -55,14 +59,17 @@ public class JobManager extends AbstractJobManager {
     @Override
     public void start() throws Throwable {
         for (JobHolder jobHolder : jobMap.values()) {
-            ((SimpleJobHolder) jobHolder).getScheduler().start();
+            if (jobHolder.getScheduled().enable()) {
+                //只启动启用的（如果有需要，手动启用）
+                ((SimpleScheduler) jobHolder.getAttachment()).start();
+            }
         }
     }
 
     @Override
     public void stop() throws Throwable {
         for (JobHolder jobHolder : jobMap.values()) {
-            ((SimpleJobHolder) jobHolder).getScheduler().stop();
+            ((SimpleScheduler) jobHolder.getAttachment()).stop();
         }
     }
 }

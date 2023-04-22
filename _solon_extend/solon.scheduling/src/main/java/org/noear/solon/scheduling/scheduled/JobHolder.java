@@ -17,6 +17,7 @@ public class JobHolder implements JobHandler {
     protected Scheduled scheduled;
     protected JobHandler handler;
     protected Map<String, String> data;
+    protected Object attachment;
 
     public JobHolder(String name, Scheduled scheduled, JobHandler handler) {
         this.name = name;
@@ -51,6 +52,14 @@ public class JobHolder implements JobHandler {
 
     public Map<String, String> getData() {
         return data;
+    }
+
+    public Object getAttachment() {
+        return attachment;
+    }
+
+    public void setAttachment(Object attachment) {
+        this.attachment = attachment;
     }
 
     /**
