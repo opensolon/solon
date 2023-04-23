@@ -54,7 +54,7 @@ Startup is 5 to 10 times faster; QPS is 2 to 3 times higher; runtime memory is s
 
 ## Introduction:
 
-**Solon** Build from scratch. It has its own standards and norms and open ecology. Combination of different ecological plug-ins to meet different needs, convenient customization, rapid development:
+Build from scratch. It has its own standards and norms and open ecology. Combination of different ecological plug-ins to meet different needs, convenient customization, rapid development:
 
 * **Restraint, simplicity, efficiency, openness and ecology**
 * Supports JDK8, JDK11, JDK17, JDK20
