@@ -45,7 +45,7 @@ public class RepackageMojo extends AbstractMojo {
     @Parameter(defaultValue = "true")
     public boolean includeSystemScope;
 
-    @Component
+    @Parameter( defaultValue = "${project}", readonly = true )
     private MavenProject project;
 
     public static PluginType PLUGIN_TYPE;
