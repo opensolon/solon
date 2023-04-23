@@ -63,10 +63,10 @@ public class JobManager extends AbstractJobManager {
 
     @Override
     public void start() throws Throwable {
-        for (JobHolder jobHolder : jobMap.values()) {
-            if (jobHolder.getScheduled().enable()) {
+        for (JobHolder holder : jobMap.values()) {
+            if (holder.getScheduled().enable()) {
                 //只启动启用的（如果有需要，手动启用）
-                ((SimpleScheduler) jobHolder.getAttachment()).start();
+                ((SimpleScheduler) holder.getAttachment()).start();
             }
         }
 

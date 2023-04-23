@@ -100,7 +100,10 @@ public class JobManager extends AbstractJobManager {
     @Override
     public void start() throws Throwable {
         for (JobHolder holder : jobMap.values()) {
-            schedulerProxy.register(holder);
+            if (holder.getScheduled().enable()) {
+                //只启动启用的（如果有需要，手动启用）
+                schedulerProxy.register(holder);
+            }
         }
         schedulerProxy.start();
 

@@ -12,10 +12,8 @@
 ### 2.2.13
 * 增加 @Inject 注入 bean 的 required 支持???
 * 增加 afterInjection() 后所有 bean 必然可用的支持???
-* 调整 允许 "solon.scheduling" 的任务在注册时未配置调度???（由后续动态控制）
 * 调整 solon.scheduling.quartz 管理机制
 * 调整 solon.scheduling.simple 管理机制
-* 应用事件，在H-Spi里错过时机了???
 * mybatis-flex 升为 1.1.7
 
 ### 2.2.12
