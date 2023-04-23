@@ -9,9 +9,11 @@
 * 提醒1：之前没有使用弃用接口的，可以直接升级 <br>
 * 提醒2：有使用弃用接口的。建议先升级到 1.12.4；替换弃用代码后，再升级到 2.0.0
 
-### 2.2.13
+### 2.2.14
 * 增加 @Inject 注入 bean 的 required 支持???
 * 增加 afterInjection() 后所有 bean 必然可用的支持???
+
+### 2.2.13
 * 调整 solon.scheduling.quartz 管理机制
 * 调整 solon.scheduling.simple 管理机制
 * 调整 solon.aot 将 native 元数据生成到对应主类的包下
