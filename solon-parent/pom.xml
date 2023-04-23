@@ -29,7 +29,7 @@
         <redisson.version>3.17.0</redisson.version>
 
         <fastjson.version>1.2.83</fastjson.version>
-        <fastjson2.version>2.0.28</fastjson2.version>
+        <fastjson2.version>2.0.29</fastjson2.version>
         <okhttp.version>3.14.9</okhttp.version>
         <hutool.version>5.8.16</hutool.version>
 
@@ -74,7 +74,7 @@
         <protobuf.version>3.19.4</protobuf.version>
         <grpc.version>1.49.0</grpc.version>
         <dubbo2.version>2.7.5</dubbo2.version>
-        <dubbo3.version>3.1.7</dubbo3.version>
+        <dubbo3.version>3.2.0</dubbo3.version>
         <nacos1.version>1.4.4</nacos1.version>
         <nacos2.version>2.1.2</nacos2.version>
         <polaris.version>1.10.1</polaris.version>

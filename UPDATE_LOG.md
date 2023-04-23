@@ -14,8 +14,14 @@
 * 增加 afterInjection() 后所有 bean 必然可用的支持???
 * 调整 solon.scheduling.quartz 管理机制
 * 调整 solon.scheduling.simple 管理机制
+* 调整 solon.aot 将 native 元数据生成到对应主类的包下
 * 调整 solon bean 允许有多个其它基础形态
-* mybatis-flex 升为 1.1.7
+* 调整 EnjoyRender 增加获取 Engine 对象方法
+* 调整 aot 时不启动 http 等通讯服务
+* 移除 mybatis-flex-solon-plugin 的实现代码，改为引用第三方
+* mybatis-flex 升为 1.1.8
+* dubbo3 升为 3.2.0
+* fastjson2 升为 2.0.29
 
 ### 2.2.12
 * 新增 solon.aot 插件
