@@ -61,7 +61,8 @@ Solon v2.2.13
 * Http、WebSocket、Socketの3つの信号統合の開発体験（通称：3ソース統合）
 * 「注記」と「手動」の2種類のモードをサポートし、必要に応じて自由に操作する
 * Not Servlet、あらゆるインフラストラクチャに適合（最小0.3 mでrpcアーキテクチャを実行）
-* Web、Data、Job、Remoting、Cloudなどの開発シーンをサポートするIOC/AOPコンテナを自社で構築
+* IOC/AOPコンテナの自己構築
+* Web、Data、Job、Remoting、Cloudなどの開発シーンをサポート
 * 集合Handler+ContextとListener+Messageの2つのスキーマパターン
 * プラグイン式の拡張を強調し、拡張可能で切り替え可能、異なるアプリケーションシーンに対応
 * ビジネスプラグインのホットプラグ、ホットダイヤルを許可する
