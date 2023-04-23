@@ -61,7 +61,8 @@ Startup is 5 to 10 times faster; QPS is 2 to 3 times higher; runtime memory is s
 * Http, WebSocket, Socket three signal unified development experience (commonly known as: three-source integration)
 * Supports "annotation" and "manual" modes, freely controlled as needed
 * Not Servlet, can adapt to any basic communication framework (minimum 0.3m running rpc architecture)
-* Built-in IOC/AOP container, supports Web, Data, Job, Remoting, Cloud, and other development scenarios
+* Built-in IOC/AOP container
+* Supports Web, Data, Job, Remoting, Cloud, and other development scenarios
 * Combines Handler + Context and Listener + Message architectural patterns
 * Emphasizes plug-in extensibility, expandable and swappable, adaptable to different application scenarios
 * Allows business plug-ins for "hot plugging" and "hot unloading"
