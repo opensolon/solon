@@ -14,6 +14,7 @@
 * 增加 afterInjection() 后所有 bean 必然可用的支持???
 * 调整 solon.scheduling.quartz 管理机制
 * 调整 solon.scheduling.simple 管理机制
+* 调整 solon bean 允许有多个其它基础形态
 * mybatis-flex 升为 1.1.7
 
 ### 2.2.12
