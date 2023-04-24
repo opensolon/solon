@@ -7,7 +7,7 @@ import org.noear.solon.annotation.Inject;
 /**
  * Created by xfworld on 2017-11-22.
  **/
-@Inject("${easy.poi.base}")
+@Inject(value = "${easy.poi.base}",required = false)
 @Configuration
 public class EasyPoiProperties {
     /**

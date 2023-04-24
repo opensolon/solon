@@ -8,7 +8,7 @@ import org.noear.solon.annotation.Inject;
  * @author noear
  * @since 1.5
  */
-@Inject("${aj.captcha}")
+@Inject(value = "${aj.captcha}",required = false)
 @Configuration
 public class AjCaptchaProperties {
     public static final String PREFIX = "aj.captcha";

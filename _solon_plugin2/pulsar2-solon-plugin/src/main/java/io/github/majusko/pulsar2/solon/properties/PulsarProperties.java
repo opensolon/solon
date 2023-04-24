@@ -12,7 +12,7 @@ import org.noear.solon.annotation.Inject;
  * @author Administrator
  *
  */
-@Inject("${solon.pulsar2}")
+@Inject(value = "${solon.pulsar2}", required = false)
 @Configuration
 public class PulsarProperties {
     private String serviceUrl = "pulsar://localhost:6650";
