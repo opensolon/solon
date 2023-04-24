@@ -4,7 +4,7 @@
 Solon v2.2.13
 </h1>
 <p align="center">
-	<strong>一个高效的 Java 应用开发框架，更小、更快、更简单！</strong>
+	<strong>Java 新的生态型应用开发框架，更小、更快、更简单！</strong>
 </p>
 <p align="center">
 	<a href="https://solon.noear.org/">https://solon.noear.org</a>
@@ -54,7 +54,7 @@ Solon v2.2.13
 
 ## 介绍：
 
-**Solon** 从零开始构建。有自己的标准规范与开放生态。组合不同的生态插件应对不同需求，方便定制，快速开发：
+从零开始构建。有自己的标准规范与开放生态。组合不同的生态插件应对不同需求，方便定制，快速开发：
 
 * **克制、简洁、高效、开放、生态**
 * 支持 JDK8、JDK11、JDK17、JDK20
