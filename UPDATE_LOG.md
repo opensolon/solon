@@ -12,6 +12,8 @@
 ### 2.2.14
 * 增加 @Inject 注入 bean 的 required 支持???
 * 增加 afterInjection() 后所有 bean 必然可用的支持???
+* 调整 mybatis 适配的环境id规则
+* 调整 Fastjson2Serializer 增加复用
 
 ### 2.2.13
 * 调整 solon.scheduling.quartz 管理机制
