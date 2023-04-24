@@ -4,7 +4,7 @@
 Solon v2.2.14-SNAPSHOT
 </h1>
 <p align="center">
-	<strong>Эффективная система разработки приложений Java, меньше, быстрее и проще!</strong>
+	<strong>Новая структура разработки приложений Java, меньше, быстрее и проще!</strong>
 </p>
 <p align="center">
 	<a href="https://solon.noear.org/">https://solon.noear.org</a>
