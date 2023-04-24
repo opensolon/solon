@@ -35,12 +35,12 @@ public class PluginUtil {
                 .filter(url -> {
                     if (url == null) {
                         return false;
+                    } else {
+                        if (Utils.isNotEmpty(limitFile)) {
+                            return url.toString().contains(limitFile);
+                        }
+                        return true;
                     }
-                    if (Utils.isNotEmpty(limitFile)) {
-                        return url.toString().contains(limitFile);
-                    }
-
-                    return true;
                 })
                 .forEach(url -> {
                     Properties props = Utils.loadProperties(url);
