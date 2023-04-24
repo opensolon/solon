@@ -62,7 +62,10 @@ public class MybatisAdapterDefault implements MybatisAdapter {
         this.factoryBuilder = new SqlSessionFactoryBuilder();
 
         DataSource dataSource = getDataSource();
-        String dataSourceId = "ds-" + (dsWrap.name() == null ? "" : dsWrap.name());
+        String dataSourceId = dsWrap.name();
+        if (Utils.isEmpty(dataSourceId)) {
+            dataSourceId = "_main";
+        }
 
         TransactionFactory tf = new SolonManagedTransactionFactory();
         Environment environment = new Environment(dataSourceId, tf, dataSource);
@@ -94,7 +97,7 @@ public class MybatisAdapterDefault implements MybatisAdapter {
         });
     }
 
-    protected DataSource getDataSource(){
+    protected DataSource getDataSource() {
         return dsWrap.raw();
     }
 
@@ -126,7 +129,7 @@ public class MybatisAdapterDefault implements MybatisAdapter {
                         String valNew = getClassExpr(val);
 
                         for (Class<?> clz : ResourceUtil.scanClasses(valNew)) {
-                            if(clz.isInterface() == false) {
+                            if (clz.isInterface() == false) {
                                 getConfiguration().getTypeAliasRegistry().registerAlias(clz);
                             }
                         }
@@ -183,7 +186,7 @@ public class MybatisAdapterDefault implements MybatisAdapter {
                             String valNew = getClassExpr(val);
 
                             for (Class<?> clz : ResourceUtil.scanClasses(valNew)) {
-                                if(clz.isInterface()) {
+                                if (clz.isInterface()) {
                                     getConfiguration().addMapper(clz);
                                 }
                             }
