@@ -4,7 +4,7 @@
 Solon v2.2.14-SNAPSHOT
 </h1>
 <p align="center">
-	<strong>一个高效的 Java 应用开发框架，更小、更快、更简单！</strong>
+	<strong>Java 新的生态型应用开发框架，更小、更快、更简单！</strong>
 </p>
 <p align="center">
 	<a href="https://solon.noear.org/">https://solon.noear.org</a>
@@ -63,7 +63,7 @@ Solon v2.2.14-SNAPSHOT
 * Not Servlet，可以适配任何基础通讯框架（最小 0.3m 运行rpc架构）
 * 自制 IOC/AOP 容器
 * 支持 Web、Data、Job、Remoting、Cloud 等任何开发场景
-* 集合 Handler + Context 和 Listener + Message 两种架构模式
+* 结合 Handler + Context 和 Listener + Message 两种架构模式
 * 强调插件式扩展，可扩展可切换；适应不同的应用场景
 * 允许业务插件“热插”、“热拨”
 * 支持 GraalVm Native 打包
