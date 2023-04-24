@@ -3,6 +3,7 @@ package org.noear.solon.core.util;
 import org.noear.solon.Utils;
 import org.noear.solon.core.PluginEntity;
 
+import java.net.URL;
 import java.util.Properties;
 import java.util.function.Consumer;
 
@@ -23,12 +24,20 @@ public class PluginUtil {
                     return n.endsWith(".properties") || n.endsWith(".yml");
                 })
                 .stream()
-                .map(k -> ResourceUtil.getResource(classLoader, k))
+                .map(k -> {
+                    URL resource = ResourceUtil.getResource(classLoader, k);
+                    if (resource == null) {
+                        // native 时，扫描出来的resource可能是不存在的（这种情况就是bug），需要给于用户提示，反馈给社区
+                        LogUtil.global().warn("solon plugin: name=" + k + ", resource is null");
+                    }
+                    return resource;
+                })
                 .filter(url -> {
+                    if (url == null) {
+                        return false;
+                    }
                     if (Utils.isNotEmpty(limitFile)) {
-                        if (url.toString().contains(limitFile) == false) {
-                            return false;
-                        }
+                        return url.toString().contains(limitFile);
                     }
 
                     return true;
