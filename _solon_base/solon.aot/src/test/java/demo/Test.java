@@ -21,7 +21,7 @@ public class Test {
         String pathStr = new File("/Users/noear/Downloads/temp3").getPath();
         Path path = Paths.get(pathStr);
 
-        Settings settings = new Settings(path, "", "");
+        Settings settings = new Settings(path, path, "", "");
 
         ProxyClassGenerator proxyClassGenerator = new ProxyClassGenerator();
         proxyClassGenerator.generateCode(settings, UserService.class);

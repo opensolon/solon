@@ -63,14 +63,14 @@ public class SolonAotProcessor {
 
         LogUtil.global().info("aot processor start, args: " + Arrays.toString(args));
 
-        int requiredArgs = 4;
+        int requiredArgs = 5;
         if (args.length < requiredArgs) {
             throw new IllegalArgumentException("Usage: " + SolonAotProcessor.class.getName()
-                    + " <applicationName> <classOutput> <groupId> <artifactId> <originalArgs...>");
+                    + " <applicationName> <classOutput> <generatedSources> <groupId> <artifactId> <originalArgs...>");
         }
 
         Class<?> application = Class.forName(args[0]);
-        Settings build = new Settings(Paths.get(args[1]), args[2], args[3]);
+        Settings build = new Settings(Paths.get(args[1]), Paths.get(args[2]), args[3], args[4]);
 
         String[] applicationArgs = (args.length > requiredArgs) ? Arrays.copyOfRange(args, requiredArgs, args.length)
                 : new String[0];

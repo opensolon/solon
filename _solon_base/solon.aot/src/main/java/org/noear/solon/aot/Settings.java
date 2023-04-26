@@ -10,12 +10,18 @@ public final class Settings {
 
     private Path classOutput;
 
+    /**
+     * aot生成的Java类
+     */
+    private Path generatedSources;
+
     private String groupId;
 
     private String artifactId;
 
-    public Settings(Path classOutput, String groupId, String artifactId) {
+    public Settings(Path classOutput, Path generatedSources, String groupId, String artifactId) {
         this.classOutput = classOutput;
+        this.generatedSources = generatedSources;
         this.groupId = groupId;
         this.artifactId = artifactId;
     }
@@ -30,5 +36,9 @@ public final class Settings {
 
     public String getArtifactId() {
         return artifactId;
+    }
+
+    public Path getGeneratedSources() {
+        return generatedSources;
     }
 }
