@@ -22,8 +22,7 @@ public class MethodUtil {
         int modifiers = element.getModifiers();
         if (Modifier.isStatic(modifiers) ||
                 Modifier.isFinal(modifiers) ||
-                Modifier.isPrivate(modifiers) ||
-                Modifier.isProtected(modifiers)) {
+                Modifier.isPrivate(modifiers)) {
             //静态 或 只读 或 私有；不需要重写
             return false;
         } else {

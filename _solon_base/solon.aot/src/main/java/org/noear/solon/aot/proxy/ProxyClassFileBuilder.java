@@ -171,7 +171,7 @@ public class ProxyClassFileBuilder {
 
         proxyTypeBuilder.addField(Method.class, methodFieldName, Modifier.PRIVATE, Modifier.STATIC);
 
-        Type returnType = TypeNameUtil.getType(typeGenericMap, methodElement.getReturnType(), methodElement.getGenericReturnType());
+        //Type returnType = TypeNameUtil.getType(typeGenericMap, methodElement.getReturnType(), methodElement.getGenericReturnType());
         TypeName returnTypeName = TypeNameUtil.getTypeName(typeGenericMap, methodElement.getReturnType(), methodElement.getGenericReturnType());
 
         StringBuilder codeBuilder = new StringBuilder(150);
