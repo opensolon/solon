@@ -1,15 +1,9 @@
-package org.noear.solon.aot.util;
+package org.noear.solon.aot.proxy;
 
 import com.squareup.javapoet.*;
-import org.noear.solon.aot.holder.ParamElementHolder;
 
-import javax.annotation.processing.ProcessingEnvironment;
-import javax.lang.model.element.*;
-import javax.lang.model.type.TypeKind;
-import javax.lang.model.type.TypeMirror;
-import javax.lang.model.type.TypeVariable;
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
+import javax.lang.model.element.Modifier;
+import java.lang.reflect.*;
 import java.util.Map;
 
 /**
@@ -18,14 +12,14 @@ import java.util.Map;
  * @author noear
  * @since 2.2
  */
-public class ClassFileBuilder {
+public class ProxyClassFileBuilder {
     public static final String PROXY_CLASSNAME_SUFFIX ="$$SolonAptProxy";
 
-    public JavaFile build(ProcessingEnvironment env, TypeElement typeElement) {
+    public JavaFile build(Class<?> typeElement) {
         //::1.准备
         //获取包路径
-        PackageElement packageElement = env.getElementUtils().getPackageOf(typeElement);
-        String packageName = packageElement.getQualifiedName().toString();
+        Package packageElement = typeElement.getPackage();
+        String packageName = packageElement.getName();
 
         //获取类名（支持成员类）
         String className = getClassName(typeElement, packageName);
@@ -34,7 +28,7 @@ public class ClassFileBuilder {
         String proxyClassName = className + PROXY_CLASSNAME_SUFFIX;
 
         //获取所有函数
-        Map<String, ExecutableElement> methodAll = MethodUtil.findMethodAll(typeElement);
+        Map<String, Method> methodAll = MethodUtil.findMethodAll(typeElement);
 
         //::2.开始
         //生成的类
@@ -63,7 +57,7 @@ public class ClassFileBuilder {
     /**
      * 添加构造函数
      */
-    private void addConstructor(TypeSpec.Builder proxyTypeBuilder, TypeElement typeElement, String proxyClassName) {
+    private void addConstructor(TypeSpec.Builder proxyTypeBuilder, Class<?> typeElement, String proxyClassName) {
         //添加字段
         proxyTypeBuilder.addField(InvocationHandler.class, "handler", Modifier.PRIVATE);
 
@@ -83,7 +77,7 @@ public class ClassFileBuilder {
     /**
      * 添加静态代码块
      */
-    private void addStaticBlock(TypeSpec.Builder proxyTypeBuilder, String packageName, String className, Map<String, ExecutableElement> methodAll) {
+    private void addStaticBlock(TypeSpec.Builder proxyTypeBuilder, String packageName, String className, Map<String, Method> methodAll) {
         int methodIndex = 0;
 
         StringBuilder codeBuilder = new StringBuilder(150);
@@ -91,7 +85,7 @@ public class ClassFileBuilder {
         codeBuilder.append("try {\n");
         codeBuilder.append("  Class<?> clazz = $T.class;\n\n");
 
-        for (ExecutableElement methodElement : methodAll.values()) {
+        for (Method methodElement : methodAll.values()) {
             //添加函数
             if (MethodUtil.allowMethod(methodElement) == false) {
                 //静态 或 只读 或 私有；不需要重写
@@ -101,14 +95,12 @@ public class ClassFileBuilder {
 
             codeBuilder.append(methodFieldName)
                     .append("=clazz.getMethod(\"")
-                    .append(methodElement.getSimpleName())
+                    .append(methodElement.getName())
                     .append("\"");
 
-            for (VariableElement p0 : methodElement.getParameters()) {
-                if (p0 instanceof ParamElementHolder) {
-                    ParamElementHolder p0x = (ParamElementHolder) p0;
-
-                    TypeMirror p1 = p0x.getReal().asType();
+            for (Parameter p0 : methodElement.getParameters()) {
+                if (p0.getParameterizedType() != null) {
+                    Type p1 = p0.getType();
                     String p1Name = p1.toString();
                     int p1NameIdx = p1Name.indexOf("<");
                     if (p1NameIdx > 0) {
@@ -123,7 +115,7 @@ public class ClassFileBuilder {
                                 .append(".class");
                     }
                 } else {
-                    TypeMirror p1 = p0.asType();
+                    Type p1 = p0.getType();
                     String p1Name = p1.toString();
                     int p1NameIdx = p1Name.indexOf("<");
                     if (p1NameIdx > 0) {
@@ -155,10 +147,10 @@ public class ClassFileBuilder {
     /**
      * 添加所有函数
      */
-    private void addMethodAll(TypeSpec.Builder proxyTypeBuilder, Map<String, ExecutableElement> methodAll) {
+    private void addMethodAll(TypeSpec.Builder proxyTypeBuilder, Map<String, Method> methodAll) {
         int methodIndex = 0;
 
-        for (ExecutableElement e : methodAll.values()) {
+        for (Method e : methodAll.values()) {
             //添加函数
             methodIndex = addMethod(proxyTypeBuilder, e, methodIndex);
         }
@@ -167,7 +159,7 @@ public class ClassFileBuilder {
     /**
      * 添加具本函数
      */
-    private int addMethod(TypeSpec.Builder proxyTypeBuilder, ExecutableElement methodElement, int methodIndex) {
+    private int addMethod(TypeSpec.Builder proxyTypeBuilder, Method methodElement, int methodIndex) {
         if (MethodUtil.allowMethod(methodElement) == false) {
             //静态 或 只读 或 私有；不需要重写
             return methodIndex;
@@ -177,34 +169,28 @@ public class ClassFileBuilder {
 
         proxyTypeBuilder.addField(Method.class, methodFieldName, Modifier.PRIVATE, Modifier.STATIC);
 
-        TypeMirror returnType = methodElement.getReturnType();
-        TypeName returnTypeName = TypeNameUtil.getTypeName(returnType);
+        Type returnType = methodElement.getReturnType();
+        TypeName returnTypeName = TypeNameUtil.getTypeName(methodElement.getReturnType(), methodElement.getGenericReturnType());
 
         StringBuilder codeBuilder = new StringBuilder(150);
 
-        boolean isPublic = methodElement.getModifiers().contains(Modifier.PUBLIC);
+        boolean isPublic = java.lang.reflect.Modifier.isPublic(methodElement.getModifiers());
 
         //生成方法
         MethodSpec.Builder methodBuilder = MethodSpec
-                .methodBuilder(methodElement.getSimpleName().toString())
+                .methodBuilder(methodElement.getName().toString())
                 .addModifiers(isPublic ? Modifier.PUBLIC : Modifier.PROTECTED)
                 .addAnnotation(Override.class)
                 .returns(returnTypeName);
 
         //添加可抛类型
-        for (TypeMirror tt : methodElement.getThrownTypes()) {
+        for (Class<?> tt : methodElement.getExceptionTypes()) {
             methodBuilder.addException(TypeName.get(tt));
         }
 
         //添加函数泛型
-        for (TypeParameterElement te : methodElement.getTypeParameters()) {
-            if (te.asType() instanceof TypeVariable) {
-                TypeVariable tv = (TypeVariable) te.asType();
-                methodBuilder.addTypeVariable(TypeVariableName.get(tv));
-            } else {
-                methodBuilder.addTypeVariable(TypeVariableName.get(te.getSimpleName().toString()));
-            }
-
+        for (TypeVariable te : methodElement.getTypeParameters()) {
+            methodBuilder.addTypeVariable(TypeVariableName.get(te));
         }
 
         //构建代码块和参数
@@ -213,11 +199,10 @@ public class ClassFileBuilder {
                 .append("new Object[]{");
 
         //添加函数参数
-        for (VariableElement pe : methodElement.getParameters()) {
-            TypeMirror pet = pe.asType();
-            TypeName paramType = TypeNameUtil.getTypeName(pet);
+        for (Parameter pe : methodElement.getParameters()) {
+            TypeName paramType = TypeNameUtil.getTypeName(pe.getType(), pe.getParameterizedType());
 
-            String paramName = pe.getSimpleName().toString();
+            String paramName = pe.getName();
 
             methodBuilder.addParameter(paramType, paramName);
             codeBuilder.append(paramName).append(",");
@@ -229,7 +214,7 @@ public class ClassFileBuilder {
         codeBuilder.append("});");
 
         //添加函数代码
-        if (methodElement.getReturnType().getKind() == TypeKind.VOID) {
+        if (methodElement.getReturnType() == Void.class) {
             codeBuilder.insert(0, "try { \n  ");
             codeBuilder.append("\n} catch (RuntimeException _ex) {\n" +
                     "  throw _ex;\n" +
@@ -260,9 +245,9 @@ public class ClassFileBuilder {
      * @param type        类型
      * @param packageName 包名
      */
-    public static String getClassName(TypeElement type, String packageName) {
+    public static String getClassName(Class<?> type, String packageName) {
         int packageLen = packageName.length() + 1;
-        return type.getQualifiedName().toString().substring(packageLen)
+        return type.getName().substring(packageLen)
                 .replace('.', '$');
     }
 }

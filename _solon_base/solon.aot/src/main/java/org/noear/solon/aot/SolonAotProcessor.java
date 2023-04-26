@@ -5,9 +5,11 @@ import org.noear.snack.core.Feature;
 import org.noear.snack.core.Options;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
+import org.noear.solon.annotation.ProxyComponent;
 import org.noear.solon.aot.graalvm.GraalvmUtil;
 import org.noear.solon.aot.hint.ExecutableMode;
 import org.noear.solon.aot.hint.ResourceHint;
+import org.noear.solon.aot.proxy.ProxyClassGenerator;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.NativeDetector;
 import org.noear.solon.core.PluginEntity;
@@ -20,7 +22,6 @@ import org.noear.solon.core.wrap.FieldWrap;
 import java.io.File;
 import java.io.FileWriter;
 import java.lang.reflect.Method;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -40,6 +41,8 @@ import java.util.regex.Pattern;
 public class SolonAotProcessor {
     private AopContextNativeProcessor aopContextNativeProcessor;
 
+    private final ProxyClassGenerator proxyClassGenerator;
+
     private final Options jsonOptions = Options.def().add(Feature.PrettyFormat).add(Feature.OrderedField);
 
     private final Settings settings;
@@ -54,6 +57,7 @@ public class SolonAotProcessor {
         this.settings = settings;
         this.applicationArgs = applicationArgs;
         this.applicationClass = applicationClass;
+        this.proxyClassGenerator = new ProxyClassGenerator();
     }
 
     public static void main(String[] args) throws Exception {
@@ -105,6 +109,7 @@ public class SolonAotProcessor {
         RuntimeNativeMetadata nativeMetadata = new RuntimeNativeMetadata();
         nativeMetadata.setApplicationClassName(applicationClass.getCanonicalName());
 
+        //处理 bean（生成配置、代理等...）
         processBean(context, nativeMetadata);
 
         List<PluginEntity> plugs = Solon.cfg().plugs();
@@ -131,6 +136,9 @@ public class SolonAotProcessor {
         Solon.stopBlock(false, -1);
     }
 
+    /**
+     * 处理 bean（生成配置、代理等...）
+     * */
     private void processBean(AopContext context, RuntimeNativeMetadata nativeMetadata) {
         AtomicInteger beanCount = new AtomicInteger();
         context.beanForeach(beanWrap -> {
@@ -138,6 +146,13 @@ public class SolonAotProcessor {
             if (RuntimeNativeRegistrar.class.isAssignableFrom(beanWrap.clz())) {
                 return;
             }
+
+            //生成代理
+            if(beanWrap.clz().getAnnotation(ProxyComponent.class) != null){
+                proxyClassGenerator.generateCode(settings, beanWrap.clz());
+            }
+
+            //注册信息
             beanCount.getAndIncrement();
             if (beanWrap.clzInit() != null) {
                 nativeMetadata.registerMethod(beanWrap.clzInit(), ExecutableMode.INVOKE);
@@ -145,6 +160,8 @@ public class SolonAotProcessor {
                 nativeMetadata.registerDefaultConstructor(beanWrap.clz());
             }
             aopContextNativeProcessor.processBean(nativeMetadata, beanWrap);
+
+
 
             ClassWrap clzWrap = ClassWrap.get(beanWrap.clz());
             Map<String, FieldWrap> fieldAllWraps = clzWrap.getFieldAllWraps();
@@ -269,7 +286,7 @@ public class SolonAotProcessor {
             String dir = GraalvmUtil.getNativeImageDir();
             String fileName = String.join("/", dir, configName);
 
-            File file = new File(settings.classOutput + "/" + fileName);
+            File file = new File(settings.getClassOutput() + "/" + fileName);
             File parentFile = file.getParentFile();
             if (!parentFile.exists()) {
                 parentFile.mkdirs();
@@ -293,31 +310,5 @@ public class SolonAotProcessor {
         return !isEmpty(objects);
     }
 
-    public static final class Settings {
-
-        private Path classOutput;
-
-        private String groupId;
-
-        private String artifactId;
-
-        public Settings(Path classOutput, String groupId, String artifactId) {
-            this.classOutput = classOutput;
-            this.groupId = groupId;
-            this.artifactId = artifactId;
-        }
-
-        public Path getClassOutput() {
-            return classOutput;
-        }
-
-        public String getGroupId() {
-            return groupId;
-        }
-
-        public String getArtifactId() {
-            return artifactId;
-        }
-    }
 
 }
