@@ -2,9 +2,11 @@ package org.noear.solon.core.util;
 
 import org.noear.solon.core.handle.Context;
 
+import java.io.File;
 import java.lang.reflect.*;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.nio.charset.Charset;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -257,6 +259,14 @@ public class ConvertUtil {
 
         if (type.isEnum()) {
             return enumOf((Class<Enum>) type, val);
+        }
+
+        if (File.class == type) {
+            return new File(val);
+        }
+
+        if (Charset.class == type) {
+            return Charset.forName(val);
         }
 
         if(String.class == type){
