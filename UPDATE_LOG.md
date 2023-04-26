@@ -12,9 +12,12 @@
 ### 2.2.14
 * 增加 @Inject 注入 bean 的 required 支持???
 * 增加 afterInjection() 后所有 bean 必然可用的支持???
+* 调整 solon.proxy.apt 的代理生成能力，转移到 solon.aot
+* 调整 solon aot 整体功能已完成
 * 调整 mybatis 适配的环境id规则保持也数据源bean同名
 * 调整 Fastjson2Serializer 增加内部的上下文复用
 * 修复 native 运行时，可能出现找不到资源文件而报错
+* mybatis-flex 升为 1.2.0
 
 ### 2.2.13
 * 调整 solon.scheduling.quartz 管理机制
