@@ -31,28 +31,23 @@ public class ProxyClassGenerator {
         JavaFile javaFile = classFileBuilder.build(typeElement);
         //写入源文件
         try {
-            javaFile.writeTo(getProxyFile(settings, typeElement));
+            javaFile.writeTo(getProxyFileDir(settings, typeElement));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private File getProxyFile(Settings settings, Class<?> typeElement) {
+    private File getProxyFileDir(Settings settings, Class<?> typeElement) {
         try {
             String dir = typeElement.getPackage().getName().replace("\\.","/");
-            String fileName = typeElement.getName().replace("\\.","/");
 
-            File file = new File(settings.getClassOutput() + "/" + fileName);
+            File file = new File(settings.getClassOutput() + "/" + dir);
             File parentFile = file.getParentFile();
             if (!parentFile.exists()) {
                 parentFile.mkdirs();
             }
 
-            boolean newFile = file.createNewFile();
-            if (newFile) {
-                LogUtil.global().info("create file: " + file.getAbsolutePath());
-            }
-            return file;
+            return new File(settings.getClassOutput()+"/");
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

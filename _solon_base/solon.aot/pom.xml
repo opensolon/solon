@@ -30,7 +30,11 @@
             <artifactId>javapoet</artifactId>
             <version>1.13.0</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>mybatis-plus-extension-solon-plugin</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
-
-
 </project>

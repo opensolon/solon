@@ -168,7 +168,9 @@ public class AopContext extends BeanContainer {
 
         //注册 @ProxyComponent 构建器
         beanBuilderAdd(ProxyComponent.class, (clz, bw, anno) -> {
-            throw new IllegalStateException("Missing plugin dependency: 'solon.proxy'");
+            if(NativeDetector.isAotRuntime() == false) {
+                throw new IllegalStateException("Missing plugin dependency: 'solon.proxy'");
+            }
         });
 
         //注册 @Remoting 构建器

@@ -5,6 +5,7 @@ import java.lang.reflect.Modifier;
 import java.lang.reflect.Parameter;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * 函数处理工具
@@ -57,7 +58,7 @@ public class MethodUtil {
      * @param type 类型
      */
     public static Map<String, Method> findMethodAll(Class<?> type) {
-        Map<String, Method> methodAll = new LinkedHashMap<>();
+        Map<String, Method> methodAll = new TreeMap<>(); //new LinkedHashMap<>();
 
         //本级优先
         for (Method method : type.getDeclaredMethods()) {
@@ -70,7 +71,7 @@ public class MethodUtil {
         //再取超类的函数
         Class<?> origin = type.getSuperclass();
         while (true) {
-            if (origin != Object.class) {
+            if (origin == Object.class) {
                 break;
             }
 

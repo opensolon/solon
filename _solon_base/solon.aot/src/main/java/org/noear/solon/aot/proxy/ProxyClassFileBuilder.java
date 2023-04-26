@@ -1,6 +1,7 @@
 package org.noear.solon.aot.proxy;
 
 import com.squareup.javapoet.*;
+import org.noear.solon.core.util.GenericUtil;
 
 import javax.lang.model.element.Modifier;
 import java.lang.reflect.*;
@@ -22,7 +23,7 @@ public class ProxyClassFileBuilder {
         String packageName = packageElement.getName();
 
         //获取类名（支持成员类）
-        String className = getClassName(typeElement, packageName);
+        String className = typeElement.getSimpleName();
 
         ClassName supperClassName = ClassName.get(packageName, className);
         String proxyClassName = className + PROXY_CLASSNAME_SUFFIX;
@@ -43,7 +44,7 @@ public class ProxyClassFileBuilder {
 
         if(methodAll.size() > 0) {
             //添加代理函数
-            addMethodAll(proxyTypeBuilder, methodAll);
+            addMethodAll(proxyTypeBuilder, typeElement, methodAll);
             //添加静态代码块
             addStaticBlock(proxyTypeBuilder, packageName, className, methodAll);
         }
@@ -101,7 +102,7 @@ public class ProxyClassFileBuilder {
             for (Parameter p0 : methodElement.getParameters()) {
                 if (p0.getParameterizedType() != null) {
                     Type p1 = p0.getType();
-                    String p1Name = p1.toString();
+                    String p1Name = p1.getTypeName();
                     int p1NameIdx = p1Name.indexOf("<");
                     if (p1NameIdx > 0) {
                         p1Name = p1Name.substring(0, p1NameIdx);
@@ -147,19 +148,20 @@ public class ProxyClassFileBuilder {
     /**
      * 添加所有函数
      */
-    private void addMethodAll(TypeSpec.Builder proxyTypeBuilder, Map<String, Method> methodAll) {
+    private void addMethodAll(TypeSpec.Builder proxyTypeBuilder,Class<?> typeElement, Map<String, Method> methodAll) {
         int methodIndex = 0;
+        Map<String,Type> typeGenericMap = GenericUtil.getGenericInfo(typeElement);
 
         for (Method e : methodAll.values()) {
             //添加函数
-            methodIndex = addMethod(proxyTypeBuilder, e, methodIndex);
+            methodIndex = addMethod(proxyTypeBuilder, typeGenericMap, e, methodIndex);
         }
     }
 
     /**
      * 添加具本函数
      */
-    private int addMethod(TypeSpec.Builder proxyTypeBuilder, Method methodElement, int methodIndex) {
+    private int addMethod(TypeSpec.Builder proxyTypeBuilder, Map<String,Type> typeGenericMap, Method methodElement, int methodIndex) {
         if (MethodUtil.allowMethod(methodElement) == false) {
             //静态 或 只读 或 私有；不需要重写
             return methodIndex;
@@ -169,8 +171,8 @@ public class ProxyClassFileBuilder {
 
         proxyTypeBuilder.addField(Method.class, methodFieldName, Modifier.PRIVATE, Modifier.STATIC);
 
-        Type returnType = methodElement.getReturnType();
-        TypeName returnTypeName = TypeNameUtil.getTypeName(methodElement.getReturnType(), methodElement.getGenericReturnType());
+        Type returnType = TypeNameUtil.getType(typeGenericMap, methodElement.getReturnType(), methodElement.getGenericReturnType());
+        TypeName returnTypeName = TypeNameUtil.getTypeName(typeGenericMap, methodElement.getReturnType(), methodElement.getGenericReturnType());
 
         StringBuilder codeBuilder = new StringBuilder(150);
 
@@ -200,7 +202,7 @@ public class ProxyClassFileBuilder {
 
         //添加函数参数
         for (Parameter pe : methodElement.getParameters()) {
-            TypeName paramType = TypeNameUtil.getTypeName(pe.getType(), pe.getParameterizedType());
+            TypeName paramType = TypeNameUtil.getTypeName(typeGenericMap, pe.getType(), pe.getParameterizedType());
 
             String paramName = pe.getName();
 
@@ -224,7 +226,7 @@ public class ProxyClassFileBuilder {
 
             methodBuilder.addCode(codeBuilder.toString());
         } else {
-            codeBuilder.insert(0, "try { \n  return (" + returnType + ")");
+            codeBuilder.insert(0, "try { \n  return (" + returnTypeName + ")");
             codeBuilder.append("\n} catch (RuntimeException _ex) {\n" +
                     "  throw _ex;\n" +
                     "} catch (Throwable _ex) {\n" +
@@ -246,8 +248,6 @@ public class ProxyClassFileBuilder {
      * @param packageName 包名
      */
     public static String getClassName(Class<?> type, String packageName) {
-        int packageLen = packageName.length() + 1;
-        return type.getName().substring(packageLen)
-                .replace('.', '$');
+        return type.getSimpleName().replace('.', '$');
     }
 }
