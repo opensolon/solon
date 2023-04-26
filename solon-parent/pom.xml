@@ -346,11 +346,6 @@
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.proxy.apt</artifactId>
-                <version>${solon.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.noear</groupId>
                 <artifactId>solon.graalvm</artifactId>
                 <version>${solon.version}</version>
             </dependency>

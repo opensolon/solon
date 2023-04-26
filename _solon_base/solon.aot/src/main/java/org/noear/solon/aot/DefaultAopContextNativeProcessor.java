@@ -19,7 +19,7 @@ import java.lang.reflect.Field;
  * @since 2.2
  */
 public class DefaultAopContextNativeProcessor implements AopContextNativeProcessor {
-    public static final String APT_PROXY_CLASSNAME_SUFFIX ="$$SolonAptProxy";
+    public static final String AOT_PROXY_CLASSNAME_SUFFIX ="$$SolonAotProxy";
     public static final String ASM_PROXY_CLASSNAME_SUFFIX ="$$SolonAsmProxy";
 
     @Override
@@ -33,8 +33,8 @@ public class DefaultAopContextNativeProcessor implements AopContextNativeProcess
         }
         nativeMetadata.registerReflection(beanWrap.clz(), MemberCategory.INVOKE_DECLARED_CONSTRUCTORS);
 
-        // 处理代理类
-        Class<?> proxyClass = ClassUtil.loadClass(ReflectUtil.getClassName(beanWrap.clz()) + APT_PROXY_CLASSNAME_SUFFIX);
+        // 处理代理类（代理类构造时会用到反射）
+        Class<?> proxyClass = ClassUtil.loadClass(ReflectUtil.getClassName(beanWrap.clz()) + AOT_PROXY_CLASSNAME_SUFFIX);
         if (proxyClass != null) {
             Constructor<?>[] declaredConstructors = proxyClass.getDeclaredConstructors();
             for (Constructor<?> declaredConstructor : declaredConstructors) {

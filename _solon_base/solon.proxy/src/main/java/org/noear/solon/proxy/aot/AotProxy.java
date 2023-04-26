@@ -1,6 +1,5 @@
-package org.noear.solon.proxy.apt;
+package org.noear.solon.proxy.aot;
 
-import org.noear.solon.Utils;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.util.ClassUtil;
 
@@ -11,8 +10,8 @@ import java.lang.reflect.InvocationHandler;
  * @author noear
  * @since 2.1
  */
-public class AptProxy {
-    public static final String PROXY_CLASSNAME_SUFFIX ="$$SolonAptProxy";
+public class AotProxy {
+    public static final String PROXY_CLASSNAME_SUFFIX ="$$SolonAotProxy";
     /**
      * 返回一个动态创建的代理类，此类继承自 targetClass（或许是算静态代理类）
      *

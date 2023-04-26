@@ -14,7 +14,7 @@ import java.util.Map;
  * @since 2.2
  */
 public class ProxyClassFileBuilder {
-    public static final String PROXY_CLASSNAME_SUFFIX ="$$SolonAptProxy";
+    public static final String PROXY_CLASSNAME_SUFFIX ="$$SolonAotProxy";
 
     public JavaFile build(Class<?> typeElement) {
         //::1.准备
