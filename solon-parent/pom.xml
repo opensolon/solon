@@ -346,21 +346,6 @@
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.graalvm</artifactId>
-                <version>${solon.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>solon.graalvm.apt</artifactId>
-                <version>${solon.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>solon.extend.graalvm</artifactId>
-                <version>${solon.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.noear</groupId>
                 <artifactId>solon.validation</artifactId>
                 <version>${solon.version}</version>
             </dependency>
