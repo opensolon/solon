@@ -216,17 +216,12 @@ public class SolonAotProcessor {
         try {
             nativeMetadata.registerResourceInclude("app.*\\.yml")
                     .registerResourceInclude("app.*\\.properties")
-                    .registerResourceInclude("META-INF/solon/.*\\.json")
-                    .registerResourceInclude("META-INF/solon/.*\\.properties")
-                    .registerResourceInclude("META-INF/solon_def/.*\\.txt")
-                    .registerResourceInclude("META-INF/solon_def/.*\\.xml")
-                    .registerResourceInclude("META-INF/solon_def/.*\\.properties")
-                    .registerResourceInclude("WEB-INF/static/.*") //静态资源
-                    .registerResourceInclude("WEB-INF/templates/.*") //模板
-                    .registerResourceInclude("static/.*")//静态资源
-                    .registerResourceInclude("templates/.*")//模板
-                    .registerResourceInclude(GraalvmUtil.getSolonResourcePath())
-                    .registerResourceInclude(GraalvmUtil.getNativeImageDir() + "/reflect-config.json");
+                    .registerResourceInclude("META-INF/.*")
+                    .registerResourceInclude("WEB-INF/.*");
+
+            //todo: 有“META-INF/.*”后，或许它们不需要加?
+            //nativeMetadata.registerResourceInclude(GraalvmUtil.getSolonResourcePath());
+            //nativeMetadata.registerResourceInclude(GraalvmUtil.getNativeImageDir() + "/reflect-config.json");
 
             List<ResourceHint> includes = nativeMetadata.getIncludes();
             List<String> allResources = new ArrayList<>();
