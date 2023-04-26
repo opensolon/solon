@@ -221,6 +221,10 @@ public class SolonAotProcessor {
                     .registerResourceInclude("META-INF/solon_def/.*\\.txt")
                     .registerResourceInclude("META-INF/solon_def/.*\\.xml")
                     .registerResourceInclude("META-INF/solon_def/.*\\.properties")
+                    .registerResourceInclude("WEB-INF/static/.*") //静态资源
+                    .registerResourceInclude("WEB-INF/templates/.*") //模板
+                    .registerResourceInclude("static/.*")//静态资源
+                    .registerResourceInclude("templates/.*")//模板
                     .registerResourceInclude(GraalvmUtil.getSolonResourcePath())
                     .registerResourceInclude(GraalvmUtil.getNativeImageDir() + "/reflect-config.json");
 
