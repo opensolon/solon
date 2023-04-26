@@ -2,13 +2,12 @@ package org.noear.solon.aot.proxy;
 
 import com.squareup.javapoet.JavaFile;
 import org.noear.solon.aot.Settings;
-import org.noear.solon.core.util.LogUtil;
 
 import java.io.File;
 import java.io.IOException;
 
 /**
- * Apt 代理注解处理器基类
+ * aot 代理注解处理器基类
  *
  * @author noear
  * @since 2.2
@@ -40,14 +39,15 @@ public class ProxyClassGenerator {
     private File getProxyFileDir(Settings settings, Class<?> typeElement) {
         try {
             String dir = typeElement.getPackage().getName().replace("\\.","/");
+            String proxyFileDir = settings.getGeneratedSources() + "/" + dir;
 
-            File file = new File(settings.getClassOutput() + "/" + dir);
+            File file = new File(proxyFileDir);
             File parentFile = file.getParentFile();
             if (!parentFile.exists()) {
                 parentFile.mkdirs();
             }
 
-            return new File(settings.getClassOutput()+"/");
+            return new File(settings.getGeneratedSources() + "/");
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -55,8 +55,8 @@ public class ProxyClassGenerator {
 
     /**
      * 断言（对不支持的情况异常提示）
-     * */
-    private void assertProxyType(Class<?> typeElement) throws IllegalStateException{
+     */
+    private void assertProxyType(Class<?> typeElement) throws IllegalStateException {
         int modifiers = typeElement.getModifiers();
 
         //虚拟类不支持
@@ -75,7 +75,7 @@ public class ProxyClassGenerator {
         }
 
         //泛型类不支持
-        if(typeElement.getTypeParameters() != null && typeElement.getTypeParameters().length > 0){
+        if (typeElement.getTypeParameters() != null && typeElement.getTypeParameters().length > 0) {
             throw new IllegalStateException("Generic type classes are not supported as proxy components");
         }
     }
