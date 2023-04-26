@@ -5,7 +5,6 @@ import org.noear.snack.core.Feature;
 import org.noear.snack.core.Options;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
-import org.noear.solon.annotation.ProxyComponent;
 import org.noear.solon.aot.graalvm.GraalvmUtil;
 import org.noear.solon.aot.hint.ExecutableMode;
 import org.noear.solon.aot.hint.ResourceHint;
@@ -148,7 +147,7 @@ public class SolonAotProcessor {
             }
 
             //生成代理
-            if(beanWrap.clz().getAnnotation(ProxyComponent.class) != null){
+            if(beanWrap.proxy() != null){
                 proxyClassGenerator.generateCode(settings, beanWrap.clz());
             }
 
