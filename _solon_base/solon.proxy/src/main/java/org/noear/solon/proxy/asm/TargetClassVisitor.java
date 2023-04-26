@@ -76,13 +76,13 @@ public class TargetClassVisitor extends ClassVisitor {
             }
 
             //protected 给 declaredMethods
-            if ((access & Opcodes.ACC_PROTECTED) == Opcodes.ACC_PROTECTED
-                    && (access & Opcodes.ACC_ABSTRACT) != Opcodes.ACC_ABSTRACT) {
-
-                if (declaredMethods.contains(methodBean) == false) {
-                    declaredMethods.add(methodBean);
-                }
-            }
+//            if ((access & Opcodes.ACC_PROTECTED) == Opcodes.ACC_PROTECTED
+//                    && (access & Opcodes.ACC_ABSTRACT) != Opcodes.ACC_ABSTRACT) {
+//
+//                if (declaredMethods.contains(methodBean) == false) {
+//                    declaredMethods.add(methodBean);
+//                }
+//            }
         }
 
         return super.visitMethod(access, name, descriptor, signature, exceptions);
