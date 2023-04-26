@@ -192,11 +192,6 @@
             <artifactId>solon.proxy</artifactId>
         </dependency>
 
-<!--        <dependency>-->
-<!--            <groupId>org.noear</groupId>-->
-<!--            <artifactId>solon.proxy.apt</artifactId>-->
-<!--            <scope>provided</scope>-->
-<!--        </dependency>-->
 
 <!--        <dependency>-->
 <!--            <groupId>org.noear</groupId>-->

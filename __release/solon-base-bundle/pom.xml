@@ -19,7 +19,7 @@
         <module>../../_solon_base/solon.aot</module>
         <module>../../_solon_base/solon.aspect</module>
         <module>../../_solon_base/solon.proxy</module>
-        <module>../../_solon_base/solon.proxy.apt</module>
+<!--        <module>../../_solon_base/solon.proxy.apt</module>-->
 
         <module>../../_solon_base/solon.graalvm</module>
         <module>../../_solon_base/solon.graalvm.apt</module>
