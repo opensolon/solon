@@ -17,7 +17,7 @@ import java.util.Arrays;
  * @see org.noear.solon.aot.graalvm.GraalvmUtil
  * @since 2.2
  */
-public class DefaultAopContextNativeProcessor implements AopContextNativeProcessor {
+public class BeanNativeProcessorDefault implements BeanNativeProcessor {
     public static final String AOT_PROXY_CLASSNAME_SUFFIX ="$$SolonAotProxy";
     public static final String ASM_PROXY_CLASSNAME_SUFFIX ="$$SolonAsmProxy";
 

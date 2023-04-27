@@ -9,7 +9,7 @@ import java.lang.reflect.Method;
  * @author songyinyin
  * @since 2.2
  */
-public interface AopContextNativeProcessor {
+public interface BeanNativeProcessor {
 
     /**
      * aot 阶段，对所有的 bean 注册 native 元数据

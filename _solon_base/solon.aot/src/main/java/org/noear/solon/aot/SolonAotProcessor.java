@@ -38,7 +38,7 @@ import java.util.regex.Pattern;
  * @since 2023/4/11 14:11
  */
 public class SolonAotProcessor {
-    private AopContextNativeProcessor aopContextNativeProcessor;
+    private BeanNativeProcessor beanNativeProcessor;
 
     private final ProxyClassGenerator proxyClassGenerator;
 
@@ -96,11 +96,11 @@ public class SolonAotProcessor {
         }
 
         //（静态扩展约定：org.noear.solon.extend.impl.XxxxExt）
-        AopContextNativeProcessor ext = ClassUtil.newInstance("org.noear.solon.extend.impl.AopContextNativeProcessorExt");
+        BeanNativeProcessor ext = ClassUtil.newInstance("org.noear.solon.extend.impl.AopContextNativeProcessorExt");
         if (ext != null) {
-            aopContextNativeProcessor = ext;
+            beanNativeProcessor = ext;
         } else {
-            aopContextNativeProcessor = new DefaultAopContextNativeProcessor();
+            beanNativeProcessor = new BeanNativeProcessorDefault();
         }
 
         AopContext context = Solon.app().context();
@@ -148,13 +148,9 @@ public class SolonAotProcessor {
 
             Class<?> clz = beanWrap.clz();
 
-            //如果是接口类型，尝试为原生实例上获取类信息
+            //如果是接口类型，则不处理（如果有需要手动处理）
             if(clz.isInterface()) {
-                if (beanWrap.raw() != null) {
-                    clz = beanWrap.raw().getClass(); //像：DataSource 这种接口
-                } else {
-                    return;
-                }
+                return;
             }
 
             //开始计数
@@ -171,17 +167,21 @@ public class SolonAotProcessor {
                 nativeMetadata.registerMethod(beanWrap.clzInit(), ExecutableMode.INVOKE);
             }
 
-            aopContextNativeProcessor.processBean(nativeMetadata, clz, beanWrap.proxy() != null);
+            beanNativeProcessor.processBean(nativeMetadata, clz, beanWrap.proxy() != null);
 
             ClassWrap clzWrap = ClassWrap.get(clz);
             Map<String, FieldWrap> fieldAllWraps = clzWrap.getFieldAllWraps();
             for (FieldWrap fieldWrap : fieldAllWraps.values()) {
-                aopContextNativeProcessor.processField(nativeMetadata, fieldWrap.field);
+                beanNativeProcessor.processField(nativeMetadata, fieldWrap.field);
+            }
+
+            for(Method method : clzWrap.getMethods()){
+                beanNativeProcessor.processMethod(nativeMetadata, method);
             }
         });
 
         context.methodForeach(methodWrap -> {
-            aopContextNativeProcessor.processMethod(nativeMetadata, methodWrap.getMethod());
+            beanNativeProcessor.processMethod(nativeMetadata, methodWrap.getMethod());
         });
         LogUtil.global().info("Aot process bean, bean size: " + beanCount.get());
     }
