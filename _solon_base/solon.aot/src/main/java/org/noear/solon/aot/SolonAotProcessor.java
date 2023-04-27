@@ -146,21 +146,26 @@ public class SolonAotProcessor {
                 return;
             }
 
+            //如果是接口类型，说明它是用户自己new的，不涉及反射
+            if(beanWrap.clz().isInterface()){
+                return;
+            }
+
+            //开始计数
+            beanCount.getAndIncrement();
+
             //生成代理
             if(beanWrap.proxy() != null){
                 proxyClassGenerator.generateCode(settings, beanWrap.clz());
             }
 
-            //注册信息
-            beanCount.getAndIncrement();
+            //注册信息（构造函数，初始化函数等...）
+            nativeMetadata.registerDefaultConstructor(beanWrap.clz());
             if (beanWrap.clzInit() != null) {
                 nativeMetadata.registerMethod(beanWrap.clzInit(), ExecutableMode.INVOKE);
-            } else {
-                nativeMetadata.registerDefaultConstructor(beanWrap.clz());
             }
+
             aopContextNativeProcessor.processBean(nativeMetadata, beanWrap);
-
-
 
             ClassWrap clzWrap = ClassWrap.get(beanWrap.clz());
             Map<String, FieldWrap> fieldAllWraps = clzWrap.getFieldAllWraps();
@@ -172,7 +177,7 @@ public class SolonAotProcessor {
         context.methodForeach(methodWrap -> {
             aopContextNativeProcessor.processMethod(nativeMetadata, methodWrap);
         });
-        LogUtil.global().info("aot process bean, bean size: " + beanCount.get());
+        LogUtil.global().info("Aot process bean, bean size: " + beanCount.get());
     }
 
     private void addSerializationConfig(RuntimeNativeMetadata nativeMetadata) {
