@@ -204,7 +204,14 @@ public class Solon {
         stop0(exit, delay);
     }
 
+    public static void stopBlock(boolean exit, int delay, int exitStatus) {
+        stop0(exit, delay, exitStatus);
+    }
+
     private static void stop0(boolean exit, int delay) {
+        stop0(exit, delay, 1);
+    }
+    private static void stop0(boolean exit, int delay, int exitStatus) {
         if (Solon.app() == null) {
             return;
         }
@@ -264,7 +271,7 @@ public class Solon {
 
         //4.直接非正常退出
         if (exit) {
-            System.exit(1);
+            System.exit(exitStatus);
         }
     }
 
