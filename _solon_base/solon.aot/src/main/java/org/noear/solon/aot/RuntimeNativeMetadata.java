@@ -4,24 +4,21 @@ import org.noear.snack.ONode;
 import org.noear.snack.core.Feature;
 import org.noear.snack.core.Options;
 import org.noear.solon.Utils;
-import org.noear.solon.aot.graalvm.GraalvmUtil;
 import org.noear.solon.aot.hint.ExecutableHint;
 import org.noear.solon.aot.hint.ExecutableMode;
 import org.noear.solon.aot.hint.MemberCategory;
 import org.noear.solon.aot.hint.ReflectionHints;
 import org.noear.solon.aot.hint.ResourceHint;
 import org.noear.solon.aot.hint.SerializationHint;
+import org.noear.solon.core.JarClassLoader;
+import org.noear.solon.core.util.ClassUtil;
+import org.noear.solon.core.util.ScanUtil;
 
 import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -182,6 +179,31 @@ public class RuntimeNativeMetadata {
     /**
      * 注册Java序列化
      *
+     * @param basePackage 类型基础包
+     * @return {@code this}
+     */
+    public RuntimeNativeMetadata registerSerialization(Package basePackage) {
+        String dir = basePackage.getName().replace('.', '/');
+
+        //扫描类文件并处理（采用两段式加载，可以部分bean先处理；剩下的为第二段处理）
+        ScanUtil.scan(JarClassLoader.global(), dir, n -> n.endsWith(".class"))
+                .stream()
+                .forEach(name -> {
+                    String className = name.substring(0, name.length() - 6);
+                    className = className.replace("/", ".");
+
+                    Class<?> clz = ClassUtil.loadClass(JarClassLoader.global(), className);
+                    if (clz != null && Serializable.class.isAssignableFrom(clz)) {
+                        registerSerializationDo(clz.getName(), null);
+                    }
+                });
+
+        return this;
+    }
+
+    /**
+     * 注册Java序列化
+     *
      * @param type 类型
      * @return {@code this}
      */
@@ -197,11 +219,15 @@ public class RuntimeNativeMetadata {
      * @return {@code this}
      */
     public RuntimeNativeMetadata registerSerialization(Class<? extends Serializable> type, String reachableType) {
+        registerSerializationDo(type.getName(), reachableType);
+        return this;
+    }
+
+    private void registerSerializationDo(String typeName, String reachableType) {
         SerializationHint serializationHint = new SerializationHint();
-        serializationHint.setName(type.getName());
+        serializationHint.setName(typeName);
         serializationHint.setReachableType(reachableType);
         serialization.add(serializationHint);
-        return this;
     }
 
     /**
@@ -365,6 +391,4 @@ public class RuntimeNativeMetadata {
             }
         }
     }
-
-
 }
