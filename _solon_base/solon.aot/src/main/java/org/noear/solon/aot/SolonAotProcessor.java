@@ -165,6 +165,7 @@ public class SolonAotProcessor {
             }
 
             beanNativeProcessor.processBean(nativeMetadata, clz, beanWrap.proxy() != null);
+            beanNativeProcessor.processBeanFields(nativeMetadata, clz);
         });
 
         context.methodForeach(methodWrap -> {

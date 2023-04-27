@@ -14,7 +14,6 @@ import org.noear.solon.core.JarClassLoader;
 import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.core.util.ScanUtil;
 
-import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -204,7 +203,7 @@ public class RuntimeNativeMetadata {
                     className = className.replace("/", ".");
 
                     Class<?> clz = ClassUtil.loadClass(JarClassLoader.global(), className);
-                    if (clz != null && Serializable.class.isAssignableFrom(clz)) {
+                    if (clz != null) {
                         registerSerializationDo(clz.getName(), null);
                     }
                 });
@@ -218,7 +217,7 @@ public class RuntimeNativeMetadata {
      * @param type 类型
      * @return {@code this}
      */
-    public RuntimeNativeMetadata registerSerialization(Class<? extends Serializable> type) {
+    public RuntimeNativeMetadata registerSerialization(Class<?> type) {
         return registerSerialization(type, null);
     }
 
@@ -229,7 +228,7 @@ public class RuntimeNativeMetadata {
      * @param reachableType condition class
      * @return {@code this}
      */
-    public RuntimeNativeMetadata registerSerialization(Class<? extends Serializable> type, String reachableType) {
+    public RuntimeNativeMetadata registerSerialization(Class<?> type, String reachableType) {
         registerSerializationDo(type.getName(), reachableType);
         return this;
     }

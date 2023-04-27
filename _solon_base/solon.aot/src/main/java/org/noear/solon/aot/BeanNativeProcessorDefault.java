@@ -47,18 +47,6 @@ public class BeanNativeProcessorDefault implements BeanNativeProcessor {
                     hints.getMemberCategories().addAll((Arrays.asList(MemberCategory.INVOKE_DECLARED_CONSTRUCTORS))));
 
         }
-
-        // 处理字段
-        ClassWrap clzWrap = ClassWrap.get(clazz);
-        Map<String, FieldWrap> fieldAllWraps = clzWrap.getFieldAllWraps();
-        for (FieldWrap fieldWrap : fieldAllWraps.values()) {
-            processField(nativeMetadata, fieldWrap.field);
-        }
-
-        // 处理函数
-        for (Method method : clzWrap.getMethods()) {
-            processMethod(nativeMetadata, method);
-        }
     }
 
     @Override
