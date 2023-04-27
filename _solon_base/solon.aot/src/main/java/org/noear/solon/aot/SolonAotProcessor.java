@@ -286,11 +286,6 @@ public class SolonAotProcessor {
         args.add("--no-fallback");
         args.add("--install-exit-handlers");
 
-        if (ClassUtil.loadClass("org.noear.solon.boot.ServerLifecycle") != null) {
-            args.add("--enable-http");
-            args.add("--enable-https");
-        }
-
         return args;
     }
 
