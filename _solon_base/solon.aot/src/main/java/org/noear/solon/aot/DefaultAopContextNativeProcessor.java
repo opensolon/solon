@@ -3,13 +3,11 @@ package org.noear.solon.aot;
 import org.noear.solon.aot.hint.ExecutableHint;
 import org.noear.solon.aot.hint.ExecutableMode;
 import org.noear.solon.aot.hint.MemberCategory;
-import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.util.ReflectUtil;
-import org.noear.solon.core.wrap.FieldWrap;
-import org.noear.solon.core.wrap.MethodWrap;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
 import java.util.Arrays;
 
 /**
@@ -24,19 +22,19 @@ public class DefaultAopContextNativeProcessor implements AopContextNativeProcess
     public static final String ASM_PROXY_CLASSNAME_SUFFIX ="$$SolonAsmProxy";
 
     @Override
-    public void processBean(RuntimeNativeMetadata nativeMetadata, BeanWrap beanWrap) {
-        if (beanWrap.clz().isEnum() || beanWrap.clz().isAnnotation()) {
+    public void processBean(RuntimeNativeMetadata nativeMetadata, Class<?> clazz, boolean supportProxy) {
+        if (clazz.isEnum() || clazz.isAnnotation()) {
             return;
         }
-        nativeMetadata.registerDefaultConstructor(beanWrap.clz());
-        for (Field field : ReflectUtil.getDeclaredFields(beanWrap.clz())) {
+        nativeMetadata.registerDefaultConstructor(clazz);
+        for (Field field : ReflectUtil.getDeclaredFields(clazz)) {
             nativeMetadata.registerField(field);
         }
-        nativeMetadata.registerReflection(beanWrap.clz(), MemberCategory.INVOKE_DECLARED_CONSTRUCTORS);
+        nativeMetadata.registerReflection(clazz, MemberCategory.INVOKE_DECLARED_CONSTRUCTORS);
 
         // 处理代理类（代理类构造时会用到反射）
-        if (beanWrap.proxy() != null) {
-            String proxyClassName = ReflectUtil.getClassName(beanWrap.clz()) + AOT_PROXY_CLASSNAME_SUFFIX;
+        if (supportProxy) {
+            String proxyClassName = ReflectUtil.getClassName(clazz) + AOT_PROXY_CLASSNAME_SUFFIX;
 
             nativeMetadata.registerReflection(proxyClassName, hints ->
                     hints.getConstructors().add(new ExecutableHint("<init>", new Class[]{InvocationHandler.class}, ExecutableMode.INVOKE)));
@@ -47,13 +45,13 @@ public class DefaultAopContextNativeProcessor implements AopContextNativeProcess
     }
 
     @Override
-    public void processMethod(RuntimeNativeMetadata nativeMetadata, MethodWrap methodWrap) {
-        nativeMetadata.registerMethod(methodWrap.getMethod(), ExecutableMode.INVOKE);
+    public void processMethod(RuntimeNativeMetadata nativeMetadata, Method method) {
+        nativeMetadata.registerMethod(method, ExecutableMode.INVOKE);
     }
 
     @Override
-    public void processField(RuntimeNativeMetadata nativeMetadata, FieldWrap fieldWrap) {
-        nativeMetadata.registerField(fieldWrap.field);
-        nativeMetadata.registerReflection(fieldWrap.field.getDeclaringClass(), MemberCategory.DECLARED_FIELDS);
+    public void processField(RuntimeNativeMetadata nativeMetadata, Field field) {
+        nativeMetadata.registerField(field);
+        nativeMetadata.registerReflection(field.getDeclaringClass(), MemberCategory.DECLARED_FIELDS);
     }
 }

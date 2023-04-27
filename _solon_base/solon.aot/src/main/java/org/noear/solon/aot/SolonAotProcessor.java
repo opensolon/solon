@@ -104,6 +104,7 @@ public class SolonAotProcessor {
         }
 
         AopContext context = Solon.app().context();
+        context.wrapAndPut(AopContextNativeProcessor.class, aopContextNativeProcessor);
 
         RuntimeNativeMetadata nativeMetadata = new RuntimeNativeMetadata();
         nativeMetadata.setApplicationClassName(applicationClass.getCanonicalName());
@@ -146,6 +147,10 @@ public class SolonAotProcessor {
                 return;
             }
 
+            if (AopContextNativeProcessor.class.isAssignableFrom(beanWrap.clz())) {
+                return;
+            }
+
             //如果是接口类型，说明它是用户自己new的，不涉及反射
             if(beanWrap.clz().isInterface()){
                 return;
@@ -165,17 +170,17 @@ public class SolonAotProcessor {
                 nativeMetadata.registerMethod(beanWrap.clzInit(), ExecutableMode.INVOKE);
             }
 
-            aopContextNativeProcessor.processBean(nativeMetadata, beanWrap);
+            aopContextNativeProcessor.processBean(nativeMetadata, beanWrap.clz(), beanWrap.proxy() != null);
 
             ClassWrap clzWrap = ClassWrap.get(beanWrap.clz());
             Map<String, FieldWrap> fieldAllWraps = clzWrap.getFieldAllWraps();
             for (FieldWrap fieldWrap : fieldAllWraps.values()) {
-                aopContextNativeProcessor.processField(nativeMetadata, fieldWrap);
+                aopContextNativeProcessor.processField(nativeMetadata, fieldWrap.field);
             }
         });
 
         context.methodForeach(methodWrap -> {
-            aopContextNativeProcessor.processMethod(nativeMetadata, methodWrap);
+            aopContextNativeProcessor.processMethod(nativeMetadata, methodWrap.getMethod());
         });
         LogUtil.global().info("Aot process bean, bean size: " + beanCount.get());
     }
