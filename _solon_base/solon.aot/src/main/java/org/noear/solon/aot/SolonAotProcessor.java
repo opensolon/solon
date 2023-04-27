@@ -226,10 +226,6 @@ public class SolonAotProcessor {
                     .registerResourceInclude("static/.*")
                     .registerResourceInclude("templates/.*");
 
-            //todo: 有“META-INF/.*”后，或许它们不需要加?
-            //nativeMetadata.registerResourceInclude(GraalvmUtil.getSolonResourcePath());
-            //nativeMetadata.registerResourceInclude(GraalvmUtil.getNativeImageDir() + "/reflect-config.json");
-
             List<ResourceHint> includes = nativeMetadata.getIncludes();
             List<String> allResources = new ArrayList<>();
             for (ResourceHint include : includes) {
@@ -263,11 +259,11 @@ public class SolonAotProcessor {
      */
     private void addReflectConfig(RuntimeNativeMetadata nativeMetadata) {
         try {
-            nativeMetadata.registerDefaultConstructor("org.noear.solon.extend.impl.PropsLoaderExt")
-                    .registerDefaultConstructor("org.noear.solon.extend.impl.PropsConverterExt")
-                    .registerDefaultConstructor("org.noear.solon.extend.impl.AppClassLoaderExt")
-                    .registerDefaultConstructor("org.noear.solon.extend.impl.ReflectionExt")
-                    .registerDefaultConstructor("org.noear.solon.extend.impl.ResourceScannerExt");
+            addReflectConfigDo(nativeMetadata, "org.noear.solon.extend.impl.PropsLoaderExt");
+            addReflectConfigDo(nativeMetadata, "org.noear.solon.extend.impl.PropsConverterExt");
+            addReflectConfigDo(nativeMetadata, "org.noear.solon.extend.impl.AppClassLoaderExt");
+            addReflectConfigDo(nativeMetadata, "org.noear.solon.extend.impl.ReflectionExt");
+            addReflectConfigDo(nativeMetadata, "org.noear.solon.extend.impl.ResourceScannerExt");
 
             FileWriter fileWriter = getFileWriter("reflect-config.json");
             fileWriter.write(nativeMetadata.toReflectionJson());
@@ -277,12 +273,21 @@ public class SolonAotProcessor {
         }
     }
 
+    private void addReflectConfigDo(RuntimeNativeMetadata nativeMetadata, String className){
+        if(ClassUtil.loadClass(className) != null){
+            nativeMetadata.registerDefaultConstructor(className);
+        }
+    }
+
     private List<String> getDefaultNativeImageArguments(String applicationClassName) {
         List<String> args = new ArrayList<>();
         args.add("-H:Class=" + applicationClassName);
         args.add("--report-unsupported-elements-at-runtime");
         args.add("--no-fallback");
         args.add("--install-exit-handlers");
+        args.add("--enable-http");
+        args.add("--enable-https");
+
         return args;
     }
 
