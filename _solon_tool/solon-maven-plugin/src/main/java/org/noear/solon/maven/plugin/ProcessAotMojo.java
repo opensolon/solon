@@ -150,6 +150,9 @@ public class ProcessAotMojo extends AbstractMojo {
 
     private void compileSourceFiles(URL[] classPath) throws Exception {
         List<Path> sourceFiles;
+        if (!generatedSources.exists()) {
+            return;
+        }
         try (Stream<Path> pathStream = Files.walk(generatedSources.toPath())) {
             sourceFiles = pathStream.filter(Files::isRegularFile).collect(Collectors.toList());
         }
