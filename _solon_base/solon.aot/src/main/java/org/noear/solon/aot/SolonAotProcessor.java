@@ -104,7 +104,6 @@ public class SolonAotProcessor {
         }
 
         AopContext context = Solon.app().context();
-        context.wrapAndPut(AopContextNativeProcessor.class, aopContextNativeProcessor);
 
         RuntimeNativeMetadata nativeMetadata = new RuntimeNativeMetadata();
         nativeMetadata.setApplicationClassName(applicationClass.getCanonicalName());
@@ -147,13 +146,15 @@ public class SolonAotProcessor {
                 return;
             }
 
-            if (AopContextNativeProcessor.class.isAssignableFrom(beanWrap.clz())) {
-                return;
-            }
+            Class<?> clz = beanWrap.clz();
 
-            //如果是接口类型，说明它是用户自己new的，不涉及反射
-            if(beanWrap.clz().isInterface()){
-                return;
+            //如果是接口类型，尝试为原生实例上获取类信息
+            if(clz.isInterface()) {
+                if (beanWrap.raw() != null) {
+                    clz = beanWrap.raw().getClass(); //像：DataSource 这种接口
+                } else {
+                    return;
+                }
             }
 
             //开始计数
@@ -161,18 +162,18 @@ public class SolonAotProcessor {
 
             //生成代理
             if(beanWrap.proxy() != null){
-                proxyClassGenerator.generateCode(settings, beanWrap.clz());
+                proxyClassGenerator.generateCode(settings, clz);
             }
 
             //注册信息（构造函数，初始化函数等...）
-            nativeMetadata.registerDefaultConstructor(beanWrap.clz());
+            nativeMetadata.registerDefaultConstructor(clz);
             if (beanWrap.clzInit() != null) {
                 nativeMetadata.registerMethod(beanWrap.clzInit(), ExecutableMode.INVOKE);
             }
 
-            aopContextNativeProcessor.processBean(nativeMetadata, beanWrap.clz(), beanWrap.proxy() != null);
+            aopContextNativeProcessor.processBean(nativeMetadata, clz, beanWrap.proxy() != null);
 
-            ClassWrap clzWrap = ClassWrap.get(beanWrap.clz());
+            ClassWrap clzWrap = ClassWrap.get(clz);
             Map<String, FieldWrap> fieldAllWraps = clzWrap.getFieldAllWraps();
             for (FieldWrap fieldWrap : fieldAllWraps.values()) {
                 aopContextNativeProcessor.processField(nativeMetadata, fieldWrap.field);
