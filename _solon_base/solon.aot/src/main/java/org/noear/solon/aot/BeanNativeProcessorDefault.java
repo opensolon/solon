@@ -4,11 +4,14 @@ import org.noear.solon.aot.hint.ExecutableHint;
 import org.noear.solon.aot.hint.ExecutableMode;
 import org.noear.solon.aot.hint.MemberCategory;
 import org.noear.solon.core.util.ReflectUtil;
+import org.noear.solon.core.wrap.ClassWrap;
+import org.noear.solon.core.wrap.FieldWrap;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.Map;
 
 /**
  * 收集运行时的类、字段、方法，用于bean扫描时使用，本类会对所有bean进行处理
@@ -26,13 +29,15 @@ public class BeanNativeProcessorDefault implements BeanNativeProcessor {
         if (clazz.isEnum() || clazz.isAnnotation()) {
             return;
         }
+
+        // 注册
         nativeMetadata.registerDefaultConstructor(clazz);
         for (Field field : ReflectUtil.getDeclaredFields(clazz)) {
             nativeMetadata.registerField(field);
         }
         nativeMetadata.registerReflection(clazz, MemberCategory.INVOKE_DECLARED_CONSTRUCTORS);
 
-        // 处理代理类（代理类构造时会用到反射）
+        // 注册代理类（代理类构造时会用到反射）
         if (supportProxy) {
             String proxyClassName = ReflectUtil.getClassName(clazz) + AOT_PROXY_CLASSNAME_SUFFIX;
 
@@ -41,6 +46,18 @@ public class BeanNativeProcessorDefault implements BeanNativeProcessor {
             nativeMetadata.registerReflection(proxyClassName, hints ->
                     hints.getMemberCategories().addAll((Arrays.asList(MemberCategory.INVOKE_DECLARED_CONSTRUCTORS))));
 
+        }
+
+        // 处理字段
+        ClassWrap clzWrap = ClassWrap.get(clazz);
+        Map<String, FieldWrap> fieldAllWraps = clzWrap.getFieldAllWraps();
+        for (FieldWrap fieldWrap : fieldAllWraps.values()) {
+            processField(nativeMetadata, fieldWrap.field);
+        }
+
+        // 处理函数
+        for (Method method : clzWrap.getMethods()) {
+            processMethod(nativeMetadata, method);
         }
     }
 

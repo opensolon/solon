@@ -20,6 +20,7 @@ public interface BeanNativeProcessor {
      */
     void processBean(RuntimeNativeMetadata nativeMetadata, Class<?> clazz, boolean supportProxy);
 
+
     /**
      * aot 阶段，对 bean 中的方法，注册 native 元数据
      *

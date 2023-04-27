@@ -15,8 +15,6 @@ import org.noear.solon.core.PluginEntity;
 import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.core.util.ScanUtil;
-import org.noear.solon.core.wrap.ClassWrap;
-import org.noear.solon.core.wrap.FieldWrap;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -105,7 +103,7 @@ public class SolonAotProcessor {
 
         AopContext context = Solon.app().context();
 
-        RuntimeNativeMetadata nativeMetadata = new RuntimeNativeMetadata();
+        RuntimeNativeMetadata nativeMetadata = new RuntimeNativeMetadata(beanNativeProcessor);
         nativeMetadata.setApplicationClassName(applicationClass.getCanonicalName());
 
         //处理 bean（生成配置、代理等...）
@@ -162,22 +160,11 @@ public class SolonAotProcessor {
             }
 
             //注册信息（构造函数，初始化函数等...）
-            nativeMetadata.registerDefaultConstructor(clz);
             if (beanWrap.clzInit() != null) {
                 nativeMetadata.registerMethod(beanWrap.clzInit(), ExecutableMode.INVOKE);
             }
 
             beanNativeProcessor.processBean(nativeMetadata, clz, beanWrap.proxy() != null);
-
-            ClassWrap clzWrap = ClassWrap.get(clz);
-            Map<String, FieldWrap> fieldAllWraps = clzWrap.getFieldAllWraps();
-            for (FieldWrap fieldWrap : fieldAllWraps.values()) {
-                beanNativeProcessor.processField(nativeMetadata, fieldWrap.field);
-            }
-
-            for(Method method : clzWrap.getMethods()){
-                beanNativeProcessor.processMethod(nativeMetadata, method);
-            }
         });
 
         context.methodForeach(methodWrap -> {
