@@ -216,7 +216,7 @@ public class ProxyClassFileBuilder {
         codeBuilder.append("});");
 
         //添加函数代码
-        if (methodElement.getReturnType() == Void.class) {
+        if (Void.TYPE.equals(methodElement.getReturnType())) {
             codeBuilder.insert(0, "try { \n  ");
             codeBuilder.append("\n} catch (RuntimeException _ex) {\n" +
                     "  throw _ex;\n" +
