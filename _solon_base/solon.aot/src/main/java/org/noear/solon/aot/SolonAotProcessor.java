@@ -217,7 +217,9 @@ public class SolonAotProcessor {
             nativeMetadata.registerResourceInclude("app.*\\.yml")
                     .registerResourceInclude("app.*\\.properties")
                     .registerResourceInclude("META-INF/.*")
-                    .registerResourceInclude("WEB-INF/.*");
+                    .registerResourceInclude("WEB-INF/.*")
+                    .registerResourceInclude("static/.*")
+                    .registerResourceInclude("templates/.*");
 
             //todo: 有“META-INF/.*”后，或许它们不需要加?
             //nativeMetadata.registerResourceInclude(GraalvmUtil.getSolonResourcePath());
