@@ -119,7 +119,7 @@ public class ProcessAotMojo extends AbstractMojo {
 
     @Override
     public void execute() throws MojoExecutionException {
-        getLog().info("start process aot ...");
+        getLog().info("Aot start process ...");
 
         try {
             executeAot();
