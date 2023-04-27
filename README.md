@@ -63,7 +63,7 @@ Solon v2.2.14-SNAPSHOT
 * Not Servlet，可以适配任何基础通讯框架（最小 0.3m 运行rpc架构）
 * 自制 IOC/AOP 容器
 * 支持 Web、Data、Job、Remoting、Cloud 等任何开发场景
-* 结合 Handler + Context 和 Listener + Message 两种架构模式
+* 兼顾 Handler + Context 和 Listener + Message 两种架构模式
 * 强调插件式扩展，可扩展可切换；适应不同的应用场景
 * 允许业务插件“热插”、“热拨”
 * 支持 GraalVm Native 打包

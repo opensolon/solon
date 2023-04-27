@@ -63,7 +63,7 @@ Build from scratch. It has its own standards and norms and open ecology. Combina
 * Not Servlet, can adapt to any basic communication framework (minimum 0.3m running rpc architecture)
 * Homemade IOC/AOP container
 * Supports Web, Data, Job, Remoting, Cloud, and other development scenarios
-* Combines Handler + Context and Listener + Message architectural patterns
+* The two architecture modes are Handler + Context and Listener + Message
 * Emphasizes plug-in extensibility, expandable and swappable, adaptable to different application scenarios
 * Allows business plug-ins for "hot plugging" and "hot unloading"
 * Supports GraalVm Native packaging

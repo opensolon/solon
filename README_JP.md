@@ -63,7 +63,7 @@ Solon v2.2.14-SNAPSHOT
 * Not Servlet、あらゆるインフラストラクチャに適合（最小0.3 mでrpcアーキテクチャを実行）
 * 自作 IOC/AOP 容器
 * Web、Data、Job、Remoting、Cloudなどの開発シーンをサポート
-* 集合Handler+ContextとListener+Messageの2つのスキーマパターン
+* Handler+ContextとListener+Messageの2つのアーキテクチャモードを両立
 * プラグイン式の拡張を強調し、拡張可能で切り替え可能、異なるアプリケーションシーンに対応
 * ビジネスプラグインのホットプラグ、ホットダイヤルを許可する
 * GraalVm Nativeパッケージのサポート
