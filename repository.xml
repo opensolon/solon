@@ -7,7 +7,6 @@
     <!--
      使用时，可以项目的 pom.xml 里添加 repositories 内容
      -->
-
     <repositories>
         <repository>
             <id>tencent</id>
