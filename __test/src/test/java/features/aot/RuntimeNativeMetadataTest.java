@@ -4,6 +4,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.noear.solon.Solon;
+import org.noear.solon.aot.BeanNativeProcessorDefault;
 import org.noear.solon.aot.RuntimeNativeMetadata;
 import org.noear.solon.aot.hint.ExecutableMode;
 import org.noear.solon.aot.hint.MemberCategory;
@@ -26,7 +27,7 @@ public class RuntimeNativeMetadataTest {
 
     @Test
     public void testReflectionJson() throws NoSuchMethodException, NoSuchFieldException, IOException {
-        RuntimeNativeMetadata metadata = new RuntimeNativeMetadata();
+        RuntimeNativeMetadata metadata = new RuntimeNativeMetadata(new BeanNativeProcessorDefault());
         metadata.registerReflection(Solon.class, hint -> {
                     hint.getMemberCategories().add(MemberCategory.PUBLIC_FIELDS);
                     hint.getMemberCategories().add(MemberCategory.DECLARED_FIELDS);
@@ -50,7 +51,7 @@ public class RuntimeNativeMetadataTest {
 
     @Test
     public void testResourceJson() throws IOException {
-        RuntimeNativeMetadata metadata = new RuntimeNativeMetadata();
+        RuntimeNativeMetadata metadata = new RuntimeNativeMetadata(new BeanNativeProcessorDefault());
 
         metadata.registerResourceInclude("/")
                 .registerResourceInclude("app.*\\.yml")
@@ -70,7 +71,7 @@ public class RuntimeNativeMetadataTest {
 
     @Test
     public void testSerializationJson() throws IOException {
-        RuntimeNativeMetadata metadata = new RuntimeNativeMetadata();
+        RuntimeNativeMetadata metadata = new RuntimeNativeMetadata(new BeanNativeProcessorDefault());
 
         metadata.registerSerialization(NativeDTO.NativeDTO2.class)
                 .registerSerialization(MyUser.class);
