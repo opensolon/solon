@@ -27,7 +27,7 @@ public class RuntimeNativeMetadataTest {
 
     @Test
     public void testReflectionJson() throws NoSuchMethodException, NoSuchFieldException, IOException {
-        RuntimeNativeMetadata metadata = new RuntimeNativeMetadata(new BeanNativeProcessorDefault());
+        RuntimeNativeMetadata metadata = new RuntimeNativeMetadata();
         metadata.registerReflection(Solon.class, hint -> {
                     hint.getMemberCategories().add(MemberCategory.PUBLIC_FIELDS);
                     hint.getMemberCategories().add(MemberCategory.DECLARED_FIELDS);
@@ -51,7 +51,7 @@ public class RuntimeNativeMetadataTest {
 
     @Test
     public void testResourceJson() throws IOException {
-        RuntimeNativeMetadata metadata = new RuntimeNativeMetadata(new BeanNativeProcessorDefault());
+        RuntimeNativeMetadata metadata = new RuntimeNativeMetadata();
 
         metadata.registerResourceInclude("/")
                 .registerResourceInclude("app.*\\.yml")
@@ -71,7 +71,7 @@ public class RuntimeNativeMetadataTest {
 
     @Test
     public void testSerializationJson() throws IOException {
-        RuntimeNativeMetadata metadata = new RuntimeNativeMetadata(new BeanNativeProcessorDefault());
+        RuntimeNativeMetadata metadata = new RuntimeNativeMetadata();
 
         metadata.registerSerialization(NativeDTO.NativeDTO2.class)
                 .registerSerialization(MyUser.class);

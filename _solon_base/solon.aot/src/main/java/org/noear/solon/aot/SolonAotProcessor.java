@@ -103,7 +103,7 @@ public class SolonAotProcessor {
 
         AopContext context = Solon.app().context();
 
-        RuntimeNativeMetadata nativeMetadata = new RuntimeNativeMetadata(beanNativeProcessor);
+        RuntimeNativeMetadata nativeMetadata = new RuntimeNativeMetadata();
         nativeMetadata.setApplicationClassName(applicationClass.getCanonicalName());
 
         //处理 bean（生成配置、代理等...）

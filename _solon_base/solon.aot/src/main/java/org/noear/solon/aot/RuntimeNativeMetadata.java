@@ -45,16 +45,6 @@ public class RuntimeNativeMetadata {
 
     private final List<SerializationHint> serialization = new ArrayList<>();
 
-    private final BeanNativeProcessor beanNativeProcessor;
-
-    public RuntimeNativeMetadata(BeanNativeProcessor beanNativeProcessor){
-        this.beanNativeProcessor = beanNativeProcessor;
-    }
-
-    public BeanNativeProcessor beanNativeProcessor(){
-        return beanNativeProcessor;
-    }
-
 
     private String applicationClassName;
 
