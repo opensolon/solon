@@ -18,6 +18,7 @@
 * 调整 Fastjson2Serializer 增加内部的上下文复用
 * 修复 native 运行时，可能出现找不到资源文件而报错
 * mybatis-flex 升为 1.2.0
+* wood 升为 1.1.1
 
 ### 2.2.13
 * 调整 solon.scheduling.quartz 管理机制
