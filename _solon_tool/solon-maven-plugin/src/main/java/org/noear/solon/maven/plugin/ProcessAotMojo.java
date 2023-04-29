@@ -145,7 +145,9 @@ public class ProcessAotMojo extends AbstractMojo {
         processExecutor.run(this.project.getBasedir(), command, Collections.emptyMap());
 
         // 将 aot 阶段生成的 Java 文件编译成 class 文件
+        getLog().info("Aot source files compile begin");
         compileSourceFiles(classPath);
+        getLog().info("Aot source files compile end");
     }
 
     private void compileSourceFiles(URL[] classPath) throws Exception {

@@ -125,8 +125,8 @@ public class SolonAotProcessor {
         // 添加 serialization-config.json
         addSerializationConfig(nativeMetadata);
 
-        LogUtil.global().info("Aot processor end.");
         Solon.stopBlock(false, -1);
+        LogUtil.global().info("Aot processor end.");
     }
 
     /**
