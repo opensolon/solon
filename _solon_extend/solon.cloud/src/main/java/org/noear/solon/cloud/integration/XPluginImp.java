@@ -47,7 +47,9 @@ public class XPluginImp implements Plugin , InitializingBean {
 
         if (CloudClient.discovery() != null) {
             //服务注册
-            CloudClient.discoveryPush();
+            if(NativeDetector.isAotRuntime() == false) {
+                CloudClient.discoveryPush();
+            }
 
             //设置负载工厂
             Bridge.upstreamFactorySet(CloudClient.loadBalance());
@@ -89,6 +91,10 @@ public class XPluginImp implements Plugin , InitializingBean {
     @Override
     public void prestop() throws Throwable {
         if (Solon.cfg().stopSafe() == false) {
+            return;
+        }
+
+        if(NativeDetector.isAotRuntime()){
             return;
         }
 
