@@ -2,6 +2,7 @@ package org.noear.solon;
 
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.JarClassLoader;
+import org.noear.solon.core.NativeDetector;
 import org.noear.solon.core.NvMap;
 import org.noear.solon.core.event.AppPrestopEndEvent;
 import org.noear.solon.core.event.AppStopEndEvent;
@@ -165,11 +166,13 @@ public class Solon {
 
 
         //5.初始化安全停止
-        if (app.cfg().stopSafe()) {
-            //添加关闭勾子
-            Runtime.getRuntime().addShutdownHook(new Thread(() -> Solon.stop0(false, app.cfg().stopDelay())));
-        } else {
-            Runtime.getRuntime().addShutdownHook(new Thread(() -> Solon.stop0(false, 0)));
+        if(NativeDetector.isAotRuntime() == false) {
+            if (app.cfg().stopSafe()) {
+                //添加关闭勾子
+                Runtime.getRuntime().addShutdownHook(new Thread(() -> Solon.stop0(false, app.cfg().stopDelay())));
+            } else {
+                Runtime.getRuntime().addShutdownHook(new Thread(() -> Solon.stop0(false, 0)));
+            }
         }
 
         //启动完成

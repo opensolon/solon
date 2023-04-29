@@ -55,7 +55,7 @@ public class SolonAotProcessor {
 
     public static void main(String[] args) throws Exception {
 
-        LogUtil.global().info("aot processor start, args: " + Arrays.toString(args));
+        LogUtil.global().info("Aot processor start, args: " + Arrays.toString(args));
 
         int requiredArgs = 5;
         if (args.length < requiredArgs) {
@@ -126,6 +126,7 @@ public class SolonAotProcessor {
         addSerializationConfig(nativeMetadata);
 
         Solon.stopBlock(false, -1);
+
         LogUtil.global().info("Aot processor end.");
     }
 
