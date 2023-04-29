@@ -20,11 +20,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.lang.reflect.Method;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
@@ -193,7 +189,9 @@ public class SolonAotProcessor {
      */
     private void addNativeImage(RuntimeNativeMetadata nativeMetadata) {
         try {
-            List<String> args = getDefaultNativeImageArguments(nativeMetadata.getApplicationClassName());
+            Set<String> args = getDefaultNativeImageArguments(nativeMetadata.getApplicationClassName());
+            args.addAll(nativeMetadata.getArgs());
+
             StringBuilder sb = new StringBuilder();
             sb.append("Args = ");
             sb.append(String.join(String.format(" \\%n"), args));
@@ -273,8 +271,8 @@ public class SolonAotProcessor {
         }
     }
 
-    private List<String> getDefaultNativeImageArguments(String applicationClassName) {
-        List<String> args = new ArrayList<>();
+    private Set<String> getDefaultNativeImageArguments(String applicationClassName) {
+        Set<String> args = new TreeSet<>();
         args.add("-H:Class=" + applicationClassName);
         args.add("--report-unsupported-elements-at-runtime");
         args.add("--no-fallback");

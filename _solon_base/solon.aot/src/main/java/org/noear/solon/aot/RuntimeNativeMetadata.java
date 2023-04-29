@@ -34,8 +34,12 @@ public class RuntimeNativeMetadata {
     private final Options jsonOptions = Options.def().add(Feature.PrettyFormat).add(Feature.OrderedField);
 
     private final Map<String, ReflectionHints> reflection = new LinkedHashMap<>();
-
+    private final Set<String> args = new TreeSet<>();
     private final List<ResourceHint> includes = new ArrayList<>();
+
+    public Set<String> getArgs() {
+        return args;
+    }
 
     public List<ResourceHint> getIncludes() {
         return includes;
@@ -54,6 +58,20 @@ public class RuntimeNativeMetadata {
 
     public void setApplicationClassName(String applicationClassName) {
         this.applicationClassName = applicationClassName;
+    }
+
+    /**
+     * 注册参数
+     *
+     * @param args 参数
+     * @return {@code this}
+     */
+    public RuntimeNativeMetadata registerArg(String... args) {
+        for (String arg : args) {
+            this.args.add(arg);
+        }
+
+        return this;
     }
 
     /**
