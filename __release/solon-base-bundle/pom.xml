@@ -47,5 +47,7 @@
         <module>../../_solon_base/solon.health.detector</module>
 
         <module>../../_solon_base/solon.hotplug</module>
+
+        <module>../../_native/solon.native.okhttp</module>
     </modules>
 </project>
