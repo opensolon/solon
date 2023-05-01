@@ -16,6 +16,7 @@
 * 调整 solon aot 整体功能已完成
 * 调整 mybatis 适配的环境id规则保持也数据源bean同名
 * 调整 Fastjson2Serializer 增加内部的上下文复用
+* 调整 路径分析器添加区分大小写的控制
 * 修复 native 运行时，可能出现找不到资源文件而报错
 * mybatis-flex 升为 1.2.0
 * wood 升为 1.1.1
