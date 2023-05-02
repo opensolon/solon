@@ -23,8 +23,10 @@ public class VarGather implements Runnable {
     private boolean done;
     //完成时
     private Consumer<Object[]> onDone;
+    private boolean requireRun;
 
-    public VarGather(int varSize, Consumer<Object[]> onDone) {
+    public VarGather(boolean requireRun, int varSize, Consumer<Object[]> onDone) {
+        this.requireRun = requireRun;
         this.onDone = onDone;
         this.varSize = varSize;
         this.vars = new ArrayList<>(varSize);
@@ -58,8 +60,8 @@ public class VarGather implements Runnable {
 
     /**
      * 检测
-     * */
-    public void check() throws Exception{
+     */
+    public void check() throws Exception {
         if (done) {
             return;
         }
@@ -74,13 +76,15 @@ public class VarGather implements Runnable {
             }
         }
 
-        //补触 onDone
-        List<Object> args = new ArrayList<>(vars.size());
-        for (VarHolder p1 : vars) {
-            args.add(p1.getValue());
-        }
+        if (requireRun) {
+            //补触 onDone
+            List<Object> args = new ArrayList<>(vars.size());
+            for (VarHolder p1 : vars) {
+                args.add(p1.getValue());
+            }
 
-        done = true;
-        onDone.accept(args.toArray());
+            done = true;
+            onDone.accept(args.toArray());
+        }
     }
 }

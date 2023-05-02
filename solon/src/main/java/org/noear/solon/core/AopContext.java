@@ -333,7 +333,7 @@ public class AopContext extends BeanContainer {
                 RunUtil.runOrThrow(initBean::afterInjection);
             } else {
                 //需要注入（可能）
-                VarGather gather = new VarGather(fwList.size(), (args2) -> {
+                VarGather gather = new VarGather(true, fwList.size(), (args2) -> {
                     RunUtil.runOrThrow(initBean::afterInjection);
                 });
 
@@ -578,7 +578,7 @@ public class AopContext extends BeanContainer {
             tryBuildBeanDo(anno, mWrap, bw, new Object[]{});
         } else {
             //1.构建参数
-            VarGather gather = new VarGather(size2, (args2) -> {
+            VarGather gather = new VarGather(false, size2, (args2) -> {
                 //变量收集完成后，会回调此处
                 RunUtil.runOrThrow(() -> tryBuildBeanDo(anno, mWrap, bw, args2));
             });
