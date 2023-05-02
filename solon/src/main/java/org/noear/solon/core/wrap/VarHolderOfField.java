@@ -21,6 +21,7 @@ public class VarHolderOfField implements VarHolder {
     protected final AopContext ctx;
 
     protected Object val;
+    protected boolean required = false;
     protected boolean done;
     protected Runnable onDone;
 
@@ -94,5 +95,15 @@ public class VarHolderOfField implements VarHolder {
 
     public boolean isDone() {
         return done;
+    }
+
+    @Override
+    public boolean required() {
+        return required;
+    }
+
+    @Override
+    public void required(boolean required) {
+        this.required = required;
     }
 }

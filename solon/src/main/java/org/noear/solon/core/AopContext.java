@@ -45,6 +45,7 @@ public class AopContext extends BeanContainer {
     private final Set<RankEntity<LifecycleBean>> lifecycleBeans = new HashSet<>();
 
     private final Map<Method, MethodWrap> methodCached = new HashMap<>();
+    private final Set<VarGather> gatherSet = new HashSet<>();
 
 
     public MethodWrap methodGet(Method method) {
@@ -336,6 +337,10 @@ public class AopContext extends BeanContainer {
                     RunUtil.runOrThrow(initBean::afterInjection);
                 });
 
+                //添加到集合
+                gatherSet.add(gather);
+
+                //添加要收集的字段
                 for (FieldWrap fw : fwList) {
                     VarHolder varH = fw.holder(this, obj, gather);
                     gather.add(varH);
@@ -578,7 +583,10 @@ public class AopContext extends BeanContainer {
                 RunUtil.runOrThrow(() -> tryBuildBeanDo(anno, mWrap, bw, args2));
             });
 
-            //1.1.添加要收集的参数；并为参数注入（注入是异步的；全部完成后，VarGather 会回调）
+            //1.1.登录到集合
+            gatherSet.add(gather);
+
+            //1.2.添加要收集的参数；并为参数注入（注入是异步的；全部完成后，VarGather 会回调）
             for (ParamWrap pw : mWrap.getParamWraps()) {
                 VarHolder varH = new VarHolderOfParam(bw.context(), pw.getParameter(), gather);
                 gather.add(varH);
@@ -721,6 +729,10 @@ public class AopContext extends BeanContainer {
         started = true;
 
         try {
+            for(VarGather gather : gatherSet){
+                gather.check();
+            }
+
             //执行生命周期bean //支持排序
             List<RankEntity<LifecycleBean>> beans = new ArrayList<>(lifecycleBeans);
             beans.sort(Comparator.comparingInt(f -> f.index));

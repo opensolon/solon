@@ -21,6 +21,7 @@ public class VarHolderOfParam implements VarHolder {
 
     protected Object val;
     protected boolean done;
+    protected boolean required = false;
     protected Runnable onDone;
 
     public VarHolderOfParam(AopContext ctx, Parameter p, Runnable onDone) {
@@ -84,5 +85,15 @@ public class VarHolderOfParam implements VarHolder {
 
     public boolean isDone() {
         return done;
+    }
+
+    @Override
+    public boolean required() {
+        return required;
+    }
+
+    @Override
+    public void required(boolean required) {
+        this.required = required;
     }
 }

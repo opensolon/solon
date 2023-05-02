@@ -573,6 +573,7 @@ public abstract class BeanContainer {
 
     protected void beanInject(VarHolder varH, String name, boolean required, boolean autoRefreshed) {
         try {
+            varH.required(required);
             beanInjectDo(varH, name, required, autoRefreshed);
         } catch (InjectionException e) {
             throw e;

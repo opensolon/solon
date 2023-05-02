@@ -14,5 +14,6 @@ import java.lang.annotation.*;
 @Documented
 public @interface VaultInject {
     String value();
+    boolean required() default true;
     boolean autoRefreshed() default false;
 }

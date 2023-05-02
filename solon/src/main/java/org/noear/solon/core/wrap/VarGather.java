@@ -1,10 +1,8 @@
 package org.noear.solon.core.wrap;
 
 import org.noear.solon.core.AopContext;
-import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.VarHolder;
 
-import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -18,13 +16,16 @@ import java.util.function.Consumer;
  * */
 public class VarGather implements Runnable {
     //变量
-    List<VarHolder> vars;
-    int varSize;
+    private List<VarHolder> vars;
+    //变量数量
+    private int varSize;
+    //完成的
+    private boolean done;
     //完成时
-    Consumer<Object[]> done;
+    private Consumer<Object[]> onDone;
 
-    public VarGather(int varSize, Consumer<Object[]> done) {
-        this.done = done;
+    public VarGather(int varSize, Consumer<Object[]> onDone) {
+        this.onDone = onDone;
         this.varSize = varSize;
         this.vars = new ArrayList<>(varSize);
     }
@@ -51,6 +52,35 @@ public class VarGather implements Runnable {
             args.add(p1.getValue());
         }
 
-        done.accept(args.toArray());
+        done = true;
+        onDone.accept(args.toArray());
+    }
+
+    /**
+     * 检测
+     * */
+    public void check() throws Exception{
+        if (done) {
+            return;
+        }
+
+        if (vars.size() != varSize) {
+            return;
+        }
+
+        for (VarHolder p1 : vars) {
+            if (p1.isDone() == false && p1.required()) {
+                throw new IllegalStateException("Injection failure: " + p1.getFullName());
+            }
+        }
+
+        //补触 onDone
+        List<Object> args = new ArrayList<>(vars.size());
+        for (VarHolder p1 : vars) {
+            args.add(p1.getValue());
+        }
+
+        done = true;
+        onDone.accept(args.toArray());
     }
 }
