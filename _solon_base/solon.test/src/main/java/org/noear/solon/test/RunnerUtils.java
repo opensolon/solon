@@ -83,6 +83,9 @@ public class RunnerUtils {
         //设置代理(把 final 排除掉)
         if (Modifier.isFinal(tmp.getClass().getModifiers()) == false) {
             beanWrap.proxySet(BeanProxy.getGlobal());
+            if(beanWrap.raw() != null){
+                aopContext.beanInject(beanWrap.raw());
+            }
         }
         //重新获取bean
         tmp = beanWrap.get();

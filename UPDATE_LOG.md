@@ -9,13 +9,17 @@
 * 提醒1：之前没有使用弃用接口的，可以直接升级 <br>
 * 提醒2：有使用弃用接口的。建议先升级到 1.12.4；替换弃用代码后，再升级到 2.0.0
 
-### 2.2.14
+### 2.2.15
 * 增加 @Inject 注入 bean 的 required 支持???
 * 增加 afterInjection() 后所有 bean 必然可用的支持???
+
+### 2.2.14
+* 增加 afterInjection() 对非必须注入的支持!!!
 * 增加 okhttp 原生支持配置
 * 增加 solon.scheduling.quartz 反射原生元信息配置
 * 增加 water-solon-cloud-plugin 原生编译配置
 * 增加 solon aot 整体功能实现
+* 调整 solon.test 增加代理类的字段注入
 * 调整 solon.proxy.apt 的代理生成能力，转移到 solon.aot
 * 调整 solon aot 时，取消 Runtime.getRuntime().addShutdownHook
 * 调整 solon cloud 在 aot 时不做注册处理
