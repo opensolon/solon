@@ -15,12 +15,14 @@
 
 ### 2.2.14
 * 新增 solon.native.okhttp 插件
-* wdn w afterInjection() 对注入的检测及非必须注入的支持
+* 增加 afterInjection() 对注入的检测及非必须注入的支持
 * 增加 @Bean demo(...) 对注入的检测及非必须注入的支持
 * 增加 okhttp 原生编译支持配置
 * 增加 solon.scheduling.quartz 原生编译支持配置
 * 增加 water-solon-cloud-plugin 原生编译支持配置
 * 增加 solon.aot 功能总体上实现（细节优需优化）
+* 增加 VarGater::check 接口，用于在容器启动时做收集检测
+* 增加 Router::caseSensitive 接口，用于设定区分大小写
 * 调整 solon.test 增加代理类的字段注入
 * 调整 solon.proxy.apt 的代理生成能力，转移到 solon.aot
 * 调整 solon aot 时，取消 Runtime.getRuntime().addShutdownHook
