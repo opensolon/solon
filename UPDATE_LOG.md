@@ -14,12 +14,13 @@
 * 增加 afterInjection() 后所有 bean 必然可用的支持???
 
 ### 2.2.14
-* 增加 afterInjection() 对非必须注入的触发及检测
-* 增加 @Bean demo(...) 对非必须注入的触发及检测
-* 增加 okhttp 原生支持配置
-* 增加 solon.scheduling.quartz 反射原生元信息配置
-* 增加 water-solon-cloud-plugin 原生编译配置
-* 增加 solon aot 整体功能实现
+* 新增 solon.native.okhttp 插件
+* wdn w afterInjection() 对注入的检测及非必须注入的支持
+* 增加 @Bean demo(...) 对注入的检测及非必须注入的支持
+* 增加 okhttp 原生编译支持配置
+* 增加 solon.scheduling.quartz 原生编译支持配置
+* 增加 water-solon-cloud-plugin 原生编译支持配置
+* 增加 solon.aot 功能总体上实现（细节优需优化）
 * 调整 solon.test 增加代理类的字段注入
 * 调整 solon.proxy.apt 的代理生成能力，转移到 solon.aot
 * 调整 solon aot 时，取消 Runtime.getRuntime().addShutdownHook
@@ -28,6 +29,7 @@
 * 调整 Fastjson2Serializer 增加内部的上下文复用
 * 调整 solon 路径分析器添加区分大小写的控制
 * 调整 solon-maven-plugin 打包时，排除 provided 的包；支持配置 include 和 exclude 配置
+* 调整 sa-token-solon-plugin 全局过滤器的 BeforeAuth 认证设为不受 includeList 与 excludeList 的限制，所有请求都会进入
 * 修复 native 运行时，可能出现找不到资源文件而报错
 * mybatis-flex 升为 1.2.0
 * wood 升为 1.1.1
