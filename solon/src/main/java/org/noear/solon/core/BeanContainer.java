@@ -742,6 +742,8 @@ public abstract class BeanContainer {
                     if(required){
                         throw new InjectionException("Missing required property: '" +name+"', config injection failed: " + varH.getFullName());
                     }
+
+                    varH.setValue(null); //用于触发事件
                 } else {
                     //尝试转为实体
                     Properties val0 = cfg().getProp(name);
@@ -753,6 +755,8 @@ public abstract class BeanContainer {
                         if(required){
                             throw new InjectionException("Missing required property: '" +name+"', config injection failed: " + varH.getFullName());
                         }
+
+                        varH.setValue(null); //用于触发事件
                     }
                 }
             } else {

@@ -14,7 +14,7 @@
 * 增加 afterInjection() 后所有 bean 必然可用的支持???
 
 ### 2.2.14
-* 增加 afterInjection() 对非必须注入的支持!!!
+* 增加 afterInjection() 对 @Inject 配置非必须注入的触发支持
 * 增加 okhttp 原生支持配置
 * 增加 solon.scheduling.quartz 反射原生元信息配置
 * 增加 water-solon-cloud-plugin 原生编译配置
