@@ -119,9 +119,10 @@ public class SolonAotProcessor {
         // 添加 proxy-config.json
         addJdkProxyConfig(metadata);
 
-        Solon.stopBlock(false, -1);
-
         LogUtil.global().info("Aot processor end.");
+
+        // 正常退出
+        Solon.stopBlock(true, -1, 0);
     }
 
 
