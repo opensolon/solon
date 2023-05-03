@@ -164,6 +164,24 @@ public abstract class BeanContainer {
         });
     }
 
+    private void entityAdd(Class<?> type, ParameterizedType genericType) {
+        if (NativeDetector.isAotRuntime()) {
+            if (type.getName().startsWith("java.") == false) {
+                entitySet.add(type);
+            }
+
+            if (genericType != null) {
+                for (Type type1 : genericType.getActualTypeArguments()) {
+                    if (type1 instanceof Class) {
+                        if (type1.getTypeName().startsWith("java.") == false) {
+                            entitySet.add((Class<?>) type1);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     /**
      * 添加 bean builder, injector, extractor
      */
@@ -640,7 +658,7 @@ public abstract class BeanContainer {
                 } else {
                     Object val2 = PropsConverter.global().convert(val, null, varH.getType(), varH.getGenericType());
                     varH.setValue(val2);
-                    entitySet.add(varH.getType());
+                    entityAdd(varH.getType(), varH.getGenericType());
                 }
             }
         } else if (name.startsWith("${")) {
@@ -758,6 +776,7 @@ public abstract class BeanContainer {
                         //如果找到配置了
                         Object val2 = PropsConverter.global().convert(val0, null, pt, varH.getGenericType());
                         varH.setValue(val2);
+                        entityAdd(varH.getType(), varH.getGenericType());
                     }else{
                         if(required){
                             throw new InjectionException("Missing required property: '" +name+"', config injection failed: " + varH.getFullName());
@@ -769,7 +788,7 @@ public abstract class BeanContainer {
             } else {
                 Object val2 = ConvertUtil.to(varH.getType(), val);
                 varH.setValue(val2);
-                entitySet.add(varH.getType());
+                entityAdd(varH.getType(), varH.getGenericType());
             }
         }
     }
