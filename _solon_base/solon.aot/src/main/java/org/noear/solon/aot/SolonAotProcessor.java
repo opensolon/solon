@@ -7,18 +7,26 @@ import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.aot.graalvm.GraalvmUtil;
 import org.noear.solon.aot.hint.ExecutableMode;
+import org.noear.solon.aot.hint.MemberCategory;
 import org.noear.solon.aot.hint.ResourceHint;
 import org.noear.solon.aot.proxy.ProxyClassGenerator;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.NativeDetector;
 import org.noear.solon.core.PluginEntity;
+import org.noear.solon.core.handle.Action;
+import org.noear.solon.core.handle.Endpoint;
+import org.noear.solon.core.handle.Handler;
+import org.noear.solon.core.route.Routing;
 import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.core.util.ScanUtil;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.io.Serializable;
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -144,7 +152,7 @@ public class SolonAotProcessor {
             Class<?> clz = beanWrap.clz();
 
             //如果是接口类型，则不处理（如果有需要手动处理）
-            if(clz.isInterface()) {
+            if (clz.isInterface()) {
                 return;
             }
 
@@ -152,7 +160,7 @@ public class SolonAotProcessor {
             beanCount.getAndIncrement();
 
             //生成代理
-            if(beanWrap.proxy() != null){
+            if (beanWrap.proxy() != null) {
                 proxyClassGenerator.generateCode(settings, clz);
             }
 
@@ -165,9 +173,39 @@ public class SolonAotProcessor {
             beanNativeProcessor.processBeanFields(nativeMetadata, clz);
         });
 
+        //for
         context.methodForeach(methodWrap -> {
             beanNativeProcessor.processMethod(nativeMetadata, methodWrap.getMethod());
+
+            Class<?> returnType = methodWrap.getReturnType();
+            if (returnType.getName().startsWith("java.") == false && Serializable.class.isAssignableFrom(returnType)) {
+                //是 Serializable 的做自动注册（不则，怕注册太多了）
+                nativeMetadata.registerSerialization(returnType);
+            }
+
+            Type genericReturnType = methodWrap.getGenericReturnType();
+            if (genericReturnType instanceof ParameterizedType) {
+                for (Type arg1 : ((ParameterizedType) genericReturnType).getActualTypeArguments()) {
+                    if (arg1 instanceof Class) {
+                        Class<?> arg1c = (Class<?>) arg1;
+                        if (arg1c.getName().startsWith("java.") == false && Serializable.class.isAssignableFrom(arg1c)) {
+                            //是 Serializable 的做自动注册（不则，怕注册太多了）
+                            nativeMetadata.registerSerialization(arg1c);
+                        }
+                    }
+                }
+            }
         });
+
+        //for @Inject(${..}) clz
+        context.entityForeach(clz -> {
+            if(clz.getName().startsWith("java.") == false) {
+                nativeMetadata.registerReflection(clz, MemberCategory.INVOKE_DECLARED_CONSTRUCTORS,
+                        MemberCategory.INVOKE_PUBLIC_METHODS);
+            }
+        });
+
+
         LogUtil.global().info("Aot process bean, bean size: " + beanCount.get());
     }
 

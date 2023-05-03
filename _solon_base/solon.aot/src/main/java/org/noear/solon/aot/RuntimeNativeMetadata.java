@@ -47,7 +47,7 @@ public class RuntimeNativeMetadata {
 
     private final List<ResourceHint> excludes = new ArrayList<>();
 
-    private final List<SerializationHint> serialization = new ArrayList<>();
+    private final Set<SerializationHint> serialization = new LinkedHashSet<>();
 
 
     private String applicationClassName;

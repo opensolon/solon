@@ -11,6 +11,7 @@ import org.noear.solon.core.exception.InjectionException;
 import org.noear.solon.core.handle.HandlerLoader;
 import org.noear.solon.core.util.ConvertUtil;
 import org.noear.solon.core.util.ResourceUtil;
+import org.noear.solon.core.wrap.MethodWrap;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
@@ -83,6 +84,8 @@ public abstract class BeanContainer {
      */
     private final Map<Class<?>, Class<?>> clzMapping = new HashMap<>();
 
+    private final Set<Class<?>> entitySet = new HashSet<>();
+
     //启动时写入
     /**
      * bean 构建器
@@ -119,6 +122,8 @@ public abstract class BeanContainer {
 
         clzMapping.clear();
         attrs.clear();
+
+        entitySet.clear();
 
         wrapExternalConsumers.clear();
 
@@ -635,6 +640,7 @@ public abstract class BeanContainer {
                 } else {
                     Object val2 = PropsConverter.global().convert(val, null, varH.getType(), varH.getGenericType());
                     varH.setValue(val2);
+                    entitySet.add(varH.getType());
                 }
             }
         } else if (name.startsWith("${")) {
@@ -763,6 +769,7 @@ public abstract class BeanContainer {
             } else {
                 Object val2 = ConvertUtil.to(varH.getType(), val);
                 varH.setValue(val2);
+                entitySet.add(varH.getType());
             }
         }
     }
@@ -773,12 +780,22 @@ public abstract class BeanContainer {
     //
     /////////////////////////
 
+
+
+    /**
+     * 编历实体类(由 @Inject 产生的记录)
+     * */
+    public void entityForeach(Consumer<Class<?>> action) {
+        entitySet.forEach(action);
+    }
+
     /**
      * 遍历bean库 (拿到的是bean包装)
      */
     public void beanForeach(BiConsumer<String, BeanWrap> action) {
         beanWrapsOfName.forEach(action);
     }
+
 
     /**
      * 遍历bean包装库

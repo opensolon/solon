@@ -77,6 +77,8 @@ public class AopContext extends BeanContainer {
         methodCached.clear();
         beanCreatedCached.clear();
 
+        gatherSet.clear();
+
         lifecycleBeans.clear();
 
         started = false;
