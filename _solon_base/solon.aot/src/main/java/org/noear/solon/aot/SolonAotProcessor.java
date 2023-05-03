@@ -143,6 +143,8 @@ public class SolonAotProcessor {
      * */
     private void processBean(AopContext context, RuntimeNativeMetadata metadata) {
         AtomicInteger beanCount = new AtomicInteger();
+
+        //for beanWrap
         context.beanForeach(beanWrap -> {
             // aot阶段产生的bean，不需要注册到 native 元数据里
             if (RuntimeNativeRegistrar.class.isAssignableFrom(beanWrap.clz())) {
@@ -173,7 +175,7 @@ public class SolonAotProcessor {
             beanNativeProcessor.processBeanFields(metadata, clz);
         });
 
-        //for
+        //for methodWrap
         context.methodForeach(methodWrap -> {
             beanNativeProcessor.processMethod(metadata, methodWrap.getMethod());
 
@@ -197,7 +199,7 @@ public class SolonAotProcessor {
             }
         });
 
-        //for @Inject(${..}) clz
+        //for @Inject(${..}) clz (entity)
         for (Class<?> clz : context.aot().getEntityTypes()) {
             if (clz.getName().startsWith("java.") == false) {
                 metadata.registerReflection(clz, MemberCategory.INVOKE_DECLARED_CONSTRUCTORS,
