@@ -103,33 +103,33 @@ public class SolonAotProcessor {
 
         AopContext context = Solon.app().context();
 
-        RuntimeNativeMetadata nativeMetadata = new RuntimeNativeMetadata();
-        nativeMetadata.setApplicationClassName(applicationClass.getCanonicalName());
+        RuntimeNativeMetadata metadata = new RuntimeNativeMetadata();
+        metadata.setApplicationClassName(applicationClass.getCanonicalName());
 
         //处理 bean（生成配置、代理等...）
-        processBean(context, nativeMetadata);
+        processBean(context, metadata);
 
         List<PluginEntity> plugs = Solon.cfg().plugs();
         for (PluginEntity plug : plugs) {
-            nativeMetadata.registerDefaultConstructor(plug.getClassName());
+            metadata.registerDefaultConstructor(plug.getClassName());
         }
 
         List<RuntimeNativeRegistrar> runtimeNativeRegistrars = context.getBeansOfType(RuntimeNativeRegistrar.class);
         for (RuntimeNativeRegistrar runtimeNativeRegistrar : runtimeNativeRegistrars) {
-            runtimeNativeRegistrar.register(context, nativeMetadata);
+            runtimeNativeRegistrar.register(context, metadata);
         }
 
 
-        addNativeImage(nativeMetadata);
+        addNativeImage(metadata);
 
         // 添加 resource-config.json
-        addResourceConfig(nativeMetadata);
+        addResourceConfig(metadata);
         // 添加 reflect-config.json
-        addReflectConfig(nativeMetadata);
+        addReflectConfig(metadata);
         // 添加 serialization-config.json
-        addSerializationConfig(nativeMetadata);
+        addSerializationConfig(metadata);
         // 添加 proxy-config.json
-        addJdkProxyConfig(nativeMetadata);
+        addJdkProxyConfig(metadata);
 
         Solon.stopBlock(false, -1);
 
@@ -139,7 +139,7 @@ public class SolonAotProcessor {
     /**
      * 处理 bean（生成配置、代理等...）
      * */
-    private void processBean(AopContext context, RuntimeNativeMetadata nativeMetadata) {
+    private void processBean(AopContext context, RuntimeNativeMetadata metadata) {
         AtomicInteger beanCount = new AtomicInteger();
         context.beanForeach(beanWrap -> {
             // aot阶段产生的bean，不需要注册到 native 元数据里
@@ -164,21 +164,21 @@ public class SolonAotProcessor {
 
             //注册信息（构造函数，初始化函数等...）
             if (beanWrap.clzInit() != null) {
-                nativeMetadata.registerMethod(beanWrap.clzInit(), ExecutableMode.INVOKE);
+                metadata.registerMethod(beanWrap.clzInit(), ExecutableMode.INVOKE);
             }
 
-            beanNativeProcessor.processBean(nativeMetadata, clz, beanWrap.proxy() != null);
-            beanNativeProcessor.processBeanFields(nativeMetadata, clz);
+            beanNativeProcessor.processBean(metadata, clz, beanWrap.proxy() != null);
+            beanNativeProcessor.processBeanFields(metadata, clz);
         });
 
         //for
         context.methodForeach(methodWrap -> {
-            beanNativeProcessor.processMethod(nativeMetadata, methodWrap.getMethod());
+            beanNativeProcessor.processMethod(metadata, methodWrap.getMethod());
 
             Class<?> returnType = methodWrap.getReturnType();
             if (returnType.getName().startsWith("java.") == false && Serializable.class.isAssignableFrom(returnType)) {
                 //是 Serializable 的做自动注册（不则，怕注册太多了）
-                nativeMetadata.registerSerialization(returnType);
+                metadata.registerSerialization(returnType);
             }
 
             Type genericReturnType = methodWrap.getGenericReturnType();
@@ -188,7 +188,7 @@ public class SolonAotProcessor {
                         Class<?> arg1c = (Class<?>) arg1;
                         if (arg1c.getName().startsWith("java.") == false && Serializable.class.isAssignableFrom(arg1c)) {
                             //是 Serializable 的做自动注册（不则，怕注册太多了）
-                            nativeMetadata.registerSerialization(arg1c);
+                            metadata.registerSerialization(arg1c);
                         }
                     }
                 }
@@ -198,7 +198,7 @@ public class SolonAotProcessor {
         //for @Inject(${..}) clz
         context.entityForeach(clz -> {
             if(clz.getName().startsWith("java.") == false) {
-                nativeMetadata.registerReflection(clz, MemberCategory.INVOKE_DECLARED_CONSTRUCTORS,
+                metadata.registerReflection(clz, MemberCategory.INVOKE_DECLARED_CONSTRUCTORS,
                         MemberCategory.INVOKE_PUBLIC_METHODS);
             }
         });
@@ -207,8 +207,8 @@ public class SolonAotProcessor {
         LogUtil.global().info("Aot process bean, bean size: " + beanCount.get());
     }
 
-    private void addSerializationConfig(RuntimeNativeMetadata nativeMetadata) {
-        String serializationJson = nativeMetadata.toSerializationJson();
+    private void addSerializationConfig(RuntimeNativeMetadata metadata) {
+        String serializationJson = metadata.toSerializationJson();
         if (Utils.isEmpty(serializationJson)) {
             return;
         }
@@ -221,8 +221,8 @@ public class SolonAotProcessor {
         }
     }
 
-    private void addJdkProxyConfig(RuntimeNativeMetadata nativeMetadata) {
-        String jdkProxyJson = nativeMetadata.toJdkProxyJson();
+    private void addJdkProxyConfig(RuntimeNativeMetadata metadata) {
+        String jdkProxyJson = metadata.toJdkProxyJson();
         if (Utils.isEmpty(jdkProxyJson)) {
             return;
         }
@@ -238,10 +238,10 @@ public class SolonAotProcessor {
     /**
      * 添加 native-image.properties
      */
-    private void addNativeImage(RuntimeNativeMetadata nativeMetadata) {
+    private void addNativeImage(RuntimeNativeMetadata metadata) {
         try {
-            Set<String> args = getDefaultNativeImageArguments(nativeMetadata.getApplicationClassName());
-            args.addAll(nativeMetadata.getArgs());
+            Set<String> args = getDefaultNativeImageArguments(metadata.getApplicationClassName());
+            args.addAll(metadata.getArgs());
 
             StringBuilder sb = new StringBuilder();
             sb.append("Args = ");
@@ -260,16 +260,16 @@ public class SolonAotProcessor {
      *
      * @see GraalvmUtil#scanResource(String, Predicate, Set)
      */
-    private void addResourceConfig(RuntimeNativeMetadata nativeMetadata) {
+    private void addResourceConfig(RuntimeNativeMetadata metadata) {
         try {
-            nativeMetadata.registerResourceInclude("app.*\\.yml")
+            metadata.registerResourceInclude("app.*\\.yml")
                     .registerResourceInclude("app.*\\.properties")
                     .registerResourceInclude("META-INF/.*")
                     .registerResourceInclude("WEB-INF/.*")
                     .registerResourceInclude("static/.*")
                     .registerResourceInclude("templates/.*");
 
-            List<ResourceHint> includes = nativeMetadata.getIncludes();
+            List<ResourceHint> includes = metadata.getIncludes();
             List<String> allResources = new ArrayList<>();
             for (ResourceHint include : includes) {
                 for (String allowResource : ALLOW_RESOURCES) {
@@ -289,7 +289,7 @@ public class SolonAotProcessor {
             solonResourceFile.close();
 
             FileWriter fileWriter = getFileWriter("resource-config.json");
-            fileWriter.write(nativeMetadata.toResourcesJson());
+            fileWriter.write(metadata.toResourcesJson());
             fileWriter.close();
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -300,25 +300,25 @@ public class SolonAotProcessor {
     /**
      * 添加 reflect-config.json
      */
-    private void addReflectConfig(RuntimeNativeMetadata nativeMetadata) {
+    private void addReflectConfig(RuntimeNativeMetadata metadata) {
         try {
-            addReflectConfigDo(nativeMetadata, "org.noear.solon.extend.impl.PropsLoaderExt");
-            addReflectConfigDo(nativeMetadata, "org.noear.solon.extend.impl.PropsConverterExt");
-            addReflectConfigDo(nativeMetadata, "org.noear.solon.extend.impl.AppClassLoaderExt");
-            addReflectConfigDo(nativeMetadata, "org.noear.solon.extend.impl.ReflectionExt");
-            addReflectConfigDo(nativeMetadata, "org.noear.solon.extend.impl.ResourceScannerExt");
+            addReflectConfigDo(metadata, "org.noear.solon.extend.impl.PropsLoaderExt");
+            addReflectConfigDo(metadata, "org.noear.solon.extend.impl.PropsConverterExt");
+            addReflectConfigDo(metadata, "org.noear.solon.extend.impl.AppClassLoaderExt");
+            addReflectConfigDo(metadata, "org.noear.solon.extend.impl.ReflectionExt");
+            addReflectConfigDo(metadata, "org.noear.solon.extend.impl.ResourceScannerExt");
 
             FileWriter fileWriter = getFileWriter("reflect-config.json");
-            fileWriter.write(nativeMetadata.toReflectionJson());
+            fileWriter.write(metadata.toReflectionJson());
             fileWriter.close();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
-    private void addReflectConfigDo(RuntimeNativeMetadata nativeMetadata, String className){
+    private void addReflectConfigDo(RuntimeNativeMetadata metadata, String className){
         if(ClassUtil.loadClass(className) != null){
-            nativeMetadata.registerDefaultConstructor(className);
+            metadata.registerDefaultConstructor(className);
         }
     }
 
