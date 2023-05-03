@@ -24,6 +24,8 @@ import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.nio.file.Paths;
+import java.sql.Driver;
+import java.sql.DriverManager;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
@@ -208,6 +210,12 @@ public class SolonAotProcessor {
             if (clz.getName().startsWith("java.") == false) {
                 metadata.registerJdkProxy(clz);
             }
+        }
+
+        //for sql Driver
+        Enumeration<Driver> drivers = DriverManager.getDrivers();
+        while (drivers.hasMoreElements()){
+            metadata.registerReflection(drivers.nextElement().getClass(), MemberCategory.INVOKE_DECLARED_CONSTRUCTORS);
         }
 
 
