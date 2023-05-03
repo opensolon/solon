@@ -4,7 +4,6 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.noear.solon.Solon;
-import org.noear.solon.aot.BeanNativeProcessorDefault;
 import org.noear.solon.aot.RuntimeNativeMetadata;
 import org.noear.solon.aot.hint.ExecutableMode;
 import org.noear.solon.aot.hint.MemberCategory;

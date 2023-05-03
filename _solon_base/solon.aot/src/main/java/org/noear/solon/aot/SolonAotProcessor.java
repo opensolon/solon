@@ -6,10 +6,7 @@ import org.noear.snack.core.Options;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.aot.graalvm.GraalvmUtil;
-import org.noear.solon.aot.hint.ExecutableMode;
-import org.noear.solon.aot.hint.MemberCategory;
 import org.noear.solon.aot.hint.ResourceHint;
-import org.noear.solon.aot.proxy.ProxyClassGenerator;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.core.PluginEntity;
@@ -19,15 +16,9 @@ import org.noear.solon.core.util.ScanUtil;
 
 import java.io.File;
 import java.io.FileWriter;
-import java.io.Serializable;
 import java.lang.reflect.Method;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.nio.file.Paths;
-import java.sql.Driver;
-import java.sql.DriverManager;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
@@ -38,10 +29,6 @@ import java.util.regex.Pattern;
  * @since 2023/4/11 14:11
  */
 public class SolonAotProcessor {
-    private BeanNativeProcessor beanNativeProcessor;
-
-    private final ProxyClassGenerator proxyClassGenerator;
-
     private final Options jsonOptions = Options.def().add(Feature.PrettyFormat).add(Feature.OrderedField);
 
     private final Settings settings;
@@ -56,7 +43,6 @@ public class SolonAotProcessor {
         this.settings = settings;
         this.applicationArgs = applicationArgs;
         this.applicationClass = applicationClass;
-        this.proxyClassGenerator = new ProxyClassGenerator();
     }
 
     public static void main(String[] args) throws Exception {
@@ -95,21 +81,21 @@ public class SolonAotProcessor {
             e.printStackTrace();
         }
 
-        //（静态扩展约定：org.noear.solon.extend.impl.XxxxExt）
-        BeanNativeProcessor ext = ClassUtil.newInstance("org.noear.solon.extend.impl.BeanNativeProcessorExt");
-        if (ext != null) {
-            beanNativeProcessor = ext;
-        } else {
-            beanNativeProcessor = new BeanNativeProcessorDefault();
-        }
 
         AopContext context = Solon.app().context();
+
+        //改为普通扩展方式
+        AopContextNativeProcessor contextNativeProcessor = context.getBean(AopContextNativeProcessor.class);
+        if(contextNativeProcessor == null){
+            contextNativeProcessor = new AopContextNativeProcessorDefault();
+        }
+
 
         RuntimeNativeMetadata metadata = new RuntimeNativeMetadata();
         metadata.setApplicationClassName(applicationClass.getCanonicalName());
 
         //处理 bean（生成配置、代理等...）
-        processBean(context, metadata);
+        contextNativeProcessor.process(context, settings, metadata);
 
         List<PluginEntity> plugs = Solon.cfg().plugs();
         for (PluginEntity plug : plugs) {
@@ -138,91 +124,6 @@ public class SolonAotProcessor {
         LogUtil.global().info("Aot processor end.");
     }
 
-    /**
-     * 处理 bean（生成配置、代理等...）
-     * */
-    private void processBean(AopContext context, RuntimeNativeMetadata metadata) {
-        AtomicInteger beanCount = new AtomicInteger();
-
-        //for beanWrap
-        context.beanForeach(beanWrap -> {
-            // aot阶段产生的bean，不需要注册到 native 元数据里
-            if (RuntimeNativeRegistrar.class.isAssignableFrom(beanWrap.clz())) {
-                return;
-            }
-
-            Class<?> clz = beanWrap.clz();
-
-            //如果是接口类型，则不处理（如果有需要手动处理）
-            if (clz.isInterface()) {
-                return;
-            }
-
-            //开始计数
-            beanCount.getAndIncrement();
-
-            //生成代理
-            if (beanWrap.proxy() != null) {
-                proxyClassGenerator.generateCode(settings, clz);
-            }
-
-            //注册信息（构造函数，初始化函数等...）
-            if (beanWrap.clzInit() != null) {
-                metadata.registerMethod(beanWrap.clzInit(), ExecutableMode.INVOKE);
-            }
-
-            beanNativeProcessor.processBean(metadata, clz, beanWrap.proxy() != null);
-            beanNativeProcessor.processBeanFields(metadata, clz);
-        });
-
-        //for methodWrap
-        context.methodForeach(methodWrap -> {
-            beanNativeProcessor.processMethod(metadata, methodWrap.getMethod());
-
-            Class<?> returnType = methodWrap.getReturnType();
-            if (returnType.getName().startsWith("java.") == false && Serializable.class.isAssignableFrom(returnType)) {
-                //是 Serializable 的做自动注册（不则，怕注册太多了）
-                metadata.registerSerialization(returnType);
-            }
-
-            Type genericReturnType = methodWrap.getGenericReturnType();
-            if (genericReturnType instanceof ParameterizedType) {
-                for (Type arg1 : ((ParameterizedType) genericReturnType).getActualTypeArguments()) {
-                    if (arg1 instanceof Class) {
-                        Class<?> arg1c = (Class<?>) arg1;
-                        if (arg1c.getName().startsWith("java.") == false && Serializable.class.isAssignableFrom(arg1c)) {
-                            //是 Serializable 的做自动注册（不则，怕注册太多了）
-                            metadata.registerSerialization(arg1c);
-                        }
-                    }
-                }
-            }
-        });
-
-        //for @Inject(${..}) clz (entity)
-        for (Class<?> clz : context.aot().getEntityTypes()) {
-            if (clz.getName().startsWith("java.") == false) {
-                metadata.registerReflection(clz, MemberCategory.INVOKE_DECLARED_CONSTRUCTORS,
-                        MemberCategory.INVOKE_PUBLIC_METHODS);
-            }
-        }
-
-        //for jdk proxy interface
-        for(Class<?> clz : context.aot().getJdkProxyTypes()) {
-            if (clz.getName().startsWith("java.") == false) {
-                metadata.registerJdkProxy(clz);
-            }
-        }
-
-        //for sql Driver
-        Enumeration<Driver> drivers = DriverManager.getDrivers();
-        while (drivers.hasMoreElements()){
-            metadata.registerReflection(drivers.nextElement().getClass(), MemberCategory.INVOKE_DECLARED_CONSTRUCTORS);
-        }
-
-
-        LogUtil.global().info("Aot process bean, bean size: " + beanCount.get());
-    }
 
     private void addSerializationConfig(RuntimeNativeMetadata metadata) {
         String serializationJson = metadata.toSerializationJson();
@@ -333,8 +234,8 @@ public class SolonAotProcessor {
         }
     }
 
-    private void addReflectConfigDo(RuntimeNativeMetadata metadata, String className){
-        if(ClassUtil.loadClass(className) != null){
+    private void addReflectConfigDo(RuntimeNativeMetadata metadata, String className) {
+        if (ClassUtil.loadClass(className) != null) {
             metadata.registerDefaultConstructor(className);
         }
     }
@@ -377,6 +278,4 @@ public class SolonAotProcessor {
     private boolean isNotEmpty(Object[] objects) {
         return !isEmpty(objects);
     }
-
-
 }
