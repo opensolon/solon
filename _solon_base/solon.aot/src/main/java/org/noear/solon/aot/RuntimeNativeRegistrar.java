@@ -13,8 +13,8 @@ public interface RuntimeNativeRegistrar {
     /**
      * aot 阶段，注册 native 运行时元信息
      *
-     * @param context        上下文
-     * @param nativeMetadata native 运行时元信息
+     * @param context  上下文
+     * @param metadata 原生运行时元信息
      */
-    void register(AopContext context, RuntimeNativeMetadata nativeMetadata);
+    void register(AopContext context, RuntimeNativeMetadata metadata);
 }
