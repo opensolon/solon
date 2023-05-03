@@ -128,6 +128,8 @@ public class SolonAotProcessor {
         addReflectConfig(nativeMetadata);
         // 添加 serialization-config.json
         addSerializationConfig(nativeMetadata);
+        // 添加 proxy-config.json
+        addJdkProxyConfig(nativeMetadata);
 
         Solon.stopBlock(false, -1);
 
@@ -213,6 +215,20 @@ public class SolonAotProcessor {
         try {
             FileWriter fileWriter = getFileWriter("serialization-config.json");
             fileWriter.write(serializationJson);
+            fileWriter.close();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void addJdkProxyConfig(RuntimeNativeMetadata nativeMetadata) {
+        String jdkProxyJson = nativeMetadata.toJdkProxyJson();
+        if (Utils.isEmpty(jdkProxyJson)) {
+            return;
+        }
+        try {
+            FileWriter fileWriter = getFileWriter("proxy-config.json");
+            fileWriter.write(jdkProxyJson);
             fileWriter.close();
         } catch (Exception e) {
             throw new RuntimeException(e);

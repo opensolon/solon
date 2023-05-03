@@ -4,12 +4,7 @@ import org.noear.snack.ONode;
 import org.noear.snack.core.Feature;
 import org.noear.snack.core.Options;
 import org.noear.solon.Utils;
-import org.noear.solon.aot.hint.ExecutableHint;
-import org.noear.solon.aot.hint.ExecutableMode;
-import org.noear.solon.aot.hint.MemberCategory;
-import org.noear.solon.aot.hint.ReflectionHints;
-import org.noear.solon.aot.hint.ResourceHint;
-import org.noear.solon.aot.hint.SerializationHint;
+import org.noear.solon.aot.hint.*;
 import org.noear.solon.core.JarClassLoader;
 import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.core.util.ScanUtil;
@@ -48,6 +43,7 @@ public class RuntimeNativeMetadata {
     private final List<ResourceHint> excludes = new ArrayList<>();
 
     private final Set<SerializationHint> serialization = new LinkedHashSet<>();
+    private final Set<JdkProxyHint> jdkProxys = new LinkedHashSet<>();
 
 
     private String applicationClassName;
@@ -69,6 +65,28 @@ public class RuntimeNativeMetadata {
     public RuntimeNativeMetadata registerArg(String... args) {
         for (String arg : args) {
             this.args.add(arg);
+        }
+
+        return this;
+    }
+
+    /**
+     * 注册 jdk 代理接口
+     * */
+    public RuntimeNativeMetadata registerJdkProxy(Class<?> type) {
+        return registerJdkProxy(type, null);
+    }
+
+    /**
+     * 注册 jdk 代理接口
+     * */
+    public RuntimeNativeMetadata registerJdkProxy(Class<?> type, String reachableType) {
+        if (type.isInterface()) {
+            JdkProxyHint proxyHint = new JdkProxyHint();
+            proxyHint.setReachableType(reachableType);
+            proxyHint.setInterfaces(Arrays.asList(type.getName()));
+
+            jdkProxys.add(proxyHint);
         }
 
         return this;
@@ -360,6 +378,28 @@ public class RuntimeNativeMetadata {
                 item.getOrNew("condition").set("typeReachable", hint.getReachableType());
             }
         }
+        return oNode.toJson();
+    }
+
+
+    public String toJdkProxyJson() {
+        if (jdkProxys.isEmpty()) {
+            return "";
+        }
+        ONode oNode = new ONode(jsonOptions).asArray();
+        for (JdkProxyHint hint : jdkProxys) {
+            if(Utils.isEmpty(hint.getInterfaces())){
+                continue;
+            }
+
+            ONode item = oNode.addNew();
+            item.set("interfaces", hint.getInterfaces());
+
+            if (Utils.isNotEmpty(hint.getReachableType())) {
+                item.getOrNew("condition").set("typeReachable", hint.getReachableType());
+            }
+        }
+
         return oNode.toJson();
     }
 
