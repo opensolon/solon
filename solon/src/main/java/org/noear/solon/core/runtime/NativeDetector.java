@@ -1,4 +1,4 @@
-package org.noear.solon.core;
+package org.noear.solon.core.runtime;
 
 /**
  * 用于检测GraalVM本机映像环境的通用委托。

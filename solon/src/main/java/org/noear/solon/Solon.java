@@ -2,7 +2,7 @@ package org.noear.solon;
 
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.JarClassLoader;
-import org.noear.solon.core.NativeDetector;
+import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.core.NvMap;
 import org.noear.solon.core.event.AppPrestopEndEvent;
 import org.noear.solon.core.event.AppStopEndEvent;

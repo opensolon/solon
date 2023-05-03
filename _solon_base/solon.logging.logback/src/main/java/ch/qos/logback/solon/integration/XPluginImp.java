@@ -8,7 +8,7 @@ import ch.qos.logback.solon.SolonConfigurator;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.AopContext;
-import org.noear.solon.core.NativeDetector;
+import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.bean.InitializingBean;
 import org.noear.solon.core.util.LogUtil;

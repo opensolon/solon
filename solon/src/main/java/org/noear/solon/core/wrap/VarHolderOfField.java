@@ -4,7 +4,6 @@ import org.noear.solon.core.AopContext;
 import org.noear.solon.core.VarHolder;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.ParameterizedType;
 
 /**
@@ -77,6 +76,8 @@ public class VarHolderOfField implements VarHolder {
     public void setValue(Object val) {
         if(val != null) {
             fw.setValue(obj, val, true);
+
+            ctx.aot().registerJdkProxyType(getType(), val);
         }
 
         this.val = val;

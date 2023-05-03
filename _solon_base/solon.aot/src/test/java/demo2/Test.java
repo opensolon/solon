@@ -3,7 +3,7 @@ package demo2;
 import org.noear.solon.Solon;
 import org.noear.solon.aot.Settings;
 import org.noear.solon.aot.proxy.ProxyClassGenerator;
-import org.noear.solon.core.NativeDetector;
+import org.noear.solon.core.runtime.NativeDetector;
 
 import java.io.File;
 import java.nio.file.Path;

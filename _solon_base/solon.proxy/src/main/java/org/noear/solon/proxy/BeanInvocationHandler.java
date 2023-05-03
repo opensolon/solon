@@ -1,7 +1,7 @@
 package org.noear.solon.proxy;
 
 import org.noear.solon.Solon;
-import org.noear.solon.core.NativeDetector;
+import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.proxy.aot.AotProxy;
 import org.noear.solon.core.AopContext;

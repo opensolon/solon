@@ -11,7 +11,7 @@ import org.noear.solon.aot.hint.MemberCategory;
 import org.noear.solon.aot.hint.ResourceHint;
 import org.noear.solon.aot.proxy.ProxyClassGenerator;
 import org.noear.solon.core.AopContext;
-import org.noear.solon.core.NativeDetector;
+import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.core.PluginEntity;
 import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.core.util.LogUtil;
@@ -196,12 +196,19 @@ public class SolonAotProcessor {
         });
 
         //for @Inject(${..}) clz
-        context.entityForeach(clz -> {
-            if(clz.getName().startsWith("java.") == false) {
+        for (Class<?> clz : context.aot().getEntityTypes()) {
+            if (clz.getName().startsWith("java.") == false) {
                 metadata.registerReflection(clz, MemberCategory.INVOKE_DECLARED_CONSTRUCTORS,
                         MemberCategory.INVOKE_PUBLIC_METHODS);
             }
-        });
+        }
+
+        //for jdk proxy interface
+        for(Class<?> clz : context.aot().getJdkProxyTypes()) {
+            if (clz.getName().startsWith("java.") == false) {
+                metadata.registerJdkProxy(clz);
+            }
+        }
 
 
         LogUtil.global().info("Aot process bean, bean size: " + beanCount.get());

@@ -9,9 +9,9 @@ import org.noear.solon.core.aspect.Interceptor;
 import org.noear.solon.core.aspect.InterceptorEntity;
 import org.noear.solon.core.exception.InjectionException;
 import org.noear.solon.core.handle.HandlerLoader;
+import org.noear.solon.core.runtime.AotCollector;
 import org.noear.solon.core.util.ConvertUtil;
 import org.noear.solon.core.util.ResourceUtil;
-import org.noear.solon.core.wrap.MethodWrap;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
@@ -31,6 +31,7 @@ public abstract class BeanContainer {
     private final Props props;
     private final ClassLoader classLoader;
     private Map<Class<?>, Object> attrs = new HashMap<>();
+    private final AotCollector aot = new AotCollector();
 
 
     public BeanContainer(ClassLoader classLoader, Props props) {
@@ -47,6 +48,10 @@ public abstract class BeanContainer {
         } else {
             return props;
         }
+    }
+
+    public AotCollector aot(){
+        return aot;
     }
 
     /**
@@ -79,12 +84,17 @@ public abstract class BeanContainer {
     private final Map<String, BeanWrap> beanWrapsOfName = new HashMap<>();
     private final Set<BeanWrap> beanWrapSet = new HashSet<>();
 
+
+    /**
+     * for Aot
+     */
+
+
     /**
      * clz mapping
      */
     private final Map<Class<?>, Class<?>> clzMapping = new HashMap<>();
 
-    private final Set<Class<?>> entitySet = new HashSet<>();
 
     //启动时写入
     /**
@@ -122,8 +132,7 @@ public abstract class BeanContainer {
 
         clzMapping.clear();
         attrs.clear();
-
-        entitySet.clear();
+        aot.clear();
 
         wrapExternalConsumers.clear();
 
@@ -164,23 +173,7 @@ public abstract class BeanContainer {
         });
     }
 
-    private void entityAdd(Class<?> type, ParameterizedType genericType) {
-        if (NativeDetector.isAotRuntime()) {
-            if (type.getName().startsWith("java.") == false) {
-                entitySet.add(type);
-            }
 
-            if (genericType != null) {
-                for (Type type1 : genericType.getActualTypeArguments()) {
-                    if (type1 instanceof Class) {
-                        if (type1.getTypeName().startsWith("java.") == false) {
-                            entitySet.add((Class<?>) type1);
-                        }
-                    }
-                }
-            }
-        }
-    }
 
     /**
      * 添加 bean builder, injector, extractor
@@ -658,7 +651,7 @@ public abstract class BeanContainer {
                 } else {
                     Object val2 = PropsConverter.global().convert(val, null, varH.getType(), varH.getGenericType());
                     varH.setValue(val2);
-                    entityAdd(varH.getType(), varH.getGenericType());
+                    aot().registerEntityType(varH.getType(), varH.getGenericType());
                 }
             }
         } else if (name.startsWith("${")) {
@@ -776,7 +769,7 @@ public abstract class BeanContainer {
                         //如果找到配置了
                         Object val2 = PropsConverter.global().convert(val0, null, pt, varH.getGenericType());
                         varH.setValue(val2);
-                        entityAdd(varH.getType(), varH.getGenericType());
+                        aot().registerEntityType(varH.getType(), varH.getGenericType());
                     }else{
                         if(required){
                             throw new InjectionException("Missing required property: '" +name+"', config injection failed: " + varH.getFullName());
@@ -788,7 +781,7 @@ public abstract class BeanContainer {
             } else {
                 Object val2 = ConvertUtil.to(varH.getType(), val);
                 varH.setValue(val2);
-                entityAdd(varH.getType(), varH.getGenericType());
+                aot().registerEntityType(varH.getType(), varH.getGenericType());
             }
         }
     }
@@ -798,15 +791,6 @@ public abstract class BeanContainer {
     // bean 遍历与查找
     //
     /////////////////////////
-
-
-
-    /**
-     * 编历实体类(由 @Inject 产生的记录)
-     * */
-    public void entityForeach(Consumer<Class<?>> action) {
-        entitySet.forEach(action);
-    }
 
     /**
      * 遍历bean库 (拿到的是bean包装)
