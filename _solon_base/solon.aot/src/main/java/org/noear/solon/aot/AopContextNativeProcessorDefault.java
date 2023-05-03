@@ -123,6 +123,9 @@ public class AopContextNativeProcessorDefault implements AopContextNativeProcess
             metadata.registerReflection(drivers.nextElement().getClass(), MemberCategory.INVOKE_DECLARED_CONSTRUCTORS);
         }
 
+        //for InvocationHandler
+        metadata.registerReflection(InvocationHandler.class, MemberCategory.INVOKE_DECLARED_METHODS);
+
 
         LogUtil.global().info("Aot process bean, bean size: " + beanCount.get());
     }
