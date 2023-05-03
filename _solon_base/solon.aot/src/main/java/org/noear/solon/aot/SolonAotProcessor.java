@@ -96,7 +96,7 @@ public class SolonAotProcessor {
         }
 
         //（静态扩展约定：org.noear.solon.extend.impl.XxxxExt）
-        BeanNativeProcessor ext = ClassUtil.newInstance("org.noear.solon.extend.impl.AopContextNativeProcessorExt");
+        BeanNativeProcessor ext = ClassUtil.newInstance("org.noear.solon.extend.impl.BeanNativeProcessorExt");
         if (ext != null) {
             beanNativeProcessor = ext;
         } else {
