@@ -117,7 +117,7 @@ public class AopContextNativeProcessorDefault implements AopContextNativeProcess
             }
         }
 
-        //for sql Driver
+        //for jdbc Driver
         Enumeration<Driver> drivers = DriverManager.getDrivers();
         while (drivers.hasMoreElements()){
             metadata.registerReflection(drivers.nextElement().getClass(), MemberCategory.INVOKE_DECLARED_CONSTRUCTORS);
