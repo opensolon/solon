@@ -4,7 +4,6 @@ import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.*;
 import org.noear.solon.core.util.LogUtil;
-import org.noear.solon.proxy.BeanProxyAot;
 import org.noear.solon.proxy.ProxyUtil;
 import org.noear.solon.annotation.ProxyComponent;
 import org.noear.solon.aspect.annotation.Dao;
@@ -15,11 +14,6 @@ public class XPluginImp implements Plugin {
     @Override
     public void start(AopContext context) {
         context.beanBuilderAdd(ProxyComponent.class, (clz, bw, anno) -> {
-            if(NativeDetector.isAotRuntime()){
-                bw.proxySet(BeanProxyAot.getGlobal());
-                return;
-            }
-
             String beanName = Utils.annoAlias(anno.value(), anno.name());
 
             ProxyUtil.binding(bw, beanName, anno.typed());
@@ -31,11 +25,6 @@ public class XPluginImp implements Plugin {
 
         //@deprecated 2.2
         context.beanBuilderAdd(Dao.class, (clz, bw, anno) -> {
-            if(NativeDetector.isAotRuntime()){
-                bw.proxySet(BeanProxyAot.getGlobal());
-                return;
-            }
-
             String beanName = Utils.annoAlias(anno.value(), anno.name());
 
             ProxyUtil.binding(bw, beanName, anno.typed());
@@ -48,11 +37,6 @@ public class XPluginImp implements Plugin {
 
         //@deprecated 2.2
         context.beanBuilderAdd(Service.class, (clz, bw, anno) -> {
-            if(NativeDetector.isAotRuntime()){
-                bw.proxySet(BeanProxyAot.getGlobal());
-                return;
-            }
-
             String beanName = Utils.annoAlias(anno.value(), anno.name());
 
             ProxyUtil.binding(bw, beanName, anno.typed());
@@ -65,11 +49,6 @@ public class XPluginImp implements Plugin {
 
         //@deprecated 2.2
         context.beanBuilderAdd(Repository.class, (clz, bw, anno) -> {
-            if(NativeDetector.isAotRuntime()){
-                bw.proxySet(BeanProxyAot.getGlobal());
-                return;
-            }
-
             String beanName = Utils.annoAlias(anno.value(), anno.name());
 
             ProxyUtil.binding(bw, beanName, anno.typed());
