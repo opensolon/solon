@@ -31,6 +31,9 @@ public class RuntimeNativeMetadata {
     private final Map<String, ReflectionHints> reflection = new LinkedHashMap<>();
     private final Set<String> args = new TreeSet<>();
     private final List<ResourceHint> includes = new ArrayList<>();
+    private final List<ResourceHint> excludes = new ArrayList<>();
+    private final Map<String, SerializationHint> serialization = new LinkedHashMap<>();
+    private final Map<String, JdkProxyHint> jdkProxys = new LinkedHashMap<>();
 
     public Set<String> getArgs() {
         return args;
@@ -39,11 +42,6 @@ public class RuntimeNativeMetadata {
     public List<ResourceHint> getIncludes() {
         return includes;
     }
-
-    private final List<ResourceHint> excludes = new ArrayList<>();
-
-    private final Set<SerializationHint> serialization = new LinkedHashSet<>();
-    private final Set<JdkProxyHint> jdkProxys = new LinkedHashSet<>();
 
 
     private String applicationClassName;
@@ -72,24 +70,30 @@ public class RuntimeNativeMetadata {
 
     /**
      * 注册 jdk 代理接口
-     * */
+     */
     public RuntimeNativeMetadata registerJdkProxy(Class<?> type) {
         return registerJdkProxy(type, null);
     }
 
     /**
      * 注册 jdk 代理接口
-     * */
+     */
     public RuntimeNativeMetadata registerJdkProxy(Class<?> type, String reachableType) {
-        if (type.isInterface()) {
-            JdkProxyHint proxyHint = new JdkProxyHint();
-            proxyHint.setReachableType(reachableType);
-            proxyHint.setInterfaces(Arrays.asList(type.getName()));
-
-            jdkProxys.add(proxyHint);
+        if (type.isInterface() && type.isAnnotation() == false) {
+            registerJdkProxyDo(type.getName(), reachableType);
         }
 
         return this;
+    }
+
+    private void registerJdkProxyDo(String typeName, String reachableType) {
+        if (jdkProxys.containsKey(typeName) == false) {
+            JdkProxyHint proxyHint = new JdkProxyHint();
+            proxyHint.setReachableType(reachableType);
+            proxyHint.setInterfaces(Arrays.asList(typeName));
+
+            jdkProxys.put(typeName, proxyHint);
+        }
     }
 
     /**
@@ -260,10 +264,12 @@ public class RuntimeNativeMetadata {
     }
 
     private void registerSerializationDo(String typeName, String reachableType) {
-        SerializationHint serializationHint = new SerializationHint();
-        serializationHint.setName(typeName);
-        serializationHint.setReachableType(reachableType);
-        serialization.add(serializationHint);
+        if (serialization.containsKey(typeName) == false) {
+            SerializationHint serializationHint = new SerializationHint();
+            serializationHint.setName(typeName);
+            serializationHint.setReachableType(reachableType);
+            serialization.put(typeName, serializationHint);
+        }
     }
 
     /**
@@ -372,7 +378,7 @@ public class RuntimeNativeMetadata {
             return "";
         }
         ONode oNode = new ONode(jsonOptions).asArray();
-        for (SerializationHint hint : serialization) {
+        for (SerializationHint hint : serialization.values()) {
             ONode item = oNode.addNew().set("name", hint.getName());
             if (Utils.isNotEmpty(hint.getReachableType())) {
                 item.getOrNew("condition").set("typeReachable", hint.getReachableType());
@@ -387,8 +393,8 @@ public class RuntimeNativeMetadata {
             return "";
         }
         ONode oNode = new ONode(jsonOptions).asArray();
-        for (JdkProxyHint hint : jdkProxys) {
-            if(Utils.isEmpty(hint.getInterfaces())){
+        for (JdkProxyHint hint : jdkProxys.values()) {
+            if (Utils.isEmpty(hint.getInterfaces())) {
                 continue;
             }
 
