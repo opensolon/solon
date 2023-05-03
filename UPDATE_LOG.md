@@ -12,6 +12,7 @@
 ### 2.2.15
 * 增加 @Inject 注入 bean 的 required 支持???
 * 增加 afterInjection() 后所有 bean 必然可用的支持???
+* 取消 solon.native.okhttp 插件
 * aot 增加配置注入实体的自动处理 和 mvc 返回可序列化类型的自动处理
 
 ### 2.2.14
