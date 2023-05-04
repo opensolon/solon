@@ -15,6 +15,7 @@ import org.noear.solon.boot.jetty.http.JtContainerInitializer;
 import org.noear.solon.boot.jetty.http.JtHttpContextHandler;
 import org.noear.solon.boot.jetty.http.JtHttpContextServletHandler;
 import org.noear.solon.boot.prop.impl.HttpServerProps;
+import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.core.util.ResourceUtil;
 
 import java.io.FileNotFoundException;
@@ -39,8 +40,8 @@ abstract class JettyServerBase implements ServerLifecycle {
      * 创建连接器（支持https）
      *
      * @since 1.6
-     * */
-    protected ServerConnector getConnector(Server server) throws RuntimeException{
+     */
+    protected ServerConnector getConnector(Server server) throws RuntimeException {
         //配置 //http://www.eclipse.org/jetty/documentation/jetty-9/index.html
         HttpConfiguration config = new HttpConfiguration();
         if (ServerProps.request_maxHeaderSize != 0) {
@@ -89,7 +90,7 @@ abstract class JettyServerBase implements ServerLifecycle {
 
 
         //添加session state 支持
-        if(Solon.app().enableSessionState()) {
+        if (Solon.app().enableSessionState()) {
             handler.setSessionHandler(new SessionHandler());
 
             if (ServerProps.session_timeout > 0) {
@@ -103,11 +104,11 @@ abstract class JettyServerBase implements ServerLifecycle {
         return handler;
     }
 
-    protected Handler getJettyHandler(){
+    protected Handler getJettyHandler() {
         //::走Handler接口
         JtHttpContextHandler _handler = new JtHttpContextHandler();
 
-        if(Solon.app().enableSessionState()) {
+        if (Solon.app().enableSessionState()) {
             //需要session state
             //
             SessionHandler s_handler = new SessionHandler();
@@ -119,7 +120,7 @@ abstract class JettyServerBase implements ServerLifecycle {
             s_handler.setHandler(_handler);
 
             return s_handler;
-        }else{
+        } else {
             //不需要session state
             //
             return _handler;
@@ -130,8 +131,13 @@ abstract class JettyServerBase implements ServerLifecycle {
     protected String[] getResourceURLs() throws FileNotFoundException {
         URL rootURL = getRootPath();
         if (rootURL == null) {
+            if(NativeDetector.inNativeImage()){
+                return new String[]{};
+            }
+
             throw new FileNotFoundException("Unable to find root");
         }
+
         String resURL = rootURL.toString();
 
         if (Solon.cfg().isDebugMode() && (resURL.startsWith("jar:") == false)) {
@@ -149,7 +155,12 @@ abstract class JettyServerBase implements ServerLifecycle {
             return root;
         }
         try {
-            String path = ResourceUtil.getResource("").toString();
+            URL temp = ResourceUtil.getResource("");
+            if (temp == null) {
+                return null;
+            }
+
+            String path = temp.toString();
             if (path.startsWith("jar:")) {
                 int endIndex = path.indexOf("!");
                 path = path.substring(0, endIndex + 1) + "/";
