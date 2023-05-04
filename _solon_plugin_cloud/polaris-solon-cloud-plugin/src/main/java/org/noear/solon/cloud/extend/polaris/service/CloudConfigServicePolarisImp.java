@@ -41,10 +41,9 @@ public class CloudConfigServicePolarisImp implements CloudConfigService , Closea
 
         //配置连接设置(8093)
         ConnectorConfigImpl connectorConfig = cfgImpl.getConfigFile().getServerConnector();
-        if (connectorConfig.getAddresses() == null || connectorConfig.getAddresses().size() == 0) {
-            connectorConfig.setAddresses(Arrays.asList(server));
-        }
-
+        List<String> address = connectorConfig.getAddresses();
+        address.add(server);
+        connectorConfig.setAddresses(address);
 
         this.real = ConfigFileServiceFactory.createConfigFileService(cfgImpl);
     }
