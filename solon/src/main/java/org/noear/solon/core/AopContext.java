@@ -479,7 +479,7 @@ public class AopContext extends BeanContainer {
     /**
      * 尝试生成 bean
      */
-    protected void tryCreateBeanOfMethod(BeanWrap bw, Method m, Bean ma) throws Exception {
+    protected void tryCreateBeanOfMethod(BeanWrap bw, Method m, Bean ma) throws Throwable {
         Condition mc = m.getAnnotation(Condition.class);
 
         if (started == false && ConditionUtil.ifMissing(mc)) {
@@ -489,7 +489,7 @@ public class AopContext extends BeanContainer {
         }
     }
 
-    private void tryCreateBeanOfMethod0(BeanWrap bw, Method m, Bean ma, Condition mc) throws Exception {
+    private void tryCreateBeanOfMethod0(BeanWrap bw, Method m, Bean ma, Condition mc) throws Throwable {
         //增加条件检测
         if (ConditionUtil.test(this, mc) == false) {
             return;
@@ -573,7 +573,7 @@ public class AopContext extends BeanContainer {
      * @param mWrap 方法包装器
      * @param bw    bean 包装器
      */
-    protected void tryBuildBean(Bean anno, MethodWrap mWrap, BeanWrap bw) throws Exception {
+    protected void tryBuildBean(Bean anno, MethodWrap mWrap, BeanWrap bw) throws Throwable {
         int size2 = mWrap.getParamWraps().length;
 
         if (size2 == 0) {
@@ -604,7 +604,7 @@ public class AopContext extends BeanContainer {
         }
     }
 
-    protected void tryBuildBeanDo(Bean anno, MethodWrap mWrap, BeanWrap bw, Object[] args) throws Exception {
+    protected void tryBuildBeanDo(Bean anno, MethodWrap mWrap, BeanWrap bw, Object[] args) throws Throwable {
         Object raw = mWrap.invoke(bw.raw(), args);
         tryBuildBean0(mWrap, anno, raw);
     }

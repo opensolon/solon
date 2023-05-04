@@ -185,23 +185,18 @@ public class MethodWrap implements Interceptor, MethodHolder {
      * 拦截处理
      */
     @Override
-    public Object doIntercept(Invocation inv) throws Exception {
+    public Object doIntercept(Invocation inv) throws Throwable {
         return invoke(inv.target(), inv.args());
     }
 
     /**
      * 执行
      */
-    public Object invoke(Object obj, Object[] args) throws Exception {
+    public Object invoke(Object obj, Object[] args) throws Throwable {
         try {
             return method.invoke(obj, args);
         } catch (InvocationTargetException e) {
-            Throwable ex = e.getTargetException();
-            if (ex instanceof Error) {
-                throw (Error) ex;
-            } else {
-                throw (Exception) ex;
-            }
+            throw e.getTargetException();
         }
     }
 
