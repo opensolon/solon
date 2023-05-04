@@ -247,6 +247,20 @@ public abstract class Context {
         return pathAsUpper;
     }
 
+
+    private String pathAsLower;
+
+    /**
+     * 获取请求的URI路径并大写
+     * */
+    public String pathAsLower() {
+        if (pathAsLower == null) {
+            pathAsLower = path().toLowerCase();
+        }
+
+        return pathAsLower;
+    }
+
     /**
      * 获取请求的UA
      */
