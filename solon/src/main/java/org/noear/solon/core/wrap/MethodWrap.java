@@ -1,5 +1,6 @@
 package org.noear.solon.core.wrap;
 
+import org.noear.solon.Utils;
 import org.noear.solon.annotation.*;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.aspect.Interceptor;
@@ -196,7 +197,8 @@ public class MethodWrap implements Interceptor, MethodHolder {
         try {
             return method.invoke(obj, args);
         } catch (InvocationTargetException e) {
-            throw e.getTargetException();
+            Throwable e2 = e.getTargetException();
+            throw Utils.throwableUnwrap(e2);
         }
     }
 

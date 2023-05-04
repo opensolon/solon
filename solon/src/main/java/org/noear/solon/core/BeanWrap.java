@@ -5,6 +5,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import org.noear.solon.Solon;
+import org.noear.solon.Utils;
 import org.noear.solon.annotation.Init;
 import org.noear.solon.annotation.Singleton;
 import org.noear.solon.core.util.ClassUtil;
@@ -243,7 +244,8 @@ public class BeanWrap {
         try {
             clzInit.invoke(bean);
         } catch (InvocationTargetException e) {
-            throw e.getTargetException();
+            Throwable e2 = e.getTargetException();
+            throw Utils.throwableUnwrap(e2);
         }
     }
 
