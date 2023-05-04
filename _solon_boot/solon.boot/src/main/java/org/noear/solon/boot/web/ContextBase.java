@@ -5,6 +5,8 @@ import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.core.handle.Context;
 
+import java.io.IOException;
+
 /**
  * @author noear
  * @since 1.11
@@ -192,5 +194,9 @@ public abstract class ContextBase extends Context {
      * */
     public final void sessionClear() {
         sessionState().sessionClear();
+    }
+
+    //一些特殊的boot才有效
+    protected void commit() throws IOException {
     }
 }

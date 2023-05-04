@@ -987,10 +987,6 @@ public abstract class Context {
     @Note("冲刷")
     public abstract void flush() throws IOException;
 
-    //一些特殊的boot才有效
-    @Note("提交响应")
-    protected void commit() throws IOException {
-    }
 
     //一些特殊的boot才有效
     @Note("关闭响应")
