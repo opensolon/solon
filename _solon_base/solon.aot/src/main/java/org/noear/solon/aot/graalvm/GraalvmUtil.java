@@ -4,6 +4,7 @@ import org.noear.snack.ONode;
 import org.noear.solon.Solon;
 import org.noear.solon.aot.hint.ExecutableHint;
 import org.noear.solon.core.ExtendLoader;
+import org.noear.solon.core.JarClassLoader;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.core.util.ReflectUtil;
@@ -107,9 +108,9 @@ public class GraalvmUtil {
                         }
                         Class<?>[] classes = types.stream().map(type -> {
                             try {
-                                return Class.forName(type);
-                            } catch (ClassNotFoundException ex) {
-                                throw new RuntimeException(ex);
+                                return TypeUtil.forName(type, JarClassLoader.global());
+                            } catch (Exception ex) {
+                                return new RuntimeException(ex);
                             }
                         }).toArray(Class[]::new);
                         return clz.getDeclaredMethod(e.getName(), classes);
