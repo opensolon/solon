@@ -47,7 +47,7 @@ public class XPluginImp implements Plugin {
         }
 
 
-        //2.添加印射
+        //2.添加映射
         List<Map> mapList = Solon.cfg().getBean(StaticConfig.PROP_MAPPINGS, ArrayList.class);
         if (mapList != null) {
             for (Map map : mapList) {

@@ -4,7 +4,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * 文件与执行器印射关系
+ * 文件与执行器映射关系
  *
  * @author noear
  * @since 1.3
