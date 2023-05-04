@@ -99,7 +99,10 @@ public class SolonAotProcessor {
 
         List<PluginEntity> plugs = Solon.cfg().plugs();
         for (PluginEntity plug : plugs) {
-            metadata.registerDefaultConstructor(plug.getClassName());
+            if (Utils.isNotEmpty(plug.getClassName())) {
+                //手动注册时，没有字符串类名
+                metadata.registerDefaultConstructor(plug.getClassName());
+            }
         }
 
         List<RuntimeNativeRegistrar> runtimeNativeRegistrars = context.getBeansOfType(RuntimeNativeRegistrar.class);

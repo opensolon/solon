@@ -104,12 +104,15 @@ public class RuntimeNativeMetadata {
      * @return {@code this}
      */
     public RuntimeNativeMetadata registerReflection(String className, Consumer<ReflectionHints> typeHint) {
-        ReflectionHints reflectionHints = reflection.computeIfAbsent(className, k -> {
-            ReflectionHints hints = new ReflectionHints();
-            hints.setName(className);
-            return hints;
-        });
-        typeHint.accept(reflectionHints);
+        if (Utils.isNotEmpty(className)) {
+            ReflectionHints reflectionHints = reflection.computeIfAbsent(className, k -> {
+                ReflectionHints hints = new ReflectionHints();
+                hints.setName(className);
+                return hints;
+            });
+            typeHint.accept(reflectionHints);
+        }
+
         return this;
     }
 
