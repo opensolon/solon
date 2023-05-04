@@ -1,0 +1,38 @@
+[
+  {
+    "name": "ch.qos.logback.core.ConsoleAppender",
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "ch.qos.logback.core.rolling.RollingFileAppender",
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "ch.qos.logback.solon.SolonAppender",
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "ch.qos.logback.solon.SolonCloudAppender",
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "ch.qos.logback.solon.SolonPropertyAction",
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "ch.qos.logback.solon.SolonTagsConverter",
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "ch.qos.logback.classic.filter.ThresholdFilter",
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "ch.qos.logback.core.rolling.TimeBasedRollingPolicy",
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP",
+    "allDeclaredConstructors": true
+  }
+]

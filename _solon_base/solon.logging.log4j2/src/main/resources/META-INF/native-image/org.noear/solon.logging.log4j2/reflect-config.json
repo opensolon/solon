@@ -1,0 +1,14 @@
+[
+  {
+    "name": "org.apache.logging.log4j.solon.SolonAppender",
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "org.apache.logging.log4j.solon.SolonCloudAppender",
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "org.apache.logging.log4j.solon.SolonTagsConverter",
+    "allDeclaredConstructors": true
+  }
+]
