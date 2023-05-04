@@ -15,6 +15,8 @@
 
 ### 2.2.16
 * 增加 ctx:pathAsLower() 接口
+* 增加 solon.boot.undertow 原生配置申明
+* 解决 solon.aot 部分类型不能解析识别的问题
 
 ### 2.2.15
 * 取消 solon.native.okhttp 插件
