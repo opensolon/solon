@@ -24,7 +24,7 @@ solon.extend: "!jt_ext" #!开头，表示如果没有扩展目录则自动创建
 public class App {
     public static void main(String[] args) {
         Solon.start(App.class, args, app -> {
-            //添加静态目录印射
+            //添加静态目录映射
 
             //1.添加扩展目录：${solon.extend}/static/
             StaticMappings.add("/", new ExtendStaticRepository());
