@@ -521,7 +521,7 @@ public abstract class BeanContainer {
     /////////////////////////
 
     /**
-     * 尝试BEAN注册（按名字和类型存入容器；并进行类型印射）
+     * 尝试BEAN注册（按名字和类型存入容器；并进行类型映射）
      */
     public void beanRegister(BeanWrap bw, String name, boolean typed) {
         //按名字注册

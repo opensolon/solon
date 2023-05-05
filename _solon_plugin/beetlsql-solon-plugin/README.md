@@ -10,7 +10,7 @@ test:
     username: root
     password: 123456
 
-# 配置印射的是 SQLManagerBuilder 字段（1.10.3 开始支持）
+# 配置映射的是 SQLManagerBuilder 字段（1.10.3 开始支持）
 beetlsql.db1:
   dialect: "mysql" #快捷配置
   slaves: "db2,db3"  #快捷配置

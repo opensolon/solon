@@ -137,7 +137,7 @@ public class ArpManager {
             Table table = entry.getKey();
             String dbSource = getDbSource(entry.getValue());
             if (dsName.equals(dbSource)) {
-                //添加表印射
+                //添加表映射
                 arp.addMapping(table.name(), table.primaryKey(), entry.getValue());
             }
         }

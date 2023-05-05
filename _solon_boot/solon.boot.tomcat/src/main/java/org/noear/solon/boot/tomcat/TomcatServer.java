@@ -21,7 +21,7 @@ public class TomcatServer extends TomcatServerBase {
         //2.添加 servlet
         String servletName = "solon";
         Tomcat.addServlet(context, servletName, new TCHttpContextHandler());
-        //3.建立 servlet 印射
+        //3.建立 servlet 映射
         context.addServletMappingDecoded("/", servletName);//Servlet与对应uri映射
         //**************session time setting start Session时间相关*****************
         if (ServerProps.session_timeout > 0) {
