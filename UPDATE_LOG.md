@@ -28,6 +28,12 @@
 * 调整 MethodWrap 和 BeanWrap 的两个异常解包处理
 * 解决 solon.aot 部分类型不能解析识别的问题
 * polaris 升为 1.12.2
+* beetl 升为 3.15.4.RELEASE
+* beetlsql 升为 3.22.0-RELEASE
+* sqltoy 升为 5.2.45
+* liteflow 升为 2.10.2
+* forest 升为 1.5.31
+* dbvisitor 升为 5.3.1
 
 ### 2.2.15
 * 增加 aot 配置注入实体的自动登记处理
