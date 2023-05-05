@@ -19,6 +19,7 @@
 * 增加 solon.sessionstate.jwt 原生配置申明
 * 增加 solon.logging.logback 原生配置申明
 * 增加 solon.logging.log4j2 原生配置申明
+* 增加 solon cloud 发现代理的配置支持（在 k8s 环境，可直接转发到 k8s sev 上）
 * 调整 aot 注册时对空类名进行过滤
 * 增强 solon.boot.jetty 在原生运行时兼容性
 * 增强 solon.boot.undertow 在原生运行时兼容性
