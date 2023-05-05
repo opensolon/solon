@@ -30,6 +30,19 @@ public class RedisCacheService implements CacheService {
         return this;
     }
 
+    public RedisCacheService(RedisClient client, String keyHeader, int defSeconds){
+        this.client = client;
+
+        _cacheKeyHead = keyHeader;
+        _defaultSeconds = defSeconds;
+
+        if (_defaultSeconds < 1) {
+            _defaultSeconds = 30;
+        }
+
+        _serializer = JavabinSerializer.instance;
+    }
+
     public RedisCacheService(Properties prop) {
         this(prop, prop.getProperty("keyHeader"), 0);
     }

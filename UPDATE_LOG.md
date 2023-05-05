@@ -12,6 +12,7 @@
 ### 2.2.17
 * 增加 @Inject 注入 bean 的 required 支持???
 * 增加 afterInjection() 后所有 bean 必然可用的支持???
+* 缓存服务增加可传入客户端的构建函数
 
 ### 2.2.16
 * 增加 ctx:pathAsLower() 接口
