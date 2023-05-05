@@ -16,10 +16,19 @@
 ### 2.2.16
 * 增加 ctx:pathAsLower() 接口
 * 增加 solon.boot.undertow 原生配置申明
+* 增加 solon.sessionstate.jwt 原生配置申明
+* 增加 solon.logging.logback 原生配置申明
+* 增加 solon.logging.log4j2 原生配置申明
+* 调整 aot 注册时对空类名进行过滤
+* 增强 solon.boot.jetty 在原生运行时兼容性
+* 增强 solon.boot.undertow 在原生运行时兼容性
+* 调整 Context::commit 函数位置，迁移到别处
+* 调整 预热工具在 aot 时跳过执行
+* 调整 MethodWrap 和 BeanWrap 的两个异常解包处理
 * 解决 solon.aot 部分类型不能解析识别的问题
+* polaris 升为 1.12.2
 
 ### 2.2.15
-* 取消 solon.native.okhttp 插件
 * 增加 aot 配置注入实体的自动登记处理
 * 增加 aot 函数包装的返回可序列化类型的自动登记处理
 * 增加 aot 有注入jdk代理的自动登记处理
@@ -28,7 +37,6 @@
 * 调整 aot 完成后的关闭处理方式
 
 ### 2.2.14
-* 新增 solon.native.okhttp 插件
 * 增加 afterInjection() 对注入的检测及非必须注入的支持
 * 增加 @Bean demo(...) 对注入的检测及非必须注入的支持
 * 增加 okhttp 原生编译支持配置
