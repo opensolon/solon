@@ -125,7 +125,7 @@ public class CloudManager {
      * 登记注册与发现服务
      */
     public static void register(CloudDiscoveryService service) {
-        discoveryService = service;
+        discoveryService = new CloudDiscoveryServiceProxy(service);
         LogUtil.global().info("Cloud: CloudDiscoveryService registered from the " + service.getClass().getTypeName());
     }
 

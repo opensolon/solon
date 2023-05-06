@@ -14,6 +14,7 @@
 * 增加 afterInjection() 后所有 bean 必然可用的支持???
 * 缓存服务增加可传入客户端的构建函数
 * DynamicDataSource 增加无参构造函数
+* CloudDiscoveryService 增加代理类，用于附加配置的发现代理
 
 ### 2.2.16
 * 增加 ctx:pathAsLower() 接口
