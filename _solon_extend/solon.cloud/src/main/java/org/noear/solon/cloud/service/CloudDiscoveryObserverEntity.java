@@ -4,6 +4,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.cloud.CloudDiscoveryHandler;
 import org.noear.solon.cloud.model.Discovery;
+import org.noear.solon.cloud.utils.DiscoveryUtils;
 import org.noear.solon.core.event.EventBus;
 
 /**
@@ -27,16 +28,7 @@ public class CloudDiscoveryObserverEntity implements CloudDiscoveryHandler {
     public void handle(Discovery discovery) {
         try {
             //尝试增加发现代理
-            if (Utils.isEmpty(discovery.agent())) {
-                if (CloudClient.config() != null) {
-                    //前缀在前，方便相同配置在一起
-                    String agent = CloudClient.config().pull(group, "discovery.agent." + service).value();
-
-                    if (Utils.isNotEmpty(agent)) {
-                        discovery.agent(agent);
-                    }
-                }
-            }
+            DiscoveryUtils.tryLoadAgent(discovery, group, service);
 
             handler.handle(discovery);
         } catch (Throwable e) {
