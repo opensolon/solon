@@ -17,6 +17,9 @@
 * 增加 缓存服务适配类可传入客户端的构建函数
 * 增加 DynamicDataSource 无参构造函数，方便定制
 * 增加 CloudDiscoveryService 代理类，以支持发现代理的配置
+* smart-socket 升级为 1.5.27
+* smart-http 升级为 1.2.0
+* fastjson2 升为 2.0.31
 
 ### 2.2.16
 * 增加 ctx:pathAsLower() 接口

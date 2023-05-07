@@ -1,7 +1,5 @@
-package org.noear.solon.core.wrap;
+package org.noear.solon.core;
 
-import org.noear.solon.core.AopContext;
-import org.noear.solon.core.VarHolder;
 import org.noear.solon.core.exception.InjectionException;
 
 import java.util.ArrayList;
