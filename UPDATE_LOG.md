@@ -9,9 +9,11 @@
 * 提醒1：之前没有使用弃用接口的，可以直接升级 <br>
 * 提醒2：有使用弃用接口的。建议先升级到 1.12.4；替换弃用代码后，再升级到 2.0.0
 
-### 2.2.17
-* 增加 @Inject 注入 bean 的 required 支持???
+### 2.2.18
 * 增加 afterInjection() 后所有 bean 必然可用的支持???
+
+### 2.2.17
+* 增加 @Inject 注入 bean 的 required 检测支持
 * 缓存服务增加可传入客户端的构建函数
 * DynamicDataSource 增加无参构造函数
 * CloudDiscoveryService 增加代理类，用于附加配置的发现代理

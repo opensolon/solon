@@ -2,6 +2,7 @@ package org.noear.solon.core.wrap;
 
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.VarHolder;
+import org.noear.solon.core.exception.InjectionException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,13 +50,15 @@ public class VarGather implements Runnable {
             return;
         }
 
-        List<Object> args = new ArrayList<>(vars.size());
-        for (VarHolder p1 : vars) {
-            args.add(p1.getValue());
-        }
-
         done = true;
-        onDone.accept(args.toArray());
+        if(onDone != null) {
+            List<Object> args = new ArrayList<>(vars.size());
+            for (VarHolder p1 : vars) {
+                args.add(p1.getValue());
+            }
+
+            onDone.accept(args.toArray());
+        }
     }
 
     /**
@@ -72,11 +75,11 @@ public class VarGather implements Runnable {
 
         for (VarHolder p1 : vars) {
             if (p1.isDone() == false && p1.required()) {
-                throw new IllegalStateException("Injection failure: " + p1.getFullName());
+                throw new InjectionException("Injection failure: " + p1.getFullName());
             }
         }
 
-        if (requireRun) {
+        if (onDone != null && requireRun) {
             //补触 onDone
             List<Object> args = new ArrayList<>(vars.size());
             for (VarHolder p1 : vars) {

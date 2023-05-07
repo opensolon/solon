@@ -317,19 +317,18 @@ public class AopContext extends BeanContainer {
         }
 
         ClassWrap clzWrap = ClassWrap.get(obj.getClass());
+        List<FieldWrap> fwList = new ArrayList<>();
+
+        //支持父类注入(找到有注解的字段)
+        for (Map.Entry<String, FieldWrap> kv : clzWrap.getFieldAllWraps().entrySet()) {
+            Annotation[] annS = kv.getValue().annoS;
+            if (annS.length > 0) {
+                fwList.add(kv.getValue());
+            }
+        }
 
         if (obj instanceof InitializingBean) {
             InitializingBean initBean = (InitializingBean)obj;
-
-            List<FieldWrap> fwList = new ArrayList<>();
-
-            //支持父类注入(找到有注解的字段)
-            for (Map.Entry<String, FieldWrap> kv : clzWrap.getFieldAllWraps().entrySet()) {
-                Annotation[] annS = kv.getValue().annoS;
-                if (annS.length > 0) {
-                    fwList.add(kv.getValue());
-                }
-            }
 
             if (fwList.size() == 0) {
                 //不需要注入
@@ -351,12 +350,20 @@ public class AopContext extends BeanContainer {
                 }
             }
         } else {
-            //支持父类注入(找到有注解的字段)
-            for (Map.Entry<String, FieldWrap> kv : clzWrap.getFieldAllWraps().entrySet()) {
-                Annotation[] annoS = kv.getValue().annoS;
-                if (annoS.length > 0) {
-                    VarHolder varH = kv.getValue().holder(this, obj, null);
-                    tryInject(varH, annoS);
+            if (fwList.size() == 0) {
+
+            }else {
+                //需要注入（可能）
+                VarGather gather = new VarGather(true, fwList.size(), null);
+
+                //添加到集合
+                gatherSet.add(gather);
+
+                //添加要收集的字段
+                for (FieldWrap fw : fwList) {
+                    VarHolder varH = fw.holder(this, obj, gather);
+                    gather.add(varH);
+                    tryInject(varH, fw.annoS);
                 }
             }
         }
@@ -732,10 +739,6 @@ public class AopContext extends BeanContainer {
         started = true;
 
         try {
-            for(VarGather gather : gatherSet){
-                gather.check();
-            }
-
             //执行生命周期bean //支持排序
             List<RankEntity<LifecycleBean>> beans = new ArrayList<>(lifecycleBeans);
             beans.sort(Comparator.comparingInt(f -> f.index));
@@ -745,6 +748,10 @@ public class AopContext extends BeanContainer {
                 b.target.start();
             }
 
+            //全部跑完后，检查注入情况
+            for(VarGather gather : gatherSet){
+                gather.check();
+            }
         } catch (Throwable e) {
             throw new IllegalStateException("AopContext start failed", e);
         }
