@@ -61,7 +61,7 @@ Build from scratch. It has its own standards and norms and open ecology. Combina
 * Http, WebSocket, Socket three signal unified development experience (commonly known as: three-source integration)
 * Supports "annotation" and "manual" modes, freely controlled as needed
 * Not Servlet, can adapt to any basic communication framework (minimum 0.3m running rpc architecture)
-* Homemade IOC/AOP container
+* Homemade IOC/AOP container. It won't start slowly just because there are more plug-ins
 * Supports Web, Data, Job, Remoting, Cloud, and other development scenarios
 * The two architecture modes are Handler + Context and Listener + Message
 * Emphasizes plug-in extensibility, expandable and swappable, adaptable to different application scenarios

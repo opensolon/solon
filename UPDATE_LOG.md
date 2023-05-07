@@ -14,9 +14,9 @@
 
 ### 2.2.17
 * 增加 @Inject 注入 bean 的 required 检测支持
-* 缓存服务增加可传入客户端的构建函数
-* DynamicDataSource 增加无参构造函数
-* CloudDiscoveryService 增加代理类，用于附加配置的发现代理
+* 增加 缓存服务适配类可传入客户端的构建函数
+* 增加 DynamicDataSource 无参构造函数，方便定制
+* 增加 CloudDiscoveryService 代理类，以支持发现代理的配置
 
 ### 2.2.16
 * 增加 ctx:pathAsLower() 接口
