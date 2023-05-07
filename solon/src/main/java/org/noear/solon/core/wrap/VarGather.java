@@ -75,7 +75,7 @@ public class VarGather implements Runnable {
 
         for (VarHolder p1 : vars) {
             if (p1.isDone() == false && p1.required()) {
-                throw new InjectionException("Injection failure: " + p1.getFullName());
+                throw new InjectionException("Required injection failed: " + p1.getFullName());
             }
         }
 
