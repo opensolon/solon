@@ -8,12 +8,9 @@ import org.noear.solon.boot.web.MimeType;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.web.staticfiles.StaticMimes;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Controller
 public class UIController {
@@ -21,31 +18,30 @@ public class UIController {
     @Get
     @Mapping("/")
     @Produces(MimeType.TEXT_HTML_VALUE)
-    public String index() throws IOException {
-        try (InputStream stream = this.getClass().getResourceAsStream("/META-INF/solon-admin-server-ui/index.html")) {
-            if (stream == null)
-                throw new IOException("Could not find index.html from solon-admin-server-ui, please check if the solon-admin-server-ui dependency is added");
-            return new BufferedReader(new InputStreamReader(stream))
-                    .lines()
-                    .collect(Collectors.joining(System.lineSeparator()));
-        }
+    public InputStream index() throws IOException {
+        InputStream stream = this.getClass().getResourceAsStream("/META-INF/solon-admin-server-ui/index.html");
+        if (stream == null)
+            throw new IOException("Could not find index.html from solon-admin-server-ui, please check if the solon-admin-server-ui dependency is added");
+        return stream;
     }
 
     @Get
     @Mapping("/**")
     public void resources(Context ctx) throws IOException {
-        try (InputStream stream = this.getClass().getResourceAsStream("/META-INF/solon-admin-server-ui" + ctx.path())) {
-            if (stream == null) {
-                ctx.status(404);
-                return;
-            }
-
-            Optional.ofNullable(StaticMimes.findByFileName(ctx.path())).ifPresent(ctx::contentType);
-
-            ctx.output(new BufferedReader(new InputStreamReader(stream))
-                    .lines()
-                    .collect(Collectors.joining(System.lineSeparator())));
+        if (ctx.path().equals("/index.html")) {
+            ctx.redirect("/");
+            return;
         }
+
+        InputStream stream = this.getClass().getResourceAsStream("/META-INF/solon-admin-server-ui" + ctx.path());
+        if (stream == null) {
+            ctx.status(404);
+            return;
+        }
+
+        Optional.ofNullable(StaticMimes.findByFileName(ctx.path())).ifPresent(ctx::contentType);
+
+        ctx.output(stream);
     }
 
 }
