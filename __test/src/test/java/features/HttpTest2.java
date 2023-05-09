@@ -2,7 +2,7 @@ package features;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.noear.solon.test.AbstractHttpTester;
+import org.noear.solon.test.HttpTester;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
 import webapp.App;
@@ -14,7 +14,7 @@ import java.io.IOException;
  */
 @RunWith(SolonJUnit4ClassRunner.class)
 @SolonTest(App.class)
-public class HttpTest2 extends AbstractHttpTester {
+public class HttpTest2 extends HttpTester {
     @Test
     public void test1() throws IOException {
         assert path("/demo1/run1/*?@=1").get().equals("http://localhost:8080/demo1/run1/*");

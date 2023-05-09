@@ -6,6 +6,7 @@ import org.noear.solon.core.handle.*;
 import org.noear.solon.annotation.Import;
 import org.noear.solon.core.*;
 import org.noear.solon.core.route.RouterWrapper;
+import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.core.util.ConsumerEx;
 import org.noear.solon.core.util.LogUtil;
 
@@ -167,6 +168,9 @@ public class SolonApp extends RouterWrapper {
         List<PluginEntity> plugs = cfg().plugs();
         //1.0.尝式初始化插件 //一般插件不需要
         for (int i = 0, len = plugs.size(); i < len; i++) {
+            if (Solon.cfg().isDebugMode()) {
+                LogUtil.global().info("App: plugin init: " + plugs.get(i).getClassName());
+            }
             plugs.get(i).init(context());
         }
 
@@ -489,7 +493,7 @@ public class SolonApp extends RouterWrapper {
      * 是否已启用 Http 信号接入
      */
     public boolean enableHttp() {
-        return _enableHttp;
+        return _enableHttp && !NativeDetector.isAotRuntime();
     }
 
     /**
@@ -503,7 +507,7 @@ public class SolonApp extends RouterWrapper {
     private boolean _enableWebSocket = false;
 
     public boolean enableWebSocket() {
-        return _enableWebSocket;
+        return _enableWebSocket && !NativeDetector.isAotRuntime();
     }
 
     /**
@@ -537,7 +541,7 @@ public class SolonApp extends RouterWrapper {
      * 是否已启用 WebSocket as SockteD 信号接入
      */
     public boolean enableWebSocketD() {
-        return _enableWebSocketD;
+        return _enableWebSocketD  && !NativeDetector.isAotRuntime();
     }
 
     /**
@@ -557,7 +561,7 @@ public class SolonApp extends RouterWrapper {
      * 是否已启用 Socket as SockteD 信号接入
      */
     public boolean enableSocketD() {
-        return _enableSocketD;
+        return _enableSocketD  && !NativeDetector.isAotRuntime();
     }
 
     /**

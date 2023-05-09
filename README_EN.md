@@ -1,10 +1,10 @@
 <h1 align="center" style="text-align:center;">
 <img src="solon_icon.png" width="128" />
 <br />
-Solon v2.2.10-SNAPSHOT
+Solon v2.2.17
 </h1>
 <p align="center">
-	<strong>An efficient Java application development framework - smaller, faster, simpler!</strong>
+	<strong>Java new ecological application development framework, smaller, faster, simpler!</strong>
 </p>
 <p align="center">
 	<a href="https://solon.noear.org/">https://solon.noear.org</a>
@@ -44,7 +44,7 @@ Solon v2.2.10-SNAPSHOT
 	<img src="https://img.shields.io/badge/QQ交流群-22200020-orange"/></a>
 </p>
 
-##### Language: English | [中文](README.md) | [日本語](README_JP.md)
+##### Language: English | [中文](README.md) | [Русский](README_RU.md) | [日本語](README_JP.md)
 
 <hr />
 
@@ -54,19 +54,19 @@ Startup is 5 to 10 times faster; QPS is 2 to 3 times higher; runtime memory is s
 
 ## Introduction:
 
-**Solon** is an efficient Java application development framework and a rich plug-in open ecosystem, combining different plug-ins to meet different needs, easy to customize, and rapid development:
+Build from scratch. It has its own standards and norms and open ecology. Combination of different ecological plug-ins to meet different needs, convenient customization, rapid development:
 
-* **Restrained, concise, open, ecological**
+* **Restraint, simplicity, efficiency, openness and ecology**
 * Supports JDK8, JDK11, JDK17, JDK20
 * Http, WebSocket, Socket three signal unified development experience (commonly known as: three-source integration)
 * Supports "annotation" and "manual" modes, freely controlled as needed
 * Not Servlet, can adapt to any basic communication framework (minimum 0.3m running rpc architecture)
-* Built-in IOC/AOP container, supports Web, Data, Job, Remoting, Cloud, and other development scenarios
-* Combines Handler + Context and Listener + Message architectural patterns
+* Homemade IOC/AOP container. It won't start slowly just because there are more plug-ins
+* Supports Web, Data, Job, Remoting, Cloud, and other development scenarios
+* The two architecture modes are Handler + Context and Listener + Message
 * Emphasizes plug-in extensibility, expandable and swappable, adaptable to different application scenarios
 * Allows business plug-ins for "hot plugging" and "hot unloading"
 * Supports GraalVm Native packaging
-* Not Spring, no Servlet, and unrelated to JavaEE; a new, independent open ecosystem
 
 ## Ecosystem Architecture Diagram:
 
@@ -78,7 +78,7 @@ Startup is 5 to 10 times faster; QPS is 2 to 3 times higher; runtime memory is s
 <parent>
     <groupId>org.noear</groupId>
     <artifactId>solon-parent</artifactId>
-    <version>2.2.10-SNAPSHOT</version>   
+    <version>2.2.17</version>   
 </parent>
 
 <dependencies>

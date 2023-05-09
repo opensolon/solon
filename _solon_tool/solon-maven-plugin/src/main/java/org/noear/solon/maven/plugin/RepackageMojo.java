@@ -7,15 +7,31 @@ import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.plugins.annotations.*;
 import org.apache.maven.project.MavenProject;
+import org.apache.maven.shared.artifact.filter.collection.ArtifactFilterException;
+import org.apache.maven.shared.artifact.filter.collection.ArtifactsFilter;
+import org.apache.maven.shared.artifact.filter.collection.FilterArtifacts;
+import org.apache.maven.shared.artifact.filter.collection.ScopeFilter;
+import org.noear.solon.maven.plugin.filter.Exclude;
+import org.noear.solon.maven.plugin.filter.ExcludeFilter;
+import org.noear.solon.maven.plugin.filter.FilterableDependency;
+import org.noear.solon.maven.plugin.filter.Include;
+import org.noear.solon.maven.plugin.filter.IncludeFilter;
+import org.noear.solon.maven.plugin.filter.MatchingGroupIdFilter;
 import org.noear.solon.maven.plugin.tools.tool.ArtifactsLibraries;
 import org.noear.solon.maven.plugin.tools.tool.Libraries;
 
 import java.io.File;
-import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.StringTokenizer;
 
-@Mojo(name = "repackage", defaultPhase = LifecyclePhase.PACKAGE, requiresDependencyResolution = ResolutionScope.RUNTIME)
+//@Mojo(name = "repackage", defaultPhase = LifecyclePhase.PACKAGE, requiresDependencyResolution = ResolutionScope.RUNTIME)
+@Mojo(name = "repackage", defaultPhase = LifecyclePhase.PACKAGE, threadSafe = true,
+        requiresDependencyResolution = ResolutionScope.COMPILE_PLUS_RUNTIME,
+        requiresDependencyCollection = ResolutionScope.COMPILE_PLUS_RUNTIME)
 public class RepackageMojo extends AbstractMojo {
 
     @Parameter(required = false)
@@ -36,8 +52,40 @@ public class RepackageMojo extends AbstractMojo {
     @Parameter
     private String classifier;
 
-    @Component
+    /**
+     * Include system scoped dependencies.
+     */
+    @Parameter(defaultValue = "true")
+    public boolean includeSystemScope;
+
+    @Parameter( defaultValue = "${project}", readonly = true )
     private MavenProject project;
+
+    /**
+     * Collection of artifact definitions to include. The {@link FilterableDependency} element defines
+     * mandatory {@code groupId} and {@code artifactId} properties and an optional
+     * mandatory {@code groupId} and {@code artifactId} properties and an optional
+     * {@code classifier} property.
+     * @since 1.2.0
+     */
+    @Parameter(property = "solon.includes")
+    private List<Include> includes;
+
+    /**
+     * Collection of artifact definitions to exclude. The {@link FilterableDependency} element defines
+     * mandatory {@code groupId} and {@code artifactId} properties and an optional
+     * {@code classifier} property.
+     * @since 1.1.0
+     */
+    @Parameter(property = "solon.excludes")
+    private List<Exclude> excludes;
+
+    /**
+     * Comma separated list of groupId names to exclude (exact match).
+     * @since 1.1.0
+     */
+    @Parameter(property = "solon.excludeGroupIds", defaultValue = "")
+    private String excludeGroupIds;
 
     public static PluginType PLUGIN_TYPE;
 
@@ -48,7 +96,7 @@ public class RepackageMojo extends AbstractMojo {
         logger.info("打包类型：" + packaging);
         if (packaging != null) {
             if ("jar".equalsIgnoreCase(packaging)) {
-                PLUGIN_TYPE=PluginType.JAR;
+                PLUGIN_TYPE = PluginType.JAR;
                 //移动数据
                 ClassesMove.change(project.getArtifact().getFile());
                 //处理依赖
@@ -60,7 +108,7 @@ public class RepackageMojo extends AbstractMojo {
                     throw new MojoExecutionException("write loader exception", e);
                 }
             } else if ("war".equalsIgnoreCase(packaging)) {
-                PLUGIN_TYPE=PluginType.WAR;
+                PLUGIN_TYPE = PluginType.WAR;
                 //默认就是war了
             }
         } else {
@@ -75,11 +123,69 @@ public class RepackageMojo extends AbstractMojo {
             Repackager repackager = new Repackager(sourceFile, logger, mainClass);
             File target = getTargetFile();
             Set<Artifact> artifacts = project.getArtifacts();
-            Libraries libraries = new ArtifactsLibraries(artifacts, Collections.emptyList(), getLog());
+
+            Set<Artifact> includedArtifacts = filterDependencies(artifacts, getAdditionalFilters());
+            Libraries libraries = new ArtifactsLibraries(includedArtifacts, Collections.emptyList(), getLog());
             repackager.repackage(target, libraries);
         } catch (Exception ex) {
             throw new MojoExecutionException(ex.getMessage(), ex);
         }
+    }
+
+    private ArtifactsFilter[] getAdditionalFilters() {
+        List<ArtifactsFilter> filters = new ArrayList<>();
+        if (!this.includeSystemScope) {
+            filters.add(new ScopeFilter(null, Artifact.SCOPE_SYSTEM));
+        }
+        filters.add(new ScopeFilter(null, Artifact.SCOPE_PROVIDED));
+        return filters.toArray(new ArtifactsFilter[0]);
+    }
+
+    protected final Set<Artifact> filterDependencies(Set<Artifact> dependencies, ArtifactsFilter... additionalFilters)
+            throws MojoExecutionException {
+        try {
+            Set<Artifact> filtered = new LinkedHashSet<>(dependencies);
+            filtered.retainAll(getFilters(additionalFilters).filter(dependencies));
+            return filtered;
+        }
+        catch (ArtifactFilterException ex) {
+            throw new MojoExecutionException(ex.getMessage(), ex);
+        }
+    }
+
+    /**
+     * Return artifact filters configured for this MOJO.
+     * @param additionalFilters optional additional filters to apply
+     * @return the filters
+     */
+    private FilterArtifacts getFilters(ArtifactsFilter... additionalFilters) {
+        FilterArtifacts filters = new FilterArtifacts();
+        for (ArtifactsFilter additionalFilter : additionalFilters) {
+            filters.addFilter(additionalFilter);
+        }
+        filters.addFilter(new MatchingGroupIdFilter(cleanFilterConfig(this.excludeGroupIds)));
+        if (this.includes != null && !this.includes.isEmpty()) {
+            filters.addFilter(new IncludeFilter(this.includes));
+        }
+        if (this.excludes != null && !this.excludes.isEmpty()) {
+            filters.addFilter(new ExcludeFilter(this.excludes));
+        }
+        return filters;
+    }
+
+    private String cleanFilterConfig(String content) {
+        if (content == null || content.trim().isEmpty()) {
+            return "";
+        }
+        StringBuilder cleaned = new StringBuilder();
+        StringTokenizer tokenizer = new StringTokenizer(content, ",");
+        while (tokenizer.hasMoreElements()) {
+            cleaned.append(tokenizer.nextToken().trim());
+            if (tokenizer.hasMoreElements()) {
+                cleaned.append(",");
+            }
+        }
+        return cleaned.toString();
     }
 
     private File getTargetFile() {
@@ -93,5 +199,4 @@ public class RepackageMojo extends AbstractMojo {
         String name = this.finalName + classifier + "." + this.project.getArtifact().getArtifactHandler().getExtension();
         return new File(this.outputDirectory, name);
     }
-
 }

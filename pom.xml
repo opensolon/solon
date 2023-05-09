@@ -18,6 +18,7 @@
     </properties>
 
     <modules>
+        <module>solon</module>
         <module>solon-parent</module>
 
         <module>__release/nami-bundle</module>

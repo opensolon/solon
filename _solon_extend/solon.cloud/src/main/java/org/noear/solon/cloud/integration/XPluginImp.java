@@ -8,6 +8,7 @@ import org.noear.solon.cloud.impl.*;
 import org.noear.solon.cloud.trace.NamiTraceFilter;
 import org.noear.solon.core.*;
 import org.noear.solon.core.bean.InitializingBean;
+import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.logging.AppenderHolder;
@@ -47,7 +48,9 @@ public class XPluginImp implements Plugin , InitializingBean {
 
         if (CloudClient.discovery() != null) {
             //服务注册
-            CloudClient.discoveryPush();
+            if(NativeDetector.isAotRuntime() == false) {
+                CloudClient.discoveryPush();
+            }
 
             //设置负载工厂
             Bridge.upstreamFactorySet(CloudClient.loadBalance());
@@ -89,6 +92,10 @@ public class XPluginImp implements Plugin , InitializingBean {
     @Override
     public void prestop() throws Throwable {
         if (Solon.cfg().stopSafe() == false) {
+            return;
+        }
+
+        if(NativeDetector.isAotRuntime()){
             return;
         }
 

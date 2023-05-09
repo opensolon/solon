@@ -4,7 +4,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerConstants;
 import org.noear.solon.boot.ServerLifecycle;
 import org.noear.solon.boot.ssl.SslContextFactory;
-import org.noear.solon.core.Signal;
+import org.noear.solon.core.handle.Handler;
 
 import java.util.concurrent.Executor;
 
@@ -16,10 +16,10 @@ import java.util.concurrent.Executor;
 public class JlHttpServer implements ServerLifecycle {
 
     private HTTPServer server = null;
-    private HTTPServer.ContextHandler handler;
+    private Handler handler;
     private Executor executor;
 
-    public void setHandler(HTTPServer.ContextHandler handler) {
+    public void setHandler(Handler handler) {
         this.handler = handler;
     }
 
@@ -38,7 +38,7 @@ public class JlHttpServer implements ServerLifecycle {
 
         HTTPServer.VirtualHost virtualHost = server.getVirtualHost(null);
         virtualHost.setDirectoryIndex(null);
-        virtualHost.addContext("/", handler, "*");
+        virtualHost.addContext("/", new JlHttpContextHandler(handler), "*");
 
         server.setExecutor(executor);
         server.setPort(port);

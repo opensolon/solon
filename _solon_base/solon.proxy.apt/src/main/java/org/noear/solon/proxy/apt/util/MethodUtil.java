@@ -8,6 +8,7 @@ import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * 函数处理工具
@@ -58,7 +59,7 @@ public class MethodUtil {
      * @param type 类型
      */
     public static Map<String, ExecutableElement> findMethodAll(TypeElement type) {
-        Map<String, ExecutableElement> methodAll = new LinkedHashMap<>();
+        Map<String, ExecutableElement> methodAll = new TreeMap<>();//new LinkedHashMap<>();
 
         //本级优先
         for (Element e : type.getEnclosedElements()) {

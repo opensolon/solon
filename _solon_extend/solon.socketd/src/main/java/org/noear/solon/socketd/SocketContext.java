@@ -161,7 +161,6 @@ public class SocketContext extends ContextEmpty {
         }
     }
 
-    @Override
     protected void commit() throws IOException {
         if (_session.isValid()) {
             if (_messageIsString) {

@@ -3,6 +3,7 @@ package org.noear.solon.core.route;
 import org.noear.solon.core.handle.*;
 import org.noear.solon.core.message.Listener;
 import org.noear.solon.core.message.Session;
+import org.noear.solon.core.util.PathAnalyzer;
 
 import java.util.*;
 
@@ -37,6 +38,13 @@ import java.util.*;
  * @since 1.0
  * */
 public interface Router {
+
+    /**
+     * 区分大小写（默认不区分）
+     * */
+    default void caseSensitive(boolean caseSensitive){
+        PathAnalyzer.setCaseSensitive(caseSensitive);
+    }
 
     /**
      * 添加路由关系 for Handler

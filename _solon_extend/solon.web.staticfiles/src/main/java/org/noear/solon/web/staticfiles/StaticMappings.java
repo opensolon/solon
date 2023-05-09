@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 静态文件印射
+ * 静态文件映射
  *
  * @author noear
  * @since 1.0
@@ -14,14 +14,14 @@ public class StaticMappings {
     static final Map<StaticRepository, StaticLocation> locationMap = new HashMap<>();
 
     /**
-     * 印射数量
+     * 映射数量
      */
     public static int count() {
         return locationMap.size();
     }
 
     /**
-     * 添加印射关系
+     * 添加映射关系
      *
      * @param pathPrefix 路径前缀
      * @param repository 资源仓库

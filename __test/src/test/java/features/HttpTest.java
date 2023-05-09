@@ -6,18 +6,19 @@ import org.noear.nami.Nami;
 import org.noear.snack.ONode;
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.Inject;
-import org.noear.solon.test.AbstractHttpTester;
+import org.noear.solon.test.HttpTester;
 import org.noear.solon.test.SolonTest;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import webapp.App;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 @RunWith(SolonJUnit4ClassRunner.class)
 @SolonTest(App.class)
-public class HttpTest extends AbstractHttpTester {
+public class HttpTest extends HttpTester {
 
     @Inject("${username}")
     public String username;
@@ -383,7 +384,7 @@ public class HttpTest extends AbstractHttpTester {
 
     @Test
     public void test2u() throws IOException {
-        assert path("/demo2/rpc/json").get().indexOf("@type") > 0;
+        assert path("/demo2/rpc/json").get().indexOf("java.") > 0;
     }
 
     @Test
@@ -446,7 +447,7 @@ public class HttpTest extends AbstractHttpTester {
         String val = ONode.loadStr(json).get("file.separator").getString();
 
         System.out.println(val);
-        assert val.equals("/") || val.equals("\\/");
+        assert val.equals("/") || val.equals("\\/") || val.equals(File.separator);
     }
 
     @Test

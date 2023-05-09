@@ -22,7 +22,7 @@ public class XPluginImp implements Plugin {
             });
         });
 
-        Solon.app().onEvent(AppLoadEndEvent.class, e -> {
+        context.lifecycle(Integer.MAX_VALUE, () -> {
             JobManager.run(JobRunner.global);
         });
     }

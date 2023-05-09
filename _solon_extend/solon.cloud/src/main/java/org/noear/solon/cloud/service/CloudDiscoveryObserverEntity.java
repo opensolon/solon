@@ -1,7 +1,10 @@
 package org.noear.solon.cloud.service;
 
+import org.noear.solon.Utils;
+import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.cloud.CloudDiscoveryHandler;
 import org.noear.solon.cloud.model.Discovery;
+import org.noear.solon.cloud.utils.DiscoveryUtils;
 import org.noear.solon.core.event.EventBus;
 
 /**
@@ -24,6 +27,9 @@ public class CloudDiscoveryObserverEntity implements CloudDiscoveryHandler {
     @Override
     public void handle(Discovery discovery) {
         try {
+            //尝试增加发现代理
+            DiscoveryUtils.tryLoadAgent(discovery, group, service);
+
             handler.handle(discovery);
         } catch (Throwable e) {
             EventBus.pushTry(e);

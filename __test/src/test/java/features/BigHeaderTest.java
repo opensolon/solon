@@ -3,7 +3,7 @@ package features;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.noear.snack.ONode;
-import org.noear.solon.test.AbstractHttpTester;
+import org.noear.solon.test.HttpTester;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
 import webapp.App;
@@ -18,7 +18,7 @@ import java.util.Map;
  */
 @RunWith(SolonJUnit4ClassRunner.class)
 @SolonTest(App.class)
-public class BigHeaderTest extends AbstractHttpTester {
+public class BigHeaderTest extends HttpTester {
     @Test
     public void test_header() throws Exception {
         //构发大json数据块(7k)

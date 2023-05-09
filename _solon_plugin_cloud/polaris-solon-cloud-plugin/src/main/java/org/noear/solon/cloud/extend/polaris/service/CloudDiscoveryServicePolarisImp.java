@@ -19,8 +19,8 @@ import org.noear.solon.cloud.service.CloudDiscoveryService;
 
 import java.io.Closeable;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -43,9 +43,9 @@ public class CloudDiscoveryServicePolarisImp implements CloudDiscoveryService , 
 
         //发现连接设置(8091)
         ServerConnectorConfigImpl connectorConfig = cfgImpl.getGlobal().getServerConnector();
-        if (connectorConfig.getAddresses() == null || connectorConfig.getAddresses().size() == 0) {
-            connectorConfig.setAddresses(Arrays.asList(server));
-        }
+        List<String> address = connectorConfig.getAddresses();
+        address.add(server);
+        connectorConfig.setAddresses(address);
 
         providerAPI = DiscoveryAPIFactory.createProviderAPIByConfig(cfgImpl);
         consumerAPI = DiscoveryAPIFactory.createConsumerAPIByConfig(cfgImpl);

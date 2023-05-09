@@ -3,7 +3,7 @@ package features;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.noear.snack.ONode;
-import org.noear.solon.test.AbstractHttpTester;
+import org.noear.solon.test.HttpTester;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
 import webapp.App;
@@ -16,7 +16,7 @@ import java.io.IOException;
  */
 @RunWith(SolonJUnit4ClassRunner.class)
 @SolonTest(App.class)
-public class HttpParam4Test extends AbstractHttpTester {
+public class HttpParam4Test extends HttpTester {
     @Test
     public void json() throws IOException {
         //走json通过，这个格式会有问题
@@ -143,7 +143,8 @@ public class HttpParam4Test extends AbstractHttpTester {
         oNode.set("id", "1")
                 .set("name", "noear")
                 .set("icon", "bbb")
-                .set("date", "2021-12-12 12:12:12");
+                .set("date", "2021-12-12");
+
 
         //走param，@Param 的格式化会起效果
         String json2 = path("/demo2/param4/param3").bodyJson(oNode.toJson()).post();
@@ -232,11 +233,12 @@ public class HttpParam4Test extends AbstractHttpTester {
 
     @Test
     public void test() throws IOException {
-        String body = "hello";
+        String body = "'hello'";
 
         //paramMap()->body()
         System.out.println(body);
         String body2 = path("/demo2/param4/test").bodyJson(body).post();
+        System.out.println(body2);
 
         assert body.equals(body2);
     }

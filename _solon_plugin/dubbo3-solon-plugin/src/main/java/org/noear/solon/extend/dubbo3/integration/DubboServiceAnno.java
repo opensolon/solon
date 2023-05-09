@@ -364,6 +364,16 @@ public class DubboServiceAnno implements DubboService, Service {
     }
 
     @Override
+    public String executor() {
+        return anno.executor();
+    }
+
+    @Override
+    public String payload() {
+        return anno.payload();
+    }
+
+    @Override
     public Class<? extends Annotation> annotationType() {
         return anno.annotationType();
     }

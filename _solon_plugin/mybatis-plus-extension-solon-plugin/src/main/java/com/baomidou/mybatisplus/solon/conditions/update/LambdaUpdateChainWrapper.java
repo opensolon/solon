@@ -30,7 +30,7 @@ import com.baomidou.mybatisplus.solon.conditions.AbstractChainWrapper;
  */
 @SuppressWarnings({"serial"})
 public class LambdaUpdateChainWrapper<T> extends AbstractChainWrapper<T, SFunction<T, ?>, LambdaUpdateChainWrapper<T>, LambdaUpdateWrapper<T>>
-    implements ChainUpdate<T>, Update<LambdaUpdateChainWrapper<T>, SFunction<T, ?>> {
+        implements ChainUpdate<T>, Update<LambdaUpdateChainWrapper<T>, SFunction<T, ?>> {
 
     private final BaseMapper<T> baseMapper;
 
@@ -38,6 +38,12 @@ public class LambdaUpdateChainWrapper<T> extends AbstractChainWrapper<T, SFuncti
         super();
         this.baseMapper = baseMapper;
         super.wrapperChildren = new LambdaUpdateWrapper<>();
+    }
+
+    public LambdaUpdateChainWrapper(Class<T> entityClass) {
+        super();
+        this.baseMapper = null;
+        super.wrapperChildren = new LambdaUpdateWrapper<>(entityClass);
     }
 
     @Override
@@ -61,4 +67,10 @@ public class LambdaUpdateChainWrapper<T> extends AbstractChainWrapper<T, SFuncti
     public BaseMapper<T> getBaseMapper() {
         return baseMapper;
     }
+
+    @Override
+    public Class<T> getEntityClass() {
+        return super.wrapperChildren.getEntityClass();
+    }
 }
+

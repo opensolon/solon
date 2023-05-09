@@ -55,4 +55,14 @@ public interface VarHolder {
      * 是否为完成的
      * */
     boolean isDone();
+
+    /**
+     * 是否必须
+     * */
+    boolean required();
+
+    /**
+     * 设定必须
+     * */
+    void required(boolean required);
 }

@@ -16,7 +16,19 @@ import java.util.regex.Pattern;
  * @since 1.0
  * */
 public class PathAnalyzer {
+    /**
+     * 区分大小写（默认不区分）
+     * */
+    private static boolean caseSensitive = false;
+    /**
+     * 分析器缓存
+     * */
     private static Map<String,PathAnalyzer> cached = new LinkedHashMap<>();
+
+    public static void setCaseSensitive(boolean caseSensitive) {
+        PathAnalyzer.caseSensitive = caseSensitive;
+    }
+
     public static PathAnalyzer get(String expr) {
         PathAnalyzer pa = cached.get(expr);
         if (pa == null) {
@@ -35,8 +47,12 @@ public class PathAnalyzer {
 
     private Pattern pattern;
 
-    private PathAnalyzer(String expr){
-        pattern = Pattern.compile(exprCompile(expr), Pattern.CASE_INSENSITIVE);
+    private PathAnalyzer(String expr) {
+        if (caseSensitive) {
+            pattern = Pattern.compile(exprCompile(expr));
+        } else {
+            pattern = Pattern.compile(exprCompile(expr), Pattern.CASE_INSENSITIVE);
+        }
     }
 
     /**

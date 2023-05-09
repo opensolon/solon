@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.noear</groupId>
         <artifactId>solon-parent</artifactId>
-        <version>2.2.10-SNAPSHOT</version>
+        <version>2.2.17</version>
         <relativePath>../solon-parent/pom.xml</relativePath>
     </parent>
 
@@ -184,20 +184,14 @@
 
         <dependency>
             <groupId>org.noear</groupId>
+            <artifactId>solon.aot</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.noear</groupId>
             <artifactId>solon.proxy</artifactId>
         </dependency>
 
-<!--        <dependency>-->
-<!--            <groupId>org.noear</groupId>-->
-<!--            <artifactId>solon.proxy.apt</artifactId>-->
-<!--            <scope>provided</scope>-->
-<!--        </dependency>-->
-
-<!--        <dependency>-->
-<!--            <groupId>org.noear</groupId>-->
-<!--            <artifactId>solon.graalvm.apt</artifactId>-->
-<!--            <scope>provided</scope>-->
-<!--        </dependency>-->
 
         <dependency>
             <groupId>org.noear</groupId>
@@ -282,11 +276,6 @@
 <!--                <dependency>-->
 <!--                    <groupId>org.noear</groupId>-->
 <!--                    <artifactId>solon.boot.jetty</artifactId>-->
-<!--                </dependency>-->
-
-<!--                <dependency>-->
-<!--                    <groupId>org.noear</groupId>-->
-<!--                    <artifactId>solon.boot.jetty.add.servlet</artifactId>-->
 <!--                </dependency>-->
 
 <!--                <dependency>-->

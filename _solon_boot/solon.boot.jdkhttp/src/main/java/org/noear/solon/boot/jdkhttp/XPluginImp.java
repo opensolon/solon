@@ -5,6 +5,7 @@ import org.noear.solon.SolonApp;
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.prop.impl.HttpServerProps;
 import org.noear.solon.core.*;
+import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.core.util.LogUtil;
 
@@ -64,8 +65,11 @@ public final class XPluginImp implements Plugin {
 
         _server = new JdkHttpServer();
         _server.setExecutor(props.getBioExecutor("jdkhttp-"));
-        _server.setHandler(new JdkHttpContextHandler());
+        _server.setHandler(Solon.app()::tryHandle);
         _server.start(_host, _port);
+
+        //尝试事件扩展
+        EventBus.push(_server);
 
         app.signalAdd(_signal);
 

@@ -8,6 +8,7 @@ import ch.qos.logback.solon.SolonConfigurator;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.AopContext;
+import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.bean.InitializingBean;
 import org.noear.solon.core.util.LogUtil;
@@ -98,7 +99,9 @@ public class XPluginImp implements Plugin , InitializingBean {
             LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
             SolonConfigurator configurator = new SolonConfigurator();
             configurator.setContext(loggerContext);
-            loggerContext.reset();
+            if (!NativeDetector.inNativeImage()) {
+                loggerContext.reset(); // native 启动时，这里会线程卡死，先跳过
+            }
             configurator.doConfigure(url);
 
             //同步 logger level 配置

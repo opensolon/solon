@@ -1,164 +1,122 @@
 package org.noear.solon.scheduling.quartz;
 
-
-import org.noear.solon.Solon;
 import org.noear.solon.Utils;
+import org.noear.solon.scheduling.ScheduledException;
 import org.noear.solon.scheduling.annotation.Scheduled;
-import org.quartz.*;
-import org.quartz.impl.StdSchedulerFactory;
+import org.noear.solon.scheduling.scheduled.JobHolder;
+import org.noear.solon.scheduling.scheduled.manager.AbstractJobManager;
+import org.quartz.Scheduler;
 
-import java.time.ZoneId;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.TimeZone;
 
-public final class JobManager {
-    static Scheduler _scheduler = null;
-    static Map<String, JobHolder> jobMap = new HashMap<>();
+/**
+ * 任务管理器
+ *
+ * @author noear
+ * @since 2.2
+ */
+public class JobManager extends AbstractJobManager {
+    private static JobManager instance = new JobManager();
 
-    public static void setScheduler(Scheduler scheduler) {
-        //如果已存在，则不可替换
-        if (_scheduler == null) {
-            _scheduler = scheduler;
-        }
+    /**
+     * 获取实例
+     */
+    public static JobManager getInstance() {
+        return instance;
     }
 
-    private static void tryInitScheduler() throws SchedulerException {
-        if (_scheduler == null) {
-            synchronized (JobManager.class) {
-                if (_scheduler == null) {
-                    //默认使用：直接本地调用
-                    SchedulerFactory schedulerFactory = new StdSchedulerFactory();
-                    _scheduler = schedulerFactory.getScheduler();
+
+    private QuartzSchedulerProxy schedulerProxy;
+
+    public JobManager() {
+        schedulerProxy = new QuartzSchedulerProxy();
+    }
+
+    public void setScheduler(Scheduler real) {
+        schedulerProxy.setScheduler(real);
+    }
+
+    @Override
+    public void jobStart(String name, Map<String, String> data) throws ScheduledException {
+        JobHolder holder = jobGet(name);
+
+        if (holder != null) {
+            holder.setData(data);
+
+            try {
+                if (schedulerProxy.exists(name)) {
+                    schedulerProxy.resume(name);
+                } else {
+                    schedulerProxy.register(holder);
                 }
+            } catch (Exception e) {
+                throw new ScheduledException(e);
             }
         }
     }
 
-    /**
-     * 开始
-     */
-    public static void start() throws SchedulerException {
-        tryInitScheduler();
-
-        for (JobHolder jobEntity : jobMap.values()) {
-            regJob(jobEntity);
-        }
-
-        if (_scheduler != null) {
-            _scheduler.start();
+    @Override
+    public void jobStop(String name) throws ScheduledException {
+        if (jobExists(name)) {
+            try {
+                schedulerProxy.pause(name);
+            } catch (Exception e) {
+                throw new ScheduledException(e);
+            }
         }
     }
 
-    /**
-     * 停止
-     */
-    public static void stop() throws SchedulerException {
-        if (_scheduler != null) {
-            _scheduler.shutdown();
-
-            _scheduler = null;
+    @Override
+    public void jobRemove(String name) throws ScheduledException {
+        if (jobExists(name)) {
+            super.jobRemove(name);
+            try {
+                schedulerProxy.remove(name);
+            } catch (Exception e) {
+                throw new ScheduledException(e);
+            }
         }
     }
 
-    /**
-     * 添加 job
-     */
-    public static void addJob(String name, Scheduled anno, AbstractJob job) throws Exception {
-        if (anno.enable() == false) {
-            return;
-        }
-
+    @Override
+    protected void jobAddCheckDo(String name, Scheduled scheduled) {
         if (Utils.isEmpty(name)) {
             throw new IllegalArgumentException("The job name cannot be empty!");
         }
 
-        if (anno.fixedRate() > 0 && Utils.isNotEmpty(anno.cron())) {
+        if (scheduled.fixedRate() > 0 && Utils.isNotEmpty(scheduled.cron())) {
             throw new IllegalArgumentException("The job cron and fixedRate cannot both have values: " + name);
         }
 
-        if (anno.initialDelay() > 0) {
-            throw new IllegalArgumentException("The quartz job unsupported initialDelay!");
+        if (scheduled.initialDelay() > 0) {
+            throw new IllegalArgumentException("The job unsupported initialDelay!");
         }
 
-        if (anno.fixedDelay() > 0) {
-            throw new IllegalArgumentException("The quartz job unsupported fixedDelay!");
-        }
-
-        if (jobMap.containsKey(name) == false) {
-            JobHolder jobHolder = new JobHolder(name, anno, job);
-            jobMap.put(name, jobHolder);
+        if (scheduled.fixedDelay() > 0) {
+            throw new IllegalArgumentException("The job unsupported fixedDelay!");
         }
     }
 
-    /**
-     * 获取 job
-     */
-    public static JobHolder getJob(String name) {
-        if (Utils.isEmpty(name)) {
-            return null;
-        } else {
-            return jobMap.get(name);
-        }
-    }
-
-    /**
-     * 注册 job（on start）
-     */
-    private static void regJob(JobHolder jobHolder) throws SchedulerException {
-        String jobGroup = Utils.annoAlias(Solon.cfg().appName(), "solon");
-
-        if (Utils.isEmpty(jobHolder.anno.cron())) {
-            regJobByFixedRate(jobHolder, jobHolder.anno.fixedRate(), jobGroup);
-        } else {
-            regJobByCron(jobHolder, jobHolder.anno.cron(), jobHolder.anno.zone(), jobGroup);
-        }
-    }
-
-    private static void regJobByCron(JobHolder jobHolder, String cron, String zone, String jobGroup) throws SchedulerException {
-        tryInitScheduler();
-
-        JobDetail jobDetail = JobBuilder.newJob(QuartzProxy.class)
-                .withIdentity(jobHolder.name, jobGroup)
-                .build();
-
-        if (_scheduler.checkExists(jobDetail.getKey()) == false) {
-            CronScheduleBuilder builder = CronScheduleBuilder.cronSchedule(cron);
-
-            //支持时区配置
-            if (Utils.isNotEmpty(zone)) {
-                builder.inTimeZone(TimeZone.getTimeZone(ZoneId.of(zone)));
+    @Override
+    public void start() throws Throwable {
+        for (JobHolder holder : jobMap.values()) {
+            if (holder.getScheduled().enable()) {
+                //只启动启用的（如果有需要，手动启用）
+                schedulerProxy.register(holder);
             }
-
-            Trigger trigger = TriggerBuilder.newTrigger()
-                    .withIdentity(jobHolder.name, jobGroup)
-                    .startNow()
-                    .withSchedule(builder)
-                    .build();
-
-            _scheduler.scheduleJob(jobDetail, trigger);
         }
+        schedulerProxy.start();
+
+        isStarted = true;
     }
 
-    private static void regJobByFixedRate(JobHolder jobHolder, long milliseconds, String jobGroup) throws SchedulerException {
-        tryInitScheduler();
+    @Override
+    public void stop() throws Throwable {
+        isStarted = false;
 
-        JobDetail jobDetail = JobBuilder.newJob(QuartzProxy.class)
-                .withIdentity(jobHolder.name, jobGroup)
-                .build();
-
-        if (_scheduler.checkExists(jobDetail.getKey()) == false) {
-            SimpleScheduleBuilder builder = SimpleScheduleBuilder.simpleSchedule();
-            builder.withIntervalInMilliseconds(milliseconds);
-            builder.repeatForever();
-
-            Trigger trigger = TriggerBuilder.newTrigger()
-                    .withIdentity(jobHolder.name, jobGroup)
-                    .startNow()
-                    .withSchedule(builder)//
-                    .build();
-
-            _scheduler.scheduleJob(jobDetail, trigger);
+        if (schedulerProxy != null) {
+            schedulerProxy.stop();
+            schedulerProxy = null;
         }
     }
 }

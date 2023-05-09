@@ -49,10 +49,10 @@ public class RouterListener implements Listener{
                 sl.onOpen(session);
             }
 
-            //实例监听者
-            if (session.listener() != null) {
-                session.listener().onOpen(session);
-            }
+            //todo: 实例监听者（SessionBase）
+            //if (session.listener() != null) {
+            //    session.listener().onOpen(session);
+            //}
         } catch (Throwable e) {
             EventBus.pushTry(e);
         }

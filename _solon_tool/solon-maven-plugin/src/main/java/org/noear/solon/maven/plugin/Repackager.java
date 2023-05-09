@@ -1,17 +1,14 @@
 package org.noear.solon.maven.plugin;
 
 
-import javassist.ClassPool;
-import javassist.CtClass;
-import javassist.CtMethod;
 import org.apache.maven.plugin.logging.Log;
+import org.noear.solon.maven.plugin.tools.SolonMavenUtil;
 import org.noear.solon.maven.plugin.tools.tool.*;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Modifier;
 import java.util.*;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
@@ -45,92 +42,9 @@ public class Repackager {
         }
         this.source = source.getAbsoluteFile();
 
-        if (mainClass == null || mainClass.trim().length() == 0) {
-            this.mainClass = getStartClass();
-        } else {
-            this.mainClass = mainClass;
-        }
+		this.mainClass = SolonMavenUtil.getStartClass(getFile(), mainClass, logger);
         logger.info("JAR的启动类为：" + this.mainClass);
     }
-
-
-    private String getStartClass() throws IOException {
-        File f = getFile();
-        JarFile jar = new JarFile(f);
-        try {
-            List<String> mains = new ArrayList<>();
-
-            Enumeration<JarEntry> enumFiles = jar.entries();
-            ClassPool classPool= ClassPool.getDefault();
-
-            while (enumFiles.hasMoreElements()) {
-                JarEntry entry = enumFiles.nextElement();
-                String classFullName = entry.getName();
-
-                if (classFullName.endsWith(".class")) {
-                    try {
-                        InputStream inputStream = jar.getInputStream(entry);
-                        CtClass ctClass = classPool.makeClass(inputStream);
-                        inputStream.close();
-                        CtMethod[] methods = ctClass.getDeclaredMethods();
-                        for (CtMethod method : methods) {
-                            if (method.getName().equals("main") && method.getParameterTypes().length == 1) {
-                                if (method.getParameterTypes()[0].getName().equals("java.lang.String[]") && Modifier.isStatic(method.getModifiers())) {
-                                    if (method.getReturnType().getName().equals("void")) {
-                                        mains.add(ctClass.getName());
-
-                                        //有注解的为主类
-                                        if(ctClass.hasAnnotation(Constant.START_CLASS_ANNOTATION)){
-                                            logger.info("检查到的启动类：" + ctClass.getName());
-                                            return ctClass.getName();
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    } catch (Throwable ignored) {
-                    }
-                }
-            }
-
-
-            if (mains.size() > 0) {
-                if (mains.size() == 1) {
-                    logger.info("检查到的启动类：" + mains.get(0));
-                    return mains.get(0);
-                }
-
-                //提供选择启动类：
-                logger.info("检查到的启动类：");
-
-                for (int i = 0; i < mains.size(); i++) {
-                    logger.info(i + "、" + mains.get(i));
-                }
-
-                logger.info("请选择一个主函数作为启动函数(如：输入0回车)：");
-                String tempMain;
-                Scanner scanner = new Scanner(System.in);
-                while (true) {
-                    if (scanner.hasNextLine()) {
-                        try {
-                            String s = scanner.nextLine();
-                            int i = Integer.parseInt(s);
-                            tempMain = mains.get(i);
-                            break;
-                        } catch (Exception e) {
-                            logger.error("选择失败，请重新选择");
-                        }
-                    }
-                }
-                scanner.close();
-                return tempMain;
-            }
-        }finally {
-            jar.close();
-        }
-        throw new IllegalStateException("找不到启动类,请配置你的启动类");
-    }
-
 
     /**
      * Repackage to the given destination so that it can be launched using '

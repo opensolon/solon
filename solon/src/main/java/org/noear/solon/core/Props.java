@@ -23,6 +23,7 @@ public class Props extends Properties {
     private ClassLoader classLoader;
 
     public Props() {
+        //不产生 defaults
         super();
     }
 
@@ -37,7 +38,7 @@ public class Props extends Properties {
 
     public Props(Map<String, String> data) {
         super();
-        putAll(data);
+        super.putAll(data);
     }
 
     @Override
@@ -351,12 +352,11 @@ public class Props extends Properties {
      */
     @Override
     public synchronized void forEach(BiConsumer<? super Object, ? super Object> action) {
-        if (defaults == null) {
-            super.forEach(action);
-        } else {
-            defaults.forEach(action);
-            super.forEach((k, v) -> {
-                if (defaults.containsKey(k) == false) {
+        super.forEach(action);
+
+        if (defaults != null) {
+            defaults.forEach((k, v) -> {
+                if (super.containsKey(k) == false) {
                     action.accept(k, v);
                 }
             });

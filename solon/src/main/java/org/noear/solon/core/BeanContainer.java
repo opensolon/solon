@@ -9,6 +9,7 @@ import org.noear.solon.core.aspect.Interceptor;
 import org.noear.solon.core.aspect.InterceptorEntity;
 import org.noear.solon.core.exception.InjectionException;
 import org.noear.solon.core.handle.HandlerLoader;
+import org.noear.solon.core.runtime.AotCollector;
 import org.noear.solon.core.util.ConvertUtil;
 import org.noear.solon.core.util.ResourceUtil;
 
@@ -30,6 +31,7 @@ public abstract class BeanContainer {
     private final Props props;
     private final ClassLoader classLoader;
     private Map<Class<?>, Object> attrs = new HashMap<>();
+    private final AotCollector aot = new AotCollector();
 
 
     public BeanContainer(ClassLoader classLoader, Props props) {
@@ -46,6 +48,10 @@ public abstract class BeanContainer {
         } else {
             return props;
         }
+    }
+
+    public AotCollector aot(){
+        return aot;
     }
 
     /**
@@ -78,10 +84,17 @@ public abstract class BeanContainer {
     private final Map<String, BeanWrap> beanWrapsOfName = new HashMap<>();
     private final Set<BeanWrap> beanWrapSet = new HashSet<>();
 
+
+    /**
+     * for Aot
+     */
+
+
     /**
      * clz mapping
      */
     private final Map<Class<?>, Class<?>> clzMapping = new HashMap<>();
+
 
     //启动时写入
     /**
@@ -119,6 +132,7 @@ public abstract class BeanContainer {
 
         clzMapping.clear();
         attrs.clear();
+        aot.clear();
 
         wrapExternalConsumers.clear();
 
@@ -158,6 +172,8 @@ public abstract class BeanContainer {
             container.beanExtractors.putIfAbsent(k, v);
         });
     }
+
+
 
     /**
      * 添加 bean builder, injector, extractor
@@ -505,7 +521,7 @@ public abstract class BeanContainer {
     /////////////////////////
 
     /**
-     * 尝试BEAN注册（按名字和类型存入容器；并进行类型印射）
+     * 尝试BEAN注册（按名字和类型存入容器；并进行类型映射）
      */
     public void beanRegister(BeanWrap bw, String name, boolean typed) {
         //按名字注册
@@ -573,6 +589,7 @@ public abstract class BeanContainer {
 
     protected void beanInject(VarHolder varH, String name, boolean required, boolean autoRefreshed) {
         try {
+            varH.required(required);
             beanInjectDo(varH, name, required, autoRefreshed);
         } catch (InjectionException e) {
             throw e;
@@ -617,22 +634,25 @@ public abstract class BeanContainer {
             Properties val = Utils.loadProperties(ResourceUtil.getResource(getClassLoader(),url));
 
             if (val == null) {
-                throw new IllegalStateException(name + "  failed to load!");
-            }
-
-            if (Properties.class == varH.getType()) {
-                varH.setValue(val);
-            } else if (Map.class == varH.getType()) {
-                Map<String, String> val2 = new HashMap<>();
-                val.forEach((k, v) -> {
-                    if (k instanceof String && v instanceof String) {
-                        val2.put((String) k, (String) v);
-                    }
-                });
-                varH.setValue(val2);
-            } else {
-                Object val2 = PropsConverter.global().convert(val, null, varH.getType(), varH.getGenericType());
-                varH.setValue(val2);
+                if (required) {
+                    throw new IllegalStateException(name + "  failed to load!");
+                }
+            }else {
+                if (Properties.class == varH.getType()) {
+                    varH.setValue(val);
+                } else if (Map.class == varH.getType()) {
+                    Map<String, String> val2 = new HashMap<>();
+                    val.forEach((k, v) -> {
+                        if (k instanceof String && v instanceof String) {
+                            val2.put((String) k, (String) v);
+                        }
+                    });
+                    varH.setValue(val2);
+                } else {
+                    Object val2 = PropsConverter.global().convert(val, null, varH.getType(), varH.getGenericType());
+                    varH.setValue(val2);
+                    aot().registerEntityType(varH.getType(), varH.getGenericType());
+                }
             }
         } else if (name.startsWith("${")) {
             //
@@ -643,9 +663,15 @@ public abstract class BeanContainer {
             beanInjectConfig(varH, name2, required);
 
             if (autoRefreshed && varH.isField()) {
+                int defIdx = name2.indexOf(":");
+                if (defIdx > 0) {
+                    name2 = name2.substring(0, defIdx).trim();
+                }
+                String name3 = name2;
+
                 cfg().onChange((key, val) -> {
-                    if(key.startsWith(name2)){
-                        beanInjectConfig(varH, name2,required);
+                    if(key.startsWith(name3)){
+                        beanInjectConfig(varH, name3,required);
                     }
                 });
             }
@@ -663,14 +689,52 @@ public abstract class BeanContainer {
         }
     }
 
-    protected void beanInjectProperties(Class<?> clz, Object obj){
+    protected void beanInjectProperties(Class<?> clz, Object obj) {
         Inject typeInj = clz.getAnnotation(Inject.class);
 
         if (typeInj != null && Utils.isNotEmpty(typeInj.value())) {
-            if (typeInj.value().startsWith("${")) {
-                Utils.injectProperties(obj, cfg().getPropByExpr(typeInj.value()));
+            String name = typeInj.value();
+
+            if (name.startsWith("${classpath:")) {
+                //
+                // @Inject("${classpath:user.yml}") //注入配置文件
+                //
+                String url = name.substring(12, name.length() - 1);
+                Properties val = Utils.loadProperties(ResourceUtil.getResource(getClassLoader(), url));
+
+                if (val == null) {
+                    if (typeInj.required()) {
+                        throw new IllegalStateException(name + "  failed to load!");
+                    }
+                } else {
+                    Utils.injectProperties(obj, val);
+                }
+            } else if (typeInj.value().startsWith("${")) {
+                //
+                // @Inject("${xxx}") //注入配置 ${xxx} or ${xxx:def},只适合单值
+                //
+                String name2 = name.substring(2, name.length() - 1).trim();
+
+                beanInjectPropertiesDo(name, obj, cfg().getProp(name2), typeInj.required());
+
+                //支持自动刷新
+                if (typeInj.autoRefreshed()) {
+                    cfg().onChange((key, val) -> {
+                        if (key.startsWith(name2)) {
+                            beanInjectPropertiesDo(name, obj, cfg().getProp(name2), typeInj.required());
+                        }
+                    });
+                }
             }
         }
+    }
+
+    private void beanInjectPropertiesDo(String name, Object obj, Properties val, boolean required) {
+        if (required && val.size() == 0) {
+            throw new InjectionException("Missing required property: '" + name + "', config injection failed: " + obj.getClass().getName());
+        }
+
+        Utils.injectProperties(obj, val);
     }
 
 
@@ -696,6 +760,8 @@ public abstract class BeanContainer {
                     if(required){
                         throw new InjectionException("Missing required property: '" +name+"', config injection failed: " + varH.getFullName());
                     }
+
+                    varH.setValue(null); //用于触发事件
                 } else {
                     //尝试转为实体
                     Properties val0 = cfg().getProp(name);
@@ -703,15 +769,19 @@ public abstract class BeanContainer {
                         //如果找到配置了
                         Object val2 = PropsConverter.global().convert(val0, null, pt, varH.getGenericType());
                         varH.setValue(val2);
+                        aot().registerEntityType(varH.getType(), varH.getGenericType());
                     }else{
                         if(required){
                             throw new InjectionException("Missing required property: '" +name+"', config injection failed: " + varH.getFullName());
                         }
+
+                        varH.setValue(null); //用于触发事件
                     }
                 }
             } else {
                 Object val2 = ConvertUtil.to(varH.getType(), val);
                 varH.setValue(val2);
+                aot().registerEntityType(varH.getType(), varH.getGenericType());
             }
         }
     }
@@ -728,6 +798,7 @@ public abstract class BeanContainer {
     public void beanForeach(BiConsumer<String, BeanWrap> action) {
         beanWrapsOfName.forEach(action);
     }
+
 
     /**
      * 遍历bean包装库

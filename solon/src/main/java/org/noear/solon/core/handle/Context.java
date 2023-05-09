@@ -247,6 +247,20 @@ public abstract class Context {
         return pathAsUpper;
     }
 
+
+    private String pathAsLower;
+
+    /**
+     * 获取请求的URI路径并大写
+     * */
+    public String pathAsLower() {
+        if (pathAsLower == null) {
+            pathAsLower = path().toLowerCase();
+        }
+
+        return pathAsLower;
+    }
+
     /**
      * 获取请求的UA
      */
@@ -973,10 +987,6 @@ public abstract class Context {
     @Note("冲刷")
     public abstract void flush() throws IOException;
 
-    //一些特殊的boot才有效
-    @Note("提交响应")
-    protected void commit() throws IOException {
-    }
 
     //一些特殊的boot才有效
     @Note("关闭响应")

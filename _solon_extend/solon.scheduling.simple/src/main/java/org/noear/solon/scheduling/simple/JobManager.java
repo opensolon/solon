@@ -1,9 +1,11 @@
 package org.noear.solon.scheduling.simple;
 
-import org.noear.solon.Utils;
+import org.noear.solon.scheduling.ScheduledException;
 import org.noear.solon.scheduling.annotation.Scheduled;
+import org.noear.solon.scheduling.scheduled.JobHandler;
+import org.noear.solon.scheduling.scheduled.JobHolder;
+import org.noear.solon.scheduling.scheduled.manager.AbstractJobManager;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -12,130 +14,71 @@ import java.util.Map;
  * @author noear
  * @since 1.6
  */
-public class JobManager {
-    private static Map<String, JobHolder> jobEntityMap = new HashMap<>();
-    private static boolean isStarted = false;
-
+public class JobManager extends AbstractJobManager {
+    private static JobManager instance = new JobManager();
 
     /**
-     * 添加计划任务
-     *
-     * @param name     任务名称
-     * @param runnable 运行函数
+     * 获取实例
      */
-    public static void add(String name, Scheduled anno, Runnable runnable) {
-        if (anno.enable() == false) {
-            return;
-        }
+    public static JobManager getInstance() {
+        return instance;
+    }
 
-        if (Utils.isEmpty(name)) {
-            throw new IllegalArgumentException("The job name cannot be empty!");
-        }
 
-        if (anno.fixedDelay() > 0 && anno.fixedRate() > 0) {
-            if (Utils.isEmpty(anno.cron())) {
-                throw new IllegalArgumentException("The job fixedDelay and fixedRate cannot both have values: " + name);
-            } else {
-                throw new IllegalArgumentException("The job cron and fixedDelay and fixedRate cannot both have values: " + name);
+    @Override
+    protected JobHolder jobWrapDo(String name, Scheduled scheduled, JobHandler handler) {
+        JobHolder jobHolder = new JobHolder(name, scheduled, handler);
+        jobHolder.setAttachment(new SimpleScheduler(jobHolder));
+
+        return jobHolder;
+    }
+
+    @Override
+    public void jobStart(String name, Map<String, String> data) throws ScheduledException {
+        JobHolder jobHolder = jobGet(name);
+
+        if (jobHolder != null) {
+            jobHolder.setData(data);
+
+            try {
+                ((SimpleScheduler) jobHolder.getAttachment()).start();
+            } catch (Throwable e) {
+                throw new ScheduledException(e);
+            }
+        }
+    }
+
+    @Override
+    public void jobStop(String name) throws ScheduledException {
+        JobHolder jobHolder = jobGet(name);
+
+        if (jobHolder != null) {
+            try {
+                ((SimpleScheduler) jobHolder.getAttachment()).stop();
+            } catch (Throwable e) {
+                throw new ScheduledException(e);
+            }
+        }
+    }
+
+    @Override
+    public void start() throws Throwable {
+        for (JobHolder holder : jobMap.values()) {
+            if (holder.getScheduled().enable()) {
+                //只启动启用的（如果有需要，手动启用）
+                ((SimpleScheduler) holder.getAttachment()).start();
             }
         }
 
-        if (contains(name) == false) {
-            addDo(name, new JobHolder(name, anno, runnable));
-        }
-    }
-
-    /**
-     * 添加计划任务
-     *
-     * @param name      任务名称
-     * @param jobEntity 任务实体
-     */
-    private static synchronized void addDo(String name, JobHolder jobEntity) {
-        jobEntityMap.putIfAbsent(name, jobEntity);
-
-        if (isStarted) {
-            //如果已开始，则直接开始调度
-            jobEntity.start();
-        }
-    }
-
-
-    /**
-     * 检查计划任务是否存在
-     *
-     * @param name 任务名称
-     */
-    public static boolean contains(String name) {
-        return jobEntityMap.containsKey(name);
-    }
-
-    /**
-     * 移移计划任务
-     *
-     * @param name 任务名称
-     */
-    public static void remove(String name) {
-        JobHolder jobHolder = jobEntityMap.get(name);
-
-        if (jobHolder != null) {
-            jobHolder.cancel();
-            jobEntityMap.remove(name);
-        }
-    }
-
-    /**
-     * 启动计划任务
-     *
-     * @param name 任务名称
-     */
-    public static void start(String name) {
-        JobHolder jobHolder = jobEntityMap.get(name);
-
-        if (jobHolder != null && jobHolder.isCanceled()) {
-            jobHolder.start();
-        }
-    }
-
-    /**
-     * 停止计划任务
-     *
-     * @param name 任务名称
-     */
-    public static void stop(String name) {
-        JobHolder jobHolder = jobEntityMap.get(name);
-
-        if (jobHolder != null && jobHolder.isCanceled() == false) {
-            jobHolder.cancel();
-        }
-    }
-
-    ///////////////////////////////
-
-    /**
-     * 数量
-     */
-    public static int count() {
-        return jobEntityMap.size();
-    }
-
-    /**
-     * 启动
-     */
-    public static void start() {
-        for (JobHolder job : jobEntityMap.values()) {
-            job.start();
-        }
         isStarted = true;
     }
 
-    /**
-     * 停止
-     */
-    public static void stop() {
-        for (JobHolder job : jobEntityMap.values()) {
-            job.cancel();
-        }
+    @Override
+    public void stop() throws Throwable {
         isStarted = false;
+
+        for (JobHolder jobHolder : jobMap.values()) {
+            ((SimpleScheduler) jobHolder.getAttachment()).stop();
+        }
     }
 }

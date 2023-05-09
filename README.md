@@ -1,10 +1,10 @@
 <h1 align="center" style="text-align:center;">
 <img src="solon_icon.png" width="128" />
 <br />
-Solon v2.2.10-SNAPSHOT
+Solon v2.2.17
 </h1>
 <p align="center">
-	<strong>一个高效的 Java 应用开发框架，更小、更快、更简单！</strong>
+	<strong>Java 新的生态型应用开发框架，更小、更快、更简单！</strong>
 </p>
 <p align="center">
 	<a href="https://solon.noear.org/">https://solon.noear.org</a>
@@ -44,7 +44,7 @@ Solon v2.2.10-SNAPSHOT
 	<img src="https://img.shields.io/badge/QQ交流群-22200020-orange"/></a>
 </p>
 
-##### 语言： 中文 | [English](README_EN.md) | [日本語](README_JP.md)
+##### 语言： 中文 | [English](README_EN.md) | [Русский](README_RU.md) | [日本語](README_JP.md)
 
 <hr />
 
@@ -54,19 +54,19 @@ Solon v2.2.10-SNAPSHOT
 
 ## 介绍：
 
-**Solon** 是一个高效的 Java 应用开发框架；也是一个插件丰富的开放生态，组合不同的插件应对不同需求；方便定制；快速开发：
+从零开始构建。有自己的标准规范与开放生态。组合不同的生态插件应对不同需求，方便定制，快速开发：
 
-* **克制、简洁、开放、生态**
+* **克制、简洁、高效、开放、生态**
 * 支持 JDK8、JDK11、JDK17、JDK20
 * Http、WebSocket、Socket 三种信号统一的开发体验（俗称：三源合一）
 * 支持“注解”与“手动”两种模式，按需自由操控
 * Not Servlet，可以适配任何基础通讯框架（最小 0.3m 运行rpc架构）
-* 自建 IOC/AOP 容器，支持 Web、Data、Job、Remoting、Cloud 等任何开发场景
-* 集合 Handler + Context 和 Listener + Message 两种架构模式
+* 自制 IOC/AOP 容器。不会因为插件变多而启动变很慢
+* 支持 Web、Data、Job、Remoting、Cloud 等任何开发场景
+* 兼顾 Handler + Context 和 Listener + Message 两种架构模式
 * 强调插件式扩展，可扩展可切换；适应不同的应用场景
 * 允许业务插件“热插”、“热拨”
 * 支持 GraalVm Native 打包
-* 不是 Spring，没有 Servlet，也无关 JavaEE；新兴独立的开放生态
 
 
 ## 生态架构图：
@@ -79,7 +79,7 @@ Solon v2.2.10-SNAPSHOT
 <parent>
     <groupId>org.noear</groupId>
     <artifactId>solon-parent</artifactId>
-    <version>2.2.10-SNAPSHOT</version>   
+    <version>2.2.17</version>   
 </parent>
 
 <dependencies>
@@ -132,7 +132,7 @@ public class HelloServiceImpl implements HelloService{
 |------------------------|-----------------------------|
 | org.noear:solon-parent | 依赖版本管理                      |
 | org.noear:solon        | 主框架                         |
-| org.noear:nami         | 伴生框架（做为solon remoting 的客户端） |
+| org.noear:nami         | 伴生框架（作为solon remoting 的客户端） |
 
 ###### 快速集成开发包及相互关系：
 

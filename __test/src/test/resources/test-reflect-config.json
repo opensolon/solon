@@ -1,0 +1,35 @@
+[
+  {
+    "name": "org.noear.solon.Solon",
+    "condition": {
+      "typeReachable": "org.noear.solon.Solon"
+    },
+    "methods": [
+      {
+        "name": "version",
+        "parameterTypes": []
+      }
+    ],
+    "queriedMethods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      }
+    ],
+    "fields": [
+      {
+        "name": "encoding"
+      }
+    ],
+    "allPublicFields": true,
+    "allDeclaredFields": true
+  },
+  {
+    "name": "features.aot.NativeDTO$NativeDTO2",
+    "fields": [
+      {
+        "name": "subName"
+      }
+    ]
+  }
+]

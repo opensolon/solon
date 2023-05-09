@@ -9,12 +9,129 @@
 * 提醒1：之前没有使用弃用接口的，可以直接升级 <br>
 * 提醒2：有使用弃用接口的。建议先升级到 1.12.4；替换弃用代码后，再升级到 2.0.0
 
-### 2.2.10
-* 增加 @Inject 注入 bean 的 required 支持???
+### 2.2.18
 * 增加 afterInjection() 后所有 bean 必然可用的支持???
-* 调整 允许 "solon.scheduling" 的任务在注册时未配置调度???（由后续动态控制）
+
+### 2.2.17
+* 增加 @Inject 注入 bean 的 required 检测支持
+* 增加 缓存服务适配类可传入客户端的构建函数
+* 增加 DynamicDataSource 无参构造函数，方便定制
+* 增加 CloudDiscoveryService 代理类，以支持发现代理的配置
+* smart-socket 升级为 1.5.27
+* smart-http 升级为 1.2.0
+* fastjson2 升为 2.0.31
+
+### 2.2.16
+* 增加 ctx:pathAsLower() 接口
+* 增加 solon.boot.undertow 原生配置申明
+* 增加 solon.sessionstate.jwt 原生配置申明
+* 增加 solon.logging.logback 原生配置申明
+* 增加 solon.logging.log4j2 原生配置申明
+* 增加 solon cloud 发现代理的配置支持（在 k8s 环境，可直接转发到 k8s sev 上）
+* 调整 aot 注册时对空类名进行过滤
+* 增强 solon.boot.jetty 在原生运行时兼容性
+* 增强 solon.boot.undertow 在原生运行时兼容性
+* 调整 Context::commit 函数位置，迁移到别处
+* 调整 预热工具在 aot 时跳过执行
+* 调整 MethodWrap 和 BeanWrap 的两个异常解包处理
+* 解决 solon.aot 部分类型不能解析识别的问题
+* polaris 升为 1.12.2
+* beetl 升为 3.15.4.RELEASE
+* beetlsql 升为 3.22.0-RELEASE
+* sqltoy 升为 5.2.45
+* liteflow 升为 2.10.2
+* forest 升为 1.5.31
+* dbvisitor 升为 5.3.1
+
+### 2.2.15
+* 增加 aot 配置注入实体的自动登记处理
+* 增加 aot 函数包装的返回可序列化类型的自动登记处理
+* 增加 aot 有注入jdk代理的自动登记处理
+* 增加 aot jdbc 驱动的的自动登记处理
+* 增加 aot 通用反射代理的自动登记处理
+* 调整 aot 完成后的关闭处理方式
+
+### 2.2.14
+* 增加 afterInjection() 对注入的检测及非必须注入的支持
+* 增加 @Bean demo(...) 对注入的检测及非必须注入的支持
+* 增加 okhttp 原生编译支持配置
+* 增加 solon.scheduling.quartz 原生编译支持配置
+* 增加 water-solon-cloud-plugin 原生编译支持配置
+* 增加 solon.aot 功能总体上实现（细节优需优化）
+* 增加 VarGater::check 接口，用于在容器启动时做收集检测
+* 增加 Router::caseSensitive 接口，用于设定区分大小写
+* 调整 solon.test 增加代理类的字段注入
+* 调整 solon.proxy.apt 的代理生成能力，转移到 solon.aot
+* 调整 solon aot 时，取消 Runtime.getRuntime().addShutdownHook
+* 调整 solon cloud 在 aot 时不做注册处理
+* 调整 mybatis 适配的环境id规则保持也数据源bean同名
+* 调整 Fastjson2Serializer 增加内部的上下文复用
+* 调整 solon 路径分析器添加区分大小写的控制
+* 调整 solon-maven-plugin 打包时，排除 provided 的包；支持配置 include 和 exclude 配置
+* 调整 sa-token-solon-plugin 全局过滤器的 BeforeAuth 认证设为不受 includeList 与 excludeList 的限制，所有请求都会进入
+* 修复 native 运行时，可能出现找不到资源文件而报错
+* mybatis-flex 升为 1.2.0
+* wood 升为 1.1.1
+
+### 2.2.13
+* 调整 solon.scheduling.quartz 管理机制
+* 调整 solon.scheduling.simple 管理机制
+* 调整 solon.aot 将 native 元数据生成到对应主类的包下
+* 调整 solon bean 允许有多个其它基础形态
+* 调整 EnjoyRender 增加获取 Engine 对象方法
+* 调整 aot 时不启动 http 等通讯服务
+* 移除 mybatis-flex-solon-plugin 的实现代码，改为引用第三方
+* mybatis-flex 升为 1.1.8
+* dubbo3 升为 3.2.0
+* fastjson2 升为 2.0.29
+
+### 2.2.12
+* 新增 solon.aot 插件
+* 新增 simplejavamail-solon-plugin 插件
+* 新增 sms4j-solon-plugin 插件
+* 增加 Utils::isEmpty(Collection s) 接口
+* 增加 solon cloud i18n 默认值配置支持
+* 修复 @Inject("${demo:hello}") 有默认值的配置注入不能自动更新的问题
+* mybatis-flex 升为 1.1.3
+* mybatis-plus 升为 3.5.3.1
+* undertow 升为 2.2.24.Final
+* jetty 升为 9.4.51.v20230217
+* fastjson2 升为 2.0.28
+* snack3 升为 3.2.66，支持 Charset 类型注入
+
+### 2.2.11
+* 新增 pulsar2-solon-plugin 插件
+* 新增 drools-solon-plugin 插件
+* 新增 solon.web.sdl 插件替代 solon.web.sso（之前名字搞错了）
+* 插件 solon.boot.jetty 增加 jetty-servlet 依赖（solon.boot.jetty.add.servlet 就不需要了）
+* 插件 solon.boot.jlhttp 优化线程不够时会处理方式
+* 插件 solon.boot.sockted.jdksocket 优化线程不够时会处理方式
+* 插件 solon.boot.smarthttp 优化二级池线程不够时会处理方式
+* 插件 solon-maven-plugin 打包机制，支持 scope system 包编译
+* 增加 @Configuration + @Inject 支持配置变更事件的注入
+* 增加 solon.cloud/Config:_Props 申明为非序列化字段
+* 增加 三个 http server 通过事件扩展的支持，比如定制执行服务
+* 调整 sa-token sao 适配代码，优化相同key在多线程下的并发问题
+* 调整 InvocationRunnableFactory::create 允许返回为 null，即自己直接执行
+* 调整 @Init 的索引策略与 LifecycleBean 相同：+1
+* 调整 根路由支持 remove 监听记录
+* fastjson2 升为 2.0.27
+* beetlsql 升为 3.22.0-RELEASE
+* redisx 升为 1.4.7
+
+### 2.2.10
+* 新增 mybatis-flex-solon-plugin 插件
+* 插件 solon.cloud.tracing 将 traceId 和 spanId 存入日志全局变量，方便在日志中打印
+* 插件 solon.scheduling 增加 @Async 运行器创建扩展机制
 * 调整 "@Init will be discarded" 打印时机，改由 debug 时打印
 * 调整 solon.web.sso 插件的用法
+* 调整 mybatis 相关的适配包名，基于2.0规范
+* 调整 @SolonTest 注解为可继承
+* 优化 mybatis-solon-plugin 去掉关闭连接时的 connection.setAutoCommit(true)。此段代码会导致查询速度增加20~30ms
+* 优化 solon.boot.jlhttp 插件 JlHttpServer 类，实现接口公用性!!!
+* 优化 solon.boot.jdkhttp 插件 JdkHttpServer 类，实现接口公用性!!!
+* 优化 solon.boot.smarthttp 插件 SmHttpServer 类，实现接口公用性!!!
+* snack3 升为 3.2.65，支持 File 类型注入
 
 ### 2.2.9
 * 新增 solon.web.sso 插件

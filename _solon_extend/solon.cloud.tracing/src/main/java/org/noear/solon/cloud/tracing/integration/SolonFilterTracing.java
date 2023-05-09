@@ -9,7 +9,7 @@ import io.opentracing.propagation.TextMapAdapter;
 import io.opentracing.tag.Tags;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
-import org.noear.solon.cloud.utils.LocalUtils;
+import org.noear.solon.cloud.tracing.slf4j.TracingMDC;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Filter;
 import org.noear.solon.core.handle.FilterChain;
@@ -58,11 +58,15 @@ public class SolonFilterTracing implements Filter {
             Span span = buildSpan(ctx);
 
             try (Scope scope = tracer.activateSpan(span)) {
+                TracingMDC.inject(span);
+
                 chain.doFilter(ctx);
             } catch (Throwable e) {
                 span.log(Utils.throwableToString(e));
                 throw e;
             } finally {
+                TracingMDC.removeSpanId();
+                TracingMDC.removeTraceId();
                 span.finish();
             }
         }

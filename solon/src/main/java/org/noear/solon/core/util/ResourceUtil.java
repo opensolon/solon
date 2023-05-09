@@ -192,6 +192,12 @@ public class ResourceUtil {
         return scanClasses(JarClassLoader.global(), clzExpr);
     }
 
+    /**
+     * 扫描类
+     *
+     * @param classLoader 类加载器
+     * @param clzExpr     类表达式（基于 import 表达式扩展）
+     */
     public static Collection<Class<?>> scanClasses(ClassLoader classLoader, String clzExpr) {
         List<Class<?>> clzList = new ArrayList<>();
 
@@ -236,8 +242,8 @@ public class ResourceUtil {
 
     //a.xml
     //a.*.xml
-    //a/**/*.xml
-    //a/**/b/*.xml
+    //classpath:a/**/*.xml
+    //classpath:a/**/b/*.xml
 
     /**
      * 扫描资源
@@ -248,6 +254,12 @@ public class ResourceUtil {
         return scanResources(JarClassLoader.global(), resExpr);
     }
 
+    /**
+     * 扫描资源
+     *
+     * @param classLoader 类加载器
+     * @param resExpr     资源表达式
+     */
     public static Collection<String> scanResources(ClassLoader classLoader, String resExpr) {
         List<String> paths = new ArrayList<>();
 
@@ -308,6 +320,4 @@ public class ResourceUtil {
 
         return paths;
     }
-
-
 }

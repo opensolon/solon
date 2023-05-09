@@ -3,7 +3,7 @@ package demo;
 import okhttp3.Response;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.noear.solon.test.AbstractHttpTester;
+import org.noear.solon.test.HttpTester;
 import org.noear.solon.test.HttpUtils;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
@@ -16,7 +16,7 @@ import java.util.List;
  */
 @RunWith(SolonJUnit4ClassRunner.class)
 @SolonTest(DemoApp.class)
-public class DemoTest extends AbstractHttpTester {
+public class DemoTest extends HttpTester {
     @Test
     public void test() throws Exception {
         Response response = path("/put").data("id", "12").data("name", "world").exec("post");

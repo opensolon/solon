@@ -5,7 +5,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.noear.solon.core.handle.Result;
 import org.noear.solon.health.HealthChecker;
-import org.noear.solon.test.AbstractHttpTester;
+import org.noear.solon.test.HttpTester;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
 
@@ -17,7 +17,7 @@ import java.util.Map;
  */
 @RunWith(SolonJUnit4ClassRunner.class)
 @SolonTest(TestApp.class)
-public class TestDemo extends AbstractHttpTester {
+public class TestDemo extends HttpTester {
     @Test
     public void test1() throws Exception {
         Response resp = path("/healthz").exec("GET");

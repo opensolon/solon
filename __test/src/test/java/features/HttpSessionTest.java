@@ -3,7 +3,7 @@ package features;
 import okhttp3.Response;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.noear.solon.test.AbstractHttpTester;
+import org.noear.solon.test.HttpTester;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
 import webapp.App;
@@ -16,7 +16,7 @@ import java.util.List;
  */
 @RunWith(SolonJUnit4ClassRunner.class)
 @SolonTest(App.class)
-public class HttpSessionTest extends AbstractHttpTester {
+public class HttpSessionTest extends HttpTester {
 
     @Test
     public void session() throws IOException {

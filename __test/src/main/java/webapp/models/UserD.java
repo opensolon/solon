@@ -1,6 +1,8 @@
 package webapp.models;
 
-public final class UserD {
+import java.io.Serializable;
+
+public final class UserD implements Serializable {
     final Integer id;
     final String name;
 
@@ -14,6 +16,14 @@ public final class UserD {
     }
 
     public String name() {
+        return name;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public String getName() {
         return name;
     }
 }

@@ -14,10 +14,15 @@ import java.io.IOException;
 public class Fastjson2Serializer implements StringSerializer {
     ObjectWriterProvider config;
     JSONWriter.Feature[] features;
+    JSONWriter.Context writeContext;
 
     protected Fastjson2Serializer(ObjectWriterProvider config, JSONWriter.Feature... features) {
-        this.config = config;
         this.features = features;
+
+        if (config != null) {
+            this.config = config;
+            this.writeContext = new JSONWriter.Context(config, features);
+        }
     }
 
     @Override
@@ -25,25 +30,7 @@ public class Fastjson2Serializer implements StringSerializer {
         if (config == null) {
             return JSON.toJSONString(obj, features);
         } else {
-            JSONWriter.Context writeContext = new JSONWriter.Context(config, features);
             return JSON.toJSONString(obj, writeContext);
-            //return toJSONString2(obj);
         }
     }
-
-//    private String toJSONString2(Object object) {
-//        JSONWriter.Context context = new JSONWriter.Context(config, features);
-//        try (JSONWriter writer = JSONWriter.of(context)) {
-//            if (object == null) {
-//                writer.writeNull();
-//            } else {
-//                Class<?> valueClass = object.getClass();
-//                ObjectWriter<?> objectWriter = writer.getObjectWriter(valueClass, valueClass);
-//                objectWriter.write(writer, object, null, null, 0);
-//            }
-//            return writer.toString();
-//        } catch (NullPointerException | NumberFormatException e) {
-//            throw new JSONException("JSON#toJSONString cannot serialize '" + object + "'", e);
-//        }
-//    }
 }

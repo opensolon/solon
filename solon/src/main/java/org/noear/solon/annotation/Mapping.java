@@ -12,7 +12,7 @@ import java.lang.annotation.*;
 //:: /xxx/{b_b}/{ccc}.js
 
 /**
- * 路径印射
+ * 路径映射
  *
  * 一般附加在控制器和动作上
  *

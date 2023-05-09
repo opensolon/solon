@@ -221,11 +221,29 @@ public class Utils {
     }
 
     /**
+     * 检查集合是否为空
+     *
+     * @param s 集合
+     */
+    public static boolean isEmpty(Collection s) {
+        return s == null || s.size() == 0;
+    }
+
+    /**
      * 检查字符串是否为非空
      *
      * @param s 字符串
      */
     public static boolean isNotEmpty(String s) {
+        return !isEmpty(s);
+    }
+
+    /**
+     * 检查集合是否非空
+     *
+     * @param s 集合
+     */
+    public static boolean isNotEmpty(Collection s) {
         return !isEmpty(s);
     }
 

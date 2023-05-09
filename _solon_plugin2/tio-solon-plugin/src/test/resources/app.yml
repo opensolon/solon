@@ -1,0 +1,18 @@
+tio:
+  core:
+    server:
+      name: tio_test
+      # websocket port default 9876
+      port: 6789
+      heartbeat: true
+      # 心跳时间
+      heartbeat-timeout: 60000
+      ip: 127.0.0.1
+      #ip状态监视时间
+      ip-stat-durations:
+        - 60
+      # SSL 配置
+    ssl:
+      key-store: #如果是以"classpath:"开头，则从classpath中查找，否则视为普通的文件路径
+      password: #如果是以"classpath:"开头，则从classpath中查找，否则视为普通的文件路径
+      trust-store: #密钥

@@ -7,6 +7,8 @@ import org.noear.solon.scheduling.ScheduledAnno;
 import java.util.Properties;
 
 /**
+ * 调整助手
+ *
  * @author noear
  * @since 1.11
  */

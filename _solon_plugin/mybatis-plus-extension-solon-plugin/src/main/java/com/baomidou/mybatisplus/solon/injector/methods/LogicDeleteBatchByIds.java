@@ -1,3 +1,18 @@
+/*
+ * Copyright (c) 2011-2022, baomidou (jobob@qq.com).
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.baomidou.mybatisplus.solon.injector.methods;
 
 import com.baomidou.mybatisplus.core.enums.SqlMethod;
@@ -52,14 +67,14 @@ public class LogicDeleteBatchByIds extends DeleteBatchByIds {
             .collect(toList());
         if (CollectionUtils.isNotEmpty(fieldInfos)) {
             String sqlScript = fieldInfos.stream()
-                .map(i -> i.getSqlSet(COLLECTION + "[0].")).collect(joining(EMPTY));
+                .map(i -> i.getSqlSet(COLL + "[0].")).collect(joining(EMPTY));
             String sqlSet = "SET " + SqlScriptUtils.convertIf(sqlScript, "!@org.apache.ibatis.type.SimpleTypeRegistry@isSimpleType(_parameter.getClass())", true)
                 + tableInfo.getLogicDeleteSql(false, false);
             return String.format(sqlMethod.getSql(), tableInfo.getTableName(), sqlSet, tableInfo.getKeyColumn(),
                 SqlScriptUtils.convertForeach(
                     SqlScriptUtils.convertChoose("@org.apache.ibatis.type.SimpleTypeRegistry@isSimpleType(item.getClass())",
                         "#{item}", "#{item." + tableInfo.getKeyProperty() + "}"),
-                    COLLECTION, null, "item", COMMA),
+                    COLL, null, "item", COMMA),
                 tableInfo.getLogicDeleteSql(true, true));
         } else {
             return super.logicDeleteScript(tableInfo, sqlMethod);

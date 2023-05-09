@@ -3,9 +3,9 @@ package org.noear.solon.scheduling.simple.integration;
 import org.noear.solon.Solon;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
-import org.noear.solon.core.event.AppLoadEndEvent;
 import org.noear.solon.scheduling.annotation.EnableScheduling;
 import org.noear.solon.scheduling.annotation.Scheduled;
+import org.noear.solon.scheduling.scheduled.manager.JobExtractor;
 import org.noear.solon.scheduling.simple.JobManager;
 
 /**
@@ -19,19 +19,19 @@ public class XPluginImp implements Plugin {
             return;
         }
 
-        ScheduledBeanBuilder scheduledBeanBuilder = new ScheduledBeanBuilder(context);
+        //提取任务
+        JobExtractor jobExtractor = new JobExtractor(JobManager.getInstance());
+        context.beanBuilderAdd(Scheduled.class, jobExtractor);
+        context.beanExtractorAdd(Scheduled.class, jobExtractor);
 
-        context.beanBuilderAdd(Scheduled.class, scheduledBeanBuilder);
-        context.beanExtractorAdd(Scheduled.class, scheduledBeanBuilder);
-
-        //应用加载完后，再启动任务
-        Solon.app().onEvent(AppLoadEndEvent.class, e -> {
-            JobManager.start();
+        //容器加载完后，再启动任务
+        context.lifecycle(Integer.MAX_VALUE, () -> {
+            JobManager.getInstance().start();
         });
     }
 
     @Override
     public void stop() throws Throwable {
-        JobManager.stop();
+        JobManager.getInstance().stop();
     }
 }

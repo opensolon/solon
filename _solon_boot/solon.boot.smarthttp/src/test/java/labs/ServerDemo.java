@@ -4,18 +4,14 @@ import org.noear.solon.Solon;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.boot.smarthttp.SmHttpServer;
 import org.noear.solon.core.bean.LifecycleBean;
-import org.smartboot.http.server.HttpRequest;
-import org.smartboot.http.server.HttpResponse;
-import org.smartboot.http.server.HttpServerHandler;
-
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
+import org.noear.solon.core.handle.Context;
+import org.noear.solon.core.handle.Handler;
 
 /**
  * @author noear 2023/4/6 created
  */
 @Component
-public class ServerDemo extends HttpServerHandler implements LifecycleBean {
+public class ServerDemo implements LifecycleBean , Handler {
     SmHttpServer _server;
 
     @Override
@@ -23,7 +19,7 @@ public class ServerDemo extends HttpServerHandler implements LifecycleBean {
         _server = new SmHttpServer();
         _server.setEnableWebSocket(false);
         _server.setCoreThreads(Runtime.getRuntime().availableProcessors() * 2);
-        _server.setHandler(this); //如果使用 SmHttpContextHandler，则转发给 Solon.app()
+        _server.setHandler(this); //如果使用 Solon.app()::tryHandle，则转发给 Solon.app()
         _server.start(null, Solon.cfg().serverPort() + 1);
     }
 
@@ -36,7 +32,7 @@ public class ServerDemo extends HttpServerHandler implements LifecycleBean {
     }
 
     @Override
-    public void handle(HttpRequest request, HttpResponse response) throws IOException {
-        response.write("Hello world!".getBytes(StandardCharsets.UTF_8));
+    public void handle(Context ctx) throws Throwable {
+        ctx.output("Hello world!");
     }
 }

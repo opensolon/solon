@@ -1,9 +1,11 @@
 package org.noear.solon.core;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import org.noear.solon.Solon;
+import org.noear.solon.Utils;
 import org.noear.solon.annotation.Init;
 import org.noear.solon.annotation.Singleton;
 import org.noear.solon.core.util.ClassUtil;
@@ -136,6 +138,13 @@ public class BeanWrap {
     }
 
     /**
+     * 初始化bean的方法
+     */
+    public Method clzInit() {
+        return clzInit;
+    }
+
+    /**
      * bean 原始对象
      */
     public <T> T raw() {
@@ -223,20 +232,20 @@ public class BeanWrap {
                 clzInitIndex = new IndexBuilder().buildIndex(clz);
             }
 
-            context.lifecycle(clzInitIndex, () -> {
+            //保持与 LifecycleBean 相同策略：+1
+            context.lifecycle(clzInitIndex + 1, () -> {
                 initInvokeDo(bean);
             });
         }
     }
 
 
-    protected void initInvokeDo(Object bean) {
+    protected void initInvokeDo(Object bean) throws Throwable {
         try {
             clzInit.invoke(bean);
-        } catch (RuntimeException ex) {
-            throw ex;
-        } catch (ReflectiveOperationException ex) {
-            throw new RuntimeException(ex);
+        } catch (InvocationTargetException e) {
+            Throwable e2 = e.getTargetException();
+            throw Utils.throwableUnwrap(e2);
         }
     }
 

@@ -52,6 +52,8 @@ public class RouterDefault implements Router{
         routesH[Endpoint.before.code].remove(pathPrefix);
         routesH[Endpoint.main.code].remove(pathPrefix);
         routesH[Endpoint.after.code].remove(pathPrefix);
+
+        routesL.remove(pathPrefix);
     }
 
     /**

@@ -65,7 +65,7 @@ public class RenderManager implements Render {
     }
 
     /**
-     * 印射后缀和渲染器的关系
+     * 映射后缀和渲染器的关系
      *
      * @param suffix 后缀（例：.ftl）
      * @param render 渲染器
@@ -82,7 +82,7 @@ public class RenderManager implements Render {
     }
 
     /**
-     * 印射后缀和渲染器的关系
+     * 映射后缀和渲染器的关系
      *
      * @param suffix 后缀（例：.ftl）
      * @param clzName  渲染器类名

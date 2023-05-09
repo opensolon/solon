@@ -22,13 +22,29 @@ public class CloudI18nServiceLocalImpl implements CloudI18nService {
     static final String I18N_KEY_FORMAT = "i18n/%s_%s-%s";
 
     private final String server;
+    private String packNameDefault;
 
     public CloudI18nServiceLocalImpl(CloudProps cloudProps) {
         this.server = cloudProps.getServer();
+
+        packNameDefault = cloudProps.getI18nDefault();
+
+        if (Utils.isEmpty(packNameDefault)) {
+            packNameDefault = Solon.cfg().appName();
+        }
+
+        if (Utils.isEmpty(packNameDefault)) {
+            //不能用日志服务（可能会死循环）
+            System.err.println("[WARN] Solon.cloud no default i18n is configured");
+        }
     }
 
     @Override
     public Pack pull(String group, String packName, Locale locale) {
+        if(Utils.isEmpty(packName)){
+            packName = packNameDefault;
+        }
+
         if (Utils.isEmpty(group)) {
             group = Solon.cfg().appGroup();
 

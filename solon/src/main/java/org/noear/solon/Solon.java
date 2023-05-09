@@ -2,6 +2,7 @@ package org.noear.solon;
 
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.JarClassLoader;
+import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.core.NvMap;
 import org.noear.solon.core.event.AppPrestopEndEvent;
 import org.noear.solon.core.event.AppStopEndEvent;
@@ -38,7 +39,7 @@ public class Solon {
      * 框架版本号
      */
     public static String version() {
-        return "2.2.10-SNAPSHOT";
+        return "2.2.17";
     }
 
     /**
@@ -165,11 +166,13 @@ public class Solon {
 
 
         //5.初始化安全停止
-        if (app.cfg().stopSafe()) {
-            //添加关闭勾子
-            Runtime.getRuntime().addShutdownHook(new Thread(() -> Solon.stop0(false, app.cfg().stopDelay())));
-        } else {
-            Runtime.getRuntime().addShutdownHook(new Thread(() -> Solon.stop0(false, 0)));
+        if(NativeDetector.isAotRuntime() == false) {
+            if (app.cfg().stopSafe()) {
+                //添加关闭勾子
+                Runtime.getRuntime().addShutdownHook(new Thread(() -> Solon.stop0(false, app.cfg().stopDelay())));
+            } else {
+                Runtime.getRuntime().addShutdownHook(new Thread(() -> Solon.stop0(false, 0)));
+            }
         }
 
         //启动完成
@@ -204,7 +207,14 @@ public class Solon {
         stop0(exit, delay);
     }
 
+    public static void stopBlock(boolean exit, int delay, int exitStatus) {
+        stop0(exit, delay, exitStatus);
+    }
+
     private static void stop0(boolean exit, int delay) {
+        stop0(exit, delay, 1);
+    }
+    private static void stop0(boolean exit, int delay, int exitStatus) {
         if (Solon.app() == null) {
             return;
         }
@@ -264,7 +274,7 @@ public class Solon {
 
         //4.直接非正常退出
         if (exit) {
-            System.exit(1);
+            System.exit(exitStatus);
         }
     }
 

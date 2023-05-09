@@ -32,13 +32,22 @@ import java.util.function.Predicate;
  */
 @SuppressWarnings({"serial"})
 public class QueryChainWrapper<T> extends AbstractChainWrapper<T, String, QueryChainWrapper<T>, QueryWrapper<T>>
-    implements ChainQuery<T>, Query<QueryChainWrapper<T>, T, String> {
+        implements ChainQuery<T>, Query<QueryChainWrapper<T>, T, String> {
 
     private final BaseMapper<T> baseMapper;
+    private final Class<T> entityClass;
 
     public QueryChainWrapper(BaseMapper<T> baseMapper) {
         super();
         this.baseMapper = baseMapper;
+        this.entityClass = null;
+        super.wrapperChildren = new QueryWrapper<>();
+    }
+
+    public QueryChainWrapper(Class<T> entityClass) {
+        super();
+        this.baseMapper = null;
+        this.entityClass = entityClass;
         super.wrapperChildren = new QueryWrapper<>();
     }
 
@@ -62,5 +71,15 @@ public class QueryChainWrapper<T> extends AbstractChainWrapper<T, String, QueryC
     @Override
     public BaseMapper<T> getBaseMapper() {
         return baseMapper;
+    }
+
+    /**
+     * 获取当前实体Class
+     *
+     * @return Class
+     */
+    @Override
+    public Class<T> getEntityClass() {
+        return entityClass;
     }
 }

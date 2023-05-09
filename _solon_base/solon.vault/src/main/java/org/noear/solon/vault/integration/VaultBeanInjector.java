@@ -17,10 +17,12 @@ import java.util.Properties;
 public class VaultBeanInjector implements BeanInjector<VaultInject> {
     @Override
     public void doInject(VarHolder varH, VaultInject anno) {
-        beanInject(varH, anno.value(), anno.autoRefreshed());
+        beanInject(varH, anno.value(), anno.required(), anno.autoRefreshed());
     }
 
-    protected void beanInject(VarHolder varH, String name, boolean autoRefreshed) {
+    protected void beanInject(VarHolder varH, String name, boolean required, boolean autoRefreshed) {
+        varH.required(required);
+
         if (name.startsWith("${")) {
             //
             // @Inject("${xxx}") //注入配置 ${xxx} or ${xxx:def},只适合单值

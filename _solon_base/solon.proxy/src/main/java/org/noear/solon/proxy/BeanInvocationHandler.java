@@ -1,8 +1,9 @@
 package org.noear.solon.proxy;
 
 import org.noear.solon.Solon;
+import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.core.util.LogUtil;
-import org.noear.solon.proxy.apt.AptProxy;
+import org.noear.solon.proxy.aot.AotProxy;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.proxy.asm.AsmProxy;
 
@@ -37,11 +38,13 @@ public class BeanInvocationHandler implements InvocationHandler {
         this.target = target;
         this.handler = handler;
 
-        //支持APT (支持 Graalvm Native  打包)
-        this.proxy = AptProxy.newProxyInstance(context, this, clazz);
+        //支持 AOT 生成的代理 (支持 Graalvm Native  打包)
+        if (NativeDetector.isAotRuntime() == false) {
+            this.proxy = AotProxy.newProxyInstance(context, this, clazz);
+        }
 
         if (this.proxy == null) {
-            //支持ASM（兼容旧的包，不支持 Graalvm Native  打包）
+            //支持 ASM（兼容旧的包，不支持 Graalvm Native  打包）
             this.proxy = AsmProxy.newProxyInstance(context, this, clazz);
         }
 

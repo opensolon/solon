@@ -4,9 +4,10 @@ import org.noear.solon.annotation.Alias;
 
 import java.lang.annotation.*;
 
-@Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.TYPE})
 @Documented
+@Inherited
 public @interface SolonTest {
     /**
      * 启动类

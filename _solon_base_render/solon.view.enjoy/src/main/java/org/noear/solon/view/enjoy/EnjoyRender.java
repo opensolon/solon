@@ -69,6 +69,14 @@ public class EnjoyRender implements Render {
         });
     }
 
+    public Engine getProvider() {
+        return provider;
+    }
+
+    public Engine getProviderDebug() {
+        return provider_debug;
+    }
+
     private void forDebug() {
         if (Solon.cfg().isDebugMode() == false) {
             return;

@@ -5,14 +5,14 @@
     <modelVersion>4.0.0</modelVersion>
 
     <!--
-     使用时，可以项目的 pom.xml 里添加 repositories 内容
+     使用时，可以向项目的 pom.xml 里添加 repositories 内容
      -->
-
+    
     <repositories>
         <repository>
             <id>tencent</id>
             <name>tencent maven</name>
-            <url>http://mirrors.cloud.tencent.com/nexus/repository/maven-public/</url>
+            <url>https://mirrors.cloud.tencent.com/nexus/repository/maven-public/</url>
             <layout>default</layout>
             <releases>
                 <enabled>true</enabled>

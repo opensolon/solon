@@ -15,6 +15,7 @@ import org.noear.solon.annotation.Mapping;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Future;
 import java.util.regex.Matcher;
 
 /**
@@ -261,6 +262,9 @@ public class Action extends HandlerAide implements Handler {
 
                 //执行
                 c.result = executeDo(c, obj);
+                if(c.result instanceof Future) {
+                    c.result = ((Future) c.result).get();
+                }
 
                 //设定输出产品（放在这个位置正好）
                 if (Utils.isEmpty(mProduces) == false) {

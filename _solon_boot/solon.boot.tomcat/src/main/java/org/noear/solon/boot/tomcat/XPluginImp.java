@@ -1,5 +1,6 @@
 package org.noear.solon.boot.tomcat;
 
+import org.apache.catalina.util.ServerInfo;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.boot.ServerLifecycle;
@@ -23,7 +24,7 @@ public final class XPluginImp implements Plugin {
     private ServerLifecycle _server = null;
 
     public static String solon_boot_ver() {
-        return "tomcat 9.0.64/" + Solon.version();
+    	return ServerInfo.getServerInfo() + "/" + Solon.version();
     }
 
     @Override

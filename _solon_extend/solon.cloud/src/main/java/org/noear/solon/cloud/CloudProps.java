@@ -113,6 +113,7 @@ public class CloudProps {
 
     //国际化服务相关
     private String I18N_ENABLE = "solon.cloud.@@.i18n.enable";
+    private String I18N_DEFAULT = "solon.cloud.@@.i18n.default";
 
     //ID服务相关
     private String ID_ENABLE = "solon.cloud.@@.id.enable";
@@ -202,6 +203,7 @@ public class CloudProps {
         FILE_SECRET_KEY = FILE_SECRET_KEY.replace("@@", frame);
 
         I18N_ENABLE = I18N_ENABLE.replace("@@", frame);
+        I18N_DEFAULT = I18N_DEFAULT.replace("@@", frame);
 
         ID_ENABLE = ID_ENABLE.replace("@@", frame);
         ID_START = ID_START.replace("@@", frame);
@@ -569,6 +571,10 @@ public class CloudProps {
     //
     public boolean getI18nEnable() {
         return aopContext.cfg().getBool(I18N_ENABLE, true);
+    }
+
+    public String getI18nDefault() {
+        return aopContext.cfg().get(I18N_DEFAULT);
     }
 
     //

@@ -11,7 +11,7 @@ import org.noear.solon.core.handle.UploadedFile;
 @Controller
 public class UploadController {
 
-    //支持上传文件参数（file 变量名，与表单变量名保持一至）
+    //支持上传文件参数（file 变量名，与表单变量名保持一致）
     @Mapping(path = "f1", method = MethodType.POST)
     public String test_f1(Context ctx, UploadedFile file, UploadedFile file2) throws Exception {
         if (file != null) {
@@ -100,7 +100,7 @@ public class UploadController {
     //支持上传文件参数
     @Mapping("f2")
     public String test_f2(Context ctx) throws Exception {
-        UploadedFile file = ctx.file("file"); //（file 变量名，与表单变量名保持一至）
+        UploadedFile file = ctx.file("file"); //（file 变量名，与表单变量名保持一致）
 
         return ctx.path();
     }

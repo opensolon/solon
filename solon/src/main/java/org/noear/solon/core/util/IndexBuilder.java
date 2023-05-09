@@ -103,7 +103,7 @@ public class IndexBuilder {
 	 */
 	private List<Class<?>> findRelateClass(Class<?> clazz) {
 		List<Class<?>> clazzList = new ArrayList<>();
-		Field[] fields = clazz.getDeclaredFields();
+		Field[] fields = ReflectUtil.getDeclaredFields(clazz);
 
 		for (Field field : fields) {
 			if (field.isAnnotationPresent(Inject.class)) {

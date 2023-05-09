@@ -66,7 +66,7 @@ public class Config implements Serializable {
         return version;
     }
 
-    private Properties _props;
+    private transient Properties _props;
 
     /**
      * 转换为属性格式

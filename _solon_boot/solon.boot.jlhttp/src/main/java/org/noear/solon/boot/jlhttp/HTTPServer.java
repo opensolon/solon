@@ -21,6 +21,10 @@
 
 package org.noear.solon.boot.jlhttp;
 
+import org.noear.solon.core.util.ReflectUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.*;
 import java.lang.annotation.*;
 import java.lang.reflect.*;
@@ -123,6 +127,7 @@ import javax.net.ssl.SSLSocket;
  * @since  2008-07-24
  */
 public class HTTPServer {
+    static final Logger log = LoggerFactory.getLogger(HTTPServer.class);
 
     protected static int MAX_BODY_SIZE = 2097152; //2m
     protected static int MAX_HEADER_SIZE = 8192;
@@ -1011,7 +1016,7 @@ public class HTTPServer {
         public void addContexts(Object o) throws IllegalArgumentException {
             for (Class<?> c = o.getClass(); c != null; c = c.getSuperclass()) {
                 // add to contexts those with @Context annotation
-                for (Method m : c.getDeclaredMethods()) {
+                for (Method m : ReflectUtil.getDeclaredMethods(c)) {
                     Context context = m.getAnnotation(Context.class);
                     if (context != null) {
                         m.setAccessible(true); // allow access to private method
@@ -1921,30 +1926,51 @@ public class HTTPServer {
                 ServerSocket serv = HTTPServer.this.serv; // keep local to avoid NPE when stopped
                 while (serv != null && !serv.isClosed()) {
                     final Socket sock = serv.accept();
-                    executor.execute(new Runnable() {
-                        public void run() {
-                            try {
-                                try {
-                                    sock.setSoTimeout(socketTimeout);
-                                    sock.setTcpNoDelay(true); // we buffer anyway, so improve latency
-                                    handleConnection(sock.getInputStream(), sock.getOutputStream(), sock);
-                                } finally {
-                                    try {
-                                        // RFC7230#6.6 - close socket gracefully
-                                        // (except SSL socket which doesn't support half-closing)
-                                        if (!(sock instanceof SSLSocket)) {
-                                            sock.shutdownOutput(); // half-close socket (only output)
-                                            transfer(sock.getInputStream(), null, -1); // consume input
-                                        }
-                                    } finally {
-                                        sock.close(); // and finally close socket fully
-                                    }
-                                }
-                            } catch (IOException ignore) {}
-                        }
-                    });
+
+                    try {
+                        executor.execute(() -> {
+                            execute(sock);
+                        });
+                    } catch (RejectedExecutionException e) {
+                        execute(sock);
+                    } catch (Throwable e) {
+                        //todo: 确保监听不死
+                        log.error(e.getMessage(), e);
+                        //todo: 直接关闭，让客户端知道出问题了
+                        close(sock);
+                    }
                 }
-            } catch (IOException ignore) {}
+            } catch (IOException ignore) {
+            }
+        }
+
+        private void close(Socket socket){
+            try{
+                socket.close();
+            }catch (Throwable e){
+
+            }
+        }
+
+        private void execute(Socket sock){
+            try {
+                try {
+                    sock.setSoTimeout(socketTimeout);
+                    sock.setTcpNoDelay(true); // we buffer anyway, so improve latency
+                    handleConnection(sock.getInputStream(), sock.getOutputStream(), sock);
+                } finally {
+                    try {
+                        // RFC7230#6.6 - close socket gracefully
+                        // (except SSL socket which doesn't support half-closing)
+                        if (!(sock instanceof SSLSocket)) {
+                            sock.shutdownOutput(); // half-close socket (only output)
+                            transfer(sock.getInputStream(), null, -1); // consume input
+                        }
+                    } finally {
+                        sock.close(); // and finally close socket fully
+                    }
+                }
+            } catch (Throwable ignore) {} //todo: IOException 改为 Throwable
         }
     }
 

@@ -10,6 +10,7 @@ import org.noear.solon.core.event.EventListener;
 import org.noear.solon.core.handle.*;
 import org.noear.solon.core.message.Listener;
 import org.noear.solon.core.route.RouterInterceptor;
+import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.core.util.*;
 import org.noear.solon.core.wrap.*;
 
@@ -45,6 +46,7 @@ public class AopContext extends BeanContainer {
     private final Set<RankEntity<LifecycleBean>> lifecycleBeans = new HashSet<>();
 
     private final Map<Method, MethodWrap> methodCached = new HashMap<>();
+    private final Set<VarGather> gatherSet = new HashSet<>();
 
 
     public MethodWrap methodGet(Method method) {
@@ -62,12 +64,21 @@ public class AopContext extends BeanContainer {
         return mw;
     }
 
+	/**
+	 * 遍历method (拿到的是method包装)
+	 */
+	public void methodForeach(Consumer<MethodWrap> action) {
+		methodCached.values().forEach(action);
+	}
+
     @Override
     public void clear() {
         super.clear();
 
         methodCached.clear();
         beanCreatedCached.clear();
+
+        gatherSet.clear();
 
         lifecycleBeans.clear();
 
@@ -161,7 +172,9 @@ public class AopContext extends BeanContainer {
 
         //注册 @ProxyComponent 构建器
         beanBuilderAdd(ProxyComponent.class, (clz, bw, anno) -> {
-            throw new IllegalStateException("Missing plugin dependency: 'solon.proxy'");
+            if(NativeDetector.isAotRuntime() == false) {
+                throw new IllegalStateException("Missing plugin dependency: 'solon.proxy'");
+            }
         });
 
         //注册 @Remoting 构建器
@@ -200,8 +213,7 @@ public class AopContext extends BeanContainer {
         if (Plugin.class.isAssignableFrom(clz)) {
             //如果是插件，则插入
             Solon.app().plug(bw.raw());
-            LogUtil.global().warn("'Plugin' will be deprecated as a component, please use 'LifecycleBean'");
-            return;
+            LogUtil.global().warn("'Plugin' will be deprecated as a component, please use 'LifecycleBean'");return;
         }
 
         //LifecycleBean（替代 Plugin，提供组件的生态周期控制）
@@ -213,13 +225,11 @@ public class AopContext extends BeanContainer {
             }
 
             lifecycle(index + 1, bw.raw());
-            return;
         }
 
         //EventListener
         if (EventListener.class.isAssignableFrom(clz)) {
             addEventListener(clz, bw);
-            return;
         }
 
         //LoadBalance.Factory
@@ -307,29 +317,32 @@ public class AopContext extends BeanContainer {
         }
 
         ClassWrap clzWrap = ClassWrap.get(obj.getClass());
+        List<FieldWrap> fwList = new ArrayList<>();
+
+        //支持父类注入(找到有注解的字段)
+        for (Map.Entry<String, FieldWrap> kv : clzWrap.getFieldAllWraps().entrySet()) {
+            Annotation[] annS = kv.getValue().annoS;
+            if (annS.length > 0) {
+                fwList.add(kv.getValue());
+            }
+        }
 
         if (obj instanceof InitializingBean) {
             InitializingBean initBean = (InitializingBean)obj;
-
-            List<FieldWrap> fwList = new ArrayList<>();
-
-            //支持父类注入(找到有注解的字段)
-            for (Map.Entry<String, FieldWrap> kv : clzWrap.getFieldAllWraps().entrySet()) {
-                Annotation[] annS = kv.getValue().annoS;
-                if (annS.length > 0) {
-                    fwList.add(kv.getValue());
-                }
-            }
 
             if (fwList.size() == 0) {
                 //不需要注入
                 RunUtil.runOrThrow(initBean::afterInjection);
             } else {
                 //需要注入（可能）
-                VarGather gather = new VarGather(fwList.size(), (args2) -> {
+                VarGather gather = new VarGather(true, fwList.size(), (args2) -> {
                     RunUtil.runOrThrow(initBean::afterInjection);
                 });
 
+                //添加到集合
+                gatherSet.add(gather);
+
+                //添加要收集的字段
                 for (FieldWrap fw : fwList) {
                     VarHolder varH = fw.holder(this, obj, gather);
                     gather.add(varH);
@@ -337,12 +350,20 @@ public class AopContext extends BeanContainer {
                 }
             }
         } else {
-            //支持父类注入(找到有注解的字段)
-            for (Map.Entry<String, FieldWrap> kv : clzWrap.getFieldAllWraps().entrySet()) {
-                Annotation[] annoS = kv.getValue().annoS;
-                if (annoS.length > 0) {
-                    VarHolder varH = kv.getValue().holder(this, obj, null);
-                    tryInject(varH, annoS);
+            if (fwList.size() == 0) {
+
+            }else {
+                //需要注入（可能）
+                VarGather gather = new VarGather(true, fwList.size(), null);
+
+                //添加到集合
+                gatherSet.add(gather);
+
+                //添加要收集的字段
+                for (FieldWrap fw : fwList) {
+                    VarHolder varH = fw.holder(this, obj, gather);
+                    gather.add(varH);
+                    tryInject(varH, fw.annoS);
                 }
             }
         }
@@ -465,7 +486,7 @@ public class AopContext extends BeanContainer {
     /**
      * 尝试生成 bean
      */
-    protected void tryCreateBeanOfMethod(BeanWrap bw, Method m, Bean ma) throws Exception {
+    protected void tryCreateBeanOfMethod(BeanWrap bw, Method m, Bean ma) throws Throwable {
         Condition mc = m.getAnnotation(Condition.class);
 
         if (started == false && ConditionUtil.ifMissing(mc)) {
@@ -475,7 +496,7 @@ public class AopContext extends BeanContainer {
         }
     }
 
-    private void tryCreateBeanOfMethod0(BeanWrap bw, Method m, Bean ma, Condition mc) throws Exception {
+    private void tryCreateBeanOfMethod0(BeanWrap bw, Method m, Bean ma, Condition mc) throws Throwable {
         //增加条件检测
         if (ConditionUtil.test(this, mc) == false) {
             return;
@@ -559,7 +580,7 @@ public class AopContext extends BeanContainer {
      * @param mWrap 方法包装器
      * @param bw    bean 包装器
      */
-    protected void tryBuildBean(Bean anno, MethodWrap mWrap, BeanWrap bw) throws Exception {
+    protected void tryBuildBean(Bean anno, MethodWrap mWrap, BeanWrap bw) throws Throwable {
         int size2 = mWrap.getParamWraps().length;
 
         if (size2 == 0) {
@@ -567,12 +588,15 @@ public class AopContext extends BeanContainer {
             tryBuildBeanDo(anno, mWrap, bw, new Object[]{});
         } else {
             //1.构建参数
-            VarGather gather = new VarGather(size2, (args2) -> {
+            VarGather gather = new VarGather(false, size2, (args2) -> {
                 //变量收集完成后，会回调此处
                 RunUtil.runOrThrow(() -> tryBuildBeanDo(anno, mWrap, bw, args2));
             });
 
-            //1.1.添加要收集的参数；并为参数注入（注入是异步的；全部完成后，VarGather 会回调）
+            //1.1.登录到集合
+            gatherSet.add(gather);
+
+            //1.2.添加要收集的参数；并为参数注入（注入是异步的；全部完成后，VarGather 会回调）
             for (ParamWrap pw : mWrap.getParamWraps()) {
                 VarHolder varH = new VarHolderOfParam(bw.context(), pw.getParameter(), gather);
                 gather.add(varH);
@@ -587,7 +611,7 @@ public class AopContext extends BeanContainer {
         }
     }
 
-    protected void tryBuildBeanDo(Bean anno, MethodWrap mWrap, BeanWrap bw, Object[] args) throws Exception {
+    protected void tryBuildBeanDo(Bean anno, MethodWrap mWrap, BeanWrap bw, Object[] args) throws Throwable {
         Object raw = mWrap.invoke(bw.raw(), args);
         tryBuildBean0(mWrap, anno, raw);
     }
@@ -724,6 +748,10 @@ public class AopContext extends BeanContainer {
                 b.target.start();
             }
 
+            //全部跑完后，检查注入情况
+            for(VarGather gather : gatherSet){
+                gather.check();
+            }
         } catch (Throwable e) {
             throw new IllegalStateException("AopContext start failed", e);
         }

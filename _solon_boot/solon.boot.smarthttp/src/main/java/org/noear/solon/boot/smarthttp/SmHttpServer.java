@@ -10,6 +10,7 @@ import org.noear.solon.boot.smarthttp.websocket._SessionManagerImpl;
 import org.noear.solon.boot.ssl.SslContextFactory;
 import org.noear.solon.core.Signal;
 import org.noear.solon.core.event.EventBus;
+import org.noear.solon.core.handle.Handler;
 import org.noear.solon.socketd.SessionManager;
 import org.smartboot.http.server.HttpBootstrap;
 import org.smartboot.http.server.HttpServerConfiguration;
@@ -18,6 +19,7 @@ import org.smartboot.http.server.impl.Request;
 import org.smartboot.socket.extension.plugins.SslPlugin;
 
 import javax.net.ssl.SSLContext;
+import java.util.concurrent.Executor;
 
 /**
  * @author noear
@@ -25,16 +27,21 @@ import javax.net.ssl.SSLContext;
  */
 public class SmHttpServer implements ServerLifecycle {
     private HttpBootstrap server = null;
-    private HttpServerHandler handler;
+    private Handler handler;
     private int coreThreads;
+    private Executor workExecutor;
     private boolean enableWebSocket;
 
     public void setEnableWebSocket(boolean enableWebSocket) {
         this.enableWebSocket = enableWebSocket;
     }
 
-    public void setHandler(HttpServerHandler handler) {
+    public void setHandler(Handler handler) {
         this.handler = handler;
+    }
+
+    public void setWorkExecutor(Executor executor) {
+        this.workExecutor = executor;
     }
 
     public void setCoreThreads(int coreThreads) {
@@ -77,7 +84,10 @@ public class SmHttpServer implements ServerLifecycle {
         //HttpServerConfiguration
         EventBus.push(_config);
 
-        server.httpHandler(handler);
+        SmHttpContextHandler handlerTmp = new SmHttpContextHandler(handler);
+        handlerTmp.setExecutor(workExecutor);
+
+        server.httpHandler(handlerTmp);
 
         if (enableWebSocket) {
             server.webSocketHandler(new SmWebSocketHandleImp());

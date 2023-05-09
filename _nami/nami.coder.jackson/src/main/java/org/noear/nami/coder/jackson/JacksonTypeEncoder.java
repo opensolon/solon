@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.noear.nami.Context;
 import org.noear.nami.Encoder;
 import org.noear.nami.common.ContentTypes;
@@ -25,6 +26,7 @@ public class JacksonTypeEncoder implements Encoder {
         mapper_type.activateDefaultTypingAsProperty(
                 mapper_type.getPolymorphicTypeValidator(),
                 ObjectMapper.DefaultTyping.OBJECT_AND_NON_CONCRETE, "@type");
+        mapper_type.registerModule(new JavaTimeModule());
     }
 
     @Override

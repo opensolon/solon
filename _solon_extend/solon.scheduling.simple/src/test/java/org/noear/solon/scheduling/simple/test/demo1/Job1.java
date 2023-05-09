@@ -13,7 +13,7 @@ import java.util.Date;
 public class Job1 implements Runnable {
     @Override
     public void run() {
-        log.debug(new Date() + ": 1000 * 1");
+        log.warn(new Date() + ": 1000 * 1");
 
         try {
             Thread.sleep(1000 * 2);

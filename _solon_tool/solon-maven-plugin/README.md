@@ -8,28 +8,8 @@
 <build>
     <plugins>
         <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-compiler-plugin</artifactId>
-            <version>3.8.1</version>
-            <configuration>
-                <compilerArgument>-parameters</compilerArgument>
-                <source>${java.version}</source>
-                <target>${java.version}</target>
-                <encoding>UTF-8</encoding>
-            </configuration>
-        </plugin>
-        
-        <plugin>
             <groupId>org.noear</groupId>
             <artifactId>solon-maven-plugin</artifactId>
-            <executions>
-                <execution>
-                    <phase>package</phase>
-                    <goals>
-                        <goal>repackage</goal>
-                    </goals>
-                </execution>
-            </executions>
         </plugin>
     </plugins>
 </build>
