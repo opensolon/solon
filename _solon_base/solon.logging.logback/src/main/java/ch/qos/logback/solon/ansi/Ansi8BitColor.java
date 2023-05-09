@@ -16,9 +16,6 @@
 
 package ch.qos.logback.solon.ansi;
 
-
-import com.sun.tools.javac.util.Assert;
-
 /**
  * {@link AnsiElement} implementation for ANSI 8-bit foreground or background color codes.
  *
@@ -41,7 +38,7 @@ public final class Ansi8BitColor implements AnsiElement {
 	 * @throws IllegalArgumentException if color code is not between 0 and 255.
 	 */
 	private Ansi8BitColor(String prefix, int code) {
-        Assert.check(code >= 0 && code <= 255, "Code must be between 0 and 255");
+        // todo: Assert.check(code >= 0 && code <= 255, "Code must be between 0 and 255");
 		this.prefix = prefix;
 		this.code = code;
 	}

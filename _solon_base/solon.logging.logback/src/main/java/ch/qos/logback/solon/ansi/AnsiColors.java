@@ -16,8 +16,6 @@
 
 package ch.qos.logback.solon.ansi;
 
-import com.sun.tools.javac.util.Assert;
-
 import java.awt.*;
 import java.awt.color.ColorSpace;
 import java.util.Collections;
@@ -148,7 +146,7 @@ public final class AnsiColors {
 		}
 
 		LabColor(Color color) {
-            Assert.checkNonNull(color, "Color must not be null");
+            // todo: Assert.checkNonNull(color, "Color must not be null");
 			float[] lab = fromXyz(color.getColorComponents(XYZ_COLOR_SPACE, null));
 			this.l = lab[0];
 			this.a = lab[1];

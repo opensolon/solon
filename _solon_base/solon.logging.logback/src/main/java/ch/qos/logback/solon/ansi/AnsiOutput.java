@@ -16,8 +16,6 @@
 
 package ch.qos.logback.solon.ansi;
 
-import com.sun.tools.javac.util.Assert;
-
 import java.util.Locale;
 
 /**
@@ -50,7 +48,7 @@ public abstract class AnsiOutput {
 	 * @param enabled if ANSI is enabled, disabled or detected
 	 */
 	public static void setEnabled(Enabled enabled) {
-        Assert.checkNonNull(enabled, "Enabled must not be null");
+        // todo: Assert.checkNonNull(enabled, "Enabled must not be null");
 		AnsiOutput.enabled = enabled;
 	}
 
