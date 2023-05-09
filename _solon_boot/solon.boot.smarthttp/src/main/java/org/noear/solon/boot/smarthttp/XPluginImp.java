@@ -4,7 +4,6 @@ import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.prop.impl.HttpServerProps;
-import org.noear.solon.boot.smarthttp.http.SmHttpContextHandler;
 import org.noear.solon.boot.smarthttp.http.FormContentFilter;
 import org.noear.solon.core.*;
 import org.noear.solon.core.event.EventBus;

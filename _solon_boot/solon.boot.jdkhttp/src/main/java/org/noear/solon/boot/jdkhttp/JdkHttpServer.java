@@ -25,7 +25,11 @@ public class JdkHttpServer implements ServerLifecycle {
     private HttpServer server = null;
     private Executor executor;
     private Handler handler;
+    private boolean allowHttps = true;
 
+    public void setAllowHttps(boolean allowHttps) {
+        this.allowHttps = allowHttps;
+    }
 
     public void setHandler(Handler handler) {
         this.handler = handler;
@@ -38,7 +42,7 @@ public class JdkHttpServer implements ServerLifecycle {
 
     @Override
     public void start(String host, int port) throws Throwable {
-        if (System.getProperty(ServerConstants.SSL_KEYSTORE) != null) {
+        if (allowHttps && System.getProperty(ServerConstants.SSL_KEYSTORE) != null) {
             // enable SSL if configured
             if (Utils.isNotEmpty(host)) {
                 server = HttpsServer.create(new InetSocketAddress(host, port), 0);
