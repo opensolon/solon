@@ -4,10 +4,10 @@ solon.app:
 solon.logging.appender:
   console:
     level: DEBUG
-    pattern: "%d{yyyy-MM-dd HH:mm:ss} %-5level %magenta(${PID:-}) %white(-&#45;&#45;) %-20(%yellow([%20.20thread])) %-55(%cyan(%.32logger{30}:%L)) %msg%n"
+    pattern: "%d{yyyy-MM-dd HH:mm:ss} %-5level %magenta(${PID:-}) %white(---) %-20(%yellow([%20.20thread])) %-55(%cyan(%.32logger{30}:%L)) %msg%n"
   file:
     level: INFO
-    pattern: "%d{yyyy-MM-dd HH:mm:ss} %-5level %magenta(${PID:-}) %white(-&#45;&#45;) %-20(%yellow([%20.20thread])) %-55(%cyan(%.32logger{30}:%L)) %msg%n"
+    pattern: "%d{yyyy-MM-dd HH:mm:ss} %-5level ${PID:-} --- %-20([%20.20thread]) %-55(%.32logger{30}:%L) %msg%n"
     enable: true
   cloud:
     level: INFO
