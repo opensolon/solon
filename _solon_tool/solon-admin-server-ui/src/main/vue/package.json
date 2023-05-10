@@ -16,6 +16,7 @@
   },
   "devDependencies": {
     "@arco-design/web-vue": "^2.45.3",
+    "@arco-plugins/vite-vue": "^1.4.5",
     "@vitejs/plugin-vue": "^4.1.0",
     "typescript": "^5.0.2",
     "unplugin-auto-import": "^0.15.3",
