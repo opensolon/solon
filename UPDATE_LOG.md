@@ -10,7 +10,9 @@
 * 提醒2：有使用弃用接口的。建议先升级到 1.12.4；替换弃用代码后，再升级到 2.0.0
 
 ### 2.2.18
-* 增加 afterInjection() 后所有 bean 必然可用的支持???
+* 新增 fastmybatis-solon-plugin 插件
+* 修复 logback 输出彩色日志到文件时存在特殊符号的问题
+* snack3 升为 3.2.67
 
 ### 2.2.17
 * 增加 @Inject 注入 bean 的 required 检测支持

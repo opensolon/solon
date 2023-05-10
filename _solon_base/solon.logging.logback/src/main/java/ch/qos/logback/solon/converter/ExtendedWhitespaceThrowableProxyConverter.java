@@ -14,60 +14,24 @@
  * limitations under the License.
  */
 
-package ch.qos.logback.solon.ansi;
+package ch.qos.logback.solon.converter;
+
+import ch.qos.logback.classic.pattern.ExtendedThrowableProxyConverter;
+import ch.qos.logback.classic.spi.IThrowableProxy;
+import ch.qos.logback.core.CoreConstants;
 
 /**
- * {@link AnsiElement Ansi} background colors.
+ * {@link ExtendedThrowableProxyConverter} that adds some additional whitespace around the
+ * stack trace.
  *
  * @author Phillip Webb
- * @author Geoffrey Chandler
  * @since 1.3.0
  */
-public enum AnsiBackground implements AnsiElement {
-
-	DEFAULT("49"),
-
-	BLACK("40"),
-
-	RED("41"),
-
-	GREEN("42"),
-
-	YELLOW("43"),
-
-	BLUE("44"),
-
-	MAGENTA("45"),
-
-	CYAN("46"),
-
-	WHITE("47"),
-
-	BRIGHT_BLACK("100"),
-
-	BRIGHT_RED("101"),
-
-	BRIGHT_GREEN("102"),
-
-	BRIGHT_YELLOW("103"),
-
-	BRIGHT_BLUE("104"),
-
-	BRIGHT_MAGENTA("105"),
-
-	BRIGHT_CYAN("106"),
-
-	BRIGHT_WHITE("107");
-
-	private String code;
-
-	AnsiBackground(String code) {
-		this.code = code;
-	}
+public class ExtendedWhitespaceThrowableProxyConverter extends ExtendedThrowableProxyConverter {
 
 	@Override
-	public String toString() {
-		return this.code;
+	protected String throwableProxyToString(IThrowableProxy tp) {
+		return CoreConstants.LINE_SEPARATOR + super.throwableProxyToString(tp) + CoreConstants.LINE_SEPARATOR;
 	}
 
 }

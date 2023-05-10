@@ -5,7 +5,7 @@ import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.core.joran.spi.JoranException;
 import ch.qos.logback.solon.SolonConfigurator;
-import ch.qos.logback.solon.ansi.AnsiOutput;
+import org.noear.solon.logging.ansi.AnsiOutput;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.AopContext;

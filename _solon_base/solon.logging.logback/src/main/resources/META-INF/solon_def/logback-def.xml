@@ -3,9 +3,9 @@
 <!DOCTYPE configuration>
 <configuration scan="true" scanPeriod="60 seconds" debug="false">
     <!-- 彩色日志依赖的渲染类 -->
-    <conversionRule conversionWord="clr" converterClass="ch.qos.logback.solon.ColorConverter"/>
-    <conversionRule conversionWord="wex" converterClass="ch.qos.logback.solon.WhitespaceThrowableProxyConverter"/>
-    <conversionRule conversionWord="wEx" converterClass="ch.qos.logback.solon.ExtendedWhitespaceThrowableProxyConverter"/>
+    <conversionRule conversionWord="clr" converterClass="ch.qos.logback.solon.converter.ColorConverter"/>
+    <conversionRule conversionWord="wex" converterClass="ch.qos.logback.solon.converter.WhitespaceThrowableProxyConverter"/>
+    <conversionRule conversionWord="wEx" converterClass="ch.qos.logback.solon.converter.ExtendedWhitespaceThrowableProxyConverter"/>
 
     <conversionRule conversionWord="tags" converterClass="ch.qos.logback.solon.SolonTagsConverter" />
 

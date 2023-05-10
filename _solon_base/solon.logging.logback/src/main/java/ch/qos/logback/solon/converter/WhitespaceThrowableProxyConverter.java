@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package ch.qos.logback.solon;
+package ch.qos.logback.solon.converter;
 
 import ch.qos.logback.classic.pattern.ThrowableProxyConverter;
 import ch.qos.logback.classic.spi.IThrowableProxy;

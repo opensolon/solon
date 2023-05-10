@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package ch.qos.logback.solon.ansi;
+package org.noear.solon.logging.ansi;
 
 import java.util.Locale;
 

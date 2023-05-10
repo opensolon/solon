@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package ch.qos.logback.solon.ansi;
+package org.noear.solon.logging.ansi;
 
 /**
  * {@link AnsiElement} implementation for ANSI 8-bit foreground or background color codes.
