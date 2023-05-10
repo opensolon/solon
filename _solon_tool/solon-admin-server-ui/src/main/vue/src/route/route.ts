@@ -1,5 +1,9 @@
 import Home from "../pages/Home.vue";
 
 export const routes = [
-    {path: '/', component: Home},
+    {
+        path: '/',
+        name: 'home',
+        component: Home
+    }
 ]

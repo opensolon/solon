@@ -5,3 +5,8 @@ export const router = createRouter({
     history: createWebHashHistory(),
     routes
 })
+declare module 'vue-router' {
+    interface RouteMeta {
+
+    }
+}
