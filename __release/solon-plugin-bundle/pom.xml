@@ -40,6 +40,7 @@
         <module>../../_solon_plugin/mybatis-plus-extension-solon-plugin</module>
 
         <module>../../_solon_plugin/mybatis-flex-solon-plugin</module>
+        <module>../../_solon_plugin/fastmybatis-solon-plugin</module>
 
         <module>../../_solon_plugin/activerecord-solon-plugin</module>
 

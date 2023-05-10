@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <plugins>
+        <plugin interceptor="com.gitee.fastmybatis.core.support.plugin.SqlFormatterPlugin">
+            <!-- 以下配置皆为默认值 -->
+            <!-- 打印SQL末尾自动添加结束符（;） -->
+            <property name="appendDelimiter" value="true" />
+            <!-- 指定结束符 -->
+            <property name="delimiter" value=";" />
+            <!-- 是否使用Druid -->
+            <property name="useDruid" value="false" />
+            <!-- format内容，%s表示SQL占位符 -->
+            <property name="format" value="\n====== SQL ======\n%s" />
+        </plugin>
+    </plugins>
+
+</configuration>
