@@ -14,7 +14,7 @@
     <packaging>jar</packaging>
 
     <properties>
-        <fastmybatis.version>2.6.0.1</fastmybatis.version>
+        <fastmybatis.version>2.6.0.2</fastmybatis.version>
     </properties>
 
     <dependencies>

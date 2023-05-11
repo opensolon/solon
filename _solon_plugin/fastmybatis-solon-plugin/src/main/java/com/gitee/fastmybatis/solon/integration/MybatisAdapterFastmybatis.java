@@ -1,11 +1,12 @@
 package com.gitee.fastmybatis.solon.integration;
 
 import com.gitee.fastmybatis.core.FastmybatisConfig;
-import com.gitee.fastmybatis.core.ext.SqlSessionFactoryBuilderExt;
-import com.gitee.fastmybatis.core.ext.SqlSessionFactoryInfo;
+import com.gitee.fastmybatis.core.ext.MapperLocationsBuilder;
+import com.gitee.fastmybatis.core.ext.MyBatisResource;
 import com.gitee.fastmybatis.core.util.DbUtil;
-import org.apache.ibatis.io.Resources;
+import org.apache.ibatis.builder.xml.XMLMapperBuilder;
 import org.apache.ibatis.mapping.Environment;
+import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.solon.integration.MybatisAdapterDefault;
 import org.noear.solon.Utils;
@@ -15,8 +16,11 @@ import org.noear.solon.core.Props;
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
-import java.util.Properties;
 
 /**
  * 适配器 for fastmybatis
@@ -25,14 +29,14 @@ import java.util.Properties;
  */
 public class MybatisAdapterFastmybatis extends MybatisAdapterDefault {
     protected static final String CONFIG_LOCATION_DEFAULT = "mybatis/mybatis-config-default.xml";
+
     protected String configLocation = CONFIG_LOCATION_DEFAULT;
-    protected SqlSessionFactoryBuilderExt sqlSessionFactoryBuilder;
-
-    protected Properties properties;
-
-    protected SqlSessionFactoryInfo sqlSessionFactoryInfo;
 
     protected FastmybatisConfig fastmybatisConfig;
+
+    protected MapperLocationsBuilder mapperLocationsBuilder;
+
+    protected List<String> mapperResources;
 
     /**
      * 构建Sql工厂适配器，使用默认的 typeAliases 和 mappers 配置
@@ -50,33 +54,22 @@ public class MybatisAdapterFastmybatis extends MybatisAdapterDefault {
 
     @Override
     protected void initConfiguration(Environment environment) {
+        super.initConfiguration(environment);
         this.fastmybatisConfig = new FastmybatisConfig();
-        Utils.injectProperties(fastmybatisConfig, dsProps);
+        this.mapperLocationsBuilder = new MapperLocationsBuilder(fastmybatisConfig);
+        this.mapperResources = new ArrayList<>(8);
         this.configLocation = dsProps.get("configLocation", CONFIG_LOCATION_DEFAULT);
-        String basePackage = dsProps.get("basePackage");
-        String[] mapperLocations = dsProps.getList("mappers").toArray(new String[0]);
-        Objects.requireNonNull(configLocation);
-        Objects.requireNonNull(basePackage);
-        Objects.requireNonNull(fastmybatisConfig);
-        this.fastmybatisConfig.setMapperLocations(mapperLocations);
-        DataSource dataSource = this.getDataSource();
-        String dialect = DbUtil.getDialect(dataSource);
-        try {
-            InputStream inputStream = Resources.getResourceAsStream(configLocation);
-            SqlSessionFactoryBuilderExt sqlSessionFactoryBuilderExt = new SqlSessionFactoryBuilderExt(basePackage, fastmybatisConfig, dialect, environment);
-            sqlSessionFactoryBuilder = sqlSessionFactoryBuilderExt;
-            sqlSessionFactoryInfo = sqlSessionFactoryBuilderExt.buildSqlSessionFactoryInfo(inputStream, dsWrap.name(), properties);
-            this.config = sqlSessionFactoryInfo.getConfiguration();
-        } catch (IOException e) {
-            throw new RuntimeException("初始化mybatis失败", e);
+        List<String> mappers = dsProps.getList("mappers");
+        if (mappers == null || mappers.isEmpty()) {
+            throw new IllegalArgumentException("yml文件缺少 mappers 参数");
         }
-        Props cfgProps = this.dsProps.getProp("configuration");
-        if (cfgProps.size() > 0) {
-            Utils.injectProperties(this.config, cfgProps);
-        }
-        dsWrap.context().getBeanAsync(SqlSessionFactoryBuilderExt.class, bean -> {
-            sqlSessionFactoryBuilder = bean;
-        });
+        Utils.injectProperties(fastmybatisConfig, dsProps);
+    }
+
+
+    @Override
+    protected void addMapperByXml(String uri) {
+        this.mapperResources.add(uri);
     }
 
     /**
@@ -85,9 +78,40 @@ public class MybatisAdapterFastmybatis extends MybatisAdapterDefault {
     @Override
     public SqlSessionFactory getFactory() {
         if (factory == null) {
-            factory = sqlSessionFactoryInfo.getSqlSessionFactory();
+            try {
+                this.initXml(config);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            factory = factoryBuilder.build(getConfiguration());
         }
         return factory;
+    }
+
+    protected void initXml(Configuration configuration) throws IOException {
+        List<MyBatisResource> myBatisResources = new ArrayList<>(16);
+        if (mapperResources != null) {
+            for (String mapperResource : mapperResources) {
+                MyBatisResource myBatisResource = MyBatisResource.buildFromClasspath(mapperResource);
+                myBatisResources.add(myBatisResource);
+            }
+        }
+        Objects.requireNonNull(fastmybatisConfig);
+
+        DataSource dataSource = this.getDataSource();
+        String dialect = DbUtil.getDialect(dataSource);
+        Collection<Class<?>> mapperClasses = config.getMapperRegistry().getMappers();
+        MyBatisResource[] allMybatisMapperResources = mapperLocationsBuilder.build(new HashSet<>(mapperClasses), myBatisResources, dialect);
+        for (MyBatisResource myBatisResource : allMybatisMapperResources) {
+            try (InputStream inputStream = myBatisResource.getInputStream()) {
+                String resource = myBatisResource.getFilepath();
+                if (resource == null) {
+                    resource = myBatisResource.getFilename();
+                }
+                XMLMapperBuilder mapperParser = new XMLMapperBuilder(inputStream, configuration, resource, configuration.getSqlFragments());
+                mapperParser.parse();
+            }
+        }
     }
 
 
