@@ -7,7 +7,7 @@ public class CloudClientProperties implements IClientProperties {
 
     private boolean enabled = true;
 
-    private String name;
+    private String name = "Solon Admin Application";
 
     private String serverUrl;
 
