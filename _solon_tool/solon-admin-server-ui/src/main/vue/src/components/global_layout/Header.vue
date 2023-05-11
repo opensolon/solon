@@ -4,10 +4,12 @@ import {routes} from "../../route/route.ts";
 import {computed, ref, watch} from "vue";
 import {useRoute, useRouter} from "vue-router";
 import useLocale from "../../hooks/locale.ts";
+import {useI18n} from "vue-i18n";
 
 const router = useRouter()
 const route = useRoute()
 const {changeLocale, allLocales} = useLocale();
+const {t} = useI18n()
 
 const path = computed(() => [route.name as string])
 watch(path, (value) => {
@@ -30,14 +32,14 @@ watch(currentPath, (value, oldValue) => {
         <a-menu-item key="_ignore:icon" disabled>
             <div id="icon">
                 <img :src="icon" alt="icon"/>
-                <span>{{ $t("header.title") }}</span>
+                <span>{{ t("header.title") }}</span>
             </div>
         </a-menu-item>
         <template v-for="item in routes" :key="item.name">
-            <a-menu-item>{{ $t(`header.item.${item.name}`) }}</a-menu-item>
+            <a-menu-item>{{ t(`header.item.${item.name}`) }}</a-menu-item>
         </template>
         <a-sub-menu>
-            <template #title>{{ $t("language") }}</template>
+            <template #title>{{ t("language") }}</template>
             <template v-for="language in Object.keys(allLocales)" :key="'_ignore:'+language">
                 <a-menu-item @click="() => changeLocale(language)">{{ allLocales[language].language }}</a-menu-item>
             </template>
