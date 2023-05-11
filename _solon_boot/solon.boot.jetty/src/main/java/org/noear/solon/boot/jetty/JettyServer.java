@@ -40,16 +40,13 @@ class JettyServer extends JettyServerBase implements ServerLifecycle {
         _server = new Server(threadPool);
 
 
-        //有配置的链接器
-        ServerConnector connector = getConnector(_server);
-        connector.setPort(port);
+        //http or https
+        _server.addConnector(getConnector(_server, host, port, true));
 
-        if (Utils.isNotEmpty(host)) {
-            connector.setHost(host);
+        //http add
+        for (Integer portAdd : addHttpPorts) {
+            _server.addConnector(getConnector(_server, host, portAdd, false));
         }
-
-        //添加链接器
-        _server.addConnector(connector);
 
         //session 支持
         if (Solon.app().enableSessionState()) {

@@ -5,6 +5,7 @@ import org.noear.solon.SolonApp;
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.prop.impl.HttpServerProps;
 import org.noear.solon.core.*;
+import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.core.util.LogUtil;
 
@@ -63,6 +64,7 @@ public final class XPluginImp implements Plugin {
         final int _port = props.getPort();
         final String _name = props.getName();
 
+        EventBus.push(_server);
         _server.start(_host, _port);
 
         final String _wrapHost = props.getWrapHost();

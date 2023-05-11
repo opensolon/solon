@@ -3,11 +3,11 @@ package org.noear.solon.boot.undertow;
 import io.undertow.servlet.api.DeploymentInfo;
 import io.undertow.servlet.util.DefaultClassIntrospector;
 import org.noear.solon.Solon;
-import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerLifecycle;
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.prop.impl.HttpServerProps;
 import org.noear.solon.boot.undertow.http.UtContainerInitializer;
+import org.noear.solon.boot.http.HttpServerConfigure;
 import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.core.util.ResourceUtil;
 
@@ -15,13 +15,26 @@ import javax.servlet.MultipartConfigElement;
 import java.io.FileNotFoundException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
-abstract class UndertowServerBase implements ServerLifecycle {
+abstract class UndertowServerBase implements ServerLifecycle, HttpServerConfigure {
     protected HttpServerProps props = new HttpServerProps();
     protected boolean allowSsl = true;
+    protected Set<Integer> addHttpPorts = new LinkedHashSet<>();
 
+    /**
+     * 是否允许Ssl
+     * */
     public void allowSsl(boolean allowSsl) {
         this.allowSsl = allowSsl;
+    }
+
+    /**
+     * 添加 HttpPort（当 ssl 时，可再开个 http 端口）
+     * */
+    public void addHttpPort(int port){
+        addHttpPorts.add(port);
     }
 
     public HttpServerProps getProps() {

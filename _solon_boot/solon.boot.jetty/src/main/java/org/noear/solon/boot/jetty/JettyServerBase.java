@@ -15,6 +15,7 @@ import org.noear.solon.boot.jetty.http.JtContainerInitializer;
 import org.noear.solon.boot.jetty.http.JtHttpContextHandler;
 import org.noear.solon.boot.jetty.http.JtHttpContextServletHandler;
 import org.noear.solon.boot.prop.impl.HttpServerProps;
+import org.noear.solon.boot.http.HttpServerConfigure;
 import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.core.util.ResourceUtil;
 
@@ -22,15 +23,28 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.LinkedHashSet;
+import java.util.Set;
 import java.util.concurrent.ExecutorService;
 
-abstract class JettyServerBase implements ServerLifecycle {
+abstract class JettyServerBase implements ServerLifecycle , HttpServerConfigure {
     protected ExecutorService executor;
     protected HttpServerProps props = new HttpServerProps();
     protected boolean allowSsl = true;
+    protected Set<Integer> addHttpPorts = new LinkedHashSet<>();
 
+    /**
+     * 是否允许Ssl
+     * */
     public void allowSsl(boolean allowSsl) {
         this.allowSsl = allowSsl;
+    }
+
+    /**
+     * 添加 HttpPort（当 ssl 时，可再开个 http 端口）
+     * */
+    public void addHttpPort(int port){
+        addHttpPorts.add(port);
     }
 
     public HttpServerProps getProps() {
@@ -46,7 +60,7 @@ abstract class JettyServerBase implements ServerLifecycle {
      *
      * @since 1.6
      */
-    protected ServerConnector getConnector(Server server) throws RuntimeException {
+    protected ServerConnector getConnector(Server server, String host, int port, boolean autoSsl) throws RuntimeException {
         //配置 //http://www.eclipse.org/jetty/documentation/jetty-9/index.html
         HttpConfiguration config = new HttpConfiguration();
         if (ServerProps.request_maxHeaderSize != 0) {
@@ -54,8 +68,9 @@ abstract class JettyServerBase implements ServerLifecycle {
         }
 
         HttpConnectionFactory httpFactory = new HttpConnectionFactory(config);
+        ServerConnector serverConnector;
 
-        if (allowSsl && System.getProperty(ServerConstants.SSL_KEYSTORE) != null) {
+        if (allowSsl && autoSsl && System.getProperty(ServerConstants.SSL_KEYSTORE) != null) {
             String sslKeyStore = System.getProperty(ServerConstants.SSL_KEYSTORE);
             String sslKeyStoreType = System.getProperty(ServerConstants.SSL_KEYSTORE_TYPE);
             String sslKeyStorePassword = System.getProperty(ServerConstants.SSL_KEYSTORE_PASSWORD);
@@ -81,10 +96,19 @@ abstract class JettyServerBase implements ServerLifecycle {
 
             SslConnectionFactory sslFactory = new SslConnectionFactory(contextFactory, HttpVersion.HTTP_1_1.asString());
 
-            return new ServerConnector(server, sslFactory, httpFactory);
+            serverConnector = new ServerConnector(server, sslFactory, httpFactory);
         } else {
-            return new ServerConnector(server, httpFactory);
+            serverConnector = new ServerConnector(server, httpFactory);
         }
+
+
+        serverConnector.setPort(port);
+
+        if (Utils.isNotEmpty(host)) {
+            serverConnector.setHost(host);
+        }
+
+        return serverConnector;
     }
 
     protected ServletContextHandler getServletHandler() throws IOException {

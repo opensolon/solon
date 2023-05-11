@@ -88,6 +88,11 @@ public class UndertowServer extends UndertowServerBase implements ServerLifecycl
             builder.addHttpListener(port, host);
         }
 
+        //http add
+        for(Integer portAdd: addHttpPorts){
+            builder.addHttpListener(portAdd, host);
+        }
+
         if (app.enableWebSocket()) {
             builder.setHandler(websocket(new UtWsConnectionCallback(), httpHandler));
 
