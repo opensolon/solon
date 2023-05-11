@@ -11,6 +11,7 @@
 
 ### 2.2.18
 * 新增 fastmybatis-solon-plugin 插件
+* 增加 allowSsl ，用于控制是否允许 https
 * 修复 logback 输出彩色日志到文件时存在特殊符号的问题
 * snack3 升为 3.2.67
 
