@@ -31,12 +31,11 @@ public class SmHttpServer implements ServerLifecycle {
     private boolean enableWebSocket;
     private boolean allowSsl = true;
 
-    public SmHttpServer allowSsl(boolean allowSsl) {
+    public void allowSsl(boolean allowSsl) {
         this.allowSsl = allowSsl;
-        return this;
     }
 
-    public void setEnableWebSocket(boolean enableWebSocket) {
+    public void enableWebSocket(boolean enableWebSocket) {
         this.enableWebSocket = enableWebSocket;
     }
 

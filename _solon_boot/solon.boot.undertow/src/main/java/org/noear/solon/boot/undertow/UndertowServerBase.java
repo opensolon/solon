@@ -18,6 +18,11 @@ import java.net.URL;
 
 abstract class UndertowServerBase implements ServerLifecycle {
     protected HttpServerProps props = new HttpServerProps();
+    protected boolean allowSsl = true;
+
+    public void allowSsl(boolean allowSsl) {
+        this.allowSsl = allowSsl;
+    }
 
     public HttpServerProps getProps() {
         return props;

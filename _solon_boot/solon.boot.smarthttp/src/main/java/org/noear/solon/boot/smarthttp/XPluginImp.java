@@ -51,7 +51,7 @@ public final class XPluginImp implements Plugin {
         _signal = new SignalSim(_name, _wrapHost, _wrapPort, "http", SignalType.HTTP);
 
         _server = new SmHttpServer();
-        _server.setEnableWebSocket(app.enableWebSocket());
+        _server.enableWebSocket(app.enableWebSocket());
         _server.setCoreThreads(props.getCoreThreads());
         if (props.isIoBound()) {
             //如果是io密集型的，加二段线程池

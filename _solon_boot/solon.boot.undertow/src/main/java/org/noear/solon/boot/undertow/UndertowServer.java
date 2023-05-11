@@ -18,13 +18,17 @@ import org.noear.solon.boot.undertow.websocket._SessionManagerImpl;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.socketd.SessionManager;
 
+import javax.net.ssl.KeyManager;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+
 import static io.undertow.Handlers.websocket;
 
 /**
  * @author  by: Yukai
  * @since : 2019/3/28 15:49
  */
-class UndertowServer extends UndertowServerBase implements ServerLifecycle {
+public class UndertowServer extends UndertowServerBase implements ServerLifecycle {
     protected Undertow _server;
 
     @Override
@@ -65,23 +69,23 @@ class UndertowServer extends UndertowServerBase implements ServerLifecycle {
         }
 
         builder.setIoThreads(props.getCoreThreads());
-        if(props.isIoBound()) {
+        if (props.isIoBound()) {
             builder.setWorkerThreads(props.getMaxThreads(true));
-        }else{
+        } else {
             builder.setWorkerThreads(props.getMaxThreads(false));
         }
 
 
-        if(Utils.isEmpty(host)){
+        if (Utils.isEmpty(host)) {
             host = "0.0.0.0";
         }
 
-        if (System.getProperty(ServerConstants.SSL_KEYSTORE) == null) {
-            //http
-            builder.addHttpListener(port, host);
-        } else {
+        if (allowSsl && System.getProperty(ServerConstants.SSL_KEYSTORE) != null) {
             //https
             builder.addHttpsListener(port, host, SslContextFactory.create());
+        } else {
+            //http
+            builder.addHttpListener(port, host);
         }
 
         if (app.enableWebSocket()) {

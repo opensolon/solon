@@ -17,7 +17,7 @@ public class ServerDemo implements LifecycleBean , Handler {
     @Override
     public void start() throws Throwable {
         _server = new SmHttpServer();
-        _server.setEnableWebSocket(false);
+        _server.enableWebSocket(false);
         _server.setCoreThreads(Runtime.getRuntime().availableProcessors() * 2);
         _server.setHandler(this); //如果使用 Solon.app()::tryHandle，则转发给 Solon.app()
         _server.start(null, Solon.cfg().serverPort() + 1);

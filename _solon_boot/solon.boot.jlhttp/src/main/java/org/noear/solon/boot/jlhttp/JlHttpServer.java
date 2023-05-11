@@ -20,9 +20,8 @@ public class JlHttpServer implements ServerLifecycle {
     private Executor executor;
     private boolean allowSsl = true;
 
-    public JlHttpServer allowSsl(boolean allowSsl) {
+    public void allowSsl(boolean allowSsl) {
         this.allowSsl = allowSsl;
-        return this;
     }
 
     public void setHandler(Handler handler) {
