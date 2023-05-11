@@ -10,7 +10,7 @@
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <groupId>org.noear.solon.admin.server</groupId>
+    <groupId>org.noear.solon.admin</groupId>
     <artifactId>solon-admin-server-ui</artifactId>
 
     <build>
