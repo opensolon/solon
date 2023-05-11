@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import GlobalLayout from "./components/./global_layout/index.vue";
+import GlobalLayout from "./components/global_layout/index.vue";
 
 import useLocale from "./hooks/locale.ts";
 

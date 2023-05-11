@@ -10,14 +10,14 @@ import Header from "./Header.vue";
         </a-layout-header>
         <a-layout>
             <a-layout-sider>
-                <template #sider/>
+                <slot name="sider"/>
             </a-layout-sider>
             <a-layout-content>
-                <template #default/>
+                <slot/>
             </a-layout-content>
         </a-layout>
         <a-layout-footer>
-            <template #footer/>
+            <slot name="footer"/>
         </a-layout-footer>
     </a-layout>
 </template>
