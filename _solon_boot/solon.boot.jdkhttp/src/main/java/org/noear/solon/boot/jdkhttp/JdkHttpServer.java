@@ -27,8 +27,9 @@ public class JdkHttpServer implements ServerLifecycle {
     private Handler handler;
     private boolean allowSsl = true;
 
-    public void setAllowSsl(boolean allowSsl) {
+    public JdkHttpServer allowSsl(boolean allowSsl) {
         this.allowSsl = allowSsl;
+        return this;
     }
 
     public void setHandler(Handler handler) {

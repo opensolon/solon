@@ -31,8 +31,9 @@ public class SmHttpServer implements ServerLifecycle {
     private boolean enableWebSocket;
     private boolean allowSsl = true;
 
-    public void setAllowSsl(boolean allowSsl) {
+    public SmHttpServer allowSsl(boolean allowSsl) {
         this.allowSsl = allowSsl;
+        return this;
     }
 
     public void setEnableWebSocket(boolean enableWebSocket) {
