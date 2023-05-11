@@ -1,0 +1,27 @@
+{
+  "name": "solon-admin-server-ui",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "pinia": "^2.0.36",
+    "vue": "^3.2.47",
+    "vue-i18n": "9",
+    "vue-router": "4"
+  },
+  "devDependencies": {
+    "@arco-design/web-vue": "^2.45.3",
+    "@arco-plugins/vite-vue": "^1.4.5",
+    "@vitejs/plugin-vue": "^4.1.0",
+    "typescript": "^5.0.2",
+    "unplugin-auto-import": "^0.15.3",
+    "unplugin-vue-components": "^0.24.1",
+    "vite": "^4.3.2",
+    "vue-tsc": "^1.4.2"
+  }
+}
