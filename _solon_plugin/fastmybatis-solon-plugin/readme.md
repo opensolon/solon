@@ -20,11 +20,10 @@ dataSource:
 
 mybatis:
   db1:
-    # 扫描的dao package,多个用,隔开
-    basePackage: "com.myapp.demo.dao"
     mappers:
+      - "com.myapp.demo.dao.*"
       # 指定mybatis xml文件存放目录
-      - "mybatis/mapper"
+      - "classpath:mybatis/mapper/*.xml"
     # 指定mybatis-config.xml文件classpath路径
     configLocation: "mybatis/mybatis-config.xml"
     configuration:
