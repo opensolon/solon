@@ -7,6 +7,8 @@ public class CloudClientProperties implements IClientProperties {
 
     private boolean enabled = true;
 
+    private String mode = "cloud";
+
     private String serverUrl;
 
     private long heartbeatInterval = 10 * 1000;
@@ -16,5 +18,4 @@ public class CloudClientProperties implements IClientProperties {
     private long readTimeout = 5 * 1000;
 
     private String metadata = "";
-
 }

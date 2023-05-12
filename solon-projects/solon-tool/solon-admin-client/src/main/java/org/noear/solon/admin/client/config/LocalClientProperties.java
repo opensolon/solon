@@ -7,6 +7,8 @@ public class LocalClientProperties implements IClientProperties {
 
     private boolean enabled = true;
 
+    private String mode = "local";
+
     private String serverUrl;
 
     private long heartbeatInterval = 10 * 1000;
