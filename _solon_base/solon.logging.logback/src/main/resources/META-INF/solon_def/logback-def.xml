@@ -23,6 +23,9 @@
     <solonProperty name="FILE_LOG_NAME" source="solon.logging.appender.file.name"
                    defaultValue="logs/${APP_NAME}" />
 
+    <solonProperty name="FILE_LOG_EXTENSION" source="solon.logging.appender.file.extension"
+                   defaultValue=".log" />
+
     <solonProperty name="FILE_LOG_PATTERN" source="solon.logging.appender.file.pattern"
                    defaultValue="%-5level %d{yyyy-MM-dd HH:mm:ss.SSS} [-%t][*%X{traceId}]%tags[%logger{20}]: %n%msg%n" />
 
@@ -55,7 +58,7 @@
         <File>${FILE_LOG_NAME}.log</File>
         <append>true</append>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${FILE_LOG_NAME}_%d{yyyy-MM-dd}_%i.log</fileNamePattern>
+            <fileNamePattern>${FILE_LOG_NAME}_%d{yyyy-MM-dd}_%i${FILE_LOG_EXTENSION}</fileNamePattern>
             <maxHistory>${FILE_LOG_MAX_HISTORY}</maxHistory>
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                 <maxFileSize>${FILE_LOG_MAX_FILE_SIZE}</maxFileSize>
