@@ -4,6 +4,8 @@ public interface IClientProperties {
 
     boolean isEnabled();
 
+    String getMode();
+
     String getServerUrl();
 
     long getHeartbeatInterval();
