@@ -5,7 +5,6 @@ import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.core.joran.spi.JoranException;
 import ch.qos.logback.solon.SolonConfigurator;
-import org.noear.solon.logging.ansi.AnsiOutput;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.AopContext;
@@ -29,13 +28,6 @@ import java.net.URL;
 public class XPluginImp implements Plugin , InitializingBean {
     @Override
     public void afterInjection() throws Throwable {
-        // 启用打印彩色文本功能
-        String s = Solon.cfg().get("solon.output.ansi.enabled", "ALWAYS");
-        AnsiOutput.Enabled enabled = AnsiOutput.Enabled.valueOf(s.toUpperCase());
-        AnsiOutput.setEnabled(enabled);
-        boolean consoleAvailable = Solon.cfg().getBool("solon.output.ansi.console-available", true);
-        AnsiOutput.setConsoleAvailable(consoleAvailable);
-
         //尝试从配置里获取
         URL url = getUrlOfConfig();
 
