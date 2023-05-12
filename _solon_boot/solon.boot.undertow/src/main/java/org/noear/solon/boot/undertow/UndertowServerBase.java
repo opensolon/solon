@@ -26,6 +26,7 @@ abstract class UndertowServerBase implements ServerLifecycle, HttpServerConfigur
     /**
      * 是否允许Ssl
      * */
+    @Override
     public void allowSsl(boolean allowSsl) {
         this.allowSsl = allowSsl;
     }
@@ -33,6 +34,7 @@ abstract class UndertowServerBase implements ServerLifecycle, HttpServerConfigur
     /**
      * 添加 HttpPort（当 ssl 时，可再开个 http 端口）
      * */
+    @Override
     public void addHttpPort(int port){
         addHttpPorts.add(port);
     }

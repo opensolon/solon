@@ -11,9 +11,11 @@
 
 ### 2.2.18
 * 新增 fastmybatis-solon-plugin 插件
-* 增加 allowSsl ，用于控制是否允许 https
-* 增加 solon.boot.jetty 对 HttpServerConfigure 接口的支持，方便添加端口
-* 增加 solon.boot.undertow 对 HttpServerConfigure 接口的支持，方便添加端口
+* 增加 solon.boot.jdkhttp 对 HttpServerConfigure 接口的支持，方便添加端口及ssl的编程控制
+* 增加 solon.boot.jlhttp 对 HttpServerConfigure 接口的支持，方便添加端口及ssl的编程控制
+* 增加 solon.boot.smarthttp 对 HttpServerConfigure 接口的支持，方便添加端口及ssl的编程控制
+* 增加 solon.boot.jetty 对 HttpServerConfigure 接口的支持，方便添加端口及ssl的编程控制
+* 增加 solon.boot.undertow 对 HttpServerConfigure 接口的支持，方便添加端口及ssl的编程控制
 * 增加 solon.logging.logback 插件，文件扩展名配置（.log, .log.gz）
 * 增加 solon.logging.log4j2 插件，文件扩展名配置（.log, .log.gz）
 * 修复 logback 输出彩色日志到文件时存在特殊符号的问题

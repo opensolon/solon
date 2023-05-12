@@ -67,6 +67,7 @@ public final class XPluginImp implements Plugin {
         EventBus.push(_server);
         _server.start(_host, _port);
 
+
         final String _wrapHost = props.getWrapHost();
         final int _wrapPort = props.getWrapPort();
         _signal = new SignalSim(_name, _wrapHost, _wrapPort, "http", SignalType.HTTP);
