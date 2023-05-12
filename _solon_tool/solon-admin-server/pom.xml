@@ -23,7 +23,7 @@
         <dependency>
             <groupId>org.noear.solon.admin</groupId>
             <artifactId>solon-admin-server-ui</artifactId>
-            <version>${version}</version>
+            <version>${project.version}</version>
         </dependency>
 
         <dependency>
