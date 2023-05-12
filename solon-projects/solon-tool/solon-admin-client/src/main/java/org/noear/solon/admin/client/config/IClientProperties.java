@@ -4,11 +4,7 @@ public interface IClientProperties {
 
     boolean isEnabled();
 
-    String getName();
-
     String getServerUrl();
-
-    String getApiPath();
 
     long getHeartbeatInterval();
 
