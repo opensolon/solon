@@ -1,5 +1,6 @@
 package webapp.dso;
 
+import org.noear.solon.annotation.Inject;
 import org.noear.solon.annotation.ProxyComponent;
 
 /**
@@ -7,6 +8,10 @@ import org.noear.solon.annotation.ProxyComponent;
  */
 @ProxyComponent
 public class TestServiceImpl implements TestService{
+
+    @Inject
+    EntityConfig entityConfig;
+
     @Override
     public void hello() {
         this.helloDo();

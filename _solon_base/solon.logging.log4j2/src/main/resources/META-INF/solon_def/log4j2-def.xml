@@ -8,6 +8,7 @@
         <Property name="CONSOLE_LOG_LEVEL">${sys:solon.logging.appender.console.level:-TRACE}</Property>
 
         <Property name="FILE_LOG_NAME">${sys:solon.logging.appender.file.name:-logs/${APP_NAME}}</Property>
+        <Property name="FILE_LOG_EXTENSION">${sys:solon.logging.appender.file.extension:-.log}</Property>
         <Property name="FILE_LOG_PATTERN_DEF">%-5level %d{yyyy-MM-dd HH:mm:ss.SSS} [-%t][*%X{traceId}]%tags[%logger{20}]: %n%msg%n</Property>
         <Property name="FILE_LOG_PATTERN">${sys:solon.logging.appender.file.pattern:-${FILE_LOG_PATTERN_DEF}}</Property>
         <Property name="FILE_LOG_LEVEL">${sys:solon.logging.appender.file.level:-INFO}</Property>
@@ -25,7 +26,7 @@
         </Console>
         <RollingFile name="File"
                      fileName="${FILE_LOG_NAME}.log"
-                     filePattern="${FILE_LOG_NAME}_%d{yyyy-MM-dd}_%i.log">
+                     filePattern="${FILE_LOG_NAME}_%d{yyyy-MM-dd}_%i${FILE_LOG_EXTENSION}">
             <ThresholdFilter level="${FILE_LOG_LEVEL}" onMatch="ACCEPT" onMismatch="DENY"/>
             <PatternLayout>
                 <Pattern>${FILE_LOG_PATTERN}</Pattern>
