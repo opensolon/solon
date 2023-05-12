@@ -7,11 +7,7 @@ public class CloudClientProperties implements IClientProperties {
 
     private boolean enabled = true;
 
-    private String name = "Solon Admin Application";
-
     private String serverUrl;
-
-    private String apiPath = "api";
 
     private long heartbeatInterval = 10 * 1000;
 

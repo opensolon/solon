@@ -7,11 +7,7 @@ public class LocalClientProperties implements IClientProperties {
 
     private boolean enabled = true;
 
-    private String name;
-
     private String serverUrl;
-
-    private String apiPath = "api";
 
     private long heartbeatInterval = 10 * 1000;
 
