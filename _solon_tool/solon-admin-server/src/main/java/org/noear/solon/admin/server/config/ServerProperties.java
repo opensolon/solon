@@ -16,4 +16,7 @@ public class ServerProperties {
     @Inject(value = "${server.contextPath}", required = false)
     private String contextPath = "/";
 
+    @Inject(value = "${solon.admin.server.mode}", required = false)
+    private String mode = "local";
+
 }
