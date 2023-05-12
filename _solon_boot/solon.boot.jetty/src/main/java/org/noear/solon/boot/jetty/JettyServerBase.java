@@ -36,6 +36,7 @@ abstract class JettyServerBase implements ServerLifecycle , HttpServerConfigure 
     /**
      * 是否允许Ssl
      * */
+    @Override
     public void allowSsl(boolean allowSsl) {
         this.allowSsl = allowSsl;
     }
@@ -43,6 +44,7 @@ abstract class JettyServerBase implements ServerLifecycle , HttpServerConfigure 
     /**
      * 添加 HttpPort（当 ssl 时，可再开个 http 端口）
      * */
+    @Override
     public void addHttpPort(int port){
         addHttpPorts.add(port);
     }
