@@ -21,7 +21,7 @@ public final class XPluginImp implements Plugin {
         return "smart http 1.1/" + Solon.version();
     }
 
-    private SmHttpServer _server;
+    private SmHttpServerComb _server;
 
     @Override
     public void start(AopContext context) {
@@ -46,11 +46,7 @@ public final class XPluginImp implements Plugin {
         long time_start = System.currentTimeMillis();
 
 
-        final String _wrapHost = props.getWrapHost();
-        final int _wrapPort = props.getWrapPort();
-        _signal = new SignalSim(_name, _wrapHost, _wrapPort, "http", SignalType.HTTP);
-
-        _server = new SmHttpServer();
+        _server = new SmHttpServerComb();
         _server.enableWebSocket(app.enableWebSocket());
         _server.setCoreThreads(props.getCoreThreads());
         if (props.isIoBound()) {
@@ -59,11 +55,15 @@ public final class XPluginImp implements Plugin {
         }
 
         _server.setHandler(Solon.app()::tryHandle);
-        _server.start(_host, _port);
 
         //尝试事件扩展
         EventBus.push(_server);
+        _server.start(_host, _port);
 
+
+        final String _wrapHost = props.getWrapHost();
+        final int _wrapPort = props.getWrapPort();
+        _signal = new SignalSim(_name, _wrapHost, _wrapPort, "http", SignalType.HTTP);
         app.signalAdd(_signal);
 
         app.before(-9, new FormContentFilter());
