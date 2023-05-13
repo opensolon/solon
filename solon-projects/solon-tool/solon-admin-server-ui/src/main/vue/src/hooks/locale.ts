@@ -24,6 +24,7 @@ export default function useLocale() {
         }
     });
     const changeLocale = (value: string) => {
+        if (i18n.locale.value === value) return;
         i18n.locale.value = value;
         localStorage.setItem('solon-admin-locale', value);
         Message.success(i18n.t('header.action.locale', {language: i18n.t('language')}));
