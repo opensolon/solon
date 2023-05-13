@@ -35,7 +35,14 @@ class JettyServer extends JettyServerBase implements ServerLifecycle {
     protected void setup(SolonApp app, String host, int port) throws IOException {
         Class<?> wsClz = ClassUtil.loadClass("org.eclipse.jetty.websocket.server.WebSocketHandler");
 
-        QueuedThreadPool threadPool = new QueuedThreadPool(props.getMaxThreads(true), props.getCoreThreads(), (int) props.getIdleTimeout());
+        int maxThreads;
+        if(props.isIoBound()){
+            maxThreads = props.getMaxThreads(true);
+        }else{
+            maxThreads = props.getMaxThreads(false);
+        }
+
+        QueuedThreadPool threadPool = new QueuedThreadPool(maxThreads, props.getCoreThreads(), (int) props.getIdleTimeout());
 
         _server = new Server(threadPool);
 

@@ -11,6 +11,7 @@
 
 ### 2.2.19
 * 新增 fastmybatis-solon-plugin 插件
+* 调整 bio maxThreads 为 x128(core x 64)
 * smartboot.socket 升为 1.5.28
 * smartboot.http 升为 1.2.1
 * snack3 升为 3.2.70
