@@ -16,4 +16,7 @@ public class ServerProperties {
     @Inject(value = "${solon.admin.server.mode}", required = false)
     private String mode = "local";
 
+    @Inject(value = "${solon.admin.server.heartbeatInterval}", required = false)
+    private long heartbeatInterval = 10 * 1000;
+
 }

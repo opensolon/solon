@@ -73,4 +73,26 @@ public class ApplicationRegistrationService {
         }
     }
 
+    public void heartbeat() {
+        log.debug("Attempting to send heartbeat to Solon Admin server...");
+        val serverUrl = this.properties.getServerUrl().replaceAll("/+$", "");
+        try (Response response = client.newCall(new Request.Builder()
+                .url(new URL(serverUrl + "/api/application/heartbeat"))
+                .post(RequestBody.create(this.gson.toJson(
+                        Application.builder()
+                                .name(this.applicationName)
+                                .baseUrl(NetworkUtils.getHostAndPort())
+                                .build()
+                ), MediaType.parse("application/json")))
+                .build()).execute()) {
+            if (response.isSuccessful()) {
+                log.debug("Successfully send heartbeat to Solon Admin server.");
+                return;
+            }
+            log.error("Failed to send heartbeat to Solon Admin server. Response: {}", response);
+        } catch (Exception ex) {
+            log.error("Unexpected error occurred during the heartbeat sending:", ex);
+        }
+    }
+
 }

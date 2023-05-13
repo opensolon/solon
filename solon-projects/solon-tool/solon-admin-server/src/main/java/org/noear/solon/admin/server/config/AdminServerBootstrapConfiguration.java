@@ -6,6 +6,9 @@ import org.noear.solon.Solon;
 import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Condition;
 import org.noear.solon.annotation.Configuration;
+import org.noear.solon.annotation.Inject;
+
+import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 @Slf4j
 @Configuration
@@ -15,6 +18,12 @@ public class AdminServerBootstrapConfiguration {
     @Bean
     public MarkedServerEnabled markedServerEnabled() {
         return new MarkedServerEnabled(Solon.cfg().get("solon.admin.server.mode", "local"));
+    }
+
+    @Bean
+    public ScheduledThreadPoolExecutor scheduledThreadPoolExecutor(@Inject(required = false) MarkedServerEnabled marker) {
+        if (marker == null) return null;
+        return new ScheduledThreadPoolExecutor(1);
     }
 
     @Value

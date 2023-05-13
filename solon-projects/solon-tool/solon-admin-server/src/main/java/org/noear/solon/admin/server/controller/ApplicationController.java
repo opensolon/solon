@@ -4,6 +4,8 @@ import org.noear.solon.admin.server.data.Application;
 import org.noear.solon.admin.server.services.ApplicationService;
 import org.noear.solon.annotation.*;
 
+import java.util.Set;
+
 @Controller
 @Mapping("/api/application")
 public class ApplicationController {
@@ -23,4 +25,15 @@ public class ApplicationController {
         applicationService.unregisterApplication(application);
     }
 
+    @Get
+    @Mapping("/all")
+    public Set<Application> all() {
+        return applicationService.getApplications();
+    }
+
+    @Post
+    @Mapping("/heartbeat")
+    public void heartbeat(@Body Application application) {
+        applicationService.heartbeatApplication(application);
+    }
 }
