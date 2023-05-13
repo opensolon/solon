@@ -1,6 +1,7 @@
 package org.noear.solon.admin.client.services;
 
 import com.google.gson.Gson;
+import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import okhttp3.*;
 import org.noear.solon.admin.client.config.IClientProperties;
@@ -12,6 +13,7 @@ import org.noear.solon.annotation.Inject;
 import java.io.IOException;
 import java.net.URL;
 
+@Slf4j
 @Component
 public class ApplicationRegistrationService {
 
@@ -27,7 +29,8 @@ public class ApplicationRegistrationService {
     @Inject
     private IClientProperties properties;
 
-    public boolean register() throws IOException {
+    public void register() throws IOException {
+        log.info("Attempting to register this client as an application with Solon Admin server...");
         val serverUrl = this.properties.getServerUrl().replaceAll("/+$", "");
         try (Response response = client.newCall(new Request.Builder()
                 .url(new URL(serverUrl + "/api/application/register"))
@@ -39,11 +42,16 @@ public class ApplicationRegistrationService {
                                 .build()
                 ), MediaType.parse("application/json")))
                 .build()).execute()) {
-            return response.isSuccessful();
+            if (response.isSuccessful()) {
+                log.info("Successfully register application to Solon Admin server.");
+                return;
+            }
+            log.error("Failed to register application to Solon Admin server. Response: {}", response);
         }
     }
 
-    public boolean unregister() throws IOException {
+    public void unregister() throws IOException {
+        log.info("Attempting to unregister this client from Solon Admin server...");
         val serverUrl = this.properties.getServerUrl().replaceAll("/+$", "");
         try (Response response = client.newCall(new Request.Builder()
                 .url(new URL(serverUrl + "/api/application/unregister"))
@@ -54,7 +62,11 @@ public class ApplicationRegistrationService {
                                 .build()
                 ), MediaType.parse("application/json")))
                 .build()).execute()) {
-            return response.isSuccessful();
+            if (response.isSuccessful()) {
+                log.info("Successfully unregister application from Solon Admin server.");
+                return;
+            }
+            log.error("Failed to unregister application to Solon Admin server. Response: {}", response);
         }
     }
 
