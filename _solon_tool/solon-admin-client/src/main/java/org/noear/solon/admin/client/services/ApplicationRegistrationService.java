@@ -10,7 +10,6 @@ import org.noear.solon.admin.client.utils.NetworkUtils;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Inject;
 
-import java.io.IOException;
 import java.net.URL;
 
 @Slf4j
@@ -29,7 +28,7 @@ public class ApplicationRegistrationService {
     @Inject
     private IClientProperties properties;
 
-    public void register() throws IOException {
+    public void register() {
         log.info("Attempting to register this client as an application with Solon Admin server...");
         val serverUrl = this.properties.getServerUrl().replaceAll("/+$", "");
         try (Response response = client.newCall(new Request.Builder()
@@ -47,10 +46,12 @@ public class ApplicationRegistrationService {
                 return;
             }
             log.error("Failed to register application to Solon Admin server. Response: {}", response);
+        } catch (Exception ex) {
+            log.error("Unexpected error occurred during the application registration:", ex);
         }
     }
 
-    public void unregister() throws IOException {
+    public void unregister() {
         log.info("Attempting to unregister this client from Solon Admin server...");
         val serverUrl = this.properties.getServerUrl().replaceAll("/+$", "");
         try (Response response = client.newCall(new Request.Builder()
@@ -67,6 +68,8 @@ public class ApplicationRegistrationService {
                 return;
             }
             log.error("Failed to unregister application to Solon Admin server. Response: {}", response);
+        } catch (Exception ex) {
+            log.error("Unexpected error occurred during the application de-registration:", ex);
         }
     }
 
