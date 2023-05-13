@@ -1,7 +1,7 @@
 <h1 align="center" style="text-align:center;">
 <img src="solon_icon.png" width="128" />
 <br />
-Solon v2.2.18
+Solon v2.2.19-SNAPSHOT
 </h1>
 <p align="center">
 	<strong>Java new ecological application development framework, smaller, faster, simpler!</strong>
@@ -78,7 +78,7 @@ Build from scratch. It has its own standards and norms and open ecology. Combina
 <parent>
     <groupId>org.noear</groupId>
     <artifactId>solon-parent</artifactId>
-    <version>2.2.18</version>   
+    <version>2.2.19-SNAPSHOT</version>   
 </parent>
 
 <dependencies>
