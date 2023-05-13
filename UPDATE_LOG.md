@@ -9,8 +9,10 @@
 * 提醒1：之前没有使用弃用接口的，可以直接升级 <br>
 * 提醒2：有使用弃用接口的。建议先升级到 1.12.4；替换弃用代码后，再升级到 2.0.0
 
-### 2.2.18
+### 2.2.19
 * 新增 fastmybatis-solon-plugin 插件
+
+### 2.2.18
 * 增加 solon.boot.jdkhttp 对 HttpServerConfigure 接口的支持，方便添加端口及ssl的编程控制
 * 增加 solon.boot.jlhttp 对 HttpServerConfigure 接口的支持，方便添加端口及ssl的编程控制
 * 增加 solon.boot.smarthttp 对 HttpServerConfigure 接口的支持，方便添加端口及ssl的编程控制
@@ -18,8 +20,6 @@
 * 增加 solon.boot.undertow 对 HttpServerConfigure 接口的支持，方便添加端口及ssl的编程控制
 * 增加 solon.logging.logback 插件，文件扩展名配置（.log, .log.gz）
 * 增加 solon.logging.log4j2 插件，文件扩展名配置（.log, .log.gz）
-* 修复 logback 输出彩色日志到文件时存在特殊符号的问题
-* 
 * snack3 升为 3.2.67
 
 ### 2.2.17
