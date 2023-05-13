@@ -44,6 +44,12 @@ public class AdminClientBootstrapConfiguration {
     @Value
     public static class MarkedClientEnabled {
         String mode;
+
+        public MarkedClientEnabled(String mode) {
+            this.mode = mode;
+
+            log.info("Solon Admin client has been successfully enabled in {} mode.", this.mode);
+        }
     }
 
     @Bean
