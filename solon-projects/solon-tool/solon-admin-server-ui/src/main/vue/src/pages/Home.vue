@@ -1,17 +1,15 @@
 <script lang="ts" setup>
 
 import {useI18n} from "vue-i18n";
-import {Application, ApplicationStatus} from "../data";
+import {ApplicationStatus} from "../data";
 import {computed, ref} from "vue";
-import {computedAsync} from "@vueuse/core";
+import useApplication from "../hooks/application.ts";
 
 const {t} = useI18n()
+const {getAllApplications} = useApplication()
 
 const isLoading = ref(false);
-const applications = computedAsync<Application[]>(async () => {
-    return await fetch("/api/application/all")
-        .then(response => response.json())
-}, null!!, isLoading)
+const {applications, updateApplications} = getAllApplications(isLoading)
 
 const isEmpty = computed(() => applications.value.length === 0)
 const isAbnormal = computed(() => applications.value.some(app => app.status !== ApplicationStatus.UP))
