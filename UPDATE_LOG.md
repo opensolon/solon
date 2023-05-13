@@ -11,6 +11,7 @@
 
 ### 2.2.19
 * 新增 fastmybatis-solon-plugin 插件
+* snack3 升为 3.2.69
 
 ### 2.2.18
 * 增加 solon.boot.jdkhttp 对 HttpServerConfigure 接口的支持，方便添加端口及ssl的编程控制
