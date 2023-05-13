@@ -1,6 +1,5 @@
 package org.noear.solon.admin.client.registration;
 
-import lombok.SneakyThrows;
 import org.noear.solon.admin.client.config.AdminClientBootstrapConfiguration;
 import org.noear.solon.admin.client.services.ApplicationRegistrationService;
 import org.noear.solon.annotation.Bean;
@@ -23,12 +22,10 @@ public class AutoRegistrationConfiguration {
         EventBus.subscribe(AppPrestopEndEvent.class, e -> onStop(applicationRegistrationService));
     }
 
-    @SneakyThrows
     public void onStart(ApplicationRegistrationService applicationRegistrationService) {
         applicationRegistrationService.register();
     }
 
-    @SneakyThrows
     public void onStop(ApplicationRegistrationService applicationRegistrationService) {
         applicationRegistrationService.unregister();
     }
