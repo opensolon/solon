@@ -67,7 +67,11 @@ public abstract class TomcatServerBase implements ServerLifecycle {
         Connector connector = _server.getConnector();
 
         if (ServerProps.request_maxBodySize > 0) {
-            connector.setMaxPostSize(ServerProps.request_maxBodySize);
+            if (ServerProps.request_maxBodySize > Integer.MAX_VALUE) {
+                connector.setMaxPostSize(Integer.MAX_VALUE);
+            } else {
+                connector.setMaxPostSize((int) ServerProps.request_maxBodySize);
+            }
         }
     }
 

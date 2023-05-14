@@ -191,7 +191,7 @@ public abstract class BaseServerProps implements ServerSignalProps, ServerExecut
             return maxThreads;
         } else {
             if (bio) {
-                return getCoreThreads() * 64;
+                return getCoreThreads() * 32;
             } else {
                 return getCoreThreads() * 8;
             }
