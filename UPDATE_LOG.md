@@ -11,6 +11,7 @@
 
 ### 2.2.19
 * 新增 fastmybatis-solon-plugin 插件
+* 调整 日志框架，增加 window 下的彩色打印支持
 * 调整 bio maxThreads core x 32
 * 调整 maxBodySize,maxFileSize 用大于号做判断 (undertow 之外，maxBodySize 相当于 maxFromContentSize)
 * 修复 solon.boot.undertow 的 maxBodySize 配置无效问题
