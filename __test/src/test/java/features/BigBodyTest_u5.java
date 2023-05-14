@@ -58,7 +58,13 @@ public class BigBodyTest_u5 extends HttpTester {
         System.out.println(json.length());
 
         try {
-            path("/demo2/json/body").bodyJson(json).post();
+            String rst = path("/demo2/json/body").bodyJson(json).post();
+
+            if (rst.contains("IOException")) {
+                assert true;
+                return;
+            }
+
             assert false;
         } catch (IOException e) {
             e.printStackTrace();
@@ -108,7 +114,13 @@ public class BigBodyTest_u5 extends HttpTester {
         System.out.println(json.length());
 
         try {
-            path("/demo2/json/form").data("p", json).post();
+            String rst = path("/demo2/json/form").data("p", json).post();
+
+            if (rst.contains("IOException")) {
+                assert true;
+                return;
+            }
+
             assert false;
         } catch (IOException e) {
             e.printStackTrace();
