@@ -65,7 +65,7 @@ abstract class JettyServerBase implements ServerLifecycle , HttpServerConfigure 
     protected ServerConnector getConnector(Server server, String host, int port, boolean autoSsl) throws RuntimeException {
         //配置 //http://www.eclipse.org/jetty/documentation/jetty-9/index.html
         HttpConfiguration config = new HttpConfiguration();
-        if (ServerProps.request_maxHeaderSize != 0) {
+        if (ServerProps.request_maxHeaderSize > 0) {
             config.setRequestHeaderSize(ServerProps.request_maxHeaderSize);
         }
 

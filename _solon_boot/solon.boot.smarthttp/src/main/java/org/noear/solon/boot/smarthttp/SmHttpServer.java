@@ -75,11 +75,11 @@ public class SmHttpServer implements ServerLifecycle {
         _config.threadNum(coreThreads);
 
 
-        if (ServerProps.request_maxHeaderSize != 0) {
+        if (ServerProps.request_maxHeaderSize > 0) {
             _config.readBufferSize(ServerProps.request_maxHeaderSize);
         }
 
-        if (ServerProps.request_maxBodySize != 0) {
+        if (ServerProps.request_maxBodySize > 0) {
             if (ServerProps.request_maxBodySize > Integer.MAX_VALUE) {
                 _config.setMaxFormContentSize(Integer.MAX_VALUE);
             } else {

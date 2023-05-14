@@ -36,7 +36,7 @@ public final class XPluginImp implements Plugin {
             return;
         }
 
-        if (ServerProps.request_maxBodySize != 0) {
+        if (ServerProps.request_maxBodySize > 0) {
             System.setProperty(ContextHandler.MAX_FORM_CONTENT_SIZE_KEY,
                     String.valueOf(ServerProps.request_maxBodySize));
         }
