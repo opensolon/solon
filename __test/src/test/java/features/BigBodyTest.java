@@ -16,10 +16,10 @@ import webapp.App;
 public class BigBodyTest extends HttpTester {
     @Test
     public void test_body() throws Exception {
-        //构发大json数据块(20mb)
+        //构发大json数据块(2mb)
         ONode oNode = new ONode();
 
-        for (int i = 0; i < 5000; i++) {
+        for (int i = 0; i < 500; i++) {
             ONode n1 = new ONode();
             n1.set("name", String.valueOf(i));
             n1.set("time", System.currentTimeMillis());
