@@ -2,14 +2,12 @@
 
 import {useI18n} from "vue-i18n";
 import {ApplicationStatus} from "../data";
-import {computed, onUnmounted, ref} from "vue";
+import {computed, onUnmounted} from "vue";
 import useApplication from "../hooks/application.ts";
 
 const {t} = useI18n()
-const {getAllApplications} = useApplication()
 
-const isLoading = ref(false);
-const {applications, updateApplications} = getAllApplications(isLoading)
+const {applications, isEvaluating: isLoading, updateApplications, unregisterApplication} = useApplication()
 
 const isEmpty = computed(() => applications.value.length === 0)
 const isAbnormal = computed(() => applications.value.some(app => app.status !== ApplicationStatus.UP))
@@ -74,6 +72,15 @@ onUnmounted(() => {
                                 <a-link :href="app.baseUrl" icon>{{ app.baseUrl }}</a-link>
                             </template>
                         </a-list-item-meta>
+                        <template #actions>
+                            <a-popconfirm :content="t('home.applications.actions.remove.ask')"
+                                          type="warning"
+                                          @ok="unregisterApplication(app)">
+                                <a-tooltip :content="t('home.applications.actions.remove.tooltip')">
+                                    <icon-delete/>
+                                </a-tooltip>
+                            </a-popconfirm>
+                        </template>
                     </a-list-item>
                 </template>
             </a-list>
