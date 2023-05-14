@@ -2,7 +2,7 @@
 
 import {useI18n} from "vue-i18n";
 import {ApplicationStatus} from "../data";
-import {computed, ref} from "vue";
+import {computed, onUnmounted, ref} from "vue";
 import useApplication from "../hooks/application.ts";
 
 const {t} = useI18n()
@@ -13,6 +13,14 @@ const {applications, updateApplications} = getAllApplications(isLoading)
 
 const isEmpty = computed(() => applications.value.length === 0)
 const isAbnormal = computed(() => applications.value.some(app => app.status !== ApplicationStatus.UP))
+
+const timer = setInterval(() => {
+    updateApplications()
+}, 10000)
+
+onUnmounted(() => {
+    clearInterval(timer)
+})
 
 </script>
 

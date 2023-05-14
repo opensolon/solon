@@ -32,7 +32,6 @@ public class ApplicationService {
         applications.add(application);
         scheduleHeartbeatCheck(application);
         log.info("Application registered: {}", application);
-        // TODO: WebSocket push
     }
 
     public void unregisterApplication(Application application) {
@@ -41,7 +40,6 @@ public class ApplicationService {
         applications.remove(find.get());
         scheduledThreadPoolExecutor.remove(runningHeartbeatTasks.get(find.get()));
         log.info("Application unregistered: {}", find.get());
-        // TODO: WebSocket push
     }
 
     public void heartbeatApplication(Application application) {
@@ -65,7 +63,6 @@ public class ApplicationService {
         if (System.currentTimeMillis() - application.getLastHeartbeat() <= serverProperties.getHeartbeatInterval())
             return;
         application.setStatus(Application.Status.DOWN);
-        // TODO: WebSocket push
     }
 
     public Set<Application> getApplications() {
