@@ -8,6 +8,8 @@ import org.noear.solon.test.SolonJUnit5Extension;
 import org.noear.solon.test.SolonTest;
 import webapp.App;
 
+import java.io.IOException;
+
 /**
  * @author noear 2022/2/10 created
  */
@@ -58,7 +60,7 @@ public class BigBodyTest_u5 extends HttpTester {
         try {
             path("/demo2/json/body").bodyJson(json).post();
             assert false;
-        } catch (Throwable e) {
+        } catch (IOException e) {
             e.printStackTrace();
             assert true;
         }
@@ -108,7 +110,7 @@ public class BigBodyTest_u5 extends HttpTester {
         try {
             path("/demo2/json/form").data("p", json).post();
             assert false;
-        } catch (Throwable e) {
+        } catch (IOException e) {
             e.printStackTrace();
             assert true;
         }

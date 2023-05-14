@@ -24,8 +24,8 @@ public class NamiCoderTest_fastjson2 {
         try {
             Fastjson2Decoder.instance.decode(err_rst, UserModel.class);
             assert false;
-        } catch (Throwable e) {
-            assert e instanceof IllegalArgumentException;
+        } catch (IllegalArgumentException e) {
+            assert true;
             System.out.println("test_fastjson::ok");
         }
     }
