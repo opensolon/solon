@@ -80,8 +80,11 @@ public class SmHttpServer implements ServerLifecycle {
         }
 
         if (ServerProps.request_maxBodySize != 0) {
-            //如果超界会自动转为 int.Max
-            _config.setMaxFormContentSize((int)ServerProps.request_maxBodySize);
+            if (ServerProps.request_maxBodySize > Integer.MAX_VALUE) {
+                _config.setMaxFormContentSize(Integer.MAX_VALUE);
+            } else {
+                _config.setMaxFormContentSize((int) ServerProps.request_maxBodySize);
+            }
         }
 
 

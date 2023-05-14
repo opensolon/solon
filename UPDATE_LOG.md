@@ -13,6 +13,7 @@
 * 新增 fastmybatis-solon-plugin 插件
 * 调整 bio maxThreads core x 32
 * 修复 solon.boot.undertow 的 maxBodySize 配置无效问题
+* 修复 solon.boot.smarthttp + ssl 在某些情况下会慢的问题
 * 修复 maxFileSize 过大会超界的问题
 * smartboot.socket 升为 1.5.28
 * smartboot.http 升为 1.2.1
