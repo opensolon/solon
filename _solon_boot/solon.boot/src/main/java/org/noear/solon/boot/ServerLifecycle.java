@@ -16,7 +16,7 @@ public interface ServerLifecycle {
     void start(String host, int port) throws Throwable;
 
     /**
-     * 停目
+     * 停止
      * */
     void stop() throws Throwable;
 }
