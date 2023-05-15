@@ -19,7 +19,7 @@
 * 修复 maxFileSize 过大会超界的问题
 * smartboot.socket 升为 1.5.28
 * smartboot.http 升为 1.2.1
-* snack3 升为 3.2.70
+* snack3 升为 3.2.71
 
 ### 2.2.18
 * 增加 solon.boot.jdkhttp 对 HttpServerConfigure 接口的支持，方便添加端口及ssl的编程控制
