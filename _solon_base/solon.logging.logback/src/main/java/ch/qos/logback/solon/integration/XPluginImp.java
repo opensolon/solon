@@ -31,7 +31,8 @@ import java.net.URL;
 public class XPluginImp implements Plugin , InitializingBean {
     @Override
     public void afterInjection() throws Throwable {
-        if (JavaUtil.IS_WINDOWS) { //只在 window 下启用它；否则 mac 会失去彩色
+        if (JavaUtil.IS_WINDOWS && Solon.cfg().isFilesMode() == false) {
+            //只在 window 用 jar 模式下才启用
             if (ClassUtil.hasClass(() -> AnsiConsole.class)) {
                 AnsiConsole.systemInstall();
             }
