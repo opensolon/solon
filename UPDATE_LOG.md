@@ -9,8 +9,13 @@
 * 提醒1：之前没有使用弃用接口的，可以直接升级 <br>
 * 提醒2：有使用弃用接口的。建议先升级到 1.12.4；替换弃用代码后，再升级到 2.0.0
 
-### 2.2.19
+### 2.2.20
 * 新增 fastmybatis-solon-plugin 插件
+* 添加 Props::bindTo 接口
+* 优化 日志框架，在 window 下的彩色打印支持
+* snack3 升为 3.2.72
+
+### 2.2.19
 * 调整 日志框架，增加 window 下的彩色打印支持
 * 调整 bio maxThreads core x 32
 * 调整 maxBodySize,maxFileSize 用大于号做判断 (undertow 之外，maxBodySize 相当于 maxFromContentSize)

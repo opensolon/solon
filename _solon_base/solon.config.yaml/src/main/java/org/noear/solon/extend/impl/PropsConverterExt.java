@@ -34,13 +34,16 @@ public class PropsConverterExt extends PropsConverter {
                 }
             }
 
-            if(targetType == null){
+            if (targetType == null) {
                 targetType = targetClz;
             }
 
             return ONode.loadObj(props, Feature.UseSetter).toObject(targetType);
         } else {
-            return ONode.loadObj(props, Feature.UseSetter).bindTo(target);
+            //bindTo 可能会返回为 null
+            ONode.loadObj(props, Feature.UseSetter).bindTo(target);
+
+            return target;
         }
     }
 }
