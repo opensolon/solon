@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import icon from '../../assets/icon.png'
-import {routes} from "../../route/route.ts";
 import {computed, ref, watch} from "vue";
 import {useRoute, useRouter} from "vue-router";
 import useLocale from "../../hooks/locale.ts";
@@ -11,32 +10,37 @@ const route = useRoute()
 const {changeLocale, allLocales} = useLocale();
 const {t} = useI18n()
 
-const path = computed(() => [route.name as string])
+const selectedKeys = ref<string[]>()
+
+const path = computed(() => route.name as string)
 watch(path, (value) => {
-    currentPath.value = value;
+    selectedKeys.value = [value];
 })
 
-const currentPath = ref<string[]>()
-watch(currentPath, (value, oldValue) => {
-    if (value == oldValue || !value) return
-    if (value[0].startsWith("_ignore:")) {
-        currentPath.value = oldValue
+function onClickMenuItem(key: string) {
+    if (key.startsWith("_ignore:")
+        || router.getRoutes().find(r => r.name === key)?.meta?.ignored === true) {
+        selectedKeys.value = [path.value]
         return
     }
-    router.push({name: value[0]})
-})
+    router.push({name: key})
+}
 </script>
 
 <template>
-    <a-menu v-model:selected-keys="currentPath" mode="horizontal">
+    <a-menu v-model:selected-keys="selectedKeys" mode="horizontal" @menu-item-click="onClickMenuItem">
         <a-menu-item key="_ignore:icon" disabled>
             <div id="icon">
                 <img :src="icon" alt="icon"/>
                 <span>{{ t("header.title") }}</span>
             </div>
         </a-menu-item>
-        <template v-for="item in routes" :key="item.name">
-            <a-menu-item>{{ t(`header.item.${item.name}`) }}</a-menu-item>
+        <template
+            v-for="item in router.getRoutes()
+                .filter(it=>it.meta.showInHeader!=false)
+                .sort((a,b)=>(a.meta.index==undefined?0:a.meta.index) - (b.meta.index==undefined?0:b.meta.index))"
+            :key="item.name">
+            <a-menu-item>{{ t(`header.item.${String(item.name)}`) }}</a-menu-item>
         </template>
         <a-sub-menu>
             <template #title>{{ t("language") }}</template>

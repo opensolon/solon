@@ -3,6 +3,7 @@ export default {
     "loading": "Loading, please wait...",
     "header.title": "Solon Admin",
     "header.item.home": "Home",
+    "header.item.details": "Application Details",
     "header.action.locale": "Successfully switch language to {language}",
     "home.getting-started": "To get started, please launching a Solon Admin client project first.",
     "home.summary.abnormal": "Some applications down",
@@ -11,5 +12,8 @@ export default {
     "home.applications.actions.remove.tooltip": "Remove application",
     "home.applications.actions.remove.ask": "Are you sure you want to delete?",
     "home.applications.actions.remove.fail": "Failed to remove application",
-    "home.applications.actions.remove.success": "Successfully remove application"
+    "home.applications.actions.remove.success": "Successfully remove application",
+    "home.applications.actions.details.tooltip": "View application details",
+    "notfound.subtitle": "404 Not Found",
+    "notfound.extra.action.back": "Back",
 }
