@@ -69,4 +69,9 @@ public class ApplicationService {
         return new HashSet<>(applications);
     }
 
+    public Application getApplication(String name, String baseUrl) {
+        val find = applications.stream().filter(it -> it.getName().equals(name) && it.getBaseUrl().equals(baseUrl)).findFirst();
+        return find.orElse(null);
+    }
+
 }

@@ -36,4 +36,10 @@ public class ApplicationController {
     public void heartbeat(@Body Application application) {
         applicationService.heartbeatApplication(application);
     }
+
+    @Get
+    @Mapping("/name/{name}/baseUrl/{baseUrl}")
+    public Application getByNameAndBaseUrl(@Param("name") String name, @Param("baseUrl") String baseUrl) {
+        return applicationService.getApplication(name, baseUrl);
+    }
 }
