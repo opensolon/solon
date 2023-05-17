@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import Header from "./Header.vue";
 import {useSlots} from "vue";
+import Footer from "./Footer.vue";
 
 const slots = useSlots()
 const hasSlot = (name) => {
@@ -21,12 +22,15 @@ const hasSlot = (name) => {
                 <slot/>
             </a-layout-content>
         </a-layout>
-        <a-layout-footer v-if="hasSlot('footer')">
-            <slot name="footer"/>
+        <a-layout-footer>
+            <Footer/>
         </a-layout-footer>
     </a-layout>
 </template>
 
 <style scoped>
-
+.arco-layout {
+    height: 100%;
+    overflow: hidden;
+}
 </style>

@@ -28,27 +28,29 @@ function onClickMenuItem(key: string) {
 </script>
 
 <template>
-    <a-menu v-model:selected-keys="selectedKeys" mode="horizontal" @menu-item-click="onClickMenuItem">
-        <a-menu-item key="_ignore:icon" disabled>
-            <div id="icon">
-                <img :src="icon" alt="icon"/>
-                <span>{{ t("header.title") }}</span>
-            </div>
-        </a-menu-item>
-        <template
-            v-for="item in router.getRoutes()
+    <div class="header">
+        <a-menu v-model:selected-keys="selectedKeys" mode="horizontal" @menu-item-click="onClickMenuItem">
+            <a-menu-item key="_ignore:icon" disabled>
+                <div id="icon">
+                    <img :src="icon" alt="icon"/>
+                    <span>{{ t("header.title") }}</span>
+                </div>
+            </a-menu-item>
+            <template
+                v-for="item in router.getRoutes()
                 .filter(it=>it.meta.showInHeader!=false)
                 .sort((a,b)=>(a.meta.index==undefined?0:a.meta.index) - (b.meta.index==undefined?0:b.meta.index))"
-            :key="item.name">
-            <a-menu-item>{{ t(`header.item.${String(item.name)}`) }}</a-menu-item>
-        </template>
-        <a-sub-menu>
-            <template #title>{{ t("language") }}</template>
-            <template v-for="language in Object.keys(allLocales)" :key="'_ignore:'+language">
-                <a-menu-item @click="() => changeLocale(language)">{{ allLocales[language].language }}</a-menu-item>
+                :key="item.name">
+                <a-menu-item>{{ t(`header.item.${String(item.name)}`) }}</a-menu-item>
             </template>
-        </a-sub-menu>
-    </a-menu>
+            <a-sub-menu>
+                <template #title>{{ t("language") }}</template>
+                <template v-for="language in Object.keys(allLocales)" :key="'_ignore:'+language">
+                    <a-menu-item @click="() => changeLocale(language)">{{ allLocales[language].language }}</a-menu-item>
+                </template>
+            </a-sub-menu>
+        </a-menu>
+    </div>
 </template>
 
 <style scoped>
