@@ -39,5 +39,7 @@ public class DemoTest {
         HttpUtils.http("x.x.x/demo").get();
 
         HttpUtils.http("x.x.x/demo").data("name", "noear").post();
+
+        HttpUtils.http("x.x.x/demo").data("name", "noear").multipart(true).post();
     }
 }
