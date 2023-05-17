@@ -1,9 +1,12 @@
 <script lang="ts" setup>
 
 import {useI18n} from "vue-i18n";
-import {ApplicationStatus} from "../data";
+import {Application, ApplicationStatus} from "../data";
 import {computed, onUnmounted} from "vue";
 import {useApplications} from "../hooks/application.ts";
+import {useRouter} from "vue-router";
+
+const router = useRouter()
 
 const {t} = useI18n()
 
@@ -19,6 +22,16 @@ const timer = setInterval(() => {
 onUnmounted(() => {
     clearInterval(timer)
 })
+
+function goToDetails(app: Application) {
+    router.push({
+        name: 'details',
+        params: {
+            name: encodeURIComponent(app.name),
+            baseUrl: encodeURIComponent(app.baseUrl)
+        }
+    })
+}
 
 </script>
 
@@ -73,13 +86,21 @@ onUnmounted(() => {
                             </template>
                         </a-list-item-meta>
                         <template #actions>
-                            <a-popconfirm :content="t('home.applications.actions.remove.ask')"
-                                          type="warning"
-                                          @ok="unregisterApplication(app)">
-                                <a-tooltip :content="t('home.applications.actions.remove.tooltip')">
-                                    <icon-delete/>
+                            <div>
+                                <a-popconfirm :content="t('home.applications.actions.remove.ask')"
+                                              type="warning"
+                                              @ok="unregisterApplication(app)">
+                                    <a-tooltip :content="t('home.applications.actions.remove.tooltip')">
+                                        <icon-delete/>
+                                    </a-tooltip>
+                                </a-popconfirm>
+                            </div>
+                            <div>
+                                <a-tooltip :content="t('home.applications.actions.details.tooltip')">
+                                    <icon-launch
+                                        @click="goToDetails(app)"/>
                                 </a-tooltip>
-                            </a-popconfirm>
+                            </div>
                         </template>
                     </a-list-item>
                 </template>

@@ -51,7 +51,7 @@ export function useApplications() {
 export function useApplication() {
 
     const getApplication = async (name: string, baseUrl: string) => {
-        return await fetch("/api/application/name/" + name + "/baseUrl/" + baseUrl)
+        return await fetch("/api/application?name=" + name + "&baseUrl=" + baseUrl)
             .then(response => response.json())
             .then(response => response as Application)
     }

@@ -7,6 +7,8 @@ export const router = createRouter({
 })
 declare module 'vue-router' {
     interface RouteMeta {
-
+        showInHeader?: boolean,
+        ignored?: boolean,
+        index?: number
     }
 }

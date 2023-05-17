@@ -4,6 +4,8 @@ import org.noear.solon.admin.server.data.Application;
 import org.noear.solon.admin.server.services.ApplicationService;
 import org.noear.solon.annotation.*;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.Set;
 
 @Controller
@@ -38,8 +40,11 @@ public class ApplicationController {
     }
 
     @Get
-    @Mapping("/name/{name}/baseUrl/{baseUrl}")
-    public Application getByNameAndBaseUrl(@Param("name") String name, @Param("baseUrl") String baseUrl) {
+    @Mapping("/?")
+    public Application getByNameAndBaseUrl(@Param("name") String name, @Param("baseUrl") String baseUrl) throws UnsupportedEncodingException {
+        name = URLDecoder.decode(name, "UTF-8");
+        baseUrl = URLDecoder.decode(baseUrl, "UTF-8");
+
         return applicationService.getApplication(name, baseUrl);
     }
 }
