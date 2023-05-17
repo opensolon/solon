@@ -5,7 +5,6 @@ import org.eclipse.jetty.server.session.DefaultSessionIdManager;
 import org.eclipse.jetty.util.thread.QueuedThreadPool;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
-import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerLifecycle;
 import org.noear.solon.boot.jetty.websocket._SessionManagerImpl;
 import org.noear.solon.core.event.EventBus;
@@ -35,7 +34,14 @@ class JettyServer extends JettyServerBase implements ServerLifecycle {
     protected void setup(SolonApp app, String host, int port) throws IOException {
         Class<?> wsClz = ClassUtil.loadClass("org.eclipse.jetty.websocket.server.WebSocketHandler");
 
-        QueuedThreadPool threadPool = new QueuedThreadPool(props.getMaxThreads(true), props.getCoreThreads(), (int) props.getIdleTimeout());
+        int maxThreads;
+        if(props.isIoBound()){
+            maxThreads = props.getMaxThreads(true);
+        }else{
+            maxThreads = props.getMaxThreads(false);
+        }
+
+        QueuedThreadPool threadPool = new QueuedThreadPool(maxThreads, props.getCoreThreads(), (int) props.getIdleTimeout());
 
         _server = new Server(threadPool);
 

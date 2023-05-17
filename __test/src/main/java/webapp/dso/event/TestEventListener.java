@@ -10,6 +10,6 @@ import org.noear.solon.core.event.EventListener;
 public class TestEventListener implements EventListener<TestEvent> {
     @Override
     public void onEvent(TestEvent testEvent) throws Throwable {
-        throw new Exception("test");
+        throw new IllegalStateException("test");
     }
 }

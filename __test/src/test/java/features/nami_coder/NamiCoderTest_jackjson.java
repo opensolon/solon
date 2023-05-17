@@ -26,8 +26,8 @@ public class NamiCoderTest_jackjson {
         try {
             JacksonDecoder.instance.decode(err_rst, UserModel.class);
             assert false;
-        } catch (Throwable e) {
-            assert e instanceof RuntimeException;
+        } catch (RuntimeException e) {
+            assert true;
             System.out.println("test_jackjson::ok");
         }
 
@@ -63,8 +63,8 @@ public class NamiCoderTest_jackjson {
         try {
             JacksonDecoder.instance.decode(err_rst, UserModel.class);
             assert false;
-        } catch (Throwable e) {
-            assert e instanceof RuntimeException;
+        } catch (RuntimeException e) {
+            assert true;
             System.out.println("test_jackjson::ok");
         }
     }

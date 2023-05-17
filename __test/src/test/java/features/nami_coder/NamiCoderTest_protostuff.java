@@ -26,8 +26,8 @@ public class NamiCoderTest_protostuff {
         try {
             ProtostuffDeoder.instance.decode(err_rst, UserModel.class);
             assert false;
-        } catch (Throwable e) {
-            assert e instanceof IllegalArgumentException;
+        } catch (IllegalArgumentException e) {
+            assert true;
             System.out.println("test_protostuff::ok");
         }
     }

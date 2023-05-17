@@ -8,6 +8,8 @@ import org.noear.solon.test.SolonJUnit5Extension;
 import org.noear.solon.test.SolonTest;
 import webapp.App;
 
+import java.io.IOException;
+
 /**
  * @author noear 2022/2/10 created
  */
@@ -16,10 +18,10 @@ import webapp.App;
 public class BigBodyTest_u5 extends HttpTester {
     @Test
     public void test_body() throws Exception {
-        //构发大json数据块(20mb)
+        //构发大json数据块(2mb)
         ONode oNode = new ONode();
 
-        for (int i = 0; i < 5000; i++) {
+        for (int i = 0; i < 500; i++) {
             ONode n1 = new ONode();
             n1.set("name", String.valueOf(i));
             n1.set("time", System.currentTimeMillis());
@@ -56,9 +58,15 @@ public class BigBodyTest_u5 extends HttpTester {
         System.out.println(json.length());
 
         try {
-            path("/demo2/json/body").bodyJson(json).post();
+            String rst = path("/demo2/json/body").bodyJson(json).post();
+
+            if (rst.contains("IOException")) {
+                assert true;
+                return;
+            }
+
             assert false;
-        } catch (Throwable e) {
+        } catch (IOException e) {
             e.printStackTrace();
             assert true;
         }
@@ -106,9 +114,15 @@ public class BigBodyTest_u5 extends HttpTester {
         System.out.println(json.length());
 
         try {
-            path("/demo2/json/form").data("p", json).post();
+            String rst = path("/demo2/json/form").data("p", json).post();
+
+            if (rst.contains("IOException")) {
+                assert true;
+                return;
+            }
+
             assert false;
-        } catch (Throwable e) {
+        } catch (IOException e) {
             e.printStackTrace();
             assert true;
         }

@@ -78,7 +78,11 @@ public final class XPluginImp implements Plugin {
         }
 
         if (ServerProps.request_maxBodySize > 0) {
-            HTTPServer.MAX_BODY_SIZE = ServerProps.request_maxBodySize;
+            if (ServerProps.request_maxBodySize > Integer.MAX_VALUE) {
+                HTTPServer.MAX_BODY_SIZE = Integer.MAX_VALUE;
+            } else {
+                HTTPServer.MAX_BODY_SIZE = (int)ServerProps.request_maxBodySize;
+            }
         }
 
 

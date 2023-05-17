@@ -36,11 +36,6 @@ public final class XPluginImp implements Plugin {
             return;
         }
 
-        if (ServerProps.request_maxBodySize != 0) {
-            System.setProperty(ContextHandler.MAX_FORM_CONTENT_SIZE_KEY,
-                    String.valueOf(ServerProps.request_maxBodySize));
-        }
-
         context.beanBuilderAdd(WebFilter.class, (clz, bw, ano) -> {
         });
         context.beanBuilderAdd(WebServlet.class, (clz, bw, ano) -> {
@@ -59,6 +54,10 @@ public final class XPluginImp implements Plugin {
 
         Class<?> jspClz = ClassUtil.loadClass("org.eclipse.jetty.jsp.JettyJspServlet");
 
+        if (ServerProps.request_maxBodySize > 0) {
+            System.setProperty(ContextHandler.MAX_FORM_CONTENT_SIZE_KEY,
+                    String.valueOf(ServerProps.request_maxBodySize));
+        }
 
         if (jspClz == null) {
             _server = new JettyServer();

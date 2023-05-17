@@ -6,6 +6,7 @@ import org.noear.solon.core.event.EventBus;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
 import webapp.App;
+import webapp.dso.event.TestEvent;
 
 /**
  * @author noear 2023/5/6 created
@@ -15,12 +16,12 @@ import webapp.App;
 public class EventTest {
     @Test
     public void test1() {
-        EventTest eventTest = new EventTest();
+        TestEvent eventTest = new TestEvent();
 
         try {
             EventBus.push(eventTest);
             assert false;
-        } catch (Throwable e) {
+        } catch (IllegalStateException e) {
             e.printStackTrace();
             assert true;
         }

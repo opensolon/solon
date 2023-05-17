@@ -25,11 +25,11 @@ public class ServerProps {
     /**
      * 请求最大主体大小
      * */
-    public static final int request_maxBodySize;
+    public static final long request_maxBodySize;
     /**
      * 分片最大文件大小
      * */
-    public static final int request_maxFileSize;
+    public static final long request_maxFileSize;
     /**
      * 会话超时
      * */
@@ -66,7 +66,7 @@ public class ServerProps {
         //
 
         tmp = Solon.cfg().get("server.request.maxHeaderSize", "").trim().toLowerCase();//k数
-        request_maxHeaderSize = getSize(tmp);
+        request_maxHeaderSize = (int)getSize(tmp);
 
         tmp = Solon.cfg().get("server.request.maxBodySize", "").trim().toLowerCase();//k数
         if (Utils.isEmpty(tmp)) {
@@ -116,21 +116,21 @@ public class ServerProps {
         }
     }
 
-    static int getSize(String tmp) {
+    static long getSize(String tmp) {
         if (tmp == null) {
-            return 0;
+            return 0L;
         }
 
         if (tmp.endsWith("mb")) {
-            int val = Integer.parseInt(tmp.substring(0, tmp.length() - 2));
+            long val = Long.parseLong(tmp.substring(0, tmp.length() - 2));
             return val * 1204 * 1204;
         } else if (tmp.endsWith("kb")) {
-            int val = Integer.parseInt(tmp.substring(0, tmp.length() - 2));
+            long val = Long.parseLong(tmp.substring(0, tmp.length() - 2));
             return val * 1204;
         } else if (tmp.length() > 0) {
-            return Integer.parseInt(tmp); //支持-1
+            return Long.parseLong(tmp); //支持-1
         } else {
-            return 0;//默认0，表示不设置
+            return 0L;//默认0，表示不设置
         }
     }
 }

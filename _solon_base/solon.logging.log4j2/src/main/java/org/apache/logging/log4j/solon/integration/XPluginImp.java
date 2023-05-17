@@ -4,11 +4,14 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.core.LoggerContext;
 import org.apache.logging.log4j.core.config.Configurator;
 import org.apache.logging.log4j.core.config.LoggerConfig;
+import org.fusesource.jansi.AnsiConsole;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.bean.InitializingBean;
+import org.noear.solon.core.util.ClassUtil;
+import org.noear.solon.core.util.JavaUtil;
 import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.core.util.ResourceUtil;
 import org.noear.solon.logging.LogOptions;
@@ -25,6 +28,13 @@ import java.net.URL;
 public class XPluginImp implements Plugin , InitializingBean {
     @Override
     public void afterInjection() throws Throwable {
+        if (JavaUtil.IS_WINDOWS && Solon.cfg().isFilesMode() == false) {
+            //只在 window 用 jar 模式下才启用
+            if (ClassUtil.hasClass(() -> AnsiConsole.class)) {
+                AnsiConsole.systemInstall();
+            }
+        }
+
         //尝试从配置里获取
         URL url = getUrlOfConfig();
 

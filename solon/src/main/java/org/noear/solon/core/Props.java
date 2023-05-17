@@ -223,6 +223,11 @@ public class Props extends Properties {
         return PropsConverter.global().convert(this, clz);
     }
 
+    public <T> T bindTo(T obj) {
+        PropsConverter.global().convert(this, obj, null, null);
+        return obj;
+    }
+
     /**
      * 查找 keyStarts 开头的所有配置；并生成一个新的 配置集
      *
