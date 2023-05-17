@@ -22,5 +22,9 @@ function back() {
 </template>
 
 <style scoped>
-
+.arco-result {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
 </style>

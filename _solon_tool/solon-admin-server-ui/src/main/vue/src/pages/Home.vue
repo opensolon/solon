@@ -50,14 +50,14 @@ function goToDetails(app: Application) {
                     </template>
                 </a-empty>
             </div>
-            <div v-else-if="isAbnormal" class="abnormal">
+            <div v-else-if="isAbnormal" class="abnormal modified">
                 <a-empty :description="t('home.summary.abnormal')">
                     <template #image>
                         <icon-exclamation-circle-fill style="color: rgb(var(--red-6))"/>
                     </template>
                 </a-empty>
             </div>
-            <div v-else class="normal">
+            <div v-else class="normal modified">
                 <a-empty :description="t('home.summary.normal')">
                     <template #image>
                         <icon-check-circle-fill style="color: rgb(var(--green-6))"/>
@@ -65,46 +65,57 @@ function goToDetails(app: Application) {
                 </a-empty>
             </div>
         </div>
-        <div v-if="!isEmpty" class="applications">
-            <a-list>
-                <template #header>
-                    <span>{{ t('home.applications.title', {count: applications.length}) }}</span>
-                </template>
-                <template v-for="app in applications">
-                    <a-list-item>
-                        <a-list-item-meta :title="app.name">
-                            <template #avatar>
-                                <template v-if="app.status===ApplicationStatus.UP">
-                                    <icon-check-circle-fill style="color: rgb(var(--green-6))"/>
+        <div class="applications">
+            <template v-if="isLoading">
+                <a-skeleton :animation="true">
+                    <a-space :style="{width:'100%'}" direction="vertical" size="large">
+                        <a-skeleton-line/>
+                        <a-skeleton-shape/>
+                        <a-skeleton-line :rows="10"/>
+                    </a-space>
+                </a-skeleton>
+            </template>
+            <template v-else-if="!isEmpty">
+                <a-list>
+                    <template #header>
+                        <span>{{ t('home.applications.title', {count: applications.length}) }}</span>
+                    </template>
+                    <template v-for="app in applications">
+                        <a-list-item>
+                            <a-list-item-meta :title="app.name">
+                                <template #avatar>
+                                    <template v-if="app.status===ApplicationStatus.UP">
+                                        <icon-check-circle-fill style="color: rgb(var(--green-6))"/>
+                                    </template>
+                                    <template v-else>
+                                        <icon-exclamation-circle-fill style="color: rgb(var(--red-6))"/>
+                                    </template>
                                 </template>
-                                <template v-else>
-                                    <icon-exclamation-circle-fill style="color: rgb(var(--red-6))"/>
+                                <template #description>
+                                    <a-link :href="app.baseUrl" icon>{{ app.baseUrl }}</a-link>
                                 </template>
-                            </template>
-                            <template #description>
-                                <a-link :href="app.baseUrl" icon>{{ app.baseUrl }}</a-link>
-                            </template>
-                        </a-list-item-meta>
-                        <template #actions>
-                            <div>
-                                <a-popconfirm :content="t('home.applications.actions.remove.ask')"
-                                              type="warning"
-                                              @ok="unregisterApplication(app)">
-                                    <a-tooltip :content="t('home.applications.actions.remove.tooltip')">
-                                        <icon-delete/>
+                            </a-list-item-meta>
+                            <template #actions>
+                                <div>
+                                    <a-popconfirm :content="t('home.applications.actions.remove.ask')"
+                                                  type="warning"
+                                                  @ok="unregisterApplication(app)">
+                                        <a-tooltip :content="t('home.applications.actions.remove.tooltip')">
+                                            <icon-delete/>
+                                        </a-tooltip>
+                                    </a-popconfirm>
+                                </div>
+                                <div>
+                                    <a-tooltip :content="t('home.applications.actions.details.tooltip')">
+                                        <icon-launch
+                                            @click="goToDetails(app)"/>
                                     </a-tooltip>
-                                </a-popconfirm>
-                            </div>
-                            <div>
-                                <a-tooltip :content="t('home.applications.actions.details.tooltip')">
-                                    <icon-launch
-                                        @click="goToDetails(app)"/>
-                                </a-tooltip>
-                            </div>
-                        </template>
-                    </a-list-item>
-                </template>
-            </a-list>
+                                </div>
+                            </template>
+                        </a-list-item>
+                    </template>
+                </a-list>
+            </template>
         </div>
     </div>
 
@@ -128,14 +139,14 @@ function goToDetails(app: Application) {
     margin: auto;
 }
 
-:deep(.arco-empty-description) {
+.modified :deep(.arco-empty-description) {
     color: BLACK;
     font-size: 1.5rem;
     line-height: 2rem;
     font-weight: 700;
 }
 
-:deep(.arco-empty-image) {
+.modified :deep(.arco-empty-image) {
     font-size: 100px;
 }
 
