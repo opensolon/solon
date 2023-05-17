@@ -3,11 +3,11 @@
 import {useI18n} from "vue-i18n";
 import {ApplicationStatus} from "../data";
 import {computed, onUnmounted} from "vue";
-import useApplication from "../hooks/application.ts";
+import {useApplications} from "../hooks/application.ts";
 
 const {t} = useI18n()
 
-const {applications, isEvaluating: isLoading, updateApplications, unregisterApplication} = useApplication()
+const {applications, isEvaluating: isLoading, updateApplications, unregisterApplication} = useApplications()
 
 const isEmpty = computed(() => applications.value.length === 0)
 const isAbnormal = computed(() => applications.value.some(app => app.status !== ApplicationStatus.UP))

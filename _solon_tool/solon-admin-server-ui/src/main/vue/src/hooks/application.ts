@@ -4,7 +4,7 @@ import {ref, watch} from "vue";
 import {Message} from "@arco-design/web-vue";
 import {useI18n} from 'vue-i18n';
 
-export default function useApplication() {
+export function useApplications() {
 
     const i18n = useI18n();
 
