@@ -14,8 +14,8 @@ const hasSlot = (name) => {
             <Header/>
         </a-layout-header>
         <a-layout>
-            <a-layout-sider v-if="hasSlot('sider')">
-                <slot name="sider"/>
+            <a-layout-sider v-if="hasSlot('sidebar')">
+                <slot name="sidebar"/>
             </a-layout-sider>
             <a-layout-content v-if="hasSlot('default')">
                 <slot/>
