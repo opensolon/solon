@@ -78,7 +78,7 @@
         <dubbo3.version>3.2.0</dubbo3.version>
         <nacos1.version>1.4.4</nacos1.version>
         <nacos2.version>2.1.2</nacos2.version>
-        <jetcd-version>0.7.5</jetcd-version>
+        <jetcd-version>0.5.0</jetcd-version>
         <polaris.version>1.12.2</polaris.version>
 
         <feign.version>8.18.0</feign.version>

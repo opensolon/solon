@@ -18,12 +18,16 @@ import org.noear.solon.cloud.model.Instance;
 import org.noear.solon.cloud.service.CloudDiscoveryObserverEntity;
 import org.noear.solon.cloud.service.CloudDiscoveryService;
 
+/**
+ * @author luke
+ * @since 2.2
+ */
 public class CloudDiscoveryServiceEtcdImp implements CloudDiscoveryService {
     private static final String PATH_ROOT = "/solon/register";
     private EtcdClient client;
 
     public CloudDiscoveryServiceEtcdImp(CloudProps cloudProps){
-        String sessionTimeout = cloudProps.getDiscoveryHealthCheckInterval("3000");
+        String sessionTimeout = cloudProps.getDiscoveryHealthCheckInterval("60");
         this.client = new EtcdClient(cloudProps, Integer.parseInt(sessionTimeout));
     }
 
@@ -65,8 +69,9 @@ public class CloudDiscoveryServiceEtcdImp implements CloudDiscoveryService {
         String key = String.format("%s/%s/%s", PATH_ROOT, group, service);
 
         List<KeyValue> instances = null;
+
         try {
-            instances = client.range(key);
+            instances = client.getByPrefix(key);
         } catch (ExecutionException e) {
             throw new RuntimeException(e);
         } catch (InterruptedException e) {
@@ -95,7 +100,7 @@ public class CloudDiscoveryServiceEtcdImp implements CloudDiscoveryService {
         Watch.Listener listener = Watch.listener(watchResponse -> {
             watchResponse.getEvents().forEach(watchEvent -> {
                 WatchEvent.EventType eventType = watchEvent.getEventType();
-
+                System.out.println("prefix:"+prefix+" has changed!");
                 switch (eventType) {
                     case PUT:
                     case DELETE: //删除+修改+新增=服务注册变动 => 服务重新做发现

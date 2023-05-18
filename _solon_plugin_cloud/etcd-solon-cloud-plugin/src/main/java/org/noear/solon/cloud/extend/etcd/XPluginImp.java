@@ -13,7 +13,7 @@ import org.noear.solon.core.Plugin;
  * @author luke
  * @since 2.2
  */
-public class XPluginImpl implements Plugin {
+public class XPluginImp implements Plugin {
 
     CloudConfigServiceEtcdImp configServiceEtcdImp;
     CloudDiscoveryServiceEtcdImp discoveryServiceEtcdImp;

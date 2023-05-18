@@ -19,6 +19,10 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import org.noear.solon.cloud.CloudProps;
 
+/**
+ * @author luke
+ * @since 2.2
+ */
 public class EtcdClient {
 
     private Client real;
@@ -26,6 +30,7 @@ public class EtcdClient {
 
     public EtcdClient(CloudProps cloudProps, int sessionTimeout){
         String[] endpoints = cloudProps.getServer().split(",");
+        endpoints = toURI(endpoints);
         this.real = Client.builder()
                 .endpoints(endpoints)
                 .build();
@@ -61,20 +66,15 @@ public class EtcdClient {
         return get(key).getValue().toString(UTF_8);
     }
 
-    public List<KeyValue> range(String key) throws ExecutionException, InterruptedException {
+    public List<KeyValue> getByPrefix(String key) throws ExecutionException, InterruptedException {
         ByteSequence byteKey = ByteSequence.from(key,UTF_8);
 
-        GetOption option = GetOption.newBuilder()
-                .withSortField(GetOption.SortTarget.KEY)
-                .withSortOrder(GetOption.SortOrder.DESCEND)
-                .withRange(byteKey)
-                .build();
+        CompletableFuture<GetResponse> getResponseCompletableFuture =
+                real.getKVClient().get(ByteSequence.from(key,
+                                UTF_8),
+                        GetOption.newBuilder().withPrefix(ByteSequence.from(key, UTF_8)).build());
 
-        CompletableFuture<GetResponse> futureResponse = real.getKVClient().get(byteKey, option);
-
-        GetResponse response = futureResponse.get();
-
-        return response.getKvs();
+        return getResponseCompletableFuture.get().getKvs();
     }
 
     public boolean put(String key,String value){
@@ -109,7 +109,7 @@ public class EtcdClient {
                             // 每次续租操作完成后，该方法都会被调用
                             @Override
                             public void onNext(LeaseKeepAliveResponse value) {
-                                System.out.println("key:"+key+" value:"+value+" 续租完成");
+                                System.out.println("key:"+key+" 续租完成");
                             }
 
                             @Override
@@ -142,7 +142,7 @@ public class EtcdClient {
 
     public void attentionKeysWithPrefix(String prefix,Watch.Listener listener){
         WatchOption watchOpts = WatchOption.newBuilder()
-                .withRange(ByteSequence.from(prefix, UTF_8))
+                .withPrefix(ByteSequence.from(prefix, UTF_8))
                 .build();
 
         real.getWatchClient().watch(ByteSequence.from(prefix, UTF_8), watchOpts,
@@ -156,5 +156,15 @@ public class EtcdClient {
         if (real != null) {
             real.close();
         }
+    }
+
+    //jetcd客户端要求endpoints必须是能直接转化为URI的格式，我就给它手动加上协议头了
+    public String[] toURI(String[] endpoints){
+        for (int i=0;i< endpoints.length;i++) {
+            if(!endpoints[i].startsWith("http")){
+                endpoints[i] = "http://" + endpoints[i];
+            }
+        }
+        return endpoints;
     }
 }

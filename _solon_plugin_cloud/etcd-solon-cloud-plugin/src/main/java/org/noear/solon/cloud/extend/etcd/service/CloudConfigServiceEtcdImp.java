@@ -7,6 +7,7 @@ import io.etcd.jetcd.Watch;
 import io.etcd.jetcd.watch.WatchEvent;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudConfigHandler;
@@ -16,13 +17,18 @@ import org.noear.solon.cloud.model.Config;
 import org.noear.solon.cloud.service.CloudConfigObserverEntity;
 import org.noear.solon.cloud.service.CloudConfigService;
 
+/**
+ * @author luke
+ * @since 2.2
+ */
 public class CloudConfigServiceEtcdImp implements CloudConfigService {
 
     private static final String PATH_ROOT = "/solon/config";
     private EtcdClient client;
 
     public CloudConfigServiceEtcdImp(CloudProps cloudProps){
-        String sessionTimeout = cloudProps.getDiscoveryHealthCheckInterval("3000");
+        //默认60秒刷新
+        String sessionTimeout = cloudProps.getConfigRefreshInterval("60");
         this.client = new EtcdClient(cloudProps, Integer.parseInt(sessionTimeout));
     }
 
@@ -39,7 +45,15 @@ public class CloudConfigServiceEtcdImp implements CloudConfigService {
 
         KeyValue kv = client.get(key);
 
-        return new Config(group,name, kv.getValue().toString(UTF_8),kv.getVersion());
+        String value = null;
+        long version = 0;
+
+        if(!Objects.isNull(kv)){
+            value = kv.getValue().toString(UTF_8);
+            version = kv.getVersion();
+        }
+
+        return new Config(group,name, value, version);
     }
 
     /**
@@ -93,7 +107,7 @@ public class CloudConfigServiceEtcdImp implements CloudConfigService {
         Watch.Listener listener = Watch.listener(watchResponse -> {
             watchResponse.getEvents().forEach(watchEvent -> {
                 WatchEvent.EventType eventType = watchEvent.getEventType();
-
+                System.out.println("key:"+key+" has changed!");
                 switch (eventType) {
                     case PUT:       //新增和修改
                         observer.handle(pull(entity.key));
