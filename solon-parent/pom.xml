@@ -1025,6 +1025,12 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>etcd-solon-cloud-plugin</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>consul-solon-cloud-plugin</artifactId>
                 <version>${solon.version}</version>
             </dependency>

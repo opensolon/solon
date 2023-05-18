@@ -51,6 +51,5 @@ public class XPluginImp implements Plugin {
         if (discoveryServiceEtcdImp != null) {
             discoveryServiceEtcdImp.close();
         }
-        Plugin.super.stop();
     }
 }
