@@ -72,6 +72,10 @@ public class ProxyUtil {
      * @since 1.6
      */
     public static void attach(AopContext aopContext, Class<?> clz, InvocationHandler handler) {
+        attach(aopContext, clz, null, handler);
+    }
+
+    public static void attach(AopContext aopContext, Class<?> clz,  Object obj, InvocationHandler handler) {
         if (clz.isAnnotation() || clz.isInterface() || clz.isEnum() || clz.isPrimitive()) {
             return;
         }
@@ -83,7 +87,7 @@ public class ProxyUtil {
             tryAttachCached.add(clz);
         }
 
-        aopContext.wrapAndPut(clz).proxySet(new BeanProxy(handler));
+        aopContext.wrapAndPut(clz, obj).proxySet(new BeanProxy(handler));
     }
 
     /**
