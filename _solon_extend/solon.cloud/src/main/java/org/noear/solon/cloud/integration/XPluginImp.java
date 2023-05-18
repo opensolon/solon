@@ -48,7 +48,7 @@ public class XPluginImp implements Plugin , InitializingBean {
 
         if (CloudClient.discovery() != null) {
             //服务注册
-            if(NativeDetector.isAotRuntime() == false) {
+            if(NativeDetector.isNotAotRuntime()) {
                 CloudClient.discoveryPush();
             }
 
