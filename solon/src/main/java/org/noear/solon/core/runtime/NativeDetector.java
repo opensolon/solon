@@ -26,4 +26,11 @@ public abstract class NativeDetector {
     public static boolean isAotRuntime() {
         return aotRuntime;
     }
+
+    /**
+     * 是否不在 aot 运行时
+     */
+    public static boolean isNotAotRuntime() {
+        return !aotRuntime;
+    }
 }

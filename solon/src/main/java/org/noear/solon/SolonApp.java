@@ -29,7 +29,7 @@ import java.util.function.Consumer;
  *
  * @author noear
  * @since 1.0
- * */
+ */
 public class SolonApp extends RouterWrapper {
     private final SolonProps _cfg; //属性配置
     private final AopContext _context;//容器上下文
@@ -41,8 +41,8 @@ public class SolonApp extends RouterWrapper {
 
     /**
      * 获取应用上下文
-     * */
-    public AopContext context(){
+     */
+    public AopContext context() {
         return _context;
     }
 
@@ -58,7 +58,7 @@ public class SolonApp extends RouterWrapper {
         _source = source;
 
         //添加启动类检测
-        if(source == null) {
+        if (source == null) {
             throw new IllegalArgumentException("The startup class parameter('source') cannot be null");
         }
 
@@ -80,7 +80,7 @@ public class SolonApp extends RouterWrapper {
 
     /**
      * 启动
-     * */
+     */
     protected void start(ConsumerEx<SolonApp> initialize) throws Throwable {
         //2.0.内部初始化等待（尝试ping等待）
         initAwait();
@@ -100,7 +100,7 @@ public class SolonApp extends RouterWrapper {
     /**
      * 初始化等待
      */
-    private void initAwait() throws Throwable{
+    private void initAwait() throws Throwable {
         String addr = cfg().get("solon.start.ping");
 
         if (Utils.isNotEmpty(addr)) {
@@ -124,7 +124,7 @@ public class SolonApp extends RouterWrapper {
     /**
      * 初始化（不能合在构建函数里）
      */
-    private void init() throws Throwable{
+    private void init() throws Throwable {
         List<ClassLoader> loaderList;
 
         //1.尝试加载扩展文件夹
@@ -160,7 +160,7 @@ public class SolonApp extends RouterWrapper {
     /**
      * 运行应用
      */
-    private void run() throws Throwable{
+    private void run() throws Throwable {
 
         //event::0.x.推送App init end事件
         EventBus.pushTry(new AppInitEndEvent(this));
@@ -203,7 +203,7 @@ public class SolonApp extends RouterWrapper {
 
 
         //3.加载渲染关系
-        Map<String,String> map = cfg().getMap("solon.view.mapping.");
+        Map<String, String> map = cfg().getMap("solon.view.mapping.");
         map.forEach((k, v) -> {
             RenderManager.mapping("." + k, v);
         });
@@ -438,7 +438,7 @@ public class SolonApp extends RouterWrapper {
         _handler.handle(x);
     }
 
-    protected boolean doStatus(Context x) throws Throwable{
+    protected boolean doStatus(Context x) throws Throwable {
         if (x.status() >= 400 && _statusHandlers.size() > 0) {
             Handler h = _statusHandlers.get(x.status());
             if (h != null) {
@@ -472,8 +472,8 @@ public class SolonApp extends RouterWrapper {
 
     /**
      * 订阅异常状态
-     * */
-    public SolonApp onStatus(Integer code, Handler handler){
+     */
+    public SolonApp onStatus(Integer code, Handler handler) {
         _statusHandlers.put(code, handler);
         return this;
     }
@@ -493,7 +493,7 @@ public class SolonApp extends RouterWrapper {
      * 是否已启用 Http 信号接入
      */
     public boolean enableHttp() {
-        return _enableHttp && !NativeDetector.isAotRuntime();
+        return _enableHttp && NativeDetector.isNotAotRuntime();
     }
 
     /**
@@ -507,7 +507,7 @@ public class SolonApp extends RouterWrapper {
     private boolean _enableWebSocket = false;
 
     public boolean enableWebSocket() {
-        return _enableWebSocket && !NativeDetector.isAotRuntime();
+        return _enableWebSocket && NativeDetector.isNotAotRuntime();
     }
 
     /**
@@ -534,14 +534,13 @@ public class SolonApp extends RouterWrapper {
     }
 
 
-
     private boolean _enableWebSocketD = false;
 
     /**
      * 是否已启用 WebSocket as SockteD 信号接入
      */
     public boolean enableWebSocketD() {
-        return _enableWebSocketD  && !NativeDetector.isAotRuntime();
+        return _enableWebSocketD && NativeDetector.isNotAotRuntime();
     }
 
     /**
@@ -561,7 +560,7 @@ public class SolonApp extends RouterWrapper {
      * 是否已启用 Socket as SockteD 信号接入
      */
     public boolean enableSocketD() {
-        return _enableSocketD  && !NativeDetector.isAotRuntime();
+        return _enableSocketD && NativeDetector.isNotAotRuntime();
     }
 
     /**
@@ -589,7 +588,6 @@ public class SolonApp extends RouterWrapper {
         _enableSocketMvc = enable;
         return this;
     }
-
 
 
     private boolean _enableTransaction = true;

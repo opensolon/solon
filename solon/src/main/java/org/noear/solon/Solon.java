@@ -166,7 +166,7 @@ public class Solon {
 
 
         //5.初始化安全停止
-        if(NativeDetector.isAotRuntime() == false) {
+        if(NativeDetector.isNotAotRuntime()) {
             if (app.cfg().stopSafe()) {
                 //添加关闭勾子
                 Runtime.getRuntime().addShutdownHook(new Thread(() -> Solon.stop0(false, app.cfg().stopDelay())));
@@ -280,8 +280,8 @@ public class Solon {
 
     private static void sleep0(int seconds) {
         try {
-            Thread.sleep(seconds * 1000);
-        } catch (InterruptedException ex) {
+            Thread.sleep(seconds * 1000L);
+        } catch (InterruptedException ignored) {
 
         }
     }
