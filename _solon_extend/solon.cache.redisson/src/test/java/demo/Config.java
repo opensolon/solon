@@ -3,11 +3,14 @@ package demo;
 import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
+import org.noear.solon.cache.redisson.RedissonBuilder;
 import org.noear.solon.cache.redisson.RedissonCacheService;
 import org.noear.solon.cache.redisson.RedissonClientSupplier;
 import org.noear.solon.data.cache.CacheService;
 import org.noear.solon.data.cache.CacheServiceSupplier;
 import org.redisson.api.RedissonClient;
+
+import java.util.Properties;
 
 /**
  * @author noear 2022/11/28 created
@@ -33,5 +36,11 @@ public class Config {
     @Bean
     public RedissonClient cache3(@Inject("${test.rd1}") RedissonClientSupplier clientSupplier) {
         return clientSupplier.get();
+    }
+
+
+    @Bean
+    public RedissonClient demo4(@Inject("${test.rd1}") Properties prop) {
+        return RedissonBuilder.build(prop);
     }
 }
