@@ -58,6 +58,12 @@ public class Param4Controller {
         return user;
     }
 
+    @Mapping("param2_2")
+    public UserType test_param2(UserType type) throws IOException {
+        asyncTask.test();
+        return type;
+    }
+
     @Mapping("param3")
     public UserModelEx test_param3(UserModelEx user) throws IOException {
         asyncTask.test();
