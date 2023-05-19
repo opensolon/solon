@@ -12,6 +12,7 @@
 ### 2.2.21
 * 新增 fastmybatis-solon-plugin 插件
 * 新增 etcd-solon-cloud-plugin 插件
+* 新增 solon.web.servlet.jakarta 插件
 * 添加 ProxyUtil::attach(ctx,clz,obj,handler) 接口
 
 ### 2.2.20
