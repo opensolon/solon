@@ -14,6 +14,7 @@
 * 新增 etcd-solon-cloud-plugin 插件
 * 新增 solon.web.servlet.jakarta 插件
 * 添加 ProxyUtil::attach(ctx,clz,obj,handler) 接口
+* mybatis-flex 升为 1.2.6
 
 ### 2.2.20
 * 添加 Props::bindTo 接口
