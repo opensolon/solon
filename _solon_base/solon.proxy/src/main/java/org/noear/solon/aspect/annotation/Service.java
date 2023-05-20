@@ -1,7 +1,6 @@
 package org.noear.solon.aspect.annotation;
 
 import org.noear.solon.annotation.Alias;
-import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.ProxyComponent;
 
 import java.lang.annotation.*;
@@ -10,10 +9,11 @@ import java.lang.annotation.*;
  * 服务类注解（未来会弃用，建议改用 @ProxyComponent）
  *
  * @see ProxyComponent
+ * @deprecated 2.3
  * @author noear
  * @since 1.1
  */
-@Component
+@Deprecated
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented

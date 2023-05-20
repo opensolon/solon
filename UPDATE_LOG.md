@@ -9,10 +9,11 @@
 * 提醒1：之前没有使用弃用接口的，可以直接升级 <br>
 * 提醒2：有使用弃用接口的。建议先升级到 1.12.4；替换弃用代码后，再升级到 2.0.0
 
-### 2.2.21
+### 2.3.0
 * 新增 fastmybatis-solon-plugin 插件
 * 新增 etcd-solon-cloud-plugin 插件
 * 新增 solon.web.servlet.jakarta 插件
+* 弃用 `@Dao` `@Repository` `@Service` （改由 `@ProxyComponent` 替代）
 * 添加 ProxyUtil::attach(ctx,clz,obj,handler) 接口
 * mybatis-flex 升为 1.2.6
 
