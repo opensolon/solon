@@ -41,6 +41,8 @@
         <undertow.version>2.2.24.Final</undertow.version>
         <tomcat.version>9.0.64</tomcat.version>
 
+        <jaeger.version>1.7.0</jaeger.version>
+
         <snakeyaml.version>2.0</snakeyaml.version>
         <swagger.version>1.6.2</swagger.version>
 
@@ -72,10 +74,10 @@
         <hazelcast.version>5.1</hazelcast.version>
         <lombok.version>1.18.26</lombok.version>
 
-        <protobuf.version>3.19.4</protobuf.version>
-        <grpc.version>1.49.0</grpc.version>
+        <protobuf.version>3.22.3</protobuf.version>
+        <grpc.version>1.54.1</grpc.version>
         <dubbo2.version>2.7.5</dubbo2.version>
-        <dubbo3.version>3.2.0</dubbo3.version>
+        <dubbo3.version>3.2.1</dubbo3.version>
         <nacos1.version>1.4.4</nacos1.version>
         <nacos2.version>2.1.2</nacos2.version>
         <jetcd-version>0.5.0</jetcd-version>

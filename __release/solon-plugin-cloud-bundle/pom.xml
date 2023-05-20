@@ -53,6 +53,7 @@
 
         <module>../../_solon_plugin_cloud/opentracing-solon-cloud-plugin</module>
         <module>../../_solon_plugin_cloud/jaeger-solon-cloud-plugin</module>
+        <module>../../_solon_plugin_cloud/zipkin-solon-cloud-plugin</module>
 
         <module>../../_solon_plugin_cloud/grpc-solon-cloud-plugin</module>
         <module>../../_solon_plugin_cloud/thrift-solon-cloud-plugin</module>

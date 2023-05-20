@@ -11,7 +11,7 @@
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>jaeger-solon-cloud-plugin</artifactId>
+    <artifactId>zipkin-solon-cloud-plugin</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>
@@ -20,11 +20,7 @@
             <artifactId>solon.cloud.tracing</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>io.jaegertracing</groupId>
-            <artifactId>jaeger-client</artifactId>
-            <version>${jaeger.version}</version>
-        </dependency>
+
     </dependencies>
 
 </project>
