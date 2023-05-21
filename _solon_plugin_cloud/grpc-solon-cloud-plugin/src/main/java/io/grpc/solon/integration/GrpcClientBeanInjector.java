@@ -36,11 +36,13 @@ public class GrpcClientBeanInjector implements BeanInjector<GrpcClient> {
             Class<?> grpcClz = ClassUtil.loadClass(varH.getType().getName().split("\\$")[0]);
 
             try {
+                //同步
                 if (AbstractBlockingStub.class.isAssignableFrom(varH.getType())) {
                     method = grpcClz.getDeclaredMethod("newBlockingStub", Channel.class);
                     grpcCli = method.invoke(null, new Object[]{grpcChannel});
                 }
 
+                //异步
                 if (AbstractFutureStub.class.isAssignableFrom(varH.getType())) {
                     method = grpcClz.getDeclaredMethod("newFutureStub", Channel.class);
                     grpcCli = method.invoke(null, new Object[]{grpcChannel});
