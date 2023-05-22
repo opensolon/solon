@@ -16,6 +16,7 @@
 * 新增 solon.web.servlet.jakarta 插件
 * 弃用 `@Dao` `@Repository` `@Service` （改由 `@ProxyComponent` 替代）
 * 添加 ProxyUtil::attach(ctx,clz,obj,handler) 接口
+* 增加 aot 对 methodWrap 参数的自动登记处理
 * mybatis-flex 升为 1.2.6
 * protobuf 升为 3.22.3
 * dubbo3 升为 3.2.1

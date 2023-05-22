@@ -9,6 +9,7 @@ import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.core.util.ReflectUtil;
 import org.noear.solon.core.wrap.ClassWrap;
 import org.noear.solon.core.wrap.FieldWrap;
+import org.noear.solon.core.wrap.ParamWrap;
 
 import java.io.Serializable;
 import java.lang.reflect.*;
@@ -82,20 +83,31 @@ public class AopContextNativeProcessorDefault implements AopContextNativeProcess
         context.methodForeach(methodWrap -> {
             processMethodDo(metadata, methodWrap.getMethod());
 
-            Class<?> returnType = methodWrap.getReturnType();
-            if (returnType.getName().startsWith("java.") == false && Serializable.class.isAssignableFrom(returnType)) {
-                //是 Serializable 的做自动注册（不则，怕注册太多了）
-                metadata.registerSerialization(returnType);
+            {
+                Class<?> returnType = methodWrap.getReturnType();
+                processSerialization(metadata, returnType);
+
+                Type genericReturnType = methodWrap.getGenericReturnType();
+                if (genericReturnType instanceof ParameterizedType) {
+                    for (Type arg1 : ((ParameterizedType) genericReturnType).getActualTypeArguments()) {
+                        if (arg1 instanceof Class) {
+                            Class<?> arg1c = (Class<?>) arg1;
+                            processSerialization(metadata, arg1c);
+                        }
+                    }
+                }
             }
 
-            Type genericReturnType = methodWrap.getGenericReturnType();
-            if (genericReturnType instanceof ParameterizedType) {
-                for (Type arg1 : ((ParameterizedType) genericReturnType).getActualTypeArguments()) {
-                    if (arg1 instanceof Class) {
-                        Class<?> arg1c = (Class<?>) arg1;
-                        if (arg1c.getName().startsWith("java.") == false && Serializable.class.isAssignableFrom(arg1c)) {
-                            //是 Serializable 的做自动注册（不则，怕注册太多了）
-                            metadata.registerSerialization(arg1c);
+            for(ParamWrap  paramWrap : methodWrap.getParamWraps()) {
+                Class<?> type = paramWrap.getType();
+                processSerialization(metadata, type);
+
+                Type genericType = paramWrap.getGenericType();
+                if (genericType instanceof ParameterizedType) {
+                    for (Type arg1 : ((ParameterizedType) genericType).getActualTypeArguments()) {
+                        if (arg1 instanceof Class) {
+                            Class<?> arg1c = (Class<?>) arg1;
+                            processSerialization(metadata, arg1c);
                         }
                     }
                 }
@@ -128,6 +140,16 @@ public class AopContextNativeProcessorDefault implements AopContextNativeProcess
 
 
         LogUtil.global().info("Aot process bean, bean size: " + beanCount.get());
+    }
+
+    /**
+     * 处理序列化类
+     * */
+    protected void processSerialization(RuntimeNativeMetadata metadata, Class<?> type){
+        if (type.getName().startsWith("java.") == false && Serializable.class.isAssignableFrom(type)) {
+            //是 Serializable 的做自动注册（不则，怕注册太多了）
+            metadata.registerSerialization(type);
+        }
     }
 
 
