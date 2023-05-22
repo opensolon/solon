@@ -13,10 +13,6 @@
     <artifactId>fastmybatis-solon-plugin</artifactId>
     <packaging>jar</packaging>
 
-    <properties>
-        <fastmybatis.version>2.6.0.2</fastmybatis.version>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
@@ -25,8 +21,14 @@
 
         <dependency>
             <groupId>net.oschina.durcframework</groupId>
-            <artifactId>fastmybatis-core</artifactId>
-            <version>${fastmybatis.version}</version>
+            <artifactId>fastmybatis-solon-plugin</artifactId>
+            <version>1.0.1</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.noear</groupId>
+                    <artifactId>mybatis-solon-plugin</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>

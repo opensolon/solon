@@ -24,8 +24,6 @@ mybatis:
       - "com.myapp.demo.dao.*"
       # 指定mybatis xml文件存放目录
       - "classpath:mybatis/mapper/*.xml"
-    # 指定mybatis-config.xml文件classpath路径
-    configLocation: "mybatis/mybatis-config.xml"
     configuration:
       cacheEnabled: false
       mapUnderscoreToCamelCase: true
