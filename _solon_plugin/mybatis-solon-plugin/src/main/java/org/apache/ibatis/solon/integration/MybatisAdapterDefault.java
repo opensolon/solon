@@ -1,5 +1,6 @@
 package org.apache.ibatis.solon.integration;
 
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.builder.xml.XMLMapperBuilder;
 import org.apache.ibatis.executor.ErrorContext;
 import org.apache.ibatis.io.Resources;
@@ -186,7 +187,7 @@ public class MybatisAdapterDefault implements MybatisAdapter {
                             String valNew = getClassExpr(val);
 
                             for (Class<?> clz : ResourceUtil.scanClasses(valNew)) {
-                                if (clz.isInterface()) {
+                                if (clz.isInterface() && clz.getAnnotation(Mapper.class) != null) {
                                     getConfiguration().addMapper(clz);
                                 }
                             }

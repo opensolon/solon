@@ -17,6 +17,7 @@
 * 弃用 `@Dao` `@Repository` `@Service` （改由 `@ProxyComponent` 替代）
 * 增加 ProxyUtil::attach(ctx,clz,obj,handler) 接口
 * 增加 aot 对 methodWrap 参数的自动登记处理
+* 调整 mybatis 按包名扫描只对 `@Mapper` 注解的接口有效
 * 调整 日志体系升到 slf4j 2.x
 * slf4j 升为 2.0.7
 * log4j2 升为 2.20.0（基于 slf4j 2.x）
