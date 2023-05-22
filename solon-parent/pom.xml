@@ -1032,12 +1032,6 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>etcd-solon-cloud-plugin</artifactId>
-                <version>${solon.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.noear</groupId>
                 <artifactId>consul-solon-cloud-plugin</artifactId>
                 <version>${solon.version}</version>
             </dependency>
@@ -1202,6 +1196,14 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>etcd-solon-cloud-plugin</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+
+
+
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>kafka-solon-cloud-plugin</artifactId>
                 <version>${solon.version}</version>
             </dependency>
@@ -1241,6 +1243,13 @@
                 <artifactId>jaeger-solon-cloud-plugin</artifactId>
                 <version>${solon.version}</version>
             </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>zipkin-solon-cloud-plugin</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+
 
             <!-- for logging -->
             <dependency>
