@@ -20,6 +20,10 @@ public abstract class NativeDetector {
         return imageCode;
     }
 
+    public static boolean notInNativeImage() {
+        return !imageCode;
+    }
+
     /**
      * 是否在 aot 运行时
      */

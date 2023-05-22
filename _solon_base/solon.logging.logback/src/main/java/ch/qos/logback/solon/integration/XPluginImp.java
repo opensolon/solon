@@ -107,8 +107,10 @@ public class XPluginImp implements Plugin , InitializingBean {
 
         try {
             LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
-            loggerContext.stop();
-            loggerContext.reset();
+
+            if(NativeDetector.notInNativeImage()) {
+                loggerContext.reset();
+            }
 
             SolonConfigurator configurator = new SolonConfigurator();
             configurator.setContext(loggerContext);
