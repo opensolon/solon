@@ -20,6 +20,23 @@
             <artifactId>solon.cloud.tracing</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>io.zipkin.brave</groupId>
+            <artifactId>brave</artifactId>
+            <version>${brave.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.zipkin.reporter2</groupId>
+            <artifactId>zipkin-sender-okhttp3</artifactId>
+            <version>${zipkin-sender-okhttp3.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.opentracing.brave</groupId>
+            <artifactId>brave-opentracing</artifactId>
+            <version>${brave-opentracing.version}</version>
+        </dependency>
 
     </dependencies>
 
