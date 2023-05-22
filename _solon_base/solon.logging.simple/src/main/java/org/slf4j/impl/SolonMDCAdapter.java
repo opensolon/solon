@@ -1,7 +1,9 @@
 package org.slf4j.impl;
 
+import org.slf4j.helpers.ThreadLocalMapOfStacks;
 import org.slf4j.spi.MDCAdapter;
 
+import java.util.Deque;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -9,8 +11,8 @@ import java.util.Map;
  * @author noear 2021/2/26 created
  */
 public class SolonMDCAdapter implements MDCAdapter {
-
     private static final ThreadLocal<Map<String, String>> threadMap = new InheritableThreadLocal<>();
+    private static final ThreadLocalMapOfStacks threadLocalMapOfDeques = new ThreadLocalMapOfStacks();
 
     @Override
     public void put(String key, String val) {
@@ -59,5 +61,25 @@ public class SolonMDCAdapter implements MDCAdapter {
     @Override
     public void setContextMap(Map<String, String> map) {
         threadMap.set(map);
+    }
+
+    @Override
+    public void pushByKey(String key, String value) {
+        threadLocalMapOfDeques.pushByKey(key, value);
+    }
+
+    @Override
+    public String popByKey(String key) {
+        return threadLocalMapOfDeques.popByKey(key);
+    }
+
+    @Override
+    public Deque<String> getCopyOfDequeByKey(String key) {
+        return threadLocalMapOfDeques.getCopyOfDequeByKey(key);
+    }
+
+    @Override
+    public void clearDequeByKey(String key) {
+        threadLocalMapOfDeques.clearDequeByKey(key);
     }
 }

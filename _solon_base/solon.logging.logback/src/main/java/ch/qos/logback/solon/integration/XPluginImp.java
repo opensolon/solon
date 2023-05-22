@@ -107,11 +107,11 @@ public class XPluginImp implements Plugin , InitializingBean {
 
         try {
             LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
+            loggerContext.stop();
+            loggerContext.reset();
+
             SolonConfigurator configurator = new SolonConfigurator();
             configurator.setContext(loggerContext);
-            if (!NativeDetector.inNativeImage()) {
-                loggerContext.reset(); // native 启动时，这里会线程卡死，先跳过
-            }
             configurator.doConfigure(url);
 
             //同步 logger level 配置

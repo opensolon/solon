@@ -1,49 +1,29 @@
 package ch.qos.logback.solon;
 
-import ch.qos.logback.core.joran.action.Action;
-import ch.qos.logback.core.joran.action.ActionUtil;
-import ch.qos.logback.core.joran.spi.ActionException;
-import ch.qos.logback.core.joran.spi.InterpretationContext;
-import ch.qos.logback.core.util.OptionHelper;
-import org.noear.solon.Solon;
+import ch.qos.logback.core.joran.action.BaseModelAction;
+import ch.qos.logback.core.joran.spi.SaxEventInterpretationContext;
+import ch.qos.logback.core.model.Model;
 import org.xml.sax.Attributes;
 
 /**
  * @author noear
  * @since 1.6
+ * @since 2.3
  */
-public class SolonPropertyAction extends Action {
+public class SolonPropertyAction extends BaseModelAction {
+
+    private static final String SOURCE_ATTRIBUTE = "source";
+
+    private static final String DEFAULT_VALUE_ATTRIBUTE = "defaultValue";
 
     @Override
-    public void begin(InterpretationContext context, String s, Attributes attrs) throws ActionException {
-        String name = attrs.getValue("name");
-        String source = attrs.getValue("source");
-        ActionUtil.Scope scope = ActionUtil.stringToScope(attrs.getValue("scope"));
-        String defaultValue = attrs.getValue("defaultValue");
-        if (OptionHelper.isEmpty(name) || OptionHelper.isEmpty(source)) {
-            this.addError("The \"name\" and \"source\" attributes of <springProperty> must be set");
-        }
-
-        ActionUtil.setProperty(context, name, this.getValue(source, defaultValue), scope);
-    }
-
-    private String getValue(String source, String defaultValue) {
-        String value = Solon.cfg().getProperty(source);
-        if (value != null) {
-            return value;
-        } else {
-            int lastDot = source.lastIndexOf(46);
-            if (lastDot > 0) {
-                String prefix = source.substring(0, lastDot + 1);
-                return Solon.cfg().getProperty(prefix + source.substring(lastDot + 1), defaultValue);
-            } else {
-                return defaultValue;
-            }
-        }
-    }
-
-    @Override
-    public void end(InterpretationContext interpretationContext, String s) throws ActionException {
-
+    protected Model buildCurrentModel(SaxEventInterpretationContext interpretationContext, String name,
+                                      Attributes attributes) {
+        SolonPropertyModel model = new SolonPropertyModel();
+        model.setName(attributes.getValue(NAME_ATTRIBUTE));
+        model.setSource(attributes.getValue(SOURCE_ATTRIBUTE));
+        model.setScope(attributes.getValue(SCOPE_ATTRIBUTE));
+        model.setDefaultValue(attributes.getValue(DEFAULT_VALUE_ATTRIBUTE));
+        return model;
     }
 }
