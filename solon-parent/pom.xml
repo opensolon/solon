@@ -42,6 +42,10 @@
         <tomcat.version>9.0.64</tomcat.version>
 
         <jaeger.version>1.7.0</jaeger.version>
+        <brave.version>5.16.0</brave.version>
+        <zipkin-sender-okhttp3.version>2.16.4</zipkin-sender-okhttp3.version>
+        <brave-opentracing.version>1.0.0</brave-opentracing.version>
+
 
         <snakeyaml.version>2.0</snakeyaml.version>
         <swagger.version>1.6.2</swagger.version>

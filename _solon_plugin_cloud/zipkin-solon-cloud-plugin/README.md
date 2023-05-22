@@ -1,29 +1,10 @@
 
-#### udp
-```yaml
-solon.cloud.jaeger:
-  server: "udp://localhost:6831"
-  trace:
-    enable: true                    #是否启用（默认：true）
-    exclude: "/healthz,/_run/check/" #排除路径
-```
 
 #### http
 
 ```yaml
-solon.cloud.jaeger:
-  server: "http://localhost:xxxx"
-  username: user
-  password: 1234
-  trace:
-    enable: true                    #是否启用（默认：true）
-    exclude: "/healthz,/_run/check/" #排除路径
-```
-
-```yaml
-solon.cloud.jaeger:
-  server: "http://localhost:xxxx"
-  token: xxxx
+solon.cloud.zipkin:
+  server: "http://localhost:xxxx/api/v2/spans" #根据server的版本选择正确的上报入口
   trace:
     enable: true                    #是否启用（默认：true）
     exclude: "/healthz,/_run/check/" #排除路径
