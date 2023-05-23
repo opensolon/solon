@@ -18,12 +18,15 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import org.noear.solon.cloud.CloudProps;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author luke
  * @since 2.2
  */
 public class EtcdClient {
+    private static final Logger log = LoggerFactory.getLogger(EtcdClient.class);
 
     private Client real;
     private int sessionTimeout;
@@ -87,7 +90,7 @@ public class EtcdClient {
         return true;
     }
 
-    public void putWithLease(String key,String value){
+    public void putWithLease(String key,String value) {
         Lease leaseClient = real.getLeaseClient();
 
         leaseClient.grant(sessionTimeout).thenAccept(result -> {
@@ -101,7 +104,7 @@ public class EtcdClient {
             PutOption putOption = PutOption.newBuilder().withLeaseId(leaseId).build();
 
             // put操作
-            kvClient.put(ByteSequence.from(key,UTF_8), ByteSequence.from(value,UTF_8), putOption)
+            kvClient.put(ByteSequence.from(key, UTF_8), ByteSequence.from(value, UTF_8), putOption)
                     .thenAccept(putResponse -> {
                         // put操作完成后，再设置无限续租的操作
                         leaseClient.keepAlive(leaseId, new StreamObserver<LeaseKeepAliveResponse>() {
@@ -109,12 +112,12 @@ public class EtcdClient {
                             // 每次续租操作完成后，该方法都会被调用
                             @Override
                             public void onNext(LeaseKeepAliveResponse value) {
-                                System.out.println("key:"+key+" 续租完成");
+                                log.trace("Etcd key lease renewal completed: {}", key);
                             }
 
                             @Override
                             public void onError(Throwable t) {
-                                System.out.println(t);
+                                log.error(t.getMessage(), t);
                             }
 
                             @Override

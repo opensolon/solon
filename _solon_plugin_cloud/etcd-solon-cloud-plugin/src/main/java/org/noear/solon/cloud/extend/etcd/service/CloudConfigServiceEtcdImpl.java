@@ -16,17 +16,20 @@ import org.noear.solon.cloud.extend.etcd.impl.EtcdClient;
 import org.noear.solon.cloud.model.Config;
 import org.noear.solon.cloud.service.CloudConfigObserverEntity;
 import org.noear.solon.cloud.service.CloudConfigService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author luke
  * @since 2.2
  */
-public class CloudConfigServiceEtcdImp implements CloudConfigService {
-
+public class CloudConfigServiceEtcdImpl implements CloudConfigService {
+    private static final Logger log = LoggerFactory.getLogger(CloudConfigServiceEtcdImpl.class);
     private static final String PATH_ROOT = "/solon/config";
+
     private EtcdClient client;
 
-    public CloudConfigServiceEtcdImp(CloudProps cloudProps){
+    public CloudConfigServiceEtcdImpl(CloudProps cloudProps){
         //默认60秒刷新
         String sessionTimeout = cloudProps.getConfigRefreshInterval("60");
         this.client = new EtcdClient(cloudProps, Integer.parseInt(sessionTimeout));
@@ -107,7 +110,9 @@ public class CloudConfigServiceEtcdImp implements CloudConfigService {
         Watch.Listener listener = Watch.listener(watchResponse -> {
             watchResponse.getEvents().forEach(watchEvent -> {
                 WatchEvent.EventType eventType = watchEvent.getEventType();
-                System.out.println("key:"+key+" has changed!");
+
+                log.trace("Etcd key has changed: {}" , key);
+
                 switch (eventType) {
                     case PUT:       //新增和修改
                         observer.handle(pull(entity.key));

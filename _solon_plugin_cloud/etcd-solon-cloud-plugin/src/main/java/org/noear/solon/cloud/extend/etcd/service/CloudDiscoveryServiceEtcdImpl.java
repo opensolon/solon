@@ -17,16 +17,20 @@ import org.noear.solon.cloud.model.Discovery;
 import org.noear.solon.cloud.model.Instance;
 import org.noear.solon.cloud.service.CloudDiscoveryObserverEntity;
 import org.noear.solon.cloud.service.CloudDiscoveryService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author luke
  * @since 2.2
  */
-public class CloudDiscoveryServiceEtcdImp implements CloudDiscoveryService {
+public class CloudDiscoveryServiceEtcdImpl implements CloudDiscoveryService {
+    private static final Logger log = LoggerFactory.getLogger(CloudConfigServiceEtcdImpl.class);
     private static final String PATH_ROOT = "/solon/register";
+
     private EtcdClient client;
 
-    public CloudDiscoveryServiceEtcdImp(CloudProps cloudProps){
+    public CloudDiscoveryServiceEtcdImpl(CloudProps cloudProps){
         String sessionTimeout = cloudProps.getDiscoveryHealthCheckInterval("60");
         this.client = new EtcdClient(cloudProps, Integer.parseInt(sessionTimeout));
     }
@@ -100,7 +104,9 @@ public class CloudDiscoveryServiceEtcdImp implements CloudDiscoveryService {
         Watch.Listener listener = Watch.listener(watchResponse -> {
             watchResponse.getEvents().forEach(watchEvent -> {
                 WatchEvent.EventType eventType = watchEvent.getEventType();
-                System.out.println("prefix:"+prefix+" has changed!");
+
+                log.trace("Etcd key prefix has changed: {}" , prefix);
+
                 switch (eventType) {
                     case PUT:
                     case DELETE: //删除+修改+新增=服务注册变动 => 服务重新做发现

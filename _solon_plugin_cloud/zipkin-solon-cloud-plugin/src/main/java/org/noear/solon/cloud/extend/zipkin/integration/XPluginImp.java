@@ -8,7 +8,7 @@ import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
 
 /**
- * @author noear
+ * @author blackbear2003
  * @since 2.3
  */
 public class XPluginImp implements Plugin {

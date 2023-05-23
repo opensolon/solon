@@ -4,8 +4,8 @@ import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.cloud.CloudManager;
 import org.noear.solon.cloud.CloudProps;
-import org.noear.solon.cloud.extend.etcd.service.CloudConfigServiceEtcdImp;
-import org.noear.solon.cloud.extend.etcd.service.CloudDiscoveryServiceEtcdImp;
+import org.noear.solon.cloud.extend.etcd.service.CloudConfigServiceEtcdImpl;
+import org.noear.solon.cloud.extend.etcd.service.CloudDiscoveryServiceEtcdImpl;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
 
@@ -15,8 +15,8 @@ import org.noear.solon.core.Plugin;
  */
 public class XPluginImp implements Plugin {
 
-    CloudConfigServiceEtcdImp configServiceEtcdImp;
-    CloudDiscoveryServiceEtcdImp discoveryServiceEtcdImp;
+    CloudConfigServiceEtcdImpl configServiceEtcdImp;
+    CloudDiscoveryServiceEtcdImpl discoveryServiceEtcdImp;
 
     @Override
     public void start(AopContext context) throws Throwable {
@@ -28,7 +28,7 @@ public class XPluginImp implements Plugin {
 
         //1.登记配置服务
         if (cloudProps.getConfigEnable()) {
-            configServiceEtcdImp = new CloudConfigServiceEtcdImp(cloudProps);
+            configServiceEtcdImp = new CloudConfigServiceEtcdImpl(cloudProps);
             CloudManager.register(configServiceEtcdImp);
 
             //1.1.加载配置
@@ -37,7 +37,7 @@ public class XPluginImp implements Plugin {
 
         //2.登记发现服务
         if (cloudProps.getDiscoveryEnable()) {
-            discoveryServiceEtcdImp = new CloudDiscoveryServiceEtcdImp(cloudProps);
+            discoveryServiceEtcdImp = new CloudDiscoveryServiceEtcdImpl(cloudProps);
             CloudManager.register(discoveryServiceEtcdImp);
         }
     }
