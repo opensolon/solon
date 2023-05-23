@@ -1,0 +1,70 @@
+swagger官方注解包,目前参与解析的注解与属性说明
+
+@Api
+tags                分组
+position            排序位置
+hidden              不生成文档
+
+@Deprecated         方法废弃注解(JDK自带)
+@ApiOperation       方法
+tags                方法分组,默认取归属的controller分组
+value               简单描述
+notes               详细描述
+code                返回码 默认值200
+httpMethod          GET/POST/等 默认值GET
+consumes            请求格式
+produces            返回格式
+position            排序位置
+schemes             可用协议
+hidden              不生成文档
+
+@ApiImplicitParams  包含一组参数说明
+@ApiImplicitParam   @ApiImplicitParams中，指定一个请求参数的配置信息
+name                参数名称
+value               描述
+required            必填
+allowMultiple       数组
+dataType            参数类型
+dataTypeClass       参数对象
+paramType           参数提交方式 query/body/header
+format              自定义格式
+example             非对象参数的示例值
+
+
+@ApiResponses       包含一组返回值说明 (未实现,请使用@ApiRes进行返回值描述)
+@ApiResponse        @ApiResponses，指定一个返回值参数的配置信息 (未实现,请使用@ApiResProperty进行返回值描述)
+code                状态码
+message             状态码对应信息
+response            返回对象
+
+
+@ApiModel           bean/dto/model 注解
+description         描述
+
+@ApiModelProperty   @ApiModel中字段注解
+value               描述
+example             示例值
+dataType            参数类型
+
+------------------------------------------------------------------------------------------------------------
+自定义注解
+用于返回文档的生成,区别于swagger官方注解.
+根据配置responseInData将参数放在CommonRet中返回,或CommonRet.data中返回
+
+@ApiRes             包含一组返回值说明
+@ApiResProperty     @ApiRes，指定一个返回值参数的配置信息
+name                返回值名称
+value               描述
+allowMultiple       数组
+dataType            参数类型
+dataTypeClass       参数对象
+format              自定义格式
+example             非对象参数的示例值
+
+@ApiNoAuthorize     声明Controller或方法不需要认证,文档不生成全局参数(2.6版本+)
+
+------------------------------------------------------------------------------------------------------------
+ApiEnum.java
+所有swagger注解用到的类型,都汇总在此类中.
+
+
