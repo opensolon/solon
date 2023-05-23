@@ -346,7 +346,7 @@ public abstract class BeanContainer {
 
         beanForeach(bw -> {
             if (baseType.isAssignableFrom(bw.clz())) {
-                wraps.add(bw.raw());
+                wraps.add(bw);
             }
         });
 
