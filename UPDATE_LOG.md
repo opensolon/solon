@@ -11,18 +11,20 @@
 
 ### 2.3.0
 * 新增 zipkin-solon-cloud-plugin 插件
-* 新增 fastmybatis-solon-plugin 插件
 * 新增 etcd-solon-cloud-plugin 插件
+* 新增 fastmybatis-solon-plugin 插件
 * 新增 solon.web.servlet.jakarta 插件
 * 弃用 `@Dao` `@Repository` `@Service` （改由 `@ProxyComponent` 替代）
 * 增加 ProxyUtil::attach(ctx,clz,obj,handler) 接口
 * 增加 aot 对 methodWrap 参数的自动登记处理
-* 调整 mybatis 按包名扫描只对 `@Mapper` 注解的接口有效
+* 调整 mybatis 按包名扫描只对 `@Mapper` 注解的接口有效（避免其它接口误扫）
 * 调整 日志体系升到 slf4j 2.x
 * slf4j 升为 2.0.7
 * log4j2 升为 2.20.0（基于 slf4j 2.x）
 * logback 升为 1.3.7（基于 slf4j 2.x）
-* mybatis-flex 升为 1.2.6
+* sqltoy 升为  5.2.48
+* mybatis-flex 升为 1.2.8
+* beetlsql 升为 3.23.1-RELEASE
 * protobuf 升为 3.22.3
 * dubbo3 升为 3.2.1
 * grpc 升为 1.54.1
