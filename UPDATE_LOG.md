@@ -11,6 +11,7 @@
 
 ### 2.3.0
 * 新增 solon.docs 插件
+* 新增 solon-swagger-knife4j 插件
 * 新增 zipkin-solon-cloud-plugin 插件
 * 新增 etcd-solon-cloud-plugin 插件
 * 新增 fastmybatis-solon-plugin 插件

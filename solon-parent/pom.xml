@@ -1353,6 +1353,12 @@
                 <version>${solon.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-swagger-knife4j</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+
 
             <!-- //////////// servlet ////////////  -->
             <!-- //////////// servlet ////////////  -->
