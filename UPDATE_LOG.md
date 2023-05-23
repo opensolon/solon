@@ -10,6 +10,7 @@
 * 提醒2：有使用弃用接口的。建议先升级到 1.12.4；替换弃用代码后，再升级到 2.0.0
 
 ### 2.3.0
+* 新增 solon.docs 插件
 * 新增 zipkin-solon-cloud-plugin 插件
 * 新增 etcd-solon-cloud-plugin 插件
 * 新增 fastmybatis-solon-plugin 插件
