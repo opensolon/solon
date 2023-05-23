@@ -112,7 +112,7 @@ public class EtcdClient {
                             // 每次续租操作完成后，该方法都会被调用
                             @Override
                             public void onNext(LeaseKeepAliveResponse value) {
-                                log.trace("Etcd key lease renewal completed: {}", key);
+                                log.debug("Etcd key lease renewal completed: {}", key);
                             }
 
                             @Override

@@ -111,7 +111,7 @@ public class CloudConfigServiceEtcdImpl implements CloudConfigService {
             watchResponse.getEvents().forEach(watchEvent -> {
                 WatchEvent.EventType eventType = watchEvent.getEventType();
 
-                log.trace("Etcd key has changed: {}" , key);
+                log.debug("Etcd key has changed: {}" , key);
 
                 switch (eventType) {
                     case PUT:       //新增和修改

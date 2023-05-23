@@ -105,7 +105,7 @@ public class CloudDiscoveryServiceEtcdImpl implements CloudDiscoveryService {
             watchResponse.getEvents().forEach(watchEvent -> {
                 WatchEvent.EventType eventType = watchEvent.getEventType();
 
-                log.trace("Etcd key prefix has changed: {}" , prefix);
+                log.debug("Etcd key prefix has changed: {}" , prefix);
 
                 switch (eventType) {
                     case PUT:
