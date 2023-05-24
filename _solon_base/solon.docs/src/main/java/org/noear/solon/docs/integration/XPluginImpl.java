@@ -1,8 +1,6 @@
 package org.noear.solon.docs.integration;
 
-
 import org.noear.solon.docs.openapi2.Swagger2Controller;
-import org.noear.solon.docs.annotation.EnableDoc;
 
 import org.noear.solon.Solon;
 import org.noear.solon.core.AopContext;
@@ -12,7 +10,7 @@ public class XPluginImpl implements Plugin {
 
     @Override
     public void start(AopContext context) {
-        if (Solon.app().source().isAnnotationPresent(EnableDoc.class) == false) {
+        if (Solon.app().enableDoc() == false) {
             return;
         }
 

@@ -641,6 +641,25 @@ public class SolonApp extends RouterWrapper {
         return this;
     }
 
+
+    private boolean _enableDoc = true;
+
+    /**
+     * 是否已启用文档
+     */
+    public boolean enableDoc() {
+        return _enableDoc;
+    }
+
+    /**
+     * 启用文档
+     */
+    public SolonApp enableDoc(boolean enable) {
+        _enableDoc = enable;
+        return this;
+    }
+
+
     private boolean _enableErrorAutoprint = true;
 
     /**
