@@ -8,7 +8,9 @@ swagger.adminApi:
   groupName: "admin端接口"
   globalResponseInData: true
   globalResult: "com.swagger.demo.model.ResultModel"
-  schemes: "https,http"
+  schemes:
+    - https
+    - http
   apis:
     - basePackage: "com.swagger.demo.controller.admin"
   info: #可选
