@@ -22,10 +22,10 @@
         <solon.version>2.3.0-SNAPSHOT</solon.version>
         <snack3.version>3.2.72</snack3.version>
         <weed3.version>3.4.33</weed3.version>
-        <wood.version>1.1.1</wood.version>
-        <water.version>2.10.4</water.version>
+        <wood.version>1.1.2</wood.version>
+        <water.version>2.11.0</water.version>
         <luffy.version>1.6.4</luffy.version>
-        <redisx.version>1.4.7</redisx.version>
+        <redisx.version>1.4.8</redisx.version>
         <redisson.version>3.17.0</redisson.version>
 
         <fastjson.version>1.2.83</fastjson.version>
@@ -41,7 +41,7 @@
         <undertow.version>2.2.24.Final</undertow.version>
         <tomcat.version>9.0.64</tomcat.version>
 
-        <jaeger.version>1.7.0</jaeger.version>
+        <jaeger.version>1.8.1</jaeger.version>
         <brave.version>5.16.0</brave.version>
         <zipkin-sender-okhttp3.version>2.16.4</zipkin-sender-okhttp3.version>
         <brave-opentracing.version>1.0.0</brave-opentracing.version>
@@ -50,7 +50,7 @@
         <snakeyaml.version>2.0</snakeyaml.version>
         <swagger.version>1.6.11</swagger.version>
 
-        <jackson.version>2.14.2</jackson.version>
+        <jackson.version>2.14.3</jackson.version>
         <gson.version>2.10.1</gson.version>
         <hessian.version>4.0.66</hessian.version>
         <hessian-sofa.version>4.0.4</hessian-sofa.version>
@@ -82,8 +82,9 @@
         <grpc.version>1.54.1</grpc.version>
         <dubbo2.version>2.7.5</dubbo2.version>
         <dubbo3.version>3.2.1</dubbo3.version>
-        <nacos1.version>1.4.4</nacos1.version>
-        <nacos2.version>2.1.2</nacos2.version>
+        <nacos1.version>1.4.5</nacos1.version>
+        <nacos2.version>2.2.2</nacos2.version>
+        <zookeeper.version>3.7.1</zookeeper.version>
         <jetcd-version>0.5.0</jetcd-version>
         <polaris.version>1.12.2</polaris.version>
 
@@ -101,7 +102,7 @@
         <beetl.version>3.15.4.RELEASE</beetl.version>
         <beetlsql.version>3.23.1-RELEASE</beetlsql.version>
         <sqltoy.version>5.2.48</sqltoy.version>
-        <mybatis-flex.version>1.2.8</mybatis-flex.version>
+        <mybatis-flex.version>1.2.9</mybatis-flex.version>
         <liteflow.version>2.10.2</liteflow.version>
         <forest.version>1.5.31</forest.version>
         <dbvisitor.version>5.3.1</dbvisitor.version>
