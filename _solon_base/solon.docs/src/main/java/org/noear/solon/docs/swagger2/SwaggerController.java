@@ -28,6 +28,8 @@ public class SwaggerController {
     @Inject
     AopContext aopContext;
 
+    Map<String, String> swaggerCached = new LinkedHashMap<>();
+
     /**
      * swagger 获取分组信息
      */
@@ -49,7 +51,7 @@ public class SwaggerController {
     public String api(Context ctx, String group) throws IOException {
         DocDocket docket = aopContext.getBean(group);
 
-        if(docket == null){
+        if (docket == null) {
             return null;
         }
 
@@ -58,15 +60,21 @@ public class SwaggerController {
             return null;
         }
 
-        if(docket.globalResponseCodes().containsKey(200) == false){
+        if (docket.globalResponseCodes().containsKey(200) == false) {
             docket.globalResponseCodes().put(200, "");
         }
 
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        String swaggerJson = swaggerCached.get(group);
+        if (Utils.isEmpty(swaggerJson)) {
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
 
-        Swagger swagger = new SwaggerBuilder(docket).build();
+            Swagger swagger = new SwaggerBuilder(docket).build();
+            swaggerJson = mapper.writeValueAsString(swagger);
 
-        return mapper.writeValueAsString(swagger);
+            swaggerCached.put(group, swaggerJson);
+        }
+
+        return swaggerJson;
     }
 }

@@ -1,6 +1,7 @@
 package org.noear.solon.docs;
 
 
+import io.swagger.models.ExternalDocs;
 import io.swagger.models.Scheme;
 import io.swagger.models.auth.ApiKeyAuthDefinition;
 import io.swagger.models.auth.In;
@@ -22,15 +23,20 @@ public class DocDocket {
     private String basePath;
 
 
-    private Map<String,String> basicAuth = new LinkedHashMap<>();
+    private Map<String, String> basicAuth = new LinkedHashMap<>();
 
     private Class<?> globalResult;
-    private Map<Integer,String> globalResponseCodes = new LinkedHashMap<>();
+    private Map<Integer, String> globalResponseCodes = new LinkedHashMap<>();
     private boolean globalResponseInData = false;
 
     private ApiInfo info = new ApiInfo();
     private List<ApiResource> apis = new ArrayList<>();
     private Map<String, SecuritySchemeDefinition> securityDefinitions = new LinkedHashMap<>();
+
+
+    private ExternalDocs externalDocs;
+    private Map<String, Object> vendorExtensions = new LinkedHashMap<>();
+
 
     public String version() {
         return version;
@@ -39,7 +45,8 @@ public class DocDocket {
     public String host() {
         return host;
     }
-    public DocDocket host(String host){
+
+    public DocDocket host(String host) {
         this.host = host;
         return this;
     }
@@ -47,6 +54,7 @@ public class DocDocket {
     public List<Scheme> schemes() {
         return schemes;
     }
+
     public DocDocket schemes(String... schemes) {
         for (String s : schemes) {
             Scheme scheme = Scheme.forValue(s);
@@ -60,7 +68,8 @@ public class DocDocket {
     public String groupName() {
         return groupName;
     }
-    public DocDocket groupName(String groupName){
+
+    public DocDocket groupName(String groupName) {
         this.groupName = groupName;
         return this;
     }
@@ -71,15 +80,16 @@ public class DocDocket {
 
     /**
      * 格式：admin#123456,user#654321,张三#abc
-     * */
-    public DocDocket basePath(String basePath){
+     */
+    public DocDocket basePath(String basePath) {
         this.basePath = basePath;
         return this;
     }
 
-    public Map<String,String> basicAuth() {
+    public Map<String, String> basicAuth() {
         return basicAuth;
     }
+
     public DocDocket basicAuth(String username, String password) {
         this.basicAuth.put(username, password);
         return this;
@@ -88,38 +98,42 @@ public class DocDocket {
     public List<ApiResource> apis() {
         return apis;
     }
-    public DocDocket apis(String basePackage){
+
+    public DocDocket apis(String basePackage) {
         this.apis.add(new ApiResource(basePackage));
 
         return this;
     }
 
-    public DocDocket apis(ApiResource apiResource){
+    public DocDocket apis(ApiResource apiResource) {
         this.apis.add(apiResource);
 
         return this;
     }
 
-    public ApiInfo info(){
+    public ApiInfo info() {
         return info;
     }
-    public DocDocket info(ApiInfo info){
+
+    public DocDocket info(ApiInfo info) {
         this.info = info;
         return this;
     }
 
-    public boolean globalResponseInData(){
+    public boolean globalResponseInData() {
         return globalResponseInData;
     }
-    public DocDocket globalResponseInData(boolean globalResponseInData){
+
+    public DocDocket globalResponseInData(boolean globalResponseInData) {
         this.globalResponseInData = globalResponseInData;
         return this;
     }
 
-    public Map<Integer,String> globalResponseCodes(){
+    public Map<Integer, String> globalResponseCodes() {
         return globalResponseCodes;
     }
-    public DocDocket globalResponseCodes(Map<Integer,String> globalResponseCodes) {
+
+    public DocDocket globalResponseCodes(Map<Integer, String> globalResponseCodes) {
         if (globalResponseCodes != null) {
             this.globalResponseCodes.putAll(globalResponseCodes);
         }
@@ -127,16 +141,16 @@ public class DocDocket {
     }
 
 
-    public Class<?> globalResult(){
+    public Class<?> globalResult() {
         return globalResult;
     }
 
-    public DocDocket globalResult(Class<?> clz){
+    public DocDocket globalResult(Class<?> clz) {
         globalResult = clz;
         return this;
     }
 
-    public Map<String, SecuritySchemeDefinition> securityDefinitions(){
+    public Map<String, SecuritySchemeDefinition> securityDefinitions() {
         return securityDefinitions;
     }
 
@@ -152,6 +166,38 @@ public class DocDocket {
 
     public DocDocket securityDefinitionInQuery(String name) {
         securityDefinitions.put(name, new ApiKeyAuthDefinition().in(In.QUERY));
+        return this;
+    }
+
+    public ExternalDocs externalDocs() {
+        return externalDocs;
+    }
+
+    public DocDocket externalDocs(ExternalDocs externalDocs) {
+        this.externalDocs = externalDocs;
+        return this;
+    }
+
+    public Map<String, Object> vendorExtensions() {
+        return vendorExtensions;
+    }
+
+    public DocDocket vendorExtensions(Map<String, Object> vendorExtensions) {
+        if (vendorExtensions != null) {
+            this.vendorExtensions.putAll(vendorExtensions);
+        }
+        return this;
+    }
+
+    public DocDocket vendorExtensions(String name, Object value) {
+        this.vendorExtensions.put(name, value);
+        return this;
+    }
+
+    public DocDocket vendorExtensions(ApiVendorExtension vendorExtension) {
+        if (vendorExtension != null) {
+            this.vendorExtensions.put(vendorExtension.getName(), vendorExtension.getValue());
+        }
         return this;
     }
 }

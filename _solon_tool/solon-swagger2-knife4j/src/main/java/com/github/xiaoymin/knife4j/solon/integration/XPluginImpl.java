@@ -1,4 +1,4 @@
-package com.github.xiaoymin.knife4j.solon;
+package com.github.xiaoymin.knife4j.solon.integration;
 
 import org.noear.solon.docs.annotation.EnableSwagger2;
 

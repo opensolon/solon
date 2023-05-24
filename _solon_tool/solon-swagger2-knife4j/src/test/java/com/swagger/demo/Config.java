@@ -1,5 +1,8 @@
 package com.swagger.demo;
 
+import com.github.xiaoymin.knife4j.solon.OpenApiExtendSetting;
+import com.github.xiaoymin.knife4j.solon.OpenApiExtension;
+import com.github.xiaoymin.knife4j.solon.OpenApiSettingExtension;
 import com.swagger.demo.model.HttpCodes;
 
 import org.noear.solon.docs.ApiEnum;
@@ -13,6 +16,7 @@ import org.noear.solon.core.handle.Result;
 
 @Configuration
 public class Config {
+    static OpenApiExtendSetting setting = new OpenApiExtendSetting();
     /**
      * 基于配置构建
      */
@@ -21,6 +25,8 @@ public class Config {
         //docket.globalResult(SwaggerRes.class);
         docket.globalResponseCodes(new HttpCodes());
         docket.securityDefinitionInHeader("token");
+        docket.vendorExtensions(new OpenApiExtension()
+                .addProperty(new OpenApiSettingExtension(setting)));
         return docket;
     }
 
