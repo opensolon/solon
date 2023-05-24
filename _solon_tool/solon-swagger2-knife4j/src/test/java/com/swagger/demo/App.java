@@ -2,13 +2,11 @@ package com.swagger.demo;
 
 
 import org.noear.solon.Solon;
-import io.swagger.solon.annotation.EnableSwagger;
+import org.noear.solon.docs.annotation.EnableSwagger2;
 
-@EnableSwagger
+@EnableSwagger2
 public class App {
     public static void main(String[] args) {
-        Solon.start(App.class, args, app -> {
-            app.get("/", c -> c.redirect("/swagger"));
-        });
+        Solon.start(App.class, args);
     }
 }

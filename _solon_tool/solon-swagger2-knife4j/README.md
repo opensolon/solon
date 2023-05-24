@@ -8,7 +8,7 @@ solon 集成 knife4j , 按UI规范生成相应的 Swagger Json。目前处于试
 
 使用方式：
 
-启用示例（启动后打开：`/swagger`）
+启用示例（启动后打开：`/doc.html`）
 
 ```java
 @EnableSwagger

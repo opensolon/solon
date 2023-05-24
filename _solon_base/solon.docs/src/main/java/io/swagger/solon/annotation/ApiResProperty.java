@@ -7,6 +7,8 @@ import java.lang.annotation.Target;
 
 /**
  * 接口返回参数
+ *
+ * @since 2.3
  */
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)

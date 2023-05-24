@@ -2,7 +2,7 @@ package org.noear.solon.docs.integration;
 
 
 import org.noear.solon.docs.swagger2.SwaggerController;
-import io.swagger.solon.annotation.EnableSwagger;
+import org.noear.solon.docs.annotation.EnableSwagger2;
 
 import org.noear.solon.Solon;
 import org.noear.solon.core.AopContext;
@@ -12,7 +12,7 @@ public class XPluginImp implements Plugin {
 
     @Override
     public void start(AopContext context) {
-        if (Solon.app().source().isAnnotationPresent(EnableSwagger.class) == false) {
+        if (Solon.app().source().isAnnotationPresent(EnableSwagger2.class) == false) {
             return;
         }
 
