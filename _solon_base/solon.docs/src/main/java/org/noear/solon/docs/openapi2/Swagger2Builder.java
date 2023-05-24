@@ -73,7 +73,9 @@ public class Swagger2Builder {
         swagger.host(this.getHost(docket));
         swagger.basePath(docket.basePath());
         swagger.schemes(docket.schemes());
-        //swagger.externalDocs(new ExternalDocs().url("https://swagger.io/").description("Find out more about Swagger"));
+        swagger.externalDocs(docket.externalDocs());
+        swagger.vendorExtensions(docket.vendorExtensions());
+        //new ExternalDocs().url("https://swagger.io/").description("Find out more about Swagger")
 
 
         swagger.getTags().sort((t1, t2) -> {

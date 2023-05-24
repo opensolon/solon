@@ -60,8 +60,8 @@ public class DocConfig {
 @Configuration
 public class DocConfig {
 
-    @Inject(value = "${knife4j.setting}",required = false)
-    OpenApiExtendSetting setting = new OpenApiExtendSetting();
+    @Inject
+    OpenApiExtensionResolver openApiExtensionResolver;
 
     /**
      * 基于代码构建
@@ -70,7 +70,7 @@ public class DocConfig {
     public DocDocket appApi() {
         //根据情况增加 "knife4j.setting" （可选）
         return new DocDocket()
-                .vendorExtensions(new OpenApiExtension().addProperty(new OpenApiSettingExtension(setting)))
+                .vendorExtensions(openApiExtensionResolver.getExtension())
                 .groupName("app端接口")
                 .schemes(Scheme.HTTP)
                 .globalResult(Result.class)
