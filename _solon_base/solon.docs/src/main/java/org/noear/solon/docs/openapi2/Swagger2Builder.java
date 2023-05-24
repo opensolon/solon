@@ -22,6 +22,7 @@ import org.noear.solon.core.handle.Endpoint;
 import org.noear.solon.core.handle.Handler;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.route.Routing;
+import org.noear.solon.core.util.GenericUtil;
 import org.noear.solon.core.util.PathUtil;
 
 import org.noear.solon.docs.ApiEnum;
@@ -54,7 +55,7 @@ public class Swagger2Builder {
     public Swagger build() {
         // 解析通用返回
         if (docket.globalResult() != null) {
-            this.globalResultModel = (ModelImpl) this.parseSwaggerModel(docket.globalResult());
+            this.globalResultModel = (ModelImpl) this.parseSwaggerModel(docket.globalResult(), docket.globalResult());
         }
 
         // 解析JSON
@@ -378,7 +379,7 @@ public class Swagger2Builder {
         Class<?> apiResClz = method.getReturnType();
         if (apiResClz != Void.class) {
             if (apiResClz.isAnnotationPresent(ApiModel.class)) {
-                ModelImpl commonResKv = (ModelImpl) this.parseSwaggerModel(apiResClz);
+                ModelImpl commonResKv = (ModelImpl) this.parseSwaggerModel(apiResClz, method.getGenericReturnType());
                 swaggerModelName = commonResKv.getName();
                 return swaggerModelName;
             }
@@ -433,8 +434,26 @@ public class Swagger2Builder {
     /**
      * 将class解析为swagger model
      */
-    private Model parseSwaggerModel(Class<?> clazz) {
+    private Model parseSwaggerModel(Class<?> clazz, Type type) {
         String modelName = clazz.getSimpleName();
+
+        if(type instanceof ParameterizedType) {
+            //支持泛型
+            Map<String, Type> typeMap = GenericUtil.getGenericInfo(type);
+
+            if (typeMap.size() > 0) {
+                StringBuilder buf = new StringBuilder();
+                typeMap.forEach((k, v) -> {
+                    if (v instanceof Class<?>) {
+                        buf.append(((Class<?>) v).getSimpleName()).append(",");
+                    }
+                });
+                buf.setLength(buf.length() - 1);
+
+                modelName = modelName + "«" + buf + "»";
+            }
+        }
+
 
         // 已存在,不重复解析
         if (swagger.getDefinitions() != null) {
@@ -479,7 +498,7 @@ public class Swagger2Builder {
                     //得到泛型里的class类型对象
                     Class<?> genericClazz = (Class<?>) pt.getActualTypeArguments()[0];
 
-                    ModelImpl swaggerModel = (ModelImpl) this.parseSwaggerModel(genericClazz);
+                    ModelImpl swaggerModel = (ModelImpl) this.parseSwaggerModel(genericClazz, genericClazz);
 
 
                     ObjectProperty fieldKv = new ObjectProperty();
@@ -495,15 +514,24 @@ public class Swagger2Builder {
             }
 
             Class<?> typeClazz = field.getType();
-            if (typeClazz.isAnnotationPresent(ApiModel.class)) {
-                ModelImpl swaggerModel = (ModelImpl) this.parseSwaggerModel(typeClazz);
+            Type typeGenericType = field.getGenericType();
+            if(typeGenericType instanceof TypeVariable) {
+                if (type instanceof ParameterizedType) {
+                    Map<String, Type> genericMap = GenericUtil.getGenericInfo(type);
+                    Type typeClazz2 = genericMap.get(typeGenericType.getTypeName());
+                    if (typeClazz2 instanceof Class) {
+                        typeClazz = (Class<?>) typeClazz2;
+                    }
+                }
+            }
 
-                ObjectProperty fieldKv = new ObjectProperty();
-                fieldKv.setName(swaggerModel.getName());
+            if (typeClazz.isAnnotationPresent(ApiModel.class)) {
+                ModelImpl swaggerModel = (ModelImpl) this.parseSwaggerModel(typeClazz, typeClazz);
+
+                RefProperty fieldKv = new RefProperty(swaggerModel.getName(), RefFormat.INTERNAL);
                 if(apiField != null){
                     fieldKv.setDescription(apiField.value());
                 }
-                fieldKv.setType(ApiEnum.RES_OBJECT);
 
                 fieldList.put(field.getName(), fieldKv);
             } else {
@@ -551,7 +579,7 @@ public class Swagger2Builder {
         for (ApiResProperty apiResponse : responses) {
 
             if (apiResponse.dataTypeClass() != Void.class) {
-                ModelImpl swaggerModel = (ModelImpl) this.parseSwaggerModel(apiResponse.dataTypeClass());
+                ModelImpl swaggerModel = (ModelImpl) this.parseSwaggerModel(apiResponse.dataTypeClass(), apiResponse.dataTypeClass());
 
                 if (apiResponse.allowMultiple()) {
                     ArrayProperty fieldKv = new ArrayProperty();
@@ -622,7 +650,7 @@ public class Swagger2Builder {
      */
     private String toParameterSchema(ApiImplicitParam apiParam) {
         if (apiParam.dataTypeClass() != Void.class) {
-            ModelImpl swaggerModel = (ModelImpl) this.parseSwaggerModel(apiParam.dataTypeClass());
+            ModelImpl swaggerModel = (ModelImpl) this.parseSwaggerModel(apiParam.dataTypeClass(), apiParam.dataTypeClass());
 
             return swaggerModel.getName();
         }
