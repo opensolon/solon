@@ -1,6 +1,6 @@
 package com.github.xiaoymin.knife4j.solon.integration;
 
-import org.noear.solon.docs.annotation.EnableSwagger2;
+import org.noear.solon.docs.annotation.EnableDoc;
 
 import org.noear.solon.Solon;
 import org.noear.solon.core.AopContext;
@@ -15,7 +15,7 @@ import org.noear.solon.web.staticfiles.repository.ClassPathStaticRepository;
 public class XPluginImpl implements Plugin {
     @Override
     public void start(AopContext context) throws Throwable {
-        if (Solon.app().source().isAnnotationPresent(EnableSwagger2.class) == false) {
+        if (Solon.app().source().isAnnotationPresent(EnableDoc.class) == false) {
             return;
         }
 
