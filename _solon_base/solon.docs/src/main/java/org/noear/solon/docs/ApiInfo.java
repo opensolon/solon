@@ -46,8 +46,8 @@ public class ApiInfo {
         return termsOfService;
     }
 
-    public ApiInfo termsOfService(String termsOfService) {
-        this.termsOfService = termsOfService;
+    public ApiInfo termsOfService(String url) {
+        this.termsOfService = url;
         return this;
     }
 

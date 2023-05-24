@@ -76,25 +76,28 @@ public class Swagger2Builder {
         swagger.schemes(docket.schemes());
         swagger.externalDocs(docket.externalDocs());
         swagger.vendorExtensions(docket.vendorExtensions());
-        //new ExternalDocs().url("https://swagger.io/").description("Find out more about Swagger")
-
-
-        swagger.getTags().sort((t1, t2) -> {
-            String name1 = t1.getDescription();
-            String name2 = t2.getDescription();
-
-            return Collator.getInstance(Locale.UK).compare(name1, name2);
-        });
-
-        List<String> definitionKeys = new ArrayList<>(swagger.getDefinitions().keySet());
-        Map<String, Model> definitionMap = new LinkedHashMap<>();
-        definitionKeys.sort((name1, name2) -> Collator.getInstance(Locale.UK).compare(name1, name2));
-        for (String name : definitionKeys) {
-            definitionMap.put(name, swagger.getDefinitions().get(name));
-        }
-        swagger.setDefinitions(definitionMap);
-
         swagger.setSecurityDefinitions(docket.securityDefinitions());
+
+        if(swagger.getTags() != null) {
+            //排序
+            swagger.getTags().sort((t1, t2) -> {
+                String name1 = t1.getDescription();
+                String name2 = t2.getDescription();
+
+                return Collator.getInstance(Locale.UK).compare(name1, name2);
+            });
+        }
+
+        if(swagger.getDefinitions() != null) {
+            //排序
+            List<String> definitionKeys = new ArrayList<>(swagger.getDefinitions().keySet());
+            Map<String, Model> definitionMap = new LinkedHashMap<>();
+            definitionKeys.sort((name1, name2) -> Collator.getInstance(Locale.UK).compare(name1, name2));
+            for (String name : definitionKeys) {
+                definitionMap.put(name, swagger.getDefinitions().get(name));
+            }
+            swagger.setDefinitions(definitionMap);
+        }
 
         return swagger;
     }
@@ -378,11 +381,11 @@ public class Swagger2Builder {
         // 2.9.1 实验性质 自定义返回值
         Class<?> apiResClz = method.getReturnType();
         if (apiResClz != Void.class) {
-            if (apiResClz.isAnnotationPresent(ApiModel.class)) {
+            //if (apiResClz.isAnnotationPresent(ApiModel.class)) {
                 ModelImpl commonResKv = (ModelImpl) this.parseSwaggerModel(apiResClz, method.getGenericReturnType());
                 swaggerModelName = commonResKv.getName();
                 return swaggerModelName;
-            }
+            //}
         }
 
 
@@ -448,9 +451,12 @@ public class Swagger2Builder {
                         buf.append(((Class<?>) v).getSimpleName()).append(",");
                     }
                 });
-                buf.setLength(buf.length() - 1);
 
-                modelName = modelName + "«" + buf + "»";
+                if (buf.length() > 0) {
+                    buf.setLength(buf.length() - 1);
+
+                    modelName = modelName + "«" + buf + "»";
+                }
             }
         }
 
