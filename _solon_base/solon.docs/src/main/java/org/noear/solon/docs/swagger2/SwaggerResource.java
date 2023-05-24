@@ -15,8 +15,8 @@ public class SwaggerResource {
     public SwaggerResource(String group, String groupName) {
         name = groupName;
         if (Utils.isNotEmpty(group)) {
-            url = ("/swagger/api?group=" + group);
-            location = ("/swagger/api?group=" + group);
+            url = ("/swagger2/api?group=" + group);
+            location = ("/swagger2/api?group=" + group);
             swaggerVersion = ("2.0");
         }
     }
