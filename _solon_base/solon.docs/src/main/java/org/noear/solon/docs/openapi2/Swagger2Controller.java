@@ -1,4 +1,4 @@
-package org.noear.solon.docs.swagger2;
+package org.noear.solon.docs.openapi2;
 
 import java.io.IOException;
 import java.util.*;
@@ -24,7 +24,7 @@ import org.noear.solon.core.handle.*;
  * @author noear
  * @since 2.3
  */
-public class SwaggerController {
+public class Swagger2Controller {
     @Inject
     AopContext aopContext;
 
@@ -35,11 +35,11 @@ public class SwaggerController {
      */
     @Produces("application/json; charset=utf-8")
     @Mapping("swagger-resources")
-    public List<SwaggerResource> resources() {
+    public List<Swagger2Resource> resources() {
         List<BeanWrap> list = aopContext.getWrapsOfType(DocDocket.class);
 
         return list.stream().filter(bw -> Utils.isNotEmpty(bw.name()))
-                .map(bw -> new SwaggerResource(bw.name(), ((DocDocket) bw.raw()).groupName()))
+                .map(bw -> new Swagger2Resource(bw.name(), ((DocDocket) bw.raw()).groupName()))
                 .collect(Collectors.toList());
     }
 
@@ -69,7 +69,7 @@ public class SwaggerController {
             ObjectMapper mapper = new ObjectMapper();
             mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
 
-            Swagger swagger = new SwaggerBuilder(docket).build();
+            Swagger swagger = new Swagger2Builder(docket).build();
             swaggerJson = mapper.writeValueAsString(swagger);
 
             swaggerCached.put(group, swaggerJson);

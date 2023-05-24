@@ -1,18 +1,20 @@
-package org.noear.solon.docs.swagger2;
+package org.noear.solon.docs.openapi2;
 
 import org.noear.solon.Utils;
+
+import java.io.Serializable;
 
 /**
  * @author noear
  * @since 2.3
  */
-public class SwaggerResource {
+public class Swagger2Resource implements Serializable {
     private String name;
     private String url;
     private String location;
     private String swaggerVersion;
 
-    public SwaggerResource(String group, String groupName) {
+    public Swagger2Resource(String group, String groupName) {
         name = groupName;
         if (Utils.isNotEmpty(group)) {
             url = ("/swagger2/api?group=" + group);

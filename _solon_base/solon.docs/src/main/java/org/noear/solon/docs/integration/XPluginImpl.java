@@ -1,7 +1,7 @@
 package org.noear.solon.docs.integration;
 
 
-import org.noear.solon.docs.swagger2.SwaggerController;
+import org.noear.solon.docs.openapi2.Swagger2Controller;
 import org.noear.solon.docs.annotation.EnableDoc;
 
 import org.noear.solon.Solon;
@@ -16,6 +16,6 @@ public class XPluginImpl implements Plugin {
             return;
         }
 
-        Solon.app().add("/", SwaggerController.class);
+        Solon.app().add("/", Swagger2Controller.class);
     }
 }

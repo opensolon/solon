@@ -1,4 +1,4 @@
-package org.noear.solon.docs.swagger2;
+package org.noear.solon.docs.openapi2;
 
 import io.swagger.annotations.*;
 import io.swagger.models.*;
@@ -32,10 +32,12 @@ import java.text.Collator;
 import java.util.*;
 
 /**
+ * openapi v2 json builder
+ *
  * @author noear
  * @since 2.3
  */
-public class SwaggerBuilder {
+public class Swagger2Builder {
     private final DocDocket docket;
 
     /**
@@ -45,7 +47,7 @@ public class SwaggerBuilder {
 
     Swagger swagger = new Swagger();
 
-    public SwaggerBuilder(DocDocket docket) {
+    public Swagger2Builder(DocDocket docket) {
         this.docket = docket;
     }
 

@@ -1,4 +1,4 @@
-package org.noear.solon.docs.swagger2;
+package org.noear.solon.docs.openapi2;
 
 import org.noear.solon.docs.DocDocket;
 import org.noear.solon.Utils;
