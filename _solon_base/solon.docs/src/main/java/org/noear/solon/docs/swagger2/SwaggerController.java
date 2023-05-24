@@ -1,4 +1,4 @@
-package io.swagger.solon.api;
+package org.noear.solon.docs.swagger2;
 
 import java.io.IOException;
 import java.util.*;
@@ -8,9 +8,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.swagger.models.Swagger;
-import io.swagger.solon.models.SwaggerDocket;
-import io.swagger.solon.models.SwaggerResource;
-import io.swagger.solon.models.SwaggerBuilder;
+import org.noear.solon.docs.DocDocket;
 
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.Inject;
@@ -36,10 +34,10 @@ public class SwaggerController {
     @Produces("application/json; charset=utf-8")
     @Mapping("swagger-resources")
     public List<SwaggerResource> resources() {
-        List<BeanWrap> list = aopContext.getWrapsOfType(SwaggerDocket.class);
+        List<BeanWrap> list = aopContext.getWrapsOfType(DocDocket.class);
 
         return list.stream().filter(bw -> Utils.isNotEmpty(bw.name()))
-                .map(bw -> new SwaggerResource(bw.name(), ((SwaggerDocket) bw.raw()).groupName()))
+                .map(bw -> new SwaggerResource(bw.name(), ((DocDocket) bw.raw()).groupName()))
                 .collect(Collectors.toList());
     }
 
@@ -49,7 +47,7 @@ public class SwaggerController {
     @Produces("application/json; charset=utf-8")
     @Mapping("swagger/api")
     public String api(Context ctx, String group) throws IOException {
-        SwaggerDocket docket = aopContext.getBean(group);
+        DocDocket docket = aopContext.getBean(group);
 
         if(docket == null){
             return null;

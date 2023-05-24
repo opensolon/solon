@@ -1,20 +1,29 @@
-package io.swagger.solon.api;
+package org.noear.solon.docs.swagger2;
 
-import io.swagger.solon.models.SwaggerDocket;
+import org.noear.solon.docs.DocDocket;
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Context;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.util.Base64;
 
 /**
  * @author noear
  * @since 2.3
  */
 public class BasicAuthUtils {
+    static final Charset UTF_8 = Charset.forName("UTF-8");
+
+    public static String base64DecodeToStr(String value) {
+        byte[] decodedValue = Base64.getDecoder().decode(value);
+        return new String(decodedValue, UTF_8);
+    }
+
     /**
      * WWW-Authenticate 简单认证
      */
-    public static boolean basicAuth(Context ctx, SwaggerDocket docket) throws IOException {
+    public static boolean basicAuth(Context ctx, DocDocket docket) throws IOException {
         if (docket.basicAuth() == null || docket.basicAuth().size() == 0) {
             // 未启用简单认证
             return true;
@@ -27,7 +36,7 @@ public class BasicAuthUtils {
         }
 
 
-        String nameAndPwd = Base64Utils.decodeToStr(authorization.substring(6));
+        String nameAndPwd = base64DecodeToStr(authorization.substring(6));
         String[] upArr = nameAndPwd.split(":");
 
         if (upArr.length != 2) {

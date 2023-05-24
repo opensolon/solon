@@ -1,4 +1,4 @@
-package io.swagger.solon.models;
+package org.noear.solon.docs;
 
 import io.swagger.models.Contact;
 import io.swagger.models.License;
@@ -15,51 +15,67 @@ public class ApiInfo {
     private Contact contact;
     private License license;
 
-    public String description(){
+    public String description() {
         return description;
     }
-    public ApiInfo description(String description){
+
+    public ApiInfo description(String description) {
         this.description = description;
         return this;
     }
 
-    public String version(){
+    public String version() {
         return version;
     }
-    public ApiInfo version(String version){
+
+    public ApiInfo version(String version) {
         this.version = version;
         return this;
     }
 
-    public String title(){
+    public String title() {
         return title;
     }
-    public ApiInfo title(String title){
+
+    public ApiInfo title(String title) {
         this.title = title;
         return this;
     }
 
-    public String termsOfService(){
+    public String termsOfService() {
         return termsOfService;
     }
-    public ApiInfo termsOfService(String termsOfService){
+
+    public ApiInfo termsOfService(String termsOfService) {
         this.termsOfService = termsOfService;
         return this;
     }
 
-    public Contact contact(){
+    public Contact contact() {
         return contact;
     }
-    public ApiInfo contact(Contact contact){
+
+    public ApiInfo contact(Contact contact) {
         this.contact = contact;
         return this;
     }
 
-    public License license(){
+    public ApiInfo contact(String name, String url, String email) {
+        this.contact = new Contact().name(name).url(url).email(email);
+        return this;
+    }
+
+    public License license() {
         return license;
     }
-    public ApiInfo license(License license){
+
+    public ApiInfo license(License license) {
         this.license = license;
+        return this;
+    }
+
+    public ApiInfo license(String name, String url) {
+        this.license = new License().name(name).url(url);
         return this;
     }
 }

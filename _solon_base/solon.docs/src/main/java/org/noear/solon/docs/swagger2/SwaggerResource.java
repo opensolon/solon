@@ -1,4 +1,4 @@
-package io.swagger.solon.models;
+package org.noear.solon.docs.swagger2;
 
 import org.noear.solon.Utils;
 

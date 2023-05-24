@@ -1,4 +1,4 @@
-package io.swagger.solon.models;
+package org.noear.solon.docs;
 
 
 import io.swagger.models.Scheme;
@@ -14,7 +14,7 @@ import java.util.Map;
 /**
  * Swagger 摘要
  * */
-public class SwaggerDocket {
+public class DocDocket {
     private String version = "2.0";
     private List<Scheme> schemes = new ArrayList<>();
     private String groupName = "default";
@@ -39,7 +39,7 @@ public class SwaggerDocket {
     public String host() {
         return host;
     }
-    public SwaggerDocket host(String host){
+    public DocDocket host(String host){
         this.host = host;
         return this;
     }
@@ -47,9 +47,12 @@ public class SwaggerDocket {
     public List<Scheme> schemes() {
         return schemes;
     }
-    public SwaggerDocket schemes(Scheme... schemes) {
-        for (Scheme scheme : schemes) {
-            this.schemes.add(scheme);
+    public DocDocket schemes(String... schemes) {
+        for (String s : schemes) {
+            Scheme scheme = Scheme.forValue(s);
+            if (scheme != null) {
+                this.schemes.add(scheme);
+            }
         }
         return this;
     }
@@ -57,7 +60,7 @@ public class SwaggerDocket {
     public String groupName() {
         return groupName;
     }
-    public SwaggerDocket groupName(String groupName){
+    public DocDocket groupName(String groupName){
         this.groupName = groupName;
         return this;
     }
@@ -69,7 +72,7 @@ public class SwaggerDocket {
     /**
      * 格式：admin#123456,user#654321,张三#abc
      * */
-    public SwaggerDocket basePath(String basePath){
+    public DocDocket basePath(String basePath){
         this.basePath = basePath;
         return this;
     }
@@ -77,7 +80,7 @@ public class SwaggerDocket {
     public Map<String,String> basicAuth() {
         return basicAuth;
     }
-    public SwaggerDocket basicAuth(String username, String password) {
+    public DocDocket basicAuth(String username, String password) {
         this.basicAuth.put(username, password);
         return this;
     }
@@ -85,13 +88,13 @@ public class SwaggerDocket {
     public List<ApiResource> apis() {
         return apis;
     }
-    public SwaggerDocket apis(String basePackage){
+    public DocDocket apis(String basePackage){
         this.apis.add(new ApiResource(basePackage));
 
         return this;
     }
 
-    public SwaggerDocket apis(ApiResource apiResource){
+    public DocDocket apis(ApiResource apiResource){
         this.apis.add(apiResource);
 
         return this;
@@ -100,7 +103,7 @@ public class SwaggerDocket {
     public ApiInfo info(){
         return info;
     }
-    public SwaggerDocket info(ApiInfo info){
+    public DocDocket info(ApiInfo info){
         this.info = info;
         return this;
     }
@@ -108,7 +111,7 @@ public class SwaggerDocket {
     public boolean globalResponseInData(){
         return globalResponseInData;
     }
-    public SwaggerDocket globalResponseInData(boolean globalResponseInData){
+    public DocDocket globalResponseInData(boolean globalResponseInData){
         this.globalResponseInData = globalResponseInData;
         return this;
     }
@@ -116,7 +119,7 @@ public class SwaggerDocket {
     public Map<Integer,String> globalResponseCodes(){
         return globalResponseCodes;
     }
-    public SwaggerDocket globalResponseCodes(Map<Integer,String> globalResponseCodes) {
+    public DocDocket globalResponseCodes(Map<Integer,String> globalResponseCodes) {
         if (globalResponseCodes != null) {
             this.globalResponseCodes.putAll(globalResponseCodes);
         }
@@ -128,7 +131,7 @@ public class SwaggerDocket {
         return globalResult;
     }
 
-    public SwaggerDocket globalResult(Class<?> clz){
+    public DocDocket globalResult(Class<?> clz){
         globalResult = clz;
         return this;
     }
@@ -137,17 +140,17 @@ public class SwaggerDocket {
         return securityDefinitions;
     }
 
-    public SwaggerDocket securityDefinition(String name, SecuritySchemeDefinition securityDefinition) {
+    public DocDocket securityDefinition(String name, SecuritySchemeDefinition securityDefinition) {
         securityDefinitions.put(name, securityDefinition);
         return this;
     }
 
-    public SwaggerDocket securityDefinitionInHeader(String name) {
+    public DocDocket securityDefinitionInHeader(String name) {
         securityDefinitions.put(name, new ApiKeyAuthDefinition().in(In.HEADER));
         return this;
     }
 
-    public SwaggerDocket securityDefinitionInQuery(String name) {
+    public DocDocket securityDefinitionInQuery(String name) {
         securityDefinitions.put(name, new ApiKeyAuthDefinition().in(In.QUERY));
         return this;
     }

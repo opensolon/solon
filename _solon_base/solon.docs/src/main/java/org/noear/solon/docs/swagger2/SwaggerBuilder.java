@@ -1,15 +1,14 @@
-package io.swagger.solon.models;
+package org.noear.solon.docs.swagger2;
 
 import io.swagger.annotations.*;
 import io.swagger.models.*;
-import io.swagger.models.ExternalDocs;
 import io.swagger.models.Info;
 import io.swagger.models.Tag;
 import io.swagger.models.parameters.*;
 import io.swagger.models.parameters.Parameter;
 import io.swagger.models.properties.*;
 import io.swagger.models.refs.RefFormat;
-import io.swagger.solon.annotation.ApiEnum;
+
 import io.swagger.solon.annotation.ApiNoAuthorize;
 import io.swagger.solon.annotation.ApiRes;
 import io.swagger.solon.annotation.ApiResProperty;
@@ -24,6 +23,9 @@ import org.noear.solon.core.handle.Handler;
 import org.noear.solon.core.route.Routing;
 import org.noear.solon.core.util.PathUtil;
 
+import org.noear.solon.docs.ApiEnum;
+import org.noear.solon.docs.DocDocket;
+
 import java.lang.reflect.*;
 import java.text.Collator;
 import java.util.*;
@@ -33,7 +35,7 @@ import java.util.*;
  * @since 2.3
  */
 public class SwaggerBuilder {
-    private final SwaggerDocket docket;
+    private final DocDocket docket;
 
     /**
      * 公共返回模型
@@ -42,7 +44,7 @@ public class SwaggerBuilder {
 
     Swagger swagger = new Swagger();
 
-    public SwaggerBuilder(SwaggerDocket docket) {
+    public SwaggerBuilder(DocDocket docket) {
         this.docket = docket;
     }
 
@@ -68,7 +70,7 @@ public class SwaggerBuilder {
         swagger.host(this.getHost(docket));
         swagger.basePath(docket.basePath());
         swagger.schemes(docket.schemes());
-        swagger.externalDocs(new ExternalDocs().url("https://swagger.io/").description("Find out more about Swagger"));
+        //swagger.externalDocs(new ExternalDocs().url("https://swagger.io/").description("Find out more about Swagger"));
 
 
         swagger.getTags().sort((t1, t2) -> {
@@ -121,7 +123,7 @@ public class SwaggerBuilder {
             Action action = (Action) routing.target();
             Class<?> controller = action.controller().clz();
 
-            boolean matched = docket.apis().stream().anyMatch(res -> controller.getName().startsWith(res.basePackage()));
+            boolean matched = docket.apis().stream().anyMatch(res -> res.test(action));
             if (matched == false) {
                 continue;
             }
@@ -623,7 +625,7 @@ public class SwaggerBuilder {
     /**
      * 获取host配置
      */
-    private String getHost(SwaggerDocket swaggerDock) {
+    private String getHost(DocDocket swaggerDock) {
         String host = swaggerDock.host();
         if (Utils.isBlank(host)) {
             host = "localhost";

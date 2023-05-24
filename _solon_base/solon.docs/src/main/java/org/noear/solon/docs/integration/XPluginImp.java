@@ -1,7 +1,7 @@
-package io.swagger.solon.integration;
+package org.noear.solon.docs.integration;
 
 
-import io.swagger.solon.api.SwaggerController;
+import org.noear.solon.docs.swagger2.SwaggerController;
 import io.swagger.solon.annotation.EnableSwagger;
 
 import org.noear.solon.Solon;

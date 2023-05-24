@@ -1,4 +1,4 @@
-package io.swagger.solon.annotation;
+package org.noear.solon.docs;
 
 /**
  * Swagger 注解所需的类型汇总
