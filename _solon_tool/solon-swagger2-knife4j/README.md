@@ -26,15 +26,15 @@ swagger.adminApi:
     user: "654321"
   apis:
     - basePackage: "com.swagger.demo.controller.admin"
-  info:
+  info: #可选
     title: "在线文档"
     description: "在线API文档"
     termsOfService: "https://gitee.com/noear/solon"
     version: 1.0
-    contact:
+    contact: #可选
       name: "demo"
       email: "demo@qq.com"
-    license:
+    license: #可选
       name: "demo"
       url: "https://gitee.com/noear/solon/blob/master/LICENSE"
 ```
