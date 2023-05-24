@@ -20,6 +20,7 @@ import org.noear.solon.annotation.Mapping;
 import org.noear.solon.core.handle.Action;
 import org.noear.solon.core.handle.Endpoint;
 import org.noear.solon.core.handle.Handler;
+import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.route.Routing;
 import org.noear.solon.core.util.PathUtil;
 
@@ -97,12 +98,12 @@ public class SwaggerBuilder {
      * 解析分组包
      */
     private void parseGroupPackage() {
-        Map<Class<?>, List<Action>> classMap = this.getApiAction();
+        Map<Class<?>, List<ActionHolder>> classMap = this.getApiAction();
         classMap.keySet().forEach((Class<?> clazz) -> {
-            List<Action> actions = classMap.get(clazz);
+            List<ActionHolder> actionHolders = classMap.get(clazz);
 
             // 解析controller
-            this.parseController(clazz, actions);
+            this.parseController(clazz, actionHolders);
 
         });
     }
@@ -111,8 +112,8 @@ public class SwaggerBuilder {
     /**
      * 获取全部Action
      */
-    private Map<Class<?>, List<Action>> getApiAction() {
-        Map<Class<?>, List<Action>> apiMap = new HashMap<>(16);
+    private Map<Class<?>, List<ActionHolder>> getApiAction() {
+        Map<Class<?>, List<ActionHolder>> apiMap = new HashMap<>(16);
 
         Collection<Routing<Handler>> routingCollection = Solon.app().router().getAll(Endpoint.main);
         for (Routing<Handler> routing : routingCollection) {
@@ -128,20 +129,22 @@ public class SwaggerBuilder {
                 continue;
             }
 
+            ActionHolder actionHolder = new ActionHolder(routing, action);
+
             if (apiMap.containsKey(controller)) {
                 if (action.method().isAnnotationPresent(ApiOperation.class)) {
-                    List<Action> actions = apiMap.get(controller);
-                    if (!actions.contains(action)) {
-                        actions.add(action);
-                        apiMap.put(controller, actions);
+                    List<ActionHolder> actionHolders = apiMap.get(controller);
+                    if (!actionHolders.contains(actionHolder)) {
+                        actionHolders.add(actionHolder);
+                        apiMap.put(controller, actionHolders);
                     }
                 }
             } else {
                 if (controller.isAnnotationPresent(Api.class)) {
                     if (action.method().isAnnotationPresent(ApiOperation.class)) {
-                        List<Action> actions = new ArrayList<>();
-                        actions.add(action);
-                        apiMap.put(controller, actions);
+                        List<ActionHolder> actionHolders = new ArrayList<>();
+                        actionHolders.add(actionHolder);
+                        apiMap.put(controller, actionHolders);
                     }
                 }
             }
@@ -150,11 +153,11 @@ public class SwaggerBuilder {
         List<Class<?>> ctlList = new ArrayList<>(apiMap.keySet());
         ctlList.sort(Comparator.comparingInt(clazz -> clazz.getAnnotation(Api.class).position()));
 
-        Map<Class<?>, List<Action>> result = new LinkedHashMap<>();
+        Map<Class<?>, List<ActionHolder>> result = new LinkedHashMap<>();
         ctlList.forEach(i -> {
-            List<Action> actions = apiMap.get(i);
-            actions.sort(Comparator.comparingInt(action -> action.method().getAnnotation(ApiOperation.class).position()));
-            result.put(i, actions);
+            List<ActionHolder> actionHolders = apiMap.get(i);
+            actionHolders.sort(Comparator.comparingInt(ah -> ah.action().method().getAnnotation(ApiOperation.class).position()));
+            result.put(i, actionHolders);
         });
 
         return result;
@@ -163,7 +166,7 @@ public class SwaggerBuilder {
     /**
      * 解析controller
      */
-    private void parseController(Class<?> clazz, List<Action> actions) {
+    private void parseController(Class<?> clazz, List<ActionHolder> actionHolders) {
         // controller 信息
         Api api = clazz.getAnnotation(Api.class);
         boolean hidden = api.hidden();
@@ -183,27 +186,27 @@ public class SwaggerBuilder {
 
 
         // 解析action
-        this.parseAction(actions);
+        this.parseAction(actionHolders);
     }
 
     /**
      * 解析action
      */
-    private void parseAction(List<Action> actions) {
-        for (Action action : actions) {
-            Method method = action.method().getMethod();
+    private void parseAction(List<ActionHolder> actionHolders) {
+        for (ActionHolder actionHolder : actionHolders) {
 
-            ApiOperation apiAction = method.getAnnotation(ApiOperation.class);
+            ApiOperation apiAction = actionHolder.getAnnotation(ApiOperation.class);
 
             if (apiAction.hidden()) {
                 return;
             }
 
-            String controllerKey = this.getControllerKey(action.controller().clz());
-            String actionName = action.name();//action.getMethodName();
+            String controllerKey = this.getControllerKey(actionHolder.controllerClz());
+            String actionName = actionHolder.action().name();//action.getMethodName();
+            Method actionMethod = actionHolder.action().method().getMethod();
 
             Set<String> actionTags = new HashSet<>();
-            actionTags.addAll(Arrays.asList(actions.get(0).controller().clz().getAnnotation(Api.class).tags()));
+            actionTags.addAll(Arrays.asList(actionHolder.controllerClz().getAnnotation(Api.class).tags()));
             actionTags.addAll(Arrays.asList(apiAction.tags()));
             actionTags.remove("");
 
@@ -214,26 +217,26 @@ public class SwaggerBuilder {
             operation.setTags(new ArrayList<>(actionTags));
             operation.setSummary(apiAction.value());
             operation.setDescription(apiAction.notes());
-            operation.setDeprecated(method.isAnnotationPresent(Deprecated.class));
+            operation.setDeprecated(actionHolder.isAnnotationPresent(Deprecated.class));
 
-            if ((method.isAnnotationPresent(ApiNoAuthorize.class) ||
-                    action.controller().clz().isAnnotationPresent(ApiNoAuthorize.class)) == false) {
+            if ((actionHolder.isAnnotationPresent(ApiNoAuthorize.class) ||
+                    actionHolder.controllerClz().isAnnotationPresent(ApiNoAuthorize.class)) == false) {
                 for (String securityName : docket.securityDefinitions().keySet()) {
                     operation.security(new SecurityRequirement(securityName).scope("global"));
                 }
             }
 
 
-            String operationKey = Utils.isBlank(apiAction.httpMethod()) ? ApiEnum.METHOD_GET : apiAction.httpMethod();
+            String operationMethod = getHttpMethod(actionHolder, apiAction);
 
 
-            operation.setParameters(this.parseActionParameters(method));
-            operation.setResponses(this.parseActionResponse(controllerKey, actionName, method));
+            operation.setParameters(this.parseActionParameters(actionMethod));
+            operation.setResponses(this.parseActionResponse(controllerKey, actionName, actionMethod));
             operation.setVendorExtension("controllerKey", controllerKey);
             operation.setVendorExtension("actionName", actionName);
 
             if (Utils.isBlank(apiAction.consumes())) {
-                if (operationKey.equals(ApiEnum.METHOD_GET)) {
+                if (operationMethod.equals(ApiEnum.METHOD_GET)) {
                     operation.consumes(""); //如果是 get ，则没有 content-type
                 } else {
                     operation.consumes(ApiEnum.CONSUMES_URLENCODED);
@@ -245,9 +248,9 @@ public class SwaggerBuilder {
             operation.produces(Utils.isBlank(apiAction.produces()) ? ApiEnum.PRODUCES_DEFAULT : apiAction.produces());
 
 
-            operation.setOperationId(operationKey + "_" + pathKey.replace("/", "_"));
+            operation.setOperationId(operationMethod + "_" + pathKey.replace("/", "_"));
 
-            path.set(operationKey, operation);
+            path.set(operationMethod, operation);
 
             swagger.path(pathKey, path);
         }
@@ -620,6 +623,24 @@ public class SwaggerBuilder {
             return swaggerModel.getName();
         }
         return null;
+    }
+
+    public String getHttpMethod(ActionHolder actionHolder, ApiOperation apiAction) {
+        if (Utils.isBlank(apiAction.httpMethod())) {
+            MethodType methodType = actionHolder.routing().method();
+
+            if (methodType == null) {
+                return ApiEnum.METHOD_GET;
+            } else {
+                if (methodType.ordinal() < MethodType.UNKNOWN.ordinal()) {
+                    return methodType.name.toLowerCase();
+                } else {
+                    return ApiEnum.METHOD_GET;
+                }
+            }
+        } else {
+            return apiAction.httpMethod();
+        }
     }
 
     /**
