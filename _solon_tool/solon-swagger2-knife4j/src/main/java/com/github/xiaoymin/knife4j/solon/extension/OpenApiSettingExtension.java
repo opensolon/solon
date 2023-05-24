@@ -1,11 +1,12 @@
-package com.github.xiaoymin.knife4j.solon;
+package com.github.xiaoymin.knife4j.solon.extension;
 
 import org.noear.solon.docs.ApiVendorExtension;
 
 /**
- * @author noear 2023/5/24 created
+ * @author noear
+ * @since 2.2
  */
-public class OpenApiSettingExtension implements ApiVendorExtension {
+public class OpenApiSettingExtension implements ApiVendorExtension<OpenApiExtendSetting> {
     OpenApiExtendSetting value;
     public OpenApiSettingExtension(OpenApiExtendSetting value){
         this.value = value;
@@ -16,7 +17,7 @@ public class OpenApiSettingExtension implements ApiVendorExtension {
     }
 
     @Override
-    public Object getValue() {
+    public OpenApiExtendSetting getValue() {
         return value;
     }
 }

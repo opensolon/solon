@@ -1,4 +1,4 @@
-package com.github.xiaoymin.knife4j.solon;
+package com.github.xiaoymin.knife4j.solon.extension;
 
 import org.noear.solon.docs.ApiVendorExtension;
 
@@ -9,13 +9,13 @@ import java.util.Map;
  * @author noear
  * @since 2.2
  */
-public class OpenApiExtension implements ApiVendorExtension {
+public class OpenApiExtension implements ApiVendorExtension<Map> {
     public static final String EXTENSION_NAME = "x-openapi";
 
     private final String name;
     private final Map<String, Object> value;
 
-    public OpenApiExtension(){
+    public OpenApiExtension() {
         this(EXTENSION_NAME);
     }
 
@@ -28,7 +28,7 @@ public class OpenApiExtension implements ApiVendorExtension {
         return name;
     }
 
-    public Map<String, Object> getValue() {
+    public Map getValue() {
         return value;
     }
 

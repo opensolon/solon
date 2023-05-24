@@ -1,8 +1,8 @@
 package com.swagger.demo;
 
-import com.github.xiaoymin.knife4j.solon.OpenApiExtendSetting;
-import com.github.xiaoymin.knife4j.solon.OpenApiExtension;
-import com.github.xiaoymin.knife4j.solon.OpenApiSettingExtension;
+import com.github.xiaoymin.knife4j.solon.extension.OpenApiExtendSetting;
+import com.github.xiaoymin.knife4j.solon.extension.OpenApiExtension;
+import com.github.xiaoymin.knife4j.solon.extension.OpenApiSettingExtension;
 import com.swagger.demo.model.HttpCodes;
 
 import org.noear.solon.docs.ApiEnum;
@@ -16,7 +16,9 @@ import org.noear.solon.core.handle.Result;
 
 @Configuration
 public class Config {
-    static OpenApiExtendSetting setting = new OpenApiExtendSetting();
+    @Inject(value = "${knife4j.setting}",required = false)
+    OpenApiExtendSetting setting = new OpenApiExtendSetting();
+
     /**
      * 基于配置构建
      */
@@ -52,7 +54,7 @@ public class Config {
                 .info(new ApiInfo().title("在线文档")
                         .description("在线API文档")
                         .termsOfService("https://gitee.com/noear/solon")
-                        .contact("demo", "https://gitee.com/noear/solon","demo@foxmail.com")
+                        .contact("demo", "https://gitee.com/noear/solon", "demo@foxmail.com")
                         .version("1.0"))
                 .schemes(ApiEnum.SCHEMES_HTTP)
                 .globalResponseInData(true)
