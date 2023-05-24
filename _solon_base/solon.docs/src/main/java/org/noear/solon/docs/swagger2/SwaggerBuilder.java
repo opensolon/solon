@@ -156,7 +156,7 @@ public class SwaggerBuilder {
         Map<Class<?>, List<ActionHolder>> result = new LinkedHashMap<>();
         ctlList.forEach(i -> {
             List<ActionHolder> actionHolders = apiMap.get(i);
-            actionHolders.sort(Comparator.comparingInt(ah -> ah.action().method().getAnnotation(ApiOperation.class).position()));
+            actionHolders.sort(Comparator.comparingInt(ah -> ah.getAnnotation(ApiOperation.class).position()));
             result.put(i, actionHolders);
         });
 
