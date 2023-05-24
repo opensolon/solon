@@ -1,14 +1,8 @@
-[![Maven Central](https://img.shields.io/maven-central/v/org.noear/solon-swagger-knife4j.svg)](https://search.maven.org/search?q=g:org.noear%20AND%20solon-swagger-knife4j)
-[![Apache 2.0](https://img.shields.io/:license-Apache2-blue.svg)](https://license.coscl.org.cn/Apache2/)
-[![JDK-8+](https://img.shields.io/badge/JDK-8+-green.svg)](https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html)
-[![QQ交流群](https://img.shields.io/badge/QQ交流群-22200020-orange)](https://jq.qq.com/?_wv=1027&k=kjB5JNiC)
-
-
-solon 集成 knife4j , 按UI规范生成相应的 Swagger Json。目前处于试验中
+solon 集成 swagger2 + knife4j , 按UI规范生成相应的 Swagger Json。目前处于试验中
 
 使用方式：
 
-启用示例（启动后打开：`/doc.html`）
+启用示例（启动后打开：`/doc.html`），具体参考 src/test 示例
 
 ```java
 @EnableSwagger
