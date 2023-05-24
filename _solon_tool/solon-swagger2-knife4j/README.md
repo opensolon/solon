@@ -5,10 +5,12 @@ solon 集成 swagger2 + knife4j , 按UI规范生成相应的 Swagger Json。目�
 启用示例（启动后打开：`/doc.html`），具体参考 src/test 示例
 
 ```java
-@EnableDoc
 public class App {
     public static void main(String[] args) {
-        Solon.start(App.class, args);
+        Solon.start(App.class, args, app -> {
+            //开发模式，或调试模式下才开启文档（或者自己定义配置控制）//或者一直开着（默认是开着的）
+            app.enableDoc(app.cfg().isDebugMode() || app.cfg().isFilesMode());
+        });
     }
 }
 ```
