@@ -57,11 +57,6 @@
         <module>../../_solon_plugin/liteflow-solon-plugin</module>
         <module>../../_solon_plugin/easy-trans-solon-plugin</module>
 
-
-        <module>../../_solon_plugin/swagger-solon-plugin</module>
-
         <module>../../_solon_plugin/bean-searcher-solon-plugin</module>
-
-        <!--        <module>../../_solon_tool/solon-swagger-knife4j</module>-->
     </modules>
 </project>

@@ -12,7 +12,7 @@ import io.swagger.annotations.ApiModelProperty;
  * 创建日期: 2020/9/8
  */
 @ApiModel(description = "响应结果")
-public class SwaggerRes {
+public class ResultModel {
     @ApiModelProperty(value = "请求状态")
     private boolean success;
 

@@ -48,7 +48,7 @@
 
 
         <snakeyaml.version>2.0</snakeyaml.version>
-        <swagger.version>1.6.2</swagger.version>
+        <swagger.version>1.6.11</swagger.version>
 
         <jackson.version>2.14.2</jackson.version>
         <gson.version>2.10.1</gson.version>
@@ -1017,12 +1017,6 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>swagger-solon-plugin</artifactId>
-                <version>${solon.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.noear</groupId>
                 <artifactId>sa-token-solon-plugin</artifactId>
                 <version>${solon.version}</version>
             </dependency>
@@ -1355,7 +1349,7 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon-swagger-knife4j</artifactId>
+                <artifactId>solon-swagger2-knife4j</artifactId>
                 <version>${solon.version}</version>
             </dependency>
 

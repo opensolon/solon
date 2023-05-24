@@ -36,6 +36,6 @@
         <module>../../_solon_tool/solon-test-junit4</module>
         <module>../../_solon_tool/solon-test-junit5</module>
 
-        <module>../../_solon_tool/solon-swagger-knife4j</module>
+        <module>../../_solon_tool/solon-swagger2-knife4j</module>
     </modules>
 </project>

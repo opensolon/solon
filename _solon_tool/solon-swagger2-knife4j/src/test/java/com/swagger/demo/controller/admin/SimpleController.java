@@ -13,8 +13,9 @@ import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Mapping;
 import io.swagger.solon.annotation.ApiRes;
 import io.swagger.solon.annotation.ApiResProperty;
-import io.swagger.solon.annotation.ApiEnum;
-import com.swagger.demo.model.SwaggerRes;
+import org.noear.solon.annotation.Put;
+import org.noear.solon.docs.ApiEnum;
+import com.swagger.demo.model.ResultModel;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -65,8 +66,9 @@ public class SimpleController {
             @ApiResProperty(name = "resA", value = "返回值A", example = "hello word1"),
             @ApiResProperty(name = "resB", value = "返回值b", example = "hello word2"),
     })
-    @Mapping("test3")
-    public Map test3(String paramA, String paramB, String device) {
+    @Put
+    @Mapping("test3_put")
+    public Map test3_put(String paramA, String paramB, String device) {
         return new HashMap();
     }
 
@@ -113,7 +115,7 @@ public class SimpleController {
             @ApiResProperty(name = "machine", value = "农机信息", dataTypeClass = MachineDto.class),
     })
     @Mapping("test6")
-    public SwaggerRes test6(String paramA, String paramB, String device) {
+    public ResultModel test6(String paramA, String paramB, String device) {
         DeviceParamBean deviceParamBean = ONode.deserialize(device, DeviceParamBean.class);
 
         Map kv = new HashMap();
@@ -121,7 +123,7 @@ public class SimpleController {
         kv.put("paramB", paramB);
         kv.put("device", deviceParamBean);
 
-        SwaggerRes swaggerRes = new SwaggerRes();
+        ResultModel swaggerRes = new ResultModel();
         swaggerRes.setData(kv);
 
         return swaggerRes;

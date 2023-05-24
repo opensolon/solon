@@ -45,12 +45,12 @@ swagger.adminApi:
 
 ```java
 @Configuration
-public class SwaggerConfig {
+public class DocConfig {
     /**
      * 基于配置构建
      */
     @Bean("adminApi")
-    public SwaggerDocket adminApi(@Inject("${swagger.adminApi}") SwaggerDocket docket) {
+    public DocDocket adminApi(@Inject("${swagger.adminApi}") DocDocket docket) {
         docket.globalResult(Result.class);
         docket.securityDefinitionInHeader("token");
         return docket;
@@ -62,14 +62,14 @@ public class SwaggerConfig {
 
 ```java
 @Configuration
-public class SwaggerConfig {
+public class DocConfig {
 
     /**
      * 基于代码构建
      */
     @Bean("appApi")
-    public SwaggerDocket appApi() {
-        return new SwaggerDocket()
+    public DocDocket appApi() {
+        return new DocDocket()
                 .groupName("app端接口")
                 .schemes(Scheme.HTTP)
                 .globalResult(Result.class)
@@ -80,8 +80,8 @@ public class SwaggerConfig {
     }
 
     @Bean("adminApi")
-    public SwaggerDocket adminApi() {
-        return new SwaggerDocket()
+    public DocDocket adminApi() {
+        return new DocDocket()
                 .groupName("admin端接口")
                 .info(new ApiInfo().title("在线文档")
                         .description("在线API文档")

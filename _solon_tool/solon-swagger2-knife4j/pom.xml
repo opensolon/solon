@@ -11,7 +11,7 @@
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>solon-swagger-knife4j</artifactId>
+    <artifactId>solon-swagger2-knife4j</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>
@@ -27,8 +27,8 @@
 
         <dependency>
             <groupId>com.github.xiaoymin</groupId>
-            <artifactId>knife4j-spring-ui</artifactId>
-            <version>3.0.3</version>
+            <artifactId>knife4j-openapi2-ui</artifactId>
+            <version>4.1.0</version>
         </dependency>
 
         <dependency>
