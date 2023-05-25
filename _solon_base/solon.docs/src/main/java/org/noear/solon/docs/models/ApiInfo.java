@@ -1,4 +1,4 @@
-package org.noear.solon.docs;
+package org.noear.solon.docs.models;
 
 import io.swagger.models.Contact;
 import io.swagger.models.License;

@@ -2,6 +2,7 @@ package org.noear.solon.docs.openapi2;
 
 import io.swagger.annotations.*;
 import io.swagger.models.*;
+import io.swagger.models.ExternalDocs;
 import io.swagger.models.Info;
 import io.swagger.models.Tag;
 import io.swagger.models.parameters.*;
@@ -27,6 +28,7 @@ import org.noear.solon.core.wrap.ParamWrap;
 import org.noear.solon.docs.ApiEnum;
 import org.noear.solon.docs.DocDocket;
 import org.noear.solon.docs.exception.DocException;
+import org.noear.solon.docs.models.ApiScheme;
 
 import java.lang.reflect.*;
 import java.text.Collator;
@@ -72,8 +74,17 @@ public class Swagger2Builder {
 
         swagger.host(BuilderHelper.getHost(docket));
         swagger.basePath(docket.basePath());
-        swagger.schemes(docket.schemes());
-        swagger.externalDocs(docket.externalDocs());
+
+        if(docket.schemes() != null) {
+            for (ApiScheme scheme : docket.schemes()) {
+                swagger.scheme(Scheme.forValue(scheme.toValue()));
+            }
+        }
+
+        if(docket.externalDocs() != null) {
+            swagger.externalDocs(new ExternalDocs(docket.externalDocs().description(), docket.externalDocs().url()));
+        }
+
         swagger.vendorExtensions(docket.vendorExtensions());
         swagger.setSecurityDefinitions(docket.securityDefinitions());
 

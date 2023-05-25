@@ -5,7 +5,7 @@ import com.github.xiaoymin.knife4j.solon.settings.OpenApiSetting;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.core.bean.InitializingBean;
-import org.noear.solon.docs.ApiVendorExtension;
+import org.noear.solon.docs.models.ApiVendorExtension;
 import org.noear.solon.docs.DocDocket;
 
 import java.util.Arrays;

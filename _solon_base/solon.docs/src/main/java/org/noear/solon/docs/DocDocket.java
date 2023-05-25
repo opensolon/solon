@@ -1,12 +1,11 @@
 package org.noear.solon.docs;
 
 
-import io.swagger.models.ExternalDocs;
-import io.swagger.models.Scheme;
 import io.swagger.models.auth.ApiKeyAuthDefinition;
 import io.swagger.models.auth.In;
 import io.swagger.models.auth.SecuritySchemeDefinition;
 import org.noear.solon.Utils;
+import org.noear.solon.docs.models.*;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -18,7 +17,7 @@ import java.util.Map;
  * */
 public class DocDocket {
     private String version = "2.0";
-    private List<Scheme> schemes = new ArrayList<>();
+    private List<ApiScheme> schemes = new ArrayList<>();
     private String groupName = "default";
     private String host;
     private String basePath;
@@ -40,7 +39,7 @@ public class DocDocket {
     /**
      * 外部文件
      * */
-    private ExternalDocs externalDocs;
+    private ApiExternalDocs externalDocs;
     /**
      * 供应商扩展
      * */
@@ -60,13 +59,13 @@ public class DocDocket {
         return this;
     }
 
-    public List<Scheme> schemes() {
+    public List<ApiScheme> schemes() {
         return schemes;
     }
 
     public DocDocket schemes(String... schemes) {
         for (String s : schemes) {
-            Scheme scheme = Scheme.forValue(s);
+            ApiScheme scheme = ApiScheme.forValue(s);
             if (scheme != null) {
                 this.schemes.add(scheme);
             }
@@ -187,12 +186,17 @@ public class DocDocket {
         return this;
     }
 
-    public ExternalDocs externalDocs() {
+    public ApiExternalDocs externalDocs() {
         return externalDocs;
     }
 
-    public DocDocket externalDocs(ExternalDocs externalDocs) {
+    public DocDocket externalDocs(ApiExternalDocs externalDocs) {
         this.externalDocs = externalDocs;
+        return this;
+    }
+
+    public DocDocket externalDocs(String description, String url) {
+        this.externalDocs = new ApiExternalDocs();
         return this;
     }
 

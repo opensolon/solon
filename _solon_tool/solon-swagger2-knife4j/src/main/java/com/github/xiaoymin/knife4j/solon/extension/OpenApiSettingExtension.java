@@ -1,7 +1,7 @@
 package com.github.xiaoymin.knife4j.solon.extension;
 
 import com.github.xiaoymin.knife4j.solon.settings.OpenApiExtendSetting;
-import org.noear.solon.docs.ApiVendorExtension;
+import org.noear.solon.docs.models.ApiVendorExtension;
 
 /**
  * @author noear

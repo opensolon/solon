@@ -4,7 +4,7 @@ import com.github.xiaoymin.knife4j.solon.extension.OpenApiExtensionResolver;
 import com.swagger.demo.model.HttpCodes;
 
 import org.noear.solon.docs.ApiEnum;
-import org.noear.solon.docs.ApiInfo;
+import org.noear.solon.docs.models.ApiInfo;
 import org.noear.solon.docs.DocDocket;
 
 import org.noear.solon.annotation.Bean;
