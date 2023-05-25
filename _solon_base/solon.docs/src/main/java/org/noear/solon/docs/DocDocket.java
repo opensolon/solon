@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Swagger 摘要
+ * 文档摘要
  * */
 public class DocDocket {
     private String version = "2.0";
@@ -32,10 +32,18 @@ public class DocDocket {
 
     private ApiInfo info = new ApiInfo();
     private List<ApiResource> apis = new ArrayList<>();
+
+    /**
+     * 安全定义
+     * */
     private Map<String, SecuritySchemeDefinition> securityDefinitions = new LinkedHashMap<>();
-
-
+    /**
+     * 外部文件
+     * */
     private ExternalDocs externalDocs;
+    /**
+     * 供应商扩展
+     * */
     private Map<String, Object> vendorExtensions = new LinkedHashMap<>();
 
 
