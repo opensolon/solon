@@ -7,7 +7,7 @@ import java.util.Map;
 
 /**
  * @author noear
- * @since 2.2
+ * @since 2.3
  */
 public class OpenApiExtension implements ApiVendorExtension<Map> {
     public static final String EXTENSION_NAME = "x-openapi";

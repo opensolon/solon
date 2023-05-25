@@ -4,7 +4,7 @@ import org.noear.solon.docs.ApiVendorExtension;
 
 /**
  * @author noear
- * @since 2.2
+ * @since 2.3
  */
 public class ApiOrderExtension implements ApiVendorExtension<Integer> {
     private final Integer order;

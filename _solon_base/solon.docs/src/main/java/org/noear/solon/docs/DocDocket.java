@@ -6,6 +6,7 @@ import io.swagger.models.Scheme;
 import io.swagger.models.auth.ApiKeyAuthDefinition;
 import io.swagger.models.auth.In;
 import io.swagger.models.auth.SecuritySchemeDefinition;
+import org.noear.solon.Utils;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -92,6 +93,13 @@ public class DocDocket {
 
     public DocDocket basicAuth(String username, String password) {
         this.basicAuth.put(username, password);
+        return this;
+    }
+
+    public DocDocket basicAuth(BasicAuth basicAuth) {
+        if (basicAuth != null && Utils.isNotEmpty(basicAuth.getUsername())) {
+            this.basicAuth.put(basicAuth.getUsername(), basicAuth.getPassword());
+        }
         return this;
     }
 
@@ -197,6 +205,15 @@ public class DocDocket {
     public DocDocket vendorExtensions(ApiVendorExtension vendorExtension) {
         if (vendorExtension != null) {
             this.vendorExtensions.put(vendorExtension.getName(), vendorExtension.getValue());
+        }
+        return this;
+    }
+
+    public DocDocket vendorExtensions(List<ApiVendorExtension> vendorExtensions) {
+        if (vendorExtensions != null) {
+            for (ApiVendorExtension vendorExtension : vendorExtensions) {
+                this.vendorExtensions.put(vendorExtension.getName(), vendorExtension.getValue());
+            }
         }
         return this;
     }

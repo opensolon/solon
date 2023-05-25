@@ -25,7 +25,7 @@ public class Config {
         //docket.globalResult(SwaggerRes.class);
         docket.globalResponseCodes(new HttpCodes());
         docket.securityDefinitionInHeader("token");
-        docket.vendorExtensions(openApiExtensionResolver.getExtension());
+        docket.vendorExtensions(openApiExtensionResolver.buildExtensions());
 
         return docket;
     }

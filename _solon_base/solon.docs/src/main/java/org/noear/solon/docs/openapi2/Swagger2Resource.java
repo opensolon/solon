@@ -17,8 +17,8 @@ public class Swagger2Resource implements Serializable {
     public Swagger2Resource(String group, String groupName) {
         name = groupName;
         if (Utils.isNotEmpty(group)) {
-            url = ("/swagger2/api?group=" + group);
-            location = ("/swagger2/api?group=" + group);
+            url = ("/swagger/v2?group=" + group);
+            location = ("/swagger/v2?group=" + group);
             swaggerVersion = ("2.0");
         }
     }

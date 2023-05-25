@@ -1,8 +1,8 @@
-package com.github.xiaoymin.knife4j.solon.extension;
+package com.github.xiaoymin.knife4j.solon.settings;
 
 /**
  * @author noear
- * @since 2.2
+ * @since 2.3
  */
 public class OpenApiExtendSetting {
     private String language = "zh-CN";

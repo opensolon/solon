@@ -1,10 +1,11 @@
 package com.github.xiaoymin.knife4j.solon.extension;
 
+import com.github.xiaoymin.knife4j.solon.settings.OpenApiExtendSetting;
 import org.noear.solon.docs.ApiVendorExtension;
 
 /**
  * @author noear
- * @since 2.2
+ * @since 2.3
  */
 public class OpenApiSettingExtension implements ApiVendorExtension<OpenApiExtendSetting> {
     OpenApiExtendSetting value;

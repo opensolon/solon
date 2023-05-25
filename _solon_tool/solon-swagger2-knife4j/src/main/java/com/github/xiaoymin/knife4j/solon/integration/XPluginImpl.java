@@ -3,6 +3,7 @@ package com.github.xiaoymin.knife4j.solon.integration;
 import com.github.xiaoymin.knife4j.solon.extension.OpenApiExtensionResolver;
 import org.noear.solon.Solon;
 import org.noear.solon.core.AopContext;
+import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.web.staticfiles.StaticMappings;
 import org.noear.solon.web.staticfiles.repository.ClassPathStaticRepository;
@@ -18,10 +19,11 @@ public class XPluginImpl implements Plugin {
             return;
         }
 
-        if (context.hasWrap(OpenApiExtensionResolver.class) == false) {
-            context.beanMake(OpenApiExtensionResolver.class);
-        }
+        BeanWrap beanWrap = context.beanMake(OpenApiExtensionResolver.class);
+        OpenApiExtensionResolver openApiExtensionResolver = beanWrap.raw();
 
-        StaticMappings.add("/", new ClassPathStaticRepository("META-INF/resources"));
+        if (openApiExtensionResolver.getSetting().isEnable()) {
+            StaticMappings.add("/", new ClassPathStaticRepository("META-INF/resources"));
+        }
     }
 }

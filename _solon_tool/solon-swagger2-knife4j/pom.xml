@@ -28,7 +28,7 @@
         <dependency>
             <groupId>com.github.xiaoymin</groupId>
             <artifactId>knife4j-openapi2-ui</artifactId>
-            <version>4.1.0</version>
+            <version>${knife4j.version}</version>
         </dependency>
 
         <dependency>

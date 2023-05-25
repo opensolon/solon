@@ -6,14 +6,12 @@ import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.Mapping;
 import org.noear.solon.core.handle.MethodType;
-import org.noear.solon.core.util.GenericUtil;
 import org.noear.solon.docs.ApiEnum;
 import org.noear.solon.docs.DocDocket;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 
 /**

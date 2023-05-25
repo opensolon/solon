@@ -15,14 +15,15 @@ import io.swagger.solon.annotation.ApiResProperty;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
-import org.noear.solon.annotation.Get;
 import org.noear.solon.core.handle.Action;
 import org.noear.solon.core.handle.Endpoint;
 import org.noear.solon.core.handle.Handler;
+import org.noear.solon.core.handle.UploadedFile;
 import org.noear.solon.core.route.Routing;
 import org.noear.solon.core.util.GenericUtil;
 import org.noear.solon.core.util.PathUtil;
 
+import org.noear.solon.core.wrap.ParamWrap;
 import org.noear.solon.docs.ApiEnum;
 import org.noear.solon.docs.DocDocket;
 import org.noear.solon.docs.exception.DocException;
@@ -76,7 +77,7 @@ public class Swagger2Builder {
         swagger.vendorExtensions(docket.vendorExtensions());
         swagger.setSecurityDefinitions(docket.securityDefinitions());
 
-        if(swagger.getTags() != null) {
+        if (swagger.getTags() != null) {
             //排序
             swagger.getTags().sort((t1, t2) -> {
                 String name1 = t1.getDescription();
@@ -86,7 +87,7 @@ public class Swagger2Builder {
             });
         }
 
-        if(swagger.getDefinitions() != null) {
+        if (swagger.getDefinitions() != null) {
             //排序
             List<String> definitionKeys = new ArrayList<>(swagger.getDefinitions().keySet());
             Map<String, Model> definitionMap = new LinkedHashMap<>();
@@ -236,7 +237,7 @@ public class Swagger2Builder {
             String operationMethod = BuilderHelper.getHttpMethod(actionHolder, apiAction);
 
 
-            operation.setParameters(this.parseActionParameters(actionMethod));
+            operation.setParameters(this.parseActionParameters(actionHolder));
             operation.setResponses(this.parseActionResponse(controllerKey, actionName, actionMethod));
             operation.setVendorExtension("controllerKey", controllerKey);
             operation.setVendorExtension("actionName", actionName);
@@ -265,76 +266,132 @@ public class Swagger2Builder {
     /**
      * 解析action 参数文档
      */
-    private List<Parameter> parseActionParameters(Method method) {
-        // 获取参数注解信息
-        List<ApiImplicitParam> apiParams = new ArrayList<>();
-        if (method.isAnnotationPresent(ApiImplicitParams.class)) {
-            apiParams.addAll(Arrays.asList(method.getAnnotation(ApiImplicitParams.class).value()));
+    private List<Parameter> parseActionParameters(ActionHolder actionHolder) {
+        Map<String, ParamHolder> actionParamMap = new LinkedHashMap<>();
+        for (ParamWrap p1 : actionHolder.action().method().getParamWraps()) {
+            actionParamMap.put(p1.getName(), new ParamHolder(p1));
         }
 
-        if (method.isAnnotationPresent(ApiImplicitParams.class)) {
-            ApiImplicitParam[] paramArray = method.getAnnotationsByType(ApiImplicitParam.class);
-            apiParams.addAll(Arrays.asList(paramArray));
+        // 获取参数注解信息
+        {
+            List<ApiImplicitParam> apiParams = new ArrayList<>();
+            if (actionHolder.isAnnotationPresent(ApiImplicitParams.class)) {
+                apiParams.addAll(Arrays.asList(actionHolder.getAnnotation(ApiImplicitParams.class).value()));
+            }
+
+            if (actionHolder.isAnnotationPresent(ApiImplicitParams.class)) {
+                ApiImplicitParam[] paramArray = actionHolder.getAnnotationsByType(ApiImplicitParam.class);
+                apiParams.addAll(Arrays.asList(paramArray));
+            }
+
+            for (ApiImplicitParam a1 : apiParams) {
+                ParamHolder paramHolder = actionParamMap.get(a1.name());
+                if (paramHolder == null) {
+                    paramHolder = new ParamHolder(null);
+                    actionParamMap.put(a1.name(), paramHolder);
+                }
+                paramHolder.binding(a1);
+            }
         }
 
         // 构建参数列表(包含全局参数)
         List<Parameter> paramList = new ArrayList<>();
 
-        for (ApiImplicitParam apiParam : apiParams) {
-            String paramSchema = this.toParameterSchema(apiParam);
-            String dataType = Utils.isBlank(apiParam.dataType()) ? ApiEnum.STRING : apiParam.dataType();
+        for (ParamHolder paramHolder : actionParamMap.values()) {
+            if (paramHolder.isIgnore()) {
+                continue;
+            }
+
+            String paramSchema = this.getParameterSchema(paramHolder);
+            String dataType = paramHolder.dataType();
 
             Parameter parameter;
 
-            if (apiParam.allowMultiple() && Utils.isNotEmpty(paramSchema)) {
-                //array model
-                BodyParameter modelParameter = new BodyParameter();
-                modelParameter.setSchema(new ArrayModel().items(new RefProperty(paramSchema)));
+            if (paramHolder.allowMultiple()) {
+                if (Utils.isNotEmpty(paramSchema)) {
+                    //array model
+                    BodyParameter modelParameter = new BodyParameter();
+                    modelParameter.setSchema(new ArrayModel().items(new RefProperty(paramSchema)));
 
-                parameter = modelParameter;
-            } else if (apiParam.allowMultiple() && "file".equals(dataType)) {
-                //array file
-                FormParameter formParameter = new FormParameter();
-                formParameter.type("array");
-                formParameter.items(new FileProperty());
-                formParameter.collectionFormat("multi");
-
-                parameter = formParameter;
-            } else if (Utils.isNotEmpty(paramSchema)) {
-                //model
-                BodyParameter modelParameter = new BodyParameter();
-                modelParameter.setSchema(new RefModel(paramSchema));
-
-                parameter = modelParameter;
-            } else {
-                if (method.getAnnotation(Get.class) != null) {
-                    QueryParameter formParameter = new QueryParameter();
-                    formParameter.setFormat(apiParam.format());
-                    formParameter.setType(dataType);
-                    formParameter.setDefaultValue(apiParam.defaultValue());
+                    parameter = modelParameter;
+                } else if ("file".equals(dataType)) {
+                    //array file
+                    FormParameter formParameter = new FormParameter();
+                    formParameter.type("array");
+                    formParameter.items(new FileProperty());
+                    formParameter.collectionFormat("multi");
 
                     parameter = formParameter;
                 } else {
-                    FormParameter formParameter = new FormParameter();
-                    formParameter.setFormat(apiParam.format());
-                    formParameter.setType(dataType);
-                    formParameter.setDefaultValue(apiParam.defaultValue());
+                    //array
+                    ObjectProperty objectProperty = new ObjectProperty();
+                    objectProperty.setType(dataType);
 
-                    parameter = formParameter;
+                    if (actionHolder.isGet()) {
+                        QueryParameter queryParameter = new QueryParameter();
+                        queryParameter.type("array");
+                        queryParameter.items(objectProperty);
+
+                        parameter = queryParameter;
+                    } else {
+                        FormParameter formParameter = new FormParameter();
+                        formParameter.type("array");
+                        formParameter.items(objectProperty);
+
+                        parameter = formParameter;
+                    }
+                }
+            } else {
+                if (Utils.isNotEmpty(paramSchema)) {
+                    //model
+                    BodyParameter modelParameter = new BodyParameter();
+                    modelParameter.setSchema(new RefModel(paramSchema));
+
+                    parameter = modelParameter;
+                } else {
+                    if (actionHolder.isGet()) {
+                        QueryParameter queryParameter = new QueryParameter();
+                        queryParameter.setType(dataType);
+
+                        if (paramHolder.getAnno() != null) {
+                            queryParameter.setFormat(paramHolder.getAnno().format());
+                            queryParameter.setDefaultValue(paramHolder.getAnno().defaultValue());
+                        }
+
+                        parameter = queryParameter;
+                    } else {
+                        FormParameter formParameter = new FormParameter();
+                        formParameter.setType(dataType);
+
+                        if (paramHolder.getAnno() != null) {
+                            formParameter.setFormat(paramHolder.getAnno().format());
+                            formParameter.setDefaultValue(paramHolder.getAnno().defaultValue());
+                        }
+
+                        parameter = formParameter;
+                    }
                 }
             }
 
-            parameter.setName(apiParam.name());
-            parameter.setDescription(apiParam.value());
-            parameter.setRequired(apiParam.required());
-            parameter.setReadOnly(parameter.isReadOnly());
-            parameter.setIn(Utils.isBlank(apiParam.paramType()) ? ApiEnum.PARAM_TYPE_QUERY : apiParam.paramType());
+            parameter.setName(paramHolder.getName());
+            parameter.setDescription(paramHolder.getDescription());
+            parameter.setRequired(paramHolder.isRequired());
+            parameter.setReadOnly(paramHolder.isReadOnly());
+
+            if (actionHolder.isGet()) {
+                parameter.setIn(ApiEnum.PARAM_TYPE_QUERY);
+            } else {
+                if (Utils.isEmpty(parameter.getIn())) {
+                    parameter.setIn(paramHolder.paramType());
+                }
+            }
 
             paramList.add(parameter);
         }
 
         return paramList;
     }
+
 
     /**
      * 解析action 返回文档
@@ -384,7 +441,7 @@ public class Swagger2Builder {
                     ModelImpl commonResKv = (ModelImpl) this.parseSwaggerModel(apiResClz, method.getGenericReturnType());
                     swaggerModelName = commonResKv.getName();
                     return swaggerModelName;
-                }catch (Exception e) {
+                } catch (Exception e) {
                     String hint = method.getDeclaringClass().getName() + ":" + method.getName() + "->" + apiResClz.getSimpleName();
                     throw new DocException("Response model parsing failure: " + hint, e);
                 }
@@ -414,7 +471,7 @@ public class Swagger2Builder {
      * 在data中返回
      */
     private String toResponseInData(String swaggerModelName) {
-        if(globalResultModel != null) {
+        if (globalResultModel != null) {
             Map<String, Property> propertyMap = new LinkedHashMap<>();
 
             propertyMap.putAll(this.globalResultModel.getProperties());
@@ -441,7 +498,7 @@ public class Swagger2Builder {
      * 将class解析为swagger model
      */
     private Model parseSwaggerModel(Class<?> clazz, Type type) {
-        String modelName = BuilderHelper.getModelName(clazz,type);
+        String modelName = BuilderHelper.getModelName(clazz, type);
 
         // 已存在,不重复解析
         if (swagger.getDefinitions() != null) {
@@ -464,7 +521,7 @@ public class Swagger2Builder {
 
         Field[] fields = clazz.getDeclaredFields();
         for (Field field : fields) {
-            if(Modifier.isStatic(field.getModifiers())){
+            if (Modifier.isStatic(field.getModifiers())) {
                 //静态的跳过
                 continue;
             }
@@ -473,7 +530,7 @@ public class Swagger2Builder {
 
             Class<?> typeClazz = field.getType();
             Type typeGenericType = field.getGenericType();
-            if(typeGenericType instanceof TypeVariable) {
+            if (typeGenericType instanceof TypeVariable) {
                 if (type instanceof ParameterizedType) {
                     Map<String, Type> genericMap = GenericUtil.getGenericInfo(type);
                     Type typeClazz2 = genericMap.get(typeGenericType.getTypeName());
@@ -481,8 +538,8 @@ public class Swagger2Builder {
                         typeClazz = (Class<?>) typeClazz2;
                     }
 
-                    if(typeClazz2 instanceof ParameterizedType){
-                        ParameterizedType typeGenericType2 = (ParameterizedType)typeClazz2;
+                    if (typeClazz2 instanceof ParameterizedType) {
+                        ParameterizedType typeGenericType2 = (ParameterizedType) typeClazz2;
                         typeClazz = (Class<?>) typeGenericType2.getRawType();
                         typeGenericType = typeClazz2;
                     }
@@ -526,12 +583,11 @@ public class Swagger2Builder {
             }
 
 
-
             if (BuilderHelper.isModel(typeClazz)) {
                 ModelImpl swaggerModel = (ModelImpl) this.parseSwaggerModel(typeClazz, typeClazz);
 
                 RefProperty fieldPr = new RefProperty(swaggerModel.getName(), RefFormat.INTERNAL);
-                if(apiField != null){
+                if (apiField != null) {
                     fieldPr.setDescription(apiField.value());
                 }
 
@@ -540,11 +596,11 @@ public class Swagger2Builder {
                 ObjectProperty fieldPr = new ObjectProperty();
                 fieldPr.setName(field.getName());
 
-                if(apiField != null) {
+                if (apiField != null) {
                     fieldPr.setDescription(apiField.value());
                     fieldPr.setType(Utils.isBlank(apiField.dataType()) ? typeClazz.getSimpleName().toLowerCase() : apiField.dataType());
                     fieldPr.setExample(apiField.example());
-                }else{
+                } else {
                     fieldPr.setType(typeClazz.getSimpleName().toLowerCase());
                 }
 
@@ -647,16 +703,43 @@ public class Swagger2Builder {
     }
 
 
-
     /**
      * 解析对象参数
      */
-    private String toParameterSchema(ApiImplicitParam apiParam) {
-        if (apiParam.dataTypeClass() != Void.class) {
-            ModelImpl swaggerModel = (ModelImpl) this.parseSwaggerModel(apiParam.dataTypeClass(), apiParam.dataTypeClass());
+    private String getParameterSchema(ParamHolder paramHolder) {
+        if (paramHolder.getAnno() != null) {
+            Class<?> dataTypeClass = paramHolder.getAnno().dataTypeClass();
 
-            return swaggerModel.getName();
+            if (dataTypeClass != Void.class) {
+                ModelImpl swaggerModel = (ModelImpl) this.parseSwaggerModel(dataTypeClass, dataTypeClass);
+
+                return swaggerModel.getName();
+            }
         }
+
+        if (paramHolder.getParam() != null) {
+            Class<?> dataTypeClass = paramHolder.getParam().getType();
+            if (dataTypeClass.isPrimitive()) {
+                return null;
+            }
+
+            if (UploadedFile.class.equals(dataTypeClass)) {
+                return null;
+            }
+
+            if (dataTypeClass.getName().startsWith("java.lang")) {
+                return null;
+            }
+
+            Type dataGenericType = paramHolder.getParam().getGenericType();
+
+            if (dataTypeClass != Void.class) {
+                ModelImpl swaggerModel = (ModelImpl) this.parseSwaggerModel(dataTypeClass, dataGenericType);
+
+                return swaggerModel.getName();
+            }
+        }
+
         return null;
     }
 }

@@ -14,6 +14,7 @@ import org.noear.solon.annotation.Mapping;
 import io.swagger.solon.annotation.ApiRes;
 import io.swagger.solon.annotation.ApiResProperty;
 import org.noear.solon.annotation.Put;
+import org.noear.solon.core.handle.UploadedFile;
 import org.noear.solon.docs.ApiEnum;
 import com.swagger.demo.model.ResultModel;
 
@@ -167,6 +168,12 @@ public class SimpleController {
     })
     @Mapping("upFile")
     public Map upFile() {
+        return new HashMap();
+    }
+
+    @ApiOperation("示例2-2")
+    @Mapping("upFile2")
+    public Map upFile2(UploadedFile file) {
         return new HashMap();
     }
 }

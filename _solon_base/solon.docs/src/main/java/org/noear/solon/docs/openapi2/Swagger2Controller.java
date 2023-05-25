@@ -47,7 +47,7 @@ public class Swagger2Controller {
      * swagger 获取分组接口数据
      */
     @Produces("application/json; charset=utf-8")
-    @Mapping("swagger2/api")
+    @Mapping("swagger/v2")
     public String api(Context ctx, String group) throws IOException {
         DocDocket docket = aopContext.getBean(group);
 

@@ -48,7 +48,9 @@
 
 
         <snakeyaml.version>2.0</snakeyaml.version>
+
         <swagger.version>1.6.11</swagger.version>
+        <knife4j.version>4.1.0</knife4j.version>
 
         <jackson.version>2.14.3</jackson.version>
         <gson.version>2.10.1</gson.version>
