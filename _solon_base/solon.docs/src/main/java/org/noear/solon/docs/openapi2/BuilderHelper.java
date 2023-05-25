@@ -81,10 +81,14 @@ public class BuilderHelper {
             if (methodType == null) {
                 return ApiEnum.METHOD_GET;
             } else {
+                if (actionHolder.isGet()) {
+                    return ApiEnum.METHOD_GET;
+                }
+
                 if (methodType.ordinal() < MethodType.UNKNOWN.ordinal()) {
                     return methodType.name.toLowerCase();
                 } else {
-                    return ApiEnum.METHOD_GET;
+                    return ApiEnum.METHOD_POST;
                 }
             }
         } else {

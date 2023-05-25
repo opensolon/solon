@@ -40,6 +40,7 @@ public class ApiEnum {
     public static final String PARAM_TYPE_QUERY = "query";
     public static final String PARAM_TYPE_BODY = "body";
     public static final String PARAM_TYPE_HEADER = "header";
+    public static final String PARAM_TYPE_COOKIE = "cookie";
 
     // 参数类型
     public static final String STRING = "String";

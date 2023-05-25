@@ -312,6 +312,9 @@ public class Swagger2Builder {
                     //array model
                     BodyParameter modelParameter = new BodyParameter();
                     modelParameter.setSchema(new ArrayModel().items(new RefProperty(paramSchema)));
+                    if (paramHolder.getParam().requireBody() == false) {
+                        modelParameter.setIn(ApiEnum.PARAM_TYPE_QUERY);
+                    }
 
                     parameter = modelParameter;
                 } else if ("file".equals(dataType)) {
@@ -319,7 +322,6 @@ public class Swagger2Builder {
                     FormParameter formParameter = new FormParameter();
                     formParameter.type("array");
                     formParameter.items(new FileProperty());
-                    formParameter.collectionFormat("multi");
 
                     parameter = formParameter;
                 } else {
@@ -327,29 +329,36 @@ public class Swagger2Builder {
                     ObjectProperty objectProperty = new ObjectProperty();
                     objectProperty.setType(dataType);
 
-                    if (actionHolder.isGet()) {
-                        QueryParameter queryParameter = new QueryParameter();
-                        queryParameter.type("array");
-                        queryParameter.items(objectProperty);
+                    QueryParameter queryParameter = new QueryParameter();
+                    queryParameter.type("array");
+                    queryParameter.items(objectProperty);
 
-                        parameter = queryParameter;
-                    } else {
-                        FormParameter formParameter = new FormParameter();
-                        formParameter.type("array");
-                        formParameter.items(objectProperty);
-
-                        parameter = formParameter;
-                    }
+                    parameter = queryParameter;
                 }
             } else {
                 if (Utils.isNotEmpty(paramSchema)) {
                     //model
                     BodyParameter modelParameter = new BodyParameter();
                     modelParameter.setSchema(new RefModel(paramSchema));
+                    if (paramHolder.isRequiredBody() == false) {
+                        modelParameter.setIn(ApiEnum.PARAM_TYPE_QUERY);
+                    }
 
                     parameter = modelParameter;
+                } else if ("file".equals(dataType)) {
+                    //array file
+                    FormParameter formParameter = new FormParameter();
+                    formParameter.items(new FileProperty());
+
+                    parameter = formParameter;
                 } else {
-                    if (actionHolder.isGet()) {
+                    if (paramHolder.isRequiredHeader()) {
+                        parameter = new HeaderParameter();
+                    } else if (paramHolder.isRequiredCookie()) {
+                        parameter = new CookieParameter();
+                    } else if (paramHolder.isRequiredPath()) {
+                        parameter = new PathParameter();
+                    } else {
                         QueryParameter queryParameter = new QueryParameter();
                         queryParameter.setType(dataType);
 
@@ -359,16 +368,6 @@ public class Swagger2Builder {
                         }
 
                         parameter = queryParameter;
-                    } else {
-                        FormParameter formParameter = new FormParameter();
-                        formParameter.setType(dataType);
-
-                        if (paramHolder.getAnno() != null) {
-                            formParameter.setFormat(paramHolder.getAnno().format());
-                            formParameter.setDefaultValue(paramHolder.getAnno().defaultValue());
-                        }
-
-                        parameter = formParameter;
                     }
                 }
             }
@@ -378,12 +377,8 @@ public class Swagger2Builder {
             parameter.setRequired(paramHolder.isRequired());
             parameter.setReadOnly(paramHolder.isReadOnly());
 
-            if (actionHolder.isGet()) {
-                parameter.setIn(ApiEnum.PARAM_TYPE_QUERY);
-            } else {
-                if (Utils.isEmpty(parameter.getIn())) {
-                    parameter.setIn(paramHolder.paramType());
-                }
+            if (Utils.isEmpty(parameter.getIn())) {
+                parameter.setIn(paramHolder.paramType());
             }
 
             paramList.add(parameter);

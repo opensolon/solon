@@ -2,6 +2,9 @@ package org.noear.solon.docs.openapi2;
 
 import io.swagger.annotations.ApiImplicitParam;
 import org.noear.solon.Utils;
+import org.noear.solon.annotation.Cookie;
+import org.noear.solon.annotation.Header;
+import org.noear.solon.annotation.Path;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.SessionState;
 import org.noear.solon.core.handle.UploadedFile;
@@ -130,6 +133,46 @@ public class ParamHolder {
 
         if (anno != null) {
             return anno.required();
+        }
+
+        return false;
+    }
+
+    public boolean isRequiredBody(){
+        if (param != null) {
+            if (param.requireBody()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public boolean isRequiredHeader(){
+        if (param != null) {
+            if (param.getParameter().isAnnotationPresent(Header.class)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public boolean isRequiredCookie(){
+        if (param != null) {
+            if (param.getParameter().isAnnotationPresent(Cookie.class)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public boolean isRequiredPath(){
+        if (param != null) {
+            if (param.getParameter().isAnnotationPresent(Path.class)) {
+                return true;
+            }
         }
 
         return false;

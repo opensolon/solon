@@ -28,8 +28,6 @@ public class Swagger2Controller {
     @Inject
     AopContext aopContext;
 
-    Map<String, String> swaggerCached = new LinkedHashMap<>();
-
     /**
      * swagger 获取分组信息
      */
@@ -64,17 +62,11 @@ public class Swagger2Controller {
             docket.globalResponseCodes().put(200, "");
         }
 
-        String swaggerJson = swaggerCached.get(group);
-        if (Utils.isEmpty(swaggerJson)) {
-            ObjectMapper mapper = new ObjectMapper();
-            mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
 
-            Swagger swagger = new Swagger2Builder(docket).build();
-            swaggerJson = mapper.writeValueAsString(swagger);
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
 
-            swaggerCached.put(group, swaggerJson);
-        }
-
-        return swaggerJson;
+        Swagger swagger = new Swagger2Builder(docket).build();
+        return mapper.writeValueAsString(swagger);
     }
 }
