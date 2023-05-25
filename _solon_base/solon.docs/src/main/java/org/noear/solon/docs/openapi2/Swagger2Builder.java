@@ -16,17 +16,16 @@ import io.swagger.solon.annotation.ApiResProperty;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.Get;
-import org.noear.solon.annotation.Mapping;
 import org.noear.solon.core.handle.Action;
 import org.noear.solon.core.handle.Endpoint;
 import org.noear.solon.core.handle.Handler;
-import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.route.Routing;
 import org.noear.solon.core.util.GenericUtil;
 import org.noear.solon.core.util.PathUtil;
 
 import org.noear.solon.docs.ApiEnum;
 import org.noear.solon.docs.DocDocket;
+import org.noear.solon.docs.exception.DocException;
 
 import java.lang.reflect.*;
 import java.text.Collator;
@@ -39,14 +38,13 @@ import java.util.*;
  * @since 2.3
  */
 public class Swagger2Builder {
+    private final Swagger swagger = new Swagger();
     private final DocDocket docket;
 
     /**
      * 公共返回模型
      */
     private ModelImpl globalResultModel;
-
-    Swagger swagger = new Swagger();
 
     public Swagger2Builder(DocDocket docket) {
         this.docket = docket;
@@ -71,7 +69,7 @@ public class Swagger2Builder {
                 .license(docket.info().license())
                 .contact(docket.info().contact()));
 
-        swagger.host(this.getHost(docket));
+        swagger.host(BuilderHelper.getHost(docket));
         swagger.basePath(docket.basePath());
         swagger.schemes(docket.schemes());
         swagger.externalDocs(docket.externalDocs());
@@ -182,7 +180,7 @@ public class Swagger2Builder {
             return;
         }
 
-        String controllerKey = getControllerKey(clazz);
+        String controllerKey = BuilderHelper.getControllerKey(clazz);
 
         for (String tags : api.tags()) {
             Tag tag = new Tag();
@@ -209,7 +207,7 @@ public class Swagger2Builder {
                 return;
             }
 
-            String controllerKey = this.getControllerKey(actionHolder.controllerClz());
+            String controllerKey = BuilderHelper.getControllerKey(actionHolder.controllerClz());
             String actionName = actionHolder.action().name();//action.getMethodName();
             Method actionMethod = actionHolder.action().method().getMethod();
 
@@ -235,7 +233,7 @@ public class Swagger2Builder {
             }
 
 
-            String operationMethod = getHttpMethod(actionHolder, apiAction);
+            String operationMethod = BuilderHelper.getHttpMethod(actionHolder, apiAction);
 
 
             operation.setParameters(this.parseActionParameters(actionMethod));
@@ -381,11 +379,16 @@ public class Swagger2Builder {
         // 2.9.1 实验性质 自定义返回值
         Class<?> apiResClz = method.getReturnType();
         if (apiResClz != Void.class) {
-            //if (apiResClz.isAnnotationPresent(ApiModel.class)) {
-                ModelImpl commonResKv = (ModelImpl) this.parseSwaggerModel(apiResClz, method.getGenericReturnType());
-                swaggerModelName = commonResKv.getName();
-                return swaggerModelName;
-            //}
+            if (BuilderHelper.isModel(apiResClz)) {
+                try {
+                    ModelImpl commonResKv = (ModelImpl) this.parseSwaggerModel(apiResClz, method.getGenericReturnType());
+                    swaggerModelName = commonResKv.getName();
+                    return swaggerModelName;
+                }catch (Exception e) {
+                    String hint = method.getDeclaringClass().getName() + ":" + method.getName() + "->" + apiResClz.getSimpleName();
+                    throw new DocException("Response model parsing failure: " + hint, e);
+                }
+            }
         }
 
 
@@ -438,28 +441,7 @@ public class Swagger2Builder {
      * 将class解析为swagger model
      */
     private Model parseSwaggerModel(Class<?> clazz, Type type) {
-        String modelName = clazz.getSimpleName();
-
-        if(type instanceof ParameterizedType) {
-            //支持泛型
-            Map<String, Type> typeMap = GenericUtil.getGenericInfo(type);
-
-            if (typeMap.size() > 0) {
-                StringBuilder buf = new StringBuilder();
-                typeMap.forEach((k, v) -> {
-                    if (v instanceof Class<?>) {
-                        buf.append(((Class<?>) v).getSimpleName()).append(",");
-                    }
-                });
-
-                if (buf.length() > 0) {
-                    buf.setLength(buf.length() - 1);
-
-                    modelName = modelName + "«" + buf + "»";
-                }
-            }
-        }
-
+        String modelName = BuilderHelper.getModelName(clazz,type);
 
         // 已存在,不重复解析
         if (swagger.getDefinitions() != null) {
@@ -489,36 +471,6 @@ public class Swagger2Builder {
 
             ApiModelProperty apiField = field.getAnnotation(ApiModelProperty.class);
 
-
-            // List<Class> 类型
-            if (field.getType() == List.class) {
-                // 如果是List类型，得到其Generic的类型
-                Type genericType = field.getGenericType();
-                if (genericType == null) {
-                    continue;
-                }
-
-                // 如果是泛型参数的类型
-                if (genericType instanceof ParameterizedType) {
-                    ParameterizedType pt = (ParameterizedType) genericType;
-                    //得到泛型里的class类型对象
-                    Class<?> genericClazz = (Class<?>) pt.getActualTypeArguments()[0];
-
-                    ModelImpl swaggerModel = (ModelImpl) this.parseSwaggerModel(genericClazz, genericClazz);
-
-
-                    ObjectProperty fieldKv = new ObjectProperty();
-                    fieldKv.setName(swaggerModel.getName());
-                    if(apiField != null){
-                        fieldKv.setDescription(apiField.value());
-                    }
-                    fieldKv.setType(ApiEnum.RES_OBJECT);
-
-                    fieldList.put(field.getName(), fieldKv);
-                }
-                continue;
-            }
-
             Class<?> typeClazz = field.getType();
             Type typeGenericType = field.getGenericType();
             if(typeGenericType instanceof TypeVariable) {
@@ -528,31 +480,75 @@ public class Swagger2Builder {
                     if (typeClazz2 instanceof Class) {
                         typeClazz = (Class<?>) typeClazz2;
                     }
+
+                    if(typeClazz2 instanceof ParameterizedType){
+                        ParameterizedType typeGenericType2 = (ParameterizedType)typeClazz2;
+                        typeClazz = (Class<?>) typeGenericType2.getRawType();
+                        typeGenericType = typeClazz2;
+                    }
                 }
             }
 
-            if (typeClazz.isAnnotationPresent(ApiModel.class)) {
+            // List<Class> 类型
+            if (Collection.class.isAssignableFrom(typeClazz)) {
+                // 如果是List类型，得到其Generic的类型
+                if (typeGenericType == null) {
+                    continue;
+                }
+
+                // 如果是泛型参数的类型
+                if (typeGenericType instanceof ParameterizedType) {
+                    ArrayProperty fieldPr = new ArrayProperty();
+                    if (apiField != null) {
+                        fieldPr.setDescription(apiField.value());
+                    }
+
+
+                    ParameterizedType pt = (ParameterizedType) typeGenericType;
+                    //得到泛型里的class类型对象
+                    Type itemClazz = pt.getActualTypeArguments()[0];
+
+                    if (itemClazz instanceof ParameterizedType) {
+                        itemClazz = ((ParameterizedType) itemClazz).getRawType();
+                    }
+
+                    if (itemClazz instanceof Class) {
+                        ModelImpl swaggerModel = (ModelImpl) this.parseSwaggerModel((Class<?>) itemClazz, itemClazz);
+
+                        RefProperty itemPr = new RefProperty(swaggerModel.getName(), RefFormat.INTERNAL);
+                        fieldPr.setItems(itemPr);
+                    }
+
+
+                    fieldList.put(field.getName(), fieldPr);
+                }
+                continue;
+            }
+
+
+
+            if (BuilderHelper.isModel(typeClazz)) {
                 ModelImpl swaggerModel = (ModelImpl) this.parseSwaggerModel(typeClazz, typeClazz);
 
-                RefProperty fieldKv = new RefProperty(swaggerModel.getName(), RefFormat.INTERNAL);
+                RefProperty fieldPr = new RefProperty(swaggerModel.getName(), RefFormat.INTERNAL);
                 if(apiField != null){
-                    fieldKv.setDescription(apiField.value());
+                    fieldPr.setDescription(apiField.value());
                 }
 
-                fieldList.put(field.getName(), fieldKv);
+                fieldList.put(field.getName(), fieldPr);
             } else {
-                ObjectProperty fieldKv = new ObjectProperty();
-                fieldKv.setName(field.getName());
+                ObjectProperty fieldPr = new ObjectProperty();
+                fieldPr.setName(field.getName());
 
                 if(apiField != null) {
-                    fieldKv.setDescription(apiField.value());
-                    fieldKv.setType(Utils.isBlank(apiField.dataType()) ? field.getType().getSimpleName().toLowerCase() : apiField.dataType());
-                    fieldKv.setExample(apiField.example());
+                    fieldPr.setDescription(apiField.value());
+                    fieldPr.setType(Utils.isBlank(apiField.dataType()) ? typeClazz.getSimpleName().toLowerCase() : apiField.dataType());
+                    fieldPr.setExample(apiField.example());
                 }else{
-                    fieldKv.setType(field.getType().getSimpleName().toLowerCase());
+                    fieldPr.setType(typeClazz.getSimpleName().toLowerCase());
                 }
 
-                fieldList.put(field.getName(), fieldKv);
+                fieldList.put(field.getName(), fieldPr);
             }
         }
 
@@ -588,55 +584,54 @@ public class Swagger2Builder {
                 ModelImpl swaggerModel = (ModelImpl) this.parseSwaggerModel(apiResponse.dataTypeClass(), apiResponse.dataTypeClass());
 
                 if (apiResponse.allowMultiple()) {
-                    ArrayProperty fieldKv = new ArrayProperty();
-                    fieldKv.setName(swaggerModel.getName());
-                    fieldKv.setDescription(apiResponse.value());
-                    fieldKv.items(new RefProperty(swaggerModel.getName()));
+                    ArrayProperty fieldPr = new ArrayProperty();
+                    fieldPr.setName(swaggerModel.getName());
+                    fieldPr.setDescription(apiResponse.value());
+                    fieldPr.items(new RefProperty(swaggerModel.getName(), RefFormat.INTERNAL));
 
-                    propertiesList.put(apiResponse.name(), fieldKv);
+                    propertiesList.put(apiResponse.name(), fieldPr);
                 } else {
-                    ObjectProperty fieldKv = new ObjectProperty();
-                    fieldKv.setName(swaggerModel.getName());
-                    fieldKv.setDescription(apiResponse.value());
+                    RefProperty fieldPr = new RefProperty(swaggerModel.getName(), RefFormat.INTERNAL);
+                    fieldPr.setDescription(apiResponse.value());
 
-                    propertiesList.put(apiResponse.name(), fieldKv);
+                    propertiesList.put(apiResponse.name(), fieldPr);
                 }
 
-                //fieldKv.set("key", apiResponse.name());
-                //fieldKv.set("name", swaggerModel.getStr("name"));
-                //fieldKv.set("description", apiResponse.value());
-                //fieldKv.set("type", ApiEnum.RES_OBJECT);
-                //fieldKv.set("allowMultiple", apiResponse.allowMultiple());
+                //fieldPr.set("key", apiResponse.name());
+                //fieldPr.set("name", swaggerModel.getStr("name"));
+                //fieldPr.set("description", apiResponse.value());
+                //fieldPr.set("type", ApiEnum.RES_OBJECT);
+                //fieldPr.set("allowMultiple", apiResponse.allowMultiple());
 
 
             } else {
                 if (apiResponse.allowMultiple()) {
-                    ArrayProperty fieldKv = new ArrayProperty();
+                    ArrayProperty fieldPr = new ArrayProperty();
 
-                    fieldKv.setName(apiResponse.name());
-                    fieldKv.setDescription(apiResponse.value());
-                    fieldKv.setFormat(Utils.isBlank(apiResponse.format()) ? ApiEnum.FORMAT_STRING : apiResponse.format());
-                    fieldKv.setExample(apiResponse.example());
+                    fieldPr.setName(apiResponse.name());
+                    fieldPr.setDescription(apiResponse.value());
+                    fieldPr.setFormat(Utils.isBlank(apiResponse.format()) ? ApiEnum.FORMAT_STRING : apiResponse.format());
+                    fieldPr.setExample(apiResponse.example());
 
                     UntypedProperty itemsProperty = new UntypedProperty();
                     itemsProperty.setType(Utils.isBlank(apiResponse.dataType()) ? ApiEnum.RES_STRING : apiResponse.dataType());
-                    fieldKv.items(itemsProperty);
+                    fieldPr.items(itemsProperty);
 
-                    propertiesList.put(apiResponse.name(), fieldKv);
+                    propertiesList.put(apiResponse.name(), fieldPr);
                 } else {
-                    UntypedProperty fieldKv = new UntypedProperty();
+                    UntypedProperty fieldPr = new UntypedProperty();
 
-                    fieldKv.setName(apiResponse.name());
-                    fieldKv.setDescription(apiResponse.value());
-                    fieldKv.setType(Utils.isBlank(apiResponse.dataType()) ? ApiEnum.RES_STRING : apiResponse.dataType());
-                    fieldKv.setFormat(Utils.isBlank(apiResponse.format()) ? ApiEnum.FORMAT_STRING : apiResponse.format());
-                    fieldKv.setExample(apiResponse.example());
+                    fieldPr.setName(apiResponse.name());
+                    fieldPr.setDescription(apiResponse.value());
+                    fieldPr.setType(Utils.isBlank(apiResponse.dataType()) ? ApiEnum.RES_STRING : apiResponse.dataType());
+                    fieldPr.setFormat(Utils.isBlank(apiResponse.format()) ? ApiEnum.FORMAT_STRING : apiResponse.format());
+                    fieldPr.setExample(apiResponse.example());
 
-                    propertiesList.put(apiResponse.name(), fieldKv);
+                    propertiesList.put(apiResponse.name(), fieldPr);
                 }
 
-                //fieldKv.set("exampleEnum", apiResponse.exampleEnum());
-                //fieldKv.set("allowMultiple", apiResponse.allowMultiple());
+                //fieldPr.set("exampleEnum", apiResponse.exampleEnum());
+                //fieldPr.set("allowMultiple", apiResponse.allowMultiple());
 
 
             }
@@ -651,6 +646,8 @@ public class Swagger2Builder {
         return model;
     }
 
+
+
     /**
      * 解析对象参数
      */
@@ -661,55 +658,5 @@ public class Swagger2Builder {
             return swaggerModel.getName();
         }
         return null;
-    }
-
-    public String getHttpMethod(ActionHolder actionHolder, ApiOperation apiAction) {
-        if (Utils.isBlank(apiAction.httpMethod())) {
-            MethodType methodType = actionHolder.routing().method();
-
-            if (methodType == null) {
-                return ApiEnum.METHOD_GET;
-            } else {
-                if (methodType.ordinal() < MethodType.UNKNOWN.ordinal()) {
-                    return methodType.name.toLowerCase();
-                } else {
-                    return ApiEnum.METHOD_GET;
-                }
-            }
-        } else {
-            return apiAction.httpMethod();
-        }
-    }
-
-    /**
-     * 获取host配置
-     */
-    private String getHost(DocDocket swaggerDock) {
-        String host = swaggerDock.host();
-        if (Utils.isBlank(host)) {
-            host = "localhost";
-            if (Solon.cfg().serverPort() != 80) {
-                host += ":" + Solon.cfg().serverPort();
-            }
-        }
-
-        return host;
-    }
-
-    /**
-     * 避免ControllerKey 设置前缀后,与swagger basePath 设置导致前端生成2次
-     */
-    private String getControllerKey(Class<?> controllerClz) {
-        Mapping mapping = controllerClz.getAnnotation(Mapping.class);
-        if (mapping == null) {
-            return "";
-        }
-
-        String path = Utils.annoAlias(mapping.value(), mapping.path());
-        if (path.startsWith("/")) {
-            return path.substring(1);
-        } else {
-            return path;
-        }
     }
 }
