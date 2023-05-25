@@ -97,8 +97,10 @@ public class DocDocket {
     }
 
     public DocDocket basicAuth(BasicAuth basicAuth) {
-        if (basicAuth != null && Utils.isNotEmpty(basicAuth.getUsername())) {
-            this.basicAuth.put(basicAuth.getUsername(), basicAuth.getPassword());
+        if (basicAuth != null) {
+            if (basicAuth.isEnable() && Utils.isNotEmpty(basicAuth.getUsername())) {
+                this.basicAuth.put(basicAuth.getUsername(), basicAuth.getPassword());
+            }
         }
         return this;
     }

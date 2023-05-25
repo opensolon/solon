@@ -5,6 +5,7 @@ package org.noear.solon.docs;
  * @since 2.3
  */
 public interface BasicAuth {
+    boolean isEnable();
     String getUsername();
     String getPassword();
 }

@@ -7,7 +7,7 @@ import org.noear.solon.docs.BasicAuth;
  * @since 2.3
  */
 public class OpenApiBasicAuth implements BasicAuth {
-    boolean enable = false;
+    boolean enable = true;
     String username;
     String password;
 
