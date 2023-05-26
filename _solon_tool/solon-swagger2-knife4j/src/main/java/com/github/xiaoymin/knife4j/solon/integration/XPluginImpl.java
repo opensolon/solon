@@ -15,15 +15,13 @@ import org.noear.solon.web.staticfiles.repository.ClassPathStaticRepository;
 public class XPluginImpl implements Plugin {
     @Override
     public void start(AopContext context) throws Throwable {
-        if (Solon.app().enableDoc() == false) {
-            return;
-        }
-
         BeanWrap beanWrap = context.beanMake(OpenApiExtensionResolver.class);
         OpenApiExtensionResolver openApiExtensionResolver = beanWrap.raw();
 
         if (openApiExtensionResolver.getSetting().isEnable()) {
             StaticMappings.add("/", new ClassPathStaticRepository("META-INF/resources"));
+        } else {
+            Solon.app().enableDoc(false);
         }
     }
 }
