@@ -28,7 +28,6 @@
         <module>__release/solon-base-extend-bundle</module>
         <module>__release/solon-base-render-bundle</module>
 
-
         <module>__release/solon-plugin-bundle</module>
         <module>__release/solon-plugin-bundle2</module>
         <module>__release/solon-plugin-data-bundle</module>
