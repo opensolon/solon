@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.noear</groupId>
+        <artifactId>solon-parent</artifactId>
+        <version>2.3.1-SNAPSHOT</version>
+        <relativePath>../../solon-parent/pom.xml</relativePath>
+    </parent>
+
+    <groupId>org.noear.bundle</groupId>
+    <artifactId>solon-shortcuts-bundle</artifactId>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>../../solon-shortcuts/solon-beetl-web</module>
+        <module>../../solon-shortcuts/solon-enjoy-web</module>
+
+        <module>../../solon-shortcuts/solon-lib</module>
+        <module>../../solon-shortcuts/solon-job</module>
+        <module>../../solon-shortcuts/solon-api</module>
+
+        <module>../../solon-shortcuts/solon-web</module>
+        <module>../../solon-shortcuts/solon-web-beetl</module>
+        <module>../../solon-shortcuts/solon-web-enjoy</module>
+
+        <module>../../solon-shortcuts/solon-rpc</module>
+        <module>../../solon-shortcuts/solon-cloud</module>
+        <module>../../solon-shortcuts/solon-cloud-alibaba</module>
+        <module>../../solon-shortcuts/solon-cloud-water</module>
+
+    </modules>
+</project>

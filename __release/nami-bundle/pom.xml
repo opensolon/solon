@@ -16,32 +16,32 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>../../_nami/nami</module>
+        <module>../../solon-projects/nami/nami</module>
 
-        <module>../../_nami/nami.channel.http.okhttp</module>
-        <module>../../_nami/nami.channel.http.hutool</module>
+        <module>../../solon-projects/nami/nami.channel.http.okhttp</module>
+        <module>../../solon-projects/nami/nami.channel.http.hutool</module>
 
-        <module>../../_nami/nami.channel.socketd</module>
-        <module>../../_nami/nami.channel.socketd.jdksocket</module>
-        <module>../../_nami/nami.channel.socketd.netty</module>
-        <module>../../_nami/nami.channel.socketd.rsocket</module>
-        <module>../../_nami/nami.channel.socketd.smartsocket</module>
-        <module>../../_nami/nami.channel.socketd.websocket</module>
+        <module>../../solon-projects/nami/nami.channel.socketd</module>
+        <module>../../solon-projects/nami/nami.channel.socketd.jdksocket</module>
+        <module>../../solon-projects/nami/nami.channel.socketd.netty</module>
+        <module>../../solon-projects/nami/nami.channel.socketd.rsocket</module>
+        <module>../../solon-projects/nami/nami.channel.socketd.smartsocket</module>
+        <module>../../solon-projects/nami/nami.channel.socketd.websocket</module>
 
-        <module>../../_nami/nami.coder.snack3</module>
-        <module>../../_nami/nami.coder.fastjson</module>
-        <module>../../_nami/nami.coder.fastjson2</module>
-        <module>../../_nami/nami.coder.jackson</module>
-        <module>../../_nami/nami.coder.hessian</module>
-        <module>../../_nami/nami.coder.protostuff</module>
+        <module>../../solon-projects/nami/nami.coder.snack3</module>
+        <module>../../solon-projects/nami/nami.coder.fastjson</module>
+        <module>../../solon-projects/nami/nami.coder.fastjson2</module>
+        <module>../../solon-projects/nami/nami.coder.jackson</module>
+        <module>../../solon-projects/nami/nami.coder.hessian</module>
+        <module>../../solon-projects/nami/nami.coder.protostuff</module>
 
 
-        <module>../../_solon_extend/solon.socketd</module>
+        <module>../../solon-projects/solon-base-extend/solon.socketd</module>
 
-        <module>../../_solon_extend/solon.socketd.client.jdksocket</module>
-        <module>../../_solon_extend/solon.socketd.client.netty</module>
-        <module>../../_solon_extend/solon.socketd.client.rsocket</module>
-        <module>../../_solon_extend/solon.socketd.client.smartsocket</module>
-        <module>../../_solon_extend/solon.socketd.client.websocket</module>
+        <module>../../solon-projects/solon-base-extend/solon.socketd.client.jdksocket</module>
+        <module>../../solon-projects/solon-base-extend/solon.socketd.client.netty</module>
+        <module>../../solon-projects/solon-base-extend/solon.socketd.client.rsocket</module>
+        <module>../../solon-projects/solon-base-extend/solon.socketd.client.smartsocket</module>
+        <module>../../solon-projects/solon-base-extend/solon.socketd.client.websocket</module>
     </modules>
 </project>

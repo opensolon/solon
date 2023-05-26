@@ -16,58 +16,58 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>../../_solon_plugin_cloud/local-solon-cloud-plugin</module>
+        <module>../../solon-projects/solon-plugin-cloud/local-solon-cloud-plugin</module>
 
-        <module>../../_solon_plugin_cloud/water-solon-cloud-plugin</module>
-        <module>../../_solon_plugin_cloud/consul-solon-cloud-plugin</module>
-        <module>../../_solon_plugin_cloud/nacos2-solon-cloud-plugin</module>
-        <module>../../_solon_plugin_cloud/nacos-solon-cloud-plugin</module>
-        <module>../../_solon_plugin_cloud/zookeeper-solon-cloud-plugin</module>
-        <module>../../_solon_plugin_cloud/etcd-solon-cloud-plugin</module>
+        <module>../../solon-projects/solon-plugin-cloud/water-solon-cloud-plugin</module>
+        <module>../../solon-projects/solon-plugin-cloud/consul-solon-cloud-plugin</module>
+        <module>../../solon-projects/solon-plugin-cloud/nacos2-solon-cloud-plugin</module>
+        <module>../../solon-projects/solon-plugin-cloud/nacos-solon-cloud-plugin</module>
+        <module>../../solon-projects/solon-plugin-cloud/zookeeper-solon-cloud-plugin</module>
+        <module>../../solon-projects/solon-plugin-cloud/etcd-solon-cloud-plugin</module>
 
-        <module>../../_solon_plugin_cloud/aliyun-oss-solon-cloud-plugin</module>
-        <module>../../_solon_plugin_cloud/aws-s3-solon-cloud-plugin</module>
+        <module>../../solon-projects/solon-plugin-cloud/aliyun-oss-solon-cloud-plugin</module>
+        <module>../../solon-projects/solon-plugin-cloud/aws-s3-solon-cloud-plugin</module>
 
-        <module>../../_solon_plugin_cloud/qiniu-kodo-solon-cloud-plugin</module>
-        <module>../../_solon_plugin_cloud/minio-solon-cloud-plugin</module>
-        <module>../../_solon_plugin_cloud/minio7-solon-cloud-plugin</module>
+        <module>../../solon-projects/solon-plugin-cloud/qiniu-kodo-solon-cloud-plugin</module>
+        <module>../../solon-projects/solon-plugin-cloud/minio-solon-cloud-plugin</module>
+        <module>../../solon-projects/solon-plugin-cloud/minio7-solon-cloud-plugin</module>
 
-        <module>../../_solon_plugin_cloud/rabbitmq-solon-cloud-plugin</module>
-        <module>../../_solon_plugin_cloud/rocketmq-solon-cloud-plugin</module>
-        <module>../../_solon_plugin_cloud/rocketmq5-solon-cloud-plugin</module>
-        <module>../../_solon_plugin_cloud/mqtt-solon-cloud-plugin</module>
-        <module>../../_solon_plugin_cloud/kafka-solon-cloud-plugin</module>
-        <module>../../_solon_plugin_cloud/aliyun-ons-solon-cloud-plugin</module>
-        <module>../../_solon_plugin_cloud/activemq-solon-cloud-plugin</module>
-
-
-        <module>../../_solon_plugin_cloud/guava-solon-cloud-plugin</module>
-        <module>../../_solon_plugin_cloud/sentinel-solon-cloud-plugin</module>
-        <module>../../_solon_plugin_cloud/semaphore-solon-cloud-plugin</module>
-
-        <module>../../_solon_plugin_cloud/snowflake-id-solon-cloud-plugin</module>
+        <module>../../solon-projects/solon-plugin-cloud/rabbitmq-solon-cloud-plugin</module>
+        <module>../../solon-projects/solon-plugin-cloud/rocketmq-solon-cloud-plugin</module>
+        <module>../../solon-projects/solon-plugin-cloud/rocketmq5-solon-cloud-plugin</module>
+        <module>../../solon-projects/solon-plugin-cloud/mqtt-solon-cloud-plugin</module>
+        <module>../../solon-projects/solon-plugin-cloud/kafka-solon-cloud-plugin</module>
+        <module>../../solon-projects/solon-plugin-cloud/aliyun-ons-solon-cloud-plugin</module>
+        <module>../../solon-projects/solon-plugin-cloud/activemq-solon-cloud-plugin</module>
 
 
-        <module>../../_solon_plugin_cloud/xxl-job-solon-cloud-plugin</module>
-        <module>../../_solon_plugin_cloud/quartz-solon-cloud-plugin</module>
-        <module>../../_solon_plugin_cloud/powerjob-solon-cloud-plugin</module>
+        <module>../../solon-projects/solon-plugin-cloud/guava-solon-cloud-plugin</module>
+        <module>../../solon-projects/solon-plugin-cloud/sentinel-solon-cloud-plugin</module>
+        <module>../../solon-projects/solon-plugin-cloud/semaphore-solon-cloud-plugin</module>
 
-        <module>../../_solon_plugin_cloud/opentracing-solon-cloud-plugin</module>
-        <module>../../_solon_plugin_cloud/jaeger-solon-cloud-plugin</module>
-        <module>../../_solon_plugin_cloud/zipkin-solon-cloud-plugin</module>
+        <module>../../solon-projects/solon-plugin-cloud/snowflake-id-solon-cloud-plugin</module>
 
-        <module>../../_solon_plugin_cloud/grpc-solon-cloud-plugin</module>
-        <module>../../_solon_plugin_cloud/thrift-solon-cloud-plugin</module>
 
-        <module>../../_solon_plugin_cloud/pulsar-solon-cloud-plugin</module>
+        <module>../../solon-projects/solon-plugin-cloud/xxl-job-solon-cloud-plugin</module>
+        <module>../../solon-projects/solon-plugin-cloud/quartz-solon-cloud-plugin</module>
+        <module>../../solon-projects/solon-plugin-cloud/powerjob-solon-cloud-plugin</module>
 
-        <module>../../_solon_plugin_cloud/kubernetes-solon-cloud-plugin</module>
-        <module>../../_solon_plugin_cloud/jmdns-solon-cloud-plugin</module>
-        <module>../../_solon_plugin_cloud/jedis-solon-cloud-plugin</module>
+        <module>../../solon-projects/solon-plugin-cloud/opentracing-solon-cloud-plugin</module>
+        <module>../../solon-projects/solon-plugin-cloud/jaeger-solon-cloud-plugin</module>
+        <module>../../solon-projects/solon-plugin-cloud/zipkin-solon-cloud-plugin</module>
 
-        <module>../../_solon_plugin_cloud/fastdfs-solon-cloud-plugin</module>
+        <module>../../solon-projects/solon-plugin-cloud/grpc-solon-cloud-plugin</module>
+        <module>../../solon-projects/solon-plugin-cloud/thrift-solon-cloud-plugin</module>
 
-        <module>../../_solon_plugin_cloud/file-s3-solon-cloud-plugin</module>
-        <module>../../_solon_plugin_cloud/polaris-solon-cloud-plugin</module>
+        <module>../../solon-projects/solon-plugin-cloud/pulsar-solon-cloud-plugin</module>
+
+        <module>../../solon-projects/solon-plugin-cloud/kubernetes-solon-cloud-plugin</module>
+        <module>../../solon-projects/solon-plugin-cloud/jmdns-solon-cloud-plugin</module>
+        <module>../../solon-projects/solon-plugin-cloud/jedis-solon-cloud-plugin</module>
+
+        <module>../../solon-projects/solon-plugin-cloud/fastdfs-solon-cloud-plugin</module>
+
+        <module>../../solon-projects/solon-plugin-cloud/file-s3-solon-cloud-plugin</module>
+        <module>../../solon-projects/solon-plugin-cloud/polaris-solon-cloud-plugin</module>
     </modules>
 </project>

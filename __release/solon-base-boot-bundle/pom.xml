@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.noear</groupId>
+        <artifactId>solon-parent</artifactId>
+        <version>2.3.1-SNAPSHOT</version>
+        <relativePath>../../solon-parent/pom.xml</relativePath>
+    </parent>
+
+    <groupId>org.noear.bundle</groupId>
+    <artifactId>solon-base-boot-bundle</artifactId>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>../../solon-projects/solon-base-boot/solon.boot</module>
+        <module>../../solon-projects/solon-base-boot/solon.boot.jdkhttp</module>
+        <module>../../solon-projects/solon-base-boot/solon.boot.jlhttp</module>
+        <module>../../solon-projects/solon-base-boot/solon.boot.smarthttp</module>
+        <module>../../solon-projects/solon-base-boot/solon.boot.jetty</module>
+        <module>../../solon-projects/solon-base-boot/solon.boot.undertow</module>
+        <module>../../solon-projects/solon-base-boot/solon.boot.tomcat</module>
+        <module>../../solon-projects/solon-base-boot/solon.boot.tiohttp</module>
+
+        <module>../../solon-projects/solon-base-boot/solon.boot.websocket</module>
+
+
+        <module>../../solon-projects/solon-base-boot/solon.boot.jetty.add.jsp</module>
+        <module>../../solon-projects/solon-base-boot/solon.boot.jetty.add.websocket</module>
+        <module>../../solon-projects/solon-base-boot/solon.boot.undertow.add.jsp</module>
+        <module>../../solon-projects/solon-base-boot/solon.boot.tomcat.add.jsp</module>
+
+
+        <module>../../solon-projects/solon-base-boot/solon.boot.socketd.jdksocket</module>
+        <module>../../solon-projects/solon-base-boot/solon.boot.socketd.netty</module>
+        <module>../../solon-projects/solon-base-boot/solon.boot.socketd.smartsocket</module>
+        <module>../../solon-projects/solon-base-boot/solon.boot.socketd.rsocket</module>
+        <module>../../solon-projects/solon-base-boot/solon.boot.socketd.websocket</module>
+    </modules>
+</project>
