@@ -7,7 +7,7 @@
         <groupId>org.noear</groupId>
         <artifactId>solon-parent</artifactId>
         <version>2.2.16</version>
-        <relativePath>../../solon-parent/pom.xml</relativePath>
+        <relativePath>../../../solon-parent/pom.xml</relativePath>
     </parent>
 
     <groupId>org.noear.solon.admin.client</groupId>
