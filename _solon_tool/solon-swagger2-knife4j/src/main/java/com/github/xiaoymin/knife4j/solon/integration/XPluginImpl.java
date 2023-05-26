@@ -19,6 +19,7 @@ public class XPluginImpl implements Plugin {
         OpenApiExtensionResolver openApiExtensionResolver = beanWrap.raw();
 
         if (openApiExtensionResolver.getSetting().isEnable()) {
+            Solon.app().enableDoc(true);
             StaticMappings.add("/", new ClassPathStaticRepository("META-INF/resources"));
         } else {
             Solon.app().enableDoc(false);
