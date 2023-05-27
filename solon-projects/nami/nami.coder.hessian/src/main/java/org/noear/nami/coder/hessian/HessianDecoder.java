@@ -1,6 +1,6 @@
 package org.noear.nami.coder.hessian;
 
-import com.caucho.hessian.io.Hessian2Input;
+import com.alibaba.com.caucho.hessian.io.Hessian2Input;
 import org.noear.nami.Decoder;
 import org.noear.nami.Context;
 import org.noear.nami.Result;

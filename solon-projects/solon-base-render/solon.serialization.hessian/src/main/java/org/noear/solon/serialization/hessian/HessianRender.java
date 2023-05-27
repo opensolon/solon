@@ -1,6 +1,6 @@
 package org.noear.solon.serialization.hessian;
 
-import com.caucho.hessian.io.Hessian2Output;
+import com.alibaba.com.caucho.hessian.io.Hessian2Output;
 import org.noear.solon.core.handle.ModelAndView;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Render;

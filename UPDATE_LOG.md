@@ -16,6 +16,8 @@
 * bean-searcher 升为 4.2.0
 * mybatis-flex 升为 1.3.1
 * sqltoy 升为 5.2.51
+* redisson 升为 3.19.3
+* netty 升为 4.1.75.Final
 
 ### 2.3.0
 * 新增 solon.docs 插件!!!

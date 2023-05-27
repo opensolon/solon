@@ -25,6 +25,16 @@
             <groupId>com.github.fangjinuo.sqlhelper</groupId>
             <artifactId>sqlhelper-mybatis</artifactId>
             <version>3.6.9</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-autoconfigure</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>

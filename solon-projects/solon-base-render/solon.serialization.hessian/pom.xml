@@ -23,9 +23,9 @@
         </dependency>
 
         <dependency>
-            <groupId>com.alipay.sofa</groupId>
-            <artifactId>hessian</artifactId>
-            <version>${hessian-sofa.version}</version>
+            <groupId>com.alibaba</groupId>
+            <artifactId>hessian-lite</artifactId>
+            <version>${hessian-lite.version}</version>
         </dependency>
     </dependencies>
 
