@@ -1,6 +1,9 @@
 package org.noear.solon.config.yaml;
 
+import org.yaml.snakeyaml.DumperOptions;
+import org.yaml.snakeyaml.LoaderOptions;
 import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.constructor.Constructor;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -10,8 +13,12 @@ import java.util.Map;
 import java.util.Properties;
 
 public class PropertiesYaml extends Properties {
+    private Yaml createYaml() {
+        return new Yaml(new SolonYamlConstructor());
+    }
+
     public synchronized void loadYml(InputStream inputStream) {
-        Yaml yaml = new Yaml();
+        Yaml yaml = createYaml();
 
         Object tmp = yaml.load(inputStream);
 
@@ -20,7 +27,7 @@ public class PropertiesYaml extends Properties {
     }
 
     public synchronized void loadYml(Reader reader) throws IOException {
-        Yaml yaml = new Yaml();
+        Yaml yaml = createYaml();
 
         Object tmp = yaml.load(reader);
 
