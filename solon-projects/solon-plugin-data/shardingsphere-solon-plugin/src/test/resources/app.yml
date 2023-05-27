@@ -1,0 +1,3 @@
+sharding-sphere:
+  config:
+    yml: 'classpath:sharding.yml'
