@@ -13,6 +13,9 @@
 * 新增 solon.web.servlet.jakarta 插件
 * 新增 solon.boot.jetty.jakarta 插件
 * 新增 solon.boot.undertow.jakarta 插件
+* bean-searcher 升为 4.2.0
+* mybatis-flex 升为 1.3.1
+* sqltoy 升为 5.2.51
 
 ### 2.3.0
 * 新增 solon.docs 插件!!!
