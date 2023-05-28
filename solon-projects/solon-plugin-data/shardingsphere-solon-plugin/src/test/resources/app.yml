@@ -33,4 +33,4 @@ sharding.demo2:
         random:
           type: RANDOM
   props:
-    sqlShow: true
+    sql-show: true

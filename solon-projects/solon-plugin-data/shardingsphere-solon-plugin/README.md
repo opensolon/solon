@@ -2,17 +2,48 @@
 配置示例::
 
 ```yaml
-sharding-sphere:
-  config:
-    yml: 'classpath:sharding.yml'
+# 模式一:: 支持：外置sharding.yml的配置
+sharding.demo1:
+  config.yml: "classpath:sharding.yml"
+# 模式二:: 支持：内置sharding.yml的配置
+sharding.demo2:
+  mode:
+    type: Standalone
+    repository:
+      type: JDBC
+  dataSources:
+    ds_1:
+      dataSourceClassName: com.zaxxer.hikari.HikariDataSource
+      driverClassName: com.mysql.jdbc.Driver
+      jdbcUrl: jdbc:mysql://192.168.88.60:3306/xxxxxxx
+      username: root
+      password: xxxxxxx
+    ds_2:
+      dataSourceClassName: com.zaxxer.hikari.HikariDataSource
+      driverClassName: com.mysql.jdbc.Driver
+      jdbcUrl: jdbc:mysql://192.168.88.61:3306/xxxxxxx
+      username: root
+      password: xxxxxxx
+  rules:
+    - !READWRITE_SPLITTING
+      dataSources:
+        readwrite_ds:
+          staticStrategy:
+            writeDataSourceName: ds_1
+            readDataSourceNames:
+              - ds_2
+          loadBalancerName: random
+      loadBalancers:
+        random:
+          type: RANDOM
+  props:
+    sql-show: true
 ```
 
-然后在resources目录下，添加 sharding.yml 文件，内容如下：
-
-其余配置：<a href="https://shardingsphere.apache.org/document/current/cn/user-manual/shardingsphere-jdbc/yaml-config/">官方链接</a>
 
 ```yaml
-# Demo 读写分离配置
+# 模式一:: 在resources目录下，添加 sharding.yml 文件，内容如下：
+# Demo配置
 mode:
   type: Standalone
   repository:
@@ -48,16 +79,29 @@ props:
 注入示例：
 
 ```java
+import org.noear.solon.annotation.Component;
 
-public class DemoController {
-    @Db("shardingDs") //shardingDs datasource
-    SqlSessionFactory factory;
+@Configuration
+public class Config {
+
+    @Bean(name = "shardingDs1")
+    DataSource shardingSphere2(@Inject("${sharding.demo1}") ShardingSphereFactory factory) throws Exception {
+        return factory.createDataSource();
+    }
     
-    @Db("shardingDs") //shardingDs datasource
-    SqlSession session;
+    @Bean(name = "shardingDs2", typed = true)
+    DataSource shardingSphere(@Inject("${sharding.demo2}") ShardingSphereFactory factory) throws Exception {
+        return factory.createDataSource();
+    }
     
-    @Db("shardingDs") //shardingDs datasource
-    UserMapper mapper;
 }
 
+@Component
+public class UserService {
+    @Db("shardingDs1")
+    OrderMapper orderMapper;
+
+    @Db("shardingDs2")
+    UserMapper userMapper;
+}
 ```
