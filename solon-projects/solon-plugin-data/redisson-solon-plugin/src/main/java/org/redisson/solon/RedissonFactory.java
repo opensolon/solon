@@ -2,10 +2,11 @@ package org.redisson.solon;
 
 import org.noear.solon.Utils;
 import org.noear.solon.core.util.ResourceUtil;
+import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
 import org.redisson.config.Config;
 
-import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.Properties;
 
@@ -24,14 +25,25 @@ public class RedissonFactory {
         String fileUri = properties.getProperty("file");
         if (Utils.isNotEmpty(fileUri)) {
             URL url = ResourceUtil.findResource(fileUri);
-            //Config config = new Config(new File(url.getFile()));
+            try {
+                Config config = Config.fromYAML(url);
+                return Redisson.create(config);
+            }catch (IOException ex){
+                throw new IllegalStateException("Invalid redisson configuration",ex);
+            }
         }
 
         String configTxt = properties.getProperty("config");
         if (Utils.isNotEmpty(configTxt)) {
-            //return YamlShardingSphereDataSourceFactory.createDataSource(configTxt.getBytes());
+            try {
+                Config config = Config.fromYAML(configTxt);
+                return Redisson.create(config);
+            }catch (IOException ex){
+                throw new IllegalStateException("Invalid redisson configuration",ex);
+            }
+
         }
 
-        throw new IllegalStateException("Invalid sharding sphere configuration");
+        throw new IllegalStateException("Invalid redisson configuration");
     }
 }
