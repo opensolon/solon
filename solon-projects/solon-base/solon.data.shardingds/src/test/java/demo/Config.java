@@ -1,9 +1,9 @@
 package demo;
 
-import org.apache.shardingsphere.solon.ShardingSphereSupplier;
 import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
+import org.noear.solon.data.shardingds.ShardingDataSource;
 
 import javax.sql.DataSource;
 
@@ -16,12 +16,12 @@ import javax.sql.DataSource;
 @Configuration
 public class Config {
     @Bean(name = "shardingDs1", typed = true)
-    DataSource shardingSphere(@Inject("${sharding.demo1}") ShardingSphereSupplier supplier) throws Exception {
-        return supplier.get();
+    public DataSource shardingSphere(@Inject("${sharding.demo1}") ShardingDataSource ds) throws Exception {
+        return ds;
     }
 
     @Bean(name = "shardingDs2")
-    DataSource shardingSphere2(@Inject("${sharding.demo2}") ShardingSphereSupplier supplier) throws Exception {
-        return supplier.get();
+    public DataSource shardingSphere2(@Inject("${sharding.demo2}") ShardingDataSource ds) throws Exception {
+        return ds;
     }
 }

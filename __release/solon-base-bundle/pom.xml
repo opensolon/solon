@@ -27,6 +27,8 @@
 
         <module>../../solon-projects/solon-base/solon.data</module>
         <module>../../solon-projects/solon-base/solon.data.dynamicds</module>
+        <module>../../solon-projects/solon-base/solon.data.shardingds</module>
+
         <module>../../solon-projects/solon-base/solon.docs</module>
         <module>../../solon-projects/solon-base/solon.auth</module>
         <module>../../solon-projects/solon-base/solon.test</module>

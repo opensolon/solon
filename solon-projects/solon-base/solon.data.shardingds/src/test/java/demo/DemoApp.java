@@ -34,7 +34,7 @@ public class DemoApp {
         connectionWrite.rollback();
 
         System.out.println("------------------ Sharding Ds 2 ------------------");
-        dataSource = Solon.context().getBean("shardingDs2");
+        dataSource = Solon.context().getBean("ds2");
         // 读
         connectionRead = dataSource.getConnection();
         statementRead = connectionRead.createStatement();
