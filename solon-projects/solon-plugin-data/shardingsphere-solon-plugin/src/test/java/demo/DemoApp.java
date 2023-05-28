@@ -1,6 +1,7 @@
 package demo;
 
 import org.apache.shardingsphere.driver.jdbc.core.datasource.ShardingSphereDataSource;
+import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.SolonBuilder;
 
@@ -15,9 +16,9 @@ import java.sql.Statement;
  */
 public class DemoApp {
     public static void main(String[] args) throws SQLException {
-        SolonApp start = new SolonBuilder()
-                .start(DemoApp.class, args);
-        ShardingSphereDataSource shardingSphereDataSource = (ShardingSphereDataSource) start.context().getBean(DataSource.class);
+        Solon.start(DemoApp.class, args);
+
+        ShardingSphereDataSource shardingSphereDataSource = (ShardingSphereDataSource) Solon.context().getBean(DataSource.class);
         // 读
         Connection connectionRead = shardingSphereDataSource.getConnection();
         Statement statementRead = connectionRead.createStatement();

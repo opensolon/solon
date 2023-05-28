@@ -21,6 +21,11 @@
         </dependency>
 
         <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.config.yaml</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>org.apache.shardingsphere</groupId>
             <artifactId>shardingsphere-jdbc-core</artifactId>
             <version>${shardingsphere.version}</version>
@@ -31,7 +36,6 @@
             <artifactId>solon-lib</artifactId>
             <scope>test</scope>
         </dependency>
-
 
         <dependency>
             <groupId>com.zaxxer</groupId>
@@ -51,7 +55,6 @@
             <groupId>org.noear</groupId>
             <artifactId>log4j2-solon-plugin</artifactId>
             <scope>test</scope>
-
         </dependency>
     </dependencies>
 </project>

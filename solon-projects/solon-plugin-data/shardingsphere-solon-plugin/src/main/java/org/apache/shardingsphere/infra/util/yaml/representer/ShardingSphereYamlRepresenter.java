@@ -35,12 +35,14 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 /**
- * ShardingSphere YAML representer.
+ * ShardingSphere YAML representer（由于Yaml版本不同，需要重写ShardingSphereYamlRepresenter的构造方法，否则会报错）
+ *
+ * @author Sorghum
+ * @since 2.3
  */
 public final class ShardingSphereYamlRepresenter extends Representer {
     
     public ShardingSphereYamlRepresenter() {
-        // 由于Yaml版本不同，需要重写ShardingSphereYamlRepresenter的构造方法，否则会报错
         super(new DumperOptions());
         Map<String, Class<?>> yamlShortcuts = new HashMap<>();
         ShardingSphereServiceLoader.getServiceInstances(ShardingSphereYamlShortcuts.class).stream().map(ShardingSphereYamlShortcuts::getYamlShortcuts).forEach(yamlShortcuts::putAll);

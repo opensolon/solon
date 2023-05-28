@@ -28,4 +28,4 @@ rules:
       random:
         type: RANDOM
 props:
-  sql-show: true
+  sqlShow: true
