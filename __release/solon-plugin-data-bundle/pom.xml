@@ -43,5 +43,7 @@
         <module>../../solon-projects/solon-plugin-data/bean-searcher-solon-plugin</module>
 
         <module>../../solon-projects/solon-plugin-data/shardingsphere-solon-plugin</module>
+
+        <module>../../solon-projects/solon-plugin-data/redisson-solon-plugin</module>
     </modules>
 </project>
