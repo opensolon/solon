@@ -61,13 +61,13 @@ transportMode: "NIO"
 public class Config {
     
     @Bean(value = "demo1",typed = true)
-    public RedissonClient demo1(@Inject("${redisson.demo1}") RedissonFactory factory) {
-        return factory.create();
+    public RedissonClient demo1(@Inject("${redisson.demo1}") RedissonSupplier supplier) {
+        return supplier.get();
     }
 
     @Bean(value = "demo2")
-    public RedissonClient demo2(@Inject("${redisson.demo2}") RedissonFactory factory) {
-        return factory.create();
+    public RedissonClient demo2(@Inject("${redisson.demo2}") RedissonSupplier supplier) {
+        return supplier.get();
     }
 }
 
