@@ -12,6 +12,7 @@
 ### 2.3.1
 * 新增 shardingsphere-solon-plugin 插件
 * 新增 redisson-solon-plugin 插件
+* 调整 solon-swagger2-knife4j 插件的优先级，以便控制 enableDoc
 * bean-searcher 升为 4.2.0
 * mybatis-flex 升为 1.3.1
 * sqltoy 升为 5.2.51
