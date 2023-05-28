@@ -23,15 +23,17 @@ public class ShardingSphereFactory {
     }
 
     public DataSource createDataSource() throws IOException, SQLException {
-        String config = properties.getProperty("config.yml");
-
-        if (Utils.isEmpty(config)) {
-            String yamlStr = YamlUtil.toYamlString(properties); //new Yaml(dumperOptions).dump(propertiesAsMap);
-
-            return YamlShardingSphereDataSourceFactory.createDataSource(yamlStr.getBytes());
-        } else {
-            URL url = ResourceUtil.findResource(config);
+        String fileUri = properties.getProperty("file");
+        if (Utils.isNotEmpty(fileUri)) {
+            URL url = ResourceUtil.findResource(fileUri);
             return YamlShardingSphereDataSourceFactory.createDataSource(new File(url.getFile()));
         }
+
+        String configTxt = properties.getProperty("config");
+        if (Utils.isNotEmpty(configTxt)) {
+            return YamlShardingSphereDataSourceFactory.createDataSource(configTxt.getBytes());
+        }
+
+        throw new IllegalStateException("Invalid sharding sphere configuration");
     }
 }

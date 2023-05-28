@@ -4,40 +4,42 @@
 ```yaml
 # 模式一:: 支持：外置sharding.yml的配置
 sharding.demo1:
-  config.yml: "classpath:sharding.yml"
+  file: "classpath:sharding.yml"
+  
 # 模式二:: 支持：内置sharding.yml的配置
 sharding.demo2:
-  mode:
-    type: Standalone
-    repository:
-      type: JDBC
-  dataSources:
-    ds_1:
-      dataSourceClassName: com.zaxxer.hikari.HikariDataSource
-      driverClassName: com.mysql.jdbc.Driver
-      jdbcUrl: jdbc:mysql://192.168.88.60:3306/xxxxxxx
-      username: root
-      password: xxxxxxx
-    ds_2:
-      dataSourceClassName: com.zaxxer.hikari.HikariDataSource
-      driverClassName: com.mysql.jdbc.Driver
-      jdbcUrl: jdbc:mysql://192.168.88.61:3306/xxxxxxx
-      username: root
-      password: xxxxxxx
-  rules:
-    - !READWRITE_SPLITTING
+  config: |
+      mode:
+        type: Standalone
+        repository:
+          type: JDBC
       dataSources:
-        readwrite_ds:
-          staticStrategy:
-            writeDataSourceName: ds_1
-            readDataSourceNames:
-              - ds_2
-          loadBalancerName: random
-      loadBalancers:
-        random:
-          type: RANDOM
-  props:
-    sql-show: true
+        ds_1:
+          dataSourceClassName: com.zaxxer.hikari.HikariDataSource
+          driverClassName: com.mysql.jdbc.Driver
+          jdbcUrl: jdbc:mysql://192.168.88.60:3306/xxxxxxx
+          username: root
+          password: xxxxxxx
+        ds_2:
+          dataSourceClassName: com.zaxxer.hikari.HikariDataSource
+          driverClassName: com.mysql.jdbc.Driver
+          jdbcUrl: jdbc:mysql://192.168.88.61:3306/xxxxxxx
+          username: root
+          password: xxxxxxx
+      rules:
+        - !READWRITE_SPLITTING
+          dataSources:
+            readwrite_ds:
+              staticStrategy:
+                writeDataSourceName: ds_1
+                readDataSourceNames:
+                  - ds_2
+              loadBalancerName: random
+          loadBalancers:
+            random:
+              type: RANDOM
+      props:
+        sql-show: true
 ```
 
 
