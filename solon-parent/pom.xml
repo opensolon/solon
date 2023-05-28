@@ -1036,13 +1036,6 @@
                 <version>${solon.version}</version>
             </dependency>
 
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>shardingsphere-solon-plugin</artifactId>
-                <version>${solon.version}</version>
-            </dependency>
-
-
             <!-- for solon cloud -->
             <dependency>
                 <groupId>org.noear</groupId>
