@@ -14,7 +14,7 @@ import java.util.Properties;
 
 public class PropertiesYaml extends Properties {
     private Yaml createYaml() {
-        return new Yaml(new SolonYamlConstructor());
+        return new Yaml();
     }
 
     public synchronized void loadYml(InputStream inputStream) {

@@ -10,12 +10,8 @@
 * 提醒2：有使用弃用接口的。建议先升级到 1.12.4；替换弃用代码后，再升级到 2.0.0
 
 ### 2.3.1
-* 新增 solon.web.servlet.jakarta 插件
-* 新增 solon.boot.jetty.jakarta 插件
-* 新增 solon.boot.undertow.jakarta 插件
 * 新增 shardingsphere-solon-plugin 插件
 * 新增 redisson-solon-plugin 插件
-* 优化 solon.config.yaml 增加类型映射解析支持（将 "!XXX: xxx" 转为普通属性）
 * bean-searcher 升为 4.2.0
 * mybatis-flex 升为 1.3.1
 * sqltoy 升为 5.2.51

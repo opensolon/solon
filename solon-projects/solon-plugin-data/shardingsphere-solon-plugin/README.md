@@ -87,13 +87,13 @@ import org.noear.solon.annotation.Component;
 public class Config {
 
     @Bean(name = "shardingDs1")
-    DataSource shardingSphere2(@Inject("${sharding.demo1}") ShardingSphereFactory factory) throws Exception {
-        return factory.createDataSource();
+    DataSource shardingSphere2(@Inject("${sharding.demo1}") ShardingSphereSupplier supplier) throws Exception {
+        return supplier.get();
     }
     
     @Bean(name = "shardingDs2", typed = true)
-    DataSource shardingSphere(@Inject("${sharding.demo2}") ShardingSphereFactory factory) throws Exception {
-        return factory.createDataSource();
+    DataSource shardingSphere(@Inject("${sharding.demo2}") ShardingSphereSupplier supplier) throws Exception {
+        return supplier.get();
     }
     
 }
