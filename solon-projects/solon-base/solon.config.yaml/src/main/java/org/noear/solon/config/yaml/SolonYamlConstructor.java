@@ -10,7 +10,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * 增加类型映射解析支持（将 "!XXX: xxx" 转为普通属性）
+ * 增加类型映射解析支持（将 "!XXX" 转为普通属性）
  *
  * @author noear
  * @since 2.3
