@@ -19,9 +19,17 @@ import java.util.logging.Logger;
 public class ShardingDataSource implements DataSource {
     final DataSource real;
 
+    /**
+     * 获取真实数据源
+     * */
+    public DataSource getReal() {
+        return real;
+    }
+
     public ShardingDataSource(Properties props) {
         real = new ShardingSphereSupplier(props).get();
     }
+
 
     @Override
     public Connection getConnection() throws SQLException {

@@ -3,11 +3,11 @@
 
 ```yaml
 # 模式一:: 支持：外置sharding.yml的配置
-demo.ds1:
+demo.db1:
   file: "classpath:sharding.yml"
   
 # 模式二:: 支持：内置sharding.yml的配置
-demo.ds2:
+demo.db2:
   config: |
       mode:
         type: Standalone
@@ -86,13 +86,13 @@ import org.noear.solon.annotation.Component;
 @Configuration
 public class Config {
 
-    @Bean(name = "ds1", typed = true)
-    public DataSource ds1(@Inject("${demo.ds1}") ShardingDataSource ds) throws Exception {
+    @Bean(name = "db1", typed = true)
+    public DataSource db1(@Inject("${demo.db1}") ShardingDataSource ds) throws Exception {
         return ds;
     }
     
-    @Bean("ds2")
-    public DataSource ds2(@Inject("${demo.ds2}") ShardingDataSource ds) throws Exception {
+    @Bean("db2")
+    public DataSource db2(@Inject("${demo.db2}") ShardingDataSource ds) throws Exception {
         return ds;
     }
     
@@ -100,10 +100,10 @@ public class Config {
 
 @Component
 public class UserService {
-    @Db("ds1")
+    @Db("db1")
     OrderMapper orderMapper;
 
-    @Db("ds2")
+    @Db("db2")
     UserMapper userMapper;
 }
 ```
