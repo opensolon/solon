@@ -1,45 +1,84 @@
 
-
-
-```yaml
-redisson.demo1: 
-  file: "classpath:redisson.yaml"
-```
-
+配置示例::
 
 ```yaml
-redisson.demo2: 
+redisson.demo1:
+  file: "classpath:redisson.yml"
+
+redisson.demo2:
   config: |
-    clusterServersConfig:
+    singleServerConfig:
       idleConnectionTimeout: 10000
       connectTimeout: 10000
       timeout: 3000
       retryAttempts: 3
       retryInterval: 1500
-      failedSlaveReconnectionInterval: 3000
-      failedSlaveCheckInterval: 60000
       password: null
       subscriptionsPerConnection: 5
       clientName: null
-      loadBalancer: !<org.redisson.connection.balancer.RoundRobinLoadBalancer> {}
+      address: "redis://192.168.88.60:6379"
       subscriptionConnectionMinimumIdleSize: 1
       subscriptionConnectionPoolSize: 50
-      slaveConnectionMinimumIdleSize: 24
-      slaveConnectionPoolSize: 64
-      masterConnectionMinimumIdleSize: 24
-      masterConnectionPoolSize: 64
-      readMode: "SLAVE"
-      subscriptionMode: "SLAVE"
-      nodeAddresses:
-      - "redis://127.0.0.1:7004"
-      - "redis://127.0.0.1:7001"
-      - "redis://127.0.0.1:7000"
-      scanInterval: 1000
-      pingConnectionInterval: 0
-      keepAlive: false
-      tcpNoDelay: false
+      connectionMinimumIdleSize: 24
+      connectionPoolSize: 64
+      database: 0
+      dnsMonitoringInterval: 5000
     threads: 16
     nettyThreads: 32
-    codec: !<org.redisson.codec.Kryo5Codec> {}
+    codec: !<org.redisson.codec.Kryo5Codec> { }
     transportMode: "NIO"
+```
+
+
+```yaml
+# 模式一:: 在resources目录下，添加 redisson.yml 文件，内容如下：
+# Demo配置
+singleServerConfig:
+  idleConnectionTimeout: 10000
+  connectTimeout: 10000
+  timeout: 3000
+  retryAttempts: 3
+  retryInterval: 1500
+  password: null
+  subscriptionsPerConnection: 5
+  clientName: null
+  address: "redis://192.168.88.60:6379"
+  subscriptionConnectionMinimumIdleSize: 1
+  subscriptionConnectionPoolSize: 50
+  connectionMinimumIdleSize: 24
+  connectionPoolSize: 64
+  database: 0
+  dnsMonitoringInterval: 5000
+threads: 16
+nettyThreads: 32
+codec: !<org.redisson.codec.Kryo5Codec> {}
+transportMode: "NIO"
+```
+注入示例：
+
+```java
+@Configuration
+public class Config {
+    
+    @Bean(value = "demo1",typed = true)
+    public RedissonClient demo1(@Inject("${redisson.demo1}") RedissonFactory factory) {
+        return factory.create();
+    }
+
+    @Bean(value = "demo2")
+    public RedissonClient demo2(@Inject("${redisson.demo2}") RedissonFactory factory) {
+        return factory.create();
+    }
+}
+
+@Component
+public class DemoService {
+    
+    @Inject("demo1")
+    RedissonClient demo1;
+
+    @Inject("demo2")
+    RedissonClient demo2;
+    
+}
 ```

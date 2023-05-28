@@ -26,7 +26,7 @@
         <water.version>2.11.0</water.version>
         <luffy.version>1.6.4</luffy.version>
         <redisx.version>1.4.8</redisx.version>
-        <redisson.version>3.19.3</redisson.version>
+        <redisson.version>3.21.0</redisson.version>
 
         <fastjson.version>1.2.83</fastjson.version>
         <fastjson2.version>2.0.31</fastjson2.version>
