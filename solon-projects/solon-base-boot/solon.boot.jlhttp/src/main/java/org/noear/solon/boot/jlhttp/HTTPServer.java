@@ -754,7 +754,7 @@ public class HTTPServer {
              */
             public String getString() throws IOException {
                 String charset = headers.getParams("Content-Type").get("charset");
-                return readToken(body, -1, charset == null ? "UTF-8" : charset, MAX_HEADER_SIZE);
+                return readToken(body, -1, charset == null ? "UTF-8" : charset, MAX_BODY_SIZE);
             }
         }
 

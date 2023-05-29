@@ -18,6 +18,7 @@
 * 调整 开放 bean 内部形态注册的限制，之前只能用普通组件注解
 * 调整 应用启动时的事件改由 push 推送（之前是 pushTry）
 * 调整 XxxCacheService 增加新的构造函数
+* 调整 jlhttp Part 的 body string 大小限制改为 MAX_BODY_SIZE（之前为 MAX_HEADER_SIZE）
 * bean-searcher 升为 4.2.0
 * mybatis-flex 升为 1.3.1
 * sqltoy 升为 5.2.51
