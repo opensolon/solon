@@ -37,8 +37,6 @@ public class SolonAotProcessor {
 
     private final Class<?> applicationClass;
 
-    private static final List<String> ALLOW_RESOURCES = Arrays.asList("META-INF", "static", "templates", "sql");
-
     public SolonAotProcessor(Settings settings, String[] applicationArgs, Class<?> applicationClass) {
         this.settings = settings;
         this.applicationArgs = applicationArgs;
@@ -194,14 +192,15 @@ public class SolonAotProcessor {
             List<ResourceHint> includes = metadata.getIncludes();
             List<String> allResources = new ArrayList<>();
             for (ResourceHint include : includes) {
-                for (String allowResource : ALLOW_RESOURCES) {
-                    if (!include.getPattern().startsWith(allowResource)) {
-                        continue;
-                    }
-                    Pattern pattern = Pattern.compile(include.getPattern());
-                    Set<String> scanned = ScanUtil.scan(allowResource, path -> pattern.matcher(path).find());
-                    if (!scanned.isEmpty()) {
-                        allResources.addAll(scanned);
+                int pathIdx = include.getPattern().indexOf("/");
+                if (pathIdx > 0) {
+                    String pathDir = include.getPattern().substring(0, pathIdx);
+                    if (pathDir.contains("*") == false) {
+                        Pattern pattern = Pattern.compile(include.getPattern());
+                        Set<String> scanned = ScanUtil.scan(pathDir, path -> pattern.matcher(path).find());
+                        if (!scanned.isEmpty()) {
+                            allResources.addAll(scanned);
+                        }
                     }
                 }
             }
