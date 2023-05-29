@@ -207,7 +207,7 @@ public class MybatisAdapterDefault implements MybatisAdapter {
             }
         });
 
-        if (mapperTypes.size() == 0 || mapperFiles.size() == 0) {
+        if (mapperTypes.size() == 0 && mapperFiles.size() == 0) {
             LogUtil.global().warn("Missing mappers configuration!");
             //throw new IllegalStateException("Please add the mappers configuration!");
         }
