@@ -9,6 +9,9 @@
 * 提醒1：之前没有使用弃用接口的，可以直接升级 <br>
 * 提醒2：有使用弃用接口的。建议先升级到 1.12.4；替换弃用代码后，再升级到 2.0.0
 
+### 2.3.2
+* activemq 升为 5.15.9
+
 ### 2.3.1
 * 新增 solon.data.shardingds 插件
 * 新增 redisson-solon-plugin 插件
@@ -32,6 +35,7 @@
 * fastmybatis 升为 2.6.1
 
 ### 2.3.0
+* 升级 日志体系到 slf4j 2.x（如果冲突，排除旧的 1.x）!!!
 * 新增 solon.docs 插件!!!
 * 新增 solon-swagger2-knife4j 插件!!!
 * 新增 zipkin-solon-cloud-plugin 插件
@@ -42,7 +46,6 @@
 * 增加 aot 对 methodWrap 参数的自动登记处理
 * 修复 AopContext::getWrapsOfType 返回结果失真的问题
 * 调整 mybatis 按包名扫描只对 `@Mapper` 注解的接口有效（避免其它接口误扫）
-* 调整 日志体系升到 slf4j 2.x（如果冲突，排除旧的 1.x）!!!
 * slf4j 升为 2.0.7
 * log4j2 升为 2.20.0（基于 slf4j 2.x）
 * logback 升为 1.3.7（基于 slf4j 2.x）
