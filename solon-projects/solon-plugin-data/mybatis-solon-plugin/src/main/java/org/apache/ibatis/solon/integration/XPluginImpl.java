@@ -23,6 +23,10 @@ public class XPluginImpl implements Plugin {
         context.beanInjectorAdd(org.apache.ibatis.solon.annotation.Db.class, (varH, anno) -> {
             injectorAddDo(varH, anno.value());
         });
+
+        // aot
+        context.beanScan("org.apache.ibatis.solon.aot");
+
     }
 
     private void builderAddDo(Class<?> clz, BeanWrap wrap, String annoValue) {
