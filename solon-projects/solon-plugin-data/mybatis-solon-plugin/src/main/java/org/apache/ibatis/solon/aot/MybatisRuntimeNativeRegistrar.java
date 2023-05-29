@@ -89,8 +89,8 @@ public class MybatisRuntimeNativeRegistrar implements RuntimeNativeRegistrar {
         for (String res : bean.getMappers()) {
             if (res.startsWith(Utils.TAG_classpath)) {
                 res = res.substring(Utils.TAG_classpath.length());
-                res = res.replace("/**", "/.*");
-                res = res.replace("/*", "/.*");
+                res = res.replace("**", "*");
+                res = res.replace("*", ".*");
                 metadata.registerResourceInclude(res);
             }
         }
