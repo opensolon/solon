@@ -24,8 +24,9 @@ import org.apache.ibatis.solon.tran.SolonManagedTransactionFactory;
 
 import javax.sql.DataSource;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * Mybatis 适配器默认实现
@@ -39,7 +40,8 @@ public class MybatisAdapterDefault implements MybatisAdapter {
 
     protected Configuration config;
     protected SqlSessionFactory factory;
-    protected List<String> mappers = new ArrayList<>();
+    protected Set<Class<?>> mapperTypes = new TreeSet<>();
+    protected Set<String> mapperFiles = new TreeSet<>();
     protected SqlSessionFactoryBuilder factoryBuilder;
 
     /**
@@ -96,6 +98,14 @@ public class MybatisAdapterDefault implements MybatisAdapter {
         dsWrap.context().getBeanAsync(SqlSessionFactoryBuilder.class, bean -> {
             factoryBuilder = bean;
         });
+    }
+
+    public Set<Class<?>> getMapperTypes() {
+        return mapperTypes;
+    }
+
+    public Set<String> getMapperFiles() {
+        return mapperFiles;
     }
 
     protected DataSource getDataSource() {
@@ -176,12 +186,11 @@ public class MybatisAdapterDefault implements MybatisAdapter {
                             //mapper xml， 新方法，替代旧的 *.xml （基于表达式；更自由，更语义化）
                             for (String uri : ResourceUtil.scanResources(val)) {
                                 addMapperByXml(uri);
+                                mapperFiles.add(uri);
                             }
 
                             //todo: 兼容提醒:
                             compatibilityTipsOfXml(val);
-
-                            mappers.add(val);
                         } else {
                             //package || type class，转为类表达式
                             String valNew = getClassExpr(val);
@@ -189,17 +198,16 @@ public class MybatisAdapterDefault implements MybatisAdapter {
                             for (Class<?> clz : ResourceUtil.scanClasses(valNew)) {
                                 if (clz.isInterface() && isMapper(clz)) {
                                     getConfiguration().addMapper(clz);
+                                    mapperTypes.add(clz);
                                 }
                             }
-
-                            mappers.add(val);
                         }
                     }
                 }
             }
         });
 
-        if (mappers.size() == 0) {
+        if (mapperTypes.size() == 0 || mapperFiles.size() == 0) {
             LogUtil.global().warn("Missing mappers configuration!");
             //throw new IllegalStateException("Please add the mappers configuration!");
         }

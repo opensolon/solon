@@ -1,6 +1,5 @@
 package org.apache.ibatis.solon.aot;
 
-import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.cache.decorators.FifoCache;
 import org.apache.ibatis.cache.decorators.LruCache;
 import org.apache.ibatis.cache.decorators.SoftCache;
@@ -18,20 +17,16 @@ import org.apache.ibatis.logging.stdout.StdOutImpl;
 import org.apache.ibatis.scripting.defaults.RawLanguageDriver;
 import org.apache.ibatis.scripting.xmltags.XMLLanguageDriver;
 import org.apache.ibatis.session.SqlSessionFactory;
-import org.noear.solon.Solon;
-import org.noear.solon.annotation.Component;
-import org.noear.solon.annotation.Condition;
+import org.apache.ibatis.solon.MybatisAdapter;
+import org.apache.ibatis.solon.integration.MybatisAdapterDefault;
+import org.apache.ibatis.solon.integration.MybatisAdapterManager;
 import org.noear.solon.aot.RuntimeNativeMetadata;
 import org.noear.solon.aot.RuntimeNativeRegistrar;
 import org.noear.solon.aot.hint.ExecutableMode;
 import org.noear.solon.aot.hint.MemberCategory;
 import org.noear.solon.core.AopContext;
-import org.noear.solon.core.Props;
-
-import javax.sql.DataSource;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.TreeSet;
@@ -41,11 +36,9 @@ import java.util.stream.Stream;
  * Mybatis aot 注册 native 元数据
  *
  * @author songyinyin
- * @since 2.3.1
+ * @since 2.3
  * @link <a href="https://github.com/kazuki43zoo/mybatis-native-demo/blob/main/src/main/java/com/example/nativedemo/MyBatisNativeConfiguration.java">MyBatisNativeConfiguration</a>
  */
-@Component
-@Condition(onClass = RuntimeNativeRegistrar.class)
 public class MybatisRuntimeNativeRegistrar implements RuntimeNativeRegistrar {
 
     @Override
@@ -78,36 +71,28 @@ public class MybatisRuntimeNativeRegistrar implements RuntimeNativeRegistrar {
                 "org/apache/ibatis/builder/xml/.*.xsd"
         ).forEach(metadata::registerResourceInclude);
 
-        context.beanForeach(beanWrap -> {
-            if (Arrays.stream(beanWrap.annotations()).anyMatch(x -> x instanceof Mapper)) {
 
-                metadata.registerJdkProxy(beanWrap.clz());
-                metadata.registerReflection(beanWrap.clz(), MemberCategory.INTROSPECT_PUBLIC_METHODS);
-                Method[] declaredMethods = beanWrap.clz().getDeclaredMethods();
-                for (Method method : declaredMethods) {
-                    metadata.registerMethod(method, ExecutableMode.INVOKE);
-                }
+        for (MybatisAdapter adapter : MybatisAdapterManager.getAll().values()) {
+            if (adapter instanceof MybatisAdapterDefault) {
+                registerMybatisAdapter(metadata, (MybatisAdapterDefault) adapter);
             }
-        });
+        }
+    }
 
-        // TODO 待优化
-        //  1. 这里与 MybatisAdapterDefault 中获取 mapper 的逻辑重复了
-        //  2. 有可能用户配置的不是正则表达式，需要处理为正则表达式
-        context.subWrapsOfType(DataSource.class, bw -> {
-            Props prop = Solon.cfg().getProp("mybatis." + bw.name());
-            prop.forEach((k, v) -> {
-                String key = (String) k;
-                String valStr = (String) v;
-                valStr = valStr.replace(".", "/");
+    protected void registerMybatisAdapter(RuntimeNativeMetadata metadata, MybatisAdapterDefault bean) {
+        //注册 xml 资源
+        for (String url : bean.getMapperFiles()) {
+            metadata.registerResourceInclude(url);
+        }
 
-                if (key.startsWith("mappers[") || key.equals("mappers")) {
-                    if (valStr.endsWith(".xml")) {
-                        metadata.registerResourceInclude(valStr);
-                    } else {
-                        metadata.registerResourceInclude(valStr + "/.*.xml");
-                    }
-                }
-            });
-        });
+        //注册 mapper 代理
+        for (Class<?> clz : bean.getConfiguration().getMapperRegistry().getMappers()) {
+            metadata.registerJdkProxy(clz);
+            metadata.registerReflection(clz, MemberCategory.INTROSPECT_PUBLIC_METHODS);
+            Method[] declaredMethods = clz.getDeclaredMethods();
+            for (Method method : declaredMethods) {
+                metadata.registerMethod(method, ExecutableMode.INVOKE);
+            }
+        }
     }
 }

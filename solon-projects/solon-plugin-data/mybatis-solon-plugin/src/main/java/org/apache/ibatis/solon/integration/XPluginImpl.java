@@ -1,9 +1,12 @@
 package org.apache.ibatis.solon.integration;
 
 import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.solon.aot.MybatisRuntimeNativeRegistrar;
 import org.noear.solon.Utils;
+import org.noear.solon.aot.RuntimeNativeRegistrar;
 import org.noear.solon.core.*;
 import org.apache.ibatis.solon.MybatisAdapter;
+import org.noear.solon.core.util.ClassUtil;
 
 import javax.sql.DataSource;
 
@@ -11,13 +14,13 @@ public class XPluginImpl implements Plugin {
     @Override
     public void start(AopContext context) {
 
-        context.subWrapsOfType(DataSource.class, bw->{
+        context.subWrapsOfType(DataSource.class, bw -> {
             MybatisAdapterManager.register(bw);
         });
 
         //for new
         context.beanBuilderAdd(org.apache.ibatis.solon.annotation.Db.class, (clz, wrap, anno) -> {
-            builderAddDo(clz, wrap,anno.value());
+            builderAddDo(clz, wrap, anno.value());
         });
 
         context.beanInjectorAdd(org.apache.ibatis.solon.annotation.Db.class, (varH, anno) -> {
@@ -25,7 +28,9 @@ public class XPluginImpl implements Plugin {
         });
 
         // aot
-        context.beanScan("org.apache.ibatis.solon.aot");
+        if (ClassUtil.hasClass(() -> RuntimeNativeRegistrar.class)) {
+            context.wrapAndPut(MybatisRuntimeNativeRegistrar.class);
+        }
 
     }
 

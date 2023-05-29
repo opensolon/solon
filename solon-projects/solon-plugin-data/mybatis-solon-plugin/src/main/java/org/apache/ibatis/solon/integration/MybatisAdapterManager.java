@@ -6,6 +6,7 @@ import org.noear.solon.core.BeanWrap;
 import org.apache.ibatis.solon.MybatisAdapter;
 import org.apache.ibatis.solon.MybatisAdapterFactory;
 
+import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -32,6 +33,10 @@ public class MybatisAdapterManager {
 
     public static MybatisAdapter getOnly(String name){
         return dbMap.get(name);
+    }
+
+    public static Map<String, MybatisAdapter> getAll(){
+        return Collections.unmodifiableMap(dbMap);
     }
 
     /**
