@@ -187,7 +187,7 @@ public class MybatisAdapterDefault implements MybatisAdapter {
                             String valNew = getClassExpr(val);
 
                             for (Class<?> clz : ResourceUtil.scanClasses(valNew)) {
-                                if (clz.isInterface() && clz.getAnnotation(Mapper.class) != null) {
+                                if (clz.isInterface() && isMapper(clz)) {
                                     getConfiguration().addMapper(clz);
                                 }
                             }
@@ -214,6 +214,10 @@ public class MybatisAdapterDefault implements MybatisAdapter {
         for (Interceptor itp : interceptors) {
             getConfiguration().addInterceptor(itp);
         }
+    }
+
+    protected boolean isMapper(Class<?> clz) {
+        return clz.isAnnotationPresent(Mapper.class);
     }
 
     /**
