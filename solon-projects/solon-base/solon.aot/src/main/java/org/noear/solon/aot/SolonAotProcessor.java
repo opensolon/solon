@@ -199,7 +199,11 @@ public class SolonAotProcessor {
                         Pattern pattern = Pattern.compile(include.getPattern().substring(pathIdx + 1));
                         Set<String> scanned = ScanUtil.scan(pathDir, path -> pattern.matcher(path).find());
                         if (!scanned.isEmpty()) {
-                            allResources.addAll(scanned);
+                            for (String uri : scanned) {
+                                if (uri.startsWith("META-INF/maven/") == false) {
+                                    allResources.add(uri);
+                                }
+                            }
                         }
                     }
                 }
