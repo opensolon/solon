@@ -15,10 +15,6 @@
     <packaging>jar</packaging>
     <description>https://www.simplejavamail.org/</description>
 
-    <properties>
-        <sms4j.version>2.0.0</sms4j.version>
-    </properties>
-
     <dependencies>
         <dependency>
 	      <groupId>org.noear</groupId>
@@ -27,21 +23,15 @@
 
         <dependency>
             <groupId>org.dromara.sms4j</groupId>
-            <artifactId>sms4j-core</artifactId>
-			<version>${sms4j.version}</version>
+            <artifactId>sms4j-solon-plugin</artifactId>
+            <version>2.1.0</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.noear</groupId>
+                    <artifactId>solon</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
-		
-		<dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>redisx</artifactId>
-        </dependency>
-
-        <!-- test -->
-	    <dependency>
-	      <groupId>org.noear</groupId>
-	      <artifactId>solon-test</artifactId>
-	      <scope>test</scope>
-	    </dependency>
     </dependencies>
 
 </project>
