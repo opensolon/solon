@@ -19,7 +19,28 @@ import java.util.function.Supplier;
 public class CaffeineCacheService implements CacheService {
     private String _cacheKeyHead;
     private int _defaultSeconds;
-    private Cache<String, Object> _data;
+
+    private final Cache<String, Object> client;
+
+    public CaffeineCacheService(Cache<String, Object> client, int defSeconds) {
+        this(client, null, defSeconds);
+    }
+
+
+    public CaffeineCacheService(Cache<String, Object> client, String keyHeader, int defSeconds) {
+        this.client = client;
+
+        if (Utils.isEmpty(keyHeader)) {
+            keyHeader = Solon.cfg().appName();
+        }
+
+        if (defSeconds < 1) {
+            defSeconds = 30;
+        }
+
+        _cacheKeyHead = keyHeader;
+        _defaultSeconds = defSeconds;
+    }
 
     public CaffeineCacheService(Properties prop) {
         this(prop, prop.getProperty("keyHeader"), 0);
@@ -38,39 +59,35 @@ public class CaffeineCacheService implements CacheService {
             keyHeader = Solon.cfg().appName();
         }
 
+        if (defSeconds < 1) {
+            defSeconds = 30;
+        }
+
         _cacheKeyHead = keyHeader;
         _defaultSeconds = defSeconds;
 
-        if (_defaultSeconds < 1) {
-            _defaultSeconds = 30;
-        }
-
-        if (Utils.isEmpty(_cacheKeyHead)) {
-            _cacheKeyHead = Solon.cfg().appName();
-        }
-
-        _data = Caffeine.newBuilder()
+        client = Caffeine.newBuilder()
                 .expireAfterWrite(_defaultSeconds, TimeUnit.SECONDS)
                 .build();
     }
 
     @Override
     public void store(String key, Object obj, int seconds) {
-        _data.put(key, obj);
+        client.put(key, obj);
     }
 
     @Override
     public void remove(String key) {
-        _data.put(key, null);
+        client.put(key, null);
     }
 
     @Override
     public Object get(String key) {
-        return _data.getIfPresent(key);
+        return client.getIfPresent(key);
     }
 
     @Override
     public <T> T getOrStore(String key, int seconds, Supplier supplier) {
-        return (T) _data.get(key, (k) -> supplier.get());
+        return (T) client.get(key, (k) -> supplier.get());
     }
 }

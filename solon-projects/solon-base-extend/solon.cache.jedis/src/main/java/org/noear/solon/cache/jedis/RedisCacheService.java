@@ -30,15 +30,23 @@ public class RedisCacheService implements CacheService {
         return this;
     }
 
+    public RedisCacheService(RedisClient client, int defSeconds) {
+        this(client, null, defSeconds);
+    }
+
     public RedisCacheService(RedisClient client, String keyHeader, int defSeconds){
         this.client = client;
 
+        if (Utils.isEmpty(keyHeader)) {
+            keyHeader = Solon.cfg().appName();
+        }
+
+        if (defSeconds < 1) {
+            defSeconds = 30;
+        }
+
         _cacheKeyHead = keyHeader;
         _defaultSeconds = defSeconds;
-
-        if (_defaultSeconds < 1) {
-            _defaultSeconds = 30;
-        }
 
         _serializer = JavabinSerializer.instance;
     }
@@ -73,16 +81,12 @@ public class RedisCacheService implements CacheService {
             keyHeader = Solon.cfg().appName();
         }
 
+        if (defSeconds < 1) {
+            defSeconds = 30;
+        }
+
         _cacheKeyHead = keyHeader;
         _defaultSeconds = defSeconds;
-
-        if (_defaultSeconds < 1) {
-            _defaultSeconds = 30;
-        }
-
-        if (Utils.isEmpty(_cacheKeyHead)) {
-            _cacheKeyHead = Solon.cfg().appName();
-        }
 
         _serializer = JavabinSerializer.instance;
 

@@ -19,15 +19,23 @@ public class RedissonCacheService implements CacheService {
 
     protected final RedissonClient client;
 
-    public RedissonCacheService(RedissonClient client, String keyHeader, int defSeconds){
+    public RedissonCacheService(RedissonClient client, int defSeconds) {
+        this(client, null, defSeconds);
+    }
+
+    public RedissonCacheService(RedissonClient client, String keyHeader, int defSeconds) {
         this.client = client;
+
+        if (Utils.isEmpty(keyHeader)) {
+            keyHeader = Solon.cfg().appName();
+        }
+
+        if (defSeconds < 1) {
+            defSeconds = 30;
+        }
 
         _cacheKeyHead = keyHeader;
         _defaultSeconds = defSeconds;
-
-        if (_defaultSeconds < 1) {
-            _defaultSeconds = 30;
-        }
     }
 
     public RedissonCacheService(Properties prop){
@@ -47,16 +55,12 @@ public class RedissonCacheService implements CacheService {
             keyHeader = Solon.cfg().appName();
         }
 
+        if (defSeconds < 1) {
+            defSeconds = 30;
+        }
+
         _cacheKeyHead = keyHeader;
         _defaultSeconds = defSeconds;
-
-        if (_defaultSeconds < 1) {
-            _defaultSeconds = 30;
-        }
-
-        if (Utils.isEmpty(_cacheKeyHead)) {
-            _cacheKeyHead = Solon.cfg().appName();
-        }
 
         client = RedissonBuilder.build(prop);
     }

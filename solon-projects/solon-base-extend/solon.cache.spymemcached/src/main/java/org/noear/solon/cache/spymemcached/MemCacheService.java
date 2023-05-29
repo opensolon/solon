@@ -25,15 +25,23 @@ public class MemCacheService implements CacheService {
 
     protected final MemcachedClient client;
 
+    public MemCacheService(MemcachedClient client, int defSeconds) {
+        this(client, null, defSeconds);
+    }
+
     public MemCacheService(MemcachedClient client, String keyHeader, int defSeconds){
         this.client = client;
 
+        if (Utils.isEmpty(keyHeader)) {
+            keyHeader = Solon.cfg().appName();
+        }
+
+        if (defSeconds < 1) {
+            defSeconds = 30;
+        }
+
         _cacheKeyHead = keyHeader;
         _defaultSeconds = defSeconds;
-
-        if (_defaultSeconds < 1) {
-            _defaultSeconds = 30;
-        }
     }
 
     public MemCacheService(Properties prop) {
@@ -56,17 +64,12 @@ public class MemCacheService implements CacheService {
             keyHeader = Solon.cfg().appName();
         }
 
+        if (defSeconds < 1) {
+            defSeconds = 30;
+        }
 
         _cacheKeyHead = keyHeader;
         _defaultSeconds = defSeconds;
-
-        if (_defaultSeconds < 1) {
-            _defaultSeconds = 30;
-        }
-
-        if (Utils.isEmpty(_cacheKeyHead)) {
-            _cacheKeyHead = Solon.cfg().appName();
-        }
 
         ConnectionFactoryBuilder builder = new ConnectionFactoryBuilder();
         builder.setProtocol(ConnectionFactoryBuilder.Protocol.BINARY);
