@@ -18,6 +18,7 @@
 * sqltoy 升为 5.2.51
 * redisson 升为 3.21.0
 * netty 升为 4.1.75.Final
+* fastjson2 升为 2.0.33
 
 ### 2.3.0
 * 新增 solon.docs 插件!!!
