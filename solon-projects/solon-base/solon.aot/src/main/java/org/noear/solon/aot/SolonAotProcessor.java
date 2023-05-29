@@ -196,7 +196,7 @@ public class SolonAotProcessor {
                 if (pathIdx > 0) {
                     String pathDir = include.getPattern().substring(0, pathIdx);
                     if (pathDir.contains("*") == false) {
-                        Pattern pattern = Pattern.compile(include.getPattern());
+                        Pattern pattern = Pattern.compile(include.getPattern().substring(pathIdx + 1));
                         Set<String> scanned = ScanUtil.scan(pathDir, path -> pattern.matcher(path).find());
                         if (!scanned.isEmpty()) {
                             allResources.addAll(scanned);
