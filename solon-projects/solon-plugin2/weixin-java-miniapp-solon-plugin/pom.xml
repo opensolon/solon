@@ -75,12 +75,6 @@
             <version>${redisson.version}</version>
             <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.data</groupId>
-            <artifactId>spring-data-redis</artifactId>
-            <version>${springboot.version}</version>
-            <scope>provided</scope>
-        </dependency>
         <!-- test -->
         <dependency>
             <groupId>org.noear</groupId>
