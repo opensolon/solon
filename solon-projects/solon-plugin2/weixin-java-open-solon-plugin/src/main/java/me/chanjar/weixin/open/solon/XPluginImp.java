@@ -6,7 +6,6 @@ import me.chanjar.weixin.open.solon.config.WxOpenServiceAutoConfiguration;
 import me.chanjar.weixin.open.solon.config.storage.WxOpenInJedisConfigStorageConfiguration;
 import me.chanjar.weixin.open.solon.config.storage.WxOpenInMemoryConfigStorageConfiguration;
 import me.chanjar.weixin.open.solon.config.storage.WxOpenInRedisConfigStorageConfiguration;
-import me.chanjar.weixin.open.solon.config.storage.WxOpenInRedisTemplateConfigStorageConfiguration;
 import me.chanjar.weixin.open.solon.config.storage.WxOpenInRedissonConfigStorageConfiguration;
 import me.chanjar.weixin.open.solon.properties.WxOpenProperties;
 
@@ -20,7 +19,6 @@ public class XPluginImp implements Plugin{
             context.beanMake(WxOpenInRedissonConfigStorageConfiguration.class);
             context.beanMake(WxOpenInRedisConfigStorageConfiguration.class);
             context.beanMake(WxOpenInJedisConfigStorageConfiguration.class);
-            context.beanMake(WxOpenInRedisTemplateConfigStorageConfiguration.class);
             context.beanMake(WxOpenServiceAutoConfiguration.class);
         });
 	}
