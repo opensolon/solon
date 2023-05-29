@@ -29,6 +29,12 @@
 
         <dependency>
             <groupId>org.noear</groupId>
+            <artifactId>solon.aot</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.noear</groupId>
             <artifactId>solon-lib</artifactId>
             <scope>test</scope>
         </dependency>
