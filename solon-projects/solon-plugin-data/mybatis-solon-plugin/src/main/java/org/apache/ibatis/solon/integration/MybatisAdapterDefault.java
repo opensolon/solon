@@ -24,6 +24,7 @@ import org.apache.ibatis.solon.tran.SolonManagedTransactionFactory;
 
 import javax.sql.DataSource;
 import java.io.InputStream;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -40,8 +41,8 @@ public class MybatisAdapterDefault implements MybatisAdapter {
 
     protected Configuration config;
     protected SqlSessionFactory factory;
-    protected Set<Class<?>> mapperTypes = new TreeSet<>();
-    protected Set<String> mapperFiles = new TreeSet<>();
+    protected Set<Class<?>> mapperTypes = new HashSet<>();
+    protected Set<String> mapperFiles = new HashSet<>();
     protected SqlSessionFactoryBuilder factoryBuilder;
 
     /**
