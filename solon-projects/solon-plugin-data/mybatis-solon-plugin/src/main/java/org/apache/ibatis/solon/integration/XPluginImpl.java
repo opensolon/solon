@@ -6,6 +6,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.aot.RuntimeNativeRegistrar;
 import org.noear.solon.core.*;
 import org.apache.ibatis.solon.MybatisAdapter;
+import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.core.util.ClassUtil;
 
 import javax.sql.DataSource;
@@ -28,7 +29,7 @@ public class XPluginImpl implements Plugin {
         });
 
         // aot
-        if (ClassUtil.hasClass(() -> RuntimeNativeRegistrar.class)) {
+        if (ClassUtil.hasClass(() -> RuntimeNativeRegistrar.class) && NativeDetector.isAotRuntime()) {
             context.wrapAndPut(MybatisRuntimeNativeRegistrar.class);
         }
 
