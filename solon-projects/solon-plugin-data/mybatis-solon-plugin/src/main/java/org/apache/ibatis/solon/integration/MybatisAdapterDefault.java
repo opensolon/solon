@@ -24,10 +24,7 @@ import org.apache.ibatis.solon.tran.SolonManagedTransactionFactory;
 
 import javax.sql.DataSource;
 import java.io.InputStream;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 /**
  * Mybatis 适配器默认实现
@@ -41,8 +38,7 @@ public class MybatisAdapterDefault implements MybatisAdapter {
 
     protected Configuration config;
     protected SqlSessionFactory factory;
-    protected Set<Class<?>> mapperTypes = new HashSet<>();
-    protected Set<String> mapperFiles = new HashSet<>();
+    protected List<String> mappers = new ArrayList<>();
     protected SqlSessionFactoryBuilder factoryBuilder;
 
     /**
@@ -101,12 +97,8 @@ public class MybatisAdapterDefault implements MybatisAdapter {
         });
     }
 
-    public Set<Class<?>> getMapperTypes() {
-        return mapperTypes;
-    }
-
-    public Set<String> getMapperFiles() {
-        return mapperFiles;
+    public List<String> getMappers() {
+        return mappers;
     }
 
     protected DataSource getDataSource() {
@@ -183,11 +175,12 @@ public class MybatisAdapterDefault implements MybatisAdapter {
                             continue;
                         }
 
+                        mappers.add(val);
+
                         if (val.endsWith(".xml")) {
                             //mapper xml， 新方法，替代旧的 *.xml （基于表达式；更自由，更语义化）
                             for (String uri : ResourceUtil.scanResources(val)) {
                                 addMapperByXml(uri);
-                                mapperFiles.add(uri);
                             }
 
                             //todo: 兼容提醒:
@@ -199,7 +192,6 @@ public class MybatisAdapterDefault implements MybatisAdapter {
                             for (Class<?> clz : ResourceUtil.scanClasses(valNew)) {
                                 if (clz.isInterface() && isMapper(clz)) {
                                     getConfiguration().addMapper(clz);
-                                    mapperTypes.add(clz);
                                 }
                             }
                         }
@@ -208,7 +200,7 @@ public class MybatisAdapterDefault implements MybatisAdapter {
             }
         });
 
-        if (mapperTypes.size() == 0 && mapperFiles.size() == 0) {
+        if (mappers.size() == 0) {
             LogUtil.global().warn("Missing mappers configuration!");
             //throw new IllegalStateException("Please add the mappers configuration!");
         }

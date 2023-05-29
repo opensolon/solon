@@ -101,7 +101,7 @@ public class MybatisAdapterManager {
             Object mapper = adapter.getMapper(clz);
 
             //进入容器，用于 @Inject 注入
-            dsBw.context().putWrap(clz, dsBw.context().wrap(clz, mapper));
+            dsBw.context().wrapAndPut(clz, mapper);
         }
     }
 }

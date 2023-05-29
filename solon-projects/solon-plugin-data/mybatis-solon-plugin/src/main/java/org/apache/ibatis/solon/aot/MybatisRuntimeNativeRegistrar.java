@@ -20,6 +20,7 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.solon.MybatisAdapter;
 import org.apache.ibatis.solon.integration.MybatisAdapterDefault;
 import org.apache.ibatis.solon.integration.MybatisAdapterManager;
+import org.noear.solon.Utils;
 import org.noear.solon.aot.RuntimeNativeMetadata;
 import org.noear.solon.aot.RuntimeNativeRegistrar;
 import org.noear.solon.aot.hint.ExecutableMode;
@@ -72,17 +73,26 @@ public class MybatisRuntimeNativeRegistrar implements RuntimeNativeRegistrar {
         ).forEach(metadata::registerResourceInclude);
 
 
-        for (MybatisAdapter adapter : MybatisAdapterManager.getAll().values()) {
-            if (adapter instanceof MybatisAdapterDefault) {
-                registerMybatisAdapter(metadata, (MybatisAdapterDefault) adapter);
+        for (String name : MybatisAdapterManager.getAll().keySet()) {
+            //用 name 找，避免出现重复的（默认的name=null）
+            if (Utils.isNotEmpty(name)) {
+                MybatisAdapter adapter = MybatisAdapterManager.getOnly(name);
+                if (adapter instanceof MybatisAdapterDefault) {
+                    registerMybatisAdapter(metadata, (MybatisAdapterDefault) adapter);
+                }
             }
         }
     }
 
     protected void registerMybatisAdapter(RuntimeNativeMetadata metadata, MybatisAdapterDefault bean) {
         //注册 xml 资源
-        for (String url : bean.getMapperFiles()) {
-            metadata.registerResourceInclude(url);
+        for (String res : bean.getMappers()) {
+            if (res.startsWith(Utils.TAG_classpath)) {
+                res = res.substring(Utils.TAG_classpath.length());
+                res = res.replace("/**", "/.*");
+                res = res.replace("/*", "/.*");
+                metadata.registerResourceInclude(res);
+            }
         }
 
         //注册 mapper 代理
