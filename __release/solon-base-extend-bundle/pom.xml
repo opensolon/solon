@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.noear</groupId>
+        <artifactId>solon-parent</artifactId>
+        <version>2.3.1</version>
+        <relativePath>../../solon-parent/pom.xml</relativePath>
+    </parent>
+
+    <groupId>org.noear.bundle</groupId>
+    <artifactId>solon-base-extend-bundle</artifactId>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>../../solon-projects/solon-base-extend/solon.cache.caffeine</module>
+        <module>../../solon-projects/solon-base-extend/solon.cache.jedis</module>
+        <module>../../solon-projects/solon-base-extend/solon.cache.spymemcached</module>
+        <module>../../solon-projects/solon-base-extend/solon.cache.redisson</module>
+
+
+        <module>../../solon-projects/solon-base-extend/solon.sessionstate.jedis</module>
+        <module>../../solon-projects/solon-base-extend/solon.sessionstate.local</module>
+        <module>../../solon-projects/solon-base-extend/solon.sessionstate.jwt</module>
+        <module>../../solon-projects/solon-base-extend/solon.sessionstate.redisson</module>
+
+
+        <module>../../solon-projects/solon-base-extend/solon.cloud</module>
+        <module>../../solon-projects/solon-base-extend/solon.cloud.eventplus</module>
+        <module>../../solon-projects/solon-base-extend/solon.cloud.httputils</module>
+        <module>../../solon-projects/solon-base-extend/solon.cloud.tracing</module>
+
+        <module>../../solon-projects/solon-base-extend/solon.web.webdav</module>
+        <module>../../solon-projects/solon-base-extend/solon.web.staticfiles</module>
+        <module>../../solon-projects/solon-base-extend/solon.web.servlet</module>
+        <module>../../solon-projects/solon-base-extend/solon.web.cors</module>
+        <module>../../solon-projects/solon-base-extend/solon.web.stop</module>
+        <module>../../solon-projects/solon-base-extend/solon.web.sdl</module>
+
+        <module>../../solon-projects/solon-base-extend/solon.extend.schedule</module>
+
+        <module>../../solon-projects/solon-base-extend/solon.scheduling</module>
+        <module>../../solon-projects/solon-base-extend/solon.scheduling.simple</module>
+        <module>../../solon-projects/solon-base-extend/solon.scheduling.quartz</module>
+    </modules>
+</project>

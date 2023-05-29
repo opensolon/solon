@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.noear</groupId>
         <artifactId>solon-parent</artifactId>
-        <version>2.3.0</version>
+        <version>2.3.1</version>
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
@@ -16,47 +16,29 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>../../_solon_tool/solon-maven-plugin</module>
-        <module>../../_solon_tool/solon-springboot-starter</module>
+        <module>../../solon-projects/solon-plugin/detector-solon-plugin</module>
 
-        <module>../../_solon_plugin/detector-solon-plugin</module>
+        <module>../../solon-projects/solon-plugin/dubbo-solon-plugin</module>
+        <module>../../solon-projects/solon-plugin/dubbo3-solon-plugin</module>
+        <module>../../solon-projects/solon-plugin/feign-solon-plugin</module>
+        <module>../../solon-projects/solon-plugin/forest-solon-plugin</module>
 
-        <module>../../_solon_plugin/beetlsql-solon-plugin</module>
 
-        <module>../../_solon_plugin/dubbo-solon-plugin</module>
-        <module>../../_solon_plugin/dubbo3-solon-plugin</module>
-        <module>../../_solon_plugin/feign-solon-plugin</module>
-        <module>../../_solon_plugin/forest-solon-plugin</module>
+        <module>../../solon-projects/solon-plugin/sa-token-solon-plugin</module>
 
-        <module>../../_solon_plugin/dbvisitor-solon-plugin</module>
+        <module>../../solon-projects/solon-plugin/log4j2-solon-plugin</module>
+        <module>../../solon-projects/solon-plugin/logback-solon-plugin</module>
 
-        <module>../../_solon_plugin/sqltoy-solon-plugin</module>
+        <module>../../solon-projects/solon-plugin/graphql-solon-plugin</module>
+        <module>../../solon-projects/solon-plugin/seata-solon-plugin</module>
 
-        <module>../../_solon_plugin/mybatis-solon-plugin</module>
-        <module>../../_solon_plugin/mybatis-sqlhelper-solon-plugin</module>
-        <module>../../_solon_plugin/mybatis-pagehelper-solon-plugin</module>
+        <module>../../solon-projects/solon-plugin/liteflow-solon-plugin</module>
+        <module>../../solon-projects/solon-plugin/easy-trans-solon-plugin</module>
 
-        <module>../../_solon_plugin/mybatis-plus-solon-plugin</module>
-        <module>../../_solon_plugin/mybatis-plus-extension-solon-plugin</module>
+        <module>../../solon-projects/solon-plugin/drools-solon-plugin</module>
+        <module>../../solon-projects/solon-plugin/luffy-solon-plugin</module>
+        <module>../../solon-projects/solon-plugin/vaptcha-solon-plugin</module>
 
-        <module>../../_solon_plugin/mybatis-flex-solon-plugin</module>
-        <module>../../_solon_plugin/fastmybatis-solon-plugin</module>
-
-        <module>../../_solon_plugin/activerecord-solon-plugin</module>
-
-        <module>../../_solon_plugin/sa-token-solon-plugin</module>
-
-        <module>../../_solon_plugin/log4j2-solon-plugin</module>
-        <module>../../_solon_plugin/logback-solon-plugin</module>
-        <module>../../_solon_plugin/weed3-solon-plugin</module>
-        <module>../../_solon_plugin/wood-solon-plugin</module>
-
-        <module>../../_solon_plugin/graphql-solon-plugin</module>
-        <module>../../_solon_plugin/seata-solon-plugin</module>
-
-        <module>../../_solon_plugin/liteflow-solon-plugin</module>
-        <module>../../_solon_plugin/easy-trans-solon-plugin</module>
-
-        <module>../../_solon_plugin/bean-searcher-solon-plugin</module>
+<!--        <module>../../solon-projects/solon-plugin/tio-solon-plugin</module>-->
     </modules>
 </project>

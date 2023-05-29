@@ -17,10 +17,7 @@ import java.net.URI;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 通用上下文接口（实现：Context + Handler 架构）
@@ -491,12 +488,21 @@ public abstract class Context {
         }
     }
 
+    public abstract Map<String,List<UploadedFile>> filesMap() throws Exception;
+
     /**
      * 获取上传文件
      *
      * @param name 文件名
      */
-    public abstract List<UploadedFile> files(String name) throws Exception;
+    public List<UploadedFile> files(String name) throws Exception {
+        List<UploadedFile> list = filesMap().get(name);
+        if (list == null) {
+            return Collections.emptyList();
+        } else {
+            return list;
+        }
+    }
 
     /**
      * 获取上传文件

@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.noear</groupId>
         <artifactId>solon-parent</artifactId>
-        <version>2.3.0</version>
+        <version>2.3.1</version>
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
@@ -16,37 +16,35 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>../../_solon_base/solon.aot</module>
-        <module>../../_solon_base/solon.aspect</module>
-        <module>../../_solon_base/solon.proxy</module>
-<!--        <module>../../_solon_base/solon.proxy.apt</module>-->
+        <module>../../solon-projects/solon-base/solon.aot</module>
+        <module>../../solon-projects/solon-base/solon.aspect</module>
+        <module>../../solon-projects/solon-base/solon.proxy</module>
 
-<!--        <module>../../_solon_base/solon.graalvm</module>-->
-<!--        <module>../../_solon_base/solon.graalvm.apt</module>-->
+        <module>../../solon-projects/solon-base/solon.vault</module>
+        <module>../../solon-projects/solon-base/solon.config.yaml</module>
 
-        <module>../../_solon_base/solon.vault</module>
-        <module>../../_solon_base/solon.config.yaml</module>
+        <module>../../solon-projects/solon-base/solon.banner</module>
 
-        <module>../../_solon_base/solon.banner</module>
+        <module>../../solon-projects/solon-base/solon.data</module>
+        <module>../../solon-projects/solon-base/solon.data.dynamicds</module>
+        <module>../../solon-projects/solon-base/solon.data.shardingds</module>
 
-        <module>../../_solon_base/solon.data</module>
-        <module>../../_solon_base/solon.data.dynamicds</module>
-        <module>../../_solon_base/solon.docs</module>
-        <module>../../_solon_base/solon.auth</module>
-        <module>../../_solon_base/solon.test</module>
-        <module>../../_solon_base/solon.validation</module>
+        <module>../../solon-projects/solon-base/solon.docs</module>
+        <module>../../solon-projects/solon-base/solon.auth</module>
+        <module>../../solon-projects/solon-base/solon.test</module>
+        <module>../../solon-projects/solon-base/solon.validation</module>
 
-        <module>../../_solon_base/solon.i18n</module>
+        <module>../../solon-projects/solon-base/solon.i18n</module>
 
-        <module>../../_solon_base/solon.logging</module>
-        <module>../../_solon_base/solon.logging.log4j2</module>
-        <module>../../_solon_base/solon.logging.logback</module>
-        <module>../../_solon_base/solon.logging.simple</module>
+        <module>../../solon-projects/solon-base/solon.logging</module>
+        <module>../../solon-projects/solon-base/solon.logging.log4j2</module>
+        <module>../../solon-projects/solon-base/solon.logging.logback</module>
+        <module>../../solon-projects/solon-base/solon.logging.simple</module>
 
 
-        <module>../../_solon_base/solon.health</module>
-        <module>../../_solon_base/solon.health.detector</module>
+        <module>../../solon-projects/solon-base/solon.health</module>
+        <module>../../solon-projects/solon-base/solon.health.detector</module>
 
-        <module>../../_solon_base/solon.hotplug</module>
+        <module>../../solon-projects/solon-base/solon.hotplug</module>
     </modules>
 </project>

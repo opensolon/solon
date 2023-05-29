@@ -10,9 +10,26 @@
 * 提醒2：有使用弃用接口的。建议先升级到 1.12.4；替换弃用代码后，再升级到 2.0.0
 
 ### 2.3.1
-* 新增 solon.web.servlet.jakarta 插件
-* 新增 solon.boot.jetty.jakarta 插件
-* 新增 solon.boot.undertow.jakarta 插件
+* 新增 solon.data.shardingds 插件
+* 新增 redisson-solon-plugin 插件
+* 调整 solon-swagger2-knife4j 插件的优先级，以便控制 enableDoc
+* 调整 mybatis-solon-plugin 插件，增加 aot 处理支持
+* 调整 mybatis 适配增加 isMapper 检测接口
+* 调整 开放 bean 内部形态注册的限制，之前只能用普通组件注解
+* 调整 应用启动时的事件改由 push 推送（之前是 pushTry）
+* 调整 XxxCacheService 增加新的构造函数
+* 调整 jlhttp Part 的 body string 大小限制改为 MAX_BODY_SIZE（之前为 MAX_HEADER_SIZE）
+* 调整 smarthttp Part 的 body string 大小限制改为 MAX_BODY_SIZE（之前为 MAX_HEADER_SIZE）
+* 调整 jdkhttp Part 的 body string 大小限制改为 MAX_BODY_SIZE（之前为 MAX_HEADER_SIZE）
+* 增加 Context::filesMap() 接口
+* bean-searcher 升为 4.2.0
+* mybatis-flex 升为 1.3.1
+* sqltoy 升为 5.2.51
+* redisson 升为 3.21.0
+* netty 升为 4.1.75.Final
+* fastjson2 升为 2.0.33
+* mybatis-flex 升为 1.3.2
+* fastmybatis 升为 2.6.1
 
 ### 2.3.0
 * 新增 solon.docs 插件!!!
