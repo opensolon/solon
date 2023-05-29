@@ -133,7 +133,7 @@ public class AopContext extends BeanContainer {
             }
 
             //添加bean形态处理
-            addBeanShape(clz, bw, clz);
+            beanShapeRegister(clz, bw, clz);
 
             //注册到容器 //Configuration 不进入二次注册
             //beanRegister(bw,bw.name(),bw.typed());
@@ -154,7 +154,7 @@ public class AopContext extends BeanContainer {
             bw.indexSet(anno.index());
 
             //添加bean形态处理
-            addBeanShape(clz, bw, clz);
+            beanShapeRegister(clz, bw, clz);
 
             //注册到容器
             beanRegister(bw, beanName, anno.typed());
@@ -206,9 +206,9 @@ public class AopContext extends BeanContainer {
     }
 
     /**
-     * 添加bean的不同形态
+     * 尝试 bean 形态注册
      */
-    private void addBeanShape(Class<?> clz, BeanWrap bw, AnnotatedElement annoEl) {
+    public void beanShapeRegister(Class<?> clz, BeanWrap bw, AnnotatedElement annoEl) {
         //Plugin
         if (Plugin.class.isAssignableFrom(clz)) {
             //如果是插件，则插入
@@ -644,7 +644,7 @@ public class AopContext extends BeanContainer {
             m_bw.indexSet(anno.index());
 
             //添加bean形态处理
-            addBeanShape(m_bw.clz(), m_bw, mWrap.getMethod());
+            beanShapeRegister(m_bw.clz(), m_bw, mWrap.getMethod());
 
             //注册到容器
             beanRegister(m_bw, beanName, anno.typed());

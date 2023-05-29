@@ -50,6 +50,8 @@ public class ProxyUtil {
 
             bw.proxySet(BeanProxy.getGlobal());
             bw.context().beanRegister(bw, name, typed);
+            bw.context().beanShapeRegister(bw.clz(), bw, bw.clz());
+
             return true;
         }
     }
