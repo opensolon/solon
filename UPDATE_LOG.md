@@ -19,6 +19,9 @@
 * 调整 应用启动时的事件改由 push 推送（之前是 pushTry）
 * 调整 XxxCacheService 增加新的构造函数
 * 调整 jlhttp Part 的 body string 大小限制改为 MAX_BODY_SIZE（之前为 MAX_HEADER_SIZE）
+* 调整 smarthttp Part 的 body string 大小限制改为 MAX_BODY_SIZE（之前为 MAX_HEADER_SIZE）
+* 调整 jdkhttp Part 的 body string 大小限制改为 MAX_BODY_SIZE（之前为 MAX_HEADER_SIZE）
+* 增加 Context::filesMap() 接口
 * bean-searcher 升为 4.2.0
 * mybatis-flex 升为 1.3.1
 * sqltoy 升为 5.2.51

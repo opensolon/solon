@@ -115,10 +115,16 @@ public class ContextEmpty extends Context {
         return null;
     }
 
+    Map<String, List<UploadedFile>> filesMap = null;
     @Override
-    public List<UploadedFile> files(String key) throws Exception {
-        return null;
+    public Map<String, List<UploadedFile>> filesMap() throws Exception {
+        if (filesMap == null) {
+            filesMap = new LinkedHashMap<>();
+        }
+
+        return filesMap;
     }
+
 
     @Override
     public String cookie(String key) {

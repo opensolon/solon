@@ -255,7 +255,7 @@ public class Swagger2Builder {
 
             if (Utils.isBlank(apiAction.consumes())) {
                 if (operationMethod.equals(ApiEnum.METHOD_GET)) {
-                    operation.consumes(""); //如果是 get ，则没有 content-type
+                    operation.consumes(ApiEnum.CONSUMES_URLENCODED); //如果是 get ，则没有 content-type
                 } else {
                     operation.consumes(ApiEnum.CONSUMES_URLENCODED);
                 }

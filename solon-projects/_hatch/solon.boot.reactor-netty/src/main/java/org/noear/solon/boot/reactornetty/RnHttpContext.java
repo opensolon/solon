@@ -162,9 +162,10 @@ public class RnHttpContext extends ContextBase {
     }
 
     @Override
-    public List<UploadedFile> files(String key) throws Exception {
-        return _request_parse.fileMap.get(key);
+    public Map<String, List<UploadedFile>> filesMap() throws Exception {
+        return _request_parse.fileMap;
     }
+
 
     private NvMap _cookieMap;
     @Override

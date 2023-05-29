@@ -19,10 +19,21 @@ public class XPluginImpl implements Plugin {
         OpenApiExtensionResolver openApiExtensionResolver = beanWrap.raw();
 
         if (openApiExtensionResolver.getSetting().isEnable()) {
-            Solon.app().enableDoc(true);
-            StaticMappings.add("/", new ClassPathStaticRepository("META-INF/resources"));
-        } else {
-            Solon.app().enableDoc(false);
+            if (openApiExtensionResolver.getSetting().isProduction()) {
+                if (Solon.cfg().isFilesMode() == false) {
+                    //生产环境，只有 files 模式才能用（即开发模式）
+                    Solon.app().enableDoc(true);
+                    StaticMappings.add("/", new ClassPathStaticRepository("META-INF/resources"));
+                    return;
+                }
+            } else {
+                //非生产环境，一直可用
+                Solon.app().enableDoc(true);
+                StaticMappings.add("/", new ClassPathStaticRepository("META-INF/resources"));
+                return;
+            }
         }
+
+        Solon.app().enableDoc(false);
     }
 }
