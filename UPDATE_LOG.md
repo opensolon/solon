@@ -16,7 +16,7 @@
 * 新增 solon.data.shardingds 插件
 * 新增 redisson-solon-plugin 插件
 * 调整 solon-swagger2-knife4j 插件的优先级，以便控制 enableDoc
-* 调整 mybatis-solon-plugin 插件，增加 aot 处理支持
+* 调整 mybatis-solon-plugin 插件，增加 aot 处理适配（支持原生编译了）
 * 调整 mybatis 适配增加 isMapper 检测接口
 * 调整 开放 bean 内部形态注册的限制，之前只能用普通组件注解
 * 调整 应用启动时的事件改由 push 推送（之前是 pushTry）
@@ -26,7 +26,6 @@
 * 调整 jdkhttp Part 的 body string 大小限制改为 MAX_BODY_SIZE（之前为 MAX_HEADER_SIZE）
 * 增加 Context::filesMap() 接口
 * bean-searcher 升为 4.2.0
-* mybatis-flex 升为 1.3.1
 * sqltoy 升为 5.2.51
 * redisson 升为 3.21.0
 * netty 升为 4.1.75.Final

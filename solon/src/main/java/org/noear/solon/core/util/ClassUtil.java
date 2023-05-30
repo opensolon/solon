@@ -2,6 +2,7 @@ package org.noear.solon.core.util;
 
 import org.noear.solon.core.JarClassLoader;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Properties;
 
 /**
@@ -92,15 +93,16 @@ public class ClassUtil {
      * @param prop        属性
      */
     public static <T> T newInstance(ClassLoader classLoader, String className, Properties prop) {
-        try {
-            Class<?> clz = loadClass(classLoader, className);
-            if (clz == null) {
-                return null;
-            } else {
-                return newInstance(clz, prop);
-            }
-        } catch (Exception ex) {
+        Class<?> clz = loadClass(classLoader, className);
+
+        if (clz == null) {
             return null;
+        } else {
+            try {
+                return newInstance(clz, prop);
+            } catch (Throwable e) {
+                return null;
+            }
         }
     }
 
@@ -109,7 +111,8 @@ public class ClassUtil {
      *
      * @param clz 类
      */
-    public static <T> T newInstance(Class<?> clz) throws Exception {
+    public static <T> T newInstance(Class<?> clz) throws InstantiationException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
         return newInstance(clz, null);
     }
 
@@ -120,7 +123,8 @@ public class ClassUtil {
      * @param clz  类
      * @param prop 属性
      */
-    public static <T> T newInstance(Class<?> clz, Properties prop) throws Exception {
+    public static <T> T newInstance(Class<?> clz, Properties prop) throws InstantiationException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
         if (prop == null) {
             return (T) clz.getDeclaredConstructor().newInstance();
         } else {
