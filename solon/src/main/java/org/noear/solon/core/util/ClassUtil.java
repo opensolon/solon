@@ -32,11 +32,7 @@ public class ClassUtil {
      * @param className 类名称
      */
     public static Class<?> loadClass(String className) {
-        try {
-            return loadClass(null, className); //Class.forName(className);
-        } catch (Throwable ex) {
-            return null;
-        }
+        return loadClass(null, className); //Class.forName(className);
     }
 
     /**
@@ -52,8 +48,10 @@ public class ClassUtil {
             } else {
                 return classLoader.loadClass(className);
             }
-        } catch (Throwable ex) {
+        } catch (ClassNotFoundException e) {
             return null;
+        } catch (Throwable e) {
+            throw new IllegalStateException(e);
         }
     }
 
