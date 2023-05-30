@@ -11,6 +11,7 @@
 
 ### 2.3.2
 * 调整 mybaits-solon-plugin 插件，添加 configuration.mapperVerifyEnabled 配置（控制是否启用 mapper 校验）
+* 调整 solon.docs 插件，将 `@Body` model 进行字段拆解
 * activemq 升为 5.15.9
 
 ### 2.3.1

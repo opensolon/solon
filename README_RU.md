@@ -1,7 +1,7 @@
 <h1 align="center" style="text-align:center;">
 <img src="solon_icon.png" width="128" />
 <br />
-Solon v2.3.2-SNAPSHOT
+Solon v2.3.2
 </h1>
 <p align="center">
 	<strong>Новая структура разработки приложений Java, меньше, быстрее и проще!</strong>
@@ -79,7 +79,7 @@ Solon v2.3.2-SNAPSHOT
 <parent>
     <groupId>org.noear</groupId>
     <artifactId>solon-parent</artifactId>
-    <version>2.3.2-SNAPSHOT</version>   
+    <version>2.3.2</version>   
 </parent>
 
 <dependencies>
@@ -152,7 +152,7 @@ public class HelloServiceImpl implements HelloService{
 * Адрес основной сети：[https://solon.noear.org](https://solon.noear.org)
 * Демо в комплекте с официальной сетью：[https://gitee.com/noear/solon-examples](https://gitee.com/noear/solon-examples)
 * Монометрия проекта：[__test](./__test/) 
-* Более функциональный пример проекта：[solon_demo](https://gitee.com/noear/solon_demo) 、 [solon_api_demo](https://gitee.com/noear/solon_api_demo)  、 [solon_rpc_demo](https://gitee.com/noear/solon_rpc_demo) 、 [solon_socketd_demo](https://gitee.com/noear/solon_socketd_demo) 、 [solon_cloud_demo](https://gitee.com/noear/solon_cloud_demo) 、 [solon_auth_demo](https://gitee.com/noear/solon_auth_demo)
+* Более функциональный пример проекта：[solon_api_demo](https://gitee.com/noear/solon_api_demo)  、 [solon_rpc_demo](https://gitee.com/noear/solon_rpc_demo) 、 [solon_socketd_demo](https://gitee.com/noear/solon_socketd_demo) 、 [solon_cloud_demo](https://gitee.com/noear/solon_cloud_demo) 、 [solon_auth_demo](https://gitee.com/noear/solon_auth_demo)
 
 ## Особая благодарность JetBrains за поддержку проекта open source：
 

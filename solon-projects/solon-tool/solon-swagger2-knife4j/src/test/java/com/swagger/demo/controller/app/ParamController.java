@@ -68,8 +68,9 @@ public class ParamController {
     }
 
     @ApiOperation("实体列表参数")
+    @Post
     @Mapping("demo11")
-    public void demo11(List<DeviceParamBean> bean) {
+    public void demo11(@Body List<DeviceParamBean> bean) {
 
     }
 }

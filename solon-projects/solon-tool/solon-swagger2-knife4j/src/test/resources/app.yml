@@ -4,6 +4,19 @@ solon.app:
   name: demoapi
   group: demo
 
+
+knife4j.enable: true
+knife4j.production: false
+knife4j.basic.enable: false
+knife4j.basic.username: admin
+knife4j.basic.password: 123456
+knife4j.setting.enableOpenApi: false
+knife4j.setting.enableSwaggerModels: true
+knife4j.setting.enableFooter: false
+knife4j.setting.enableFooterCustom: true
+knife4j.setting.footerCustomContent: Apache License 2.0 | Copyright 2022-[SNOWY](https://www.xiaonuo.vip)
+
+
 swagger.adminApi:
   groupName: "admin端接口"
   globalResponseInData: true

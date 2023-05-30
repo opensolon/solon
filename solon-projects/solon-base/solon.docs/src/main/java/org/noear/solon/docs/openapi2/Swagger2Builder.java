@@ -351,10 +351,14 @@ public class Swagger2Builder {
             } else {
                 if (Utils.isNotEmpty(paramSchema)) {
                     //model
-                    if(paramHolder.isRequiredBody()){
+                    if(paramHolder.isRequiredBody() || paramHolder.getParam() == null){
                         //做为 body
                         BodyParameter modelParameter = new BodyParameter();
                         modelParameter.setSchema(new RefModel(paramSchema));
+                        if (paramHolder.getParam().requireBody() == false) {
+                            modelParameter.setIn(ApiEnum.PARAM_TYPE_QUERY);
+                        }
+
                         parameter = modelParameter;
                     }else {
                         parseActionParametersByFields(paramHolder, paramList);
