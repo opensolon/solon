@@ -36,6 +36,9 @@ public class MybatisAdapterDefault implements MybatisAdapter {
     protected final BeanWrap dsWrap;
     protected final Props dsProps;
 
+    //mapper 注解验证启用？
+    protected final boolean mapperVerifyEnabled;
+
     protected Configuration config;
     protected SqlSessionFactory factory;
     protected List<String> mappers = new ArrayList<>();
@@ -59,6 +62,7 @@ public class MybatisAdapterDefault implements MybatisAdapter {
             this.dsProps = dsProps;
         }
 
+        this.mapperVerifyEnabled = dsProps.getBool("configuration.mapperVerifyEnabled", false);
         this.factoryBuilder = new SqlSessionFactoryBuilder();
 
         DataSource dataSource = getDataSource();
@@ -190,8 +194,14 @@ public class MybatisAdapterDefault implements MybatisAdapter {
                             String valNew = getClassExpr(val);
 
                             for (Class<?> clz : ResourceUtil.scanClasses(valNew)) {
-                                if (clz.isInterface() && isMapper(clz)) {
-                                    getConfiguration().addMapper(clz);
+                                if (clz.isInterface()) {
+                                    if (mapperVerifyEnabled) {
+                                        if (isMapper(clz)) {
+                                            getConfiguration().addMapper(clz);
+                                        }
+                                    } else {
+                                        getConfiguration().addMapper(clz);
+                                    }
                                 }
                             }
                         }
