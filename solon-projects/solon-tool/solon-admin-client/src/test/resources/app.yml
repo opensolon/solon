@@ -4,10 +4,11 @@ solon.app:
   name: "SolonAdminClient"
   group: "demo"
 solon.admin.client:
-  mode: "cloud"
+  mode: "local"
   serverUrl: "http://localhost:8888"
-solon.cloud.consul:
-  server: "localhost"
+  metadata: "demo"
+#solon.cloud.consul:
+#  server: "localhost"
 solon.logging.appender:
   console:
     level: INFO

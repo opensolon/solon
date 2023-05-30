@@ -4,9 +4,9 @@ solon.app:
   name: "SolonAdminServer"
   group: "demo"
 solon.admin.server:
-  mode: "cloud"
-solon.cloud.consul:
-  server: "localhost"
+  mode: "local"
+#solon.cloud.consul:
+#  server: "localhost"
 solon.logging.appender:
   console:
     level: INFO
