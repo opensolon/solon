@@ -2,7 +2,7 @@
 
 import {useI18n} from "vue-i18n";
 import {Application, ApplicationStatus} from "../data";
-import {computed, onUnmounted} from "vue";
+import {computed} from "vue";
 import {useApplications} from "../hooks/application.ts";
 import {useRouter} from "vue-router";
 
@@ -10,18 +10,10 @@ const router = useRouter()
 
 const {t} = useI18n()
 
-const {applications, isEvaluating: isLoading, updateApplications, unregisterApplication} = useApplications()
+const {applications, isEvaluating: isLoading, unregisterApplication} = useApplications()
 
 const isEmpty = computed(() => applications.value.length === 0)
-const isAbnormal = computed(() => applications.value.some(app => app.status !== ApplicationStatus.UP))
-
-const timer = setInterval(() => {
-    updateApplications()
-}, 10000)
-
-onUnmounted(() => {
-    clearInterval(timer)
-})
+const isAbnormal = computed(() => applications.value.some(app => app.status != ApplicationStatus.UP))
 
 function goToDetails(app: Application) {
     router.push({
@@ -84,9 +76,9 @@ function goToDetails(app: Application) {
                         <a-list-item>
                             <a-list-item-meta :title="app.name">
                                 <template #avatar>
-                                    <template v-if="app.status===ApplicationStatus.UP">
-                                        <icon-check-circle-fill style="color: rgb(var(--green-6))"/>
-                                    </template>
+                                  <template v-if="app.status==ApplicationStatus.UP">
+                                    <icon-check-circle-fill style="color: rgb(var(--green-6))"/>
+                                  </template>
                                     <template v-else>
                                         <icon-exclamation-circle-fill style="color: rgb(var(--red-6))"/>
                                     </template>

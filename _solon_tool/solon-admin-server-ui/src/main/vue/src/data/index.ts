@@ -11,3 +11,8 @@ export enum ApplicationStatus {
     UP = 0,
     DOWN = 1,
 }
+
+export type ApplicationWebSocketTransfer<T> = {
+    type: string,
+    data: T
+}

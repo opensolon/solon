@@ -1,5 +1,6 @@
 package org.noear.solon.admin.server.data;
 
+import com.google.gson.annotations.SerializedName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -22,7 +23,9 @@ public class Application {
     private long lastHeartbeat;
 
     public enum Status {
+        @SerializedName("0")
         UP,
+        @SerializedName("1")
         DOWN
     }
 

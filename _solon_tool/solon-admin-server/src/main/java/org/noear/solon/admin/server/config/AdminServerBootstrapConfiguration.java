@@ -1,5 +1,6 @@
 package org.noear.solon.admin.server.config;
 
+import com.google.gson.Gson;
 import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.noear.solon.Solon;
@@ -35,6 +36,12 @@ public class AdminServerBootstrapConfiguration {
 
             log.info("Solon Admin server has been successfully enabled in {} mode.", this.mode);
         }
+    }
+
+    @Bean
+    public Gson gson(@Inject(required = false) MarkedServerEnabled marker) {
+        if (marker == null) return null;
+        return new Gson();
     }
 
 }

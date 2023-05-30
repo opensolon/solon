@@ -6,7 +6,6 @@ import org.noear.solon.annotation.*;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.util.Set;
 
 @Controller
 @Mapping("/api/application")
@@ -25,12 +24,6 @@ public class ApplicationController {
     @Mapping("/unregister")
     public void unregister(@Body Application application) {
         applicationService.unregisterApplication(application);
-    }
-
-    @Get
-    @Mapping("/all")
-    public Set<Application> all() {
-        return applicationService.getApplications();
     }
 
     @Post
