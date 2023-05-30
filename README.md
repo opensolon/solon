@@ -149,9 +149,9 @@ public class HelloServiceImpl implements HelloService{
 
 ## 加入到交流群：
 
-| QQ交流群：22200020                       | 微信交流群（申请是输入：Solon）                                                    |
-|---------------------------|-------------------------------------------------------|
-| <img src="group_qq.png" width="120" />       | <img src="group_wx.png" width="120" />    
+| QQ交流群：22200020                       | 微信交流群（申请时输入：Solon）                     |
+|---------------------------|----------------------------------------|
+| <img src="group_qq.png" width="120" />       | <img src="group_wx.png" width="120" /> 
 
 
 交流群里，会提供 "保姆级" 支持和帮助。如有需要，也可提供技术培训和顾问服务
