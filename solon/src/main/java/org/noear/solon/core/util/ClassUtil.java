@@ -57,42 +57,45 @@ public class ClassUtil {
     }
 
     /**
-     * 根据类名实例化一个对象
+     * 尝试根据类名实例化一个对象
      *
      * @param className 类名称
      */
-    public static <T> T newInstance(String className) {
-        return newInstance(className, null);
+    public static <T> T tryInstance(String className) {
+        return tryInstance(className, null);
     }
 
+
     /**
-     * 根据类名实例化一个对象
+     * 尝试根据类名实例化一个对象
      *
      * @param className 类名称
      * @param prop      属性
      */
-    public static <T> T newInstance(String className, Properties prop) {
-        return newInstance(JarClassLoader.global(), className, prop);
+    public static <T> T tryInstance(String className, Properties prop) {
+        return tryInstance(JarClassLoader.global(), className, prop);
     }
 
+
     /**
-     * 根据类名实例化一个对象
+     * 尝试根据类名实例化一个对象
      *
      * @param classLoader 类加载器
      * @param className   类名称
      */
-    public static <T> T newInstance(ClassLoader classLoader, String className) {
-        return newInstance(classLoader, className, null);
+    public static <T> T tryInstance(ClassLoader classLoader, String className) {
+        return tryInstance(classLoader, className, null);
     }
 
+
     /**
-     * 根据类名实例化一个对象
+     * 尝试根据类名实例化一个对象
      *
      * @param classLoader 类加载器
      * @param className   类名称
      * @param prop        属性
      */
-    public static <T> T newInstance(ClassLoader classLoader, String className, Properties prop) {
+    public static <T> T tryInstance(ClassLoader classLoader, String className, Properties prop) {
         Class<?> clz = loadClass(classLoader, className);
 
         if (clz == null) {
@@ -101,9 +104,41 @@ public class ClassUtil {
             try {
                 return newInstance(clz, prop);
             } catch (Throwable e) {
-                return null;
+                return null; //如果异常，说明不支持这种实例化。跳过
             }
         }
+    }
+
+    /**
+     * @deprecated 2.3
+     */
+    @Deprecated
+    public static <T> T newInstance(String className) {
+        return tryInstance(className);
+    }
+
+    /**
+     * @deprecated 2.3
+     */
+    @Deprecated
+    public static <T> T newInstance(String className, Properties prop) {
+        return tryInstance(className, prop);
+    }
+
+    /**
+     * @deprecated 2.3
+     */
+    @Deprecated
+    public static <T> T newInstance(ClassLoader classLoader, String className) {
+        return tryInstance(classLoader, className);
+    }
+
+    /**
+     * @deprecated 2.3
+     */
+    @Deprecated
+    public static <T> T newInstance(ClassLoader classLoader, String className, Properties prop) {
+        return tryInstance(classLoader, className, prop);
     }
 
     /**

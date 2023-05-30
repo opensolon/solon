@@ -366,7 +366,7 @@ public class Utils {
      */
     @Deprecated
     public static <T> T newInstance(String className) {
-        return ClassUtil.newInstance(className);
+        return ClassUtil.tryInstance(className);
     }
 
     /**
@@ -374,7 +374,7 @@ public class Utils {
      */
     @Deprecated
     public static <T> T newInstance(String className, Properties prop) {
-        return ClassUtil.newInstance(className, prop);
+        return ClassUtil.tryInstance(className, prop);
     }
 
     /**
@@ -386,7 +386,7 @@ public class Utils {
      */
     @Deprecated
     public static <T> T newInstance(ClassLoader classLoader, String className) {
-        return ClassUtil.newInstance(classLoader, className);
+        return ClassUtil.tryInstance(classLoader, className);
     }
 
     /**
@@ -394,7 +394,7 @@ public class Utils {
      */
     @Deprecated
     public static <T> T newInstance(ClassLoader classLoader, String className, Properties prop) {
-        return ClassUtil.newInstance(classLoader, className, prop);
+        return ClassUtil.tryInstance(classLoader, className, prop);
     }
 
     /**

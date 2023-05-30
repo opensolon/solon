@@ -70,7 +70,7 @@ public class PluginPackage {
     }
 
     public <T> T newInstance(String className) {
-        return ClassUtil.newInstance(getClassLoader(), className);
+        return ClassUtil.tryInstance(getClassLoader(), className);
     }
 
     public URL getResource(String name) {

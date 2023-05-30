@@ -37,7 +37,7 @@ public class XPluginImp implements Plugin , InitializingBean {
                 String val = (String) v;
 
                 if (key.endsWith(".class")) {
-                    Appender appender = ClassUtil.newInstance(val);
+                    Appender appender = ClassUtil.tryInstance(val);
                     if (appender != null) {
                         String name = key.substring(0, key.length() - 6);
                         AppenderManager.register(name, appender);

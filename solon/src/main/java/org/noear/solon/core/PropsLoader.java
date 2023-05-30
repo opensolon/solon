@@ -34,7 +34,7 @@ public class PropsLoader {
 
     static {
         //（静态扩展约定：org.noear.solon.extend.impl.XxxxExt）
-        PropsLoader tmp = ClassUtil.newInstance("org.noear.solon.extend.impl.PropsLoaderExt");
+        PropsLoader tmp = ClassUtil.tryInstance("org.noear.solon.extend.impl.PropsLoaderExt");
 
         if (tmp == null) {
             global = new PropsLoader();

@@ -165,7 +165,7 @@ public class DbManager {
             DBStyle style = null;
 
             if (dialect.indexOf(".") > 0) {
-                style = ClassUtil.newInstance(dialect);
+                style = ClassUtil.tryInstance(dialect);
 
             } else {
                 dialect = dialect.toLowerCase();

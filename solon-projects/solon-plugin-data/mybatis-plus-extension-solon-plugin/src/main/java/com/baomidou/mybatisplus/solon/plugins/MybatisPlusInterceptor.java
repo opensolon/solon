@@ -15,7 +15,6 @@
  */
 package com.baomidou.mybatisplus.solon.plugins;
 
-import com.baomidou.mybatisplus.core.toolkit.ClassUtils;
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.baomidou.mybatisplus.solon.plugins.inner.InnerInterceptor;
 import com.baomidou.mybatisplus.solon.toolkit.PropertyMapper;
@@ -140,7 +139,7 @@ public class MybatisPlusInterceptor implements Interceptor {
         PropertyMapper pm = PropertyMapper.newInstance(properties);
         Map<String, Properties> group = pm.group(StringPool.AT);
         group.forEach((k, v) -> {
-            InnerInterceptor innerInterceptor = ClassUtil.newInstance(k);
+            InnerInterceptor innerInterceptor = ClassUtil.tryInstance(k);
             innerInterceptor.setProperties(v);
             addInnerInterceptor(innerInterceptor);
         });

@@ -1,6 +1,5 @@
 package org.noear.solon.core;
 
-import org.noear.solon.Utils;
 import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.core.wrap.ClassWrap;
 
@@ -26,7 +25,7 @@ public class PropsConverter {
 
     static {
         //（静态扩展约定：org.noear.solon.extend.impl.XxxxExt）
-        PropsConverter tmp = ClassUtil.newInstance("org.noear.solon.extend.impl.PropsConverterExt");
+        PropsConverter tmp = ClassUtil.tryInstance("org.noear.solon.extend.impl.PropsConverterExt");
 
         if (tmp == null) {
             global = new PropsConverter();

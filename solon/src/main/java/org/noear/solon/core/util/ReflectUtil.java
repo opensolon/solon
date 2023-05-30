@@ -19,7 +19,7 @@ public class ReflectUtil {
 
     static {
         //（静态扩展约定：org.noear.solon.extend.impl.XxxxExt）
-        Reflection ext = ClassUtil.newInstance("org.noear.solon.extend.impl.ReflectionExt");
+        Reflection ext = ClassUtil.tryInstance("org.noear.solon.extend.impl.ReflectionExt");
 
         if (ext == null) {
             reflection = new Reflection();

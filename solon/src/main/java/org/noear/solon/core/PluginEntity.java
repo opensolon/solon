@@ -145,7 +145,7 @@ public class PluginEntity {
     private void initInstance(AopContext context) {
         if (plugin == null) {
             if (classLoader != null) {
-                plugin = ClassUtil.newInstance(classLoader, className);
+                plugin = ClassUtil.tryInstance(classLoader, className);
 
                 if (plugin == null) {
                     LogUtil.global().warn("The configured plugin cannot load: " + className);
