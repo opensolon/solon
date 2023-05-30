@@ -24,6 +24,8 @@ import org.noear.solon.core.route.Routing;
 import org.noear.solon.core.util.GenericUtil;
 import org.noear.solon.core.util.PathUtil;
 
+import org.noear.solon.core.wrap.ClassWrap;
+import org.noear.solon.core.wrap.FieldWrap;
 import org.noear.solon.core.wrap.ParamWrap;
 import org.noear.solon.docs.ApiEnum;
 import org.noear.solon.docs.DocDocket;
@@ -349,13 +351,17 @@ public class Swagger2Builder {
             } else {
                 if (Utils.isNotEmpty(paramSchema)) {
                     //model
-                    BodyParameter modelParameter = new BodyParameter();
-                    modelParameter.setSchema(new RefModel(paramSchema));
-                    if (paramHolder.isRequiredBody() == false) {
-                        modelParameter.setIn(ApiEnum.PARAM_TYPE_QUERY);
+                    if(paramHolder.isRequiredBody()){
+                        //做为 body
+                        BodyParameter modelParameter = new BodyParameter();
+                        modelParameter.setSchema(new RefModel(paramSchema));
+                        parameter = modelParameter;
+                    }else {
+                        parseActionParametersByFields(paramHolder, paramList);
+
+                        continue;
                     }
 
-                    parameter = modelParameter;
                 } else if ("file".equals(dataType)) {
                     //array file
                     FormParameter formParameter = new FormParameter();
@@ -396,6 +402,36 @@ public class Swagger2Builder {
         }
 
         return paramList;
+    }
+
+
+    private void parseActionParametersByFields(ParamHolder paramHolder, List<Parameter> paramList) {
+        //做为 字段
+        ClassWrap classWrap = ClassWrap.get(paramHolder.getParam().getType());
+        for (FieldWrap fw : classWrap.getFieldAllWraps().values()) {
+            QueryParameter parameter = new QueryParameter();
+            parameter.setType(fw.type.getSimpleName());
+
+            ApiModelProperty anno = fw.field.getAnnotation(ApiModelProperty.class);
+
+            if (anno != null) {
+                parameter.setName(anno.name());
+                parameter.setDescription(anno.value());
+                parameter.setRequired(anno.required());
+                parameter.setReadOnly(anno.readOnly());
+
+                if (Utils.isNotEmpty(anno.dataType())) {
+                    parameter.setType(anno.dataType());
+                }
+            }
+
+            if (Utils.isEmpty(parameter.getName())) {
+                parameter.setName(fw.field.getName());
+            }
+
+
+            paramList.add(parameter);
+        }
     }
 
 
