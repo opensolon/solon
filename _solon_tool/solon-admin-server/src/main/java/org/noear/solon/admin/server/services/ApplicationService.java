@@ -1,16 +1,16 @@
 package org.noear.solon.admin.server.services;
 
+import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.noear.solon.admin.server.config.ServerProperties;
 import org.noear.solon.admin.server.data.Application;
+import org.noear.solon.admin.server.data.ApplicationWebsocketTransfer;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Inject;
+import org.noear.solon.core.message.Session;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
@@ -28,9 +28,19 @@ public class ApplicationService {
     @Inject
     private ServerProperties serverProperties;
 
+    @Inject
+    private List<Session> sessions;
+
+    @Inject
+    private Gson gson;
+
     public void registerApplication(Application application) {
         applications.add(application);
         scheduleHeartbeatCheck(application);
+        sessions.forEach(it -> it.sendAsync(gson.toJson(new ApplicationWebsocketTransfer<>(
+                "registerApplication",
+                application
+        ))));
         log.info("Application registered: {}", application);
     }
 
@@ -39,6 +49,10 @@ public class ApplicationService {
         if (!find.isPresent()) return;
         applications.remove(find.get());
         scheduledThreadPoolExecutor.remove(runningHeartbeatTasks.get(find.get()));
+        sessions.forEach(it -> it.sendAsync(gson.toJson(new ApplicationWebsocketTransfer<>(
+                "unregisterApplication",
+                find.get()
+        ))));
         log.info("Application unregistered: {}", find.get());
     }
 
@@ -46,7 +60,16 @@ public class ApplicationService {
         val find = applications.stream().filter(it -> it.equals(application)).findFirst();
         if (!find.isPresent()) return;
         find.get().setLastHeartbeat(System.currentTimeMillis());
+
+        if (application.getStatus() == Application.Status.UP) return;
+
         find.get().setStatus(Application.Status.UP);
+
+        sessions.forEach(it -> it.sendAsync(gson.toJson(new ApplicationWebsocketTransfer<>(
+                "updateApplication",
+                find.get()
+        ))));
+
         log.debug("Application heartbeat: {}", find.get());
     }
 
@@ -62,7 +85,15 @@ public class ApplicationService {
     private void runHeartbeatCheck(Application application) {
         if (System.currentTimeMillis() - application.getLastHeartbeat() <= serverProperties.getHeartbeatInterval())
             return;
+
+        if (application.getStatus() == Application.Status.DOWN) return;
+
         application.setStatus(Application.Status.DOWN);
+
+        sessions.forEach(it -> it.sendAsync(gson.toJson(new ApplicationWebsocketTransfer<>(
+                "updateApplication",
+                application
+        ))));
     }
 
     public Set<Application> getApplications() {

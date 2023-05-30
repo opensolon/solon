@@ -1,6 +1,5 @@
-import {computedAsync} from "@vueuse/core";
-import {Application} from "../data";
-import {ref, watch} from "vue";
+import {Application, ApplicationWebSocketTransfer} from "../data";
+import {ref} from "vue";
 import {Message} from "@arco-design/web-vue";
 import {useI18n} from 'vue-i18n';
 
@@ -8,21 +7,37 @@ export function useApplications() {
 
     const i18n = useI18n();
 
-    const time = ref(new Date().getTime())
     const applications = ref<Application[]>([])
     const isEvaluating = ref(true);
 
-    const evaluatingApplications = computedAsync<Application[]>(async () => {
-        return await fetch("/api/application/all?" + time.value)
-            .then(response => response.json())
-    }, null!!, isEvaluating)
-    watch(evaluatingApplications, (value) => {
-        applications.value = value
+    const websocket = new WebSocket("ws://" + window.location.host + "/ws/application");
+    websocket.addEventListener('message', (event: MessageEvent) => {
+        const data = JSON.parse(event.data) as ApplicationWebSocketTransfer<any>
+        switch (data.type) {
+            case "getAllApplication":
+                applications.value = data.data as Application[];
+                isEvaluating.value = false;
+                break
+            case "registerApplication":
+                applications.value.push(data.data as Application)
+                break
+            case "unregisterApplication":
+                applications.value = applications.value.filter(app => app.name !== data.data.name || app.baseUrl !== data.data.baseUrl)
+                break;
+            case "updateApplication":
+                applications.value = applications.value.map(app => {
+                    if (app.name === data.data.name && app.baseUrl === data.data.baseUrl) {
+                        return data.data as Application
+                    }
+                    return app
+                })
+        }
     })
-
-    const updateApplications = () => {
-        time.value = new Date().getTime()
-    }
+    websocket.addEventListener('open', () => {
+        websocket.send(JSON.stringify({
+            type: "getAllApplication"
+        }))
+    })
 
     const unregisterApplication = async (application: Application) => {
         const isOk = await fetch("/api/application/unregister", {
@@ -43,7 +58,6 @@ export function useApplications() {
     return {
         applications,
         isEvaluating,
-        updateApplications,
         unregisterApplication
     };
 }
