@@ -35,6 +35,8 @@ public class ApplicationService {
     private Gson gson;
 
     public void registerApplication(Application application) {
+        if (applications.contains(application)) return;
+
         applications.add(application);
         scheduleHeartbeatCheck(application);
         sessions.forEach(it -> it.sendAsync(gson.toJson(new ApplicationWebsocketTransfer<>(
@@ -47,6 +49,7 @@ public class ApplicationService {
     public void unregisterApplication(Application application) {
         val find = applications.stream().filter(it -> it.equals(application)).findFirst();
         if (!find.isPresent()) return;
+
         applications.remove(find.get());
         scheduledThreadPoolExecutor.remove(runningHeartbeatTasks.get(find.get()));
         sessions.forEach(it -> it.sendAsync(gson.toJson(new ApplicationWebsocketTransfer<>(
