@@ -1,6 +1,5 @@
 package org.noear.solon.admin.server.config;
 
-import org.noear.solon.Solon;
 import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
