@@ -15,6 +15,7 @@
 * nacos2 升为 2.2.3
 * nacos1 升为 1.4.6
 * rocketmq5 升为 5.0.5
+* dubbo3 升为 3.2.2
 
 ### 2.3.2
 * 调整 mybaits-solon-plugin 插件，添加 configuration.mapperVerifyEnabled 配置（控制是否启用 mapper 校验）
