@@ -103,7 +103,7 @@
 
         <sa-token.version>1.34.0</sa-token.version>
 
-        <mapstruct.version>1.5.3.Final</mapstruct.version>
+        <mapstruct.version>1.5.5.Final</mapstruct.version>
         <native.version>0.9.20</native.version>
 
         <activerecord.version>5.0.4</activerecord.version>
@@ -117,6 +117,8 @@
         <dbvisitor.version>5.3.1</dbvisitor.version>
         <shardingsphere.version>5.3.2</shardingsphere.version>
         <wx-java.version>4.4.9.B</wx-java.version>
+
+        <dromara-plugins.version>0.0.8</dromara-plugins.version>
     </properties>
 
 
@@ -1515,6 +1517,37 @@
                 <groupId>org.mapstruct</groupId>
                 <artifactId>mapstruct-processor</artifactId>
                 <version>${mapstruct.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.dromara.solon-plugins</groupId>
+                <artifactId>bee-solon-plugin</artifactId>
+                <version>${dromara-plugins.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.dromara.solon-plugins</groupId>
+                <artifactId>job-solon-plugin</artifactId>
+                <version>${dromara-plugins.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.dromara.solon-plugins</groupId>
+                <artifactId>orika-solon-plugin</artifactId>
+                <version>${dromara-plugins.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.dromara.solon-plugins</groupId>
+                <artifactId>captcha-solon-plugin</artifactId>
+                <version>${dromara-plugins.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.dromara.solon-plugins</groupId>
+                <artifactId>easypoi-solon-plugin</artifactId>
+                <version>${dromara-plugins.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.dromara.solon-plugins</groupId>
+                <artifactId>mapstruct-plus-solon-plugin</artifactId>
+                <version>${dromara-plugins.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
