@@ -11,6 +11,7 @@
 
 ### 2.3.3
 * 调整 solon-cloud-alibaba 快捷包 改用 nacos2,rocketmq5
+* 调整 file-s3-solon-cloud-plugin 插件，不排除 aws-java-sdk-s3（之前为排除）
 * wood 升为 1.1.3
 * nacos2 升为 2.2.3
 * nacos1 升为 1.4.6
