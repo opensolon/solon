@@ -17,8 +17,6 @@ public class WebSocketConfiguration {
             @Inject(required = false) AdminServerBootstrapConfiguration.MarkedServerEnabled marked
     ) {
         if (marked == null) return null;
-        Solon.app().enableWebSocket();
-        Solon.app().enableWebSocketMvc(false);
 
         return new ArrayList<>();
     }
