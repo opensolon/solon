@@ -25,4 +25,11 @@ public interface RouterInterceptor {
     default Object postResult(Context ctx, @Nullable Object result) throws Throwable {
         return result;
     }
+
+    /**
+     * 转为路由规则拦截器（可附加路径规则:路径包函和路径排除）
+     * */
+    default RouterRuleInterceptor rule(){
+        return new RouterRuleInterceptor(this);
+    }
 }
