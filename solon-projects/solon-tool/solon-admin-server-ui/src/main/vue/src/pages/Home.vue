@@ -2,28 +2,34 @@
 
 import {useI18n} from "vue-i18n";
 import {Application, ApplicationStatus} from "../data";
-import {computed} from "vue";
-import {useApplications} from "../hooks/application.ts";
+import {computed, onUnmounted} from "vue";
+import {useApplication, useApplications} from "../hooks/application.ts";
 import {useRouter} from "vue-router";
 
 const router = useRouter()
 
 const {t} = useI18n()
 
-const {applications, isEvaluating: isLoading, unregisterApplication} = useApplications()
+const {applications, isEvaluating: isLoading, close} = useApplications()
+
+const {unregisterApplication} = useApplication()
 
 const isEmpty = computed(() => applications.value.length === 0)
 const isAbnormal = computed(() => applications.value.some(app => app.status != ApplicationStatus.UP))
 
 function goToDetails(app: Application) {
-    router.push({
-        name: 'details',
-        params: {
-            name: encodeURIComponent(app.name),
-            baseUrl: encodeURIComponent(app.baseUrl)
-        }
-    })
+  router.push({
+    name: 'details',
+    params: {
+      name: encodeURIComponent(app.name),
+      baseUrl: encodeURIComponent(app.baseUrl)
+    }
+  })
 }
+
+onUnmounted(() => {
+  close()
+})
 
 </script>
 
