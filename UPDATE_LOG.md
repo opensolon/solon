@@ -9,9 +9,16 @@
 * 提醒1：之前没有使用弃用接口的，可以直接升级 <br>
 * 提醒2：有使用弃用接口的。建议先升级到 1.12.4；替换弃用代码后，再升级到 2.0.0
 
+### 2.3.3
+* 调整 solon-cloud-alibaba 快捷包 改用 nacos2,rocketmq5
+* wood 升为 1.1.3
+* nacos2 升为 2.2.3
+* nacos1 升为 1.4.6
+* rocketmq5 升为 5.0.5
+
 ### 2.3.2
 * 调整 mybaits-solon-plugin 插件，添加 configuration.mapperVerifyEnabled 配置（控制是否启用 mapper 校验）
-* 调整 solon.docs 插件，将 `@Body` model 进行字段拆解
+* 调整 solon.docs 插件，将非 `@Body` model 进行字段拆解
 * activemq 升为 5.15.9
 
 ### 2.3.1

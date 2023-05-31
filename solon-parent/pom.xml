@@ -22,7 +22,7 @@
         <solon.version>2.3.3-SNAPSHOT</solon.version>
         <snack3.version>3.2.72</snack3.version>
         <weed3.version>3.4.33</weed3.version>
-        <wood.version>1.1.2</wood.version>
+        <wood.version>1.1.3</wood.version>
         <water.version>2.11.0</water.version>
         <luffy.version>1.6.4</luffy.version>
         <redisx.version>1.4.8</redisx.version>
@@ -85,8 +85,13 @@
         <grpc.version>1.54.1</grpc.version>
         <dubbo2.version>2.7.5</dubbo2.version>
         <dubbo3.version>3.2.1</dubbo3.version>
-        <nacos1.version>1.4.5</nacos1.version>
-        <nacos2.version>2.2.2</nacos2.version>
+
+        <rocketmq4.version>4.9.5</rocketmq4.version>
+        <rocketmq5.version>5.0.5</rocketmq5.version>
+
+
+        <nacos1.version>1.4.6</nacos1.version>
+        <nacos2.version>2.2.3</nacos2.version>
         <zookeeper.version>3.7.1</zookeeper.version>
         <jetcd-version>0.5.0</jetcd-version>
         <polaris.version>1.12.2</polaris.version>
