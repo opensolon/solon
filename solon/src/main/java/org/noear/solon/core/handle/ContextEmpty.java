@@ -117,7 +117,7 @@ public class ContextEmpty extends Context {
 
     Map<String, List<UploadedFile>> filesMap = null;
     @Override
-    public Map<String, List<UploadedFile>> filesMap() throws Exception {
+    public Map<String, List<UploadedFile>> filesMap() throws IOException {
         if (filesMap == null) {
             filesMap = new LinkedHashMap<>();
         }

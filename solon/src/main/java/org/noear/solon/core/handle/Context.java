@@ -488,14 +488,14 @@ public abstract class Context {
         }
     }
 
-    public abstract Map<String,List<UploadedFile>> filesMap() throws Exception;
+    public abstract Map<String,List<UploadedFile>> filesMap() throws IOException;
 
     /**
      * 获取上传文件
      *
      * @param name 文件名
      */
-    public List<UploadedFile> files(String name) throws Exception {
+    public List<UploadedFile> files(String name) throws IOException {
         List<UploadedFile> list = filesMap().get(name);
         if (list == null) {
             return Collections.emptyList();
@@ -509,7 +509,7 @@ public abstract class Context {
      *
      * @param name 文件名
      */
-    public UploadedFile file(String name) throws Exception {
+    public UploadedFile file(String name) throws IOException {
         return Utils.firstOrNull(files(name));
     }
 

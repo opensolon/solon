@@ -29,7 +29,7 @@ public class XPluginImpl implements Plugin {
         });
 
         // aot
-        if (ClassUtil.hasClass(() -> RuntimeNativeRegistrar.class) && NativeDetector.isAotRuntime()) {
+        if (NativeDetector.isAotRuntime() && ClassUtil.hasClass(() -> RuntimeNativeRegistrar.class)) {
             context.wrapAndPut(MybatisRuntimeNativeRegistrar.class);
         }
 

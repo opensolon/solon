@@ -162,7 +162,7 @@ public class RnHttpContext extends ContextBase {
     }
 
     @Override
-    public Map<String, List<UploadedFile>> filesMap() throws Exception {
+    public Map<String, List<UploadedFile>> filesMap() throws IOException {
         return _request_parse.fileMap;
     }
 

@@ -194,9 +194,13 @@ public class SolonServletContext extends ContextBase {
     }
 
     @Override
-    public Map<String, List<UploadedFile>> filesMap() throws Exception {
+    public Map<String, List<UploadedFile>> filesMap() throws IOException {
         if (isMultipartFormData()) {
-            loadMultipartFormData();
+            try {
+                loadMultipartFormData();
+            } catch (ServletException e) {
+                throw new IOException(e);
+            }
 
             return _fileMap;
         } else {

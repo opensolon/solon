@@ -294,7 +294,7 @@ public class Utils {
      * 获取第一项或者null
      */
     public static <T> T firstOrNull(List<T> list) {
-        if (list.size() > 0) {
+        if (list != null && list.size() > 0) {
             return list.get(0);
         } else {
             return null;

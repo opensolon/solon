@@ -225,7 +225,7 @@ public class JlHttpContext extends ContextBase {
     }
 
     @Override
-    public Map<String, List<UploadedFile>> filesMap() throws Exception {
+    public Map<String, List<UploadedFile>> filesMap() throws IOException {
         if (isMultipartFormData()) {
             loadMultipartFormData();
 
