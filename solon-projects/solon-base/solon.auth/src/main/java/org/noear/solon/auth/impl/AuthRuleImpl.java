@@ -3,13 +3,10 @@ package org.noear.solon.auth.impl;
 import org.noear.solon.auth.AuthStatus;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Result;
-import org.noear.solon.core.util.PathAnalyzer;
 import org.noear.solon.auth.AuthFailureHandler;
 import org.noear.solon.auth.AuthRule;
 import org.noear.solon.auth.AuthUtil;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.noear.solon.core.util.PathRule;
 
 /**
  * 授权规则默认实现
@@ -19,13 +16,10 @@ import java.util.List;
  */
 public class AuthRuleImpl implements AuthRule {
     /**
-     * 拦截规则（包函规则）
-     */
-    private List<PathAnalyzer> includeList = new ArrayList<>();
-    /**
-     * 放行规则（排除规则）
-     */
-    private List<PathAnalyzer> excludeList = new ArrayList<>();
+     * 路径规则
+     * */
+    private PathRule pathRule = new PathRule();
+
     private boolean verifyIp;
     private boolean verifyLogined;
     private boolean verifyPath;
@@ -36,14 +30,14 @@ public class AuthRuleImpl implements AuthRule {
     private AuthFailureHandler failureHandler;
 
     @Override
-    public AuthRule include(String pattern) {
-        includeList.add(PathAnalyzer.get(pattern));
+    public AuthRule include(String pathPattern) {
+        pathRule.include(pathPattern);
         return this;
     }
 
     @Override
-    public AuthRule exclude(String pattern) {
-        excludeList.add(PathAnalyzer.get(pattern));
+    public AuthRule exclude(String pathPattern) {
+        pathRule.exclude(pathPattern);
         return this;
     }
 
@@ -104,30 +98,11 @@ public class AuthRuleImpl implements AuthRule {
         return this;
     }
 
-    public boolean test(String path) {
-        //1.放行匹配
-        for (PathAnalyzer pa : excludeList) {
-            if (pa.matches(path)) {
-                return false;
-            }
-        }
-
-        //2.拦截匹配
-        for (PathAnalyzer pa : includeList) {
-            if (pa.matches(path)) {
-                return true;
-            }
-        }
-
-        //3.无匹配，//如果有排除，又没排除掉；且没有包函；则需要处理
-        return (excludeList.size() > 0 && includeList.size() == 0);
-    }
-
     @Override
     public void handle(Context ctx) throws Throwable {
         String path = ctx.pathNew().toLowerCase();
 
-        if (test(path) == false) {
+        if (pathRule.test(path) == false) {
             return;
         }
 
