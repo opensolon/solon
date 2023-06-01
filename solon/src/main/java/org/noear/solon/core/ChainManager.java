@@ -1,8 +1,10 @@
 package org.noear.solon.core;
 
 import org.noear.solon.core.handle.*;
+import org.noear.solon.core.route.PathLimiter;
 import org.noear.solon.core.route.RouterInterceptor;
 import org.noear.solon.core.route.RouterInterceptorChainImpl;
+import org.noear.solon.core.route.RouterInterceptorLimiter;
 import org.noear.solon.core.util.RankEntity;
 import org.noear.solon.lang.Nullable;
 
@@ -26,6 +28,10 @@ public class ChainManager {
      * 添加过滤器
      */
     public synchronized void addFilter(Filter filter, int index) {
+        if (filter instanceof PathLimiter) {
+            filter = new FilterLimiter(filter, ((PathLimiter) filter).pathRule());
+        }
+
         _filterNodes.add(new RankEntity(filter, index));
         _filterNodes.sort(Comparator.comparingInt(f -> f.index));
     }
@@ -47,6 +53,10 @@ public class ChainManager {
      * 添加拦截器
      */
     public synchronized void addInterceptor(RouterInterceptor interceptor, int index) {
+        if (interceptor instanceof PathLimiter) {
+            interceptor = new RouterInterceptorLimiter(interceptor, ((PathLimiter) interceptor).pathRule());
+        }
+
         _interceptorNodes.add(new RankEntity<>(interceptor, index));
         _interceptorNodes.sort(Comparator.comparingInt(f -> f.index));
     }

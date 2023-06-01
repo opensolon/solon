@@ -1,4 +1,6 @@
-package org.noear.solon.core.util;
+package org.noear.solon.core.route;
+
+import org.noear.solon.core.util.PathAnalyzer;
 
 import java.util.ArrayList;
 import java.util.List;

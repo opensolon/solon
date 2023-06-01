@@ -2,6 +2,7 @@ package org.noear.solon.core;
 
 
 import org.noear.solon.Solon;
+import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.annotation.ProxyComponent;
@@ -613,6 +614,11 @@ public abstract class BeanContainer {
 
             if(AopContext.class.isAssignableFrom(varH.getType())){
                 varH.setValue(this);
+                return;
+            }
+
+            if(SolonApp.class.isAssignableFrom(varH.getType())){
+                varH.setValue(Solon.app());
                 return;
             }
 

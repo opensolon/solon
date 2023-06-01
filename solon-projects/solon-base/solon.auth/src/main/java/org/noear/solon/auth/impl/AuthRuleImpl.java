@@ -6,7 +6,7 @@ import org.noear.solon.core.handle.Result;
 import org.noear.solon.auth.AuthFailureHandler;
 import org.noear.solon.auth.AuthRule;
 import org.noear.solon.auth.AuthUtil;
-import org.noear.solon.core.util.PathRule;
+import org.noear.solon.core.route.PathRule;
 
 /**
  * 授权规则默认实现

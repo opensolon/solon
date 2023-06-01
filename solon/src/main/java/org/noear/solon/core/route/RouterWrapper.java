@@ -13,7 +13,7 @@ import org.noear.solon.core.message.ListenerPipeline;
  * @author noear
  * @since 1.8
  */
-public abstract class RouterWrapper implements HandlerSlots{
+public abstract class RouterWrapper implements HandlerSlots {
     private Router _router;
     private RouterHandler _routerHandler;
     private ChainManager _chainManager;
@@ -31,7 +31,7 @@ public abstract class RouterWrapper implements HandlerSlots{
     }
 
 
-    protected RouterHandler routerHandler(){
+    protected RouterHandler routerHandler() {
         return _routerHandler;
     }
 
@@ -42,8 +42,9 @@ public abstract class RouterWrapper implements HandlerSlots{
         return _router;
     }
 
-    public ChainManager chainManager(){ return _chainManager; }
-
+    public ChainManager chainManager() {
+        return _chainManager;
+    }
 
 
     ///////////////////////////////////////////////
@@ -74,10 +75,25 @@ public abstract class RouterWrapper implements HandlerSlots{
 
     /**
      * 添加路由拦截器（按先进后出策略执行）
-     * */
-    public void routerInterceptor(int index, RouterInterceptor interceptor){
+     *
+     * @param interceptor 路由拦截器
+     */
+    public void routerInterceptor(RouterInterceptor interceptor) {
+        _chainManager.addInterceptor(interceptor, 0);
+    }
+
+
+    /**
+     * 添加路由拦截器（按先进后出策略执行）
+     *
+     * @param index       顺序位
+     * @param interceptor 路由拦截器
+     */
+    public void routerInterceptor(int index, RouterInterceptor interceptor) {
         _chainManager.addInterceptor(interceptor, index);
     }
+
+
 
     /**
      * 添加前置处理
@@ -289,23 +305,24 @@ public abstract class RouterWrapper implements HandlerSlots{
 
     /**
      * 添加监听到之前的位置
-     * */
-    public void listenBefore(Listener listener){
+     */
+    public void listenBefore(Listener listener) {
         _listenerPipeline.prev(listener);
     }
 
     /**
      * 添加监听到之后的位置
-     * */
-    public void listenAfter(Listener listener){
+     */
+    public void listenAfter(Listener listener) {
         _listenerPipeline.next(listener);
     }
 
     private final ListenerPipeline _listenerPipeline = new ListenerPipeline();
+
     /**
      * 监听器入口
-     * */
-    public Listener listener(){
+     */
+    public Listener listener() {
         return _listenerPipeline;
     }
 }
