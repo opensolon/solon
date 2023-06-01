@@ -3,7 +3,10 @@ package org.noear.solon.core.route;
 import org.noear.solon.core.handle.MethodType;
 
 /**
- * @author noear 2021/4/26 created
+ * 路由记录
+ *
+ * @author noear
+ * @since 1.3
  */
 public interface Routing<T> {
     int index();
