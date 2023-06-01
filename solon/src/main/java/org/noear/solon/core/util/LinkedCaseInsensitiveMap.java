@@ -92,7 +92,7 @@ public class LinkedCaseInsensitiveMap<V> implements Map<String, V>, Serializable
         if (key instanceof String) {
             String key2 = this._k.get(convertKey((String) key));
             if (key2 != null) {
-                return this._m.get(key2);
+                return this._m.getOrDefault(key2, defaultValue);
             }
         }
         return defaultValue;

@@ -130,16 +130,6 @@ public class RnHttpContext extends ContextBase {
         return paramMap().get(key);
     }
 
-    @Override
-    public String param(String key, String def) {
-        String tmp = paramMap().get(key);
-        if(tmp == null) {
-            return def;
-        }else{
-            return tmp;
-        }
-    }
-
     private NvMap _paramMap;
     @Override
     public NvMap paramMap() {

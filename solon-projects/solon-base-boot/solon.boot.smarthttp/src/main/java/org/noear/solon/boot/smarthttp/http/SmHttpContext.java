@@ -128,23 +128,6 @@ public class SmHttpContext extends ContextBase {
         return paramMap().get(key);
     }
 
-    @Override
-    public String param(String key, String def) {
-        try {
-            String temp = paramMap().get(key);
-
-            if (Utils.isEmpty(temp)) {
-                return def;
-            } else {
-                return temp;
-            }
-        } catch (Exception e) {
-            EventBus.pushTry(e);
-
-            return def;
-        }
-    }
-
     private NvMap _paramMap;
 
     @Override

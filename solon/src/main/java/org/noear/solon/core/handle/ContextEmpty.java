@@ -96,11 +96,6 @@ public class ContextEmpty extends Context {
         return paramMap().get(key);
     }
 
-    @Override
-    public String param(String key, String def) {
-        return paramMap().getOrDefault(key, def);
-    }
-
     private NvMap paramMap = null;
     @Override
     public NvMap paramMap() {

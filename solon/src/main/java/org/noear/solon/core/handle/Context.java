@@ -385,7 +385,9 @@ public abstract class Context {
     /**
      * 获取参数
      * */
-    public abstract String param(String name, String def);
+    public String param(String key, String def) {
+        return paramMap().getOrDefault(key, def);
+    }
 
     /**
      * 获取参数并转为int

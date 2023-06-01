@@ -137,18 +137,6 @@ public class SolonServletContext extends ContextBase {
         return paramMap().get(key);
     }
 
-    @Override
-    public String param(String key, String def) {
-        String temp = paramMap().get(key); //因为会添加参数，所以必须用这个
-
-        if (Utils.isEmpty(temp)) {
-            return def;
-        } else {
-            return temp;
-        }
-    }
-
-
     private NvMap _paramMap;
 
     @Override

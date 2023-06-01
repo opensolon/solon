@@ -17,6 +17,7 @@
 * 添加 RouterRuleInterceptor 带路径规则的路由拦截器
 * 优化 Utils::firstOrNull 增加 null 判断
 * 优化 Context::filesMap() 改抛 IOException 异常
+* 简化 Context::param(key,def) 处理
 * wood 升为 1.1.3
 * nacos2 升为 2.2.3
 * nacos1 升为 1.4.6
