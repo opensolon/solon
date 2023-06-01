@@ -13,11 +13,11 @@ public class RouterInterceptorImpl2 implements RouterInterceptor, PathLimiter {
 
     @Override
     public PathRule pathRule() {
-        return new PathRule().exclude("/login");
+        return new PathRule().include("/admin/**").exclude("/admin/login");
     }
 
     @Override
     public void doIntercept(Context ctx, Handler mainHandler, RouterInterceptorChain chain) throws Throwable {
-
+        chain.doIntercept(ctx, mainHandler);
     }
 }
