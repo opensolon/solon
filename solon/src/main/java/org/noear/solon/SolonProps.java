@@ -161,7 +161,7 @@ public final class SolonProps extends Props {
 
         //是否为调试模式
         isDebugMode = "1".equals(getArg("debug")); //调试模式
-        //是否为调试模式
+        //是否为安装模式
         isSetupMode = "1".equals(getArg("setup")); //安装模式
         //是否为白名单模式
         isWhiteMode = "1".equals(getArg("white")); //安全模式（即白名单模式）//todo:默认不再为1, update by 2021.11.49

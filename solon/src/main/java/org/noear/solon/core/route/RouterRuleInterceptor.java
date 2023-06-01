@@ -31,9 +31,9 @@ public abstract class RouterRuleInterceptor implements RouterInterceptor {
     protected final PathRule pathRule = new PathRule();
 
     /**
-     * 规则检测
+     * 是否匹配
      */
-    protected boolean test(Context ctx) {
+    protected boolean isMatched(Context ctx) {
         return pathRule.isEmpty() || pathRule.test(ctx.path());
     }
 
@@ -58,7 +58,7 @@ public abstract class RouterRuleInterceptor implements RouterInterceptor {
      * */
     @Override
     public void doIntercept(Context ctx, Handler mainHandler, RouterInterceptorChain chain) throws Throwable {
-        if (test(ctx)) {
+        if (isMatched(ctx)) {
             //检测通过，则执行规则截拦
             doRuleIntercept(ctx, mainHandler, chain);
         } else {
