@@ -65,8 +65,8 @@ Build from scratch. It has its own standards and norms and open ecology. Combina
 * Supports Web, Data, Job, Remoting, Cloud, and other development scenarios
 * The two architecture modes are Handler + Context and Listener + Message
 * Emphasizes plug-in extensibility, expandable and swappable, adaptable to different application scenarios
-* Allows business plug-ins for "hot plugging" and "hot unloading"
 * Supports GraalVm Native packaging
+* Allow service plug-ins to hot-plug, hot-swap, and hot-manage.
 
 ## Ecosystem Architecture Diagram:
 
