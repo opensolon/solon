@@ -8,7 +8,7 @@ package org.noear.solon.core.route;
  */
 public interface PathLimiter {
     /**
-     * 限制规则
+     * 路径规则
      * */
     PathRule pathRule();
 }
