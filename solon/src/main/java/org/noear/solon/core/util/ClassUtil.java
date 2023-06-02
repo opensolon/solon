@@ -16,6 +16,12 @@ public class ClassUtil {
     /**
      * 是否存在某个类
      *
+     * <pre><code>
+     * if(ClassUtil.hasClass(DemoTestClass.class)){
+     *     ...
+     * }
+     * </code></pre>
+     *
      * @param test 检测函数
      */
     public static boolean hasClass(SupplierEx<Class<?>> test) {
@@ -28,16 +34,16 @@ public class ClassUtil {
     }
 
     /**
-     * 根据字符串加载为一个类
+     * 根据字符串加载为一个类（如果类不存在返回 null）
      *
      * @param className 类名称
      */
     public static Class<?> loadClass(String className) {
-        return loadClass(null, className); //Class.forName(className);
+        return loadClass(null, className);
     }
 
     /**
-     * 根据字符串加载为一个类
+     * 根据字符串加载为一个类（如果类不存在返回 null）
      *
      * @param classLoader 类加载器
      * @param className   类名称
@@ -51,13 +57,11 @@ public class ClassUtil {
             }
         } catch (ClassNotFoundException e) {
             return null;
-        } catch (Throwable e) {
-            throw new IllegalStateException(e);
         }
     }
 
     /**
-     * 尝试根据类名实例化一个对象
+     * 尝试根据类名实例化一个对象（如果类不存在返回 null）
      *
      * @param className 类名称
      */
@@ -67,7 +71,7 @@ public class ClassUtil {
 
 
     /**
-     * 尝试根据类名实例化一个对象
+     * 尝试根据类名实例化一个对象（如果类不存在返回 null）
      *
      * @param className 类名称
      * @param prop      属性
@@ -78,7 +82,7 @@ public class ClassUtil {
 
 
     /**
-     * 尝试根据类名实例化一个对象
+     * 尝试根据类名实例化一个对象（如果类不存在返回 null）
      *
      * @param classLoader 类加载器
      * @param className   类名称
@@ -89,7 +93,7 @@ public class ClassUtil {
 
 
     /**
-     * 尝试根据类名实例化一个对象
+     * 尝试根据类名实例化一个对象（如果类不存在返回 null）
      *
      * @param classLoader 类加载器
      * @param className   类名称
@@ -103,11 +107,41 @@ public class ClassUtil {
         } else {
             try {
                 return newInstance(clz, prop);
-            } catch (Throwable e) {
-                return null; //如果异常，说明不支持这种实例化。跳过
+            } catch (Exception e) {
+                throw new IllegalStateException(e);
             }
         }
     }
+
+    /**
+     * 根据类名实例化一个对象
+     *
+     * @param clz 类
+     */
+    public static <T> T newInstance(Class<?> clz) throws InstantiationException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
+        return newInstance(clz, null);
+    }
+
+
+    /**
+     * 根据类名实例化一个对象
+     *
+     * @param clz  类
+     * @param prop 属性
+     */
+    public static <T> T newInstance(Class<?> clz, Properties prop) throws InstantiationException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
+        if (prop == null) {
+            return (T) clz.getDeclaredConstructor().newInstance();
+        } else {
+            return (T) clz.getConstructor(Properties.class).newInstance(prop);
+        }
+    }
+
+
+    /////////////////
+
 
     /**
      * @deprecated 2.3
@@ -139,31 +173,5 @@ public class ClassUtil {
     @Deprecated
     public static <T> T newInstance(ClassLoader classLoader, String className, Properties prop) {
         return tryInstance(classLoader, className, prop);
-    }
-
-    /**
-     * 根据类名实例化一个对象
-     *
-     * @param clz 类
-     */
-    public static <T> T newInstance(Class<?> clz) throws InstantiationException, IllegalAccessException,
-            IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
-        return newInstance(clz, null);
-    }
-
-
-    /**
-     * 根据类名实例化一个对象
-     *
-     * @param clz  类
-     * @param prop 属性
-     */
-    public static <T> T newInstance(Class<?> clz, Properties prop) throws InstantiationException, IllegalAccessException,
-            IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
-        if (prop == null) {
-            return (T) clz.getDeclaredConstructor().newInstance();
-        } else {
-            return (T) clz.getConstructor(Properties.class).newInstance(prop);
-        }
     }
 }
