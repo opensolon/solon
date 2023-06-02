@@ -28,10 +28,6 @@ public class ChainManager {
      * 添加过滤器
      */
     public synchronized void addFilter(Filter filter, int index) {
-        if (filter instanceof PathLimiter) {
-            filter = new FilterLimiter(filter, ((PathLimiter) filter).pathRule());
-        }
-
         _filterNodes.add(new RankEntity(filter, index));
         _filterNodes.sort(Comparator.comparingInt(f -> f.index));
     }
