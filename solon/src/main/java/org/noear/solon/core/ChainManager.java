@@ -50,7 +50,7 @@ public class ChainManager {
      */
     public synchronized void addInterceptor(RouterInterceptor interceptor, int index) {
         if (interceptor instanceof PathLimiter) {
-            interceptor = new RouterInterceptorLimiter(interceptor, ((PathLimiter) interceptor).limitRule());
+            interceptor = new RouterInterceptorLimiter(interceptor, ((PathLimiter) interceptor).pathRule());
         }
 
         _interceptorNodes.add(new RankEntity<>(interceptor, index));

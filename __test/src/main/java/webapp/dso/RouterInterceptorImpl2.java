@@ -12,7 +12,7 @@ import org.noear.solon.core.route.*;
 public class RouterInterceptorImpl2 implements RouterInterceptor, PathLimiter {
 
     @Override
-    public PathRule limitRule() {
+    public PathRule pathRule() {
         return new PathRule().include("/admin/**").exclude("/admin/login");
     }
 

@@ -10,5 +10,5 @@ public interface PathLimiter {
     /**
      * 限制规则
      * */
-    PathRule limitRule();
+    PathRule pathRule();
 }
