@@ -664,7 +664,7 @@ public abstract class BeanContainer {
             //
             // @Inject("${xxx}") //注入配置 ${xxx} or ${xxx:def},只适合单值
             //
-            String name2 = name.substring(2, name.length() - 1).trim();
+            String name2 = findConfigKey(name);
 
             beanInjectConfig(varH, name2, required);
 
@@ -719,7 +719,7 @@ public abstract class BeanContainer {
                 //
                 // @Inject("${xxx}") //注入配置 ${xxx} or ${xxx:def},只适合单值
                 //
-                String name2 = name.substring(2, name.length() - 1).trim();
+                String name2 = findConfigKey(name);
 
                 beanInjectPropertiesDo(name, obj, cfg().getProp(name2), typeInj.required());
 
@@ -733,6 +733,25 @@ public abstract class BeanContainer {
                 }
             }
         }
+    }
+
+    /**
+     * 找到真实的name
+     * @param name 原始name，${a:${b:3}}
+     * @return 返回真实的name
+     */
+    protected String findConfigKey(String name) {
+        String name2 = name.substring(2, name.length() - 1).trim();
+        // 如果定义了默认值且左边没有配置，则找右边
+        int index = name2.indexOf(':');
+        if (index > 0) {
+            String rawName = name2.substring(0, index);
+            String nextName = name2.substring(index + 1);
+            if (!cfg().containsKey(rawName) && nextName.startsWith("${")) {
+                return findConfigKey(nextName);
+            }
+        }
+        return name2;
     }
 
     private void beanInjectPropertiesDo(String name, Object obj, Properties val, boolean required) {
