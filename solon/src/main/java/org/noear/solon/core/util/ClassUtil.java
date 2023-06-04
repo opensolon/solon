@@ -28,8 +28,12 @@ public class ClassUtil {
         try {
             test.get();
             return true;
-        } catch (Throwable e) {
+        } catch (ClassNotFoundException e) {
             return false;
+        } catch (NoClassDefFoundError e) {
+            return false;
+        } catch (Throwable e) {
+            throw new IllegalStateException(e);
         }
     }
 
