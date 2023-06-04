@@ -191,7 +191,7 @@ public class SseEmitter {
         }
 
         public String build() {
-            return append("\n\n").sb.toString();
+            return append("\n").sb.toString();
         }
 
         SseEventBuilder append(String text) {
