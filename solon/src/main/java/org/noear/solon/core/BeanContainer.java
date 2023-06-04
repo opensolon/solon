@@ -742,12 +742,12 @@ public abstract class BeanContainer {
      */
     protected String findConfigKey(String name) {
         String name2 = name.substring(2, name.length() - 1).trim();
-        // 如果定义了默认值且左边没有配置，则找右边
+        // 如果定义了默认值且左边没有配置右边是表达式，则找右边
         int index = name2.indexOf(':');
         if (index > 0) {
             String rawName = name2.substring(0, index);
             String nextName = name2.substring(index + 1);
-            if (!cfg().containsKey(rawName) && nextName.startsWith("${")) {
+            if (nextName.startsWith("${") && !cfg().containsKey(rawName)) {
                 return findConfigKey(nextName);
             }
         }
