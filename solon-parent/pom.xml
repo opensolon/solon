@@ -141,7 +141,7 @@
         </developer>
         <developer>
             <name>馒头虫/瓢虫</name>
-            <url> https://www.jianshu.com/u/ec230216606c</url>
+            <url>https://www.jianshu.com/u/ec230216606c</url>
         </developer>
         <developer>
             <name>iYarnFog</name>
@@ -162,7 +162,7 @@
         <developer>
             <name>YukaiTang</name>
             <email>2420177044@qq.com</email>
-            <url> https://blog.csdn.net/fanduifandui</url>
+            <url>https://blog.csdn.net/fanduifandui</url>
         </developer>
     </developers>
     <scm>
@@ -422,6 +422,12 @@
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.web.sdl</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.web.sse</artifactId>
                 <version>${solon.version}</version>
             </dependency>
 
