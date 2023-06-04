@@ -16,8 +16,9 @@
 * 添加 PathRule 工具类
 * 添加 PathLimiter 用于限制 RouterInterceptor 的范围
 * 优化 Utils::firstOrNull 增加 null 判断
+* 优化 ClassUtil 的异常处理
 * 优化 Context::filesMap() 改抛 IOException 异常
-* 简化 Context::param(key,def) 处理
+* 优化 Context::param(key,def) 处理
 * wood 升为 1.1.3
 * nacos2 升为 2.2.3
 * rocketmq5 升为 5.0.5
