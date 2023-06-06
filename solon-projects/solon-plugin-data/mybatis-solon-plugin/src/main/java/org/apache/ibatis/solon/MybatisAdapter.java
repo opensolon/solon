@@ -32,27 +32,20 @@ public interface MybatisAdapter {
 
     /**
      * 打开一个会话
-     * */
-    default SqlSession openSession(){
+     */
+    default SqlSession openSession() {
         return getFactory().openSession();
     }
 
 
     /**
      * 获取印映代理
-     * */
-    default <T> T getMapper(Class<T> mapperClz) {
-        MybatisMapperInterceptor handler = new MybatisMapperInterceptor(getFactory(), mapperClz);
-
-        return (T) Proxy.newProxyInstance(
-                mapperClz.getClassLoader(),
-                new Class[]{mapperClz},
-                handler);
-    }
+     */
+    <T> T getMapper(Class<T> mapperClz);
 
 
     /**
      * 注入到
-     * */
+     */
     void injectTo(VarHolder varH);
 }

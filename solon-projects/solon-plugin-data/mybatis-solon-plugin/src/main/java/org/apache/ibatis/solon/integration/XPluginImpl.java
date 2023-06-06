@@ -69,9 +69,7 @@ public class XPluginImpl implements Plugin {
 
 
     private void create0(Class<?> clz, BeanWrap dsBw) {
-        SqlSession session = MybatisAdapterManager.get(dsBw).getFactory().openSession();
-
-        Object raw = session.getMapper(clz);
+        Object raw = MybatisAdapterManager.get(dsBw).getMapper(clz);
         dsBw.context().wrapAndPut(clz, raw);
     }
 

@@ -15,6 +15,7 @@
 * 添加 dromara-plugins 所有插件的版本管理
 * 添加 PathRule 工具类
 * 添加 PathLimiter 用于限制 RouterInterceptor 的范围
+* 添加 MybaitsAdapter::getMapper 增加缓存处理
 * 优化 Utils::firstOrNull 增加 null 判断
 * 优化 ClassUtil 的异常处理
 * 优化 Context::filesMap() 改抛 IOException 异常

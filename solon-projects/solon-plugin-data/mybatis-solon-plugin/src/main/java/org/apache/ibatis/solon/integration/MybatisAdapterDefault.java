@@ -24,6 +24,7 @@ import org.apache.ibatis.solon.tran.SolonManagedTransactionFactory;
 
 import javax.sql.DataSource;
 import java.io.InputStream;
+import java.lang.reflect.Proxy;
 import java.util.*;
 
 /**
@@ -249,6 +250,30 @@ public class MybatisAdapterDefault implements MybatisAdapter {
         }
 
         return factory;
+    }
+
+    Map<Class<?> , Object> mapperCached = new HashMap<>();
+
+    @Override
+    public  <T> T getMapper(Class<T> mapperClz) {
+        Object mapper = mapperCached.get(mapperClz);
+
+        if (mapper == null) {
+            synchronized (mapperClz) {
+                mapper = mapperCached.get(mapperClz);
+                if (mapper == null) {
+                    MybatisMapperInterceptor handler = new MybatisMapperInterceptor(getFactory(), mapperClz);
+
+                    mapper = Proxy.newProxyInstance(
+                            mapperClz.getClassLoader(),
+                            new Class[]{mapperClz},
+                            handler);
+                    mapperCached.put(mapperClz, mapper);
+                }
+            }
+        }
+
+        return (T) mapper;
     }
 
     @Override
