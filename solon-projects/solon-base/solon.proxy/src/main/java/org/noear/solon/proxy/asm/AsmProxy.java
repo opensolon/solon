@@ -2,14 +2,13 @@ package org.noear.solon.proxy.asm;
 
 
 import org.noear.solon.core.AopContext;
+import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.core.util.LogUtil;
 import org.objectweb.asm.*;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.Map;
 
 public class AsmProxy {
     public static final int ASM_VERSION = Opcodes.ASM9;
@@ -18,23 +17,29 @@ public class AsmProxy {
     // 方法名
     private static final String METHOD_SETTER = "setInvocationHandler";
 
-    // 缓存容器，防止生成同一个Class文件在同一个ClassLoader加载崩溃的问题
-    private static final Map<String, Class<?>> proxyClassCache = new HashMap<>();
 
-    /**
-     * 缓存已经生成的代理类的Class，key值根据 classLoader 和 targetClass 共同决定
-     */
-    private static void saveProxyClassCache(ClassLoader classLoader, Class<?> targetClass, Class<?> proxyClass) {
-        String key = classLoader.toString() + "_" + targetClass.getName();
-        proxyClassCache.put(key, proxyClass);
-    }
+    public static Class<?> getProxyClass(AopContext context, Class<?> targetClass) throws Exception {
+        String proxyClassName = targetClass.getName() + PROXY_CLASSNAME_SUFFIX;
 
-    /**
-     * 从缓存中取得代理类的Class，如果没有则返回 null
-     */
-    private static Class<?> getProxyClassCache(ClassLoader classLoader, Class<?> targetClass) {
-        String key = classLoader.toString() + "_" + targetClass.getName();
-        return proxyClassCache.get(key);
+        //目标代理类名
+        Class<?> proxyClass = null;
+
+        //确定代理类加载器
+        AsmProxyClassLoader classLoader = (AsmProxyClassLoader) context.getAttrs().get(AsmProxyClassLoader.class);
+        if (classLoader == null) {
+            classLoader = new AsmProxyClassLoader(context.getClassLoader());
+            context.getAttrs().put(AsmProxyClassLoader.class, classLoader);
+        } else {
+            //尝试获取类
+            proxyClass = ClassUtil.loadClass(classLoader, proxyClassName);
+        }
+
+        if (proxyClass == null) {
+            //构建新的代理类
+            proxyClass = ClassCodeBuilder.build(targetClass, classLoader);
+        }
+
+        return proxyClass;
     }
 
     /**
@@ -77,23 +82,8 @@ public class AsmProxy {
             throw new IllegalArgumentException("argument is null");
         }
 
-        //确定代理类加载器
-        AsmProxyClassLoader classLoader = (AsmProxyClassLoader) context.getAttrs().get(AsmProxyClassLoader.class);
-        if (classLoader == null) {
-            classLoader = new AsmProxyClassLoader(context.getClassLoader());
-            context.getAttrs().put(AsmProxyClassLoader.class, classLoader);
-        }
-
         try {
-            // 查看是否有缓存
-            Class<?> proxyClass = getProxyClassCache(classLoader, targetClass);
-
-            if (proxyClass == null) {
-                //构建新的代理类
-                proxyClass = ClassCodeBuilder.build(targetClass, classLoader);
-                // 缓存
-                saveProxyClassCache(classLoader, targetClass, proxyClass);
-            }
+            Class<?> proxyClass = getProxyClass(context, targetClass);
 
             // 实例化代理对象
             return newInstance(proxyClass, invocationHandler, targetConstructor, targetParam);

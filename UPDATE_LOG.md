@@ -16,6 +16,7 @@
 * 添加 PathRule 工具类
 * 添加 PathLimiter 用于限制 RouterInterceptor 的范围
 * 添加 MybaitsAdapter::getMapper 增加缓存处理
+* 优化 AsmProxy 代理类的缓存机制（简化）
 * 优化 Utils::firstOrNull 增加 null 判断
 * 优化 ClassUtil 的异常处理
 * 优化 Context::filesMap() 改抛 IOException 异常
