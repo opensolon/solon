@@ -21,10 +21,11 @@ public class XPluginImp implements Plugin {
         CloudProps cloudProps = new CloudProps(context, "aws.s3");
 
         if (cloudProps.getFileEnable()) {
-            // maybe we should use AWS environment
-//            if (Utils.isEmpty(cloudProps.getFileAccessKey())) {
-//                return;
-//            }
+            //支持直接使用 AWS 环境（不需要配置）
+            if (cloudProps.getProp().size() == 0) {
+                //没有任何属性时，必须增加 "..file.enable=true"
+                return;
+            }
 
             if (ClassUtil.loadClass(AWS_SDK_TAG) == null) {
                 CloudManager.register(new CloudFileServiceOfS3HttpImpl(cloudProps));

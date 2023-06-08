@@ -25,11 +25,10 @@ solon.cloud.aws.s3:
     secretKey: 'xxx'  
 ```
 
-If not provided accessKey and secretKey, then use aws default credentials provided. 
-you need run on AWS services and use AWS IAM authentications.
+如果没有提供 accessKey 和 secretKey，则使用所提供的默认凭证（需要在AWS服务上运行，并使用AWS IAM身份验证）
 
 ```yaml
 solon.cloud.aws.s3:
   file:
-    enable: true                  #是否启用（默认：启用）
+    enable: true                  #需要显示启用
 ```

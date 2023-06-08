@@ -44,10 +44,10 @@ public class BucketUtils {
 //        }
         if (Utils.isNotBlank(accessKey) && Utils.isNotBlank(secretKey)) {
             return createClient(endpoint, regionId, accessKey, secretKey, cloudProps.getProp("file"));
+        }else {
+            //使用 AWS 默认凭证提供程序
+            return AmazonS3ClientBuilder.defaultClient();
         }
-
-        //use aws default credentials provider
-        return AmazonS3ClientBuilder.defaultClient();
     }
 
     public static AmazonS3 createClient(String endpoint, String regionId, String accessKey, String secretKey, Properties props) {
