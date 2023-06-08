@@ -650,7 +650,7 @@ public class Utils {
                 if (idx > 0) {
                     idx = idx + 8;
                 } else {
-                    idx = uri.lastIndexOf("/", idx) + 1;
+                    idx = uri.lastIndexOf("/") + 1;
                 }
 
                 uri = uri.substring(5, idx);
