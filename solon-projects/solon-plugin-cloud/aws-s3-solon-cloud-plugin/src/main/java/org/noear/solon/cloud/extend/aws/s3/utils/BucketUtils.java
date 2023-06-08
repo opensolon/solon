@@ -7,6 +7,8 @@ import com.amazonaws.auth.AWSCredentialsProvider;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.client.builder.AwsClientBuilder;
+import com.amazonaws.regions.Region;
+import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
@@ -37,11 +39,15 @@ public class BucketUtils {
         String accessKey = cloudProps.getFileAccessKey();
         String secretKey = cloudProps.getFileSecretKey();
 
-        if (Utils.isEmpty(regionId) && Utils.isEmpty(endpoint)) {
-            throw new CloudFileException("The 'regionId' and 'endpoint' configuration must have one");
+//        if (Utils.isEmpty(regionId) && Utils.isEmpty(endpoint)) {
+//            throw new CloudFileException("The 'regionId' and 'endpoint' configuration must have one");
+//        }
+        if (Utils.isNotBlank(accessKey) && Utils.isNotBlank(secretKey)) {
+            return createClient(endpoint, regionId, accessKey, secretKey, cloudProps.getProp("file"));
         }
 
-        return createClient(endpoint, regionId, accessKey, secretKey, cloudProps.getProp("file"));
+        //use aws default credentials provider
+        return AmazonS3ClientBuilder.defaultClient();
     }
 
     public static AmazonS3 createClient(String endpoint, String regionId, String accessKey, String secretKey, Properties props) {

@@ -21,9 +21,10 @@ public class XPluginImp implements Plugin {
         CloudProps cloudProps = new CloudProps(context, "aws.s3");
 
         if (cloudProps.getFileEnable()) {
-            if (Utils.isEmpty(cloudProps.getFileAccessKey())) {
-                return;
-            }
+            // maybe we should use AWS environment
+//            if (Utils.isEmpty(cloudProps.getFileAccessKey())) {
+//                return;
+//            }
 
             if (ClassUtil.loadClass(AWS_SDK_TAG) == null) {
                 CloudManager.register(new CloudFileServiceOfS3HttpImpl(cloudProps));
