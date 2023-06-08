@@ -66,20 +66,20 @@ public class ServerProps {
         //
 
         tmp = Solon.cfg().get("server.request.maxHeaderSize", "").trim().toLowerCase();//k数
-        request_maxHeaderSize = (int)getSize(tmp);
+        request_maxHeaderSize = (int)getSize(tmp, 8192L);//8k
 
         tmp = Solon.cfg().get("server.request.maxBodySize", "").trim().toLowerCase();//k数
         if (Utils.isEmpty(tmp)) {
             //兼容旧的配置
             tmp = Solon.cfg().get("server.request.maxRequestSize", "").trim().toLowerCase();//k数
         }
-        request_maxBodySize = getSize(tmp);
+        request_maxBodySize = getSize(tmp, 2097152L);//2m
 
         tmp = Solon.cfg().get("server.request.maxFileSize", "").trim().toLowerCase();//k数
         if (Utils.isEmpty(tmp)) {
             request_maxFileSize = request_maxBodySize;
         } else {
-            request_maxFileSize = getSize(tmp);
+            request_maxFileSize = getSize(tmp, 2097152L);//2m
         }
 
         tmp = Solon.cfg().get("server.request.encoding", "").trim();
@@ -116,9 +116,9 @@ public class ServerProps {
         }
     }
 
-    static long getSize(String tmp) {
+    static long getSize(String tmp, long def) {
         if (tmp == null) {
-            return 0L;
+            return def;
         }
 
         if (tmp.endsWith("mb")) {
@@ -130,7 +130,7 @@ public class ServerProps {
         } else if (tmp.length() > 0) {
             return Long.parseLong(tmp); //支持-1
         } else {
-            return 0L;//默认0，表示不设置
+            return def;//默认0，表示不设置
         }
     }
 }
