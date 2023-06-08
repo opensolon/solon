@@ -49,6 +49,7 @@ public class CloudFileServiceImpl implements CloudFileService {
     public void addBucket(String bucketName, Props props){
         String endpoint = props.getProperty("endpoint");
 
+        // TODO!!!
         if (Utils.isNotEmpty(endpoint)) {
             if (endpoint.startsWith("http://") || endpoint.startsWith("https://") || endpoint.contains("/") == false) {
                 bucketServiceMap.put(bucketName, new CloudFileServiceOfS3SdkImpl(bucketName, props));

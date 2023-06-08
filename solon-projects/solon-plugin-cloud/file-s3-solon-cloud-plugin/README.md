@@ -19,6 +19,9 @@ solon.cloud.file.s3.file:
       
 ```
 
+If not provided accessKey and secretKey, then use aws default credentials provided. 
+you need run on AWS services and use AWS IAM authentications.
+
 其它 s3 bucket 属性支持
 ```yml
 demo1_bucket:

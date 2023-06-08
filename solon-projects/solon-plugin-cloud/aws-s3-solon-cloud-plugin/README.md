@@ -24,3 +24,12 @@ solon.cloud.aws.s3:
     accessKey: 'xxxx'
     secretKey: 'xxx'  
 ```
+
+If not provided accessKey and secretKey, then use aws default credentials provided. 
+you need run on AWS services and use AWS IAM authentications.
+
+```yaml
+solon.cloud.aws.s3:
+  file:
+    enable: true                  #是否启用（默认：启用）
+```

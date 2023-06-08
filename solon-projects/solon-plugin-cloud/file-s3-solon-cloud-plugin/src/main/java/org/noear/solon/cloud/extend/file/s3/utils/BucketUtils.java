@@ -36,19 +36,23 @@ public class BucketUtils {
         String accessKey = props.getProperty("accessKey");
         String secretKey = props.getProperty("secretKey");
 
-        if(accessKey == null){
+        if (accessKey == null) {
             accessKey = props.getProperty("username");
         }
 
-        if(secretKey == null){
+        if (secretKey == null) {
             secretKey = props.getProperty("password");
         }
 
-        if (Utils.isEmpty(regionId) && Utils.isEmpty(endpoint)) {
-            throw new CloudFileException("The 'regionId' and 'endpoint' configuration must have one");
+//        if (Utils.isEmpty(regionId) && Utils.isEmpty(endpoint)) {
+//            throw new CloudFileException("The 'regionId' and 'endpoint' configuration must have one");
+//        }
+        if (Utils.isNotBlank(accessKey) && Utils.isNotBlank(secretKey)) {
+            return createClient(endpoint, regionId, accessKey, secretKey, props);
         }
 
-        return createClient(endpoint, regionId, accessKey, secretKey, props);
+        //use aws default credentials provider
+        return AmazonS3ClientBuilder.defaultClient();
     }
 
     public static AmazonS3 createClient(String endpoint, String regionId, String accessKey, String secretKey, Properties props) {
