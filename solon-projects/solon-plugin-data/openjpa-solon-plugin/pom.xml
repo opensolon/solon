@@ -11,24 +11,13 @@
         <relativePath>../../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>solon.boot.smarthttp</artifactId>
+    <artifactId>openjpa-solon-plugin</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.boot</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.socketd</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.smartboot.http</groupId>
-            <artifactId>smart-http-server</artifactId>
-            <version>${smarthttp.version}</version>
+            <artifactId>solon.data</artifactId>
         </dependency>
 
         <dependency>

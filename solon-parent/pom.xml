@@ -40,6 +40,8 @@
         <jetty.version>9.4.51.v20230217</jetty.version>
         <undertow.version>2.2.24.Final</undertow.version>
         <tomcat.version>9.0.64</tomcat.version>
+        <smartsocket.version>1.5.28</smartsocket.version>
+        <smarthttp.version>1.2.1</smarthttp.version>
 
         <jaeger.version>1.8.1</jaeger.version>
         <brave.version>5.16.0</brave.version>
