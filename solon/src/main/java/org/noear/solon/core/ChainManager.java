@@ -9,6 +9,7 @@ import org.noear.solon.core.util.RankEntity;
 import org.noear.solon.lang.Nullable;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -23,6 +24,10 @@ public class ChainManager {
      * 过滤器 节点
      */
     private final List<RankEntity<Filter>> _filterNodes = new ArrayList<>();
+
+    public List<RankEntity<Filter>> getFilterNodes() {
+        return Collections.unmodifiableList(_filterNodes);
+    }
 
     /**
      * 添加过滤器
@@ -44,6 +49,10 @@ public class ChainManager {
      * 拦截器节点
      */
     private final List<RankEntity<RouterInterceptor>> _interceptorNodes = new ArrayList<>();
+
+    public List<RankEntity<RouterInterceptor>> getInterceptorNodes() {
+        return Collections.unmodifiableList(_interceptorNodes);
+    }
 
     /**
      * 添加拦截器
