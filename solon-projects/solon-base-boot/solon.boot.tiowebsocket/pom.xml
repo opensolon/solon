@@ -12,7 +12,7 @@
     </parent>
 
     <groupId>org.noear</groupId>
-    <artifactId>solon.boot.tiohttp</artifactId>
+    <artifactId>solon.boot.tiowebsocket</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>
@@ -23,7 +23,7 @@
 
         <dependency>
             <groupId>org.t-io</groupId>
-            <artifactId>tio-http-server</artifactId>
+            <artifactId>tio-websocket-server</artifactId>
             <version>3.7.4.v20210808-RELEASE</version>
         </dependency>
     </dependencies>
