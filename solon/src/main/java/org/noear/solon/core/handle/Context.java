@@ -297,7 +297,7 @@ public abstract class Context {
      * */
     public String accept() {
         if (accept == null) {
-            accept = header("Accept", "");
+            accept = headerOrDefault("Accept", "");
         }
 
         return accept;
@@ -384,8 +384,18 @@ public abstract class Context {
 
     /**
      * 获取参数
+     *
+     * @deprecated 2.3
      * */
+    @Deprecated
     public String param(String key, String def) {
+        return paramOrDefault(key, def);
+    }
+
+    /**
+     * 获取参数或默认
+     * */
+    public String paramOrDefault(String key, String def) {
         return paramMap().getOrDefault(key, def);
     }
 
@@ -400,7 +410,7 @@ public abstract class Context {
      * 获取参数并转为int
      * */
     public int paramAsInt(String name, int def) {
-        return Integer.parseInt(param(name, String.valueOf(def)));
+        return Integer.parseInt(paramOrDefault(name, String.valueOf(def)));
     }
 
     /**
@@ -414,7 +424,7 @@ public abstract class Context {
      * 获取参数并转为long
      * */
     public long paramAsLong(String name, long def) {
-        return Long.parseLong(param(name, String.valueOf(def)));
+        return Long.parseLong(paramOrDefault(name, String.valueOf(def)));
     }
 
     /**
@@ -428,7 +438,7 @@ public abstract class Context {
      * 获取参数并转为double
      * */
     public double paramAsDouble(String name, double def) {
-        return Double.parseDouble(param(name, String.valueOf(def)));
+        return Double.parseDouble(paramOrDefault(name, String.valueOf(def)));
     }
 
     /**
@@ -553,8 +563,19 @@ public abstract class Context {
      *
      * @param name header名
      * @param def 默认值
+     * @deprecated 2.3
      */
+    @Deprecated
     public String header(String name, String def) {
+        return headerOrDefault(name, def);
+    }
+
+    /**
+     * 获取 header
+     *
+     * @param name header名
+     */
+    public String headerOrDefault(String name, String def) {
         return headerMap().getOrDefault(name, def);
     }
 
@@ -592,9 +613,21 @@ public abstract class Context {
      * 获取 session 状态（类型转换，存在风险）
      *
      * @param name 状态名
+     * @deprecated 2.3
+     */
+    @Deprecated
+    public  <T> T session(String name, T def) {
+        return sessionOrDefault(name, def);
+    }
+
+    /**
+     * 获取 session 状态（类型转换，存在风险）
+     *
+     * @param name 状态名
+     * @deprecated 2.3
      */
     @Note("泛型转换，存在转换风险")
-    public abstract  <T> T session(String name, T def);
+    public abstract  <T> T sessionOrDefault(String name, T def);
 
     /**
      * 获取 session 状态，并以 int 型输出

@@ -18,7 +18,7 @@ import org.noear.water.utils.RuntimeUtils;
 public class HandlerStatus implements Handler {
     @Override
     public void handle(Context ctx) throws Throwable {
-        String token = ctx.header(WaterProps.http_header_token, "");
+        String token = ctx.headerOrDefault(WaterProps.http_header_token, "");
 
         //调用任务必须要有server token
         if (authServerToken(token)) {

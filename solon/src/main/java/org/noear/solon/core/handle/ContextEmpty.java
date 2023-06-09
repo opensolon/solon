@@ -160,7 +160,7 @@ public class ContextEmpty extends Context {
     }
 
     @Override
-    public <T> T session(String name, T def) {
+    public <T> T sessionOrDefault(String name, T def) {
         return null;
     }
 

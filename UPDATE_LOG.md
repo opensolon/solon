@@ -17,6 +17,7 @@
 * 添加 PathLimiter 用于限制 RouterInterceptor 的范围
 * 添加 MybaitsAdapter::getMapper 增加缓存处理
 * 添加 maxHeaderSize(8k), maxBodySize(2m) 为 server 统一默认配置，不然会出 readToken 错误
+* 添加 Context::sessionOrDefault(),headerOrDefault(),paramOrDefault() 接口
 * 优化 AsmProxy 代理类的缓存机制（简化）
 * 优化 Utils::firstOrNull 增加 null 判断
 * 优化 ClassUtil 的异常处理

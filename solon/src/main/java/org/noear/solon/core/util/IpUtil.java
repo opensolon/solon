@@ -16,7 +16,7 @@ public class IpUtil {
 
         if (Utils.isEmpty(ip) || "unknown".equalsIgnoreCase(ip)) {
             //包含了客户端和各级代理ip的完整ip链路
-            ip = ctx.header("X-Forwarded-For", "");
+            ip = ctx.headerOrDefault("X-Forwarded-For", "");
             if (ip.contains(",")) {
                 ip = ip.split(",")[0];
             }

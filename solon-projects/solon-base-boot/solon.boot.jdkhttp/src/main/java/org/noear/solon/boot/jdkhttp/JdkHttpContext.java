@@ -228,7 +228,7 @@ public class JdkHttpContext extends ContextBase {
         if (_cookieMap == null) {
             _cookieMap = new NvMap();
 
-            String tmp = header(Constants.HEADER_COOKIE, "");
+            String tmp = headerOrDefault(Constants.HEADER_COOKIE, "");
             String[] ss = tmp.split(";");
             for (String s : ss) {
                 String[] kv = s.split("=");

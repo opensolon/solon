@@ -19,7 +19,7 @@ import org.noear.water.WW;
 public class HandlerJob implements Handler {
     @Override
     public void handle(Context ctx) throws Throwable {
-        String token = ctx.header(WaterProps.http_header_token, "");
+        String token = ctx.headerOrDefault(WaterProps.http_header_token, "");
 
         //调用任务必须要有server token
         if (authServerToken(token)) {

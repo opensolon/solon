@@ -40,7 +40,7 @@ public class SdlService {
      * 获取已登录用户Id
      */
     public Serializable getLoginedUserId(Context ctx) {
-        return ctx.session(SdlStorage.SESSION_USER_ID, null);
+        return ctx.sessionOrDefault(SdlStorage.SESSION_USER_ID, null);
     }
 
     /**
@@ -48,7 +48,7 @@ public class SdlService {
      */
     public boolean isLogined(SdlStorage storage, Context ctx) {
         //检测会话中的用户Id
-        Serializable userId = ctx.session(SdlStorage.SESSION_USER_ID, null);
+        Serializable userId = ctx.sessionOrDefault(SdlStorage.SESSION_USER_ID, null);
 
         if (userId == null) {
             return false;
@@ -72,7 +72,7 @@ public class SdlService {
         }
 
         //检测会话中的用户SdlKey
-        String userSdlKey = ctx.session(SdlStorage.SESSION_SDL_KEY, "");
+        String userSdlKey = ctx.sessionOrDefault(SdlStorage.SESSION_SDL_KEY, "");
 
         if (Utils.isEmpty(userSdlKey)) {
             return false;

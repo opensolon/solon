@@ -59,7 +59,7 @@ public abstract class ContextBase extends Context {
      *
      * @param name 状态名
      */
-    public final <T> T session(String name, T def) {
+    public final <T> T sessionOrDefault(String name, T def) {
         Object tmp = session(name);
         if (tmp == null) {
             return def;

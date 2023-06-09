@@ -68,7 +68,7 @@ public class EasypoiPDFTemplateView extends PoiBaseView {
             fileName = userFileName;
         }
         // 用工具类生成符合RFC 5987标准的文件名header, 去掉UA判断
-        ctx.header("content-disposition", WebFilenameUtils.disposition(fileName + ".pdf"));
+        ctx.headerOrDefault("content-disposition", WebFilenameUtils.disposition(fileName + ".pdf"));
         writeToResponse(ctx, baos);
     }
 

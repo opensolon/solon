@@ -32,7 +32,7 @@ public class LocaleResolverSession implements LocaleResolver {
     @Override
     public Locale getLocale(Context ctx) {
         if (ctx.getLocale() == null) {
-            String lang = ctx.session(attrName, "");
+            String lang = ctx.sessionOrDefault(attrName, "");
 
             if (Utils.isEmpty(lang)) {
                 ctx.setLocale(Solon.cfg().locale());
