@@ -28,6 +28,13 @@ public class Param4Controller {
         return user;
     }
 
+    @Mapping("json_2")
+    public Object test_json_2(@Body Map user) throws IOException {
+        asyncTask.test();
+
+        return user;
+    }
+
     @Mapping("json2")
     public List<UserModel> test_json2(List<UserModel> list) throws IOException {
         asyncTask.test();
