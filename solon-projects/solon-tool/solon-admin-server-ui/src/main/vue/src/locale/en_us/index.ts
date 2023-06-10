@@ -16,4 +16,5 @@ export default {
     "home.applications.actions.details.tooltip": "View application details",
     "notfound.subtitle": "404 Not Found",
     "notfound.extra.action.back": "Back",
+    "websocket.disconnect": "The connection to the server has been disconnected, please try to refresh the page",
 }

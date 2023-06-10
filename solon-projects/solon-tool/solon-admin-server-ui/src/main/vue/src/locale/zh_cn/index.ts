@@ -16,4 +16,5 @@ export default {
     "home.applications.actions.details.tooltip": "查看应用程序详细信息",
     "notfound.subtitle": "404 找不到界面",
     "notfound.extra.action.back": "返回",
+    "websocket.disconnect": "与服务器的连接已断开，请尝试刷新页面",
 }

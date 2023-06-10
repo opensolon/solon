@@ -28,7 +28,7 @@ public class ApplicationService {
     @Inject
     private ServerProperties serverProperties;
 
-    @Inject
+    @Inject("applicationWebsocketSessions")
     private List<Session> sessions;
 
     @Inject

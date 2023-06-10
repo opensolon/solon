@@ -11,7 +11,7 @@ import java.util.List;
 @Configuration
 public class WebSocketConfiguration {
 
-    @Bean
+    @Bean(name = "applicationWebsocketSessions")
     public List<Session> initialSessions(
             @Inject(required = false) AdminServerBootstrapConfiguration.MarkedServerEnabled marked
     ) {

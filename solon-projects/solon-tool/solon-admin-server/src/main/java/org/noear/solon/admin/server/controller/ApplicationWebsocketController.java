@@ -21,7 +21,7 @@ public class ApplicationWebsocketController implements Listener {
     @Inject
     private ApplicationService applicationService;
 
-    @Inject
+    @Inject("applicationWebsocketSessions")
     private List<Session> sessions;
 
     @Override
