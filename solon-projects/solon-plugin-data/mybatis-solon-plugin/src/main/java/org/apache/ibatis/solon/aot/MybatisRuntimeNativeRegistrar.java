@@ -5,6 +5,8 @@ import org.apache.ibatis.cache.decorators.LruCache;
 import org.apache.ibatis.cache.decorators.SoftCache;
 import org.apache.ibatis.cache.decorators.WeakCache;
 import org.apache.ibatis.cache.impl.PerpetualCache;
+import org.apache.ibatis.executor.Executor;
+import org.apache.ibatis.executor.statement.StatementHandler;
 import org.apache.ibatis.javassist.util.proxy.ProxyFactory;
 import org.apache.ibatis.javassist.util.proxy.RuntimeSupport;
 import org.apache.ibatis.logging.Log;
@@ -14,8 +16,10 @@ import org.apache.ibatis.logging.log4j2.Log4j2Impl;
 import org.apache.ibatis.logging.nologging.NoLoggingImpl;
 import org.apache.ibatis.logging.slf4j.Slf4jImpl;
 import org.apache.ibatis.logging.stdout.StdOutImpl;
+import org.apache.ibatis.mapping.BoundSql;
 import org.apache.ibatis.scripting.defaults.RawLanguageDriver;
 import org.apache.ibatis.scripting.xmltags.XMLLanguageDriver;
+import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.solon.MybatisAdapter;
 import org.apache.ibatis.solon.integration.MybatisAdapterDefault;
@@ -34,7 +38,7 @@ import java.util.TreeSet;
 import java.util.stream.Stream;
 
 /**
- * Mybatis aot 注册 native 元数据
+ * mybatis aot 注册 native 元数据
  *
  * @author songyinyin
  * @since 2.3
@@ -71,6 +75,20 @@ public class MybatisRuntimeNativeRegistrar implements RuntimeNativeRegistrar {
                 "org/apache/ibatis/builder/xml/.*.dtd",
                 "org/apache/ibatis/builder/xml/.*.xsd"
         ).forEach(metadata::registerResourceInclude);
+
+        metadata.registerJdkProxy(Executor.class);
+        metadata.registerReflection(Executor.class, MemberCategory.INTROSPECT_PUBLIC_METHODS);
+        metadata.registerAllDeclaredMethod(Executor.class, ExecutableMode.INVOKE);
+
+        metadata.registerJdkProxy(StatementHandler.class);
+        metadata.registerReflection(StatementHandler.class, MemberCategory.INTROSPECT_PUBLIC_METHODS);
+        metadata.registerAllDeclaredMethod(StatementHandler.class, ExecutableMode.INVOKE);
+
+        metadata.registerReflection(BoundSql.class, MemberCategory.DECLARED_FIELDS, MemberCategory.INTROSPECT_DECLARED_METHODS, MemberCategory.INTROSPECT_DECLARED_CONSTRUCTORS);
+        metadata.registerAllDeclaredMethod(BoundSql.class, ExecutableMode.INVOKE);
+
+        metadata.registerReflection(Configuration.class, MemberCategory.DECLARED_FIELDS);
+        metadata.registerAllDeclaredMethod(Configuration.class, ExecutableMode.INVOKE);
 
 
         for (String name : MybatisAdapterManager.getAll().keySet()) {

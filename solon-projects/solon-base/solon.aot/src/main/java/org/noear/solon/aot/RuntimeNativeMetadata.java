@@ -7,6 +7,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.aot.hint.*;
 import org.noear.solon.core.JarClassLoader;
 import org.noear.solon.core.util.ClassUtil;
+import org.noear.solon.core.util.ReflectUtil;
 import org.noear.solon.core.util.ScanUtil;
 
 import java.lang.reflect.Constructor;
@@ -32,7 +33,9 @@ public class RuntimeNativeMetadata {
     private final Set<String> args = new TreeSet<>();
     private final List<ResourceHint> includes = new ArrayList<>();
     private final List<ResourceHint> excludes = new ArrayList<>();
-    private final Map<String, SerializationHint> serialization = new LinkedHashMap<>();
+    private final Map<String, SerializationHint> serializations = new LinkedHashMap<>();
+
+    private final Map<String, SerializationHint> lambdaSerializations = new LinkedHashMap<>();
     private final Map<String, JdkProxyHint> jdkProxys = new LinkedHashMap<>();
 
     public Set<String> getArgs() {
@@ -161,6 +164,17 @@ public class RuntimeNativeMetadata {
         return registerReflection(method.getDeclaringClass(), hints -> hints.getMethods().add(new ExecutableHint(method.getName(), method.getParameterTypes(), mode)));
     }
 
+    /**
+     * 注册类上所有的方法
+     */
+    public RuntimeNativeMetadata registerAllDeclaredMethod(Class<?> clazz, ExecutableMode mode) {
+        Method[] declaredMethods = ReflectUtil.getDeclaredMethods(clazz);
+        for (Method declaredMethod : declaredMethods) {
+            registerMethod(declaredMethod, mode);
+        }
+        return this;
+    }
+
     public RuntimeNativeMetadata registerDefaultConstructor(Class<?> clazz) {
         return registerReflection(clazz, hint -> hint.getConstructors().add(new ExecutableHint("<init>", null, ExecutableMode.INVOKE)));
     }
@@ -254,6 +268,18 @@ public class RuntimeNativeMetadata {
         return registerSerialization(type, null);
     }
 
+
+    /**
+     * 注册Java序列化
+     *
+     * @param name 全类名
+     * @return {@code this}
+     */
+    public RuntimeNativeMetadata registerSerialization(String name) {
+        registerSerializationDo(name, null);
+        return this;
+    }
+
     /**
      * 注册Java序列化
      *
@@ -266,13 +292,12 @@ public class RuntimeNativeMetadata {
         return this;
     }
 
-    private void registerSerializationDo(String typeName, String reachableType) {
-        if (serialization.containsKey(typeName) == false) {
-            SerializationHint serializationHint = new SerializationHint();
-            serializationHint.setName(typeName);
-            serializationHint.setReachableType(reachableType);
-            serialization.put(typeName, serializationHint);
-        }
+    /**
+     * 注册Lambda序列化
+     */
+    public RuntimeNativeMetadata registerLambdaSerialization(Class<?> type) {
+        registerLambdaSerializationDo(ReflectUtil.getClassName(type), null, null);
+        return this;
     }
 
     /**
@@ -377,14 +402,27 @@ public class RuntimeNativeMetadata {
      * @see <a href="https://www.graalvm.org/latest/reference-manual/native-image/metadata/#serialization-metadata-in-json">Serialization Metadata in JSON</a>
      */
     public String toSerializationJson() {
-        if (serialization.isEmpty()) {
+        if (serializations.isEmpty() && lambdaSerializations.isEmpty()) {
             return "";
         }
-        ONode oNode = new ONode(jsonOptions).asArray();
-        for (SerializationHint hint : serialization.values()) {
-            ONode item = oNode.addNew().set("name", hint.getName());
+        ONode oNode = new ONode(jsonOptions);
+
+        ONode types = oNode.getOrNew("types").asArray();
+        for (SerializationHint hint : serializations.values()) {
+            ONode item = types.addNew().set("name", hint.getName());
             if (Utils.isNotEmpty(hint.getReachableType())) {
                 item.getOrNew("condition").set("typeReachable", hint.getReachableType());
+            }
+        }
+
+        ONode lambdaCapturingTypes = oNode.getOrNew("lambdaCapturingTypes").asArray();
+        for (SerializationHint hint : lambdaSerializations.values()) {
+            ONode item = lambdaCapturingTypes.addNew().set("name", hint.getName());
+            if (Utils.isNotEmpty(hint.getReachableType())) {
+                item.getOrNew("condition").set("typeReachable", hint.getReachableType());
+            }
+            if (Utils.isNotEmpty(hint.getCustomTargetConstructorClass())) {
+                item.set("customTargetConstructorClass", hint.getCustomTargetConstructorClass());
             }
         }
         return oNode.toJson();
@@ -456,6 +494,25 @@ public class RuntimeNativeMetadata {
                     attributes.set("allDeclaredClasses", true);
                     break;
             }
+        }
+    }
+
+    private void registerSerializationDo(String typeName, String reachableType) {
+        if (!serializations.containsKey(typeName)) {
+            SerializationHint serializationHint = new SerializationHint();
+            serializationHint.setName(typeName);
+            serializationHint.setReachableType(reachableType);
+            serializations.put(typeName, serializationHint);
+        }
+    }
+
+    private void registerLambdaSerializationDo(String name, String customTargetConstructorClass, String reachableType) {
+        if (!lambdaSerializations.containsKey(name)) {
+            SerializationHint serializationHint = new SerializationHint();
+            serializationHint.setName(name);
+            serializationHint.setCustomTargetConstructorClass(customTargetConstructorClass);
+            serializationHint.setReachableType(reachableType);
+            lambdaSerializations.put(name, serializationHint);
         }
     }
 }
