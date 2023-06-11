@@ -12,6 +12,8 @@ public class SerializationHint {
 
     private String reachableType;
 
+    private String customTargetConstructorClass;
+
     public String getName() {
         return name;
     }
@@ -27,4 +29,13 @@ public class SerializationHint {
     public void setReachableType(String reachableType) {
         this.reachableType = reachableType;
     }
+
+    public String getCustomTargetConstructorClass() {
+        return customTargetConstructorClass;
+    }
+
+    public void setCustomTargetConstructorClass(String customTargetConstructorClass) {
+        this.customTargetConstructorClass = customTargetConstructorClass;
+    }
+
 }
