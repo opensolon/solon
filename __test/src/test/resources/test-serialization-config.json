@@ -1,8 +1,11 @@
-[
-  {
-    "name": "features.aot.NativeDTO$NativeDTO2"
-  },
-  {
-    "name": "features.aot.MyUser"
-  }
-]
+{
+  "types": [
+    {
+      "name": "features.aot.NativeDTO$NativeDTO2"
+    },
+    {
+      "name": "features.aot.MyUser"
+    }
+  ],
+  "lambdaCapturingTypes": []
+}

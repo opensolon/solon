@@ -79,6 +79,7 @@ public class RuntimeNativeMetadataTest {
         System.out.println(resourcesJson);
 
         String resourceAsString = ResourceUtil.getResourceAsString("test-serialization-config.json");
+        System.out.println(resourceAsString);
 
         Assert.assertEquals(resourcesJson, resourceAsString);
     }
