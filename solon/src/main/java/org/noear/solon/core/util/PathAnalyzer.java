@@ -18,12 +18,12 @@ import java.util.regex.Pattern;
 public class PathAnalyzer {
     /**
      * 区分大小写（默认不区分）
-     * */
+     */
     private static boolean caseSensitive = false;
     /**
      * 分析器缓存
-     * */
-    private static Map<String,PathAnalyzer> cached = new LinkedHashMap<>();
+     */
+    private static Map<String, PathAnalyzer> cached = new LinkedHashMap<>();
 
     public static void setCaseSensitive(boolean caseSensitive) {
         PathAnalyzer.caseSensitive = caseSensitive;
@@ -46,33 +46,47 @@ public class PathAnalyzer {
 
 
     private Pattern pattern;
+    private Pattern patternNoStart;
+
 
     private PathAnalyzer(String expr) {
         if (caseSensitive) {
-            pattern = Pattern.compile(exprCompile(expr));
+            pattern = Pattern.compile(exprCompile(expr, true));
+
+            if(expr.contains("{")){
+                patternNoStart = Pattern.compile(exprCompile(expr, false));
+            }
         } else {
-            pattern = Pattern.compile(exprCompile(expr), Pattern.CASE_INSENSITIVE);
+            pattern = Pattern.compile(exprCompile(expr, true), Pattern.CASE_INSENSITIVE);
+
+            if(expr.contains("{")){
+                patternNoStart = Pattern.compile(exprCompile(expr, false), Pattern.CASE_INSENSITIVE);
+            }
         }
     }
 
     /**
-     * 获取路径匹配结果
-     * */
-    public Matcher matcher(String uri){
-        return pattern.matcher(uri);
+     * 路径匹配变量
+     */
+    public Matcher matcher(String uri) {
+        if (patternNoStart != null) {
+            return patternNoStart.matcher(uri);
+        } else {
+            return pattern.matcher(uri);
+        }
     }
 
     /**
      * 检测是否匹配
-     * */
-    public boolean matches(String uri){
+     */
+    public boolean matches(String uri) {
         return pattern.matcher(uri).find();
     }
 
     /**
      * 将路径表达式编译为正则表达式
-     * */
-    private static String exprCompile(String expr) {
+     */
+    private static String exprCompile(String expr, boolean fixedStart) {
         //替换特殊符号
         String p = expr;
 
@@ -87,7 +101,7 @@ public class PathAnalyzer {
 
         //替换{x}值
         if (p.indexOf("{") >= 0) {
-            if(p.indexOf("_}")>0){
+            if (p.indexOf("_}") > 0) {
                 p = p.replaceAll("\\{[^\\}]+?\\_\\}", "(.+?)");
             }
             p = p.replaceAll("\\{[^\\}]+?\\}", "([^/]+?)");//不采用group name,可解决_的问题
@@ -97,9 +111,13 @@ public class PathAnalyzer {
             p = "/" + p;
         }
 
-        p = p.replace(".[]",".*");
+        p = p.replace(".[]", ".*");
 
         //整合并输出
-        return "^" + p + "$";
+        if (fixedStart) {
+            return "^" + p + "$";
+        } else {
+            return p + "$";
+        }
     }
 }

@@ -48,7 +48,7 @@ public class Action extends HandlerAide implements Handler {
     private boolean mMultipart;
 
     //path 分析器
-    private PathAnalyzer pathAnalyzer;//路径分析器
+    private PathAnalyzer pathKeysAnalyzer;//路径分析器
     //path key 列表
     private List<String> pathKeys;
 
@@ -124,7 +124,7 @@ public class Action extends HandlerAide implements Handler {
             }
 
             if (pathKeys.size() > 0) {
-                pathAnalyzer = PathAnalyzer.get(path);
+                pathKeysAnalyzer = PathAnalyzer.get(path);
             }
         }
     }
@@ -303,8 +303,8 @@ public class Action extends HandlerAide implements Handler {
     }
 
     private void bindPathVarDo(Context c) throws Throwable{
-        if (pathAnalyzer != null) {
-            Matcher pm = pathAnalyzer.matcher(c.pathNew());
+        if (pathKeysAnalyzer != null) {
+            Matcher pm = pathKeysAnalyzer.matcher(c.pathNew());
             if (pm.find()) {
                 for (int i = 0, len = pathKeys.size(); i < len; i++) {
                     c.paramSet(pathKeys.get(i), pm.group(i + 1));//不采用group name,可解决_的问题
