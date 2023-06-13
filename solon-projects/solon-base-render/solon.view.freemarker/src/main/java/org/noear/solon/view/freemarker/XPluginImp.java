@@ -1,7 +1,7 @@
 package org.noear.solon.view.freemarker;
 
 import freemarker.template.TemplateDirectiveModel;
-import org.noear.solon.Solon;
+
 import org.noear.solon.auth.AuthUtil;
 import org.noear.solon.auth.tags.AuthConstants;
 import org.noear.solon.core.AopContext;

@@ -1,8 +1,9 @@
 package org.noear.solon.web.sse;
 
+import org.noear.solon.core.Lifecycle;
+import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.Context;
 
-import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
@@ -10,62 +11,91 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 
 /**
- * solon sse简单实现
+ * web sse 简单实现
+ *
+ * @author kongweiguang
+ * @since  2.3
  */
-public class SseEmitter {
+public class SseEmitter implements Lifecycle {
     private final Context ctx;
-    private final LinkedBlockingQueue<Object> q = new LinkedBlockingQueue<>();
+    private final LinkedBlockingQueue<String> q = new LinkedBlockingQueue<>();
     private final AtomicBoolean b = new AtomicBoolean(false);
-    private final Runnable onCompletion;
-    private final Consumer<Throwable> onError;
-    private final TimeUnit unit;
-    private final long timeout;
-    private static final String t = "data: %s\n\n";
 
-    private SseEmitter(Context ctx, Runnable onCompletion, Consumer<Throwable> onError, TimeUnit unit, long timeout) {
-        this.ctx = ctx;
+    private Runnable onCompletion;
+    private Consumer<Throwable> onError;
+
+    private final TimeUnit intervalUnit = TimeUnit.SECONDS;
+    private final long interval;
+
+    private final CompletableFuture future;
+
+
+    /**
+     * 完成之前回调方法
+     *
+     * @param onCompletion
+     * @return
+     */
+    public SseEmitter onCompletion(Runnable onCompletion) {
         this.onCompletion = onCompletion;
+        return this;
+    }
+
+
+    /**
+     * 异常回调方法
+     *
+     * @param onError
+     * @return
+     */
+    public SseEmitter onError(Consumer<Throwable> onError) {
         this.onError = onError;
-        this.unit = unit;
-        this.timeout = timeout;
-        init();
+        return this;
     }
 
-    public static Builder builder() {
-        return new Builder();
-    }
 
-    private void init() {
-        CompletableFuture.runAsync(() -> {
+    public SseEmitter(long interval) {
+        this.ctx = Context.current();
+
+        this.interval = interval;
+
+        this.future = CompletableFuture.runAsync(() -> {
             try {
-                sendMsg();
+                executeSendTask();
             } catch (Throwable e) {
-                onError.accept(e);
-                throw new RuntimeException(e);
+                if (onError != null) {
+                    onError.accept(e);
+                } else {
+                    EventBus.pushTry(e);
+                }
             }
         });
     }
 
-    private void sendMsg() {
-        setHeader();
-        try {
-            while (!b.get()) {
-                Object take = q.poll();
-                if (take != null) {
-                    ctx.output(String.format(t, take));
-                    ctx.flush();
-                }
-                if (unit != null) {
-                    unit.sleep(timeout);
-                }
+    /**
+     * 发送任务
+     */
+    private void executeSendTask() throws Throwable {
+        sendHeader();
+        ctx.flush();
+
+        while (!b.get()) {
+            String msg = q.poll();
+            if (msg != null) {
+                ctx.output(msg);
+                ctx.flush();
             }
-            ctx.close();
-        } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
+
+            if (intervalUnit != null) {
+                intervalUnit.sleep(interval);
+            }
         }
     }
 
-    private void setHeader() {
+    /**
+     * 设置头
+     */
+    private void sendHeader() {
         ctx.headerSet("Content-Type", "text/event-stream");
         ctx.headerSet("Cache-Control", "no-cache");
         ctx.headerSet("Connection", "keep-alive");
@@ -77,127 +107,38 @@ public class SseEmitter {
      *
      * @param o
      */
-    public void send(Object o) {
+    public void send(String o) {
+        send(new SseEvent().data(o));
+    }
+
+    public void send(SseEvent builder) {
         try {
-            if (o != null && !b.get()) {
-                q.put(o);
+            if (builder != null && !b.get()) {
+                q.put(builder.build());
             }
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public void complete() {
+    /**
+     * 任务开始
+     */
+    @Override
+    public void start() throws Throwable {
+        future.get();
+    }
+
+
+    /**
+     * 任务关闭
+     */
+    @Override
+    public void stop() throws Throwable {
         if (onCompletion != null) {
             onCompletion.run();
         }
+
         b.set(true);
-    }
-
-    /**
-     * SseEmitter 构建器
-     */
-    public static class Builder {
-        private Runnable onCompletion;
-        private Consumer<Throwable> onError;
-        private TimeUnit unit;
-        private long timeout;
-
-        /**
-         * sse完成之前调用回调方法
-         *
-         * @param onCompletion
-         * @return
-         */
-        public Builder onCompletion(Runnable onCompletion) {
-            this.onCompletion = onCompletion;
-            return this;
-        }
-
-
-        /**
-         * sse异常时调用回调方法
-         *
-         * @param onError
-         * @return
-         */
-        public Builder onError(Consumer<Throwable> onError) {
-            this.onError = onError;
-            return this;
-        }
-
-        /**
-         * 发送消息间隔时间
-         *
-         * @param timeout
-         * @param unit
-         * @return
-         */
-        public Builder setInterval(long timeout, TimeUnit unit) {
-            this.timeout = timeout;
-            this.unit = unit;
-            return this;
-        }
-
-        /**
-         * 构建SseEmitter对象
-         *
-         * @return
-         */
-        public SseEmitter build() {
-            return new SseEmitter(Context.current(), onCompletion, onError, unit, timeout);
-        }
-
-    }
-
-
-    /**
-     * SseEventBuilder.
-     */
-    public static class SseEventBuilder {
-
-        private final StringBuilder sb = new StringBuilder();
-
-        /**
-         * Add an SSE "id" line.
-         */
-        public SseEventBuilder id(String id) {
-            append("id:").append(id).append("\n");
-            return this;
-        }
-
-        /**
-         * Add an SSE "event" line.
-         */
-        public SseEventBuilder name(String name) {
-            append("event:").append(name).append("\n");
-            return this;
-        }
-
-        /**
-         * Add an SSE "retry" line.
-         */
-        public SseEventBuilder reconnectTime(long reconnectTimeMillis) {
-            append("retry:").append(String.valueOf(reconnectTimeMillis)).append("\n");
-            return this;
-        }
-
-        /**
-         * Add an SSE "data" line.
-         */
-        public SseEventBuilder data(Object object) {
-            append("data:").append(object.toString()).append("\n");
-            return this;
-        }
-
-        public String build() {
-            return append("\n").sb.toString();
-        }
-
-        SseEventBuilder append(String text) {
-            this.sb.append(text);
-            return this;
-        }
-
     }
 }
