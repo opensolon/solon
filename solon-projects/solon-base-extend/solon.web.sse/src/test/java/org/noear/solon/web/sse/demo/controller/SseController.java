@@ -1,6 +1,7 @@
 package org.noear.solon.web.sse.demo.controller;
 
 import org.noear.snack.ONode;
+import org.noear.solon.Utils;
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Get;
 import org.noear.solon.annotation.Mapping;
@@ -36,7 +37,7 @@ public class SseController {
         String msg = "this is msg -> " + System.currentTimeMillis();
         System.out.println(msg);
         emitter.send(msg);
-        emitter.send(new SseEvent().data(msg));
+        emitter.send(new SseEvent().id(Utils.guid()).name("update").data(msg));
         emitter.send(ONode.stringify(Result.succeed(msg)));
 
         return "Ok";

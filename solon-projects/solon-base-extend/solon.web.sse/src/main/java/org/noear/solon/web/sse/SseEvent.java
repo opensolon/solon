@@ -14,7 +14,7 @@ public class SseEvent {
      * Add an SSE "id" line.
      */
     public SseEvent id(String id) {
-        append("id: ").append(id).append("\n");
+        append("id:").append(id).append("\n");
         return this;
     }
 
@@ -22,7 +22,7 @@ public class SseEvent {
      * Add an SSE "event" line.
      */
     public SseEvent name(String name) {
-        append("event: ").append(name).append("\n");
+        append("event:").append(name).append("\n");
         return this;
     }
 
@@ -30,7 +30,7 @@ public class SseEvent {
      * Add an SSE "retry" line.
      */
     public SseEvent reconnectTime(long reconnectTimeMillis) {
-        append("retry: ").append(String.valueOf(reconnectTimeMillis)).append("\n");
+        append("retry:").append(String.valueOf(reconnectTimeMillis)).append("\n");
         return this;
     }
 
@@ -38,7 +38,7 @@ public class SseEvent {
      * Add an SSE "data" line.
      */
     public SseEvent data(Object object) {
-        append("data: ").append(object.toString()).append("\n");
+        append("data:").append(object.toString()).append("\n");
         return this;
     }
 
