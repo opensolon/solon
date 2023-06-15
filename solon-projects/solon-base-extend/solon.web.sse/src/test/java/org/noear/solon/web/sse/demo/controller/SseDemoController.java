@@ -13,28 +13,30 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Controller
-public class SseController {
-    static Map<String, SseEmitter> sseEmitterMap = new HashMap<>();
+public class SseDemoController {
+    static Map<String, SseEmitter> emitterMap = new HashMap<>();
 
     @Get
     @Mapping("/sse/{id}")
     public void sse(String id) throws Throwable {
-        SseEmitter emitter = new SseEmitter(1L);
+        SseEmitter emitter = new SseEmitter(1L)
+                .onCompletion(() -> emitterMap.remove(id))
+                .onError(e -> emitterMap.remove(id));
 
-        sseEmitterMap.put(id, emitter);
+        emitterMap.put(id, emitter);
+
         emitter.start();
-        System.out.println("Started");
     }
 
     @Get
     @Mapping("/sse/put/{id}")
     public String ssePut(String id) {
-        SseEmitter emitter = sseEmitterMap.get(id);
+        SseEmitter emitter = emitterMap.get(id);
         if (emitter == null) {
             return "No user: " + id;
         }
 
-        String msg = "this is msg -> " + System.currentTimeMillis();
+        String msg = "test msg -> " + System.currentTimeMillis();
         System.out.println(msg);
         emitter.send(msg);
         emitter.send(new SseEvent().id(Utils.guid()).name("update").data(msg));
@@ -46,9 +48,9 @@ public class SseController {
     @Get
     @Mapping("/sse/del/{id}")
     public String sseDel(String id) throws Throwable {
-        SseEmitter emitter = sseEmitterMap.get(id);
+        SseEmitter emitter = emitterMap.get(id);
         if (emitter != null) {
-            sseEmitterMap.remove(id);
+            emitterMap.remove(id);
             emitter.stop();
         }
 
