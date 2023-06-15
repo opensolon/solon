@@ -16,10 +16,9 @@ import java.util.Map;
 public class SseDemoController {
     static Map<String, SseEmitter> emitterMap = new HashMap<>();
 
-    @Get
     @Mapping("/sse/{id}")
     public void sse(String id) throws Throwable {
-        SseEmitter emitter = new SseEmitter(1L)
+        SseEmitter emitter = new SseEmitter(0L)
                 .onCompletion(() -> emitterMap.remove(id))
                 .onError(e -> emitterMap.remove(id));
 

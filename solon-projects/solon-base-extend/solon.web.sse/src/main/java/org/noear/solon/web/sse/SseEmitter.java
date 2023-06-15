@@ -6,7 +6,6 @@ import org.noear.solon.core.handle.Context;
 
 import java.io.IOException;
 import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 
@@ -24,8 +23,7 @@ public class SseEmitter implements Lifecycle {
     private Runnable onCompletion;
     private Consumer<Throwable> onError;
 
-    private final TimeUnit intervalUnit = TimeUnit.SECONDS;
-    private final long interval;
+    private final long keepAlive;
 
 
     /**
@@ -52,9 +50,15 @@ public class SseEmitter implements Lifecycle {
     }
 
 
-    public SseEmitter(long interval) {
+
+    public SseEmitter(long keepAlive) {
         this.ctx = Context.current();
-        this.interval = interval;
+
+        if (keepAlive > 0) {
+            this.keepAlive = keepAlive;
+        } else {
+            this.keepAlive = 60;
+        }
     }
 
     /**
@@ -94,9 +98,7 @@ public class SseEmitter implements Lifecycle {
                 internalSendEvent(event);
             }
 
-            if (interval > 0) {
-                intervalUnit.sleep(interval);
-            }
+            Thread.sleep(1000L);
         }
     }
 
@@ -107,6 +109,8 @@ public class SseEmitter implements Lifecycle {
         ctx.headerSet("Content-Type", "text/event-stream");
         ctx.headerSet("Cache-Control", "no-cache");
         ctx.headerSet("Connection", "keep-alive");
+        ctx.headerSet("Keep-Alive", "timeout=" + keepAlive);
+
         ctx.flush();
     }
 
