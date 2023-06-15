@@ -43,8 +43,14 @@ public class InjectTest {
     @Inject("${inject.set1:1,2,3}")
     Set<String> injectSet1;
 
-    @Inject("${inject.set1:1,2,3}")
+    @Inject("${inject.set2:1,2,3}")
     List<Integer> injectSet2;
+
+    @Inject("${inject.set3}")
+    Set<Integer> injectSet3;
+
+    @Inject("${inject.set4}")
+    Set<Integer> injectSet4;
 
     @Inject
     Map<String, Object> map;
@@ -95,5 +101,17 @@ public class InjectTest {
     public void def_set_test2(){
         assert injectSet2 != null;
         assert injectSet2.size() ==3;
+    }
+
+    @Test
+    public void def_set_test3(){
+        assert injectSet3 != null;
+        assert injectSet3.size() ==3;
+    }
+
+    @Test
+    public void def_set_test4(){
+        assert injectSet4 != null;
+        assert injectSet4.size() ==3;
     }
 }

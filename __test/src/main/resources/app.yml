@@ -87,6 +87,11 @@ formattest:
   text10: ${JAVA_HOME}
   text11: ${JAVA_HOME12:11}
 
+inject.set3: "1,2,3"
+inject.set4:
+  - 1
+  - 2
+  - 3
 
 server:
   request:
