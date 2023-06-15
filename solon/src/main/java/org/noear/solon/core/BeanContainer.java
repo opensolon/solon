@@ -804,7 +804,7 @@ public abstract class BeanContainer {
                     }
                 }
             } else {
-                Object val2 = ConvertUtil.to(varH.getType(), val);
+                Object val2 = ConvertUtil.to(varH.getType(), varH.getGenericType(), val);
                 varH.setValue(val2);
                 aot().registerEntityType(varH.getType(), varH.getGenericType());
             }

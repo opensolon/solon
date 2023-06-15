@@ -10,11 +10,16 @@
 * 提醒2：有使用弃用接口的。建议先升级到 1.12.4；替换弃用代码后，再升级到 2.0.0
 
 ### 2.3.4
+* 新增 solon.boot.tiowebsocket 插件
 * 新增 solon.web.sse 插件
-* 新增 mybatis-plus-solon-plugin 插件，原生编译支持（GraalVM Native Image）
+* 增加 mybatis-plus-solon-plugin 插件，原生编译支持（GraalVM Native Image）
+* 增加 Inject("{xxx:def}}") 默认值转集合支持
 * 完善 mybatis-solon-plugin  原生编译支持
-* 调整 graalvm native 增加 lambda 序列化支持
+* 完善 solon.aot 增加 lambda 序列化支持
 * 修复 请求路径动态变化后，路径变量获取失败的问题
+* guava 升为 32.0.0-jre
+* smarthttp 升为 1.2.3
+* smartsocket 升为 1.5.30
 
 ### 2.3.3
 * 调整 solon-cloud-alibaba 快捷包 改用 nacos2,rocketmq5

@@ -92,7 +92,7 @@ public class VaultBeanInjector implements BeanInjector<VaultInject> {
                     }
                 }
             } else {
-                Object val2 = ConvertUtil.to(varH.getType(), val);
+                Object val2 = ConvertUtil.to(varH.getType(), varH.getGenericType(), val);
 
                 varH.setValue(val2);
             }

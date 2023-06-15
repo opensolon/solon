@@ -11,10 +11,7 @@ import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * 类型转换工具
@@ -68,8 +65,8 @@ public class ConvertUtil {
             rst = tryToArray(ary, type);
         }
 
-        //转 list
-        if(rst == null && List.class.isAssignableFrom(type)) {
+        //转 coll
+        if(rst == null && Collection.class.isAssignableFrom(type)) {
             String[] ary = null;
             if (ctx == null) {
                 ary = val.split(",");
@@ -81,26 +78,26 @@ public class ConvertUtil {
                 }
             }
 
-            Type gType =null;
-            if(element instanceof Parameter){
-                gType = ((Parameter)element).getParameterizedType();
-            }else if(element instanceof Field){
-                gType = ((Field)element).getGenericType();
+            Type gType = null;
+            if (element instanceof Parameter) {
+                gType = ((Parameter) element).getParameterizedType();
+            } else if (element instanceof Field) {
+                gType = ((Field) element).getGenericType();
             }
 
-            if(gType instanceof ParameterizedType){
-                Type gTypeA = ((ParameterizedType)gType).getActualTypeArguments()[0];
-                if(gTypeA instanceof Class){
+            if (gType instanceof ParameterizedType) {
+                Type gTypeA = ((ParameterizedType) gType).getActualTypeArguments()[0];
+                if (gTypeA instanceof Class) {
                     List ary2 = new ArrayList(ary.length);
                     for (int i = 0; i < ary.length; i++) {
                         ary2.add(tryTo((Class<?>) gTypeA, ary[i]));
                     }
-                    return ary2;
-                }else{
-                    rst = Arrays.asList(ary);
+                    rst = tryToColl(type, ary2);
+                } else {
+                    rst = tryToColl(type, Arrays.asList(ary));
                 }
-            }else{
-                rst = Arrays.asList(ary);
+            } else {
+                rst = tryToColl(type, Arrays.asList(ary));
             }
         }
 
@@ -122,6 +119,16 @@ public class ConvertUtil {
      * @param val  属性值
      */
     public static Object to(Class<?> type, String val) throws ClassCastException {
+        return to(type, null, val);
+    }
+
+    /**
+     * 转换 properties 的值
+     *
+     * @param type 目标类型
+     * @param val  属性值
+     */
+    public static Object to(Class<?> type, Type genericType, String val) throws ClassCastException {
         if (String.class == (type)) {
             return val;
         }
@@ -130,13 +137,30 @@ public class ConvertUtil {
             return null;
         }
 
+
         Object rst = tryTo(type, val);
 
-        if (rst != null) {
-            return rst;
+        //转 list
+        if (rst == null && Collection.class.isAssignableFrom(type)) {
+            String[] ary = val.split(",");
+
+            if (genericType instanceof ParameterizedType) {
+                Type gTypeA = ((ParameterizedType) genericType).getActualTypeArguments()[0];
+                if (gTypeA instanceof Class) {
+                    List ary2 = new ArrayList(ary.length);
+                    for (int i = 0; i < ary.length; i++) {
+                        ary2.add(tryTo((Class<?>) gTypeA, ary[i]));
+                    }
+                    rst = tryToColl(type, ary2);
+                } else {
+                    rst = tryToColl(type, Arrays.asList(ary));
+                }
+            } else {
+                rst = tryToColl(type, Arrays.asList(ary));
+            }
         }
 
-        if (Date.class == (type)) {
+        if (rst == null && Date.class == (type)) {
             try {
                 return DateAnalyzer.getGlobal().parse(val);
             } catch (RuntimeException ex) {
@@ -147,10 +171,31 @@ public class ConvertUtil {
         }
 
 
-        throw new ClassCastException("不支持类型:" + type.getName());
+        if (rst == null) {
+            throw new ClassCastException("Unsupported type:" + type.getName());
+        } else {
+            return rst;
+        }
     }
 
 
+    private static Object tryToColl(Class<?> type, List list) {
+        if (type.isInterface()) {
+            if (Set.class.equals(type)) {
+                return new TreeSet<>(list);
+            }
+
+            return list;
+        } else {
+            try {
+                Collection coll = ClassUtil.newInstance(type);
+                coll.addAll(list);
+                return coll;
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
 
     private static Object tryToArray(String[] ary, Class<?> type){
         int len = ary.length;
