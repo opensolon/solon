@@ -44,7 +44,7 @@ public class RetryableTask<T> {
     /**
      * 重试达到最大次数后还是失败，使用兜底策略
      */
-    private Supplier<T> recover;
+    private Recover<T> recover;
     /**
      * 自定义重试策略
      */
@@ -143,7 +143,7 @@ public class RetryableTask<T> {
      * @param recover 兜底策略
      * @return this
      */
-    public RetryableTask<T> recover(Supplier<T> recover) {
+    public RetryableTask<T> recover(Recover<T> recover) {
         this.recover = recover;
         return this;
     }
@@ -202,8 +202,8 @@ public class RetryableTask<T> {
      * 自定义重试方法
      */
     private void retryPHelper() {
-
         Throwable ex = null;
+
         while (true) {
             try {
                 result = this.sup.get();
@@ -219,12 +219,11 @@ public class RetryableTask<T> {
                 }
             } else {
                 if (this.recover != null) {
-                    result = this.recover.get();
+                    result = this.recover.recover();
                 }
                 break;
             }
         }
-
     }
 
 
@@ -255,9 +254,7 @@ public class RetryableTask<T> {
         }
 
         if (recover != null) {
-            result = recover.get();
+            result = recover.recover();
         }
     }
-
 }
-

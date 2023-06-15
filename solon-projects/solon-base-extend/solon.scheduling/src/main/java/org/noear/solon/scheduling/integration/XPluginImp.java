@@ -18,16 +18,16 @@ public class XPluginImp implements Plugin {
     public void start(AopContext context) throws Throwable {
         Class<?> source = Solon.app().source();
 
+        // @since 2.2
         Annotation enableAnno = source.getAnnotation(EnableAsync.class);
-
         if (enableAnno != null) {
             context.beanAroundAdd(Async.class, new AsyncInterceptor(context), Integer.MIN_VALUE);
         }
 
+        // @since 2.3
         Annotation enableRetryAnno = source.getAnnotation(EnableRetry.class);
-
         if (enableRetryAnno != null) {
-            context.beanAroundAdd(Retry.class, new RetryInterceptor(), Integer.MIN_VALUE);
+            context.beanAroundAdd(Retry.class, new RetryInterceptor(context), Integer.MIN_VALUE);
         }
     }
 }
