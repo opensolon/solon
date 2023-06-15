@@ -3,9 +3,9 @@ package org.noear.solon.scheduling.integration;
 import org.noear.solon.Solon;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
-import org.noear.solon.scheduling.annotation.Async;
-import org.noear.solon.scheduling.annotation.EnableAsync;
+import org.noear.solon.scheduling.annotation.*;
 import org.noear.solon.scheduling.async.AsyncInterceptor;
+import org.noear.solon.scheduling.retry.RetryInterceptor;
 
 import java.lang.annotation.Annotation;
 
@@ -16,10 +16,18 @@ import java.lang.annotation.Annotation;
 public class XPluginImp implements Plugin {
     @Override
     public void start(AopContext context) throws Throwable {
-        Annotation enableAnno = Solon.app().source().getAnnotation(EnableAsync.class);
+        Class<?> source = Solon.app().source();
+
+        Annotation enableAnno = source.getAnnotation(EnableAsync.class);
 
         if (enableAnno != null) {
             context.beanAroundAdd(Async.class, new AsyncInterceptor(context), Integer.MIN_VALUE);
+        }
+
+        Annotation enableRetryAnno = source.getAnnotation(EnableRetry.class);
+
+        if (enableRetryAnno != null) {
+            context.beanAroundAdd(Retry.class, new RetryInterceptor(), Integer.MIN_VALUE);
         }
     }
 }
