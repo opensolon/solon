@@ -49,8 +49,14 @@ public class InjectTest {
     @Inject("${inject.set3}")
     Set<Integer> injectSet3;
 
+    @Inject("${inject.set3}")
+    Integer[] injectSet3_2;
+
     @Inject("${inject.set4}")
     Set<Integer> injectSet4;
+
+    @Inject("${inject.set4}")
+    Integer[] injectSet4_2;
 
     @Inject
     Map<String, Object> map;
@@ -86,32 +92,44 @@ public class InjectTest {
     TestModel testModel;
 
     @Test
-    public void test3(){
+    public void test3() {
         System.out.println(testModel.getTestname());
         assert testModel.getTestname() != null;
     }
 
     @Test
-    public void def_set_test1(){
+    public void def_set_test1() {
         assert injectSet1 != null;
-        assert injectSet1.size() ==3;
+        assert injectSet1.size() == 3;
     }
 
     @Test
-    public void def_set_test2(){
+    public void def_set_test2() {
         assert injectSet2 != null;
-        assert injectSet2.size() ==3;
+        assert injectSet2.size() == 3;
     }
 
     @Test
-    public void def_set_test3(){
+    public void def_set_test3() {
         assert injectSet3 != null;
-        assert injectSet3.size() ==3;
+        assert injectSet3.size() == 3;
     }
 
     @Test
-    public void def_set_test4(){
+    public void def_set_test3_2() {
+        assert injectSet3_2 != null;
+        assert injectSet3_2.length == 3;
+    }
+
+    @Test
+    public void def_set_test4() {
         assert injectSet4 != null;
-        assert injectSet4.size() ==3;
+        assert injectSet4.size() == 3;
+    }
+
+    @Test
+    public void def_set_test4_2() {
+        assert injectSet4_2 != null;
+        assert injectSet4_2.length == 3;
     }
 }

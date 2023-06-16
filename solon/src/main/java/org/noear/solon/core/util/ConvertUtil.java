@@ -160,6 +160,13 @@ public class ConvertUtil {
             }
         }
 
+        //转数组
+        if (rst == null && type.isArray()) {
+            String[] ary = val.split(",");
+
+            rst = tryToArray(ary, type);
+        }
+
         if (rst == null && Date.class == (type)) {
             try {
                 return DateAnalyzer.getGlobal().parse(val);
