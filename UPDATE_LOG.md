@@ -19,8 +19,10 @@
 * 完善 solon.aot 增加 lambda 序列化支持
 * 修复 请求路径动态变化后，路径变量获取失败的问题
 * guava 升为 32.0.0-jre
-* smarthttp 升为 1.2.3
+* smarthttp 升为 1.2.4
 * smartsocket 升为 1.5.30
+* mybatis-flex 升为 1.3.9
+* sqltoy 升为 5.2.54
 
 ### 2.3.3
 * 调整 solon-cloud-alibaba 快捷包 改用 nacos2,rocketmq5
