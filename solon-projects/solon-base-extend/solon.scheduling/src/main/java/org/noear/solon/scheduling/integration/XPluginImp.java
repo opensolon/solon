@@ -21,7 +21,7 @@ public class XPluginImp implements Plugin {
         // @since 2.2
         Annotation enableAnno = source.getAnnotation(EnableAsync.class);
         if (enableAnno != null) {
-            context.beanAroundAdd(Async.class, new AsyncInterceptor(context), Integer.MIN_VALUE);
+            context.beanAroundAdd(Async.class, new AsyncInterceptor(context));
         }
 
         // @since 2.3

@@ -6,5 +6,5 @@ package org.noear.solon.scheduling.retry;
  * @since 2.3
  */
 public interface Recover<T> {
-    T recover();
+    T recover(Throwable e);
 }

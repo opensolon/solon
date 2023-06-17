@@ -1,6 +1,7 @@
 package org.noear.solon.scheduling.annotation;
 
 
+import org.noear.solon.annotation.Alias;
 import org.noear.solon.scheduling.retry.DefaultRecover;
 import org.noear.solon.scheduling.retry.Recover;
 
@@ -17,6 +18,21 @@ import java.util.concurrent.TimeUnit;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface Retry {
+    /**
+     * 指定需要重试的异常类型（默认为空，空时所有异常都需要处理）
+     */
+    @Alias("include")
+    Class<? extends Throwable>[] value() default {};
+    /**
+     * 指定需要重试的异常类型（默认为空，空时所有异常都需要处理）
+     */
+    @Alias("value")
+    Class<? extends Throwable>[] include() default {};
+    /**
+     * 指定不需要重试的异常类型（默认为空）
+     */
+    Class<? extends Throwable>[] exclude() default {};
+
     /**
      * 最大重试次数
      * 默认3次
@@ -39,11 +55,4 @@ public @interface Retry {
      * 兜底方法，自定义需要实现Recover接口
      */
     Class<? extends Recover> recover() default DefaultRecover.class;
-
-    /**
-     * 指定的异常类型需要重试
-     * 默认是RuntimeException
-     */
-    Class<? extends Throwable>[] exs() default {RuntimeException.class};
-
 }

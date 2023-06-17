@@ -13,31 +13,28 @@ import org.noear.solon.scheduling.annotation.Retry;
  */
 public class RetryInterceptor implements Interceptor {
     AopContext aopContext;
-    public RetryInterceptor(AopContext aopContext){
+
+    public RetryInterceptor(AopContext aopContext) {
         this.aopContext = aopContext;
     }
+
     @Override
     public Object doIntercept(Invocation inv) throws Throwable {
         Retry anno = inv.method().getAnnotation(Retry.class);
 
         if (anno != null) {
-            return RetryableTask.of(() -> {
-                        try {
-                            return inv.method().getMethod().invoke(inv.target(), inv.args());
-                        } catch (Exception e) {
-                            throw new RuntimeException(e);
-                        }
-                    })
+            return RetryableTask.of(() -> inv.method().getMethod().invoke(inv.target(), inv.args()))
                     .maxRetryCount(anno.maxAttempts())
                     .interval(anno.interval())
                     .unit(anno.unit())
                     .recover(aopContext.getBeanOrNew(anno.recover()))
-                    .retryForExceptions(anno.exs())
+                    .retryForIncludes(anno.value())
+                    .retryForIncludes(anno.include())
+                    .retryForExcludes(anno.exclude())
                     .execute()
                     .get();
         } else {
             return inv.invoke();
         }
-
     }
 }

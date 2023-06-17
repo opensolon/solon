@@ -1,13 +1,12 @@
 package org.noear.solon.scheduling.retry;
 
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.concurrent.CompletableFuture;
+import org.noear.solon.core.util.RunnableEx;
+import org.noear.solon.core.util.SupplierEx;
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
-import java.util.function.BiPredicate;
-import java.util.function.Supplier;
 
 /**
  * 重试任务类
@@ -18,9 +17,31 @@ import java.util.function.Supplier;
 public class RetryableTask<T> {
 
     /**
-     * 存放指定异常类
+     * 异常包含
      */
-    private final List<Class<? extends Throwable>> exs = new ArrayList<>();
+    private final Set<Class<? extends Throwable>> exceptionIncludes = new HashSet<>();
+    /**
+     * 异常排除
+     */
+    private final Set<Class<? extends Throwable>> exceptionExcludes = new HashSet<>();
+
+    /**
+     * 重试次数
+     */
+    private long maxRetryCount = 3;
+    /**
+     * 重试间隔
+     */
+    private long interval = 1;
+    /**
+     * 重试间隔单位
+     */
+    private TimeUnit unit = TimeUnit.SECONDS;
+    /**
+     * 重试达到最大次数后还是失败，使用兜底策略
+     */
+    private Recover<T> recover;
+
     /**
      * 执行后结果存放
      */
@@ -28,38 +49,17 @@ public class RetryableTask<T> {
     /**
      * 执行法方法
      */
-    private final Supplier<T> sup;
-    /**
-     * 重试次数
-     */
-    private long maxRetryCount;
-    /**
-     * 重试间隔
-     */
-    private long interval;
-    /**
-     * 重试间隔单位
-     */
-    private TimeUnit unit;
-    /**
-     * 重试达到最大次数后还是失败，使用兜底策略
-     */
-    private Recover<T> recover;
-    /**
-     * 自定义重试策略
-     */
-    private BiPredicate<T, Throwable> predicate;
+    private final SupplierEx<T> caller;
 
-
-    private RetryableTask(Runnable run) {
-        this.sup = () -> {
+    private RetryableTask(RunnableEx run) {
+        this.caller = () -> {
             run.run();
             return null;
         };
     }
 
-    private RetryableTask(Supplier<T> sup) {
-        this.sup = sup;
+    private RetryableTask(SupplierEx<T> sup) {
+        this.caller = sup;
     }
 
     /**
@@ -68,7 +68,7 @@ public class RetryableTask<T> {
      * @param run 任务
      * @return Void
      */
-    public static RetryableTask<Void> of(Runnable run) {
+    public static RetryableTask<Void> of(RunnableEx run) {
         return new RetryableTask<>(run);
     }
 
@@ -78,7 +78,7 @@ public class RetryableTask<T> {
      * @param sup 任务
      * @return 执行结果
      */
-    public static <T> RetryableTask<T> of(Supplier<T> sup) {
+    public static <T> RetryableTask<T> of(SupplierEx<T> sup) {
         return new RetryableTask<>(sup);
     }
 
@@ -119,21 +119,19 @@ public class RetryableTask<T> {
      * @param exs 异常集合
      * @return this
      */
-    @SafeVarargs
-    public final RetryableTask<T> retryForExceptions(Class<? extends Throwable>... exs) {
-        this.exs.addAll(Arrays.asList(exs));
+    public final RetryableTask<T> retryForIncludes(Class<? extends Throwable>... exs) {
+        if (exs != null && exs.length > 0) {
+            exceptionIncludes.addAll(Arrays.asList(exs));
+        }
+
         return this;
     }
 
-    /**
-     * 重试根据自定义策略
-     * 第一个参数是执行结果，第二个参数是抛出的异常
-     *
-     * @param predicate 策略
-     * @return this
-     */
-    public final RetryableTask<T> retryForPredicate(BiPredicate<T, Throwable> predicate) {
-        this.predicate = predicate;
+    public final RetryableTask<T> retryForExcludes(Class<? extends Throwable>... exs) {
+        if (exs != null && exs.length > 0) {
+            exceptionExcludes.addAll(Arrays.asList(exs));
+        }
+
         return this;
     }
 
@@ -157,22 +155,14 @@ public class RetryableTask<T> {
         return this.result;
     }
 
-    /**
-     * 异步执行重试
-     *
-     * @return CompletableFuture
-     */
-    public CompletableFuture<RetryableTask<T>> asyncExecute() {
-        return CompletableFuture.supplyAsync(this::execute);
-    }
 
     /**
      * 开始执行重试方法
      *
      * @return this
      */
-    public RetryableTask<T> execute() {
-        if (this.sup == null) {
+    public RetryableTask<T> execute() throws Throwable {
+        if (this.caller == null) {
             throw new IllegalArgumentException("task parameter cannot be null");
         }
 
@@ -184,45 +174,23 @@ public class RetryableTask<T> {
             throw new IllegalArgumentException("interval must be greater than 0");
         }
 
-        if (predicate != null) {
-            retryPHelper();
-        } else if (!exs.isEmpty()) {
-            if (this.maxRetryCount < 0) {
-                throw new IllegalArgumentException("maxRetryCount must be greater than 0");
-            }
-            retryEHelper();
-        } else {
-            throw new IllegalArgumentException("predicate and exs cannot both be empty");
-        }
+        executeDo();
+
         return this;
     }
 
-
-    /**
-     * 自定义重试方法
-     */
-    private void retryPHelper() {
-        Throwable ex = null;
-
-        while (true) {
-            try {
-                result = this.sup.get();
-            } catch (Exception e) {
-                ex = e;
+    private boolean retryPredicate(Throwable e) {
+        if (exceptionExcludes.size() > 0) {
+            if (exceptionExcludes.stream().anyMatch(ex -> ex.isAssignableFrom(e.getClass()))) {
+                //如果排除成功
+                return false;
             }
+        }
 
-            if (Boolean.TRUE.equals(predicate.test(result, ex))) {
-                try {
-                    unit.sleep(interval);
-                } catch (InterruptedException ignored) {
-
-                }
-            } else {
-                if (this.recover != null) {
-                    result = this.recover.recover();
-                }
-                break;
-            }
+        if (exceptionIncludes.size() > 0) {
+            return exceptionIncludes.stream().anyMatch(ex -> ex.isAssignableFrom(e.getClass()));
+        } else {
+            return true;
         }
     }
 
@@ -230,31 +198,34 @@ public class RetryableTask<T> {
     /**
      * 指定异常重试
      **/
-    private void retryEHelper() {
+    private void executeDo() throws Throwable {
+        Throwable throwable = null;
 
         while (--maxRetryCount >= 0) {
-
             try {
-                result = this.sup.get();
+                result = caller.get();
                 return;
-            } catch (Exception e) {
+            } catch (Throwable e) {
+                if (e instanceof InvocationTargetException) {
+                    e = ((InvocationTargetException) e).getTargetException();
+                }
 
-                if (this.exs.stream().anyMatch(ex -> ex.isAssignableFrom(e.getClass()))) {
+                throwable = e;
+
+                if (retryPredicate(e)) {
                     try {
                         unit.sleep(interval);
-                    } catch (InterruptedException ignored) {
+                    } catch (InterruptedException ignore) {
 
                     }
                 } else {
-                    break;
+                    throw e;
                 }
-
             }
-
         }
 
         if (recover != null) {
-            result = recover.recover();
+            result = recover.recover(throwable);
         }
     }
 }

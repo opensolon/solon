@@ -8,7 +8,7 @@ package org.noear.solon.scheduling.retry;
  */
 public class DefaultRecover<T> implements Recover<T> {
     @Override
-    public T recover() {
+    public T recover(Throwable e) {
         return null;
     }
 }

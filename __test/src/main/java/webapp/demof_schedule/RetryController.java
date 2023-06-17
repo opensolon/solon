@@ -5,6 +5,7 @@ import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.annotation.Mapping;
 
+@Mapping("demof")
 @Controller
 public class RetryController {
     @Inject
@@ -13,5 +14,10 @@ public class RetryController {
     @Mapping("retry")
     public String f1() {
         return helloService.m1("qwe");
+    }
+
+    @Mapping("retry2")
+    public String f2() {
+        return helloService.m2("qwe");
     }
 }
