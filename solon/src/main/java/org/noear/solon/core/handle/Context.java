@@ -1025,6 +1025,23 @@ public abstract class Context {
         _remoting = remoting;
     }
 
+    /**
+     * 是否支持异步
+     * */
+    public boolean asyncSupported(){
+        return false;
+    }
+
+    /**
+     * 异步开始
+     * */
+    public void asyncStart() throws IllegalStateException{}
+
+    /**
+     * 异步完成
+     * */
+    public void asyncComplete(){}
+
     @Note("冲刷")
     public abstract void flush() throws IOException;
 

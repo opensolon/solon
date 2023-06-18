@@ -12,15 +12,11 @@ import org.noear.solon.boot.ServerConstants;
 import org.noear.solon.boot.ServerLifecycle;
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.ssl.SslContextFactory;
-import org.noear.solon.boot.undertow.http.UtHandlerHandler;
+import org.noear.solon.boot.undertow.http.UtServletHandler;
 import org.noear.solon.boot.undertow.websocket.UtWsConnectionCallback;
 import org.noear.solon.boot.undertow.websocket._SessionManagerImpl;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.socketd.SessionManager;
-
-import javax.net.ssl.KeyManager;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManager;
 
 import static io.undertow.Handlers.websocket;
 
@@ -121,7 +117,7 @@ public class UndertowServer extends UndertowServerBase implements ServerLifecycl
         DeploymentInfo builder = initDeploymentInfo();
 
         //添加servlet
-        builder.addServlet(new ServletInfo("ACTServlet", UtHandlerHandler.class).addMapping("/"));
+        builder.addServlet(new ServletInfo("ACTServlet", UtServletHandler.class).addMapping("/").setAsyncSupported(true));
         //builder.addInnerHandlerChainWrapper(h -> handler); //这个会使过滤器不能使用
 
 

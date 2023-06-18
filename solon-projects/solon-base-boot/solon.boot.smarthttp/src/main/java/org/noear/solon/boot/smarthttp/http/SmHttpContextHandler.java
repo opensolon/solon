@@ -12,7 +12,6 @@ import org.smartboot.http.server.HttpServerHandler;
 import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.RejectedExecutionException;
 
 public class SmHttpContextHandler extends HttpServerHandler {
@@ -42,23 +41,27 @@ public class SmHttpContextHandler extends HttpServerHandler {
     }
 
     protected void handle0(HttpRequest request, HttpResponse response, CompletableFuture<Object> future) {
+        HttpHolder httpHolder = new HttpHolder(request, future);
+
         try {
-            handleDo(request, response);
+            handleDo(httpHolder, response);
         } catch (Throwable e) {
             e.printStackTrace();
         } finally {
-            future.complete(this);
+            if (httpHolder.isAsync() == false) {
+                httpHolder.complete();
+            }
         }
     }
 
-    protected void handleDo(HttpRequest request, HttpResponse response) {
+    protected void handleDo(HttpHolder httpHolder, HttpResponse response) {
         try {
-            if ("PRI".equals(request.getMethod())) {
+            if ("PRI".equals(httpHolder.getRequest().getMethod())) {
                 response.setHttpStatus(HttpStatus.NOT_IMPLEMENTED);
                 return;
             }
 
-            SmHttpContext ctx = new SmHttpContext(request, response);
+            SmHttpContext ctx = new SmHttpContext(httpHolder, response);
 
             ctx.contentType("text/plain;charset=UTF-8");
             if (ServerProps.output_meta) {

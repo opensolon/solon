@@ -59,6 +59,8 @@ public class SseEmitter implements Lifecycle {
         } else {
             this.keepAlive = 60;
         }
+
+        internalSendHeader();
     }
 
     /**
@@ -66,7 +68,7 @@ public class SseEmitter implements Lifecycle {
      *
      * @param data 事件数据
      */
-    public void send(String data) {
+    public void send(String data) throws IOException{
         send(new SseEvent().data(data));
     }
 
@@ -75,13 +77,24 @@ public class SseEmitter implements Lifecycle {
      *
      * @param event 事件数据
      */
-    public void send(SseEvent event) {
-        try {
-            if (event != null && !b.get()) {
+    public void send(SseEvent event) throws IOException {
+        if (event == null) {
+            return;
+        }
+
+        if (b.get()) {
+            return;
+        }
+
+
+        if (ctx.asyncSupported()) {
+            internalSendEvent(event.build());
+        } else {
+            try {
                 q.put(event.build());
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
             }
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
         }
     }
 
@@ -90,8 +103,6 @@ public class SseEmitter implements Lifecycle {
      * 发送任务
      */
     private void executeSendTask() throws Throwable {
-        internalSendHeader();
-
         while (!b.get()) {
             String event = q.poll();
             if (event != null) {
@@ -105,13 +116,11 @@ public class SseEmitter implements Lifecycle {
     /**
      * 设置头
      */
-    private void internalSendHeader() throws IOException {
+    private void internalSendHeader() {
         ctx.headerSet("Content-Type", "text/event-stream");
         ctx.headerSet("Cache-Control", "no-cache");
         ctx.headerSet("Connection", "keep-alive");
         ctx.headerSet("Keep-Alive", "timeout=" + keepAlive);
-
-        ctx.flush();
     }
 
     private void internalSendEvent(String event) throws IOException {
@@ -126,7 +135,11 @@ public class SseEmitter implements Lifecycle {
     @Override
     public void start() throws Throwable {
         try {
-            executeSendTask();
+            if(ctx.asyncSupported()){
+                ctx.asyncStart();
+            }else {
+                executeSendTask();
+            }
         } catch (Throwable e) {
             if (onError != null) {
                 onError.accept(e);
@@ -147,5 +160,6 @@ public class SseEmitter implements Lifecycle {
         }
 
         b.set(true);
+        ctx.asyncComplete();
     }
 }

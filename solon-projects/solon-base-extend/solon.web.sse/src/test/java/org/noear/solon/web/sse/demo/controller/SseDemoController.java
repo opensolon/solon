@@ -9,6 +9,7 @@ import org.noear.solon.core.handle.Result;
 import org.noear.solon.web.sse.SseEmitter;
 import org.noear.solon.web.sse.SseEvent;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,7 +30,7 @@ public class SseDemoController {
 
     @Get
     @Mapping("/sse/put/{id}")
-    public String ssePut(String id) {
+    public String ssePut(String id) throws IOException {
         SseEmitter emitter = emitterMap.get(id);
         if (emitter == null) {
             return "No user: " + id;

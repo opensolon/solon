@@ -20,12 +20,14 @@ import java.net.URI;
 import java.util.*;
 
 public class SmHttpContext extends ContextBase {
+    private HttpHolder _httpHolder;
     private HttpRequest _request;
     private HttpResponse _response;
     protected Map<String, List<UploadedFile>> _fileMap;
 
-    public SmHttpContext(HttpRequest request, HttpResponse response) {
-        _request = request;
+    public SmHttpContext(HttpHolder requestHolder, HttpResponse response) {
+        _request = requestHolder.getRequest();
+        _httpHolder = requestHolder;
         _response = response;
         _fileMap = new HashMap<>();
     }
@@ -344,6 +346,24 @@ public class SmHttpContext extends ContextBase {
         _response.setContentLength((int) size);
     }
 
+
+    @Override
+    public boolean asyncSupported() {
+        return true;
+    }
+
+    @Override
+    public void asyncStart() throws IllegalStateException {
+        _httpHolder.startAsync();
+    }
+
+    @Override
+    public void asyncComplete() {
+        if (_httpHolder.isAsync()) {
+            _httpHolder.complete();
+        }
+    }
+
     @Override
     public void flush() throws IOException {
         if (_allows_write) {
@@ -373,10 +393,10 @@ public class SmHttpContext extends ContextBase {
 
             _response.setHttpStatus(HttpStatus.valueOf(status()));
 
-            if (isCommit || _allows_write == false) {
+            if (_allows_write == false) {
                 _response.setContentLength(0);
-            } else {
-                //_response.setContentLength(-1);
+            } else if (isCommit && _httpHolder.isAsync() == false) {
+                _response.setContentLength(0);
             }
         }
     }

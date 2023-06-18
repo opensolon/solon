@@ -6,6 +6,7 @@ import org.noear.solon.boot.web.RedirectUtils;
 import org.noear.solon.core.NvMap;
 import org.noear.solon.core.handle.UploadedFile;
 
+import javax.servlet.AsyncContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -327,6 +328,28 @@ public class SolonServletContext extends ContextBase {
     @Override
     protected void statusDoSet(int status) {
         _response.setStatus(status);
+    }
+
+    AsyncContext asyncContext;
+
+    @Override
+    public boolean asyncSupported() {
+        return true;
+    }
+
+    @Override
+    public void asyncStart() throws IllegalStateException {
+        if(asyncContext == null) {
+            asyncContext = _request.startAsync();
+            asyncContext.setTimeout(-1L);
+        }
+    }
+
+    @Override
+    public void asyncComplete() {
+        if(asyncContext != null) {
+            asyncContext.complete();
+        }
     }
 
     @Override

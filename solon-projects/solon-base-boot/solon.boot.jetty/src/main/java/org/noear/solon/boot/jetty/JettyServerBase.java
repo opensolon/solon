@@ -116,7 +116,7 @@ abstract class JettyServerBase implements ServerLifecycle , HttpServerConfigure 
     protected ServletContextHandler getServletHandler() throws IOException {
         ServletContextHandler handler = new ServletContextHandler();
         handler.setContextPath("/");
-        handler.addServlet(JtHttpContextServletHandler.class, "/");
+        handler.addServlet(JtHttpContextServletHandler.class, "/").setAsyncSupported(true);
         handler.setBaseResource(new ResourceCollection(getResourceURLs()));
 
 
