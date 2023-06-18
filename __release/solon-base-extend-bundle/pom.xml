@@ -40,6 +40,7 @@
         <module>../../solon-projects/solon-base-extend/solon.web.stop</module>
         <module>../../solon-projects/solon-base-extend/solon.web.sdl</module>
         <module>../../solon-projects/solon-base-extend/solon.web.sse</module>
+        <module>../../solon-projects/solon-base-extend/solon.web.reactor</module>
 
         <module>../../solon-projects/solon-base-extend/solon.extend.schedule</module>
 

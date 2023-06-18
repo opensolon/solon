@@ -267,8 +267,16 @@ public class Action extends HandlerAide implements Handler {
                     c.contentType(mProduces);
                 }
 
-                //渲染
-                renderDo(c.result, c);
+                //结果处理
+                ActionReturnHandler returnHandler = Bridge.actionReturnHandlers.get(method().getReturnType());
+
+                if (returnHandler != null) {
+                    //执行函数
+                    returnHandler.handle(c, this, c.result);
+                } else {
+                    //渲染
+                    renderDo(c.result, c);
+                }
             }
         } catch (Throwable e) {
             e = Utils.throwableUnwrap(e);
@@ -324,6 +332,10 @@ public class Action extends HandlerAide implements Handler {
         }
 
         return Bridge.actionExecutorDef().execute(c, obj, mWrap);
+    }
+
+    public void render(Object obj, Context c) throws Throwable {
+        renderDo(obj, c);
     }
 
     /**

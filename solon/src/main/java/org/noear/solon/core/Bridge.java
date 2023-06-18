@@ -149,4 +149,7 @@ public class Bridge {
     public static void actionExecutorRemove(Class<?> clz){
         _actionExecutors.remove(clz);
     }
+
+
+    public static final Map<Class<?>, ActionReturnHandler> actionReturnHandlers = new HashMap<>();
 }
