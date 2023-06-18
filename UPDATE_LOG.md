@@ -14,6 +14,8 @@
 * 新增 solon.web.sse 插件
 * 增加 mybatis-plus-solon-plugin 插件，原生编译支持（GraalVM Native Image）
 * 增加 solon.scheduling 插件 简单的 Retry 功能
+* 增加 Context 异步控制接口
+* 增加 jetty、undertow 对 Context 异步适配
 * 增加 Inject("{xxx:def}}") 默认值转集合和数组支持
 * 完善 mybatis-solon-plugin  原生编译支持
 * 完善 solon.aot 增加 lambda 序列化支持
