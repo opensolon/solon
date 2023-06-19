@@ -26,6 +26,7 @@
 * guava 升为 32.0.0-jre
 * smarthttp 升为 1.2.4
 * smartsocket 升为 1.5.30
+* dromara-plugins 升为 0.0.9
 * mybatis-flex 升为 1.4.0
 * sqltoy 升为 5.2.54
 * hutool 升为 5.8.20
