@@ -10,13 +10,11 @@ import org.noear.solon.core.wrap.FieldWrap;
 import org.noear.solon.core.wrap.ParamWrap;
 import org.noear.solon.core.util.DataThrowable;
 import org.noear.solon.validation.annotation.*;
+import org.noear.solon.validation.annotation.Date;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 验证管理器
@@ -27,6 +25,13 @@ import java.util.Map;
  * @since 1.0
  * */
 public class ValidatorManager {
+
+    /**
+     * 是否开启所有验证（默认：开启）
+     * 开启后，将对所有的验证注解进行逐一验证
+     * 关闭后，只要有一个校验不通过，就会停止后续校验，直接返回错误
+     */
+    public static boolean VALIDATE_ALL = true;
 
     /**
      * 设定非重复提交检测器
@@ -181,25 +186,32 @@ public class ValidatorManager {
     /**
      * 执行参数的验证处理
      * */
-    public static void validateOfInvocation(Invocation inv) throws Throwable {
-        StringBuilder tmp = new StringBuilder();
-
+    public static void validateOfInvocation(Invocation inv) {
+        Result<List<BeanValidateInfo>> succeed = Result.succeed();
+        succeed.setData(new ArrayList<>());
         for (int i = 0, len = inv.args().length; i < len; i++) {
             ParamWrap pw = inv.method().getParamWraps()[i];
 
             for (Annotation anno : pw.getParameter().getAnnotations()) {
-                //内部会自动抛异常
-                validateOfValue0(pw.getName(), anno, inv.args()[i], tmp);
+                validateOfValue0(pw.getName(), anno, inv.args()[i], succeed);
             }
+        }
+        if(succeed.getCode() != Result.SUCCEED_CODE){
+            StringBuilder msg = new StringBuilder();
+            for (BeanValidateInfo datum : succeed.getData()) {
+                msg.append(datum.message).append("；");
+            }
+            msg.delete(msg.length() - 1, msg.length());
+            succeed.setDescription(msg.toString());
+            throw new ValidatorException(succeed.getCode(), succeed.getDescription(), null, succeed);
         }
     }
 
-    private static void validateOfValue0(String label, Annotation anno, Object val, StringBuilder tmp) {
+    private static void validateOfValue0(String label, Annotation anno, Object val, Result<List<BeanValidateInfo>> result) {
         Validator valid = validMap.get(anno.annotationType());
 
         if (valid != null) {
-            tmp.setLength(0);
-            Result rst = valid.validateOfValue(anno, val, tmp);
+            Result rst = valid.validateOfValue(anno, val, new StringBuilder());
 
             if (rst.getCode() == Result.FAILURE_CODE) {
                 String message = null;
@@ -207,19 +219,28 @@ public class ValidatorManager {
                 if (Utils.isEmpty(rst.getDescription())) {
                     rst.setDescription(label);
                 }
-
-                if (rst.getData() instanceof BeanValidateInfo) {
+                if (rst.getData() instanceof  BeanValidateInfo){
                     BeanValidateInfo info = (BeanValidateInfo) rst.getData();
                     anno = info.anno;
                     message = info.message;
-                } else {
-                    message = valid.message(anno);
+                    result.getData().add(info);
+                }else if (rst.getData() instanceof Collection){
+                    List<BeanValidateInfo> list = (List<BeanValidateInfo>) rst.getData();
+                    result.getData().addAll(list);
+                }else {
+                    BeanValidateInfo beanValidateInfo = new BeanValidateInfo(anno, valid.message(anno));
+                    message = beanValidateInfo.message;
+                    rst.setData(beanValidateInfo);
+                    result.getData().add(beanValidateInfo);
                 }
-
-                if (ValidatorManager.failureDo(Context.current(), anno, rst, message)) {
-                    throw new DataThrowable();
-                } else {
-                    throw new IllegalArgumentException(rst.getDescription());
+                if (VALIDATE_ALL){
+                    result.setCode(rst.getCode());
+                }else {
+                    if (ValidatorManager.failureDo(Context.current(), anno, rst, message)) {
+                        throw new DataThrowable();
+                    } else {
+                        throw new IllegalArgumentException(rst.getDescription());
+                    }
                 }
             }
         }
@@ -286,7 +307,8 @@ public class ValidatorManager {
         ClassWrap cw = ClassWrap.get(obj.getClass());
         StringBuilder tmp = new StringBuilder();
 
-
+        Result<Object> succeed = Result.succeed();
+        List<BeanValidateInfo> list = new ArrayList<>();
         for (Map.Entry<String, FieldWrap> kv : cw.getFieldAllWraps().entrySet()) {
             Field field = kv.getValue().field;
 
@@ -310,14 +332,18 @@ public class ValidatorManager {
                         if (rst.getData() instanceof BeanValidateInfo == false) {
                             rst.setData(new BeanValidateInfo(anno, valid.message(anno)));
                         }
-
-                        return rst;
+                        if (VALIDATE_ALL){
+                            list.add((BeanValidateInfo) rst.getData());
+                            succeed.setCode(rst.getCode());
+                        }else {
+                            return rst;
+                        }
                     }
                 }
             }
         }
-
-        return Result.succeed();
+        succeed.setData(list);
+        return succeed;
     }
 
 
