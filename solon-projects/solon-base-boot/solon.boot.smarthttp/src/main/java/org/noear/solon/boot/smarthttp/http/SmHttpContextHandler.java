@@ -38,11 +38,11 @@ public class SmHttpContextHandler extends HttpServerHandler {
             return;
         }
 
-        HttpHolder httpHolder = (HttpHolder) request.getAttachment().get(httpHolderKey);
-        if (httpHolder != null && httpHolder.isAsync()) {
-            for (ContextAsyncListener listener : httpHolder.getListeners()) {
+        SmHttpContext ctx = (SmHttpContext) request.getAttachment().get(httpHolderKey);
+        if (ctx != null && ctx.isAsync()) {
+            for (ContextAsyncListener listener : ctx.asyncListeners()) {
                 try {
-                    listener.onComplete(httpHolder.getContext());
+                    listener.onComplete(ctx);
                 } catch (Throwable e) {
                     EventBus.pushTry(e);
                 }
@@ -52,45 +52,44 @@ public class SmHttpContextHandler extends HttpServerHandler {
 
     @Override
     public void handle(HttpRequest request, HttpResponse response, CompletableFuture<Object> future) throws IOException {
-        if (executor == null) {
-            handle0(request, response, future);
-        } else {
-            try {
-                executor.execute(() -> {
-                    handle0(request, response, future);
-                });
-            } catch (RejectedExecutionException e) {
-                handle0(request, response, future);
-            }
-        }
-    }
-
-    protected void handle0(HttpRequest request, HttpResponse response, CompletableFuture<Object> future) {
-        HttpHolder httpHolder = new HttpHolder(request, future);
+        SmHttpContext ctx = new SmHttpContext(request, response, future);
         if(request.getAttachment() == null){
             request.setAttachment(new Attachment());
         }
-        request.getAttachment().put(httpHolderKey, httpHolder);
+        request.getAttachment().put(httpHolderKey, ctx);
 
-        try {
-            handleDo(httpHolder, response);
-        } catch (Throwable e) {
-            e.printStackTrace();
-        } finally {
-            if (httpHolder.isAsync() == false) {
-                httpHolder.complete();
+
+        if (executor == null) {
+            handle0(ctx, future);
+        } else {
+            try {
+                executor.execute(() -> {
+                    handle0(ctx, future);
+                });
+            } catch (RejectedExecutionException e) {
+                handle0(ctx, future);
             }
         }
     }
 
-    protected void handleDo(HttpHolder httpHolder, HttpResponse response) {
+    protected void handle0(SmHttpContext ctx, CompletableFuture<Object> future) {
         try {
-            if ("PRI".equals(httpHolder.getRequest().getMethod())) {
-                response.setHttpStatus(HttpStatus.NOT_IMPLEMENTED);
+            handleDo(ctx);
+        } catch (Throwable e) {
+            e.printStackTrace();
+        } finally {
+            if (ctx.isAsync() == false) {
+                future.complete(ctx);
+            }
+        }
+    }
+
+    protected void handleDo(SmHttpContext ctx) {
+        try {
+            if ("PRI".equals(ctx.method())) {
+                ctx.getResponse().setHttpStatus(HttpStatus.NOT_IMPLEMENTED);
                 return;
             }
-
-            SmHttpContext ctx = new SmHttpContext(httpHolder, response);
 
             ctx.contentType("text/plain;charset=UTF-8");
             if (ServerProps.output_meta) {
@@ -108,7 +107,7 @@ public class SmHttpContextHandler extends HttpServerHandler {
         } catch (Throwable e) {
             EventBus.pushTry(e);
 
-            response.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+            ctx.getResponse().setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }
