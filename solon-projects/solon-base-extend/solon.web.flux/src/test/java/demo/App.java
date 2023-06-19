@@ -3,7 +3,7 @@ package demo;
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Mapping;
-import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 /**
  * @author noear 2023/6/19 created
@@ -15,7 +15,7 @@ public class App {
     }
 
     @Mapping("/")
-    public Flux hello(String name) {
-        return Flux.just("Hello " + name);
+    public Mono hello(String name) {
+        return Mono.just("Hello " + name);
     }
 }
