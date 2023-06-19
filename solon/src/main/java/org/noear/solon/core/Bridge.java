@@ -96,11 +96,4 @@ public class Bridge {
             _upstreamFactory = uf;
         }
     }
-
-
-    //
-    // ActionExecutor 对接
-    //
-
-
 }

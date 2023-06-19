@@ -1035,7 +1035,7 @@ public abstract class Context {
     /**
      * 异步开始
      * */
-    public void asyncStart() throws IllegalStateException{}
+    public void asyncStart(long timeout, ContextAsyncListener listener) throws IllegalStateException{}
 
     /**
      * 异步完成
