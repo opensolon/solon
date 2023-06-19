@@ -413,6 +413,10 @@ public class Swagger2Builder {
         //做为 字段
         ClassWrap classWrap = ClassWrap.get(paramHolder.getParam().getType());
         for (FieldWrap fw : classWrap.getFieldAllWraps().values()) {
+            if(Modifier.isTransient(fw.field.getModifiers())){
+                continue;
+            }
+
             QueryParameter parameter = new QueryParameter();
             parameter.setType(fw.type.getSimpleName());
 
