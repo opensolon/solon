@@ -1,6 +1,6 @@
 package org.noear.solon.serialization.protostuff;
 
-import org.noear.solon.core.handle.ActionExecutorDefault;
+import org.noear.solon.core.handle.ActionExecuteHandlerDefault;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.wrap.ParamWrap;
 
@@ -10,7 +10,7 @@ import java.util.Map;
  * @author noear
  * @since 1.2
  */
-public class ProtostuffActionExecutor extends ActionExecutorDefault {
+public class ProtostuffActionExecutor extends ActionExecuteHandlerDefault {
     private static final String label = "application/protobuf";
 
     @Override

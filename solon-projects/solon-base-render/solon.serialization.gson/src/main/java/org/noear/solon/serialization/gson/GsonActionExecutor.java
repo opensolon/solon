@@ -2,7 +2,7 @@ package org.noear.solon.serialization.gson;
 
 import com.google.gson.*;
 import org.noear.solon.Utils;
-import org.noear.solon.core.handle.ActionExecutorDefault;
+import org.noear.solon.core.handle.ActionExecuteHandlerDefault;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.wrap.ParamWrap;
 import org.noear.solon.serialization.gson.impl.DateReadAdapter;
@@ -16,7 +16,7 @@ import java.util.List;
  * @author noear
  * @since 2.2
  */
-public class GsonActionExecutor extends ActionExecutorDefault {
+public class GsonActionExecutor extends ActionExecuteHandlerDefault {
     private static final String label = "/json";
 
     private final GsonBuilder config = new GsonBuilder();

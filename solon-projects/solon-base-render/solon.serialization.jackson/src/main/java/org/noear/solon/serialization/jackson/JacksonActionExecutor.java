@@ -6,7 +6,7 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.noear.solon.Utils;
-import org.noear.solon.core.handle.ActionExecutorDefault;
+import org.noear.solon.core.handle.ActionExecuteHandlerDefault;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.wrap.ParamWrap;
 
@@ -17,7 +17,7 @@ import java.util.List;
  * @author noear
  * @since 1.2
  * */
-public class JacksonActionExecutor extends ActionExecutorDefault {
+public class JacksonActionExecutor extends ActionExecuteHandlerDefault {
     private static final String label = "/json";
 
     private final ObjectMapper mapper_type = new ObjectMapper();

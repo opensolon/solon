@@ -42,7 +42,7 @@ public class XPluginImp implements Plugin {
         context.wrapAndPut(SnackActionExecutor.class, actionExecutor);
         EventBus.push(actionExecutor);
 
-        Bridge.actionExecutorAdd(actionExecutor);
+        Solon.app().chainManager().addExecuteHandler(actionExecutor);
     }
 
     private void applyProps(SnackRenderFactory factory, JsonProps jsonProps) {

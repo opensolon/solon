@@ -41,7 +41,7 @@ public class XPluginImp implements Plugin {
         context.wrapAndPut(Fastjson2ActionExecutor.class, actionExecutor);
         EventBus.push(actionExecutor);
 
-        Bridge.actionExecutorAdd(actionExecutor);
+        Solon.app().chainManager().addExecuteHandler(actionExecutor);
     }
 
     private void applyProps(Fastjson2RenderFactory factory, JsonProps jsonProps) {

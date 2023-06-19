@@ -1,10 +1,10 @@
 package org.noear.solon.web.reactive;
 
+import org.noear.solon.annotation.Component;
 import org.noear.solon.core.handle.Action;
 import org.noear.solon.core.handle.ActionReturnHandler;
 import org.noear.solon.core.handle.Context;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
+import org.reactivestreams.Publisher;
 
 /**
  * Action 响应式返回处理
@@ -14,17 +14,16 @@ import reactor.core.publisher.Mono;
  */
 public class ActionReturnReactiveHandler implements ActionReturnHandler {
     @Override
-    public void handle(Context ctx, Action action, Object result) throws Throwable {
-        ActionReactiveSubscriber subscriber = new ActionReactiveSubscriber(ctx, action);
+    public boolean matched(Class<?> returnType) {
+        return Publisher.class.isAssignableFrom(returnType);
+    }
 
-        if (result instanceof Flux) {
-            ((Flux) result).subscribe(subscriber);
-            return;
-        }
+    @Override
+    public void returnHandle(Context ctx, Action action, Object result) throws Throwable {
+        if (result != null) {
+            ActionReactiveSubscriber subscriber = new ActionReactiveSubscriber(ctx, action);
 
-        if (result instanceof Mono) {
-            ((Mono) result).subscribe(subscriber);
-            return;
+            ((Publisher) result).subscribe(subscriber);
         }
     }
 }

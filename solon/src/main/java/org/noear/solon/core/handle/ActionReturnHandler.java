@@ -8,7 +8,12 @@ package org.noear.solon.core.handle;
  */
 public interface ActionReturnHandler {
     /**
-     * 处理
+     * 是否匹配
      * */
-    void handle(Context ctx, Action action, Object result) throws Throwable;
+    boolean matched(Class<?> returnType);
+
+    /**
+     * 返回处理
+     * */
+    void returnHandle(Context ctx, Action action, Object returnValue) throws Throwable;
 }

@@ -19,7 +19,7 @@ import java.util.Map;
  * @author noear
  * @since 1.0
  * */
-public class ActionExecutorDefault implements ActionExecutor {
+public class ActionExecuteHandlerDefault implements ActionExecuteHandler {
     /**
      * 是否匹配
      *
@@ -39,7 +39,7 @@ public class ActionExecutorDefault implements ActionExecutor {
      * @param mWrap 函数包装器
      */
     @Override
-    public Object execute(Context ctx, Object obj, MethodWrap mWrap) throws Throwable {
+    public Object executeHandle(Context ctx, Object obj, MethodWrap mWrap) throws Throwable {
         List<Object> args = buildArgs(ctx, mWrap);
         return mWrap.invokeByAspect(obj, args.toArray());
     }

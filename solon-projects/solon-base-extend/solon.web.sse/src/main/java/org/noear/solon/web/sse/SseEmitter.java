@@ -77,7 +77,7 @@ public class SseEmitter implements Lifecycle {
      *
      * @param event 事件数据
      */
-    public void send(SseEvent event) throws IOException {
+    public synchronized void send(SseEvent event) throws IOException {
         if (event == null) {
             return;
         }
@@ -133,7 +133,7 @@ public class SseEmitter implements Lifecycle {
      * 任务开始
      */
     @Override
-    public void start() throws Throwable {
+    public synchronized void start() throws Throwable {
         try {
             if(ctx.asyncSupported()){
                 ctx.asyncStart();
@@ -154,7 +154,7 @@ public class SseEmitter implements Lifecycle {
      * 任务关闭
      */
     @Override
-    public void stop() throws Throwable {
+    public synchronized void stop() throws Throwable {
         if (onCompletion != null) {
             onCompletion.run();
         }

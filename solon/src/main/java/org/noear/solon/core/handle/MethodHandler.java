@@ -1,7 +1,7 @@
 package org.noear.solon.core.handle;
 
+import org.noear.solon.Solon;
 import org.noear.solon.core.BeanWrap;
-import org.noear.solon.core.Bridge;
 import org.noear.solon.core.wrap.MethodWrap;
 
 import java.lang.reflect.Method;
@@ -34,7 +34,8 @@ public class MethodHandler implements Handler {
      */
     @Override
     public void handle(Context c) throws Throwable {
-        Object tmp = Bridge.actionExecutorDef().execute(c, bw.get(), mw);
+        Object tmp = Solon.app().chainManager().getExecuteHandlerDefault()
+                .executeHandle(c, bw.get(), mw);
 
         if (allowResult) {
             c.result = tmp;
