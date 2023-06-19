@@ -18,9 +18,8 @@ public class ActionReturnSseHandler implements ActionReturnHandler {
 
     @Override
     public void returnHandle(Context ctx, Action action, Object returnValue) throws Throwable {
-        SseEmitter emitter = (SseEmitter) returnValue;
-        SseEmitterHandler emitterHandler = new SseEmitterHandler(emitter);
-
-        emitterHandler.init();
+        if (returnValue != null) {
+            new SseEmitterHandler((SseEmitter) returnValue).start();
+        }
     }
 }

@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.function.Consumer;
 
 /**
- * Sse 发射器
+ * Sse 发射器（操作界面）
  *
  * @author kongweiguang
  * @since  2.3
@@ -14,7 +14,7 @@ public class SseEmitter {
     protected Runnable onCompletion;
     protected Runnable onTimeout;
     protected Consumer<Throwable> onError;
-
+    protected Consumer<SseEmitter> onInited;
 
     protected long timeout;
 
@@ -43,12 +43,18 @@ public class SseEmitter {
         return this;
     }
 
-    public SseEmitter release(Consumer<SseEmitter> consumer){
-        consumer.accept(this);
+    /**
+     * 初始化回调方法
+     * */
+    public SseEmitter onInited(Consumer<SseEmitter> onInited){
+        this.onInited = onInited;
         return this;
     }
 
 
+    /**
+     * 超时（用于异步超时）
+     * */
     public SseEmitter(long timeout) {
         this.timeout = timeout;
     }
@@ -59,11 +65,11 @@ public class SseEmitter {
      * @param data 事件数据
      */
     public void send(String data) throws IOException {
-        handler.send(new SseEvent().data(data));
+        send(new SseEvent().data(data));
     }
 
     /**
-     * 发送事件内容
+     * 发送事件
      *
      * @param event 事件数据
      */
@@ -72,7 +78,7 @@ public class SseEmitter {
     }
 
     /**
-     * 完成
+     * 完成（用于手动控制）
      */
     public void complete() {
         handler.complete();
@@ -80,16 +86,13 @@ public class SseEmitter {
 
 
     /**
-     * 内部初始化
+     * 初始化
      */
-    protected void internalInit(SseEmitterHandler handler) {
+    protected void initialize(SseEmitterHandler handler) {
         this.handler = handler;
-    }
 
-    /**
-     * 内部完成调用
-     */
-    protected void internalComplete() {
-        handler.internalComplete();
+        if(onInited != null){
+            onInited.accept(this);
+        }
     }
 }

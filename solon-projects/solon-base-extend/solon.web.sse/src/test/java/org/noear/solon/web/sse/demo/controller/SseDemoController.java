@@ -29,7 +29,7 @@ public class SseDemoController {
                     emitterMap.remove(id);
                     System.out.println("::onError");
                 })
-                .release(e -> emitterMap.put(id, e));
+                .onInited(e -> emitterMap.put(id, e));
     }
 
     @Get

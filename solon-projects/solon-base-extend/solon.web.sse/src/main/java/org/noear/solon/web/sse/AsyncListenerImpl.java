@@ -10,10 +10,10 @@ import java.io.IOException;
  * @since 2.3
  */
 public class AsyncListenerImpl implements ContextAsyncListener {
-    SseEmitter emitter;
+    SseEmitterHandler handler;
 
-    public AsyncListenerImpl(SseEmitter emitter) {
-        this.emitter = emitter;
+    public AsyncListenerImpl(SseEmitterHandler handler) {
+        this.handler = handler;
     }
 
     @Override
@@ -23,24 +23,16 @@ public class AsyncListenerImpl implements ContextAsyncListener {
 
     @Override
     public void onComplete(Context ctx) throws IOException {
-        emitter.internalComplete();
+        handler.stop();
     }
 
     @Override
     public void onTimeout(Context ctx) throws IOException {
-        if (emitter.onTimeout != null) {
-            emitter.onTimeout.run();
-        }
-
-        emitter.internalComplete();
+        handler.stopOnTimeout();
     }
 
     @Override
     public void onError(Context ctx, Throwable e) throws IOException {
-        if (emitter.onError != null) {
-            emitter.onError.accept(e);
-        }
-
-        emitter.internalComplete();
+        handler.stopOnError(e);
     }
 }
