@@ -4,6 +4,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.boot.web.ContextBase;
 import org.noear.solon.boot.web.RedirectUtils;
 import org.noear.solon.core.NvMap;
+import org.noear.solon.core.handle.ContextAsyncListener;
 import org.noear.solon.core.handle.UploadedFile;
 
 import javax.servlet.AsyncContext;
@@ -338,10 +339,17 @@ public class SolonServletContext extends ContextBase {
     }
 
     @Override
-    public void asyncStart() throws IllegalStateException {
-        if(asyncContext == null) {
+    public void asyncStart(long timeout, ContextAsyncListener listener) throws IllegalStateException {
+        if (asyncContext == null) {
             asyncContext = _request.startAsync();
-            asyncContext.setTimeout(-1L);
+
+            if (timeout != 0) {
+                asyncContext.setTimeout(timeout);
+            }
+        }
+
+        if (listener != null) {
+            asyncContext.addListener(new AsyncListenerWrap(this, listener));
         }
     }
 

@@ -23,7 +23,7 @@ public class ActionReactiveSubscriber implements Subscriber {
 
     @Override
     public void onSubscribe(Subscription subscription) {
-        ctx.asyncStart();
+        ctx.asyncStart(-1L, null);
         subscription.request(1L);
     }
 
