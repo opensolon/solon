@@ -3,7 +3,7 @@ package org.noear.solon.serialization.snack3;
 import org.noear.snack.ONode;
 import org.noear.snack.core.Options;
 import org.noear.solon.Utils;
-import org.noear.solon.core.handle.ActionExecutorDefault;
+import org.noear.solon.core.handle.ActionExecuteHandlerDefault;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.wrap.ParamWrap;
 
@@ -17,7 +17,7 @@ import java.util.List;
  * @author noear
  * @since 1.0
  * */
-public class SnackActionExecutor extends ActionExecutorDefault {
+public class SnackActionExecutor extends ActionExecuteHandlerDefault {
     static final SnackActionExecutor global = new SnackActionExecutor();
 
     private static final String label = "/json";

@@ -6,6 +6,7 @@ import org.noear.solon.boot.web.RedirectUtils;
 import org.noear.solon.core.NvMap;
 import org.noear.solon.Utils;
 import org.noear.solon.core.event.EventBus;
+import org.noear.solon.core.handle.ContextAsyncListener;
 import org.noear.solon.core.handle.UploadedFile;
 import org.smartboot.http.common.Cookie;
 import org.smartboot.http.common.enums.HttpStatus;
@@ -18,17 +19,33 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URI;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 
 public class SmHttpContext extends ContextBase {
-    private HttpHolder _httpHolder;
+    private CompletableFuture<Object> _future;
     private HttpRequest _request;
     private HttpResponse _response;
     protected Map<String, List<UploadedFile>> _fileMap;
+    private boolean _isAsync;
+    private List<ContextAsyncListener> _asyncListeners = new ArrayList<>();
 
-    public SmHttpContext(HttpHolder requestHolder, HttpResponse response) {
-        _request = requestHolder.getRequest();
-        _httpHolder = requestHolder;
+    public HttpRequest getRequest() {
+        return _request;
+    }
+
+    public HttpResponse getResponse() {
+        return _response;
+    }
+
+    public boolean isAsync() {
+        return _isAsync;
+    }
+
+    public SmHttpContext(HttpRequest request, HttpResponse response, CompletableFuture<Object> future) {
+        _request = request;
         _response = response;
+        _future = future;
+
         _fileMap = new HashMap<>();
     }
 
@@ -347,20 +364,30 @@ public class SmHttpContext extends ContextBase {
     }
 
 
+    public List<ContextAsyncListener> asyncListeners() {
+        return _asyncListeners;
+    }
+
+
     @Override
     public boolean asyncSupported() {
         return true;
     }
 
     @Override
-    public void asyncStart() throws IllegalStateException {
-        _httpHolder.startAsync();
+    public void asyncStart(long timeout, ContextAsyncListener listener) throws IllegalStateException {
+        _isAsync = true;
+
+        if (listener != null) {
+            _asyncListeners.add(listener);
+        }
     }
+
 
     @Override
     public void asyncComplete() {
-        if (_httpHolder.isAsync()) {
-            _httpHolder.complete();
+        if (_isAsync) {
+            _future.complete(this);
         }
     }
 
@@ -395,7 +422,7 @@ public class SmHttpContext extends ContextBase {
 
             if (_allows_write == false) {
                 _response.setContentLength(0);
-            } else if (isCommit && _httpHolder.isAsync() == false) {
+            } else if (isCommit && _isAsync == false) {
                 _response.setContentLength(0);
             }
         }

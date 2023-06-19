@@ -20,6 +20,6 @@ public class XPluginImp implements Plugin {
         HessianActionExecutor executor = new HessianActionExecutor();
         EventBus.push(executor);
 
-        Bridge.actionExecutorAdd(executor);
+        Solon.app().chainManager().addExecuteHandler(executor);
     }
 }

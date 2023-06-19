@@ -268,11 +268,11 @@ public class Action extends HandlerAide implements Handler {
                 }
 
                 //结果处理
-                ActionReturnHandler returnHandler = Bridge.actionReturnHandlers.get(method().getReturnType());
+                ActionReturnHandler returnHandler = Solon.app().chainManager().getReturnHandler(method().getReturnType());
 
                 if (returnHandler != null) {
                     //执行函数
-                    returnHandler.handle(c, this, c.result);
+                    returnHandler.returnHandle(c, this, c.result);
                 } else {
                     //渲染
                     renderDo(c.result, c);
@@ -318,20 +318,10 @@ public class Action extends HandlerAide implements Handler {
     }
 
     protected Object executeDo(Context c, Object obj) throws Throwable {
-        String ct = c.contentType();
+        ActionExecuteHandler executeHandler = Solon.app().chainManager()
+                .getExecuteHandler(c, mWrap.getParamWraps().length);
 
-        if (ct != null && mWrap.getParamWraps().length > 0) {
-            //
-            //仅有参数时，才执行执行其它执行器
-            //
-            for (ActionExecutor me : Bridge.actionExecutors()) {
-                if (me.matched(c, ct)) {
-                    return me.execute(c, obj, mWrap);
-                }
-            }
-        }
-
-        return Bridge.actionExecutorDef().execute(c, obj, mWrap);
+        return executeHandler.executeHandle(c, obj, mWrap);
     }
 
     public void render(Object obj, Context c) throws Throwable {

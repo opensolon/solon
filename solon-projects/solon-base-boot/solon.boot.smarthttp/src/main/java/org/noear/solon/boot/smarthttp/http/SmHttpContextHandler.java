@@ -3,11 +3,15 @@ package org.noear.solon.boot.smarthttp.http;
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.smarthttp.XPluginImp;
 import org.noear.solon.core.event.EventBus;
+import org.noear.solon.core.handle.ContextAsyncListener;
 import org.noear.solon.core.handle.Handler;
 import org.smartboot.http.common.enums.HttpStatus;
 import org.smartboot.http.server.HttpRequest;
 import org.smartboot.http.server.HttpResponse;
 import org.smartboot.http.server.HttpServerHandler;
+import org.smartboot.http.server.impl.Request;
+import org.smartboot.socket.util.AttachKey;
+import org.smartboot.socket.util.Attachment;
 
 import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
@@ -15,9 +19,12 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.RejectedExecutionException;
 
 public class SmHttpContextHandler extends HttpServerHandler {
+    static final AttachKey httpHolderKey = AttachKey.valueOf("httpHolder");
+
     protected Executor executor;
     private final Handler handler;
-    public SmHttpContextHandler(Handler handler){
+
+    public SmHttpContextHandler(Handler handler) {
         this.handler = handler;
     }
 
@@ -26,42 +33,63 @@ public class SmHttpContextHandler extends HttpServerHandler {
     }
 
     @Override
+    public void onClose(Request request) {
+        if(request.getAttachment() == null){
+            return;
+        }
+
+        SmHttpContext ctx = (SmHttpContext) request.getAttachment().get(httpHolderKey);
+        if (ctx != null && ctx.isAsync()) {
+            for (ContextAsyncListener listener : ctx.asyncListeners()) {
+                try {
+                    listener.onComplete(ctx);
+                } catch (Throwable e) {
+                    EventBus.pushTry(e);
+                }
+            }
+        }
+    }
+
+    @Override
     public void handle(HttpRequest request, HttpResponse response, CompletableFuture<Object> future) throws IOException {
+        SmHttpContext ctx = new SmHttpContext(request, response, future);
+        if(request.getAttachment() == null){
+            request.setAttachment(new Attachment());
+        }
+        request.getAttachment().put(httpHolderKey, ctx);
+
+
         if (executor == null) {
-            handle0(request, response, future);
+            handle0(ctx, future);
         } else {
             try {
                 executor.execute(() -> {
-                    handle0(request, response, future);
+                    handle0(ctx, future);
                 });
             } catch (RejectedExecutionException e) {
-                handle0(request, response, future);
+                handle0(ctx, future);
             }
         }
     }
 
-    protected void handle0(HttpRequest request, HttpResponse response, CompletableFuture<Object> future) {
-        HttpHolder httpHolder = new HttpHolder(request, future);
-
+    protected void handle0(SmHttpContext ctx, CompletableFuture<Object> future) {
         try {
-            handleDo(httpHolder, response);
+            handleDo(ctx);
         } catch (Throwable e) {
             e.printStackTrace();
         } finally {
-            if (httpHolder.isAsync() == false) {
-                httpHolder.complete();
+            if (ctx.isAsync() == false) {
+                future.complete(ctx);
             }
         }
     }
 
-    protected void handleDo(HttpHolder httpHolder, HttpResponse response) {
+    protected void handleDo(SmHttpContext ctx) {
         try {
-            if ("PRI".equals(httpHolder.getRequest().getMethod())) {
-                response.setHttpStatus(HttpStatus.NOT_IMPLEMENTED);
+            if ("PRI".equals(ctx.method())) {
+                ctx.getResponse().setHttpStatus(HttpStatus.NOT_IMPLEMENTED);
                 return;
             }
-
-            SmHttpContext ctx = new SmHttpContext(httpHolder, response);
 
             ctx.contentType("text/plain;charset=UTF-8");
             if (ServerProps.output_meta) {
@@ -79,7 +107,7 @@ public class SmHttpContextHandler extends HttpServerHandler {
         } catch (Throwable e) {
             EventBus.pushTry(e);
 
-            response.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+            ctx.getResponse().setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

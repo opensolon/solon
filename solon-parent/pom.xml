@@ -115,12 +115,12 @@
         <mybatis-flex.version>1.4.0</mybatis-flex.version>
         <fastmybatis.version>2.6.1</fastmybatis.version>
         <liteflow.version>2.10.2</liteflow.version>
-        <forest.version>1.5.31</forest.version>
+        <forest.version>1.5.32</forest.version>
         <dbvisitor.version>5.3.1</dbvisitor.version>
         <shardingsphere.version>5.3.2</shardingsphere.version>
         <wx-java.version>4.4.9.B</wx-java.version>
 
-        <dromara-plugins.version>0.0.8</dromara-plugins.version>
+        <dromara-plugins.version>0.0.9</dromara-plugins.version>
     </properties>
 
 
@@ -423,7 +423,7 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.web.reactor</artifactId>
+                <artifactId>solon.web.flux</artifactId>
                 <version>${solon.version}</version>
             </dependency>
 

@@ -5,7 +5,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.parser.ParserConfig;
 import org.noear.solon.Utils;
-import org.noear.solon.core.handle.ActionExecutorDefault;
+import org.noear.solon.core.handle.ActionExecuteHandlerDefault;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.wrap.ParamWrap;
 
@@ -20,7 +20,7 @@ import java.util.List;
  * @author 夜の孤城
  * @since 1.5
  */
-public class FastjsonActionExecutor extends ActionExecutorDefault {
+public class FastjsonActionExecutor extends ActionExecuteHandlerDefault {
     private static final String label = "/json";
 
     private final ParserConfig config = new ParserConfig();

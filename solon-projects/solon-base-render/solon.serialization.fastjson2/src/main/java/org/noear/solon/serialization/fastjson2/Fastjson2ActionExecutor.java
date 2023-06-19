@@ -2,7 +2,7 @@ package org.noear.solon.serialization.fastjson2;
 
 import com.alibaba.fastjson2.*;
 import org.noear.solon.Utils;
-import org.noear.solon.core.handle.ActionExecutorDefault;
+import org.noear.solon.core.handle.ActionExecuteHandlerDefault;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.wrap.ParamWrap;
 
@@ -18,7 +18,7 @@ import java.util.List;
  * @author 暮城留风
  * @since 1.9
  * */
-public class Fastjson2ActionExecutor extends ActionExecutorDefault {
+public class Fastjson2ActionExecutor extends ActionExecuteHandlerDefault {
     private static final String label = "/json";
 
     private final JSONReader.Context config = JSONFactory.createReadContext();

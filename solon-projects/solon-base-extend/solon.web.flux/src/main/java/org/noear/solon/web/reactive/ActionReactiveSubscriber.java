@@ -1,4 +1,4 @@
-package org.noear.solon.web.reactor;
+package org.noear.solon.web.reactive;
 
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.Action;
@@ -7,20 +7,23 @@ import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
 /**
- * @author noear 2023/6/19 created
+ * Action 响应式订阅者
+ *
+ * @author noear
+ * @since 2.3
  */
-public class SubscriberImpl implements Subscriber {
+public class ActionReactiveSubscriber implements Subscriber {
     Context ctx;
     Action action;
 
-    public SubscriberImpl(Context ctx, Action action) {
+    public ActionReactiveSubscriber(Context ctx, Action action) {
         this.ctx = ctx;
         this.action = action;
     }
 
     @Override
     public void onSubscribe(Subscription subscription) {
-        ctx.asyncStart();
+        ctx.asyncStart(-1L, null);
         subscription.request(1L);
     }
 

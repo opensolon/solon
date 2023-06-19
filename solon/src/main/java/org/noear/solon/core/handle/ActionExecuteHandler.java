@@ -3,13 +3,13 @@ package org.noear.solon.core.handle;
 import org.noear.solon.core.wrap.MethodWrap;
 
 /**
- * 动作执行器。用于支持多种消息体执行
+ * 动作执行处理。用于支持多种消息体执行
  *
  * @see Action#callDo(Context, Object, MethodWrap)
  * @author noear
  * @since 1.0
  * */
-public interface ActionExecutor {
+public interface ActionExecuteHandler {
     /**
      * 是否匹配
      *
@@ -25,6 +25,6 @@ public interface ActionExecutor {
      * @param obj 控制器
      * @param mWrap 函数包装器
      * */
-    Object execute(Context ctx, Object obj, MethodWrap mWrap) throws Throwable;
+    Object executeHandle(Context ctx, Object obj, MethodWrap mWrap) throws Throwable;
 
 }

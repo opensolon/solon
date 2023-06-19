@@ -259,6 +259,16 @@ public class AopContext extends BeanContainer {
         if (RouterInterceptor.class.isAssignableFrom(clz)) {
             Solon.app().routerInterceptor(bw.index(), bw.raw());
         }
+
+        //ActionReturnHandler
+        if(ActionReturnHandler.class.isAssignableFrom(clz)){
+            Solon.app().chainManager().addReturnHandler(bw.raw());
+        }
+
+        //ActionExecuteHandler
+        if(ActionExecuteHandler.class.isAssignableFrom(clz)){
+            Solon.app().chainManager().addExecuteHandler(bw.raw());
+        }
     }
 
     //添加事件监听

@@ -48,7 +48,7 @@ public class XPluginImp implements Plugin {
         context.wrapAndPut(JacksonActionExecutor.class, actionExecutor);
         EventBus.push(actionExecutor);
 
-        Bridge.actionExecutorAdd(actionExecutor);
+        Solon.app().chainManager().addExecuteHandler(actionExecutor);
     }
 
     private void applyProps(JacksonRenderFactory factory, JsonProps jsonProps) {

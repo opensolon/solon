@@ -1,7 +1,7 @@
 package org.noear.solon.web.sse;
 
 /**
- * SseEventBuilder
+ * Sse 事件
  *
  * @author kongweiguang
  * @since 2.3

@@ -1,5 +1,6 @@
 package org.noear.solon.serialization.gson;
 
+import org.noear.solon.Solon;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Bridge;
 import org.noear.solon.core.Plugin;
@@ -43,7 +44,7 @@ public class XPluginImp implements Plugin {
         context.wrapAndPut(GsonActionExecutor.class, actionExecutor);
         EventBus.push(actionExecutor);
 
-        Bridge.actionExecutorAdd(actionExecutor);
+        Solon.app().chainManager().addExecuteHandler(actionExecutor);
     }
 
     private void applyProps(GsonRenderFactory factory, JsonProps jsonProps) {
