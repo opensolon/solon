@@ -6,6 +6,7 @@ import org.noear.solon.boot.web.RedirectUtils;
 import org.noear.solon.core.NvMap;
 import org.noear.solon.Utils;
 import org.noear.solon.core.event.EventBus;
+import org.noear.solon.core.handle.ContextAsyncListener;
 import org.noear.solon.core.handle.UploadedFile;
 import org.smartboot.http.common.Cookie;
 import org.smartboot.http.common.enums.HttpStatus;
@@ -30,6 +31,8 @@ public class SmHttpContext extends ContextBase {
         _httpHolder = requestHolder;
         _response = response;
         _fileMap = new HashMap<>();
+
+        requestHolder.setContext(this);
     }
 
     private boolean _loadMultipartFormData = false;
@@ -353,8 +356,12 @@ public class SmHttpContext extends ContextBase {
     }
 
     @Override
-    public void asyncStart() throws IllegalStateException {
+    public void asyncStart(long timeout, ContextAsyncListener listener) throws IllegalStateException {
         _httpHolder.startAsync();
+
+        if (listener != null) {
+            _httpHolder.addListener(listener);
+        }
     }
 
     @Override

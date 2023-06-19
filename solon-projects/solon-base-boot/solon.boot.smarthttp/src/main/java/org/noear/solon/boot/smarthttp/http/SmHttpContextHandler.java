@@ -3,11 +3,15 @@ package org.noear.solon.boot.smarthttp.http;
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.smarthttp.XPluginImp;
 import org.noear.solon.core.event.EventBus;
+import org.noear.solon.core.handle.ContextAsyncListener;
 import org.noear.solon.core.handle.Handler;
 import org.smartboot.http.common.enums.HttpStatus;
 import org.smartboot.http.server.HttpRequest;
 import org.smartboot.http.server.HttpResponse;
 import org.smartboot.http.server.HttpServerHandler;
+import org.smartboot.http.server.impl.Request;
+import org.smartboot.socket.util.AttachKey;
+import org.smartboot.socket.util.Attachment;
 
 import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
@@ -15,14 +19,35 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.RejectedExecutionException;
 
 public class SmHttpContextHandler extends HttpServerHandler {
+    static final AttachKey httpHolderKey = AttachKey.valueOf("httpHolder");
+
     protected Executor executor;
     private final Handler handler;
-    public SmHttpContextHandler(Handler handler){
+
+    public SmHttpContextHandler(Handler handler) {
         this.handler = handler;
     }
 
     public void setExecutor(Executor executor) {
         this.executor = executor;
+    }
+
+    @Override
+    public void onClose(Request request) {
+        if(request.getAttachment() == null){
+            return;
+        }
+
+        HttpHolder httpHolder = (HttpHolder) request.getAttachment().get(httpHolderKey);
+        if (httpHolder != null && httpHolder.isAsync()) {
+            for (ContextAsyncListener listener : httpHolder.getListeners()) {
+                try {
+                    listener.onComplete(httpHolder.getContext());
+                } catch (Throwable e) {
+                    EventBus.pushTry(e);
+                }
+            }
+        }
     }
 
     @Override
@@ -42,6 +67,10 @@ public class SmHttpContextHandler extends HttpServerHandler {
 
     protected void handle0(HttpRequest request, HttpResponse response, CompletableFuture<Object> future) {
         HttpHolder httpHolder = new HttpHolder(request, future);
+        if(request.getAttachment() == null){
+            request.setAttachment(new Attachment());
+        }
+        request.getAttachment().put(httpHolderKey, httpHolder);
 
         try {
             handleDo(httpHolder, response);
