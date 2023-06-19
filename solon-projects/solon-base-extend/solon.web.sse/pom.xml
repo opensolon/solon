@@ -28,7 +28,7 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.boot.smarthttp</artifactId>
+            <artifactId>solon.boot.jetty</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>

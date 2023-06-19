@@ -18,14 +18,18 @@ public class SseDemoController {
     static Map<String, SseEmitter> emitterMap = new HashMap<>();
 
     @Mapping("/sse/{id}")
-    public void sse(String id) throws Throwable {
-        SseEmitter emitter = new SseEmitter(0L)
-                .onCompletion(() -> emitterMap.remove(id))
-                .onError(e -> emitterMap.remove(id));
+    public SseEmitter sse(String id) throws Throwable {
+        return new SseEmitter(0L)
+                .onCompletion(() -> {
+                    emitterMap.remove(id);
+                    System.out.println("::onCompletion");
 
-        emitterMap.put(id, emitter);
-
-        emitter.start();
+                })
+                .onError(e -> {
+                    emitterMap.remove(id);
+                    System.out.println("::onError");
+                })
+                .release(e -> emitterMap.put(id, e));
     }
 
     @Get
@@ -51,7 +55,7 @@ public class SseDemoController {
         SseEmitter emitter = emitterMap.get(id);
         if (emitter != null) {
             emitterMap.remove(id);
-            emitter.stop();
+            emitter.complete();
         }
 
         return "Ok";
