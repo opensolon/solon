@@ -1,5 +1,7 @@
 package org.noear.solon.web.sse;
 
+import org.noear.solon.core.util.ConsumerEx;
+
 import java.io.IOException;
 import java.util.function.Consumer;
 
@@ -14,7 +16,7 @@ public class SseEmitter {
     protected Runnable onCompletion;
     protected Runnable onTimeout;
     protected Consumer<Throwable> onError;
-    protected Consumer<SseEmitter> onInited;
+    protected ConsumerEx<SseEmitter> onInited;
 
     protected long timeout;
 
@@ -46,7 +48,7 @@ public class SseEmitter {
     /**
      * 初始化回调方法
      * */
-    public SseEmitter onInited(Consumer<SseEmitter> onInited){
+    public SseEmitter onInited(ConsumerEx<SseEmitter> onInited){
         this.onInited = onInited;
         return this;
     }
@@ -88,7 +90,7 @@ public class SseEmitter {
     /**
      * 初始化
      */
-    protected void initialize(SseEmitterHandler handler) {
+    protected void initialize(SseEmitterHandler handler) throws Throwable{
         this.handler = handler;
 
         if(onInited != null){

@@ -25,10 +25,8 @@ public class SseEmitterHandler {
 
     /**
      * 开始
-     * */
+     */
     public void start() throws Throwable {
-        emitter.initialize(this);
-
         sendHeaderDo();
 
         if (ctx.asyncSupported()) {
@@ -36,16 +34,20 @@ public class SseEmitterHandler {
         } else {
             executeSendTask();
         }
+
+
+        emitter.initialize(this);
     }
 
     /**
      * 发送头
      */
     private void sendHeaderDo() {
-        ctx.headerSet("Content-Type", "text/event-stream");
-        ctx.headerSet("Cache-Control", "no-cache");
-        ctx.headerSet("Connection", "keep-alive");
-        ctx.headerSet("Keep-Alive", "timeout=60");
+        ctx.contentType("text/event-stream;charset=utf-8");
+        //ctx.headerSet("Content-Type", "text/event-stream");
+        //ctx.headerSet("Cache-Control", "no-cache");
+        //ctx.headerSet("Connection", "keep-alive");
+        //ctx.headerSet("Keep-Alive", "timeout=60");
     }
 
     /**
@@ -80,7 +82,7 @@ public class SseEmitterHandler {
             throw new IllegalArgumentException("Event cannot be null");
         }
 
-        if(stopped.get()){
+        if (stopped.get()) {
             throw new IllegalStateException("Emitter was not initialized or stopped");
         }
 
@@ -105,11 +107,7 @@ public class SseEmitterHandler {
      * 完成（用于手动控制）
      */
     public synchronized void complete() {
-        if (stop()) {
-            if (ctx.asyncSupported()) {
-                ctx.asyncComplete();
-            }
-        }
+        stop();
     }
 
     /**
@@ -139,7 +137,7 @@ public class SseEmitterHandler {
      *
      * @return 是否正常停止
      */
-    protected boolean stop() {
+    protected void stop() {
         if (stopped.get() == false) {
             stopped.set(true);
 
@@ -147,9 +145,9 @@ public class SseEmitterHandler {
                 emitter.onCompletion.run();
             }
 
-            return true;
-        } else {
-            return false;
+            if (ctx.asyncSupported()) {
+                ctx.asyncComplete();
+            }
         }
     }
 }

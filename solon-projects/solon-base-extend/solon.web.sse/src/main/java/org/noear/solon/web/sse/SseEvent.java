@@ -11,7 +11,7 @@ public class SseEvent {
     private final StringBuilder sb = new StringBuilder();
 
     /**
-     * Add an SSE "id" line.
+     * 添加 SSE "id" 行.
      */
     public SseEvent id(String id) {
         append("id:").append(id).append("\n");
@@ -19,7 +19,7 @@ public class SseEvent {
     }
 
     /**
-     * Add an SSE "event" line.
+     * 添加 SSE "event" 行.
      */
     public SseEvent name(String name) {
         append("event:").append(name).append("\n");
@@ -27,7 +27,7 @@ public class SseEvent {
     }
 
     /**
-     * Add an SSE "retry" line.
+     * 添加 SSE "retry" 行.
      */
     public SseEvent reconnectTime(long reconnectTimeMillis) {
         append("retry:").append(String.valueOf(reconnectTimeMillis)).append("\n");
@@ -35,13 +35,16 @@ public class SseEvent {
     }
 
     /**
-     * Add an SSE "data" line.
+     * 添加 SSE "data" 行.
      */
     public SseEvent data(Object object) {
         append("data:").append(object.toString()).append("\n");
         return this;
     }
 
+    /**
+     * 构建为事件文本
+     * */
     public String build() {
         return append("\n").sb.toString();
     }
