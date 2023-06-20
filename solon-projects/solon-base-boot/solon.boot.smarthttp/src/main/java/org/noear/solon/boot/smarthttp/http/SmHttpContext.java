@@ -8,6 +8,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.ContextAsyncListener;
 import org.noear.solon.core.handle.UploadedFile;
+import org.noear.solon.core.util.RunUtil;
 import org.smartboot.http.common.Cookie;
 import org.smartboot.http.common.enums.HttpStatus;
 import org.smartboot.http.server.HttpRequest;
@@ -376,7 +377,17 @@ public class SmHttpContext extends ContextBase {
 
     @Override
     public void asyncStart(long timeout, ContextAsyncListener listener) throws IllegalStateException {
-        _isAsync = true;
+        if (_isAsync == false) {
+            _isAsync = true;
+
+            if (timeout > 0) {
+                RunUtil.delay(() -> {
+                    for (ContextAsyncListener listener1 : _asyncListeners) {
+                        listener1.onTimeout(this);
+                    }
+                }, timeout);
+            }
+        }
 
         if (listener != null) {
             _asyncListeners.add(listener);
