@@ -1035,12 +1035,16 @@ public abstract class Context {
     /**
      * 异步开始
      * */
-    public void asyncStart(long timeout, ContextAsyncListener listener) throws IllegalStateException{}
+    public void asyncStart(long timeout, ContextAsyncListener listener) throws IllegalStateException{
+        throw new UnsupportedOperationException();
+    }
 
     /**
      * 异步完成
      * */
-    public void asyncComplete(){}
+    public void asyncComplete(){
+        throw new UnsupportedOperationException();
+    }
 
     @Note("冲刷")
     public abstract void flush() throws IOException;

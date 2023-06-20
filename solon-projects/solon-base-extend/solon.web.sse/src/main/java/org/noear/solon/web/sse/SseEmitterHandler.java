@@ -27,45 +27,26 @@ public class SseEmitterHandler {
      * 开始
      */
     public void start() throws Throwable {
-        sendHeaderDo();
+        ctx.contentType("text/event-stream;charset=utf-8");
 
         if (ctx.asyncSupported()) {
             ctx.asyncStart(emitter.timeout, new AsyncListenerImpl(this));
+            emitter.initialize(this);
         } else {
-            executeSendTask();
+            emitter.initialize(this);
+            executeSyncSendTask();
         }
-
-
-        emitter.initialize(this);
-    }
-
-    /**
-     * 发送头
-     */
-    private void sendHeaderDo() {
-        ctx.contentType("text/event-stream;charset=utf-8");
-        //ctx.headerSet("Content-Type", "text/event-stream");
-        //ctx.headerSet("Cache-Control", "no-cache");
-        //ctx.headerSet("Connection", "keep-alive");
-        //ctx.headerSet("Keep-Alive", "timeout=60");
-    }
-
-    /**
-     * 发送事件
-     */
-    private void sendEventDo(String event) throws IOException {
-        ctx.output(event);
-        ctx.flush();
     }
 
     /**
      * 发送事件任务（同步模式时）
      */
-    private void executeSendTask() throws Throwable {
+    private void executeSyncSendTask() throws Throwable {
         while (!stopped.get()) {
             String event = q.poll();
             if (event != null) {
-                sendEventDo(event);
+                ctx.output(event);
+                ctx.flush();
             }
 
             Thread.sleep(500L);
@@ -79,16 +60,17 @@ public class SseEmitterHandler {
      */
     public synchronized void send(SseEvent event) throws IOException {
         if (event == null) {
-            throw new IllegalArgumentException("Event cannot be null");
+            throw new IllegalArgumentException("SSE event cannot be null");
         }
 
         if (stopped.get()) {
-            throw new IllegalStateException("Emitter was not initialized or stopped");
+            throw new IllegalStateException("SSE emitter was not initialized or stopped");
         }
 
         try {
             if (ctx.asyncSupported()) {
-                sendEventDo(event.build());
+                ctx.output(event.build());
+                ctx.flush();
             } else {
                 try {
                     q.put(event.build());
@@ -106,7 +88,7 @@ public class SseEmitterHandler {
     /**
      * 完成（用于手动控制）
      */
-    public synchronized void complete() {
+    public void complete() {
         stop();
     }
 
@@ -134,8 +116,6 @@ public class SseEmitterHandler {
 
     /**
      * 停止
-     *
-     * @return 是否正常停止
      */
     protected void stop() {
         if (stopped.get() == false) {
