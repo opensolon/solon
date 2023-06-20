@@ -330,6 +330,12 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>solon.boot.websocket.netty</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>solon.boot.socketd.jdksocket</artifactId>
                 <version>${solon.version}</version>
             </dependency>

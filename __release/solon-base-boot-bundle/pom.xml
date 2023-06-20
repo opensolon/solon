@@ -23,10 +23,9 @@
         <module>../../solon-projects/solon-base-boot/solon.boot.jetty</module>
         <module>../../solon-projects/solon-base-boot/solon.boot.undertow</module>
         <module>../../solon-projects/solon-base-boot/solon.boot.tomcat</module>
-        <module>../../solon-projects/solon-base-boot/solon.boot.tiohttp</module>
 
         <module>../../solon-projects/solon-base-boot/solon.boot.websocket</module>
-        <module>../../solon-projects/solon-base-boot/solon.boot.tiowebsocket</module>
+        <module>../../solon-projects/solon-base-boot/solon.boot.websocket.netty</module>
 
 
         <module>../../solon-projects/solon-base-boot/solon.boot.jetty.add.jsp</module>

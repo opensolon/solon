@@ -11,9 +11,9 @@
         <relativePath>../../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <groupId>org.noear</groupId>
-    <artifactId>solon.boot.tiohttp</artifactId>
+    <artifactId>solon.boot.websocket.netty</artifactId>
     <packaging>jar</packaging>
+
 
     <dependencies>
         <dependency>
@@ -22,9 +22,20 @@
         </dependency>
 
         <dependency>
-            <groupId>org.t-io</groupId>
-            <artifactId>tio-http-server</artifactId>
-            <version>3.7.4.v20210808-RELEASE</version>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.socketd</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-all</artifactId>
+            <version>${netty.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
         </dependency>
     </dependencies>
 

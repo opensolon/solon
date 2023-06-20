@@ -218,9 +218,14 @@
             <artifactId>solon.socketd.client.websocket</artifactId>
         </dependency>
 
+<!--        <dependency>-->
+<!--            <groupId>org.noear</groupId>-->
+<!--            <artifactId>solon.boot.websocket</artifactId>-->
+<!--        </dependency>-->
+
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.boot.websocket</artifactId>
+            <artifactId>solon.boot.websocket.netty</artifactId>
         </dependency>
 
         <dependency>

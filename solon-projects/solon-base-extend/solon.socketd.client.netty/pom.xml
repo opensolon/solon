@@ -25,7 +25,6 @@
             <groupId>io.netty</groupId>
             <artifactId>netty-all</artifactId>
             <version>${netty.version}</version>
-            <!-- 如果与 undertow 同用时；注意netty版本号的统一 -->
         </dependency>
     </dependencies>
 
