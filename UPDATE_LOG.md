@@ -23,7 +23,7 @@
 * 增加 ActionReturnHandler 接口，之后特别的返回结果可定制。为响应式web开发提供支持
 * 增加 ActionExecuteHandler 接口（替代旧的 ActionExecutor），并交由 chainManager 管理
 * 增加 jetty、undertow 对 Context 异步适配
-* 增加 Inject("{xxx:def}}") 默认值转集合和数组支持
+* 增加 Inject("{xxx:def}") 默认值转集合和数组支持
 * 完善 mybatis-solon-plugin  原生编译支持
 * 完善 solon.aot 增加 lambda 序列化支持
 * 修复 请求路径动态变化后，路径变量获取失败的问题
