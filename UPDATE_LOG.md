@@ -15,6 +15,7 @@
 * 新增 solon.web.flux 插件，响应式web开发插件（适用于支持异步的 http server）
 * 增加 mybatis-plus-solon-plugin 插件，原生编译支持（GraalVM Native Image）
 * 增加 solon.scheduling 插件，简单的 Retry 功能
+* 增加 solon.validation 一次性验证所有字段的支持
 * 增加 solon.docs 插件，支持字段 transient 排除
 * 增加 Context 异步控制接口，为响应式web开发提供支持
 * 增加 ActionReturnHandler 接口，之后特别的返回结果可定制。为响应式web开发提供支持
