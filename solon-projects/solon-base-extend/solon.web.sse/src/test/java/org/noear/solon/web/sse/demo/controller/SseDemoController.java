@@ -16,7 +16,7 @@ public class SseDemoController {
     static Map<String, SseEmitter> emitterMap = new HashMap<>();
 
     @Mapping("/sse/{id}")
-    public SseEmitter sse(String id) throws Throwable {
+    public SseEmitter sse(String id) {
         return new SseEmitter(0L)
                 .onCompletion(() -> {
                     emitterMap.remove(id);
@@ -30,7 +30,7 @@ public class SseDemoController {
     }
 
     @Mapping("/sse2/{id}")
-    public SseEmitter sse2(String id) throws Throwable {
+    public SseEmitter sse2(String id) {
         //// 超时时间设置为3s，用于演示客户端自动重连
         return new SseEmitter(3000L)
                 .onCompletion(() -> {
@@ -66,7 +66,7 @@ public class SseDemoController {
 
     @Get
     @Mapping("/sse/del/{id}")
-    public String sseDel(String id) throws Throwable {
+    public String sseDel(String id) {
         SseEmitter emitter = emitterMap.get(id);
         if (emitter != null) {
             emitter.complete();
