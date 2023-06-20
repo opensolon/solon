@@ -25,7 +25,7 @@ public class XPluginImp implements Plugin {
     ChannelFuture _server;
 
     public static String solon_boot_ver() {
-        return "netty-socketd 4.1.68/" + Solon.version();
+        return "netty-socketd 4.1.75/" + Solon.version();
     }
 
     @Override
@@ -54,12 +54,12 @@ public class XPluginImp implements Plugin {
         final String _name = props.getName();
 
 
-        EventLoopGroup parentGroup = new NioEventLoopGroup();
-        EventLoopGroup childGroup = new NioEventLoopGroup();
+        EventLoopGroup bossGroup = new NioEventLoopGroup(props.getCoreThreads());
+        EventLoopGroup workGroup = new NioEventLoopGroup(props.getMaxThreads(false));
 
         try {
             ServerBootstrap bootstrap = new ServerBootstrap();
-            bootstrap.group(parentGroup, childGroup)
+            bootstrap.group(bossGroup, workGroup)
                     .channel(NioServerSocketChannel.class)
                     .childHandler(new NioChannelInitializer(() -> new NioServerProcessor()));
 
@@ -80,13 +80,13 @@ public class XPluginImp implements Plugin {
             LogUtil.global().info("Connector:main: netty-socketd: Started ServerConnector@{[Socket]}{0.0.0.0:" + _port + "}");
             LogUtil.global().info("Server:main: netty-socketd: Started (" + solon_boot_ver() + ") @" + (time_end - time_start) + "ms");
         } catch (RuntimeException e) {
-            parentGroup.shutdownGracefully();
-            childGroup.shutdownGracefully();
+            bossGroup.shutdownGracefully();
+            workGroup.shutdownGracefully();
 
             throw e;
         } catch (Throwable e) {
-            parentGroup.shutdownGracefully();
-            childGroup.shutdownGracefully();
+            bossGroup.shutdownGracefully();
+            workGroup.shutdownGracefully();
 
             throw new IllegalStateException(e);
         }
