@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.noear</groupId>
         <artifactId>solon-parent</artifactId>
-        <version>2.3.4-SNAPSHOT</version>
+        <version>2.3.4</version>
         <relativePath>../../../solon-parent/pom.xml</relativePath>
     </parent>
     
@@ -19,19 +19,5 @@
             <groupId>org.noear</groupId>
             <artifactId>solon</artifactId>
         </dependency>
-
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon-lib</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.boot.jetty</artifactId>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
-
-
 </project>

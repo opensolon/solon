@@ -23,7 +23,10 @@ public class ActionReactiveSubscriber implements Subscriber {
 
     @Override
     public void onSubscribe(Subscription subscription) {
-        ctx.asyncStart(-1L, null);
+        if (ctx.asyncSupported()) {
+            ctx.asyncStart(0L, null);
+        }
+
         subscription.request(1L);
     }
 
@@ -47,6 +50,8 @@ public class ActionReactiveSubscriber implements Subscriber {
 
     @Override
     public void onComplete() {
-        ctx.asyncComplete();
+        if (ctx.asyncSupported()) {
+            ctx.asyncComplete();
+        }
     }
 }

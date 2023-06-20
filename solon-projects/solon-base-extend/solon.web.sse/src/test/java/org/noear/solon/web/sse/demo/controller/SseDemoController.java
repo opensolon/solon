@@ -1,11 +1,9 @@
 package org.noear.solon.web.sse.demo.controller;
 
-import org.noear.snack.ONode;
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Get;
 import org.noear.solon.annotation.Mapping;
-import org.noear.solon.core.handle.Result;
 import org.noear.solon.web.sse.SseEmitter;
 import org.noear.solon.web.sse.SseEvent;
 
@@ -62,7 +60,6 @@ public class SseDemoController {
         System.out.println(msg);
         emitter.send(msg);
         emitter.send(new SseEvent().id(Utils.guid()).name("update").data(msg));
-        emitter.send(ONode.stringify(Result.succeed(msg)));
 
         return "Ok";
     }

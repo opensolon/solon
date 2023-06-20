@@ -9,8 +9,10 @@
 * 提醒1：之前没有使用弃用接口的，可以直接升级 <br>
 * 提醒2：有使用弃用接口的。建议先升级到 1.12.4；替换弃用代码后，再升级到 2.0.0
 
-### 2.3.4
+### 2.3.5
 * 新增 solon.boot.tiowebsocket 插件
+
+### 2.3.4
 * 新增 solon.web.sse 插件（sse: Server Send Events）
 * 新增 solon.web.flux 插件，响应式web开发插件（适用于支持异步的 http server）
 * 增加 mybatis-plus-solon-plugin 插件，原生编译支持（GraalVM Native Image）
@@ -34,6 +36,7 @@
 * sqltoy 升为 5.2.54
 * hutool 升为 5.8.20
 * fastjson2 升为 2.0.34
+* java-websocket 升为 1.5.3
 
 ### 2.3.3
 * 调整 solon-cloud-alibaba 快捷包 改用 nacos2,rocketmq5

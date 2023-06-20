@@ -17,22 +17,22 @@ public class AsyncListenerImpl implements ContextAsyncListener {
     }
 
     @Override
-    public void onStart(Context ctx) throws IOException {
+    public void onStart(Context ctx)  {
 
     }
 
     @Override
-    public void onComplete(Context ctx) throws IOException {
+    public void onComplete(Context ctx)  {
         handler.stop();
     }
 
     @Override
-    public void onTimeout(Context ctx) throws IOException {
+    public void onTimeout(Context ctx)  {
         handler.stopOnTimeout();
     }
 
     @Override
-    public void onError(Context ctx, Throwable e) throws IOException {
+    public void onError(Context ctx, Throwable e) {
         handler.stopOnError(e);
     }
 }
