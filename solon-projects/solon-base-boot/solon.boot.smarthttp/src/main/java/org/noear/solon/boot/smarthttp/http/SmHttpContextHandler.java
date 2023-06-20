@@ -39,7 +39,7 @@ public class SmHttpContextHandler extends HttpServerHandler {
         }
 
         SmHttpContext ctx = (SmHttpContext) request.getAttachment().get(httpHolderKey);
-        if (ctx != null && ctx.isAsync()) {
+        if (ctx != null && ctx.innerIsAsync()) {
             for (ContextAsyncListener listener : ctx.asyncListeners()) {
                 try {
                     listener.onComplete(ctx);
@@ -78,7 +78,7 @@ public class SmHttpContextHandler extends HttpServerHandler {
         } catch (Throwable e) {
             e.printStackTrace();
         } finally {
-            if (ctx.isAsync() == false) {
+            if (ctx.innerIsAsync() == false) {
                 future.complete(ctx);
             }
         }
@@ -87,7 +87,7 @@ public class SmHttpContextHandler extends HttpServerHandler {
     protected void handleDo(SmHttpContext ctx) {
         try {
             if ("PRI".equals(ctx.method())) {
-                ctx.getResponse().setHttpStatus(HttpStatus.NOT_IMPLEMENTED);
+                ctx.innerGetResponse().setHttpStatus(HttpStatus.NOT_IMPLEMENTED);
                 return;
             }
 
@@ -107,7 +107,7 @@ public class SmHttpContextHandler extends HttpServerHandler {
         } catch (Throwable e) {
             EventBus.pushTry(e);
 
-            ctx.getResponse().setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+            ctx.innerGetResponse().setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

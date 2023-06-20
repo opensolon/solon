@@ -29,15 +29,15 @@ public class SmHttpContext extends ContextBase {
     private boolean _isAsync;
     private List<ContextAsyncListener> _asyncListeners = new ArrayList<>();
 
-    public HttpRequest getRequest() {
+    public HttpRequest innerGetRequest() {
         return _request;
     }
 
-    public HttpResponse getResponse() {
+    public HttpResponse innerGetResponse() {
         return _response;
     }
 
-    public boolean isAsync() {
+    public boolean innerIsAsync() {
         return _isAsync;
     }
 
