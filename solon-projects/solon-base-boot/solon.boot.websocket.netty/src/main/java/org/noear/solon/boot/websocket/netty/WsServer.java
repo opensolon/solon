@@ -10,8 +10,8 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpServerCodec;
-import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
-import io.netty.handler.codec.http.websocketx.extensions.compression.WebSocketServerCompressionHandler;
+
+import io.netty.handler.stream.ChunkedWriteHandler;
 import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerLifecycle;
 import org.noear.solon.boot.prop.impl.WebSocketServerProps;
@@ -30,33 +30,40 @@ public class WsServer implements ServerLifecycle {
     @Override
     public void start(String host, int port) throws Throwable {
         EventLoopGroup bossGroup = new NioEventLoopGroup(_props.getCoreThreads());
-        EventLoopGroup workerGroup = new NioEventLoopGroup(_props.getMaxThreads(false));
+        EventLoopGroup workGroup = new NioEventLoopGroup(_props.getMaxThreads(false));
 
         try {
             ServerBootstrap bootstrap = new ServerBootstrap();
-            bootstrap.group(bossGroup, workerGroup)
+            bootstrap.group(bossGroup, workGroup)
                     .channel(NioServerSocketChannel.class)
                     .childHandler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         public void initChannel(SocketChannel ch) throws Exception {
                             ChannelPipeline pipeline = ch.pipeline();
-                            pipeline.addLast(new HttpServerCodec()); // HTTP 协议解析，用于握手阶段
-                            pipeline.addLast(new HttpObjectAggregator(65536)); // HTTP 协议解析，用于握手阶段
-                            pipeline.addLast(new WebSocketServerCompressionHandler()); // WebSocket 数据压缩扩展
-                            pipeline.addLast(new WebSocketServerProtocolHandler("/", null, true)); // WebSocket 握手、控制帧处理
-                            pipeline.addLast(new WsServerHandler());
+                            //将请求和应答消息编码或解码为HTTP消息
+                            pipeline.addLast(new HttpServerCodec());
+                            //将HTTP消息的多个部分组合成一条完整的HTTP消息
+                            pipeline.addLast(new HttpObjectAggregator(65536));
+                            //向客户端发送HTML5文件，主要用于支持浏览器和服务端进行WebSocket通信
+                            pipeline.addLast(new ChunkedWriteHandler());
+                            pipeline.addLast(new WebSocketServerHandler());
                         }
                     });
             if (Utils.isEmpty(host)) {
-                _server = bootstrap.bind(port).sync();
+                _server = bootstrap.bind(port).await();
             } else {
-                _server = bootstrap.bind(host, port).sync();
+                _server = bootstrap.bind(host, port).await();
             }
-
-            _server.channel().closeFuture().sync();
-        } finally {
-            workerGroup.shutdownGracefully();
+        } catch (RuntimeException e) {
             bossGroup.shutdownGracefully();
+            workGroup.shutdownGracefully();
+
+            throw e;
+        } catch (Throwable e) {
+            bossGroup.shutdownGracefully();
+            workGroup.shutdownGracefully();
+
+            throw new IllegalStateException(e);
         }
     }
 

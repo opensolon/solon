@@ -20,6 +20,8 @@ import java.nio.ByteBuffer;
 import java.util.*;
 
 public class _SocketServerSession extends SessionBase {
+
+
     public static final Map<ChannelHandlerContext, Session> sessions = new HashMap<>();
 
     public static Session get(ChannelHandlerContext real) {
@@ -69,7 +71,7 @@ public class _SocketServerSession extends SessionBase {
     @Override
     public URI uri() {
         if(_uri == null){
-            _uri = URI.create(real.name());
+            _uri = URI.create(real.attr(WebSocketServerHandler.ResourceDescriptorKey).get());
         }
 
         return _uri;
@@ -134,7 +136,7 @@ public class _SocketServerSession extends SessionBase {
             return false;
         }
 
-        return real.isRemoved() == false;
+        return real.channel().isOpen();
     }
 
     @Override

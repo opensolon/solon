@@ -24,7 +24,7 @@ public class XPluginImpl implements Plugin {
     WsServer _server;
 
     public static String solon_boot_ver() {
-        return "netty-webscoket 4.1.68/" + Solon.version();
+        return "netty-webscoket 4.1.75/" + Solon.version();
     }
 
     @Override
