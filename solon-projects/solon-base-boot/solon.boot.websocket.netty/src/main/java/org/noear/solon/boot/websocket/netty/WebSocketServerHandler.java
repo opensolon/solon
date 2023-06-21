@@ -12,6 +12,7 @@ import io.netty.util.AttributeKey;
 import io.netty.util.CharsetUtil;
 import org.noear.solon.Solon;
 import org.noear.solon.core.message.Message;
+import org.noear.solon.core.message.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -88,17 +89,23 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler<Object> 
 
         if (frame instanceof TextWebSocketFrame) {
             //listener.onMessage();
+            Session session = _SocketServerSession.get(ctx);
             String msgTxt = ((TextWebSocketFrame) frame).text();
 
-            Solon.app().listener().onMessage(_SocketServerSession.get(ctx), Message.wrap(msgTxt));
+            Message message = Message.wrap(session.pathNew(), null, msgTxt);
+
+            Solon.app().listener().onMessage(session, message);
             return;
         }
 
         if (frame instanceof BinaryWebSocketFrame) {
             //listener.onMessage();
-            byte[] bytes = ((BinaryWebSocketFrame) frame).content().array();
+            Session session = _SocketServerSession.get(ctx);
+            byte[] msgBytes = frame.content().array();
 
-            Solon.app().listener().onMessage(_SocketServerSession.get(ctx), Message.wrap(bytes));
+            Message message = Message.wrap(session.pathNew(), null, msgBytes);
+
+            Solon.app().listener().onMessage(session, message);
             return;
         }
     }

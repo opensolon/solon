@@ -50,8 +50,6 @@ public class WebSocketTestSelf {
 
         assert errors == null;
         System.out.println("测试完成...");
-
-        Thread.sleep(100);
     }
 
     @Test
@@ -75,6 +73,10 @@ public class WebSocketTestSelf {
         session.sendAsync("test3");
 
         assert check.get(2, TimeUnit.SECONDS);
+
+        session.close();
+
+        Thread.sleep(100);
     }
 }
 

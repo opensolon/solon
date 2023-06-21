@@ -31,7 +31,7 @@ public class WebSocketTest {
 
         while (!client.isOpen()) {
             if (System.currentTimeMillis() - time_start > 1000 * 2) {
-                throw new RuntimeException("没有自带WebSocket服务或链接超时");
+                throw new RuntimeException("没有WebSocket服务或链接超时");
             }
 
             Thread.sleep(100);
@@ -50,8 +50,6 @@ public class WebSocketTest {
 
         assert errors == null;
         System.out.println("测试完成...");
-
-        Thread.sleep(100);
     }
 
     @Test
@@ -62,7 +60,7 @@ public class WebSocketTest {
         session.listener(new Listener() {
             @Override
             public void onMessage(Session session, Message message) {
-                System.out.println("异步发送-ws-self::实例监到，收到了：" + message);
+                System.out.println("异步发送-ws::实例监到，收到了：" + message);
                 check.complete(true);
             }
         });
@@ -75,5 +73,9 @@ public class WebSocketTest {
         session.sendAsync("test3");
 
         assert check.get(2, TimeUnit.SECONDS);
+
+        session.close();
+
+        Thread.sleep(1000);
     }
 }
