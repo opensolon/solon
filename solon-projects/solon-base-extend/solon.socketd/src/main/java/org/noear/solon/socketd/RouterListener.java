@@ -2,6 +2,7 @@ package org.noear.solon.socketd;
 
 import org.noear.solon.Solon;
 import org.noear.solon.core.event.EventBus;
+import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.message.Listener;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.MessageFlag;
@@ -48,10 +49,19 @@ public class RouterListener implements Listener{
             if (sl != null) {
                 sl.onOpen(session);
             } else {
-                if (Solon.app().enableWebSocketMvc() == false
-                        && Solon.app().enableSocketMvc() == false
-                        && session.listener() == null) {
-                    session.close();
+
+                if(Solon.app().enableWebSocketMvc() == false) {
+                    if (session.method() == MethodType.WEBSOCKET && session.listener() == null) {
+                        session.close();
+                        return;
+                    }
+                }
+
+                if(Solon.app().enableSocketMvc() == false) {
+                    if (session.method() == MethodType.SOCKET && session.listener() == null) {
+                        session.close();
+                        return;
+                    }
                 }
             }
 
