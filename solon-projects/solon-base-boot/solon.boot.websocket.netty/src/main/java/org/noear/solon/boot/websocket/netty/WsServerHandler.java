@@ -13,21 +13,14 @@ import io.netty.util.CharsetUtil;
 import org.noear.solon.Solon;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.util.Date;
 
 /**
  * @author noear
  * @since 2.3
  */
-public class WebSocketServerHandler extends SimpleChannelInboundHandler<Object> {
+public class WsServerHandler extends SimpleChannelInboundHandler<Object> {
     public static final AttributeKey<String> ResourceDescriptorKey = AttributeKey.valueOf("ResourceDescriptor");
-    private static final Logger log = LoggerFactory.getLogger(WebSocketServerHandler.class);
-
-    private WebSocketServerHandshaker handshaker;
-
+    public static final AttributeKey<WebSocketServerHandshaker> HandshakerKey = AttributeKey.valueOf("Handshaker");
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, Object msg) throws Exception {
         //判断请求是HTTP请求还是WebSocket请求
@@ -57,19 +50,20 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler<Object> 
 
         //生成 ResourceDescriptor
         String url = "ws://" + req.headers().get(HttpHeaderNames.HOST) + req.uri();
-        ctx.attr(ResourceDescriptorKey).set(url);
 
         //构造握手工厂创建握手处理类 WebSocketServerHandshaker，来构造握手响应返回给客户端
         WebSocketServerHandshakerFactory wsFactory = new WebSocketServerHandshakerFactory(url, null, false);
-        handshaker = wsFactory.newHandshaker(req);
+        WebSocketServerHandshaker handshaker = wsFactory.newHandshaker(req);
         if (handshaker == null) {
             WebSocketServerHandshakerFactory.sendUnsupportedVersionResponse(ctx.channel());
         } else {
             handshaker.handshake(ctx.channel(), req);
-        }
+            ctx.attr(HandshakerKey).set(handshaker);
+            ctx.attr(ResourceDescriptorKey).set(req.uri());
 
-        //listener.onOpen();
-        Solon.app().listener().onOpen(_SocketServerSession.get(ctx));
+            //listener.onOpen();
+            Solon.app().listener().onOpen(_SocketServerSession.get(ctx));
+        }
     }
 
     //如果接收到的消息是已经解码的WebSocketFrame消息
@@ -77,7 +71,10 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler<Object> 
         //先对控制帧进行判断
         //判断是否是关闭链路的指令
         if (frame instanceof CloseWebSocketFrame) {
-            handshaker.close(ctx.channel(), (CloseWebSocketFrame) frame.retain());
+            WebSocketServerHandshaker handshaker = ctx.attr(HandshakerKey).get();
+            if(handshaker != null){
+                handshaker.close(ctx.channel(), (CloseWebSocketFrame) frame.retain());
+            }
             return;
         }
 

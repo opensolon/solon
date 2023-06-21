@@ -71,7 +71,7 @@ public class _SocketServerSession extends SessionBase {
     @Override
     public URI uri() {
         if(_uri == null){
-            _uri = URI.create(real.attr(WebSocketServerHandler.ResourceDescriptorKey).get());
+            _uri = URI.create(real.attr(WsServerHandler.ResourceDescriptorKey).get());
         }
 
         return _uri;

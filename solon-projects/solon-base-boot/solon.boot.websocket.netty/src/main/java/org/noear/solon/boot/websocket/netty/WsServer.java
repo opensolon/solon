@@ -46,7 +46,7 @@ public class WsServer implements ServerLifecycle {
                             pipeline.addLast(new HttpObjectAggregator(65536));
                             //向客户端发送HTML5文件，主要用于支持浏览器和服务端进行WebSocket通信
                             pipeline.addLast(new ChunkedWriteHandler());
-                            pipeline.addLast(new WebSocketServerHandler());
+                            pipeline.addLast(new WsServerHandler());
                         }
                     });
             if (Utils.isEmpty(host)) {

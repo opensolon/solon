@@ -47,6 +47,12 @@ public class RouterListener implements Listener{
             Listener sl = get(session);
             if (sl != null) {
                 sl.onOpen(session);
+            } else {
+                if (Solon.app().enableWebSocketMvc() == false
+                        && Solon.app().enableSocketMvc() == false
+                        && session.listener() == null) {
+                    session.close();
+                }
             }
 
             //todo: 实例监听者（SessionBase）
