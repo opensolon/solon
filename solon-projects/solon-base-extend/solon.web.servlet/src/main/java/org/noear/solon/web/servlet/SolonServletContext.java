@@ -29,6 +29,10 @@ public class SolonServletContext extends ContextBase {
     private HttpServletResponse _response;
     protected Map<String, List<UploadedFile>> _fileMap;
 
+    protected boolean innerIsAsync() {
+        return asyncContext != null;
+    }
+
     public SolonServletContext(HttpServletRequest request, HttpServletResponse response) {
         _request = request;
         _response = response;
@@ -351,9 +355,13 @@ public class SolonServletContext extends ContextBase {
     }
 
     @Override
-    public void asyncComplete() {
-        if(asyncContext != null) {
-            asyncContext.complete();
+    public void asyncComplete() throws IOException {
+        if (asyncContext != null) {
+            try {
+                commit();
+            } finally {
+                asyncContext.complete();
+            }
         }
     }
 
@@ -364,7 +372,11 @@ public class SolonServletContext extends ContextBase {
 
     @Override
     protected void commit() throws IOException {
-        sendHeaders();
+        if (getHandled() || status() >= 200) {
+            sendHeaders();
+        } else {
+            _response.setStatus(404);
+        }
     }
 
     private boolean _headers_sent = false;

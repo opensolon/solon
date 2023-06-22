@@ -30,10 +30,8 @@ public class SolonServletHandler extends HttpServlet {
 
         Solon.app().tryHandle(ctx);
 
-        if (ctx.getHandled() || ctx.status() >= 200) {
+        if(ctx.innerIsAsync() == false){
             ctx.commit();
-        }else{
-            response.setStatus(404);
         }
     }
 }
