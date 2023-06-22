@@ -41,6 +41,8 @@ public class ActionReactiveSubscriber implements Subscriber {
             action.render(e, ctx);
         } catch (Throwable e2) {
             EventBus.pushTry(e2);
+        } finally {
+            onComplete();
         }
     }
 
