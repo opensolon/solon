@@ -1,6 +1,7 @@
 package org.noear.solon.socketd;
 
 import org.noear.solon.Utils;
+import org.noear.solon.core.handle.ContextAsyncListener;
 import org.noear.solon.core.handle.ContextEmpty;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.message.Message;
@@ -170,6 +171,21 @@ public class SocketContext extends ContextEmpty {
                 _session.send(msg);
             }
         }
+    }
+
+    @Override
+    public boolean asyncSupported() {
+        return true;
+    }
+
+    @Override
+    public void asyncStart(long timeout, ContextAsyncListener listener) throws IllegalStateException {
+        //本身就是异步机制，不用启动
+    }
+
+    @Override
+    public void asyncComplete() {
+
     }
 
     @Override

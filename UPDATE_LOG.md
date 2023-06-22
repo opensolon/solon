@@ -13,6 +13,7 @@
 * 新增 solon.boot.websocket.netty 插件
 * 调整 solon.boot.jdkhttp 插件，增加虚拟异步支持（进而支持响应式接口）
 * 调整 solon.boot.jlhttp 插件，增加虚拟异步支持（进而支持响应式接口）
+* 调整 solon.web.sse 插件，改为纯异步机制（所有 solon.boot.http 已支持异步）
 * 调整 异步接口机制，只能启动一次
 
 ### 2.3.4
