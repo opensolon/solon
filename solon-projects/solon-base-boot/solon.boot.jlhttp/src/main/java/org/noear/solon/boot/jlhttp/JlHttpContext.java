@@ -384,7 +384,8 @@ public class JlHttpContext extends ContextBase {
     @Override
     public void flush() throws IOException {
         if (_allows_write) {
-            outputStream().flush();
+            outputStream();
+            _response.flush();
         }
     }
 
@@ -406,9 +407,13 @@ public class JlHttpContext extends ContextBase {
 
 
     @Override
-    public void asyncComplete() {
+    public void asyncComplete() throws IOException {
         if (_isAsync) {
-            _asyncFuture.complete(this);
+            try {
+                innerCommit();
+            } finally {
+                _asyncFuture.complete(this);
+            }
         }
     }
 
@@ -432,8 +437,12 @@ public class JlHttpContext extends ContextBase {
 
     //jlhttp 需要先输出 header ，但是 header 后面可能会有变化；所以不直接使用  response.getOutputStream()
     @Override
-    protected void commit() throws IOException {
-        sendHeaders(true);
+    protected void innerCommit() throws IOException {
+        if (getHandled() || status() >= 200) {
+            sendHeaders(true);
+        } else {
+            _response.sendError(404);
+        }
     }
 
     private boolean _allows_write = true;

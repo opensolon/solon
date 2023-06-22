@@ -43,7 +43,7 @@ public class SseEmitterHandler {
         }
 
         if (stopped.get()) {
-            throw new IllegalStateException("SSE emitter was not initialized or stopped");
+            throw new IllegalStateException("SSE emitter was stopped");
         }
 
         try {
@@ -88,7 +88,7 @@ public class SseEmitterHandler {
     /**
      * 停止
      */
-    protected void stop() throws IOException {
+    protected synchronized void stop() throws IOException {
         if (stopped.get() == false) {
             stopped.set(true);
 

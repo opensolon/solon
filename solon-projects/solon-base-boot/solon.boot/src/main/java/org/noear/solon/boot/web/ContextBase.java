@@ -197,6 +197,6 @@ public abstract class ContextBase extends Context {
     }
 
     //一些特殊的boot才有效
-    protected void commit() throws IOException {
+    protected void innerCommit() throws IOException {
     }
 }

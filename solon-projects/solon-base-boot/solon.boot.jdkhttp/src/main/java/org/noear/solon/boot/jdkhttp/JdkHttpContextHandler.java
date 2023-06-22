@@ -46,7 +46,7 @@ public class JdkHttpContextHandler implements HttpHandler {
                 //如果启用了异步?
                 ctx.asyncAwait();
             } else {
-                ctx.commit();
+                ctx.innerCommit();
             }
         } catch (Throwable e) {
             EventBus.pushTry(e);

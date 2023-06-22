@@ -99,7 +99,7 @@ public class SmHttpContextHandler extends HttpServerHandler {
             handler.handle(ctx);
 
             if (ctx.innerIsAsync() == false) {
-                ctx.commit();
+                ctx.innerCommit();
             }
 
         } catch (Throwable e) {

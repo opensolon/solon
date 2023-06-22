@@ -21,13 +21,11 @@
 
 package org.noear.solon.boot.jlhttp;
 
-import org.noear.solon.core.util.ReflectUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.lang.annotation.*;
-import java.lang.reflect.*;
 import java.net.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -1004,28 +1002,6 @@ public class HTTPServer {
             info = existing != null ? existing : info;
             info.addHandler(handler, methods);
         }
-
-        /**
-         * Adds contexts for all methods of the given object that
-         * are annotated with the {@link Context} annotation.
-         *
-         * @param o the object whose annotated methods are added
-         * @throws IllegalArgumentException if a Context-annotated
-         *         method has an {@link Context invalid signature}
-         */
-        public void addContexts(Object o) throws IllegalArgumentException {
-            for (Class<?> c = o.getClass(); c != null; c = c.getSuperclass()) {
-                // add to contexts those with @Context annotation
-                for (Method m : ReflectUtil.getDeclaredMethods(c)) {
-                    Context context = m.getAnnotation(Context.class);
-                    if (context != null) {
-                        m.setAccessible(true); // allow access to private method
-                        ContextHandler handler = new MethodContextHandler(m, o);
-                        addContext(context.value(), handler, context.methods());
-                    }
-                }
-            }
-        }
     }
 
     /**
@@ -1075,60 +1051,7 @@ public class HTTPServer {
          *         processing will be done
          * @throws IOException if an IO error occurs
          */
-        int serve(Request req, Response resp) throws IOException;
-    }
-
-    /**
-     * The {@code FileContextHandler} services a context by mapping it
-     * to a file or folder (recursively) on disk.
-     */
-    public static class FileContextHandler implements ContextHandler {
-
-        protected final File base;
-
-        public FileContextHandler(File dir) throws IOException {
-            this.base = dir.getCanonicalFile();
-        }
-
-        public int serve(Request req, Response resp) throws IOException {
-            return serveFile(base, req.getContext().getPath(), req, resp);
-        }
-    }
-
-    /**
-     * The {@code MethodContextHandler} services a context
-     * by invoking a handler method on a specified object.
-     * <p>
-     * The method must have the same signature and contract as
-     * {@link ContextHandler#serve}, but can have an arbitrary name.
-     *
-     * @see VirtualHost#addContexts(Object)
-     */
-    public static class MethodContextHandler implements ContextHandler {
-
-        protected final Method m;
-        protected final Object obj;
-
-        public MethodContextHandler(Method m, Object obj) throws IllegalArgumentException {
-            this.m = m;
-            this.obj = obj;
-            Class<?>[] params = m.getParameterTypes();
-            if (params.length != 2
-                || !Request.class.isAssignableFrom(params[0])
-                || !Response.class.isAssignableFrom(params[1])
-                || !int.class.isAssignableFrom(m.getReturnType()))
-                    throw new IllegalArgumentException("invalid method signature: " + m);
-        }
-
-        public int serve(Request req, Response resp) throws IOException {
-            try {
-                return (Integer)m.invoke(obj, req, resp);
-            } catch (InvocationTargetException ite) {
-                throw new IOException("error: " + ite.getCause().getMessage());
-            } catch (Exception e) {
-                throw new IOException("error: " + e);
-            }
-        }
+        void serve(Request req, Response resp) throws IOException;
     }
 
     /**
@@ -1720,6 +1643,15 @@ public class HTTPServer {
         }
 
         /**
+         * todo: 增加异步流输出支持 by noear 20230622
+         * */
+        public void flush() throws IOException {
+            if (encodedOut != null)
+                encodedOut.flush();
+            out.flush();
+        }
+
+        /**
          * Sends the response headers with the given response status.
          * A Date header is added if it does not already exist.
          * If the response has a body, the Content-Length/Transfer-Encoding
@@ -2280,40 +2212,7 @@ public class HTTPServer {
             serve(req, resp); // method is handled by context handler (or 404)
         }
 
-        //todo: 这段代码，没机会进入了 by noear,2022-12-08
-        /*
-        // RFC 2616#5.1.1 - GET and HEAD must be supported
-        if (method.equals("HEAD")) { // default HEAD handler
-            req.method = "GET"; // identical to a GET
-            resp.setDiscardBody(true); // process normally but discard body
-            serve(req, resp);
-        } else if (method.equals("TRACE")) { // default TRACE handler
-            handleTrace(req, resp);
-        } else {
-
-
-
-            // "*" is a special server-wide (no-context) request supported by OPTIONS
-            boolean isOptions = method.equals("OPTIONS");
-
-            if(isOptions) {
-                Set<String> methods = new LinkedHashSet<String>();
-                methods.addAll(Arrays.asList("GET", "HEAD", "TRACE", "OPTIONS")); // built-in methods
-                Map<String, ContextHandler> handlers = req.getContext().getHandlers();
-                methods.addAll(isOptions ? req.getVirtualHost().getMethods() : handlers.keySet());
-                resp.getHeaders().add("Allow", join(", ", methods));
-            }
-
-            if (isOptions) { // default OPTIONS handler
-                resp.getHeaders().add("Content-Length", "0"); // RFC2616#9.2
-                resp.sendHeaders(200);
-            } else if (req.getVirtualHost().getMethods().contains(method)) {
-                resp.sendHeaders(405); // supported by server, but not this context (nor built-in)
-            } else {
-                resp.sendError(501); // unsupported method
-            }
-        }
-        */
+        //todo: 下面这段代码，没机会进入了 by noear,2022-12-08
     }
 
     /**
@@ -2348,25 +2247,9 @@ public class HTTPServer {
             return;
         }
         // serve request
-        int status = handler.serve(req, resp);
+        handler.serve(req, resp);
 
         //todo: 不支持目录首页 by noear,2022-12-08
-
-        // add directory index if necessary
-        /*String path = req.getPath();
-        if (path.endsWith("/")) {
-            String index = req.getVirtualHost().getDirectoryIndex();
-            if (index != null) {
-                req.setPath(path + index);
-                status = handler.serve(req, resp);
-                req.setPath(path);
-            }
-        }
-        if (status == 404)
-            status = handler.serve(req, resp);*/
-
-        if (status > 0)
-            resp.sendError(status);
     }
 
     /**
@@ -2960,247 +2843,5 @@ public class HTTPServer {
             if (e.equals("*") || (e.equals(etag) && !(strong && (e.startsWith("W/")))))
                 return true;
         return false;
-    }
-
-    /**
-     * Calculates the appropriate response status for the given request and
-     * its resource's last-modified time and ETag, based on the conditional
-     * headers present in the request.
-     *
-     * @param req the request
-     * @param lastModified the resource's last modified time
-     * @param etag the resource's ETag
-     * @return the appropriate response status for the request
-     */
-    public static int getConditionalStatus(Request req, long lastModified, String etag) {
-        Headers headers = req.getHeaders();
-        // If-Match
-        String header = headers.get("If-Match");
-        if (header != null && !match(true, splitElements(header, false), etag))
-            return 412;
-        // If-Unmodified-Since
-        Date date = headers.getDate("If-Unmodified-Since");
-        if (date != null && lastModified > date.getTime())
-            return 412;
-        // If-Modified-Since
-        int status = 200;
-        boolean force = false;
-        date = headers.getDate("If-Modified-Since");
-        if (date != null && date.getTime() <= System.currentTimeMillis()) {
-            if (lastModified > date.getTime())
-                force = true;
-            else
-                status = 304;
-        }
-        // If-None-Match
-        header = headers.get("If-None-Match");
-        if (header != null) {
-            if (match(false, splitElements(header, false), etag)) // RFC7232#3.2: use weak matching
-                status = req.getMethod().equals("GET")
-                    || req.getMethod().equals("HEAD") ? 304 : 412;
-            else
-                force = true;
-        }
-        return force ? 200 : status;
-    }
-
-    /**
-     * Serves a context's contents from a file based resource.
-     * <p>
-     * The file is located by stripping the given context prefix from
-     * the request's path, and appending the result to the given base directory.
-     * <p>
-     * Missing, forbidden and otherwise invalid files return the appropriate
-     * error response. Directories are served as an HTML index page if the
-     * virtual host allows one, or a forbidden error otherwise. Files are
-     * sent with their corresponding content types, and handle conditional
-     * and partial retrievals according to the RFC.
-     *
-     * @param base the base directory to which the context is mapped
-     * @param context the context which is mapped to the base directory
-     * @param req the request
-     * @param resp the response into which the content is written
-     * @return the HTTP status code to return, or 0 if a response was sent
-     * @throws IOException if an error occurs
-     */
-    public static int serveFile(File base, String context,
-            Request req, Response resp) throws IOException {
-        String relativePath = req.getPath().substring(context.length());
-        File file = new File(base, relativePath).getCanonicalFile();
-        if (!file.exists() || file.isHidden() || file.getName().startsWith(".")) {
-            return 404;
-        } else if (!file.canRead() || !file.getPath().startsWith(base.getPath())) { // validate
-            return 403;
-        } else if (file.isDirectory()) {
-            if (relativePath.endsWith("/")) {
-                if (!req.getVirtualHost().isAllowGeneratedIndex())
-                    return 403;
-                resp.send(200, createIndex(file, req.getPath()));
-            } else { // redirect to the normalized directory URL ending with '/'
-                resp.redirect(req.getBaseURL() + req.getPath() + "/", true);
-            }
-        } else if (relativePath.endsWith("/")) {
-            return 404; // non-directory ending with slash (File constructor removed it)
-        } else {
-            serveFileContent(file, req, resp);
-        }
-        return 0;
-    }
-
-    /**
-     * Serves the contents of a file, with its corresponding content type,
-     * last modification time, etc. conditional and partial retrievals are
-     * handled according to the RFC.
-     *
-     * @param file the existing and readable file whose contents are served
-     * @param req the request
-     * @param resp the response into which the content is written
-     * @throws IOException if an error occurs
-     */
-    public static void serveFileContent(File file, Request req, Response resp) throws IOException {
-        long len = file.length();
-        long lastModified = file.lastModified();
-        String etag = "W/\"" + lastModified + "\""; // a weak tag based on date
-        int status = 200;
-        // handle range or conditional request
-        long[] range = req.getRange(len);
-        if (range == null || len == 0) {
-            status = getConditionalStatus(req, lastModified, etag);
-        } else {
-            String ifRange = req.getHeaders().get("If-Range");
-            if (ifRange == null) {
-                if (range[0] >= len)
-                    status = 416; // unsatisfiable range
-                else
-                    status = getConditionalStatus(req, lastModified, etag);
-            } else if (range[0] >= len) {
-                // RFC2616#14.16, 10.4.17: invalid If-Range gets everything
-                range = null;
-            } else { // send either range or everything
-                if (!ifRange.startsWith("\"") && !ifRange.startsWith("W/")) {
-                    Date date = req.getHeaders().getDate("If-Range");
-                    if (date != null && lastModified > date.getTime())
-                        range = null; // modified - send everything
-                } else if (!ifRange.equals(etag)) {
-                    range = null; // modified - send everything
-                }
-            }
-        }
-        // send the response
-        Headers respHeaders = resp.getHeaders();
-        switch (status) {
-            case 304: // no other headers or body allowed
-                respHeaders.add("ETag", etag);
-                respHeaders.add("Vary", "Accept-Encoding");
-                respHeaders.add("Last-Modified", formatDate(lastModified));
-                resp.sendHeaders(304);
-                break;
-            case 412:
-                resp.sendHeaders(412);
-                break;
-            case 416:
-                respHeaders.add("Content-Range", "bytes */" + len);
-                resp.sendHeaders(416);
-                break;
-            case 200:
-                // send OK response
-                resp.sendHeaders(200, len, lastModified, etag,
-                    getContentType(file.getName(), "application/octet-stream"), range);
-                // send body
-                InputStream in = new FileInputStream(file);
-                try {
-                    resp.sendBody(in, len, range);
-                } finally {
-                    in.close();
-                }
-                break;
-            default:
-                resp.sendHeaders(500); // should never happen
-                break;
-        }
-    }
-
-    /**
-     * Serves the contents of a directory as an HTML file index.
-     *
-     * @param dir the existing and readable directory whose contents are served
-     * @param path the displayed base path corresponding to dir
-     * @return an HTML string containing the file index for the directory
-     */
-    public static String createIndex(File dir, String path) {
-        if (!path.endsWith("/"))
-            path += "/";
-        // calculate name column width
-        int w = 21; // minimum width
-        for (String name : dir.list())
-            if (name.length() > w)
-                w = name.length();
-        w += 2; // with room for added slash and space
-        // note: we use apache's format, for consistent user experience
-        Formatter f = new Formatter(Locale.US);
-        f.format("<!DOCTYPE html>%n" +
-            "<html><head><title>Index of %s</title></head>%n" +
-            "<body><h1>Index of %s</h1>%n" +
-            "<pre> Name%" + (w - 5) + "s Last modified      Size<hr>",
-            path, path, "");
-        if (path.length() > 1) // add parent link if not root path
-            f.format(" <a href=\"%s/\">Parent Directory</a>%"
-                + (w + 5) + "s-%n", getParentPath(path), "");
-        for (File file : dir.listFiles()) {
-            try {
-                String name = file.getName() + (file.isDirectory() ? "/" : "");
-                String size = file.isDirectory() ? "- " : toSizeApproxString(file.length());
-                // properly url-encode the link
-                String link = new URI(null, path + name, null).toASCIIString();
-                if (!file.isHidden() && !name.startsWith("."))
-                    f.format(" <a href=\"%s\">%s</a>%-" + (w - name.length()) +
-                        "s&#8206;%td-%<tb-%<tY %<tR%6s%n",
-                        link, name, "", file.lastModified(), size);
-            } catch (URISyntaxException ignore) {}
-        }
-        f.format("</pre></body></html>");
-        return f.toString();
-    }
-
-    /**
-     * Starts a stand-alone HTTP server, serving files from disk.
-     *
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        try {
-            if (args.length == 0) {
-                System.err.printf("Usage: java [-options] %s <directory> [port]%n" +
-                    "To enable SSL: specify options -Djavax.net.ssl.keyStore, " +
-                    "-Djavax.net.ssl.keyStorePassword, etc.%n", HTTPServer.class.getName());
-                return;
-            }
-            File dir = new File(args[0]);
-            if (!dir.canRead())
-                throw new FileNotFoundException(dir.getAbsolutePath());
-            int port = args.length < 2 ? 80 : (int)parseULong(args[1], 10);
-            // set up server
-            for (File f : Arrays.asList(new File("/etc/mime.types"), new File(dir, ".mime.types")))
-                if (f.exists())
-                    addContentTypes(new FileInputStream(f));
-            HTTPServer server = new HTTPServer(port);
-            if (System.getProperty("javax.net.ssl.keyStore") != null) // enable SSL if configured
-                server.setServerSocketFactory(SSLServerSocketFactory.getDefault());
-            VirtualHost host = server.getVirtualHost(null); // default host
-            host.setAllowGeneratedIndex(true); // with directory index pages
-            host.addContext("/", new FileContextHandler(dir));
-            host.addContext("/api/time", new ContextHandler() {
-                public int serve(Request req, Response resp) throws IOException {
-                    long now = System.currentTimeMillis();
-                    resp.getHeaders().add("Content-Type", "text/plain");
-                    resp.send(200, String.format("%tF %<tT", now));
-                    return 0;
-                }
-            });
-            server.start();
-            System.out.println("HTTPServer is listening on port " + port);
-        } catch (Exception e) {
-            System.err.println("error: " + e);
-        }
     }
 }

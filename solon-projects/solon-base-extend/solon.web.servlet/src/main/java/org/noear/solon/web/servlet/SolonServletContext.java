@@ -358,7 +358,7 @@ public class SolonServletContext extends ContextBase {
     public void asyncComplete() throws IOException {
         if (asyncContext != null) {
             try {
-                commit();
+                innerCommit();
             } finally {
                 asyncContext.complete();
             }
@@ -371,7 +371,7 @@ public class SolonServletContext extends ContextBase {
     }
 
     @Override
-    protected void commit() throws IOException {
+    protected void innerCommit() throws IOException {
         if (getHandled() || status() >= 200) {
             sendHeaders();
         } else {
