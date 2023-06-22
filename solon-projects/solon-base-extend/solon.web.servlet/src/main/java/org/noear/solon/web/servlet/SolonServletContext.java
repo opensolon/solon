@@ -342,14 +342,11 @@ public class SolonServletContext extends ContextBase {
     public void asyncStart(long timeout, ContextAsyncListener listener) throws IllegalStateException {
         if (asyncContext == null) {
             asyncContext = _request.startAsync();
+            asyncContext.addListener(new AsyncListenerWrap(this, listener));
 
             if (timeout != 0) {
                 asyncContext.setTimeout(timeout);
             }
-        }
-
-        if (listener != null) {
-            asyncContext.addListener(new AsyncListenerWrap(this, listener));
         }
     }
 

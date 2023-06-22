@@ -40,7 +40,7 @@ public class SmHttpContextHandler extends HttpServerHandler {
 
         SmHttpContext ctx = (SmHttpContext) request.getAttachment().get(httpHolderKey);
         if (ctx != null && ctx.innerIsAsync()) {
-            for (ContextAsyncListener listener : ctx.asyncListeners()) {
+            for (ContextAsyncListener listener : ctx.innerAsyncListeners()) {
                 try {
                     listener.onComplete(ctx);
                 } catch (Throwable e) {

@@ -23,29 +23,32 @@ import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
 public class SmHttpContext extends ContextBase {
-    private CompletableFuture<Object> _future;
     private HttpRequest _request;
     private HttpResponse _response;
     protected Map<String, List<UploadedFile>> _fileMap;
+
     private boolean _isAsync;
+    private CompletableFuture<Object> _asyncFuture;
     private List<ContextAsyncListener> _asyncListeners = new ArrayList<>();
 
-    public HttpRequest innerGetRequest() {
+    protected HttpRequest innerGetRequest() {
         return _request;
     }
-
-    public HttpResponse innerGetResponse() {
+    protected HttpResponse innerGetResponse() {
         return _response;
     }
-
-    public boolean innerIsAsync() {
+    protected boolean innerIsAsync() {
         return _isAsync;
     }
+    protected List<ContextAsyncListener> innerAsyncListeners() {
+        return _asyncListeners;
+    }
+
 
     public SmHttpContext(HttpRequest request, HttpResponse response, CompletableFuture<Object> future) {
         _request = request;
         _response = response;
-        _future = future;
+        _asyncFuture = future;
 
         _fileMap = new HashMap<>();
     }
@@ -364,11 +367,12 @@ public class SmHttpContext extends ContextBase {
         _response.setContentLength((int) size);
     }
 
-
-    public List<ContextAsyncListener> asyncListeners() {
-        return _asyncListeners;
+    @Override
+    public void flush() throws IOException {
+        if (_allows_write) {
+            outputStream().flush();
+        }
     }
-
 
     @Override
     public boolean asyncSupported() {
@@ -379,6 +383,7 @@ public class SmHttpContext extends ContextBase {
     public void asyncStart(long timeout, ContextAsyncListener listener) throws IllegalStateException {
         if (_isAsync == false) {
             _isAsync = true;
+            _asyncListeners.add(listener);
 
             if (timeout > 0) {
                 RunUtil.delay(() -> {
@@ -388,24 +393,13 @@ public class SmHttpContext extends ContextBase {
                 }, timeout);
             }
         }
-
-        if (listener != null) {
-            _asyncListeners.add(listener);
-        }
     }
 
 
     @Override
     public void asyncComplete() {
         if (_isAsync) {
-            _future.complete(this);
-        }
-    }
-
-    @Override
-    public void flush() throws IOException {
-        if (_allows_write) {
-            outputStream().flush();
+            _asyncFuture.complete(this);
         }
     }
 

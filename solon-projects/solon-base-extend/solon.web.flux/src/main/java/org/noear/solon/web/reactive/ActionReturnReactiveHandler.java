@@ -23,6 +23,10 @@ public class ActionReturnReactiveHandler implements ActionReturnHandler {
         if (result != null) {
             ActionReactiveSubscriber subscriber = new ActionReactiveSubscriber(ctx, action);
 
+            if (ctx.asyncSupported()) {
+                ctx.asyncStart(0L, null);
+            }
+
             ((Publisher) result).subscribe(subscriber);
         }
     }

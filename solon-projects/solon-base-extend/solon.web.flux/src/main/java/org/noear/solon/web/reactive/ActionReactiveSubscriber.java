@@ -23,10 +23,6 @@ public class ActionReactiveSubscriber implements Subscriber {
 
     @Override
     public void onSubscribe(Subscription subscription) {
-        if (ctx.asyncSupported()) {
-            ctx.asyncStart(0L, null);
-        }
-
         subscription.request(1L);
     }
 
