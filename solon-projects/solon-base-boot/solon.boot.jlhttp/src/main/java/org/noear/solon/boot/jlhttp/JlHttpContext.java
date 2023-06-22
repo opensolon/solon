@@ -441,7 +441,9 @@ public class JlHttpContext extends ContextBase {
         if (getHandled() || status() >= 200) {
             sendHeaders(true);
         } else {
-            _response.sendError(404);
+            if (!_response.headersSent()) {
+                _response.sendError(404);
+            }
         }
     }
 

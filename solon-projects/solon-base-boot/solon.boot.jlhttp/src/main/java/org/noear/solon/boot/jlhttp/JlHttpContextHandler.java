@@ -19,7 +19,10 @@ public class JlHttpContextHandler implements HTTPServer.ContextHandler {
             handleDo(request, response);
         } catch (Throwable e) {
             EventBus.pushTry(e);
-            response.sendHeaders(500);
+
+            if (!response.headersSent()) {
+                response.sendHeaders(500);
+            }
         }
     }
 
@@ -42,8 +45,11 @@ public class JlHttpContextHandler implements HTTPServer.ContextHandler {
                 ctx.innerCommit();
             }
         } catch (Throwable e) {
-            response.sendError(500);
             EventBus.pushTry(e);
+
+            if (!response.headersSent()) {
+                response.sendError(500);
+            }
         }
     }
 }
