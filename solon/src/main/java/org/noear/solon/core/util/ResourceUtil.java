@@ -1,9 +1,5 @@
 package org.noear.solon.core.util;
 
-import org.noear.solon.Solon;
-import org.noear.solon.Utils;
-import org.noear.solon.core.JarClassLoader;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,6 +9,9 @@ import java.util.Collection;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.regex.Pattern;
+import org.noear.solon.Solon;
+import org.noear.solon.Utils;
+import org.noear.solon.core.JarClassLoader;
 
 /**
  * 资源工具
@@ -303,13 +302,13 @@ public class ResourceUtil {
         Pattern pattern = Pattern.compile(expr);
 
         ScanUtil.scan(classLoader, dir, n -> {
-                    //进行后缀过滤，相对比较快
-                    if (sufIdx2 > 0) {
-                        return n.endsWith(suf2);
-                    } else {
-                        return true;
-                    }
-                })
+            //进行后缀过滤，相对比较快
+            if (sufIdx2 > 0) {
+                return n.endsWith(suf2);
+            } else {
+                return true;
+            }
+        })
                 .forEach(uri -> {
                     //再进行表达式过滤
                     if (pattern.matcher(uri).find()) {
@@ -317,7 +316,7 @@ public class ResourceUtil {
                     }
                 });
 
-
         return paths;
     }
+
 }

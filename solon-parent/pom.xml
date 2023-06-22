@@ -119,6 +119,8 @@
         <dbvisitor.version>5.3.1</dbvisitor.version>
         <shardingsphere.version>5.3.2</shardingsphere.version>
         <wx-java.version>4.4.9.B</wx-java.version>
+        <graphql-java.version>18.3</graphql-java.version>
+        <graphql-java-tools.version>12.1.0</graphql-java-tools.version>
 
         <java-websocket.version>1.5.3</java-websocket.version>
         <dromara-plugins.version>0.0.9</dromara-plugins.version>
