@@ -423,11 +423,13 @@ public class JdkHttpContext extends ContextBase {
 
 
     @Override
-    public void asyncComplete() throws IOException{
+    public void asyncComplete() throws IOException {
         if (_isAsync) {
-            _asyncFuture.complete(this);
-
-            commit();
+            try {
+                commit();
+            } finally {
+                _asyncFuture.complete(this);
+            }
         }
     }
 
@@ -450,7 +452,7 @@ public class JdkHttpContext extends ContextBase {
     @Override
     protected void commit() throws IOException {
         if (getHandled() || status() >= 200) {
-            commit();
+            sendHeaders(true);
         } else {
             status(404);
             sendHeaders(true);
