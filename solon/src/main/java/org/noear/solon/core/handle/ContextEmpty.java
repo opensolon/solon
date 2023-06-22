@@ -276,4 +276,19 @@ public class ContextEmpty extends Context {
     public void flush() throws IOException{
 
     }
+
+    @Override
+    public boolean asyncSupported() {
+        return false;
+    }
+
+    @Override
+    public void asyncStart(long timeout, ContextAsyncListener listener) throws IllegalStateException {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void asyncComplete() {
+        throw new UnsupportedOperationException();
+    }
 }

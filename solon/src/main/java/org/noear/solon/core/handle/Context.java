@@ -1025,26 +1025,6 @@ public abstract class Context {
         _remoting = remoting;
     }
 
-    /**
-     * 是否支持异步
-     * */
-    public boolean asyncSupported(){
-        return false;
-    }
-
-    /**
-     * 异步开始
-     * */
-    public void asyncStart(long timeout, ContextAsyncListener listener) throws IllegalStateException{
-        throw new UnsupportedOperationException();
-    }
-
-    /**
-     * 异步完成
-     * */
-    public void asyncComplete(){
-        throw new UnsupportedOperationException();
-    }
 
     @Note("冲刷")
     public abstract void flush() throws IOException;
@@ -1054,6 +1034,26 @@ public abstract class Context {
     @Note("关闭响应")
     public void close() throws IOException {
     }
+
+    /**
+     * 是否支持异步
+     * */
+    @Note("是否支持异步")
+    public abstract boolean asyncSupported();
+
+    /**
+     * 异步开始
+     * */
+    @Note("异步开始")
+    public abstract void asyncStart(long timeout, ContextAsyncListener listener) throws IllegalStateException;
+
+    /**
+     * 异步完成
+     * */
+    @Note("异步完成")
+    public abstract void asyncComplete();
+
+
 
     /**
      * 用于在处理链中透传处理结果

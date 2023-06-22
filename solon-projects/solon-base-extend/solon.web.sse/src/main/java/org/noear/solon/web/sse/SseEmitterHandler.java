@@ -3,7 +3,6 @@ package org.noear.solon.web.sse;
 import org.noear.solon.core.handle.Context;
 
 import java.io.IOException;
-import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -15,7 +14,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class SseEmitterHandler {
     private final SseEmitter emitter;
     private final Context ctx;
-    private final LinkedBlockingQueue<String> q = new LinkedBlockingQueue<>();
     private final AtomicBoolean stopped = new AtomicBoolean(false);
 
     public SseEmitterHandler(SseEmitter emitter) {
@@ -29,29 +27,10 @@ public class SseEmitterHandler {
     public void start() throws Throwable {
         ctx.contentType("text/event-stream;charset=utf-8");
 
-        if (ctx.asyncSupported()) {
-            ctx.asyncStart(emitter.timeout, new AsyncListenerImpl(this));
-            emitter.initialize(this);
-        } else {
-            emitter.initialize(this);
-            executeSyncSendTask();
-        }
+        ctx.asyncStart(emitter.timeout, new AsyncListenerImpl(this));
+        emitter.initialize(this);
     }
 
-    /**
-     * 发送事件任务（同步模式时）
-     */
-    private void executeSyncSendTask() throws Throwable {
-        while (!stopped.get()) {
-            String event = q.poll();
-            if (event != null) {
-                ctx.output(event);
-                ctx.flush();
-            }
-
-            Thread.sleep(500L);
-        }
-    }
 
     /**
      * 发送事件内容
@@ -68,16 +47,8 @@ public class SseEmitterHandler {
         }
 
         try {
-            if (ctx.asyncSupported()) {
-                ctx.output(event.build());
-                ctx.flush();
-            } else {
-                try {
-                    q.put(event.build());
-                } catch (InterruptedException e) {
-                    throw new IOException(e);
-                }
-            }
+            ctx.output(event.build());
+            ctx.flush();
         } catch (IOException e) {
             stopOnError(e);
 
@@ -125,9 +96,7 @@ public class SseEmitterHandler {
                 emitter.onCompletion.run();
             }
 
-            if (ctx.asyncSupported()) {
-                ctx.asyncComplete();
-            }
+            ctx.asyncComplete();
         }
     }
 }
