@@ -47,7 +47,6 @@ public class JlHttpContextHandler implements HTTPServer.ContextHandler {
 
             if (ctx.getHandled() || ctx.status() >= 200) {
                 ctx.commit();
-
                 return 0;
             } else {
                 return 404;

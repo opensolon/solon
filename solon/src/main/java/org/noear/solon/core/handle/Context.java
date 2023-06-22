@@ -1045,13 +1045,13 @@ public abstract class Context {
      * 异步开始
      * */
     @Note("异步开始")
-    public abstract void asyncStart(long timeout, ContextAsyncListener listener) throws IllegalStateException;
+    public abstract void asyncStart(long timeout, ContextAsyncListener listener) throws IOException;
 
     /**
      * 异步完成
      * */
     @Note("异步完成")
-    public abstract void asyncComplete();
+    public abstract void asyncComplete() throws IOException;
 
 
 

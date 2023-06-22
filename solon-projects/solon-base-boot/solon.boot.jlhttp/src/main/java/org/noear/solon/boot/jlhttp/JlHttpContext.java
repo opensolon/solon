@@ -412,7 +412,7 @@ public class JlHttpContext extends ContextBase {
         }
     }
 
-    protected void asyncAwait() throws InterruptedException, ExecutionException {
+    protected void asyncAwait() throws InterruptedException, ExecutionException, IOException {
         if(_isAsync){
             if (_asyncTimeout > 0) {
                 try {

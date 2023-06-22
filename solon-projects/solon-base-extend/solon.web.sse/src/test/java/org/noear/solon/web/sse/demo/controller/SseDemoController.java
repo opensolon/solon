@@ -66,7 +66,7 @@ public class SseDemoController {
 
     @Get
     @Mapping("/sse/del/{id}")
-    public String sseDel(String id) {
+    public String sseDel(String id) throws IOException{
         SseEmitter emitter = emitterMap.get(id);
         if (emitter != null) {
             emitter.complete();

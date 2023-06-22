@@ -59,14 +59,14 @@ public class SseEmitterHandler {
     /**
      * 完成（用于手动控制）
      */
-    public void complete() {
+    public void complete() throws IOException{
         stop();
     }
 
     /**
      * 因出错停目
      */
-    protected void stopOnError(Throwable e) {
+    protected void stopOnError(Throwable e) throws IOException{
         if (emitter.onError != null) {
             emitter.onError.accept(e);
         }
@@ -77,7 +77,7 @@ public class SseEmitterHandler {
     /**
      * 因操时停止（异步操时）
      */
-    protected void stopOnTimeout() {
+    protected void stopOnTimeout() throws IOException{
         if (emitter.onTimeout != null) {
             emitter.onTimeout.run();
         }
@@ -88,7 +88,7 @@ public class SseEmitterHandler {
     /**
      * 停止
      */
-    protected void stop() {
+    protected void stop() throws IOException {
         if (stopped.get() == false) {
             stopped.set(true);
 

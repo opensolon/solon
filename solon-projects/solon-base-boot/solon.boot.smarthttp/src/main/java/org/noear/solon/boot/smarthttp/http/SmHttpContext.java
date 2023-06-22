@@ -34,12 +34,15 @@ public class SmHttpContext extends ContextBase {
     protected HttpRequest innerGetRequest() {
         return _request;
     }
+
     protected HttpResponse innerGetResponse() {
         return _response;
     }
+
     protected boolean innerIsAsync() {
         return _isAsync;
     }
+
     protected List<ContextAsyncListener> innerAsyncListeners() {
         return _asyncListeners;
     }
@@ -380,7 +383,7 @@ public class SmHttpContext extends ContextBase {
     }
 
     @Override
-    public void asyncStart(long timeout, ContextAsyncListener listener) throws IllegalStateException {
+    public void asyncStart(long timeout, ContextAsyncListener listener) throws IOException {
         if (_isAsync == false) {
             _isAsync = true;
             _asyncListeners.add(listener);
@@ -388,7 +391,11 @@ public class SmHttpContext extends ContextBase {
             if (timeout > 0) {
                 RunUtil.delay(() -> {
                     for (ContextAsyncListener listener1 : _asyncListeners) {
-                        listener1.onTimeout(this);
+                        try {
+                            listener1.onTimeout(this);
+                        } catch (IOException e) {
+                            EventBus.pushTry(e);
+                        }
                     }
                 }, timeout);
             }
@@ -397,15 +404,23 @@ public class SmHttpContext extends ContextBase {
 
 
     @Override
-    public void asyncComplete() {
+    public void asyncComplete() throws IOException {
         if (_isAsync) {
             _asyncFuture.complete(this);
+
+            commit();
         }
     }
 
+
     @Override
     protected void commit() throws IOException {
-        sendHeaders(true);
+        if (getHandled() || status() >= 200) {
+            sendHeaders(true);
+        } else {
+            status(404);
+            sendHeaders(true);
+        }
     }
 
     private boolean _headers_sent = false;

@@ -34,7 +34,7 @@ public class SmHttpContextHandler extends HttpServerHandler {
 
     @Override
     public void onClose(Request request) {
-        if(request.getAttachment() == null){
+        if (request.getAttachment() == null) {
             return;
         }
 
@@ -53,7 +53,7 @@ public class SmHttpContextHandler extends HttpServerHandler {
     @Override
     public void handle(HttpRequest request, HttpResponse response, CompletableFuture<Object> future) throws IOException {
         SmHttpContext ctx = new SmHttpContext(request, response, future);
-        if(request.getAttachment() == null){
+        if (request.getAttachment() == null) {
             request.setAttachment(new Attachment());
         }
         request.getAttachment().put(httpHolderKey, ctx);
@@ -98,12 +98,10 @@ public class SmHttpContextHandler extends HttpServerHandler {
 
             handler.handle(ctx);
 
-            if (ctx.getHandled() || ctx.status() >= 200) {
-                ctx.commit();
-            } else {
-                ctx.status(404);
+            if (ctx.innerIsAsync() == false) {
                 ctx.commit();
             }
+
         } catch (Throwable e) {
             EventBus.pushTry(e);
 

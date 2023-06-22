@@ -6,6 +6,8 @@ import org.noear.solon.core.handle.Context;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
+import java.io.IOException;
+
 /**
  * Action 响应式订阅者
  *
@@ -40,6 +42,7 @@ public class ActionReactiveSubscriber implements Subscriber {
         try {
             action.render(e, ctx);
         } catch (Throwable e2) {
+            ctx.status(500);
             EventBus.pushTry(e2);
         } finally {
             onComplete();
@@ -49,7 +52,11 @@ public class ActionReactiveSubscriber implements Subscriber {
     @Override
     public void onComplete() {
         if (ctx.asyncSupported()) {
-            ctx.asyncComplete();
+            try {
+                ctx.asyncComplete();
+            } catch (IOException e) {
+                EventBus.pushTry(e);
+            }
         }
     }
 }
