@@ -1623,9 +1623,9 @@ public class HTTPServer {
             if (te.contains("chunked"))
                 encodedOut = new ChunkedOutputStream(encodedOut);
             if (ce.contains("gzip") || te.contains("gzip"))
-                encodedOut = new GZIPOutputStream(encodedOut, 4096);
+                encodedOut = new GZIPOutputStream(encodedOut, 4096, true);
             else if (ce.contains("deflate") || te.contains("deflate"))
-                encodedOut = new DeflaterOutputStream(encodedOut);
+                encodedOut = new DeflaterOutputStream(encodedOut, true);//todo: syncFlush=true ，支持流输出
 
             return encodedOut; // return the outer-most stream
         }
