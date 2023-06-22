@@ -406,9 +406,11 @@ public class SmHttpContext extends ContextBase {
     @Override
     public void asyncComplete() throws IOException {
         if (_isAsync) {
-            _asyncFuture.complete(this);
-
-            commit();
+            try {
+                commit();
+            } finally {
+                _asyncFuture.complete(this);
+            }
         }
     }
 
