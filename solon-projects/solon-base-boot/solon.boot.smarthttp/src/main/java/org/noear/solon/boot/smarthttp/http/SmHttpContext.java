@@ -442,7 +442,7 @@ public class SmHttpContext extends ContextBase {
 
             _response.setHttpStatus(HttpStatus.valueOf(status()));
 
-            if (isCommit && _allows_write == false) {
+            if (isCommit || _allows_write == false) {
                 _response.setContentLength(0);
             }
         }

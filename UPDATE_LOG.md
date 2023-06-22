@@ -14,7 +14,7 @@
 * 调整 solon.boot.jdkhttp 插件，增加虚拟异步支持（进而支持响应式接口）
 * 调整 solon.boot.jlhttp 插件，增加虚拟异步支持（进而支持响应式接口）
 * 调整 solon.web.sse 插件，改为纯异步机制（所有 solon.boot.http 已支持异步）
-* 调整 solon.web.flux ，出错时结束异步
+* 调整 solon.web.flux 插件，出错时自动结束异步
 * 调整 Context 异步接口机制，只能被调用一次
 * 优化 SmartHttp Context 异步接口机制
 * 优化 Servlet 启动打印信息
