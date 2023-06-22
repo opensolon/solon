@@ -2,9 +2,11 @@ package org.noear.solon.boot.jlhttp;
 
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.core.event.EventBus;
+import org.noear.solon.core.handle.ContextAsyncListener;
 import org.noear.solon.core.handle.Handler;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 public class JlHttpContextHandler implements HTTPServer.ContextHandler {
     private final Handler handler;
@@ -37,6 +39,11 @@ public class JlHttpContextHandler implements HTTPServer.ContextHandler {
             }
 
             handler.handle(ctx);
+
+            if(ctx.innerIsAsync()) {
+                //如果启用了异步?
+                ctx.asyncAwait();
+            }
 
             if (ctx.getHandled() || ctx.status() >= 200) {
                 ctx.commit();
