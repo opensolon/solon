@@ -40,6 +40,11 @@ public class JdkHttpContextHandler implements HttpHandler {
 
             handler.handle(ctx);
 
+            if(ctx.innerIsAsync()){
+                //如果启用了异步?
+                ctx.asyncAwait();
+            }
+
             if (ctx.getHandled() || ctx.status() >= 200) {
                 ctx.commit();
             } else {

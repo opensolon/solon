@@ -7,6 +7,7 @@ import org.noear.solon.boot.web.ContextBase;
 import org.noear.solon.boot.web.Constants;
 import org.noear.solon.boot.web.RedirectUtils;
 import org.noear.solon.core.event.EventBus;
+import org.noear.solon.core.handle.ContextAsyncListener;
 import org.noear.solon.core.handle.UploadedFile;
 import org.noear.solon.core.NvMap;
 
@@ -16,11 +17,23 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URI;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 
 public class JdkHttpContext extends ContextBase {
     private HttpExchange _exchange;
     private Map<String, Object> _parameters;
     protected Map<String, List<UploadedFile>> _fileMap;
+
+    private boolean _isAsync;
+    private long _asyncTimeout;
+    private CompletableFuture<Object> _asyncFuture;
+    private List<ContextAsyncListener> _asyncListeners = new ArrayList<>();
+
+    protected boolean innerIsAsync() {
+        return _isAsync;
+    }
 
 
     public JdkHttpContext(HttpExchange exchange) {
@@ -388,6 +401,47 @@ public class JdkHttpContext extends ContextBase {
     public void flush() throws IOException {
         if (_allows_write) {
             outputStream().flush();
+        }
+    }
+
+
+    @Override
+    public boolean asyncSupported() {
+        return true;
+    }
+
+    @Override
+    public void asyncStart(long timeout, ContextAsyncListener listener) throws IllegalStateException {
+        if (_isAsync == false) {
+            _isAsync = true;
+
+            _asyncFuture = new CompletableFuture<>();
+            _asyncListeners.add(listener);
+            _asyncTimeout = timeout;
+        }
+    }
+
+
+    @Override
+    public void asyncComplete() {
+        if (_isAsync) {
+            _asyncFuture.complete(this);
+        }
+    }
+
+    protected void asyncAwait() throws InterruptedException, ExecutionException {
+        if(_isAsync){
+            if (_asyncTimeout > 0) {
+                try {
+                    _asyncFuture.get(_asyncTimeout, TimeUnit.MILLISECONDS);
+                } catch (Exception e) {
+                    for (ContextAsyncListener listener1 : _asyncListeners) {
+                        listener1.onTimeout(this);
+                    }
+                }
+            } else {
+                _asyncFuture.get();
+            }
         }
     }
 
