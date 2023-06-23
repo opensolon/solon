@@ -903,7 +903,11 @@ public abstract class Context {
 
     @Note("转发")
     public void forward(String pathNew) {
-        pathNew(pathNew);
+        if (Utils.isEmpty(Solon.cfg().serverContextPath())) {
+            pathNew(pathNew);
+        } else {
+            pathNew(PathUtil.mergePath(Solon.cfg().serverContextPath(), pathNew));
+        }
 
         Solon.app().tryHandle(this);
         setHandled(true);

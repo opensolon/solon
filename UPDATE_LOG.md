@@ -18,6 +18,8 @@
 * 调整 Context 异步接口机制，只能被调用一次
 * 优化 SmartHttp Context 异步接口机制
 * 优化 Servlet 启动打印信息
+* 优化 Context:forward 在有 context-path 时的处理
+* 修复 pathNew 多次执行后 ContextPathFilter 会失效的问题
 
 ### 2.3.4
 * 新增 solon.web.sse 插件（sse: Server Send Events）

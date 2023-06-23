@@ -9,41 +9,46 @@ import org.noear.solon.Solon;
  * @since 1.8
  */
 public class ContextPathFilter implements Filter {
-    private final String path;
+    private final String contextPath0;
+    private final String contextPath1;
     private final boolean forced;
 
     /**
-     * @param path '/demo/'
+     * @param contextPath '/demo/'
      */
-    public ContextPathFilter(String path, boolean forced) {
+    public ContextPathFilter(String contextPath, boolean forced) {
         String newPath = null;
-        if (path.endsWith("/")) {
-            newPath = path;
+        if (contextPath.endsWith("/")) {
+            newPath = contextPath;
         } else {
-            newPath = path + "/";
+            newPath = contextPath + "/";
         }
 
         if (newPath.startsWith("/")) {
-            this.path = newPath;
+            this.contextPath1 = newPath;
         } else {
-            this.path = "/" + newPath;
+            this.contextPath1 = "/" + newPath;
         }
 
+        this.contextPath0 = contextPath1.substring(0, contextPath1.length() - 1);
         this.forced = forced;
 
         //有可能是 ContextPathFilter 是用户手动添加的！需要补一下配置
-        Solon.cfg().serverContextPath(this.path);
+        Solon.cfg().serverContextPath(this.contextPath1);
     }
 
-    public ContextPathFilter(String path) {
-        this(path, false);
+    public ContextPathFilter(String contextPath) {
+        this(contextPath, false);
     }
 
 
     @Override
     public void doFilter(Context ctx, FilterChain chain) throws Throwable {
-        if (ctx.pathNew().startsWith(path)) {
-            ctx.pathNew(ctx.path().substring(path.length() - 1));
+        if (ctx.pathNew().equals(contextPath0)) {
+            //www:888 加 abc 后，仍可以用 www:888/abc 打开
+            ctx.pathNew("/");
+        } else if (ctx.pathNew().startsWith(contextPath1)) {
+            ctx.pathNew(ctx.pathNew().substring(contextPath1.length() - 1));
         } else {
             if (forced) {
                 return;

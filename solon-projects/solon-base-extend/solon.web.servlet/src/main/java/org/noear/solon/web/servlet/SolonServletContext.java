@@ -1,6 +1,7 @@
 package org.noear.solon.web.servlet;
 
 import org.noear.solon.Utils;
+import org.noear.solon.boot.web.Constants;
 import org.noear.solon.boot.web.ContextBase;
 import org.noear.solon.boot.web.RedirectUtils;
 import org.noear.solon.core.NvMap;
@@ -321,7 +322,7 @@ public class SolonServletContext extends ContextBase {
     public void redirect(String url, int code) {
         url = RedirectUtils.getRedirectPath(url);
 
-        headerSet("Location", url);
+        headerSet(Constants.HEADER_LOCATION, url);
         statusDoSet(code);
     }
 
