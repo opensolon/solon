@@ -411,7 +411,7 @@ public class JdkHttpContext extends ContextBase {
     }
 
     @Override
-    public void asyncStart(long timeout, ContextAsyncListener listener) throws IllegalStateException {
+    public void asyncStart(long timeout, ContextAsyncListener listener) {
         if (_isAsync == false) {
             _isAsync = true;
 

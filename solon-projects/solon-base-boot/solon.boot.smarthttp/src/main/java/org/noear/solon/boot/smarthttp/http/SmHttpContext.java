@@ -383,7 +383,7 @@ public class SmHttpContext extends ContextBase {
     }
 
     @Override
-    public void asyncStart(long timeout, ContextAsyncListener listener) throws IOException {
+    public void asyncStart(long timeout, ContextAsyncListener listener) {
         if (_isAsync == false) {
             _isAsync = true;
             _asyncListeners.add(listener);

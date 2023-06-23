@@ -179,7 +179,7 @@ public class SocketContext extends ContextEmpty {
     }
 
     @Override
-    public void asyncStart(long timeout, ContextAsyncListener listener) throws IllegalStateException {
+    public void asyncStart(long timeout, ContextAsyncListener listener) {
         //本身就是异步机制，不用启动
     }
 

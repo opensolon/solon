@@ -1045,7 +1045,7 @@ public abstract class Context {
      * 异步开始
      * */
     @Note("异步开始")
-    public abstract void asyncStart(long timeout, ContextAsyncListener listener) throws IOException;
+    public abstract void asyncStart(long timeout, ContextAsyncListener listener);
 
     /**
      * 异步完成

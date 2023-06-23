@@ -283,7 +283,7 @@ public class ContextEmpty extends Context {
     }
 
     @Override
-    public void asyncStart(long timeout, ContextAsyncListener listener) throws IllegalStateException {
+    public void asyncStart(long timeout, ContextAsyncListener listener)  {
         throw new UnsupportedOperationException();
     }
 

@@ -343,7 +343,7 @@ public class SolonServletContext extends ContextBase {
     }
 
     @Override
-    public void asyncStart(long timeout, ContextAsyncListener listener) throws IllegalStateException {
+    public void asyncStart(long timeout, ContextAsyncListener listener) {
         if (asyncContext == null) {
             asyncContext = _request.startAsync();
             asyncContext.addListener(new AsyncListenerWrap(this, listener));
