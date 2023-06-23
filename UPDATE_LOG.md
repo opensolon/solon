@@ -19,6 +19,7 @@
 * 优化 SmartHttp Context 异步接口机制
 * 优化 Servlet 启动打印信息
 * 优化 Context:forward 在有 context-path 时的处理
+* 优化 ContextPathFilter 对根地址的映射处理
 * 修复 pathNew 多次执行后 ContextPathFilter 会失效的问题
 
 ### 2.3.4
