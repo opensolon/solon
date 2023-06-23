@@ -9,7 +9,6 @@ import java.lang.annotation.*;
  * @author noear
  * @since 2.1
  */
-@Component
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
