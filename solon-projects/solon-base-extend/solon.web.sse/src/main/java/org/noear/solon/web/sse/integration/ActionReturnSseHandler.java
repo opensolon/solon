@@ -20,7 +20,7 @@ public class ActionReturnSseHandler implements ActionReturnHandler {
     public void returnHandle(Context ctx, Action action, Object returnValue) throws Throwable {
         if (returnValue != null) {
             if (ctx.asyncSupported() == false) {
-                throw new IllegalStateException("The current boot plugin does not support async sse");
+                throw new IllegalStateException("This boot plugin does not support asynchronous mode");
             }
 
             new SseEmitterHandler((SseEmitter) returnValue).start();

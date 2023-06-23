@@ -1,6 +1,5 @@
 package org.noear.solon.web.reactive;
 
-import org.noear.solon.annotation.Component;
 import org.noear.solon.core.handle.Action;
 import org.noear.solon.core.handle.ActionReturnHandler;
 import org.noear.solon.core.handle.Context;
@@ -21,13 +20,11 @@ public class ActionReturnReactiveHandler implements ActionReturnHandler {
     @Override
     public void returnHandle(Context ctx, Action action, Object result) throws Throwable {
         if (result != null) {
-            ActionReactiveSubscriber subscriber = new ActionReactiveSubscriber(ctx, action);
-
-            if (ctx.asyncSupported()) {
-                ctx.asyncStart(0L, null);
+            if (ctx.asyncSupported() == false) {
+                throw new IllegalStateException("This boot plugin does not support asynchronous mode");
             }
 
-            ((Publisher) result).subscribe(subscriber);
+            ((Publisher) result).subscribe(new ActionReactiveSubscriber(ctx, action));
         }
     }
 }
