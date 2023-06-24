@@ -28,6 +28,7 @@ public class SmHttpContext extends ContextBase {
     protected Map<String, List<UploadedFile>> _fileMap;
 
     private boolean _isAsync;
+    private long _asyncTimeout = 30000L;//默认30秒
     private CompletableFuture<Object> _asyncFuture;
     private List<ContextAsyncListener> _asyncListeners = new ArrayList<>();
 
@@ -386,9 +387,16 @@ public class SmHttpContext extends ContextBase {
     public void asyncStart(long timeout, ContextAsyncListener listener) {
         if (_isAsync == false) {
             _isAsync = true;
-            _asyncListeners.add(listener);
 
-            if (timeout > 0) {
+            if(listener != null) {
+                _asyncListeners.add(listener);
+            }
+
+            if (timeout != 0) {
+                _asyncTimeout = timeout;
+            }
+
+            if (_asyncTimeout > 0) {
                 RunUtil.delay(() -> {
                     for (ContextAsyncListener listener1 : _asyncListeners) {
                         try {
@@ -397,7 +405,7 @@ public class SmHttpContext extends ContextBase {
                             EventBus.pushTry(e);
                         }
                     }
-                }, timeout);
+                }, _asyncTimeout);
             }
         }
     }

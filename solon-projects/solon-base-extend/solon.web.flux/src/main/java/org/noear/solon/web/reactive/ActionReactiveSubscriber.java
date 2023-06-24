@@ -26,7 +26,7 @@ public class ActionReactiveSubscriber implements Subscriber {
     @Override
     public void onSubscribe(Subscription subscription) {
         //启动异步模式
-        ctx.asyncStart(0L, null);
+        ctx.asyncStart(-1L, null);
 
         subscription.request(Long.MAX_VALUE);
     }

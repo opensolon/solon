@@ -347,9 +347,13 @@ public class SolonServletContext extends ContextBase {
     public void asyncStart(long timeout, ContextAsyncListener listener) {
         if (asyncContext == null) {
             asyncContext = _request.startAsync();
-            asyncContext.addListener(new AsyncListenerWrap(this, listener));
+
+            if (listener != null) {
+                asyncContext.addListener(new AsyncListenerWrap(this, listener));
+            }
 
             if (timeout != 0) {
+                //内部默认30秒
                 asyncContext.setTimeout(timeout);
             }
         }

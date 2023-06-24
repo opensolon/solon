@@ -25,7 +25,7 @@ public class JlHttpContext extends ContextBase {
     protected Map<String, List<UploadedFile>> _fileMap;
 
     private boolean _isAsync;
-    private long _asyncTimeout;
+    private long _asyncTimeout = 30000L;//默认30秒
     private CompletableFuture<Object> _asyncFuture;
     private List<ContextAsyncListener> _asyncListeners = new ArrayList<>();
 
@@ -400,8 +400,14 @@ public class JlHttpContext extends ContextBase {
             _isAsync = true;
 
             _asyncFuture = new CompletableFuture<>();
-            _asyncListeners.add(listener);
-            _asyncTimeout = timeout;
+
+            if (listener != null) {
+                _asyncListeners.add(listener);
+            }
+
+            if (timeout != 0) {
+                _asyncTimeout = timeout;
+            }
         }
     }
 
