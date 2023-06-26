@@ -32,6 +32,7 @@
         <module>../../solon-projects/solon-base-extend/solon.cloud.eventplus</module>
         <module>../../solon-projects/solon-base-extend/solon.cloud.httputils</module>
         <module>../../solon-projects/solon-base-extend/solon.cloud.tracing</module>
+        <module>../../solon-projects/solon-base-extend/solon.cloud.metrics</module>
 
         <module>../../solon-projects/solon-base-extend/solon.web.webdav</module>
         <module>../../solon-projects/solon-base-extend/solon.web.staticfiles</module>
