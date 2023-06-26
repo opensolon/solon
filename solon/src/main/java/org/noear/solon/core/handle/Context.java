@@ -1052,6 +1052,13 @@ public abstract class Context {
     public abstract void asyncStart(long timeout, ContextAsyncListener listener);
 
     /**
+     * 异步开始
+     * */
+    public void asyncStart(){
+        asyncStart(0L, null);
+    }
+
+    /**
      * 异步完成
      * */
     @Note("异步完成")
