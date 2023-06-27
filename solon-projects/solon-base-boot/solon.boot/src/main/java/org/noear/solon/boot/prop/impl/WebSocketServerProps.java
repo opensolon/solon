@@ -1,5 +1,7 @@
 package org.noear.solon.boot.prop.impl;
 
+import org.noear.solon.boot.ServerConstants;
+
 /**
  * @author noear
  * @since 1.8
@@ -7,6 +9,6 @@ package org.noear.solon.boot.prop.impl;
 public class WebSocketServerProps extends BaseServerProps {
 
     public WebSocketServerProps(int portBase) {
-        super("websocket", portBase);
+        super(ServerConstants.SIGNAL_WEBSOCKET, portBase);
     }
 }

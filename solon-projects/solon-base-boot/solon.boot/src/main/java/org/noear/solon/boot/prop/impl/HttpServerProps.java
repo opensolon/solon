@@ -1,11 +1,13 @@
 package org.noear.solon.boot.prop.impl;
 
+import org.noear.solon.boot.ServerConstants;
+
 /**
  * @author noear
  * @since 1.8
  */
 public class HttpServerProps extends BaseServerProps {
     public HttpServerProps() {
-        super("http", 0);
+        super(ServerConstants.SIGNAL_HTTP, 0);
     }
 }

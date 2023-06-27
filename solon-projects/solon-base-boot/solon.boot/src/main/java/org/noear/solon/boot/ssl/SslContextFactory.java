@@ -2,6 +2,7 @@ package org.noear.solon.boot.ssl;
 
 import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerConstants;
+import org.noear.solon.boot.prop.ServerSslProps;
 import org.noear.solon.core.util.ResourceUtil;
 
 import javax.net.ssl.*;
@@ -17,10 +18,10 @@ import java.security.cert.CertificateException;
  * @since 1.6
  */
 public class SslContextFactory {
-    public static SSLContext create() throws IOException {
-        String keyStoreName = System.getProperty(ServerConstants.SSL_KEYSTORE);
-        String keyStoreType = System.getProperty(ServerConstants.SSL_KEYSTORE_TYPE);
-        String keyStorePassword = System.getProperty(ServerConstants.SSL_KEYSTORE_PASSWORD);
+    public static SSLContext create(ServerSslProps serverSslProps) throws IOException {
+        String keyStoreName = serverSslProps.getSslKeyStore();
+        String keyStoreType = serverSslProps.getSslKeyType();
+        String keyStorePassword = serverSslProps.getSslKeyPassword();
 
         if(Utils.isEmpty(keyStoreType)){
             keyStoreType = "jks";
