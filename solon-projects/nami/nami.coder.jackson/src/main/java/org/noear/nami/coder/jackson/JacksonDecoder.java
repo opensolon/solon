@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.noear.nami.Context;
 import org.noear.nami.Decoder;
+import org.noear.nami.EncoderTyped;
 import org.noear.nami.Result;
 import org.noear.nami.common.Constants;
 import org.noear.nami.common.ContentTypes;
@@ -78,7 +79,10 @@ public class JacksonDecoder implements Decoder {
 
     @Override
     public void pretreatment(Context ctx) {
-        ctx.headers.put(Constants.HEADER_SERIALIZATION, Constants.AT_TYPE_JSON);
+        if (ctx.config.getEncoder() instanceof EncoderTyped) {
+            ctx.headers.put(Constants.HEADER_SERIALIZATION, Constants.AT_TYPE_JSON);
+        }
+
         ctx.headers.put(Constants.HEADER_ACCEPT, ContentTypes.JSON_VALUE);
     }
 }

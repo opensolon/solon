@@ -3,13 +3,13 @@ package org.noear.nami.coder.fastjson;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import org.noear.nami.Context;
-import org.noear.nami.Encoder;
+import org.noear.nami.EncoderTyped;
 import org.noear.nami.common.ContentTypes;
 
 import java.nio.charset.StandardCharsets;
 
 
-public class FastjsonTypeEncoder implements Encoder {
+public class FastjsonTypeEncoder implements EncoderTyped {
 
     public static final FastjsonTypeEncoder instance = new FastjsonTypeEncoder();
 

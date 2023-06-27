@@ -12,6 +12,13 @@
 ### 2.3.7
 * 新增 solon.boot.vertx 插件
 * 新增 solon.cloud.metrics 插件
+* 优化 nami 解码器的渲染要求策略
+* 增加 server.http.ssl.keyStore 配置
+* 增加 server.http.ssl.keyPassword 配置
+* 增加 server.socket.ssl.keyStore 配置
+* 增加 server.socket.ssl.keyPassword 配置
+* 增加 server.websocket.ssl.keyStore 配置
+* 增加 server.websocket.ssl.keyPassword 配置
 * wood 升为 1.1.5
 
 ### 2.3.6

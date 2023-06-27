@@ -7,14 +7,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.noear.nami.Context;
-import org.noear.nami.Encoder;
+import org.noear.nami.EncoderTyped;
 import org.noear.nami.common.ContentTypes;
 
 /**
  * @author noear
  * @since 1.2
  */
-public class JacksonTypeEncoder implements Encoder {
+public class JacksonTypeEncoder implements EncoderTyped {
     public static final JacksonTypeEncoder instance = new JacksonTypeEncoder();
 
     ObjectMapper mapper_type = new ObjectMapper();
