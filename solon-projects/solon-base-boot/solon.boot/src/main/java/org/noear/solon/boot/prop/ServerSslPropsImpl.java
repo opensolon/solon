@@ -19,14 +19,14 @@ class ServerSslPropsImpl implements ServerSslProps{
 
     public ServerSslPropsImpl(String signalName) {
         PROP_SSL_KEY_STORE = PROP_SSL_KEY_STORE.replace("@@", signalName);
-        sslKeyStore = Solon.cfg().get(PROP_SSL_KEY_STORE, ServerConstants.SERVER_KEY_STORE);
+        sslKeyStore = Solon.cfg().getOr(PROP_SSL_KEY_STORE, ServerConstants.SERVER_KEY_STORE);
 
         if (Utils.isNotEmpty(sslKeyStore)) {
             PROP_SSL_KEY_PASSWORK = PROP_SSL_KEY_PASSWORK.replace("@@", signalName);
             PROP_SSL_KEY_TYPE = PROP_SSL_KEY_TYPE.replace("@@", signalName);
 
-            sslKeyType = Solon.cfg().get(PROP_SSL_KEY_TYPE, ServerConstants.SERVER_KEY_TYPE);
-            sslKeyPassword = Solon.cfg().get(PROP_SSL_KEY_PASSWORK, ServerConstants.SERVER_KEY_PASSWORD);
+            sslKeyType = Solon.cfg().getOr(PROP_SSL_KEY_TYPE, ServerConstants.SERVER_KEY_TYPE);
+            sslKeyPassword = Solon.cfg().getOr(PROP_SSL_KEY_PASSWORK, ServerConstants.SERVER_KEY_PASSWORD);
         }
     }
 
