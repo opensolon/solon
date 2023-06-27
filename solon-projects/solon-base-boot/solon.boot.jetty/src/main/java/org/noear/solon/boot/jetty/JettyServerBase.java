@@ -14,6 +14,7 @@ import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.jetty.http.JtContainerInitializer;
 import org.noear.solon.boot.jetty.http.JtHttpContextHandler;
 import org.noear.solon.boot.jetty.http.JtHttpContextServletHandler;
+import org.noear.solon.boot.prop.ServerSslProps;
 import org.noear.solon.boot.prop.impl.HttpServerProps;
 import org.noear.solon.boot.http.HttpServerConfigure;
 import org.noear.solon.core.runtime.NativeDetector;
@@ -32,6 +33,15 @@ abstract class JettyServerBase implements ServerLifecycle , HttpServerConfigure 
     protected HttpServerProps props = new HttpServerProps();
     protected boolean allowSsl = true;
     protected Set<Integer> addHttpPorts = new LinkedHashSet<>();
+
+    private ServerSslProps sslProps;
+    protected boolean supportSsl() {
+        if (sslProps == null) {
+            sslProps = ServerSslProps.of(ServerConstants.SIGNAL_HTTP);
+        }
+
+        return sslProps.getSslKeyStore() != null;
+    }
 
     /**
      * 是否允许Ssl
@@ -72,10 +82,11 @@ abstract class JettyServerBase implements ServerLifecycle , HttpServerConfigure 
         HttpConnectionFactory httpFactory = new HttpConnectionFactory(config);
         ServerConnector serverConnector;
 
-        if (allowSsl && autoSsl && System.getProperty(ServerConstants.SSL_KEYSTORE) != null) {
-            String sslKeyStore = System.getProperty(ServerConstants.SSL_KEYSTORE);
-            String sslKeyStoreType = System.getProperty(ServerConstants.SSL_KEYSTORE_TYPE);
-            String sslKeyStorePassword = System.getProperty(ServerConstants.SSL_KEYSTORE_PASSWORD);
+        if (allowSsl && autoSsl && supportSsl()) {
+
+            String sslKeyStore = sslProps.getSslKeyStore();
+            String sslKeyStoreType = sslProps.getSslKeyType();
+            String sslKeyStorePassword = sslProps.getSslKeyPassword();
 
             SslContextFactory.Server contextFactory = new SslContextFactory.Server();
 

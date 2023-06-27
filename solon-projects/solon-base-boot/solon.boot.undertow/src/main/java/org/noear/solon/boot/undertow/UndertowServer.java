@@ -11,6 +11,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerConstants;
 import org.noear.solon.boot.ServerLifecycle;
 import org.noear.solon.boot.ServerProps;
+import org.noear.solon.boot.prop.ServerSslProps;
 import org.noear.solon.boot.ssl.SslContextFactory;
 import org.noear.solon.boot.undertow.http.UtServletHandler;
 import org.noear.solon.boot.undertow.websocket.UtWsConnectionCallback;
@@ -26,6 +27,15 @@ import static io.undertow.Handlers.websocket;
  */
 public class UndertowServer extends UndertowServerBase implements ServerLifecycle {
     protected Undertow _server;
+
+    private ServerSslProps sslProps;
+    protected boolean supportSsl() {
+        if (sslProps == null) {
+            sslProps = ServerSslProps.of(ServerConstants.SIGNAL_HTTP);
+        }
+
+        return sslProps.getSslKeyStore() != null;
+    }
 
     @Override
     public void start(String host, int port) {
@@ -83,9 +93,9 @@ public class UndertowServer extends UndertowServerBase implements ServerLifecycl
             host = "0.0.0.0";
         }
 
-        if (allowSsl && System.getProperty(ServerConstants.SSL_KEYSTORE) != null) {
+        if (allowSsl && supportSsl()) {
             //https
-            builder.addHttpsListener(port, host, SslContextFactory.create());
+            builder.addHttpsListener(port, host, SslContextFactory.create(sslProps));
         } else {
             //http
             builder.addHttpListener(port, host);

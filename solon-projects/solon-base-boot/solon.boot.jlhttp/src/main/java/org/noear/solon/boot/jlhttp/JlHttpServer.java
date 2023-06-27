@@ -3,6 +3,7 @@ package org.noear.solon.boot.jlhttp;
 import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerConstants;
 import org.noear.solon.boot.ServerLifecycle;
+import org.noear.solon.boot.prop.ServerSslProps;
 import org.noear.solon.boot.ssl.SslContextFactory;
 import org.noear.solon.core.handle.Handler;
 
@@ -19,6 +20,15 @@ public class JlHttpServer implements ServerLifecycle {
     private Handler handler;
     private Executor executor;
     private boolean allowSsl = true;
+
+    private ServerSslProps sslProps;
+    protected boolean supportSsl() {
+        if (sslProps == null) {
+            sslProps = ServerSslProps.of(ServerConstants.SIGNAL_HTTP);
+        }
+
+        return sslProps.getSslKeyStore() != null;
+    }
 
     public void allowSsl(boolean allowSsl) {
         this.allowSsl = allowSsl;
@@ -37,9 +47,9 @@ public class JlHttpServer implements ServerLifecycle {
     public void start(String host, int port) throws Throwable {
         server = new HTTPServer();
 
-        if (allowSsl && System.getProperty(ServerConstants.SSL_KEYSTORE) != null) {
+        if (allowSsl && supportSsl()) {
             // enable SSL if configured
-            server.setServerSocketFactory(SslContextFactory.create().getServerSocketFactory());
+            server.setServerSocketFactory(SslContextFactory.create(sslProps).getServerSocketFactory());
         }
 
         HTTPServer.VirtualHost virtualHost = server.getVirtualHost(null);

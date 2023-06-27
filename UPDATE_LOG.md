@@ -16,12 +16,9 @@
 * 优化 单元测试项目结构
 * 调整 solon.boot.websocket 异步发送机制
 * 调整 solon.boot.websocket.netty 异步发送机制
-* 增加 server.http.ssl.keyStore 配置
-* 增加 server.http.ssl.keyPassword 配置
-* 增加 server.socket.ssl.keyStore 配置
-* 增加 server.socket.ssl.keyPassword 配置
-* 增加 server.websocket.ssl.keyStore 配置
-* 增加 server.websocket.ssl.keyPassword 配置
+* 增加 server.http.ssl.* 配置
+* 增加 server.socket.ssl.* 配置
+* 增加 server.websocket.ssl.* 配置
 * wood 升为 1.1.5
 
 ### 2.3.6

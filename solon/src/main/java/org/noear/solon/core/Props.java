@@ -57,6 +57,15 @@ public class Props extends Properties {
         return getProperty(key);
     }
 
+    public String getOr(String key, String key2) {
+        String tmp = getProperty(key);
+        if (Utils.isEmpty(tmp)) {
+            return getProperty(key2);
+        } else {
+            return tmp;
+        }
+    }
+
     /**
      * @param expr 兼容 ${key} or key or ${key:def} or key:def
      */

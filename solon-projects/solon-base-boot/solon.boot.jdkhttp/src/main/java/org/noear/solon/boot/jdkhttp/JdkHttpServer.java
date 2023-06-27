@@ -4,6 +4,7 @@ import com.sun.net.httpserver.*;
 import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerConstants;
 import org.noear.solon.boot.ServerLifecycle;
+import org.noear.solon.boot.prop.ServerSslProps;
 import org.noear.solon.boot.ssl.SslContextFactory;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.Handler;
@@ -27,6 +28,15 @@ public class JdkHttpServer implements ServerLifecycle {
     private Handler handler;
     private boolean allowSsl = true;
 
+    private ServerSslProps sslProps;
+    protected boolean supportSsl() {
+        if (sslProps == null) {
+            sslProps = ServerSslProps.of(ServerConstants.SIGNAL_HTTP);
+        }
+
+        return sslProps.getSslKeyStore() != null;
+    }
+
     public void allowSsl(boolean allowSsl) {
         this.allowSsl = allowSsl;
     }
@@ -40,9 +50,10 @@ public class JdkHttpServer implements ServerLifecycle {
     }
 
 
+
     @Override
     public void start(String host, int port) throws Throwable {
-        if (allowSsl && System.getProperty(ServerConstants.SSL_KEYSTORE) != null) {
+        if (allowSsl && supportSsl()) {
             // enable SSL if configured
             if (Utils.isNotEmpty(host)) {
                 server = HttpsServer.create(new InetSocketAddress(host, port), 0);
@@ -75,7 +86,7 @@ public class JdkHttpServer implements ServerLifecycle {
     }
 
     private void addSslConfig(HttpsServer httpsServer) throws IOException {
-        SSLContext sslContext = SslContextFactory.create();
+        SSLContext sslContext = SslContextFactory.create(sslProps);
 
         httpsServer.setHttpsConfigurator(new HttpsConfigurator(sslContext) {
             public void configure(HttpsParameters params) {

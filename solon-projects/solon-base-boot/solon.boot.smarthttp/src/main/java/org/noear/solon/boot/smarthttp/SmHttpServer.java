@@ -4,6 +4,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerConstants;
 import org.noear.solon.boot.ServerLifecycle;
 import org.noear.solon.boot.ServerProps;
+import org.noear.solon.boot.prop.ServerSslProps;
 import org.noear.solon.boot.smarthttp.http.SmHttpContextHandler;
 import org.noear.solon.boot.smarthttp.websocket.SmWebSocketHandleImp;
 import org.noear.solon.boot.smarthttp.websocket._SessionManagerImpl;
@@ -30,6 +31,15 @@ public class SmHttpServer implements ServerLifecycle {
     private Executor workExecutor;
     private boolean enableWebSocket;
     private boolean allowSsl = true;
+
+    private ServerSslProps sslProps;
+    protected boolean supportSsl() {
+        if (sslProps == null) {
+            sslProps = ServerSslProps.of(ServerConstants.SIGNAL_HTTP);
+        }
+
+        return sslProps.getSslKeyStore() != null;
+    }
 
     public void allowSsl(boolean allowSsl) {
         this.allowSsl = allowSsl;
@@ -59,8 +69,8 @@ public class SmHttpServer implements ServerLifecycle {
             _config.host(host);
         }
 
-        if (allowSsl && System.getProperty(ServerConstants.SSL_KEYSTORE) != null) {
-            SSLContext sslContext = SslContextFactory.create();
+        if (allowSsl && supportSsl()) {
+            SSLContext sslContext = SslContextFactory.create(sslProps);
 
             SslPlugin<Request> sslPlugin = new SslPlugin<>(() -> sslContext, sslEngine -> {
                 sslEngine.setUseClientMode(false);
