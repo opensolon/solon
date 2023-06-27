@@ -10,15 +10,15 @@
 * 提醒2：有使用弃用接口的。建议先升级到 1.12.4；替换弃用代码后，再升级到 2.0.0
 
 ### 2.3.7
-* 新增 solon.boot.vertx 插件
-* 新增 solon.cloud.metrics 插件
+* 新增 solon.boot.vertx 插件?
+* 新增 solon.cloud.metrics 插件?
 * 优化 nami 解码器的渲染要求策略
-* 优化 单元测试项目结构
+* 优化 单元测试项目结构?
 * 调整 solon.boot.websocket 异步发送机制
 * 调整 solon.boot.websocket.netty 异步发送机制
 * 增加 server.http.ssl.* 配置
-* 增加 server.socket.ssl.* 配置
-* 增加 server.websocket.ssl.* 配置
+* 增加 server.socket.ssl.* 配置?
+* 增加 server.websocket.ssl.* 配置?
 * 增加 NamiMapping、NamiBody 注解
 * wood 升为 1.1.5
 
