@@ -19,7 +19,7 @@ import webapp.utils.Datetime;
 
 @RunWith(SolonJUnit4ClassRunner.class)
 @SolonTest(App.class)
-public class RpcAndNamiTest {
+public class NamiAndRpcTest {
     //直接指定服务端地址
     @NamiClient(url = "http://localhost:8080/demo5/user/")
     UserService userService;

@@ -2,7 +2,9 @@ package features;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.noear.nami.Nami;
 import org.noear.nami.annotation.NamiClient;
+import org.noear.nami.coder.snack3.SnackEncoder;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
 import webapp.App;
@@ -33,6 +35,17 @@ public class NamiTest {
         complexModelService1.save(model);
 
         assert complexModelService1.read(12).getModelId() == 12;
+    }
+
+    @Test
+    public void test1_2() {
+        ComplexModelService1 service1_2 = Nami.builder()
+                .name("local")
+                .path("/nami/ComplexModelService1/")
+                .encoder(SnackEncoder.instance)
+                .create(ComplexModelService1.class);
+
+        assert service1_2.read(12).getModelId() == 12;
     }
 
     @Test
