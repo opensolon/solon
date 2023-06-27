@@ -13,6 +13,9 @@
 * 新增 solon.boot.vertx 插件
 * 新增 solon.cloud.metrics 插件
 * 优化 nami 解码器的渲染要求策略
+* 优化 单元测试项目结构
+* 调整 solon.boot.websocket 异步发送机制
+* 调整 solon.boot.websocket.netty 异步发送机制
 * 增加 server.http.ssl.keyStore 配置
 * 增加 server.http.ssl.keyPassword 配置
 * 增加 server.socket.ssl.keyStore 配置

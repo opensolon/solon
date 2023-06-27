@@ -89,6 +89,16 @@ public class _SocketServerSession extends SessionBase {
     }
 
     @Override
+    public void sendAsync(Message message) {
+        send(message);
+    }
+
+    @Override
+    public void sendAsync(String message) {
+        send(message);
+    }
+
+    @Override
     public void send(String message) {
         synchronized (this) {
             if (Solon.app().enableWebSocketD()) {
