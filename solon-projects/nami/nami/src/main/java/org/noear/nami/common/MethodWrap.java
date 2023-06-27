@@ -1,7 +1,6 @@
 package org.noear.nami.common;
 
-import org.noear.nami.annotation.Body;
-import org.noear.nami.annotation.Mapping;
+import org.noear.nami.annotation.*;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
@@ -32,14 +31,34 @@ public class MethodWrap {
         return mw;
     }
 
+    protected void resolveMappingAnno(Method m){
+        mappingAnno = m.getAnnotation(NamiMapping.class);
+        if(mappingAnno == null){
+            Mapping anno = m.getAnnotation(Mapping.class);
+            if(anno != null){
+                mappingAnno = new NamiMappingAnno(anno);
+            }
+        }
+    }
+
+    protected void resolveBodyAnno(Parameter p1) {
+        bodyAnno = p1.getAnnotation(NamiBody.class);
+        if (bodyAnno == null) {
+            Body anno = p1.getAnnotation(Body.class);
+            if (anno != null) {
+                bodyAnno = new NamiBodyAnno(anno);
+            }
+        }
+    }
+
 
     protected MethodWrap(Method m) {
         this.method = m;
         this.parameters = m.getParameters();
-        this.mappingAnno = m.getAnnotation(Mapping.class);
+        resolveMappingAnno(m);
 
         for (Parameter p1 : parameters) {
-            bodyAnno = p1.getAnnotation(Body.class);
+            resolveBodyAnno(p1);
             if (bodyAnno != null) {
                 bodyName = p1.getName();
                 break;
@@ -76,8 +95,8 @@ public class MethodWrap {
     private Method method;
     private Parameter[] parameters;
     private String bodyName;
-    private Body bodyAnno;
-    private Mapping mappingAnno;
+    private NamiBody bodyAnno;
+    private NamiMapping mappingAnno;
     private Map<String,String> mappingHeaders;
     private String act;
     private String fun;
@@ -94,11 +113,11 @@ public class MethodWrap {
         return bodyName;
     }
 
-    public Body getBodyAnno() {
+    public NamiBody getBodyAnno() {
         return bodyAnno;
     }
 
-    public Mapping getMappingAnno() {
+    public NamiMapping getMappingAnno() {
         return mappingAnno;
     }
 

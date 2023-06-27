@@ -1,8 +1,8 @@
 package webapp.nami;
 
 
-import org.noear.nami.annotation.Body;
-import org.noear.nami.annotation.Mapping;
+import org.noear.nami.annotation.NamiBody;
+import org.noear.nami.annotation.NamiMapping;
 import org.noear.nami.annotation.NamiClient;
 
 /**
@@ -10,9 +10,9 @@ import org.noear.nami.annotation.NamiClient;
  */
 @NamiClient(name="local", path="/nami/ComplexModelService2/", headers="TOKEN=a")
 public interface ComplexModelService2 {
-    @Mapping("PUT")
-    void save(@Body ComplexModel model);
+    @NamiMapping("PUT")
+    void save(@NamiBody ComplexModel model);
 
-    @Mapping("GET api/1.0.1")
+    @NamiMapping("GET api/1.0.1")
     ComplexModel read(Integer modelId);
 }

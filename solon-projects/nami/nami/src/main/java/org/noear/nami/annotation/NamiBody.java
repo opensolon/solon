@@ -9,12 +9,10 @@ import java.lang.annotation.*;
  *
  * @author noear
  * @since 1.2
- * @deprecated 2.3
  */
-@Deprecated
 @Target({ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface Body {
+public @interface NamiBody {
     String contentType() default ContentTypes.JSON_VALUE;
 }

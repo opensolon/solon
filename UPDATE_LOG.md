@@ -19,6 +19,7 @@
 * 增加 server.http.ssl.* 配置
 * 增加 server.socket.ssl.* 配置
 * 增加 server.websocket.ssl.* 配置
+* 增加 NamiMapping、NamiBody 注解
 * wood 升为 1.1.5
 
 ### 2.3.6

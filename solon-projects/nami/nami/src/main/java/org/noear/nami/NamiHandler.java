@@ -1,6 +1,6 @@
 package org.noear.nami;
 
-import org.noear.nami.annotation.Mapping;
+import org.noear.nami.annotation.NamiMapping;
 import org.noear.nami.annotation.NamiClient;
 import org.noear.nami.common.*;
 
@@ -170,7 +170,7 @@ public class NamiHandler implements InvocationHandler {
         String act = null;
 
         //处理mapping
-        Mapping mapping = methodWrap.getMappingAnno();
+        NamiMapping mapping = methodWrap.getMappingAnno();
         if (mapping != null) {
             if (methodWrap.getAct() != null) {
                 act = methodWrap.getAct();

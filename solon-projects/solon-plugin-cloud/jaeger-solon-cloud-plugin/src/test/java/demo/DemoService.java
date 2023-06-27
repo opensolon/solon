@@ -1,6 +1,6 @@
 package demo;
 
-import org.noear.nami.annotation.Mapping;
+import org.noear.nami.annotation.NamiMapping;
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.cloud.tracing.Spans;
 
@@ -9,7 +9,7 @@ import org.noear.solon.cloud.tracing.Spans;
  */
 @Controller
 public class DemoService {
-    @Mapping("hello")
+    @NamiMapping("hello")
     public String hello() {
         Spans.active(span -> span.setTag("订单", 12));
         //或

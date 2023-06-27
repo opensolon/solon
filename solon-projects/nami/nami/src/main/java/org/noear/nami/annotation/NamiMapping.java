@@ -1,5 +1,7 @@
 package org.noear.nami.annotation;
 
+import org.noear.solon.annotation.Note;
+
 import java.lang.annotation.*;
 
 /**
@@ -7,13 +9,11 @@ import java.lang.annotation.*;
  *
  * @author noear
  * @since 1.1
- * @deprecated 2.3
  * */
-@Deprecated
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface Mapping {
+public @interface NamiMapping {
     /**
      * mapping:
      *

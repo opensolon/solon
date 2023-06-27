@@ -3,7 +3,7 @@ package features;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.noear.nami.Nami;
-import org.noear.nami.annotation.Body;
+import org.noear.nami.annotation.NamiBody;
 import org.noear.nami.annotation.NamiClient;
 import org.noear.nami.coder.snack3.SnackDecoder;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
@@ -34,6 +34,6 @@ public class HttpParam3Test {
 
     @NamiClient(path = "/demo2/param", upstream = {"http://localhost:8080"})
     public interface ParamService {
-        UserModel model(@Body UserModel model);
+        UserModel model(@NamiBody UserModel model);
     }
 }
