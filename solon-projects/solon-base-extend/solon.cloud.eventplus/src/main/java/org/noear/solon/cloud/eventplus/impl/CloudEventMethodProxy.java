@@ -4,6 +4,8 @@ import org.noear.snack.ONode;
 import org.noear.solon.cloud.CloudEventHandler;
 import org.noear.solon.cloud.eventplus.CloudEventEntity;
 import org.noear.solon.cloud.model.Event;
+import org.noear.solon.core.BeanWrap;
+import org.noear.solon.core.wrap.MethodWrap;
 
 import java.lang.reflect.Method;
 
@@ -13,13 +15,13 @@ import java.lang.reflect.Method;
  * @since 1.5
  */
 public class CloudEventMethodProxy implements CloudEventHandler {
-    Object target;
-    Method method;
+    BeanWrap target;
+    MethodWrap method;
     Class<?> entityClz;
 
-    public CloudEventMethodProxy(Object target, Method method, Class<?> entityClz) {
+    public CloudEventMethodProxy(BeanWrap target, Method method, Class<?> entityClz) {
         this.target = target;
-        this.method = method;
+        this.method = target.context().methodGet(method);
         this.entityClz = entityClz;
     }
 
@@ -27,7 +29,7 @@ public class CloudEventMethodProxy implements CloudEventHandler {
     public boolean handle(Event event) throws Throwable {
         CloudEventEntity eventEntity = ONode.deserialize(event.content(), entityClz);
 
-        Object tmp = method.invoke(target, eventEntity);
+        Object tmp = method.invokeByAspect(target.get(), new Object[]{eventEntity});
 
         if (tmp instanceof Boolean) { //说明需要 ack
             return (boolean) tmp;
