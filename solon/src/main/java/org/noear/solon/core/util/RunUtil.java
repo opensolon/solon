@@ -11,8 +11,15 @@ import java.util.concurrent.*;
  * @since 1.12
  */
 public class RunUtil {
-    private static final ExecutorService executor = Executors.newCachedThreadPool();
-    private static final ScheduledExecutorService scheduledExecutor = Executors.newScheduledThreadPool(Runtime.getRuntime().availableProcessors());
+    private static final ExecutorService executor;
+    private static final ScheduledExecutorService scheduledExecutor;
+
+    static {
+        executor =  new ThreadPoolExecutor(0, Integer.MAX_VALUE,
+                60L, TimeUnit.SECONDS,
+                new SynchronousQueue<Runnable>(),new NamedThreadFactory("Solon-RunUtil-executor-"));
+        scheduledExecutor = new ScheduledThreadPoolExecutor(Runtime.getRuntime().availableProcessors(),new NamedThreadFactory("Solon-RunUtil-scheduledExecutor-"));
+    }
 
     /**
      * 运行或异常
@@ -48,7 +55,7 @@ public class RunUtil {
      * 异步执行
      */
     public static Future<?> async(Runnable task) {
-        return CompletableFuture.runAsync(task);
+        return CompletableFuture.runAsync(task,executor);
     }
 
     /**
