@@ -15,16 +15,18 @@ public class RunUtil {
     private static final ScheduledExecutorService scheduledExecutor;
 
     static {
-        executor =  new ThreadPoolExecutor(0, Integer.MAX_VALUE,
+        executor = new ThreadPoolExecutor(0, Integer.MAX_VALUE,
                 60L, TimeUnit.SECONDS,
-                new SynchronousQueue<Runnable>(),new NamedThreadFactory("Solon-RunUtil-executor-"));
-        scheduledExecutor = new ScheduledThreadPoolExecutor(Runtime.getRuntime().availableProcessors(),new NamedThreadFactory("Solon-RunUtil-scheduledExecutor-"));
+                new SynchronousQueue<Runnable>(),
+                new NamedThreadFactory("Solon-RunUtil-executor-"));
+        scheduledExecutor = new ScheduledThreadPoolExecutor(Runtime.getRuntime().availableProcessors(),
+                new NamedThreadFactory("Solon-RunUtil-scheduledExecutor-"));
     }
 
     /**
      * 运行或异常
-     * */
-    public static void runOrThrow(RunnableEx task){
+     */
+    public static void runOrThrow(RunnableEx task) {
         try {
             task.run();
         } catch (Throwable e) {
@@ -55,7 +57,7 @@ public class RunUtil {
      * 异步执行
      */
     public static Future<?> async(Runnable task) {
-        return CompletableFuture.runAsync(task,executor);
+        return CompletableFuture.runAsync(task, executor);
     }
 
     /**

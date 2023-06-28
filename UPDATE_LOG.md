@@ -9,6 +9,10 @@
 * 提醒1：之前没有使用弃用接口的，可以直接升级 <br>
 * 提醒2：有使用弃用接口的。建议先升级到 1.12.4；替换弃用代码后，再升级到 2.0.0
 
+
+### 2.3.8
+
+
 ### 2.3.7
 * 新增 solon.boot.vertx 插件?
 * 新增 solon.cloud.metrics 插件?
@@ -16,6 +20,7 @@
 * 优化 单元测试项目结构?
 * 调整 solon.boot.websocket 异步发送机制
 * 调整 solon.boot.websocket.netty 异步发送机制
+* 调整 RunUtil 增加线程池名
 * 增加 sa-token dao 的 redisson 实现
 * 增加 server.http.ssl.* 配置
 * 增加 server.socket.ssl.* 配置?
