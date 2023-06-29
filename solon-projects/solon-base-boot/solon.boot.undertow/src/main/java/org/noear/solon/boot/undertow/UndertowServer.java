@@ -34,7 +34,7 @@ public class UndertowServer extends UndertowServerBase implements ServerLifecycl
             sslProps = ServerSslProps.of(ServerConstants.SIGNAL_HTTP);
         }
 
-        return sslProps.getSslKeyStore() != null;
+        return sslProps.isEnable() && sslProps.getSslKeyStore() != null;
     }
 
     @Override

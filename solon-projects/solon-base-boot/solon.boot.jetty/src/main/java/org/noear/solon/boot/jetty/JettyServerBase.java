@@ -40,7 +40,7 @@ abstract class JettyServerBase implements ServerLifecycle , HttpServerConfigure 
             sslProps = ServerSslProps.of(ServerConstants.SIGNAL_HTTP);
         }
 
-        return sslProps.getSslKeyStore() != null;
+        return sslProps.isEnable() && sslProps.getSslKeyStore() != null;
     }
 
     /**

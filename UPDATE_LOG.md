@@ -26,6 +26,7 @@
 * 增加 server.http.ssl.* 配置
 * 增加 server.socket.ssl.* 配置?
 * 增加 server.websocket.ssl.* 配置?
+* 增加 solon.boot.socketd.jdksocket 插件对 ssl 的支持
 * 增加 NamiMapping、NamiBody 注解
 * 增加 CloudEvent 注解在函数上时，支持 AOP 扩展
 * 增加 序列化接口（在渲染之外），可以外面复用（从 StringSerializerRender 开放 serializer）

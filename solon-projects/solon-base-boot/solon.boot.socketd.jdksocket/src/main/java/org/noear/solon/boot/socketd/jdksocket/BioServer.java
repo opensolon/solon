@@ -2,7 +2,10 @@ package org.noear.solon.boot.socketd.jdksocket;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
+import org.noear.solon.boot.ServerConstants;
 import org.noear.solon.boot.ServerLifecycle;
+import org.noear.solon.boot.prop.ServerSslProps;
+import org.noear.solon.boot.ssl.SslContextFactory;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.core.util.LogUtil;
@@ -11,13 +14,13 @@ import org.noear.solon.socketd.client.jdksocket.BioSocketSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.net.ssl.SSLContext;
 import java.io.IOException;
 import java.net.Inet4Address;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.RejectedExecutionException;
 
 class BioServer implements ServerLifecycle {
     static final Logger log = LoggerFactory.getLogger(BioServer.class);
@@ -29,11 +32,32 @@ class BioServer implements ServerLifecycle {
         this.executor = executor;
     }
 
+    private ServerSslProps sslProps;
+
+    protected boolean supportSsl() {
+        if (sslProps == null) {
+            sslProps = ServerSslProps.of(ServerConstants.SIGNAL_SOCKET);
+        }
+
+        return sslProps.isEnable() && sslProps.getSslKeyStore() != null;
+    }
+
     private void start0(String host, int port) throws IOException {
-        if (Utils.isEmpty(host)) {
-            server = new ServerSocket(port);
+        if (supportSsl()) {
+            //使用 ssl
+            SSLContext sslContext = SslContextFactory.create(sslProps);
+            if (Utils.isEmpty(host)) {
+                server = sslContext.getServerSocketFactory().createServerSocket(port);
+            } else {
+                server = sslContext.getServerSocketFactory().createServerSocket(port, 50, Inet4Address.getByName(host));
+            }
         } else {
-            server = new ServerSocket(port, 50, Inet4Address.getByName(host));
+            //不使用 ssl
+            if (Utils.isEmpty(host)) {
+                server = new ServerSocket(port);
+            } else {
+                server = new ServerSocket(port, 50, Inet4Address.getByName(host));
+            }
         }
 
 
@@ -58,10 +82,10 @@ class BioServer implements ServerLifecycle {
         }
     }
 
-    private void close(Socket socket){
-        try{
+    private void close(Socket socket) {
+        try {
             socket.close();
-        }catch (Throwable e){
+        } catch (Throwable e) {
 
         }
     }

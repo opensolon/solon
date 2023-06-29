@@ -38,7 +38,7 @@ public class SmHttpServer implements ServerLifecycle {
             sslProps = ServerSslProps.of(ServerConstants.SIGNAL_HTTP);
         }
 
-        return sslProps.getSslKeyStore() != null;
+        return sslProps.isEnable() && sslProps.getSslKeyStore() != null;
     }
 
     public void allowSsl(boolean allowSsl) {
