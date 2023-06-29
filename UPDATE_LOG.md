@@ -29,6 +29,7 @@
 * 增加 NamiMapping、NamiBody 注解
 * 增加 CloudEvent 注解在函数上时，支持 AOP 扩展
 * 增加 序列化接口（在渲染之外），可以外面复用（从 StringSerializerRender 开放 serializer）
+* 修复 solon.serialization.jackson 在某些情况下，序列化 null 会出错的问题
 * wood 升为 1.1.5
 * smarthttp 升为 1.2.6
 * smartsocket 升为 1.5.31

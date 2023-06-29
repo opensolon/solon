@@ -31,10 +31,11 @@ public class NullValueSerializer extends JsonSerializer<Object> {
 
         if (type == null) {
             try {
-                String fieldName = gen.getOutputContext().getCurrentName();
-                Field field = gen.getCurrentValue().getClass().getDeclaredField(fieldName);
-                type = field.getType();
-
+                if(gen.getCurrentValue() != null) {
+                    String fieldName = gen.getOutputContext().getCurrentName();
+                    Field field = gen.getCurrentValue().getClass().getDeclaredField(fieldName);
+                    type = field.getType();
+                }
             } catch (NoSuchFieldException e) {
             }
         }
