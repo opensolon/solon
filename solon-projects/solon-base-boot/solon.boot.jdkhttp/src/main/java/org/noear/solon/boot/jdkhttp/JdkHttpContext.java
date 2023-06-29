@@ -280,6 +280,16 @@ public class JdkHttpContext extends ContextBase {
     private NvMap _headerMap;
 
     @Override
+    public Map<String, List<String>> headersMap() {
+        if (_headersMap == null) {
+            _headersMap = new LinkedHashMap<>(_exchange.getRequestHeaders());
+
+        }
+        return _headersMap;
+    }
+    private Map<String, List<String>> _headersMap;
+
+    @Override
     public Object response() {
         return _exchange;
     }

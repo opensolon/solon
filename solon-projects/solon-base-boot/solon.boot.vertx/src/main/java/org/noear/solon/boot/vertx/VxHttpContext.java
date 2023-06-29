@@ -113,6 +113,11 @@ public class VxHttpContext extends Context {
     }
 
     @Override
+    public Map<String, List<String>> headersMap() {
+        return null;
+    }
+
+    @Override
     public String sessionId() {
         return null;
     }

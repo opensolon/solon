@@ -241,6 +241,23 @@ public class SolonServletContext extends ContextBase {
     private NvMap _headerMap;
 
 
+    @Override
+    public Map<String, List<String>> headersMap() {
+        if (_headersMap == null) {
+            _headersMap = new LinkedHashMap<>();
+
+            Enumeration<String> headers = _request.getHeaderNames();
+
+            while (headers.hasMoreElements()) {
+                String key = headers.nextElement();
+                _headersMap.put(key, Collections.list(_request.getHeaders(key)));
+            }
+        }
+        return _headersMap;
+    }
+    private Map<String, List<String>> _headersMap;
+
+
     //====================================
 
     @Override

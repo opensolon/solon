@@ -583,6 +583,10 @@ public abstract class Context {
      * 获取 headerMap
      */
     public abstract NvMap headerMap();
+    /**
+     * 获取 headersMap
+     */
+    public abstract Map<String, List<String>> headersMap();
 
     protected SessionState sessionState;
 

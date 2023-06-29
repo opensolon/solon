@@ -19,9 +19,7 @@ import reactor.netty.http.server.HttpServerResponse;
 import java.io.*;
 import java.net.InetSocketAddress;
 import java.net.URI;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static io.netty.handler.codec.http.HttpHeaderNames.SET_COOKIE;
 import static io.netty.handler.codec.http.HttpHeaderNames.COOKIE;
@@ -190,6 +188,27 @@ public class RnHttpContext extends ContextBase {
         }
 
         return _headerMap;
+    }
+
+    private Map<String, List<String>> _headersMap;
+    @Override
+    public Map<String, List<String>> headersMap() {
+        if (_headersMap == null) {
+            _headersMap = new LinkedHashMap<>();
+
+            HttpHeaders headers = _request.requestHeaders();
+
+            for (Map.Entry<String, String> kv : headers) {
+                List<String> values = _headersMap.get(kv.getKey());
+                if (values == null) {
+                    values = new ArrayList<>();
+                    _headersMap.put(kv.getKey(), values);
+                }
+
+                values.add(kv.getValue());
+            }
+        }
+        return _headersMap;
     }
 
     @Override

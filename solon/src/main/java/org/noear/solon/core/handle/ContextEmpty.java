@@ -149,6 +149,15 @@ public class ContextEmpty extends Context {
         return headerMap;
     }
 
+    private Map<String, List<String>> headersMap;
+    @Override
+    public Map<String, List<String>> headersMap() {
+        if (headersMap == null) {
+            headersMap = new LinkedHashMap<>();
+        }
+        return headersMap;
+    }
+
     @Override
     public String sessionId() {
         return null;

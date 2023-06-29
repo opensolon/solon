@@ -246,6 +246,20 @@ public class SmHttpContext extends ContextBase {
 
     private NvMap _headerMap;
 
+    @Override
+    public Map<String, List<String>> headersMap() {
+        if (_headersMap == null) {
+            _headersMap = new LinkedHashMap<>();
+
+            for (String k : _request.getHeaderNames()) {
+                _headersMap.put(k, new ArrayList<>(_request.getHeaders(k)));
+            }
+        }
+
+        return _headersMap;
+    }
+    private Map<String, List<String>> _headersMap;
+
     //=================================
 
     @Override

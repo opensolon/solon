@@ -262,6 +262,32 @@ public class JlHttpContext extends ContextBase {
 
     private NvMap _headerMap;
 
+
+
+    @Override
+    public Map<String, List<String>> headersMap() {
+        if (_headersMap == null) {
+            _headersMap = new LinkedHashMap<>();
+
+            HTTPServer.Headers headers = _request.getHeaders();
+
+            if (headers != null) {
+                for (HTTPServer.Header h : headers) {
+                    List<String> values = _headersMap.get(h.getName());
+                    if (values == null) {
+                        values = new ArrayList<>();
+                        _headersMap.put(h.getName(), values);
+                    }
+
+                    values.add(h.getValue());
+                }
+            }
+
+        }
+        return _headersMap;
+    }
+    private Map<String, List<String>> _headersMap;
+
     //=================================
 
     @Override
