@@ -11,19 +11,29 @@ import org.noear.solon.core.handle.Render;
  */
 public class StringSerializerRender implements Render {
     /**
+     * 类型化
+     */
+    boolean typed;
+
+    /**
      * 序列化器
      */
     StringSerializer serializer;
 
-    /**
-     * 类型化
-     */
-    boolean typed;
 
     public StringSerializerRender(boolean typed,  StringSerializer serializer) {
         this.typed = typed;
         this.serializer = serializer;
     }
+
+    public boolean isTyped() {
+        return typed;
+    }
+
+    public StringSerializer getSerializer() {
+        return serializer;
+    }
+
 
     @Override
     public String getName() {
