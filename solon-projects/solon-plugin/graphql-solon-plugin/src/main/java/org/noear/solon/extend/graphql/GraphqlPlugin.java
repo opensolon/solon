@@ -3,6 +3,8 @@ package org.noear.solon.extend.graphql;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.extend.graphql.annotation.SchemaMapping;
+import org.noear.solon.extend.graphql.config.DefaultClassPathResourceResolver;
+import org.noear.solon.extend.graphql.config.DefaultRuntimeWiringConfigurer;
 import org.noear.solon.extend.graphql.config.GraphqlConfiguration;
 import org.noear.solon.extend.graphql.controller.GraphqlController;
 import org.noear.solon.extend.graphql.integration.SchemaMappingBeanExtractor;
@@ -28,6 +30,8 @@ public class GraphqlPlugin implements Plugin {
 
         context.lifecycle(-99, () -> {
             context.beanMake(GraphqlProperties.class);
+            context.beanMake(DefaultClassPathResourceResolver.class);
+            context.beanMake(DefaultRuntimeWiringConfigurer.class);
             context.beanMake(GraphqlConfiguration.class);
             context.beanMake(GraphqlController.class);
         });

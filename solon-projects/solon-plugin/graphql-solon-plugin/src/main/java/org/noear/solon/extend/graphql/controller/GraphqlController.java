@@ -8,7 +8,7 @@ import org.noear.solon.annotation.Mapping;
 import org.noear.solon.annotation.Post;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.extend.graphql.execution.GraphQlSource;
-import org.noear.solon.extend.graphql.support.GraphqlRequestParam;
+import org.noear.solon.extend.graphql.resource.GraphqlRequestParam;
 
 /**
  * @author fuzi1996

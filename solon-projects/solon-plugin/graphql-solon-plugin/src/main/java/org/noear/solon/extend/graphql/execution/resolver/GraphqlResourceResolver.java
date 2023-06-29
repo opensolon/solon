@@ -1,7 +1,7 @@
-package org.noear.solon.extend.graphql.execution;
+package org.noear.solon.extend.graphql.execution.resolver;
 
 import java.util.Set;
-import org.noear.solon.extend.graphql.support.Resource;
+import org.noear.solon.extend.graphql.resource.Resource;
 
 /**
  * @author fuzi1996

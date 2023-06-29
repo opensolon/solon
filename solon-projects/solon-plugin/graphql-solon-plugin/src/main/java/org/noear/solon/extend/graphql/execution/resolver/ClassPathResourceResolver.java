@@ -5,9 +5,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import org.noear.solon.core.util.ResourceUtil;
 import org.noear.solon.core.util.ScanUtil;
-import org.noear.solon.extend.graphql.execution.GraphqlResourceResolver;
-import org.noear.solon.extend.graphql.support.ClassPathResource;
-import org.noear.solon.extend.graphql.support.Resource;
+import org.noear.solon.extend.graphql.resource.ClassPathResource;
+import org.noear.solon.extend.graphql.resource.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

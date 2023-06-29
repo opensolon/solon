@@ -9,22 +9,33 @@ import graphql.schema.GraphQLSchema;
  */
 public class DefaultGraphQlSource implements GraphQlSource {
 
-    private final GraphQL graphQl;
+    private Boolean initFlag;
+    private GraphQL graphQl;
+    private GraphQLSchema schema;
 
-    private final GraphQLSchema schema;
+    public DefaultGraphQlSource() {
+        this.initFlag = false;
+    }
 
-    public DefaultGraphQlSource(GraphQL graphQl, GraphQLSchema schema) {
+    public void init(GraphQL graphQl, GraphQLSchema schema) {
         this.graphQl = graphQl;
         this.schema = schema;
+        this.initFlag = true;
     }
 
     @Override
     public GraphQL graphQl() {
+        if (!this.initFlag) {
+            throw new IllegalStateException("un init");
+        }
         return this.graphQl;
     }
 
     @Override
     public GraphQLSchema schema() {
+        if (!this.initFlag) {
+            throw new IllegalStateException("un init");
+        }
         return this.schema;
     }
 

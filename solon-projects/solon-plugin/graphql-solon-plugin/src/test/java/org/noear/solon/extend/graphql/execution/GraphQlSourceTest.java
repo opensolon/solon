@@ -8,18 +8,40 @@ import static org.hamcrest.Matchers.is;
 
 import graphql.ExecutionResult;
 import graphql.GraphQL;
+import graphql.schema.GraphQLSchema;
 import graphql.schema.StaticDataFetcher;
 import graphql.schema.idl.TypeRuntimeWiring;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 import org.junit.jupiter.api.Test;
-import org.noear.solon.extend.graphql.support.ByteArrayResource;
+import org.noear.solon.extend.graphql.execution.configurer.RuntimeWiringConfigurer;
+import org.noear.solon.extend.graphql.resource.ByteArrayResource;
+import org.noear.solon.extend.graphql.resource.Resource;
 
 /**
  * @author fuzi1996
  * @since 2.3
  */
 public class GraphQlSourceTest {
+
+    private GraphQlSource getGraphqlSource(Set<Resource> resources,
+            List<RuntimeWiringConfigurer> configurers) {
+        DefaultSchemaResourceGraphQlSourceBuilder defaultBuilder = new DefaultSchemaResourceGraphQlSourceBuilder();
+        defaultBuilder.schemaResources(resources);
+
+        if (Objects.nonNull(configurers)) {
+            configurers.forEach(defaultBuilder::configureRuntimeWiring);
+        }
+
+        GraphQLSchema graphQlSchema = defaultBuilder.getGraphQlSchema();
+        GraphQL graphql = GraphQL.newGraphQL(graphQlSchema).build();
+        DefaultGraphQlSource defaultGraphQlSource = new DefaultGraphQlSource();
+        defaultGraphQlSource.init(graphql, graphQlSchema);
+        return defaultGraphQlSource;
+    }
 
     @Test
     void graphQl() {
@@ -29,9 +51,9 @@ public class GraphQlSourceTest {
 
         String schema = "type Query{hello: String}";
         ByteArrayResource resource = new ByteArrayResource(schema);
-        GraphQlSource graphQlSource = GraphQlSourceGenerater
-                .generateGraphqlSource(Collections.singleton(resource),
-                        Collections.singletonList(configurer));
+
+        GraphQlSource graphQlSource = this.getGraphqlSource(Collections.singleton(resource),
+                Collections.singletonList(configurer));
         GraphQL graphQL = graphQlSource.graphQl();
         ExecutionResult result = graphQL.execute("{hello}");
         Object data = result.getData();

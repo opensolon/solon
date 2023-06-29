@@ -1,25 +1,23 @@
 package org.noear.solon.extend.graphql.config;
 
-import graphql.schema.idl.TypeRuntimeWiring;
+import graphql.GraphQL;
+import graphql.schema.GraphQLSchema;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-import org.noear.solon.Solon;
 import org.noear.solon.annotation.Bean;
-import org.noear.solon.annotation.Condition;
 import org.noear.solon.annotation.Configuration;
-import org.noear.solon.annotation.Inject;
+import org.noear.solon.core.event.AppBeanLoadEndEvent;
+import org.noear.solon.core.event.EventBus;
+import org.noear.solon.extend.graphql.execution.DefaultGraphQlSource;
+import org.noear.solon.extend.graphql.execution.DefaultSchemaResourceGraphQlSourceBuilder;
 import org.noear.solon.extend.graphql.execution.GraphQlSource;
-import org.noear.solon.extend.graphql.execution.GraphQlSourceGenerater;
-import org.noear.solon.extend.graphql.execution.GraphqlResourceResolver;
-import org.noear.solon.extend.graphql.execution.RuntimeWiringConfigurer;
-import org.noear.solon.extend.graphql.execution.fetcher.DataFetcherWrap;
-import org.noear.solon.extend.graphql.execution.resolver.ClassPathResourceResolver;
-import org.noear.solon.extend.graphql.integration.SchemaMappingBeanExtractor;
-import org.noear.solon.extend.graphql.properties.GraphqlProperties;
-import org.noear.solon.extend.graphql.properties.GraphqlProperties.Schema;
-import org.noear.solon.extend.graphql.support.Resource;
+import org.noear.solon.extend.graphql.execution.collect.GraphqlResourceResolverCollect;
+import org.noear.solon.extend.graphql.execution.collect.RuntimeWiringConfigurerCollect;
+import org.noear.solon.extend.graphql.execution.configurer.RuntimeWiringConfigurer;
+import org.noear.solon.extend.graphql.execution.resolver.GraphqlResourceResolver;
+import org.noear.solon.extend.graphql.resource.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,62 +34,48 @@ public class GraphqlConfiguration {
     }
 
     /**
-     * 用于扫描路径下graphql定义文件
-     */
-    @Bean
-    public ClassPathResourceResolver classPathResourceResolver(
-            @Inject GraphqlProperties properties) {
-        Schema schema = properties.getSchema();
-
-        List<String> locations = schema.getLocations();
-        List<String> fileExtensions = schema.getFileExtensions();
-        log.debug("添加[ClassPathResourceResolver] locations: {}, fileExtensions: {}", locations,
-                fileExtensions);
-        return new ClassPathResourceResolver(locations, fileExtensions);
-    }
-
-    /**
-     * 用于扫描注解生成DataFetcher
-     */
-    @Bean
-    public RuntimeWiringConfigurer runtimeWiringConfigurer(
-            @Inject SchemaMappingBeanExtractor extractor) {
-        final List<DataFetcherWrap> wrapList = extractor.getWrapList();
-        return (builder) -> {
-            wrapList.forEach(wrap -> {
-                String typeName = wrap.getTypeName();
-                String fieldName = wrap.getFieldName();
-                log.debug("添加 typeName:[{}], fieldName:[{}] DataFetcher", typeName, fieldName);
-                builder.type(TypeRuntimeWiring.newTypeWiring(typeName)
-                        .dataFetcher(fieldName, wrap.getDataFetcher()));
-            });
-        };
-    }
-
-    /**
      * 注入GraphQlSource
      */
     @Bean
-    @Condition(onClass = ClassPathResourceResolver.class)
     public GraphQlSource defaultGraphqlSource() {
+        GraphqlResourceResolverCollect graphqlResourceResolverCollect = new GraphqlResourceResolverCollect();
+        EventBus.push(graphqlResourceResolverCollect);
+        RuntimeWiringConfigurerCollect runtimeWiringConfigurerCollect = new RuntimeWiringConfigurerCollect();
+        EventBus.push(runtimeWiringConfigurerCollect);
 
-        List<GraphqlResourceResolver> resolvers = Objects.requireNonNull(Solon.context())
-                .getBeansOfType(GraphqlResourceResolver.class);
+        final DefaultGraphQlSource defaultGraphQlSource = new DefaultGraphQlSource();
+        EventBus.subscribe(AppBeanLoadEndEvent.class, (e) -> {
+            Set<Resource> resources = new LinkedHashSet<>();
+            List<GraphqlResourceResolver> resolvers = graphqlResourceResolverCollect
+                    .getAllCollector();
+            if (Objects.nonNull(resolvers)) {
+                resolvers.forEach(resolver -> {
+                    if (resolver.isNeedAppend(resources)) {
+                        Set<Resource> otherResources = resolver.getGraphqlResource();
+                        resources.addAll(otherResources);
+                    }
+                });
+            }
 
-        Set<Resource> resources = new LinkedHashSet<>();
+            List<RuntimeWiringConfigurer> configurers = runtimeWiringConfigurerCollect
+                    .getAllCollector();
 
-        if (Objects.nonNull(resolvers)) {
-            resolvers.forEach(resolver -> {
-                if (resolver.isNeedAppend(resources)) {
-                    Set<Resource> otherResources = resolver.getGraphqlResource();
-                    resources.addAll(otherResources);
-                }
-            });
-        }
+            DefaultSchemaResourceGraphQlSourceBuilder defaultBuilder = new DefaultSchemaResourceGraphQlSourceBuilder();
+            defaultBuilder.schemaResources(resources);
 
-        List<RuntimeWiringConfigurer> configurers = Objects.requireNonNull(Solon.context())
-                .getBeansOfType(RuntimeWiringConfigurer.class);
+            if (Objects.nonNull(configurers)) {
+                configurers.forEach(defaultBuilder::configureRuntimeWiring);
+            }
+
+            GraphQLSchema graphQlSchema = defaultBuilder.getGraphQlSchema();
+            GraphQL graphql = GraphQL.newGraphQL(graphQlSchema).build();
+
+            log.debug("默认的 GraphQlSource 初始化");
+            defaultGraphQlSource.init(graphql, graphQlSchema);
+        });
+
         log.debug("注册默认的 GraphQlSource");
-        return GraphQlSourceGenerater.generateGraphqlSource(resources, configurers);
+        return defaultGraphQlSource;
     }
+
 }

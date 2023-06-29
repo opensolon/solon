@@ -1,4 +1,4 @@
-package org.noear.solon.extend.graphql.support;
+package org.noear.solon.extend.graphql.resource;
 
 import java.util.Map;
 

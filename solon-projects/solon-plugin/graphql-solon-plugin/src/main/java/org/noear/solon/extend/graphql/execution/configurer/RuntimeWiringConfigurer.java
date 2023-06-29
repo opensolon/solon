@@ -1,4 +1,4 @@
-package org.noear.solon.extend.graphql.execution;
+package org.noear.solon.extend.graphql.execution.configurer;
 
 import graphql.schema.idl.RuntimeWiring;
 import graphql.schema.idl.WiringFactory;
