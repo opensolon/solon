@@ -10,6 +10,7 @@ import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.ContextAsyncListener;
 import org.noear.solon.core.handle.UploadedFile;
 import org.noear.solon.core.NvMap;
+import org.noear.solon.core.util.IgnoreCaseMap;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -261,17 +262,7 @@ public class JdkHttpContext extends ContextBase {
     @Override
     public NvMap headerMap() {
         if (_headerMap == null) {
-            _headerMap = new NvMap();
-
-            Headers headers = _exchange.getRequestHeaders();
-
-            if (headers != null) {
-                headers.forEach((k, l) -> {
-                    if (l.size() > 0) {
-                        _headerMap.put(k, l.get(0));
-                    }
-                });
-            }
+            resolveHeaders();
         }
 
         return _headerMap;
@@ -279,11 +270,26 @@ public class JdkHttpContext extends ContextBase {
 
     private NvMap _headerMap;
 
+    private void resolveHeaders(){
+        _headerMap = new NvMap();
+        _headersMap = new IgnoreCaseMap<>();
+
+        Headers headers = _exchange.getRequestHeaders();
+
+        if (headers != null) {
+            headers.forEach((k, l) -> {
+                if (l.size() > 0) {
+                    _headerMap.put(k, l.get(0));
+                }
+                _headersMap.put(k,l);
+            });
+        }
+    }
+
     @Override
     public Map<String, List<String>> headersMap() {
         if (_headersMap == null) {
-            _headersMap = new LinkedHashMap<>(_exchange.getRequestHeaders());
-
+            resolveHeaders();
         }
         return _headersMap;
     }

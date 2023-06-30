@@ -7,6 +7,7 @@ import org.noear.solon.boot.web.RedirectUtils;
 import org.noear.solon.core.NvMap;
 import org.noear.solon.core.handle.ContextAsyncListener;
 import org.noear.solon.core.handle.UploadedFile;
+import org.noear.solon.core.util.IgnoreCaseMap;
 
 import javax.servlet.AsyncContext;
 import javax.servlet.ServletException;
@@ -244,7 +245,7 @@ public class SolonServletContext extends ContextBase {
     @Override
     public Map<String, List<String>> headersMap() {
         if (_headersMap == null) {
-            _headersMap = new LinkedHashMap<>();
+            _headersMap = new IgnoreCaseMap<>();
 
             Enumeration<String> headers = _request.getHeaderNames();
 

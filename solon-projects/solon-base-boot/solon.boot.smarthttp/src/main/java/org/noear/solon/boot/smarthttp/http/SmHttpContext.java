@@ -8,6 +8,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.ContextAsyncListener;
 import org.noear.solon.core.handle.UploadedFile;
+import org.noear.solon.core.util.IgnoreCaseMap;
 import org.noear.solon.core.util.RunUtil;
 import org.smartboot.http.common.Cookie;
 import org.smartboot.http.common.enums.HttpStatus;
@@ -249,7 +250,7 @@ public class SmHttpContext extends ContextBase {
     @Override
     public Map<String, List<String>> headersMap() {
         if (_headersMap == null) {
-            _headersMap = new LinkedHashMap<>();
+            _headersMap = new IgnoreCaseMap<>();
 
             for (String k : _request.getHeaderNames()) {
                 _headersMap.put(k, new ArrayList<>(_request.getHeaders(k)));

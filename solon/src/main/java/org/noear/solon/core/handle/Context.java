@@ -4,8 +4,8 @@ import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.Note;
 import org.noear.solon.core.Bridge;
-import org.noear.solon.core.NdMap;
 import org.noear.solon.core.NvMap;
+import org.noear.solon.core.util.IgnoreCaseMap;
 import org.noear.solon.core.util.IpUtil;
 import org.noear.solon.core.util.PathUtil;
 import org.noear.solon.core.wrap.ClassWrap;
@@ -583,6 +583,16 @@ public abstract class Context {
      * 获取 headerMap
      */
     public abstract NvMap headerMap();
+
+    /**
+     * 获取 header (多值)
+     *
+     * @param name header名
+     */
+    public List<String> headerValues(String name) {
+        return headersMap().get(name);
+    }
+
     /**
      * 获取 headersMap
      */
@@ -943,12 +953,12 @@ public abstract class Context {
     protected abstract void statusDoSet(int status);
 
 
-    private NdMap attrMap = null;
+    private Map<String, Object> attrMap = null;
 
     @Note("获取自定义特性并转为Map")
     public Map<String, Object> attrMap() {//改为懒加载
         if (attrMap == null) {
-            attrMap = new NdMap();
+            attrMap = new IgnoreCaseMap<>();
         }
 
         return attrMap;

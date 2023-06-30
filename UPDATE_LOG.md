@@ -21,24 +21,25 @@
 
 ### 2.3.7
 * 优化 nami 解码器的渲染要求策略
-* 调整 solon.boot.websocket 异步发送机制
-* 调整 solon.boot.websocket.netty 异步发送机制
+* 优化 solon.boot.websocket 异步发送机制
+* 优化 solon.boot.websocket.netty 异步发送机制
 * 调整 RunUtil 增加线程池名
 * 调整 StringSerializerRender 开放 serializer 属性
 * 调整 app.router().caseSensitive 默认为 true
+* 增加 CloudEvent 注解在函数上时，支持 AOP 扩展
 * 增加 solon.docs 插件，对网关开发模式的支持
 * 增加 solon.boot.socketd.jdksocket 插件，对 ssl 的支持
 * 增加 server.http.ssl.* 配置
 * 增加 NamiMapping、NamiBody 注解
-* 增加 CloudEvent 注解在函数上时，支持 AOP 扩展
 * 增加 序列化接口（在渲染之外），可以外面复用（从 StringSerializerRender 开放 serializer）
-* 增加 Context::headersMap 接口
+* 增加 Context::headersMap, Context::headerValues 接口
 * 修复 solon.serialization.jackson 在某些情况下，序列化 null 会出错的问题
 * wood 升为 1.1.5
 * smarthttp 升为 1.2.6
 * smartsocket 升为 1.5.31
 * sqltoy 升为 5.2.57
 * mybatis-flex 升为 1.4.4
+* beetlsql 升为 3.23.2-RELEASE
 
 ### 2.3.6
 * 修复 异步监听可能为null的问题

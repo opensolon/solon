@@ -36,6 +36,18 @@ public class HeaderTest extends HttpTester {
     }
 
     @Test
+    public void test1_2() throws Exception {
+        String json = path("/demo2/header2/")
+                .headerAdd("test", "a")
+                .headerAdd("test", "b")
+                .get();
+
+        assert json.length() > 0;
+        assert json.contains("a");
+        assert json.contains("b");
+    }
+
+    @Test
     public void test2() throws Exception {
         Map<String, String> map = new LinkedHashMap<>();
         map.put("address", "192.168.1.1:9373");

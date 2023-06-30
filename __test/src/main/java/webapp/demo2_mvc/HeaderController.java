@@ -4,11 +4,18 @@ import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Mapping;
 import org.noear.solon.core.handle.Context;
 
+import java.util.List;
+
 @Controller
 public class HeaderController {
     @Mapping("/demo2/header/")
     public String header(Context ctx) throws Exception {
         return ctx.header("Water-Trace-Id");
+    }
+
+    @Mapping("/demo2/header2/")
+    public List<String> header2(Context ctx) throws Exception {
+        return ctx.headerValues("test");
     }
 
     @Mapping("/demo2/cookie/")

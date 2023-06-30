@@ -12,6 +12,7 @@ import org.noear.solon.boot.web.RedirectUtils;
 import org.noear.solon.core.handle.ContextAsyncListener;
 import org.noear.solon.core.handle.UploadedFile;
 import org.noear.solon.core.NvMap;
+import org.noear.solon.core.util.IgnoreCaseMap;
 import reactor.netty.http.server.HttpServerRequest;
 import reactor.netty.http.server.HttpServerResponse;
 
@@ -194,7 +195,7 @@ public class RnHttpContext extends ContextBase {
     @Override
     public Map<String, List<String>> headersMap() {
         if (_headersMap == null) {
-            _headersMap = new LinkedHashMap<>();
+            _headersMap = new IgnoreCaseMap<>();
 
             HttpHeaders headers = _request.requestHeaders();
 

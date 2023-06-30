@@ -1,7 +1,7 @@
 package org.noear.solon.core;
 
 import org.noear.solon.core.handle.Context;
-import org.noear.solon.core.util.LinkedCaseInsensitiveMap;
+import org.noear.solon.core.util.IgnoreCaseMap;
 
 import java.util.Map;
 
@@ -14,7 +14,8 @@ import java.util.Map;
  * @author noear
  * @since 1.3
  * */
-public class NdMap extends LinkedCaseInsensitiveMap<Object> {
+@Deprecated
+public class NdMap extends IgnoreCaseMap<Object> {
 
     public NdMap() {
         super();

@@ -8,6 +8,7 @@ import org.noear.solon.core.NvMap;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.ContextAsyncListener;
 import org.noear.solon.core.handle.UploadedFile;
+import org.noear.solon.core.util.IgnoreCaseMap;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -267,7 +268,7 @@ public class JlHttpContext extends ContextBase {
     @Override
     public Map<String, List<String>> headersMap() {
         if (_headersMap == null) {
-            _headersMap = new LinkedHashMap<>();
+            _headersMap = new IgnoreCaseMap<>();
 
             HTTPServer.Headers headers = _request.getHeaders();
 
