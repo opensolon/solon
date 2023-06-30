@@ -17,9 +17,9 @@ import java.util.regex.Pattern;
  * */
 public class PathAnalyzer {
     /**
-     * 区分大小写（默认不区分）
+     * 区分大小写（默认区分）
      */
-    private static boolean caseSensitive = false;
+    private static boolean caseSensitive = true;
     /**
      * 分析器缓存
      */
