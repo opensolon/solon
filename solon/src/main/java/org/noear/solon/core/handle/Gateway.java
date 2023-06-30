@@ -39,11 +39,23 @@ import java.util.function.Predicate;
  * @since 1.0
  * */
 public abstract class Gateway extends HandlerAide implements Handler, Render {
+    //主处理缺省
     private Handler mainDef;
+    //主处理路由
     private final RoutingTable<Handler> mainRouting;
+    //映射
     private final String mapping;
+    //映射注解
     private Mapping mappingAnno;
+    //过滤列表
     private List<RankEntity<Filter>> filterList = new ArrayList<>();
+
+    /**
+     * 获取内部主路由（方便文档生成）
+     * */
+    public RoutingTable<Handler> getMainRouting() {
+        return mainRouting;
+    }
 
     public Gateway() {
         this(new RoutingTableDefault<>());

@@ -46,6 +46,21 @@ public class Config {
 
     }
 
+    /**
+     * 基于代码构建
+     */
+    @Bean("gatewayApi")
+    public DocDocket gatewayApi() {
+        return new DocDocket()
+                .groupName("gateway端接口")
+                .schemes(ApiEnum.SCHEMES_HTTP)
+                .globalResult(Result.class)
+                .globalResponseInData(true)
+                .apis("com.swagger.demo.controller.api2")
+                .securityDefinitionInHeader("token");
+
+    }
+
     //    @Bean("appApi")
     public DocDocket appApi2() {
         return new DocDocket()

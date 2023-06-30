@@ -22,6 +22,7 @@
 * 调整 solon.boot.websocket.netty 异步发送机制
 * 调整 RunUtil 增加线程池名
 * 调整 StringSerializerRender 开放 serializer 属性
+* 调整 app.router().caseSensitive 默认为 true
 * 增加 sa-token dao 的 redisson 实现
 * 增加 server.http.ssl.* 配置
 * 增加 server.socket.ssl.* 配置?
@@ -31,6 +32,7 @@
 * 增加 CloudEvent 注解在函数上时，支持 AOP 扩展
 * 增加 序列化接口（在渲染之外），可以外面复用（从 StringSerializerRender 开放 serializer）
 * 增加 Context::headersMap 接口
+* 增加 swagger2 对网关开发模式的支持
 * 修复 solon.serialization.jackson 在某些情况下，序列化 null 会出错的问题
 * wood 升为 1.1.5
 * smarthttp 升为 1.2.6

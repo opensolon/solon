@@ -16,10 +16,7 @@ import io.swagger.solon.annotation.ApiResProperty;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
-import org.noear.solon.core.handle.Action;
-import org.noear.solon.core.handle.Endpoint;
-import org.noear.solon.core.handle.Handler;
-import org.noear.solon.core.handle.UploadedFile;
+import org.noear.solon.core.handle.*;
 import org.noear.solon.core.route.Routing;
 import org.noear.solon.core.util.GenericUtil;
 import org.noear.solon.core.util.PathUtil;
@@ -137,34 +134,16 @@ public class Swagger2Builder {
 
         Collection<Routing<Handler>> routingCollection = Solon.app().router().getAll(Endpoint.main);
         for (Routing<Handler> routing : routingCollection) {
-            if (routing.target() instanceof Action == false) {
-                continue;
+            if (routing.target() instanceof Action) {
+                //如果是 Action
+                resolveAction(apiMap, routing);
             }
 
-            Action action = (Action) routing.target();
-            Class<?> controller = action.controller().clz();
-
-            boolean matched = docket.apis().stream().anyMatch(res -> res.test(action));
-            if (matched == false) {
-                continue;
-            }
-
-            ActionHolder actionHolder = new ActionHolder(routing, action);
-
-            if (apiMap.containsKey(controller)) {
-                if (action.method().isAnnotationPresent(ApiOperation.class)) {
-                    List<ActionHolder> actionHolders = apiMap.get(controller);
-                    if (!actionHolders.contains(actionHolder)) {
-                        actionHolders.add(actionHolder);
-                        apiMap.put(controller, actionHolders);
-                    }
-                }
-            } else {
-                if (controller.isAnnotationPresent(Api.class)) {
-                    if (action.method().isAnnotationPresent(ApiOperation.class)) {
-                        List<ActionHolder> actionHolders = new ArrayList<>();
-                        actionHolders.add(actionHolder);
-                        apiMap.put(controller, actionHolders);
+            if (routing.target() instanceof Gateway) {
+                //如果是 Gateway (网关)
+                for (Routing<Handler> routing2 : ((Gateway) routing.target()).getMainRouting().getAll()) {
+                    if (routing2.target() instanceof Action) {
+                        resolveAction(apiMap, routing2);
                     }
                 }
             }
@@ -183,6 +162,36 @@ public class Swagger2Builder {
         return result;
     }
 
+    private void resolveAction(Map<Class<?>, List<ActionHolder>> apiMap, Routing<Handler> routing){
+        Action action = (Action) routing.target();
+        Class<?> controller = action.controller().clz();
+
+        boolean matched = docket.apis().stream().anyMatch(res -> res.test(action));
+        if (matched == false) {
+            return;
+        }
+
+        ActionHolder actionHolder = new ActionHolder(routing, action);
+
+        if (apiMap.containsKey(controller)) {
+            if (action.method().isAnnotationPresent(ApiOperation.class)) {
+                List<ActionHolder> actionHolders = apiMap.get(controller);
+                if (!actionHolders.contains(actionHolder)) {
+                    actionHolders.add(actionHolder);
+                    apiMap.put(controller, actionHolders);
+                }
+            }
+        } else {
+            if (controller.isAnnotationPresent(Api.class)) {
+                if (action.method().isAnnotationPresent(ApiOperation.class)) {
+                    List<ActionHolder> actionHolders = new ArrayList<>();
+                    actionHolders.add(actionHolder);
+                    apiMap.put(controller, actionHolders);
+                }
+            }
+        }
+    }
+
     /**
      * 解析controller
      */
@@ -196,9 +205,9 @@ public class Swagger2Builder {
 
         String controllerKey = BuilderHelper.getControllerKey(clazz);
 
-        for (String tags : api.tags()) {
+        for (String tagName : api.tags()) {
             Tag tag = new Tag();
-            tag.setName(tags);
+            tag.setName(tagName);
             tag.setDescription(controllerKey + " (" + clazz.getSimpleName() + ")");
 
             swagger.addTag(tag);
@@ -231,7 +240,7 @@ public class Swagger2Builder {
             actionTags.remove("");
 
             Path path = new Path();
-            String pathKey = PathUtil.mergePath(controllerKey, actionName);
+            String pathKey = actionHolder.routing().path(); //PathUtil.mergePath(controllerKey, actionName);
             Operation operation = new Operation();
 
             operation.setTags(new ArrayList<>(actionTags));
@@ -325,7 +334,7 @@ public class Swagger2Builder {
                     //array model
                     BodyParameter modelParameter = new BodyParameter();
                     modelParameter.setSchema(new ArrayModel().items(new RefProperty(paramSchema)));
-                    if (paramHolder.getParam().requireBody() == false) {
+                    if (paramHolder.getParam() != null && paramHolder.getParam().requireBody() == false) {
                         modelParameter.setIn(ApiEnum.PARAM_TYPE_QUERY);
                     }
 
@@ -351,11 +360,11 @@ public class Swagger2Builder {
             } else {
                 if (Utils.isNotEmpty(paramSchema)) {
                     //model
-                    if(paramHolder.isRequiredBody() || paramHolder.getParam() == null){
+                    if(paramHolder.isRequiredBody() || paramHolder.getParam() == null) {
                         //做为 body
                         BodyParameter modelParameter = new BodyParameter();
                         modelParameter.setSchema(new RefModel(paramSchema));
-                        if (paramHolder.getParam().requireBody() == false) {
+                        if (paramHolder.getParam() != null && paramHolder.getParam().requireBody() == false) {
                             modelParameter.setIn(ApiEnum.PARAM_TYPE_QUERY);
                         }
 
