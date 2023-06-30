@@ -91,7 +91,7 @@ abstract class JettyServerBase implements ServerLifecycle , HttpServerConfigure 
             SslContextFactory.Server contextFactory = new SslContextFactory.Server();
 
             if (Utils.isNotEmpty(sslKeyStore)) {
-                URL url = ResourceUtil.getResource(sslKeyStore);
+                URL url = ResourceUtil.findResource(sslKeyStore);
                 if (url != null) {
                     sslKeyStore = url.toString();
                 }

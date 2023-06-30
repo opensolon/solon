@@ -18,9 +18,9 @@ public class RunUtil {
         executor = new ThreadPoolExecutor(0, Integer.MAX_VALUE,
                 60L, TimeUnit.SECONDS,
                 new SynchronousQueue<Runnable>(),
-                new NamedThreadFactory("Solon-RunUtil-executor-"));
+                new NamedThreadFactory("Solon-RunUtil-Executor-"));
         scheduledExecutor = new ScheduledThreadPoolExecutor(Runtime.getRuntime().availableProcessors(),
-                new NamedThreadFactory("Solon-RunUtil-scheduledExecutor-"));
+                new NamedThreadFactory("Solon-RunUtil-EcheduledExecutor-"));
     }
 
     /**
