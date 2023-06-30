@@ -13,7 +13,7 @@ const route = useRoute()
     <a-config-provider :locale="currentLocale">
         <global-layout>
             <template #default>
-                <router-view/>
+              <router-view/>
             </template>
             <template #sidebar v-if="route.meta.showSideBar==true">
                 <router-view name="sidebar"/>

@@ -1,8 +1,10 @@
-import Home from "../pages/Home.vue";
-import Application from "../pages/application/index.vue";
 import {RouteRecordRaw} from "vue-router";
-import Details from "../pages/application/Details.vue";
+
+import Home from "../pages/Home.vue";
 import NotFound from "../pages/NotFound.vue";
+import Application from "../pages/application/index.vue";
+import Details from "../pages/application/Details.vue";
+import Sidebar from "../pages/application/Sidebar.vue";
 
 export const routes: RouteRecordRaw[] = [
     {
@@ -12,7 +14,11 @@ export const routes: RouteRecordRaw[] = [
     },
     {
         path: '/application/name/:name/baseUrl/:baseUrl',
-        component: Application,
+        name: 'application',
+        components: {
+            default: Application,
+            sidebar: Sidebar
+        },
         children: [
             {
                 name: 'details',
@@ -26,7 +32,8 @@ export const routes: RouteRecordRaw[] = [
             }
         ],
         meta: {
-            showInHeader: false
+            showInHeader: false,
+            showSideBar: true,
         }
     },
     {

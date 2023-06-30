@@ -4,6 +4,7 @@ export default {
     "header.title": "Solon Admin",
     "header.item.home": "Home",
     "header.item.details": "Application Details",
+    "sidebar.item.application.details": "Details",
     "header.action.locale": "Successfully switch language to {language}",
     "home.getting-started": "To get started, please launching a Solon Admin client project first.",
     "home.summary.abnormal": "Some applications down",

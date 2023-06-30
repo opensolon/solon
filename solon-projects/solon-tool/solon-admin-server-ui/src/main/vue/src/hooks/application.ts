@@ -1,8 +1,7 @@
-import {Application, ApplicationWebSocketTransfer, UniqueApplication} from "../data";
+import {Application, ApplicationStatus, ApplicationWebSocketTransfer, UniqueApplication} from "../data";
 import {computed, reactive, Ref, ref} from "vue";
 import {Message, Notification} from "@arco-design/web-vue";
 import {useI18n} from 'vue-i18n';
-import {ComputedRef} from "@vue/reactivity";
 import {useRoute} from "vue-router";
 
 const applications = ref<Application[]>([])
@@ -91,11 +90,11 @@ export function useApplication() {
             .then(response => response as Application)
     }
 
-    const getApplication = (application: Ref<UniqueApplication>): ComputedRef<Application | undefined> => {
+    const getApplication = (application: Ref<UniqueApplication>) => {
         return computed(() => applications.value.find(app => app.name === application.value.name && app.baseUrl === application.value.baseUrl))
     }
 
-    function currentApplication(): ComputedRef<Application | undefined> {
+    function currentApplication() {
         return useApplication().getApplication(computed(() => new UniqueApplication(decodeURIComponent(route.params.name as string), decodeURIComponent(route.params.baseUrl as string))))
     }
 
