@@ -1,6 +1,6 @@
 package benchmark;
 
-import model.UserModel;
+import features._model.UserModel;
 import org.junit.Test;
 import org.noear.solon.core.wrap.ClassWrap;
 
