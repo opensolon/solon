@@ -40,10 +40,24 @@ public class EnjoyRender implements Render {
     }
 
 
-    Engine provider = null;
-    Engine provider_debug = null;
 
     private ClassLoader classLoader;
+    private Engine provider = null;
+    private Engine providerOfDebug = null;
+
+    /**
+     * 引擎提供者
+     * */
+    public Engine getProvider() {
+        return provider;
+    }
+
+    /**
+     * 引擎提供者（调试模式）
+     * */
+    public Engine getProviderOfDebug() {
+        return providerOfDebug;
+    }
 
     //不要要入参，方便后面多视图混用
     //
@@ -69,13 +83,6 @@ public class EnjoyRender implements Render {
         });
     }
 
-    public Engine getProvider() {
-        return provider;
-    }
-
-    public Engine getProviderDebug() {
-        return provider_debug;
-    }
 
     private void forDebug() {
         if (Solon.cfg().isDebugMode() == false) {
@@ -86,7 +93,7 @@ public class EnjoyRender implements Render {
             return;
         }
 
-        if (provider_debug != null) {
+        if (providerOfDebug != null) {
             return;
         }
 
@@ -96,8 +103,8 @@ public class EnjoyRender implements Render {
             return;
         }
 
-        provider_debug = Engine.create("debug");
-        provider_debug.setDevMode(true);
+        providerOfDebug = Engine.create("debug");
+        providerOfDebug.setDevMode(true);
 
 
         String rootdir = rooturi.toString().replace("target/classes/", "");
@@ -114,12 +121,12 @@ public class EnjoyRender implements Render {
 
         try {
             if (dir != null && dir.exists()) {
-                provider_debug.setBaseTemplatePath(dir.getPath());
-                provider_debug.setSourceFactory(new FileSourceFactory());
+                providerOfDebug.setBaseTemplatePath(dir.getPath());
+                providerOfDebug.setSourceFactory(new FileSourceFactory());
             }
 
             //通过事件扩展
-            EventBus.push(provider_debug);
+            EventBus.push(providerOfDebug);
         } catch (Exception e) {
             EventBus.pushTry(e);
         }
@@ -151,8 +158,8 @@ public class EnjoyRender implements Render {
         try {
             provider.addDirective(name, clz);
 
-            if (provider_debug != null) {
-                provider_debug.addDirective(name, clz);
+            if (providerOfDebug != null) {
+                providerOfDebug.addDirective(name, clz);
             }
         } catch (Exception e) {
             EventBus.pushTry(e);
@@ -166,8 +173,8 @@ public class EnjoyRender implements Render {
         try {
             provider.addSharedObject(name, value);
 
-            if (provider_debug != null) {
-                provider_debug.addSharedObject(name, value);
+            if (providerOfDebug != null) {
+                providerOfDebug.addSharedObject(name, value);
             }
         } catch (Exception e) {
             EventBus.pushTry(e);
@@ -181,8 +188,8 @@ public class EnjoyRender implements Render {
         try {
             provider.addSharedFunction(path);
 
-            if (provider_debug != null) {
-                provider_debug.addSharedFunction(path);
+            if (providerOfDebug != null) {
+                providerOfDebug.addSharedFunction(path);
             }
         } catch (Exception e) {
             EventBus.pushTry(e);
@@ -229,9 +236,9 @@ public class EnjoyRender implements Render {
 
         Template template = null;
 
-        if (provider_debug != null) {
+        if (providerOfDebug != null) {
             try {
-                template = provider_debug.getTemplate(mv.view());
+                template = providerOfDebug.getTemplate(mv.view());
             } catch (Exception e) {
                 //忽略不计
             }

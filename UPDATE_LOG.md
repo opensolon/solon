@@ -13,11 +13,12 @@
 ### 2.3.8
 * 新增 solon.boot.vertx 插件?
 * 新增 solon.cloud.metrics 插件?
-* 优化 单元测试项目结构?
 * 增加 sa-token dao 的 redisson 实现
 * 增加 server.socket.ssl.* 配置?
 * 增加 server.websocket.ssl.* 配置?
 * 增加 HttpServerConfigure::enableHttp2 接口, 默认为 false
+* 调整 solon.view.* 增加引擎提供者获取属性
+* 调整 单元测试项目结构?
 
 
 ### 2.3.7

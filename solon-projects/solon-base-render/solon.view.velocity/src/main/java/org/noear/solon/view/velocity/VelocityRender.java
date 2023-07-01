@@ -41,9 +41,21 @@ public class VelocityRender implements Render {
         return _global;
     }
 
+    private Map<String, Object> sharedVariables = new HashMap<>();
     private RuntimeInstance provider;
-    private RuntimeInstance provider_debug;
-    private Map<String, Object> _sharedVariable = new HashMap<>();
+    private RuntimeInstance providerOfDebug;
+    /**
+     * 引擎提供者
+     * */
+    public RuntimeInstance getProvider() {
+        return provider;
+    }
+    /**
+     * 引擎提供者（调试模式）
+     * */
+    public RuntimeInstance getProviderOfDebug() {
+        return providerOfDebug;
+    }
 
     //不要要入参，方便后面多视图混用
     //
@@ -53,10 +65,10 @@ public class VelocityRender implements Render {
         forRelease();
 
         engineInit(provider);
-        engineInit(provider_debug);
+        engineInit(providerOfDebug);
 
         //通过事件扩展
-        EventBus.push(provider_debug);
+        EventBus.push(providerOfDebug);
         //通过事件扩展
         EventBus.push(provider);
 
@@ -96,7 +108,7 @@ public class VelocityRender implements Render {
             return;
         }
 
-        if (provider_debug != null) {
+        if (providerOfDebug != null) {
             return;
         }
 
@@ -106,7 +118,7 @@ public class VelocityRender implements Render {
             return;
         }
 
-        provider_debug = new RuntimeInstance();
+        providerOfDebug = new RuntimeInstance();
 
         String rootdir = rooturi.toString().replace("target/classes/", "");
         File dir = null;
@@ -122,7 +134,7 @@ public class VelocityRender implements Render {
 
         try {
             if (dir != null && dir.exists()) {
-                provider_debug.setProperty(Velocity.FILE_RESOURCE_LOADER_PATH, dir.getAbsolutePath() + File.separatorChar);
+                providerOfDebug.setProperty(Velocity.FILE_RESOURCE_LOADER_PATH, dir.getAbsolutePath() + File.separatorChar);
             } else {
                 //如果没有找到文件，则使用发行模式
                 //
@@ -157,8 +169,8 @@ public class VelocityRender implements Render {
     public <T extends Directive> void putDirective(T obj) {
         provider.addDirective(obj);
 
-        if (provider_debug != null) {
-            provider_debug.addDirective(obj);
+        if (providerOfDebug != null) {
+            providerOfDebug.addDirective(obj);
         }
     }
 
@@ -166,7 +178,7 @@ public class VelocityRender implements Render {
      * 添加共享变量
      */
     public void putVariable(String key, Object obj) {
-        _sharedVariable.put(key, obj);
+        sharedVariables.put(key, obj);
     }
 
 
@@ -213,9 +225,9 @@ public class VelocityRender implements Render {
         //取得velocity的模版
         Template template = null;
 
-        if (provider_debug != null) {
+        if (providerOfDebug != null) {
             try {
-                template = provider_debug.getTemplate(view, Solon.encoding());
+                template = providerOfDebug.getTemplate(view, Solon.encoding());
             } catch (ResourceNotFoundException ex) {
                 //忽略不计
             }
@@ -227,7 +239,7 @@ public class VelocityRender implements Render {
 
         // 取得velocity的上下文context
         VelocityContext vc = new VelocityContext(mv.model());
-        _sharedVariable.forEach((k, v) -> vc.put(k, v));
+        sharedVariables.forEach((k, v) -> vc.put(k, v));
 
         // 输出流
         PrintWriter writer = new PrintWriter(outputStream.get());

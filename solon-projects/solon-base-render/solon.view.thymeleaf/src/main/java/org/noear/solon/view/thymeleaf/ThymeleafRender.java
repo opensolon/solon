@@ -39,11 +39,16 @@ public class ThymeleafRender implements Render {
     }
 
 
-    private TemplateEngine provider = new TemplateEngine();
 
-    private Map<String, Object> _sharedVariable = new HashMap<>();
-
+    private Map<String, Object> sharedVariables = new HashMap<>();
     private ClassLoader classLoader;
+    private TemplateEngine provider = new TemplateEngine();
+    /**
+     * 引擎提供者
+     * */
+    public TemplateEngine getProvider() {
+        return provider;
+    }
 
     public ThymeleafRender(){
         this(JarClassLoader.global());
@@ -141,7 +146,7 @@ public class ThymeleafRender implements Render {
      * 添加共享变量
      */
     public void putVariable(String name, Object obj) {
-        _sharedVariable.put(name, obj);
+        sharedVariables.put(name, obj);
     }
 
     @Override
@@ -183,7 +188,7 @@ public class ThymeleafRender implements Render {
         }
 
         org.thymeleaf.context.Context context = new org.thymeleaf.context.Context();
-        context.setVariables(_sharedVariable);
+        context.setVariables(sharedVariables);
         context.setVariables(mv.model());
 
         if (ctx.getLocale() != null) {

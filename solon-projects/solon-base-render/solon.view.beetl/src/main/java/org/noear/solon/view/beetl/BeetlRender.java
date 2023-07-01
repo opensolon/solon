@@ -42,11 +42,26 @@ public class BeetlRender implements Render {
     }
 
 
-    Configuration cfg = null;
-    GroupTemplate provider = null;
-    GroupTemplate provider_debug = null;
 
     private ClassLoader classLoader;
+    private Configuration cfg = null;
+
+    private GroupTemplate provider = null;
+    private GroupTemplate providerOfDebug = null;
+
+    /**
+     * 引擎提供者
+     * */
+    public GroupTemplate getProvider() {
+        return provider;
+    }
+
+    /**
+     * 引擎提供者（调试模式）
+     * */
+    public GroupTemplate getProviderOfDebug() {
+        return providerOfDebug;
+    }
 
     //不要要入参，方便后面多视图混用
     //
@@ -84,7 +99,7 @@ public class BeetlRender implements Render {
             return;
         }
 
-        if (provider_debug != null) {
+        if (providerOfDebug != null) {
             return;
         }
 
@@ -110,10 +125,10 @@ public class BeetlRender implements Render {
             if (dir != null && dir.exists()) {
                 FileResourceLoader loader = new FileResourceLoader(dir.getAbsolutePath(), Solon.encoding());
                 loader.setAutoCheck(true);
-                provider_debug = new GroupTemplate(loader, cfg);
+                providerOfDebug = new GroupTemplate(loader, cfg);
 
                 //通过事件扩展
-                EventBus.push(provider_debug);
+                EventBus.push(providerOfDebug);
             }
         } catch (Exception e) {
             EventBus.pushTry(e);
@@ -144,8 +159,8 @@ public class BeetlRender implements Render {
         try {
             provider.registerTag(name, clz);
 
-            if (provider_debug != null) {
-                provider_debug.registerTag(name, clz);
+            if (providerOfDebug != null) {
+                providerOfDebug.registerTag(name, clz);
             }
         } catch (Exception e) {
             EventBus.pushTry(e);
@@ -159,8 +174,8 @@ public class BeetlRender implements Render {
         try {
             provider.getSharedVars().put(name, value);
 
-            if (provider_debug != null) {
-                provider_debug.getSharedVars().put(name, value);
+            if (providerOfDebug != null) {
+                providerOfDebug.getSharedVars().put(name, value);
             }
         } catch (Exception e) {
             EventBus.pushTry(e);
@@ -207,9 +222,9 @@ public class BeetlRender implements Render {
 
         Template template = null;
 
-        if (provider_debug != null) {
+        if (providerOfDebug != null) {
             try {
-                template = provider_debug.getTemplate(mv.view());
+                template = providerOfDebug.getTemplate(mv.view());
                 if (template != null && template.program instanceof ErrorGrammarProgram) {
                     template = null;
                 }

@@ -32,11 +32,24 @@ public class FreemarkerRender implements Render {
         return _global;
     }
 
-
-    Configuration provider;
-    Configuration provider_debug;
-
     private ClassLoader classLoader;
+
+    private Configuration provider;
+    private Configuration providerOfDebug;
+
+    /**
+     * 引擎提供者
+     * */
+    public Configuration getProvider() {
+        return provider;
+    }
+
+    /**
+     * 引擎提供者（调试模式）
+     * */
+    public Configuration getProviderOfDebug() {
+        return providerOfDebug;
+    }
 
     //不要要入参，方便后面多视图混用
     //
@@ -68,7 +81,7 @@ public class FreemarkerRender implements Render {
             return;
         }
 
-        if (provider_debug != null) {
+        if (providerOfDebug != null) {
             return;
         }
 
@@ -78,9 +91,9 @@ public class FreemarkerRender implements Render {
             return;
         }
 
-        provider_debug = new Configuration(Configuration.VERSION_2_3_28);
-        provider_debug.setNumberFormat("#");
-        provider_debug.setDefaultEncoding("utf-8");
+        providerOfDebug = new Configuration(Configuration.VERSION_2_3_28);
+        providerOfDebug.setNumberFormat("#");
+        providerOfDebug.setDefaultEncoding("utf-8");
 
         String rootdir = rooturi.toString().replace("target/classes/", "");
         File dir = null;
@@ -96,11 +109,11 @@ public class FreemarkerRender implements Render {
 
         try {
             if (dir != null && dir.exists()) {
-                provider_debug.setDirectoryForTemplateLoading(dir);
+                providerOfDebug.setDirectoryForTemplateLoading(dir);
             }
 
             //通过事件扩展
-            EventBus.push(provider_debug);
+            EventBus.push(providerOfDebug);
         } catch (Exception e) {
             EventBus.pushTry(e);
         }
@@ -142,8 +155,8 @@ public class FreemarkerRender implements Render {
         try {
             provider.setSharedVariable(name, value);
 
-            if (provider_debug != null) {
-                provider_debug.setSharedVariable(name, value);
+            if (providerOfDebug != null) {
+                providerOfDebug.setSharedVariable(name, value);
             }
         } catch (Exception e) {
             EventBus.pushTry(e);
@@ -192,9 +205,9 @@ public class FreemarkerRender implements Render {
 
         Template template = null;
 
-        if (provider_debug != null) {
+        if (providerOfDebug != null) {
             try {
-                template = provider_debug.getTemplate(mv.view(), Solon.encoding());
+                template = providerOfDebug.getTemplate(mv.view(), Solon.encoding());
             } catch (TemplateNotFoundException e) {
                 //忽略不计
             }
