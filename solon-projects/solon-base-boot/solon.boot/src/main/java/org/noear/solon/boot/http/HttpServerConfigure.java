@@ -9,8 +9,22 @@ package org.noear.solon.boot.http;
 public interface HttpServerConfigure {
     /**
      * 是否允许Ssl
+     * @deprecated 2.3
      */
-    void allowSsl(boolean allowSsl);
+    @Deprecated
+    default void allowSsl(boolean enable){
+        enableSsl(enable);
+    }
+
+    /**
+     * 启用 ssl
+     */
+    void enableSsl(boolean enable);
+
+    /**
+     * 启用 http2 （不一定所有服务都支持）
+     */
+    void enableHttp2(boolean enable);
 
     /**
      * 添加 HttpPort（当 ssl 时，可再开个 http 端口）

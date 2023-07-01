@@ -31,7 +31,7 @@ import java.util.concurrent.ExecutorService;
 abstract class JettyServerBase implements ServerLifecycle , HttpServerConfigure {
     protected ExecutorService executor;
     protected HttpServerProps props = new HttpServerProps();
-    protected boolean allowSsl = true;
+    protected boolean enableSsl = true;
     protected Set<Integer> addHttpPorts = new LinkedHashSet<>();
 
     private ServerSslProps sslProps;
@@ -47,8 +47,13 @@ abstract class JettyServerBase implements ServerLifecycle , HttpServerConfigure 
      * 是否允许Ssl
      * */
     @Override
-    public void allowSsl(boolean allowSsl) {
-        this.allowSsl = allowSsl;
+    public void enableSsl(boolean enable) {
+        this.enableSsl = enable;
+    }
+
+    @Override
+    public void enableHttp2(boolean enable) {
+
     }
 
     /**
@@ -82,7 +87,8 @@ abstract class JettyServerBase implements ServerLifecycle , HttpServerConfigure 
         HttpConnectionFactory httpFactory = new HttpConnectionFactory(config);
         ServerConnector serverConnector;
 
-        if (allowSsl && autoSsl && supportSsl()) {
+        if (enableSsl && autoSsl && supportSsl()) {
+
 
             String sslKeyStore = sslProps.getSslKeyStore();
             String sslKeyStoreType = sslProps.getSslKeyType();

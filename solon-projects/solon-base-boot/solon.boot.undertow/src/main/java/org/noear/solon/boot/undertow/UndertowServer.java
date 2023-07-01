@@ -88,12 +88,15 @@ public class UndertowServer extends UndertowServerBase implements ServerLifecycl
         builder.setIoThreads(props.getCoreThreads());
         builder.setWorkerThreads(maxThreads);
 
+        if(enableHttp2){
+            builder.setServerOption(UndertowOptions.ENABLE_HTTP2, true);
+        }
 
         if (Utils.isEmpty(host)) {
             host = "0.0.0.0";
         }
 
-        if (allowSsl && supportSsl()) {
+        if (enableSsl && supportSsl()) {
             //https
             builder.addHttpsListener(port, host, SslContextFactory.create(sslProps));
         } else {

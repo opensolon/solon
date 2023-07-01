@@ -19,7 +19,7 @@ public class JlHttpServer implements ServerLifecycle {
     private HTTPServer server = null;
     private Handler handler;
     private Executor executor;
-    private boolean allowSsl = true;
+    private boolean enableSsl = true;
 
     private ServerSslProps sslProps;
     protected boolean supportSsl() {
@@ -30,8 +30,8 @@ public class JlHttpServer implements ServerLifecycle {
         return sslProps.isEnable() && sslProps.getSslKeyStore() != null;
     }
 
-    public void allowSsl(boolean allowSsl) {
-        this.allowSsl = allowSsl;
+    public void enableSsl(boolean enable) {
+        this.enableSsl = enable;
     }
 
     public void setHandler(Handler handler) {
@@ -47,7 +47,7 @@ public class JlHttpServer implements ServerLifecycle {
     public void start(String host, int port) throws Throwable {
         server = new HTTPServer();
 
-        if (allowSsl && supportSsl()) {
+        if (enableSsl && supportSsl()) {
             // enable SSL if configured
             server.setServerSocketFactory(SslContextFactory.create(sslProps).getServerSocketFactory());
         }

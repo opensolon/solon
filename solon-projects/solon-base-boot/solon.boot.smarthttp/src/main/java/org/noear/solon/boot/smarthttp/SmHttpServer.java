@@ -30,7 +30,7 @@ public class SmHttpServer implements ServerLifecycle {
     private int coreThreads;
     private Executor workExecutor;
     private boolean enableWebSocket;
-    private boolean allowSsl = true;
+    private boolean enableSsl = true;
 
     private ServerSslProps sslProps;
     protected boolean supportSsl() {
@@ -41,8 +41,8 @@ public class SmHttpServer implements ServerLifecycle {
         return sslProps.isEnable() && sslProps.getSslKeyStore() != null;
     }
 
-    public void allowSsl(boolean allowSsl) {
-        this.allowSsl = allowSsl;
+    public void enableSsl(boolean enable) {
+        this.enableSsl = enable;
     }
 
     public void enableWebSocket(boolean enableWebSocket) {
@@ -69,7 +69,7 @@ public class SmHttpServer implements ServerLifecycle {
             _config.host(host);
         }
 
-        if (allowSsl && supportSsl()) {
+        if (enableSsl && supportSsl()) {
             SSLContext sslContext = SslContextFactory.create(sslProps);
 
             SslPlugin<Request> sslPlugin = new SslPlugin<>(() -> sslContext, sslEngine -> {

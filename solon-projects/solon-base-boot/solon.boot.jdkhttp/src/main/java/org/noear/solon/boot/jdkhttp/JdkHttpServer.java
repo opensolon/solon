@@ -26,7 +26,7 @@ public class JdkHttpServer implements ServerLifecycle {
     private HttpServer server = null;
     private Executor executor;
     private Handler handler;
-    private boolean allowSsl = true;
+    private boolean enableSsl = true;
 
     private ServerSslProps sslProps;
     protected boolean supportSsl() {
@@ -37,8 +37,8 @@ public class JdkHttpServer implements ServerLifecycle {
         return sslProps.isEnable() && sslProps.getSslKeyStore() != null;
     }
 
-    public void allowSsl(boolean allowSsl) {
-        this.allowSsl = allowSsl;
+    public void enableSsl(boolean enable) {
+        this.enableSsl = enable;
     }
 
     public void setHandler(Handler handler) {
@@ -53,7 +53,7 @@ public class JdkHttpServer implements ServerLifecycle {
 
     @Override
     public void start(String host, int port) throws Throwable {
-        if (allowSsl && supportSsl()) {
+        if (enableSsl && supportSsl()) {
             // enable SSL if configured
             if (Utils.isNotEmpty(host)) {
                 server = HttpsServer.create(new InetSocketAddress(host, port), 0);

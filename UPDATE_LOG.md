@@ -17,6 +17,7 @@
 * 增加 sa-token dao 的 redisson 实现
 * 增加 server.socket.ssl.* 配置?
 * 增加 server.websocket.ssl.* 配置?
+* 增加 HttpServerConfigure::enableHttp2 接口, 默认为 false
 
 
 ### 2.3.7

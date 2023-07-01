@@ -19,7 +19,7 @@ import java.util.concurrent.Executor;
 public class JlHttpServerComb implements HttpServerConfigure, ServerLifecycle {
     private Executor executor;
     private Handler handler;
-    protected boolean allowSsl = true;
+    protected boolean enableSsl = true;
     protected Set<Integer> addHttpPorts = new LinkedHashSet<>();
     protected List<JlHttpServer> servers = new ArrayList<>();
 
@@ -27,8 +27,13 @@ public class JlHttpServerComb implements HttpServerConfigure, ServerLifecycle {
      * 是否允许Ssl
      */
     @Override
-    public void allowSsl(boolean allowSsl) {
-        this.allowSsl = allowSsl;
+    public void enableSsl(boolean enable) {
+        this.enableSsl = enable;
+    }
+
+    @Override
+    public void enableHttp2(boolean enable) {
+
     }
 
     /**
@@ -53,7 +58,7 @@ public class JlHttpServerComb implements HttpServerConfigure, ServerLifecycle {
             JlHttpServer s1 = new JlHttpServer();
             s1.setExecutor(executor);
             s1.setHandler(handler);
-            s1.allowSsl(allowSsl);
+            s1.enableSsl(enableSsl);
             s1.start(host, port);
 
             servers.add(s1);
@@ -63,7 +68,7 @@ public class JlHttpServerComb implements HttpServerConfigure, ServerLifecycle {
             JlHttpServer s2 = new JlHttpServer();
             s2.setExecutor(executor);
             s2.setHandler(handler);
-            s2.allowSsl(false); //只支持http
+            s2.enableSsl(false); //只支持http
             s2.start(host, portAdd);
 
             servers.add(s2);

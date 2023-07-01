@@ -20,15 +20,21 @@ import java.util.Set;
 
 abstract class UndertowServerBase implements ServerLifecycle, HttpServerConfigure {
     protected HttpServerProps props = new HttpServerProps();
-    protected boolean allowSsl = true;
+    protected boolean enableSsl = true;
+    protected boolean enableHttp2 = false;
     protected Set<Integer> addHttpPorts = new LinkedHashSet<>();
 
     /**
      * 是否允许Ssl
      * */
     @Override
-    public void allowSsl(boolean allowSsl) {
-        this.allowSsl = allowSsl;
+    public void enableSsl(boolean enable) {
+        this.enableSsl = enable;
+    }
+
+    @Override
+    public void enableHttp2(boolean enable) {
+        this.enableHttp2 = enable;
     }
 
     /**
