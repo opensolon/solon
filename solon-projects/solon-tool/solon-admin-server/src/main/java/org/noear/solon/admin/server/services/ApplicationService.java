@@ -68,6 +68,8 @@ public class ApplicationService {
 
         find.get().setStatus(Application.Status.UP);
 
+        find.get().setLastUpTime(System.currentTimeMillis());
+
         sessions.forEach(it -> it.sendAsync(gson.toJson(new ApplicationWebsocketTransfer<>(
                 "updateApplication",
                 find.get()
@@ -92,6 +94,8 @@ public class ApplicationService {
         if (application.getStatus() == Application.Status.DOWN) return;
 
         application.setStatus(Application.Status.DOWN);
+
+        application.setLastDownTime(System.currentTimeMillis());
 
         sessions.forEach(it -> it.sendAsync(gson.toJson(new ApplicationWebsocketTransfer<>(
                 "updateApplication",

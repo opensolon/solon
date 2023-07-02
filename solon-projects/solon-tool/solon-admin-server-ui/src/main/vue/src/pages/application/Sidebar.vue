@@ -2,6 +2,7 @@
 import {useRoute, useRouter} from "vue-router";
 import {useI18n} from "vue-i18n";
 import {computed, ref, watch} from "vue";
+import {useApplication} from "../../hooks/application.ts";
 
 const router = useRouter()
 const route = useRoute()
@@ -18,10 +19,14 @@ function onClickMenuItem(key: string) {
   router.push({name: key})
 }
 
+const application = useApplication().currentApplication()
 </script>
 
 <template>
   <div class="sidebar">
+    <div class="instance-name">
+      <span>{{ application?.name }}</span>
+    </div>
     <a-menu v-model:selected-keys="selectedKeys" mode="vertical" @menu-item-click="onClickMenuItem">
       <template
           v-for="item in (router.getRoutes().find(it=>it.name==='application')?.children??[])
@@ -35,5 +40,9 @@ function onClickMenuItem(key: string) {
 </template>
 
 <style scoped>
-
+.instance-name {
+  padding: 1rem 1.5rem;
+  margin: auto;
+  text-align: center;
+}
 </style>

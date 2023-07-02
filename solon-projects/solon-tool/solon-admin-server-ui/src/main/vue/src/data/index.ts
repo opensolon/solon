@@ -18,12 +18,18 @@ export class Application extends UniqueApplication {
     metadata?: string
     status: ApplicationStatus
     lastHeartbeat: number
+    startupTime: number
+    lastUpTime: number
+    lastDownTime: number
 
-    constructor(name: string, baseUrl: string, metadata: string | undefined, status: ApplicationStatus, lastHeartbeat: number) {
+    constructor(name: string, baseUrl: string, metadata: string | undefined, status: ApplicationStatus, lastHeartbeat: number, startupTime: number, lastUpTime: number, lastDownTime: number) {
         super(name, baseUrl);
         this.metadata = metadata;
         this.status = status;
         this.lastHeartbeat = lastHeartbeat;
+        this.startupTime = startupTime;
+        this.lastUpTime = lastUpTime;
+        this.lastDownTime = lastDownTime;
     }
 }
 

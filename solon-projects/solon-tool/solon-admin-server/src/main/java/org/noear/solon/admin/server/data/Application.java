@@ -20,7 +20,13 @@ public class Application {
 
     private Status status = Status.DOWN;
 
+    private long startupTime = System.currentTimeMillis();
+
     private long lastHeartbeat;
+
+    private long lastUpTime;
+
+    private long lastDownTime;
 
     public enum Status {
         @SerializedName("0")
