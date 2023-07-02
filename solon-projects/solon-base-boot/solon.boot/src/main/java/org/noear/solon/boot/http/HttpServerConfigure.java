@@ -17,14 +17,23 @@ public interface HttpServerConfigure {
     }
 
     /**
-     * 启用 ssl
+     * 是否支持 http2
      */
-    void enableSsl(boolean enable);
+    default boolean isSupportedHttp2(){
+        return false;
+    }
 
     /**
      * 启用 http2 （不一定所有服务都支持）
      */
-    void enableHttp2(boolean enable);
+    default void enableHttp2(boolean enable){
+
+    }
+
+    /**
+     * 启用 ssl
+     */
+    void enableSsl(boolean enable);
 
     /**
      * 添加 HttpPort（当 ssl 时，可再开个 http 端口）

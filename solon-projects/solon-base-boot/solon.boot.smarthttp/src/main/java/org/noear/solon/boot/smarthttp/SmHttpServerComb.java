@@ -33,11 +33,6 @@ public class SmHttpServerComb implements HttpServerConfigure, ServerLifecycle {
         this.enableSsl = enable;
     }
 
-    @Override
-    public void enableHttp2(boolean enable) {
-
-    }
-
     /**
      * 添加 HttpPort（当 ssl 时，可再开个 http 端口）
      */

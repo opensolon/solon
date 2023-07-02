@@ -33,6 +33,11 @@ abstract class UndertowServerBase implements ServerLifecycle, HttpServerConfigur
     }
 
     @Override
+    public boolean isSupportedHttp2() {
+        return true;
+    }
+
+    @Override
     public void enableHttp2(boolean enable) {
         this.enableHttp2 = enable;
     }
