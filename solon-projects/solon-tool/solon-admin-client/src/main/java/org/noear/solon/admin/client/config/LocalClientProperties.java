@@ -19,5 +19,5 @@ public class LocalClientProperties implements IClientProperties {
 
     private String metadata = "";
 
-
+    private boolean showSecretInformation = false;
 }

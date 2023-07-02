@@ -30,7 +30,7 @@ const application = useApplication().currentApplication()
     <a-menu v-model:selected-keys="selectedKeys" mode="vertical" @menu-item-click="onClickMenuItem">
       <template
           v-for="item in (router.getRoutes().find(it=>it.name==='application')?.children??[])
-                .filter(it=>it.meta?.showInHeader!=false)
+                .filter(it=>it.meta?.showInSideBar!=false)
                 .sort((a,b)=>(a.meta?.index??0) - (b.meta?.index??0))"
           :key="item.name">
         <a-menu-item>{{ t(`sidebar.item.application.${String(item.name)}`) }}</a-menu-item>

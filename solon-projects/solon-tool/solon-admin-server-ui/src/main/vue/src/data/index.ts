@@ -21,8 +21,11 @@ export class Application extends UniqueApplication {
     startupTime: number
     lastUpTime: number
     lastDownTime: number
+    showSecretInformation: boolean
+    environmentInformation: EnvironmentInformation
 
-    constructor(name: string, baseUrl: string, metadata: string | undefined, status: ApplicationStatus, lastHeartbeat: number, startupTime: number, lastUpTime: number, lastDownTime: number) {
+
+    constructor(name: string, baseUrl: string, metadata: string | undefined, status: ApplicationStatus, lastHeartbeat: number, startupTime: number, lastUpTime: number, lastDownTime: number, showSecretInformation: boolean, environmentInformation: EnvironmentInformation) {
         super(name, baseUrl);
         this.metadata = metadata;
         this.status = status;
@@ -30,6 +33,8 @@ export class Application extends UniqueApplication {
         this.startupTime = startupTime;
         this.lastUpTime = lastUpTime;
         this.lastDownTime = lastDownTime;
+        this.showSecretInformation = showSecretInformation;
+        this.environmentInformation = environmentInformation;
     }
 }
 
@@ -41,4 +46,16 @@ export enum ApplicationStatus {
 export type ApplicationWebSocketTransfer<T> = {
     type: string,
     data: T
+}
+
+export type EnvironmentInformation = {
+    systemEnvironment: {
+        [key: string]: string
+    };
+    systemProperties: {
+        [key: string]: string
+    };
+    applicationProperties: {
+        [key: string]: string
+    };
 }

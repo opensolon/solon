@@ -5,6 +5,7 @@ import NotFound from "../pages/NotFound.vue";
 import Application from "../pages/application/index.vue";
 import Details from "../pages/application/Details.vue";
 import Sidebar from "../pages/application/Sidebar.vue";
+import Environment from "../pages/application/Environment.vue";
 
 export const routes: RouteRecordRaw[] = [
     {
@@ -26,8 +27,20 @@ export const routes: RouteRecordRaw[] = [
                 component: Details,
                 meta: {
                     showInHeader: true,
+                    showInSidebar: true,
                     ignored: true,
                     index: 1
+                }
+            },
+            {
+                name: 'environment',
+                path: 'env',
+                component: Environment,
+                meta: {
+                    showInHeader: false,
+                    showInSidebar: true,
+                    ignored: true,
+                    index: 2
                 }
             }
         ],

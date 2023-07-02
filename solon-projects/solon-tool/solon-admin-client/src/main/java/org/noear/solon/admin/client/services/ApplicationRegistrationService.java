@@ -6,6 +6,7 @@ import lombok.val;
 import okhttp3.*;
 import org.noear.solon.admin.client.config.IClientProperties;
 import org.noear.solon.admin.client.data.Application;
+import org.noear.solon.admin.client.data.EnvironmentInformation;
 import org.noear.solon.admin.client.utils.NetworkUtils;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Inject;
@@ -38,6 +39,8 @@ public class ApplicationRegistrationService {
                                 .name(this.applicationName)
                                 .baseUrl(NetworkUtils.getHostAndPort())
                                 .metadata(properties.getMetadata())
+                                .showSecretInformation(properties.isShowSecretInformation())
+                                .environmentInformation(EnvironmentInformation.create())
                                 .build()
                 ), MediaType.parse("application/json")))
                 .build()).execute()) {

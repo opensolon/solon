@@ -7,8 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Data
-@ToString(of = {"name", "baseUrl"})
-@EqualsAndHashCode(of = {"name", "baseUrl"})
 @NoArgsConstructor
 public class Application {
 
@@ -16,17 +14,37 @@ public class Application {
 
     private String baseUrl;
 
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private String metadata;
 
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private Status status = Status.DOWN;
 
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private long startupTime = System.currentTimeMillis();
 
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private long lastHeartbeat;
 
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private long lastUpTime;
 
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private long lastDownTime;
+
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private boolean showSecretInformation;
+
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private EnvironmentInformation environmentInformation;
 
     public enum Status {
         @SerializedName("0")
