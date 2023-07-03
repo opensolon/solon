@@ -2,7 +2,9 @@ package org.noear.solon.extend.sqltoy;
 
 import org.noear.solon.core.AopContext;
 import org.sagacity.sqltoy.SqlToyContext;
+import org.sagacity.sqltoy.dao.LightDao;
 import org.sagacity.sqltoy.dao.SqlToyLazyDao;
+import org.sagacity.sqltoy.dao.impl.LightDaoImpl;
 import org.sagacity.sqltoy.dao.impl.SqlToyLazyDaoImpl;
 import org.sagacity.sqltoy.service.SqlToyCRUDService;
 
@@ -15,6 +17,7 @@ import java.util.Map;
  * */
 public class DbManager {
     private static Map<DataSource, SqlToyLazyDao> daoMap = new HashMap<>();
+    private static Map<DataSource, LightDao> lightDaoMap = new HashMap<>();
     private static Map<DataSource, SqlToyCRUDService> serviceMap = new HashMap<>();
     private static SqlToyContext context;
 
@@ -35,7 +38,18 @@ public class DbManager {
 
         return dao;
     }
+    public static synchronized LightDao getLightDao(DataSource dataSource) {
+        LightDao dao = lightDaoMap.get(dataSource);
 
+        if (dao == null) {
+            LightDaoImpl sqlToyLazyDao = new LightDaoImpl();
+            sqlToyLazyDao.setDataSource(dataSource);
+            sqlToyLazyDao.setSqlToyContext(context);
+            lightDaoMap.put(dataSource, sqlToyLazyDao);
+            dao = sqlToyLazyDao;
+        }
+        return dao;
+    }
     public static synchronized SqlToyCRUDService getService(AopContext context, DataSource dataSource) {
         SqlToyCRUDService service = serviceMap.get(dataSource);
         if (service == null) {
