@@ -19,6 +19,8 @@
 * 增加 HttpServerConfigure::enableHttp2 接口, 默认为 false
 * 调整 solon.view.* 增加引擎提供者获取属性
 * 调整 单元测试项目结构?
+* 优化 sqltoy 适配代码，增加LightDao的支持
+* sqltoy 升为 5.2.57
 
 
 ### 2.3.7
