@@ -78,15 +78,9 @@ public class UndertowServer extends UndertowServerBase implements ServerLifecycl
             builder.setServerOption(UndertowOptions.MULTIPART_MAX_ENTITY_SIZE, ServerProps.request_maxFileSize);
         }
 
-        int maxThreads;
-        if(props.isIoBound()){
-            maxThreads = props.getMaxThreads(true);
-        }else{
-            maxThreads = props.getMaxThreads(false);
-        }
 
         builder.setIoThreads(props.getCoreThreads());
-        builder.setWorkerThreads(maxThreads);
+        builder.setWorkerThreads(props.getMaxThreads(props.isIoBound()));
 
         if(enableHttp2){
             builder.setServerOption(UndertowOptions.ENABLE_HTTP2, true);
