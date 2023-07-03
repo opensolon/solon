@@ -5,6 +5,7 @@ import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.extend.sqltoy.configure.Elastic;
 import org.noear.solon.extend.sqltoy.configure.ElasticConfig;
 import org.noear.solon.extend.sqltoy.configure.SqlToyContextProperties;
+import org.noear.solon.extend.sqltoy.configure.SqlToyContextTaskPoolProperties;
 import org.noear.solon.extend.sqltoy.impl.SolonAppContext;
 import org.noear.solon.extend.sqltoy.impl.SolonConnectionFactory;
 import org.sagacity.sqltoy.SqlToyContext;
@@ -13,6 +14,7 @@ import org.sagacity.sqltoy.integration.AppContext;
 import org.sagacity.sqltoy.integration.ConnectionFactory;
 import org.sagacity.sqltoy.plugins.*;
 import org.sagacity.sqltoy.plugins.datasource.DataSourceSelector;
+import org.sagacity.sqltoy.plugins.formater.SqlFormater;
 import org.sagacity.sqltoy.plugins.secure.DesensitizeProvider;
 import org.sagacity.sqltoy.plugins.secure.FieldsSecureProvider;
 import org.sagacity.sqltoy.translate.cache.TranslateCacheManager;
@@ -33,8 +35,10 @@ import static java.lang.System.err;
 class SqlToyContextBuilder {
     SqlToyContextProperties properties;
     AppContext appContext;
+    AopContext aopContext;
     public SqlToyContextBuilder(SqlToyContextProperties properties, AopContext context){
         this.properties = properties;
+        this.aopContext=context;
         this.appContext = new SolonAppContext(context);
     }
 
@@ -70,6 +74,10 @@ class SqlToyContextBuilder {
 
         // 当发现有重复sqlId时是否抛出异常，终止程序执行
         sqlToyContext.setBreakWhenSqlRepeat(properties.isBreakWhenSqlRepeat());
+
+        // 开放设置默认单页记录数量
+        sqlToyContext.setDefaultPageSize(properties.getDefaultPageSize());
+        sqlToyContext.setDefaultPageOffset(properties.isDefaultPageOffset());
 
         // map 类型结果label是否自动转驼峰处理
         if (properties.getHumpMapResultTypeLabel() != null) {
@@ -171,7 +179,9 @@ class SqlToyContextBuilder {
 
         // 修改多少条记录做特别提示
         sqlToyContext.setUpdateTipCount(properties.getUpdateTipCount());
-
+        if (properties.getOverPageToFirst() != null) {
+            sqlToyContext.setOverPageToFirst(properties.getOverPageToFirst());
+        }
         // 设置公共统一属性的处理器
         String unfiyHandler = properties.getUnifyFieldsHandler();
         if (StringUtil.isNotBlank(unfiyHandler)) {
@@ -346,6 +356,33 @@ class SqlToyContextBuilder {
             }
             sqlToyContext.setSqlInterceptors(sqlInterceptorList);
         }
+
+        // 自定义sql格式化器
+        String sqlFormater = properties.getSqlFormater();
+        if (StringUtil.isNotBlank(sqlFormater)) {
+            // 提供简化配置
+            if (sqlFormater.equalsIgnoreCase("default") || sqlFormater.equalsIgnoreCase("defaultFormater")
+                    || sqlFormater.equalsIgnoreCase("defaultSqlFormater")) {
+                sqlFormater = "org.sagacity.sqltoy.plugins.formater.impl.DefaultSqlFormater";
+            }
+            if (appContext.containsBean(sqlFormater)) {
+                sqlToyContext.setSqlFormater((SqlFormater) appContext.getBean(sqlFormater));
+            } // 包名和类名称
+            else if (sqlFormater.contains(".")) {
+                sqlToyContext.setSqlFormater(
+                        (SqlFormater) Class.forName(sqlFormater).getDeclaredConstructor().newInstance());
+            }
+        }
+
+        // 自定义线程池
+        SqlToyContextTaskPoolProperties taskPoolProperties= properties.getTaskExecutor();
+        if(taskPoolProperties!=null){
+            String taskExecutorName= taskPoolProperties.getTargetPoolName();
+            if (StringUtil.isNotBlank(taskExecutorName)) {
+                sqlToyContext.setTaskExecutorName(taskExecutorName);
+            }
+        }
+
         return sqlToyContext;
     }
 }

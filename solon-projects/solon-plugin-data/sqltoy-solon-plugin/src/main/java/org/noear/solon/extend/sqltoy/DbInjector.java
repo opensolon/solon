@@ -4,6 +4,7 @@ import org.noear.solon.core.BeanInjector;
 import org.noear.solon.core.VarHolder;
 import org.noear.solon.extend.sqltoy.annotation.Db;
 import org.sagacity.sqltoy.SqlToyContext;
+import org.sagacity.sqltoy.dao.LightDao;
 import org.sagacity.sqltoy.dao.SqlToyLazyDao;
 import org.sagacity.sqltoy.service.SqlToyCRUDService;
 
@@ -46,10 +47,15 @@ class DbInjector implements BeanInjector<Db> {
                 varH.setValue(DbManager.getDao(dataSource));
                 return;
             }
+            if(type.equals(LightDao.class)){
+                varH.setValue(DbManager.getLightDao(dataSource));
+                return;
+            }
             if (type.equals(SqlToyCRUDService.class)) {
                 varH.setValue(DbManager.getService(bw.context(), dataSource));
                 return;
             }
+
 //            if (type.isInterface()) {
 //                varH.setValue(DbManager.getMapper(dataSource, type));
 //                return;

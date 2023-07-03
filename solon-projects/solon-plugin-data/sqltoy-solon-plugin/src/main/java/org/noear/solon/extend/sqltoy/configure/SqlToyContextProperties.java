@@ -201,7 +201,30 @@ public class SqlToyContextProperties implements Serializable {
      * executeSql变更操作型sql执行空白参数是否默认转为null
      */
     private boolean executeSqlBlankToNull = true;
+    /**
+     * 跳转超出数据页范围回到第一页
+     */
+    private Boolean overPageToFirst;
 
+    /**
+     * sql格式化输出器(用于debug sql输出)
+     */
+    private String sqlFormater;
+
+    /**
+     * 未匹配的数据库类型分页是否是limit ? offset ? 模式还是 limit ?,? 模式
+     */
+    private boolean defaultPageOffset = true;
+
+    /**
+     * 线程池配置参数
+     */
+    private SqlToyContextTaskPoolProperties taskExecutor = new SqlToyContextTaskPoolProperties();
+
+    /**
+     * 默认一页数据记录数量
+     */
+    private int defaultPageSize = 10;
 
     /**
      * @return the sqlResourcesDir
@@ -590,5 +613,45 @@ public class SqlToyContextProperties implements Serializable {
 
     public void setRedoDataSources(String[] redoDataSources) {
         this.redoDataSources = redoDataSources;
+    }
+
+    public Boolean getOverPageToFirst() {
+        return overPageToFirst;
+    }
+
+    public void setOverPageToFirst(Boolean overPageToFirst) {
+        this.overPageToFirst = overPageToFirst;
+    }
+
+    public String getSqlFormater() {
+        return sqlFormater;
+    }
+
+    public void setSqlFormater(String sqlFormater) {
+        this.sqlFormater = sqlFormater;
+    }
+
+    public boolean isDefaultPageOffset() {
+        return defaultPageOffset;
+    }
+
+    public void setDefaultPageOffset(boolean defaultPageOffset) {
+        this.defaultPageOffset = defaultPageOffset;
+    }
+
+    public SqlToyContextTaskPoolProperties getTaskExecutor() {
+        return taskExecutor;
+    }
+
+    public void setTaskExecutor(SqlToyContextTaskPoolProperties taskExecutor) {
+        this.taskExecutor = taskExecutor;
+    }
+
+    public int getDefaultPageSize() {
+        return defaultPageSize;
+    }
+
+    public void setDefaultPageSize(int defaultPageSize) {
+        this.defaultPageSize = defaultPageSize;
     }
 }
