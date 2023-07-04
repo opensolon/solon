@@ -8,6 +8,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.core.AopContext;
+import org.noear.solon.core.bean.InitializingBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,7 +24,7 @@ import java.util.Set;
  * @since 2020.10.10
  * */
 @Configuration
-public class HasorWebConfiguration implements ServletContainerInitializer {
+public class HasorWebConfiguration implements ServletContainerInitializer, InitializingBean {
     private static final Logger logger = LoggerFactory.getLogger(HasorWebConfiguration.class);
     private String filterPath = "/*";
     private int filterOrder = 0;
@@ -31,16 +32,14 @@ public class HasorWebConfiguration implements ServletContainerInitializer {
     @Inject
     private AopContext context;
 
-    public HasorWebConfiguration() {
-        this(Solon.app().source().getAnnotation(EnableHasorWeb.class));
-    }
-
     /**
      * 此构建函数，是为了手动写代码提供支持；充许EnableHasorWeb注在别的临时类上实现配置
      * <p>
      * 为开发隐式插件提供支持
      */
-    public HasorWebConfiguration(EnableHasorWeb enableHasor) {
+    @Override
+    public void afterInjection() throws Throwable {
+        EnableHasorWeb enableHasor = Solon.app().source().getAnnotation(EnableHasorWeb.class);
         //
         this.filterPath = enableHasor.path();
         this.filterOrder = 0;

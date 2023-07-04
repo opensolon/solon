@@ -8,10 +8,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.core.AopContext;
-import org.noear.solon.core.event.EventListener;
-import org.noear.solon.core.event.AppBeanLoadEndEvent;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.noear.solon.core.bean.InitializingBean;
 
 import java.io.IOException;
 
@@ -22,22 +19,19 @@ import java.io.IOException;
  * @since 2020.10.10
  * */
 @Configuration
-public class HasorConfiguration implements EventListener<AppBeanLoadEndEvent> {
-    private static Logger logger = LoggerFactory.getLogger(HasorConfiguration.class);
-
+public class HasorConfiguration implements InitializingBean {
     @Inject
     private AopContext context;
-
-    public HasorConfiguration() {
-        this(Solon.app().source().getAnnotation(EnableHasor.class));
-    }
 
     /**
      * 此构建函数，是为了手动写代码提供支持；充许EnableHasor注在别的临时类上实现配置
      * <p>
      * 为开发隐式插件提供支持
      */
-    public HasorConfiguration(EnableHasor enableHasor) {
+    @Override
+    public void afterInjection() throws Throwable {
+        EnableHasor enableHasor = Solon.app().source().getAnnotation(EnableHasor.class);
+
         BuildConfig buildConfig = BuildConfig.getInstance();
 
         // 处理mainConfig
@@ -79,13 +73,10 @@ public class HasorConfiguration implements EventListener<AppBeanLoadEndEvent> {
                 buildConfig.customProperties.put(name, property.value());
             }
         }
-    }
 
-    @Override
-    public void onEvent(AppBeanLoadEndEvent event) {
         //没有EnableHasorWeb时，生成AppContext并注入容器
         //
-        if (event.app().source().getAnnotation(EnableHasorWeb.class) == null) {
+        if (Solon.app().source().getAnnotation(EnableHasorWeb.class) == null) {
             //所有bean加载完成之后，手动注入AppContext
             context.wrapAndPut(AppContext.class, initAppContext());
         }
