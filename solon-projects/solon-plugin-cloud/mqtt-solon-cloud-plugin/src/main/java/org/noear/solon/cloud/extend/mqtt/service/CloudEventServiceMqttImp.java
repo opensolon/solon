@@ -32,6 +32,13 @@ public class CloudEventServiceMqttImp implements CloudEventServicePlus {
     private String clientId;
     private MqttCallbackImp clientCallback;
 
+    /**
+     * 获取客户端
+     * */
+    public MqttClient getClient() {
+        return client;
+    }
+
     //
     // 1833(MQTT的默认端口号)
     //
