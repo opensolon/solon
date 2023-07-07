@@ -10,7 +10,26 @@ import org.noear.solon.core.handle.Context;
  * @since 1.3
  * */
 public class IpUtil {
-    public static String getIp(Context ctx) {
+    //
+    // 可以进行替换扩展
+    //
+    private static IpUtil global = new IpUtil();
+
+    public static IpUtil global() {
+        return global;
+    }
+
+    public static void globalSet(IpUtil instance) {
+        if (instance != null) {
+            global = instance;
+        }
+    }
+
+
+    /**
+     * 获取 Ip
+     * */
+    public String getRealIp(Context ctx) {
         //客户端ip
         String ip = ctx.header("X-Real-IP");
 

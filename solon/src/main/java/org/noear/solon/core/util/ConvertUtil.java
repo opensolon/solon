@@ -43,7 +43,7 @@ public class ConvertUtil {
 
         if (rst == null && Date.class == type) {
             try {
-                rst = DateAnalyzer.getGlobal().parse(val);
+                rst = DateAnalyzer.global().parse(val);
             } catch (ParseException e) {
                 throw new RuntimeException(e);
             }
@@ -169,7 +169,7 @@ public class ConvertUtil {
 
         if (rst == null && Date.class == (type)) {
             try {
-                return DateAnalyzer.getGlobal().parse(val);
+                return DateAnalyzer.global().parse(val);
             } catch (RuntimeException ex) {
                 throw ex;
             } catch (Throwable ex) {

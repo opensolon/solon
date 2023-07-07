@@ -32,7 +32,7 @@ public class DateReadAdapter extends TypeAdapter<Date> {
                 return new Date(in.nextLong());
             case STRING:
                 try {
-                    return DateAnalyzer.getGlobal().parse(in.nextString());
+                    return DateAnalyzer.global().parse(in.nextString());
                 } catch (ParseException e) {
                     throw new JsonSyntaxException("Expecting date, got: " + jsonToken + "; at path " + in.getPath(), e);
                 }

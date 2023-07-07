@@ -111,7 +111,7 @@ public abstract class Context {
     @Note("获取客户端真实IP")
     public String realIp() {
         if (realIp == null) {
-            realIp = IpUtil.getIp(this);
+            realIp = IpUtil.global().getRealIp(this);
         }
 
         return realIp;

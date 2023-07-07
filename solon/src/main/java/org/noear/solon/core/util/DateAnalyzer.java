@@ -43,14 +43,14 @@ public class DateAnalyzer {
     //
     private static DateAnalyzer global = new DateAnalyzer();
 
-    public static void setGlobal(DateAnalyzer instance) {
+    public static DateAnalyzer global() {
+        return global;
+    }
+
+    public static void globalSet(DateAnalyzer instance) {
         if (instance != null) {
             global = instance;
         }
-    }
-
-    public static DateAnalyzer getGlobal() {
-        return global;
     }
 
 
