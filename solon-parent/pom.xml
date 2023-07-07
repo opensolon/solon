@@ -113,7 +113,7 @@
         <beetl.version>3.15.4.RELEASE</beetl.version>
         <beetlsql.version>3.23.2-RELEASE</beetlsql.version>
         <sqltoy.version>5.2.57</sqltoy.version>
-        <mybatis-flex.version>1.4.5</mybatis-flex.version>
+        <mybatis-flex.version>1.4.7</mybatis-flex.version>
         <fastmybatis.version>2.6.1</fastmybatis.version>
         <liteflow.version>2.10.2</liteflow.version>
         <forest.version>1.5.32</forest.version>
