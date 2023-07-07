@@ -28,7 +28,8 @@ public class ActionHolder {
     }
 
     public boolean isGet() {
-        return routing().method() == MethodType.GET || action.method().getParamWraps().length ==0;
+        return routing().method() == MethodType.GET
+                || (action.method().getParamWraps().length == 0 && routing().method() == MethodType.ALL);
     }
 
     public boolean isAnnotationPresent(Class<? extends Annotation> annoClz){

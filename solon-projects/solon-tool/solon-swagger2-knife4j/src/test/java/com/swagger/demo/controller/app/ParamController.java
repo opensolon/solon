@@ -73,4 +73,11 @@ public class ParamController {
     public void demo11(@Body List<DeviceParamBean> bean) {
 
     }
+
+    @ApiOperation("无参数 Post")
+    @Post
+    @Mapping("demo12")
+    public void demo12() {
+
+    }
 }
