@@ -23,6 +23,7 @@
 * 调整 单元测试项目结构?
 * 调整 IpUtil 增加扩展 ip 实现，可替换内部的实现
 * 调整 solon.docs 插件，在无参 post 时，不再自动转成 get；增加 @Api::value() 做为 tags
+* 调整 Gateway:register 执行时机为容器启动时，使注册时可使用注入字段
 * 优化 sqltoy-solon-plugin 适配代码，增加LightDao的支持
 * 优化 hasor-solon-plugin 插件适配，支持最新状态
 * sqltoy 升为 5.2.58

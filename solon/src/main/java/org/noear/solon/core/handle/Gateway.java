@@ -77,7 +77,10 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
 
         filterList.add(new RankEntity<>(this::doFilter, Integer.MAX_VALUE));
 
-        register();
+        Solon.context().lifecycle(()->{
+            //通过生命周期触发注册，可以在注册时使用注入字段
+            register();
+        });
     }
 
     /**
