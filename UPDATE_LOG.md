@@ -18,10 +18,13 @@
 * 增加 server.websocket.ssl.* 配置?
 * 增加 HttpServerConfigure::enableHttp2 接口, 默认为 false
 * 调整 solon.view.* 增加引擎提供者获取属性
+* 调整 mqtt-solon-cloud-plugin 插件，增加获取原生 client 接口
 * 调整 单元测试项目结构?
+* 调整 IpUtil 增加扩展 ip 实现
 * 优化 sqltoy-solon-plugin 适配代码，增加LightDao的支持
 * 优化 hasor-solon-plugin 插件适配，支持最新状态
-* sqltoy 升为 5.2.57
+* sqltoy 升为 5.2.58
+* mybatis-flex 升为 1.4.5
 
 
 ### 2.3.7
