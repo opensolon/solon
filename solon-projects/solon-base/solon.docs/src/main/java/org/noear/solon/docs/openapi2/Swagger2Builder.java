@@ -204,8 +204,12 @@ public class Swagger2Builder {
         }
 
         String controllerKey = BuilderHelper.getControllerKey(clazz);
+        Set<String> apiTags = new LinkedHashSet<>();
+        apiTags.add(api.value());
+        apiTags.addAll(Arrays.asList(api.tags()));
+        apiTags.remove("");
 
-        for (String tagName : api.tags()) {
+        for (String tagName : apiTags) {
             Tag tag = new Tag();
             tag.setName(tagName);
             tag.setDescription(controllerKey + " (" + clazz.getSimpleName() + ")");
@@ -234,10 +238,7 @@ public class Swagger2Builder {
             String actionName = actionHolder.action().name();//action.getMethodName();
             Method actionMethod = actionHolder.action().method().getMethod();
 
-            Set<String> actionTags = new HashSet<>();
-            actionTags.addAll(Arrays.asList(actionHolder.controllerClz().getAnnotation(Api.class).tags()));
-            actionTags.addAll(Arrays.asList(apiAction.tags()));
-            actionTags.remove("");
+            Set<String> actionTags = actionHolder.getTags(apiAction);
 
             Path path = new Path();
             String pathKey = actionHolder.routing().path(); //PathUtil.mergePath(controllerKey, actionName);

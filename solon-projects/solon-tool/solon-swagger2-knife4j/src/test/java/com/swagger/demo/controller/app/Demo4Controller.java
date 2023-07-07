@@ -19,7 +19,7 @@ import java.util.Map;
  * @date: 2020/12/21
  */
 @Mapping("/")
-@Api(tags = "0级Path导致UI渲染白屏")
+@Api("0级Path导致UI渲染白屏")
 @Controller
 public class Demo4Controller {
 

@@ -8,7 +8,7 @@ import org.noear.solon.annotation.Mapping;
 /**
  * @author noear 2023/6/30 created
  */
-@Api(tags = "用户接口")
+@Api("用户接口")
 @Component
 public class UserApi {
     @ApiOperation("添加用户")
