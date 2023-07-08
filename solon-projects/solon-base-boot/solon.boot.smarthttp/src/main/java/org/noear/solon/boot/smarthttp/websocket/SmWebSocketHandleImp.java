@@ -8,6 +8,7 @@ import org.noear.solon.socketd.ProtocolManager;
 import org.smartboot.http.server.WebSocketRequest;
 import org.smartboot.http.server.WebSocketResponse;
 import org.smartboot.http.server.handler.WebSocketDefaultHandler;
+import org.smartboot.http.server.impl.Request;
 
 import java.nio.ByteBuffer;
 
@@ -19,13 +20,24 @@ public class SmWebSocketHandleImp extends WebSocketDefaultHandler {
     }
 
     @Override
+    public void onClose(Request request) {
+        WebSocketRequest request2 =  request.newWebsocketRequest();
+        onCloseDo(request2);
+    }
+
+    @Override
     public void onClose(WebSocketRequest request, WebSocketResponse response) {
-        _SocketServerSession session = _SocketServerSession.get(request, response);
-        session.onClose();
+        onCloseDo(request);
+    }
 
-        Solon.app().listener().onClose(session);
+    private void onCloseDo(WebSocketRequest request) {
+        _SocketServerSession session = _SocketServerSession.getOnly(request);
 
-        _SocketServerSession.remove(request);
+        if (session != null) {
+            session.onClose();
+            Solon.app().listener().onClose(session);
+            _SocketServerSession.remove(request);
+        }
     }
 
     @Override

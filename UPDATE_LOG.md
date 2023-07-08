@@ -9,7 +9,7 @@
 * 提醒1：之前没有使用弃用接口的，可以直接升级 <br>
 * 提醒2：有使用弃用接口的。建议先升级到 1.12.4；替换弃用代码后，再升级到 2.0.0
 
-### 2.3.8
+### 2.3.9
 * 新增 solon.boot.vertx 插件?
 * 新增 solon.cloud.metrics 插件?
 * 增加 sa-token dao 的 redisson 实现
@@ -25,7 +25,8 @@
 * 调整 IpUtil 增加扩展 ip 实现，可替换内部的实现
 * 调整 solon.docs 插件，在无参 post 时，不再自动转成 get；增加 @Api::value() 做为 tags
 * 调整 Gateway:register 执行时机为容器启动时，使注册时可使用注入字段
-* 修复 solon.boot.undertow 在客户端进程半闭时，不能触发 onClose 事件的问题
+* 修复 solon.boot.undertow 在客户端进程关闭时，不能触发 onClose 事件的问题
+* 修复 solon.boot.smarthttp 在客户端进程关闭时，不能触发 onClose 事件的问题
 * 优化 sqltoy-solon-plugin 适配代码，增加LightDao的支持
 * 优化 hasor-solon-plugin 插件适配，支持最新状态
 * sqltoy 升为 5.2.58
