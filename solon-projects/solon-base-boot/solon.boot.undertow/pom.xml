@@ -40,6 +40,7 @@
         <dependency>
             <groupId>io.undertow</groupId>
             <artifactId>undertow-servlet</artifactId>
+            <version>${undertow.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.jboss.spec.javax.servlet</groupId>

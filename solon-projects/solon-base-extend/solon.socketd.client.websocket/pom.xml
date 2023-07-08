@@ -24,6 +24,7 @@
         <dependency>
             <groupId>org.java-websocket</groupId>
             <artifactId>Java-WebSocket</artifactId>
+            <version>${java-websocket.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.slf4j</groupId>
