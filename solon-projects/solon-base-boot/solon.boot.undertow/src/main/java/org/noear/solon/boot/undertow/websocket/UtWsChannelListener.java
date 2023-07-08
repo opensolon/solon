@@ -13,6 +13,35 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 
 public class UtWsChannelListener extends AbstractReceiveListener {
+    @Override
+    public void handleEvent(WebSocketChannel channel) {
+        try {
+            StreamSourceFrameChannel result = channel.receive();
+            if (result == null) {
+                if (channel.isOpen() == false) {
+                    //如果已关闭，由触发关闭事件 //如果不触发，客户端关了都没感觉
+                    onClose(channel, result);
+                }
+                return;
+            }
+
+            if (result.getType() == WebSocketFrameType.BINARY) {
+                this.onBinary(channel, result);
+            } else if (result.getType() == WebSocketFrameType.TEXT) {
+                this.onText(channel, result);
+            } else if (result.getType() == WebSocketFrameType.PONG) {
+                this.onPong(channel, result);
+            } else if (result.getType() == WebSocketFrameType.PING) {
+                this.onPing(channel, result);
+            } else if (result.getType() == WebSocketFrameType.CLOSE) {
+                this.onClose(channel, result);
+            }
+        } catch (IOException var3) {
+            this.onError(channel, var3);
+        }
+
+    }
+
 
     public void onOpen(WebSocketHttpExchange exchange, WebSocketChannel channel) {
         Session session = _SocketServerSession.get(channel);

@@ -18,6 +18,8 @@
 * 增加 server.socket.ssl.* 配置?
 * 增加 server.websocket.ssl.* 配置?
 * 增加 HttpServerConfigure::enableHttp2 接口, 默认为 false
+* 增加 Context::fileValues 接口，原 files 标为弃用
+* 调整 solon.boot.undertow 在客户端进程半闭时触发 onClose 事件
 * 调整 solon.view.* 增加引擎提供者获取属性
 * 调整 mqtt-solon-cloud-plugin 插件，增加获取原生 client 接口
 * 调整 单元测试项目结构?
