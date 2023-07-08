@@ -21,5 +21,7 @@ public interface GraphQlSource {
      */
     GraphQLSchema schema();
 
+    void init(GraphQL graphQl, GraphQLSchema schema);
+
 }
 

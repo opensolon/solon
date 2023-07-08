@@ -1,7 +1,10 @@
 package org.noear.solon.extend.graphql.controller;
 
+import graphql.ExecutionInput;
 import graphql.ExecutionResult;
 import graphql.GraphQL;
+import java.util.HashMap;
+import java.util.Map;
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.annotation.Mapping;
@@ -22,9 +25,19 @@ public class GraphqlController {
 
     @Post
     @Mapping("/graphql")
-    public Object graphql(GraphqlRequestParam param, Context request) {
+    public Object graphql(GraphqlRequestParam param, Context ctx) {
         GraphQL graphQL = this.graphQlSource.graphQl();
-        ExecutionResult executionResult = graphQL.execute(param.getQuery());
+
+        Map<Object, Object> mapOfContext = new HashMap<>();
+        mapOfContext.put(Context.class, ctx);
+
+        ExecutionInput executionInput = ExecutionInput
+                .newExecutionInput()
+                .query(param.getQuery())
+                .localContext(ctx.getLocale())
+                .graphQLContext(mapOfContext)
+                .build();
+        ExecutionResult executionResult = graphQL.execute(executionInput);
         return executionResult.getData();
     }
 

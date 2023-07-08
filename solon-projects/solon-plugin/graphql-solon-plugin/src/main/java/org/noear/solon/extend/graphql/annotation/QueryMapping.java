@@ -54,13 +54,7 @@ public @interface QueryMapping {
     String typeName() default "Query";
 
     /**
-     * Alias for {@link SchemaMapping#field()}.
-     */
-    @Alias("field")
-    String name() default "";
-
-    /**
-     * Alias for {@link SchemaMapping#field()}.
+     * Alias for {@link QueryMapping#field()}.
      */
     @Alias("field")
     String value() default "";

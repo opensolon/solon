@@ -1,14 +1,14 @@
-package org.noear.solon.extend.graphql.config;
+package org.noear.solon.extend.graphql.event;
 
 import graphql.schema.idl.TypeRuntimeWiring;
 import java.util.List;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.core.event.EventListener;
+import org.noear.solon.extend.graphql.annotation.QueryMappingAnnoHandler;
 import org.noear.solon.extend.graphql.execution.collect.RuntimeWiringConfigurerCollect;
 import org.noear.solon.extend.graphql.execution.configurer.RuntimeWiringConfigurer;
 import org.noear.solon.extend.graphql.execution.fetcher.DataFetcherWrap;
-import org.noear.solon.extend.graphql.integration.SchemaMappingBeanExtractor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,13 +19,17 @@ import org.slf4j.LoggerFactory;
  * @since 2.3
  */
 @Configuration
-public class DefaultRuntimeWiringConfigurer implements
+public class DefaultRwConfigurerCollectEventListener implements
         EventListener<RuntimeWiringConfigurerCollect> {
 
-    private static Logger log = LoggerFactory.getLogger(DefaultRuntimeWiringConfigurer.class);
+    private static Logger log = LoggerFactory
+            .getLogger(DefaultRwConfigurerCollectEventListener.class);
 
     @Inject
-    private SchemaMappingBeanExtractor extractor;
+    private QueryMappingAnnoHandler extractor;
+
+    public DefaultRwConfigurerCollectEventListener() {
+    }
 
     @Override
     public void onEvent(

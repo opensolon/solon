@@ -17,6 +17,7 @@ public class DefaultGraphQlSource implements GraphQlSource {
         this.initFlag = false;
     }
 
+    @Override
     public void init(GraphQL graphQl, GraphQLSchema schema) {
         this.graphQl = graphQl;
         this.schema = schema;
@@ -38,5 +39,4 @@ public class DefaultGraphQlSource implements GraphQlSource {
         }
         return this.schema;
     }
-
 }
