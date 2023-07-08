@@ -1,5 +1,6 @@
 package org.noear.solon.core.handle;
 
+import org.noear.solon.Utils;
 import org.noear.solon.core.NvMap;
 import org.noear.solon.core.wrap.ClassWrap;
 import org.noear.solon.core.wrap.MethodWrap;
@@ -175,6 +176,9 @@ public class ActionExecuteHandlerDefault implements ActionExecuteHandler {
             if (UploadedFile.class == pt) {
                 //1.如果是 UploadedFile 类型
                 tv = ctx.file(pn);
+            } else if (UploadedFile[].class == pt) {
+                //2.如果是 UploadedFile[] 类型
+                tv = Utils.toArray(ctx.files(pn), new UploadedFile[]{});
             } else {
                 //$name 的变量，从attr里找
                 if (pn.startsWith("$")) {

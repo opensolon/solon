@@ -503,17 +503,12 @@ public abstract class Context {
     public abstract Map<String,List<UploadedFile>> filesMap() throws IOException;
 
     /**
-     * 获取上传文件
+     * 获取上传文件数组
      *
      * @param name 文件名
      */
     public List<UploadedFile> files(String name) throws IOException {
-        List<UploadedFile> list = filesMap().get(name);
-        if (list == null) {
-            return Collections.emptyList();
-        } else {
-            return list;
-        }
+        return filesMap().get(name);
     }
 
     /**

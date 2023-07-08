@@ -301,6 +301,14 @@ public class Utils {
         }
     }
 
+    public static <T> T[] toArray(List<T> list, T[] a) {
+        if (list != null) {
+            return list.toArray(a);
+        } else {
+            return null;
+        }
+    }
+
     public static Locale toLocale(String lang) {
         if (lang == null) {
             return null;

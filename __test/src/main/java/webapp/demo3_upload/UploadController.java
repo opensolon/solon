@@ -12,7 +12,8 @@ import org.noear.solon.core.handle.UploadedFile;
 public class UploadController {
 
     //支持上传文件参数（file 变量名，与表单变量名保持一致）
-    @Mapping(path = "f1", method = MethodType.POST)
+    @Post
+    @Mapping("f1")
     public String test_f1(Context ctx, UploadedFile file, UploadedFile file2) throws Exception {
         if (file != null) {
             if (file2 == null) {
@@ -25,7 +26,8 @@ public class UploadController {
         return "失败：" + ctx.path();
     }
 
-    @Mapping(path = "f11", method = MethodType.POST)
+    @Post
+    @Mapping("f11")
     public String test_f11(String userName) throws Exception {
         if (userName == null) {
             return "我没接数据：）";
@@ -34,7 +36,8 @@ public class UploadController {
         }
     }
 
-    @Mapping(path = "f11_2", method = MethodType.POST, multipart = true)
+    @Post
+    @Mapping(path="f11_2", multipart = true)
     public String test_f11_2(String userName) throws Exception {
         if (userName == null) {
             return "我没接数据：）";
@@ -43,7 +46,8 @@ public class UploadController {
         }
     }
 
-    @Mapping(path = "f12", method = MethodType.POST)
+    @Post
+    @Mapping("f12")
     public String test_f12(String userName, UploadedFile file) throws Exception {
         if (userName == null) {
             return "userName is null";
@@ -103,5 +107,11 @@ public class UploadController {
         UploadedFile file = ctx.file("file"); //（file 变量名，与表单变量名保持一致）
 
         return ctx.path();
+    }
+
+    @Post
+    @Mapping("f3")
+    public int test_f3(UploadedFile[] file) throws Exception {
+        return file.length;
     }
 }

@@ -98,4 +98,13 @@ public class HttpUploadTest extends HttpTester {
                 .data("userName", "noear")
                 .post().startsWith("noear");
     }
+
+    @Test
+    public void upload_param_f3() throws IOException {
+        InputStream inputStream = new ByteArrayInputStream("test".getBytes(StandardCharsets.UTF_8));
+
+        assert path("/demo3/upload/f3")
+                .data("file", "装修-水电-视频.mp4", inputStream, "video/mp4")
+                .post().equals("1");
+    }
 }
