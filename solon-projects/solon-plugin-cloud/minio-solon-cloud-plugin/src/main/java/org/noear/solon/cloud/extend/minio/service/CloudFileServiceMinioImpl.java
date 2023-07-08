@@ -10,7 +10,6 @@ import org.noear.solon.cloud.service.CloudFileService;
 import org.noear.solon.core.handle.Result;
 
 import java.util.Date;
-import java.util.concurrent.TimeUnit;
 
 /**
  * 云端文件服务（minio）
