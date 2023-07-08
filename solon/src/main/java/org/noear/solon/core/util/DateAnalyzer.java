@@ -43,6 +43,14 @@ public class DateAnalyzer {
     //
     private static DateAnalyzer global = new DateAnalyzer();
 
+    /**
+     * @deprecated 2.3
+     * */
+    @Deprecated
+    public static DateAnalyzer getGlobal(){
+        return global();
+    }
+
     public static DateAnalyzer global() {
         return global;
     }

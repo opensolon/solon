@@ -13,21 +13,22 @@
 * 新增 solon.boot.vertx 插件?
 * 新增 solon.cloud.metrics 插件?
 * 增加 sa-token dao 的 redisson 实现
-
-### 2.3.8
 * 增加 server.socket.ssl.* 配置?
 * 增加 server.websocket.ssl.* 配置?
+
+### 2.3.8
 * 增加 HttpServerConfigure::enableHttp2 接口, 默认为 false
 * 增加 UploadedFile[] 注入支持
 * 调整 solon.view.* 增加引擎提供者获取属性
 * 调整 mqtt-solon-cloud-plugin 插件，增加获取原生 client 接口
+* 调整 minio-solon-cloud-plugin 插件，minio 降为 8.2.2
 * 调整 单元测试项目结构?
 * 调整 IpUtil 增加扩展 ip 实现，可替换内部的实现
 * 调整 solon.docs 插件，在无参 post 时，不再自动转成 get；增加 @Api::value() 做为 tags
 * 调整 Gateway:register 执行时机为容器启动时，使注册时可使用注入字段
 * 修复 solon.boot.undertow 在客户端进程关闭时，不能触发 onClose 事件的问题
 * 修复 solon.boot.smarthttp 在客户端进程关闭时，不能触发 onClose 事件的问题
-* 优化 sqltoy-solon-plugin 适配代码，增加LightDao的支持
+* 优化 sqltoy-solon-plugin 适配代码，增加 LightDao 的支持
 * 优化 hasor-solon-plugin 插件适配，支持最新状态
 * sqltoy 升为 5.2.58
 * mybatis-flex 升为 1.4.7
