@@ -4,7 +4,9 @@ import zh_cn from "./zh_cn";
 
 const locale = localStorage.getItem('solon-admin-locale') || "zh_CN";
 
-export const i18n = createI18n({
+type MessageSchema = typeof zh_cn
+
+export const i18n = createI18n<[MessageSchema], 'en_US' | 'zh_CN'>({
     locale,
     fallbackLocale: "en_US",
     allowComposition: true,

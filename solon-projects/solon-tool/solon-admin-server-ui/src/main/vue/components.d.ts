@@ -9,11 +9,11 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
-    AConfigProvider: typeof import('@arco-design/web-vue')['ConfigProvider']
+    Footer: typeof import('./src/components/global_layout/Footer.vue')['default']
     Global_layout: typeof import('./src/components/global_layout/index.vue')['default']
-    Globals: typeof import('./src/components/globals/index.vue')['default']
     Header: typeof import('./src/components/global_layout/Header.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    VChart: typeof import('vue-echarts')['default']
   }
 }
