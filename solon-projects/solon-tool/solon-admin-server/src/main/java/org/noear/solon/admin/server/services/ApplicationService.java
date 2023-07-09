@@ -22,6 +22,8 @@ public class ApplicationService {
 
     private final Map<Application, Runnable> runningHeartbeatTasks = new HashMap<>();
 
+    private final Map<Application, Runnable> runningClientMonitorTasks = new HashMap<>();
+
     @Inject
     private ScheduledThreadPoolExecutor scheduledThreadPoolExecutor;
 
@@ -32,6 +34,9 @@ public class ApplicationService {
     private List<Session> sessions;
 
     @Inject
+    private ClientMonitorService clientMonitorService;
+
+    @Inject
     private Gson gson;
 
     public void registerApplication(Application application) {
@@ -40,9 +45,13 @@ public class ApplicationService {
         applications.add(application);
         scheduleHeartbeatCheck(application);
         sessions.forEach(it -> it.sendAsync(gson.toJson(new ApplicationWebsocketTransfer<>(
+                null,
                 "registerApplication",
                 application
         ))));
+
+        scheduleClientMonitor(application);
+
         log.info("Application registered: {}", application);
     }
 
@@ -52,10 +61,13 @@ public class ApplicationService {
 
         applications.remove(find.get());
         scheduledThreadPoolExecutor.remove(runningHeartbeatTasks.get(find.get()));
+        scheduledThreadPoolExecutor.remove(runningClientMonitorTasks.get(find.get()));
         sessions.forEach(it -> it.sendAsync(gson.toJson(new ApplicationWebsocketTransfer<>(
+                null,
                 "unregisterApplication",
                 find.get()
         ))));
+
         log.info("Application unregistered: {}", find.get());
     }
 
@@ -71,6 +83,7 @@ public class ApplicationService {
         find.get().setLastUpTime(System.currentTimeMillis());
 
         sessions.forEach(it -> it.sendAsync(gson.toJson(new ApplicationWebsocketTransfer<>(
+                null,
                 "updateApplication",
                 find.get()
         ))));
@@ -98,6 +111,26 @@ public class ApplicationService {
         application.setLastDownTime(System.currentTimeMillis());
 
         sessions.forEach(it -> it.sendAsync(gson.toJson(new ApplicationWebsocketTransfer<>(
+                null,
+                "updateApplication",
+                application
+        ))));
+    }
+
+    private void scheduleClientMonitor(Application application) {
+        Runnable clientMonitorCallback = () -> {
+            runClientMonitor(application);
+            scheduleClientMonitor(application);
+        };
+        runningClientMonitorTasks.put(application, clientMonitorCallback);
+        scheduledThreadPoolExecutor.schedule(clientMonitorCallback, serverProperties.getClientMonitorPeriod(), TimeUnit.MILLISECONDS);
+    }
+
+    private void runClientMonitor(Application application) {
+        application.setMonitors(clientMonitorService.getMonitors(application));
+
+        sessions.forEach(it -> it.sendAsync(gson.toJson(new ApplicationWebsocketTransfer<>(
+                null,
                 "updateApplication",
                 application
         ))));

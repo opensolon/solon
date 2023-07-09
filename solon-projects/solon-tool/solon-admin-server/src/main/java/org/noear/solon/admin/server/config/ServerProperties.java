@@ -19,4 +19,13 @@ public class ServerProperties {
     @Inject(value = "${solon.admin.server.heartbeatInterval}", required = false)
     private long heartbeatInterval = 10 * 1000;
 
+    @Inject(value = "${solon.admin.server.clientMonitorPeriod}", required = false)
+    private long clientMonitorPeriod = 2 * 1000;
+
+    @Inject(value = "${solon.admin.server.clientMonitorTimeout}", required = false)
+    private long connectTimeout = 5 * 1000;
+
+    @Inject(value = "${solon.admin.server.clientMonitorTimeout}", required = false)
+    private long readTimeout = 5 * 1000;
+
 }

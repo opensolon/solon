@@ -3,6 +3,8 @@ package org.noear.solon.admin.server.config;
 import com.google.gson.Gson;
 import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
+import lombok.val;
+import okhttp3.OkHttpClient;
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Condition;
@@ -10,6 +12,7 @@ import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
 
 import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Configuration
@@ -42,6 +45,16 @@ public class AdminServerBootstrapConfiguration {
     public Gson gson(@Inject(required = false) MarkedServerEnabled marker) {
         if (marker == null) return null;
         return new Gson();
+    }
+
+    @Bean
+    public OkHttpClient okHttpClient(@Inject(required = false) MarkedServerEnabled marker) {
+        if (marker == null) return null;
+        val config = Solon.context().getBean(ServerProperties.class);
+        return new OkHttpClient.Builder()
+                .connectTimeout(config.getConnectTimeout(), TimeUnit.MILLISECONDS)
+                .readTimeout(config.getReadTimeout(), TimeUnit.MILLISECONDS)
+                .build();
     }
 
 }

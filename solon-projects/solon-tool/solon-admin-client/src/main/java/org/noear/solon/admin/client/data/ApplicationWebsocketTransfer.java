@@ -1,9 +1,9 @@
-package org.noear.solon.admin.server.data;
+package org.noear.solon.admin.client.data;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.noear.solon.lang.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 @Data
 @AllArgsConstructor

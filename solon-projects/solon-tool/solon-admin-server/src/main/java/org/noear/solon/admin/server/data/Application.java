@@ -6,6 +6,8 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.util.Collection;
+
 @Data
 @NoArgsConstructor
 public class Application {
@@ -45,6 +47,10 @@ public class Application {
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private EnvironmentInformation environmentInformation;
+
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private Collection<Detector> monitors;
 
     public enum Status {
         @SerializedName("0")

@@ -23,9 +23,9 @@ export class Application extends UniqueApplication {
     lastDownTime: number
     showSecretInformation: boolean
     environmentInformation: EnvironmentInformation
+    monitors: (JVMDetector | DiskDetector | CPUDetector | OSDetector | MemoryDetector | Detector)[]
 
-
-    constructor(name: string, baseUrl: string, metadata: string | undefined, status: ApplicationStatus, lastHeartbeat: number, startupTime: number, lastUpTime: number, lastDownTime: number, showSecretInformation: boolean, environmentInformation: EnvironmentInformation) {
+    constructor(name: string, baseUrl: string, metadata: string | undefined, status: ApplicationStatus, lastHeartbeat: number, startupTime: number, lastUpTime: number, lastDownTime: number, showSecretInformation: boolean, environmentInformation: EnvironmentInformation, monitors: Detector[]) {
         super(name, baseUrl);
         this.metadata = metadata;
         this.status = status;
@@ -35,6 +35,7 @@ export class Application extends UniqueApplication {
         this.lastDownTime = lastDownTime;
         this.showSecretInformation = showSecretInformation;
         this.environmentInformation = environmentInformation;
+        this.monitors = monitors;
     }
 }
 
@@ -44,6 +45,7 @@ export enum ApplicationStatus {
 }
 
 export type ApplicationWebSocketTransfer<T> = {
+    scope: UniqueApplication | undefined | null,
     type: string,
     data: T
 }
@@ -58,4 +60,63 @@ export type EnvironmentInformation = {
     applicationProperties: {
         [key: string]: string
     };
+}
+
+export type Detector = {
+    name: string
+    info: {
+        [key: string]: object | number | string
+    }
+}
+
+export type OSDetector = {
+    name: 'os',
+    info: {
+        name: string,
+        arch: string,
+        version: string,
+    }
+}
+
+export type MemoryDetector = {
+    name: 'memory',
+    info: {
+        total: string,
+        used: string,
+        ratio: number
+    }
+}
+
+export type CPUDetector = {
+    name: 'cpu',
+    info: {
+        ratio: number
+    }
+}
+
+export type DiskDetector = {
+    name: 'disk',
+    info: {
+        total: string,
+        used: string,
+        details: {
+            [key: string]: {
+                total: string,
+                used: string,
+                free: string,
+                ratio: string
+            }
+        }
+    }
+}
+
+export type JVMDetector = {
+    name: 'jvm',
+    info: {
+        ratio: number,
+        total: string,
+        used: string,
+        usable: string,
+        free: string
+    }
 }

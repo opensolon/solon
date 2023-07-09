@@ -29,15 +29,23 @@ public class ApplicationRegistrationService {
     @Inject
     private IClientProperties properties;
 
+    private Application.ApplicationBuilder getApplicationBuilder() {
+        return Application.builder()
+                .name(this.applicationName)
+                .baseUrl(NetworkUtils.getHostAndPort());
+    }
+
+    public Application getCurrentApplication() {
+        return getApplicationBuilder().build();
+    }
+
     public void register() {
         log.info("Attempting to register this client as an application with Solon Admin server...");
         val serverUrl = this.properties.getServerUrl().replaceAll("/+$", "");
         try (Response response = client.newCall(new Request.Builder()
                 .url(new URL(serverUrl + "/api/application/register"))
                 .put(RequestBody.create(this.gson.toJson(
-                        Application.builder()
-                                .name(this.applicationName)
-                                .baseUrl(NetworkUtils.getHostAndPort())
+                        getApplicationBuilder()
                                 .metadata(properties.getMetadata())
                                 .showSecretInformation(properties.isShowSecretInformation())
                                 .environmentInformation(EnvironmentInformation.create())
@@ -60,10 +68,7 @@ public class ApplicationRegistrationService {
         try (Response response = client.newCall(new Request.Builder()
                 .url(new URL(serverUrl + "/api/application/unregister"))
                 .delete(RequestBody.create(this.gson.toJson(
-                        Application.builder()
-                                .name(this.applicationName)
-                                .baseUrl(NetworkUtils.getHostAndPort())
-                                .build()
+                        getCurrentApplication()
                 ), MediaType.parse("application/json")))
                 .build()).execute()) {
             if (response.isSuccessful()) {
@@ -82,10 +87,7 @@ public class ApplicationRegistrationService {
         try (Response response = client.newCall(new Request.Builder()
                 .url(new URL(serverUrl + "/api/application/heartbeat"))
                 .post(RequestBody.create(this.gson.toJson(
-                        Application.builder()
-                                .name(this.applicationName)
-                                .baseUrl(NetworkUtils.getHostAndPort())
-                                .build()
+                        getCurrentApplication()
                 ), MediaType.parse("application/json")))
                 .build()).execute()) {
             if (response.isSuccessful()) {

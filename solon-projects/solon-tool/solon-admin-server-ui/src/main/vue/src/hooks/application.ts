@@ -1,4 +1,4 @@
-import {Application, ApplicationStatus, ApplicationWebSocketTransfer, UniqueApplication} from "../data";
+import {Application, ApplicationWebSocketTransfer, UniqueApplication} from "../data";
 import {computed, reactive, Ref, ref} from "vue";
 import {Message, Notification} from "@arco-design/web-vue";
 import {useI18n} from 'vue-i18n';

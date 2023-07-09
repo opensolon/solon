@@ -24,8 +24,15 @@ export default defineConfig({
             resolvers: [
                 ArcoResolver({
                     sideEffect: true
-                })
-            ]
+                }),
+                (componentName) => {
+                    if (componentName == "VChart") {
+                        return {
+                            from: "vue-echarts"
+                        }
+                    }
+                }
+            ],
         })
     ],
     build: {
