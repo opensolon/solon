@@ -1,6 +1,5 @@
 package org.noear.solon.admin.client.config;
 
-import com.google.gson.Gson;
 import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
@@ -61,11 +60,4 @@ public class AdminClientBootstrapConfiguration {
                 .readTimeout(config.getReadTimeout(), TimeUnit.MILLISECONDS)
                 .build();
     }
-
-    @Bean
-    public Gson gson(@Inject(required = false) MarkedClientEnabled marker) {
-        if (marker == null) return null;
-        return new Gson();
-    }
-
 }

@@ -1,12 +1,12 @@
 package org.noear.solon.admin.client.services;
 
-import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import okhttp3.*;
 import org.noear.solon.admin.client.config.IClientProperties;
 import org.noear.solon.admin.client.data.Application;
 import org.noear.solon.admin.client.data.EnvironmentInformation;
+import org.noear.solon.admin.client.utils.JsonUtils;
 import org.noear.solon.admin.client.utils.NetworkUtils;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Inject;
@@ -16,10 +16,6 @@ import java.net.URL;
 @Slf4j
 @Component
 public class ApplicationRegistrationService {
-
-    @Inject
-    private Gson gson;
-
     @Inject
     private OkHttpClient client;
 
@@ -44,13 +40,14 @@ public class ApplicationRegistrationService {
         val serverUrl = this.properties.getServerUrl().replaceAll("/+$", "");
         try (Response response = client.newCall(new Request.Builder()
                 .url(new URL(serverUrl + "/api/application/register"))
-                .put(RequestBody.create(this.gson.toJson(
-                        getApplicationBuilder()
-                                .metadata(properties.getMetadata())
-                                .showSecretInformation(properties.isShowSecretInformation())
-                                .environmentInformation(EnvironmentInformation.create())
-                                .build()
-                ), MediaType.parse("application/json")))
+                .put(RequestBody.create(MediaType.parse("application/json"),
+                        JsonUtils.toJson(
+                                getApplicationBuilder()
+                                        .metadata(properties.getMetadata())
+                                        .showSecretInformation(properties.isShowSecretInformation())
+                                        .environmentInformation(EnvironmentInformation.create())
+                                        .build()
+                        )))
                 .build()).execute()) {
             if (response.isSuccessful()) {
                 log.info("Successfully register application to Solon Admin server.");
@@ -67,9 +64,8 @@ public class ApplicationRegistrationService {
         val serverUrl = this.properties.getServerUrl().replaceAll("/+$", "");
         try (Response response = client.newCall(new Request.Builder()
                 .url(new URL(serverUrl + "/api/application/unregister"))
-                .delete(RequestBody.create(this.gson.toJson(
-                        getCurrentApplication()
-                ), MediaType.parse("application/json")))
+                .delete(RequestBody.create(MediaType.parse("application/json"),
+                        JsonUtils.toJson(getCurrentApplication())))
                 .build()).execute()) {
             if (response.isSuccessful()) {
                 log.info("Successfully unregister application from Solon Admin server.");
@@ -86,9 +82,10 @@ public class ApplicationRegistrationService {
         val serverUrl = this.properties.getServerUrl().replaceAll("/+$", "");
         try (Response response = client.newCall(new Request.Builder()
                 .url(new URL(serverUrl + "/api/application/heartbeat"))
-                .post(RequestBody.create(this.gson.toJson(
-                        getCurrentApplication()
-                ), MediaType.parse("application/json")))
+                .post(RequestBody.create(MediaType.parse("application/json"),
+                        JsonUtils.toJson(
+                                getCurrentApplication()
+                        )))
                 .build()).execute()) {
             if (response.isSuccessful()) {
                 log.debug("Successfully send heartbeat to Solon Admin server.");

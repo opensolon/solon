@@ -3,7 +3,7 @@ package org.noear.solon.admin.client.data;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.jetbrains.annotations.Nullable;
+import org.noear.solon.lang.Nullable;
 
 @Data
 @AllArgsConstructor

@@ -1,6 +1,5 @@
 package org.noear.solon.admin.client.controller;
 
-import com.google.gson.Gson;
 import org.noear.solon.admin.client.data.Detector;
 import org.noear.solon.admin.client.services.ApplicationRegistrationService;
 import org.noear.solon.admin.client.services.MonitorService;
@@ -14,9 +13,6 @@ import java.util.Collection;
 @Controller
 @Mapping("/api/monitor")
 public class MonitorController {
-
-    @Inject
-    private Gson gson;
 
     @Inject
     private MonitorService monitorService;
