@@ -1397,6 +1397,24 @@
                 <version>${solon.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-admin-client</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-admin-server</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-admin-server-ui</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+
 
             <!-- //////////// servlet ////////////  -->
             <!-- //////////// servlet ////////////  -->

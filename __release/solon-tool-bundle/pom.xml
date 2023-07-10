@@ -23,5 +23,9 @@
         <module>../../solon-projects/solon-tool/solon-test-junit5</module>
 
         <module>../../solon-projects/solon-tool/solon-swagger2-knife4j</module>
+
+        <module>../../solon-projects/solon-tool/solon-admin-client</module>
+        <module>../../solon-projects/solon-tool/solon-admin-server</module>
+        <module>../../solon-projects/solon-tool/solon-admin-server-ui</module>
     </modules>
 </project>

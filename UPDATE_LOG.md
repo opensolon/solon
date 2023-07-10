@@ -10,11 +10,15 @@
 * 提醒2：有使用弃用接口的。建议先升级到 1.12.4；替换弃用代码后，再升级到 2.0.0
 
 ### 2.3.9
+* 新增 solon-admin-client
+* 新增 solon-admin-server
+* 新增 solon-admin-server-ui
 * 新增 solon.boot.vertx 插件?
 * 新增 solon.cloud.metrics 插件?
 * 增加 sa-token dao 的 redisson 实现
 * 增加 server.socket.ssl.* 配置?
 * 增加 server.websocket.ssl.* 配置?
+* 调整 nacos2 适配的 jackson 版本
 
 ### 2.3.8
 * 增加 HttpServerConfigure::enableHttp2 接口, 默认为 false
