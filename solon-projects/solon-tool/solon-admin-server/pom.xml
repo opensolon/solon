@@ -23,22 +23,17 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon-web</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon-cloud</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.noear</groupId>
             <artifactId>solon-api</artifactId>
         </dependency>
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.boot.undertow</artifactId>
+            <artifactId>solon.cloud</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.cloud.httputils</artifactId>
         </dependency>
 
         <dependency>
@@ -55,12 +50,6 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>com.squareup.okhttp3</groupId>
-            <artifactId>okhttp</artifactId>
-            <version>4.10.0</version>
         </dependency>
     </dependencies>
 

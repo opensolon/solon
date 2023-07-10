@@ -1,10 +1,9 @@
 package org.noear.solon.admin.server.controller;
 
-import com.google.gson.Gson;
-import lombok.val;
 import org.noear.solon.admin.server.data.ApplicationWebsocketTransfer;
 import org.noear.solon.admin.server.services.ApplicationService;
 import org.noear.solon.admin.server.services.ClientMonitorService;
+import org.noear.solon.admin.server.utils.JsonUtils;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.annotation.ServerEndpoint;
 import org.noear.solon.core.message.Listener;
@@ -15,9 +14,6 @@ import java.util.List;
 
 @ServerEndpoint(path = "/ws/application")
 public class ApplicationWebsocketController implements Listener {
-
-    @Inject
-    private Gson gson;
 
     @Inject
     private ApplicationService applicationService;
@@ -35,10 +31,10 @@ public class ApplicationWebsocketController implements Listener {
 
     @Override
     public void onMessage(Session session, Message message) {
-        val data = gson.fromJson(message.bodyAsString(), ApplicationWebsocketTransfer.class);
+        ApplicationWebsocketTransfer data = JsonUtils.fromJson(message.bodyAsString(), ApplicationWebsocketTransfer.class);
 
         if (data.getType().equals("getAllApplication")) {
-            session.sendAsync(gson.toJson(new ApplicationWebsocketTransfer<>(
+            session.sendAsync(JsonUtils.toJson(new ApplicationWebsocketTransfer<>(
                     null,
                     "getAllApplication",
                     applicationService.getApplications()

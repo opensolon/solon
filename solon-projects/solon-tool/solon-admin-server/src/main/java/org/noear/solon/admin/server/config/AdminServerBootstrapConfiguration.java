@@ -1,6 +1,5 @@
 package org.noear.solon.admin.server.config;
 
-import com.google.gson.Gson;
 import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
@@ -42,15 +41,10 @@ public class AdminServerBootstrapConfiguration {
     }
 
     @Bean
-    public Gson gson(@Inject(required = false) MarkedServerEnabled marker) {
-        if (marker == null) return null;
-        return new Gson();
-    }
-
-    @Bean
     public OkHttpClient okHttpClient(@Inject(required = false) MarkedServerEnabled marker) {
         if (marker == null) return null;
         val config = Solon.context().getBean(ServerProperties.class);
+
         return new OkHttpClient.Builder()
                 .connectTimeout(config.getConnectTimeout(), TimeUnit.MILLISECONDS)
                 .readTimeout(config.getReadTimeout(), TimeUnit.MILLISECONDS)

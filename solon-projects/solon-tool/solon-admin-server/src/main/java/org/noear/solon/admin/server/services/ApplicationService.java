@@ -1,11 +1,11 @@
 package org.noear.solon.admin.server.services;
 
-import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.noear.solon.admin.server.config.ServerProperties;
 import org.noear.solon.admin.server.data.Application;
 import org.noear.solon.admin.server.data.ApplicationWebsocketTransfer;
+import org.noear.solon.admin.server.utils.JsonUtils;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.core.message.Session;
@@ -36,15 +36,12 @@ public class ApplicationService {
     @Inject
     private ClientMonitorService clientMonitorService;
 
-    @Inject
-    private Gson gson;
-
     public void registerApplication(Application application) {
         if (applications.contains(application)) return;
 
         applications.add(application);
         scheduleHeartbeatCheck(application);
-        sessions.forEach(it -> it.sendAsync(gson.toJson(new ApplicationWebsocketTransfer<>(
+        sessions.forEach(it -> it.sendAsync(JsonUtils.toJson(new ApplicationWebsocketTransfer<>(
                 null,
                 "registerApplication",
                 application
@@ -62,7 +59,7 @@ public class ApplicationService {
         applications.remove(find.get());
         scheduledThreadPoolExecutor.remove(runningHeartbeatTasks.get(find.get()));
         scheduledThreadPoolExecutor.remove(runningClientMonitorTasks.get(find.get()));
-        sessions.forEach(it -> it.sendAsync(gson.toJson(new ApplicationWebsocketTransfer<>(
+        sessions.forEach(it -> it.sendAsync(JsonUtils.toJson(new ApplicationWebsocketTransfer<>(
                 null,
                 "unregisterApplication",
                 find.get()
@@ -82,7 +79,7 @@ public class ApplicationService {
 
         find.get().setLastUpTime(System.currentTimeMillis());
 
-        sessions.forEach(it -> it.sendAsync(gson.toJson(new ApplicationWebsocketTransfer<>(
+        sessions.forEach(it -> it.sendAsync(JsonUtils.toJson(new ApplicationWebsocketTransfer<>(
                 null,
                 "updateApplication",
                 find.get()
@@ -110,7 +107,7 @@ public class ApplicationService {
 
         application.setLastDownTime(System.currentTimeMillis());
 
-        sessions.forEach(it -> it.sendAsync(gson.toJson(new ApplicationWebsocketTransfer<>(
+        sessions.forEach(it -> it.sendAsync(JsonUtils.toJson(new ApplicationWebsocketTransfer<>(
                 null,
                 "updateApplication",
                 application
@@ -129,7 +126,7 @@ public class ApplicationService {
     private void runClientMonitor(Application application) {
         application.setMonitors(clientMonitorService.getMonitors(application));
 
-        sessions.forEach(it -> it.sendAsync(gson.toJson(new ApplicationWebsocketTransfer<>(
+        sessions.forEach(it -> it.sendAsync(JsonUtils.toJson(new ApplicationWebsocketTransfer<>(
                 null,
                 "updateApplication",
                 application

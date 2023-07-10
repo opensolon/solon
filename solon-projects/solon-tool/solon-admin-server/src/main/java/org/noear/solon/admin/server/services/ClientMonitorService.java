@@ -1,26 +1,25 @@
 package org.noear.solon.admin.server.services;
 
-import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import org.noear.snack.core.TypeRef;
 import org.noear.solon.admin.server.data.Application;
 import org.noear.solon.admin.server.data.Detector;
+import org.noear.solon.admin.server.utils.JsonUtils;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Inject;
 
 import java.net.URL;
 import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 
 @Slf4j
 @Component
 public class ClientMonitorService {
-
-    @Inject
-    private Gson gson;
 
     @Inject
     private OkHttpClient client;
@@ -32,9 +31,9 @@ public class ClientMonitorService {
                 .get()
                 .build()).execute()) {
             if (response.isSuccessful()) {
-                try (val reader = Objects.requireNonNull(response.body()).charStream()) {
-                    return gson.<Collection<Detector>>fromJson(reader, Collection.class);
-                }
+                String json = Objects.requireNonNull(response.body()).string();
+
+                return JsonUtils.fromJson(json,  (new TypeRef<List<Detector>>(){}).getClass());
             }
             log.warn("Failed to get monitors of {} with status code {}", application, response.code());
         } catch (Exception ex) {
