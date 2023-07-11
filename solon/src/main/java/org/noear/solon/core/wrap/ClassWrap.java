@@ -256,9 +256,7 @@ public class ClassWrap {
         for (Field f : ReflectUtil.getDeclaredFields(clz)) {
             int mod = f.getModifiers();
 
-            if (!Modifier.isStatic(mod)
-                    && !Modifier.isTransient(mod)) {
-
+            if (!Modifier.isStatic(mod)) {
                 if (checker.test(f.getName()) == false) {
                     _recordable &= Modifier.isFinal(mod);
                     //使用当前类，而不是申明类！
