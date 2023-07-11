@@ -1,6 +1,6 @@
 package org.noear.solon.boot.smarthttp.http;
 
-import org.noear.solon.boot.web.ContextBase;
+import org.noear.solon.boot.web.WebContextBase;
 import org.noear.solon.boot.web.Constants;
 import org.noear.solon.boot.web.RedirectUtils;
 import org.noear.solon.core.NvMap;
@@ -23,7 +23,7 @@ import java.net.URI;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
-public class SmHttpContext extends ContextBase {
+public class SmHttpContext extends WebContextBase {
     private HttpRequest _request;
     private HttpResponse _response;
     protected Map<String, List<UploadedFile>> _fileMap;
@@ -111,6 +111,11 @@ public class SmHttpContext extends ContextBase {
             _uri = URI.create(url());
         }
         return _uri;
+    }
+
+    @Override
+    public boolean isSecure() {
+        return _request.isSecure();
     }
 
     private String _url;

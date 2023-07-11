@@ -7,7 +7,7 @@ import io.netty.handler.codec.http.cookie.ServerCookieDecoder;
 import io.netty.handler.codec.http.cookie.Cookie;
 import org.noear.solon.Utils;
 import org.noear.solon.boot.web.Constants;
-import org.noear.solon.boot.web.ContextBase;
+import org.noear.solon.boot.web.WebContextBase;
 import org.noear.solon.boot.web.RedirectUtils;
 import org.noear.solon.core.handle.ContextAsyncListener;
 import org.noear.solon.core.handle.UploadedFile;
@@ -26,7 +26,7 @@ import static io.netty.handler.codec.http.HttpHeaderNames.SET_COOKIE;
 import static io.netty.handler.codec.http.HttpHeaderNames.COOKIE;
 
 
-public class RnHttpContext extends ContextBase {
+public class RnHttpContext extends WebContextBase {
     private final HttpServerRequest _request;
     private final HttpServerResponse _response;
     private final HttpRequestParser _request_parse;
@@ -77,6 +77,11 @@ public class RnHttpContext extends ContextBase {
             _uri = URI.create(url());
         }
         return _uri;
+    }
+
+    @Override
+    public boolean isSecure() {
+        return "https".equals(uri().getScheme());
     }
 
     private String _url;

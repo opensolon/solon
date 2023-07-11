@@ -2,7 +2,7 @@ package org.noear.solon.web.servlet;
 
 import org.noear.solon.Utils;
 import org.noear.solon.boot.web.Constants;
-import org.noear.solon.boot.web.ContextBase;
+import org.noear.solon.boot.web.WebContextBase;
 import org.noear.solon.boot.web.RedirectUtils;
 import org.noear.solon.core.NvMap;
 import org.noear.solon.core.handle.ContextAsyncListener;
@@ -26,7 +26,7 @@ import java.util.*;
  * @author noear
  * @since 1.2
  * */
-public class SolonServletContext extends ContextBase {
+public class SolonServletContext extends WebContextBase {
     private HttpServletRequest _request;
     private HttpServletResponse _response;
     protected Map<String, List<UploadedFile>> _fileMap;
@@ -98,6 +98,11 @@ public class SolonServletContext extends ContextBase {
         }
 
         return _uri;
+    }
+
+    @Override
+    public boolean isSecure() {
+        return _request.isSecure();
     }
 
     private String _url;

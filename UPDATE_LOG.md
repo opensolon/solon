@@ -18,6 +18,7 @@
 * 增加 sa-token dao 的 redisson 实现
 * 增加 server.socket.ssl.* 配置?
 * 增加 server.websocket.ssl.* 配置?
+* 增加 Context::isSecure 接口
 * 调整 nacos2 适配的 jackson 版本
 
 ### 2.3.8

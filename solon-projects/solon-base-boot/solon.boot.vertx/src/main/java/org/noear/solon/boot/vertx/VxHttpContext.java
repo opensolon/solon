@@ -48,6 +48,11 @@ public class VxHttpContext extends Context {
     }
 
     @Override
+    public boolean isSecure() {
+        return false;
+    }
+
+    @Override
     public String url() {
         return null;
     }

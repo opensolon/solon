@@ -10,8 +10,9 @@ import java.io.IOException;
 /**
  * @author noear
  * @since 1.11
+ * @since 2.3
  */
-public abstract class ContextBase extends Context {
+public abstract class WebContextBase extends Context {
 
     @Override
     public String contentType() {

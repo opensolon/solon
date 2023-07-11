@@ -258,6 +258,8 @@ public abstract class Context {
         return pathAsLower;
     }
 
+    public abstract boolean isSecure();
+
     /**
      * 获取请求的UA
      */
