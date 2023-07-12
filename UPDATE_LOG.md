@@ -21,6 +21,7 @@
 * 调整 nacos2-solon-cloud-plugin 适配的  jackson 版本
 * 调整 nacos-solon-cloud-plugin 适配的  jackson 版本
 * 调整 LogUtil 改成静态扩展方式，原手动设置标为弃用
+* dbvisitor 升为 5.3.3
 
 ### 2.3.8
 * 增加 HttpServerConfigure::enableHttp2 接口, 默认为 false
