@@ -1,8 +1,9 @@
 package demo.component;
 
-import demo.entity.AuthorEntity;
+import demo.dto.AuthorInputDTO;
+import demo.dto.BookInputDTO;
 import org.noear.solon.annotation.Component;
-import org.noear.solon.extend.graphql.annotation.QueryMapping;
+import org.noear.solon.extend.graphql.annotation.SchemaMapping;
 
 /**
  * @author fuzi1996
@@ -14,16 +15,16 @@ public class AuthorService {
     public AuthorService() {
     }
 
-    private AuthorEntity getDefaultAuthor() {
-        AuthorEntity author = new AuthorEntity();
+    private AuthorInputDTO getDefaultAuthor() {
+        AuthorInputDTO author = new AuthorInputDTO();
         author.setId("1");
         author.setFirstName("J");
         author.setLastName("K");
         return author;
     }
 
-    @QueryMapping
-    public AuthorEntity authorById(String id) {
+    @SchemaMapping(field = "author", typeName = "Book")
+    public AuthorInputDTO authorByBookId(BookInputDTO book) {
         return this.getDefaultAuthor();
     }
 }

@@ -1,4 +1,4 @@
-package org.noear.solon.extend.graphql.execution.collect;
+package org.noear.solon.extend.graphql.collect;
 
 import java.util.List;
 

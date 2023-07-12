@@ -1,6 +1,6 @@
-package org.noear.solon.extend.graphql.execution.collect;
+package org.noear.solon.extend.graphql.configurer;
 
-import org.noear.solon.extend.graphql.execution.configurer.RuntimeWiringConfigurer;
+import org.noear.solon.extend.graphql.collect.AbstractBaseCollector;
 
 /**
  * @author fuzi1996

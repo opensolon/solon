@@ -4,10 +4,10 @@ import java.util.List;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.core.event.EventListener;
-import org.noear.solon.extend.graphql.execution.collect.GraphqlResourceResolverCollect;
-import org.noear.solon.extend.graphql.execution.resolver.ClassPathResourceResolver;
 import org.noear.solon.extend.graphql.properties.GraphqlProperties;
 import org.noear.solon.extend.graphql.properties.GraphqlProperties.Schema;
+import org.noear.solon.extend.graphql.resolver.resource.ClassPathResourceResolver;
+import org.noear.solon.extend.graphql.resolver.resource.GraphqlResourceResolverCollect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

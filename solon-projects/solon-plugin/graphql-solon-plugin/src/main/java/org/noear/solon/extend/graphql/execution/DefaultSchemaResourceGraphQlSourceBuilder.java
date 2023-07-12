@@ -21,8 +21,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.BiFunction;
+import org.noear.solon.extend.graphql.configurer.RuntimeWiringConfigurer;
 import org.noear.solon.extend.graphql.exception.MissingSchemaException;
-import org.noear.solon.extend.graphql.execution.configurer.RuntimeWiringConfigurer;
 import org.noear.solon.extend.graphql.resource.Resource;
 import org.noear.solon.lang.Nullable;
 

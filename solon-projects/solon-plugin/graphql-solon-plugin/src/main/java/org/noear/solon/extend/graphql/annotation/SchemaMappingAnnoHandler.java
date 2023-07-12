@@ -12,23 +12,23 @@ import org.slf4j.LoggerFactory;
  * @author fuzi1996
  * @since 2.3
  */
-public class QueryMappingAnnoHandler extends BaseSchemaMappingAnnoHandler<QueryMapping> {
+public class SchemaMappingAnnoHandler extends BaseSchemaMappingAnnoHandler<SchemaMapping> {
 
-    private static Logger log = LoggerFactory.getLogger(QueryMappingAnnoHandler.class);
+    private static Logger log = LoggerFactory.getLogger(SchemaMappingAnnoHandler.class);
 
-    public QueryMappingAnnoHandler(AopContext context) {
+    public SchemaMappingAnnoHandler(AopContext context) {
         super(context);
     }
 
     @Override
     String getTypeName(BeanWrap wrap, Method method,
-            QueryMapping schemaMapping) {
+            SchemaMapping schemaMapping) {
         return schemaMapping.typeName();
     }
 
     @Override
     String getFieldName(BeanWrap wrap, Method method,
-            QueryMapping schemaMapping) {
+            SchemaMapping schemaMapping) {
         String fieldName = Utils.annoAlias(schemaMapping.field(), schemaMapping.value());
 
         if (StringUtils.isBlank(fieldName)) {

@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
-import org.noear.solon.extend.graphql.execution.configurer.RuntimeWiringConfigurer;
+import org.noear.solon.extend.graphql.configurer.RuntimeWiringConfigurer;
 import org.noear.solon.extend.graphql.resource.ByteArrayResource;
 import org.noear.solon.extend.graphql.resource.Resource;
 

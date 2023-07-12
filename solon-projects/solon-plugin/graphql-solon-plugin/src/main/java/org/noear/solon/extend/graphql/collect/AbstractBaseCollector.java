@@ -1,4 +1,4 @@
-package org.noear.solon.extend.graphql.execution.collect;
+package org.noear.solon.extend.graphql.collect;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -9,19 +9,19 @@ import java.util.List;
  */
 public abstract class AbstractBaseCollector<T> implements Collector<T> {
 
-    protected List<T> graphqlResourceResolvers;
+    protected List<T> list;
 
     public AbstractBaseCollector() {
-        this.graphqlResourceResolvers = new LinkedList<>();
+        this.list = new LinkedList<>();
     }
 
     @Override
     public void append(T one) {
-        this.graphqlResourceResolvers.add(one);
+        this.list.add(one);
     }
 
     @Override
     public List<T> getAllCollector() {
-        return graphqlResourceResolvers;
+        return list;
     }
 }

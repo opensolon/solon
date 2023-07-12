@@ -1,14 +1,16 @@
 package org.noear.solon.extend.graphql.event;
 
 import graphql.schema.idl.TypeRuntimeWiring;
+import java.util.LinkedList;
 import java.util.List;
+import org.noear.solon.Solon;
 import org.noear.solon.annotation.Configuration;
-import org.noear.solon.annotation.Inject;
+import org.noear.solon.core.AopContext;
 import org.noear.solon.core.event.EventListener;
-import org.noear.solon.extend.graphql.annotation.QueryMappingAnnoHandler;
-import org.noear.solon.extend.graphql.execution.collect.RuntimeWiringConfigurerCollect;
-import org.noear.solon.extend.graphql.execution.configurer.RuntimeWiringConfigurer;
-import org.noear.solon.extend.graphql.execution.fetcher.DataFetcherWrap;
+import org.noear.solon.extend.graphql.annotation.BaseSchemaMappingAnnoHandler;
+import org.noear.solon.extend.graphql.configurer.RuntimeWiringConfigurer;
+import org.noear.solon.extend.graphql.configurer.RuntimeWiringConfigurerCollect;
+import org.noear.solon.extend.graphql.fetcher.DataFetcherWrap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,16 +27,22 @@ public class DefaultRwConfigurerCollectEventListener implements
     private static Logger log = LoggerFactory
             .getLogger(DefaultRwConfigurerCollectEventListener.class);
 
-    @Inject
-    private QueryMappingAnnoHandler extractor;
-
     public DefaultRwConfigurerCollectEventListener() {
     }
 
     @Override
     public void onEvent(
             RuntimeWiringConfigurerCollect collect) throws Throwable {
-        final List<DataFetcherWrap> wrapList = extractor.getWrapList();
+
+        AopContext context = Solon.context();
+        List<BaseSchemaMappingAnnoHandler> beans = context
+                .getBeansOfType(BaseSchemaMappingAnnoHandler.class);
+
+        List<DataFetcherWrap> wrapList = new LinkedList<>();
+        for (BaseSchemaMappingAnnoHandler bean : beans) {
+            wrapList.addAll(bean.getWrapList());
+        }
+        
         RuntimeWiringConfigurer configurer = (builder) -> {
             wrapList.forEach(wrap -> {
                 String typeName = wrap.getTypeName();

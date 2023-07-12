@@ -6,12 +6,16 @@ import org.noear.solon.core.event.AppLoadEndEvent;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.extend.graphql.annotation.QueryMapping;
 import org.noear.solon.extend.graphql.annotation.QueryMappingAnnoHandler;
+import org.noear.solon.extend.graphql.annotation.SchemaMapping;
+import org.noear.solon.extend.graphql.annotation.SchemaMappingAnnoHandler;
 import org.noear.solon.extend.graphql.config.GraphqlConfiguration;
 import org.noear.solon.extend.graphql.controller.GraphqlController;
 import org.noear.solon.extend.graphql.event.AppLoadEndEventListener;
 import org.noear.solon.extend.graphql.event.DefaultCprResolverEventListener;
 import org.noear.solon.extend.graphql.event.DefaultRwConfigurerCollectEventListener;
 import org.noear.solon.extend.graphql.properties.GraphqlProperties;
+import org.noear.solon.extend.graphql.resolver.argument.HandlerMethodArgumentResolver;
+import org.noear.solon.extend.graphql.resolver.argument.HandlerMethodArgumentResolverCollect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,10 +31,20 @@ public class GraphqlPlugin implements Plugin {
     public void start(AopContext context) {
         log.debug("load GraphqlPlugin ...");
 
-        QueryMappingAnnoHandler extractor = new QueryMappingAnnoHandler(context);
-        context.beanExtractorAdd(QueryMapping.class, extractor);
+        HandlerMethodArgumentResolverCollect methodArgumentResolverCollect = new HandlerMethodArgumentResolverCollect();
+        context.wrapAndPut(HandlerMethodArgumentResolverCollect.class,
+                methodArgumentResolverCollect);
+        context.getBeanAsync(HandlerMethodArgumentResolver.class,
+                methodArgumentResolverCollect::append);
 
-        context.wrapAndPut(QueryMappingAnnoHandler.class, extractor);
+        SchemaMappingAnnoHandler schemaExtractor = new SchemaMappingAnnoHandler(context);
+        context.beanExtractorAdd(SchemaMapping.class, schemaExtractor);
+
+        QueryMappingAnnoHandler queryExtractor = new QueryMappingAnnoHandler(context);
+        context.beanExtractorAdd(QueryMapping.class, queryExtractor);
+
+        context.wrapAndPut(QueryMappingAnnoHandler.class, queryExtractor);
+        context.wrapAndPut(SchemaMappingAnnoHandler.class, schemaExtractor);
 
         context.lifecycle(-99, () -> {
             context.beanMake(GraphqlProperties.class);

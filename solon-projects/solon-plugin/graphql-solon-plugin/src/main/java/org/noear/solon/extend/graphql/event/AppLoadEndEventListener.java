@@ -11,12 +11,12 @@ import org.noear.solon.core.event.AppLoadEndEvent;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.event.EventListener;
 import org.noear.solon.extend.graphql.GraphqlPlugin;
+import org.noear.solon.extend.graphql.configurer.RuntimeWiringConfigurer;
+import org.noear.solon.extend.graphql.configurer.RuntimeWiringConfigurerCollect;
 import org.noear.solon.extend.graphql.execution.DefaultSchemaResourceGraphQlSourceBuilder;
 import org.noear.solon.extend.graphql.execution.GraphQlSource;
-import org.noear.solon.extend.graphql.execution.collect.GraphqlResourceResolverCollect;
-import org.noear.solon.extend.graphql.execution.collect.RuntimeWiringConfigurerCollect;
-import org.noear.solon.extend.graphql.execution.configurer.RuntimeWiringConfigurer;
-import org.noear.solon.extend.graphql.execution.resolver.GraphqlResourceResolver;
+import org.noear.solon.extend.graphql.resolver.resource.GraphqlResourceResolver;
+import org.noear.solon.extend.graphql.resolver.resource.GraphqlResourceResolverCollect;
 import org.noear.solon.extend.graphql.resource.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,6 +31,10 @@ public class AppLoadEndEventListener implements EventListener<AppLoadEndEvent> {
 
     @Override
     public void onEvent(AppLoadEndEvent appLoadEndEvent) throws Throwable {
+        this.initGraphqlSource(appLoadEndEvent);
+    }
+
+    private void initGraphqlSource(AppLoadEndEvent appLoadEndEvent) {
         GraphqlResourceResolverCollect graphqlResourceResolverCollect = new GraphqlResourceResolverCollect();
         RuntimeWiringConfigurerCollect runtimeWiringConfigurerCollect = new RuntimeWiringConfigurerCollect();
 

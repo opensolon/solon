@@ -1,4 +1,4 @@
-package org.noear.solon.extend.graphql.execution.fetcher;
+package org.noear.solon.extend.graphql.fetcher;
 
 import graphql.schema.DataFetcher;
 

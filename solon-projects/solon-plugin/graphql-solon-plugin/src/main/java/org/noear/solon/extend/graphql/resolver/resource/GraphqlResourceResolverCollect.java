@@ -1,6 +1,6 @@
-package org.noear.solon.extend.graphql.execution.collect;
+package org.noear.solon.extend.graphql.resolver.resource;
 
-import org.noear.solon.extend.graphql.execution.resolver.GraphqlResourceResolver;
+import org.noear.solon.extend.graphql.collect.AbstractBaseCollector;
 
 /**
  * @author fuzi1996

@@ -1,7 +1,8 @@
 package demo.component;
 
-import demo.entity.BookEntity;
+import demo.dto.BookInputDTO;
 import org.noear.solon.annotation.Component;
+import org.noear.solon.annotation.Param;
 import org.noear.solon.extend.graphql.annotation.QueryMapping;
 
 /**
@@ -14,9 +15,9 @@ public class BookService {
     public BookService() {
     }
 
-    private BookEntity getDefaultBook() {
-        BookEntity book = new BookEntity();
-        book.setId("1");
+    private BookInputDTO generateNewOne(String id) {
+        BookInputDTO book = new BookInputDTO();
+        book.setId(id);
         book.setName("book-1");
         book.setPageCount(1);
         book.setAuthorId("1");
@@ -24,7 +25,7 @@ public class BookService {
     }
 
     @QueryMapping
-    public BookEntity bookById(String id) {
-        return this.getDefaultBook();
+    public BookInputDTO bookById(@Param("id") String id) {
+        return this.generateNewOne(id);
     }
 }
