@@ -3,7 +3,7 @@ package features;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.noear.snack.ONode;
-import org.noear.solon.test.HttpTestBase;
+import org.noear.solon.test.HttpTester;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
 
@@ -13,7 +13,7 @@ import org.noear.solon.test.SolonTest;
  */
 @RunWith(SolonJUnit4ClassRunner.class)
 @SolonTest(TestApp.class)
-public class TestDemo extends HttpTestBase {
+public class TestDemo extends HttpTester {
     @Test
     public void test0() throws Exception{
         String json = path("/t1").get();

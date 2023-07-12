@@ -4,7 +4,7 @@ import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.noear.solon.test.HttpTestBase;
+import org.noear.solon.test.HttpTester;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
 
@@ -14,7 +14,7 @@ import org.noear.solon.test.SolonTest;
  */
 @RunWith(SolonJUnit4ClassRunner.class)
 @SolonTest(TestApp.class)
-public class TestDemo extends HttpTestBase {
+public class TestDemo extends HttpTester {
     @Test
     public void home_test() throws Exception {
         String json = path("/").get();

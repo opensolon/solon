@@ -30,7 +30,7 @@ public class SolonJUnit5Extension implements TestInstanceFactory {
 
             return tmp;
         } catch (Throwable e) {
-            throw new TestInstantiationException("Test class instantiation failed: " + factory.getTestClass().getName());
+            throw new TestInstantiationException("Test class instantiation failed: " + factory.getTestClass().getName(), e);
         }
     }
 }

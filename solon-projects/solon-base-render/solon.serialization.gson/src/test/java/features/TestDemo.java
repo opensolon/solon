@@ -3,7 +3,7 @@ package features;
 import com.google.gson.Gson;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.noear.solon.test.HttpTestBase;
+import org.noear.solon.test.HttpTester;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
 
@@ -15,7 +15,7 @@ import java.util.Map;
  */
 @RunWith(SolonJUnit4ClassRunner.class)
 @SolonTest(TestApp.class)
-public class TestDemo extends HttpTestBase {
+public class TestDemo extends HttpTester {
     @Test
     public void test0() throws Exception{
         String json = path("/").get();
