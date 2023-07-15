@@ -160,23 +160,6 @@ public class JlHttpContext extends WebContextBase {
         return _request.getBody();
     }
 
-    @Override
-    public String[] paramValues(String key) {
-        List<String> list = paramsMap().get(key);
-        if (list == null) {
-            return null;
-        }
-
-        return list.toArray(new String[list.size()]);
-    }
-
-    @Override
-    public String param(String key) {
-        //要充许为字符串
-        //默认不能为null
-        return paramMap().get(key);
-    }
-
     private NvMap _paramMap;
 
     @Override

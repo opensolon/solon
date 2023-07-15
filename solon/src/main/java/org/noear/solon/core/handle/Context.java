@@ -377,12 +377,21 @@ public abstract class Context {
     /**
      * 获取参数数组
      */
-    public abstract String[] paramValues(String name);
+    public String[] paramValues(String name) {
+        List<String> list = paramsMap().get(name);
+        if (list == null) {
+            return null;
+        }
+
+        return list.toArray(new String[list.size()]);
+    }
 
     /**
      * 获取参数
      * */
-    public abstract String param(String name);
+    public String param(String name){
+        return paramMap().get(name);
+    }
 
     /**
      * 获取参数
@@ -586,8 +595,13 @@ public abstract class Context {
      *
      * @param name header名
      */
-    public List<String> headerValues(String name) {
-        return headersMap().get(name);
+    public String[] headerValues(String name) {
+        List<String> list = headersMap().get(name);
+        if(list == null){
+            return null;
+        }
+
+        return list.toArray(new String[list.size()]);
     }
 
     /**

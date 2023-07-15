@@ -84,7 +84,7 @@ public class VxHttpContext extends Context {
 
     @Override
     public String[] paramValues(String name) {
-        return new String[0];
+        return null;
     }
 
     @Override

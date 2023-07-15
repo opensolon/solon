@@ -74,6 +74,14 @@ public class ParamWrap {
         }
     }
 
+    public String[] getValues(Context ctx) {
+        if (isRequestHeader) {
+            return ctx.headerValues(getName());
+        } else {
+            return ctx.paramValues(getName());
+        }
+    }
+
     public ParameterizedType getGenericType() {
         return genericType;
     }

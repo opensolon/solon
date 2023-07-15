@@ -1,6 +1,7 @@
 package org.noear.solon.core.handle;
 
 import org.noear.solon.core.NvMap;
+import org.noear.solon.core.util.IgnoreCaseMap;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -91,16 +92,6 @@ public class ContextEmpty extends Context {
         return null;
     }
 
-    @Override
-    public String[] paramValues(String key) {
-        return new String[0];
-    }
-
-    @Override
-    public String param(String key) {
-        return paramMap().get(key);
-    }
-
     private NvMap paramMap = null;
     @Override
     public NvMap paramMap() {
@@ -110,9 +101,13 @@ public class ContextEmpty extends Context {
         return paramMap;
     }
 
+    Map<String, List<String>> paramsMap = null;
     @Override
     public Map<String, List<String>> paramsMap() {
-        return null;
+        if(paramsMap == null){
+            paramsMap = new IgnoreCaseMap<>();
+        }
+        return paramsMap;
     }
 
     Map<String, List<UploadedFile>> filesMap = null;

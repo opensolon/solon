@@ -149,18 +149,6 @@ public class SmHttpContext extends WebContextBase {
         return _request.getInputStream();
     }
 
-    @Override
-    public String[] paramValues(String key) {
-        return _request.getParameterValues(key);
-    }
-
-    @Override
-    public String param(String key) {
-        //要充许为字符串
-        //默认不能为null
-        return paramMap().get(key);
-    }
-
     private NvMap _paramMap;
 
     @Override

@@ -14,7 +14,7 @@ public class HeaderController {
     }
 
     @Mapping("/demo2/header2/")
-    public List<String> header2(Context ctx) throws Exception {
+    public String[] header2(Context ctx) throws Exception {
         return ctx.headerValues("test");
     }
 
