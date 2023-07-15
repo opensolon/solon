@@ -267,6 +267,10 @@ public class ResourceUtil {
             resExpr = resExpr.substring(Utils.TAG_classpath.length());
         }
 
+        if(resExpr.startsWith("/")){
+            resExpr = resExpr.substring(1);
+        }
+
         if (resExpr.contains("/*") == false) { //说明没有*符
             paths.add(resExpr);
             return paths;
