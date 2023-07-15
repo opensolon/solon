@@ -1,5 +1,8 @@
 package org.noear.solon.test;
 
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.SolonTestApp;
@@ -72,7 +75,7 @@ public class RunnerUtils {
 
     /**
      * 初始化测试目标类
-     * */
+     */
     public static Object initTestTarget(AopContext aopContext, Object tmp) {
         //注入
         aopContext.beanInject(tmp);
@@ -83,7 +86,7 @@ public class RunnerUtils {
         //设置代理(把 final 排除掉)
         if (Modifier.isFinal(tmp.getClass().getModifiers()) == false) {
             beanWrap.proxySet(BeanProxy.getGlobal());
-            if(beanWrap.raw() != null){
+            if (beanWrap.raw() != null) {
                 aopContext.beanInject(beanWrap.raw());
             }
         }
@@ -97,7 +100,7 @@ public class RunnerUtils {
 
     /**
      * 初始化测试运行器
-     * */
+     */
     public static AopContext initRunner(Class<?> klass) throws Throwable {
         //添加测试类包名检测（包名为必须要求）
         if (klass.getPackage() == null || Utils.isEmpty(klass.getPackage().getName())) {
@@ -159,13 +162,12 @@ public class RunnerUtils {
 
     private static AopContext startDo(Class<?> mainClz, List<String> argsAry, Class<?> klass) throws Throwable {
 
-
         if (mainClz == klass) {
             String[] args = argsAry.toArray(new String[argsAry.size()]);
 
             SolonTestApp testApp = new SolonTestApp(mainClz, NvMap.from(args));
             testApp.start(x -> {
-                initDo(x, klass);
+                initDo(klass, x);
             });
 
             return testApp.context();
@@ -176,7 +178,7 @@ public class RunnerUtils {
             if (main != null && Modifier.isStatic(main.getModifiers())) {
                 String[] args = argsAry.toArray(new String[argsAry.size()]);
 
-                initDo(null, klass);
+                initDo(klass, null);
                 main.invoke(null, new Object[]{args});
 
                 return Solon.context();
@@ -185,7 +187,7 @@ public class RunnerUtils {
 
                 SolonTestApp testApp = new SolonTestApp(mainClz, NvMap.from(args));
                 testApp.start(x -> {
-                    initDo(x, klass);
+                    initDo(klass, x);
                 });
 
                 return testApp.context();
@@ -193,21 +195,29 @@ public class RunnerUtils {
         }
     }
 
-    private static void initDo(SolonApp app, Class<?> klass) {
+    private static void initDo(Class<?> klass, SolonApp app) {
         TestPropertySource propAnno = klass.getAnnotation(TestPropertySource.class);
 
         if (app == null) {
             EventBus.subscribe(AppInitEndEvent.class, event -> {
-                //加载测试配置
-                RunnerUtils.addPropertySource(event.context(), propAnno);
-                //event.context().wrapAndPut(klass);
-                event.context().beanAroundAdd(TestRollback.class, new TestRollbackInterceptor(), 120);
+                initContextDo(klass, event.context(), propAnno);
             });
         } else {
-            //加载测试配置
-            RunnerUtils.addPropertySource(app.context(), propAnno);
-            //app.context().wrapAndPut(klass);
-            app.context().beanAroundAdd(TestRollback.class, new TestRollbackInterceptor(), 120);
+            initContextDo(klass, app.context(), propAnno);
         }
+    }
+
+    private static void initContextDo(Class<?> klass, AopContext context, TestPropertySource propAnno) {
+        //添加 TestPropertySource 注解支持 //加载测试配置
+        RunnerUtils.addPropertySource(context, propAnno);
+
+        //添加 TestRollback 注解支持
+        context.beanAroundAdd(TestRollback.class, new TestRollbackInterceptor(), 120);
+
+        //添加 Mock 注解支持
+        context.beanInjectorAdd(Mock.class, (varH, anno) -> {
+            Object val = Mockito.mock(varH.getType(), anno.answer());
+            varH.setValue(val);
+        });
     }
 }

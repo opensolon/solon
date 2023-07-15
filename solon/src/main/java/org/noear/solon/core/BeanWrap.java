@@ -16,7 +16,7 @@ import org.noear.solon.core.wrap.ClassWrap;
 /**
  * Bean 包装
  *
- * Bean 构建过程：Constructor(构造方法) -> @Inject(依赖注入) -> @Init(初始化，相当于 PostConstruct)
+ * Bean 构建过程：Constructor(构造方法) -> @Inject(依赖注入) -> @Init(初始化，相当于 LifecycleBean)
  *
  * @author noear
  * @since 1.0
@@ -75,19 +75,24 @@ public class BeanWrap {
         this.name = name;
         this.typed = typed;
 
-        //单例
+        //不否为单例
         Singleton anoS = clz.getAnnotation(Singleton.class);
         singleton = (anoS == null || anoS.value()); //默认为单例
 
         annotations = clz.getAnnotations();
 
+        //构建初始化函数
         tryBuildInit();
 
+        //构建原生实例
         if (raw == null) {
             this.raw = _new();
         } else {
             this.raw = raw;
         }
+
+        //尝试初始化
+        tryInit(this.raw);
     }
 
     public AopContext context() {
@@ -218,36 +223,7 @@ public class BeanWrap {
         }
     }
 
-    /**
-     * bean 初始化
-     */
-    protected void init(Object bean) {
-        //a.注入
-        context.beanInject(bean);
 
-        //b.调用初始化函数
-        if (clzInit != null) {
-            if (clzInitIndex == 0) {
-                //如果为0，则自动识别
-                clzInitIndex = new IndexBuilder().buildIndex(clz);
-            }
-
-            //保持与 LifecycleBean 相同策略：+1
-            context.lifecycle(clzInitIndex + 1, () -> {
-                initInvokeDo(bean);
-            });
-        }
-    }
-
-
-    protected void initInvokeDo(Object bean) throws Throwable {
-        try {
-            clzInit.invoke(bean);
-        } catch (InvocationTargetException e) {
-            Throwable e2 = e.getTargetException();
-            throw Utils.throwableUnwrap(e2);
-        }
-    }
 
     /**
      * bean 新建对象
@@ -261,18 +237,48 @@ public class BeanWrap {
             //1.构造
             Object bean = ClassUtil.newInstance(clz);
 
-            //2.初始化
-            init(bean);
+            //2.完成注入动作
+            context.beanInject(bean);
 
+            //3.尝试代理转换
             if (proxy != null) {
                 bean = proxy.getProxy(context(), bean);
             }
 
+            //4.返回
             return bean;
         } catch (RuntimeException ex) {
             throw ex;
         } catch (Throwable ex) {
             throw new IllegalArgumentException("Instantiation failure: " + clz.getTypeName(), ex);
+        }
+    }
+
+    /**
+     * 尝试初始化（仅对第一个实例有效）//保持与 LifecycleBean 相同策略
+     *
+     * @since 2.3
+     */
+    protected void tryInit(Object bean) {
+        if(bean == null){
+            return;
+        }
+
+        if (clzInit != null) {
+            if (clzInitIndex == 0) {
+                //如果为0，则自动识别
+                clzInitIndex = new IndexBuilder().buildIndex(clz);
+            }
+
+            //保持与 LifecycleBean 相同策略：+1
+            context.lifecycle(clzInitIndex + 1, () -> {
+                try {
+                    clzInit.invoke(bean);
+                } catch (InvocationTargetException e) {
+                    Throwable e2 = e.getTargetException();
+                    throw Utils.throwableUnwrap(e2);
+                }
+            });
         }
     }
 
