@@ -23,6 +23,7 @@
 * 增加 ChainManager::defExecuteHandler 接口
 * 增强 ResourceUtil 的根路径兼容性
 * 调整 @Init 注解逻辑，仅对原生实例有效。保持与 LifecycleBean 相同策略
+* 调整 solon.boot.smarthttp 的 ws 适配
 * 调整 nacos2-solon-cloud-plugin 适配的  jackson 版本
 * 调整 nacos-solon-cloud-plugin 适配的  jackson 版本
 * 调整 LogUtil 改成静态扩展方式，原手动设置标为弃用

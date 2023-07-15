@@ -17,7 +17,7 @@ public class _SessionManagerImpl extends SessionManager {
     @Override
     public Session getSession(Object conn) {
         if (conn instanceof WebSocketRequest) {
-            return _SocketServerSession.getOnly((WebSocketRequest) conn);
+            return _SocketServerSession.get((WebSocketRequest) conn);
         } else {
             throw new IllegalArgumentException("This conn requires a smarthttp WebSocketRequest type");
         }

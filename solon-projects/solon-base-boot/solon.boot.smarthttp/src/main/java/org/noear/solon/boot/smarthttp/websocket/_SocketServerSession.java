@@ -2,7 +2,6 @@ package org.noear.solon.boot.smarthttp.websocket;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
-import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.message.Session;
@@ -21,13 +20,13 @@ import java.util.*;
 public class _SocketServerSession extends SessionBase {
     public static final Map<WebSocketRequest, _SocketServerSession> sessions = new HashMap<>();
 
-    public static _SocketServerSession get(WebSocketRequest req, WebSocketResponse res) {
+    public static _SocketServerSession get(WebSocketRequest req) {
         _SocketServerSession tmp = sessions.get(req);
         if (tmp == null) {
             synchronized (req) {
                 tmp = sessions.get(req);
                 if (tmp == null) {
-                    tmp = new _SocketServerSession(req, res);
+                    tmp = new _SocketServerSession(req);
                     sessions.put(req, tmp);
                 }
             }
@@ -36,22 +35,18 @@ public class _SocketServerSession extends SessionBase {
         return tmp;
     }
 
-    public static _SocketServerSession getOnly(WebSocketRequest real) {
-        return sessions.get(real);
-    }
-
     public static void remove(WebSocketRequest real) {
         sessions.remove(real);
     }
 
 
-    private final WebSocketRequest request;
+    private final WebSocketRequestImpl request;
     private final WebSocketResponse real;
     private String _sessionId = Utils.guid();
 
-    public _SocketServerSession(WebSocketRequest request, WebSocketResponse response) {
-        this.request = request;
-        this.real = response;
+    public _SocketServerSession(WebSocketRequest request) {
+        this.request = ((WebSocketRequestImpl) request);
+        this.real = this.request.getResponse();
     }
 
     @Override
@@ -75,14 +70,13 @@ public class _SocketServerSession extends SessionBase {
     @Override
     public URI uri() {
         if (_uri == null) {
-            WebSocketRequestImpl tmp = (WebSocketRequestImpl) request;
-            if (Utils.isEmpty(tmp.getQueryString())) {
-                _uri = URI.create(tmp.getRequestURL());
+            if (Utils.isEmpty(request.getQueryString())) {
+                _uri = URI.create(request.getRequestURL());
             } else {
-                if (tmp.getRequestURL().contains("?")) {
-                    _uri = URI.create(tmp.getRequestURL());
+                if (request.getRequestURL().contains("?")) {
+                    _uri = URI.create(request.getRequestURL());
                 } else {
-                    _uri = URI.create(tmp.getRequestURL() + "?" + tmp.getQueryString());
+                    _uri = URI.create(request.getRequestURL() + "?" + request.getQueryString());
                 }
             }
         }
@@ -163,7 +157,7 @@ public class _SocketServerSession extends SessionBase {
 
     @Override
     public boolean isSecure() {
-        return request.getRequestURI().startsWith("wss:");
+        return request.getRequestURL().startsWith("wss:");
     }
 
     @Override

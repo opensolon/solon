@@ -16,7 +16,7 @@ public class SmWebSocketHandleImp extends WebSocketDefaultHandler {
 
     @Override
     public void onHandShake(WebSocketRequest request, WebSocketResponse response) {
-        Solon.app().listener().onOpen(_SocketServerSession.get(request, response));
+        Solon.app().listener().onOpen(_SocketServerSession.get(request));
     }
 
     @Override
@@ -31,19 +31,17 @@ public class SmWebSocketHandleImp extends WebSocketDefaultHandler {
     }
 
     private void onCloseDo(WebSocketRequest request) {
-        _SocketServerSession session = _SocketServerSession.getOnly(request);
+        _SocketServerSession session = _SocketServerSession.get(request);
 
-        if (session != null) {
-            session.onClose();
-            Solon.app().listener().onClose(session);
-            _SocketServerSession.remove(request);
-        }
+        session.onClose();
+        Solon.app().listener().onClose(session);
+        _SocketServerSession.remove(request);
     }
 
     @Override
     public void handleTextMessage(WebSocketRequest request, WebSocketResponse response, String data) {
         try {
-            Session session = _SocketServerSession.get(request, response);
+            Session session = _SocketServerSession.get(request);
             Message message = Message.wrap(request.getRequestURI(), null, data);
 
             Solon.app().listener().onMessage(session, message.isString(true));
@@ -55,7 +53,7 @@ public class SmWebSocketHandleImp extends WebSocketDefaultHandler {
     @Override
     public void handleBinaryMessage(WebSocketRequest request, WebSocketResponse response, byte[] data) {
         try {
-            Session session = _SocketServerSession.get(request, response);
+            Session session = _SocketServerSession.get(request);
             Message message = null;
 
             if (Solon.app().enableWebSocketD()) {
@@ -73,10 +71,6 @@ public class SmWebSocketHandleImp extends WebSocketDefaultHandler {
 
     @Override
     public void onError(WebSocketRequest request, Throwable error) {
-        _SocketServerSession session = _SocketServerSession.getOnly(request);
-
-        if (session != null) {
-            Solon.app().listener().onError(session, error);
-        }
+        Solon.app().listener().onError(_SocketServerSession.get(request), error);
     }
 }
