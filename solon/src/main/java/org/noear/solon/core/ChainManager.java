@@ -113,6 +113,12 @@ public class ChainManager {
      */
     private Map<Class<?>, ActionExecuteHandler> executeHandlers = new LinkedHashMap<>();
 
+    public void defExecuteHandler(ActionExecuteHandler e) {
+        if (e != null) {
+            executeHandlerDefault = e;
+        }
+    }
+
     /**
      * 添加Action执行器
      */

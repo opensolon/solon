@@ -18,6 +18,7 @@
 * 增加 server.socket.ssl.* 配置?
 * 增加 server.websocket.ssl.* 配置?
 * 增加 Context::isSecure 接口
+* 增加 ChainManager::defExecuteHandler 接口
 * 调整 nacos2-solon-cloud-plugin 适配的  jackson 版本
 * 调整 nacos-solon-cloud-plugin 适配的  jackson 版本
 * 调整 LogUtil 改成静态扩展方式，原手动设置标为弃用

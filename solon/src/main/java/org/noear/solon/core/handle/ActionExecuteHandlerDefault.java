@@ -49,7 +49,7 @@ public class ActionExecuteHandlerDefault implements ActionExecuteHandler {
     /**
      * 构建执行参数
      *
-     * @param ctx   上下文
+     * @param ctx 上下文
      */
     protected List<Object> buildArgs(Context ctx, MethodWrap mWrap) throws Exception {
         ParamWrap[] pSet = mWrap.getParamWraps();
@@ -190,22 +190,29 @@ public class ActionExecuteHandlerDefault implements ActionExecuteHandler {
                         tv = null;
                     } else {
                         //尝试转为实体
-                        tv = changeEntityDo(ctx, pn, pt);
+                        tv = changeEntityDo(ctx, p, pn, pt);
                     }
                 }
             }
         } else {
             //如果拿到了具体的参数值，则开始转换
-            tv = ConvertUtil.to(p.getParameter(), pt, pn, pv, ctx);
+            tv = changeValueDo(ctx, p, pn, pt, pv);
         }
 
         return tv;
     }
 
     /**
-     * 尝试将值转换为实体
+     * 尝试将值转换为目标值
      */
-    private Object changeEntityDo(Context ctx, String name, Class<?> type) throws Exception {
+    protected Object changeValueDo(Context ctx, ParamWrap p, String name, Class<?> type, String value) {
+        return ConvertUtil.to(p.getParameter(), type, name, value, ctx);
+    }
+
+    /**
+     * 尝试将值转换为目标实体
+     */
+    protected Object changeEntityDo(Context ctx, ParamWrap p, String name, Class<?> type) throws Exception {
         ClassWrap clzW = ClassWrap.get(type);
         Map<String, String> map = ctx.paramMap();
 
