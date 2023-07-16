@@ -17,19 +17,26 @@
 * 新增 solon-admin-client
 * 新增 solon-admin-server
 * 新增 solon-admin-server-ui
-* 增加 server.socket.ssl.* 配置?
-* 增加 server.websocket.ssl.* 配置?
+* 增加 server.socket.ssl.* 配置???
+* 增加 server.websocket.ssl.* 配置???
 * 增加 Context::isSecure 接口
 * 增加 ChainManager::defExecuteHandler 接口
-* 增强 ResourceUtil 的根路径兼容性
-* 调整 @Init 注解逻辑，仅对原生实例有效。保持与 LifecycleBean 相同策略
-* 调整 solon.boot.smarthttp 的 ws 适配
-* 调整 nacos2-solon-cloud-plugin 适配的  jackson 版本
-* 调整 nacos-solon-cloud-plugin 适配的  jackson 版本
-* 调整 LogUtil 改成静态扩展方式，原手动设置标为弃用
-* 调整 Context::headerValues() 返回类型为 String[]
-* 调整 Context::paramValues() 所有 server 相关处理逻辑
+* 优化 ResourceUtil 的根路径兼容性
+* 优化 soln rpc 关于 @Body 注解的处理???
+* 优化 @Init 注解逻辑，仅对原生实例有效。保持与 LifecycleBean 相同策略
+* 优化 solon.boot.smarthttp 的 ws 适配
+* 优化 nacos2-solon-cloud-plugin 的适配，统一 jackson 版本
+* 优化 nacos-solon-cloud-plugin 的适配，统一 jackson 版本
+* 优化 LogUtil 扩展方式，改为静态扩展方式，原手方式标为弃用
+* 优化 Context::headerValues() 返回类型为 String[]
+* 优化 Context::paramValues() 统一 server 相关处理逻辑
 * dbvisitor 升为 5.3.3
+* mybatis-flex 升为 1.4.9
+* fastmybatis 升为 2.8.1
+* bean-searcher 升为 4.2.2
+* liteflow 升为 2.10.5
+* beetl 升为 3.15.7.RELEASE
+* beetlsql 升为 3.23.4-RELEASE
 
 ### 2.3.8
 * 增加 HttpServerConfigure::enableHttp2 接口, 默认为 false
