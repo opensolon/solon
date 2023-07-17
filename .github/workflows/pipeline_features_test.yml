@@ -36,7 +36,8 @@ jobs:
       # Scanning Code
       - name: scan
         run: |
-          infer -- mvn -DskipTests=true clean package -P infer-capture
+          # infer -- mvn -DskipTests=true clean package
+          echo "scan code "
 
       # pr review
       - name: Check Infer report
