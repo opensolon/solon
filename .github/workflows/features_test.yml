@@ -21,27 +21,27 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-    build_install_test:
-      name: Build code and install and test
-      needs: [ env_init ]
-      env:
-        STAGE: BUILD_INSTALL_TEST
-      runs-on: [ ubuntu-latest ]
-      strategy:
-        matrix:
-          java: [ '8', '11', '17', '20' ]
-      steps:
-        - name: Setup java
-          uses: actions/setup-java@v3
-          with:
-            distribution: '<distribution>'
-            java-version: ${{ matrix.java }}
+  build_install_test:
+    name: Build code and install and test
+    needs: [ env_init ]
+    env:
+      STAGE: BUILD_INSTALL_TEST
+    runs-on: [ ubuntu-latest ]
+    strategy:
+      matrix:
+        java: [ '8', '11', '17', '20' ]
+    steps:
+      - name: Setup java
+        uses: actions/setup-java@v3
+        with:
+          distribution: '<distribution>'
+          java-version: ${{ matrix.java }}
 
-        - name: Clean And Install
-          run: |
-            mvn clean install -Dmaven.test.skip=true --file pom.xml
+      - name: Clean And Install
+        run: |
+          mvn clean install -Dmaven.test.skip=true --file pom.xml
 
-        - name: Test Features
-          run: |
-            mvn test -Dtest="features.*" -Dmaven.test.failure.ignore=true -f __test/pom.xml
+      - name: Test Features
+        run: |
+          mvn test -Dtest="features.*" -Dmaven.test.failure.ignore=true -f __test/pom.xml
 
