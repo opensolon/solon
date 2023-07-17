@@ -65,7 +65,7 @@ Solon v2.4.0-SNAPSHOT
 * Web、Data、Job、Remoting、Cloudなどの開発シナリオをサポート
 * Handler+ContextとListener+Messageの2つのイベントモデルを両立
 * プラグイン式の拡張を強調し、異なるアプリケーションシーンに対応可能
-* GraalVm Nativeパッケージをサポート
+* GraalVm Native Imageパッケージをサポート
 * サービスプラグイン「ホットプラグ」「ホットプラグ」「ホットマネジメント」を許可します。
 
 

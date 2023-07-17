@@ -65,7 +65,7 @@ Solon v2.4.0-SNAPSHOT
 * 支持 Web、Data、Job、Remoting、Cloud 等任何开发场景
 * 兼顾 Handler + Context 和 Listener + Message 两种架构模式
 * 强调插件式扩展，可扩展可切换；适应不同的应用场景
-* 支持 GraalVm Native 打包
+* 支持 GraalVm Native Image 打包
 * 允许业务插件“热插”、“热拔”、“热管理”
 
 
