@@ -36,7 +36,7 @@ jobs:
       # Scanning Code
       - name: scan
         run: |
-          infer -- mvn -DskipTests=true clean package
+          infer -- mvn -DskipTests=true clean package -P infer-capture
 
       # pr review
       - name: Check Infer report
