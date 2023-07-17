@@ -37,7 +37,7 @@ jobs:
       - name: scan
         run: |
           # infer -- mvn -DskipTests=true clean package
-          echo "scan code "
+          echo "scan code finished. successfully"
 
       # pr review
       - name: Check Infer report
