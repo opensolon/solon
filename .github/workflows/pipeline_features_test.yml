@@ -47,6 +47,7 @@ jobs:
         run: |
           mvn test -Dtest="features.*" -Dmaven.test.failure.ignore=true -f __test/pom.xml
 
+      # Generate test reports
       - name: JEST Test Report
         uses: dorny/test-reporter@v1
         if: success() || failure()    # run this step even if previous step failed
