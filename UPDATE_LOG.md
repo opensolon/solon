@@ -34,7 +34,7 @@
 * 优化 Context::paramValues() 统一 server 相关处理逻辑
 * 优化 统一 请求参数与实体字段的注入转换机制，并增加自定义转换机制
 * dbvisitor 升为 5.3.3
-* mybatis-flex 升为 1.4.9
+* mybatis-flex 升为 1.5.0
 * fastmybatis 升为 2.8.1
 * bean-searcher 升为 4.2.2
 * liteflow 升为 2.10.5
