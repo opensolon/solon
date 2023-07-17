@@ -3,7 +3,7 @@
 #----------------------------------------------------------------
 
 name: Solon Features Test CI
-run-name: ${{ github.actor }} is testing out Solon in GitHub Actions 🚀
+run-name: ${{ github.actor }} is testing out SOLON in GitHub Actions 🚀
 
 
 on: [ push, pull_request, workflow_dispatch ]
