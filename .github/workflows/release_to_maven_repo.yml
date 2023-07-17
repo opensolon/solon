@@ -2,12 +2,34 @@ name: Release
 
 # Run workflow on commits to the `master` branch
 # docs : https://github.com/marketplace/actions/action-maven-publish
+# not test!!!
 on:
   push:
     branches:
       - master
 
 jobs:
+
+ # publish package to github package
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Set up Java for publishing to GitHub Packages
+        uses: actions/checkout@v3
+
+      - name: Publish to GitHub Packages
+        uses: actions/setup-java@v3
+        with:
+          java-version: '8'
+          distribution: 'zulu'
+          run: mvn --batch-mode deploy -DskipTests -Prelease-github
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # publish package to maven repository
   release:
     runs-on: ubuntu-latest
     steps:
