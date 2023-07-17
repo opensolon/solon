@@ -5,6 +5,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.annotation.*;
 import org.noear.solon.core.bean.InitializingBean;
 import org.noear.solon.core.bean.LifecycleBean;
+import org.noear.solon.core.convert.Converter;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.event.EventListener;
 import org.noear.solon.core.handle.*;
@@ -268,6 +269,11 @@ public class AopContext extends BeanContainer {
         //ActionExecuteHandler
         if(ActionExecuteHandler.class.isAssignableFrom(clz)){
             Solon.app().chainManager().addExecuteHandler(bw.raw());
+        }
+
+        //Converter
+        if(Converter.class.isAssignableFrom(clz)){
+            Solon.app().converterManager().register(bw.raw());
         }
     }
 

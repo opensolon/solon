@@ -1,5 +1,6 @@
 package org.noear.solon;
 
+import org.noear.solon.core.convert.ConverterManager;
 import org.noear.solon.core.event.*;
 import org.noear.solon.core.event.EventListener;
 import org.noear.solon.core.handle.*;
@@ -33,6 +34,7 @@ import java.util.function.Consumer;
 public class SolonApp extends RouterWrapper {
     private final SolonProps _cfg; //属性配置
     private final AopContext _context;//容器上下文
+    private final ConverterManager _converterManager; //转换管理器
 
     private final Class<?> _source; //应用加载源
     private final long _startupTime;
@@ -47,6 +49,13 @@ public class SolonApp extends RouterWrapper {
     }
 
     /**
+     * 获取转换管理器
+     * */
+    public ConverterManager converterManager() {
+        return _converterManager;
+    }
+
+    /**
      * 获取应用属性（或配置）
      */
     public SolonProps cfg() {
@@ -56,6 +65,7 @@ public class SolonApp extends RouterWrapper {
     protected SolonApp(Class<?> source, NvMap args) throws Exception {
         _startupTime = System.currentTimeMillis();
         _source = source;
+        _converterManager = new ConverterManager();
 
         //添加启动类检测
         if (source == null) {

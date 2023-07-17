@@ -1,5 +1,9 @@
 package org.noear.solon.core.util;
 
+import org.noear.solon.Solon;
+import org.noear.solon.Utils;
+import org.noear.solon.core.convert.Converter;
+import org.noear.solon.core.exception.ConvertException;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.wrap.VarDeclarer;
 
@@ -31,22 +35,16 @@ public class ConvertUtil {
      */
     public static Object to(VarDeclarer declarer, String val, Context ctx) throws ClassCastException {
         if (String.class == declarer.getType()) {
+            //如果是 string 返回原始值
             return val;
         }
 
-        if (val.length() == 0) {
+        if (Utils.isEmpty(val)) {
+            //如果是其它类型，且为空。返回 null （空不方便转其它类型）
             return null;
         }
 
         Object rst = null;
-
-        if (rst == null && Date.class == declarer.getType()) {
-            try {
-                rst = DateAnalyzer.global().parse(val);
-            } catch (ParseException e) {
-                throw new RuntimeException(e);
-            }
-        }
 
         //转数组
         if (rst == null && declarer.getType().isArray()) {
@@ -64,7 +62,7 @@ public class ConvertUtil {
             rst = tryToArray(ary, declarer.getType());
         }
 
-        //转 coll
+        //转集合
         if (rst == null && Collection.class.isAssignableFrom(declarer.getType())) {
             String[] ary = null;
             if (ctx == null) {
@@ -95,6 +93,7 @@ public class ConvertUtil {
             }
         }
 
+        //转其它（不是数组，也不是集合）
         if (rst == null) {
             rst = tryTo(declarer.getType(), val);
         }
@@ -132,9 +131,16 @@ public class ConvertUtil {
         }
 
 
-        Object rst = tryTo(type, val);
+        Object rst = null;
 
-        //转 list
+        //转数组
+        if (rst == null && type.isArray()) {
+            String[] ary = val.split(",");
+
+            rst = tryToArray(ary, type);
+        }
+
+        //转集合
         if (rst == null && Collection.class.isAssignableFrom(type)) {
             String[] ary = val.split(",");
 
@@ -154,23 +160,10 @@ public class ConvertUtil {
             }
         }
 
-        //转数组
-        if (rst == null && type.isArray()) {
-            String[] ary = val.split(",");
-
-            rst = tryToArray(ary, type);
+        //转其它
+        if(rst == null){
+            rst = tryTo(type, val);
         }
-
-        if (rst == null && Date.class == (type)) {
-            try {
-                return DateAnalyzer.global().parse(val);
-            } catch (RuntimeException ex) {
-                throw ex;
-            } catch (Throwable ex) {
-                throw new RuntimeException(ex);
-            }
-        }
-
 
         if (rst == null) {
             throw new ClassCastException("Unsupported type:" + type.getName());
@@ -252,6 +245,12 @@ public class ConvertUtil {
      * @param val  值
      */
     public static Object tryTo(Class<?> type, String val) {
+        //尝试获取转换器
+        Converter converter = Solon.app().converterManager().find(String.class, type);
+        if(converter != null){
+            return converter.convert(val);
+        }
+
         if (Short.class == type || type == Short.TYPE) {
             return Short.parseShort(val);
         }
@@ -278,6 +277,14 @@ public class ConvertUtil {
             }
 
             return Boolean.parseBoolean(val);
+        }
+
+        if (Date.class == type) {
+            try {
+                return DateAnalyzer.global().parse(val);
+            } catch (ParseException e) {
+                throw new ConvertException(e);
+            }
         }
 
         if (LocalDate.class == type) {
