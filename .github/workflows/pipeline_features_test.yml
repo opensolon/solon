@@ -21,16 +21,29 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+
+      # Setup Infer
+      - name: Setup Infer
+        uses: srz-zumix/setup-infer@v1
+
       # Setup Java
       - name: Setup java
         uses: actions/setup-java@v3
         with:
           distribution: 'zulu'
           java-version: 8
+
       # Scanning Code
       - name: scan
         run: |
           infer -- mvn clean package -Dmaven.test.skip=true
+
+      # pr review
+      - name: Check Infer report
+        if: ${{ github.event_name == 'pull_request' }}
+        uses: srz-zumix/reviewdog-action-infer@v1
+        with:
+          reporter: github-pr-review # Default is github-pr-check
   
 
   junit-test:
