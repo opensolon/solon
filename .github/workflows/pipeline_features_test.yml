@@ -19,7 +19,7 @@ jobs:
       pull-requests: write
       actions: write
 
-    name: matrix junit test JDK version - ${{ matrix.java }}
+    name: Matrix junit test JDK version - ${{ matrix.java }}
     env:
       STAGE: BUILD_INSTALL_TEST
     runs-on: 'ubuntu-latest'
