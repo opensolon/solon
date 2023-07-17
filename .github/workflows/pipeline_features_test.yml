@@ -17,6 +17,16 @@ jobs:
       STAGE: CODE_SCAN
     runs-on: ubuntu-latest
     steps:
+      # check out code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Setup Java
+      - name: Setup java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: 8
       - name: scan
         run: |
           infer -- mvn clean package -Dmaven.test.skip=true
