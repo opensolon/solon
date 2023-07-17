@@ -10,20 +10,9 @@ on: [ push, pull_request, workflow_dispatch ]
 
 
 jobs:
-  env_init:
-    name: Environment init
-    env:
-      PROJECT_NAME: solon
-      STAGE: ENV_INIT
-    runs-on: 'ubuntu-latest'
-    steps:
-      # check out code
-      - name: Checkout code
-        uses: actions/checkout@v3
 
-  build_install_test:
+  test:
     name: Build code and install and test
-    needs: [ env_init ]
     env:
       STAGE: BUILD_INSTALL_TEST
     runs-on: 'ubuntu-latest'
@@ -31,16 +20,22 @@ jobs:
       matrix:
         java: [ '8', '11', '17', '20' ]
     steps:
+      # check out code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Setup Java
       - name: Setup java
         uses: actions/setup-java@v3
         with:
           distribution: 'zulu'
           java-version: ${{ matrix.java }}
-
+      # Maven install
       - name: Clean And Install
         run: |
           mvn clean install -Dmaven.test.skip=true --file pom.xml
 
+      # Maven Test
       - name: Test Features
         run: |
           mvn test -Dtest="features.*" -Dmaven.test.failure.ignore=true -f __test/pom.xml
