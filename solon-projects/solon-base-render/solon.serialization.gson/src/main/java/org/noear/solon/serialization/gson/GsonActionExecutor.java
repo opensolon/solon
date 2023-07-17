@@ -7,7 +7,6 @@ import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.wrap.ParamWrap;
 import org.noear.solon.serialization.gson.impl.DateReadAdapter;
 
-import java.lang.reflect.ParameterizedType;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -64,7 +63,7 @@ public class GsonActionExecutor extends ActionExecuteHandlerDefault {
 
     @Override
     protected Object changeValue(Context ctx, ParamWrap p, int pi, Class<?> pt, Object bodyObj) throws Exception {
-        if (p.requireBody() == false && ctx.paramMap().containsKey(p.getName())) {
+        if (p.isRequiredBody() == false && ctx.paramMap().containsKey(p.getName())) {
             //有可能是path、queryString变量
             return super.changeValue(ctx, p, pi, pt, bodyObj);
         }
@@ -76,17 +75,17 @@ public class GsonActionExecutor extends ActionExecuteHandlerDefault {
         if (bodyObj instanceof JsonObject) {
             JsonObject tmp = (JsonObject) bodyObj;
 
-            if (p.requireBody() == false) {
+            if (p.isRequiredBody() == false) {
                 //
                 //如果没有 body 要求；尝试找按属性找
                 //
                 if (tmp.has(p.getName())) {
                     //支持泛型的转换
-                    ParameterizedType gp = p.getGenericType();
-                    if (gp != null) {
-                        return gson().fromJson(tmp.get(p.getName()),gp);
+                    if (p.isGenericType()) {
+                        return gson().fromJson(tmp.get(p.getName()), p.getGenericType());
+                    } else {
+                        return gson().fromJson(tmp.get(p.getName()), pt);
                     }
-                    return gson().fromJson(tmp.get(p.getName()),pt);
                 }
             }
 
@@ -103,12 +102,11 @@ public class GsonActionExecutor extends ActionExecuteHandlerDefault {
                 }
 
                 //支持泛型的转换 如：Map<T>
-                ParameterizedType gp = p.getGenericType();
-                if (gp != null) {
-                    return gson().fromJson(tmp,gp);
+                if (p.isGenericType()) {
+                    return gson().fromJson(tmp, p.getGenericType());
+                } else {
+                    return gson().fromJson(tmp, pt);
                 }
-                return gson().fromJson(tmp,pt);
-                // return tmp.toJavaObject(pt);
             }
         }
 
@@ -119,13 +117,13 @@ public class GsonActionExecutor extends ActionExecuteHandlerDefault {
                 return null;
             }
             //集合类型转换
-            ParameterizedType gp = p.getGenericType();
-            if (gp != null) {
+            if (p.isGenericType()) {
                 //转换带泛型的集合
-                return gson().fromJson(tmp, gp);
+                return gson().fromJson(tmp, p.getGenericType());
+            } else {
+                //不仅可以转换为List 还可以转换成Set
+                return gson().fromJson(tmp, p.getType());
             }
-            //不仅可以转换为List 还可以转换成Set
-            return gson().fromJson(tmp, p.getType());
         }
 
         return bodyObj;

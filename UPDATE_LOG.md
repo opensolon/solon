@@ -21,6 +21,7 @@
 * 增加 server.websocket.ssl.* 配置???
 * 增加 Context::isSecure 接口
 * 增加 ChainManager::defExecuteHandler 接口
+* 增加 @Header String[] xxx 注入支持
 * 优化 ResourceUtil 的根路径兼容性
 * 优化 soln rpc 关于 @Body 注解的处理???
 * 优化 @Init 注解逻辑，仅对原生实例有效。保持与 LifecycleBean 相同策略
@@ -30,6 +31,7 @@
 * 优化 LogUtil 扩展方式，改为静态扩展方式，原手方式标为弃用
 * 优化 Context::headerValues() 返回类型为 String[]
 * 优化 Context::paramValues() 统一 server 相关处理逻辑
+* 优化 统一 请求参数与实体字段的注入转换机制
 * dbvisitor 升为 5.3.3
 * mybatis-flex 升为 1.4.9
 * fastmybatis 升为 2.8.1

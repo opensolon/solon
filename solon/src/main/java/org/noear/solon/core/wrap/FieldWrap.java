@@ -108,6 +108,23 @@ public class FieldWrap {
         _getter = dofindGetter(clz, f1);
     }
 
+
+
+    private VarDeclarer declarer;
+    /**
+     * 变量申明者
+     *
+     * @since 2.3
+     * */
+    public VarDeclarer getDeclarer() {
+        if(declarer == null){
+            //采用懒加载，不浪费
+            declarer = new FieldWrapDeclarer(this);
+        }
+        return declarer;
+    }
+
+
     /**
      * 获取自身的临时对象
      */

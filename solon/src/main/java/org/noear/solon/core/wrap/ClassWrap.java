@@ -52,7 +52,7 @@ public class ClassWrap {
     //for record
     private boolean _recordable;
     private Constructor _recordConstructor;
-    private Parameter[] _recordParams;
+    private List<ParamWrap> _recordParams;
 
     protected ClassWrap(Class<?> clz) {
         _clz = clz;
@@ -84,7 +84,10 @@ public class ClassWrap {
         if (_recordable) {
             //如果合字段只读
             _recordConstructor = clz.getConstructors()[0];
-            _recordParams = _recordConstructor.getParameters();
+            _recordParams = new ArrayList<>();
+            for (Parameter p : _recordConstructor.getParameters()) {
+                _recordParams.add(new ParamWrap(p));
+            }
         }
     }
 
@@ -128,7 +131,7 @@ public class ClassWrap {
     /**
      * record 构造参数（可能为 null）
      * */
-    public Parameter[] recordParams(){
+    public List<ParamWrap> recordParams(){
         return _recordParams;
     }
 
@@ -165,17 +168,17 @@ public class ClassWrap {
         try {
             if (recordable()) {
                 //for record
-                Parameter[] argsP = recordParams();
-                Object[] argsV = new Object[argsP.length];
+                List<ParamWrap> argsP = recordParams();
+                Object[] argsV = new Object[argsP.size()];
 
-                for (int i = 0; i < argsP.length; i++) {
-                    Parameter p = argsP[i];
+                for (int i = 0; i < argsP.size(); i++) {
+                    ParamWrap p = argsP.get(i);
                     String key = p.getName();
                     String val0 = data.apply(key);
 
                     if (val0 != null) {
                         //将 string 转为目标 type，并为字段赋值
-                        Object val = ConvertUtil.to(p, p.getType(), key, val0, ctx);
+                        Object val = ConvertUtil.to(p, val0, ctx);
                         argsV[i] = val;
                     } else {
                         if(p.getType() == UploadedFile.class){
@@ -232,7 +235,7 @@ public class ClassWrap {
 
             if (val0 != null) {
                 //将 string 转为目标 type，并为字段赋值
-                Object val = ConvertUtil.to(fw.field, fw.type, key, val0, ctx);
+                Object val = ConvertUtil.to(fw.getDeclarer(), val0, ctx);
                 fw.setValue(bean, val);
             } else {
                 if (ctx != null && fw.type == UploadedFile.class) {

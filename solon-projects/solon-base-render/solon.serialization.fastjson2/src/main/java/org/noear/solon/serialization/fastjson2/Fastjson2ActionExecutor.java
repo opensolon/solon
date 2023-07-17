@@ -6,7 +6,6 @@ import org.noear.solon.core.handle.ActionExecuteHandlerDefault;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.wrap.ParamWrap;
 
-import java.lang.reflect.ParameterizedType;
 import java.util.Collection;
 import java.util.List;
 
@@ -48,7 +47,7 @@ public class Fastjson2ActionExecutor extends ActionExecuteHandlerDefault {
 
     @Override
     protected Object changeValue(Context ctx, ParamWrap p, int pi, Class<?> pt, Object bodyObj) throws Exception {
-        if (p.requireBody() == false && ctx.paramMap().containsKey(p.getName())) {
+        if (p.isRequiredBody() == false && ctx.paramMap().containsKey(p.getName())) {
             //有可能是path、queryString变量
             return super.changeValue(ctx, p, pi, pt, bodyObj);
         }
@@ -60,17 +59,17 @@ public class Fastjson2ActionExecutor extends ActionExecuteHandlerDefault {
         if (bodyObj instanceof JSONObject) {
             JSONObject tmp = (JSONObject) bodyObj;
 
-            if (p.requireBody() == false) {
+            if (p.isRequiredBody() == false) {
                 //
                 //如果没有 body 要求；尝试找按属性找
                 //
                 if (tmp.containsKey(p.getName())) {
                     //支持泛型的转换
-                    ParameterizedType gp = p.getGenericType();
-                    if (gp != null) {
-                        return tmp.getObject(p.getName(), gp);
+                    if (p.isGenericType()) {
+                        return tmp.getObject(p.getName(), p.getGenericType());
+                    } else {
+                        return tmp.getObject(p.getName(), pt);
                     }
-                    return tmp.getObject(p.getName(), pt);
                 }
             }
 
@@ -87,29 +86,28 @@ public class Fastjson2ActionExecutor extends ActionExecuteHandlerDefault {
                 }
 
                 //支持泛型的转换 如：Map<T>
-                ParameterizedType gp = p.getGenericType();
-                if (gp != null) {
-                    return tmp.to(gp);
+                if (p.isGenericType()) {
+                    return tmp.to(p.getGenericType());
+                } else {
+                    return tmp.to(pt);
                 }
-                return tmp.to(pt);
-                // return tmp.toJavaObject(pt);
             }
         }
 
         if (bodyObj instanceof JSONArray) {
             JSONArray tmp = (JSONArray) bodyObj;
             //如果参数是非集合类型
-            if(!Collection.class.isAssignableFrom(pt)){
+            if (!Collection.class.isAssignableFrom(pt)) {
                 return null;
             }
             //集合类型转换
-            ParameterizedType gp = p.getGenericType();
-            if (gp != null) {
+            if (p.isGenericType()) {
                 //转换带泛型的集合
-                return  tmp.to(gp);
+                return tmp.to(p.getGenericType());
+            } else {
+                //不仅可以转换为List 还可以转换成Set
+                return tmp.to(p.getType());
             }
-            //不仅可以转换为List 还可以转换成Set
-            return tmp.to(p.getType());
         }
 
         return bodyObj;

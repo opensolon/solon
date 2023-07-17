@@ -7,7 +7,6 @@ import org.noear.solon.core.handle.ActionExecuteHandlerDefault;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.wrap.ParamWrap;
 
-import java.lang.reflect.ParameterizedType;
 import java.util.Collection;
 import java.util.List;
 
@@ -57,7 +56,7 @@ public class SnackActionExecutor extends ActionExecuteHandlerDefault {
     @Override
     protected Object changeValue(Context ctx, ParamWrap p, int pi, Class<?> pt, Object bodyObj) throws Exception {
 
-        if (p.requireBody() == false && p.requireBody() == false && ctx.paramMap().containsKey(p.getName())) {
+        if (p.isRequiredInput() == false && p.isRequiredBody() == false && ctx.paramMap().containsKey(p.getName())) {
             //有可能是path、queryString变量
             return super.changeValue(ctx, p, pi, pt, bodyObj);
         }
@@ -69,18 +68,17 @@ public class SnackActionExecutor extends ActionExecuteHandlerDefault {
         ONode tmp = (ONode) bodyObj;
 
         if (tmp.isObject()) {
-            if (p.requireBody() == false) {
+            if (p.isRequiredBody() == false) {
                 //
                 //如果没有 body 要求；尝试找按属性找
                 //
                 if (tmp.contains(p.getName())) {
                     //支持泛型的转换
-                    ParameterizedType gp = p.getGenericType();
-                    if (gp != null) {
-                        return tmp.get(p.getName()).toObject(gp);
+                    if (p.isGenericType()) {
+                        return tmp.get(p.getName()).toObject(p.getGenericType());
+                    }else{
+                        return tmp.get(p.getName()).toObject(pt);
                     }
-
-                    return tmp.get(p.getName()).toObject(pt);
                 }
             }
 
@@ -98,12 +96,11 @@ public class SnackActionExecutor extends ActionExecuteHandlerDefault {
                 }
 
                 //支持泛型的转换 如：Map<T>
-                ParameterizedType gp = p.getGenericType();
-                if (gp != null) {
-                    return tmp.toObject(gp);
+                if (p.isGenericType()) {
+                    return tmp.toObject(p.getGenericType());
+                }else{
+                    return tmp.toObject(pt);
                 }
-
-                return tmp.toObject(pt);
             }
         }
 
@@ -114,14 +111,13 @@ public class SnackActionExecutor extends ActionExecuteHandlerDefault {
             }
 
             //集合类型转换
-            ParameterizedType gp = p.getGenericType();
-            if (gp != null) {
+            if (p.isGenericType()) {
                 //转换带泛型的集合
-                return tmp.toObject(gp);
+                return tmp.toObject(p.getGenericType());
+            }else{
+                //不仅可以转换为List 还可以转换成Set
+                return tmp.toObject(p.getType());
             }
-
-            //不仅可以转换为List 还可以转换成Set
-            return tmp.toObject(p.getType());
         }
 
         return tmp.val().getRaw();

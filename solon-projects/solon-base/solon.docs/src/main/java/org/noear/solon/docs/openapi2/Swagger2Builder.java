@@ -19,7 +19,6 @@ import org.noear.solon.Utils;
 import org.noear.solon.core.handle.*;
 import org.noear.solon.core.route.Routing;
 import org.noear.solon.core.util.GenericUtil;
-import org.noear.solon.core.util.PathUtil;
 
 import org.noear.solon.core.wrap.ClassWrap;
 import org.noear.solon.core.wrap.FieldWrap;
@@ -335,7 +334,7 @@ public class Swagger2Builder {
                     //array model
                     BodyParameter modelParameter = new BodyParameter();
                     modelParameter.setSchema(new ArrayModel().items(new RefProperty(paramSchema)));
-                    if (paramHolder.getParam() != null && paramHolder.getParam().requireBody() == false) {
+                    if (paramHolder.getParam() != null && paramHolder.getParam().isRequiredBody() == false) {
                         modelParameter.setIn(ApiEnum.PARAM_TYPE_QUERY);
                     }
 
@@ -365,7 +364,7 @@ public class Swagger2Builder {
                         //做为 body
                         BodyParameter modelParameter = new BodyParameter();
                         modelParameter.setSchema(new RefModel(paramSchema));
-                        if (paramHolder.getParam() != null && paramHolder.getParam().requireBody() == false) {
+                        if (paramHolder.getParam() != null && paramHolder.getParam().isRequiredBody() == false) {
                             modelParameter.setIn(ApiEnum.PARAM_TYPE_QUERY);
                         }
 

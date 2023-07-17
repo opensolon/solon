@@ -1,6 +1,7 @@
 package org.noear.solon.core.util;
 
 import org.noear.solon.core.handle.Context;
+import org.noear.solon.core.wrap.VarDeclarer;
 
 import java.io.File;
 import java.lang.reflect.*;
@@ -24,14 +25,12 @@ public class ConvertUtil {
     /**
      * 转换 context 的值
      *
-     * @param element 目标注解元素
-     * @param type    目标类型
-     * @param key     变量名
-     * @param val     值
-     * @param ctx     通用上下文
+     * @param declarer 目标申明
+     * @param val      值
+     * @param ctx      通用上下文
      */
-    public static Object to(AnnotatedElement element, Class<?> type, String key, String val, Context ctx) throws ClassCastException {
-        if (String.class == (type)) {
+    public static Object to(VarDeclarer declarer, String val, Context ctx) throws ClassCastException {
+        if (String.class == declarer.getType()) {
             return val;
         }
 
@@ -41,7 +40,7 @@ public class ConvertUtil {
 
         Object rst = null;
 
-        if (rst == null && Date.class == type) {
+        if (rst == null && Date.class == declarer.getType()) {
             try {
                 rst = DateAnalyzer.global().parse(val);
             } catch (ParseException e) {
@@ -50,40 +49,35 @@ public class ConvertUtil {
         }
 
         //转数组
-        if (rst == null && type.isArray()) {
+        if (rst == null && declarer.getType().isArray()) {
             String[] ary = null;
             if (ctx == null) {
                 ary = val.split(",");
             } else {
-                ary = ctx.paramValues(key);
+                ary = declarer.getValues(ctx);
                 if (ary == null || ary.length == 1) {
                     //todo:可能有兼容问题("?aaa=1,2&aaa=3,4,5,6"，只传第一部份时会有歧意)
                     ary = val.split(",");
                 }
             }
 
-            rst = tryToArray(ary, type);
+            rst = tryToArray(ary, declarer.getType());
         }
 
         //转 coll
-        if(rst == null && Collection.class.isAssignableFrom(type)) {
+        if (rst == null && Collection.class.isAssignableFrom(declarer.getType())) {
             String[] ary = null;
             if (ctx == null) {
                 ary = val.split(",");
             } else {
-                ary = ctx.paramValues(key);
+                ary = declarer.getValues(ctx);
                 if (ary == null || ary.length == 1) {
                     //todo:可能有兼容问题("?aaa=1,2&aaa=3,4,5,6"，只传第一部份时会有歧意)
                     ary = val.split(",");
                 }
             }
 
-            Type gType = null;
-            if (element instanceof Parameter) {
-                gType = ((Parameter) element).getParameterizedType();
-            } else if (element instanceof Field) {
-                gType = ((Field) element).getGenericType();
-            }
+            Type gType = declarer.getGenericType();
 
             if (gType instanceof ParameterizedType) {
                 Type gTypeA = ((ParameterizedType) gType).getActualTypeArguments()[0];
@@ -92,21 +86,21 @@ public class ConvertUtil {
                     for (int i = 0; i < ary.length; i++) {
                         ary2.add(tryTo((Class<?>) gTypeA, ary[i]));
                     }
-                    rst = tryToColl(type, ary2);
+                    rst = tryToColl(declarer.getType(), ary2);
                 } else {
-                    rst = tryToColl(type, Arrays.asList(ary));
+                    rst = tryToColl(declarer.getType(), Arrays.asList(ary));
                 }
             } else {
-                rst = tryToColl(type, Arrays.asList(ary));
+                rst = tryToColl(declarer.getType(), Arrays.asList(ary));
             }
         }
 
         if (rst == null) {
-            rst = tryTo(type, val);
+            rst = tryTo(declarer.getType(), val);
         }
 
         if (rst == null) {
-            throw new ClassCastException("Unsupported type:" + type.getName());
+            throw new ClassCastException("Unsupported type:" + declarer.getName());
         } else {
             return rst;
         }
@@ -204,7 +198,7 @@ public class ConvertUtil {
         }
     }
 
-    private static Object tryToArray(String[] ary, Class<?> type){
+    private static Object tryToArray(String[] ary, Class<?> type) {
         int len = ary.length;
 
         if (is(String[].class, type)) {
@@ -279,7 +273,7 @@ public class ConvertUtil {
         }
 
         if (Boolean.class == type || type == Boolean.TYPE) {
-            if("1".equals(val)){
+            if ("1".equals(val)) {
                 return true;
             }
 
@@ -321,7 +315,7 @@ public class ConvertUtil {
             return Charset.forName(val);
         }
 
-        if(String.class == type){
+        if (String.class == type) {
             return val;
         }
 
@@ -330,7 +324,7 @@ public class ConvertUtil {
 
     /**
      * 获取枚举
-     * */
+     */
     private static <T extends Enum<T>> T enumOf(Class<T> enumType, String name) {
         for (T each : enumType.getEnumConstants()) {
             if (each.name().compareToIgnoreCase(name) == 0) {

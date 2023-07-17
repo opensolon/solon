@@ -2,9 +2,6 @@ package org.noear.solon.docs.openapi2;
 
 import io.swagger.annotations.ApiImplicitParam;
 import org.noear.solon.Utils;
-import org.noear.solon.annotation.Cookie;
-import org.noear.solon.annotation.Header;
-import org.noear.solon.annotation.Path;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.SessionState;
 import org.noear.solon.core.handle.UploadedFile;
@@ -94,7 +91,7 @@ public class ParamHolder {
 
     public String paramType(){
         if(param != null) {
-            if (param.requireBody()) {
+            if (param.isRequiredBody()) {
                 return ApiEnum.PARAM_TYPE_BODY;
             }
         }
@@ -126,7 +123,7 @@ public class ParamHolder {
 
     public boolean isRequired() {
         if (param != null) {
-            if (param.required()) {
+            if (param.isRequiredInput()) {
                 return true;
             }
         }
@@ -140,9 +137,7 @@ public class ParamHolder {
 
     public boolean isRequiredBody(){
         if (param != null) {
-            if (param.requireBody()) {
-                return true;
-            }
+            return param.isRequiredBody();
         }
 
         return false;
@@ -150,9 +145,7 @@ public class ParamHolder {
 
     public boolean isRequiredHeader(){
         if (param != null) {
-            if (param.getParameter().isAnnotationPresent(Header.class)) {
-                return true;
-            }
+            return param.isRequiredHeader();
         }
 
         return false;
@@ -160,9 +153,7 @@ public class ParamHolder {
 
     public boolean isRequiredCookie(){
         if (param != null) {
-            if (param.getParameter().isAnnotationPresent(Cookie.class)) {
-                return true;
-            }
+            return param.isRequiredCookie();
         }
 
         return false;
@@ -170,9 +161,7 @@ public class ParamHolder {
 
     public boolean isRequiredPath(){
         if (param != null) {
-            if (param.getParameter().isAnnotationPresent(Path.class)) {
-                return true;
-            }
+            return param.isRequiredPath();
         }
 
         return false;
