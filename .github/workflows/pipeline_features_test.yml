@@ -2,8 +2,8 @@
 # doc links: https://docs.github.com/zh/actions
 #----------------------------------------------------------------
 
-name: Solon Features Test
-run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
+name: Solon Features Test CI
+run-name: ${{ github.actor }} is testing out Solon in GitHub Actions 🚀
 
 
 on: [ push, pull_request, workflow_dispatch ]
@@ -39,4 +39,13 @@ jobs:
       - name: Test Features
         run: |
           mvn test -Dtest="features.*" -Dmaven.test.failure.ignore=true -f __test/pom.xml
+          
+
+      - name: JEST Test Report
+        uses: dorny/test-reporter@v1
+        if: success() || failure()    # run this step even if previous step failed
+        with:
+          name: JEST Tests            # Name of the check run which will be created
+          path: target/TEST_*.xml    # Path to test results
+          reporter: jest-junit        # Format of test results
 

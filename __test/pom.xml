@@ -471,6 +471,23 @@
 
     <build>
         <plugins>
+
+            <!-- 单测输出一个概要的报告 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-report-plugin</artifactId>
+                <version>3.1.2</version>
+                <executions>
+                    <execution>
+                        <id>report</id>
+                        <phase>test</phase><!-- 要绑定到的生命周期的阶段 -->
+                        <goals>
+                            <goal>report</goal><!-- 要绑定的插件的目标 -->
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
