@@ -22,7 +22,7 @@ jobs:
     name: Build code and install and test
     env:
       STAGE: BUILD_INSTALL_TEST
-    runs-on: 'ubuntu-latest-4-cores'
+    runs-on: 'ubuntu-latest'
     strategy:
       matrix:
         java: [ '8', '11', '17', '20' ]
