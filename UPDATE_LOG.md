@@ -9,11 +9,11 @@
 * 提醒1：之前没有使用弃用接口的，可以直接升级 <br>
 * 提醒2：有使用弃用接口的。建议先升级到 1.12.4；替换弃用代码后，再升级到 2.0.0
 
-### 2.3.10
+### 2.4.1
 * 新增 solon.boot.vertx 插件?
 * 新增 solon.cloud.metrics 插件?
 
-### 2.3.9
+### 2.4.0
 * 新增 solon-admin-client
 * 新增 solon-admin-server
 * 新增 solon-admin-server-ui
