@@ -1,6 +1,7 @@
 package org.noear.solon.core.convert;
 
-import java.lang.reflect.ParameterizedType;
+import org.noear.solon.core.util.GenericUtil;
+
 import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
@@ -18,16 +19,20 @@ public class ConverterManager {
      * 注册转换器
      */
     public <S, T> void register(Converter<S, T> converter) {
-        Type superClass = converter.getClass().getGenericSuperclass();
-        Type sourceType;
-        Type tagertType;
+        Map<String, Type> genericInfo = GenericUtil.getGenericInfo(converter.getClass());
+        Type sourceType = null;
+        Type tagertType = null;
 
-        if (superClass instanceof ParameterizedType) {
-            ParameterizedType tmp = (ParameterizedType) superClass;
-            sourceType = tmp.getActualTypeArguments()[0];
-            tagertType = tmp.getActualTypeArguments()[1];
-        } else {
+        if (genericInfo != null) {
+            sourceType = genericInfo.get("S");
+            tagertType = genericInfo.get("T");
+        }
+
+        if (sourceType == null) {
             sourceType = Object.class;
+        }
+
+        if (tagertType == null) {
             tagertType = Object.class;
         }
 
