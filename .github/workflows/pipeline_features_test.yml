@@ -12,6 +12,13 @@ on: [ push, pull_request, workflow_dispatch ]
 jobs:
 
   test:
+    permissions:
+      statuses: write
+      checks: write
+      contents: write
+      pull-requests: write
+      actions: write
+
     name: Build code and install and test
     env:
       STAGE: BUILD_INSTALL_TEST
@@ -47,4 +54,6 @@ jobs:
           name: JEST Tests            # Name of the check run which will be created
           path: ./__test/target/surefire-reports/TEST-*.xml    # Path to test results
           reporter: java-junit        # Format of test results
+
+
 
