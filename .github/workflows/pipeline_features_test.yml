@@ -11,7 +11,18 @@ on: [ push, pull_request, workflow_dispatch ]
 
 jobs:
 
-  test:
+  code-scanning:
+    name: Code Scanning
+    env:
+      STAGE: CODE_SCAN
+    runs-on: ubuntu-latest
+    steps:
+      - name: scan
+        run: |
+          infer -- mvn clean package -Dmaven.test.skip=true
+  
+
+  junit-test:
     permissions:
       statuses: write
       checks: write
