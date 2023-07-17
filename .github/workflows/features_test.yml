@@ -34,6 +34,7 @@ jobs:
       - name: Setup java
         uses: actions/setup-java@v3
         with:
+          distribution: 'oracle'
           java-version: ${{ matrix.java }}
 
       - name: Clean And Install
