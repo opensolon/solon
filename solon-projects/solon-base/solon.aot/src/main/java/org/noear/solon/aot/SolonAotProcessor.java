@@ -232,6 +232,7 @@ public class SolonAotProcessor {
             addReflectConfigDo(metadata, "org.noear.solon.extend.impl.AppClassLoaderExt");
             addReflectConfigDo(metadata, "org.noear.solon.extend.impl.ReflectionExt");
             addReflectConfigDo(metadata, "org.noear.solon.extend.impl.ResourceScannerExt");
+            addReflectConfigDo(metadata, "org.noear.solon.extend.impl.LogUtilExt");
 
             FileWriter fileWriter = getFileWriter("reflect-config.json");
             fileWriter.write(metadata.toReflectionJson());
