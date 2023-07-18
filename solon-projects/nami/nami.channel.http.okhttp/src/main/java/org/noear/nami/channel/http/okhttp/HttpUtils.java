@@ -12,6 +12,9 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
+/**
+ * Http 处理工具
+ * */
 class HttpUtils {
     private final static Supplier<Dispatcher> httpClientDispatcher = () -> {
         Dispatcher temp = new Dispatcher();
@@ -62,13 +65,17 @@ class HttpUtils {
     }
 
 
-    //@XNote("设置charset")
+    /**
+     * 设置charset
+     * */
     public HttpUtils charset(String charset){
         _charset = Charset.forName(charset);
         return this;
     }
 
-    //@XNote("设置请求头")
+    /**
+     * 设置请求头
+     * */
     public HttpUtils headers(Map<String,String> headers) {
         if (headers != null) {
             headers.forEach((k, v) -> {
@@ -82,7 +89,9 @@ class HttpUtils {
     }
 
 
-    //@XNote("设置数据提交")
+    /**
+     * 设置表单数据
+     * */
     public HttpUtils data(Map<String,Object> data) {
         if (data != null) {
             tryInitForm();
@@ -97,19 +106,27 @@ class HttpUtils {
         return this;
     }
 
+    /**
+     * 设置表单数据
+     * */
     public HttpUtils data(String key, String value){
         tryInitForm();
         _form.put(key,value);
         return this;
     }
 
-    //@XNote("设置BODY提交")
+    /**
+     * 设置BODY数据
+     * */
     public HttpUtils bodyRaw(byte[] bytes, String contentType) {
         _body = FormBody.create(MediaType.parse(contentType), bytes);
 
         return this;
     }
 
+    /**
+     * 超时设置
+     * */
     public HttpUtils timeout(int timeoutSeconds) {
         if (timeoutSeconds > 0) {
             _builder.tag(TimeoutProps.class, new TimeoutProps(timeoutSeconds));
@@ -119,7 +136,9 @@ class HttpUtils {
     }
 
 
-    //@XNote("执行请求，返回响应对象")
+    /**
+     * 执行请求，返回响应对象
+     * */
     public Response exec(String mothod) throws Exception {
         if (_form != null) {
             FormBody.Builder fb = new FormBody.Builder(_charset);

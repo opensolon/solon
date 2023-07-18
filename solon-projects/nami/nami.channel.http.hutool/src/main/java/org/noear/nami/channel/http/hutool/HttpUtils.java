@@ -11,6 +11,9 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Map;
 
+/**
+ * Http 处理工具
+ * */
 class HttpUtils {
 
     public static HttpUtils http(String url){
@@ -34,13 +37,17 @@ class HttpUtils {
     }
 
 
-    //@XNote("设置charset")
+    /**
+     * 设置charset
+     * */
     public HttpUtils charset(String charset){
         _builder.charset(charset);
         return this;
     }
 
-    //@XNote("设置请求头")
+    /**
+     * 设置请求头
+     * */
     public HttpUtils headers(Map<String,String> headers) {
         if (headers != null) {
             headers.forEach((k, v) -> {
@@ -54,7 +61,9 @@ class HttpUtils {
     }
 
 
-    //@XNote("设置数据提交")
+    /**
+     * 设置表单数据
+     * */
     public HttpUtils data(Map<String,Object> data) {
         if (data != null) {
             _builder.form(data);
@@ -63,12 +72,17 @@ class HttpUtils {
         return this;
     }
 
-    //@XNote("设置BODY提交")
+    /**
+     * 设置BODY数据
+     * */
     public HttpUtils bodyRaw(byte[] bytes, String contentType) {
         _builder.body(bytes).contentType(contentType);
         return this;
     }
 
+    /**
+     * 超时设置
+     * */
     public HttpUtils timeout(int seconds) {
         if (seconds > 0) {
             _builder.timeout(seconds * 1000);
@@ -78,10 +92,10 @@ class HttpUtils {
     }
 
 
-    //@XNote("执行请求，返回响应对象")
+    /**
+     * 执行请求，返回响应对象
+     * */
     public HttpResponse exec(String mothod) throws Exception {
-
-
         switch (mothod.toUpperCase()){
             case "GET":_builder.method(Method.GET);break;
             case "POST":_builder.method(Method.POST);break;

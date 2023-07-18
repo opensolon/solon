@@ -7,6 +7,11 @@ import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.Arrays;
 
+/**
+ * SSL 客户端
+ *
+ * @author desire
+ * */
 public class SSLClient {
     public static final DefaultHostnameVerifier defaultHostnameVerifier=new DefaultHostnameVerifier();
     public static final DefaultX509TrustManager defaultTrustManager=new DefaultX509TrustManager();
