@@ -23,6 +23,7 @@
 * 增加 ChainManager::defExecuteHandler 接口
 * 增加 @Header String[] xxx 注入支持
 * 增加 Converter 体系，一般用于基础类型的通用转换
+* 增加 日志服务孵化机制，可在打印前进行完成格式配置
 * 优化 JsonConverter 标为弃用，统一由 Converter 替代
 * 优化 ResourceUtil 的根路径兼容性
 * 优化 soln rpc 关于 @Body 注解的处理???
@@ -31,10 +32,11 @@
 * 优化 nacos2-solon-cloud-plugin 的适配，统一 jackson 版本
 * 优化 nacos-solon-cloud-plugin 的适配，统一 jackson 版本
 * 优化 LogUtil 扩展方式，改为静态扩展方式，原手方式标为弃用
-* 优化 内核日志打印顺序，由 SolonApp 实例化后再打印。以便日志配置先加载???
 * 优化 Context::headerValues() 返回类型为 String[]
 * 优化 Context::paramValues() 统一 server 相关处理逻辑
 * 优化 统一 request 参数与实体字段的注入转换机制，并增加自定义转换机制
+* 优化 内核日志打印顺序，由 SolonApp 实例化后再打印。以便日志配置先加载???
+* 修复 solon-swagger2-knife4j 插件，递归类型的数据结构会栈溢出的问题???
 * dbvisitor 升为 5.3.3
 * mybatis-flex 升为 1.5.0
 * fastmybatis 升为 2.8.1
