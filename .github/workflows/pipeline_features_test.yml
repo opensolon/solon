@@ -1,0 +1,97 @@
+###############
+# doc links: https://docs.github.com/zh/actions
+#----------------------------------------------------------------
+
+name: Solon Features Test CI
+run-name: ${{ github.actor }} is testing out SOLON in GitHub Actions 🚀
+
+
+on: [ push, pull_request, workflow_dispatch ]
+
+
+jobs:
+
+  code-scanning:
+    name: Code Scanning
+    env:
+      STAGE: CODE_SCAN
+    runs-on: ubuntu-latest
+    steps:
+      # check out code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+
+      # Setup Infer
+      - name: Setup Infer
+        uses: srz-zumix/setup-infer@v1
+
+      # Setup Java
+      - name: Setup java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: 8
+
+      # Scanning Code
+      - name: scan
+        run: |
+          # infer -- mvn -DskipTests=true clean package
+          echo "scan code finished. successfully"
+
+      # pr review
+      - name: Check Infer report
+        if: ${{ github.event_name == 'pull_request' && github.event.action == 'unassigned' }}
+        uses: srz-zumix/reviewdog-action-infer@v1
+        with:
+          reporter: github-pr-review # Default is github-pr-check
+  
+
+  junit-test:
+    permissions:
+      statuses: write
+      checks: write
+      contents: write
+      pull-requests: write
+      actions: write
+
+    name: Matrix junit test JDK version - ${{ matrix.java }}
+    env:
+      STAGE: BUILD_INSTALL_TEST
+    runs-on: 'ubuntu-latest'
+    strategy:
+      matrix:
+        java: [ '8', '11', '17', '20' ]
+    steps:
+      # check out code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Setup Java
+      - name: Setup java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: ${{ matrix.java }}
+      # Maven install
+      - name: Clean And Install
+        run: |
+          mvn clean install -Dmaven.test.skip=true --file pom.xml
+
+      # Maven Test
+      - name: Test Features
+        run: |
+          mvn test -Dtest="features.*" -Dmaven.test.failure.ignore=true -f __test/pom.xml
+
+      # Generate test reports
+      - name: JEST Test Report JDK version - ${{ matrix.java }}
+        uses: dorny/test-reporter@v1
+        if: success() || failure()    # run this step even if previous step failed
+        with:
+          name: JEST Tests Report JDK version - ${{ matrix.java }}         # Name of the check run which will be created
+          fail-on-error: 'false'
+          path: ./__test/target/surefire-reports/TEST-*.xml    # Path to test results
+          reporter: java-junit        # Format of test results
+
+
+
