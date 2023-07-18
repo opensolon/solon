@@ -21,4 +21,9 @@ public class ContentTypes {
     public static final String PROTOBUF = "Content-Type=application/protobuf";
     public static final String JSON = "Content-Type=application/json";
     public static final String JSON_TYPE = "Content-Type=application/json-type";
+
+
+    public static final String HESSIAN_ACCEPT = "Accept=application/hessian";
+    public static final String PROTOBUF_ACCEPT = "Accept=application/protobuf";
+    public static final String JSON_ACCEPT = "Accept=application/json";
 }

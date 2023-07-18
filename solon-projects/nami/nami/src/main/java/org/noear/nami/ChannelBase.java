@@ -14,7 +14,7 @@ public abstract class ChannelBase implements Channel {
      * 预处理
      *
      * @param ctx 上下文
-     * */
+     */
     protected void pretreatment(Context ctx) {
         if (ctx.config.getDecoder() == null) {
             String at = ctx.config.getHeader(Constants.HEADER_ACCEPT);
@@ -25,8 +25,8 @@ public abstract class ChannelBase implements Channel {
 
             ctx.config.setDecoder(NamiManager.getDecoder(at));
 
-            if (ctx.config.getEncoder() == null) {
-                ctx.config.setEncoder(NamiManager.getEncoderFirst());
+            if (ctx.config.getDecoder() == null) {
+                ctx.config.setDecoder(NamiManager.getDecoderFirst());
             }
         }
 
