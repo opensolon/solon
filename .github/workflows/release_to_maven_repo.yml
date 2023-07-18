@@ -12,7 +12,7 @@ jobs:
 
  # Publish package to github package
   publish:
-    runs-on: mac
+    runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
