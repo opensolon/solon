@@ -55,7 +55,7 @@ public class ActionExecuteHandlerDefault implements ActionExecuteHandler {
         ParamWrap[] pSet = mWrap.getParamWraps();
         List<Object> args = new ArrayList<>(pSet.length);
 
-        Object bodyObj = changeBody(ctx);
+        Object bodyObj = changeBody(ctx, mWrap);
 
         //p 参数
         //pt 参数原类型
@@ -153,7 +153,7 @@ public class ActionExecuteHandlerDefault implements ActionExecuteHandler {
     /**
      * 尝试将body转换为特定对象
      */
-    protected Object changeBody(Context ctx) throws Exception {
+    protected Object changeBody(Context ctx, MethodWrap mWrap) throws Exception {
         return ctx.paramMap();
     }
 

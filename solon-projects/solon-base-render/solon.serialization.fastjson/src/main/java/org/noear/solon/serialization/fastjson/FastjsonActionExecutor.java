@@ -7,6 +7,7 @@ import com.alibaba.fastjson.parser.ParserConfig;
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.ActionExecuteHandlerDefault;
 import org.noear.solon.core.handle.Context;
+import org.noear.solon.core.wrap.MethodWrap;
 import org.noear.solon.core.wrap.ParamWrap;
 
 import java.util.Collection;
@@ -41,7 +42,7 @@ public class FastjsonActionExecutor extends ActionExecuteHandlerDefault {
     }
 
     @Override
-    protected Object changeBody(Context ctx) throws Exception {
+    protected Object changeBody(Context ctx, MethodWrap mWrap) throws Exception {
         String json = ctx.bodyNew();
 
         if (Utils.isNotEmpty(json)) {

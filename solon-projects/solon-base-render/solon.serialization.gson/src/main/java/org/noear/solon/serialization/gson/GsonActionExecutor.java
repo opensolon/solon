@@ -4,6 +4,7 @@ import com.google.gson.*;
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.ActionExecuteHandlerDefault;
 import org.noear.solon.core.handle.Context;
+import org.noear.solon.core.wrap.MethodWrap;
 import org.noear.solon.core.wrap.ParamWrap;
 import org.noear.solon.serialization.gson.impl.DateReadAdapter;
 
@@ -51,7 +52,7 @@ public class GsonActionExecutor extends ActionExecuteHandlerDefault {
     }
 
     @Override
-    protected Object changeBody(Context ctx) throws Exception {
+    protected Object changeBody(Context ctx, MethodWrap mWrap) throws Exception {
         String json = ctx.bodyNew();
 
         if (Utils.isNotEmpty(json)) {

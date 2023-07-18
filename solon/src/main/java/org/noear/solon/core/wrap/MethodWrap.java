@@ -6,6 +6,7 @@ import org.noear.solon.core.AopContext;
 import org.noear.solon.core.aspect.Interceptor;
 import org.noear.solon.core.aspect.InterceptorEntity;
 import org.noear.solon.core.aspect.Invocation;
+import org.noear.solon.lang.Nullable;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
@@ -30,7 +31,7 @@ public class MethodWrap implements Interceptor, MethodHolder {
         entityClz = m.getDeclaringClass();
 
         method = m;
-        parameters = paramsWrap(m.getParameters());
+        parameters = buildParamsWrap(m.getParameters());
         annotations = m.getAnnotations();
         arounds = new ArrayList<>();
         aroundsIdx = new HashSet<>();
@@ -71,10 +72,15 @@ public class MethodWrap implements Interceptor, MethodHolder {
         arounds.add(new InterceptorEntity(0, this));
     }
 
-    private ParamWrap[] paramsWrap(Parameter[] pAry) {
+    private ParamWrap[] buildParamsWrap(Parameter[] pAry) {
         ParamWrap[] tmp = new ParamWrap[pAry.length];
         for (int i = 0, len = pAry.length; i < len; i++) {
             tmp[i] = new ParamWrap(pAry[i]);
+
+            if (tmp[i].isRequiredBody()) {
+                isRequiredBody = true;
+                bodyParameter = tmp[i];
+            }
         }
 
         return tmp;
@@ -107,11 +113,21 @@ public class MethodWrap implements Interceptor, MethodHolder {
     private final Method method;
     //函数参数
     private final ParamWrap[] parameters;
+    //函数Body参数(用于 web)
+    private ParamWrap bodyParameter;
     //函数注解
     private final Annotation[] annotations;
     //函数包围列表（扩展切点）
     private final List<InterceptorEntity> arounds;
     private final Set<Interceptor> aroundsIdx;
+    private boolean isRequiredBody;
+
+    /**
+     * 是否需要 body（用于 web）
+     * */
+    public boolean isRequiredBody(){
+        return isRequiredBody;
+    }
 
 
     /**
@@ -121,6 +137,9 @@ public class MethodWrap implements Interceptor, MethodHolder {
         return method.getName();
     }
 
+    /**
+     * 获取申明实体类
+     * */
     public Class<?> getEntityClz() {
         return entityClz;
     }
@@ -151,6 +170,13 @@ public class MethodWrap implements Interceptor, MethodHolder {
      */
     public ParamWrap[] getParamWraps() {
         return parameters;
+    }
+
+    /**
+     * 获取函数Body参数
+     */
+    public @Nullable ParamWrap getBodyParamWrap() {
+        return bodyParameter;
     }
 
     /**

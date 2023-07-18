@@ -31,11 +31,12 @@
 * 优化 solon.boot.smarthttp 的 ws 适配
 * 优化 nacos2-solon-cloud-plugin 的适配，统一 jackson 版本
 * 优化 nacos-solon-cloud-plugin 的适配，统一 jackson 版本
-* 优化 LogUtil 扩展方式，改为静态扩展方式，原手方式标为弃用
+* 优化 LogUtil 扩展方式，改为静态扩展方式，原手动方式标为弃用
 * 优化 Context::headerValues() 返回类型为 String[]
 * 优化 Context::paramValues() 统一 server 相关处理逻辑
 * 优化 统一 request 参数与实体字段的注入转换机制，并增加自定义转换机制
 * 优化 内核日志打印顺序，由 SolonApp 实例化后再打印。以便日志格式配置先加载
+* 优化 ActionExecuteHandlerDefault::changeBody 参数结构，方便 Protostuff 处理
 * 修复 solon-swagger2-knife4j 插件，递归类型的数据结构会栈溢出的问题???
 * dbvisitor 升为 5.3.3
 * mybatis-flex 升为 1.5.0

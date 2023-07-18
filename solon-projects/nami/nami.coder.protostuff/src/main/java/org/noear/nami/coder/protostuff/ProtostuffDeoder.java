@@ -29,7 +29,7 @@ public class ProtostuffDeoder implements Decoder {
                 return null;
             }
 
-            returnVal = ProtostuffUtil.deserialize(rst.body());
+            returnVal = ProtostuffUtil.deserialize(rst.body(), (Class<? extends Object>) type);
 
         } catch (Throwable ex) {
             returnVal = ex;

@@ -18,6 +18,9 @@ public class ProtostuffEncoder implements Encoder {
 
     @Override
     public byte[] encode(Object obj) {
+        //
+        //两种可能：map 或者 entity
+        //
         return ProtostuffUtil.serialize(obj);
     }
 

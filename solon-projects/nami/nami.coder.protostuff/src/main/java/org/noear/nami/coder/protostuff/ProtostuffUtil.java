@@ -6,12 +6,13 @@ import io.protostuff.Schema;
 import io.protostuff.runtime.RuntimeSchema;
 
 /**
+ * Protostuff 序列化工具
+ *
  * @author noear
  * @since 1.2
+ * @since 2.4
  */
 public class ProtostuffUtil {
-    private static final Schema<DataWrapper> WRAPPER_SCHEMA = RuntimeSchema.createFrom(DataWrapper.class);
-
     //序列化对象
     public static <T> byte[] serialize(T obj) {
         LinkedBuffer buffer = null;
@@ -19,10 +20,9 @@ public class ProtostuffUtil {
         try {
             buffer = LinkedBuffer.allocate();
 
-            Object serializerObj = DataWrapper.builder(obj);
-            Schema schema = WRAPPER_SCHEMA;
+            Schema schema = RuntimeSchema.getSchema(obj.getClass());
 
-            return ProtostuffIOUtil.toByteArray(serializerObj, schema, buffer);
+            return ProtostuffIOUtil.toByteArray(obj, schema, buffer);
         } catch (RuntimeException e) {
             throw e;
         } catch (Throwable e) {
@@ -34,37 +34,20 @@ public class ProtostuffUtil {
         }
     }
 
-    public static <T> T deserialize(byte[] data) {
+    public static <T> T deserialize(byte[] data, Class<T> targetType) {
+        if (targetType == Void.class) {
+            return null;
+        }
+
         try {
-            DataWrapper<T> wrapper = new DataWrapper<>();
-            ProtostuffIOUtil.mergeFrom(data, wrapper, WRAPPER_SCHEMA);
-            return wrapper.getData();
+            Schema schema = RuntimeSchema.getSchema(targetType);
+            Object obj = schema.newMessage();
+            ProtostuffIOUtil.mergeFrom(data, obj, schema);
+            return (T) obj;
         } catch (RuntimeException e) {
             throw e;
         } catch (Throwable e) {
             throw new RuntimeException(e);
-        }
-    }
-
-
-    //静态内部类
-    public static class DataWrapper<T> {
-        //泛型的使用
-        private T data;
-
-        //建造者模式(返回实体类型)
-        public static <T> DataWrapper<T> builder(T data) {
-            DataWrapper<T> wrapper = new DataWrapper<T>();
-            wrapper.setData(data);
-            return wrapper;
-        }
-
-        public void setData(T data) {
-            this.data = data;
-        }
-
-        public T getData() {
-            return data;
         }
     }
 }
