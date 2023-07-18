@@ -91,9 +91,9 @@ public class SmHttpServer implements ServerLifecycle {
 
         if (ServerProps.request_maxBodySize > 0) {
             if (ServerProps.request_maxBodySize > Integer.MAX_VALUE) {
-                _config.setMaxFormContentSize(Integer.MAX_VALUE);
+                _config.setMaxRequestSize(Integer.MAX_VALUE);
             } else {
-                _config.setMaxFormContentSize((int) ServerProps.request_maxBodySize);
+                _config.setMaxRequestSize((int) ServerProps.request_maxBodySize);
             }
         }
 

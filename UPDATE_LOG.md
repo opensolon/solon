@@ -48,7 +48,6 @@
 * beetl 升为 3.15.7.RELEASE
 * beetlsql 升为 3.23.4-RELEASE
 * smarthttp 升为 1.2.8
-* smartsocket 升为 1.5.30
 
 ### 2.3.8
 * 增加 HttpServerConfigure::enableHttp2 接口, 默认为 false
