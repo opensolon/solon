@@ -1,5 +1,6 @@
 package org.noear.solon.serialization;
 
+import org.noear.solon.core.convert.Converter;
 import org.noear.solon.core.handle.Render;
 
 /**
@@ -12,7 +13,7 @@ public interface JsonRenderFactory {
     /**
      * 添加数据转换器（用于简单场景）
      */
-    <T> void addConvertor(Class<T> clz, JsonConverter<T> converter);
+    <T> void addConvertor(Class<T> clz, Converter<T,Object> converter);
 
     /**
      * 创建渲染器

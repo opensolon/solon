@@ -3,8 +3,8 @@ package org.noear.solon.serialization.fastjson;
 import com.alibaba.fastjson.serializer.ObjectSerializer;
 import com.alibaba.fastjson.serializer.SerializeConfig;
 import com.alibaba.fastjson.serializer.SerializeWriter;
+import org.noear.solon.core.convert.Converter;
 import org.noear.solon.serialization.JsonRenderFactory;
-import org.noear.solon.serialization.JsonConverter;
 
 import java.math.BigDecimal;
 
@@ -24,7 +24,7 @@ public abstract class FastjsonRenderFactoryBase implements JsonRenderFactory {
 
 
     @Override
-    public <T> void addConvertor(Class<T> clz, JsonConverter<T> converter) {
+    public <T> void addConvertor(Class<T> clz, Converter<T,Object> converter) {
         addEncoder(clz, (ser, obj, fieldName, fieldType, features) -> {
             Object val = converter.convert((T) obj);
 

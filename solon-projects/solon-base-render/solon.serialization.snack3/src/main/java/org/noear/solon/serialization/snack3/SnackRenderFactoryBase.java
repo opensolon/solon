@@ -2,8 +2,8 @@ package org.noear.solon.serialization.snack3;
 
 import org.noear.snack.core.Options;
 import org.noear.snack.core.NodeEncoder;
+import org.noear.solon.core.convert.Converter;
 import org.noear.solon.serialization.JsonRenderFactory;
-import org.noear.solon.serialization.JsonConverter;
 
 /**
  * Json 渲染器工厂基类
@@ -23,7 +23,7 @@ public abstract class SnackRenderFactoryBase implements JsonRenderFactory {
     }
 
     @Override
-    public <T> void addConvertor(Class<T> clz, JsonConverter<T> converter) {
+    public <T> void addConvertor(Class<T> clz, Converter<T,Object> converter) {
         addEncoder(clz, (source, target) -> {
             Object val = converter.convert((T) source);
 

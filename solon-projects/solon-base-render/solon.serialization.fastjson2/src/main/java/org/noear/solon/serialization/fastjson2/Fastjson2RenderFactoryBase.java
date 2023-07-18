@@ -3,7 +3,7 @@ package org.noear.solon.serialization.fastjson2;
 
 import com.alibaba.fastjson2.writer.ObjectWriter;
 import com.alibaba.fastjson2.writer.ObjectWriterProvider;
-import org.noear.solon.serialization.JsonConverter;
+import org.noear.solon.core.convert.Converter;
 import org.noear.solon.serialization.JsonRenderFactory;
 
 /**
@@ -22,7 +22,7 @@ public abstract class Fastjson2RenderFactoryBase implements JsonRenderFactory {
 
 
     @Override
-    public <T> void addConvertor(Class<T> clz, JsonConverter<T> converter) {
+    public <T> void addConvertor(Class<T> clz, Converter<T,Object> converter) {
         addEncoder(clz, (out, obj, fieldName, fieldType, features) -> {
             Object val = converter.convert((T) obj);
             if (val == null) {

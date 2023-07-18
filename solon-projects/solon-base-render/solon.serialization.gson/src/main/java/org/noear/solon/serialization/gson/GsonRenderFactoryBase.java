@@ -1,8 +1,8 @@
 package org.noear.solon.serialization.gson;
 
 import com.google.gson.*;
+import org.noear.solon.core.convert.Converter;
 import org.noear.solon.serialization.JsonRenderFactory;
-import org.noear.solon.serialization.JsonConverter;
 
 /**
  * @author noear 2021/10/11 created
@@ -20,7 +20,7 @@ public abstract class GsonRenderFactoryBase implements JsonRenderFactory {
 
 
     @Override
-    public <T> void addConvertor(Class<T> clz, JsonConverter<T> converter) {
+    public <T> void addConvertor(Class<T> clz, Converter<T,Object> converter) {
         addEncoder(clz, (source, type, jsc) -> {
             Object val = converter.convert((T) source);
 

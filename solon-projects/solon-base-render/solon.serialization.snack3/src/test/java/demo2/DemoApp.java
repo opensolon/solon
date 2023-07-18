@@ -1,9 +1,7 @@
 package demo2;
 
 import org.noear.snack.core.Feature;
-import org.noear.snack.core.Options;
 import org.noear.solon.Solon;
-import org.noear.solon.serialization.JsonConverter;
 import org.noear.solon.serialization.snack3.SnackRenderFactory;
 
 import java.time.LocalDate;

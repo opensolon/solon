@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Mapping;
-import org.noear.solon.serialization.JsonConverter;
 import org.noear.solon.serialization.jackson.JacksonRenderFactory;
 
 import java.io.IOException;
