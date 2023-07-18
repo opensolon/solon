@@ -10,7 +10,7 @@ import java.nio.charset.Charset;
 /**
  * Http 通道
  * */
-public class HttpChannel implements Channel {
+public class HttpChannel extends ChannelBase implements Channel {
     public static final HttpChannel instance = new HttpChannel();
 
     @Override
@@ -97,25 +97,5 @@ public class HttpChannel implements Channel {
 
         //3.返回结果
         return result;
-    }
-
-    private void pretreatment(Context ctx) {
-        if (ctx.config.getDecoder() == null) {
-            String at = ctx.config.getHeader(Constants.HEADER_ACCEPT);
-
-            if (at == null) {
-                at = ContentTypes.JSON_VALUE;
-            }
-
-            ctx.config.setDecoder(NamiManager.getDecoder(at));
-        }
-
-        if (ctx.config.getEncoder() == null) {
-            String ct = ctx.config.getHeader(Constants.HEADER_CONTENT_TYPE);
-
-            if (ct != null) {
-                ctx.config.setEncoder(NamiManager.getEncoder(ct));
-            }
-        }
     }
 }

@@ -12,15 +12,20 @@ import java.util.Set;
  *
  * @author noear
  * @since 1.2
+ * @since 2.4
  */
 public class NamiManager {
     static final Map<String, Decoder> decoderMap = new HashMap<>();
     static final Map<String, Encoder> encoderMap = new HashMap<>();
     static final Map<String, Channel> channelMap = new HashMap<>();
     static final Map<Class<?>, NamiConfiguration> configuratorMap = new HashMap<>();
+
+    static Decoder decoderFirst;
+    static Encoder encoderFirst;
+
     /**
      * 全局拦截器
-     * */
+     */
     static final Set<Filter> filterSet = new LinkedHashSet<>();
 
     /**
@@ -28,13 +33,19 @@ public class NamiManager {
      */
     public static void reg(Decoder decoder) {
         decoderMap.put(decoder.enctype(), decoder);
+        if (decoderFirst == null) {
+            decoderFirst = decoder;
+        }
     }
 
     /**
      * 登记解码器
-     * */
+     */
     public static void regIfAbsent(Decoder decoder) {
         decoderMap.putIfAbsent(decoder.enctype(), decoder);
+        if (decoderFirst == null) {
+            decoderFirst = decoder;
+        }
     }
 
     /**
@@ -42,6 +53,9 @@ public class NamiManager {
      */
     public static void reg(Encoder encoder) {
         encoderMap.put(encoder.enctype(), encoder);
+        if(encoderFirst == null){
+            encoderFirst = encoder;
+        }
     }
 
     /**
@@ -49,6 +63,9 @@ public class NamiManager {
      */
     public static void regIfAbsent(Encoder encoder) {
         encoderMap.putIfAbsent(encoder.enctype(), encoder);
+        if(encoderFirst == null){
+            encoderFirst = encoder;
+        }
     }
 
 
@@ -74,22 +91,61 @@ public class NamiManager {
         channelMap.putIfAbsent(scheme, channel);
     }
 
+    /**
+     * 获取解码器
+     */
     public static Decoder getDecoder(String enctype) {
+        if(enctype == null){
+            return null;
+        }
+
         return decoderMap.get(enctype);
     }
 
+    /**
+     * 获取第一个解码器
+     * @since 2.4
+     */
+    public static Decoder getDecoderFirst() {
+        return decoderFirst;
+    }
+
+    /**
+     * 获取编码器
+     */
     public static Encoder getEncoder(String enctype) {
+        if(enctype == null){
+            return null;
+        }
+
         return encoderMap.get(enctype);
     }
 
+    /**
+     * 获取第一个编码器
+     * @since 2.4
+     */
+    public static Encoder getEncoderFirst() {
+        return encoderFirst;
+    }
+
+    /**
+     * 获取过滤器
+     */
     public static Set<Filter> getFilters() {
         return filterSet;
     }
 
+    /**
+     * 获取通道
+     */
     public static Channel getChannel(String scheme) {
         return channelMap.get(scheme);
     }
 
+    /**
+     * 获取配置器
+     */
     public static NamiConfiguration getConfigurator(Class<? extends NamiConfiguration> clz) throws Exception {
         NamiConfiguration tmp = configuratorMap.get(clz);
 

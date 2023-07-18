@@ -26,7 +26,6 @@
 * 增加 日志服务孵化机制，可在打印前进行完成格式配置
 * 优化 JsonConverter 标为弃用，统一由 Converter 替代
 * 优化 ResourceUtil 的根路径兼容性
-* 优化 soln rpc 关于 @Body 注解的处理???
 * 优化 @Init 注解逻辑，仅对原生实例有效。保持与 LifecycleBean 相同策略
 * 优化 solon.boot.smarthttp 的 ws 适配
 * 优化 nacos2-solon-cloud-plugin 的适配，统一 jackson 版本
@@ -37,6 +36,7 @@
 * 优化 统一 request 参数与实体字段的注入转换机制，并增加自定义转换机制
 * 优化 内核日志打印顺序，由 SolonApp 实例化后再打印。以便日志格式配置先加载
 * 优化 ActionExecuteHandlerDefault::changeBody 参数结构，方便 Protostuff 处理
+* 优化 Nami 编码器匹配策略，尤其是仅单编码包引入时
 * 修复 solon-swagger2-knife4j 插件，递归类型的数据结构会栈溢出的问题???
 * dbvisitor 升为 5.3.3
 * mybatis-flex 升为 1.5.0
@@ -45,6 +45,8 @@
 * liteflow 升为 2.10.5
 * beetl 升为 3.15.7.RELEASE
 * beetlsql 升为 3.23.4-RELEASE
+* smarthttp 升为 1.2.8
+* smartsocket 升为 1.5.30
 
 ### 2.3.8
 * 增加 HttpServerConfigure::enableHttp2 接口, 默认为 false

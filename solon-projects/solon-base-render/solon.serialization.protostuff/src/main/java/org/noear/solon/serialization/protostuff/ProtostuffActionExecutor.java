@@ -25,12 +25,7 @@ public class ProtostuffActionExecutor extends ActionExecuteHandlerDefault {
 
     @Override
     protected Object changeBody(Context ctx, MethodWrap mWrap) throws Exception {
-        if (mWrap.isRequiredBody()) {
-            Class<?> bodyType = mWrap.getBodyParamWrap().getType();
-            return ProtostuffUtil.deserialize(ctx.bodyAsBytes(), bodyType);
-        } else {
-            return ProtostuffUtil.deserialize(ctx.bodyAsBytes(), Map.class);
-        }
+        return ProtostuffUtil.deserialize(ctx.bodyAsBytes());
     }
 
     /**

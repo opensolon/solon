@@ -1,19 +1,15 @@
-package org.noear.nami.channel.socketd;
+package org.noear.nami;
 
-import org.noear.nami.Context;
-import org.noear.nami.NamiManager;
 import org.noear.nami.common.Constants;
 import org.noear.nami.common.ContentTypes;
 
 /**
- * Socket 通道基类
+ * 处理通道基类
  *
  * @author noear
- * @since 1.2
- * @deprecated 2.4
+ * @since 2.4
  */
-@Deprecated
-public abstract class SocketChannelBase  {
+public abstract class ChannelBase implements Channel {
     /**
      * 预处理
      *
@@ -28,6 +24,10 @@ public abstract class SocketChannelBase  {
             }
 
             ctx.config.setDecoder(NamiManager.getDecoder(at));
+
+            if (ctx.config.getEncoder() == null) {
+                ctx.config.setEncoder(NamiManager.getEncoderFirst());
+            }
         }
 
         if (ctx.config.getEncoder() == null) {
@@ -38,6 +38,10 @@ public abstract class SocketChannelBase  {
             }
 
             ctx.config.setEncoder(NamiManager.getEncoder(ct));
+
+            if (ctx.config.getEncoder() == null) {
+                ctx.config.setEncoder(NamiManager.getEncoderFirst());
+            }
         }
     }
 }

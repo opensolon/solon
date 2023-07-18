@@ -102,6 +102,7 @@ public class NamiHandler implements InvocationHandler {
                     }
                     if (ss.length == 2) {
                         headers0.put(ss[0].trim(), ss[1].trim());
+                        config.setHeader(ss[0].trim(), ss[1].trim());
                     }
                 }
             }

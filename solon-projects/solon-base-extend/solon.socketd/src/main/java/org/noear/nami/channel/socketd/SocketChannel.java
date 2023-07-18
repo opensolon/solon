@@ -20,7 +20,7 @@ import java.util.function.Supplier;
  * @author noear
  * @since 1.2
  */
-public class SocketChannel extends SocketChannelBase implements Channel {
+public class SocketChannel extends ChannelBase implements Channel {
     public Supplier<Session> sessions;
 
     public SocketChannel(Supplier<Session> sessions) {
