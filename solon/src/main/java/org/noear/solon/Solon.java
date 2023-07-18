@@ -146,11 +146,13 @@ public class Solon {
         //绑定类加载器（即替换当前线程[即主线程]的类加载器）
         JarClassLoader.bindingThread();
 
-        LogUtil.global().info("App: Start loading");
-
         try {
             //1.创建全局应用及配置
             app = appMain = new SolonApp(source, argx);
+
+            LogUtil.global().info("App: Start loading");//调整了打印时机
+
+            //2.开始
             app.start(initialize);
 
         } catch (Throwable e) {
@@ -158,14 +160,14 @@ public class Solon {
             e = Utils.throwableUnwrap(e);
             EventBus.pushTry(e);
 
-            //4.停止服务并退出（主要是停止插件）
+            //3.停止服务并退出（主要是停止插件）
             Solon.stop0(false, 0);
 
             throw new IllegalStateException("SolonApp start failed", e);
         }
 
 
-        //5.初始化安全停止
+        //4.初始化安全停止
         if(NativeDetector.isNotAotRuntime()) {
             if (app.cfg().stopSafe()) {
                 //添加关闭勾子
@@ -175,7 +177,7 @@ public class Solon {
             }
         }
 
-        //启动完成
+        //5.启动完成
         LogUtil.global().info("App: End loading elapsed=" + app.elapsedTimes() + "ms pid=" + pid + " v=" + Solon.version());
 
         return app;
