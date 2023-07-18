@@ -1,5 +1,6 @@
 package org.noear.solon.core;
 
+import org.noear.solon.Solon;
 import org.noear.solon.core.handle.*;
 import org.noear.solon.core.route.PathLimiter;
 import org.noear.solon.core.route.RouterInterceptor;
@@ -154,5 +155,42 @@ public class ChainManager {
 
     public ActionExecuteHandler getExecuteHandlerDefault(){
         return executeHandlerDefault;
+    }
+
+
+
+
+    //
+    // SessionState 对接 //与函数同名，_开头
+    //
+    private static SessionStateFactory _sessionStateFactory = (ctx) -> new SessionStateEmpty();
+    private static boolean _sessionStateUpdated;
+
+    public static SessionStateFactory getSessionStateFactory() {
+        return _sessionStateFactory;
+    }
+
+    /**
+     * 设置Session状态管理器
+     */
+    public static void setSessionStateFactory(SessionStateFactory ssf) {
+        if (ssf != null) {
+            _sessionStateFactory = ssf;
+
+            if (_sessionStateUpdated == false) {
+                _sessionStateUpdated = true;
+
+                Solon.app().before("**", MethodType.HTTP, (c) -> {
+                    c.sessionState().sessionRefresh();
+                });
+            }
+        }
+    }
+
+    /**
+     * 获取Session状态管理器
+     */
+    public static SessionState getSessionState(Context ctx) {
+        return _sessionStateFactory.create(ctx);
     }
 }

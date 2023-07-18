@@ -1,9 +1,5 @@
 package org.noear.solon.core;
 
-import org.noear.solon.Solon;
-import org.noear.solon.core.handle.*;
-
-import java.util.*;
 
 /**
  * 内部扩展桥接器
@@ -41,41 +37,6 @@ import java.util.*;
  * @since 1.0
  * */
 public class Bridge {
-    //
-    // SessionState 对接 //与函数同名，_开头
-    //
-    private static SessionStateFactory _sessionStateFactory = (ctx) -> new SessionStateEmpty();
-    private static boolean sessionStateUpdated;
-
-    public static SessionStateFactory sessionStateFactory() {
-        return _sessionStateFactory;
-    }
-
-    /**
-     * 设置Session状态管理器
-     */
-    public static void sessionStateFactorySet(SessionStateFactory ssf) {
-        if (ssf != null) {
-            _sessionStateFactory = ssf;
-
-            if (sessionStateUpdated == false) {
-                sessionStateUpdated = true;
-
-                Solon.app().before("**", MethodType.HTTP, (c) -> {
-                    c.sessionState().sessionRefresh();
-                });
-            }
-        }
-    }
-
-    /**
-     * 获取Session状态管理器
-     */
-    public static SessionState sessionState(Context ctx) {
-        return _sessionStateFactory.create(ctx);
-    }
-
-
     //
     // UpstreamFactory 对接
     //

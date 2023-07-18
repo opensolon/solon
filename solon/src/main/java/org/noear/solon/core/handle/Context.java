@@ -3,7 +3,6 @@ package org.noear.solon.core.handle;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.Note;
-import org.noear.solon.core.Bridge;
 import org.noear.solon.core.NvMap;
 import org.noear.solon.core.util.IgnoreCaseMap;
 import org.noear.solon.core.util.IpUtil;
@@ -616,7 +615,7 @@ public abstract class Context {
      * */
     public SessionState sessionState() {
         if (sessionState == null) {
-            sessionState = Bridge.sessionState(this);
+            sessionState = Solon.app().chainManager().getSessionState(this);
         }
 
         return sessionState;

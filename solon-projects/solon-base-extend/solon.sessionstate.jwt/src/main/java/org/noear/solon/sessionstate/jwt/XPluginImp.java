@@ -2,7 +2,6 @@ package org.noear.solon.sessionstate.jwt;
 
 import org.noear.solon.Solon;
 import org.noear.solon.core.AopContext;
-import org.noear.solon.core.Bridge;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.util.LogUtil;
 
@@ -17,13 +16,14 @@ public class XPluginImp implements Plugin {
             return;
         }
 
-        if (Bridge.sessionStateFactory().priority() >= JwtSessionStateFactory.SESSION_STATE_PRIORITY) {
+        if (Solon.app().chainManager().getSessionStateFactory().priority()
+                >= JwtSessionStateFactory.SESSION_STATE_PRIORITY) {
             return;
         }
 
         SessionProp.init();
 
-        Bridge.sessionStateFactorySet(JwtSessionStateFactory.getInstance());
+        Solon.app().chainManager().setSessionStateFactory(JwtSessionStateFactory.getInstance());
 
         LogUtil.global().info("Session: Jwt session state plugin is loaded");
     }

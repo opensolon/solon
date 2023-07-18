@@ -21,13 +21,14 @@
 * 增加 server.websocket.ssl.* 配置???
 * 增加 Context::isSecure 接口
 * 增加 ChainManager::defExecuteHandler 接口
+* 增加 ChainManager 对 SessionStateFactory 的管理，原管理方式移除
 * 增加 @Header String[] xxx 注入支持
 * 增加 Converter 体系，一般用于基础类型的通用转换
 * 增加 日志服务孵化机制，可在打印前进行完成格式配置
 * 优化 JsonConverter 标为弃用，统一由 Converter 替代
 * 优化 SocketChannelBase 标为弃用，统一由 ChannelBase 替代
 * 优化 ResourceUtil 的根路径兼容性
-* 优化 @Init 注解逻辑，仅对原生实例有效。保持与 LifecycleBean 相同策略
+* 优化 @Init 注解逻辑，仅对原始实例有效。保持与 LifecycleBean 相同策略
 * 优化 solon.boot.smarthttp 的 ws 适配
 * 优化 nacos2-solon-cloud-plugin 的适配，统一 jackson 版本
 * 优化 nacos-solon-cloud-plugin 的适配，统一 jackson 版本

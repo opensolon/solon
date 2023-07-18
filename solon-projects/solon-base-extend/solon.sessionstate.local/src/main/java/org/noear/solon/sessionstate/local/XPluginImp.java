@@ -13,11 +13,12 @@ public class XPluginImp implements Plugin {
             return;
         }
 
-        if (Bridge.sessionStateFactory().priority() >= LocalSessionStateFactory.SESSION_STATE_PRIORITY) {
+        if (Solon.app().chainManager().getSessionStateFactory().priority()
+                >= LocalSessionStateFactory.SESSION_STATE_PRIORITY) {
             return;
         }
 
-        Bridge.sessionStateFactorySet(LocalSessionStateFactory.getInstance());
+        Solon.app().chainManager().setSessionStateFactory(LocalSessionStateFactory.getInstance());
 
         LogUtil.global().info("Session: Local session state plugin is loaded");
     }

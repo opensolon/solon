@@ -2,7 +2,6 @@ package org.noear.solon.sessionstate.jedis;
 
 import org.noear.solon.Solon;
 import org.noear.solon.core.AopContext;
-import org.noear.solon.core.Bridge;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.util.LogUtil;
 
@@ -13,7 +12,8 @@ public class XPluginImp implements Plugin {
             return;
         }
 
-        if (Bridge.sessionStateFactory().priority() >= JedisSessionStateFactory.SESSION_STATE_PRIORITY) {
+        if (Solon.app().chainManager().getSessionStateFactory().priority()
+                >= JedisSessionStateFactory.SESSION_STATE_PRIORITY) {
             return;
         }
 
@@ -31,7 +31,7 @@ public class XPluginImp implements Plugin {
             return;
         }
 
-        Bridge.sessionStateFactorySet(JedisSessionStateFactory.getInstance());
+        Solon.app().chainManager().setSessionStateFactory(JedisSessionStateFactory.getInstance());
 
         LogUtil.global().info("Session: Redis session state plugin is loaded");
     }
