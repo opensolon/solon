@@ -38,4 +38,8 @@ public class BatchMappingAnnoHandler extends BaseSchemaMappingAnnoHandler<BatchM
         return fieldName;
     }
 
+    @Override
+    protected boolean getIsBatch() {
+        return true;
+    }
 }

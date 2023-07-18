@@ -18,17 +18,18 @@ import org.noear.solon.extend.graphql.resolver.argument.HandlerMethodArgumentRes
  * @author fuzi1996
  * @since 2.3
  */
-public class QueryMappingDataFetcher implements DataFetcher<Object> {
+public class SchemaMappingDataFetcher implements DataFetcher<Object> {
 
     private final AopContext context;
     private final BeanWrap wrap;
     private final Method method;
     private final ParamWrap[] paramWraps;
     private final HandlerMethodArgumentResolverCollect collect;
-
     private final Map<ParamWrap, HandlerMethodArgumentResolver> argumentResolverCache;
+    private final boolean isBatch;
 
-    public QueryMappingDataFetcher(AopContext context, BeanWrap wrap, Method method) {
+    public SchemaMappingDataFetcher(AopContext context, BeanWrap wrap, Method method,
+            boolean isBatch) {
         this.context = context;
         this.wrap = wrap;
         this.method = method;
@@ -46,6 +47,8 @@ public class QueryMappingDataFetcher implements DataFetcher<Object> {
         } else {
             this.paramWraps = null;
         }
+
+        this.isBatch = isBatch;
     }
 
     /**
@@ -58,14 +61,16 @@ public class QueryMappingDataFetcher implements DataFetcher<Object> {
 
             for (int i = 0; i < this.paramWraps.length; i++) {
                 ParamWrap paramWrap = this.paramWraps[i];
-                arguments[i] = this.get(environment, this.method, this.paramWraps, i, paramWrap);
+                arguments[i] = this
+                        .getArgument(environment, this.method, this.paramWraps, i, paramWrap);
             }
         }
 
         return arguments;
     }
 
-    public Object get(DataFetchingEnvironment environment, Method method, ParamWrap[] paramWraps,
+    protected Object getArgument(DataFetchingEnvironment environment, Method method,
+            ParamWrap[] paramWraps,
             int index,
             ParamWrap paramWrap) throws Exception {
 

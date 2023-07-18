@@ -4,6 +4,8 @@ import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.event.AppLoadEndEvent;
 import org.noear.solon.core.event.EventBus;
+import org.noear.solon.extend.graphql.annotation.BatchMapping;
+import org.noear.solon.extend.graphql.annotation.BatchMappingAnnoHandler;
 import org.noear.solon.extend.graphql.annotation.QueryMapping;
 import org.noear.solon.extend.graphql.annotation.QueryMappingAnnoHandler;
 import org.noear.solon.extend.graphql.annotation.SchemaMapping;
@@ -43,8 +45,12 @@ public class GraphqlPlugin implements Plugin {
         QueryMappingAnnoHandler queryExtractor = new QueryMappingAnnoHandler(context);
         context.beanExtractorAdd(QueryMapping.class, queryExtractor);
 
+        BatchMappingAnnoHandler batchMappingExtractor = new BatchMappingAnnoHandler(context);
+        context.beanExtractorAdd(BatchMapping.class, batchMappingExtractor);
+
         context.wrapAndPut(QueryMappingAnnoHandler.class, queryExtractor);
         context.wrapAndPut(SchemaMappingAnnoHandler.class, schemaExtractor);
+        context.wrapAndPut(BatchMappingAnnoHandler.class, batchMappingExtractor);
 
         context.lifecycle(-99, () -> {
             context.beanMake(GraphqlProperties.class);

@@ -1,5 +1,6 @@
 package org.noear.solon.extend.graphql.annotation;
 
+import graphql.schema.DataFetcher;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.LinkedList;
@@ -8,7 +9,7 @@ import org.noear.solon.core.AopContext;
 import org.noear.solon.core.BeanExtractor;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.extend.graphql.fetcher.DataFetcherWrap;
-import org.noear.solon.extend.graphql.fetcher.QueryMappingDataFetcher;
+import org.noear.solon.extend.graphql.fetcher.SchemaMappingDataFetcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,11 +42,21 @@ public abstract class BaseSchemaMappingAnnoHandler<T extends Annotation> impleme
         String typeName = this.getTypeName(wrap, method, schemaMapping);
         String fieldName = this.getFieldName(wrap, method, schemaMapping);
 
-        DataFetcherWrap fetcherWrap = new DataFetcherWrap(typeName, fieldName,
-                new QueryMappingDataFetcher(context, wrap, method));
-        log.debug("扫描到 typeName: [{}],fieldName: [{}] 的 QueryMappingDataFetcher", typeName,
+        DataFetcher<Object> dataFetcher = this.getDataFetcher(context, wrap, method);
+        DataFetcherWrap fetcherWrap = new DataFetcherWrap(typeName, fieldName, dataFetcher);
+        log.debug("扫描到 typeName: [{}],fieldName: [{}] 的 SchemaMappingDataFetcher", typeName,
                 fieldName);
         this.wrapList.add(fetcherWrap);
+    }
+
+    protected DataFetcher<Object> getDataFetcher(AopContext context, BeanWrap wrap,
+            Method method) {
+        boolean isBatch = this.getIsBatch();
+        return new SchemaMappingDataFetcher(context, wrap, method, isBatch);
+    }
+
+    protected boolean getIsBatch() {
+        return false;
     }
 
     abstract String getTypeName(BeanWrap wrap, Method method,
