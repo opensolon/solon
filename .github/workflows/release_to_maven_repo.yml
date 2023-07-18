@@ -2,7 +2,7 @@ name: Release
 
 # Run workflow on commits to the `master` branch
 # docs : https://github.com/marketplace/actions/action-maven-publish
-# not test!!!!
+# not test!!!
 on:
   push:
     branches:
@@ -12,7 +12,7 @@ jobs:
 
  # Publish package to github package
   publish:
-    runs-on: ubuntu-latest
+    runs-on: mac
     permissions:
       contents: read
       packages: write
