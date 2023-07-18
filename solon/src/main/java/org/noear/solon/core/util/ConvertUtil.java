@@ -5,7 +5,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.core.convert.Converter;
 import org.noear.solon.core.exception.ConvertException;
 import org.noear.solon.core.handle.Context;
-import org.noear.solon.core.wrap.VarDeclarer;
+import org.noear.solon.core.wrap.VarDescriptor;
 
 import java.io.File;
 import java.lang.reflect.*;
@@ -29,12 +29,12 @@ public class ConvertUtil {
     /**
      * 转换 context 的值
      *
-     * @param declarer 目标申明
-     * @param val      值
-     * @param ctx      通用上下文
+     * @param descriptor 目标申明
+     * @param val        值
+     * @param ctx        通用上下文
      */
-    public static Object to(VarDeclarer declarer, String val, Context ctx) throws ClassCastException {
-        if (String.class == declarer.getType()) {
+    public static Object to(VarDescriptor descriptor, String val, Context ctx) throws ClassCastException {
+        if (String.class == descriptor.getType()) {
             //如果是 string 返回原始值
             return val;
         }
@@ -47,35 +47,35 @@ public class ConvertUtil {
         Object rst = null;
 
         //转数组
-        if (rst == null && declarer.getType().isArray()) {
+        if (rst == null && descriptor.getType().isArray()) {
             String[] ary = null;
             if (ctx == null) {
                 ary = val.split(",");
             } else {
-                ary = declarer.getValues(ctx);
+                ary = descriptor.getValues(ctx);
                 if (ary == null || ary.length == 1) {
                     //todo:可能有兼容问题("?aaa=1,2&aaa=3,4,5,6"，只传第一部份时会有歧意)
                     ary = val.split(",");
                 }
             }
 
-            rst = tryToArray(ary, declarer.getType());
+            rst = tryToArray(ary, descriptor.getType());
         }
 
         //转集合
-        if (rst == null && Collection.class.isAssignableFrom(declarer.getType())) {
+        if (rst == null && Collection.class.isAssignableFrom(descriptor.getType())) {
             String[] ary = null;
             if (ctx == null) {
                 ary = val.split(",");
             } else {
-                ary = declarer.getValues(ctx);
+                ary = descriptor.getValues(ctx);
                 if (ary == null || ary.length == 1) {
                     //todo:可能有兼容问题("?aaa=1,2&aaa=3,4,5,6"，只传第一部份时会有歧意)
                     ary = val.split(",");
                 }
             }
 
-            Type gType = declarer.getGenericType();
+            Type gType = descriptor.getGenericType();
 
             if (gType instanceof ParameterizedType) {
                 Type gTypeA = ((ParameterizedType) gType).getActualTypeArguments()[0];
@@ -84,22 +84,22 @@ public class ConvertUtil {
                     for (int i = 0; i < ary.length; i++) {
                         ary2.add(tryTo((Class<?>) gTypeA, ary[i]));
                     }
-                    rst = tryToColl(declarer.getType(), ary2);
+                    rst = tryToColl(descriptor.getType(), ary2);
                 } else {
-                    rst = tryToColl(declarer.getType(), Arrays.asList(ary));
+                    rst = tryToColl(descriptor.getType(), Arrays.asList(ary));
                 }
             } else {
-                rst = tryToColl(declarer.getType(), Arrays.asList(ary));
+                rst = tryToColl(descriptor.getType(), Arrays.asList(ary));
             }
         }
 
         //转其它（不是数组，也不是集合）
         if (rst == null) {
-            rst = tryTo(declarer.getType(), val);
+            rst = tryTo(descriptor.getType(), val);
         }
 
         if (rst == null) {
-            throw new ClassCastException("Unsupported type:" + declarer.getName());
+            throw new ClassCastException("Unsupported type:" + descriptor.getName());
         } else {
             return rst;
         }
@@ -161,7 +161,7 @@ public class ConvertUtil {
         }
 
         //转其它
-        if(rst == null){
+        if (rst == null) {
             rst = tryTo(type, val);
         }
 
@@ -247,7 +247,7 @@ public class ConvertUtil {
     public static Object tryTo(Class<?> type, String val) {
         //尝试获取转换器
         Converter converter = Solon.app().converterManager().find(String.class, type);
-        if(converter != null){
+        if (converter != null) {
             return converter.convert(val);
         }
 

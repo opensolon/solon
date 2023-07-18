@@ -6,12 +6,12 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
 /**
- * 变量申明者
+ * 变量描述符
  *
  * @author noear
  * @since 2.3
  */
-public interface VarDeclarer {
+public interface VarDescriptor {
     /**
      * 必须有 body
      */

@@ -235,7 +235,7 @@ public class ClassWrap {
 
             if (val0 != null) {
                 //将 string 转为目标 type，并为字段赋值
-                Object val = ConvertUtil.to(fw.getDeclarer(), val0, ctx);
+                Object val = ConvertUtil.to(fw.getDescriptor(), val0, ctx);
                 fw.setValue(bean, val);
             } else {
                 if (ctx != null && fw.type == UploadedFile.class) {

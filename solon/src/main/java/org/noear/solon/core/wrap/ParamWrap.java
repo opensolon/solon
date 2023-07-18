@@ -9,7 +9,7 @@ import java.lang.reflect.Type;
  * @since 1.6
  * @since 2.4
  */
-public class ParamWrap extends VarDeclarerBase {
+public class ParamWrap extends VarDescriptorBase {
     private final Parameter parameter;
 
     public ParamWrap(Parameter parameter) {

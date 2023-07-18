@@ -7,12 +7,12 @@ import org.noear.solon.core.Constants;
 import java.lang.reflect.AnnotatedElement;
 
 /**
- * 变量申明者 基类
+ * 变量描述符 基类
  *
  * @author noear
  * @since 2.4
  */
-public abstract class VarDeclarerBase implements VarDeclarer {
+public abstract class VarDescriptorBase implements VarDescriptor {
     private AnnotatedElement element;
     private String name;
     private String defaultValue;
@@ -74,7 +74,7 @@ public abstract class VarDeclarerBase implements VarDeclarer {
         return defaultValue;
     }
 
-    public VarDeclarerBase(AnnotatedElement element, String name){
+    public VarDescriptorBase(AnnotatedElement element, String name){
         this.element = element;
         this.name = name;
     }

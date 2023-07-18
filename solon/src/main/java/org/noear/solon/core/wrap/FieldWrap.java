@@ -110,18 +110,18 @@ public class FieldWrap {
 
 
 
-    private VarDeclarer declarer;
+    private VarDescriptor descriptor;
     /**
      * 变量申明者
      *
      * @since 2.3
      * */
-    public VarDeclarer getDeclarer() {
-        if(declarer == null){
+    public VarDescriptor getDescriptor() {
+        if(descriptor == null){
             //采用懒加载，不浪费
-            declarer = new FieldWrapDeclarer(this);
+            descriptor = new FieldWrapDescriptor(this);
         }
-        return declarer;
+        return descriptor;
     }
 
 

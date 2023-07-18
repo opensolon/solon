@@ -24,6 +24,7 @@ import org.noear.solon.serialization.JsonRenderFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import webapp.demo6_aop.TestImport;
+import webapp.models.CatTypeConverter;
 
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStreamWriter;
@@ -82,6 +83,8 @@ public class App {
 
             x.enableSocketD(true);
             x.enableWebSocket(true);
+
+            //x.converterManager().register(new CatTypeConverter());
 
             //x.onStatus(404, c->c.render("404了"));
 
