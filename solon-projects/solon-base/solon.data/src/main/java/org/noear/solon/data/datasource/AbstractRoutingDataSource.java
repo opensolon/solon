@@ -126,17 +126,23 @@ public abstract class AbstractRoutingDataSource implements DataSource, Closeable
 
     @Override
     public void close() throws IOException {
-        if (defaultTargetDataSource != null) {
-            if (defaultTargetDataSource instanceof Closeable) {
-                ((Closeable) defaultTargetDataSource).close();
-            }
-        }
-
         if (targetDataSources != null) {
             for (DataSource ds : targetDataSources.values()) {
                 if (ds instanceof Closeable) {
                     ((Closeable) ds).close();
                 }
+            }
+        }
+
+        if (defaultTargetDataSource != null) {
+            if(targetDataSources != null){
+                if(targetDataSources.containsValue(defaultTargetDataSource)){
+                    return;
+                }
+            }
+
+            if (defaultTargetDataSource instanceof Closeable) {
+                ((Closeable) defaultTargetDataSource).close();
             }
         }
     }
