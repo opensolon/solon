@@ -11,21 +11,20 @@
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <groupId>org.noear.bundle</groupId>
-    <artifactId>_hatch</artifactId>
-    <packaging>pom</packaging>
+    <groupId>org.noear.hatch</groupId>
+    <artifactId>solon.boot.reactor-netty</artifactId>
+    <packaging>jar</packaging>
 
-    <modules>
-        <module>nami.coder.thrift</module>
+    <dependencies>
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.boot</artifactId>
+        </dependency>
 
-        <module>solon.serialization.thrift</module>
-        <module>solon.serialization.avro</module>
-
-        <module>solon.boot.reactor-netty</module>
-
-
-<!--        <module>../../__hatch/solon.boot.rapidoid-http-fast</module>-->
-<!--        <module>../../__hatch/solon.boot.jdkudp</module>-->
-    </modules>
-
+        <dependency>
+            <groupId>io.projectreactor.netty</groupId>
+            <artifactId>reactor-netty-http</artifactId>
+            <version>1.1.0</version>
+        </dependency>
+    </dependencies>
 </project>
