@@ -44,7 +44,8 @@
 * 优化 Nami 编码器匹配策略及头同步策略，尤其是仅单编码包引入时
 * 优化 AbstractRoutingDataSource 的关闭处理
 * 优化 ShardingDataSource 增加 Closeable 接口支持
-* 修复 solon-swagger2-knife4j 插件，递归类型的数据模型会栈溢出的问题
+* 调整 beetlsql-solon-plugin 插件，DbConnectionSource 改为公有，调整包结构
+* 调整 solon-swagger2-knife4j 插件，解决递归类型的数据模型会栈溢出的问题
 * dbvisitor 升为 5.3.3
 * mybatis-flex 升为 1.5.0
 * fastmybatis 升为 2.8.1

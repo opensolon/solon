@@ -1,4 +1,4 @@
-package org.noear.solon.extend.beetlsql;
+package org.beetl.sql.solon;
 
 import org.beetl.sql.clazz.kit.BeetlSQLException;
 import org.beetl.sql.core.DefaultConnectionSource;
@@ -15,7 +15,7 @@ import java.sql.SQLException;
  * @author noear
  * @since 2020-09-01
  * */
-class DbConnectionSource extends DefaultConnectionSource {
+public class DbConnectionSource extends DefaultConnectionSource {
     public DbConnectionSource(DataSource master, DataSource[] slaves) {
         super(master, slaves);
     }

@@ -1,6 +1,9 @@
-package org.noear.solon.extend.beetlsql;
+package org.beetl.sql.solon.integration;
 
 import org.beetl.sql.core.SQLManager;
+import org.beetl.sql.solon.DbManager;
+import org.beetl.sql.solon.annotation.Db;
+
 import org.noear.solon.Utils;
 import org.noear.solon.core.*;
 
@@ -22,11 +25,11 @@ public class XPluginImp implements Plugin {
 
 
         //for new
-        context.beanBuilderAdd(org.beetl.sql.solon.annotation.Db.class, (clz, wrap, anno) -> {
+        context.beanBuilderAdd(Db.class, (clz, wrap, anno) -> {
             builderAddDo(clz, wrap, anno.value());
         });
 
-        context.beanInjectorAdd(org.beetl.sql.solon.annotation.Db.class, (varH, anno) -> {
+        context.beanInjectorAdd(Db.class, (varH, anno) -> {
             injectorAddDo(varH, anno.value());
         });
 
