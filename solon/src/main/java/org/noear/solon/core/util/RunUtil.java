@@ -3,6 +3,7 @@ package org.noear.solon.core.util;
 import org.noear.solon.Utils;
 
 import java.util.concurrent.*;
+import java.util.function.Supplier;
 
 /**
  * 运行工具
@@ -11,16 +12,32 @@ import java.util.concurrent.*;
  * @since 1.12
  */
 public class RunUtil {
-    private static final ExecutorService executor;
-    private static final ScheduledExecutorService scheduledExecutor;
+    private static ExecutorService executor;
+    private static ScheduledExecutorService scheduledExecutor;
 
     static {
         executor = new ThreadPoolExecutor(0, Integer.MAX_VALUE,
                 60L, TimeUnit.SECONDS,
                 new SynchronousQueue<Runnable>(),
-                new NamedThreadFactory("Solon-RunUtil-executor-"));
+                new NamedThreadFactory("Solon-executor-"));
         scheduledExecutor = new ScheduledThreadPoolExecutor(Runtime.getRuntime().availableProcessors(),
-                new NamedThreadFactory("Solon-RunUtil-echeduledExecutor-"));
+                new NamedThreadFactory("Solon-echeduledExecutor-"));
+    }
+
+    public static void setScheduledExecutor(ScheduledExecutorService scheduledExecutor) {
+        if (scheduledExecutor != null) {
+            ScheduledExecutorService old = RunUtil.scheduledExecutor;
+            RunUtil.scheduledExecutor = scheduledExecutor;
+            old.shutdown();
+        }
+    }
+
+    public static void setExecutor(ExecutorService executor) {
+        if (executor != null) {
+            ExecutorService old = RunUtil.executor;
+            RunUtil.executor = executor;
+            old.shutdown();
+        }
     }
 
     /**
@@ -56,8 +73,15 @@ public class RunUtil {
     /**
      * 异步执行
      */
-    public static Future<?> async(Runnable task) {
+    public static CompletableFuture<Void> async(Runnable task) {
         return CompletableFuture.runAsync(task, executor);
+    }
+
+    /**
+     * 异步执行
+     */
+    public static <U> CompletableFuture<U> async(Supplier<U> task) {
+        return CompletableFuture.supplyAsync(task, executor);
     }
 
     /**

@@ -27,6 +27,7 @@
 * 增加 日志服务孵化机制，可在打印前进行完成格式配置
 * 增加 solon.boot.socketd.netty 插件对 ssl 的支持
 * 增加 solon.boot.websocket.netty 插件对 ssl 的支持
+* 优化 RouterListener 取消自己的线程池，改用 RunUtil
 * 优化 JsonConverter 标为弃用，统一由 Converter 替代
 * 优化 SocketChannelBase 标为弃用，统一由 ChannelBase 替代
 * 优化 ResourceUtil 的根路径兼容性

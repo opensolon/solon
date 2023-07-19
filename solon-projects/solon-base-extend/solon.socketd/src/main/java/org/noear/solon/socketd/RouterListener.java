@@ -7,13 +7,12 @@ import org.noear.solon.core.message.Listener;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.MessageFlag;
 import org.noear.solon.core.message.Session;
+import org.noear.solon.core.util.RunUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 /**
  * 路由器监听者
@@ -23,10 +22,6 @@ import java.util.concurrent.Executors;
  */
 public class RouterListener implements Listener{
     static final Logger log = LoggerFactory.getLogger(RouterListener.class);
-    /**
-     * 消息处理线程池
-     * */
-    static final ExecutorService executor = Executors.newCachedThreadPool();
 
 
     //
@@ -37,7 +32,7 @@ public class RouterListener implements Listener{
      * */
     @Override
     public void onOpen(Session session) {
-        executor.execute(() -> {
+        RunUtil.parallel(() -> {
             onOpen0(session);
         });
     }
@@ -86,7 +81,7 @@ public class RouterListener implements Listener{
         //
         //线程池处理，免得被卡住
         //
-        executor.execute(() -> {
+        RunUtil.parallel(() -> {
             onMessage0(session, message);
         });
     }
@@ -141,7 +136,7 @@ public class RouterListener implements Listener{
      * */
     @Override
     public void onClose(Session session) {
-        executor.execute(() -> {
+        RunUtil.parallel(() -> {
             onClose0(session);
         });
     }
@@ -168,7 +163,7 @@ public class RouterListener implements Listener{
      * */
     @Override
     public void onError(Session session, Throwable error) {
-        executor.execute(() -> {
+        RunUtil.parallel(() -> {
             onError0(session, error);
         });
     }
