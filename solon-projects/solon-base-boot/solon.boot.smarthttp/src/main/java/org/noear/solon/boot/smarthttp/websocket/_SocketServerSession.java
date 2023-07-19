@@ -40,13 +40,13 @@ public class _SocketServerSession extends SessionBase {
     }
 
 
-    private final WebSocketRequestImpl request;
+    private final WebSocketRequest request;
     private final WebSocketResponse real;
     private String _sessionId = Utils.guid();
 
     public _SocketServerSession(WebSocketRequest request) {
-        this.request = ((WebSocketRequestImpl) request);
-        this.real = this.request.getResponse();
+        this.request = request;
+        this.real = ((WebSocketRequestImpl) request).getResponse();
     }
 
     @Override
