@@ -11,10 +11,17 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpServerCodec;
 
+import io.netty.handler.ssl.SslHandler;
 import io.netty.handler.stream.ChunkedWriteHandler;
 import org.noear.solon.Utils;
+import org.noear.solon.boot.ServerConstants;
 import org.noear.solon.boot.ServerLifecycle;
+import org.noear.solon.boot.prop.ServerSslProps;
 import org.noear.solon.boot.prop.impl.WebSocketServerProps;
+import org.noear.solon.boot.ssl.SslContextFactory;
+
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLEngine;
 
 /**
  * @author noear
@@ -23,6 +30,18 @@ import org.noear.solon.boot.prop.impl.WebSocketServerProps;
 public class WsServer implements ServerLifecycle {
     ChannelFuture _server;
     WebSocketServerProps _props;
+
+    private ServerSslProps sslProps;
+    private SSLContext sslContext;
+
+    protected boolean supportSsl() {
+        if (sslProps == null) {
+            sslProps = ServerSslProps.of(ServerConstants.SIGNAL_WEBSOCKET);
+        }
+
+        return sslProps.isEnable() && sslProps.getSslKeyStore() != null;
+    }
+
     public WsServer(WebSocketServerProps props){
         _props = props;
     }
@@ -33,6 +52,10 @@ public class WsServer implements ServerLifecycle {
         EventLoopGroup workGroup = new NioEventLoopGroup(_props.getMaxThreads(false));
 
         try {
+            if(supportSsl()){
+                sslContext = SslContextFactory.create(sslProps);
+            }
+
             ServerBootstrap bootstrap = new ServerBootstrap();
             bootstrap.group(bossGroup, workGroup)
                     .channel(NioServerSocketChannel.class)
@@ -40,6 +63,14 @@ public class WsServer implements ServerLifecycle {
                         @Override
                         public void initChannel(SocketChannel ch) throws Exception {
                             ChannelPipeline pipeline = ch.pipeline();
+
+                            if(sslContext != null) {
+                                SSLEngine engine = sslContext.createSSLEngine();
+                                engine.setUseClientMode(false);
+                                engine.setNeedClientAuth(true);
+                                pipeline.addFirst(new SslHandler(engine));
+                            }
+
                             //将请求和应答消息编码或解码为HTTP消息
                             pipeline.addLast(new HttpServerCodec());
                             //将HTTP消息的多个部分组合成一条完整的HTTP消息
