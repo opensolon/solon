@@ -3,6 +3,8 @@ package org.noear.solon.data.shardingds;
 import org.apache.shardingsphere.solon.ShardingSphereSupplier;
 
 import javax.sql.DataSource;
+import java.io.Closeable;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -16,12 +18,12 @@ import java.util.logging.Logger;
  * @author noear
  * @since 2.2
  */
-public class ShardingDataSource implements DataSource {
+public class ShardingDataSource implements DataSource , Closeable {
     final DataSource real;
 
     /**
      * 获取真实数据源
-     * */
+     */
     public DataSource getReal() {
         return real;
     }
@@ -74,5 +76,12 @@ public class ShardingDataSource implements DataSource {
     @Override
     public Logger getParentLogger() throws SQLFeatureNotSupportedException {
         return real.getParentLogger();
+    }
+
+    @Override
+    public void close() throws IOException {
+        if (real instanceof Closeable) {
+            ((Closeable) real).close();
+        }
     }
 }

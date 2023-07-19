@@ -42,6 +42,8 @@
 * 优化 内核日志打印顺序，由 SolonApp 实例化后再打印。以便日志格式配置先加载
 * 优化 ActionExecuteHandlerDefault::changeBody 参数结构，方便不同的序列化方案处理
 * 优化 Nami 编码器匹配策略及头同步策略，尤其是仅单编码包引入时
+* 优化 AbstractRoutingDataSource 的关闭处理
+* 优化 ShardingDataSource 增加 Closeable 接口支持
 * 修复 solon-swagger2-knife4j 插件，递归类型的数据结构会栈溢出的问题???
 * dbvisitor 升为 5.3.3
 * mybatis-flex 升为 1.5.0
