@@ -9,6 +9,7 @@ import org.noear.solon.core.wrap.ParamWrap;
 import org.noear.solon.docs.ApiEnum;
 
 import java.util.Collection;
+import java.util.Map;
 
 /**
  * @author noear 2023/5/25 created
@@ -63,6 +64,22 @@ public class ParamHolder {
         }
 
         return null;
+    }
+
+    public boolean isMap(){
+        if(param != null){
+            return Map.class.isAssignableFrom(param.getType());
+        }
+
+        return false;
+    }
+
+    public boolean isArray(){
+        if(param != null){
+            return Collection.class.isAssignableFrom(param.getType());
+        }
+
+        return false;
     }
 
     /**

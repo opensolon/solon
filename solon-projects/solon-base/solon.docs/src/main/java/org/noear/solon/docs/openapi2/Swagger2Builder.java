@@ -73,13 +73,13 @@ public class Swagger2Builder {
         swagger.host(BuilderHelper.getHost(docket));
         swagger.basePath(docket.basePath());
 
-        if(docket.schemes() != null) {
+        if (docket.schemes() != null) {
             for (ApiScheme scheme : docket.schemes()) {
                 swagger.scheme(Scheme.forValue(scheme.toValue()));
             }
         }
 
-        if(docket.externalDocs() != null) {
+        if (docket.externalDocs() != null) {
             swagger.externalDocs(new ExternalDocs(docket.externalDocs().description(), docket.externalDocs().url()));
         }
 
@@ -117,7 +117,7 @@ public class Swagger2Builder {
         //获取所有控制器及动作
         Map<Class<?>, List<ActionHolder>> classMap = this.getApiAction();
 
-        for(Map.Entry<Class<?>, List<ActionHolder>> kv : classMap.entrySet()){
+        for (Map.Entry<Class<?>, List<ActionHolder>> kv : classMap.entrySet()) {
             // 解析controller
             this.parseController(kv.getKey(), kv.getValue());
         }
@@ -160,7 +160,7 @@ public class Swagger2Builder {
         return result;
     }
 
-    private void resolveAction(Map<Class<?>, List<ActionHolder>> apiMap, Routing<Handler> routing){
+    private void resolveAction(Map<Class<?>, List<ActionHolder>> apiMap, Routing<Handler> routing) {
         Action action = (Action) routing.target();
         Class<?> controller = action.controller().clz();
 
@@ -242,7 +242,7 @@ public class Swagger2Builder {
             String pathKey = actionHolder.routing().path(); //PathUtil.mergePath(controllerKey, actionName);
 
             Path path = swagger.getPath(pathKey);
-            if(path == null) {
+            if (path == null) {
                 //path 要重复可用
                 path = new Path();
                 swagger.path(pathKey, path);
@@ -365,16 +365,22 @@ public class Swagger2Builder {
             } else {
                 if (Utils.isNotEmpty(paramSchema)) {
                     //model
-                    if(paramHolder.isRequiredBody() || paramHolder.getParam() == null) {
+                    if (paramHolder.isRequiredBody() || paramHolder.getParam() == null) {
                         //做为 body
                         BodyParameter modelParameter = new BodyParameter();
-                        modelParameter.setSchema(new RefModel(paramSchema));
+
+                        if(paramHolder.isMap()){
+                            modelParameter.setSchema(new ModelImpl().type("object"));
+                        }else{
+                            modelParameter.setSchema(new RefModel(paramSchema));
+                        }
+
                         if (paramHolder.getParam() != null && paramHolder.getParam().isRequiredBody() == false) {
                             modelParameter.setIn(ApiEnum.PARAM_TYPE_QUERY);
                         }
 
                         parameter = modelParameter;
-                    }else {
+                    } else {
                         parseActionParametersByFields(paramHolder, paramList);
 
                         continue;
@@ -427,7 +433,7 @@ public class Swagger2Builder {
         //做为 字段
         ClassWrap classWrap = ClassWrap.get(paramHolder.getParam().getType());
         for (FieldWrap fw : classWrap.getFieldAllWraps().values()) {
-            if(Modifier.isTransient(fw.field.getModifiers())){
+            if (Modifier.isTransient(fw.field.getModifiers())) {
                 continue;
             }
 
@@ -562,9 +568,9 @@ public class Swagger2Builder {
      * 将class解析为swagger model
      */
     private Model parseSwaggerModel(Class<?> clazz, Type type) {
-        String modelName = BuilderHelper.getModelName(clazz, type);
+        final String modelName = BuilderHelper.getModelName(clazz, type);
 
-        // 已存在,不重复解析
+        // 1.已存在,不重复解析
         if (swagger.getDefinitions() != null) {
             Model model = swagger.getDefinitions().get(modelName);
 
@@ -573,6 +579,7 @@ public class Swagger2Builder {
             }
         }
 
+        // 2.创建模型
         ApiModel apiModel = clazz.getAnnotation(ApiModel.class);
         String title;
         if (apiModel != null) {
@@ -583,6 +590,16 @@ public class Swagger2Builder {
 
         Map<String, Property> fieldList = new LinkedHashMap<>();
 
+
+        ModelImpl model = new ModelImpl();
+        model.setName(modelName);
+        model.setTitle(title);
+        model.setType(ApiEnum.RES_OBJECT);
+
+        swagger.addDefinition(modelName, model);
+
+
+        // 3.完成模型解析
         Field[] fields = clazz.getDeclaredFields();
         for (Field field : fields) {
             if (Modifier.isStatic(field.getModifiers())) {
@@ -634,11 +651,11 @@ public class Swagger2Builder {
                     }
 
                     if (itemClazz instanceof Class) {
-                        if(itemClazz.equals(type)){
+                        if (itemClazz.equals(type)) {
                             //避免出现循环依赖，然后 oom
                             RefProperty itemPr = new RefProperty(modelName, RefFormat.INTERNAL);
                             fieldPr.setItems(itemPr);
-                        }else {
+                        } else {
                             ModelImpl swaggerModel = (ModelImpl) this.parseSwaggerModel((Class<?>) itemClazz, itemClazz);
 
                             RefProperty itemPr = new RefProperty(swaggerModel.getName(), RefFormat.INTERNAL);
@@ -654,7 +671,7 @@ public class Swagger2Builder {
 
 
             if (BuilderHelper.isModel(typeClazz)) {
-                if(typeClazz.equals(type)){
+                if (typeClazz.equals(type)) {
                     //避免出现循环依赖，然后 oom
                     RefProperty fieldPr = new RefProperty(modelName, RefFormat.INTERNAL);
                     if (apiField != null) {
@@ -662,7 +679,7 @@ public class Swagger2Builder {
                     }
 
                     fieldList.put(field.getName(), fieldPr);
-                }else {
+                } else {
                     ModelImpl swaggerModel = (ModelImpl) this.parseSwaggerModel(typeClazz, typeClazz);
 
                     RefProperty fieldPr = new RefProperty(swaggerModel.getName(), RefFormat.INTERNAL);
@@ -688,14 +705,7 @@ public class Swagger2Builder {
             }
         }
 
-        ModelImpl model = new ModelImpl();
         model.setProperties(fieldList);
-        model.setName(modelName);
-        model.setTitle(title);
-        model.setType(ApiEnum.RES_OBJECT);
-
-        swagger.addDefinition(modelName, model);
-
         return model;
     }
 
@@ -703,9 +713,15 @@ public class Swagger2Builder {
      * 将action response解析为swagger model
      */
     private Model parseSwaggerModel(String controllerKey, String actionName, List<ApiResProperty> responses) {
-        String modelName = controllerKey + "_" + actionName;
+        final String modelName = controllerKey + "_" + actionName;
 
         Map<String, Property> propertiesList = new LinkedHashMap<>();
+
+        ModelImpl model = new ModelImpl();
+        model.setName(modelName);
+
+        swagger.addDefinition(modelName, model);
+
 
         //todo: 不在Data中返回参数
         if (!docket.globalResponseInData()) {
@@ -732,14 +748,6 @@ public class Swagger2Builder {
 
                     propertiesList.put(apiResponse.name(), fieldPr);
                 }
-
-                //fieldPr.set("key", apiResponse.name());
-                //fieldPr.set("name", swaggerModel.getStr("name"));
-                //fieldPr.set("description", apiResponse.value());
-                //fieldPr.set("type", ApiEnum.RES_OBJECT);
-                //fieldPr.set("allowMultiple", apiResponse.allowMultiple());
-
-
             } else {
                 if (apiResponse.allowMultiple()) {
                     ArrayProperty fieldPr = new ArrayProperty();
@@ -765,20 +773,10 @@ public class Swagger2Builder {
 
                     propertiesList.put(apiResponse.name(), fieldPr);
                 }
-
-                //fieldPr.set("exampleEnum", apiResponse.exampleEnum());
-                //fieldPr.set("allowMultiple", apiResponse.allowMultiple());
-
-
             }
         }
 
-        ModelImpl model = new ModelImpl();
         model.setProperties(propertiesList);
-        model.setName(modelName);
-
-        swagger.addDefinition(modelName, model);
-
         return model;
     }
 
@@ -814,8 +812,16 @@ public class Swagger2Builder {
             Type dataGenericType = paramHolder.getParam().getGenericType();
 
             if (dataTypeClass != Void.class) {
-                ModelImpl swaggerModel = (ModelImpl) this.parseSwaggerModel(dataTypeClass, dataGenericType);
+                if (Collection.class.isAssignableFrom(dataTypeClass) && dataGenericType instanceof ParameterizedType) {
+                    Type itemType = ((ParameterizedType) dataGenericType).getActualTypeArguments()[0];
 
+                    if (itemType instanceof Class) {
+                        ModelImpl swaggerModel = (ModelImpl) this.parseSwaggerModel((Class<?>) itemType, itemType);
+                        return swaggerModel.getName();
+                    }
+                }
+
+                ModelImpl swaggerModel = (ModelImpl) this.parseSwaggerModel(dataTypeClass, dataGenericType);
                 return swaggerModel.getName();
             }
         }
