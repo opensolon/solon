@@ -83,7 +83,7 @@ public class XPluginImp implements Plugin {
             ServerBootstrap bootstrap = new ServerBootstrap();
             bootstrap.group(bossGroup, workGroup)
                     .channel(NioServerSocketChannel.class)
-                    .childHandler(new NioChannelInitializer(sslContext, () -> new NioServerProcessor()));
+                    .childHandler(new NioChannelInitializer(sslContext, false, () -> new NioServerProcessor()));
 
             if (Utils.isEmpty(_host)) {
                 _server = bootstrap.bind(_port).await();

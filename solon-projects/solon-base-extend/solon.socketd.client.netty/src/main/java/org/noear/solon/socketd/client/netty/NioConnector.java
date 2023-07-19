@@ -32,7 +32,7 @@ class NioConnector extends ConnectorBase<Channel> {
 
            bootstrap.group(eventLoopGroup)
                    .channel(NioSocketChannel.class)
-                   .handler(new NioChannelInitializer(() -> new NioClientProcessor(session)));
+                   .handler(new NioChannelInitializer(null, true, () -> new NioClientProcessor(session)));
 
            ChannelFuture channelFuture = bootstrap.connect(uri().getHost(), uri().getPort()).sync();
 
