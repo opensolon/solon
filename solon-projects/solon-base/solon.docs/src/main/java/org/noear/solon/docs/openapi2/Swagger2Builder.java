@@ -629,10 +629,16 @@ public class Swagger2Builder {
                     }
 
                     if (itemClazz instanceof Class) {
-                        ModelImpl swaggerModel = (ModelImpl) this.parseSwaggerModel((Class<?>) itemClazz, itemClazz);
+                        if(itemClazz.equals(type)){
+                            //避免出现循环依赖，然后 oom
+                            RefProperty itemPr = new RefProperty(modelName, RefFormat.INTERNAL);
+                            fieldPr.setItems(itemPr);
+                        }else {
+                            ModelImpl swaggerModel = (ModelImpl) this.parseSwaggerModel((Class<?>) itemClazz, itemClazz);
 
-                        RefProperty itemPr = new RefProperty(swaggerModel.getName(), RefFormat.INTERNAL);
-                        fieldPr.setItems(itemPr);
+                            RefProperty itemPr = new RefProperty(swaggerModel.getName(), RefFormat.INTERNAL);
+                            fieldPr.setItems(itemPr);
+                        }
                     }
 
 
@@ -643,14 +649,24 @@ public class Swagger2Builder {
 
 
             if (BuilderHelper.isModel(typeClazz)) {
-                ModelImpl swaggerModel = (ModelImpl) this.parseSwaggerModel(typeClazz, typeClazz);
+                if(typeClazz.equals(type)){
+                    //避免出现循环依赖，然后 oom
+                    RefProperty fieldPr = new RefProperty(modelName, RefFormat.INTERNAL);
+                    if (apiField != null) {
+                        fieldPr.setDescription(apiField.value());
+                    }
 
-                RefProperty fieldPr = new RefProperty(swaggerModel.getName(), RefFormat.INTERNAL);
-                if (apiField != null) {
-                    fieldPr.setDescription(apiField.value());
+                    fieldList.put(field.getName(), fieldPr);
+                }else {
+                    ModelImpl swaggerModel = (ModelImpl) this.parseSwaggerModel(typeClazz, typeClazz);
+
+                    RefProperty fieldPr = new RefProperty(swaggerModel.getName(), RefFormat.INTERNAL);
+                    if (apiField != null) {
+                        fieldPr.setDescription(apiField.value());
+                    }
+
+                    fieldList.put(field.getName(), fieldPr);
                 }
-
-                fieldList.put(field.getName(), fieldPr);
             } else {
                 ObjectProperty fieldPr = new ObjectProperty();
                 fieldPr.setName(field.getName());

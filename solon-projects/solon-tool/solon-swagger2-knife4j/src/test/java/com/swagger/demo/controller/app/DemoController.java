@@ -1,6 +1,7 @@
 package com.swagger.demo.controller.app;
 
 
+import com.swagger.demo.model.bean.Node;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -35,5 +36,11 @@ public class DemoController {
     @Mapping("test2")
     public Map test2() {
         return new HashMap();
+    }
+
+    @ApiOperation("复杂返回树")
+    @Mapping("test3")
+    public Node test3(){
+        return new Node();
     }
 }
