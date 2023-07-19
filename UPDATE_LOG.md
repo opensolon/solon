@@ -47,7 +47,7 @@
 * 调整 beetlsql-solon-plugin 插件，DbConnectionSource 改为公有，调整包结构
 * 调整 solon-swagger2-knife4j 插件，解决递归类型的数据模型会栈溢出的问题
 * dbvisitor 升为 5.3.3
-* mybatis-flex 升为 1.5.0
+* mybatis-flex 升为 1.5.1
 * fastmybatis 升为 2.8.1
 * bean-searcher 升为 4.2.2
 * liteflow 升为 2.10.5
