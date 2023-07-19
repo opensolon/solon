@@ -8,12 +8,17 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
+import org.noear.solon.boot.ServerConstants;
 import org.noear.solon.boot.ServerProps;
+import org.noear.solon.boot.prop.ServerSslProps;
 import org.noear.solon.boot.prop.impl.SocketServerProps;
+import org.noear.solon.boot.ssl.SslContextFactory;
 import org.noear.solon.core.*;
 import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.socketd.SessionManager;
 import org.noear.solon.socketd.client.netty.NioChannelInitializer;
+
+import javax.net.ssl.SSLContext;
 
 public class XPluginImp implements Plugin {
     private static Signal _signal;
@@ -26,6 +31,17 @@ public class XPluginImp implements Plugin {
 
     public static String solon_boot_ver() {
         return "netty-socketd 4.1.75/" + Solon.version();
+    }
+
+
+    private ServerSslProps sslProps;
+
+    protected boolean supportSsl() {
+        if (sslProps == null) {
+            sslProps = ServerSslProps.of(ServerConstants.SIGNAL_SOCKET);
+        }
+
+        return sslProps.isEnable() && sslProps.getSslKeyStore() != null;
     }
 
     @Override
@@ -57,11 +73,17 @@ public class XPluginImp implements Plugin {
         EventLoopGroup bossGroup = new NioEventLoopGroup(props.getCoreThreads());
         EventLoopGroup workGroup = new NioEventLoopGroup(props.getMaxThreads(false));
 
+
         try {
+            SSLContext sslContext = null;
+            if(supportSsl()){
+                sslContext = SslContextFactory.create(sslProps);
+            }
+
             ServerBootstrap bootstrap = new ServerBootstrap();
             bootstrap.group(bossGroup, workGroup)
                     .channel(NioServerSocketChannel.class)
-                    .childHandler(new NioChannelInitializer(() -> new NioServerProcessor()));
+                    .childHandler(new NioChannelInitializer(sslContext, () -> new NioServerProcessor()));
 
             if (Utils.isEmpty(_host)) {
                 _server = bootstrap.bind(_port).await();

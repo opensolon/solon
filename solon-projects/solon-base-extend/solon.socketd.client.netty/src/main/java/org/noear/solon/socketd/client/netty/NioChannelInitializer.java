@@ -5,14 +5,19 @@ import io.netty.channel.ChannelPipeline;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
+import io.netty.handler.ssl.SslHandler;
 import org.noear.solon.core.message.Message;
 
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLEngine;
 import java.util.function.Supplier;
 
 public class NioChannelInitializer extends ChannelInitializer<SocketChannel> {
     Supplier<SimpleChannelInboundHandler<Message>> processor;
-    public NioChannelInitializer(Supplier<SimpleChannelInboundHandler<Message>> processor){
+    SSLContext sslContext;
+    public NioChannelInitializer(SSLContext sslContext, Supplier<SimpleChannelInboundHandler<Message>> processor){
         this.processor = processor;
+        this.sslContext = sslContext;
     }
 
     @Override
@@ -20,6 +25,13 @@ public class NioChannelInitializer extends ChannelInitializer<SocketChannel> {
         ChannelPipeline pipeline = ch.pipeline();
 
         //pipeline.addLast(new IdleStateHandler())
+
+        if(sslContext != null) {
+            SSLEngine engine = sslContext.createSSLEngine();
+            engine.setUseClientMode(false);
+            engine.setNeedClientAuth(true);
+            pipeline.addFirst(new SslHandler(engine));
+        }
 
         pipeline.addLast(new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE, 0, 4,-4,0));
         pipeline.addLast(new MessageDecoder());
