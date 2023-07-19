@@ -5,11 +5,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.noear</groupId>
-    <artifactId>solon-framework</artifactId>
+    <artifactId>__release</artifactId>
     <version>dev</version>
     <packaging>pom</packaging>
 
-    <name>_root</name>
+    <name>__release</name>
     <description>Java project for solon</description>
 
     <properties>
@@ -18,9 +18,23 @@
     </properties>
 
     <modules>
-        <module>__release/</module>
-        <module>__test</module>
+        <module>../solon</module>
+        <module>../solon-parent</module>
 
-        <module>solon-projects/_hatch</module>
+        <module>nami-bundle</module>
+
+        <module>solon-base-bundle</module>
+        <module>solon-base-boot-bundle</module>
+        <module>solon-base-extend-bundle</module>
+        <module>solon-base-render-bundle</module>
+
+        <module>solon-plugin-bundle</module>
+        <module>solon-plugin-bundle2</module>
+        <module>solon-plugin-data-bundle</module>
+        <module>solon-plugin-cloud-bundle</module>
+
+        <module>solon-tool-bundle</module>
+
+        <module>solon-shortcuts-bundle</module>
     </modules>
 </project>
