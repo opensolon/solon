@@ -114,14 +114,13 @@ public class Swagger2Builder {
      * 解析分组包
      */
     private void parseGroupPackage() {
+        //获取所有控制器及动作
         Map<Class<?>, List<ActionHolder>> classMap = this.getApiAction();
-        classMap.keySet().forEach((Class<?> clazz) -> {
-            List<ActionHolder> actionHolders = classMap.get(clazz);
 
+        for(Map.Entry<Class<?>, List<ActionHolder>> kv : classMap.entrySet()){
             // 解析controller
-            this.parseController(clazz, actionHolders);
-
-        });
+            this.parseController(kv.getKey(), kv.getValue());
+        }
     }
 
 
@@ -239,8 +238,17 @@ public class Swagger2Builder {
 
             Set<String> actionTags = actionHolder.getTags(apiAction);
 
-            Path path = new Path();
+
             String pathKey = actionHolder.routing().path(); //PathUtil.mergePath(controllerKey, actionName);
+
+            Path path = swagger.getPath(pathKey);
+            if(path == null) {
+                //path 要重复可用
+                path = new Path();
+                swagger.path(pathKey, path);
+            }
+
+
             Operation operation = new Operation();
 
             operation.setTags(new ArrayList<>(actionTags));
@@ -276,12 +284,9 @@ public class Swagger2Builder {
 
             operation.produces(Utils.isBlank(apiAction.produces()) ? ApiEnum.PRODUCES_DEFAULT : apiAction.produces());
 
-
             operation.setOperationId(operationMethod + "_" + pathKey.replace("/", "_"));
 
             path.set(operationMethod, operation);
-
-            swagger.path(pathKey, path);
         }
     }
 
