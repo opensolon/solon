@@ -1,5 +1,7 @@
 package org.noear.solon.extend.activerecord.impl;
 
+import java.io.Closeable;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -16,7 +18,7 @@ import org.noear.solon.data.tran.TranUtils;
  * @author noear
  * @since 1.4
  */
-public class DataSourceProxyImpl implements DataSource {
+public class DataSourceProxyImpl implements DataSource , Closeable {
     private DataSource ds;
 
     public DataSourceProxyImpl(DataSource ds) {
@@ -70,5 +72,12 @@ public class DataSourceProxyImpl implements DataSource {
     @Override
     public <T> T unwrap(Class<T> iface) throws SQLException {
         return this.ds.unwrap(iface);
+    }
+
+    @Override
+    public void close() throws IOException {
+        if (ds instanceof Closeable) {
+            ((Closeable) ds).close();
+        }
     }
 }
