@@ -22,6 +22,7 @@ abstract class UndertowServerBase implements ServerLifecycle, HttpServerConfigur
     protected HttpServerProps props = new HttpServerProps();
     protected boolean enableSsl = true;
     protected boolean enableHttp2 = false;
+
     protected Set<Integer> addHttpPorts = new LinkedHashSet<>();
 
     /**

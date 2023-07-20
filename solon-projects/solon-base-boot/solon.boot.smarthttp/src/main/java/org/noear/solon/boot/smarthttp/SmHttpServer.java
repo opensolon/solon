@@ -31,6 +31,10 @@ public class SmHttpServer implements ServerLifecycle {
     private Executor workExecutor;
     private boolean enableWebSocket;
     private boolean enableSsl = true;
+    private boolean isSecure;
+    public boolean isSecure() {
+        return isSecure;
+    }
 
     private ServerSslProps sslProps;
     protected boolean supportSsl() {
@@ -76,6 +80,7 @@ public class SmHttpServer implements ServerLifecycle {
                 sslEngine.setUseClientMode(false);
             });
             _config.addPlugin(sslPlugin);
+            isSecure = true;
         }
 
         //_config.debug(Solon.cfg().isDebugMode());

@@ -20,6 +20,11 @@ public class JlHttpServer implements ServerLifecycle {
     private Handler handler;
     private Executor executor;
     private boolean enableSsl = true;
+    private boolean isSecure;
+    public boolean isSecure() {
+        return isSecure;
+    }
+
 
     private ServerSslProps sslProps;
     protected boolean supportSsl() {
@@ -50,6 +55,7 @@ public class JlHttpServer implements ServerLifecycle {
         if (enableSsl && supportSsl()) {
             // enable SSL if configured
             server.setServerSocketFactory(SslContextFactory.create(sslProps).getServerSocketFactory());
+            isSecure = true;
         }
 
         HTTPServer.VirtualHost virtualHost = server.getVirtualHost(null);

@@ -19,9 +19,9 @@ import java.util.concurrent.Executor;
 public class JdkHttpServerComb implements HttpServerConfigure, ServerLifecycle {
     private Executor executor;
     private Handler handler;
-    protected boolean enableSsl = true;
-    protected Set<Integer> addHttpPorts = new LinkedHashSet<>();
-    protected List<JdkHttpServer> servers = new ArrayList<>();
+    private boolean enableSsl = true;
+    private Set<Integer> addHttpPorts = new LinkedHashSet<>();
+    private List<JdkHttpServer> servers = new ArrayList<>();
 
 
     @Override
@@ -43,6 +43,14 @@ public class JdkHttpServerComb implements HttpServerConfigure, ServerLifecycle {
 
     public void setExecutor(Executor executor) {
         this.executor = executor;
+    }
+
+    public boolean isSecure() {
+        if (servers.size() > 0) {
+            return servers.get(0).isSecure();
+        } else {
+            return false;
+        }
     }
 
     @Override

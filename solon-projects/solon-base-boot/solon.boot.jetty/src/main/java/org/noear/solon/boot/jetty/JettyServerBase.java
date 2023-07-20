@@ -32,6 +32,11 @@ abstract class JettyServerBase implements ServerLifecycle , HttpServerConfigure 
     protected ExecutorService executor;
     protected HttpServerProps props = new HttpServerProps();
     protected boolean enableSsl = true;
+    private boolean isSecure;
+    public boolean isSecure() {
+        return isSecure;
+    }
+
     protected Set<Integer> addHttpPorts = new LinkedHashSet<>();
 
     private ServerSslProps sslProps;
@@ -111,6 +116,7 @@ abstract class JettyServerBase implements ServerLifecycle , HttpServerConfigure 
             SslConnectionFactory sslFactory = new SslConnectionFactory(contextFactory, HttpVersion.HTTP_1_1.asString());
 
             serverConnector = new ServerConnector(server, sslFactory, httpFactory);
+            isSecure = true;
         } else {
             serverConnector = new ServerConnector(server, httpFactory);
         }

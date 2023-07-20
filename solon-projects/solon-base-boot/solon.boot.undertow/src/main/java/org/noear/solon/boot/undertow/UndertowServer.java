@@ -27,6 +27,10 @@ import static io.undertow.Handlers.websocket;
  */
 public class UndertowServer extends UndertowServerBase implements ServerLifecycle {
     protected Undertow _server;
+    private boolean isSecure;
+    public boolean isSecure() {
+        return isSecure;
+    }
 
     private ServerSslProps sslProps;
     protected boolean supportSsl() {
@@ -93,6 +97,7 @@ public class UndertowServer extends UndertowServerBase implements ServerLifecycl
         if (enableSsl && supportSsl()) {
             //https
             builder.addHttpsListener(port, host, SslContextFactory.create(sslProps));
+            isSecure = true;
         } else {
             //http
             builder.addHttpListener(port, host);

@@ -27,8 +27,14 @@ public class JdkHttpServer implements ServerLifecycle {
     private Executor executor;
     private Handler handler;
     private boolean enableSsl = true;
+    private boolean isSecure;
+    public boolean isSecure() {
+        return isSecure;
+    }
+
 
     private ServerSslProps sslProps;
+
     protected boolean supportSsl() {
         if (sslProps == null) {
             sslProps = ServerSslProps.of(ServerConstants.SIGNAL_HTTP);
@@ -62,6 +68,7 @@ public class JdkHttpServer implements ServerLifecycle {
             }
 
             addSslConfig((HttpsServer) server);
+            isSecure = true;
         } else {
             if (Utils.isNotEmpty(host)) {
                 server = HttpServer.create(new InetSocketAddress(host, port), 0);

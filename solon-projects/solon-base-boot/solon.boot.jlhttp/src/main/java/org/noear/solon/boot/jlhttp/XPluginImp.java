@@ -102,7 +102,8 @@ public final class XPluginImp implements Plugin {
 
         long time_end = System.currentTimeMillis();
 
-        LogUtil.global().info("Connector:main: jlhttp: Started ServerConnector@{HTTP/1.1,[http/1.1]}{http://localhost:" + _port + "}");
+        String serverUrl = (_server.isSecure() ? "https" : "http") + "://localhost:" + _port;
+        LogUtil.global().info("Connector:main: jlhttp: Started ServerConnector@{HTTP/1.1,[http/1.1]}{"+ serverUrl +"}");
         LogUtil.global().info("Server:main: jlhttp: Started ("+solon_boot_ver()+") @" + (time_end - time_start) + "ms");
     }
 

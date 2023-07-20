@@ -20,7 +20,7 @@ public final class XPluginImp implements Plugin {
         return _signal;
     }
 
-    private UndertowServerBase _server = null;
+    private UndertowServer _server = null;
 
     public static String solon_boot_ver() {
         return "undertow 2.2.24/" + Solon.version();
@@ -81,8 +81,8 @@ public final class XPluginImp implements Plugin {
             LogUtil.global().info(connectorInfo + "[WebSocket]}{0.0.0.0:" + _port + "}");
         }
 
-        LogUtil.global().info(connectorInfo + "}{http://localhost:" + _port + "}");
-
+        String serverUrl = (_server.isSecure() ? "https" : "http") + "://localhost:" + _port;
+        LogUtil.global().info(connectorInfo + "}{"+serverUrl+"}");
         LogUtil.global().info("Server:main: undertow: Started (" + solon_boot_ver() + ") @" + (time_end - time_start) + "ms");
     }
 

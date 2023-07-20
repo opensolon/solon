@@ -57,6 +57,14 @@ public class SmHttpServerComb implements HttpServerConfigure, ServerLifecycle {
         this.enableWebSocket = enableWebSocket;
     }
 
+    public boolean isSecure() {
+        if (servers.size() > 0) {
+            return servers.get(0).isSecure();
+        } else {
+            return false;
+        }
+    }
+
     @Override
     public void start(String host, int port) throws Throwable {
         {
