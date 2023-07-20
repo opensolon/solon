@@ -688,7 +688,7 @@ public class Swagger2Builder {
 
                     fieldList.put(field.getName(), fieldPr);
                 } else {
-                    ModelImpl swaggerModel = (ModelImpl) this.parseSwaggerModel(typeClazz, typeClazz);
+                    ModelImpl swaggerModel = (ModelImpl) this.parseSwaggerModel(typeClazz, typeGenericType);
 
                     RefProperty fieldPr = new RefProperty(swaggerModel.getName(), RefFormat.INTERNAL);
                     if (apiField != null) {

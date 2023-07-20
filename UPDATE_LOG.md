@@ -49,7 +49,7 @@
 * 修复 solon-swagger2-knife4j 插件，递归类型的数据模型会栈溢出的问题
 * 修复 solon-swagger2-knife4j 插件，相同 path 不能显示多个 method 的问题
 * 修复 solon-swagger2-knife4j 插件，`List<Demo>` 风格参数，不能正常构建 json 示例
-* 修复 solon-swagger2-knife4j 插件，`Page<Demo>` 风格的临时模型，不能正常构建 json 示例
+* 修复 solon-swagger2-knife4j 插件，`Page<Demo>`、`Result<Page<Demo>>` 等复杂嵌套的临时模型，不能正常构建 json 示例
 * dbvisitor 升为 5.3.3
 * mybatis-flex 升为 1.5.1
 * sqltoy 升为 5.2.59
