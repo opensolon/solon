@@ -23,7 +23,7 @@
 * 增加 Context::isSecure 接口
 * 增加 ChainManager::defExecuteHandler 接口
 * 增加 ChainManager 对 SessionStateFactory 的管理，原管理方式移除
-* 增加 @Header String[] xxx 注入支持
+* 增加 `@Header` String[] xxx 注入支持
 * 增加 Converter 体系，一般用于基础类型的通用转换
 * 增加 日志服务孵化机制，可在打印前进行完成格式配置
 * 增加 solon.boot.socketd.netty 插件对 ssl 的支持
