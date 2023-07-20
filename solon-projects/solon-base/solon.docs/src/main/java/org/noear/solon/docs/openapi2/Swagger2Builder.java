@@ -650,6 +650,14 @@ public class Swagger2Builder {
                         itemClazz = ((ParameterizedType) itemClazz).getRawType();
                     }
 
+                    if(itemClazz instanceof TypeVariable){
+                        Map<String, Type> genericMap = GenericUtil.getGenericInfo(type);
+                        Type itemClazz2 = genericMap.get(itemClazz.getTypeName());
+                        if (itemClazz2 instanceof Class) {
+                            itemClazz = itemClazz2;
+                        }
+                    }
+
                     if (itemClazz instanceof Class) {
                         if (itemClazz.equals(type)) {
                             //避免出现循环依赖，然后 oom
