@@ -51,12 +51,14 @@
 * 修复 solon-swagger2-knife4j 插件，`List<Demo>` 风格参数，不能正常构建 json 示例
 * dbvisitor 升为 5.3.3
 * mybatis-flex 升为 1.5.1
+* sqltoy 升为 5.2.59
 * fastmybatis 升为 2.8.1
 * bean-searcher 升为 4.2.2
 * liteflow 升为 2.10.5
 * beetl 升为 3.15.7.RELEASE
 * beetlsql 升为 3.23.4-RELEASE
 * smarthttp 升为 1.2.8
+* fastjson2 升为 2.0.35
 
 ### 2.3.8
 * 增加 HttpServerConfigure::enableHttp2 接口, 默认为 false
