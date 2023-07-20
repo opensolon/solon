@@ -22,6 +22,7 @@
         <module>../../solon-projects/solon-tool/solon-test-junit4</module>
         <module>../../solon-projects/solon-tool/solon-test-junit5</module>
 
+        <module>../../solon-projects/solon-tool/solon-openapi2-knife4j</module>
         <module>../../solon-projects/solon-tool/solon-swagger2-knife4j</module>
 
         <module>../../solon-projects/solon-tool/solon-admin-client</module>

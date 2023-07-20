@@ -12,13 +12,14 @@
 ### 2.4.1
 * 新增 solon.boot.vertx 插件?
 * 新增 solon.cloud.metrics 插件?
+* 新增 solon-admin-client 插件?
+* 新增 solon-admin-server 插件?
+* 新增 solon-admin-server-ui 插件?
 
 ### 2.4.0
-* 新增 solon-admin-client
-* 新增 solon-admin-server
-* 新增 solon-admin-server-ui
-* 增加 server.socket.ssl.* 配置???
-* 增加 server.websocket.ssl.* 配置???
+* 新增 solon-openapi2-knife4j 插件，替代 solon-swagger2-knife4j
+* 增加 server.socket.ssl.* 配置
+* 增加 server.websocket.ssl.* 配置
 * 增加 Context::isSecure 接口
 * 增加 ChainManager::defExecuteHandler 接口
 * 增加 ChainManager 对 SessionStateFactory 的管理，原管理方式移除
