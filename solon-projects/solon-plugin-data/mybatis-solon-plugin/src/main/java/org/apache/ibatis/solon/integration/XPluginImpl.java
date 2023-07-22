@@ -1,6 +1,7 @@
 package org.apache.ibatis.solon.integration;
 
 import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.solon.annotation.Db;
 import org.apache.ibatis.solon.aot.MybatisRuntimeNativeRegistrar;
 import org.noear.solon.Utils;
 import org.noear.solon.aot.RuntimeNativeRegistrar;
@@ -20,11 +21,11 @@ public class XPluginImpl implements Plugin {
         });
 
         //for new
-        context.beanBuilderAdd(org.apache.ibatis.solon.annotation.Db.class, (clz, wrap, anno) -> {
+        context.beanBuilderAdd(Db.class, (clz, wrap, anno) -> {
             builderAddDo(clz, wrap, anno.value());
         });
 
-        context.beanInjectorAdd(org.apache.ibatis.solon.annotation.Db.class, (varH, anno) -> {
+        context.beanInjectorAdd(Db.class, (varH, anno) -> {
             injectorAddDo(varH, anno.value());
         });
 
