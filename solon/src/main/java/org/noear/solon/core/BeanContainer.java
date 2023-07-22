@@ -204,25 +204,57 @@ public abstract class BeanContainer {
         return beanExtractors.containsKey(annoClz);
     }
 
+
+    /**
+     * 添加拦截处理
+     *
+     * @param index 执行顺序
+     */
+    public <T extends Annotation> void beanInterceptorAdd(Class<T> annoClz, Interceptor interceptor, int index) {
+        beanInterceptors.put(annoClz, new InterceptorEntity(index, interceptor));
+    }
+
+    /**
+     * 添加拦截处理
+     */
+    public <T extends Annotation> void beanInterceptorAdd(Class<T> annoClz, Interceptor interceptor) {
+        beanInterceptorAdd(annoClz, interceptor, 0);
+    }
+
+    /**
+     * 获取拦截处理
+     */
+    public <T extends Annotation> InterceptorEntity beanInterceptorGet(Class<T> annoClz) {
+        return beanInterceptors.get(annoClz);
+    }
+
     /**
      * 添加环绕处理
      *
      * @param index 执行顺序
+     * @deprecated 2.4
      */
+    @Deprecated
     public <T extends Annotation> void beanAroundAdd(Class<T> annoClz, Interceptor interceptor, int index) {
         beanInterceptors.put(annoClz, new InterceptorEntity(index, interceptor));
     }
 
     /**
      * 添加环绕处理
+     *
+     * @deprecated 2.4
      */
+    @Deprecated
     public <T extends Annotation> void beanAroundAdd(Class<T> annoClz, Interceptor interceptor) {
         beanAroundAdd(annoClz, interceptor, 0);
     }
 
     /**
      * 获取环绕处理
+     *
+     * @deprecated 2.4
      */
+    @Deprecated
     public <T extends Annotation> InterceptorEntity beanAroundGet(Class<T> annoClz) {
         return beanInterceptors.get(annoClz);
     }
