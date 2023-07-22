@@ -3,6 +3,7 @@ package org.noear.solon.boot.vertx;
 import io.vertx.core.Vertx;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
+import org.noear.solon.boot.ServerConstants;
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.prop.impl.HttpServerProps;
 import org.noear.solon.core.AopContext;
@@ -25,7 +26,7 @@ public class XPluginImp implements Plugin {
 
         context.wrapAndPut(Vertx.class, vertx);
 
-        context.lifecycle(-99, () -> {
+        context.lifecycle(ServerConstants.SIGNAL_LIFECYCLE_INDEX, () -> {
             start0(Solon.app());
         });
     }

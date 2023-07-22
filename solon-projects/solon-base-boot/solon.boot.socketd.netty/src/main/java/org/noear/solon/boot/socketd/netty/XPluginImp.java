@@ -53,7 +53,7 @@ public class XPluginImp implements Plugin {
             return;
         }
 
-        context.lifecycle(-99, () -> {
+        context.lifecycle(ServerConstants.SIGNAL_LIFECYCLE_INDEX, () -> {
             start0(Solon.app());
         });
     }

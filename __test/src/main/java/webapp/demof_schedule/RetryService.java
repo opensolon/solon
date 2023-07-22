@@ -2,9 +2,6 @@ package webapp.demof_schedule;
 
 import org.noear.solon.annotation.ProxyComponent;
 import org.noear.solon.scheduling.annotation.Retry;
-import org.noear.solon.scheduling.retry.DefaultRecover;
-
-import java.util.concurrent.TimeUnit;
 
 @ProxyComponent
 public class RetryService {

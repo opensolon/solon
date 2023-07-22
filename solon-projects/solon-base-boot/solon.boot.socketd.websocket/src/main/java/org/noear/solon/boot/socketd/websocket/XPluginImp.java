@@ -3,6 +3,7 @@ package org.noear.solon.boot.socketd.websocket;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
+import org.noear.solon.boot.ServerConstants;
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.prop.impl.WebSocketServerProps;
 import org.noear.solon.core.*;
@@ -33,7 +34,7 @@ public class XPluginImp implements Plugin {
             return;
         }
 
-        context.lifecycle(-99, () -> {
+        context.lifecycle(ServerConstants.SIGNAL_LIFECYCLE_INDEX, () -> {
             start0(Solon.app());
         });
     }

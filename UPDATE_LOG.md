@@ -16,6 +16,8 @@
 * 新增 solon-admin-client 插件?
 * 新增 solon-admin-server 插件?
 * 新增 solon-admin-server-ui 插件?
+* 优化 solon.boot 信号启动的执行时机后延
+* 优化 solon.scheduling 插件的 retry 的兜底设计
 
 ### 2.4.0
 * 新增 solon-openapi2-knife4j 插件，替代 solon-swagger2-knife4j

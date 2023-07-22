@@ -12,4 +12,6 @@ public class ServerConstants {
     public static final String SIGNAL_HTTP = "http";
     public static final String SIGNAL_SOCKET = "socket";
     public static final String SIGNAL_WEBSOCKET = "websocket";
+
+    public static final int SIGNAL_LIFECYCLE_INDEX = 99;
 }
