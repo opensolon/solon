@@ -37,6 +37,7 @@
         <module>../../solon-projects/solon-base-extend/solon.web.webdav</module>
         <module>../../solon-projects/solon-base-extend/solon.web.staticfiles</module>
         <module>../../solon-projects/solon-base-extend/solon.web.servlet</module>
+        <module>../../solon-projects/solon-base-extend/solon.web.servlet.jakarta</module>
         <module>../../solon-projects/solon-base-extend/solon.web.cors</module>
         <module>../../solon-projects/solon-base-extend/solon.web.stop</module>
         <module>../../solon-projects/solon-base-extend/solon.web.sdl</module>

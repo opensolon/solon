@@ -36,6 +36,7 @@
         <asm.version>9.4</asm.version>
 
         <servlet.version>4.0.1</servlet.version>
+        <servlet.jakarta.version>5.0.0</servlet.jakarta.version>
 
         <jetty.version>9.4.51.v20230217</jetty.version>
         <undertow.version>2.2.24.Final</undertow.version>
@@ -470,6 +471,12 @@
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.web.servlet</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.web.servlet.jakarta</artifactId>
                 <version>${solon.version}</version>
             </dependency>
 
