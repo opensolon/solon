@@ -21,7 +21,7 @@ public class XPluginImp implements Plugin {
         if (Solon.app().enableTransaction()) {
             context.wrapAndPut(TranExecutor.class, TranExecutorImp.global);
 
-            context.beanAroundAdd(Tran.class, new TranInterceptor(), 120);
+            context.beanInterceptorAdd(Tran.class, new TranInterceptor(), 120);
         }
 
         //添加缓存控制支持
@@ -36,9 +36,9 @@ public class XPluginImp implements Plugin {
                 }
             });
 
-            context.beanAroundAdd(CachePut.class, new CachePutInterceptor(), 110);
-            context.beanAroundAdd(CacheRemove.class, new CacheRemoveInterceptor(), 110);
-            context.beanAroundAdd(Cache.class, new CacheInterceptor(), 111);
+            context.beanInterceptorAdd(CachePut.class, new CachePutInterceptor(), 110);
+            context.beanInterceptorAdd(CacheRemove.class, new CacheRemoveInterceptor(), 110);
+            context.beanInterceptorAdd(Cache.class, new CacheInterceptor(), 111);
         }
     }
 }

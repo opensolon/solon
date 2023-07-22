@@ -5,7 +5,7 @@ import org.noear.solon.core.handle.Handler;
 
 
 //@Controller
-public class AfterInterceptor implements Handler {
+public class AfterHandler implements Handler {
     //@Mapping(value = "/demoa/**", index = 1, endpoint = Endpoint.after)
 //    public void call(Context context, String sev) {
 //

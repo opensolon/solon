@@ -15,11 +15,11 @@ public class ShiroPluginImp implements Plugin {
     public void start(AopContext context) {
         //换了种方式，注册AOP环绕处理，获得一级拦截权限（之前的方案，需要类上有：@Valid 注解；借助它的拦截，获得二级执行权限有）
         //
-        context.beanAroundAdd(RequiresPermissions.class, PermissionInterceptor.instance);
-        context.beanAroundAdd(RequiresRoles.class, RoleInterceptor.instance);
-        context.beanAroundAdd(RequiresUser.class, UserInterceptor.instance);
-        context.beanAroundAdd(RequiresGuest.class, GuestInterceptor.instance);
-        context.beanAroundAdd(RequiresAuthentication.class, AuthenticateInterceptor.instance);
+        context.beanInterceptorAdd(RequiresPermissions.class, PermissionInterceptor.instance);
+        context.beanInterceptorAdd(RequiresRoles.class, RoleInterceptor.instance);
+        context.beanInterceptorAdd(RequiresUser.class, UserInterceptor.instance);
+        context.beanInterceptorAdd(RequiresGuest.class, GuestInterceptor.instance);
+        context.beanInterceptorAdd(RequiresAuthentication.class, AuthenticateInterceptor.instance);
 
         //这个不需要，因为这个插件里，没有大片的类要扫描
         //

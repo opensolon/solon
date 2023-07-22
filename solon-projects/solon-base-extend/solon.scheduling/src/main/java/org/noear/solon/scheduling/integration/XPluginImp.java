@@ -21,13 +21,13 @@ public class XPluginImp implements Plugin {
         // @since 2.2
         Annotation enableAnno = source.getAnnotation(EnableAsync.class);
         if (enableAnno != null) {
-            context.beanAroundAdd(Async.class, new AsyncInterceptor(context));
+            context.beanInterceptorAdd(Async.class, new AsyncInterceptor(context));
         }
 
         // @since 2.3
         Annotation enableRetryAnno = source.getAnnotation(EnableRetry.class);
         if (enableRetryAnno != null) {
-            context.beanAroundAdd(Retry.class, new RetryInterceptor(context), Integer.MIN_VALUE);
+            context.beanInterceptorAdd(Retry.class, new RetryInterceptor(context), Integer.MIN_VALUE);
         }
     }
 }

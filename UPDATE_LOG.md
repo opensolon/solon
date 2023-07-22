@@ -18,6 +18,8 @@
 * 新增 solon-admin-server-ui 插件?
 * 优化 solon.boot 信号启动的执行时机后延
 * 优化 solon.scheduling 插件的 retry 的兜底设计
+* 调整 AopContext::beanAroundXxx 标为弃用，添加 beanInterceptorXxx 代之
+* 调整 Around 相关名改为 Interceptor，原名标为弃用
 
 ### 2.4.0
 * 新增 solon-openapi2-knife4j 插件，替代 solon-swagger2-knife4j

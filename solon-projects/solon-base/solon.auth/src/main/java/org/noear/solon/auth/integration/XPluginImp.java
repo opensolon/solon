@@ -14,11 +14,11 @@ import org.noear.solon.core.Plugin;
 public class XPluginImp implements Plugin {
     @Override
     public void start(AopContext context) {
-        context.beanAroundAdd(AuthIp.class, new IpInterceptor());
-        context.beanAroundAdd(AuthLogined.class, new LoginedInterceptor());
-        context.beanAroundAdd(AuthPath.class, new PathInterceptor());
-        context.beanAroundAdd(AuthPermissions.class, new PermissionsInterceptor());
-        context.beanAroundAdd(AuthRoles.class, new RolesInterceptor());
+        context.beanInterceptorAdd(AuthIp.class, new IpInterceptor());
+        context.beanInterceptorAdd(AuthLogined.class, new LoginedInterceptor());
+        context.beanInterceptorAdd(AuthPath.class, new PathInterceptor());
+        context.beanInterceptorAdd(AuthPermissions.class, new PermissionsInterceptor());
+        context.beanInterceptorAdd(AuthRoles.class, new RolesInterceptor());
 
         context.subBeansOfType(AuthAdapterSupplier.class, e -> AuthUtil.adapterAdd(e));
     }

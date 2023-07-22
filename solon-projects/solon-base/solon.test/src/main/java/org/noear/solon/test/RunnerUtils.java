@@ -212,7 +212,7 @@ public class RunnerUtils {
         RunnerUtils.addPropertySource(context, propAnno);
 
         //添加 TestRollback 注解支持
-        context.beanAroundAdd(TestRollback.class, new TestRollbackInterceptor(), 120);
+        context.beanInterceptorAdd(TestRollback.class, new TestRollbackInterceptor(), 120);
 
         //添加 Mock 注解支持
         context.beanInjectorAdd(Mock.class, (varH, anno) -> {

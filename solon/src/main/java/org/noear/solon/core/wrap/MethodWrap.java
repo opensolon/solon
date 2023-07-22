@@ -33,19 +33,19 @@ public class MethodWrap implements Interceptor, MethodHolder {
         method = m;
         parameters = buildParamsWrap(m.getParameters());
         annotations = m.getAnnotations();
-        arounds = new ArrayList<>();
-        aroundsIdx = new HashSet<>();
+        interceptors = new ArrayList<>();
+        interceptorsIdx = new HashSet<>();
 
         //scan method @Around （优先）
         for (Annotation anno : annotations) {
             if (anno instanceof Around) {
-                doAroundAdd((Around) anno);
+                doInterceptorAdd((Around) anno);
             } else {
-                InterceptorEntity ie = context.beanAroundGet(anno.annotationType());
+                InterceptorEntity ie = context.beanInterceptorGet(anno.annotationType());
                 if (ie != null) {
-                    doAroundAdd(ie);
+                    doInterceptorAdd(ie);
                 } else {
-                    doAroundAdd(anno.annotationType().getAnnotation(Around.class));
+                    doInterceptorAdd(anno.annotationType().getAnnotation(Around.class));
                 }
             }
         }
@@ -53,23 +53,23 @@ public class MethodWrap implements Interceptor, MethodHolder {
         //scan cless @Around
         for (Annotation anno : entityClz.getAnnotations()) {
             if (anno instanceof Around) {
-                doAroundAdd((Around) anno);
+                doInterceptorAdd((Around) anno);
             } else {
-                InterceptorEntity ie = context.beanAroundGet(anno.annotationType());
+                InterceptorEntity ie = context.beanInterceptorGet(anno.annotationType());
                 if (ie != null) {
-                    doAroundAdd(ie);
+                    doInterceptorAdd(ie);
                 } else {
-                    doAroundAdd(anno.annotationType().getAnnotation(Around.class));
+                    doInterceptorAdd(anno.annotationType().getAnnotation(Around.class));
                 }
             }
         }
 
-        if (arounds.size() > 0) {
+        if (interceptors.size() > 0) {
             //排序（顺排）
-            arounds.sort(Comparator.comparing(x -> x.getIndex()));
+            interceptors.sort(Comparator.comparing(x -> x.getIndex()));
         }
 
-        arounds.add(new InterceptorEntity(0, this));
+        interceptors.add(new InterceptorEntity(0, this));
     }
 
     private ParamWrap[] buildParamsWrap(Parameter[] pAry) {
@@ -87,21 +87,21 @@ public class MethodWrap implements Interceptor, MethodHolder {
     }
 
 
-    private void doAroundAdd(Around a) {
+    private void doInterceptorAdd(Around a) {
         if (a != null) {
-            doAroundAdd(new InterceptorEntity(a.index(), context.getBeanOrNew(a.value())));
+            doInterceptorAdd(new InterceptorEntity(a.index(), context.getBeanOrNew(a.value())));
         }
     }
 
-    private void doAroundAdd(InterceptorEntity i) {
+    private void doInterceptorAdd(InterceptorEntity i) {
         if (i != null) {
-            if(aroundsIdx.contains(i.getReal())){
+            if(interceptorsIdx.contains(i.getReal())){
                 //去重处理
                 return;
             }
 
-            aroundsIdx.add(i.getReal());
-            arounds.add(i);
+            interceptorsIdx.add(i.getReal());
+            interceptors.add(i);
         }
     }
 
@@ -117,9 +117,9 @@ public class MethodWrap implements Interceptor, MethodHolder {
     private ParamWrap bodyParameter;
     //函数注解
     private final Annotation[] annotations;
-    //函数包围列表（扩展切点）
-    private final List<InterceptorEntity> arounds;
-    private final Set<Interceptor> aroundsIdx;
+    //函数拦截器列表（扩展切点）
+    private final List<InterceptorEntity> interceptors;
+    private final Set<Interceptor> interceptorsIdx;
     private boolean isRequiredBody;
 
     /**
@@ -203,9 +203,19 @@ public class MethodWrap implements Interceptor, MethodHolder {
 
     /**
      * 获取包围处理
+     *
+     * @deprecated 2.4
      */
+    @Deprecated
     public List<InterceptorEntity> getArounds() {
-        return Collections.unmodifiableList(arounds);
+        return getInterceptors();
+    }
+
+    /**
+     * 获取拦截器
+     */
+    public List<InterceptorEntity> getInterceptors() {
+        return Collections.unmodifiableList(interceptors);
     }
 
     /**
@@ -217,7 +227,7 @@ public class MethodWrap implements Interceptor, MethodHolder {
     }
 
     /**
-     * 执行
+     * 执行（原生处理）
      */
     public Object invoke(Object obj, Object[] args) throws Throwable {
         try {
@@ -229,10 +239,10 @@ public class MethodWrap implements Interceptor, MethodHolder {
     }
 
     /**
-     * 执行切面
+     * 执行切面（即带拦截器的处理）
      */
     public Object invokeByAspect(Object obj, Object[] args) throws Throwable {
-        Invocation inv = new Invocation(obj, args, this, arounds);
+        Invocation inv = new Invocation(obj, args, this, interceptors);
         return inv.invoke();
     }
 }

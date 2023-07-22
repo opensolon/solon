@@ -3,8 +3,6 @@ package labs.test3;
 import org.junit.Test;
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.Around;
-import org.noear.solon.annotation.Controller;
-import org.noear.solon.annotation.Mapping;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.aspect.InterceptorEntity;
 import org.noear.solon.validation.annotation.Valid;
@@ -42,7 +40,7 @@ public class AnnoTest {
      * 方案1
      * */
     private void xxx1(Annotation anno){
-        doAroundAdd(anno.annotationType().getAnnotation(Around.class));
+        doInterceptorAdd(anno.annotationType().getAnnotation(Around.class));
     }
 
     /**
@@ -52,21 +50,21 @@ public class AnnoTest {
         //@since 1.10 //支持拦截注解的别名注解形式
         for (Annotation anno2 : anno.annotationType().getAnnotations()) {
             if (anno2 instanceof Around) {
-                doAroundAdd((Around) anno2);
+                doInterceptorAdd((Around) anno2);
             } else {
-                InterceptorEntity ie2 = context.beanAroundGet(anno2.annotationType());
+                InterceptorEntity ie2 = context.beanInterceptorGet(anno2.annotationType());
                 if (ie2 != null) {
-                    doAroundAdd(ie2);
+                    doInterceptorAdd(ie2);
                 }
             }
         }
     }
 
-    private void doAroundAdd(Around anno){
+    private void doInterceptorAdd(Around anno){
 
     }
 
-    private void doAroundAdd(InterceptorEntity anno){
+    private void doInterceptorAdd(InterceptorEntity anno){
 
     }
 }

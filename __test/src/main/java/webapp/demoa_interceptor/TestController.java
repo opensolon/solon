@@ -8,7 +8,7 @@ import org.noear.solon.annotation.Mapping;
 @Before({BeforeHandler.class})
 @Controller
 public class TestController {
-    @Around(AroundHandler.class)
+    @Around(AroundInterceptor.class)
     @Mapping("/demoa/test/")
     public void test(){
 

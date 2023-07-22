@@ -5,7 +5,7 @@ import org.noear.solon.core.handle.Handler;
 
 
 //@Controller
-public class BeforeInterceptor {
+public class BeforeHandlerBean {
     public static class Before1 implements Handler{
 
         @Override

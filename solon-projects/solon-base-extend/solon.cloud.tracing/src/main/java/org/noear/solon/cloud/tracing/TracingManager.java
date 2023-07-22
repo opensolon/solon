@@ -38,7 +38,7 @@ public class TracingManager {
         Solon.app().onError(new ErrorListenerTracing());
 
         //添加 @Tracing 适配
-        Solon.context().beanAroundAdd(Tracing.class, new TracingInterceptor());
+        Solon.context().beanInterceptorAdd(Tracing.class, new TracingInterceptor());
     }
 
     /**

@@ -38,7 +38,7 @@ public class XPluginImp implements Plugin , InitializingBean {
 
         context.beanBuilderAdd(CloudEvent.class, CloudEventBeanBuilder.instance);
 
-        context.beanAroundAdd(CloudBreaker.class, CloudBreakerInterceptor.instance);
+        context.beanInterceptorAdd(CloudBreaker.class, CloudBreakerInterceptor.instance);
 
         context.beanExtractorAdd(CloudJob.class, CloudJobBeanExtractor.getInstance());
         context.beanBuilderAdd(CloudJob.class, CloudJobBeanBuilder.getInstance());
