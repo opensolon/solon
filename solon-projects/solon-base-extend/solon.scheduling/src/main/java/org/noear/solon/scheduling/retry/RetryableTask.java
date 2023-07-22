@@ -1,9 +1,6 @@
 package org.noear.solon.scheduling.retry;
 
 
-import org.noear.solon.core.util.RunnableEx;
-import org.noear.solon.core.util.SupplierEx;
-
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -41,46 +38,30 @@ public class RetryableTask<T> {
      * 重试达到最大次数后还是失败，使用兜底策略
      */
     private Recover<T> recover;
-
     /**
      * 执行后结果存放
      */
     private T result;
     /**
-     * 执行法方法
+     * 重试对象
      */
-    private final SupplierEx<T> caller;
+    private final Callee callee;
 
-    private RetryableTask(RunnableEx run) {
-        this.caller = () -> {
-            run.run();
-            return null;
-        };
-    }
 
-    private RetryableTask(SupplierEx<T> sup) {
-        this.caller = sup;
+    private RetryableTask(Callee callee) {
+        this.callee = callee;
     }
 
     /**
-     * 创建一个没有返回值的重试任务
+     * 创建重试任务
      *
-     * @param run 任务
+     * @param task 任务
      * @return Void
      */
-    public static RetryableTask<Void> of(RunnableEx run) {
-        return new RetryableTask<>(run);
+    public static RetryableTask<Void> of(Callee task) {
+        return new RetryableTask<>(task);
     }
 
-    /**
-     * 创建一个有返回值的重试任务
-     *
-     * @param sup 任务
-     * @return 执行结果
-     */
-    public static <T> RetryableTask<T> of(SupplierEx<T> sup) {
-        return new RetryableTask<>(sup);
-    }
 
     /**
      * 最大重试次数
@@ -146,6 +127,7 @@ public class RetryableTask<T> {
         return this;
     }
 
+
     /**
      * 获取答案
      *
@@ -162,7 +144,7 @@ public class RetryableTask<T> {
      * @return this
      */
     public RetryableTask<T> execute() throws Throwable {
-        if (this.caller == null) {
+        if (this.callee == null) {
             throw new IllegalArgumentException("task parameter cannot be null");
         }
 
@@ -203,7 +185,7 @@ public class RetryableTask<T> {
 
         while (--maxRetryCount >= 0) {
             try {
-                result = caller.get();
+                result = (T) callee.call();
                 return;
             } catch (Throwable e) {
                 if (e instanceof InvocationTargetException) {
@@ -225,7 +207,7 @@ public class RetryableTask<T> {
         }
 
         if (recover != null) {
-            result = recover.recover(throwable);
+            result = recover.recover(callee, throwable);
         }
     }
 }

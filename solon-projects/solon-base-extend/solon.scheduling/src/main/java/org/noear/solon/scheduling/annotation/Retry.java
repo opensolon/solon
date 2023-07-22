@@ -2,7 +2,7 @@ package org.noear.solon.scheduling.annotation;
 
 
 import org.noear.solon.annotation.Alias;
-import org.noear.solon.scheduling.retry.DefaultRecover;
+import org.noear.solon.scheduling.retry.RecoverDefault;
 import org.noear.solon.scheduling.retry.Recover;
 
 import java.lang.annotation.*;
@@ -54,5 +54,5 @@ public @interface Retry {
     /**
      * 兜底方法，自定义需要实现Recover接口
      */
-    Class<? extends Recover> recover() default DefaultRecover.class;
+    Class<? extends Recover> recover() default RecoverDefault.class;
 }

@@ -23,11 +23,14 @@ public class RetryInterceptor implements Interceptor {
         Retry anno = inv.method().getAnnotation(Retry.class);
 
         if (anno != null) {
-            return RetryableTask.of(() -> inv.method().getMethod().invoke(inv.target(), inv.args()))
+            Callee callee = new CalleeImpl(inv);
+            Recover recover = aopContext.getBeanOrNew(anno.recover());
+
+            return RetryableTask.of(callee)
                     .maxRetryCount(anno.maxAttempts())
                     .interval(anno.interval())
                     .unit(anno.unit())
-                    .recover(aopContext.getBeanOrNew(anno.recover()))
+                    .recover(recover)
                     .retryForIncludes(anno.value())
                     .retryForIncludes(anno.include())
                     .retryForExcludes(anno.exclude())
