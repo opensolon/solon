@@ -8,7 +8,7 @@ import org.noear.solon.core.util.RunUtil;
 import java.util.*;
 
 /**
- * 监听器（内部类，外部不要使用）
+ * 事件总线（内部类，外部不要使用）
  *
  * @see org.noear.solon.core.AopContext#start()
  * @see org.noear.solon.SolonApp#onEvent(Class, EventListener)
@@ -19,7 +19,7 @@ public final class EventBus {
     //其它订阅者
     private static List<HH> sOther = new ArrayList<>();
     //订阅管道
-    private static Map<Class<?>, EventPipeline<?>> sPipeline = new HashMap<>();
+    private static Map<Class<?>, EventListenPipeline<?>> sPipeline = new HashMap<>();
 
     /**
      * 异步推送事件（一般不推荐）；
@@ -165,19 +165,19 @@ public final class EventBus {
      *
      * @param eventType 事件类型
      */
-    private static <T> EventPipeline<T> pipelineDo(Class<T> eventType) {
-        EventPipeline<T> pipeline = (EventPipeline<T>) sPipeline.get(eventType);
+    private static <T> EventListenPipeline<T> pipelineDo(Class<T> eventType) {
+        EventListenPipeline<T> pipeline = (EventListenPipeline<T>) sPipeline.get(eventType);
 
         if (pipeline == null) {
-            pipeline = new EventPipeline<>();
+            pipeline = new EventListenPipeline<>();
             sPipeline.put(eventType, pipeline);
-            subscribeDo(eventType, pipeline);
+            registerDo(eventType, pipeline);
         }
 
         return pipeline;
     }
 
-    private static <T> void subscribeDo(Class<T> eventType, EventListener<T> listener) {
+    private static <T> void registerDo(Class<T> eventType, EventListener<T> listener) {
         if (Throwable.class.isAssignableFrom(eventType)) {
             sThrow.add(new HH(eventType, listener));
 
@@ -202,7 +202,7 @@ public final class EventBus {
     }
 
     /**
-     * Handler Holder
+     * Listener Holder
      */
     static class HH {
         protected Class<?> t;

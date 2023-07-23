@@ -10,8 +10,8 @@ package org.noear.solon.core.event;
  * });
  *
  * //demo2: 自动添加Listener
- * @Configuration
- * public class ThrowableListener implements XEventListener<Throwable>{
+ * @Component
+ * public class ThrowableListener implements EventListener<Throwable>{
  *     public void onEvent(Throwable err){
  *        ...
  *     }
@@ -21,8 +21,8 @@ package org.noear.solon.core.event;
  * //订阅事件
  * Solon.app().onEvent(ComAdaptor.class,(oc)->{ ... });
  *
- * //推送事件
- * EventBus.push(new ComAdaptor());
+ * //发布事件
+ * EventBus.publish(new ComAdaptor());
  * </code></pre>
  * @author noear
  * @since 1.0

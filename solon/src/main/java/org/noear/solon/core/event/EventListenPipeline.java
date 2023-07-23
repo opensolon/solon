@@ -5,12 +5,12 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * 事件处理管道
+ * 事件监听管道
  *
  * @author noear
  * @since 2.4
  */
-public class EventPipeline<Event> implements EventListener<Event> {
+public class EventListenPipeline<Event> implements EventListener<Event> {
     private List<EH> list = new ArrayList<>();
 
     /**
