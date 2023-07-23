@@ -1,7 +1,5 @@
 package org.noear.solon.cloud.service;
 
-import org.noear.solon.Utils;
-import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.cloud.CloudDiscoveryHandler;
 import org.noear.solon.cloud.model.Discovery;
 import org.noear.solon.cloud.utils.DiscoveryUtils;
@@ -32,7 +30,7 @@ public class CloudDiscoveryObserverEntity implements CloudDiscoveryHandler {
 
             handler.handle(discovery);
         } catch (Throwable e) {
-            EventBus.pushTry(e);
+            EventBus.publishTry(e);
         }
     }
 }

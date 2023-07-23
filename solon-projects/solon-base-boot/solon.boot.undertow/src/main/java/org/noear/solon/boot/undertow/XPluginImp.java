@@ -65,7 +65,7 @@ public final class XPluginImp implements Plugin {
         final int _port = props.getPort();
         final String _name = props.getName();
 
-        EventBus.push(_server);
+        EventBus.publish(_server);
         _server.start(_host, _port);
 
 

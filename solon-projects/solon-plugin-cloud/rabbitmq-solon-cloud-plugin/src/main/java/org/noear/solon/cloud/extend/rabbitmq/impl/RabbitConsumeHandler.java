@@ -62,7 +62,7 @@ public class RabbitConsumeHandler extends DefaultConsumer {
         } catch (Throwable e) {
             e = Utils.throwableUnwrap(e);
 
-            EventBus.pushTry(e);
+            EventBus.publishTry(e);
 
             if (e instanceof RuntimeException) {
                 throw (RuntimeException) e;
@@ -81,7 +81,7 @@ public class RabbitConsumeHandler extends DefaultConsumer {
         try {
             return onReceiveDo(event);
         } catch (Throwable e) {
-            EventBus.pushTry(e);
+            EventBus.publishTry(e);
             return false;
         }
     }

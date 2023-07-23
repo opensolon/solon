@@ -65,7 +65,7 @@ public class JobRunner implements IJobRunner {
                 }
             } catch (Throwable e) {
                 try {
-                    EventBus.pushTry(e);
+                    EventBus.publishTry(e);
                     Thread.sleep(1000);
                 } catch (Throwable ee) {
                 }

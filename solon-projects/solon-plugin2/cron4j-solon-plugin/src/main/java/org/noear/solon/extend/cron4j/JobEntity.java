@@ -29,7 +29,7 @@ public class JobEntity {
             Runnable job = beanWrap.raw();
             job.run();
         } catch (Throwable e) {
-            EventBus.pushTry(e);
+            EventBus.publishTry(e);
         }
     }
 

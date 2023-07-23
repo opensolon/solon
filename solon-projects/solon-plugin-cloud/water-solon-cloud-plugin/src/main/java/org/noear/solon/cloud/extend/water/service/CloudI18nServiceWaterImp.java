@@ -82,7 +82,7 @@ public class CloudI18nServiceWaterImp implements CloudI18nService {
                 Map<String, String> data = WaterClient.I18n.getI18nNoCache(group, packName, pack.getLang());
                 pack.setData(new Props(data));
             } catch (Throwable e) {
-                EventBus.pushTry(e);
+                EventBus.publishTry(e);
             }
         }
     }

@@ -30,7 +30,7 @@ public class WsSocketClientImp extends WebSocketClient {
         try {
             Solon.app().listener().onMessage(session, Message.wrap(test).isString(true));
         } catch (Throwable e) {
-            EventBus.pushTry(e);
+            EventBus.publishTry(e);
         }
     }
 
@@ -47,7 +47,7 @@ public class WsSocketClientImp extends WebSocketClient {
 
             Solon.app().listener().onMessage(session, message);
         } catch (Throwable e) {
-            EventBus.pushTry(e);
+            EventBus.publishTry(e);
         }
     }
 

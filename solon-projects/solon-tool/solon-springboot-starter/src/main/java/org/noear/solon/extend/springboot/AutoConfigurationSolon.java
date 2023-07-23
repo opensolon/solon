@@ -29,7 +29,7 @@ public class AutoConfigurationSolon {
         //如果是WEB，注册一个信号
         Signal signal = new SignalSim(Solon.cfg().appName(), Solon.cfg().serverHost(), Solon.cfg().serverPort(), "http", SignalType.HTTP);
         Solon.app().signalAdd(signal);
-        EventBus.push(signal);
+        EventBus.publish(signal);
 
 
         //添加过滤器注册

@@ -158,7 +158,7 @@ public class Solon {
         } catch (Throwable e) {
             //显示异常信息
             e = Utils.throwableUnwrap(e);
-            EventBus.pushTry(e);
+            EventBus.publishTry(e);
 
             //3.停止服务并退出（主要是停止插件）
             Solon.stop0(false, 0);
@@ -230,7 +230,7 @@ public class Solon {
 
             //1.预停止
             Solon.cfg().plugs().forEach(p -> p.prestop());
-            EventBus.pushTry(new AppPrestopEndEvent(Solon.app()));
+            EventBus.publishTry(new AppPrestopEndEvent(Solon.app()));
             LogUtil.global().info("App: Security to stop: 1 completed " + hint);
 
 
@@ -255,19 +255,19 @@ public class Solon {
             //3.停止
             Solon.cfg().plugs().forEach(p -> p.stop());
             Solon.context().stop();
-            EventBus.pushTry(new AppStopEndEvent(Solon.app()));
+            EventBus.publishTry(new AppStopEndEvent(Solon.app()));
             LogUtil.global().info("App: Security to stop: 3 completed " + hint);
         } else {
             //1.预停止
             Solon.cfg().plugs().forEach(p -> p.prestop());
-            EventBus.pushTry(new AppPrestopEndEvent(Solon.app()));
+            EventBus.publishTry(new AppPrestopEndEvent(Solon.app()));
 
             //2.标停
             Solon.app().stopped = true;
             //3.停止
             Solon.cfg().plugs().forEach(p -> p.stop());
             Solon.context().stop();
-            EventBus.pushTry(new AppStopEndEvent(Solon.app()));
+            EventBus.publishTry(new AppStopEndEvent(Solon.app()));
         }
 
         app = null;

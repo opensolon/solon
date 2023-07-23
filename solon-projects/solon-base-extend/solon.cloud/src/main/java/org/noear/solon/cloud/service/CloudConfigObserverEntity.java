@@ -26,7 +26,7 @@ public class CloudConfigObserverEntity implements CloudConfigHandler {
         try {
             handler.handle(config);
         } catch (Throwable e) {
-            EventBus.pushTry(e);
+            EventBus.publishTry(e);
         }
     }
 }

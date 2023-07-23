@@ -186,7 +186,7 @@ public class GraalvmUtil {
             }
         } catch (Exception e) {
             LogUtil.global().warn("reflect-config: read error: " + e.getLocalizedMessage());
-            EventBus.pushTry(e);
+            EventBus.publishTry(e);
         }
     }
 
@@ -216,7 +216,7 @@ public class GraalvmUtil {
             }
         } catch (Exception e) {
             LogUtil.global().warn("resource-config: read error: " + e.getLocalizedMessage());
-            EventBus.pushTry(e);
+            EventBus.publishTry(e);
         }
     }
 

@@ -55,7 +55,7 @@ public class CloudEventServiceLocalImpl implements CloudEventServicePlus {
                     //派发
                     distribute(event);
                 } catch (Throwable e) {
-                    EventBus.pushTry(new CloudEventException(e));
+                    EventBus.publishTry(new CloudEventException(e));
                 }
             });
         }

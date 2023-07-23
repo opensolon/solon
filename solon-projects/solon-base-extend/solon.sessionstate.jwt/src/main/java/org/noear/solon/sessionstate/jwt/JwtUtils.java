@@ -112,7 +112,7 @@ public class JwtUtils {
         } catch (ExpiredJwtException ex) {
 
         } catch (Throwable e) {
-            EventBus.pushTry(e);
+            EventBus.publishTry(e);
         }
 
         return null;

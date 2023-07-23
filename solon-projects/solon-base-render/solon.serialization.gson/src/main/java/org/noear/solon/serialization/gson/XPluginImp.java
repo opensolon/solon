@@ -2,7 +2,6 @@ package org.noear.solon.serialization.gson;
 
 import org.noear.solon.Solon;
 import org.noear.solon.core.AopContext;
-import org.noear.solon.core.Bridge;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.RenderManager;
@@ -27,7 +26,7 @@ public class XPluginImp implements Plugin {
 
         //事件扩展
         context.wrapAndPut(GsonRenderFactory.class, renderFactory);
-        EventBus.push(renderFactory);
+        EventBus.publish(renderFactory);
 
         //::renderTypedFactory
         GsonRenderTypedFactory renderTypedFactory = new GsonRenderTypedFactory();
@@ -42,7 +41,7 @@ public class XPluginImp implements Plugin {
         //支持 json 内容类型执行
         GsonActionExecutor actionExecutor = new GsonActionExecutor();
         context.wrapAndPut(GsonActionExecutor.class, actionExecutor);
-        EventBus.push(actionExecutor);
+        EventBus.publish(actionExecutor);
 
         Solon.app().chainManager().addExecuteHandler(actionExecutor);
     }

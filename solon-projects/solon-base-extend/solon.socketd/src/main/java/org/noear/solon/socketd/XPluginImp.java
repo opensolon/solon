@@ -32,7 +32,7 @@ public class XPluginImp implements Plugin {
                     try {
                         s.sendHandshake(Message.wrapHandshake(anno.handshakeHeader()));
                     } catch (Throwable e) {
-                        EventBus.pushTry(e);
+                        EventBus.publishTry(e);
                     }
                 }
 

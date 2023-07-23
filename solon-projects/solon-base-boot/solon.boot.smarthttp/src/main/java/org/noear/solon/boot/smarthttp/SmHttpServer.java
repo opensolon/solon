@@ -104,7 +104,7 @@ public class SmHttpServer implements ServerLifecycle {
 
 
         //HttpServerConfiguration
-        EventBus.push(_config);
+        EventBus.publish(_config);
 
         SmHttpContextHandler handlerTmp = new SmHttpContextHandler(handler);
         handlerTmp.setExecutor(workExecutor);

@@ -126,9 +126,9 @@ public class EnjoyRender implements Render {
             }
 
             //通过事件扩展
-            EventBus.push(providerOfDebug);
+            EventBus.publish(providerOfDebug);
         } catch (Exception e) {
-            EventBus.pushTry(e);
+            EventBus.publishTry(e);
         }
     }
 
@@ -145,9 +145,9 @@ public class EnjoyRender implements Render {
             provider.setSourceFactory(new ClassPathSourceFactory2(classLoader));
 
             //通过事件扩展
-            EventBus.push(provider);
+            EventBus.publish(provider);
         } catch (Exception e) {
-            EventBus.pushTry(e);
+            EventBus.publishTry(e);
         }
     }
 
@@ -162,7 +162,7 @@ public class EnjoyRender implements Render {
                 providerOfDebug.addDirective(name, clz);
             }
         } catch (Exception e) {
-            EventBus.pushTry(e);
+            EventBus.publishTry(e);
         }
     }
 
@@ -177,7 +177,7 @@ public class EnjoyRender implements Render {
                 providerOfDebug.addSharedObject(name, value);
             }
         } catch (Exception e) {
-            EventBus.pushTry(e);
+            EventBus.publishTry(e);
         }
     }
 
@@ -192,7 +192,7 @@ public class EnjoyRender implements Render {
                 providerOfDebug.addSharedFunction(path);
             }
         } catch (Exception e) {
-            EventBus.pushTry(e);
+            EventBus.publishTry(e);
         }
     }
 

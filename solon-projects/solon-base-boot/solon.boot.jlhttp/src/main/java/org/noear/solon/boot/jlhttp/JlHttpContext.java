@@ -146,7 +146,7 @@ public class JlHttpContext extends WebContextBase {
         try {
             return _request.getBody().available();
         } catch (Exception e) {
-            EventBus.pushTry(e);
+            EventBus.publishTry(e);
             return 0;
         }
     }
@@ -201,7 +201,7 @@ public class JlHttpContext extends WebContextBase {
                     list.add(kv[1]);
                 }
             } catch (Exception e) {
-                EventBus.pushTry(e);
+                EventBus.publishTry(e);
                 return null;
             }
         }

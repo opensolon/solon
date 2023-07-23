@@ -26,16 +26,53 @@ public final class EventBus {
      *
      * @param event 事件（可以是任何对象）
      */
-    public static void pushAsync(Object event) {
+    public static void publishAsync(Object event) {
         if (event != null) {
             RunUtil.async(() -> {
                 try {
-                    push0(event);
+                    publish0(event);
                 } catch (Throwable e) {
-                    push(e);
+                    publish(e);
                 }
             });
         }
+    }
+
+    /**
+     * 异步推送事件（一般不推荐）；
+     *
+     * @param event 事件（可以是任何对象）
+     * @deprecated 2.4
+     */
+    @Deprecated
+    public static void pushAsync(Object event){
+        publishAsync(event);
+    }
+
+    /**
+     * 同步推送事件（不抛异常，不具有事务回滚传导性）
+     *
+     * @param event 事件（可以是任何对象）
+     */
+    public static void publishTry(Object event) {
+        if (event != null) {
+            try {
+                publish0(event);
+            } catch (Throwable e) {
+                //不再转发异常，免得死循环
+            }
+        }
+    }
+
+    /**
+     * 同步推送事件（不抛异常，不具有事务回滚传导性）
+     *
+     * @param event 事件（可以是任何对象）
+     * @deprecated 2.4
+     */
+    @Deprecated
+    public static void pushTry(Object event){
+        publishTry(event);
     }
 
     /**
@@ -43,10 +80,10 @@ public final class EventBus {
      *
      * @param event 事件（可以是任何对象）
      */
-    public static void push(Object event) throws RuntimeException {
+    public static void publish(Object event) throws RuntimeException {
         if (event != null) {
             try {
-                push0(event);
+                publish0(event);
             } catch (Throwable e) {
                 if (e instanceof RuntimeException) {
                     throw (RuntimeException) e;
@@ -58,21 +95,18 @@ public final class EventBus {
     }
 
     /**
-     * 同步推送事件（不抛异常，不具有事务回滚传导性）
+     * 同步推送事件（会抛异常，可传导事务回滚）
      *
      * @param event 事件（可以是任何对象）
+     * @deprecated 2.4
      */
-    public static void pushTry(Object event) {
-        if (event != null) {
-            try {
-                push0(event);
-            } catch (Throwable e) {
-                //不再转发异常，免得死循环
-            }
-        }
+    @Deprecated
+    public static void push(Object event) throws RuntimeException {
+        publish(event);
     }
 
-    private static void push0(Object event) throws Throwable {
+
+    private static void publish0(Object event) throws Throwable {
         if (event instanceof Throwable) {
 
             if (Solon.app() == null || Solon.app().enableErrorAutoprint()) {
@@ -80,14 +114,14 @@ public final class EventBus {
             }
 
             //异常分发
-            push1(sThrow, event, false);
+            publish1(sThrow, event, false);
         } else {
             //其它事件分发
-            push1(sOther, event, true);
+            publish1(sOther, event, true);
         }
     }
 
-    private static void push1(Collection<HH> hhs, Object event, boolean thrown) throws Throwable {
+    private static void publish1(Collection<HH> hhs, Object event, boolean thrown) throws Throwable {
         for (HH h1 : hhs) {
             if (h1.t.isInstance(event)) {
                 try {

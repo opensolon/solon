@@ -118,7 +118,7 @@ public class UndertowServer extends UndertowServerBase implements ServerLifecycl
 
 
         //1.1:分发事件（充许外部扩展）
-        EventBus.push(builder);
+        EventBus.publish(builder);
 
         _server = builder.build();
 

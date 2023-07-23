@@ -44,7 +44,7 @@ public class SmHttpContextHandler extends HttpServerHandler {
                 try {
                     listener.onComplete(ctx);
                 } catch (Throwable e) {
-                    EventBus.pushTry(e);
+                    EventBus.publishTry(e);
                 }
             }
         }
@@ -103,7 +103,7 @@ public class SmHttpContextHandler extends HttpServerHandler {
             }
 
         } catch (Throwable e) {
-            EventBus.pushTry(e);
+            EventBus.publishTry(e);
 
             ctx.innerGetResponse().setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
         }

@@ -57,7 +57,7 @@ public class OnsConsumerHandler implements MessageListener {
             isOk = isOk && onReceive(event, topicNew);
         } catch (Throwable e) {
             isOk = false;
-            EventBus.pushTry(e);
+            EventBus.publishTry(e);
         }
 
         if (isOk) {

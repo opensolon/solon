@@ -80,7 +80,7 @@ public class UtWsChannelListener extends AbstractReceiveListener {
             }
 
         } catch (Throwable e) {
-            EventBus.pushTry(e);
+            EventBus.publishTry(e);
         }
     }
 
@@ -92,7 +92,7 @@ public class UtWsChannelListener extends AbstractReceiveListener {
 
             Solon.app().listener().onMessage(session, message.isString(true));
         } catch (Throwable e) {
-            EventBus.pushTry(e);
+            EventBus.publishTry(e);
         }
     }
 

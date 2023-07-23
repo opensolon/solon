@@ -173,7 +173,7 @@ public class SolonApp extends RouterWrapper {
     private void run() throws Throwable {
 
         //event::0.x.推送App init end事件
-        EventBus.push(new AppInitEndEvent(this));
+        EventBus.publish(new AppInitEndEvent(this));
 
         List<PluginEntity> plugs = cfg().plugs();
         //1.0.尝式初始化插件 //一般插件不需要
@@ -185,7 +185,7 @@ public class SolonApp extends RouterWrapper {
         }
 
         //event::1.0.x推送Plugin init end事件
-        EventBus.push(new AppPluginInitEndEvent(this));
+        EventBus.publish(new AppPluginInitEndEvent(this));
 
         LogUtil.global().info("App: Plugin starting");
 
@@ -195,7 +195,7 @@ public class SolonApp extends RouterWrapper {
         }
 
         //event::1.1.x推送Plugin load end事件
-        EventBus.push(new AppPluginLoadEndEvent(this));
+        EventBus.publish(new AppPluginLoadEndEvent(this));
 
 
         LogUtil.global().info("App: Bean scanning");
@@ -209,7 +209,7 @@ public class SolonApp extends RouterWrapper {
         }
 
         //event::2.x.推送Bean load end事件
-        EventBus.push(new AppBeanLoadEndEvent(this));
+        EventBus.publish(new AppBeanLoadEndEvent(this));
 
 
         //3.加载渲染关系
@@ -222,7 +222,7 @@ public class SolonApp extends RouterWrapper {
         context().start();
 
         //event::4.x.推送App load end事件
-        EventBus.push(new AppLoadEndEvent(this));
+        EventBus.publish(new AppLoadEndEvent(this));
     }
 
     //通过注解，导入bean
@@ -413,7 +413,7 @@ public class SolonApp extends RouterWrapper {
             ex = Utils.throwableUnwrap(ex);
 
             //推送异常事件 //todo: Action -> Gateway? -> RouterHandler -> SolonApp!
-            EventBus.pushTry(ex);
+            EventBus.publishTry(ex);
 
             //如果未处理，尝试处理
             if (x.getHandled() == false) {

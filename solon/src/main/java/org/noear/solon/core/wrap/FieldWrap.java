@@ -215,7 +215,7 @@ public class FieldWrap {
         } catch (NoSuchMethodException e) {
             //正常情况，不用管
         } catch (Throwable e) {
-            EventBus.pushTry(e);
+            EventBus.publishTry(e);
         }
         return null;
     }

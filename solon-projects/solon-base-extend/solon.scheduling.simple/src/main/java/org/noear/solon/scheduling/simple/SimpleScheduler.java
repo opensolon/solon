@@ -101,7 +101,7 @@ public class SimpleScheduler implements Lifecycle {
                 scheduling();
             } catch (Throwable e) {
                 e = Utils.throwableUnwrap(e);
-                EventBus.pushTry(new ScheduledException(e));
+                EventBus.publishTry(new ScheduledException(e));
             }
         }
     }
@@ -166,7 +166,7 @@ public class SimpleScheduler implements Lifecycle {
         try {
             jobHolder.handle(null);
         } catch (Throwable e) {
-            EventBus.pushTry(e);
+            EventBus.publishTry(e);
         }
     }
 
@@ -178,7 +178,7 @@ public class SimpleScheduler implements Lifecycle {
         try {
             Thread.sleep(millis);
         } catch (Throwable e) {
-            EventBus.pushTry(e);
+            EventBus.publishTry(e);
         }
     }
 }

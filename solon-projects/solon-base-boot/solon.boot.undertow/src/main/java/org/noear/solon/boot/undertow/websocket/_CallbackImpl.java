@@ -18,6 +18,6 @@ class _CallbackImpl implements WebSocketCallback<Void> {
 
     @Override
     public void onError(WebSocketChannel webSocketChannel, Void unused, Throwable e) {
-        EventBus.pushTry(e);
+        EventBus.publishTry(e);
     }
 }

@@ -6,14 +6,11 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.noear.solon.Solon;
 import org.noear.solon.core.AopContext;
-import org.noear.solon.core.Bridge;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.RenderManager;
 import org.noear.solon.serialization.prop.JsonProps;
 import org.noear.solon.serialization.prop.JsonPropsUtil;
-
-import java.util.LinkedHashMap;
 
 import static com.fasterxml.jackson.databind.MapperFeature.PROPAGATE_TRANSIENT_MARKER;
 import static com.fasterxml.jackson.databind.MapperFeature.SORT_PROPERTIES_ALPHABETICALLY;
@@ -31,7 +28,7 @@ public class XPluginImp implements Plugin {
 
         //事件扩展
         context.wrapAndPut(JacksonRenderFactory.class, renderFactory);
-        EventBus.push(renderFactory);
+        EventBus.publish(renderFactory);
 
         //::renderTypedFactory
         JacksonRenderTypedFactory renderTypedFactory = new JacksonRenderTypedFactory();
@@ -46,7 +43,7 @@ public class XPluginImp implements Plugin {
         //支持 json 内容类型执行
         JacksonActionExecutor actionExecutor = new JacksonActionExecutor();
         context.wrapAndPut(JacksonActionExecutor.class, actionExecutor);
-        EventBus.push(actionExecutor);
+        EventBus.publish(actionExecutor);
 
         Solon.app().chainManager().addExecuteHandler(actionExecutor);
     }

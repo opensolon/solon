@@ -22,7 +22,7 @@ public class JdkHttpContextHandler implements HttpHandler {
         } catch (Throwable e) {
             //context 初始化时，可能会出错
             //
-            EventBus.pushTry(e);
+            EventBus.publishTry(e);
         } finally {
             exchange.close();
         }
@@ -49,7 +49,7 @@ public class JdkHttpContextHandler implements HttpHandler {
                 ctx.innerCommit();
             }
         } catch (Throwable e) {
-            EventBus.pushTry(e);
+            EventBus.publishTry(e);
 
             exchange.sendResponseHeaders(500, -1);
         }

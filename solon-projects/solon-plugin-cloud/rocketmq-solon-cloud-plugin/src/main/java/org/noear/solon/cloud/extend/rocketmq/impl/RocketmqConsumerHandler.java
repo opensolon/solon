@@ -61,7 +61,7 @@ public class RocketmqConsumerHandler implements MessageListenerConcurrently {
             }
         } catch (Throwable e) {
             isOk = false;
-            EventBus.pushTry(e);
+            EventBus.publishTry(e);
         }
 
         if (isOk) {

@@ -21,7 +21,7 @@ public class InvocationRunnable implements Runnable {
         try {
             invocation.invoke();
         } catch (Throwable e) {
-            EventBus.pushTry(e);
+            EventBus.publishTry(e);
         }
     }
 }

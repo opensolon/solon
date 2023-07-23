@@ -7,7 +7,6 @@ import com.jfinal.plugin.activerecord.Model;
 import org.noear.solon.Utils;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.event.EventBus;
-import org.noear.solon.core.util.RunnableEx;
 import org.noear.solon.core.util.ScanUtil;
 import org.noear.solon.extend.activerecord.annotation.Db;
 import org.noear.solon.extend.activerecord.annotation.Table;
@@ -106,7 +105,7 @@ public class ArpManager {
             sqlUrls.forEach(url -> arp.addSqlTemplate(url));
 
             // 发布事件，以便扩展
-            EventBus.push(arp);
+            EventBus.publish(arp);
 
             // 启动 arp
             arp.start();

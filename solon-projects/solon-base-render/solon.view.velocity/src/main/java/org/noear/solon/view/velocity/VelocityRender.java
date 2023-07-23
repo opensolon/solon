@@ -68,9 +68,9 @@ public class VelocityRender implements Render {
         engineInit(providerOfDebug);
 
         //通过事件扩展
-        EventBus.push(providerOfDebug);
+        EventBus.publish(providerOfDebug);
         //通过事件扩展
-        EventBus.push(provider);
+        EventBus.publish(provider);
 
         Solon.app().shared().forEach((k, v) -> {
             putVariable(k, v);
@@ -141,7 +141,7 @@ public class VelocityRender implements Render {
                 forRelease();
             }
         } catch (Exception e) {
-            EventBus.pushTry(e);
+            EventBus.publishTry(e);
         }
     }
 

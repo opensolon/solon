@@ -21,7 +21,8 @@
 * 优化 solon.boot 信号启动的执行时机后延
 * 优化 solon.scheduling 插件的 retry 的兜底设计
 * 优化 EventBus 增加订阅排序支持
-* 调整 AopContext::beanAroundXxx 标为弃用，添加 beanInterceptorXxx 代之
+* 调整 EventBus::push 标为弃用，添加 ::publish 代之
+* 调整 AopContext::beanAroundXxx 标为弃用，添加 ::beanInterceptorXxx 代之
 * 调整 Around 相关名改为 Interceptor，原名标为弃用
 
 ### 2.4.0

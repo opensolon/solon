@@ -89,7 +89,7 @@ public final class XPluginImp implements Plugin {
         _server.setHandler(Solon.app()::tryHandle);
 
         //尝试事件扩展
-        EventBus.push(_server);
+        EventBus.publish(_server);
         _server.start(_host, _port);
 
 

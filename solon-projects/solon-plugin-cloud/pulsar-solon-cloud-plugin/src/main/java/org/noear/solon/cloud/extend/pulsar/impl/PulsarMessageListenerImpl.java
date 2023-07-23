@@ -51,7 +51,7 @@ public class PulsarMessageListenerImpl implements MessageListener<byte[]> {
         } catch (Throwable e) {
             e = Utils.throwableUnwrap(e);
 
-            EventBus.pushTry(e);
+            EventBus.publishTry(e);
 
             if (e instanceof RuntimeException) {
                 throw (RuntimeException) e;
@@ -70,7 +70,7 @@ public class PulsarMessageListenerImpl implements MessageListener<byte[]> {
         try {
             return onReceiveDo(event);
         } catch (Throwable e) {
-            EventBus.pushTry(e);
+            EventBus.publishTry(e);
             return false;
         }
     }

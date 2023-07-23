@@ -96,7 +96,7 @@ class JobEntity extends Thread {
                     scheduling();
                 } catch (Throwable e) {
                     e = Utils.throwableUnwrap(e);
-                    EventBus.pushTry(new CloudJobException(e));
+                    EventBus.publishTry(new CloudJobException(e));
                 }
             } else {
                 break;
@@ -154,7 +154,7 @@ class JobEntity extends Thread {
         try {
             runnable.run();
         } catch (Throwable e) {
-            EventBus.pushTry(e);
+            EventBus.publishTry(e);
         }
     }
 
@@ -166,7 +166,7 @@ class JobEntity extends Thread {
         try {
             Thread.sleep(sleep);
         } catch (Exception e) {
-            EventBus.pushTry(e);
+            EventBus.publishTry(e);
         }
     }
 }

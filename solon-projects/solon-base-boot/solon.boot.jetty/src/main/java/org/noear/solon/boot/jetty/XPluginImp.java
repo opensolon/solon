@@ -73,7 +73,7 @@ public final class XPluginImp implements Plugin {
 
         long time_start = System.currentTimeMillis();
 
-        EventBus.push(_server);
+        EventBus.publish(_server);
         _server.start(_host, _port);
 
 

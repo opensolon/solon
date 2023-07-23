@@ -92,7 +92,7 @@ public class MybatisAdapterDefault implements MybatisAdapter {
         });
 
         //1.分发事件，推给扩展处理
-        EventBus.push(config);
+        EventBus.publish(config);
 
         //2.初始化（顺序不能乱）
         initDo();

@@ -19,7 +19,7 @@ public class XPluginImp implements Plugin {
 
         //支持 protostuff 内容类型执行
         ProtostuffActionExecutor executor = new ProtostuffActionExecutor();
-        EventBus.push(executor);
+        EventBus.publish(executor);
 
         Solon.app().chainManager().addExecuteHandler(executor);
     }

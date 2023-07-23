@@ -37,7 +37,7 @@ public class JedisEventConsumer extends JedisPubSub {
         }catch (Throwable ex){
             ex = Utils.throwableUnwrap(ex);
 
-            EventBus.pushTry(ex);
+            EventBus.publishTry(ex);
 
             if (ex instanceof RuntimeException) {
                 throw (RuntimeException) ex;
@@ -51,7 +51,7 @@ public class JedisEventConsumer extends JedisPubSub {
         try {
             return onReceiveDo(event);
         } catch (Throwable e) {
-            EventBus.pushTry(e);
+            EventBus.publishTry(e);
             return false;
         }
     }

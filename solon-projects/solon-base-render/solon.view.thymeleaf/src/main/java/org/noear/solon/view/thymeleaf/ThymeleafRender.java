@@ -109,9 +109,9 @@ public class ThymeleafRender implements Render {
             }
 
             //通过事件扩展
-            EventBus.push(provider);
+            EventBus.publish(provider);
         } catch (Exception e) {
-            EventBus.pushTry(e);
+            EventBus.publishTry(e);
         }
     }
 
@@ -127,7 +127,7 @@ public class ThymeleafRender implements Render {
         provider.addTemplateResolver(_loader);
 
         //通过事件扩展
-        EventBus.push(provider);
+        EventBus.publish(provider);
     }
 
 
@@ -138,7 +138,7 @@ public class ThymeleafRender implements Render {
         try {
             provider.addDialect(obj);
         } catch (Exception e) {
-            EventBus.pushTry(e);
+            EventBus.publishTry(e);
         }
     }
 

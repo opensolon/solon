@@ -3,7 +3,6 @@ package org.noear.solon.serialization.fastjson2;
 import com.alibaba.fastjson2.JSONWriter;
 import org.noear.solon.Solon;
 import org.noear.solon.core.AopContext;
-import org.noear.solon.core.Bridge;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.RenderManager;
@@ -23,7 +22,7 @@ public class XPluginImp implements Plugin {
 
         //事件扩展
         context.wrapAndPut(Fastjson2RenderFactory.class, renderFactory);
-        EventBus.push(renderFactory);
+        EventBus.publish(renderFactory);
 
         //::renderTypedFactory
         Fastjson2RenderTypedFactory renderTypedFactory = new Fastjson2RenderTypedFactory();
@@ -39,7 +38,7 @@ public class XPluginImp implements Plugin {
         //支持 json 内容类型执行
         Fastjson2ActionExecutor actionExecutor = new Fastjson2ActionExecutor();
         context.wrapAndPut(Fastjson2ActionExecutor.class, actionExecutor);
-        EventBus.push(actionExecutor);
+        EventBus.publish(actionExecutor);
 
         Solon.app().chainManager().addExecuteHandler(actionExecutor);
     }

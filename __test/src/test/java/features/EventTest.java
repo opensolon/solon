@@ -19,7 +19,7 @@ public class EventTest {
         TestEvent eventTest = new TestEvent();
 
         try {
-            EventBus.push(eventTest);
+            EventBus.publish(eventTest);
             assert false;
         } catch (IllegalStateException e) {
             e.printStackTrace();

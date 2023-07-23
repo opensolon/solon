@@ -3,8 +3,6 @@ package features;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.event.EventListener;
 
-import java.util.HashSet;
-
 /**
  * @author noear 2023/7/23 created
  */
@@ -16,7 +14,7 @@ public class EventTest {
         EventBus.subscribe(DemoEvent.class, e -> { System.out.println("fun"); });
         EventBus.subscribe(DemoEvent.class, 2, listener);
         //推送
-        EventBus.push(new DemoEvent());
+        EventBus.publish(new DemoEvent());
         //取消订阅
         EventBus.unsubscribe(listener);
 

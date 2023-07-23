@@ -87,7 +87,7 @@ public class RedissonCacheService implements CacheService {
         try {
             client.getBucket(newKey).set(obj, seconds, TimeUnit.SECONDS);
         } catch (Throwable e) {
-            EventBus.pushTry(e);
+            EventBus.publishTry(e);
         }
     }
 

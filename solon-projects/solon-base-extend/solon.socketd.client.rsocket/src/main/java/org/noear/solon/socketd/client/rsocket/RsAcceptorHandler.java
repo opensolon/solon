@@ -43,7 +43,7 @@ public class RsAcceptorHandler implements RSocket {
             try {
                 Solon.app().listener().onMessage(session, message);
             } catch (Throwable e) {
-                EventBus.pushTry(e);
+                EventBus.publishTry(e);
             }
         }
 

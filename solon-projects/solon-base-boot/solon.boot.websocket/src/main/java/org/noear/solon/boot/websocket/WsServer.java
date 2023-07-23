@@ -66,7 +66,7 @@ public class WsServer extends WebSocketServer {
 
             Solon.app().listener().onMessage(session, message.isString(true));
         } catch (Throwable e) {
-            EventBus.pushTry(e);
+            EventBus.publishTry(e);
         }
     }
 
@@ -88,7 +88,7 @@ public class WsServer extends WebSocketServer {
 
             Solon.app().listener().onMessage(session, message);
         } catch (Throwable e) {
-            EventBus.pushTry(e);
+            EventBus.publishTry(e);
         }
     }
 

@@ -66,7 +66,7 @@ class JettyServer extends JettyServerBase implements ServerLifecycle {
         }
 
         //1.1:分发事件（充许外部扩展）
-        EventBus.push(_server);
+        EventBus.publish(_server);
     }
 
     /**

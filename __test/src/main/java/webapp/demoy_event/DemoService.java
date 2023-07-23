@@ -13,7 +13,7 @@ import org.noear.solon.annotation.ProxyComponent;
 public class DemoService {
     public void hello(String name){
         //发布事件
-        EventBus.push(new HelloEvent(name));
+        EventBus.publish(new HelloEvent(name));
     }
 
     //定义事件模型

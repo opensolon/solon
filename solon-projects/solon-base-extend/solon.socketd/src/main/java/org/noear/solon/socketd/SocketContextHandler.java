@@ -53,7 +53,7 @@ public class SocketContextHandler {
         } catch (Throwable e) {
             //context 初始化时，可能会出错
             //
-            EventBus.pushTry(e);
+            EventBus.publishTry(e);
         }
     }
 }

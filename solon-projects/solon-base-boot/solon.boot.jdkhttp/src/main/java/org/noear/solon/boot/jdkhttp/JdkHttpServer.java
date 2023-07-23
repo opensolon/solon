@@ -110,7 +110,7 @@ public class JdkHttpServer implements ServerLifecycle {
                     params.setSSLParameters(defaultSSLParameters);
                 } catch (Throwable e) {
                     //"Failed to create HTTPS port"
-                    EventBus.pushTry(e);
+                    EventBus.publishTry(e);
                 }
             }
         });

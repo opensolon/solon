@@ -107,7 +107,7 @@ public class MemCacheService implements CacheService {
         try {
             client.set(newKey, seconds, obj);
         } catch (Exception e) {
-            EventBus.pushTry(e);
+            EventBus.publishTry(e);
         }
     }
 
@@ -118,7 +118,7 @@ public class MemCacheService implements CacheService {
         try {
             return client.get(newKey);
         } catch (Exception e) {
-            EventBus.pushTry(e);
+            EventBus.publishTry(e);
             return null;
         }
     }

@@ -155,7 +155,7 @@ public class DbManager {
         }
 
         //推到事件中心，用于扩展
-        EventBus.push(builder);
+        EventBus.publish(builder);
 
         return builder.build();
     }

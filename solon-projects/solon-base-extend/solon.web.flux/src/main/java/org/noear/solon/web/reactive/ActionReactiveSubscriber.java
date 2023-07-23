@@ -36,7 +36,7 @@ public class ActionReactiveSubscriber implements Subscriber {
         try {
             action.render(o, ctx);
         } catch (Throwable e) {
-            EventBus.pushTry(e);
+            EventBus.publishTry(e);
         }
     }
 
@@ -46,7 +46,7 @@ public class ActionReactiveSubscriber implements Subscriber {
             action.render(e, ctx);
         } catch (Throwable e2) {
             ctx.status(500);
-            EventBus.pushTry(e2);
+            EventBus.publishTry(e2);
         } finally {
             onComplete();
         }
@@ -58,7 +58,7 @@ public class ActionReactiveSubscriber implements Subscriber {
             try {
                 ctx.asyncComplete();
             } catch (IOException e) {
-                EventBus.pushTry(e);
+                EventBus.publishTry(e);
             }
         }
     }

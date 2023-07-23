@@ -61,7 +61,7 @@ public class JspTldLocator {
                         }
                     }
                 } catch (Throwable e) {
-                    EventBus.pushTry(e);
+                    EventBus.publishTry(e);
                 }
             }
         }
@@ -73,7 +73,7 @@ public class JspTldLocator {
                 loadTagLibraryInfo(tagLibInfos, () -> ResourceUtil.getResource(uri).openStream());
             });
         } catch (Throwable e) {
-            EventBus.pushTry(e);
+            EventBus.publishTry(e);
         }
 
         return tagLibInfos;
@@ -129,7 +129,7 @@ public class JspTldLocator {
             }
 
         } catch (Throwable e) {
-            EventBus.pushTry(e);
+            EventBus.publishTry(e);
         } finally {
             try {
                 if (is != null) {

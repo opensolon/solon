@@ -21,7 +21,7 @@ public class JtHttpContextHandler extends AbstractHandler {
         } catch (Throwable e) {
             //context 初始化时，可能会出错
             //
-            EventBus.pushTry(e);
+            EventBus.publishTry(e);
 
             response.setStatus(500);
         }

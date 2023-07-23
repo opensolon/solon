@@ -134,7 +134,7 @@ public class SmHttpContext extends WebContextBase {
         try {
             return _request.getContentLength();
         } catch (Exception e) {
-            EventBus.pushTry(e);
+            EventBus.publishTry(e);
             return 0;
         }
     }
@@ -410,7 +410,7 @@ public class SmHttpContext extends WebContextBase {
                         try {
                             listener1.onTimeout(this);
                         } catch (IOException e) {
-                            EventBus.pushTry(e);
+                            EventBus.publishTry(e);
                         }
                     }
                 }, _asyncTimeout);

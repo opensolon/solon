@@ -70,7 +70,7 @@ public class WsServer extends WebSocketServer {
 
             Solon.app().listener().onMessage(session, message);
         } catch (Throwable e) {
-            EventBus.pushTry(e);
+            EventBus.publishTry(e);
         }
     }
 

@@ -87,7 +87,7 @@ public class SseEmitter {
         try {
             handler.complete();
         } catch (IOException e) {
-            EventBus.pushTry(e);
+            EventBus.publishTry(e);
         }
     }
 
