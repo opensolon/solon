@@ -3,7 +3,10 @@ package org.noear.solon.proxy.integration;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.LoadBalance;
 import org.noear.solon.core.bean.LifecycleBean;
+import org.noear.solon.core.convert.Converter;
 import org.noear.solon.core.event.EventListener;
+import org.noear.solon.core.handle.ActionExecuteHandler;
+import org.noear.solon.core.handle.ActionReturnHandler;
 import org.noear.solon.core.handle.Filter;
 import org.noear.solon.core.handle.Handler;
 import org.noear.solon.core.route.RouterInterceptor;
@@ -67,6 +70,21 @@ public class UnsupportedUtil {
         //RouterInterceptor
         if (RouterInterceptor.class.isAssignableFrom(clz)) {
             beahShapeHint("RouterInterceptor", annoName, clz);
+        }
+
+        //ActionReturnHandler
+        if (ActionReturnHandler.class.isAssignableFrom(clz)) {
+            beahShapeHint("ActionReturnHandler", annoName, clz);
+        }
+
+        //ActionExecuteHandler
+        if (ActionExecuteHandler.class.isAssignableFrom(clz)) {
+            beahShapeHint("ActionExecuteHandler", annoName, clz);
+        }
+
+        //Converter
+        if (Converter.class.isAssignableFrom(clz)) {
+            beahShapeHint("Converter", annoName, clz);
         }
     }
 
