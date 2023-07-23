@@ -1,4 +1,4 @@
-package features;
+package labs;
 
 
 import org.noear.solon.Solon;

@@ -1,4 +1,4 @@
-package features;
+package labs;
 
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.event.EventListener;

@@ -24,6 +24,7 @@
 * 调整 EventBus::push 标为弃用，添加 ::publish 代之
 * 调整 AopContext::beanAroundXxx 标为弃用，添加 ::beanInterceptorXxx 代之
 * 调整 Around 相关名改为 Interceptor，原名标为弃用
+* 修复 bean 所有字段只读且无 public 构造器时，会异常的问题
 
 ### 2.4.0
 * 新增 solon-openapi2-knife4j 插件，替代 solon-swagger2-knife4j
