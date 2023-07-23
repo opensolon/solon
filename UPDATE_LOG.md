@@ -26,6 +26,7 @@
 * 调整 Around 相关名改为 Interceptor，原名标为弃用
 * 调整 ProxyComponent 注解属性调整成与 Component 注解一样
 * 修复 bean 所有字段只读且无 public 构造器时，会异常的问题
+* wood 升为 1.1.6
 
 ### 2.4.0
 * 新增 solon-openapi2-knife4j 插件，替代 solon-swagger2-knife4j
