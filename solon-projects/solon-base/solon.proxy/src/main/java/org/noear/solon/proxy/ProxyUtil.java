@@ -49,8 +49,12 @@ public class ProxyUtil {
             }
 
             bw.proxySet(BeanProxy.getGlobal());
-            bw.context().beanRegister(bw, name, typed);
+
+            //添加bean形态处理
             bw.context().beanShapeRegister(bw.clz(), bw, bw.clz());
+
+            //注册到容器
+            bw.context().beanRegister(bw, name, typed);
 
             return true;
         }

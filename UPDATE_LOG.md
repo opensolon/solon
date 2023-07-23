@@ -24,6 +24,7 @@
 * 调整 EventBus::push 标为弃用，添加 ::publish 代之
 * 调整 AopContext::beanAroundXxx 标为弃用，添加 ::beanInterceptorXxx 代之
 * 调整 Around 相关名改为 Interceptor，原名标为弃用
+* 调整 ProxyComponent 注解属性调整成与 Component 注解一样
 * 修复 bean 所有字段只读且无 public 构造器时，会异常的问题
 
 ### 2.4.0
