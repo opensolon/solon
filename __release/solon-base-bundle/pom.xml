@@ -41,6 +41,7 @@
         <module>../../solon-projects/solon-base/solon.logging.logback</module>
         <module>../../solon-projects/solon-base/solon.logging.simple</module>
 
+        <module>../../solon-projects/solon-base/solon.mvc</module>
 
         <module>../../solon-projects/solon-base/solon.health</module>
         <module>../../solon-projects/solon-base/solon.health.detector</module>

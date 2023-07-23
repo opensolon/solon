@@ -470,6 +470,14 @@ public class SolonApp extends RouterWrapper {
         return this;
     }
 
+    /**
+     * 订阅事件
+     */
+    public <T> SolonApp onEvent(Class<T> type, int index, EventListener<T> handler) {
+        EventBus.subscribe(type, index, handler);
+        return this;
+    }
+
 
     /**
      * 订阅未处理异常事件

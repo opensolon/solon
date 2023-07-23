@@ -9,15 +9,18 @@
 * 提醒1：之前没有使用弃用接口的，可以直接升级 <br>
 * 提醒2：有使用弃用接口的。建议先升级到 1.12.4；替换弃用代码后，再升级到 2.0.0
 
+### 2.4.2
+* 新增 solon.boot.vertx 插件?
+
 ### 2.4.1
 * 新增 solon.web.servlet.jakarta 插件
-* 新增 solon.boot.vertx 插件?
 * 新增 solon.cloud.metrics 插件?
 * 新增 solon-admin-client 插件?
 * 新增 solon-admin-server 插件?
 * 新增 solon-admin-server-ui 插件?
 * 优化 solon.boot 信号启动的执行时机后延
 * 优化 solon.scheduling 插件的 retry 的兜底设计
+* 优化 EventBus 增加订阅排序支持
 * 调整 AopContext::beanAroundXxx 标为弃用，添加 beanInterceptorXxx 代之
 * 调整 Around 相关名改为 Interceptor，原名标为弃用
 

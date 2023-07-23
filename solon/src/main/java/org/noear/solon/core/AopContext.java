@@ -281,7 +281,7 @@ public class AopContext extends BeanContainer {
     private void addEventListener(Class<?> clz, BeanWrap bw) {
         Class<?>[] ets = GenericUtil.resolveTypeArguments(clz, EventListener.class);
         if (ets != null && ets.length > 0) {
-            EventBus.subscribe(ets[0], bw.raw());
+            EventBus.subscribe(ets[0], bw.index(), bw.raw());
         }
     }
 

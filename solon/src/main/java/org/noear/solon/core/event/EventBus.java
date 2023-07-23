@@ -2,11 +2,10 @@ package org.noear.solon.core.event;
 
 import org.noear.solon.Solon;
 import org.noear.solon.core.exception.EventException;
+import org.noear.solon.core.util.GenericUtil;
 import org.noear.solon.core.util.RunUtil;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 监听器（内部类，外部不要使用）
@@ -16,9 +15,11 @@ import java.util.Map;
  * */
 public final class EventBus {
     //异常订阅者
-    private static Map<Object, HH> sThrow = new HashMap<>();
+    private static List<HH> sThrow = new ArrayList<>();
     //其它订阅者
-    private static Map<Object, HH> sOther = new HashMap<>();
+    private static List<HH> sOther = new ArrayList<>();
+    //订阅管道
+    private static Map<Class<?>, EventPipeline<?>> sPipeline = new HashMap<>();
 
     /**
      * 异步推送事件（一般不推荐）；
@@ -42,7 +43,7 @@ public final class EventBus {
      *
      * @param event 事件（可以是任何对象）
      */
-    public static void push(Object event) throws RuntimeException{
+    public static void push(Object event) throws RuntimeException {
         if (event != null) {
             try {
                 push0(event);
@@ -55,6 +56,7 @@ public final class EventBus {
             }
         }
     }
+
     /**
      * 同步推送事件（不抛异常，不具有事务回滚传导性）
      *
@@ -78,10 +80,10 @@ public final class EventBus {
             }
 
             //异常分发
-            push1(sThrow.values(), event, false);
+            push1(sThrow, event, false);
         } else {
             //其它事件分发
-            push1(sOther.values(), event, true);
+            push1(sOther, event, true);
         }
     }
 
@@ -102,6 +104,7 @@ public final class EventBus {
         }
     }
 
+
     /**
      * 订阅事件
      *
@@ -109,14 +112,46 @@ public final class EventBus {
      * @param listener  事件监听者
      */
     public synchronized static <T> void subscribe(Class<T> eventType, EventListener<T> listener) {
+        pipelineDo(eventType).add(listener);
+    }
+
+    /**
+     * 订阅事件
+     *
+     * @param eventType 事件类型
+     * @param index     顺序位
+     * @param listener  事件监听者
+     */
+    public synchronized static <T> void subscribe(Class<T> eventType, int index, EventListener<T> listener) {
+        pipelineDo(eventType).add(index, listener);
+    }
+
+    /**
+     * 建立订阅管道
+     *
+     * @param eventType 事件类型
+     */
+    private static <T> EventPipeline<T> pipelineDo(Class<T> eventType) {
+        EventPipeline<T> pipeline = (EventPipeline<T>) sPipeline.get(eventType);
+
+        if (pipeline == null) {
+            pipeline = new EventPipeline<>();
+            sPipeline.put(eventType, pipeline);
+            subscribeDo(eventType, pipeline);
+        }
+
+        return pipeline;
+    }
+
+    private static <T> void subscribeDo(Class<T> eventType, EventListener<T> listener) {
         if (Throwable.class.isAssignableFrom(eventType)) {
-            sThrow.putIfAbsent(listener, new HH(eventType, listener));
+            sThrow.add(new HH(eventType, listener));
 
             if (Solon.app() != null) {
                 Solon.app().enableErrorAutoprint(false);
             }
         } else {
-            sOther.putIfAbsent(listener, new HH(eventType, listener));
+            sOther.add(new HH(eventType, listener));
         }
     }
 
@@ -126,8 +161,10 @@ public final class EventBus {
      * @param listener 事件监听者
      */
     public synchronized static <T> void unsubscribe(EventListener<T> listener) {
-        sThrow.remove(listener);
-        sOther.remove(listener);
+        Class<?>[] ets = GenericUtil.resolveTypeArguments(listener.getClass(), EventListener.class);
+        if (ets != null && ets.length > 0) {
+            pipelineDo((Class<T>) ets[0]).remove(listener);
+        }
     }
 
     /**
