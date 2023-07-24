@@ -4,7 +4,7 @@ import lombok.Data;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
 
-@Inject("${solon.admin.server}")
+@Inject(value = "${solon.admin.server}", required = false)
 @Configuration
 @Data
 public class ServerProperties {

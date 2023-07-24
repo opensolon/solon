@@ -9,7 +9,7 @@ public class CloudClientProperties implements IClientProperties {
 
     private String mode = "cloud";
 
-    private String serverUrl;
+    private String serverUrl = "http://localhost:8080";
 
     private long heartbeatInterval = 10 * 1000;
 
