@@ -287,7 +287,7 @@ onMounted(() => {
         <a-empty v-else/>
       </a-card>
     </div>
-    <div v-for="monitor in application?.monitors.sort((a,b)=>a.name.charCodeAt(0)-b.name.charCodeAt(0))"
+    <div v-for="monitor in application?.monitors?.sort((a,b)=>a.name.charCodeAt(0)-b.name.charCodeAt(0))"
          :key="monitor.name">
       <a-card :title="t(`application.details.dashboard.${monitor.name}.title`)" class="card">
         <template v-if="monitor.name==='memory'">
