@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit;
 @Component
 public class ApplicationService {
 
-    private final Set<Application> applications = new HashSet<>();
+    private final Map<String, Application> applications = new HashMap<>();
 
     private final Map<Application, Runnable> runningHeartbeatTasks = new HashMap<>();
 
@@ -37,9 +37,14 @@ public class ApplicationService {
     private ClientMonitorService clientMonitorService;
 
     public void registerApplication(Application application) {
-        if (applications.contains(application)) return;
+        String key = application.toKey();
+        Application persisted = applications.get(key);
+        if (persisted != null) { // on app restart, update app info
+            persisted.replace(application);
+            return;
+        }
 
-        applications.add(application);
+        applications.put(key, application);
         scheduleHeartbeatCheck(application);
         sessions.forEach(it -> it.sendAsync(JsonUtils.toJson(new ApplicationWebsocketTransfer<>(
                 null,
@@ -53,10 +58,10 @@ public class ApplicationService {
     }
 
     public void unregisterApplication(Application application) {
-        val find = applications.stream().filter(it -> it.equals(application)).findFirst();
+        val find = applications.values().stream().filter(it -> it.equals(application)).findFirst();
         if (!find.isPresent()) return;
 
-        applications.remove(find.get());
+        applications.remove(find.get().toKey());
         scheduledThreadPoolExecutor.remove(runningHeartbeatTasks.get(find.get()));
         scheduledThreadPoolExecutor.remove(runningClientMonitorTasks.get(find.get()));
         sessions.forEach(it -> it.sendAsync(JsonUtils.toJson(new ApplicationWebsocketTransfer<>(
@@ -69,7 +74,7 @@ public class ApplicationService {
     }
 
     public void heartbeatApplication(Application application) {
-        val find = applications.stream().filter(it -> it.equals(application)).findFirst();
+        val find = applications.values().stream().filter(it -> it.equals(application)).findFirst();
         if (!find.isPresent()) return;
         find.get().setLastHeartbeat(System.currentTimeMillis());
 
@@ -133,12 +138,12 @@ public class ApplicationService {
         ))));
     }
 
-    public Set<Application> getApplications() {
-        return new HashSet<>(applications);
+    public Collection<Application> getApplications() {
+        return applications.values();
     }
 
     public Application getApplication(String name, String baseUrl) {
-        val find = applications.stream().filter(it -> it.getName().equals(name) && it.getBaseUrl().equals(baseUrl)).findFirst();
+        val find = applications.values().stream().filter(it -> it.getName().equals(name) && it.getBaseUrl().equals(baseUrl)).findFirst();
         return find.orElse(null);
     }
 
