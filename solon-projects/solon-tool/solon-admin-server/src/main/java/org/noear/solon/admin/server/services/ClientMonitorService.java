@@ -17,6 +17,10 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * @author shaokeyibb
+ * @since 2.3
+ */
 @Slf4j
 @Component
 public class ClientMonitorService {
@@ -24,6 +28,11 @@ public class ClientMonitorService {
     @Inject
     private OkHttpClient client;
 
+    /**
+     * 获取应用程序的监视器
+     * @param application 应用程序
+     * @return 应用程序的监视器
+     */
     public Collection<Detector> getMonitors(Application application) {
         val clientUrl = application.getBaseUrl().replaceAll("/+$", "");
         try (Response response = client.newCall(new Request.Builder()

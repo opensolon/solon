@@ -5,6 +5,10 @@ import org.noear.solon.Utils;
 import org.noear.solon.cloud.utils.LocalUtils;
 import org.noear.solon.core.Signal;
 
+/**
+ * @author shaokeyibb
+ * @since 2.3
+ */
 public class NetworkUtils {
 
     public static String getHostAndPort() {

@@ -10,6 +10,12 @@ import org.noear.solon.annotation.Mapping;
 
 import java.util.Collection;
 
+/**
+ * 监视器 Controller，用于分发客户端监视器信息
+ *
+ * @author shaokeyibb
+ * @since 2.3
+ */
 @Controller
 @Mapping("/api/monitor")
 public class MonitorController {
@@ -20,6 +26,10 @@ public class MonitorController {
     @Inject
     private ApplicationRegistrationService applicationRegistrationService;
 
+    /**
+     * 获取所有监视器信息
+     * @return 所有监视器信息
+     */
     @Get
     @Mapping("/all")
     public Collection<Detector> register() {

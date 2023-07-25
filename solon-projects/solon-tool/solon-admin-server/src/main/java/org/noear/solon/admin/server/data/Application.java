@@ -7,6 +7,12 @@ import lombok.ToString;
 
 import java.util.Collection;
 
+/**
+ * 应用程序数据
+ *
+ * @author shaokeyibb
+ * @since 2.3
+ */
 @Data
 @NoArgsConstructor
 public class Application {

@@ -12,6 +12,12 @@ import org.noear.solon.core.message.Session;
 
 import java.util.List;
 
+/**
+ * 应用程序 WebSocket Controller
+ *
+ * @author shaokeyibb
+ * @since 2.3
+ */
 @ServerEndpoint(path = "/ws/application")
 public class ApplicationWebsocketController implements Listener {
 
@@ -33,6 +39,7 @@ public class ApplicationWebsocketController implements Listener {
     public void onMessage(Session session, Message message) {
         ApplicationWebsocketTransfer data = JsonUtils.fromJson(message.bodyAsString(), ApplicationWebsocketTransfer.class);
 
+        // 获取全部应用程序信息
         if (data.getType().equals("getAllApplication")) {
             session.sendAsync(JsonUtils.toJson(new ApplicationWebsocketTransfer<>(
                     null,
