@@ -28,6 +28,7 @@
 * 修复 bean 所有字段只读且无 public 构造器时，会异常的问题
 * wood 升为 1.1.7
 * snack3 升为 3.2.73
+* beetlsql 升为 3.23.5-RELEASE
 
 ### 2.4.0
 * 新增 solon-openapi2-knife4j 插件，替代 solon-swagger2-knife4j
