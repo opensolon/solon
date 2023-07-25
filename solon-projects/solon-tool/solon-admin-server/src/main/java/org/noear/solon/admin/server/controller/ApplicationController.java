@@ -9,6 +9,9 @@ import java.net.URLDecoder;
 
 /**
  * 应用程序相关 Controller
+ *
+ * @author shaokeyibb
+ * @since 2.3
  */
 @Controller
 @Mapping("/api/application")

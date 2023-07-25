@@ -4,6 +4,9 @@ import lombok.Data;
 
 /**
  * 云模式配置文件
+ *
+ * @author shaokeyibb
+ * @since 2.3
  */
 @Data
 public class CloudClientProperties implements IClientProperties {

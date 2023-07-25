@@ -6,6 +6,9 @@ import org.noear.solon.annotation.Inject;
 
 /**
  * 配置文件
+ *
+ * @author shaokeyibb
+ * @since 2.3
  */
 @Inject(value = "${solon.admin.server}", required = false)
 @Configuration

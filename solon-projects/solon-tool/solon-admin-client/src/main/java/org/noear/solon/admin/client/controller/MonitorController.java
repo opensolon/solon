@@ -12,6 +12,9 @@ import java.util.Collection;
 
 /**
  * 监视器 Controller，用于分发客户端监视器信息
+ *
+ * @author shaokeyibb
+ * @since 2.3
  */
 @Controller
 @Mapping("/api/monitor")

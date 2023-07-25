@@ -7,7 +7,10 @@ import org.noear.solon.lang.Nullable;
 
 /**
  * 应用程序数据传输 Dto
+ *
  * @param <T> 要传输的数据类型
+ * @author shaokeyibb
+ * @since 2.3
  */
 @Data
 @AllArgsConstructor

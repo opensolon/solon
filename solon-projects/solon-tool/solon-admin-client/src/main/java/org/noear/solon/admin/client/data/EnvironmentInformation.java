@@ -10,6 +10,9 @@ import java.util.Map;
 
 /**
  * 应用环境信息
+ *
+ * @author shaokeyibb
+ * @since 2.3
  */
 @Data
 @Value

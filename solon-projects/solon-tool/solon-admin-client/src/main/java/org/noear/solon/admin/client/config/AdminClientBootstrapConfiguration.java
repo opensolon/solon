@@ -14,6 +14,9 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * 配置文件检查和注入
+ *
+ * @author shaokeyibb
+ * @since 2.3
  */
 @Slf4j
 @Configuration

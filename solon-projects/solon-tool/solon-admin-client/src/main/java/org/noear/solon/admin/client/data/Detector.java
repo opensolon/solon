@@ -7,6 +7,9 @@ import java.util.Map;
 
 /**
  * 监视器数据
+ *
+ * @author shaokeyibb
+ * @since 2.3
  */
 @AllArgsConstructor
 @Data

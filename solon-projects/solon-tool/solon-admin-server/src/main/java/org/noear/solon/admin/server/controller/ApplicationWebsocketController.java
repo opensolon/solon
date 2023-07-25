@@ -14,6 +14,9 @@ import java.util.List;
 
 /**
  * 应用程序 WebSocket Controller
+ *
+ * @author shaokeyibb
+ * @since 2.3
  */
 @ServerEndpoint(path = "/ws/application")
 public class ApplicationWebsocketController implements Listener {

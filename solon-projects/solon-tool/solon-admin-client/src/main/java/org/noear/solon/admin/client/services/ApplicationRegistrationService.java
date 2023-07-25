@@ -15,6 +15,9 @@ import java.net.URL;
 
 /**
  * 应用程序注册服务
+ *
+ * @author shaokeyibb
+ * @since 2.3
  */
 @Slf4j
 @Component
@@ -36,6 +39,7 @@ public class ApplicationRegistrationService {
 
     /**
      * 获取当前应用程序信息
+     *
      * @return 当前应用程序信息
      */
     public Application getCurrentApplication() {
@@ -48,6 +52,7 @@ public class ApplicationRegistrationService {
     public void register() {
         log.info("Attempting to register this client as an application with Solon Admin server...");
         val serverUrl = this.properties.getServerUrl().replaceAll("/+$", "");
+        // 向 Server 发送注册请求
         try (Response response = client.newCall(new Request.Builder()
                 .url(new URL(serverUrl + "/api/application/register"))
                 .put(RequestBody.create(MediaType.parse("application/json"),
@@ -75,6 +80,7 @@ public class ApplicationRegistrationService {
     public void unregister() {
         log.info("Attempting to unregister this client from Solon Admin server...");
         val serverUrl = this.properties.getServerUrl().replaceAll("/+$", "");
+        // 向 Server 发送注销请求
         try (Response response = client.newCall(new Request.Builder()
                 .url(new URL(serverUrl + "/api/application/unregister"))
                 .delete(RequestBody.create(MediaType.parse("application/json"),
@@ -96,6 +102,7 @@ public class ApplicationRegistrationService {
     public void heartbeat() {
         log.debug("Attempting to send heartbeat to Solon Admin server...");
         val serverUrl = this.properties.getServerUrl().replaceAll("/+$", "");
+        // 向 Server 发送心跳请求
         try (Response response = client.newCall(new Request.Builder()
                 .url(new URL(serverUrl + "/api/application/heartbeat"))
                 .post(RequestBody.create(MediaType.parse("application/json"),
