@@ -36,6 +36,10 @@ public class ApplicationService {
     @Inject
     private ClientMonitorService clientMonitorService;
 
+    /**
+     * 注册 Solon Admin Client 应用程序
+     * @param application 应用程序
+     */
     public void registerApplication(Application application) {
         if (applications.contains(application)) return;
 
@@ -52,6 +56,10 @@ public class ApplicationService {
         log.info("Application registered: {}", application);
     }
 
+    /**
+     * 注销 Solon Admin Client 应用程序
+     * @param application 应用程序
+     */
     public void unregisterApplication(Application application) {
         val find = applications.stream().filter(it -> it.equals(application)).findFirst();
         if (!find.isPresent()) return;
@@ -68,6 +76,10 @@ public class ApplicationService {
         log.info("Application unregistered: {}", find.get());
     }
 
+    /**
+     * 心跳
+     * @param application 应用程序
+     */
     public void heartbeatApplication(Application application) {
         val find = applications.stream().filter(it -> it.equals(application)).findFirst();
         if (!find.isPresent()) return;
@@ -133,10 +145,20 @@ public class ApplicationService {
         ))));
     }
 
+    /**
+     * 获取全部应用程序
+     * @return 全部应用程序
+     */
     public Set<Application> getApplications() {
         return new HashSet<>(applications);
     }
 
+    /**
+     * 获取应用程序
+     * @param name 应用程序名称
+     * @param baseUrl 应用程序 baseUrl
+     * @return 应用程序
+     */
     public Application getApplication(String name, String baseUrl) {
         val find = applications.stream().filter(it -> it.getName().equals(name) && it.getBaseUrl().equals(baseUrl)).findFirst();
         return find.orElse(null);

@@ -13,6 +13,9 @@ import org.noear.solon.core.event.EventBus;
 import java.util.Timer;
 import java.util.TimerTask;
 
+/**
+ * 自动向 Solon Admin Server 注册客户端信息
+ */
 @Configuration
 public class AutoRegistrationConfiguration {
 

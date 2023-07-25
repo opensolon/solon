@@ -8,6 +8,9 @@ import org.noear.solon.core.message.Session;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * WebSocket 初始化
+ */
 @Configuration
 public class WebSocketConfiguration {
 
