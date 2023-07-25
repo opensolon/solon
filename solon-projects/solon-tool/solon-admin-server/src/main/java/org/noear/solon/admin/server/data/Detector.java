@@ -5,6 +5,9 @@ import lombok.NoArgsConstructor;
 
 import java.util.Map;
 
+/**
+ * 监视器数据
+ */
 @NoArgsConstructor
 @Data
 public class Detector {

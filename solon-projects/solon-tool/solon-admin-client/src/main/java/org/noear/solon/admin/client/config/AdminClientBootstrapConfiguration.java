@@ -12,6 +12,9 @@ import org.noear.solon.annotation.Inject;
 
 import java.util.concurrent.TimeUnit;
 
+/**
+ * 配置文件检查和注入
+ */
 @Slf4j
 @Configuration
 public class AdminClientBootstrapConfiguration {

@@ -24,6 +24,11 @@ public class ClientMonitorService {
     @Inject
     private OkHttpClient client;
 
+    /**
+     * 获取应用程序的监视器
+     * @param application 应用程序
+     * @return 应用程序的监视器
+     */
     public Collection<Detector> getMonitors(Application application) {
         val clientUrl = application.getBaseUrl().replaceAll("/+$", "");
         try (Response response = client.newCall(new Request.Builder()

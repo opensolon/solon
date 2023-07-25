@@ -8,14 +8,20 @@ import org.noear.solon.Solon;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * 应用环境信息
+ */
 @Data
 @Value
 public class EnvironmentInformation {
 
+    // 系统环境变量
     Map<String, String> systemEnvironment;
 
+    // 系统属性
     Map<String, String> systemProperties;
 
+    // 应用配置
     Map<String, String> applicationProperties;
 
     public static EnvironmentInformation create() {

@@ -12,9 +12,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Optional;
 
+/**
+ * 前端 UI Controller
+ */
 @Controller
 public class UIController {
 
+    /**
+     * 获取 index.html
+     */
     @Get
     @Mapping("/")
     @Produces(MimeType.TEXT_HTML_VALUE)
@@ -25,6 +31,9 @@ public class UIController {
         return stream;
     }
 
+    /**
+     * 获取资源文件
+     */
     @Get
     @Mapping("/**")
     public void resources(Context ctx) throws IOException {

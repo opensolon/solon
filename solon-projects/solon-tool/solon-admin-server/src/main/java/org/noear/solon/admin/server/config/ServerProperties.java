@@ -4,6 +4,9 @@ import lombok.Data;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
 
+/**
+ * 配置文件
+ */
 @Inject(value = "${solon.admin.server}", required = false)
 @Configuration
 @Data

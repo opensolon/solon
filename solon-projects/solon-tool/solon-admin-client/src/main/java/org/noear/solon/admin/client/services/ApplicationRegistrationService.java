@@ -13,6 +13,9 @@ import org.noear.solon.annotation.Inject;
 
 import java.net.URL;
 
+/**
+ * 应用程序注册服务
+ */
 @Slf4j
 @Component
 public class ApplicationRegistrationService {
@@ -31,10 +34,17 @@ public class ApplicationRegistrationService {
                 .baseUrl(NetworkUtils.getHostAndPort());
     }
 
+    /**
+     * 获取当前应用程序信息
+     * @return 当前应用程序信息
+     */
     public Application getCurrentApplication() {
         return getApplicationBuilder().build();
     }
 
+    /**
+     * 向 Solon Admin Server 注册当前应用程序
+     */
     public void register() {
         log.info("Attempting to register this client as an application with Solon Admin server...");
         val serverUrl = this.properties.getServerUrl().replaceAll("/+$", "");
@@ -59,6 +69,9 @@ public class ApplicationRegistrationService {
         }
     }
 
+    /**
+     * 向 Solon Admin Server 注销
+     */
     public void unregister() {
         log.info("Attempting to unregister this client from Solon Admin server...");
         val serverUrl = this.properties.getServerUrl().replaceAll("/+$", "");
@@ -77,6 +90,9 @@ public class ApplicationRegistrationService {
         }
     }
 
+    /**
+     * 向 Solon Admin Server 发送心跳
+     */
     public void heartbeat() {
         log.debug("Attempting to send heartbeat to Solon Admin server...");
         val serverUrl = this.properties.getServerUrl().replaceAll("/+$", "");

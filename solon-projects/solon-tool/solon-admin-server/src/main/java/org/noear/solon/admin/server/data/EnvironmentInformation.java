@@ -5,6 +5,9 @@ import lombok.Value;
 
 import java.util.Map;
 
+/**
+ * 应用环境信息
+ */
 @Data
 @Value
 public class EnvironmentInformation {

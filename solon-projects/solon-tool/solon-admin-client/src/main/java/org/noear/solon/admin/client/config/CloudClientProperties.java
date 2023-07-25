@@ -2,6 +2,9 @@ package org.noear.solon.admin.client.config;
 
 import lombok.Data;
 
+/**
+ * 云模式配置文件
+ */
 @Data
 public class CloudClientProperties implements IClientProperties {
 
