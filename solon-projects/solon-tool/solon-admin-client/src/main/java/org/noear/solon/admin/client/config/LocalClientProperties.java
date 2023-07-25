@@ -9,7 +9,7 @@ public class LocalClientProperties implements IClientProperties {
 
     private String mode = "local";
 
-    private String serverUrl;
+    private String serverUrl = "http://localhost:8080";
 
     private long heartbeatInterval = 10 * 1000;
 
