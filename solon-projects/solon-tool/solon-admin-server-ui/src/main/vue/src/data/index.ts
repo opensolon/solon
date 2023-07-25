@@ -23,7 +23,7 @@ export class Application extends UniqueApplication {
     lastDownTime: number
     showSecretInformation: boolean
     environmentInformation: EnvironmentInformation
-    monitors: (JVMDetector | DiskDetector | CPUDetector | OSDetector | MemoryDetector | Detector)[]
+    monitors?: (JVMDetector | DiskDetector | CPUDetector | OSDetector | MemoryDetector | Detector)[]
 
     constructor(name: string, baseUrl: string, metadata: string | undefined, status: ApplicationStatus, lastHeartbeat: number, startupTime: number, lastUpTime: number, lastDownTime: number, showSecretInformation: boolean, environmentInformation: EnvironmentInformation, monitors: Detector[]) {
         super(name, baseUrl);

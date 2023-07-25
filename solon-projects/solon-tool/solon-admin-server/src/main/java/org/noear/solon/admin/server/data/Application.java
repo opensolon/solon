@@ -51,8 +51,24 @@ public class Application {
     @EqualsAndHashCode.Exclude
     private Collection<Detector> monitors;
 
+    public void replace(Application application) {
+        this.metadata = application.metadata;
+        this.status = application.status;
+        this.startupTime = application.startupTime;
+        this.lastHeartbeat = application.lastHeartbeat;
+        this.lastUpTime = application.lastUpTime;
+        this.lastDownTime = application.lastDownTime;
+        this.showSecretInformation = application.showSecretInformation;
+        this.environmentInformation = application.environmentInformation;
+        this.monitors = application.monitors;
+    }
+
     public enum Status {
         UP,
         DOWN
+    }
+
+    public String toKey() {
+        return name + "@" + baseUrl;
     }
 }
