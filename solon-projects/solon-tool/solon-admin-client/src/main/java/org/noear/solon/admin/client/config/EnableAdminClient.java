@@ -13,6 +13,5 @@ import java.lang.annotation.*;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-@Import(scanPackages = "org.noear.solon.admin.client")
 public @interface EnableAdminClient {
 }

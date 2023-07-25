@@ -25,8 +25,8 @@ public class AdminServerBootstrapConfiguration {
 
     @Condition(onProperty = "${solon.admin.server.enabled:true} = true")
     @Bean
-    public MarkedServerEnabled markedServerEnabled() {
-        return new MarkedServerEnabled(Solon.cfg().get("solon.admin.server.mode", "local"));
+    public MarkedServerEnabled markedServerEnabled(@Inject("${solon.admin.server.mode:local}") String mode) {
+        return new MarkedServerEnabled(mode);
     }
 
     @Bean

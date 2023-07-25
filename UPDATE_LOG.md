@@ -17,7 +17,8 @@
 * 新增 solon-admin-server-ui 插件?
 
 ### 2.4.1
-* 新增 solon.web.servlet.jakarta 插件
+* 新增 solon.web.servlet.jakarta 插件（用于 war 打包时，支持 tomcat10, jetty11 等 jakarta.servlet 容器）
+* 增加 Props::getByKeys、getOrDefault 接口
 * 调整 EventBus::push 标为弃用，添加 ::publish 代之
 * 调整 AopContext::beanAroundXxx 标为弃用，添加 ::beanInterceptorXxx 代之
 * 调整 Around 相关名改为 Interceptor，原名标为弃用

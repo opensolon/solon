@@ -57,13 +57,15 @@ public class Props extends Properties {
         return getProperty(key);
     }
 
-    public String getOr(String key, String key2) {
-        String tmp = getProperty(key);
-        if (Utils.isEmpty(tmp)) {
-            return getProperty(key2);
-        } else {
-            return tmp;
+    public String getByKeys(String... keys) {
+        for (String key : keys) {
+            String tmp = get(key);
+            if (Utils.isNotEmpty(tmp)) {
+                return tmp;
+            }
         }
+
+        return null;
     }
 
     /**
@@ -178,7 +180,7 @@ public class Props extends Properties {
      * @param def 默认值
      */
     public boolean getBool(String key, boolean def) {
-        return getOrDef(key, def, Boolean::parseBoolean);
+        return getOrDefault(key, def, Boolean::parseBoolean);
     }
 
     /**
@@ -187,7 +189,7 @@ public class Props extends Properties {
      * @param def 默认值
      */
     public int getInt(String key, int def) {
-        return getOrDef(key, def, Integer::parseInt);
+        return getOrDefault(key, def, Integer::parseInt);
     }
 
     /**
@@ -196,7 +198,7 @@ public class Props extends Properties {
      * @param def 默认值
      */
     public long getLong(String key, long def) {
-        return getOrDef(key, def, Long::parseLong);
+        return getOrDefault(key, def, Long::parseLong);
     }
 
     /**
@@ -205,10 +207,13 @@ public class Props extends Properties {
      * @param def 默认值
      */
     public Double getDouble(String key, double def) {
-        return getOrDef(key, def, Double::parseDouble);
+        return getOrDefault(key, def, Double::parseDouble);
     }
 
-    private <T> T getOrDef(String key, T def, Function<String, T> convert) {
+    /**
+     * 获取某项配置，并转为目标类型（如果没有，输出默认值）
+     * */
+    public  <T> T getOrDefault(String key, T def, Function<String, T> convert) {
         String temp = get(key);
         if (Utils.isEmpty(temp)) {
             return def;

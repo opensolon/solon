@@ -1,5 +1,6 @@
 package org.noear.solon.admin.client.config;
 
+import org.noear.solon.Solon;
 import org.noear.solon.admin.client.controller.MonitorController;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
@@ -11,6 +12,10 @@ import org.noear.solon.core.Plugin;
 public class XPluginImpl implements Plugin {
     @Override
     public void start(AopContext context) throws Throwable {
-        context.beanMake(MonitorController.class);
+        if(Solon.app().source().isAnnotationPresent(EnableAdminClient.class) == false){
+            return;
+        }
+
+        context.beanScan("org.noear.solon.admin.client");
     }
 }
