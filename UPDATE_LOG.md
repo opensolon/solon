@@ -11,22 +11,23 @@
 
 ### 2.4.2
 * 新增 solon.boot.vertx 插件?
-
-### 2.4.1
-* 新增 solon.web.servlet.jakarta 插件
 * 新增 solon.cloud.metrics 插件?
 * 新增 solon-admin-client 插件?
 * 新增 solon-admin-server 插件?
 * 新增 solon-admin-server-ui 插件?
-* 优化 solon.boot 信号启动的执行时机后延
-* 优化 solon.scheduling 插件的 retry 的兜底设计
-* 优化 EventBus 增加订阅排序支持
+
+### 2.4.1
+* 新增 solon.web.servlet.jakarta 插件
 * 调整 EventBus::push 标为弃用，添加 ::publish 代之
 * 调整 AopContext::beanAroundXxx 标为弃用，添加 ::beanInterceptorXxx 代之
 * 调整 Around 相关名改为 Interceptor，原名标为弃用
-* 调整 ProxyComponent 注解属性调整成与 Component 注解一样
+* 优化 ProxyComponent 注解属性调整成与 Component 注解一样，支持用 tags 查找
+* 优化 solon.boot 信号启动的执行时机后延
+* 优化 solon.scheduling 插件的 retry 的兜底设计
+* 优化 EventBus 增加订阅排序支持
 * 修复 bean 所有字段只读且无 public 构造器时，会异常的问题
 * wood 升为 1.1.7
+* snack3 升为 3.2.73
 
 ### 2.4.0
 * 新增 solon-openapi2-knife4j 插件，替代 solon-swagger2-knife4j
