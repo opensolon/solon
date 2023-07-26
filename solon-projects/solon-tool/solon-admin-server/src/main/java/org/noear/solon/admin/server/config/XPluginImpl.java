@@ -30,30 +30,30 @@ public class XPluginImpl implements Plugin {
         Solon.app().sharedAdd("solon-admin-server-url", serverUrl);
 
         //4.确定界面资源
-        String adminPath = buildAdminPath(context);
+        String uiPath = buildUiPath(context);
 
         //添加静态资源
-        StaticMappings.add(adminPath, new ClassPathStaticRepository("META-INF/solon-admin-server-ui"));
+        StaticMappings.add(uiPath, new ClassPathStaticRepository("META-INF/solon-admin-server-ui"));
 
         //添加跳转
-        Solon.app().get(adminPath, c -> c.forward(adminPath+"index.html"));
-        Solon.app().get(adminPath +"index.html", c -> c.redirect(adminPath));
+        Solon.app().get(uiPath, c -> c.forward(uiPath+"index.html"));
+        Solon.app().get(uiPath +"index.html", c -> c.redirect(uiPath));
     }
 
-    private String buildAdminPath(AopContext context){
-        String adminPath = context.getBean(ServerProperties.class).getUiPath();
-        if (Utils.isEmpty(adminPath)) {
-            adminPath = "/";
+    private String buildUiPath(AopContext context){
+        String uiPath = context.getBean(ServerProperties.class).getUiPath();
+        if (Utils.isEmpty(uiPath)) {
+            uiPath = "/";
         }
 
-        if (adminPath.startsWith("/") == false) {
-            adminPath = "/" + adminPath;
+        if (uiPath.startsWith("/") == false) {
+            uiPath = "/" + uiPath;
         }
 
-        if(adminPath.endsWith("/") == false){
-            adminPath = adminPath+"/";
+        if(uiPath.endsWith("/") == false){
+            uiPath = uiPath+"/";
         }
 
-        return adminPath;
+        return uiPath;
     }
 }
