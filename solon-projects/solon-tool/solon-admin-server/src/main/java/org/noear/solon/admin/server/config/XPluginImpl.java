@@ -30,5 +30,8 @@ public class XPluginImpl implements Plugin {
         //调整页面跳转
         Solon.app().get("/", c -> c.forward("/index.html"));
         Solon.app().get("/index.html", c -> c.redirect("/"));
+
+        String serverUrl = "http://localhost:" + Solon.cfg().serverPort();
+        Solon.app().sharedAdd("solon-admin-server-url", serverUrl);
     }
 }

@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import okhttp3.OkHttpClient;
 import org.noear.solon.Solon;
+import org.noear.solon.Utils;
 import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
@@ -25,22 +26,26 @@ public class AdminClientBootstrapConfiguration {
     @Inject
     AopContext aopContext;
 
-    @Bean
-    public IClientProperties clientProperties(@Inject("${solon.admin.client.mode:local}") String mode) {
-        IClientProperties properties;
+    @Inject(value = "${solon.admin.client}", required = false)
+    ClientProperties clientProperties;
 
-        if("local".equals(mode)) {
-            properties = aopContext.cfg().getBean("solon.admin.client", LocalClientProperties.class);
-            if(properties == null){
-                properties = new LocalClientProperties();
-            }
-            log.debug("Injected localClientProperties: " + properties);
-        }else{
-            properties = aopContext.cfg().getBean("solon.admin.client", CloudClientProperties.class);
-            log.debug("Injected cloudClientProperties: " + properties);
+    @Bean
+    public IClientProperties clientProperties() {
+        if(clientProperties == null){
+            clientProperties = new ClientProperties();
         }
 
-        return properties;
+        if("local".equals(clientProperties.getMode())) {
+            log.debug("Injected localClientProperties: " + clientProperties);
+        }else{
+            log.debug("Injected cloudClientProperties: " + clientProperties);
+        }
+
+        String serverUrl = (String) Solon.app().shared().get("solon-admin-server-url");
+        if(Utils.isNotEmpty(serverUrl)){
+            clientProperties.setServerUrl(serverUrl);
+        }
+        return clientProperties;
     }
 
     @Bean

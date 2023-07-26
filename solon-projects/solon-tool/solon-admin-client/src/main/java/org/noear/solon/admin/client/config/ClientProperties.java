@@ -3,17 +3,17 @@ package org.noear.solon.admin.client.config;
 import lombok.Data;
 
 /**
- * 云模式配置文件
+ * 本地模式配置文件
  *
  * @author shaokeyibb
  * @since 2.3
  */
 @Data
-public class CloudClientProperties implements IClientProperties {
+public class ClientProperties implements IClientProperties {
 
     private boolean enabled = true;
 
-    private String mode = "cloud";
+    private String mode = "local";
 
     private String serverUrl = "http://localhost:8080";
 
