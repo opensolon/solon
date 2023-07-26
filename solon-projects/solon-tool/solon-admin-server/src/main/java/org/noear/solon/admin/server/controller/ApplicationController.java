@@ -14,7 +14,7 @@ import java.net.URLDecoder;
  * @since 2.3
  */
 @Controller
-@Mapping("/api/application")
+@Mapping("/solon-admin/api/application")
 public class ApplicationController {
 
     @Inject

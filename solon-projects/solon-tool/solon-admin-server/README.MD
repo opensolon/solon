@@ -40,6 +40,7 @@ solon.admin.server:
   clientMonitorPeriod: 2000 #客户端监控周期，单位：毫秒
   connectTimeout: 5000 #连接超时，单位：毫秒
   readTimeout: 5000 #读取超时，单位：毫秒
+  uiPath: "/"
 ```
 
 ## 4. 配置中心

@@ -56,7 +56,7 @@ public class ApplicationRegistrationService {
         String clientMetadata = Solon.cfg().getProp("solon.app").toString();
         // 向 Server 发送注册请求
         try (Response response = client.newCall(new Request.Builder()
-                .url(new URL(serverUrl + "/api/application/register"))
+                .url(new URL(serverUrl + "/solon-admin/api/application/register"))
                 .put(RequestBody.create(MediaType.parse("application/json"),
                         JsonUtils.toJson(
                                 getApplicationBuilder()
@@ -84,7 +84,7 @@ public class ApplicationRegistrationService {
         val serverUrl = this.properties.getServerUrl().replaceAll("/+$", "");
         // 向 Server 发送注销请求
         try (Response response = client.newCall(new Request.Builder()
-                .url(new URL(serverUrl + "/api/application/unregister"))
+                .url(new URL(serverUrl + "/solon-admin/api/application/unregister"))
                 .delete(RequestBody.create(MediaType.parse("application/json"),
                         JsonUtils.toJson(getCurrentApplication())))
                 .build()).execute()) {
@@ -106,7 +106,7 @@ public class ApplicationRegistrationService {
         val serverUrl = this.properties.getServerUrl().replaceAll("/+$", "");
         // 向 Server 发送心跳请求
         try (Response response = client.newCall(new Request.Builder()
-                .url(new URL(serverUrl + "/api/application/heartbeat"))
+                .url(new URL(serverUrl + "/solon-admin/api/application/heartbeat"))
                 .post(RequestBody.create(MediaType.parse("application/json"),
                         JsonUtils.toJson(
                                 getCurrentApplication()

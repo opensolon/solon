@@ -14,9 +14,13 @@ import org.noear.solon.annotation.Inject;
 @Configuration
 @Data
 public class ServerProperties {
-
+    /**
+     * 是否启用
+     * */
     private boolean enabled = true;
-
+    /**
+     * 模式
+     * */
     private String mode = "local";
 
     private long heartbeatInterval = 10 * 1000;
@@ -26,4 +30,9 @@ public class ServerProperties {
     private long connectTimeout = 5 * 1000;
 
     private long readTimeout = 5 * 1000;
+
+    /**
+     * 介绍路径
+     * */
+    private String uiPath = "/";
 }

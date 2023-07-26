@@ -70,7 +70,7 @@ export function useApplication() {
     const i18n = useI18n();
 
     const unregisterApplication = async (application: Application) => {
-        const isOk = await fetch("/api/application/unregister", {
+        const isOk = await fetch("/solon-admin/api/application/unregister", {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json"
@@ -85,7 +85,7 @@ export function useApplication() {
     }
 
     const getApplicationRaw = async (name: string, baseUrl: string) => {
-        return await fetch("/api/application?name=" + encodeURIComponent(name) + "&baseUrl=" + encodeURIComponent(baseUrl))
+        return await fetch("/solon-admin/api/application?name=" + encodeURIComponent(name) + "&baseUrl=" + encodeURIComponent(baseUrl))
             .then(response => response.json())
             .then(response => response as Application)
     }
