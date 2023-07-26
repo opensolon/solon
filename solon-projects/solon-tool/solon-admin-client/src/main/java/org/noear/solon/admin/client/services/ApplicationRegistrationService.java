@@ -102,7 +102,7 @@ public class ApplicationRegistrationService {
      * 向 Solon Admin Server 发送心跳
      */
     public void heartbeat() {
-        log.debug("Attempting to send heartbeat to Solon Admin server...");
+        log.trace("Attempting to send heartbeat to Solon Admin server...");
         val serverUrl = this.properties.getServerUrl().replaceAll("/+$", "");
         // 向 Server 发送心跳请求
         try (Response response = client.newCall(new Request.Builder()
@@ -113,7 +113,7 @@ public class ApplicationRegistrationService {
                         )))
                 .build()).execute()) {
             if (response.isSuccessful()) {
-                log.debug("Successfully send heartbeat to Solon Admin server.");
+                log.trace("Successfully send heartbeat to Solon Admin server.");
                 return;
             }
             log.error("Failed to send heartbeat to Solon Admin server. Response: {}", response);
