@@ -1,4 +1,4 @@
-package org.noear.solon.admin.client.integration;
+package org.noear.solon.admin.client.config;
 
 import lombok.Data;
 

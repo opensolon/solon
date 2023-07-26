@@ -1,4 +1,4 @@
-package org.noear.solon.admin.client.integration;
+package org.noear.solon.admin.client.config;
 
 import lombok.Value;
 import lombok.extern.slf4j.Slf4j;

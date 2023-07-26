@@ -1,4 +1,4 @@
-package org.noear.solon.admin.server.integration;
+package org.noear.solon.admin.server.config;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;

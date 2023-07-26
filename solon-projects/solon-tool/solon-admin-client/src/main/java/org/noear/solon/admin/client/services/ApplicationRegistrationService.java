@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import okhttp3.*;
 import org.noear.solon.Solon;
-import org.noear.solon.admin.client.integration.ClientProperties;
+import org.noear.solon.admin.client.config.ClientProperties;
 import org.noear.solon.admin.client.data.Application;
 import org.noear.solon.admin.client.data.EnvironmentInformation;
 import org.noear.solon.admin.client.utils.JsonUtils;
