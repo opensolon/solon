@@ -41,6 +41,8 @@ solon.admin.server:
   connectTimeout: 5000 #连接超时，单位：毫秒
   readTimeout: 5000 #读取超时，单位：毫秒
   uiPath: "/"
+  basicAuth:
+    admin: 123456
 ```
 
 ## 4. 配置中心

@@ -4,6 +4,8 @@ import lombok.Data;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
 
+import java.util.Map;
+
 /**
  * 配置文件
  *
@@ -35,4 +37,8 @@ public class ServerProperties {
      * 介绍路径
      * */
     private String uiPath = "/";
+    /**
+     * base 签权
+     * */
+    private Map<String, String> basicAuth;
 }

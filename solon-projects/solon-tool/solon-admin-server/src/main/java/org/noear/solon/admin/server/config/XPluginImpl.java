@@ -2,6 +2,7 @@ package org.noear.solon.admin.server.config;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
+import org.noear.solon.admin.server.utils.BasicAuthUtils;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.web.staticfiles.StaticMappings;
@@ -30,18 +31,26 @@ public class XPluginImpl implements Plugin {
         Solon.app().sharedAdd("solon-admin-server-url", serverUrl);
 
         //4.确定界面资源
-        String uiPath = buildUiPath(context);
+        ServerProperties serverProperties = context.getBean(ServerProperties.class);
+        String uiPath = buildUiPath(serverProperties);
 
         //添加静态资源
         StaticMappings.add(uiPath, new ClassPathStaticRepository("META-INF/solon-admin-server-ui"));
 
+        //添加签权
+        Solon.app().before(uiPath, ctx -> {
+            if (!BasicAuthUtils.basicAuth(ctx, serverProperties)) {
+                BasicAuthUtils.response401(ctx);
+                ctx.setHandled(true);
+            }
+        });
         //添加跳转
-        Solon.app().get(uiPath, c -> c.forward(uiPath+"index.html"));
-        Solon.app().get(uiPath +"index.html", c -> c.redirect(uiPath));
+        Solon.app().get(uiPath, c -> c.forward(uiPath + "index.html"));
+        Solon.app().get(uiPath + "index.html", c -> c.redirect(uiPath));
     }
 
-    private String buildUiPath(AopContext context){
-        String uiPath = context.getBean(ServerProperties.class).getUiPath();
+    private String buildUiPath(ServerProperties serverProperties) {
+        String uiPath = serverProperties.getUiPath();
         if (Utils.isEmpty(uiPath)) {
             uiPath = "/";
         }
@@ -50,8 +59,8 @@ public class XPluginImpl implements Plugin {
             uiPath = "/" + uiPath;
         }
 
-        if(uiPath.endsWith("/") == false){
-            uiPath = uiPath+"/";
+        if (uiPath.endsWith("/") == false) {
+            uiPath = uiPath + "/";
         }
 
         return uiPath;
