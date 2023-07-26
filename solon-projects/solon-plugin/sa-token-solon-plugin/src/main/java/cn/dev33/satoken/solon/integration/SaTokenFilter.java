@@ -10,6 +10,7 @@ import cn.dev33.satoken.router.SaRouter;
 import cn.dev33.satoken.strategy.SaStrategy;
 import org.noear.solon.Solon;
 import org.noear.solon.core.handle.*;
+import org.noear.solon.core.route.RoutingTable;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -170,7 +171,14 @@ public class SaTokenFilter implements Filter { //之所以改名，为了跟 SaT
 	public void doFilter(Context ctx, FilterChain chain) throws Throwable {
 		try {
 			//查找当前主处理
-			Handler mainHandler = Solon.app().router().matchMain(ctx);
+            Handler mainHandler = Solon.app().router().matchMain(ctx);
+            if (mainHandler instanceof Gateway) {
+                Gateway gateway = (Gateway) mainHandler;
+                RoutingTable<Handler> mainRouting = gateway.getMainRouting();
+                String pathNew = ctx.pathNew();
+                MethodType method = MethodTypeUtil.valueOf(ctx.method());
+                mainHandler = mainRouting.matchOne(pathNew, method);
+            }
 			Action action = (mainHandler instanceof Action ? (Action) mainHandler : null);
 
             //1.执行前置处理（主要是一些跨域之类的）
@@ -179,11 +187,12 @@ public class SaTokenFilter implements Filter { //之所以改名，为了跟 SaT
             }
 
 			//先路径过滤下（包括了静态文件）
+            Handler finalMainHandler = mainHandler;
 			SaRouter.match(includeList).notMatch(excludeList).check(r -> {
 				//2.执行注解处理
 				if(authAnno(action)) {
 					//3.执行规则处理（如果没有被 @SaIgnore 忽略）
-					auth.run(mainHandler);
+					auth.run(finalMainHandler);
 				}
 			});
 		} catch (StopMatchException e) {
