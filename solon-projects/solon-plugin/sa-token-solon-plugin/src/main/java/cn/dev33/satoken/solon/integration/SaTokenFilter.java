@@ -196,7 +196,7 @@ public class SaTokenFilter implements Filter { //之所以改名，为了跟 SaT
 				}
 			});
 		} catch (StopMatchException e) {
-
+            // StopMatchException 异常代表：停止匹配，进入Controller
 		} catch (SaTokenException e) {
 			// 1. 获取异常处理策略结果
 			Object result;
