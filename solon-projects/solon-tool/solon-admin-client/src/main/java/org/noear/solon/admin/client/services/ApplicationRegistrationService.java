@@ -3,6 +3,7 @@ package org.noear.solon.admin.client.services;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import okhttp3.*;
+import org.noear.solon.Solon;
 import org.noear.solon.admin.client.config.IClientProperties;
 import org.noear.solon.admin.client.data.Application;
 import org.noear.solon.admin.client.data.EnvironmentInformation;
@@ -52,13 +53,14 @@ public class ApplicationRegistrationService {
     public void register() {
         log.info("Attempting to register this client as an application with Solon Admin server...");
         val serverUrl = this.properties.getServerUrl().replaceAll("/+$", "");
+        String clientMetadata = Solon.cfg().getProp("solon.app").toString();
         // 向 Server 发送注册请求
         try (Response response = client.newCall(new Request.Builder()
                 .url(new URL(serverUrl + "/api/application/register"))
                 .put(RequestBody.create(MediaType.parse("application/json"),
                         JsonUtils.toJson(
                                 getApplicationBuilder()
-                                        .metadata(properties.getMetadata())
+                                        .metadata(clientMetadata)
                                         .showSecretInformation(properties.isShowSecretInformation())
                                         .environmentInformation(EnvironmentInformation.create())
                                         .build()

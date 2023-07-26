@@ -18,8 +18,6 @@ public interface IClientProperties {
 
     long getReadTimeout();
 
-    String getMetadata();
-
     boolean isShowSecretInformation();
 
 }

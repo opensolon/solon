@@ -6,9 +6,9 @@ import lombok.val;
 import okhttp3.OkHttpClient;
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.Bean;
-import org.noear.solon.annotation.Condition;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
+import org.noear.solon.core.AopContext;
 
 import java.util.concurrent.TimeUnit;
 
@@ -22,18 +22,24 @@ import java.util.concurrent.TimeUnit;
 @Configuration
 public class AdminClientBootstrapConfiguration {
 
-    @Condition(onProperty = "${solon.admin.client.mode:local} = local")
-    @Bean
-    public IClientProperties localClientProperties(@Inject(value = "${solon.admin.client}") LocalClientProperties properties) {
-        log.debug("Injected localClientProperties: " + properties);
-        return properties;
-    }
+    @Inject
+    AopContext aopContext;
 
-
-    @Condition(onProperty = "${solon.admin.client.mode:local} = cloud")
     @Bean
-    public IClientProperties cloudClientProperties(@Inject(value = "${solon.admin.client}") CloudClientProperties properties) {
-        log.debug("Injected cloudClientProperties: " + properties);
+    public IClientProperties clientProperties(@Inject("${solon.admin.client.mode:local}") String mode) {
+        IClientProperties properties;
+
+        if("local".equals(mode)) {
+            properties = aopContext.cfg().getBean("solon.admin.client", LocalClientProperties.class);
+            if(properties == null){
+                properties = new LocalClientProperties();
+            }
+            log.debug("Injected localClientProperties: " + properties);
+        }else{
+            properties = aopContext.cfg().getBean("solon.admin.client", CloudClientProperties.class);
+            log.debug("Injected cloudClientProperties: " + properties);
+        }
+
         return properties;
     }
 

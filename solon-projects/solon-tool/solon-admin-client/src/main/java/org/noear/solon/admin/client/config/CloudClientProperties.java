@@ -23,7 +23,5 @@ public class CloudClientProperties implements IClientProperties {
 
     private long readTimeout = 5 * 1000;
 
-    private String metadata = "";
-
     private boolean showSecretInformation = false;
 }

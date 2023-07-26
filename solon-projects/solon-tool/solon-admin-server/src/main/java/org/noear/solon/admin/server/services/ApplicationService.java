@@ -118,7 +118,7 @@ public class ApplicationService {
                 find.get()
         ))));
 
-        log.debug("Application heartbeat: {}", find.get());
+        log.trace("Application heartbeat: {}", find.get());
     }
 
     private void scheduleHeartbeatCheck(Application application) {
