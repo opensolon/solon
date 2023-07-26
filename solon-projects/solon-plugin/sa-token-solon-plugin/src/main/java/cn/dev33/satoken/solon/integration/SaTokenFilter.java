@@ -173,11 +173,11 @@ public class SaTokenFilter implements Filter { //之所以改名，为了跟 SaT
 			//查找当前主处理
             Handler mainHandler = Solon.app().router().matchMain(ctx);
             if (mainHandler instanceof Gateway) {
+                //支持网关处理
                 Gateway gateway = (Gateway) mainHandler;
                 RoutingTable<Handler> mainRouting = gateway.getMainRouting();
-                String pathNew = ctx.pathNew();
                 MethodType method = MethodTypeUtil.valueOf(ctx.method());
-                mainHandler = mainRouting.matchOne(pathNew, method);
+                mainHandler = mainRouting.matchOne(ctx.pathNew(), method);
             }
 			Action action = (mainHandler instanceof Action ? (Action) mainHandler : null);
 

@@ -11,6 +11,7 @@ import cn.dev33.satoken.strategy.SaStrategy;
 import org.noear.solon.core.handle.*;
 import org.noear.solon.core.route.RouterInterceptor;
 import org.noear.solon.core.route.RouterInterceptorChain;
+import org.noear.solon.core.route.RoutingTable;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -170,6 +171,14 @@ public class SaTokenInterceptor implements RouterInterceptor {
 	@Override
 	public void doIntercept(Context ctx, Handler mainHandler, RouterInterceptorChain chain) throws Throwable {
 		try {
+            if (mainHandler instanceof Gateway) {
+                //支持网关处理
+                Gateway gateway = (Gateway) mainHandler;
+                RoutingTable<Handler> mainRouting = gateway.getMainRouting();
+                MethodType method = MethodTypeUtil.valueOf(ctx.method());
+                mainHandler = mainRouting.matchOne(ctx.pathNew(), method);
+            }
+
 			Action action = (mainHandler instanceof Action ? (Action) mainHandler : null);
 
             //1.执行前置处理（主要是一些跨域之类的）
@@ -178,11 +187,12 @@ public class SaTokenInterceptor implements RouterInterceptor {
             }
 
 			//先路径过滤下（不包括静态文件）
+            Handler finalMainHandler = mainHandler;
 			SaRouter.match(includeList).notMatch(excludeList).check(r -> {
 				//2.执行注解处理
 				if(authAnno(action)) {
 					//3.执行规则处理（如果没有被 @SaIgnore 忽略）
-					auth.run(mainHandler);
+					auth.run(finalMainHandler);
 				}
 			});
 
