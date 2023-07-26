@@ -2,7 +2,7 @@ package org.noear.solon.admin.server.services;
 
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
-import org.noear.solon.admin.server.config.ServerProperties;
+import org.noear.solon.admin.server.integration.ServerProperties;
 import org.noear.solon.admin.server.data.Application;
 import org.noear.solon.admin.server.data.ApplicationWebsocketTransfer;
 import org.noear.solon.admin.server.utils.JsonUtils;

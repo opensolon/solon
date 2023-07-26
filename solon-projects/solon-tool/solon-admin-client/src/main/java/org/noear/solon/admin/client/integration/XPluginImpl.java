@@ -1,7 +1,7 @@
-package org.noear.solon.admin.client.config;
+package org.noear.solon.admin.client.integration;
 
 import org.noear.solon.Solon;
-import org.noear.solon.admin.client.controller.MonitorController;
+import org.noear.solon.admin.client.annotation.EnableAdminClient;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
 

@@ -1,4 +1,4 @@
-package org.noear.solon.admin.client.config;
+package org.noear.solon.admin.client.integration;
 
 import lombok.Data;
 
@@ -9,7 +9,7 @@ import lombok.Data;
  * @since 2.3
  */
 @Data
-public class ClientProperties implements IClientProperties {
+public class ClientProperties {
 
     private boolean enabled = true;
 

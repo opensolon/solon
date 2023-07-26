@@ -1,6 +1,4 @@
-package org.noear.solon.admin.client.config;
-
-import org.noear.solon.annotation.Import;
+package org.noear.solon.admin.client.annotation;
 
 import java.lang.annotation.*;
 

@@ -1,7 +1,7 @@
 package org.noear.solon.admin.client.registration;
 
-import org.noear.solon.admin.client.config.AdminClientBootstrapConfiguration;
-import org.noear.solon.admin.client.config.IClientProperties;
+import org.noear.solon.admin.client.integration.AdminClientBootstrapConfiguration;
+import org.noear.solon.admin.client.integration.ClientProperties;
 import org.noear.solon.admin.client.services.ApplicationRegistrationService;
 import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Configuration;
@@ -24,7 +24,7 @@ public class AutoRegistrationConfiguration {
 
     private final Timer timer = new Timer();
     @Inject
-    private IClientProperties clientProperties;
+    private ClientProperties clientProperties;
 
     @Bean
     public void afterInjection(

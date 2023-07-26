@@ -1,7 +1,7 @@
 package org.noear.solon.admin.server.utils;
 
 import org.noear.solon.Utils;
-import org.noear.solon.admin.server.config.ServerProperties;
+import org.noear.solon.admin.server.integration.ServerProperties;
 import org.noear.solon.core.handle.Context;
 
 import java.io.IOException;

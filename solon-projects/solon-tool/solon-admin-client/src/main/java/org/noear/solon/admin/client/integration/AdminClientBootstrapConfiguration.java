@@ -1,8 +1,7 @@
-package org.noear.solon.admin.client.config;
+package org.noear.solon.admin.client.integration;
 
 import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
-import lombok.val;
 import okhttp3.OkHttpClient;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
@@ -27,29 +26,26 @@ public class AdminClientBootstrapConfiguration {
     AopContext aopContext;
 
     @Inject(value = "${solon.admin.client}", required = false)
-    ClientProperties clientProperties;
+    ClientProperties clientProperties = new ClientProperties();
 
     @Bean
-    public IClientProperties clientProperties() {
-        if(clientProperties == null){
-            clientProperties = new ClientProperties();
-        }
-
-        if("local".equals(clientProperties.getMode())) {
+    public ClientProperties clientProperties() {
+        if ("local".equals(clientProperties.getMode())) {
             log.debug("Injected localClientProperties: " + clientProperties);
-        }else{
+        } else {
             log.debug("Injected cloudClientProperties: " + clientProperties);
         }
 
         String serverUrl = (String) Solon.app().shared().get("solon-admin-server-url");
-        if(Utils.isNotEmpty(serverUrl)){
+        if (Utils.isNotEmpty(serverUrl)) {
             clientProperties.setServerUrl(serverUrl);
         }
+
         return clientProperties;
     }
 
     @Bean
-    public MarkedClientEnabled markedClientEnabled(@Inject(required = false) IClientProperties clientProperties) {
+    public MarkedClientEnabled markedClientEnabled(@Inject ClientProperties clientProperties) {
         if (clientProperties == null || !clientProperties.isEnabled()) {
             log.error("Failed to enable Solon Admin client.", new IllegalStateException("Could not enable Solon Admin client because none of the properties has been configured correctly."));
             return null;
@@ -69,12 +65,13 @@ public class AdminClientBootstrapConfiguration {
     }
 
     @Bean
-    public OkHttpClient okHttpClient(@Inject(required = false) MarkedClientEnabled marker) {
+    public OkHttpClient okHttpClient(@Inject(required = false) MarkedClientEnabled marker,
+                                     @Inject ClientProperties clientProperties) {
         if (marker == null) return null;
-        val config = Solon.context().getBean(IClientProperties.class);
+
         return new OkHttpClient.Builder()
-                .connectTimeout(config.getConnectTimeout(), TimeUnit.MILLISECONDS)
-                .readTimeout(config.getReadTimeout(), TimeUnit.MILLISECONDS)
+                .connectTimeout(clientProperties.getConnectTimeout(), TimeUnit.MILLISECONDS)
+                .readTimeout(clientProperties.getReadTimeout(), TimeUnit.MILLISECONDS)
                 .build();
     }
 }

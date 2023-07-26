@@ -1,4 +1,4 @@
-package org.noear.solon.admin.server.config;
+package org.noear.solon.admin.server.integration;
 
 import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Configuration;

@@ -1,4 +1,4 @@
-package org.noear.solon.admin.server.config;
+package org.noear.solon.admin.server.integration;
 
 import lombok.Data;
 import org.noear.solon.annotation.Configuration;

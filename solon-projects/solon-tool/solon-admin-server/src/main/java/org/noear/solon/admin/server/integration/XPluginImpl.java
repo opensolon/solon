@@ -1,7 +1,8 @@
-package org.noear.solon.admin.server.config;
+package org.noear.solon.admin.server.integration;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
+import org.noear.solon.admin.server.annotation.EnableAdminServer;
 import org.noear.solon.admin.server.utils.BasicAuthUtils;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
