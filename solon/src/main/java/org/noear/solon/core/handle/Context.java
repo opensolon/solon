@@ -978,7 +978,7 @@ public abstract class Context {
     /**
      * 获取上下文特性
      */
-    public <T> T attr(String name, T def) {
+    public <T> T attrOrDefault(String name, T def) {
         Object val = attrMap().get(name);
 
         if (val == null) {
@@ -986,6 +986,14 @@ public abstract class Context {
         }
 
         return (T) val;
+    }
+
+    /**
+     * 获取上下文特性
+     */
+    @Deprecated
+    public <T> T attr(String name, T def) {
+        return attrOrDefault(name, def);
     }
 
     /**
