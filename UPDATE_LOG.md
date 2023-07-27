@@ -13,6 +13,7 @@
 * 新增 solon.boot.vertx 插件?
 * 新增 solon.cloud.metrics 插件?
 * 增加 Context::attrOrDefault 接口，原接口标为弃用
+* 增加 RouterInterceptor::pathPatterns 接口，原接口标为弃用
 * 优化 sa-token-solon-plugin 插件，增加对网关的支持
 * mybatis-flex 升为 1.5.3
 * sqltoy 升为 5.2.60

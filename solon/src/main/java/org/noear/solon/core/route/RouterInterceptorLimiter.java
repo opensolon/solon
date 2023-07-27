@@ -26,6 +26,11 @@ public class RouterInterceptorLimiter implements RouterInterceptor {
     }
 
     @Override
+    public PathRule pathPatterns() {
+        return rule;
+    }
+
+    @Override
     public void doIntercept(Context ctx, Handler mainHandler, RouterInterceptorChain chain) throws Throwable {
         if (isMatched(ctx)) {
             //执行拦截

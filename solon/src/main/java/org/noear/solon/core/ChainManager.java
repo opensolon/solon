@@ -59,6 +59,8 @@ public class ChainManager {
     public synchronized void addInterceptor(RouterInterceptor interceptor, int index) {
         if (interceptor instanceof PathLimiter) {
             interceptor = new RouterInterceptorLimiter(interceptor, ((PathLimiter) interceptor).pathRule());
+        } else {
+            interceptor = new RouterInterceptorLimiter(interceptor, interceptor.pathPatterns());
         }
 
         interceptorNodes.add(new RankEntity<>(interceptor, index));
@@ -153,11 +155,9 @@ public class ChainManager {
         return executeHandlerDefault;
     }
 
-    public ActionExecuteHandler getExecuteHandlerDefault(){
+    public ActionExecuteHandler getExecuteHandlerDefault() {
         return executeHandlerDefault;
     }
-
-
 
 
     //

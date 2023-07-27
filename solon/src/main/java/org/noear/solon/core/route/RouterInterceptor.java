@@ -13,6 +13,14 @@ import org.noear.solon.lang.Nullable;
 @FunctionalInterface
 public interface RouterInterceptor {
     /**
+     * 路径匹配模式
+     * */
+    default PathRule pathPatterns(){
+        //null 表示全部
+        return null;
+    }
+
+    /**
      * 执行拦截
      */
     void doIntercept(Context ctx,
