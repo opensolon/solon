@@ -1,4 +1,4 @@
-package org.noear.solon.docs.openapi2;
+package com.github.xiaoymin.knife4j.solon.integration;
 
 import org.noear.solon.Utils;
 

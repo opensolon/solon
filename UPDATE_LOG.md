@@ -14,6 +14,7 @@
 * 新增 solon.cloud.metrics 插件?
 * 增加 Context::attrOrDefault 接口，原接口标为弃用
 * 增加 RouterInterceptor::pathPatterns 接口，原接口标为弃用
+* 调整 solon.docs 的控制器启动，转到 solon-openapi2-knife4j。方便不同的框架定制自己的服务
 * 优化 sa-token-solon-plugin 插件，增加对网关的支持
 * mybatis-flex 升为 1.5.3
 * sqltoy 升为 5.2.60

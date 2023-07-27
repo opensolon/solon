@@ -15,25 +15,26 @@ import org.noear.solon.web.staticfiles.repository.ClassPathStaticRepository;
 public class XPluginImpl implements Plugin {
     @Override
     public void start(AopContext context) throws Throwable {
+        if (Solon.app().enableDoc() == false) {
+            return;
+        }
+
         BeanWrap beanWrap = context.beanMake(OpenApiExtensionResolver.class);
         OpenApiExtensionResolver openApiExtensionResolver = beanWrap.raw();
 
         if (openApiExtensionResolver.getSetting().isEnable()) {
+            String uiPath = "/";
             if (openApiExtensionResolver.getSetting().isProduction()) {
                 if (Solon.cfg().isFilesMode() == false) {
                     //生产环境，只有 files 模式才能用（即开发模式）
-                    Solon.app().enableDoc(true);
-                    StaticMappings.add("/", new ClassPathStaticRepository("META-INF/resources"));
-                    return;
+                    StaticMappings.add(uiPath, new ClassPathStaticRepository("META-INF/resources"));
                 }
             } else {
                 //非生产环境，一直可用
-                Solon.app().enableDoc(true);
-                StaticMappings.add("/", new ClassPathStaticRepository("META-INF/resources"));
-                return;
+                StaticMappings.add(uiPath, new ClassPathStaticRepository("META-INF/resources"));
             }
-        }
 
-        Solon.app().enableDoc(false);
+            Solon.app().add(uiPath, Swagger2Controller.class);
+        }
     }
 }

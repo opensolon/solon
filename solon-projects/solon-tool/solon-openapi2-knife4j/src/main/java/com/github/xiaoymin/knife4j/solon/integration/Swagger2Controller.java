@@ -1,4 +1,4 @@
-package org.noear.solon.docs.openapi2;
+package com.github.xiaoymin.knife4j.solon.integration;
 
 import java.io.IOException;
 import java.util.*;
@@ -17,6 +17,8 @@ import org.noear.solon.annotation.Produces;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.handle.*;
+import org.noear.solon.docs.openapi2.BasicAuthUtils;
+import org.noear.solon.docs.openapi2.Swagger2Builder;
 
 /**
  * Swagger api Controller
