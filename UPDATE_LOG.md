@@ -17,6 +17,7 @@
 * 优化 sa-token-solon-plugin 插件，增加对网关的支持
 * mybatis-flex 升为 1.5.3
 * sqltoy 升为 5.2.60
+* snack3 升为 3.2.74
 
 ### 2.4.1
 * 新增 solon.web.servlet.jakarta 插件（用于 war 打包时，支持 tomcat10, jetty11 等 jakarta.servlet 容器）
