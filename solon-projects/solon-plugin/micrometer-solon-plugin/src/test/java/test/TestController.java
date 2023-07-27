@@ -1,7 +1,7 @@
 package test;
 
-import micrometer.annotation.MeterCounter;
-import micrometer.annotation.MeterTimer;
+import org.noear.solon.micrometer.annotation.MeterCounter;
+import org.noear.solon.micrometer.annotation.MeterTimer;
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Get;
 import org.noear.solon.annotation.Mapping;

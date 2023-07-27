@@ -1,4 +1,4 @@
-package micrometer;
+package org.noear.solon.micrometer;
 
 /**
  * 通用注册表

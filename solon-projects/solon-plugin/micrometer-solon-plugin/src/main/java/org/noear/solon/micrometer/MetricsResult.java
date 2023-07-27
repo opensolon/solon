@@ -1,4 +1,4 @@
-package micrometer;
+package org.noear.solon.micrometer;
 
 /**
  * 度量结果

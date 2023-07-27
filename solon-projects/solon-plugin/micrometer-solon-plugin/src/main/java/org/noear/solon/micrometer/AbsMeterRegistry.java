@@ -1,4 +1,4 @@
-package micrometer;
+package org.noear.solon.micrometer;
 
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Metrics;

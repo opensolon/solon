@@ -1,4 +1,4 @@
-package micrometer.integration;
+package org.noear.solon.micrometer.integration;
 
 import io.micrometer.core.instrument.Metrics;
 import org.noear.snack.ONode;

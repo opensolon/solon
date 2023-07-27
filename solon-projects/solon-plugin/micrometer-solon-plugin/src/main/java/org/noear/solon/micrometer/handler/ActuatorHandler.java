@@ -1,4 +1,4 @@
-package micrometer.handler;
+package org.noear.solon.micrometer.handler;
 
 import io.micrometer.core.instrument.MeterRegistry;
 import org.noear.solon.core.handle.Context;

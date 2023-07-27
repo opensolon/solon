@@ -4,7 +4,7 @@ import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.prometheus.PrometheusConfig;
 import io.micrometer.prometheus.PrometheusMeterRegistry;
 import io.prometheus.client.exporter.common.TextFormat;
-import micrometer.AbsMeterRegistry;
+import org.noear.solon.micrometer.AbsMeterRegistry;
 import org.noear.solon.annotation.Configuration;
 
 /**

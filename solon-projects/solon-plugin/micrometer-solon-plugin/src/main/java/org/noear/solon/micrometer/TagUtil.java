@@ -1,4 +1,4 @@
-package micrometer;
+package org.noear.solon.micrometer;
 
 import org.noear.solon.core.aspect.Invocation;
 import org.noear.solon.core.handle.Context;
