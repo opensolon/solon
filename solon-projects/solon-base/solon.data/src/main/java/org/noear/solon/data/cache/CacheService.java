@@ -40,7 +40,7 @@ public interface CacheService {
      *
      * @since 1.7
      */
-    default <T> T getOrStore(String key, int seconds, Supplier supplier) {
+    default <T> T getOrStore(String key, int seconds, Supplier<T> supplier) {
         Object obj = get(key);
         if (obj == null) {
             obj = supplier.get();
