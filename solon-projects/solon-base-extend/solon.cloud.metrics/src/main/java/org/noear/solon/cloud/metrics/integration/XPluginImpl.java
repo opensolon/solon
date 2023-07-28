@@ -28,8 +28,8 @@ public class XPluginImpl implements Plugin {
      */
     @Override
     public void start(AopContext context) {
-        context.beanAroundAdd(MeterCounter.class, new MeterCounterInterceptor());
-        context.beanAroundAdd(MeterTimer.class, new MeterTimerInterceptor());
+        context.beanInterceptorAdd(MeterCounter.class, new MeterCounterInterceptor());
+        context.beanInterceptorAdd(MeterTimer.class, new MeterTimerInterceptor());
 
         context.subBeansOfType(MeterRegistry.class, bean -> {
             Metrics.globalRegistry.add(bean);

@@ -43,6 +43,7 @@ public final class EventBus {
      *
      * @param event 事件（可以是任何对象）
      * @deprecated 2.4
+     * @see #publishAsync(Object)
      */
     @Deprecated
     public static void pushAsync(Object event){
@@ -69,6 +70,7 @@ public final class EventBus {
      *
      * @param event 事件（可以是任何对象）
      * @deprecated 2.4
+     * @see #publishTry(Object)
      */
     @Deprecated
     public static void pushTry(Object event){
@@ -99,6 +101,7 @@ public final class EventBus {
      *
      * @param event 事件（可以是任何对象）
      * @deprecated 2.4
+     * @see #publish(Object)
      */
     @Deprecated
     public static void push(Object event) throws RuntimeException {
