@@ -27,6 +27,7 @@
         <luffy.version>1.6.6</luffy.version>
         <redisx.version>1.4.8</redisx.version>
         <redisson.version>3.21.0</redisson.version>
+        <lettuce.version>6.2.5.RELEASE</lettuce.version>
 
         <fastjson.version>1.2.83</fastjson.version>
         <fastjson2.version>2.0.35</fastjson2.version>
@@ -1071,6 +1072,12 @@
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>redisson-solon-plugin</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>lettuce-solon-plugin</artifactId>
                 <version>${solon.version}</version>
             </dependency>
 
