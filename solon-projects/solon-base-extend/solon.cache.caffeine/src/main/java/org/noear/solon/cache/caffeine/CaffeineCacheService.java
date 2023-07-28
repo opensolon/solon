@@ -87,7 +87,7 @@ public class CaffeineCacheService implements CacheService {
     }
 
     @Override
-    public <T> T getOrStore(String key, int seconds, Supplier supplier) {
+    public <T> T getOrStore(String key, int seconds, Supplier<T> supplier) {
         return (T) client.get(key, (k) -> supplier.get());
     }
 }
