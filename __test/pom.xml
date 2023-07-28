@@ -76,6 +76,16 @@
 
         <dependency>
             <groupId>org.noear</groupId>
+            <artifactId>solon.cloud.eventplus</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>local-solon-cloud-plugin</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.noear</groupId>
             <artifactId>detector-solon-plugin</artifactId>
         </dependency>
 

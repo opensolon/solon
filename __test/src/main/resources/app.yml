@@ -40,6 +40,7 @@ solon.config.load:
 solon.locale: "en_US"
 
 solon.cloud.local:
+  server: "classpath:META-INF/solon-cloud/"
   breaker:
     root: 1
   discovery:
