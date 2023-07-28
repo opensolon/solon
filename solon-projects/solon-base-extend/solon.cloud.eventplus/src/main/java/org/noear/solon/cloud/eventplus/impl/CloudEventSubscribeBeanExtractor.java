@@ -43,7 +43,7 @@ public class CloudEventSubscribeBeanExtractor implements BeanExtractor<CloudEven
         //支持${xxx}配置
         String group2 = Solon.cfg().getByParse(anno2.group());
 
-        CloudEventMethodProxy hadnler2 = new CloudEventMethodProxy(bw.raw(), method, entityClz);
+        CloudEventMethodProxy hadnler2 = new CloudEventMethodProxy(bw, method, entityClz);
 
         CloudManager.register(anno2, hadnler2);
         CloudClient.event().attention(anno2.level(), anno2.channel(), group2, topic2, anno2.tag(), hadnler2);
