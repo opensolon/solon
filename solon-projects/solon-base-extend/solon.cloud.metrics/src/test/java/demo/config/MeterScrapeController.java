@@ -20,6 +20,7 @@ public class MeterScrapeController {
 
     @Mapping("/actuator/prometheus")
     public String handle(){
+        //todo:这个是不是可以用默衣格式 registry.scrape()
         return registry.scrape(TextFormat.CONTENT_TYPE_OPENMETRICS_100);
     }
 }
