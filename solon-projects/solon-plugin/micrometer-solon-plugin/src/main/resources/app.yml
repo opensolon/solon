@@ -1,0 +1,11 @@
+solon:
+  plugin: com.items.integration.XPluginImpl
+
+
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, metrics, trace, prometheus #断点
