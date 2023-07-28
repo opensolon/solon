@@ -1,0 +1,28 @@
+### 任意选一种
+### 模式一
+lettuce.rd:
+  redis-mode: standalone
+  redis-uri: redis://localhost:6379/0
+
+#### 模式二
+#lettuce.rd:
+#  config:
+#    host: localhost
+#    socket: xxxx
+#    port: 6379
+#    client-name: myClientName
+#    database: 0
+#    sentinel-masterId: 'mymaster'
+#    username: 'myusername'
+#    password: 'mypassword'
+#    ssl: false
+#    verify-mode: FULL
+#    startTls: false
+#    timeout: 10000
+#    sentinels:
+#      - host: localhost
+#        port: 16379
+#        password: 'mypassword'
+#      - host: localhost
+#        port: 26379
+#        password: 'mypassword'
