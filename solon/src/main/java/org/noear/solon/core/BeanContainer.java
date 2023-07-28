@@ -233,6 +233,7 @@ public abstract class BeanContainer {
      *
      * @param index 执行顺序
      * @deprecated 2.4
+     * @see #beanInterceptorAdd(Class, Interceptor, int)
      */
     @Deprecated
     public <T extends Annotation> void beanAroundAdd(Class<T> annoClz, Interceptor interceptor, int index) {
@@ -243,6 +244,7 @@ public abstract class BeanContainer {
      * 添加环绕处理
      *
      * @deprecated 2.4
+     * @see #beanInterceptorAdd(Class, Interceptor)
      */
     @Deprecated
     public <T extends Annotation> void beanAroundAdd(Class<T> annoClz, Interceptor interceptor) {
@@ -253,6 +255,7 @@ public abstract class BeanContainer {
      * 获取环绕处理
      *
      * @deprecated 2.4
+     * @see #beanInterceptorGet(Class)
      */
     @Deprecated
     public <T extends Annotation> InterceptorEntity beanAroundGet(Class<T> annoClz) {
