@@ -16,13 +16,13 @@ public class LettuceSupplier extends LettuceProperties implements Supplier<Abstr
 
     @Override
     public AbstractRedisClient get() {
-        LettuceProperties.RedisMode redisMode = LettuceProperties.RedisMode.getRedisMode(this.getRedisMode());
+        RedisMode redisMode = RedisMode.getRedisMode(this.getRedisMode());
         RedisURI redisUri  = getRedisURI();
-        if (redisMode.equals(LettuceProperties.RedisMode.STANDALONE)) {
+        if (redisMode.equals(RedisMode.STANDALONE)) {
             return RedisClient.create(redisUri);
-        } else if (redisMode.equals(LettuceProperties.RedisMode.CLUSTER)) {
+        } else if (redisMode.equals(RedisMode.CLUSTER)) {
             return RedisClusterClient.create(redisUri);
-        } else if (redisMode.equals(LettuceProperties.RedisMode.SENTINEL)) {
+        } else if (redisMode.equals(RedisMode.SENTINEL)) {
             return RedisClient.create(redisUri);
         } else {
             throw new IllegalArgumentException("redis mode error");

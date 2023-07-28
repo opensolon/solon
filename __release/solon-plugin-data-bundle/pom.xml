@@ -45,5 +45,6 @@
         <module>../../solon-projects/solon-plugin-data/openjpa-solon-plugin</module>
 
         <module>../../solon-projects/solon-plugin-data/redisson-solon-plugin</module>
+        <module>../../solon-projects/solon-plugin-data/lettuce-solon-plugin</module>
     </modules>
 </project>
