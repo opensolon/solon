@@ -5,8 +5,6 @@ import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Metrics;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Mapping;
-import org.noear.solon.cloud.metrics.AbsMeterRegistry;
-import org.noear.solon.cloud.metrics.MeterItem;
 import org.noear.solon.core.handle.Result;
 
 import java.util.*;
@@ -18,10 +16,10 @@ import java.util.*;
 public class DemoController {
     @Mapping("/actuator/meterRegistry")
     public Result demo(){
-        Map<String, Object> map = new HashMap<>();
+        List<String> map = new ArrayList<>();
 
-        for (AbsMeterRegistry<? extends MeterRegistry> meterRegistry : AbsMeterRegistry.meterRegistryList) {
-            map.put(meterRegistry.getClass().getName(), meterRegistry.scrape());
+        for (MeterRegistry meterRegistry : Metrics.globalRegistry.getRegistries()) {
+            map.add(meterRegistry.getClass().getName());
         }
 
         return Result.succeed(map);
