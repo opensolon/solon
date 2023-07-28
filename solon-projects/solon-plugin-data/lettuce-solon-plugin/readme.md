@@ -1,3 +1,58 @@
+# lettuce-solon-plugin
+
+> lettuce本身易于适配，方便使用，本插件只是做了一层薄薄的适配，方便与在某些情况下更加便利的使用。
+
+
+## 依赖引入
+
+```xml
+<dependency>
+    <groupId>org.noear</groupId>
+    <artifactId>lettuce-solon-plugin</artifactId>
+    <version>${solon.version}</version>
+</dependency>
+```
+
+## 配置文件
+    
+```yaml
+### 任意选一种
+### 模式一
+lettuce.rd1:
+  # Redis模式 (standalone, cluster, sentinel)
+  redis-mode: standalone
+  redis-uri: redis://localhost:6379/0
+
+#### 模式二
+lettuce.rd2:
+  # Redis模式 (standalone, cluster, sentinel)
+  redis-mode: standalone
+  config:
+    host: localhost
+    port: 6379
+#    socket: xxxx
+#    client-name: myClientName
+#    database: 0
+#    sentinel-masterId: 'mymaster'
+#    username: 'myusername'
+#    password: 'mypassword'
+#    ssl: false
+#    verify-mode: FULL
+#    startTls: false
+#    timeout: 10000
+#    sentinels:
+#      - host: localhost
+#        port: 16379
+#        password: 'mypassword'
+#      - host: localhost
+#        port: 26379
+#        password: 'mypassword'
+```
+## java
+
+### Config
+
+```java
 package io.lettuce.solon;
 
 import io.lettuce.core.RedisClient;
@@ -46,3 +101,24 @@ public class Config {
     }
 
 }
+```
+
+### 使用
+
+```java
+@Component
+public class DemoService {
+    
+    @Inject
+    RedisClient redisClient;
+
+    /**
+     * 仅仅做测试使用，以实际情况为准
+     */
+    public void demoSet() {
+        redisClient.connect().sync().set("test", "test");
+        System.out.println(redisClient.connect().sync().get("test"));
+        redisClient.connect().sync().del("test");
+    }
+}
+```

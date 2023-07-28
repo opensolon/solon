@@ -41,7 +41,7 @@ public class LettuceProperties {
                     return redisMode;
                 }
             }
-            return null;
+            throw new IllegalArgumentException("RedisMode must be one of [standalone, cluster, sentinel]");
         }
     }
     public String getRedisMode() {

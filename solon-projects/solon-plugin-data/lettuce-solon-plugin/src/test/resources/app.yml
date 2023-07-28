@@ -1,15 +1,18 @@
 ### 任意选一种
 ### 模式一
-lettuce.rd:
+lettuce.rd1:
   redis-mode: standalone
   redis-uri: redis://localhost:6379/0
-
+lettuce.rd3:
+  redis-mode: cluster
+  redis-uri: redis://localhost:6379/0
 #### 模式二
-#lettuce.rd:
-#  config:
-#    host: localhost
+lettuce.rd2:
+  redis-mode: standalone
+  config:
+    host: localhost
+    port: 6379
 #    socket: xxxx
-#    port: 6379
 #    client-name: myClientName
 #    database: 0
 #    sentinel-masterId: 'mymaster'
