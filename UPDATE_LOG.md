@@ -26,7 +26,7 @@
 * 调整 "@Bean" 函数的 VarGather::requireRun 由 false 改为 true，只要过了条件检测必然运行
 * 优化 sa-token-solon-plugin 插件，增加对网关的支持
 * 修复 “@CloudEventSubscribe” 注解在函数会出错的问题，已补充新的单测
-* mybatis-flex 升为 1.5.3
+* mybatis-flex 升为 1.5.4
 * sqltoy 升为 5.2.60
 * snack3 升为 3.2.74
 
