@@ -29,6 +29,8 @@
 * mybatis-flex 升为 1.5.4
 * sqltoy 升为 5.2.60
 * snack3 升为 3.2.74
+* smarthttp 升为 1.2.9
+* smartsocket 升为 1.5.32
 
 ### 2.4.1
 * 新增 solon.web.servlet.jakarta 插件（用于 war 打包时，支持 tomcat10, jetty11 等 jakarta.servlet 容器）
