@@ -603,8 +603,8 @@ public class AopContext extends BeanContainer {
             //0.没有参数
             tryBuildBeanDo(anno, mWrap, bw, new Object[]{});
         } else {
-            //1.构建参数
-            VarGather gather = new VarGather(false, size2, (args2) -> {
+            //1.构建参数 (requireRun=false => true) //运行条件已经确认过，且必须已异常
+            VarGather gather = new VarGather(true, size2, (args2) -> {
                 //变量收集完成后，会回调此处
                 RunUtil.runOrThrow(() -> tryBuildBeanDo(anno, mWrap, bw, args2));
             });
