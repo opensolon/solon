@@ -16,6 +16,7 @@ import java.util.Map;
 
 /**
  * @author noear
+ * @since 2.3
  */
 public class BuilderHelper {
     public static boolean isModel(Class<?> clz){

@@ -369,9 +369,9 @@ public class Swagger2Builder {
                         //做为 body
                         BodyParameter modelParameter = new BodyParameter();
 
-                        if(paramHolder.isMap()){
+                        if (paramHolder.isMap()) {
                             modelParameter.setSchema(new ModelImpl().type("object"));
-                        }else{
+                        } else {
                             modelParameter.setSchema(new RefModel(paramSchema));
                         }
 
@@ -650,7 +650,7 @@ public class Swagger2Builder {
                         itemClazz = ((ParameterizedType) itemClazz).getRawType();
                     }
 
-                    if(itemClazz instanceof TypeVariable){
+                    if (itemClazz instanceof TypeVariable) {
                         Map<String, Type> genericMap = GenericUtil.getGenericInfo(type);
                         Type itemClazz2 = genericMap.get(itemClazz.getTypeName());
                         if (itemClazz2 instanceof Class) {

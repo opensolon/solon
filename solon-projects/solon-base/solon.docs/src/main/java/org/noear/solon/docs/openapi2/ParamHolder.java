@@ -12,7 +12,8 @@ import java.util.Collection;
 import java.util.Map;
 
 /**
- * @author noear 2023/5/25 created
+ * @author noear
+ * @since 2.3
  */
 public class ParamHolder {
     private ParamWrap param;

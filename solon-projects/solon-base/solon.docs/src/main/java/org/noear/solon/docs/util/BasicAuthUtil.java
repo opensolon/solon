@@ -1,4 +1,4 @@
-package org.noear.solon.docs.openapi2;
+package org.noear.solon.docs.util;
 
 import org.noear.solon.docs.DocDocket;
 import org.noear.solon.Utils;
@@ -12,7 +12,7 @@ import java.util.Base64;
  * @author noear
  * @since 2.3
  */
-public class BasicAuthUtils {
+public class BasicAuthUtil {
     static final Charset UTF_8 = Charset.forName("UTF-8");
 
     public static String base64DecodeToStr(String value) {
@@ -50,7 +50,7 @@ public class BasicAuthUtils {
 
     public static void response401(Context ctx) throws IOException {
         ctx.status(401);
-        ctx.headerSet("WWW-Authenticate", "Basic realm=\"请输入Swagger文档访问账号密码\"");
+        ctx.headerSet("WWW-Authenticate", "Basic realm=\"请输入文档访问账号密码\"");
         ctx.output("无权限访问");
     }
 }
