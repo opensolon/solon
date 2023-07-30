@@ -1,25 +1,22 @@
 package org.noear.solon.docs.openapi2;
 
 import io.swagger.annotations.*;
-import io.swagger.models.*;
 import io.swagger.models.ExternalDocs;
 import io.swagger.models.Info;
 import io.swagger.models.Tag;
-import io.swagger.models.parameters.*;
+import io.swagger.models.*;
 import io.swagger.models.parameters.Parameter;
+import io.swagger.models.parameters.*;
 import io.swagger.models.properties.*;
 import io.swagger.models.refs.RefFormat;
-
 import io.swagger.solon.annotation.ApiNoAuthorize;
 import io.swagger.solon.annotation.ApiRes;
 import io.swagger.solon.annotation.ApiResProperty;
-
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.*;
 import org.noear.solon.core.route.Routing;
 import org.noear.solon.core.util.GenericUtil;
-
 import org.noear.solon.core.wrap.ClassWrap;
 import org.noear.solon.core.wrap.FieldWrap;
 import org.noear.solon.core.wrap.ParamWrap;

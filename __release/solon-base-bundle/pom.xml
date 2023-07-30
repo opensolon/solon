@@ -30,6 +30,9 @@
         <module>../../solon-projects/solon-base/solon.data.shardingds</module>
 
         <module>../../solon-projects/solon-base/solon.docs</module>
+        <module>../../solon-projects/solon-base/solon.docs.openapi2</module>
+        <module>../../solon-projects/solon-base/solon.docs.openapi3</module>
+
         <module>../../solon-projects/solon-base/solon.auth</module>
         <module>../../solon-projects/solon-base/solon.test</module>
         <module>../../solon-projects/solon-base/solon.validation</module>

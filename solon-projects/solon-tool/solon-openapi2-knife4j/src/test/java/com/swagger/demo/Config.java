@@ -4,6 +4,7 @@ import com.github.xiaoymin.knife4j.solon.extension.OpenApiExtensionResolver;
 import com.swagger.demo.model.HttpCodes;
 
 import org.noear.solon.docs.ApiEnum;
+import org.noear.solon.docs.DocType;
 import org.noear.solon.docs.models.ApiInfo;
 import org.noear.solon.docs.DocDocket;
 
@@ -36,7 +37,7 @@ public class Config {
      */
     @Bean("appApi")
     public DocDocket appApi() {
-        return new DocDocket()
+        return new DocDocket(DocType.SWAGGER_2)
                 .groupName("app端接口")
                 .schemes(ApiEnum.SCHEMES_HTTP)
                 .globalResult(Result.class)
@@ -51,7 +52,7 @@ public class Config {
      */
     @Bean("gatewayApi")
     public DocDocket gatewayApi() {
-        return new DocDocket()
+        return new DocDocket(DocType.SWAGGER_2)
                 .groupName("gateway端接口")
                 .schemes(ApiEnum.SCHEMES_HTTP)
                 .globalResult(Result.class)
@@ -63,7 +64,7 @@ public class Config {
 
     //    @Bean("appApi")
     public DocDocket appApi2() {
-        return new DocDocket()
+        return new DocDocket(DocType.SWAGGER_2)
                 .groupName("app端接口")
                 .info(new ApiInfo().title("在线文档")
                         .description("在线API文档")

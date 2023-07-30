@@ -55,6 +55,7 @@
         <snakeyaml.version>2.0</snakeyaml.version>
 
         <swagger.version>1.6.11</swagger.version>
+        <swagger2.version>2.2.15</swagger2.version>
         <knife4j.version>4.1.0</knife4j.version>
 
         <jackson.version>2.14.3</jackson.version>
@@ -401,6 +402,16 @@
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.docs</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.docs.openapi2</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.docs.openapi3</artifactId>
                 <version>${solon.version}</version>
             </dependency>
             <dependency>

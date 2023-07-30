@@ -46,6 +46,10 @@ public class DocDocket {
     private Map<String, Object> vendorExtensions = new LinkedHashMap<>();
 
 
+    public DocDocket(DocType docType) {
+        this.version = docType.getVersion();
+    }
+
     public String version() {
         return version;
     }
