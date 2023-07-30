@@ -13,11 +13,8 @@ import java.lang.reflect.Type;
 public class XxxxTest {
     public static void main(String[] args){
         ObjectWriterProvider writerProvider = new ObjectWriterProvider();
-        writerProvider.register(Long.class, new ObjectWriter() {
-            @Override
-            public void write(JSONWriter jsonWriter, Object o, Object o1, Type type, long l) {
-                jsonWriter.writeString(String.valueOf(o));
-            }
+        writerProvider.register(Long.class, (out, obj, fieldName, fieldType, features) -> {
+            out.writeString(String.valueOf(obj));
         });
 
         JSONWriter.Context writeContext = new JSONWriter.Context(writerProvider,

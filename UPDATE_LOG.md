@@ -15,6 +15,7 @@
 ### 2.4.2
 * 新增 lettuce-solon-plugin 插件
 * 新增 solon.cloud.metrics 插件?
+* 升级 solon-maven-plugin 的相关依赖
 * 增加 solon-admin-server 对 basic auth 配置的支持
 * 增加 solon-admin-server 对 uiPath 配置的支持
 * 增加 solon-admin-client 与 server 一起使用时，自动识别 serverUrl

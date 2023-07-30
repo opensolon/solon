@@ -1,6 +1,5 @@
 package org.noear.solon.serialization.fastjson2;
 
-import com.alibaba.fastjson2.JSONFactory;
 import com.alibaba.fastjson2.JSONWriter;
 import com.alibaba.fastjson2.writer.ObjectWriterProvider;
 import org.noear.solon.core.handle.Render;
