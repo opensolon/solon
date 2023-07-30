@@ -23,12 +23,18 @@ import java.util.stream.Collectors;
 public class OpenApi2Utils {
     /**
      * 获取接口分组资源
-     * */
+     */
     public static String getApiGroupResourceJson() throws IOException {
         List<BeanWrap> list = Solon.context().getWrapsOfType(DocDocket.class);
 
         List<ApiGroupResource> resourceList = list.stream().filter(bw -> Utils.isNotEmpty(bw.name()))
-                .map(bw -> new ApiGroupResource(bw.name(), ((DocDocket) bw.raw()).groupName()))
+                .map(bw -> {
+                    String group = bw.name();
+                    String groupName = ((DocDocket) bw.raw()).groupName();
+                    String url = "/swagger/v2?group=" + group;
+
+                    return new ApiGroupResource(groupName, "2.0", url);
+                })
                 .collect(Collectors.toList());
 
         return JsonUtil.toJson(resourceList);
@@ -36,7 +42,7 @@ public class OpenApi2Utils {
 
     /**
      * 获取接口
-     * */
+     */
     public static String getApiJson(Context ctx, String group) throws IOException {
         DocDocket docket = Solon.context().getBean(group);
 

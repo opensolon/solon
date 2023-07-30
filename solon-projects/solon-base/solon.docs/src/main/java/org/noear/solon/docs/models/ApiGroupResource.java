@@ -1,7 +1,5 @@
 package org.noear.solon.docs.models;
 
-import org.noear.solon.Utils;
-
 import java.io.Serializable;
 
 /**
@@ -14,13 +12,11 @@ public class ApiGroupResource implements Serializable {
     private String location;
     private String swaggerVersion;
 
-    public ApiGroupResource(String group, String groupName) {
-        name = groupName;
-        if (Utils.isNotEmpty(group)) {
-            url = ("/swagger/v2?group=" + group);
-            location = ("/swagger/v2?group=" + group);
-            swaggerVersion = ("2.0");
-        }
+    public ApiGroupResource(String name, String version, String url) {
+        this.name = name;
+        this.url = url;
+        this.location = url;
+        this.swaggerVersion = version;
     }
 
     public String getName() {
