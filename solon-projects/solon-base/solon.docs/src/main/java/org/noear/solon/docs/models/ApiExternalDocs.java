@@ -1,7 +1,10 @@
 package org.noear.solon.docs.models;
 
 /**
- * @author noear 2023/5/25 created
+ * 接口扩展文档
+ *
+ * @author noear
+ * @since 2.2
  */
 public class ApiExternalDocs {
     private String description;

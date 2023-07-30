@@ -1,7 +1,7 @@
-package org.noear.solon.docs.openapi2;
+package org.noear.solon.docs.openapi3.impl;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.noear.solon.core.handle.Action;
 import org.noear.solon.core.handle.Handler;
 import org.noear.solon.core.handle.MethodType;
@@ -14,7 +14,7 @@ import java.util.Set;
 
 /**
  * @author noear
- * @since 2.3
+ * @since 2.4
  */
 public class ActionHolder {
     private final Routing<Handler> routing;
@@ -33,13 +33,12 @@ public class ActionHolder {
         return action.controller().clz();
     }
 
-    public Set<String> getTags(ApiOperation apiOperationAnno) {
-        Api apiAnno = controllerClz().getAnnotation(Api.class);
+    public Set<String> getTags(Operation apiOperationAnno) {
+        Tag apiAnno = controllerClz().getAnnotation(Tag.class);
 
         Set<String> actionTags = new HashSet<>();
 
-        actionTags.add(apiAnno.value());
-        actionTags.addAll(Arrays.asList(apiAnno.tags()));
+        actionTags.add(apiAnno.name());
         actionTags.addAll(Arrays.asList(apiOperationAnno.tags()));
         actionTags.remove("");
 

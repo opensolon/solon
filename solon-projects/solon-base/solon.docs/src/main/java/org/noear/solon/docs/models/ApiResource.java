@@ -7,7 +7,10 @@ import org.noear.solon.core.handle.Action;
 import java.util.function.Predicate;
 
 /**
- * Swagger 资源信息
+ * 接口资源信息
+ *
+ * @author noear
+ * @since 2.2
  * */
 public class ApiResource implements Predicate<Action> {
 

@@ -1,6 +1,5 @@
-package org.noear.solon.docs.openapi2;
+package org.noear.solon.docs.openapi3;
 
-import io.swagger.models.Swagger;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.BeanWrap;
@@ -20,7 +19,7 @@ import java.util.stream.Collectors;
  * @author noear
  * @since 2.4
  */
-public class OpenApi2Utils {
+public class OpenApi3Utils {
     /**
      * 获取接口分组资源
      */
@@ -59,7 +58,7 @@ public class OpenApi2Utils {
             docket.globalResponseCodes().put(200, "");
         }
 
-        Swagger swagger = new OpenApi2Builder(docket).build();
+        Swagger swagger = new OpenApi3Builder(docket).build();
         return JsonUtil.toJson(swagger);
     }
 }

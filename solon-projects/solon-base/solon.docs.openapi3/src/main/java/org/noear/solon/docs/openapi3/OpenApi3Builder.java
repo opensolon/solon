@@ -1,17 +1,15 @@
-package org.noear.solon.docs.openapi2;
+package org.noear.solon.docs.openapi3;
 
-import io.swagger.annotations.*;
-import io.swagger.models.ExternalDocs;
-import io.swagger.models.Info;
-import io.swagger.models.Tag;
-import io.swagger.models.*;
-import io.swagger.models.parameters.Parameter;
-import io.swagger.models.parameters.*;
-import io.swagger.models.properties.*;
-import io.swagger.models.refs.RefFormat;
+
 import io.swagger.solon.annotation.ApiNoAuthorize;
 import io.swagger.solon.annotation.ApiRes;
 import io.swagger.solon.annotation.ApiResProperty;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Contact;
+import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.info.License;
+import io.swagger.v3.oas.models.servers.Server;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.*;
@@ -23,20 +21,25 @@ import org.noear.solon.core.wrap.ParamWrap;
 import org.noear.solon.docs.ApiEnum;
 import org.noear.solon.docs.DocDocket;
 import org.noear.solon.docs.exception.DocException;
+import org.noear.solon.docs.models.ApiContact;
+import org.noear.solon.docs.models.ApiLicense;
 import org.noear.solon.docs.models.ApiScheme;
+import org.noear.solon.docs.openapi3.impl.ActionHolder;
+import org.noear.solon.docs.openapi3.impl.BuilderHelper;
+import org.noear.solon.docs.openapi3.impl.ParamHolder;
 
 import java.lang.reflect.*;
 import java.text.Collator;
 import java.util.*;
 
 /**
- * openapi v2 json builder
+ * openapi v3 json builder
  *
  * @author noear
  * @since 2.3
  */
-public class Swagger2Builder {
-    private final Swagger swagger = new Swagger();
+public class OpenApi3Builder {
+    private final OpenAPI swagger = new OpenAPI();
     private final DocDocket docket;
 
     /**
@@ -44,11 +47,11 @@ public class Swagger2Builder {
      */
     private ModelImpl globalResultModel;
 
-    public Swagger2Builder(DocDocket docket) {
+    public OpenApi3Builder(DocDocket docket) {
         this.docket = docket;
     }
 
-    public Swagger build() {
+    public OpenAPI build() {
         // 解析通用返回
         if (docket.globalResult() != null) {
             this.globalResultModel = (ModelImpl) this.parseSwaggerModel(docket.globalResult(), docket.globalResult());
@@ -57,18 +60,36 @@ public class Swagger2Builder {
         // 解析JSON
         this.parseGroupPackage();
 
+        ApiLicense apiLicense = docket.info().license();
+        ApiContact apiContact = docket.info().contact();
 
-        swagger.setSwagger(docket.version());
+        //swagger.setSwagger(docket.version());
         swagger.info(new Info()
                 .title(docket.info().title())
                 .description(docket.info().description())
                 .termsOfService(docket.info().termsOfService())
-                .version(docket.info().version())
-                .license(docket.info().license())
-                .contact(docket.info().contact()));
+                .version(docket.info().version()));
 
-        swagger.host(BuilderHelper.getHost(docket));
-        swagger.basePath(docket.basePath());
+        if (apiLicense != null) {
+            License license = new License()
+                    .url(apiLicense.url())
+                    .name(apiLicense.name());
+            license.setExtensions(apiLicense.vendorExtensions());
+
+            swagger.getInfo().setLicense(license);
+        }
+
+        if (apiContact != null) {
+            Contact contact = new Contact()
+                    .email(apiContact.email())
+                    .name(apiContact.name())
+                    .url(apiContact.url());
+            contact.setExtensions(apiContact.vendorExtensions());
+            swagger.getInfo().contact(contact);
+        }
+
+        swagger.addServersItem(new Server().url(BuilderHelper.getHost(docket)));
+        //swagger.basePath(docket.basePath());
 
         if (docket.schemes() != null) {
             for (ApiScheme scheme : docket.schemes()) {
@@ -223,7 +244,7 @@ public class Swagger2Builder {
     private void parseAction(List<ActionHolder> actionHolders) {
         for (ActionHolder actionHolder : actionHolders) {
 
-            ApiOperation apiAction = actionHolder.getAnnotation(ApiOperation.class);
+            Operation apiAction = actionHolder.getAnnotation(Operation.class);
 
             if (apiAction.hidden()) {
                 return;

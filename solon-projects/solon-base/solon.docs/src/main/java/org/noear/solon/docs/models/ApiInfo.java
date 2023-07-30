@@ -1,19 +1,18 @@
 package org.noear.solon.docs.models;
 
-import io.swagger.models.Contact;
-import io.swagger.models.License;
-
 /**
+ * 接口信息
+ *
  * @author noear
- * @since 2.3
+ * @since 2.2
  */
 public class ApiInfo {
     private String description;
     private String version;
     private String title;
     private String termsOfService;
-    private Contact contact;
-    private License license;
+    private ApiContact contact;
+    private ApiLicense license;
 
     public String description() {
         return description;
@@ -51,31 +50,31 @@ public class ApiInfo {
         return this;
     }
 
-    public Contact contact() {
+    public ApiContact contact() {
         return contact;
     }
 
-    public ApiInfo contact(Contact contact) {
+    public ApiInfo contact(ApiContact contact) {
         this.contact = contact;
         return this;
     }
 
     public ApiInfo contact(String name, String url, String email) {
-        this.contact = new Contact().name(name).url(url).email(email);
+        this.contact = new ApiContact().name(name).url(url).email(email);
         return this;
     }
 
-    public License license() {
+    public ApiLicense license() {
         return license;
     }
 
-    public ApiInfo license(License license) {
+    public ApiInfo license(ApiLicense license) {
         this.license = license;
         return this;
     }
 
     public ApiInfo license(String name, String url) {
-        this.license = new License().name(name).url(url);
+        this.license = new ApiLicense().name(name).url(url);
         return this;
     }
 }

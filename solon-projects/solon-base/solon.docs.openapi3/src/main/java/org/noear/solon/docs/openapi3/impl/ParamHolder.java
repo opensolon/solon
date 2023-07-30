@@ -1,6 +1,6 @@
-package org.noear.solon.docs.openapi2;
+package org.noear.solon.docs.openapi3.impl;
 
-import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.v3.oas.annotations.Parameter;
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.SessionState;
@@ -13,17 +13,17 @@ import java.util.Map;
 
 /**
  * @author noear
- * @since 2.3
+ * @since 2.4
  */
 public class ParamHolder {
     private ParamWrap param;
-    private ApiImplicitParam anno;
+    private Parameter anno;
 
     public ParamHolder(ParamWrap param){
         this.param = param;
     }
 
-    public ParamHolder binding(ApiImplicitParam anno) {
+    public ParamHolder binding(Parameter anno) {
         this.anno = anno;
         return this;
     }
@@ -37,7 +37,7 @@ public class ParamHolder {
         return param;
     }
 
-    public ApiImplicitParam getAnno() {
+    public Parameter getAnno() {
         return anno;
     }
 
@@ -61,7 +61,7 @@ public class ParamHolder {
      * */
     public String getDescription(){
         if(anno != null){
-            return anno.value();
+            return anno.description();
         }
 
         return null;
@@ -96,9 +96,9 @@ public class ParamHolder {
         }
 
         String tmp = null;
-        if (anno != null) {
-            tmp = anno.dataType();
-        }
+//        if (anno != null) {
+//            tmp = anno.dataType();
+//        }
 
         if (Utils.isBlank(tmp)) {
             return ApiEnum.STRING;
@@ -116,7 +116,7 @@ public class ParamHolder {
 
         String tmp = null;
         if (anno != null) {
-            tmp = anno.paramType();
+            tmp = anno.in().toString();
         }
 
         if (Utils.isBlank(tmp)) {
@@ -132,9 +132,9 @@ public class ParamHolder {
                     Collection.class.isAssignableFrom(param.getType());
         }
 
-        if (anno != null) {
-            return anno.allowMultiple();
-        }
+//        if (anno != null) {
+//            return anno.allowMultiple();
+//        }
 
         return false;
     }
@@ -186,9 +186,9 @@ public class ParamHolder {
     }
 
     public boolean isReadOnly(){
-        if(anno != null){
-            return anno.readOnly();
-        }
+//        if(anno != null){
+//            return anno.readOnly();
+//        }
 
         return false;
     }

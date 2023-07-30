@@ -1,8 +1,10 @@
 package org.noear.solon.docs.models;
 
 /**
+ * 接口协议架构
+ *
  * @author noear
- * @since 2.3
+ * @since 2.2
  */
 public enum ApiScheme {
     HTTP("http"),

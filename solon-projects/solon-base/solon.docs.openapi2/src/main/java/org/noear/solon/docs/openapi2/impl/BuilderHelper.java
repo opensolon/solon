@@ -1,4 +1,4 @@
-package org.noear.solon.docs.openapi2;
+package org.noear.solon.docs.openapi2.impl;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;

@@ -4,7 +4,6 @@ import com.github.xiaoymin.knife4j.solon.extension.OpenApiExtensionResolver;
 import com.swagger.demo.model.HttpCodes;
 
 import org.noear.solon.docs.ApiEnum;
-import org.noear.solon.docs.DocType;
 import org.noear.solon.docs.models.ApiInfo;
 import org.noear.solon.docs.DocDocket;
 
@@ -25,7 +24,7 @@ public class Config {
     public DocDocket adminApi(@Inject("${swagger.adminApi}") DocDocket docket) {
         //docket.globalResult(SwaggerRes.class);
         docket.globalResponseCodes(new HttpCodes());
-        docket.securityDefinitionInHeader("token");
+        //docket.securityDefinitionInHeader("token");
         docket.basicAuth(openApiExtensionResolver.getSetting().getBasic());
         docket.vendorExtensions(openApiExtensionResolver.buildExtensions());
 
@@ -37,13 +36,13 @@ public class Config {
      */
     @Bean("appApi")
     public DocDocket appApi() {
-        return new DocDocket(DocType.SWAGGER_2)
+        return new DocDocket()
                 .groupName("app端接口")
                 .schemes(ApiEnum.SCHEMES_HTTP)
                 .globalResult(Result.class)
                 .globalResponseInData(true)
-                .apis("com.swagger.demo.controller.app")
-                .securityDefinitionInHeader("token");
+                .apis("com.swagger.demo.controller.app");
+                //.securityDefinitionInHeader("token");
 
     }
 
@@ -52,19 +51,19 @@ public class Config {
      */
     @Bean("gatewayApi")
     public DocDocket gatewayApi() {
-        return new DocDocket(DocType.SWAGGER_2)
+        return new DocDocket()
                 .groupName("gateway端接口")
                 .schemes(ApiEnum.SCHEMES_HTTP)
                 .globalResult(Result.class)
                 .globalResponseInData(true)
-                .apis("com.swagger.demo.controller.api2")
-                .securityDefinitionInHeader("token");
+                .apis("com.swagger.demo.controller.api2");
+                //.securityDefinitionInHeader("token");
 
     }
 
     //    @Bean("appApi")
     public DocDocket appApi2() {
-        return new DocDocket(DocType.SWAGGER_2)
+        return new DocDocket()
                 .groupName("app端接口")
                 .info(new ApiInfo().title("在线文档")
                         .description("在线API文档")
@@ -74,8 +73,8 @@ public class Config {
                 .schemes(ApiEnum.SCHEMES_HTTP)
                 .globalResponseInData(true)
                 .globalResult(Result.class)
-                .apis("com.swagger.demo.controller.app")
-                .securityDefinitionInHeader("token");
+                .apis("com.swagger.demo.controller.app");
+                //.securityDefinitionInHeader("token");
 
     }
 }

@@ -3,8 +3,10 @@ package org.noear.solon.docs.models;
 import java.io.Serializable;
 
 /**
+ * 接口组资源
+ *
  * @author noear
- * @since 2.3
+ * @since 2.2
  */
 public class ApiGroupResource implements Serializable {
     private String name;

@@ -1,9 +1,5 @@
 package org.noear.solon.docs;
 
-
-import io.swagger.models.auth.ApiKeyAuthDefinition;
-import io.swagger.models.auth.In;
-import io.swagger.models.auth.SecuritySchemeDefinition;
 import org.noear.solon.Utils;
 import org.noear.solon.docs.models.*;
 
@@ -33,10 +29,6 @@ public class DocDocket {
     private List<ApiResource> apis = new ArrayList<>();
 
     /**
-     * 安全定义
-     * */
-    private Map<String, SecuritySchemeDefinition> securityDefinitions = new LinkedHashMap<>();
-    /**
      * 外部文件
      * */
     private ApiExternalDocs externalDocs;
@@ -46,13 +38,16 @@ public class DocDocket {
     private Map<String, Object> vendorExtensions = new LinkedHashMap<>();
 
 
-    public DocDocket(DocType docType) {
-        this.version = docType.getVersion();
-    }
 
     public String version() {
         return version;
     }
+
+    public DocDocket version(String version) {
+        this.version = version;
+        return this;
+    }
+
 
     public String host() {
         return host;
@@ -171,24 +166,6 @@ public class DocDocket {
         return this;
     }
 
-    public Map<String, SecuritySchemeDefinition> securityDefinitions() {
-        return securityDefinitions;
-    }
-
-    public DocDocket securityDefinition(String name, SecuritySchemeDefinition securityDefinition) {
-        securityDefinitions.put(name, securityDefinition);
-        return this;
-    }
-
-    public DocDocket securityDefinitionInHeader(String name) {
-        securityDefinitions.put(name, new ApiKeyAuthDefinition().in(In.HEADER));
-        return this;
-    }
-
-    public DocDocket securityDefinitionInQuery(String name) {
-        securityDefinitions.put(name, new ApiKeyAuthDefinition().in(In.QUERY));
-        return this;
-    }
 
     public ApiExternalDocs externalDocs() {
         return externalDocs;
