@@ -174,10 +174,11 @@ public abstract class BeanContainer {
         });
     }
 
+    //bean builder, injector, extractor
 
 
     /**
-     * 添加 bean builder, injector, extractor
+     * 添加构建处理
      */
     public <T extends Annotation> void beanBuilderAdd(Class<T> annoClz, BeanBuilder<T> builder) {
         beanBuilders.put(annoClz, builder);
@@ -237,7 +238,7 @@ public abstract class BeanContainer {
      */
     @Deprecated
     public <T extends Annotation> void beanAroundAdd(Class<T> annoClz, Interceptor interceptor, int index) {
-        beanInterceptors.put(annoClz, new InterceptorEntity(index, interceptor));
+        beanInterceptorAdd(annoClz, interceptor, index);
     }
 
     /**
@@ -248,7 +249,7 @@ public abstract class BeanContainer {
      */
     @Deprecated
     public <T extends Annotation> void beanAroundAdd(Class<T> annoClz, Interceptor interceptor) {
-        beanAroundAdd(annoClz, interceptor, 0);
+        beanInterceptorAdd(annoClz, interceptor);
     }
 
     /**
@@ -259,7 +260,7 @@ public abstract class BeanContainer {
      */
     @Deprecated
     public <T extends Annotation> InterceptorEntity beanAroundGet(Class<T> annoClz) {
-        return beanInterceptors.get(annoClz);
+        return beanInterceptorGet(annoClz);
     }
 
 
