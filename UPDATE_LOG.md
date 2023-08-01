@@ -17,6 +17,7 @@
 * 新增 solon.docs.openapi2 插件
 * 新增 solon.cloud.metrics 插件?
 * 升级 solon-maven-plugin 的相关依赖
+* quartz jdbc 增加及时更新（数据库里变了，它马上变）？？？？
 * 增加 solon-admin-server 对 basic auth 配置的支持
 * 增加 solon-admin-server 对 uiPath 配置的支持
 * 增加 solon-admin-client 与 server 一起使用时，自动识别 serverUrl
@@ -28,7 +29,8 @@
 * 调整 "@Bean" 函数的 VarGather::requireRun 由 false 改为 true，只要过了条件检测必然运行
 * 优化 sa-token-solon-plugin 插件，增加对网关的支持
 * 修复 “@CloudEventSubscribe” 注解在函数会出错的问题，已补充新的单测
-* mybatis-flex 升为 1.5.4
+* mybatis-flex 升为 1.5.5
+* beetlsql 升为 3.23.7-RELEASE
 * sqltoy 升为 5.2.60
 * snack3 升为 3.2.74
 * smarthttp 升为 1.2.9
