@@ -17,6 +17,7 @@
 * 新增 solon.docs.openapi2 插件
 * 新增 solon.cloud.metrics 插件?
 * 升级 solon-maven-plugin 的相关依赖
+* 增加 `List<Bean>` 和 `Map<String,Bean>` 注入支持
 * quartz jdbc 增加及时更新（数据库里变了，它马上变）？？？？
 * 增加 solon-admin-server 对 basic auth 配置的支持
 * 增加 solon-admin-server 对 uiPath 配置的支持

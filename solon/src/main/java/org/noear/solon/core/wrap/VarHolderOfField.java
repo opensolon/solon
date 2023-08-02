@@ -90,7 +90,7 @@ public class VarHolderOfField implements VarHolder {
 
     @Override
     public Object getValue() {
-        return null;
+        return val;
     }
 
 
