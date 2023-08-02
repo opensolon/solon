@@ -34,7 +34,7 @@
 * mybatis-flex 升为 1.5.5
 * beetlsql 升为 3.23.6-RELEASE
 * sqltoy 升为 5.2.60
-* snack3 升为 3.2.74
+* snack3 升为 3.2.75
 * smarthttp 升为 1.2.9
 * smartsocket 升为 1.5.32
 
