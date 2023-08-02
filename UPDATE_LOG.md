@@ -28,9 +28,9 @@
 * 增加 RouterInterceptor::pathPatterns 接口，原接口标为弃用
 * 调整 solon.docs 的控制器启动，转到 solon-openapi2-knife4j。方便不同的框架定制自己的服务
 * 调整 "@Bean" 函数的 VarGather::requireRun 由 false 改为 true，只要过了条件检测必然运行
-* 优化 sa-token-solon-plugin 插件，增加对网关的支持
-* 优化 CloudMetricService 接口设计
-* 修复 “@CloudEventSubscribe” 注解在函数会出错的问题，已补充新的单测
+* 调整 sa-token-solon-plugin 插件，增加对网关的支持
+* 调整 CloudMetricService 接口设计
+* 修复 “@CloudEventSubscribe” 注解在函数会出错的问题
 * mybatis-flex 升为 1.5.5
 * beetlsql 升为 3.23.6-RELEASE
 * sqltoy 升为 5.2.60
