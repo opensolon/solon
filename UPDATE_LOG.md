@@ -20,12 +20,12 @@
 * 新增 solon.cloud.metrics 插件?
 * 升级 solon-maven-plugin 的相关依赖
 * 增加 `List<Bean>` 和 `Map<String,Bean>` 注入支持
+* 增加 Context::attrOrDefault 接口，原接口标为弃用
+* 增加 RouterInterceptor::pathPatterns 接口，原接口标为弃用
 * 增加 solon-admin-server 对 basic auth 配置的支持
 * 增加 solon-admin-server 对 uiPath 配置的支持
 * 增加 solon-admin-client 与 server 一起使用时，自动识别 serverUrl
 * 调整 solon-admin-client ，元信息改为 solon.app 的内容；server 监视日志改为 trace 级别
-* 增加 Context::attrOrDefault 接口，原接口标为弃用
-* 增加 RouterInterceptor::pathPatterns 接口，原接口标为弃用
 * 调整 solon.docs 的控制器启动，转到 solon-openapi2-knife4j。方便不同的框架定制自己的服务
 * 调整 "@Bean" 函数的 VarGather::requireRun 由 false 改为 true，只要过了条件检测必然运行
 * 调整 sa-token-solon-plugin 插件，增加对网关的支持
