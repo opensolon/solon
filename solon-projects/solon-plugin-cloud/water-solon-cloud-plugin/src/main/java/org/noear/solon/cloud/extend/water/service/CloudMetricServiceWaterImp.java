@@ -20,11 +20,11 @@ public class CloudMetricServiceWaterImp implements CloudMetricService {
     @Override
     public void addTimer(String group, String category, String item, long val) {
         if (WW.track_service.equals(group)) {
-            WaterClient.Track.addMeterByNode(category, item, val);
+            WaterClient.Track.addTimerByNode(category, item, val);
         } else if (WW.track_from.equals(group)) {
-            WaterClient.Track.addMeterByFrom(category, item, val);
+            WaterClient.Track.addTimerByFrom(category, item, val);
         } else {
-            WaterClient.Track.addMeter(group, category, item, val);
+            WaterClient.Track.addTimer(group, category, item, val);
         }
     }
 

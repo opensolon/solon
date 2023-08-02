@@ -1,14 +1,14 @@
 package org.noear.solon.cloud.service;
 
+import java.util.HashSet;
 import java.util.Set;
-import java.util.TreeSet;
 
 /**
  * @author noear
  * @since 2.4
  */
 public class CloudMetricServiceManager implements CloudMetricService{
-    Set<CloudMetricService> services = new TreeSet<>();
+    Set<CloudMetricService> services = new HashSet<>();
 
     public int size(){
         return services.size();
