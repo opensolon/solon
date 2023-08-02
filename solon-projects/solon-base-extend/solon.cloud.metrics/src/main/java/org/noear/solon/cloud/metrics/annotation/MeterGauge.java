@@ -1,24 +1,19 @@
 package org.noear.solon.cloud.metrics.annotation;
 
-
 import org.noear.solon.annotation.Alias;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.lang.annotation.*;
 
 /**
- * 用于不断累加值
+ * 用来记录单个的变化的值（例如：温度，气压）
  *
- * @author bai
+ * @author noear
  * @since 2.4
  */
 @Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface MeterCounter {
+public @interface MeterGauge {
     /**
      * 名称
      */

@@ -2,53 +2,54 @@ package org.noear.solon.cloud.metrics.Interceptor;
 
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.Metrics;
-import org.noear.snack.core.utils.StringUtil;
-import org.noear.solon.core.aspect.Interceptor;
-import org.noear.solon.core.aspect.Invocation;
-import org.noear.solon.cloud.metrics.TagUtil;
+import org.noear.solon.Utils;
 import org.noear.solon.cloud.metrics.annotation.MeterCounter;
+import org.noear.solon.core.aspect.Invocation;
 
-import java.util.HashMap;
-import java.util.Map;
 
 /**
- * 计数器注解拦截器
+ * MeterCounter 拦截处理
  *
- * @author bai
+ * @author noear
  * @since 2.4
  */
-public class MeterCounterInterceptor implements Interceptor {
+public class MeterCounterInterceptor extends BaseMeterInterceptor<MeterCounter,Counter> {
 
-    static final Map<String, Counter> counterCache = new HashMap<>();
-
-    /**
-     * 拦截
-     *
-     * @param inv 调用者
-     * @return {@link Object}
-     * @throws Throwable throwable
-     */
     @Override
-    public Object doIntercept(Invocation inv) throws Throwable {
-        MeterCounter anno = inv.target().getClass().getAnnotation(MeterCounter.class);
-        // method
+    protected MeterCounter getAnno(Invocation inv) {
+        MeterCounter anno = inv.method().getAnnotation(MeterCounter.class);
         if (anno == null) {
-            anno = inv.method().getAnnotation(MeterCounter.class);
+            anno = inv.target().getClass().getAnnotation(MeterCounter.class);
         }
-        //此处为拦截处理
-        Object rst = inv.invoke();
-        // 计数
-        if(anno != null && anno.enable()){
-            if (!counterCache.containsKey(anno.value())){
-                String counterName = anno.value();
-                if (StringUtil.isEmpty(anno.value())){
-                    counterName = inv.target().getClass() +"."+ inv.method().toString();
+
+        return anno;
+    }
+
+    @Override
+    protected String getAnnoName(MeterCounter anno) {
+        return Utils.annoAlias(anno.value(), anno.name());
+    }
+
+    @Override
+    protected Object metering(Invocation inv, MeterCounter anno) throws Throwable {
+        //获取度量器
+        Counter meter = meterCached.get(anno);
+        if (meter == null) {
+            synchronized (anno) {
+                meter = meterCached.get(anno);
+                if (meter == null) {
+                    String meterName = getMeterName(inv, anno);
+                    meter = Metrics.counter(meterName, getMeterTags(inv, anno.tags()));
+                    meterCached.put(anno, meter);
                 }
-                Counter counter = Metrics.globalRegistry.counter(counterName, TagUtil.tags(inv, anno.type(), anno.tags()));
-                counterCache.put(anno.value(), counter);
             }
-            counterCache.get(anno.value()).increment();
         }
-        return rst;
+
+        try {
+            return inv.invoke();
+        } finally {
+            //计数
+            meter.increment();
+        }
     }
 }

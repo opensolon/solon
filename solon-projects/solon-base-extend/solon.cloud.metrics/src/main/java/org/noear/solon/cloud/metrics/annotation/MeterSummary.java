@@ -1,24 +1,19 @@
 package org.noear.solon.cloud.metrics.annotation;
 
-
 import org.noear.solon.annotation.Alias;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.lang.annotation.*;
 
 /**
- * 用于不断累加值
+ * 用来记录指标的分布
  *
- * @author bai
+ * @author noear
  * @since 2.4
  */
 @Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface MeterCounter {
+public @interface MeterSummary {
     /**
      * 名称
      */
@@ -30,6 +25,21 @@ public @interface MeterCounter {
      */
     @Alias("value")
     String name() default "";
+
+    /**
+     * 最大期望值
+     * */
+    double maxValue() default Double.MAX_VALUE;
+
+    /**
+     * 最小期望值
+     * */
+    double minValue() default Double.MIN_VALUE;
+
+    /**
+     * 百分位
+     * */
+    double[] percentiles() default {};
 
     /**
      * 标签

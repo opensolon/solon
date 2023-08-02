@@ -2,39 +2,58 @@ package org.noear.solon.cloud.metrics.Interceptor;
 
 import io.micrometer.core.instrument.Metrics;
 import io.micrometer.core.instrument.Timer;
-import org.noear.snack.core.utils.StringUtil;
-import org.noear.solon.core.aspect.Interceptor;
-import org.noear.solon.core.aspect.Invocation;
-import org.noear.solon.cloud.metrics.TagUtil;
+import org.noear.solon.Utils;
 import org.noear.solon.cloud.metrics.annotation.MeterTimer;
+import org.noear.solon.core.aspect.Invocation;
+
+import java.util.concurrent.TimeUnit;
 
 
 /**
- * 计时器注解拦截器
+ * MeterTimer 拦截处理
  *
  * @author bai
  * @since 2.4
  */
-public class MeterTimerInterceptor implements Interceptor {
-    /**
-     * 做拦截
-     *
-     * @param inv 调用者
-     * @return {@link Object}
-     * @throws Throwable throwable
-     */
-    @Override
-    public Object doIntercept(Invocation inv) throws Throwable {
-        MeterTimer anno = inv.method().getAnnotation(MeterTimer.class);
+public class MeterTimerInterceptor extends BaseMeterInterceptor<MeterTimer, Timer> {
 
-        Timer.Sample sample = Timer.start(Metrics.globalRegistry);
-        //此处为拦截处理
-        Object rst = inv.invoke();
-        String counterName = anno.value();
-        if (StringUtil.isEmpty(anno.value())) {
-            counterName = inv.target().getClass() + "." + inv.method().toString();
+    @Override
+    protected MeterTimer getAnno(Invocation inv) {
+        MeterTimer anno = inv.method().getAnnotation(MeterTimer.class);
+        if (anno == null) {
+            anno = inv.target().getClass().getAnnotation(MeterTimer.class);
         }
-        sample.stop(Metrics.globalRegistry.timer(counterName, TagUtil.tags(inv, anno.type(), anno.tags())));
-        return rst;
+
+        return anno;
+    }
+
+    @Override
+    protected String getAnnoName(MeterTimer anno) {
+        return Utils.annoAlias(anno.value(), anno.name());
+    }
+
+    @Override
+    protected Object metering(Invocation inv, MeterTimer anno) throws Throwable {
+        //获取度量器
+        Timer meter = meterCached.get(anno);
+        if (meter == null) {
+            synchronized (anno) {
+                meter = meterCached.get(anno);
+                if (meter == null) {
+                    String meterName = getMeterName(inv, anno);
+                    meter = Metrics.timer(meterName, getMeterTags(inv, anno.tags()));
+                    meterCached.put(anno, meter);
+                }
+            }
+        }
+
+        //计时
+        long start = System.currentTimeMillis();
+        try {
+            return inv.invoke();
+        } finally {
+            long span = System.currentTimeMillis() - start;
+            meter.record(span, TimeUnit.MICROSECONDS);
+        }
     }
 }

@@ -1,5 +1,7 @@
 package org.noear.solon.cloud.metrics.annotation;
 
+import org.noear.solon.annotation.Alias;
+
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,7 +9,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 计时器
+ * 用来记录事件的持续时间
  *
  * @author bai
  * @since 2.4
@@ -16,25 +18,20 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface MeterTimer {
-
     /**
-     * 值
-     *
-     * @return {@link String}
+     * 名称
      */
+    @Alias("name")
     String value() default "";
 
     /**
-     * 类型
-     *
-     * @return {@link String}
+     * 名称
      */
-    String type() default "timer";
+    @Alias("value")
+    String name() default "";
 
     /**
      * 标签
-     *
-     * @return {@link String[]}
      */
     String[] tags() default {};
 }
