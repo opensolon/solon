@@ -28,12 +28,12 @@ public class XPluginImpl implements Plugin {
         context.beanInterceptorAdd(MeterSummary.class, new MeterSummaryInterceptor());
         context.beanInterceptorAdd(MeterTimer.class, new MeterTimerInterceptor());
 
+        context.wrapAndPut(MeterRegistry.class, Metrics.globalRegistry);
+
         context.subBeansOfType(MeterRegistry.class, bean -> {
             if (bean != Metrics.globalRegistry) {
                 Metrics.addRegistry(bean);
             }
         });
-
-        context.wrapAndPut(MeterRegistry.class, Metrics.globalRegistry);
     }
 }
