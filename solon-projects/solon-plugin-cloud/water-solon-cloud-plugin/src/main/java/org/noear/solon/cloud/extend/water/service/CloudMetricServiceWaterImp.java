@@ -12,13 +12,13 @@ import org.noear.water.WaterClient;
  */
 public class CloudMetricServiceWaterImp implements CloudMetricService {
     @Override
-    public void addCount(String group, String category, String item, long val) {
+    public void addCounter(String group, String category, String item, long val) {
         WaterClient.Track.addCount(group, category, item, val);
 
     }
 
     @Override
-    public void addMeter(String group, String category, String item, long val) {
+    public void addTimer(String group, String category, String item, long val) {
         if (WW.track_service.equals(group)) {
             WaterClient.Track.addMeterByNode(category, item, val);
         } else if (WW.track_from.equals(group)) {

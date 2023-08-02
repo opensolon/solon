@@ -51,13 +51,7 @@ public abstract class BaseMeterInterceptor<T,M> implements Interceptor {
         String meterName = getAnnoName(anno);
 
         if (Utils.isEmpty(meterName)) {
-            Context ctx = Context.current();
-
-            if (ctx != null) {
-                meterName = ctx.path();
-            } else {
-                meterName = inv.target().getClass().getName() + "::" + inv.method().getMethod().getName();
-            }
+            meterName = inv.target().getClass().getName() + "::" + inv.method().getMethod().getName();
         }
 
         return meterName;
@@ -67,13 +61,15 @@ public abstract class BaseMeterInterceptor<T,M> implements Interceptor {
         Tags tags = Tags.of(annoTags);
 
         Context ctx = Context.current();
+
         if (ctx != null) {
-            tags.and(Tag.of("path", ctx.path()),
+            tags.and(Tag.of("uri", ctx.path()),
+                    Tag.of("method", ctx.method()),
                     Tag.of("class", inv.target().getClass().getTypeName()),
-                    Tag.of("method", inv.method().getMethod().getName()));
+                    Tag.of("executable", inv.method().getMethod().getName()));
         } else {
             tags.and(Tag.of("class", inv.target().getClass().getTypeName()),
-                    Tag.of("method", inv.method().getMethod().getName()));
+                    Tag.of("executable", inv.method().getMethod().getName()));
         }
 
 

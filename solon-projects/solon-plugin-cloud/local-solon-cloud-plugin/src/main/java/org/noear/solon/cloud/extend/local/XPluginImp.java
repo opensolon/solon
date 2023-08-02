@@ -56,10 +56,6 @@ public class XPluginImp implements Plugin {
             CloudManager.register(new CloudListServiceLocalImpl(cloudProps));
         }
 
-        if (cloudProps.getMetricEnable()) {
-            CloudManager.register(new CloudMetricServiceLocalImpl());
-        }
-
         if (cloudProps.getFileEnable()) {
             //不是空，并且不是"classpath:"开头
             if (Utils.isNotEmpty(cloudProps.getServer()) &&

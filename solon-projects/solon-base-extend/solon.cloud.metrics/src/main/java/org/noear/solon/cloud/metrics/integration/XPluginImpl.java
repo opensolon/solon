@@ -3,6 +3,8 @@ package org.noear.solon.cloud.metrics.integration;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Metrics;
 
+import org.noear.solon.Solon;
+import org.noear.solon.cloud.CloudManager;
 import org.noear.solon.cloud.metrics.annotation.MeterGauge;
 import org.noear.solon.cloud.metrics.annotation.MeterSummary;
 import org.noear.solon.cloud.metrics.annotation.MeterCounter;
@@ -35,5 +37,13 @@ public class XPluginImpl implements Plugin {
                 Metrics.addRegistry(bean);
             }
         });
+
+        Metrics.globalRegistry.config()
+                .commonTags(
+                        "solon.app.name", Solon.cfg().appName(),
+                        "solon.app.group", Solon.cfg().appGroup(),
+                        "solon.app.nameSpace", Solon.cfg().appNamespace());
+
+        CloudManager.register(new CloudMetricServiceImpl());
     }
 }

@@ -73,7 +73,7 @@ public class CloudManager {
     /**
      * 云端度量服务（监控）
      */
-    private static CloudMetricService metricService;
+    private static CloudMetricServiceManager metricServiceManager = new CloudMetricServiceManager();
 
     /**
      * 云端任务服务
@@ -194,7 +194,7 @@ public class CloudManager {
      * 登记度量服务
      */
     public static void register(CloudMetricService service) {
-        metricService = service;
+        metricServiceManager.register(service);
         LogUtil.global().info("Cloud: CloudMetricService registered from the " + service.getClass().getTypeName());
     }
 
@@ -265,7 +265,7 @@ public class CloudManager {
     }
 
     protected static CloudMetricService metricService() {
-        return metricService;
+        return metricServiceManager;
     }
 
     protected static CloudIdServiceFactory idServiceFactory() {
