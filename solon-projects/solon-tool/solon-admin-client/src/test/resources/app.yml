@@ -1,5 +1,5 @@
-server:
-  port: 8889
+server.port: 8889
+
 solon.app:
   name: "SolonAdminClient"
   group: "demo"
@@ -8,8 +8,6 @@ solon.admin.client:
   mode: "local"
   serverUrl: "http://localhost:8888"
   metadata: "demo"
-
-solon.health.detector: "*"
 
 #solon.cloud.consul:
 #  server: "localhost"

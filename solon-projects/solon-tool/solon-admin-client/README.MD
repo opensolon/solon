@@ -43,9 +43,6 @@ solon.admin.client:
   readTimeout: 5000 #读取超时，单位：毫秒
   metadata: "" #自定义元数据
   showSecretInformation: false #是否向服务端发送敏感信息，如环境变量等
-
-## 设置 Solon Health Detector 监视器，* 为启用全部监视器
-solon.health.detector: "*"
 ```
 
 ## 4. 配置中心

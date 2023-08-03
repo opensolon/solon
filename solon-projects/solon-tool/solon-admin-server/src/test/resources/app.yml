@@ -1,10 +1,12 @@
-server:
-  port: 8888
+server.port: 8888
+
 solon.app:
   name: "SolonAdminServer"
   group: "demo"
+
 solon.admin.server:
   mode: "local"
+
 #solon.cloud.consul:
 #  server: "localhost"
 solon.logging.appender:
