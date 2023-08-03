@@ -4,6 +4,9 @@ import org.noear.solon.Solon;
 import org.noear.solon.admin.client.annotation.EnableAdminClient;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
+import org.noear.solon.core.event.AppLoadEndEvent;
+import org.noear.solon.core.event.EventBus;
+import org.noear.solon.health.detector.DetectorManager;
 
 /**
  * @author noear
@@ -17,5 +20,9 @@ public class XPluginImpl implements Plugin {
         }
 
         context.beanScan("org.noear.solon.admin.client");
+
+        EventBus.subscribe(AppLoadEndEvent.class, e->{
+            DetectorManager.start("*");
+        });
     }
 }

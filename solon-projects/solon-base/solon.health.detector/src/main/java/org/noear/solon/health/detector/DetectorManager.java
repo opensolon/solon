@@ -36,8 +36,8 @@ public class DetectorManager {
     /**
      * 获取全部
      */
-    public static Collection<Detector> getAll() {
-        return Collections.unmodifiableCollection(detectorMap.values());
+    public static Collection<Detector> all() {
+        return detectorMap.values();
     }
 
 
@@ -64,5 +64,24 @@ public class DetectorManager {
         }
 
         return tmp;
+    }
+
+    /**
+     * 启动
+     * */
+    public static void start(String... names) throws Throwable{
+        for (String name : names) {
+            if ("*".equals(name)) {
+                for (Detector detector : detectorMap.values()) {
+                    detector.start();
+                }
+                break;
+            } else {
+                Detector detector = get(name);
+                if (detector != null) {
+                    detector.start();
+                }
+            }
+        }
     }
 }
