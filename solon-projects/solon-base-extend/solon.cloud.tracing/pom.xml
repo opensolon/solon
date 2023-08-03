@@ -14,10 +14,6 @@
     <artifactId>solon.cloud.tracing</artifactId>
     <packaging>jar</packaging>
 
-    <properties>
-        <opentracing.version>0.33.0</opentracing.version>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
