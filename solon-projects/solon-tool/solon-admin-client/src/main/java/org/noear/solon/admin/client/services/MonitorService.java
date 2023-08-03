@@ -24,7 +24,7 @@ public class MonitorService {
      * @return 所有监视器信息
      */
     public Collection<Detector> getMonitors() {
-        return DetectorManager.all().parallelStream().map(it -> new Detector(it.getName(), it.getInfo())).collect(Collectors.toSet());
+        return DetectorManager.getAll().parallelStream().map(it -> new Detector(it.getName(), it.getInfo())).collect(Collectors.toSet());
     }
 
 }

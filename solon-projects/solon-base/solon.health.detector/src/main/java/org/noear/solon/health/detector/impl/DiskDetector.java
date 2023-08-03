@@ -3,6 +3,7 @@ package org.noear.solon.health.detector.impl;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.health.detector.AbstractDetector;
 import org.noear.solon.health.detector.util.CmdUtil;
+import org.noear.solon.health.detector.util.SizeUtil;
 
 import java.io.File;
 import java.util.HashMap;
@@ -44,9 +45,9 @@ public class DiskDetector extends AbstractDetector {
                 totalUsed += used;
                 String ratio = (total > 0L ? used * 100L / total : 0L) + "%";
 
-                disk.put("total", formatByteSize(total));
-                disk.put("free", formatByteSize(free));
-                disk.put("used", formatByteSize(used));
+                disk.put("total", SizeUtil.formatByteSize(total));
+                disk.put("free", SizeUtil.formatByteSize(free));
+                disk.put("used", SizeUtil.formatByteSize(used));
                 disk.put("ratio", ratio);
 
                 details.put(file.getPath(), disk);
@@ -64,9 +65,9 @@ public class DiskDetector extends AbstractDetector {
                     long free = Long.valueOf(disk[3]) * 1024L * 1024L;
                     String ratio = disk[4];
 
-                    diskInfo.put("total", formatByteSize(total));
-                    diskInfo.put("free", formatByteSize(free));
-                    diskInfo.put("used", formatByteSize(used));
+                    diskInfo.put("total", SizeUtil.formatByteSize(total));
+                    diskInfo.put("free", SizeUtil.formatByteSize(free));
+                    diskInfo.put("used", SizeUtil.formatByteSize(used));
                     diskInfo.put("ratio", ratio);
                     details.put(disk[5], diskInfo);
 
@@ -82,8 +83,8 @@ public class DiskDetector extends AbstractDetector {
 
         Map<String, Object> info = new LinkedHashMap<>();
 
-        info.put("total", formatByteSize(totals));
-        info.put("used", formatByteSize(totalUsed));
+        info.put("total", SizeUtil.formatByteSize(totals));
+        info.put("used", SizeUtil.formatByteSize(totalUsed));
         info.put("details", details);
 
         return info;

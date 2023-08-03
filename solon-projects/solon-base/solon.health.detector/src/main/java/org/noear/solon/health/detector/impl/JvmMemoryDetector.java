@@ -1,6 +1,7 @@
 package org.noear.solon.health.detector.impl;
 
 import org.noear.solon.health.detector.AbstractDetector;
+import org.noear.solon.health.detector.util.SizeUtil;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -34,10 +35,10 @@ public class JvmMemoryDetector extends AbstractDetector {
             info.put("ratio", ratio);
         }
 
-        info.put("total", formatByteSize(total));
-        info.put("used", formatByteSize(used));
-        info.put("usable", formatByteSize(usable));
-        info.put("free", formatByteSize(free));
+        info.put("total", SizeUtil.formatByteSize(total));
+        info.put("used", SizeUtil.formatByteSize(used));
+        info.put("usable", SizeUtil.formatByteSize(usable));
+        info.put("free", SizeUtil.formatByteSize(free));
         return info;
     }
 }

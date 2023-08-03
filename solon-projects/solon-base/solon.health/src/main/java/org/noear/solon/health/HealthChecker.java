@@ -20,11 +20,20 @@ public class HealthChecker {
     /**
      * 添加指示器
      *
-     * @param name  名称
+     * @param name      名称
      * @param indicator 指示器
      */
     public static void addIndicator(String name, HealthIndicator indicator) {
         indicatorMap.put(name, indicator);
+    }
+
+    /**
+     * 批量添加指示器
+     *
+     * @param indicators 指示器
+     */
+    public static void addIndicatorAll(Map<String, HealthIndicator> indicators) {
+        indicatorMap.putAll(indicators);
     }
 
     /**

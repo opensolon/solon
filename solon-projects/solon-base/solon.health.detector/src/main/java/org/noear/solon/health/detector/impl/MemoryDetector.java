@@ -2,6 +2,7 @@ package org.noear.solon.health.detector.impl;
 
 import com.sun.management.OperatingSystemMXBean;
 import org.noear.solon.health.detector.AbstractDetector;
+import org.noear.solon.health.detector.util.SizeUtil;
 
 import java.lang.management.ManagementFactory;
 import java.util.LinkedHashMap;
@@ -29,8 +30,8 @@ public class MemoryDetector extends AbstractDetector {
         long free = osmxb.getFreePhysicalMemorySize();
         long used = total - free;
 
-        info.put("total", formatByteSize(total));
-        info.put("used", formatByteSize(used));
+        info.put("total", SizeUtil.formatByteSize(total));
+        info.put("used", SizeUtil.formatByteSize(used));
 
         if (total > 0L) {
             float ratio = (float) used * 100.0F / (float) total;

@@ -9,20 +9,60 @@ import java.util.*;
  * @since 2.1
  */
 public class DetectorManager {
-    private static final Map<String,Detector> detectorMap = new LinkedHashMap<>();
+    private static final Map<String, Detector> detectorMap = new LinkedHashMap<>();
 
-    public static Collection<Detector> all(){
-        return Collections.unmodifiableCollection(detectorMap.values());
-    }
-    public static void add(Detector detector){
+    /**
+     * 添加
+     */
+    public static void add(Detector detector) {
         detectorMap.put(detector.getName(), detector);
     }
 
-    public static Detector get(String name){
+    /**
+     * 移除
+     */
+    public static void remove(String name) {
+        detectorMap.remove(name);
+    }
+
+    /**
+     * 获取
+     */
+    public static Detector get(String name) {
         return detectorMap.get(name);
     }
 
-    public static void remove(String name){
-        detectorMap.remove(name);
+
+    /**
+     * 获取全部
+     */
+    public static Collection<Detector> getAll() {
+        return Collections.unmodifiableCollection(detectorMap.values());
+    }
+
+
+    /**
+     * 获取多个
+     *
+     * @since 2.4
+     */
+    public static Map<String, Detector> getMore(String... names) {
+        Map<String, Detector> tmp = new HashMap<>();
+
+        for (String name : names) {
+            if ("*".equals(name)) {
+                for (Detector detector : detectorMap.values()) {
+                    tmp.put(detector.getName(), detector);
+                }
+                break;
+            } else {
+                Detector detector = get(name);
+                if (detector != null) {
+                    tmp.put(detector.getName(), detector);
+                }
+            }
+        }
+
+        return tmp;
     }
 }
