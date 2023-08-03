@@ -25,6 +25,7 @@
 * 增加 solon-admin-server 对 basic auth 配置的支持
 * 增加 solon-admin-server 对 uiPath 配置的支持
 * 增加 solon-admin-client 与 server 一起使用时，自动识别 serverUrl
+* 增加 solon-admin-client 增加 token 访问控制
 * 调整 solon-admin-client ，元信息改为 solon.app 的内容；server 监视日志改为 trace 级别
 * 调整 solon.docs 的控制器启动，转到 solon-openapi2-knife4j。方便不同的框架定制自己的服务
 * 调整 "@Bean" 函数的 VarGather::requireRun 由 false 改为 true，只要过了条件检测必然运行

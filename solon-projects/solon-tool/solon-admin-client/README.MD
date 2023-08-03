@@ -38,6 +38,7 @@ public class Main {
 solon.admin.client:
   enabled: true #是否启用 Solon Admin Client
   mode: "local" #模式：local 本地模式，cloud 云模式
+  token: "3C41D632-A070-060C-40D2-6D84B3C07094" #令牌：访问接口时需要
   serverUrl: "http://localhost:8080" #Solon Admin Server 实例地址
   connectTimeout: 5000 #连接超时，单位：毫秒
   readTimeout: 5000 #读取超时，单位：毫秒

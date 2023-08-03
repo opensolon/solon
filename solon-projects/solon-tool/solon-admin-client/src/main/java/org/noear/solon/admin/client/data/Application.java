@@ -17,6 +17,8 @@ public class Application {
 
     private final String name;
 
+    private final String token;
+
     private String baseUrl;
 
     @ToString.Exclude

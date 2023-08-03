@@ -36,7 +36,8 @@ public class ClientMonitorService {
     public Collection<Detector> getMonitors(Application application) {
         val clientUrl = application.getBaseUrl().replaceAll("/+$", "");
         try (Response response = client.newCall(new Request.Builder()
-                .url(new URL(clientUrl + "/api/monitor/all"))
+                .url(new URL(clientUrl + "/solon-admin/api/monitor/data"))
+                .header("TOKEN", application.getToken())
                 .get()
                 .build()).execute()) {
             if (response.isSuccessful()) {

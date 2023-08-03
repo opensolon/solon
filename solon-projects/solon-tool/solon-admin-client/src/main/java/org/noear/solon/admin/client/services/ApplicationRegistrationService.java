@@ -35,6 +35,7 @@ public class ApplicationRegistrationService {
     private Application.ApplicationBuilder getApplicationBuilder() {
         return Application.builder()
                 .name(this.applicationName)
+                .token(properties.getToken())
                 .baseUrl(NetworkUtils.getHostAndPort());
     }
 
