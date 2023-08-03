@@ -14,10 +14,6 @@
     <artifactId>solon.cloud.metrics</artifactId>
     <packaging>jar</packaging>
 
-    <properties>
-        <micrometer.version>1.11.0</micrometer.version>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
@@ -28,24 +24,6 @@
             <groupId>io.micrometer</groupId>
             <artifactId>micrometer-core</artifactId>
             <version>${micrometer.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>${slf4j.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>io.micrometer</groupId>
-            <artifactId>micrometer-registry-prometheus</artifactId>
-            <version>${micrometer.version}</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon-test</artifactId>
         </dependency>
     </dependencies>
 
