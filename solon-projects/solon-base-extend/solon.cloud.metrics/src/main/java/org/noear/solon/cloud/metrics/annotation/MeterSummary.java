@@ -34,12 +34,21 @@ public @interface MeterSummary {
     /**
      * 最小期望值
      * */
-    double minValue() default Double.MIN_VALUE;
+    double minValue() default 1D;
 
     /**
      * 百分位
      * */
     double[] percentiles() default {};
+
+    /**
+     * 百分位柱状图
+     * */
+    boolean percentilesHistogram() default false;
+
+    double scale() default 1.0D;
+
+    double[] serviceLevelObjectives() default {};
 
     /**
      * 标签

@@ -57,6 +57,11 @@ public class MeterSummaryInterceptor extends BaseMeterInterceptor<MeterSummary, 
 
                     if(anno.percentiles().length > 0) {
                         builder.publishPercentiles(anno.percentiles());
+                        builder.publishPercentileHistogram(anno.percentilesHistogram());
+                    }
+
+                    if(anno.serviceLevelObjectives().length > 0){
+                        builder.serviceLevelObjectives(anno.serviceLevelObjectives());
                     }
 
                     meter = builder.register(Metrics.globalRegistry);
