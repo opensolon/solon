@@ -30,4 +30,9 @@ public @interface MeterGauge {
      * 标签
      */
     String[] tags() default {};
+
+    /**
+     * 描述
+     * */
+    String description() default "";
 }

@@ -1,5 +1,6 @@
 package org.noear.solon.cloud.metrics.interceptor;
 
+import io.micrometer.core.instrument.Gauge;
 import io.micrometer.core.instrument.Metrics;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.metrics.annotation.MeterGauge;
@@ -36,7 +37,12 @@ public class MeterGaugeInterceptor extends BaseMeterInterceptor<MeterGauge, Numb
         //计变数
         if (rst instanceof Number) {
             String meterName = getMeterName(inv, anno);
-            Metrics.gauge(meterName, getMeterTags(inv, anno.tags()), (Number) rst);
+            Number number = (Number) rst;
+
+            Gauge.builder(meterName, number, Number::doubleValue)
+                    .tags(getMeterTags(inv, anno.tags()))
+                    .description(anno.description())
+                    .register(Metrics.globalRegistry);
         }
 
         return rst;

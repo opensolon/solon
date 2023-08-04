@@ -34,4 +34,9 @@ public @interface MeterTimer {
      * 标签
      */
     String[] tags() default {};
+
+    /**
+     * 描述
+     * */
+    String description() default "";
 }

@@ -41,7 +41,12 @@ public class MeterTimerInterceptor extends BaseMeterInterceptor<MeterTimer, Time
                 meter = meterCached.get(anno);
                 if (meter == null) {
                     String meterName = getMeterName(inv, anno);
-                    meter = Metrics.timer(meterName, getMeterTags(inv, anno.tags()));
+
+                    meter = Timer.builder(meterName)
+                            .tags(getMeterTags(inv, anno.tags()))
+                            .description(anno.description())
+                            .register(Metrics.globalRegistry);
+
                     meterCached.put(anno, meter);
                 }
             }

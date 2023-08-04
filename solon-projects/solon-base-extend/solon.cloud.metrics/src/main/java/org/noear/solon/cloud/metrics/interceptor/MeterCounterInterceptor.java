@@ -39,7 +39,12 @@ public class MeterCounterInterceptor extends BaseMeterInterceptor<MeterCounter,C
                 meter = meterCached.get(anno);
                 if (meter == null) {
                     String meterName = getMeterName(inv, anno);
-                    meter = Metrics.counter(meterName, getMeterTags(inv, anno.tags()));
+
+                    meter = Counter.builder(meterName)
+                            .tags(getMeterTags(inv, anno.tags()))
+                            .description(anno.description())
+                            .register(Metrics.globalRegistry);
+
                     meterCached.put(anno, meter);
                 }
             }

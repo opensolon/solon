@@ -42,7 +42,8 @@ public class MeterSummaryInterceptor extends BaseMeterInterceptor<MeterSummary, 
 
                     DistributionSummary.Builder builder = DistributionSummary
                             .builder(meterName)
-                            .tags(getMeterTags(inv, anno.tags()));
+                            .tags(getMeterTags(inv, anno.tags()))
+                            .description(anno.description());
 
                     //最大期望值
                     if (anno.maxValue() != Double.MAX_VALUE) {
