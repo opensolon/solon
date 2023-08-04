@@ -7,16 +7,16 @@ import io.micrometer.core.instrument.Tag;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudManager;
-import org.noear.solon.cloud.metrics.adapter.MetricsAdapter;
-import org.noear.solon.cloud.metrics.adapter.PrometheusAdapter;
+import org.noear.solon.cloud.metrics.opener.MeterOpener;
+import org.noear.solon.cloud.metrics.opener.PrometheusOpener;
 import org.noear.solon.cloud.metrics.annotation.MeterGauge;
 import org.noear.solon.cloud.metrics.annotation.MeterSummary;
 import org.noear.solon.cloud.metrics.annotation.MeterCounter;
 import org.noear.solon.cloud.metrics.annotation.MeterTimer;
-import org.noear.solon.cloud.metrics.Interceptor.MeterGaugeInterceptor;
-import org.noear.solon.cloud.metrics.Interceptor.MeterSummaryInterceptor;
-import org.noear.solon.cloud.metrics.Interceptor.MeterCounterInterceptor;
-import org.noear.solon.cloud.metrics.Interceptor.MeterTimerInterceptor;
+import org.noear.solon.cloud.metrics.interceptor.MeterGaugeInterceptor;
+import org.noear.solon.cloud.metrics.interceptor.MeterSummaryInterceptor;
+import org.noear.solon.cloud.metrics.interceptor.MeterCounterInterceptor;
+import org.noear.solon.cloud.metrics.interceptor.MeterTimerInterceptor;
 
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
@@ -32,6 +32,8 @@ import java.util.List;
  * @since 2.4
  */
 public class XPluginImpl implements Plugin {
+    List<MeterOpener> meterOpeners = new ArrayList<>();
+
     @Override
     public void start(AopContext context) {
         //增加注解支持
@@ -40,9 +42,6 @@ public class XPluginImpl implements Plugin {
         context.beanInterceptorAdd(MeterSummary.class, new MeterSummaryInterceptor());
         context.beanInterceptorAdd(MeterTimer.class, new MeterTimerInterceptor());
 
-        //将 globalRegistry 转到容器（提供注入）
-        context.wrapAndPut(MeterRegistry.class, Metrics.globalRegistry);
-
         //订阅 MeterRegistry
         context.subBeansOfType(MeterRegistry.class, bean -> {
             if (bean != Metrics.globalRegistry) {
@@ -50,27 +49,45 @@ public class XPluginImpl implements Plugin {
             }
         });
 
+        //将 globalRegistry 转到容器（提供注入支持）
+        context.wrapAndPut(MeterRegistry.class, Metrics.globalRegistry);
+
+
         //添加接口
         Solon.app().add("/", MetricsController.class);
 
         //初始化公共标签
-        meterCommonTagsInit();
+        forCommonTagsInit();
 
+        //增加开放接口支持
+        forOpener(context);
+
+        forCloudImpl();
+    }
+
+    private void forCloudImpl(){
         //注册 CloudMetricService 适配器
         CloudManager.register(new CloudMetricServiceImpl());
+    }
 
-        //适配处理
-        List<MetricsAdapter> metricsAdapters = new ArrayList<>();
-        metricsAdapters.add(new PrometheusAdapter());
+    private void forOpener(AopContext aopContext){
+        //订阅 MeterOpener
+        meterOpeners.add(new PrometheusOpener());
+        aopContext.subBeansOfType(MeterOpener.class, bean->{
+            meterOpeners.add(bean);
+        });
 
+        //拦取处理
         EventBus.subscribe(AppBeanLoadEndEvent.class, e->{
-            for(MetricsAdapter adapter : metricsAdapters){
-                adapter.adaptive(context);
+            for(MeterOpener adapter : meterOpeners){
+                if(adapter.isRegistered(aopContext)){
+                    Solon.app().get(adapter.path(), adapter);
+                }
             }
         });
     }
 
-    private void meterCommonTagsInit() {
+    private void forCommonTagsInit() {
         List<Tag> commonTags = new ArrayList<>();
         if (Utils.isNotEmpty(Solon.cfg().appName())) {
             commonTags.add(Tag.of("solon.app.name", Solon.cfg().appName()));

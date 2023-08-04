@@ -1,4 +1,4 @@
-package org.noear.solon.cloud.metrics.Interceptor;
+package org.noear.solon.cloud.metrics.interceptor;
 
 import io.micrometer.core.instrument.DistributionSummary;
 import io.micrometer.core.instrument.Metrics;

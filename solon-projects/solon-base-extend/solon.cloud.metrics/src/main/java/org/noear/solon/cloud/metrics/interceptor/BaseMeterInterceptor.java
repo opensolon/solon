@@ -1,4 +1,4 @@
-package org.noear.solon.cloud.metrics.Interceptor;
+package org.noear.solon.cloud.metrics.interceptor;
 
 import io.micrometer.core.instrument.Tag;
 import io.micrometer.core.instrument.Tags;
