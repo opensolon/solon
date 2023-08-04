@@ -7,6 +7,8 @@ import io.micrometer.core.instrument.Tag;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudManager;
+import org.noear.solon.cloud.metrics.adapter.MetricsAdapter;
+import org.noear.solon.cloud.metrics.adapter.PrometheusAdapter;
 import org.noear.solon.cloud.metrics.annotation.MeterGauge;
 import org.noear.solon.cloud.metrics.annotation.MeterSummary;
 import org.noear.solon.cloud.metrics.annotation.MeterCounter;
@@ -18,6 +20,8 @@ import org.noear.solon.cloud.metrics.Interceptor.MeterTimerInterceptor;
 
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
+import org.noear.solon.core.event.AppBeanLoadEndEvent;
+import org.noear.solon.core.event.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,11 +50,24 @@ public class XPluginImpl implements Plugin {
             }
         });
 
+        //添加接口
+        Solon.app().add("/", MetricsController.class);
+
         //初始化公共标签
         meterCommonTagsInit();
 
         //注册 CloudMetricService 适配器
         CloudManager.register(new CloudMetricServiceImpl());
+
+        //适配处理
+        List<MetricsAdapter> metricsAdapters = new ArrayList<>();
+        metricsAdapters.add(new PrometheusAdapter());
+
+        EventBus.subscribe(AppBeanLoadEndEvent.class, e->{
+            for(MetricsAdapter adapter : metricsAdapters){
+                adapter.adaptive(context);
+            }
+        });
     }
 
     private void meterCommonTagsInit() {

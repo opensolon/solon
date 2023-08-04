@@ -17,7 +17,7 @@
 ### 2.4.2
 * 新增 lettuce-solon-plugin 插件
 * 新增 solon.docs.openapi2 插件
-* 新增 solon.cloud.metrics 插件?
+* 新增 solon.cloud.metrics 插件
 * 升级 solon-maven-plugin 的相关依赖
 * 增加 `List<Bean>` 和 `Map<String,Bean>` 注入支持
 * 增加 Context::attrOrDefault 接口，原接口标为弃用

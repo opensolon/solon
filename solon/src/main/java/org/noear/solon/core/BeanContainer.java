@@ -315,7 +315,7 @@ public abstract class BeanContainer {
     /**
      * wrap 发布，偏向对外 （只支持 @Bean 和 @Component 的 wrap）
      */
-    protected void wrapPublish(BeanWrap wrap) {
+    public void wrapPublish(BeanWrap wrap) {
         //避免在forEach时，对它进行add
         new ArrayList<>(wrapExternalConsumers).forEach(s1 -> {
             s1.accept(wrap);

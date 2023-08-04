@@ -17,7 +17,7 @@ public class CloudMetricServiceImpl implements CloudMetricService {
     @Override
     public void addCounter(String group, String category, String item, long increment, Map<String, String> attrs) {
         StringBuilder buf = new StringBuilder();
-        buf.append(group).append(":").append(category).append(":").append(item);
+        buf.append(group).append(".").append(category).append(".").append(item);
 
         Metrics.counter(buf.toString(), getTags(attrs)).increment(increment);
     }
@@ -25,7 +25,7 @@ public class CloudMetricServiceImpl implements CloudMetricService {
     @Override
     public void addTimer(String group, String category, String item, long record, Map<String, String> attrs) {
         StringBuilder buf = new StringBuilder();
-        buf.append(group).append(":").append(category).append(":").append(item);
+        buf.append(group).append(".").append(category).append(".").append(item);
 
         Metrics.timer(buf.toString(), getTags(attrs)).record(record, TimeUnit.MICROSECONDS);
     }
@@ -33,7 +33,7 @@ public class CloudMetricServiceImpl implements CloudMetricService {
     @Override
     public void addGauge(String group, String category, String item, long number, Map<String, String> attrs) {
         StringBuilder buf = new StringBuilder();
-        buf.append(group).append(":").append(category).append(":").append(item);
+        buf.append(group).append(".").append(category).append(".").append(item);
 
         Metrics.gauge(buf.toString(), getTags(attrs), number);
     }
