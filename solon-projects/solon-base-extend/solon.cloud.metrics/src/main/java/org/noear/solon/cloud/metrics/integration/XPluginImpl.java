@@ -65,22 +65,22 @@ public class XPluginImpl implements Plugin {
         forCloudImpl();
     }
 
-    private void forCloudImpl(){
+    private void forCloudImpl() {
         //注册 CloudMetricService 适配器
         CloudManager.register(new CloudMetricServiceImpl());
     }
 
-    private void forOpener(AopContext aopContext){
+    private void forOpener(AopContext aopContext) {
         //订阅 MeterOpener
         meterOpeners.add(new PrometheusOpener());
-        aopContext.subBeansOfType(MeterOpener.class, bean->{
+        aopContext.subBeansOfType(MeterOpener.class, bean -> {
             meterOpeners.add(bean);
         });
 
         //拦取处理
-        EventBus.subscribe(AppBeanLoadEndEvent.class, e->{
-            for(MeterOpener adapter : meterOpeners){
-                if(adapter.isRegistered(aopContext)){
+        EventBus.subscribe(AppBeanLoadEndEvent.class, e -> {
+            for (MeterOpener adapter : meterOpeners) {
+                if (adapter.isRegistered(aopContext)) {
                     Solon.app().get(adapter.path(), adapter);
                 }
             }
@@ -104,6 +104,13 @@ public class XPluginImpl implements Plugin {
         if (commonTags.size() > 0) {
             Metrics.globalRegistry.config()
                     .commonTags(commonTags);
+        }
+    }
+
+    @Override
+    public void stop() throws Throwable {
+        for (MeterRegistry registry : Metrics.globalRegistry.getRegistries()) {
+            registry.close();
         }
     }
 }

@@ -46,6 +46,8 @@ public class PrometheusOpener implements MeterOpener {
 
     @Override
     public void handle(Context ctx) throws Throwable {
+        //TextFormat.CONTENT_TYPE_OPENMETRICS_100
+        //TextFormat.CONTENT_TYPE_004
         ctx.output(registry.scrape());
     }
 }
