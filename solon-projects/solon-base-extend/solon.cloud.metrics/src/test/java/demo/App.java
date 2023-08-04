@@ -16,13 +16,13 @@ public class App {
     }
 
     @Mapping("/test")
-    @MeterCounter("test")
+    @MeterCounter("demo.test")
     public String test(){
         return "test";
     }
 
     @Mapping("/hello")
-    @MeterTimer("hello")
+    @MeterTimer("demo.hello")
     public String hello(){
         return "hello";
     }

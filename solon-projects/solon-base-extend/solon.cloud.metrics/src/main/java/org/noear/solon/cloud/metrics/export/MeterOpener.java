@@ -1,10 +1,10 @@
-package org.noear.solon.cloud.metrics.opener;
+package org.noear.solon.cloud.metrics.export;
 
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.handle.Handler;
 
 /**
- * 度量拉取器
+ * 度量开放器（用于导出数据）
  *
  * @author noear
  * @since 2.4
@@ -16,7 +16,7 @@ public interface MeterOpener extends Handler {
     String path();
 
     /**
-     * 是否已注册
+     * 是否支持
      * */
-    boolean isRegistered(AopContext aopContext);
+    boolean isSupported(AopContext aopContext);
 }

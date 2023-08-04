@@ -7,8 +7,8 @@ import io.micrometer.core.instrument.Tag;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudManager;
-import org.noear.solon.cloud.metrics.opener.MeterOpener;
-import org.noear.solon.cloud.metrics.opener.PrometheusOpener;
+import org.noear.solon.cloud.metrics.export.MeterOpener;
+import org.noear.solon.cloud.metrics.export.PrometheusOpener;
 import org.noear.solon.cloud.metrics.annotation.MeterGauge;
 import org.noear.solon.cloud.metrics.annotation.MeterSummary;
 import org.noear.solon.cloud.metrics.annotation.MeterCounter;
@@ -53,7 +53,7 @@ public class XPluginImpl implements Plugin {
         context.wrapAndPut(MeterRegistry.class, Metrics.globalRegistry);
 
 
-        //添加接口
+        //添加基础接口
         Solon.app().add("/", MetricsController.class);
 
         //初始化公共标签
@@ -80,7 +80,7 @@ public class XPluginImpl implements Plugin {
         //拦取处理
         EventBus.subscribe(AppBeanLoadEndEvent.class, e -> {
             for (MeterOpener adapter : meterOpeners) {
-                if (adapter.isRegistered(aopContext)) {
+                if (adapter.isSupported(aopContext)) {
                     Solon.app().get(adapter.path(), adapter);
                 }
             }

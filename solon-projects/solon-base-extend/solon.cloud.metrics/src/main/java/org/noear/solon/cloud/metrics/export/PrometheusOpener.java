@@ -1,4 +1,4 @@
-package org.noear.solon.cloud.metrics.opener;
+package org.noear.solon.cloud.metrics.export;
 
 import io.micrometer.prometheus.PrometheusConfig;
 import io.micrometer.prometheus.PrometheusMeterRegistry;
@@ -9,7 +9,7 @@ import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.util.ClassUtil;
 
 /**
- * Prometheus 自动开放器（如果有引入包，则自动生效）
+ * Prometheus 度量开放器（如果有引入包，则自动生效）
  *
  * @author noear
  * @since 2.4
@@ -23,7 +23,7 @@ public class PrometheusOpener implements MeterOpener {
     }
 
     @Override
-    public boolean isRegistered(AopContext aopContext) {
+    public boolean isSupported(AopContext aopContext) {
         if (registry != null) {
             return true;
         }

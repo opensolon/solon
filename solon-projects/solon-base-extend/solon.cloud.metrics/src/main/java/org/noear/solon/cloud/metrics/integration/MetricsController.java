@@ -6,10 +6,15 @@ import org.noear.solon.annotation.Mapping;
 import java.util.*;
 
 /**
+ * 度量基础接口
+ *
  * @author noear
  * @since 2.4
  */
 public class MetricsController {
+    /**
+     * 获取所有注册器（类名）
+     * */
     @Mapping("/metrics/registrys")
     public Map<String, List> registrys() {
         Map<String, List> data = new HashMap<>();
@@ -23,6 +28,9 @@ public class MetricsController {
         return data;
     }
 
+    /**
+     * 获取所有度量器（名字）
+     * */
     @Mapping("/metrics/meters")
     public Map<String, List> meters() {
         Map<String, List> data = new HashMap<>();
@@ -36,6 +44,9 @@ public class MetricsController {
         return data;
     }
 
+    /**
+     * 获取度量详情
+     * */
     @Mapping("/metrics/meter/{meterName}")
     public Map meter(String meterName) {
         Map<String, Object> meterData = new LinkedHashMap<>();
