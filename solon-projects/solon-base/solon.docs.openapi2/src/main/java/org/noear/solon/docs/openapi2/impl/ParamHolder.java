@@ -1,13 +1,16 @@
 package org.noear.solon.docs.openapi2.impl;
 
 import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiParam;
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.SessionState;
 import org.noear.solon.core.handle.UploadedFile;
 import org.noear.solon.core.wrap.ParamWrap;
 import org.noear.solon.docs.ApiEnum;
+import org.noear.solon.docs.openapi2.wrap.ApiImplicitParamWrap;
 
+import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.Map;
 
@@ -19,12 +22,21 @@ public class ParamHolder {
     private ParamWrap param;
     private ApiImplicitParam anno;
 
-    public ParamHolder(ParamWrap param){
+    public ParamHolder(ParamWrap param) {
         this.param = param;
+        if (param != null) {
+            ApiParam tmp = param.getParameter().getAnnotation(ApiParam.class);
+            if (tmp != null) {
+                anno = new ApiImplicitParamWrap(tmp);
+            }
+        }
     }
 
     public ParamHolder binding(ApiImplicitParam anno) {
-        this.anno = anno;
+        if (anno != null) {
+            this.anno = anno;
+        }
+
         return this;
     }
 
@@ -105,6 +117,26 @@ public class ParamHolder {
         } else {
             return tmp;
         }
+    }
+
+    public Class<?> dataTypeClass() {
+        if (param != null) {
+            return param.getType();
+        }
+
+        if (anno != null) {
+            return anno.dataTypeClass();
+        }
+
+        return null;
+    }
+
+    public Type dataGenericType() {
+        if (param != null) {
+            return param.getGenericType();
+        }
+
+        return null;
     }
 
     public String paramType(){

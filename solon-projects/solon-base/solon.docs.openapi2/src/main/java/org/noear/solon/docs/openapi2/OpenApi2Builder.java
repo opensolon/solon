@@ -815,18 +815,9 @@ public class OpenApi2Builder {
      * 解析对象参数
      */
     private String getParameterSchema(ParamHolder paramHolder) {
-        if (paramHolder.getAnno() != null) {
-            Class<?> dataTypeClass = paramHolder.getAnno().dataTypeClass();
+        Class<?> dataTypeClass = paramHolder.dataTypeClass();
 
-            if (dataTypeClass != Void.class) {
-                ModelImpl swaggerModel = (ModelImpl) this.parseSwaggerModel(dataTypeClass, dataTypeClass);
-
-                return swaggerModel.getName();
-            }
-        }
-
-        if (paramHolder.getParam() != null) {
-            Class<?> dataTypeClass = paramHolder.getParam().getType();
+        if (dataTypeClass != null) {
             if (dataTypeClass.isPrimitive()) {
                 return null;
             }
@@ -839,7 +830,7 @@ public class OpenApi2Builder {
                 return null;
             }
 
-            Type dataGenericType = paramHolder.getParam().getGenericType();
+            Type dataGenericType = paramHolder.dataGenericType();
 
             if (dataTypeClass != Void.class) {
                 if (Collection.class.isAssignableFrom(dataTypeClass) && dataGenericType instanceof ParameterizedType) {

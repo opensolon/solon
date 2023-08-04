@@ -31,8 +31,9 @@
 * 调整 "@Bean" 函数的 VarGather::requireRun 由 false 改为 true，只要过了条件检测必然运行
 * 调整 sa-token-solon-plugin 插件，增加对网关的支持
 * 调整 CloudMetricService 接口设计，更适合与 micrometer 对接
-* 优化 solon.health.detector 代码实现，增加复用性
-* 修复 “@CloudEventSubscribe” 注解在函数会出错的问题
+* 调整 solon.health.detector 代码实现，增加复用性
+* 修复 solon.cloud.eventplus 插件 `@CloudEventSubscribe` 注解在函数会出错的问题
+* 修复 solon.docs 插件 `@ApiParam` 注解无效的问题
 * mybatis-flex 升为 1.5.5
 * beetlsql 升为 3.23.6-RELEASE
 * sqltoy 升为 5.2.60
