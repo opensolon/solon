@@ -34,7 +34,7 @@
 * 调整 solon.health.detector 代码实现，增加复用性
 * 修复 solon.cloud.eventplus 插件 `@CloudEventSubscribe` 注解在函数会出错的问题
 * 修复 solon.docs 插件 `@ApiParam` 注解无效的问题
-* mybatis-flex 升为 1.5.5
+* mybatis-flex 升为 1.5.6
 * beetlsql 升为 3.23.6-RELEASE
 * sqltoy 升为 5.2.60
 * snack3 升为 3.2.75
