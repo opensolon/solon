@@ -28,7 +28,7 @@
 * 增加 solon-admin-client 增加 token 访问控制
 * 调整 solon-admin-client ，元信息改为 solon.app 的内容；server 监视日志改为 trace 级别
 * 调整 solon.docs 的控制器启动，转到 solon-openapi2-knife4j。方便不同的框架定制自己的服务
-* 调整 "@Bean" 函数的 VarGather::requireRun 由 false 改为 true，只要过了条件检测必然运行
+* 调整 `@Bean` 函数的 VarGather::requireRun 由 false 改为 true，只要过了条件检测必然运行
 * 调整 sa-token-solon-plugin 插件，增加对网关的支持
 * 调整 CloudMetricService 接口设计，更适合与 micrometer 对接
 * 调整 solon.health.detector 代码实现，增加复用性
