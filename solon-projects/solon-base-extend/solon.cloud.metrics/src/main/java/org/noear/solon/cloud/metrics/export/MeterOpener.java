@@ -16,7 +16,7 @@ public interface MeterOpener extends Handler {
     String path();
 
     /**
-     * 是否支持
+     * 是否支持输出
      * */
     boolean isSupported(AopContext aopContext);
 }
