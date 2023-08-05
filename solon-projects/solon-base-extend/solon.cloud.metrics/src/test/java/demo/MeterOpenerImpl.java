@@ -12,7 +12,7 @@ import org.noear.solon.core.handle.Context;
  * @author noear 2023/8/5 created
  */
 @Configuration
-public class SimpleMeterOpener implements MeterOpener {
+public class MeterOpenerImpl implements MeterOpener {
     SimpleMeterRegistry meterRegistry = new SimpleMeterRegistry();
 
     @Bean

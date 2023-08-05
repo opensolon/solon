@@ -4,6 +4,7 @@ import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Metrics;
 
 import io.micrometer.core.instrument.Tag;
+import io.micrometer.core.instrument.binder.MeterBinder;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudManager;
@@ -43,10 +44,15 @@ public class XPluginImpl implements Plugin {
         context.beanInterceptorAdd(MeterTimer.class, new MeterTimerInterceptor());
 
         //订阅 MeterRegistry
-        context.subBeansOfType(MeterRegistry.class, bean -> {
-            if (bean != Metrics.globalRegistry) {
-                Metrics.addRegistry(bean);
+        context.subBeansOfType(MeterRegistry.class, registry -> {
+            if (registry != Metrics.globalRegistry) {
+                Metrics.addRegistry(registry);
             }
+        });
+
+        //订阅 MeterBinder
+        context.subBeansOfType(MeterBinder.class, binder->{
+            binder.bindTo(Metrics.globalRegistry);
         });
 
         //将 globalRegistry 转到容器（提供注入支持）

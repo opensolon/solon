@@ -12,7 +12,7 @@
 ### 2.4.2
 * 新增 solon.boot.vertx 插件?
 * 增加 quartz jdbc 及时更新支持（数据库里变了，它马上变）？
-* 增加 solon-admin-client 接口访问控制？
+* 增加 solon.cloud.metrics 对 MeterBinder 的自动装配处理
 
 ### 2.4.2
 * 新增 lettuce-solon-plugin 插件
@@ -24,6 +24,7 @@
 * 增加 RouterInterceptor::pathPatterns 接口，原接口标为弃用
 * 增加 solon-admin-server 对 basic auth 配置的支持
 * 增加 solon-admin-server 对 uiPath 配置的支持
+* 增加 solon-admin-client 接口安全控制
 * 增加 solon-admin-client 与 server 一起使用时，自动识别 serverUrl
 * 增加 solon-admin-client 增加 token 访问控制
 * 调整 solon-admin-client ，元信息改为 solon.app 的内容；server 监视日志改为 trace 级别
