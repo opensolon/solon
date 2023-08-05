@@ -13,5 +13,9 @@ import java.lang.annotation.*;
 @Documented
 @Inherited
 public @interface TestPropertySource {
+    /**
+     * 例，资源文件：classpath:demo.yml
+     * 例，外部文件：./demo.yml
+     * */
     String[] value();
 }
