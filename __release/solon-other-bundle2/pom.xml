@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.noear</groupId>
+        <artifactId>solon-parent</artifactId>
+        <version>2.4.3-SNAPSHOT</version>
+        <relativePath>../../solon-parent/pom.xml</relativePath>
+    </parent>
+
+    <groupId>org.noear.bundle</groupId>
+    <artifactId>solon-other-bundle2</artifactId>
+    <packaging>pom</packaging>
+
+    <modules>
+
+        <module>../../solon-projects-other/solon-plugin-data-sql/beetlsql-solon-plugin</module>
+
+        <module>../../solon-projects-other/solon-plugin-data-sql/hasordb-solon-plugin</module>
+        <module>../../solon-projects-other/solon-plugin-data-sql/dbvisitor-solon-plugin</module>
+
+        <module>../../solon-projects-other/solon-plugin-data-sql/sqltoy-solon-plugin</module>
+
+        <module>../../solon-projects-other/solon-plugin-data-sql/mybatis-solon-plugin</module>
+        <module>../../solon-projects-other/solon-plugin-data-sql/mybatis-sqlhelper-solon-plugin</module>
+        <module>../../solon-projects-other/solon-plugin-data-sql/mybatis-pagehelper-solon-plugin</module>
+
+        <module>../../solon-projects-other/solon-plugin-data-sql/mybatis-plus-solon-plugin</module>
+        <module>../../solon-projects-other/solon-plugin-data-sql/mybatis-plus-extension-solon-plugin</module>
+
+        <module>../../solon-projects-other/solon-plugin-data-sql/mybatis-flex-solon-plugin</module>
+        <module>../../solon-projects-other/solon-plugin-data-sql/fastmybatis-solon-plugin</module>
+
+        <module>../../solon-projects-other/solon-plugin-data-sql/activerecord-solon-plugin</module>
+
+
+        <module>../../solon-projects-other/solon-plugin-data-sql/weed3-solon-plugin</module>
+        <module>../../solon-projects-other/solon-plugin-data-sql/wood-solon-plugin</module>
+
+        <module>../../solon-projects-other/solon-plugin-data-sql/bean-searcher-solon-plugin</module>
+
+        <module>../../solon-projects-other/solon-plugin-data-sql/openjpa-solon-plugin</module>
+
+        <module>../../solon-projects-other/solon-plugin-data-nosql/redisson-solon-plugin</module>
+        <module>../../solon-projects-other/solon-plugin-data-nosql/lettuce-solon-plugin</module>
+    </modules>
+</project>

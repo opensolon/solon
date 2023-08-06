@@ -14,7 +14,7 @@
 * 增加 quartz jdbc 及时更新支持（数据库里变了，它马上变）？
 * 增加 solon.cloud.metrics 对 MeterBinder 的自动装配处理
 * 调整 solon-test 依赖，改成 solon-test-junit4 和 solon-test-junit5 的集合
-* 调整 solon-cloud 模块结构
+* 调整 solon 模块结构
 
 ### 2.4.2
 * 新增 lettuce-solon-plugin 插件

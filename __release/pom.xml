@@ -23,15 +23,19 @@
 
         <module>nami-bundle</module>
 
-        <module>solon-base-bundle</module>
-        <module>solon-base-boot-bundle</module>
-        <module>solon-base-extend-bundle</module>
-        <module>solon-base-render-bundle</module>
+        <module>solon-base-bundle1</module>
+        <module>solon-base-bundle2</module>
+        <module>solon-base-bundle3</module>
+        <module>solon-base-bundle4</module>
+        <module>solon-base-bundle5</module>
+        <module>solon-base-bundle6</module>
 
-        <module>solon-plugin-bundle</module>
-        <module>solon-plugin-bundle2</module>
-        <module>solon-plugin-data-bundle</module>
-        <module>solon-plugin-cloud-bundle</module>
+        <module>solon-cloud-bundle1</module>
+        <module>solon-cloud-bundle2</module>
+
+        <module>solon-other-bundle1</module>
+        <module>solon-other-bundle2</module>
+        <module>solon-other-bundle3</module>
 
         <module>solon-tool-bundle</module>
 

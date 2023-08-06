@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.noear</groupId>
+        <artifactId>solon-parent</artifactId>
+        <version>2.4.3-SNAPSHOT</version>
+        <relativePath>../../solon-parent/pom.xml</relativePath>
+    </parent>
+
+    <groupId>org.noear.bundle</groupId>
+    <artifactId>solon-other-bundle3</artifactId>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>../../solon-projects-other/solon-plugin-auth/sa-token-solon-plugin</module>
+        <module>../../solon-projects-other/solon-plugin-auth/vaptcha-solon-plugin</module>
+
+        <module>../../solon-projects-other/solon-plugin-flow/liteflow-solon-plugin</module>
+
+
+        <module>../../solon-projects-other/solon-plugin-rpc/dubbo-solon-plugin</module>
+        <module>../../solon-projects-other/solon-plugin-rpc/dubbo3-solon-plugin</module>
+        <module>../../solon-projects-other/solon-plugin-rpc/feign-solon-plugin</module>
+        <module>../../solon-projects-other/solon-plugin-rpc/forest-solon-plugin</module>
+
+        <module>../../solon-projects-other/solon-plugin-auth/captcha-solon-plugin</module>
+        <module>../../solon-projects-other/solon-plugin-auth/jap-ids-solon-plugin</module>
+        <module>../../solon-projects-other/solon-plugin-auth/jap-solon-plugin</module>
+
+        <module>../../solon-projects-other/solon-plugin-job/cron4j-solon-plugin</module>
+        <module>../../solon-projects-other/solon-plugin-job/powerjob-solon-plugin</module>
+        <module>../../solon-projects-other/solon-plugin-job/quartz-solon-plugin</module>
+
+
+        <module>../../solon-projects-other/solon-plugin-weixin/weixin-java-cp-solon-plugin</module>
+        <module>../../solon-projects-other/solon-plugin-weixin/weixin-java-miniapp-solon-plugin</module>
+        <module>../../solon-projects-other/solon-plugin-weixin/weixin-java-mp-solon-plugin</module>
+        <module>../../solon-projects-other/solon-plugin-weixin/weixin-java-open-solon-plugin</module>
+        <module>../../solon-projects-other/solon-plugin-weixin/weixin-java-pay-solon-plugin</module>
+        <module>../../solon-projects-other/solon-plugin-weixin/weixin-java-qidian-solon-plugin</module>
+    </modules>
+</project>
