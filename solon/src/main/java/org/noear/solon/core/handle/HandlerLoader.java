@@ -43,19 +43,11 @@ public class HandlerLoader extends HandlerAide {
         }
     }
 
-    public HandlerLoader(BeanWrap wrap, String mapping) {
-        initDo(wrap, mapping, wrap.remoting(), null, true);
-    }
-
-    public HandlerLoader(BeanWrap wrap, String mapping, boolean remoting) {
-        initDo(wrap, mapping, remoting, null, true);
-    }
-
     public HandlerLoader(BeanWrap wrap, String mapping, boolean remoting, Render render, boolean allowMapping) {
         initDo(wrap, mapping, remoting, render, allowMapping);
     }
 
-    private void initDo(BeanWrap wrap, String mapping, boolean remoting, Render render, boolean allowMapping) {
+    protected void initDo(BeanWrap wrap, String mapping, boolean remoting, Render render, boolean allowMapping) {
         bw = wrap;
         bRender = render;
         this.allowMapping = allowMapping;
@@ -93,12 +85,14 @@ public class HandlerLoader extends HandlerAide {
         if (Handler.class.isAssignableFrom(bw.clz())) {
             loadHandlerDo(slots);
         } else {
-            loadActionDo(slots, all || bRemoting);
+            loadActions(slots, all || bRemoting);
         }
     }
 
     /**
      * 加载处理
+     *
+     * @param slots 接收加载结果的容器（槽）
      */
     protected void loadHandlerDo(HandlerSlots slots) {
         if (bMapping == null) {
@@ -115,8 +109,8 @@ public class HandlerLoader extends HandlerAide {
 
     /**
      * 查找 method
-     * */
-    protected Method[] findMethods(Class<?> clz){
+     */
+    protected Method[] findMethods(Class<?> clz) {
         return ReflectUtil.getDeclaredMethods(clz);
     }
 
@@ -124,9 +118,7 @@ public class HandlerLoader extends HandlerAide {
     /**
      * 加载 Action 处理
      */
-    protected void loadActionDo(HandlerSlots slots, boolean all) {
-        String m_path;
-
+    protected void loadActions(HandlerSlots slots, boolean all) {
         if (bPath == null) {
             bPath = "";
         }
@@ -135,78 +127,85 @@ public class HandlerLoader extends HandlerAide {
 
         loadControllerAide(b_method);
 
-        Set<MethodType> m_method;
-        Mapping m_map;
-
-
         //只支持 public 函数为 Action
         for (Method method : findMethods(bw.clz())) {
-            m_map = method.getAnnotation(Mapping.class);
-            m_method = new HashSet<>();
+            loadActionItem(slots, all, method, b_method);
+        }
+    }
 
-            //如果没有注解，则只允许 public
-            if (m_map == null) {
-                if (Modifier.isPublic(method.getModifiers()) == false) {
-                    continue;
-                }
+    /**
+     * 加载 Action item 处理
+     */
+    protected void loadActionItem(HandlerSlots slots, boolean all, Method method, Set<MethodType> b_method){
+        String m_path;
+        Mapping m_map = method.getAnnotation(Mapping.class);
+        Set<MethodType> m_method = new HashSet<>();
+
+        //如果没有注解，则只允许 public
+        if (m_map == null) {
+            if (Modifier.isPublic(method.getModifiers()) == false) {
+                return;
+            }
+        }
+
+        //获取 action 的 methodTypes
+        MethodTypeUtil.findAndFill(m_method, t -> method.getAnnotation(t) != null);
+
+        //构建path and method
+        if (m_map != null) {
+            m_path = Utils.annoAlias(m_map.value(), m_map.path());
+
+            if (m_method.size() == 0) {
+                //如果没有找到，则用Mapping上自带的
+                m_method.addAll(Arrays.asList(m_map.method()));
+            }
+        } else {
+            m_path = method.getName();
+
+            if (m_method.size() == 0) {
+                //获取 controller 的 methodTypes
+                MethodTypeUtil.findAndFill(m_method, t -> bw.clz().getAnnotation(t) != null);
             }
 
-            //获取 action 的 methodTypes
-            MethodTypeUtil.findAndFill(m_method, t -> method.getAnnotation(t) != null);
-
-            //构建path and method
-            if (m_map != null) {
-                m_path = Utils.annoAlias(m_map.value(), m_map.path());
-
-                if (m_method.size() == 0) {
-                    //如果没有找到，则用Mapping上自带的
-                    m_method.addAll(Arrays.asList(m_map.method()));
-                }
-            } else {
-                m_path = method.getName();
-
-                if (m_method.size() == 0) {
-                    //获取 controller 的 methodTypes
-                    MethodTypeUtil.findAndFill(m_method, t -> bw.clz().getAnnotation(t) != null);
-                }
-
-                if (m_method.size() == 0) {
-                    //如果没有找到，则用Mapping上自带的；或默认
-                    if (bMapping == null) {
-                        m_method.add(MethodType.HTTP);
-                    } else {
-                        m_method.addAll(Arrays.asList(bMapping.method()));
-                    }
+            if (m_method.size() == 0) {
+                //如果没有找到，则用Mapping上自带的；或默认
+                if (bMapping == null) {
+                    m_method.add(MethodType.HTTP);
+                } else {
+                    m_method.addAll(Arrays.asList(bMapping.method()));
                 }
             }
+        }
 
-            //如果是service，method 就不需要map
-            if (m_map != null || all) {
-                String newPath = PathUtil.mergePath(bPath, m_path);
+        //如果是service，method 就不需要map
+        if (m_map != null || all) {
+            String newPath = PathUtil.mergePath(bPath, m_path);
 
-                Action action = createAction(bw, method, m_map, newPath, bRemoting);
+            Action action = createAction(bw, method, m_map, newPath, bRemoting);
 
-                //m_method 必须之前已准备好，不再动  //用于支持 Cors
-                loadActionAide(method, action, m_method);
-                if (b_method.size() > 0 &&
-                        m_method.contains(MethodType.HTTP) == false &&
-                        m_method.contains(MethodType.ALL) == false) {
-                    //用于支持 Cors
-                    m_method.addAll(b_method);
-                }
+            //m_method 必须之前已准备好，不再动  //用于支持 Cors
+            loadActionAide(method, action, m_method);
+            if (b_method.size() > 0 &&
+                    m_method.contains(MethodType.HTTP) == false &&
+                    m_method.contains(MethodType.ALL) == false) {
+                //用于支持 Cors
+                m_method.addAll(b_method);
+            }
 
-                for (MethodType m1 : m_method) {
-                    if (m_map == null) {
-                        slots.add(newPath, m1, action);
-                    } else {
-                        slots.add(newPath, m1, action);
-                    }
+            for (MethodType m1 : m_method) {
+                if (m_map == null) {
+                    slots.add(newPath, m1, action);
+                } else {
+                    slots.add(newPath, m1, action);
                 }
             }
         }
     }
 
 
+    /**
+     * 加载控制器助理（Before、After）
+     * */
     protected void loadControllerAide(Set<MethodType> methodSet) {
         for (Annotation anno : bw.clz().getAnnotations()) {
             if (anno instanceof Before) {
@@ -228,6 +227,9 @@ public class HandlerLoader extends HandlerAide {
         }
     }
 
+    /**
+     * 加载动作助理（Before、After）
+     * */
     protected void loadActionAide(Method method, Action action, Set<MethodType> methodSet) {
         for (Annotation anno : method.getAnnotations()) {
             if (anno instanceof Before) {
@@ -266,7 +268,7 @@ public class HandlerLoader extends HandlerAide {
     /**
      * 附加处理
      */
-    private static <T> void addDo(T[] ary, ConsumerEx<T> fun) {
+    protected <T> void addDo(T[] ary, ConsumerEx<T> fun) {
         if (ary != null) {
             for (T t : ary) {
                 try {

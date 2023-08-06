@@ -363,7 +363,7 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
             bPath = Utils.annoAlias(bMapping.value(), bMapping.path());
         }
 
-        HandlerLoader uw = new HandlerLoader(beanWp, bPath, remoting, this, allowActionMapping());
+        HandlerLoader uw = HandlerLoaderFactory.global().create(beanWp, bPath, remoting, this, allowActionMapping());
 
         uw.load((expr, method, handler) -> {
             if (path == null) {

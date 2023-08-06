@@ -188,7 +188,7 @@ public class AopContext extends BeanContainer {
 
         //注册 @Controller 构建器
         beanBuilderAdd(Controller.class, (clz, bw, anno) -> {
-            new HandlerLoader(bw).load(Solon.app());
+            HandlerLoaderFactory.global().create(bw).load(Solon.app());
         });
 
         //注册 @ServerEndpoint 构建器

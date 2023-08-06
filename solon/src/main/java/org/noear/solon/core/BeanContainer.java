@@ -10,6 +10,7 @@ import org.noear.solon.core.aspect.Interceptor;
 import org.noear.solon.core.aspect.InterceptorEntity;
 import org.noear.solon.core.exception.InjectionException;
 import org.noear.solon.core.handle.HandlerLoader;
+import org.noear.solon.core.handle.HandlerLoaderFactory;
 import org.noear.solon.core.runtime.AotCollector;
 import org.noear.solon.core.util.ConvertUtil;
 import org.noear.solon.core.util.ResourceUtil;
@@ -581,7 +582,7 @@ public abstract class BeanContainer {
 
         //尝试Remoting处理。如果是，则加载到 Solon 路由器
         if (bw.remoting()) {
-            HandlerLoader bww = new HandlerLoader(bw);
+            HandlerLoader bww = HandlerLoaderFactory.global().create(bw);
             if (bww.mapping() != null) {
                 //
                 //如果没有xmapping，则不进行web注册
