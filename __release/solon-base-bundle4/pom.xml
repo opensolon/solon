@@ -28,9 +28,9 @@
         <module>../../solon-projects/solon-boot/solon.boot.socketd.rsocket</module>
         <module>../../solon-projects/solon-boot/solon.boot.socketd.websocket</module>
 
-        <module>../../solon-projects/solon-detector/solon.health</module>
-        <module>../../solon-projects/solon-detector/solon.health.detector</module>
-        <module>../../solon-projects/solon-detector/detector-solon-plugin</module>
+        <module>../../solon-projects/solon-health/solon.health</module>
+        <module>../../solon-projects/solon-health/solon.health.detector</module>
+        <module>../../solon-projects/solon-health/detector-solon-plugin</module>
         <module>../../solon-projects/solon-testing/solon.test</module>
         <module>../../solon-projects/solon-testing/solon-test</module>
         <module>../../solon-projects/solon-testing/solon-test-junit4</module>
