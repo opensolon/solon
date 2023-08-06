@@ -37,8 +37,6 @@
         <module>solon-other-bundle2</module>
         <module>solon-other-bundle3</module>
 
-        <module>solon-tool-bundle</module>
-
         <module>solon-shortcuts-bundle</module>
     </modules>
 </project>
