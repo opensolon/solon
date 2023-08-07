@@ -2,7 +2,16 @@ package org.noear.solon.admin.server.controller;
 
 import org.noear.solon.admin.server.data.Application;
 import org.noear.solon.admin.server.services.ApplicationService;
-import org.noear.solon.annotation.*;
+import org.noear.solon.annotation.Body;
+import org.noear.solon.annotation.Controller;
+import org.noear.solon.annotation.Delete;
+import org.noear.solon.annotation.Get;
+import org.noear.solon.annotation.Inject;
+import org.noear.solon.annotation.Mapping;
+import org.noear.solon.annotation.Param;
+import org.noear.solon.annotation.Post;
+import org.noear.solon.annotation.Put;
+import org.noear.solon.core.handle.Result;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -22,37 +31,44 @@ public class ApplicationController {
 
     /**
      * 注册应用程序
+     *
      * @param application 应用程序
      */
     @Put
     @Mapping("/register")
-    public void register(@Body Application application) {
+    public Result<?> register(@Body Application application) {
         applicationService.registerApplication(application);
+        return Result.succeed();
     }
 
     /**
      * 注销应用程序
+     *
      * @param application 应用程序
      */
     @Delete
     @Mapping("/unregister")
-    public void unregister(@Body Application application) {
+    public Result<?> unregister(@Body Application application) {
         applicationService.unregisterApplication(application);
+        return Result.succeed();
     }
 
     /**
      * 发送一次心跳
+     *
      * @param application 应用程序
      */
     @Post
     @Mapping("/heartbeat")
-    public void heartbeat(@Body Application application) {
+    public Result<?> heartbeat(@Body Application application) {
         applicationService.heartbeatApplication(application);
+        return Result.succeed();
     }
 
     /**
      * 获取应用程序信息
-     * @param name 应用程序名称
+     *
+     * @param name    应用程序名称
      * @param baseUrl 应用程序 baseUrl
      * @return 应用程序信息
      */
