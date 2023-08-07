@@ -10,13 +10,13 @@ import okhttp3.Response;
 import org.noear.snack.ONode;
 import org.noear.solon.Solon;
 import org.noear.solon.admin.client.config.ClientProperties;
-import org.noear.solon.admin.client.data.AdminResponse;
 import org.noear.solon.admin.client.data.Application;
 import org.noear.solon.admin.client.data.EnvironmentInformation;
 import org.noear.solon.admin.client.utils.JsonUtils;
 import org.noear.solon.admin.client.utils.NetworkUtils;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Inject;
+import org.noear.solon.core.handle.Result;
 
 import java.io.IOException;
 import java.net.URL;
@@ -133,8 +133,8 @@ public class ApplicationRegistrationService {
             log.error("Failed to {} to Solon Admin server. response: {}", type, response);
         }
         String res = new String(response.body().bytes());
-        AdminResponse adminResponse = ONode.load(res).toObject(AdminResponse.class);
-        if (adminResponse.isSuccess()) {
+        Result<?> result = ONode.load(res).toObject(Result.class);
+        if (result.getCode() == 200) {
             if (traceLog) {
                 log.trace("Successfully {} to Solon Admin server.", type);
             } else {
