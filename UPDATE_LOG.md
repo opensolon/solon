@@ -11,19 +11,40 @@
 
 ### 2.4.2
 * 新增 solon.boot.vertx 插件?
-* 新增 solon.cloud.metrics 插件?
-* 增加 solon-admin-server 对 basic auth 配置的支持
-* 增加 solon-admin-server 对 uiPath 配置的支持
-* 增加 solon-admin-client 与 server 一起使用时，自动识别 serverUrl
+* 增加 quartz jdbc 及时更新支持（数据库里变了，它马上变）？
+* 增加 solon.cloud.metrics 对 MeterBinder 的自动装配处理
+* 增加 HandlerLoaderFactory，以实现所有 `@Mapping` 注解解析的重写支持
+* 调整 solon-test 依赖，改成 solon-test-junit4 和 solon-test-junit5 的集合
+* 调整 solon 模块结构
+
+### 2.4.2
+* 新增 lettuce-solon-plugin 插件
+* 新增 solon.docs.openapi2 插件
+* 新增 solon.cloud.metrics 插件
+* 升级 solon-maven-plugin 的相关依赖
+* 增加 `List<Bean>` 和 `Map<String,Bean>` 注入支持
 * 增加 Context::attrOrDefault 接口，原接口标为弃用
 * 增加 RouterInterceptor::pathPatterns 接口，原接口标为弃用
+* 增加 solon-admin-server 对 basic auth 配置的支持
+* 增加 solon-admin-server 对 uiPath 配置的支持
+* 增加 solon-admin-client 接口安全控制
+* 增加 solon-admin-client 与 server 一起使用时，自动识别 serverUrl
+* 增加 solon-admin-client 增加 token 访问控制
+* 调整 solon-admin-client ，元信息改为 solon.app 的内容；server 监视日志改为 trace 级别
 * 调整 solon.docs 的控制器启动，转到 solon-openapi2-knife4j。方便不同的框架定制自己的服务
-* 调整 solon-admin-client ，元信息改为 solon.app 的内容；server 监视日志改为 trace
-* 优化 sa-token-solon-plugin 插件，增加对网关的支持
-* 修复 “@CloudEventSubscribe” 注解在函数会出错的问题
-* mybatis-flex 升为 1.5.3
+* 调整 `@Bean` 函数的 VarGather::requireRun 由 false 改为 true，只要过了条件检测必然运行
+* 调整 sa-token-solon-plugin 插件，增加对网关的支持
+* 调整 CloudMetricService 接口设计，更适合与 micrometer 对接
+* 调整 solon.health.detector 代码实现，增加复用性
+* 修复 solon.cloud.eventplus 插件 `@CloudEventSubscribe` 注解在函数会出错的问题
+* 修复 solon.docs 插件 `@ApiParam` 注解无效的问题
+* mybatis-flex 升为 1.5.6
+* beetlsql 升为 3.23.6-RELEASE
 * sqltoy 升为 5.2.60
-* snack3 升为 3.2.74
+* snack3 升为 3.2.75
+* wood 升为 1.1.8
+* smarthttp 升为 1.2.9
+* smartsocket 升为 1.5.32
 
 ### 2.4.1
 * 新增 solon.web.servlet.jakarta 插件（用于 war 打包时，支持 tomcat10, jetty11 等 jakarta.servlet 容器）

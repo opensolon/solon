@@ -10,6 +10,7 @@ import org.noear.solon.core.aspect.Interceptor;
 import org.noear.solon.core.aspect.InterceptorEntity;
 import org.noear.solon.core.exception.InjectionException;
 import org.noear.solon.core.handle.HandlerLoader;
+import org.noear.solon.core.handle.HandlerLoaderFactory;
 import org.noear.solon.core.runtime.AotCollector;
 import org.noear.solon.core.util.ConvertUtil;
 import org.noear.solon.core.util.ResourceUtil;
@@ -174,10 +175,11 @@ public abstract class BeanContainer {
         });
     }
 
+    //bean builder, injector, extractor
 
 
     /**
-     * 添加 bean builder, injector, extractor
+     * 添加构建处理
      */
     public <T extends Annotation> void beanBuilderAdd(Class<T> annoClz, BeanBuilder<T> builder) {
         beanBuilders.put(annoClz, builder);
@@ -237,7 +239,7 @@ public abstract class BeanContainer {
      */
     @Deprecated
     public <T extends Annotation> void beanAroundAdd(Class<T> annoClz, Interceptor interceptor, int index) {
-        beanInterceptors.put(annoClz, new InterceptorEntity(index, interceptor));
+        beanInterceptorAdd(annoClz, interceptor, index);
     }
 
     /**
@@ -248,7 +250,7 @@ public abstract class BeanContainer {
      */
     @Deprecated
     public <T extends Annotation> void beanAroundAdd(Class<T> annoClz, Interceptor interceptor) {
-        beanAroundAdd(annoClz, interceptor, 0);
+        beanInterceptorAdd(annoClz, interceptor);
     }
 
     /**
@@ -259,7 +261,7 @@ public abstract class BeanContainer {
      */
     @Deprecated
     public <T extends Annotation> InterceptorEntity beanAroundGet(Class<T> annoClz) {
-        return beanInterceptors.get(annoClz);
+        return beanInterceptorGet(annoClz);
     }
 
 
@@ -314,7 +316,7 @@ public abstract class BeanContainer {
     /**
      * wrap 发布，偏向对外 （只支持 @Bean 和 @Component 的 wrap）
      */
-    protected void wrapPublish(BeanWrap wrap) {
+    public void wrapPublish(BeanWrap wrap) {
         //避免在forEach时，对它进行add
         new ArrayList<>(wrapExternalConsumers).forEach(s1 -> {
             s1.accept(wrap);
@@ -580,7 +582,7 @@ public abstract class BeanContainer {
 
         //尝试Remoting处理。如果是，则加载到 Solon 路由器
         if (bw.remoting()) {
-            HandlerLoader bww = new HandlerLoader(bw);
+            HandlerLoader bww = HandlerLoaderFactory.global().create(bw);
             if (bww.mapping() != null) {
                 //
                 //如果没有xmapping，则不进行web注册

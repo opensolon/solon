@@ -173,7 +173,7 @@ public class AopContext extends BeanContainer {
 
         //注册 @ProxyComponent 构建器
         beanBuilderAdd(ProxyComponent.class, (clz, bw, anno) -> {
-            if(NativeDetector.isNotAotRuntime()) {
+            if (NativeDetector.isNotAotRuntime()) {
                 throw new IllegalStateException("Missing plugin dependency: 'solon.proxy'");
             }
         });
@@ -188,7 +188,7 @@ public class AopContext extends BeanContainer {
 
         //注册 @Controller 构建器
         beanBuilderAdd(Controller.class, (clz, bw, anno) -> {
-            new HandlerLoader(bw).load(Solon.app());
+            HandlerLoaderFactory.global().create(bw).load(Solon.app());
         });
 
         //注册 @ServerEndpoint 构建器
@@ -201,9 +201,59 @@ public class AopContext extends BeanContainer {
 
 
         //注册 @Inject 注入器
-        beanInjectorAdd(Inject.class, ((fwT, anno) -> {
-            beanInject(fwT, anno.value(), anno.required(), anno.autoRefreshed());
+        beanInjectorAdd(Inject.class, ((varH, anno) -> {
+            beanInject(varH, anno.value(), anno.required(), anno.autoRefreshed());
         }));
+    }
+
+    @Override
+    protected void beanInject(VarHolder varH, String name, boolean required, boolean autoRefreshed) {
+        super.beanInject(varH, name, required, autoRefreshed);
+
+        if(varH.isDone()){
+            return;
+        }
+
+        if (Utils.isEmpty(name) && varH.getGenericType() != null) {
+            if (List.class == varH.getType()) {
+                //支持 List<Bean> 注入
+                Type type = varH.getGenericType().getActualTypeArguments()[0];
+                if (type instanceof Class) {
+                    varH.required(required);
+                    lifecycle(-999999, () -> {
+                        if(varH.isDone()){
+                            return;
+                        }
+
+                        List beanList = this.getBeansOfType((Class<? extends Object>) type);
+                        varH.setValue(beanList);
+                    });
+                    return;
+                }
+            }
+
+            if (Map.class == varH.getType()) {
+                //支持 Map<String,Bean> 注入
+                Type keyType = varH.getGenericType().getActualTypeArguments()[0];
+                Type valType = varH.getGenericType().getActualTypeArguments()[1];
+                if (String.class == keyType && valType instanceof Class) {
+                    varH.required(required);
+                    lifecycle(-999999, () -> {
+                        if(varH.isDone()){
+                            return;
+                        }
+
+                        Map<String, Object> beanMap = new HashMap<>();
+                        List<BeanWrap> wrapList = this.getWrapsOfType((Class<? extends Object>) valType);
+                        for (BeanWrap bw : wrapList) {
+                            beanMap.put(bw.name(), bw.raw());
+                        }
+                        varH.setValue(beanMap);
+                    });
+                    return;
+                }
+            }
+        }
     }
 
     /**
@@ -603,8 +653,8 @@ public class AopContext extends BeanContainer {
             //0.没有参数
             tryBuildBeanDo(anno, mWrap, bw, new Object[]{});
         } else {
-            //1.构建参数
-            VarGather gather = new VarGather(false, size2, (args2) -> {
+            //1.构建参数 (requireRun=false => true) //运行条件已经确认过，且必须已异常
+            VarGather gather = new VarGather(true, size2, (args2) -> {
                 //变量收集完成后，会回调此处
                 RunUtil.runOrThrow(() -> tryBuildBeanDo(anno, mWrap, bw, args2));
             });

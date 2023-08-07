@@ -1,0 +1,18 @@
+server.port: 8889
+
+solon.app:
+  name: "SolonAdminClient"
+  group: "demo"
+
+solon.admin.client:
+  mode: "local"
+  serverUrl: "http://localhost:8888"
+  metadata: "demo"
+
+#solon.cloud.consul:
+#  server: "localhost"
+solon.logging.appender:
+  console:
+    level: INFO
+  cloud:
+    level: INFO

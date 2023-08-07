@@ -4,10 +4,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
+import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
 import webapp.App;
+import webapp.demo6_aop.beans.DnBean;
+import webapp.demo6_aop.beans.DsBean;
 import webapp.models.TestModel;
 
 import java.util.List;
@@ -60,6 +63,13 @@ public class InjectTest {
 
     @Inject
     Map<String, Object> map;
+
+
+    @Inject
+    Map<String, DnBean> dnBeanMap;
+
+    @Inject
+    List<DsBean> dsBeanList;
 
     @Test
     public void test1() {
@@ -131,5 +141,18 @@ public class InjectTest {
     public void def_set_test4_2() {
         assert injectSet4_2 != null;
         assert injectSet4_2.length == 3;
+    }
+
+    @Bean
+    public void inject_dsBeanList() {
+        assert dsBeanList != null;
+        assert dsBeanList.size() == 2;
+    }
+
+    @Bean
+    public void inject_dnBeanMap() {
+        assert dnBeanMap != null;
+        assert dnBeanMap.size() == 2;
+        assert dnBeanMap.get("DnBean2") != null;
     }
 }

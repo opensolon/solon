@@ -59,8 +59,6 @@ public class FieldWrap {
         annoS = f1.getDeclaredAnnotations();
         readonly = isFinal;
 
-        field.setAccessible(true);
-
         Type tmp = f1.getGenericType();
         if (tmp instanceof TypeVariable) {
             //如果是类型变量，则重新构建类型
@@ -137,6 +135,9 @@ public class FieldWrap {
      */
     public Object getValue(Object tObj) throws ReflectiveOperationException {
         if (_getter == null) {
+            if (!field.isAccessible()) {
+                field.setAccessible(true);
+            }
             return field.get(tObj);
         } else {
             return _getter.invoke(tObj);
@@ -160,6 +161,9 @@ public class FieldWrap {
             }
 
             if (_setter == null || disFun) {
+                if (!field.isAccessible()) {
+                    field.setAccessible(true);
+                }
                 field.set(tObj, val);
             } else {
                 _setter.invoke(tObj, new Object[]{val});

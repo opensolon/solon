@@ -28,7 +28,7 @@ public class CloudJobInterceptorImpl implements CloudJobInterceptor {
         } finally {
             //记录一个内部处理的花费时间
             long timespan = System.currentTimeMillis() - start;
-            CloudClient.metric().addMeter(Solon.cfg().appName(), "job", timespan);
+            CloudClient.metric().addTimer(Solon.cfg().appName(), "job", timespan);
         }
     }
 }
