@@ -1,5 +1,6 @@
 package org.noear.solon.admin.server.controller;
 
+import org.noear.solon.admin.server.data.AdminResponse;
 import org.noear.solon.admin.server.data.Application;
 import org.noear.solon.admin.server.services.ApplicationService;
 import org.noear.solon.annotation.*;
@@ -26,8 +27,9 @@ public class ApplicationController {
      */
     @Put
     @Mapping("/register")
-    public void register(@Body Application application) {
+    public AdminResponse register(@Body Application application) {
         applicationService.registerApplication(application);
+        return AdminResponse.success();
     }
 
     /**
@@ -36,8 +38,9 @@ public class ApplicationController {
      */
     @Delete
     @Mapping("/unregister")
-    public void unregister(@Body Application application) {
+    public AdminResponse unregister(@Body Application application) {
         applicationService.unregisterApplication(application);
+        return AdminResponse.success();
     }
 
     /**
@@ -46,8 +49,9 @@ public class ApplicationController {
      */
     @Post
     @Mapping("/heartbeat")
-    public void heartbeat(@Body Application application) {
+    public AdminResponse heartbeat(@Body Application application) {
         applicationService.heartbeatApplication(application);
+        return AdminResponse.success();
     }
 
     /**
