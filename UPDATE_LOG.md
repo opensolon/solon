@@ -15,6 +15,7 @@
 * 增加 solon.cloud.metrics 对 MeterBinder 的自动装配处理
 * 增加 HandlerLoaderFactory，以实现所有 `@Mapping` 注解解析的重写支持
 * 调整 solon-test 依赖，改成 solon-test-junit4 和 solon-test-junit5 的集合
+* 调整 FiledWrap 设置权限的时机延后，改为用时再设
 * 调整 solon 模块结构
 
 ### 2.4.2
