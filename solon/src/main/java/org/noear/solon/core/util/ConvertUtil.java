@@ -13,9 +13,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.nio.charset.Charset;
 import java.text.ParseException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.time.*;
 import java.util.*;
 
 /**
@@ -280,26 +278,35 @@ public class ConvertUtil {
         }
 
         if (Date.class == type) {
-            try {
-                return DateAnalyzer.global().parse(val);
-            } catch (ParseException e) {
-                throw new ConvertException(e);
-            }
+            return dateOf(val);
         }
 
         if (LocalDate.class == type) {
             //as "2007-12-03", not null
-            return LocalDate.parse(val);
+            //return LocalDate.parse(val);
+            return dateOf(val).toInstant()
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDate();
         }
 
         if (LocalTime.class == type) {
             //as "10:15:30", not null
-            return LocalTime.parse(val);
+            //return LocalTime.parse(val);
+            return dateOf(val).toInstant()
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalTime();
         }
 
         if (LocalDateTime.class == type) {
             //as "2007-12-03T10:15:30", not null
-            return LocalDateTime.parse(val);
+            //return LocalDateTime.parse(val);
+            return dateOf(val).toInstant()
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDateTime();
+        }
+
+        if (Instant.class == type){
+            return dateOf(val).toInstant();
         }
 
         if (BigDecimal.class == type) {
@@ -327,6 +334,14 @@ public class ConvertUtil {
         }
 
         return null;
+    }
+
+    private static Date dateOf(String val){
+        try {
+            return DateAnalyzer.global().parse(val);
+        } catch (ParseException e) {
+            throw new ConvertException(e);
+        }
     }
 
     /**

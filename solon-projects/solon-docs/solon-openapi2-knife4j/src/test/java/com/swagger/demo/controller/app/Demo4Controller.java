@@ -27,6 +27,7 @@ public class Demo4Controller {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "paramA", value = "参数a", defaultValue = "1111"),
             @ApiImplicitParam(name = "paramB", value = "参数b", defaultValue = "222"),
+            @ApiImplicitParam(name = "headerA", value = "头a", defaultValue = "333", paramType = "header"),
     })
     @ApiRes({
             @ApiResProperty(name = "resA", value = "返回值A", example = "hello word1"),

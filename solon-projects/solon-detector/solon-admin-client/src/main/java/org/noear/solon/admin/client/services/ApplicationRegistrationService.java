@@ -2,7 +2,12 @@ package org.noear.solon.admin.client.services;
 
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
-import okhttp3.*;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+import org.noear.snack.ONode;
 import org.noear.solon.Solon;
 import org.noear.solon.admin.client.config.ClientProperties;
 import org.noear.solon.admin.client.data.Application;
@@ -11,7 +16,9 @@ import org.noear.solon.admin.client.utils.JsonUtils;
 import org.noear.solon.admin.client.utils.NetworkUtils;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Inject;
+import org.noear.solon.core.handle.Result;
 
+import java.io.IOException;
 import java.net.URL;
 
 /**
@@ -67,11 +74,8 @@ public class ApplicationRegistrationService {
                                         .build()
                         )))
                 .build()).execute()) {
-            if (response.isSuccessful()) {
-                log.info("Successfully register application to Solon Admin server.");
-                return;
-            }
-            log.error("Failed to register application to Solon Admin server. Response: {}", response);
+
+            assertResponse("register application", response, false);
         } catch (Exception ex) {
             log.error("Unexpected error occurred during the application registration:", ex);
         }
@@ -89,11 +93,8 @@ public class ApplicationRegistrationService {
                 .delete(RequestBody.create(MediaType.parse("application/json"),
                         JsonUtils.toJson(getCurrentApplication())))
                 .build()).execute()) {
-            if (response.isSuccessful()) {
-                log.info("Successfully unregister application from Solon Admin server.");
-                return;
-            }
-            log.error("Failed to unregister application to Solon Admin server. Response: {}", response);
+
+            assertResponse("unregister application", response, false);
         } catch (Exception ex) {
             log.error("Unexpected error occurred during the application de-registration:", ex);
         }
@@ -113,13 +114,34 @@ public class ApplicationRegistrationService {
                                 getCurrentApplication()
                         )))
                 .build()).execute()) {
-            if (response.isSuccessful()) {
-                log.trace("Successfully send heartbeat to Solon Admin server.");
-                return;
-            }
-            log.error("Failed to send heartbeat to Solon Admin server. Response: {}", response);
+
+            assertResponse("send heartbeat", response, true);
         } catch (Exception ex) {
             log.error("Unexpected error occurred during the heartbeat sending:", ex);
+        }
+    }
+
+    /**
+     * 确认响应是否成功
+     *
+     * @param type     请求类型
+     * @param response 响应
+     * @param traceLog true 成功后打印 trace 日志，false 打印 info 日志
+     */
+    private void assertResponse(String type, Response response, boolean traceLog) throws IOException {
+        if (!response.isSuccessful()) {
+            log.error("Failed to {} to Solon Admin server. response: {}", type, response);
+        }
+        String res = new String(response.body().bytes());
+        Result<?> result = ONode.load(res).toObject(Result.class);
+        if (result.getCode() == 200) {
+            if (traceLog) {
+                log.trace("Successfully {} to Solon Admin server.", type);
+            } else {
+                log.info("Successfully {} to Solon Admin server.", type);
+            }
+        } else {
+            log.error("Failed to {} to Solon Admin server. adminResponse: {}", type, res);
         }
     }
 

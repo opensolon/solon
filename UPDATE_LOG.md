@@ -9,12 +9,15 @@
 * 提醒1：之前没有使用弃用接口的，可以直接升级 <br>
 * 提醒2：有使用弃用接口的。建议先升级到 1.12.4；替换弃用代码后，再升级到 2.0.0
 
-### 2.4.2
+### 2.4.3
 * 新增 solon.boot.vertx 插件?
 * 增加 quartz jdbc 及时更新支持（数据库里变了，它马上变）？
 * 增加 solon.cloud.metrics 对 MeterBinder 的自动装配处理
 * 增加 HandlerLoaderFactory，以实现所有 `@Mapping` 注解解析的重写支持
 * 调整 solon-test 依赖，改成 solon-test-junit4 和 solon-test-junit5 的集合
+* 调整 ConvertUtil 内的 LocalDateTime 处理，先通过 Date 中转，统一时间格式
+* 调整 FiledWrap 设置权限的时机延后，改为用时再设
+* 调整 solon-admin 的 server 和 client 通信为有状态格式
 * 调整 solon 模块结构
 
 ### 2.4.2
