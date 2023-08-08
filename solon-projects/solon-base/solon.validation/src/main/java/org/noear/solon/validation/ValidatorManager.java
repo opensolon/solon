@@ -321,7 +321,7 @@ public class ValidatorManager {
         Result result = Result.succeed();
         List<BeanValidateInfo> list = new ArrayList<>();
         for (Map.Entry<String, FieldWrap> kv : cw.getFieldAllWraps().entrySet()) {
-            Field field = kv.getValue().field;
+            FieldWrap fieldWrap = kv.getValue();
 
             for (Annotation anno : kv.getValue().annoS) {
                 Validator valid = ValidatorManager.get(anno.annotationType());
@@ -333,11 +333,11 @@ public class ValidatorManager {
                     }
 
                     tmp.setLength(0);
-                    Result rst = valid.validateOfValue(anno, field.get(obj), tmp);
+                    Result rst = valid.validateOfValue(anno, fieldWrap.get(obj), tmp);
 
                     if (rst.getCode() != Result.SUCCEED_CODE) {
                         if (Utils.isEmpty(rst.getDescription())) {
-                            rst.setDescription(cw.clz().getSimpleName() + "." + field.getName());
+                            rst.setDescription(cw.clz().getSimpleName() + "." + fieldWrap.getName());
                         }
 
                         if (rst.getData() instanceof BeanValidateInfo == false) {

@@ -122,6 +122,10 @@ public class FieldWrap {
         return descriptor;
     }
 
+    public String getName(){
+        return field.getName();
+    }
+
 
     /**
      * 获取自身的临时对象
@@ -135,13 +139,17 @@ public class FieldWrap {
      */
     public Object getValue(Object tObj) throws ReflectiveOperationException {
         if (_getter == null) {
-            if (!field.isAccessible()) {
-                field.setAccessible(true);
-            }
-            return field.get(tObj);
+            return get(tObj);
         } else {
             return _getter.invoke(tObj);
         }
+    }
+
+    public Object get(Object tObj) throws IllegalAccessException{
+        if (!field.isAccessible()) {
+            field.setAccessible(true);
+        }
+        return field.get(tObj);
     }
 
     /**
