@@ -28,6 +28,7 @@ export const routes: RouteRecordRaw[] = [
                 meta: {
                     showInHeader: true,
                     showInSidebar: true,
+                    showInHome: false,
                     ignored: true,
                     index: 1
                 }
@@ -38,6 +39,7 @@ export const routes: RouteRecordRaw[] = [
                 component: Environment,
                 meta: {
                     showInHeader: false,
+                    showInHome: false,
                     showInSidebar: true,
                     ignored: true,
                     index: 2
@@ -46,6 +48,7 @@ export const routes: RouteRecordRaw[] = [
         ],
         meta: {
             showInHeader: false,
+            showInHome: false,
             showSideBar: true,
         }
     },
@@ -54,7 +57,8 @@ export const routes: RouteRecordRaw[] = [
         name: 'NotFound',
         component: NotFound,
         meta: {
-            showInHeader: false
+            showInHeader: false,
+            showInHome: false
         }
     },
 ]
