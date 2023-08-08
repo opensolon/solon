@@ -22,6 +22,7 @@
 * 调整 FiledWrap 反射权限改为用时再设置
 * 调整 solon-admin 的 server 和 client 通信为有状态格式
 * 调整 solon 模块结构
+* 修复 solon.docs.openapi2 插件 ApiImplicitParam::paramType 未生效的问题
 
 ### 2.4.2
 * 新增 lettuce-solon-plugin 插件

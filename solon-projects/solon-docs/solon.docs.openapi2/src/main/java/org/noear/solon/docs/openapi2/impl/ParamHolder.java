@@ -186,35 +186,55 @@ public class ParamHolder {
     }
 
     public boolean isRequiredBody(){
+        boolean tmp = false;
         if (param != null) {
-            return param.isRequiredBody();
+            tmp = param.isRequiredBody();
         }
 
-        return false;
+        if(!tmp && anno!=null){
+            tmp = ApiEnum.PARAM_TYPE_BODY.equals(anno.paramType());
+        }
+
+        return tmp;
     }
 
     public boolean isRequiredHeader(){
+        boolean tmp = false;
         if (param != null) {
-            return param.isRequiredHeader();
+            tmp = param.isRequiredHeader();
         }
 
-        return false;
+        if(!tmp && anno!=null){
+            tmp = ApiEnum.PARAM_TYPE_HEADER.equals(anno.paramType());
+        }
+
+        return tmp;
     }
 
     public boolean isRequiredCookie(){
+        boolean tmp = false;
         if (param != null) {
             return param.isRequiredCookie();
         }
 
-        return false;
+        if(!tmp && anno!=null){
+            tmp = ApiEnum.PARAM_TYPE_COOKIE.equals(anno.paramType());
+        }
+
+        return tmp;
     }
 
     public boolean isRequiredPath(){
+        boolean tmp = false;
         if (param != null) {
             return param.isRequiredPath();
         }
 
-        return false;
+        if(!tmp && anno!=null){
+            tmp = ApiEnum.PARAM_TYPE_PATH.equals(anno.paramType());
+        }
+
+        return tmp;
     }
 
     public boolean isReadOnly(){
