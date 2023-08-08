@@ -27,6 +27,9 @@ public class RocketmqConfig {
     private final String server;
     private final String namespace;
 
+    private final String accessKey;
+    private final String secretKey;
+
     private final long timeout;
 
     //实例的消费线程数，0表示默认
@@ -38,8 +41,12 @@ public class RocketmqConfig {
     public RocketmqConfig(CloudProps cloudProps) {
         server = cloudProps.getEventServer();
         channelName = cloudProps.getEventChannel();
-        timeout = cloudProps.getEventPublishTimeout();
         namespace = Solon.cfg().appNamespace();
+
+        accessKey = cloudProps.getEventAccessKey();
+        secretKey = cloudProps.getEventSecretKey();
+
+        timeout = cloudProps.getEventPublishTimeout();
 
         consumeThreadNums = Integer.valueOf(cloudProps.getValue(PROP_EVENT_consumeThreadNums, "0"));
         maxReconsumeTimes = Integer.valueOf(cloudProps.getValue(PROP_EVENT_maxReconsumeTimes, "0"));
@@ -90,6 +97,14 @@ public class RocketmqConfig {
 
     public String getServer() {
         return server;
+    }
+
+    public String getAccessKey() {
+        return accessKey;
+    }
+
+    public String getSecretKey() {
+        return secretKey;
     }
 
     public long getTimeout() {

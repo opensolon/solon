@@ -16,6 +16,7 @@
 * 增加 quartz jdbc 及时更新支持（数据库里变了，它马上变）？
 * 增加 solon.cloud.metrics 对 MeterBinder 的自动装配处理
 * 增加 HandlerLoaderFactory，以实现所有 `@Mapping` 注解解析的重写支持
+* 增加 rocketmq-solon-cloud-plugin 插件，对 ak/sk 的支持
 * 调整 solon-test 依赖，改成 solon-test-junit4 和 solon-test-junit5 的集合
 * 调整 ConvertUtil 内的 LocalDateTime 处理，先通过 Date 中转，统一时间格式
 * 调整 FiledWrap 反射权限改为用时再设置

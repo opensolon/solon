@@ -24,6 +24,12 @@
             <artifactId>rocketmq-client</artifactId>
             <version>${rocketmq4.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.apache.rocketmq</groupId>
+            <artifactId>rocketmq-acl</artifactId>
+            <version>${rocketmq4.version}</version>
+        </dependency>
     </dependencies>
 
 </project>

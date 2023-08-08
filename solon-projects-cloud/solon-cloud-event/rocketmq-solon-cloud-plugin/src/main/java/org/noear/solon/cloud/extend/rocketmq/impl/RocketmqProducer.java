@@ -1,11 +1,15 @@
 package org.noear.solon.cloud.extend.rocketmq.impl;
 
+import org.apache.rocketmq.acl.common.AclClientRPCHook;
+import org.apache.rocketmq.acl.common.SessionCredentials;
+import org.apache.rocketmq.client.consumer.DefaultMQPushConsumer;
 import org.apache.rocketmq.client.exception.MQBrokerException;
 import org.apache.rocketmq.client.exception.MQClientException;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
 import org.apache.rocketmq.client.producer.SendResult;
 import org.apache.rocketmq.client.producer.SendStatus;
 import org.apache.rocketmq.common.message.Message;
+import org.apache.rocketmq.remoting.RPCHook;
 import org.apache.rocketmq.remoting.exception.RemotingException;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudProps;
@@ -35,8 +39,14 @@ public class RocketmqProducer {
                 return;
             }
 
+            if(Utils.isEmpty(config.getAccessKey())) {
+                producer = new DefaultMQProducer();
+            }else{
+                RPCHook rpcHook = new AclClientRPCHook(new SessionCredentials(config.getAccessKey(), config.getSecretKey()));
+                producer = new DefaultMQProducer(rpcHook);
+            }
 
-            producer = new DefaultMQProducer();
+
             //服务地址
             producer.setNamesrvAddr(config.getServer());
             //生产组

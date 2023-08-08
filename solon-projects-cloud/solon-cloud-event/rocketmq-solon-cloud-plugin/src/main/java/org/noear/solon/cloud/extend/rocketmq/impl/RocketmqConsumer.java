@@ -1,7 +1,10 @@
 package org.noear.solon.cloud.extend.rocketmq.impl;
 
+import org.apache.rocketmq.acl.common.AclClientRPCHook;
+import org.apache.rocketmq.acl.common.SessionCredentials;
 import org.apache.rocketmq.client.consumer.DefaultMQPushConsumer;
 import org.apache.rocketmq.client.exception.MQClientException;
+import org.apache.rocketmq.remoting.RPCHook;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.service.CloudEventObserverManger;
@@ -40,7 +43,13 @@ public class RocketmqConsumer {
 
             RocketmqConsumerHandler handler = new RocketmqConsumerHandler(config, observerManger);
 
-            consumer = new DefaultMQPushConsumer();
+            if(Utils.isEmpty(config.getAccessKey())){
+                consumer = new DefaultMQPushConsumer();
+            }else{
+                RPCHook rpcHook = new AclClientRPCHook(new SessionCredentials(config.getAccessKey(), config.getSecretKey()));
+                consumer = new DefaultMQPushConsumer(rpcHook);
+            }
+
 
             //服务地址
             consumer.setNamesrvAddr(config.getServer());
