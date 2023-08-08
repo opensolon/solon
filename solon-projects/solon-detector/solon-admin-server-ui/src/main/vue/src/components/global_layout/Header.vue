@@ -17,6 +17,10 @@ watch(path, (value) => {
     selectedKeys.value = [value];
 })
 
+const isHome = computed(() => {
+    return path.value === "home"
+})
+
 function onClickMenuItem(key: string) {
     if (key.startsWith("_ignore:")
         || router.getRoutes().find(r => r.name === key)?.meta?.ignored === true) {
@@ -25,6 +29,7 @@ function onClickMenuItem(key: string) {
     }
     router.push({name: key})
 }
+
 </script>
 
 <template>
@@ -39,11 +44,12 @@ function onClickMenuItem(key: string) {
             <template
                 v-for="item in router.getRoutes()
                 .filter(it=>it.meta.showInHeader!=false)
+                .filter(it=> isHome ? it.meta.showInHome!=false : true)
                 .sort((a,b)=>(a.meta.index==undefined?0:a.meta.index) - (b.meta.index==undefined?0:b.meta.index))"
                 :key="item.name">
                 <a-menu-item>{{ t(`header.item.${String(item.name)}`) }}</a-menu-item>
             </template>
-            <a-sub-menu>
+            <a-sub-menu class="language-menu">
                 <template #title>{{ t("language") }}</template>
                 <template v-for="language in Object.keys(allLocales)" :key="'_ignore:'+language">
                     <a-menu-item @click="() => changeLocale(language)">{{ allLocales[language].language }}</a-menu-item>
