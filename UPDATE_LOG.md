@@ -17,11 +17,13 @@
 * 增加 solon.cloud.metrics 对 MeterBinder 的自动装配处理
 * 增加 HandlerLoaderFactory，以实现所有 `@Mapping` 注解解析的重写支持
 * 增加 rocketmq-solon-cloud-plugin 插件，对 ak/sk 的支持
+* 增加 `@Ds` 统一的数据源处理注解
 * 调整 solon-test 依赖，改成 solon-test-junit4 和 solon-test-junit5 的集合
 * 调整 ConvertUtil 内的 LocalDateTime 处理，先通过 Date 中转，统一时间格式
 * 调整 FiledWrap 反射权限改为用时再设置
 * 调整 solon-admin 的 server 和 client 通信为有状态格式
 * 调整 solon 模块结构
+* 调整 solon-admin-server 界面细节
 * 修复 solon.docs.openapi2 插件 ApiImplicitParam::paramType 未生效的问题
 
 ### 2.4.2
