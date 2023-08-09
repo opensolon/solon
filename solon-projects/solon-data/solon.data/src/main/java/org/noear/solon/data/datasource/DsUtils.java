@@ -38,6 +38,22 @@ public class DsUtils {
         return typeClz;
     }
 
+    private static Class<?> resolveTypeOrDefault(Properties props, Class<?> typeDef){
+        String typeStr = props.getProperty("type");
+        if (Utils.isEmpty(typeStr)) {
+            return typeDef;
+        }else {
+            props.remove("type");
+
+            Class<?> typeClz = ClassUtil.loadClass(typeStr);
+            if (typeClz == null || DataSource.class.isAssignableFrom(typeClz) == false) {
+                throw new IllegalStateException("Type configuration not is data source");
+            }
+
+            return typeClz;
+        }
+    }
+
     public static DataSource buildDs(Properties props) {
         Class<?> typeClz = resolveType(props);
 
@@ -60,7 +76,7 @@ public class DsUtils {
     /**
      * 构建数据源字典
      */
-    public static Map<String, DataSource> buildDsMap(Properties props, Class<?> typeClz) {
+    public static Map<String, DataSource> buildDsMap(Properties props, Class<?> typeDef) {
         //::数据源构建
         Props rootProps;
         if (props instanceof Props) {
@@ -82,7 +98,8 @@ public class DsUtils {
         groupProps.forEach((key, prop) -> {
             if (prop.size() > 1) {
                 //超过1个以上的，才可能是数据源属性
-                DataSource source = (DataSource) PropsConverter.global().convert(prop, typeClz);
+                Class<?> typeClz = resolveTypeOrDefault(prop, typeDef);
+                DataSource source = buildDs(prop, typeClz);
                 dataSourceMap.put(key, source);
             }
         });

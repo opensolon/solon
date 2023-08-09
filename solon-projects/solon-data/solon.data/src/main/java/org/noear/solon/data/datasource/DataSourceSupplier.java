@@ -1,9 +1,5 @@
 package org.noear.solon.data.datasource;
 
-import org.noear.solon.data.cache.CacheFactory;
-import org.noear.solon.data.cache.CacheLib;
-import org.noear.solon.data.cache.CacheService;
-
 import javax.sql.DataSource;
 import java.util.Properties;
 import java.util.function.Supplier;
