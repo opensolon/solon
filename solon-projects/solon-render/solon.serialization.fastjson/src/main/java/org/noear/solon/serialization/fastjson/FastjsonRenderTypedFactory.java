@@ -18,6 +18,7 @@ public class FastjsonRenderTypedFactory extends FastjsonRenderFactoryBase {
     public FastjsonRenderTypedFactory(){
         features = new SerializerFeature[]{
                 SerializerFeature.BrowserCompatible,
+                SerializerFeature.SortField,
                 SerializerFeature.WriteClassName,
                 SerializerFeature.DisableCircularReferenceDetect
         };
