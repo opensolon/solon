@@ -25,6 +25,16 @@ public class RouterInterceptorLimiter implements RouterInterceptor {
         return rule == null || rule.isEmpty() || rule.test(ctx.path());
     }
 
+    /**
+     * 获取拦截器
+     * */
+    public RouterInterceptor getInterceptor() {
+        return interceptor;
+    }
+
+    /**
+     * 路径匹配模式
+     * */
     @Override
     public PathRule pathPatterns() {
         return rule;

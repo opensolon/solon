@@ -23,8 +23,14 @@ public class ChainManager {
      */
     private final List<RankEntity<Filter>> filterNodes = new ArrayList<>();
 
-    public List<RankEntity<Filter>> getFilterNodes() {
-        return Collections.unmodifiableList(filterNodes);
+    public List<Filter> getFilterNodes() {
+        List<Filter> tmp = new ArrayList<>();
+
+        for (RankEntity<Filter> entity : filterNodes) {
+            tmp.add(entity.target);
+        }
+
+        return tmp;
     }
 
     /**
@@ -45,16 +51,30 @@ public class ChainManager {
     //=======================
 
     /**
-     * 拦截器节点
+     * 路由拦截器节点
      */
     private final List<RankEntity<RouterInterceptor>> interceptorNodes = new ArrayList<>();
 
-    public List<RankEntity<RouterInterceptor>> getInterceptorNodes() {
-        return Collections.unmodifiableList(interceptorNodes);
+    /**
+     * 获取所有路由拦截器
+     * */
+    public List<RouterInterceptor> getInterceptorNodes() {
+        List<RouterInterceptor> tmp = new ArrayList<>();
+
+        for (RankEntity<RouterInterceptor> entity : interceptorNodes) {
+            if (entity.target instanceof RouterInterceptorLimiter) {
+                tmp.add(((RouterInterceptorLimiter) entity.target).getInterceptor());
+            } else {
+                tmp.add(entity.target);
+            }
+
+        }
+
+        return tmp;
     }
 
     /**
-     * 添加拦截器
+     * 添加路由拦截器
      */
     public synchronized void addInterceptor(RouterInterceptor interceptor, int index) {
         if (interceptor instanceof PathLimiter) {
@@ -68,7 +88,7 @@ public class ChainManager {
     }
 
     /**
-     * 执行拦截
+     * 执行路由拦截
      */
     public void doIntercept(Context x, @Nullable Handler mainHandler) throws Throwable {
         new RouterInterceptorChainImpl(interceptorNodes).doIntercept(x, mainHandler);
