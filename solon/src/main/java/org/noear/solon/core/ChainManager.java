@@ -23,7 +23,7 @@ public class ChainManager {
      */
     private final List<RankEntity<Filter>> filterNodes = new ArrayList<>();
 
-    public List<Filter> getFilterNodes() {
+    public Collection<Filter> getFilterNodes() {
         List<Filter> tmp = new ArrayList<>();
 
         for (RankEntity<Filter> entity : filterNodes) {
@@ -58,7 +58,7 @@ public class ChainManager {
     /**
      * 获取所有路由拦截器
      * */
-    public List<RouterInterceptor> getInterceptorNodes() {
+    public Collection<RouterInterceptor> getInterceptorNodes() {
         List<RouterInterceptor> tmp = new ArrayList<>();
 
         for (RankEntity<RouterInterceptor> entity : interceptorNodes) {
