@@ -6,6 +6,7 @@ import org.noear.solon.core.route.PathLimiter;
 import org.noear.solon.core.route.RouterInterceptor;
 import org.noear.solon.core.route.RouterInterceptorChainImpl;
 import org.noear.solon.core.route.RouterInterceptorLimiter;
+import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.core.util.RankEntity;
 import org.noear.solon.lang.Nullable;
 
@@ -64,6 +65,7 @@ public class ChainManager {
         for (RankEntity<RouterInterceptor> entity : interceptorNodes) {
             if (entity.target instanceof RouterInterceptorLimiter) {
                 tmp.add(((RouterInterceptorLimiter) entity.target).getInterceptor());
+                LogUtil.global().warn("RouterInterceptorLimiter will be discarded, suggested use 'RouterInterceptor:pathPatterns'");
             } else {
                 tmp.add(entity.target);
             }
