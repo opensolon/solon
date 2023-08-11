@@ -26,6 +26,7 @@
 * 调整 solon 模块结构
 * 调整 solon-admin-server 界面细节
 * 修复 solon.docs.openapi2 插件 ApiImplicitParam::paramType 未生效的问题
+* 修复 solon.docs.openapi2 插件 ApiParam::hidden 未生效的问题
 
 ### 2.4.2
 * 新增 lettuce-solon-plugin 插件

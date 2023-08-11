@@ -10,9 +10,9 @@ import java.lang.annotation.Annotation;
  * @author noear
  * @since 2.4
  */
-public class ApiImplicitParamWrap implements ApiImplicitParam {
-    ApiParam real;
-    public ApiImplicitParamWrap(ApiParam real){
+public class ApiImplicitParamImpl implements ApiParamAnno {
+    ApiImplicitParam real;
+    public ApiImplicitParamImpl(ApiImplicitParam real){
         this.real = real;
     }
 
@@ -53,17 +53,17 @@ public class ApiImplicitParamWrap implements ApiImplicitParam {
 
     @Override
     public String dataType() {
-        return "";
+        return real.dataType();
     }
 
     @Override
     public Class<?> dataTypeClass() {
-        return Void.class;
+        return real.dataTypeClass();
     }
 
     @Override
     public String paramType() {
-        return "";
+        return real.paramType();
     }
 
     @Override

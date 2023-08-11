@@ -30,6 +30,7 @@ import org.noear.solon.docs.models.ApiScheme;
 import org.noear.solon.docs.openapi2.impl.ActionHolder;
 import org.noear.solon.docs.openapi2.impl.BuilderHelper;
 import org.noear.solon.docs.openapi2.impl.ParamHolder;
+import org.noear.solon.docs.openapi2.wrap.ApiImplicitParamImpl;
 
 import java.lang.reflect.*;
 import java.text.Collator;
@@ -339,7 +340,7 @@ public class OpenApi2Builder {
                     paramHolder = new ParamHolder(null);
                     actionParamMap.put(a1.name(), paramHolder);
                 }
-                paramHolder.binding(a1);
+                paramHolder.binding(new ApiImplicitParamImpl(a1));
             }
         }
 
@@ -421,6 +422,8 @@ public class OpenApi2Builder {
                         parameter = new CookieParameter();
                     } else if (paramHolder.isRequiredPath()) {
                         parameter = new PathParameter();
+                    } else if (paramHolder.isRequiredBody()) {
+                        parameter = new BodyParameter();
                     } else {
                         QueryParameter queryParameter = new QueryParameter();
                         queryParameter.setType(dataType);

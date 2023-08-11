@@ -8,7 +8,9 @@ import org.noear.solon.core.handle.SessionState;
 import org.noear.solon.core.handle.UploadedFile;
 import org.noear.solon.core.wrap.ParamWrap;
 import org.noear.solon.docs.ApiEnum;
-import org.noear.solon.docs.openapi2.wrap.ApiImplicitParamWrap;
+import org.noear.solon.docs.openapi2.wrap.ApiImplicitParamImpl;
+import org.noear.solon.docs.openapi2.wrap.ApiParamAnno;
+import org.noear.solon.docs.openapi2.wrap.ApiParamImpl;
 
 import java.lang.reflect.Type;
 import java.util.Collection;
@@ -20,19 +22,19 @@ import java.util.Map;
  */
 public class ParamHolder {
     private ParamWrap param;
-    private ApiImplicitParam anno;
+    private ApiParamAnno anno;
 
     public ParamHolder(ParamWrap param) {
         this.param = param;
         if (param != null) {
             ApiParam tmp = param.getParameter().getAnnotation(ApiParam.class);
             if (tmp != null) {
-                anno = new ApiImplicitParamWrap(tmp);
+                anno = new ApiParamImpl(tmp);
             }
         }
     }
 
-    public ParamHolder binding(ApiImplicitParam anno) {
+    public ParamHolder binding(ApiImplicitParamImpl anno) {
         if (anno != null) {
             this.anno = anno;
         }
@@ -55,13 +57,13 @@ public class ParamHolder {
 
     /**
      * 名字
-     * */
+     */
     public String getName() {
-        if(param != null){
+        if (param != null) {
             return param.getName();
         }
 
-        if(anno != null){
+        if (anno != null) {
             return anno.name();
         }
 
@@ -70,25 +72,25 @@ public class ParamHolder {
 
     /**
      * 描述
-     * */
-    public String getDescription(){
-        if(anno != null){
+     */
+    public String getDescription() {
+        if (anno != null) {
             return anno.value();
         }
 
         return null;
     }
 
-    public boolean isMap(){
-        if(param != null){
+    public boolean isMap() {
+        if (param != null) {
             return Map.class.isAssignableFrom(param.getType());
         }
 
         return false;
     }
 
-    public boolean isArray(){
-        if(param != null){
+    public boolean isArray() {
+        if (param != null) {
             return Collection.class.isAssignableFrom(param.getType());
         }
 
@@ -97,7 +99,7 @@ public class ParamHolder {
 
     /**
      * 获取数据类型
-     * */
+     */
     public String dataType() {
         if (param != null) {
             if (UploadedFile.class.equals(param.getType())) {
@@ -139,8 +141,8 @@ public class ParamHolder {
         return null;
     }
 
-    public String paramType(){
-        if(param != null) {
+    public String paramType() {
+        if (param != null) {
             if (param.isRequiredBody()) {
                 return ApiEnum.PARAM_TYPE_BODY;
             }
@@ -171,6 +173,14 @@ public class ParamHolder {
         return false;
     }
 
+    public boolean hidden() {
+        if (anno != null) {
+            return anno.hidden();
+        }
+
+        return false;
+    }
+
     public boolean isRequired() {
         if (param != null) {
             if (param.isRequiredInput()) {
@@ -185,77 +195,77 @@ public class ParamHolder {
         return false;
     }
 
-    public boolean isRequiredBody(){
+    public boolean isRequiredBody() {
         boolean tmp = false;
         if (param != null) {
             tmp = param.isRequiredBody();
         }
 
-        if(!tmp && anno!=null){
+        if (!tmp && anno != null) {
             tmp = ApiEnum.PARAM_TYPE_BODY.equals(anno.paramType());
         }
 
         return tmp;
     }
 
-    public boolean isRequiredHeader(){
+    public boolean isRequiredHeader() {
         boolean tmp = false;
         if (param != null) {
             tmp = param.isRequiredHeader();
         }
 
-        if(!tmp && anno!=null){
+        if (!tmp && anno != null) {
             tmp = ApiEnum.PARAM_TYPE_HEADER.equals(anno.paramType());
         }
 
         return tmp;
     }
 
-    public boolean isRequiredCookie(){
+    public boolean isRequiredCookie() {
         boolean tmp = false;
         if (param != null) {
             return param.isRequiredCookie();
         }
 
-        if(!tmp && anno!=null){
+        if (!tmp && anno != null) {
             tmp = ApiEnum.PARAM_TYPE_COOKIE.equals(anno.paramType());
         }
 
         return tmp;
     }
 
-    public boolean isRequiredPath(){
+    public boolean isRequiredPath() {
         boolean tmp = false;
         if (param != null) {
             return param.isRequiredPath();
         }
 
-        if(!tmp && anno!=null){
+        if (!tmp && anno != null) {
             tmp = ApiEnum.PARAM_TYPE_PATH.equals(anno.paramType());
         }
 
         return tmp;
     }
 
-    public boolean isReadOnly(){
-        if(anno != null){
+    public boolean isReadOnly() {
+        if (anno != null) {
             return anno.readOnly();
         }
 
         return false;
     }
 
-    public boolean isIgnore(){
-        if(param !=null){
-            if(Context.class.equals(param.getType())){
+    public boolean isIgnore() {
+        if (param != null) {
+            if (Context.class.equals(param.getType())) {
                 return true;
             }
 
-            if(SessionState.class.equals(param.getType())){
+            if (SessionState.class.equals(param.getType())) {
                 return true;
             }
         }
 
-        return false;
+        return hidden();
     }
 }
