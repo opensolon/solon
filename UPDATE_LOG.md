@@ -17,6 +17,7 @@
 * 增加 solon.cloud.metrics 对 MeterBinder 的自动装配处理
 * 增加 HandlerLoaderFactory，以实现所有 `@Mapping` 注解解析的重写支持
 * 增加 rocketmq-solon-cloud-plugin 插件，对 ak/sk 的支持
+* 增加 sa-token 插件，对 SaTokenDaoOfRedisson 实现
 * 增加 动态数据源支持各种的连接池类型
 * 调整 solon.serialization.fastjson 插件，默认增加字段排序特性
 * 调整 solon-test 依赖，改成 solon-test-junit4 和 solon-test-junit5 的集合
