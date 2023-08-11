@@ -25,7 +25,7 @@
         <wood.version>1.1.8</wood.version>
         <water.version>2.11.2</water.version>
         <luffy.version>1.6.6</luffy.version>
-        <redisx.version>1.4.8</redisx.version>
+        <redisx.version>1.4.9</redisx.version>
         <redisson.version>3.21.0</redisson.version>
         <lettuce.version>6.2.5.RELEASE</lettuce.version>
 
