@@ -5,6 +5,11 @@ import cn.dev33.satoken.context.model.SaRequest;
 import cn.dev33.satoken.util.SaFoxUtil;
 import org.noear.solon.core.handle.Context;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 /**
  * @author noear
  * @since 1.4
@@ -28,6 +33,21 @@ public class SaRequestForSolon implements SaRequest {
     }
 
     @Override
+    public List<String> getParamNames(){
+        Set<String> names = ctx.paramMap().keySet();
+        return new ArrayList<>(names);
+    }
+
+    /**
+     * 获取 [请求体] 里提交的所有参数
+     * @return 参数列表
+     */
+    @Override
+    public Map<String, String> getParamMap(){
+        return ctx.paramMap();
+    }
+
+    @Override
     public String getHeader(String s) {
         return ctx.header(s);
     }
@@ -45,7 +65,7 @@ public class SaRequestForSolon implements SaRequest {
     @Override
     public String getUrl() {
         String currDomain = SaManager.getConfig().getCurrDomain();
-        if(SaFoxUtil.isEmpty(currDomain) == false) {
+        if( ! SaFoxUtil.isEmpty(currDomain)) {
             return currDomain + this.getRequestPath();
         }
         return ctx.url();

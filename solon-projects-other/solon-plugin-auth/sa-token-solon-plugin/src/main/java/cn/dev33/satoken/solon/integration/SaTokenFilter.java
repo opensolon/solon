@@ -4,6 +4,7 @@ import cn.dev33.satoken.annotation.SaIgnore;
 import cn.dev33.satoken.exception.BackResultException;
 import cn.dev33.satoken.exception.SaTokenException;
 import cn.dev33.satoken.exception.StopMatchException;
+import cn.dev33.satoken.filter.SaFilter;
 import cn.dev33.satoken.filter.SaFilterAuthStrategy;
 import cn.dev33.satoken.filter.SaFilterErrorStrategy;
 import cn.dev33.satoken.router.SaRouter;
@@ -27,150 +28,99 @@ import java.util.List;
  * @author noear
  * @since 1.10
  */
-public class SaTokenFilter implements Filter { //之所以改名，为了跟 SaTokenInterceptor 形成一对
-	/**
-	 * 是否打开注解鉴权
-	 */
-	public boolean isAnnotation = true;
+public class SaTokenFilter implements SaFilter, Filter { //之所以改名，为了跟 SaTokenInterceptor 形成一对
 
-	// ------------------------ 设置此过滤器 拦截 & 放行 的路由
+    /**
+     * 是否打开注解鉴权
+     */
+    public boolean isAnnotation = true;
 
-	/**
-	 * 拦截路由
-	 */
-	protected List<String> includeList = new ArrayList<>();
+    // ------------------------ 设置此过滤器 拦截 & 放行 的路由
 
-	/**
-	 * 放行路由
-	 */
-	protected List<String> excludeList = new ArrayList<>();
+    /**
+     * 拦截路由
+     */
+    public List<String> includeList = new ArrayList<>();
 
-	/**
-	 * 添加 [拦截路由]
-	 *
-	 * @param paths 路由
-	 * @return 对象自身
-	 */
-	public SaTokenFilter addInclude(String... paths) {
-		includeList.addAll(Arrays.asList(paths));
-		return this;
-	}
+    /**
+     * 放行路由
+     */
+    public List<String> excludeList = new ArrayList<>();
 
-	/**
-	 * 添加 [放行路由]
-	 *
-	 * @param paths 路由
-	 * @return 对象自身
-	 */
-	public SaTokenFilter addExclude(String... paths) {
-		excludeList.addAll(Arrays.asList(paths));
-		return this;
-	}
+    @Override
+    public SaTokenFilter addInclude(String... paths) {
+        includeList.addAll(Arrays.asList(paths));
+        return this;
+    }
 
-	/**
-	 * 写入 [拦截路由] 集合
-	 *
-	 * @param pathList 路由集合
-	 * @return 对象自身
-	 */
-	public SaTokenFilter setIncludeList(List<String> pathList) {
-		includeList = pathList;
-		return this;
-	}
+    @Override
+    public SaTokenFilter addExclude(String... paths) {
+        excludeList.addAll(Arrays.asList(paths));
+        return this;
+    }
 
-	/**
-	 * 写入 [放行路由] 集合
-	 *
-	 * @param pathList 路由集合
-	 * @return 对象自身
-	 */
-	public SaTokenFilter setExcludeList(List<String> pathList) {
-		excludeList = pathList;
-		return this;
-	}
+    @Override
+    public SaTokenFilter setIncludeList(List<String> pathList) {
+        includeList = pathList;
+        return this;
+    }
 
-	/**
-	 * 获取 [拦截路由] 集合
-	 *
-	 * @return see note
-	 */
-	public List<String> getIncludeList() {
-		return includeList;
-	}
-
-	/**
-	 * 获取 [放行路由] 集合
-	 *
-	 * @return see note
-	 */
-	public List<String> getExcludeList() {
-		return excludeList;
-	}
+    @Override
+    public SaTokenFilter setExcludeList(List<String> pathList) {
+        excludeList = pathList;
+        return this;
+    }
 
 
-	// ------------------------ 钩子函数
+    // ------------------------ 钩子函数
 
-	/**
-	 * 认证函数：每次请求执行
-	 */
-	protected SaFilterAuthStrategy auth = r -> {
-	};
+    /**
+     * 认证函数：每次请求执行
+     */
+    public SaFilterAuthStrategy auth = r -> {
+    };
 
-	/**
-	 * 异常处理函数：每次[认证函数]发生异常时执行此函数
-	 */
-	protected SaFilterErrorStrategy error = e -> {
-		if (e instanceof SaTokenException) {
-			throw (SaTokenException) e;
-		} else {
-			throw new SaTokenException(e);
-		}
-	};
+    /**
+     * 异常处理函数：每次[认证函数]发生异常时执行此函数
+     */
+    public SaFilterErrorStrategy error = e -> {
+        if (e instanceof SaTokenException) {
+            throw (SaTokenException) e;
+        } else {
+            throw new SaTokenException(e);
+        }
+    };
 
-	/**
-	 * 前置函数：在每次[认证函数]之前执行
-	 */
-	protected SaFilterAuthStrategy beforeAuth = r -> {
-	};
+    /**
+     * 前置函数：在每次[认证函数]之前执行
+     *      <b>注意点：前置认证函数将不受 includeList 与 excludeList 的限制，所有路由的请求都会进入 beforeAuth</b>
+     */
+    public SaFilterAuthStrategy beforeAuth = r -> {
+    };
 
-	/**
-	 * 写入[认证函数]: 每次请求执行
-	 *
-	 * @param auth see note
-	 * @return 对象自身
-	 */
-	public SaTokenFilter setAuth(SaFilterAuthStrategy auth) {
-		this.auth = auth;
-		return this;
-	}
+    @Override
+    public SaTokenFilter setAuth(SaFilterAuthStrategy auth) {
+        this.auth = auth;
+        return this;
+    }
 
-	/**
-	 * 写入[异常处理函数]：每次[认证函数]发生异常时执行此函数
-	 *
-	 * @param error see note
-	 * @return 对象自身
-	 */
-	public SaTokenFilter setError(SaFilterErrorStrategy error) {
-		this.error = error;
-		return this;
-	}
+    @Override
+    public SaTokenFilter setError(SaFilterErrorStrategy error) {
+        this.error = error;
+        return this;
+    }
 
-	/**
-	 * 写入[前置函数]：在每次[认证函数]之前执行
-	 *
-	 * @param beforeAuth see note
-	 * @return 对象自身
-	 */
-	public SaTokenFilter setBeforeAuth(SaFilterAuthStrategy beforeAuth) {
-		this.beforeAuth = beforeAuth;
-		return this;
-	}
+    @Override
+    public SaTokenFilter setBeforeAuth(SaFilterAuthStrategy beforeAuth) {
+        this.beforeAuth = beforeAuth;
+        return this;
+    }
 
 
-	@Override
-	public void doFilter(Context ctx, FilterChain chain) throws Throwable {
-		try {
-			//查找当前主处理
+    @Override
+    public void doFilter(Context ctx, FilterChain chain) throws Throwable {
+        try {
+            //查找当前主处理
             Handler mainHandler = Solon.app().router().matchMain(ctx);
             if (mainHandler instanceof Gateway) {
                 //支持网关处理
@@ -179,59 +129,59 @@ public class SaTokenFilter implements Filter { //之所以改名，为了跟 SaT
                 MethodType method = MethodTypeUtil.valueOf(ctx.method());
                 mainHandler = mainRouting.matchOne(ctx.pathNew(), method);
             }
-			Action action = (mainHandler instanceof Action ? (Action) mainHandler : null);
+            Action action = (mainHandler instanceof Action ? (Action) mainHandler : null);
 
             //1.执行前置处理（主要是一些跨域之类的）
             if(beforeAuth != null) {
                 beforeAuth.run(mainHandler);
             }
 
-			//先路径过滤下（包括了静态文件）
+            //先路径过滤下（包括了静态文件）
             Handler finalMainHandler = mainHandler;
-			SaRouter.match(includeList).notMatch(excludeList).check(r -> {
-				//2.执行注解处理
-				if(authAnno(action)) {
-					//3.执行规则处理（如果没有被 @SaIgnore 忽略）
-					auth.run(finalMainHandler);
-				}
-			});
-		} catch (StopMatchException e) {
+            SaRouter.match(includeList).notMatch(excludeList).check(r -> {
+                //2.执行注解处理
+                if(authAnno(action)) {
+                    //3.执行规则处理（如果没有被 @SaIgnore 忽略）
+                    auth.run(finalMainHandler);
+                }
+            });
+        } catch (StopMatchException e) {
             // StopMatchException 异常代表：停止匹配，进入Controller
-		} catch (SaTokenException e) {
-			// 1. 获取异常处理策略结果
-			Object result;
-			if (e instanceof BackResultException) {
-				result = e.getMessage();
-			} else {
-				result = error.run(e);
-			}
+        } catch (SaTokenException e) {
+            // 1. 获取异常处理策略结果
+            Object result;
+            if (e instanceof BackResultException) {
+                result = e.getMessage();
+            } else {
+                result = error.run(e);
+            }
 
-			// 2. 写入输出流
-			if (result != null) {
-				ctx.render(result);
-			}
-			ctx.setHandled(true);
-			return;
-		}
+            // 2. 写入输出流
+            if (result != null) {
+                ctx.render(result);
+            }
+            ctx.setHandled(true);
+            return;
+        }
 
-		chain.doFilter(ctx);
-	}
+        chain.doFilter(ctx);
+    }
 
-	private boolean authAnno(Action action) {
-		//2.验证注解处理
-		if (isAnnotation && action != null) {
-			// 获取此请求对应的 Method 处理函数
-			Method method = action.method().getMethod();
+    private boolean authAnno(Action action) {
+        //2.验证注解处理
+        if (isAnnotation && action != null) {
+            // 获取此请求对应的 Method 处理函数
+            Method method = action.method().getMethod();
 
-			// 如果此 Method 或其所属 Class 标注了 @SaIgnore，则忽略掉鉴权
-			if (SaStrategy.instance.isAnnotationPresent.apply(method, SaIgnore.class)) {
-				return false;
-			}
+            // 如果此 Method 或其所属 Class 标注了 @SaIgnore，则忽略掉鉴权
+            if (SaStrategy.instance.isAnnotationPresent.apply(method, SaIgnore.class)) {
+                return false;
+            }
 
-			// 注解校验
-			SaStrategy.instance.checkMethodAnnotation.accept(method);
-		}
+            // 注解校验
+            SaStrategy.instance.checkMethodAnnotation.accept(method);
+        }
 
-		return true;
-	}
+        return true;
+    }
 }
