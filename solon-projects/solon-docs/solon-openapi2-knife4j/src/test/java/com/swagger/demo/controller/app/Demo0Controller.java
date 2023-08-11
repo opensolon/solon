@@ -41,7 +41,7 @@ public class Demo0Controller {
     @ApiOperation(value = "ApiImplicitParam 测试", notes = "body test")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "roleId", value = "角色id", required = true, paramType = "body"),
-            @ApiImplicitParam(name = "name", value = "角色名称", required = true, paramType = "body"),
+            @ApiImplicitParam(name = "menuIds", value = "菜单id数组", required = true, paramType = "body", dataTypeClass = Integer.class, allowMultiple = true),
     })
     @Mapping("test2")
     public Map test2(@ApiParam(hidden = true) @Body RoleReq req) {

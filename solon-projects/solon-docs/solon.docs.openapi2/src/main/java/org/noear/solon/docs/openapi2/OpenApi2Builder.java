@@ -379,11 +379,21 @@ public class OpenApi2Builder {
                     ObjectProperty objectProperty = new ObjectProperty();
                     objectProperty.setType(dataType);
 
-                    QueryParameter queryParameter = new QueryParameter();
-                    queryParameter.type("array");
-                    queryParameter.items(objectProperty);
-
-                    parameter = queryParameter;
+                    if (paramHolder.isRequiredHeader()) {
+                        parameter = new HeaderParameter().type(ApiEnum.RES_ARRAY);
+                    } else if (paramHolder.isRequiredCookie()) {
+                        parameter = new CookieParameter().type(ApiEnum.RES_ARRAY);
+                    } else if (paramHolder.isRequiredPath()) {
+                        parameter = new PathParameter().type(ApiEnum.RES_ARRAY);
+                    } else if (paramHolder.isRequiredBody()) {
+                        BodyParameter bodyParameter = new BodyParameter();
+                        if (Utils.isNotEmpty(dataType)) {
+                            bodyParameter.setSchema(new ArrayModel().items(objectProperty));
+                        }
+                        parameter = bodyParameter;
+                    } else {
+                        parameter = new QueryParameter().type(ApiEnum.RES_ARRAY).items(objectProperty);
+                    }
                 }
             } else {
                 if (Utils.isNotEmpty(paramSchema)) {
@@ -423,7 +433,11 @@ public class OpenApi2Builder {
                     } else if (paramHolder.isRequiredPath()) {
                         parameter = new PathParameter();
                     } else if (paramHolder.isRequiredBody()) {
-                        parameter = new BodyParameter();
+                        BodyParameter bodyParameter = new BodyParameter();
+                        if(Utils.isNotEmpty(dataType)) {
+                            bodyParameter.setSchema(new ModelImpl().type(dataType));
+                        }
+                        parameter = bodyParameter;
                     } else {
                         QueryParameter queryParameter = new QueryParameter();
                         queryParameter.setType(dataType);

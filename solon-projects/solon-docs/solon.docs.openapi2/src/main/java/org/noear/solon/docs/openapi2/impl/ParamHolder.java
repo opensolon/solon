@@ -112,6 +112,10 @@ public class ParamHolder {
         String tmp = null;
         if (anno != null) {
             tmp = anno.dataType();
+
+            if (Utils.isEmpty(tmp) && anno.dataTypeClass() != Void.class) {
+                tmp = anno.dataTypeClass().getSimpleName();
+            }
         }
 
         if (Utils.isBlank(tmp)) {
