@@ -31,6 +31,7 @@
 * 修复 solon.docs.openapi2 插件 ApiImplicitParam::paramType 未生效的问题
 * 修复 solon.docs.openapi2 插件 ApiParam::hidden 未生效的问题
 * sa-token 升为 1.35.0.RC
+* mybatis-flex 升为 1.5.7
 * redisx 升为 1.4.9
 
 ### 2.4.2
