@@ -303,11 +303,7 @@ public class AopContext extends BeanContainer {
 
         //Render
         if(Render.class.isAssignableFrom(clz)) {
-            String suffix = bw.name();
-            RenderManager.register(bw.raw());
-            if (Utils.isNotEmpty(suffix)) {
-                RenderManager.mapping(suffix, (Render) bw.raw());
-            }
+            RenderManager.mapping(bw.name(), (Render) bw.raw());
         }
 
         //Filter

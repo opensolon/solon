@@ -71,14 +71,16 @@ public class RenderManager implements Render {
      * @param render 渲染器
      */
     public static void mapping(String suffix, Render render) {
-        if (suffix == null || render == null) {
+        if (render == null) {
             return;
         }
 
-        //suffix=.ftl
-        _mapping.put(suffix, render);
+        if (Utils.isNotEmpty(suffix)) {
+            //suffix=.ftl
+            _mapping.put(suffix, render);
 
-        LogUtil.global().info("Render mapping: " + suffix + "=" + render.getName());
+            LogUtil.global().info("Render mapping: " + suffix + "=" + render.getName());
+        }
     }
 
     /**
@@ -101,7 +103,7 @@ public class RenderManager implements Render {
 
         _mapping.put(suffix, render);
 
-        LogUtil.global().info("View: mapping: " + suffix + "=" + clzName);
+        LogUtil.global().info("Render mapping: " + suffix + "=" + clzName);
     }
 
     /**
