@@ -5,10 +5,7 @@ import org.noear.solon.core.LoadBalance;
 import org.noear.solon.core.bean.LifecycleBean;
 import org.noear.solon.core.convert.Converter;
 import org.noear.solon.core.event.EventListener;
-import org.noear.solon.core.handle.ActionExecuteHandler;
-import org.noear.solon.core.handle.ActionReturnHandler;
-import org.noear.solon.core.handle.Filter;
-import org.noear.solon.core.handle.Handler;
+import org.noear.solon.core.handle.*;
 import org.noear.solon.core.route.RouterInterceptor;
 import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.core.wrap.ClassWrap;
@@ -60,6 +57,11 @@ public class UnsupportedUtil {
         //Handler
         if (Handler.class.isAssignableFrom(clz)) {
             beahShapeHint("Handler", annoName, clz);
+        }
+
+        //Render
+        if(Render.class.isAssignableFrom(clz)) {
+            beahShapeHint("Render", annoName, clz);
         }
 
         //Filter

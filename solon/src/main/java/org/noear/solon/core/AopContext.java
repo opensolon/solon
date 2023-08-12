@@ -301,6 +301,15 @@ public class AopContext extends BeanContainer {
             }
         }
 
+        //Render
+        if(Render.class.isAssignableFrom(clz)) {
+            String suffix = bw.name();
+            RenderManager.register(bw.raw());
+            if (Utils.isNotEmpty(suffix)) {
+                RenderManager.mapping(suffix, (Render) bw.raw());
+            }
+        }
+
         //Filter
         if (Filter.class.isAssignableFrom(clz)) {
             Solon.app().filter(bw.index(), bw.raw());
