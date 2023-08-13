@@ -14,9 +14,14 @@
     <artifactId>logback-solon-plugin</artifactId>
     <packaging>jar</packaging>
 
-
     <dependencies>
         <!-- 提高深度优先级 -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
