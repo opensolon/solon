@@ -71,6 +71,7 @@
 
         <junit4.version>4.13.2</junit4.version>
         <junit5.version>5.9.1</junit5.version>
+        <hamcrest.version>2.2</hamcrest.version>
         <mockito.version>4.11.0</mockito.version>
 
         <mybatis.version>3.5.13</mybatis.version>

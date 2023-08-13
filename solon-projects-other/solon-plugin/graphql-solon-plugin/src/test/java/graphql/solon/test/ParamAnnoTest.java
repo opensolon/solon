@@ -1,6 +1,5 @@
 package graphql.solon.test;
 
-import static com.jayway.jsonpath.JsonPath.read;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
@@ -34,13 +33,14 @@ public class ParamAnnoTest extends HttpTester {
         String json = param.toJson();
 
         String content = path("/graphql").bodyJson(json).post();
-        assertThat(read(content, "$.bookById"), notNullValue());
-        assertThat(read(content, "$.bookById.name"), is("book-1"));
-        assertThat(read(content, "$.bookById.pageCount"), is(1));
-        assertThat(read(content, "$.bookById.author"), notNullValue());
-        assertThat(read(content, "$.bookById.author.firstName"), is("J"));
-        assertThat(read(content, "$.bookById.author.lastName"), is("K"));
+        ONode oNode = ONode.load(content);
+
+        assertThat(oNode.select("$.bookById").val().getRaw(), notNullValue());
+        assertThat(oNode.select("$.bookById.name").val().getRaw(), is("book-1"));
+        assertThat(oNode.select("$.bookById.pageCount").val().getRaw(), is(1));
+        assertThat(oNode.select("$.bookById.author").val().getRaw(), notNullValue());
+        assertThat(oNode.select("$.bookById.author.firstName").val().getRaw(), is("J"));
+        assertThat(oNode.select("$.bookById.author.lastName").val().getRaw(), is("K"));
 
     }
-
 }
