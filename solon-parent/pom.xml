@@ -132,6 +132,9 @@
 
         <java-websocket.version>1.5.3</java-websocket.version>
         <dromara-plugins.version>0.0.9</dromara-plugins.version>
+
+        <maven-compiler.version>3.11.0</maven-compiler.version>
+        <maven-resources.version>3.3.1</maven-resources.version>
     </properties>
 
     <licenses>
@@ -1691,7 +1694,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
+                <version>${maven-compiler.version}</version>
                 <configuration>
                     <compilerArgument>-parameters</compilerArgument>
                     <source>${java.version}</source>
