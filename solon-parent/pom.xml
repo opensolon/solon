@@ -1045,6 +1045,12 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>graphql-solon-plugin</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>feign-solon-plugin</artifactId>
                 <version>${solon.version}</version>
             </dependency>

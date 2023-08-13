@@ -6,8 +6,8 @@ import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
 
 /**
- * @author noear
- * @since 1.5
+ * @author fuzi1996
+ * @since 2.3
  */
 @Inject(value = "${solon.plugin.graphql}", required = false)
 @Configuration

@@ -78,7 +78,7 @@ public class ArgumentMethodArgumentResolver implements HandlerMethodArgumentReso
                 ctx.response())) { //getTypeName().equals("javax.servlet.http.HttpServletResponse")
             tv = ctx.response();
         } else {
-            if (paramWrap.requireBody()) {
+            if (paramWrap.isRequiredBody()) {
                 //需要 body 数据
                 if (String.class.equals(argumentTragetType)) {
                     tv = ctx.bodyNew();
@@ -128,9 +128,9 @@ public class ArgumentMethodArgumentResolver implements HandlerMethodArgumentReso
             }
 
             if (tv == null) {
-                if (paramWrap.required()) {
+                if (paramWrap.isRequiredInput()) {
                     ctx.status(400);
-                    throw new IllegalArgumentException(paramWrap.requiredHint());
+                    throw new IllegalArgumentException(paramWrap.getRequiredHint());
                 }
             }
 

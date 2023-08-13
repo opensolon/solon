@@ -1,18 +1,3 @@
-/*
- * Copyright 2002-2022 the original author or authors.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      https://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package graphql.solon.execution;
 
 import graphql.GraphQLContext;
@@ -25,17 +10,8 @@ import reactor.util.context.Context;
 import reactor.util.context.ContextView;
 
 /**
- * copy from org.springframework.graphql.execution.ReactorContextManager
- *
- * Provides helper methods to save Reactor context in the {@link GraphQLContext}
- * so it can be subsequently obtained and propagated to data fetchers, exception
- * handlers, and others.
- *
- * <p>The Reactor context is also used to carry ThreadLocal values that are also
- * restored around the execution of data fetchers and exceptions handlers.
- *
- * @author Rossen Stoyanchev
- * @since 1.0.0
+ * @author fuzi1996
+ * @since 2.3
  */
 public abstract class ReactorContextManager {
 
