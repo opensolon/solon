@@ -11,6 +11,7 @@
 
 ### 2.4.4
 * 新增 solon.boot.vertx 插件?
+* 新增 graphql-solon-plugin 插件
 * 增加 quartz jdbc 及时更新支持（数据库里变了，它马上变）？
 
 ### 2.4.3
