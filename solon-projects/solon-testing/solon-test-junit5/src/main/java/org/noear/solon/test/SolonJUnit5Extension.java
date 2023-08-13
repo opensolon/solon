@@ -10,7 +10,6 @@ import org.noear.solon.core.util.ClassUtil;
  * @since 1.10
  */
 public class SolonJUnit5Extension implements TestInstanceFactory {
-    private Class<?> klassCached;
     private AopContext aopContext;
 
     @Override
@@ -19,13 +18,12 @@ public class SolonJUnit5Extension implements TestInstanceFactory {
         try {
             //init
             Class<?> klass = factory.getTestClass();
-            if (klassCached == null) {
-                klassCached = klass;
+            if (aopContext == null) {
                 aopContext = RunnerUtils.initRunner(klass);
             }
 
             //create
-            Object tmp = ClassUtil.newInstance(factory.getTestClass());
+            Object tmp = ClassUtil.newInstance(klass);
             tmp = RunnerUtils.initTestTarget(aopContext, tmp);
 
             return tmp;

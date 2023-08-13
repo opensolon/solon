@@ -55,7 +55,7 @@ public class RunnerUtils {
         }
     }
 
-    private static void addPropertySource(AopContext context, TestPropertySource propertySource) {
+    private static void addPropertySource(AopContext context, TestPropertySource propertySource) throws Throwable {
         if (propertySource == null) {
             return;
         }
@@ -64,11 +64,7 @@ public class RunnerUtils {
             if (uri.startsWith(Utils.TAG_classpath)) {
                 context.cfg().loadAdd(uri.substring(Utils.TAG_classpath.length()));
             } else {
-                try {
-                    context.cfg().loadAdd(new File(uri).toURI().toURL());
-                } catch (MalformedURLException e) {
-                    throw new RuntimeException(e);
-                }
+                context.cfg().loadAdd(new File(uri).toURI().toURL());
             }
         }
     }
@@ -195,7 +191,7 @@ public class RunnerUtils {
         }
     }
 
-    private static void initDo(Class<?> klass, SolonApp app) {
+    private static void initDo(Class<?> klass, SolonApp app) throws Throwable{
         TestPropertySource propAnno = klass.getAnnotation(TestPropertySource.class);
 
         if (app == null) {
@@ -207,7 +203,7 @@ public class RunnerUtils {
         }
     }
 
-    private static void initContextDo(Class<?> klass, AopContext context, TestPropertySource propAnno) {
+    private static void initContextDo(Class<?> klass, AopContext context, TestPropertySource propAnno) throws Throwable{
         //添加 TestPropertySource 注解支持 //加载测试配置
         RunnerUtils.addPropertySource(context, propAnno);
 

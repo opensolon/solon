@@ -5,7 +5,6 @@ import org.junit.runners.model.InitializationError;
 import org.noear.solon.core.AopContext;
 
 public class SolonJUnit4ClassRunner extends BlockJUnit4ClassRunner {
-    private Class<?> klassCached;
     private AopContext aopContext;
 
     public SolonJUnit4ClassRunner(Class<?> klass) throws InitializationError {
@@ -17,8 +16,7 @@ public class SolonJUnit4ClassRunner extends BlockJUnit4ClassRunner {
         try {
             //init
             Class<?> klass = super.getTestClass().getJavaClass();
-            if (klassCached == null) {
-                klassCached = klass;
+            if (aopContext == null) {
                 aopContext = RunnerUtils.initRunner(klass);
             }
 
