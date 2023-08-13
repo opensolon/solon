@@ -35,7 +35,7 @@
         <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-assembly-plugin</artifactId>
-            <version>3.3.0</version>
+            <version>${maven-assembly.version}</version>
             <configuration>
                 <finalName>${project.artifactId}</finalName>
                 <appendAssemblyId>false</appendAssemblyId>
