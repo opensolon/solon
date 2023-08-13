@@ -1,7 +1,7 @@
 <h1 align="center" style="text-align:center;">
 <img src="solon_icon.png" width="128" />
 <br />
-Solon v2.4.3
+Solon v2.4.4-SNAPSHOT
 </h1>
 <p align="center">
 	<strong>Новая структура разработки приложений Java, меньше, быстрее и проще!</strong>
@@ -79,7 +79,7 @@ Solon v2.4.3
 <parent>
     <groupId>org.noear</groupId>
     <artifactId>solon-parent</artifactId>
-    <version>2.4.3</version>   
+    <version>2.4.4-SNAPSHOT</version>   
 </parent>
 
 <dependencies>
