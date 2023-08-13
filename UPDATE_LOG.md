@@ -11,9 +11,9 @@
 
 ### 2.4.4
 * 新增 solon.boot.vertx 插件?
+* 增加 quartz jdbc 及时更新支持（数据库里变了，它马上变）？
 
 ### 2.4.3
-* 增加 quartz jdbc 及时更新支持（数据库里变了，它马上变）？
 * 增加 solon.cloud.metrics 对 MeterBinder 的自动装配处理
 * 增加 HandlerLoaderFactory，以实现所有 `@Mapping` 注解解析的重写支持
 * 增加 rocketmq-solon-cloud-plugin 插件，对 ak/sk 的支持
