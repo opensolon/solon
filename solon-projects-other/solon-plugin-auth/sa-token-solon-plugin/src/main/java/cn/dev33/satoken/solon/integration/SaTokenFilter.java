@@ -28,7 +28,7 @@ import java.util.List;
  * @author noear
  * @since 1.10
  */
-public class SaTokenFilter implements SaFilter, Filter { //之所以改名，为了跟 SaTokenInterceptor 形成一对
+public class SaTokenFilter implements Filter { //之所以改名，为了跟 SaTokenInterceptor 形成一对
 
     /**
      * 是否打开注解鉴权
@@ -47,25 +47,25 @@ public class SaTokenFilter implements SaFilter, Filter { //之所以改名，为
      */
     public List<String> excludeList = new ArrayList<>();
 
-    @Override
+
     public SaTokenFilter addInclude(String... paths) {
         includeList.addAll(Arrays.asList(paths));
         return this;
     }
 
-    @Override
+
     public SaTokenFilter addExclude(String... paths) {
         excludeList.addAll(Arrays.asList(paths));
         return this;
     }
 
-    @Override
+
     public SaTokenFilter setIncludeList(List<String> pathList) {
         includeList = pathList;
         return this;
     }
 
-    @Override
+
     public SaTokenFilter setExcludeList(List<String> pathList) {
         excludeList = pathList;
         return this;
@@ -98,19 +98,19 @@ public class SaTokenFilter implements SaFilter, Filter { //之所以改名，为
     public SaFilterAuthStrategy beforeAuth = r -> {
     };
 
-    @Override
+
     public SaTokenFilter setAuth(SaFilterAuthStrategy auth) {
         this.auth = auth;
         return this;
     }
 
-    @Override
+
     public SaTokenFilter setError(SaFilterErrorStrategy error) {
         this.error = error;
         return this;
     }
 
-    @Override
+
     public SaTokenFilter setBeforeAuth(SaFilterAuthStrategy beforeAuth) {
         this.beforeAuth = beforeAuth;
         return this;
