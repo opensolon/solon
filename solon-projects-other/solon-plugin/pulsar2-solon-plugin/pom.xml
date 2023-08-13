@@ -16,7 +16,7 @@
 
     <properties>
         <bcpkix-jdk15on.version>1.70</bcpkix-jdk15on.version>
-        <guava.version>31.1-jre</guava.version>
+        <guava.version>32.0.0-jre</guava.version>
         <commons-io.version>2.11.0</commons-io.version>
         <google.protobuf.version>3.22.2</google.protobuf.version>
         <!--<micrometer.version>1.10.5</micrometer.version>-->
