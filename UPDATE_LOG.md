@@ -13,6 +13,7 @@
 * 新增 solon.boot.vertx 插件?
 * 新增 graphql-solon-plugin 插件
 * 增加 quartz jdbc 及时更新支持（数据库里变了，它马上变）？
+* beetlsql 升为 3.23.11-RELEASE
 
 ### 2.4.3
 * 增加 solon.cloud.metrics 对 MeterBinder 的自动装配处理
