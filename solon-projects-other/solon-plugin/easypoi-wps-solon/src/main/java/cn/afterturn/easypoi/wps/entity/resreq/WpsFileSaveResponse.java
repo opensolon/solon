@@ -1,14 +1,12 @@
 package cn.afterturn.easypoi.wps.entity.resreq;
 
 import cn.afterturn.easypoi.wps.entity.WpsFileEntity;
-import lombok.Data;
 
 import java.io.Serializable;
 
 /**
  * @author jueyue on 20-5-8.
  */
-@Data
 public class WpsFileSaveResponse extends WpsResponse implements Serializable {
 
     public WpsFileSaveResponse() {
@@ -19,4 +17,12 @@ public class WpsFileSaveResponse extends WpsResponse implements Serializable {
     }
 
     private WpsFileEntity file;
+
+    public WpsFileEntity getFile() {
+        return file;
+    }
+
+    public void setFile(WpsFileEntity file) {
+        this.file = file;
+    }
 }
