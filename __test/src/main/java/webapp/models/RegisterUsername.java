@@ -1,6 +1,7 @@
 package webapp.models;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.noear.solon.validation.annotation.Length;
 import org.noear.solon.validation.annotation.NotBlank;
 import org.noear.solon.validation.annotation.NotNull;
@@ -11,6 +12,7 @@ import org.noear.solon.validation.annotation.NotNull;
  * @Date: 2022/5/18
  */
 @Data
+@EqualsAndHashCode(callSuper=false)
 public class RegisterUsername extends LoginUsername{
 
     @NotBlank(message = "请输入密码")
