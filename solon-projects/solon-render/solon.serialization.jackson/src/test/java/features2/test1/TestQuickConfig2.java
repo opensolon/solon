@@ -44,6 +44,6 @@ public class TestQuickConfig2 {
         assert ONode.load(output).count() == 5;
 
         //完美
-        assert "{\"s1\":\"noear\",\"b1\":true,\"n1\":1,\"d1\":1.0,\"map1\":{\"time\":1673861993477,\"long\":12,\"int\":12}}".equals(output);
+        assert "{\"b1\":true,\"d1\":1.0,\"map1\":{\"time\":1673861993477,\"long\":12,\"int\":12},\"n1\":1,\"s1\":\"noear\"}".equals(output);
     }
 }
