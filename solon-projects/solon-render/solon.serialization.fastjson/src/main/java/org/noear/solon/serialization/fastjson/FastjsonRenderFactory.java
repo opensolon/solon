@@ -23,7 +23,6 @@ public class FastjsonRenderFactory extends FastjsonRenderFactoryBase {
     public FastjsonRenderFactory() {
         features = new HashSet<>();
         features.add(SerializerFeature.BrowserCompatible);
-        features.add(SerializerFeature.SortField);
     }
 
     @Override
