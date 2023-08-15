@@ -139,6 +139,7 @@
         <maven-compiler.version>3.11.0</maven-compiler.version>
         <maven-resources.version>3.3.1</maven-resources.version>
         <maven-assembly.version>3.6.0</maven-assembly.version>
+        <maven-resources.version>3.3.1</maven-resources.version>
         <maven-war.version>3.4.0</maven-war.version>
     </properties>
 
@@ -1727,8 +1728,18 @@
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>${maven-resources.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-assembly-plugin</artifactId>
                     <version>${maven-assembly.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-war-plugin</artifactId>
+                    <version>${maven-war.version}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.graalvm.buildtools</groupId>
