@@ -6,7 +6,8 @@ solon.logging.appender:
     level: DEBUG
   file:
     level: INFO
-    enable: false
+    rolling: "logs/demoapp_%d{yyyy-MM-dd}/%i${FILE_LOG_EXTENSION}"
+    maxFileSize: "1 KB"
   cloud:
     level: INFO
   json:
