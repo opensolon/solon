@@ -1,5 +1,6 @@
 package features2.test2;
 
+import features2.model.OrderDo;
 import features2.model.UserDo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,6 +13,7 @@ import org.noear.solon.test.annotation.TestPropertySource;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -45,5 +47,20 @@ public class TestQuickConfig {
 
         //error: int 没转为 string
         assert "{\"b1\":true,\"d1\":1.0,\"map1\":{\"time\":\"2023-01-16 17:39:53\",\"long\":\"12\",\"int\":12},\"n1\":\"1\",\"s1\":\"noear\"}".equals(output);
+    }
+
+    @Test
+    public void hello3() throws Throwable{
+        Map<String, Object> data = new LinkedHashMap<>();
+        data.put("long", 1l);
+        data.put("order", new OrderDo());
+
+        ContextEmpty ctx = new ContextEmpty();
+        renderFactory.create().render(data, ctx);
+        String output = ctx.attr("output");
+
+        System.out.println(output);
+
+        assert "{\"long\":\"1\",\"order\":{\"orderId\":\"2\"}}".equals(output);
     }
 }
