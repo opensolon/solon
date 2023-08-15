@@ -27,6 +27,7 @@ public class CloudEventServiceMqttImp implements CloudEventServicePlus {
     private final String server;
     private final String username;
     private final String password;
+    private final long publishTimeout;
 
     private MqttClient client;
     private String clientId;
@@ -48,6 +49,7 @@ public class CloudEventServiceMqttImp implements CloudEventServicePlus {
         this.server = cloudProps.getEventServer();
         this.username = cloudProps.getUsername();
         this.password = cloudProps.getPassword();
+        this.publishTimeout = cloudProps.getEventPublishTimeout();
 
         connect();
     }
@@ -113,7 +115,7 @@ public class CloudEventServiceMqttImp implements CloudEventServicePlus {
             MqttDeliveryToken token = mqttTopic.publish(message);
 
             if (event.qos() > 0) {
-                token.waitForCompletion(1000 * 30);
+                token.waitForCompletion(publishTimeout);
                 return token.isComplete();
             } else {
                 return true;
