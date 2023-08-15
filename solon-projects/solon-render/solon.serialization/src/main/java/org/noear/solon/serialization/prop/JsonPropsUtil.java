@@ -60,6 +60,7 @@ public class JsonPropsUtil {
 
         if (jsonProps.longAsString) {
             factory.addConvertor(Long.class, e -> String.valueOf(e));
+            factory.addConvertor(long.class, e -> String.valueOf(e));
         }
 
         if (jsonProps.boolAsInt) {
