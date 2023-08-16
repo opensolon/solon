@@ -6,7 +6,7 @@ import com.alibaba.fastjson.serializer.SerializeWriter;
 import org.noear.solon.core.convert.Converter;
 import org.noear.solon.serialization.JsonRenderFactory;
 
-import java.math.BigDecimal;
+import java.lang.reflect.Type;
 
 
 /**
@@ -18,10 +18,15 @@ import java.math.BigDecimal;
 public abstract class FastjsonRenderFactoryBase implements JsonRenderFactory {
     public abstract SerializeConfig config();
 
-    public <T> void addEncoder(Class<T> clz, ObjectSerializer encoder) {
+    public void addEncoder(Type clz, ObjectSerializer encoder) {
         config().put(clz, encoder);
-    }
 
+        if (clz == Long.class) {
+            config().put(Long.TYPE, encoder);
+        } else if (clz == Integer.class) {
+            config().put(Integer.TYPE, encoder);
+        }
+    }
 
     @Override
     public <T> void addConvertor(Class<T> clz, Converter<T,Object> converter) {
