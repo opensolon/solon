@@ -31,7 +31,7 @@ public class CloudEventServiceMqttImp implements CloudEventServicePlus {
 
     private MqttClient client;
     private String clientId;
-    private MqttCallbackImp clientCallback;
+    private MqttCallbackImpl clientCallback;
 
     /**
      * 获取客户端
@@ -93,7 +93,7 @@ public class CloudEventServiceMqttImp implements CloudEventServicePlus {
 
         try {
             client = new MqttClient(server, clientId, new MemoryPersistence());
-            clientCallback = new MqttCallbackImp(client, cloudProps);
+            clientCallback = new MqttCallbackImpl(client, cloudProps);
 
             client.setCallback(clientCallback);
             client.connect(options);
@@ -128,8 +128,8 @@ public class CloudEventServiceMqttImp implements CloudEventServicePlus {
     CloudEventObserverManger observerMap = new CloudEventObserverManger();
 
     @Override
-    public void attention(EventLevel level, String channel, String group, String topic, String tag, CloudEventHandler observer) {
-        observerMap.add(topic, level, group, topic, tag, observer);
+    public void attention(EventLevel level, String channel, String group, String topic, String tag, int qos,CloudEventHandler observer) {
+        observerMap.add(topic, level, group, topic, tag, qos, observer);
     }
 
     public void subscribe() {
