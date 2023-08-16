@@ -95,7 +95,7 @@ public class CloudEventServiceLocalImpl implements CloudEventServicePlus {
     private CloudEventObserverManger observerManger = new CloudEventObserverManger();
 
     @Override
-    public void attention(EventLevel level, String channel, String group, String topic, String tag, CloudEventHandler observer) {
+    public void attention(EventLevel level, String channel, String group, String topic, String tag, int qos, CloudEventHandler observer) {
         //new topic
         String topicNew;
         if (Utils.isEmpty(group)) {
@@ -104,7 +104,7 @@ public class CloudEventServiceLocalImpl implements CloudEventServicePlus {
             topicNew = group + LocalProps.GROUP_TOPIC_SPLIT_MART + topic;
         }
 
-        observerManger.add(topicNew, level, group, topic, tag, observer);
+        observerManger.add(topicNew, level, group, topic, tag, qos, observer);
     }
 
     private String channel;

@@ -88,7 +88,7 @@ public class CloudEventServiceWaterImp implements CloudEventServicePlus {
      * 登记关注
      */
     @Override
-    public void attention(EventLevel level, String channel, String group, String topic, String tag, CloudEventHandler observer) {
+    public void attention(EventLevel level, String channel, String group, String topic, String tag, int qos, CloudEventHandler observer) {
         //new topic
         String topicNew;
         if (Utils.isEmpty(group)) {
@@ -98,9 +98,9 @@ public class CloudEventServiceWaterImp implements CloudEventServicePlus {
         }
 
         if (level == EventLevel.instance) {
-            instanceObserverManger.add(topicNew, level, group, topic, tag, observer);
+            instanceObserverManger.add(topicNew, level, group, topic, tag, qos, observer);
         } else {
-            clusterObserverManger.add(topicNew, level, group, topic, tag, observer);
+            clusterObserverManger.add(topicNew, level, group, topic, tag, qos, observer);
         }
     }
 

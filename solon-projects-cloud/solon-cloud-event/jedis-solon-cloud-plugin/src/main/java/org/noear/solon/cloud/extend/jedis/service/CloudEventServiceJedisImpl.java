@@ -74,7 +74,7 @@ public class CloudEventServiceJedisImpl implements CloudEventServicePlus {
     CloudEventObserverManger observerManger = new CloudEventObserverManger();
 
     @Override
-    public void attention(EventLevel level, String channel, String group, String topic, String tag, CloudEventHandler observer) {
+    public void attention(EventLevel level, String channel, String group, String topic, String tag, int qos, CloudEventHandler observer) {
         //new topic
         String topicNew;
         if (Utils.isEmpty(group)) {
@@ -83,7 +83,7 @@ public class CloudEventServiceJedisImpl implements CloudEventServicePlus {
             topicNew = group + JedisProps.GROUP_SPLIT_MARK + topic;
         }
 
-        observerManger.add(topicNew, level, group, topic, tag, observer);
+        observerManger.add(topicNew, level, group, topic, tag, qos, observer);
     }
 
     public void subscribe() {

@@ -22,14 +22,16 @@ public class EventObserver implements CloudEventHandler {
     private final String group;
     private final String topic;
     private final String tag;
+    private final int qos;
     private final List<CloudEventHandler> handlers;
 
 
-    public EventObserver(EventLevel level, String group, String topic, String tag) {
+    public EventObserver(EventLevel level, String group, String topic, String tag, int qos) {
         this.level = level;
         this.group = group;
         this.topic = topic;
         this.tag = tag;
+        this.qos = qos;
         this.handlers = new ArrayList<>();
     }
 
@@ -47,6 +49,10 @@ public class EventObserver implements CloudEventHandler {
 
     public String getTag() {
         return tag;
+    }
+
+    public int getQos() {
+        return qos;
     }
 
     /**

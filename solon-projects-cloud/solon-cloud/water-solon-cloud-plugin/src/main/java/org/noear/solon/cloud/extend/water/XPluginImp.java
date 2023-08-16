@@ -168,13 +168,13 @@ public class XPluginImp implements Plugin, InitializingBean {
             if (discoveryServiceImp != null || i18nServiceImp != null) {
                 //关注缓存更新事件
                 eventServiceImp.attention(EventLevel.instance, "", "", WW.msg_ucache_topic, "",
-                        new HandlerCacheUpdate(discoveryServiceImp, i18nServiceImp));
+                        0, new HandlerCacheUpdate(discoveryServiceImp, i18nServiceImp));
             }
 
             if (configServiceImp != null) {
                 //关注配置更新事件
                 eventServiceImp.attention(EventLevel.instance, "", "", WW.msg_uconfig_topic, "",
-                        new HandlerConfigUpdate(configServiceImp));
+                       0, new HandlerConfigUpdate(configServiceImp));
             }
 
             context.lifecycle(-99, () -> eventServiceImp.subscribe());

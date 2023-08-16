@@ -27,7 +27,8 @@ public interface CloudEventService {
      * @param group    分组
      * @param topic    主题
      * @param tag      标签
+     * @param qos      服务质量
      * @param observer 观察者
      */
-    void attention(EventLevel level, String channel, String group, String topic, String tag, CloudEventHandler observer);
+    void attention(EventLevel level, String channel, String group, String topic, String tag, int qos, CloudEventHandler observer);
 }

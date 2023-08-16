@@ -45,4 +45,9 @@ public @interface CloudEvent {
      * 通道：用于同时支持多个消息框架
      * */
     String channel() default "";
+
+    /**
+     * 服务质量：只对部分适配有用（0，最多交付一次；1，至少交付一次；2，只交付一次）
+     * */
+    int qos() default 1;
 }

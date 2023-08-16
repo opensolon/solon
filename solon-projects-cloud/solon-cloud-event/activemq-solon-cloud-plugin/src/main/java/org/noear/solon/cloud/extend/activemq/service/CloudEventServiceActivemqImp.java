@@ -86,7 +86,7 @@ public class CloudEventServiceActivemqImp implements CloudEventServicePlus {
 
     @Override
     public void attention(EventLevel level, String channel, String group,
-                          String topic, String tag, CloudEventHandler observer) {
+                          String topic, String tag, int qos, CloudEventHandler observer) {
         //new topic
         String topicNew;
         if (Utils.isEmpty(group)) {
@@ -95,7 +95,7 @@ public class CloudEventServiceActivemqImp implements CloudEventServicePlus {
             topicNew = group + ActivemqProps.GROUP_SPLIT_MARK + topic;
         }
 
-        observerManger.add(topicNew, level, group, topic, tag, observer);
+        observerManger.add(topicNew, level, group, topic, tag, qos, observer);
 
     }
 

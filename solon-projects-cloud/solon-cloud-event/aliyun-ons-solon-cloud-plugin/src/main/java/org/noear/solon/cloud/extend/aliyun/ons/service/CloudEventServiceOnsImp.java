@@ -66,7 +66,7 @@ public class CloudEventServiceOnsImp implements CloudEventServicePlus {
     CloudEventObserverManger observerManger = new CloudEventObserverManger();
 
     @Override
-    public void attention(EventLevel level, String channel, String group, String topic, String tag, CloudEventHandler observer) {
+    public void attention(EventLevel level, String channel, String group, String topic, String tag, int qos, CloudEventHandler observer) {
         topic = topic.replace(".", "_");
 
         //new topic
@@ -81,7 +81,7 @@ public class CloudEventServiceOnsImp implements CloudEventServicePlus {
             tag = "*";
         }
 
-        observerManger.add(topicNew, level, group, topic, tag, observer);
+        observerManger.add(topicNew, level, group, topic, tag, qos, observer);
     }
 
     public void subscribe() {

@@ -43,21 +43,21 @@ public class CloudEventObserverManger {
     /**
      * 获取事件处理
      */
-    public CloudEventHandler getByTopic(String topic) {
+    public EventObserver getByTopic(String topic) {
         return topicObserverMap.get(topic);
     }
 
     /**
      * 获取事件处理（支持 tag）
      */
-    public CloudEventHandler getByTopicAndTag(String topicAndTag) {
+    public EventObserver getByTopicAndTag(String topicAndTag) {
         return topicAndTagObserverMap.get(topicAndTag);
     }
 
     /**
      * 获取事件处理（支持 tag）
      */
-    public CloudEventHandler getByTopicAndTag(String topic, String tag) {
+    public EventObserver getByTopicAndTag(String topic, String tag) {
         String topicAndTag = topic + TAG_SPLIT_MARK + tag;
 
         return getByTopicAndTag(topicAndTag);
@@ -66,28 +66,28 @@ public class CloudEventObserverManger {
     /**
      * 添加主题事件处理
      */
-    public void add(String topic, EventLevel level, String group, String topicRaw, String tag, CloudEventHandler observer) {
+    public void add(String topic, EventLevel level, String group, String topicRaw, String tag, int qos, CloudEventHandler observer) {
         //主题关注关系
-        addTopicObserver(topic, level, group, topicRaw, tag, observer);
+        addTopicObserver(topic, level, group, topicRaw, tag, qos, observer);
 
         //主题标签关注关系
-        addTopicAndTagObserver(topic, level, group, topicRaw, tag, observer);
+        addTopicAndTagObserver(topic, level, group, topicRaw, tag, qos, observer);
 
         //主题与标签
         addTopicTags(topic, tag);
     }
 
-    private void addTopicObserver(String topic, EventLevel level, String group, String topicRaw, String tag, CloudEventHandler observer) {
+    private void addTopicObserver(String topic, EventLevel level, String group, String topicRaw, String tag, int qos, CloudEventHandler observer) {
         EventObserver eventObserver = topicObserverMap.get(topic);
         if (eventObserver == null) {
-            eventObserver = new EventObserver(level, group, topicRaw, tag);
+            eventObserver = new EventObserver(level, group, topicRaw, tag, qos);
             topicObserverMap.put(topic, eventObserver);
         }
 
         eventObserver.addHandler(observer);
     }
 
-    private void addTopicAndTagObserver(String topic, EventLevel level, String group, String topicRaw, String tag, CloudEventHandler observer) {
+    private void addTopicAndTagObserver(String topic, EventLevel level, String group, String topicRaw, String tag, int qos, CloudEventHandler observer) {
         if (Utils.isEmpty(tag)) {
             return;
         }
@@ -95,7 +95,7 @@ public class CloudEventObserverManger {
         String topicAndTag = topic + TAG_SPLIT_MARK + tag;
         EventObserver eventObserver = topicAndTagObserverMap.get(topicAndTag);
         if (eventObserver == null) {
-            eventObserver = new EventObserver(level, group, topicRaw, tag);
+            eventObserver = new EventObserver(level, group, topicRaw, tag, qos);
             topicAndTagObserverMap.put(topicAndTag, eventObserver);
         }
 
