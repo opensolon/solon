@@ -17,6 +17,7 @@
 * 增加 quartz jdbc 及时更新支持（数据库里变了，它马上变）？
 * 优化 maven 打包插件版本管理
 * beetlsql 升为 3.23.11-RELEASE
+* fastjson2 升为 2.0.39
 
 ### 2.4.3
 * 增加 solon.cloud.metrics 对 MeterBinder 的自动装配处理
