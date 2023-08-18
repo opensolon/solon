@@ -1,7 +1,7 @@
-package org.noear.solon.cloud.extend.mqtt.service;
+package org.noear.solon.cloud.extend.mqtt5.service;
 
-import org.eclipse.paho.client.mqttv3.IMqttMessageListener;
-import org.eclipse.paho.client.mqttv3.MqttMessage;
+import org.eclipse.paho.mqttv5.client.IMqttMessageListener;
+import org.eclipse.paho.mqttv5.common.MqttMessage;
 import org.noear.solon.cloud.CloudEventHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

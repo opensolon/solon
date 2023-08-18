@@ -1,18 +1,27 @@
 package org.noear.solon.cloud.extend.mqtt.service;
 
+import org.eclipse.paho.client.mqttv3.IMqttMessageListener;
+import org.eclipse.paho.client.mqttv3.MqttClient;
+import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudEventHandler;
 import org.noear.solon.cloud.exception.CloudEventException;
 import org.noear.solon.cloud.model.Event;
+import org.noear.solon.cloud.model.EventObserver;
+import org.noear.solon.cloud.service.CloudEventObserverManger;
 import org.noear.solon.core.event.EventBus;
 import org.slf4j.Logger;
 
 /**
- * @author noear 2023/8/16 created
+ * @author noear
+ * @since 2.4
  */
-public class MqttArrived {
-    public static void messageArrived(Logger log, String eventChannelName, CloudEventHandler eventHandler, String topic, MqttMessage message) throws Exception {
+public class MqttUtil {
+    /**
+     * 接收
+     * */
+    public static void receive(Logger log, String eventChannelName, CloudEventHandler eventHandler, String topic, MqttMessage message) throws Exception {
         try {
             Event event = new Event(topic, new String(message.getPayload()))
                     .qos(message.getQos())
@@ -39,5 +48,21 @@ public class MqttArrived {
                 throw new CloudEventException(ex);
             }
         }
+    }
+
+    /**
+     * 订阅
+     * */
+    public static void subscribe(MqttClient client, String eventChannelName, CloudEventObserverManger observerManger) throws MqttException {
+        String[] topicAry = observerManger.topicAll().toArray(new String[0]);
+        int[] topicQos = new int[topicAry.length];
+        IMqttMessageListener[] topicListener = new IMqttMessageListener[topicAry.length];
+        for (int i = 0, len = topicQos.length; i < len; i++) {
+            EventObserver eventObserver = observerManger.getByTopic(topicAry[i]);
+            topicQos[i] = eventObserver.getQos();
+            topicListener[i] = new MqttMessageListenerImpl(eventChannelName, eventObserver);
+        }
+
+        client.subscribe(topicAry, topicQos, topicListener);
     }
 }

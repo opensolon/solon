@@ -13,6 +13,7 @@
 * 新增 solon.boot.vertx 插件?
 * 新增 seata-solon-plugin 插件
 * 新增 graphql-solon-plugin 插件
+* 新增 mqtt5-solon-cloud-plugin 插件
 * 增加 mqtt-solon-cloud-plugin 支持 publishTimeout 配置（默认3秒）
 * 增加 mqtt-solon-cloud-plugin 支持 topicFilter 表达式
 * 增加 quartz jdbc 及时更新支持（数据库里变了，它马上变）？

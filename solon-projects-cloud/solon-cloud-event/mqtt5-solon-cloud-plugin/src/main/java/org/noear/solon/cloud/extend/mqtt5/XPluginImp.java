@@ -1,28 +1,28 @@
-package org.noear.solon.cloud.extend.mqtt;
+package org.noear.solon.cloud.extend.mqtt5;
 
-import org.eclipse.paho.client.mqttv3.MqttClient;
+import org.eclipse.paho.mqttv5.client.MqttClient;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudManager;
 import org.noear.solon.cloud.CloudProps;
-import org.noear.solon.cloud.extend.mqtt.service.CloudEventServiceMqtt3;
+import org.noear.solon.cloud.extend.mqtt5.service.CloudEventServiceMqtt5;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
 
 /**
  * @author noear
- * @since 1.3
+ * @since 2.4
  */
 public class XPluginImp implements Plugin {
     @Override
     public void start(AopContext context) {
-        CloudProps cloudProps = new CloudProps(context,"mqtt");
+        CloudProps cloudProps = new CloudProps(context, "mqtt");
 
         if (Utils.isEmpty(cloudProps.getEventServer())) {
             return;
         }
 
         if (cloudProps.getEventEnable()) {
-            CloudEventServiceMqtt3 eventServiceImp = new CloudEventServiceMqtt3(cloudProps);
+            CloudEventServiceMqtt5 eventServiceImp = new CloudEventServiceMqtt5(cloudProps);
             CloudManager.register(eventServiceImp);
 
             context.wrapAndPut(MqttClient.class, eventServiceImp.getClient());

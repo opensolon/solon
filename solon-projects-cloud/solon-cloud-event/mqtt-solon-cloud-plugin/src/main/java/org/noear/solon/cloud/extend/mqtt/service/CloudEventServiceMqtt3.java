@@ -19,7 +19,7 @@ import java.util.Properties;
  * @author noear
  * @since 1.3
  */
-public class CloudEventServiceMqttImp implements CloudEventServicePlus {
+public class CloudEventServiceMqtt3 implements CloudEventServicePlus {
     private static final String PROP_EVENT_clientId = "event.clientId";
 
     private final CloudProps cloudProps;
@@ -33,9 +33,11 @@ public class CloudEventServiceMqttImp implements CloudEventServicePlus {
     private String clientId;
     private MqttCallbackImpl clientCallback;
 
+    private CloudEventObserverManger observerMap = new CloudEventObserverManger();
+
     /**
      * 获取客户端
-     * */
+     */
     public MqttClient getClient() {
         return client;
     }
@@ -43,7 +45,7 @@ public class CloudEventServiceMqttImp implements CloudEventServicePlus {
     //
     // 1833(MQTT的默认端口号)
     //
-    public CloudEventServiceMqttImp(CloudProps cloudProps) {
+    public CloudEventServiceMqtt3(CloudProps cloudProps) {
         this.cloudProps = cloudProps;
 
         this.server = cloudProps.getEventServer();
@@ -93,12 +95,12 @@ public class CloudEventServiceMqttImp implements CloudEventServicePlus {
 
         try {
             client = new MqttClient(server, clientId, new MemoryPersistence());
-            clientCallback = new MqttCallbackImpl(client, cloudProps);
+            clientCallback = new MqttCallbackImpl(client, observerMap, cloudProps);
 
             client.setCallback(clientCallback);
             client.connect(options);
         } catch (MqttException ex) {
-            throw new RuntimeException(ex);
+            throw new IllegalArgumentException(ex);
         }
     }
 
@@ -125,17 +127,16 @@ public class CloudEventServiceMqttImp implements CloudEventServicePlus {
         }
     }
 
-    CloudEventObserverManger observerMap = new CloudEventObserverManger();
 
     @Override
-    public void attention(EventLevel level, String channel, String group, String topic, String tag, int qos,CloudEventHandler observer) {
+    public void attention(EventLevel level, String channel, String group, String topic, String tag, int qos, CloudEventHandler observer) {
         observerMap.add(topic, level, group, topic, tag, qos, observer);
     }
 
     public void subscribe() {
         try {
             if (observerMap.topicSize() > 0) {
-                clientCallback.subscribe(observerMap);
+                MqttUtil.subscribe(client, cloudProps.getEventChannel(), observerMap);
             }
         } catch (Throwable ex) {
             throw new RuntimeException(ex);

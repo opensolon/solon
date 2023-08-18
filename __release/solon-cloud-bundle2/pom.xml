@@ -24,6 +24,7 @@
         <module>../../solon-projects-cloud/solon-cloud-event/rocketmq-solon-cloud-plugin</module>
         <module>../../solon-projects-cloud/solon-cloud-event/rocketmq5-solon-cloud-plugin</module>
         <module>../../solon-projects-cloud/solon-cloud-event/mqtt-solon-cloud-plugin</module>
+        <module>../../solon-projects-cloud/solon-cloud-event/mqtt5-solon-cloud-plugin</module>
         <module>../../solon-projects-cloud/solon-cloud-event/kafka-solon-cloud-plugin</module>
         <module>../../solon-projects-cloud/solon-cloud-event/aliyun-ons-solon-cloud-plugin</module>
         <module>../../solon-projects-cloud/solon-cloud-event/activemq-solon-cloud-plugin</module>

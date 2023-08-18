@@ -1,9 +1,11 @@
-package org.noear.solon.cloud.extend.mqtt.service;
+package org.noear.solon.cloud.extend.mqtt5.service;
 
-import org.eclipse.paho.client.mqttv3.*;
+import org.eclipse.paho.mqttv5.client.*;
+import org.eclipse.paho.mqttv5.common.MqttException;
+import org.eclipse.paho.mqttv5.common.MqttMessage;
+import org.eclipse.paho.mqttv5.common.packet.MqttProperties;
 import org.noear.solon.cloud.CloudEventHandler;
 import org.noear.solon.cloud.CloudProps;
-import org.noear.solon.cloud.model.EventObserver;
 import org.noear.solon.cloud.service.CloudEventObserverManger;
 import org.noear.solon.core.event.EventBus;
 import org.slf4j.Logger;
@@ -11,7 +13,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * @author noear
- * @since 1.3
+ * @since 2.4
  */
 public class MqttCallbackImpl implements MqttCallback {
     static Logger log = LoggerFactory.getLogger(MqttCallbackImpl.class);
@@ -26,13 +28,16 @@ public class MqttCallbackImpl implements MqttCallback {
         this.eventChannelName = cloudProps.getEventChannel();
     }
 
-    //在断开连接时调用
     @Override
-    public void connectionLost(Throwable e) {
-        EventBus.publishTry(e);
+    public void disconnected(MqttDisconnectResponse disconnectResponse) {
+
     }
 
-    //已经预订的消息
+    @Override
+    public void mqttErrorOccurred(MqttException exception) {
+        EventBus.publishTry(exception);
+    }
+
     @Override
     public void messageArrived(String topic, MqttMessage message) throws Exception {
         CloudEventHandler eventHandler = observerManger.getByTopic(topic);
@@ -40,9 +45,18 @@ public class MqttCallbackImpl implements MqttCallback {
         MqttUtil.receive(log, eventChannelName, eventHandler, topic, message);
     }
 
-    //发布的 QoS 1 或 QoS 2 消息的传递令牌时调用
     @Override
-    public void deliveryComplete(IMqttDeliveryToken token) {
+    public void deliveryComplete(IMqttToken token) {
+
+    }
+
+    @Override
+    public void connectComplete(boolean reconnect, String serverURI) {
+
+    }
+
+    @Override
+    public void authPacketArrived(int reasonCode, MqttProperties properties) {
 
     }
 }
