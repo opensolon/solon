@@ -86,11 +86,7 @@ public class RabbitConfig {
 
         virtualHost = getVirtualHost();
         if (Utils.isEmpty(virtualHost)) {
-            if (Utils.isEmpty(Solon.cfg().appNamespace())) {
-                virtualHost = "/";
-            } else {
-                virtualHost = "/" + Solon.cfg().appNamespace();
-            }
+            virtualHost = Solon.cfg().appNamespace();
         }
 
         exchangeName = getEventExchange();

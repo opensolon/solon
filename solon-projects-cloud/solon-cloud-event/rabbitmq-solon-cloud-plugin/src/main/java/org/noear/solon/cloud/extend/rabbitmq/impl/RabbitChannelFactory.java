@@ -28,7 +28,6 @@ public class RabbitChannelFactory {
 
         String host = config.server.split(":")[0];
         int port = Integer.parseInt(config.server.split(":")[1]);
-        String virtualHost = config.virtualHost;
 
         connectionFactory = new ConnectionFactory();
 
@@ -43,8 +42,8 @@ public class RabbitChannelFactory {
         if (Utils.isNotEmpty(config.password)) {
             connectionFactory.setPassword(config.password);
         }
-        if (Utils.isNotEmpty(virtualHost)) {
-            connectionFactory.setVirtualHost(virtualHost);
+        if (Utils.isNotEmpty(config.virtualHost)) {
+            connectionFactory.setVirtualHost(config.virtualHost);
         }
 
         // 网络异常自动连接恢复
