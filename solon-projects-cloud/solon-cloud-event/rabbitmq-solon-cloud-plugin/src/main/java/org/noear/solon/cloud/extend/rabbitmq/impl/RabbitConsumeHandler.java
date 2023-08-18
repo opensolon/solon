@@ -27,12 +27,12 @@ public class RabbitConsumeHandler extends DefaultConsumer {
     RabbitProducer producer;
     String eventChannelName;
 
-    public RabbitConsumeHandler(CloudProps cloudProps, RabbitProducer producer, RabbitConfig config, Channel channel, CloudEventObserverManger observerManger) {
+    public RabbitConsumeHandler(RabbitProducer producer, RabbitConfig config, Channel channel, CloudEventObserverManger observerManger) {
         super(channel);
         this.cfg = config;
         this.producer = producer;
         this.observerManger = observerManger;
-        this.eventChannelName = cloudProps.getEventChannel();
+        this.eventChannelName = config.getEventChannel();
     }
 
     @Override

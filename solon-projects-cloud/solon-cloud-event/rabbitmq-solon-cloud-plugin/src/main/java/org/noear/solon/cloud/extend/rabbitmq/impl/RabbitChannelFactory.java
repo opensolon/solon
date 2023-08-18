@@ -1,11 +1,8 @@
 package org.noear.solon.cloud.extend.rabbitmq.impl;
 
 import com.rabbitmq.client.Channel;
-import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 import org.noear.solon.Utils;
-import org.noear.solon.cloud.CloudProps;
-import org.noear.solon.cloud.extend.rabbitmq.RabbitmqProps;
 
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
@@ -15,17 +12,11 @@ import java.util.concurrent.TimeoutException;
  *
  * @author noear
  * @since 1.2
+ * @since 2.4
  */
 public class RabbitChannelFactory {
     private ConnectionFactory connectionFactory;
-    private RabbitConfig config;
-
-    private CloudProps cloudProps;
-    public RabbitChannelFactory(CloudProps cloudProps, RabbitConfig cfg) {
-        this.cloudProps = cloudProps;
-
-        config = cfg;
-
+    public RabbitChannelFactory(RabbitConfig config) {
         String host = config.server.split(":")[0];
         int port = Integer.parseInt(config.server.split(":")[1]);
 
@@ -52,33 +43,11 @@ public class RabbitChannelFactory {
         connectionFactory.setNetworkRecoveryInterval(5000L);
     }
 
-    public ConnectionFactory getConnectionFactory() {
-        return connectionFactory;
-    }
 
-    public CloudProps getCloudProps() {
-        return cloudProps;
-    }
-
-    public RabbitConfig getConfig() {
-        return config;
-    }
-
-    private Connection connection;
-    public Connection getConnection() throws IOException, TimeoutException {
-        if (connection == null) {
-            connection = connectionFactory.newConnection();
-        }
-
-        return connection;
-    }
-
-    private Channel channel;
-    public Channel getChannel() throws IOException, TimeoutException {
-        if (channel == null) {
-            channel = getConnection().createChannel();
-        }
-
-        return channel;
+    /**
+     * 创建通道
+     * */
+    public Channel createChannel() throws IOException, TimeoutException {
+        return connectionFactory.newConnection().createChannel();
     }
 }

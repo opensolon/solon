@@ -19,44 +19,44 @@ public class RabbitConfig {
     /**
      * 虚拟主机
      */
-    public String virtualHost;
+    public final String virtualHost;
     /**
      * 交换器名称
      */
-    public String exchangeName;
+    public final String exchangeName;
     /**
      * 交换器类型
      */
-    public BuiltinExchangeType exchangeType = BuiltinExchangeType.DIRECT;
+    public final BuiltinExchangeType exchangeType = BuiltinExchangeType.DIRECT;
 
     /**
      * 是否持久化
      */
-    public boolean durable = true;
+    public final boolean durable = true;
     /**
      * 是否自动删除
      */
-    public boolean autoDelete = false;
+    public final boolean autoDelete = false;
     /**
      * 是否为内部
      */
-    public boolean internal = false;
+    public final boolean internal = false;
 
     /**
      * 标志告诉服务器至少将该消息route到一个队列中，否则将消息返还给生产者
      */
-    public boolean mandatory = false;
+    public final boolean mandatory = false;
 
     /**
      * 标志告诉服务器如果该消息关联的queue上有消费者，则马上将消息投递给它；
      * 如果所有queue都没有消费者，直接把消息返还给生产者，不用将消息入队列等待消费者了。
      */
-    public boolean immediate = false;
+    public final boolean immediate = false;
 
     /**
      * 是否排它
      */
-    public boolean exclusive = false;
+    public final boolean exclusive = false;
 
     /**
      * 服务器地址
@@ -75,27 +75,32 @@ public class RabbitConfig {
     public final String queue_ready;
     public final String queue_retry;
 
+    /**
+     * 发布超时
+     * */
+    public final long publishTimeout;
+    /**
+     *
+     * */
+    public final int prefetchCount;
+
     private final CloudProps cloudProps;
 
     public RabbitConfig(CloudProps cloudProps) {
         this.cloudProps = cloudProps;
 
+        publishTimeout = cloudProps.getEventPublishTimeout();
+        prefetchCount = getPrefetchCountInternal();
+
         server = cloudProps.getEventServer();
         username = cloudProps.getEventUsername();
         password = cloudProps.getEventPassword();
 
-        virtualHost = getVirtualHost();
-        if (Utils.isEmpty(virtualHost)) {
-            virtualHost = Solon.cfg().appNamespace();
-        }
+        virtualHost = getVirtualHostInternal();
 
-        exchangeName = getEventExchange();
-        if (Utils.isEmpty(exchangeName)) {
-            exchangeName = Solon.cfg().appGroup();
-        }
+        exchangeName = getEventExchangeInternal();
 
-        String queueName = getEventQueue();
-
+        String queueName = getEventQueueInternal();
         if (Utils.isEmpty(queueName)) {
             queueName = exchangeName + "_" + Solon.cfg().appName();
         }
@@ -110,21 +115,45 @@ public class RabbitConfig {
     }
 
 
-    private String getVirtualHost() {
-        return cloudProps.getValue(RabbitmqProps.PROP_EVENT_virtualHost);
+    public String getEventChannel(){
+        return cloudProps.getEventChannel();
+    }
+
+    private int getPrefetchCountInternal(){
+        int tmp = cloudProps.getEventPrefetchCount();
+        if (tmp < 1) {
+            tmp = 10;
+        }
+        return tmp;
+    }
+
+    private String getVirtualHostInternal() {
+        String tmp = cloudProps.getValue(RabbitmqProps.PROP_EVENT_virtualHost);
+
+        if (Utils.isEmpty(tmp)) {
+            return Solon.cfg().appNamespace();
+        } else {
+            return tmp;
+        }
     }
 
     /**
      * 交换机
      */
-    private String getEventExchange() {
-        return cloudProps.getValue(RabbitmqProps.PROP_EVENT_exchange);
+    private String getEventExchangeInternal() {
+        String tmp = cloudProps.getValue(RabbitmqProps.PROP_EVENT_exchange);
+
+        if (Utils.isEmpty(tmp)) {
+            return Solon.cfg().appGroup();
+        } else {
+            return tmp;
+        }
     }
 
     /**
      * 队列
      */
-    private String getEventQueue() {
+    private String getEventQueueInternal() {
         return cloudProps.getValue(RabbitmqProps.PROP_EVENT_queue);
     }
 }

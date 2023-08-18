@@ -1,5 +1,6 @@
 package org.noear.solon.cloud.extend.rabbitmq.service;
 
+import com.rabbitmq.client.Channel;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudEventHandler;
 import org.noear.solon.cloud.CloudProps;
@@ -36,24 +37,37 @@ public class CloudEventServiceRabbitmqImp implements CloudEventServicePlus {
         RabbitConfig config = new RabbitConfig(cloudProps);
 
 
-        RabbitChannelFactory factory = new RabbitChannelFactory(cloudProps, config);
-
-        producer = new RabbitProducer(factory);
-        consumer = new RabbitConsumer(cloudProps, producer, factory);
+        RabbitChannelFactory factory = new RabbitChannelFactory(config);
 
         try {
-            initExchange(factory, config);
+            Channel channel = initChannel(factory, config);
+
+            producer = new RabbitProducer(config, channel);
+            consumer = new RabbitConsumer(config, channel, producer);
         } catch (Exception e) {
             throw new IllegalStateException(e);
         }
     }
 
-    private void initExchange(RabbitChannelFactory factory, RabbitConfig config) throws IOException, TimeoutException {
-        factory.getChannel().exchangeDeclare(config.exchangeName,
+    private Channel initChannel(RabbitChannelFactory factory, RabbitConfig config) throws IOException, TimeoutException {
+        Channel channel = factory.createChannel();
+
+        //for exchange
+        channel.exchangeDeclare(config.exchangeName,
                 config.exchangeType,
                 config.durable,
                 config.autoDelete,
                 config.internal, new HashMap<>());
+
+        //for producer
+        if(config.publishTimeout > 0) {
+            channel.confirmSelect(); //申明需要发布确认（以提高可靠性）
+        }
+
+        //for consumer
+        channel.basicQos(config.prefetchCount); //申明同时接收数量
+
+        return channel;
     }
 
     @Override

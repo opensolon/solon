@@ -6,9 +6,7 @@ import com.rabbitmq.client.Channel;
 import org.noear.snack.ONode;
 import org.noear.solon.cloud.model.Event;
 
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.concurrent.TimeoutException;
 
 /**
  * 生产者
@@ -19,15 +17,12 @@ import java.util.concurrent.TimeoutException;
 public class RabbitProducer {
     private RabbitConfig config;
     private Channel channel;
-    private long publishTimeout;
-    private RabbitChannelFactory factory;
     private AMQP.BasicProperties eventPropsDefault;
 
-    public RabbitProducer(RabbitChannelFactory factory) {
-        this.config = factory.getConfig();
-        this.factory = factory;
+    public RabbitProducer(RabbitConfig config, Channel channel) {
+        this.config = config;
+        this.channel = channel;
         this.eventPropsDefault = newEventProps().build();
-        this.publishTimeout = factory.getCloudProps().getEventPublishTimeout();
     }
 
     public AMQP.BasicProperties.Builder newEventProps() {
@@ -37,25 +32,7 @@ public class RabbitProducer {
                 .contentType("application/json");
     }
 
-    /**
-     * 初始化
-     */
-    private void init() throws IOException, TimeoutException {
-        if(channel == null) {
-            synchronized (factory){
-                if(channel == null){
-                    channel = factory.getChannel();
-                    if (publishTimeout > 0) {
-                        channel.confirmSelect();
-                    }
-                }
-            }
-        }
-    }
-
     public boolean publish(Event event, String topic, long delay) throws Exception {
-        init();
-
         byte[] event_data = ONode.stringify(event).getBytes(StandardCharsets.UTF_8);
 
         AMQP.BasicProperties props;
@@ -67,8 +44,8 @@ public class RabbitProducer {
 
         channel.basicPublish(config.exchangeName, topic, config.mandatory, props, event_data);
 
-        if (publishTimeout > 0) {
-            return channel.waitForConfirms(publishTimeout);
+        if (config.publishTimeout > 0) {
+            return channel.waitForConfirms(config.publishTimeout);
         } else {
             return true;
         }
