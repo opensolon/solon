@@ -55,6 +55,6 @@ public interface CloudEventEntity {
 
         String content = ONode.stringify(this);
 
-        return CloudClient.event().publish(new Event(topic2, content).group(group2).tags(anno2.tag()).channel(anno2.channel()));
+        return CloudClient.event().publish(new Event(topic2, content).qos(anno2.qos()).group(group2).tags(anno2.tag()).channel(anno2.channel()));
     }
 }
