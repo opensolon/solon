@@ -8,8 +8,6 @@ import org.noear.solon.cloud.model.Event;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.TimeoutException;
 
 /**
@@ -21,7 +19,7 @@ import java.util.concurrent.TimeoutException;
 public class RabbitProducer {
     private RabbitConfig config;
     private Channel channel;
-    private long timeout;
+    private long publishTimeout;
     private RabbitChannelFactory factory;
     private AMQP.BasicProperties eventPropsDefault;
 
@@ -29,7 +27,7 @@ public class RabbitProducer {
         this.config = factory.getConfig();
         this.factory = factory;
         this.eventPropsDefault = newEventProps().build();
-        this.timeout = factory.getCloudProps().getEventPublishTimeout();
+        this.publishTimeout = factory.getCloudProps().getEventPublishTimeout();
     }
 
     public AMQP.BasicProperties.Builder newEventProps() {
@@ -47,16 +45,7 @@ public class RabbitProducer {
             synchronized (factory){
                 if(channel == null){
                     channel = factory.getChannel();
-
-                    Map<String, Object> args = new HashMap<>();
-
-                    channel.exchangeDeclare(config.exchangeName,
-                            config.exchangeType,
-                            config.durable,
-                            config.autoDelete,
-                            config.internal, args);
-
-                    if (timeout > 0) {
+                    if (publishTimeout > 0) {
                         channel.confirmSelect();
                     }
                 }
@@ -78,8 +67,8 @@ public class RabbitProducer {
 
         channel.basicPublish(config.exchangeName, topic, config.mandatory, props, event_data);
 
-        if (timeout > 0) {
-            return channel.waitForConfirms(timeout);
+        if (publishTimeout > 0) {
+            return channel.waitForConfirms(publishTimeout);
         } else {
             return true;
         }

@@ -14,6 +14,10 @@ import org.noear.solon.cloud.model.Event;
 import org.noear.solon.cloud.service.CloudEventObserverManger;
 import org.noear.solon.cloud.service.CloudEventServicePlus;
 
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.concurrent.TimeoutException;
+
 /**
  *
  * @author noear
@@ -38,6 +42,20 @@ public class CloudEventServiceRabbitmqImp implements CloudEventServicePlus {
 
         producer = new RabbitProducer(factory);
         consumer = new RabbitConsumer(cloudProps, producer, factory);
+
+        try {
+            initExchange(factory, config);
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
+    private void initExchange(RabbitChannelFactory factory, RabbitConfig config) throws IOException, TimeoutException {
+        factory.getChannel().exchangeDeclare(config.exchangeName,
+                config.exchangeType,
+                config.durable,
+                config.autoDelete,
+                config.internal, new HashMap<>());
     }
 
     @Override
