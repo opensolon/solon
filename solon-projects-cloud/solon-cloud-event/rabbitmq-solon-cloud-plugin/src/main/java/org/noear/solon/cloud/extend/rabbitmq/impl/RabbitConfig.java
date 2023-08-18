@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author noear
  * @since 1.3
+ * @since 2.4
  */
 public class RabbitConfig {
     static final Logger log = LoggerFactory.getLogger(RabbitConfig.class);

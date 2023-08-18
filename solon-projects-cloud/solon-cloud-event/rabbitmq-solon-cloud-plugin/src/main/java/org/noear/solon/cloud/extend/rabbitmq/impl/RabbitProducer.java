@@ -13,6 +13,7 @@ import java.nio.charset.StandardCharsets;
  *
  * @author noear
  * @since 1.3
+ * @since 2.4
  */
 public class RabbitProducer {
     private RabbitConfig config;

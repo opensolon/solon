@@ -11,6 +11,7 @@ import java.util.concurrent.TimeoutException;
 /**
  * @author noear
  * @since 1.3
+ * @since 2.4
  */
 public class RabbitConsumer {
     private RabbitConfig config;

@@ -4,7 +4,6 @@ import com.rabbitmq.client.*;
 import org.noear.snack.ONode;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudEventHandler;
-import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.extend.rabbitmq.RabbitmqProps;
 import org.noear.solon.cloud.model.Event;
 import org.noear.solon.cloud.service.CloudEventObserverManger;
@@ -23,13 +22,13 @@ public class RabbitConsumeHandler extends DefaultConsumer {
     static Logger log = LoggerFactory.getLogger(RabbitConsumeHandler.class);
 
     CloudEventObserverManger observerManger;
-    RabbitConfig cfg;
+    RabbitConfig config;
     RabbitProducer producer;
     String eventChannelName;
 
     public RabbitConsumeHandler(RabbitProducer producer, RabbitConfig config, Channel channel, CloudEventObserverManger observerManger) {
         super(channel);
-        this.cfg = config;
+        this.config = config;
         this.producer = producer;
         this.observerManger = observerManger;
         this.eventChannelName = config.getEventChannel();
@@ -48,7 +47,7 @@ public class RabbitConsumeHandler extends DefaultConsumer {
                 event.times(event.times() + 1);
 
                 try {
-                    isOk = producer.publish(event, cfg.queue_ready, ExpirationUtils.getExpiration(event.times()));
+                    isOk = producer.publish(event, config.queue_ready, ExpirationUtils.getExpiration(event.times()));
                 } catch (Throwable ex) {
                     getChannel().basicNack(envelope.getDeliveryTag(), false, true);
                     isOk = true;

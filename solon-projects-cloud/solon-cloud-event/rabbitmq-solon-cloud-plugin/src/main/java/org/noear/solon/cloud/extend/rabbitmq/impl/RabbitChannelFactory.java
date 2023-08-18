@@ -5,6 +5,7 @@ import com.rabbitmq.client.ConnectionFactory;
 import org.noear.solon.Utils;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.concurrent.TimeoutException;
 
 /**
@@ -16,7 +17,11 @@ import java.util.concurrent.TimeoutException;
  */
 public class RabbitChannelFactory {
     private ConnectionFactory connectionFactory;
+    private RabbitConfig config;
+
     public RabbitChannelFactory(RabbitConfig config) {
+        this.config = config;
+
         String host = config.server.split(":")[0];
         int port = Integer.parseInt(config.server.split(":")[1]);
 
@@ -43,11 +48,32 @@ public class RabbitChannelFactory {
         connectionFactory.setNetworkRecoveryInterval(5000L);
     }
 
+    private Channel initChannel(Channel channel) throws IOException {
+        //for exchange
+        channel.exchangeDeclare(config.exchangeName,
+                config.exchangeType,
+                config.durable,
+                config.autoDelete,
+                config.internal, new HashMap<>());
+
+        //for producer
+        if (config.publishTimeout > 0) {
+            channel.confirmSelect(); //申明需要发布确认（以提高可靠性）
+        }
+
+        //for consumer
+        channel.basicQos(config.prefetchCount); //申明同时接收数量
+
+        return channel;
+    }
+
 
     /**
      * 创建通道
-     * */
+     */
     public Channel createChannel() throws IOException, TimeoutException {
-        return connectionFactory.newConnection().createChannel();
+        Channel channel = connectionFactory.newConnection().createChannel();
+
+        return initChannel(channel);
     }
 }
