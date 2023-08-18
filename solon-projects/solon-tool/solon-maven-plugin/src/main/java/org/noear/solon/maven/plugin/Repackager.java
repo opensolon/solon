@@ -43,7 +43,7 @@ public class Repackager {
         this.source = source.getAbsoluteFile();
 
 		this.mainClass = SolonMavenUtil.getStartClass(getFile(), mainClass, logger);
-        logger.info("JAR的启动类为：" + this.mainClass);
+        logger.info("The startup class of the JAR: " + this.mainClass);
     }
 
     /**

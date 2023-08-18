@@ -93,7 +93,7 @@ public class RepackageMojo extends AbstractMojo {
 
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
-        logger.info("打包类型：" + packaging);
+        logger.info("Packaging type: " + packaging);
         if (packaging != null) {
             if ("jar".equalsIgnoreCase(packaging)) {
                 PLUGIN_TYPE = PluginType.JAR;
@@ -112,7 +112,7 @@ public class RepackageMojo extends AbstractMojo {
                 //默认就是war了
             }
         } else {
-            throw new MojoExecutionException("打包方式不是JAR或者WAR类型");
+            throw new MojoExecutionException("The packaging is not of the JAR or WAR type");
         }
 
     }

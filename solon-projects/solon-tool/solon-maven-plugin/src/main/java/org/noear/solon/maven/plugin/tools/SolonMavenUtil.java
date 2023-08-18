@@ -66,7 +66,7 @@ public class SolonMavenUtil {
                         String solonMain = getSolonMainClass(ctClass, mains);
                         //有注解的为主类
                         if (solonMain != null) {
-                            logger.info("检查到的启动类：" + ctClass.getName());
+                            logger.info("Checked startup class: " + ctClass.getName());
                             return solonMain;
                         }
                     } catch (IOException | NotFoundException ignored) {
@@ -96,7 +96,7 @@ public class SolonMavenUtil {
                             String solonMain = getSolonMainClass(ctClass, mains);
                             //有注解的为主类
                             if (solonMain != null) {
-                                logger.info("检查到的启动类：" + ctClass.getName());
+                                logger.info("Checked startup class: " + ctClass.getName());
                                 return solonMain;
                             }
                         } catch (Throwable ignored) {
@@ -109,18 +109,18 @@ public class SolonMavenUtil {
 
         if (mains.size() > 0) {
             if (mains.size() == 1) {
-                logger.info("检查到的启动类：" + mains.get(0));
+                logger.info("Checked startup class: " + mains.get(0));
                 return mains.get(0);
             }
 
             //提供选择启动类：
-            logger.info("检查到的启动类：");
+            logger.info("Checked startup class: ");
 
             for (int i = 0; i < mains.size(); i++) {
                 logger.info(i + "、" + mains.get(i));
             }
 
-            logger.info("请选择一个主函数作为启动函数(如：输入0回车)：");
+            logger.info("Please select a main function as the launch function (for example, enter 0 carriage return) :");
             String tempMain;
             Scanner scanner = new Scanner(System.in);
             while (true) {
@@ -131,14 +131,14 @@ public class SolonMavenUtil {
                         tempMain = mains.get(i);
                         break;
                     } catch (Exception e) {
-                        logger.error("选择失败，请重新选择");
+                        logger.error("Failed to select. Please select again");
                     }
                 }
             }
             scanner.close();
             return tempMain;
         }
-        throw new IllegalStateException("找不到启动类,请配置你的启动类");
+        throw new IllegalStateException("Unable to find startup class, please configure your startup class");
     }
 
     /**
