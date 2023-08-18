@@ -3,6 +3,7 @@ package org.noear.solon.cloud.extend.mqtt.service;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudEventHandler;
+import org.noear.solon.cloud.exception.CloudEventException;
 import org.noear.solon.cloud.model.Event;
 import org.noear.solon.core.event.EventBus;
 import org.slf4j.Logger;
@@ -19,7 +20,10 @@ public class MqttArrived {
                     .channel(eventChannelName);
 
             if (eventHandler != null) {
-                eventHandler.handle(event);
+                if (eventHandler.handle(event) == false) {
+                    //未成功，则异常（模拟 ack）
+                    throw new CloudEventException("This event handling returns false: " + event.topic());
+                }
             } else {
                 //只需要记录一下
                 log.warn("There is no observer for this event topic[{}]", event.topic());
@@ -32,7 +36,7 @@ public class MqttArrived {
             if (ex instanceof Exception) {
                 throw (Exception) ex;
             } else {
-                throw new RuntimeException(ex);
+                throw new CloudEventException(ex);
             }
         }
     }
