@@ -28,7 +28,7 @@ public class RabbitChannelFactory {
 
         String host = config.server.split(":")[0];
         int port = Integer.parseInt(config.server.split(":")[1]);
-        String virtualHost = getEventVirtualHost();
+        String virtualHost = config.virtualHost;
 
         connectionFactory = new ConnectionFactory();
 
@@ -81,12 +81,5 @@ public class RabbitChannelFactory {
         }
 
         return channel;
-    }
-
-    /**
-     * 虚拟主机
-     */
-    public String getEventVirtualHost() {
-        return cloudProps.getValue(RabbitmqProps.PROP_EVENT_virtualHost);
     }
 }

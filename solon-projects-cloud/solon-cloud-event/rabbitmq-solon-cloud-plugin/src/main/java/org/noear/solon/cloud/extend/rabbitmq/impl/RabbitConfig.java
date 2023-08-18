@@ -17,6 +17,10 @@ import org.slf4j.LoggerFactory;
 public class RabbitConfig {
     static final Logger log = LoggerFactory.getLogger(RabbitConfig.class);
     /**
+     * 虚拟主机
+     */
+    public String virtualHost;
+    /**
      * 交换器名称
      */
     public String exchangeName;
@@ -57,40 +61,52 @@ public class RabbitConfig {
     /**
      * 服务器地址
      */
-    public String server;
+    public final String server;
     /**
      * 用户名
      */
-    public String username;
+    public final String username;
     /**
      * 密码
      */
-    public String password;
+    public final String password;
 
-    public String queue_normal;
-    public String queue_ready;
-    public String queue_retry;
+    public final String queue_normal;
+    public final String queue_ready;
+    public final String queue_retry;
 
     private final CloudProps cloudProps;
 
     public RabbitConfig(CloudProps cloudProps) {
         this.cloudProps = cloudProps;
 
+        server = cloudProps.getEventServer();
+        username = cloudProps.getEventUsername();
+        password = cloudProps.getEventPassword();
+
+        virtualHost = getVirtualHost();
+        if (Utils.isEmpty(virtualHost)) {
+            if (Utils.isEmpty(Solon.cfg().appNamespace())) {
+                virtualHost = "/";
+            } else {
+                virtualHost = "/" + Solon.cfg().appNamespace();
+            }
+        }
+
         exchangeName = getEventExchange();
         if (Utils.isEmpty(exchangeName)) {
-            exchangeName = "DEFAULT";
+            exchangeName = Solon.cfg().appGroup();
         }
 
         String queueName = getEventQueue();
 
         if (Utils.isEmpty(queueName)) {
-            queueName = Solon.cfg().appGroup() + "_" + Solon.cfg().appName();
+            queueName = exchangeName + "_" + Solon.cfg().appName();
         }
 
         queue_normal = queueName + "@normal";
         queue_ready = queueName + "@ready";
         queue_retry = queueName + "@retry";
-
 
         log.trace("queue_normal=" + queue_normal);
         log.trace("queue_ready=" + queue_ready);
@@ -98,17 +114,21 @@ public class RabbitConfig {
     }
 
 
+    private String getVirtualHost() {
+        return cloudProps.getValue(RabbitmqProps.PROP_EVENT_virtualHost);
+    }
+
     /**
      * 交换机
      */
-    public String getEventExchange() {
+    private String getEventExchange() {
         return cloudProps.getValue(RabbitmqProps.PROP_EVENT_exchange);
     }
 
     /**
      * 队列
      */
-    public String getEventQueue() {
+    private String getEventQueue() {
         return cloudProps.getValue(RabbitmqProps.PROP_EVENT_queue);
     }
 }

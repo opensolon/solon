@@ -34,9 +34,7 @@ public class CloudEventServiceRabbitmqImp implements CloudEventServicePlus {
         this.cloudProps = cloudProps;
 
         RabbitConfig config = new RabbitConfig(cloudProps);
-        config.server = cloudProps.getEventServer();
-        config.username = cloudProps.getUsername();
-        config.password = cloudProps.getPassword();
+
 
         RabbitChannelFactory factory = new RabbitChannelFactory(cloudProps, config);
 
