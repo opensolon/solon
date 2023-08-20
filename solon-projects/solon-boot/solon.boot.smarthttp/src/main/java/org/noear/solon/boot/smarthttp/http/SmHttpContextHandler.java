@@ -1,5 +1,6 @@
 package org.noear.solon.boot.smarthttp.http;
 
+import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.smarthttp.XPluginImp;
 import org.noear.solon.core.event.EventBus;
@@ -19,7 +20,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.RejectedExecutionException;
 
 public class SmHttpContextHandler extends HttpServerHandler {
-    static final AttachKey httpHolderKey = AttachKey.valueOf("httpHolder");
+    static final AttachKey<SmHttpContext> httpHolderKey = AttachKey.valueOf("httpHolder");
 
     protected Executor executor;
     private final Handler handler;
@@ -38,7 +39,7 @@ public class SmHttpContextHandler extends HttpServerHandler {
             return;
         }
 
-        SmHttpContext ctx = (SmHttpContext) request.getAttachment().get(httpHolderKey);
+        SmHttpContext ctx = request.getAttachment().get(httpHolderKey);
         if (ctx != null && ctx.innerIsAsync()) {
             for (ContextAsyncListener listener : ctx.innerAsyncListeners()) {
                 try {
@@ -58,6 +59,11 @@ public class SmHttpContextHandler extends HttpServerHandler {
         }
         request.getAttachment().put(httpHolderKey, ctx);
 
+        //增加 gzip 支持
+        String tmp = ctx.header("Accept-Encoding");
+        if(tmp != null && tmp.contains("gzip")) {
+            response.gzip();
+        }
 
         if (executor == null) {
             handle0(ctx, future);
