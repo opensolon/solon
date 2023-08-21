@@ -1068,8 +1068,7 @@ public abstract class Context {
 
     //一些特殊的boot才有效
     @Note("关闭响应")
-    public void close() throws IOException {
-    }
+    public abstract void close() throws IOException;
 
     /**
      * 是否支持异步

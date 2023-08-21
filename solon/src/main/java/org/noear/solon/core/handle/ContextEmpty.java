@@ -287,6 +287,11 @@ public class ContextEmpty extends Context {
     }
 
     @Override
+    public void close() throws IOException {
+
+    }
+
+    @Override
     public boolean asyncSupported() {
         return false;
     }

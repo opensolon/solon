@@ -388,6 +388,11 @@ public class SolonServletContext extends WebContextBase {
     }
 
     @Override
+    public void close() throws IOException {
+        outputStream().close();
+    }
+
+    @Override
     protected void innerCommit() throws IOException {
         if (getHandled() || status() >= 200) {
             sendHeaders();

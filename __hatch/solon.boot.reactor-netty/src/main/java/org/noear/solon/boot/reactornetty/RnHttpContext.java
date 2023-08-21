@@ -303,6 +303,10 @@ public class RnHttpContext extends WebContextBase {
         //不用实现
     }
 
+    @Override
+    public void close() throws IOException {
+
+    }
 
     @Override
     public boolean asyncSupported() {

@@ -408,6 +408,10 @@ public class JdkHttpContext extends WebContextBase {
         }
     }
 
+    @Override
+    public void close() throws IOException {
+        _exchange.close();
+    }
 
     @Override
     public boolean asyncSupported() {

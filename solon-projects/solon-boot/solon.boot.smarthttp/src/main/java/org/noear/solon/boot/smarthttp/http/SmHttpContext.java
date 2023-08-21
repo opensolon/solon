@@ -387,6 +387,11 @@ public class SmHttpContext extends WebContextBase {
     }
 
     @Override
+    public void close() throws IOException {
+        _response.close();
+    }
+
+    @Override
     public boolean asyncSupported() {
         return true;
     }

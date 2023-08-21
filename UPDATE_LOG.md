@@ -17,6 +17,7 @@
 * 增加 mqtt-solon-cloud-plugin 支持 publishTimeout 配置（默认3秒）
 * 增加 mqtt-solon-cloud-plugin 支持 topicFilter 表达式
 * 增加 HttpServerConfigure::enableDebug 接口
+* 增加 Context::close 强制实现约定
 * 增加 quartz jdbc 及时更新支持（数据库里变了，它马上变）？
 * 调整 solon-maven-plugin 改用英文作提示语
 * 调整 maven 打包插件版本管理
