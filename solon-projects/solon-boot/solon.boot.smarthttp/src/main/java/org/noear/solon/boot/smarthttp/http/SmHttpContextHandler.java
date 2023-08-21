@@ -60,10 +60,10 @@ public class SmHttpContextHandler extends HttpServerHandler {
         request.getAttachment().put(httpHolderKey, ctx);
 
         //增加 gzip 支持
-        String tmp = ctx.header("Accept-Encoding");
-        if(tmp != null && tmp.contains("gzip")) {
-            response.gzip();
-        }
+//        String tmp = ctx.header("Accept-Encoding");
+//        if(tmp != null && tmp.contains("gzip")) {
+//            response.gzip();
+//        }
 
         if (executor == null) {
             handle0(ctx, future);

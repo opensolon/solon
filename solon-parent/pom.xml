@@ -43,7 +43,7 @@
         <undertow.version>2.2.24.Final</undertow.version>
         <tomcat.version>9.0.64</tomcat.version>
         <smartsocket.version>1.5.32</smartsocket.version>
-        <smarthttp.version>1.3.0-SNAPSHOT</smarthttp.version>
+        <smarthttp.version>1.2.9</smarthttp.version>
         <vertx.version>4.4.1</vertx.version>
 
 
