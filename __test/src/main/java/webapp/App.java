@@ -9,6 +9,7 @@ import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Import;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.annotation.SolonMain;
+import org.noear.solon.boot.http.HttpServerConfigure;
 import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.ExtendLoader;
@@ -90,6 +91,10 @@ public class App {
 
             x.onEvent(JsonRenderFactory.class, e->{
                System.out.println("JsonRenderFactory event: xxxxx: " + e.getClass().getSimpleName());
+            });
+
+            x.onEvent(HttpServerConfigure.class, e->{
+                e.enableDebug(true);
             });
 
             StaticMappings.add("/file-a/", new ClassPathStaticRepository("static_test"));
