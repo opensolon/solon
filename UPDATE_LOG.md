@@ -12,10 +12,10 @@
 ### 2.4.5
 * 新增 solon.boot.vertx 插件?
 * 增加 quartz jdbc 及时更新支持（数据库里变了，它马上变）？
-
-### 2.4.4
 * 新增 seata-solon-plugin 插件
 * 新增 graphql-solon-plugin 插件
+
+### 2.4.4
 * 新增 mqtt5-solon-cloud-plugin 插件（用于支持 v5 版本）
 * 增加 mqtt-solon-cloud-plugin 支持 publishTimeout 配置（默认3秒）
 * 增加 mqtt-solon-cloud-plugin 支持 topicFilter 表达式
@@ -27,8 +27,13 @@
 * 优化 solon-maven-plugin 打包提示语
 * 优化 maven 打包插件版本管理
 * beetlsql 升为 3.24.0-RELEASE
+* beetl 升为 3.15.8.RELEASE
+* mybatis-flex 升为 1.5.8
+* fastmybatis 升为 2.9.2
 * fastjson2 升为 2.0.39
 * snack3 升为 3.2.76
+* liteflow 升为 2.10.6
+* knife4j 升为 4.2.0
 
 ### 2.4.3
 * 增加 solon.cloud.metrics 对 MeterBinder 的自动装配处理
