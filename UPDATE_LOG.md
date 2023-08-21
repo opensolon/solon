@@ -22,7 +22,7 @@
 * 增加 quartz jdbc 及时更新支持（数据库里变了，它马上变）？
 * 调整 solon-maven-plugin 改用英文作提示语
 * 调整 maven 打包插件版本管理
-* beetlsql 升为 3.23.11-RELEASE
+* beetlsql 升为 3.24.0-RELEASE
 * fastjson2 升为 2.0.39
 * snack3 升为 3.2.76
 
