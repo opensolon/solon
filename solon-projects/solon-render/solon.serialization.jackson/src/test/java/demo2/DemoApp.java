@@ -1,5 +1,6 @@
 package demo2;
 
+import com.fasterxml.jackson.databind.SerializationFeature;
 import org.noear.solon.Solon;
 import org.noear.solon.serialization.jackson.JacksonRenderFactory;
 
@@ -34,7 +35,6 @@ public class DemoApp {
         //    out.writeLong(((Date) obj).getTime());
         //});
 
-        //示例3：重置序列化特性（例，添加序列化null的特性）
-        //factory.addFeatures(SerializerFeature.WriteMapNullValue);
+        //factory.addFeatures(SerializationFeature.EAGER_SERIALIZER_FETCH);
     }
 }
