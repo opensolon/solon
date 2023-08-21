@@ -36,6 +36,13 @@ public interface HttpServerConfigure {
     void enableSsl(boolean enable);
 
     /**
+     * 启用调试模式 （不一定所有服务都支持）
+     * */
+    default void enableDebug(boolean enable){
+
+    }
+
+    /**
      * 添加 HttpPort（当 ssl 时，可再开个 http 端口）
      */
     void addHttpPort(int port);

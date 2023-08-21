@@ -22,6 +22,7 @@ public class SmHttpServerComb implements HttpServerConfigure, ServerLifecycle {
     private boolean enableWebSocket;
     private Handler handler;
     protected boolean enableSsl = true;
+    protected boolean enableDebug = false;
     protected Set<Integer> addHttpPorts = new LinkedHashSet<>();
     protected List<SmHttpServer> servers = new ArrayList<>();
 
@@ -31,6 +32,11 @@ public class SmHttpServerComb implements HttpServerConfigure, ServerLifecycle {
     @Override
     public void enableSsl(boolean enable) {
         this.enableSsl = enable;
+    }
+
+    @Override
+    public void enableDebug(boolean enable) {
+        enableDebug = enable;
     }
 
     /**
@@ -74,6 +80,7 @@ public class SmHttpServerComb implements HttpServerConfigure, ServerLifecycle {
             s1.enableWebSocket(enableWebSocket);
             s1.setHandler(handler);
             s1.enableSsl(enableSsl);
+            s1.enableDebug(enableDebug);
             s1.start(host, port);
 
             servers.add(s1);
@@ -86,6 +93,7 @@ public class SmHttpServerComb implements HttpServerConfigure, ServerLifecycle {
             s2.enableWebSocket(enableWebSocket);
             s2.setHandler(handler);
             s2.enableSsl(false); //只支持http
+            s2.enableDebug(enableDebug);
             s2.start(host, portAdd);
 
             servers.add(s2);

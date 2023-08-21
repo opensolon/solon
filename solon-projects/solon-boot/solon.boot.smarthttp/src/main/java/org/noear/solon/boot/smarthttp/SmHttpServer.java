@@ -31,6 +31,7 @@ public class SmHttpServer implements ServerLifecycle {
     private Executor workExecutor;
     private boolean enableWebSocket;
     private boolean enableSsl = true;
+    private boolean enableDebug = false;
     private boolean isSecure;
     public boolean isSecure() {
         return isSecure;
@@ -47,6 +48,10 @@ public class SmHttpServer implements ServerLifecycle {
 
     public void enableSsl(boolean enable) {
         this.enableSsl = enable;
+    }
+
+    public void enableDebug(boolean enable) {
+        enableDebug = enable;
     }
 
     public void enableWebSocket(boolean enableWebSocket) {
@@ -83,7 +88,7 @@ public class SmHttpServer implements ServerLifecycle {
             isSecure = true;
         }
 
-        //_config.debug(Solon.cfg().isDebugMode());
+        _config.debug(enableDebug);
 
         _config.bannerEnabled(false);
         _config.readBufferSize(1024 * 8); //默认: 8k
