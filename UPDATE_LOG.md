@@ -9,19 +9,23 @@
 * 提醒1：之前没有使用弃用接口的，可以直接升级 <br>
 * 提醒2：有使用弃用接口的。建议先升级到 1.12.4；替换弃用代码后，再升级到 2.0.0
 
-### 2.4.4
+### 2.4.5
 * 新增 solon.boot.vertx 插件?
+* 增加 quartz jdbc 及时更新支持（数据库里变了，它马上变）？
+
+### 2.4.4
 * 新增 seata-solon-plugin 插件
 * 新增 graphql-solon-plugin 插件
-* 新增 mqtt5-solon-cloud-plugin 插件
+* 新增 mqtt5-solon-cloud-plugin 插件（用于支持 v5 版本）
 * 增加 mqtt-solon-cloud-plugin 支持 publishTimeout 配置（默认3秒）
 * 增加 mqtt-solon-cloud-plugin 支持 topicFilter 表达式
 * 增加 HttpServerConfigure::enableDebug 接口
 * 增加 Context::close 强制实现约定
 * 增加 JacksonRenderFactory::addFeatures、removeFeatures 接口
-* 增加 quartz jdbc 及时更新支持（数据库里变了，它马上变）？
-* 调整 solon-maven-plugin 改用英文作提示语
-* 调整 maven 打包插件版本管理
+* 增加 solon.cloud.eventplus 对事件 qos 传递支持
+* 优化 rabbitmq-solon-cloud-plugin 代码实现
+* 优化 solon-maven-plugin 打包提示语
+* 优化 maven 打包插件版本管理
 * beetlsql 升为 3.24.0-RELEASE
 * fastjson2 升为 2.0.39
 * snack3 升为 3.2.76
