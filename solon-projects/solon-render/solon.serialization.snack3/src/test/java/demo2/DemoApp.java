@@ -32,6 +32,8 @@ public class DemoApp {
         //示例2：通过编码器，做复杂类型的原生定制（基于框架原生接口）
         factory.addEncoder(Date.class, (data, node) -> node.val().setNumber(data.getTime()));
 
+        factory.removeFeatures(Feature.BrowserCompatible);
+
         //示例3：重置序列化特性（例，添加序列化null的特性）
         factory.setFeatures(
                 Feature.OrderedField,
