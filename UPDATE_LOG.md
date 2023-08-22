@@ -15,7 +15,6 @@
 * 新增 seata-solon-plugin 插件
 * 新增 graphql-solon-plugin 插件
 
-
 ### 2.4.5
 * 修复 httputils of okhttp 手动设定超时无效的问题
 
