@@ -14,6 +14,7 @@
 * 增加 quartz jdbc 及时更新支持（数据库里变了，它马上变）？
 * 新增 seata-solon-plugin 插件
 * 新增 graphql-solon-plugin 插件
+* 修复 httputils of okhttp 手动设定超时无效的问题
 
 ### 2.4.4
 * 新增 mqtt5-solon-cloud-plugin 插件（用于支持 v5 版本）

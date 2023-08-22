@@ -21,15 +21,15 @@ public class HttpInterceptor implements Interceptor {
 
         if (timeout != null) {
             if (timeout.connectTimeout > 0) {
-                chain.withConnectTimeout(timeout.connectTimeout, TimeUnit.SECONDS);
+                chain = chain.withConnectTimeout(timeout.connectTimeout, TimeUnit.SECONDS);
             }
 
             if (timeout.writeTimeout > 0) {
-                chain.withWriteTimeout(timeout.writeTimeout, TimeUnit.SECONDS);
+                chain = chain.withWriteTimeout(timeout.writeTimeout, TimeUnit.SECONDS);
             }
 
             if (timeout.readTimeout > 0) {
-                chain.withReadTimeout(timeout.readTimeout, TimeUnit.SECONDS);
+                chain = chain.withReadTimeout(timeout.readTimeout, TimeUnit.SECONDS);
             }
         }
 
