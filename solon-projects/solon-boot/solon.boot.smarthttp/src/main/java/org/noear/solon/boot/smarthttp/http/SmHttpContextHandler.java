@@ -1,6 +1,5 @@
 package org.noear.solon.boot.smarthttp.http;
 
-import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.smarthttp.XPluginImp;
 import org.noear.solon.core.event.EventBus;
@@ -60,10 +59,10 @@ public class SmHttpContextHandler extends HttpServerHandler {
         request.getAttachment().put(httpHolderKey, ctx);
 
         //增加 gzip 支持
-//        String tmp = ctx.header("Accept-Encoding");
-//        if(tmp != null && tmp.contains("gzip")) {
-//            response.gzip();
-//        }
+        String tmp = ctx.header("Accept-Encoding");
+        if(tmp != null && tmp.contains("gzip")) {
+            response.gzip();
+        }
 
         if (executor == null) {
             handle0(ctx, future);
