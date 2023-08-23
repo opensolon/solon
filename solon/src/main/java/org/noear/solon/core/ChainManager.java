@@ -65,7 +65,6 @@ public class ChainManager {
         for (RankEntity<RouterInterceptor> entity : interceptorNodes) {
             if (entity.target instanceof RouterInterceptorLimiter) {
                 tmp.add(((RouterInterceptorLimiter) entity.target).getInterceptor());
-                LogUtil.global().warn("RouterInterceptorLimiter will be discarded, suggested use 'RouterInterceptor:pathPatterns'");
             } else {
                 tmp.add(entity.target);
             }
@@ -81,6 +80,7 @@ public class ChainManager {
     public synchronized void addInterceptor(RouterInterceptor interceptor, int index) {
         if (interceptor instanceof PathLimiter) {
             interceptor = new RouterInterceptorLimiter(interceptor, ((PathLimiter) interceptor).pathRule());
+            LogUtil.global().warn("PathLimiter will be discarded, suggested use 'RouterInterceptor:pathPatterns'");
         } else {
             interceptor = new RouterInterceptorLimiter(interceptor, interceptor.pathPatterns());
         }
