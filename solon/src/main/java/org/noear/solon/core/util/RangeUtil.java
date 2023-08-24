@@ -31,10 +31,10 @@ public class RangeUtil {
     /**
      * 输出文件
      */
-    public void outputFile(Context ctx, DownloadedFile file, boolean isDownload) throws IOException {
+    public void outputFile(Context ctx, DownloadedFile file, boolean asAttachment) throws IOException {
         if (Utils.isNotEmpty(file.getName())) {
             String fileName = URLEncoder.encode(file.getName(), Solon.encoding());
-            if (isDownload) {
+            if (asAttachment) {
                 ctx.headerSet("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
             } else {
                 ctx.headerSet("Content-Disposition", "filename=\"" + fileName + "\"");
@@ -54,11 +54,11 @@ public class RangeUtil {
     /**
      * 输出文件
      */
-    public void outputFile(Context ctx, File file, boolean isDownload) throws IOException {
+    public void outputFile(Context ctx, File file, boolean asAttachment) throws IOException {
         //输出文件名
         if (Utils.isNotEmpty(file.getName())) {
             String fileName = URLEncoder.encode(file.getName(), Solon.encoding());
-            if (isDownload) {
+            if (asAttachment) {
                 ctx.headerSet("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
             } else {
                 ctx.headerSet("Content-Disposition", "filename=\"" + fileName + "\"");

@@ -28,18 +28,21 @@ public class DownloadedFile {
      */
     private String name;
     /**
-     * 是否为附件（即下载模式）
+     * 是否附件（即下载模式）
      */
     private boolean attachment = true;
 
     /**
-     * 是否为附件
+     * 是否附件
      */
     public boolean isAttachment() {
         return attachment;
     }
 
-    public DownloadedFile isAttachment(boolean attachment) {
+    /**
+     * 作为附件
+     * */
+    public DownloadedFile asAttachment(boolean attachment) {
         this.attachment = attachment;
         return this;
     }
