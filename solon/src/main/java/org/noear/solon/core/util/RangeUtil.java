@@ -15,14 +15,10 @@ import java.net.URLEncoder;
  * @since 2.4
  */
 public class RangeUtil {
-    private static int SIZE_1MB = 1024 * 1024;
-
     private static RangeUtil global = new RangeUtil();
-
     public static RangeUtil global() {
         return global;
     }
-
     public static void globalSet(RangeUtil instance) {
         if (instance != null) {
             global = instance;

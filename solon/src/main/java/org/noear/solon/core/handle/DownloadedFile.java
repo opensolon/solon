@@ -27,11 +27,26 @@ public class DownloadedFile {
      * 文件名（带扩展名，例：demo.jpg）
      */
     private String name;
+    /**
+     * 是否为附件（即下载模式）
+     */
+    private boolean attachment = true;
 
+    /**
+     * 是否为附件
+     */
+    public boolean isAttachment() {
+        return attachment;
+    }
+
+    public DownloadedFile isAttachment(boolean attachment) {
+        this.attachment = attachment;
+        return this;
+    }
 
     /**
      * 内容流
-     * */
+     */
     public String getContentType() {
         return contentType;
     }
@@ -39,7 +54,7 @@ public class DownloadedFile {
 
     /**
      * 内容大小
-     * */
+     */
     public long getContentSize() {
         if (contentSize > 0) {
             return contentSize;
@@ -54,19 +69,19 @@ public class DownloadedFile {
 
     /**
      * 内容类型（有些地方会动态构建，所以不能只读）
-     * */
+     */
     public InputStream getContent() {
         return content;
     }
 
     /**
      * 文件名（带扩展名，例：demo.jpg）
-     * */
+     */
     public String getName() {
         return name;
     }
 
-    public DownloadedFile(){
+    public DownloadedFile() {
 
     }
 
@@ -74,9 +89,9 @@ public class DownloadedFile {
      * 基于下载输出的构建函数
      *
      * @param contentType 内容类型
-     * @param content 内容流
-     * @param name 文件名
-     * */
+     * @param content     内容流
+     * @param name        文件名
+     */
     public DownloadedFile(String contentType, long contentSize, InputStream content, String name) {
         this.contentType = contentType;
         this.contentSize = contentSize;
@@ -95,11 +110,18 @@ public class DownloadedFile {
         this.name = name;
     }
 
+    public DownloadedFile(File file) throws FileNotFoundException {
+        this.contentType = Utils.mime(file.getName());
+        this.contentSize = 0;
+        this.content = new FileInputStream(file);
+        this.name = file.getName();
+    }
+
     /**
      * 将内容流迁移到..
      *
      * @param file 文件
-     * */
+     */
     public void transferTo(File file) throws IOException {
         try (FileOutputStream stream = new FileOutputStream(file)) {
             Utils.transferTo(content, stream);
@@ -110,7 +132,7 @@ public class DownloadedFile {
      * 将内容流迁移到..
      *
      * @param stream 输出流
-     * */
+     */
     public void transferTo(OutputStream stream) throws IOException {
         Utils.transferTo(content, stream);
     }

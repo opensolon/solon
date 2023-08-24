@@ -828,7 +828,7 @@ public abstract class Context {
      * 输出为文件
      */
     public void outputAsFile(DownloadedFile file) throws IOException {
-        RangeUtil.global().outputFile(this, file, true);
+        RangeUtil.global().outputFile(this, file, file.isAttachment());
     }
 
     /**
