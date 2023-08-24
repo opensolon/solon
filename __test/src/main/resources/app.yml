@@ -55,6 +55,8 @@ solon.cloud.local:
 
 solon.health.detector: "cpu,disk,jvm,memory,os,qps"
 
+solon.mime:
+  mov: "video/quicktime"
 
 solon.logging.appender:
   console:

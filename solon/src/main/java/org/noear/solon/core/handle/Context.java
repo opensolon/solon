@@ -13,7 +13,6 @@ import org.noear.solon.lang.Nullable;
 import java.io.*;
 import java.math.BigDecimal;
 import java.net.URI;
-import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
@@ -761,7 +760,9 @@ public abstract class Context {
     protected abstract void contentTypeDoSet(String contentType);
 
     public void contentLength(long size) {
-        headerSet("Content-Length", String.valueOf(size));
+        if (size >= 0) {
+            headerSet("Content-Length", String.valueOf(size));
+        }
     }
 
     /**
@@ -826,49 +827,14 @@ public abstract class Context {
      * 输出为文件
      */
     public void outputAsFile(DownloadedFile file) throws IOException {
-        if (Utils.isNotEmpty(file.getName())) {
-            String fileName = URLEncoder.encode(file.getName(), Solon.encoding());
-            headerSet("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
-        }
-
-        //输出内容类型
-        if (Utils.isNotEmpty(file.getContentType())) {
-            contentType(file.getContentType());
-        }
-
-        //输出内容大小
-        long contentSize = file.getContentSize();
-        if (contentSize > 0) {
-            contentLength(contentSize);
-        }
-
-        try (InputStream ins = file.getContent()) {
-            output(ins);
-        }
+        RangeUtil.global().outputFile(this, file);
     }
 
     /**
      * 输出为文件
      */
     public void outputAsFile(File file) throws IOException {
-        //输出文件名
-        if (Utils.isNotEmpty(file.getName())) {
-            String fileName = URLEncoder.encode(file.getName(), Solon.encoding());
-            headerSet("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
-        }
-
-        //输出内容类型
-        String contentType = Utils.mime(file.getName());
-        if (Utils.isNotEmpty(contentType)) {
-            contentType(contentType);
-        }
-
-        //输出内容大小
-        contentLength(file.length());
-
-        try (InputStream ins = new FileInputStream(file)) {
-            output(ins);
-        }
+        RangeUtil.global().outputFile(this, file);
     }
 
     /**
