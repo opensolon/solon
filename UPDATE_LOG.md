@@ -11,9 +11,11 @@
 
 ### 2.4.6
 * 新增 solon.boot.vertx 插件?
-* 增加 quartz jdbc 及时更新支持（数据库里变了，它马上变）？
 * 新增 seata-solon-plugin 插件
 * 新增 graphql-solon-plugin 插件
+* 增加 quartz jdbc 及时更新支持（数据库里变了，它马上变）？
+* 增加 http range 分片输出支持
+* 调整 PathLimiter 的弃用提示
 
 ### 2.4.5
 * 修复 httputils of okhttp 手动设定超时无效的问题

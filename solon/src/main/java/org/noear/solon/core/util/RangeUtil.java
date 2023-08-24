@@ -1,7 +1,9 @@
-package org.noear.solon.core.handle;
+package org.noear.solon.core.util;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
+import org.noear.solon.core.handle.Context;
+import org.noear.solon.core.handle.DownloadedFile;
 
 import java.io.*;
 import java.net.URLEncoder;
@@ -33,10 +35,14 @@ public class RangeUtil {
     /**
      * 输出文件
      */
-    public void outputFile(Context ctx, DownloadedFile file) throws IOException {
+    public void outputFile(Context ctx, DownloadedFile file, boolean isDownload) throws IOException {
         if (Utils.isNotEmpty(file.getName())) {
             String fileName = URLEncoder.encode(file.getName(), Solon.encoding());
-            ctx.headerSet("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
+            if (isDownload) {
+                ctx.headerSet("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
+            } else {
+                ctx.headerSet("Content-Disposition", "filename=\"" + fileName + "\"");
+            }
         }
 
         //输出内容类型
@@ -52,11 +58,15 @@ public class RangeUtil {
     /**
      * 输出文件
      */
-    public void outputFile(Context ctx, File file) throws IOException {
+    public void outputFile(Context ctx, File file, boolean isDownload) throws IOException {
         //输出文件名
         if (Utils.isNotEmpty(file.getName())) {
             String fileName = URLEncoder.encode(file.getName(), Solon.encoding());
-            ctx.headerSet("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
+            if (isDownload) {
+                ctx.headerSet("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
+            } else {
+                ctx.headerSet("Content-Disposition", "filename=\"" + fileName + "\"");
+            }
         }
 
         //输出内容类型
@@ -88,27 +98,38 @@ public class RangeUtil {
         long start = 0, end = 0;
         long size = 0;
 
-        if (Utils.isNotEmpty(range)) {
+        if (Utils.isEmpty(range)) {
+            ctx.contentLength(streamSize);
+            ctx.status(200);
+            ctx.output(stream);
+            return;
+        } else {
             String[] ss1 = range.split("=");
 
             if (ss1.length == 2) {
                 String unit = ss1[0];
                 String[] ss2 = ss1[1].split("-");
 
-                if (ss2.length == 2 && "bytes".equals(unit)) {
-                    start = getLong(ss2[0]);
-                    end = getLong(ss2[1]);
+                if ("bytes".equals(unit)) {
+                    if (ss2.length == 2) {
+                        start = getLong(ss2[0]);
+                        end = getLong(ss2[1]);
+                    } else if (ss2.length == 1) {
+                        start = getLong(ss2[0]);
+                        end = streamSize - 1;
+                    } else {
+                        //说明格式有误
+                        ctx.status(416);
+                        return;
+                    }
+                } else {
+                    //说明格式有误
+                    ctx.status(416);
+                    return;
                 }
             } else {
                 //说明格式有误
                 ctx.status(416);
-                return;
-            }
-        } else {
-            if (streamSize < SIZE_1MB) {
-                ctx.contentLength(streamSize);
-                ctx.status(200);
-                ctx.output(stream);
                 return;
             }
         }
@@ -133,18 +154,17 @@ public class RangeUtil {
         }
 
         ctx.contentLength(size);
-        if (end + 1 == streamSize) {
-            ctx.status(200);
-        } else {
-            ctx.status(206);
-        }
+        ctx.status(206);
 
         ctx.headerSet("Connection", "keep-alive");
-        ctx.headerSet("Keep-Alive", "timeout=60");
         ctx.headerSet("Content-Range", "bytes " + start + "-" + end + "/" + streamSize);
 
         //ctx.output(stream);
-        transferTo(stream, ctx.outputStream(), start, size);
+        try {
+            transferTo(stream, ctx.outputStream(), start, size);
+        } catch (IOException e) {
+            LogUtil.global().warn("The http range output is abnormal: " + e.getMessage());
+        }
     }
 
     /**
@@ -179,6 +199,10 @@ public class RangeUtil {
             length -= len;
             if (bufMax > length) {
                 bufMax = (int) length;
+
+                if (bufMax == 0) {
+                    break;
+                }
             }
         }
 

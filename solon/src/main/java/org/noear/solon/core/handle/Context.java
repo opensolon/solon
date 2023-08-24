@@ -7,6 +7,7 @@ import org.noear.solon.core.NvMap;
 import org.noear.solon.core.util.IgnoreCaseMap;
 import org.noear.solon.core.util.IpUtil;
 import org.noear.solon.core.util.PathUtil;
+import org.noear.solon.core.util.RangeUtil;
 import org.noear.solon.core.wrap.ClassWrap;
 import org.noear.solon.lang.Nullable;
 
@@ -827,14 +828,14 @@ public abstract class Context {
      * 输出为文件
      */
     public void outputAsFile(DownloadedFile file) throws IOException {
-        RangeUtil.global().outputFile(this, file);
+        RangeUtil.global().outputFile(this, file, true);
     }
 
     /**
      * 输出为文件
      */
     public void outputAsFile(File file) throws IOException {
-        RangeUtil.global().outputFile(this, file);
+        RangeUtil.global().outputFile(this, file, true);
     }
 
     /**

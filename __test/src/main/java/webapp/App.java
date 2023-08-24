@@ -94,7 +94,7 @@ public class App {
             });
 
             x.onEvent(HttpServerConfigure.class, e->{
-                e.enableDebug(true);
+                //e.enableDebug(true);
             });
 
             StaticMappings.add("/file-a/", new ClassPathStaticRepository("static_test"));

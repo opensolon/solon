@@ -4,7 +4,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Handler;
 import org.noear.solon.core.handle.MethodType;
-import org.noear.solon.core.handle.RangeUtil;
+import org.noear.solon.core.util.RangeUtil;
 
 import java.io.InputStream;
 import java.net.URL;
