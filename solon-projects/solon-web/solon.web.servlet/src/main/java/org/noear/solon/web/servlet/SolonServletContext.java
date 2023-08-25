@@ -8,6 +8,7 @@ import org.noear.solon.core.NvMap;
 import org.noear.solon.core.handle.ContextAsyncListener;
 import org.noear.solon.core.handle.UploadedFile;
 import org.noear.solon.core.util.IgnoreCaseMap;
+import org.noear.solon.core.util.IoUtil;
 
 import javax.servlet.AsyncContext;
 import javax.servlet.ServletException;
@@ -295,7 +296,7 @@ public class SolonServletContext extends WebContextBase {
         try {
             OutputStream out = outputStream();
 
-            Utils.transferTo(stream, out);
+            IoUtil.transferTo(stream, out);
         } catch (Throwable ex) {
             throw new RuntimeException(ex);
         }

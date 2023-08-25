@@ -116,7 +116,7 @@ public class ResourceUtil {
         URL url = getResource(classLoader, name);
         if (url != null) {
             try (InputStream in = url.openStream()) {
-                return Utils.transferToString(in, charset);
+                return IoUtil.transferToString(in, charset);
             }
         } else {
             return null;
@@ -133,7 +133,7 @@ public class ResourceUtil {
         URL url = findResource(uri);
         if (url != null) {
             try (InputStream in = url.openStream()) {
-                return Utils.transferToString(in, Solon.encoding());
+                return IoUtil.transferToString(in, Solon.encoding());
             }
         } else {
             return null;

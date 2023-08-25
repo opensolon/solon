@@ -4,10 +4,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.Note;
 import org.noear.solon.core.NvMap;
-import org.noear.solon.core.util.IgnoreCaseMap;
-import org.noear.solon.core.util.IpUtil;
-import org.noear.solon.core.util.PathUtil;
-import org.noear.solon.core.util.RangeUtil;
+import org.noear.solon.core.util.*;
 import org.noear.solon.core.wrap.ClassWrap;
 import org.noear.solon.lang.Nullable;
 
@@ -320,7 +317,7 @@ public abstract class Context {
     public String body(String charset) throws IOException {
         if (body == null) {
             try (InputStream ins = bodyAsStream()) {
-                body = Utils.transferToString(ins, charset);
+                body = IoUtil.transferToString(ins, charset);
             }
         }
 

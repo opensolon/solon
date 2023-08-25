@@ -11,6 +11,7 @@ import org.noear.solon.core.handle.ContextAsyncListener;
 import org.noear.solon.core.handle.UploadedFile;
 import org.noear.solon.core.NvMap;
 import org.noear.solon.core.util.IgnoreCaseMap;
+import org.noear.solon.core.util.IoUtil;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -344,7 +345,7 @@ public class JdkHttpContext extends WebContextBase {
                 return;
             }
 
-            Utils.transferTo(stream, out);
+            IoUtil.transferTo(stream, out);
         } catch (Throwable ex) {
             throw new RuntimeException(ex);
         }

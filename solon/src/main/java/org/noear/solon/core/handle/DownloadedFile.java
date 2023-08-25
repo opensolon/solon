@@ -1,6 +1,7 @@
 package org.noear.solon.core.handle;
 
 import org.noear.solon.Utils;
+import org.noear.solon.core.util.IoUtil;
 
 import java.io.*;
 
@@ -127,7 +128,7 @@ public class DownloadedFile {
      */
     public void transferTo(File file) throws IOException {
         try (FileOutputStream stream = new FileOutputStream(file)) {
-            Utils.transferTo(content, stream);
+            IoUtil.transferTo(content, stream);
         }
     }
 
@@ -137,6 +138,6 @@ public class DownloadedFile {
      * @param stream 输出流
      */
     public void transferTo(OutputStream stream) throws IOException {
-        Utils.transferTo(content, stream);
+        IoUtil.transferTo(content, stream);
     }
 }

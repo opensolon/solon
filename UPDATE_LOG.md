@@ -15,6 +15,7 @@
 * 新增 graphql-solon-plugin 插件
 * 增加 quartz jdbc 及时更新支持（数据库里变了，它马上变）？
 * 增加 http range 分片输出支持
+* 增加 IoUtil 工具类，替代旧的 Utils IO功能（旧的标为弃用）
 * 调整 PathLimiter 的弃用提示
 
 ### 2.4.5

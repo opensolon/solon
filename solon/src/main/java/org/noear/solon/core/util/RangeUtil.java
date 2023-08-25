@@ -168,7 +168,7 @@ public class RangeUtil {
 
         //ctx.output(stream);
         try {
-            transferTo(stream, ctx.outputStream(), start, size);
+            IoUtil.transferTo(stream, ctx.outputStream(), start, size);
         } catch (IOException e) {
             LogUtil.global().warn("The http range output is abnormal: " + e.getMessage());
         }
@@ -183,36 +183,5 @@ public class RangeUtil {
         } else {
             return Long.parseLong(str);
         }
-    }
-
-    /**
-     * 转换流
-     */
-    protected <T extends OutputStream> T transferTo(InputStream ins, T out, long start, long length) throws IOException {
-        int len = 0;
-        byte[] buf = new byte[512];
-        int bufMax = buf.length;
-        if (length < bufMax) {
-            bufMax = (int) length;
-        }
-
-        if (start > 0) {
-            ins.skip(start);
-        }
-
-        while ((len = ins.read(buf, 0, bufMax)) != -1) {
-            out.write(buf, 0, len);
-
-            length -= len;
-            if (bufMax > length) {
-                bufMax = (int) length;
-
-                if (bufMax == 0) {
-                    break;
-                }
-            }
-        }
-
-        return out;
     }
 }
