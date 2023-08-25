@@ -16,9 +16,11 @@ import java.net.URLEncoder;
  */
 public class RangeUtil {
     private static RangeUtil global = new RangeUtil();
+
     public static RangeUtil global() {
         return global;
     }
+
     public static void globalSet(RangeUtil instance) {
         if (instance != null) {
             global = instance;
@@ -81,9 +83,18 @@ public class RangeUtil {
      * 输出流
      */
     public void outputStream(Context ctx, InputStream stream, long streamSize) throws IOException {
-        ctx.headerSet("Accept-Ranges", "bytes");
+        if (streamSize > 0) {
+            //支持分版
+            ctx.headerSet("Accept-Ranges", "bytes");
+        } else {
+            //大小未知时，不支持分片
+            ctx.status(200);
+            ctx.output(stream);
+            return;
+        }
 
         if ("HEAD".equals(ctx.method())) {
+            //如果客户端在探测
             ctx.contentLength(streamSize);
             ctx.status(200);
             return;
