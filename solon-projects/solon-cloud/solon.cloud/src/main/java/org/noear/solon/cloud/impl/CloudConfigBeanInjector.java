@@ -3,6 +3,7 @@ package org.noear.solon.cloud.impl;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudClient;
+import org.noear.solon.cloud.exception.CloudConfigException;
 import org.noear.solon.core.BeanInjector;
 import org.noear.solon.core.PropsConverter;
 import org.noear.solon.core.VarHolder;
@@ -34,6 +35,10 @@ public class CloudConfigBeanInjector implements BeanInjector<CloudConfig> {
         String name = Solon.cfg().getByParse(Utils.annoAlias(anno.value(), anno.name()));
         //支持${xxx}配置
         String group = Solon.cfg().getByParse(anno.group());
+
+        if(Utils.isEmpty(name)){
+            throw new CloudConfigException("@CloudConfig missing value or name");
+        }
 
         Object tmp1 = build(varH.getType(), group, name);
         if (tmp1 != null) {

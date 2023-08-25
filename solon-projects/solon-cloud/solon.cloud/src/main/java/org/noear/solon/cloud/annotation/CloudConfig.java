@@ -30,6 +30,10 @@ public @interface CloudConfig {
      * 分组 （对某些框架来讲，可能没用处），支持${xxx}配置
      * */
     String group() default "";
+
+    /**
+     * 是否必须
+     * */
     boolean required() default true;
 
     /**
