@@ -130,6 +130,12 @@ public class SimpleController {
         return swaggerRes;
     }
 
+    @ApiOperation("返回实体")
+    @Mapping("test62")
+    public ResultModel test6_2(ResultModel model) {
+       return model;
+    }
+
     @ApiOperation(value = "url数组参数Json", notes = "数组参数在url中提交,json参数支持多个")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "paramA", value = "参数a", defaultValue = "1111"),

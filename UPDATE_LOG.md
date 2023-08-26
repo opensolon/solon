@@ -17,6 +17,7 @@
 * 增加 http range 分片输出支持
 * 增加 IoUtil 工具类，替代旧的 Utils IO功能（旧的标为弃用）
 * 调整 PathLimiter 的弃用提示
+* 优化 solon.docs.openapi2 的 `@ApiModelProperty` 注解处理
 
 ### 2.4.5
 * 修复 httputils of okhttp 手动设定超时无效的问题

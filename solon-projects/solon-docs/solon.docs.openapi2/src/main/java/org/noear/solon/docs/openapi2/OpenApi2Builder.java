@@ -678,6 +678,8 @@ public class OpenApi2Builder {
                     ArrayProperty fieldPr = new ArrayProperty();
                     if (apiField != null) {
                         fieldPr.setDescription(apiField.value());
+                        fieldPr.setRequired(apiField.required());
+                        fieldPr.setExample(apiField.example());
                     }
 
 
@@ -723,6 +725,8 @@ public class OpenApi2Builder {
                     RefProperty fieldPr = new RefProperty(modelName, RefFormat.INTERNAL);
                     if (apiField != null) {
                         fieldPr.setDescription(apiField.value());
+                        fieldPr.setRequired(apiField.required());
+                        fieldPr.setExample(apiField.example());
                     }
 
                     fieldList.put(field.getName(), fieldPr);
@@ -732,6 +736,8 @@ public class OpenApi2Builder {
                     RefProperty fieldPr = new RefProperty(swaggerModel.getName(), RefFormat.INTERNAL);
                     if (apiField != null) {
                         fieldPr.setDescription(apiField.value());
+                        fieldPr.setRequired(apiField.required());
+                        fieldPr.setExample(apiField.example());
                     }
 
                     fieldList.put(field.getName(), fieldPr);
@@ -742,8 +748,9 @@ public class OpenApi2Builder {
 
                 if (apiField != null) {
                     fieldPr.setDescription(apiField.value());
-                    fieldPr.setType(Utils.isBlank(apiField.dataType()) ? typeClazz.getSimpleName().toLowerCase() : apiField.dataType());
+                    fieldPr.setRequired(apiField.required());
                     fieldPr.setExample(apiField.example());
+                    fieldPr.setType(Utils.isBlank(apiField.dataType()) ? typeClazz.getSimpleName().toLowerCase() : apiField.dataType());
                 } else {
                     fieldPr.setType(typeClazz.getSimpleName().toLowerCase());
                 }

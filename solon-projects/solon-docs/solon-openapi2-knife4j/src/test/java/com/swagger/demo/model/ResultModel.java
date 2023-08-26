@@ -19,7 +19,7 @@ public class ResultModel {
     @ApiModelProperty(value = "返回数据")
     private Object data;
 
-    @ApiModelProperty(value = "错误码", example = "-1")
+    @ApiModelProperty(value = "错误码", example = "-1", required = true)
     private String errorCode;
 
     @ApiModelProperty(value = "错误信息", example = "错误信息")
