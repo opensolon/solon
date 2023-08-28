@@ -24,6 +24,7 @@
 * mybatis-flex 升为 1.6.1
 * beetlsql 升为 3.25.0-RELEASE
 * dbvisitor 升为 5.4.0
+* snack3 升为 3.2.77
 
 ### 2.4.5
 * 修复 httputils of okhttp 手动设定超时无效的问题
