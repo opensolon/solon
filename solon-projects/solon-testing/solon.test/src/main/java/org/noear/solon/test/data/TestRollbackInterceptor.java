@@ -28,6 +28,7 @@ public class TestRollbackInterceptor implements Interceptor {
             anno1.policy(anno0.policy());
             anno1.readOnly(anno0.readOnly());
             anno1.isolation(anno0.isolation());
+            anno1.message(anno0.message());
         }
 
         rollbackDo(anno1, () -> {

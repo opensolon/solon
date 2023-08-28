@@ -16,7 +16,8 @@
 * 增加 quartz jdbc 及时更新支持（数据库里变了，它马上变）？
 * 增加 http range 分片输出支持
 * 增加 IoUtil 工具类，替代旧的 Utils IO功能（旧的标为弃用）
-* 调整 PathLimiter 的弃用提示
+* 增加 `@Tran` 事务监视事件支持，并增加 message 属性（只在最外层触发事件）
+* 优化 PathLimiter 的弃用提示方式
 * 优化 solon.docs.openapi2 对基础类型列表识别过度的问题
 * 优化 solon.data.dynamicds 手动控制能力（添加、移除、获取）
 * 优化 solon.scheduling 的 `@Async` 定制能力
