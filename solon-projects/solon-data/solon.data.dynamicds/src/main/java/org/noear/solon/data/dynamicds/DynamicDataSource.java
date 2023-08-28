@@ -30,11 +30,13 @@ public class DynamicDataSource extends AbstractRoutingDataSource implements Data
 
         String strictStr = props.getProperty("strict", "false");
         props.remove("strict");
+        String defaultStr = props.getProperty("default", "default");
+        props.remove("default");
 
         Map<String, DataSource> dataSourceMap = DsUtils.buildDsMap(props);
 
         //::获取默认数据源
-        DataSource defSource = dataSourceMap.get("default");
+        DataSource defSource = dataSourceMap.get(defaultStr);
 
         if (defSource == null) {
             defSource = dataSourceMap.get("master");
