@@ -123,7 +123,7 @@
         <sqltoy.version>5.2.60</sqltoy.version>
         <mybatis-flex.version>1.6.1</mybatis-flex.version>
         <fastmybatis.version>2.9.2</fastmybatis.version>
-        <dbvisitor.version>5.3.3</dbvisitor.version>
+        <dbvisitor.version>5.4.0</dbvisitor.version>
         <bean-searcher.version>4.2.2</bean-searcher.version>
 
         <liteflow.version>2.10.6</liteflow.version>
