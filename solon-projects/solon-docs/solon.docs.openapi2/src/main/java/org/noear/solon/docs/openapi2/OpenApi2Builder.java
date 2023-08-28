@@ -34,6 +34,8 @@ import org.noear.solon.docs.openapi2.wrap.ApiImplicitParamImpl;
 
 import java.lang.reflect.*;
 import java.text.Collator;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 /**
@@ -434,7 +436,7 @@ public class OpenApi2Builder {
                         parameter = new PathParameter();
                     } else if (paramHolder.isRequiredBody()) {
                         BodyParameter bodyParameter = new BodyParameter();
-                        if(Utils.isNotEmpty(dataType)) {
+                        if (Utils.isNotEmpty(dataType)) {
                             bodyParameter.setSchema(new ModelImpl().type(dataType));
                         }
                         parameter = bodyParameter;
@@ -477,7 +479,14 @@ public class OpenApi2Builder {
             }
 
             QueryParameter parameter = new QueryParameter();
-            parameter.setType(fw.type.getSimpleName());
+
+            if (Collection.class.isAssignableFrom(fw.type)) {
+                parameter.setType(ApiEnum.RES_ARRAY);
+            } else if (Map.class.isAssignableFrom(fw.type)) {
+                parameter.setType(ApiEnum.RES_OBJECT);
+            } else {
+                parameter.setType(fw.type.getSimpleName());
+            }
 
             ApiModelProperty anno = fw.field.getAnnotation(ApiModelProperty.class);
 
@@ -705,10 +714,16 @@ public class OpenApi2Builder {
                             RefProperty itemPr = new RefProperty(modelName, RefFormat.INTERNAL);
                             fieldPr.setItems(itemPr);
                         } else {
-                            ModelImpl swaggerModel = (ModelImpl) this.parseSwaggerModel((Class<?>) itemClazz, itemClazz);
+                            Property itemPr = getPrimitiveProperty(itemClazz);
 
-                            RefProperty itemPr = new RefProperty(swaggerModel.getName(), RefFormat.INTERNAL);
-                            fieldPr.setItems(itemPr);
+                            if (itemPr != null) {
+                                fieldPr.setItems(itemPr);
+                            } else {
+                                ModelImpl swaggerModel = (ModelImpl) this.parseSwaggerModel((Class<?>) itemClazz, itemClazz);
+
+                                itemPr = new RefProperty(swaggerModel.getName(), RefFormat.INTERNAL);
+                                fieldPr.setItems(itemPr);
+                            }
                         }
                     }
 
@@ -870,6 +885,43 @@ public class OpenApi2Builder {
                 return swaggerModel.getName();
             }
         }
+
+        return null;
+    }
+
+    private Property getPrimitiveProperty(Type clz) {
+        if (clz == Integer.class || clz == int.class) {
+            return new IntegerProperty();
+        }
+
+        if (clz == Long.class || clz == long.class) {
+            return new LongProperty();
+        }
+
+        if (clz == Float.class || clz == float.class) {
+            return new FloatProperty();
+        }
+
+        if (clz == Double.class || clz == double.class) {
+            return new DoubleProperty();
+        }
+
+        if (clz == Boolean.class || clz == boolean.class) {
+            return new BooleanProperty();
+        }
+
+        if (clz == Date.class) {
+            return new DateProperty();
+        }
+
+        if (clz == LocalDateTime.class) {
+            return new DateTimeProperty();
+        }
+
+        if (clz == String.class) {
+            return new StringProperty();
+        }
+
 
         return null;
     }

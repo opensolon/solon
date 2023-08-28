@@ -3,6 +3,8 @@ package com.swagger.demo.model;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
+import java.util.List;
+
 /**
  * 参考AntDesign约定的Json返回格式
  * https://beta-pro.ant.design/docs/request-cn
@@ -34,6 +36,17 @@ public class ResultModel {
 
     @ApiModelProperty(value = "当前访问服务器的主机", example = "127.0.0.1")
     private String host;
+
+    @ApiModelProperty(value = "测试long[]")
+    private List<Long> ports;
+
+    public List<Long> getPorts() {
+        return ports;
+    }
+
+    public void setPorts(List<Long> ports) {
+        this.ports = ports;
+    }
 
     public boolean isSuccess() {
         return success;

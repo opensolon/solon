@@ -9,6 +9,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.noear.snack.ONode;
+import org.noear.solon.annotation.Body;
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Mapping;
 import io.swagger.solon.annotation.ApiRes;
@@ -130,10 +131,16 @@ public class SimpleController {
         return swaggerRes;
     }
 
-    @ApiOperation("返回实体")
+    @ApiOperation("test62")
     @Mapping("test62")
     public ResultModel test6_2(ResultModel model) {
        return model;
+    }
+
+    @ApiOperation("test63")
+    @Mapping("test63")
+    public ResultModel test6_3(@Body ResultModel model) {
+        return model;
     }
 
     @ApiOperation(value = "url数组参数Json", notes = "数组参数在url中提交,json参数支持多个")
