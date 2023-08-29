@@ -65,9 +65,9 @@ public class CloudEventServiceKafkaImp implements CloudEventServicePlus {
         }
 
         Future<RecordMetadata> future = producer.send(new ProducerRecord<>(event.topic(), event.key(), event.content()));
-        if (config.getTimeout() > 0 && event.qos() > 0) {
+        if (config.getPublishTimeout() > 0 && event.qos() > 0) {
             try {
-                future.get(config.getTimeout(), TimeUnit.MICROSECONDS);
+                future.get(config.getPublishTimeout(), TimeUnit.MICROSECONDS);
             } catch (Exception e) {
                 throw new CloudEventException(e);
             }

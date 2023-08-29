@@ -14,14 +14,14 @@ import java.util.Properties;
 public class KafkaConfig {
     private final CloudProps cloudProps;
     private final String server;
-    private final long timeout;
+    private final long publishTimeout;
 
     private final String eventChannel;
     private final String eventGroup;
 
 
-    public long getTimeout() {
-        return timeout;
+    public long getPublishTimeout() {
+        return publishTimeout;
     }
 
     public String getEventChannel() {
@@ -36,7 +36,7 @@ public class KafkaConfig {
         this.cloudProps = cloudProps;
 
         server = cloudProps.getEventServer();
-        timeout = cloudProps.getEventPublishTimeout();
+        publishTimeout = cloudProps.getEventPublishTimeout();
 
         eventChannel = cloudProps.getEventChannel();
         eventGroup = cloudProps.getEventGroup();
