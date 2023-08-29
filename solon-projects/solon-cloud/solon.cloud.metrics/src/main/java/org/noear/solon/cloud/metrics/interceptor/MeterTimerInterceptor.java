@@ -58,7 +58,7 @@ public class MeterTimerInterceptor extends BaseMeterInterceptor<MeterTimer, Time
             return inv.invoke();
         } finally {
             long span = System.currentTimeMillis() - start;
-            meter.record(span, TimeUnit.MICROSECONDS);
+            meter.record(span, TimeUnit.MILLISECONDS);
         }
     }
 }

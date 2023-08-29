@@ -27,7 +27,7 @@ public class CloudMetricServiceImpl implements CloudMetricService {
         StringBuilder buf = new StringBuilder();
         buf.append(group).append(".").append(category).append(".").append(item);
 
-        Metrics.timer(buf.toString(), getTags(attrs)).record(record, TimeUnit.MICROSECONDS);
+        Metrics.timer(buf.toString(), getTags(attrs)).record(record, TimeUnit.MILLISECONDS);
     }
 
     @Override
