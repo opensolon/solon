@@ -6,7 +6,10 @@ import org.noear.nami.Invocation;
 import org.noear.nami.Result;
 
 /**
- * @author noear 2023/8/16 created
+ * Nami 过滤器（透递 seata 信息）
+ *
+ * @author noear
+ * @since 2.4
  */
 public class NamiFilter implements Filter {
     @Override

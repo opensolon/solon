@@ -1,6 +1,7 @@
-package io.seata.solon.annotation;
+package io.seata.solon.impl;
 
 import io.seata.rm.GlobalLockTemplate;
+import io.seata.solon.annotation.GlobalLock;
 import io.seata.solon.impl.GlobalLockExecutorImpl;
 import org.noear.solon.core.aspect.Interceptor;
 import org.noear.solon.core.aspect.Invocation;
@@ -9,16 +10,16 @@ import org.noear.solon.core.aspect.Invocation;
  * @author noear
  * @since 2.4
  */
-public class SeataLockInterceptor implements Interceptor {
+public class GlobalLockInterceptor implements Interceptor {
     GlobalLockTemplate globalLockTemplate;
 
-    public SeataLockInterceptor(GlobalLockTemplate globalLockTemplate) {
+    public GlobalLockInterceptor(GlobalLockTemplate globalLockTemplate) {
         this.globalLockTemplate = globalLockTemplate;
     }
 
     @Override
     public Object doIntercept(Invocation inv) throws Throwable {
-        SeataLock anno = inv.method().getAnnotation(SeataLock.class);
+        GlobalLock anno = inv.method().getAnnotation(GlobalLock.class);
 
         if (anno == null) {
             return null;

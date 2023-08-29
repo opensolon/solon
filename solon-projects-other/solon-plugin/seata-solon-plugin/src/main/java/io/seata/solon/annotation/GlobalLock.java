@@ -3,12 +3,15 @@ package io.seata.solon.annotation;
 import java.lang.annotation.*;
 
 /**
- * @author noear 2023/8/16 created
+ * 全局锁
+ *
+ * @author noear
+ * @since 2.4
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 @Inherited
-public @interface SeataLock {
+public @interface GlobalLock {
 
     int lockRetryInterval() default 0;
 

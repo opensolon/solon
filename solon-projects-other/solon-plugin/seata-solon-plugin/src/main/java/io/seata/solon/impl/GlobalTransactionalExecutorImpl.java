@@ -1,6 +1,6 @@
 package io.seata.solon.impl;
 
-import io.seata.solon.annotation.SeataTran;
+import io.seata.solon.annotation.GlobalTransactional;
 import io.seata.tm.api.TransactionalExecutor;
 import io.seata.tm.api.transaction.NoRollbackRule;
 import io.seata.tm.api.transaction.RollbackRule;
@@ -14,13 +14,16 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * @author noear 2023/8/16 created
+ * 全局事务执行器
+ *
+ * @author noear
+ * @since 2.4
  */
-public class TransactionalExecutorImpl implements TransactionalExecutor {
+public class GlobalTransactionalExecutorImpl implements TransactionalExecutor {
     Invocation inv;
-    SeataTran anno;
+    GlobalTransactional anno;
 
-    public TransactionalExecutorImpl(Invocation inv, SeataTran anno) {
+    public GlobalTransactionalExecutorImpl(Invocation inv, GlobalTransactional anno) {
         this.inv = inv;
         this.anno = anno;
     }
@@ -33,9 +36,12 @@ public class TransactionalExecutorImpl implements TransactionalExecutor {
     @Override
     public TransactionInfo getTransactionInfo() {
         TransactionInfo transactionInfo = new TransactionInfo();
+
         transactionInfo.setTimeOut(anno.timeoutMills());
         transactionInfo.setName(getName());
+
         Set<RollbackRule> rollbackRules = new LinkedHashSet<>();
+
         for (Class<?> rbRule : anno.rollbackFor()) {
             rollbackRules.add(new RollbackRule(rbRule));
         }
@@ -48,6 +54,7 @@ public class TransactionalExecutorImpl implements TransactionalExecutor {
         for (String rbRule : anno.noRollbackForClassName()) {
             rollbackRules.add(new NoRollbackRule(rbRule));
         }
+
         transactionInfo.setRollbackRules(rollbackRules);
         return transactionInfo;
     }

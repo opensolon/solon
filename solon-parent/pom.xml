@@ -138,7 +138,6 @@
         <dromara-plugins.version>0.0.9</dromara-plugins.version>
 
         <maven-compiler.version>3.11.0</maven-compiler.version>
-        <maven-resources.version>3.3.1</maven-resources.version>
         <maven-assembly.version>3.6.0</maven-assembly.version>
         <maven-resources.version>3.3.1</maven-resources.version>
         <maven-war.version>3.4.0</maven-war.version>
