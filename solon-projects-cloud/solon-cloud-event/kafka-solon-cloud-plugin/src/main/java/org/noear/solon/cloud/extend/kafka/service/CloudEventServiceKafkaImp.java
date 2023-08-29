@@ -84,17 +84,17 @@ public class CloudEventServiceKafkaImp implements CloudEventServicePlus {
     }
 
     public void subscribe() {
-        try {
-            //订阅
-            if (observerManger.topicSize() > 0) {
+        //订阅
+        if (observerManger.topicSize() > 0) {
+            try {
                 initConsumer();
                 consumer.subscribe(observerManger.topicAll());
-            }
 
-            //开始拉取
-            new Thread(this::subscribePull).start();
-        } catch (Throwable ex) {
-            throw new RuntimeException(ex);
+                //开始拉取
+                new Thread(this::subscribePull).start();
+            } catch (Throwable ex) {
+                throw new RuntimeException(ex);
+            }
         }
     }
 
