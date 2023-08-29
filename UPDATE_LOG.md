@@ -24,7 +24,8 @@
 * 调整 kafka-solon-cloud-plugin 如果没有订阅，则不启用消费端
 * 调整 PathLimiter 的弃用提示方式
 * 调整 solon.cloud.metrics 的时间记录单位
-* 调整 优化 solon.data.dynamicds 增加默认源配置项
+* 调整 solon.data.dynamicds 增加默认源配置项
+* 优化 solon.serialization.snack3 对根字符串的解码处理
 * 优化 solon.scheduling 的 `@Async` 定制能力
 * 优化 solon.docs.openapi2 对基础类型列表识别过度的问题
 * 优化 solon.docs.openapi2 的 `@ApiModelProperty` 注解处理
