@@ -9,19 +9,26 @@
 * 提醒1：之前没有使用弃用接口的，可以直接升级 <br>
 * 提醒2：有使用弃用接口的。建议先升级到 1.12.4；替换弃用代码后，再升级到 2.0.0
 
-### 2.4.6
+
+
+### 2.4.7
 * 新增 solon.boot.vertx 插件?
 * 新增 seata-solon-plugin 插件
 * 新增 graphql-solon-plugin 插件
 * 增加 quartz jdbc 及时更新支持（数据库里变了，它马上变）？
+
+### 2.4.6
 * 增加 http range 分片输出支持
 * 增加 IoUtil 工具类，替代旧的 Utils IO功能（旧的标为弃用）
 * 增加 `@Tran` 事务监视事件支持，并增加 message 属性（只在最外层触发事件）
-* 优化 PathLimiter 的弃用提示方式
-* 优化 solon.docs.openapi2 对基础类型列表识别过度的问题
-* 优化 solon.data.dynamicds 手动控制能力（添加、移除、获取）
+* 调整 kafka-solon-cloud-plugin 如果没有订阅，则不启用消费端
+* 调整 PathLimiter 的弃用提示方式
+* 调整 solon.cloud.metrics 的时间记录单位
+* 调整 优化 solon.data.dynamicds 增加默认源配置项
 * 优化 solon.scheduling 的 `@Async` 定制能力
+* 优化 solon.docs.openapi2 对基础类型列表识别过度的问题
 * 优化 solon.docs.openapi2 的 `@ApiModelProperty` 注解处理
+* 优化 solon.data.dynamicds 手动控制能力（添加、移除、获取）
 * mybatis-flex 升为 1.6.1
 * beetlsql 升为 3.25.0-RELEASE
 * dbvisitor 升为 5.4.0
