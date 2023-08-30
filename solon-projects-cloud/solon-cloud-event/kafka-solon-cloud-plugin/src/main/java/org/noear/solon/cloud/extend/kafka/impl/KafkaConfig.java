@@ -1,5 +1,7 @@
 package org.noear.solon.cloud.extend.kafka.impl;
 
+import org.apache.kafka.clients.consumer.ConsumerConfig;
+import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.noear.solon.Solon;
@@ -45,12 +47,12 @@ public class KafkaConfig {
     public Properties getProducerProperties() {
         Properties properties = new Properties();
 
-        properties.put("bootstrap.servers", server);
-        properties.put("key.serializer", StringSerializer.class.getName());
-        properties.put("value.serializer", StringSerializer.class.getName());
-        properties.put("acks", "all");
-        properties.put("retries", 0);
-        properties.put("batch.size", 16384); //默认是16384Bytes，即16kB
+        properties.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, server);
+        properties.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
+        properties.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
+        properties.put(ProducerConfig.ACKS_CONFIG, "all");
+        properties.put(ProducerConfig.RETRIES_CONFIG, 0);
+        properties.put(ProducerConfig.BATCH_SIZE_CONFIG, 16384); //默认是16384Bytes，即16kB
 
         //绑定定制属性
         Properties props = cloudProps.getEventProducerProps();
@@ -66,15 +68,14 @@ public class KafkaConfig {
     public Properties getConsumerProperties() {
         Properties properties = new Properties();
 
-        properties.put("bootstrap.servers", server);
-        properties.put("key.deserializer", StringDeserializer.class.getName());
-        properties.put("value.deserializer", StringDeserializer.class.getName());
-        properties.put("group.id", Solon.cfg().appGroup() + "_" + Solon.cfg().appName());
-        properties.put("enable.auto.commit", "true");
-        properties.put("auto.commit.interval.ms", "1000");
-        properties.put("session.timeout.ms", "30000");
-        properties.put("max.poll.records", 100);
-        properties.put("auto.offset.reset", "earliest");
+        properties.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, server);
+        properties.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
+        properties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
+        properties.put(ConsumerConfig.GROUP_ID_CONFIG, Solon.cfg().appGroup() + "_" + Solon.cfg().appName());
+        properties.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "false");
+        properties.put(ConsumerConfig.SESSION_TIMEOUT_MS_CONFIG, "30000");
+        properties.put(ConsumerConfig.MAX_POLL_INTERVAL_MS_CONFIG, 100);
+        properties.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
 
         //绑定定制属性
         Properties props = cloudProps.getEventConsumerProps();

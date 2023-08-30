@@ -3,7 +3,9 @@ package org.noear.solon.cloud.extend.kafka.service;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
+import org.apache.kafka.clients.consumer.OffsetAndMetadata;
 import org.apache.kafka.clients.producer.*;
+import org.apache.kafka.common.TopicPartition;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudEventHandler;
 import org.noear.solon.cloud.CloudProps;
@@ -19,6 +21,8 @@ import org.slf4j.LoggerFactory;
 
 import java.io.EOFException;
 import java.time.Duration;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
@@ -100,32 +104,47 @@ public class CloudEventServiceKafkaImp implements CloudEventServicePlus {
 
     private void subscribePull() {
         while (true) {
-            boolean isOk = true;
-
             try {
-                ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(100));
-
-                if (records.isEmpty()) {
-                    Thread.sleep(100);
-                    continue;
-                }
-
-                for (ConsumerRecord<String, String> record : records) {
-                    Event event = new Event(record.topic(), record.value())
-                            .key(record.key())
-                            .channel(config.getEventChannel());
-
-                    isOk = isOk && onReceive(event);
-                }
-
-                if (isOk) {
-                    consumer.commitAsync();
-                }
+                subscribePullDo();
             } catch (EOFException e) {
                 break;
             } catch (Throwable e) {
                 EventBus.publishTry(e);
             }
+        }
+    }
+
+    private void subscribePullDo() throws Throwable{
+        //拉取
+        ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(100));
+
+        //如果没有小休息下
+        if (records.isEmpty()) {
+            Thread.sleep(100);
+            return;
+        }
+
+        Map<TopicPartition, OffsetAndMetadata> topicOffsets = new LinkedHashMap<>();
+
+        for (ConsumerRecord<String, String> record : records) {
+            Event event = new Event(record.topic(), record.value())
+                    .key(record.key())
+                    .channel(config.getEventChannel());
+
+            try {
+                //接收并处理事件
+                if (onReceive(event)) {
+                    //接收需要提交的偏移量
+                    topicOffsets.put(new TopicPartition(record.topic(), record.partition()),
+                            new OffsetAndMetadata(record.offset() + 1));
+                }
+            } catch (Throwable e) {
+                EventBus.publishTry(e);
+            }
+        }
+
+        if (topicOffsets.size() > 0) {
+            consumer.commitAsync(topicOffsets, null);
         }
     }
 
