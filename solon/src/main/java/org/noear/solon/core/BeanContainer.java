@@ -5,7 +5,6 @@ import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.Inject;
-import org.noear.solon.annotation.ProxyComponent;
 import org.noear.solon.core.aspect.Interceptor;
 import org.noear.solon.core.aspect.InterceptorEntity;
 import org.noear.solon.core.exception.InjectionException;
@@ -151,9 +150,6 @@ public abstract class BeanContainer {
      * 容器能力制复到另一个容器
      */
     public void copyTo(BeanContainer container) {
-        //ProxyComponent 需要二次赋值
-        container.beanBuilders.remove(ProxyComponent.class);
-
         //构建器
         beanBuilders.forEach((k, v) -> {
             container.beanBuilders.putIfAbsent(k, v);

@@ -13,8 +13,6 @@ import org.noear.solon.aspect.annotation.Service;
 public class XPluginImp implements Plugin {
     @Override
     public void start(AopContext context) {
-        context.beanBuilderAdd(ProxyComponent.class, new ProxyComponentBeanBuilder());
-
         //@deprecated 2.2
         context.beanBuilderAdd(Dao.class, (clz, bw, anno) -> {
             String beanName = Utils.annoAlias(anno.value(), anno.name());
@@ -23,7 +21,7 @@ public class XPluginImp implements Plugin {
 
             if (Solon.cfg().isDebugMode()) {
                 UnsupportedUtil.check(clz, context, anno);
-                LogUtil.global().warn("@Dao will be discarded, suggested use '@ProxyComponent'");
+                LogUtil.global().warn("@Dao will be discarded, suggested use '@Component'");
             }
         });
 
@@ -35,7 +33,7 @@ public class XPluginImp implements Plugin {
 
             if (Solon.cfg().isDebugMode()) {
                 UnsupportedUtil.check(clz, context, anno);
-                LogUtil.global().warn("@Service will be discarded, suggested use '@ProxyComponent'");
+                LogUtil.global().warn("@Service will be discarded, suggested use '@Component'");
             }
         });
 
@@ -47,7 +45,7 @@ public class XPluginImp implements Plugin {
 
             if (Solon.cfg().isDebugMode()) {
                 UnsupportedUtil.check(clz, context, anno);
-                LogUtil.global().warn("@Repository will be discarded, suggested use '@ProxyComponent'");
+                LogUtil.global().warn("@Repository will be discarded, suggested use '@Component'");
             }
         });
     }

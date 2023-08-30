@@ -11,7 +11,6 @@ import org.noear.solon.core.event.EventListener;
 import org.noear.solon.core.handle.*;
 import org.noear.solon.core.message.Listener;
 import org.noear.solon.core.route.RouterInterceptor;
-import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.core.util.*;
 import org.noear.solon.core.wrap.*;
 
@@ -154,27 +153,25 @@ public class AopContext extends BeanContainer {
             //确定顺序位
             bw.indexSet(anno.index());
 
-            //添加bean形态处理
-            beanShapeRegister(clz, bw, clz);
-
-            //注册到容器
-            beanRegister(bw, beanName, anno.typed());
-
-            //尝试提取函数
-            beanExtract(bw);
-
-            //单例，进行事件通知
-            if (bw.singleton()) {
-                EventBus.publish(bw.raw()); //@deprecated
-                //EventBus.push(bw); //@deprecated
-                wrapPublish(bw);
-            }
+            beanComponentized(bw);
         });
 
-        //注册 @ProxyComponent 构建器
+        //注册 @ProxyComponent 构建器 //@deprecated 2.5
         beanBuilderAdd(ProxyComponent.class, (clz, bw, anno) -> {
-            if (NativeDetector.isNotAotRuntime()) {
-                throw new IllegalStateException("Missing plugin dependency: 'solon.proxy'");
+            String beanName = Utils.annoAlias(anno.value(), anno.name());
+
+            bw.nameSet(beanName);
+            bw.tagSet(anno.tag());
+            bw.typedSet(anno.typed());
+
+            //确定顺序位
+            bw.indexSet(anno.index());
+
+            //组件化处理
+            beanComponentized(bw);
+
+            if (Solon.cfg().isDebugMode()) {
+                LogUtil.global().warn("@ProxyComponent will be discarded, suggested use '@Component'");
             }
         });
 
@@ -204,6 +201,27 @@ public class AopContext extends BeanContainer {
         beanInjectorAdd(Inject.class, ((varH, anno) -> {
             beanInject(varH, anno.value(), anno.required(), anno.autoRefreshed());
         }));
+    }
+
+    /**
+     * 组件化处理
+     * */
+    protected void beanComponentized(BeanWrap bw) {
+        //尝试提取函数并确定自动代理
+        beanExtractOrProxy(bw);
+
+        //添加bean形态处理
+        beanShapeRegister(bw.clz(), bw, bw.clz());
+
+        //注册到容器
+        beanRegister(bw, bw.name(), bw.typed());
+
+
+        //单例，进行事件通知
+        if (bw.singleton()) {
+            EventBus.publish(bw.raw()); //@deprecated
+            wrapPublish(bw);
+        }
     }
 
     @Override
@@ -343,9 +361,9 @@ public class AopContext extends BeanContainer {
     //::提取
 
     /**
-     * 为一个对象提取函数
+     * 为一个对象提取函数或自动代理
      */
-    public void beanExtract(BeanWrap bw) {
+    public void beanExtractOrProxy(BeanWrap bw) {
         if (bw == null) {
             return;
         }
@@ -354,6 +372,7 @@ public class AopContext extends BeanContainer {
             return;
         }
 
+        boolean autoProxy = false;
         ClassWrap clzWrap = ClassWrap.get(bw.clz());
 
         for (Method m : clzWrap.getMethods()) {
@@ -371,8 +390,22 @@ public class AopContext extends BeanContainer {
                             throw new RuntimeException(e);
                         }
                     }
+                } else {
+                    //是否需要自动代理
+                    autoProxy = autoProxy || beanInjectors.containsKey(a.annotationType());
                 }
             }
+        }
+
+        if (autoProxy == false) {
+            for (Annotation a : bw.clz().getAnnotations()) {
+                //是否需要自动代理
+                autoProxy = autoProxy || beanInjectors.containsKey(a.annotationType());
+            }
+        }
+
+        if (autoProxy) {
+            ProxyBinder.global().binding(bw);
         }
     }
 

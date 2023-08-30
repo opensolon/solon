@@ -2,12 +2,10 @@ package org.noear.solon.test;
 
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.SolonTestApp;
 import org.noear.solon.Utils;
-import org.noear.solon.proxy.BeanProxy;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.NvMap;
@@ -20,7 +18,6 @@ import org.noear.solon.test.data.TestRollbackInterceptor;
 import java.io.File;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.net.MalformedURLException;
 import java.util.*;
 
 /**
@@ -77,14 +74,11 @@ public class RunnerUtils {
         aopContext.beanInject(tmp);
         //构建临时包装（用于支持提取操作）
         BeanWrap beanWrap = new BeanWrap(aopContext, tmp.getClass(), tmp);
-        //尝试提取操作
-        aopContext.beanExtract(beanWrap);
-        //设置代理(把 final 排除掉)
-        if (Modifier.isFinal(tmp.getClass().getModifiers()) == false) {
-            beanWrap.proxySet(BeanProxy.getGlobal());
-            if (beanWrap.raw() != null) {
-                aopContext.beanInject(beanWrap.raw());
-            }
+        //尝试提取操作和代理
+        aopContext.beanExtractOrProxy(beanWrap);
+        if (beanWrap.proxy() != null) {
+            //如果有代理，把代理也注入下
+            aopContext.beanInject(beanWrap.raw());
         }
         //重新获取bean
         tmp = beanWrap.get();
