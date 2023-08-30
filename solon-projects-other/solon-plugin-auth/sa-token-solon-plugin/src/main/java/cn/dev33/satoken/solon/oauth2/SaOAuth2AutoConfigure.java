@@ -31,7 +31,9 @@ public class SaOAuth2AutoConfigure {
      */
     @Bean
     public void setSaOAuth2Config(@Inject(required = false) SaOAuth2Config saOAuth2Config) {
-        SaOAuth2Manager.setConfig(saOAuth2Config);
+        if (saOAuth2Config != null) {
+            SaOAuth2Manager.setConfig(saOAuth2Config);
+        }
     }
 
     /**
@@ -41,6 +43,8 @@ public class SaOAuth2AutoConfigure {
      */
     @Bean
     public void setSaOAuth2Interface(@Inject(required = false) SaOAuth2Template saOAuth2Template) {
-        SaOAuth2Util.saOAuth2Template = saOAuth2Template;
+        if (saOAuth2Template != null) {
+            SaOAuth2Util.saOAuth2Template = saOAuth2Template;
+        }
     }
 }

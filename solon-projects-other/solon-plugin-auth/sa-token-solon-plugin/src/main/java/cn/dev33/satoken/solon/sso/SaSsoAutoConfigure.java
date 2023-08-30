@@ -32,7 +32,9 @@ public class SaSsoAutoConfigure {
      */
     @Bean
     public void setSaSsoConfig(@Inject(required = false) SaSsoConfig saSsoConfig) {
-        SaSsoManager.setConfig(saSsoConfig);
+        if (saSsoConfig != null) {
+            SaSsoManager.setConfig(saSsoConfig);
+        }
     }
 
     /**
@@ -42,7 +44,9 @@ public class SaSsoAutoConfigure {
      */
     @Bean
     public void setSaSsoTemplate(@Inject(required = false) SaSsoTemplate ssoTemplate) {
-        SaSsoUtil.ssoTemplate = ssoTemplate;
-        SaSsoProcessor.instance.ssoTemplate = ssoTemplate;
+        if (ssoTemplate != null) {
+            SaSsoUtil.ssoTemplate = ssoTemplate;
+            SaSsoProcessor.instance.ssoTemplate = ssoTemplate;
+        }
     }
 }
