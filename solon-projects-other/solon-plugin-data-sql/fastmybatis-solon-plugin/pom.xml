@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.noear</groupId>
         <artifactId>solon-parent</artifactId>
-        <version>2.4.6-SNAPSHOT</version>
+        <version>2.4.6</version>
         <relativePath>../../../solon-parent/pom.xml</relativePath>
     </parent>
     <artifactId>fastmybatis-solon-plugin</artifactId>
