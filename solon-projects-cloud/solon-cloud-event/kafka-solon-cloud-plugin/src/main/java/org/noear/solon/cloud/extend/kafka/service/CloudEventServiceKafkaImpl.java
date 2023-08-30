@@ -33,33 +33,45 @@ import java.util.concurrent.TimeUnit;
  * @author noear
  * @since 1.3
  */
-public class CloudEventServiceKafkaImp implements CloudEventServicePlus, Closeable {
-    static Logger log = LoggerFactory.getLogger(CloudEventServiceKafkaImp.class);
+public class CloudEventServiceKafkaImpl implements CloudEventServicePlus, Closeable {
+    static Logger log = LoggerFactory.getLogger(CloudEventServiceKafkaImpl.class);
 
     private final KafkaConfig config;
     private KafkaProducer<String, String> producer;
     private KafkaConsumer<String, String> consumer;
 
-    public CloudEventServiceKafkaImp(CloudProps cloudProps) {
+    public CloudEventServiceKafkaImpl(CloudProps cloudProps) {
         this.config = new KafkaConfig(cloudProps);
     }
 
-    private synchronized void initProducer() {
+    private void initProducer() {
         if (producer != null) {
             return;
         }
 
-        Properties properties = config.getProducerProperties();
-        producer = new KafkaProducer<>(properties);
+        synchronized (this) {
+            if (producer != null) {
+                return;
+            }
+
+            Properties properties = config.getProducerProperties();
+            producer = new KafkaProducer<>(properties);
+        }
     }
 
-    private synchronized void initConsumer() {
+    private void initConsumer() {
         if (consumer != null) {
             return;
         }
 
-        Properties properties = config.getConsumerProperties();
-        consumer = new KafkaConsumer<>(properties);
+        synchronized (this) {
+            if (consumer != null) {
+                return;
+            }
+
+            Properties properties = config.getConsumerProperties();
+            consumer = new KafkaConsumer<>(properties);
+        }
     }
 
     @Override

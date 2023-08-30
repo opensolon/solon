@@ -3,7 +3,7 @@ package org.noear.solon.cloud.extend.kafka;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudManager;
 import org.noear.solon.cloud.CloudProps;
-import org.noear.solon.cloud.extend.kafka.service.CloudEventServiceKafkaImp;
+import org.noear.solon.cloud.extend.kafka.service.CloudEventServiceKafkaImpl;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
 
@@ -11,8 +11,8 @@ import org.noear.solon.core.Plugin;
  * @author noear
  * @since 1.3
  */
-public class XPluginImp implements Plugin {
-    CloudEventServiceKafkaImp eventServiceImp;
+public class XPluginImpl implements Plugin {
+    CloudEventServiceKafkaImpl eventServiceImpl;
 
     @Override
     public void start(AopContext context) {
@@ -23,17 +23,17 @@ public class XPluginImp implements Plugin {
         }
 
         if (cloudProps.getEventEnable()) {
-            eventServiceImp = new CloudEventServiceKafkaImp(cloudProps);
-            CloudManager.register(eventServiceImp);
+            eventServiceImpl = new CloudEventServiceKafkaImpl(cloudProps);
+            CloudManager.register(eventServiceImpl);
 
-            context.lifecycle(-99, () -> eventServiceImp.subscribe());
+            context.lifecycle(-99, () -> eventServiceImpl.subscribe());
         }
     }
 
     @Override
     public void stop() throws Throwable {
-        if (eventServiceImp != null) {
-            eventServiceImp.close();
+        if (eventServiceImpl != null) {
+            eventServiceImpl.close();
         }
     }
 }
