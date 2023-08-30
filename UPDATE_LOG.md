@@ -28,6 +28,7 @@
 * 优化 solon.serialization.snack3 对根字符串的解码处理
 * 优化 solon.scheduling 的 `@Async` 定制能力
 * 优化 solon.docs.openapi2 对基础类型列表识别过度的问题
+* 优化 solon.docs.openapi2 对实体扩展的字段识别
 * 优化 solon.docs.openapi2 的 `@ApiModelProperty` 注解处理
 * 优化 solon.data.dynamicds 手动控制能力（添加、移除、获取）
 * 优化 sa-token-solon-plugin 两个适配类的处理

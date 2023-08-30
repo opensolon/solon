@@ -648,12 +648,14 @@ public class OpenApi2Builder {
 
 
         // 3.完成模型解析
-        Field[] fields = clazz.getDeclaredFields();
-        for (Field field : fields) {
-            if (Modifier.isStatic(field.getModifiers())) {
+        ClassWrap classWrap = ClassWrap.get(clazz);
+        for (FieldWrap fw : classWrap.getFieldAllWraps().values()) {
+            if (Modifier.isStatic(fw.field.getModifiers())) {
                 //静态的跳过
                 continue;
             }
+
+            Field field = fw.field;
 
             ApiModelProperty apiField = field.getAnnotation(ApiModelProperty.class);
 

@@ -1,5 +1,6 @@
 package com.swagger.demo.controller.admin;
 
+import com.swagger.demo.model.ResultModelEx;
 import com.swagger.demo.model.bean.DeviceParamBean;
 import com.swagger.demo.model.dto.EquipDto;
 import com.swagger.demo.model.dto.MachineDto;
@@ -137,9 +138,21 @@ public class SimpleController {
        return model;
     }
 
+    @ApiOperation("test62-2")
+    @Mapping("test62-2")
+    public ResultModelEx test6_2_2(ResultModelEx model) {
+        return model;
+    }
+
     @ApiOperation("test63")
     @Mapping("test63")
     public ResultModel test6_3(@Body ResultModel model) {
+        return model;
+    }
+
+    @ApiOperation("test63-2")
+    @Mapping("test63-2")
+    public ResultModelEx test6_3_2(@Body ResultModelEx model) {
         return model;
     }
 
