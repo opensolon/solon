@@ -50,7 +50,9 @@ public class KafkaConfig {
         properties.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, server);
         properties.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
         properties.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
+        //发送ack级别（最高了）
         properties.put(ProducerConfig.ACKS_CONFIG, "all");
+        //重试次数
         properties.put(ProducerConfig.RETRIES_CONFIG, 0);
         properties.put(ProducerConfig.BATCH_SIZE_CONFIG, 16384); //默认是16384Bytes，即16kB
 

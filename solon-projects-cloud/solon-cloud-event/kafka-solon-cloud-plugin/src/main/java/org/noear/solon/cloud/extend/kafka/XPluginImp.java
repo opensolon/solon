@@ -12,6 +12,8 @@ import org.noear.solon.core.Plugin;
  * @since 1.3
  */
 public class XPluginImp implements Plugin {
+    CloudEventServiceKafkaImp eventServiceImp;
+
     @Override
     public void start(AopContext context) {
         CloudProps cloudProps = new CloudProps(context, "kafka");
@@ -21,10 +23,17 @@ public class XPluginImp implements Plugin {
         }
 
         if (cloudProps.getEventEnable()) {
-            CloudEventServiceKafkaImp eventServiceImp = new CloudEventServiceKafkaImp(cloudProps);
+            eventServiceImp = new CloudEventServiceKafkaImp(cloudProps);
             CloudManager.register(eventServiceImp);
 
             context.lifecycle(-99, () -> eventServiceImp.subscribe());
+        }
+    }
+
+    @Override
+    public void stop() throws Throwable {
+        if (eventServiceImp != null) {
+            eventServiceImp.close();
         }
     }
 }

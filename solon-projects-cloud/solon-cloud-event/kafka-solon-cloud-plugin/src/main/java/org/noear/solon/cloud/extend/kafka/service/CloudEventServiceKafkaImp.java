@@ -19,7 +19,9 @@ import org.noear.solon.core.event.EventBus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.Closeable;
 import java.io.EOFException;
+import java.io.IOException;
 import java.time.Duration;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -31,7 +33,7 @@ import java.util.concurrent.TimeUnit;
  * @author noear
  * @since 1.3
  */
-public class CloudEventServiceKafkaImp implements CloudEventServicePlus {
+public class CloudEventServiceKafkaImp implements CloudEventServicePlus, Closeable {
     static Logger log = LoggerFactory.getLogger(CloudEventServiceKafkaImp.class);
 
     private final KafkaConfig config;
@@ -114,7 +116,7 @@ public class CloudEventServiceKafkaImp implements CloudEventServicePlus {
         }
     }
 
-    private void subscribePullDo() throws Throwable{
+    private void subscribePullDo() throws Throwable {
         //拉取
         ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(100));
 
@@ -174,5 +176,16 @@ public class CloudEventServiceKafkaImp implements CloudEventServicePlus {
     @Override
     public String getGroup() {
         return config.getEventGroup();
+    }
+
+    @Override
+    public void close() throws IOException {
+        if (producer != null) {
+            producer.close();
+        }
+
+        if (consumer != null) {
+            consumer.close();
+        }
     }
 }
