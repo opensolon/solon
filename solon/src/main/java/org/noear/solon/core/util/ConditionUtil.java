@@ -14,6 +14,22 @@ import java.lang.reflect.AnnotatedElement;
  */
 public class ConditionUtil {
     /**
+     * 是否有 Missing 条件
+     * */
+    public static boolean ifMissing(Condition anno) {
+        if (anno == null) {
+            return false;
+        } else {
+            try {
+                return (anno.onMissingBean() != Void.class) || Utils.isNotEmpty(anno.onMissingBeanName());
+            } catch (Throwable e) {
+                //如果 onMissingBean 的类是不存在的，会出错
+                return true;
+            }
+        }
+    }
+
+    /**
      * 检测条件
      * */
     public static boolean test(AopContext context, AnnotatedElement element) {
@@ -22,6 +38,9 @@ public class ConditionUtil {
         return test(context, anno);
     }
 
+    /**
+     * 检测条件
+     * */
     public static boolean test(AopContext context, Condition anno){
         if (anno == null) {
             return true;
@@ -30,23 +49,17 @@ public class ConditionUtil {
         }
     }
 
-    public static boolean ifMissing(Condition anno) {
-        if (anno == null) {
-            return false;
-        } else {
-            return (anno.onMissingBean() != Void.class) || Utils.isNotEmpty(anno.onMissingBeanName());
-        }
-    }
-
     private static boolean testNo(AopContext context, Condition anno) {
         try {
             anno.onClass();
         } catch (Throwable e) {
+            //异常，表示不存在类
             return true;
         }
 
         if (Utils.isNotEmpty(anno.onClassName())) {
             if (ClassUtil.loadClass(context.getClassLoader(), anno.onClassName()) == null) {
+                //如果null，表示不存在类
                 return true;
             }
         }
@@ -69,10 +82,14 @@ public class ConditionUtil {
             }
         }
 
-        if (anno.onMissingBean() != Void.class) {
-            if (context.hasWrap(anno.onMissingBean())) {
-                return true;
+        try {
+            if (anno.onMissingBean() != Void.class) {
+                if (context.hasWrap(anno.onMissingBean())) {
+                    return true;
+                }
             }
+        }catch (Throwable e){
+            //如果 onMissingBean 的类是不存在的，会异常 //异常跳过，不用管
         }
 
         if (Utils.isNotEmpty(anno.onMissingBeanName())) {
