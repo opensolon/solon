@@ -30,6 +30,7 @@
 * 优化 solon.docs.openapi2 对基础类型列表识别过度的问题
 * 优化 solon.docs.openapi2 的 `@ApiModelProperty` 注解处理
 * 优化 solon.data.dynamicds 手动控制能力（添加、移除、获取）
+* 优化 sa-token-solon-plugin 两个适配类的处理
 * mybatis-flex 升为 1.6.1
 * beetlsql 升为 3.25.0-RELEASE
 * dbvisitor 升为 5.4.0
