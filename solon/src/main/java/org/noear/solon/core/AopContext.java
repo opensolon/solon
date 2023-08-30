@@ -574,7 +574,9 @@ public class AopContext extends BeanContainer {
         }
 
         //支持非公有函数
-        m.setAccessible(true);
+        if(m.isAccessible() == false) {
+            m.setAccessible(true);
+        }
 
         MethodWrap mWrap = methodGet(m);
 
