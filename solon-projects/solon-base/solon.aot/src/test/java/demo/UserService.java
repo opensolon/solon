@@ -1,11 +1,11 @@
 package demo;
 
-import org.noear.solon.annotation.ProxyComponent;
+import org.noear.solon.annotation.Component;
 
 /**
  * @author noear 2023/2/23 created
  */
-@ProxyComponent
+@Component
 public class UserService extends UserServiceBase<String>{
     private String userName;
     public UserService(){

@@ -8,7 +8,7 @@ import org.noear.solon.data.datasource.DsUtils;
 import org.noear.solon.data.dynamicds.DynamicDataSource;
 import org.noear.solon.data.dynamicds.DynamicDsHolder;
 import org.noear.solon.data.dynamicds.DynamicDs;
-import org.noear.solon.annotation.ProxyComponent;
+import org.noear.solon.annotation.Component;
 
 import javax.sql.DataSource;
 import java.util.Map;
@@ -40,7 +40,7 @@ public class Config {
         return tmp;
     }
 }
-@ProxyComponent
+@Component
 public class UserService{
     @Db("db_user")
     UserMapper userMapper;

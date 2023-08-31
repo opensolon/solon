@@ -1,9 +1,9 @@
 package webapp.demo6_aop;
 
 
-import org.noear.solon.annotation.ProxyComponent;
+import org.noear.solon.annotation.Component;
 
-@ProxyComponent
+@Component
 public class Rockservice3 implements Rockapi {
 
     @Override

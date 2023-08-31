@@ -1,11 +1,11 @@
 package test1;
 
-import org.noear.solon.annotation.ProxyComponent;
+import org.noear.solon.annotation.Component;
 
 /**
  * @author noear 2022/9/30 created
  */
-@ProxyComponent
+@Component
 public class TestBaseService extends TestBase {
     @Override
     public void sayHello() {

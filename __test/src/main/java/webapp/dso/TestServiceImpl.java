@@ -1,12 +1,12 @@
 package webapp.dso;
 
 import org.noear.solon.annotation.Inject;
-import org.noear.solon.annotation.ProxyComponent;
+import org.noear.solon.annotation.Component;
 
 /**
  * @author noear 2022/10/2 created
  */
-@ProxyComponent
+@Component
 public class TestServiceImpl implements TestService{
 
     @Inject

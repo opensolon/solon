@@ -16,6 +16,8 @@
 * 新增 seata-solon-plugin 插件
 * 新增 graphql-solon-plugin 插件
 * 增加 quartz jdbc 及时更新支持（数据库里变了，它马上变）？
+* 增加 自动代理特性，根据是否有拦截需要识别
+* 调整 `@ProxyComponent` 标为弃用，组件统一使用 `@Component`
 
 ### 2.4.6
 * 增加 http range 分片输出支持

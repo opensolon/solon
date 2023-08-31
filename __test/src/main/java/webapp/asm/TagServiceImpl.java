@@ -1,11 +1,11 @@
 package webapp.asm;
 
-import org.noear.solon.annotation.ProxyComponent;
+import org.noear.solon.annotation.Component;
 
 /**
  * @author noear 2022/9/30 created
  */
-@ProxyComponent
+@Component
 public class TagServiceImpl extends CrudServiceImpl<TagDao, Tag, TagDTO, TagConvert> implements TagService {
 
     @Override

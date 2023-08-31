@@ -5,7 +5,6 @@ import org.noear.solon.Utils;
 import org.noear.solon.core.*;
 import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.proxy.ProxyUtil;
-import org.noear.solon.annotation.ProxyComponent;
 import org.noear.solon.aspect.annotation.Dao;
 import org.noear.solon.aspect.annotation.Repository;
 import org.noear.solon.aspect.annotation.Service;

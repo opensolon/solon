@@ -1,14 +1,14 @@
 package org.noear.solon.aspect.annotation;
 
 import org.noear.solon.annotation.Alias;
-import org.noear.solon.annotation.ProxyComponent;
+import org.noear.solon.annotation.Component;
 
 import java.lang.annotation.*;
 
 /**
- * 数据访问类注解（未来会弃用，建议改用 @ProxyComponent）
+ * 数据访问类注解（未来会弃用，建议改用 @Component）
  *
- * @see ProxyComponent
+ * @see Component
  * @deprecated 2.3
  * @author noear
  * @since 1.1
