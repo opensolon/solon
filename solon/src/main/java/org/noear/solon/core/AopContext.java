@@ -370,7 +370,7 @@ public class AopContext extends BeanContainer {
 
         boolean enableProxy = false;
 
-        if (beanExtractors.size() > 0 || beanExtractors.size() > 0) {
+        if (beanExtractors.size() > 0 || beanInterceptors.size() > 0) {
             ClassWrap clzWrap = ClassWrap.get(bw.clz());
 
             for (Method m : clzWrap.getMethods()) {
