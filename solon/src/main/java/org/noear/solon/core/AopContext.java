@@ -368,43 +368,42 @@ public class AopContext extends BeanContainer {
             return;
         }
 
-        if (beanExtractors.size() == 0) {
-            return;
-        }
+        boolean enableProxy = false;
 
-        boolean autoProxy = false;
-        ClassWrap clzWrap = ClassWrap.get(bw.clz());
+        if (beanExtractors.size() > 0 || beanExtractors.size() > 0) {
+            ClassWrap clzWrap = ClassWrap.get(bw.clz());
 
-        for (Method m : clzWrap.getMethods()) {
-            for (Annotation a : m.getAnnotations()) {
-                BeanExtractor be = beanExtractors.get(a.annotationType());
+            for (Method m : clzWrap.getMethods()) {
+                for (Annotation a : m.getAnnotations()) {
+                    BeanExtractor be = beanExtractors.get(a.annotationType());
 
-                if (be != null) {
-                    try {
-                        be.doExtract(bw, m, a);
-                    } catch (Throwable e) {
-                        e = Utils.throwableUnwrap(e);
-                        if (e instanceof RuntimeException) {
-                            throw (RuntimeException) e;
-                        } else {
-                            throw new RuntimeException(e);
+                    if (be != null) {
+                        try {
+                            be.doExtract(bw, m, a);
+                        } catch (Throwable e) {
+                            e = Utils.throwableUnwrap(e);
+                            if (e instanceof RuntimeException) {
+                                throw (RuntimeException) e;
+                            } else {
+                                throw new RuntimeException(e);
+                            }
                         }
+                    } else {
+                        //是否需要自动代理
+                        enableProxy = enableProxy || beanInterceptors.containsKey(a.annotationType());
                     }
-                } else {
-                    //是否需要自动代理
-                    autoProxy = autoProxy || beanInjectors.containsKey(a.annotationType());
                 }
             }
         }
 
-        if (autoProxy == false) {
+        if (enableProxy == false) {
             for (Annotation a : bw.clz().getAnnotations()) {
                 //是否需要自动代理
-                autoProxy = autoProxy || beanInjectors.containsKey(a.annotationType());
+                enableProxy = enableProxy || beanInterceptors.containsKey(a.annotationType());
             }
         }
 
-        if (autoProxy) {
+        if (enableProxy) {
             ProxyBinder.global().binding(bw);
         }
     }
