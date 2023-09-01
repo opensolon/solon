@@ -35,7 +35,7 @@ public class MethodHandler implements Handler {
     @Override
     public void handle(Context c) throws Throwable {
         Object tmp = Solon.app().chainManager().getExecuteHandlerDefault()
-                .executeHandle(c, bw.get(), mw);
+                .executeHandle(c, bw.get(true), mw);
 
         if (allowResult) {
             c.result = tmp;

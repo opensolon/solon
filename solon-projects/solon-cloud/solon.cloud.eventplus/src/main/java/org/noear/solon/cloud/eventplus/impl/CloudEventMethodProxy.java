@@ -29,7 +29,7 @@ public class CloudEventMethodProxy implements CloudEventHandler {
     public boolean handle(Event event) throws Throwable {
         CloudEventEntity eventEntity = ONode.deserialize(event.content(), entityClz);
 
-        Object tmp = method.invokeByAspect(target.get(), new Object[]{eventEntity});
+        Object tmp = method.invokeByAspect(target.get(true), new Object[]{eventEntity});
 
         if (tmp instanceof Boolean) { //说明需要 ack
             return (boolean) tmp;
