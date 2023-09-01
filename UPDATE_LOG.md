@@ -19,6 +19,8 @@
 * 增加 `@Component` 自动动态代理特性，即自动识别AOP需求并按需启用动态代理
 * 调整 `@ProxyComponent` 标为弃用，组件统一使用 `@Component`
 * liteflow 升为 2.11.0
+* activerecord 升为 5.1.2
+* enjoy 升为 5.1.2
 
 ### 2.4.6
 * 增加 http range 分片输出支持
