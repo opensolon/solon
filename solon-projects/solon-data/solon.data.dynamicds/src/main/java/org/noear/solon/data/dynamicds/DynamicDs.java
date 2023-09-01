@@ -1,7 +1,5 @@
 package org.noear.solon.data.dynamicds;
 
-import org.noear.solon.annotation.Around;
-
 import java.lang.annotation.*;
 
 /**
@@ -10,7 +8,6 @@ import java.lang.annotation.*;
  * @author noear
  * @since 1.11
  */
-@Around(DynamicDsInterceptor.class)
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented

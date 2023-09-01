@@ -3,10 +3,7 @@ package org.noear.solon.validation;
 import org.noear.solon.Solon;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
-import org.noear.solon.validation.annotation.LoginedChecker;
-import org.noear.solon.validation.annotation.NoRepeatSubmitChecker;
-import org.noear.solon.validation.annotation.NotBlacklistChecker;
-import org.noear.solon.validation.annotation.WhitelistChecker;
+import org.noear.solon.validation.annotation.*;
 
 /**
  * @author noear
@@ -16,6 +13,8 @@ public class XPluginImp implements Plugin {
     @Override
     public void start(AopContext context) {
         ValidatorManager.VALIDATE_ALL = Solon.cfg().getBool("solon.validation.validateAll", false);
+
+        context.beanInterceptorAdd(Valid.class, new BeanValidateInterceptor(), 1);
 
         //ValidatorFailureHandler
         context.getBeanAsync(ValidatorFailureHandler.class, (bean) -> {
