@@ -95,7 +95,7 @@ public class MethodWrap implements Interceptor, MethodHolder {
 
     private void doInterceptorAdd(InterceptorEntity i) {
         if (i != null) {
-            if(interceptorsIdx.contains(i.getReal())){
+            if (interceptorsIdx.contains(i.getReal())) {
                 //去重处理
                 return;
             }
@@ -124,8 +124,8 @@ public class MethodWrap implements Interceptor, MethodHolder {
 
     /**
      * 是否需要 body（用于 web）
-     * */
-    public boolean isRequiredBody(){
+     */
+    public boolean isRequiredBody() {
         return isRequiredBody;
     }
 
@@ -139,7 +139,7 @@ public class MethodWrap implements Interceptor, MethodHolder {
 
     /**
      * 获取申明实体类
-     * */
+     */
     public Class<?> getEntityClz() {
         return entityClz;
     }
@@ -196,7 +196,7 @@ public class MethodWrap implements Interceptor, MethodHolder {
 
     /**
      * 检测是否存在注解
-     * */
+     */
     public boolean isAnnotationPresent(Class<? extends Annotation> annotationClass) {
         return method.isAnnotationPresent(annotationClass);
     }
@@ -228,6 +228,9 @@ public class MethodWrap implements Interceptor, MethodHolder {
 
     /**
      * 执行（原生处理）
+     *
+     * @param obj  目标对象
+     * @param args 执行参数
      */
     public Object invoke(Object obj, Object[] args) throws Throwable {
         try {
@@ -240,6 +243,9 @@ public class MethodWrap implements Interceptor, MethodHolder {
 
     /**
      * 执行切面（即带拦截器的处理）
+     *
+     * @param obj  目标对象（要求：未代理对象。避免二次拦截）
+     * @param args 执行参数
      */
     public Object invokeByAspect(Object obj, Object[] args) throws Throwable {
         Invocation inv = new Invocation(obj, args, this, interceptors);

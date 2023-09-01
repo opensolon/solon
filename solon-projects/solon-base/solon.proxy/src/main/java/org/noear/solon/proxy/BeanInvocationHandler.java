@@ -25,8 +25,8 @@ public class BeanInvocationHandler implements InvocationHandler {
     /**
      * @since 1.6
      */
-    public BeanInvocationHandler(AopContext context, Object bean, InvocationHandler handler) {
-        this(context, bean.getClass(), bean, handler);
+    public BeanInvocationHandler(AopContext context, Object target, InvocationHandler handler) {
+        this(context, target.getClass(), target, handler);
     }
 
     /**
