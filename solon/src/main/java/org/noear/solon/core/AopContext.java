@@ -390,7 +390,7 @@ public class AopContext extends BeanContainer {
                         }
                     } else {
                         //是否需要自动代理
-                        enableProxy = enableProxy || beanInterceptors.containsKey(a.annotationType());
+                        enableProxy = enableProxy || requiredProxy(a);
                     }
                 }
             }
@@ -399,13 +399,22 @@ public class AopContext extends BeanContainer {
         if (enableProxy == false) {
             for (Annotation a : bw.clz().getAnnotations()) {
                 //是否需要自动代理
-                enableProxy = enableProxy || beanInterceptors.containsKey(a.annotationType());
+                enableProxy = enableProxy || requiredProxy(a);
             }
         }
 
         if (enableProxy) {
             ProxyBinder.global().binding(bw);
         }
+    }
+
+    /**
+     * 是否需要有代理
+     * */
+    private boolean requiredProxy(Annotation a) {
+        return beanInterceptors.containsKey(a.annotationType())
+                || a.annotationType().isAnnotationPresent(Around.class)
+                || a.annotationType().equals(Around.class);
     }
 
 
