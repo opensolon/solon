@@ -3,7 +3,7 @@ package org.noear.solon.cloud.extend.nacos;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.cloud.CloudProps;
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.cloud.CloudManager;
 import org.noear.solon.cloud.extend.nacos.service.CloudConfigServiceNacosImp;
@@ -17,7 +17,7 @@ public class XPluginImp implements Plugin {
     private static final String SERVER2 = "solon.cloud.nacos2.server";
 
     @Override
-    public void start(AopContext context) {
+    public void start(AppContext context) {
         CloudProps cloudProps;
         if (context.cfg().get(SERVER2) == null) {
             cloudProps = new CloudProps(context, "nacos");

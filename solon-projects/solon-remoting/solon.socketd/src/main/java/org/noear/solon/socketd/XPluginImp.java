@@ -2,7 +2,7 @@ package org.noear.solon.socketd;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.message.Listener;
@@ -12,7 +12,7 @@ import org.noear.solon.socketd.annotation.ClientEndpoint;
 
 public class XPluginImp implements Plugin {
     @Override
-    public void start(AopContext context) {
+    public void start(AppContext context) {
         //注册 @ClientListenEndpoint 构建器
 
         Solon.app().listenAfter(new RouterListener());

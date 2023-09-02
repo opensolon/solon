@@ -9,7 +9,7 @@ import org.noear.solon.cloud.extend.powerjob.impl.PowerJobProperties;
 import org.noear.solon.cloud.extend.powerjob.impl.PowerJobWorkerOfSolon;
 import org.noear.solon.cloud.extend.powerjob.service.CloudJobServiceImpl;
 import org.noear.solon.cloud.impl.CloudJobBeanBuilder;
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +28,7 @@ public class XPluginImp implements Plugin {
     private static final Logger logger = LoggerFactory.getLogger(XPluginImp.class);
 
     @Override
-    public void start(AopContext context) throws Throwable {
+    public void start(AppContext context) throws Throwable {
         CloudProps cloudProps = new CloudProps(context, "powerjob");
 
         if (cloudProps.getJobEnable() == false) {

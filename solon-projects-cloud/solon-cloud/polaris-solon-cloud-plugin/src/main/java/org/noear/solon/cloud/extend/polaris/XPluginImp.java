@@ -5,7 +5,7 @@ import org.noear.solon.cloud.CloudManager;
 import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.extend.polaris.service.CloudConfigServicePolarisImp;
 import org.noear.solon.cloud.extend.polaris.service.CloudDiscoveryServicePolarisImp;
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 
 /**
@@ -17,7 +17,7 @@ public class XPluginImp implements Plugin {
     CloudDiscoveryServicePolarisImp cloudDiscoveryServicePolarisImp;
 
     @Override
-    public void start(AopContext context) throws Throwable {
+    public void start(AppContext context) throws Throwable {
         CloudProps cloudProps = new CloudProps(context,"polaris");
 
         //1.登记配置服务

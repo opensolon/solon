@@ -2,7 +2,7 @@ package com.fujieid.jap.solon.integration;
 
 import com.fujieid.jap.solon.JapInitializer;
 import com.fujieid.jap.solon.JapProps;
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 
 /**
@@ -12,7 +12,7 @@ import org.noear.solon.core.Plugin;
 public class XPluginImpl implements Plugin {
 
     @Override
-    public void start(AopContext context) {
+    public void start(AppContext context) {
         context.beanMake(JapProps.class);
         context.beanMake(JapInitializer.class);
     }

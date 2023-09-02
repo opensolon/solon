@@ -1,6 +1,6 @@
 package org.noear.solon.data.dynamicds.integration;
 
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.data.dynamicds.DynamicDs;
 import org.noear.solon.data.dynamicds.DynamicDsInterceptor;
@@ -11,7 +11,7 @@ import org.noear.solon.data.dynamicds.DynamicDsInterceptor;
  */
 public class XPluginImpl implements Plugin {
     @Override
-    public void start(AopContext context) throws Throwable {
+    public void start(AppContext context) throws Throwable {
         context.beanInterceptorAdd(DynamicDs.class, new DynamicDsInterceptor());
     }
 }

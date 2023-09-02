@@ -1,7 +1,7 @@
 package org.noear.solon.serialization.protostuff;
 
 import org.noear.solon.Solon;
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.RenderManager;
@@ -12,7 +12,7 @@ import org.noear.solon.core.handle.RenderManager;
  */
 public class XPluginImp implements Plugin {
     @Override
-    public void start(AopContext context) {
+    public void start(AppContext context) {
         ProtostuffRender render = new ProtostuffRender();
 
         RenderManager.mapping("@protobuf",render);

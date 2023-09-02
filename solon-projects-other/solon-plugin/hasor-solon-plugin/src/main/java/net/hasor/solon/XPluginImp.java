@@ -3,7 +3,7 @@ package net.hasor.solon;
 import net.hasor.core.DimModule;
 import net.hasor.core.Module;
 import net.hasor.solon.boot.BuildConfig;
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 
 /**
@@ -14,7 +14,7 @@ import org.noear.solon.core.Plugin;
  * */
 public class XPluginImp implements Plugin {
     @Override
-    public void start(AopContext context) {
+    public void start(AppContext context) {
         //
         //注册bean构建器
         //

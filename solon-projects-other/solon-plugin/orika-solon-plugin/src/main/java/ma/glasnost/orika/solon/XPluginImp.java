@@ -6,7 +6,7 @@ import ma.glasnost.orika.MapperFacade;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.impl.DefaultMapperFactory;
 import ma.glasnost.orika.metadata.ClassMapBuilder;
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 
 /**
@@ -15,7 +15,7 @@ import org.noear.solon.core.Plugin;
  */
 public class XPluginImp implements Plugin {
     @Override
-    public void start(AopContext context) throws Throwable {
+    public void start(AppContext context) throws Throwable {
         DefaultMapperFactory factory = new DefaultMapperFactory.Builder().build();
 
         context.subBeansOfType(CustomConverter.class, bean -> {

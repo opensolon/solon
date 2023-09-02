@@ -32,7 +32,7 @@ public class XPluginImp implements Plugin , InitializingBean {
     }
 
     @Override
-    public void start(AopContext context) {
+    public void start(AppContext context) {
         context.beanInjectorAdd(CloudConfig.class, CloudConfigBeanInjector.instance);
         context.beanBuilderAdd(CloudConfig.class, CloudConfigBeanBuilder.instance);
 

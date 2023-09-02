@@ -4,7 +4,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.admin.server.annotation.EnableAdminServer;
 import org.noear.solon.admin.server.utils.BasicAuthUtils;
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.web.staticfiles.StaticMappings;
 import org.noear.solon.web.staticfiles.repository.ClassPathStaticRepository;
@@ -15,7 +15,7 @@ import org.noear.solon.web.staticfiles.repository.ClassPathStaticRepository;
  */
 public class XPluginImpl implements Plugin {
     @Override
-    public void start(AopContext context) {
+    public void start(AppContext context) {
         if (Solon.app().source().isAnnotationPresent(EnableAdminServer.class) == false) {
             return;
         }

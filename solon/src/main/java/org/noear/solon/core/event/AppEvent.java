@@ -1,7 +1,7 @@
 package org.noear.solon.core.event;
 
 import org.noear.solon.SolonApp;
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 
 /**
  * @author noear
@@ -14,7 +14,7 @@ public abstract class AppEvent {
         return app;
     }
 
-    public AopContext context(){
+    public AppContext context(){
         return app.context();
     }
 

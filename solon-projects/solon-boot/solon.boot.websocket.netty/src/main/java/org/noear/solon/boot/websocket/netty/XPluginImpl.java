@@ -29,7 +29,7 @@ public class XPluginImpl implements Plugin {
     }
 
     @Override
-    public void start(AopContext context) throws Throwable {
+    public void start(AppContext context) throws Throwable {
         //注册会话管理器
         SessionManager.register(new _SessionManagerImpl());
 

@@ -1,6 +1,6 @@
 package graphql.solon.integration;
 
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.event.AppLoadEndEvent;
 import org.noear.solon.core.event.EventBus;
@@ -30,7 +30,7 @@ public class GraphqlPlugin implements Plugin {
     private static Logger log = LoggerFactory.getLogger(GraphqlPlugin.class);
 
     @Override
-    public void start(AopContext context) {
+    public void start(AppContext context) {
         log.debug("load GraphqlPlugin ...");
 
         HandlerMethodArgumentResolverCollect methodArgumentResolverCollect = new HandlerMethodArgumentResolverCollect();

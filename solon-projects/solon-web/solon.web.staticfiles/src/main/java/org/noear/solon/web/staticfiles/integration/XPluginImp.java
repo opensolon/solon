@@ -2,7 +2,7 @@ package org.noear.solon.web.staticfiles.integration;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.handle.HandlerPipeline;
 import org.noear.solon.core.util.ResourceUtil;
@@ -20,7 +20,7 @@ import java.util.Map;
 
 public class XPluginImp implements Plugin {
     @Override
-    public void start(AopContext context) {
+    public void start(AppContext context) {
         //通过动态控制是否启用
         //
 

@@ -6,7 +6,7 @@ import org.noear.solon.cloud.CloudManager;
 import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.extend.local.impl.job.JobManager;
 import org.noear.solon.cloud.extend.local.service.*;
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.util.LogUtil;
 
@@ -16,7 +16,7 @@ import org.noear.solon.core.util.LogUtil;
  */
 public class XPluginImp implements Plugin {
     @Override
-    public void start(AopContext context) throws Throwable {
+    public void start(AppContext context) throws Throwable {
         CloudProps cloudProps = new CloudProps(context,"local");
 
         if(Utils.isEmpty(cloudProps.getServer())){

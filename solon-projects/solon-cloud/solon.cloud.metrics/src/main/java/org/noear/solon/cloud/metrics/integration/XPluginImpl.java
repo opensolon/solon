@@ -19,7 +19,7 @@ import org.noear.solon.cloud.metrics.interceptor.MeterSummaryInterceptor;
 import org.noear.solon.cloud.metrics.interceptor.MeterCounterInterceptor;
 import org.noear.solon.cloud.metrics.interceptor.MeterTimerInterceptor;
 
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.event.AppBeanLoadEndEvent;
 import org.noear.solon.core.event.EventBus;
@@ -36,7 +36,7 @@ public class XPluginImpl implements Plugin {
     List<MeterOpener> meterOpeners = new ArrayList<>();
 
     @Override
-    public void start(AopContext context) {
+    public void start(AppContext context) {
         //增加注解支持
         context.beanInterceptorAdd(MeterCounter.class, new MeterCounterInterceptor());
         context.beanInterceptorAdd(MeterGauge.class, new MeterGaugeInterceptor());
@@ -76,7 +76,7 @@ public class XPluginImpl implements Plugin {
         CloudManager.register(new CloudMetricServiceImpl());
     }
 
-    private void forOpener(AopContext aopContext) {
+    private void forOpener(AppContext aopContext) {
         //订阅 MeterOpener
         meterOpeners.add(new PrometheusOpener());
         aopContext.subBeansOfType(MeterOpener.class, bean -> {

@@ -1,6 +1,6 @@
 package org.apache.thrift.solon;
 
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 
 /**
@@ -9,7 +9,7 @@ import org.noear.solon.core.Plugin;
  */
 public class XPluginImp implements Plugin {
     @Override
-    public void start(AopContext context) throws Throwable {
+    public void start(AppContext context) throws Throwable {
 
     }
 }

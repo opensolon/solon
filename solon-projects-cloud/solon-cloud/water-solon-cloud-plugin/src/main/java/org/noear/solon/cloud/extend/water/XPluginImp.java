@@ -102,7 +102,7 @@ public class XPluginImp implements Plugin, InitializingBean {
     }
 
     @Override
-    public void start(AopContext context) throws Throwable {
+    public void start(AppContext context) throws Throwable {
         if (initDo(context) == false) {
             return;
         }

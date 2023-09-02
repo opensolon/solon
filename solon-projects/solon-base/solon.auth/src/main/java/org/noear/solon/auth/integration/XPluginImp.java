@@ -4,7 +4,7 @@ import org.noear.solon.auth.AuthAdapterSupplier;
 import org.noear.solon.auth.AuthUtil;
 import org.noear.solon.auth.annotation.*;
 import org.noear.solon.auth.interceptor.*;
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 
 /**
@@ -13,7 +13,7 @@ import org.noear.solon.core.Plugin;
  */
 public class XPluginImp implements Plugin {
     @Override
-    public void start(AopContext context) {
+    public void start(AppContext context) {
         context.beanInterceptorAdd(AuthIp.class, new IpInterceptor());
         context.beanInterceptorAdd(AuthLogined.class, new LoginedInterceptor());
         context.beanInterceptorAdd(AuthPath.class, new PathInterceptor());

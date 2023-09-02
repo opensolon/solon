@@ -6,7 +6,7 @@ import io.seata.solon.impl.GlobalLockInterceptor;
 import io.seata.solon.annotation.GlobalTransactional;
 import io.seata.solon.impl.GlobalTransactionalInterceptor;
 import io.seata.tm.api.TransactionalTemplate;
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 
 /**
@@ -15,7 +15,7 @@ import org.noear.solon.core.Plugin;
  */
 public class XPluginImpl implements Plugin {
     @Override
-    public void start(AopContext context) throws Throwable {
+    public void start(AppContext context) throws Throwable {
         GlobalLockTemplate globalLockTemplate = new GlobalLockTemplate();
         TransactionalTemplate transactionalTemplate = new TransactionalTemplate();
 

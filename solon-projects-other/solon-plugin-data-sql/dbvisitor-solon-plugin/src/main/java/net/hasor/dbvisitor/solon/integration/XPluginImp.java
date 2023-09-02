@@ -20,7 +20,7 @@ public class XPluginImp implements Plugin {
     DalRegistry dalRegistry = new DalRegistry();
 
     @Override
-    public void start(AopContext context) {
+    public void start(AppContext context) {
         context.beanInjectorAdd(Db.class, (varH, anno) -> {
             if (Utils.isEmpty(anno.value())) {
                 varH.context().getWrapAsync(DataSource.class, (dsBw) -> {

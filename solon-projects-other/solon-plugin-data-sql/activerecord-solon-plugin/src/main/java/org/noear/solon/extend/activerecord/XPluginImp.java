@@ -2,7 +2,7 @@ package org.noear.solon.extend.activerecord;
 
 import javax.sql.DataSource;
 
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.extend.activerecord.annotation.Db;
 import org.noear.solon.extend.activerecord.annotation.Table;
@@ -16,7 +16,7 @@ import org.noear.solon.extend.activerecord.impl.TableBeanBuilderImpl;
 public class XPluginImp implements Plugin {
 
     @Override
-    public void start(AopContext context) {
+    public void start(AppContext context) {
         // 构建Bean时的Table标签
         context.beanBuilderAdd(Table.class, new TableBeanBuilderImpl());
 

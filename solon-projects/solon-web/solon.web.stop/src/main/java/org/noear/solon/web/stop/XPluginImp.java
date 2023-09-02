@@ -1,12 +1,12 @@
 package org.noear.solon.web.stop;
 
 import org.noear.solon.Solon;
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 
 public class XPluginImp implements Plugin {
     @Override
-    public void start(AopContext context) {
+    public void start(AppContext context) {
         boolean enable = context.cfg().getBool("solon.stop.enable", false);
         String path = context.cfg().get("solon.stop.path", "/_run/stop/");
         String whitelist = context.cfg().get("solon.stop.whitelist", "127.0.0.1");

@@ -1,7 +1,7 @@
 package org.noear.solon.extend.sqltoy;
 
 import org.noear.solon.Solon;
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.data.cache.CacheService;
@@ -20,10 +20,10 @@ import org.sagacity.sqltoy.SqlToyContext;
  */
 public class XPluginImp implements Plugin {
 
-    AopContext context;
+    AppContext context;
 
     @Override
-    public void start(AopContext context) {
+    public void start(AppContext context) {
         this.context = context;
 
         //尝试初始化 rdb

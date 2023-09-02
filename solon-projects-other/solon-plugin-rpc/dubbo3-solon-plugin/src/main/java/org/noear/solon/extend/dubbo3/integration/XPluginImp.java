@@ -8,7 +8,7 @@ import org.apache.dubbo.config.annotation.Service;
 import org.apache.dubbo.config.bootstrap.DubboBootstrap;
 
 import org.noear.solon.Solon;
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.extend.dubbo3.EnableDubbo;
 
@@ -20,7 +20,7 @@ public class XPluginImp implements Plugin {
     private DubboBootstrap bootstrap;
 
     @Override
-    public void start(AopContext context){
+    public void start(AppContext context){
         if (Solon.app().source().getAnnotation(EnableDubbo.class) == null) {
             return;
         }
@@ -103,7 +103,7 @@ public class XPluginImp implements Plugin {
         }
     }
 
-    private void register(AopContext context) {
+    private void register(AppContext context) {
         context.beanBuilderAdd(DubboService.class, ((clz, bw, anno) -> {
             Class<?>[] interfaces = clz.getInterfaces();
 

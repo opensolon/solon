@@ -9,7 +9,7 @@ import org.noear.solon.core.Plugin;
  * */
 public class XPluginImp implements Plugin {
     @Override
-    public void start(AopContext context) {
+    public void start(AppContext context) {
 
     }
 }

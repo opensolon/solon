@@ -2,9 +2,8 @@ package com.baomidou.mybatisplus.solon.integration;
 
 import com.baomidou.mybatisplus.core.toolkit.reflect.GenericTypeUtils;
 import com.baomidou.mybatisplus.solon.integration.aot.MybatisPlusRuntimeNativeRegistrar;
-import org.apache.ibatis.solon.aot.MybatisRuntimeNativeRegistrar;
 import org.noear.solon.aot.RuntimeNativeRegistrar;
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.core.util.GenericUtil;
@@ -17,7 +16,7 @@ import org.noear.solon.core.Plugin;
  */
 public class XPluginImpl implements Plugin {
     @Override
-    public void start(AopContext context) {
+    public void start(AppContext context) {
         //
         // 此插件的 solon.plugin.priority 会大于 mybatis-solon-plugin 的值
         //

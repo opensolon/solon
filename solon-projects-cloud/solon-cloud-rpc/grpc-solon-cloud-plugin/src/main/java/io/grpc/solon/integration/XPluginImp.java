@@ -38,7 +38,7 @@ public class XPluginImp implements Plugin {
     Map<Class<?>, Object> clientMap;
 
     @Override
-    public void start(AopContext context) {
+    public void start(AppContext context) {
         if (Solon.app().source().getAnnotation(EnableGrpc.class) == null) {
             return;
         }

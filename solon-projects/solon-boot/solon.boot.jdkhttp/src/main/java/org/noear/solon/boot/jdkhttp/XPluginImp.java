@@ -24,7 +24,7 @@ public final class XPluginImp implements Plugin {
     JdkHttpServerComb _server;
 
     @Override
-    public void start(AopContext context) {
+    public void start(AppContext context) {
         if (Solon.app().enableHttp() == false) {
             return;
         }

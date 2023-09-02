@@ -1,9 +1,7 @@
 package org.noear.solon.extend.schedule;
 
-import org.noear.solon.Solon;
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
-import org.noear.solon.core.event.AppLoadEndEvent;
 
 /**
  * solon.extend.schedule 相对于 cron4j-solon-plugin 的区别：
@@ -13,7 +11,7 @@ import org.noear.solon.core.event.AppLoadEndEvent;
  * */
 public class XPluginImp implements Plugin {
     @Override
-    public void start(AopContext context) {
+    public void start(AppContext context) {
         context.lifecycle(-99, () -> {
             context.beanForeach((v) -> {
                 if (v.raw() instanceof IJob) {

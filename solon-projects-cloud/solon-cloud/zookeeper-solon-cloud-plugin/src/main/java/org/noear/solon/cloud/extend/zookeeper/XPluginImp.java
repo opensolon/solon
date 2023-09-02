@@ -6,7 +6,7 @@ import org.noear.solon.cloud.CloudManager;
 import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.extend.zookeeper.service.CloudConfigServiceZkImp;
 import org.noear.solon.cloud.extend.zookeeper.service.CloudDiscoveryServiceZkImp;
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 
 /**
@@ -19,7 +19,7 @@ public class XPluginImp implements Plugin {
     CloudDiscoveryServiceZkImp discoveryServiceZkImp;
 
     @Override
-    public void start(AopContext context) {
+    public void start(AppContext context) {
         CloudProps cloudProps = new CloudProps(context,"zookeeper");
 
         if (Utils.isEmpty(cloudProps.getServer())) {

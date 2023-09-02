@@ -2,7 +2,7 @@ package org.noear.solon.serialization.fastjson2;
 
 import com.alibaba.fastjson2.JSONWriter;
 import org.noear.solon.Solon;
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.RenderManager;
@@ -12,7 +12,7 @@ import org.noear.solon.serialization.prop.JsonPropsUtil;
 public class XPluginImp implements Plugin {
 
     @Override
-    public void start(AopContext context) {
+    public void start(AppContext context) {
         JsonProps jsonProps = JsonProps.create(context);
 
         //::renderFactory

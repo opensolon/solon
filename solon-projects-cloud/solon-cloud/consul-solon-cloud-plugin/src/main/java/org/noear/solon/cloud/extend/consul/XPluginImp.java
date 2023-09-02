@@ -21,7 +21,7 @@ public class XPluginImp implements Plugin {
 
 
     @Override
-    public void start(AopContext context) {
+    public void start(AppContext context) {
         CloudProps cloudProps = new CloudProps(context,"consul");
 
         if (Utils.isEmpty(cloudProps.getServer())) {

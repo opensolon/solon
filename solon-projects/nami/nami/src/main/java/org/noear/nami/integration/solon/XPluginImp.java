@@ -4,7 +4,7 @@ import org.noear.nami.*;
 import org.noear.nami.annotation.NamiClient;
 import org.noear.nami.common.InfoUtils;
 import org.noear.solon.Utils;
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 
 import java.util.LinkedHashMap;
@@ -18,7 +18,7 @@ public class XPluginImp implements Plugin {
     private Map<NamiClient, Object> cached = new LinkedHashMap<>();
 
     @Override
-    public void start(AopContext context) {
+    public void start(AppContext context) {
         if (NamiConfigurationDefault.proxy == null) {
             NamiConfigurationDefault.proxy = new NamiConfigurationSolon(context);
         }
