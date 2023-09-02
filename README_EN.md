@@ -145,12 +145,13 @@ public class HelloServiceImpl implements HelloService{
 | org.noear:solon-cloud     | solon-rpc + consul；quick development of microservices applications                          |
 
 
-## Official website and related examples：
+## Official website and related examples, cases：
 
 * Official website address：[https://solon.noear.org](https://solon.noear.org)
 * Official website supporting demos：[https://gitee.com/noear/solon-examples](https://gitee.com/noear/solon-examples)
 * Project unit test：[__test](./__test/)
 * Project more feature examples：[solon_api_demo](https://gitee.com/noear/solon_api_demo)  、 [solon_rpc_demo](https://gitee.com/noear/solon_rpc_demo) 、 [solon_socketd_demo](https://gitee.com/noear/solon_socketd_demo) 、 [solon_cloud_demo](https://gitee.com/noear/solon_cloud_demo) 、 [solon_auth_demo](https://gitee.com/noear/solon_auth_demo)
+* User case：[User open source project](https://solon.noear.org/article/555)、[User business project](https://solon.noear.org/article/cases)
 
 ## Special thanks to JetBrains for supporting open-source projects：
 
