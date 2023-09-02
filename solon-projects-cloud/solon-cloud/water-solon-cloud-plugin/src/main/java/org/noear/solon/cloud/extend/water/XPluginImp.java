@@ -12,7 +12,7 @@ import org.noear.solon.cloud.extend.water.integration.msg.HandlerConfigUpdate;
 import org.noear.solon.cloud.extend.water.service.*;
 import org.noear.solon.cloud.model.Config;
 import org.noear.solon.cloud.model.Instance;
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.bean.InitializingBean;
 import org.noear.water.WW;
@@ -31,7 +31,7 @@ public class XPluginImp implements Plugin, InitializingBean {
     private CloudProps cloudProps;
     private boolean inited = false;
 
-    private boolean initDo(AopContext context) throws Throwable {
+    private boolean initDo(AppContext context) throws Throwable {
         if (cloudProps == null) {
             cloudProps = new CloudProps(context, "water");
         }
