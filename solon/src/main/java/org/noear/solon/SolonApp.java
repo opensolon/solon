@@ -33,7 +33,7 @@ import java.util.function.Consumer;
  */
 public class SolonApp extends RouterWrapper {
     private final SolonProps _cfg; //属性配置
-    private final AopContext _context;//容器上下文
+    private final AppContext _context;//容器上下文
     private final ConverterManager _converterManager; //转换管理器
 
     private final Class<?> _source; //应用加载源
@@ -44,7 +44,7 @@ public class SolonApp extends RouterWrapper {
     /**
      * 获取应用上下文
      */
-    public AopContext context() {
+    public AppContext context() {
         return _context;
     }
 
@@ -79,7 +79,7 @@ public class SolonApp extends RouterWrapper {
 
         //初始化配置
         _cfg = new SolonProps().load(source, args);
-        _context = new AopContext(new JarClassLoader(JarClassLoader.global()), _cfg);
+        _context = new AppContext(new JarClassLoader(JarClassLoader.global()), _cfg);
 
         //初始化路由
         initRouter(this::doFilter);

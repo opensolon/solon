@@ -1,6 +1,6 @@
 package org.noear.solon;
 
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.JarClassLoader;
 import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.core.NvMap;
@@ -61,7 +61,7 @@ public class Solon {
     /**
      * 应用上下文
      */
-    public static AopContext context() {
+    public static AppContext context() {
         if (app == null) {
             return null;
         } else {

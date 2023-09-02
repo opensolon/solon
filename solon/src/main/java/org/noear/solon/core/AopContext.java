@@ -30,8 +30,10 @@ import java.util.function.Consumer;
  *
  * @author noear
  * @since 1.0
+ * @deprecated 2.5
  * */
-public class AopContext extends BeanContainer {
+@Deprecated
+public abstract class AopContext extends BeanContainer {
 
     public AopContext() {
         this(null, null);
@@ -90,12 +92,20 @@ public class AopContext extends BeanContainer {
         return new BeanWrap(this, type, bean, name);
     }
 
+    /**
+     * @deprecated 2.5
+     * */
+    @Deprecated
     public AopContext copy() {
         return copy(null, null);
     }
 
+    /**
+     * @deprecated 2.5
+     * */
+    @Deprecated
     public AopContext copy(ClassLoader classLoader, Props props) {
-        AopContext tmp = new AopContext(classLoader, props);
+        AppContext tmp = new AppContext(classLoader, props);
         copyTo(tmp);
         return tmp;
     }

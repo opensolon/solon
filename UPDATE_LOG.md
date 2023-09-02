@@ -14,6 +14,8 @@
 * 新增 seata-solon-plugin 插件
 * 新增 graphql-solon-plugin 插件
 * 增加 quartz jdbc 及时更新支持（数据库里变了，它马上变）？
+* 增加 `AppContext` 类
+* 调整 `AopContext` 标为弃用，由 `AppContext` 替代
 
 ### 2.5.2
 * 增加 `@Component` 自动动态代理特性，即自动识别AOP需求并按需启用动态代理
