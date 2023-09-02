@@ -147,7 +147,7 @@ public class HelloServiceImpl implements HelloService{
 | org.noear:solon-cloud     | solon-rpc + consul；Быстро разработайте приложения микрослужб                         |
 
 
-## Официальная сеть и соответствующие примеры：
+## Официальная сеть и связанные с ней примеры, дела：
 
 * Адрес основной сети：[https://solon.noear.org](https://solon.noear.org)
 * Демо в комплекте с официальной сетью：[https://gitee.com/noear/solon-examples](https://gitee.com/noear/solon-examples)

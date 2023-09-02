@@ -147,7 +147,7 @@ public class HelloServiceImpl implements HelloService{
 | org.noear:solon-cloud     | solon-rpc + consul；マイクロサービスアプリケーションの迅速な開発                                |
 
 
-## 公式サイトおよび関連例：
+## 公式サイトと関連例・事例です：
 
 * 公式サイト：[https://solon.noear.org](https://solon.noear.org)
 * 公式サイトのデモ：[https://gitee.com/noear/solon-examples](https://gitee.com/noear/solon-examples)
