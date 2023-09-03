@@ -1,6 +1,6 @@
 package org.noear.solon.scheduling.async;
 
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.aspect.Interceptor;
 import org.noear.solon.core.aspect.Invocation;
 import org.noear.solon.scheduling.annotation.Async;
@@ -16,7 +16,7 @@ import java.util.concurrent.Future;
 public class AsyncInterceptor implements Interceptor {
     AsyncExecutor asyncExecutor = new AsyncExecutorDefault();
 
-    public AsyncInterceptor(AopContext context) {
+    public AsyncInterceptor(AppContext context) {
         context.getBeanAsync(AsyncExecutor.class, bean -> {
             asyncExecutor = bean;
         });

@@ -4,7 +4,7 @@ import org.noear.solon.aot.hint.ExecutableHint;
 import org.noear.solon.aot.hint.ExecutableMode;
 import org.noear.solon.aot.hint.MemberCategory;
 import org.noear.solon.aot.proxy.ProxyClassGenerator;
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.core.util.ReflectUtil;
 import org.noear.solon.core.wrap.ClassWrap;
@@ -27,13 +27,13 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @see org.noear.solon.aot.graalvm.GraalvmUtil
  * @since 2.2
  */
-public class AopContextNativeProcessorDefault implements AopContextNativeProcessor {
+public class AppContextNativeProcessorDefault implements AppContextNativeProcessor {
     public static final String AOT_PROXY_CLASSNAME_SUFFIX ="$$SolonAotProxy";
     public static final String ASM_PROXY_CLASSNAME_SUFFIX ="$$SolonAsmProxy";
 
     private final ProxyClassGenerator proxyClassGenerator;
 
-    public AopContextNativeProcessorDefault(){
+    public AppContextNativeProcessorDefault(){
         proxyClassGenerator = new ProxyClassGenerator();
     }
 
@@ -45,7 +45,7 @@ public class AopContextNativeProcessorDefault implements AopContextNativeProcess
      * @param settings 运行设置
      * @param metadata 元信息对象
      */
-    public void process(AopContext context, Settings settings, RuntimeNativeMetadata metadata) {
+    public void process(AppContext context, Settings settings, RuntimeNativeMetadata metadata) {
         AtomicInteger beanCount = new AtomicInteger();
 
         //for beanWrap

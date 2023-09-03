@@ -359,6 +359,6 @@ public class BeanWrap {
         /**
          * 获取代理
          */
-        Object getProxy(AopContext ctx, Object bean);
+        Object getProxy(AppContext ctx, Object bean);
     }
 }

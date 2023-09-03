@@ -30,7 +30,7 @@ public class XPluginImp implements Plugin {
         });
     }
 
-    private void getProxy(AopContext ctx, Class<?> clz, FeignClient anno, Consumer consumer) {
+    private void getProxy(AppContext ctx, Class<?> clz, FeignClient anno, Consumer consumer) {
         //获取配置器
         FeignConfiguration configuration = ctx.wrapAndPut(anno.configuration()).get();
 

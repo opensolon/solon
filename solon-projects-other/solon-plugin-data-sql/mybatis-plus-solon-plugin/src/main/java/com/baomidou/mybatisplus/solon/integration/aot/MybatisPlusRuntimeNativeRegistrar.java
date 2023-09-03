@@ -18,7 +18,7 @@ import org.noear.solon.aot.RuntimeNativeMetadata;
 import org.noear.solon.aot.RuntimeNativeRegistrar;
 import org.noear.solon.aot.hint.ExecutableMode;
 import org.noear.solon.aot.hint.MemberCategory;
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 
 import java.lang.invoke.SerializedLambda;
 
@@ -31,7 +31,7 @@ import java.lang.invoke.SerializedLambda;
 public class MybatisPlusRuntimeNativeRegistrar implements RuntimeNativeRegistrar {
 
     @Override
-    public void register(AopContext context, RuntimeNativeMetadata metadata) {
+    public void register(AppContext context, RuntimeNativeMetadata metadata) {
         metadata.registerDefaultConstructor(MybatisXMLLanguageDriver.class);
         metadata.registerReflection(MybatisConfiguration.class, MemberCategory.DECLARED_FIELDS, MemberCategory.INTROSPECT_PUBLIC_CONSTRUCTORS);
         metadata.registerAllDeclaredMethod(MybatisConfiguration.class, ExecutableMode.INVOKE);

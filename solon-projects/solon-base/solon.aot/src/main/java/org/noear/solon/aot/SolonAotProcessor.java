@@ -7,7 +7,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.aot.graalvm.GraalvmUtil;
 import org.noear.solon.aot.hint.ResourceHint;
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.core.PluginEntity;
 import org.noear.solon.core.util.ClassUtil;
@@ -80,12 +80,12 @@ public class SolonAotProcessor {
         }
 
 
-        AopContext context = Solon.app().context();
+        AppContext context = Solon.context();
 
         //改为普通扩展方式
-        AopContextNativeProcessor contextNativeProcessor = context.getBean(AopContextNativeProcessor.class);
+        AppContextNativeProcessor contextNativeProcessor = context.getBean(AppContextNativeProcessor.class);
         if(contextNativeProcessor == null){
-            contextNativeProcessor = new AopContextNativeProcessorDefault();
+            contextNativeProcessor = new AppContextNativeProcessorDefault();
         }
 
 

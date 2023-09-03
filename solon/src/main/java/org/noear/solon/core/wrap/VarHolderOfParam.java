@@ -1,6 +1,6 @@
 package org.noear.solon.core.wrap;
 
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.VarHolder;
 
 import java.lang.annotation.Annotation;
@@ -17,14 +17,14 @@ import java.lang.reflect.*;
 public class VarHolderOfParam implements VarHolder {
     private final Parameter p;
     private final ParameterizedType genericType;
-    private final AopContext ctx;
+    private final AppContext ctx;
 
     protected Object val;
     protected boolean done;
     protected boolean required = false;
     protected Runnable onDone;
 
-    public VarHolderOfParam(AopContext ctx, Parameter p, Runnable onDone) {
+    public VarHolderOfParam(AppContext ctx, Parameter p, Runnable onDone) {
         this.ctx = ctx;
         this.p = p;
         this.onDone = onDone;
@@ -39,7 +39,7 @@ public class VarHolderOfParam implements VarHolder {
     }
 
     @Override
-    public AopContext context() {
+    public AppContext context() {
         return ctx;
     }
 

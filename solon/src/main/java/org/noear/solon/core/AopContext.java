@@ -35,10 +35,18 @@ import java.util.function.Consumer;
 @Deprecated
 public abstract class AopContext extends BeanContainer {
 
+    /**
+     * @deprecated 2.5
+     * */
+    @Deprecated
     public AopContext() {
         this(null, null);
     }
 
+    /**
+     * @deprecated 2.5
+     * */
+    @Deprecated
     public AopContext(ClassLoader classLoader, Props props) {
         super(classLoader, props);
         initialize();

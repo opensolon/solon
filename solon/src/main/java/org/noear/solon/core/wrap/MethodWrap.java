@@ -3,6 +3,7 @@ package org.noear.solon.core.wrap;
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.*;
 import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.aspect.Interceptor;
 import org.noear.solon.core.aspect.InterceptorEntity;
 import org.noear.solon.core.aspect.Invocation;
@@ -26,7 +27,7 @@ import java.util.*;
 public class MethodWrap implements Interceptor, MethodHolder {
 
     public MethodWrap(AopContext ctx, Method m) {
-        context = ctx;
+        context = (AppContext) ctx;
 
         entityClz = m.getDeclaringClass();
 
@@ -105,7 +106,7 @@ public class MethodWrap implements Interceptor, MethodHolder {
         }
     }
 
-    private final AopContext context;
+    private final AppContext context;
 
     //实体类型
     private final Class<?> entityClz;

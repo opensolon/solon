@@ -1,6 +1,6 @@
 package org.noear.solon.aot;
 
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 
 /**
  * aot 阶段，注册 native 运行时的元信息，其实现类需要是一个 solon bean
@@ -16,5 +16,5 @@ public interface RuntimeNativeRegistrar {
      * @param context  上下文
      * @param metadata 原生运行时元信息
      */
-    void register(AopContext context, RuntimeNativeMetadata metadata);
+    void register(AppContext context, RuntimeNativeMetadata metadata);
 }
