@@ -7,6 +7,7 @@ import org.noear.solon.core.event.EventBus;
 import org.noear.solon.data.cache.CacheService;
 import org.noear.solon.extend.sqltoy.annotation.Db;
 import org.noear.solon.extend.sqltoy.configure.SqlToyContextProperties;
+import org.noear.solon.extend.sqltoy.impl.SolonAppContext;
 import org.noear.solon.extend.sqltoy.translate.SolonTranslateCacheManager;
 import org.sagacity.sqltoy.SqlToyContext;
 
@@ -37,7 +38,8 @@ public class XPluginImp implements Plugin {
         }
 
         try {
-            final SqlToyContext sqlToyContext = new SqlToyContextBuilder(properties, context).build();
+            SolonAppContext solonAppContext = new SolonAppContext(context);
+            final SqlToyContext sqlToyContext = new SqlToyContextBuilder(properties, solonAppContext).build();
 
             if ("solon".equals(properties.getCacheType()) || properties.getCacheType() == null) {
                 context.getWrapAsync(CacheService.class, bw -> {

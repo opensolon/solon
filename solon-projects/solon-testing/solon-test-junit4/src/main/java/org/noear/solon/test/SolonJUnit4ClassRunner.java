@@ -2,10 +2,10 @@ package org.noear.solon.test;
 
 import org.junit.runners.BlockJUnit4ClassRunner;
 import org.junit.runners.model.InitializationError;
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 
 public class SolonJUnit4ClassRunner extends BlockJUnit4ClassRunner {
-    private AopContext aopContext;
+    private AppContext appContext;
 
     public SolonJUnit4ClassRunner(Class<?> klass) throws InitializationError {
         super(klass);
@@ -16,13 +16,13 @@ public class SolonJUnit4ClassRunner extends BlockJUnit4ClassRunner {
         try {
             //init
             Class<?> klass = super.getTestClass().getJavaClass();
-            if (aopContext == null) {
-                aopContext = RunnerUtils.initRunner(klass);
+            if (appContext == null) {
+                appContext = RunnerUtils.initRunner(klass);
             }
 
             //create
             Object tmp = super.createTest();
-            tmp = RunnerUtils.initTestTarget(aopContext, tmp);
+            tmp = RunnerUtils.initTestTarget(appContext, tmp);
 
             return tmp;
         } catch (Exception e) {

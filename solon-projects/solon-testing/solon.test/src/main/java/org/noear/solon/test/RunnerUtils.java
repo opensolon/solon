@@ -6,7 +6,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.SolonTestApp;
 import org.noear.solon.Utils;
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.NvMap;
 import org.noear.solon.core.event.AppInitEndEvent;
@@ -25,7 +25,7 @@ import java.util.*;
  * @since 1.11
  */
 public class RunnerUtils {
-    private static Map<Class<?>, AopContext> appCached = new HashMap<>();
+    private static Map<Class<?>, AppContext> appCached = new HashMap<>();
 
     private static Class<?> getMainClz(SolonTest anno, Class<?> klass) {
         if (anno == null) {
@@ -52,7 +52,7 @@ public class RunnerUtils {
         }
     }
 
-    private static void addPropertySource(AopContext context, TestPropertySource propertySource) throws Throwable {
+    private static void addPropertySource(AppContext context, TestPropertySource propertySource) throws Throwable {
         if (propertySource == null) {
             return;
         }
@@ -69,16 +69,16 @@ public class RunnerUtils {
     /**
      * 初始化测试目标类
      */
-    public static Object initTestTarget(AopContext aopContext, Object tmp) {
+    public static Object initTestTarget(AppContext appContext, Object tmp) {
         //注入
-        aopContext.beanInject(tmp);
+        appContext.beanInject(tmp);
         //构建临时包装（用于支持提取操作）
-        BeanWrap beanWrap = new BeanWrap(aopContext, tmp.getClass(), tmp);
+        BeanWrap beanWrap = new BeanWrap(appContext, tmp.getClass(), tmp);
         //尝试提取操作和代理
-        aopContext.beanExtractOrProxy(beanWrap);
+        appContext.beanExtractOrProxy(beanWrap);
         if (beanWrap.proxy() != null) {
             //如果有代理，把代理也注入下
-            aopContext.beanInject(beanWrap.raw());
+            appContext.beanInject(beanWrap.raw());
         }
         //重新获取bean
         tmp = beanWrap.get();
@@ -91,7 +91,7 @@ public class RunnerUtils {
     /**
      * 初始化测试运行器
      */
-    public static AopContext initRunner(Class<?> klass) throws Throwable {
+    public static AppContext initRunner(Class<?> klass) throws Throwable {
         //添加测试类包名检测（包名为必须要求）
         if (klass.getPackage() == null || Utils.isEmpty(klass.getPackage().getName())) {
             throw new IllegalStateException("The test class is missing package: " + klass.getName());
@@ -130,9 +130,9 @@ public class RunnerUtils {
                 return appCached.get(mainClz);
             }
 
-            AopContext aopContext = startDo(mainClz, argsAry, klass);
+            AppContext appContext = startDo(mainClz, argsAry, klass);
 
-            appCached.put(mainClz, aopContext);
+            appCached.put(mainClz, appContext);
             //延迟秒数
             if (anno.delay() > 0) {
                 try {
@@ -142,7 +142,7 @@ public class RunnerUtils {
                 }
             }
 
-            return aopContext;
+            return appContext;
         } else {
             List<String> argsAry = new ArrayList<>();
             argsAry.add("-debug=1");
@@ -150,7 +150,7 @@ public class RunnerUtils {
         }
     }
 
-    private static AopContext startDo(Class<?> mainClz, List<String> argsAry, Class<?> klass) throws Throwable {
+    private static AppContext startDo(Class<?> mainClz, List<String> argsAry, Class<?> klass) throws Throwable {
 
         if (mainClz == klass) {
             String[] args = argsAry.toArray(new String[argsAry.size()]);
@@ -197,7 +197,7 @@ public class RunnerUtils {
         }
     }
 
-    private static void initContextDo(Class<?> klass, AopContext context, TestPropertySource propAnno) throws Throwable{
+    private static void initContextDo(Class<?> klass, AppContext context, TestPropertySource propAnno) throws Throwable{
         //添加 TestPropertySource 注解支持 //加载测试配置
         RunnerUtils.addPropertySource(context, propAnno);
 

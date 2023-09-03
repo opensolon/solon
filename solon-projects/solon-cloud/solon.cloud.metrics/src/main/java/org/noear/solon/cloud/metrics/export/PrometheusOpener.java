@@ -3,7 +3,7 @@ package org.noear.solon.cloud.metrics.export;
 import io.micrometer.prometheus.PrometheusConfig;
 import io.micrometer.prometheus.PrometheusMeterRegistry;
 
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.util.ClassUtil;
@@ -23,19 +23,19 @@ public class PrometheusOpener implements MeterOpener {
     }
 
     @Override
-    public boolean isSupported(AopContext aopContext) {
+    public boolean isSupported(AppContext appContext) {
         if (registry != null) {
             return true;
         }
 
         if (ClassUtil.hasClass(() -> PrometheusMeterRegistry.class)) {
             //如果有这个类
-            if (aopContext.hasWrap(PrometheusMeterRegistry.class)) {
-                registry = aopContext.getBean(PrometheusMeterRegistry.class);
+            if (appContext.hasWrap(PrometheusMeterRegistry.class)) {
+                registry = appContext.getBean(PrometheusMeterRegistry.class);
             } else {
                 registry = new PrometheusMeterRegistry(PrometheusConfig.DEFAULT);
-                BeanWrap beanWrap = aopContext.wrapAndPut(PrometheusMeterRegistry.class, registry);
-                aopContext.wrapPublish(beanWrap);
+                BeanWrap beanWrap = appContext.wrapAndPut(PrometheusMeterRegistry.class, registry);
+                appContext.wrapPublish(beanWrap);
             }
 
             return true;

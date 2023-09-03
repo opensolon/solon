@@ -1,13 +1,12 @@
 package org.noear.solon.cloud.extend.fastdfs.service;
 
 import org.csource.fastdfs.*;
-import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.exception.CloudFileException;
 import org.noear.solon.cloud.model.Media;
 import org.noear.solon.cloud.service.CloudFileService;
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.handle.Result;
 
 import java.util.Date;
@@ -33,12 +32,12 @@ public class CloudFileServiceFastDFSImpl implements CloudFileService {
         return client;
     }
 
-    public CloudFileServiceFastDFSImpl(AopContext aopContext, CloudProps cloudProps) {
+    public CloudFileServiceFastDFSImpl(AppContext appContext, CloudProps cloudProps) {
         bucketDef = cloudProps.getFileBucket();
 
         //构建属性
         Properties props = Utils.loadProperties(DEF_CONFIG_FILE);
-        Properties propsTmp = aopContext.cfg().getProp("fastdfs");
+        Properties propsTmp = appContext.cfg().getProp("fastdfs");
         propsTmp.forEach((key, val) -> {
             props.put("fastdfs." + key, val);
         });

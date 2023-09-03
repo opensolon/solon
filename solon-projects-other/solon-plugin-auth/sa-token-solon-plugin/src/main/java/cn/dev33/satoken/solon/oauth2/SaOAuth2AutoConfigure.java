@@ -8,7 +8,7 @@ import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Condition;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.bean.InitializingBean;
 
 /**
@@ -19,15 +19,15 @@ import org.noear.solon.core.bean.InitializingBean;
 @Configuration
 public class SaOAuth2AutoConfigure implements InitializingBean {
     @Inject
-    private AopContext aopContext;
+    private AppContext appContext;
 
     @Override
     public void afterInjection() throws Throwable {
-        aopContext.subBeansOfType(SaOAuth2Template.class, bean -> {
+        appContext.subBeansOfType(SaOAuth2Template.class, bean -> {
             SaOAuth2Util.saOAuth2Template = bean;
         });
 
-        aopContext.subBeansOfType(SaOAuth2Config.class, bean -> {
+        appContext.subBeansOfType(SaOAuth2Config.class, bean -> {
             SaOAuth2Manager.setConfig(bean);
         });
     }
