@@ -10,6 +10,7 @@ public interface Plugin {
     /**
      * 启动（保留，为兼容性过度）
      *
+     * @param context 应用上下文
      * @deprecated 2.5
      */
     @Deprecated
@@ -17,6 +18,8 @@ public interface Plugin {
 
     /**
      * 启动
+     *
+     * @param context 应用上下文
      * */
     default void start(AppContext context) throws Throwable{
         start((AopContext)context);

@@ -75,30 +75,43 @@ public class ProxyUtil {
     /**
      * 为类，系上拦截代理
      *
+     * @param appContext 应用上下文
+     * @param targetClz  目标类
+     * @param handler    调用处理
      * @since 1.6
      */
-    public static void attach(AppContext appContext, Class<?> clz, InvocationHandler handler) {
-        attach(appContext, clz, null, handler);
+    public static void attach(AppContext appContext, Class<?> targetClz, InvocationHandler handler) {
+        attach(appContext, targetClz, null, handler);
     }
 
-    public static void attach(AppContext appContext, Class<?> clz,  Object obj, InvocationHandler handler) {
-        if (clz.isAnnotation() || clz.isInterface() || clz.isEnum() || clz.isPrimitive()) {
+    /**
+     * 为类，系上拦截代理
+     *
+     * @param appContext 应用上下文
+     * @param targetClz  目标类
+     * @param targetObj  目标对象
+     * @param handler    调用处理
+     * @since 1.6
+     */
+    public static void attach(AppContext appContext, Class<?> targetClz, Object targetObj, InvocationHandler handler) {
+        if (targetClz.isAnnotation() || targetClz.isInterface() || targetClz.isEnum() || targetClz.isPrimitive()) {
             return;
         }
 
         //去重处理
-        if (tryAttachCached.contains(clz)) {
+        if (tryAttachCached.contains(targetClz)) {
             return;
         } else {
-            tryAttachCached.add(clz);
+            tryAttachCached.add(targetClz);
         }
 
-        appContext.wrapAndPut(clz, obj).proxySet(new BeanProxy(handler));
+        appContext.wrapAndPut(targetClz, targetObj).proxySet(new BeanProxy(handler));
     }
 
     /**
      * 为搜索的类，系上拦截代理
      *
+     * @param appContext  应用上下文
      * @param basePackage 基础包名
      * @param handler     拦截代理
      */
@@ -110,7 +123,7 @@ public class ProxyUtil {
     /**
      * 为搜索的类，系上拦截代理
      *
-     * @param aopContext  类加载器
+     * @param appContext  应用上下文
      * @param basePackage 基础包名
      * @param filter      过滤器
      * @param handler     拦截代理

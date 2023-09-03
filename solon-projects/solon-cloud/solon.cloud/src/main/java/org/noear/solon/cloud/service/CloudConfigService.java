@@ -16,6 +16,7 @@ public interface CloudConfigService {
      *
      * @param group 分组
      * @param name 配置名
+     * @return 配置
      */
     Config pull(String group, String name);
 
@@ -23,6 +24,7 @@ public interface CloudConfigService {
      * 拉取配置
      *
      * @param name 配置名
+     * @return 配置
      */
     default Config pull(String name){
         return pull(Solon.cfg().appGroup(), name);
@@ -34,6 +36,7 @@ public interface CloudConfigService {
      * @param group 分组
      * @param name 配置名
      * @param value 值
+     * @return 是否成功
      */
     boolean push(String group, String name, String value);
 
@@ -42,6 +45,7 @@ public interface CloudConfigService {
      *
      * @param name 配置名
      * @param value 值
+     * @return 是否成功
      */
     default boolean push(String name, String value) {
         return push(Solon.cfg().appGroup(), name, value);
@@ -53,6 +57,7 @@ public interface CloudConfigService {
      *
      * @param group 分组
      * @param name 配置名
+     * @return 是否成功
      */
     boolean remove(String group, String name);
 
@@ -60,6 +65,7 @@ public interface CloudConfigService {
      * 移除配置
      *
      * @param name 配置名
+     * @return 是否成功
      */
     default boolean remove(String name){
         return remove(Solon.cfg().appGroup(), name);
