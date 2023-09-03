@@ -13,7 +13,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Init;
 import org.noear.solon.annotation.Inject;
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,7 +35,7 @@ public class JapInitializer {
     JapMfaService japMfaService;
 
     @Inject
-    AopContext context;
+    AppContext context;
 
     /**
      * 初始化

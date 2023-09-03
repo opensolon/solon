@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.wrap.ParamWrap;
 import graphql.solon.resolver.argument.HandlerMethodArgumentResolver;
@@ -20,7 +20,7 @@ import graphql.solon.resolver.argument.HandlerMethodArgumentResolverCollect;
  */
 public class SchemaMappingDataFetcher implements DataFetcher<Object> {
 
-    private final AopContext context;
+    private final AppContext context;
     private final BeanWrap wrap;
     private final Method method;
     private final ParamWrap[] paramWraps;
@@ -28,7 +28,7 @@ public class SchemaMappingDataFetcher implements DataFetcher<Object> {
     private final Map<ParamWrap, HandlerMethodArgumentResolver> argumentResolverCache;
     private final boolean isBatch;
 
-    public SchemaMappingDataFetcher(AopContext context, BeanWrap wrap, Method method,
+    public SchemaMappingDataFetcher(AppContext context, BeanWrap wrap, Method method,
             boolean isBatch) {
         this.context = context;
         this.wrap = wrap;

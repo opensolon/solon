@@ -35,7 +35,7 @@ public class ProducerCollector{
     private ProducerInterceptor producerInterceptor;
 
 
-//    public ProducerCollector(AopContext context) {
+//    public ProducerCollector(AppContext context) {
 //        PulsarProperties pulsarProperties = context.getBean(PulsarProperties.class);
 //        ConsumerProperties consumerProperties = context.getBean(ConsumerProperties.class);
 //        ProducerInterceptor producerInterceptor = context.getBean(ProducerInterceptor.class);

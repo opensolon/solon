@@ -1,6 +1,6 @@
 package org.noear.solon.core.route;
 
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.ChainManager;
 import org.noear.solon.core.handle.*;
@@ -18,7 +18,7 @@ public abstract class RouterWrapper implements HandlerSlots {
     private RouterHandler _routerHandler;
     private ChainManager _chainManager;
 
-    public abstract AopContext context();
+    public abstract AppContext context();
 
     protected void initRouter(Filter appFilter) {
         //顺序不能换

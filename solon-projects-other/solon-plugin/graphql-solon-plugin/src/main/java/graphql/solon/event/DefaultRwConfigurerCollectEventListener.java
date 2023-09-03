@@ -5,7 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.Configuration;
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.event.EventListener;
 import graphql.solon.annotation.BaseSchemaMappingAnnoHandler;
 import graphql.solon.configurer.RuntimeWiringConfigurer;
@@ -34,7 +34,7 @@ public class DefaultRwConfigurerCollectEventListener implements
     public void onEvent(
             RuntimeWiringConfigurerCollect collect) throws Throwable {
 
-        AopContext context = Solon.context();
+        AppContext context = Solon.context();
         List<BaseSchemaMappingAnnoHandler> beans = context
                 .getBeansOfType(BaseSchemaMappingAnnoHandler.class);
 

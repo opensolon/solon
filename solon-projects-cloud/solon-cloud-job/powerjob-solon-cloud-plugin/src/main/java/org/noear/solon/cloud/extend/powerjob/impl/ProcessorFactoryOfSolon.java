@@ -3,7 +3,7 @@ package org.noear.solon.cloud.extend.powerjob.impl;
 import com.google.common.collect.Sets;
 import org.noear.solon.cloud.extend.powerjob.JobBeanManager;
 import org.noear.solon.cloud.extend.powerjob.JobManager;
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.BeanWrap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,9 +25,9 @@ public class ProcessorFactoryOfSolon implements ProcessorFactory {
 
     private static final Logger log = LoggerFactory.getLogger(ProcessorFactoryOfSolon.class);
 
-    private final AopContext context;
+    private final AppContext context;
 
-    public ProcessorFactoryOfSolon(AopContext context) {
+    public ProcessorFactoryOfSolon(AppContext context) {
         this.context = context;
     }
 

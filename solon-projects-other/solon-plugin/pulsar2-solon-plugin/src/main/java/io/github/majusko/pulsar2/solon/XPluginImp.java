@@ -67,7 +67,7 @@ public class XPluginImp implements Plugin {
 
 //	@Override
 //	public void prestop() throws Throwable {
-//		AopContext context = Solon.app().context();
+//		AppContext context = Solon.app().context();
 //		LogUtil.global().info("[Solon] APP Bean Plugin Load End...");
 //		ProducerCollector producerBeanBuilder = new ProducerCollector(context);
 //		List<BeanWrap> bws = context.getWrapsOfType(PulsarProducerFactory.class);

@@ -6,7 +6,7 @@ import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.Optional;
 
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.BeanExtractor;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.util.LogUtil;
@@ -23,7 +23,7 @@ public class ConsumerCollector implements BeanExtractor<PulsarConsumer> {
 
 //	private final Map<String, ConsumerHolder> consumers = new ConcurrentHashMap<>();
 
-	public ConsumerCollector(AopContext context) {
+	public ConsumerCollector(AppContext context) {
 		PulsarProperties pp = context.getBean(PulsarProperties.class);
 		ConsumerProperties cp = context.getBean(ConsumerProperties.class);
 		this.urlBuildService = new UrlBuildService(pp, cp);

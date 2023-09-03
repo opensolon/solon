@@ -13,10 +13,6 @@ package org.noear.solon.core;
  * @since 2.5
  * */
 public class AppContext extends AopContext{ //（继承，为兼容性过度）
-    public AppContext() {
-        super();
-    }
-
     public AppContext(ClassLoader classLoader, Props props) {
         super(classLoader, props);
     }

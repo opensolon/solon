@@ -8,13 +8,13 @@ import org.noear.solon.annotation.Inject;
 import com.fujieid.jap.ids.solon.services.IdsClientDetailServiceImpl;
 import com.fujieid.jap.ids.solon.services.IdsIdentityServiceImpl;
 import com.fujieid.jap.ids.solon.services.IdsUserServiceImpl;
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 
 @Configuration
 public class JapConfig {
 
     @Inject
-    AopContext context;
+    AppContext context;
 
     @Bean
     public void ids(@Inject IdsContext idsContext) {

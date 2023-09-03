@@ -49,7 +49,7 @@ public class BeanWrap {
     // bean clz 的注解（算是缓存起来）
     private final Annotation[] annotations;
 
-    private final AopContext context;
+    private final AppContext context;
 
 
     public BeanWrap(AopContext context, Class<?> clz) {
@@ -71,7 +71,7 @@ public class BeanWrap {
      * @since 1.10
      */
     public BeanWrap(AopContext context, Class<?> clz, Object raw, String name, boolean typed) {
-        this.context = context;
+        this.context = (AppContext) context;
         this.clz = clz;
         this.name = name;
         this.typed = typed;
@@ -98,7 +98,7 @@ public class BeanWrap {
         tryInit(this.raw);
     }
 
-    public AopContext context() {
+    public AppContext context() {
         return context;
     }
 

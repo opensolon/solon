@@ -1,6 +1,6 @@
 package org.noear.solon.extend.sqltoy;
 
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import org.sagacity.sqltoy.SqlToyContext;
 import org.sagacity.sqltoy.dao.LightDao;
 import org.sagacity.sqltoy.dao.SqlToyLazyDao;
@@ -50,7 +50,7 @@ public class DbManager {
         }
         return dao;
     }
-    public static synchronized SqlToyCRUDService getService(AopContext context, DataSource dataSource) {
+    public static synchronized SqlToyCRUDService getService(AppContext context, DataSource dataSource) {
         SqlToyCRUDService service = serviceMap.get(dataSource);
         if (service == null) {
             SqlToyCRUDServiceForSolon crudService = context.beanMake(SqlToyCRUDServiceForSolon.class).get();
