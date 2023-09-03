@@ -1,6 +1,5 @@
 package org.noear.solon.proxy.integration;
 
-import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.*;
 import org.noear.solon.core.util.LogUtil;
@@ -17,11 +16,7 @@ public class XPluginImp implements Plugin {
             String beanName = Utils.annoAlias(anno.value(), anno.name());
 
             ProxyUtil.binding(bw, beanName, anno.typed());
-
-            if (Solon.cfg().isDebugMode()) {
-                UnsupportedUtil.check(clz, context, anno);
-                LogUtil.global().warn("@Dao will be discarded, suggested use '@Component'");
-            }
+            LogUtil.global().warn("@Dao will be discarded, suggested use '@Component'");
         });
 
         //@deprecated 2.2
@@ -29,11 +24,7 @@ public class XPluginImp implements Plugin {
             String beanName = Utils.annoAlias(anno.value(), anno.name());
 
             ProxyUtil.binding(bw, beanName, anno.typed());
-
-            if (Solon.cfg().isDebugMode()) {
-                UnsupportedUtil.check(clz, context, anno);
-                LogUtil.global().warn("@Service will be discarded, suggested use '@Component'");
-            }
+            LogUtil.global().warn("@Service will be discarded, suggested use '@Component'");
         });
 
         //@deprecated 2.2
@@ -41,11 +32,7 @@ public class XPluginImp implements Plugin {
             String beanName = Utils.annoAlias(anno.value(), anno.name());
 
             ProxyUtil.binding(bw, beanName, anno.typed());
-
-            if (Solon.cfg().isDebugMode()) {
-                UnsupportedUtil.check(clz, context, anno);
-                LogUtil.global().warn("@Repository will be discarded, suggested use '@Component'");
-            }
+            LogUtil.global().warn("@Repository will be discarded, suggested use '@Component'");
         });
     }
 }
