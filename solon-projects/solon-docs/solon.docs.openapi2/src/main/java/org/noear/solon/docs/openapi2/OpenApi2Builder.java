@@ -627,6 +627,7 @@ public class OpenApi2Builder {
             }
         }
 
+
         // 2.创建模型
         ApiModel apiModel = clazz.getAnnotation(ApiModel.class);
         String title;
@@ -645,6 +646,11 @@ public class OpenApi2Builder {
         model.setType(ApiEnum.RES_OBJECT);
 
         swagger.addDefinition(modelName, model);
+
+        if(clazz.isEnum()){
+            model.setType(ApiEnum.RES_STRING);
+            return model;
+        }
 
 
         // 3.完成模型解析
@@ -716,7 +722,7 @@ public class OpenApi2Builder {
                             RefProperty itemPr = new RefProperty(modelName, RefFormat.INTERNAL);
                             fieldPr.setItems(itemPr);
                         } else {
-                            Property itemPr = getPrimitiveProperty(itemClazz);
+                            Property itemPr = getPrimitiveProperty((Class<?>) itemClazz);
 
                             if (itemPr != null) {
                                 fieldPr.setItems(itemPr);
@@ -891,7 +897,7 @@ public class OpenApi2Builder {
         return null;
     }
 
-    private Property getPrimitiveProperty(Type clz) {
+    private Property getPrimitiveProperty(Class<?> clz) {
         if (clz == Integer.class || clz == int.class) {
             return new IntegerProperty();
         }
@@ -920,7 +926,7 @@ public class OpenApi2Builder {
             return new DateTimeProperty();
         }
 
-        if (clz == String.class) {
+        if (clz == String.class || clz.isEnum()) {
             return new StringProperty();
         }
 

@@ -9,13 +9,16 @@
 * 提醒1：之前没有使用弃用接口的，可以直接升级 <br>
 * 提醒2：有使用弃用接口的。建议先升级到 1.12.4；替换弃用代码后，再升级到 2.0.0
 
-### 2.5.3
+### 2.5.4
 * 新增 solon.boot.vertx 插件?
 * 新增 seata-solon-plugin 插件
 * 新增 graphql-solon-plugin 插件
 * 增加 quartz jdbc 及时更新支持（数据库里变了，它马上变）？
+
+### 2.5.3
 * 增加 `AppContext` 类
 * 调整 `AopContext` 标为弃用，由 `AppContext` 替代
+* 调整 solon.docs.openapi2 对枚举类型的显示处理
 
 ### 2.5.2
 * 增加 `@Component` 自动动态代理特性，即自动识别AOP需求并按需启用动态代理

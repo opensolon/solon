@@ -28,7 +28,7 @@ public class BuilderHelper {
             return false;
         }
 
-        if(clz.isPrimitive()){
+        if(clz.isPrimitive() || clz.isEnum()){
             return false;
         }
 

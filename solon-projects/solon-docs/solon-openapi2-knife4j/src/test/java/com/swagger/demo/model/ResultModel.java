@@ -40,6 +40,25 @@ public class ResultModel {
     @ApiModelProperty(value = "测试long[]")
     private List<Long> ports;
 
+    OrderType orderType;
+    UserType userType;
+
+    public OrderType getOrderType() {
+        return orderType;
+    }
+
+    public UserType getUserType() {
+        return userType;
+    }
+
+    public void setOrderType(OrderType orderType) {
+        this.orderType = orderType;
+    }
+
+    public void setUserType(UserType userType) {
+        this.userType = userType;
+    }
+
     public List<Long> getPorts() {
         return ports;
     }
