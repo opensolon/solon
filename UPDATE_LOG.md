@@ -9,17 +9,21 @@
 * 提醒1：之前没有使用弃用接口的，可以直接升级 <br>
 * 提醒2：有使用弃用接口的。建议先升级到 1.12.4；替换弃用代码后，再升级到 2.0.0
 
-### 2.5.4
+### 2.5.5
 * 新增 solon.boot.vertx 插件?
 * 新增 seata-solon-plugin 插件
 * 新增 graphql-solon-plugin 插件
 * 增加 quartz jdbc 及时更新支持（数据库里变了，它马上变）？
+
+### 2.5.4
 * 调整 paramsMap() 的 List 处理，避免出现只读情况
 * 调整 solon.serialization.fastjson2 枚举未匹配时则异常
 * 调整 solon.serialization.snack3 枚举未匹配时则异常
 * mybatis-flex 升为 1.6.4
 * dromara-plugins 升为 0.1.0
 * snack3 升为 3.2.80
+* redisx 升为 1.4.10
+* beetlsql 升为 3.25.4-RELEASE
 
 ### 2.5.3
 * 增加 `AppContext` 类

@@ -25,7 +25,7 @@
         <wood.version>1.1.8</wood.version>
         <water.version>2.11.2</water.version>
         <luffy.version>1.6.6</luffy.version>
-        <redisx.version>1.4.9</redisx.version>
+        <redisx.version>1.4.10</redisx.version>
         <redisson.version>3.21.0</redisson.version>
         <lettuce.version>6.2.5.RELEASE</lettuce.version>
 
@@ -124,7 +124,7 @@
         <freemarker.version>2.3.31</freemarker.version>
 
         <activerecord.version>5.1.2</activerecord.version>
-        <beetlsql.version>3.25.2-RELEASE</beetlsql.version>
+        <beetlsql.version>3.25.4-RELEASE</beetlsql.version>
         <sqltoy.version>5.2.60</sqltoy.version>
         <mybatis-flex.version>1.6.4</mybatis-flex.version>
         <fastmybatis.version>2.9.2</fastmybatis.version>

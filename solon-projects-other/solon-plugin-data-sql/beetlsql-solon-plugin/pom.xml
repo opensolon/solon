@@ -23,46 +23,10 @@
 
         <dependency>
             <groupId>com.ibeetl</groupId>
-            <artifactId>beetlsql</artifactId>
+            <artifactId>sql-solon-plugin</artifactId>
             <version>${beetlsql.version}</version>
         </dependency>
 
-
-
-        <!-- test -->
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon-lib</artifactId>
-            <version>${solon.version}</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon-test</artifactId>
-            <version>${solon.version}</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>com.zaxxer</groupId>
-            <artifactId>HikariCP</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.31</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.18.24</version>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
 
 </project>
