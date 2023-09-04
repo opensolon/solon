@@ -140,7 +140,7 @@
         <graphql-java-tools.version>12.1.0</graphql-java-tools.version>
 
         <java-websocket.version>1.5.3</java-websocket.version>
-        <dromara-plugins.version>0.0.9</dromara-plugins.version>
+        <dromara-plugins.version>0.1.0</dromara-plugins.version>
 
         <maven-compiler.version>3.11.0</maven-compiler.version>
         <maven-assembly.version>3.6.0</maven-assembly.version>
@@ -1556,6 +1556,11 @@
             <dependency>
                 <groupId>org.dromara.solon-plugins</groupId>
                 <artifactId>bee-solon-plugin</artifactId>
+                <version>${dromara-plugins.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.dromara.solon-plugins</groupId>
+                <artifactId>drools-solon-plugin</artifactId>
                 <version>${dromara-plugins.version}</version>
             </dependency>
             <dependency>

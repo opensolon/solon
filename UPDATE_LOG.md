@@ -15,6 +15,7 @@
 * 新增 graphql-solon-plugin 插件
 * 增加 quartz jdbc 及时更新支持（数据库里变了，它马上变）？
 * mybatis-flex 升为 1.6.4
+* dromara-plugins 升为 0.1.0
 
 ### 2.5.3
 * 增加 `AppContext` 类
