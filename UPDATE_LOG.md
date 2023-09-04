@@ -15,6 +15,7 @@
 * 新增 graphql-solon-plugin 插件
 * 增加 quartz jdbc 及时更新支持（数据库里变了，它马上变）？
 * 调整 paramsMap() 的 List 处理，避免出现只读情况
+* 调整 solon.serialization.fastjson2 枚举未匹配时则异常
 * mybatis-flex 升为 1.6.4
 * dromara-plugins 升为 0.1.0
 * snack3 升为 3.2.80
