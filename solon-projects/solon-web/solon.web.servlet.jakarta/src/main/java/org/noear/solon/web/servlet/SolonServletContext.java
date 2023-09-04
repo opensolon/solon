@@ -178,7 +178,7 @@ public class SolonServletContext extends WebContextBase {
             _paramsMap = new LinkedHashMap<>();
 
             _request.getParameterMap().forEach((k, v) -> {
-                _paramsMap.put(k, Arrays.asList(v));
+                _paramsMap.put(k, Utils.asList(v));
             });
         }
 

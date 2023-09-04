@@ -57,6 +57,19 @@ public class Utils {
         }
     }
 
+    /**
+     * 创建一个可变 List
+     * */
+    public static <T> List<T> asList(T[] ary) {
+        if (ary == null) {
+            return null;
+        } else {
+            List<T> list = new ArrayList<>(ary.length);
+            Collections.addAll(list, ary);
+            return list;
+        }
+    }
+
 
     /**
      * 获取MIME

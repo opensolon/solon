@@ -183,7 +183,7 @@ public class SmHttpContext extends WebContextBase {
             _paramsMap = new LinkedHashMap<>();
 
             _request.getParameters().forEach((k, v) -> {
-                _paramsMap.put(k, Arrays.asList(v));
+                _paramsMap.put(k, Utils.asList(v));
             });
         }
 
