@@ -22,7 +22,7 @@
         <dependency>
             <groupId>com.rabbitmq</groupId>
             <artifactId>amqp-client</artifactId>
-            <version>5.13.1</version>
+            <version>${rabbitmq.version}</version>
         </dependency>
     </dependencies>
 
