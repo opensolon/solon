@@ -31,6 +31,7 @@
 * rabbitmq 升为 5.18.0
 * kafka_2.13 升为 3.5.1
 * dubbo3 升为 3.2.5
+* logback 升为 1.3.11
 
 ### 2.5.3
 * 增加 `AppContext` 类
