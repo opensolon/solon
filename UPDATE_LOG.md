@@ -26,6 +26,7 @@
 * redisx 升为 1.4.10
 * beetlsql 升为 3.25.4-RELEASE
 * fastmybatis 升为 2.9.6
+* bean-searcher 升为 4.2.4
 
 ### 2.5.3
 * 增加 `AppContext` 类
