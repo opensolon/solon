@@ -14,23 +14,29 @@
 	<artifactId>bean-searcher-solon-plugin</artifactId>
 	<packaging>jar</packaging>
 
-	<dependencies>
-		<dependency>
-			<groupId>cn.zhxu</groupId>
-			<artifactId>bean-searcher-solon-plugin</artifactId>
-			<version>${bean-searcher.version}</version>
-			<exclusions>
-				<exclusion>
-					<artifactId>org.noear</artifactId>
-					<groupId>solon.data</groupId>
-				</exclusion>
-			</exclusions>
-		</dependency>
+    <properties>
+        <xjsonkit.version>1.4.2</xjsonkit.version>
+    </properties>
 
-		<dependency>
-			<groupId>org.noear</groupId>
-			<artifactId>solon.data</artifactId>
-		</dependency>
+	<dependencies>
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.data</artifactId>
+            <version>${solon.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>cn.zhxu</groupId>
+            <artifactId>bean-searcher</artifactId>
+            <version>${bean-searcher.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>cn.zhxu</groupId>
+            <artifactId>xjsonkit-api</artifactId>
+            <version>${xjsonkit.version}</version>
+            <scope>provided</scope>
+        </dependency>
 	</dependencies>
 	
 </project>
