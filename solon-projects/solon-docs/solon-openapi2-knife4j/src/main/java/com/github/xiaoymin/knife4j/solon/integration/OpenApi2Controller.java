@@ -13,14 +13,14 @@ import org.noear.solon.docs.openapi2.OpenApi2Utils;
  * @author noear
  * @since 2.3
  */
-public class Swagger2Controller {
+public class OpenApi2Controller {
     /**
      * swagger 获取分组信息
      */
     @Produces("application/json; charset=utf-8")
     @Mapping("swagger-resources")
     public String resources() throws IOException {
-        return OpenApi2Utils.getApiGroupResourceJson();
+        return OpenApi2Utils.getApiGroupResourceJson("swagger/v2");
     }
 
     /**
