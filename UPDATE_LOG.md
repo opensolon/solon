@@ -17,6 +17,7 @@
 
 ### 2.5.4
 * 调整 paramsMap() 的 List 处理，避免出现只读情况
+* 调整 JarClassLoader 更名为 AppClassLoader
 * 调整 solon.serialization.fastjson2 转换枚举未匹配时则异常
 * 调整 solon.serialization.snack3 转换枚举未匹配时则异常
 * mybatis-flex 升为 1.6.4

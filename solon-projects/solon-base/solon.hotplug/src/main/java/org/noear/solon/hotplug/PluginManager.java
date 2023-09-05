@@ -1,7 +1,7 @@
 package org.noear.solon.hotplug;
 
 import org.noear.solon.Solon;
-import org.noear.solon.core.JarClassLoader;
+import org.noear.solon.core.AppClassLoader;
 import org.noear.solon.core.PluginEntity;
 import org.noear.solon.core.util.PluginUtil;
 
@@ -120,7 +120,7 @@ public class PluginManager {
     public synchronized static PluginPackage loadJar(File file) {
         try {
             URL url = file.toURI().toURL();
-            PluginClassLoader classLoader = new PluginClassLoader(JarClassLoader.global());
+            PluginClassLoader classLoader = new PluginClassLoader(AppClassLoader.global());
             classLoader.addJar(url);
 
             List<PluginEntity> plugins = new ArrayList<>();

@@ -5,7 +5,7 @@ import com.jfinal.template.Engine;
 import com.jfinal.template.Template;
 import com.jfinal.template.source.FileSourceFactory;
 import org.noear.solon.Solon;
-import org.noear.solon.core.JarClassLoader;
+import org.noear.solon.core.AppClassLoader;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.ModelAndView;
@@ -62,7 +62,7 @@ public class EnjoyRender implements Render {
     //不要要入参，方便后面多视图混用
     //
     public EnjoyRender() {
-        this(JarClassLoader.global());
+        this(AppClassLoader.global());
     }
 
     public EnjoyRender(ClassLoader classLoader) {

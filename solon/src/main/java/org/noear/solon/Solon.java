@@ -1,7 +1,7 @@
 package org.noear.solon;
 
 import org.noear.solon.core.AppContext;
-import org.noear.solon.core.JarClassLoader;
+import org.noear.solon.core.AppClassLoader;
 import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.core.NvMap;
 import org.noear.solon.core.event.AppPrestopEndEvent;
@@ -145,7 +145,7 @@ public class Solon {
         System.setProperty("PID", pid);
 
         //绑定类加载器（即替换当前线程[即主线程]的类加载器）
-        JarClassLoader.bindingThread();
+        AppClassLoader.bindingThread();
 
         try {
             //1.创建全局应用及配置

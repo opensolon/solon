@@ -1,6 +1,6 @@
 package org.noear.solon.core.util;
 
-import org.noear.solon.core.JarClassLoader;
+import org.noear.solon.core.AppClassLoader;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Properties;
@@ -81,7 +81,7 @@ public class ClassUtil {
      * @param prop      属性
      */
     public static <T> T tryInstance(String className, Properties prop) {
-        return tryInstance(JarClassLoader.global(), className, prop);
+        return tryInstance(AppClassLoader.global(), className, prop);
     }
 
 

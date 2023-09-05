@@ -51,7 +51,7 @@ public class ThymeleafRender implements Render {
     }
 
     public ThymeleafRender(){
-        this(JarClassLoader.global());
+        this(AppClassLoader.global());
     }
 
     public ThymeleafRender(ClassLoader classLoader) {
