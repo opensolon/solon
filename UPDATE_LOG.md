@@ -17,13 +17,14 @@
 
 ### 2.5.4
 * 调整 paramsMap() 的 List 处理，避免出现只读情况
-* 调整 solon.serialization.fastjson2 枚举未匹配时则异常
-* 调整 solon.serialization.snack3 枚举未匹配时则异常
+* 调整 solon.serialization.fastjson2 转换枚举未匹配时则异常
+* 调整 solon.serialization.snack3 转换枚举未匹配时则异常
 * mybatis-flex 升为 1.6.4
 * dromara-plugins 升为 0.1.0
 * snack3 升为 3.2.80
 * redisx 升为 1.4.10
 * beetlsql 升为 3.25.4-RELEASE
+* fastmybatis 升为 2.9.6
 
 ### 2.5.3
 * 增加 `AppContext` 类
