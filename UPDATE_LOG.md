@@ -30,6 +30,7 @@
 * bean-searcher 升为 4.2.4
 * rabbitmq 升为 5.18.0
 * kafka_2.13 升为 3.5.1
+* dubbo3 升为 3.2.5
 
 ### 2.5.3
 * 增加 `AppContext` 类

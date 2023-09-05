@@ -95,7 +95,7 @@
         <protobuf.version>3.22.3</protobuf.version>
         <grpc.version>1.54.1</grpc.version>
         <dubbo2.version>2.7.5</dubbo2.version>
-        <dubbo3.version>3.2.2</dubbo3.version>
+        <dubbo3.version>3.2.5</dubbo3.version>
 
         <rocketmq4.version>4.9.5</rocketmq4.version>
         <rocketmq5.version>5.0.5</rocketmq5.version>
