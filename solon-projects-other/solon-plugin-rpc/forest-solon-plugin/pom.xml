@@ -17,20 +17,14 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.dtflys.forest</groupId>
-            <artifactId>forest-solon-plugin</artifactId>
-            <version>${forest.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.noear</groupId>
-                    <artifactId>solon</artifactId>
-                </exclusion>
-            </exclusions>
+            <groupId>org.noear</groupId>
+            <artifactId>solon</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon</artifactId>
+            <groupId>com.dtflys.forest</groupId>
+            <artifactId>forest-core</artifactId>
+            <version>${forest.version}</version>
         </dependency>
     </dependencies>
 
