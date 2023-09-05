@@ -17,7 +17,7 @@ public class ClassUtil {
      * 是否存在某个类
      *
      * <pre><code>
-     * if(ClassUtil.hasClass(DemoTestClass.class)){
+     * if(ClassUtil.hasClass(()->DemoTestClass.class)){
      *     ...
      * }
      * </code></pre>

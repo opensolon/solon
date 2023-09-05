@@ -19,6 +19,9 @@ public class NamedThreadFactory implements ThreadFactory {
     private boolean daemon = false;
     private int priority = Thread.NORM_PRIORITY;
 
+    /**
+     * @param namePrefix 名字前缀
+     */
     public NamedThreadFactory(String namePrefix) {
         if (Utils.isEmpty(namePrefix)) {
             this.namePrefix = this.getClass().getSimpleName() + "-";
@@ -27,16 +30,27 @@ public class NamedThreadFactory implements ThreadFactory {
         }
     }
 
+
+    /**
+     * 线程组
+     */
     public NamedThreadFactory group(ThreadGroup group) {
         this.group = group;
         return this;
     }
 
+
+    /**
+     * 线程守护
+     */
     public NamedThreadFactory daemon(boolean daemon) {
         this.daemon = daemon;
         return this;
     }
 
+    /**
+     * 优先级
+     */
     public NamedThreadFactory priority(int priority) {
         this.priority = priority;
         return this;

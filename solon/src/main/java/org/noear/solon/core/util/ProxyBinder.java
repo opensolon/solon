@@ -4,6 +4,8 @@ import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.runtime.NativeDetector;
 
 /**
+ * 代理绑定器
+ *
  * @author noear
  * @since 2.5
  */

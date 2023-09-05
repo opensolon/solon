@@ -1,9 +1,6 @@
 package org.noear.solon.config.yaml;
 
-import org.yaml.snakeyaml.DumperOptions;
-import org.yaml.snakeyaml.LoaderOptions;
 import org.yaml.snakeyaml.Yaml;
-import org.yaml.snakeyaml.constructor.Constructor;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,6 +9,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+/**
+ * Yaml 属性
+ *
+ * @author noear
+ * @since 1.5
+ * */
 public class PropertiesYaml extends Properties {
     private Yaml createYaml() {
         return new Yaml();

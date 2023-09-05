@@ -34,14 +34,14 @@ public class DownloadedFile {
     private boolean attachment = true;
 
     /**
-     * 是否附件
+     * 是否附件输出
      */
     public boolean isAttachment() {
         return attachment;
     }
 
     /**
-     * 作为附件
+     * 作为附件输出
      * */
     public DownloadedFile asAttachment(boolean attachment) {
         this.attachment = attachment;
