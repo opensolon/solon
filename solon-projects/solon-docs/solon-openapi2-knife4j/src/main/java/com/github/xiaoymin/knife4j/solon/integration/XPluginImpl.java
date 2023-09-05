@@ -34,7 +34,7 @@ public class XPluginImpl implements Plugin {
                 StaticMappings.add(uiPath, new ClassPathStaticRepository("META-INF/resources"));
             }
 
-            Solon.app().add(uiPath, Swagger2Controller.class);
+            Solon.app().add(uiPath, OpenApi2Controller.class);
         }
     }
 }
