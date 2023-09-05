@@ -6,6 +6,7 @@ import org.noear.solon.core.VarHolder;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.GenericUtil;
 import org.noear.solon.core.util.ParameterizedTypeImpl;
+import org.noear.solon.lang.Nullable;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
@@ -39,7 +40,7 @@ public class FieldWrap {
     /**
      * 字段泛型类型（可能为null）
      */
-    public final ParameterizedType genericType;
+    public final @Nullable ParameterizedType genericType;
     /**
      * 字段是否只读
      * */

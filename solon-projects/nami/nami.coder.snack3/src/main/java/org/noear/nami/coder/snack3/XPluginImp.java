@@ -1,7 +1,6 @@
 package org.noear.nami.coder.snack3;
 
 import org.noear.nami.NamiManager;
-import org.noear.solon.core.AopContext;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 

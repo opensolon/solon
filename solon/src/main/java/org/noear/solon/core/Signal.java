@@ -1,7 +1,7 @@
 package org.noear.solon.core;
 
 /**
- * 信号
+ * 通讯信号
  *
  * @author noear
  * @since 1.3

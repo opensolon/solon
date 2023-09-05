@@ -4,6 +4,8 @@ import java.lang.reflect.Parameter;
 import java.lang.reflect.Type;
 
 /**
+ * 参数包装
+ *
  * @author noear
  * @since 1.2
  * @since 1.6
@@ -25,11 +27,17 @@ public class ParamWrap extends VarDescriptorBase {
         return parameter;
     }
 
+    /**
+     * 获取泛型
+     * */
     @Override
     public Type getGenericType() {
         return parameter.getParameterizedType();
     }
 
+    /**
+     * 获取类型
+     * */
     @Override
     public Class<?> getType() {
         return parameter.getType();

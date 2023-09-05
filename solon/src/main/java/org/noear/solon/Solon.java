@@ -17,6 +17,7 @@ import java.lang.management.RuntimeMXBean;
  * 应用管理中心
  *
  * <pre><code>
+ * @SolonMain
  * public class DemoApp{
  *     public static void main(String[] args){
  *         Solon.start(DemoApp.class, args);
@@ -168,7 +169,7 @@ public class Solon {
 
 
         //4.初始化安全停止
-        if(NativeDetector.isNotAotRuntime()) {
+        if (NativeDetector.isNotAotRuntime()) {
             if (app.cfg().stopSafe()) {
                 //添加关闭勾子
                 Runtime.getRuntime().addShutdownHook(new Thread(() -> Solon.stop0(false, app.cfg().stopDelay())));
@@ -209,6 +210,13 @@ public class Solon {
         stop0(exit, delay);
     }
 
+    /**
+     * 停止应用（未完成之前，会一直卡住）
+     *
+     * @param exit       是否退出进程
+     * @param delay      延迟时间（单位：秒）
+     * @param exitStatus 退出状态码
+     */
     public static void stopBlock(boolean exit, int delay, int exitStatus) {
         stop0(exit, delay, exitStatus);
     }
@@ -216,6 +224,7 @@ public class Solon {
     private static void stop0(boolean exit, int delay) {
         stop0(exit, delay, 1);
     }
+
     private static void stop0(boolean exit, int delay, int exitStatus) {
         if (Solon.app() == null) {
             return;

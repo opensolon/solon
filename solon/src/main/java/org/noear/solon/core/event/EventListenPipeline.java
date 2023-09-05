@@ -22,6 +22,9 @@ public class EventListenPipeline<Event> implements EventListener<Event> {
 
     /**
      * 添加监听（带顺序位）
+     *
+     * @param index    顺序位
+     * @param listener 监听器
      */
     public void add(int index, EventListener<Event> listener) {
         list.add(new EH(index, listener));
@@ -30,6 +33,8 @@ public class EventListenPipeline<Event> implements EventListener<Event> {
 
     /**
      * 移除监听
+     *
+     * @param listener 监听器
      */
     public void remove(EventListener<Event> listener) {
         for (int i = 0; i < list.size(); i++) {

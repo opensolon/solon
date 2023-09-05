@@ -12,8 +12,7 @@ import org.apache.pulsar.client.api.PulsarClientException;
 import org.apache.pulsar.client.api.Schema;
 import org.apache.pulsar.client.api.interceptor.ProducerInterceptor;
 import org.noear.solon.Utils;
-import org.noear.solon.core.AopContext;
-import org.noear.solon.core.BeanBuilder;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.util.LogUtil;
 
@@ -72,7 +71,7 @@ public class ProducerCollector{
         return SchemaUtils.getSchema(holder.getSerialization(), holder.getClazz());
     }
     
-    public void doBuild(BeanWrap bean,AopContext acontext) {
+    public void doBuild(BeanWrap bean, AppContext context) {
     	Annotation[] annos = bean.annotations();
     	boolean hasPulsarProducer = false;
     	if(annos != null && annos.length > 0) {
@@ -87,16 +86,16 @@ public class ProducerCollector{
     	Object raw = bean.raw();
         if (hasPulsarProducer && (raw instanceof PulsarProducerFactory)) {
         	if(pulsarClient==null) {
-                pulsarClient = acontext.getBean(PulsarClient.class);
+                pulsarClient = context.getBean(PulsarClient.class);
         	}
         	if(producerInterceptor==null) {
-        		producerInterceptor = acontext.getBean(ProducerInterceptor.class);
+        		producerInterceptor = context.getBean(ProducerInterceptor.class);
         	}
         	if(pulsarProperties==null) {
-        		pulsarProperties = acontext.getBean(PulsarProperties.class);
+        		pulsarProperties = context.getBean(PulsarProperties.class);
         	}
         	if(urlBuildService==null) {
-        		ConsumerProperties consumerProperties = acontext.getBean(ConsumerProperties.class);
+        		ConsumerProperties consumerProperties = context.getBean(ConsumerProperties.class);
         		urlBuildService = new UrlBuildService(pulsarProperties,consumerProperties);
         	}
         	Map<String, ProducerMaker> topics = ((PulsarProducerFactory) raw).getTopics();

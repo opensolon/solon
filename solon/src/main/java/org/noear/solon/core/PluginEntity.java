@@ -6,12 +6,13 @@ import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.lang.Nullable;
 
+import java.util.List;
 import java.util.Properties;
 
 /**
  * 插件实体
  *
- * @see SolonProps#plugsScan()
+ * @see SolonProps#plugsScan(List) 
  * @author noear
  * @since 1.0
  * */

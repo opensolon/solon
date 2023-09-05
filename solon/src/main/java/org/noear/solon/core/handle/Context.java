@@ -184,10 +184,11 @@ public abstract class Context {
      */
     public abstract URI uri();
 
+
+    private String path;
     /**
      * 获取请求的URI路径
      */
-    private String path;
     public String path() {
         if (path == null && url() != null) {
             path = uri().getPath();
@@ -254,6 +255,9 @@ public abstract class Context {
         return pathAsLower;
     }
 
+    /**
+     * 是否为 ssl 请求
+     * */
     public abstract boolean isSecure();
 
     /**
@@ -541,8 +545,20 @@ public abstract class Context {
      *
      * @param name cookie名
      * @param def 默认值
+     * @deprecated 2.5
      */
+    @Deprecated
     public String cookie(String name, String def) {
+        return cookieOrDefault(name, def);
+    }
+
+    /**
+     * 获取 cookie
+     *
+     * @param name cookie名
+     * @param def 默认值
+     */
+    public String cookieOrDefault(String name, String def) {
         return cookieMap().getOrDefault(name, def);
     }
 
@@ -757,6 +773,9 @@ public abstract class Context {
 
     protected abstract void contentTypeDoSet(String contentType);
 
+    /**
+     * 设置内容长度
+     * */
     public void contentLength(long size) {
         if (size >= 0) {
             headerSet("Content-Length", String.valueOf(size));

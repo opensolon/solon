@@ -58,7 +58,7 @@ public class Utils {
     }
 
     /**
-     * 创建一个可变 List
+     * 转为一个可变 List（Arrays.asList 不可变）
      * */
     public static <T> List<T> asList(T[] ary) {
         if (ary == null) {

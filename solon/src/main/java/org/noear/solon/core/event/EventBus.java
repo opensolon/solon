@@ -10,7 +10,7 @@ import java.util.*;
 /**
  * 事件总线（内部类，外部不要使用）
  *
- * @see org.noear.solon.core.AopContext#start()
+ * @see org.noear.solon.core.AppContext#start()
  * @see org.noear.solon.SolonApp#onEvent(Class, EventListener)
  * */
 public final class EventBus {

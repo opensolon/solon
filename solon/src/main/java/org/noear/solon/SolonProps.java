@@ -11,7 +11,7 @@ import java.util.*;
 import java.util.function.Predicate;
 
 /**
- * 统一配置加载器
+ * 应用配置加载器
  *
  * <pre><code>
  * //
@@ -43,7 +43,7 @@ public final class SolonProps extends Props {
     private boolean isSetupMode;//是否为安装蕈式
     private boolean isAloneMode;//是否为独立蕈式（即独立运行模式）
 
-    private int stopDelay=10; //停止延迟（秒）
+    private int stopDelay = 10; //停止延迟（秒）
     private boolean stopSafe;//停止安全的进行
 
     private String env;
@@ -65,7 +65,8 @@ public final class SolonProps extends Props {
     /**
      * 加载配置（用于第一次加载）
      *
-     * @param args 启用参数
+     * @param source 应用源（即启动主类）
+     * @param args   启用参数
      */
     public SolonProps load(Class<?> source, NvMap args) throws Exception {
         //1.接收启动参数
@@ -139,8 +140,8 @@ public final class SolonProps extends Props {
         loadAdd(source.getAnnotation(PropertySource.class));
 
         //4.4.加载配置 solon.config.load //支持多文件（只支持内部，支持{env}）
-        getMap("solon.config.load").forEach((key, val)->{
-            if(key.equals("") || key.startsWith("[")) {
+        getMap("solon.config.load").forEach((key, val) -> {
+            if (key.equals("") || key.startsWith("[")) {
                 addConfig(val, true, sysPropOrg);
             }
         });
@@ -269,9 +270,14 @@ public final class SolonProps extends Props {
         return loadEnv(k -> k.startsWith(keyStarts));
     }
 
-    public SolonProps loadEnv(Predicate<String> predicate) {
+    /**
+     * 加载环境变量
+     *
+     * @param condition 条件
+     */
+    public SolonProps loadEnv(Predicate<String> condition) {
         System.getenv().forEach((k, v) -> {
-            if (predicate.test(k)) {
+            if (condition.test(k)) {
                 setProperty(k, v); //可以替换系统属性 update by: 2021-11-05,noear
                 System.setProperty(k, v);
             }
@@ -333,7 +339,7 @@ public final class SolonProps extends Props {
     protected void plugsScan(List<ClassLoader> classLoaders) {
         for (ClassLoader classLoader : classLoaders) {
             //扫描配置
-            PluginUtil.scanPlugins(classLoader, null ,plugs::add);
+            PluginUtil.scanPlugins(classLoader, null, plugs::add);
         }
 
         //扫描主配置
@@ -345,7 +351,7 @@ public final class SolonProps extends Props {
 
 
     /**
-     * 应用源
+     * 应用源（即启动主类）
      */
     public Class<?> source() {
         return source;
@@ -398,7 +404,7 @@ public final class SolonProps extends Props {
     }
 
     private String serverHost;
-    
+
     /**
      * 获取应用主机名
      */
@@ -409,7 +415,6 @@ public final class SolonProps extends Props {
 
         return serverHost;
     }
-
 
 
     private Integer serverWrapPort;
@@ -430,6 +435,7 @@ public final class SolonProps extends Props {
     }
 
     private String serverWrapHost;
+
     /**
      * 获取应用包装主机
      */
@@ -447,6 +453,7 @@ public final class SolonProps extends Props {
 
 
     private String serverContextPath;
+
     /**
      * 获取服务主上下文路径
      */
@@ -463,7 +470,7 @@ public final class SolonProps extends Props {
      * 设置服务主上下文路径
      *
      * @param path 上下文路径
-     * */
+     */
     public void serverContextPath(String path) {
         if (path == null) {
             serverContextPath = "";
@@ -494,8 +501,8 @@ public final class SolonProps extends Props {
 
     /**
      * 是否为单测
-     * */
-    public boolean testing(){
+     */
+    public boolean testing() {
         return testing;
     }
 
@@ -536,7 +543,7 @@ public final class SolonProps extends Props {
 
     /**
      * 命名空间
-     * */
+     */
     public String appNamespace() {
         return appNamespace;
     }
@@ -621,26 +628,26 @@ public final class SolonProps extends Props {
 
     /**
      * 停止安全的进行
-     * */
-    public boolean stopSafe(){
+     */
+    public boolean stopSafe() {
         return stopSafe;
     }
 
-    public void stopSafe(boolean value){
-         stopSafe = value;
+    public void stopSafe(boolean value) {
+        stopSafe = value;
     }
 
     /**
      * @deprecated 2.0
-     * */
+     */
     @Deprecated
-    public boolean enableSafeStop(){
+    public boolean enableSafeStop() {
         return stopSafe;
     }
 
     /**
      * 停止延时
-     * */
+     */
     public int stopDelay() {
         return stopDelay;
     }

@@ -7,7 +7,6 @@ import net.hasor.utils.StringUtils;
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
-import org.noear.solon.core.AopContext;
 import org.noear.solon.core.bean.InitializingBean;
 
 import java.io.IOException;

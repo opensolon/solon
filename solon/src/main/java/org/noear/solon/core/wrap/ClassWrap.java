@@ -14,7 +14,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 
 /**
- * Class 包装，用于缓存类的方法和字段等相关信息
+ * 类包装，用于缓存类的方法和字段等相关信息
  *
  * @author noear
  * @since 1.0
