@@ -16,6 +16,7 @@
 * 增加 quartz jdbc 及时更新支持（数据库里变了，它马上变）？
 
 ### 2.5.4
+* 增加 AppContext::onEvent 接口
 * 调整 paramsMap() 的 List 处理，避免出现只读情况
 * 调整 JarClassLoader 更名为 AppClassLoader
 * 调整 solon.serialization.fastjson2 转换枚举未匹配时则异常

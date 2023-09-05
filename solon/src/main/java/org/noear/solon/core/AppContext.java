@@ -1,5 +1,8 @@
 package org.noear.solon.core;
 
+import org.noear.solon.core.event.EventBus;
+import org.noear.solon.core.event.EventListener;
+
 /**
  * 应用上下文（ 为全局对象；热插拨的插件，会产生独立的上下文）
  *
@@ -16,4 +19,22 @@ public class AppContext extends AopContext{ //（继承，为兼容性过度）
     public AppContext(ClassLoader classLoader, Props props) {
         super(classLoader, props);
     }
+
+
+    /**
+     * 订阅事件
+     */
+    public <T> AppContext onEvent(Class<T> type, EventListener<T> handler) {
+        EventBus.subscribe(type, handler);
+        return this;
+    }
+
+    /**
+     * 订阅事件
+     */
+    public <T> AppContext onEvent(Class<T> type, int index, EventListener<T> handler) {
+        EventBus.subscribe(type, index, handler);
+        return this;
+    }
+
 }
