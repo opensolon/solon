@@ -34,6 +34,10 @@
 * dubbo3 升为 3.2.5
 * logback 升为 1.3.11
 * nacos2 升为 2.2.4
+* snakeyaml 升为 2.2
+* redisson 升为 3.23.3
+* luffy 升为 1.6.7
+* water 升为 2.11.3
 
 ### 2.5.3
 * 增加 `AppContext` 类
