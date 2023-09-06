@@ -36,7 +36,7 @@ public class FormUrlencodedUtils {
             String[] ss2 = s1.split("=");
 
             if (ss2.length == 2) {
-                ctx.paramMap().put(ss2[0], URLDecoder.decode(ss2[1], ServerProps.request_encoding));
+                ctx.paramSet(ss2[0], URLDecoder.decode(ss2[1], ServerProps.request_encoding));
             }
         }
     }
