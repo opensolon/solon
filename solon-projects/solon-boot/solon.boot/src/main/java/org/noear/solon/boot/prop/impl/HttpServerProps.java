@@ -20,7 +20,7 @@ public class HttpServerProps extends BaseServerProps {
     public String buildServerUrl(boolean isSecure) {
         StringBuilder buf = new StringBuilder();
         buf.append((isSecure ? "https" : "http"));
-        buf.append(":");
+        buf.append("://");
 
         if (Utils.isEmpty(getHost())) {
             buf.append("localhost");
