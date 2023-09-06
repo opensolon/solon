@@ -93,8 +93,6 @@ public final class XPluginImp implements Plugin {
         String serverUrl = (_server.isSecure() ? "https" : "http") + "://localhost:" + _port;
         LogUtil.global().info(connectorInfo + "}{"+ serverUrl +"}");
         LogUtil.global().info("Server:main: jetty: Started (" + solon_boot_ver() + ") @" + (time_end - time_start) + "ms");
-
-        app.before(-9, new FormContentFilter());
     }
 
     @Override
