@@ -17,7 +17,7 @@ import java.io.IOException;
  * */
 public class SolonServletHandler extends HttpServlet {
 
-    protected void preHandle(Context ctx) {
+    protected void preHandle(Context ctx) throws IOException{
 
     }
 
