@@ -41,7 +41,7 @@ public class JtHttpContextHandler extends AbstractHandler {
         }
 
         //预处理 FORM_URLENCODED
-        preProcessDo(ctx);
+        pretreatment(ctx);
         Solon.app().tryHandle(ctx);
 
         if (ctx.getHandled() || ctx.status() >= 200) {
@@ -52,7 +52,10 @@ public class JtHttpContextHandler extends AbstractHandler {
         }
     }
 
-    private void preProcessDo(Context ctx) throws Exception {
+    /**
+     * 预处理
+     * */
+    private void pretreatment(Context ctx) throws Exception {
         if (FORM_URLENCODED.equals(ctx.contentType())) {
             ctx.paramMap();
 
