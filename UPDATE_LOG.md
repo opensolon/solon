@@ -21,6 +21,7 @@
 * 调整 JarClassLoader 更名为 AppClassLoader
 * 调整 solon.serialization.fastjson2 转换枚举未匹配时则异常
 * 调整 solon.serialization.snack3 转换枚举未匹配时则异常
+* 调整 smarthttp,jetty,undertow 的 FORM_URLENCODED 预处理
 * mybatis-flex 升为 1.6.4
 * dromara-plugins 升为 0.1.0
 * snack3 升为 3.2.80
