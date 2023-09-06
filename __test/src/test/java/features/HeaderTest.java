@@ -94,6 +94,7 @@ public class HeaderTest extends HttpTester {
         rst = path("/demo2/header/ct").data("name", "solon").multipart(true).post();
         assert rst.startsWith("POST::multipart/form-data");
         assert rst.endsWith("::solon");
+        assert rst.equals("POST::multipart/form-data::solon") == false;
 
 
         rst = path("/demo2/header/ct?name=solon").get();
