@@ -2,6 +2,7 @@ package org.noear.solon.boot.smarthttp.http;
 
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.smarthttp.XPluginImp;
+import org.noear.solon.boot.web.FormUrlencodedUtils;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.ContextAsyncListener;
 import org.noear.solon.core.handle.Handler;
@@ -58,12 +59,6 @@ public class SmHttpContextHandler extends HttpServerHandler {
         }
         request.getAttachment().put(httpHolderKey, ctx);
 
-        //增加 gzip 支持
-//        String tmp = ctx.header("Accept-Encoding");
-//        if(tmp != null && tmp.contains("gzip")) {
-//            response.gzip();
-//        }
-
         if (executor == null) {
             handle0(ctx, future);
         } else {
@@ -101,6 +96,8 @@ public class SmHttpContextHandler extends HttpServerHandler {
                 ctx.headerSet("Solon-Boot", XPluginImp.solon_boot_ver());
             }
 
+            //编码窗体预处理
+            FormUrlencodedUtils.pretreatment(ctx);
             handler.handle(ctx);
 
             if (ctx.innerIsAsync() == false) {

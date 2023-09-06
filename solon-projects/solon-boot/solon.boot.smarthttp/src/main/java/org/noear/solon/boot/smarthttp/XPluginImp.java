@@ -5,7 +5,6 @@ import org.noear.solon.SolonApp;
 import org.noear.solon.boot.ServerConstants;
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.prop.impl.HttpServerProps;
-import org.noear.solon.boot.smarthttp.http.FormContentFilter;
 import org.noear.solon.core.*;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.LogUtil;
@@ -66,8 +65,6 @@ public final class XPluginImp implements Plugin {
         final int _wrapPort = props.getWrapPort();
         _signal = new SignalSim(_name, _wrapHost, _wrapPort, "http", SignalType.HTTP);
         app.signalAdd(_signal);
-
-        app.before(-9, new FormContentFilter());
 
         long time_end = System.currentTimeMillis();
 

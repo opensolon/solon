@@ -130,28 +130,55 @@ public abstract class Context {
         this.allowMultipart = auto;
     }
 
+    Boolean isFormUrlencoded;
+    /**
+     * 是否为编码窗体
+     */
+    public boolean isFormUrlencoded() {
+        if (isFormUrlencoded == null) {
+            String temp = contentType();
+            if (temp == null) {
+                isFormUrlencoded = false;
+            } else {
+                isFormUrlencoded = temp.toLowerCase().contains("application/x-www-form-urlencoded");
+            }
+        }
+
+        return isFormUrlencoded;
+    }
+
+    Boolean isMultipart;
     /**
      * 是否为分段内容
      */
     public boolean isMultipart() {
-        String temp = contentType();
-        if (temp == null) {
-            return false;
-        } else {
-            return temp.toLowerCase().contains("multipart/");
+        if (isMultipart == null) {
+            String temp = contentType();
+            if (temp == null) {
+                isMultipart = false;
+            } else {
+                isMultipart = temp.toLowerCase().contains("multipart/");
+            }
         }
+
+        return isMultipart;
     }
 
+    Boolean isMultipartFormData;
     /**
      * 是否为分段表单数据
      * */
     public boolean isMultipartFormData() {
-        String temp = contentType();
-        if (temp == null) {
-            return false;
-        } else {
-            return temp.toLowerCase().contains("multipart/form-data");
+        if (isMultipartFormData == null) {
+            String temp = contentType();
+            if (temp == null) {
+                isMultipartFormData = false;
+            } else {
+                isMultipartFormData = temp.toLowerCase().contains("multipart/form-data");
+            }
         }
+
+        return isMultipartFormData;
     }
 
     /**
