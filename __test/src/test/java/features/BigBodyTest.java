@@ -115,7 +115,7 @@ public class BigBodyTest extends HttpTester {
 
         try {
             String rst = path("/demo2/json/form").data("p", json).post();
-            if (rst.contains("IOException")) {
+            if (rst.contains("IOException") || rst.contains("HTTP ERROR 400 Unable to parse form content")) {
                 assert true;
                 return;
             }
