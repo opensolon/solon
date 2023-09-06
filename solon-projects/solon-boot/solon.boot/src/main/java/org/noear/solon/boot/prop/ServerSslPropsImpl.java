@@ -5,6 +5,8 @@ import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerConstants;
 
 /**
+ * 服务证属性实现
+ *
  * @author noear
  * @since 2.3
  */

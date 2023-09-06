@@ -6,6 +6,8 @@ import org.noear.solon.boot.prop.ServerExecutorProps;
 import org.noear.solon.boot.prop.ServerSignalProps;
 
 /**
+ * 基础服务属性
+ *
  * @author noear
  * @since 1.10
  */

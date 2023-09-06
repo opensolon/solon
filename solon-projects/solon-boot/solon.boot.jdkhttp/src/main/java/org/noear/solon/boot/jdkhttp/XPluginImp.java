@@ -77,7 +77,7 @@ public final class XPluginImp implements Plugin {
 
         long time_end = System.currentTimeMillis();
 
-        String serverUrl = (_server.isSecure() ? "https" : "http") + "://localhost:" + _port;
+        String serverUrl = props.buildServerUrl(_server.isSecure());
         LogUtil.global().info("Connector:main: jdkhttp: Started ServerConnector@{HTTP/1.1,[http/1.1]}{" + serverUrl + "}");
         LogUtil.global().info("Server:main: jdkhttp: Started (" + solon_boot_ver() + ") @" + (time_end - time_start) + "ms");
     }
