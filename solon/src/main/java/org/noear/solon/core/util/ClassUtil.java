@@ -59,7 +59,7 @@ public class ClassUtil {
             } else {
                 return classLoader.loadClass(className);
             }
-        } catch (ClassNotFoundException e) {
+        } catch (ClassNotFoundException | NoClassDefFoundError e) {
             return null;
         }
     }
