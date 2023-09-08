@@ -28,9 +28,7 @@ public class ClassUtil {
         try {
             test.get();
             return true;
-        } catch (ClassNotFoundException e) {
-            return false;
-        } catch (NoClassDefFoundError e) {
+        } catch (ClassNotFoundException | NoClassDefFoundError e) {
             return false;
         } catch (Throwable e) {
             throw new IllegalStateException(e);
