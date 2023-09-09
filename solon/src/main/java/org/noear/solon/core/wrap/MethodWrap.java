@@ -65,7 +65,7 @@ public class MethodWrap implements Interceptor, MethodHolder {
             }
         }
 
-        if (interceptors.size() > 0) {
+        if (interceptors.size() > 1) {
             //排序（顺排）
             interceptors.sort(Comparator.comparing(x -> x.getIndex()));
         }
