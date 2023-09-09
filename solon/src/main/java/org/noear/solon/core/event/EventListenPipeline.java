@@ -47,8 +47,9 @@ public class EventListenPipeline<Event> implements EventListener<Event> {
 
     @Override
     public void onEvent(Event event) throws Throwable {
-        for (EH h : list) {
-            h.listener.onEvent(event);
+        //用 i，可以避免遍历时添加监听的异常
+        for (int i = 0; i < list.size(); i++) {
+            list.get(i).listener.onEvent(event);
         }
     }
 
