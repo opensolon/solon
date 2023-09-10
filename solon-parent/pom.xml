@@ -1366,12 +1366,6 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>dami-solon-plugin</artifactId>
-                <version>${solon.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.noear</groupId>
                 <artifactId>pulsar2-solon-plugin</artifactId>
                 <version>${solon.version}</version>
             </dependency>
