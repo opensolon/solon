@@ -71,7 +71,7 @@ public class PluginPackage {
         return ClassUtil.loadClass(getClassLoader(), className);
     }
 
-    public <T> T newInstance(String className) {
+    public <T> T tryInstance(String className) {
         return ClassUtil.tryInstance(getClassLoader(), className);
     }
 
