@@ -30,5 +30,6 @@
         <module>../../solon-projects-other/solon-plugin/sureness-solon-plugin</module>
         <module>../../solon-projects-other/solon-plugin/simplejavamail-solon-plugin</module>
         <module>../../solon-projects-other/solon-plugin/sms4j-solon-plugin</module>
+        <module>../../solon-projects-other/solon-plugin/dami-solon-plugin</module>
     </modules>
 </project>
