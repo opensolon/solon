@@ -111,7 +111,7 @@
         <feign.version>8.18.0</feign.version>
         <aws.s3.version>1.12.347</aws.s3.version>
         <quartz.version>2.3.2</quartz.version>
-        <powerjob.version>4.3.0</powerjob.version>
+        <powerjob.version>4.3.6</powerjob.version>
 
         <sa-token.version>1.35.0.RC</sa-token.version>
 

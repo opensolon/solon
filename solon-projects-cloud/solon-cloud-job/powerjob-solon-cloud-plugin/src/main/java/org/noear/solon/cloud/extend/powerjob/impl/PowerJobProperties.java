@@ -48,7 +48,14 @@ public class PowerJobProperties {
      * If test mode is set as true, Powerjob-worker no longer connects to the server or validates appName.
      * Test mode is used for conditions that your have no powerjob-server in your develop env, so you can't start up the application
      */
+    @Deprecated
     private boolean enableTestMode = false;
+
+    /**
+     * If allowLazyConnectServer is set as true, PowerJob worker allows launching without a direct connection to the server.
+     * allowLazyConnectServer is used for conditions that your have no powerjob-server in your develop env so you can't startup the application
+     */
+    private boolean allowLazyConnectServer = false;
 
     /**
      * Max length of appended workflow context value length. Appended workflow context value that is longer than the value will be ignored.
@@ -104,7 +111,11 @@ public class PowerJobProperties {
          * When enabledTestMode is set as true, PowerJob-this no longer connects to PowerJob-server
          * or validate appName.
          */
-        config.setEnableTestMode(this.isEnableTestMode());
+        if (this.isEnableTestMode()) {
+            config.setAllowLazyConnectServer(true);
+        } else {
+            config.setAllowLazyConnectServer(this.isAllowLazyConnectServer());
+        }
         /*
          * Max length of appended workflow context . Appended workflow context value that is longer than the value will be ignored.
          */
