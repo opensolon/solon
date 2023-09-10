@@ -172,7 +172,7 @@ public class BeanWrap {
     }
 
     public void rawSet(Object raw) {
-        if (this.raw == null && raw != null) {
+        if (this.raw == null) {
             this.raw = raw;
         }
     }
@@ -203,8 +203,10 @@ public class BeanWrap {
         return tag;
     }
 
-    protected void tagSet(String tag) {
-        this.tag = tag;
+    public void tagSet(String tag) {
+        if (this.tag == null) {
+            this.tag = tag;
+        }
     }
 
     /**
