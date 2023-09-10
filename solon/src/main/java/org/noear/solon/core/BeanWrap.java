@@ -171,8 +171,10 @@ public class BeanWrap {
         return raw(false);
     }
 
-    protected void rawSet(Object raw) {
-        this.raw = raw;
+    public void rawSet(Object raw) {
+        if (this.raw == null && raw != null) {
+            this.raw = raw;
+        }
     }
 
     /**
