@@ -9,7 +9,6 @@ import org.noear.solon.cloud.CloudEventHandler;
 import org.noear.solon.cloud.extend.aliyun.ons.OnsProps;
 import org.noear.solon.cloud.model.Event;
 import org.noear.solon.cloud.service.CloudEventObserverManger;
-import org.noear.solon.core.event.EventBus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,11 +18,11 @@ import org.slf4j.LoggerFactory;
  * @since 1.11
  */
 public class OnsConsumerHandler implements MessageListener {
-    static Logger log = LoggerFactory.getLogger(OnsConsumerHandler.class);
+    static final Logger log = LoggerFactory.getLogger(OnsConsumerHandler.class);
 
-    CloudEventObserverManger observerManger;
+    private CloudEventObserverManger observerManger;
 
-    OnsConfig config;
+    private OnsConfig config;
 
     public OnsConsumerHandler(OnsConfig config, CloudEventObserverManger observerManger) {
         this.observerManger = observerManger;
@@ -57,7 +56,7 @@ public class OnsConsumerHandler implements MessageListener {
             isOk = isOk && onReceive(event, topicNew);
         } catch (Throwable e) {
             isOk = false;
-            EventBus.publishTry(e);
+            log.warn(e.getMessage(), e);
         }
 
         if (isOk) {
