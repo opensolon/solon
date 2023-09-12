@@ -9,11 +9,19 @@
 * 提醒1：之前没有使用弃用接口的，可以直接升级 <br>
 * 提醒2：有使用弃用接口的。建议先升级到 1.12.4；替换弃用代码后，再升级到 2.0.0
 
-### 2.5.5
+### 2.5.6
 * 新增 solon.boot.vertx 插件?
 * 新增 seata-solon-plugin 插件
 * 新增 graphql-solon-plugin 插件
 * 增加 quartz jdbc 及时更新支持（数据库里变了，它马上变）？
+
+### 2.5.5
+* 添加 PropUtil 类。把原来的属性表达式与模板解析独立出来
+* 添加 ContextPathListener 类，用于控制 contentPath 对 ws,tpc 的影响
+* 添加 ContextPathFilter 一个简化的构造函数
+* 调整 BeanWrap 的 rawSet tagSet 改为公有
+* 调整 CloudConfig 复用主框架的属性表达式与模板解析
+* 调整 使用更多的 slf4j???
 
 ### 2.5.4
 * 增加 AppContext::onEvent 接口
