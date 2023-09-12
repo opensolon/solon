@@ -9,7 +9,7 @@ import org.noear.solon.cloud.impl.CloudTraceServiceImpl;
  * @author noear
  * @since 1.2
  */
-public class CloudTraceServiceWaterImp extends CloudTraceServiceImpl {
+public class CloudTraceServiceWaterImpl extends CloudTraceServiceImpl {
     @Override
     public String HEADER_TRACE_ID_NAME() {
         return WaterProps.http_header_trace;

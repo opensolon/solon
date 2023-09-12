@@ -21,8 +21,8 @@ import java.util.Map;
  * @author noear
  * @since 1.2
  */
-public class CloudJobServiceWaterImp implements CloudJobService {
-    public static final CloudJobServiceWaterImp instance = new CloudJobServiceWaterImp();
+public class CloudJobServiceWaterImpl implements CloudJobService {
+    public static final CloudJobServiceWaterImpl instance = new CloudJobServiceWaterImpl();
 
     public Map<String, JobHolder> jobMap = new LinkedHashMap<>();
 

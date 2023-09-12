@@ -6,8 +6,9 @@ import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.model.Pack;
 import org.noear.solon.cloud.service.CloudI18nService;
 import org.noear.solon.core.Props;
-import org.noear.solon.core.event.EventBus;
 import org.noear.water.WaterClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.Locale;
@@ -18,11 +19,13 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author noear
  * @since 1.6
  */
-public class CloudI18nServiceWaterImp implements CloudI18nService {
+public class CloudI18nServiceWaterImpl implements CloudI18nService {
+    static final Logger log = LoggerFactory.getLogger(CloudI18nServiceWaterImpl.class);
+
     private String packNameDefault;
     private Map<String, Pack> packMap = new ConcurrentHashMap<>();
 
-    public CloudI18nServiceWaterImp(CloudProps cloudProps){
+    public CloudI18nServiceWaterImpl(CloudProps cloudProps){
         packNameDefault = cloudProps.getI18nDefault();
 
         if (Utils.isEmpty(packNameDefault)) {
@@ -82,7 +85,7 @@ public class CloudI18nServiceWaterImp implements CloudI18nService {
                 Map<String, String> data = WaterClient.I18n.getI18nNoCache(group, packName, pack.getLang());
                 pack.setData(new Props(data));
             } catch (Throwable e) {
-                EventBus.publishTry(e);
+                log.warn(e.getMessage(), e);
             }
         }
     }

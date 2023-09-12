@@ -12,7 +12,7 @@ import java.util.Map;
  * @author noear
  * @since 1.4
  */
-public class CloudMetricServiceWaterImp implements CloudMetricService {
+public class CloudMetricServiceWaterImpl implements CloudMetricService {
     @Override
     public void addCounter(String group, String category, String item, long increment, Map<String, String> attrs) {
         WaterClient.Track.addCount(group, category, item, increment);

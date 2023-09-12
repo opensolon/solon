@@ -18,10 +18,10 @@ import org.noear.water.utils.LogHelper;
  * @author noear
  * @since 1.3
  */
-public class CloudLogServiceWaterImp implements CloudLogService {
+public class CloudLogServiceWaterImpl implements CloudLogService {
     private String loggerNameDefault;
 
-    public CloudLogServiceWaterImp(CloudProps cloudProps) {
+    public CloudLogServiceWaterImpl(CloudProps cloudProps) {
         loggerNameDefault = cloudProps.getLogDefault();
 
         if (Utils.isEmpty(loggerNameDefault)) {

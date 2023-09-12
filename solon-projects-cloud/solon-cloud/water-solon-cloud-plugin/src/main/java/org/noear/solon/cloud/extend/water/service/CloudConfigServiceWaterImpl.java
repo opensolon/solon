@@ -8,9 +8,10 @@ import org.noear.solon.cloud.model.Config;
 import org.noear.solon.cloud.service.CloudConfigObserverEntity;
 import org.noear.solon.cloud.service.CloudConfigService;
 import org.noear.solon.cloud.utils.IntervalUtils;
-import org.noear.solon.core.event.EventBus;
 import org.noear.water.WaterClient;
 import org.noear.water.model.ConfigM;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.*;
@@ -22,7 +23,9 @@ import java.util.function.Consumer;
  * @author noear
  * @since 1.2
  */
-public class CloudConfigServiceWaterImp extends TimerTask implements CloudConfigService {
+public class CloudConfigServiceWaterImpl extends TimerTask implements CloudConfigService {
+    static final Logger log = LoggerFactory.getLogger(CloudConfigServiceWaterImpl.class);
+
     private final String DEFAULT_GROUP = "DEFAULT_GROUP";
 
     private long refreshInterval;
@@ -30,7 +33,7 @@ public class CloudConfigServiceWaterImp extends TimerTask implements CloudConfig
     private Map<String, Config> configMap = new HashMap<>();
 
 
-    public CloudConfigServiceWaterImp(CloudProps cloudProps) {
+    public CloudConfigServiceWaterImpl(CloudProps cloudProps) {
         refreshInterval = IntervalUtils.getInterval(cloudProps.getConfigRefreshInterval("5s"));
     }
 
@@ -46,7 +49,7 @@ public class CloudConfigServiceWaterImp extends TimerTask implements CloudConfig
         try {
             run0();
         } catch (Throwable e) {
-            EventBus.publishTry(e);
+            log.warn(e.getMessage(), e);
         }
     }
 
@@ -112,7 +115,7 @@ public class CloudConfigServiceWaterImp extends TimerTask implements CloudConfig
             WaterClient.Config.set(group, key, value);
             return true;
         } catch (IOException e) {
-            EventBus.publishTry(e);
+            log.warn(e.getMessage(), e);
             return false;
         }
     }

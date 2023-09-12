@@ -23,8 +23,8 @@ import org.slf4j.LoggerFactory;
  * @author noear
  * @since 1.2
  */
-public class CloudEventServiceWaterImp implements CloudEventServicePlus {
-    static Logger log = LoggerFactory.getLogger(CloudEventServiceWaterImp.class);
+public class CloudEventServiceWaterImpl implements CloudEventServicePlus {
+    static Logger log = LoggerFactory.getLogger(CloudEventServiceWaterImpl.class);
 
     private final CloudProps cloudProps;
 
@@ -34,7 +34,7 @@ public class CloudEventServiceWaterImp implements CloudEventServicePlus {
     private String eventChannelName;
     private String eventBroker;
 
-    public CloudEventServiceWaterImp(CloudProps cloudProps) {
+    public CloudEventServiceWaterImpl(CloudProps cloudProps) {
         this.cloudProps = cloudProps;
 
         this.unstable = Solon.cfg().isFilesMode()

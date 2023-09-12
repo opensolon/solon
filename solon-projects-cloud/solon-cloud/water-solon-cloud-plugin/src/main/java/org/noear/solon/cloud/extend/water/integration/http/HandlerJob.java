@@ -3,12 +3,13 @@ package org.noear.solon.cloud.extend.water.integration.http;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.cloud.extend.water.WaterProps;
-import org.noear.solon.cloud.extend.water.service.CloudJobServiceWaterImp;
+import org.noear.solon.cloud.extend.water.service.CloudJobServiceWaterImpl;
 import org.noear.solon.cloud.model.JobHolder;
-import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Handler;
 import org.noear.water.WW;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 任务调度处理（用令牌的形式实现安全）//中频
@@ -17,6 +18,8 @@ import org.noear.water.WW;
  * @since 1.4
  */
 public class HandlerJob implements Handler {
+    static final Logger log = LoggerFactory.getLogger(HandlerJob.class);
+
     @Override
     public void handle(Context ctx) throws Throwable {
         String token = ctx.headerOrDefault(WaterProps.http_header_token, "");
@@ -36,7 +39,7 @@ public class HandlerJob implements Handler {
     }
 
     private void handleDo(Context ctx, String name) {
-        JobHolder jobHolder = CloudJobServiceWaterImp.instance.get(name);
+        JobHolder jobHolder = CloudJobServiceWaterImpl.instance.get(name);
 
         if (jobHolder == null) {
             ctx.status(400);
@@ -51,7 +54,7 @@ public class HandlerJob implements Handler {
                 ctx.output("OK");
             } catch (Throwable e) {
                 e = Utils.throwableUnwrap(e);
-                EventBus.publishTry(e);
+                log.warn(e.getMessage(), e);
                 ctx.status(500);
                 ctx.output(e);
             }

@@ -11,10 +11,11 @@ import org.noear.solon.cloud.service.CloudDiscoveryObserverEntity;
 import org.noear.solon.cloud.service.CloudDiscoveryService;
 import org.noear.solon.cloud.utils.IntervalUtils;
 import org.noear.solon.core.Signal;
-import org.noear.solon.core.event.EventBus;
 import org.noear.solon.health.HealthHandler;
 import org.noear.water.WaterClient;
 import org.noear.water.model.DiscoverM;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,13 +27,15 @@ import java.util.TimerTask;
  * @author noear
  * @since 1.2
  */
-public class CloudDiscoveryServiceWaterImp extends TimerTask implements CloudDiscoveryService {
-    //String checkPathDefault;
-    String alarmMobile;
-    long refreshInterval;
-    boolean unstable;
+public class CloudDiscoveryServiceWaterImpl extends TimerTask implements CloudDiscoveryService {
+    static final Logger log = LoggerFactory.getLogger(CloudDiscoveryServiceWaterImpl.class);
 
-    public CloudDiscoveryServiceWaterImp(CloudProps cloudProps) {
+    //String checkPathDefault;
+    private String alarmMobile;
+    private long refreshInterval;
+    private boolean unstable;
+
+    public CloudDiscoveryServiceWaterImpl(CloudProps cloudProps) {
         unstable = Solon.cfg().isFilesMode()
                 || Solon.cfg().isDriftMode();
         //checkPathDefault = WaterProps.instance.getDiscoveryHealthCheckPath();
@@ -57,7 +60,7 @@ public class CloudDiscoveryServiceWaterImp extends TimerTask implements CloudDis
             }
 
         } catch (Throwable e) {
-            EventBus.publishTry(e);
+            log.warn(e.getMessage(), e);
         }
     }
 
