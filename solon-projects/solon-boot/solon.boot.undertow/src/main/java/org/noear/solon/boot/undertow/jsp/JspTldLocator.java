@@ -11,10 +11,11 @@ import org.jboss.metadata.web.spec.*;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.AppClassLoader;
-import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.ResourceUtil;
 import org.noear.solon.core.util.ScanUtil;
 import org.noear.solon.core.util.SupplierEx;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
@@ -34,6 +35,8 @@ import java.util.jar.JarFile;
  * Jsp Tld 定位器
  */
 public class JspTldLocator {
+    static final Logger log = LoggerFactory.getLogger(JspTldLocator.class);
+
     public static HashMap<String, TagLibraryInfo> createTldInfos(String webinfo_path) throws IOException {
 
         List<URL> urls = getURLs();
@@ -61,7 +64,7 @@ public class JspTldLocator {
                         }
                     }
                 } catch (Throwable e) {
-                    EventBus.publishTry(e);
+                    log.warn(e.getMessage(), e);
                 }
             }
         }
@@ -73,7 +76,7 @@ public class JspTldLocator {
                 loadTagLibraryInfo(tagLibInfos, () -> ResourceUtil.getResource(uri).openStream());
             });
         } catch (Throwable e) {
-            EventBus.publishTry(e);
+            log.warn(e.getMessage(), e);
         }
 
         return tagLibInfos;
@@ -129,7 +132,7 @@ public class JspTldLocator {
             }
 
         } catch (Throwable e) {
-            EventBus.publishTry(e);
+            log.warn(e.getMessage(), e);
         } finally {
             try {
                 if (is != null) {

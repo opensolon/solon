@@ -3,16 +3,19 @@ package org.noear.solon.boot.undertow.websocket;
 import io.undertow.websockets.core.*;
 import io.undertow.websockets.spi.WebSocketHttpExchange;
 import org.noear.solon.Solon;
-import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.socketd.ProtocolManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xnio.Pooled;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
 public class UtWsChannelListener extends AbstractReceiveListener {
+    static final Logger log = LoggerFactory.getLogger(UtWsChannelListener.class);
+
     @Override
     public void handleEvent(WebSocketChannel channel) {
         try {
@@ -80,7 +83,7 @@ public class UtWsChannelListener extends AbstractReceiveListener {
             }
 
         } catch (Throwable e) {
-            EventBus.publishTry(e);
+            log.warn(e.getMessage(), e);
         }
     }
 
@@ -92,7 +95,7 @@ public class UtWsChannelListener extends AbstractReceiveListener {
 
             Solon.app().listener().onMessage(session, message.isString(true));
         } catch (Throwable e) {
-            EventBus.publishTry(e);
+            log.warn(e.getMessage(), e);
         }
     }
 
