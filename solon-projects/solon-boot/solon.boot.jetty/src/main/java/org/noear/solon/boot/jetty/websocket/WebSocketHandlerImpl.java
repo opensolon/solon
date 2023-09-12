@@ -4,7 +4,7 @@ import org.eclipse.jetty.websocket.server.WebSocketHandler;
 import org.eclipse.jetty.websocket.servlet.WebSocketServletFactory;
 
 
-public class WebSocketHandlerImp extends WebSocketHandler {
+public class WebSocketHandlerImpl extends WebSocketHandler {
 
     @Override
     public void configure(WebSocketServletFactory factory) {
@@ -12,7 +12,7 @@ public class WebSocketHandlerImp extends WebSocketHandler {
         //factory.getPolicy().setAsyncWriteTimeout(10L * 1000L);
 
         //注册览听器
-        factory.register(WebSocketListenerImp.class);
+        factory.register(WebSocketListenerImpl.class);
     }
 }
 

@@ -10,8 +10,8 @@ import org.slf4j.LoggerFactory;
 
 import java.nio.ByteBuffer;
 
-public class WebSocketListenerImp extends WebSocketAdapter {
-    static final Logger log = LoggerFactory.getLogger(WebSocketListenerImp.class);
+public class WebSocketListenerImpl extends WebSocketAdapter {
+    static final Logger log = LoggerFactory.getLogger(WebSocketListenerImpl.class);
 
     @Override
     public void onWebSocketConnect(org.eclipse.jetty.websocket.api.Session sess) {
