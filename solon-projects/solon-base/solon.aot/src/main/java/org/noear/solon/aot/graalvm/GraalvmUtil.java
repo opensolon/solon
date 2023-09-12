@@ -5,10 +5,10 @@ import org.noear.solon.Solon;
 import org.noear.solon.aot.hint.ExecutableHint;
 import org.noear.solon.core.ExtendLoader;
 import org.noear.solon.core.AppClassLoader;
-import org.noear.solon.core.event.EventBus;
-import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.core.util.ReflectUtil;
 import org.noear.solon.core.util.ResourceUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -32,6 +32,7 @@ import java.util.stream.Collectors;
  * @since 1.5
  */
 public class GraalvmUtil {
+    static final Logger log = LoggerFactory.getLogger(GraalvmUtil.class);
 
     public static final String NATIVE_IMAGE_DIR = "META-INF/native-image";
     public static final String SOLON_RESOURCE_NAME = "solon-resource.json";
@@ -182,11 +183,10 @@ public class GraalvmUtil {
             }
 
             if (Solon.cfg().isDebugMode()) {
-                LogUtil.global().info("reflect-config: load completed: " + resources);
+                log.debug("reflect-config: load completed: " + resources);
             }
         } catch (Exception e) {
-            LogUtil.global().warn("reflect-config: read error: " + e.getLocalizedMessage());
-            EventBus.publishTry(e);
+            log.error("reflect-config: read error: " + e.getLocalizedMessage(), e);
         }
     }
 
@@ -212,11 +212,10 @@ public class GraalvmUtil {
             }
 
             if (Solon.cfg().isDebugMode()) {
-                LogUtil.global().info(solonResource + ": load completed: " + resources);
+                log.debug(solonResource + ": load completed: " + resources);
             }
         } catch (Exception e) {
-            LogUtil.global().warn("resource-config: read error: " + e.getLocalizedMessage());
-            EventBus.publishTry(e);
+            log.error("resource-config: read error: " + e.getLocalizedMessage(), e);
         }
     }
 

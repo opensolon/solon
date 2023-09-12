@@ -8,11 +8,15 @@ import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.socketd.ProtocolManager;
 import org.noear.solon.socketd.SessionFlag;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.URI;
 import java.nio.ByteBuffer;
 
 public class WsSocketClientImp extends WebSocketClient {
+    static final Logger log = LoggerFactory.getLogger(WsSocketClientImp.class);
+
     private Session session;
 
     public WsSocketClientImp(URI serverUri, Session session) {
@@ -30,7 +34,7 @@ public class WsSocketClientImp extends WebSocketClient {
         try {
             Solon.app().listener().onMessage(session, Message.wrap(test).isString(true));
         } catch (Throwable e) {
-            EventBus.publishTry(e);
+            log.warn(e.getMessage(), e);
         }
     }
 
@@ -47,7 +51,7 @@ public class WsSocketClientImp extends WebSocketClient {
 
             Solon.app().listener().onMessage(session, message);
         } catch (Throwable e) {
-            EventBus.publishTry(e);
+            log.warn(e.getMessage(), e);
         }
     }
 

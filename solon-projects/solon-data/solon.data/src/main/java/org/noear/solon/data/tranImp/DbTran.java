@@ -110,7 +110,7 @@ public abstract class DbTran extends DbTranNode implements TranNode {
                     //
                 }
             } catch (Throwable e) {
-                EventBus.publishTry(e);
+                log.warn(e.getMessage() ,e);
             }
         }
     }

@@ -4,10 +4,11 @@ import io.netty.buffer.ByteBuf;
 import io.rsocket.Payload;
 import io.rsocket.RSocket;
 import org.noear.solon.Solon;
-import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.socketd.ProtocolManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
 import java.nio.ByteBuffer;
@@ -16,8 +17,10 @@ import java.nio.ByteBuffer;
  * @author noear 2021/1/4 created
  */
 public class RsAcceptorHandler implements RSocket {
-    Session session;
-    RSocket rSocket;
+    static final Logger log = LoggerFactory.getLogger(RsAcceptorHandler.class);
+
+    private Session session;
+    private RSocket rSocket;
 
     public RsAcceptorHandler(RSocket rSocket, Session session) {
         this.session = session;
@@ -43,7 +46,7 @@ public class RsAcceptorHandler implements RSocket {
             try {
                 Solon.app().listener().onMessage(session, message);
             } catch (Throwable e) {
-                EventBus.publishTry(e);
+                log.warn(e.getMessage(), e);
             }
         }
 
