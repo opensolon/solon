@@ -2,10 +2,11 @@ package org.noear.solon.socketd;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
-import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * SocketD 上下文处理者
@@ -14,6 +15,8 @@ import org.noear.solon.core.message.Session;
  * @since 1.0
  * */
 public class SocketContextHandler {
+    static final Logger log = LoggerFactory.getLogger(SessionBase.class);
+
     public static final SocketContextHandler instance = new SocketContextHandler();
 
     public void handle(Session session, Message message) {
@@ -53,7 +56,7 @@ public class SocketContextHandler {
         } catch (Throwable e) {
             //context 初始化时，可能会出错
             //
-            EventBus.publishTry(e);
+            log.warn(e.getMessage(), e);
         }
     }
 }

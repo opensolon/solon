@@ -22,7 +22,6 @@ import java.util.function.BiConsumer;
  * @since 1.2
  * */
 public abstract class SessionBase implements Session {
-
     static final Logger log = LoggerFactory.getLogger(SessionBase.class);
 
     //路径
@@ -154,7 +153,7 @@ public abstract class SessionBase implements Session {
             try {
                 send(message);
             } catch (Throwable e) {
-                EventBus.publishTry(e);
+                log.warn(e.getMessage(), e);
             }
         });
     }
@@ -165,7 +164,7 @@ public abstract class SessionBase implements Session {
             try {
                 send(message);
             } catch (Throwable e) {
-                EventBus.publishTry(e);
+                log.warn(e.getMessage(), e);
             }
         });
     }
@@ -307,7 +306,7 @@ public abstract class SessionBase implements Session {
                         try {
                             sendHeartbeat();
                         } catch (Throwable e) {
-                            EventBus.publishTry(e);
+                            log.warn(e.getMessage(), e);
                         }
                     }, intervalSeconds * 1000);
         }
