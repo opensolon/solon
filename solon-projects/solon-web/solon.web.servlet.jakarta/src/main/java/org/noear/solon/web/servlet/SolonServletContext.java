@@ -24,7 +24,8 @@ import java.nio.charset.Charset;
 import java.util.*;
 
 /**
- * SServlet，适配为 Context
+ * Servlet，适配为 Context
+ *
  * @author noear
  * @since 1.2
  * */
@@ -120,7 +121,7 @@ public class SolonServletContext extends WebContextBase {
 
     @Override
     public long contentLength() {
-        return _request.getContentLength();
+        return _request.getContentLengthLong();
     }
 
     @Override
