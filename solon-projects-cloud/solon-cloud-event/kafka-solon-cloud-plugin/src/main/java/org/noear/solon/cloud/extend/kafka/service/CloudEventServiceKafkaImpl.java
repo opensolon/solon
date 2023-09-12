@@ -15,7 +15,6 @@ import org.noear.solon.cloud.extend.kafka.impl.KafkaConfig;
 import org.noear.solon.cloud.model.Event;
 import org.noear.solon.cloud.service.CloudEventObserverManger;
 import org.noear.solon.cloud.service.CloudEventServicePlus;
-import org.noear.solon.core.event.EventBus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,7 +33,7 @@ import java.util.concurrent.TimeUnit;
  * @since 1.3
  */
 public class CloudEventServiceKafkaImpl implements CloudEventServicePlus, Closeable {
-    static Logger log = LoggerFactory.getLogger(CloudEventServiceKafkaImpl.class);
+    static final Logger log = LoggerFactory.getLogger(CloudEventServiceKafkaImpl.class);
 
     private final KafkaConfig config;
     private KafkaProducer<String, String> producer;
@@ -123,7 +122,7 @@ public class CloudEventServiceKafkaImpl implements CloudEventServicePlus, Closea
             } catch (EOFException e) {
                 break;
             } catch (Throwable e) {
-                EventBus.publishTry(e);
+                log.warn(e.getMessage(), e);
             }
         }
     }
@@ -153,7 +152,7 @@ public class CloudEventServiceKafkaImpl implements CloudEventServicePlus, Closea
                             new OffsetAndMetadata(record.offset() + 1));
                 }
             } catch (Throwable e) {
-                EventBus.publishTry(e);
+                log.warn(e.getMessage(), e);
             }
         }
 

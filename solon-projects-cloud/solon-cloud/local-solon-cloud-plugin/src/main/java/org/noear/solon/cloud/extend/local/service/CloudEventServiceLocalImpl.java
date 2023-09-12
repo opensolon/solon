@@ -23,7 +23,8 @@ import org.slf4j.LoggerFactory;
  * @since 1.11
  */
 public class CloudEventServiceLocalImpl implements CloudEventServicePlus {
-    static Logger log = LoggerFactory.getLogger(CloudEventServiceLocalImpl.class);
+    static final Logger log = LoggerFactory.getLogger(CloudEventServiceLocalImpl.class);
+
     private CloudProps cloudProps;
 
     public CloudEventServiceLocalImpl(CloudProps cloudProps) {
@@ -55,7 +56,7 @@ public class CloudEventServiceLocalImpl implements CloudEventServicePlus {
                     //派发
                     distribute(event);
                 } catch (Throwable e) {
-                    EventBus.publishTry(new CloudEventException(e));
+                    log.warn(e.getMessage(), e);
                 }
             });
         }

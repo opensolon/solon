@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
  * @since 2.4
  */
 public class MqttCallbackImpl implements MqttCallback {
-    static Logger log = LoggerFactory.getLogger(MqttCallbackImpl.class);
+    static final Logger log = LoggerFactory.getLogger(MqttCallbackImpl.class);
 
     final MqttClient client;
     final CloudEventObserverManger observerManger;
@@ -34,8 +34,8 @@ public class MqttCallbackImpl implements MqttCallback {
     }
 
     @Override
-    public void mqttErrorOccurred(MqttException exception) {
-        EventBus.publishTry(exception);
+    public void mqttErrorOccurred(MqttException e) {
+        log.warn(e.getMessage(), e);
     }
 
     @Override
