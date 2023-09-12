@@ -124,14 +124,14 @@ public class Props extends Properties {
     }
 
     /**
-     * @param tml 模板： ${key} 或 aaa${key}bbb
+     * @param tml 模板： ${key} 或 aaa${key}bbb 或 ${key:def}/ccc
      */
     public String getByParse(String tml) {
         return getByParse(tml, null);
     }
 
     /**
-     * @param tml 模板： ${key} 或 aaa${key}bbb
+     * @param tml 模板： ${key} 或 aaa${key}bbb 或 ${key:def}/ccc
      */
     protected String getByParse(String tml, Properties props) {
         if (Utils.isEmpty(tml)) {
@@ -152,7 +152,7 @@ public class Props extends Properties {
                 }
 
                 String name = tml.substring(start + 2, end);
-                String value = getByExpr(name, props);//支持默认值表达式
+                String value = getByExpr(name, props);//支持默认值表达式 ${key:def}
                 if (value == null) {
                     value = "";
                 }
@@ -515,6 +515,7 @@ public class Props extends Properties {
                         // db1.jdbcUrl=${db1.url}
                         // db1.jdbcUrl=jdbc:mysql:${db1.server}
                         // db1.jdbcUrl=jdbc:mysql:${db1.server}/${db1.db}
+                        // db1.username=${db1.user:root}
                         v1 = getByParse((String) v1, props);
                     }
 

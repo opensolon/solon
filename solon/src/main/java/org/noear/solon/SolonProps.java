@@ -316,6 +316,7 @@ public final class SolonProps extends Props {
         }
 
         for (Map.Entry kv : sysPropOrg.entrySet()) {
+            //同步系统属性
             if (kv.getKey() instanceof String) {
                 String key = (String) kv.getKey();
 
