@@ -21,6 +21,11 @@
         </dependency>
 
         <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>org.noear</groupId>
             <artifactId>luffy.base</artifactId>
             <version>${luffy.version}</version>
@@ -30,11 +35,6 @@
             <groupId>org.noear</groupId>
             <artifactId>luffy.executor.s.javascript</artifactId>
             <version>${luffy.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.logging.simple</artifactId>
         </dependency>
 
         <dependency>
