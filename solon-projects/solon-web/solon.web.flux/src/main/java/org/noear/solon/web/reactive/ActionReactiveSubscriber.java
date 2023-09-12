@@ -1,10 +1,11 @@
 package org.noear.solon.web.reactive;
 
-import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.Action;
 import org.noear.solon.core.handle.Context;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
@@ -15,8 +16,10 @@ import java.io.IOException;
  * @since 2.3
  */
 public class ActionReactiveSubscriber implements Subscriber {
-    Context ctx;
-    Action action;
+    static final Logger log = LoggerFactory.getLogger(ActionReactiveSubscriber.class);
+
+    private Context ctx;
+    private Action action;
 
     public ActionReactiveSubscriber(Context ctx, Action action) {
         this.ctx = ctx;
@@ -36,7 +39,7 @@ public class ActionReactiveSubscriber implements Subscriber {
         try {
             action.render(o, ctx);
         } catch (Throwable e) {
-            EventBus.publishTry(e);
+            log.warn(e.getMessage(), e);
         }
     }
 
@@ -46,7 +49,7 @@ public class ActionReactiveSubscriber implements Subscriber {
             action.render(e, ctx);
         } catch (Throwable e2) {
             ctx.status(500);
-            EventBus.publishTry(e2);
+            log.warn(e.getMessage(), e);
         } finally {
             onComplete();
         }
@@ -58,7 +61,7 @@ public class ActionReactiveSubscriber implements Subscriber {
             try {
                 ctx.asyncComplete();
             } catch (IOException e) {
-                EventBus.publishTry(e);
+                log.warn(e.getMessage(), e);
             }
         }
     }
