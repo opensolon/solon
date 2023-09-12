@@ -3,12 +3,15 @@ package org.noear.solon.boot.jdkhttp;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import org.noear.solon.boot.ServerProps;
-import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.Handler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
 public class JdkHttpContextHandler implements HttpHandler {
+    static final Logger log = LoggerFactory.getLogger(JdkHttpContextHandler.class);
+
     private final Handler handler;
 
     public JdkHttpContextHandler(Handler handler) {
@@ -22,7 +25,7 @@ public class JdkHttpContextHandler implements HttpHandler {
         } catch (Throwable e) {
             //context 初始化时，可能会出错
             //
-            EventBus.publishTry(e);
+            log.warn(e.getMessage(), e);
         } finally {
             exchange.close();
         }
@@ -49,7 +52,7 @@ public class JdkHttpContextHandler implements HttpHandler {
                 ctx.innerCommit();
             }
         } catch (Throwable e) {
-            EventBus.publishTry(e);
+            log.warn(e.getMessage(), e);
 
             exchange.sendResponseHeaders(500, -1);
         }

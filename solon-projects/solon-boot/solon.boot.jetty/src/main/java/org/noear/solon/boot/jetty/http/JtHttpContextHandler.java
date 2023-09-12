@@ -7,12 +7,15 @@ import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.jetty.XPluginImp;
 import org.noear.solon.boot.web.FormUrlencodedUtils;
 import org.noear.solon.web.servlet.SolonServletContext;
-import org.noear.solon.core.event.EventBus;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class JtHttpContextHandler extends AbstractHandler {
+    static final Logger log = LoggerFactory.getLogger(JtHttpContextHandler.class);
+
     @Override
     public void handle(String s, Request baseRequest, HttpServletRequest request, HttpServletResponse response) {
         try {
@@ -21,7 +24,7 @@ public class JtHttpContextHandler extends AbstractHandler {
         } catch (Throwable e) {
             //context 初始化时，可能会出错
             //
-            EventBus.publishTry(e);
+            log.warn(e.getMessage(), e);
 
             response.setStatus(500);
         }

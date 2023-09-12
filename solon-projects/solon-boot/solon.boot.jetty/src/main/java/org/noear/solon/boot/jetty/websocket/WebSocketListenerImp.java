@@ -2,14 +2,16 @@ package org.noear.solon.boot.jetty.websocket;
 
 import org.eclipse.jetty.websocket.api.WebSocketAdapter;
 import org.noear.solon.Solon;
-import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.socketd.ProtocolManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.nio.ByteBuffer;
 
 public class WebSocketListenerImp extends WebSocketAdapter {
+    static final Logger log = LoggerFactory.getLogger(WebSocketListenerImp.class);
 
     @Override
     public void onWebSocketConnect(org.eclipse.jetty.websocket.api.Session sess) {
@@ -42,7 +44,7 @@ public class WebSocketListenerImp extends WebSocketAdapter {
 
             Solon.app().listener().onMessage(session, message);
         } catch (Throwable e) {
-            EventBus.publishTry(e);
+            log.warn(e.getMessage(),e);
         }
     }
 
@@ -55,7 +57,7 @@ public class WebSocketListenerImp extends WebSocketAdapter {
             Solon.app().listener().onMessage(session, message.isString(true));
 
         } catch (Throwable e) {
-            EventBus.publishTry(e);
+            log.warn(e.getMessage(),e);
         }
     }
 

@@ -6,8 +6,9 @@ import org.noear.solon.boot.ServerConstants;
 import org.noear.solon.boot.ServerLifecycle;
 import org.noear.solon.boot.prop.ServerSslProps;
 import org.noear.solon.boot.ssl.SslContextFactory;
-import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.Handler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLEngine;
@@ -23,6 +24,8 @@ import java.util.concurrent.Executor;
  * @since 2.2
  */
 public class JdkHttpServer implements ServerLifecycle {
+    static final Logger log = LoggerFactory.getLogger(JdkHttpServer.class);
+
     private HttpServer server = null;
     private Executor executor;
     private Handler handler;
@@ -110,7 +113,7 @@ public class JdkHttpServer implements ServerLifecycle {
                     params.setSSLParameters(defaultSSLParameters);
                 } catch (Throwable e) {
                     //"Failed to create HTTPS port"
-                    EventBus.publishTry(e);
+                    log.warn(e.getMessage(), e);
                 }
             }
         });
