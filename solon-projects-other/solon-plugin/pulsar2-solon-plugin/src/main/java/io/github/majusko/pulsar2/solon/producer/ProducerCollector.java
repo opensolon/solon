@@ -2,8 +2,6 @@ package io.github.majusko.pulsar2.solon.producer;
 
 import java.lang.annotation.Annotation;
 import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.apache.pulsar.client.api.Producer;
 import org.apache.pulsar.client.api.ProducerBuilder;
@@ -14,7 +12,6 @@ import org.apache.pulsar.client.api.interceptor.ProducerInterceptor;
 import org.noear.solon.Utils;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.BeanWrap;
-import org.noear.solon.core.util.LogUtil;
 
 import io.github.majusko.pulsar2.solon.annotation.PulsarProducer;
 import io.github.majusko.pulsar2.solon.collector.ProducerHolder;
@@ -24,29 +21,12 @@ import io.github.majusko.pulsar2.solon.properties.PulsarProperties;
 import io.github.majusko.pulsar2.solon.utils.SchemaUtils;
 import io.github.majusko.pulsar2.solon.utils.UrlBuildService;
 
-//public class ProducerCollector implements BeanBuilder<PulsarProducer>{
 public class ProducerCollector{
-	
     private PulsarClient pulsarClient;
     private UrlBuildService urlBuildService;
     private PulsarProperties pulsarProperties;
 
     private ProducerInterceptor producerInterceptor;
-
-
-//    public ProducerCollector(AppContext context) {
-//        PulsarProperties pulsarProperties = context.getBean(PulsarProperties.class);
-//        ConsumerProperties consumerProperties = context.getBean(ConsumerProperties.class);
-//        ProducerInterceptor producerInterceptor = context.getBean(ProducerInterceptor.class);
-//        PulsarClient pulsarClient = context.getBean(PulsarClient.class);
-//
-//        this.urlBuildService = new UrlBuildService(pulsarProperties,consumerProperties);
-//
-//        this.pulsarClient = pulsarClient;
-//        this.pulsarProperties = pulsarProperties;
-//        this.producerInterceptor = producerInterceptor;
-//        
-//    }
 
     private Producer<?> buildProducer(ProducerHolder holder) {
         try {
@@ -62,7 +42,6 @@ public class ProducerCollector{
 
             return producerBuilder.create();
         } catch (PulsarClientException e) {
-        	LogUtil.global().error("[Solon] [pulsar2-solon-plugin] \n"+e.getMessage());
             throw new ProducerInitException("Failed to init producer.", e);
         }
     }
@@ -111,31 +90,6 @@ public class ProducerCollector{
         		Producer<?> p =buildProducer(ph);
         		IProducerConst.producers.put(pm.getTopic(), p);
         	}
-        	
-        	LogUtil.global().info("[Solon] [pulsar2-solon-plugin] PulsarProducer doBuild End...");
         }
-
     }
-
-//    @Override
-//    public void doBuild(Class<?> clz, BeanWrap bw, PulsarProducer anno) throws Throwable {
-//        System.out.println("[pulsar2-solon-plugin] PulsarProducer doBuild...");
-//        Object bean = bw.raw();
-//
-//        if (bean instanceof PulsarProducerFactory) {
-//        	IProducerConst.producers.putAll(((PulsarProducerFactory) bean).getTopics().entrySet().stream()
-//                    .map($ -> $.getValue().getNamespace().map(customNamespace -> new ProducerHolder(
-//                            $.getKey(),
-//                            $.getValue().getClazz(),
-//                            $.getValue().getSerialization(),
-//                            customNamespace, $.getValue().getCompressionType())
-//                    ).orElseGet(() -> new ProducerHolder(
-//                            $.getKey(),
-//                            $.getValue().getClazz(),
-//                            $.getValue().getSerialization(), $.getValue().getCompressionType())
-//                    ))
-//                    .collect(Collectors.toMap(ProducerHolder::getTopic, this::buildProducer)));
-//        }
-//    }
-    
 }

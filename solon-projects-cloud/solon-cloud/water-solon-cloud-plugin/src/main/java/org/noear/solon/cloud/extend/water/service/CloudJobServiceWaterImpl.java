@@ -4,10 +4,11 @@ import org.noear.solon.Solon;
 import org.noear.solon.cloud.CloudJobHandler;
 import org.noear.solon.cloud.model.JobHolder;
 import org.noear.solon.cloud.service.CloudJobService;
-import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.logging.utils.TagsMDC;
 import org.noear.water.WaterClient;
 import org.noear.water.model.JobM;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -22,6 +23,8 @@ import java.util.Map;
  * @since 1.2
  */
 public class CloudJobServiceWaterImpl implements CloudJobService {
+    static final Logger log = LoggerFactory.getLogger(CloudJobServiceWaterImpl.class);
+
     public static final CloudJobServiceWaterImpl instance = new CloudJobServiceWaterImpl();
 
     public Map<String, JobHolder> jobMap = new LinkedHashMap<>();
@@ -53,7 +56,7 @@ public class CloudJobServiceWaterImpl implements CloudJobService {
 
         jobMap.put(name, jobHolder);
         TagsMDC.tag0("CloudJob");
-        LogUtil.global().info("CloudJob: Handler registered name:" + name + ", class:" + handler.getClass().getName());
+        log.info("CloudJob: Handler registered name:" + name + ", class:" + handler.getClass().getName());
         TagsMDC.tag0("");
         return true;
     }
