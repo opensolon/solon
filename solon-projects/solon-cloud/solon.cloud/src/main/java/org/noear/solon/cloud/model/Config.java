@@ -1,7 +1,9 @@
 package org.noear.solon.cloud.model;
 
+import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.PropsConverter;
+import org.noear.solon.core.util.PropUtil;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -77,12 +79,8 @@ public class Config implements Serializable {
 
             for (Map.Entry<Object, Object> kv : _props.entrySet()) {
                 if (kv.getValue() instanceof String) {
-                    String tmpV = (String) kv.getValue();
-                    if (tmpV.startsWith("${") && tmpV.endsWith("}")) {
-                        String tmpK = tmpV.substring(2, tmpV.length() - 1);
-                        tmpV = _props.getProperty(tmpK);
-                        _props.put(kv.getKey(), tmpV);
-                    }
+                    String tmpV = PropUtil.getByTml(Solon.cfg(), _props, (String) kv.getValue());
+                    _props.put(kv.getKey(), tmpV);
                 }
             }
         }
