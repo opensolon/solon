@@ -3,6 +3,7 @@ package org.noear.solon.boot.jdkhttp;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import org.noear.solon.Utils;
+import org.noear.solon.boot.web.HeaderUtils;
 import org.noear.solon.boot.web.WebContextBase;
 import org.noear.solon.boot.web.Constants;
 import org.noear.solon.boot.web.RedirectUtils;
@@ -147,12 +148,7 @@ public class JdkHttpContext extends WebContextBase {
 
     @Override
     public long contentLength() {
-        try {
-            return bodyAsStream().available();
-        } catch (Exception e) {
-            EventBus.publishTry(e);
-            return 0;
-        }
+        return HeaderUtils.getContentLengthLong(this);
     }
 
     @Override

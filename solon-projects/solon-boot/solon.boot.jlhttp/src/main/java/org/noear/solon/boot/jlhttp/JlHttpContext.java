@@ -1,6 +1,7 @@
 package org.noear.solon.boot.jlhttp;
 
 import org.noear.solon.Utils;
+import org.noear.solon.boot.web.HeaderUtils;
 import org.noear.solon.boot.web.WebContextBase;
 import org.noear.solon.boot.web.Constants;
 import org.noear.solon.boot.web.RedirectUtils;
@@ -144,12 +145,7 @@ public class JlHttpContext extends WebContextBase {
 
     @Override
     public long contentLength() {
-        try {
-            return _request.getBody().available();
-        } catch (Exception e) {
-            EventBus.publishTry(e);
-            return 0;
-        }
+        return HeaderUtils.getContentLengthLong(this);
     }
     @Override
     public String queryString() {

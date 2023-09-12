@@ -21,6 +21,7 @@
 * 添加 ContextPathFilter 一个简化的构造函数
 * 调整 BeanWrap 的 rawSet tagSet 改为公有
 * 调整 CloudConfig 复用主框架的属性表达式与模板解析
+* 调整 jdkhttp,jlhttp,smarthttp 的 contentLength 适配处理
 * 调整 使用更多的 slf4j 替代 bus???
 
 ### 2.5.4

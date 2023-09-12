@@ -132,12 +132,7 @@ public class SmHttpContext extends WebContextBase {
 
     @Override
     public long contentLength() {
-        try {
-            return _request.getContentLength();
-        } catch (Exception e) {
-            EventBus.publishTry(e);
-            return 0;
-        }
+        return _request.getContentLength();
     }
 
     @Override
