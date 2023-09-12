@@ -6,7 +6,8 @@ import io.jsonwebtoken.io.Encoders;
 import io.jsonwebtoken.security.Keys;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
-import org.noear.solon.core.event.EventBus;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.security.Key;
 import java.util.Date;
@@ -16,6 +17,8 @@ import java.util.Date;
  * @since 1.3
  */
 public class JwtUtils {
+    static final Logger log = LoggerFactory.getLogger(JwtUtils.class);
+
     private static String TOKEN_HEADER = "Bearer ";
     private static Key key = null;
 
@@ -112,7 +115,7 @@ public class JwtUtils {
         } catch (ExpiredJwtException ex) {
 
         } catch (Throwable e) {
-            EventBus.publishTry(e);
+            log.warn(e.getMessage(), e);
         }
 
         return null;

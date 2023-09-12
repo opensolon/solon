@@ -14,6 +14,8 @@ import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.util.ResourceUtil;
 import org.noear.solon.core.util.SupplierEx;
 import org.noear.solon.view.ViewConfig;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -31,6 +33,8 @@ import java.util.Map;
  * @since 1.0
  * */
 public class VelocityRender implements Render {
+    static final Logger log = LoggerFactory.getLogger(VelocityRender.class);
+
     private static VelocityRender _global;
 
     public static VelocityRender global() {
@@ -141,7 +145,7 @@ public class VelocityRender implements Render {
                 forRelease();
             }
         } catch (Exception e) {
-            EventBus.publishTry(e);
+            log.warn(e.getMessage(), e);
         }
     }
 
