@@ -1,9 +1,10 @@
 package org.noear.solon.health.detector.impl;
 
-import org.noear.solon.core.event.EventBus;
 import org.noear.solon.health.detector.AbstractDetector;
 import org.noear.solon.health.detector.util.CmdUtil;
 import org.noear.solon.health.detector.util.SizeUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.util.HashMap;
@@ -19,6 +20,8 @@ import java.util.regex.Pattern;
  * @since 1.2
  * */
 public class DiskDetector extends AbstractDetector {
+    static final Logger log = LoggerFactory.getLogger(DiskDetector.class);
+
     private static final Pattern linuxDiskPattern = Pattern.compile("\\s+([\\d]+)\\s+([\\d]+)\\s+([\\d]+)\\s+([\\d]+%)\\s+(/.*)", 42);
     private static final Pattern macDiskPattern = Pattern.compile("\\s+([\\d]+)\\s+([\\d]+)\\s+([\\d]+)\\s+([\\d]+%)\\s+\\d+\\s+\\d+\\s+\\d+%\\s+(/.*)", 42);
 
@@ -75,7 +78,7 @@ public class DiskDetector extends AbstractDetector {
                     totalUsed += used;
                 }
             } catch (Exception e) {
-                EventBus.publishTry(e);
+                log.warn(e.getMessage(), e);
                 details.put("error", "Get Disk Failed:" + e.getMessage());
             }
 

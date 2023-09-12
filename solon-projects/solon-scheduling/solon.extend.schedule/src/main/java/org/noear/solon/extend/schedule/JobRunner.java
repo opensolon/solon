@@ -1,6 +1,7 @@
 package org.noear.solon.extend.schedule;
 
-import org.noear.solon.core.event.EventBus;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -10,6 +11,8 @@ import org.noear.solon.core.event.EventBus;
  * @since 1.0
  * */
 public class JobRunner implements IJobRunner {
+    static final Logger log = LoggerFactory.getLogger(JobRunner.class);
+
     /**
      * 全局运行实例（可以修改替换）
      */
@@ -65,7 +68,7 @@ public class JobRunner implements IJobRunner {
                 }
             } catch (Throwable e) {
                 try {
-                    EventBus.publishTry(e);
+                    log.warn(e.getMessage(), e);
                     Thread.sleep(1000);
                 } catch (Throwable ee) {
                 }
