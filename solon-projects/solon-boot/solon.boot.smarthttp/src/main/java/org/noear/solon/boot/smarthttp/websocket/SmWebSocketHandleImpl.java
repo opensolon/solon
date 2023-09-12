@@ -1,10 +1,11 @@
 package org.noear.solon.boot.smarthttp.websocket;
 
 import org.noear.solon.Solon;
-import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.socketd.ProtocolManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.smartboot.http.server.WebSocketRequest;
 import org.smartboot.http.server.WebSocketResponse;
 import org.smartboot.http.server.handler.WebSocketDefaultHandler;
@@ -12,7 +13,8 @@ import org.smartboot.http.server.impl.Request;
 
 import java.nio.ByteBuffer;
 
-public class SmWebSocketHandleImp extends WebSocketDefaultHandler {
+public class SmWebSocketHandleImpl extends WebSocketDefaultHandler {
+    static final Logger log = LoggerFactory.getLogger(SmWebSocketHandleImpl.class);
 
     @Override
     public void onHandShake(WebSocketRequest request, WebSocketResponse response) {
@@ -46,7 +48,7 @@ public class SmWebSocketHandleImp extends WebSocketDefaultHandler {
 
             Solon.app().listener().onMessage(session, message.isString(true));
         } catch (Throwable e) {
-            EventBus.publishTry(e);
+            log.warn(e.getMessage(), e);
         }
     }
 
@@ -65,7 +67,7 @@ public class SmWebSocketHandleImp extends WebSocketDefaultHandler {
             Solon.app().listener().onMessage(session, message);
 
         } catch (Throwable e) {
-            EventBus.publishTry(e);
+            log.warn(e.getMessage(), e);
         }
     }
 

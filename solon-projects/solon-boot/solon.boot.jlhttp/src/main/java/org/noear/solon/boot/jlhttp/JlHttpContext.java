@@ -197,9 +197,8 @@ public class JlHttpContext extends WebContextBase {
 
                     list.add(kv[1]);
                 }
-            } catch (Exception e) {
-                EventBus.publishTry(e);
-                return null;
+            } catch (IOException e) {
+                throw new IllegalStateException(e);
             }
         }
 
