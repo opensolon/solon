@@ -2,7 +2,8 @@ package org.noear.solon.extend.springboot;
 
 import org.noear.solon.Solon;
 import org.noear.solon.core.BeanWrap;
-import org.noear.solon.core.event.EventBus;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 
@@ -11,6 +12,8 @@ import org.springframework.beans.factory.config.BeanPostProcessor;
  * @since 1.2
  */
 public class BeanPostProcessorSolon implements BeanPostProcessor {
+    static final Logger log = LoggerFactory.getLogger(BeanPostProcessorSolon.class);
+
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
         if (beanName.startsWith("org.springframework") == false) {
@@ -21,7 +24,7 @@ public class BeanPostProcessorSolon implements BeanPostProcessor {
                     //
                     Solon.context().beanInject(bean);
                 } catch (Throwable e) {
-                    EventBus.publishTry(e);
+                    log.warn(e.getMessage(), e);
                 }
             }
         }
@@ -46,7 +49,7 @@ public class BeanPostProcessorSolon implements BeanPostProcessor {
                         Solon.context().beanRegister(bw, beanName, true);
                     }
                 } catch (Throwable e) {
-                    EventBus.publishTry(e);
+                    log.warn(e.getMessage(), e);
                 }
             }
         }
