@@ -150,7 +150,8 @@ public class JdkHttpContext extends WebContextBase {
         try {
             return bodyAsStream().available();
         } catch (Exception e) {
-            throw new IllegalStateException(e);
+            EventBus.publishTry(e);
+            return 0;
         }
     }
 
