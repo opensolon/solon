@@ -9,6 +9,8 @@ import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.socketd.ProtocolManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
@@ -16,6 +18,8 @@ import java.nio.ByteBuffer;
 
 @SuppressWarnings("unchecked")
 public class WsServer extends WebSocketServer {
+    static final Logger log = LoggerFactory.getLogger(WsServer.class);
+
     public WsServer(int port) {
         super(new InetSocketAddress(port));
     }
@@ -60,7 +64,7 @@ public class WsServer extends WebSocketServer {
 
     @Override
     public void onMessage(WebSocket conn, ByteBuffer data) {
-        if(conn == null){
+        if (conn == null) {
             return;
         }
 
@@ -70,7 +74,7 @@ public class WsServer extends WebSocketServer {
 
             Solon.app().listener().onMessage(session, message);
         } catch (Throwable e) {
-            EventBus.publishTry(e);
+            log.warn(e.getMessage(), e);
         }
     }
 

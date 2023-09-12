@@ -3,7 +3,8 @@ package org.noear.solon.cloud.service;
 import org.noear.solon.cloud.CloudDiscoveryHandler;
 import org.noear.solon.cloud.model.Discovery;
 import org.noear.solon.cloud.utils.DiscoveryUtils;
-import org.noear.solon.core.event.EventBus;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 云端发现观察者实体
@@ -12,6 +13,8 @@ import org.noear.solon.core.event.EventBus;
  * @since 1.2
  */
 public class CloudDiscoveryObserverEntity implements CloudDiscoveryHandler {
+    static final Logger log = LoggerFactory.getLogger(CloudDiscoveryObserverEntity.class);
+
     public String group;
     public String service;
     public CloudDiscoveryHandler handler;
@@ -30,7 +33,7 @@ public class CloudDiscoveryObserverEntity implements CloudDiscoveryHandler {
 
             handler.handle(discovery);
         } catch (Throwable e) {
-            EventBus.publishTry(e);
+            log.warn(e.getMessage(), e);
         }
     }
 }
