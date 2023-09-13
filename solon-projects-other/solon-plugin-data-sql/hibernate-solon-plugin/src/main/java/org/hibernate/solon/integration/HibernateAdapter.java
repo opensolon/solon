@@ -3,15 +3,11 @@ package org.hibernate.solon.integration;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.noear.solon.Solon;
-import org.noear.solon.Utils;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.Props;
 import org.noear.solon.core.VarHolder;
-import org.noear.solon.core.util.LogUtil;
-import org.noear.solon.core.util.ResourceUtil;
 
 import javax.sql.DataSource;
-import java.util.List;
 
 /**
  * @author lingkang
@@ -22,11 +18,12 @@ public class HibernateAdapter {
     protected Props dsProps;
 
     protected HibernateConfiguration configuration;
-    public HibernateAdapter(BeanWrap dsWrap){
+
+    public HibernateAdapter(BeanWrap dsWrap) {
         this(dsWrap, Solon.cfg().getProp("hibernate"));
     }
 
-    public HibernateAdapter(BeanWrap dsWrap, Props dsProps){
+    public HibernateAdapter(BeanWrap dsWrap, Props dsProps) {
         this.dsWrap = dsWrap;
         this.dsProps = dsProps;
 
@@ -44,15 +41,21 @@ public class HibernateAdapter {
         return dsWrap.raw();
     }
 
-    public SessionFactory getSessionFactory(){
-        return getConfiguration().buildSessionFactory();
+    SessionFactory sessionFactory;
+
+    public SessionFactory getSessionFactory() {
+        if (sessionFactory != null) {
+            sessionFactory = getConfiguration().buildSessionFactory();
+        }
+
+        return sessionFactory;
     }
 
     public HibernateConfiguration getConfiguration() {
         return configuration;
     }
 
-    protected void initConfiguration(){
+    protected void initConfiguration() {
 
     }
 
@@ -80,12 +83,12 @@ public class HibernateAdapter {
         getConfiguration().setProperties(cfgProps);
     }
 
-    protected void injectTo(VarHolder varH){
-        if(SessionFactory.class.isAssignableFrom(varH.getType())){
+    protected void injectTo(VarHolder varH) {
+        if (SessionFactory.class.isAssignableFrom(varH.getType())) {
             varH.setValue(getSessionFactory());
         }
 
-        if(Configuration.class.isAssignableFrom(varH.getType())){
+        if (Configuration.class.isAssignableFrom(varH.getType())) {
             varH.setValue(getConfiguration());
         }
     }
