@@ -32,6 +32,7 @@
         <module>../../solon-projects-other/solon-plugin-data-sql/wood-solon-plugin</module>
         <module>../../solon-projects-other/solon-plugin-data-sql/bean-searcher-solon-plugin</module>
         <module>../../solon-projects-other/solon-plugin-data-sql/openjpa-solon-plugin</module>
+        <module>../../solon-projects-other/solon-plugin-data-sql/hibernate-solon-plugin</module>
         <module>../../solon-projects-other/solon-plugin-data-nosql/redisson-solon-plugin</module>
         <module>../../solon-projects-other/solon-plugin-data-nosql/lettuce-solon-plugin</module>
     </modules>

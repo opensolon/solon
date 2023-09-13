@@ -142,10 +142,8 @@ public final class SolonProps extends Props {
         //4.4.加载配置 solon.config.load //支持多文件（只支持内部，支持{env}）
         Map<String,String> loadKeyMap = new TreeMap<>();
         doFind("solon.config.load", (key, val) -> {
-            if (key.equals("")) {
+            if (key.equals("") || key.startsWith("[")) {
                 loadKeyMap.put(key, val);
-            } else if (key.equals("") || key.startsWith("[")) {
-                loadKeyMap.put(key.substring(1), val);
             }
         });
 

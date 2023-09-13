@@ -9,10 +9,10 @@ import java.util.TreeMap;
 public class MapTest {
     public static void main(String[] args) {
         Map<String, String> loadKeyMap = new TreeMap<>();
-        loadKeyMap.put("3", "d");
-        loadKeyMap.put("0", "a");
-        loadKeyMap.put("2", "c");
-        loadKeyMap.put("1", "b");
+        loadKeyMap.put("[3]", "d");
+        loadKeyMap.put("[0]", "a");
+        loadKeyMap.put("[2]", "c");
+        loadKeyMap.put("[1]", "b");
         loadKeyMap.put("","x");
 
         for (String v : loadKeyMap.values()) {
