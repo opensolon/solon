@@ -140,11 +140,18 @@ public final class SolonProps extends Props {
         loadAdd(source.getAnnotation(PropertySource.class));
 
         //4.4.加载配置 solon.config.load //支持多文件（只支持内部，支持{env}）
-        getMap("solon.config.load").forEach((key, val) -> {
-            if (key.equals("") || key.startsWith("[")) {
-                addConfig(val, true, sysPropOrg);
+        Map<String,String> loadKeyMap = new TreeMap<>();
+        doFind("solon.config.load", (key, val) -> {
+            if (key.equals("")) {
+                loadKeyMap.put(key, val);
+            } else if (key.equals("") || key.startsWith("[")) {
+                loadKeyMap.put(key.substring(1), val);
             }
         });
+
+        for(String loadKey : loadKeyMap.values()) {
+            addConfig(loadKey, true, sysPropOrg);
+        }
 
 
         //4.5.加载扩展配置 solon.config.add //支持多文件（支持内部或外部，支持{env}）

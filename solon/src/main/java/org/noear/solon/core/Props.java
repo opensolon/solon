@@ -276,7 +276,7 @@ public class Props extends Properties {
         return new ArrayList<>(sortMap.values());
     }
 
-    private void doFind(String keyStarts, BiConsumer<String, String> setFun) {
+    protected void doFind(String keyStarts, BiConsumer<String, String> setFun) {
         String key2 = keyStarts;
         int idx2 = key2.length();
 
