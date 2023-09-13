@@ -26,6 +26,7 @@
 * 调整 使用更多的 slf4j 替换 LogUtil???
 * 调整 solon.config.add 与 solon.config.load 合并，规范格式（同时支持内部与外部）???
 * 调整 mybatis-solon-plugin 的会话提交方式，修复二级缓存控制可能失效的问题
+* 调整 "solon.config.load" 支持按顺序加载
 
 ### 2.5.4
 * 增加 AppContext::onEvent 接口
