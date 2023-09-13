@@ -27,6 +27,7 @@
 * 调整 solon.config.add 与 solon.config.load 合并，规范格式（同时支持内部与外部）???
 * 调整 mybatis-solon-plugin 的会话提交方式，修复二级缓存控制可能失效的问题
 * 调整 "solon.config.load" 支持按顺序加载
+* 调整 几个特定启动参数的处理方式。改与成 Solon.cfg() 同步，再统一从 Solon.cfg() 取值
 
 ### 2.5.4
 * 增加 AppContext::onEvent 接口

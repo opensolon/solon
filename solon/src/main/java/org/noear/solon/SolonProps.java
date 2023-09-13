@@ -43,8 +43,6 @@ public final class SolonProps extends Props {
     private boolean isSetupMode;//是否为安装蕈式
     private boolean isAloneMode;//是否为独立蕈式（即独立运行模式）
 
-    private int stopDelay = 10; //停止延迟（秒）
-    private boolean stopSafe;//停止安全的进行
 
     private String env;
 
@@ -53,10 +51,6 @@ public final class SolonProps extends Props {
     private String extend;
     private String extendFilter;
 
-    private String appName;
-    private String appGroup;
-    private String appNamespace;
-    private String appTitle;
 
     public SolonProps() {
         super(System.getProperties());
@@ -197,21 +191,16 @@ public final class SolonProps extends Props {
         }
 
         //8.应用基础信息
-        appName = getArg("app.name");  //6.应用名
-        appGroup = getArg("app.group"); //6.1.应用组
-        appNamespace = getArg("app.namespace"); //6.1.应用组
-        appTitle = getArg("app.title"); //6.1.应用标题
+        synArg("app.name");  //6.应用名
+        synArg("app.group"); //6.1.应用组
+        synArg("app.namespace"); //6.1.应用组
+        synArg("app.title"); //6.1.应用标题
 
         //9.特性控制
         //solon.stop.delay = 10
         //solon.stop.safe  = 0
-        String stopSafeStr = getArg("stop.safe");
-        if (Utils.isEmpty(stopSafeStr)) {
-            //@deprecated
-            stopSafeStr = getArg("app.safeStop");
-        }
-        stopSafe = "1".equals(stopSafeStr); //是否安全停止
-        stopDelay = Integer.parseInt(getArg("stop.delay", "10s").replace("s", ""));
+        synArg("stop.safe");
+        synArg("stop.delay");
 
         return this;
     }
@@ -235,6 +224,18 @@ public final class SolonProps extends Props {
         LogUtil.global().warn("'" + file + "' is deprecated, please use '" + sml + "'");
     }
 
+    /**
+     * 同步特定启动参数
+     *
+     * @param name 参数名
+     * */
+    private void synArg(String name) {
+        String val = args.get(name);
+        if (val != null) {
+            //如果为空，尝试从属性配置取
+            setProperty("solon." + name, val);
+        }
+    }
 
     /**
      * 获取启动参数
@@ -242,28 +243,14 @@ public final class SolonProps extends Props {
      * @param name 参数名
      */
     private String getArg(String name) {
-        return getArg(name, null);
-    }
-
-    /**
-     * 获取启动参数
-     *
-     * @param name 参数名
-     * @param def  默认值
-     */
-    private String getArg(String name, String def) {
         //尝试去启动参数取
-        String tmp = args.get(name);
-        if (Utils.isEmpty(tmp)) {
+        String val = args.get(name);
+        if (val == null) {
             //如果为空，尝试从属性配置取
-            tmp = get("solon." + name);
+            val = get("solon." + name);
         }
 
-        if (Utils.isEmpty(tmp)) {
-            return def;
-        } else {
-            return tmp;
-        }
+        return val;
     }
 
     /**
@@ -537,28 +524,28 @@ public final class SolonProps extends Props {
      * 应用名
      */
     public String appName() {
-        return appName;
+        return get("solon.app.name");
     }
 
     /**
      * 应用组
      */
     public String appGroup() {
-        return appGroup;
+        return get("solon.app.group");
     }
 
     /**
      * 命名空间
      */
     public String appNamespace() {
-        return appNamespace;
+        return get("solon.app.namespace");
     }
 
     /**
      * 应用标题
      */
     public String appTitle() {
-        return appTitle;
+        return get("solon.app.title");
     }
 
     /**
@@ -632,10 +619,15 @@ public final class SolonProps extends Props {
     }
 
 
+    Boolean stopSafe;
     /**
      * 停止安全的进行
      */
     public boolean stopSafe() {
+        if(stopSafe == null){
+            stopSafe = "1".equals("solon.stop.safe");
+        }
+
         return stopSafe;
     }
 
@@ -643,18 +635,15 @@ public final class SolonProps extends Props {
         stopSafe = value;
     }
 
-    /**
-     * @deprecated 2.0
-     */
-    @Deprecated
-    public boolean enableSafeStop() {
-        return stopSafe;
-    }
-
+    Integer stopDelay;
     /**
      * 停止延时
      */
     public int stopDelay() {
+        if(stopDelay == null){
+            stopDelay = Integer.parseInt(get("solon.stop.delay", "10s").replace("s", ""));
+        }
+
         return stopDelay;
     }
 }
