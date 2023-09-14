@@ -73,11 +73,7 @@ public final class SolonProps extends Props {
         this.testing = args.containsKey("testing");
 
         //2.同步启动参数到系统属性
-        this.args.forEach((k, v) -> {
-            if (k.contains(".")) {
-                System.setProperty(k, v);
-            }
-        });
+        this.syncArgsToSys();
 
         //3.获取原始系统属性原始副本
         Properties sysPropOrg = new Properties();
@@ -111,7 +107,6 @@ public final class SolonProps extends Props {
         env = getArg("env");
 
         if (Utils.isNotEmpty(env)) {
-            System.setProperty(Constants.SOLON_ENV, env);
             //@Deprecated 2.2
             appUrl = ResourceUtil.getResource("application-" + env + ".properties");
             if (appUrl != null) {
@@ -191,17 +186,6 @@ public final class SolonProps extends Props {
             locale = Locale.getDefault();
         }
 
-        //8.应用基础信息
-        synArg("app.name");  //6.应用名
-        synArg("app.group"); //6.1.应用组
-        synArg("app.namespace"); //6.1.应用组
-        synArg("app.title"); //6.1.应用标题
-
-        //9.特性控制
-        //solon.stop.delay = 10
-        //solon.stop.safe  = 0
-        synArg("stop.safe");
-        synArg("stop.delay");
 
         return this;
     }
@@ -225,16 +209,36 @@ public final class SolonProps extends Props {
         LogUtil.global().warn("'" + file + "' is deprecated, please use '" + sml + "'");
     }
 
+    private void syncArgsToSys() {
+        //1.同步所有属性
+        this.args.forEach((k, v) -> {
+            if (k.contains(".")) {
+                System.setProperty(k, v);
+            }
+        });
+
+        //2.同步特定参数
+        syncArgToSys("env");
+
+        syncArgToSys("app.name");  //应用名
+        syncArgToSys("app.group"); //应用组
+        syncArgToSys("app.namespace"); //应用组
+        syncArgToSys("app.title"); //应用标题
+
+        syncArgToSys("stop.safe"); //def: 0
+        syncArgToSys("stop.delay"); //def: 10s
+    }
+
     /**
-     * 同步特定启动参数
+     * 同步特定启动参数到系统属性
      *
      * @param name 参数名
      * */
-    private void synArg(String name) {
+    private void syncArgToSys(String name) {
         String val = args.get(name);
         if (val != null) {
             //如果为空，尝试从属性配置取
-            setProperty("solon." + name, val);
+            System.setProperty("solon." + name, val);
         }
     }
 
