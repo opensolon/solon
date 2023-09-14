@@ -111,6 +111,7 @@ public final class SolonProps extends Props {
         env = getArg("env");
 
         if (Utils.isNotEmpty(env)) {
+            System.setProperty(Constants.SOLON_ENV, env);
             //@Deprecated 2.2
             appUrl = ResourceUtil.getResource("application-" + env + ".properties");
             if (appUrl != null) {
