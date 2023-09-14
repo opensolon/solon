@@ -19,6 +19,7 @@
 * 添加 PropUtil 类。把原来的属性表达式与模板解析独立出来
 * 添加 ContextPathListener 类，用于控制 contentPath 对 ws,tpc 的影响
 * 添加 ContextPathFilter 一个简化的构造函数
+* 添加 yaml 多片段支持（即一文件多环境支持）
 * 调整 BeanWrap 的 rawSet tagSet 改为公有
 * 调整 CloudConfig 复用主框架的属性表达式与模板解析
 * 调整 jdkhttp,jlhttp,smarthttp 的 contentLength 适配处理
@@ -28,6 +29,8 @@
 * 调整 mybatis-solon-plugin 的会话提交方式，修复二级缓存控制可能失效的问题
 * 调整 "solon.config.load" 支持按顺序加载
 * 调整 几个特定启动参数的处理方式。改与成 Solon.cfg() 同步，再统一从 Solon.cfg() 取值
+* 调整 启动参数与系统属性的同步时机
+* wood 升为 1.1.9
 
 ### 2.5.4
 * 增加 AppContext::onEvent 接口
