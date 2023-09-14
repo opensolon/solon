@@ -1,81 +1,103 @@
 package org.noear.solon.config.yaml;
 
-import org.noear.solon.Solon;
-import org.noear.solon.core.Constants;
+import org.noear.solon.Utils;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.*;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.regex.Pattern;
 
 /**
  * Yaml 属性
  *
  * @author noear
  * @since 1.5
+ * @since 2.5
  * */
 public class PropertiesYaml extends Properties {
+    static final String SOLON_ENV = "solon.env";
+    static final String SOLON_ENV_ON = "solon.env.on";
+    static final String YML_PART_SPLIT = "---";
+
 
     private Yaml createYaml() {
         return new Yaml();
     }
 
     public void loadYml(InputStream inputStream) throws Exception {
-        try(InputStreamReader is =  new InputStreamReader(inputStream)) {
+        try (InputStreamReader is = new InputStreamReader(inputStream)) {
             this.loadYml(is);
         }
     }
+
     public synchronized void loadYml(Reader reader) throws IOException {
-        List<String> strList = new ArrayList<>();
-        try(BufferedReader in = new BufferedReader(reader)){
-            StringBuffer buffer = new StringBuffer();
-            String line = null;
-            while ((line = in.readLine()) != null){
-                if(Constants.YML_SPLIT_PATTERN.matcher(line).matches()){
-                    strList.add(buffer.toString());
-                    buffer.setLength(0);
-                }else{
-                    buffer.append(line).append("\n");
-                }
-            }
-            strList.add(buffer.toString());
-        }
-        AtomicReference<String> envAtomicReference = new AtomicReference<>(System.getProperty(Constants.SOLON_ENV));
-        String str = null;
-        for (int i = 0; i < strList.size(); i++) {
-            str = strList.get(i);
-            if(str == null || str.replaceAll(" ", "").length() == 0){
+        //支持多部分切割
+        List<String> partList = splitParts(reader);
+
+        //开始加载多部分属性
+        AtomicReference<String> envRef = new AtomicReference<>(System.getProperty(SOLON_ENV));
+        String partStr = null;
+        for (int i = 0; i < partList.size(); i++) {
+            partStr = partList.get(i);
+            if (Utils.isBlank(partStr)) {
                 continue;
             }
-            Yaml yaml = createYaml();
-            Object tmp = yaml.load(str);
-            Map<Object, Object> temProp = new TreeMap<>();
-            load0(temProp, "", tmp);
-            if(temProp.size() == 0){
+
+            //1.加载部分属性
+            Object tmp = createYaml().load(partStr);
+            Map<Object, Object> partProp = new TreeMap<>();
+            load0(partProp, "", tmp);
+            if (partProp.size() == 0) {
                 continue;
             }
-            if(envAtomicReference.get() == null && i ==0 && temProp.containsKey(Constants.SOLON_ENV)){
-                envAtomicReference.set(String.valueOf(temProp.get(Constants.SOLON_ENV)));
+
+            //2.同步环境变量
+            if (envRef.get() == null && i == 0 && partProp.containsKey(SOLON_ENV)) {
+                envRef.set(String.valueOf(partProp.get(SOLON_ENV)));
             }
-            if(temProp.containsKey(Constants.SOLON_ACTIVATE_ON_ENV)){
-                if(Arrays.stream(String.valueOf(temProp.get(Constants.SOLON_ACTIVATE_ON_ENV)).split("\\|")).anyMatch(activateOnEnv->{
-                    return activateOnEnv.replaceAll(" ", "").equals(envAtomicReference.get());
-                })){
-                    super.putAll(temProp);
+
+            //3.根据条件过滤加载
+            if (partProp.containsKey(SOLON_ENV_ON)) {
+                //如果有环境条件，尝试匹配 //支持多环境匹配。例：solon.env.on: pro1 | pro2
+                String envOn = String.valueOf(partProp.get(SOLON_ENV_ON));
+                if (Arrays.stream(envOn.split("\\|")).anyMatch(e -> e.trim().equals(envRef.get()))) {
+                    super.putAll(partProp);
                 }
-            }else{
-                super.putAll(temProp);
+            } else {
+                super.putAll(partProp);
             }
         }
     }
 
+    /**
+     * 切割多部分
+     * */
+    private List<String> splitParts(Reader reader) throws IOException {
+        List<String> partList = new ArrayList<>();
+
+        //支持多部分切割
+        try (BufferedReader in = new BufferedReader(reader)) {
+            StringBuffer buffer = new StringBuffer();
+            String line = null;
+            while ((line = in.readLine()) != null) {
+                if (line.startsWith(YML_PART_SPLIT)) { //用 starts 替代 pattern 提高性能
+                    partList.add(buffer.toString());
+                    buffer.setLength(0);
+                } else {
+                    buffer.append(line).append("\n");
+                }
+            }
+            partList.add(buffer.toString());
+        }
+
+        return partList;
+    }
 
     private void load0(Map<Object, Object> temProp, String prefix, Object tmp) {
         if (tmp instanceof Map) {
             ((Map<String, Object>) tmp).forEach((k, v) -> {
                 String prefix2 = prefix + "." + k;
-                this.load0(temProp, prefix2, v);
+                load0(temProp, prefix2, v);
             });
             return;
         }
@@ -85,16 +107,16 @@ public class PropertiesYaml extends Properties {
             int index = 0;
             for (Object v : ((List) tmp)) {
                 String prefix2 = prefix + "[" + index + "]";
-                this.load0(temProp, prefix2, v);
+                load0(temProp, prefix2, v);
                 index++;
             }
             return;
         }
 
         if (tmp == null) {
-            this.put0(temProp, prefix, "");
+            put0(temProp, prefix, "");
         } else {
-            this.put0(temProp, prefix, String.valueOf(tmp));
+            put0(temProp, prefix, String.valueOf(tmp));
         }
     }
 
