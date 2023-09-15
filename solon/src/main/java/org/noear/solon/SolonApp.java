@@ -1,11 +1,11 @@
 package org.noear.solon;
 
-import org.noear.solon.core.convert.ConverterManager;
-import org.noear.solon.core.event.*;
-import org.noear.solon.core.event.EventListener;
-import org.noear.solon.core.handle.*;
 import org.noear.solon.annotation.Import;
 import org.noear.solon.core.*;
+import org.noear.solon.core.convert.ConverterManager;
+import org.noear.solon.core.event.EventListener;
+import org.noear.solon.core.event.*;
+import org.noear.solon.core.handle.*;
 import org.noear.solon.core.route.RouterWrapper;
 import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.core.util.ConsumerEx;
@@ -45,6 +45,7 @@ public class SolonApp extends RouterWrapper {
     /**
      * 应用上下文
      */
+    @Override
     public AppContext context() {
         return _context;
     }
@@ -218,6 +219,9 @@ public class SolonApp extends RouterWrapper {
         map.forEach((k, v) -> {
             RenderManager.mapping("." + k, v);
         });
+
+        //检查配置是否完全适配
+        cfg().complete();
 
         //3.1.标识上下文加载完成
         context().start();

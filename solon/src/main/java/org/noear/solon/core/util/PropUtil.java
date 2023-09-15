@@ -3,6 +3,8 @@ package org.noear.solon.core.util;
 import org.noear.solon.Utils;
 
 import java.util.Properties;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 /**
  * 属性模板处理工具
@@ -61,12 +63,16 @@ public class PropUtil {
         }
     }
 
+    public static String getByTml(Properties main, Properties target, String tml) {
+        return getByTml(main, target, tml, null);
+    }
+
     /**
      * 根据模板获取配置值
      *
      * @param tml @param tml 模板： ${key} 或 aaa${key}bbb 或 ${key:def}/ccc
      */
-    public static String getByTml(Properties main, Properties target, String tml) {
+    public static String getByTml(Properties main, Properties target, String tml, BiConsumer<String, String> c) {
         if (Utils.isEmpty(tml)) {
             return tml;
         }
@@ -83,15 +89,15 @@ public class PropUtil {
                 if (end < 0) {
                     throw new IllegalStateException("Invalid template expression: " + tml);
                 }
-
                 String name = tml.substring(start + 2, end);
                 String value = getByExp(main, target, name);//支持默认值表达式 ${key:def}
                 if (value == null) {
                     value = "";
                 }
-
+                if(c != null && "".equals(value)){
+                    c.accept(name.replaceAll(":", "").trim(), tml.substring(start, end + 1));
+                }
                 tml = tml.substring(0, start) + value + tml.substring(end + 1);
-
                 //起始位增量
                 start = start + value.length();
             }
