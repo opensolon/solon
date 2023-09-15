@@ -7,6 +7,7 @@ import io.swagger.models.Info;
 import io.swagger.models.License;
 import io.swagger.models.Tag;
 import io.swagger.models.*;
+import io.swagger.models.auth.SecuritySchemeDefinition;
 import io.swagger.models.parameters.Parameter;
 import io.swagger.models.parameters.*;
 import io.swagger.models.properties.*;
@@ -109,7 +110,12 @@ public class OpenApi2Builder {
         }
 
         swagger.vendorExtensions(docket.vendorExtensions());
-        //swagger.setSecurityDefinitions(docket.securityDefinitions());
+        docket.securityExtensions().forEach((key, val) -> {
+            if (val instanceof SecuritySchemeDefinition) {
+                swagger.addSecurityDefinition(key, (SecuritySchemeDefinition) val);
+            }
+        });
+        //
 
         if (swagger.getTags() != null) {
             //排序

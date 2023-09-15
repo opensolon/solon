@@ -37,6 +37,8 @@ public class DocDocket {
      * */
     private Map<String, Object> vendorExtensions = new LinkedHashMap<>();
 
+    private Map<String, Object> securityExtensions = new LinkedHashMap<>();
+
 
 
     public String version() {
@@ -197,19 +199,27 @@ public class DocDocket {
         return this;
     }
 
-    public DocDocket vendorExtensions(ApiVendorExtension vendorExtension) {
-        if (vendorExtension != null) {
-            this.vendorExtensions.put(vendorExtension.getName(), vendorExtension.getValue());
+    public DocDocket vendorExtensions(List<ApiVendorExtension> extensions) {
+        for (ApiVendorExtension ext : extensions) {
+            this.vendorExtensions.put(ext.getName(), ext.getValue());
+        }
+
+        return this;
+    }
+
+    public Map<String, Object> securityExtensions() {
+        return securityExtensions;
+    }
+
+    public DocDocket securityExtensions(Map<String, Object> securityExtensions) {
+        if (securityExtensions != null) {
+            this.securityExtensions.putAll(securityExtensions);
         }
         return this;
     }
 
-    public DocDocket vendorExtensions(List<ApiVendorExtension> vendorExtensions) {
-        if (vendorExtensions != null) {
-            for (ApiVendorExtension vendorExtension : vendorExtensions) {
-                this.vendorExtensions.put(vendorExtension.getName(), vendorExtension.getValue());
-            }
-        }
+    public DocDocket securityExtensions(String name, Object value) {
+        this.securityExtensions.put(name, value);
         return this;
     }
 }
