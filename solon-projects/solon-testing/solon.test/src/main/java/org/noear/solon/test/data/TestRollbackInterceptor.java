@@ -1,7 +1,6 @@
 package org.noear.solon.test.data;
 
 import org.noear.solon.Utils;
-import org.noear.solon.core.ValHolder;
 import org.noear.solon.core.aspect.Interceptor;
 import org.noear.solon.core.aspect.Invocation;
 import org.noear.solon.core.util.RunnableEx;
@@ -9,6 +8,8 @@ import org.noear.solon.data.annotation.Tran;
 import org.noear.solon.data.annotation.TranAnno;
 import org.noear.solon.data.tran.TranUtils;
 import org.noear.solon.test.annotation.TestRollback;
+
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * 回滚拦截器
@@ -19,7 +20,7 @@ import org.noear.solon.test.annotation.TestRollback;
 public class TestRollbackInterceptor implements Interceptor {
     @Override
     public Object doIntercept(Invocation inv) throws Throwable {
-        ValHolder val0 = new ValHolder();
+        AtomicReference val0 = new AtomicReference();
 
         TestRollback anno0 = inv.method().getAnnotation(TestRollback.class);
         TranAnno anno1 = new TranAnno();
@@ -32,10 +33,10 @@ public class TestRollbackInterceptor implements Interceptor {
         }
 
         rollbackDo(anno1, () -> {
-            val0.value = inv.invoke();
+            val0.set(inv.invoke());
         });
 
-        return val0.value;
+        return val0.get();
     }
 
 

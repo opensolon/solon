@@ -5,7 +5,9 @@ package org.noear.solon.core;
  *
  * @author noear
  * @since 1.0
+ * @since 2.5
  * */
+@Deprecated
 public class ValHolder<T> {
     public T value;
 
