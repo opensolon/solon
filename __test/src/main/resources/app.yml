@@ -20,7 +20,7 @@ paasword: 1234
 testname: xxx
 testpath: "D:/abc-1-2.12/xx.xml"
 
-server.port: 8080
+server.port: 8081
 
 server.contextPath: "/test/"
 
@@ -193,3 +193,10 @@ sa-token:
   token-style: uuid
   # 是否输出操作日志
   is-log: false
+
+---
+solon.env.on: test
+envtest.name: test
+---
+solon.env.on: dev
+envtest.title: dev
