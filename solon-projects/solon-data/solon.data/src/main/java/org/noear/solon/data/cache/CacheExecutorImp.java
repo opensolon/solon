@@ -49,7 +49,7 @@ public class CacheExecutorImp {
 
             //1.从缓存获取
             //
-            result = cs.get(key);
+            result = cs.get(key, inv.method().getReturnType());
 
             if (result == null) {
                 //2.执行调用，并返回

@@ -48,7 +48,7 @@ public class IdsCacheImpl implements JapCache {
      */
     @Override
     public Serializable get(String key) {
-        return (Serializable) this.cacheService.get(key);
+        return (Serializable) this.cacheService.get(key, Object.class);
     }
 
     /**

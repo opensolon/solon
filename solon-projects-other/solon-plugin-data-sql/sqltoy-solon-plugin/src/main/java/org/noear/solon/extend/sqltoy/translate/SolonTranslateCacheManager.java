@@ -24,13 +24,13 @@ public class SolonTranslateCacheManager extends TranslateCacheManager {
 
     @Override
     public boolean hasCache(String s) {
-        Object cache=cacheService.get(prefix+s);
-        return cache!=null;
+        Object cache = cacheService.get(prefix + s, Boolean.class);
+        return cache != null;
     }
 
     @Override
     public HashMap<String, Object[]> getCache(String cacheName, String cacheType) {
-       return (HashMap<String, Object[]> )cacheService.get(buildKey(cacheName,cacheType));
+       return (HashMap<String, Object[]> )cacheService.get(buildKey(cacheName,cacheType), HashMap.class);
     }
 
     @Override

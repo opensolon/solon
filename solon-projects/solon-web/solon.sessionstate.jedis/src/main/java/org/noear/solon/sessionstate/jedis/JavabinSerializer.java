@@ -19,17 +19,17 @@ public class JavabinSerializer implements Serializer<String> {
     }
 
     @Override
-    public String serialize(Object obj) throws Exception {
-        if(obj == null){
+    public String serialize(Object fromObj) throws Exception {
+        if(fromObj == null){
             return null;
         }
 
-        byte[] tmp = SerializationUtil.serialize(obj);
+        byte[] tmp = SerializationUtil.serialize(fromObj);
         return Base64.getEncoder().encodeToString(tmp);
     }
 
     @Override
-    public Object deserialize(String dta) throws Exception {
+    public Object deserialize(String dta, Class<?> toClz) throws Exception {
         if(dta == null){
             return null;
         }

@@ -15,11 +15,11 @@ public class CacheTest {
     CacheService cacheService;
 
     @Test
-    public void test() throws Exception{
+    public void test() throws Exception {
         cacheService.store("test", "1", 1);
-        assert "1".equals(cacheService.get("test"));
+        assert "1".equals(cacheService.get("test", String.class));
         Thread.sleep(2000);
-        assert cacheService.get("test") == null;
+        assert cacheService.get("test", String.class) == null;
 
 
         UserM userM = new UserM();
@@ -27,17 +27,17 @@ public class CacheTest {
         userM.name = "test";
 
         cacheService.store("test", userM, 1);
-        assert userM.id == ((UserM)cacheService.get("test")).id;
+        assert userM.id == cacheService.get("test", UserM.class).id;
         Thread.sleep(2000);
-        assert cacheService.get("test") == null;
+        assert cacheService.get("test", UserM.class) == null;
     }
 
     @Test
-    public void test2() throws Exception{
+    public void test2() throws Exception {
         cacheService.store("test", "1", 0);
-        assert "1".equals(cacheService.get("test"));
+        assert "1".equals(cacheService.get("test", String.class));
         cacheService.remove("test");
-        assert cacheService.get("test") == null;
+        assert cacheService.get("test", String.class) == null;
 
 
         UserM userM = new UserM();
@@ -45,8 +45,8 @@ public class CacheTest {
         userM.name = "test";
 
         cacheService.store("test", userM, 0);
-        assert userM.id == ((UserM)cacheService.get("test")).id;
+        assert userM.id == cacheService.get("test", UserM.class).id;
         cacheService.remove("test");
-        assert cacheService.get("test") == null;
+        assert cacheService.get("test", UserM.class) == null;
     }
 }

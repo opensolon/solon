@@ -115,11 +115,11 @@ public class MemCacheService implements CacheService {
     }
 
     @Override
-    public Object get(String key) {
+    public <T> T get(String key, Class<T> clz) {
         String newKey = newKey(key);
 
         try {
-            return client.get(newKey);
+            return (T)client.get(newKey);
         } catch (Exception e) {
             log.warn(e.getMessage(), e);
             return null;

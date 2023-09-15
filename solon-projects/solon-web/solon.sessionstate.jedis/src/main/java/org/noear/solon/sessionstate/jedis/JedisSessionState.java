@@ -60,7 +60,7 @@ public class JedisSessionState extends SessionStateBase {
         }
 
         try {
-            return serializer.deserialize(val);
+            return serializer.deserialize(val, Object.class);
         } catch (Exception e) {
             throw new RuntimeException("Session state deserialization error: " + key + " = " + val, e);
         }

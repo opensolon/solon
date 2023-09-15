@@ -95,10 +95,10 @@ public class RedissonCacheService implements CacheService {
     }
 
     @Override
-    public Object get(String key) {
+    public <T> T get(String key, Class<T> clz) {
         String newKey = newKey(key);
 
-        return client.getBucket(newKey).get();
+        return (T)client.getBucket(newKey).get();
     }
 
     @Override

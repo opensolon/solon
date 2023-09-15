@@ -13,6 +13,6 @@ public class CacheTest {
 
         cacheService.store("1","world",100);
 
-        assert "world".equals(cacheService.get("1"));
+        assert "world".equals(cacheService.get("1", String.class));
     }
 }

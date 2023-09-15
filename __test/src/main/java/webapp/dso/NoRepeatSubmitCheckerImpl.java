@@ -21,7 +21,7 @@ public class NoRepeatSubmitCheckerImpl implements NoRepeatSubmitChecker {
         String key2 = "lock." + submitHash;
 
         synchronized (key2.intern()) {
-            Object tmp = cache.get(key2);
+            Object tmp = cache.get(key2, Object.class);
 
             if (tmp == null) {
                 //如果还没有，则锁成功

@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class CacheTagsServiceImpl implements CacheTagsService {
 
-    private static final String TAG_SECONDS  ="{{s}}:";
+    private static final String TAG_SECONDS = "{{s}}:";
 
     private CacheService _cache;
 
@@ -23,9 +23,9 @@ public class CacheTagsServiceImpl implements CacheTagsService {
      * 获取标签键列表
      *
      * @param tag 缓存标签
-     * */
+     */
     protected List<String> _get(String tag) {
-        Object temp = this._cache.get(tag);
+        Object temp = this._cache.get(tag, ArrayList.class);
 
         if (temp == null) {
             return new ArrayList<>();
@@ -37,7 +37,7 @@ public class CacheTagsServiceImpl implements CacheTagsService {
     /**
      * 设置缓存键列表
      *
-     * @param tag 缓存标签
+     * @param tag     缓存标签
      * @param keyList 标签键列表
      */
     protected void _set(String tag, List<String> keyList, int seconds) {
@@ -46,7 +46,7 @@ public class CacheTagsServiceImpl implements CacheTagsService {
 
     /**
      * 生成标签键
-     * 
+     *
      * @param tag 标签键
      */
     protected String _tagKey(String tag) {
@@ -54,8 +54,8 @@ public class CacheTagsServiceImpl implements CacheTagsService {
     }
 
     @Override
-    public Object get(String key) {
-        return this._cache.get(key);
+    public <T> T get(String key, Class<T> clz) {
+        return this._cache.get(key, clz);
     }
 
     @Override
@@ -98,8 +98,8 @@ public class CacheTagsServiceImpl implements CacheTagsService {
     /**
      * 为缓存添加一个标签
      *
-     * @param tag 标签
-     * @param key 缓存键
+     * @param tag        标签
+     * @param key        缓存键
      * @param refSeconds 缓存时间
      */
     protected void update(String key, String tag, Object newValue, int refSeconds) {
@@ -107,20 +107,20 @@ public class CacheTagsServiceImpl implements CacheTagsService {
 
         List<String> cacheKeyList = this._get(tagKey);
         if (cacheKeyList.contains(key)) {
-            Object temp = this._cache.get(key);
+            if (newValue == null) {
+                // 如果值为null，则删除
+                this._cache.remove(key);
+            } else {
+                Object temp = this._cache.get(key, newValue.getClass());
 
-            if (temp != null) {
-                // 如果之前有缓存，则：
-                if (newValue == null) {
-                    // 如果值为null，则删除
-                    this._cache.remove(key);
-                } else {
-                    // 类型一样才更新 //避免引起莫名的错
+                if (temp != null) {
+                    // 如果之前有缓存，则改 // 类型一样才更新 //避免引起莫名的错
                     if (newValue.getClass() == temp.getClass()) {
                         this._cache.store(key, newValue, refSeconds);
                     }
                 }
             }
+
         }
 
         int seconds = refSeconds;
@@ -135,11 +135,11 @@ public class CacheTagsServiceImpl implements CacheTagsService {
                     // 时间不同时
                     cacheKeyList.add(0, TAG_SECONDS + seconds);
                 }
-            }else{
+            } else {
                 // 不存在时间时
                 cacheKeyList.add(0, TAG_SECONDS + seconds);
             }
-        }else{
+        } else {
             // 第一次时
             cacheKeyList.add(0, TAG_SECONDS + seconds);
         }
@@ -148,5 +148,4 @@ public class CacheTagsServiceImpl implements CacheTagsService {
 
         this._set(tagKey, cacheKeyList, seconds);
     }
-
 }

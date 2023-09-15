@@ -15,16 +15,16 @@ public class SecondCacheService implements CacheService {
     /**
      * @param cache1 一级缓存
      * @param cache2 二级缓存
-     * */
+     */
     public SecondCacheService(CacheService cache1, CacheService cache2) {
         this(cache1, cache2, 5);
     }
 
     /**
-     * @param cache1 一级缓存
-     * @param cache2 二级缓存
+     * @param cache1        一级缓存
+     * @param cache2        二级缓存
      * @param bufferSeconds 缓冲秒数
-     * */
+     */
     public SecondCacheService(CacheService cache1, CacheService cache2, int bufferSeconds) {
         this.cache1 = cache1;
         this.cache2 = cache2;
@@ -38,10 +38,10 @@ public class SecondCacheService implements CacheService {
     }
 
     @Override
-    public Object get(String key) {
-        Object temp = cache1.get(key);
+    public <T> T get(String key, Class<T> clz) {
+        T temp = cache1.get(key, clz);
         if (temp == null) {
-            temp = cache2.get(key);
+            temp = cache2.get(key, clz);
             if (bufferSeconds > 0 && temp != null) {
                 cache1.store(key, temp, bufferSeconds);
             }

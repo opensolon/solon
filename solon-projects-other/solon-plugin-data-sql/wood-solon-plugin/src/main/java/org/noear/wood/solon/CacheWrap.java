@@ -10,7 +10,7 @@ import org.noear.wood.cache.ICacheServiceEx;
  * @since 1.10
  */
 public class CacheWrap implements ICacheServiceEx, CacheService {
-    public static CacheWrap wrap(ICacheServiceEx cache){
+    public static CacheWrap wrap(ICacheServiceEx cache) {
         return new CacheWrap(cache);
     }
 
@@ -32,9 +32,15 @@ public class CacheWrap implements ICacheServiceEx, CacheService {
     }
 
     @Override
+    public <T> T get(String key, Class<T> clz) {
+        return (T) get(key);
+    }
+
+    @Override
     public void remove(String key) {
         real.remove(key);
     }
+
 
     @Override
     public int getDefalutSeconds() {

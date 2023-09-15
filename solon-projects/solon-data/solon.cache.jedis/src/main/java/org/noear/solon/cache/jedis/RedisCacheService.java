@@ -125,7 +125,7 @@ public class RedisCacheService implements CacheService {
     }
 
     @Override
-    public Object get(String key) {
+    public <T> T get(String key, Class<T> clz) {
         String newKey = newKey(key);
         String val = client.openAndGet((ru) -> ru.key(newKey).get());
 
@@ -134,7 +134,7 @@ public class RedisCacheService implements CacheService {
         }
 
         try {
-            return _serializer.deserialize(val);
+            return (T)_serializer.deserialize(val,clz);
         } catch (Exception e) {
             log.warn(e.getMessage(), e);
             return null;
