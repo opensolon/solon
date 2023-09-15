@@ -3,7 +3,7 @@ package org.noear.solon.core;
 import org.noear.solon.SolonProps;
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.PropertySource;
-import org.noear.solon.config.yaml.PropertiesYaml;
+import org.noear.solon.core.config.PropertiesYaml;
 import org.noear.solon.core.util.PropUtil;
 import org.noear.solon.core.util.ResourceUtil;
 
