@@ -63,6 +63,10 @@ public abstract class WebContextBase extends Context {
      * @param name 状态名
      */
     public final <T> T sessionOrDefault(String name, @NonNull T def) {
+        if (def == null) {
+            return (T) session(name, Object.class);
+        }
+
         Object tmp = session(name, def.getClass());
         if (tmp == null) {
             return def;
