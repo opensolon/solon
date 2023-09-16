@@ -36,8 +36,8 @@ public class SocketSessionState implements SessionState {
     }
 
     @Override
-    public Object sessionGet(String key) {
-        return session.attr(key);
+    public <T> T sessionGet(String key, Class<T> clz) {
+        return (T) session.attr(key);
     }
 
     @Override

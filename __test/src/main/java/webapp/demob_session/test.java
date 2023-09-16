@@ -17,9 +17,9 @@ public class test {
 
     @Mapping(value = "/demob/session/getval", produces = "text/html;charset=utf-8")
     public void getVal(Context ctx) {
-        Object v1 = ctx.session("v1");
-        Object v2 = ctx.session("v2");
-        Object v3 = ctx.session("v3");
+        Object v1 = ctx.session("v1", Object.class);
+        Object v2 = ctx.session("v2", Object.class);
+        Object v3 = ctx.session("v3", Object.class);
 
         ctx.output(v1 + "<br/>");
         ctx.output(v2 + "<br/>");

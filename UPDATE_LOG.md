@@ -20,6 +20,9 @@
 * 添加 ContextPathListener 类，用于控制 contentPath 对 ws,tpc 的影响
 * 添加 ContextPathFilter 一个简化的构造函数
 * 添加 yaml 多片段支持（即一文件多环境支持）
+* 调整 CacheService 接口（增加类型化 get）
+* 调整 SessionState 接口（增加类型化 get）
+* 调整 Context::session 接口（增加类型化 get）
 * 调整 BeanWrap 的 rawSet tagSet 改为公有
 * 调整 CloudConfig 复用主框架的属性表达式与模板解析
 * 调整 Listener 去掉 @FunctionalInterface，所有方法标为 default
@@ -32,7 +35,8 @@
 * 调整 "solon.config.load" 支持按顺序加载
 * 调整 几个特定启动参数的处理方式。改与成 Solon.cfg() 同步，再统一从 Solon.cfg() 取值
 * 调整 启动参数与系统属性的同步时机
-* wood 升为 1.1.9
+* wood 升为 1.2.0
+* redisx 升为 1.5.0
 * mybatis-flex 升为 1.6.5
 * sqltoy 升为 5.2.66
 

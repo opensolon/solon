@@ -4,6 +4,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.core.handle.Context;
+import org.noear.solon.lang.NonNull;
 
 import java.io.IOException;
 
@@ -21,6 +22,7 @@ public abstract class WebContextBase extends Context {
 
 
     private String contentCharset;
+
     @Override
     public String contentCharset() {
         if (contentCharset == null) {
@@ -51,8 +53,8 @@ public abstract class WebContextBase extends Context {
      *
      * @param name 状态名
      */
-    public final Object session(String name) {
-        return sessionState().sessionGet(name);
+    public final <T> T session(String name, Class<T> clz) {
+        return sessionState().sessionGet(name, clz);
     }
 
     /**
@@ -60,8 +62,8 @@ public abstract class WebContextBase extends Context {
      *
      * @param name 状态名
      */
-    public final <T> T sessionOrDefault(String name, T def) {
-        Object tmp = session(name);
+    public final <T> T sessionOrDefault(String name, @NonNull T def) {
+        Object tmp = session(name, def.getClass());
         if (tmp == null) {
             return def;
         } else {
@@ -72,21 +74,21 @@ public abstract class WebContextBase extends Context {
     /**
      * 获取 session 状态，并以 int 型输出
      *
-     * @since 1.6
      * @param name 状态名
+     * @since 1.6
      */
-    public final int sessionAsInt(String name){
+    public final int sessionAsInt(String name) {
         return sessionAsInt(name, 0);
     }
 
     /**
      * 获取 session 状态，并以 int 型输出
      *
-     * @since 1.6
      * @param name 状态名
+     * @since 1.6
      */
     public final int sessionAsInt(String name, int def) {
-        Object tmp = session(name);
+        Object tmp = session(name, Object.class);
         if (tmp == null) {
             return def;
         } else {
@@ -106,21 +108,21 @@ public abstract class WebContextBase extends Context {
     /**
      * 获取 session 状态，并以 long 型输出
      *
-     * @since 1.6
      * @param name 状态名
+     * @since 1.6
      */
-    public final long sessionAsLong(String name){
+    public final long sessionAsLong(String name) {
         return sessionAsLong(name, 0L);
     }
 
     /**
      * 获取 session 状态，并以 long 型输出
      *
-     * @since 1.6
      * @param name 状态名
+     * @since 1.6
      */
     public final long sessionAsLong(String name, long def) {
-        Object tmp = session(name);
+        Object tmp = session(name, Object.class);
         if (tmp == null) {
             return def;
         } else {
@@ -140,8 +142,8 @@ public abstract class WebContextBase extends Context {
     /**
      * 获取 session 状态，并以 double 型输出
      *
-     * @since 1.6
      * @param name 状态名
+     * @since 1.6
      */
     public final double sessionAsDouble(String name) {
         return sessionAsDouble(name, 0.0D);
@@ -150,11 +152,11 @@ public abstract class WebContextBase extends Context {
     /**
      * 获取 session 状态，并以 double 型输出
      *
-     * @since 1.6
      * @param name 状态名
+     * @since 1.6
      */
     public final double sessionAsDouble(String name, double def) {
-        Object tmp = session(name);
+        Object tmp = session(name, Object.class);
         if (tmp == null) {
             return def;
         } else {
@@ -175,7 +177,7 @@ public abstract class WebContextBase extends Context {
      * 设置 session 状态
      *
      * @param name 状态名
-     * @param val 值
+     * @param val  值
      */
     public final void sessionSet(String name, Object val) {
         sessionState().sessionSet(name, val);
@@ -185,14 +187,14 @@ public abstract class WebContextBase extends Context {
      * 移除 session 状态
      *
      * @param name 状态名
-     * */
-    public final void  sessionRemove(String name){
+     */
+    public final void sessionRemove(String name) {
         sessionState().sessionRemove(name);
     }
 
     /**
      * 清空 session 状态
-     * */
+     */
     public final void sessionClear() {
         sessionState().sessionClear();
     }

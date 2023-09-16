@@ -10,7 +10,7 @@ import org.noear.solon.core.handle.Context;
 public class LoginedCheckerImp implements LoginedChecker{
     @Override
     public boolean check(Logined anno, Context ctx, String userKeyName) {
-        Object userKey = ctx.session(userKeyName);
+        Object userKey = ctx.session(userKeyName, Object.class);
 
         if (userKey == null) {
             return false;

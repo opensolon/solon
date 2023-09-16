@@ -58,12 +58,12 @@ public class HttpSessionImpl implements HttpSession {
 
     @Override
     public Object getAttribute(String s) {
-        return sessionState.sessionGet(s);
+        return sessionState.sessionGet(s, Object.class);
     }
 
     @Override
     public Object getValue(String s) {
-        return sessionState.sessionGet(s);
+        return sessionState.sessionGet(s, Object.class);
     }
 
     @Override

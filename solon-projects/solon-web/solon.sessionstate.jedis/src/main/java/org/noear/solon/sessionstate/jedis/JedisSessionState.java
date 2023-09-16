@@ -52,7 +52,7 @@ public class JedisSessionState extends SessionStateBase {
 
 
     @Override
-    public Object sessionGet(String key) {
+    public <T> T sessionGet(String key, Class<T> clz) {
         String val = redisClient.openAndGet((ru) -> ru.key(sessionId()).expire(_expiry).hashGet(key));
 
         if (val == null) {
@@ -60,7 +60,7 @@ public class JedisSessionState extends SessionStateBase {
         }
 
         try {
-            return serializer.deserialize(val, Object.class);
+            return (T) serializer.deserialize(val, clz);
         } catch (Exception e) {
             throw new RuntimeException("Session state deserialization error: " + key + " = " + val, e);
         }

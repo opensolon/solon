@@ -164,7 +164,7 @@ public class ContextEmpty extends Context {
     }
 
     @Override
-    public Object session(String name) {
+    public <T> T session(String name, Class<T> clz) {
         return null;
     }
 

@@ -35,8 +35,8 @@ public class SolonServletSessionState implements SessionState {
     }
 
     @Override
-    public Object sessionGet(String key) {
-        return _request.getSession().getAttribute(key);
+    public <T> T sessionGet(String key, Class<T> clz) {
+        return (T) _request.getSession().getAttribute(key);
     }
 
     @Override

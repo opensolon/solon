@@ -6,6 +6,7 @@ import org.noear.solon.annotation.Note;
 import org.noear.solon.core.NvMap;
 import org.noear.solon.core.util.*;
 import org.noear.solon.core.wrap.ClassWrap;
+import org.noear.solon.lang.NonNull;
 import org.noear.solon.lang.Nullable;
 
 import java.io.*;
@@ -666,12 +667,16 @@ public abstract class Context {
      */
     public abstract String sessionId();
 
+    public final Object session(String name) {
+        return session(name, Object.class);
+    }
+
     /**
      * 获取 session 状态
      *
      * @param name 状态名
      */
-    public abstract Object session(String name);
+    public abstract <T> T session(String name, Class<T> clz);
 
     /**
      * 获取 session 状态（类型转换，存在风险）
@@ -680,7 +685,7 @@ public abstract class Context {
      * @deprecated 2.3
      */
     @Deprecated
-    public  <T> T session(String name, T def) {
+    public  <T> T session(String name, @NonNull T def) {
         return sessionOrDefault(name, def);
     }
 
@@ -691,7 +696,7 @@ public abstract class Context {
      * @deprecated 2.3
      */
     @Note("泛型转换，存在转换风险")
-    public abstract  <T> T sessionOrDefault(String name, T def);
+    public abstract  <T> T sessionOrDefault(String name, @NonNull T def);
 
     /**
      * 获取 session 状态，并以 int 型输出
