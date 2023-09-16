@@ -427,7 +427,7 @@ public class Props extends Properties {
 
 
     protected void loadAddDo(Properties props, boolean toSystem, boolean addIfAbsent) {
-        this.loadAddDo( props,  toSystem,  addIfAbsent, Boolean.TRUE);
+        this.loadAddDo( props,  toSystem,  addIfAbsent, true);
     }
 
     /**
