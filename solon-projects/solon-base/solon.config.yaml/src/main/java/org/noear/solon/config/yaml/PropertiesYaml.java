@@ -6,6 +6,7 @@ import org.yaml.snakeyaml.Yaml;
 import java.io.*;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
 
 /**
  * Yaml 属性
@@ -19,6 +20,8 @@ public class PropertiesYaml extends Properties {
     static final String SOLON_ENV_ON = "solon.env.on";
     static final String YML_PART_SPLIT = "---";
 
+    AtomicReference<String> envRef = new AtomicReference<>(System.getProperty(SOLON_ENV));
+
 
     private Yaml createYaml() {
         return new Yaml();
@@ -30,42 +33,52 @@ public class PropertiesYaml extends Properties {
         }
     }
 
-    public synchronized void loadYml(Reader reader) throws IOException {
+    public  void loadYml(Reader reader) throws IOException {
         //支持多部分切割
         List<String> partList = splitParts(reader);
 
         //开始加载多部分属性
-        AtomicReference<String> envRef = new AtomicReference<>(System.getProperty(SOLON_ENV));
+
         String partStr = null;
         for (int i = 0; i < partList.size(); i++) {
             partStr = partList.get(i);
             if (Utils.isBlank(partStr)) {
                 continue;
             }
-
-            //1.加载部分属性
-            Object tmp = createYaml().load(partStr);
-            Map<Object, Object> partProp = new TreeMap<>();
-            load0(partProp, "", tmp);
-            if (partProp.size() == 0) {
-                continue;
-            }
-
-            //2.同步环境变量
-            if (envRef.get() == null && i == 0 && partProp.containsKey(SOLON_ENV)) {
-                envRef.set(String.valueOf(partProp.get(SOLON_ENV)));
-            }
-
-            //3.根据条件过滤加载
-            if (partProp.containsKey(SOLON_ENV_ON)) {
-                //如果有环境条件，尝试匹配 //支持多环境匹配。例：solon.env.on: pro1 | pro2
-                String envOn = String.valueOf(partProp.get(SOLON_ENV_ON));
-                if (Arrays.stream(envOn.split("\\|")).anyMatch(e -> e.trim().equals(envRef.get()))) {
-                    super.putAll(partProp);
+            final int fi = i;
+            this.loadYml(partStr, partProp->{
+                //2.同步环境变量
+                if (envRef.get() == null && fi == 0 && partProp.containsKey(SOLON_ENV)) {
+                    envRef.set(String.valueOf(partProp.get(SOLON_ENV)));
                 }
-            } else {
+            });
+        }
+    }
+    public  void loadYml(String str) {
+        this.loadYml(str, null);
+    }
+
+    public synchronized void loadYml(String str, Consumer<Map<Object, Object>> c) {
+        //1.加载部分属性
+        Object tmp = createYaml().load(str);
+        Map<Object, Object> partProp = new TreeMap<>();
+        load0(partProp, "", tmp);
+        if (partProp.size() == 0) {
+            return;
+        }
+        if(c != null){
+            //2.其他操作，如同步环境变量
+            c.accept(partProp);
+        }
+        //3.根据条件过滤加载
+        if (partProp.containsKey(SOLON_ENV_ON)) {
+            //如果有环境条件，尝试匹配 //支持多环境匹配。例：solon.env.on: pro1 | pro2
+            String envOn = String.valueOf(partProp.get(SOLON_ENV_ON));
+            if (Arrays.stream(envOn.split("\\|")).anyMatch(e -> e.trim().equals(envRef.get()))) {
                 super.putAll(partProp);
             }
+        } else {
+            super.putAll(partProp);
         }
     }
 
@@ -74,7 +87,6 @@ public class PropertiesYaml extends Properties {
      * */
     private List<String> splitParts(Reader reader) throws IOException {
         List<String> partList = new ArrayList<>();
-
         //支持多部分切割
         try (BufferedReader in = new BufferedReader(reader)) {
             StringBuffer buffer = new StringBuffer();

@@ -3,6 +3,9 @@ package org.noear.solon.core.util;
 import org.noear.solon.Utils;
 
 import java.util.Properties;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 /**
  * 属性模板处理工具
@@ -17,25 +20,17 @@ public class PropUtil {
      * @param expr 兼容 ${key} or key or ${key:def} or key:def
      */
     public static String getByExp(Properties main, Properties target, String expr) {
-        String name = expr;
+        return getByExp( main,  target,  expr, null);
+    }
+    public static String getByExp(Properties main, Properties target, String expr, BiConsumer<String, String> c) {
+        AtomicReference<String> nameAtomic = new AtomicReference<>();
+        AtomicReference<String> defAtomic = new AtomicReference<>();
+        exprStrHandle(expr, (name, def)->{
+            nameAtomic.set(name);
+            defAtomic.set(def);
+        });
 
-        //如果有表达式，去掉符号
-        if (name.startsWith("${") && name.endsWith("}")) {
-            name = expr.substring(2, name.length() - 1);
-        }
-
-        //如果有默认值，则获取
-        String def = null;
-        int defIdx = name.indexOf(":");
-        if (defIdx > 0) {
-            if (name.length() > defIdx + 1) {
-                def = name.substring(defIdx + 1).trim();
-            } else {
-                def = "";
-            }
-            name = name.substring(0, defIdx).trim();
-        }
-
+        String name = nameAtomic.get(), def = defAtomic.get();
 
         String val = null;
 
@@ -55,10 +50,35 @@ public class PropUtil {
         }
 
         if (val == null) {
+            if(c != null){
+                c.accept(name, def);
+            }
             return def;
         } else {
             return val;
         }
+    }
+    public static  void exprStrHandle(String exprStr, BiConsumer<String, String> c){
+        //如果有表达式，去掉符号
+        if (exprStr.startsWith("${") && exprStr.endsWith("}")) {
+            exprStr = exprStr.substring(2, exprStr.length() - 1);
+        }
+        //如果有默认值，则获取
+        String def = null;
+        int defIdx = exprStr.indexOf(":");
+        if (defIdx > 0) {
+            if (exprStr.length() > defIdx + 1) {
+                def = exprStr.substring(defIdx + 1).trim();
+            } else {
+                def = "";
+            }
+            exprStr = exprStr.substring(0, defIdx).trim();
+        }
+        c.accept(exprStr, def);
+    }
+
+    public static String getByTml(Properties main, Properties target, String tml) {
+        return getByTml(main, target, tml, null);
     }
 
     /**
@@ -66,7 +86,7 @@ public class PropUtil {
      *
      * @param tml @param tml 模板： ${key} 或 aaa${key}bbb 或 ${key:def}/ccc
      */
-    public static String getByTml(Properties main, Properties target, String tml) {
+    public static String getByTml(Properties main, Properties target, String tml, BiConsumer<String, String> c) {
         if (Utils.isEmpty(tml)) {
             return tml;
         }
@@ -83,15 +103,21 @@ public class PropUtil {
                 if (end < 0) {
                     throw new IllegalStateException("Invalid template expression: " + tml);
                 }
-
                 String name = tml.substring(start + 2, end);
-                String value = getByExp(main, target, name);//支持默认值表达式 ${key:def}
+                String valueExpStr = tml.substring(start, end + 1);
+                //支持默认值表达式 ${key:def}
+                String value = getByExp(main, target, name, (propName, propDefVal) ->{
+                    if(c != null){
+                        c.accept(propName, valueExpStr);
+                    }
+                });
                 if (value == null) {
                     value = "";
                 }
-
+                //if(c != null && "".equals(value)){
+                //    c.accept(name.replaceAll(":", "").trim(), tml.substring(start, end + 1));
+                //}
                 tml = tml.substring(0, start) + value + tml.substring(end + 1);
-
                 //起始位增量
                 start = start + value.length();
             }

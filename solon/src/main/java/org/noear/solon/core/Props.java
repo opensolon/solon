@@ -10,6 +10,7 @@ import java.net.URL;
 import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
+import java.util.regex.Pattern;
 
 /**
  * 通用属性集合（为 SolonProps 的基类）
@@ -95,6 +96,13 @@ public class Props extends Properties {
      */
     protected String getByParse(String tml, Properties props) {
         return PropUtil.getByTml(this, props, tml);
+    }
+
+    /**
+     * @param tml 模板： ${key} 或 aaa${key}bbb 或 ${key:def}/ccc
+     */
+    protected String getByParse(String tml, Properties props, BiConsumer<String, String> c) {
+        return PropUtil.getByTml(this, props, tml, c);
     }
 
     /**
@@ -417,12 +425,18 @@ public class Props extends Properties {
         loadAddDo(props, false, true);
     }
 
+    Map<String, String> tempPropMap = new TreeMap<>();
+
+    protected void loadAddDo(Properties props, boolean toSystem, boolean addIfAbsent) {
+        this.loadAddDo( props,  toSystem,  addIfAbsent, Boolean.TRUE);
+    }
+
     /**
      * 加载配置（用于扩展加载）
      *
      * @param props 配置地址
      */
-    protected void loadAddDo(Properties props, boolean toSystem, boolean addIfAbsent) {
+    protected void loadAddDo(Properties props, boolean toSystem, boolean addIfAbsent, boolean retry) {
         if (props != null) {
             for (Map.Entry<Object, Object> kv : props.entrySet()) {
                 Object k1 = kv.getKey();
@@ -448,7 +462,25 @@ public class Props extends Properties {
                         // db1.jdbcUrl=jdbc:mysql:${db1.server}
                         // db1.jdbcUrl=jdbc:mysql:${db1.server}/${db1.db}
                         // db1.username=${db1.user:root}
-                        v1 = getByParse((String) v1, props);
+                        String v = (String) v1;
+                        Map<String, String> tempMap = new HashMap<>();
+                        String tmpV = getByParse(v, props, (subName, subVal)->{
+                            //如果在全局变量中已经存在则不添加
+                            if(!this.containsKey(subName)){
+                                tempMap.put(subName, subVal);
+                            }
+                        });
+                        if(tempMap.size() > 0){
+                            //tempPropMap.putAll(tempMap);
+                            tempPropMap.put(key, v);
+                            v1 = null;
+                        }else{
+                            //如果加载成功且存在于列表中，从变量中移除
+                            if(tempPropMap.containsKey(key)){
+                                tempPropMap.remove(key);
+                            }
+                            v1 = tmpV;
+                        }
                     }
 
                     if (v1 != null) {
@@ -458,7 +490,6 @@ public class Props extends Properties {
 
                         put(k1, v1);
 
-
                         if (key.contains("-")) {
                             String camelKey = buildCamelKey(key);
                             put(camelKey, v1);
@@ -466,7 +497,67 @@ public class Props extends Properties {
                     }
                 }
             }
+            //尝试2次加载，解决循环依赖问题
+            if(retry){
+                this.tempPropMapHandle(toSystem, addIfAbsent);
+            }
         }
+    }
+
+    public void complete(){
+        //如果加载完成还存在变量，则特殊处理
+        if(tempPropMap.size() == 0){
+            return;
+        }
+        Map<String, String> tempMap = new HashMap<>();
+        for (Map.Entry<String, String> entry : tempPropMap.entrySet()) {
+            //entry
+            String key = entry.getKey();
+            String tml = entry.getValue();
+            while (true) {
+                int start = tml.indexOf("${");
+                if (start < 0) {
+                    break;
+                } else {
+                    int end = tml.indexOf("}", start);
+                    if (end < 0) {
+                        throw new RuntimeException("Invalid template expression: " + tml);
+                    }
+                    String name = tml.substring(start + 2, end);
+                    int defIdx = name.indexOf(":");
+                    if (defIdx > 0) {
+                        PropUtil.exprStrHandle(name, (propName, propDef)->{
+                            if(!(tempMap.containsKey(propName) || this.containsKey(propName))){
+                                tempMap.put(propName, propDef);
+                            }
+                        });
+                    }
+                    tml = tml.substring(end);
+                }
+            }
+        }
+        tempPropMap.putAll(tempMap);
+        tempPropMapHandle(Boolean.FALSE, Boolean.FALSE);
+        //如果还存在遗留项则抛出异常
+        if(tempPropMap.size() > 0){
+            throw new RuntimeException("config init error: " + tempPropMap.toString());
+        }
+    }
+
+    private void tempPropMapHandle(boolean toSystem, boolean addIfAbsent){
+        if(tempPropMap.size() == 0){
+            return;
+        }
+        //StringBuffer buffer = new StringBuffer();
+        //for (Map.Entry<String, String> entry : tempPropMap.entrySet()) {
+        //    buffer.append(entry.getKey()).append(": ").append(entry.getValue()).append("\n");
+        //}
+        //PropertiesYaml tmp = new PropertiesYaml();
+        //tmp.loadYml(buffer.toString());
+        //this.loadAddDo(tmp,  toSystem,  addIfAbsent, Boolean.FALSE);
+        Properties props = new Properties();
+        props.putAll(tempPropMap);
+        this.loadAddDo(props, toSystem, addIfAbsent, Boolean.FALSE);
     }
 
     /**

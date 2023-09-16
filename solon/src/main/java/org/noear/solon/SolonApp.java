@@ -1,11 +1,11 @@
 package org.noear.solon;
 
-import org.noear.solon.core.convert.ConverterManager;
-import org.noear.solon.core.event.*;
-import org.noear.solon.core.event.EventListener;
-import org.noear.solon.core.handle.*;
 import org.noear.solon.annotation.Import;
 import org.noear.solon.core.*;
+import org.noear.solon.core.convert.ConverterManager;
+import org.noear.solon.core.event.EventListener;
+import org.noear.solon.core.event.*;
+import org.noear.solon.core.handle.*;
 import org.noear.solon.core.route.RouterWrapper;
 import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.core.util.ConsumerEx;
@@ -45,6 +45,7 @@ public class SolonApp extends RouterWrapper {
     /**
      * 应用上下文
      */
+    @Override
     public AppContext context() {
         return _context;
     }
@@ -195,6 +196,9 @@ public class SolonApp extends RouterWrapper {
             plugs.get(i).start(context());
         }
 
+        //检查配置是否完全适配
+        cfg().complete();
+
         //event::1.1.x推送Plugin load end事件
         EventBus.publish(new AppPluginLoadEndEvent(this));
 
@@ -211,7 +215,6 @@ public class SolonApp extends RouterWrapper {
 
         //event::2.x.推送Bean load end事件
         EventBus.publish(new AppBeanLoadEndEvent(this));
-
 
         //3.加载渲染关系
         Map<String, String> map = cfg().getMap("solon.view.mapping.");
