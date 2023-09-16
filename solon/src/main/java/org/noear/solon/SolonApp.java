@@ -196,10 +196,10 @@ public class SolonApp extends RouterWrapper {
             plugs.get(i).start(context());
         }
 
-        //检查配置是否完全适配
+        //1.2.检查配置是否完全适配
         cfg().complete();
 
-        //event::1.1.x推送Plugin load end事件
+        //event::1.3.推送Plugin load end事件
         EventBus.publish(new AppPluginLoadEndEvent(this));
 
 

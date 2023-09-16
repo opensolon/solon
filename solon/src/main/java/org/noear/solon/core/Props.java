@@ -10,7 +10,6 @@ import java.net.URL;
 import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
-import java.util.regex.Pattern;
 
 /**
  * 通用属性集合（为 SolonProps 的基类）
@@ -23,6 +22,7 @@ import java.util.regex.Pattern;
  * */
 public class Props extends Properties {
     private ClassLoader classLoader;
+    private Map<String, String> tempPropMap = new TreeMap<>();
 
     public Props() {
         //不产生 defaults
@@ -425,7 +425,6 @@ public class Props extends Properties {
         loadAddDo(props, false, true);
     }
 
-    Map<String, String> tempPropMap = new TreeMap<>();
 
     protected void loadAddDo(Properties props, boolean toSystem, boolean addIfAbsent) {
         this.loadAddDo( props,  toSystem,  addIfAbsent, Boolean.TRUE);
@@ -461,15 +460,16 @@ public class Props extends Properties {
                         // db1.jdbcUrl=${db1.url}
                         // db1.jdbcUrl=jdbc:mysql:${db1.server}
                         // db1.jdbcUrl=jdbc:mysql:${db1.server}/${db1.db}
-                        // db1.username=${db1.user:root}
+                        // db1.jdbcUrl=jdbc:mysql:${db1.server}/${db1.db:order}
                         String v = (String) v1;
                         Map<String, String> tempMap = new HashMap<>();
-                        String tmpV = getByParse(v, props, (subName, subVal)->{
+                        String tmpV = getByParse(v, props, (subName, subValTml)->{
                             //如果在全局变量中已经存在则不添加
                             if(!this.containsKey(subName)){
-                                tempMap.put(subName, subVal);
+                                tempMap.put(subName, subValTml);
                             }
                         });
+
                         if(tempMap.size() > 0){
                             //tempPropMap.putAll(tempMap);
                             tempPropMap.put(key, v);
@@ -504,11 +504,15 @@ public class Props extends Properties {
         }
     }
 
-    public void complete(){
+    /**
+     * 完成（多文件加载后，执行完成）
+     * */
+    public void complete() {
         //如果加载完成还存在变量，则特殊处理
-        if(tempPropMap.size() == 0){
+        if (tempPropMap.size() == 0) {
             return;
         }
+
         Map<String, String> tempMap = new HashMap<>();
         for (Map.Entry<String, String> entry : tempPropMap.entrySet()) {
             //entry
@@ -521,26 +525,27 @@ public class Props extends Properties {
                 } else {
                     int end = tml.indexOf("}", start);
                     if (end < 0) {
-                        throw new RuntimeException("Invalid template expression: " + tml);
+                        throw new IllegalStateException("Invalid template expression: " + tml);
                     }
+
                     String name = tml.substring(start + 2, end);
                     int defIdx = name.indexOf(":");
                     if (defIdx > 0) {
-                        PropUtil.exprStrHandle(name, (propName, propDef)->{
-                            if(!(tempMap.containsKey(propName) || this.containsKey(propName))){
-                                tempMap.put(propName, propDef);
-                            }
-                        });
+                        String[] nameAndDef = PropUtil.expSplit(name);
+                        if (!(tempMap.containsKey(nameAndDef[0]) || this.containsKey(nameAndDef[0]))) {
+                            tempMap.put(nameAndDef[0], nameAndDef[1]);
+                        }
                     }
                     tml = tml.substring(end);
                 }
             }
         }
         tempPropMap.putAll(tempMap);
-        tempPropMapHandle(Boolean.FALSE, Boolean.FALSE);
+        tempPropMapHandle(false, false);
+
         //如果还存在遗留项则抛出异常
-        if(tempPropMap.size() > 0){
-            throw new RuntimeException("config init error: " + tempPropMap.toString());
+        if (tempPropMap.size() > 0) {
+            throw new IllegalStateException("Config init failed: " + tempPropMap);
         }
     }
 
@@ -548,16 +553,10 @@ public class Props extends Properties {
         if(tempPropMap.size() == 0){
             return;
         }
-        //StringBuffer buffer = new StringBuffer();
-        //for (Map.Entry<String, String> entry : tempPropMap.entrySet()) {
-        //    buffer.append(entry.getKey()).append(": ").append(entry.getValue()).append("\n");
-        //}
-        //PropertiesYaml tmp = new PropertiesYaml();
-        //tmp.loadYml(buffer.toString());
-        //this.loadAddDo(tmp,  toSystem,  addIfAbsent, Boolean.FALSE);
+
         Properties props = new Properties();
         props.putAll(tempPropMap);
-        this.loadAddDo(props, toSystem, addIfAbsent, Boolean.FALSE);
+        this.loadAddDo(props, toSystem, addIfAbsent, false);
     }
 
     /**
