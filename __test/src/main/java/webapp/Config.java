@@ -7,15 +7,58 @@ import org.noear.solon.core.BeanWrap;
 import org.noear.solon.data.cache.CacheServiceSupplier;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.Set;
 
 /**
  * @author noear 2021/9/9 created
  */
 @Configuration
 public class Config {
+    @Inject(value = "${username}", autoRefreshed = true)
+    String username;
+
+
+    @Inject("${formattest.text}")
+    String formattest;
+
+    @Inject("${formattest.text2}")
+    String formattest2;
+
+    @Inject("${formattest.text3}")
+    String formattest3;
+
+    @Inject("${formattest.text10}")
+    String formattest10;
+
+    @Inject("${formattest.text11}")
+    String formattest11;
+
+
+    @Inject("${inject.set1:1,2,3}")
+    Set<String> injectSet1;
+
+    @Inject("${inject.set2:1,2,3}")
+    List<Integer> injectSet2;
+
+    @Inject("${inject.set3}")
+    Set<Integer> injectSet3;
+
+    @Inject("${inject.set3}")
+    Integer[] injectSet3_2;
+
+    @Inject("${inject.set4}")
+    Set<Integer> injectSet4;
+
+    @Inject("${inject.set4}")
+    Integer[] injectSet4_2;
+
+    @Inject("${load2.title}")
+    String load2Title;
+
+    @Inject("${load1.title}")
+    String load1Title;
 
 //    @Bean
 //    public void error(@Inject("${xxxyyyzzz}") String tmp){

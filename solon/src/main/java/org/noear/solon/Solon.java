@@ -159,12 +159,12 @@ public class Solon {
         } catch (Throwable e) {
             //显示异常信息
             e = Utils.throwableUnwrap(e);
-            EventBus.publishTry(e);
+            LogUtil.global().error("Solon start failed: " + e.getMessage());
 
             //3.停止服务并退出（主要是停止插件）
             Solon.stop0(false, 0);
 
-            throw new IllegalStateException("SolonApp start failed", e);
+            throw new IllegalStateException("Solon start failed", e);
         }
 
 

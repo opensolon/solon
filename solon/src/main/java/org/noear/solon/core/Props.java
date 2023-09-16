@@ -8,9 +8,6 @@ import org.noear.solon.core.util.ResourceUtil;
 
 import java.net.URL;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
@@ -103,9 +100,10 @@ public class Props extends Properties {
 
     /**
      * @param tml 模板： ${key} 或 aaa${key}bbb 或 ${key:def}/ccc
+     * @param  useDef 是否使用默认值
      */
-    protected String getByParse(String tml, Properties props, BiConsumer<String, String> c) {
-        return PropUtil.getByTml(this, props, tml, c);
+    protected String getByParse(String tml, Properties props, boolean useDef) {
+        return PropUtil.getByTml(this, props, tml, useDef);
     }
 
     /**
@@ -467,23 +465,12 @@ public class Props extends Properties {
                         // db1.jdbcUrl=jdbc:mysql:${db1.server}
                         // db1.jdbcUrl=jdbc:mysql:${db1.server}/${db1.db}
                         // db1.jdbcUrl=jdbc:mysql:${db1.server}/${db1.db:order}
-                        String v = (String) v1;
-                        AtomicReference<Boolean> tempUnresolved = new AtomicReference<>(false);
-                        v1 = getByParse(v, props, (subName, subValTml) -> {
-                            //如果在全局变量中已经存在，则跳过
-                            if (!this.containsKey(subName)) {
-                                //标为有未处理模板
-                                tempUnresolved.set(true);
-                            }
-                        });
+                        String valExp = (String) v1;
+                        v1 = getByParse(valExp, props, isEnd);
 
-                        if (tempUnresolved.get()) {
-                            if (isEnd) {
-                                //最后一次允许使用默认值
-                                tempPropMap.remove(key);
-                            } else {
-                                tempPropMap.put(key, v);
-                                v1 = null;
+                        if (v1 == null) {
+                            if (!isEnd) {
+                                tempPropMap.put(key, valExp);
                             }
                         } else {
                             //如果加载成功且存在于列表中，从变量中移除
@@ -516,7 +503,7 @@ public class Props extends Properties {
     }
 
     /**
-     * 校正（多文件加载后，执行完成）
+     * 校正（多文件加载后）
      * */
     protected void reviseDo(boolean isEnd) {
         //如果加载完成还存在变量，则特殊处理
@@ -530,7 +517,7 @@ public class Props extends Properties {
 
         //如果还存在遗留项则抛出异常
         if (isEnd && tempPropMap.size() > 0) {
-            throw new IllegalStateException("Config revise failed: " + tempPropMap);
+            throw new IllegalStateException("Config verification failed: " + tempPropMap);
         }
     }
 

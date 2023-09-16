@@ -3,7 +3,6 @@ package org.noear.solon.core.util;
 import org.noear.solon.Utils;
 
 import java.util.Properties;
-import java.util.function.BiConsumer;
 
 /**
  * 属性模板处理工具
@@ -45,41 +44,41 @@ public class PropUtil {
      * @param expr 兼容 ${key} or key or ${key:def} or key:def
      */
     public static String getByExp(Properties main, Properties target, String expr) {
-        return getByExp(main, target, expr, null);
+        return getByExp(main, target, expr, true);
     }
 
     /**
      * 根据表达式获取配置值
      *
      * @param expr 兼容 ${key} or key or ${key:def} or key:def
+     * @param useDef 是否使用默认值
      */
-    public static String getByExp(Properties main, Properties target, String expr, BiConsumer<String, String> c) {
+    public static String getByExp(Properties main, Properties target, String expr, boolean useDef) {
         String[] nameAndDef = expSplit(expr);
-
-        String name = nameAndDef[0], def = nameAndDef[1];
 
         String val = null;
 
         if (target != null) {
             //从"目标属性"获取
-            val = target.getProperty(name);
+            val = target.getProperty(nameAndDef[0]);
         }
 
         if (val == null) {
             //从"主属性"获取
-            val = main.getProperty(name);
+            val = main.getProperty(nameAndDef[0]);
 
-            if (val == null && Character.isUpperCase(name.charAt(0))) {
+            if (val == null && Character.isUpperCase(nameAndDef[0].charAt(0))) {
                 //从"环镜变量"获取
-                val = System.getenv(name);
+                val = System.getenv(nameAndDef[0]);
             }
         }
 
         if (val == null) {
-            if (c != null) {
-                c.accept(name, def);
+            if (useDef) {
+                return nameAndDef[1];
+            } else {
+                return null;
             }
-            return def;
         } else {
             return val;
         }
@@ -93,15 +92,16 @@ public class PropUtil {
      * @param tml 模板： ${key} 或 aaa${key}bbb 或 ${key:def}/ccc
      */
     public static String getByTml(Properties main, Properties target, String tml) {
-        return getByTml(main, target, tml, null);
+        return getByTml(main, target, tml, true);
     }
 
     /**
      * 根据模板获取配置值
      *
      * @param tml 模板： ${key} 或 aaa${key}bbb 或 ${key:def}/ccc
+     * @param useDef 是否使用默认值
      */
-    public static String getByTml(Properties main, Properties target, String tml, BiConsumer<String, String> c) {
+    public static String getByTml(Properties main, Properties target, String tml, boolean useDef) {
         if (Utils.isEmpty(tml)) {
             return tml;
         }
@@ -120,16 +120,11 @@ public class PropUtil {
                 }
 
                 String valueExp = tml.substring(start + 2, end); //key:def
-                String valueExpFull = tml.substring(start, end + 1); //${key:def}
                 //支持默认值表达式 ${key:def}
-                String value = getByExp(main, target, valueExp, (propName, propDefVal) -> {
-                    if (c != null) {
-                        c.accept(propName, valueExpFull);
-                    }
-                });
+                String value = getByExp(main, target, valueExp, useDef);
 
                 if (value == null) {
-                    value = "";
+                    return null;
                 }
 
                 tml = tml.substring(0, start) + value + tml.substring(end + 1);
