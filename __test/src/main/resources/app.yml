@@ -36,6 +36,8 @@ solon.extend: "!app_ext"
 
 solon.config.load:
   - "jdbc-${solon.env}.yml"
+  - "cfg-load1.yml"
+  - "cfg-load2.yml"
 
 solon.locale: "en_US"
 
