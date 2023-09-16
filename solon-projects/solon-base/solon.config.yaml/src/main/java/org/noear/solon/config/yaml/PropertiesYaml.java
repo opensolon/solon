@@ -1,4 +1,4 @@
-package org.noear.solon.core.config;
+package org.noear.solon.config.yaml;
 
 import org.noear.solon.Utils;
 import org.yaml.snakeyaml.Yaml;

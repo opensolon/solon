@@ -3,7 +3,6 @@ package org.noear.solon.core;
 import org.noear.solon.SolonProps;
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.PropertySource;
-import org.noear.solon.core.config.PropertiesYaml;
 import org.noear.solon.core.util.PropUtil;
 import org.noear.solon.core.util.ResourceUtil;
 
@@ -24,7 +23,6 @@ import java.util.regex.Pattern;
  * */
 public class Props extends Properties {
     private ClassLoader classLoader;
-    protected static final Pattern VAR_PATTERN = Pattern.compile("\\$\\{.+\\}");
 
     public Props() {
         //不产生 defaults
@@ -549,13 +547,16 @@ public class Props extends Properties {
         if(tempPropMap.size() == 0){
             return;
         }
-        StringBuffer buffer = new StringBuffer();
-        for (Map.Entry<String, String> entry : tempPropMap.entrySet()) {
-            buffer.append(entry.getKey()).append(": ").append(entry.getValue()).append("\n");
-        }
-        PropertiesYaml tmp = new PropertiesYaml();
-        tmp.loadYml(buffer.toString());
-        this.loadAddDo(tmp,  toSystem,  addIfAbsent, Boolean.FALSE);
+        //StringBuffer buffer = new StringBuffer();
+        //for (Map.Entry<String, String> entry : tempPropMap.entrySet()) {
+        //    buffer.append(entry.getKey()).append(": ").append(entry.getValue()).append("\n");
+        //}
+        //PropertiesYaml tmp = new PropertiesYaml();
+        //tmp.loadYml(buffer.toString());
+        //this.loadAddDo(tmp,  toSystem,  addIfAbsent, Boolean.FALSE);
+        Properties props = new Properties();
+        props.putAll(tempPropMap);
+        this.loadAddDo(props, toSystem, addIfAbsent, Boolean.FALSE);
     }
 
     /**
