@@ -26,6 +26,10 @@ public class CacheWrap implements ICacheServiceEx, CacheService {
         real.store(key, obj, seconds);
     }
 
+    /**
+     * @deprecated 2.5
+     * */
+    @Deprecated
     @Override
     public Object get(String key) {
         return real.get(key);
@@ -33,7 +37,7 @@ public class CacheWrap implements ICacheServiceEx, CacheService {
 
     @Override
     public <T> T get(String key, Class<T> clz) {
-        return (T) get(key);
+        return real.get(key, clz);
     }
 
     @Override
