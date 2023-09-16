@@ -35,7 +35,7 @@
 * 调整 "solon.config.load" 支持按顺序加载
 * 调整 几个特定启动参数的处理方式。改与成 Solon.cfg() 同步，再统一从 Solon.cfg() 取值
 * 调整 启动参数与系统属性的同步时机
-* wood 升为 1.2.0
+* wood 升为 1.2.1
 * redisx 升为 1.5.0
 * mybatis-flex 升为 1.6.5
 * sqltoy 升为 5.2.66
