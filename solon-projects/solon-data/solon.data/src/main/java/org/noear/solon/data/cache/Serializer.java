@@ -19,15 +19,6 @@ public interface Serializer<T> {
 
     /**
      * 反序列化
-     * @deprecated 2.5
-     */
-    @Deprecated
-    default Object deserialize(T dta) throws Exception {
-        return deserialize(dta, Object.class);
-    }
-
-    /**
-     * 反序列化
      */
     Object deserialize(T dta, Class<?> toClz) throws Exception;
 }
