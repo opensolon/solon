@@ -8,6 +8,9 @@ import org.noear.solon.core.util.ResourceUtil;
 
 import java.net.URL;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
@@ -427,7 +430,10 @@ public class Props extends Properties {
 
 
     protected void loadAddDo(Properties props, boolean toSystem, boolean addIfAbsent) {
-        this.loadAddDo( props,  toSystem,  addIfAbsent, true);
+        //加载配置
+        this.loadAddDo( props,  toSystem,  addIfAbsent, false);
+        //校正配置
+        this.reviseDo(false);
     }
 
     /**
@@ -435,7 +441,7 @@ public class Props extends Properties {
      *
      * @param props 配置地址
      */
-    protected void loadAddDo(Properties props, boolean toSystem, boolean addIfAbsent, boolean retry) {
+    protected void loadAddDo(Properties props, boolean toSystem, boolean addIfAbsent, boolean isEnd) {
         if (props != null) {
             for (Map.Entry<Object, Object> kv : props.entrySet()) {
                 Object k1 = kv.getKey();
@@ -462,24 +468,26 @@ public class Props extends Properties {
                         // db1.jdbcUrl=jdbc:mysql:${db1.server}/${db1.db}
                         // db1.jdbcUrl=jdbc:mysql:${db1.server}/${db1.db:order}
                         String v = (String) v1;
-                        Map<String, String> tempMap = new HashMap<>();
-                        String tmpV = getByParse(v, props, (subName, subValTml)->{
-                            //如果在全局变量中已经存在则不添加
-                            if(!this.containsKey(subName)){
-                                tempMap.put(subName, subValTml);
+                        AtomicReference<Boolean> tempUnresolved = new AtomicReference<>(false);
+                        v1 = getByParse(v, props, (subName, subValTml) -> {
+                            //如果在全局变量中已经存在，则跳过
+                            if (!this.containsKey(subName)) {
+                                //标为有未处理模板
+                                tempUnresolved.set(true);
                             }
                         });
 
-                        if(tempMap.size() > 0){
-                            //tempPropMap.putAll(tempMap);
-                            tempPropMap.put(key, v);
-                            v1 = null;
-                        }else{
-                            //如果加载成功且存在于列表中，从变量中移除
-                            if(tempPropMap.containsKey(key)){
+                        if (tempUnresolved.get()) {
+                            if (isEnd) {
+                                //最后一次允许使用默认值
                                 tempPropMap.remove(key);
+                            } else {
+                                tempPropMap.put(key, v);
+                                v1 = null;
                             }
-                            v1 = tmpV;
+                        } else {
+                            //如果加载成功且存在于列表中，从变量中移除
+                            tempPropMap.remove(key);
                         }
                     }
 
@@ -497,66 +505,33 @@ public class Props extends Properties {
                     }
                 }
             }
-            //尝试2次加载，解决循环依赖问题
-            if(retry){
-                this.tempPropMapHandle(toSystem, addIfAbsent);
-            }
         }
     }
 
     /**
-     * 完成（多文件加载后，执行完成）
+     * 完成
      * */
-    public void complete() {
+    public void complete(){
+        reviseDo(true);
+    }
+
+    /**
+     * 校正（多文件加载后，执行完成）
+     * */
+    protected void reviseDo(boolean isEnd) {
         //如果加载完成还存在变量，则特殊处理
         if (tempPropMap.size() == 0) {
             return;
         }
 
-        Map<String, String> tempMap = new HashMap<>();
-        for (Map.Entry<String, String> entry : tempPropMap.entrySet()) {
-            //entry
-            String key = entry.getKey();
-            String tml = entry.getValue();
-            while (true) {
-                int start = tml.indexOf("${");
-                if (start < 0) {
-                    break;
-                } else {
-                    int end = tml.indexOf("}", start);
-                    if (end < 0) {
-                        throw new IllegalStateException("Invalid template expression: " + tml);
-                    }
-
-                    String name = tml.substring(start + 2, end);
-                    int defIdx = name.indexOf(":");
-                    if (defIdx > 0) {
-                        String[] nameAndDef = PropUtil.expSplit(name);
-                        if (!(tempMap.containsKey(nameAndDef[0]) || this.containsKey(nameAndDef[0]))) {
-                            tempMap.put(nameAndDef[0], nameAndDef[1]);
-                        }
-                    }
-                    tml = tml.substring(end);
-                }
-            }
-        }
-        tempPropMap.putAll(tempMap);
-        tempPropMapHandle(false, false);
+        Properties tempProps = new Properties();
+        tempProps.putAll(tempPropMap);
+        this.loadAddDo(tempProps, false, false, isEnd);
 
         //如果还存在遗留项则抛出异常
-        if (tempPropMap.size() > 0) {
-            throw new IllegalStateException("Config init failed: " + tempPropMap);
+        if (isEnd && tempPropMap.size() > 0) {
+            throw new IllegalStateException("Config revise failed: " + tempPropMap);
         }
-    }
-
-    private void tempPropMapHandle(boolean toSystem, boolean addIfAbsent){
-        if(tempPropMap.size() == 0){
-            return;
-        }
-
-        Properties props = new Properties();
-        props.putAll(tempPropMap);
-        this.loadAddDo(props, toSystem, addIfAbsent, false);
     }
 
     /**

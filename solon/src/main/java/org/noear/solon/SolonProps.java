@@ -186,7 +186,6 @@ public final class SolonProps extends Props {
             locale = Locale.getDefault();
         }
 
-
         return this;
     }
 
