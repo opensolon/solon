@@ -196,6 +196,9 @@ public class SolonApp extends RouterWrapper {
             plugs.get(i).start(context());
         }
 
+        //检查配置是否完全适配
+        cfg().complete();
+
         //event::1.1.x推送Plugin load end事件
         EventBus.publish(new AppPluginLoadEndEvent(this));
 
@@ -213,15 +216,11 @@ public class SolonApp extends RouterWrapper {
         //event::2.x.推送Bean load end事件
         EventBus.publish(new AppBeanLoadEndEvent(this));
 
-
         //3.加载渲染关系
         Map<String, String> map = cfg().getMap("solon.view.mapping.");
         map.forEach((k, v) -> {
             RenderManager.mapping("." + k, v);
         });
-
-        //检查配置是否完全适配
-        cfg().complete();
 
         //3.1.标识上下文加载完成
         context().start();

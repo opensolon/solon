@@ -526,10 +526,11 @@ public class Props extends Properties {
                     String name = tml.substring(start + 2, end);
                     int defIdx = name.indexOf(":");
                     if (defIdx > 0) {
-                        name = name.substring(0, defIdx).trim();
-                        if(!(tempMap.containsKey(name) || this.contains(name))){
-                            tempMap.put(name, "");
-                        }
+                        PropUtil.exprStrHandle(name, (propName, propDef)->{
+                            if(!(tempMap.containsKey(propName) || this.containsKey(propName))){
+                                tempMap.put(propName, propDef);
+                            }
+                        });
                     }
                     tml = tml.substring(end);
                 }
