@@ -1,7 +1,9 @@
 package org.noear.solon.cloud.metrics.interceptor;
 
+import io.micrometer.core.instrument.LongTaskTimer;
 import io.micrometer.core.instrument.Metrics;
 import io.micrometer.core.instrument.Timer;
+import io.micrometer.core.instrument.distribution.pause.PauseDetector;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.metrics.annotation.MeterTimer;
 import org.noear.solon.core.aspect.Invocation;
@@ -35,23 +37,18 @@ public class MeterTimerInterceptor extends BaseMeterInterceptor<MeterTimer, Time
     @Override
     protected Object metering(Invocation inv, MeterTimer anno) throws Throwable {
         //获取度量器
-        Timer meter = meterCached.get(anno);
-        if (meter == null) {
-            synchronized (anno) {
-                meter = meterCached.get(anno);
-                if (meter == null) {
-                    String meterName = getMeterName(inv, anno);
+        String meterName = getMeterName(inv, anno);
+        Timer meter;
 
-                    meter = Timer.builder(meterName)
-                            .tags(getMeterTags(inv, anno.tags()))
-                            .description(anno.description())
-                            .register(Metrics.globalRegistry);
-
-                    meterCached.put(anno, meter);
-                }
-            }
+        if (!meterCached.containsKey(meterName)) {
+            meter = Timer.builder(meterName)
+                    .description(anno.description())
+                    .tags(getMeterTags(inv, anno.tags()))
+                    .publishPercentiles(anno.percentiles())
+                    .register(Metrics.globalRegistry);
+            meterCached.put(meterName, meter);
         }
-
+        meter = meterCached.get(meterName);
         //计时
         long start = System.currentTimeMillis();
         try {

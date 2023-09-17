@@ -32,24 +32,16 @@ public class MeterCounterInterceptor extends BaseMeterInterceptor<MeterCounter,C
 
     @Override
     protected Object metering(Invocation inv, MeterCounter anno) throws Throwable {
-        //获取度量器
-        Counter meter = meterCached.get(anno);
-        if (meter == null) {
-            synchronized (anno) {
-                meter = meterCached.get(anno);
-                if (meter == null) {
-                    String meterName = getMeterName(inv, anno);
 
-                    meter = Counter.builder(meterName)
-                            .tags(getMeterTags(inv, anno.tags()))
-                            .description(anno.description())
-                            .register(Metrics.globalRegistry);
-
-                    meterCached.put(anno, meter);
-                }
-            }
+        String meterName = getMeterName(inv, anno);
+        if (!meterCached.containsKey(meterName)) {
+            meterCached.put(meterName, Counter.builder(meterName)
+                    .baseUnit(anno.unit())
+                    .description(anno.description())
+                    .tags(getMeterTags(inv, anno.tags()))
+                    .register(Metrics.globalRegistry));
         }
-
+        Counter meter = meterCached.get(meterName);
         try {
             return inv.invoke();
         } finally {

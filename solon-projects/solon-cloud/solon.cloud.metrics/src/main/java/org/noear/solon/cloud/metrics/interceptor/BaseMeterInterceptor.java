@@ -7,8 +7,8 @@ import org.noear.solon.core.aspect.Interceptor;
 import org.noear.solon.core.aspect.Invocation;
 import org.noear.solon.core.handle.Context;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 度量注解的拦截器基类
@@ -17,7 +17,7 @@ import java.util.Map;
  * @since 2.4
  */
 public abstract class BaseMeterInterceptor<T,M> implements Interceptor {
-    protected final Map<T, M> meterCached = new HashMap<>();
+    protected final Map<String, M> meterCached = new ConcurrentHashMap<>();
 
     /**
      * 获取注解
@@ -71,7 +71,6 @@ public abstract class BaseMeterInterceptor<T,M> implements Interceptor {
             tags.and(Tag.of("class", inv.target().getClass().getTypeName()),
                     Tag.of("executable", inv.method().getMethod().getName()));
         }
-
 
         return tags;
     }

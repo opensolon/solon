@@ -16,8 +16,8 @@ public class MetricsController {
      * 获取所有注册器（类名）
      * */
     @Mapping("/metrics/registrys")
-    public Map<String, List> registrys() {
-        Map<String, List> data = new HashMap<>();
+    public Map<String, List<?>> registrys() {
+        Map<String, List<?>> data = new HashMap<>();
         List<String> registrys = new ArrayList<>();
 
         for (MeterRegistry meterRegistry : Metrics.globalRegistry.getRegistries()) {
@@ -32,8 +32,8 @@ public class MetricsController {
      * 获取所有度量器（名字）
      * */
     @Mapping("/metrics/meters")
-    public Map<String, List> meters() {
-        Map<String, List> data = new HashMap<>();
+    public Map<String, List<?>> meters() {
+        Map<String, List<?>> data = new HashMap<>();
         List<String> meters = new ArrayList<>();
 
         Metrics.globalRegistry.getMeters().forEach(meter -> {
@@ -48,7 +48,7 @@ public class MetricsController {
      * 获取度量详情
      * */
     @Mapping("/metrics/meter/{meterName}")
-    public Map meter(String meterName) {
+    public Map<String, Object> meter(String meterName) {
         Map<String, Object> meterData = new LinkedHashMap<>();
         meterData.put("name", meterName);
 
