@@ -6,7 +6,7 @@ import org.noear.solon.core.util.IoUtil;
 import java.io.*;
 
 /**
- * 下载的文件模型
+ * 下载文件模型
  *
  * @author noear
  * @since 1.5
@@ -42,7 +42,7 @@ public class DownloadedFile {
 
     /**
      * 作为附件输出
-     * */
+     */
     public DownloadedFile asAttachment(boolean attachment) {
         this.attachment = attachment;
         return this;
@@ -90,9 +90,10 @@ public class DownloadedFile {
     }
 
     /**
-     * 基于下载输出的构建函数
+     * 构造函数
      *
      * @param contentType 内容类型
+     * @param contentSize 内容大小
      * @param content     内容流
      * @param name        文件名
      */
@@ -103,10 +104,24 @@ public class DownloadedFile {
         this.name = name;
     }
 
+    /**
+     * 构造函数
+     *
+     * @param contentType 内容类型
+     * @param content     内容流
+     * @param name        文件名
+     */
     public DownloadedFile(String contentType, InputStream content, String name) {
         this(contentType, 0, content, name);
     }
 
+    /**
+     * 构造函数
+     *
+     * @param contentType 内容类型
+     * @param content     内容流
+     * @param name        文件名
+     */
     public DownloadedFile(String contentType, byte[] content, String name) {
         this.contentType = contentType;
         this.contentSize = content.length;
@@ -114,30 +129,35 @@ public class DownloadedFile {
         this.name = name;
     }
 
-    public DownloadedFile(File file) throws FileNotFoundException {
-        this.contentType = Utils.mime(file.getName());
-        this.contentSize = 0;
-        this.content = new FileInputStream(file);
-        this.name = file.getName();
-    }
-    
     /**
-     * 
-     * @param file
-     * @param name 指定文件名
+     * 构造函数
+     *
+     * @param file 文件
      * @throws FileNotFoundException
      */
-    public DownloadedFile(File file,String name) throws FileNotFoundException {
+    public DownloadedFile(File file) throws FileNotFoundException {
+        this(file, file.getName());
+    }
+
+    /**
+     * 构造函数
+     *
+     * @param file 文件
+     * @param name 名字
+     * @throws FileNotFoundException
+     * @since 2.5
+     */
+    public DownloadedFile(File file, String name) throws FileNotFoundException {
         this.contentType = Utils.mime(file.getName());
-        this.contentSize = 0;
+        this.contentSize = file.length();
         this.content = new FileInputStream(file);
         this.name = name;
     }
 
     /**
-     * 将内容流迁移到..
+     * 将内容流迁移到目标文件
      *
-     * @param file 文件
+     * @param file 目标文件
      */
     public void transferTo(File file) throws IOException {
         try (FileOutputStream stream = new FileOutputStream(file)) {
@@ -146,9 +166,9 @@ public class DownloadedFile {
     }
 
     /**
-     * 将内容流迁移到..
+     * 将内容流迁移到目标输出流
      *
-     * @param stream 输出流
+     * @param stream 目标输出流
      */
     public void transferTo(OutputStream stream) throws IOException {
         IoUtil.transferTo(content, stream);

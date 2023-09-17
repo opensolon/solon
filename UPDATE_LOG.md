@@ -20,6 +20,8 @@
 * 添加 ContextPathListener 类，用于控制 contentPath 对 ws,tpc 的影响
 * 添加 ContextPathFilter 一个简化的构造函数
 * 添加 yaml 多片段支持（即一文件多环境支持）
+* 添加 多配置文件交差引用变量支持
+* 添加 DownloadedFile(file,name) 构造函数
 * 调整 CacheService 接口（增加类型化 get）
 * 调整 SessionState 接口（增加类型化 get）
 * 调整 Context::session 接口（增加类型化 get）
