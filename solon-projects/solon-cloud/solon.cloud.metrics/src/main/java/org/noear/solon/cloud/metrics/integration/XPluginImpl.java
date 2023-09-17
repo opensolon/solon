@@ -8,12 +8,9 @@ import io.micrometer.core.instrument.binder.MeterBinder;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudManager;
+import org.noear.solon.cloud.metrics.annotation.*;
 import org.noear.solon.cloud.metrics.export.MeterOpener;
 import org.noear.solon.cloud.metrics.export.PrometheusOpener;
-import org.noear.solon.cloud.metrics.annotation.MeterGauge;
-import org.noear.solon.cloud.metrics.annotation.MeterSummary;
-import org.noear.solon.cloud.metrics.annotation.MeterCounter;
-import org.noear.solon.cloud.metrics.annotation.MeterTimer;
 import org.noear.solon.cloud.metrics.interceptor.MeterGaugeInterceptor;
 import org.noear.solon.cloud.metrics.interceptor.MeterSummaryInterceptor;
 import org.noear.solon.cloud.metrics.interceptor.MeterCounterInterceptor;
@@ -42,6 +39,7 @@ public class XPluginImpl implements Plugin {
         context.beanInterceptorAdd(MeterGauge.class, new MeterGaugeInterceptor());
         context.beanInterceptorAdd(MeterSummary.class, new MeterSummaryInterceptor());
         context.beanInterceptorAdd(MeterTimer.class, new MeterTimerInterceptor());
+        context.beanInterceptorAdd(MeterLongTimer.class, new MeterTimerInterceptor());
 
         //订阅 MeterRegistry
         context.subBeansOfType(MeterRegistry.class, registry -> {

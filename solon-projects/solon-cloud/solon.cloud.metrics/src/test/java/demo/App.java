@@ -4,11 +4,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Mapping;
 import org.noear.solon.annotation.SolonMain;
-import org.noear.solon.cloud.metrics.annotation.MeterCounter;
-import org.noear.solon.cloud.metrics.annotation.MeterGauge;
-import org.noear.solon.cloud.metrics.annotation.MeterSummary;
-import org.noear.solon.cloud.metrics.annotation.MeterTimer;
-
+import org.noear.solon.cloud.metrics.annotation.*;
 /**
  * 不需要配置，直接可用
  */
@@ -20,13 +16,13 @@ public class App {
     }
 
     @Mapping("/counter")
-    @MeterCounter("demo.counter")
+    @MeterCounter(value = "demo.counter", unit = "个")
     public String counter() {
         return "counter";
     }
 
     @Mapping("/gauge")
-    @MeterGauge("demo.gauge")
+    @MeterGauge(name = "demo.gauge", description = "这是一个gauge")
     public Long gauge() {
         return System.currentTimeMillis() % 100;
     }
@@ -38,8 +34,16 @@ public class App {
     }
 
     @Mapping("/timer")
-    @MeterTimer("demo.timer")
+    @MeterTimer(value = "demo.timer", description = "这是一个计时器", percentiles = {10.0, 20, 50})
     public String timer() {
         return "timer";
+    }
+
+
+    @Mapping("/timer")
+    @MeterLongTimer(value = "demo.timer", description = "这是一个长任务计时器", percentiles = {10.0, 20, 50})
+    public String longTimer() throws InterruptedException {
+        Thread.sleep(100);
+        return "longTimer";
     }
 }

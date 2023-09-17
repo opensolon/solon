@@ -1,19 +1,26 @@
 package org.noear.solon.cloud.metrics.annotation;
 
+
 import org.noear.solon.annotation.Alias;
 
-import java.lang.annotation.*;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * 用来记录单个的变化的值（例如：温度，气压）
+ * 计计划
  *
- * @author noear
- * @since 2.4
+ * @author bai
+ * @date 2023/07/31
  */
 @Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface MeterGauge {
+public @interface MeterLongTimer {
+
+
     /**
      * 名称
      */
@@ -26,8 +33,11 @@ public @interface MeterGauge {
     @Alias("value")
     String name() default "";
 
+
     /**
      * 标签
+     *
+     * @return {@link String[]}
      */
     String[] tags() default {};
 
@@ -38,4 +48,12 @@ public @interface MeterGauge {
      * @return {@link String}
      */
     String description() default "";
+
+    /**
+     * 百分位数
+     *
+     * @return {@link double[]}
+     */
+    double[] percentiles() default {1.0};
+
 }
