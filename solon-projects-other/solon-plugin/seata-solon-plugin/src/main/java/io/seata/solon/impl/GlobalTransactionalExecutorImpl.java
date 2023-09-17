@@ -8,10 +8,8 @@ import io.seata.tm.api.transaction.TransactionInfo;
 import org.noear.solon.Utils;
 import org.noear.solon.core.aspect.Invocation;
 
-import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * 全局事务执行器
@@ -76,10 +74,17 @@ public class GlobalTransactionalExecutorImpl implements TransactionalExecutor {
      * */
     private String getName() {
         if (Utils.isEmpty(anno.name())) {
-            String paramTypes = Arrays.stream(inv.method().getMethod().getParameterTypes())
-                    .map(Class::getName)
-                    .collect(Collectors.joining(", ", "(", ")"));
-            return inv.method().getMethod().getName() + paramTypes;
+            StringBuilder sb = new StringBuilder(inv.method().getMethod().getName()).append("(");
+
+            Class<?>[] params = inv.method().getMethod().getParameterTypes();
+            int in = 0;
+            for (Class<?> clazz : params) {
+                sb.append(clazz.getName());
+                if (++in < params.length) {
+                    sb.append(", ");
+                }
+            }
+            return sb.append(")").toString();
         } else {
             return anno.name();
         }
