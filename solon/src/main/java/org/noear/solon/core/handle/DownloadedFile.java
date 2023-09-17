@@ -120,6 +120,19 @@ public class DownloadedFile {
         this.content = new FileInputStream(file);
         this.name = file.getName();
     }
+    
+    /**
+     * 
+     * @param file
+     * @param name 指定文件名
+     * @throws FileNotFoundException
+     */
+    public DownloadedFile(File file,String name) throws FileNotFoundException {
+        this.contentType = Utils.mime(file.getName());
+        this.contentSize = 0;
+        this.content = new FileInputStream(file);
+        this.name = name;
+    }
 
     /**
      * 将内容流迁移到..
