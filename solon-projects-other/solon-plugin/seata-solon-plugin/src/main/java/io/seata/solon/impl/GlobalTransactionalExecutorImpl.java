@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
  * 全局事务执行器
  *
  * @author noear
- * @since 2.4
+ * @since 2.5
  */
 public class GlobalTransactionalExecutorImpl implements TransactionalExecutor {
     Invocation inv;
@@ -39,7 +39,19 @@ public class GlobalTransactionalExecutorImpl implements TransactionalExecutor {
 
         transactionInfo.setTimeOut(anno.timeoutMills());
         transactionInfo.setName(getName());
+        transactionInfo.setRollbackRules(getRollbackRules());
+        transactionInfo.setPropagation(anno.propagation());
+        transactionInfo.setLockRetryInterval(anno.lockRetryInterval());
+        transactionInfo.setLockRetryTimes(anno.lockRetryTimes());
+        transactionInfo.setLockStrategyMode(anno.lockStrategyMode());
 
+        return transactionInfo;
+    }
+
+    /**
+     * Get the rollback rule
+     * */
+    private Set<RollbackRule> getRollbackRules() {
         Set<RollbackRule> rollbackRules = new LinkedHashSet<>();
 
         for (Class<?> rbRule : anno.rollbackFor()) {
@@ -55,11 +67,13 @@ public class GlobalTransactionalExecutorImpl implements TransactionalExecutor {
             rollbackRules.add(new NoRollbackRule(rbRule));
         }
 
-        transactionInfo.setRollbackRules(rollbackRules);
-        return transactionInfo;
+        return rollbackRules;
     }
 
 
+    /**
+     * Get global transaction name
+     * */
     private String getName() {
         if (Utils.isEmpty(anno.name())) {
             String paramTypes = Arrays.stream(inv.method().getMethod().getParameterTypes())

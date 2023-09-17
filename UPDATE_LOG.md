@@ -19,6 +19,7 @@
 * 添加 PropUtil 类。把原来的属性表达式与模板解析独立出来
 * 添加 ContextPathListener 类，用于控制 contentPath 对 ws,tpc 的影响
 * 添加 ContextPathFilter 一个简化的构造函数
+* 添加 MethodHolder::getDeclaringClz、getDeclaringClzAnnotation 接口
 * 添加 yaml 多片段支持（即一文件多环境支持）
 * 添加 多配置文件交差引用变量支持
 * 添加 DownloadedFile(file,name) 构造函数

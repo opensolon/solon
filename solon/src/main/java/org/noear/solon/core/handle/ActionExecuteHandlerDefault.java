@@ -103,7 +103,7 @@ public class ActionExecuteHandlerDefault implements ActionExecuteHandler {
                     try {
                         tv = changeValue(ctx, p, i, pt, bodyObj);
                     } catch (Exception e) {
-                        String methodFullName = mWrap.getEntityClz().getName() + "::" + mWrap.getName() + "@" + p.getName();
+                        String methodFullName = mWrap.getDeclaringClz().getName() + "::" + mWrap.getName() + "@" + p.getName();
                         throw new IllegalArgumentException("Action parameter change failed: " + methodFullName, e);
                     }
                 }

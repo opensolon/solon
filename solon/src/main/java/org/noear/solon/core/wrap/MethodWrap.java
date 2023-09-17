@@ -29,7 +29,7 @@ public class MethodWrap implements Interceptor, MethodHolder {
     public MethodWrap(AopContext ctx, Method m) {
         context = (AppContext) ctx;
 
-        entityClz = m.getDeclaringClass();
+        declaringClz = m.getDeclaringClass();
 
         method = m;
         parameters = buildParamsWrap(m.getParameters());
@@ -52,7 +52,7 @@ public class MethodWrap implements Interceptor, MethodHolder {
         }
 
         //scan cless @Around
-        for (Annotation anno : entityClz.getAnnotations()) {
+        for (Annotation anno : declaringClz.getAnnotations()) {
             if (anno instanceof Around) {
                 doInterceptorAdd((Around) anno);
             } else {
@@ -109,7 +109,7 @@ public class MethodWrap implements Interceptor, MethodHolder {
     private final AppContext context;
 
     //实体类型
-    private final Class<?> entityClz;
+    private final Class<?> declaringClz;
     //函数
     private final Method method;
     //函数参数
@@ -139,10 +139,11 @@ public class MethodWrap implements Interceptor, MethodHolder {
     }
 
     /**
-     * 获取申明实体类
+     * 获取申明类
      */
-    public Class<?> getEntityClz() {
-        return entityClz;
+    @Override
+    public Class<?> getDeclaringClz() {
+        return declaringClz;
     }
 
     /**
@@ -192,6 +193,11 @@ public class MethodWrap implements Interceptor, MethodHolder {
      */
     public <T extends Annotation> T getAnnotation(Class<T> type) {
         return method.getAnnotation(type);
+    }
+
+    @Override
+    public <T extends Annotation> T getDeclaringClzAnnotation(Class<T> type) {
+        return null;
     }
 
 

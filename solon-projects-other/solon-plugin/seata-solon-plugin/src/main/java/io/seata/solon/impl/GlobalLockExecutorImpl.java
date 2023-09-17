@@ -9,7 +9,7 @@ import org.noear.solon.core.aspect.Invocation;
  * 全局锁执行器
  *
  * @author noear
- * @since 2.4
+ * @since 2.5
  */
 public class GlobalLockExecutorImpl implements GlobalLockExecutor {
     Invocation inv;

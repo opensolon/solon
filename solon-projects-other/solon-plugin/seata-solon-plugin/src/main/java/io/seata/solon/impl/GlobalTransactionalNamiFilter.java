@@ -1,4 +1,4 @@
-package io.seata.solon.integration;
+package io.seata.solon.impl;
 
 
 import org.noear.nami.Filter;
@@ -9,9 +9,9 @@ import org.noear.nami.Result;
  * Nami 过滤器（透递 seata 信息）
  *
  * @author noear
- * @since 2.4
+ * @since 2.5
  */
-public class NamiFilter implements Filter {
+public class GlobalTransactionalNamiFilter implements Filter {
     @Override
     public Result doFilter(Invocation inv) throws Throwable {
         return null;

@@ -2,13 +2,12 @@ package io.seata.solon.impl;
 
 import io.seata.rm.GlobalLockTemplate;
 import io.seata.solon.annotation.GlobalLock;
-import io.seata.solon.impl.GlobalLockExecutorImpl;
 import org.noear.solon.core.aspect.Interceptor;
 import org.noear.solon.core.aspect.Invocation;
 
 /**
  * @author noear
- * @since 2.4
+ * @since 2.5
  */
 public class GlobalLockInterceptor implements Interceptor {
     GlobalLockTemplate globalLockTemplate;
