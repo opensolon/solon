@@ -1,4 +1,4 @@
-package demo;
+package org.hibernate.solon.test.demo;
 
 import lombok.Data;
 

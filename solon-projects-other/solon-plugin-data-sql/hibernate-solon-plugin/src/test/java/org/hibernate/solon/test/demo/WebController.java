@@ -1,5 +1,4 @@
-package demo;
-
+package org.hibernate.solon.test.demo;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;

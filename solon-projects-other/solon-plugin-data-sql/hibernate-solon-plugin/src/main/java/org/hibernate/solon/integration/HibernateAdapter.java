@@ -41,7 +41,7 @@ public class HibernateAdapter {
         return dsWrap.raw();
     }
 
-    SessionFactory sessionFactory;
+    private SessionFactory sessionFactory;
 
     public SessionFactory getSessionFactory() {
         if (sessionFactory != null) {
