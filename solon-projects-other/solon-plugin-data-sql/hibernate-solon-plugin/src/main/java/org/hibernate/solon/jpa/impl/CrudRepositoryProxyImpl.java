@@ -25,7 +25,7 @@ public class CrudRepositoryProxyImpl extends BaseRepositoryProxyImpl implements 
 
     @Override
     public Object save(Object entity) {
-        return null;
+        return getSession().save(entity);
     }
 
     @Override
@@ -35,7 +35,7 @@ public class CrudRepositoryProxyImpl extends BaseRepositoryProxyImpl implements 
 
     @Override
     public Optional findById(Object o) {
-        return Optional.empty();
+        return Optional.ofNullable(getSession().find(entityType, o));
     }
 
     @Override
@@ -65,7 +65,7 @@ public class CrudRepositoryProxyImpl extends BaseRepositoryProxyImpl implements 
 
     @Override
     public void delete(Object entity) {
-
+        getSession().delete(entity);
     }
 
     @Override

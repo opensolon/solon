@@ -1,5 +1,6 @@
 package org.hibernate.solon.jpa.impl;
 
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 /**
@@ -10,5 +11,10 @@ public class BaseRepositoryProxyImpl {
     protected SessionFactory sessionFactory;
     public BaseRepositoryProxyImpl(SessionFactory sessionFactory){
         this.sessionFactory = sessionFactory;
+    }
+
+    public Session getSession() {
+        return sessionFactory.getCurrentSession();
+        //return sessionFactory.openSession();
     }
 }
