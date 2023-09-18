@@ -106,7 +106,7 @@
         <nacos2.version>2.2.4</nacos2.version>
         <zookeeper.version>3.7.1</zookeeper.version>
         <jetcd-version>0.5.0</jetcd-version>
-        <polaris.version>1.12.2</polaris.version>
+        <polaris.version>1.14.1</polaris.version>
 
         <feign.version>8.18.0</feign.version>
         <aws.s3.version>1.12.347</aws.s3.version>
