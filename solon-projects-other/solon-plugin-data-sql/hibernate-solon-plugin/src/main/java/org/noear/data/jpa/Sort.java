@@ -1,4 +1,4 @@
-package org.noear.data.jap;
+package org.noear.data.jpa;
 
 /**
  * @author noear 2023/9/18 created

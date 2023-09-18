@@ -1,7 +1,7 @@
-package org.hibernate.solon.jap.impl;
+package org.hibernate.solon.jpa.impl;
 
 import org.hibernate.SessionFactory;
-import org.noear.data.jap.CrudRepository;
+import org.noear.data.jpa.CrudRepository;
 import org.noear.solon.core.util.GenericUtil;
 
 import java.util.Optional;

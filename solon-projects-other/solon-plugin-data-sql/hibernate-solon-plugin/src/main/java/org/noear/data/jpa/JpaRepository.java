@@ -1,4 +1,4 @@
-package org.noear.data.jap;
+package org.noear.data.jpa;
 
 /**
  * Jpa 仓库

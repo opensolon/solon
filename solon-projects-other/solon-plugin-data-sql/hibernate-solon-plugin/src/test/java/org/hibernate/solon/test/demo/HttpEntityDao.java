@@ -1,6 +1,6 @@
 package org.hibernate.solon.test.demo;
 
-import org.noear.data.jap.JpaRepository;
+import org.noear.data.jpa.JpaRepository;
 import org.noear.solon.annotation.Component;
 
 @Component

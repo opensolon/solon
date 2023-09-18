@@ -1,4 +1,4 @@
-package org.hibernate.solon.jap;
+package org.hibernate.solon.jpa;
 
 import org.hibernate.SessionFactory;
 import org.noear.solon.lang.Nullable;

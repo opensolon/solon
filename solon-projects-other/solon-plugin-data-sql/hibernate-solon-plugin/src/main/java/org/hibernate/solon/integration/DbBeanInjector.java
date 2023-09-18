@@ -1,6 +1,6 @@
 package org.hibernate.solon.integration;
 
-import org.hibernate.solon.jap.RepositoryProxy;
+import org.hibernate.solon.jpa.RepositoryProxy;
 import org.hibernate.solon.annotation.Db;
 import org.noear.solon.Utils;
 import org.noear.solon.core.BeanInjector;

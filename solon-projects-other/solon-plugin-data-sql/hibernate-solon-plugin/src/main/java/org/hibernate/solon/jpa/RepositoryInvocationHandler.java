@@ -1,10 +1,10 @@
-package org.hibernate.solon.jap;
+package org.hibernate.solon.jpa;
 
 import org.hibernate.SessionFactory;
-import org.hibernate.solon.jap.impl.JapRepositoryProxyImpl;
-import org.noear.data.jap.CrudRepository;
-import org.noear.data.jap.JpaRepository;
-import org.noear.data.jap.PagingAndSortingRepository;
+import org.hibernate.solon.jpa.impl.JapRepositoryProxyImpl;
+import org.noear.data.jpa.CrudRepository;
+import org.noear.data.jpa.JpaRepository;
+import org.noear.data.jpa.PagingAndSortingRepository;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;

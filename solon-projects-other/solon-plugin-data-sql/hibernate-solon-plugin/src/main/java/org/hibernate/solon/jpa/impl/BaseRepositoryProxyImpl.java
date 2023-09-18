@@ -1,4 +1,4 @@
-package org.hibernate.solon.jap.impl;
+package org.hibernate.solon.jpa.impl;
 
 import org.hibernate.SessionFactory;
 

@@ -1,10 +1,10 @@
-package org.hibernate.solon.jap.impl;
+package org.hibernate.solon.jpa.impl;
 
 import org.hibernate.SessionFactory;
-import org.noear.data.jap.Page;
-import org.noear.data.jap.Pageable;
-import org.noear.data.jap.PagingAndSortingRepository;
-import org.noear.data.jap.Sort;
+import org.noear.data.jpa.Page;
+import org.noear.data.jpa.Pageable;
+import org.noear.data.jpa.PagingAndSortingRepository;
+import org.noear.data.jpa.Sort;
 
 
 /**
