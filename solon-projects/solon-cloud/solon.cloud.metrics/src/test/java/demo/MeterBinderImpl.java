@@ -13,6 +13,6 @@ public class MeterBinderImpl implements MeterBinder {
 
     @Override
     public void bindTo(MeterRegistry meterRegistry) {
-        Metrics.globalRegistry.add(meterRegistry);
+        //Metrics.globalRegistry.add(meterRegistry);
     }
 }

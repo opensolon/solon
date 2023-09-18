@@ -32,11 +32,8 @@ public class MeterSummaryInterceptor extends BaseMeterInterceptor<MeterSummary, 
 
     @Override
     protected Object metering(Invocation inv, MeterSummary anno) throws Throwable {
-
-        DistributionSummary meter;
         String meterName = getMeterName(inv, anno);
-        if (!meterCached.containsKey(meterName)) {
-
+        DistributionSummary meter = getMeter(meterName, ()->{
             DistributionSummary.Builder builder = DistributionSummary
                     .builder(meterName)
                     .tags(getMeterTags(inv, anno.tags()));
@@ -55,11 +52,9 @@ public class MeterSummaryInterceptor extends BaseMeterInterceptor<MeterSummary, 
                 builder.publishPercentiles(anno.percentiles());
             }
 
-            meter = builder.register(Metrics.globalRegistry);
-            meterCached.put(meterName, meter);
-        }
-        //获取度量器
-        meter = meterCached.get(meterName);
+            return builder.register(Metrics.globalRegistry);
+        });
+
         Object rst = inv.invoke();
 
         //计变数

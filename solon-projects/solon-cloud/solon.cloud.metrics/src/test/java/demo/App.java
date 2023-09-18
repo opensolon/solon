@@ -28,20 +28,20 @@ public class App {
     }
 
     @Mapping("/summary")
-    @MeterSummary(value = "demo.summary", maxValue = 88, minValue = 1, percentiles = {10, 20, 50})
+    @MeterSummary(value = "demo.summary", maxValue = 88, minValue = 1, percentiles = {0.0, 0.2, 1.0})
     public Long summary() {
         return System.currentTimeMillis() % 100;
     }
 
     @Mapping("/timer")
-    @MeterTimer(value = "demo.timer", description = "这是一个计时器", percentiles = {10.0, 20, 50})
+    @MeterTimer(value = "demo.timer", description = "这是一个计时器")
     public String timer() {
         return "timer";
     }
 
 
-    @Mapping("/timer")
-    @MeterLongTimer(value = "demo.timer", description = "这是一个长任务计时器", percentiles = {10.0, 20, 50})
+    @Mapping("/longTimer")
+    @MeterLongTimer(value = "demo.longTimer", description = "这是一个长任务计时器", percentiles = {0.0, 0.2, 1.0})
     public String longTimer() throws InterruptedException {
         Thread.sleep(100);
         return "longTimer";

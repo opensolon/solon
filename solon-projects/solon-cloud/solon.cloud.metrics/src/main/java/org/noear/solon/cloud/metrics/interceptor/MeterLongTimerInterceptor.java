@@ -10,9 +10,9 @@ import org.noear.solon.core.aspect.Invocation;
  * 长计时器拦截器
  *
  * @author bai
- * @date 2023/08/04
+ * @date 2.5
  */
-public class MeterLongTimerInterceptor  extends BaseMeterInterceptor<MeterLongTimer, Number> {
+public class MeterLongTimerInterceptor  extends BaseMeterInterceptor<MeterLongTimer, LongTaskTimer> {
 
     @Override
     protected MeterLongTimer getAnno(Invocation inv) {
@@ -30,17 +30,21 @@ public class MeterLongTimerInterceptor  extends BaseMeterInterceptor<MeterLongTi
 
     @Override
     protected Object metering(Invocation inv, MeterLongTimer anno) throws Throwable {
-        LongTaskTimer longTaskTimer = LongTaskTimer.builder(getMeterName(inv, anno))
-                .tags(getMeterTags(inv, anno.tags()))
-                .publishPercentiles(anno.percentiles())
-                .description(anno.description())
-                .register(Metrics.globalRegistry);
-        return longTaskTimer.record(()->{
-            try {
-                return inv.invoke();
-            } catch (Throwable e) {
-                throw new RuntimeException(e);
-            }
+        String meterName = getMeterName(inv, anno);
+        LongTaskTimer meter = getMeter(meterName, () -> {
+            return LongTaskTimer.builder(getMeterName(inv, anno))
+                    .tags(getMeterTags(inv, anno.tags()))
+                    .publishPercentiles(anno.percentiles())
+                    .description(anno.description())
+                    .register(Metrics.globalRegistry);
         });
+
+        //计时
+        LongTaskTimer.Sample sample = meter.start(); //默认是 NANOSECONDS 计时
+        try {
+            return inv.invoke(); //改成 record, 不用再一层包异常
+        } finally {
+            sample.stop();
+        }
     }
 }
