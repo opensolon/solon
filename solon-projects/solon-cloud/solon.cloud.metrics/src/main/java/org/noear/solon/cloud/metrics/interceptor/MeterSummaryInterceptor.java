@@ -48,9 +48,10 @@ public class MeterSummaryInterceptor extends BaseMeterInterceptor<MeterSummary, 
                 builder.minimumExpectedValue(anno.minValue());
             }
 
-            if(anno.percentiles().length > 0) {
-                builder.publishPercentiles(anno.percentiles());
-            }
+            builder.scale(anno.scale());
+            builder.publishPercentileHistogram(anno.percentilesHistogram());
+            builder.publishPercentiles(anno.percentiles());
+            builder.serviceLevelObjectives(anno.serviceLevelObjectives());
 
             return builder.register(Metrics.globalRegistry);
         });
