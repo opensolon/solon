@@ -1,9 +1,9 @@
 package org.hibernate.solon.jap;
 
 import org.hibernate.SessionFactory;
-import org.hibernate.solon.jap.impl.CrudRepositoryProxyImpl;
-import org.hibernate.solon.jap.impl.PagingAndSortingRepositoryProxyImpl;
+import org.hibernate.solon.jap.impl.JapRepositoryProxyImpl;
 import org.noear.data.jap.CrudRepository;
+import org.noear.data.jap.JpaRepository;
 import org.noear.data.jap.PagingAndSortingRepository;
 
 import java.lang.reflect.InvocationHandler;
@@ -21,15 +21,15 @@ public class RepositoryInvocationHandler implements InvocationHandler {
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        if (CrudRepository.class == method.getDeclaringClass()) {
-            CrudRepositoryProxyImpl repository = new CrudRepositoryProxyImpl(sessionFactory, repositoryInterface);
-            method.invoke(repository, args);
-        } else if (PagingAndSortingRepository.class == method.getDeclaringClass()) {
-            PagingAndSortingRepository repository = new PagingAndSortingRepositoryProxyImpl(sessionFactory, repositoryInterface);
-            method.invoke(repository, args);
+        if (CrudRepository.class == method.getDeclaringClass()
+                || PagingAndSortingRepository.class == method.getDeclaringClass()
+                || JpaRepository.class == method.getDeclaringClass()) {
+            //归属 JpaRepository 范围的
+            JapRepositoryProxyImpl repository = new JapRepositoryProxyImpl(sessionFactory, repositoryInterface);
+            return method.invoke(repository, args);
+        } else {
+            //无归属的 method 处理
         }
-
-        //...
 
         return null;
     }
