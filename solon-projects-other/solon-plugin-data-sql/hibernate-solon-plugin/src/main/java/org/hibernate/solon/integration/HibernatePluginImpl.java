@@ -4,6 +4,7 @@ import org.hibernate.solon.annotation.Db;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 
+import javax.persistence.spi.PersistenceProviderResolverHolder;
 import javax.sql.DataSource;
 
 /**
@@ -14,6 +15,12 @@ public class HibernatePluginImpl implements Plugin {
 
     @Override
     public void start(AppContext context) throws Throwable {
+        //支持 jpa
+        PersistenceProviderResolverHolder
+                .getPersistenceProviderResolver()
+                .getPersistenceProviders()
+                .add(new HibernateAdapterPersistenceProvider());
+
         context.subWrapsOfType(DataSource.class, bw -> {
             HibernateAdapterManager.register(bw);
         });

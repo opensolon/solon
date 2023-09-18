@@ -1,6 +1,5 @@
 package org.hibernate.solon.integration;
 
-import org.hibernate.solon.jpa.RepositoryProxy;
 import org.hibernate.solon.annotation.Db;
 import org.noear.solon.Utils;
 import org.noear.solon.core.BeanInjector;
@@ -32,7 +31,7 @@ public class DbBeanInjector implements BeanInjector<Db> {
             adapter.injectTo(varH);
 
             if (varH.getType().isInterface()) {
-                Object proxy = RepositoryProxy.newProxyInstance(adapter.getSessionFactory(), varH.getType());
+                Object proxy = adapter.getMapper(varH.getType());
                 varH.setValue(proxy);
             }
         }

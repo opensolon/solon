@@ -1,6 +1,5 @@
 package org.hibernate.solon.integration;
 
-import org.hibernate.solon.jpa.RepositoryProxy;
 import org.hibernate.solon.annotation.Db;
 import org.noear.solon.Utils;
 import org.noear.solon.core.BeanBuilder;
@@ -31,7 +30,7 @@ public class DbBeanBuilder implements BeanBuilder<Db> {
     private void create0(Class<?> clz, BeanWrap dsBw, BeanWrap daoBw) {
         HibernateAdapter adapter = HibernateAdapterManager.get(dsBw);
 
-        Object proxy = RepositoryProxy.newProxyInstance(adapter.getSessionFactory(), clz);
+        Object proxy = adapter.getMapper(clz);
 
         daoBw.rawSet(proxy);
     }

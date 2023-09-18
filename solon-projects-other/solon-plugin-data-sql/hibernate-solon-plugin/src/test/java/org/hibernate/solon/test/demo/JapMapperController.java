@@ -10,7 +10,7 @@ import org.noear.solon.data.annotation.Tran;
 import java.util.List;
 
 @Controller
-public class WebController {
+public class JapMapperController {
     @Db
     private SessionFactory sessionFactory;
 

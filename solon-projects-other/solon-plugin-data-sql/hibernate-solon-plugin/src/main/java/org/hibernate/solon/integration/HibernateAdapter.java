@@ -2,11 +2,13 @@ package org.hibernate.solon.integration;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.solon.jpa.RepositoryProxy;
 import org.noear.solon.Solon;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.Props;
 import org.noear.solon.core.VarHolder;
 
+import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
 /**
@@ -55,6 +57,11 @@ public class HibernateAdapter {
         return configuration;
     }
 
+
+    public Object getMapper(Class<?> repositoryInterface) {
+        return RepositoryProxy.newProxyInstance(getSessionFactory(), repositoryInterface);
+    }
+
     protected void initConfiguration() {
 
     }
@@ -90,6 +97,10 @@ public class HibernateAdapter {
 
         if (Configuration.class.isAssignableFrom(varH.getType())) {
             varH.setValue(getConfiguration());
+        }
+
+        if (EntityManagerFactory.class.isAssignableFrom(varH.getType())) {
+            varH.setValue(getSessionFactory());
         }
     }
 }
