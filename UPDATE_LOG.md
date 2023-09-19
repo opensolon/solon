@@ -30,6 +30,7 @@
 * 调整 BeanWrap 的 rawSet tagSet 改为公有
 * 调整 CloudConfig 复用主框架的属性表达式与模板解析
 * 调整 Listener 去掉 @FunctionalInterface，所有方法标为 default
+* 调整 ChainManager::postResult 的执行策略为包围式
 * 调整 ValHolder 标为弃用
 * 调整 jdkhttp,jlhttp,smarthttp 的 contentLength 适配处理
 * 调整 使用更多的 slf4j 替换 bus

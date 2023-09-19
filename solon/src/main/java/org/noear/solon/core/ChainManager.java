@@ -100,7 +100,8 @@ public class ChainManager {
      * 提交结果（action / render 执行前调用）
      */
     public Object postResult(Context x, @Nullable Object result) throws Throwable {
-        for (RankEntity<RouterInterceptor> e : interceptorNodes) {
+        for (int i = interceptorNodes.size() - 1; i >= 0; i--) {
+            RankEntity<RouterInterceptor> e = interceptorNodes.get(i);
             result = e.target.postResult(x, result);
         }
 
