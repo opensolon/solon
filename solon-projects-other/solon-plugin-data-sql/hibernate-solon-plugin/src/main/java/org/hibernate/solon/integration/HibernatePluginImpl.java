@@ -1,6 +1,7 @@
 package org.hibernate.solon.integration;
 
 import org.hibernate.solon.annotation.Db;
+import org.hibernate.solon.jpa.SolonPersistenceProvider;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 
@@ -19,7 +20,7 @@ public class HibernatePluginImpl implements Plugin {
         PersistenceProviderResolverHolder
                 .getPersistenceProviderResolver()
                 .getPersistenceProviders()
-                .add(new HibernateAdapterPersistenceProvider());
+                .add(new SolonPersistenceProvider());
 
         context.subWrapsOfType(DataSource.class, bw -> {
             HibernateAdapterManager.register(bw);

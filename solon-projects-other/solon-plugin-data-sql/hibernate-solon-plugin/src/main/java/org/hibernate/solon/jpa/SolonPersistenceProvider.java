@@ -1,7 +1,8 @@
-package org.hibernate.solon.integration;
+package org.hibernate.solon.jpa;
 
 import org.hibernate.jpa.internal.util.PersistenceUtilHelper;
-import org.noear.solon.Utils;
+import org.hibernate.solon.integration.HibernateAdapter;
+import org.hibernate.solon.integration.HibernateAdapterManager;
 
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.spi.LoadState;
@@ -10,7 +11,10 @@ import javax.persistence.spi.PersistenceUnitInfo;
 import javax.persistence.spi.ProviderUtil;
 import java.util.Map;
 
-public class HibernateAdapterPersistenceProvider implements PersistenceProvider {
+/**
+ * 提供 java 配置的数据源支持
+ * */
+public class SolonPersistenceProvider implements PersistenceProvider {
     private final PersistenceUtilHelper.MetadataCache cache = new PersistenceUtilHelper.MetadataCache();
 
     @Override
@@ -28,12 +32,12 @@ public class HibernateAdapterPersistenceProvider implements PersistenceProvider 
     }
 
     @Override
-    public void generateSchema(PersistenceUnitInfo info, Map map) {
+    public void generateSchema(PersistenceUnitInfo unitInfo, Map map) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public boolean generateSchema(String persistenceUnitName, Map map) {
+    public boolean generateSchema(String unitName, Map map) {
         throw new UnsupportedOperationException();
     }
 
