@@ -93,6 +93,7 @@ public class ChainManager {
      * 执行路由拦截
      */
     public void doIntercept(Context x, @Nullable Handler mainHandler) throws Throwable {
+        //先执行的，包住后执行的
         new RouterInterceptorChainImpl(interceptorNodes).doIntercept(x, mainHandler);
     }
 
@@ -100,6 +101,7 @@ public class ChainManager {
      * 提交结果（action / render 执行前调用）
      */
     public Object postResult(Context x, @Nullable Object result) throws Throwable {
+        //后执行的，包住先执行的（与 doIntercept 的顺序反了一下）
         for (int i = interceptorNodes.size() - 1; i >= 0; i--) {
             RankEntity<RouterInterceptor> e = interceptorNodes.get(i);
             result = e.target.postResult(x, result);
