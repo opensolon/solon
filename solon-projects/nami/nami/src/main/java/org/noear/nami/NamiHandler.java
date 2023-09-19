@@ -125,7 +125,7 @@ public class NamiHandler implements InvocationHandler {
             StringBuilder buf = new StringBuilder();
             buf.append("NamiClient: Not found upstream: ").append(clz0.getName());
 
-            if (TextUtils.isEmpty(config.getName())) {
+            if (TextUtils.isNotEmpty(config.getName())) {
                 buf.append(": '").append(config.getName()).append("'");
             }
 
