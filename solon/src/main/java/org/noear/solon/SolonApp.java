@@ -413,7 +413,13 @@ public class SolonApp extends RouterWrapper {
 
                 if (x.getHandled() == false) { //@since: 1.9
                     if (x.status() <= 200 && x.mainHandler() == null) {//@since: 1.10
-                        x.status(404);
+                        Integer mainStatus = x.attr(Constants.mainStatus); //支持405  //@since: 2.5
+
+                        if (mainStatus != null) {
+                            x.status(mainStatus);
+                        } else {
+                            x.status(404);
+                        }
                     }
                     //x.setHandled(true);  //todo: 不能加，对websocket有影响
                 }

@@ -23,6 +23,7 @@
 * 添加 yaml 多片段支持（即一文件多环境支持）
 * 添加 多配置文件交差引用变量支持
 * 添加 DownloadedFile(file,name) 构造函数
+* 添加 Router 对 405 的支持
 * 调整 CacheService 接口（增加类型化 get）
 * 调整 SessionState 接口（增加类型化 get）
 * 调整 Context::session 接口（增加类型化 get）
@@ -33,7 +34,7 @@
 * 调整 jdkhttp,jlhttp,smarthttp 的 contentLength 适配处理
 * 调整 使用更多的 slf4j 替换 bus
 * 调整 使用更多的 slf4j 替换 LogUtil???
-* 调整 solon.config.add 与 solon.config.load 合并，规范格式（同时支持内部与外部）???
+* 调整 solon.config.add 与 solon.config.load 合并，规范格式（同时支持内部与外部）？？？
 * 调整 mybatis-solon-plugin 的会话提交方式，修复二级缓存控制可能失效的问题
 * 调整 "solon.config.load" 支持按顺序加载
 * 调整 几个特定启动参数的处理方式。改与成 Solon.cfg() 同步，再统一从 Solon.cfg() 取值

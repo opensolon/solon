@@ -3,6 +3,7 @@ package org.noear.solon.core.handle;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.Note;
+import org.noear.solon.core.Constants;
 import org.noear.solon.core.NvMap;
 import org.noear.solon.core.util.*;
 import org.noear.solon.core.wrap.ClassWrap;
@@ -1130,7 +1131,7 @@ public abstract class Context {
      * */
     @Note("控制器?")
     public @Nullable Object controller() {
-        return attr("controller");
+        return attr(Constants.controller);
     }
 
     /**
@@ -1138,13 +1139,13 @@ public abstract class Context {
      * */
     @Note("动作?")
     public @Nullable Action action() {
-        return attr("action");
+        return attr(Constants.action);
     }
 
     /**
      * 获取当前主处理器
      * */
     public @Nullable Handler mainHandler(){
-        return attr("mainHandler");
+        return attr(Constants.mainHandler);
     }
 }
