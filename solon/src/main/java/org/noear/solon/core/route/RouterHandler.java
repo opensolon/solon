@@ -1,6 +1,7 @@
 package org.noear.solon.core.route;
 
 import org.noear.solon.Solon;
+import org.noear.solon.core.Constants;
 import org.noear.solon.core.handle.*;
 import org.noear.solon.lang.Nullable;
 
@@ -25,7 +26,7 @@ public class RouterHandler implements Handler, RouterInterceptor {
 
 
     /**
-     * 唯一处理（用于主处理）
+     * 主处理
      */
     protected boolean handleMain(Handler h, Context ctx) throws Throwable {
         if (h != null) {
@@ -37,10 +38,10 @@ public class RouterHandler implements Handler, RouterInterceptor {
     }
 
     /**
-     * 多项目处理（用于拦截器）
+     * 触发器处理（链式拦截）
      */
-    protected void handleMultiple(Context ctx, Endpoint endpoint) throws Throwable {
-        for (Handler h : router.matchAll(ctx, endpoint)) {
+    protected void handleTriggers(Context ctx, Endpoint endpoint) throws Throwable {
+        for (Handler h : router.matchMore(ctx, endpoint)) {
             h.handle(ctx);
         }
     }
@@ -53,8 +54,8 @@ public class RouterHandler implements Handler, RouterInterceptor {
         }
 
         try {
-            //前置处理（支持多代理）
-            handleMultiple(x, Endpoint.before);
+            //前置触发器（支持多处理）
+            handleTriggers(x, Endpoint.before);
 
             //主体处理
             if (x.getHandled() == false) {
@@ -68,8 +69,8 @@ public class RouterHandler implements Handler, RouterInterceptor {
             }
             throw e;
         } finally {
-            //后置处理（支持多代理）
-            handleMultiple(x, Endpoint.after); //前后不能反 （后置处理由内部进行状态控制）
+            //后置触发器（支持多处理）
+            handleTriggers(x, Endpoint.after); //前后不能反 （后置处理由内部进行状态控制）
         }
     }
 
@@ -85,7 +86,7 @@ public class RouterHandler implements Handler, RouterInterceptor {
 
         //预处理 action
         if (mainHandler instanceof Action) {
-            x.attrSet("action", mainHandler);
+            x.attrSet(Constants.action, mainHandler);
         }
 
         //执行
