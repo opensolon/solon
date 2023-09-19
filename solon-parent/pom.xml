@@ -17,7 +17,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <java.version>1.8</java.version>
+        <java.version>21</java.version>
 
         <solon.version>2.5.5-SNAPSHOT</solon.version>
         <snack3.version>3.2.80</snack3.version>
@@ -90,7 +90,7 @@
         <spring.version>5.0.8.RELEASE</spring.version>
 
         <hazelcast.version>5.1</hazelcast.version>
-        <lombok.version>1.18.26</lombok.version>
+        <lombok.version>1.18.28</lombok.version>
 
         <protobuf.version>3.22.3</protobuf.version>
         <grpc.version>1.54.1</grpc.version>

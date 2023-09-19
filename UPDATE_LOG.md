@@ -43,6 +43,7 @@
 * mybatis-flex 升为 1.6.5
 * sqltoy 升为 5.2.66
 * polaris 升为 1.14.1
+* lombok 升为 1.18.28
 
 ### 2.5.4
 * 增加 AppContext::onEvent 接口
