@@ -203,7 +203,7 @@ public class BeanWrap {
         return tag;
     }
 
-    public void tagSet(String tag) {
+    protected void tagSet(String tag) {
         if (this.tag == null) {
             this.tag = tag;
         }

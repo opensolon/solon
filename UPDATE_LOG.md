@@ -27,7 +27,7 @@
 * 调整 CacheService 接口（增加类型化 get）
 * 调整 SessionState 接口（增加类型化 get）
 * 调整 Context::session 接口（增加类型化 get）
-* 调整 BeanWrap 的 rawSet tagSet 改为公有
+* 调整 BeanWrap 的 rawSet 改为公有
 * 调整 CloudConfig 复用主框架的属性表达式与模板解析
 * 调整 Listener 去掉 @FunctionalInterface，所有方法标为 default
 * 调整 ChainManager::postResult 的执行策略为包围式
