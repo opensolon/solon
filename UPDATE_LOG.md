@@ -48,6 +48,7 @@
 * polaris 升为 1.14.1
 * lombok 升为 1.18.28
 * nacos1 升为 1.4.6
+* slf4j 升为 2.0.9
 
 ### 2.5.4
 * 增加 AppContext::onEvent 接口
