@@ -51,6 +51,8 @@ public interface CrudRepository<T,ID> {
      */
     void delete(T entity);
 
+    void deleteAllById(Iterable<? extends ID> ids);
+
     /**
      * 删除给定的实体集合。
      */
