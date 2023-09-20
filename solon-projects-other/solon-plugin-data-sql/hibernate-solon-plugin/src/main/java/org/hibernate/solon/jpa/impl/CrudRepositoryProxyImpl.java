@@ -69,6 +69,11 @@ public class CrudRepositoryProxyImpl extends BaseRepositoryProxyImpl implements 
     }
 
     @Override
+    public void deleteAllById(Iterable<?> objects) {
+
+    }
+
+    @Override
     public void deleteAll(Iterable entities) {
 
     }

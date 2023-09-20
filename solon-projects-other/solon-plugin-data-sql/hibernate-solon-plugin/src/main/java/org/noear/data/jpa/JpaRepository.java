@@ -6,18 +6,6 @@ import java.util.List;
  * Jpa 仓库
  * */
 public interface JpaRepository<T, ID> extends PagingAndSortingRepository<T, ID>, QueryByExampleExecutor<T> {
-
-    /**
-     * 查找全部
-     * */
-    List<T> findAll();
-
-    List<T> findAll(Sort sort);
-
-    List<T> findAllById(Iterable<ID> ids);
-
-    <S extends T> List<S> saveAll(Iterable<S> entities);
-
     /**
      * 将所有未决的更改刷新到数据库。
      */
