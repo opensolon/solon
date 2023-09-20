@@ -83,7 +83,9 @@ public class App {
         }).start(App.class, args, x -> {
 
             x.enableSocketD(true);
+            x.enableSocketMvc(true);
             x.enableWebSocket(true);
+            x.enableWebSocketMvc(true);
 
             //x.converterManager().register(new CatTypeConverter());
 

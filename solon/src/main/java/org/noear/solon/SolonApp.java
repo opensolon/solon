@@ -557,7 +557,7 @@ public class SolonApp extends RouterWrapper {
     }
 
 
-    private boolean _enableWebSocketMvc = true;
+    private boolean _enableWebSocketMvc = false;
 
     public boolean enableWebSocketMvc() {
         return _enableWebSocketMvc;
@@ -570,6 +570,9 @@ public class SolonApp extends RouterWrapper {
      */
     public SolonApp enableWebSocketMvc(boolean enable) {
         _enableWebSocketMvc = enable;
+        if (enable) {
+            enableWebSocket(enable);
+        }
         return this;
     }
 
@@ -616,7 +619,7 @@ public class SolonApp extends RouterWrapper {
     }
 
 
-    private boolean _enableSocketMvc = true;
+    private boolean _enableSocketMvc = false;
 
     /**
      * 是否已启用 SockteD Mvc 信号接入
@@ -632,6 +635,10 @@ public class SolonApp extends RouterWrapper {
      */
     public SolonApp enableSocketMvc(boolean enable) {
         _enableSocketMvc = enable;
+        if (enable) {
+            enableSocketD(enable);
+        }
+
         return this;
     }
 
