@@ -91,22 +91,22 @@ Build from scratch. It has its own standards and norms and open ecology. Combina
 
 ```java
 @SolonMain
-public class App{
-    public static void main(String[] args){
-        Solon.start(App.class, args, app->{
+public class App {
+    public static void main(String[] args) {
+        Solon.start(App.class, args, app -> {
             //Handler mode:
-            app.get("/hello",(c)->c.output("Hello world!"));
+            app.get("/hello", c -> c.output("Hello world!"));
         });
     }
 }
 
 //Controller mode: (mvc or rest-api)
 @Controller
-public class HelloController{
+public class HelloController {
     //Limit Socket method type
     @Socket
     @Mapping("/mvc/hello")
-    public String hello(String name){
+    public String hello(String name) {
         return "Hello " + name;
     }
 }
@@ -114,9 +114,9 @@ public class HelloController{
 //Remoting mode: (rpc)
 @Mapping("/rpc/")
 @Remoting
-public class HelloServiceImpl implements HelloService{
+public class HelloServiceImpl implements HelloService {
     @Override
-    public String hello(){
+    public String hello() {
         return "Hello world!";
     }
 }

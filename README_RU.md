@@ -92,22 +92,22 @@ Solon v2.5.5-SNAPSHOT
 
 ```java
 @SolonMain
-public class App{
-    public static void main(String[] args){
-        Solon.start(App.class, args, app->{
+public class App {
+    public static void main(String[] args) {
+        Solon.start(App.class, args, app -> {
             //Handler модел：
-            app.get("/hello",(c)->c.output("Hello world!"));
+            app.get("/hello", c -> c.output("Hello world!"));
         });
     }
 }
 
 //Controller модел：(mvc or rest-api)
 @Controller
-public class HelloController{
+public class HelloController {
     //Ограничение типов методов Socket
     @Socket
     @Mapping("/mvc/hello")
-    public String hello(String name){
+    public String hello(String name) {
         return "Hello " + name;
     }
 }
@@ -115,9 +115,9 @@ public class HelloController{
 //Remoting модел：(rpc)
 @Mapping("/rpc/")
 @Remoting
-public class HelloServiceImpl implements HelloService{
+public class HelloServiceImpl implements HelloService {
     @Override
-    public String hello(){
+    public String hello() {
         return "Hello world!";
     }
 }
