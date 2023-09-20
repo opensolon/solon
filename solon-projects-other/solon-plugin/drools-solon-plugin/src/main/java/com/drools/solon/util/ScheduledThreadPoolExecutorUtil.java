@@ -55,10 +55,7 @@ public class ScheduledThreadPoolExecutorUtil {
         private final String namePrefix;
 
         DefaultThreadFactory(String name) {
-
-            SecurityManager s = System.getSecurityManager();
-            group = (s != null) ? s.getThreadGroup() :
-                    Thread.currentThread().getThreadGroup();
+            group = Thread.currentThread().getThreadGroup();
             namePrefix = name + "-pool-" + POOL_NUMBER.getAndIncrement() + "-thread-";
         }
 
