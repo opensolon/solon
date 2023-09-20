@@ -47,6 +47,7 @@
 * sqltoy 升为 5.2.66
 * polaris 升为 1.14.1
 * lombok 升为 1.18.28
+* nacos1 升为 1.4.6
 
 ### 2.5.4
 * 增加 AppContext::onEvent 接口
