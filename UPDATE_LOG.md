@@ -13,9 +13,13 @@
 * 新增 solon.boot.vertx 插件?
 * 新增 seata-solon-plugin 插件
 * 新增 graphql-solon-plugin 插件
-* 增加 quartz jdbc 及时更新支持（数据库里变了，它马上变）？
+* 增加 quartz jdbc 及时更新支持（数据库里变了，它马上变） ???
+* 调整 使用更多的 slf4j 替换 LogUtil ???
+* 调整 solon.config.add 与 solon.config.load 合并，规范格式（同时支持内部与外部） ???
+* 调整 简化 SocketD ???
 
 ### 2.5.5
+* 完成 JDK21 编译测试，功能单元测试
 * 添加 HttpServerConfigure::setExecutor 接口，用于支持虚拟线程池（for JDK21）
 * 添加 PropUtil 类。把原来的属性表达式与模板解析独立出来
 * 添加 ContextPathListener 类，用于控制 contentPath 对 ws,tpc 的影响
@@ -30,15 +34,14 @@
 * 调整 SessionState 接口（增加类型化 get）
 * 调整 Context::session 接口（增加类型化 get）
 * 调整 BeanWrap 的 rawSet 改为公有
-* 调整 SolonApp::enableWebSocketMvc, enableSocketMvc 默认为 false
+* 调整 SolonApp::enableWebSocketMvc, enableSocketMvc, 默认为 false
+* 调整 SolonApp::enableWebSocket, enableWebSocketD 分离设置，各不相关（前者代表通讯，后者代表协议）
 * 调整 CloudConfig 复用主框架的属性表达式与模板解析
 * 调整 Listener 去掉 @FunctionalInterface，所有方法标为 default
-* 调整 ChainManager::postResult 的执行策略为包围式
+* 调整 ChainManager::postResult 的执行策略改为包围式（相当于倒序）
 * 调整 ValHolder 标为弃用
 * 调整 jdkhttp,jlhttp,smarthttp 的 contentLength 适配处理
 * 调整 使用更多的 slf4j 替换 bus
-* 调整 使用更多的 slf4j 替换 LogUtil???
-* 调整 solon.config.add 与 solon.config.load 合并，规范格式（同时支持内部与外部）？？？
 * 调整 mybatis-solon-plugin 的会话提交方式，修复二级缓存控制可能失效的问题
 * 调整 "solon.config.load" 支持按顺序加载
 * 调整 几个特定启动参数的处理方式。改与成 Solon.cfg() 同步，再统一从 Solon.cfg() 取值

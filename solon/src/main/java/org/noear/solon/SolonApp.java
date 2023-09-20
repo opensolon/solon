@@ -570,9 +570,6 @@ public class SolonApp extends RouterWrapper {
      */
     public SolonApp enableWebSocketMvc(boolean enable) {
         _enableWebSocketMvc = enable;
-        if (enable) {
-            enableWebSocket(enable);
-        }
         return this;
     }
 
@@ -593,9 +590,6 @@ public class SolonApp extends RouterWrapper {
      */
     public SolonApp enableWebSocketD(boolean enable) {
         _enableWebSocketD = enable;
-        if (enable) {
-            _enableWebSocket = enable;
-        }
         return this;
     }
 
@@ -635,10 +629,6 @@ public class SolonApp extends RouterWrapper {
      */
     public SolonApp enableSocketMvc(boolean enable) {
         _enableSocketMvc = enable;
-        if (enable) {
-            enableSocketD(enable);
-        }
-
         return this;
     }
 
