@@ -1,5 +1,6 @@
 package org.noear.solon.proxy.asm;
 
+import org.noear.solon.core.util.JavaUtil;
 import org.objectweb.asm.*;
 
 import java.io.InputStream;
@@ -14,7 +15,17 @@ import java.util.Map;
  * @since 2.2
  */
 public class ClassCodeBuilder {
-    public static final int ASM_JDK_VERSION = Opcodes.V1_8;
+    public static final int ASM_JDK_VERSION() {
+        if (JavaUtil.JAVA_MAJOR_VERSION < 11) {
+            return Opcodes.V1_8;
+        } else if (JavaUtil.JAVA_MAJOR_VERSION < 17) {
+            return Opcodes.V11;
+        } else if (JavaUtil.JAVA_MAJOR_VERSION < 21) {
+            return Opcodes.V17;
+        } else {
+            return Opcodes.V21;
+        }
+    }
 
     // 字段名
     private static final String FIELD_INVOCATIONHANDLER = "invocationHandler";
@@ -101,7 +112,7 @@ public class ClassCodeBuilder {
     private static void newClass(ClassWriter writer, String newClassName, String targetClassName) throws Exception {
         int access = Opcodes.ACC_PUBLIC | Opcodes.ACC_FINAL;
 
-        writer.visit(ASM_JDK_VERSION, access, newClassName, null, targetClassName, null);
+        writer.visit(ASM_JDK_VERSION(), access, newClassName, null, targetClassName, null);
     }
 
     /**

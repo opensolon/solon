@@ -9,7 +9,7 @@
 * 提醒1：之前没有使用弃用接口的，可以直接升级 <br>
 * 提醒2：有使用弃用接口的。建议先升级到 1.12.4；替换弃用代码后，再升级到 2.0.0
 
-### 2.5.6
+### 2.5.7
 * 新增 solon.boot.vertx 插件?
 * 新增 seata-solon-plugin 插件
 * 新增 graphql-solon-plugin 插件
@@ -17,6 +17,9 @@
 * 调整 使用更多的 slf4j 替换 LogUtil ???
 * 调整 solon.config.add 与 solon.config.load 合并，规范格式（同时支持内部与外部） ???
 * 调整 简化 SocketD ???
+
+### 2.5.6
+* asm 升为 9.5 
 
 ### 2.5.5
 * 完成 JDK21 编译测试，功能单元测试

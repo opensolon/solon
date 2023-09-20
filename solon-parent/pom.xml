@@ -38,7 +38,7 @@
         <okhttp.version>3.14.9</okhttp.version>
         <hutool.version>5.8.20</hutool.version>
 
-        <asm.version>9.4</asm.version>
+        <asm.version>9.5</asm.version>
 
         <servlet.version>4.0.1</servlet.version>
         <servlet.jakarta.version>5.0.0</servlet.jakarta.version>
