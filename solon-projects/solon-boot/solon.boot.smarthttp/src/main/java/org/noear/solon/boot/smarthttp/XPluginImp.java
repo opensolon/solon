@@ -51,7 +51,7 @@ public final class XPluginImp implements Plugin {
         _server.setCoreThreads(props.getCoreThreads());
         if (props.isIoBound()) {
             //如果是io密集型的，加二段线程池
-            _server.setWorkExecutor(props.getBioExecutor("smarthttp-"));
+            _server.setExecutor(props.getBioExecutor("smarthttp-"));
         }
 
         _server.setHandler(Solon.app()::tryHandle);

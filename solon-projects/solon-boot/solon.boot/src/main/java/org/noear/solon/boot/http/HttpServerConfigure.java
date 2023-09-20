@@ -1,5 +1,7 @@
 package org.noear.solon.boot.http;
 
+import java.util.concurrent.Executor;
+
 /**
  * Http 服务器编程配置
  *
@@ -9,24 +11,25 @@ package org.noear.solon.boot.http;
 public interface HttpServerConfigure {
     /**
      * 是否允许Ssl
+     *
      * @deprecated 2.3
      */
     @Deprecated
-    default void allowSsl(boolean enable){
+    default void allowSsl(boolean enable) {
         enableSsl(enable);
     }
 
     /**
      * 是否支持 http2
      */
-    default boolean isSupportedHttp2(){
+    default boolean isSupportedHttp2() {
         return false;
     }
 
     /**
      * 启用 http2 （不一定所有服务都支持）
      */
-    default void enableHttp2(boolean enable){
+    default void enableHttp2(boolean enable) {
 
     }
 
@@ -37,8 +40,8 @@ public interface HttpServerConfigure {
 
     /**
      * 启用调试模式 （不一定所有服务都支持）
-     * */
-    default void enableDebug(boolean enable){
+     */
+    default void enableDebug(boolean enable) {
 
     }
 
@@ -46,4 +49,9 @@ public interface HttpServerConfigure {
      * 添加 HttpPort（当 ssl 时，可再开个 http 端口）
      */
     void addHttpPort(int port);
+
+    /**
+     * 设置执行器（线程池）
+     */
+    void setExecutor(Executor executor);
 }

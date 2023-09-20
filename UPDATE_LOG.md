@@ -16,6 +16,7 @@
 * 增加 quartz jdbc 及时更新支持（数据库里变了，它马上变）？
 
 ### 2.5.5
+* 添加 HttpServerConfigure::setExecutor 接口，用于支持虚拟线程池（for JDK21）
 * 添加 PropUtil 类。把原来的属性表达式与模板解析独立出来
 * 添加 ContextPathListener 类，用于控制 contentPath 对 ws,tpc 的影响
 * 添加 ContextPathFilter 一个简化的构造函数
@@ -47,7 +48,6 @@
 * sqltoy 升为 5.2.66
 * polaris 升为 1.14.1
 * lombok 升为 1.18.28
-* nacos1 升为 1.4.6
 * slf4j 升为 2.0.9
 * lombok 升为 1.18.30
 

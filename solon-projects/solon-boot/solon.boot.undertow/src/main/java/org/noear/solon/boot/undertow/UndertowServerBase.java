@@ -9,6 +9,7 @@ import org.noear.solon.boot.prop.impl.HttpServerProps;
 import org.noear.solon.boot.undertow.http.UtContainerInitializer;
 import org.noear.solon.boot.http.HttpServerConfigure;
 import org.noear.solon.core.runtime.NativeDetector;
+import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.core.util.ResourceUtil;
 
 import javax.servlet.MultipartConfigElement;
@@ -17,6 +18,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.concurrent.Executor;
 
 abstract class UndertowServerBase implements ServerLifecycle, HttpServerConfigure {
     protected HttpServerProps props = new HttpServerProps();
@@ -49,6 +51,11 @@ abstract class UndertowServerBase implements ServerLifecycle, HttpServerConfigur
     @Override
     public void addHttpPort(int port){
         addHttpPorts.add(port);
+    }
+
+    @Override
+    public void setExecutor(Executor executor) {
+        LogUtil.global().warn("Undertow does not support user-defined executor");
     }
 
     public HttpServerProps getProps() {

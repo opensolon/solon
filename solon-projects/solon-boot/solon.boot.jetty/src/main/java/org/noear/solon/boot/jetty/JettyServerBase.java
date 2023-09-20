@@ -26,13 +26,14 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.LinkedHashSet;
 import java.util.Set;
-import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executor;
 
 abstract class JettyServerBase implements ServerLifecycle , HttpServerConfigure {
-    protected ExecutorService executor;
+    protected Executor executor;
     protected HttpServerProps props = new HttpServerProps();
     protected boolean enableSsl = true;
     private boolean isSecure;
+
     public boolean isSecure() {
         return isSecure;
     }
@@ -40,6 +41,7 @@ abstract class JettyServerBase implements ServerLifecycle , HttpServerConfigure 
     protected Set<Integer> addHttpPorts = new LinkedHashSet<>();
 
     private ServerSslProps sslProps;
+
     protected boolean supportSsl() {
         if (sslProps == null) {
             sslProps = ServerSslProps.of(ServerConstants.SIGNAL_HTTP);
@@ -50,7 +52,7 @@ abstract class JettyServerBase implements ServerLifecycle , HttpServerConfigure 
 
     /**
      * 是否允许Ssl
-     * */
+     */
     @Override
     public void enableSsl(boolean enable) {
         this.enableSsl = enable;
@@ -58,9 +60,9 @@ abstract class JettyServerBase implements ServerLifecycle , HttpServerConfigure 
 
     /**
      * 添加 HttpPort（当 ssl 时，可再开个 http 端口）
-     * */
+     */
     @Override
-    public void addHttpPort(int port){
+    public void addHttpPort(int port) {
         addHttpPorts.add(port);
     }
 
@@ -68,7 +70,8 @@ abstract class JettyServerBase implements ServerLifecycle , HttpServerConfigure 
         return props;
     }
 
-    public void setExecutor(ExecutorService executor) {
+    @Override
+    public void setExecutor(Executor executor) {
         this.executor = executor;
     }
 
@@ -115,10 +118,12 @@ abstract class JettyServerBase implements ServerLifecycle , HttpServerConfigure 
 
             SslConnectionFactory sslFactory = new SslConnectionFactory(contextFactory, HttpVersion.HTTP_1_1.asString());
 
-            serverConnector = new ServerConnector(server, sslFactory, httpFactory);
+            serverConnector = new ServerConnector(server, executor, null, null, -1, -1, sslFactory, httpFactory);
+            //this(server, (Executor)null, (Scheduler)null, (ByteBufferPool)null, -1, -1, factories);
             isSecure = true;
         } else {
-            serverConnector = new ServerConnector(server, httpFactory);
+            serverConnector = new ServerConnector(server, executor, null, null, -1, -1, httpFactory);
+            //this(server, (Executor)null, (Scheduler)null, (ByteBufferPool)null, -1, -1, factories);
         }
 
 
@@ -180,7 +185,7 @@ abstract class JettyServerBase implements ServerLifecycle , HttpServerConfigure 
     protected String[] getResourceURLs() throws FileNotFoundException {
         URL rootURL = getRootPath();
         if (rootURL == null) {
-            if(NativeDetector.inNativeImage()){
+            if (NativeDetector.inNativeImage()) {
                 return new String[]{};
             }
 
