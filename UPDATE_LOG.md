@@ -19,7 +19,7 @@
 * 调整 简化 SocketD ???
 
 ### 2.5.6
-* asm 升为 9.5 
+* asm 升为 9.5 （for JDK21）
 
 ### 2.5.5
 * 完成 JDK21 编译测试，功能单元测试
@@ -32,7 +32,7 @@
 * 添加 多配置文件交差引用变量支持
 * 添加 DownloadedFile(file,name) 构造函数
 * 添加 Router 对 405 的支持
-* 调整 RunUtil 执行器分离为 parallelExecutor + asyncExecutor
+* 调整 RunUtil 执行器分离为 parallelExecutor + asyncExecutor（for JDK21）
 * 调整 CacheService 接口（增加类型化 get）
 * 调整 SessionState 接口（增加类型化 get）
 * 调整 Context::session 接口（增加类型化 get）
@@ -56,7 +56,7 @@
 * polaris 升为 1.14.1
 * lombok 升为 1.18.28
 * slf4j 升为 2.0.9
-* lombok 升为 1.18.30
+* lombok 升为 1.18.30（for JDK21）
 
 ### 2.5.4
 * 增加 AppContext::onEvent 接口
