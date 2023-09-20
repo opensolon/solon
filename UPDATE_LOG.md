@@ -25,6 +25,7 @@
 * 添加 多配置文件交差引用变量支持
 * 添加 DownloadedFile(file,name) 构造函数
 * 添加 Router 对 405 的支持
+* 调整 RunUtil 执行器分离为 parallelExecutor + asyncExecutor
 * 调整 CacheService 接口（增加类型化 get）
 * 调整 SessionState 接口（增加类型化 get）
 * 调整 Context::session 接口（增加类型化 get）

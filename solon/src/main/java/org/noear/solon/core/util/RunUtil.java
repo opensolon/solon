@@ -12,14 +12,31 @@ import java.util.function.Supplier;
  * @since 1.12
  */
 public class RunUtil {
-    private static ExecutorService executor;
+    /**
+     * 并行执行器（一般用于执行简单的定时任务）
+     */
+    private static ExecutorService parallelExecutor;
+    /**
+     * 异步执行器（一般用于执行 @Async 注解任务）
+     */
+    private static ExecutorService asyncExecutor;
+    /**
+     * 调度执行器（一般用于延时任务）
+     */
     private static ScheduledExecutorService scheduledExecutor;
 
     static {
-        executor = new ThreadPoolExecutor(0, Integer.MAX_VALUE,
+        parallelExecutor = new ThreadPoolExecutor(0, Integer.MAX_VALUE,
                 60L, TimeUnit.SECONDS,
                 new SynchronousQueue<Runnable>(),
-                new NamedThreadFactory("Solon-executor-"));
+                new NamedThreadFactory("Solon-parallelExecutor-"));
+
+        int asyncPoolSize = Runtime.getRuntime().availableProcessors() * 2;
+        asyncExecutor = new ThreadPoolExecutor(asyncPoolSize, asyncPoolSize,
+                0L, TimeUnit.MILLISECONDS,
+                new LinkedBlockingQueue<Runnable>(),
+                new NamedThreadFactory("Solon-asyncExecutor-"));
+
         scheduledExecutor = new ScheduledThreadPoolExecutor(Runtime.getRuntime().availableProcessors(),
                 new NamedThreadFactory("Solon-echeduledExecutor-"));
     }
@@ -32,10 +49,26 @@ public class RunUtil {
         }
     }
 
+    /**
+     * @deprecated 2.5
+     */
+    @Deprecated
     public static void setExecutor(ExecutorService executor) {
-        if (executor != null) {
-            ExecutorService old = RunUtil.executor;
-            RunUtil.executor = executor;
+        setParallelExecutor(executor);
+    }
+
+    public static void setParallelExecutor(ExecutorService parallelExecutor) {
+        if (parallelExecutor != null) {
+            ExecutorService old = RunUtil.parallelExecutor;
+            RunUtil.parallelExecutor = parallelExecutor;
+            old.shutdown();
+        }
+    }
+
+    public static void setAsyncExecutor(ExecutorService asyncExecutor) {
+        if (asyncExecutor != null) {
+            ExecutorService old = RunUtil.asyncExecutor;
+            RunUtil.asyncExecutor = asyncExecutor;
             old.shutdown();
         }
     }
@@ -60,28 +93,28 @@ public class RunUtil {
      * 并行执行
      */
     public static Future<?> parallel(Runnable task) {
-        return executor.submit(task);
+        return parallelExecutor.submit(task);
     }
 
     /**
      * 并行执行
      */
     public static <T> Future<T> parallel(Callable<T> task) {
-        return executor.submit(task);
+        return parallelExecutor.submit(task);
     }
 
     /**
      * 异步执行
      */
     public static CompletableFuture<Void> async(Runnable task) {
-        return CompletableFuture.runAsync(task, executor);
+        return CompletableFuture.runAsync(task, asyncExecutor);
     }
 
     /**
      * 异步执行
      */
     public static <U> CompletableFuture<U> async(Supplier<U> task) {
-        return CompletableFuture.supplyAsync(task, executor);
+        return CompletableFuture.supplyAsync(task, asyncExecutor);
     }
 
     /**
