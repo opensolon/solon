@@ -10,7 +10,8 @@ import java.util.UUID;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.jar.JarOutputStream;
-
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 /**
  * @author hxm
  */
@@ -24,18 +25,18 @@ public class CopyLoader {
         CopyLoader.tempName = UUID.randomUUID() + ".jar";
         CopyLoader.path = (file.getAbsolutePath().replace(name, ""));
         //提取jar里面的class
-        setLoader();
-        organizeFiles();
+        if (setLoader()) {
+            organizeFiles();
+        }
     }
 
 
     private static void organizeFiles() {
-        new File(path + name).delete();
-        new File(path + tempName).renameTo(new File(path + name));
-
+        FileUtils.delete(new File(path + name));
+        FileUtils.moveFile(new File(path + tempName), new File(path + name));
     }
 
-    private static void setLoader() throws IOException {
+    private static boolean setLoader() throws IOException {
         try {
             //获取当前类所在路径
             ProtectionDomain protectionDomain = CopyLoader.class.getProtectionDomain();
@@ -51,7 +52,7 @@ public class CopyLoader {
                 JarEntry jarEntry = entries.nextElement();
                 if (!jarEntry.isDirectory() && jarEntry.getName().contains(Constant.HEAD_PACKAGE_PATH) && jarEntry.getName().endsWith(".class")) {
                     jarOutputStream.putNextEntry(jarEntry);
-                    byte[] bytes = toByteArray(jarfile.getInputStream(jarEntry));
+                    byte[] bytes = IOUtils.toByteArray(jarfile.getInputStream(jarEntry));
                     jarOutputStream.write(bytes);
                 }
             }
@@ -62,24 +63,16 @@ public class CopyLoader {
                 InputStream entryInputStream = targetJarfile
                         .getInputStream(entry);
                 jarOutputStream.putNextEntry(entry);
-                jarOutputStream.write(toByteArray(entryInputStream));
+                jarOutputStream.write(IOUtils.toByteArray(entryInputStream));
             }
             jarOutputStream.flush();
             jarOutputStream.close();
             targetJarfile.close();
             jarfile.close();
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    private static byte[] toByteArray(InputStream input) throws IOException {
-        ByteArrayOutputStream output = new ByteArrayOutputStream();
-        byte[] buffer = new byte[4096];
-        int n = 0;
-        while (-1 != (n = input.read(buffer))) {
-            output.write(buffer, 0, n);
-        }
-        return output.toByteArray();
+        return false;
     }
 }
