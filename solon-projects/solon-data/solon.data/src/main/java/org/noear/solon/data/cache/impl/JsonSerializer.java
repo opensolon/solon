@@ -1,9 +1,11 @@
-package org.noear.solon.cache.jedis;
+package org.noear.solon.data.cache.impl;
 
 import org.noear.snack.ONode;
 import org.noear.solon.data.cache.Serializer;
 
 /**
+ * Json 序列化实现
+ *
  * @author noear
  * @since 2.5
  */
