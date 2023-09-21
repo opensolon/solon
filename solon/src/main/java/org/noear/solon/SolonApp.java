@@ -696,6 +696,7 @@ public class SolonApp extends RouterWrapper {
     /**
      * 是否已启用文档
      */
+    @SuppressWarnings("removal")
     @Deprecated
     public boolean enableDoc() {
         return _enableDoc;
@@ -706,6 +707,7 @@ public class SolonApp extends RouterWrapper {
      *
      * @param enable 是否启用
      */
+    @SuppressWarnings("removal")
     @Deprecated
     public SolonApp enableDoc(boolean enable) {
         _enableDoc = enable;

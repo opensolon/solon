@@ -13,6 +13,7 @@ import java.lang.annotation.*;
  * @author noear
  * @since 1.5
  */
+@SuppressWarnings("removal")
 @Deprecated
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)

@@ -11,6 +11,7 @@ import org.noear.solon.extend.impl.LogUtilExt;
  * @deprecated 2.3
  */
 @Note("不再需要手动转了")
+@SuppressWarnings("removal")
 @Deprecated
 public class LogUtilToSlf4j extends LogUtilExt {
 
