@@ -5,6 +5,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.data.cache.CacheService;
 import org.noear.solon.data.cache.Serializer;
 import org.redisson.api.RedissonClient;
+import org.redisson.client.codec.StringCodec;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,6 +24,14 @@ public class RedissonCacheService implements CacheService {
     private Serializer<String> _serializer = null;
 
     private final RedissonClient client;
+
+    public RedissonCacheService serializer(Serializer<String> serializer) {
+        if (serializer != null) {
+            this._serializer = serializer;
+        }
+
+        return this;
+    }
 
     public RedissonCacheService(RedissonClient client, int defSeconds) {
         this(client, null, defSeconds);
@@ -90,11 +99,12 @@ public class RedissonCacheService implements CacheService {
         String newKey = newKey(key);
 
         try {
-            if (_serializer != null) {
+            if (_serializer == null) {
+                client.getBucket(newKey).set(obj, seconds, TimeUnit.SECONDS);
+            } else {
                 obj = _serializer.serialize(obj); //序列化为 string
+                client.getBucket(newKey, StringCodec.INSTANCE).set(obj, seconds, TimeUnit.SECONDS);
             }
-
-            client.getBucket(newKey).set(obj, seconds, TimeUnit.SECONDS);
         } catch (Throwable e) {
             log.warn(e.getMessage(), e);
         }
@@ -104,18 +114,20 @@ public class RedissonCacheService implements CacheService {
     public <T> T get(String key, Class<T> clz) {
         String newKey = newKey(key);
 
-        Object obj = client.getBucket(newKey).get();
-
-        if (obj == null) {
-            return null;
-        }
 
         try {
-            if (_serializer != null) {
-                obj = _serializer.deserialize(obj.toString(), clz);
-            }
+            if (_serializer == null) {
+                return (T) client.getBucket(newKey).get();
+            } else {
+                Object obj = client.getBucket(newKey, StringCodec.INSTANCE).get();
+                if (obj == null) {
+                    return null;
+                }
 
-            return (T) obj;
+                obj = _serializer.deserialize((String) obj, clz);
+
+                return (T) obj;
+            }
         } catch (Throwable e) {
             log.warn(e.getMessage(), e);
             return null;
@@ -126,7 +138,11 @@ public class RedissonCacheService implements CacheService {
     public void remove(String key) {
         String newKey = newKey(key);
 
-        client.getBucket(newKey).delete();
+        if (_serializer == null) {
+            client.getBucket(newKey).delete();
+        } else {
+            client.getBucket(newKey, StringCodec.INSTANCE).delete();
+        }
     }
 
     protected String newKey(String key) {
