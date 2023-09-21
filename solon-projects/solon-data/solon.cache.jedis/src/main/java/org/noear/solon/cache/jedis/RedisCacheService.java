@@ -5,6 +5,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.data.cache.CacheService;
 import org.noear.solon.data.cache.Serializer;
+import org.noear.solon.data.cache.impl.JavabinSerializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,11 +20,11 @@ import java.util.Properties;
 public class RedisCacheService implements CacheService {
     static final Logger log = LoggerFactory.getLogger(RedisCacheService.class);
 
-    protected String _cacheKeyHead;
-    protected int _defaultSeconds;
+    private String _cacheKeyHead;
+    private int _defaultSeconds;
     private Serializer<String> _serializer = null;
 
-    protected final RedisClient client;
+    private final RedisClient client;
 
     public RedisCacheService serializer(Serializer<String> serializer) {
         if (serializer != null) {
