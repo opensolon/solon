@@ -15,6 +15,8 @@ public class SolonTestApp extends SolonApp {
 
     @Override
     public void start(ConsumerEx<SolonApp> initialize) throws Throwable {
+        //默认关闭 http（避免主已经存在的服务端口冲突）
+        enableHttp(false);
         super.start(initialize);
     }
 }

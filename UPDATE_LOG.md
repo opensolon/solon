@@ -17,6 +17,10 @@
 * 调整 使用更多的 slf4j 替换 LogUtil ???
 * 调整 solon.config.add 与 solon.config.load 合并，规范格式（同时支持内部与外部） ???
 * 调整 简化 SocketD ???
+* 调整 SolonTestApp 默认关闭 http 服务；避免与已启动服务端口冲突
+* 调整 solon.cache.jedis 的两个序列化实现，转到 solon.data（做为公用）
+* 调整 solon.cache.redission RedissonCacheService 增加外部序列化接口支持
+* 修复 solon-maven-plugin 在 linux 下因为一些用户角色没有权限导致打包失败问题
 
 ### 2.5.6
 * asm 升为 9.5 （for JDK21）
