@@ -7,6 +7,7 @@ import org.noear.solon.core.util.RunnableEx;
 import org.noear.solon.data.annotation.Tran;
 import org.noear.solon.data.annotation.TranAnno;
 import org.noear.solon.data.tran.TranUtils;
+import org.noear.solon.test.annotation.Rollback;
 import org.noear.solon.test.annotation.TestRollback;
 
 import java.util.concurrent.atomic.AtomicReference;
@@ -17,12 +18,16 @@ import java.util.concurrent.atomic.AtomicReference;
  * @author noear
  * @since 1.10
  */
-public class TestRollbackInterceptor implements Interceptor {
+public class RollbackInterceptor implements Interceptor {
     @Override
     public Object doIntercept(Invocation inv) throws Throwable {
         AtomicReference val0 = new AtomicReference();
 
-        TestRollback anno0 = inv.method().getAnnotation(TestRollback.class);
+        Rollback anno0 = inv.method().getAnnotation(Rollback.class);
+        if(anno0 == null){
+            anno0 = new RollbackAnno(inv.method().getAnnotation(TestRollback.class));
+        }
+
         TranAnno anno1 = new TranAnno();
 
         if (anno0 != null) {
@@ -58,12 +63,12 @@ public class TestRollbackInterceptor implements Interceptor {
         try {
             TranUtils.execute(tran, () -> {
                 runnable.run();
-                throw new TestRollbackException();
+                throw new RollbackException();
             });
         } catch (Throwable e) {
             e = Utils.throwableUnwrap(e);
-            if (e instanceof TestRollbackException) {
-                System.out.println("@TestRollback: the transaction has been rolled back!");
+            if (e instanceof RollbackException) {
+                System.out.println("@Rollback: the transaction has been rolled back!");
             } else {
                 throw e;
             }

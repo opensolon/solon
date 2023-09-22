@@ -6,5 +6,5 @@ package org.noear.solon.test.data;
  * @author noear
  * @since 1.10
  */
-public class TestRollbackException extends RuntimeException{
+public class RollbackException extends RuntimeException{
 }
