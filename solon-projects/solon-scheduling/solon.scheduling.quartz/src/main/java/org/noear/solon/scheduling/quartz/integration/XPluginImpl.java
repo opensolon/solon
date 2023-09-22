@@ -6,18 +6,22 @@ import org.noear.solon.core.Plugin;
 import org.noear.solon.scheduling.annotation.EnableScheduling;
 import org.noear.solon.scheduling.annotation.Scheduled;
 import org.noear.solon.scheduling.quartz.JobManager;
+import org.noear.solon.scheduling.scheduled.manager.IJobManager;
 import org.noear.solon.scheduling.scheduled.manager.JobExtractor;
 import org.quartz.Job;
 import org.quartz.Scheduler;
 
 import java.lang.reflect.Method;
 
-public class XPluginImp implements Plugin {
+public class XPluginImpl implements Plugin {
     @Override
     public void start(AppContext context) {
         if (Solon.app().source().getAnnotation(EnableScheduling.class) == null) {
             return;
         }
+
+        //注册 IJobManager
+        context.wrapAndPut(IJobManager.class, JobManager.getInstance());
 
         //允许产生 Scheduler bean
         context.getBeanAsync(Scheduler.class, bean -> {
