@@ -14,9 +14,6 @@ public class JapController {
     @Db
     private EntityManagerFactory entityManagerFactory;
 
-    @Db
-    HttpEntityDao httpEntityDao;
-
     private EntityManager getEntityManager() {
         return entityManagerFactory.createEntityManager();
     }

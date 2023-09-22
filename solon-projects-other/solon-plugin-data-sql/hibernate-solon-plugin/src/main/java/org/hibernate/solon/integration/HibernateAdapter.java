@@ -2,7 +2,6 @@ package org.hibernate.solon.integration;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.solon.jpa.RepositoryProxy;
 import org.noear.solon.Solon;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.Props;
@@ -58,9 +57,6 @@ public class HibernateAdapter {
     }
 
 
-    public Object getMapper(Class<?> repositoryInterface) {
-        return RepositoryProxy.newProxyInstance(getSessionFactory(), repositoryInterface);
-    }
 
     protected void initConfiguration() {
 

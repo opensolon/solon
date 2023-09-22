@@ -29,11 +29,6 @@ public class DbBeanInjector implements BeanInjector<Db> {
 
         if (adapter != null) {
             adapter.injectTo(varH);
-
-            if (varH.getType().isInterface()) {
-                Object proxy = adapter.getMapper(varH.getType());
-                varH.setValue(proxy);
-            }
         }
     }
 }

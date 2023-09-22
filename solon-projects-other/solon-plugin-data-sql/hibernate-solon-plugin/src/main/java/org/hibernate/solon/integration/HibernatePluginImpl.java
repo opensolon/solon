@@ -27,6 +27,5 @@ public class HibernatePluginImpl implements Plugin {
         });
 
         context.beanInjectorAdd(Db.class, new DbBeanInjector());
-        context.beanBuilderAdd(Db.class, new DbBeanBuilder());
     }
 }
