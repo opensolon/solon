@@ -35,14 +35,32 @@ import java.lang.annotation.*;
 public @interface Import {
     /**
      * 导入类（beanMake）
-     * */
+     */
+    @Alias("classes")
     Class<?>[] value() default {};
+
+    /**
+     * 导入类（beanMake）
+     *
+     * @since 2.5
+     */
+    @Alias("value")
+    Class<?>[] classes() default {};
+
     /**
      * 扫描包（beanScan）
-     * */
+     */
     String[] scanPackages() default {};
+
     /**
      * 扫描包（beanScan）
-     * */
+     */
     Class<?>[] scanPackageClasses() default {};
+
+    /**
+     * 导入配置源（classpath:demo.yml, ./demo.yml）
+     *
+     * @since 2.5
+     */
+    String[] configSource() default {};
 }

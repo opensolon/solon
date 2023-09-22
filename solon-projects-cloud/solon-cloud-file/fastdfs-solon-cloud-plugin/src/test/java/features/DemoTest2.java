@@ -2,19 +2,19 @@ package features;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.noear.solon.annotation.Import;
 import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.cloud.model.Media;
 import org.noear.solon.core.handle.DownloadedFile;
 import org.noear.solon.core.handle.Result;
 import org.noear.solon.core.handle.UploadedFile;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
-import org.noear.solon.test.annotation.TestPropertySource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
-@TestPropertySource("app-test2.yml")
+@Import(configSource = "app-test2.yml")
 @RunWith(SolonJUnit4ClassRunner.class)
 public class DemoTest2 {
     static Logger log = LoggerFactory.getLogger(DemoTest2.class);

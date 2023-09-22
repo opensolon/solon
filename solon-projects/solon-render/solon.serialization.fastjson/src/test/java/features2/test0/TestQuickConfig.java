@@ -4,11 +4,11 @@ import features2.model.UserDo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.noear.snack.ONode;
+import org.noear.solon.annotation.Import;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.core.handle.ContextEmpty;
 import org.noear.solon.serialization.fastjson.FastjsonRenderFactory;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
-import org.noear.solon.test.annotation.TestPropertySource;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -17,7 +17,7 @@ import java.util.Map;
 /**
  * 什么配置都没有
  */
-@TestPropertySource("classpath:features2_test0.yml")
+@Import(configSource = "classpath:features2_test0.yml")
 @RunWith(SolonJUnit4ClassRunner.class)
 public class TestQuickConfig {
 

@@ -1,5 +1,7 @@
 package org.noear.solon.test.annotation;
 
+import org.noear.solon.annotation.Note;
+
 import java.lang.annotation.*;
 
 /**
@@ -7,7 +9,10 @@ import java.lang.annotation.*;
  *
  * @author noear
  * @since 1.10
+ * @deprecated 2.5
  */
+@Note("由 @Import 替代")
+@Deprecated
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented

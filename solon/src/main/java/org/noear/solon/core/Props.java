@@ -2,6 +2,7 @@ package org.noear.solon.core;
 
 import org.noear.solon.SolonProps;
 import org.noear.solon.Utils;
+import org.noear.solon.annotation.Import;
 import org.noear.solon.annotation.PropertySource;
 import org.noear.solon.core.util.PropUtil;
 import org.noear.solon.core.util.ResourceUtil;
@@ -367,12 +368,27 @@ public class Props extends Properties {
         loadAdd(ResourceUtil.getResource(classLoader, name));
     }
 
-    public void loadAdd(PropertySource propertySource) {
-        if (propertySource == null) {
+    public void loadAdd(Import anno) {
+        if (anno == null) {
             return;
         }
 
-        for (String uri : propertySource.value()) {
+        for (String uri : anno.configSource()) {
+            uri = getByParse(uri);
+            loadAdd(ResourceUtil.findResource(classLoader, uri));
+        }
+    }
+
+    /**
+     * @deprecated 2.5
+     * */
+    @Deprecated
+    public void loadAdd(PropertySource anno) {
+        if (anno == null) {
+            return;
+        }
+
+        for (String uri : anno.value()) {
             uri = getByParse(uri);
             loadAdd(ResourceUtil.findResource(classLoader, uri));
         }

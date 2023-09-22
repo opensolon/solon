@@ -409,11 +409,6 @@
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.data.jpa</artifactId>
-                <version>${solon.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.noear</groupId>
                 <artifactId>solon.data.dynamicds</artifactId>
                 <version>${solon.version}</version>
             </dependency>

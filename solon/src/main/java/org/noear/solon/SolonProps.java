@@ -1,5 +1,6 @@
 package org.noear.solon;
 
+import org.noear.solon.annotation.Import;
 import org.noear.solon.annotation.PropertySource;
 import org.noear.solon.core.*;
 import org.noear.solon.core.util.LogUtil;
@@ -127,10 +128,13 @@ public final class SolonProps extends Props {
 
 
         //4.3.加载注解配置（优于固定配置）/v1.12
-        loadAdd(source.getAnnotation(PropertySource.class));
+        loadAdd(source.getAnnotation(PropertySource.class)); //v1.12 //@deprecated 2.5
 
-        //4.4.加载配置 solon.config.load //支持多文件（只支持内部，支持{env}）
+        loadAdd(source.getAnnotation(Import.class));//v2.5
+
+        //4.4.加载配置 solon.config.load //支持多文件（只支持内部，支持{env}） //@Deprecated
         Map<String,String> loadKeyMap = new TreeMap<>();
+        //@Deprecated 2.5
         doFind("solon.config.load", (key, val) -> {
             if (key.equals("") || key.startsWith("[")) {
                 loadKeyMap.put(key, val);
@@ -141,9 +145,23 @@ public final class SolonProps extends Props {
             addConfig(loadKey, true, sysPropOrg);
         }
 
+        //4.5.加载配置 solon.config.import //支持多文件（只支持内部，支持{env}）
+        loadKeyMap.clear();
+        doFind("solon.config.import", (key, val) -> {
+            if (key.equals("") || key.startsWith("[")) {
+                loadKeyMap.put(key, val);
+            }
+        });
 
-        //4.5.加载扩展配置 solon.config.add //支持多文件（支持内部或外部，支持{env}）
-        addConfig(getArg("config"), false, sysPropOrg);//@Deprecated 2.2
+        for(String loadKey : loadKeyMap.values()) {
+            addConfig(loadKey, false, sysPropOrg);
+        }
+
+
+        //4.6.加载扩展配置 solon.config.add //支持多文件（支持内部或外部，支持{env}） //@Deprecated
+        //@Deprecated 2.2
+        addConfig(getArg("config"), false, sysPropOrg);
+        //@Deprecated 2.5
         addConfig(getArg("config.add"), false, sysPropOrg);//替代旧的 solon.config, 与 config.load 配对
 
 

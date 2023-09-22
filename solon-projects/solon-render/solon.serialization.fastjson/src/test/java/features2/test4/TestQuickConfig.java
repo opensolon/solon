@@ -3,11 +3,11 @@ package features2.test4;
 import features2.model.UserDo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.noear.solon.annotation.Import;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.core.handle.ContextEmpty;
 import org.noear.solon.serialization.fastjson.FastjsonRenderFactory;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
-import org.noear.solon.test.annotation.TestPropertySource;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -16,7 +16,7 @@ import java.util.Map;
 /**
  * 时间进行格式化 + long,int 转为字符串 + 常见类型转为非null + 所有null输出
  */
-@TestPropertySource("classpath:features2_test4.yml")
+@Import(configSource = "classpath:features2_test4.yml")
 @RunWith(SolonJUnit4ClassRunner.class)
 public class TestQuickConfig {
     @Inject

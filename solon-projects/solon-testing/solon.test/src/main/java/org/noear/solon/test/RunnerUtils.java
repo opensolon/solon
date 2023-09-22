@@ -6,14 +6,16 @@ import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.SolonTestApp;
 import org.noear.solon.Utils;
+import org.noear.solon.annotation.Import;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.NvMap;
 import org.noear.solon.core.event.AppInitEndEvent;
 import org.noear.solon.core.event.EventBus;
+import org.noear.solon.test.annotation.Rollback;
 import org.noear.solon.test.annotation.TestPropertySource;
 import org.noear.solon.test.annotation.TestRollback;
-import org.noear.solon.test.data.TestRollbackInterceptor;
+import org.noear.solon.test.data.RollbackInterceptor;
 
 import java.io.File;
 import java.lang.reflect.Method;
@@ -52,12 +54,12 @@ public class RunnerUtils {
         }
     }
 
-    private static void addPropertySource(AppContext context, TestPropertySource propertySource) throws Throwable {
-        if (propertySource == null) {
+    private static void addPropertySource(AppContext context, List<String> propertySources) throws Throwable {
+        if (propertySources == null) {
             return;
         }
 
-        for (String uri : propertySource.value()) {
+        for (String uri : propertySources) {
             if (uri.startsWith(Utils.TAG_classpath)) {
                 context.cfg().loadAdd(uri.substring(Utils.TAG_classpath.length()));
             } else {
@@ -185,24 +187,39 @@ public class RunnerUtils {
         }
     }
 
-    private static void initDo(Class<?> klass, SolonApp app) throws Throwable{
-        TestPropertySource propAnno = klass.getAnnotation(TestPropertySource.class);
+    private static void initDo(Class<?> klass, SolonApp app) throws Throwable {
+        List<String> propertySources = new ArrayList<>();
+        TestPropertySource anno1 = klass.getAnnotation(TestPropertySource.class);
+        if(anno1 != null){
+            for(String s1 : anno1.value()) {
+                propertySources.add(s1);
+            }
+        }
+
+        Import anno2 = klass.getAnnotation(Import.class);
+        if(anno2 != null){
+            for(String s1 : anno2.configSource()) {
+                propertySources.add(s1);
+            }
+        }
+
 
         if (app == null) {
             EventBus.subscribe(AppInitEndEvent.class, event -> {
-                initContextDo(klass, event.context(), propAnno);
+                initContextDo(klass, event.context(), propertySources);
             });
         } else {
-            initContextDo(klass, app.context(), propAnno);
+            initContextDo(klass, app.context(), propertySources);
         }
     }
 
-    private static void initContextDo(Class<?> klass, AppContext context, TestPropertySource propAnno) throws Throwable{
+    private static void initContextDo(Class<?> klass, AppContext context, List<String> propertySources) throws Throwable {
         //添加 TestPropertySource 注解支持 //加载测试配置
-        RunnerUtils.addPropertySource(context, propAnno);
+        RunnerUtils.addPropertySource(context, propertySources);
 
         //添加 TestRollback 注解支持
-        context.beanInterceptorAdd(TestRollback.class, new TestRollbackInterceptor(), 120);
+        context.beanInterceptorAdd(TestRollback.class, new RollbackInterceptor(), 120);
+        context.beanInterceptorAdd(Rollback.class, new RollbackInterceptor(), 120);//v2.5
 
         //添加 Mock 注解支持
         context.beanInjectorAdd(Mock.class, (varH, anno) -> {

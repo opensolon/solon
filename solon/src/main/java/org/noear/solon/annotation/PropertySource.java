@@ -7,7 +7,11 @@ import java.lang.annotation.*;
  *
  * @author noear
  * @since 1.12
+ * @see Import
+ * @deprecated 2.5
  */
+@Note("由 Import 替代")
+@Deprecated
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented

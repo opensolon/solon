@@ -1,5 +1,6 @@
 package org.noear.solon.test.annotation;
 
+import org.noear.solon.annotation.Note;
 import org.noear.solon.data.tran.TranIsolation;
 import org.noear.solon.data.tran.TranPolicy;
 
@@ -13,7 +14,10 @@ import java.lang.annotation.Target;
  *
  * @author noear
  * @since 1.10
+ * @deprecated 2.5
  */
+@Note("由 @Rollback 替代")
+@Deprecated
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface TestRollback {

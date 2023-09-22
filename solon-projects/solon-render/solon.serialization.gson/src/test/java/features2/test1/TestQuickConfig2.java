@@ -4,6 +4,7 @@ import features2.model.UserDo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.noear.snack.ONode;
+import org.noear.solon.annotation.Import;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.core.handle.ContextEmpty;
 import org.noear.solon.serialization.gson.GsonRenderFactory;
@@ -17,7 +18,7 @@ import java.util.Map;
 /**
  * 只对时间进行格式化
  */
-@TestPropertySource("classpath:features2_test1-2.yml")
+@Import(configSource = "classpath:features2_test1-2.yml")
 @RunWith(SolonJUnit4ClassRunner.class)
 public class TestQuickConfig2 {
     @Inject

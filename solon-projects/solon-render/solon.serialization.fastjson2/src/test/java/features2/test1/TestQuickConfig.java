@@ -4,6 +4,7 @@ import features2.model.UserDo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.noear.snack.ONode;
+import org.noear.solon.annotation.Import;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.core.handle.ContextEmpty;
 import org.noear.solon.serialization.fastjson2.Fastjson2RenderFactory;
@@ -17,7 +18,7 @@ import java.util.Map;
 /**
  * @author noear 2023/1/16 created
  */
-@TestPropertySource("classpath:features2_test1.yml")
+@Import(configSource = "classpath:features2_test1.yml")
 @RunWith(SolonJUnit4ClassRunner.class)
 public class TestQuickConfig {
     @Inject

@@ -3,11 +3,11 @@ package features2.test3;
 import features2.model.UserDo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.noear.solon.annotation.Import;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.core.handle.ContextEmpty;
 import org.noear.solon.serialization.snack3.SnackRenderFactory;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
-import org.noear.solon.test.annotation.TestPropertySource;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -16,7 +16,7 @@ import java.util.Map;
 /**
  * @author noear 2023/1/16 created
  */
-@TestPropertySource("classpath:features2_test3.yml")
+@Import(configSource = "classpath:features2_test3.yml")
 @RunWith(SolonJUnit4ClassRunner.class)
 public class TestQuickConfig {
     @Inject

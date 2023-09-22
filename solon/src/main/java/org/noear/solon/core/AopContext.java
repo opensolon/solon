@@ -133,14 +133,19 @@ public abstract class AopContext extends BeanContainer {
         //注册 @Configuration 构建器
         beanBuilderAdd(Configuration.class, (clz, bw, anno) -> {
             //尝试导入注解配置（先导）//v1.12
-            cfg().loadAdd(clz.getAnnotation(PropertySource.class));
+            cfg().loadAdd(clz.getAnnotation(PropertySource.class));//v1.12 //@deprecated 2.5
 
             //尝试导入（可能会导入属性源，或小饼依赖的组件）
             for (Annotation a1 : clz.getAnnotations()) {
                 if (a1 instanceof Import) {
                     beanImport((Import) a1);
+                    cfg().loadAdd((Import) a1);//v2.5
                 } else {
-                    beanImport(a1.annotationType().getAnnotation(Import.class));
+                    a1 = a1.annotationType().getAnnotation(Import.class);
+                    if (a1 != null) {
+                        beanImport((Import) a1);
+                        cfg().loadAdd((Import) a1);//v2.5
+                    }
                 }
             }
 

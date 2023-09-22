@@ -9,14 +9,20 @@
 * 提醒1：之前没有使用弃用接口的，可以直接升级 <br>
 * 提醒2：有使用弃用接口的。建议先升级到 1.12.4；替换弃用代码后，再升级到 2.0.0
 
-### 2.5.7
+### 2.5.8
 * 新增 solon.boot.vertx 插件?
 * 新增 seata-solon-plugin 插件
 * 新增 graphql-solon-plugin 插件
 * 增加 quartz jdbc 及时更新支持（数据库里变了，它马上变） ???
 * 调整 使用更多的 slf4j 替换 LogUtil ???
-* 调整 solon.config.add 与 solon.config.load 合并，规范格式（同时支持内部与外部） ???
 * 调整 简化 SocketD ???
+
+### 2.5.7
+
+* 调整 solon.config.add 与 solon.config.load 合并，规范格式（同时支持内部与外部） ???
+* 使用 `solon.config.import` 替代 `solon.config.add`、`solon.config.load`，后者标为弃用
+* 使用 `@Import` 替代 `@PropertySource`、`@TestPropertySource`，后者标为弃用
+* 使用 `@Rollback` 替代 `@TestRollback`，后者标为弃用
 * 调整 SolonTestApp 默认关闭 http 服务；避免与已启动服务端口冲突
 * 调整 solon.cache.jedis 的两个序列化实现，转到 solon.data（做为公用）
 * 调整 solon.cache.redission RedissonCacheService 增加外部序列化接口支持
