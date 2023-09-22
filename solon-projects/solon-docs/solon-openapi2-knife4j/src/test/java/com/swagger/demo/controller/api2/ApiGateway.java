@@ -14,5 +14,6 @@ public class ApiGateway extends Gateway {
     @Override
     protected void register() {
         add(UserApi.class);
+        add(UserApiApplicationJson.class);
     }
 }

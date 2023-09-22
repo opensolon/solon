@@ -35,7 +35,6 @@ import org.noear.solon.docs.openapi2.wrap.ApiImplicitParamImpl;
 
 import java.lang.reflect.*;
 import java.text.Collator;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -196,7 +195,7 @@ public class OpenApi2Builder {
         Class<?> controller = action.controller().clz();
 
         boolean matched = docket.apis().stream().anyMatch(res -> res.test(action));
-        if (matched == false) {
+        if (!matched) {
             return;
         }
 
@@ -472,6 +471,38 @@ public class OpenApi2Builder {
             paramList.add(parameter);
         }
 
+        return mergeBodyParamList(actionHolder,paramList);
+    }
+
+    private List<Parameter> mergeBodyParamList(ActionHolder actionHolder,List<Parameter> paramList){
+        if (actionHolder.action().consumes().equals("application/json") || paramList.stream().map(Parameter::getIn).anyMatch(in -> in.equals(ApiEnum.PARAM_TYPE_BODY))) {
+            BodyParameter finalBodyParameter = new BodyParameter();
+            finalBodyParameter.setIn("body");
+            finalBodyParameter.name("data");
+            ModelImpl model = new ModelImpl();
+            model.setDescription("请求体");
+            model.setName("请求体");
+            for (Parameter parameter : paramList) {
+                if (parameter instanceof BodyParameter) {
+                    BodyParameter bodyParameter = ((BodyParameter) parameter);
+                    Model schema = bodyParameter.getSchema();
+                    if (schema instanceof RefModel){
+                        RefModel refModel = (RefModel) schema;
+                        model.setProperties(this.swagger.getDefinitions().get(refModel.getSimpleRef()).getProperties());
+                    }
+                }else if (parameter instanceof QueryParameter){
+                    QueryParameter queryParameter = ((QueryParameter)parameter);
+                    ObjectProperty property = new ObjectProperty();
+                    property.setType(queryParameter.getType());
+                    property.setDescription(queryParameter.getDescription());
+                    model.setProperties(Collections.singletonMap(queryParameter.getName(),property));
+                }
+            }
+            String key = "Map[" + actionHolder.action().fullName() + "]";
+            this.swagger.addDefinition(key,model);
+            finalBodyParameter.setSchema(new RefModel(key));
+            return Collections.singletonList(finalBodyParameter);
+        }
         return paramList;
     }
 
@@ -670,6 +701,11 @@ public class OpenApi2Builder {
             Field field = fw.field;
 
             ApiModelProperty apiField = field.getAnnotation(ApiModelProperty.class);
+
+            // 隐藏的跳过
+            if (apiField != null && apiField.hidden()){
+                continue;
+            }
 
             Class<?> typeClazz = field.getType();
             Type typeGenericType = field.getGenericType();
