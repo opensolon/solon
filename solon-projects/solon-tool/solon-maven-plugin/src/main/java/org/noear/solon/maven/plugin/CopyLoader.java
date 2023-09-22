@@ -1,6 +1,5 @@
 package org.noear.solon.maven.plugin;
 
-
 import java.io.*;
 import java.net.URI;
 import java.security.CodeSource;
@@ -12,6 +11,7 @@ import java.util.jar.JarFile;
 import java.util.jar.JarOutputStream;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+
 /**
  * @author hxm
  */
@@ -31,7 +31,7 @@ public class CopyLoader {
     }
 
 
-    private static void organizeFiles() {
+    private static void organizeFiles() throws IOException{
         FileUtils.delete(new File(path + name));
         FileUtils.moveFile(new File(path + tempName), new File(path + name));
     }
