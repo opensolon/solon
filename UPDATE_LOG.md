@@ -20,6 +20,7 @@
 ### 2.5.7
 
 * 调整 solon.config.add 与 solon.config.load 合并，规范格式（同时支持内部与外部） ???
+* 添加 `AppContext::newInstance` 接口
 * 使用 `solon.config.import` 替代 `solon.config.add`、`solon.config.load`，后者标为弃用
 * 使用 `@Import` 替代 `@PropertySource`、`@TestPropertySource`，后者标为弃用
 * 使用 `@Rollback` 替代 `@TestRollback`，后者标为弃用

@@ -90,13 +90,6 @@ public abstract class BeanContainer {
      * for Aot
      */
 
-
-    /**
-     * clz mapping
-     */
-    private final Map<Class<?>, Class<?>> clzMapping = new HashMap<>();
-
-
     //启动时写入
     /**
      * bean 构建器
@@ -131,7 +124,6 @@ public abstract class BeanContainer {
         beanWrapsOfName.clear();
         beanWrapSet.clear();
 
-        clzMapping.clear();
         attrs.clear();
         aot.clear();
 
@@ -596,8 +588,6 @@ public abstract class BeanContainer {
         Class<?>[] list = bw.clz().getInterfaces();
         for (Class<?> c : list) {
             if (c.getName().contains("java.") == false) {
-                //建立关系映射
-                clzMapping.putIfAbsent(c, bw.clz());
                 putWrap(c, bw);
             }
         }
