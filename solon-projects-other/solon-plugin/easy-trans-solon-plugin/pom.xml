@@ -19,7 +19,7 @@
         <dependency>
             <groupId>com.fhs-opensource</groupId>
             <artifactId>easy-trans-solon-plugin</artifactId>
-            <version>1.2.0</version>
+            <version>1.3.0</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.noear</groupId>
