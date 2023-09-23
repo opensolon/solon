@@ -3,9 +3,7 @@ package org.noear.solon.cloud.extend.mqtt.service;
 import org.eclipse.paho.client.mqttv3.*;
 import org.noear.solon.cloud.CloudEventHandler;
 import org.noear.solon.cloud.CloudProps;
-import org.noear.solon.cloud.model.EventObserver;
 import org.noear.solon.cloud.service.CloudEventObserverManger;
-import org.noear.solon.core.event.EventBus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
