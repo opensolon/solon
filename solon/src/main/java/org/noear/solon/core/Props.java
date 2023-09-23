@@ -373,7 +373,7 @@ public class Props extends Properties {
             return;
         }
 
-        for (String uri : anno.configSource()) {
+        for (String uri : anno.propertySource()) {
             uri = getByParse(uri);
             loadAdd(ResourceUtil.findResource(classLoader, uri));
         }

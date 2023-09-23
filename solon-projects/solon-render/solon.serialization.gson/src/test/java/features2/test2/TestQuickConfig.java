@@ -10,7 +10,6 @@ import org.noear.solon.annotation.Inject;
 import org.noear.solon.core.handle.ContextEmpty;
 import org.noear.solon.serialization.gson.GsonRenderFactory;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
-import org.noear.solon.test.annotation.TestPropertySource;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -20,7 +19,7 @@ import java.util.Map;
 /**
  * @author noear 2023/1/16 created
  */
-@Import(configSource = "classpath:features2_test2.yml")
+@Import(propertySource = "classpath:features2_test2.yml")
 @RunWith(SolonJUnit4ClassRunner.class)
 public class TestQuickConfig {
     @Inject

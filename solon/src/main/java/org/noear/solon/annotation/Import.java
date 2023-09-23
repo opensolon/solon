@@ -58,9 +58,9 @@ public @interface Import {
     Class<?>[] scanPackageClasses() default {};
 
     /**
-     * 导入配置源（classpath:demo.yml, ./demo.yml）
+     * 导入属性源（classpath:demo.yml, ./demo.yml）
      *
      * @since 2.5
      */
-    String[] configSource() default {};
+    String[] propertySource() default {};
 }

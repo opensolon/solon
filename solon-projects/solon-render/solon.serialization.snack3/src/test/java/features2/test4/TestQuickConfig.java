@@ -16,7 +16,7 @@ import java.util.Map;
 /**
  * @author noear 2023/1/16 created
  */
-@Import(configSource = "classpath:features2_test4.yml")
+@Import(propertySource = "classpath:features2_test4.yml")
 @RunWith(SolonJUnit4ClassRunner.class)
 public class TestQuickConfig {
     @Inject

@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
-@Import(configSource = "app-test2.yml")
+@Import(propertySource = "app-test2.yml")
 @RunWith(SolonJUnit4ClassRunner.class)
 public class DemoTest2 {
     static Logger log = LoggerFactory.getLogger(DemoTest2.class);

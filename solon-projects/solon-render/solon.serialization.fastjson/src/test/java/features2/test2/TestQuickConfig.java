@@ -19,7 +19,7 @@ import java.util.Map;
 /**
  * 时间进行格式化 + long,int 转为字符串
  */
-@Import(configSource = "classpath:features2_test2.yml")
+@Import(propertySource = "classpath:features2_test2.yml")
 @RunWith(SolonJUnit4ClassRunner.class)
 public class TestQuickConfig {
     @Inject
