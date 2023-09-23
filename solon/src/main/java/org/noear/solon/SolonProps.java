@@ -132,9 +132,8 @@ public final class SolonProps extends Props {
 
         loadAdd(source.getAnnotation(Import.class));//v2.5
 
-        //4.4.加载配置 solon.config.load //支持多文件（只支持内部，支持{env}） //@Deprecated
+        //4.4.加载配置 solon.config.load //支持多文件（只支持内部，支持{env}）
         Map<String,String> loadKeyMap = new TreeMap<>();
-        //@Deprecated 2.5
         doFind("solon.config.load", (key, val) -> {
             if (key.equals("") || key.startsWith("[")) {
                 loadKeyMap.put(key, val);
@@ -145,23 +144,8 @@ public final class SolonProps extends Props {
             addConfig(loadKey, true, sysPropOrg);
         }
 
-        //4.5.加载配置 solon.config.import //支持多文件（只支持内部，支持{env}）
-        loadKeyMap.clear();
-        doFind("solon.config.import", (key, val) -> {
-            if (key.equals("") || key.startsWith("[")) {
-                loadKeyMap.put(key, val);
-            }
-        });
-
-        for(String loadKey : loadKeyMap.values()) {
-            addConfig(loadKey, false, sysPropOrg);
-        }
-
-
-        //4.6.加载扩展配置 solon.config.add //支持多文件（支持内部或外部，支持{env}） //@Deprecated
-        //@Deprecated 2.2
-        addConfig(getArg("config"), false, sysPropOrg);
-        //@Deprecated 2.5
+        //4.6.加载扩展配置 solon.config.add //支持多文件（支持内部或外部，支持{env}）
+        addConfig(getArg("config"), false, sysPropOrg); //@Deprecated 2.2
         addConfig(getArg("config.add"), false, sysPropOrg);//替代旧的 solon.config, 与 config.load 配对
 
 
