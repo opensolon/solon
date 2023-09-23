@@ -21,5 +21,6 @@ public @interface PropertySource {
      * 例，资源文件：classpath:demo.yml
      * 例，外部文件：./demo.yml
      * */
+    @Alias("@Import(configSource)")
     String[] value();
 }

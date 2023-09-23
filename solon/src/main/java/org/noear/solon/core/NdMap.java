@@ -14,6 +14,7 @@ import java.util.Map;
  * @author noear
  * @since 1.3
  * */
+@SuppressWarnings("removal")
 @Deprecated
 public class NdMap extends IgnoreCaseMap<Object> {
 
