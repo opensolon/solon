@@ -31,6 +31,7 @@
 * mybatis-flex 升为 1.6.6
 * easy-trans 升为 1.3.0
 * sa-token 升为 1.36.0
+* fastjson2 升为 2.4.0
 
 ### 2.5.6
 * asm 升为 9.5 （for JDK21）
