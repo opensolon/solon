@@ -15,13 +15,12 @@
 * 新增 graphql-solon-plugin 插件
 * 增加 quartz jdbc 及时更新支持（数据库里变了，它马上变） ???
 * 调整 使用更多的 slf4j 替换 LogUtil ???
+* 调整 solon.config.add 与 solon.config.load 合并，规范格式（同时支持内部与外部） ???
 * 调整 简化 SocketD ???
 
 ### 2.5.7
 
-* 调整 solon.config.add 与 solon.config.load 合并，规范格式（同时支持内部与外部） ???
 * 添加 `AppContext::newInstance` 接口
-* 使用 `solon.config.import` 替代 `solon.config.add`、`solon.config.load`，后者标为弃用
 * 使用 `@Import` 替代 `@PropertySource`、`@TestPropertySource`，后者标为弃用
 * 使用 `@Rollback` 替代 `@TestRollback`，后者标为弃用
 * 调整 SolonTestApp 默认关闭 http 服务；避免与已启动服务端口冲突
