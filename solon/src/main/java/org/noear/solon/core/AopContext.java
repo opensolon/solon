@@ -755,7 +755,8 @@ public abstract class AopContext extends BeanContainer {
 
                 Annotation[] annoS = pw.getParameter().getDeclaredAnnotations();
                 if (annoS.length == 0) {
-                    beanInject(varH, null);
+                    //没带注解的，算必须
+                    beanInject(varH, null, true, false);
                 } else {
                     tryInject(varH, annoS);
                 }
