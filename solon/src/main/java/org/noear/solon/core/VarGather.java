@@ -22,13 +22,31 @@ public class VarGather implements Runnable {
     private boolean done;
     //完成时
     private Consumer<Object[]> onDone;
+    //必须运行
     private boolean requireRun;
+    //输出类型
+    private Class<?> outType;
+    //执行顺序位
+    public int index;
 
-    public VarGather(boolean requireRun, int varSize, Consumer<Object[]> onDone) {
+    public VarGather(Class<?> outType, boolean requireRun, int varSize, Consumer<Object[]> onDone) {
         this.requireRun = requireRun;
         this.onDone = onDone;
         this.varSize = varSize;
         this.vars = new ArrayList<>(varSize);
+        this.outType = outType;
+    }
+
+    public boolean isDone() {
+        return done;
+    }
+
+    public Class<?> getOutType() {
+        return outType;
+    }
+
+    public List<VarHolder> getVars() {
+        return vars;
     }
 
     public void add(VarHolder p) {

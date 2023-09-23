@@ -20,13 +20,13 @@
 
 ### 2.5.7
 
-* 添加 `AppContext::newInstance` 接口
 * 使用 `@Import` 替代 `@PropertySource`、`@TestPropertySource`，后者标为弃用
 * 使用 `@Rollback` 替代 `@TestRollback`，后者标为弃用
 * 调整 SolonTestApp 默认关闭 http 服务；避免与已启动服务端口冲突
 * 调整 solon.cache.jedis 的两个序列化实现，转到 solon.data（做为公用）
 * 调整 solon.cache.redission RedissonCacheService 增加外部序列化接口支持
 * 修复 solon-maven-plugin 在 linux 下因为一些用户角色没有权限导致打包失败问题
+* 增加 VarGather 自动排序
 * wood 升为 1.2.2
 * mybatis-flex 升为 1.6.6
 * easy-trans 升为 1.3.0

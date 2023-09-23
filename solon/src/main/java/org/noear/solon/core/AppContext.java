@@ -3,8 +3,6 @@ package org.noear.solon.core;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.event.EventListener;
 
-import java.lang.reflect.Constructor;
-
 /**
  * 应用上下文（ 为全局对象；热插拨的插件，会产生独立的上下文）
  *
@@ -37,23 +35,5 @@ public class AppContext extends AopContext { //（继承，为兼容性过度）
     public <T> AppContext onEvent(Class<T> type, int index, EventListener<T> handler) {
         EventBus.subscribe(type, index, handler);
         return this;
-    }
-
-    /**
-     * 构造实例
-     * */
-    public  <T> T newInstance(Class<?> clz) throws Exception {
-        Constructor c = clz.getDeclaredConstructors()[0];
-        if (c.getParameterCount() > 0) {
-            Object[] args = new Object[c.getParameterCount()];
-
-            for (int i = 0; i < args.length; i++) {
-                args[i] = getBean(c.getParameterTypes()[i]);
-            }
-
-            return (T) c.newInstance(args);
-        } else {
-            return (T) c.newInstance();
-        }
     }
 }
