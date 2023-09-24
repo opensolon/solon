@@ -37,6 +37,17 @@ public class IndexUtil {
             if (v1.isDone() == false) {
                 if (clazzStack.contains(v1.getType())) {
                     //避免死循环
+                    Optional<InjectGather> tmp = gathers.stream()
+                            .filter(g2 -> g2.getOutType().equals(v1.getType()))
+                            .findFirst();
+
+                    if(tmp.isPresent()){
+                        int index = tmp.get().index + 1;
+                        if(g1.index < index){
+                            g1.index = index;
+                        }
+                    }
+
                     continue;
                 } else {
                     clazzStack.add(v1.getType());
