@@ -180,9 +180,17 @@ public class SmHttpContext extends WebContextBase {
         if (_paramsMap == null) {
             _paramsMap = new LinkedHashMap<>();
 
-            _request.getParameters().forEach((k, v) -> {
-                _paramsMap.put(k, Utils.asList(v));
-            });
+            try {
+                if (autoMultipart()) {
+                    loadMultipartFormData();
+                }
+
+                _request.getParameters().forEach((k, v) -> {
+                    _paramsMap.put(k, Utils.asList(v));
+                });
+            } catch (IOException e) {
+                throw new IllegalStateException(e);
+            }
         }
 
         return _paramsMap;

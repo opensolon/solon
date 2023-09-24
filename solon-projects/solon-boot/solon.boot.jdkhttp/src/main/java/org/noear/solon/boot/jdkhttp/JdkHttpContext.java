@@ -197,15 +197,24 @@ public class JdkHttpContext extends WebContextBase {
         if (_paramsMap == null) {
             _paramsMap = new LinkedHashMap<>();
 
-            _parameters.forEach((k, v) -> {
-                if (v instanceof List) {
-                    _paramsMap.put(k, (List<String>) v);
-                } else {
-                    List<String> list = new ArrayList<>();
-                    list.add((String) v);
-                    _paramsMap.put(k, list);
+            try {
+                if (autoMultipart()) {
+                    loadMultipartFormData();
                 }
-            });
+
+                _parameters.forEach((k, v) -> {
+                    if (v instanceof List) {
+                        _paramsMap.put(k, (List<String>) v);
+                    } else {
+                        List<String> list = new ArrayList<>();
+                        list.add((String) v);
+                        _paramsMap.put(k, list);
+                    }
+                });
+            } catch (IOException e) {
+                throw new IllegalStateException(e);
+            }
+
         }
 
         return _paramsMap;

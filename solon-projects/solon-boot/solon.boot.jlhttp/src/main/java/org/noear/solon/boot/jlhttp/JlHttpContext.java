@@ -170,10 +170,8 @@ public class JlHttpContext extends WebContextBase {
                 }
 
                 _paramMap.putAll(_request.getParams());
-            } catch (RuntimeException e) {
-                throw e;
-            } catch (Throwable e) {
-                throw new RuntimeException(e);
+            } catch (IOException e) {
+                throw new IllegalStateException(e);
             }
         }
 
@@ -188,6 +186,10 @@ public class JlHttpContext extends WebContextBase {
             _paramsMap = new LinkedHashMap<>();
 
             try {
+                if (autoMultipart()) {
+                    loadMultipartFormData();
+                }
+
                 for (String[] kv : _request.getParamsList()) {
                     List<String> list = _paramsMap.get(kv[0]);
                     if (list == null) {
