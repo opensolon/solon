@@ -26,6 +26,7 @@
 * 调整 solon.cache.jedis 的两个序列化实现，转到 solon.data（做为公用）
 * 调整 solon.cache.redission RedissonCacheService 增加外部序列化接口支持
 * 调整 `@Bean` 函数，参数没带注解的算必须
+* 调整 paramsMap 增加 autoMultipart 处理
 * 修复 solon-maven-plugin 在 linux 下因为一些用户角色没有权限导致打包失败问题
 * 优化 `VarGather` 检查增加自动排序
 * wood 升为 1.2.2
