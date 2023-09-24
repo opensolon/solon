@@ -54,8 +54,15 @@ public class VarGather implements Runnable {
         vars.add(p);
     }
 
+    /**
+     * 运行（变量收集完成后，回调运行）
+     */
     @Override
-    public void run() {
+    public synchronized void run() {
+        if (done) {
+            return;
+        }
+
         for (VarHolder p1 : vars) {
             if (p1.isDone() == false) {
                 return;
@@ -67,7 +74,7 @@ public class VarGather implements Runnable {
         }
 
         done = true;
-        if(onDone != null) {
+        if (onDone != null) {
             List<Object> args = new ArrayList<>(vars.size());
             for (VarHolder p1 : vars) {
                 args.add(p1.getValue());
@@ -80,7 +87,7 @@ public class VarGather implements Runnable {
     /**
      * 检测
      */
-    public void check() throws Exception {
+    public synchronized void check() throws Exception {
         if (done) {
             return;
         }

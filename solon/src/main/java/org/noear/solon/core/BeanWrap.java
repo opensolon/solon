@@ -9,7 +9,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.annotation.Init;
 import org.noear.solon.annotation.Singleton;
 import org.noear.solon.core.util.ClassUtil;
-import org.noear.solon.core.util.IndexBuilder;
+import org.noear.solon.core.util.IndexUtil;
 import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.core.wrap.ClassWrap;
 
@@ -304,7 +304,7 @@ public class BeanWrap {
         if (clzInit != null) {
             if (clzInitIndex == 0) {
                 //如果为0，则自动识别
-                clzInitIndex = new IndexBuilder().buildIndex(clz);
+                clzInitIndex = IndexUtil.buildLifecycleIndex(clz);
             }
 
             //保持与 LifecycleBean 相同策略：+1
