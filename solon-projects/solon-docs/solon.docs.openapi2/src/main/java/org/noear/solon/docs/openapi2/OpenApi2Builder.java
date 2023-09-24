@@ -738,7 +738,6 @@ public class OpenApi2Builder {
                     if (apiField != null) {
                         fieldPr.setDescription(apiField.value());
                         fieldPr.setRequired(apiField.required());
-                        fieldPr.setExample(apiField.example());
                     }
 
 
