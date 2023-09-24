@@ -7,13 +7,13 @@ import java.util.List;
 import java.util.function.Consumer;
 
 /**
- * 变量收集器，收集完成后会进行回调（主要为 Configuration 构建 method bean 时服务）
+ * 注入收集器，收集完成后会进行回调（主要为 Configuration 构建 method bean 时服务）
  *
  * @see AppContext#tryBuildBean
  * @author noear
  * @since 1.0
  * */
-public class VarGather implements Runnable {
+public class InjectGather implements Runnable {
     //变量
     private List<VarHolder> vars;
     //变量数量
@@ -29,7 +29,7 @@ public class VarGather implements Runnable {
     //执行顺序位
     public int index;
 
-    public VarGather(Class<?> outType, boolean requireRun, int varSize, Consumer<Object[]> onDone) {
+    public InjectGather(Class<?> outType, boolean requireRun, int varSize, Consumer<Object[]> onDone) {
         this.requireRun = requireRun;
         this.onDone = onDone;
         this.varSize = varSize;

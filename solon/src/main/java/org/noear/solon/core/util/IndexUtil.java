@@ -1,6 +1,6 @@
 package org.noear.solon.core.util;
 
-import org.noear.solon.core.VarGather;
+import org.noear.solon.core.InjectGather;
 import org.noear.solon.core.VarHolder;
 
 import java.util.HashSet;
@@ -23,12 +23,12 @@ public class IndexUtil {
     /**
      * 构建变量收集器的检查顺序位
      */
-    public static int buildGatherIndex(VarGather g1, List<VarGather> gathers) {
+    public static int buildGatherIndex(InjectGather g1, List<InjectGather> gathers) {
         Set<Class<?>> clazzStack = new HashSet<>();
         return buildGatherIndex0(g1, gathers, clazzStack);
     }
 
-    private static int buildGatherIndex0(VarGather g1, List<VarGather> gathers, Set<Class<?>> clazzStack) {
+    private static int buildGatherIndex0(InjectGather g1, List<InjectGather> gathers, Set<Class<?>> clazzStack) {
         if (g1.index > 0) {
             return g1.index;
         }
@@ -42,7 +42,7 @@ public class IndexUtil {
                     clazzStack.add(v1.getType());
                 }
 
-                Optional<VarGather> tmp = gathers.stream()
+                Optional<InjectGather> tmp = gathers.stream()
                         .filter(g2 -> g2.getOutType().equals(v1.getType()))
                         .findFirst();
 

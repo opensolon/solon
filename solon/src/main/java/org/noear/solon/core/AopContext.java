@@ -54,7 +54,7 @@ public abstract class AopContext extends BeanContainer {
     private final Set<RankEntity<LifecycleBean>> lifecycleBeans = new HashSet<>();
 
     private final Map<Method, MethodWrap> methodCached = new HashMap<>();
-    private final Set<VarGather> gatherSet = new HashSet<>();
+    private final Set<InjectGather> gatherSet = new HashSet<>();
 
 
     /**
@@ -485,7 +485,7 @@ public abstract class AopContext extends BeanContainer {
                 RunUtil.runOrThrow(initBean::afterInjection);
             } else {
                 //需要注入（可能）
-                VarGather gather = new VarGather(clzWrap.clz(), true, fwList.size(), (args2) -> {
+                InjectGather gather = new InjectGather(clzWrap.clz(), true, fwList.size(), (args2) -> {
                     RunUtil.runOrThrow(initBean::afterInjection);
                 });
 
@@ -504,7 +504,7 @@ public abstract class AopContext extends BeanContainer {
 
             } else {
                 //需要注入（可能）
-                VarGather gather = new VarGather(clzWrap.clz(), true, fwList.size(), null);
+                InjectGather gather = new InjectGather(clzWrap.clz(), true, fwList.size(), null);
 
                 //添加到集合
                 gatherSet.add(gather);
@@ -740,7 +740,7 @@ public abstract class AopContext extends BeanContainer {
             tryBuildBeanDo(anno, mWrap, bw, new Object[]{});
         } else {
             //1.构建参数 (requireRun=false => true) //运行条件已经确认过，且必须已异常
-            VarGather gather = new VarGather(mWrap.getReturnType(), true, size2, (args2) -> {
+            InjectGather gather = new InjectGather(mWrap.getReturnType(), true, size2, (args2) -> {
                 //变量收集完成后，会回调此处
                 RunUtil.runOrThrow(() -> tryBuildBeanDo(anno, mWrap, bw, args2));
             });
@@ -895,7 +895,7 @@ public abstract class AopContext extends BeanContainer {
             startLifecycle();
 
             //开始检查注入情况 //支持自动排序
-            startGatherCheck();
+            startInjectCheck();
         } catch (Throwable e) {
             throw new IllegalStateException("AopContext start failed", e);
         }
@@ -918,17 +918,17 @@ public abstract class AopContext extends BeanContainer {
     /**
      * 开始收集器检查（支持自动排序）
      */
-    private void startGatherCheck() throws Throwable {
+    private void startInjectCheck() throws Throwable {
         //全部跑完后，检查注入情况
-        List<VarGather> gatherList = gatherSet.stream().filter(g1 -> g1.isDone() == false)
+        List<InjectGather> gatherList = gatherSet.stream().filter(g1 -> g1.isDone() == false)
                 .collect(Collectors.toList());
         if (gatherList.size() > 0) {
-            for (VarGather gather : gatherList) {
+            for (InjectGather gather : gatherList) {
                 IndexUtil.buildGatherIndex(gather, gatherList);
             }
 
             gatherList.sort(Comparator.comparingInt(g1 -> g1.index));
-            for (VarGather g1 : gatherList) {
+            for (InjectGather g1 : gatherList) {
                 g1.check();
             }
         }
