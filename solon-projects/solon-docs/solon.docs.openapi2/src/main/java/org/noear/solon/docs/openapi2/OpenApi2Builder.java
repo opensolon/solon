@@ -738,7 +738,8 @@ public class OpenApi2Builder {
                     if (apiField != null) {
                         fieldPr.setDescription(apiField.value());
                         fieldPr.setRequired(apiField.required());
-                        fieldPr.setExample(apiField.example());
+                        // 如果是泛型参数的类型 加上 示例，在knife4j下将无法正确解析，所以将其注释
+                        // fieldPr.setExample(apiField.example());
                     }
 
 
