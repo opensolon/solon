@@ -20,6 +20,7 @@
 
 ### 2.5.7
 
+* 新增 hibernate-solon-plugin 插件
 * 使用 `@Import` 替代 `@PropertySource`、`@TestPropertySource`，后者标为弃用
 * 使用 `@Rollback` 替代 `@TestRollback`，后者标为弃用
 * 调整 SolonTestApp 默认关闭 http 服务；避免与已启动服务端口冲突

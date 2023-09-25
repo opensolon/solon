@@ -1022,6 +1022,14 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>hibernate-solon-plugin</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+
+
+
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>cron4j-solon-plugin</artifactId>
                 <version>${solon.version}</version>
             </dependency>
