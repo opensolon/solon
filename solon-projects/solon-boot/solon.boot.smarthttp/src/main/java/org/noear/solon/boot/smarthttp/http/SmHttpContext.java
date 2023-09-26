@@ -24,6 +24,7 @@ import java.io.OutputStream;
 import java.net.URI;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
+import java.util.zip.GZIPOutputStream;
 
 public class SmHttpContext extends WebContextBase {
     static final Logger log = LoggerFactory.getLogger(SmHttpContextHandler.class);
@@ -282,13 +283,22 @@ public class SmHttpContext extends WebContextBase {
 
 
     private ByteArrayOutputStream _outputStreamTmp;
+    private OutputStream _outputStream;
 
     @Override
     public OutputStream outputStream() throws IOException {
         sendHeaders(false);
 
         if (_allows_write) {
-            return _response.getOutputStream();
+            if(_outputStream == null){
+                if("gzip".equals(_response.getHeader("Content-Encoding"))){
+                    _outputStream = new GZIPOutputStream(_response.getOutputStream(), 4096, true);
+                }else{
+                    _outputStream = _response.getOutputStream();
+                }
+            }
+
+            return _outputStream;
         } else {
             if (_outputStreamTmp == null) {
                 _outputStreamTmp = new ByteArrayOutputStream();
@@ -451,6 +461,7 @@ public class SmHttpContext extends WebContextBase {
             status(404);
             sendHeaders(true);
         }
+        this.flush();
     }
 
     private boolean _headers_sent = false;
