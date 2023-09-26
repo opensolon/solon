@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 静态文件类型申明
+ * 静态文件类型配置
  *
  * @author noear
  * @since 1.0
@@ -218,14 +218,14 @@ public class StaticMimes {
     /**
      * 查找 Mime 记录（找到对应的内容类型）
      */
-    public synchronized static String findByExt(String ext) {
+    public static String findByExt(String ext) {
         return mimeMap.get(ext);
     }
 
     /**
      * 查找 Mime 记录（找到对应的内容类型）
      */
-    public synchronized static String findByFileName(String fileName) {
+    public static String findByFileName(String fileName) {
         String ext = resolveExt(fileName);
 
         return findByExt(ext);
@@ -240,6 +240,8 @@ public class StaticMimes {
 
     /**
      * 分析扩展名
+     *
+     * @param fileName 文件名
      */
     public static String resolveExt(String fileName) {
         String ext = "";

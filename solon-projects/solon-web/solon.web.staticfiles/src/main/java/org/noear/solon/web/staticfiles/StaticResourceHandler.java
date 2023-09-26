@@ -6,6 +6,7 @@ import org.noear.solon.core.handle.Handler;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.util.RangeUtil;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
@@ -20,10 +21,8 @@ import java.util.Date;
 public class StaticResourceHandler implements Handler {
     private static final String CACHE_CONTROL = "Cache-Control";
     private static final String LAST_MODIFIED = "Last-Modified";
+    private static final Date modified_time = new Date();
 
-    public StaticResourceHandler() {
-
-    }
 
     @Override
     public void handle(Context ctx) throws Exception {
@@ -86,7 +85,7 @@ public class StaticResourceHandler implements Handler {
 
                 try (InputStream stream = connection.getInputStream()) {
                     ctx.contentType(conentType);
-                    RangeUtil.global().outputStream(ctx, stream, stream.available());
+                    this.outputStream(ctx, stream, stream.available(), conentType);
 
                     //ctx.contentLength(stream.available());
                     //ctx.status(200);
@@ -95,7 +94,7 @@ public class StaticResourceHandler implements Handler {
             } else {
                 try (InputStream stream = uri.openStream()) {
                     ctx.contentType(conentType);
-                    RangeUtil.global().outputStream(ctx, stream, stream.available());
+                    this.outputStream(ctx, stream, stream.available(), conentType);
 
                     //ctx.contentLength(stream.available());
                     //ctx.status(200);
@@ -105,7 +104,17 @@ public class StaticResourceHandler implements Handler {
         }
     }
 
-    private static final Date modified_time = new Date();
+    /**
+     * 输出流
+     * */
+    private void outputStream(Context ctx, InputStream stream, long streamSize, String contentType) throws IOException {
+        if(StaticCompression.handle(ctx, contentType, streamSize)){
+            ctx.status(200);
+            ctx.output(stream);
+        }else {
+            RangeUtil.global().outputStream(ctx, stream, streamSize);
+        }
+    }
 
 
     /**

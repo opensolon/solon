@@ -22,6 +22,7 @@ import java.io.OutputStream;
 import java.net.URI;
 import java.nio.charset.Charset;
 import java.util.*;
+import java.util.zip.GZIPOutputStream;
 
 /**
  * Servlet，适配为 Context
@@ -281,11 +282,20 @@ public class SolonServletContext extends WebContextBase {
     }
 
 
+    private OutputStream _outputStream;
     @Override
     public OutputStream outputStream() throws IOException {
         sendHeaders();
 
-        return _response.getOutputStream();
+        if(_outputStream == null){
+            if("gzip".equals(_response.getHeader("Content-Encoding"))){
+                _outputStream = new GZIPOutputStream(_response.getOutputStream(), 4096, true);
+            }else{
+                _outputStream = _response.getOutputStream();
+            }
+        }
+
+        return _outputStream;
     }
 
     @Override
@@ -408,6 +418,8 @@ public class SolonServletContext extends WebContextBase {
         } else {
             _response.setStatus(404);
         }
+
+        this.flush();
     }
 
     private boolean _headers_sent = false;

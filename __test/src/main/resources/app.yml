@@ -24,6 +24,11 @@ server.port: 8081
 
 server.contextPath: "/test/"
 
+server.http.gzip:
+    enable: true
+    minSize: 4096
+    mimeTypes: 'text/html,text/xml,text/plain,text/css,text/javascript,application/json,application/xml'
+
 solon.env: test
 
 solon.app:

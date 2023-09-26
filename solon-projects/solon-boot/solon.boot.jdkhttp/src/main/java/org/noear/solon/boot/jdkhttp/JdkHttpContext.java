@@ -7,7 +7,6 @@ import org.noear.solon.boot.web.HeaderUtils;
 import org.noear.solon.boot.web.WebContextBase;
 import org.noear.solon.boot.web.Constants;
 import org.noear.solon.boot.web.RedirectUtils;
-import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.ContextAsyncListener;
 import org.noear.solon.core.handle.UploadedFile;
 import org.noear.solon.core.NvMap;
@@ -23,6 +22,7 @@ import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
+import java.util.zip.GZIPOutputStream;
 
 public class JdkHttpContext extends WebContextBase {
     private HttpExchange _exchange;
@@ -308,13 +308,22 @@ public class JdkHttpContext extends WebContextBase {
 
 
     private ByteArrayOutputStream _outputStreamTmp;
+    private OutputStream _outputStream;
 
     @Override
     public OutputStream outputStream() throws IOException {
         sendHeaders(false);
 
         if (_allows_write) {
-            return _exchange.getResponseBody();
+            if(_outputStream == null){
+                if("gzip".equals(_exchange.getResponseHeaders().get("Content-Encoding"))){
+                    _outputStream = new GZIPOutputStream(_exchange.getResponseBody(), 4096, true);
+                }else{
+                    _outputStream = _exchange.getResponseBody();
+                }
+            }
+
+            return _outputStream;
         } else {
             if (_outputStreamTmp == null) {
                 _outputStreamTmp = new ByteArrayOutputStream();
@@ -477,6 +486,7 @@ public class JdkHttpContext extends WebContextBase {
             status(404);
             sendHeaders(true);
         }
+        this.flush();
     }
 
     private boolean _allows_write = true;

@@ -21,6 +21,10 @@
 ### 2.5.7
 
 * 新增 hibernate-solon-plugin 插件
+* 增加 solon.web.staticfiles 对 gzip 的配置支持
+* 增加 solon.boot.smarthttp 对 gzip 的配置支持
+* 增加 solon.web.servlet 对 gzip 的配置支持
+* 增加 solon.web.servlet.jakarta 对 gzip 的配置支持
 * 使用 `@Import` 替代 `@PropertySource`、`@TestPropertySource`，后者标为弃用
 * 使用 `@Rollback` 替代 `@TestRollback`，后者标为弃用
 * 调整 SolonTestApp 默认关闭 http 服务；避免与已启动服务端口冲突
@@ -30,6 +34,8 @@
 * 调整 paramsMap 增加 autoMultipart 处理
 * 修复 solon-maven-plugin 在 linux 下因为一些用户角色没有权限导致打包失败问题
 * 优化 `VarGather` 检查增加自动排序
+* 优化 Props::getMap 处理
+* 简化 Props::getProp 处理提升性能
 * wood 升为 1.2.2
 * mybatis-flex 升为 1.6.6
 * easy-trans 升为 1.3.0
