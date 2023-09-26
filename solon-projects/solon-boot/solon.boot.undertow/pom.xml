@@ -59,6 +59,7 @@
         <dependency>
             <groupId>io.undertow.jastow</groupId>
             <artifactId>jastow</artifactId>
+            <version>${undertow.jastow.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>io.undertow</groupId>
@@ -75,18 +76,21 @@
         <dependency>
             <groupId>org.jboss.metadata</groupId>
             <artifactId>jboss-metadata-common</artifactId>
+            <version>${undertow.jboss-metadata.version}</version>
             <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>org.jboss.metadata</groupId>
             <artifactId>jboss-metadata-web</artifactId>
+            <version>${undertow.jboss-metadata.version}</version>
             <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>org.jboss.spec.javax.servlet.jsp</groupId>
             <artifactId>jboss-jsp-api_2.3_spec</artifactId>
+            <version>${undertow.jboss-jsp.version}</version>
             <scope>provided</scope>
         </dependency>
 
