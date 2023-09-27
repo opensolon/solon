@@ -24,7 +24,6 @@ public class GzipProps {
         mimeTypes.add("text/css");
         mimeTypes.add("text/javascript");
         mimeTypes.add("application/javascript");
-        mimeTypes.add("application/json");
         mimeTypes.add("application/xml");
 
         load();
