@@ -306,7 +306,12 @@ public class OpenApi2Builder {
                 if (operationMethod.equals(ApiEnum.METHOD_GET)) {
                     operation.consumes(ApiEnum.CONSUMES_URLENCODED); //如果是 get ，则没有 content-type
                 } else {
-                    operation.consumes(ApiEnum.CONSUMES_URLENCODED);
+                    //operation.consumes(ApiEnum.CONSUMES_URLENCODED);
+                    if (operation.getParameters().stream().anyMatch(parameter -> parameter instanceof BodyParameter)){
+                        operation.consumes(ApiEnum.CONSUMES_JSON);
+                    }else {
+                        operation.consumes(ApiEnum.CONSUMES_URLENCODED);
+                    }
                 }
             } else {
                 operation.consumes(apiAction.consumes());
@@ -498,7 +503,9 @@ public class OpenApi2Builder {
                     model.setProperties(Collections.singletonMap(queryParameter.getName(),property));
                 }
             }
-            String key = "Map[" + actionHolder.action().fullName() + "]";
+            //String key = "Map[" + actionHolder.action().fullName() + "]";
+            // 避免其他平台数据导入错误
+            String key = "Map[" + actionHolder.action().fullName().replace("/","_") + "]";
             this.swagger.addDefinition(key,model);
             finalBodyParameter.setSchema(new RefModel(key));
             return Collections.singletonList(finalBodyParameter);
