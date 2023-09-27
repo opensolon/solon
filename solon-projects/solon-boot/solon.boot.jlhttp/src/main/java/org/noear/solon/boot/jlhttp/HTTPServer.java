@@ -1618,14 +1618,16 @@ public class HTTPServer {
                 return encodedOut; // return the existing stream (or null)
             // set up chain of encoding streams according to headers
             List<String> te = Arrays.asList(splitElements(headers.get("Transfer-Encoding"), true));
-            List<String> ce = Arrays.asList(splitElements(headers.get("Content-Encoding"), true));
+            //List<String> ce = Arrays.asList(splitElements(headers.get("Content-Encoding"), true));
             encodedOut = new ResponseOutputStream(out); // leaves underlying stream open when closed
             if (te.contains("chunked"))
                 encodedOut = new ChunkedOutputStream(encodedOut);
-            if (ce.contains("gzip") || te.contains("gzip"))
-                encodedOut = new GZIPOutputStream(encodedOut, 4096, true);
-            else if (ce.contains("deflate") || te.contains("deflate"))
-                encodedOut = new DeflaterOutputStream(encodedOut, true);//todo: syncFlush=true ，支持流输出
+
+            //todo: gzip 交由应用层处理
+            //if (ce.contains("gzip") || te.contains("gzip"))
+            //    encodedOut = new GZIPOutputStream(encodedOut, 4096, true);
+            //else if (ce.contains("deflate") || te.contains("deflate"))
+            //    encodedOut = new DeflaterOutputStream(encodedOut, true);//todo: syncFlush=true ，支持流输出
 
             return encodedOut; // return the outer-most stream
         }
