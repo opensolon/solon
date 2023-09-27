@@ -281,21 +281,11 @@ public class SolonServletContext extends WebContextBase {
     }
 
 
-
-    private OutputStream _outputStream;
     @Override
     public OutputStream outputStream() throws IOException {
         sendHeaders();
 
-        if(_outputStream == null){
-            if(requiredGzip()){
-                _outputStream = new GZIPOutputStream(_response.getOutputStream(), 4096, true);
-            }else{
-                _outputStream = _response.getOutputStream();
-            }
-        }
-
-        return _outputStream;
+        return _response.getOutputStream();
     }
 
     @Override
@@ -425,8 +415,6 @@ public class SolonServletContext extends WebContextBase {
         } else {
             _response.setStatus(404);
         }
-
-        this.flush();
     }
 
     private boolean _headers_sent = false;

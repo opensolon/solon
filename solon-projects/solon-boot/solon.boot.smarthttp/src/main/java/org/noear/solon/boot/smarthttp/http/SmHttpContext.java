@@ -283,22 +283,13 @@ public class SmHttpContext extends WebContextBase {
 
 
     private ByteArrayOutputStream _outputStreamTmp;
-    private OutputStream _outputStream;
 
     @Override
     public OutputStream outputStream() throws IOException {
         sendHeaders(false);
 
         if (_allows_write) {
-            if(_outputStream == null){
-                if(requiredGzip()){
-                    _outputStream = new GZIPOutputStream(_response.getOutputStream(), 4096, true);
-                }else{
-                    _outputStream = _response.getOutputStream();
-                }
-            }
-
-            return _outputStream;
+            return _response.getOutputStream();
         } else {
             if (_outputStreamTmp == null) {
                 _outputStreamTmp = new ByteArrayOutputStream();
@@ -465,7 +456,6 @@ public class SmHttpContext extends WebContextBase {
             status(404);
             sendHeaders(true);
         }
-        this.flush();
     }
 
     private boolean _headers_sent = false;

@@ -3,7 +3,6 @@ package org.noear.solon.boot.web;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerProps;
-import org.noear.solon.boot.prop.GzipProps;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.DownloadedFile;
 import org.noear.solon.lang.NonNull;
@@ -48,7 +47,7 @@ public abstract class WebContextBase extends Context {
      */
     @Override
     public void outputAsFile(DownloadedFile file) throws IOException {
-        RangeUtils.global().outputFile(this, file, file.isAttachment());
+        OutputUtils.global().outputFile(this, file, file.isAttachment());
     }
 
     /**
@@ -56,7 +55,7 @@ public abstract class WebContextBase extends Context {
      */
     @Override
     public void outputAsFile(File file) throws IOException {
-        RangeUtils.global().outputFile(this, file, true);
+        OutputUtils.global().outputFile(this, file, true);
     }
 
 
@@ -232,15 +231,6 @@ public abstract class WebContextBase extends Context {
     @Override
     public final void sessionClear() {
         sessionState().sessionClear();
-    }
-
-    protected boolean requiredGzip() {
-        //如果没有启用，则由用户自己控制
-        if (GzipProps.enable() && "gzip".equals(headerOfResponse("Content-Encoding"))) {
-            return true;
-        } else {
-            return false;
-        }
     }
 
 

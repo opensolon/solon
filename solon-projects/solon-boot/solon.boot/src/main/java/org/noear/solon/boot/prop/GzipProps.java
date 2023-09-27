@@ -92,12 +92,10 @@ public class GzipProps {
     /**
      * 附上压缩的头信息
      */
-    public static boolean attach(Context ctx, String mime, long size) {
+    public static boolean requiredGzip(Context ctx, String mime, long size) {
         if (enable && size >= minSize) {
             String ae = ctx.header("Accept-Encoding");
             if (ae != null && ae.contains("gzip") && mimeTypes.contains(mime.split(";")[0])) {
-                ctx.headerSet("Vary", "Accept-Encoding");
-                ctx.headerSet("Content-Encoding", "gzip");
                 return true;
             }
         }

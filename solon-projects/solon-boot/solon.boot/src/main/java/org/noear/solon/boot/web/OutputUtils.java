@@ -10,21 +10,22 @@ import org.noear.solon.core.util.LogUtil;
 
 import java.io.*;
 import java.net.URLEncoder;
+import java.util.zip.GZIPOutputStream;
 
 /**
- * 分片输出工具类
+ * 文件输出工具类
  *
  * @author noear
  * @since 2.4
  */
-public class RangeUtils {
-    private static RangeUtils global = new RangeUtils();
+public class OutputUtils {
+    private static OutputUtils global = new OutputUtils();
 
-    public static RangeUtils global() {
+    public static OutputUtils global() {
         return global;
     }
 
-    public static void globalSet(RangeUtils instance) {
+    public static void globalSet(OutputUtils instance) {
         if (instance != null) {
             global = instance;
         }
@@ -52,7 +53,7 @@ public class RangeUtils {
         }
 
         try (InputStream ins = file.getContent()) {
-            RangeUtils.global().outputStream(ctx, ins, file.getContentSize(), file.getContentType());
+            OutputUtils.global().outputStream(ctx, ins, file.getContentSize(), file.getContentType());
         }
     }
 
@@ -77,7 +78,7 @@ public class RangeUtils {
         }
 
         try (InputStream ins = new FileInputStream(file)) {
-            RangeUtils.global().outputStream(ctx, ins, file.length(), contentType);
+            OutputUtils.global().outputStream(ctx, ins, file.length(), contentType);
         }
     }
 
@@ -86,12 +87,30 @@ public class RangeUtils {
      * 输出流
      */
     public void outputStream(Context ctx, InputStream stream, long streamSize, String mime) throws IOException {
-        if(GzipProps.attach(ctx, mime, streamSize)){
-            ctx.status(200);
-            ctx.output(stream);
-            return;
+        if (GzipProps.requiredGzip(ctx, mime, streamSize)) {
+            outputStreamAsGzip(ctx, stream);
+        } else {
+            outputStreamAsRange(ctx, stream, streamSize);
         }
+    }
 
+    /**
+     * 输出流，做为 gzip 输出
+     */
+    public void outputStreamAsGzip(Context ctx, InputStream stream) throws IOException {
+        //支持 gzip
+        ctx.status(200);
+        ctx.headerSet("Vary", "Accept-Encoding");
+        ctx.headerSet("Content-Encoding", "gzip");
+        GZIPOutputStream gzipOut = new GZIPOutputStream(ctx.outputStream(), 4096, true);
+        IoUtil.transferTo(stream, gzipOut);
+        gzipOut.flush();
+    }
+
+    /**
+     * 输出流，做为 range 形式输出（如果支持）
+     */
+    public void outputStreamAsRange(Context ctx, InputStream stream, long streamSize) throws IOException {
         if (streamSize > 0) {
             //支持分版
             ctx.headerSet("Accept-Ranges", "bytes");

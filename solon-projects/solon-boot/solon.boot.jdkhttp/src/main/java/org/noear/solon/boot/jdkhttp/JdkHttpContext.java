@@ -308,22 +308,13 @@ public class JdkHttpContext extends WebContextBase {
 
 
     private ByteArrayOutputStream _outputStreamTmp;
-    private OutputStream _outputStream;
 
     @Override
     public OutputStream outputStream() throws IOException {
         sendHeaders(false);
 
         if (_allows_write) {
-            if(_outputStream == null){
-                if(requiredGzip()){
-                    _outputStream = new GZIPOutputStream(_exchange.getResponseBody(), 4096, true);
-                }else{
-                    _outputStream = _exchange.getResponseBody();
-                }
-            }
-
-            return _outputStream;
+            return _exchange.getResponseBody();
         } else {
             if (_outputStreamTmp == null) {
                 _outputStreamTmp = new ByteArrayOutputStream();
@@ -493,7 +484,6 @@ public class JdkHttpContext extends WebContextBase {
             status(404);
             sendHeaders(true);
         }
-        this.flush();
     }
 
     private boolean _allows_write = true;

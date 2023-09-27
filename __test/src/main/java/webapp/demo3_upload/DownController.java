@@ -2,7 +2,7 @@ package webapp.demo3_upload;
 
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Mapping;
-import org.noear.solon.boot.web.MimeType;
+import org.noear.solon.boot.web.OutputUtils;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.DownloadedFile;
 import org.noear.solon.core.util.ResourceUtil;
@@ -41,7 +41,7 @@ public class DownController {
     }
 
     @Mapping("f3_2")
-    public DownloadedFile down3_2() throws Exception{
+    public DownloadedFile down3_2() throws Exception {
         String filePath = ResourceUtil.getResource("WEB-INF/static/debug.htm").getFile();
 
         File file = new File(filePath);
@@ -55,5 +55,12 @@ public class DownController {
         File file = new File(filePath);
 
         ctx.outputAsFile(file);
+    }
+
+    @Mapping("f4_2")
+    public void down4_2(Context ctx) throws IOException {
+        try (InputStream stream = ResourceUtil.getResource("WEB-INF/static/debug.htm").openStream()) {
+            OutputUtils.global().outputStreamAsGzip(ctx, stream);
+        }
     }
 }
