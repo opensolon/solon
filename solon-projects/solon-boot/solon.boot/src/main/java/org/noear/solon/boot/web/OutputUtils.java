@@ -9,6 +9,8 @@ import org.noear.solon.core.util.IoUtil;
 import org.noear.solon.core.util.LogUtil;
 
 import java.io.*;
+import java.net.URL;
+import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.util.zip.GZIPOutputStream;
 
@@ -35,7 +37,7 @@ public class OutputUtils {
 
 
     /**
-     * 输出文件
+     * 输出文件（主要是给动态输出用）
      */
     public void outputFile(Context ctx, DownloadedFile file, boolean asAttachment) throws IOException {
         if (Utils.isNotEmpty(file.getName())) {
@@ -58,7 +60,7 @@ public class OutputUtils {
     }
 
     /**
-     * 输出文件
+     * 输出文件（主要是给动态输出用）
      */
     public void outputFile(Context ctx, File file, boolean asAttachment) throws IOException {
         //输出文件名
@@ -79,6 +81,28 @@ public class OutputUtils {
 
         try (InputStream ins = new FileInputStream(file)) {
             OutputUtils.global().outputStream(ctx, ins, file.length(), contentType);
+        }
+    }
+
+    /**
+     * 输出文件（主要是给静态文件用）
+     */
+    public void outputFile(Context ctx, URL file , String conentType,boolean useCaches) throws IOException {
+        if (useCaches) {
+            //使用 uri 缓存（jdk 内部有缓存）
+            try (InputStream stream = file.openStream()) {
+                ctx.contentType(conentType);
+                outputStream(ctx, stream, stream.available(), conentType);
+            }
+        } else {
+            //说明不需要 uri 缓存; 或者是调试模式
+            URLConnection connection = file.openConnection();
+            connection.setUseCaches(false);
+
+            try (InputStream stream = connection.getInputStream()) {
+                ctx.contentType(conentType);
+                outputStream(ctx, stream, stream.available(), conentType);
+            }
         }
     }
 
