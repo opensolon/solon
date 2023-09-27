@@ -1724,15 +1724,16 @@ public class HTTPServer {
             if (!headers.contains("Content-Length") && !headers.contains("Transfer-Encoding")) {
                 // RFC2616#3.6: transfer encodings are case-insensitive and must not be sent to an HTTP/1.0 client
                 boolean modern = req != null && req.getVersion().endsWith("1.1");
-                String accepted = req == null ? null : req.getHeaders().get("Accept-Encoding");
-                List<String> encodings = Arrays.asList(splitElements(accepted, true));
-                String compression = encodings.contains("gzip") ? "gzip" :
-                                     encodings.contains("deflate") ? "deflate" : null;
-                if (compression != null && (length < 0 || length > 300) && isCompressible(ct) && modern) {
+                //String accepted = req == null ? null : req.getHeaders().get("Accept-Encoding");
+                //List<String> encodings = Arrays.asList(splitElements(accepted, true));
+                //String compression = encodings.contains("gzip") ? "gzip" :
+                //                     encodings.contains("deflate") ? "deflate" : null;
+                //if (compression != null && (length < 0 || length > 300) && isCompressible(ct) && modern) {
                     //todo: by noear 20220316; add() -> replace()
-                    headers.replace("Transfer-Encoding", "chunked"); // compressed data is always unknown length
-                    headers.replace("Content-Encoding", compression);
-                } else if (length < 0 && modern) {
+                //    headers.replace("Transfer-Encoding", "chunked"); // compressed data is always unknown length
+                    //headers.replace("Content-Encoding", compression); //todo: by noear 20230928，不再自动 gzip
+                //} else
+                if (length < 0 && modern) {
                     headers.replace("Transfer-Encoding", "chunked"); // unknown length
                 } else if (length >= 0) {
                     headers.replace("Content-Length", Long.toString(length)); // known length
@@ -2315,15 +2316,15 @@ public class HTTPServer {
      * @param contentType the content type
      * @return true if the data is compressible, false if not
      */
-    public static boolean isCompressible(String contentType) {
-        int pos = contentType.indexOf(';'); // exclude params
-        String ct = pos < 0 ? contentType : contentType.substring(0, pos);
-        for (String s : compressibleContentTypes)
-            if (s.equals(ct) || s.charAt(0) == '*' && ct.endsWith(s.substring(1))
-                || s.charAt(s.length() - 1) == '*' && ct.startsWith(s.substring(0, s.length() - 1)))
-                    return true;
-        return false;
-    }
+//    public static boolean isCompressible(String contentType) {
+//        int pos = contentType.indexOf(';'); // exclude params
+//        String ct = pos < 0 ? contentType : contentType.substring(0, pos);
+//        for (String s : compressibleContentTypes)
+//            if (s.equals(ct) || s.charAt(0) == '*' && ct.endsWith(s.substring(1))
+//                || s.charAt(s.length() - 1) == '*' && ct.startsWith(s.substring(0, s.length() - 1)))
+//                    return true;
+//        return false;
+//    } //todo: by noear, 20230928 不需要自动 gzip
 
     /**
      * Returns the local host's auto-detected name.
