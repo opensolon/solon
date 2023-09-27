@@ -88,6 +88,9 @@ public class OutputUtils {
      * 输出文件（主要是给静态文件用）
      */
     public void outputFile(Context ctx, URL file , String conentType,boolean useCaches) throws IOException {
+        //
+        // todo: 有 gzip 需求时，可以再增加 demo.js 由 demo.js.gz 输出的尝试（如果有）
+        //
         if (useCaches) {
             //使用 uri 缓存（jdk 内部有缓存）
             try (InputStream stream = file.openStream()) {
