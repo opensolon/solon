@@ -219,6 +219,11 @@ public class VxHttpContext extends Context {
     }
 
     @Override
+    public String headerOfResponse(String name) {
+        return null;
+    }
+
+    @Override
     public void cookieSet(String name, String val, String domain, String path, int maxAge) {
 
     }

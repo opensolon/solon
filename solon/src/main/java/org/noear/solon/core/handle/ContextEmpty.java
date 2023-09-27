@@ -262,6 +262,11 @@ public class ContextEmpty extends Context {
     }
 
     @Override
+    public String headerOfResponse(String name) {
+        return headerMap().get(name);
+    }
+
+    @Override
     public void cookieSet(String key, String val, String domain, String path, int maxAge) {
         cookieMap().put(key,val);
     }

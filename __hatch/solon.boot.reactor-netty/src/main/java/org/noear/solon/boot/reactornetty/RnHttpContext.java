@@ -259,6 +259,11 @@ public class RnHttpContext extends WebContextBase {
     }
 
     @Override
+    public String headerOfResponse(String name) {
+        return null;
+    }
+
+    @Override
     public void cookieSet(String key, String val, String domain, String path, int maxAge) {
         StringBuilder sb = new StringBuilder();
         sb.append(key).append("=").append(val).append(";");

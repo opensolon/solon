@@ -898,6 +898,11 @@ public abstract class Context {
     public abstract void headerAdd(String name, String val);
 
     /**
+     * 获取响应 header
+     * */
+    public abstract String headerOfResponse(String name);
+
+    /**
      * 设置 cookie
      * */
     public void cookieSet(String name, String val) {

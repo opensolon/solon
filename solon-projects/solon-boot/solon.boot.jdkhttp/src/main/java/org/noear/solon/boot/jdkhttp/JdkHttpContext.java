@@ -316,7 +316,7 @@ public class JdkHttpContext extends WebContextBase {
 
         if (_allows_write) {
             if(_outputStream == null){
-                if("gzip".equals(_exchange.getResponseHeaders().get("Content-Encoding"))){
+                if(requiredGzip()){
                     _outputStream = new GZIPOutputStream(_exchange.getResponseBody(), 4096, true);
                 }else{
                     _outputStream = _exchange.getResponseBody();
@@ -374,6 +374,12 @@ public class JdkHttpContext extends WebContextBase {
     @Override
     public void headerAdd(String key, String val) {
         _exchange.getResponseHeaders().add(key, val);
+    }
+
+
+    @Override
+    public String headerOfResponse(String name) {
+        return _exchange.getResponseHeaders().getFirst(name);
     }
 
     @Override
@@ -477,6 +483,7 @@ public class JdkHttpContext extends WebContextBase {
             }
         }
     }
+
 
     @Override
     protected void innerCommit() throws IOException {

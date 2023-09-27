@@ -203,6 +203,15 @@ public abstract class WebContextBase extends Context {
         sessionState().sessionClear();
     }
 
+    protected boolean requiredGzip() {
+        if ("gzip".equals(headerOfResponse("Content-Encoding"))) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
     //一些特殊的boot才有效
     protected void innerCommit() throws IOException {
     }

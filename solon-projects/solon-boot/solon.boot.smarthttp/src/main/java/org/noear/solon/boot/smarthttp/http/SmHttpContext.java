@@ -291,7 +291,7 @@ public class SmHttpContext extends WebContextBase {
 
         if (_allows_write) {
             if(_outputStream == null){
-                if("gzip".equals(_response.getHeader("Content-Encoding"))){
+                if(requiredGzip()){
                     _outputStream = new GZIPOutputStream(_response.getOutputStream(), 4096, true);
                 }else{
                     _outputStream = _response.getOutputStream();
@@ -350,6 +350,11 @@ public class SmHttpContext extends WebContextBase {
     @Override
     public void headerAdd(String key, String val) {
         _response.addHeader(key, val);
+    }
+
+    @Override
+    public String headerOfResponse(String name) {
+        return _response.getHeader(name);
     }
 
     @Override
@@ -451,7 +456,6 @@ public class SmHttpContext extends WebContextBase {
             }
         }
     }
-
 
     @Override
     protected void innerCommit() throws IOException {

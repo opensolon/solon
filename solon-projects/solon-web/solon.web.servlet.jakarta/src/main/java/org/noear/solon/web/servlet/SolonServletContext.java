@@ -282,13 +282,14 @@ public class SolonServletContext extends WebContextBase {
     }
 
 
+
     private OutputStream _outputStream;
     @Override
     public OutputStream outputStream() throws IOException {
         sendHeaders();
 
         if(_outputStream == null){
-            if("gzip".equals(_response.getHeader("Content-Encoding"))){
+            if(requiredGzip()){
                 _outputStream = new GZIPOutputStream(_response.getOutputStream(), 4096, true);
             }else{
                 _outputStream = _response.getOutputStream();
@@ -329,6 +330,13 @@ public class SolonServletContext extends WebContextBase {
     public void headerAdd(String key, String val) {
         _response.addHeader(key, val);
     }
+
+
+    @Override
+    public String headerOfResponse(String name) {
+        return _response.getHeader(name);
+    }
+
 
     @Override
     public void cookieSet(String key, String val, String domain, String path, int maxAge) {

@@ -355,6 +355,11 @@ public class JlHttpContext extends WebContextBase {
     }
 
     @Override
+    public String headerOfResponse(String name) {
+        return _response.getHeaders().get(name);
+    }
+
+    @Override
     public void cookieSet(String key, String val, String domain, String path, int maxAge) {
         StringBuilder sb = new StringBuilder();
         sb.append(key).append("=").append(val).append(";");
@@ -456,8 +461,6 @@ public class JlHttpContext extends WebContextBase {
             }
         }
     }
-
-
 
     //jlhttp 需要先输出 header ，但是 header 后面可能会有变化；所以不直接使用  response.getOutputStream()
     @Override
