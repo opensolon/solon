@@ -1,6 +1,7 @@
 package org.noear.solon.web.staticfiles;
 
 import org.noear.solon.Utils;
+import org.noear.solon.boot.prop.GzipProps;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Handler;
 import org.noear.solon.core.handle.MethodType;
@@ -76,14 +77,13 @@ public class StaticResourceHandler implements Handler {
             }
 
 
-            //一般情况下，文本类型的文件gzip才有价值,图片,excel这类文件gzip压缩率很低
-            if (conentType.startsWith("text/")
-                    || "application/json".equals(conentType)
-                    || "application/javascript".equals(conentType)
-            ) {
-                //判断客户端是否支持gzip
-                String acceptEncoding=ctx.headerOrDefault("Accept-Encoding", "");
-                if (acceptEncoding.contains("br")) {
+            //如果支持配置的类型
+            if (GzipProps.hasMime(conentType)) {
+
+                String ae = ctx.headerOrDefault("Accept-Encoding", "");
+
+                if (ae.contains("br")) {
+                    //如果支持 br
                     URL zipedFile = StaticMappings.find(path + ".br");
                     if (zipedFile != null) {
                         try (InputStream stream = zipedFile.openStream()) {
@@ -95,7 +95,9 @@ public class StaticResourceHandler implements Handler {
                         return;
                     }
                 }
-                if (acceptEncoding.contains("gzip")) {
+
+                if (ae.contains("gzip")) {
+                    //如果支持 gzip
                     URL zipedFile = StaticMappings.find(path + ".gz");
                     if (zipedFile != null) {
                         try (InputStream stream = zipedFile.openStream()) {

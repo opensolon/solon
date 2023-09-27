@@ -90,16 +90,42 @@ public class GzipProps {
     }
 
     /**
-     * 附上压缩的头信息
+     * 配置需要 gzip
      */
-    public static boolean requiredGzip(Context ctx, String mime, long size) {
+    public static boolean requiredGzip(Context ctx, String contentType, long size) {
         if (enable && size >= minSize) {
             String ae = ctx.header("Accept-Encoding");
-            if (ae != null && ae.contains("gzip") && mimeTypes.contains(mime.split(";")[0])) {
+            if (ae != null && ae.contains("gzip") && mimeTypes.contains(resolveMime(contentType))) {
                 return true;
             }
         }
 
         return false;
+    }
+
+    /**
+     * 配置包函 mime
+     */
+    public static boolean hasMime(String contentType) {
+        if (enable) {
+            return mimeTypes.contains(resolveMime(contentType));
+        }
+
+        return false;
+    }
+
+    /**
+     * 分析 mime
+     *
+     * @param contentType 内容类型
+     * @return mime
+     */
+    public static String resolveMime(String contentType) {
+        int idx = contentType.indexOf(';');
+        if (idx > 0) {
+            return contentType.substring(0, idx);
+        } else {
+            return contentType;
+        }
     }
 }
