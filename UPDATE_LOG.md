@@ -21,8 +21,10 @@
 ### 2.5.7
 
 * 新增 hibernate-solon-plugin 插件
+* 增加 http server gzip 体整配置支持
 * 增加 Context::headerOfResponse 接口
 * 增加 solon.web.staticfiles 对 gzip 的配置支持
+* 增加 solon.boot.jdkhttp 对 gzip 的配置支持
 * 增加 solon.boot.smarthttp 对 gzip 的配置支持
 * 增加 solon.web.servlet 对 gzip 的配置支持
 * 增加 solon.web.servlet.jakarta 对 gzip 的配置支持

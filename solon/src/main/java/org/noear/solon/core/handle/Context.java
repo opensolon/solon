@@ -876,16 +876,12 @@ public abstract class Context {
     /**
      * 输出为文件
      */
-    public void outputAsFile(DownloadedFile file) throws IOException {
-        RangeUtil.global().outputFile(this, file, file.isAttachment());
-    }
+    public abstract void outputAsFile(DownloadedFile file) throws IOException;
 
     /**
      * 输出为文件
      */
-    public void outputAsFile(File file) throws IOException {
-        RangeUtil.global().outputFile(this, file, true);
-    }
+    public abstract void outputAsFile(File file) throws IOException;
 
     /**
      * 设置 header

@@ -5,9 +5,11 @@ import io.vertx.core.http.HttpServerResponse;
 import org.noear.solon.core.NvMap;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.ContextAsyncListener;
+import org.noear.solon.core.handle.DownloadedFile;
 import org.noear.solon.core.handle.UploadedFile;
 import org.noear.solon.lang.NonNull;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -206,6 +208,16 @@ public class VxHttpContext extends Context {
     @Override
     public OutputStream outputStream() throws IOException {
         return null;
+    }
+
+    @Override
+    public void outputAsFile(DownloadedFile file) throws IOException {
+
+    }
+
+    @Override
+    public void outputAsFile(File file) throws IOException {
+
     }
 
     @Override

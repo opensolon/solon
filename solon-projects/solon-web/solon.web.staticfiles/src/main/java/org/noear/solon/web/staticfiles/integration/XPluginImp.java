@@ -79,17 +79,10 @@ public class XPluginImp implements Plugin {
         //3.加载自定义 mime
         loadStaticMimes();
 
-        //4.加载压缩配置 compression
-        loadStaticCompression();
-
-        //5.切换代理（让静态文件优先）
+        //4.切换代理（让静态文件优先）
         HandlerPipeline pipeline = new HandlerPipeline();
         pipeline.next(new StaticResourceHandler()).next(Solon.app().handlerGet());
         Solon.app().handlerSet(pipeline);
-    }
-
-    private void loadStaticCompression(){
-        StaticCompression.load();
     }
 
     private void loadStaticMimes(){

@@ -1,6 +1,5 @@
 package webapp.demo3_upload;
 
-import org.noear.solon.Utils;
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Mapping;
 import org.noear.solon.boot.web.MimeType;
@@ -46,7 +45,7 @@ public class DownController {
         String filePath = ResourceUtil.getResource("WEB-INF/static/debug.htm").getFile();
 
         File file = new File(filePath);
-        return new DownloadedFile(MimeType.TEXT_HTML_VALUE,new FileInputStream(file), file.getName());
+        return new DownloadedFile(file).asAttachment(false);
     }
 
     @Mapping("f4")

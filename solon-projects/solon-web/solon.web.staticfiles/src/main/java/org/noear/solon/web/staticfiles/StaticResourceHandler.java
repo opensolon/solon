@@ -4,7 +4,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Handler;
 import org.noear.solon.core.handle.MethodType;
-import org.noear.solon.core.util.RangeUtil;
+import org.noear.solon.boot.web.RangeUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -85,7 +85,7 @@ public class StaticResourceHandler implements Handler {
 
                 try (InputStream stream = connection.getInputStream()) {
                     ctx.contentType(conentType);
-                    this.outputStream(ctx, stream, stream.available(), conentType);
+                    RangeUtils.global().outputStream(ctx, stream, stream.available(), conentType);
 
                     //ctx.contentLength(stream.available());
                     //ctx.status(200);
@@ -94,25 +94,13 @@ public class StaticResourceHandler implements Handler {
             } else {
                 try (InputStream stream = uri.openStream()) {
                     ctx.contentType(conentType);
-                    this.outputStream(ctx, stream, stream.available(), conentType);
+                    RangeUtils.global().outputStream(ctx, stream, stream.available(), conentType);
 
                     //ctx.contentLength(stream.available());
                     //ctx.status(200);
                     //ctx.output(stream);
                 }
             }
-        }
-    }
-
-    /**
-     * 输出流
-     * */
-    private void outputStream(Context ctx, InputStream stream, long streamSize, String contentType) throws IOException {
-        if(StaticCompression.handle(ctx, contentType, streamSize)){
-            ctx.status(200);
-            ctx.output(stream);
-        }else {
-            RangeUtil.global().outputStream(ctx, stream, streamSize);
         }
     }
 

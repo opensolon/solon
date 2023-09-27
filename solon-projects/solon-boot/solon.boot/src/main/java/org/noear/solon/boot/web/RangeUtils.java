@@ -1,9 +1,12 @@
-package org.noear.solon.core.util;
+package org.noear.solon.boot.web;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
+import org.noear.solon.boot.prop.GzipProps;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.DownloadedFile;
+import org.noear.solon.core.util.IoUtil;
+import org.noear.solon.core.util.LogUtil;
 
 import java.io.*;
 import java.net.URLEncoder;
@@ -14,14 +17,14 @@ import java.net.URLEncoder;
  * @author noear
  * @since 2.4
  */
-public class RangeUtil {
-    private static RangeUtil global = new RangeUtil();
+public class RangeUtils {
+    private static RangeUtils global = new RangeUtils();
 
-    public static RangeUtil global() {
+    public static RangeUtils global() {
         return global;
     }
 
-    public static void globalSet(RangeUtil instance) {
+    public static void globalSet(RangeUtils instance) {
         if (instance != null) {
             global = instance;
         }
@@ -49,7 +52,7 @@ public class RangeUtil {
         }
 
         try (InputStream ins = file.getContent()) {
-            RangeUtil.global().outputStream(ctx, ins, file.getContentSize());
+            RangeUtils.global().outputStream(ctx, ins, file.getContentSize(), file.getContentType());
         }
     }
 
@@ -74,7 +77,7 @@ public class RangeUtil {
         }
 
         try (InputStream ins = new FileInputStream(file)) {
-            RangeUtil.global().outputStream(ctx, ins, file.length());
+            RangeUtils.global().outputStream(ctx, ins, file.length(), contentType);
         }
     }
 
@@ -82,7 +85,13 @@ public class RangeUtil {
     /**
      * 输出流
      */
-    public void outputStream(Context ctx, InputStream stream, long streamSize) throws IOException {
+    public void outputStream(Context ctx, InputStream stream, long streamSize, String mime) throws IOException {
+        if(GzipProps.attach(ctx, mime, streamSize)){
+            ctx.status(200);
+            ctx.output(stream);
+            return;
+        }
+
         if (streamSize > 0) {
             //支持分版
             ctx.headerSet("Accept-Ranges", "bytes");

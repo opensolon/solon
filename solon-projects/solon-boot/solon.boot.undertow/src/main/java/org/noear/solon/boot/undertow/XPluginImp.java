@@ -24,7 +24,7 @@ public final class XPluginImp implements Plugin {
     private UndertowServer _server = null;
 
     public static String solon_boot_ver() {
-        return "undertow 2.2.24/" + Solon.version();
+        return "undertow 2.2/" + Solon.version();
     }
 
     @Override

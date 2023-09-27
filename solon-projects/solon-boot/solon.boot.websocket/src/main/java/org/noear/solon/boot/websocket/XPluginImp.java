@@ -22,7 +22,7 @@ public class XPluginImp implements Plugin {
     private WsServer _server = null;
 
     public static String solon_boot_ver() {
-        return "org.java_websocket 1.5.0/" + Solon.version();
+        return "org.java_websocket 1.5/" + Solon.version();
     }
 
     @Override
