@@ -129,12 +129,15 @@ public class Action extends HandlerAide implements Handler {
     }
 
     /**
-     * 接口名称
+     * 名称
      */
     public String name() {
         return mName;
     }
 
+    /**
+     * 全名称
+     */
     public String fullName() {
         return mFullName;
     }
