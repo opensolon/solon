@@ -11,7 +11,7 @@ Solon v2.5.7-SNAPSHOT
 </p>
 
 <p align="center">
-    <a target="_blank" href="https://central.sonatype.com/search?q=org.noear%2520solon-parent">
+    <a target="_blank" href="https://central.sonatype.com/search?q=org.noear%3Asolon-parent">
         <img src="https://img.shields.io/maven-central/v/org.noear/solon.svg?label=Maven%20Central" alt="Maven" />
     </a>
     <a target="_blank" href="https://www.apache.org/licenses/LICENSE-2.0.txt">
