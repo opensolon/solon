@@ -14,5 +14,9 @@
   {
     "name": "ch.qos.logback.solon.SolonTagsConverter",
     "allDeclaredConstructors": true
+  },
+  {
+    "name": "ch.qos.logback.solon.integration.LogIncubatorImpl",
+    "allDeclaredConstructors": true
   }
 ]

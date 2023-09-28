@@ -10,5 +10,9 @@
   {
     "name": "org.apache.logging.log4j.solon.SolonTagsConverter",
     "allDeclaredConstructors": true
+  },
+  {
+    "name": "org.apache.logging.log4j.solon.integration.LogIncubatorImpl",
+    "allDeclaredConstructors": true
   }
 ]

@@ -29,14 +29,20 @@ import java.net.URL;
  * @since 2.4
  */
 public class LogIncubatorImpl implements LogIncubator {
+    public LogIncubatorImpl(){
+        System.err.println("LogIncubatorImpl.......");
+    }
     @Override
     public void incubate() throws Throwable{
+        System.err.println("LogIncubatorImpl::incubate.......");
         if (JavaUtil.IS_WINDOWS && Solon.cfg().isFilesMode() == false) {
             //只在 window 用 jar 模式下才启用
             if (ClassUtil.hasClass(() -> AnsiConsole.class)) {
                 AnsiConsole.systemInstall();
             }
         }
+        System.err.println("LogIncubatorImpl::incubate2.......");
+
 
         //尝试从配置里获取
         URL url = getUrlOfConfig();
