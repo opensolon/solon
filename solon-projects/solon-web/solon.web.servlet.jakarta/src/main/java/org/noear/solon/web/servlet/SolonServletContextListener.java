@@ -58,7 +58,11 @@ public class SolonServletContextListener implements ServletContextListener {
      * */
     private void invokeMain(ServletContext sc, String[] strArgs) throws RuntimeException {
         Class<?> mainClass = this.getClass();
-        String mainClassStr = sc.getInitParameter("solonStartClass");
+        String mainClassStr = sc.getInitParameter("solonMainClass");//v2.5
+        if (Utils.isEmpty(mainClassStr)) {
+            mainClassStr = sc.getInitParameter("solonStartClass");//@deprecated v2.5
+        }
+
         if(Utils.isNotEmpty(mainClassStr)) {
             mainClass = ClassUtil.loadClass(mainClassStr);
 
