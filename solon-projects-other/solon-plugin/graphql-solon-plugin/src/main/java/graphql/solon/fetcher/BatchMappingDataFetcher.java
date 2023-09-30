@@ -22,7 +22,6 @@ import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import org.apache.commons.lang3.StringUtils;
 import org.dataloader.BatchLoaderEnvironment;
 import org.dataloader.DataLoader;
 import org.noear.solon.core.AppContext;
@@ -88,13 +87,13 @@ public class BatchMappingDataFetcher extends SchemaMappingDataFetcher {
         Object[] args = new Object[this.paramWraps.length];
         for (int i = 0; i < this.paramWraps.length; i++) {
             ParamWrap paramWrap = this.paramWraps[i];
-            args[i] = resolve(keys, paramWrap, environment, i);
+            args[i] = resolve(keys, paramWrap, environment);
         }
         return args;
     }
 
     private <K> Object resolve(Collection<K> keys, ParamWrap paramWrap,
-            BatchLoaderEnvironment environment, int i) {
+            BatchLoaderEnvironment environment) {
         Class<?> parameterType = paramWrap.getType();
         Parameter parameter = paramWrap.getParameter();
         String name = parameter.getName();
@@ -117,12 +116,6 @@ public class BatchMappingDataFetcher extends SchemaMappingDataFetcher {
         } else {
             throw new IllegalStateException("Could not resolve parameter: " + name);
         }
-    }
-
-    private static String formatArgumentError(String paramName, String paramIndex, String message) {
-        return " [" + paramIndex + "] in " +
-                paramName + (StringUtils.isNotBlank(message) ? ": "
-                + message : "");
     }
 
     public static <E> Collection<E> createCollection(Class<?> collectionType,

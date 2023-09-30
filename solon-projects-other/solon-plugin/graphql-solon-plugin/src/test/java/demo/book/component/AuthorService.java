@@ -12,9 +12,6 @@ import org.noear.solon.annotation.Component;
 @Component
 public class AuthorService {
 
-    public AuthorService() {
-    }
-
     private AuthorInputDTO getDefaultAuthor() {
         AuthorInputDTO author = new AuthorInputDTO();
         author.setId("1");

@@ -12,9 +12,6 @@ import org.noear.solon.annotation.Param;
 @Component
 public class BookService {
 
-    public BookService() {
-    }
-
     private BookInputDTO generateNewOne(String id) {
         BookInputDTO book = new BookInputDTO();
         book.setId(id);

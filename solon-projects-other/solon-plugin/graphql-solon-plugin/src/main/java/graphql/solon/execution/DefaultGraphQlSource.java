@@ -62,7 +62,7 @@ public class DefaultGraphQlSource implements GraphQlSource {
                     .registerAll(previousRegistry).build();
             this.dataLoaderRegistrars.forEach(
                     registrar -> registrar.registerDataLoaders(newRegistry, graphQLContext));
-            executionInput = executionInput
+            return executionInput
                     .transform(builder -> builder.dataLoaderRegistry(newRegistry));
         }
         return executionInput;

@@ -17,9 +17,6 @@ import org.noear.solon.annotation.Component;
 @Component
 public class BatchListCourseService {
 
-    public BatchListCourseService() {
-    }
-
     @QueryMapping
     public Collection<Course> courses() {
         return CourseSupport.courseMap.values();

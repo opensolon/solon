@@ -20,6 +20,7 @@ import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.StringJoiner;
 import org.noear.solon.lang.Nullable;
@@ -329,7 +330,7 @@ public abstract class ObjectUtils {
      * @see java.util.Arrays#equals
      */
     public static boolean nullSafeEquals(@Nullable Object o1, @Nullable Object o2) {
-        if (o1 == o2) {
+        if (Objects.equals(o1, o2)) {
             return true;
         }
         if (o1 == null || o2 == null) {
