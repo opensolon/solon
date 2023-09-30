@@ -1,4 +1,4 @@
-package demo.entity;
+package demo.book.entity;
 
 public class BookEntity {
 

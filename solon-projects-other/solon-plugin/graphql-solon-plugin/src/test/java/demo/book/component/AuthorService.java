@@ -1,9 +1,9 @@
-package demo.component;
+package demo.book.component;
 
-import demo.dto.AuthorInputDTO;
-import demo.dto.BookInputDTO;
-import org.noear.solon.annotation.Component;
+import demo.book.dto.AuthorInputDTO;
+import demo.book.dto.BookInputDTO;
 import graphql.solon.annotation.SchemaMapping;
+import org.noear.solon.annotation.Component;
 
 /**
  * @author fuzi1996

@@ -1,4 +1,4 @@
-package demo.config;
+package demo.book.config;
 
 import org.noear.solon.annotation.Configuration;
 
