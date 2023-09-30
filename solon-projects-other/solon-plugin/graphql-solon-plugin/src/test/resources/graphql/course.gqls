@@ -1,4 +1,4 @@
-type Query {
+extend type Query {
     courses: [Course]
 }
 type Course {
