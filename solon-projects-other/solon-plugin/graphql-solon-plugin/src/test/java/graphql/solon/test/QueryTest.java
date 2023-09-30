@@ -3,7 +3,7 @@ package graphql.solon.test;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
-import demo.App;
+import demo.book.component.BookService;
 import java.io.IOException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,17 +12,23 @@ import org.noear.solon.core.util.ResourceUtil;
 import org.noear.solon.test.HttpTester;
 import org.noear.solon.test.SolonJUnit5Extension;
 import org.noear.solon.test.SolonTest;
+import test.App;
 
 /**
+ * 测试普通的graphql查询
+ *
  * @author fuzi1996
  * @since 2.3
  */
 @ExtendWith(SolonJUnit5Extension.class)
-@SolonTest(App.class)
-public class ParamAnnoTest extends HttpTester {
+@SolonTest(value = App.class, properties = "tbk=demo.book.component")
+public class QueryTest extends HttpTester {
 
+    /**
+     * @see BookService#bookById(java.lang.String)
+     */
     @Test
-    public void testParamAnno() throws IOException {
+    public void testQuery() throws IOException {
         ONode param = new ONode();
         ONode variables = new ONode();
         param.set("query",

@@ -44,6 +44,10 @@ public class Course {
         this.studentIds = studentIds;
     }
 
+    public Long id() {
+        return this.id;
+    }
+
     public String name() {
         return this.name;
     }

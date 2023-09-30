@@ -1,0 +1,11 @@
+query {
+    courses {
+        id
+        name
+        instructor {
+            id
+            firstName
+            lastName
+        }
+    }
+}

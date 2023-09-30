@@ -41,7 +41,7 @@ public class GraphQlSourceTest {
         GraphQLSchema graphQlSchema = defaultBuilder.getGraphQlSchema();
         GraphQL graphql = GraphQL.newGraphQL(graphQlSchema).build();
         DefaultGraphQlSource defaultGraphQlSource = new DefaultGraphQlSource();
-        defaultGraphQlSource.init(graphql, graphQlSchema);
+        defaultGraphQlSource.init(graphql, graphQlSchema, null);
         return defaultGraphQlSource;
     }
 

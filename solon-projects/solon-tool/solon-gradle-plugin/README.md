@@ -29,18 +29,18 @@ compileJava {
 
 // 配置启动文件名
 solon {
-    mainClass = "com.example.demo.App"
+    mainClass = "com.example.test.App"
 }
 
 // 也可以针对 jar包和 war包指定不同的 mainClass
 
 solonJar{
-    mainClass = "com.example.demo.App"
+    mainClass = "com.example.test.App"
 }
 
 // 使用 solonWar 需要添加 war 插件
 solonWar{
-    mainClass = "com.example.demo.App"
+    mainClass = "com.example.test.App"
 }
 
 ```
@@ -65,16 +65,16 @@ apply(plugin = "org.noear.solon")
 
 // 统一配置
 extensions.configure(org.noear.solon.gradle.dsl.SolonExtension::class.java) {
-    mainClass.set("com.example.demo.App")
+    mainClass.set("com.example.test.App")
 }
 
 // 单独配置
 tasks.withType<org.noear.solon.gradle.tasks.bundling.SolonJar> {
-    mainClass.set("com.example.demo.App")
+    mainClass.set("com.example.test.App")
 }
 
 tasks.withType<org.noear.solon.gradle.tasks.bundling.SolonWar> {
-    mainClass.set("com.example.demo.App")
+    mainClass.set("com.example.test.App")
 }
 
 ```
