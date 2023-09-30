@@ -1,7 +1,7 @@
 <h1 align="center" style="text-align:center;">
 <img src="solon_icon.png" width="128" />
 <br />
-Solon v2.4.5
+Solon v2.5.6
 </h1>
 <p align="center">
 	<strong>Новая структура разработки приложений Java, меньше, быстрее и проще!</strong>
@@ -57,7 +57,7 @@ Solon v2.4.5
 Постройка с нуля. Существуют собственные стандартные нормы и открытая экология. Комбинировать различные эко-плагины для решения различных потребностей, удобно настраивать их и быстро разрабатывать:
 
 * **Сдержанность, лаконичность, эффективность, открытость, экология**
-* Поддержка JDK8, JDK11, JDK17, JDK20
+* Поддержка JDK8, JDK11, JDK17, JDK21
 * Http, WebSocket, Socket, три общих опыта разработки сигналов.
 * Поддерживайте "интубацию" и "ручное управление", свободно управляемое по требованию
 * Не Servlet, который может быть адаптирован к любой базовой структуре связи (минимальная эксплуатация RPC архитектуры на 0,3 м)
@@ -79,7 +79,7 @@ Solon v2.4.5
 <parent>
     <groupId>org.noear</groupId>
     <artifactId>solon-parent</artifactId>
-    <version>2.4.5</version>   
+    <version>2.5.6</version>   
 </parent>
 
 <dependencies>
@@ -92,22 +92,22 @@ Solon v2.4.5
 
 ```java
 @SolonMain
-public class App{
-    public static void main(String[] args){
-        Solon.start(App.class, args, app->{
+public class App {
+    public static void main(String[] args) {
+        Solon.start(App.class, args, app -> {
             //Handler модел：
-            app.get("/hello",(c)->c.output("Hello world!"));
+            app.get("/hello", c -> c.output("Hello world!"));
         });
     }
 }
 
 //Controller модел：(mvc or rest-api)
 @Controller
-public class HelloController{
+public class HelloController {
     //Ограничение типов методов Socket
     @Socket
     @Mapping("/mvc/hello")
-    public String hello(String name){
+    public String hello(String name) {
         return "Hello " + name;
     }
 }
@@ -115,9 +115,9 @@ public class HelloController{
 //Remoting модел：(rpc)
 @Mapping("/rpc/")
 @Remoting
-public class HelloServiceImpl implements HelloService{
+public class HelloServiceImpl implements HelloService {
     @Override
-    public String hello(){
+    public String hello() {
         return "Hello world!";
     }
 }
@@ -147,12 +147,14 @@ public class HelloServiceImpl implements HelloService{
 | org.noear:solon-cloud     | solon-rpc + consul；Быстро разработайте приложения микрослужб                         |
 
 
-## Официальная сеть и соответствующие примеры：
+## Официальная сеть и связанные с ней примеры, дела：
 
 * Адрес основной сети：[https://solon.noear.org](https://solon.noear.org)
 * Демо в комплекте с официальной сетью：[https://gitee.com/noear/solon-examples](https://gitee.com/noear/solon-examples)
 * Монометрия проекта：[__test](./__test/) 
 * Более функциональный пример проекта：[solon_api_demo](https://gitee.com/noear/solon_api_demo)  、 [solon_rpc_demo](https://gitee.com/noear/solon_rpc_demo) 、 [solon_socketd_demo](https://gitee.com/noear/solon_socketd_demo) 、 [solon_cloud_demo](https://gitee.com/noear/solon_cloud_demo) 、 [solon_auth_demo](https://gitee.com/noear/solon_auth_demo)
+* Дело пользователя：[Пользовательский проект с открытым исходным кодом](https://solon.noear.org/article/555)、[Коммерческий проект пользователя](https://solon.noear.org/article/cases)
+
 
 ## Особая благодарность JetBrains за поддержку проекта open source：
 

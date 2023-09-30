@@ -7,7 +7,6 @@ import net.hasor.web.startup.RuntimeListener;
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
-import org.noear.solon.core.AopContext;
 import org.noear.solon.core.bean.InitializingBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +29,7 @@ public class HasorWebConfiguration implements ServletContainerInitializer, Initi
     private int filterOrder = 0;
 
     @Inject
-    private AopContext context;
+    private org.noear.solon.core.AppContext context;
 
     /**
      * 此构建函数，是为了手动写代码提供支持；充许EnableHasorWeb注在别的临时类上实现配置

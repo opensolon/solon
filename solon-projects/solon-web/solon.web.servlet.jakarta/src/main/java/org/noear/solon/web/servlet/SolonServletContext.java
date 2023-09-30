@@ -14,6 +14,8 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.noear.solon.core.util.IoUtil;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -22,7 +24,8 @@ import java.nio.charset.Charset;
 import java.util.*;
 
 /**
- * SServlet，适配为 Context
+ * Servlet，适配为 Context
+ *
  * @author noear
  * @since 1.2
  * */
@@ -118,7 +121,7 @@ public class SolonServletContext extends WebContextBase {
 
     @Override
     public long contentLength() {
-        return _request.getContentLength();
+        return _request.getContentLengthLong();
     }
 
     @Override
@@ -176,7 +179,7 @@ public class SolonServletContext extends WebContextBase {
             _paramsMap = new LinkedHashMap<>();
 
             _request.getParameterMap().forEach((k, v) -> {
-                _paramsMap.put(k, Arrays.asList(v));
+                _paramsMap.put(k, Utils.asList(v));
             });
         }
 
@@ -295,7 +298,7 @@ public class SolonServletContext extends WebContextBase {
         try {
             OutputStream out = outputStream();
 
-            Utils.transferTo(stream, out);
+            IoUtil.transferTo(stream, out);
         } catch (Throwable ex) {
             throw new RuntimeException(ex);
         }

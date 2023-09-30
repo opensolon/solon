@@ -3,7 +3,7 @@ package org.noear.solon.boot.jetty;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.HandlerCollection;
-import org.noear.solon.boot.jetty.websocket.WebSocketHandlerImp;
+import org.noear.solon.boot.jetty.websocket.WebSocketHandlerImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -12,7 +12,7 @@ import java.io.IOException;
 
 public class HandlerHub extends HandlerCollection {
     Handler http;
-    Handler websocket = new WebSocketHandlerImp();
+    Handler websocket = new WebSocketHandlerImpl();
 
     final String SEC_WEBSOCKET_KEY = "Sec-WebSocket-Key";
 

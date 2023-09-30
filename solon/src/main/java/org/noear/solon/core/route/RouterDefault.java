@@ -1,5 +1,6 @@
 package org.noear.solon.core.route;
 
+import org.noear.solon.core.Constants;
 import org.noear.solon.core.handle.*;
 import org.noear.solon.core.message.Listener;
 import org.noear.solon.core.message.ListenerHolder;
@@ -84,6 +85,23 @@ public class RouterDefault implements Router{
         return routesH[endpoint.code].matchOne(pathNew, method);
     }
 
+    @Override
+    public Handler matchMain(Context ctx) {
+        //不能从缓存里取，不然 pathNew 会有问题
+        String pathNew = ctx.pathNew();
+        MethodType method = MethodTypeUtil.valueOf(ctx.method());
+
+        Result<Handler> result = routesH[Endpoint.main.code].matchOneAndStatus(pathNew, method);
+
+        if (result.getData() != null) {
+            ctx.attrSet(Constants.mainHandler, result.getData());
+        } else {
+            ctx.attrSet(Constants.mainStatus, result.getCode());
+        }
+
+        return result.getData();
+    }
+
     /**
      * 区配多个处理（根据上下文）
      *
@@ -92,11 +110,11 @@ public class RouterDefault implements Router{
      * @return 一批匹配的处理
      */
     @Override
-    public List<Handler> matchAll(Context ctx, Endpoint endpoint) {
+    public List<Handler> matchMore(Context ctx, Endpoint endpoint) {
         String pathNew = ctx.pathNew();
         MethodType method = MethodTypeUtil.valueOf(ctx.method());
 
-        return routesH[endpoint.code].matchAll(pathNew, method);
+        return routesH[endpoint.code].matchMore(pathNew, method);
     }
 
     /////////////////// for Listener ///////////////////
@@ -135,13 +153,13 @@ public class RouterDefault implements Router{
     }
 
     @Override
-    public List<Listener> matchAll(Session session) {
+    public List<Listener> matchMore(Session session) {
         String path = session.pathNew();
 
         if (path == null) {
             return null;
         } else {
-            return routesL.matchAll(path, session.method());
+            return routesL.matchMore(path, session.method());
         }
     }
 

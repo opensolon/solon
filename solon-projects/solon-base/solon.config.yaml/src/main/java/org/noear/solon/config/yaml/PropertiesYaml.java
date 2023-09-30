@@ -1,73 +1,142 @@
 package org.noear.solon.config.yaml;
 
-import org.yaml.snakeyaml.DumperOptions;
-import org.yaml.snakeyaml.LoaderOptions;
+import org.noear.solon.Utils;
 import org.yaml.snakeyaml.Yaml;
-import org.yaml.snakeyaml.constructor.Constructor;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.Reader;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
+import java.io.*;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
 
+/**
+ * Yaml 属性
+ *
+ * @author noear
+ * @since 1.5
+ * @since 2.5
+ * */
 public class PropertiesYaml extends Properties {
+    static final String SOLON_ENV = "solon.env";
+    static final String SOLON_ENV_ON = "solon.env.on";
+    static final String YML_PART_SPLIT = "---";
+
+    AtomicReference<String> envRef = new AtomicReference<>(System.getProperty(SOLON_ENV));
+
+
     private Yaml createYaml() {
         return new Yaml();
     }
 
-    public synchronized void loadYml(InputStream inputStream) {
-        Yaml yaml = createYaml();
-
-        Object tmp = yaml.load(inputStream);
-
-        String prefix = "";
-        load0(prefix, tmp);
+    public void loadYml(InputStream inputStream) throws Exception {
+        try (InputStreamReader is = new InputStreamReader(inputStream)) {
+            this.loadYml(is);
+        }
     }
 
-    public synchronized void loadYml(Reader reader) throws IOException {
-        Yaml yaml = createYaml();
+    public  void loadYml(Reader reader) throws IOException {
+        //支持多部分切割
+        List<String> partList = splitParts(reader);
 
-        Object tmp = yaml.load(reader);
+        //开始加载多部分属性
 
-        String prefix = "";
-        load0(prefix, tmp);
+        String partStr = null;
+        for (int i = 0; i < partList.size(); i++) {
+            partStr = partList.get(i);
+            if (Utils.isBlank(partStr)) {
+                continue;
+            }
+            final int fi = i;
+            this.loadYml(partStr, partProp->{
+                //2.同步环境变量
+                if (envRef.get() == null && fi == 0 && partProp.containsKey(SOLON_ENV)) {
+                    envRef.set(String.valueOf(partProp.get(SOLON_ENV)));
+                }
+            });
+        }
+    }
+    public  void loadYml(String str) {
+        this.loadYml(str, null);
     }
 
-    private void load0(String prefix, Object tmp) {
+    public synchronized void loadYml(String str, Consumer<Map<Object, Object>> c) {
+        //1.加载部分属性
+        Object tmp = createYaml().load(str);
+        Map<Object, Object> partProp = new TreeMap<>();
+        load0(partProp, "", tmp);
+        if (partProp.size() == 0) {
+            return;
+        }
+        if(c != null){
+            //2.其他操作，如同步环境变量
+            c.accept(partProp);
+        }
+        //3.根据条件过滤加载
+        if (partProp.containsKey(SOLON_ENV_ON)) {
+            //如果有环境条件，尝试匹配 //支持多环境匹配。例：solon.env.on: pro1 | pro2
+            String envOn = String.valueOf(partProp.get(SOLON_ENV_ON));
+            if (Arrays.stream(envOn.split("\\|")).anyMatch(e -> e.trim().equals(envRef.get()))) {
+                super.putAll(partProp);
+            }
+        } else {
+            super.putAll(partProp);
+        }
+    }
+
+    /**
+     * 切割多部分
+     * */
+    private List<String> splitParts(Reader reader) throws IOException {
+        List<String> partList = new ArrayList<>();
+        //支持多部分切割
+        try (BufferedReader in = new BufferedReader(reader)) {
+            StringBuffer buffer = new StringBuffer();
+            String line = null;
+            while ((line = in.readLine()) != null) {
+                if (line.startsWith(YML_PART_SPLIT)) { //用 starts 替代 pattern 提高性能
+                    partList.add(buffer.toString());
+                    buffer.setLength(0);
+                } else {
+                    buffer.append(line).append("\n");
+                }
+            }
+            partList.add(buffer.toString());
+        }
+
+        return partList;
+    }
+
+    private void load0(Map<Object, Object> temProp, String prefix, Object tmp) {
         if (tmp instanceof Map) {
             ((Map<String, Object>) tmp).forEach((k, v) -> {
                 String prefix2 = prefix + "." + k;
-                load0(prefix2, v);
+                load0(temProp, prefix2, v);
             });
             return;
         }
 
         if (tmp instanceof List) {
             //do_put(prefix, tmp);
-
             int index = 0;
             for (Object v : ((List) tmp)) {
                 String prefix2 = prefix + "[" + index + "]";
-                load0(prefix2, v);
+                load0(temProp, prefix2, v);
                 index++;
             }
             return;
         }
 
         if (tmp == null) {
-            put0(prefix, "");
+            put0(temProp, prefix, "");
         } else {
-            put0(prefix, String.valueOf(tmp));
+            put0(temProp, prefix, String.valueOf(tmp));
         }
     }
 
-    private void put0(String key, Object val) {
+    private void put0(Map<Object, Object> temProp, String key, Object val) {
         if (key.startsWith(".")) {
-            put(key.substring(1), val);
+            temProp.put(key.substring(1), val);
         } else {
-            put(key, val);
+            temProp.put(key, val);
         }
     }
 }

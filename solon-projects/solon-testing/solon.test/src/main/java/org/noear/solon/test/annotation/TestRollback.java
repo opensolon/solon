@@ -31,4 +31,9 @@ public @interface TestRollback {
      * 只读事务
      * */
     boolean readOnly() default false;
+
+    /**
+     * 消息
+     * */
+    String message() default "";
 }

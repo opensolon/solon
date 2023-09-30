@@ -1,11 +1,14 @@
 package org.noear.solon.extend.cron4j;
 
 import org.noear.solon.core.BeanWrap;
-import org.noear.solon.core.event.EventBus;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.ScheduledFuture;
 
 public class JobEntity {
+    static final Logger log = LoggerFactory.getLogger(JobEntity.class);
+
     public final String name;
     /**
      * cron or 100ms,2s,1m,1h,1d(ms:毫秒；s:秒；m:分；h:小时；d:天)
@@ -29,7 +32,7 @@ public class JobEntity {
             Runnable job = beanWrap.raw();
             job.run();
         } catch (Throwable e) {
-            EventBus.publishTry(e);
+            log.warn(e.getMessage(), e);
         }
     }
 

@@ -1,13 +1,13 @@
 package org.noear.solon.sessionstate.jedis;
 
 import org.noear.solon.Solon;
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.util.LogUtil;
 
 public class XPluginImp implements Plugin {
     @Override
-    public void start(AopContext context) {
+    public void start(AppContext context) {
         if (Solon.app().enableSessionState() == false) {
             return;
         }

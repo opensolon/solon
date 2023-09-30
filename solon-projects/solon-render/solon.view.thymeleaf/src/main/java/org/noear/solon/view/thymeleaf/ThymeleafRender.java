@@ -9,6 +9,8 @@ import org.noear.solon.core.handle.Render;
 import org.noear.solon.core.util.ResourceUtil;
 import org.noear.solon.core.util.SupplierEx;
 import org.noear.solon.view.ViewConfig;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.dialect.IDialect;
 import org.thymeleaf.templatemode.TemplateMode;
@@ -28,6 +30,8 @@ import java.util.Map;
  * @since 1.0
  * */
 public class ThymeleafRender implements Render {
+    static final Logger log = LoggerFactory.getLogger(ThymeleafRender.class);
+
     private static ThymeleafRender _global;
 
     public static ThymeleafRender global() {
@@ -51,7 +55,7 @@ public class ThymeleafRender implements Render {
     }
 
     public ThymeleafRender(){
-        this(JarClassLoader.global());
+        this(AppClassLoader.global());
     }
 
     public ThymeleafRender(ClassLoader classLoader) {
@@ -111,7 +115,7 @@ public class ThymeleafRender implements Render {
             //通过事件扩展
             EventBus.publish(provider);
         } catch (Exception e) {
-            EventBus.publishTry(e);
+            log.warn(e.getMessage(), e);
         }
     }
 
@@ -138,7 +142,7 @@ public class ThymeleafRender implements Render {
         try {
             provider.addDialect(obj);
         } catch (Exception e) {
-            EventBus.publishTry(e);
+            log.warn(e.getMessage(), e);
         }
     }
 

@@ -7,7 +7,6 @@ import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.extend.jedis.JedisProps;
 import org.noear.solon.cloud.model.Event;
 import org.noear.solon.cloud.service.CloudEventObserverManger;
-import org.noear.solon.core.event.EventBus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import redis.clients.jedis.JedisPubSub;
@@ -17,7 +16,7 @@ import redis.clients.jedis.JedisPubSub;
  * @since 1.10
  */
 public class JedisEventConsumer extends JedisPubSub {
-    static Logger log = LoggerFactory.getLogger(JedisEventConsumer.class);
+    static final Logger log = LoggerFactory.getLogger(JedisEventConsumer.class);
 
     CloudEventObserverManger observerManger;
     String eventChannelName;
@@ -34,15 +33,15 @@ public class JedisEventConsumer extends JedisPubSub {
             event.channel(eventChannelName);
 
             onReceive(event);
-        }catch (Throwable ex){
-            ex = Utils.throwableUnwrap(ex);
+        } catch (Throwable e) {
+            e = Utils.throwableUnwrap(e);
 
-            EventBus.publishTry(ex);
+            log.warn(e.getMessage(), e); //todo: ?
 
-            if (ex instanceof RuntimeException) {
-                throw (RuntimeException) ex;
+            if (e instanceof RuntimeException) {
+                throw (RuntimeException) e;
             } else {
-                throw new RuntimeException(ex);
+                throw new RuntimeException(e);
             }
         }
     }
@@ -51,7 +50,7 @@ public class JedisEventConsumer extends JedisPubSub {
         try {
             return onReceiveDo(event);
         } catch (Throwable e) {
-            EventBus.publishTry(e);
+            log.warn(e.getMessage(), e);
             return false;
         }
     }

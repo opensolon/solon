@@ -1,6 +1,7 @@
 package org.noear.solon.cloud.extend.local.impl;
 
 import org.noear.solon.Utils;
+import org.noear.solon.core.util.IoUtil;
 import org.noear.solon.core.util.ResourceUtil;
 
 import java.io.File;
@@ -26,7 +27,7 @@ public class CloudLocalUtils {
             //本地目录
             File resourceFile = new File(server, key);
             if (resourceFile.exists()) {
-                return Utils.transferToString(new FileInputStream(resourceFile));
+                return IoUtil.transferToString(new FileInputStream(resourceFile));
             } else {
                 return null;
             }

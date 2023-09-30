@@ -3,6 +3,7 @@ package org.noear.solon.core;
 import org.noear.solon.SolonProps;
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.PropertySource;
+import org.noear.solon.core.util.PropUtil;
 import org.noear.solon.core.util.ResourceUtil;
 
 import java.net.URL;
@@ -21,6 +22,7 @@ import java.util.function.Function;
  * */
 public class Props extends Properties {
     private ClassLoader classLoader;
+    private Map<String, String> tempPropMap = new TreeMap<>();
 
     public Props() {
         //不产生 defaults
@@ -79,90 +81,29 @@ public class Props extends Properties {
      * @param expr 兼容 ${key} or key or ${key:def} or key:def
      */
     protected String getByExpr(String expr, Properties props) {
-        String name = expr;
-
-        //如果有表达式，去掉符号
-        if (name.startsWith("${") && name.endsWith("}")) {
-            name = expr.substring(2, name.length() - 1);
-        }
-
-        //如果有默认值，则获取
-        String def = null;
-        int defIdx = name.indexOf(":");
-        if (defIdx > 0) {
-            if (name.length() > defIdx + 1) {
-                def = name.substring(defIdx + 1).trim();
-            } else {
-                def = "";
-            }
-            name = name.substring(0, defIdx).trim();
-        }
-
-
-        String val = null;
-
-        if (props != null) {
-            //从"目标属性"获取
-            val = props.getProperty(name);
-        }
-
-        if (val == null) {
-            //从"本属性"获取
-            val = get(name);
-
-            if (val == null && Character.isUpperCase(name.charAt(0))) {
-                //从"环镜变量"获取
-                val = System.getenv(name);
-            }
-        }
-
-        if (val == null) {
-            return def;
-        } else {
-            return val;
-        }
+        return PropUtil.getByExp(this, props, expr);
     }
 
     /**
-     * @param tml 模板： ${key} 或 aaa${key}bbb
+     * @param tml 模板： ${key} 或 aaa${key}bbb 或 ${key:def}/ccc
      */
     public String getByParse(String tml) {
         return getByParse(tml, null);
     }
 
     /**
-     * @param tml 模板： ${key} 或 aaa${key}bbb
+     * @param tml 模板： ${key} 或 aaa${key}bbb 或 ${key:def}/ccc
      */
     protected String getByParse(String tml, Properties props) {
-        if (Utils.isEmpty(tml)) {
-            return tml;
-        }
+        return PropUtil.getByTml(this, props, tml);
+    }
 
-        int start = 0, end = 0;
-        while (true) {
-            start = tml.indexOf("${", start);
-
-            if (start < 0) {
-                return tml;
-            } else {
-                end = tml.indexOf("}", start);
-
-                if (end < 0) {
-                    throw new IllegalStateException("Invalid template expression: " + tml);
-                }
-
-                String name = tml.substring(start + 2, end);
-                String value = getByExpr(name, props);//支持默认值表达式
-                if (value == null) {
-                    value = "";
-                }
-
-                tml = tml.substring(0, start) + value + tml.substring(end + 1);
-
-                //起始位增量
-                start = start + value.length();
-            }
-        }
+    /**
+     * @param tml 模板： ${key} 或 aaa${key}bbb 或 ${key:def}/ccc
+     * @param  useDef 是否使用默认值
+     */
+    protected String getByParse(String tml, Properties props, boolean useDef) {
+        return PropUtil.getByTml(this, props, tml, useDef);
     }
 
     /**
@@ -344,7 +285,7 @@ public class Props extends Properties {
         return new ArrayList<>(sortMap.values());
     }
 
-    private void doFind(String keyStarts, BiConsumer<String, String> setFun) {
+    protected void doFind(String keyStarts, BiConsumer<String, String> setFun) {
         String key2 = keyStarts;
         int idx2 = key2.length();
 
@@ -485,12 +426,20 @@ public class Props extends Properties {
         loadAddDo(props, false, true);
     }
 
+
+    protected void loadAddDo(Properties props, boolean toSystem, boolean addIfAbsent) {
+        //加载配置
+        this.loadAddDo( props,  toSystem,  addIfAbsent, false);
+        //校正配置
+        this.reviseDo(false);
+    }
+
     /**
      * 加载配置（用于扩展加载）
      *
      * @param props 配置地址
      */
-    protected void loadAddDo(Properties props, boolean toSystem, boolean addIfAbsent) {
+    protected void loadAddDo(Properties props, boolean toSystem, boolean addIfAbsent, boolean isEnd) {
         if (props != null) {
             for (Map.Entry<Object, Object> kv : props.entrySet()) {
                 Object k1 = kv.getKey();
@@ -515,7 +464,18 @@ public class Props extends Properties {
                         // db1.jdbcUrl=${db1.url}
                         // db1.jdbcUrl=jdbc:mysql:${db1.server}
                         // db1.jdbcUrl=jdbc:mysql:${db1.server}/${db1.db}
-                        v1 = getByParse((String) v1, props);
+                        // db1.jdbcUrl=jdbc:mysql:${db1.server}/${db1.db:order}
+                        String valExp = (String) v1;
+                        v1 = getByParse(valExp, props, isEnd);
+
+                        if (v1 == null) {
+                            if (!isEnd) {
+                                tempPropMap.put(key, valExp);
+                            }
+                        } else {
+                            //如果加载成功且存在于列表中，从变量中移除
+                            tempPropMap.remove(key);
+                        }
                     }
 
                     if (v1 != null) {
@@ -525,7 +485,6 @@ public class Props extends Properties {
 
                         put(k1, v1);
 
-
                         if (key.contains("-")) {
                             String camelKey = buildCamelKey(key);
                             put(camelKey, v1);
@@ -533,6 +492,32 @@ public class Props extends Properties {
                     }
                 }
             }
+        }
+    }
+
+    /**
+     * 完成
+     * */
+    public void complete(){
+        reviseDo(true);
+    }
+
+    /**
+     * 校正（多文件加载后）
+     * */
+    protected void reviseDo(boolean isEnd) {
+        //如果加载完成还存在变量，则特殊处理
+        if (tempPropMap.size() == 0) {
+            return;
+        }
+
+        Properties tempProps = new Properties();
+        tempProps.putAll(tempPropMap);
+        this.loadAddDo(tempProps, false, false, isEnd);
+
+        //如果还存在遗留项则抛出异常
+        if (isEnd && tempPropMap.size() > 0) {
+            throw new IllegalStateException("Config verification failed: " + tempPropMap);
         }
     }
 

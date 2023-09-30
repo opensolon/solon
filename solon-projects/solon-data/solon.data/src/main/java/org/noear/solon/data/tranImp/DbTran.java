@@ -4,8 +4,10 @@ import org.noear.solon.Utils;
 import org.noear.solon.data.annotation.Tran;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.RunnableEx;
+import org.noear.solon.data.tran.TranEvent;
 import org.noear.solon.data.tran.TranNode;
 import org.noear.solon.data.tran.TranManager;
+import org.noear.solon.data.tran.TranPhase;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -58,11 +60,14 @@ public abstract class DbTran extends DbTranNode implements TranNode {
             runnable.run();
 
             if (parent == null) {
+                EventBus.publish(new TranEvent(TranPhase.BEFORE_COMMIT, meta));
                 commit();
+                EventBus.publish(new TranEvent(TranPhase.AFTER_COMMIT, meta));
             }
         } catch (Throwable ex) {
             if (parent == null) {
                 rollback();
+                EventBus.publish(new TranEvent(TranPhase.AFTER_ROLLBACK, meta));
             }
 
             throw Utils.throwableUnwrap(ex);
@@ -71,6 +76,7 @@ public abstract class DbTran extends DbTranNode implements TranNode {
 
             if (parent == null) {
                 close();
+                EventBus.publish(new TranEvent(TranPhase.AFTER_COMPLETION, meta));
             }
         }
     }
@@ -104,7 +110,7 @@ public abstract class DbTran extends DbTranNode implements TranNode {
                     //
                 }
             } catch (Throwable e) {
-                EventBus.publishTry(e);
+                log.warn(e.getMessage() ,e);
             }
         }
     }

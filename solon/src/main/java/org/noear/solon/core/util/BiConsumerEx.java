@@ -1,7 +1,7 @@
 package org.noear.solon.core.util;
 
 /**
- * 双参数消费者
+ * 可异常双参数消费者
  *
  * @author noear
  * @since 1.0

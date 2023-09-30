@@ -9,7 +9,6 @@ import org.noear.solon.cloud.CloudEventHandler;
 import org.noear.solon.cloud.extend.rocketmq.RocketmqProps;
 import org.noear.solon.cloud.model.Event;
 import org.noear.solon.cloud.service.CloudEventObserverManger;
-import org.noear.solon.core.event.EventBus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,10 +20,10 @@ import java.util.List;
  * @since 1.11
  */
 public class RocketmqConsumerHandler implements MessageListenerConcurrently {
-    static Logger log = LoggerFactory.getLogger(RocketmqConsumerHandler.class);
+    static final Logger log = LoggerFactory.getLogger(RocketmqConsumerHandler.class);
 
-    final CloudEventObserverManger observerManger;
-    final RocketmqConfig  config;
+    private final CloudEventObserverManger observerManger;
+    private final RocketmqConfig  config;
 
     public RocketmqConsumerHandler(RocketmqConfig config, CloudEventObserverManger observerManger) {
         this.observerManger = observerManger;
@@ -61,7 +60,7 @@ public class RocketmqConsumerHandler implements MessageListenerConcurrently {
             }
         } catch (Throwable e) {
             isOk = false;
-            EventBus.publishTry(e);
+            log.warn(e.getMessage(), e);
         }
 
         if (isOk) {

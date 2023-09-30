@@ -9,14 +9,16 @@ package org.noear.solon.data.cache;
 public interface Serializer<T> {
     /**
      * 名称
-     * */
+     */
     String name();
+
     /**
      * 序列化
-     * */
-    T serialize(Object obj) throws Exception ;
+     */
+    T serialize(Object fromObj) throws Exception;
+
     /**
      * 反序列化
-     * */
-    Object deserialize(T dta) throws Exception ;
+     */
+    Object deserialize(T dta, Class<?> toClz) throws Exception;
 }

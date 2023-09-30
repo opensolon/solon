@@ -4,7 +4,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudManager;
 import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.extend.activemq.service.CloudEventServiceActivemqImp;
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 
 /**
@@ -13,7 +13,7 @@ import org.noear.solon.core.Plugin;
  */
 public class XPluginImp implements Plugin {
     @Override
-    public void start(AopContext context) throws Throwable {
+    public void start(AppContext context) throws Throwable {
         CloudProps cloudProps = new CloudProps(context,"activemq");
 
         if (Utils.isEmpty(cloudProps.getEventServer())) {

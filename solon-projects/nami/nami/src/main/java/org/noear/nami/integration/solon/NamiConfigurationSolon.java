@@ -3,7 +3,7 @@ package org.noear.nami.integration.solon;
 import org.noear.nami.*;
 import org.noear.nami.annotation.NamiClient;
 import org.noear.solon.Utils;
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Bridge;
 import org.noear.solon.core.LoadBalance;
 
@@ -16,9 +16,9 @@ import org.noear.solon.core.LoadBalance;
 public final class NamiConfigurationSolon implements NamiConfiguration {
 
     private NamiConfiguration custom;
-    private AopContext context;
+    private AppContext context;
 
-    public NamiConfigurationSolon(AopContext context) {
+    public NamiConfigurationSolon(AppContext context) {
         this.context = context;
 
         //

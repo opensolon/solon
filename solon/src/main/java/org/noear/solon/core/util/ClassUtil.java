@@ -1,6 +1,6 @@
 package org.noear.solon.core.util;
 
-import org.noear.solon.core.JarClassLoader;
+import org.noear.solon.core.AppClassLoader;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Properties;
@@ -17,7 +17,7 @@ public class ClassUtil {
      * 是否存在某个类
      *
      * <pre><code>
-     * if(ClassUtil.hasClass(DemoTestClass.class)){
+     * if(ClassUtil.hasClass(()->DemoTestClass.class)){
      *     ...
      * }
      * </code></pre>
@@ -28,9 +28,7 @@ public class ClassUtil {
         try {
             test.get();
             return true;
-        } catch (ClassNotFoundException e) {
-            return false;
-        } catch (NoClassDefFoundError e) {
+        } catch (ClassNotFoundException | NoClassDefFoundError e) {
             return false;
         } catch (Throwable e) {
             throw new IllegalStateException(e);
@@ -59,7 +57,7 @@ public class ClassUtil {
             } else {
                 return classLoader.loadClass(className);
             }
-        } catch (ClassNotFoundException e) {
+        } catch (ClassNotFoundException | NoClassDefFoundError e) {
             return null;
         }
     }
@@ -81,7 +79,7 @@ public class ClassUtil {
      * @param prop      属性
      */
     public static <T> T tryInstance(String className, Properties prop) {
-        return tryInstance(JarClassLoader.global(), className, prop);
+        return tryInstance(AppClassLoader.global(), className, prop);
     }
 
 

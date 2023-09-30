@@ -200,7 +200,7 @@ public class Action extends HandlerAide implements Handler {
         try {
             //预加载控制器，确保所有的'处理器'可以都可以获取控制器
             if (obj == null) {
-                obj = bWrap.get();
+                obj = bWrap.get(true);
             }
 
             //传递控制器实例

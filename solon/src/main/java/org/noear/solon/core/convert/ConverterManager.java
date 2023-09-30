@@ -17,6 +17,8 @@ public class ConverterManager {
 
     /**
      * 注册转换器
+     *
+     * @param converter 转换器
      */
     public <S, T> void register(Converter<S, T> converter) {
         Map<String, Type> genericInfo = GenericUtil.getGenericInfo(converter.getClass());

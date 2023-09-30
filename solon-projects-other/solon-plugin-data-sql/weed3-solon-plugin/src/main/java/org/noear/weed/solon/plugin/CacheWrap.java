@@ -29,10 +29,17 @@ public class CacheWrap implements ICacheServiceEx, CacheService {
         return real.get(key);
     }
 
+
+    @Override
+    public <T> T get(String key, Class<T> clz) {
+        return (T)real.get(key);
+    }
+
     @Override
     public void remove(String key) {
         real.remove(key);
     }
+
 
     @Override
     public int getDefalutSeconds() {

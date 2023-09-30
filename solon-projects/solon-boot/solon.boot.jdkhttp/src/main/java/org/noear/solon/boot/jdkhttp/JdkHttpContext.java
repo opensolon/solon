@@ -3,6 +3,7 @@ package org.noear.solon.boot.jdkhttp;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import org.noear.solon.Utils;
+import org.noear.solon.boot.web.HeaderUtils;
 import org.noear.solon.boot.web.WebContextBase;
 import org.noear.solon.boot.web.Constants;
 import org.noear.solon.boot.web.RedirectUtils;
@@ -11,6 +12,7 @@ import org.noear.solon.core.handle.ContextAsyncListener;
 import org.noear.solon.core.handle.UploadedFile;
 import org.noear.solon.core.NvMap;
 import org.noear.solon.core.util.IgnoreCaseMap;
+import org.noear.solon.core.util.IoUtil;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -146,12 +148,7 @@ public class JdkHttpContext extends WebContextBase {
 
     @Override
     public long contentLength() {
-        try {
-            return bodyAsStream().available();
-        } catch (Exception e) {
-            EventBus.publishTry(e);
-            return 0;
-        }
+        return HeaderUtils.getContentLengthLong(this);
     }
 
     @Override
@@ -344,7 +341,7 @@ public class JdkHttpContext extends WebContextBase {
                 return;
             }
 
-            Utils.transferTo(stream, out);
+            IoUtil.transferTo(stream, out);
         } catch (Throwable ex) {
             throw new RuntimeException(ex);
         }

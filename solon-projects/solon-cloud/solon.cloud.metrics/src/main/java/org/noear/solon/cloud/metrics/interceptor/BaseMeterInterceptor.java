@@ -9,6 +9,7 @@ import org.noear.solon.core.handle.Context;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Supplier;
 
 /**
  * 度量注解的拦截器基类
@@ -17,7 +18,8 @@ import java.util.Map;
  * @since 2.4
  */
 public abstract class BaseMeterInterceptor<T,M> implements Interceptor {
-    protected final Map<T, M> meterCached = new HashMap<>();
+    private final Map<String, M> meterCached = new HashMap<>();
+    private final Object meterCachedLock = new Object();
 
     /**
      * 获取注解
@@ -47,6 +49,21 @@ public abstract class BaseMeterInterceptor<T,M> implements Interceptor {
         }
     }
 
+    protected M getMeter(String meterName, Supplier<M> supplier){
+        M tmp = meterCached.get(meterName);
+        if(tmp == null) {
+            synchronized (meterCachedLock) {
+                tmp = meterCached.get(meterName);
+                if(tmp == null){
+                    tmp = supplier.get();
+                    meterCached.put(meterName, tmp);
+                }
+            }
+        }
+
+        return tmp;
+    }
+
     protected String getMeterName(Invocation inv, T anno) {
         String meterName = getAnnoName(anno);
 
@@ -71,7 +88,6 @@ public abstract class BaseMeterInterceptor<T,M> implements Interceptor {
             tags.and(Tag.of("class", inv.target().getClass().getTypeName()),
                     Tag.of("executable", inv.method().getMethod().getName()));
         }
-
 
         return tags;
     }

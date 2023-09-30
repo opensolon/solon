@@ -19,7 +19,6 @@ public interface CacheService {
     void store(String key, Object obj, int seconds);
 
 
-
     /**
      * 移除
      *
@@ -27,21 +26,31 @@ public interface CacheService {
      */
     void remove(String key);
 
+    /**
+     * 获取
+     *
+     * @param key 缓存键
+     * @deprecated 2.5
+     */
+    @Deprecated
+    default Object get(String key){
+        return get(key, Object.class);
+    }
 
     /**
      * 获取
      *
      * @param key 缓存键
      */
-    Object get(String key);
+    <T> T get(String key, Class<T> clz);
 
     /**
      * 获取或者存储
      *
      * @since 1.7
      */
-    default <T> T getOrStore(String key, int seconds, Supplier<T> supplier) {
-        Object obj = get(key);
+    default <T> T getOrStore(String key, Class<T> clz, int seconds, Supplier<T> supplier) {
+        T obj = get(key, clz);
         if (obj == null) {
             obj = supplier.get();
             store(key, obj, seconds);

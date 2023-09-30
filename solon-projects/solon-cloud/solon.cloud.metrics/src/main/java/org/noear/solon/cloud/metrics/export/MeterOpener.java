@@ -1,6 +1,6 @@
 package org.noear.solon.cloud.metrics.export;
 
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.handle.Handler;
 
 /**
@@ -18,5 +18,5 @@ public interface MeterOpener extends Handler {
     /**
      * 是否支持输出
      * */
-    boolean isSupported(AopContext aopContext);
+    boolean isSupported(AppContext appContext);
 }

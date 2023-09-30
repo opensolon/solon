@@ -5,7 +5,7 @@ import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.cloud.metrics.export.MeterOpener;
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.handle.Context;
 
 /**
@@ -26,7 +26,7 @@ public class MeterOpenerImpl implements MeterOpener {
     }
 
     @Override
-    public boolean isSupported(AopContext aopContext) {
+    public boolean isSupported(AppContext appContext) {
         //不支持开放输出
         return false;
     }

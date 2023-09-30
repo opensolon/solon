@@ -1,12 +1,12 @@
 package io.seata.solon.integration;
 
 import io.seata.rm.GlobalLockTemplate;
-import io.seata.solon.annotation.SeataLock;
-import io.seata.solon.annotation.SeataLockInterceptor;
-import io.seata.solon.annotation.SeataTran;
-import io.seata.solon.annotation.SeataTranInterceptor;
+import io.seata.solon.annotation.GlobalLock;
+import io.seata.solon.impl.GlobalLockInterceptor;
+import io.seata.solon.annotation.GlobalTransactional;
+import io.seata.solon.impl.GlobalTransactionalInterceptor;
 import io.seata.tm.api.TransactionalTemplate;
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 
 /**
@@ -15,14 +15,14 @@ import org.noear.solon.core.Plugin;
  */
 public class XPluginImpl implements Plugin {
     @Override
-    public void start(AopContext context) throws Throwable {
+    public void start(AppContext context) throws Throwable {
         GlobalLockTemplate globalLockTemplate = new GlobalLockTemplate();
         TransactionalTemplate transactionalTemplate = new TransactionalTemplate();
 
         context.wrapAndPut(GlobalLockTemplate.class, globalLockTemplate);
         context.wrapAndPut(TransactionalTemplate.class, transactionalTemplate);
 
-        context.beanInterceptorAdd(SeataLock.class, new SeataLockInterceptor(globalLockTemplate));
-        context.beanInterceptorAdd(SeataTran.class, new SeataTranInterceptor(transactionalTemplate));
+        context.beanInterceptorAdd(GlobalLock.class, new GlobalLockInterceptor(globalLockTemplate));
+        context.beanInterceptorAdd(GlobalTransactional.class, new GlobalTransactionalInterceptor(transactionalTemplate));
     }
 }

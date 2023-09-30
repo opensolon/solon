@@ -10,6 +10,8 @@ import java.lang.reflect.Type;
 import java.util.Properties;
 
 /**
+ * 属性转换器-静态扩展实现
+ *
  * @author noear
  * @since 1.6
  */

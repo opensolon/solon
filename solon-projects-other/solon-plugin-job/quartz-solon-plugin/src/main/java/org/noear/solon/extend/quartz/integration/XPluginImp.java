@@ -1,21 +1,16 @@
 package org.noear.solon.extend.quartz.integration;
 
 import org.noear.solon.Solon;
-import org.noear.solon.Utils;
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
-import org.noear.solon.core.event.AppLoadEndEvent;
 import org.noear.solon.extend.quartz.EnableQuartz;
 import org.noear.solon.extend.quartz.JobManager;
 import org.noear.solon.extend.quartz.Quartz;
-import org.quartz.Job;
 import org.quartz.Scheduler;
-
-import java.util.Properties;
 
 public class XPluginImp implements Plugin {
     @Override
-    public void start(AopContext context) {
+    public void start(AppContext context) {
         if (Solon.app().source().getAnnotation(EnableQuartz.class) == null) {
             return;
         }

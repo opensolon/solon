@@ -12,6 +12,17 @@ import java.util.*;
  * @since 1.5
  */
 public class GenericUtil {
+    /**
+     * 分析类型参数
+     *
+     * <pre><code>
+     * public class DemoEventListener extend EventListener<Demo>{ }
+     * Class<?>[] tArgs = GenericUtil.resolveTypeArguments(DemoEventListener.class, EventListener.class);
+     * assert tArgs[0] == Demo.class
+     * </code></pre>
+     * @param clazz     类型
+     * @param genericIfc 泛型接口
+     * */
     public static Class<?>[] resolveTypeArguments(Class<?> clazz, Class<?> genericIfc) {
         for (Type type0 : clazz.getGenericInterfaces()) {
             if (type0 instanceof ParameterizedType) {
@@ -40,7 +51,7 @@ public class GenericUtil {
     /**
      * 获取指定类的所有父类
      *
-     * @param clazz: 要获取的类
+     * @param clazz 要获取的类
      * @return 所有父类
      */
     private static List<Class<?>> getGenericInterfaces(Class<?> clazz) {
@@ -50,7 +61,7 @@ public class GenericUtil {
     /**
      * 获取指定类的所有父类
      *
-     * @param clazz: 要获取的类
+     * @param clazz 要获取的类
      * @return 所有父类
      */
     private static List<Class<?>> getGenericInterfaces(Class<?> clazz, List<Class<?>> classes) {
@@ -71,6 +82,9 @@ public class GenericUtil {
         return classes;
     }
 
+    /**
+     * 转换为参数化类型
+     * */
     public static ParameterizedType toParameterizedType(Type type) {
         ParameterizedType result = null;
         if (type instanceof ParameterizedType) {

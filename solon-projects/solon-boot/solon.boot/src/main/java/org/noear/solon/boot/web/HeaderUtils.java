@@ -1,12 +1,34 @@
 package org.noear.solon.boot.web;
 
 import org.noear.solon.Utils;
+import org.noear.solon.core.handle.Context;
 
 /**
+ * 头处理工具类
+ *
  * @author noear
  * @since 1.11
  */
 public class HeaderUtils {
+    /**
+     * 提取内容长度
+     * */
+    public static int getContentLength(Context ctx) {
+        long length = getContentLengthLong(ctx);
+        return length > 2147483647L ? -1 : (int)length;
+    }
+
+    /**
+     * 提取内容长度
+     * */
+    public static long getContentLengthLong(Context ctx) {
+        String contentLength = ctx.header("Content-Length");
+        return contentLength != null && !contentLength.isEmpty() ? Long.parseLong(contentLength) : -1L;
+    }
+
+    /**
+     * 提取头信息中的分段值（例：Content-Type:text/json;charset=utf-8）
+     * */
     public static String extractQuotedValueFromHeader(String header, String key) {
         if(Utils.isEmpty(header)){
             return null;

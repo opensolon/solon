@@ -1,6 +1,6 @@
 package cn.afterturn.easypoi.integration;
 
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.handle.RenderManager;
 
@@ -25,7 +25,7 @@ import org.noear.solon.core.handle.RenderManager;
 public class EasyPoiPlugin implements Plugin {
 
     @Override
-    public void start(AopContext context) {
+    public void start(AppContext context) {
         if(context.cfg().getBool("easy.poi.base.enable",true) == false){
             return;
         }

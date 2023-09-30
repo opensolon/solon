@@ -51,6 +51,7 @@ public class OpenApiExtensionResolver implements InitializingBean {
                     setting.getBasic().getPassword());
         }
 
-        docket.vendorExtensions(extension);
+
+        docket.vendorExtensions(extension.getName(), extension.getValue());
     }
 }

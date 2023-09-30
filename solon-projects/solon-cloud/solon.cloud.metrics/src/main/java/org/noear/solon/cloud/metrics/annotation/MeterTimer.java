@@ -37,6 +37,13 @@ public @interface MeterTimer {
 
     /**
      * 描述
-     * */
+     *
+     */
     String description() default "";
+
+    /**
+     * 百分位数
+     *
+     */
+    double[] percentiles() default {};
 }

@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
-import org.noear.solon.core.JarClassLoader;
+import org.noear.solon.core.AppClassLoader;
 
 /**
  * 资源工具
@@ -38,7 +38,7 @@ public class ResourceUtil {
      */
     public static Enumeration<URL> getResources(ClassLoader classLoader, String name) throws IOException {
         if (classLoader == null) {
-            return JarClassLoader.global().getResources(name);
+            return AppClassLoader.global().getResources(name);
         } else {
             return classLoader.getResources(name);
         }
@@ -80,7 +80,7 @@ public class ResourceUtil {
      */
     public static URL getResource(ClassLoader classLoader, String name) {
         if (classLoader == null) {
-            return JarClassLoader.global().getResource(name);
+            return AppClassLoader.global().getResource(name);
         } else {
             return classLoader.getResource(name); //Utils.class.getResource(name);
         }
@@ -92,7 +92,7 @@ public class ResourceUtil {
      * @param name 内部资源名称
      */
     public static String getResourceAsString(String name) throws IOException {
-        return getResourceAsString(JarClassLoader.global(), name, Solon.encoding());
+        return getResourceAsString(AppClassLoader.global(), name, Solon.encoding());
     }
 
     /**
@@ -102,7 +102,7 @@ public class ResourceUtil {
      * @param charset 编码
      */
     public static String getResourceAsString(String name, String charset) throws IOException {
-        return getResourceAsString(JarClassLoader.global(), name, charset);
+        return getResourceAsString(AppClassLoader.global(), name, charset);
     }
 
     /**
@@ -116,7 +116,7 @@ public class ResourceUtil {
         URL url = getResource(classLoader, name);
         if (url != null) {
             try (InputStream in = url.openStream()) {
-                return Utils.transferToString(in, charset);
+                return IoUtil.transferToString(in, charset);
             }
         } else {
             return null;
@@ -133,7 +133,7 @@ public class ResourceUtil {
         URL url = findResource(uri);
         if (url != null) {
             try (InputStream in = url.openStream()) {
-                return Utils.transferToString(in, Solon.encoding());
+                return IoUtil.transferToString(in, Solon.encoding());
             }
         } else {
             return null;
@@ -188,7 +188,7 @@ public class ResourceUtil {
      * @param clzExpr 类表达式（基于 import 表达式扩展）
      */
     public static Collection<Class<?>> scanClasses(String clzExpr) {
-        return scanClasses(JarClassLoader.global(), clzExpr);
+        return scanClasses(AppClassLoader.global(), clzExpr);
     }
 
     /**
@@ -250,7 +250,7 @@ public class ResourceUtil {
      * @param resExpr 资源表达式
      */
     public static Collection<String> scanResources(String resExpr) {
-        return scanResources(JarClassLoader.global(), resExpr);
+        return scanResources(AppClassLoader.global(), resExpr);
     }
 
     /**

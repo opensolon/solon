@@ -55,8 +55,9 @@ public class SmHttpServerComb implements HttpServerConfigure, ServerLifecycle {
         this.coreThreads = coreThreads;
     }
 
-    public void setWorkExecutor(Executor workExecutor) {
-        this.workExecutor = workExecutor;
+    @Override
+    public void setExecutor(Executor executor) {
+        this.workExecutor = executor;
     }
 
     public void enableWebSocket(boolean enableWebSocket) {

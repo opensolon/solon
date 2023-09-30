@@ -1,7 +1,6 @@
 package org.noear.solon.proxy.asm;
 
-
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.core.util.LogUtil;
 import org.objectweb.asm.*;
@@ -18,7 +17,7 @@ public class AsmProxy {
     private static final String METHOD_SETTER = "setInvocationHandler";
 
 
-    public static Class<?> getProxyClass(AopContext context, Class<?> targetClass) throws Exception {
+    public static Class<?> getProxyClass(AppContext context, Class<?> targetClass) throws Exception {
         String proxyClassName = targetClass.getName() + PROXY_CLASSNAME_SUFFIX;
 
         //目标代理类名
@@ -49,7 +48,7 @@ public class AsmProxy {
      * @param targetClass       被代理对象
      * @return 代理实例
      */
-    public static Object newProxyInstance(AopContext context,
+    public static Object newProxyInstance(AppContext context,
                                           InvocationHandler invocationHandler,
                                           Class<?> targetClass) {
         try {
@@ -73,7 +72,7 @@ public class AsmProxy {
      * @param targetParam       被代理对象的某一个构造器的参数，用于实例化构造器
      * @return 代理实例
      */
-    public static Object newProxyInstance(AopContext context,
+    public static Object newProxyInstance(AppContext context,
                                           InvocationHandler invocationHandler,
                                           Class<?> targetClass,
                                           Constructor<?> targetConstructor,

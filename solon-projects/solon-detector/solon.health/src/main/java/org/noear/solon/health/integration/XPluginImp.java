@@ -2,9 +2,8 @@ package org.noear.solon.health.integration;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
-import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.health.HealthChecker;
 import org.noear.solon.health.HealthHandler;
 
@@ -14,7 +13,7 @@ import org.noear.solon.health.HealthHandler;
  */
 public class XPluginImp implements Plugin {
     @Override
-    public void start(AopContext context) {
+    public void start(AppContext context) {
         //
         // HealthHandler 独立出来，便于其它检测路径的复用
         //

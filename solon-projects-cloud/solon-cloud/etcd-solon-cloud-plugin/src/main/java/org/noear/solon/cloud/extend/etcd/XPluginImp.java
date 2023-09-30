@@ -6,7 +6,7 @@ import org.noear.solon.cloud.CloudManager;
 import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.extend.etcd.service.CloudConfigServiceEtcdImpl;
 import org.noear.solon.cloud.extend.etcd.service.CloudDiscoveryServiceEtcdImpl;
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 
 /**
@@ -19,7 +19,7 @@ public class XPluginImp implements Plugin {
     CloudDiscoveryServiceEtcdImpl discoveryServiceEtcdImp;
 
     @Override
-    public void start(AopContext context) throws Throwable {
+    public void start(AppContext context) throws Throwable {
         CloudProps cloudProps = new CloudProps(context,"etcd");
 
         if (Utils.isEmpty(cloudProps.getServer())) {

@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.noear</groupId>
         <artifactId>solon-parent</artifactId>
-        <version>2.4.5</version>
+        <version>2.5.6</version>
         <relativePath>../../../solon-parent/pom.xml</relativePath>
     </parent>
 
@@ -29,6 +29,12 @@
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>redisx</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>snack3</artifactId>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>

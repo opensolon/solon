@@ -1,7 +1,7 @@
 package org.noear.solon;
 
-import org.noear.solon.core.AopContext;
-import org.noear.solon.core.JarClassLoader;
+import org.noear.solon.core.AppContext;
+import org.noear.solon.core.AppClassLoader;
 import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.core.NvMap;
 import org.noear.solon.core.event.AppPrestopEndEvent;
@@ -17,6 +17,7 @@ import java.lang.management.RuntimeMXBean;
  * 应用管理中心
  *
  * <pre><code>
+ * @SolonMain
  * public class DemoApp{
  *     public static void main(String[] args){
  *         Solon.start(DemoApp.class, args);
@@ -39,7 +40,7 @@ public class Solon {
      * 框架版本号
      */
     public static String version() {
-        return "2.4.5";
+        return "2.5.6";
     }
 
     /**
@@ -61,7 +62,7 @@ public class Solon {
     /**
      * 应用上下文
      */
-    public static AopContext context() {
+    public static AppContext context() {
         if (app == null) {
             return null;
         } else {
@@ -144,7 +145,7 @@ public class Solon {
         System.setProperty("PID", pid);
 
         //绑定类加载器（即替换当前线程[即主线程]的类加载器）
-        JarClassLoader.bindingThread();
+        AppClassLoader.bindingThread();
 
         try {
             //1.创建全局应用及配置
@@ -158,17 +159,17 @@ public class Solon {
         } catch (Throwable e) {
             //显示异常信息
             e = Utils.throwableUnwrap(e);
-            EventBus.publishTry(e);
+            LogUtil.global().error("Solon start failed: " + e.getMessage());
 
             //3.停止服务并退出（主要是停止插件）
             Solon.stop0(false, 0);
 
-            throw new IllegalStateException("SolonApp start failed", e);
+            throw new IllegalStateException("Solon start failed", e);
         }
 
 
         //4.初始化安全停止
-        if(NativeDetector.isNotAotRuntime()) {
+        if (NativeDetector.isNotAotRuntime()) {
             if (app.cfg().stopSafe()) {
                 //添加关闭勾子
                 Runtime.getRuntime().addShutdownHook(new Thread(() -> Solon.stop0(false, app.cfg().stopDelay())));
@@ -209,6 +210,13 @@ public class Solon {
         stop0(exit, delay);
     }
 
+    /**
+     * 停止应用（未完成之前，会一直卡住）
+     *
+     * @param exit       是否退出进程
+     * @param delay      延迟时间（单位：秒）
+     * @param exitStatus 退出状态码
+     */
     public static void stopBlock(boolean exit, int delay, int exitStatus) {
         stop0(exit, delay, exitStatus);
     }
@@ -216,6 +224,7 @@ public class Solon {
     private static void stop0(boolean exit, int delay) {
         stop0(exit, delay, 1);
     }
+
     private static void stop0(boolean exit, int delay, int exitStatus) {
         if (Solon.app() == null) {
             return;

@@ -10,7 +10,7 @@ import java.util.*;
 /**
  * 事件总线（内部类，外部不要使用）
  *
- * @see org.noear.solon.core.AopContext#start()
+ * @see org.noear.solon.core.AppContext#start()
  * @see org.noear.solon.SolonApp#onEvent(Class, EventListener)
  * */
 public final class EventBus {
@@ -124,8 +124,10 @@ public final class EventBus {
         }
     }
 
-    private static void publish1(Collection<HH> hhs, Object event, boolean thrown) throws Throwable {
-        for (HH h1 : hhs) {
+    private static void publish1(List<HH> hhs, Object event, boolean thrown) throws Throwable {
+        //用 i，可以避免遍历时添加监听的异常
+        for (int i = 0; i < hhs.size(); i++) {
+            HH h1 = hhs.get(i);
             if (h1.t.isInstance(event)) {
                 try {
                     h1.l.onEvent(event);

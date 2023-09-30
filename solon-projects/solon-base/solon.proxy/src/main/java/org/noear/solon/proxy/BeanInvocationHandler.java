@@ -4,7 +4,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.proxy.aot.AotProxy;
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.proxy.asm.AsmProxy;
 
 import java.lang.reflect.InvocationHandler;
@@ -20,20 +20,20 @@ public class BeanInvocationHandler implements InvocationHandler {
     private Object target;
     private Object proxy;
     private InvocationHandler handler;
-    private final AopContext context;
+    private final AppContext context;
 
     /**
      * @since 1.6
      */
-    public BeanInvocationHandler(AopContext context, Object bean, InvocationHandler handler) {
-        this(context, bean.getClass(), bean, handler);
+    public BeanInvocationHandler(AppContext context, Object target, InvocationHandler handler) {
+        this(context, target.getClass(), target, handler);
     }
 
     /**
      * @since 1.6
      * @since 2.1
      */
-    public BeanInvocationHandler(AopContext context, Class<?> clazz, Object target, InvocationHandler handler) {
+    public BeanInvocationHandler(AppContext context, Class<?> clazz, Object target, InvocationHandler handler) {
         this.context = context;
         this.target = target;
         this.handler = handler;

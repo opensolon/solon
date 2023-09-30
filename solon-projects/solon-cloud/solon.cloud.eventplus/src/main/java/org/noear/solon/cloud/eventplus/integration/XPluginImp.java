@@ -3,7 +3,7 @@ package org.noear.solon.cloud.eventplus.integration;
 import org.noear.solon.cloud.eventplus.CloudEventSubscribe;
 import org.noear.solon.cloud.eventplus.impl.CloudEventSubscribeBeanBuilder;
 import org.noear.solon.cloud.eventplus.impl.CloudEventSubscribeBeanExtractor;
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 
 /**
@@ -13,7 +13,7 @@ import org.noear.solon.core.Plugin;
 public class XPluginImp implements Plugin {
 
     @Override
-    public void start(AopContext context) {
+    public void start(AppContext context) {
         context.beanBuilderAdd(CloudEventSubscribe.class,
                 new CloudEventSubscribeBeanBuilder());
 

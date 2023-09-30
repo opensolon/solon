@@ -2,7 +2,7 @@ package org.noear.solon.cloud;
 
 import java.util.Properties;
 import org.noear.solon.Utils;
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Props;
 
 /**
@@ -126,10 +126,10 @@ public class CloudProps {
     private String JOB_ENABLE = "solon.cloud.@@.job.enable";
     private String JOB_SERVER = "solon.cloud.@@.job.server";
 
-    private final AopContext aopContext;
+    private final AppContext appContext;
 
-    public CloudProps(AopContext aopContext, String frame) {
-        this.aopContext = aopContext;
+    public CloudProps(AppContext appContext, String frame) {
+        this.appContext = appContext;
 
         ROOT = ROOT.replace("@@", frame);
 
@@ -219,16 +219,16 @@ public class CloudProps {
     //公共
     //
     public String getServer() {
-        return aopContext.cfg().get(SERVER);
+        return appContext.cfg().get(SERVER);
     }
 
     public String getToken() {
-        return aopContext.cfg().get(TOKEN);
+        return appContext.cfg().get(TOKEN);
     }
 
 
     public String getAlarm() {
-        return aopContext.cfg().get(ALARM);
+        return appContext.cfg().get(ALARM);
     }
 
 
@@ -236,10 +236,10 @@ public class CloudProps {
 
     public String getUsername() {
         if (username == null) {
-            username = aopContext.cfg().get(USERNAME);
+            username = appContext.cfg().get(USERNAME);
 
             if (username == null) {
-                username = aopContext.cfg().get(ACCESS_KEY); //支持 USERNAME 与 ACCESS_KEY 互用
+                username = appContext.cfg().get(ACCESS_KEY); //支持 USERNAME 与 ACCESS_KEY 互用
             }
 
             if (username == null) {
@@ -254,10 +254,10 @@ public class CloudProps {
 
     public String getPassword() {
         if (password == null) {
-            password = aopContext.cfg().get(PASSWORD);
+            password = appContext.cfg().get(PASSWORD);
 
             if (password == null) {
-                password = aopContext.cfg().get(SECRET_KEY); //支持 PASSWORD 与 SECRET_KEY 互用
+                password = appContext.cfg().get(SECRET_KEY); //支持 PASSWORD 与 SECRET_KEY 互用
             }
 
             if (password == null) {
@@ -280,11 +280,11 @@ public class CloudProps {
     //配置
     //
     public boolean getConfigEnable() {
-        return aopContext.cfg().getBool(CONFIG_ENABLE, true);
+        return appContext.cfg().getBool(CONFIG_ENABLE, true);
     }
 
     public String getConfigServer() {
-        String tmp = aopContext.cfg().get(CONFIG_SERVER);
+        String tmp = appContext.cfg().get(CONFIG_SERVER);
         if (Utils.isEmpty(tmp)) {
             return getServer();
         } else {
@@ -293,11 +293,11 @@ public class CloudProps {
     }
 
     public String getConfigLoad() {
-        return aopContext.cfg().get(CONFIG_LOAD);
+        return appContext.cfg().get(CONFIG_LOAD);
     }
 
     public String getConfigRefreshInterval(String def) {
-        return aopContext.cfg().get(CONFIG_REFRESH_INTERVAL, def);//def:10s
+        return appContext.cfg().get(CONFIG_REFRESH_INTERVAL, def);//def:10s
     }
 
 
@@ -305,11 +305,11 @@ public class CloudProps {
     //发现
     //
     public boolean getDiscoveryEnable() {
-        return aopContext.cfg().getBool(DISCOVERY_ENABLE, true);
+        return appContext.cfg().getBool(DISCOVERY_ENABLE, true);
     }
 
     public String getDiscoveryServer() {
-        String tmp = aopContext.cfg().get(DISCOVERY_SERVER);
+        String tmp = appContext.cfg().get(DISCOVERY_SERVER);
         if (Utils.isEmpty(tmp)) {
             return getServer();
         } else {
@@ -324,35 +324,35 @@ public class CloudProps {
     }
 
     public String getDiscoveryClusterName() {
-        return aopContext.cfg().get(DISCOVERY_CLUSTER_NAME);
+        return appContext.cfg().get(DISCOVERY_CLUSTER_NAME);
     }
 
 
     //    @Deprecated
 //    public boolean getDiscoveryUnstable() {
-//        return Solon.cfg().isDriftMode(); //aopContext.cfg().getBool(DISCOVERY_UNSTABLE, false);
+//        return Solon.cfg().isDriftMode(); //appContext.cfg().getBool(DISCOVERY_UNSTABLE, false);
 //    }
 
     public String getDiscoveryHealthCheckInterval(String def) {
-        return aopContext.cfg().get(DISCOVERY_HEALTH_CHECK_INTERVAL, def); //def:5s
+        return appContext.cfg().get(DISCOVERY_HEALTH_CHECK_INTERVAL, def); //def:5s
     }
 
     public String getDiscoveryRefreshInterval(String def) {
-        return aopContext.cfg().get(DISCOVERY_REFRESH_INTERVAL, def);//def:5s
+        return appContext.cfg().get(DISCOVERY_REFRESH_INTERVAL, def);//def:5s
     }
 
     //
     //事件总线服务相关
     //
     public boolean getEventEnable() {
-        return aopContext.cfg().getBool(EVENT_ENABLE, true);
+        return appContext.cfg().getBool(EVENT_ENABLE, true);
     }
 
     private String eventServer;
 
     public String getEventServer() {
         if (eventServer == null) {
-            eventServer = aopContext.cfg().get(EVENT_SERVER);
+            eventServer = appContext.cfg().get(EVENT_SERVER);
 
             if (eventServer == null) {
                 eventServer = getServer();
@@ -363,7 +363,7 @@ public class CloudProps {
     }
 
     public int getEventPrefetchCount() {
-        return aopContext.cfg().getInt(EVENT_PREFETCH_COUNT, 0);
+        return appContext.cfg().getInt(EVENT_PREFETCH_COUNT, 0);
     }
 
     public long getEventPublishTimeout() {
@@ -371,41 +371,41 @@ public class CloudProps {
     }
 
     public long getEventPublishTimeout(long def) {
-        return aopContext.cfg().getLong(EVENT_PUBLISH_TIMEOUT, def);
+        return appContext.cfg().getLong(EVENT_PUBLISH_TIMEOUT, def);
     }
 
     public String getEventChannel() {
-        return aopContext.cfg().get(EVENT_CHANNEL, "");
+        return appContext.cfg().get(EVENT_CHANNEL, "");
     }
 
     public String getEventBroker() {
-        return aopContext.cfg().get(EVENT_BROKER, "");
+        return appContext.cfg().get(EVENT_BROKER, "");
     }
 
     public String getEventGroup() {
-        return aopContext.cfg().get(EVENT_GROUP, "");
+        return appContext.cfg().get(EVENT_GROUP, "");
     }
 
     public Properties getEventConsumerProps() {
-        return aopContext.cfg().getProp(EVENT_CONSUMER);
+        return appContext.cfg().getProp(EVENT_CONSUMER);
     }
 
     public Properties getEventProducerProps() {
-        return aopContext.cfg().getProp(EVENT_PRODUCER);
+        return appContext.cfg().getProp(EVENT_PRODUCER);
     }
 
     public Properties getEventClientProps() {
-        return aopContext.cfg().getProp(EVENT_CLIENT);
+        return appContext.cfg().getProp(EVENT_CLIENT);
     }
 
     private String eventUsername;
 
     public String getEventUsername() {
         if (eventUsername == null) {
-            eventUsername = aopContext.cfg().get(EVENT_USERNAME);
+            eventUsername = appContext.cfg().get(EVENT_USERNAME);
 
             if (eventUsername == null) {
-                eventUsername = aopContext.cfg().get(EVENT_ACCESS_KEY);
+                eventUsername = appContext.cfg().get(EVENT_ACCESS_KEY);
             }
 
             if (eventUsername == null) {
@@ -420,10 +420,10 @@ public class CloudProps {
 
     public String getEventPassword() {
         if (eventPassword == null) {
-            eventPassword = aopContext.cfg().get(EVENT_PASSWORD);
+            eventPassword = appContext.cfg().get(EVENT_PASSWORD);
 
             if (eventPassword == null) {
-                eventPassword = aopContext.cfg().get(EVENT_SECRET_KEY);
+                eventPassword = appContext.cfg().get(EVENT_SECRET_KEY);
             }
 
             if (eventPassword == null) {
@@ -446,11 +446,11 @@ public class CloudProps {
     //锁服务相关
     //
     public boolean getLockEnable() {
-        return aopContext.cfg().getBool(LOCK_ENABLE, true);
+        return appContext.cfg().getBool(LOCK_ENABLE, true);
     }
 
     public String getLockServer() {
-        String tmp = aopContext.cfg().get(LOCK_SERVER);
+        String tmp = appContext.cfg().get(LOCK_SERVER);
         if (Utils.isEmpty(tmp)) {
             return getServer();
         } else {
@@ -463,11 +463,11 @@ public class CloudProps {
     //日志总线服务相关
     //
     public boolean getLogEnable() {
-        return aopContext.cfg().getBool(LOG_ENABLE, true);
+        return appContext.cfg().getBool(LOG_ENABLE, true);
     }
 
     public String getLogServer() {
-        String tmp = aopContext.cfg().get(LOG_SERVER);
+        String tmp = appContext.cfg().get(LOG_SERVER);
         if (Utils.isEmpty(tmp)) {
             return getServer();
         } else {
@@ -476,7 +476,7 @@ public class CloudProps {
     }
 
     public String getLogDefault() {
-        return aopContext.cfg().get(LOG_DEFAULT);
+        return appContext.cfg().get(LOG_DEFAULT);
     }
 
 
@@ -484,19 +484,19 @@ public class CloudProps {
     //链路跟踪服务相关
     //
     public boolean getTraceEnable() {
-        return aopContext.cfg().getBool(TRACE_ENABLE, true);
+        return appContext.cfg().getBool(TRACE_ENABLE, true);
     }
 
 
     public String getTraceExclude() {
-        return aopContext.cfg().get(TRACE_EXCLUDE);
+        return appContext.cfg().get(TRACE_EXCLUDE);
     }
 
     //
     //度量服务相关
     //
     public boolean getMetricEnable() {
-        return aopContext.cfg().getBool(METRIC_ENABLE, true);
+        return appContext.cfg().getBool(METRIC_ENABLE, true);
     }
 
 
@@ -504,29 +504,29 @@ public class CloudProps {
     //文件服务相关
     //
     public boolean getFileEnable() {
-        return aopContext.cfg().getBool(FILE_ENABLE, true);
+        return appContext.cfg().getBool(FILE_ENABLE, true);
     }
 
     public String getFileEndpoint() {
-        return aopContext.cfg().get(FILE_ENDPOINT);
+        return appContext.cfg().get(FILE_ENDPOINT);
     }
 
     public String getFileRegionId() {
-        return aopContext.cfg().get(FILE_REGION_ID);
+        return appContext.cfg().get(FILE_REGION_ID);
     }
 
     public String getFileBucket() {
-        return aopContext.cfg().get(FILE_BUCKET);
+        return appContext.cfg().get(FILE_BUCKET);
     }
 
     private String fileUsername;
 
     public String getFileUsername() {
         if (fileUsername == null) {
-            fileUsername = aopContext.cfg().get(FILE_USERNAME);
+            fileUsername = appContext.cfg().get(FILE_USERNAME);
 
             if (fileUsername == null) {
-                fileUsername = aopContext.cfg().get(FILE_ACCESS_KEY);
+                fileUsername = appContext.cfg().get(FILE_ACCESS_KEY);
             }
 
             if (fileUsername == null) {
@@ -542,10 +542,10 @@ public class CloudProps {
 
     public String getFilePassword() {
         if (filePassword == null) {
-            filePassword = aopContext.cfg().get(FILE_PASSWORD);
+            filePassword = appContext.cfg().get(FILE_PASSWORD);
 
             if (filePassword == null) {
-                filePassword = aopContext.cfg().get(FILE_SECRET_KEY);
+                filePassword = appContext.cfg().get(FILE_SECRET_KEY);
             }
 
             if (filePassword == null) {
@@ -570,40 +570,40 @@ public class CloudProps {
     //国际化服务相关
     //
     public boolean getI18nEnable() {
-        return aopContext.cfg().getBool(I18N_ENABLE, true);
+        return appContext.cfg().getBool(I18N_ENABLE, true);
     }
 
     public String getI18nDefault() {
-        return aopContext.cfg().get(I18N_DEFAULT);
+        return appContext.cfg().get(I18N_DEFAULT);
     }
 
     //
     //ID服务相关
     //
     public boolean getIdEnable() {
-        return aopContext.cfg().getBool(ID_ENABLE, true);
+        return appContext.cfg().getBool(ID_ENABLE, true);
     }
 
     public long getIdStart() {
-        return aopContext.cfg().getLong(ID_START, 0L);
+        return appContext.cfg().getLong(ID_START, 0L);
     }
 
     //
     //LIST服务相关
     //
     public boolean getListEnable() {
-        return aopContext.cfg().getBool(LIST_ENABLE, true);
+        return appContext.cfg().getBool(LIST_ENABLE, true);
     }
 
     //
     //JOB服务相关
     //
     public boolean getJobEnable() {
-        return aopContext.cfg().getBool(JOB_ENABLE, true);
+        return appContext.cfg().getBool(JOB_ENABLE, true);
     }
 
     public String getJobServer() {
-        String tmp = aopContext.cfg().get(JOB_SERVER);
+        String tmp = appContext.cfg().get(JOB_SERVER);
         if (Utils.isEmpty(tmp)) {
             return getServer();
         } else {
@@ -615,11 +615,11 @@ public class CloudProps {
      * 获取值
      */
     public String getValue(String name) {
-        return aopContext.cfg().get(ROOT + name); //"solon.cloud.@@.";
+        return appContext.cfg().get(ROOT + name); //"solon.cloud.@@.";
     }
 
     public String getValue(String name, String def) {
-        return aopContext.cfg().get(ROOT + name, def); //"solon.cloud.@@.";
+        return appContext.cfg().get(ROOT + name, def); //"solon.cloud.@@.";
     }
 
 
@@ -627,20 +627,20 @@ public class CloudProps {
      * 设置值
      */
     public void setValue(String name, String value) {
-        aopContext.cfg().setProperty(ROOT + name, value); //"solon.cloud.@@.";
+        appContext.cfg().setProperty(ROOT + name, value); //"solon.cloud.@@.";
     }
 
     /**
      * 获取所有属性
      */
     public Props getProp() {
-        return aopContext.cfg().getProp(ROOT.substring(0, ROOT.length() - 1));
+        return appContext.cfg().getProp(ROOT.substring(0, ROOT.length() - 1));
     }
 
     /**
      * 获取所有某一块属性
      */
     public Props getProp(String keyStarts) {
-        return aopContext.cfg().getProp(ROOT + keyStarts);
+        return appContext.cfg().getProp(ROOT + keyStarts);
     }
 }

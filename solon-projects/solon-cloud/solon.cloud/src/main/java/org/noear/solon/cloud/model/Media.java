@@ -3,6 +3,7 @@ package org.noear.solon.cloud.model;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.exception.CloudFileException;
+import org.noear.solon.core.util.IoUtil;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -83,10 +84,10 @@ public class Media {
         try {
             if (autoClose) {
                 try (InputStream stream = body) {
-                    return Utils.transferToBytes(stream);
+                    return IoUtil.transferToBytes(stream);
                 }
             } else {
-                return Utils.transferToBytes(body);
+                return IoUtil.transferToBytes(body);
             }
         } catch (IOException e) {
             throw new CloudFileException(e);
@@ -104,10 +105,10 @@ public class Media {
         try {
             if (autoClose) {
                 try (InputStream stream = body) {
-                    return Utils.transferToString(stream, Solon.encoding());
+                    return IoUtil.transferToString(stream, Solon.encoding());
                 }
             } else {
-                return Utils.transferToString(body, Solon.encoding());
+                return IoUtil.transferToString(body, Solon.encoding());
             }
         } catch (IOException e) {
             throw new CloudFileException(e);

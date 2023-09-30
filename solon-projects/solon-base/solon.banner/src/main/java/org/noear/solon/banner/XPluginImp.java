@@ -2,7 +2,7 @@ package org.noear.solon.banner;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.bean.InitializingBean;
 import org.noear.solon.core.util.LogUtil;
@@ -51,7 +51,7 @@ public class XPluginImp implements Plugin, InitializingBean {
 	}
 
 	@Override
-	public void start(AopContext context) throws Throwable {
+	public void start(AppContext context) throws Throwable {
 
 	}
 }

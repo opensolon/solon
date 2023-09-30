@@ -11,7 +11,7 @@ import org.noear.solon.annotation.Inject;
 import org.noear.solon.annotation.SolonMain;
 import org.noear.solon.boot.http.HttpServerConfigure;
 import org.noear.solon.cloud.CloudClient;
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.ExtendLoader;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.scheduling.annotation.EnableAsync;
@@ -45,7 +45,7 @@ public class App {
     static Logger logger = LoggerFactory.getLogger(App.class);
 
     @Inject
-    AopContext aopContext;
+    AppContext appContext;
 
     public static void main(String[] args) throws Exception {
         System.out.println("Default Charset=" + Charset.defaultCharset());
@@ -83,7 +83,9 @@ public class App {
         }).start(App.class, args, x -> {
 
             x.enableSocketD(true);
+            x.enableSocketMvc(true);
             x.enableWebSocket(true);
+            x.enableWebSocketMvc(true);
 
             //x.converterManager().register(new CatTypeConverter());
 
@@ -94,7 +96,7 @@ public class App {
             });
 
             x.onEvent(HttpServerConfigure.class, e->{
-                e.enableDebug(true);
+                //e.enableDebug(true);
             });
 
             StaticMappings.add("/file-a/", new ClassPathStaticRepository("static_test"));

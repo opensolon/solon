@@ -57,6 +57,19 @@ public class Utils {
         }
     }
 
+    /**
+     * 转为一个可变 List（Arrays.asList 不可变）
+     * */
+    public static <T> List<T> asList(T[] ary) {
+        if (ary == null) {
+            return null;
+        } else {
+            List<T> list = new ArrayList<>(ary.length);
+            Collections.addAll(list, ary);
+            return list;
+        }
+    }
+
 
     /**
      * 获取MIME
@@ -125,6 +138,7 @@ public class Utils {
      * @param pathExpr 路径表达式
      * @deprecated 2.0
      */
+    @SuppressWarnings("removal")
     @Deprecated
     public static Collection<String> resolvePaths(String pathExpr) {
         return ResourceUtil.scanResources(pathExpr);
@@ -338,6 +352,7 @@ public class Utils {
     /**
      * @deprecated 2.2
      */
+    @SuppressWarnings("removal")
     @Deprecated
     public static boolean hasClass(SupplierEx<Class<?>> test) {
         return ClassUtil.hasClass(test);
@@ -349,6 +364,7 @@ public class Utils {
      * @param className 类名称
      * @deprecated 2.2
      */
+    @SuppressWarnings("removal")
     @Deprecated
     public static Class<?> loadClass(String className) {
         return ClassUtil.loadClass(className);
@@ -361,6 +377,7 @@ public class Utils {
      * @param className   类名称
      * @deprecated 2.2
      */
+    @SuppressWarnings("removal")
     @Deprecated
     public static Class<?> loadClass(ClassLoader classLoader, String className) {
         return ClassUtil.loadClass(classLoader, className);
@@ -372,6 +389,7 @@ public class Utils {
      * @param className 类名称
      * @deprecated 2.2
      */
+    @SuppressWarnings("removal")
     @Deprecated
     public static <T> T newInstance(String className) {
         return ClassUtil.tryInstance(className);
@@ -380,6 +398,7 @@ public class Utils {
     /**
      * @deprecated 2.2
      */
+    @SuppressWarnings("removal")
     @Deprecated
     public static <T> T newInstance(String className, Properties prop) {
         return ClassUtil.tryInstance(className, prop);
@@ -392,6 +411,7 @@ public class Utils {
      * @param className   类名称
      * @deprecated 2.2
      */
+    @SuppressWarnings("removal")
     @Deprecated
     public static <T> T newInstance(ClassLoader classLoader, String className) {
         return ClassUtil.tryInstance(classLoader, className);
@@ -400,6 +420,7 @@ public class Utils {
     /**
      * @deprecated 2.2
      */
+    @SuppressWarnings("removal")
     @Deprecated
     public static <T> T newInstance(ClassLoader classLoader, String className, Properties prop) {
         return ClassUtil.tryInstance(classLoader, className, prop);
@@ -408,6 +429,7 @@ public class Utils {
     /**
      * @deprecated 2.2
      */
+    @SuppressWarnings("removal")
     @Deprecated
     public static <T> T newInstance(Class<?> clz) throws Exception {
         return ClassUtil.newInstance(clz);
@@ -416,6 +438,7 @@ public class Utils {
     /**
      * @deprecated 2.2
      */
+    @SuppressWarnings("removal")
     @Deprecated
     public static <T> T newInstance(Class<?> clz, Properties prop) throws Exception {
         return ClassUtil.newInstance(clz, prop);
@@ -427,6 +450,7 @@ public class Utils {
      * @param name 资源名称
      * @deprecated 2.2
      */
+    @SuppressWarnings("removal")
     @Deprecated
     public static Enumeration<URL> getResources(String name) throws IOException {
         return ResourceUtil.getResources(name);
@@ -439,6 +463,7 @@ public class Utils {
      * @param name        资源名称
      * @deprecated 2.2
      */
+    @SuppressWarnings("removal")
     @Deprecated
     public static Enumeration<URL> getResources(ClassLoader classLoader, String name) throws IOException {
         return ResourceUtil.getResources(classLoader, name);
@@ -450,6 +475,7 @@ public class Utils {
      * @param name 资源名称
      * @deprecated 2.2
      */
+    @SuppressWarnings("removal")
     @Deprecated
     public static URL getResource(String name) {
         return ResourceUtil.getResource(name);
@@ -462,6 +488,7 @@ public class Utils {
      * @param name        资源名称
      * @deprecated 2.2
      */
+    @SuppressWarnings("removal")
     @Deprecated
     public static URL getResource(ClassLoader classLoader, String name) {
         return ResourceUtil.getResource(classLoader, name);
@@ -473,6 +500,7 @@ public class Utils {
      * @param name 资源名称
      * @deprecated 2.2
      */
+    @SuppressWarnings("removal")
     @Deprecated
     public static String getResourceAsString(String name) throws IOException {
         return ResourceUtil.getResourceAsString(name);
@@ -485,6 +513,7 @@ public class Utils {
      * @param charset 编码
      * @deprecated 2.2
      */
+    @SuppressWarnings("removal")
     @Deprecated
     public static String getResourceAsString(String name, String charset) throws IOException {
         return ResourceUtil.getResourceAsString(name, charset);
@@ -498,13 +527,19 @@ public class Utils {
      * @param charset     编码
      * @deprecated 2.2
      */
+    @SuppressWarnings("removal")
     @Deprecated
     public static String getResourceAsString(ClassLoader classLoader, String name, String charset) throws IOException {
         return ResourceUtil.getResourceAsString(classLoader, name, charset);
     }
 
+    /**
+     * @deprecated 2.4
+     * */
+    @SuppressWarnings("removal")
+    @Deprecated
     public static String transferToString(InputStream ins) throws IOException {
-        return transferToString(ins, Solon.encoding());
+        return IoUtil.transferToString(ins);
     }
 
     /**
@@ -512,32 +547,24 @@ public class Utils {
      *
      * @param ins     输入流
      * @param charset 字符集
+     * @deprecated 2.4
      */
+    @SuppressWarnings("removal")
+    @Deprecated
     public static String transferToString(InputStream ins, String charset) throws IOException {
-        if (ins == null) {
-            return null;
-        }
-
-        ByteArrayOutputStream outs = transferTo(ins, new ByteArrayOutputStream());
-
-        if (Utils.isEmpty(charset)) {
-            return outs.toString();
-        } else {
-            return outs.toString(charset);
-        }
+        return IoUtil.transferToString(ins, charset);
     }
 
     /**
      * 将输入流转换为byte数组
      *
      * @param ins 输入流
+     * @deprecated  2.4
      */
+    @SuppressWarnings("removal")
+    @Deprecated
     public static byte[] transferToBytes(InputStream ins) throws IOException {
-        if (ins == null) {
-            return null;
-        }
-
-        return transferTo(ins, new ByteArrayOutputStream()).toByteArray();
+        return IoUtil.transferToBytes(ins);
     }
 
     /**
@@ -545,19 +572,12 @@ public class Utils {
      *
      * @param ins 输入流
      * @param out 输出流
+     * @deprecated 2.4
      */
+    @SuppressWarnings("removal")
+    @Deprecated
     public static <T extends OutputStream> T transferTo(InputStream ins, T out) throws IOException {
-        if (ins == null || out == null) {
-            return null;
-        }
-
-        int len = 0;
-        byte[] buf = new byte[512];
-        while ((len = ins.read(buf)) != -1) {
-            out.write(buf, 0, len);
-        }
-
-        return out;
+        return IoUtil.transferTo(ins, out);
     }
 
 

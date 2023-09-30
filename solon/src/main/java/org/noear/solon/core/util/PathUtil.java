@@ -11,7 +11,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * 路由工具
+ * 路径工具
  *
  * @author noear
  * @since 1.2

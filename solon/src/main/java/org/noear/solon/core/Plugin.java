@@ -6,12 +6,24 @@ package org.noear.solon.core;
  * @author noear
  * @since 1.0
  * */
-@FunctionalInterface
 public interface Plugin {
     /**
-     * 启动
+     * 启动（保留，为兼容性过度）
+     *
+     * @param context 应用上下文
+     * @deprecated 2.5
      */
-    void start(AopContext context) throws Throwable;
+    @Deprecated
+    default void start(AopContext context) throws Throwable{}
+
+    /**
+     * 启动
+     *
+     * @param context 应用上下文
+     * */
+    default void start(AppContext context) throws Throwable{
+        start((AopContext)context);
+    }
 
     /**
      * 预停止

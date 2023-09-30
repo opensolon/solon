@@ -1,7 +1,8 @@
 package org.noear.solon.data.tranImp;
 
-import org.noear.solon.core.event.EventBus;
 import org.noear.solon.data.tran.TranNode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +14,8 @@ import java.util.List;
  * @since 1.0
  * */
 public abstract class DbTranNode implements TranNode {
+    static final Logger log = LoggerFactory.getLogger(DbTranNode.class);
+
     /**
      * 父节点
      * */
@@ -54,7 +57,7 @@ public abstract class DbTranNode implements TranNode {
             try {
                 n1.rollback();
             } catch (Throwable e) {
-                EventBus.publishTry(e);
+                log.warn(e.getMessage(), e);
             }
         }
     }
@@ -69,7 +72,7 @@ public abstract class DbTranNode implements TranNode {
             try {
                 n1.close();
             } catch (Throwable e) {
-                EventBus.publishTry(e);
+                log.warn(e.getMessage(), e);
             }
         }
     }

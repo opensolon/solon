@@ -18,8 +18,8 @@ public interface CacheTagsService extends CacheService {
      * @param supplier Represents a supplier of results.
      * @param tags     缓存标签
      */
-    default <T> T getOrStoreTag(String key, int seconds, Supplier<T> supplier, String... tags) {
-        Object obj = this.get(key);
+    default <T> T getOrStoreTag(String key, Class<T> clz, int seconds, Supplier<T> supplier, String... tags) {
+        Object obj = this.get(key, clz);
         if (obj == null) {
             obj = supplier.get();
             for (String tag : tags) {

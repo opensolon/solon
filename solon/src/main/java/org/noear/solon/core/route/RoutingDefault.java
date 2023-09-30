@@ -70,6 +70,30 @@ public class RoutingDefault<T> implements Routing<T> {
         return false;
     }
 
+    /**
+     * 匹配程度
+     *
+     * @since 2.5
+     * */
+    @Override
+    public int degrees(MethodType method2, String path2) {
+        if (matches0(path2)) {
+            if (MethodType.ALL == method) {
+                return 2;
+            } else if (MethodType.HTTP == method) { //不是null时，不能用==
+                if (method2.signal == SignalType.HTTP) {
+                    return 2;
+                }
+            } else if (method2 == method) {
+                return 2;
+            }
+
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
     private boolean matches0(String path2) {
         //1.如果当前为**，任何路径都可命中
         if ("**".equals(path) || "/**".equals(path)) {

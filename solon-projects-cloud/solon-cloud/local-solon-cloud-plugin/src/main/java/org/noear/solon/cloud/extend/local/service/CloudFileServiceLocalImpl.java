@@ -5,6 +5,7 @@ import org.noear.solon.cloud.exception.CloudFileException;
 import org.noear.solon.cloud.model.Media;
 import org.noear.solon.cloud.service.CloudFileService;
 import org.noear.solon.core.handle.Result;
+import org.noear.solon.core.util.IoUtil;
 
 import java.io.*;
 import java.util.Date;
@@ -63,7 +64,7 @@ public class CloudFileServiceLocalImpl implements CloudFileService {
             }
 
             try (OutputStream stream = new FileOutputStream(file, false)) {
-                Utils.transferTo(media.body(), stream);
+                IoUtil.transferTo(media.body(), stream);
             }
 
             return Result.succeed(file.getAbsolutePath());

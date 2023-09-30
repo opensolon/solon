@@ -88,7 +88,16 @@ public class PropTest {
         assert Solon.cfg().get("ifAbsent.test").equals("1");
     }
 
+    @Test
+    public void test_env() {
+        //单文件多环境测试
+        assert "test".equals(Solon.cfg().get("envtest.name"));
+        assert Solon.cfg().get("envtest.title") == null;
+    }
+
     public void configLoad(){
         assert "jdbc".equals(jdbcName);
     }
+
+
 }

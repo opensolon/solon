@@ -1,9 +1,9 @@
 package webapp.demof_schedule;
 
-import org.noear.solon.annotation.ProxyComponent;
+import org.noear.solon.annotation.Component;
 import org.noear.solon.scheduling.annotation.Retry;
 
-@ProxyComponent
+@Component
 public class RetryService {
     @Retry(
             maxAttempts = 5,

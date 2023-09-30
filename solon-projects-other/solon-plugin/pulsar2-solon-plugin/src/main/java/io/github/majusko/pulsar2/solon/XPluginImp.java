@@ -1,9 +1,8 @@
 package io.github.majusko.pulsar2.solon;
 
-import org.apache.pulsar.client.api.ConsumerInterceptor;
 import org.apache.pulsar.client.api.PulsarClient;
 import org.noear.solon.Solon;
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.event.AppLoadEndEvent;
@@ -22,15 +21,15 @@ import io.github.majusko.pulsar2.solon.properties.PulsarProperties;
 public class XPluginImp implements Plugin {
 
 	@Override
-	public void start(AopContext context) throws Throwable {
+	public void start(AppContext context) throws Throwable {
 		EnablePulsar2 annoEp2 =Solon.app().source().getAnnotation(EnablePulsar2.class);
 		if (annoEp2 == null) {
 			return;
 		}
-		LogUtil.global().info("[Solon] [pulsar2-solon-plugin] config start ...");
+
 		context.beanMake(PulsarProperties.class);
 		BeanWrap cp = context.beanMake(ConsumerProperties.class);
-		LogUtil.global().info("[Solon] [pulsar2-solon-plugin] config PulsarProperties,ConsumerProperties End ...");
+
 		context.beanMake(Pulsar2AutoConfiguration.class);
 		context.beanMake(Pulsar2ProducerConfiguration.class);
 		context.beanMake(Pulsar2ConsumerConfiguration.class);
@@ -47,9 +46,7 @@ public class XPluginImp implements Plugin {
 
 		// 晚点启动，让扫描时产生的组件可以注册进来
 		EventBus.subscribe(AppLoadEndEvent.class, e -> {
-			LogUtil.global().info(
-					"[Solon] [pulsar2-solon-plugin] config PulsarClient,ProducerInterceptor,ConsumerInterceptor,FluxConsumerFactory End ...");
-			AopContext acontext = e.context();
+			AppContext acontext = e.context();
 
 			acontext.subWrapsOfType(PulsarProducerFactory.class, ppf -> {
 				producerBeanBuilder.doBuild(ppf, acontext);
@@ -68,7 +65,7 @@ public class XPluginImp implements Plugin {
 
 //	@Override
 //	public void prestop() throws Throwable {
-//		AopContext context = Solon.app().context();
+//		AppContext context = Solon.app().context();
 //		LogUtil.global().info("[Solon] APP Bean Plugin Load End...");
 //		ProducerCollector producerBeanBuilder = new ProducerCollector(context);
 //		List<BeanWrap> bws = context.getWrapsOfType(PulsarProducerFactory.class);

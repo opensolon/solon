@@ -9,6 +9,7 @@ import org.noear.solon.core.convert.Converter;
  * @since 1.5
  * @deprecated 2.4
  */
+@SuppressWarnings("removal")
 @Deprecated
 @FunctionalInterface
 public interface JsonConverter<T> extends Converter<T,Object> {

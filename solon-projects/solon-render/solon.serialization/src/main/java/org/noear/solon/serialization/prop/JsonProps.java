@@ -1,6 +1,6 @@
 package org.noear.solon.serialization.prop;
 
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 
 import java.io.Serializable;
 
@@ -11,7 +11,7 @@ import java.io.Serializable;
  * @since 1.12
  */
 public class JsonProps implements Serializable {
-    public static JsonProps create(AopContext context) {
+    public static JsonProps create(AppContext context) {
         return context.cfg().getBean("solon.serialization.json", JsonProps.class);
     }
 

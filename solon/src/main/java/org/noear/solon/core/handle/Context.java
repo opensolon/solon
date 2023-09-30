@@ -3,17 +3,16 @@ package org.noear.solon.core.handle;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.Note;
+import org.noear.solon.core.Constants;
 import org.noear.solon.core.NvMap;
-import org.noear.solon.core.util.IgnoreCaseMap;
-import org.noear.solon.core.util.IpUtil;
-import org.noear.solon.core.util.PathUtil;
+import org.noear.solon.core.util.*;
 import org.noear.solon.core.wrap.ClassWrap;
+import org.noear.solon.lang.NonNull;
 import org.noear.solon.lang.Nullable;
 
 import java.io.*;
 import java.math.BigDecimal;
 import java.net.URI;
-import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
@@ -133,28 +132,55 @@ public abstract class Context {
         this.allowMultipart = auto;
     }
 
+    Boolean isFormUrlencoded;
+    /**
+     * 是否为编码窗体
+     */
+    public boolean isFormUrlencoded() {
+        if (isFormUrlencoded == null) {
+            String temp = contentType();
+            if (temp == null) {
+                isFormUrlencoded = false;
+            } else {
+                isFormUrlencoded = temp.toLowerCase().contains("application/x-www-form-urlencoded");
+            }
+        }
+
+        return isFormUrlencoded;
+    }
+
+    Boolean isMultipart;
     /**
      * 是否为分段内容
      */
     public boolean isMultipart() {
-        String temp = contentType();
-        if (temp == null) {
-            return false;
-        } else {
-            return temp.toLowerCase().contains("multipart/");
+        if (isMultipart == null) {
+            String temp = contentType();
+            if (temp == null) {
+                isMultipart = false;
+            } else {
+                isMultipart = temp.toLowerCase().contains("multipart/");
+            }
         }
+
+        return isMultipart;
     }
 
+    Boolean isMultipartFormData;
     /**
      * 是否为分段表单数据
      * */
     public boolean isMultipartFormData() {
-        String temp = contentType();
-        if (temp == null) {
-            return false;
-        } else {
-            return temp.toLowerCase().contains("multipart/form-data");
+        if (isMultipartFormData == null) {
+            String temp = contentType();
+            if (temp == null) {
+                isMultipartFormData = false;
+            } else {
+                isMultipartFormData = temp.toLowerCase().contains("multipart/form-data");
+            }
         }
+
+        return isMultipartFormData;
     }
 
     /**
@@ -187,10 +213,11 @@ public abstract class Context {
      */
     public abstract URI uri();
 
+
+    private String path;
     /**
      * 获取请求的URI路径
      */
-    private String path;
     public String path() {
         if (path == null && url() != null) {
             path = uri().getPath();
@@ -257,6 +284,9 @@ public abstract class Context {
         return pathAsLower;
     }
 
+    /**
+     * 是否为 ssl 请求
+     * */
     public abstract boolean isSecure();
 
     /**
@@ -320,7 +350,7 @@ public abstract class Context {
     public String body(String charset) throws IOException {
         if (body == null) {
             try (InputStream ins = bodyAsStream()) {
-                body = Utils.transferToString(ins, charset);
+                body = IoUtil.transferToString(ins, charset);
             }
         }
 
@@ -544,8 +574,20 @@ public abstract class Context {
      *
      * @param name cookie名
      * @param def 默认值
+     * @deprecated 2.5
      */
+    @Deprecated
     public String cookie(String name, String def) {
+        return cookieOrDefault(name, def);
+    }
+
+    /**
+     * 获取 cookie
+     *
+     * @param name cookie名
+     * @param def 默认值
+     */
+    public String cookieOrDefault(String name, String def) {
         return cookieMap().getOrDefault(name, def);
     }
 
@@ -626,12 +668,16 @@ public abstract class Context {
      */
     public abstract String sessionId();
 
+    public final Object session(String name) {
+        return session(name, Object.class);
+    }
+
     /**
      * 获取 session 状态
      *
      * @param name 状态名
      */
-    public abstract Object session(String name);
+    public abstract <T> T session(String name, Class<T> clz);
 
     /**
      * 获取 session 状态（类型转换，存在风险）
@@ -640,7 +686,7 @@ public abstract class Context {
      * @deprecated 2.3
      */
     @Deprecated
-    public  <T> T session(String name, T def) {
+    public  <T> T session(String name, @NonNull T def) {
         return sessionOrDefault(name, def);
     }
 
@@ -651,7 +697,7 @@ public abstract class Context {
      * @deprecated 2.3
      */
     @Note("泛型转换，存在转换风险")
-    public abstract  <T> T sessionOrDefault(String name, T def);
+    public abstract  <T> T sessionOrDefault(String name, @NonNull T def);
 
     /**
      * 获取 session 状态，并以 int 型输出
@@ -760,8 +806,13 @@ public abstract class Context {
 
     protected abstract void contentTypeDoSet(String contentType);
 
+    /**
+     * 设置内容长度
+     * */
     public void contentLength(long size) {
-        headerSet("Content-Length", String.valueOf(size));
+        if (size >= 0) {
+            headerSet("Content-Length", String.valueOf(size));
+        }
     }
 
     /**
@@ -826,49 +877,14 @@ public abstract class Context {
      * 输出为文件
      */
     public void outputAsFile(DownloadedFile file) throws IOException {
-        if (Utils.isNotEmpty(file.getName())) {
-            String fileName = URLEncoder.encode(file.getName(), Solon.encoding());
-            headerSet("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
-        }
-
-        //输出内容类型
-        if (Utils.isNotEmpty(file.getContentType())) {
-            contentType(file.getContentType());
-        }
-
-        //输出内容大小
-        long contentSize = file.getContentSize();
-        if (contentSize > 0) {
-            contentLength(contentSize);
-        }
-
-        try (InputStream ins = file.getContent()) {
-            output(ins);
-        }
+        RangeUtil.global().outputFile(this, file, file.isAttachment());
     }
 
     /**
      * 输出为文件
      */
     public void outputAsFile(File file) throws IOException {
-        //输出文件名
-        if (Utils.isNotEmpty(file.getName())) {
-            String fileName = URLEncoder.encode(file.getName(), Solon.encoding());
-            headerSet("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
-        }
-
-        //输出内容类型
-        String contentType = Utils.mime(file.getName());
-        if (Utils.isNotEmpty(contentType)) {
-            contentType(contentType);
-        }
-
-        //输出内容大小
-        contentLength(file.length());
-
-        try (InputStream ins = new FileInputStream(file)) {
-            output(ins);
-        }
+        RangeUtil.global().outputFile(this, file, true);
     }
 
     /**
@@ -1115,7 +1131,7 @@ public abstract class Context {
      * */
     @Note("控制器?")
     public @Nullable Object controller() {
-        return attr("controller");
+        return attr(Constants.controller);
     }
 
     /**
@@ -1123,13 +1139,13 @@ public abstract class Context {
      * */
     @Note("动作?")
     public @Nullable Action action() {
-        return attr("action");
+        return attr(Constants.action);
     }
 
     /**
      * 获取当前主处理器
      * */
     public @Nullable Handler mainHandler(){
-        return attr("mainHandler");
+        return attr(Constants.mainHandler);
     }
 }

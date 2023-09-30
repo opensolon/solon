@@ -7,11 +7,15 @@ import org.noear.solon.core.message.Session;
 import org.noear.solon.socketd.client.smartsocket.AioSocketSession;
 
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.smartboot.socket.MessageProcessor;
 import org.smartboot.socket.StateMachineEnum;
 import org.smartboot.socket.transport.AioSession;
 
 class AioServerProcessor implements MessageProcessor<Message> {
+    static final Logger log = LoggerFactory.getLogger(AioServerProcessor.class);
+
     @Override
     public void process(AioSession session, Message message) {
         Session session1 = null;
@@ -21,7 +25,7 @@ class AioServerProcessor implements MessageProcessor<Message> {
             Solon.app().listener().onMessage(session1, message);
         } catch (Throwable e) {
             if (session1 == null) {
-                EventBus.publishTry(e);
+                log.warn(e.getMessage(), e);
             } else {
                 Solon.app().listener().onError(session1, e);
             }

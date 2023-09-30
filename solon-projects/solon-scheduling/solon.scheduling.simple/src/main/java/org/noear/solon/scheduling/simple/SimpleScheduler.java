@@ -2,12 +2,12 @@ package org.noear.solon.scheduling.simple;
 
 import org.noear.solon.Utils;
 import org.noear.solon.core.Lifecycle;
-import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.RunUtil;
-import org.noear.solon.scheduling.ScheduledException;
 import org.noear.solon.scheduling.scheduled.JobHolder;
 import org.noear.solon.scheduling.simple.cron.CronExpressionPlus;
 import org.noear.solon.scheduling.simple.cron.CronUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Date;
 import java.util.TimeZone;
@@ -19,6 +19,8 @@ import java.util.TimeZone;
  * @since 2.2
  */
 public class SimpleScheduler implements Lifecycle {
+    static final Logger log = LoggerFactory.getLogger(SimpleScheduler.class);
+
     private JobHolder jobHolder;
     /**
      * 调度表达式
@@ -101,7 +103,7 @@ public class SimpleScheduler implements Lifecycle {
                 scheduling();
             } catch (Throwable e) {
                 e = Utils.throwableUnwrap(e);
-                EventBus.publishTry(new ScheduledException(e));
+                log.warn(e.getMessage(), e);
             }
         }
     }
@@ -166,7 +168,7 @@ public class SimpleScheduler implements Lifecycle {
         try {
             jobHolder.handle(null);
         } catch (Throwable e) {
-            EventBus.publishTry(e);
+            log.warn(e.getMessage(), e);
         }
     }
 
@@ -178,7 +180,7 @@ public class SimpleScheduler implements Lifecycle {
         try {
             Thread.sleep(millis);
         } catch (Throwable e) {
-            EventBus.publishTry(e);
+            log.warn(e.getMessage(), e);
         }
     }
 }

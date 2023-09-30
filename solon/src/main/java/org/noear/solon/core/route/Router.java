@@ -41,8 +41,8 @@ public interface Router {
 
     /**
      * 区分大小写（默认不区分）
-     * */
-    default void caseSensitive(boolean caseSensitive){
+     */
+    default void caseSensitive(boolean caseSensitive) {
         PathAnalyzer.setCaseSensitive(caseSensitive);
     }
 
@@ -99,24 +99,23 @@ public interface Router {
      */
     Handler matchOne(Context ctx, Endpoint endpoint);
 
-    default Handler matchMain(Context ctx) {
-        //不能从缓存里取，不然 pathNew 会有问题
-        Handler tmp = matchOne(ctx, Endpoint.main);
-        if (tmp != null) {
-            ctx.attrSet("mainHandler", tmp);
-        }
-
-        return tmp;
-    }
+    /**
+     * 区配主处理（根据上下文）
+     *
+     * @param ctx 上下文
+     * @return 一个匹配的处理
+     */
+    Handler matchMain(Context ctx);
 
     /**
      * 区配多个处理（根据上下文）
      *
+     * @since 2.5
      * @param ctx      上下文
      * @param endpoint 处理点
      * @return 一批匹配的处理
      */
-    List<Handler> matchAll(Context ctx, Endpoint endpoint);
+    List<Handler> matchMore(Context ctx, Endpoint endpoint);
 
 
     /////////////////// for Listener ///////////////////
@@ -165,10 +164,11 @@ public interface Router {
     /**
      * 区配多个目标（会话对象）
      *
+     * @since 2.5
      * @param session 会话对象
      * @return 多个匹配监听
      */
-    List<Listener> matchAll(Session session);
+    List<Listener> matchMore(Session session);
 
 
     /**

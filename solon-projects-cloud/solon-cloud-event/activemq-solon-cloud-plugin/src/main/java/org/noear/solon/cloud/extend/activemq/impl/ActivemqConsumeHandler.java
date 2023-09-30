@@ -7,7 +7,6 @@ import org.noear.solon.cloud.CloudEventHandler;
 import org.noear.solon.cloud.extend.activemq.ActivemqProps;
 import org.noear.solon.cloud.model.Event;
 import org.noear.solon.cloud.service.CloudEventObserverManger;
-import org.noear.solon.core.event.EventBus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,7 +19,7 @@ import javax.jms.Session;
  * @since 2.0
  */
 public class ActivemqConsumeHandler implements MessageListener {
-    static Logger log = LoggerFactory.getLogger(ActivemqConsumeHandler.class);
+    static final Logger log = LoggerFactory.getLogger(ActivemqConsumeHandler.class);
 
     private CloudEventObserverManger observerManger;
     private Session session;
@@ -48,7 +47,7 @@ public class ActivemqConsumeHandler implements MessageListener {
             }
         } catch (Throwable e) {
             e = Utils.throwableUnwrap(e);
-            EventBus.publishTry(e);
+            log.warn(e.getMessage(), e); //todo: ?
 
             if (e instanceof RuntimeException) {
                 throw (RuntimeException) e;
@@ -65,7 +64,7 @@ public class ActivemqConsumeHandler implements MessageListener {
         try {
             return onReceiveDo(event);
         } catch (Throwable e) {
-            EventBus.publishTry(e);
+            log.warn(e.getMessage(), e);
             return false;
         }
     }

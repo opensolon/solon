@@ -1,6 +1,7 @@
 package org.noear.solon.health.detector.util;
 
 import org.noear.solon.Utils;
+import org.noear.solon.core.util.IoUtil;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -34,7 +35,7 @@ public class CmdUtil {
                 lnr.close();
                 isr.close();
             } else {
-                text = Utils.transferToString(is,"utf-8");
+                text = IoUtil.transferToString(is,"utf-8");
             }
         } finally {
             if (is != null) {

@@ -14,17 +14,17 @@ import org.apache.pulsar.client.impl.auth.oauth2.AuthenticationFactoryOAuth2;
 import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Condition;
 import org.noear.solon.annotation.Configuration;
-import org.noear.solon.core.util.LogUtil;
 
 import com.google.common.base.Strings;
 
-import io.github.majusko.pulsar2.solon.consumer.DefaultConsumerInterceptor;
 import io.github.majusko.pulsar2.solon.error.exception.ClientInitException;
-import io.github.majusko.pulsar2.solon.producer.DefaultProducerInterceptor;
 import io.github.majusko.pulsar2.solon.properties.PulsarProperties;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Configuration
 public class Pulsar2AutoConfiguration {
+    static final Logger log = LoggerFactory.getLogger(Pulsar2AutoConfiguration.class);
 
     @Bean
     @Condition(onMissingBean = PulsarClient.class)
@@ -34,7 +34,7 @@ public class Pulsar2AutoConfiguration {
             !Strings.isNullOrEmpty(pulsarProperties.getTokenAuthValue())
         ) {
         	String eg = "You cannot use multiple auth options.";
-        	LogUtil.global().error(eg);
+            log.error(eg);
         	throw new ClientInitException(eg);
         }
 

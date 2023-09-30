@@ -1,18 +1,19 @@
 package org.noear.solon.aspect.annotation;
 
 import org.noear.solon.annotation.Alias;
-import org.noear.solon.annotation.ProxyComponent;
+import org.noear.solon.annotation.Component;
 
 import java.lang.annotation.*;
 
 /**
- * 仓库类注解（未来会弃用，建议改用 @ProxyComponent）
+ * 仓库类注解（未来会弃用，建议改用 @Component）
  *
- * @see ProxyComponent
+ * @see Component
  * @deprecated 2.3
  * @author noear
  * @since 1.5
  */
+@SuppressWarnings("removal")
 @Deprecated
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)

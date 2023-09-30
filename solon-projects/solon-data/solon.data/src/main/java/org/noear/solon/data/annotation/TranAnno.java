@@ -24,6 +24,10 @@ public class TranAnno implements Tran {
      * 只读事务
      */
     private boolean _readOnly = false;
+    /**
+     * 消息
+     * */
+    private String _message = "";
 
     @Override
     public TranPolicy policy() {
@@ -47,6 +51,16 @@ public class TranAnno implements Tran {
     @Override
     public boolean readOnly() {
         return _readOnly;
+    }
+
+    @Override
+    public String message() {
+        return _message;
+    }
+
+    public TranAnno message(String message){
+        _message = message;
+        return this;
     }
 
     public TranAnno readOnly(boolean readOnly){

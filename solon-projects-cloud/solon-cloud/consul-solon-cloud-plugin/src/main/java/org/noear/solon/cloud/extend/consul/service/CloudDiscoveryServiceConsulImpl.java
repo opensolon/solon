@@ -12,8 +12,9 @@ import org.noear.solon.cloud.model.Instance;
 import org.noear.solon.cloud.service.CloudDiscoveryObserverEntity;
 import org.noear.solon.cloud.service.CloudDiscoveryService;
 import org.noear.solon.cloud.utils.IntervalUtils;
-import org.noear.solon.core.event.EventBus;
 import org.noear.solon.health.HealthHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
@@ -25,6 +26,8 @@ import java.util.*;
  * @since 1.2
  */
 public class CloudDiscoveryServiceConsulImpl extends TimerTask implements CloudDiscoveryService {
+    static final Logger log = LoggerFactory.getLogger(CloudDiscoveryServiceConsulImpl.class);
+
     private ConsulClient client;
     private String token;
 
@@ -155,7 +158,7 @@ public class CloudDiscoveryServiceConsulImpl extends TimerTask implements CloudD
         try {
             run0();
         } catch (Throwable e) {
-            EventBus.publishTry(e);
+            log.warn(e.getMessage(), e);
         }
     }
 

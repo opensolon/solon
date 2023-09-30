@@ -10,7 +10,6 @@ import org.noear.solon.cloud.exception.CloudEventException;
 import org.noear.solon.cloud.model.Event;
 import org.noear.solon.cloud.model.EventObserver;
 import org.noear.solon.cloud.service.CloudEventObserverManger;
-import org.noear.solon.core.event.EventBus;
 import org.slf4j.Logger;
 
 /**
@@ -37,15 +36,15 @@ public class MqttUtil {
                 //只需要记录一下
                 log.warn("There is no observer for this event topic[{}]", event.topic());
             }
-        } catch (Throwable ex) {
-            ex = Utils.throwableUnwrap(ex);
+        } catch (Throwable e) {
+            e = Utils.throwableUnwrap(e);
 
-            EventBus.publishTry(ex);
+            log.warn(e.getMessage(), e); //todo: ?
 
-            if (ex instanceof Exception) {
-                throw (Exception) ex;
+            if (e instanceof Exception) {
+                throw (Exception) e;
             } else {
-                throw new CloudEventException(ex);
+                throw new CloudEventException(e);
             }
         }
     }

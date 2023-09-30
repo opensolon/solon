@@ -6,7 +6,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.event.AppLoadEndEvent;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.event.EventListener;
@@ -38,11 +38,11 @@ public class AppLoadEndEventListener implements EventListener<AppLoadEndEvent> {
         GraphqlResourceResolverCollect graphqlResourceResolverCollect = new GraphqlResourceResolverCollect();
         RuntimeWiringConfigurerCollect runtimeWiringConfigurerCollect = new RuntimeWiringConfigurerCollect();
 
-        EventBus.push(graphqlResourceResolverCollect);
-        EventBus.push(runtimeWiringConfigurerCollect);
+        EventBus.publish(graphqlResourceResolverCollect);
+        EventBus.publish(runtimeWiringConfigurerCollect);
 
-        AopContext aopContext = appLoadEndEvent.context();
-        GraphQlSource graphQlSource = aopContext.getBean(GraphQlSource.class);
+        AppContext appContext = appLoadEndEvent.context();
+        GraphQlSource graphQlSource = appContext.getBean(GraphQlSource.class);
         Set<Resource> resources = new LinkedHashSet<>();
         List<GraphqlResourceResolver> resolvers = graphqlResourceResolverCollect
                 .getAllCollector();

@@ -29,7 +29,7 @@ public class MqttCallbackImpl implements MqttCallback {
     //在断开连接时调用
     @Override
     public void connectionLost(Throwable e) {
-        EventBus.publishTry(e);
+        log.warn(e.getMessage(), e);
     }
 
     //已经预订的消息

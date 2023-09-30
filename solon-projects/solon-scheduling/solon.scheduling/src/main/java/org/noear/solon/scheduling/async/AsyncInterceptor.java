@@ -1,10 +1,11 @@
 package org.noear.solon.scheduling.async;
 
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.aspect.Interceptor;
 import org.noear.solon.core.aspect.Invocation;
-import org.noear.solon.core.util.RunUtil;
 import org.noear.solon.scheduling.annotation.Async;
+
+import java.util.concurrent.Future;
 
 /**
  * 异步执行拦截器
@@ -13,11 +14,11 @@ import org.noear.solon.scheduling.annotation.Async;
  * @since 1.11
  */
 public class AsyncInterceptor implements Interceptor {
-    InvocationRunnableFactory runnableFactory;
+    AsyncExecutor asyncExecutor = new AsyncExecutorDefault();
 
-    public AsyncInterceptor(AopContext context) {
-        context.getBeanAsync(InvocationRunnableFactory.class, bean -> {
-            runnableFactory = bean;
+    public AsyncInterceptor(AppContext context) {
+        context.getBeanAsync(AsyncExecutor.class, bean -> {
+            asyncExecutor = bean;
         });
     }
 
@@ -26,22 +27,15 @@ public class AsyncInterceptor implements Interceptor {
         Async anno = inv.method().getAnnotation(Async.class);
 
         if (anno != null) {
-            Runnable runnable = createRunnable(inv);
-            if (runnable != null) {
-                RunUtil.async(runnable);
-            }
+            Future future = asyncExecutor.submit(inv, anno);
 
-            return null;
+            if (inv.method().getReturnType().isAssignableFrom(Future.class)) {
+                return future;
+            } else {
+                return null;
+            }
         } else {
             return inv.invoke();
-        }
-    }
-
-    private Runnable createRunnable(Invocation inv) {
-        if (runnableFactory == null) {
-            return new InvocationRunnable(inv);
-        } else {
-            return runnableFactory.create(inv);
         }
     }
 }

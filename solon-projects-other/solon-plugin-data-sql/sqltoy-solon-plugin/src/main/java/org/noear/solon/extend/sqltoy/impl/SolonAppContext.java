@@ -1,15 +1,14 @@
 package org.noear.solon.extend.sqltoy.impl;
 
-import org.noear.solon.core.AopContext;
-import org.sagacity.sqltoy.integration.AppContext;
+import org.noear.solon.core.AppContext;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class SolonAppContext implements AppContext {
-    AopContext context;
+public class SolonAppContext implements org.sagacity.sqltoy.integration.AppContext {
+    AppContext context;
 
-    public SolonAppContext(AopContext context) {
+    public SolonAppContext(AppContext context) {
         this.context = context;
     }
 

@@ -4,12 +4,11 @@ import lombok.Getter;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.event.EventListener;
-import org.noear.solon.annotation.ProxyComponent;
 
 /**
  * @author noear 2022/5/18 created
  */
-@ProxyComponent
+@Component
 public class DemoService {
     public void hello(String name){
         //发布事件

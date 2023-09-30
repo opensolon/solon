@@ -26,6 +26,10 @@ public class Fastjson2ActionExecutor extends ActionExecuteHandlerDefault {
         return config;
     }
 
+    public Fastjson2ActionExecutor(){
+        config.config(JSONReader.Feature.ErrorOnEnumNotMatch);
+    }
+
     @Override
     public boolean matched(Context ctx, String ct) {
         if (ct != null && ct.contains(label)) {

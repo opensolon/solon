@@ -21,7 +21,6 @@ import org.apache.pulsar.client.api.Messages;
 import org.apache.pulsar.client.api.PulsarClient;
 import org.apache.pulsar.client.api.PulsarClientException;
 import org.apache.pulsar.client.api.SubscriptionType;
-import org.noear.solon.core.AopContext;
 
 import io.github.majusko.pulsar2.solon.PulsarMessage;
 import io.github.majusko.pulsar2.solon.annotation.SubscriptionProp;
@@ -36,6 +35,7 @@ import io.github.majusko.pulsar2.solon.properties.ConsumerProperties;
 import io.github.majusko.pulsar2.solon.properties.PulsarProperties;
 import io.github.majusko.pulsar2.solon.utils.SchemaUtils;
 import io.github.majusko.pulsar2.solon.utils.UrlBuildService;
+import org.noear.solon.core.AppContext;
 import reactor.core.Disposable;
 import reactor.core.publisher.Sinks;
 import reactor.util.concurrent.Queues;
@@ -72,15 +72,15 @@ public class ConsumerAggregator {
     }
 
 
-    public void init(AopContext acontext,ConsumerProperties acp) {
+    public void init(AppContext context, ConsumerProperties acp) {
     	if(pulsarClient==null) {
-            pulsarClient = acontext.getBean(PulsarClient.class);
+            pulsarClient = context.getBean(PulsarClient.class);
     	}
     	if(consumerInterceptor==null) {
-    		consumerInterceptor = acontext.getBean(ConsumerInterceptor.class);
+    		consumerInterceptor = context.getBean(ConsumerInterceptor.class);
     	}
     	if(pulsarProperties==null) {
-    		pulsarProperties = acontext.getBean(PulsarProperties.class);
+    		pulsarProperties = context.getBean(PulsarProperties.class);
     	}
     	if(urlBuildService==null) {
 //    		consumerProperties = acontext.getBean(ConsumerProperties.class);

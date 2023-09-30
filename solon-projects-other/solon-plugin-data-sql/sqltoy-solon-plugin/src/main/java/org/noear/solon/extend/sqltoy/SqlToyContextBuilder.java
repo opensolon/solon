@@ -1,12 +1,10 @@
 package org.noear.solon.extend.sqltoy;
 
-import org.noear.solon.core.AopContext;
 import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.extend.sqltoy.configure.Elastic;
 import org.noear.solon.extend.sqltoy.configure.ElasticConfig;
 import org.noear.solon.extend.sqltoy.configure.SqlToyContextProperties;
 import org.noear.solon.extend.sqltoy.configure.SqlToyContextTaskPoolProperties;
-import org.noear.solon.extend.sqltoy.impl.SolonAppContext;
 import org.noear.solon.extend.sqltoy.impl.SolonConnectionFactory;
 import org.sagacity.sqltoy.SqlToyContext;
 import org.sagacity.sqltoy.config.model.ElasticEndpoint;
@@ -35,11 +33,9 @@ import static java.lang.System.err;
 class SqlToyContextBuilder {
     SqlToyContextProperties properties;
     AppContext appContext;
-    AopContext aopContext;
-    public SqlToyContextBuilder(SqlToyContextProperties properties, AopContext context){
+    public SqlToyContextBuilder(SqlToyContextProperties properties, AppContext appContext){
         this.properties = properties;
-        this.aopContext=context;
-        this.appContext = new SolonAppContext(context);
+        this.appContext = appContext;
     }
 
     public SqlToyContext build() throws Exception {

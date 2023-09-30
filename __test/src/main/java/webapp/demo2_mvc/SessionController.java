@@ -19,19 +19,19 @@ public class SessionController {
 
     @Mapping("get")
     public Object get(Context ctx) {
-        return ctx.session("val");
+        return ctx.session("val", Object.class);
     }
 
 
     @Mapping("token_err")
     public Object token_err(Context ctx) {
         try {
-            ctx.session("val");
+            ctx.session("val", Object.class);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        ctx.session("val");
+        ctx.session("val", Object.class);
 
         return "ok";
     }

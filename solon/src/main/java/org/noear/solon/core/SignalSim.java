@@ -13,26 +13,41 @@ public class SignalSim implements Signal {
     private SignalType type;
     private String name;
 
+    /**
+     * 信号名
+     * */
     @Override
     public String name() {
         return name;
     }
 
+    /**
+     * 主机
+     * */
     @Override
     public String host() {
         return host;
     }
 
+    /**
+     * 信号端口
+     * */
     @Override
     public int port() {
         return port;
     }
 
+    /**
+     * 信号协议
+     * */
     @Override
     public String protocol() {
         return protocol;
     }
 
+    /**
+     * 信号类型
+     * */
     @Override
     public SignalType type() {
         return type;

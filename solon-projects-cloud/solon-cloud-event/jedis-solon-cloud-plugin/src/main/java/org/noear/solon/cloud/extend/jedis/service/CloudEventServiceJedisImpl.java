@@ -87,18 +87,18 @@ public class CloudEventServiceJedisImpl implements CloudEventServicePlus {
     }
 
     public void subscribe() {
-        try {
-            if (observerManger.topicSize() > 0) {
+        if (observerManger.topicSize() > 0) {
+            try {
                 String[] topicAll = new String[observerManger.topicAll().size()];
                 observerManger.topicAll().toArray(topicAll);
 
                 //用异步处理
-                RunUtil.async(() -> {
+                new Thread(() -> {
                     client.open(s -> s.subscribe(new JedisEventConsumer(cloudProps, observerManger), topicAll));
-                });
+                }).start();
+            } catch (Throwable ex) {
+                throw new RuntimeException(ex);
             }
-        } catch (Throwable ex) {
-            throw new RuntimeException(ex);
         }
     }
 

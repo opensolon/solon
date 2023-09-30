@@ -1,7 +1,8 @@
 package org.noear.solon.core.wrap;
 
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.VarHolder;
+import org.noear.solon.lang.Nullable;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.ParameterizedType;
@@ -17,14 +18,14 @@ import java.lang.reflect.ParameterizedType;
 public class VarHolderOfField implements VarHolder {
     protected final FieldWrap fw;
     protected final Object obj;
-    protected final AopContext ctx;
+    protected final AppContext ctx;
 
     protected Object val;
     protected boolean required = false;
     protected boolean done;
     protected Runnable onDone;
 
-    public VarHolderOfField(AopContext ctx, FieldWrap fw, Object obj, Runnable onDone) {
+    public VarHolderOfField(AppContext ctx, FieldWrap fw, Object obj, Runnable onDone) {
         this.ctx = ctx;
         this.fw = fw;
         this.obj = obj;
@@ -32,16 +33,25 @@ public class VarHolderOfField implements VarHolder {
         this.onDone = onDone;
     }
 
+    /**
+     * 应用上下文
+     * */
     @Override
-    public AopContext context() {
+    public AppContext context() {
         return ctx;
     }
 
+    /**
+     * 泛型（可能为null）
+     * */
     @Override
-    public ParameterizedType getGenericType() {
+    public @Nullable ParameterizedType getGenericType() {
         return fw.genericType;
     }
 
+    /**
+     * 是否为字段
+     * */
     @Override
     public boolean isField() {
         return true;
@@ -63,6 +73,9 @@ public class VarHolderOfField implements VarHolder {
         return fw.annoS;
     }
 
+    /**
+     * 获取完整名字
+     * */
     @Override
     public String getFullName() {
         return fw.entityClz.getName() + "::" + fw.field.getName();
@@ -70,7 +83,7 @@ public class VarHolderOfField implements VarHolder {
 
 
     /**
-     * 设置字段的值
+     * 设置值
      */
     @Override
     public void setValue(Object val) {
@@ -88,21 +101,33 @@ public class VarHolderOfField implements VarHolder {
         }
     }
 
+    /**
+     * 获取值
+     * */
     @Override
     public Object getValue() {
         return val;
     }
 
 
+    /**
+     * 是否为完成的（设置值后即为完成态）
+     * */
     public boolean isDone() {
         return done;
     }
 
+    /**
+     * 是否必须
+     * */
     @Override
     public boolean required() {
         return required;
     }
 
+    /**
+     * 设定必须
+     * */
     @Override
     public void required(boolean required) {
         this.required = required;

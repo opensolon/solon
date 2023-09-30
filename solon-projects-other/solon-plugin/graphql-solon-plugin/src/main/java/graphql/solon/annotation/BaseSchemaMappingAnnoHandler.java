@@ -5,7 +5,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.LinkedList;
 import java.util.List;
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.BeanExtractor;
 import org.noear.solon.core.BeanWrap;
 import graphql.solon.fetcher.DataFetcherWrap;
@@ -24,9 +24,9 @@ public abstract class BaseSchemaMappingAnnoHandler<T extends Annotation> impleme
 
     private final List<DataFetcherWrap> wrapList;
 
-    private final AopContext context;
+    private final AppContext context;
 
-    public BaseSchemaMappingAnnoHandler(AopContext context) {
+    public BaseSchemaMappingAnnoHandler(AppContext context) {
         this.wrapList = new LinkedList<>();
         this.context = context;
     }
@@ -49,7 +49,7 @@ public abstract class BaseSchemaMappingAnnoHandler<T extends Annotation> impleme
         this.wrapList.add(fetcherWrap);
     }
 
-    protected DataFetcher<Object> getDataFetcher(AopContext context, BeanWrap wrap,
+    protected DataFetcher<Object> getDataFetcher(AppContext context, BeanWrap wrap,
             Method method) {
         boolean isBatch = this.getIsBatch();
         return new SchemaMappingDataFetcher(context, wrap, method, isBatch);

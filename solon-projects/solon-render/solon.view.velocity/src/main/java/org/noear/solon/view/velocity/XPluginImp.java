@@ -2,7 +2,7 @@ package org.noear.solon.view.velocity;
 
 import org.apache.velocity.runtime.directive.Directive;
 import org.noear.solon.auth.AuthUtil;
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.handle.RenderManager;
 import org.noear.solon.core.util.ClassUtil;
@@ -12,7 +12,7 @@ import org.noear.solon.view.velocity.tags.AuthRolesTag;
 public class XPluginImp implements Plugin {
 
     @Override
-    public void start(AopContext context) {
+    public void start(AppContext context) {
         VelocityRender render = VelocityRender.global();
 
         context.lifecycle(-99, () -> {

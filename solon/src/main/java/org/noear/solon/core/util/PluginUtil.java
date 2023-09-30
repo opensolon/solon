@@ -17,6 +17,9 @@ public class PluginUtil {
 
     /**
      * 扫描插件
+     *
+     * @param classLoader 类加载器
+     * @param limitFile   限制文件
      */
     public static void scanPlugins(ClassLoader classLoader, String limitFile, Consumer<PluginEntity> consumer) {
         //3.查找插件配置（如果出错，让它抛出异常）

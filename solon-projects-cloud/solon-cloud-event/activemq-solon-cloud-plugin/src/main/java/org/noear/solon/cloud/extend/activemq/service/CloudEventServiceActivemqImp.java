@@ -100,12 +100,12 @@ public class CloudEventServiceActivemqImp implements CloudEventServicePlus {
     }
 
     public void subscribe() {
-        try {
-            if (observerManger.topicSize() > 0) {
+        if (observerManger.topicSize() > 0) {
+            try {
                 consumer.init(observerManger);
+            } catch (Throwable ex) {
+                throw new RuntimeException(ex);
             }
-        } catch (Throwable ex) {
-            throw new RuntimeException(ex);
         }
     }
 

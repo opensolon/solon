@@ -19,12 +19,12 @@ import java.io.IOException;
  * @since 1.3
  */
 public class RabbitConsumeHandler extends DefaultConsumer {
-    static Logger log = LoggerFactory.getLogger(RabbitConsumeHandler.class);
+    static final Logger log = LoggerFactory.getLogger(RabbitConsumeHandler.class);
 
-    CloudEventObserverManger observerManger;
-    RabbitConfig config;
-    RabbitProducer producer;
-    String eventChannelName;
+    private CloudEventObserverManger observerManger;
+    private RabbitConfig config;
+    private RabbitProducer producer;
+    private String eventChannelName;
 
     public RabbitConsumeHandler(RabbitProducer producer, RabbitConfig config, Channel channel, CloudEventObserverManger observerManger) {
         super(channel);
@@ -61,7 +61,7 @@ public class RabbitConsumeHandler extends DefaultConsumer {
         } catch (Throwable e) {
             e = Utils.throwableUnwrap(e);
 
-            EventBus.publishTry(e);
+            log.warn(e.getMessage(), e); //todo: ?
 
             if (e instanceof RuntimeException) {
                 throw (RuntimeException) e;
@@ -80,7 +80,7 @@ public class RabbitConsumeHandler extends DefaultConsumer {
         try {
             return onReceiveDo(event);
         } catch (Throwable e) {
-            EventBus.publishTry(e);
+            log.warn(e.getMessage(), e);
             return false;
         }
     }

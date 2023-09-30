@@ -7,6 +7,7 @@ import io.swagger.models.Info;
 import io.swagger.models.License;
 import io.swagger.models.Tag;
 import io.swagger.models.*;
+import io.swagger.models.auth.SecuritySchemeDefinition;
 import io.swagger.models.parameters.Parameter;
 import io.swagger.models.parameters.*;
 import io.swagger.models.properties.*;
@@ -34,6 +35,8 @@ import org.noear.solon.docs.openapi2.wrap.ApiImplicitParamImpl;
 
 import java.lang.reflect.*;
 import java.text.Collator;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 /**
@@ -107,7 +110,12 @@ public class OpenApi2Builder {
         }
 
         swagger.vendorExtensions(docket.vendorExtensions());
-        //swagger.setSecurityDefinitions(docket.securityDefinitions());
+        docket.securityExtensions().forEach((key, val) -> {
+            if (val instanceof SecuritySchemeDefinition) {
+                swagger.addSecurityDefinition(key, (SecuritySchemeDefinition) val);
+            }
+        });
+        //
 
         if (swagger.getTags() != null) {
             //排序
@@ -434,7 +442,7 @@ public class OpenApi2Builder {
                         parameter = new PathParameter();
                     } else if (paramHolder.isRequiredBody()) {
                         BodyParameter bodyParameter = new BodyParameter();
-                        if(Utils.isNotEmpty(dataType)) {
+                        if (Utils.isNotEmpty(dataType)) {
                             bodyParameter.setSchema(new ModelImpl().type(dataType));
                         }
                         parameter = bodyParameter;
@@ -477,7 +485,14 @@ public class OpenApi2Builder {
             }
 
             QueryParameter parameter = new QueryParameter();
-            parameter.setType(fw.type.getSimpleName());
+
+            if (Collection.class.isAssignableFrom(fw.type)) {
+                parameter.setType(ApiEnum.RES_ARRAY);
+            } else if (Map.class.isAssignableFrom(fw.type)) {
+                parameter.setType(ApiEnum.RES_OBJECT);
+            } else {
+                parameter.setType(fw.type.getSimpleName());
+            }
 
             ApiModelProperty anno = fw.field.getAnnotation(ApiModelProperty.class);
 
@@ -618,6 +633,7 @@ public class OpenApi2Builder {
             }
         }
 
+
         // 2.创建模型
         ApiModel apiModel = clazz.getAnnotation(ApiModel.class);
         String title;
@@ -637,14 +653,21 @@ public class OpenApi2Builder {
 
         swagger.addDefinition(modelName, model);
 
+        if(clazz.isEnum()){
+            model.setType(ApiEnum.RES_STRING);
+            return model;
+        }
+
 
         // 3.完成模型解析
-        Field[] fields = clazz.getDeclaredFields();
-        for (Field field : fields) {
-            if (Modifier.isStatic(field.getModifiers())) {
+        ClassWrap classWrap = ClassWrap.get(clazz);
+        for (FieldWrap fw : classWrap.getFieldAllWraps().values()) {
+            if (Modifier.isStatic(fw.field.getModifiers())) {
                 //静态的跳过
                 continue;
             }
+
+            Field field = fw.field;
 
             ApiModelProperty apiField = field.getAnnotation(ApiModelProperty.class);
 
@@ -678,6 +701,8 @@ public class OpenApi2Builder {
                     ArrayProperty fieldPr = new ArrayProperty();
                     if (apiField != null) {
                         fieldPr.setDescription(apiField.value());
+                        fieldPr.setRequired(apiField.required());
+                        fieldPr.setExample(apiField.example());
                     }
 
 
@@ -703,10 +728,16 @@ public class OpenApi2Builder {
                             RefProperty itemPr = new RefProperty(modelName, RefFormat.INTERNAL);
                             fieldPr.setItems(itemPr);
                         } else {
-                            ModelImpl swaggerModel = (ModelImpl) this.parseSwaggerModel((Class<?>) itemClazz, itemClazz);
+                            Property itemPr = getPrimitiveProperty((Class<?>) itemClazz);
 
-                            RefProperty itemPr = new RefProperty(swaggerModel.getName(), RefFormat.INTERNAL);
-                            fieldPr.setItems(itemPr);
+                            if (itemPr != null) {
+                                fieldPr.setItems(itemPr);
+                            } else {
+                                ModelImpl swaggerModel = (ModelImpl) this.parseSwaggerModel((Class<?>) itemClazz, itemClazz);
+
+                                itemPr = new RefProperty(swaggerModel.getName(), RefFormat.INTERNAL);
+                                fieldPr.setItems(itemPr);
+                            }
                         }
                     }
 
@@ -723,6 +754,8 @@ public class OpenApi2Builder {
                     RefProperty fieldPr = new RefProperty(modelName, RefFormat.INTERNAL);
                     if (apiField != null) {
                         fieldPr.setDescription(apiField.value());
+                        fieldPr.setRequired(apiField.required());
+                        fieldPr.setExample(apiField.example());
                     }
 
                     fieldList.put(field.getName(), fieldPr);
@@ -732,6 +765,8 @@ public class OpenApi2Builder {
                     RefProperty fieldPr = new RefProperty(swaggerModel.getName(), RefFormat.INTERNAL);
                     if (apiField != null) {
                         fieldPr.setDescription(apiField.value());
+                        fieldPr.setRequired(apiField.required());
+                        fieldPr.setExample(apiField.example());
                     }
 
                     fieldList.put(field.getName(), fieldPr);
@@ -742,8 +777,9 @@ public class OpenApi2Builder {
 
                 if (apiField != null) {
                     fieldPr.setDescription(apiField.value());
-                    fieldPr.setType(Utils.isBlank(apiField.dataType()) ? typeClazz.getSimpleName().toLowerCase() : apiField.dataType());
+                    fieldPr.setRequired(apiField.required());
                     fieldPr.setExample(apiField.example());
+                    fieldPr.setType(Utils.isBlank(apiField.dataType()) ? typeClazz.getSimpleName().toLowerCase() : apiField.dataType());
                 } else {
                     fieldPr.setType(typeClazz.getSimpleName().toLowerCase());
                 }
@@ -863,6 +899,43 @@ public class OpenApi2Builder {
                 return swaggerModel.getName();
             }
         }
+
+        return null;
+    }
+
+    private Property getPrimitiveProperty(Class<?> clz) {
+        if (clz == Integer.class || clz == int.class) {
+            return new IntegerProperty();
+        }
+
+        if (clz == Long.class || clz == long.class) {
+            return new LongProperty();
+        }
+
+        if (clz == Float.class || clz == float.class) {
+            return new FloatProperty();
+        }
+
+        if (clz == Double.class || clz == double.class) {
+            return new DoubleProperty();
+        }
+
+        if (clz == Boolean.class || clz == boolean.class) {
+            return new BooleanProperty();
+        }
+
+        if (clz == Date.class) {
+            return new DateProperty();
+        }
+
+        if (clz == LocalDateTime.class) {
+            return new DateTimeProperty();
+        }
+
+        if (clz == String.class || clz.isEnum()) {
+            return new StringProperty();
+        }
+
 
         return null;
     }

@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.noear</groupId>
         <artifactId>solon-parent</artifactId>
-        <version>2.4.5</version>
+        <version>2.5.6</version>
         <relativePath>../../../solon-parent/pom.xml</relativePath>
     </parent>
 
@@ -30,7 +30,7 @@
         <dependency>
             <groupId>com.jfinal</groupId>
             <artifactId>enjoy</artifactId>
-            <version>5.0.3</version>
+            <version>${enjoy.version}</version>
         </dependency>
 
     </dependencies>

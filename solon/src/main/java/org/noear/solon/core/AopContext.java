@@ -11,7 +11,6 @@ import org.noear.solon.core.event.EventListener;
 import org.noear.solon.core.handle.*;
 import org.noear.solon.core.message.Listener;
 import org.noear.solon.core.route.RouterInterceptor;
-import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.core.util.*;
 import org.noear.solon.core.wrap.*;
 
@@ -31,12 +30,19 @@ import java.util.function.Consumer;
  *
  * @author noear
  * @since 1.0
+ * @deprecated 2.5
  * */
-public class AopContext extends BeanContainer {
+@Deprecated
+public abstract class AopContext extends BeanContainer {
 
+    /**
+     * @deprecated 2.5
+     */
+    @Deprecated
     public AopContext() {
         this(null, null);
     }
+
 
     public AopContext(ClassLoader classLoader, Props props) {
         super(classLoader, props);
@@ -50,6 +56,11 @@ public class AopContext extends BeanContainer {
     private final Set<VarGather> gatherSet = new HashSet<>();
 
 
+    /**
+     * 获取方法包装（方便 aot 收集）
+     *
+     * @param method 方法
+     */
     public MethodWrap methodGet(Method method) {
         MethodWrap mw = methodCached.get(method);
         if (mw == null) {
@@ -65,12 +76,14 @@ public class AopContext extends BeanContainer {
         return mw;
     }
 
-	/**
-	 * 遍历method (拿到的是method包装)
-	 */
-	public void methodForeach(Consumer<MethodWrap> action) {
-		methodCached.values().forEach(action);
-	}
+    /**
+     * 遍历method (拿到的是method包装)
+     *
+     * @param action 遍历动作
+     */
+    public void methodForeach(Consumer<MethodWrap> action) {
+        methodCached.values().forEach(action);
+    }
 
     @Override
     public void clear() {
@@ -86,17 +99,28 @@ public class AopContext extends BeanContainer {
         started = false;
     }
 
+    /**
+     * 生成 bean 包装
+     */
     @Override
     protected BeanWrap wrapCreate(Class<?> type, Object bean, String name) {
         return new BeanWrap(this, type, bean, name);
     }
 
+    /**
+     * @deprecated 2.5
+     */
+    @Deprecated
     public AopContext copy() {
         return copy(null, null);
     }
 
+    /**
+     * @deprecated 2.5
+     */
+    @Deprecated
     public AopContext copy(ClassLoader classLoader, Props props) {
-        AopContext tmp = new AopContext(classLoader, props);
+        AppContext tmp = new AppContext(classLoader, props);
         copyTo(tmp);
         return tmp;
     }
@@ -154,27 +178,25 @@ public class AopContext extends BeanContainer {
             //确定顺序位
             bw.indexSet(anno.index());
 
-            //添加bean形态处理
-            beanShapeRegister(clz, bw, clz);
-
-            //注册到容器
-            beanRegister(bw, beanName, anno.typed());
-
-            //尝试提取函数
-            beanExtract(bw);
-
-            //单例，进行事件通知
-            if (bw.singleton()) {
-                EventBus.publish(bw.raw()); //@deprecated
-                //EventBus.push(bw); //@deprecated
-                wrapPublish(bw);
-            }
+            beanComponentized(bw);
         });
 
-        //注册 @ProxyComponent 构建器
+        //注册 @ProxyComponent 构建器 //@deprecated 2.5
         beanBuilderAdd(ProxyComponent.class, (clz, bw, anno) -> {
-            if (NativeDetector.isNotAotRuntime()) {
-                throw new IllegalStateException("Missing plugin dependency: 'solon.proxy'");
+            String beanName = Utils.annoAlias(anno.value(), anno.name());
+
+            bw.nameSet(beanName);
+            bw.tagSet(anno.tag());
+            bw.typedSet(anno.typed());
+
+            //确定顺序位
+            bw.indexSet(anno.index());
+
+            //组件化处理
+            beanComponentized(bw);
+
+            if (Solon.cfg().isDebugMode()) {
+                LogUtil.global().warn("@ProxyComponent will be discarded, suggested use '@Component'");
             }
         });
 
@@ -206,11 +228,32 @@ public class AopContext extends BeanContainer {
         }));
     }
 
+    /**
+     * 组件化处理
+     */
+    protected void beanComponentized(BeanWrap bw) {
+        //尝试提取函数并确定自动代理
+        beanExtractOrProxy(bw);
+
+        //添加bean形态处理
+        beanShapeRegister(bw.clz(), bw, bw.clz());
+
+        //注册到容器
+        beanRegister(bw, bw.name(), bw.typed());
+
+
+        //单例，进行事件通知
+        if (bw.singleton()) {
+            EventBus.publish(bw.raw()); //@deprecated
+            wrapPublish(bw);
+        }
+    }
+
     @Override
     protected void beanInject(VarHolder varH, String name, boolean required, boolean autoRefreshed) {
         super.beanInject(varH, name, required, autoRefreshed);
 
-        if(varH.isDone()){
+        if (varH.isDone()) {
             return;
         }
 
@@ -221,7 +264,7 @@ public class AopContext extends BeanContainer {
                 if (type instanceof Class) {
                     varH.required(required);
                     lifecycle(-999999, () -> {
-                        if(varH.isDone()){
+                        if (varH.isDone()) {
                             return;
                         }
 
@@ -239,7 +282,7 @@ public class AopContext extends BeanContainer {
                 if (String.class == keyType && valType instanceof Class) {
                     varH.required(required);
                     lifecycle(-999999, () -> {
-                        if(varH.isDone()){
+                        if (varH.isDone()) {
                             return;
                         }
 
@@ -258,13 +301,18 @@ public class AopContext extends BeanContainer {
 
     /**
      * 尝试 bean 形态注册
+     *
+     * @param clz    类
+     * @param bw     Bean 包装
+     * @param annoEl 有注解元素（类 或 方法）
      */
     public void beanShapeRegister(Class<?> clz, BeanWrap bw, AnnotatedElement annoEl) {
         //Plugin
         if (Plugin.class.isAssignableFrom(clz)) {
             //如果是插件，则插入
             Solon.app().plug(bw.raw());
-            LogUtil.global().warn("'Plugin' will be deprecated as a component, please use 'LifecycleBean'");return;
+            LogUtil.global().warn("'Plugin' will be deprecated as a component, please use 'LifecycleBean'");
+            return;
         }
 
         //LifecycleBean（替代 Plugin，提供组件的生态周期控制）
@@ -302,7 +350,7 @@ public class AopContext extends BeanContainer {
         }
 
         //Render
-        if(Render.class.isAssignableFrom(clz)) {
+        if (Render.class.isAssignableFrom(clz)) {
             RenderManager.mapping(bw.name(), (Render) bw.raw());
         }
 
@@ -317,22 +365,24 @@ public class AopContext extends BeanContainer {
         }
 
         //ActionReturnHandler
-        if(ActionReturnHandler.class.isAssignableFrom(clz)){
+        if (ActionReturnHandler.class.isAssignableFrom(clz)) {
             Solon.app().chainManager().addReturnHandler(bw.raw());
         }
 
         //ActionExecuteHandler
-        if(ActionExecuteHandler.class.isAssignableFrom(clz)){
+        if (ActionExecuteHandler.class.isAssignableFrom(clz)) {
             Solon.app().chainManager().addExecuteHandler(bw.raw());
         }
 
         //Converter
-        if(Converter.class.isAssignableFrom(clz)){
+        if (Converter.class.isAssignableFrom(clz)) {
             Solon.app().converterManager().register(bw.raw());
         }
     }
 
-    //添加事件监听
+    /**
+     * 添加事件监听支持
+     */
     private void addEventListener(Class<?> clz, BeanWrap bw) {
         Class<?>[] ets = GenericUtil.resolveTypeArguments(clz, EventListener.class);
         if (ets != null && ets.length > 0) {
@@ -343,37 +393,60 @@ public class AopContext extends BeanContainer {
     //::提取
 
     /**
-     * 为一个对象提取函数
+     * 为一个对象提取函数或自动代理
      */
-    public void beanExtract(BeanWrap bw) {
+    public void beanExtractOrProxy(BeanWrap bw) {
         if (bw == null) {
             return;
         }
 
-        if (beanExtractors.size() == 0) {
-            return;
-        }
+        boolean enableProxy = false;
 
-        ClassWrap clzWrap = ClassWrap.get(bw.clz());
+        if (beanExtractors.size() > 0 || beanInterceptors.size() > 0) {
+            ClassWrap clzWrap = ClassWrap.get(bw.clz());
 
-        for (Method m : clzWrap.getMethods()) {
-            for (Annotation a : m.getAnnotations()) {
-                BeanExtractor be = beanExtractors.get(a.annotationType());
+            for (Method m : clzWrap.getMethods()) {
+                for (Annotation a : m.getAnnotations()) {
+                    BeanExtractor be = beanExtractors.get(a.annotationType());
 
-                if (be != null) {
-                    try {
-                        be.doExtract(bw, m, a);
-                    } catch (Throwable e) {
-                        e = Utils.throwableUnwrap(e);
-                        if (e instanceof RuntimeException) {
-                            throw (RuntimeException) e;
-                        } else {
-                            throw new RuntimeException(e);
+                    if (be != null) {
+                        try {
+                            be.doExtract(bw, m, a);
+                        } catch (Throwable e) {
+                            e = Utils.throwableUnwrap(e);
+                            if (e instanceof RuntimeException) {
+                                throw (RuntimeException) e;
+                            } else {
+                                throw new RuntimeException(e);
+                            }
                         }
+                    } else {
+                        //是否需要自动代理
+                        enableProxy = enableProxy || requiredProxy(a);
                     }
                 }
             }
         }
+
+        if (enableProxy == false) {
+            for (Annotation a : bw.clz().getAnnotations()) {
+                //是否需要自动代理
+                enableProxy = enableProxy || requiredProxy(a);
+            }
+        }
+
+        if (enableProxy) {
+            ProxyBinder.global().binding(bw);
+        }
+    }
+
+    /**
+     * 是否需要有代理
+     */
+    private boolean requiredProxy(Annotation a) {
+        return beanInterceptors.containsKey(a.annotationType())
+                || a.annotationType().isAnnotationPresent(Around.class)
+                || a.annotationType().equals(Around.class);
     }
 
 
@@ -399,7 +472,7 @@ public class AopContext extends BeanContainer {
         }
 
         if (obj instanceof InitializingBean) {
-            InitializingBean initBean = (InitializingBean)obj;
+            InitializingBean initBean = (InitializingBean) obj;
 
             if (fwList.size() == 0) {
                 //不需要注入
@@ -423,7 +496,7 @@ public class AopContext extends BeanContainer {
         } else {
             if (fwList.size() == 0) {
 
-            }else {
+            } else {
                 //需要注入（可能）
                 VarGather gather = new VarGather(true, fwList.size(), null);
 
@@ -574,7 +647,9 @@ public class AopContext extends BeanContainer {
         }
 
         //支持非公有函数
-        m.setAccessible(true);
+        if (m.isAccessible() == false) {
+            m.setAccessible(true);
+        }
 
         MethodWrap mWrap = methodGet(m);
 
@@ -774,14 +849,14 @@ public class AopContext extends BeanContainer {
 
     /**
      * 添加生命周期 bean
-     * */
+     */
     public void lifecycle(LifecycleBean lifecycle) {
         lifecycle(0, lifecycle);
     }
 
     /**
      * 添加生命周期 bean
-     * */
+     */
     public void lifecycle(int index, LifecycleBean lifecycle) {
         lifecycleBeans.add(new RankEntity<>(lifecycle, index));
 
@@ -790,7 +865,6 @@ public class AopContext extends BeanContainer {
             RunUtil.runOrThrow(lifecycle::start);
         }
     }
-
 
 
     //已启动标志
@@ -820,7 +894,7 @@ public class AopContext extends BeanContainer {
             }
 
             //全部跑完后，检查注入情况
-            for(VarGather gather : gatherSet){
+            for (VarGather gather : gatherSet) {
                 gather.check();
             }
         } catch (Throwable e) {

@@ -12,7 +12,7 @@ import org.noear.solon.cloud.extend.water.integration.msg.HandlerConfigUpdate;
 import org.noear.solon.cloud.extend.water.service.*;
 import org.noear.solon.cloud.model.Config;
 import org.noear.solon.cloud.model.Instance;
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.bean.InitializingBean;
 import org.noear.water.WW;
@@ -31,7 +31,7 @@ public class XPluginImp implements Plugin, InitializingBean {
     private CloudProps cloudProps;
     private boolean inited = false;
 
-    private boolean initDo(AopContext context) throws Throwable {
+    private boolean initDo(AppContext context) throws Throwable {
         if (cloudProps == null) {
             cloudProps = new CloudProps(context, "water");
         }
@@ -87,13 +87,13 @@ public class XPluginImp implements Plugin, InitializingBean {
             return;
         }
 
-        CloudTraceServiceWaterImp traceServiceImp = new CloudTraceServiceWaterImp();
+        CloudTraceServiceWaterImpl traceServiceImp = new CloudTraceServiceWaterImpl();
         WaterClient.localHostSet(Instance.local().address());
         WaterClient.localServiceSet(Instance.local().service());
         WaterSetting.water_trace_id_supplier(traceServiceImp::getTraceId);
 
         if (cloudProps.getLogEnable()) {
-            CloudManager.register(new CloudLogServiceWaterImp(cloudProps));
+            CloudManager.register(new CloudLogServiceWaterImpl(cloudProps));
         }
 
         if (cloudProps.getTraceEnable()) {
@@ -102,24 +102,24 @@ public class XPluginImp implements Plugin, InitializingBean {
     }
 
     @Override
-    public void start(AopContext context) throws Throwable {
+    public void start(AppContext context) throws Throwable {
         if (initDo(context) == false) {
             return;
         }
 
         //2.初始化服务
-        CloudDiscoveryServiceWaterImp discoveryServiceImp = null;
-        CloudConfigServiceWaterImp configServiceImp = null;
-        CloudEventServiceWaterImp eventServiceImp = new CloudEventServiceWaterImp(cloudProps);
-        CloudI18nServiceWaterImp i18nServiceImp = null;
+        CloudDiscoveryServiceWaterImpl discoveryServiceImp = null;
+        CloudConfigServiceWaterImpl configServiceImp = null;
+        CloudEventServiceWaterImpl eventServiceImp = new CloudEventServiceWaterImpl(cloudProps);
+        CloudI18nServiceWaterImpl i18nServiceImp = null;
 
         if (cloudProps.getMetricEnable()) {
-            CloudManager.register(new CloudMetricServiceWaterImp());
+            CloudManager.register(new CloudMetricServiceWaterImpl());
         }
 
 
         if (cloudProps.getConfigEnable()) {
-            configServiceImp = new CloudConfigServiceWaterImp(cloudProps);
+            configServiceImp = new CloudConfigServiceWaterImpl(cloudProps);
             CloudManager.register(configServiceImp);
 
             if (Solon.cfg().isFilesMode()) {
@@ -134,13 +134,13 @@ public class XPluginImp implements Plugin, InitializingBean {
         }
 
         if (cloudProps.getI18nEnable()) {
-            i18nServiceImp = new CloudI18nServiceWaterImp(cloudProps);
+            i18nServiceImp = new CloudI18nServiceWaterImpl(cloudProps);
             CloudManager.register(i18nServiceImp);
         }
 
 
         if (cloudProps.getDiscoveryEnable()) {
-            discoveryServiceImp = new CloudDiscoveryServiceWaterImp(cloudProps);
+            discoveryServiceImp = new CloudDiscoveryServiceWaterImpl(cloudProps);
             CloudManager.register(discoveryServiceImp);
 
             if (Solon.cfg().isFilesMode()) {
@@ -181,18 +181,18 @@ public class XPluginImp implements Plugin, InitializingBean {
         }
 
         if (cloudProps.getLockEnable()) {
-            CloudManager.register(new CloudLockServiceWaterImp());
+            CloudManager.register(new CloudLockServiceWaterImpl());
         }
 
         if (cloudProps.getListEnable()) {
-            CloudManager.register(new CloudListServiceWaterImp());
+            CloudManager.register(new CloudListServiceWaterImpl());
         }
 
         if (cloudProps.getJobEnable()) {
-            CloudManager.register(CloudJobServiceWaterImp.instance);
+            CloudManager.register(CloudJobServiceWaterImpl.instance);
 
             context.lifecycle(-99, () -> {
-                CloudJobServiceWaterImp.instance.push();
+                CloudJobServiceWaterImpl.instance.push();
             });
         }
 

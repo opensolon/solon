@@ -29,7 +29,7 @@ import org.noear.solon.aot.RuntimeNativeMetadata;
 import org.noear.solon.aot.RuntimeNativeRegistrar;
 import org.noear.solon.aot.hint.ExecutableMode;
 import org.noear.solon.aot.hint.MemberCategory;
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,7 +47,7 @@ import java.util.stream.Stream;
 public class MybatisRuntimeNativeRegistrar implements RuntimeNativeRegistrar {
 
     @Override
-    public void register(AopContext context, RuntimeNativeMetadata metadata) {
+    public void register(AppContext context, RuntimeNativeMetadata metadata) {
         Stream.of(RawLanguageDriver.class,
                 XMLLanguageDriver.class,
                 RuntimeSupport.class,

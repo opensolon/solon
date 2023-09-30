@@ -2,6 +2,7 @@ package org.noear.solon.core.handle;
 
 import org.noear.solon.core.NvMap;
 import org.noear.solon.core.util.IgnoreCaseMap;
+import org.noear.solon.lang.NonNull;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -164,12 +165,12 @@ public class ContextEmpty extends Context {
     }
 
     @Override
-    public Object session(String name) {
+    public <T> T session(String name, Class<T> clz) {
         return null;
     }
 
     @Override
-    public <T> T sessionOrDefault(String name, T def) {
+    public <T> T sessionOrDefault(String name, @NonNull T def) {
         return null;
     }
 

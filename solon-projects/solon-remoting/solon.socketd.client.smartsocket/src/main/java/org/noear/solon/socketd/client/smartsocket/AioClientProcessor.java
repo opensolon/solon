@@ -1,15 +1,18 @@
 package org.noear.solon.socketd.client.smartsocket;
 
 import org.noear.solon.Solon;
-import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.smartboot.socket.MessageProcessor;
 import org.smartboot.socket.StateMachineEnum;
 import org.smartboot.socket.transport.AioSession;
 
 class AioClientProcessor implements MessageProcessor<Message> {
-    Session session;
+    static final Logger log = LoggerFactory.getLogger(AioClientProcessor.class);
+
+    private Session session;
     AioClientProcessor(Session session){
         this.session = session;
     }
@@ -19,7 +22,7 @@ class AioClientProcessor implements MessageProcessor<Message> {
         try {
             Solon.app().listener().onMessage(session, message);
         } catch (Throwable e) {
-            EventBus.publishTry(e);
+            log.warn(e.getMessage(), e);
         }
     }
 

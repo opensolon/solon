@@ -3,7 +3,7 @@ package org.noear.solon.core;
 import java.lang.annotation.Annotation;
 
 /**
- * Bean 构建器（此类用于扩展AopContext，为其添加构建器）
+ * Bean 构建器（此类用于扩展AppContext，为其添加构建器）
  *
  * <pre><code>
  * //@Cron4j 构建器添加

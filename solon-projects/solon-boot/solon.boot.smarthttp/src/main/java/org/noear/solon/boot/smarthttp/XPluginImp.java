@@ -5,7 +5,6 @@ import org.noear.solon.SolonApp;
 import org.noear.solon.boot.ServerConstants;
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.prop.impl.HttpServerProps;
-import org.noear.solon.boot.smarthttp.http.FormContentFilter;
 import org.noear.solon.core.*;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.LogUtil;
@@ -19,13 +18,13 @@ public final class XPluginImp implements Plugin {
 
 
     public static String solon_boot_ver() {
-        return "smart http 1.2/" + Solon.version();
+        return "smart http 1.3/" + Solon.version();
     }
 
     private SmHttpServerComb _server;
 
     @Override
-    public void start(AopContext context) {
+    public void start(AppContext context) {
         if (Solon.app().enableHttp() == false) {
             return;
         }
@@ -52,7 +51,7 @@ public final class XPluginImp implements Plugin {
         _server.setCoreThreads(props.getCoreThreads());
         if (props.isIoBound()) {
             //如果是io密集型的，加二段线程池
-            _server.setWorkExecutor(props.getBioExecutor("smarthttp-"));
+            _server.setExecutor(props.getBioExecutor("smarthttp-"));
         }
 
         _server.setHandler(Solon.app()::tryHandle);
@@ -67,8 +66,6 @@ public final class XPluginImp implements Plugin {
         _signal = new SignalSim(_name, _wrapHost, _wrapPort, "http", SignalType.HTTP);
         app.signalAdd(_signal);
 
-        app.before(-9, new FormContentFilter());
-
         long time_end = System.currentTimeMillis();
 
         String connectorInfo = "solon.connector:main: smarthttp: Started ServerConnector@{HTTP/1.1,[http/1.1]";
@@ -76,7 +73,7 @@ public final class XPluginImp implements Plugin {
             LogUtil.global().info(connectorInfo + "[WebSocket]}{0.0.0.0:" + _port + "}");
         }
 
-        String serverUrl = (_server.isSecure() ? "https" : "http") + "://localhost:" + _port;
+        String serverUrl = props.buildServerUrl(_server.isSecure());
         LogUtil.global().info(connectorInfo + "}{"+ serverUrl +"}");
         LogUtil.global().info("Server:main: smarthttp: Started (" + solon_boot_ver() + ") @" + (time_end - time_start) + "ms");
     }

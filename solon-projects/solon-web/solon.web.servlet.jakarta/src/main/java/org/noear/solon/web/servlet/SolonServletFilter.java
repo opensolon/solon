@@ -9,6 +9,8 @@ import org.noear.solon.core.handle.Handler;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
@@ -19,6 +21,8 @@ import java.io.IOException;
  * @since 1.2
  * */
 public class SolonServletFilter implements Filter {
+    static final Logger log = LoggerFactory.getLogger(SolonServletFilter.class);
+
     public static Handler onFilterStart;
     public static Handler onFilterError;
     public static Handler onFilterEnd;
@@ -85,7 +89,7 @@ public class SolonServletFilter implements Filter {
             try {
                 h.handle(ctx);
             } catch (Throwable e) {
-                EventBus.publishTry(e);
+                log.warn(e.getMessage(), e);
             }
         }
     }

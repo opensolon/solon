@@ -1,0 +1,29 @@
+{
+  "properties": [
+    {
+      "name": "solon.cache.driverType",
+      "type": "java.lang.String",
+      "defaultValue": "local",
+      "description": "缓存驱动类型"
+    }
+  ],
+  "hints": [
+    {
+      "name": "solon.cache.driverType",
+      "values": [
+        {
+          "value": "local",
+          "description": "本地缓存"
+        },
+        {
+          "value": "redis",
+          "description": "Redis缓存"
+        },
+        {
+          "value": "memcached",
+          "description": "Memcached缓存"
+        }
+      ]
+    }
+  ]
+}

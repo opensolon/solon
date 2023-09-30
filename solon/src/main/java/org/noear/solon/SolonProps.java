@@ -11,7 +11,7 @@ import java.util.*;
 import java.util.function.Predicate;
 
 /**
- * 统一配置加载器
+ * 应用配置加载器
  *
  * <pre><code>
  * //
@@ -43,8 +43,6 @@ public final class SolonProps extends Props {
     private boolean isSetupMode;//是否为安装蕈式
     private boolean isAloneMode;//是否为独立蕈式（即独立运行模式）
 
-    private int stopDelay=10; //停止延迟（秒）
-    private boolean stopSafe;//停止安全的进行
 
     private String env;
 
@@ -53,10 +51,6 @@ public final class SolonProps extends Props {
     private String extend;
     private String extendFilter;
 
-    private String appName;
-    private String appGroup;
-    private String appNamespace;
-    private String appTitle;
 
     public SolonProps() {
         super(System.getProperties());
@@ -65,7 +59,8 @@ public final class SolonProps extends Props {
     /**
      * 加载配置（用于第一次加载）
      *
-     * @param args 启用参数
+     * @param source 应用源（即启动主类）
+     * @param args   启用参数
      */
     public SolonProps load(Class<?> source, NvMap args) throws Exception {
         //1.接收启动参数
@@ -78,11 +73,7 @@ public final class SolonProps extends Props {
         this.testing = args.containsKey("testing");
 
         //2.同步启动参数到系统属性
-        this.args.forEach((k, v) -> {
-            if (k.contains(".")) {
-                System.setProperty(k, v);
-            }
-        });
+        this.syncArgsToSys();
 
         //3.获取原始系统属性原始副本
         Properties sysPropOrg = new Properties();
@@ -139,11 +130,16 @@ public final class SolonProps extends Props {
         loadAdd(source.getAnnotation(PropertySource.class));
 
         //4.4.加载配置 solon.config.load //支持多文件（只支持内部，支持{env}）
-        getMap("solon.config.load").forEach((key, val)->{
-            if(key.equals("") || key.startsWith("[")) {
-                addConfig(val, true, sysPropOrg);
+        Map<String,String> loadKeyMap = new TreeMap<>();
+        doFind("solon.config.load", (key, val) -> {
+            if (key.equals("") || key.startsWith("[")) {
+                loadKeyMap.put(key, val);
             }
         });
+
+        for(String loadKey : loadKeyMap.values()) {
+            addConfig(loadKey, true, sysPropOrg);
+        }
 
 
         //4.5.加载扩展配置 solon.config.add //支持多文件（支持内部或外部，支持{env}）
@@ -190,23 +186,6 @@ public final class SolonProps extends Props {
             locale = Locale.getDefault();
         }
 
-        //8.应用基础信息
-        appName = getArg("app.name");  //6.应用名
-        appGroup = getArg("app.group"); //6.1.应用组
-        appNamespace = getArg("app.namespace"); //6.1.应用组
-        appTitle = getArg("app.title"); //6.1.应用标题
-
-        //9.特性控制
-        //solon.stop.delay = 10
-        //solon.stop.safe  = 0
-        String stopSafeStr = getArg("stop.safe");
-        if (Utils.isEmpty(stopSafeStr)) {
-            //@deprecated
-            stopSafeStr = getArg("app.safeStop");
-        }
-        stopSafe = "1".equals(stopSafeStr); //是否安全停止
-        stopDelay = Integer.parseInt(getArg("stop.delay", "10s").replace("s", ""));
-
         return this;
     }
 
@@ -229,6 +208,38 @@ public final class SolonProps extends Props {
         LogUtil.global().warn("'" + file + "' is deprecated, please use '" + sml + "'");
     }
 
+    private void syncArgsToSys() {
+        //1.同步所有属性
+        this.args.forEach((k, v) -> {
+            if (k.contains(".")) {
+                System.setProperty(k, v);
+            }
+        });
+
+        //2.同步特定参数
+        syncArgToSys("env");
+
+        syncArgToSys("app.name");  //应用名
+        syncArgToSys("app.group"); //应用组
+        syncArgToSys("app.namespace"); //应用组
+        syncArgToSys("app.title"); //应用标题
+
+        syncArgToSys("stop.safe"); //def: 0
+        syncArgToSys("stop.delay"); //def: 10s
+    }
+
+    /**
+     * 同步特定启动参数到系统属性
+     *
+     * @param name 参数名
+     * */
+    private void syncArgToSys(String name) {
+        String val = args.get(name);
+        if (val != null) {
+            //如果为空，尝试从属性配置取
+            System.setProperty("solon." + name, val);
+        }
+    }
 
     /**
      * 获取启动参数
@@ -236,28 +247,14 @@ public final class SolonProps extends Props {
      * @param name 参数名
      */
     private String getArg(String name) {
-        return getArg(name, null);
-    }
-
-    /**
-     * 获取启动参数
-     *
-     * @param name 参数名
-     * @param def  默认值
-     */
-    private String getArg(String name, String def) {
         //尝试去启动参数取
-        String tmp = args.get(name);
-        if (Utils.isEmpty(tmp)) {
+        String val = args.get(name);
+        if (val == null) {
             //如果为空，尝试从属性配置取
-            tmp = get("solon." + name);
+            val = get("solon." + name);
         }
 
-        if (Utils.isEmpty(tmp)) {
-            return def;
-        } else {
-            return tmp;
-        }
+        return val;
     }
 
     /**
@@ -269,9 +266,14 @@ public final class SolonProps extends Props {
         return loadEnv(k -> k.startsWith(keyStarts));
     }
 
-    public SolonProps loadEnv(Predicate<String> predicate) {
+    /**
+     * 加载环境变量
+     *
+     * @param condition 条件
+     */
+    public SolonProps loadEnv(Predicate<String> condition) {
         System.getenv().forEach((k, v) -> {
-            if (predicate.test(k)) {
+            if (condition.test(k)) {
                 setProperty(k, v); //可以替换系统属性 update by: 2021-11-05,noear
                 System.setProperty(k, v);
             }
@@ -310,6 +312,7 @@ public final class SolonProps extends Props {
         }
 
         for (Map.Entry kv : sysPropOrg.entrySet()) {
+            //同步系统属性
             if (kv.getKey() instanceof String) {
                 String key = (String) kv.getKey();
 
@@ -333,11 +336,11 @@ public final class SolonProps extends Props {
     protected void plugsScan(List<ClassLoader> classLoaders) {
         for (ClassLoader classLoader : classLoaders) {
             //扫描配置
-            PluginUtil.scanPlugins(classLoader, null ,plugs::add);
+            PluginUtil.scanPlugins(classLoader, null, plugs::add);
         }
 
         //扫描主配置
-        PluginUtil.findPlugins(JarClassLoader.global(), this, plugs::add);
+        PluginUtil.findPlugins(AppClassLoader.global(), this, plugs::add);
 
         //插件排序
         plugsSort();
@@ -345,7 +348,7 @@ public final class SolonProps extends Props {
 
 
     /**
-     * 应用源
+     * 应用源（即启动主类）
      */
     public Class<?> source() {
         return source;
@@ -398,7 +401,7 @@ public final class SolonProps extends Props {
     }
 
     private String serverHost;
-    
+
     /**
      * 获取应用主机名
      */
@@ -409,7 +412,6 @@ public final class SolonProps extends Props {
 
         return serverHost;
     }
-
 
 
     private Integer serverWrapPort;
@@ -430,6 +432,7 @@ public final class SolonProps extends Props {
     }
 
     private String serverWrapHost;
+
     /**
      * 获取应用包装主机
      */
@@ -447,6 +450,7 @@ public final class SolonProps extends Props {
 
 
     private String serverContextPath;
+
     /**
      * 获取服务主上下文路径
      */
@@ -463,7 +467,7 @@ public final class SolonProps extends Props {
      * 设置服务主上下文路径
      *
      * @param path 上下文路径
-     * */
+     */
     public void serverContextPath(String path) {
         if (path == null) {
             serverContextPath = "";
@@ -494,8 +498,8 @@ public final class SolonProps extends Props {
 
     /**
      * 是否为单测
-     * */
-    public boolean testing(){
+     */
+    public boolean testing() {
         return testing;
     }
 
@@ -524,28 +528,28 @@ public final class SolonProps extends Props {
      * 应用名
      */
     public String appName() {
-        return appName;
+        return get("solon.app.name");
     }
 
     /**
      * 应用组
      */
     public String appGroup() {
-        return appGroup;
+        return get("solon.app.group");
     }
 
     /**
      * 命名空间
-     * */
+     */
     public String appNamespace() {
-        return appNamespace;
+        return get("solon.app.namespace");
     }
 
     /**
      * 应用标题
      */
     public String appTitle() {
-        return appTitle;
+        return get("solon.app.title");
     }
 
     /**
@@ -619,29 +623,31 @@ public final class SolonProps extends Props {
     }
 
 
+    Boolean stopSafe;
     /**
      * 停止安全的进行
-     * */
-    public boolean stopSafe(){
+     */
+    public boolean stopSafe() {
+        if(stopSafe == null){
+            stopSafe = "1".equals("solon.stop.safe");
+        }
+
         return stopSafe;
     }
 
-    public void stopSafe(boolean value){
-         stopSafe = value;
+    public void stopSafe(boolean value) {
+        stopSafe = value;
     }
 
-    /**
-     * @deprecated 2.0
-     * */
-    @Deprecated
-    public boolean enableSafeStop(){
-        return stopSafe;
-    }
-
+    Integer stopDelay;
     /**
      * 停止延时
-     * */
+     */
     public int stopDelay() {
+        if(stopDelay == null){
+            stopDelay = Integer.parseInt(get("solon.stop.delay", "10s").replace("s", ""));
+        }
+
         return stopDelay;
     }
 }

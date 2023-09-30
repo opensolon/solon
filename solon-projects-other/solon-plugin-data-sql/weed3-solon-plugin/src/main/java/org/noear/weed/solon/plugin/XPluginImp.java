@@ -13,7 +13,7 @@ import javax.sql.DataSource;
  */
 public class XPluginImp implements Plugin {
     @Override
-    public void start(AopContext context) {
+    public void start(AppContext context) {
         // 事件监听，用于时实初始化
         context.subWrapsOfType(DataSource.class, bw->{
             DbManager.global().reg(bw);

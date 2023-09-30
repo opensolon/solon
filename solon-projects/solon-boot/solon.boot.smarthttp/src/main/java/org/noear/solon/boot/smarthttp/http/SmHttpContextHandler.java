@@ -2,9 +2,11 @@ package org.noear.solon.boot.smarthttp.http;
 
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.smarthttp.XPluginImp;
-import org.noear.solon.core.event.EventBus;
+import org.noear.solon.boot.web.FormUrlencodedUtils;
 import org.noear.solon.core.handle.ContextAsyncListener;
 import org.noear.solon.core.handle.Handler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.smartboot.http.common.enums.HttpStatus;
 import org.smartboot.http.server.HttpRequest;
 import org.smartboot.http.server.HttpResponse;
@@ -19,6 +21,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.RejectedExecutionException;
 
 public class SmHttpContextHandler extends HttpServerHandler {
+    static final Logger log = LoggerFactory.getLogger(SmHttpContextHandler.class);
     static final AttachKey<SmHttpContext> httpHolderKey = AttachKey.valueOf("httpHolder");
 
     protected Executor executor;
@@ -44,7 +47,7 @@ public class SmHttpContextHandler extends HttpServerHandler {
                 try {
                     listener.onComplete(ctx);
                 } catch (Throwable e) {
-                    EventBus.publishTry(e);
+                    log.warn(e.getMessage(), e);
                 }
             }
         }
@@ -57,12 +60,6 @@ public class SmHttpContextHandler extends HttpServerHandler {
             request.setAttachment(new Attachment());
         }
         request.getAttachment().put(httpHolderKey, ctx);
-
-        //增加 gzip 支持
-//        String tmp = ctx.header("Accept-Encoding");
-//        if(tmp != null && tmp.contains("gzip")) {
-//            response.gzip();
-//        }
 
         if (executor == null) {
             handle0(ctx, future);
@@ -101,6 +98,8 @@ public class SmHttpContextHandler extends HttpServerHandler {
                 ctx.headerSet("Solon-Boot", XPluginImp.solon_boot_ver());
             }
 
+            //编码窗体预处理
+            FormUrlencodedUtils.pretreatment(ctx);
             handler.handle(ctx);
 
             if (ctx.innerIsAsync() == false) {
@@ -108,7 +107,7 @@ public class SmHttpContextHandler extends HttpServerHandler {
             }
 
         } catch (Throwable e) {
-            EventBus.publishTry(e);
+            log.warn(e.getMessage(), e);
 
             ctx.innerGetResponse().setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
         }

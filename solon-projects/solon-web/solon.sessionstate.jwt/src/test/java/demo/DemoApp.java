@@ -18,7 +18,7 @@ public class DemoApp {
 
     @Mapping("get")
     public Object get(Context ctx) {
-        return ctx.session("user");
+        return ctx.session("user", Object.class);
     }
 
 

@@ -23,7 +23,7 @@ public class MybatisMapperInterceptor implements InvocationHandler {
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        try (SqlSession session = factory.openSession()) {
+        try (SqlSession session = factory.openSession(true)) {
             Object mapper = session.getMapper(mapperClz);
             return method.invoke(mapper, args);
         }

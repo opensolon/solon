@@ -84,4 +84,20 @@ public class HeaderTest extends HttpTester {
         assert size == bytes.length;
         assert "Hello world!".equals(new String(bytes));
     }
+
+    @Test
+    public void testContentType() throws Exception {
+        String rst = path("/demo2/header/ct").data("name", "solon").post();
+        assert rst.equals("POST::application/x-www-form-urlencoded::solon");
+
+
+        rst = path("/demo2/header/ct").data("name", "solon").multipart(true).post();
+        assert rst.startsWith("POST::multipart/form-data");
+        assert rst.endsWith("::solon");
+        assert rst.equals("POST::multipart/form-data::solon") == false;
+
+
+        rst = path("/demo2/header/ct?name=solon").get();
+        assert rst.equals("GET::null::solon");
+    }
 }

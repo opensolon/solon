@@ -1,7 +1,5 @@
 package org.noear.solon.core;
 
-import org.noear.solon.Solon;
-
 /**
  * 负载均衡器（为服务提供一个简单的负载接口；起到适配中介效果）
  *
@@ -34,10 +32,21 @@ import org.noear.solon.Solon;
  * */
 @FunctionalInterface
 public interface LoadBalance {
+    /**
+     * 获取负载均衡器
+     *
+     * @param service 服务名
+     */
     static LoadBalance get(String service) {
         return get("", service);
     }
 
+    /**
+     * 获取负载均衡器
+     *
+     * @param service 服务名
+     * @param group   服务分组
+     */
     static LoadBalance get(String group, String service) {
         return Bridge.upstreamFactory().create(group, service);
     }

@@ -3,7 +3,7 @@ package org.noear.solon.core;
 import java.lang.annotation.Annotation;
 
 /**
- * Bean 注入器（此类用于扩展AopContext，为其添加注入器）
+ * Bean 注入器（此类用于扩展 AppContext，为其添加注入器）
  *
  * <pre><code>
  * //@Db 注入器添加

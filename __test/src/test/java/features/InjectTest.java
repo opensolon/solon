@@ -71,6 +71,12 @@ public class InjectTest {
     @Inject
     List<DsBean> dsBeanList;
 
+    @Inject("${load2.title}")
+    String load2Title;
+
+    @Inject("${load1.title}")
+    String load1Title;
+
     @Test
     public void test1() {
         assert "noear".equals(username);
@@ -143,16 +149,23 @@ public class InjectTest {
         assert injectSet4_2.length == 3;
     }
 
-    @Bean
+    @Test
     public void inject_dsBeanList() {
         assert dsBeanList != null;
         assert dsBeanList.size() == 2;
     }
 
-    @Bean
+    @Test
     public void inject_dnBeanMap() {
         assert dnBeanMap != null;
         assert dnBeanMap.size() == 2;
         assert dnBeanMap.get("DnBean2") != null;
     }
+
+    @Test
+    public void inject_load1_load2(){
+        assert "load2".equals(load1Title);
+        assert "load1".equals(load2Title);
+    }
+
 }

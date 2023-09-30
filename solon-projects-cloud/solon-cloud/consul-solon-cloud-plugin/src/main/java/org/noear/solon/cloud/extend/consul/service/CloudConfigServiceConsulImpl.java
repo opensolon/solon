@@ -10,7 +10,8 @@ import org.noear.solon.cloud.model.Config;
 import org.noear.solon.cloud.service.CloudConfigObserverEntity;
 import org.noear.solon.cloud.service.CloudConfigService;
 import org.noear.solon.cloud.utils.IntervalUtils;
-import org.noear.solon.core.event.EventBus;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,6 +25,8 @@ import java.util.TimerTask;
  * @since 1.2
  */
 public class CloudConfigServiceConsulImpl extends TimerTask implements CloudConfigService {
+    static final Logger log = LoggerFactory.getLogger(CloudConfigServiceConsulImpl.class);
+
     private final String DEFAULT_GROUP = "DEFAULT_GROUP";
 
     private ConsulClient client;
@@ -145,7 +148,7 @@ public class CloudConfigServiceConsulImpl extends TimerTask implements CloudConf
         try {
             run0();
         } catch (Throwable e) {
-            EventBus.publishTry(e);
+            log.warn(e.getMessage(), e);
         }
     }
 

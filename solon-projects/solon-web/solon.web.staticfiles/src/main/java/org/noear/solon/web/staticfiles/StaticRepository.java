@@ -1,6 +1,7 @@
 package org.noear.solon.web.staticfiles;
 
 import org.noear.solon.Utils;
+import org.noear.solon.core.util.IoUtil;
 
 import java.io.InputStream;
 import java.net.URL;
@@ -32,7 +33,7 @@ public interface StaticRepository {
             URLConnection connection = url.openConnection();
             connection.setUseCaches(useCaches);
             try (InputStream stream = connection.getInputStream()) {
-                Utils.transferToString(stream);
+                IoUtil.transferToString(stream);
             }
         }
     }

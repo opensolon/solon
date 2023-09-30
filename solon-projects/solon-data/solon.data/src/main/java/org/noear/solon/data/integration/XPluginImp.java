@@ -13,7 +13,7 @@ import org.noear.solon.data.tran.TranExecutorImp;
 
 public class XPluginImp implements Plugin {
     @Override
-    public void start(AopContext context) {
+    public void start(AppContext context) {
         //注册缓存工厂
         CacheLib.cacheFactoryAdd("local", new LocalCacheFactoryImpl());
 

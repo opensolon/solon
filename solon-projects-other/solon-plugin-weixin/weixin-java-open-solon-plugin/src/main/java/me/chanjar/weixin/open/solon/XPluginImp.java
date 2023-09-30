@@ -1,6 +1,6 @@
 package me.chanjar.weixin.open.solon;
 
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 import me.chanjar.weixin.open.solon.config.WxOpenServiceAutoConfiguration;
 import me.chanjar.weixin.open.solon.config.storage.WxOpenInJedisConfigStorageConfiguration;
@@ -12,7 +12,7 @@ import me.chanjar.weixin.open.solon.properties.WxOpenProperties;
 public class XPluginImp implements Plugin{
 
 	@Override
-	public void start(AopContext context) throws Throwable {
+	public void start(AppContext context) throws Throwable {
 		context.lifecycle(-99, () -> {
             context.beanMake(WxOpenProperties.class);
             context.beanMake(WxOpenInMemoryConfigStorageConfiguration.class);

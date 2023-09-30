@@ -3,6 +3,7 @@ package org.noear.solon.core.wrap;
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.*;
 import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.aspect.Interceptor;
 import org.noear.solon.core.aspect.InterceptorEntity;
 import org.noear.solon.core.aspect.Invocation;
@@ -26,9 +27,9 @@ import java.util.*;
 public class MethodWrap implements Interceptor, MethodHolder {
 
     public MethodWrap(AopContext ctx, Method m) {
-        context = ctx;
+        context = (AppContext) ctx;
 
-        entityClz = m.getDeclaringClass();
+        declaringClz = m.getDeclaringClass();
 
         method = m;
         parameters = buildParamsWrap(m.getParameters());
@@ -51,7 +52,7 @@ public class MethodWrap implements Interceptor, MethodHolder {
         }
 
         //scan cless @Around
-        for (Annotation anno : entityClz.getAnnotations()) {
+        for (Annotation anno : declaringClz.getAnnotations()) {
             if (anno instanceof Around) {
                 doInterceptorAdd((Around) anno);
             } else {
@@ -64,7 +65,7 @@ public class MethodWrap implements Interceptor, MethodHolder {
             }
         }
 
-        if (interceptors.size() > 0) {
+        if (interceptors.size() > 1) {
             //排序（顺排）
             interceptors.sort(Comparator.comparing(x -> x.getIndex()));
         }
@@ -95,7 +96,7 @@ public class MethodWrap implements Interceptor, MethodHolder {
 
     private void doInterceptorAdd(InterceptorEntity i) {
         if (i != null) {
-            if(interceptorsIdx.contains(i.getReal())){
+            if (interceptorsIdx.contains(i.getReal())) {
                 //去重处理
                 return;
             }
@@ -105,10 +106,10 @@ public class MethodWrap implements Interceptor, MethodHolder {
         }
     }
 
-    private final AopContext context;
+    private final AppContext context;
 
     //实体类型
-    private final Class<?> entityClz;
+    private final Class<?> declaringClz;
     //函数
     private final Method method;
     //函数参数
@@ -124,8 +125,8 @@ public class MethodWrap implements Interceptor, MethodHolder {
 
     /**
      * 是否需要 body（用于 web）
-     * */
-    public boolean isRequiredBody(){
+     */
+    public boolean isRequiredBody() {
         return isRequiredBody;
     }
 
@@ -138,10 +139,11 @@ public class MethodWrap implements Interceptor, MethodHolder {
     }
 
     /**
-     * 获取申明实体类
-     * */
-    public Class<?> getEntityClz() {
-        return entityClz;
+     * 获取申明类
+     */
+    @Override
+    public Class<?> getDeclaringClz() {
+        return declaringClz;
     }
 
     /**
@@ -193,10 +195,15 @@ public class MethodWrap implements Interceptor, MethodHolder {
         return method.getAnnotation(type);
     }
 
+    @Override
+    public <T extends Annotation> T getDeclaringClzAnnotation(Class<T> type) {
+        return null;
+    }
+
 
     /**
      * 检测是否存在注解
-     * */
+     */
     public boolean isAnnotationPresent(Class<? extends Annotation> annotationClass) {
         return method.isAnnotationPresent(annotationClass);
     }
@@ -228,6 +235,9 @@ public class MethodWrap implements Interceptor, MethodHolder {
 
     /**
      * 执行（原生处理）
+     *
+     * @param obj  目标对象
+     * @param args 执行参数
      */
     public Object invoke(Object obj, Object[] args) throws Throwable {
         try {
@@ -240,6 +250,9 @@ public class MethodWrap implements Interceptor, MethodHolder {
 
     /**
      * 执行切面（即带拦截器的处理）
+     *
+     * @param obj  目标对象（要求：未代理对象。避免二次拦截）
+     * @param args 执行参数
      */
     public Object invokeByAspect(Object obj, Object[] args) throws Throwable {
         Invocation inv = new Invocation(obj, args, this, interceptors);

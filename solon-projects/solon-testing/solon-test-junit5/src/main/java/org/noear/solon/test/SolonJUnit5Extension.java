@@ -1,8 +1,7 @@
 package org.noear.solon.test;
 
 import org.junit.jupiter.api.extension.*;
-import org.noear.solon.Utils;
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.util.ClassUtil;
 
 /**
@@ -10,7 +9,7 @@ import org.noear.solon.core.util.ClassUtil;
  * @since 1.10
  */
 public class SolonJUnit5Extension implements TestInstanceFactory {
-    private AopContext aopContext;
+    private AppContext appContext;
 
     @Override
     public Object createTestInstance(TestInstanceFactoryContext factory, ExtensionContext extensionContext) throws TestInstantiationException {
@@ -18,13 +17,13 @@ public class SolonJUnit5Extension implements TestInstanceFactory {
         try {
             //init
             Class<?> klass = factory.getTestClass();
-            if (aopContext == null) {
-                aopContext = RunnerUtils.initRunner(klass);
+            if (appContext == null) {
+                appContext = RunnerUtils.initRunner(klass);
             }
 
             //create
             Object tmp = ClassUtil.newInstance(klass);
-            tmp = RunnerUtils.initTestTarget(aopContext, tmp);
+            tmp = RunnerUtils.initTestTarget(appContext, tmp);
 
             return tmp;
         } catch (Throwable e) {

@@ -7,7 +7,6 @@ import net.hasor.utils.StringUtils;
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
-import org.noear.solon.core.AopContext;
 import org.noear.solon.core.bean.InitializingBean;
 
 import java.io.IOException;
@@ -21,7 +20,7 @@ import java.io.IOException;
 @Configuration
 public class HasorConfiguration implements InitializingBean {
     @Inject
-    private AopContext context;
+    private org.noear.solon.core.AppContext context;
 
     /**
      * 此构建函数，是为了手动写代码提供支持；充许EnableHasor注在别的临时类上实现配置

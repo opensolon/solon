@@ -1,6 +1,6 @@
 package org.apache.logging.log4j.solon.integration;
 
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 
 /**
@@ -10,7 +10,7 @@ import org.noear.solon.core.Plugin;
 public class XPluginImp extends LogIncubatorImpl implements Plugin {
 
     @Override
-    public void start(AopContext context) throws Throwable {
+    public void start(AppContext context) throws Throwable {
         //容器加载完后，允许再次处理
         incubate();
     }

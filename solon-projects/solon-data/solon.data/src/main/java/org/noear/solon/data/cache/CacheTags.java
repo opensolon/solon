@@ -92,16 +92,14 @@ public class CacheTags {
 
         for (String cacheKey : cacheKeyList) {
             if (cacheKey.startsWith(TAG_SECONDS) == false) {
-                Object temp = _cache.get(cacheKey);
+                if (newValue == null) {
+                    //如果值为null，则删除
+                    _cache.remove(cacheKey);
+                } else {
+                    Object temp = _cache.get(cacheKey, newValue.getClass());
 
-                if (temp != null) {
-                    //如果之前有缓存，则：
-                    //
-                    if (newValue == null) {
-                        //如果值为null，则删除
-                        _cache.remove(cacheKey);
-                    } else {
-                        //类型一样才更新 //避免引起莫名的错
+                    if (temp != null) {
+                        //如果之前有缓存，则改 //类型一样才更新 //避免引起莫名的错
                         if (newValue.getClass() == temp.getClass()) {
                             _cache.store(cacheKey, newValue, seconds);
                         }
@@ -117,7 +115,7 @@ public class CacheTags {
      * @param tagKey 标签键
      * */
     protected List<String> _get(String tagKey) {
-        Object temp = _cache.get(tagKey);
+        Object temp = _cache.get(tagKey, ArrayList.class);
 
         if (temp == null)
             return new ArrayList<>();

@@ -1,6 +1,6 @@
 package org.noear.solon.health.detector.integration;
 
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.event.AppBeanLoadEndEvent;
 import org.noear.solon.core.event.EventBus;
@@ -14,7 +14,7 @@ import org.noear.solon.health.detector.impl.*;
  */
 public class XPluginImp implements Plugin {
     @Override
-    public void start(AopContext context) {
+    public void start(AppContext context) {
         //添加内部探测器
         DetectorManager.add(new CpuDetector());
         DetectorManager.add(new JvmMemoryDetector());

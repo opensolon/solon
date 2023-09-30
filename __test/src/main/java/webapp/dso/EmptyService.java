@@ -1,10 +1,10 @@
 package webapp.dso;
 
-import org.noear.solon.annotation.ProxyComponent;
+import org.noear.solon.annotation.Component;
 
 /**
  * @author noear 2023/2/28 created
  */
-@ProxyComponent
+@Component
 public class EmptyService {
 }

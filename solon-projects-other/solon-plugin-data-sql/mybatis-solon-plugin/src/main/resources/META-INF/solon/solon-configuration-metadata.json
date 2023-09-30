@@ -1,0 +1,24 @@
+{
+  "properties": [
+    {
+      "name": "mybatis.*.typeAliases",
+      "type": "java.lang.String[]",
+      "description": "类型别名"
+    },
+    {
+      "name": "mybatis.*.typeHandlers",
+      "type": "java.lang.String[]",
+      "description": "类型处理"
+    },
+    {
+      "name": "mybatis.*.mappers",
+      "type": "java.lang.String[]",
+      "description": "映射"
+    },
+    {
+      "name": "mybatis.*.configuration",
+      "type": "org.apache.ibatis.session.Configuration",
+      "description": "会话配置"
+    }
+  ]
+}

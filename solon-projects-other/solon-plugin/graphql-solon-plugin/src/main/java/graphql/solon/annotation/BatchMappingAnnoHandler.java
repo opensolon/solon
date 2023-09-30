@@ -3,7 +3,7 @@ package graphql.solon.annotation;
 import java.lang.reflect.Method;
 import org.apache.commons.lang3.StringUtils;
 import org.noear.solon.Utils;
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.BeanWrap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +16,7 @@ public class BatchMappingAnnoHandler extends BaseSchemaMappingAnnoHandler<BatchM
 
     private static Logger log = LoggerFactory.getLogger(BatchMappingAnnoHandler.class);
 
-    public BatchMappingAnnoHandler(AopContext context) {
+    public BatchMappingAnnoHandler(AppContext context) {
         super(context);
     }
 

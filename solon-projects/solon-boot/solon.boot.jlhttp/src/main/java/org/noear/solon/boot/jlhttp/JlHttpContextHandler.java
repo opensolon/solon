@@ -1,12 +1,15 @@
 package org.noear.solon.boot.jlhttp;
 
 import org.noear.solon.boot.ServerProps;
-import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.Handler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
 public class JlHttpContextHandler implements HTTPServer.ContextHandler {
+    static final Logger log = LoggerFactory.getLogger(JlHttpContextHandler.class);
+
     private final Handler handler;
 
     public JlHttpContextHandler(Handler handler) {
@@ -18,7 +21,7 @@ public class JlHttpContextHandler implements HTTPServer.ContextHandler {
         try {
             handleDo(request, response);
         } catch (Throwable e) {
-            EventBus.publishTry(e);
+            log.warn(e.getMessage(), e);
 
             if (!response.headersSent()) {
                 response.sendHeaders(500);
@@ -45,7 +48,7 @@ public class JlHttpContextHandler implements HTTPServer.ContextHandler {
                 ctx.innerCommit();
             }
         } catch (Throwable e) {
-            EventBus.publishTry(e);
+            log.warn(e.getMessage(), e);
 
             if (!response.headersSent()) {
                 response.sendError(500);

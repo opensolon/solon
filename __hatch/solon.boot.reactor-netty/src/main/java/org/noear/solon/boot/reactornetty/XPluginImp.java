@@ -2,7 +2,7 @@ package org.noear.solon.boot.reactornetty;
 
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.util.LogUtil;
 import reactor.netty.DisposableServer;
@@ -20,7 +20,7 @@ public class XPluginImp implements Plugin {
     }
 
     @Override
-    public void start(AopContext context) {
+    public void start(AppContext context) {
         if (Solon.app().enableHttp() == false) {
             return;
         }

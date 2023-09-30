@@ -7,8 +7,9 @@ import net.spy.memcached.auth.AuthDescriptor;
 import net.spy.memcached.auth.PlainCallbackHandler;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
-import org.noear.solon.core.event.EventBus;
 import org.noear.solon.data.cache.CacheService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.Properties;
@@ -20,6 +21,8 @@ import java.util.Properties;
  * @since 1.3
  */
 public class MemCacheService implements CacheService {
+    static final Logger log = LoggerFactory.getLogger(MemCacheService.class);
+
     protected String _cacheKeyHead;
     protected int _defaultSeconds;
 
@@ -107,18 +110,18 @@ public class MemCacheService implements CacheService {
         try {
             client.set(newKey, seconds, obj);
         } catch (Exception e) {
-            EventBus.publishTry(e);
+            log.warn(e.getMessage(), e);
         }
     }
 
     @Override
-    public Object get(String key) {
+    public <T> T get(String key, Class<T> clz) {
         String newKey = newKey(key);
 
         try {
-            return client.get(newKey);
+            return (T)client.get(newKey);
         } catch (Exception e) {
-            EventBus.publishTry(e);
+            log.warn(e.getMessage(), e);
             return null;
         }
     }

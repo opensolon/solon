@@ -1,8 +1,9 @@
 package org.noear.solon.health.detector.impl;
 
-import org.noear.solon.core.event.EventBus;
 import org.noear.solon.health.detector.AbstractDetector;
 import org.noear.solon.health.detector.util.CmdUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -16,6 +17,8 @@ import java.util.regex.Pattern;
  * @since 1.2
  * */
 public class CpuDetector extends AbstractDetector {
+    static final Logger log = LoggerFactory.getLogger(CpuDetector.class);
+
     private static final Pattern wmicPattern = Pattern.compile("(.*)\\s+([\\d]+)\\s+([\\d]+)", 42);
     private static final Pattern topPattern = Pattern.compile("([\\d]+.[\\d]+)[%?|\\s?]id,", 42);
 
@@ -35,7 +38,7 @@ public class CpuDetector extends AbstractDetector {
                 readCpuRatioForLinux(info);
             }
         } catch (Exception e) {
-            EventBus.publishTry(e);
+            log.warn(e.getMessage(), e);
             info.put("err","Get CPU Info Failed: " + e.getMessage() + "");
 
         }

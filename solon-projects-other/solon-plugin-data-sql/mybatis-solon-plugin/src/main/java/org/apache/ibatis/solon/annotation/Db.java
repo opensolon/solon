@@ -15,7 +15,7 @@ import java.lang.annotation.*;
 @Documented
 public @interface Db {
     /**
-     * sqlSessionFactory bean name
+     * ds bean name
      * */
     String value() default "";
 }

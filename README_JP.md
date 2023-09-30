@@ -1,7 +1,7 @@
 <h1 align="center" style="text-align:center;">
 <img src="solon_icon.png" width="128" />
 <br />
-Solon v2.4.5
+Solon v2.5.6
 </h1>
 <p align="center">
 	<strong>Javaの新しい生態系アプリケーション開発フレームワーク、より小さく、より速く、より簡単に！</strong>
@@ -54,19 +54,19 @@ Solon v2.4.5
 
 ## 紹介：
 
-ゼロから構築されます。独自の標準規範と開放的なエコシステムを備えており、異なるエコプラグインを組み合わせて、様々なニーズに対応し、迅速にカスタマイズや開発が可能です。
+ゼロから構築され。独自の標準規範と開放的なエコシステムを備えており、異なるエコプラグインを組み合わせて様々なニーズに対応し、カスタマイズが可能、快速的に開発可能。
 
 * **理性的・簡易的・効率的・開放的・エコシステム的**
-* JDK8、JDK11、JDK17、JDK20に対応可能
+* JDK8、JDK11、JDK17、JDK21に対応可能
 * Http、WebSocket、Socket の3つの信号を統合した開発体験 (通称: 3ソース統合)
-* 「注釈」と「手動」の2種類のモードをサポートし、必要に応じて自由に操作可能
+* 「注釈」と「手動」2種類のモードをサポートし、必要に応じて自由に操作可能
 * Not Servlet、あらゆる通信インフラストラクチャに適合（最小0.3 mでrpcアーキテクチャが実行可能）
 * [ユニークなIOC/AOP容器のデザインです](https://solon.noear.org/article/241)。プラグインが多くなったからといって起動が遅くなることはありません
 * Web、Data、Job、Remoting、Cloudなどの開発シナリオをサポート
 * Handler+ContextとListener+Messageの2つのイベントモデルを両立
 * プラグイン式の拡張を強調し、異なるアプリケーションシーンに対応可能
 * GraalVm Native Imageパッケージをサポート
-* サービスプラグイン「ホットプラグ」「ホットプラグ」「ホットマネジメント」を許可します。
+* サービスプラグインには「ホットプラグ」「ホットプラグ」「ホットマネジメント」ができます。
 
 
 ## エコシステム：
@@ -79,7 +79,7 @@ Solon v2.4.5
 <parent>
     <groupId>org.noear</groupId>
     <artifactId>solon-parent</artifactId>
-    <version>2.4.5</version>   
+    <version>2.5.6</version>   
 </parent>
 
 <dependencies>
@@ -92,22 +92,22 @@ Solon v2.4.5
 
 ```java
 @SolonMain
-public class App{
-    public static void main(String[] args){
-        Solon.start(App.class, args, app->{
+public class App {
+    public static void main(String[] args) {
+        Solon.start(App.class, args, app -> {
             //Handler mode：
-            app.get("/hello",(c)->c.output("Hello world!"));
+            app.get("/hello", c -> c.output("Hello world!"));
         });
     }
 }
 
 //Controller mode：(mvc or rest-api)
 @Controller
-public class HelloController{
+public class HelloController {
     //Socketメソッドタイプの修飾
     @Socket
     @Mapping("/mvc/hello")
-    public String hello(String name){
+    public String hello(String name) {
         return "Hello " + name;
     }
 }
@@ -115,16 +115,16 @@ public class HelloController{
 //Remoting mode：(rpc)
 @Mapping("/rpc/")
 @Remoting
-public class HelloServiceImpl implements HelloService{
+public class HelloServiceImpl implements HelloService {
     @Override
-    public String hello(){
+    public String hello() {
         return "Hello world!";
     }
 }
 ```
 
 
-## メインフレームワークおよび高速統合開発パッケージ：
+## メインフレームワーク及び快速統合開発パッケージ：
 
 ###### メインフレーム：
 
@@ -134,27 +134,29 @@ public class HelloServiceImpl implements HelloService{
 | org.noear:solon        | メインフレーム                         |
 | org.noear:nami         | 随伴フレームワーク（solon remotingのクライアントとして） |
 
-###### 開発パッケージと相互関係の迅速な統合：
+###### 快速統合開発パッケージ及びお互いの関係：
 
-| コンポーネントパッケージ                       | 説明                                                          |
-|---------------------------|-------------------------------------------------------------|
-| org.noear:solon-lib       | 基盤統合パッケージの迅速な開発                                             |
-| org.noear:solon-api       | solon-lib + jlhttp boot；高速開発インタフェースアプリケーション                 |
-| org.noear:solon-web       | solon-api + freemarker + sessionstate；高速開発WEBアプリケーション       |
-| org.noear:solon-beetl-web | solon-api + beetl + beetlsql + sessionstate；高速開発WEBアプリケーション |
-| org.noear:solon-enjoy-web | solon-api + enjoy + arp + sessionstate；高速開発WEBアプリケーション      |
-| org.noear:solon-rpc       | solon-api + nami；高速開発RPCアプリケーション                            |
-| org.noear:solon-cloud     | solon-rpc + consul；マイクロサービスアプリケーションの迅速な開発                                |
+| コンポーネントパッケージ                       | 説明                                                               |
+|---------------------------|------------------------------------------------------------------|
+| org.noear:solon-lib       | 快速開発の基礎統合パッケージ                                                   |
+| org.noear:solon-api       | solon-lib + jlhttp boot；快速的にインタフェースアプリケーション                       |
+| org.noear:solon-web       | solon-api + freemarker + sessionstate；快速的にWEBアプリケーションを開発します       |
+| org.noear:solon-beetl-web | solon-api + beetl + beetlsql + sessionstate；快速的にWEBアプリケーションを開発します |
+| org.noear:solon-enjoy-web | solon-api + enjoy + arp + sessionstate；快速的にWEBアプリケーションを開発します      |
+| org.noear:solon-rpc       | solon-api + nami；快速的にRPCアプリケーションを開発します                            |
+| org.noear:solon-cloud     | solon-rpc + consul；快速的にマイクロサービスアプリケーションを開発します                        |
 
 
-## 公式サイトおよび関連例：
+## 公式サイトと関するデモ・ケース：
 
 * 公式サイト：[https://solon.noear.org](https://solon.noear.org)
 * 公式サイトのデモ：[https://gitee.com/noear/solon-examples](https://gitee.com/noear/solon-examples)
 * プロジェクトのシングルテスト：[__test](./__test/) 
-* プロジェクトの詳細機能の例：[solon_api_demo](https://gitee.com/noear/solon_api_demo)  、 [solon_rpc_demo](https://gitee.com/noear/solon_rpc_demo) 、 [solon_socketd_demo](https://gitee.com/noear/solon_socketd_demo) 、 [solon_cloud_demo](https://gitee.com/noear/solon_cloud_demo) 、 [solon_auth_demo](https://gitee.com/noear/solon_auth_demo)
+* プロジェクトの詳細機能のデモ：[solon_api_demo](https://gitee.com/noear/solon_api_demo)  、 [solon_rpc_demo](https://gitee.com/noear/solon_rpc_demo) 、 [solon_socketd_demo](https://gitee.com/noear/solon_socketd_demo) 、 [solon_cloud_demo](https://gitee.com/noear/solon_cloud_demo) 、 [solon_auth_demo](https://gitee.com/noear/solon_auth_demo)
+* ユーザーケース：[オープンソースプロジェクトです](https://solon.noear.org/article/555)、[ユーザービジネスです](https://solon.noear.org/article/cases)
 
-## 特にJetBrainsのオープンソースプロジェクトへのサポートに感謝します
+
+## オープンソースプロジェクトへのサポートしてくれたJetBrainsに特別感謝致します
 
 <a href="https://jb.gg/OpenSourceSupport">
   <img src="https://user-images.githubusercontent.com/8643542/160519107-199319dc-e1cf-4079-94b7-01b6b8d23aa6.png" align="left" height="100" width="100"  alt="JetBrains">

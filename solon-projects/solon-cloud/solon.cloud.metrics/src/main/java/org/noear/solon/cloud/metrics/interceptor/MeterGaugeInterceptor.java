@@ -6,14 +6,16 @@ import org.noear.solon.Utils;
 import org.noear.solon.cloud.metrics.annotation.MeterGauge;
 import org.noear.solon.core.aspect.Invocation;
 
+import java.util.concurrent.atomic.AtomicReference;
+
 
 /**
- * MeterTimer 拦截处理
+ * MeterGauge 拦截处理
  *
  * @author bai
  * @since 2.4
  */
-public class MeterGaugeInterceptor extends BaseMeterInterceptor<MeterGauge, Number> {
+public class MeterGaugeInterceptor extends BaseMeterInterceptor<MeterGauge, AtomicReference<Double>> {
 
     @Override
     protected MeterGauge getAnno(Invocation inv) {
@@ -32,17 +34,23 @@ public class MeterGaugeInterceptor extends BaseMeterInterceptor<MeterGauge, Numb
 
     @Override
     protected Object metering(Invocation inv, MeterGauge anno) throws Throwable {
+        String meterName = getMeterName(inv, anno);
+        AtomicReference<Double> meter = getMeter(meterName, () -> {
+            AtomicReference<Double> numberReference = new AtomicReference<>();
+
+            Gauge.builder(meterName, numberReference, AtomicReference<Double>::get)
+                    .tags(getMeterTags(inv, anno.tags()))
+                    .description(anno.description())
+                    .register(Metrics.globalRegistry);
+
+            return numberReference;
+        });
+
         Object rst = inv.invoke();
 
         //计变数
         if (rst instanceof Number) {
-            String meterName = getMeterName(inv, anno);
-            Number number = (Number) rst;
-
-            Gauge.builder(meterName, number, Number::doubleValue)
-                    .tags(getMeterTags(inv, anno.tags()))
-                    .description(anno.description())
-                    .register(Metrics.globalRegistry);
+            meter.set(((Number) rst).doubleValue());
         }
 
         return rst;

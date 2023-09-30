@@ -1,12 +1,12 @@
 package org.noear.solon.extend.sqltoy;
 
 import org.noear.solon.Solon;
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
-import org.noear.solon.core.event.EventBus;
 import org.noear.solon.data.cache.CacheService;
 import org.noear.solon.extend.sqltoy.annotation.Db;
 import org.noear.solon.extend.sqltoy.configure.SqlToyContextProperties;
+import org.noear.solon.extend.sqltoy.impl.SolonAppContext;
 import org.noear.solon.extend.sqltoy.translate.SolonTranslateCacheManager;
 import org.sagacity.sqltoy.SqlToyContext;
 
@@ -20,10 +20,10 @@ import org.sagacity.sqltoy.SqlToyContext;
  */
 public class XPluginImp implements Plugin {
 
-    AopContext context;
+    AppContext context;
 
     @Override
-    public void start(AopContext context) {
+    public void start(AppContext context) throws Throwable {
         this.context = context;
 
         //尝试初始化 rdb
@@ -36,29 +36,25 @@ public class XPluginImp implements Plugin {
             properties.setDebug(true);
         }
 
-        try {
-            final SqlToyContext sqlToyContext = new SqlToyContextBuilder(properties, context).build();
+        SolonAppContext solonAppContext = new SolonAppContext(context);
+        final SqlToyContext sqlToyContext = new SqlToyContextBuilder(properties, solonAppContext).build();
 
-            if ("solon".equals(properties.getCacheType()) || properties.getCacheType() == null) {
-                context.getWrapAsync(CacheService.class, bw -> {
-                    sqlToyContext.setTranslateCacheManager(new SolonTranslateCacheManager(bw.get()));
-                    try {
-                        DbManager.setContext(sqlToyContext);
-                        initSqlToy(sqlToyContext);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                });
-            } else {
-                DbManager.setContext(sqlToyContext);
-                initSqlToy(sqlToyContext);
-            }
-
-            context.beanInjectorAdd(Db.class, new DbInjector());
-        } catch (Exception e) {
-            //e.printStackTrace();
-            EventBus.publishTry(e); //转到事件总线
+        if ("solon".equals(properties.getCacheType()) || properties.getCacheType() == null) {
+            context.getWrapAsync(CacheService.class, bw -> {
+                sqlToyContext.setTranslateCacheManager(new SolonTranslateCacheManager(bw.get()));
+                try {
+                    DbManager.setContext(sqlToyContext);
+                    initSqlToy(sqlToyContext);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+        } else {
+            DbManager.setContext(sqlToyContext);
+            initSqlToy(sqlToyContext);
         }
+
+        context.beanInjectorAdd(Db.class, new DbInjector());
     }
 
     private void initSqlToy(SqlToyContext sqlToyContext) throws Exception {

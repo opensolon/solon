@@ -6,7 +6,7 @@ import org.noear.solon.SolonApp;
 import org.noear.solon.boot.ServerConstants;
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.prop.impl.HttpServerProps;
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 
 /**
@@ -17,7 +17,7 @@ public class XPluginImp implements Plugin {
     Vertx vertx;
 
     @Override
-    public void start(AopContext context) throws Throwable {
+    public void start(AppContext context) throws Throwable {
         if (Solon.app().enableHttp() == false) {
             return;
         }

@@ -7,9 +7,9 @@ import java.util.List;
 import java.util.function.Consumer;
 
 /**
- * 变量收集器（主要为 Configuration 构建 method bean 时服务）
+ * 变量收集器，收集完成后会进行回调（主要为 Configuration 构建 method bean 时服务）
  *
- * @see AopContext#tryBuildBean
+ * @see AppContext#tryBuildBean
  * @author noear
  * @since 1.0
  * */

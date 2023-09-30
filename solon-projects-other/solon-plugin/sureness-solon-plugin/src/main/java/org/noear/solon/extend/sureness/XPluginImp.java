@@ -1,7 +1,7 @@
 package org.noear.solon.extend.sureness;
 
 import org.noear.solon.Solon;
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.handle.Result;
 import org.noear.solon.extend.sureness.integration.SurenessConfiguration;
 import com.usthe.sureness.subject.SubjectSum;
@@ -19,7 +19,7 @@ import java.util.UUID;
  */
 public class XPluginImp implements Plugin {
     @Override
-    public void start(AopContext context) {
+    public void start(AppContext context) {
         context.beanScan(SurenessConfiguration.class);
 
         // issue jwt rest api

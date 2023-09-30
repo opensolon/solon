@@ -1,7 +1,7 @@
 <h1 align="center" style="text-align:center;">
 <img src="solon_icon.png" width="128" />
 <br />
-Solon v2.4.5
+Solon v2.5.6
 </h1>
 <p align="center">
 	<strong>Java 新的生态型应用开发框架，更小、更快、更简单！</strong>
@@ -57,7 +57,7 @@ Solon v2.4.5
 从零开始构建。有自己的标准规范与开放生态。组合不同的生态插件应对不同需求，方便定制，快速开发：
 
 * **克制、简洁、高效、开放、生态**
-* 支持 JDK8、JDK11、JDK17、JDK20
+* 支持 JDK8、JDK11、JDK17、JDK21
 * Http、WebSocket、Socket 三种信号统一的开发体验（俗称：三源合一）
 * 支持“注解”与“手动”两种模式，按需自由操控
 * Not Servlet，可以适配任何基础通讯框架（最小 0.3m 运行rpc架构）
@@ -79,7 +79,7 @@ Solon v2.4.5
 <parent>
     <groupId>org.noear</groupId>
     <artifactId>solon-parent</artifactId>
-    <version>2.4.5</version>   
+    <version>2.5.6</version>   
 </parent>
 
 <dependencies>
@@ -92,22 +92,22 @@ Solon v2.4.5
 
 ```java
 @SolonMain
-public class App{
-    public static void main(String[] args){
-        Solon.start(App.class, args, app->{
+public class App {
+    public static void main(String[] args) {
+        Solon.start(App.class, args, app -> {
             //Handler 模式：
-            app.get("/hello",(c)->c.output("Hello world!"));
+            app.get("/hello", c -> c.output("Hello world!"));
         });
     }
 }
 
 //Controller 模式：(mvc or rest-api)
 @Controller
-public class HelloController{
+public class HelloController {
     //限定 Socket 方法类型
     @Socket
     @Mapping("/mvc/hello")
-    public String hello(String name){
+    public String hello(String name) {
         return "Hello " + name;
     }
 }
@@ -115,9 +115,9 @@ public class HelloController{
 //Remoting 模式：(rpc)
 @Mapping("/rpc/")
 @Remoting
-public class HelloServiceImpl implements HelloService{
+public class HelloServiceImpl implements HelloService {
     @Override
-    public String hello(){
+    public String hello() {
         return "Hello world!";
     }
 }
@@ -156,12 +156,13 @@ public class HelloServiceImpl implements HelloService{
 
 交流群里，会提供 "保姆级" 支持和帮助。如有需要，也可提供技术培训和顾问服务
 
-## 官网及相关示例：
+## 官网及相关示例、案例：
 
 * 官网地址：[https://solon.noear.org](https://solon.noear.org)
 * 官网配套演示：[https://gitee.com/noear/solon-examples](https://gitee.com/noear/solon-examples)
 * 项目单测：[__test](./__test/) 
 * 项目更多功能示例：[solon_api_demo](https://gitee.com/noear/solon_api_demo)  、 [solon_rpc_demo](https://gitee.com/noear/solon_rpc_demo) 、 [solon_socketd_demo](https://gitee.com/noear/solon_socketd_demo) 、 [solon_cloud_demo](https://gitee.com/noear/solon_cloud_demo) 、 [solon_auth_demo](https://gitee.com/noear/solon_auth_demo)
+* 用户案例：[用户开源项目](https://solon.noear.org/article/555)、[用户商业项目](https://solon.noear.org/article/cases)
 
 ## 特别感谢JetBrains对开源项目支持：
 

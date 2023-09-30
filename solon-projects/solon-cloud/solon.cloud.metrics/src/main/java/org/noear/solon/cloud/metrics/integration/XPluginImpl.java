@@ -8,18 +8,12 @@ import io.micrometer.core.instrument.binder.MeterBinder;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudManager;
+import org.noear.solon.cloud.metrics.annotation.*;
 import org.noear.solon.cloud.metrics.export.MeterOpener;
 import org.noear.solon.cloud.metrics.export.PrometheusOpener;
-import org.noear.solon.cloud.metrics.annotation.MeterGauge;
-import org.noear.solon.cloud.metrics.annotation.MeterSummary;
-import org.noear.solon.cloud.metrics.annotation.MeterCounter;
-import org.noear.solon.cloud.metrics.annotation.MeterTimer;
-import org.noear.solon.cloud.metrics.interceptor.MeterGaugeInterceptor;
-import org.noear.solon.cloud.metrics.interceptor.MeterSummaryInterceptor;
-import org.noear.solon.cloud.metrics.interceptor.MeterCounterInterceptor;
-import org.noear.solon.cloud.metrics.interceptor.MeterTimerInterceptor;
+import org.noear.solon.cloud.metrics.interceptor.*;
 
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.event.AppBeanLoadEndEvent;
 import org.noear.solon.core.event.EventBus;
@@ -36,12 +30,13 @@ public class XPluginImpl implements Plugin {
     List<MeterOpener> meterOpeners = new ArrayList<>();
 
     @Override
-    public void start(AopContext context) {
+    public void start(AppContext context) {
         //增加注解支持
         context.beanInterceptorAdd(MeterCounter.class, new MeterCounterInterceptor());
         context.beanInterceptorAdd(MeterGauge.class, new MeterGaugeInterceptor());
         context.beanInterceptorAdd(MeterSummary.class, new MeterSummaryInterceptor());
         context.beanInterceptorAdd(MeterTimer.class, new MeterTimerInterceptor());
+        context.beanInterceptorAdd(MeterLongTimer.class, new MeterLongTimerInterceptor());
 
         //订阅 MeterRegistry
         context.subBeansOfType(MeterRegistry.class, registry -> {
@@ -76,7 +71,7 @@ public class XPluginImpl implements Plugin {
         CloudManager.register(new CloudMetricServiceImpl());
     }
 
-    private void forOpener(AopContext aopContext) {
+    private void forOpener(AppContext aopContext) {
         //订阅 MeterOpener
         meterOpeners.add(new PrometheusOpener());
         aopContext.subBeansOfType(MeterOpener.class, bean -> {

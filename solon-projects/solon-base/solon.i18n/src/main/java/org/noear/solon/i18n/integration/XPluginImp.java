@@ -1,7 +1,7 @@
 package org.noear.solon.i18n.integration;
 
 import org.noear.solon.Solon;
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.i18n.I18nUtil;
 import org.noear.solon.i18n.annotation.I18n;
@@ -11,7 +11,7 @@ import org.noear.solon.i18n.annotation.I18n;
  */
 public class XPluginImp implements Plugin {
     @Override
-    public void start(AopContext context) {
+    public void start(AppContext context) {
         context.beanInterceptorAdd(I18n.class, I18nInterceptor.instance);
 
         Solon.app().filter(-9, (ctx, chain) -> {

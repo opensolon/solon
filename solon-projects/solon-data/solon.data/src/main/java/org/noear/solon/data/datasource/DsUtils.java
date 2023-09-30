@@ -6,7 +6,7 @@ import org.noear.solon.core.PropsConverter;
 import org.noear.solon.core.util.ClassUtil;
 
 import javax.sql.DataSource;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Properties;
 
@@ -94,7 +94,7 @@ public class DsUtils {
         }
 
 
-        Map<String, DataSource> dataSourceMap = new HashMap<>();
+        Map<String, DataSource> dataSourceMap = new LinkedHashMap<>();
         groupProps.forEach((key, prop) -> {
             if (prop.size() > 1) {
                 //超过1个以上的，才可能是数据源属性

@@ -1,0 +1,4 @@
+
+load1:
+  name: "load1"
+  title: "${load2.name}"

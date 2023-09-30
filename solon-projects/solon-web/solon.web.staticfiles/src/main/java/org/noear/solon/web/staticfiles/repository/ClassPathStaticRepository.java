@@ -1,7 +1,7 @@
 package org.noear.solon.web.staticfiles.repository;
 
 import org.noear.solon.Solon;
-import org.noear.solon.core.JarClassLoader;
+import org.noear.solon.core.AppClassLoader;
 import org.noear.solon.core.util.ResourceUtil;
 import org.noear.solon.web.staticfiles.StaticRepository;
 
@@ -27,7 +27,7 @@ public class ClassPathStaticRepository implements StaticRepository {
      * @param location 位置
      */
     public ClassPathStaticRepository(String location) {
-        this(JarClassLoader.global(), location);
+        this(AppClassLoader.global(), location);
     }
 
     public ClassPathStaticRepository(ClassLoader classLoader, String location) {

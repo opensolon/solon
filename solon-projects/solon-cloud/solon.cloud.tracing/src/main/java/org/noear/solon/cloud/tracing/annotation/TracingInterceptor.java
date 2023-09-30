@@ -35,7 +35,7 @@ public class TracingInterceptor implements Interceptor {
 
         if (anno == null) {
             //支持注解在类上
-            anno = inv.method().getMethod().getDeclaringClass().getAnnotation(Tracing.class);
+            anno = inv.method().getDeclaringClzAnnotation(Tracing.class);
         }
 
         if (anno == null) {
@@ -60,7 +60,7 @@ public class TracingInterceptor implements Interceptor {
     public Span buildSpan(Invocation inv, Tracing anno) {
         String spanName = Utils.annoAlias(anno.value(), anno.name());
         if (Utils.isEmpty(spanName)) {
-            spanName = inv.method().getMethod().getDeclaringClass().getSimpleName()
+            spanName = inv.method().getDeclaringClz().getSimpleName()
                     + "::"
                     + inv.method().getMethod().getName();
         }
@@ -68,7 +68,7 @@ public class TracingInterceptor implements Interceptor {
         //实例化构建器
         Tracer.SpanBuilder spanBuilder = tracer.buildSpan(spanName);
 
-        spanBuilder.withTag("clz.fullname", inv.method().getMethod().getDeclaringClass().getName());
+        spanBuilder.withTag("clz.fullname", inv.method().getDeclaringClz().getName());
 
         //添加标志
         String tags = InvKeys.buildByTmlAndInv(anno.tags(), inv);

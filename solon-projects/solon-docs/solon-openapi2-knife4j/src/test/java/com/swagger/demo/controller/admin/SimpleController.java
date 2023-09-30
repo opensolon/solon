@@ -1,5 +1,6 @@
 package com.swagger.demo.controller.admin;
 
+import com.swagger.demo.model.ResultModelEx;
 import com.swagger.demo.model.bean.DeviceParamBean;
 import com.swagger.demo.model.dto.EquipDto;
 import com.swagger.demo.model.dto.MachineDto;
@@ -9,6 +10,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.noear.snack.ONode;
+import org.noear.solon.annotation.Body;
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Mapping;
 import io.swagger.solon.annotation.ApiRes;
@@ -128,6 +130,30 @@ public class SimpleController {
         swaggerRes.setData(kv);
 
         return swaggerRes;
+    }
+
+    @ApiOperation("test62")
+    @Mapping("test62")
+    public ResultModel test6_2(ResultModel model) {
+       return model;
+    }
+
+    @ApiOperation("test62-2")
+    @Mapping("test62-2")
+    public ResultModelEx test6_2_2(ResultModelEx model) {
+        return model;
+    }
+
+    @ApiOperation("test63")
+    @Mapping("test63")
+    public ResultModel test6_3(@Body ResultModel model) {
+        return model;
+    }
+
+    @ApiOperation("test63-2")
+    @Mapping("test63-2")
+    public ResultModelEx test6_3_2(@Body ResultModelEx model) {
+        return model;
     }
 
     @ApiOperation(value = "url数组参数Json", notes = "数组参数在url中提交,json参数支持多个")

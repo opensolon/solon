@@ -13,7 +13,7 @@ package org.noear.solon.core.event;
  * @Component
  * public class ThrowableListener implements EventListener<Throwable>{
  *     public void onEvent(Throwable err){
- *        ...
+ *
  *     }
  * }
  *

@@ -4,7 +4,7 @@ package org.noear.solon.core.handle;
 import java.io.*;
 
 /**
- * 上传的文件模型（例：通过http上传的文件）
+ * 上传文件模型（例：通过http上传的文件）
  *
  * <pre><code>
  * @Controller

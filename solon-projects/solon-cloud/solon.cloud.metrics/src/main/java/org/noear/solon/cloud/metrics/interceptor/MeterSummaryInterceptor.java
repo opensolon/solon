@@ -32,43 +32,29 @@ public class MeterSummaryInterceptor extends BaseMeterInterceptor<MeterSummary, 
 
     @Override
     protected Object metering(Invocation inv, MeterSummary anno) throws Throwable {
-        //获取度量器
-        DistributionSummary meter = meterCached.get(anno);
-        if (meter == null) {
-            synchronized (anno) {
-                meter = meterCached.get(anno);
-                if (meter == null) {
-                    String meterName = getMeterName(inv, anno);
+        String meterName = getMeterName(inv, anno);
+        DistributionSummary meter = getMeter(meterName, ()->{
+            DistributionSummary.Builder builder = DistributionSummary
+                    .builder(meterName)
+                    .tags(getMeterTags(inv, anno.tags()));
 
-                    DistributionSummary.Builder builder = DistributionSummary
-                            .builder(meterName)
-                            .tags(getMeterTags(inv, anno.tags()))
-                            .description(anno.description());
-
-                    //最大期望值
-                    if (anno.maxValue() != Double.MAX_VALUE) {
-                        builder.maximumExpectedValue(anno.maxValue());
-                    }
-
-                    //最小期望值
-                    if (anno.minValue() != Double.MIN_VALUE) {
-                        builder.minimumExpectedValue(anno.minValue());
-                    }
-
-                    if(anno.percentiles().length > 0) {
-                        builder.publishPercentiles(anno.percentiles());
-                        builder.publishPercentileHistogram(anno.percentilesHistogram());
-                    }
-
-                    if(anno.serviceLevelObjectives().length > 0){
-                        builder.serviceLevelObjectives(anno.serviceLevelObjectives());
-                    }
-
-                    meter = builder.register(Metrics.globalRegistry);
-                    meterCached.put(anno, meter);
-                }
+            //最大期望值
+            if (anno.maxValue() != Double.MAX_VALUE) {
+                builder.maximumExpectedValue(anno.maxValue());
             }
-        }
+
+            //最小期望值
+            if (anno.minValue() != Double.MIN_VALUE) {
+                builder.minimumExpectedValue(anno.minValue());
+            }
+
+            builder.scale(anno.scale());
+            builder.publishPercentileHistogram(anno.percentilesHistogram());
+            builder.publishPercentiles(anno.percentiles());
+            builder.serviceLevelObjectives(anno.serviceLevelObjectives());
+
+            return builder.register(Metrics.globalRegistry);
+        });
 
         Object rst = inv.invoke();
 
@@ -76,7 +62,6 @@ public class MeterSummaryInterceptor extends BaseMeterInterceptor<MeterSummary, 
         if (rst instanceof Number) {
             meter.record(((Number) rst).doubleValue());
         }
-
         return rst;
     }
 }

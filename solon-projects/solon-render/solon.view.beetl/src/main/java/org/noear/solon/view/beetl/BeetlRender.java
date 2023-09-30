@@ -8,7 +8,7 @@ import org.beetl.core.resource.FileResourceLoader;
 import org.beetl.core.statement.ErrorGrammarProgram;
 import org.beetl.core.tag.Tag;
 import org.noear.solon.Solon;
-import org.noear.solon.core.JarClassLoader;
+import org.noear.solon.core.AppClassLoader;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.Render;
 import org.noear.solon.core.handle.ModelAndView;
@@ -16,6 +16,8 @@ import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.util.ResourceUtil;
 import org.noear.solon.core.util.SupplierEx;
 import org.noear.solon.view.ViewConfig;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -30,6 +32,7 @@ import java.net.URL;
  * @since 1.0
  * */
 public class BeetlRender implements Render {
+    static final Logger log = LoggerFactory.getLogger(BeetlRender.class);
 
     private static BeetlRender _global;
 
@@ -66,7 +69,7 @@ public class BeetlRender implements Render {
     //不要要入参，方便后面多视图混用
     //
     public BeetlRender() {
-        this(JarClassLoader.global());
+        this(AppClassLoader.global());
     }
 
     public BeetlRender(ClassLoader classLoader) {
@@ -131,7 +134,7 @@ public class BeetlRender implements Render {
                 EventBus.publish(providerOfDebug);
             }
         } catch (Exception e) {
-            EventBus.publishTry(e);
+            log.warn(e.getMessage(), e);
         }
     }
 
@@ -147,7 +150,7 @@ public class BeetlRender implements Render {
             //通过事件扩展
             EventBus.publish(provider);
         } catch (Exception e) {
-            EventBus.publishTry(e);
+            log.warn(e.getMessage(), e);
         }
 
     }
@@ -163,7 +166,7 @@ public class BeetlRender implements Render {
                 providerOfDebug.registerTag(name, clz);
             }
         } catch (Exception e) {
-            EventBus.publishTry(e);
+            log.warn(e.getMessage(), e);
         }
     }
 
@@ -178,7 +181,7 @@ public class BeetlRender implements Render {
                 providerOfDebug.getSharedVars().put(name, value);
             }
         } catch (Exception e) {
-            EventBus.publishTry(e);
+            log.warn(e.getMessage(), e);
         }
     }
 

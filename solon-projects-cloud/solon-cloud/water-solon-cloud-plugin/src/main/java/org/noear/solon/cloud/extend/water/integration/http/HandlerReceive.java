@@ -2,15 +2,16 @@ package org.noear.solon.cloud.extend.water.integration.http;
 
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.extend.water.WaterProps;
-import org.noear.solon.cloud.extend.water.service.CloudEventServiceWaterImp;
+import org.noear.solon.cloud.extend.water.service.CloudEventServiceWaterImpl;
 import org.noear.solon.cloud.model.Event;
-import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Handler;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.water.WaterClient;
 import org.noear.water.dso.MessageHandler;
 import org.noear.water.model.MessageM;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 消息接收处理（用签名的形式实现安全）//高频
@@ -19,9 +20,11 @@ import org.noear.water.model.MessageM;
  * @since 1.2
  */
 public class HandlerReceive implements Handler, MessageHandler {
-    CloudEventServiceWaterImp eventService;
+    static final Logger log = LoggerFactory.getLogger(HandlerReceive.class);
 
-    public HandlerReceive(CloudEventServiceWaterImp eventService) {
+    private CloudEventServiceWaterImpl eventService;
+
+    public HandlerReceive(CloudEventServiceWaterImpl eventService) {
         this.eventService = eventService;
     }
 
@@ -37,7 +40,7 @@ public class HandlerReceive implements Handler, MessageHandler {
             ctx.output(rst);
         } catch (Throwable e) {
             e = Utils.throwableUnwrap(e);
-            EventBus.publishTry(e);
+            log.warn(e.getMessage(), e);
             ctx.output(e);
         }
     }

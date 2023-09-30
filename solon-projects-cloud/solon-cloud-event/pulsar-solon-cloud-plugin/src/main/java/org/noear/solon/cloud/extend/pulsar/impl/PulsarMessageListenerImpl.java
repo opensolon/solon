@@ -11,7 +11,6 @@ import org.noear.solon.cloud.extend.pulsar.PulsarProps;
 import org.noear.solon.cloud.model.Event;
 import org.noear.solon.cloud.service.CloudEventObserverManger;
 import org.noear.solon.cloud.utils.ExpirationUtils;
-import org.noear.solon.core.event.EventBus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,10 +21,10 @@ import java.util.concurrent.TimeUnit;
  * @since 1.5
  */
 public class PulsarMessageListenerImpl implements MessageListener<byte[]> {
-    static Logger log = LoggerFactory.getLogger(PulsarMessageListenerImpl.class);
+    static final Logger log = LoggerFactory.getLogger(PulsarMessageListenerImpl.class);
 
-    CloudEventObserverManger observerManger;
-    String eventChannelName;
+    private CloudEventObserverManger observerManger;
+    private String eventChannelName;
 
     public PulsarMessageListenerImpl(CloudProps cloudProps, CloudEventObserverManger observerManger) {
         this.observerManger = observerManger;
@@ -51,7 +50,7 @@ public class PulsarMessageListenerImpl implements MessageListener<byte[]> {
         } catch (Throwable e) {
             e = Utils.throwableUnwrap(e);
 
-            EventBus.publishTry(e);
+            log.warn(e.getMessage(), e); //todo: ?
 
             if (e instanceof RuntimeException) {
                 throw (RuntimeException) e;
@@ -70,7 +69,7 @@ public class PulsarMessageListenerImpl implements MessageListener<byte[]> {
         try {
             return onReceiveDo(event);
         } catch (Throwable e) {
-            EventBus.publishTry(e);
+            log.warn(e.getMessage(), e);
             return false;
         }
     }

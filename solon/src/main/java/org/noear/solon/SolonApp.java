@@ -1,11 +1,11 @@
 package org.noear.solon;
 
-import org.noear.solon.core.convert.ConverterManager;
-import org.noear.solon.core.event.*;
-import org.noear.solon.core.event.EventListener;
-import org.noear.solon.core.handle.*;
 import org.noear.solon.annotation.Import;
 import org.noear.solon.core.*;
+import org.noear.solon.core.convert.ConverterManager;
+import org.noear.solon.core.event.EventListener;
+import org.noear.solon.core.event.*;
+import org.noear.solon.core.handle.*;
 import org.noear.solon.core.route.RouterWrapper;
 import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.core.util.ConsumerEx;
@@ -21,6 +21,7 @@ import java.util.function.Consumer;
  * 应用管理中心
  *
  * <pre><code>
+ * @SolonMain
  * public class DemoApp{
  *     public static void main(String[] args){
  *         Solon.start(DemoApp.class, args);
@@ -33,7 +34,7 @@ import java.util.function.Consumer;
  */
 public class SolonApp extends RouterWrapper {
     private final SolonProps _cfg; //属性配置
-    private final AopContext _context;//容器上下文
+    private final AppContext _context;//容器上下文
     private final ConverterManager _converterManager; //转换管理器
 
     private final Class<?> _source; //应用加载源
@@ -42,21 +43,22 @@ public class SolonApp extends RouterWrapper {
     protected boolean stopped = false;
 
     /**
-     * 获取应用上下文
+     * 应用上下文
      */
-    public AopContext context() {
+    @Override
+    public AppContext context() {
         return _context;
     }
 
     /**
-     * 获取转换管理器
+     * 转换管理器
      * */
     public ConverterManager converterManager() {
         return _converterManager;
     }
 
     /**
-     * 获取应用属性（或配置）
+     * 应用属性（或配置）
      */
     public SolonProps cfg() {
         return _cfg;
@@ -79,7 +81,7 @@ public class SolonApp extends RouterWrapper {
 
         //初始化配置
         _cfg = new SolonProps().load(source, args);
-        _context = new AopContext(new JarClassLoader(JarClassLoader.global()), _cfg);
+        _context = new AppContext(new AppClassLoader(AppClassLoader.global()), _cfg);
 
         //初始化路由
         initRouter(this::doFilter);
@@ -194,7 +196,10 @@ public class SolonApp extends RouterWrapper {
             plugs.get(i).start(context());
         }
 
-        //event::1.1.x推送Plugin load end事件
+        //1.2.检查配置是否完全适配
+        cfg().complete();
+
+        //event::1.3.推送Plugin load end事件
         EventBus.publish(new AppPluginLoadEndEvent(this));
 
 
@@ -210,7 +215,6 @@ public class SolonApp extends RouterWrapper {
 
         //event::2.x.推送Bean load end事件
         EventBus.publish(new AppBeanLoadEndEvent(this));
-
 
         //3.加载渲染关系
         Map<String, String> map = cfg().getMap("solon.view.mapping.");
@@ -255,6 +259,8 @@ public class SolonApp extends RouterWrapper {
 
     /**
      * 获取信号
+     *
+     * @param port 端口
      */
     public Signal signalGet(int port) {
         return signals.get(port);
@@ -279,7 +285,7 @@ public class SolonApp extends RouterWrapper {
     private Map<String, Object> _shared_unmod;
 
     /**
-     * 获取类加载器
+     * 类加载器
      */
     public ClassLoader classLoader() {
         return context().getClassLoader();
@@ -375,10 +381,16 @@ public class SolonApp extends RouterWrapper {
      */
     private Handler _handler = null;
 
+    /**
+     * 处理器获取
+     * */
     public Handler handlerGet() {
         return _handler;
     }
 
+    /**
+     * 处理器设置
+     * */
     public void handlerSet(Handler handler) {
         if (handler != null) {
             _handler = handler;
@@ -387,7 +399,7 @@ public class SolonApp extends RouterWrapper {
 
 
     /**
-     * 统一代理入口(异常时，自动500处理)
+     * 应用请求处理入口(异常时，自动500处理)
      */
     public void tryHandle(Context x) {
         try {
@@ -401,7 +413,13 @@ public class SolonApp extends RouterWrapper {
 
                 if (x.getHandled() == false) { //@since: 1.9
                     if (x.status() <= 200 && x.mainHandler() == null) {//@since: 1.10
-                        x.status(404);
+                        Integer mainStatus = x.attr(Constants.mainStatus); //支持405  //@since: 2.5
+
+                        if (mainStatus != null) {
+                            x.status(mainStatus);
+                        } else {
+                            x.status(404);
+                        }
                     }
                     //x.setHandled(true);  //todo: 不能加，对websocket有影响
                 }
@@ -530,6 +548,8 @@ public class SolonApp extends RouterWrapper {
 
     /**
      * 启用 WebSocket 信号接入
+     *
+     * @param enable 是否启用
      */
     public SolonApp enableWebSocket(boolean enable) {
         _enableWebSocket = enable;
@@ -537,7 +557,7 @@ public class SolonApp extends RouterWrapper {
     }
 
 
-    private boolean _enableWebSocketMvc = true;
+    private boolean _enableWebSocketMvc = false;
 
     public boolean enableWebSocketMvc() {
         return _enableWebSocketMvc;
@@ -545,6 +565,8 @@ public class SolonApp extends RouterWrapper {
 
     /**
      * 启用 WebSocket Mvc 信号接入
+     *
+     * @param enable 是否启用
      */
     public SolonApp enableWebSocketMvc(boolean enable) {
         _enableWebSocketMvc = enable;
@@ -563,12 +585,11 @@ public class SolonApp extends RouterWrapper {
 
     /**
      * 启用 WebSocket as SockteD 信号接入
+     *
+     * @param enable 是否启用
      */
     public SolonApp enableWebSocketD(boolean enable) {
         _enableWebSocketD = enable;
-        if (enable) {
-            _enableWebSocket = enable;
-        }
         return this;
     }
 
@@ -583,6 +604,8 @@ public class SolonApp extends RouterWrapper {
 
     /**
      * 启用 Socket as SockteD 信号接入
+     *
+     * @param enable 是否启用
      */
     public SolonApp enableSocketD(boolean enable) {
         _enableSocketD = enable;
@@ -590,7 +613,7 @@ public class SolonApp extends RouterWrapper {
     }
 
 
-    private boolean _enableSocketMvc = true;
+    private boolean _enableSocketMvc = false;
 
     /**
      * 是否已启用 SockteD Mvc 信号接入
@@ -601,6 +624,8 @@ public class SolonApp extends RouterWrapper {
 
     /**
      * 启用 SockteD Mvc 信号接入
+     *
+     * @param enable 是否启用
      */
     public SolonApp enableSocketMvc(boolean enable) {
         _enableSocketMvc = enable;
@@ -619,6 +644,8 @@ public class SolonApp extends RouterWrapper {
 
     /**
      * 启用事务
+     *
+     * @param enable 是否启用
      */
     public SolonApp enableTransaction(boolean enable) {
         _enableTransaction = enable;
@@ -636,6 +663,8 @@ public class SolonApp extends RouterWrapper {
 
     /**
      * 启用缓存
+     *
+     * @param enable 是否启用
      */
     public SolonApp enableCaching(boolean enable) {
         _enableCaching = enable;
@@ -653,6 +682,8 @@ public class SolonApp extends RouterWrapper {
 
     /**
      * 启用静态文件服务
+     *
+     * @param enable 是否启用
      */
     public SolonApp enableStaticfiles(boolean enable) {
         _enableStaticfiles = enable;
@@ -665,13 +696,19 @@ public class SolonApp extends RouterWrapper {
     /**
      * 是否已启用文档
      */
+    @SuppressWarnings("removal")
+    @Deprecated
     public boolean enableDoc() {
         return _enableDoc;
     }
 
     /**
      * 启用文档
+     *
+     * @param enable 是否启用
      */
+    @SuppressWarnings("removal")
+    @Deprecated
     public SolonApp enableDoc(boolean enable) {
         _enableDoc = enable;
         return this;
@@ -689,6 +726,8 @@ public class SolonApp extends RouterWrapper {
 
     /**
      * 启用异常自动打印
+     *
+     * @param enable 是否启用
      */
     public void enableErrorAutoprint(boolean enable) {
         _enableErrorAutoprint = enable;
@@ -706,6 +745,8 @@ public class SolonApp extends RouterWrapper {
 
     /**
      * 启用会话状态
+     *
+     * @param enable 是否启用
      */
     public SolonApp enableSessionState(boolean enable) {
         _enableSessionState = enable;

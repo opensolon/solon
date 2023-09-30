@@ -25,13 +25,20 @@ public class OpenApi2Utils {
      * 获取接口分组资源
      */
     public static String getApiGroupResourceJson() throws IOException {
+        return getApiGroupResourceJson("/swagger/v2");
+    }
+
+    /**
+     * 获取接口分组资源
+     */
+    public static String getApiGroupResourceJson(String resourceUri) throws IOException {
         List<BeanWrap> list = Solon.context().getWrapsOfType(DocDocket.class);
 
         List<ApiGroupResource> resourceList = list.stream().filter(bw -> Utils.isNotEmpty(bw.name()))
                 .map(bw -> {
                     String group = bw.name();
                     String groupName = ((DocDocket) bw.raw()).groupName();
-                    String url = "/swagger/v2?group=" + group;
+                    String url = resourceUri + "?group=" + group;
 
                     return new ApiGroupResource(groupName, "2.0", url);
                 })

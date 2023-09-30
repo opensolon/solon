@@ -6,10 +6,9 @@ import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.Optional;
 
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.BeanExtractor;
 import org.noear.solon.core.BeanWrap;
-import org.noear.solon.core.util.LogUtil;
 
 import io.github.majusko.pulsar2.solon.annotation.PulsarConsumer;
 import io.github.majusko.pulsar2.solon.properties.ConsumerProperties;
@@ -23,7 +22,7 @@ public class ConsumerCollector implements BeanExtractor<PulsarConsumer> {
 
 //	private final Map<String, ConsumerHolder> consumers = new ConcurrentHashMap<>();
 
-	public ConsumerCollector(AopContext context) {
+	public ConsumerCollector(AppContext context) {
 		PulsarProperties pp = context.getBean(PulsarProperties.class);
 		ConsumerProperties cp = context.getBean(ConsumerProperties.class);
 		this.urlBuildService = new UrlBuildService(pp, cp);
@@ -40,7 +39,7 @@ public class ConsumerCollector implements BeanExtractor<PulsarConsumer> {
 	@Override
 	public void doExtract(BeanWrap bw, Method method, PulsarConsumer anno) throws Throwable {
 		final Class<?> beanClass = bw.clz();
-		LogUtil.global().info("[Solon] [pulsar2-solon-plugin] PulsarConsumer doExtract...");
+
 		if (IConsumerConst.nonAnnotatedClasses.contains(beanClass)) {
 			return;
 		}
@@ -49,7 +48,6 @@ public class ConsumerCollector implements BeanExtractor<PulsarConsumer> {
 		for(Method $:ms) {
 			if (!$.isAnnotationPresent(PulsarConsumer.class)) {
 				IConsumerConst.nonAnnotatedClasses.add(beanClass);
-				LogUtil.global().trace("No @PulsarConsumer annotations found on bean type: " + bean.getClass());
 				continue;
 			}
 			String cn = urlBuildService.buildConsumerName(beanClass, $);

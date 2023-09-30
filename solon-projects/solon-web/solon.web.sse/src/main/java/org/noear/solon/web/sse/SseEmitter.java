@@ -1,7 +1,8 @@
 package org.noear.solon.web.sse;
 
-import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.ConsumerEx;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.function.Consumer;
@@ -13,6 +14,8 @@ import java.util.function.Consumer;
  * @since  2.3
  */
 public class SseEmitter {
+    static final Logger log = LoggerFactory.getLogger(SseEmitter.class);
+
     private SseEmitterHandler handler;
     protected Runnable onCompletion;
     protected Runnable onTimeout;
@@ -87,7 +90,7 @@ public class SseEmitter {
         try {
             handler.complete();
         } catch (IOException e) {
-            EventBus.publishTry(e);
+            log.warn(e.getMessage(), e);
         }
     }
 

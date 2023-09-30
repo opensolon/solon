@@ -9,12 +9,116 @@
 * 提醒1：之前没有使用弃用接口的，可以直接升级 <br>
 * 提醒2：有使用弃用接口的。建议先升级到 1.12.4；替换弃用代码后，再升级到 2.0.0
 
-### 2.4.6
+### 2.5.7
 * 新增 solon.boot.vertx 插件?
-* 增加 quartz jdbc 及时更新支持（数据库里变了，它马上变）？
 * 新增 seata-solon-plugin 插件
 * 新增 graphql-solon-plugin 插件
+* 增加 quartz jdbc 及时更新支持（数据库里变了，它马上变） ???
+* 调整 使用更多的 slf4j 替换 LogUtil ???
+* 调整 solon.config.add 与 solon.config.load 合并，规范格式（同时支持内部与外部） ???
+* 调整 简化 SocketD ???
 
+### 2.5.6
+* asm 升为 9.5 （for JDK21）
+
+### 2.5.5
+* 完成 JDK21 编译测试，功能单元测试
+* 添加 HttpServerConfigure::setExecutor 接口，用于支持虚拟线程池（for JDK21）
+* 添加 PropUtil 类。把原来的属性表达式与模板解析独立出来
+* 添加 ContextPathListener 类，用于控制 contentPath 对 ws,tpc 的影响
+* 添加 ContextPathFilter 一个简化的构造函数
+* 添加 MethodHolder::getDeclaringClz、getDeclaringClzAnnotation 接口
+* 添加 yaml 多片段支持（即一文件多环境支持）
+* 添加 多配置文件交差引用变量支持
+* 添加 DownloadedFile(file,name) 构造函数
+* 添加 Router 对 405 的支持
+* 调整 RunUtil 执行器分离为 parallelExecutor + asyncExecutor（for JDK21）
+* 调整 CacheService 接口（增加类型化 get）
+* 调整 SessionState 接口（增加类型化 get）
+* 调整 Context::session 接口（增加类型化 get）
+* 调整 BeanWrap 的 rawSet 改为公有
+* 调整 SolonApp::enableWebSocketMvc, enableSocketMvc, 默认为 false
+* 调整 SolonApp::enableWebSocket, enableWebSocketD 分离设置，各不相关（前者代表通讯，后者代表协议）
+* 调整 CloudConfig 复用主框架的属性表达式与模板解析
+* 调整 Listener 去掉 @FunctionalInterface，所有方法标为 default
+* 调整 ChainManager::postResult 的执行策略改为包围式（相当于倒序）
+* 调整 ValHolder 标为弃用
+* 调整 jdkhttp,jlhttp,smarthttp 的 contentLength 适配处理
+* 调整 使用更多的 slf4j 替换 bus
+* 调整 mybatis-solon-plugin 的会话提交方式，修复二级缓存控制可能失效的问题
+* 调整 "solon.config.load" 支持按顺序加载
+* 调整 几个特定启动参数的处理方式。改与成 Solon.cfg() 同步，再统一从 Solon.cfg() 取值
+* 调整 启动参数与系统属性的同步时机
+* wood 升为 1.2.1
+* redisx 升为 1.5.0
+* mybatis-flex 升为 1.6.5
+* sqltoy 升为 5.2.66
+* polaris 升为 1.14.1
+* lombok 升为 1.18.28
+* slf4j 升为 2.0.9
+* lombok 升为 1.18.30（for JDK21）
+
+### 2.5.4
+* 增加 AppContext::onEvent 接口
+* 调整 paramsMap() 的 List 处理，避免出现只读情况
+* 调整 JarClassLoader 更名为 AppClassLoader
+* 调整 solon.serialization.fastjson2 转换枚举未匹配时则异常
+* 调整 solon.serialization.snack3 转换枚举未匹配时则异常
+* 调整 smarthttp,jetty,undertow 的 FORM_URLENCODED 预处理
+* 调整 signal server 启动打印信息
+* mybatis-flex 升为 1.6.4
+* dromara-plugins 升为 0.1.0
+* snack3 升为 3.2.80
+* redisx 升为 1.4.10
+* beetlsql 升为 3.25.4-RELEASE
+* fastmybatis 升为 2.9.6
+* bean-searcher 升为 4.2.4
+* rabbitmq 升为 5.18.0
+* kafka_2.13 升为 3.5.1
+* dubbo3 升为 3.2.5
+* logback 升为 1.3.11
+* nacos2 升为 2.2.4
+* snakeyaml 升为 2.2
+* redisson 升为 3.23.3
+* luffy 升为 1.6.7
+* water 升为 2.11.3
+
+### 2.5.3
+* 增加 `AppContext` 类
+* 调整 `AopContext` 标为弃用，由 `AppContext` 替代
+* 调整 solon.docs.openapi2 对枚举类型的显示处理
+* beetlsql 升为 3.25.2-RELEASE
+
+### 2.5.2
+* 增加 `@Component` 自动动态代理特性，即自动识别AOP需求并按需启用动态代理
+* 调整 `@ProxyComponent` 标为弃用，组件统一使用 `@Component`
+* 调整 `@Around` 标为弃用，统一使用 context::beanInterceptorAdd 接口添加拦截器
+* liteflow 升为 2.11.0
+* activerecord 升为 5.1.2
+* enjoy 升为 5.1.2
+
+### 2.4.6
+* 增加 http range 分片输出支持
+* 增加 IoUtil 工具类，替代旧的 Utils IO功能（旧的标为弃用）
+* 增加 `@Tran` 事务监视事件支持，并增加 message 属性（只在最外层触发事件）
+* 调整 kafka-solon-cloud-plugin 如果没有订阅，则不启用消费端
+* 调整 PathLimiter 的弃用提示方式
+* 调整 solon.cloud.metrics 的时间记录单位
+* 调整 solon.data.dynamicds 增加默认源配置项
+* 优化 solon.serialization.snack3 对根字符串的解码处理
+* 优化 solon.scheduling 的 `@Async` 定制能力
+* 优化 solon.docs.openapi2 对基础类型列表识别过度的问题
+* 优化 solon.docs.openapi2 对实体扩展的字段识别
+* 优化 solon.docs.openapi2 的 `@ApiModelProperty` 注解处理
+* 优化 solon.data.dynamicds 手动控制能力（添加、移除、获取）
+* 优化 sa-token-solon-plugin 两个适配类的处理
+* 优化 ConditionUtil 条件工具类处理
+* mybatis-flex 升为 1.6.1
+* beetlsql 升为 3.25.0-RELEASE
+* dbvisitor 升为 5.4.0
+* snack3 升为 3.2.79
+* forest 升为 1.5.33
+* smarthttp 升为 1.3.0
 
 ### 2.4.5
 * 修复 httputils of okhttp 手动设定超时无效的问题

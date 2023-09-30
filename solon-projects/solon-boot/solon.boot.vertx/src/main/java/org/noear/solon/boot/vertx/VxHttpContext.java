@@ -6,6 +6,7 @@ import org.noear.solon.core.NvMap;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.ContextAsyncListener;
 import org.noear.solon.core.handle.UploadedFile;
+import org.noear.solon.lang.NonNull;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -128,12 +129,12 @@ public class VxHttpContext extends Context {
     }
 
     @Override
-    public Object session(String name) {
+    public <T> T session(String name, Class<T> clz) {
         return null;
     }
 
     @Override
-    public <T> T sessionOrDefault(String name, T def) {
+    public <T> T sessionOrDefault(String name, @NonNull T def) {
         return null;
     }
 

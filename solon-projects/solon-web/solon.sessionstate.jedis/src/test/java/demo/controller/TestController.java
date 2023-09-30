@@ -22,7 +22,7 @@ public class TestController {
 
     @Mapping("get")
     public UserModel get(Context ctx) {
-        UserModel tmp = (UserModel)ctx.session("user");
+        UserModel tmp = ctx.session("user", UserModel.class);
 
         return tmp;
     }

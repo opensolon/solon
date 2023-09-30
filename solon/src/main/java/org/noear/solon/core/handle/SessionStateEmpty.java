@@ -35,8 +35,8 @@ public class SessionStateEmpty implements SessionState{
     }
 
     @Override
-    public Object sessionGet(String key) {
-        return sessionMap().get(key);
+    public <T> T sessionGet(String key, Class<T> clz) {
+        return (T)sessionMap().get(key);
     }
 
     @Override

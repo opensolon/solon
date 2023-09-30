@@ -1,5 +1,7 @@
 package org.noear.solon.core;
 
+import org.noear.solon.lang.Nullable;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.ParameterizedType;
 
@@ -17,8 +19,15 @@ import java.lang.reflect.ParameterizedType;
  * @since 1.0
  * */
 public interface VarHolder {
-    AopContext context();
+    /**
+     * 应用上下文
+     * */
+    AppContext context();
 
+    /**
+     * 泛型（可能为 null）
+     * */
+    @Nullable
     ParameterizedType getGenericType();
 
     /**
@@ -37,7 +46,7 @@ public interface VarHolder {
     Annotation[] getAnnoS();
 
     /**
-     * 获取完成名字
+     * 获取完整名字
      * */
     String getFullName();
 
@@ -52,7 +61,7 @@ public interface VarHolder {
     Object getValue();
 
     /**
-     * 是否为完成的
+     * 是否为完成的（设置值后即为完成态）
      * */
     boolean isDone();
 

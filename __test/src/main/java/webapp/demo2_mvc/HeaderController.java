@@ -33,4 +33,9 @@ public class HeaderController {
     public String redirect_page(Context ctx) throws Exception {
         return "我是跳转过来的!";
     }
+
+    @Mapping("/demo2/header/ct")
+    public String header_ct(Context ctx, String name) throws Exception {
+        return ctx.method() + "::" + ctx.contentType() + "::" + name;
+    }
 }

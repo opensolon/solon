@@ -40,9 +40,7 @@ public class SocialController extends JapController {
         // 验证 二次回调地址 是否合法
         if (next == null) {
             // 如果没指定回调地址，可能是第三方回调的结果
-            next = (String) this.cacheService.get(
-                    this.getKey(state)
-            );
+            next = (String) this.cacheService.get( this.getKey(state) ,String.class);
             // 如果 Callback 所属的 State 已过期
             if (next == null) {
                 throw new IllegalStateException();

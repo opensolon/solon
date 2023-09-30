@@ -46,10 +46,18 @@ public interface SessionState {
      * */
     Collection<String> sessionKeys();
 
+
     /**
      * 获取SESSION状态
      */
-    Object sessionGet(String key);
+    default Object sessionGet(String key) {
+        return sessionGet(key, Object.class);
+    }
+
+    /**
+     * 获取SESSION状态（指定类型）
+     */
+    <T> T sessionGet(String key, Class<T> clz);
 
     /**
      * 设置SESSION状态

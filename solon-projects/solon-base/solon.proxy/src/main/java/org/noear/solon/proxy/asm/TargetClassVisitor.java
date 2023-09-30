@@ -5,6 +5,8 @@ import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TargetClassVisitor extends ClassVisitor {
+    static final Logger log = LoggerFactory.getLogger(TargetClassVisitor.class);
 
     private boolean isFinal;
     private List<MethodBean> methods = new ArrayList<>();
@@ -138,7 +141,7 @@ public class TargetClassVisitor extends ClassVisitor {
                 return beans;
             }
         } catch (Exception e) {
-            EventBus.publishTry(e);
+            log.warn(e.getMessage(), e);
         }
 
         return null;

@@ -3,7 +3,7 @@ package labs.test3;
 import org.junit.Test;
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.Around;
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.aspect.InterceptorEntity;
 import org.noear.solon.validation.annotation.Valid;
 
@@ -46,7 +46,7 @@ public class AnnoTest {
     /**
      * 方案2
      * */
-    private void xxx2(AopContext context, Annotation anno){
+    private void xxx2(AppContext context, Annotation anno){
         //@since 1.10 //支持拦截注解的别名注解形式
         for (Annotation anno2 : anno.annotationType().getAnnotations()) {
             if (anno2 instanceof Around) {

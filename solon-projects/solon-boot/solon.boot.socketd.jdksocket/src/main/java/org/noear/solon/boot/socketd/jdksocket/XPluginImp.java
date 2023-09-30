@@ -23,7 +23,7 @@ public class XPluginImp implements Plugin {
     }
 
     @Override
-    public void start(AopContext context) {
+    public void start(AppContext context) {
         //注册会话管理器
         SessionManager.register(new _SessionManagerImpl());
 

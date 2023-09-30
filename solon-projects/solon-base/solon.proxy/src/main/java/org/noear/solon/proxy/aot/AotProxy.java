@@ -1,6 +1,6 @@
 package org.noear.solon.proxy.aot;
 
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.util.ClassUtil;
 
 import java.lang.reflect.Constructor;
@@ -19,7 +19,7 @@ public class AotProxy {
      * @param targetClass       被代理对象
      * @return 代理实例
      */
-    public static Object newProxyInstance(AopContext context,
+    public static Object newProxyInstance(AppContext context,
                                           InvocationHandler invocationHandler,
                                           Class<?> targetClass) {
         //支持APT (支持 Graalvm Native  打包)

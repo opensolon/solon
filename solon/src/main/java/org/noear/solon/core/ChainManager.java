@@ -65,7 +65,6 @@ public class ChainManager {
         for (RankEntity<RouterInterceptor> entity : interceptorNodes) {
             if (entity.target instanceof RouterInterceptorLimiter) {
                 tmp.add(((RouterInterceptorLimiter) entity.target).getInterceptor());
-                LogUtil.global().warn("RouterInterceptorLimiter will be discarded, suggested use 'RouterInterceptor:pathPatterns'");
             } else {
                 tmp.add(entity.target);
             }
@@ -81,6 +80,7 @@ public class ChainManager {
     public synchronized void addInterceptor(RouterInterceptor interceptor, int index) {
         if (interceptor instanceof PathLimiter) {
             interceptor = new RouterInterceptorLimiter(interceptor, ((PathLimiter) interceptor).pathRule());
+            LogUtil.global().warn("PathLimiter will be discarded, suggested use 'RouterInterceptor:pathPatterns'");
         } else {
             interceptor = new RouterInterceptorLimiter(interceptor, interceptor.pathPatterns());
         }
@@ -93,6 +93,7 @@ public class ChainManager {
      * 执行路由拦截
      */
     public void doIntercept(Context x, @Nullable Handler mainHandler) throws Throwable {
+        //先执行的，包住后执行的
         new RouterInterceptorChainImpl(interceptorNodes).doIntercept(x, mainHandler);
     }
 
@@ -100,7 +101,9 @@ public class ChainManager {
      * 提交结果（action / render 执行前调用）
      */
     public Object postResult(Context x, @Nullable Object result) throws Throwable {
-        for (RankEntity<RouterInterceptor> e : interceptorNodes) {
+        //后执行的，包住先执行的（与 doIntercept 的顺序反了一下）
+        for (int i = interceptorNodes.size() - 1; i >= 0; i--) {
+            RankEntity<RouterInterceptor> e = interceptorNodes.get(i);
             result = e.target.postResult(x, result);
         }
 

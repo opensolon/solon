@@ -9,7 +9,7 @@ import org.noear.solon.cloud.CloudManager;
 import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.extend.xxljob.service.CloudJobServiceImpl;
 import org.noear.solon.cloud.impl.CloudJobBeanBuilder;
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.event.AppLoadEndEvent;
@@ -20,7 +20,7 @@ import org.noear.solon.core.event.AppLoadEndEvent;
  */
 public class XPluginImp implements Plugin {
     @Override
-    public void start(AopContext context) {
+    public void start(AppContext context) {
         CloudProps cloudProps = new CloudProps(context, "xxljob");
 
         if (Utils.isEmpty(cloudProps.getServer())) {

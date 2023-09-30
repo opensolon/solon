@@ -1,7 +1,7 @@
 <h1 align="center" style="text-align:center;">
 <img src="solon_icon.png" width="128" />
 <br />
-Solon v2.4.5
+Solon v2.5.6
 </h1>
 <p align="center">
 	<strong>Java new ecological application development framework, smaller, faster, simpler!</strong>
@@ -57,7 +57,7 @@ Startup is 5 to 10 times faster; QPS is 2 to 3 times higher; runtime memory is s
 Build from scratch. It has its own standards and norms and open ecology. Combination of different ecological plug-ins to meet different needs, convenient customization, rapid development:
 
 * **Restraint, simplicity, efficiency, openness and ecology**
-* Supports JDK8, JDK11, JDK17, JDK20
+* Supports JDK8, JDK11, JDK17, JDK21
 * Http, WebSocket, Socket three signal unified development experience (commonly known as: three-source integration)
 * Supports "annotation" and "manual" modes, freely controlled as needed
 * Not Servlet, can adapt to any basic communication framework (minimum 0.3m running rpc architecture)
@@ -78,7 +78,7 @@ Build from scratch. It has its own standards and norms and open ecology. Combina
 <parent>
     <groupId>org.noear</groupId>
     <artifactId>solon-parent</artifactId>
-    <version>2.4.5</version>   
+    <version>2.5.6</version>   
 </parent>
 
 <dependencies>
@@ -91,22 +91,22 @@ Build from scratch. It has its own standards and norms and open ecology. Combina
 
 ```java
 @SolonMain
-public class App{
-    public static void main(String[] args){
-        Solon.start(App.class, args, app->{
+public class App {
+    public static void main(String[] args) {
+        Solon.start(App.class, args, app -> {
             //Handler mode:
-            app.get("/hello",(c)->c.output("Hello world!"));
+            app.get("/hello", c -> c.output("Hello world!"));
         });
     }
 }
 
 //Controller mode: (mvc or rest-api)
 @Controller
-public class HelloController{
+public class HelloController {
     //Limit Socket method type
     @Socket
     @Mapping("/mvc/hello")
-    public String hello(String name){
+    public String hello(String name) {
         return "Hello " + name;
     }
 }
@@ -114,9 +114,9 @@ public class HelloController{
 //Remoting mode: (rpc)
 @Mapping("/rpc/")
 @Remoting
-public class HelloServiceImpl implements HelloService{
+public class HelloServiceImpl implements HelloService {
     @Override
-    public String hello(){
+    public String hello() {
         return "Hello world!";
     }
 }
@@ -145,12 +145,13 @@ public class HelloServiceImpl implements HelloService{
 | org.noear:solon-cloud     | solon-rpc + consul；quick development of microservices applications                          |
 
 
-## Official website and related examples：
+## Official website and related examples, cases：
 
 * Official website address：[https://solon.noear.org](https://solon.noear.org)
 * Official website supporting demos：[https://gitee.com/noear/solon-examples](https://gitee.com/noear/solon-examples)
 * Project unit test：[__test](./__test/)
 * Project more feature examples：[solon_api_demo](https://gitee.com/noear/solon_api_demo)  、 [solon_rpc_demo](https://gitee.com/noear/solon_rpc_demo) 、 [solon_socketd_demo](https://gitee.com/noear/solon_socketd_demo) 、 [solon_cloud_demo](https://gitee.com/noear/solon_cloud_demo) 、 [solon_auth_demo](https://gitee.com/noear/solon_auth_demo)
+* User case：[User open source project](https://solon.noear.org/article/555)、[User business project](https://solon.noear.org/article/cases)
 
 ## Special thanks to JetBrains for supporting open-source projects：
 

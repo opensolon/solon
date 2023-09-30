@@ -1,7 +1,7 @@
 package org.noear.solon.proxy;
 
 import org.noear.solon.Utils;
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.core.util.ScanUtil;
@@ -75,52 +75,65 @@ public class ProxyUtil {
     /**
      * 为类，系上拦截代理
      *
+     * @param appContext 应用上下文
+     * @param targetClz  目标类
+     * @param handler    调用处理
      * @since 1.6
      */
-    public static void attach(AopContext aopContext, Class<?> clz, InvocationHandler handler) {
-        attach(aopContext, clz, null, handler);
+    public static void attach(AppContext appContext, Class<?> targetClz, InvocationHandler handler) {
+        attach(appContext, targetClz, null, handler);
     }
 
-    public static void attach(AopContext aopContext, Class<?> clz,  Object obj, InvocationHandler handler) {
-        if (clz.isAnnotation() || clz.isInterface() || clz.isEnum() || clz.isPrimitive()) {
+    /**
+     * 为类，系上拦截代理
+     *
+     * @param appContext 应用上下文
+     * @param targetClz  目标类
+     * @param targetObj  目标对象
+     * @param handler    调用处理
+     * @since 1.6
+     */
+    public static void attach(AppContext appContext, Class<?> targetClz, Object targetObj, InvocationHandler handler) {
+        if (targetClz.isAnnotation() || targetClz.isInterface() || targetClz.isEnum() || targetClz.isPrimitive()) {
             return;
         }
 
         //去重处理
-        if (tryAttachCached.contains(clz)) {
+        if (tryAttachCached.contains(targetClz)) {
             return;
         } else {
-            tryAttachCached.add(clz);
+            tryAttachCached.add(targetClz);
         }
 
-        aopContext.wrapAndPut(clz, obj).proxySet(new BeanProxy(handler));
+        appContext.wrapAndPut(targetClz, targetObj).proxySet(new BeanProxy(handler));
     }
 
     /**
      * 为搜索的类，系上拦截代理
      *
+     * @param appContext  应用上下文
      * @param basePackage 基础包名
      * @param handler     拦截代理
      */
-    public static void attachByScan(AopContext aopContext, String basePackage, InvocationHandler handler) {
-        attachByScan(aopContext, basePackage, null, handler);
+    public static void attachByScan(AppContext appContext, String basePackage, InvocationHandler handler) {
+        attachByScan(appContext, basePackage, null, handler);
     }
 
 
     /**
      * 为搜索的类，系上拦截代理
      *
-     * @param aopContext  类加载器
+     * @param appContext  应用上下文
      * @param basePackage 基础包名
      * @param filter      过滤器
      * @param handler     拦截代理
      */
-    public static void attachByScan(AopContext aopContext, String basePackage, Predicate<String> filter, InvocationHandler handler) {
+    public static void attachByScan(AppContext appContext, String basePackage, Predicate<String> filter, InvocationHandler handler) {
         if (Utils.isEmpty(basePackage)) {
             return;
         }
 
-        if (aopContext == null) {
+        if (appContext == null) {
             return;
         }
 
@@ -131,16 +144,16 @@ public class ProxyUtil {
         String dir = basePackage.replace('.', '/');
 
         //扫描类文件并处理（采用两段式加载，可以部分bean先处理；剩下的为第二段处理）
-        ScanUtil.scan(aopContext.getClassLoader(), dir, n -> n.endsWith(".class"))
+        ScanUtil.scan(appContext.getClassLoader(), dir, n -> n.endsWith(".class"))
                 .stream()
                 .sorted(Comparator.comparing(s -> s.length()))
                 .filter(filter)
                 .forEach(name -> {
                     String className = name.substring(0, name.length() - 6);
 
-                    Class<?> clz = ClassUtil.loadClass(aopContext.getClassLoader(), className.replace("/", "."));
+                    Class<?> clz = ClassUtil.loadClass(appContext.getClassLoader(), className.replace("/", "."));
                     if (clz != null) {
-                        attach(aopContext, clz, handler);
+                        attach(appContext, clz, handler);
                     }
                 });
     }

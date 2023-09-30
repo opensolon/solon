@@ -5,7 +5,7 @@ import org.noear.snack.core.Feature;
 import org.noear.snack.core.Options;
 import org.noear.solon.Utils;
 import org.noear.solon.aot.hint.*;
-import org.noear.solon.core.JarClassLoader;
+import org.noear.solon.core.AppClassLoader;
 import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.core.util.ReflectUtil;
 import org.noear.solon.core.util.ScanUtil;
@@ -243,13 +243,13 @@ public class RuntimeNativeMetadata {
         String dir = basePackage.getName().replace('.', '/');
 
         //扫描类文件并处理（采用两段式加载，可以部分bean先处理；剩下的为第二段处理）
-        ScanUtil.scan(JarClassLoader.global(), dir, n -> n.endsWith(".class"))
+        ScanUtil.scan(AppClassLoader.global(), dir, n -> n.endsWith(".class"))
                 .stream()
                 .forEach(name -> {
                     String className = name.substring(0, name.length() - 6);
                     className = className.replace("/", ".");
 
-                    Class<?> clz = ClassUtil.loadClass(JarClassLoader.global(), className);
+                    Class<?> clz = ClassUtil.loadClass(AppClassLoader.global(), className);
                     if (clz != null) {
                         registerSerializationDo(clz.getName(), null);
                     }

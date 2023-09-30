@@ -3,6 +3,8 @@ package com.swagger.demo;
 import com.github.xiaoymin.knife4j.solon.extension.OpenApiExtensionResolver;
 import com.swagger.demo.model.HttpCodes;
 
+import io.swagger.models.auth.ApiKeyAuthDefinition;
+import io.swagger.models.auth.In;
 import org.noear.solon.docs.ApiEnum;
 import org.noear.solon.docs.models.ApiInfo;
 import org.noear.solon.docs.DocDocket;
@@ -56,6 +58,8 @@ public class Config {
                 .schemes(ApiEnum.SCHEMES_HTTP)
                 .globalResult(Result.class)
                 .globalResponseInData(true)
+                .securityExtensions("TOKEN", new ApiKeyAuthDefinition().in(In.HEADER))
+                .vendorExtensions("TOKEN", "xxx")
                 .apis("com.swagger.demo.controller.api2");
                 //.securityDefinitionInHeader("token");
 

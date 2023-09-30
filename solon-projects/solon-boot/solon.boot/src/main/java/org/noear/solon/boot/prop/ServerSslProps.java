@@ -1,6 +1,8 @@
 package org.noear.solon.boot.prop;
 
 /**
+ * 服务证书属性
+ *
  * @author noear
  * @since 2.3
  */

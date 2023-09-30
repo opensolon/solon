@@ -6,6 +6,7 @@ import org.noear.solon.core.handle.ContextEmpty;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
+import org.noear.solon.core.util.IoUtil;
 import org.noear.solon.socketd.util.HeaderUtil;
 
 import java.io.*;
@@ -156,7 +157,7 @@ public class SocketContext extends ContextEmpty {
     @Override
     public void output(InputStream stream) {
         try {
-            Utils.transferTo(stream, _outputStream);
+            IoUtil.transferTo(stream, _outputStream);
         } catch (Throwable ex) {
             throw new RuntimeException(ex);
         }

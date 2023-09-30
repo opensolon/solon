@@ -37,13 +37,15 @@ public class PluginPackage {
     /**
      * Aop 上下文
      */
-    private AopContext context;
+    private AppContext context;
 
     public PluginPackage(File file, PluginClassLoader classLoader, List<PluginEntity> plugins) {
         this.file = file;
         this.plugins = plugins;
         this.classLoader = classLoader;
-        this.context = Solon.context().copy(classLoader, new Props(classLoader));
+        this.context = new AppContext(classLoader, new Props(classLoader));
+
+        Solon.context().copyTo(this.context);
 
         if (plugins.size() > 0) {
             //进行优先级顺排（数值要倒排）
@@ -69,7 +71,7 @@ public class PluginPackage {
         return ClassUtil.loadClass(getClassLoader(), className);
     }
 
-    public <T> T newInstance(String className) {
+    public <T> T tryInstance(String className) {
         return ClassUtil.tryInstance(getClassLoader(), className);
     }
 

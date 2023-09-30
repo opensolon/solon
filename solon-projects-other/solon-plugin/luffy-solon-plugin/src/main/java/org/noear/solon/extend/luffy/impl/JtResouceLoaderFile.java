@@ -2,9 +2,10 @@ package org.noear.solon.extend.luffy.impl;
 
 import org.noear.luffy.model.AFileModel;
 import org.noear.solon.Solon;
-import org.noear.solon.Utils;
-import org.noear.solon.core.event.EventBus;
+import org.noear.solon.core.util.IoUtil;
 import org.noear.solon.core.util.ResourceUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -16,6 +17,8 @@ import java.net.URI;
  * @since 1.3
  */
 public class JtResouceLoaderFile implements JtResouceLoader {
+    static final Logger log = LoggerFactory.getLogger(JtResouceLoaderFile.class);
+
     private String _baseUri = "/luffy/";
     private File _baseDir;
 
@@ -65,9 +68,9 @@ public class JtResouceLoaderFile implements JtResouceLoader {
 
             if (file.exists()) {
                 try {
-                    return Utils.transferToString(new FileInputStream(file), Solon.encoding());
+                    return IoUtil.transferToString(new FileInputStream(file), Solon.encoding());
                 } catch (IOException e) {
-                    EventBus.publishTry(e);
+                    log.warn(e.getMessage(), e);
                     return null;
                 }
             } else {

@@ -2,6 +2,7 @@ package webapp.demo2_mvc;
 
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Mapping;
+import org.noear.solon.annotation.Path;
 import org.noear.solon.annotation.Singleton;
 
 /**
@@ -23,6 +24,11 @@ public class PathController {
 
     @Mapping("/test2/?*")
     public String test2(){
+        return "ok";
+    }
+
+    @Mapping("/test3/{name}")
+    public String test3(@Path("name") String name){
         return "ok";
     }
 }

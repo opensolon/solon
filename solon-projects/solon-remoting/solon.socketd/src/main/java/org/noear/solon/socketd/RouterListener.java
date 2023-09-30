@@ -65,7 +65,7 @@ public class RouterListener implements Listener{
             //    session.listener().onOpen(session);
             //}
         } catch (Throwable e) {
-            EventBus.publishTry(e);
+            log.warn(e.getMessage(), e);
         }
     }
 
@@ -126,7 +126,7 @@ public class RouterListener implements Listener{
             }
         } catch (Throwable e) {
             if (onError0(session, e) == false) {
-                EventBus.publishTry(e);
+                log.warn(e.getMessage(), e);
             }
         }
     }
@@ -154,7 +154,7 @@ public class RouterListener implements Listener{
                 session.listener().onClose(session);
             }
         } catch (Throwable e) {
-            EventBus.publishTry(e);
+            log.warn(e.getMessage(), e);
         }
     }
 
@@ -186,7 +186,7 @@ public class RouterListener implements Listener{
 
             return handled;
         } catch (Throwable e) {
-            EventBus.publishTry(e);
+            log.warn(e.getMessage(), e);
             return true;
         }
     }

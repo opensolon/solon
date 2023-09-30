@@ -1,10 +1,12 @@
 package org.noear.solon.core.wrap;
 
 import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.VarHolder;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.GenericUtil;
 import org.noear.solon.core.util.ParameterizedTypeImpl;
+import org.noear.solon.lang.Nullable;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
@@ -38,7 +40,7 @@ public class FieldWrap {
     /**
      * 字段泛型类型（可能为null）
      */
-    public final ParameterizedType genericType;
+    public final @Nullable ParameterizedType genericType;
     /**
      * 字段是否只读
      * */
@@ -131,7 +133,7 @@ public class FieldWrap {
      * 获取自身的临时对象
      */
     public VarHolder holder(AopContext ctx, Object obj, Runnable onDone) {
-        return new VarHolderOfField(ctx, this, obj, onDone);
+        return new VarHolderOfField((AppContext) ctx, this, obj, onDone);
     }
 
     /**

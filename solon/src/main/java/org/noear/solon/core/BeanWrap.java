@@ -31,6 +31,7 @@ public class BeanWrap {
     private int clzInitIndex;
     // bean raw（初始实例）
     private Object raw;
+    private Object rawUnproxied;
     // 是否为单例
     private boolean singleton;
     // 是否为远程服务
@@ -48,7 +49,7 @@ public class BeanWrap {
     // bean clz 的注解（算是缓存起来）
     private final Annotation[] annotations;
 
-    private final AopContext context;
+    private final AppContext context;
 
 
     public BeanWrap(AopContext context, Class<?> clz) {
@@ -70,7 +71,7 @@ public class BeanWrap {
      * @since 1.10
      */
     public BeanWrap(AopContext context, Class<?> clz, Object raw, String name, boolean typed) {
-        this.context = context;
+        this.context = (AppContext) context;
         this.clz = clz;
         this.name = name;
         this.typed = typed;
@@ -86,8 +87,10 @@ public class BeanWrap {
 
         //构建原生实例
         if (raw == null) {
-            this.raw = _new();
+            this.rawUnproxied = _new();
+            this.raw = rawUnproxied;
         } else {
+            this.rawUnproxied = raw;
             this.raw = raw;
         }
 
@@ -95,7 +98,7 @@ public class BeanWrap {
         tryInit(this.raw);
     }
 
-    public AopContext context() {
+    public AppContext context() {
         return context;
     }
 
@@ -150,14 +153,28 @@ public class BeanWrap {
     }
 
     /**
-     * bean 原始对象
+     * bean 原始对象（未代理的）
      */
-    public <T> T raw() {
-        return (T) raw;
+    public <T> T raw(boolean unproxied) {
+        if (unproxied) {
+            //未代理的
+            return (T) rawUnproxied;
+        } else {
+            return (T) raw;
+        }
     }
 
-    protected void rawSet(Object raw) {
-        this.raw = raw;
+    /**
+     * bean 原始对象（可能被代理的）
+     */
+    public <T> T raw() {
+        return raw(false);
+    }
+
+    public void rawSet(Object raw) {
+        if (this.raw == null) {
+            this.raw = raw;
+        }
     }
 
     /**
@@ -187,7 +204,9 @@ public class BeanWrap {
     }
 
     protected void tagSet(String tag) {
-        this.tag = tag;
+        if (this.tag == null) {
+            this.tag = tag;
+        }
     }
 
     /**
@@ -213,16 +232,39 @@ public class BeanWrap {
     }
 
     /**
-     * bean 获取对象
+     * bean 获取对象（可能被代理的）
      */
     public <T> T get() {
-        if (singleton) {
-            return (T) raw;
-        } else {
-            return (T) _new(); //如果是 interface ，则返回 _raw
-        }
+        return get(false);
     }
 
+    /**
+     * bean 获取对象（未代理的）
+     */
+    public <T> T get(boolean unproxied) {
+        if (unproxied) {
+            //未代理的
+            if (singleton) {
+                return (T) rawUnproxied;
+            } else {
+                return (T) _new();
+            }
+        } else {
+            //可能代理的
+            if (singleton) {
+                return (T) raw;
+            } else {
+                Object tmp = _new(); //如果是 interface ，则返回 _raw
+
+                //3.尝试代理转换
+                if (proxy != null) {
+                    tmp = proxy.getProxy(context(), tmp);
+                }
+
+                return (T)tmp;
+            }
+        }
+    }
 
 
     /**
@@ -239,11 +281,6 @@ public class BeanWrap {
 
             //2.完成注入动作
             context.beanInject(bean);
-
-            //3.尝试代理转换
-            if (proxy != null) {
-                bean = proxy.getProxy(context(), bean);
-            }
 
             //4.返回
             return bean;
@@ -326,6 +363,6 @@ public class BeanWrap {
         /**
          * 获取代理
          */
-        Object getProxy(AopContext ctx, Object bean);
+        Object getProxy(AppContext ctx, Object bean);
     }
 }

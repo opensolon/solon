@@ -5,11 +5,13 @@ import org.noear.solon.boot.web.Constants;
 import org.noear.solon.boot.web.RedirectUtils;
 import org.noear.solon.core.NvMap;
 import org.noear.solon.Utils;
-import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.ContextAsyncListener;
 import org.noear.solon.core.handle.UploadedFile;
 import org.noear.solon.core.util.IgnoreCaseMap;
+import org.noear.solon.core.util.IoUtil;
 import org.noear.solon.core.util.RunUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.smartboot.http.common.Cookie;
 import org.smartboot.http.common.enums.HttpStatus;
 import org.smartboot.http.server.HttpRequest;
@@ -24,6 +26,8 @@ import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
 public class SmHttpContext extends WebContextBase {
+    static final Logger log = LoggerFactory.getLogger(SmHttpContextHandler.class);
+
     private HttpRequest _request;
     private HttpResponse _response;
     protected Map<String, List<UploadedFile>> _fileMap;
@@ -131,12 +135,7 @@ public class SmHttpContext extends WebContextBase {
 
     @Override
     public long contentLength() {
-        try {
-            return _request.getContentLength();
-        } catch (Exception e) {
-            EventBus.publishTry(e);
-            return 0;
-        }
+        return _request.getContentLength();
     }
 
     @Override
@@ -182,7 +181,7 @@ public class SmHttpContext extends WebContextBase {
             _paramsMap = new LinkedHashMap<>();
 
             _request.getParameters().forEach((k, v) -> {
-                _paramsMap.put(k, Arrays.asList(v));
+                _paramsMap.put(k, Utils.asList(v));
             });
         }
 
@@ -317,7 +316,7 @@ public class SmHttpContext extends WebContextBase {
                 return;
             }
 
-            Utils.transferTo(stream, out);
+            IoUtil.transferTo(stream, out);
         } catch (Throwable ex) {
             throw new RuntimeException(ex);
         }
@@ -415,7 +414,7 @@ public class SmHttpContext extends WebContextBase {
                         try {
                             listener1.onTimeout(this);
                         } catch (IOException e) {
-                            EventBus.publishTry(e);
+                            log.warn(e.getMessage(), e);
                         }
                     }
                 }, _asyncTimeout);

@@ -1,10 +1,10 @@
 package org.noear.solon.cloud.extend.local.impl.job;
 
 import org.noear.solon.Utils;
-import org.noear.solon.cloud.exception.CloudJobException;
 import org.noear.solon.cloud.extend.local.impl.job.cron.CronExpressionPlus;
-import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.RunUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Date;
 
@@ -15,6 +15,7 @@ import java.util.Date;
  * @since 1.6
  */
 class JobEntity extends Thread {
+    static final Logger log = LoggerFactory.getLogger(JobEntity.class);
     /**
      * 调度表达式
      */
@@ -96,7 +97,7 @@ class JobEntity extends Thread {
                     scheduling();
                 } catch (Throwable e) {
                     e = Utils.throwableUnwrap(e);
-                    EventBus.publishTry(new CloudJobException(e));
+                    log.warn(e.getMessage(), e);
                 }
             } else {
                 break;
@@ -154,7 +155,7 @@ class JobEntity extends Thread {
         try {
             runnable.run();
         } catch (Throwable e) {
-            EventBus.publishTry(e);
+            log.warn(e.getMessage(), e);
         }
     }
 
@@ -166,7 +167,7 @@ class JobEntity extends Thread {
         try {
             Thread.sleep(sleep);
         } catch (Exception e) {
-            EventBus.publishTry(e);
+            log.warn(e.getMessage(), e);
         }
     }
 }

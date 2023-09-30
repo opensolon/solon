@@ -8,7 +8,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 
 import java.util.concurrent.TimeUnit;
 
@@ -23,7 +23,7 @@ import java.util.concurrent.TimeUnit;
 public class AdminClientBootstrapConfiguration {
 
     @Inject
-    AopContext aopContext;
+    AppContext appContext;
 
     @Inject(value = "${solon.admin.client}", required = false)
     ClientProperties clientProperties = new ClientProperties();

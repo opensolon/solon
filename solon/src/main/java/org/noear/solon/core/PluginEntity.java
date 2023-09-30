@@ -6,12 +6,13 @@ import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.lang.Nullable;
 
+import java.util.List;
 import java.util.Properties;
 
 /**
  * 插件实体
  *
- * @see SolonProps#plugsScan()
+ * @see SolonProps#plugsScan(List) 
  * @author noear
  * @since 1.0
  * */
@@ -94,14 +95,14 @@ public class PluginEntity {
     /**
      * 初始化
      */
-    public void init(AopContext context) {
+    public void init(AppContext context) {
         initInstance(context);
     }
 
     /**
      * 启动
      */
-    public void start(AopContext context) {
+    public void start(AppContext context) {
         if (plugin != null) {
             try {
                 plugin.start(context);
@@ -142,7 +143,7 @@ public class PluginEntity {
     /**
      * 初始化
      */
-    private void initInstance(AopContext context) {
+    private void initInstance(AppContext context) {
         if (plugin == null) {
             if (classLoader != null) {
                 plugin = ClassUtil.tryInstance(classLoader, className);

@@ -19,22 +19,29 @@ import java.util.logging.Logger;
  * @since 1.11
  */
 public abstract class AbstractRoutingDataSource implements DataSource, Closeable {
-    private DataSource defaultTargetDataSource;
-    private Map<String, DataSource> targetDataSources;
+    protected DataSource defaultTargetDataSource;
+    protected Map<String, DataSource> targetDataSources;
 
     /**
      * 严格模式（启用后在未匹配到指定数据源时候会抛出异常,不启用则使用默认数据源.）
      */
-    private boolean strict;
+    protected boolean strict;
 
+
+    /**
+     * 设置目标数据源集合（替换掉旧的）
+     * */
     public void setTargetDataSources(Map<String, DataSource> targetDataSources) {
-        if (targetDataSources == null || targetDataSources.size() == 0) {
+        if (Utils.isEmpty(targetDataSources)) {
             throw new IllegalArgumentException("Property 'targetDataSources' is required");
         }
 
         this.targetDataSources = targetDataSources;
     }
 
+    /**
+     * 设置默认目标数据源
+     * */
     public void setDefaultTargetDataSource(DataSource defaultTargetDataSource) {
         if (defaultTargetDataSource == null) {
             throw new IllegalArgumentException("Property 'defaultTargetDataSource' is required");
@@ -43,9 +50,13 @@ public abstract class AbstractRoutingDataSource implements DataSource, Closeable
         this.defaultTargetDataSource = defaultTargetDataSource;
     }
 
+    /**
+     * 设置严格模式
+     * */
     public void setStrict(boolean strict) {
         this.strict = strict;
     }
+
 
 
     /**
@@ -128,9 +139,7 @@ public abstract class AbstractRoutingDataSource implements DataSource, Closeable
     public void close() throws IOException {
         if (targetDataSources != null) {
             for (DataSource ds : targetDataSources.values()) {
-                if (ds instanceof Closeable) {
-                    ((Closeable) ds).close();
-                }
+                closeDataSource(ds);
             }
         }
 
@@ -141,9 +150,16 @@ public abstract class AbstractRoutingDataSource implements DataSource, Closeable
                 }
             }
 
-            if (defaultTargetDataSource instanceof Closeable) {
-                ((Closeable) defaultTargetDataSource).close();
-            }
+            closeDataSource(defaultTargetDataSource);
+        }
+    }
+
+    /**
+     * 尝试关闭数据源
+     * */
+    protected void closeDataSource(DataSource ds) throws IOException{
+        if (ds instanceof Closeable) {
+            ((Closeable) ds).close();
         }
     }
 }

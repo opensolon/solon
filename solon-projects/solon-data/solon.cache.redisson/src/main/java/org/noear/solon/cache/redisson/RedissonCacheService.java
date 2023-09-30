@@ -2,9 +2,10 @@ package org.noear.solon.cache.redisson;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
-import org.noear.solon.core.event.EventBus;
 import org.noear.solon.data.cache.CacheService;
 import org.redisson.api.RedissonClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
@@ -14,6 +15,8 @@ import java.util.concurrent.TimeUnit;
  * @since 1.7
  */
 public class RedissonCacheService implements CacheService {
+    static final Logger log = LoggerFactory.getLogger(RedissonCacheService.class);
+
     protected String _cacheKeyHead;
     protected int _defaultSeconds;
 
@@ -87,15 +90,15 @@ public class RedissonCacheService implements CacheService {
         try {
             client.getBucket(newKey).set(obj, seconds, TimeUnit.SECONDS);
         } catch (Throwable e) {
-            EventBus.publishTry(e);
+            log.warn(e.getMessage(), e);
         }
     }
 
     @Override
-    public Object get(String key) {
+    public <T> T get(String key, Class<T> clz) {
         String newKey = newKey(key);
 
-        return client.getBucket(newKey).get();
+        return (T)client.getBucket(newKey).get();
     }
 
     @Override
