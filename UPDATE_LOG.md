@@ -46,6 +46,7 @@
 * fastjson2 升为 2.4.0
 * jetty 升为 9.4.52.v20230823
 * undertow 升为 2.2.26.Final
+* redisx 升为 1.6.0
 
 ### 2.5.6
 * asm 升为 9.5 （for JDK21）
