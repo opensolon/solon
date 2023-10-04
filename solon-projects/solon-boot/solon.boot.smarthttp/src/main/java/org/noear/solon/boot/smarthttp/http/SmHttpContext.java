@@ -24,7 +24,6 @@ import java.io.OutputStream;
 import java.net.URI;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
-import java.util.zip.GZIPOutputStream;
 
 public class SmHttpContext extends WebContextBase {
     static final Logger log = LoggerFactory.getLogger(SmHttpContextHandler.class);

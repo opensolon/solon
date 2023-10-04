@@ -21,7 +21,6 @@ import java.io.OutputStream;
 import java.net.URI;
 import java.nio.charset.Charset;
 import java.util.*;
-import java.util.zip.GZIPOutputStream;
 
 /**
  * Servlet，适配为 Context

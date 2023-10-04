@@ -8,21 +8,19 @@ import org.noear.solon.core.NvMap;
 import org.noear.solon.core.handle.ContextAsyncListener;
 import org.noear.solon.core.handle.UploadedFile;
 import org.noear.solon.core.util.IgnoreCaseMap;
+import org.noear.solon.core.util.IoUtil;
 
 import jakarta.servlet.AsyncContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.noear.solon.core.util.IoUtil;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URI;
 import java.nio.charset.Charset;
 import java.util.*;
-import java.util.zip.GZIPOutputStream;
 
 /**
  * Servlet，适配为 Context
@@ -430,4 +428,3 @@ public class SolonServletContext extends WebContextBase {
         }
     }
 }
-

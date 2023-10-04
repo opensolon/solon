@@ -22,7 +22,6 @@ import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
-import java.util.zip.GZIPOutputStream;
 
 public class JdkHttpContext extends WebContextBase {
     private HttpExchange _exchange;
