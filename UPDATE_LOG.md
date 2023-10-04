@@ -17,17 +17,14 @@
 * 调整 使用更多的 slf4j 替换 LogUtil ???
 * 调整 solon.config.add 与 solon.config.load 合并，规范格式（同时支持内部与外部） ???
 * 调整 简化 SocketD ???
+* 新增 hibernate-solon-plugin 插件
 
 ### 2.5.7
 
-* 新增 hibernate-solon-plugin 插件
-* 增加 http server gzip 体整配置支持
 * 增加 Context::headerOfResponse 接口
+* 增加 http server gzip 整体配置支持
 * 增加 solon.web.staticfiles 对 gzip 的配置支持
-* 增加 solon.boot.jdkhttp 对 gzip 的配置支持
-* 增加 solon.boot.smarthttp 对 gzip 的配置支持
-* 增加 solon.web.servlet 对 gzip 的配置支持
-* 增加 solon.web.servlet.jakarta 对 gzip 的配置支持
+* 增加 solon.boot.jdkhttp 对 gzip 的配置支持（取消内部的自动处理）
 * 调整 `@Import` 替代 `@PropertySource`、`@TestPropertySource`，后者标为弃用
 * 调整 `@Rollback` 替代 `@TestRollback`，后者标为弃用
 * 调整 SolonTestApp 默认关闭 http 服务；避免与已启动服务端口冲突
@@ -40,7 +37,8 @@
 * 优化 Props::getMap 处理
 * 简化 Props::getProp 处理提升性能
 * wood 升为 1.2.2
-* mybatis-flex 升为 1.6.7
+* mybatis-flex 升为 1.6.8
+* fastmybatis 升为 2.9.7
 * easy-trans 升为 1.3.0
 * sa-token 升为 1.36.0
 * fastjson2 升为 2.4.0
