@@ -21,7 +21,7 @@ public class HibernateAdapter {
     protected HibernateConfiguration configuration;
 
     public HibernateAdapter(BeanWrap dsWrap) {
-        this(dsWrap, Solon.cfg().getProp("hibernate." + dsWrap.name()));
+        this(dsWrap, Solon.cfg().getProp("hibernate"));
     }
 
     public HibernateAdapter(BeanWrap dsWrap, Props dsProps) {
