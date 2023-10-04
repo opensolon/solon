@@ -35,12 +35,6 @@
         </dependency>
 
         <dependency>
-            <groupId>org.fusesource.jansi</groupId>
-            <artifactId>jansi</artifactId>
-            <version>${jansi.version}</version>
-        </dependency>
-
-        <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon.logging.log4j2</artifactId>
         </dependency>
