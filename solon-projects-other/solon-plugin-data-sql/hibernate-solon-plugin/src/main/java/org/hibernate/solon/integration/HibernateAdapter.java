@@ -21,7 +21,7 @@ public class HibernateAdapter {
     protected HibernateConfiguration configuration;
 
     public HibernateAdapter(BeanWrap dsWrap) {
-        this(dsWrap, Solon.cfg().getProp("hibernate"));
+        this(dsWrap, Solon.cfg().getProp("hibernate." + dsWrap.name()));
     }
 
     public HibernateAdapter(BeanWrap dsWrap, Props dsProps) {
@@ -45,7 +45,7 @@ public class HibernateAdapter {
     private SessionFactory sessionFactory;
 
     public SessionFactory getSessionFactory() {
-        if (sessionFactory != null) {
+        if (sessionFactory == null) {
             sessionFactory = getConfiguration().buildSessionFactory();
         }
 
