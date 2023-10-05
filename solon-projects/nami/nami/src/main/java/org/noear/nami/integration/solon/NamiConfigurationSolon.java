@@ -59,10 +59,6 @@ public final class NamiConfigurationSolon implements NamiConfiguration {
     }
 
     private LoadBalance getUpstream(NamiClient anno) {
-        if (Bridge.upstreamFactory() == null) {
-            return null;
-        }
-
-        return Bridge.upstreamFactory().create(anno.group(), anno.name());
+        return LoadBalance.get(anno.group(), anno.name());
     }
 }
