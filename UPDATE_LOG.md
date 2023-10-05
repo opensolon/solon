@@ -32,6 +32,7 @@
 * 调整 solon.cache.redission RedissonCacheService 增加外部序列化接口支持
 * 调整 `@Bean` 函数，参数没带注解的算必须
 * 调整 paramsMap 增加 autoMultipart 处理
+* 调整 nami,forest,feign 负载均衡的获取方式
 * 修复 solon-maven-plugin 在 linux 下因为一些用户角色没有权限导致打包失败问题
 * 优化 `VarGather` 检查增加自动排序
 * 优化 Props::getMap 处理
