@@ -22,11 +22,11 @@ public class XPluginImp implements Plugin {
         }
 
         context.beanBuilderAdd(FeignClient.class, (clz, wrap, anno) -> {
-            getProxy(wrap.context(),clz, anno, obj -> wrap.context().wrapAndPut(clz, obj));
+            getProxy(wrap.context(), clz, anno, obj -> wrap.context().wrapAndPut(clz, obj));
         });
 
         context.beanInjectorAdd(FeignClient.class, (varH, anno) -> {
-            getProxy(varH.context(),varH.getType(), anno, obj -> varH.setValue(obj));
+            getProxy(varH.context(), varH.getType(), anno, obj -> varH.setValue(obj));
         });
     }
 
@@ -66,11 +66,7 @@ public class XPluginImp implements Plugin {
     }
 
     private LoadBalance getUpstream(FeignClient anno) {
-        if (Bridge.upstreamFactory() == null) {
-            return null;
-        }
-
-        return Bridge.upstreamFactory().create(anno.group(), anno.name());
+        return LoadBalance.get(anno.group(), anno.name());
     }
 
     @Override
