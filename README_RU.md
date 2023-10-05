@@ -123,30 +123,6 @@ public class HelloServiceImpl implements HelloService {
 }
 ```
 
-
-## Основные рамки и быстро интегрированные пакеты разработки：
-
-###### Главный фреймворк.：
-
-| Пакет компонентов                    | инструкц                          |
-|------------------------|-----------------------------|
-| org.noear:solon-parent | Полагаться на управление версиями                      |
-| org.noear:solon        | Главный фреймворк.                         |
-| org.noear:nami         | Фреймворк для партнеров (как клиент для solon remoting) |
-
-###### Быстрый интегральный пакет разработки и взаимосвязь：
-
-| Пакет компонентов                       | инструкц                                                    |
-|---------------------------|-------------------------------------------------------|
-| org.noear:solon-lib       | Быстрый набор базовых интегральных пакетов                                             |
-| org.noear:solon-api       | solon-lib + jlhttp boot；Быстро разработайте приложение интерфейса                       |
-| org.noear:solon-web       | solon-api + freemarker + sessionstate；Быстро разработайте веб-приложения       |
-| org.noear:solon-beetl-web | solon-api + beetl + beetlsql + sessionstate；Быстро разработайте веб-приложения |
-| org.noear:solon-enjoy-web | solon-api + enjoy + arp + sessionstate；Быстро разработайте веб-приложения      |
-| org.noear:solon-rpc       | solon-api + nami；Быстро разработайте приложение RPC                           |
-| org.noear:solon-cloud     | solon-rpc + consul；Быстро разработайте приложения микрослужб                         |
-
-
 ## Официальная сеть и связанные с ней примеры, дела：
 
 * Адрес основной сети：[https://solon.noear.org](https://solon.noear.org)

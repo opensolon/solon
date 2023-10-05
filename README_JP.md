@@ -123,30 +123,6 @@ public class HelloServiceImpl implements HelloService {
 }
 ```
 
-
-## メインフレームワーク及び快速統合開発パッケージ：
-
-###### メインフレーム：
-
-| コンポーネントパッケージ                    | 説明                          |
-|------------------------|-----------------------------|
-| org.noear:solon-parent | 依存バージョン管理                      |
-| org.noear:solon        | メインフレーム                         |
-| org.noear:nami         | 随伴フレームワーク（solon remotingのクライアントとして） |
-
-###### 快速統合開発パッケージ及びお互いの関係：
-
-| コンポーネントパッケージ                       | 説明                                                               |
-|---------------------------|------------------------------------------------------------------|
-| org.noear:solon-lib       | 快速開発の基礎統合パッケージ                                                   |
-| org.noear:solon-api       | solon-lib + jlhttp boot；快速的にインタフェースアプリケーション                       |
-| org.noear:solon-web       | solon-api + freemarker + sessionstate；快速的にWEBアプリケーションを開発します       |
-| org.noear:solon-beetl-web | solon-api + beetl + beetlsql + sessionstate；快速的にWEBアプリケーションを開発します |
-| org.noear:solon-enjoy-web | solon-api + enjoy + arp + sessionstate；快速的にWEBアプリケーションを開発します      |
-| org.noear:solon-rpc       | solon-api + nami；快速的にRPCアプリケーションを開発します                            |
-| org.noear:solon-cloud     | solon-rpc + consul；快速的にマイクロサービスアプリケーションを開発します                        |
-
-
 ## 公式サイトと関するデモ・ケース：
 
 * 公式サイト：[https://solon.noear.org](https://solon.noear.org)

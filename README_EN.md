@@ -122,29 +122,6 @@ public class HelloServiceImpl implements HelloService {
 }
 ```
 
-## Main framework and quick integration development packages：
-
-###### Main framework:
-
-| Component Package                    | Description                          |
-|------------------------|-----------------------------|
-| org.noear:solon-parent | Dependency version management                      |
-| org.noear:solon        | Main framework                         |
-| org.noear:nami         | Companion framework (as solon remoting's client) |
-
-###### Quick integration development packages and relationships：
-
-| Component Package                       | Description                                                    |
-|---------------------------|-------------------------------------------------------|
-| org.noear:solon-lib       | Quick development basic integration package                                             |
-| org.noear:solon-api       | solon-lib + jlhttp boot；quick development of API applications                       |
-| org.noear:solon-web       | solon-api + freemarker + sessionstate；quick development of WEB applications       |
-| org.noear:solon-beetl-web | solon-api + beetl + beetlsql + sessionstate；quick development of WEB applications |
-| org.noear:solon-enjoy-web | solon-api + enjoy + arp + sessionstate；quick development of WEB applications      |
-| org.noear:solon-rpc       | solon-api + nami；quick development of RPC applications                            |
-| org.noear:solon-cloud     | solon-rpc + consul；quick development of microservices applications                          |
-
-
 ## Official website and related examples, cases：
 
 * Official website address：[https://solon.noear.org](https://solon.noear.org)
