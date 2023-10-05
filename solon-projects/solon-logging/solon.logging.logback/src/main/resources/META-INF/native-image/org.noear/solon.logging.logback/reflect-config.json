@@ -18,5 +18,51 @@
   {
     "name": "ch.qos.logback.solon.integration.LogIncubatorImpl",
     "allDeclaredConstructors": true
+  },
+  {
+    "name": "ch.qos.logback.core.ConsoleAppender",
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "ch.qos.logback.classic.filter.ThresholdFilter",
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "ch.qos.logback.core.rolling.RollingFileAppender",
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "ch.qos.logback.classic.filter.ThresholdFilter",
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "ch.qos.logback.core.rolling.TimeBasedRollingPolicy",
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP",
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "ch.qos.logback.classic.joran.SerializedModelConfigurator",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [
+
+        ]
+      }
+    ]
+  },
+  {
+    "name": "ch.qos.logback.classic.util.DefaultJoranConfigurator",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [
+
+        ]
+      }
+    ]
   }
 ]
