@@ -83,7 +83,6 @@
 * mybatis-flex 升为 1.6.5
 * sqltoy 升为 5.2.66
 * polaris 升为 1.14.1
-* lombok 升为 1.18.28
 * slf4j 升为 2.0.9
 * lombok 升为 1.18.30（for JDK21）
 
