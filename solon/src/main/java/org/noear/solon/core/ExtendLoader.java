@@ -2,8 +2,9 @@ package org.noear.solon.core;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
-import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.LogUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -17,6 +18,8 @@ import java.util.function.Predicate;
  * @since 1.0
  * */
 public class ExtendLoader {
+    private static final Logger log = LoggerFactory.getLogger(ExtendLoader.class);
+
     private static final ExtendLoader instance = new ExtendLoader();
     private static String path;
 
@@ -96,7 +99,7 @@ public class ExtendLoader {
 
             return true;
         } catch (Throwable e) {
-            EventBus.publishTry(e);
+            log.warn(e.getMessage(), e);
             return false;
         }
     }
@@ -106,7 +109,7 @@ public class ExtendLoader {
             AppClassLoader.global().addJar(file);
             return true;
         } catch (Throwable e) {
-            EventBus.publishTry(e);
+            log.warn(e.getMessage(), e);
             return false;
         }
     }
@@ -119,7 +122,7 @@ public class ExtendLoader {
             AppClassLoader.global().removeJar(file);
             return true;
         } catch (Throwable e) {
-            EventBus.publishTry(e);
+            log.warn(e.getMessage(), e);
             return false;
         }
     }
@@ -194,7 +197,7 @@ public class ExtendLoader {
                     return;
                 }
             } catch (Throwable e) {
-                EventBus.publishTry(e);
+                log.warn(e.getMessage(), e);
             }
         }
     }

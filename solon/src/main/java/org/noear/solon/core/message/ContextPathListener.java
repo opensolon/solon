@@ -2,7 +2,8 @@ package org.noear.solon.core.message;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
-import org.noear.solon.core.event.EventBus;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
@@ -20,6 +21,8 @@ import java.io.IOException;
  * @since 2.5
  */
 public class ContextPathListener implements Listener {
+    private final static Logger log = LoggerFactory.getLogger(ContextPathListener.class);
+
     private final String contextPath0;
     private final String contextPath1;
     private final boolean forced;
@@ -69,7 +72,7 @@ public class ContextPathListener implements Listener {
                     try {
                         session.close();
                     } catch (IOException e) {
-                        EventBus.publishTry(e);
+                        log.warn(e.getMessage(), e);
                     }
                 }
             }

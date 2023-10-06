@@ -3,10 +3,11 @@ package org.noear.solon.core.wrap;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.VarHolder;
-import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.GenericUtil;
 import org.noear.solon.core.util.ParameterizedTypeImpl;
 import org.noear.solon.lang.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
@@ -21,6 +22,8 @@ import java.util.Map;
  * @since 1.0
  * */
 public class FieldWrap {
+    private final static Logger log = LoggerFactory.getLogger(FieldWrap.class);
+
     /**
      * 实体类型
      */
@@ -43,7 +46,7 @@ public class FieldWrap {
     public final @Nullable ParameterizedType genericType;
     /**
      * 字段是否只读
-     * */
+     */
     public final boolean readonly;
 
     /**
@@ -109,22 +112,22 @@ public class FieldWrap {
     }
 
 
-
     private VarDescriptor descriptor;
+
     /**
      * 变量申明者
      *
      * @since 2.3
-     * */
+     */
     public VarDescriptor getDescriptor() {
-        if(descriptor == null){
+        if (descriptor == null) {
             //采用懒加载，不浪费
             descriptor = new FieldWrapDescriptor(this);
         }
         return descriptor;
     }
 
-    public String getName(){
+    public String getName() {
         return field.getName();
     }
 
@@ -147,7 +150,7 @@ public class FieldWrap {
         }
     }
 
-    public Object get(Object tObj) throws IllegalAccessException{
+    public Object get(Object tObj) throws IllegalAccessException {
         if (!field.isAccessible()) {
             field.setAccessible(true);
         }
@@ -160,8 +163,9 @@ public class FieldWrap {
     public void setValue(Object tObj, Object val) {
         setValue(tObj, val, false);
     }
+
     public void setValue(Object tObj, Object val, boolean disFun) {
-        if (readonly){
+        if (readonly) {
             return;
         }
 
@@ -228,8 +232,8 @@ public class FieldWrap {
             }
         } catch (NoSuchMethodException e) {
             //正常情况，不用管
-        } catch (Throwable e) {
-            EventBus.publishTry(e);
+        } catch (SecurityException e) {
+            log.warn(e.getMessage(), e);
         }
         return null;
     }

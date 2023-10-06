@@ -11,6 +11,8 @@ import org.noear.solon.core.route.RoutingTableDefault;
 import org.noear.solon.core.util.PathUtil;
 import org.noear.solon.core.util.DataThrowable;
 import org.noear.solon.core.util.RankEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
 import java.util.function.Predicate;
@@ -39,6 +41,8 @@ import java.util.function.Predicate;
  * @since 1.0
  * */
 public abstract class Gateway extends HandlerAide implements Handler, Render {
+    private final static Logger log = LoggerFactory.getLogger(Gateway.class);
+
     //主处理缺省
     private Handler mainDef;
     //主处理路由
@@ -126,7 +130,8 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
         if (obj instanceof Throwable) {
             if (c.remoting()) {
                 //尝试推送异常，不然没机会记录；也可对后继做控制
-                EventBus.publishTry(obj);
+                Throwable objE = (Throwable)obj;
+                log.warn(objE.getMessage(), objE);
 
                 if (c.getRendered() == false) {
                     c.render(obj);

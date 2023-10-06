@@ -1,7 +1,6 @@
 package org.noear.solon.core;
 
 import org.noear.solon.Solon;
-import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.ResourceUtil;
 
 import java.io.File;
@@ -48,7 +47,7 @@ public class ResourceScanner {
                 scanDo(roots.nextElement(), path, filter, urls);
             }
 		} catch (IOException e) {
-			EventBus.publishTry(e);
+			throw new IllegalStateException(e);
 		}
 
         return urls;
