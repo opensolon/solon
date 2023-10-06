@@ -26,8 +26,8 @@ Solon v2.5.7
     <a target="_blank" href="https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html">
 		<img src="https://img.shields.io/badge/JDK-17-green.svg" alt="jdk-17" />
 	</a>
-    <a target="_blank" href="https://www.oracle.com/java/technologies/javase/jdk20-archive-downloads.html">
-		<img src="https://img.shields.io/badge/JDK-20-green.svg" alt="jdk-20" />
+    <a target="_blank" href="https://www.oracle.com/java/technologies/javase/jdk21-archive-downloads.html">
+		<img src="https://img.shields.io/badge/JDK-21-green.svg" alt="jdk-21" />
 	</a>
     <br />
     <a target="_blank" href='https://gitee.com/noear/solon/stargazers'>
