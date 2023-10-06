@@ -3,6 +3,7 @@ package org.noear.solon.core.event;
 import org.noear.solon.Solon;
 import org.noear.solon.core.exception.EventException;
 import org.noear.solon.core.util.GenericUtil;
+import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.core.util.RunUtil;
 
 import java.util.*;
@@ -61,6 +62,7 @@ public final class EventBus {
                 publish0(event);
             } catch (Throwable e) {
                 //不再转发异常，免得死循环
+                LogUtil.global().warn(e.getMessage(), e);
             }
         }
     }
