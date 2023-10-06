@@ -18,6 +18,7 @@
 * 调整 简化 SocketD ???
 * 新增 hibernate-solon-plugin 插件
 * 调整 使用更多的 slf4j 替换 LogUtil ???
+* 调整 InitializingBean 标为弃用
 
 ### 2.5.8
 * 取消 全局未处理异常走总线的机制，转由 Log 框架接收（简化用户体验）
