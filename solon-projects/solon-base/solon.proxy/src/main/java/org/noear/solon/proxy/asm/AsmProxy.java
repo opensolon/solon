@@ -12,7 +12,7 @@ import java.lang.reflect.Method;
 public class AsmProxy {
     public static final int ASM_VERSION = Opcodes.ASM9;
     // 动态生成代理类的后缀
-    public static final String PROXY_CLASSNAME_SUFFIX ="$$SolonAsmProxy";
+    public static final String PROXY_CLASSNAME_SUFFIX = "$$SolonAsmProxy";
     // 方法名
     private static final String METHOD_SETTER = "setInvocationHandler";
 
@@ -77,8 +77,12 @@ public class AsmProxy {
                                           Class<?> targetClass,
                                           Constructor<?> targetConstructor,
                                           Object... targetParam) {
-        if (targetClass == null || invocationHandler == null) {
-            throw new IllegalArgumentException("argument is null");
+        if (targetClass == null) {
+            throw new IllegalArgumentException("The targetClass is null");
+        }
+
+        if (invocationHandler == null) {
+            throw new IllegalArgumentException("The invocationHandler is null");
         }
 
         try {
@@ -87,8 +91,7 @@ public class AsmProxy {
             // 实例化代理对象
             return newInstance(proxyClass, invocationHandler, targetConstructor, targetParam);
         } catch (Exception e) {
-            LogUtil.global().warn("can not proxy, targetClass: " + targetClass.getCanonicalName(), e);
-            e.printStackTrace();
+            LogUtil.global().warn("Unable to support proxy, targetClass: " + targetClass.getCanonicalName(), e);
         }
         return null;
     }
