@@ -225,6 +225,7 @@ public class OutputUtils {
         try {
             IoUtil.transferTo(stream, ctx.outputStream(), start, size);
         } catch (IOException e) {
+            //会很常见，没必要异常
             LogUtil.global().warn("The http range output is abnormal: " + e.getMessage());
         }
     }
