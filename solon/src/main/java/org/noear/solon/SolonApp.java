@@ -10,8 +10,6 @@ import org.noear.solon.core.route.RouterWrapper;
 import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.core.util.ConsumerEx;
 import org.noear.solon.core.util.LogUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.lang.annotation.Annotation;
 import java.util.*;
@@ -35,8 +33,6 @@ import java.util.function.Consumer;
  * @since 1.0
  */
 public class SolonApp extends RouterWrapper {
-    private final static Logger log = LoggerFactory.getLogger(SolonApp.class);
-
     private final SolonProps _cfg; //属性配置
     private final AppContext _context;//容器上下文
     private final ConverterManager _converterManager; //转换管理器
@@ -435,7 +431,7 @@ public class SolonApp extends RouterWrapper {
             ex = Utils.throwableUnwrap(ex);
 
             //推送异常事件 //todo: Action -> Gateway? -> RouterHandler -> SolonApp!
-            log.warn(ex.getMessage(), ex);
+            LogUtil.global().warn(ex.getMessage(), ex);
 
             //如果未处理，尝试处理
             if (x.getHandled() == false) {

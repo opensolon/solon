@@ -87,7 +87,7 @@ public class AsmProxy {
             // 实例化代理对象
             return newInstance(proxyClass, invocationHandler, targetConstructor, targetParam);
         } catch (Exception e) {
-            LogUtil.global().warn("can not proxy, targetClass: " + targetClass.getCanonicalName());
+            LogUtil.global().warn("can not proxy, targetClass: " + targetClass.getCanonicalName(), e);
             e.printStackTrace();
         }
         return null;

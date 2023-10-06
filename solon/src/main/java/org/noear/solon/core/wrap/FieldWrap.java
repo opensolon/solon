@@ -4,10 +4,9 @@ import org.noear.solon.core.AopContext;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.VarHolder;
 import org.noear.solon.core.util.GenericUtil;
+import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.core.util.ParameterizedTypeImpl;
 import org.noear.solon.lang.Nullable;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
@@ -22,8 +21,6 @@ import java.util.Map;
  * @since 1.0
  * */
 public class FieldWrap {
-    private final static Logger log = LoggerFactory.getLogger(FieldWrap.class);
-
     /**
      * 实体类型
      */
@@ -233,7 +230,7 @@ public class FieldWrap {
         } catch (NoSuchMethodException e) {
             //正常情况，不用管
         } catch (SecurityException e) {
-            log.warn(e.getMessage(), e);
+            LogUtil.global().warn(e.getMessage(), e);
         }
         return null;
     }

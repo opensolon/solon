@@ -5,13 +5,12 @@ import org.noear.solon.Utils;
 import org.noear.solon.annotation.Consumes;
 import org.noear.solon.annotation.Produces;
 import org.noear.solon.core.*;
+import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.core.util.PathUtil;
 import org.noear.solon.core.util.DataThrowable;
 import org.noear.solon.core.wrap.MethodWrap;
 import org.noear.solon.core.util.PathAnalyzer;
 import org.noear.solon.annotation.Mapping;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -25,8 +24,6 @@ import java.util.regex.Matcher;
  * @since 1.0
  * */
 public class Action extends HandlerAide implements Handler {
-    private final static Logger log = LoggerFactory.getLogger(Action.class);
-
     //bean 包装器
     private final BeanWrap bWrap;
     //bean 相关aide
@@ -358,7 +355,7 @@ public class Action extends HandlerAide implements Handler {
                 if (c.remoting()) {
                     //尝试推送异常，不然没机会记录；也可对后继做控制
                     Throwable objE = (Throwable)obj;
-                    log.warn(objE.getMessage(), objE);
+                    LogUtil.global().warn(objE.getMessage(), objE);
 
                     if (c.getRendered() == false) {
                         c.render(obj);

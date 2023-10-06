@@ -25,8 +25,8 @@ public class LogUtilExt extends LogUtil {
 
     /**
      * 孵化日志实现（加载配置，转换格式）
-     * */
-    private void incubate(){
+     */
+    private void incubate() {
         ServiceLoader<LogIncubator> internetServices = ServiceLoader.load(LogIncubator.class);
         for (LogIncubator logIncubator : internetServices) {
             try {
@@ -54,12 +54,20 @@ public class LogUtilExt extends LogUtil {
     }
 
     @Override
-    public void warn(String content) {
-        log.warn(content);
+    public void warn(String content, Throwable throwable) {
+        if (throwable == null) {
+            log.warn(content);
+        } else {
+            log.warn(content, throwable);
+        }
     }
 
     @Override
-    public void error(String content) {
-        log.error(content);
+    public void error(String content, Throwable throwable) {
+        if (throwable == null) {
+            log.error(content);
+        } else {
+            log.error(content, throwable);
+        }
     }
 }

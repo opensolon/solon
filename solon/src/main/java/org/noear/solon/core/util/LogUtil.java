@@ -10,6 +10,7 @@ import org.noear.solon.annotation.Note;
  * */
 public class LogUtil {
     private static LogUtil global;
+
     static {
         //（静态扩展约定：org.noear.solon.extend.impl.XxxxExt）
         LogUtil ext = ClassUtil.tryInstance("org.noear.solon.extend.impl.LogUtilExt");
@@ -58,12 +59,26 @@ public class LogUtil {
     }
 
     public void warn(String content) {
+        warn(content, null);
+    }
+
+    public void warn(String content, Throwable throwable) {
         System.out.print("[Solon] ");
         PrintUtil.yellowln("WARN: " + content);
+        if (throwable != null) {
+            throwable.printStackTrace();
+        }
     }
 
     public void error(String content) {
+        error(content, null);
+    }
+
+    public void error(String content, Throwable throwable) {
         System.out.print("[Solon] ");
         PrintUtil.redln("ERROR: " + content);
+        if (throwable != null) {
+            throwable.printStackTrace();
+        }
     }
 }
