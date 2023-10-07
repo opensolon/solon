@@ -11,6 +11,10 @@ package org.noear.solon.core.bean;
 public interface InitializingBean {
     /**
      * 注入之后
+     *
+     * @deprecated 2.5
+     * @see LifecycleBean::start
      * */
+    @Deprecated
     default void afterInjection() throws Throwable{}
 }
