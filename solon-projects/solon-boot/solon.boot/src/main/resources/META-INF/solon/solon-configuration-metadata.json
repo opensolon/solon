@@ -83,6 +83,23 @@
       "description": "服务ssl证书密码"
     },
     {
+      "name": "server.http.gzip.enable",
+      "type": "java.lang.Boolean",
+      "defaultValue": false,
+      "description": "gzip 是否启用"
+    },
+    {
+      "name": "server.http.gzip.minSize",
+      "type": "java.lang.Integer",
+      "defaultValue": 4096,
+      "description": "gzip 启用最小体积"
+    },
+    {
+      "name": "server.http.gzip.mimeTypes",
+      "type": "java.lang.String",
+      "description": "gzip 启用类型"
+    },
+    {
       "name": "solon.app.name",
       "type": "java.lang.String",
       "description": "应用名称"
@@ -120,8 +137,13 @@
       "description": "应用体外扩展目录"
     },
     {
-      "name": "solon.config",
+      "name": "solon.config.add",
       "type": "java.lang.String",
+      "description": "应用体外扩展配置"
+    },
+    {
+      "name": "solon.config.load",
+      "type": "java.lang.String[]",
       "description": "应用体外扩展配置"
     },
     {
