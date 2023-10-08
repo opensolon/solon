@@ -9,9 +9,9 @@ import org.noear.solon.data.around.CacheInterceptor;
 import org.noear.solon.data.around.CachePutInterceptor;
 import org.noear.solon.data.around.CacheRemoveInterceptor;
 import org.noear.solon.data.around.TranInterceptor;
-import org.noear.solon.data.tran.TranExecutorImp;
+import org.noear.solon.data.tran.TranExecutorDefault;
 
-public class XPluginImp implements Plugin {
+public class XPluginImpl implements Plugin {
     @Override
     public void start(AppContext context) {
         //注册缓存工厂
@@ -19,7 +19,7 @@ public class XPluginImp implements Plugin {
 
         //添加事务控制支持
         if (Solon.app().enableTransaction()) {
-            context.wrapAndPut(TranExecutor.class, TranExecutorImp.global);
+            context.wrapAndPut(TranExecutor.class, TranExecutorDefault.global);
 
             context.beanInterceptorAdd(Tran.class, new TranInterceptor(), 120);
         }

@@ -2,12 +2,10 @@ package org.noear.solon.data.tran.impl;
 
 import org.noear.solon.Utils;
 import org.noear.solon.data.annotation.Tran;
-import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.RunnableEx;
-import org.noear.solon.data.tran.TranEvent;
+import org.noear.solon.data.tran.TranListener;
 import org.noear.solon.data.tran.TranNode;
 import org.noear.solon.data.tran.TranManager;
-import org.noear.solon.data.tran.TranPhase;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -50,6 +48,8 @@ public abstract class DbTran extends DbTranNode implements TranNode {
     }
 
     public void execute(RunnableEx runnable) throws Throwable {
+        int status = TranListener.STATUS_UNKNOWN;
+
         try {
             //conMap 此时，还是空的
             //
@@ -60,14 +60,16 @@ public abstract class DbTran extends DbTranNode implements TranNode {
             runnable.run();
 
             if (parent == null) {
-                EventBus.publish(new TranEvent(TranPhase.BEFORE_COMMIT, meta));
+                //TranManager.getListener().beforeCommit(meta.readOnly());
+                TranManager.getListener().beforeCompletion();
                 commit();
-                EventBus.publish(new TranEvent(TranPhase.AFTER_COMMIT, meta));
+                TranManager.getListener().afterCommit();
+                status = TranListener.STATUS_COMMITTED;
             }
         } catch (Throwable ex) {
             if (parent == null) {
                 rollback();
-                EventBus.publish(new TranEvent(TranPhase.AFTER_ROLLBACK, meta));
+                status = TranListener.STATUS_ROLLED_BACK;
             }
 
             throw Utils.throwableUnwrap(ex);
@@ -76,7 +78,7 @@ public abstract class DbTran extends DbTranNode implements TranNode {
 
             if (parent == null) {
                 close();
-                EventBus.publish(new TranEvent(TranPhase.AFTER_COMPLETION, meta));
+                TranManager.getListener().afterCompletion(status);
             }
         }
     }

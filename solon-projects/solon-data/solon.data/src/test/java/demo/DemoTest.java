@@ -2,6 +2,8 @@ package demo;
 
 import org.noear.solon.data.annotation.Tran;
 import org.noear.solon.data.annotation.TranAnno;
+import org.noear.solon.data.tran.TranListener;
+import org.noear.solon.data.tran.TranManager;
 import org.noear.solon.data.tran.TranUtils;
 
 /**
@@ -20,5 +22,11 @@ public class DemoTest {
     @Tran(readOnly = true)
     public void test2(){
         //..
+        TranManager.registerListener(new TranListener() {
+            @Override
+            public void afterCommit() {
+                TranListener.super.afterCommit();
+            }
+        });
     }
 }

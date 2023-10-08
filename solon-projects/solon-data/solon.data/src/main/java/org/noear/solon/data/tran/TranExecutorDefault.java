@@ -2,7 +2,6 @@ package org.noear.solon.data.tran;
 
 import org.noear.solon.data.annotation.Tran;
 import org.noear.solon.data.tran.impl.*;
-import org.noear.solon.data.tranImp.*;
 import org.noear.solon.core.util.RunnableEx;
 
 import javax.sql.DataSource;
@@ -18,10 +17,10 @@ import java.util.Stack;
  * @author noear
  * @since 1.0
  * */
-public class TranExecutorImp implements TranExecutor {
-    public static final TranExecutorImp global = new TranExecutorImp();
+public class TranExecutorDefault implements TranExecutor {
+    public static final TranExecutorDefault global = new TranExecutorDefault();
 
-    protected TranExecutorImp() {
+    protected TranExecutorDefault() {
 
     }
 
