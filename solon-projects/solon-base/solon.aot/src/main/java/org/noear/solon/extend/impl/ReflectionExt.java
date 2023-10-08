@@ -15,6 +15,9 @@ import java.lang.reflect.Method;
  */
 public class ReflectionExt extends Reflection {
 
+    /**
+     * 获取类申明的字段
+     */
     @Override
     public Field[] getDeclaredFields(Class<?> clazz) {
         if (NativeDetector.inNativeImage()) {
@@ -24,12 +27,27 @@ public class ReflectionExt extends Reflection {
         }
     }
 
+    /**
+     * 获取类申明的方法
+     */
     @Override
     public Method[] getDeclaredMethods(Class<?> clazz) {
         if (NativeDetector.inNativeImage()) {
             return GraalvmUtil.getDeclaredMethods(clazz);
         } else {
             return super.getDeclaredMethods(clazz);
+        }
+    }
+
+    /**
+     * 获取类所有公有的方法（包括父级）
+     */
+    @Override
+    public Method[] getMethods(Class<?> clazz) {
+        if (NativeDetector.inNativeImage()) {
+            return GraalvmUtil.getDeclaredMethods(clazz);
+        } else {
+            return super.getMethods(clazz);
         }
     }
 }

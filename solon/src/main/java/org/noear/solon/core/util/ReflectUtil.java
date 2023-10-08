@@ -29,23 +29,30 @@ public class ReflectUtil {
     }
 
     /**
-     * 获取类上的所有字段
+     * 获取类的名字
+     */
+    public static String getClassName(Class<?> clazz) {
+        return reflection.getClassName(clazz);
+    }
+
+    /**
+     * 获取类的自己申明的字段
      */
     public static Field[] getDeclaredFields(Class<?> clazz) {
         return reflection.getDeclaredFields(clazz);
     }
 
     /**
-     * 获取类上所有的方法
+     * 获取类的自己申明的方法
      */
     public static Method[] getDeclaredMethods(Class<?> clazz) {
         return reflection.getDeclaredMethods(clazz);
     }
 
     /**
-     * 获取类的名字
-     * */
-    public static String getClassName(Class<?> clazz) {
-        return reflection.getClassName(clazz);
+     * 获取类的所有公有方法（包括父类）
+     */
+    public static Method[] getMethods(Class<?> clazz) {
+        return reflection.getMethods(clazz);
     }
 }

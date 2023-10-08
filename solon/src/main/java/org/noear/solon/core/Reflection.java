@@ -10,21 +10,6 @@ import java.lang.reflect.Method;
  * @since 2.2
  */
 public class Reflection {
-
-    /**
-     * 获取类上的所有字段
-     */
-    public Field[] getDeclaredFields(Class<?> clazz) {
-        return clazz.getDeclaredFields();
-    }
-
-    /**
-     * 获取类上所有的方法
-     */
-    public Method[] getDeclaredMethods(Class<?> clazz) {
-        return clazz.getDeclaredMethods();
-    }
-
     /**
      * 获取类的名字
      * */
@@ -32,4 +17,24 @@ public class Reflection {
         return clazz.getCanonicalName();
     }
 
+    /**
+     * 获取类申明的字段
+     */
+    public Field[] getDeclaredFields(Class<?> clazz) {
+        return clazz.getDeclaredFields();
+    }
+
+    /**
+     * 获取类申明的方法
+     */
+    public Method[] getDeclaredMethods(Class<?> clazz) {
+        return clazz.getDeclaredMethods();
+    }
+
+    /**
+     * 获取类所有公有的方法（包括父级）
+     */
+    public Method[] getMethods(Class<?> clazz) {
+        return clazz.getMethods();
+    }
 }
