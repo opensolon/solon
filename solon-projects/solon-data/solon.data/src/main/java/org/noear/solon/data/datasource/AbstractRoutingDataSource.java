@@ -32,7 +32,7 @@ public abstract class AbstractRoutingDataSource implements DataSource, Closeable
      * 设置目标数据源集合（替换掉旧的）
      * */
     public void setTargetDataSources(Map<String, DataSource> targetDataSources) {
-        if (Utils.isEmpty(targetDataSources)) {
+        if (targetDataSources == null) { //null 就可以了，因为还有 defaultTargetDataSource
             throw new IllegalArgumentException("Property 'targetDataSources' is required");
         }
 
