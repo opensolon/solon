@@ -24,7 +24,7 @@ public class TranExecutorImp implements TranExecutor {
 
     }
 
-    protected ThreadLocal<Stack<TranEntity>> local = new ThreadLocal<>();
+    protected ThreadLocal<Stack<TranEntity>> local = new InheritableThreadLocal<>();
 
     /**
      * 是否在事务中

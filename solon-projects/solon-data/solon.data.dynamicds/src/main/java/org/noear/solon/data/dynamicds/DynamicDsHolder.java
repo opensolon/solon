@@ -7,7 +7,7 @@ package org.noear.solon.data.dynamicds;
  * @since 1.11
  */
 public class DynamicDsHolder {
-    static ThreadLocal<String> targetThreadLocal = new ThreadLocal<>();
+    static ThreadLocal<String> targetThreadLocal = new InheritableThreadLocal<>();
 
     /**
      * 清除

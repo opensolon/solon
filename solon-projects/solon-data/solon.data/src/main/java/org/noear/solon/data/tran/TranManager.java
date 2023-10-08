@@ -9,7 +9,7 @@ import org.noear.solon.data.tranImp.DbTran;
  * @since 1.0
  * */
 public final class TranManager {
-    private static final ThreadLocal<DbTran> _tl_tran = new ThreadLocal();
+    private static final ThreadLocal<DbTran> _tl_tran = new InheritableThreadLocal<>();
 
     private TranManager() {
     }
