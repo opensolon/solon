@@ -8,6 +8,7 @@ import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
 import webapp.App;
 import webapp.demo6_aop.Bean2;
+import webapp.demo6_aop.DaoUser;
 import webapp.demo6_aop.ioc.TestCom1;
 import webapp.dso.AutoConfigTest;
 
@@ -26,6 +27,9 @@ public class AopTest {
 
     @Inject
     TestCom1 com1;
+
+    @Inject
+    DaoUser daoUser;
 
     //双向依赖的bean测试
     //
@@ -51,4 +55,11 @@ public class AopTest {
     public void test3() {
         assert com1 != null;
     }
+
+    @Test
+    public void test4() {
+        assert daoUser != null;
+        assert daoUser.getClass() != DaoUser.class;
+    }
+
 }
