@@ -1,5 +1,6 @@
 package org.noear.solon.data.tran;
 
+import org.noear.solon.core.util.ThreadUtil;
 import org.noear.solon.data.annotation.Tran;
 import org.noear.solon.data.tran.impl.*;
 import org.noear.solon.core.util.RunnableEx;
@@ -24,7 +25,7 @@ public class TranExecutorDefault implements TranExecutor {
 
     }
 
-    protected ThreadLocal<Stack<TranEntity>> local = new InheritableThreadLocal<>();
+    protected ThreadLocal<Stack<TranEntity>> local = ThreadUtil.global().newThreadLocal(false);
 
     /**
      * 是否在事务中

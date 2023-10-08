@@ -1,5 +1,6 @@
 package org.noear.solon.data.tran;
 
+import org.noear.solon.core.util.ThreadUtil;
 import org.noear.solon.data.tran.impl.DbTran;
 
 /**
@@ -9,8 +10,8 @@ import org.noear.solon.data.tran.impl.DbTran;
  * @since 1.0
  * */
 public final class TranManager {
-    private static final ThreadLocal<DbTran> _tl_tran = new InheritableThreadLocal<>();
-    private static final ThreadLocal<TranListenerSet> _tl_listeners = new InheritableThreadLocal<>();
+    private static final ThreadLocal<DbTran> _tl_tran = ThreadUtil.global().newThreadLocal(false);
+    private static final ThreadLocal<TranListenerSet> _tl_listeners = ThreadUtil.global().newThreadLocal(false);
 
     private TranManager() {
     }

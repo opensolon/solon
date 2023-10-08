@@ -1,5 +1,7 @@
 package org.noear.solon.data.dynamicds;
 
+import org.noear.solon.core.util.ThreadUtil;
+
 /**
  * 动态数据源切换
  *
@@ -7,7 +9,7 @@ package org.noear.solon.data.dynamicds;
  * @since 1.11
  */
 public class DynamicDsHolder {
-    static ThreadLocal<String> targetThreadLocal = new InheritableThreadLocal<>();
+    static ThreadLocal<String> targetThreadLocal = ThreadUtil.global().newThreadLocal(false);
 
     /**
      * 清除
