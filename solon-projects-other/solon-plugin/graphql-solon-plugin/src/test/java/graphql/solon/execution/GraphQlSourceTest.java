@@ -11,17 +11,19 @@ import graphql.GraphQL;
 import graphql.schema.GraphQLSchema;
 import graphql.schema.StaticDataFetcher;
 import graphql.schema.idl.TypeRuntimeWiring;
+import graphql.solon.configurer.RuntimeWiringConfigurer;
+import graphql.solon.resource.ByteArrayResource;
+import graphql.solon.resource.Resource;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
-import graphql.solon.configurer.RuntimeWiringConfigurer;
-import graphql.solon.resource.ByteArrayResource;
-import graphql.solon.resource.Resource;
 
 /**
+ * 测试graphql资源加载
+ *
  * @author fuzi1996
  * @since 2.3
  */
@@ -39,7 +41,7 @@ public class GraphQlSourceTest {
         GraphQLSchema graphQlSchema = defaultBuilder.getGraphQlSchema();
         GraphQL graphql = GraphQL.newGraphQL(graphQlSchema).build();
         DefaultGraphQlSource defaultGraphQlSource = new DefaultGraphQlSource();
-        defaultGraphQlSource.init(graphql, graphQlSchema);
+        defaultGraphQlSource.init(graphql, graphQlSchema, null);
         return defaultGraphQlSource;
     }
 

@@ -1,9 +1,5 @@
-package graphql.solon.integration;
+package graphql.solon;
 
-import org.noear.solon.core.AppContext;
-import org.noear.solon.core.Plugin;
-import org.noear.solon.core.event.AppLoadEndEvent;
-import org.noear.solon.core.event.EventBus;
 import graphql.solon.annotation.BatchMapping;
 import graphql.solon.annotation.BatchMappingAnnoHandler;
 import graphql.solon.annotation.QueryMapping;
@@ -15,9 +11,15 @@ import graphql.solon.controller.GraphqlController;
 import graphql.solon.event.AppLoadEndEventListener;
 import graphql.solon.event.DefaultCprResolverEventListener;
 import graphql.solon.event.DefaultRwConfigurerCollectEventListener;
+import graphql.solon.execution.BatchLoaderRegistry;
+import graphql.solon.execution.DefaultBatchLoaderRegistry;
 import graphql.solon.properties.GraphqlProperties;
 import graphql.solon.resolver.argument.HandlerMethodArgumentResolver;
 import graphql.solon.resolver.argument.HandlerMethodArgumentResolverCollect;
+import org.noear.solon.core.AppContext;
+import org.noear.solon.core.Plugin;
+import org.noear.solon.core.event.AppLoadEndEvent;
+import org.noear.solon.core.event.EventBus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,6 +40,9 @@ public class GraphqlPlugin implements Plugin {
                 methodArgumentResolverCollect);
         context.getBeanAsync(HandlerMethodArgumentResolver.class,
                 methodArgumentResolverCollect::append);
+
+        BatchLoaderRegistry defaultBatchLoaderRegistry = new DefaultBatchLoaderRegistry();
+        context.wrapAndPut(BatchLoaderRegistry.class, defaultBatchLoaderRegistry);
 
         SchemaMappingAnnoHandler schemaExtractor = new SchemaMappingAnnoHandler(context);
         context.beanExtractorAdd(SchemaMapping.class, schemaExtractor);

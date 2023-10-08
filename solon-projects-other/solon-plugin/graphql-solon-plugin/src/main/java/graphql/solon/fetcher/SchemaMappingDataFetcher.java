@@ -2,6 +2,9 @@ package graphql.solon.fetcher;
 
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
+import graphql.solon.resolver.argument.HandlerMethodArgumentResolver;
+import graphql.solon.resolver.argument.HandlerMethodArgumentResolverCollect;
+import graphql.solon.util.ReflectionUtils;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.List;
@@ -11,8 +14,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.wrap.ParamWrap;
-import graphql.solon.resolver.argument.HandlerMethodArgumentResolver;
-import graphql.solon.resolver.argument.HandlerMethodArgumentResolverCollect;
 
 /**
  * @author fuzi1996
@@ -20,13 +21,13 @@ import graphql.solon.resolver.argument.HandlerMethodArgumentResolverCollect;
  */
 public class SchemaMappingDataFetcher implements DataFetcher<Object> {
 
-    private final AppContext context;
-    private final BeanWrap wrap;
-    private final Method method;
-    private final ParamWrap[] paramWraps;
-    private final HandlerMethodArgumentResolverCollect collect;
-    private final Map<ParamWrap, HandlerMethodArgumentResolver> argumentResolverCache;
-    private final boolean isBatch;
+    protected final AppContext context;
+    protected final BeanWrap wrap;
+    protected final Method method;
+    protected final ParamWrap[] paramWraps;
+    protected final HandlerMethodArgumentResolverCollect collect;
+    protected final Map<ParamWrap, HandlerMethodArgumentResolver> argumentResolverCache;
+    protected final boolean isBatch;
 
     public SchemaMappingDataFetcher(AppContext context, BeanWrap wrap, Method method,
             boolean isBatch) {
@@ -55,18 +56,21 @@ public class SchemaMappingDataFetcher implements DataFetcher<Object> {
      * 构建执行参数
      */
     protected Object[] buildArgs(DataFetchingEnvironment environment) throws Exception {
-        Object[] arguments = new Object[this.paramWraps.length];
+        if (Objects.nonNull(this.paramWraps)) {
+            Object[] arguments = new Object[this.paramWraps.length];
 
-        if (this.getMethodArgLength() > 0) {
+            if (this.getMethodArgLength() > 0) {
 
-            for (int i = 0; i < this.paramWraps.length; i++) {
-                ParamWrap paramWrap = this.paramWraps[i];
-                arguments[i] = this
-                        .getArgument(environment, this.method, this.paramWraps, i, paramWrap);
+                for (int i = 0; i < this.paramWraps.length; i++) {
+                    ParamWrap paramWrap = this.paramWraps[i];
+                    arguments[i] = this
+                            .getArgument(environment, this.method, this.paramWraps, i, paramWrap);
+                }
             }
-        }
 
-        return arguments;
+            return arguments;
+        }
+        return null;
     }
 
     protected Object getArgument(DataFetchingEnvironment environment, Method method,
@@ -105,8 +109,12 @@ public class SchemaMappingDataFetcher implements DataFetcher<Object> {
 
     @Override
     public Object get(DataFetchingEnvironment environment) throws Exception {
-        Object[] objects = this.buildArgs(environment);
-        return this.method.invoke(wrap.get(), objects);
+        Object[] args = this.buildArgs(environment);
+        return this.invokeMethod(args);
+    }
+
+    protected Object invokeMethod(Object[] args) {
+        return ReflectionUtils.invokeMethod(this.method, wrap.get(), args);
     }
 
 }

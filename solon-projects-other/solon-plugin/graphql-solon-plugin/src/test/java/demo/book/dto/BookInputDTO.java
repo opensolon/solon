@@ -1,6 +1,6 @@
-package demo.dto;
+package demo.book.dto;
 
-import demo.entity.BookEntity;
+import demo.book.entity.BookEntity;
 
 public class BookInputDTO extends BookEntity {
 

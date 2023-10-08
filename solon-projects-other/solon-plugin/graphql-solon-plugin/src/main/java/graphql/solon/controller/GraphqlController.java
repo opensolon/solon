@@ -3,6 +3,8 @@ package graphql.solon.controller;
 import graphql.ExecutionInput;
 import graphql.ExecutionResult;
 import graphql.GraphQL;
+import graphql.solon.execution.GraphQlSource;
+import graphql.solon.resource.GraphqlRequestParam;
 import java.util.HashMap;
 import java.util.Map;
 import org.noear.solon.annotation.Controller;
@@ -10,8 +12,6 @@ import org.noear.solon.annotation.Inject;
 import org.noear.solon.annotation.Mapping;
 import org.noear.solon.annotation.Post;
 import org.noear.solon.core.handle.Context;
-import graphql.solon.execution.GraphQlSource;
-import graphql.solon.resource.GraphqlRequestParam;
 
 /**
  * @author fuzi1996
@@ -37,9 +37,13 @@ public class GraphqlController {
                 .localContext(ctx.getLocale())
                 .graphQLContext(mapOfContext)
                 .build();
+
+        executionInput = this.graphQlSource.registerDataLoaders(executionInput);
+
         ExecutionResult executionResult = graphQL.execute(executionInput);
         return executionResult.getData();
     }
+
 
     @Post
     @Mapping("/schema")

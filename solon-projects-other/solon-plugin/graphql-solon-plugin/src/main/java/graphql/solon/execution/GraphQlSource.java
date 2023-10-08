@@ -1,7 +1,9 @@
 package graphql.solon.execution;
 
+import graphql.ExecutionInput;
 import graphql.GraphQL;
 import graphql.schema.GraphQLSchema;
+import java.util.List;
 
 /**
  * @author fuzi1996
@@ -21,7 +23,10 @@ public interface GraphQlSource {
      */
     GraphQLSchema schema();
 
-    void init(GraphQL graphQl, GraphQLSchema schema);
+    ExecutionInput registerDataLoaders(ExecutionInput executionInput);
+
+    void init(GraphQL graphQl, GraphQLSchema schema,
+            List<DataLoaderRegistrar> dataLoaderRegistrars);
 
 }
 
