@@ -24,7 +24,7 @@ public class AsyncInterceptor implements Interceptor {
 
     @Override
     public Object doIntercept(Invocation inv) throws Throwable {
-        Async anno = inv.method().getAnnotation(Async.class);
+        Async anno = inv.getMethodAnnotation(Async.class);
 
         if (anno != null) {
             Future future = asyncExecutor.submit(inv, anno);

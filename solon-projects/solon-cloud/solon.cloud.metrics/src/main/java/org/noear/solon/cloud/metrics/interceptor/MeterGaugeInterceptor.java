@@ -19,9 +19,9 @@ public class MeterGaugeInterceptor extends BaseMeterInterceptor<MeterGauge, Atom
 
     @Override
     protected MeterGauge getAnno(Invocation inv) {
-        MeterGauge anno = inv.method().getAnnotation(MeterGauge.class);
+        MeterGauge anno = inv.getMethodAnnotation(MeterGauge.class);
         if (anno == null) {
-            anno = inv.target().getClass().getAnnotation(MeterGauge.class);
+            anno = inv.getTargetAnnotation(MeterGauge.class);
         }
 
         return anno;

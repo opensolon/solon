@@ -17,9 +17,9 @@ public class MeterCounterInterceptor extends BaseMeterInterceptor<MeterCounter,C
 
     @Override
     protected MeterCounter getAnno(Invocation inv) {
-        MeterCounter anno = inv.method().getAnnotation(MeterCounter.class);
+        MeterCounter anno = inv.getMethodAnnotation(MeterCounter.class);
         if (anno == null) {
-            anno = inv.target().getClass().getAnnotation(MeterCounter.class);
+            anno = inv.getTargetAnnotation(MeterCounter.class);
         }
 
         return anno;

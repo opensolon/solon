@@ -18,7 +18,7 @@ public class TranInterceptor implements Interceptor {
     public Object doIntercept(Invocation inv) throws Throwable {
         AtomicReference val0 = new AtomicReference();
 
-        Tran anno = inv.method().getAnnotation(Tran.class);
+        Tran anno = inv.getMethodAnnotation(Tran.class);
         TranUtils.execute(anno, () -> {
             val0.set(inv.invoke());
         });

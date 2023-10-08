@@ -13,10 +13,10 @@ import org.noear.solon.data.util.InvKeys;
 public class DynamicDsInterceptor implements Interceptor {
     @Override
     public Object doIntercept(Invocation inv) throws Throwable {
-        DynamicDs anno = inv.method().getAnnotation(DynamicDs.class);
+        DynamicDs anno = inv.getMethodAnnotation(DynamicDs.class);
 
         if(anno == null){
-            anno = inv.method().getDeclaringClzAnnotation(DynamicDs.class);
+            anno = inv.getTargetAnnotation(DynamicDs.class);
         }
 
         if (anno == null) {

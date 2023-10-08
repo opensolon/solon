@@ -14,7 +14,7 @@ import org.noear.solon.core.aspect.Interceptor;
 public class CacheInterceptor implements Interceptor {
     @Override
     public Object doIntercept(Invocation inv) throws Throwable {
-        Cache anno = inv.method().getAnnotation(Cache.class);
+        Cache anno = inv.getMethodAnnotation(Cache.class);
 
         return CacheExecutorImp.global
                 .cache(anno, inv, () -> inv.invoke());

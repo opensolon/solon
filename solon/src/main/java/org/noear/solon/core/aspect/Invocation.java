@@ -3,6 +3,7 @@ package org.noear.solon.core.aspect;
 import org.noear.solon.core.wrap.MethodHolder;
 import org.noear.solon.core.wrap.ParamWrap;
 
+import java.lang.annotation.Annotation;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -34,6 +35,20 @@ public class Invocation {
      */
     public Object target() {
         return target;
+    }
+
+    /**
+     * 目标对象类
+     */
+    public Class<?> getTargetClz(){
+        return target.getClass();
+    }
+
+    /**
+     * 目标对象类注解
+     */
+    public  <T extends Annotation> T getTargetAnnotation(Class<T> annoClz) {
+        return target.getClass().getAnnotation(annoClz);
     }
 
     /**
@@ -69,6 +84,13 @@ public class Invocation {
      */
     public MethodHolder method() {
         return method;
+    }
+
+    /**
+     * 函数注解
+     */
+    public  <T extends Annotation> T getMethodAnnotation(Class<T> annoClz) {
+        return method.getAnnotation(annoClz);
     }
 
     /**

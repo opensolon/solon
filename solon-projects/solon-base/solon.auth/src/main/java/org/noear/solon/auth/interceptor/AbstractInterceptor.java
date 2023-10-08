@@ -19,10 +19,10 @@ public abstract class AbstractInterceptor<T extends Annotation> implements Inter
 
     @Override
     public Object doIntercept(Invocation inv) throws Throwable {
-        T anno = inv.method().getAnnotation(type());
+        T anno = inv.getMethodAnnotation(type());
 
         if (anno == null) {
-            anno = inv.target().getClass().getAnnotation(type());
+            anno = inv.getTargetAnnotation(type());
         }
 
         if (anno != null) {

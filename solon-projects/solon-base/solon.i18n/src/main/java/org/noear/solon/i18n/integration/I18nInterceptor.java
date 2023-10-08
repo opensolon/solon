@@ -24,10 +24,10 @@ public final class I18nInterceptor implements Interceptor {
 
         if (rst instanceof ModelAndView) {
             Context ctx = Context.current();
-            I18n anno = inv.method().getAnnotation(I18n.class);
+            I18n anno = inv.getMethodAnnotation(I18n.class);
 
             if (anno == null) {
-                anno = inv.target().getClass().getAnnotation(I18n.class);
+                anno = inv.getTargetAnnotation(I18n.class);
             }
 
             if (anno != null && ctx != null) {

@@ -18,7 +18,7 @@ public class GlobalLockInterceptor implements Interceptor {
 
     @Override
     public Object doIntercept(Invocation inv) throws Throwable {
-        GlobalLock anno = inv.method().getAnnotation(GlobalLock.class);
+        GlobalLock anno = inv.getMethodAnnotation(GlobalLock.class);
 
         if (anno == null) {
             return null;

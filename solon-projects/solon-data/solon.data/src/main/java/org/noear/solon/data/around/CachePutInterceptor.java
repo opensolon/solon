@@ -17,7 +17,7 @@ public class CachePutInterceptor implements Interceptor {
     public Object doIntercept(Invocation inv) throws Throwable {
         Object tmp = inv.invoke();
 
-        CachePut anno = inv.method().getAnnotation(CachePut.class);
+        CachePut anno = inv.getMethodAnnotation(CachePut.class);
         CacheExecutorImp.global
                 .cachePut(anno, inv, tmp);
 

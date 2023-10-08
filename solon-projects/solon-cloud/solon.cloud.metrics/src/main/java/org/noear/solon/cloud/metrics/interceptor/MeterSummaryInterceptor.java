@@ -17,9 +17,9 @@ public class MeterSummaryInterceptor extends BaseMeterInterceptor<MeterSummary, 
 
     @Override
     protected MeterSummary getAnno(Invocation inv) {
-        MeterSummary anno = inv.method().getAnnotation(MeterSummary.class);
+        MeterSummary anno = inv.getMethodAnnotation(MeterSummary.class);
         if (anno == null) {
-            anno = inv.target().getClass().getAnnotation(MeterSummary.class);
+            anno = inv.getTargetAnnotation(MeterSummary.class);
         }
 
         return anno;

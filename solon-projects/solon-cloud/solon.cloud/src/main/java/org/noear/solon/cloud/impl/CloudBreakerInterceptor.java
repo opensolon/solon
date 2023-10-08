@@ -23,7 +23,7 @@ public class CloudBreakerInterceptor implements Interceptor {
             throw new IllegalArgumentException("Missing CloudBreakerService component");
         }
 
-        CloudBreaker anno = inv.method().getAnnotation(CloudBreaker.class);
+        CloudBreaker anno = inv.getMethodAnnotation(CloudBreaker.class);
 
         if (anno != null) {
             //支持${xxx}配置

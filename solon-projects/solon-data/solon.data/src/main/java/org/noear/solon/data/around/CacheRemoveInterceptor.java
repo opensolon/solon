@@ -16,7 +16,7 @@ public class CacheRemoveInterceptor implements Interceptor {
     public Object doIntercept(Invocation inv) throws Throwable {
         Object tmp = inv.invoke();
 
-        CacheRemove anno = inv.method().getAnnotation(CacheRemove.class);
+        CacheRemove anno = inv.getMethodAnnotation(CacheRemove.class);
         CacheExecutorImp.global
                 .cacheRemove(anno, inv, tmp);
 

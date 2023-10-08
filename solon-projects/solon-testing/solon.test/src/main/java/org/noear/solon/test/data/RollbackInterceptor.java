@@ -23,9 +23,9 @@ public class RollbackInterceptor implements Interceptor {
     public Object doIntercept(Invocation inv) throws Throwable {
         AtomicReference val0 = new AtomicReference();
 
-        Rollback anno0 = inv.method().getAnnotation(Rollback.class);
+        Rollback anno0 = inv.getMethodAnnotation(Rollback.class);
         if(anno0 == null){
-            anno0 = new RollbackAnno(inv.method().getAnnotation(TestRollback.class));
+            anno0 = new RollbackAnno(inv.getMethodAnnotation(TestRollback.class));
         }
 
         TranAnno anno1 = new TranAnno();

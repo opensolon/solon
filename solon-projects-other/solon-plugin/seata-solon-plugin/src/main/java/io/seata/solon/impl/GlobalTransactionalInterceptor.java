@@ -35,9 +35,9 @@ public class GlobalTransactionalInterceptor implements Interceptor {
 
     @Override
     public Object doIntercept(Invocation inv) throws Throwable {
-        GlobalTransactional anno = inv.method().getAnnotation(GlobalTransactional.class);
+        GlobalTransactional anno = inv.getMethodAnnotation(GlobalTransactional.class);
         if (anno == null) {
-            anno = inv.method().getDeclaringClzAnnotation(GlobalTransactional.class);
+            anno = inv.getTargetAnnotation(GlobalTransactional.class);
         }
 
         if (anno == null) {

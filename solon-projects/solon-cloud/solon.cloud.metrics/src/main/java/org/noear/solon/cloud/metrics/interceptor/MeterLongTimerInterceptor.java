@@ -16,9 +16,9 @@ public class MeterLongTimerInterceptor  extends BaseMeterInterceptor<MeterLongTi
 
     @Override
     protected MeterLongTimer getAnno(Invocation inv) {
-        MeterLongTimer anno = inv.method().getAnnotation(MeterLongTimer.class);
+        MeterLongTimer anno = inv.getMethodAnnotation(MeterLongTimer.class);
         if (anno == null) {
-            anno = inv.target().getClass().getAnnotation(MeterLongTimer.class);
+            anno = inv.getTargetAnnotation(MeterLongTimer.class);
         }
         return anno;
     }

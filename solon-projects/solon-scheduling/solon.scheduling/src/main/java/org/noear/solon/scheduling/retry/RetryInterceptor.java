@@ -20,7 +20,7 @@ public class RetryInterceptor implements Interceptor {
 
     @Override
     public Object doIntercept(Invocation inv) throws Throwable {
-        Retry anno = inv.method().getAnnotation(Retry.class);
+        Retry anno = inv.getMethodAnnotation(Retry.class);
 
         if (anno != null) {
             Callee callee = new CalleeImpl(inv);
