@@ -15,6 +15,10 @@ public class DynamicDsInterceptor implements Interceptor {
     public Object doIntercept(Invocation inv) throws Throwable {
         DynamicDs anno = inv.method().getAnnotation(DynamicDs.class);
 
+        if(anno == null){
+            anno = inv.method().getDeclaringClzAnnotation(DynamicDs.class);
+        }
+
         if (anno == null) {
             return inv.invoke();
         } else {
