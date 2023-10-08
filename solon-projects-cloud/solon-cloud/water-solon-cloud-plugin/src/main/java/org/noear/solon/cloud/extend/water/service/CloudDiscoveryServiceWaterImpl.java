@@ -96,7 +96,7 @@ public class CloudDiscoveryServiceWaterImpl extends TimerTask implements CloudDi
             meta = ONode.stringify(instance.meta());
         }
 
-        String protocol = Utils.annoAlias(instance.protocol(),"http");
+        String protocol = Utils.annoAlias(instance.protocol(), "http");
         String code_location = Solon.cfg().sourceLocation().getPath();
         String checkPath;
         if (protocol.startsWith("http")) {
@@ -105,13 +105,9 @@ public class CloudDiscoveryServiceWaterImpl extends TimerTask implements CloudDi
             checkPath = instance.uri();
         }
 
-        if (Solon.cfg().isFilesMode()) {
-            //自己主动刷新
-            WaterClient.Registry.register(Solon.cfg().appGroup(), instance.service(), instance.address(), meta, checkPath, 1, alarmMobile, code_location, unstable);
-        } else {
-            //被动接收检测
-            WaterClient.Registry.register(Solon.cfg().appGroup(), instance.service(), instance.address(), meta, checkPath, 0, alarmMobile, code_location, unstable);
-        }
+
+        //被动接收检测
+        WaterClient.Registry.register(Solon.cfg().appGroup(), instance.service(), instance.address(), meta, checkPath, 0, alarmMobile, code_location, unstable);
     }
 
     @Override
