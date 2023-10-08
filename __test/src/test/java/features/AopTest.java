@@ -8,7 +8,7 @@ import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
 import webapp.App;
 import webapp.demo6_aop.Bean2;
-import webapp.demo6_aop.ioc.Com1;
+import webapp.demo6_aop.ioc.TestCom1;
 import webapp.dso.AutoConfigTest;
 
 @RunWith(SolonJUnit4ClassRunner.class)
@@ -25,7 +25,7 @@ public class AopTest {
     AutoConfigTest autoConfigTest;
 
     @Inject
-    Com1 com1;
+    TestCom1 com1;
 
     //双向依赖的bean测试
     //

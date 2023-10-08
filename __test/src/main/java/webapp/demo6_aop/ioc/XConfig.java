@@ -29,12 +29,12 @@ public class XConfig {
     }
 
     @Bean
-    public Com1 com1(Service1 service1, Service2 service2, Service3 service3) {
-        return new Com1(service1, service2, service3);
+    public TestCom1 com1(Service1 service1, Service2 service2, Service3 service3) {
+        return new TestCom1(service1, service2, service3);
     }
 
     @Bean
-    public Com2 com2(Com1 com1) {
-        return new Com2();
+    public TestCom2 com2(TestCom1 com1) {
+        return new TestCom2();
     }
 }
