@@ -2,6 +2,7 @@ package org.noear.solon.data.dynamicds;
 
 import org.noear.solon.core.aspect.Interceptor;
 import org.noear.solon.core.aspect.Invocation;
+import org.noear.solon.data.util.InvKeys;
 
 /**
  * 动态数据源切换
@@ -21,7 +22,9 @@ public class DynamicDsInterceptor implements Interceptor {
             String backup = DynamicDsHolder.get();
 
             try {
-                DynamicDsHolder.set(anno.value());
+                String dsName = InvKeys.buildByTmlAndInv(anno.value(), inv);
+
+                DynamicDsHolder.set(dsName);
                 return inv.invoke();
             } finally {
                 //还原
