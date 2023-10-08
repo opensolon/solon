@@ -20,7 +20,7 @@ import java.util.function.Consumer;
  * 此类，用于简单测试；复杂的，有bug...
  * */
 public class SocketUtils {
-    private static ThreadLocal<Map<String, SocketUtils>> threadLocal = new ThreadLocal<>();
+    private static ThreadLocal<Map<String, SocketUtils>> threadLocal = new InheritableThreadLocal<>();
     public static SocketUtils get(String uri){
         URI uri1 = URI.create(uri);
 
