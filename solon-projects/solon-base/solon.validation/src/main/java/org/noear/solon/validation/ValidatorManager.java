@@ -13,7 +13,6 @@ import org.noear.solon.validation.annotation.*;
 import org.noear.solon.validation.annotation.Date;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
 import java.util.*;
 
 /**
@@ -320,7 +319,7 @@ public class ValidatorManager {
 
         Result result = Result.succeed();
         List<BeanValidateInfo> list = new ArrayList<>();
-        for (Map.Entry<String, FieldWrap> kv : cw.getFieldAllWraps().entrySet()) {
+        for (Map.Entry<String, FieldWrap> kv : cw.getFieldWraps().entrySet()) {
             FieldWrap fieldWrap = kv.getValue();
 
             for (Annotation anno : kv.getValue().annoS) {

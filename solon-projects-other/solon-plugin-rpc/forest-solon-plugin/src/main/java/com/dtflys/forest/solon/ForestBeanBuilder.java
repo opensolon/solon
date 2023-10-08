@@ -1,6 +1,5 @@
 package com.dtflys.forest.solon;
 
-import com.dtflys.forest.Forest;
 import com.dtflys.forest.config.ForestConfiguration;
 import com.dtflys.forest.config.SolonForestProperties;
 import com.dtflys.forest.converter.ForestConverter;
@@ -18,8 +17,6 @@ import com.dtflys.forest.ssl.SSLSocketFactoryBuilder;
 import com.dtflys.forest.utils.ForestDataType;
 import com.dtflys.forest.utils.StringUtils;
 import org.noear.solon.Utils;
-import org.noear.solon.core.AppContext;
-import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.wrap.ClassWrap;
 import org.noear.solon.core.wrap.FieldWrap;
 
@@ -177,7 +174,7 @@ public class ForestBeanBuilder {
 
                 ClassWrap classWrap = ClassWrap.get(type);
 
-                for (Map.Entry<String, FieldWrap> kv : classWrap.getFieldAllWraps().entrySet()) {
+                for (Map.Entry<String, FieldWrap> kv : classWrap.getFieldWraps().entrySet()) {
                     String name = kv.getKey();
                     Object value = parameters.get(name);
                     FieldWrap fw = kv.getValue();

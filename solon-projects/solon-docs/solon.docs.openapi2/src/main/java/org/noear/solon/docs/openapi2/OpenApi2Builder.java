@@ -517,7 +517,7 @@ public class OpenApi2Builder {
     private void parseActionParametersByFields(ParamHolder paramHolder, List<Parameter> paramList) {
         //做为 字段
         ClassWrap classWrap = ClassWrap.get(paramHolder.getParam().getType());
-        for (FieldWrap fw : classWrap.getFieldAllWraps().values()) {
+        for (FieldWrap fw : classWrap.getFieldWraps().values()) {
             if (Modifier.isTransient(fw.field.getModifiers())) {
                 continue;
             }
@@ -699,7 +699,7 @@ public class OpenApi2Builder {
 
         // 3.完成模型解析
         ClassWrap classWrap = ClassWrap.get(clazz);
-        for (FieldWrap fw : classWrap.getFieldAllWraps().values()) {
+        for (FieldWrap fw : classWrap.getFieldWraps().values()) {
             if (Modifier.isStatic(fw.field.getModifiers())) {
                 //静态的跳过
                 continue;

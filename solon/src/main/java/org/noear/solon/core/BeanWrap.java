@@ -334,7 +334,7 @@ public class BeanWrap {
         ClassWrap clzWrap = ClassWrap.get(clz);
 
         //查找初始化函数
-        for (Method m : clzWrap.getMethods()) {
+        for (Method m : clzWrap.getDeclaredMethods()) {
             Init initAnno = m.getAnnotation(Init.class);
             if (initAnno != null) {
                 if (m.getParameters().length == 0) {

@@ -155,7 +155,7 @@ public abstract class AopContext extends BeanContainer {
             beanInjectProperties(clz, bw.raw());
 
             //构建小饼
-            for (Method m : ClassWrap.get(bw.clz()).getMethods()) {
+            for (Method m : ClassWrap.get(bw.clz()).getDeclaredMethods()) {
                 Bean ma = m.getAnnotation(Bean.class);
 
                 if (ma != null) {
@@ -470,7 +470,7 @@ public abstract class AopContext extends BeanContainer {
         List<FieldWrap> fwList = new ArrayList<>();
 
         //支持父类注入(找到有注解的字段)
-        for (Map.Entry<String, FieldWrap> kv : clzWrap.getFieldAllWraps().entrySet()) {
+        for (Map.Entry<String, FieldWrap> kv : clzWrap.getFieldWraps().entrySet()) {
             Annotation[] annS = kv.getValue().annoS;
             if (annS.length > 0) {
                 fwList.add(kv.getValue());
