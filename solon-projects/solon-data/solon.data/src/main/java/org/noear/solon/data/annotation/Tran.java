@@ -11,12 +11,10 @@ import java.lang.annotation.Target;
 /**
  * 事务注解
  *
- * 注意：针对 Controller、Service、Dao 等所有基于MethodWrap运行的目标，才有效
- *
  * @author noear
  * @since 1.0
  * */
-@Target({ElementType.METHOD})
+@Target({ElementType.METHOD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Tran {
     /**
