@@ -13,8 +13,8 @@ public interface HttpServerConfigure {
      * 是否允许Ssl
      *
      * @deprecated 2.3
+     * @removal true
      */
-    @SuppressWarnings("removal")
     @Deprecated
     default void allowSsl(boolean enable) {
         enableSsl(enable);

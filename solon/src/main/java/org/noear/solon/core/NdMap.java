@@ -13,8 +13,8 @@ import java.util.Map;
  * @see Context#attrMap()
  * @author noear
  * @since 1.3
+ * @removal true
  * */
-@SuppressWarnings("removal")
 @Deprecated
 public class NdMap extends IgnoreCaseMap<Object> {
 

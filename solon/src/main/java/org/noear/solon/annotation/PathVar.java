@@ -8,8 +8,8 @@ import java.lang.annotation.*;
  * @author noear
  * @since 1.0
  * @deprecated 2.2 （改用 @Path）
+ * @removal true
  * */
-@SuppressWarnings("removal")
 @Deprecated
 @Target({ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)

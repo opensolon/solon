@@ -6,8 +6,8 @@ package org.noear.solon.core;
  * @author noear
  * @since 1.0
  * @deprecated  2.5
+ * @removal true
  * */
-@SuppressWarnings("removal")
 @Deprecated
 public class ValHolder<T> {
     public T value;

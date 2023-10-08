@@ -11,8 +11,8 @@ import org.noear.nami.common.ContentTypes;
  * @author noear
  * @since 1.2
  * @deprecated 2.4
+ * @removal true
  */
-@SuppressWarnings("removal")
 @Deprecated
 public abstract class SocketChannelBase  {
     /**

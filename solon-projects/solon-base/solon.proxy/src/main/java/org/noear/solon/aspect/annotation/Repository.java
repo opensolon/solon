@@ -10,10 +10,10 @@ import java.lang.annotation.*;
  *
  * @see Component
  * @deprecated 2.3
+ * @removal true
  * @author noear
  * @since 1.5
  */
-@SuppressWarnings("removal")
 @Deprecated
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
