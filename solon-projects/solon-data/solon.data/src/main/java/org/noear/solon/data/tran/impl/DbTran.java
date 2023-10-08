@@ -30,8 +30,8 @@ public abstract class DbTran extends DbTranNode implements TranNode {
 
     /**
      * 监听
-     * */
-    public void listen(TranListener listener){
+     */
+    public void listen(TranListener listener) {
         listenerSet.add(listener);
 
         //到这里说明事务已经开始干活了；开始执行提前之前的事件
@@ -121,21 +121,23 @@ public abstract class DbTran extends DbTranNode implements TranNode {
 
     @Override
     public void close() throws Throwable {
-        super.close();
-        for (Map.Entry<DataSource, Connection> kv : conMap.entrySet()) {
-            try {
-                if (kv.getValue().isClosed() == false) {
-                    kv.getValue().close();
-                    //
-                    // close 后，链接池会对 autoCommit,readOnly 状态进行还原
-                    //
+        try {
+            super.close();
+            for (Map.Entry<DataSource, Connection> kv : conMap.entrySet()) {
+                try {
+                    if (kv.getValue().isClosed() == false) {
+                        kv.getValue().close();
+                        //
+                        // close 后，链接池会对 autoCommit,readOnly 状态进行还原
+                        //
+                    }
+                } catch (Throwable e) {
+                    log.warn(e.getMessage(), e);
                 }
-            } catch (Throwable e) {
-                log.warn(e.getMessage() ,e);
             }
+        } finally {
+            //关闭后（完成后）
+            listenerSet.afterCompletion(status);
         }
-
-        //关闭后（完成后）
-        listenerSet.afterCompletion(status);
     }
 }
