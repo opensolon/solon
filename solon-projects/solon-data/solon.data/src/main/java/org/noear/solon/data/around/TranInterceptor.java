@@ -27,11 +27,6 @@ public class TranInterceptor implements Interceptor {
         } else {
             AtomicReference val0 = new AtomicReference();
 
-            boolean isListenerActive = TranManager.isListenerActive();
-            if (isListenerActive == false) {
-                TranManager.initListener();
-            }
-
             TranUtils.execute(anno, () -> {
                 val0.set(inv.invoke());
             });

@@ -24,6 +24,10 @@ public class TranUtils {
      * 执行事务
      * */
     public static void execute(Tran tran, RunnableEx runnable) throws Throwable {
+        if (TranManager.isListenerActive() == false) {
+            TranManager.initListener();
+        }
+
         executor.execute(tran, runnable);
     }
 
