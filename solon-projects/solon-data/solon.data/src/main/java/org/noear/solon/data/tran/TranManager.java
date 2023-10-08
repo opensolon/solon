@@ -48,10 +48,10 @@ public final class TranManager {
         listeners.add(listener);
 
         //到这里说明事务已经开始干活了；开始执行提前之前的事件
-        DbTran tran = current();
-        if (tran != null) {
-            listener.beforeCommit(tran.getMeta().readOnly());
-        }
+//        DbTran tran = current();
+//        if (tran != null) {
+//            listener.beforeCommit(tran.getMeta().readOnly());
+//        }
     }
 
     /**

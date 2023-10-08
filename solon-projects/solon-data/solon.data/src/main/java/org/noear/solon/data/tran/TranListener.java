@@ -33,9 +33,9 @@ public interface TranListener {
 
 
     /**
-     * 提交之前
+     * 提交之前（可以出异常触发回滚）
      */
-    default void beforeCommit(boolean readOnly) {
+    default void beforeCommit(boolean readOnly) throws Throwable{
     }
 
     /**

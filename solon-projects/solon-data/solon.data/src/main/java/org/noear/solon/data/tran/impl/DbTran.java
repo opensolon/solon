@@ -60,11 +60,11 @@ public abstract class DbTran extends DbTranNode implements TranNode {
             runnable.run();
 
             if (parent == null) {
-                //TranManager.getListener().beforeCommit(meta.readOnly());
+                TranManager.getListener().beforeCommit(meta.readOnly());
                 TranManager.getListener().beforeCompletion();
                 commit();
-                TranManager.getListener().afterCommit();
                 status = TranListener.STATUS_COMMITTED;
+                TranManager.getListener().afterCommit();
             }
         } catch (Throwable ex) {
             if (parent == null) {

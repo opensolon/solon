@@ -1,5 +1,8 @@
 package org.noear.solon.data.tran;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.*;
 
 /**
@@ -9,7 +12,9 @@ import java.util.*;
  * @since 2.5
  */
 public class TranListenerSet implements TranListener {
-    List<TranListener> listeners = new ArrayList<>();
+    private static final Logger log = LoggerFactory.getLogger(TranListenerSet.class);
+
+    private List<TranListener> listeners = new ArrayList<>();
 
     /**
      * 添加监听器
@@ -25,7 +30,7 @@ public class TranListenerSet implements TranListener {
      * 提交之前
      */
     @Override
-    public void beforeCommit(boolean readOnly) {
+    public void beforeCommit(boolean readOnly) throws Throwable {
         for (int i = 0; i < listeners.size(); i++) {
             listeners.get(i).beforeCommit(readOnly);
         }
@@ -36,8 +41,16 @@ public class TranListenerSet implements TranListener {
      */
     @Override
     public void beforeCompletion() {
+        if (log.isTraceEnabled()) {
+            log.trace("Triggering beforeCompletion listen");
+        }
+
         for (int i = 0; i < listeners.size(); i++) {
-            listeners.get(i).beforeCompletion();
+            try {
+                listeners.get(i).beforeCompletion();
+            } catch (Throwable e) {
+                log.warn("TranListener.beforeCompletion threw exception", e);
+            }
         }
     }
 
@@ -47,8 +60,16 @@ public class TranListenerSet implements TranListener {
      */
     @Override
     public void afterCommit() {
+        if (log.isTraceEnabled()) {
+            log.trace("Triggering afterCommit listen");
+        }
+
         for (int i = 0; i < listeners.size(); i++) {
-            listeners.get(i).afterCommit();
+            try {
+                listeners.get(i).afterCommit();
+            } catch (Throwable e) {
+                log.warn("TranListener.afterCommit threw exception", e);
+            }
         }
     }
 
@@ -59,8 +80,16 @@ public class TranListenerSet implements TranListener {
      */
     @Override
     public void afterCompletion(int status) {
+        if (log.isTraceEnabled()) {
+            log.trace("Triggering afterCompletion listen");
+        }
+
         for (int i = 0; i < listeners.size(); i++) {
-            listeners.get(i).afterCompletion(status);
+            try {
+                listeners.get(i).afterCompletion(status);
+            } catch (Throwable e) {
+                log.warn("TranListener.afterCompletion threw exception", e);
+            }
         }
     }
 }
