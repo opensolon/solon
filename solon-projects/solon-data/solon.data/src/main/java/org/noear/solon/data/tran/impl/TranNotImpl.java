@@ -1,4 +1,4 @@
-package org.noear.solon.data.tranImp;
+package org.noear.solon.data.tran.impl;
 
 import org.noear.solon.data.tran.TranManager;
 import org.noear.solon.core.util.RunnableEx;
@@ -10,8 +10,8 @@ import org.noear.solon.data.tran.TranNode;
  * @author noear
  * @since 1.0
  * */
-public class TranNotImp implements TranNode {
-    public TranNotImp() {
+public class TranNotImpl implements TranNode {
+    public TranNotImpl() {
 
     }
 

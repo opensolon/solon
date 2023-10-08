@@ -1,6 +1,7 @@
 package org.noear.solon.data.tran;
 
 import org.noear.solon.data.annotation.Tran;
+import org.noear.solon.data.tran.impl.*;
 import org.noear.solon.data.tranImp.*;
 import org.noear.solon.core.util.RunnableEx;
 
@@ -59,9 +60,9 @@ public class TranExecutorImp implements TranExecutor {
         }
     }
 
-    protected TranNode tranNot = new TranNotImp();
-    protected TranNode tranNever = new TranNeverImp();
-    protected TranNode tranMandatory = new TranMandatoryImp();
+    protected TranNode tranNot = new TranNotImpl();
+    protected TranNode tranNever = new TranNeverImpl();
+    protected TranNode tranMandatory = new TranMandatoryImpl();
 
     /**
      * 执行事务
@@ -212,9 +213,9 @@ public class TranExecutorImp implements TranExecutor {
             //
             if (meta.policy() == TranPolicy.requires_new
                     || meta.policy() == TranPolicy.nested) {
-                return new TranDbNewImp(meta);
+                return new TranDbNewImpl(meta);
             } else {
-                return new TranDbImp(meta);
+                return new TranDbImpl(meta);
             }
 
         }
