@@ -195,10 +195,6 @@ public class MethodWrap implements Interceptor, MethodHolder {
         return method.getAnnotation(type);
     }
 
-    @Override
-    public <T extends Annotation> T getDeclaringClzAnnotation(Class<T> type) {
-        return null;
-    }
 
 
     /**

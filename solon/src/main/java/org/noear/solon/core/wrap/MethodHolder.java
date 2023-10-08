@@ -56,9 +56,4 @@ public interface MethodHolder {
      * 获取申明类
      * */
     Class<?> getDeclaringClz();
-
-    /**
-     * 获取函数申明类某种注解
-     * */
-    <T extends Annotation> T getDeclaringClzAnnotation(Class<T> type);
 }
