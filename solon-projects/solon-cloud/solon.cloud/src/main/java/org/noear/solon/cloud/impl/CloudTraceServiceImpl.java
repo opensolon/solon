@@ -20,7 +20,7 @@ public class CloudTraceServiceImpl implements CloudTraceService {
         return "X-Solon-From-Id";
     }
 
-    static final ThreadLocal<String> traceIdLocal = ThreadUtil.global().newThreadLocal(false);
+    static final ThreadLocal<String> traceIdLocal = ThreadUtil.global().newThreadLocal(true);
 
     @Override
     public void setLocalTraceId(String traceId) {
