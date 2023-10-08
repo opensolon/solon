@@ -1,9 +1,9 @@
 package graphql.solon.config;
 
-import org.noear.solon.annotation.Bean;
-import org.noear.solon.annotation.Configuration;
 import graphql.solon.execution.DefaultGraphQlSource;
 import graphql.solon.execution.GraphQlSource;
+import org.noear.solon.annotation.Bean;
+import org.noear.solon.annotation.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,4 +28,5 @@ public class GraphqlConfiguration {
         log.debug("注册默认的 GraphQlSource");
         return defaultGraphQlSource;
     }
+
 }

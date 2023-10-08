@@ -1,0 +1,14 @@
+extend type Query {
+    courses: [Course]
+}
+type Course {
+    id: ID
+    name: String
+    instructor: Person
+    students: [Person]
+}
+type Person {
+    id: ID
+    firstName: String
+    lastName: String
+}

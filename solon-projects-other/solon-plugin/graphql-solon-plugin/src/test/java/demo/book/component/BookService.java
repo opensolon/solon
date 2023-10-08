@@ -1,9 +1,9 @@
-package demo.component;
+package demo.book.component;
 
-import demo.dto.BookInputDTO;
+import demo.book.dto.BookInputDTO;
+import graphql.solon.annotation.QueryMapping;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Param;
-import graphql.solon.annotation.QueryMapping;
 
 /**
  * @author fuzi1996
@@ -11,9 +11,6 @@ import graphql.solon.annotation.QueryMapping;
  */
 @Component
 public class BookService {
-
-    public BookService() {
-    }
 
     private BookInputDTO generateNewOne(String id) {
         BookInputDTO book = new BookInputDTO();

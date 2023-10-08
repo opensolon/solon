@@ -1,6 +1,8 @@
 package graphql.solon.annotation;
 
 import graphql.schema.DataFetcher;
+import graphql.solon.fetcher.DataFetcherWrap;
+import graphql.solon.fetcher.SchemaMappingDataFetcher;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.LinkedList;
@@ -8,8 +10,6 @@ import java.util.List;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.BeanExtractor;
 import org.noear.solon.core.BeanWrap;
-import graphql.solon.fetcher.DataFetcherWrap;
-import graphql.solon.fetcher.SchemaMappingDataFetcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,9 +22,9 @@ public abstract class BaseSchemaMappingAnnoHandler<T extends Annotation> impleme
 
     private static Logger log = LoggerFactory.getLogger(BaseSchemaMappingAnnoHandler.class);
 
-    private final List<DataFetcherWrap> wrapList;
+    protected final List<DataFetcherWrap> wrapList;
 
-    private final AppContext context;
+    protected final AppContext context;
 
     public BaseSchemaMappingAnnoHandler(AppContext context) {
         this.wrapList = new LinkedList<>();
