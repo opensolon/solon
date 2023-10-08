@@ -3,10 +3,7 @@ package org.noear.solon.data.annotation;
 import org.noear.solon.data.tran.TranIsolation;
 import org.noear.solon.data.tran.TranPolicy;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.lang.annotation.*;
 
 /**
  * 事务注解
@@ -14,8 +11,10 @@ import java.lang.annotation.Target;
  * @author noear
  * @since 1.0
  * */
+@Inherited
 @Target({ElementType.METHOD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
+@Documented
 public @interface Tran {
     /**
      * 事务传导策略

@@ -8,6 +8,7 @@ import java.lang.annotation.*;
  * @author noear
  * @since 1.11
  */
+@Inherited
 @Target({ElementType.METHOD,ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
