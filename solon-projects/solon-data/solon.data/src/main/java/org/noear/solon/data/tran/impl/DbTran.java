@@ -4,6 +4,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.data.annotation.Tran;
 import org.noear.solon.core.util.RunnableEx;
 import org.noear.solon.data.tran.TranListener;
+import org.noear.solon.data.tran.TranListenerSet;
 import org.noear.solon.data.tran.TranNode;
 import org.noear.solon.data.tran.TranManager;
 
@@ -22,6 +23,20 @@ import java.util.Map;
 public abstract class DbTran extends DbTranNode implements TranNode {
     private final Tran meta;
     private final Map<DataSource, Connection> conMap = new HashMap<>();
+    private final TranListenerSet listenerSet = new TranListenerSet();
+
+    //事务状态
+    private int status = TranListener.STATUS_UNKNOWN;
+
+    /**
+     * 监听
+     * */
+    public void listen(TranListener listener){
+        listenerSet.add(listener);
+
+        //到这里说明事务已经开始干活了；开始执行提前之前的事件
+//        listener.beforeCommit(tran.getMeta().readOnly());
+    }
 
     public Tran getMeta() {
         return meta;
@@ -48,7 +63,6 @@ public abstract class DbTran extends DbTranNode implements TranNode {
     }
 
     public void execute(RunnableEx runnable) throws Throwable {
-        int status = TranListener.STATUS_UNKNOWN;
 
         try {
             //conMap 此时，还是空的
@@ -60,16 +74,11 @@ public abstract class DbTran extends DbTranNode implements TranNode {
             runnable.run();
 
             if (parent == null) {
-                TranManager.getListener().beforeCommit(meta.readOnly());
-                TranManager.getListener().beforeCompletion();
                 commit();
-                status = TranListener.STATUS_COMMITTED;
-                TranManager.getListener().afterCommit();
             }
         } catch (Throwable ex) {
             if (parent == null) {
                 rollback();
-                status = TranListener.STATUS_ROLLED_BACK;
             }
 
             throw Utils.throwableUnwrap(ex);
@@ -78,18 +87,25 @@ public abstract class DbTran extends DbTranNode implements TranNode {
 
             if (parent == null) {
                 close();
-                TranManager.getListener().afterCompletion(status);
             }
         }
     }
 
     @Override
     public void commit() throws Throwable {
+        //提前前
+        listenerSet.beforeCommit(meta.readOnly());
+        listenerSet.beforeCompletion();
+
         super.commit();
 
         for (Map.Entry<DataSource, Connection> kv : conMap.entrySet()) {
             kv.getValue().commit();
         }
+
+        //提交后
+        status = TranListener.STATUS_COMMITTED;
+        listenerSet.afterCommit();
     }
 
     @Override
@@ -98,6 +114,9 @@ public abstract class DbTran extends DbTranNode implements TranNode {
         for (Map.Entry<DataSource, Connection> kv : conMap.entrySet()) {
             kv.getValue().rollback();
         }
+
+        //回滚后
+        status = TranListener.STATUS_ROLLED_BACK;
     }
 
     @Override
@@ -115,5 +134,8 @@ public abstract class DbTran extends DbTranNode implements TranNode {
                 log.warn(e.getMessage() ,e);
             }
         }
+
+        //关闭后（完成后）
+        listenerSet.afterCompletion(status);
     }
 }
