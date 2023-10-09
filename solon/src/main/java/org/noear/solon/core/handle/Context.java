@@ -97,9 +97,23 @@ public abstract class Context {
 
     /**
      * 获取远程IP
+     * @deprecated 2.5
+     * */
+    @Deprecated
+    public String ip(){
+        return remoteIp();
+    }
+
+
+    /**
+     * 获取远程IP
      */
     @Note("获取远程IP")
-    public abstract String ip();
+    public abstract String remoteIp();
+    /**
+     * 获取远程Port
+     */
+    public abstract int remotePort();
 
     private String realIp;
 

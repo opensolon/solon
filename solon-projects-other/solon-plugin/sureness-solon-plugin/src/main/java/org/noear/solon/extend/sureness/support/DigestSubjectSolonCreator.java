@@ -81,7 +81,7 @@ public class DigestSubjectSolonCreator implements SubjectCreate {
                     return null;
                 }
 
-                String remoteHost = ((Context) context).ip();
+                String remoteHost = ((Context) context).remoteIp();
                 String requestUri = ((Context) context).pathNew();
                 String requestType = ((Context) context).method();
                 String targetUri = requestUri.concat("===").concat(requestType).toLowerCase();

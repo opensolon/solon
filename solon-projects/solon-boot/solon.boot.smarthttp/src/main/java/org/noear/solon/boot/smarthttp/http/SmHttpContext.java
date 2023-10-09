@@ -82,19 +82,14 @@ public class SmHttpContext extends WebContextBase {
         return _request;
     }
 
-    private String _ip;
+    @Override
+    public String remoteIp() {
+        return _request.getRemoteAddr();
+    }
 
     @Override
-    public String ip() {
-        if (_ip == null) {
-            _ip = header(Constants.HEADER_X_FORWARDED_FOR);
-
-            if (_ip == null) {
-                _ip = _request.getRemoteAddr();
-            }
-        }
-
-        return _ip;
+    public int remotePort() {
+        return _request.getRemoteAddress().getPort();
     }
 
     @Override

@@ -66,19 +66,15 @@ public class SolonServletContext extends WebContextBase {
         return _request;
     }
 
-    private String _ip;
 
     @Override
-    public String ip() {
-        if (_ip == null) {
-            _ip = header("X-Forwarded-For");
+    public String remoteIp() {
+        return _request.getRemoteAddr();
+    }
 
-            if (_ip == null) {
-                _ip = _request.getRemoteAddr();
-            }
-        }
-
-        return _ip;
+    @Override
+    public int remotePort() {
+        return _request.getRemotePort();
     }
 
     @Override

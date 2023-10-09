@@ -42,7 +42,7 @@ public class IpUtil {
         }
 
         if (Utils.isEmpty(ip) || "unknown".equalsIgnoreCase(ip)) {
-            ip = ctx.ip();
+            ip = ctx.remoteIp();
         }
 
         return ip;

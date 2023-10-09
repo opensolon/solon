@@ -47,18 +47,14 @@ public class RnHttpContext extends WebContextBase {
         return _request;
     }
 
-    private String _ip;
     @Override
-    public String ip() {
-        if(_ip == null) {
-            _ip = header("X-Forwarded-For");
-            if (_ip == null) {
-                InetSocketAddress insocket =_request.remoteAddress();
-                _ip = insocket.getAddress().getHostAddress();
-            }
-        }
+    public String remoteIp() {
+        return _request.remoteAddress().getAddress().getHostAddress();
+    }
 
-        return _ip;
+    @Override
+    public int remotePort() {
+        return _request.remoteAddress().getPort();
     }
 
     @Override

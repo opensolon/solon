@@ -17,7 +17,7 @@ public class Run2Handler extends Gateway {
         add("send", (c)->{c.output(c.url());});
         add("test", (c)->{c.output(c.url());});
         add("dock", (c)->{c.output(c.url());});
-        add("ip", (c)->{c.output(c.ip());});
+        add("ip", (c)->{c.output(c.remoteIp());});
 
         after(c->{});
     }

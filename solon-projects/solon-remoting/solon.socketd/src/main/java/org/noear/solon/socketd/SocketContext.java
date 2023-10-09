@@ -59,11 +59,21 @@ public class SocketContext extends ContextEmpty {
     }
 
     @Override
-    public String ip() {
-        if (_inetSocketAddress == null)
+    public String remoteIp() {
+        if (_inetSocketAddress == null) {
             return null;
-        else
+        } else {
             return _inetSocketAddress.getAddress().toString();
+        }
+    }
+
+    @Override
+    public int remotePort() {
+        if (_inetSocketAddress == null) {
+            return 0;
+        } else {
+            return _inetSocketAddress.getPort();
+        }
     }
 
     @Override

@@ -20,7 +20,7 @@ public class NoneSubjectSolonCreator implements SubjectCreate {
 
     @Override
     public Subject createSubject(Object context) {
-        String remoteHost = ((Context) context).ip();
+        String remoteHost = ((Context) context).remoteIp();
         String requestUri = ((Context) context).pathNew();
         String requestType = ((Context) context).method();
         String targetUri = requestUri.concat("===").concat(requestType).toLowerCase();

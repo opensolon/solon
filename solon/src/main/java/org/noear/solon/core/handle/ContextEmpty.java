@@ -40,8 +40,13 @@ public class ContextEmpty extends Context {
 
 
     @Override
-    public String ip() {
+    public String remoteIp() {
         return null;
+    }
+
+    @Override
+    public int remotePort() {
+        return 0;
     }
 
     @Override
