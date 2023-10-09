@@ -24,15 +24,6 @@ public class SolonBuilder {
     }
 
     /**
-     * 订阅异常事件
-     *
-     * @param listener 监听器
-     */
-    public SolonBuilder onError(EventListener<Throwable> listener) {
-        return onEvent(Throwable.class, listener);
-    }
-
-    /**
      * 订阅应用初始化结束事件
      *
      * @param listener 监听器

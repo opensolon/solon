@@ -1,7 +1,5 @@
 package org.noear.solon.core.util;
 
-import org.noear.solon.annotation.Note;
-
 /**
  * 日志打印小工具（仅限内部使用）
  *
@@ -24,17 +22,6 @@ public class LogUtil {
 
     public static LogUtil global() {
         return global;
-    }
-
-    /**
-     * 全局打印工具（用于改改日志实现）//不再需要手动转发 slf4j 了
-     *
-     * @deprecated 2.3
-     */
-    @Note("不再需要手动转发 slf4j 了")
-    @Deprecated
-    public static void globalSet(LogUtil instance) {
-
     }
 
     public void infoAsync(String content) {

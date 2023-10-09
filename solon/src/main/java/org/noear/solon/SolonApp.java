@@ -496,17 +496,6 @@ public class SolonApp extends RouterWrapper {
         return this;
     }
 
-
-    /**
-     * 订阅未处理异常事件
-     *
-     * @deprecated 2.5
-     */
-    @Deprecated
-    public SolonApp onError(EventListener<Throwable> handler) {
-        return onEvent(Throwable.class, handler);
-    }
-
     private Map<Integer, Handler> _statusHandlers = new HashMap<>();
 
     /**
@@ -691,56 +680,6 @@ public class SolonApp extends RouterWrapper {
     public SolonApp enableStaticfiles(boolean enable) {
         _enableStaticfiles = enable;
         return this;
-    }
-
-
-    private boolean _enableDoc = true;
-
-    /**
-     * 是否已启用文档
-     * @deprecated 2.4
-     * @removal true
-     */
-    @Deprecated
-    public boolean enableDoc() {
-        return _enableDoc;
-    }
-
-    /**
-     * 启用文档
-     *
-     * @param enable 是否启用
-     * @deprecated 2.4
-     * @removal true
-     */
-    @Deprecated
-    public SolonApp enableDoc(boolean enable) {
-        _enableDoc = enable;
-        return this;
-    }
-
-
-    private boolean _enableErrorAutoprint = true;
-
-    /**
-     * 是否已启用异常自动打印（不再需要了）
-     *
-     * @deprecated 2.5
-     */
-    @Deprecated
-    public boolean enableErrorAutoprint() {
-        return _enableErrorAutoprint;
-    }
-
-    /**
-     * 启用异常自动打印（不再需要了）
-     *
-     * @param enable 是否启用
-     * @deprecated 2.5
-     */
-    @Deprecated
-    public void enableErrorAutoprint(boolean enable) {
-        _enableErrorAutoprint = enable;
     }
 
 

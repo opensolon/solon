@@ -78,9 +78,7 @@ public class App {
         //LogUtil.globalSet(new LogUtilToSlf4j());
 
         //构建方式
-        SolonApp app = new SolonBuilder().onError(e -> {
-            e.printStackTrace();
-        }).onAppInitEnd(e -> {
+        SolonApp app = new SolonBuilder().onAppInitEnd(e -> {
             StaticMappings.add("/", new ExtendStaticRepository());
             System.out.println("1.初始化完成");
         }).onAppPluginLoadEnd(e -> {

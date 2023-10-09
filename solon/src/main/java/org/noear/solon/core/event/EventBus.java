@@ -113,11 +113,6 @@ public final class EventBus {
 
     private static void publish0(Object event) throws Throwable {
         if (event instanceof Throwable) {
-
-            if (Solon.app() == null || Solon.app().enableErrorAutoprint()) {
-                ((Throwable) event).printStackTrace();
-            }
-
             //异常分发
             publish1(sThrow, event, false);
         } else {
@@ -187,10 +182,6 @@ public final class EventBus {
     private static <T> void registerDo(Class<T> eventType, EventListener<T> listener) {
         if (Throwable.class.isAssignableFrom(eventType)) {
             sThrow.add(new HH(eventType, listener));
-
-            if (Solon.app() != null) {
-                Solon.app().enableErrorAutoprint(false);
-            }
         } else {
             sOther.add(new HH(eventType, listener));
         }

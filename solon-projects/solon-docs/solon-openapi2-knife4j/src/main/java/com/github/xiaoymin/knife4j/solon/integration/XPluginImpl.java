@@ -15,10 +15,6 @@ import org.noear.solon.web.staticfiles.repository.ClassPathStaticRepository;
 public class XPluginImpl implements Plugin {
     @Override
     public void start(AppContext context) throws Throwable {
-        if (Solon.app().enableDoc() == false) {
-            return;
-        }
-
         BeanWrap beanWrap = context.beanMake(OpenApiExtensionResolver.class);
         OpenApiExtensionResolver openApiExtensionResolver = beanWrap.raw();
 
