@@ -499,7 +499,10 @@ public class SolonApp extends RouterWrapper {
 
     /**
      * 订阅未处理异常事件
+     *
+     * @deprecated 2.5
      */
+    @Deprecated
     public SolonApp onError(EventListener<Throwable> handler) {
         return onEvent(Throwable.class, handler);
     }
