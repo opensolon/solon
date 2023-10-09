@@ -134,7 +134,7 @@
         <activerecord.version>5.1.2</activerecord.version>
         <beetlsql.version>3.25.4-RELEASE</beetlsql.version>
         <sqltoy.version>5.2.69</sqltoy.version>
-        <mybatis-flex.version>1.6.8</mybatis-flex.version>
+        <mybatis-flex.version>1.6.9</mybatis-flex.version>
         <fastmybatis.version>2.9.7</fastmybatis.version>
         <dbvisitor.version>5.4.0</dbvisitor.version>
         <bean-searcher.version>4.2.4</bean-searcher.version>
