@@ -1,10 +1,10 @@
 package features;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.Inject;
-import org.noear.solon.test.SolonJUnit4ClassRunner;
+import org.noear.solon.test.SolonJUnit5Extension;
 import org.noear.solon.test.SolonTest;
 import webapp.App;
 import webapp.demo6_aop.Bean2;
@@ -12,7 +12,7 @@ import webapp.demo6_aop.DaoUser;
 import webapp.demo6_aop.ioc.TestCom1;
 import webapp.dso.AutoConfigTest;
 
-@RunWith(SolonJUnit4ClassRunner.class)
+@ExtendWith(SolonJUnit5Extension.class)
 @SolonTest(App.class)
 //@SolonTest(value = webapp.TestApp.class, args = "-server.port=9001")
 public class AopTest {

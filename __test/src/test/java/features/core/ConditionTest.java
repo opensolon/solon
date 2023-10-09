@@ -1,12 +1,12 @@
 package features.core;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.noear.snack.ONode;
 import org.noear.snack.core.Feature;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
-import org.noear.solon.test.SolonJUnit4ClassRunner;
+import org.noear.solon.test.SolonJUnit5Extension;
 import org.noear.solon.test.SolonTest;
 import webapp.App;
 import webapp.dso.ConditionConfig;
@@ -16,7 +16,7 @@ import webapp.models.BaseRequest;
  * @author noear 2023/2/5 created
  */
 @Configuration
-@RunWith(SolonJUnit4ClassRunner.class)
+@ExtendWith(SolonJUnit5Extension.class)
 @SolonTest(App.class)
 public class ConditionTest {
 

@@ -1,14 +1,14 @@
 package features.aot;
 
 import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.noear.solon.Solon;
 import org.noear.solon.aot.RuntimeNativeMetadata;
 import org.noear.solon.aot.hint.ExecutableMode;
 import org.noear.solon.aot.hint.MemberCategory;
 import org.noear.solon.core.util.ResourceUtil;
-import org.noear.solon.test.SolonJUnit4ClassRunner;
+import org.noear.solon.test.SolonJUnit5Extension;
 import org.noear.solon.test.SolonTest;
 import webapp.App;
 
@@ -19,7 +19,7 @@ import java.lang.reflect.Constructor;
  * @author songyinyin
  * @since 2023/4/7 16:43
  */
-@RunWith(SolonJUnit4ClassRunner.class)
+@ExtendWith(SolonJUnit5Extension.class)
 @SolonTest(App.class)
 public class RuntimeNativeMetadataTest {
 

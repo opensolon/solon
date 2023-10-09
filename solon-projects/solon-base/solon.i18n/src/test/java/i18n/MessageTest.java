@@ -1,12 +1,12 @@
 package i18n;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.i18n.I18nUtil;
 import org.noear.solon.i18n.LocaleUtil;
-import org.noear.solon.test.SolonJUnit4ClassRunner;
+import org.noear.solon.test.SolonJUnit5Extension;
 
 import java.util.Locale;
 import java.util.Map;
@@ -15,7 +15,7 @@ import java.util.MissingResourceException;
 /**
  * @author noear 2021/7/7 created
  */
-@RunWith(SolonJUnit4ClassRunner.class)
+@ExtendWith(SolonJUnit5Extension.class)
 public class MessageTest {
     @Test
     public void test() {

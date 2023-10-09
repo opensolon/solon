@@ -1,6 +1,6 @@
 package labs.test3;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.Around;
 import org.noear.solon.core.AppContext;

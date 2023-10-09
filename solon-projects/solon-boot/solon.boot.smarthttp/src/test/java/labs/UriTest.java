@@ -1,7 +1,8 @@
 package labs;
 
-import org.junit.Assert;
-import org.junit.Test;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.net.URI;
 
@@ -12,10 +13,11 @@ public class UriTest {
     @Test
     @SuppressWarnings("ALL")
     public void test(){
-        Assert.assertThrows(NullPointerException.class, () -> URI.create(null));
+
+        Assertions.assertThrows(NullPointerException.class, () -> URI.create(null));
 
         URI uri = URI.create("");
-        Assert.assertNotNull(uri);
+        Assertions.assertNotNull(uri);
         System.out.println(uri);
         System.out.println(uri.getHost());
         System.out.println(uri.getPath());

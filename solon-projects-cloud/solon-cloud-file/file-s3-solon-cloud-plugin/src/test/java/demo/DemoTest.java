@@ -1,14 +1,14 @@
 package demo;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.noear.snack.ONode;
 import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.cloud.model.Media;
 import org.noear.solon.core.handle.DownloadedFile;
 import org.noear.solon.core.handle.Result;
 import org.noear.solon.core.handle.UploadedFile;
-import org.noear.solon.test.SolonJUnit4ClassRunner;
+import org.noear.solon.test.SolonJUnit5Extension;
 import org.noear.solon.test.SolonTest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +18,7 @@ import java.io.IOException;
 /**
  * @author 等風來再離開 2022/11/29 created
  */
-@RunWith(SolonJUnit4ClassRunner.class)
+@ExtendWith(SolonJUnit5Extension.class)
 @SolonTest(DemoApp.class)
 public class DemoTest {
     static Logger log = LoggerFactory.getLogger(DemoTest.class);

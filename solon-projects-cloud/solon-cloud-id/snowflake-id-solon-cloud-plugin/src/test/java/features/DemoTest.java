@@ -1,15 +1,15 @@
 package features;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.cloud.extend.snowflake.impl.SnowflakeId;
-import org.noear.solon.test.SolonJUnit4ClassRunner;
+import org.noear.solon.test.SolonJUnit5Extension;
 
 /**
  * @author noear 2021/10/9 created
  */
-@RunWith(SolonJUnit4ClassRunner.class)
+@ExtendWith(SolonJUnit5Extension.class)
 public class DemoTest {
     @Test
     public void test(){

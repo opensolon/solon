@@ -1,15 +1,15 @@
 package labs.test1;
 
 import cn.hutool.core.date.DateTime;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.noear.solon.cloud.CloudClient;
-import org.noear.solon.test.SolonJUnit4ClassRunner;
+import org.noear.solon.test.SolonJUnit5Extension;
 
 /**
  * @author noear 2021/5/3 created
  */
-@RunWith(SolonJUnit4ClassRunner.class)
+@ExtendWith(SolonJUnit5Extension.class)
 public class IdTest {
     @Test
     public void time1(){

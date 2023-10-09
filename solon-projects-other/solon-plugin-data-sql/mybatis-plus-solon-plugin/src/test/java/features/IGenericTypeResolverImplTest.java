@@ -3,7 +3,7 @@ package features;
 
 import com.baomidou.mybatisplus.core.mapper.Mapper;
 import demo.dso.mapper.UserMapper;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.noear.solon.core.util.GenericUtil;
 
 import java.util.Arrays;

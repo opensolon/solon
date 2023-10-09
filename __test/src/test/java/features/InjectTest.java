@@ -1,12 +1,12 @@
 package features;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Inject;
-import org.noear.solon.test.SolonJUnit4ClassRunner;
+import org.noear.solon.test.SolonJUnit5Extension;
 import org.noear.solon.test.SolonTest;
 import webapp.App;
 import webapp.demo6_aop.beans.DnBean;
@@ -20,7 +20,7 @@ import java.util.Set;
 /**
  * @author noear 2021/5/28 created
  */
-@RunWith(SolonJUnit4ClassRunner.class)
+@ExtendWith(SolonJUnit5Extension.class)
 @SolonTest(App.class)
 public class InjectTest {
     @Inject(value = "${username}", autoRefreshed = true)

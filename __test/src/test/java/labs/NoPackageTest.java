@@ -1,13 +1,13 @@
 package labs;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.noear.solon.test.SolonJUnit4ClassRunner;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.noear.solon.test.SolonJUnit5Extension;
 
 /**
  * @author noear 2023/1/18 created
  */
-@RunWith(SolonJUnit4ClassRunner.class)
+@ExtendWith(SolonJUnit5Extension.class)
 public class NoPackageTest {
     @Test
     public void error(){

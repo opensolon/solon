@@ -1,6 +1,6 @@
 package benchmark;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author noear 2021/5/18 created

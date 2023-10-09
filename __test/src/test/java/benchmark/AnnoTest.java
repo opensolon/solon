@@ -1,6 +1,6 @@
 package benchmark;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.noear.solon.annotation.*;
 import org.noear.solon.core.handle.MethodType;
 

@@ -1,11 +1,11 @@
 package demo;
 
 import okhttp3.Response;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.noear.solon.test.HttpTester;
 import org.noear.solon.test.HttpUtils;
-import org.noear.solon.test.SolonJUnit4ClassRunner;
+import org.noear.solon.test.SolonJUnit5Extension;
 import org.noear.solon.test.SolonTest;
 
 import java.util.List;
@@ -14,7 +14,7 @@ import java.util.List;
  * @author noear 2022/1/18 created
  * @author liao.chunping 2022/08/22
  */
-@RunWith(SolonJUnit4ClassRunner.class)
+@ExtendWith(SolonJUnit5Extension.class)
 @SolonTest(DemoApp.class)
 public class DemoTest extends HttpTester {
     @Test

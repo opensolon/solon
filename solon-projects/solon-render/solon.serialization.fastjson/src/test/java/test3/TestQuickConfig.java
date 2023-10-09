@@ -1,7 +1,7 @@
 package test3;
 
 import features2.model.UserDo;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.noear.snack.ONode;
 import org.noear.solon.core.handle.ContextEmpty;
 

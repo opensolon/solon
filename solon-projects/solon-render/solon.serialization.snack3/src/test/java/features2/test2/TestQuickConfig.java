@@ -2,13 +2,13 @@ package features2.test2;
 
 import features2.model.OrderDo;
 import features2.model.UserDo;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.noear.solon.annotation.Import;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.core.handle.ContextEmpty;
 import org.noear.solon.serialization.snack3.SnackRenderFactory;
-import org.noear.solon.test.SolonJUnit4ClassRunner;
+import org.noear.solon.test.SolonJUnit5Extension;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -19,7 +19,7 @@ import java.util.Map;
  * @author noear 2023/1/16 created
  */
 @Import(propertySource = "classpath:features2_test2.yml")
-@RunWith(SolonJUnit4ClassRunner.class)
+@ExtendWith(SolonJUnit5Extension.class)
 public class TestQuickConfig {
     @Inject
     SnackRenderFactory renderFactory;

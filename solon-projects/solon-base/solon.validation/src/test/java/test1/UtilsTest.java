@@ -1,6 +1,6 @@
 package test1;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.noear.solon.validation.util.StringUtils;
 
 public class UtilsTest {

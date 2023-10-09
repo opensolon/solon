@@ -1,7 +1,7 @@
 package features.socketd;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.noear.nami.Nami;
 import org.noear.nami.coder.snack3.SnackDecoder;
 import org.noear.nami.coder.snack3.SnackEncoder;
@@ -9,7 +9,7 @@ import org.noear.snack.ONode;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.socketd.SocketD;
-import org.noear.solon.test.SolonJUnit4ClassRunner;
+import org.noear.solon.test.SolonJUnit5Extension;
 import org.noear.solon.test.SolonTest;
 import webapp.App;
 import webapp.demoh_socketd.HelloRpcService;
@@ -18,7 +18,7 @@ import webapp.utils.ContentTypes;
 import java.util.HashMap;
 import java.util.Map;
 
-@RunWith(SolonJUnit4ClassRunner.class)
+@ExtendWith(SolonJUnit5Extension.class)
 @SolonTest(App.class)
 public class SocketResponseTest {
     @Test

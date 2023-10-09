@@ -1,14 +1,14 @@
 package features;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.noear.nami.Nami;
 import org.noear.nami.annotation.NamiClient;
 import org.noear.nami.coder.hessian.HessianDecoder;
 import org.noear.nami.coder.hessian.HessianEncoder;
 import org.noear.nami.coder.snack3.SnackDecoder;
 import org.noear.nami.coder.snack3.SnackEncoder;
-import org.noear.solon.test.SolonJUnit4ClassRunner;
+import org.noear.solon.test.SolonJUnit5Extension;
 import org.noear.solon.test.SolonTest;
 import webapp.App;
 import webapp.demo5_rpc.protocol.UserModel;
@@ -17,7 +17,7 @@ import webapp.demo5_rpc.protocol.UserService4;
 import webapp.demo5_rpc.protocol.UserService5;
 import webapp.utils.Datetime;
 
-@RunWith(SolonJUnit4ClassRunner.class)
+@ExtendWith(SolonJUnit5Extension.class)
 @SolonTest(App.class)
 public class NamiAndRpcTest {
     //直接指定服务端地址

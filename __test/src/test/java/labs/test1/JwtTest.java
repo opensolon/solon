@@ -1,6 +1,6 @@
 package labs.test1;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author noear 2021/6/16 created

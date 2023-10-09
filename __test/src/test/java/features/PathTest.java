@@ -1,6 +1,6 @@
 package features;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.noear.solon.core.util.PathAnalyzer;
 import org.noear.solon.core.util.PathUtil;
 import org.noear.solon.core.util.ResourceUtil;

@@ -81,7 +81,7 @@
         <!-- test -->
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon-test</artifactId>
+            <artifactId>solon-test-junit5</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>

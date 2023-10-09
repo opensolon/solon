@@ -1,9 +1,9 @@
 package features;
 
 import com.zaxxer.hikari.HikariDataSource;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.noear.solon.test.SolonJUnit4ClassRunner;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.noear.solon.test.SolonJUnit5Extension;
 import org.noear.solon.test.SolonTest;
 import org.noear.solon.vault.annotation.VaultInject;
 import webapp.App;
@@ -11,7 +11,7 @@ import webapp.App;
 /**
  * @author noear 2022/9/24 created
  */
-@RunWith(SolonJUnit4ClassRunner.class)
+@ExtendWith(SolonJUnit5Extension.class)
 @SolonTest(App.class)
 public class VaultTest {
     @VaultInject("${vault.test.db1}")

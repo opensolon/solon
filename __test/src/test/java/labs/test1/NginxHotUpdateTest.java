@@ -1,6 +1,6 @@
 package labs.test1;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.noear.solon.test.HttpTester;
 
 public class NginxHotUpdateTest extends HttpTester {
