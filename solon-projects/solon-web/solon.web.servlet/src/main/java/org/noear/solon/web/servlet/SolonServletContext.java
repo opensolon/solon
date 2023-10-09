@@ -66,7 +66,6 @@ public class SolonServletContext extends WebContextBase {
         return _request;
     }
 
-
     @Override
     public String remoteIp() {
         return _request.getRemoteAddr();
