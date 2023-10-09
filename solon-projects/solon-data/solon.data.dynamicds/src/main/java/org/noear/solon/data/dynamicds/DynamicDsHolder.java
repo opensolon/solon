@@ -10,7 +10,7 @@ import org.noear.solon.core.FactoryManager;
  * @since 1.11
  */
 public class DynamicDsHolder {
-    static ThreadLocal<String> targetThreadLocal = FactoryManager.newThreadLocal(false);
+    static ThreadLocal<String> targetThreadLocal = FactoryManager.newThreadLocal(true);
 
     /**
      * 清除
