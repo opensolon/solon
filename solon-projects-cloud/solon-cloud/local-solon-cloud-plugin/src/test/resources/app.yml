@@ -4,6 +4,6 @@ solon.app:
   name: demoapp
 
 solon.cloud.local:
-  server: "/Users/noear/Downloads/local-solon_cloud"
+  server: "classpath:META-INF/solon-cloud/" #server: "/Users/noear/Downloads/local-solon_cloud"
   config:
     load: "demoapp.yml"
