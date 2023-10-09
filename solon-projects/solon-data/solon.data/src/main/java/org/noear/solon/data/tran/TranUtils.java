@@ -14,15 +14,16 @@ import java.sql.SQLException;
  * @author noear
  * @since 1.0
  * */
-public class TranUtils {
-    private static TranExecutor executor = ()->false;
+public final class TranUtils {
+    private static TranExecutor executor = TranExecutorDefault.global;
+
     static {
         Solon.context().getBeanAsync(TranExecutor.class, bean -> executor = bean);
     }
 
     /**
      * 执行事务
-     * */
+     */
     public static void execute(Tran tran, RunnableEx runnable) throws Throwable {
         executor.execute(tran, runnable);
     }
@@ -39,6 +40,13 @@ public class TranUtils {
      */
     public static boolean inTransAndReadOnly() {
         return executor.inTransAndReadOnly();
+    }
+
+    /**
+     * 监听事务
+     */
+    public static void listen(TranListener listener) throws IllegalStateException {
+        executor.listen(listener);
     }
 
     /**

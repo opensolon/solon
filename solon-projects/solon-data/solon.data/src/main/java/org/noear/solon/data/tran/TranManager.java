@@ -12,26 +12,6 @@ import org.noear.solon.data.tran.impl.DbTran;
 public final class TranManager {
     private static final ThreadLocal<DbTran> _tl_tran = ThreadUtil.global().newThreadLocal(false);
 
-    private TranManager() {
-    }
-
-
-    /**
-     * 注册监听器
-     */
-    public static void registerListener(TranListener listener) throws IllegalStateException {
-        if (listener == null) {
-            return;
-        }
-
-        DbTran tran = current();
-        if (tran == null) {
-            throw new IllegalStateException("The current tran is not active");
-        }
-
-        tran.listen(listener);
-    }
-
 
     /**
      * 设置当前事务

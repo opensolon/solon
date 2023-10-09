@@ -60,6 +60,20 @@ public class TranExecutorDefault implements TranExecutor {
         }
     }
 
+    @Override
+    public void listen(TranListener listener) throws IllegalStateException {
+        if (listener == null) {
+            return;
+        }
+
+        DbTran tran = TranManager.current();
+        if (tran == null) {
+            throw new IllegalStateException("The current tran is not active");
+        }
+
+        tran.listen(listener);
+    }
+
     protected TranNode tranNot = new TranNotImpl();
     protected TranNode tranNever = new TranNeverImpl();
     protected TranNode tranMandatory = new TranMandatoryImpl();

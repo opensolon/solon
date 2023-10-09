@@ -22,7 +22,7 @@ public class DemoTest {
     @Tran(readOnly = true)
     public void test2(){
         //..
-        TranManager.registerListener(new TranListener() {
+        TranUtils.listen(new TranListener() {
             @Override
             public void afterCommit() {
                 TranListener.super.afterCommit();

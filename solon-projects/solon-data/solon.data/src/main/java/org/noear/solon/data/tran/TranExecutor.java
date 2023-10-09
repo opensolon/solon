@@ -36,11 +36,18 @@ public interface TranExecutor {
     }
 
     /**
+     * 监听
+     *
+     * @param listener 监听器
+     */
+    void listen(TranListener listener) throws IllegalStateException;
+
+    /**
      * 执行
      *
      * @since 1.9
-     * */
-    default void execute(Tran meta, RunnableEx runnable) throws Throwable{
+     */
+    default void execute(Tran meta, RunnableEx runnable) throws Throwable {
 
     }
 }
