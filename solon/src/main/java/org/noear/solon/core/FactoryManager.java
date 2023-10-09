@@ -34,11 +34,7 @@ public final class FactoryManager {
      * 创建线程状态
      */
     public static <T> ThreadLocal<T> newThreadLocal(boolean inheritable) {
-        if (inheritable) {
-            return new InheritableThreadLocal<>();
-        } else {
-            return new ThreadLocal<>();
-        }
+        return threadLocalFactory.apply(inheritable);
     }
 
     //////////
