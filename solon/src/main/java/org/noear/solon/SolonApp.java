@@ -723,17 +723,22 @@ public class SolonApp extends RouterWrapper {
     private boolean _enableErrorAutoprint = true;
 
     /**
-     * 是否已启用异常自动打印
+     * 是否已启用异常自动打印（不再需要了）
+     *
+     * @deprecated 2.5
      */
+    @Deprecated
     public boolean enableErrorAutoprint() {
         return _enableErrorAutoprint;
     }
 
     /**
-     * 启用异常自动打印
+     * 启用异常自动打印（不再需要了）
      *
      * @param enable 是否启用
+     * @deprecated 2.5
      */
+    @Deprecated
     public void enableErrorAutoprint(boolean enable) {
         _enableErrorAutoprint = enable;
     }

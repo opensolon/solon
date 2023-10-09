@@ -22,7 +22,7 @@
 * 新增 graphql-solon-plugin 插件
 * 新增 hibernate-solon-plugin 插件
 * 弃用 InitializingBean
-* 弃用 SolonApp::onError （v2.5.8 后不再需要了）
+* 弃用 SolonApp::onError,::enableErrorAutoprint （v2.5.8 后不再需要了）
 * 调整 数据源事务管理相关改为线程状态可继承
 * 调整 water-solon-cloud-plugin 服务注册改为被动检测（不然 job 不能跑）
 * 增加 FactoryManager 工具类，合并各种工厂管理，移除 Bridge
