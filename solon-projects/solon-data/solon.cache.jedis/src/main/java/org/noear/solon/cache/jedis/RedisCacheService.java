@@ -20,11 +20,12 @@ import java.util.Properties;
 public class RedisCacheService implements CacheService {
     static final Logger log = LoggerFactory.getLogger(RedisCacheService.class);
 
-    private String _cacheKeyHead;
-    private int _defaultSeconds;
-    private Serializer<String> _serializer = null;
+    //重写时可能会用到
+    protected String _cacheKeyHead;
+    protected int _defaultSeconds;
+    protected Serializer<String> _serializer = null;
 
-    private final RedisClient client;
+    protected final RedisClient client;
 
     public RedisCacheService serializer(Serializer<String> serializer) {
         if (serializer != null) {

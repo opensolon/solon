@@ -19,11 +19,12 @@ import java.util.concurrent.TimeUnit;
 public class RedissonCacheService implements CacheService {
     static final Logger log = LoggerFactory.getLogger(RedissonCacheService.class);
 
-    private String _cacheKeyHead;
-    private int _defaultSeconds;
-    private Serializer<String> _serializer = null;
+    //重写时可能会用到
+    protected String _cacheKeyHead;
+    protected int _defaultSeconds;
+    protected Serializer<String> _serializer = null;
 
-    private final RedissonClient client;
+    protected final RedissonClient client;
 
     public RedissonCacheService serializer(Serializer<String> serializer) {
         if (serializer != null) {

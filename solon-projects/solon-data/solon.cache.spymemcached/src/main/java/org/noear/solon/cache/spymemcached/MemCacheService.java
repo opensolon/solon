@@ -23,6 +23,7 @@ import java.util.Properties;
 public class MemCacheService implements CacheService {
     static final Logger log = LoggerFactory.getLogger(MemCacheService.class);
 
+    //重写时可能会用到
     protected String _cacheKeyHead;
     protected int _defaultSeconds;
 
