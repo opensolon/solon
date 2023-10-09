@@ -4,7 +4,6 @@ import org.noear.nami.*;
 import org.noear.nami.annotation.NamiClient;
 import org.noear.solon.Utils;
 import org.noear.solon.core.AppContext;
-import org.noear.solon.core.Bridge;
 import org.noear.solon.core.LoadBalance;
 
 /**

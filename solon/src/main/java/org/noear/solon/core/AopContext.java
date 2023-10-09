@@ -339,7 +339,7 @@ public abstract class AopContext extends BeanContainer {
 
         //LoadBalance.Factory
         if (LoadBalance.Factory.class.isAssignableFrom(clz)) {
-            Bridge.upstreamFactorySet(bw.raw());
+            FactoryManager.loadBalanceFactory(bw.raw());
         }
 
         //Handler

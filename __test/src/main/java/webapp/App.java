@@ -13,6 +13,7 @@ import org.noear.solon.boot.http.HttpServerConfigure;
 import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.ExtendLoader;
+import org.noear.solon.core.FactoryManager;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.scheduling.annotation.EnableAsync;
 import org.noear.solon.scheduling.annotation.EnableRetry;
@@ -63,6 +64,14 @@ public class App {
             return;
         }
 
+
+        FactoryManager.threadLocalFactory((inheritable)->{
+            if(inheritable) {
+                return new InheritableThreadLocal();
+            }else {
+                return new ThreadLocal();
+            }
+        });
 
 
         Locale.setDefault(Locale.SIMPLIFIED_CHINESE);

@@ -1,6 +1,6 @@
 package org.noear.solon.data.tran;
 
-import org.noear.solon.core.util.ThreadUtil;
+import org.noear.solon.core.FactoryManager;
 import org.noear.solon.data.tran.impl.DbTran;
 
 /**
@@ -10,7 +10,7 @@ import org.noear.solon.data.tran.impl.DbTran;
  * @since 1.0
  * */
 public final class TranManager {
-    private static final ThreadLocal<DbTran> _tl_tran = ThreadUtil.global().newThreadLocal(false);
+    private static final ThreadLocal<DbTran> _tl_tran = FactoryManager.newThreadLocal(false);
 
 
     /**

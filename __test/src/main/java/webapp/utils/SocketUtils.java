@@ -1,7 +1,7 @@
 package webapp.utils;
 
+import org.noear.solon.core.FactoryManager;
 import org.noear.solon.core.message.Message;
-import org.noear.solon.core.util.ThreadUtil;
 import org.noear.solon.socketd.ProtocolManager;
 
 import java.io.IOException;
@@ -21,7 +21,7 @@ import java.util.function.Consumer;
  * 此类，用于简单测试；复杂的，有bug...
  * */
 public class SocketUtils {
-    private static ThreadLocal<Map<String, SocketUtils>> threadLocal = ThreadUtil.global().newThreadLocal(false);
+    private static ThreadLocal<Map<String, SocketUtils>> threadLocal = FactoryManager.newThreadLocal(false);
     public static SocketUtils get(String uri){
         URI uri1 = URI.create(uri);
 

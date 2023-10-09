@@ -1,6 +1,6 @@
 package org.slf4j.impl;
 
-import org.noear.solon.core.util.ThreadUtil;
+import org.noear.solon.core.FactoryManager;
 import org.slf4j.helpers.ThreadLocalMapOfStacks;
 import org.slf4j.spi.MDCAdapter;
 
@@ -12,7 +12,7 @@ import java.util.Map;
  * @author noear 2021/2/26 created
  */
 public class SolonMDCAdapter implements MDCAdapter {
-    private static final ThreadLocal<Map<String, String>> threadMap = ThreadUtil.global().newThreadLocal(true);
+    private static final ThreadLocal<Map<String, String>> threadMap = FactoryManager.newThreadLocal(true);
     private static final ThreadLocalMapOfStacks threadLocalMapOfDeques = new ThreadLocalMapOfStacks();
 
     @Override

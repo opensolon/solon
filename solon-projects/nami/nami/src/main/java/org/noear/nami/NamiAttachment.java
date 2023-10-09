@@ -1,6 +1,6 @@
 package org.noear.nami;
 
-import org.noear.solon.core.util.ThreadUtil;
+import org.noear.solon.core.FactoryManager;
 
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -13,7 +13,7 @@ import java.util.Map;
  * @since 1.4
  */
 public final class NamiAttachment {
-    private final static ThreadLocal<Map<String, String>> threadMap = ThreadUtil.global().newThreadLocal(true);
+    private final static ThreadLocal<Map<String, String>> threadMap = FactoryManager.newThreadLocal(true);
 
     private static Map<String, String> getContextMap0() {
         Map<String, String> tmp = threadMap.get();

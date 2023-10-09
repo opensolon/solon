@@ -9,20 +9,23 @@
 * 提醒1：之前没有使用弃用接口的，可以直接升级 <br>
 * 提醒2：有使用弃用接口的。建议先升级到 1.12.4；替换弃用代码后，再升级到 2.0.0
 
-### 2.5.9
+### 2.5.10
 * 新增 solon.boot.vertx 插件?
 * 新增 seata-solon-plugin 插件
-* 新增 graphql-solon-plugin 插件
 * 增加 quartz jdbc 及时更新支持（数据库里变了，它马上变） ???
 * 调整 solon.config.add 与 solon.config.load 合并，规范格式（同时支持内部与外部） ???
 * 调整 简化 SocketD ???
-* 新增 hibernate-solon-plugin 插件
 * 调整 使用更多的 slf4j 替换 LogUtil ???
-* 调整 InitializingBean 标为弃用
 * 调整 取消启动参数简写模式，保持与应用参数相同的名字 ???
+
+### 2.5.9
+* 新增 graphql-solon-plugin 插件
+* 新增 hibernate-solon-plugin 插件
+* 弃用 InitializingBean
 * 调整 数据源事务管理改为线程状态可继承
+* 增加 FactoryManager 工具类，合并各种工厂管理，移除 Bridge
 * 增加 `@DynamicDs("${dsName}")` 参数模板支持
-* 调整 water-solon-cloud-plugin 服务注册改为被动检测 ???（不然 job 不能跑）
+* 调整 water-solon-cloud-plugin 服务注册改为被动检测（不然 job 不能跑）
 * 增加 配置提示元文件???
 * sqltoy 升为 5.2.69
 
