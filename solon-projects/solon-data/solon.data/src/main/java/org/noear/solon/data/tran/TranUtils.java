@@ -13,6 +13,7 @@ import java.sql.SQLException;
  *
  * @author noear
  * @since 1.0
+ * @since 2.5
  * */
 public final class TranUtils {
     private static TranExecutor executor = TranExecutorDefault.global;
@@ -44,6 +45,8 @@ public final class TranUtils {
 
     /**
      * 监听事务
+     *
+     * @since 2.5
      */
     public static void listen(TranListener listener) throws IllegalStateException {
         executor.listen(listener);
