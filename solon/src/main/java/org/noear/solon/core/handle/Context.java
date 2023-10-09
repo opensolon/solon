@@ -55,7 +55,6 @@ public abstract class Context {
     /**
      * 设置处理状态
      * */
-    @Note("设置处理状态")
     public void setHandled(boolean handled) {
         this.handled = handled;
     }
@@ -63,7 +62,6 @@ public abstract class Context {
     /**
      * 获取处理状态
      * */
-    @Note("获取处理状态")
     public boolean getHandled() {
         return handled;
     }
@@ -76,7 +74,6 @@ public abstract class Context {
     /**
      * 设置渲染状态
      * */
-    @Note("设置渲染状态")
     public void setRendered(boolean rendered) {
         this.rendered = rendered;
     }
@@ -84,7 +81,6 @@ public abstract class Context {
     /**
      * 获取渲染状态
      * */
-    @Note("获取渲染状态")
     public boolean getRendered() {
         return rendered;
     }
@@ -92,7 +88,6 @@ public abstract class Context {
     /**
      * 获取请求对象
      */
-    @Note("获取请求对象")
     public abstract Object request();
 
     /**
@@ -108,7 +103,6 @@ public abstract class Context {
     /**
      * 获取远程IP
      */
-    @Note("获取远程IP")
     public abstract String remoteIp();
     /**
      * 获取远程Port
@@ -120,7 +114,6 @@ public abstract class Context {
     /**
      * 获取客户端真实IP
      * */
-    @Note("获取客户端真实IP")
     public String realIp() {
         if (realIp == null) {
             realIp = IpUtil.global().getRealIp(this);
@@ -200,13 +193,11 @@ public abstract class Context {
     /**
      * 获取请求方法
      */
-    @Note("获取请求方式")
     public abstract String method();
 
     /**
      * 获取请求协议
      */
-    @Note("获取请求协议")
     public abstract String protocol();
 
     private String protocolAsUpper;
@@ -710,7 +701,6 @@ public abstract class Context {
      * @param name 状态名
      * @deprecated 2.3
      */
-    @Note("泛型转换，存在转换风险")
     public abstract  <T> T sessionOrDefault(String name, @NonNull T def);
 
     /**
@@ -948,15 +938,18 @@ public abstract class Context {
     /**
      * 跳转地址
      */
-    @Note("跳转地址")
     public void redirect(String url) {
         redirect(url, 302);
     }
 
-    @Note("跳转地址")
+    /**
+     * 跳转地址
+     */
     public abstract void redirect(String url, int code);
 
-    @Note("转发")
+    /**
+     * 转发
+     * */
     public void forward(String pathNew) {
         if (Utils.isEmpty(Solon.cfg().serverContextPath())) {
             pathNew(pathNew);
@@ -972,13 +965,11 @@ public abstract class Context {
     /**
      * 获取输出状态
      */
-    @Note("获取输出状态")
     public abstract int status();
 
     /**
      * 设置输出状态
      */
-    @Note("设置输出状态")
     public void status(int status){
         statusDoSet(status);
     }
@@ -996,7 +987,9 @@ public abstract class Context {
 
     private Map<String, Object> attrMap = null;
 
-    @Note("获取自定义特性并转为Map")
+    /**
+     * 获取自定义特性并转为Map
+     * */
     public Map<String, Object> attrMap() {//改为懒加载
         if (attrMap == null) {
             attrMap = new IgnoreCaseMap<>();
@@ -1083,7 +1076,6 @@ public abstract class Context {
     /**
      * 是否为远程调用
      * */
-    @Note("是否为远程调用")
     public boolean remoting() {
         return _remoting;
     }
@@ -1093,24 +1085,25 @@ public abstract class Context {
     }
 
 
-    @Note("冲刷")
+    /**
+     * 冲刷
+     * */
     public abstract void flush() throws IOException;
 
 
-    //一些特殊的boot才有效
-    @Note("关闭响应")
+    /**
+     * 关闭响应（一些特殊的boot才有效）
+     * */
     public abstract void close() throws IOException;
 
     /**
      * 是否支持异步
      * */
-    @Note("是否支持异步")
     public abstract boolean asyncSupported();
 
     /**
      * 异步开始
      * */
-    @Note("异步开始")
     public abstract void asyncStart(long timeout, ContextAsyncListener listener);
 
     /**
@@ -1123,7 +1116,6 @@ public abstract class Context {
     /**
      * 异步完成
      * */
-    @Note("异步完成")
     public abstract void asyncComplete() throws IOException;
 
 
@@ -1131,20 +1123,17 @@ public abstract class Context {
     /**
      * 用于在处理链中透传处理结果
      * */
-    @Note("处理结果")
     public @Nullable Object result;
 
     /**
      * 用于在处理链中透传处理错误
      * */
-    @Note("处理错误")
     public @Nullable Throwable errors;
 
 
     /**
      * 获取当前控制器
      * */
-    @Note("控制器?")
     public @Nullable Object controller() {
         return attr(Constants.controller);
     }
@@ -1152,7 +1141,6 @@ public abstract class Context {
     /**
      * 获取当前动作
      * */
-    @Note("动作?")
     public @Nullable Action action() {
         return attr(Constants.action);
     }
