@@ -54,7 +54,10 @@ public class HeaderTest extends HttpTester {
         String json = path("/demo2/remote/").get();
 
         assert json.length() > 0;
-        assert ONode.load(json).get(1).val().getRaw() instanceof Number;
+        ONode oNode = ONode.load(json);
+        assert oNode.isArray();
+        assert oNode.get(1).val().getRaw() instanceof Number;
+        assert oNode.get(1).getInt() > 80;
     }
 
     @Test
