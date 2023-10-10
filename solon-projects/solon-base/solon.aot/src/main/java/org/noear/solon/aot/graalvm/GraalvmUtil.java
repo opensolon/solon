@@ -42,6 +42,7 @@ public class GraalvmUtil {
 
     private static final Map<Class<?>, Set<Field>> classFields = new HashMap<>();
     private static final Map<String, Set<ExecutableHint>> classExecutable = new HashMap<>();
+    private static final Map<Class<?>, Set<Method>> classDeclaredMethods = new HashMap<>();
     private static final Map<Class<?>, Set<Method>> classMethods = new HashMap<>();
 
     static {
@@ -91,7 +92,7 @@ public class GraalvmUtil {
      * 获取类上的方法，优先从reflect-config.json中获取
      */
     public static Method[] getDeclaredMethods(Class<?> clz) {
-        Set<Method> methods = classMethods.get(clz);
+        Set<Method> methods = classDeclaredMethods.get(clz);
         if (methods != null) {
             return methods.toArray(new Method[0]);
         }
@@ -115,6 +116,44 @@ public class GraalvmUtil {
                             }
                         }).toArray(Class[]::new);
                         return clz.getDeclaredMethod(e.getName(), classes);
+                    } catch (NoSuchMethodException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                }).collect(Collectors.toSet());
+        classDeclaredMethods.put(clz, methodSet);
+        return methodSet.toArray(new Method[0]);
+    }
+
+    /**
+     * 获取类上的方法，优先从reflect-config.json中获取
+     *
+     * @since 2.5
+     */
+    public static Method[] getMethods(Class<?> clz) {
+        Set<Method> methods = classMethods.get(clz);
+        if (methods != null) {
+            return methods.toArray(new Method[0]);
+        }
+        Set<ExecutableHint> executableHints = classExecutable.get(ReflectUtil.getClassName(clz));
+        if (executableHints == null) {
+            return clz.getMethods();
+        }
+        Set<Method> methodSet = executableHints.stream()
+                .filter(e -> !ReflectUtil.CONSTRUCTOR_NAME.equals(e.getName()))
+                .map(e -> {
+                    try {
+                        List<String> types = e.getParameterTypes();
+                        if (types == null || types.isEmpty()) {
+                            return clz.getMethod(e.getName());
+                        }
+                        Class<?>[] classes = types.stream().map(type -> {
+                            try {
+                                return TypeUtil.forName(type, AppClassLoader.global());
+                            } catch (Exception ex) {
+                                return new RuntimeException(ex);
+                            }
+                        }).toArray(Class[]::new);
+                        return clz.getMethod(e.getName(), classes);
                     } catch (NoSuchMethodException ex) {
                         throw new RuntimeException(ex);
                     }
