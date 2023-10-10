@@ -81,7 +81,7 @@ public class GraalvmUtil {
             try {
                 return clz.getDeclaredField(e);
             } catch (NoSuchFieldException ex) {
-                throw new RuntimeException(ex);
+                throw new RuntimeException("No field found: " + clz.getName() + "." + e, ex);
             }
         }).collect(Collectors.toSet());
         classFields.put(clz, fields);
@@ -117,7 +117,7 @@ public class GraalvmUtil {
                         }).toArray(Class[]::new);
                         return clz.getDeclaredMethod(e.getName(), classes);
                     } catch (NoSuchMethodException ex) {
-                        throw new RuntimeException(ex);
+                        throw new RuntimeException("No declaredMethod found: " + clz.getName() + "." + e, ex);
                     }
                 }).collect(Collectors.toSet());
         classDeclaredMethods.put(clz, methodSet);
@@ -155,7 +155,7 @@ public class GraalvmUtil {
                         }).toArray(Class[]::new);
                         return clz.getMethod(e.getName(), classes);
                     } catch (NoSuchMethodException ex) {
-                        throw new RuntimeException(ex);
+                        throw new RuntimeException("No method found: " + clz.getName() + "." + e, ex);
                     }
                 }).collect(Collectors.toSet());
         classMethods.put(clz, methodSet);
