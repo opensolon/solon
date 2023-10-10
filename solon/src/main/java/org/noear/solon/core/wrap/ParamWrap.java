@@ -1,9 +1,6 @@
 package org.noear.solon.core.wrap;
 
-import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
-import java.lang.reflect.Type;
-import java.lang.reflect.TypeVariable;
+import java.lang.reflect.*;
 import java.util.Map;
 
 /**
@@ -17,6 +14,7 @@ import java.util.Map;
 public class ParamWrap extends VarDescriptorBase {
     private final Parameter parameter;
     private Class<?> type;
+    private Type genericType;
 
     public ParamWrap(Parameter parameter) {
         this(parameter, null, null);
@@ -26,16 +24,22 @@ public class ParamWrap extends VarDescriptorBase {
         super(parameter, parameter.getName());
         this.parameter = parameter;
         this.type = parameter.getType();
+        this.genericType = parameter.getParameterizedType();
 
-        if(method != null) {
+        if (method != null) {
             //for action
             this.init();
 
-            if (genericInfo != null && getGenericType() instanceof TypeVariable) {
-                Type ptTmp = genericInfo.get(getGenericType().getTypeName());
+            if (genericInfo != null && genericType instanceof TypeVariable) {
+                Type type0 = genericInfo.get(genericType.getTypeName());
 
-                if (ptTmp instanceof Class) {
-                    type = (Class<?>) ptTmp;
+                if (type0 instanceof ParameterizedType) {
+                    genericType = type0;
+                    type0 = ((ParameterizedType) type0).getRawType();
+                }
+
+                if (type0 instanceof Class) {
+                    type = (Class<?>) type0;
                 } else {
                     throw new IllegalStateException("Mapping mehtod generic analysis error: "
                             + method.getDeclaringClass().getName()
@@ -58,7 +62,7 @@ public class ParamWrap extends VarDescriptorBase {
      */
     @Override
     public Type getGenericType() {
-        return parameter.getParameterizedType();
+        return genericType;
     }
 
     /**
