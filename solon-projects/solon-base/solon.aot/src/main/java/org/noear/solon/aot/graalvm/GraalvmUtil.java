@@ -159,7 +159,7 @@ public class GraalvmUtil {
                         return clz.getMethod(e.getName(), classes);
                     } catch (NoSuchMethodException ex) {
                         //当同时有 declaredMethod 和 method 登记时；配置会多于目标
-                        log.warn("No method found: " + clz.getName() + "." + e.getName());
+                        log.warn("No publicMethod found: " + clz.getName() + "." + e.getName());
                         return null;
                     }
                 }).filter(e -> e != null).collect(Collectors.toSet());
