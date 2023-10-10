@@ -5,6 +5,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.annotation.Consumes;
 import org.noear.solon.annotation.Produces;
 import org.noear.solon.core.*;
+import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.core.util.*;
 import org.noear.solon.core.wrap.MethodWrap;
 import org.noear.solon.annotation.Mapping;
@@ -57,6 +58,10 @@ public class Action extends HandlerAide implements Handler {
         this.bAide = bAide;
 
         method.setAccessible(true);
+
+        if(NativeDetector.isAotRuntime()){
+            bWrap.context().methodGet(method);
+        }
 
         mWrap = new MethodWrap(bWrap.context(), method, GenericUtil.getGenericInfo(bWrap.clz()));
         mRemoting = remoting;
