@@ -111,7 +111,7 @@ public class HandlerLoader extends HandlerAide {
      * 查找 method
      */
     protected Method[] findMethods(Class<?> clz) {
-        return ReflectUtil.getDeclaredMethods(clz);
+        return ReflectUtil.getMethods(clz);
     }
 
 

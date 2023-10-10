@@ -31,10 +31,12 @@
 * 调整 所有单测都升级为 junit5
 * 调整 water-solon-cloud-plugin 服务注册改为被动检测（不然 job 不能跑）
 * 增加 FactoryManager 工具类，合并各种工厂管理，移除 Bridge
-* 增加 `@DynamicDs("${dsName}")` 参数模板支持
+* 增加 `@DynamicDs("${ddsName}")` 参数模板支持
 * 增加 Context::remotePort 接口
 * 增加 Context::remoteIp 接口，原 ip 接口标为弃用
 * 增加 事务管理的监听机制 TranListener!!!
+* 增加 Mapping 函数对 TypeVariable 参数类型的识别!!!
+* 增加 Mapping 函数父类继承的支持
 * 增加 配置提示元文件???
 * sqltoy 升为 5.2.69
 * mybatis-flex 升为 1.6.9
