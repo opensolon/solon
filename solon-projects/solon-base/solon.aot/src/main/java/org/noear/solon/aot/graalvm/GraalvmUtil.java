@@ -5,6 +5,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.aot.hint.ExecutableHint;
 import org.noear.solon.core.ExtendLoader;
 import org.noear.solon.core.AppClassLoader;
+import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.core.util.ReflectUtil;
 import org.noear.solon.core.util.ResourceUtil;
 import org.slf4j.Logger;
@@ -81,7 +82,7 @@ public class GraalvmUtil {
             try {
                 return clz.getDeclaredField(e);
             } catch (NoSuchFieldException ex) {
-                throw new RuntimeException("No field found: " + clz.getName() + "." + e, ex);
+                throw new IllegalStateException("No field found: " + clz.getName() + "." + e, ex);
             }
         }).collect(Collectors.toSet());
         classFields.put(clz, fields);
@@ -117,9 +118,11 @@ public class GraalvmUtil {
                         }).toArray(Class[]::new);
                         return clz.getDeclaredMethod(e.getName(), classes);
                     } catch (NoSuchMethodException ex) {
-                        throw new RuntimeException("No declaredMethod found: " + clz.getName() + "." + e, ex);
+                        //当同时有 declaredMethod 和 method 登记时；配置会多于目标
+                        log.warn("No declaredMethod found: " + clz.getName() + "." + e.getName());
+                        return null;
                     }
-                }).collect(Collectors.toSet());
+                }).filter(e -> e != null).collect(Collectors.toSet());
         classDeclaredMethods.put(clz, methodSet);
         return methodSet.toArray(new Method[0]);
     }
@@ -155,9 +158,11 @@ public class GraalvmUtil {
                         }).toArray(Class[]::new);
                         return clz.getMethod(e.getName(), classes);
                     } catch (NoSuchMethodException ex) {
-                        throw new RuntimeException("No method found: " + clz.getName() + "." + e, ex);
+                        //当同时有 declaredMethod 和 method 登记时；配置会多于目标
+                        log.warn("No method found: " + clz.getName() + "." + e.getName());
+                        return null;
                     }
-                }).collect(Collectors.toSet());
+                }).filter(e -> e != null).collect(Collectors.toSet());
         classMethods.put(clz, methodSet);
         return methodSet.toArray(new Method[0]);
     }
