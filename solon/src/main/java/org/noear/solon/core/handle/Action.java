@@ -5,11 +5,8 @@ import org.noear.solon.Utils;
 import org.noear.solon.annotation.Consumes;
 import org.noear.solon.annotation.Produces;
 import org.noear.solon.core.*;
-import org.noear.solon.core.util.LogUtil;
-import org.noear.solon.core.util.PathUtil;
-import org.noear.solon.core.util.DataThrowable;
+import org.noear.solon.core.util.*;
 import org.noear.solon.core.wrap.MethodWrap;
-import org.noear.solon.core.util.PathAnalyzer;
 import org.noear.solon.annotation.Mapping;
 
 import java.lang.reflect.Method;
@@ -61,7 +58,7 @@ public class Action extends HandlerAide implements Handler {
 
         method.setAccessible(true);
 
-        mWrap = bWrap.context().methodGet(method);
+        mWrap = new MethodWrap(bWrap.context(), method, GenericUtil.getGenericInfo(bWrap.clz()));
         mRemoting = remoting;
         mMapping = mapping;
         bRender = render;

@@ -27,12 +27,16 @@ import java.util.*;
 public class MethodWrap implements Interceptor, MethodHolder {
 
     public MethodWrap(AopContext ctx, Method m) {
+        this(ctx, m, null);
+    }
+
+    public MethodWrap(AopContext ctx, Method m, Map<String,Type> genericInfo) {
         context = (AppContext) ctx;
 
         declaringClz = m.getDeclaringClass();
 
         method = m;
-        parameters = buildParamsWrap(m.getParameters());
+        parameters = buildParamsWrap(m.getParameters(), genericInfo);
         annotations = m.getAnnotations();
         interceptors = new ArrayList<>();
         interceptorsIdx = new HashSet<>();
@@ -73,10 +77,10 @@ public class MethodWrap implements Interceptor, MethodHolder {
         interceptors.add(new InterceptorEntity(0, this));
     }
 
-    private ParamWrap[] buildParamsWrap(Parameter[] pAry) {
+    private ParamWrap[] buildParamsWrap(Parameter[] pAry, Map<String,Type> genericInfo) {
         ParamWrap[] tmp = new ParamWrap[pAry.length];
         for (int i = 0, len = pAry.length; i < len; i++) {
-            tmp[i] = new ParamWrap(pAry[i]);
+            tmp[i] = new ParamWrap(pAry[i], method, genericInfo);
 
             if (tmp[i].isRequiredBody()) {
                 isRequiredBody = true;
