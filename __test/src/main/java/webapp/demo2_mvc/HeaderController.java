@@ -18,6 +18,11 @@ public class HeaderController {
         return ctx.headerValues("test");
     }
 
+    @Mapping("/demo2/remote/")
+    public Object[] remote(Context ctx) throws Exception {
+        return new Object[]{ctx.remoteIp(), ctx.remotePort()};
+    }
+
     @Mapping("/demo2/cookie/")
     public void cookie(Context ctx) throws Exception {
         ctx.cookieSet("cookie1", "1");

@@ -4,12 +4,14 @@ package features;
 import okhttp3.Response;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.noear.snack.ONode;
 import org.noear.solon.boot.web.Constants;
 import org.noear.solon.test.HttpTester;
 import org.noear.solon.test.SolonJUnit5Extension;
 import org.noear.solon.test.SolonTest;
 import webapp.App;
 
+import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,7 +38,7 @@ public class HeaderTest extends HttpTester {
     }
 
     @Test
-    public void test1_2() throws Exception {
+    public void test1_header2() throws Exception {
         String json = path("/demo2/header2/")
                 .headerAdd("test", "a")
                 .headerAdd("test", "b")
@@ -45,6 +47,14 @@ public class HeaderTest extends HttpTester {
         assert json.length() > 0;
         assert json.contains("a");
         assert json.contains("b");
+    }
+
+    @Test
+    public void test1_remote() throws IOException {
+        String json = path("/demo2/remote/").get();
+
+        assert json.length() > 0;
+        assert ONode.load(json).get(1).val().getRaw() instanceof Number;
     }
 
     @Test
