@@ -26,18 +26,22 @@ public class ParamWrap extends VarDescriptorBase {
         super(parameter, parameter.getName());
         this.parameter = parameter;
         this.type = parameter.getType();
-        this.init();
 
-        if (genericInfo != null && getGenericType() instanceof TypeVariable) {
-            Type ptTmp = genericInfo.get(getGenericType().getTypeName());
+        if(method != null) {
+            //for action
+            this.init();
 
-            if (ptTmp instanceof Class) {
-                type = (Class<?>) ptTmp;
-            } else {
-                throw new IllegalStateException("Mapping mehtod generic analysis error: "
-                        + method.getDeclaringClass().getName()
-                        + "."
-                        + method.getName());
+            if (genericInfo != null && getGenericType() instanceof TypeVariable) {
+                Type ptTmp = genericInfo.get(getGenericType().getTypeName());
+
+                if (ptTmp instanceof Class) {
+                    type = (Class<?>) ptTmp;
+                } else {
+                    throw new IllegalStateException("Mapping mehtod generic analysis error: "
+                            + method.getDeclaringClass().getName()
+                            + "."
+                            + method.getName());
+                }
             }
         }
     }

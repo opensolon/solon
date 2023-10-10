@@ -36,7 +36,7 @@
 * 增加 Context::remoteIp 接口，原 ip 接口标为弃用
 * 增加 事务管理的监听机制 TranListener!!!
 * 增加 Mapping 函数对 TypeVariable 参数类型的识别!!!
-* 增加 Mapping 函数父类继承的支持
+* 增加 Mapping 函数父类继承的支持（只支持 public）
 * 增加 配置提示元文件???
 * sqltoy 升为 5.2.69
 * mybatis-flex 升为 1.6.9
