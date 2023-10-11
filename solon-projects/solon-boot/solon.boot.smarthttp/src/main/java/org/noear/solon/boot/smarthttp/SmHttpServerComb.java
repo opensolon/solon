@@ -4,6 +4,7 @@ import org.noear.solon.boot.ServerLifecycle;
 import org.noear.solon.boot.http.HttpServerConfigure;
 import org.noear.solon.core.handle.Handler;
 
+import javax.net.ssl.SSLContext;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -22,6 +23,7 @@ public class SmHttpServerComb implements HttpServerConfigure, ServerLifecycle {
     private boolean enableWebSocket;
     private Handler handler;
     protected boolean enableSsl = true;
+    protected SSLContext sslContext;
     protected boolean enableDebug = false;
     protected Set<Integer> addHttpPorts = new LinkedHashSet<>();
     protected List<SmHttpServer> servers = new ArrayList<>();
@@ -30,8 +32,9 @@ public class SmHttpServerComb implements HttpServerConfigure, ServerLifecycle {
      * 是否允许Ssl
      */
     @Override
-    public void enableSsl(boolean enable) {
+    public void enableSsl(boolean enable, SSLContext sslContext) {
         this.enableSsl = enable;
+        this.sslContext = sslContext;
     }
 
     @Override
@@ -80,7 +83,7 @@ public class SmHttpServerComb implements HttpServerConfigure, ServerLifecycle {
             s1.setCoreThreads(coreThreads);
             s1.enableWebSocket(enableWebSocket);
             s1.setHandler(handler);
-            s1.enableSsl(enableSsl);
+            s1.enableSsl(enableSsl, sslContext);
             s1.enableDebug(enableDebug);
             s1.start(host, port);
 
@@ -93,7 +96,7 @@ public class SmHttpServerComb implements HttpServerConfigure, ServerLifecycle {
             s2.setCoreThreads(coreThreads);
             s2.enableWebSocket(enableWebSocket);
             s2.setHandler(handler);
-            s2.enableSsl(false); //只支持http
+            s2.enableSsl(false, null); //只支持http
             s2.enableDebug(enableDebug);
             s2.start(host, portAdd);
 

@@ -32,15 +32,6 @@ public class UndertowServer extends UndertowServerBase implements ServerLifecycl
         return isSecure;
     }
 
-    private ServerSslProps sslProps;
-    protected boolean supportSsl() {
-        if (sslProps == null) {
-            sslProps = ServerSslProps.of(ServerConstants.SIGNAL_HTTP);
-        }
-
-        return sslProps.isEnable() && sslProps.getSslKeyStore() != null;
-    }
-
     @Override
     public void start(String host, int port) {
         try {
@@ -94,9 +85,9 @@ public class UndertowServer extends UndertowServerBase implements ServerLifecycl
             host = "0.0.0.0";
         }
 
-        if (enableSsl && supportSsl()) {
+        if (sslConfig.isSslEnable()) {
             //https
-            builder.addHttpsListener(port, host, SslContextFactory.create(sslProps));
+            builder.addHttpsListener(port, host, sslConfig.getSslContext());
             isSecure = true;
         } else {
             //http

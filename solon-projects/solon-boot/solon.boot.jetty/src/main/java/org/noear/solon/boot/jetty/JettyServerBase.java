@@ -14,12 +14,13 @@ import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.jetty.http.JtContainerInitializer;
 import org.noear.solon.boot.jetty.http.JtHttpContextHandler;
 import org.noear.solon.boot.jetty.http.JtHttpContextServletHandler;
-import org.noear.solon.boot.prop.ServerSslProps;
 import org.noear.solon.boot.prop.impl.HttpServerProps;
 import org.noear.solon.boot.http.HttpServerConfigure;
+import org.noear.solon.boot.ssl.SslConfig;
 import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.core.util.ResourceUtil;
 
+import javax.net.ssl.SSLContext;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -31,7 +32,7 @@ import java.util.concurrent.Executor;
 abstract class JettyServerBase implements ServerLifecycle , HttpServerConfigure {
     protected Executor executor;
     protected HttpServerProps props = new HttpServerProps();
-    protected boolean enableSsl = true;
+    protected SslConfig sslConfig = new SslConfig(ServerConstants.SIGNAL_HTTP);
     private boolean isSecure;
 
     public boolean isSecure() {
@@ -40,22 +41,13 @@ abstract class JettyServerBase implements ServerLifecycle , HttpServerConfigure 
 
     protected Set<Integer> addHttpPorts = new LinkedHashSet<>();
 
-    private ServerSslProps sslProps;
-
-    protected boolean supportSsl() {
-        if (sslProps == null) {
-            sslProps = ServerSslProps.of(ServerConstants.SIGNAL_HTTP);
-        }
-
-        return sslProps.isEnable() && sslProps.getSslKeyStore() != null;
-    }
 
     /**
      * 是否允许Ssl
      */
     @Override
-    public void enableSsl(boolean enable) {
-        this.enableSsl = enable;
+    public void enableSsl(boolean enable, SSLContext sslContext) {
+        sslConfig.set(enable, null);
     }
 
     /**
@@ -90,12 +82,11 @@ abstract class JettyServerBase implements ServerLifecycle , HttpServerConfigure 
         HttpConnectionFactory httpFactory = new HttpConnectionFactory(config);
         ServerConnector serverConnector;
 
-        if (enableSsl && autoSsl && supportSsl()) {
+        if (sslConfig.isSslEnable()) {
 
-
-            String sslKeyStore = sslProps.getSslKeyStore();
-            String sslKeyStoreType = sslProps.getSslKeyType();
-            String sslKeyStorePassword = sslProps.getSslKeyPassword();
+            String sslKeyStore = sslConfig.getProps().getSslKeyStore();
+            String sslKeyStoreType = sslConfig.getProps().getSslKeyType();
+            String sslKeyStorePassword = sslConfig.getProps().getSslKeyPassword();
 
             SslContextFactory.Server contextFactory = new SslContextFactory.Server();
 

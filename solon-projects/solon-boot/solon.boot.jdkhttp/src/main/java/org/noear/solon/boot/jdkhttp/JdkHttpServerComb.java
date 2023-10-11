@@ -4,6 +4,7 @@ import org.noear.solon.boot.ServerLifecycle;
 import org.noear.solon.boot.http.HttpServerConfigure;
 import org.noear.solon.core.handle.Handler;
 
+import javax.net.ssl.SSLContext;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -20,13 +21,15 @@ public class JdkHttpServerComb implements HttpServerConfigure, ServerLifecycle {
     private Executor executor;
     private Handler handler;
     private boolean enableSsl = true;
+    private SSLContext sslContext;
     private Set<Integer> addHttpPorts = new LinkedHashSet<>();
     private List<JdkHttpServer> servers = new ArrayList<>();
 
 
     @Override
-    public void enableSsl(boolean enable) {
+    public void enableSsl(boolean enable, SSLContext sslContext) {
         this.enableSsl = enable;
+        this.sslContext = sslContext;
     }
 
     /**
@@ -60,7 +63,7 @@ public class JdkHttpServerComb implements HttpServerConfigure, ServerLifecycle {
             JdkHttpServer s1 = new JdkHttpServer();
             s1.setExecutor(executor);
             s1.setHandler(handler);
-            s1.enableSsl(enableSsl);
+            s1.enableSsl(enableSsl, sslContext);
             s1.start(host, port);
 
             servers.add(s1);
@@ -70,7 +73,7 @@ public class JdkHttpServerComb implements HttpServerConfigure, ServerLifecycle {
             JdkHttpServer s2 = new JdkHttpServer();
             s2.setExecutor(executor);
             s2.setHandler(handler);
-            s2.enableSsl(false); //只支持http
+            s2.enableSsl(false, null); //只支持http
             s2.start(host, portAdd);
 
             servers.add(s2);
