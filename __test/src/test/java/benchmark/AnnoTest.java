@@ -14,8 +14,7 @@ import java.util.function.Predicate;
  */
 @Mapping
 @Controller
-@Patch
-@Get
+@Options
 public class AnnoTest {
     @Test
     public void test1() {
