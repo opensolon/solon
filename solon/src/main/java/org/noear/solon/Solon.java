@@ -162,9 +162,13 @@ public class Solon {
             LogUtil.global().error("Solon start failed: " + e.getMessage());
 
             //3.停止服务并退出（主要是停止插件）
-            Solon.stop0(false, 0);
+            if (NativeDetector.isNotAotRuntime()) {
+                Solon.stop0(true, 0);
+            } else {
+                Solon.stop0(false, 0);
 
-            throw new IllegalStateException("Solon start failed", e);
+                throw new IllegalStateException("Solon start failed", e);
+            }
         }
 
 
