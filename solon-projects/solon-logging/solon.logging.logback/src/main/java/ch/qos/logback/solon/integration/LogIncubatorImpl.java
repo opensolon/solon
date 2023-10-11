@@ -42,7 +42,7 @@ public class LogIncubatorImpl implements LogIncubator {
                 try {
                     AnsiConsole.systemInstall();
                 } catch (Throwable e) {
-
+                    e.printStackTrace();
                 }
             }
         }
