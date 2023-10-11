@@ -891,11 +891,11 @@ public abstract class AopContext extends BeanContainer {
         started = true;
 
         try {
-            //开始注入审查 //支持自动排序
-            startInjectReview();
-
             //开始执行生命周期bean（侧重做初始化） //支持排序
             startBeanLifecycle();
+
+            //开始注入审查 //支持自动排序
+            startInjectReview();
         } catch (Throwable e) {
             throw new IllegalStateException("AppContext start failed", e);
         }
