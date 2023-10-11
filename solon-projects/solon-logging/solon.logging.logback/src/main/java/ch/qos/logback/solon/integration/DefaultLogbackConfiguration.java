@@ -69,6 +69,10 @@ public class DefaultLogbackConfiguration {
         putProperty(config, "FILE_LOG_MAX_FILE_SIZE", "solon.logging.appender.file.maxFileSize",
                 "10 MB");
 
+        putProperty(config, "FILE_LOG_TOTAL_SIZE_CAP", "solon.logging.appender.file.totalSizeCap",
+                "0");
+
+
         putProperty(config, "LOGGER_ROOT_LEVEL", "solon.logging.logger.root.level",
                 "TRACE");
     }
@@ -134,7 +138,7 @@ public class DefaultLogbackConfiguration {
         rollingPolicy.setMaxFileSize(resolveFileSize(config, "${FILE_LOG_MAX_FILE_SIZE}"));
 
         //rollingPolicy.setCleanHistoryOnStart(resolveBoolean(config, "${LOGBACK_ROLLINGPOLICY_CLEAN_HISTORY_ON_START:-false}"));
-        rollingPolicy.setTotalSizeCap(resolveFileSize(config, "${LOGBACK_ROLLINGPOLICY_TOTAL_SIZE_CAP:-0}"));
+        rollingPolicy.setTotalSizeCap(resolveFileSize(config, "${FILE_LOG_TOTAL_SIZE_CAP}"));
 
         appender.setRollingPolicy(rollingPolicy);
         rollingPolicy.setParent(appender);

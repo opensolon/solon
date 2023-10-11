@@ -24,7 +24,6 @@ class LogbackConfigurator {
     private final LoggerContext context;
 
     LogbackConfigurator(LoggerContext context) {
-        Assert.notNull(context, "Context must not be null");
         this.context = context;
     }
 
@@ -38,8 +37,6 @@ class LogbackConfigurator {
 
     @SuppressWarnings({"rawtypes", "unchecked"})
     void conversionRule(String conversionWord, Class<? extends Converter> converterClass) {
-        Assert.hasLength(conversionWord, "Conversion word must not be empty");
-        Assert.notNull(converterClass, "Converter class must not be null");
         Map<String, String> registry = (Map<String, String>) this.context
                 .getObject(CoreConstants.PATTERN_RULE_REGISTRY);
         if (registry == null) {
