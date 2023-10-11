@@ -32,6 +32,8 @@ public class LogUtilExt extends LogUtil {
             try {
                 logIncubator.incubate();
             } catch (Throwable e) {
+                // native: 静态扩展，初始化 LogUtilExt 报错时，此处可以将异常打印出来
+                e.printStackTrace();
                 throw new IllegalStateException(e);
             }
             break;
