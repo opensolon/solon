@@ -32,7 +32,7 @@
 * 弃用 InitializingBean（简化应用生命周期）
 * 删除 SolonApp::onError,::enableErrorAutoprint 接口（已无用，留着有误导性）
 * 删除 LogUtil::globalSet 接口（已无用，留着有误导性）
-* 调整 Mapping 副词注解，统一取消 ElementType.TYPE 目标（仅限 method）
+* 调整 Get,Put,Post,Delete,Patch 注解，取消 ElementType.TYPE 目标（仅限 method）
 * 调整 数据源事务管理相关改为线程状态可继承（支持通过 FactoryManager 设置 threadLocalFactory）
 * 调整 所有模块的单测都升级为 junit5（落实最新的 CONTRIBUTING 规范）
 * 调整 water-solon-cloud-plugin 本地调试时服务注册改为被动检测（之前为主动上报）
