@@ -159,7 +159,7 @@ public class Solon {
         } catch (Throwable e) {
             //显示异常信息
             e = Utils.throwableUnwrap(e);
-            LogUtil.global().error("Solon start failed: " + e.getMessage());
+            LogUtil.global().error("Solon start failed: " + e.getMessage(), e);
 
             //3.停止服务并退出（主要是停止插件）
             if (NativeDetector.isNotAotRuntime()) {
