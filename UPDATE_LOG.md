@@ -36,6 +36,7 @@
 * 调整 数据源事务管理相关改为线程状态可继承（支持通过 FactoryManager 设置 threadLocalFactory）
 * 调整 所有模块的单测都升级为 junit5（落实最新的 CONTRIBUTING 规范）
 * 调整 water-solon-cloud-plugin 本地调试时服务注册改为被动检测（之前为主动上报）
+* 调整 HttpServerConfigure::enableSsl 允许自己设定 SSLContext（方便国密处理）
 * 增加 动态数据源注解 `@DynamicDs("${ddsName}")` 参数模板支持
 * 增加 Context::remotePort 接口
 * 增加 Context::remoteIp 接口，原 ip 接口标为弃用
