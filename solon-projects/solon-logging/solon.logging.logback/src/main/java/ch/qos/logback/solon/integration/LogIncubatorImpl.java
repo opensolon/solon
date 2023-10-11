@@ -4,10 +4,14 @@ import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.core.joran.spi.JoranException;
+import ch.qos.logback.core.status.Status;
+import ch.qos.logback.core.status.StatusUtil;
+import ch.qos.logback.core.util.StatusPrinter;
 import ch.qos.logback.solon.SolonConfigurator;
 import org.fusesource.jansi.AnsiConsole;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
+import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.core.util.JavaUtil;
 import org.noear.solon.core.util.LogUtil;
@@ -20,6 +24,7 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 
 /**
  * 日志孵化器
@@ -97,8 +102,28 @@ public class LogIncubatorImpl implements LogIncubator {
                     logger.setLevel(Level.valueOf(lle.getLevel().name()));
                 }
             }
+            if (NativeDetector.inNativeImage()) {
+                reportConfigurationErrorsIfNecessary(loggerContext);
+            }
         } catch (JoranException e) {
             throw new IllegalStateException(e);
+        }
+    }
+
+    private void reportConfigurationErrorsIfNecessary(LoggerContext loggerContext) {
+        List<Status> statuses = loggerContext.getStatusManager().getCopyOfStatusList();
+        StringBuilder errors = new StringBuilder();
+        for (Status status : statuses) {
+            if (status.getLevel() == Status.ERROR) {
+                errors.append((errors.length() > 0) ? String.format("%n") : "");
+                errors.append(status.toString());
+            }
+        }
+        if (errors.length() > 0) {
+            throw new IllegalStateException(String.format("Logback configuration error detected: %n%s", errors));
+        }
+        if (!StatusUtil.contextHasStatusListener(loggerContext)) {
+            StatusPrinter.printInCaseOfErrorsOrWarnings(loggerContext);
         }
     }
 
