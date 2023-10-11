@@ -24,6 +24,7 @@
         <maven.compiler.target>${java.version}</maven.compiler.target>
 
         <solon.version>2.5.9-SNAPSHOT</solon.version>
+        <solon-maven-plugin.version>2.5.8</solon-maven-plugin.version>
         <snack3.version>3.2.80</snack3.version>
         <weed3.version>3.4.33</weed3.version>
         <wood.version>1.2.2</wood.version>
@@ -1663,7 +1664,7 @@
                     <plugin>
                         <groupId>org.noear</groupId>
                         <artifactId>solon-maven-plugin</artifactId>
-                        <version>${solon.version}</version>
+                        <version>${solon-maven-plugin.version}</version>
                         <executions>
                             <execution>
                                 <id>process-aot</id>
@@ -1703,7 +1704,7 @@
                 <plugin>
                     <groupId>org.noear</groupId>
                     <artifactId>solon-maven-plugin</artifactId>
-                    <version>${solon.version}</version>
+                    <version>${solon-maven-plugin.version}</version>
                     <executions>
                         <execution>
                             <phase>package</phase>
