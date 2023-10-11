@@ -71,25 +71,10 @@ public class LogIncubatorImpl implements LogIncubator {
             url = ResourceUtil.getResource("logback-solon.xml");
         }
 
-        //3::尝试默认加载
-        if (url == null) {
-            boolean fileEnable = Solon.cfg().getBool("solon.logging.appender.file.enable", true);
-
-            if (fileEnable) {
-                url = ResourceUtil.getResource("META-INF/solon_def/logback-def.xml");
-            } else {
-                url = ResourceUtil.getResource("META-INF/solon_def/logback-def_nofile.xml");
-            }
-        }
-
         initDo(url);
     }
 
     private void initDo(URL url) {
-        if (url == null) {
-            return;
-        }
-
         try {
             LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
 
@@ -97,7 +82,15 @@ public class LogIncubatorImpl implements LogIncubator {
 
             SolonConfigurator configurator = new SolonConfigurator();
             configurator.setContext(loggerContext);
-            configurator.doConfigure(url);
+
+            if(url == null){
+                //::尝试默认加载
+                DefaultLogbackConfiguration configuration = new DefaultLogbackConfiguration();
+                configuration.apply(new LogbackConfigurator(loggerContext));
+            }else {
+                //::加载url
+                configurator.doConfigure(url);
+            }
 
             //同步 logger level 配置
             if (LogOptions.getLoggerLevels().size() > 0) {
@@ -106,6 +99,7 @@ public class LogIncubatorImpl implements LogIncubator {
                     logger.setLevel(Level.valueOf(lle.getLevel().name()));
                 }
             }
+
             if (NativeDetector.inNativeImage()) {
                 reportConfigurationErrorsIfNecessary(loggerContext);
             }
@@ -114,18 +108,23 @@ public class LogIncubatorImpl implements LogIncubator {
         }
     }
 
+    /**
+     * 报告配置错误（原生运行时）
+     * */
     private void reportConfigurationErrorsIfNecessary(LoggerContext loggerContext) {
         List<Status> statuses = loggerContext.getStatusManager().getCopyOfStatusList();
         StringBuilder errors = new StringBuilder();
         for (Status status : statuses) {
             if (status.getLevel() == Status.ERROR) {
                 errors.append((errors.length() > 0) ? String.format("%n") : "");
-                errors.append(status.toString());
+                errors.append(status);
             }
         }
+
         if (errors.length() > 0) {
             throw new IllegalStateException(String.format("Logback configuration error detected: %n%s", errors));
         }
+
         if (!StatusUtil.contextHasStatusListener(loggerContext)) {
             StatusPrinter.printInCaseOfErrorsOrWarnings(loggerContext);
         }

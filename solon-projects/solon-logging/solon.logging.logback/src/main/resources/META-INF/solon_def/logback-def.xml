@@ -43,7 +43,7 @@
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>${CONSOLE_LOG_LEVEL}</level>
         </filter>
-        <encoder>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <pattern>${CONSOLE_LOG_PATTERN}</pattern>
         </encoder>
     </appender>
@@ -55,14 +55,12 @@
 
         <File>${FILE_LOG_NAME}.log</File>
         <append>true</append>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <fileNamePattern>${FILE_LOG_ROLLING}</fileNamePattern>
             <maxHistory>${FILE_LOG_MAX_HISTORY}</maxHistory>
-            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-                <maxFileSize>${FILE_LOG_MAX_FILE_SIZE}</maxFileSize>
-            </timeBasedFileNamingAndTriggeringPolicy>
+            <maxFileSize>${FILE_LOG_MAX_FILE_SIZE}</maxFileSize>
         </rollingPolicy>
-        <encoder>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <pattern>${FILE_LOG_PATTERN}</pattern>
             <charset>UTF-8</charset>
         </encoder>

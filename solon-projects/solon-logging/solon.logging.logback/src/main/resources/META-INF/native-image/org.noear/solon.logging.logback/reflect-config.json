@@ -42,5 +42,9 @@
   {
     "name": "ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP",
     "allDeclaredConstructors": true
+  },
+  {
+    "name": "ch.qos.logback.classic.encoder.PatternLayoutEncoder",
+    "allDeclaredConstructors": true
   }
 ]

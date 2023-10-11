@@ -37,7 +37,7 @@
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>${CONSOLE_LOG_LEVEL}</level>
         </filter>
-        <encoder>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <pattern>${CONSOLE_LOG_PATTERN}</pattern>
         </encoder>
     </appender>
