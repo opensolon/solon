@@ -891,20 +891,20 @@ public abstract class AopContext extends BeanContainer {
         started = true;
 
         try {
-            //开始执行生命周期bean //支持排序
-            startLifecycle();
+            //开始注入审查 //支持自动排序
+            startInjectReview();
 
-            //开始检查注入情况 //支持自动排序
-            startInjectCheck();
+            //开始执行生命周期bean（侧重做初始化） //支持排序
+            startBeanLifecycle();
         } catch (Throwable e) {
-            throw new IllegalStateException("AopContext start failed", e);
+            throw new IllegalStateException("AppContext start failed", e);
         }
     }
 
     /**
-     * 开始生命周期（支持排序）
+     * 开始Bean生命周期（支持排序）
      */
-    private void startLifecycle() throws Throwable {
+    private void startBeanLifecycle() throws Throwable {
         //执行生命周期bean //支持排序
         List<RankEntity<LifecycleBean>> beans = new ArrayList<>(lifecycleBeans);
         beans.sort(Comparator.comparingInt(f -> f.index));
@@ -916,9 +916,9 @@ public abstract class AopContext extends BeanContainer {
     }
 
     /**
-     * 开始收集器检查（支持自动排序）
+     * 开始注入审查（支持自动排序）
      */
-    private void startInjectCheck() throws Throwable {
+    private void startInjectReview() throws Throwable {
         //全部跑完后，检查注入情况
         List<InjectGather> gatherList = gatherSet.stream().filter(g1 -> g1.isDone() == false)
                 .collect(Collectors.toList());
