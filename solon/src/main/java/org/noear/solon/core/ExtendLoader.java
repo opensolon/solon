@@ -95,7 +95,7 @@ public class ExtendLoader {
 
             return true;
         } catch (Throwable e) {
-            LogUtil.global().warn(e.getMessage(), e);
+            LogUtil.global().warn("ExtendLoader loadJar failed!", e);
             return false;
         }
     }
@@ -105,7 +105,7 @@ public class ExtendLoader {
             AppClassLoader.global().addJar(file);
             return true;
         } catch (Throwable e) {
-            LogUtil.global().warn(e.getMessage(), e);
+            LogUtil.global().warn("ExtendLoader loadJar failed!", e);
             return false;
         }
     }
@@ -118,7 +118,7 @@ public class ExtendLoader {
             AppClassLoader.global().removeJar(file);
             return true;
         } catch (Throwable e) {
-            LogUtil.global().warn(e.getMessage(), e);
+            LogUtil.global().warn("ExtendLoader unloadJar failed!", e);
             return false;
         }
     }
@@ -193,7 +193,7 @@ public class ExtendLoader {
                     return;
                 }
             } catch (Throwable e) {
-                LogUtil.global().warn(e.getMessage(), e);
+                LogUtil.global().warn("ExtendLoader loadFile failed!", e);
             }
         }
     }
