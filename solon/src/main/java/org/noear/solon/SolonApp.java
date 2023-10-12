@@ -430,7 +430,7 @@ public class SolonApp extends RouterWrapper {
         } catch (Throwable ex) {
             ex = Utils.throwableUnwrap(ex);
 
-            //推送异常事件 //todo: Action -> Gateway? -> RouterHandler -> SolonApp!
+            //推送异常事件 //todo: Action -> Gateway? -> RouterHandler -> Filter -> SolonApp!
             LogUtil.global().warn("SolonApp tryHandle failed!", ex);
 
             //如果未处理，尝试处理
