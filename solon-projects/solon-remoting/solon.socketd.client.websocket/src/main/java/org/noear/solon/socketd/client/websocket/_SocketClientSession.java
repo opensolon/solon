@@ -1,11 +1,13 @@
 package org.noear.solon.socketd.client.websocket;
 
 import org.java_websocket.WebSocket;
+import org.java_websocket.exceptions.WebsocketNotConnectedException;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.message.Message;
+import org.noear.solon.core.message.MessageFlag;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.core.util.RunnableEx;
 import org.noear.solon.socketd.Connector;
@@ -22,7 +24,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class _SocketClientSession extends SessionBase {
-
 
 
     private final String _sessionId = Utils.guid();
@@ -43,7 +44,7 @@ public class _SocketClientSession extends SessionBase {
     /**
      * @return 是否为新链接
      */
-    private boolean prepareNew() throws IOException{
+    private boolean prepareNew() throws IOException {
         if (real == null) {
             real = connector.open(this);
             onOpen();
@@ -95,7 +96,7 @@ public class _SocketClientSession extends SessionBase {
                 } else {
                     sendW(() -> real.send(message));
                 }
-            } catch (SocketException e) {
+            } catch (SocketException | WebsocketNotConnectedException e) {
                 if (autoReconnect) {
                     real = null;
                 }
@@ -118,13 +119,18 @@ public class _SocketClientSession extends SessionBase {
                 if (isWebSocketD()) {
                     sendD(message);
                 } else {
-                    if (message.isString()) {
-                        send(message.bodyAsString());
+                    if (message.flag() == MessageFlag.heartbeat) {
+                        //如果是心跳，使用 ws 协议的飞跳
+                        sendW(() -> real.sendPing());
                     } else {
-                        sendW(() -> real.send(message.body()));
+                        if (message.isString()) {
+                            send(message.bodyAsString());
+                        } else {
+                            sendW(() -> real.send(message.body()));
+                        }
                     }
                 }
-            } catch (SocketException e) {
+            } catch (SocketException | WebsocketNotConnectedException e) {
                 if (autoReconnect) {
                     real = null;
                 }
@@ -147,7 +153,7 @@ public class _SocketClientSession extends SessionBase {
         runnable.run();
     }
 
-    private void sendD(Message message) throws IOException{
+    private void sendD(Message message) throws IOException {
         if (prepareNew()) {
             send0(handshakeMessage);
         }
@@ -179,7 +185,7 @@ public class _SocketClientSession extends SessionBase {
 
     @Override
     public boolean isValid() {
-        if(real == null){
+        if (real == null) {
             return false;
         }
 

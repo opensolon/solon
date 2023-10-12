@@ -42,6 +42,7 @@
 * 增加 Context::remotePort 接口
 * 增加 Context::remoteIp 接口，原 ip 接口标为弃用
 * 增加 配置提示元文件???
+* 修复 solon.socketd.client.websocket 自动重连失效的问题
 * sqltoy 升为 5.2.69
 * mybatis-flex 升为 1.6.9
 
