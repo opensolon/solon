@@ -59,7 +59,7 @@ public class Action extends HandlerAide implements Handler {
 
         method.setAccessible(true);
 
-        if(NativeDetector.isAotRuntime()){
+        if (NativeDetector.isAotRuntime()) {
             bWrap.context().methodGet(method);
         }
 
@@ -311,7 +311,7 @@ public class Action extends HandlerAide implements Handler {
         }
     }
 
-    private void bindPathVarDo(Context c) throws Throwable{
+    private void bindPathVarDo(Context c) throws Throwable {
         if (pathKeysAnalyzer != null) {
             Matcher pm = pathKeysAnalyzer.matcher(c.pathNew());
             if (pm.find()) {
@@ -356,8 +356,8 @@ public class Action extends HandlerAide implements Handler {
             if (obj instanceof Throwable) {
                 if (c.remoting()) {
                     //尝试推送异常，不然没机会记录；也可对后继做控制
-                    Throwable objE = (Throwable)obj;
-                    LogUtil.global().warn(objE.getMessage(), objE);
+                    Throwable objE = (Throwable) obj;
+                    LogUtil.global().warn("Action remoting handle failed: " + c.pathNew(), objE);
 
                     if (c.getRendered() == false) {
                         c.render(obj);
