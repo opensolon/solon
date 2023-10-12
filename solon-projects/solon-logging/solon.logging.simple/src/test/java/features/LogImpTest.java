@@ -31,5 +31,7 @@ public class LogImpTest {
         log.warn("你不好 {}!", "world!");
 
         log.error("出错了。{}", new RuntimeException());
+
+        log.error(null, new RuntimeException());
     }
 }

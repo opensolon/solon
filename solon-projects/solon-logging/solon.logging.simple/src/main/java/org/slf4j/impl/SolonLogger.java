@@ -11,6 +11,7 @@ import org.noear.solon.logging.event.LogEvent;
 import org.slf4j.Logger;
 import org.slf4j.MDC;
 import org.slf4j.Marker;
+import org.slf4j.helpers.FormattingTuple;
 import org.slf4j.helpers.MessageFormatter;
 
 import java.util.Map;
@@ -22,7 +23,6 @@ import java.util.Map;
 public class SolonLogger implements Logger {
     private String loggerName;
     private Level loggerLevel = Level.TRACE;
-
 
     public SolonLogger(String name) {
         loggerName = name;
@@ -48,27 +48,27 @@ public class SolonLogger implements Logger {
 
     @Override
     public void trace(String s) {
-        appendDo(Level.TRACE, s, null, null);
+        appendDo(Level.TRACE, s, null);
     }
 
     @Override
     public void trace(String s, Object o) {
-        appendDo(Level.TRACE, null, s, new Object[]{o});
+        appendDo(Level.TRACE, s, new Object[]{o});
     }
 
     @Override
     public void trace(String s, Object o, Object o1) {
-        appendDo(Level.TRACE, null, s, new Object[]{o, o1});
+        appendDo(Level.TRACE, s, new Object[]{o, o1});
     }
 
     @Override
     public void trace(String s, Object... objects) {
-        appendDo(Level.TRACE, null, s, objects);
+        appendDo(Level.TRACE, s, objects);
     }
 
     @Override
     public void trace(String s, Throwable throwable) {
-        appendDo(Level.TRACE, null, s, new Object[]{throwable});
+        appendDo(Level.TRACE, s, new Object[]{throwable});
     }
 
     @Override
@@ -108,27 +108,27 @@ public class SolonLogger implements Logger {
 
     @Override
     public void debug(String s) {
-        appendDo(Level.DEBUG, s, null, null);
+        appendDo(Level.DEBUG, s, null);
     }
 
     @Override
     public void debug(String s, Object o) {
-        appendDo(Level.DEBUG, null, s, new Object[]{o});
+        appendDo(Level.DEBUG, s, new Object[]{o});
     }
 
     @Override
     public void debug(String s, Object o, Object o1) {
-        appendDo(Level.DEBUG, null, s, new Object[]{o, o1});
+        appendDo(Level.DEBUG, s, new Object[]{o, o1});
     }
 
     @Override
     public void debug(String s, Object... objects) {
-        appendDo(Level.DEBUG, null, s, objects);
+        appendDo(Level.DEBUG, s, objects);
     }
 
     @Override
     public void debug(String s, Throwable throwable) {
-        appendDo(Level.DEBUG, null, s, new Object[]{throwable});
+        appendDo(Level.DEBUG, s, new Object[]{throwable});
     }
 
     @Override
@@ -168,27 +168,27 @@ public class SolonLogger implements Logger {
 
     @Override
     public void info(String s) {
-        appendDo(Level.INFO, s, null, null);
+        appendDo(Level.INFO, s, null);
     }
 
     @Override
     public void info(String s, Object o) {
-        appendDo(Level.INFO, null, s, new Object[]{o});
+        appendDo(Level.INFO, s, new Object[]{o});
     }
 
     @Override
     public void info(String s, Object o, Object o1) {
-        appendDo(Level.INFO, null, s, new Object[]{o, o1});
+        appendDo(Level.INFO, s, new Object[]{o, o1});
     }
 
     @Override
     public void info(String s, Object... objects) {
-        appendDo(Level.INFO, null, s, objects);
+        appendDo(Level.INFO, s, objects);
     }
 
     @Override
     public void info(String s, Throwable throwable) {
-        appendDo(Level.INFO, null, s, new Object[]{throwable});
+        appendDo(Level.INFO, s, new Object[]{throwable});
     }
 
     @Override
@@ -228,27 +228,27 @@ public class SolonLogger implements Logger {
 
     @Override
     public void warn(String s) {
-        appendDo(Level.WARN, s, null, null);
+        appendDo(Level.WARN, s, null);
     }
 
     @Override
     public void warn(String s, Object o) {
-        appendDo(Level.WARN, null, s, new Object[]{o});
+        appendDo(Level.WARN, s, new Object[]{o});
     }
 
     @Override
     public void warn(String s, Object... objects) {
-        appendDo(Level.WARN, null, s, objects);
+        appendDo(Level.WARN, s, objects);
     }
 
     @Override
     public void warn(String s, Object o, Object o1) {
-        appendDo(Level.WARN, null, s, new Object[]{o, o1});
+        appendDo(Level.WARN, s, new Object[]{o, o1});
     }
 
     @Override
     public void warn(String s, Throwable throwable) {
-        appendDo(Level.WARN, null, s, new Object[]{throwable});
+        appendDo(Level.WARN, s, new Object[]{throwable});
     }
 
     @Override
@@ -288,27 +288,27 @@ public class SolonLogger implements Logger {
 
     @Override
     public void error(String s) {
-        appendDo(Level.ERROR, s, null, null);
+        appendDo(Level.ERROR, s, null);
     }
 
     @Override
     public void error(String s, Object o) {
-        appendDo(Level.ERROR, null, s, new Object[]{o});
+        appendDo(Level.ERROR, s, new Object[]{o});
     }
 
     @Override
     public void error(String s, Object o, Object o1) {
-        appendDo(Level.ERROR, null, s, new Object[]{o, o1});
+        appendDo(Level.ERROR, s, new Object[]{o, o1});
     }
 
     @Override
     public void error(String s, Object... objects) {
-        appendDo(Level.ERROR, null, s, objects);
+        appendDo(Level.ERROR, s, objects);
     }
 
     @Override
     public void error(String s, Throwable throwable) {
-        appendDo(Level.ERROR, null, s, new Object[]{throwable});
+        appendDo(Level.ERROR, s, new Object[]{throwable});
     }
 
     @Override
@@ -341,8 +341,8 @@ public class SolonLogger implements Logger {
         error(s, throwable);
     }
 
-    private void appendDo(Level level, String content, String format, Object[] args) {
-        if(level.code < loggerLevel.code){
+    private void appendDo(Level level, String messagePattern, Object[] args) {
+        if (level.code < loggerLevel.code) {
             return;
         }
 
@@ -350,35 +350,34 @@ public class SolonLogger implements Logger {
         Throwable throwable = null;
         String throwableStr = null;
 
-        if (format != null) {
-            if (args != null && args.length > 0) {
-                for (int i = 0, len = args.length; i < len; i++) {
-                    if (args[i] instanceof Throwable) {
-                        throwable = Utils.throwableUnwrap((Throwable) args[i]);
-                        throwableStr = Utils.throwableToString(throwable);
-                        args[i] = throwableStr;
-                        break;
-                    }
-                }
 
-                content = MessageFormatter.arrayFormat(format, args, null).getMessage();
-            } else {
-                content = format;
-            }
-
-            if (throwableStr != null) {
-                //
-                // 可能异常不在格式范围内...
-                //
-                if (Utils.isEmpty(content)) {
-                    content = throwableStr;
-                } else {
-                    if (throwableStr.length() > content.length()) {
-                        content = content + "\n" + throwableStr;
-                    }
+        if(args != null) {
+            for (int i = 0, len = args.length; i < len; i++) {
+                if (args[i] instanceof Throwable) {
+                    throwable = Utils.throwableUnwrap((Throwable) args[i]);
+                    throwableStr = Utils.throwableToString(throwable);
+                    args[i] = throwableStr;
+                    break;
                 }
             }
         }
+
+        FormattingTuple tuple = MessageFormatter.arrayFormat(messagePattern, args, throwable);
+        String content = tuple.getMessage();
+
+        if (throwableStr != null) {
+            //
+            // 可能异常不在格式范围内...
+            //
+            if (Utils.isEmpty(content)) {
+                content = throwableStr;
+            } else {
+                if (throwableStr.length() > content.length()) {
+                    content = content + "\n" + throwableStr;
+                }
+            }
+        }
+
 
         LogEvent logEvent = new LogEvent(getName(), level, metainfo, content,
                 System.currentTimeMillis(),
