@@ -49,7 +49,7 @@ public class XPluginImp implements Plugin , InitializingBean {
         //init
         LogOptions.getLoggerLevelInit();
 
-        Solon.app().filter(-9, (ctx, chain) -> {
+        Solon.app().filter(Integer.MIN_VALUE, (ctx, chain) -> {
             MDC.clear();
             chain.doFilter(ctx);
         });
