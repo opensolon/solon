@@ -45,7 +45,7 @@
 * 增加 配置提示元文件???
 * 修复 solon.socketd.client.websocket 自动重连失效的问题
 * sqltoy 升为 5.2.69
-* mybatis-flex 升为 1.6.9
+* mybatis-flex 升为 1.7.0
 
 ### 2.5.8
 * 取消 全局未处理异常走总线的机制，转由 Log 框架接收（简化用户体验）
