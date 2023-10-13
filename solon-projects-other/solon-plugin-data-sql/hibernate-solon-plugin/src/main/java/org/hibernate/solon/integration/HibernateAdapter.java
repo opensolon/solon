@@ -1,11 +1,13 @@
 package org.hibernate.solon.integration;
 
 import org.hibernate.SessionFactory;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.noear.solon.Solon;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.Props;
 import org.noear.solon.core.VarHolder;
+import org.noear.solon.core.util.ResourceUtil;
 
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
@@ -57,8 +59,11 @@ public class HibernateAdapter {
     }
 
 
-
     protected void initConfiguration() {
+        // 默认兼容 hibernate.cfg.xml
+        if (ResourceUtil.hasResource(null, StandardServiceRegistryBuilder.DEFAULT_CFG_RESOURCE_NAME)){
+            configuration.configure(StandardServiceRegistryBuilder.DEFAULT_CFG_RESOURCE_NAME );
+        }
 
     }
 
