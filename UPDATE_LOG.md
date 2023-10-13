@@ -41,6 +41,7 @@
 * 增加 动态数据源注解 `@DynamicDs("${ddsName}")` 参数模板支持
 * 增加 Context::remotePort 接口
 * 增加 Context::remoteIp 接口，原 ip 接口标为弃用
+* 增加 `@Init` 函数对 AOP 的支持（有时候初始化也要用事务注解之类的）
 * 增加 配置提示元文件???
 * 修复 solon.socketd.client.websocket 自动重连失效的问题
 * sqltoy 升为 5.2.69

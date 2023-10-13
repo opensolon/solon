@@ -95,7 +95,7 @@ public class BeanWrap {
         }
 
         //尝试初始化
-        tryInit(this.raw);
+        tryInit();
     }
 
     public AppContext context() {
@@ -261,7 +261,7 @@ public class BeanWrap {
                     tmp = proxy.getProxy(context(), tmp);
                 }
 
-                return (T)tmp;
+                return (T) tmp;
             }
         }
     }
@@ -296,11 +296,7 @@ public class BeanWrap {
      *
      * @since 2.3
      */
-    protected void tryInit(Object bean) {
-        if(bean == null){
-            return;
-        }
-
+    protected void tryInit() {
         if (clzInit != null) {
             if (clzInitIndex == 0) {
                 //如果为0，则自动识别
@@ -310,7 +306,9 @@ public class BeanWrap {
             //保持与 LifecycleBean 相同策略：+1
             context.lifecycle(clzInitIndex + 1, () -> {
                 try {
-                    clzInit.invoke(bean);
+                    if (raw() != null) {
+                        clzInit.invoke(raw());
+                    }
                 } catch (InvocationTargetException e) {
                     Throwable e2 = e.getTargetException();
                     throw Utils.throwableUnwrap(e2);
