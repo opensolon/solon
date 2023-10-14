@@ -20,11 +20,11 @@
 * 调整 简化 SocketD ???
 * 调整 使用更多的 slf4j 替换 LogUtil ???
 * 调整 取消启动参数简写模式，保持与应用参数相同的名字 ???
+* 新增 graphql-solon-plugin 插件
+* 新增 hibernate-solon-plugin 插件
 
 ### 2.5.9
 * 修订 CONTRIBUTING.md
-* 新增 graphql-solon-plugin 插件
-* 新增 hibernate-solon-plugin 插件
 * 新增 事务管理的 TranListener 机制支持!!!
 * 新增 Mapping 函数对 TypeVariable 参数类型的识别支持!!!
 * 新增 Mapping 函数父类继承的支持（仅限 public）!!!
