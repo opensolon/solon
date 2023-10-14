@@ -7,6 +7,7 @@ import org.noear.solon.annotation.Inject;
 import org.noear.solon.test.SolonJUnit5Extension;
 import org.noear.solon.test.SolonTest;
 import webapp.App;
+import webapp.demo0_bean.AopDemoCom2;
 import webapp.demo6_aop.Bean2;
 import webapp.demo6_aop.DaoUser;
 import webapp.demo6_aop.ioc.TestCom1;
@@ -30,6 +31,9 @@ public class AopTest {
 
     @Inject
     DaoUser daoUser;
+
+    @Inject
+    AopDemoCom2 aopDemoCom2;
 
     //双向依赖的bean测试
     //
@@ -61,5 +65,11 @@ public class AopTest {
         assert daoUser != null;
         assert daoUser.getClass() != DaoUser.class;
     }
+
+    @Test
+    public void test5(){
+        aopDemoCom2.test();
+    }
+
 
 }
