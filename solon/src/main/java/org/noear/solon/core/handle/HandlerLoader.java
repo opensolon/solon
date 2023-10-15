@@ -158,7 +158,7 @@ public class HandlerLoader extends HandlerAide {
         } else {
             //如果有注解，不是 public 时，则告警提醒（以后改为异常）//v2.5
             if (Modifier.isPublic(method.getModifiers()) == false) {
-                LogUtil.global().warn("The @Mapping method is not public: " + method.getDeclaringClass().getName() + ":" + method.getName());
+                LogUtil.global().warn("The mapping method is not public: " + method.getDeclaringClass().getName() + ":" + method.getName());
             }
         }
 
