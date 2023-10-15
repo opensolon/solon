@@ -90,26 +90,31 @@ public class ConverterManager {
     public <S, T> Converter<S, T> find(Class<S> sourceType, Class<T> tagertType) {
         Map<Type, Converter> cMap = cLib.get(sourceType);
         if (cMap == null) {
-            return null;
+            return findInFactory(sourceType, tagertType);
         } else {
             Converter c = cMap.get(tagertType);
 
             if (c == null) {
-                Map<Class<?>, ConverterFactory> cfMap = cfLib.get(sourceType);
+                return findInFactory(sourceType, tagertType);
+            } else {
+                return c;
+            }
+        }
+    }
 
-                if (cfMap == null) {
-                    return null;
-                } else {
-                    for (Map.Entry<Class<?>, ConverterFactory> kv : cfMap.entrySet()) {
-                        if (kv.getKey().isAssignableFrom(tagertType)) {
-                            c = kv.getValue().getConverter(tagertType);
-                            break;
-                        }
-                    }
+    public <S, T> Converter<S, T> findInFactory(Class<S> sourceType, Class<T> tagertType) {
+        Map<Class<?>, ConverterFactory> cfMap = cfLib.get(sourceType);
+
+        if (cfMap == null) {
+            return null;
+        } else {
+            for (Map.Entry<Class<?>, ConverterFactory> kv : cfMap.entrySet()) {
+                if (kv.getKey().isAssignableFrom(tagertType)) {
+                    return kv.getValue().getConverter(tagertType);
                 }
             }
-
-            return c;
         }
+
+        return null;
     }
 }
