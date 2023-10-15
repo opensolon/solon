@@ -27,6 +27,7 @@
 * 新增 ConverterFactory 接口
 * 恢复 @Mapping 函数旧版兼容，改为告警（以后去掉非公有支持）
 * 增加 @Mapping 函数非公有告警提醒
+* 弃用 SolonBuilder
 
 ### 2.5.9
 * 修订 CONTRIBUTING.md
