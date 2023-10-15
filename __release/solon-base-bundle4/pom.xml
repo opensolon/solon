@@ -31,8 +31,8 @@
         <module>../../solon-projects/solon-detector/solon.health</module>
         <module>../../solon-projects/solon-detector/solon.health.detector</module>
         <module>../../solon-projects/solon-detector/detector-solon-plugin</module>
-        <module>../../solon-projects/solon-detector/solon-admin-client</module>
-        <module>../../solon-projects/solon-detector/solon-admin-server</module>
-        <module>../../solon-projects/solon-detector/solon-admin-server-ui</module>
+<!--        <module>../../solon-projects/solon-detector/solon-admin-client</module>-->
+<!--        <module>../../solon-projects/solon-detector/solon-admin-server</module>-->
+<!--        <module>../../solon-projects/solon-detector/solon-admin-server-ui</module>-->
     </modules>
 </project>

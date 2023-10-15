@@ -25,6 +25,7 @@
 
         <solon.version>2.5.10-SNAPSHOT</solon.version>
         <solon-maven-plugin.version>2.5.9</solon-maven-plugin.version>
+        <solon-admin.version>2.5.9</solon-admin.version>
         <snack3.version>3.2.80</snack3.version>
         <weed3.version>3.4.33</weed3.version>
         <wood.version>1.2.2</wood.version>
@@ -1474,19 +1475,19 @@
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon-admin-client</artifactId>
-                <version>${solon.version}</version>
+                <version>${solon-admin.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon-admin-server</artifactId>
-                <version>${solon.version}</version>
+                <version>${solon-admin.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon-admin-server-ui</artifactId>
-                <version>${solon.version}</version>
+                <version>${solon-admin.version}</version>
             </dependency>
 
 
