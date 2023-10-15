@@ -9,7 +9,9 @@ import org.noear.solon.core.util.ConsumerEx;
  *
  * @author noear
  * @since 1.4
+ * @deprecated 2.5
  */
+@Deprecated //用处不大，浪费代码
 public class SolonBuilder {
 
     /**
