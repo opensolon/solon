@@ -25,7 +25,7 @@
 
 ### 2.5.10
 * 新增 ConverterFactory 接口
-* 增加 @Mapping 非 public 函数的异常提醒
+* 增加 @Mapping 非 public 函数的告警提醒
 
 ### 2.5.9
 * 修订 CONTRIBUTING.md

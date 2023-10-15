@@ -7,15 +7,14 @@ import org.noear.solon.annotation.Mapping;
 import org.noear.solon.annotation.Options;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.util.ConsumerEx;
+import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.core.util.PathUtil;
 import org.noear.solon.core.util.ReflectUtil;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * 通用处理接口加载器（根据bean加载）
@@ -111,7 +110,18 @@ public class HandlerLoader extends HandlerAide {
      * 查找 method
      */
     protected Method[] findMethods(Class<?> clz) {
-        return ReflectUtil.getMethods(clz);
+        Map<Method, Method> methods = new LinkedHashMap<>();
+
+        //最终会弃用这部分（监时过度）
+        for (Method m1 : ReflectUtil.getDeclaredMethods(clz)) {
+            methods.put(m1, m1);
+        }
+
+        for (Method m1 : ReflectUtil.getMethods(clz)) {
+            methods.put(m1, m1);
+        }
+
+        return methods.values().toArray(new Method[methods.size()]);
     }
 
 
@@ -136,17 +146,24 @@ public class HandlerLoader extends HandlerAide {
     /**
      * 加载 Action item 处理
      */
-    protected void loadActionItem(HandlerSlots slots, boolean all, Method method, Set<MethodType> b_method){
-        String m_path;
+    protected void loadActionItem(HandlerSlots slots, boolean all, Method method, Set<MethodType> b_method) {
         Mapping m_map = method.getAnnotation(Mapping.class);
-        Set<MethodType> m_method = new HashSet<>();
 
-        //如果没有注解，则只允许 public
+        //检测注解和限制
         if (m_map == null) {
+            //如果没有注解，则只允许 public
             if (Modifier.isPublic(method.getModifiers()) == false) {
                 return;
             }
+        } else {
+            //如果有注解，不是 public 时，则告警提醒（以后改为异常）//v2.5
+            if (Modifier.isPublic(method.getModifiers()) == false) {
+                LogUtil.global().warn("The @Mapping method is not public: " + method.getDeclaringClass().getName() + ":" + method.getName());
+            }
         }
+
+        String m_path;
+        Set<MethodType> m_method = new HashSet<>();
 
         //获取 action 的 methodTypes
         MethodTypeUtil.findAndFill(m_method, t -> method.getAnnotation(t) != null);
@@ -205,7 +222,7 @@ public class HandlerLoader extends HandlerAide {
 
     /**
      * 加载控制器助理（Before、After）
-     * */
+     */
     protected void loadControllerAide(Set<MethodType> methodSet) {
         for (Annotation anno : bw.clz().getAnnotations()) {
             if (anno instanceof Before) {
@@ -229,7 +246,7 @@ public class HandlerLoader extends HandlerAide {
 
     /**
      * 加载动作助理（Before、After）
-     * */
+     */
     protected void loadActionAide(Method method, Action action, Set<MethodType> methodSet) {
         for (Annotation anno : method.getAnnotations()) {
             if (anno instanceof Before) {
