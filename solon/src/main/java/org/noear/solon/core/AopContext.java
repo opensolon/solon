@@ -419,7 +419,7 @@ public abstract class AopContext extends BeanContainer {
         if (beanExtractors.size() > 0 || beanInterceptors.size() > 0) {
             ClassWrap clzWrap = ClassWrap.get(bw.clz());
 
-            for (Method m : clzWrap.getMethods()) {
+            for (Method m : clzWrap.getMethods()) { //只支持公有函数检查
                 for (Annotation a : m.getAnnotations()) {
                     BeanExtractor be = beanExtractors.get(a.annotationType());
 
@@ -436,7 +436,7 @@ public abstract class AopContext extends BeanContainer {
                         }
                     } else {
                         //是否需要自动代理
-                        enableProxy = enableProxy || requiredProxy(a, m);
+                        enableProxy = enableProxy || requiredProxy(a);
                     }
                 }
             }
@@ -445,7 +445,7 @@ public abstract class AopContext extends BeanContainer {
         if (enableProxy == false) {
             for (Annotation a : bw.clz().getAnnotations()) {
                 //是否需要自动代理
-                enableProxy = enableProxy || requiredProxy(a, null);
+                enableProxy = enableProxy || requiredProxy(a);
             }
         }
 
@@ -457,20 +457,10 @@ public abstract class AopContext extends BeanContainer {
     /**
      * 是否需要有代理
      */
-    private boolean requiredProxy(Annotation a, Method method) {
-        boolean isReq = beanInterceptors.containsKey(a.annotationType())
+    private boolean requiredProxy(Annotation a) {
+        return beanInterceptors.containsKey(a.annotationType())
                 || a.annotationType().isAnnotationPresent(Around.class)
                 || a.annotationType().equals(Around.class);
-
-        if (isReq && method != null) {
-            //如果有注解，不是 public 时，则告警提醒（以后改为异常）//v2.5
-            if (Modifier.isPublic(method.getModifiers()) == false) {
-                LogUtil.global().warn("This aop method is not public: " +
-                        method.getDeclaringClass().getName() + ":" + method.getName());
-            }
-        }
-
-        return isReq;
     }
 
 
