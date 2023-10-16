@@ -206,7 +206,7 @@ public class SolonApp extends RouterWrapper {
         LogUtil.global().info("App: Bean scanning");
 
         //2.1.通过注解导入bean（一般是些配置器）
-        importTry();
+        beanImportTry();
 
         //2.2.通过源扫描bean
         if (source() != null) {
@@ -230,7 +230,7 @@ public class SolonApp extends RouterWrapper {
     }
 
     //通过注解，导入bean
-    protected void importTry() {
+    protected void beanImportTry() {
         if (_source == null) {
             return;
         }
