@@ -1,39 +1,36 @@
 package org.noear.solon.data.dynamicds;
 
 
-import org.noear.solon.core.FactoryManager;
-
 /**
  * 动态数据源切换
  *
  * @author noear
  * @since 1.11
+ * @deprecated 2.5
  */
+@Deprecated
 public class DynamicDsHolder {
-    static ThreadLocal<String> targetThreadLocal = FactoryManager.newThreadLocal(true);
-
     /**
      * 清除
      */
+    @Deprecated
     public static void remove() {
-        targetThreadLocal.remove();
+        DynamicDsKey.remove();
     }
 
     /**
      * 获取
      */
+    @Deprecated
     public static String get() {
-        return targetThreadLocal.get();
+        return DynamicDsKey.getCurrent();
     }
 
     /**
      * 设置
      */
+    @Deprecated
     public static void set(String name) {
-        if (name == null) {
-            targetThreadLocal.remove();
-        } else {
-            targetThreadLocal.set(name);
-        }
+        DynamicDsKey.setCurrent(name);
     }
 }
