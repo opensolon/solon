@@ -66,6 +66,7 @@
 | | |
 | https://gitee.com/dromara/solon-plugins     | Solon 第三方扩展插件仓库     | 
 | | |
+| https://gitee.com/noear/solon-admin     | Solon Admin 代码仓库     | 
 | https://gitee.com/noear/solon-maven-plugin     | Solon Maven 打包插件代码仓库     | 
 | https://gitee.com/noear/solon-gradle-plugin     | Solon gradle 打包插件代码仓库     | 
 | | |
