@@ -787,7 +787,7 @@ public abstract class BeanContainer {
 
 
     private void beanInjectConfig(VarHolder varH, String name, boolean required){
-        if (Properties.class == varH.getType()) {
+        if (Properties.class == varH.getType() || Props.class == varH.getType()) {
             //如果是 Properties
             Props val = cfg().getProp(name);
 
