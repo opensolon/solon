@@ -12,7 +12,7 @@
 ### 2.6.0
 * 调整 solon-test 移除 solon-test-junit4（只留 solon-test-junit5）
 
-### 2.5.11
+### 2.5.12
 * 新增 solon.boot.vertx 插件?
 * 新增 seata-solon-plugin 插件
 * 增加 quartz jdbc 及时更新支持（数据库里变了，它马上变） ???
@@ -22,6 +22,9 @@
 * 调整 取消启动参数简写模式，保持与应用参数相同的名字 ???
 * 新增 graphql-solon-plugin 插件
 * 新增 hibernate-solon-plugin 插件
+
+### 2.5.11
+* 取消 @Init 的弃用提示（改为推荐了）
 
 ### 2.5.10
 * 新增 ConverterFactory 接口

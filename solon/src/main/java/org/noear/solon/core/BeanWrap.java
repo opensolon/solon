@@ -340,10 +340,6 @@ public class BeanWrap {
                     clzInit = m;
                     clzInit.setAccessible(true);
                     clzInitIndex = initAnno.index();
-
-                    if (Solon.cfg().isDebugMode()) {
-                        LogUtil.global().warn("@Init will be discarded, suggested use 'LifecycleBean' interface");
-                    }
                 }
                 break;
             }
