@@ -40,7 +40,7 @@ public class ClientEndpointBeanBuilder implements BeanBuilder<ClientEndpoint> {
 
             //设定自动心跳
             if (anno.heartbeatRate() > 0) {
-                s.sendHeartbeatAuto(anno.heartbeatRate());
+                s.startHeartbeatAuto(anno.heartbeatRate());
             }
         }
     }

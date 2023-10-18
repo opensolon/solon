@@ -25,6 +25,11 @@
 
 ### 2.5.11
 * 取消 @Init 的弃用提示（改为推荐了）
+* 修复 @Import::classes 未被执行的问题
+* 调整 session::sendHeartbeatAuto 更名为 startHeartbeatAuto （内部接口）
+* 添加 @Import::profiles,@Import::profilesIfAbsent
+* 添加 DynamicDsKey 类，替代 DynamicDsHolder
+  添加 session::stopHeartbeatAuto 接口
 * liteflow 升为 2.11.2
 * sqltoy 升为 5.2.72
 * mybatis-flex 升为 1.7.1

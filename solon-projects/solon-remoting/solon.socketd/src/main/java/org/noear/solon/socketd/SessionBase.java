@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.BiConsumer;
@@ -287,10 +288,18 @@ public abstract class SessionBase implements Session {
     }
 
     private boolean _sendHeartbeatAuto = false;
+    private ScheduledFuture<?> _sendHeartbeatFuture;
 
     @Override
-    public void sendHeartbeatAuto(int intervalSeconds) {
-        if (_sendHeartbeatAuto) {
+    public void closeHeartbeatAuto() {
+        if (_sendHeartbeatFuture != null) {
+            _sendHeartbeatFuture.cancel(true);
+        }
+    }
+
+    @Override
+    public void startHeartbeatAuto(int intervalSeconds) {
+        if (_sendHeartbeatAuto || _sendHeartbeatFuture != null) {
             return;
         }
 
@@ -301,7 +310,7 @@ public abstract class SessionBase implements Session {
 
             _sendHeartbeatAuto = true;
 
-            RunUtil.delayAndRepeat(
+            _sendHeartbeatFuture = RunUtil.delayAndRepeat(
                     () -> {
                         try {
                             sendHeartbeat();

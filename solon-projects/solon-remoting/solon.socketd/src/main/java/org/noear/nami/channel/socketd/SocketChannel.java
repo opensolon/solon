@@ -80,7 +80,7 @@ public class SocketChannel extends ChannelBase implements Channel {
         //3.获取会话
         Session session = sessions.get();
         if(ctx.config.getHeartbeat() > 0){
-            session.sendHeartbeatAuto(ctx.config.getHeartbeat());
+            session.startHeartbeatAuto(ctx.config.getHeartbeat());
         }
 
         //4.发送消息
