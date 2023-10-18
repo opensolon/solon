@@ -1,8 +1,5 @@
 package org.noear.nami.coder.fury;
 
-import io.fury.Fury;
-import io.fury.ThreadSafeFury;
-import io.fury.config.Language;
 import org.noear.nami.Context;
 import org.noear.nami.Encoder;
 import org.noear.nami.common.ContentTypes;
@@ -15,11 +12,6 @@ import org.noear.nami.common.ContentTypes;
  * */
 public class FuryEncoder implements Encoder {
     public static final FuryEncoder instance = new FuryEncoder();
-    static ThreadSafeFury fury = Fury.builder()
-            .withAsyncCompilation(true)
-            .withLanguage(Language.JAVA)
-            .requireClassRegistration(false)
-            .buildThreadSafeFury();
 
     @Override
     public String enctype() {
@@ -28,7 +20,7 @@ public class FuryEncoder implements Encoder {
 
     @Override
     public byte[] encode(Object obj) {
-       return fury.serialize(obj);
+       return FuryUtil.fury.serialize(obj);
     }
 
     @Override

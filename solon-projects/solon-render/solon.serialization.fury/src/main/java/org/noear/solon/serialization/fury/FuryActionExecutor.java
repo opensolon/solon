@@ -1,8 +1,5 @@
 package org.noear.solon.serialization.fury;
 
-import io.fury.Fury;
-import io.fury.ThreadSafeFury;
-import io.fury.config.Language;
 import org.noear.solon.core.handle.ActionExecuteHandlerDefault;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.wrap.MethodWrap;
@@ -12,11 +9,6 @@ import java.util.Map;
 
 public class FuryActionExecutor extends ActionExecuteHandlerDefault {
     private static final String label = "application/fury";
-    static ThreadSafeFury fury = Fury.builder()
-            .withAsyncCompilation(true)
-            .withLanguage(Language.JAVA)
-            .requireClassRegistration(false)
-            .buildThreadSafeFury();
 
     @Override
     public boolean matched(Context ctx, String ct) {
@@ -29,7 +21,7 @@ public class FuryActionExecutor extends ActionExecuteHandlerDefault {
 
     @Override
     protected Object changeBody(Context ctx, MethodWrap mWrap) throws Exception {
-        return fury.deserialize(ctx.bodyAsBytes());
+        return FuryUtil.fury.deserialize(ctx.bodyAsBytes());
     }
 
     /**

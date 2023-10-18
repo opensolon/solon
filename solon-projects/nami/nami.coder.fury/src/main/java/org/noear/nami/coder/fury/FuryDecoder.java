@@ -1,8 +1,5 @@
 package org.noear.nami.coder.fury;
 
-import io.fury.Fury;
-import io.fury.ThreadSafeFury;
-import io.fury.config.Language;
 import org.noear.nami.Context;
 import org.noear.nami.Decoder;
 import org.noear.nami.Result;
@@ -19,11 +16,6 @@ import java.lang.reflect.Type;
  * */
 public class FuryDecoder implements Decoder {
     public static final FuryDecoder instance = new FuryDecoder();
-    static ThreadSafeFury fury = Fury.builder()
-            .withAsyncCompilation(true)
-            .withLanguage(Language.JAVA)
-            .requireClassRegistration(false)
-            .buildThreadSafeFury();
 
     @Override
     public String enctype() {
@@ -39,7 +31,7 @@ public class FuryDecoder implements Decoder {
                 return null;
             }
 
-            returnVal = fury.deserialize(rst.body());
+            returnVal = FuryUtil.fury.deserialize(rst.body());
         } catch (Throwable ex) {
             returnVal = ex;
         }
