@@ -16,4 +16,9 @@ public class DemoController extends BaseController{
     public String hello(){
         return "hello";
     }
+
+    @Mapping("hello2")
+    public String hello2(){
+        return "hello";
+    }
 }

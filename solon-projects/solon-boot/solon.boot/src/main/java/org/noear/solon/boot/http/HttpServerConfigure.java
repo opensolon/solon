@@ -1,5 +1,6 @@
 package org.noear.solon.boot.http;
 
+import javax.net.ssl.SSLContext;
 import java.util.concurrent.Executor;
 
 /**
@@ -37,7 +38,14 @@ public interface HttpServerConfigure {
     /**
      * 启用 ssl
      */
-    void enableSsl(boolean enable);
+    default void enableSsl(boolean enable){
+        enableSsl(enable, null);
+    }
+
+    /**
+     * 启用 ssl（并指定 sslContext）
+     */
+    void enableSsl(boolean enable, SSLContext sslContext);
 
     /**
      * 启用调试模式 （不一定所有服务都支持）

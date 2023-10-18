@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.noear</groupId>
         <artifactId>solon-parent</artifactId>
-        <version>2.5.9-SNAPSHOT</version>
+        <version>2.5.11-SNAPSHOT</version>
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
@@ -27,7 +27,7 @@
         <module>../../solon-projects/solon-base/solon.mvc</module>
         <module>../../solon-projects/solon-base/solon.hotplug</module>
 
-        <module>../../solon-projects/solon-tool/solon-maven-plugin</module>
+<!--        <module>../../solon-projects/solon-tool/solon-maven-plugin</module>-->
         <module>../../solon-projects/solon-tool/solon-springboot-starter</module>
         <module>../../solon-projects/solon-testing/solon.test</module>
         <module>../../solon-projects/solon-testing/solon-test</module>

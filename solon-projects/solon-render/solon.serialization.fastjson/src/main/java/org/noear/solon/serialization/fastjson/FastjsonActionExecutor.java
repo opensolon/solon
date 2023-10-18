@@ -84,11 +84,11 @@ public class FastjsonActionExecutor extends ActionExecuteHandlerDefault {
             if (pt.isPrimitive() || pt.getTypeName().startsWith("java.lang.")) {
                 return super.changeValue(ctx, p, pi, pt, bodyObj);
             } else {
-                if (List.class.isAssignableFrom(p.getType())) {
+                if (List.class.isAssignableFrom(pt)) {
                     return null;
                 }
 
-                if (p.getType().isArray()) {
+                if (pt.isArray()) {
                     return null;
                 }
 
@@ -113,7 +113,7 @@ public class FastjsonActionExecutor extends ActionExecuteHandlerDefault {
                 return tmp.toJavaObject(p.getGenericType());
             } else {
                 //不仅可以转换为List 还可以转换成Set
-                return tmp.toJavaObject(p.getType());
+                return tmp.toJavaObject(pt);
             }
         }
 

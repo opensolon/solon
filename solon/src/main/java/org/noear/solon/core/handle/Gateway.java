@@ -128,7 +128,7 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
             if (c.remoting()) {
                 //尝试推送异常，不然没机会记录；也可对后继做控制
                 Throwable objE = (Throwable)obj;
-                LogUtil.global().warn(objE.getMessage(), objE);
+                LogUtil.global().warn("Gateway remoting handle failed!", objE);
 
                 if (c.getRendered() == false) {
                     c.render(obj);

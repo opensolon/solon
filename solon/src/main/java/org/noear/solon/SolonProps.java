@@ -7,6 +7,7 @@ import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.core.util.PluginUtil;
 import org.noear.solon.core.util.ResourceUtil;
 
+import java.lang.annotation.Annotation;
 import java.net.URL;
 import java.util.*;
 import java.util.function.Predicate;
@@ -130,7 +131,9 @@ public final class SolonProps extends Props {
         //4.3.加载注解配置（优于固定配置）/v1.12
         loadAdd(source.getAnnotation(PropertySource.class)); //v1.12 //@deprecated 2.5
 
-        loadAdd(source.getAnnotation(Import.class));//v2.5
+        //导入自己的，同时导入注解的 Import 注解
+        importPropsTry(source);
+
 
         //4.4.加载配置 solon.config.load //支持多文件（只支持内部，支持{env}）
         Map<String,String> loadKeyMap = new TreeMap<>();
@@ -189,6 +192,20 @@ public final class SolonProps extends Props {
         }
 
         return this;
+    }
+
+    private void importPropsTry(Class<?> source) {
+        if (source == null) {
+            return;
+        }
+
+        for (Annotation a1 : source.getAnnotations()) {
+            if (a1 instanceof Import) {
+                loadAdd((Import) a1);
+            } else {
+                loadAdd(a1.annotationType().getAnnotation(Import.class));
+            }
+        }
     }
 
     private void addConfig(String vals, boolean isName, Properties sysPropOrg) {

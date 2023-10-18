@@ -6,9 +6,9 @@ import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.data.datasource.DsUtils;
 import org.noear.solon.data.dynamicds.DynamicDataSource;
-import org.noear.solon.data.dynamicds.DynamicDsHolder;
 import org.noear.solon.data.dynamicds.DynamicDs;
 import org.noear.solon.annotation.Component;
+import org.noear.solon.data.dynamicds.DynamicDsKey;
 
 import javax.sql.DataSource;
 import java.util.Map;
@@ -53,7 +53,7 @@ public class UserService{
         userMapper.selectUserList();
     }
     public void getUserList2(){
-        DynamicDsHolder.set("db_user_2"); //使用 db_user_2 源
+        DynamicDsKey.setCurrent("db_user_2"); //使用 db_user_2 源
         userMapper.selectUserList();
     }
 }

@@ -3,10 +3,11 @@ package org.noear.solon.boot.jlhttp;
 import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerConstants;
 import org.noear.solon.boot.ServerLifecycle;
-import org.noear.solon.boot.prop.ServerSslProps;
-import org.noear.solon.boot.ssl.SslContextFactory;
+import org.noear.solon.boot.ssl.SslConfig;
 import org.noear.solon.core.handle.Handler;
+import org.noear.solon.lang.Nullable;
 
+import javax.net.ssl.SSLContext;
 import java.util.concurrent.Executor;
 
 /**
@@ -19,24 +20,16 @@ public class JlHttpServer implements ServerLifecycle {
     private HTTPServer server = null;
     private Handler handler;
     private Executor executor;
-    private boolean enableSsl = true;
+    private SslConfig sslConfig = new SslConfig(ServerConstants.SIGNAL_HTTP);
     private boolean isSecure;
+
     public boolean isSecure() {
         return isSecure;
     }
 
 
-    private ServerSslProps sslProps;
-    protected boolean supportSsl() {
-        if (sslProps == null) {
-            sslProps = ServerSslProps.of(ServerConstants.SIGNAL_HTTP);
-        }
-
-        return sslProps.isEnable() && sslProps.getSslKeyStore() != null;
-    }
-
-    public void enableSsl(boolean enable) {
-        this.enableSsl = enable;
+    public void enableSsl(boolean enable, @Nullable SSLContext sslContext) {
+        sslConfig.set(enable, sslContext);
     }
 
     public void setHandler(Handler handler) {
@@ -52,9 +45,9 @@ public class JlHttpServer implements ServerLifecycle {
     public void start(String host, int port) throws Throwable {
         server = new HTTPServer();
 
-        if (enableSsl && supportSsl()) {
+        if (sslConfig.isSslEnable()) {
             // enable SSL if configured
-            server.setServerSocketFactory(SslContextFactory.create(sslProps).getServerSocketFactory());
+            server.setServerSocketFactory(sslConfig.getSslContext().getServerSocketFactory());
             isSecure = true;
         }
 

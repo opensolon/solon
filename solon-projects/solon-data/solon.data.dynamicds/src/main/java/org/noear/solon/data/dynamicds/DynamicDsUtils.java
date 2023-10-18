@@ -19,6 +19,8 @@ import java.util.Properties;
 public class DynamicDsUtils {
     /**
      * 构建数据源字典
+     *
+     * @param props 配置
      */
     public static Map<String, DataSource> buildDsMap(Properties props) {
         //::类型
@@ -38,6 +40,12 @@ public class DynamicDsUtils {
         return buildDsMap(props, typeClz);
     }
 
+    /**
+     * 构建数据源字典
+     *
+     * @param props   配置
+     * @param typeClz 数据源类型
+     */
     public static Map<String, DataSource> buildDsMap(Properties props, Class<?> typeClz) {
         //::数据源构建
         Props rootProps;

@@ -2,12 +2,15 @@ package org.noear.solon.core.handle;
 
 import org.noear.solon.Utils;
 import org.noear.solon.core.NvMap;
+import org.noear.solon.core.util.GenericUtil;
 import org.noear.solon.core.wrap.ClassWrap;
 import org.noear.solon.core.wrap.MethodWrap;
 import org.noear.solon.core.util.ConvertUtil;
 import org.noear.solon.core.wrap.ParamWrap;
 
 import java.io.InputStream;
+import java.lang.reflect.Type;
+import java.lang.reflect.TypeVariable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -41,7 +44,7 @@ public class ActionExecuteHandlerDefault implements ActionExecuteHandler {
      */
     @Override
     public Object executeHandle(Context ctx, Object obj, MethodWrap mWrap) throws Throwable {
-        List<Object> args = buildArgs(ctx, mWrap);
+        List<Object> args = buildArgs(ctx, obj, mWrap);
         return mWrap.invokeByAspect(obj, args.toArray());
     }
 
@@ -51,7 +54,7 @@ public class ActionExecuteHandlerDefault implements ActionExecuteHandler {
      *
      * @param ctx 上下文
      */
-    protected List<Object> buildArgs(Context ctx, MethodWrap mWrap) throws Exception {
+    protected List<Object> buildArgs(Context ctx, Object target, MethodWrap mWrap) throws Exception {
         ParamWrap[] pSet = mWrap.getParamWraps();
         List<Object> args = new ArrayList<>(pSet.length);
 

@@ -14,7 +14,7 @@ public class CmdController {
     CmdService cmdService;
 
     @Mapping("/demo2/CMD/{cmd_name}")
-    public void cmd(Context ctx, String cmd_name) throws Exception{
+    protected void cmd(Context ctx, String cmd_name) throws Exception{
         ctx.sessionRemove("_test_key");
 
         switch (cmd_name) {

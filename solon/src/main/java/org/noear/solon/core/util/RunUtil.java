@@ -29,7 +29,7 @@ public class RunUtil {
         parallelExecutor = new ThreadPoolExecutor(0, Integer.MAX_VALUE,
                 60L, TimeUnit.SECONDS,
                 new SynchronousQueue<Runnable>(),
-                new NamedThreadFactory("Solon-parallelExecutor-"));
+                new NamedThreadFactory("Solon-executor-"));
 
         int asyncPoolSize = Runtime.getRuntime().availableProcessors() * 2;
         asyncExecutor = new ThreadPoolExecutor(asyncPoolSize, asyncPoolSize,

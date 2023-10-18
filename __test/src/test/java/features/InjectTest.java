@@ -65,12 +65,6 @@ public class InjectTest {
     Map<String, Object> map;
 
 
-    @Inject
-    Map<String, DnBean> dnBeanMap;
-
-    @Inject
-    List<DsBean> dsBeanList;
-
     @Inject("${load2.title}")
     String load2Title;
 
@@ -147,19 +141,6 @@ public class InjectTest {
     public void def_set_test4_2() {
         assert injectSet4_2 != null;
         assert injectSet4_2.length == 3;
-    }
-
-    @Test
-    public void inject_dsBeanList() {
-        assert dsBeanList != null;
-        assert dsBeanList.size() == 2;
-    }
-
-    @Test
-    public void inject_dnBeanMap() {
-        assert dnBeanMap != null;
-        assert dnBeanMap.size() == 2;
-        assert dnBeanMap.get("DnBean2") != null;
     }
 
     @Test

@@ -41,11 +41,13 @@ public class ReflectionExt extends Reflection {
 
     /**
      * 获取类所有公有的方法（包括父级）
+     *
+     * @since 2.5
      */
     @Override
     public Method[] getMethods(Class<?> clazz) {
         if (NativeDetector.inNativeImage()) {
-            return GraalvmUtil.getDeclaredMethods(clazz);
+            return GraalvmUtil.getMethods(clazz);
         } else {
             return super.getMethods(clazz);
         }

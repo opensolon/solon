@@ -230,8 +230,9 @@ public class FieldWrap {
         } catch (NoSuchMethodException e) {
             //正常情况，不用管
         } catch (SecurityException e) {
-            LogUtil.global().warn(e.getMessage(), e);
+            LogUtil.global().warn("FieldWrap doFindSetter failed!", e);
         }
+
         return null;
     }
 }

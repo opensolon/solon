@@ -31,7 +31,11 @@ public class LogIncubatorImpl implements LogIncubator {
         if (JavaUtil.IS_WINDOWS && Solon.cfg().isFilesMode() == false) {
             //只在 window 用 jar 模式下才启用
             if (ClassUtil.hasClass(() -> AnsiConsole.class)) {
-                AnsiConsole.systemInstall();
+                try {
+                    AnsiConsole.systemInstall();
+                } catch (Throwable e) {
+                    e.printStackTrace();
+                }
             }
         }
 

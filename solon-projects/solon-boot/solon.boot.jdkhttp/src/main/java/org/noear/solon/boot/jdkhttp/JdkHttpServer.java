@@ -4,9 +4,9 @@ import com.sun.net.httpserver.*;
 import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerConstants;
 import org.noear.solon.boot.ServerLifecycle;
-import org.noear.solon.boot.prop.ServerSslProps;
-import org.noear.solon.boot.ssl.SslContextFactory;
+import org.noear.solon.boot.ssl.SslConfig;
 import org.noear.solon.core.handle.Handler;
+import org.noear.solon.lang.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,25 +29,15 @@ public class JdkHttpServer implements ServerLifecycle {
     private HttpServer server = null;
     private Executor executor;
     private Handler handler;
-    private boolean enableSsl = true;
+    private SslConfig sslConfig = new SslConfig(ServerConstants.SIGNAL_HTTP);
     private boolean isSecure;
+
     public boolean isSecure() {
         return isSecure;
     }
 
-
-    private ServerSslProps sslProps;
-
-    protected boolean supportSsl() {
-        if (sslProps == null) {
-            sslProps = ServerSslProps.of(ServerConstants.SIGNAL_HTTP);
-        }
-
-        return sslProps.isEnable() && sslProps.getSslKeyStore() != null;
-    }
-
-    public void enableSsl(boolean enable) {
-        this.enableSsl = enable;
+    public void enableSsl(boolean enable, @Nullable SSLContext sslContext) {
+        sslConfig.set(enable, sslContext);
     }
 
     public void setHandler(Handler handler) {
@@ -59,10 +49,9 @@ public class JdkHttpServer implements ServerLifecycle {
     }
 
 
-
     @Override
     public void start(String host, int port) throws Throwable {
-        if (enableSsl && supportSsl()) {
+        if (sslConfig.isSslEnable()) {
             // enable SSL if configured
             if (Utils.isNotEmpty(host)) {
                 server = HttpsServer.create(new InetSocketAddress(host, port), 0);
@@ -70,7 +59,7 @@ public class JdkHttpServer implements ServerLifecycle {
                 server = HttpsServer.create(new InetSocketAddress(port), 0);
             }
 
-            addSslConfig((HttpsServer) server);
+            addSslConfig((HttpsServer) server, sslConfig.getSslContext());
             isSecure = true;
         } else {
             if (Utils.isNotEmpty(host)) {
@@ -95,9 +84,7 @@ public class JdkHttpServer implements ServerLifecycle {
         }
     }
 
-    private void addSslConfig(HttpsServer httpsServer) throws IOException {
-        SSLContext sslContext = SslContextFactory.create(sslProps);
-
+    private void addSslConfig(HttpsServer httpsServer, SSLContext sslContext) throws IOException {
         httpsServer.setHttpsConfigurator(new HttpsConfigurator(sslContext) {
             public void configure(HttpsParameters params) {
                 try {

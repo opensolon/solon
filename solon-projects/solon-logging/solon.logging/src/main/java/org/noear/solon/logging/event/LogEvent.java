@@ -1,5 +1,6 @@
 package org.noear.solon.logging.event;
 
+import java.io.Serializable;
 import java.util.Map;
 
 /**
@@ -8,7 +9,7 @@ import java.util.Map;
  * @author noear
  * @since 1.0
  */
-public class LogEvent {
+public class LogEvent implements Serializable {
 
     private String loggerName;
     private Level level;

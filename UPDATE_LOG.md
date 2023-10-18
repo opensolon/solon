@@ -12,7 +12,7 @@
 ### 2.6.0
 * 调整 solon-test 移除 solon-test-junit4（只留 solon-test-junit5）
 
-### 2.5.10
+### 2.5.12
 * 新增 solon.boot.vertx 插件?
 * 新增 seata-solon-plugin 插件
 * 增加 quartz jdbc 及时更新支持（数据库里变了，它马上变） ???
@@ -20,24 +20,41 @@
 * 调整 简化 SocketD ???
 * 调整 使用更多的 slf4j 替换 LogUtil ???
 * 调整 取消启动参数简写模式，保持与应用参数相同的名字 ???
-
-### 2.5.9
 * 新增 graphql-solon-plugin 插件
 * 新增 hibernate-solon-plugin 插件
+
+### 2.5.11
+* 取消 @Init 的弃用提示（改为推荐了）
+
+### 2.5.10
+* 新增 ConverterFactory 接口
+* 恢复 @Mapping 函数旧版兼容，改为告警（以后去掉非公有支持）
+* 增加 @Mapping 函数非公有告警提醒
+* 弃用 SolonBuilder
+
+### 2.5.9
+* 修订 CONTRIBUTING.md
+* 新增 事务管理的 TranListener 机制支持!!!
+* 新增 Mapping 函数对 TypeVariable 参数类型的识别支持!!!
+* 新增 Mapping 函数父类继承的支持（仅限 public）!!!
+* 新增 FactoryManager 工具类，合并各种工厂管理，替代旧的 Bridge
 * 弃用 InitializingBean（简化应用生命周期）
 * 删除 SolonApp::onError,::enableErrorAutoprint 接口（已无用，留着有误导性）
 * 删除 LogUtil::globalSet 接口（已无用，留着有误导性）
-* 调整 数据源事务管理相关改为线程状态可继承
-* 调整 所有单测都升级为 junit5
-* 调整 water-solon-cloud-plugin 服务注册改为被动检测（不然 job 不能跑）
-* 增加 FactoryManager 工具类，合并各种工厂管理，移除 Bridge
-* 增加 `@DynamicDs("${dsName}")` 参数模板支持
+* 调整 Get,Put,Post,Delete,Patch 注解，取消 ElementType.TYPE 目标
+* 调整 solon.logging 的 MDC.clear() 时机（安排到最外层）
+* 调整 数据源事务管理相关改为线程状态可继承（支持通过 FactoryManager 设置 threadLocalFactory）
+* 调整 所有模块的单测都升级为 junit5（落实最新的 CONTRIBUTING 规范）
+* 调整 water-solon-cloud-plugin 本地调试时服务注册改为被动检测（之前为主动上报）
+* 调整 HttpServerConfigure::enableSsl 允许自己设定 SSLContext（方便国密处理）
+* 增加 动态数据源注解 `@DynamicDs("${ddsName}")` 参数模板支持
 * 增加 Context::remotePort 接口
 * 增加 Context::remoteIp 接口，原 ip 接口标为弃用
-* 增加 事务管理的监听机制 TranListener!!!
+* 增加 `@Init` 函数对 AOP 的支持（有时候初始化也要用事务注解之类的）
 * 增加 配置提示元文件???
+* 修复 solon.socketd.client.websocket 自动重连失效的问题
 * sqltoy 升为 5.2.69
-* mybatis-flex 升为 1.6.9
+* mybatis-flex 升为 1.7.0
 
 ### 2.5.8
 * 取消 全局未处理异常走总线的机制，转由 Log 框架接收（简化用户体验）

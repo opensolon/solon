@@ -40,7 +40,7 @@ public class Solon {
      * 框架版本号
      */
     public static String version() {
-        return "2.5.9-SNAPSHOT";
+        return "2.5.11-SNAPSHOT";
     }
 
     /**
@@ -159,12 +159,16 @@ public class Solon {
         } catch (Throwable e) {
             //显示异常信息
             e = Utils.throwableUnwrap(e);
-            LogUtil.global().error("Solon start failed: " + e.getMessage());
+            LogUtil.global().error("Solon start failed: " + e.getMessage(), e);
 
             //3.停止服务并退出（主要是停止插件）
-            Solon.stop0(false, 0);
+            if (NativeDetector.isNotAotRuntime()) {
+                Solon.stop0(true, 0);
+            } else {
+                Solon.stop0(false, 0);
 
-            throw new IllegalStateException("Solon start failed", e);
+                throw new IllegalStateException("Solon start failed", e);
+            }
         }
 
 

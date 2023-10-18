@@ -3,15 +3,19 @@ package org.noear.solon.boot.undertow;
 import io.undertow.servlet.api.DeploymentInfo;
 import io.undertow.servlet.util.DefaultClassIntrospector;
 import org.noear.solon.Solon;
+import org.noear.solon.boot.ServerConstants;
 import org.noear.solon.boot.ServerLifecycle;
 import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.prop.impl.HttpServerProps;
+import org.noear.solon.boot.ssl.SslConfig;
 import org.noear.solon.boot.undertow.http.UtContainerInitializer;
 import org.noear.solon.boot.http.HttpServerConfigure;
 import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.core.util.ResourceUtil;
+import org.noear.solon.lang.Nullable;
 
+import javax.net.ssl.SSLContext;
 import javax.servlet.MultipartConfigElement;
 import java.io.FileNotFoundException;
 import java.net.MalformedURLException;
@@ -22,17 +26,17 @@ import java.util.concurrent.Executor;
 
 abstract class UndertowServerBase implements ServerLifecycle, HttpServerConfigure {
     protected HttpServerProps props = new HttpServerProps();
-    protected boolean enableSsl = true;
+    protected SslConfig sslConfig = new SslConfig(ServerConstants.SIGNAL_HTTP);
     protected boolean enableHttp2 = false;
 
     protected Set<Integer> addHttpPorts = new LinkedHashSet<>();
 
     /**
      * 是否允许Ssl
-     * */
+     */
     @Override
-    public void enableSsl(boolean enable) {
-        this.enableSsl = enable;
+    public void enableSsl(boolean enable, @Nullable SSLContext sslContext) {
+        sslConfig.set(enable, sslContext);
     }
 
     @Override
@@ -47,9 +51,9 @@ abstract class UndertowServerBase implements ServerLifecycle, HttpServerConfigur
 
     /**
      * 添加 HttpPort（当 ssl 时，可再开个 http 端口）
-     * */
+     */
     @Override
-    public void addHttpPort(int port){
+    public void addHttpPort(int port) {
         addHttpPorts.add(port);
     }
 
@@ -87,7 +91,7 @@ abstract class UndertowServerBase implements ServerLifecycle, HttpServerConfigur
     protected String getResourceRoot() throws FileNotFoundException {
         URL rootURL = getRootPath();
         if (rootURL == null) {
-            if(NativeDetector.inNativeImage()){
+            if (NativeDetector.inNativeImage()) {
                 return "";
             }
 

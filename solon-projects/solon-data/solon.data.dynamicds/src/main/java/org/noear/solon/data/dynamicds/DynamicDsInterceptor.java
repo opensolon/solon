@@ -23,16 +23,16 @@ public class DynamicDsInterceptor implements Interceptor {
             return inv.invoke();
         } else {
             //备份
-            String backup = DynamicDsHolder.get();
+            String backup = DynamicDsKey.getCurrent();
 
             try {
                 String dsName = InvKeys.buildByTmlAndInv(anno.value(), inv);
 
-                DynamicDsHolder.set(dsName);
+                DynamicDsKey.setCurrent(dsName);
                 return inv.invoke();
             } finally {
                 //还原
-                DynamicDsHolder.set(backup);
+                DynamicDsKey.setCurrent(backup);
             }
         }
     }

@@ -1,7 +1,7 @@
 package org.noear.solon.core.wrap;
 
-import java.lang.reflect.Parameter;
-import java.lang.reflect.Type;
+import java.lang.reflect.*;
+import java.util.Map;
 
 /**
  * 参数包装
@@ -13,11 +13,41 @@ import java.lang.reflect.Type;
  */
 public class ParamWrap extends VarDescriptorBase {
     private final Parameter parameter;
+    private Class<?> type;
+    private Type genericType;
 
     public ParamWrap(Parameter parameter) {
+        this(parameter, null, null);
+    }
+
+    public ParamWrap(Parameter parameter, Method method, Map<String, Type> genericInfo) {
         super(parameter, parameter.getName());
         this.parameter = parameter;
-        this.init();
+        this.type = parameter.getType();
+        this.genericType = parameter.getParameterizedType();
+
+        if (method != null) {
+            //for action
+            this.init();
+
+            if (genericInfo != null && genericType instanceof TypeVariable) {
+                Type type0 = genericInfo.get(genericType.getTypeName());
+
+                if (type0 instanceof ParameterizedType) {
+                    genericType = type0;
+                    type0 = ((ParameterizedType) type0).getRawType();
+                }
+
+                if (type0 instanceof Class) {
+                    type = (Class<?>) type0;
+                } else {
+                    throw new IllegalStateException("Mapping mehtod generic analysis error: "
+                            + method.getDeclaringClass().getName()
+                            + "."
+                            + method.getName());
+                }
+            }
+        }
     }
 
     /**
@@ -29,17 +59,17 @@ public class ParamWrap extends VarDescriptorBase {
 
     /**
      * 获取泛型
-     * */
+     */
     @Override
     public Type getGenericType() {
-        return parameter.getParameterizedType();
+        return genericType;
     }
 
     /**
      * 获取类型
-     * */
+     */
     @Override
     public Class<?> getType() {
-        return parameter.getType();
+        return type;
     }
 }

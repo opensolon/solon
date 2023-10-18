@@ -62,7 +62,7 @@ public final class EventBus {
                 publish0(event);
             } catch (Throwable e) {
                 //不再转发异常，免得死循环
-                LogUtil.global().warn(e.getMessage(), e);
+                LogUtil.global().warn("EventBus publishTry failed!", e);
             }
         }
     }

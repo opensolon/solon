@@ -69,7 +69,7 @@ public class ContextPathListener implements Listener {
                     try {
                         session.close();
                     } catch (IOException e) {
-                        LogUtil.global().warn(e.getMessage(), e);
+                        LogUtil.global().warn("ContextPathListener onOpen failed!", e);
                     }
                 }
             }

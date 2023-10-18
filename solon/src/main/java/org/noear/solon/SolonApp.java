@@ -206,7 +206,7 @@ public class SolonApp extends RouterWrapper {
         LogUtil.global().info("App: Bean scanning");
 
         //2.1.通过注解导入bean（一般是些配置器）
-        importTry();
+        beanImportTry();
 
         //2.2.通过源扫描bean
         if (source() != null) {
@@ -230,7 +230,7 @@ public class SolonApp extends RouterWrapper {
     }
 
     //通过注解，导入bean
-    protected void importTry() {
+    protected void beanImportTry() {
         if (_source == null) {
             return;
         }
@@ -430,8 +430,8 @@ public class SolonApp extends RouterWrapper {
         } catch (Throwable ex) {
             ex = Utils.throwableUnwrap(ex);
 
-            //推送异常事件 //todo: Action -> Gateway? -> RouterHandler -> SolonApp!
-            LogUtil.global().warn(ex.getMessage(), ex);
+            //推送异常事件 //todo: Action -> Gateway? -> RouterHandler -> Filter -> SolonApp!
+            LogUtil.global().warn("SolonApp tryHandle failed!", ex);
 
             //如果未处理，尝试处理
             if (x.getHandled() == false) {

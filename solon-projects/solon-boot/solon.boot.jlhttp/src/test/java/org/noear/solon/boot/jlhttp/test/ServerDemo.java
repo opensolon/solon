@@ -29,7 +29,7 @@ public class ServerDemo {
             _server = new JlHttpServer();
             _server.setExecutor(Executors.newCachedThreadPool());
             _server.setHandler(Solon.app()::tryHandle); //如果使用 Solon.app()::tryHandle，则转发给 Solon.app()
-            _server.enableSsl(false);
+            _server.enableSsl(false, null);
             _server.start(null, Solon.cfg().serverPort() + 1);
         }
 

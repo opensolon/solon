@@ -4,10 +4,14 @@ import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.core.joran.spi.JoranException;
+import ch.qos.logback.core.status.Status;
+import ch.qos.logback.core.status.StatusUtil;
+import ch.qos.logback.core.util.StatusPrinter;
 import ch.qos.logback.solon.SolonConfigurator;
 import org.fusesource.jansi.AnsiConsole;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
+import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.core.util.JavaUtil;
 import org.noear.solon.core.util.LogUtil;
@@ -20,6 +24,7 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 
 /**
  * 日志孵化器
@@ -34,7 +39,11 @@ public class LogIncubatorImpl implements LogIncubator {
         if (JavaUtil.IS_WINDOWS && Solon.cfg().isFilesMode() == false) {
             //只在 window 用 jar 模式下才启用
             if (ClassUtil.hasClass(() -> AnsiConsole.class)) {
-                AnsiConsole.systemInstall();
+                try {
+                    AnsiConsole.systemInstall();
+                } catch (Throwable e) {
+                    e.printStackTrace();
+                }
             }
         }
 
@@ -62,25 +71,10 @@ public class LogIncubatorImpl implements LogIncubator {
             url = ResourceUtil.getResource("logback-solon.xml");
         }
 
-        //3::尝试默认加载
-        if (url == null) {
-            boolean fileEnable = Solon.cfg().getBool("solon.logging.appender.file.enable", true);
-
-            if (fileEnable) {
-                url = ResourceUtil.getResource("META-INF/solon_def/logback-def.xml");
-            } else {
-                url = ResourceUtil.getResource("META-INF/solon_def/logback-def_nofile.xml");
-            }
-        }
-
         initDo(url);
     }
 
     private void initDo(URL url) {
-        if (url == null) {
-            return;
-        }
-
         try {
             LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
 
@@ -88,7 +82,15 @@ public class LogIncubatorImpl implements LogIncubator {
 
             SolonConfigurator configurator = new SolonConfigurator();
             configurator.setContext(loggerContext);
-            configurator.doConfigure(url);
+
+            if(url == null){
+                //::尝试默认加载
+                DefaultLogbackConfiguration configuration = new DefaultLogbackConfiguration();
+                configuration.apply(new LogbackConfigurator(loggerContext));
+            }else {
+                //::加载url
+                configurator.doConfigure(url);
+            }
 
             //同步 logger level 配置
             if (LogOptions.getLoggerLevels().size() > 0) {
@@ -97,8 +99,34 @@ public class LogIncubatorImpl implements LogIncubator {
                     logger.setLevel(Level.valueOf(lle.getLevel().name()));
                 }
             }
+
+            if (NativeDetector.inNativeImage()) {
+                reportConfigurationErrorsIfNecessary(loggerContext);
+            }
         } catch (JoranException e) {
             throw new IllegalStateException(e);
+        }
+    }
+
+    /**
+     * 报告配置错误（原生运行时）
+     * */
+    private void reportConfigurationErrorsIfNecessary(LoggerContext loggerContext) {
+        List<Status> statuses = loggerContext.getStatusManager().getCopyOfStatusList();
+        StringBuilder errors = new StringBuilder();
+        for (Status status : statuses) {
+            if (status.getLevel() == Status.ERROR) {
+                errors.append((errors.length() > 0) ? String.format("%n") : "");
+                errors.append(status);
+            }
+        }
+
+        if (errors.length() > 0) {
+            throw new IllegalStateException(String.format("Logback configuration error detected: %n%s", errors));
+        }
+
+        if (!StatusUtil.contextHasStatusListener(loggerContext)) {
+            StatusPrinter.printInCaseOfErrorsOrWarnings(loggerContext);
         }
     }
 

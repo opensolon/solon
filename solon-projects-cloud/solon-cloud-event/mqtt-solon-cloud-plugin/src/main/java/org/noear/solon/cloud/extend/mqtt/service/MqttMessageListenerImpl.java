@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
  * @since 2.4
  */
 public class MqttMessageListenerImpl implements IMqttMessageListener {
-    static Logger log = LoggerFactory.getLogger(MqttCallbackImpl.class);
+    static Logger log = LoggerFactory.getLogger(MqttMessageListenerImpl.class);
 
     CloudEventHandler eventHandler;
     String eventChannelName;

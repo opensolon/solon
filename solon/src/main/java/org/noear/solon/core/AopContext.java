@@ -6,6 +6,7 @@ import org.noear.solon.annotation.*;
 import org.noear.solon.core.bean.InitializingBean;
 import org.noear.solon.core.bean.LifecycleBean;
 import org.noear.solon.core.convert.Converter;
+import org.noear.solon.core.convert.ConverterFactory;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.event.EventListener;
 import org.noear.solon.core.handle.*;
@@ -139,13 +140,13 @@ public abstract class AopContext extends BeanContainer {
             //尝试导入（可能会导入属性源，或小饼依赖的组件）
             for (Annotation a1 : clz.getAnnotations()) {
                 if (a1 instanceof Import) {
-                    beanImport((Import) a1);
                     cfg().loadAdd((Import) a1);//v2.5
+                    beanImport((Import) a1);
                 } else {
                     a1 = a1.annotationType().getAnnotation(Import.class);
                     if (a1 != null) {
-                        beanImport((Import) a1);
                         cfg().loadAdd((Import) a1);//v2.5
+                        beanImport((Import) a1);
                     }
                 }
             }
@@ -382,7 +383,14 @@ public abstract class AopContext extends BeanContainer {
 
         //Converter
         if (Converter.class.isAssignableFrom(clz)) {
-            Solon.app().converterManager().register(bw.raw());
+            Converter c = bw.raw();
+            Solon.app().converterManager().register(c);
+        }
+
+        //Converter
+        if (ConverterFactory.class.isAssignableFrom(clz)) {
+            ConverterFactory cf = bw.raw();
+            Solon.app().converterManager().register(cf);
         }
     }
 
@@ -411,7 +419,7 @@ public abstract class AopContext extends BeanContainer {
         if (beanExtractors.size() > 0 || beanInterceptors.size() > 0) {
             ClassWrap clzWrap = ClassWrap.get(bw.clz());
 
-            for (Method m : clzWrap.getMethods()) {
+            for (Method m : clzWrap.getMethods()) { //只支持公有函数检查
                 for (Annotation a : m.getAnnotations()) {
                     BeanExtractor be = beanExtractors.get(a.annotationType());
 
@@ -891,20 +899,20 @@ public abstract class AopContext extends BeanContainer {
         started = true;
 
         try {
-            //开始执行生命周期bean //支持排序
-            startLifecycle();
+            //开始执行生命周期bean（侧重做初始化） //支持排序
+            startBeanLifecycle();
 
-            //开始检查注入情况 //支持自动排序
-            startInjectCheck();
+            //开始注入审查 //支持自动排序
+            startInjectReview();
         } catch (Throwable e) {
-            throw new IllegalStateException("AopContext start failed", e);
+            throw new IllegalStateException("AppContext start failed", e);
         }
     }
 
     /**
-     * 开始生命周期（支持排序）
+     * 开始Bean生命周期（支持排序）
      */
-    private void startLifecycle() throws Throwable {
+    private void startBeanLifecycle() throws Throwable {
         //执行生命周期bean //支持排序
         List<RankEntity<LifecycleBean>> beans = new ArrayList<>(lifecycleBeans);
         beans.sort(Comparator.comparingInt(f -> f.index));
@@ -916,9 +924,9 @@ public abstract class AopContext extends BeanContainer {
     }
 
     /**
-     * 开始收集器检查（支持自动排序）
+     * 开始注入审查（支持自动排序）
      */
-    private void startInjectCheck() throws Throwable {
+    private void startInjectReview() throws Throwable {
         //全部跑完后，检查注入情况
         List<InjectGather> gatherList = gatherSet.stream().filter(g1 -> g1.isDone() == false)
                 .collect(Collectors.toList());
