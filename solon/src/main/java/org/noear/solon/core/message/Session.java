@@ -184,7 +184,7 @@ public interface Session {
      * 关闭会话
      */
     default void close() throws IOException{
-        closeHeartbeatAuto();
+        stopHeartbeatAuto();
     }
 
     /**
@@ -260,5 +260,5 @@ public interface Session {
     /**
      * 停目自动心跳
      * */
-    void closeHeartbeatAuto();
+    void stopHeartbeatAuto();
 }

@@ -2,7 +2,6 @@ package org.noear.solon.socketd;
 
 import org.noear.solon.Utils;
 import org.noear.solon.core.NvMap;
-import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.message.*;
 import org.noear.solon.core.util.RunUtil;
 import org.slf4j.Logger;
@@ -31,6 +30,7 @@ public abstract class SessionBase implements Session {
     }
 
     private String pathNew;
+
     public String pathNew() {
         if (pathNew == null) {
             return path();
@@ -43,6 +43,7 @@ public abstract class SessionBase implements Session {
     //标志
     //
     private int _flag = SessionFlag.unknown;
+
     @Override
     public int flag() {
         return _flag;
@@ -67,8 +68,9 @@ public abstract class SessionBase implements Session {
     }
 
     private NvMap headerMap;
+
     public NvMap headerMap() {
-        if(headerMap == null){
+        if (headerMap == null) {
             headerMap = new NvMap();
         }
 
@@ -89,10 +91,11 @@ public abstract class SessionBase implements Session {
     }
 
     private NvMap paramMap;
+
     /**
      * @auth 非著名职业BUG撰写师
      * @since 1.10
-     * */
+     */
     public NvMap paramMap() {
         if (paramMap == null) {
             paramMap = new NvMap();
@@ -118,9 +121,11 @@ public abstract class SessionBase implements Session {
 
         return paramMap;
     }
-    private Map<String,Object> attrMap = null;
-    public Map<String,Object> attrMap(){
-        if(attrMap == null){
+
+    private Map<String, Object> attrMap = null;
+
+    public Map<String, Object> attrMap() {
+        if (attrMap == null) {
             attrMap = new HashMap<>();
         }
 
@@ -198,7 +203,7 @@ public abstract class SessionBase implements Session {
      * 用于支持双向RPC
      *
      * @param timeout 单位为秒
-     * */
+     */
     @Override
     public Message sendAndResponse(Message message, int timeout) {
         if (Utils.isEmpty(message.key())) {
@@ -221,7 +226,7 @@ public abstract class SessionBase implements Session {
             return request.get(timeout, TimeUnit.SECONDS);
         } catch (Exception e) {
             throw new RuntimeException(e);
-        }finally {
+        } finally {
             RequestManager.remove(message.key());
         }
     }
@@ -287,40 +292,6 @@ public abstract class SessionBase implements Session {
         send(Message.wrapHeartbeat());
     }
 
-    private boolean _sendHeartbeatAuto = false;
-    private ScheduledFuture<?> _sendHeartbeatFuture;
-
-    @Override
-    public void closeHeartbeatAuto() {
-        if (_sendHeartbeatFuture != null) {
-            _sendHeartbeatFuture.cancel(true);
-        }
-    }
-
-    @Override
-    public void startHeartbeatAuto(int intervalSeconds) {
-        if (_sendHeartbeatAuto || _sendHeartbeatFuture != null) {
-            return;
-        }
-
-        synchronized (this) {
-            if (_sendHeartbeatAuto) {
-                return;
-            }
-
-            _sendHeartbeatAuto = true;
-
-            _sendHeartbeatFuture = RunUtil.delayAndRepeat(
-                    () -> {
-                        try {
-                            sendHeartbeat();
-                        } catch (Throwable e) {
-                            log.warn(e.getMessage(), e);
-                        }
-                    }, intervalSeconds * 1000);
-        }
-    }
-
     //保存最后一次握手的信息；之后重链时使用
     protected Message handshakeMessage;
 
@@ -329,7 +300,7 @@ public abstract class SessionBase implements Session {
         if (message.flag() == MessageFlag.handshake) {
             try {
                 send(message);
-            }finally {
+            } finally {
                 //发完之后，再缓存 //不然，会发两次
                 handshakeMessage = message;
             }
@@ -349,6 +320,38 @@ public abstract class SessionBase implements Session {
             return rst;
         } else {
             throw new IllegalArgumentException("The message flag not handshake");
+        }
+    }
+
+    private ScheduledFuture<?> _sendHeartbeatFuture;
+
+    @Override
+    public void startHeartbeatAuto(int intervalSeconds) {
+        if (_sendHeartbeatFuture != null) {
+            return;
+        }
+
+        synchronized (this) {
+            if (_sendHeartbeatFuture != null) {
+                return;
+            }
+
+            _sendHeartbeatFuture = RunUtil.delayAndRepeat(
+                    () -> {
+                        try {
+                            sendHeartbeat();
+                        } catch (Throwable e) {
+                            log.warn(e.getMessage(), e);
+                        }
+                    }, intervalSeconds * 1000);
+        }
+    }
+
+    @Override
+    public void stopHeartbeatAuto() {
+        if (_sendHeartbeatFuture != null) {
+            _sendHeartbeatFuture.cancel(true);
+            _sendHeartbeatFuture = null;
         }
     }
 }
