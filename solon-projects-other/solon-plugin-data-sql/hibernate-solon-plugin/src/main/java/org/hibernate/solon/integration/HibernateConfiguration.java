@@ -17,6 +17,11 @@ import java.util.Properties;
  * @since 2.5
  */
 public class HibernateConfiguration extends Configuration {
+
+    public HibernateConfiguration(){
+
+    }
+
     /**
      * 添加实体包扫描，有hibernate的@Table、@Entity
      */
@@ -26,7 +31,6 @@ public class HibernateConfiguration extends Configuration {
             for (Class<?> clazz : classes)
                 addAnnotatedClass(clazz);
         }
-
         return this;
     }
 

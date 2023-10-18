@@ -1,7 +1,9 @@
 package org.hibernate.solon.integration;
 
 import org.hibernate.solon.annotation.Db;
+import org.hibernate.solon.annotation.HibernateTran;
 import org.hibernate.solon.jpa.SolonPersistenceProvider;
+import org.noear.solon.Solon;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 
@@ -22,10 +24,13 @@ public class HibernatePluginImpl implements Plugin {
                 .getPersistenceProviders()
                 .add(new SolonPersistenceProvider());
 
-        context.subWrapsOfType(DataSource.class, bw -> {
-            HibernateAdapterManager.register(bw);
-        });
+        context.subWrapsOfType(DataSource.class, HibernateAdapterManager::register);
 
         context.beanInjectorAdd(Db.class, new DbBeanInjector());
+
+        //添加增强事务控制支持
+        if (Solon.app().enableTransaction()) {
+            context.beanInterceptorAdd(HibernateTran.class, new TranAdapterInterceptor(), 121);
+        }
     }
 }
