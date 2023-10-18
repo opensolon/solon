@@ -22,6 +22,7 @@
         <module>../../solon-projects/solon-render/solon.serialization.fastjson2</module>
         <module>../../solon-projects/solon-render/solon.serialization.jackson</module>
         <module>../../solon-projects/solon-render/solon.serialization.gson</module>
+        <module>../../solon-projects/solon-render/solon.serialization.fury</module>
         <module>../../solon-projects/solon-render/solon.serialization.hessian</module>
         <module>../../solon-projects/solon-render/solon.serialization.protostuff</module>
         <module>../../solon-projects/solon-render/solon.view</module>
