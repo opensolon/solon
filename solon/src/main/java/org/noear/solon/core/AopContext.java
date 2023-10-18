@@ -539,6 +539,10 @@ public abstract class AopContext extends BeanContainer {
                 beanMake(clz);
             }
 
+            for (Class<?> clz : anno.classes()) {
+                beanMake(clz);
+            }
+
             //扫描包（beanScan）
             for (String pkg : anno.scanPackages()) {
                 beanScan(pkg);
