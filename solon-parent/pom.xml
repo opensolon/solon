@@ -122,7 +122,7 @@
         <quartz.version>2.3.2</quartz.version>
         <powerjob.version>4.3.6</powerjob.version>
 
-        <sa-token.version>1.36.0</sa-token.version>
+        <sa-token.version>1.37.0</sa-token.version>
 
         <mapstruct.version>1.5.5.Final</mapstruct.version>
         <native.version>0.9.20</native.version>
