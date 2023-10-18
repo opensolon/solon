@@ -25,6 +25,7 @@
 
 ### 2.5.11
 * 取消 @Init 的弃用提示（改为推荐了）
+* liteflow 升为 2.11.2
 
 ### 2.5.10
 * 新增 ConverterFactory 接口
