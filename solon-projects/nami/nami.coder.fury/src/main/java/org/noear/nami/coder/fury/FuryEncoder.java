@@ -1,12 +1,10 @@
 package org.noear.nami.coder.fury;
 
-import com.alibaba.com.caucho.hessian.io.Hessian2Output;
 import io.fury.Fury;
+import io.fury.ThreadSafeFury;
 import org.noear.nami.Context;
 import org.noear.nami.Encoder;
 import org.noear.nami.common.ContentTypes;
-
-import java.io.ByteArrayOutputStream;
 
 /**
  * Hessian 编码器
@@ -16,7 +14,7 @@ import java.io.ByteArrayOutputStream;
  * */
 public class FuryEncoder implements Encoder {
     public static final FuryEncoder instance = new FuryEncoder();
-    static Fury fury = Fury.builder().requireClassRegistration(false).build();
+    static ThreadSafeFury fury = Fury.builder().requireClassRegistration(false).buildThreadSafeFury();
 
     @Override
     public String enctype() {

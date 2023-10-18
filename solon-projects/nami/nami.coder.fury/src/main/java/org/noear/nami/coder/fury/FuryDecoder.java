@@ -1,6 +1,7 @@
 package org.noear.nami.coder.fury;
 
 import io.fury.Fury;
+import io.fury.ThreadSafeFury;
 import org.noear.nami.Context;
 import org.noear.nami.Decoder;
 import org.noear.nami.Result;
@@ -17,7 +18,7 @@ import java.lang.reflect.Type;
  * */
 public class FuryDecoder implements Decoder {
     public static final FuryDecoder instance = new FuryDecoder();
-    static Fury fury = Fury.builder().requireClassRegistration(false).build();
+    static ThreadSafeFury fury = Fury.builder().requireClassRegistration(false).buildThreadSafeFury();
 
     @Override
     public String enctype() {

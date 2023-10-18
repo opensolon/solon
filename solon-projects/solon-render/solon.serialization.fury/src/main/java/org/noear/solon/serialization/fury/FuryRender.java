@@ -1,6 +1,7 @@
 package org.noear.solon.serialization.fury;
 
 import io.fury.Fury;
+import io.fury.ThreadSafeFury;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.ModelAndView;
 import org.noear.solon.core.handle.Render;
@@ -13,7 +14,7 @@ import java.util.Map;
 //不要要入参，方便后面多视图混用
 //
 public class FuryRender implements Render {
-    static Fury fury = Fury.builder().requireClassRegistration(false).build();
+    static ThreadSafeFury fury = Fury.builder().requireClassRegistration(false).buildThreadSafeFury();
 
     @Override
     public String renderAndReturn(Object data, Context ctx) throws Throwable {
