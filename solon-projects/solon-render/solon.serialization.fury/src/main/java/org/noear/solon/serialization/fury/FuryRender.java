@@ -9,8 +9,10 @@ import java.util.Base64;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-//不要要入参，方便后面多视图混用
-//
+/**
+ * @author noear
+ * @since 2.5
+ * */
 public class FuryRender implements Render {
     @Override
     public String renderAndReturn(Object data, Context ctx) throws Throwable {

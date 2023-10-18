@@ -5,10 +5,10 @@ import org.noear.nami.Encoder;
 import org.noear.nami.common.ContentTypes;
 
 /**
- * Hessian 编码器
+ * Fury 编码器
  *
  * @author noear
- * @since 1.2
+ * @since 2.5
  * */
 public class FuryEncoder implements Encoder {
     public static final FuryEncoder instance = new FuryEncoder();

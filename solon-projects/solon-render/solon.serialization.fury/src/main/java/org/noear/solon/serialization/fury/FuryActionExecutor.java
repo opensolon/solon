@@ -7,6 +7,10 @@ import org.noear.solon.core.wrap.ParamWrap;
 
 import java.util.Map;
 
+/**
+ * @author noear
+ * @since 2.5
+ * */
 public class FuryActionExecutor extends ActionExecuteHandlerDefault {
     private static final String label = "application/fury";
 

@@ -9,10 +9,10 @@ import org.noear.nami.common.ContentTypes;
 import java.lang.reflect.Type;
 
 /**
- * Hessian 解码器
+ * Fury 解码器
  *
  * @author noear
- * @since 1.2
+ * @since 2.5
  * */
 public class FuryDecoder implements Decoder {
     public static final FuryDecoder instance = new FuryDecoder();
