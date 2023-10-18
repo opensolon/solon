@@ -153,7 +153,8 @@ public class RsSocketSession extends SessionBase {
     }
 
     @Override
-    public void close() {
+    public void close() throws IOException{
+        super.close();
         if (real == null) {
             return;
         }

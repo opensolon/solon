@@ -90,6 +90,17 @@ public class RunUtil {
     }
 
     /**
+     * 运行并吃掉异常
+     * */
+    public static void runAndTry(RunnableEx task) {
+        try {
+            task.run();
+        } catch (Throwable e) {
+            //略过
+        }
+    }
+
+    /**
      * 并行执行
      */
     public static Future<?> parallel(Runnable task) {

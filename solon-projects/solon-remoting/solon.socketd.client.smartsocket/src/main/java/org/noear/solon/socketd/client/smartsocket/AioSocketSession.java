@@ -155,6 +155,7 @@ public class AioSocketSession extends SessionBase {
 
     @Override
     public void close() throws IOException {
+        super.close();
         if (real == null) {
             return;
         }

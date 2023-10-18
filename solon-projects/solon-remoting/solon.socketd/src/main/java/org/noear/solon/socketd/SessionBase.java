@@ -350,7 +350,7 @@ public abstract class SessionBase implements Session {
     @Override
     public void stopHeartbeatAuto() {
         if (_sendHeartbeatFuture != null) {
-            _sendHeartbeatFuture.cancel(true);
+            RunUtil.runAndTry(() -> _sendHeartbeatFuture.cancel(true));
             _sendHeartbeatFuture = null;
         }
     }
