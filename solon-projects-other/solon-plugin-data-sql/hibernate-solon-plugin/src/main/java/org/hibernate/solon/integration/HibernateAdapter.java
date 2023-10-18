@@ -64,7 +64,8 @@ public class HibernateAdapter {
         if (ResourceUtil.hasResource(null, StandardServiceRegistryBuilder.DEFAULT_CFG_RESOURCE_NAME)){
             configuration.configure(StandardServiceRegistryBuilder.DEFAULT_CFG_RESOURCE_NAME );
         }
-
+        // 加载hibernate常规设置
+        getConfiguration().setProperties(this.dsProps);
     }
 
     protected void initDo() {
@@ -80,15 +81,12 @@ public class HibernateAdapter {
                         if (val.length() == 0) {
                             continue;
                         }
-
                         getConfiguration().addScanPackage(val);
                     }
                 }
             }
         });
 
-        Props cfgProps = dsProps.getProp("config");
-        getConfiguration().setProperties(cfgProps);
     }
 
     protected void injectTo(VarHolder varH) {

@@ -16,7 +16,7 @@ public class HibernateAdapterManager {
     /**
      * 缓存适配器
      */
-    private static Map<String, HibernateAdapter> dbMap = new ConcurrentHashMap<>();
+    private static final Map<String, HibernateAdapter> dbMap = new ConcurrentHashMap<>();
 
     public static HibernateAdapter getOnly(String name) {
         return dbMap.get(name);
