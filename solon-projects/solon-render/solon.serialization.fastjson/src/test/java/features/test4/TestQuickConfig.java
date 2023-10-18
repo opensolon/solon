@@ -16,7 +16,7 @@ import java.util.Map;
 /**
  * 时间进行格式化 + long,int 转为字符串 + 常见类型转为非null + 所有null输出
  */
-@Import(propertySource = "classpath:features2_test4.yml")
+@Import(profiles = "classpath:features2_test4.yml")
 @ExtendWith(SolonJUnit5Extension.class)
 public class TestQuickConfig {
     @Inject

@@ -371,9 +371,14 @@ public class Props extends Properties {
             return;
         }
 
-        for (String uri : anno.propertySource()) {
+        for (String uri : anno.profiles()) {
             uri = getByParse(uri);
             loadAdd(ResourceUtil.findResource(classLoader, uri));
+        }
+
+        for (String uri : anno.profilesIfAbsent()) {
+            uri = getByParse(uri);
+            loadAddIfAbsent(ResourceUtil.findResource(classLoader, uri));
         }
     }
 

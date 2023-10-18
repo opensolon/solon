@@ -6,7 +6,7 @@ import org.noear.solon.annotation.Import;
 /**
  * @author noear 2023/10/18 created
  */
-@Import(propertySource = "classpath:demo.properties")
+@Import(profiles = "classpath:demo.properties")
 @Configuration
 public class AutoConfig2 {
 }

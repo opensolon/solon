@@ -7,7 +7,7 @@ import java.lang.annotation.*;
 /**
  * @author noear 2023/10/18 created
  */
-@Import(classes = DemoConfig.class, propertySource = "classpath:demo.properties")
+@Import(classes = DemoConfig.class, profiles = "classpath:demo.properties")
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented

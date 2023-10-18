@@ -17,7 +17,7 @@ import java.util.Map;
 /**
  * 什么配置都没有
  */
-@Import(propertySource = "classpath:features2_test0.yml")
+@Import(profiles = "classpath:features2_test0.yml")
 @ExtendWith(SolonJUnit5Extension.class)
 public class TestQuickConfig {
 

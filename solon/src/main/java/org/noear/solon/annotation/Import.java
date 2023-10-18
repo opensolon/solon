@@ -58,9 +58,16 @@ public @interface Import {
     Class<?>[] scanPackageClasses() default {};
 
     /**
-     * 导入属性源（classpath:demo.yml, ./demo.yml）
+     * 导入配置文件（classpath:demo.yml, ./demo.yml）
      *
      * @since 2.5
      */
-    String[] propertySource() default {};
+    String[] profiles() default {};
+
+    /**
+     * 导入配置文件如果没有（classpath:demo.yml, ./demo.yml）
+     *
+     * @since 2.5
+     */
+    String[] profilesIfAbsent() default {};
 }

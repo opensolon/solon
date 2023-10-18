@@ -198,7 +198,7 @@ public class RunnerUtils {
 
         Import anno2 = klass.getAnnotation(Import.class);
         if(anno2 != null){
-            for(String s1 : anno2.propertySource()) {
+            for(String s1 : anno2.profiles()) {
                 propertySources.add(s1);
             }
         }

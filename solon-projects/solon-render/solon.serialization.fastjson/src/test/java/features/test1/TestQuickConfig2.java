@@ -17,7 +17,7 @@ import java.util.Map;
 /**
  * 只对时间进行格式化
  */
-@Import(propertySource = "classpath:features2_test1-2.yml")
+@Import(profiles = "classpath:features2_test1-2.yml")
 @ExtendWith(SolonJUnit5Extension.class)
 public class TestQuickConfig2 {
     @Inject
