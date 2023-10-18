@@ -631,6 +631,11 @@
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>solon.serialization.fury</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>solon.serialization.protostuff</artifactId>
                 <version>${solon.version}</version>
             </dependency>
@@ -779,6 +784,11 @@
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>nami.coder.hessian</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>nami.coder.fury</artifactId>
                 <version>${solon.version}</version>
             </dependency>
 

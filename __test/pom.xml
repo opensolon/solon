@@ -130,6 +130,10 @@
         </dependency>
         <dependency>
             <groupId>org.noear</groupId>
+            <artifactId>nami.coder.fury</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.noear</groupId>
             <artifactId>nami.coder.protostuff</artifactId>
         </dependency>
         <dependency>
@@ -348,6 +352,11 @@
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon.serialization.hessian</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.serialization.fury</artifactId>
         </dependency>
 
 
