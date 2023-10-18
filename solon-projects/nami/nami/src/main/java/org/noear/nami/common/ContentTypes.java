@@ -10,6 +10,7 @@ public class ContentTypes {
     //仅 Content-Type 值
 
     public static final String HESSIAN_VALUE = "application/hessian";
+    public static final String FURY_VALUE = "application/fury";
     public static final String PROTOBUF_VALUE = "application/protobuf";
     public static final String JSON_VALUE = "application/json";
     public static final String JSON_TYPE_VALUE = "application/json-type";

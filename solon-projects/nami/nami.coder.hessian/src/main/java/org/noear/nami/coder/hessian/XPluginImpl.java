@@ -8,7 +8,7 @@ import org.noear.solon.core.Plugin;
  * @author noear
  * @since 1.2
  */
-public class XPluginImp implements Plugin {
+public class XPluginImpl implements Plugin {
     @Override
     public void start(AppContext context) {
         NamiManager.reg(HessianDecoder.instance);
