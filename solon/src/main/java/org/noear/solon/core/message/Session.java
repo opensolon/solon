@@ -183,7 +183,9 @@ public interface Session {
     /**
      * 关闭会话
      */
-    void close() throws IOException;
+    default void close() throws IOException{
+        closeHeartbeatAuto();
+    }
 
     /**
      * 是否是有效的
@@ -241,11 +243,6 @@ public interface Session {
     void sendHeartbeat();
 
     /**
-     * 发送心跳
-     */
-    void sendHeartbeatAuto(int intervalSeconds);
-
-    /**
      * 发送握手
      */
     void sendHandshake(Message message);
@@ -254,4 +251,14 @@ public interface Session {
      * 发送握手并等待响应
      */
     Message sendHandshakeAndResponse(Message message);
+
+    /**
+     * 开始自动心跳
+     */
+    void startHeartbeatAuto(int intervalSeconds);
+
+    /**
+     * 停目自动心跳
+     * */
+    void closeHeartbeatAuto();
 }
