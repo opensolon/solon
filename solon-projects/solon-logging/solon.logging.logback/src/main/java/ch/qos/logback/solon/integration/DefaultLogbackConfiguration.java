@@ -95,7 +95,7 @@ public class DefaultLogbackConfiguration {
     private Appender<ILoggingEvent> consoleAppender(LogbackConfigurator config) {
         ConsoleAppender<ILoggingEvent> appender = new ConsoleAppender<>();
         ThresholdFilter filter = new ThresholdFilter();
-        filter.setLevel(resolve(config, "${CONSOLE_LOG_THRESHOLD}"));
+        filter.setLevel(resolve(config, "${CONSOLE_LOG_LEVEL}"));
         filter.start();
         appender.addFilter(filter);
 

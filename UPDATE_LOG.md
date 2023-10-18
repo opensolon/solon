@@ -27,6 +27,7 @@
 * 取消 @Init 的弃用提示（改为推荐了）
 * 修复 @Import::classes 未被执行的问题
 * 修复 sockted.session 自动心跳不能停止的问题
+* 修复 solon.logging.logback 控制台等级 yml 配置失效的问题
 * 调整 sockted.session::sendHeartbeatAuto 更名为 startHeartbeatAuto （内部接口）
 * 添加 @Import::profiles,@Import::profilesIfAbsent
 * 添加 DynamicDsKey 类，替代 DynamicDsHolder
