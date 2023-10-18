@@ -29,8 +29,8 @@
 * 修复 sockted.session 自动心跳不能停止的问题
 * 修复 solon.logging.logback 控制台等级 yml 配置失效的问题
 * 调整 sockted.session::sendHeartbeatAuto 更名为 startHeartbeatAuto （内部接口）
-* 添加 @Import::profiles,@Import::profilesIfAbsent
-* 添加 DynamicDsKey 类，替代 DynamicDsHolder
+* 添加 @Import::profiles, @Import::profilesIfAbsent 接口
+* 添加 DynamicDsKey 类, 替代 DynamicDsHolder
   添加 sockted.session::stopHeartbeatAuto 接口
 * liteflow 升为 2.11.2
 * sqltoy 升为 5.2.72
