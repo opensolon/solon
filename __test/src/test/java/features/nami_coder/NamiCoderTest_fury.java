@@ -28,7 +28,7 @@ public class NamiCoderTest_fury {
             assert false;
         } catch (IllegalArgumentException e) {
             assert true;
-            System.out.println("test_hessian::ok");
+            System.out.println("test_fury::ok");
         }
     }
 
