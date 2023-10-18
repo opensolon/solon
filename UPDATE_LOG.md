@@ -26,6 +26,8 @@
 ### 2.5.11
 * 取消 @Init 的弃用提示（改为推荐了）
 * liteflow 升为 2.11.2
+* sqltoy 升为 5.2.72
+* mybatis-flex 升为 1.7.1
 
 ### 2.5.10
 * 新增 ConverterFactory 接口
