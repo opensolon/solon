@@ -1,0 +1,53 @@
+# Tomcat
+server.port: 8888
+server:
+  #服务主机（ip）
+  host: "0.0.0.0"
+  #服务包装端口（默认为 ${port}）//v1.12.1 后支持  //一般用docker + 服务注册时才可能用到
+  wrapPort: 8080
+  #服务包装主机（ip）//v1.12.1 后支持
+  wrapHost: "0.0.0.0"
+  #服务上下文路径
+  contextPath: /dispatch-server/ #v1.11.2 后支持
+  http:
+    port: 8081
+    #服务 http 最小线程数（默认：0表示自动，支持固定值 2 或 内核倍数 x2）//一般不用配置
+    coreThreads: 0
+    #服务 http 最大线程数（默认：0表示自动，支持固定值 64 或 内核倍数 x64）
+    maxThreads: 0
+    #服务 http 闲置线程超时（0表示自动，单位毫秒） //v1.10.13 后支持
+    idleTimeout: 0
+    #服务 http 是否为IO密集型？ //v1.12.2 后支持
+    ioBound: 0
+
+#solon 支持的多数据源
+test.db1:
+  schema: rock
+  jdbcUrl: jdbc:mysql://121.40.62.167:3306/test?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8&autoReconnect=true&rewriteBatchedStatements=true
+  driverClassName: com.mysql.cj.jdbc.Driver
+  username: bai
+  password: root
+
+#db test的hibernate配置
+hibernate.test:
+  scanPackages: org.example.entity.*
+  hibernate:
+    hbm2ddl:
+      auto: create
+    show_sql: true
+    format_sql: true
+    dialect: org.hibernate.dialect.MySQL8Dialect
+    connection:
+      isolaction: 4 # 事务隔离级别 4 可重复度
+
+
+#默认hibernate配置
+# 可选app.yml 或者hibernate.cf.xml
+#hibernate:
+#  connection:
+#    driver_class : com.mysql.cj.jdbc.Driver
+#    url: jdbc:mysql://121.40.62.167:3306/test?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8&autoReconnect=true&rewriteBatchedStatements=true
+#    username: bai
+#    password: root
+#    provider_class: com.zaxxer.hikari.hibernate.HikariConnectionProvider
+#  dialect : org.hibernate.dialect.MySQL8Dialect

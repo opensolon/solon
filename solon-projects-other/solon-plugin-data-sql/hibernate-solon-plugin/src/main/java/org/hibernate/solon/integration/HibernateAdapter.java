@@ -1,11 +1,13 @@
 package org.hibernate.solon.integration;
 
 import org.hibernate.SessionFactory;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.noear.solon.Solon;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.Props;
 import org.noear.solon.core.VarHolder;
+import org.noear.solon.core.util.ResourceUtil;
 
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
@@ -57,9 +59,13 @@ public class HibernateAdapter {
     }
 
 
-
     protected void initConfiguration() {
-
+        // 默认兼容 hibernate.cfg.xml
+        if (ResourceUtil.hasResource(null, StandardServiceRegistryBuilder.DEFAULT_CFG_RESOURCE_NAME)){
+            configuration.configure(StandardServiceRegistryBuilder.DEFAULT_CFG_RESOURCE_NAME );
+        }
+        // 加载hibernate常规设置
+        getConfiguration().setProperties(this.dsProps);
     }
 
     protected void initDo() {
@@ -75,15 +81,12 @@ public class HibernateAdapter {
                         if (val.length() == 0) {
                             continue;
                         }
-
                         getConfiguration().addScanPackage(val);
                     }
                 }
             }
         });
 
-        Props cfgProps = dsProps.getProp("config");
-        getConfiguration().setProperties(cfgProps);
     }
 
     protected void injectTo(VarHolder varH) {
