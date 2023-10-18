@@ -6,7 +6,7 @@ import org.noear.solon.core.Plugin;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.RenderManager;
 
-public class XPluginImp implements Plugin {
+public class XPluginImpl implements Plugin {
 
     @Override
     public void start(AppContext context) {
