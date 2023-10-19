@@ -23,7 +23,7 @@
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
 
-        <solon.version>2.5.11</solon.version>
+        <solon.version>2.5.11-SNAPSHOT</solon.version>
         <solon-maven-plugin.version>2.5.9</solon-maven-plugin.version>
         <solon-admin.version>2.5.9</solon-admin.version>
         <snack3.version>3.2.80</snack3.version>
@@ -124,6 +124,7 @@
         <powerjob.version>4.3.6</powerjob.version>
 
         <sa-token.version>1.37.0</sa-token.version>
+        <sms4j.version>3.0.2</sms4j.version>
 
         <mapstruct.version>1.5.5.Final</mapstruct.version>
         <native.version>0.9.20</native.version>
