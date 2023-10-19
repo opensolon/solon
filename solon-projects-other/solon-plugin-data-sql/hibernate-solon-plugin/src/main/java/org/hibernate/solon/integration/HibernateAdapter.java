@@ -75,13 +75,13 @@ public class HibernateAdapter {
                 String key = (String) k;
                 String valStr = (String) v;
 
-                if (key.startsWith("scanPackages[") || key.equals("scanPackages")) {
+                if (key.startsWith("mapping[") || key.equals("mapping")) {
                     for (String val : valStr.split(",")) {
                         val = val.trim();
                         if (val.length() == 0) {
                             continue;
                         }
-                        getConfiguration().addScanPackage(val);
+                        getConfiguration().addMapping(val);
                     }
                 }
             }

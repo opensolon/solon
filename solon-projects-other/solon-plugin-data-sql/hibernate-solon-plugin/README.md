@@ -14,10 +14,32 @@ PersistenceProviderResolverHolder
                 .add(new SolonPersistenceProvider());
 ```
 
-* 要完成与 @Tran 的事务对接（最好是不重写事务注解，能与其它 orm 同时存在）
+* 通过 SessionFactoryProxy 代理，与 Solon 事务完成对接
 
-### 2、solon.data.jpa
+### 2、使用示例
 
-* jpa 接口，尽量保持与 spring.data.jpa 兼容（有好几个 jpa 需求的用户，提过这个）
-  * 要从 spring 那边的接口定义重新 copy 一下。。。目前是从网上copy的，可能旧了
-* 后面 jpa 接口可以独立为  solon.data.jpa
+* 配置
+
+```yaml
+#solon 支持的多数据源
+test.db1:
+  schema: rock
+  jdbcUrl: jdbc:mysql://121.40.62.167:3306/test?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8&autoReconnect=true&rewriteBatchedStatements=true
+  driverClassName: com.mysql.cj.jdbc.Driver
+  username: bai
+  password: root
+
+#db test的hibernate配置
+jpa.test:
+  mapping:
+    - org.example.entity.*
+  hibernate:
+    hbm2ddl:
+      auto: create
+    show_sql: true
+    format_sql: true
+    dialect: org.hibernate.dialect.MySQL8Dialect
+    connection:
+      isolaction: 4 # 事务隔离级别 4 可重复度
+```
+

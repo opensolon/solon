@@ -29,8 +29,9 @@ test.db1:
   password: root
 
 #db test的hibernate配置
-hibernate.test:
-  scanPackages: org.example.entity.*
+jpa.test:
+  mapping:
+    - org.example.entity.*
   hibernate:
     hbm2ddl:
       auto: create

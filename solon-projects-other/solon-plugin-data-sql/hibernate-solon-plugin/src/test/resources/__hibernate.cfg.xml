@@ -35,7 +35,7 @@
         <!--3. 加载所有映射-->
         <mapping resource="hibernate/Event.hbm.xml"/>
 <!--        <mapping class="org.example.entity.Event"/>-->
-        <mapping class="org.example.entity.HttpEntity"/>
+        <mapping class="org.hibernate.solon.test.demo.HttpEntity"/>
 
     </session-factory>
 

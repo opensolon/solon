@@ -69,7 +69,7 @@ public class HibernateAdapterManager {
         if (Utils.isEmpty(bw.name())) {
             adapter = new HibernateAdapter(bw);
         } else {
-            adapter = new HibernateAdapter(bw, Solon.cfg().getProp("hibernate." + bw.name()));
+            adapter = new HibernateAdapter(bw, Solon.cfg().getProp("jpa." + bw.name()));
         }
 
         return adapter;

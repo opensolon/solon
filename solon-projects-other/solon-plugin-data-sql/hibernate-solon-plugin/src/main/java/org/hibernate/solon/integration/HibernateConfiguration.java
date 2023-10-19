@@ -18,14 +18,14 @@ import java.util.Properties;
  */
 public class HibernateConfiguration extends Configuration {
 
-    public HibernateConfiguration(){
+    public HibernateConfiguration() {
 
     }
 
     /**
-     * 添加实体包扫描，有hibernate的@Table、@Entity
+     * 添加实体映射，有hibernate的@Table、@Entity
      */
-    public HibernateConfiguration addScanPackage(String basePackage) {
+    public HibernateConfiguration addMapping(String basePackage) {
         if (Utils.isNotEmpty(basePackage)) {
             Collection<Class<?>> classes = ResourceUtil.scanClasses(basePackage);
             for (Class<?> clazz : classes)
@@ -34,6 +34,9 @@ public class HibernateConfiguration extends Configuration {
         return this;
     }
 
+    /**
+     * 设置数据源
+     */
     public HibernateConfiguration setDataSource(DataSource dataSource) {
         if (dataSource != null) {
             this.getProperties().put(AvailableSettings.DATASOURCE, dataSource);
@@ -41,6 +44,9 @@ public class HibernateConfiguration extends Configuration {
         return this;
     }
 
+    /**
+     * 设置属性
+     */
     public HibernateConfiguration setProperties(Properties properties) {
         if (properties != null) {
             properties.entrySet().forEach(obj -> {
@@ -50,12 +56,15 @@ public class HibernateConfiguration extends Configuration {
         return this;
     }
 
+    /**
+     * 构建会话工具
+     */
     @Override
     public SessionFactory buildSessionFactory() throws HibernateException {
         getProperties().put(AvailableSettings.TRANSACTION_COORDINATOR_STRATEGY, "jdbc");
         getProperties().put(AvailableSettings.CURRENT_SESSION_CONTEXT_CLASS, ThreadLocalSessionContext.class.getName());
 
         SessionFactory sessionFactory = super.buildSessionFactory();
-        return sessionFactory;
+        return new SessionFactoryProxy(sessionFactory);
     }
 }
