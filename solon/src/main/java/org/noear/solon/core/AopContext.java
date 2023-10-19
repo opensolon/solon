@@ -711,7 +711,7 @@ public abstract class AopContext extends BeanContainer {
         Annotation[] annS = clz.getAnnotations();
 
         if (annS.length == 0 && clz.isInterface()) {// 当注入对象是接口时，获取所有注解，针对自定义 BeanBuilder https://gitee.com/noear/solon/issues/I89EGF
-            annS = ClassUtil.getInterfaceAllAnnotations(clz);
+            annS = ClassUtil.getInterfaceAnnotations(clz);
         }
 
         if (annS.length > 0) {

@@ -184,12 +184,12 @@ public class ClassUtil {
      * @param clz 接口类
      * @return 注解
      */
-    public static Annotation[] getInterfaceAllAnnotations(Class<?> clz) {
+    public static Annotation[] getInterfaceAnnotations(Class<?> clz) {
         for (Class<?> clazz : clz.getInterfaces()) {
             if (clazz.getInterfaces().length == 0)
                 return clazz.getAnnotations();
             else
-                return getInterfaceAllAnnotations(clazz);
+                return getInterfaceAnnotations(clazz);
         }
         return new Annotation[0];
     }
