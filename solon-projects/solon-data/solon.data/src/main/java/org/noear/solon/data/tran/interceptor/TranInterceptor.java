@@ -5,8 +5,6 @@ import org.noear.solon.data.annotation.Tran;
 import org.noear.solon.core.aspect.Interceptor;
 import org.noear.solon.data.tran.TranUtils;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -17,16 +15,6 @@ import java.util.concurrent.atomic.AtomicReference;
  * */
 public class TranInterceptor implements Interceptor {
     public static final TranInterceptor instance = new TranInterceptor();
-
-    private List<TranBefore> beforeList = new ArrayList<>();
-
-    public void beforeAdd(TranBefore tranBefore) {
-        beforeList.add(tranBefore);
-    }
-
-    public void beforeRemove(TranBefore tranBefore) {
-        beforeList.remove(tranBefore);
-    }
 
     @Override
     public Object doIntercept(Invocation inv) throws Throwable {
@@ -42,10 +30,6 @@ public class TranInterceptor implements Interceptor {
             Tran anno0 = anno;
 
             TranUtils.execute(anno0, () -> {
-                for (TranBefore before : beforeList) {
-                    before.onTranBefore(anno0, inv);
-                }
-
                 val0.set(inv.invoke());
             });
 
