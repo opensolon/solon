@@ -14,6 +14,7 @@ import java.util.Properties;
 
 /**
  * @author lingkang
+ * @author bai
  * @since 2.5
  */
 public class HibernateConfiguration extends Configuration {

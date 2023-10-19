@@ -8,6 +8,10 @@ import org.noear.solon.core.VarHolder;
 
 import javax.sql.DataSource;
 
+/**
+ * @author lingkang
+ * @since 2.5
+ */
 public class DbBeanInjector implements BeanInjector<Db> {
     @Override
     public void doInject(VarHolder varH, Db anno) {

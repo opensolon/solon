@@ -21,6 +21,8 @@ import java.util.Map;
 import java.util.Set;
 
 /**
+ * JpaTranSessionFactory（通过静态代理实现事务管理）
+ *
  * @author noear
  * @since 2.5
  */

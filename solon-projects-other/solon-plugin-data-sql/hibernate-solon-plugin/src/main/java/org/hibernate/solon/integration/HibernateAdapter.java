@@ -59,6 +59,9 @@ public class HibernateAdapter {
     }
 
 
+    /**
+     * @author bai
+     * */
     protected void initConfiguration() {
         // 默认兼容 hibernate.cfg.xml
         if (ResourceUtil.hasResource(null, StandardServiceRegistryBuilder.DEFAULT_CFG_RESOURCE_NAME)){

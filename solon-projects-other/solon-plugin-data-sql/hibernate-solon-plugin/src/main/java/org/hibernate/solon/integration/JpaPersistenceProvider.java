@@ -11,6 +11,9 @@ import java.util.Map;
 
 /**
  * 提供 java 配置的数据源支持
+ *
+ * @author noear
+ * @since 2.5
  * */
 public class JpaPersistenceProvider implements PersistenceProvider {
     private final PersistenceUtilHelper.MetadataCache cache = new PersistenceUtilHelper.MetadataCache();
