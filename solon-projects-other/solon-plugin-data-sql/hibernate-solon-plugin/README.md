@@ -31,15 +31,16 @@ test.db1:
 
 #db test的hibernate配置
 jpa.test:
-  mapping:
+  mappings:
     - org.example.entity.*
-  hibernate:
-    hbm2ddl:
-      auto: create
-    show_sql: true
-    format_sql: true
-    dialect: org.hibernate.dialect.MySQL8Dialect
-    connection:
-      isolaction: 4 # 事务隔离级别 4 可重复度
+  properties:
+    hibernate:
+      hbm2ddl:
+        auto: create
+      show_sql: true
+      format_sql: true
+      dialect: org.hibernate.dialect.MySQL8Dialect
+      connection:
+        isolaction: 4 # 事务隔离级别 4 可重复度
 ```
 

@@ -23,7 +23,7 @@ public class HibernateAdapter {
     protected HibernateConfiguration configuration;
 
     public HibernateAdapter(BeanWrap dsWrap) {
-        this(dsWrap, Solon.cfg().getProp("hibernate"));
+        this(dsWrap, Solon.cfg().getProp("jpa"));
     }
 
     public HibernateAdapter(BeanWrap dsWrap, Props dsProps) {
@@ -68,7 +68,7 @@ public class HibernateAdapter {
             configuration.configure(StandardServiceRegistryBuilder.DEFAULT_CFG_RESOURCE_NAME );
         }
         // 加载hibernate常规设置
-        getConfiguration().setProperties(this.dsProps);
+        getConfiguration().setProperties(this.dsProps.getProp("properties"));
     }
 
     protected void initDo() {
@@ -78,7 +78,7 @@ public class HibernateAdapter {
                 String key = (String) k;
                 String valStr = (String) v;
 
-                if (key.startsWith("mapping[") || key.equals("mapping")) {
+                if (key.startsWith("mappings[") || key.equals("mappings")) {
                     for (String val : valStr.split(",")) {
                         val = val.trim();
                         if (val.length() == 0) {
