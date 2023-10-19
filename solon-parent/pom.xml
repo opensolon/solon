@@ -107,10 +107,10 @@
         <dubbo2.version>2.7.5</dubbo2.version>
         <dubbo3.version>3.2.7</dubbo3.version>
 
-        <rocketmq4.version>4.9.5</rocketmq4.version>
+        <rocketmq4.version>4.9.7</rocketmq4.version>
         <rocketmq5.version>5.0.5</rocketmq5.version>
-        <rabbitmq.version>5.18.0</rabbitmq.version>
-        <kafka_2.13.version>3.5.1</kafka_2.13.version>
+        <rabbitmq.version>5.19.0</rabbitmq.version>
+        <kafka_2.13.version>3.6.0</kafka_2.13.version>
 
         <nacos1.version>1.4.5</nacos1.version>
         <nacos2.version>2.2.4</nacos2.version>

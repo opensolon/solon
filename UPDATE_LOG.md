@@ -43,7 +43,10 @@
 * beetlsql 升为 3.26.0-RELEASE
 * beetl 升为 3.15.10.RELEASE
 * fastjson2 升为 2.0.41
+* rabbitmq 升为 5.19.0
 * dubbo3 升为 3.2.7
+* rocketmq4 升为 2.9.7
+* kafka_2.13 升为 3.6.0
 
 ### 2.5.10
 * 新增 ConverterFactory 接口
