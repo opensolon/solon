@@ -38,6 +38,7 @@
 * sqltoy 升为 5.2.72
 * mybatis-flex 升为 1.7.2
 * sa-token 升为 1.37.0
+* redisx 升为 1.6.1
 
 ### 2.5.10
 * 新增 ConverterFactory 接口
