@@ -4,10 +4,10 @@ import org.noear.solon.Solon;
 import org.noear.solon.core.*;
 import org.noear.solon.data.annotation.*;
 import org.noear.solon.data.cache.*;
-import org.noear.solon.data.around.CacheInterceptor;
-import org.noear.solon.data.around.CachePutInterceptor;
-import org.noear.solon.data.around.CacheRemoveInterceptor;
-import org.noear.solon.data.around.TranInterceptor;
+import org.noear.solon.data.cache.interceptor.CacheInterceptor;
+import org.noear.solon.data.cache.interceptor.CachePutInterceptor;
+import org.noear.solon.data.cache.interceptor.CacheRemoveInterceptor;
+import org.noear.solon.data.tran.interceptor.TranInterceptor;
 
 public class XPluginImpl implements Plugin {
     @Override
@@ -17,7 +17,7 @@ public class XPluginImpl implements Plugin {
 
         //添加事务控制支持
         if (Solon.app().enableTransaction()) {
-            context.beanInterceptorAdd(Tran.class, new TranInterceptor(), 120);
+            context.beanInterceptorAdd(Tran.class, TranInterceptor.instance, 120);
         }
 
         //添加缓存控制支持

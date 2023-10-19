@@ -18,7 +18,7 @@ public class HibernatePluginImpl implements Plugin {
 
     @Override
     public void start(AppContext context) throws Throwable {
-        //支持 jpa
+        //增加 jpa 的 solon yml 配置支持
         PersistenceProviderResolverHolder
                 .getPersistenceProviderResolver()
                 .getPersistenceProviders()
