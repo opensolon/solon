@@ -43,6 +43,7 @@
 * beetlsql 升为 3.26.0-RELEASE
 * beetl 升为 3.15.10.RELEASE
 * fastjson2 升为 2.0.41
+* dubbo3 升为 3.2.7
 
 ### 2.5.10
 * 新增 ConverterFactory 接口
