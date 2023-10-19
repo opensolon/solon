@@ -2,6 +2,7 @@ package org.noear.solon.core.util;
 
 import org.noear.solon.core.AppClassLoader;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Properties;
 
@@ -175,5 +176,21 @@ public class ClassUtil {
     @Deprecated
     public static <T> T newInstance(ClassLoader classLoader, String className, Properties prop) {
         return tryInstance(classLoader, className, prop);
+    }
+
+    /**
+     * 递归获取接口上所有注解，包括接口继承了的接口
+     *
+     * @param clz 接口类
+     * @return 注解
+     */
+    public static Annotation[] getInterfaceAllAnnotations(Class<?> clz) {
+        for (Class<?> clazz : clz.getInterfaces()) {
+            if (clazz.getInterfaces().length == 0)
+                return clazz.getAnnotations();
+            else
+                return getInterfaceAllAnnotations(clazz);
+        }
+        return new Annotation[0];
     }
 }
