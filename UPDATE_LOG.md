@@ -48,6 +48,7 @@
 * rocketmq4 升为 2.9.7
 * kafka_2.13 升为 3.6.0
 * sms4j 升为 3.0.2
+* dromara-plugins 升为 0.1.1
 
 ### 2.5.10
 * 新增 ConverterFactory 接口
