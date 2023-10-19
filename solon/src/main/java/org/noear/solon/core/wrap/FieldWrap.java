@@ -58,7 +58,7 @@ public class FieldWrap {
     protected FieldWrap(Class<?> clz, Field f1, boolean isFinal) {
         entityClz = clz;
         field = f1;
-        annoS = f1.getDeclaredAnnotations();
+        annoS = f1.getAnnotations();
         readonly = isFinal;
 
         Type tmp = f1.getGenericType();

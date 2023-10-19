@@ -708,7 +708,7 @@ public abstract class AopContext extends BeanContainer {
     private final Set<Class<?>> beanCreatedCached = new HashSet<>();
 
     private void tryCreateBean0(Class<?> clz, BiConsumerEx<BeanBuilder, Annotation> consumer) {
-        Annotation[] annS = clz.getDeclaredAnnotations();
+        Annotation[] annS = clz.getAnnotations();
 
         if (annS.length > 0) {
             //去重处理
@@ -765,7 +765,7 @@ public abstract class AopContext extends BeanContainer {
                 VarHolder varH = new VarHolderOfParam(bw.context(), pw.getParameter(), gather);
                 gather.add(varH);
 
-                Annotation[] annoS = pw.getParameter().getDeclaredAnnotations();
+                Annotation[] annoS = pw.getParameter().getAnnotations();
                 if (annoS.length == 0) {
                     //没带注解的，算必须
                     beanInject(varH, null, true, false);
