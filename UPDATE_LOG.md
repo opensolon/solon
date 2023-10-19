@@ -41,6 +41,7 @@
 * redisx 升为 1.6.1
 * smarthttp 升为 1.3.4
 * beetlsql 升为 3.26.0-RELEASE
+* beetl 升为 3.15.10.RELEASE
 
 ### 2.5.10
 * 新增 ConverterFactory 接口
