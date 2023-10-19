@@ -40,6 +40,7 @@
 * sa-token 升为 1.37.0
 * redisx 升为 1.6.1
 * smarthttp 升为 1.3.4
+* beetlsql 升为 3.26.0-RELEASE
 
 ### 2.5.10
 * 新增 ConverterFactory 接口
