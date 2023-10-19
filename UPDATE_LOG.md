@@ -36,7 +36,7 @@
   添加 sockted.session::stopHeartbeatAuto 接口
 * liteflow 升为 2.11.2
 * sqltoy 升为 5.2.72
-* mybatis-flex 升为 1.7.1
+* mybatis-flex 升为 1.7.2
 * sa-token 升为 1.37.0
 
 ### 2.5.10
