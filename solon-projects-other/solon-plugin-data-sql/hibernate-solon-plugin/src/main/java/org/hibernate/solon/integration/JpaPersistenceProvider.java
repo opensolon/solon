@@ -1,8 +1,6 @@
-package org.hibernate.solon.jpa;
+package org.hibernate.solon.integration;
 
 import org.hibernate.jpa.internal.util.PersistenceUtilHelper;
-import org.hibernate.solon.integration.HibernateAdapter;
-import org.hibernate.solon.integration.HibernateAdapterManager;
 
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.spi.LoadState;
@@ -14,7 +12,7 @@ import java.util.Map;
 /**
  * 提供 java 配置的数据源支持
  * */
-public class SolonPersistenceProvider implements PersistenceProvider {
+public class JpaPersistenceProvider implements PersistenceProvider {
     private final PersistenceUtilHelper.MetadataCache cache = new PersistenceUtilHelper.MetadataCache();
 
     @Override

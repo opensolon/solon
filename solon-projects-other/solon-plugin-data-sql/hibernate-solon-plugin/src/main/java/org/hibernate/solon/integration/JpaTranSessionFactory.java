@@ -24,10 +24,10 @@ import java.util.Set;
  * @author noear
  * @since 2.5
  */
-public class SessionFactoryProxy implements SessionFactory {
+public class JpaTranSessionFactory implements SessionFactory {
     private SessionFactory real;
 
-    public SessionFactoryProxy(SessionFactory real) {
+    public JpaTranSessionFactory(SessionFactory real) {
         this.real = real;
     }
 

@@ -65,6 +65,6 @@ public class HibernateConfiguration extends Configuration {
         getProperties().put(AvailableSettings.CURRENT_SESSION_CONTEXT_CLASS, ThreadLocalSessionContext.class.getName());
 
         SessionFactory sessionFactory = super.buildSessionFactory();
-        return new SessionFactoryProxy(sessionFactory);
+        return new JpaTranSessionFactory(sessionFactory);
     }
 }

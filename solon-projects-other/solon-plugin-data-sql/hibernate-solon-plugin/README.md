@@ -5,16 +5,16 @@
 
 ### 1、原生 jpa 接口
 
-* 主要由添加个 SolonPersistenceProvider 实现。从而避开需要 xml 文件（也还可以有 hibernate 提供者支持）
+* 主要由添加个 JpaPersistenceProvider 实现。从而避开需要 xml 文件（也还可以有 hibernate 提供者支持）
 
 ```java
 PersistenceProviderResolverHolder
                 .getPersistenceProviderResolver()
                 .getPersistenceProviders()
-                .add(new SolonPersistenceProvider());
+                .add(new JpaPersistenceProvider());
 ```
 
-* 通过 SessionFactoryProxy 代理，与 Solon 事务完成对接
+* 通过 JpaTranSessionFactory 代理，与 Solon 事务完成对接
 
 ### 2、使用示例
 
