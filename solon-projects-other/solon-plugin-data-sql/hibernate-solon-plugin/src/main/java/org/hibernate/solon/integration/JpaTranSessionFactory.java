@@ -36,24 +36,27 @@ public class JpaTranSessionFactory implements SessionFactory {
     private <T extends EntityManager> T tranTry(T entityManager){
         if(TranUtils.inTrans()){
             EntityTransaction transaction = entityManager.getTransaction();
-            transaction.begin();
 
-            TranUtils.listen(new TranListener() {
-                @Override
-                public void beforeCommit(boolean readOnly) throws Throwable {
-                    if (readOnly) {
-                        transaction.setRollbackOnly();
-                    }
-                    transaction.commit();
-                }
+            if(transaction.isActive() == false) {
+                transaction.begin();
 
-                @Override
-                public void afterCompletion(int status) {
-                    if (status == TranListener.STATUS_ROLLED_BACK) {
-                        transaction.rollback();
+                TranUtils.listen(new TranListener() {
+                    @Override
+                    public void beforeCommit(boolean readOnly) throws Throwable {
+                        if (readOnly) {
+                            transaction.setRollbackOnly();
+                        }
+                        transaction.commit();
                     }
-                }
-            });
+
+                    @Override
+                    public void afterCompletion(int status) {
+                        if (status == TranListener.STATUS_ROLLED_BACK) {
+                            transaction.rollback();
+                        }
+                    }
+                });
+            }
         }
 
         return entityManager;
@@ -76,7 +79,7 @@ public class JpaTranSessionFactory implements SessionFactory {
 
     @Override
     public Session getCurrentSession() throws HibernateException {
-        return real.getCurrentSession();
+        return tranTry(real.getCurrentSession());
     }
 
     @Override
