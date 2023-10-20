@@ -26,6 +26,7 @@
 ### 2.5.11
 * 新增 nami.coder.fury 插件
 * 新增 solon.serialization.fury 插件
+* 新增 hibernate-solon-plugin 插件（提供标准 jpa 支持）
 * 取消 @Init 的弃用提示（改为推荐了）
 * 修复 @Import::classes 未被执行的问题
 * 修复 sockted.session 自动心跳不能停止的问题
