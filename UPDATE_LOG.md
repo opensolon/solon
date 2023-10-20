@@ -34,7 +34,8 @@
 * 调整 sockted.session::sendHeartbeatAuto 更名为 startHeartbeatAuto （内部接口）
 * 添加 @Import::profiles, @Import::profilesIfAbsent 接口
 * 添加 DynamicDsKey 类, 替代 DynamicDsHolder
-  添加 sockted.session::stopHeartbeatAuto 接口
+* 添加 sockted.session::stopHeartbeatAuto 接口
+* snack3 升为 3.2.81
 * liteflow 升为 2.11.2
 * sqltoy 升为 5.2.72
 * mybatis-flex 升为 1.7.2
