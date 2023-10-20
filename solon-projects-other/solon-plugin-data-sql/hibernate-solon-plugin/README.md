@@ -30,7 +30,7 @@ test.db1:
   password: root
 
 #db test的hibernate配置
-jpa.test:
+jpa.db1:
   mappings:
     - org.example.entity.*
   properties:
@@ -42,5 +42,53 @@ jpa.test:
       dialect: org.hibernate.dialect.MySQL8Dialect
       connection:
         isolaction: 4 # 事务隔离级别 4 可重复度
+```
+
+* 构建数据源
+
+```java
+//配置数据源
+@Configuration
+public class Config {
+    //此下的 db1 与 beetlsql.db1 将对应在起来 //可以用 @Db("db1") 注入mapper
+    //typed=true，表示默认数据源。@Db 可不带名字注入 
+    @Bean(name="db1", typed=true)
+    public DataSource db1(@Inject("${demo.db1}") HikariDataSource ds) {
+        return ds;
+    }
+}
+```
+
+* 应用
+
+```java
+@Mapping("jpa")
+@Controller
+public class JapController {
+    @Db
+    private EntityManagerFactory entityManagerFactory;
+
+    private EntityManager openSession() {
+        return entityManagerFactory.createEntityManager();
+    }
+
+    @Tran
+    @Mapping("/t")
+    public void t1() {
+        HttpEntity entity = new HttpEntity();
+        entity.setId(System.currentTimeMillis() + "");
+
+        openSession().persist(entity);
+
+    }
+
+    @Mapping("/t2")
+    public Object t2() {
+        HttpEntity entity = new HttpEntity();
+        entity.setId(System.currentTimeMillis() + "");
+
+        return openSession().find(HttpEntity.class, "1");
+    }
+}
 ```
 
