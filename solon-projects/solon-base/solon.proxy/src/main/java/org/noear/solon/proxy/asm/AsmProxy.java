@@ -24,10 +24,10 @@ public class AsmProxy {
         Class<?> proxyClass = null;
 
         //确定代理类加载器
-        AsmProxyClassLoader classLoader = (AsmProxyClassLoader) context.getAttrs().get(AsmProxyClassLoader.class);
+        AsmProxyClassLoader classLoader = context.attachmentGet(AsmProxyClassLoader.class);
         if (classLoader == null) {
             classLoader = new AsmProxyClassLoader(context.getClassLoader());
-            context.getAttrs().put(AsmProxyClassLoader.class, classLoader);
+            context.attachmentSet(AsmProxyClassLoader.class, classLoader);
         } else {
             //尝试获取类
             proxyClass = ClassUtil.loadClass(classLoader, proxyClassName);

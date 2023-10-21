@@ -12,18 +12,27 @@ import java.util.Set;
  * @author noear
  * @since  2.2
  */
-public class AotCollector{
+public class AotCollector {
     private final Set<Class<?>> entityTypes = new LinkedHashSet<>();
     private final Set<Class<?>> jdkProxyTypes = new LinkedHashSet<>();
 
+    /**
+     * 获取实体类型
+     */
     public Set<Class<?>> getEntityTypes() {
         return entityTypes;
     }
 
+    /**
+     * 获取Jdk代理类型
+     */
     public Set<Class<?>> getJdkProxyTypes() {
         return jdkProxyTypes;
     }
 
+    /**
+     * 注册实体类型
+     */
     public void registerEntityType(Class<?> type, ParameterizedType genericType) {
         if (NativeDetector.isAotRuntime()) {
             if (type.getName().startsWith("java.") == false) {
@@ -42,6 +51,9 @@ public class AotCollector{
         }
     }
 
+    /**
+     * 注册jdk代理类型
+     */
     public void registerJdkProxyType(Class<?> type, Object target) {
         if (NativeDetector.isAotRuntime()) {
             if (Proxy.isProxyClass(target.getClass())) {
@@ -52,6 +64,9 @@ public class AotCollector{
         }
     }
 
+    /**
+     * 清空
+     */
     public void clear() {
         entityTypes.clear();
         jdkProxyTypes.clear();
