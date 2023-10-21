@@ -7,6 +7,8 @@ import org.apache.ibatis.cache.decorators.WeakCache;
 import org.apache.ibatis.cache.impl.PerpetualCache;
 import org.apache.ibatis.executor.Executor;
 import org.apache.ibatis.executor.statement.StatementHandler;
+import org.apache.ibatis.io.DefaultVFS;
+import org.apache.ibatis.io.JBoss6VFS;
 import org.apache.ibatis.javassist.util.proxy.ProxyFactory;
 import org.apache.ibatis.javassist.util.proxy.RuntimeSupport;
 import org.apache.ibatis.logging.Log;
@@ -30,6 +32,8 @@ import org.noear.solon.aot.RuntimeNativeRegistrar;
 import org.noear.solon.aot.hint.ExecutableMode;
 import org.noear.solon.aot.hint.MemberCategory;
 import org.noear.solon.core.AppContext;
+import org.noear.solon.core.wrap.MethodWrap;
+
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -90,19 +94,21 @@ public class MybatisRuntimeNativeRegistrar implements RuntimeNativeRegistrar {
         metadata.registerReflection(Configuration.class, MemberCategory.DECLARED_FIELDS);
         metadata.registerAllDeclaredMethod(Configuration.class, ExecutableMode.INVOKE);
 
+        metadata.registerReflection(JBoss6VFS.class, MemberCategory.INVOKE_PUBLIC_CONSTRUCTORS);
+        metadata.registerReflection(DefaultVFS.class, MemberCategory.INVOKE_PUBLIC_CONSTRUCTORS);
 
         for (String name : MybatisAdapterManager.getAll().keySet()) {
             //用 name 找，避免出现重复的（默认的name=null）
             if (Utils.isNotEmpty(name)) {
                 MybatisAdapter adapter = MybatisAdapterManager.getOnly(name);
                 if (adapter instanceof MybatisAdapterDefault) {
-                    registerMybatisAdapter(metadata, (MybatisAdapterDefault) adapter);
+                    registerMybatisAdapter(context, metadata, (MybatisAdapterDefault) adapter);
                 }
             }
         }
     }
 
-    protected void registerMybatisAdapter(RuntimeNativeMetadata metadata, MybatisAdapterDefault bean) {
+    protected void registerMybatisAdapter(AppContext context, RuntimeNativeMetadata metadata, MybatisAdapterDefault bean) {
         //注册 xml 资源
         for (String res : bean.getMappers()) {
             if (res.startsWith(Utils.TAG_classpath)) {
@@ -119,8 +125,15 @@ public class MybatisRuntimeNativeRegistrar implements RuntimeNativeRegistrar {
             metadata.registerReflection(clz, MemberCategory.INTROSPECT_PUBLIC_METHODS);
             Method[] declaredMethods = clz.getDeclaredMethods();
             for (Method method : declaredMethods) {
-                metadata.registerMethod(method, ExecutableMode.INVOKE);
+                MethodWrap methodWrap = context.methodGet(method);
+                metadata.registerMethodAndParamAndReturnType(methodWrap);
             }
+        }
+
+        // 注册 entity
+        for (Class<?> clz : bean.getConfiguration().getTypeAliasRegistry().getTypeAliases().values()) {
+            metadata.registerReflection(clz, MemberCategory.DECLARED_FIELDS, MemberCategory.INVOKE_PUBLIC_CONSTRUCTORS);
+            metadata.registerDefaultConstructor(clz);
         }
     }
 }
