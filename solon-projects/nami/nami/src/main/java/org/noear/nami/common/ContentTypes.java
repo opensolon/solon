@@ -19,12 +19,14 @@ public class ContentTypes {
     //完整的 Content-Type 申明
 
     public static final String HESSIAN = "Content-Type=application/hessian";
+    public static final String FURY = "Content-Type=application/fury";
     public static final String PROTOBUF = "Content-Type=application/protobuf";
     public static final String JSON = "Content-Type=application/json";
     public static final String JSON_TYPE = "Content-Type=application/json-type";
 
 
     public static final String HESSIAN_ACCEPT = "Accept=application/hessian";
+    public static final String FURY_ACCEPT = "Accept=application/fury";
     public static final String PROTOBUF_ACCEPT = "Accept=application/protobuf";
     public static final String JSON_ACCEPT = "Accept=application/json";
 }
