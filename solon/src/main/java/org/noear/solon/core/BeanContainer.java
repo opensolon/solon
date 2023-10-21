@@ -317,7 +317,9 @@ public abstract class BeanContainer {
      * wrap 外部订阅
      */
     protected void wrapExternalSubscribe(Consumer<BeanWrap> callback) {
-        wrapExternalConsumers.add(callback);
+        synchronized (wrapExternalConsumers) {
+            wrapExternalConsumers.add(callback);
+        }
     }
 
     /**
@@ -332,9 +334,9 @@ public abstract class BeanContainer {
             //避免在forEach时，对它进行add
             Set<Consumer<BeanWrap>> tmp = beanSubscribers.get(nameOrType);
             if (tmp != null) {
-                tmp.forEach(s1 -> {
+                for (Consumer<BeanWrap> s1 : tmp) {
                     s1.accept(wrap);
-                });
+                }
             }
         }
     }
@@ -344,9 +346,11 @@ public abstract class BeanContainer {
      */
     public void wrapPublish(BeanWrap wrap) {
         //避免在forEach时，对它进行add
-        new ArrayList<>(wrapExternalConsumers).forEach(s1 -> {
-            s1.accept(wrap);
-        });
+        synchronized (wrapExternalConsumers) {
+            for (Consumer<BeanWrap> s1 : wrapExternalConsumers) {
+                s1.accept(wrap);
+            }
+        }
     }
 
 
