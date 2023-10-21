@@ -254,6 +254,16 @@ public interface Session {
 
     /**
      * 开始自动心跳
+     *
+     * @deprecated 2.5
+     */
+    @Deprecated
+    default void sendHeartbeatAuto(int intervalSeconds){
+        startHeartbeatAuto(intervalSeconds);
+    }
+
+    /**
+     * 开始自动心跳
      */
     void startHeartbeatAuto(int intervalSeconds);
 
