@@ -4,16 +4,33 @@ import org.noear.snack.ONode;
 import org.noear.snack.core.Feature;
 import org.noear.snack.core.Options;
 import org.noear.solon.Utils;
-import org.noear.solon.aot.hint.*;
+import org.noear.solon.aot.hint.ExecutableHint;
+import org.noear.solon.aot.hint.ExecutableMode;
+import org.noear.solon.aot.hint.JdkProxyHint;
+import org.noear.solon.aot.hint.MemberCategory;
+import org.noear.solon.aot.hint.ReflectionHints;
+import org.noear.solon.aot.hint.ResourceHint;
+import org.noear.solon.aot.hint.SerializationHint;
 import org.noear.solon.core.AppClassLoader;
 import org.noear.solon.core.util.ClassUtil;
+import org.noear.solon.core.util.GenericUtil;
 import org.noear.solon.core.util.ReflectUtil;
 import org.noear.solon.core.util.ScanUtil;
+import org.noear.solon.core.wrap.MethodWrap;
+import org.noear.solon.core.wrap.ParamWrap;
 
+import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -162,6 +179,37 @@ public class RuntimeNativeMetadata {
 
     public RuntimeNativeMetadata registerMethod(Method method, ExecutableMode mode) {
         return registerReflection(method.getDeclaringClass(), hints -> hints.getMethods().add(new ExecutableHint(method.getName(), method.getParameterTypes(), mode)));
+    }
+
+    /**
+     * 将方法设置为可执行，同时注册方法参数、参数泛型和返回值、返回值泛型
+     */
+    public RuntimeNativeMetadata registerMethodAndParamAndReturnType(MethodWrap methodWrap) {
+        registerMethod(methodWrap.getMethod(), ExecutableMode.INVOKE);
+
+        ParamWrap[] paramWraps = methodWrap.getParamWraps();
+        for (ParamWrap paramWrap : paramWraps) {
+            Class<?> paramType = paramWrap.getType();
+            this.registerReflection(paramType, MemberCategory.DECLARED_FIELDS, MemberCategory.INVOKE_PUBLIC_CONSTRUCTORS, MemberCategory.INVOKE_DECLARED_METHODS);
+            if (!paramType.getName().startsWith("java.") && Serializable.class.isAssignableFrom(paramType)) {
+                this.registerSerialization(paramType);
+            }
+
+            // 参数的泛型
+            Type genericType = paramWrap.getGenericType();
+            processGenericType(genericType);
+        }
+
+        Class<?> returnType = methodWrap.getReturnType();
+        this.registerReflection(returnType, MemberCategory.DECLARED_FIELDS, MemberCategory.INVOKE_PUBLIC_CONSTRUCTORS, MemberCategory.INVOKE_DECLARED_METHODS);
+        if (!returnType.getName().startsWith("java.") && Serializable.class.isAssignableFrom(returnType)) {
+            this.registerSerialization(returnType);
+        }
+
+        // 返回值的泛型
+        Type genericReturnType = methodWrap.getGenericReturnType();
+        processGenericType(genericReturnType);
+        return this;
     }
 
     /**
@@ -513,6 +561,15 @@ public class RuntimeNativeMetadata {
             serializationHint.setCustomTargetConstructorClass(customTargetConstructorClass);
             serializationHint.setReachableType(reachableType);
             lambdaSerializations.put(name, serializationHint);
+        }
+    }
+
+    private void processGenericType(Type genericType) {
+        Map<String, Type> genericInfo = GenericUtil.getGenericInfo(genericType);
+        for (Map.Entry<String, Type> entry : genericInfo.entrySet()) {
+            if (!entry.getValue().getTypeName().startsWith("java.")) {
+                this.registerReflection(entry.getValue().getTypeName(), MemberCategory.DECLARED_FIELDS, MemberCategory.INVOKE_PUBLIC_CONSTRUCTORS, MemberCategory.INVOKE_DECLARED_METHODS);
+            }
         }
     }
 }
