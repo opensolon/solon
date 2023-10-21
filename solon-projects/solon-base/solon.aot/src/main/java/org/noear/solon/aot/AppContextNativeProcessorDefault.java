@@ -9,10 +9,11 @@ import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.core.util.ReflectUtil;
 import org.noear.solon.core.wrap.ClassWrap;
 import org.noear.solon.core.wrap.FieldWrap;
-import org.noear.solon.core.wrap.ParamWrap;
 
 import java.io.Serializable;
-import java.lang.reflect.*;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
 import java.sql.Driver;
 import java.sql.DriverManager;
 import java.util.Arrays;
@@ -28,12 +29,12 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @since 2.2
  */
 public class AppContextNativeProcessorDefault implements AppContextNativeProcessor {
-    public static final String AOT_PROXY_CLASSNAME_SUFFIX ="$$SolonAotProxy";
-    public static final String ASM_PROXY_CLASSNAME_SUFFIX ="$$SolonAsmProxy";
+    public static final String AOT_PROXY_CLASSNAME_SUFFIX = "$$SolonAotProxy";
+    public static final String ASM_PROXY_CLASSNAME_SUFFIX = "$$SolonAsmProxy";
 
     private final ProxyClassGenerator proxyClassGenerator;
 
-    public AppContextNativeProcessorDefault(){
+    public AppContextNativeProcessorDefault() {
         proxyClassGenerator = new ProxyClassGenerator();
     }
 
@@ -80,39 +81,7 @@ public class AppContextNativeProcessorDefault implements AppContextNativeProcess
         });
 
         //for methodWrap
-        context.methodForeach(methodWrap -> {
-            processMethodDo(metadata, methodWrap.getMethod());
-
-            {
-                Class<?> returnType = methodWrap.getReturnType();
-                processSerialization(metadata, returnType);
-
-                Type genericReturnType = methodWrap.getGenericReturnType();
-                if (genericReturnType instanceof ParameterizedType) {
-                    for (Type arg1 : ((ParameterizedType) genericReturnType).getActualTypeArguments()) {
-                        if (arg1 instanceof Class) {
-                            Class<?> arg1c = (Class<?>) arg1;
-                            processSerialization(metadata, arg1c);
-                        }
-                    }
-                }
-            }
-
-            for(ParamWrap  paramWrap : methodWrap.getParamWraps()) {
-                Class<?> type = paramWrap.getType();
-                processSerialization(metadata, type);
-
-                Type genericType = paramWrap.getGenericType();
-                if (genericType instanceof ParameterizedType) {
-                    for (Type arg1 : ((ParameterizedType) genericType).getActualTypeArguments()) {
-                        if (arg1 instanceof Class) {
-                            Class<?> arg1c = (Class<?>) arg1;
-                            processSerialization(metadata, arg1c);
-                        }
-                    }
-                }
-            }
-        });
+        context.methodForeach(metadata::registerMethodAndParamAndReturnType);
 
         //for @Inject(${..}) clz (entity)
         for (Class<?> clz : context.aot().getEntityTypes()) {
@@ -123,7 +92,7 @@ public class AppContextNativeProcessorDefault implements AppContextNativeProcess
         }
 
         //for jdk proxy interface
-        for(Class<?> clz : context.aot().getJdkProxyTypes()) {
+        for (Class<?> clz : context.aot().getJdkProxyTypes()) {
             if (clz.getName().startsWith("java.") == false) {
                 metadata.registerJdkProxy(clz);
             }
@@ -131,7 +100,7 @@ public class AppContextNativeProcessorDefault implements AppContextNativeProcess
 
         //for jdbc Driver
         Enumeration<Driver> drivers = DriverManager.getDrivers();
-        while (drivers.hasMoreElements()){
+        while (drivers.hasMoreElements()) {
             metadata.registerReflection(drivers.nextElement().getClass(), MemberCategory.INVOKE_DECLARED_CONSTRUCTORS);
         }
 
@@ -144,14 +113,13 @@ public class AppContextNativeProcessorDefault implements AppContextNativeProcess
 
     /**
      * 处理序列化类
-     * */
-    protected void processSerialization(RuntimeNativeMetadata metadata, Class<?> type){
+     */
+    protected void processSerialization(RuntimeNativeMetadata metadata, Class<?> type) {
         if (type.getName().startsWith("java.") == false && Serializable.class.isAssignableFrom(type)) {
             //是 Serializable 的做自动注册（不则，怕注册太多了）
             metadata.registerSerialization(type);
         }
     }
-
 
 
     protected void processBeanDo(RuntimeNativeMetadata nativeMetadata, Class<?> clazz, boolean supportProxy) {
@@ -183,7 +151,7 @@ public class AppContextNativeProcessorDefault implements AppContextNativeProcess
         nativeMetadata.registerMethod(method, ExecutableMode.INVOKE);
     }
 
-    protected void processBeanFieldsDo(RuntimeNativeMetadata nativeMetadata, Class<?> clazz){
+    protected void processBeanFieldsDo(RuntimeNativeMetadata nativeMetadata, Class<?> clazz) {
         ClassWrap clzWrap = ClassWrap.get(clazz);
 
         // 处理字段
