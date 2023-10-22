@@ -467,6 +467,7 @@ public class Props extends Properties {
                 if (addIfAbsent) {
                     //如果已存在，则不盖掉
                     if (containsKey(k1)) {
+                        tempPropMap.remove(k1);
                         continue;
                     }
                 }
@@ -532,7 +533,7 @@ public class Props extends Properties {
 
         Properties tempProps = new Properties();
         tempProps.putAll(tempPropMap);
-        this.loadAddDo(tempProps, false, false, isEnd);
+        this.loadAddDo(tempProps, false, isEnd, isEnd);
 
         //如果还存在遗留项则抛出异常
         if (isEnd && tempPropMap.size() > 0) {
