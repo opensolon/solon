@@ -507,7 +507,11 @@ public class Props extends Properties {
 
                         if (key.contains("-")) {
                             String camelKey = buildCamelKey(key);
-                            put(camelKey, v1);
+                            if (addIfAbsent) {
+                                putIfAbsent(camelKey, v1);
+                            } else {
+                                put(camelKey, v1);
+                            }
                         }
                     }
                 }
