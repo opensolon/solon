@@ -31,7 +31,8 @@
 * 修复 @Import::classes 未被执行的问题
 * 修复 sockted.session 自动心跳不能停止的问题
 * 修复 solon.logging.logback 控制台等级 yml 配置失效的问题
-* 优化 多配置加载的校验机制
+* 优化 Solon::cfg() 多配置加载的校验机制
+* 优化 solon.logging.logback 原生编译元信息配置
 * 调整 sockted.session::sendHeartbeatAuto 更名为 startHeartbeatAuto （内部接口）
 * 添加 @Import::profiles, @Import::profilesIfAbsent 接口
 * 添加 DynamicDsKey 类, 替代 DynamicDsHolder
