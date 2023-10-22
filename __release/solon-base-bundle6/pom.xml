@@ -20,6 +20,7 @@
         <module>../../solon-projects/solon-boot/solon.boot.jdkhttp</module>
         <module>../../solon-projects/solon-boot/solon.boot.jlhttp</module>
         <module>../../solon-projects/solon-boot/solon.boot.smarthttp</module>
+        <module>../../solon-projects/solon-boot/solon.boot.nettyhttp</module>
         <module>../../solon-projects/solon-boot/solon.boot.jetty</module>
         <module>../../solon-projects/solon-boot/solon.boot.undertow</module>
         <module>../../solon-projects/solon-boot/solon.boot.tomcat</module>
