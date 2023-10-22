@@ -27,6 +27,7 @@ import org.apache.ibatis.solon.MybatisAdapter;
 import org.apache.ibatis.solon.integration.MybatisAdapterDefault;
 import org.apache.ibatis.solon.integration.MybatisAdapterManager;
 import org.noear.solon.Utils;
+import org.noear.solon.aot.NativeMetadataUtils;
 import org.noear.solon.aot.RuntimeNativeMetadata;
 import org.noear.solon.aot.RuntimeNativeRegistrar;
 import org.noear.solon.aot.hint.ExecutableMode;
@@ -126,7 +127,7 @@ public class MybatisRuntimeNativeRegistrar implements RuntimeNativeRegistrar {
             Method[] declaredMethods = clz.getDeclaredMethods();
             for (Method method : declaredMethods) {
                 MethodWrap methodWrap = context.methodGet(method);
-                metadata.registerMethodAndParamAndReturnType(methodWrap);
+                NativeMetadataUtils.registerMethodAndParamAndReturnType(metadata, methodWrap);
             }
         }
 
