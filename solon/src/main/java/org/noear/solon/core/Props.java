@@ -533,7 +533,7 @@ public class Props extends Properties {
 
         Properties tempProps = new Properties();
         tempProps.putAll(tempPropMap);
-        this.loadAddDo(tempProps, false, isEnd, isEnd);
+        this.loadAddDo(tempProps, false, isEnd, isEnd); //中间可能会有 put 进来，不能再盖掉
 
         //如果还存在遗留项则抛出异常
         if (isEnd && tempPropMap.size() > 0) {
