@@ -2,8 +2,10 @@ package org.noear.solon.core.wrap;
 
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.UploadedFile;
+import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.core.util.ConvertUtil;
+import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.core.util.ReflectUtil;
 
 import java.lang.reflect.*;
@@ -243,6 +245,9 @@ public class ClassWrap {
      * @param ctx  上下文
      */
     private void doFill(Object bean, Function<String, String> data, Context ctx) throws Exception {
+        if (fieldWrapsMap.isEmpty() && NativeDetector.inNativeImage()) {
+            LogUtil.global().warn(String.format("Class: %s don't have any field, so can't fill data. you should nativeMetadata.registerField(field) int aot runtime.", _clz.getName()));
+        }
         for (Map.Entry<String, FieldWrap> kv : fieldWrapsMap.entrySet()) {
             String key = kv.getKey();
             String val0 = data.apply(key);

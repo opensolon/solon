@@ -13,17 +13,13 @@ import org.noear.solon.aot.hint.ResourceHint;
 import org.noear.solon.aot.hint.SerializationHint;
 import org.noear.solon.core.AppClassLoader;
 import org.noear.solon.core.util.ClassUtil;
-import org.noear.solon.core.util.GenericUtil;
+import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.core.util.ReflectUtil;
 import org.noear.solon.core.util.ScanUtil;
-import org.noear.solon.core.wrap.MethodWrap;
-import org.noear.solon.core.wrap.ParamWrap;
 
-import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
@@ -155,6 +151,27 @@ public class RuntimeNativeMetadata {
      * @return {@code this}
      */
     public RuntimeNativeMetadata registerReflection(Class<?> type, MemberCategory... memberCategories) {
+        if (!type.getName().startsWith("java.")) {
+            try {
+                if (Arrays.asList(memberCategories).contains(MemberCategory.DECLARED_FIELDS)) {
+                    Field[] declaredFields = type.getDeclaredFields();
+                    if (Arrays.stream(declaredFields).allMatch(e -> ClassUtil.hasClass(e::getType))) {
+                        for (Field declaredField : declaredFields) {
+                            registerField(declaredField);
+                        }
+                    }
+                } else if (Arrays.asList(memberCategories).contains(MemberCategory.PUBLIC_FIELDS)) {
+                    Field[] fields = type.getFields();
+                    if (Arrays.stream(fields).allMatch(e -> ClassUtil.hasClass(e::getType))) {
+                        for (Field field : fields) {
+                            registerField(field);
+                        }
+                    }
+                }
+            } catch (NoClassDefFoundError ignore) {
+                // 报这个错，说明当前类中引用了没有依赖的类，直接跳过
+            }
+        }
         return registerReflection(type, hints -> hints.getMemberCategories().addAll((Arrays.asList(memberCategories))));
     }
 
@@ -166,7 +183,17 @@ public class RuntimeNativeMetadata {
      * @return {@code this}
      */
     public RuntimeNativeMetadata registerReflection(String className, MemberCategory... memberCategories) {
-        return registerReflection(className, hints -> hints.getMemberCategories().addAll((Arrays.asList(memberCategories))));
+        if (Arrays.stream(memberCategories).anyMatch(e -> e.equals(MemberCategory.PUBLIC_FIELDS) || e.equals(MemberCategory.DECLARED_FIELDS))) {
+            try {
+                Class<?> clazz = Class.forName(className);
+                return registerReflection(clazz, memberCategories);
+            } catch (ClassNotFoundException e) {
+                LogUtil.global().info(String.format("class %s not found, ignore registerField", className));
+                return this;
+            }
+        } else {
+            return registerReflection(className, hints -> hints.getMemberCategories().addAll((Arrays.asList(memberCategories))));
+        }
     }
 
     public RuntimeNativeMetadata registerField(Field field) {
@@ -179,37 +206,6 @@ public class RuntimeNativeMetadata {
 
     public RuntimeNativeMetadata registerMethod(Method method, ExecutableMode mode) {
         return registerReflection(method.getDeclaringClass(), hints -> hints.getMethods().add(new ExecutableHint(method.getName(), method.getParameterTypes(), mode)));
-    }
-
-    /**
-     * 将方法设置为可执行，同时注册方法参数、参数泛型和返回值、返回值泛型
-     */
-    public RuntimeNativeMetadata registerMethodAndParamAndReturnType(MethodWrap methodWrap) {
-        registerMethod(methodWrap.getMethod(), ExecutableMode.INVOKE);
-
-        ParamWrap[] paramWraps = methodWrap.getParamWraps();
-        for (ParamWrap paramWrap : paramWraps) {
-            Class<?> paramType = paramWrap.getType();
-            this.registerReflection(paramType, MemberCategory.DECLARED_FIELDS, MemberCategory.INVOKE_PUBLIC_CONSTRUCTORS, MemberCategory.INVOKE_DECLARED_METHODS);
-            if (!paramType.getName().startsWith("java.") && Serializable.class.isAssignableFrom(paramType)) {
-                this.registerSerialization(paramType);
-            }
-
-            // 参数的泛型
-            Type genericType = paramWrap.getGenericType();
-            processGenericType(genericType);
-        }
-
-        Class<?> returnType = methodWrap.getReturnType();
-        this.registerReflection(returnType, MemberCategory.DECLARED_FIELDS, MemberCategory.INVOKE_PUBLIC_CONSTRUCTORS, MemberCategory.INVOKE_DECLARED_METHODS);
-        if (!returnType.getName().startsWith("java.") && Serializable.class.isAssignableFrom(returnType)) {
-            this.registerSerialization(returnType);
-        }
-
-        // 返回值的泛型
-        Type genericReturnType = methodWrap.getGenericReturnType();
-        processGenericType(genericReturnType);
-        return this;
     }
 
     /**
@@ -564,12 +560,4 @@ public class RuntimeNativeMetadata {
         }
     }
 
-    private void processGenericType(Type genericType) {
-        Map<String, Type> genericInfo = GenericUtil.getGenericInfo(genericType);
-        for (Map.Entry<String, Type> entry : genericInfo.entrySet()) {
-            if (!entry.getValue().getTypeName().startsWith("java.")) {
-                this.registerReflection(entry.getValue().getTypeName(), MemberCategory.DECLARED_FIELDS, MemberCategory.INVOKE_PUBLIC_CONSTRUCTORS, MemberCategory.INVOKE_DECLARED_METHODS);
-            }
-        }
-    }
 }
