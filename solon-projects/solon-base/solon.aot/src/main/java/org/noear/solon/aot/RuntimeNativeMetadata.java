@@ -13,7 +13,6 @@ import org.noear.solon.aot.hint.ResourceHint;
 import org.noear.solon.aot.hint.SerializationHint;
 import org.noear.solon.core.AppClassLoader;
 import org.noear.solon.core.util.ClassUtil;
-import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.core.util.ReflectUtil;
 import org.noear.solon.core.util.ScanUtil;
 
@@ -120,15 +119,35 @@ public class RuntimeNativeMetadata {
      * @return {@code this}
      */
     public RuntimeNativeMetadata registerReflection(String className, Consumer<ReflectionHints> typeHint) {
-        if (Utils.isNotEmpty(className)) {
-            ReflectionHints reflectionHints = reflection.computeIfAbsent(className, k -> {
-                ReflectionHints hints = new ReflectionHints();
-                hints.setName(className);
-                return hints;
-            });
-            typeHint.accept(reflectionHints);
+        if (Utils.isEmpty(className)) {
+            return this;
         }
+        ReflectionHints reflectionHints = getReflectionHints(className);
+        typeHint.accept(reflectionHints);
 
+        Class<?> clazz = ClassUtil.loadClass(className);
+        if (!className.startsWith("java.") && clazz != null) {
+            // 如果类存在，且不是jdk中的类，则注册字段相关元数据
+            try {
+                if (reflectionHints.getMemberCategories().contains(MemberCategory.DECLARED_FIELDS)) {
+                    Field[] declaredFields = clazz.getDeclaredFields();
+                    if (Arrays.stream(declaredFields).allMatch(e -> ClassUtil.hasClass(e::getType))) {
+                        for (Field declaredField : declaredFields) {
+                            registerField(declaredField);
+                        }
+                    }
+                } else if (reflectionHints.getMemberCategories().contains(MemberCategory.PUBLIC_FIELDS)) {
+                    Field[] fields = clazz.getFields();
+                    if (Arrays.stream(fields).allMatch(e -> ClassUtil.hasClass(e::getType))) {
+                        for (Field field : fields) {
+                            registerField(field);
+                        }
+                    }
+                }
+            } catch (NoClassDefFoundError ignore) {
+                // 该类中使用了不存在的类，不注册字段相关元数据
+            }
+        }
         return this;
     }
 
@@ -151,27 +170,6 @@ public class RuntimeNativeMetadata {
      * @return {@code this}
      */
     public RuntimeNativeMetadata registerReflection(Class<?> type, MemberCategory... memberCategories) {
-        if (!type.getName().startsWith("java.")) {
-            try {
-                if (Arrays.asList(memberCategories).contains(MemberCategory.DECLARED_FIELDS)) {
-                    Field[] declaredFields = type.getDeclaredFields();
-                    if (Arrays.stream(declaredFields).allMatch(e -> ClassUtil.hasClass(e::getType))) {
-                        for (Field declaredField : declaredFields) {
-                            registerField(declaredField);
-                        }
-                    }
-                } else if (Arrays.asList(memberCategories).contains(MemberCategory.PUBLIC_FIELDS)) {
-                    Field[] fields = type.getFields();
-                    if (Arrays.stream(fields).allMatch(e -> ClassUtil.hasClass(e::getType))) {
-                        for (Field field : fields) {
-                            registerField(field);
-                        }
-                    }
-                }
-            } catch (NoClassDefFoundError ignore) {
-                // 报这个错，说明当前类中引用了没有依赖的类，直接跳过
-            }
-        }
         return registerReflection(type, hints -> hints.getMemberCategories().addAll((Arrays.asList(memberCategories))));
     }
 
@@ -183,29 +181,24 @@ public class RuntimeNativeMetadata {
      * @return {@code this}
      */
     public RuntimeNativeMetadata registerReflection(String className, MemberCategory... memberCategories) {
-        if (Arrays.stream(memberCategories).anyMatch(e -> e.equals(MemberCategory.PUBLIC_FIELDS) || e.equals(MemberCategory.DECLARED_FIELDS))) {
-            try {
-                Class<?> clazz = Class.forName(className);
-                return registerReflection(clazz, memberCategories);
-            } catch (ClassNotFoundException e) {
-                LogUtil.global().info(String.format("class %s not found, ignore registerField", className));
-                return this;
-            }
-        } else {
-            return registerReflection(className, hints -> hints.getMemberCategories().addAll((Arrays.asList(memberCategories))));
-        }
+        return registerReflection(className, hints -> hints.getMemberCategories().addAll((Arrays.asList(memberCategories))));
     }
 
     public RuntimeNativeMetadata registerField(Field field) {
-        return registerReflection(field.getDeclaringClass(), hints -> hints.getFields().add((field.getName())));
+        getReflectionHints(field.getDeclaringClass().getName()).getFields().add(field.getName());
+        return this;
     }
 
     public RuntimeNativeMetadata registerConstructor(Constructor<?> constructor, ExecutableMode mode) {
-        return registerReflection(constructor.getDeclaringClass(), hints -> hints.getConstructors().add(new ExecutableHint("<init>", constructor.getParameterTypes(), mode)));
+        getReflectionHints(constructor.getDeclaringClass().getName())
+                .getConstructors().add(new ExecutableHint("<init>", constructor.getParameterTypes(), mode));
+        return this;
     }
 
     public RuntimeNativeMetadata registerMethod(Method method, ExecutableMode mode) {
-        return registerReflection(method.getDeclaringClass(), hints -> hints.getMethods().add(new ExecutableHint(method.getName(), method.getParameterTypes(), mode)));
+        getReflectionHints(method.getDeclaringClass().getName())
+                .getMethods().add(new ExecutableHint(method.getName(), method.getParameterTypes(), mode));
+        return this;
     }
 
     /**
@@ -219,12 +212,25 @@ public class RuntimeNativeMetadata {
         return this;
     }
 
+    /**
+     * 注册默认构造方法，如果不存在则不注册
+     */
     public RuntimeNativeMetadata registerDefaultConstructor(Class<?> clazz) {
-        return registerReflection(clazz, hint -> hint.getConstructors().add(new ExecutableHint("<init>", null, ExecutableMode.INVOKE)));
+        if (ClassUtil.loadClass(clazz.getName()) != null && hasDefaultConstructor(clazz)) {
+            getReflectionHints(clazz.getName()).getConstructors().add(new ExecutableHint("<init>", null, ExecutableMode.INVOKE));
+        }
+        return this;
     }
 
+    /**
+     * 注册默认构造方法，如果类不存在或不存在默认构造 则不注册
+     */
     public RuntimeNativeMetadata registerDefaultConstructor(String className) {
-        return registerReflection(className, hint -> hint.getConstructors().add(new ExecutableHint("<init>", null, ExecutableMode.INVOKE)));
+        Class<?> clazz = ClassUtil.loadClass(className);
+        if (clazz != null && hasDefaultConstructor(clazz)) {
+            return registerDefaultConstructor(clazz);
+        }
+        return this;
     }
 
     /**
@@ -558,6 +564,22 @@ public class RuntimeNativeMetadata {
             serializationHint.setReachableType(reachableType);
             lambdaSerializations.put(name, serializationHint);
         }
+    }
+
+    private boolean hasDefaultConstructor(Class<?> clazz) {
+        if (clazz.isInterface() || clazz.isEnum()) {
+            return false;
+        }
+
+        return Arrays.stream(clazz.getDeclaredConstructors()).anyMatch(e -> e.getParameterCount() == 0);
+    }
+
+    private ReflectionHints getReflectionHints(String className) {
+        return reflection.computeIfAbsent(className, k -> {
+            ReflectionHints hints = new ReflectionHints();
+            hints.setName(className);
+            return hints;
+        });
     }
 
 }
