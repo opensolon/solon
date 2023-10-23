@@ -24,6 +24,7 @@
 * 新增 hibernate-solon-plugin 插件
 
 ### 2.5.11
+* 设定 smart-http 为 solon-api 快捷组合包的默认 httpserver
 * 新增 nami.coder.fury 插件
 * 新增 solon.serialization.fury 插件
 * 新增 hibernate-solon-plugin 插件（提供标准 jpa 支持）
@@ -35,7 +36,6 @@
 * 优化 运行时退出勾子的处理，非 aot 情况下强制退出
 * 调整 sockted.session::sendHeartbeatAuto 更名为 startHeartbeatAuto （内部接口）
 * 调整 @Init 的弃用提示（改为推荐了）
-* 调整 smart-http 设为 solon-api 默认的 httpserver
 * 添加 @Import::profiles, @Import::profilesIfAbsent 接口
 * 添加 DynamicDsKey 类, 替代 DynamicDsHolder
 * 添加 sockted.session::stopHeartbeatAuto 接口
