@@ -285,15 +285,16 @@
 <!--                    <artifactId>solon.boot.jlhttp</artifactId>-->
 <!--                </dependency>-->
 
-                <dependency>
-                    <groupId>org.noear</groupId>
-                    <artifactId>solon.boot.nettyhttp</artifactId>
-                </dependency>
+<!--                <dependency>-->
+<!--                    <groupId>org.noear</groupId>-->
+<!--                    <artifactId>solon.boot.nettyhttp</artifactId>-->
+<!--                    <version>${solon.version}</version>-->
+<!--                </dependency>-->
 
-<!--        <dependency>-->
-<!--            <groupId>org.noear</groupId>-->
-<!--            <artifactId>solon.boot.smarthttp</artifactId>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.boot.smarthttp</artifactId>
+        </dependency>
 
 
 <!--                <dependency>-->
