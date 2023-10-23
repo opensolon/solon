@@ -246,7 +246,7 @@ public class ClassWrap {
      */
     private void doFill(Object bean, Function<String, String> data, Context ctx) throws Exception {
         if (fieldWrapsMap.isEmpty() && NativeDetector.inNativeImage()) {
-            LogUtil.global().warn(String.format("Class: %s don't have any field, so can't fill data. you should nativeMetadata.registerField(field) int aot runtime.", _clz.getName()));
+            LogUtil.global().warn(String.format("Class: %s don't have any field, can't fill data. you should use: nativeMetadata.registerField(field) at aot runtime.", _clz.getName()));
         }
         for (Map.Entry<String, FieldWrap> kv : fieldWrapsMap.entrySet()) {
             String key = kv.getKey();
