@@ -82,7 +82,7 @@ public class MybatisAdapterManager {
         if (Utils.isEmpty(bw.name())) {
             adapter = adapterFactory.create(bw);
         } else {
-            adapter = adapterFactory.create(bw, Solon.cfg().getProp("mybatis." + bw.name()));
+            adapter = adapterFactory.create(bw, bw.context().cfg().getProp("mybatis." + bw.name()));
         }
 
         mapperBinding(bw, adapter);
