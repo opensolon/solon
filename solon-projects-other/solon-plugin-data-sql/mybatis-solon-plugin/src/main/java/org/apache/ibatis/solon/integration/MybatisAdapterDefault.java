@@ -137,7 +137,7 @@ public class MybatisAdapterDefault implements MybatisAdapter {
                         //package || type class，转为类表达式
                         String valNew = getClassExpr(val);
 
-                        for (Class<?> clz : ResourceUtil.scanClasses(valNew)) {
+                        for (Class<?> clz : ResourceUtil.scanClasses(dsWrap.context().getClassLoader(),valNew)) {
                             if (clz.isInterface() == false) {
                                 getConfiguration().getTypeAliasRegistry().registerAlias(clz);
                             }
@@ -155,7 +155,7 @@ public class MybatisAdapterDefault implements MybatisAdapter {
                         //package || type class，转为类表达式
                         String valNew = getClassExpr(val);
 
-                        for (Class<?> clz : ResourceUtil.scanClasses(valNew)) {
+                        for (Class<?> clz : ResourceUtil.scanClasses(dsWrap.context().getClassLoader(),valNew)) {
                             if (TypeHandler.class.isAssignableFrom(clz)) {
                                 getConfiguration().getTypeHandlerRegistry().register(clz);
                             }
@@ -194,7 +194,7 @@ public class MybatisAdapterDefault implements MybatisAdapter {
                             //package || type class，转为类表达式
                             String valNew = getClassExpr(val);
 
-                            for (Class<?> clz : ResourceUtil.scanClasses(valNew)) {
+                            for (Class<?> clz : ResourceUtil.scanClasses(dsWrap.context().getClassLoader(),valNew)) {
                                 if (clz.isInterface()) {
                                     if (mapperVerifyEnabled) {
                                         if (isMapper(clz)) {
