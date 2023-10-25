@@ -82,6 +82,7 @@ public class CloudEventServiceMqtt5 implements CloudEventServicePlus {
         options.setConnectionTimeout(1000); //超时时长
         options.setKeepAliveInterval(100); //心跳时长
         options.setServerURIs(new String[]{server});
+        options.setAutomaticReconnect(true);
 
         //绑定定制属性
         Properties props = cloudProps.getEventClientProps();
