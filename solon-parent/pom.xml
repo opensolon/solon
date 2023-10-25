@@ -26,7 +26,7 @@
         <solon.version>2.5.12-SNAPSHOT</solon.version>
         <solon-maven-plugin.version>2.5.11</solon-maven-plugin.version>
         <solon-admin.version>2.5.11</solon-admin.version>
-        <snack3.version>3.2.81</snack3.version>
+        <snack3.version>3.2.82</snack3.version>
         <weed3.version>3.4.33</weed3.version>
         <wood.version>1.2.2</wood.version>
         <water.version>2.11.4</water.version>

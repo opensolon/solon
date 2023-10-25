@@ -23,6 +23,7 @@
 * 调整 取消启动参数简写模式，保持与应用参数相同的名字 ???
 * 新增 graphql-solon-plugin 插件
 * 新增 hibernate-solon-plugin 插件
+* snack3 升为 3.2.82
 
 ### 2.5.11
 * 新增 nami.coder.fury 插件
