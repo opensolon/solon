@@ -1,9 +1,6 @@
 package org.noear.solon.cloud.extend.mqtt.service;
 
-import org.eclipse.paho.client.mqttv3.IMqttMessageListener;
-import org.eclipse.paho.client.mqttv3.MqttClient;
-import org.eclipse.paho.client.mqttv3.MqttException;
-import org.eclipse.paho.client.mqttv3.MqttMessage;
+import org.eclipse.paho.client.mqttv3.*;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudEventHandler;
 import org.noear.solon.cloud.exception.CloudEventException;
@@ -52,7 +49,7 @@ public class MqttUtil {
     /**
      * 订阅
      * */
-    public static void subscribe(MqttClient client, String eventChannelName, CloudEventObserverManger observerManger) throws MqttException {
+    public static void subscribe(IMqttAsyncClient client, MqttConnectOptions options,String eventChannelName, CloudEventObserverManger observerManger) throws MqttException {
         String[] topicAry = observerManger.topicAll().toArray(new String[0]);
         int[] topicQos = new int[topicAry.length];
         IMqttMessageListener[] topicListener = new IMqttMessageListener[topicAry.length];
@@ -62,6 +59,9 @@ public class MqttUtil {
             topicListener[i] = new MqttMessageListenerImpl(eventChannelName, eventObserver);
         }
 
-        client.subscribe(topicAry, topicQos, topicListener);
+        IMqttToken token = client.subscribe(topicAry, topicQos, topicListener);
+        //转为毫秒
+        long waitConnectionTimeout = options.getConnectionTimeout() * 1000;
+        token.waitForCompletion(waitConnectionTimeout);
     }
 }

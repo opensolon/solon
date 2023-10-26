@@ -14,11 +14,11 @@ import org.slf4j.LoggerFactory;
 public class MqttCallbackImpl implements MqttCallback {
     static Logger log = LoggerFactory.getLogger(MqttCallbackImpl.class);
 
-    final MqttClient client;
+    final IMqttAsyncClient client;
     final CloudEventObserverManger observerManger;
     final String eventChannelName;
 
-    public MqttCallbackImpl(MqttClient client, CloudEventObserverManger observerManger, CloudProps cloudProps) {
+    public MqttCallbackImpl(IMqttAsyncClient client, CloudEventObserverManger observerManger, CloudProps cloudProps) {
         this.client = client;
         this.observerManger = observerManger;
         this.eventChannelName = cloudProps.getEventChannel();

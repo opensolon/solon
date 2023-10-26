@@ -29,16 +29,17 @@ public class CloudEventServiceMqtt3 implements CloudEventServicePlus {
     private final String password;
     private final long publishTimeout;
 
-    private MqttClient client;
+    private IMqttAsyncClient client;
     private String clientId;
-    private MqttCallbackImpl clientCallback;
+    private MqttCallback clientCallback;
+    private MqttConnectOptions options;
 
     private CloudEventObserverManger observerMap = new CloudEventObserverManger();
 
     /**
      * 获取客户端
      */
-    public MqttClient getClient() {
+    public IMqttAsyncClient getClient() {
         return client;
     }
 
@@ -67,7 +68,7 @@ public class CloudEventServiceMqtt3 implements CloudEventServicePlus {
             clientId = Solon.cfg().appName() + "-" + Utils.guid();
         }
 
-        MqttConnectOptions options = new MqttConnectOptions();
+        options = new MqttConnectOptions();
 
         if (Utils.isNotEmpty(username)) {
             options.setUserName(username);
@@ -79,9 +80,9 @@ public class CloudEventServiceMqtt3 implements CloudEventServicePlus {
             options.setPassword(password.toCharArray());
         }
 
-        options.setCleanSession(false);
-        options.setConnectionTimeout(1000); //超时时长
-        options.setKeepAliveInterval(100); //心跳时长
+        options.setCleanSession(true);
+        options.setConnectionTimeout(30); //超时时长
+        options.setKeepAliveInterval(60); //心跳时长，秒
         options.setServerURIs(new String[]{server});
         options.setAutomaticReconnect(true);
 
@@ -95,11 +96,13 @@ public class CloudEventServiceMqtt3 implements CloudEventServicePlus {
         options.setWill("client.close", clientId.getBytes(StandardCharsets.UTF_8), 1, false);
 
         try {
-            client = new MqttClient(server, clientId, new MemoryPersistence());
+            client = new MqttAsyncClient(server, clientId, new MemoryPersistence());
             clientCallback = new MqttCallbackImpl(client, observerMap, cloudProps);
 
             client.setCallback(clientCallback);
-            client.connect(options);
+            //转为毫秒
+            long waitConnectionTimeout = options.getConnectionTimeout() * 1000;
+            client.connect(options).waitForCompletion(waitConnectionTimeout);
         } catch (MqttException ex) {
             throw new IllegalArgumentException(ex);
         }
@@ -112,10 +115,8 @@ public class CloudEventServiceMqtt3 implements CloudEventServicePlus {
         message.setRetained(event.retained());
         message.setPayload(event.content().getBytes());
 
-        MqttTopic mqttTopic = client.getTopic(event.topic());
-
         try {
-            MqttDeliveryToken token = mqttTopic.publish(message);
+            IMqttDeliveryToken token = client.publish(event.topic(), message);
 
             if (event.qos() > 0) {
                 token.waitForCompletion(publishTimeout);
@@ -137,7 +138,7 @@ public class CloudEventServiceMqtt3 implements CloudEventServicePlus {
     public void subscribe() {
         try {
             if (observerMap.topicSize() > 0) {
-                MqttUtil.subscribe(client, cloudProps.getEventChannel(), observerMap);
+                MqttUtil.subscribe(client, options, cloudProps.getEventChannel(), observerMap);
             }
         } catch (Throwable ex) {
             throw new RuntimeException(ex);
