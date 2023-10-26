@@ -56,20 +56,29 @@ public class PropUtil {
     public static String getByExp(Properties main, Properties target, String expr, boolean useDef) {
         String[] nameAndDef = expSplit(expr);
 
+        String name = nameAndDef[0];
+        if(Utils.isEmpty(name)){
+            return nameAndDef[1];
+        }
+
         String val = null;
 
         if (target != null) {
             //从"目标属性"获取
-            val = target.getProperty(nameAndDef[0]);
+            val = target.getProperty(name);
         }
 
         if (val == null) {
             //从"主属性"获取
-            val = main.getProperty(nameAndDef[0]);
+            val = main.getProperty(name);
 
-            if (val == null && Character.isUpperCase(nameAndDef[0].charAt(0))) {
+            if (val == null && (Character.isUpperCase(name.charAt(0)) || name.charAt(0) == '_')) {
                 //从"环镜变量"获取
-                val = System.getenv(nameAndDef[0]);
+                val = System.getenv(name);
+                if (val == null) {
+                    //如果是环境变量，直接使用默认值；认定后面没得变了
+                    return nameAndDef[1];
+                }
             }
         }
 

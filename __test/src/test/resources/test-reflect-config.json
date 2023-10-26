@@ -18,6 +18,12 @@
     ],
     "fields": [
       {
+        "name": "app"
+      },
+      {
+        "name": "appMain"
+      },
+      {
         "name": "encoding"
       }
     ],
