@@ -1,6 +1,7 @@
 package org.noear.solon.serialization.snack3;
 
 import org.noear.snack.ONode;
+import org.noear.snack.core.Feature;
 import org.noear.snack.core.Options;
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.ActionExecuteHandlerDefault;
@@ -22,7 +23,7 @@ public class SnackActionExecutor extends ActionExecuteHandlerDefault {
 
     private static final String label = "/json";
 
-    private final Options config = Options.def();
+    private final Options config = Options.def().add(Feature.DisableClassNameRead);
 
     /**
      * 反序列化配置
