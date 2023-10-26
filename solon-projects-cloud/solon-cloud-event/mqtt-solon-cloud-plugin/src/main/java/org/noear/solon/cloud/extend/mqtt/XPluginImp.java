@@ -1,6 +1,6 @@
 package org.noear.solon.cloud.extend.mqtt;
 
-import org.eclipse.paho.client.mqttv3.MqttClient;
+import org.eclipse.paho.client.mqttv3.IMqttAsyncClient;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudManager;
 import org.noear.solon.cloud.CloudProps;
@@ -25,7 +25,7 @@ public class XPluginImp implements Plugin {
             CloudEventServiceMqtt3 eventServiceImp = new CloudEventServiceMqtt3(cloudProps);
             CloudManager.register(eventServiceImp);
 
-            context.wrapAndPut(MqttClient.class, eventServiceImp.getClient());
+            context.wrapAndPut(IMqttAsyncClient.class, eventServiceImp.getClient());
             context.lifecycle(-99, () -> eventServiceImp.subscribe());
         }
     }
