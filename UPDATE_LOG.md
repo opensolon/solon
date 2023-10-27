@@ -13,7 +13,7 @@
 * 调整 solon-test 移除 solon-test-junit4（只留 solon-test-junit5）
 * 设定 smart-http 为 solon-api 快捷组合包的默认 httpserver
 
-### 2.5.12
+### 2.5.13
 * 新增 solon.boot.vertx 插件?
 * 新增 seata-solon-plugin 插件
 * 增加 quartz jdbc 及时更新支持（数据库里变了，它马上变） ???
@@ -22,7 +22,12 @@
 * 调整 使用更多的 slf4j 替换 LogUtil ???
 * 调整 取消启动参数简写模式，保持与应用参数相同的名字 ???
 * 新增 graphql-solon-plugin 插件
-* 新增 hibernate-solon-plugin 插件
+
+### 2.5.12
+* 调整 SnackActionExecutor 默认关闭 className 读取
+* 调整 容器停止时把 Closeable 接口的 bean 也关掉
+* 优化 属性引用表达式，当环境变量无时马上使用默认值（环境变量是启动时决定的，有或无固定了）
+* 优化 mqtt-solon-cloud-plugin 代码实现（改为异步接口）
 * snack3 升为 3.2.82
 
 ### 2.5.11
