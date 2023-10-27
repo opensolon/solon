@@ -63,7 +63,7 @@ public class TranListenerSet implements TranListener {
         if (log.isTraceEnabled()) {
             log.trace("Triggering afterCommit listen");
         }
-
+        TranManager.currentRemove();
         for (int i = 0; i < listeners.size(); i++) {
             try {
                 listeners.get(i).afterCommit();
