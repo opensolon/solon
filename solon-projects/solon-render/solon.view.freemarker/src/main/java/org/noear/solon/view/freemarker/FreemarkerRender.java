@@ -205,6 +205,9 @@ public class FreemarkerRender implements Render {
             ctx.headerSet(ViewConfig.HEADER_VIEW_META, "FreemarkerRender");
         }
 
+        //添加 context 变量
+        mv.putIfAbsent("context", ctx);
+
         PrintWriter writer = new PrintWriter(outputStream.get());
 
         Template template = null;

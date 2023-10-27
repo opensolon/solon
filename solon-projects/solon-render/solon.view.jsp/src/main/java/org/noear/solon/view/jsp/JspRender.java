@@ -46,6 +46,9 @@ public class JspRender implements Render {
             ctx.headerSet(ViewConfig.HEADER_VIEW_META, "JspRender");
         }
 
+        //添加 context 变量
+        mv.putIfAbsent("context", ctx);
+
         HttpServletResponse response = (HttpServletResponse)ctx.response();
         HttpServletRequest request = (HttpServletRequest)ctx.request();
 

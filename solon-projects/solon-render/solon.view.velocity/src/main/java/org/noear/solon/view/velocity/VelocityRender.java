@@ -224,6 +224,9 @@ public class VelocityRender implements Render {
             ctx.headerSet(ViewConfig.HEADER_VIEW_META, "VelocityRender");
         }
 
+        //添加 context 变量
+        mv.putIfAbsent("context", ctx);
+
         String view = mv.view();
 
         //取得velocity的模版

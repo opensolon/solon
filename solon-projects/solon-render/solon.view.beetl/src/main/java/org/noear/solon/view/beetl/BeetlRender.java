@@ -223,6 +223,9 @@ public class BeetlRender implements Render {
             ctx.headerSet(ViewConfig.HEADER_VIEW_META, "BeetlRender");
         }
 
+        //添加 context 变量
+        mv.putIfAbsent("context", ctx);
+
         Template template = null;
 
         if (providerOfDebug != null) {

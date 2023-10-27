@@ -237,6 +237,9 @@ public class EnjoyRender implements Render {
             ctx.headerSet(ViewConfig.HEADER_VIEW_META, "EnjoyRender");
         }
 
+        //添加 context 变量
+        mv.putIfAbsent("context", ctx);
+
         Template template = null;
 
         if (providerOfDebug != null) {

@@ -191,6 +191,9 @@ public class ThymeleafRender implements Render {
             ctx.headerSet(ViewConfig.HEADER_VIEW_META, "ThymeleafRender");
         }
 
+        //添加 context 变量
+        mv.putIfAbsent("context", ctx);
+
         org.thymeleaf.context.Context context = new org.thymeleaf.context.Context();
         context.setVariables(sharedVariables);
         context.setVariables(mv.model());
