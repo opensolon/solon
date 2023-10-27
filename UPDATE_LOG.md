@@ -24,8 +24,9 @@
 * 新增 graphql-solon-plugin 插件
 
 ### 2.5.12
-* 调整 SnackActionExecutor 默认关闭 className 读取
-* 调整 容器停止时把 Closeable 接口的 bean 也关掉
+* 优化 SnackActionExecutor 默认关闭 className 读取
+* 优化 容器停止时把 Closeable 接口的 bean 也关掉
+* 优化 solon.data 插件 afterCommit 事件之前移除事务状态
 * 优化 属性引用表达式，当环境变量无时马上使用默认值（环境变量是启动时决定的，有或无固定了）
 * 优化 mqtt-solon-cloud-plugin 代码实现（改为异步接口）
 * snack3 升为 3.2.82

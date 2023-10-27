@@ -97,6 +97,7 @@ public abstract class DbTran extends DbTranNode implements TranNode {
         listenerSet.beforeCommit(meta.readOnly());
         listenerSet.beforeCompletion();
 
+        //提交
         super.commit();
 
         for (Map.Entry<DataSource, Connection> kv : conMap.entrySet()) {
@@ -105,6 +106,7 @@ public abstract class DbTran extends DbTranNode implements TranNode {
 
         //提交后
         status = TranListener.STATUS_COMMITTED;
+        TranManager.currentRemove(); //移除当前节点
         listenerSet.afterCommit();
     }
 
