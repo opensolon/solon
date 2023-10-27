@@ -14,6 +14,7 @@ import org.noear.solon.core.runtime.AotCollector;
 import org.noear.solon.core.util.ConvertUtil;
 import org.noear.solon.core.util.ResourceUtil;
 
+import java.io.Closeable;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
 import java.util.*;
@@ -928,5 +929,20 @@ public abstract class BeanContainer {
         });
 
         return list;
+    }
+
+    /**
+     * bean 停止（if Closeable）
+     * */
+    protected void beanStop0() {
+        for (BeanWrap bw : beanWrapSet) {
+            if (bw.raw() instanceof Closeable) {
+                try {
+                    ((Closeable) bw.raw()).close();
+                } catch (Throwable e) {
+                    //e.printStackTrace();
+                }
+            }
+        }
     }
 }

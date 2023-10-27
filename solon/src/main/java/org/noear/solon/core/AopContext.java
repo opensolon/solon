@@ -963,5 +963,8 @@ public abstract class AopContext extends BeanContainer {
                 //e.printStackTrace();
             }
         }
+
+        //执行 Closeable 接口的 bean
+        beanStop0();
     }
 }
