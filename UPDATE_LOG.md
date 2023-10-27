@@ -31,6 +31,8 @@
 * 优化 属性引用表达式，当环境变量无时马上使用默认值（环境变量是启动时决定的，有或无固定了）
 * 优化 mqtt-solon-cloud-plugin 代码实现（改为异步接口）
 * snack3 升为 3.2.82
+* sqltoy 升为 5.2.74
+* mybatis-flex 升为 1.7.3
 
 ### 2.5.11
 * 新增 nami.coder.fury 插件
