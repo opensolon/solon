@@ -33,7 +33,7 @@
 * snack3 升为 3.2.82
 * sqltoy 升为 5.2.74
 * mybatis-flex 升为 1.7.3
-* activemq 升为 5.15.13
+* activemq 升为 5.15.12
 * smarthttp 升为 1.3.5
 
 ### 2.5.11
