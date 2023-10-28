@@ -41,15 +41,10 @@ public class MqttClientManagerImpl implements MqttClientManager, MqttCallbackExt
     //在断开连接时调用
     @Override
     public synchronized void connectionLost(Throwable cause) {
-        log.error("Connection lost, clientId={}", client.getClientId(), cause);
-
         if (options.isAutomaticReconnect()) {
-            try {
-                client.reconnect();
-            } catch (MqttException e) {
-                log.error("MQTT client failed to connect. Never happens.", e);
-                client = null;
-            }
+            client = null;
+        } else {
+            log.warn("Connection lost, clientId={}", client.getClientId(), cause);
         }
     }
 
