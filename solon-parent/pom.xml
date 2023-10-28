@@ -109,6 +109,7 @@
 
         <rocketmq4.version>4.9.7</rocketmq4.version>
         <rocketmq5.version>5.0.5</rocketmq5.version>
+        <activemq.version>5.15.13</activemq.version>
         <rabbitmq.version>5.19.0</rabbitmq.version>
         <kafka_2.13.version>3.6.0</kafka_2.13.version>
 

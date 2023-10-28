@@ -13,10 +13,6 @@
     <artifactId>activemq-solon-cloud-plugin</artifactId>
     <packaging>jar</packaging>
 
-    <properties>
-        <activemq.version>5.15.9</activemq.version>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
