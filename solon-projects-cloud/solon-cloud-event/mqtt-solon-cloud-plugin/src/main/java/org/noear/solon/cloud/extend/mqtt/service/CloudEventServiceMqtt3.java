@@ -82,7 +82,7 @@ public class CloudEventServiceMqtt3 implements CloudEventServicePlus {
         options.setConnectionTimeout(30); //超时时长
         options.setKeepAliveInterval(60); //心跳时长，秒
         options.setServerURIs(new String[]{server});
-        options.setAutomaticReconnect(true);
+        options.setAutomaticReconnect(false);
 
         //绑定定制属性
         Properties props = cloudProps.getEventClientProps();
