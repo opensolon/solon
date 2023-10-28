@@ -25,7 +25,7 @@ public class MqttClientManagerImpl implements MqttClientManager, MqttCallbackExt
     private final String eventChannelName;
 
     private final MqttConnectOptions options;
-    private String clientId;
+    private final String clientId;
 
     private final Set<ConnectCallback> connectCallbacks = Collections.synchronizedSet(new HashSet<>());
 
@@ -42,9 +42,16 @@ public class MqttClientManagerImpl implements MqttClientManager, MqttCallbackExt
     @Override
     public synchronized void connectionLost(Throwable cause) {
         if (options.isAutomaticReconnect()) {
-            client = null;
+            try {
+                client.reconnect();
+                connectComplete(true, client.getServerURI());
+                log.debug("MQTT reconnect succeeded, clientId={}", clientId);
+            } catch (MqttException e) {
+                log.warn("MQTT client failed to connect. Never happens.", e);
+                client = null;
+            }
         } else {
-            log.warn("Connection lost, clientId={}", client.getClientId(), cause);
+            log.warn("MQTT connection lost, clientId={}", clientId, cause);
         }
     }
 
