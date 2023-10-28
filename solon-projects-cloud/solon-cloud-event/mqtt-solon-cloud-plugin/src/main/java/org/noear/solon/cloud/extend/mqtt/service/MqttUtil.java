@@ -45,23 +45,4 @@ public class MqttUtil {
             }
         }
     }
-
-    /**
-     * 订阅
-     * */
-    public static void subscribe(IMqttAsyncClient client, MqttConnectOptions options,String eventChannelName, CloudEventObserverManger observerManger) throws MqttException {
-        String[] topicAry = observerManger.topicAll().toArray(new String[0]);
-        int[] topicQos = new int[topicAry.length];
-        IMqttMessageListener[] topicListener = new IMqttMessageListener[topicAry.length];
-        for (int i = 0, len = topicQos.length; i < len; i++) {
-            EventObserver eventObserver = observerManger.getByTopic(topicAry[i]);
-            topicQos[i] = eventObserver.getQos();
-            topicListener[i] = new MqttMessageListenerImpl(eventChannelName, eventObserver);
-        }
-
-        IMqttToken token = client.subscribe(topicAry, topicQos, topicListener);
-        //转为毫秒
-        long waitConnectionTimeout = options.getConnectionTimeout() * 1000;
-        token.waitForCompletion(waitConnectionTimeout);
-    }
 }

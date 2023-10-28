@@ -1,7 +1,6 @@
 package org.noear.solon.cloud.extend.mqtt.service;
 
 import org.eclipse.paho.client.mqttv3.*;
-import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudEventHandler;
@@ -29,9 +28,8 @@ public class CloudEventServiceMqtt3 implements CloudEventServicePlus {
     private final String password;
     private final long publishTimeout;
 
-    private IMqttAsyncClient client;
     private String clientId;
-    private MqttCallback clientCallback;
+    private MqttClientManagerImpl clientManager;
     private MqttConnectOptions options;
 
     private CloudEventObserverManger observerMap = new CloudEventObserverManger();
@@ -39,8 +37,8 @@ public class CloudEventServiceMqtt3 implements CloudEventServicePlus {
     /**
      * 获取客户端
      */
-    public IMqttAsyncClient getClient() {
-        return client;
+    public MqttClientManager getClientManager() {
+        return clientManager;
     }
 
     //
@@ -54,18 +52,18 @@ public class CloudEventServiceMqtt3 implements CloudEventServicePlus {
         this.password = cloudProps.getPassword();
         this.publishTimeout = cloudProps.getEventPublishTimeout();
 
-        connect();
+        this.clientId = getEventClientId();
+        if (Utils.isEmpty(this.clientId)) {
+            this.clientId = Solon.cfg().appName() + "-" + Utils.guid();
+        }
+
+        initClientManager();
     }
 
 
-    private synchronized void connect() {
-        if (client != null) {
+    private void initClientManager() {
+        if (clientManager != null) {
             return;
-        }
-
-        clientId = getEventClientId();
-        if (Utils.isEmpty(clientId)) {
-            clientId = Solon.cfg().appName() + "-" + Utils.guid();
         }
 
         options = new MqttConnectOptions();
@@ -95,17 +93,9 @@ public class CloudEventServiceMqtt3 implements CloudEventServicePlus {
         //设置死信
         options.setWill("client.close", clientId.getBytes(StandardCharsets.UTF_8), 1, false);
 
-        try {
-            client = new MqttAsyncClient(server, clientId, new MemoryPersistence());
-            clientCallback = new MqttCallbackImpl(client, observerMap, cloudProps);
 
-            client.setCallback(clientCallback);
-            //转为毫秒
-            long waitConnectionTimeout = options.getConnectionTimeout() * 1000;
-            client.connect(options).waitForCompletion(waitConnectionTimeout);
-        } catch (MqttException ex) {
-            throw new IllegalArgumentException(ex);
-        }
+        clientManager = new MqttClientManagerImpl(observerMap, cloudProps, options, clientId);
+
     }
 
     @Override
@@ -116,7 +106,7 @@ public class CloudEventServiceMqtt3 implements CloudEventServicePlus {
         message.setPayload(event.content().getBytes());
 
         try {
-            IMqttDeliveryToken token = client.publish(event.topic(), message);
+            IMqttDeliveryToken token = clientManager.getClient().publish(event.topic(), message);
 
             if (event.qos() > 0) {
                 token.waitForCompletion(publishTimeout);
@@ -137,9 +127,8 @@ public class CloudEventServiceMqtt3 implements CloudEventServicePlus {
 
     public void subscribe() {
         try {
-            if (observerMap.topicSize() > 0) {
-                MqttUtil.subscribe(client, options, cloudProps.getEventChannel(), observerMap);
-            }
+            //获取客户端时，自动会完成订阅
+            clientManager.getClient();
         } catch (Throwable ex) {
             throw new RuntimeException(ex);
         }
