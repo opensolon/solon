@@ -200,7 +200,8 @@ public class ProcessAotMojo extends AbstractMojo {
         aotArguments.add(generatedSources.getAbsolutePath());
         aotArguments.add(this.project.getGroupId());
         aotArguments.add(this.project.getArtifactId());
-        aotArguments.add(nativeBuildArgs);
+        // 给个空串，确认参数的长度大于 6
+        aotArguments.add(nativeBuildArgs == null ? "" : nativeBuildArgs);
         if (envs != null && envs.length != 0) {
             aotArguments.add("--solon.env=" + String.join(",", this.envs));
         }
