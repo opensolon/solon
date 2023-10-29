@@ -131,12 +131,14 @@ public class MqttClientManagerImpl implements MqttClientManager, MqttCallback {
     //发布的 QoS 1 或 QoS 2 消息的传递令牌时调用
     @Override
     public void deliveryComplete(IMqttToken token) {
-        if (log.isDebugEnabled()) {
-            log.debug("MQTT message delivery completed, clientId={}, messageId={}", clientId, token.getMessageId());
-        }
+        if (token.getMessageId() > 0) {
+            if (log.isDebugEnabled()) {
+                log.debug("MQTT message delivery completed, clientId={}, messageId={}", clientId, token.getMessageId());
+            }
 
-        if (getAsync()) {
-            EventBus.publish(new MqttDeliveryCompleteEvent(clientId, token.getMessageId(), token));
+            if (getAsync()) {
+                EventBus.publish(new MqttDeliveryCompleteEvent(clientId, token.getMessageId(), token));
+            }
         }
     }
 
