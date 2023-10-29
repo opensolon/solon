@@ -35,6 +35,8 @@
 * sqltoy 升为 5.2.74
 * mybatis-flex 升为 1.7.3
 * activemq 升为 5.15.12
+* sureness 升为 1.0.8
+* guava 升为 32.1.3-jre
 * smarthttp 升为 1.3.5
 
 ### 2.5.11
