@@ -52,9 +52,9 @@ public class CloudEventServiceMqtt3 implements CloudEventServicePlus {
         message.setPayload(event.content().getBytes());
 
         try {
-            IMqttDeliveryToken token = clientManager.getClient().publish(event.topic(), message);
+            IMqttToken token = clientManager.getClient().publish(event.topic(), message);
 
-            if (event.qos() > 0) {
+            if (!clientManager.getAsync() && event.qos() > 0) {
                 token.waitForCompletion(publishTimeout);
                 return token.isComplete();
             } else {

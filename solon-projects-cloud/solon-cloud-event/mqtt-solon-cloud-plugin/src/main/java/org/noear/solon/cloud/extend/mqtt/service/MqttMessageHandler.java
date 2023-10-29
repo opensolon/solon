@@ -1,20 +1,33 @@
 package org.noear.solon.cloud.extend.mqtt.service;
 
-import org.eclipse.paho.client.mqttv3.*;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudEventHandler;
 import org.noear.solon.cloud.model.Event;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author noear
- * @since 2.4
+ * @since 2.5
  */
-public class MqttUtil {
-    /**
-     * 接收
-     */
-    public static void receive(MqttClientManager clientManager, Logger log, String eventChannelName, CloudEventHandler eventHandler, String topic, MqttMessage message) throws Exception {
+public class MqttMessageHandler implements Runnable{
+    static Logger log = LoggerFactory.getLogger(MqttMessageListenerImpl.class);
+    MqttClientManager clientManager;
+    String eventChannelName;
+    CloudEventHandler eventHandler;
+    String topic;
+    MqttMessage message;
+
+    public MqttMessageHandler(MqttClientManager clientManager,  String eventChannelName, CloudEventHandler eventHandler, String topic, MqttMessage message){
+        this.clientManager = clientManager;
+        this.eventChannelName = eventChannelName;
+        this.eventHandler = eventHandler;
+        this.topic = topic;
+        this.message = message;
+    }
+    @Override
+    public void run() {
         try {
             Event event = new Event(topic, new String(message.getPayload()))
                     .qos(message.getQos())

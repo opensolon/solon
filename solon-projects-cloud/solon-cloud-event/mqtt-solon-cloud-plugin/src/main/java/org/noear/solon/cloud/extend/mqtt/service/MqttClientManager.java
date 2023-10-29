@@ -20,6 +20,16 @@ public interface MqttClientManager {
     String getClientId();
 
     /**
+     * 设置异步状态
+     */
+    void setAsync(boolean async);
+
+    /**
+     * 获取异步状态
+     */
+    boolean getAsync();
+
+    /**
      * 添加连接回调
      */
     void addCallback(ConnectCallback connectCallback);
