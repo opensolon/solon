@@ -3,6 +3,7 @@ package org.noear.solon.aot;
 import org.noear.snack.ONode;
 import org.noear.snack.core.Feature;
 import org.noear.snack.core.Options;
+import org.noear.snack.core.utils.StringUtil;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.aot.graalvm.GraalvmUtil;
@@ -169,7 +170,9 @@ public class SolonAotProcessor {
         try {
             Set<String> args = getDefaultNativeImageArguments(metadata.getApplicationClassName());
             args.addAll(metadata.getArgs());
-            args.add(settings.getNativeBuildArgs());
+            if (!StringUtil.isEmpty(settings.getNativeBuildArgs())) {
+                args.add(settings.getNativeBuildArgs());
+            }
 
             StringBuilder sb = new StringBuilder();
             sb.append("Args = ");
