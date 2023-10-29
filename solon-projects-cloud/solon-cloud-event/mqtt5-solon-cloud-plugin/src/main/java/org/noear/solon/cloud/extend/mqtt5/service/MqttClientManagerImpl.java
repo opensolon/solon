@@ -136,9 +136,7 @@ public class MqttClientManagerImpl implements MqttClientManager, MqttCallback {
                 log.debug("MQTT message delivery completed, clientId={}, messageId={}", clientId, token.getMessageId());
             }
 
-            if (getAsync()) {
-                EventBus.publish(new MqttDeliveryCompleteEvent(clientId, token.getMessageId(), token));
-            }
+            EventBus.publish(new MqttDeliveryCompleteEvent(clientId, token.getMessageId(), token));
         }
     }
 
