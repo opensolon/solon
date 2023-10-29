@@ -19,11 +19,14 @@ public final class Settings {
 
     private String artifactId;
 
-    public Settings(Path classOutput, Path generatedSources, String groupId, String artifactId) {
+    private String nativeBuildArgs;
+
+    public Settings(Path classOutput, Path generatedSources, String groupId, String artifactId, String nativeBuildArgs) {
         this.classOutput = classOutput;
         this.generatedSources = generatedSources;
         this.groupId = groupId;
         this.artifactId = artifactId;
+        this.nativeBuildArgs = nativeBuildArgs;
     }
 
     public Path getClassOutput() {
@@ -40,5 +43,9 @@ public final class Settings {
 
     public Path getGeneratedSources() {
         return generatedSources;
+    }
+
+    public String getNativeBuildArgs() {
+        return nativeBuildArgs;
     }
 }

@@ -47,14 +47,14 @@ public class SolonAotProcessor {
 
         LogUtil.global().info("Aot processor start, args: " + Arrays.toString(args));
 
-        int requiredArgs = 5;
+        int requiredArgs = 6;
         if (args.length < requiredArgs) {
             throw new IllegalArgumentException("Usage: " + SolonAotProcessor.class.getName()
-                    + " <applicationName> <classOutput> <generatedSources> <groupId> <artifactId> <originalArgs...>");
+                    + " <applicationName> <classOutput> <generatedSources> <groupId> <artifactId> <nativeBuildArgs> <originalArgs...>");
         }
 
         Class<?> application = Class.forName(args[0]);
-        Settings build = new Settings(Paths.get(args[1]), Paths.get(args[2]), args[3], args[4]);
+        Settings build = new Settings(Paths.get(args[1]), Paths.get(args[2]), args[3], args[4], args[5]);
 
         String[] applicationArgs = (args.length > requiredArgs) ? Arrays.copyOfRange(args, requiredArgs, args.length)
                 : new String[0];
@@ -162,6 +162,7 @@ public class SolonAotProcessor {
         try {
             Set<String> args = getDefaultNativeImageArguments(metadata.getApplicationClassName());
             args.addAll(metadata.getArgs());
+            args.add(settings.getNativeBuildArgs());
 
             StringBuilder sb = new StringBuilder();
             sb.append("Args = ");
