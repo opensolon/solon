@@ -6,6 +6,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudEventHandler;
 import org.noear.solon.cloud.CloudProps;
+import org.noear.solon.cloud.extend.mqtt.event.MqttDeliveryCompleteEvent;
 import org.noear.solon.cloud.model.EventObserver;
 import org.noear.solon.cloud.service.CloudEventObserverManger;
 import org.noear.solon.core.event.EventBus;
@@ -121,7 +122,13 @@ public class MqttClientManagerImpl implements MqttClientManager, MqttCallbackExt
     //发布的 QoS 1 或 QoS 2 消息的传递令牌时调用
     @Override
     public void deliveryComplete(IMqttDeliveryToken token) {
+        if (log.isDebugEnabled()) {
+            log.debug("MQTT message delivery completed, clientId={}, messageId={}", clientId, token.getMessageId());
+        }
 
+        if (getAsync()) {
+            EventBus.publish(new MqttDeliveryCompleteEvent(clientId, token.getMessageId(), token));
+        }
     }
 
     @Override
