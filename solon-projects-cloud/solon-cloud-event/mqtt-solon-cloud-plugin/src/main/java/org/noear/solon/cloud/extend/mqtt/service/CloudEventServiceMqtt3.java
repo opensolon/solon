@@ -1,8 +1,6 @@
 package org.noear.solon.cloud.extend.mqtt.service;
 
 import org.eclipse.paho.client.mqttv3.*;
-import org.noear.solon.Solon;
-import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudEventHandler;
 import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.annotation.EventLevel;
@@ -11,26 +9,18 @@ import org.noear.solon.cloud.model.Event;
 import org.noear.solon.cloud.service.CloudEventObserverManger;
 import org.noear.solon.cloud.service.CloudEventServicePlus;
 
-import java.nio.charset.StandardCharsets;
-import java.util.Properties;
-
 /**
  * @author noear
  * @since 1.3
+ * @since 2.5
  */
 public class CloudEventServiceMqtt3 implements CloudEventServicePlus {
-    private static final String PROP_EVENT_clientId = "event.clientId";
 
     private final CloudProps cloudProps;
 
-    private final String server;
-    private final String username;
-    private final String password;
     private final long publishTimeout;
 
-    private String clientId;
     private MqttClientManagerImpl clientManager;
-    private MqttConnectOptions options;
 
     private CloudEventObserverManger observerMap = new CloudEventObserverManger();
 
@@ -47,56 +37,12 @@ public class CloudEventServiceMqtt3 implements CloudEventServicePlus {
     public CloudEventServiceMqtt3(CloudProps cloudProps) {
         this.cloudProps = cloudProps;
 
-        this.server = cloudProps.getEventServer();
-        this.username = cloudProps.getUsername();
-        this.password = cloudProps.getPassword();
         this.publishTimeout = cloudProps.getEventPublishTimeout();
 
-        this.clientId = getEventClientId();
-        if (Utils.isEmpty(this.clientId)) {
-            this.clientId = Solon.cfg().appName() + "-" + Utils.guid();
-        }
-
-        initClientManager();
+        this.clientManager = new MqttClientManagerImpl(observerMap, cloudProps);
     }
 
 
-    private void initClientManager() {
-        if (clientManager != null) {
-            return;
-        }
-
-        options = new MqttConnectOptions();
-
-        if (Utils.isNotEmpty(username)) {
-            options.setUserName(username);
-        } else {
-            options.setUserName(Solon.cfg().appName());
-        }
-
-        if (Utils.isNotEmpty(password)) {
-            options.setPassword(password.toCharArray());
-        }
-
-        options.setCleanSession(true);
-        options.setConnectionTimeout(30); //超时时长
-        options.setKeepAliveInterval(60); //心跳时长，秒
-        options.setServerURIs(new String[]{server});
-        options.setAutomaticReconnect(false);
-
-        //绑定定制属性
-        Properties props = cloudProps.getEventClientProps();
-        if (props.size() > 0) {
-            Utils.injectProperties(options, props);
-        }
-
-        //设置死信
-        options.setWill("client.close", clientId.getBytes(StandardCharsets.UTF_8), 1, false);
-
-
-        clientManager = new MqttClientManagerImpl(observerMap, cloudProps, options, clientId);
-
-    }
 
     @Override
     public boolean publish(Event event) throws CloudEventException {
@@ -152,9 +98,5 @@ public class CloudEventServiceMqtt3 implements CloudEventServicePlus {
         }
 
         return group;
-    }
-
-    public String getEventClientId() {
-        return cloudProps.getValue(PROP_EVENT_clientId);
     }
 }

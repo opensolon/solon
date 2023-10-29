@@ -3,10 +3,7 @@ package org.noear.solon.cloud.extend.mqtt.service;
 import org.eclipse.paho.client.mqttv3.*;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudEventHandler;
-import org.noear.solon.cloud.exception.CloudEventException;
 import org.noear.solon.cloud.model.Event;
-import org.noear.solon.cloud.model.EventObserver;
-import org.noear.solon.cloud.service.CloudEventObserverManger;
 import org.slf4j.Logger;
 
 /**
@@ -16,8 +13,8 @@ import org.slf4j.Logger;
 public class MqttUtil {
     /**
      * 接收
-     * */
-    public static void receive(Logger log, String eventChannelName, CloudEventHandler eventHandler, String topic, MqttMessage message) throws Exception {
+     */
+    public static void receive(MqttClientManager clientManager, Logger log, String eventChannelName, CloudEventHandler eventHandler, String topic, MqttMessage message) throws Exception {
         try {
             Event event = new Event(topic, new String(message.getPayload()))
                     .qos(message.getQos())
@@ -25,24 +22,20 @@ public class MqttUtil {
                     .channel(eventChannelName);
 
             if (eventHandler != null) {
-                if (eventHandler.handle(event) == false) {
-                    //未成功，则异常（模拟 ack）
-                    throw new CloudEventException("This event handling returns false: " + event.topic());
+                if (eventHandler.handle(event)) {
+                    //手动 ack
+                    clientManager.getClient().messageArrivedComplete(message.getId(), message.getQos());
                 }
             } else {
-                //只需要记录一下
+                //手动 ack
+                clientManager.getClient().messageArrivedComplete(message.getId(), message.getQos());
+                //记录一下它是没有订阅的
                 log.warn("There is no observer for this event topic[{}]", event.topic());
             }
         } catch (Throwable e) {
             e = Utils.throwableUnwrap(e);
-
-            log.warn(e.getMessage(), e); //todo: ?
-
-            if (e instanceof Exception) {
-                throw (Exception) e;
-            } else {
-                throw new CloudEventException(e);
-            }
+            //不返回异常，不然会关掉客户端（已使用手动ack）
+            log.warn(e.getMessage(), e);
         }
     }
 }

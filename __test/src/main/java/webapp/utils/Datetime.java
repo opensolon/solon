@@ -329,6 +329,6 @@ public class Datetime implements Serializable,Cloneable,Comparable<Datetime> {
     public int compareTo(Datetime anotherDatetime) {
         long thisTime = getTicks();
         long anotherTime = anotherDatetime.getTicks();
-        return (thisTime<anotherTime ? -1 : (thisTime==anotherTime ? 0 : 1));
+        return (Long.compare(thisTime, anotherTime));
     }
 }

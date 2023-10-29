@@ -6,13 +6,18 @@ import org.eclipse.paho.client.mqttv3.IMqttAsyncClient;
  * Mqtt 客户端管理器
  *
  * @author noear
- * @since 2.0
+ * @since 2.5
  */
 public interface MqttClientManager {
     /**
      * 获取客户端
      */
     IMqttAsyncClient getClient();
+
+    /**
+     * 获取客户端Id
+     */
+    String getClientId();
 
     /**
      * 添加连接回调
