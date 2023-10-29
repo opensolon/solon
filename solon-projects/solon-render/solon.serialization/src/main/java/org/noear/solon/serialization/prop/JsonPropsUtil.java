@@ -55,12 +55,12 @@ public class JsonPropsUtil {
         }
 
         if(jsonProps.dateAsTicks){
-            factory.addConvertor(Date.class, e -> e.getTime());
+            factory.addConvertor(Date.class, Date::getTime);
         }
 
         if (jsonProps.longAsString) {
-            factory.addConvertor(Long.class, e -> String.valueOf(e));
-            factory.addConvertor(long.class, e -> String.valueOf(e));
+            factory.addConvertor(Long.class, String::valueOf);
+            factory.addConvertor(long.class, String::valueOf);
         }
 
         if (jsonProps.boolAsInt) {

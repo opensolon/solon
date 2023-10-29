@@ -44,10 +44,8 @@ public class XPluginImp implements Plugin {
     }
 
     private void applyProps(Fastjson2RenderFactory factory, JsonProps jsonProps) {
-        boolean writeNulls = false;
-
         if (JsonPropsUtil.apply(factory, jsonProps)) {
-            writeNulls = jsonProps.nullAsWriteable ||
+            boolean writeNulls = jsonProps.nullAsWriteable ||
                     jsonProps.nullNumberAsZero ||
                     jsonProps.nullArrayAsEmpty ||
                     jsonProps.nullBoolAsFalse ||
@@ -65,11 +63,15 @@ public class XPluginImp implements Plugin {
                 factory.addFeatures(JSONWriter.Feature.WriteNullNumberAsZero);
             }
 
+            if (jsonProps.longAsString) {
+                factory.addFeatures(JSONWriter.Feature.WriteLongAsString);
+            }
+
             if (jsonProps.nullArrayAsEmpty) {
                 factory.addFeatures(JSONWriter.Feature.WriteNullListAsEmpty);
             }
 
-            if(jsonProps.enumAsName){
+            if (jsonProps.enumAsName) {
                 factory.addFeatures(JSONWriter.Feature.WriteEnumsUsingName);
             }
 
