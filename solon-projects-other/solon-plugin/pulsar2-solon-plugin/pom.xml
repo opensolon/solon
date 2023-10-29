@@ -22,7 +22,6 @@
         <reactor.core.version>3.5.4</reactor.core.version>
         <awaitility.version>4.2.0</awaitility.version>
         <testcontainers.version>1.17.6</testcontainers.version>
-        <apache.pulsar.client.version>2.11.0</apache.pulsar.client.version>
     </properties>
 
     <dependencies>
@@ -46,7 +45,7 @@
         <dependency>
             <groupId>org.apache.pulsar</groupId>
             <artifactId>pulsar-client-original</artifactId>
-            <version>${apache.pulsar.client.version}</version>
+            <version>${pulsar.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.slf4j</groupId>

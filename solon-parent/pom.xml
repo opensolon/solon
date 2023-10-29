@@ -114,6 +114,7 @@
         <activemq.version>5.15.12</activemq.version>
         <rabbitmq.version>5.19.0</rabbitmq.version>
         <kafka_2.13.version>3.6.0</kafka_2.13.version>
+        <pulsar.version>2.11.2</pulsar.version>
 
         <nacos1.version>1.4.5</nacos1.version>
         <nacos2.version>2.2.4</nacos2.version>

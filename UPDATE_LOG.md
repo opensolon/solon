@@ -37,6 +37,7 @@
 * activemq 升为 5.15.12
 * sureness 升为 1.0.8
 * guava 升为 32.1.3-jre
+* pulsar 升为 2.11.2
 * smarthttp 升为 1.3.5
 
 ### 2.5.11
