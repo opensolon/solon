@@ -1,31 +1,31 @@
-package org.noear.solon.cloud.extend.mqtt5;
+package org.noear.solon.cloud.extend.mqtt;
 
-import org.eclipse.paho.mqttv5.client.IMqttAsyncClient;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudManager;
 import org.noear.solon.cloud.CloudProps;
-import org.noear.solon.cloud.extend.mqtt5.service.CloudEventServiceMqtt5;
+import org.noear.solon.cloud.extend.mqtt.service.CloudEventServiceMqtt3;
+import org.noear.solon.cloud.extend.mqtt.service.MqttClientManager;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 
 /**
  * @author noear
- * @since 2.4
+ * @since 1.3
  */
-public class XPluginImp implements Plugin {
+public class XPluginImpl implements Plugin {
     @Override
     public void start(AppContext context) {
-        CloudProps cloudProps = new CloudProps(context, "mqtt");
+        CloudProps cloudProps = new CloudProps(context,"mqtt");
 
         if (Utils.isEmpty(cloudProps.getEventServer())) {
             return;
         }
 
         if (cloudProps.getEventEnable()) {
-            CloudEventServiceMqtt5 eventServiceImp = new CloudEventServiceMqtt5(cloudProps);
+            CloudEventServiceMqtt3 eventServiceImp = new CloudEventServiceMqtt3(cloudProps);
             CloudManager.register(eventServiceImp);
 
-            context.wrapAndPut(IMqttAsyncClient.class, eventServiceImp.getClient());
+            context.wrapAndPut(MqttClientManager.class, eventServiceImp.getClientManager());
             context.lifecycle(-99, () -> eventServiceImp.subscribe());
         }
     }

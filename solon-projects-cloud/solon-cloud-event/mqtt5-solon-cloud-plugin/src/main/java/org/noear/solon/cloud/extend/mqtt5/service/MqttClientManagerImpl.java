@@ -1,7 +1,11 @@
-package org.noear.solon.cloud.extend.mqtt.service;
+package org.noear.solon.cloud.extend.mqtt5.service;
 
-import org.eclipse.paho.client.mqttv3.*;
-import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
+import org.eclipse.paho.mqttv5.client.*;
+import org.eclipse.paho.mqttv5.client.persist.MemoryPersistence;
+import org.eclipse.paho.mqttv5.common.MqttException;
+import org.eclipse.paho.mqttv5.common.MqttMessage;
+import org.eclipse.paho.mqttv5.common.MqttSubscription;
+import org.eclipse.paho.mqttv5.common.packet.MqttProperties;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudEventHandler;
@@ -23,7 +27,7 @@ import java.util.Set;
  * @author noear
  * @since 2.5
  */
-public class MqttClientManagerImpl implements MqttClientManager, MqttCallbackExtended {
+public class MqttClientManagerImpl implements MqttClientManager, MqttCallback {
     private static final Logger log = LoggerFactory.getLogger(MqttClientManagerImpl.class);
     private static final String PROP_EVENT_clientId = "event.clientId";
 
@@ -34,8 +38,8 @@ public class MqttClientManagerImpl implements MqttClientManager, MqttCallbackExt
     private final CloudEventObserverManger observerManger;
     private final String eventChannelName;
 
-    private final MqttConnectOptions options;
-    private  String clientId;
+    private final MqttConnectionOptions options;
+    private String clientId;
 
     private final Set<ConnectCallback> connectCallbacks = Collections.synchronizedSet(new HashSet<>());
 
@@ -51,7 +55,7 @@ public class MqttClientManagerImpl implements MqttClientManager, MqttCallbackExt
             this.clientId = Solon.cfg().appName() + "-" + Utils.guid();
         }
 
-        this.options = new MqttConnectOptions();
+        this.options = new MqttConnectionOptions();
 
         if (Utils.isNotEmpty(username)) {
             options.setUserName(username);
@@ -60,20 +64,19 @@ public class MqttClientManagerImpl implements MqttClientManager, MqttCallbackExt
         }
 
         if (Utils.isNotEmpty(password)) {
-            options.setPassword(password.toCharArray());
+            options.setPassword(password.getBytes(StandardCharsets.UTF_8));
         }
 
 
         //设置死信
-        options.setWill("client.close", clientId.getBytes(StandardCharsets.UTF_8), 1, false);
+        options.setWill("client.close", new MqttMessage(clientId.getBytes(StandardCharsets.UTF_8), 1, false, null));
 
 
         options.setConnectionTimeout(30); //超时时长
         options.setKeepAliveInterval(20); //心跳时长，秒
         options.setServerURIs(new String[]{server});
-        options.setCleanSession(false);
         options.setAutomaticReconnect(true);
-        options.setMaxInflight(128); //根据情况再调整
+        options.setReceiveMaximum(128); //根据情况再调整 //相当于 v3 的 setMaxInflight
 
         //绑定定制属性
         Properties props = cloudProps.getEventClientProps();
@@ -84,13 +87,18 @@ public class MqttClientManagerImpl implements MqttClientManager, MqttCallbackExt
 
     //在断开连接时调用
     @Override
-    public synchronized void connectionLost(Throwable cause) {
-        log.warn("MQTT connection lost, clientId={}", clientId, cause);
+    public void disconnected(MqttDisconnectResponse disconnectResponse) {
+        log.warn("MQTT connection lost, clientId={}", clientId, disconnectResponse.getException());
 
         if (options.isAutomaticReconnect() == false) {
             //如果不是自动重链，把客户端清掉（如果有自己重链，内部会自己处理）
             client = null;
         }
+    }
+
+    @Override
+    public void mqttErrorOccurred(MqttException exception) {
+        log.warn("MQTT error, clientId={}", clientId, exception);
     }
 
     //已经预订的消息
@@ -103,13 +111,18 @@ public class MqttClientManagerImpl implements MqttClientManager, MqttCallbackExt
 
     //发布的 QoS 1 或 QoS 2 消息的传递令牌时调用
     @Override
-    public void deliveryComplete(IMqttDeliveryToken token) {
+    public void deliveryComplete(IMqttToken token) {
 
     }
 
     @Override
     public void connectComplete(boolean reconnect, String serverURI) {
         connectCallbacks.forEach(callback -> callback.connectComplete(reconnect));
+    }
+
+    @Override
+    public void authPacketArrived(int reasonCode, MqttProperties properties) {
+        log.warn("MQTT authPacketArrived, clientId={}, reasonCode={}", clientId, reasonCode);
     }
 
 
@@ -175,17 +188,22 @@ public class MqttClientManagerImpl implements MqttClientManager, MqttCallbackExt
         }
 
         String[] topicAry = observerManger.topicAll().toArray(new String[0]);
-        int[] topicQos = new int[topicAry.length];
-        IMqttMessageListener[] topicListener = new IMqttMessageListener[topicAry.length];
-        for (int i = 0, len = topicQos.length; i < len; i++) {
+
+        MqttSubscription[] subscriptions = new MqttSubscription[topicAry.length];
+        IMqttMessageListener[] listeners = new IMqttMessageListener[topicAry.length];
+        for (int i = 0, len = topicAry.length; i < len; i++) {
             EventObserver eventObserver = observerManger.getByTopic(topicAry[i]);
-            topicQos[i] = eventObserver.getQos();
-            topicListener[i] = new MqttMessageListenerImpl(this, eventChannelName, eventObserver);
+            subscriptions[i] = new MqttSubscription(topicAry[i], eventObserver.getQos());
+            listeners[i] = new MqttMessageListenerImpl(this, eventChannelName, eventObserver);
         }
 
-        IMqttToken token = getClient().subscribe(topicAry, topicQos, topicListener);
+        IMqttToken token = subscribe0(subscriptions, listeners);
         //转为毫秒
         long waitConnectionTimeout = options.getConnectionTimeout() * 1000;
         token.waitForCompletion(waitConnectionTimeout);
+    }
+
+    private IMqttToken subscribe0(MqttSubscription[] subscriptions, IMqttMessageListener[] messageListeners) throws MqttException {
+        return getClient().subscribe(subscriptions, null, null, messageListeners, new MqttProperties());
     }
 }
