@@ -12,6 +12,7 @@ import org.noear.solon.cloud.CloudEventHandler;
 import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.model.EventObserver;
 import org.noear.solon.cloud.service.CloudEventObserverManger;
+import org.noear.solon.core.event.EventBus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -83,6 +84,9 @@ public class MqttClientManagerImpl implements MqttClientManager, MqttCallback {
         if (props.size() > 0) {
             Utils.injectProperties(options, props);
         }
+
+        //支持事件总线扩展
+        EventBus.publish(options);
     }
 
     //在断开连接时调用
