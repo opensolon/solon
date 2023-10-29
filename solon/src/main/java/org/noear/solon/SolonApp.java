@@ -80,7 +80,7 @@ public class SolonApp extends RouterWrapper {
         }
 
         //初始化配置
-        _cfg = new SolonProps(source, args).load();
+        _cfg = new SolonProps(source, args);
         _context = new AppContext(new AppClassLoader(AppClassLoader.global()), _cfg);
 
         //初始化路由

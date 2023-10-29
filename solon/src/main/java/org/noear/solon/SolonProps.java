@@ -31,6 +31,8 @@ import java.util.function.Predicate;
  * @since 1.0
  * */
 public final class SolonProps extends Props {
+    protected final List<String> warns = new ArrayList<>();
+
     private final NvMap args;
     private final Class<?> source;
     private final URL sourceLocation;
@@ -44,9 +46,6 @@ public final class SolonProps extends Props {
     private boolean isSetupMode;//是否为安装蕈式
     private boolean isAloneMode;//是否为独立蕈式（即独立运行模式）
 
-
-    protected final List<String> warns = new ArrayList<>();
-
     private String env;
 
     private Locale locale;
@@ -54,8 +53,7 @@ public final class SolonProps extends Props {
     private String extend;
     private String extendFilter;
 
-
-    public SolonProps(Class<?> source, NvMap args) {
+    public SolonProps(Class<?> source, NvMap args) throws Exception{
         super(System.getProperties());
 
         //1.接收启动参数
@@ -66,12 +64,9 @@ public final class SolonProps extends Props {
         this.sourceLocation = source.getProtectionDomain().getCodeSource().getLocation();
         //1.3.测试隔离
         this.testing = args.containsKey("testing");
-    }
 
-    /**
-     * 加载配置（用于第一次加载）
-     */
-    public SolonProps load() throws Exception {
+        //::: 开始加载
+
         //2.同步启动参数到系统属性
         this.syncArgsToSys();
 
@@ -188,8 +183,6 @@ public final class SolonProps extends Props {
         } else {
             locale = Locale.getDefault();
         }
-
-        return this;
     }
 
     private void importPropsTry(Class<?> source) {
