@@ -8,8 +8,8 @@ import org.noear.solon.Utils;
 import org.noear.solon.aot.graalvm.GraalvmUtil;
 import org.noear.solon.aot.hint.ResourceHint;
 import org.noear.solon.core.AppContext;
-import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.core.PluginEntity;
+import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.core.util.ScanUtil;
@@ -18,7 +18,11 @@ import java.io.File;
 import java.io.FileWriter;
 import java.lang.reflect.Method;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
@@ -31,11 +35,11 @@ import java.util.regex.Pattern;
 public class SolonAotProcessor {
     private final Options jsonOptions = Options.def().add(Feature.PrettyFormat).add(Feature.OrderedField);
 
-    private final Settings settings;
+    private Settings settings;
 
-    private final String[] applicationArgs;
+    private String[] applicationArgs;
 
-    private final Class<?> applicationClass;
+    private Class<?> applicationClass;
 
     public SolonAotProcessor(Settings settings, String[] applicationArgs, Class<?> applicationClass) {
         this.settings = settings;
@@ -62,7 +66,7 @@ public class SolonAotProcessor {
         new SolonAotProcessor(build, applicationArgs, application).process();
     }
 
-    public final void process() {
+    public final void process() throws Exception {
         try {
             System.setProperty(NativeDetector.AOT_PROCESSING, "true");
             doProcess();
@@ -71,20 +75,39 @@ public class SolonAotProcessor {
         }
     }
 
-    protected void doProcess() {
-        try {
-            Method mainMethod = applicationClass.getMethod("main", String[].class);
-            mainMethod.invoke(null, new Object[]{this.applicationArgs});
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
+    protected void doProcess() throws Exception {
+        // aot 执行 solon 应用主类报错时，应将异常抛出去，中断 maven 打包流程
+        Method mainMethod = applicationClass.getMethod("main", String[].class);
+        mainMethod.invoke(null, new Object[]{this.applicationArgs});
 
         AppContext context = Solon.context();
 
-        //改为普通扩展方式
+        RuntimeNativeMetadata metadata = genRuntimeNativeMetadata(context);
+
+        addNativeImage(metadata);
+
+        // 添加 resource-config.json
+        addResourceConfig(metadata);
+        // 添加 reflect-config.json
+        addReflectConfig(metadata);
+        // 添加 serialization-config.json
+        addSerializationConfig(metadata);
+        // 添加 proxy-config.json
+        addJdkProxyConfig(metadata);
+
+        LogUtil.global().info("Aot processor end.");
+
+        // 正常退出
+        Solon.stopBlock(true, -1, 0);
+    }
+
+    /**
+     * 生成运行时的元数据
+     */
+    protected RuntimeNativeMetadata genRuntimeNativeMetadata(AppContext context) {
+        // 获取 AppContextNativeProcessor
         AppContextNativeProcessor contextNativeProcessor = context.getBean(AppContextNativeProcessor.class);
-        if(contextNativeProcessor == null){
+        if (contextNativeProcessor == null) {
             contextNativeProcessor = new AppContextNativeProcessorDefault();
         }
 
@@ -107,23 +130,7 @@ public class SolonAotProcessor {
         for (RuntimeNativeRegistrar runtimeNativeRegistrar : runtimeNativeRegistrars) {
             runtimeNativeRegistrar.register(context, metadata);
         }
-
-
-        addNativeImage(metadata);
-
-        // 添加 resource-config.json
-        addResourceConfig(metadata);
-        // 添加 reflect-config.json
-        addReflectConfig(metadata);
-        // 添加 serialization-config.json
-        addSerializationConfig(metadata);
-        // 添加 proxy-config.json
-        addJdkProxyConfig(metadata);
-
-        LogUtil.global().info("Aot processor end.");
-
-        // 正常退出
-        Solon.stopBlock(true, -1, 0);
+        return metadata;
     }
 
 

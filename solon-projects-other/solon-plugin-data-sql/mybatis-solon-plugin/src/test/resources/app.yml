@@ -1,0 +1,31 @@
+server.port: 8080
+
+solon.app:
+  name: 'demo-app'
+  group: 'demo'
+solon.logging.appender:
+  console:
+    pattern: "%d{yyyy-MM-dd HH:mm:ss} %-5level %white(---) %-45(%cyan(%.32logger{30}:%L)) %msg%n"
+solon:
+  logging:
+    logger:
+      root:
+        level: info
+
+datasource:
+  driver-class-name: org.h2.Driver
+  username: sa
+  password:
+  jdbcUrl: jdbc:h2:mem:activiti;DB_CLOSE_DELAY=1000
+  maxPoolSize: 1
+
+#默认
+mybatis.db1:
+  typeAliases:    #支持包名 或 类名
+    - "mybatis.nativex.entity"
+  mappers:        #支持包名 或 类名 或 xml（.xml结尾 或 *.xml 结尾）
+    - "mybatis.nativex.mapper"
+    - "mapper/*.xml"
+  configuration:
+    cacheEnabled: false
+    mapUnderscoreToCamelCase: true

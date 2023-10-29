@@ -50,24 +50,7 @@ public class RuntimeNativeMetadata {
     private final Map<String, SerializationHint> lambdaSerializations = new LinkedHashMap<>();
     private final Map<String, JdkProxyHint> jdkProxys = new LinkedHashMap<>();
 
-    public Set<String> getArgs() {
-        return args;
-    }
-
-    public List<ResourceHint> getIncludes() {
-        return includes;
-    }
-
-
     private String applicationClassName;
-
-    public String getApplicationClassName() {
-        return applicationClassName;
-    }
-
-    public void setApplicationClassName(String applicationClassName) {
-        this.applicationClassName = applicationClassName;
-    }
 
     /**
      * 注册参数
@@ -498,6 +481,42 @@ public class RuntimeNativeMetadata {
         }
 
         return oNode.toJson();
+    }
+
+    public Map<String, ReflectionHints> getReflection() {
+        return reflection;
+    }
+
+    public Set<String> getArgs() {
+        return args;
+    }
+
+    public List<ResourceHint> getIncludes() {
+        return includes;
+    }
+
+    public List<ResourceHint> getExcludes() {
+        return excludes;
+    }
+
+    public Map<String, SerializationHint> getSerializations() {
+        return serializations;
+    }
+
+    public Map<String, SerializationHint> getLambdaSerializations() {
+        return lambdaSerializations;
+    }
+
+    public Map<String, JdkProxyHint> getJdkProxys() {
+        return jdkProxys;
+    }
+
+    public String getApplicationClassName() {
+        return applicationClassName;
+    }
+
+    public void setApplicationClassName(String applicationClassName) {
+        this.applicationClassName = applicationClassName;
     }
 
 
