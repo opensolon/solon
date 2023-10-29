@@ -105,6 +105,9 @@ public class ProcessAotMojo extends AbstractMojo {
     @Parameter(property = "solon.aot.compilerArguments")
     private String compilerArguments;
 
+    @Parameter(property = "solon.native.buildArgs")
+    private String nativeBuildArgs;
+
     /**
      * Application arguments that should be taken into account for AOT processing.
      */
@@ -197,6 +200,7 @@ public class ProcessAotMojo extends AbstractMojo {
         aotArguments.add(generatedSources.getAbsolutePath());
         aotArguments.add(this.project.getGroupId());
         aotArguments.add(this.project.getArtifactId());
+        aotArguments.add(nativeBuildArgs);
         if (envs != null && envs.length != 0) {
             aotArguments.add("--solon.env=" + String.join(",", this.envs));
         }
