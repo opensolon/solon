@@ -45,4 +45,9 @@ public @interface SolonTest {
      * 是否调试模式
      * */
     boolean debug() default true;
+
+    /**
+     * 是否为 aot 运行
+     */
+    boolean isAot() default false;
 }

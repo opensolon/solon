@@ -282,4 +282,8 @@ public class GraalvmUtil {
 
         return buf.toString();
     }
+
+    public static Set<String> getResources() {
+        return resources;
+    }
 }

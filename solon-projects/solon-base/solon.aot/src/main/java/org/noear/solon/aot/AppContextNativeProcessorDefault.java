@@ -66,8 +66,8 @@ public class AppContextNativeProcessorDefault implements AppContextNativeProcess
             //开始计数
             beanCount.getAndIncrement();
 
-            //生成代理
-            if (beanWrap.proxy() != null) {
+            // 生成代理，测试用例时，可以不用生成代理类？
+            if (beanWrap.proxy() != null && settings != null) {
                 proxyClassGenerator.generateCode(settings, clz);
             }
 

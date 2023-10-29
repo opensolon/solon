@@ -12,9 +12,11 @@ import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.NvMap;
 import org.noear.solon.core.event.AppInitEndEvent;
 import org.noear.solon.core.event.EventBus;
+import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.test.annotation.Rollback;
 import org.noear.solon.test.annotation.TestPropertySource;
 import org.noear.solon.test.annotation.TestRollback;
+import org.noear.solon.test.aot.SolonAotTestProcessor;
 import org.noear.solon.test.data.RollbackInterceptor;
 
 import java.io.File;
@@ -132,19 +134,31 @@ public class RunnerUtils {
                 return appCached.get(mainClz);
             }
 
-            AppContext appContext = startDo(mainClz, argsAry, klass);
-
-            appCached.put(mainClz, appContext);
-            //延迟秒数
-            if (anno.delay() > 0) {
-                try {
-                    Thread.sleep(anno.delay() * 1000);
-                } catch (Exception ex) {
-
+            try {
+                if (anno.isAot()) {
+                    System.setProperty(NativeDetector.AOT_PROCESSING, "true");
                 }
-            }
 
-            return appContext;
+                AppContext appContext = startDo(mainClz, argsAry, klass);
+
+                if (anno.isAot()) {
+                    new SolonAotTestProcessor(mainClz).process(appContext);
+                }
+
+                appCached.put(mainClz, appContext);
+                //延迟秒数
+                if (anno.delay() > 0) {
+                    try {
+                        Thread.sleep(anno.delay() * 1000);
+                    } catch (Exception ex) {
+
+                    }
+                }
+
+                return appContext;
+            } finally {
+                System.clearProperty(NativeDetector.AOT_PROCESSING);
+            }
         } else {
             List<String> argsAry = new ArrayList<>();
             argsAry.add("-debug=1");
