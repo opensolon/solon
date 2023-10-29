@@ -80,7 +80,7 @@ public class SolonApp extends RouterWrapper {
         }
 
         //初始化配置
-        _cfg = new SolonProps().load(source, args);
+        _cfg = new SolonProps(source, args).load();
         _context = new AppContext(new AppClassLoader(AppClassLoader.global()), _cfg);
 
         //初始化路由
@@ -94,6 +94,13 @@ public class SolonApp extends RouterWrapper {
      * 启动
      */
     protected void start(ConsumerEx<SolonApp> initialize) throws Throwable {
+        //1.0.打印构造时的告警
+        if(_cfg.warns.size() > 0) {
+            for (String warn : _cfg.warns) {
+                LogUtil.global().warn(warn);
+            }
+        }
+
         //2.0.内部初始化等待（尝试ping等待）
         initAwait();
 
