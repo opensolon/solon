@@ -13,6 +13,7 @@ import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.model.EventObserver;
 import org.noear.solon.cloud.service.CloudEventObserverManger;
 import org.noear.solon.core.event.EventBus;
+import org.noear.solon.core.util.RunUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,7 +41,9 @@ public class MqttClientManagerImpl implements MqttClientManager, MqttCallback {
     private final String eventChannelName;
 
     private final MqttConnectionOptions options;
+
     private String clientId;
+    private boolean async = true;
 
     private final Set<ConnectCallback> connectCallbacks = Collections.synchronizedSet(new HashSet<>());
 
@@ -108,9 +111,20 @@ public class MqttClientManagerImpl implements MqttClientManager, MqttCallback {
     //已经预订的消息
     @Override
     public void messageArrived(String topic, MqttMessage message) throws Exception {
+        if (log.isTraceEnabled()) {
+            log.trace("MQTT message arrived, clientId={}, messageId={}", clientId, message.getId());
+        }
+
         CloudEventHandler eventHandler = observerManger.getByTopic(topic);
 
-        MqttUtil.receive(this, log, eventChannelName, eventHandler, topic, message);
+        if (eventHandler != null) {
+            MqttMessageHandler handler = new MqttMessageHandler(this, eventChannelName, eventHandler, topic, message);
+            if (getAsync()) {
+                RunUtil.parallel(handler);
+            } else {
+                handler.run();
+            }
+        }
     }
 
     //发布的 QoS 1 或 QoS 2 消息的传递令牌时调用
@@ -147,6 +161,16 @@ public class MqttClientManagerImpl implements MqttClientManager, MqttCallback {
     @Override
     public String getClientId() {
         return clientId;
+    }
+
+    @Override
+    public void setAsync(boolean async) {
+        this.async = async;
+    }
+
+    @Override
+    public boolean getAsync() {
+        return async;
     }
 
     @Override

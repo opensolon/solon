@@ -8,24 +8,27 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
+ * 消息处理
+ *
  * @author noear
  * @since 2.5
  */
-public class MqttMessageHandler implements Runnable{
-    static Logger log = LoggerFactory.getLogger(MqttMessageListenerImpl.class);
-    MqttClientManager clientManager;
-    String eventChannelName;
-    CloudEventHandler eventHandler;
-    String topic;
-    MqttMessage message;
+public class MqttMessageHandler implements Runnable {
+    private static Logger log = LoggerFactory.getLogger(MqttMessageListenerImpl.class);
+    private MqttClientManager clientManager;
+    private String eventChannelName;
+    private CloudEventHandler eventHandler;
+    private String topic;
+    private MqttMessage message;
 
-    public MqttMessageHandler(MqttClientManager clientManager,  String eventChannelName, CloudEventHandler eventHandler, String topic, MqttMessage message){
+    public MqttMessageHandler(MqttClientManager clientManager, String eventChannelName, CloudEventHandler eventHandler, String topic, MqttMessage message) {
         this.clientManager = clientManager;
         this.eventChannelName = eventChannelName;
         this.eventHandler = eventHandler;
         this.topic = topic;
         this.message = message;
     }
+
     @Override
     public void run() {
         try {

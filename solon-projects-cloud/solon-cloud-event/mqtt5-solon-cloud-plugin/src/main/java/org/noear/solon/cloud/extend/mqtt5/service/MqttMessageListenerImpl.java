@@ -3,18 +3,15 @@ package org.noear.solon.cloud.extend.mqtt5.service;
 import org.eclipse.paho.mqttv5.client.IMqttMessageListener;
 import org.eclipse.paho.mqttv5.common.MqttMessage;
 import org.noear.solon.cloud.CloudEventHandler;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.noear.solon.core.util.RunUtil;
 
 /**
- * 主题消息监听（与主题一对一）
+ * 消息监听（与主题一对一）
  *
  * @author noear
  * @since 2.4
  */
 public class MqttMessageListenerImpl implements IMqttMessageListener {
-    static Logger log = LoggerFactory.getLogger(MqttMessageListenerImpl.class);
-
     private CloudEventHandler eventHandler;
     private String eventChannelName;
     private MqttClientManager clientManager;
@@ -27,6 +24,12 @@ public class MqttMessageListenerImpl implements IMqttMessageListener {
 
     @Override
     public void messageArrived(String topic, MqttMessage message) throws Exception {
-        MqttUtil.receive(clientManager, log, eventChannelName, eventHandler, topic, message);
+        MqttMessageHandler handler = new MqttMessageHandler(clientManager, eventChannelName, eventHandler, topic, message);
+
+        if (clientManager.getAsync()) {
+            RunUtil.parallel(handler);
+        } else {
+            handler.run();
+        }
     }
 }

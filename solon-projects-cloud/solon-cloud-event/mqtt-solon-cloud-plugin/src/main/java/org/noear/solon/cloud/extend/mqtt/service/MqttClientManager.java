@@ -3,7 +3,7 @@ package org.noear.solon.cloud.extend.mqtt.service;
 import org.eclipse.paho.client.mqttv3.IMqttAsyncClient;
 
 /**
- * Mqtt 客户端管理器（可以校好的支持自动重连和触发式重链）
+ * Mqtt 客户端管理器（便于支持自动重连和触发式重连）
  *
  * @author noear
  * @since 2.5
