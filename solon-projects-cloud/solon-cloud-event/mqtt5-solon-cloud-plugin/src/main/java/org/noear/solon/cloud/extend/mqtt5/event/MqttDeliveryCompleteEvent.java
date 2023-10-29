@@ -1,5 +1,7 @@
 package org.noear.solon.cloud.extend.mqtt5.event;
 
+import org.eclipse.paho.mqttv5.client.IMqttToken;
+
 import java.io.Serializable;
 
 /**
@@ -9,8 +11,8 @@ import java.io.Serializable;
 public class MqttDeliveryCompleteEvent implements Serializable {
     private String clientId;
     private int messageId;
-    private transient Object token;
-    public MqttDeliveryCompleteEvent(String clientId, int messageId, Object token){
+    private transient IMqttToken token;
+    public MqttDeliveryCompleteEvent(String clientId, int messageId, IMqttToken token){
         this.clientId = clientId;
         this.messageId = messageId;
         this.token = token;
@@ -24,7 +26,7 @@ public class MqttDeliveryCompleteEvent implements Serializable {
         return clientId;
     }
 
-    public Object getToken() {
+    public IMqttToken getToken() {
         return token;
     }
 
