@@ -143,13 +143,8 @@ public class _SocketServerSession extends SessionBase {
         sessions.remove(request);
     }
 
-    boolean isClosed = false;
     protected void onClose() {
         isOpen = false;
-        isClosed = true;
-    }
-    protected boolean isClosed(){
-        return isClosed;
     }
 
     @Override

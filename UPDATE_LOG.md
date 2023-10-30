@@ -26,7 +26,6 @@
 ### 2.5.12
 * 调整 solon.view 插件，默认添加请求上下文 context 对象
 * 调整 SnackActionExecutor 默认关闭 className 读取
-* 添加 Utils::isProxyClass 接口
 * 优化 SolonApp 构造时日志处理（避免失去样式的可能）
 * 优化 容器停止时把 Closeable 接口的 bean 也关掉
 * 优化 solon.data 插件 afterCommit 事件之前移除事务状态
@@ -34,6 +33,7 @@
 * 优化 mqtt-solon-cloud-plugin 重构代码，增加异步发布与并发消费模式（并改为异步接口）
 * 优化 mqtt5-solon-cloud-plugin 重构代码，增加异步发布与并发消费模式（并改为异步接口）
 * 增加 solon.aot 支持使用命令行设置 构建 native image args
+* 增加 Utils::isProxyClass 接口
 * 修复 solon.boot.smarthttp 可能会两次触发 close 的问题
 * snack3 升为 3.2.82
 * sqltoy 升为 5.2.74
