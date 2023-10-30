@@ -34,6 +34,7 @@
 * 优化 mqtt-solon-cloud-plugin 重构代码，增加异步发布与并发消费模式（并改为异步接口）
 * 优化 mqtt5-solon-cloud-plugin 重构代码，增加异步发布与并发消费模式（并改为异步接口）
 * 增加 solon.aot 支持使用命令行设置 构建 native image args
+* 修复 solon.boot.smarthttp 可能会两次触发 close 的问题
 * snack3 升为 3.2.82
 * sqltoy 升为 5.2.74
 * mybatis-flex 升为 1.7.3

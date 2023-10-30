@@ -34,6 +34,9 @@ public class SmWebSocketHandleImpl extends WebSocketDefaultHandler {
 
     private void onCloseDo(WebSocketRequest request) {
         _SocketServerSession session = _SocketServerSession.get(request);
+        if(session.isClosed()){
+            return;
+        }
 
         session.onClose();
         Solon.app().listener().onClose(session);
