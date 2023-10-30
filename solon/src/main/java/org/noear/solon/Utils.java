@@ -95,6 +95,13 @@ public class Utils {
     }
 
     /**
+     * 是否为 Solon 代理类
+     * */
+    public static boolean isProxyClass(Class<?> clz) {
+        return clz.getName().contains("$$Solon");
+    }
+
+    /**
      * 生成UGID
      */
     public static String guid() {
