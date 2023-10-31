@@ -16,7 +16,7 @@ public class XPluginImp implements Plugin {
             String beanName = Utils.annoAlias(anno.value(), anno.name());
 
             ProxyUtil.binding(bw, beanName, anno.typed());
-            LogUtil.global().warn("@Dao will be discarded, suggested use '@Component'");
+            LogUtil.global().error("@Dao will be removed, suggested use '@Component'");
         });
 
         //@deprecated 2.2
@@ -24,7 +24,7 @@ public class XPluginImp implements Plugin {
             String beanName = Utils.annoAlias(anno.value(), anno.name());
 
             ProxyUtil.binding(bw, beanName, anno.typed());
-            LogUtil.global().warn("@Service will be discarded, suggested use '@Component'");
+            LogUtil.global().error("@Service will be removed, suggested use '@Component'");
         });
 
         //@deprecated 2.2
@@ -32,7 +32,7 @@ public class XPluginImp implements Plugin {
             String beanName = Utils.annoAlias(anno.value(), anno.name());
 
             ProxyUtil.binding(bw, beanName, anno.typed());
-            LogUtil.global().warn("@Repository will be discarded, suggested use '@Component'");
+            LogUtil.global().error("@Repository will be removed, suggested use '@Component'");
         });
     }
 }
