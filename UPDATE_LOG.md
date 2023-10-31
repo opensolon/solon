@@ -26,7 +26,7 @@
 ### 2.5.12
 * 调整 solon.view 插件，默认添加请求上下文 context 对象
 * 调整 SnackActionExecutor 默认关闭 className 读取
-* 调整 事务事件 afterCommit 时，转为无事务状态（移除事务状态）
+* 调整 事务监听器 afterCommit 时，转为无事务状态（移除事务状态）
 * 优化 SolonApp 构造时日志处理（避免失去样式的可能）
 * 优化 容器停止时把 Closeable 接口的 bean 也关掉
 * 优化 solon.data 插件 afterCommit 事件之前移除事务状态
