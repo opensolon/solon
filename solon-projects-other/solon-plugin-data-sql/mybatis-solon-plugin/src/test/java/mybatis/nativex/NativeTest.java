@@ -2,9 +2,9 @@ package mybatis.nativex;
 
 import mybatis.nativex.app.MybatisApp;
 import mybatis.nativex.mapper.UserMapper;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.noear.solon.test.SolonJUnit4ClassRunner;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.noear.solon.test.SolonJUnit5Extension;
 import org.noear.solon.test.SolonTest;
 import org.noear.solon.test.aot.RuntimeNativeMetadataAssert;
 
@@ -13,7 +13,7 @@ import org.noear.solon.test.aot.RuntimeNativeMetadataAssert;
  * @since 2023/10/29 18:20
  */
 @SolonTest(value = MybatisApp.class, isAot = true)
-@RunWith(SolonJUnit4ClassRunner.class)
+@ExtendWith(SolonJUnit5Extension.class)
 public class NativeTest {
 
     @Test
