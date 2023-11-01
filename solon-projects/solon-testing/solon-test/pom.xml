@@ -17,11 +17,6 @@
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon-test-junit4</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.noear</groupId>
             <artifactId>solon-test-junit5</artifactId>
         </dependency>
     </dependencies>

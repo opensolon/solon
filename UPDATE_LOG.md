@@ -9,11 +9,8 @@
 * 提醒1：之前没有使用弃用接口的，可以直接升级 <br>
 * 提醒2：有使用弃用接口的。建议先升级到 1.12.4；替换弃用代码后，再升级到 2.0.0
 
-### 2.6.0
-* 调整 solon-test 移除 solon-test-junit4（只留 solon-test-junit5）
-* 设定 smart-http 为 solon-api 快捷组合包的默认 httpserver
 
-### 2.5.13
+### 待议
 * 新增 solon.boot.vertx 插件?
 * 新增 seata-solon-plugin 插件
 * 增加 quartz jdbc 及时更新支持（数据库里变了，它马上变） ???
@@ -22,6 +19,12 @@
 * 调整 使用更多的 slf4j 替换 LogUtil ???
 * 调整 取消启动参数简写模式，保持与应用参数相同的名字 ???
 * 新增 graphql-solon-plugin 插件
+
+### 2.6.0
+* 调整 solon-test 只保留 solon-test-junit5（有需要手动引入：solon-test-junit4）
+* 设定 smart-http 为 solon-api 快捷组合包的默认 httpserver
+
+
 
 ### 2.5.12
 * 调整 solon.view 插件，默认添加请求上下文 context 对象
