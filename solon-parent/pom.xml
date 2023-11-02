@@ -146,7 +146,7 @@
         <dbvisitor.version>5.4.0</dbvisitor.version>
         <bean-searcher.version>4.2.4</bean-searcher.version>
 
-        <liteflow.version>2.11.2</liteflow.version>
+        <liteflow.version>2.11.3</liteflow.version>
         <forest.version>1.5.33</forest.version>
         <shardingsphere.version>5.3.2</shardingsphere.version>
         <seata.version>2.0.0-SNAPSHOT</seata.version>

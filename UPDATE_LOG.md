@@ -26,6 +26,7 @@
 * 调整 分离 websocket 与 socketd 的接口（分开后，用户层面更清爽）
 * 设定 smart-http 为 solon-api 快捷组合包的默认 httpserver
 * jackson 升为 2.15.2
+* liteflow 升为 2.11.3
 
 
 
