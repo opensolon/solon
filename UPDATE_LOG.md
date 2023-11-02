@@ -22,6 +22,7 @@
 
 ### 2.6.0
 * 新增 solon.net 用于定义网络接口（如 websocket, socketd）
+* 新增 sa-token-dao-redisson-jackson 模块
 * 调整 solon-test 只保留 solon-test-junit5（有需要手动引入：solon-test-junit4）
 * 调整 分离 websocket 与 socketd 的接口（分开后，用户层面更清爽）
 * 设定 smart-http 为 solon-api 快捷组合包的默认 httpserver

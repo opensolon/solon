@@ -30,5 +30,7 @@
         <module>../../solon-projects-other/solon-plugin/sureness-solon-plugin</module>
         <module>../../solon-projects-other/solon-plugin/simplejavamail-solon-plugin</module>
         <module>../../solon-projects-other/solon-plugin/sms4j-solon-plugin</module>
+        <module>../../solon-projects-other/solon-plugin-data-nosql/redisson-solon-plugin</module>
+        <module>../../solon-projects-other/solon-plugin-data-nosql/lettuce-solon-plugin</module>
     </modules>
 </project>

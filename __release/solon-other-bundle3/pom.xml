@@ -17,15 +17,16 @@
 
     <modules>
         <module>../../solon-projects-other/solon-plugin-auth/sa-token-solon-plugin</module>
+        <module>../../solon-projects-other/solon-plugin-auth/sa-token-dao-redisson-jackson</module>
+        <module>../../solon-projects-other/solon-plugin-auth/captcha-solon-plugin</module>
         <module>../../solon-projects-other/solon-plugin-auth/vaptcha-solon-plugin</module>
+        <module>../../solon-projects-other/solon-plugin-auth/jap-ids-solon-plugin</module>
+        <module>../../solon-projects-other/solon-plugin-auth/jap-solon-plugin</module>
         <module>../../solon-projects-other/solon-plugin-flow/liteflow-solon-plugin</module>
         <module>../../solon-projects-other/solon-plugin-rpc/dubbo-solon-plugin</module>
         <module>../../solon-projects-other/solon-plugin-rpc/dubbo3-solon-plugin</module>
         <module>../../solon-projects-other/solon-plugin-rpc/feign-solon-plugin</module>
         <module>../../solon-projects-other/solon-plugin-rpc/forest-solon-plugin</module>
-        <module>../../solon-projects-other/solon-plugin-auth/captcha-solon-plugin</module>
-        <module>../../solon-projects-other/solon-plugin-auth/jap-ids-solon-plugin</module>
-        <module>../../solon-projects-other/solon-plugin-auth/jap-solon-plugin</module>
         <module>../../solon-projects-other/solon-plugin-job/cron4j-solon-plugin</module>
         <module>../../solon-projects-other/solon-plugin-job/powerjob-solon-plugin</module>
         <module>../../solon-projects-other/solon-plugin-job/quartz-solon-plugin</module>
