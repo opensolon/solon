@@ -21,10 +21,11 @@
 * 新增 graphql-solon-plugin 插件
 
 ### 2.6.0
-* 新增 solon.net 用于定义网络接口（如 websocket, socketd）
+* 新增 solon.net 模块用于定义网络接口，分离 websocket 与 socketd 的接口（分开后，用户层面更清爽）？？？
 * 新增 sa-token-dao-redisson-jackson 模块
 * 调整 solon-test 只保留 solon-test-junit5（有需要手动引入：solon-test-junit4）
-* 调整 分离 websocket 与 socketd 的接口（分开后，用户层面更清爽）
+* 重构 sockted 适配，基于 v2.0 ???
+* 移除 AopContext（完成更名 AppContext 的第二步）
 * 设定 smart-http 为 solon-api 快捷组合包的默认 httpserver
 * jackson 升为 2.15.2
 * liteflow 升为 2.11.3

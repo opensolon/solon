@@ -11,27 +11,19 @@ public interface Plugin {
      * 启动（保留，为兼容性过度）
      *
      * @param context 应用上下文
-     * @deprecated 2.5
      */
-    @Deprecated
-    default void start(AopContext context) throws Throwable{}
+    void start(AppContext context) throws Throwable;
 
-    /**
-     * 启动
-     *
-     * @param context 应用上下文
-     * */
-    default void start(AppContext context) throws Throwable{
-        start((AopContext)context);
-    }
 
     /**
      * 预停止
-     * */
-    default void prestop() throws Throwable{}
+     */
+    default void prestop() throws Throwable {
+    }
 
     /**
      * 停止
-     * */
-    default void stop() throws Throwable{}
+     */
+    default void stop() throws Throwable {
+    }
 }

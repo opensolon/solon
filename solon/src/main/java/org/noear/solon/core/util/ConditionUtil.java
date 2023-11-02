@@ -2,7 +2,7 @@ package org.noear.solon.core.util;
 
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.Condition;
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 
 import java.lang.reflect.AnnotatedElement;
 
@@ -32,7 +32,7 @@ public class ConditionUtil {
     /**
      * 检测条件
      * */
-    public static boolean test(AopContext context, AnnotatedElement element) {
+    public static boolean test(AppContext context, AnnotatedElement element) {
         Condition anno = element.getAnnotation(Condition.class);
 
         return test(context, anno);
@@ -41,7 +41,7 @@ public class ConditionUtil {
     /**
      * 检测条件
      * */
-    public static boolean test(AopContext context, Condition anno){
+    public static boolean test(AppContext context, Condition anno){
         if (anno == null) {
             return true;
         } else {
@@ -49,7 +49,7 @@ public class ConditionUtil {
         }
     }
 
-    private static boolean testNo(AopContext context, Condition anno) {
+    private static boolean testNo(AppContext context, Condition anno) {
         try {
             anno.onClass();
         } catch (Throwable e) {

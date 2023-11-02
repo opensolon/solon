@@ -2,7 +2,6 @@ package org.noear.solon.core.wrap;
 
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.*;
-import org.noear.solon.core.AopContext;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.aspect.Interceptor;
 import org.noear.solon.core.aspect.InterceptorEntity;
@@ -26,12 +25,12 @@ import java.util.*;
  * */
 public class MethodWrap implements Interceptor, MethodHolder {
 
-    public MethodWrap(AopContext ctx, Method m) {
+    public MethodWrap(AppContext ctx, Method m) {
         this(ctx, m, null);
     }
 
-    public MethodWrap(AopContext ctx, Method m, Map<String,Type> genericInfo) {
-        context = (AppContext) ctx;
+    public MethodWrap(AppContext ctx, Method m, Map<String,Type> genericInfo) {
+        context = ctx;
 
         declaringClz = m.getDeclaringClass();
 

@@ -1,6 +1,5 @@
 package org.noear.solon.core.wrap;
 
-import org.noear.solon.core.AopContext;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.VarHolder;
 import org.noear.solon.core.util.GenericUtil;
@@ -132,8 +131,8 @@ public class FieldWrap {
     /**
      * 获取自身的临时对象
      */
-    public VarHolder holder(AopContext ctx, Object obj, Runnable onDone) {
-        return new VarHolderOfField((AppContext) ctx, this, obj, onDone);
+    public VarHolder holder(AppContext ctx, Object obj, Runnable onDone) {
+        return new VarHolderOfField(ctx, this, obj, onDone);
     }
 
     /**

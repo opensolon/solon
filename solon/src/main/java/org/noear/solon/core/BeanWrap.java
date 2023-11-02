@@ -4,13 +4,11 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.Init;
 import org.noear.solon.annotation.Singleton;
 import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.core.util.IndexUtil;
-import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.core.wrap.ClassWrap;
 
 /**
@@ -52,26 +50,26 @@ public class BeanWrap {
     private final AppContext context;
 
 
-    public BeanWrap(AopContext context, Class<?> clz) {
+    public BeanWrap(AppContext context, Class<?> clz) {
         this(context, clz, null);
     }
 
-    public BeanWrap(AopContext context, Class<?> clz, Object raw) {
+    public BeanWrap(AppContext context, Class<?> clz, Object raw) {
         this(context, clz, raw, null);
     }
 
     /**
      * @since 1.10
      */
-    public BeanWrap(AopContext context, Class<?> clz, Object raw, String name) {
+    public BeanWrap(AppContext context, Class<?> clz, Object raw, String name) {
         this(context, clz, raw, name, false);
     }
 
     /**
      * @since 1.10
      */
-    public BeanWrap(AopContext context, Class<?> clz, Object raw, String name, boolean typed) {
-        this.context = (AppContext) context;
+    public BeanWrap(AppContext context, Class<?> clz, Object raw, String name, boolean typed) {
+        this.context = context;
         this.clz = clz;
         this.name = name;
         this.typed = typed;

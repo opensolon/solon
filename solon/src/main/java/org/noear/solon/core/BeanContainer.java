@@ -679,7 +679,7 @@ public abstract class BeanContainer {
                 }
             }
 
-            if (AopContext.class.isAssignableFrom(varH.getType())) {
+            if (AppContext.class.isAssignableFrom(varH.getType())) {
                 varH.setValue(this);
                 return;
             }
