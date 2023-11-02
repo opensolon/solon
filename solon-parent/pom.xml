@@ -70,7 +70,7 @@
         <swagger2.version>2.1.13</swagger2.version>
         <knife4j.version>4.2.0</knife4j.version>
 
-        <jackson.version>2.14.3</jackson.version>
+        <jackson.version>2.15.2</jackson.version>
         <gson.version>2.10.1</gson.version>
         <fury.version>0.2.0</fury.version>
         <hessian.version>4.0.66</hessian.version>
