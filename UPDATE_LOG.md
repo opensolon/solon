@@ -24,6 +24,7 @@
 * 新增 solon.net 模块用于定义网络接口，分离 websocket 与 socketd 的接口（分开后，用户层面更清爽）？？？
 * 新增 sa-token-dao-redisson-jackson 模块
 * 调整 solon-test 只保留 solon-test-junit5（有需要手动引入：solon-test-junit4）
+* 调整 smart-http,jetty,undertow 统一使用 server.http.idleTimeout 配置
 * 重构 sockted 适配，基于 v2.0 ???
 * 移除 AopContext（完成更名 AppContext 的第二步）
 * 设定 smart-http 为 solon-api 快捷组合包的默认 httpserver

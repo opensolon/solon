@@ -4,6 +4,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.boot.ServerConstants;
 import org.noear.solon.boot.ServerLifecycle;
 import org.noear.solon.boot.ServerProps;
+import org.noear.solon.boot.prop.impl.HttpServerProps;
 import org.noear.solon.boot.smarthttp.http.SmHttpContextHandler;
 import org.noear.solon.boot.smarthttp.websocket.SmWebSocketHandleImpl;
 import org.noear.solon.boot.smarthttp.websocket._SessionManagerImpl;
@@ -26,6 +27,7 @@ import java.util.concurrent.Executor;
  */
 public class SmHttpServer implements ServerLifecycle {
     private HttpBootstrap server = null;
+    private HttpServerProps props = new HttpServerProps();
     private Handler handler;
     private int coreThreads;
     private Executor workExecutor;
@@ -84,6 +86,7 @@ public class SmHttpServer implements ServerLifecycle {
         _config.bannerEnabled(false);
         _config.readBufferSize(1024 * 8); //默认: 8k
         _config.threadNum(coreThreads);
+        _config.setIdleTimeout((int)props.getIdleTimeout());
 
 
         if (ServerProps.request_maxHeaderSize > 0) {

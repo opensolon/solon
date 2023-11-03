@@ -37,8 +37,7 @@ class JettyServer extends JettyServerBase implements ServerLifecycle {
 
         QueuedThreadPool threadPool = new QueuedThreadPool(
                 props.getMaxThreads(props.isIoBound()),
-                props.getCoreThreads(),
-                (int) props.getIdleTimeout());
+                props.getCoreThreads());
 
         _server = new Server(threadPool);
 
