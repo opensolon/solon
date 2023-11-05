@@ -116,24 +116,6 @@ public class AppContext extends BeanContainer {
     }
 
     /**
-     * @deprecated 2.5
-     */
-    @Deprecated
-    public AppContext copy() {
-        return copy(null, null);
-    }
-
-    /**
-     * @deprecated 2.5
-     */
-    @Deprecated
-    public AppContext copy(ClassLoader classLoader, Props props) {
-        AppContext tmp = new AppContext(classLoader, props);
-        copyTo(tmp);
-        return tmp;
-    }
-
-    /**
      * ::初始化（独立出 initialize，方便重写）
      */
     protected void initialize() {
