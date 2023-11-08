@@ -31,6 +31,7 @@
 * jackson 升为 2.15.2
 * liteflow 升为 2.11.3
 * activemq 升为 5.16.7
+* redisx 升为 1.6.2
 
 
 

@@ -30,7 +30,7 @@
         <wood.version>1.2.2</wood.version>
         <water.version>2.11.4</water.version>
         <luffy.version>1.6.8</luffy.version>
-        <redisx.version>1.6.1</redisx.version>
+        <redisx.version>1.6.2</redisx.version>
         <redisson.version>3.23.3</redisson.version>
         <lettuce.version>6.2.5.RELEASE</lettuce.version>
 
