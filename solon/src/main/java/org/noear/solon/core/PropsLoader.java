@@ -73,7 +73,9 @@ public class PropsLoader {
             }
 
             Properties tmp = new Properties();
-            tmp.load(new InputStreamReader(url.openStream(), Solon.encoding()));
+            try (InputStreamReader reader = new InputStreamReader(url.openStream(), Solon.encoding())) {
+                tmp.load(reader);
+            }
             return tmp;
         }
 
