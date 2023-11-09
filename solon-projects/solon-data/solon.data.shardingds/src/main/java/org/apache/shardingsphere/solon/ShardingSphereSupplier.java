@@ -5,8 +5,6 @@ import org.noear.solon.Utils;
 import org.noear.solon.core.util.ResourceUtil;
 
 import javax.sql.DataSource;
-import java.io.File;
-import java.net.URL;
 import java.util.Properties;
 import java.util.function.Supplier;
 
@@ -15,7 +13,8 @@ import java.util.function.Supplier;
  * @since 2.2
  */
 public class ShardingSphereSupplier implements Supplier<DataSource> {
-    private Properties properties;
+
+    private final Properties properties;
 
     public ShardingSphereSupplier(Properties properties) {
         this.properties = properties;
@@ -26,8 +25,11 @@ public class ShardingSphereSupplier implements Supplier<DataSource> {
         try {
             String fileUri = properties.getProperty("file");
             if (Utils.isNotEmpty(fileUri)) {
-                URL url = ResourceUtil.findResource(fileUri);
-                return YamlShardingSphereDataSourceFactory.createDataSource(new File(url.getFile()));
+                String fileContent = ResourceUtil.findResourceAsString(fileUri);
+                if (fileContent == null){
+                    throw new IllegalStateException("The sharding sphere configuration file does not exist");
+                }
+                return YamlShardingSphereDataSourceFactory.createDataSource(fileContent.getBytes());
             }
 
             String configTxt = properties.getProperty("config");
