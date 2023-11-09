@@ -4,12 +4,9 @@ package org.noear.nami.channel.socketd;
 import org.noear.nami.*;
 import org.noear.nami.common.Constants;
 import org.noear.nami.common.ContentTypes;
-import org.noear.solon.Utils;
-import org.noear.solon.core.message.Message;
-import org.noear.solon.core.message.MessageFlag;
-import org.noear.solon.core.message.Session;
-import org.noear.solon.socketd.annotation.Handshake;
-import org.noear.solon.socketd.util.HeaderUtil;
+import org.noear.socketd.transport.core.Entity;
+import org.noear.socketd.transport.core.Session;
+import org.noear.socketd.transport.core.entity.EntityDefault;
 
 import java.util.Map;
 import java.util.function.Supplier;
@@ -19,6 +16,7 @@ import java.util.function.Supplier;
  *
  * @author noear
  * @since 1.2
+ * @since 2.6
  */
 public class SocketChannel extends ChannelBase implements Channel {
     public Supplier<Session> sessions;
@@ -44,22 +42,19 @@ public class SocketChannel extends ChannelBase implements Channel {
         //0.尝试解码器的过滤
         ctx.config.getDecoder().pretreatment(ctx);
 
-        Message message = null;
-        String message_key = Message.guid();
-        int flag = MessageFlag.message;
 
         if (ctx.method != null) {
             //是否为握手
             //
-            Handshake h = ctx.method.getAnnotation(Handshake.class);
-            if (h != null) {
-                flag = MessageFlag.handshake;
-
-                if (Utils.isNotEmpty(h.handshakeHeader())) {
-                    Map<String, String> headerMap = HeaderUtil.decodeHeaderMap(h.handshakeHeader());
-                    ctx.headers.putAll(headerMap);
-                }
-            }
+            //Handshake h = ctx.method.getAnnotation(Handshake.class);
+//            if (h != null) {
+//                flag = MessageFlag.handshake;
+//
+//                if (Utils.isNotEmpty(h.handshakeHeader())) {
+//                    Map<String, String> headerMap = HeaderUtil.decodeHeaderMap(h.handshakeHeader());
+//                    ctx.headers.putAll(headerMap);
+//                }
+//            }
         }
 
         //1.确定编码器
@@ -75,31 +70,29 @@ public class SocketChannel extends ChannelBase implements Channel {
         //2.构建消息
         ctx.headers.put(Constants.HEADER_CONTENT_TYPE, encoder.enctype());
         byte[] bytes = encoder.encode(ctx.body);
-        message = new Message(flag, message_key, ctx.url, HeaderUtil.encodeHeaderMap(ctx.headers), bytes);
+        Entity request = new EntityDefault().metaMap(ctx.headers).data(bytes);
 
         //3.获取会话
         Session session = sessions.get();
-        if(ctx.config.getHeartbeat() > 0){
-            session.startHeartbeatAuto(ctx.config.getHeartbeat());
-        }
+//        if(ctx.config.getHeartbeat() > 0){
+//            session.startHeartbeatAuto(ctx.config.getHeartbeat());
+//        }
 
         //4.发送消息
-        Message res = session.sendAndResponse(message, ctx.config.getTimeout());
+        Entity response = session.sendAndRequest(ctx.url, request, ctx.config.getTimeout());
 
-        if (res == null) {
+        if (response == null) {
             return null;
         }
 
         //2.构建结果
-        Result result = new Result(200, res.body());
+        Result result = new Result(200, response.getDataAsBytes());
 
         //2.1.设置头
-        if (Utils.isNotEmpty(res.header())) {
-            Map<String, String> map = HeaderUtil.decodeHeaderMap(res.header());
-            map.forEach((k, v) -> {
-                result.headerAdd(k, v);
-            });
-        }
+        Map<String, String> map = response.getMetaMap();
+        map.forEach((k, v) -> {
+            result.headerAdd(k, v);
+        });
 
         //3.返回结果
         return result;

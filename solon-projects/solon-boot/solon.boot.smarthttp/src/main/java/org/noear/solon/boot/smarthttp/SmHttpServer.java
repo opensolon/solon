@@ -12,7 +12,6 @@ import org.noear.solon.boot.ssl.SslConfig;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.Handler;
 import org.noear.solon.lang.Nullable;
-import org.noear.solon.socketd.SessionManager;
 import org.smartboot.http.server.HttpBootstrap;
 import org.smartboot.http.server.HttpServerConfiguration;
 import org.smartboot.http.server.impl.Request;
@@ -112,8 +111,6 @@ public class SmHttpServer implements ServerLifecycle {
 
         if (enableWebSocket) {
             server.webSocketHandler(new SmWebSocketHandleImpl());
-
-            SessionManager.register(new _SessionManagerImpl());
         }
 
 

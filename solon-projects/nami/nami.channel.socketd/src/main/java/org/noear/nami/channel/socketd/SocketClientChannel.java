@@ -4,9 +4,8 @@ import org.noear.nami.Channel;
 import org.noear.nami.ChannelBase;
 import org.noear.nami.Context;
 import org.noear.nami.Result;
-import org.noear.solon.core.message.Session;
-import org.noear.solon.socketd.SessionFlag;
-import org.noear.solon.socketd.SocketD;
+import org.noear.socketd.SocketD;
+import org.noear.socketd.transport.core.Session;
 
 import java.net.URI;
 import java.util.HashMap;
@@ -14,6 +13,7 @@ import java.util.Map;
 
 /**
  * @author noear 2021/1/1 created
+ * @since 2.6
  */
 public class SocketClientChannel extends ChannelBase implements Channel {
     public static final SocketClientChannel instance = new SocketClientChannel();
@@ -29,10 +29,15 @@ public class SocketClientChannel extends ChannelBase implements Channel {
                 channel = channelMap.get(hostname);
 
                 if (channel == null) {
-                    Session session = SocketD.createSession(uri);
-                    session.flagSet(SessionFlag.socketd);
-                    channel = new SocketChannel(() -> session);
-                    channelMap.put(hostname, channel);
+                    try {
+                        Session session = SocketD.createClient(uri.toString()).open();
+                        channel = new SocketChannel(() -> session);
+                        channelMap.put(hostname, channel);
+                    } catch (RuntimeException e) {
+                        throw e;
+                    } catch (Exception e) {
+                        throw new IllegalStateException(e);
+                    }
                 }
             }
         }

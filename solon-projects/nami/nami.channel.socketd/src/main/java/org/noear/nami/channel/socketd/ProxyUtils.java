@@ -5,7 +5,7 @@ import org.noear.nami.Encoder;
 import org.noear.nami.Nami;
 import org.noear.nami.common.Constants;
 import org.noear.nami.common.ContentTypes;
-import org.noear.solon.core.message.Session;
+import org.noear.socketd.transport.core.Session;
 
 import java.net.URI;
 import java.util.function.Supplier;
@@ -21,7 +21,7 @@ public class ProxyUtils {
      * 创建接口
      * */
     public static <T> T create(Supplier<Session> sessions, Encoder encoder, Decoder decoder, Class<T> service) {
-        URI uri = sessions.get().uri();
+        URI uri = sessions.get().getHandshake().getUri();
         if (uri == null) {
             uri = URI.create("tcp://socketd");
         }

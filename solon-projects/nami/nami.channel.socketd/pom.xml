@@ -22,7 +22,13 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.socketd</artifactId>
+            <artifactId>solon</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>socketd</artifactId>
+            <version>2.0.12</version>
         </dependency>
     </dependencies>
 
