@@ -1,6 +1,8 @@
 package org.noear.solon.maven.plugin;
 
 
+import org.apache.maven.plugin.logging.Log;
+
 import java.io.*;
 import java.util.Enumeration;
 import java.util.jar.JarEntry;
@@ -24,10 +26,8 @@ public class ClassesMove {
         try {
             //解压
             unzipJar(file1.getPath(), file.getAbsolutePath());
-
             //删除原来的jar
             deleteFile(file.getAbsolutePath());
-
             jar(file.getAbsolutePath(), file1);
             //删除历史
             deleteDirectory(file1.getAbsolutePath());
@@ -132,31 +132,31 @@ public class ClassesMove {
     }
 
     public static void unzipJar(String destinationDir, String jarPath) throws IOException {
-        File file = new File(jarPath);
-        JarFile jar = new JarFile(file);
-        for (Enumeration<JarEntry> enums = jar.entries(); enums.hasMoreElements(); ) {
-            JarEntry entry = (JarEntry) enums.nextElement();
-            String fileName = destinationDir + File.separator + entry.getName();
-            File f = new File(fileName);
-            if (fileName.endsWith("/")) {
-                f.mkdirs();
-            }
+        File outputDir = new File(destinationDir);
+        if (!outputDir.exists()) {
+            outputDir.mkdirs();
         }
-        for (Enumeration<JarEntry> enums = jar.entries(); enums.hasMoreElements(); ) {
-            JarEntry entry = enums.nextElement();
-            String fileName = destinationDir + File.separator + entry.getName();
-            File f = new File(fileName);
-            if (!fileName.endsWith("/")) {
-                InputStream is = jar.getInputStream(entry);
-                FileOutputStream fos = new FileOutputStream(f);
-                while (is.available() > 0) {
-                    fos.write(is.read());
-                }
-                fos.close();
-                is.close();
-            }
-        }
-        jar.close();
 
+        try (JarFile jarFile = new JarFile(jarPath)) {
+            Enumeration<JarEntry> entries = jarFile.entries();
+            while (entries.hasMoreElements()) {
+                JarEntry entry = entries.nextElement();
+                if (!entry.isDirectory()) {
+                    File outputFile = new File(destinationDir, entry.getName());
+                    if (!outputFile.getParentFile().exists()) {
+                        outputFile.getParentFile().mkdirs();
+                    }
+
+                    try (InputStream inputStream = jarFile.getInputStream(entry);
+                         FileOutputStream fileOutputStream = new FileOutputStream(outputFile)) {
+                        byte[] buffer = new byte[4096];
+                        int bytesRead;
+                        while ((bytesRead = inputStream.read(buffer)) != -1) {
+                            fileOutputStream.write(buffer, 0, bytesRead);
+                        }
+                    }
+                }
+            }
+        }
     }
 }
