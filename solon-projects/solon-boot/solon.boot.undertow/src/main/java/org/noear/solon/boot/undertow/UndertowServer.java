@@ -8,16 +8,11 @@ import io.undertow.servlet.api.*;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
-import org.noear.solon.boot.ServerConstants;
 import org.noear.solon.boot.ServerLifecycle;
 import org.noear.solon.boot.ServerProps;
-import org.noear.solon.boot.prop.ServerSslProps;
-import org.noear.solon.boot.ssl.SslContextFactory;
 import org.noear.solon.boot.undertow.http.UtHttpContextServletHandler;
 import org.noear.solon.boot.undertow.websocket.UtWsConnectionCallback;
-import org.noear.solon.boot.undertow.websocket._SessionManagerImpl;
 import org.noear.solon.core.event.EventBus;
-import org.noear.solon.socketd.SessionManager;
 
 import static io.undertow.Handlers.websocket;
 
@@ -101,8 +96,6 @@ public class UndertowServer extends UndertowServerBase implements ServerLifecycl
 
         if (app.enableWebSocket()) {
             builder.setHandler(websocket(new UtWsConnectionCallback(), httpHandler));
-
-            SessionManager.register(new _SessionManagerImpl());
         } else {
             builder.setHandler(httpHandler);
         }

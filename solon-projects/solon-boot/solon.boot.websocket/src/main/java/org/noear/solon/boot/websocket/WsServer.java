@@ -3,11 +3,8 @@ package org.noear.solon.boot.websocket;
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
-import org.noear.solon.Solon;
-import org.noear.solon.core.message.Message;
-import org.noear.solon.core.message.Session;
 import org.noear.solon.core.util.LogUtil;
-import org.noear.solon.socketd.ProtocolManager;
+import org.noear.solon.net.websocket.WebSocketBus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,40 +31,25 @@ public class WsServer extends WebSocketServer {
 
     @Override
     public void onOpen(WebSocket conn, ClientHandshake shake) {
-        if (conn == null) {
-            return;
-        }
+        _WebSocketImpl webSocket = new _WebSocketImpl(conn);
 
-        Session session = _SocketServerSession.get(conn);
         shake.iterateHttpFields().forEachRemaining(k -> {
-            session.headerSet(k, shake.getFieldValue(k));
+            webSocket.getHandshake().putParam(k, shake.getFieldValue(k));
         });
 
-        Solon.app().listener().onOpen(session);
+        conn.setAttachment(webSocket);
+        WebSocketBus.getListener().onOpen(webSocket);
     }
 
     @Override
     public void onClose(WebSocket conn, int i, String s, boolean b) {
-        if(conn == null){
-            return;
-        }
-
-        Solon.app().listener().onClose(_SocketServerSession.get(conn));
-
-        _SocketServerSession.remove(conn);
+        WebSocketBus.getListener().onClose(conn.getAttachment());
     }
 
     @Override
     public void onMessage(WebSocket conn, String data) {
-        if(conn == null){
-            return;
-        }
-
         try {
-            Session session = _SocketServerSession.get(conn);
-            Message message = Message.wrap(conn.getResourceDescriptor(), null, data);
-
-            Solon.app().listener().onMessage(session, message.isString(true));
+            WebSocketBus.getListener().onMessage(conn.getAttachment(), data);
         } catch (Throwable e) {
             log.warn(e.getMessage(), e);
         }
@@ -75,21 +57,8 @@ public class WsServer extends WebSocketServer {
 
     @Override
     public void onMessage(WebSocket conn, ByteBuffer data) {
-        if(conn == null){
-            return;
-        }
-
         try {
-            Session session = _SocketServerSession.get(conn);
-            Message message = null;
-
-            if(Solon.app().enableWebSocketD()){
-                message = ProtocolManager.decode(data);
-            }else{
-                message = Message.wrap(conn.getResourceDescriptor(), null,data.array());;
-            }
-
-            Solon.app().listener().onMessage(session, message);
+            WebSocketBus.getListener().onMessage(conn.getAttachment(), data);
         } catch (Throwable e) {
             log.warn(e.getMessage(), e);
         }
@@ -97,10 +66,10 @@ public class WsServer extends WebSocketServer {
 
     @Override
     public void onError(WebSocket conn, Exception ex) {
-        if(conn == null){
-            return;
+        try {
+            WebSocketBus.getListener().onError(conn.getAttachment(), ex);
+        } catch (Throwable e) {
+            log.warn(e.getMessage(), e);
         }
-
-        Solon.app().listener().onError(_SocketServerSession.get(conn), ex);
     }
 }

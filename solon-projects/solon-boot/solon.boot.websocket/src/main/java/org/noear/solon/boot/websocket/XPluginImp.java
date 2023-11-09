@@ -8,7 +8,6 @@ import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.prop.impl.WebSocketServerProps;
 import org.noear.solon.core.*;
 import org.noear.solon.core.util.LogUtil;
-import org.noear.solon.socketd.SessionManager;
 
 import java.net.Inet4Address;
 
@@ -27,9 +26,6 @@ public class XPluginImp implements Plugin {
 
     @Override
     public void start(AppContext context) {
-        //注册会话管理器
-        SessionManager.register(new _SessionManagerImpl());
-
         if (Solon.app().enableWebSocket() == false) {
             return;
         }

@@ -1,10 +1,7 @@
 package org.noear.solon.boot.jetty.websocket;
 
 import org.eclipse.jetty.websocket.api.WebSocketAdapter;
-import org.noear.solon.Solon;
-import org.noear.solon.core.message.Message;
-import org.noear.solon.core.message.Session;
-import org.noear.solon.socketd.ProtocolManager;
+import org.noear.solon.net.websocket.WebSocketBus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,64 +10,50 @@ import java.nio.ByteBuffer;
 public class WebSocketListenerImpl extends WebSocketAdapter {
     static final Logger log = LoggerFactory.getLogger(WebSocketListenerImpl.class);
 
+    private  _WebSokcetImpl webSokcet;
+
     @Override
     public void onWebSocketConnect(org.eclipse.jetty.websocket.api.Session sess) {
         super.onWebSocketConnect(sess);
 
-        Session session = _SocketServerSession.get(getSession());
+        webSokcet = new _WebSokcetImpl(sess);
+
         sess.getUpgradeRequest().getHeaders().forEach((k, v) -> {
             if (v.size() > 0) {
-                session.headerSet(k, v.get(0));
+                webSokcet.getHandshake().putParam(k, v.get(0));
             }
         });
 
-        Solon.app().listener().onOpen(session);
+        WebSocketBus.getListener().onOpen(webSokcet);
     }
 
     @Override
     public void onWebSocketBinary(byte[] payload, int offset, int len) {
         try {
             ByteBuffer buf = ByteBuffer.wrap(payload, offset, len);
-            Session session = _SocketServerSession.get(getSession());
-
-            Message message = null;
-
-            if (Solon.app().enableWebSocketD()) {
-                message = ProtocolManager.decode(buf);
-            } else {
-                message = Message.wrap(getSession().getUpgradeRequest().getOrigin(), null,
-                        buf.array());
-            }
-
-            Solon.app().listener().onMessage(session, message);
+            WebSocketBus.getListener().onMessage(webSokcet, buf);
         } catch (Throwable e) {
-            log.warn(e.getMessage(),e);
+            log.warn(e.getMessage(), e);
         }
     }
 
     @Override
     public void onWebSocketText(String text) {
         try {
-            Session session = _SocketServerSession.get(getSession());
-            Message message = Message.wrap(getSession().getUpgradeRequest().getRequestURI().toString(), null, text);
-
-            Solon.app().listener().onMessage(session, message.isString(true));
-
+            WebSocketBus.getListener().onMessage(webSokcet, text);
         } catch (Throwable e) {
-            log.warn(e.getMessage(),e);
+            log.warn(e.getMessage(), e);
         }
     }
 
     @Override
     public void onWebSocketClose(int statusCode, String reason) {
-        Solon.app().listener().onClose(_SocketServerSession.get(getSession()));
-
-        _SocketServerSession.remove(getSession());
+        WebSocketBus.getListener().onClose(webSokcet);
         super.onWebSocketClose(statusCode, reason);
     }
 
     @Override
     public void onWebSocketError(Throwable cause) {
-        Solon.app().listener().onError(_SocketServerSession.get(getSession()), cause);
+        WebSocketBus.getListener().onError(webSokcet, cause);
     }
 }

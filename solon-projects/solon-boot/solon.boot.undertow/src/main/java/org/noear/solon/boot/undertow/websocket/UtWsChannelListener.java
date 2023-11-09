@@ -2,10 +2,7 @@ package org.noear.solon.boot.undertow.websocket;
 
 import io.undertow.websockets.core.*;
 import io.undertow.websockets.spi.WebSocketHttpExchange;
-import org.noear.solon.Solon;
-import org.noear.solon.core.message.Message;
-import org.noear.solon.core.message.Session;
-import org.noear.solon.socketd.ProtocolManager;
+import org.noear.solon.net.websocket.WebSocketBus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xnio.Pooled;
@@ -15,6 +12,7 @@ import java.nio.ByteBuffer;
 
 public class UtWsChannelListener extends AbstractReceiveListener {
     static final Logger log = LoggerFactory.getLogger(UtWsChannelListener.class);
+    private final String SESSION_KEY  ="session";
 
     @Override
     public void handleEvent(WebSocketChannel channel) {
@@ -47,14 +45,16 @@ public class UtWsChannelListener extends AbstractReceiveListener {
 
 
     public void onOpen(WebSocketHttpExchange exchange, WebSocketChannel channel) {
-        Session session = _SocketServerSession.get(channel);
+
+        _WebSocketImpl webSocket = new _WebSocketImpl(channel);
         exchange.getRequestHeaders().forEach((k, v) -> {
             if (v.size() > 0) {
-                session.headerSet(k, v.get(0));
+                webSocket.getHandshake().putParam(k, v.get(0));
             }
         });
 
-        Solon.app().listener().onOpen(session);
+        channel.setAttribute(SESSION_KEY, webSocket);
+        WebSocketBus.getListener().onOpen(webSocket);
     }
 
 
@@ -67,17 +67,8 @@ public class UtWsChannelListener extends AbstractReceiveListener {
                 ByteBuffer[] resource = pulledData.getResource();
                 ByteBuffer byteBuffer = WebSockets.mergeBuffers(resource);
 
-                Session session = _SocketServerSession.get(channel);
-                Message message = null;
-
-                if (Solon.app().enableWebSocketD()) {
-                    message = ProtocolManager.decode(byteBuffer);
-                } else {
-                    message = Message.wrap(channel.getUrl(), null, byteBuffer.array());
-                }
-
-                Solon.app().listener().onMessage(session, message);
-
+                _WebSocketImpl webSocket =  (_WebSocketImpl)channel.getAttribute(SESSION_KEY);
+                WebSocketBus.getListener().onMessage(webSocket, byteBuffer);
             } finally {
                 pulledData.discard();
             }
@@ -90,10 +81,8 @@ public class UtWsChannelListener extends AbstractReceiveListener {
     @Override
     protected void onFullTextMessage(WebSocketChannel channel, BufferedTextMessage msg) throws IOException {
         try {
-            Session session = _SocketServerSession.get(channel);
-            Message message = Message.wrap(channel.getUrl(), null, msg.getData());
-
-            Solon.app().listener().onMessage(session, message.isString(true));
+            _WebSocketImpl webSocket =  (_WebSocketImpl)channel.getAttribute(SESSION_KEY);
+            WebSocketBus.getListener().onMessage(webSocket, msg.getData());
         } catch (Throwable e) {
             log.warn(e.getMessage(), e);
         }
@@ -101,13 +90,13 @@ public class UtWsChannelListener extends AbstractReceiveListener {
 
     @Override
     protected void onClose(WebSocketChannel channel, StreamSourceFrameChannel frameChannel) throws IOException {
-        Solon.app().listener().onClose(_SocketServerSession.get(channel));
-
-        _SocketServerSession.remove(channel);
+        _WebSocketImpl webSocket =  (_WebSocketImpl)channel.getAttribute(SESSION_KEY);
+        WebSocketBus.getListener().onClose(webSocket);
     }
 
     @Override
     protected void onError(WebSocketChannel channel, Throwable error) {
-        Solon.app().listener().onError(_SocketServerSession.get(channel), error);
+        _WebSocketImpl webSocket =  (_WebSocketImpl)channel.getAttribute(SESSION_KEY);
+        WebSocketBus.getListener().onError(webSocket, error);
     }
 }
