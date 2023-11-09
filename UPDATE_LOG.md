@@ -31,6 +31,7 @@
 * liteflow 升为 2.11.3
 * activemq 升为 5.16.7
 * redisx 升为 1.6.2
+* minio8 升为 8.5.6
 
 
 
