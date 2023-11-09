@@ -2,9 +2,12 @@ package org.apache.shardingsphere.solon;
 
 import org.apache.shardingsphere.driver.api.yaml.YamlShardingSphereDataSourceFactory;
 import org.noear.solon.Utils;
+import org.noear.solon.core.util.IoUtil;
 import org.noear.solon.core.util.ResourceUtil;
 
 import javax.sql.DataSource;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.Properties;
 import java.util.function.Supplier;
 
@@ -25,13 +28,15 @@ public class ShardingSphereSupplier implements Supplier<DataSource> {
         try {
             String fileUri = properties.getProperty("file");
             if (Utils.isNotEmpty(fileUri)) {
-                String fileContent = ResourceUtil.findResourceAsString(fileUri);
-                if (fileContent == null){
+                URL resource = ResourceUtil.findResource(fileUri);
+                if (resource == null) {
                     throw new IllegalStateException("The sharding sphere configuration file does not exist");
                 }
-                return YamlShardingSphereDataSourceFactory.createDataSource(fileContent.getBytes());
+                try (InputStream in = resource.openStream()) {
+                    byte[] bytes = IoUtil.transferToBytes(in);
+                    return YamlShardingSphereDataSourceFactory.createDataSource(bytes);
+                }
             }
-
             String configTxt = properties.getProperty("config");
             if (Utils.isNotEmpty(configTxt)) {
                 return YamlShardingSphereDataSourceFactory.createDataSource(configTxt.getBytes());
