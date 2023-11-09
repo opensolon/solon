@@ -22,11 +22,6 @@
         <module>../../solon-projects/nami/nami.channel.http.hutool</module>
 
         <module>../../solon-projects/nami/nami.channel.socketd</module>
-        <module>../../solon-projects/nami/nami.channel.socketd.jdksocket</module>
-        <module>../../solon-projects/nami/nami.channel.socketd.netty</module>
-        <module>../../solon-projects/nami/nami.channel.socketd.rsocket</module>
-        <module>../../solon-projects/nami/nami.channel.socketd.smartsocket</module>
-        <module>../../solon-projects/nami/nami.channel.socketd.websocket</module>
 
         <module>../../solon-projects/nami/nami.coder.snack3</module>
         <module>../../solon-projects/nami/nami.coder.fastjson</module>

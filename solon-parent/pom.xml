@@ -257,37 +257,6 @@
                 <version>${solon.version}</version>
             </dependency>
 
-
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>solon.socketd.client.jdksocket</artifactId>
-                <version>${solon.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>solon.socketd.client.netty</artifactId>
-                <version>${solon.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>solon.socketd.client.rsocket</artifactId>
-                <version>${solon.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>solon.socketd.client.smartsocket</artifactId>
-                <version>${solon.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>solon.socketd.client.websocket</artifactId>
-                <version>${solon.version}</version>
-            </dependency>
-
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon</artifactId>
@@ -372,31 +341,6 @@
                 <version>${solon.version}</version>
             </dependency>
 
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>solon.boot.socketd.jdksocket</artifactId>
-                <version>${solon.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>solon.boot.socketd.netty</artifactId>
-                <version>${solon.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>solon.boot.socketd.rsocket</artifactId>
-                <version>${solon.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>solon.boot.socketd.smartsocket</artifactId>
-                <version>${solon.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>solon.boot.socketd.websocket</artifactId>
-                <version>${solon.version}</version>
-            </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.aot</artifactId>
@@ -739,31 +683,6 @@
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>nami.channel.socketd</artifactId>
-                <version>${solon.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>nami.channel.socketd.jdksocket</artifactId>
-                <version>${solon.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>nami.channel.socketd.netty</artifactId>
-                <version>${solon.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>nami.channel.socketd.rsocket</artifactId>
-                <version>${solon.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>nami.channel.socketd.smartsocket</artifactId>
-                <version>${solon.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>nami.channel.socketd.websocket</artifactId>
                 <version>${solon.version}</version>
             </dependency>
 

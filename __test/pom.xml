@@ -234,11 +234,6 @@
             <artifactId>solon.socketd</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.socketd.client.websocket</artifactId>
-        </dependency>
-
 <!--        <dependency>-->
 <!--            <groupId>org.noear</groupId>-->
 <!--            <artifactId>solon.boot.websocket</artifactId>-->
@@ -249,31 +244,6 @@
             <artifactId>solon.boot.websocket.netty</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.boot.socketd.websocket</artifactId>
-        </dependency>
-
-
-        <!--        <dependency>-->
-        <!--            <groupId>org.noear</groupId>-->
-        <!--            <artifactId>solon.boot.socketd.rsocket</artifactId>-->
-        <!--        </dependency>-->
-
-<!--                <dependency>-->
-<!--                    <groupId>org.noear</groupId>-->
-<!--                    <artifactId>solon.boot.socketd.jdksocket</artifactId>-->
-<!--                </dependency>-->
-
-        <!--        <dependency>-->
-        <!--            <groupId>org.noear</groupId>-->
-        <!--            <artifactId>solon.boot.socketd.netty</artifactId>-->
-        <!--        </dependency>-->
-
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.boot.socketd.smartsocket</artifactId>
-        </dependency>
 
 <!--                    <dependency>-->
 <!--                        <groupId>org.noear</groupId>-->
