@@ -38,22 +38,26 @@ public class PropsLoaderExt extends PropsLoader {
         String fileName = url.toString();
 
         if (fileName.endsWith(".properties")) {
-            if(Solon.app() != null && Solon.cfg().isDebugMode()) {
+            if (Solon.app() != null && Solon.cfg().isDebugMode()) {
                 LogUtil.global().trace(fileName);
             }
 
             Properties tmp = new Properties();
-            tmp.load(new InputStreamReader(url.openStream(), Solon.encoding()));
+            try (InputStreamReader reader = new InputStreamReader(url.openStream(), Solon.encoding())) {
+                tmp.load(reader);
+            }
             return tmp;
         }
 
         if (fileName.endsWith(".yml")) {
-            if(Solon.app() != null && Solon.cfg().isDebugMode()) {
+            if (Solon.app() != null && Solon.cfg().isDebugMode()) {
                 LogUtil.global().trace(fileName);
             }
 
             PropertiesYaml tmp = new PropertiesYaml();
-            tmp.loadYml(new InputStreamReader(url.openStream(), Solon.encoding()));
+            try (InputStreamReader reader = new InputStreamReader(url.openStream(), Solon.encoding())) {
+                tmp.loadYml(reader);
+            }
             return tmp;
         }
 
