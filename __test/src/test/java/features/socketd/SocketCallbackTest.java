@@ -8,7 +8,9 @@ import org.noear.socketd.transport.core.Entity;
 import org.noear.socketd.transport.core.Message;
 import org.noear.socketd.transport.core.Session;
 import org.noear.socketd.transport.core.entity.StringEntity;
+import org.noear.socketd.transport.core.listener.PipelineListener;
 import org.noear.socketd.transport.core.listener.SimpleListener;
+import org.noear.solon.net.socketd.handle.SocketdMvc;
 import org.noear.solon.test.SolonJUnit5Extension;
 import org.noear.solon.test.SolonTest;
 import webapp.App;
@@ -26,12 +28,12 @@ public class SocketCallbackTest {
         int _port = 8080 + 20000;
 
         Session session = SocketD.createClient("tcp://localhost:"+ _port)
-                .listen(new SimpleListener(){
+                .listen(new PipelineListener().next(new SimpleListener(){
                     @Override
                     public void onMessage(Session session, Message message) {
                         System.out.println("实例监到，收到了："+message);
                     }
-                })
+                }).next(SocketdMvc.getListener()))
                 .open();
 
         String root = "tcp://localhost:" + _port;

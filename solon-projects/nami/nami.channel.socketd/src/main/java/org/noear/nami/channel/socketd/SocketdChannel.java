@@ -8,7 +8,7 @@ import org.noear.socketd.SocketD;
 import org.noear.socketd.transport.core.Entity;
 import org.noear.socketd.transport.core.Session;
 import org.noear.socketd.transport.core.entity.EntityDefault;
-import org.noear.solon.net.socketd.handle.SocketdListenerToMvc;
+import org.noear.solon.net.socketd.handle.SocketdMvc;
 
 import java.util.Map;
 import java.util.function.Supplier;
@@ -21,9 +21,8 @@ import java.util.function.Supplier;
  * @since 2.6
  */
 public class SocketdChannel extends ChannelBase implements Channel {
-    private static final SocketdListenerToMvc listenerToMvc = new SocketdListenerToMvc();
     public static <T> T create(String url, Class<T> clz) throws Exception{
-        Session session = SocketD.createClient(url).listen(listenerToMvc).open();
+        Session session = SocketD.createClient(url).listen(SocketdMvc.getListener()).open();
         return ProxyUtils.create(()->session, null, null, clz);
     }
 

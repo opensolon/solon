@@ -10,6 +10,7 @@ import org.noear.socketd.SocketD;
 import org.noear.socketd.transport.core.Entity;
 import org.noear.socketd.transport.core.Session;
 import org.noear.socketd.transport.core.entity.StringEntity;
+import org.noear.solon.net.socketd.handle.SocketdMvc;
 import org.noear.solon.test.SolonJUnit5Extension;
 import org.noear.solon.test.SolonTest;
 import webapp.App;
@@ -26,7 +27,9 @@ public class SocketResponseTest {
     public void test() throws Throwable{
         int _port = 8080 + 20000;
 
-        Session session = SocketD.createClient("tcp://localhost:"+_port).open();
+        Session session = SocketD.createClient("tcp://localhost:"+_port)
+                .listen(SocketdMvc.getListener())
+                .open();
 
 
         String root = "tcp://localhost:" + _port;
@@ -43,7 +46,9 @@ public class SocketResponseTest {
     public void test_rpc_message() throws Throwable {
         int _port = 8080 + 20000;
 
-        Session session = SocketD.createClient("tcp://localhost:"+ _port).open();
+        Session session = SocketD.createClient("tcp://localhost:"+ _port)
+                .listen(SocketdMvc.getListener())
+                .open();
 
 
         String root = "tcp://localhost:" + _port;
