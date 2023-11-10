@@ -1,28 +1,31 @@
-package org.noear.solon.core.message;
+package org.noear.solon.net.websocket.listener;
 
 import org.noear.solon.core.util.PathAnalyzer;
 import org.noear.solon.core.util.PathUtil;
+import org.noear.solon.net.websocket.WebSocket;
+import org.noear.solon.net.websocket.WebSocketListener;
 
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 
 /**
- * 监听器增强持有（用于支持 path var）
+ * 路径表过式监听器（自动解析出 /user/{id} 的值）
  *
  * @author noear
- * @since 1.6
+ * @since 2.0
  */
-public class ListenerHolder implements Listener {
-    private Listener listener;
+public class ExpressWebSocketListener implements WebSocketListener {
+    private WebSocketListener listener;
 
     //path 分析器
     private PathAnalyzer pathAnalyzer;//路径分析器
     //path key 列表
     private List<String> pathKeys;
 
-    public ListenerHolder(String path, Listener listener) {
+    public ExpressWebSocketListener(String path, WebSocketListener listener) {
         this.listener = listener;
 
         if (path != null && path.indexOf("{") >= 0) {
@@ -41,13 +44,13 @@ public class ListenerHolder implements Listener {
     }
 
     @Override
-    public void onOpen(Session s) {
+    public void onOpen(WebSocket s) {
         //获取path var
         if (pathAnalyzer != null) {
-            Matcher pm = pathAnalyzer.matcher(s.pathNew());
+            Matcher pm = pathAnalyzer.matcher(s.getPath());
             if (pm.find()) {
                 for (int i = 0, len = pathKeys.size(); i < len; i++) {
-                    s.paramSet(pathKeys.get(i), pm.group(i + 1));//不采用group name,可解决_的问题
+                    s.getHandshake().putParam(pathKeys.get(i), pm.group(i + 1));//不采用group name,可解决_的问题
                 }
             }
         }
@@ -56,17 +59,22 @@ public class ListenerHolder implements Listener {
     }
 
     @Override
-    public void onMessage(Session s, Message m) throws IOException {
-        listener.onMessage(s, m);
+    public void onMessage(WebSocket s, String text) throws IOException {
+        listener.onMessage(s, text);
     }
 
     @Override
-    public void onClose(Session s) {
+    public void onMessage(WebSocket s, ByteBuffer binary) throws IOException {
+        listener.onMessage(s, binary);
+    }
+
+    @Override
+    public void onClose(WebSocket s) {
         listener.onClose(s);
     }
 
     @Override
-    public void onError(Session s, Throwable e) {
+    public void onError(WebSocket s, Throwable e) {
         listener.onError(s, e);
     }
 }

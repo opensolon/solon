@@ -7,7 +7,6 @@ import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.prop.impl.HttpServerProps;
 import org.noear.solon.boot.smarthttp.http.SmHttpContextHandler;
 import org.noear.solon.boot.smarthttp.websocket.SmWebSocketHandleImpl;
-import org.noear.solon.boot.smarthttp.websocket._SessionManagerImpl;
 import org.noear.solon.boot.ssl.SslConfig;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.Handler;

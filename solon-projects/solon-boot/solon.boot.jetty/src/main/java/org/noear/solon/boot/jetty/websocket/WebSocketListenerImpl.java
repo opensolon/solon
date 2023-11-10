@@ -1,7 +1,7 @@
 package org.noear.solon.boot.jetty.websocket;
 
 import org.eclipse.jetty.websocket.api.WebSocketAdapter;
-import org.noear.solon.net.websocket.WebSocketBus;
+import org.noear.solon.net.websocket.WebSocketRouter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -10,28 +10,29 @@ import java.nio.ByteBuffer;
 public class WebSocketListenerImpl extends WebSocketAdapter {
     static final Logger log = LoggerFactory.getLogger(WebSocketListenerImpl.class);
 
-    private  _WebSokcetImpl webSokcet;
+    private _WebSocketImpl webSocket;
+    private WebSocketRouter webSocketRouter = WebSocketRouter.getInstance();
 
     @Override
     public void onWebSocketConnect(org.eclipse.jetty.websocket.api.Session sess) {
         super.onWebSocketConnect(sess);
 
-        webSokcet = new _WebSokcetImpl(sess);
+        webSocket = new _WebSocketImpl(sess);
 
         sess.getUpgradeRequest().getHeaders().forEach((k, v) -> {
             if (v.size() > 0) {
-                webSokcet.getHandshake().putParam(k, v.get(0));
+                webSocket.getHandshake().putParam(k, v.get(0));
             }
         });
 
-        WebSocketBus.getListener().onOpen(webSokcet);
+        webSocketRouter.getListener().onOpen(webSocket);
     }
 
     @Override
     public void onWebSocketBinary(byte[] payload, int offset, int len) {
         try {
             ByteBuffer buf = ByteBuffer.wrap(payload, offset, len);
-            WebSocketBus.getListener().onMessage(webSokcet, buf);
+            webSocketRouter.getListener().onMessage(webSocket, buf);
         } catch (Throwable e) {
             log.warn(e.getMessage(), e);
         }
@@ -40,7 +41,7 @@ public class WebSocketListenerImpl extends WebSocketAdapter {
     @Override
     public void onWebSocketText(String text) {
         try {
-            WebSocketBus.getListener().onMessage(webSokcet, text);
+            webSocketRouter.getListener().onMessage(webSocket, text);
         } catch (Throwable e) {
             log.warn(e.getMessage(), e);
         }
@@ -48,12 +49,18 @@ public class WebSocketListenerImpl extends WebSocketAdapter {
 
     @Override
     public void onWebSocketClose(int statusCode, String reason) {
-        WebSocketBus.getListener().onClose(webSokcet);
+        if (webSocket.isClosed()) {
+            return;
+        } else {
+            webSocket.close();
+        }
+
+        webSocketRouter.getListener().onClose(webSocket);
         super.onWebSocketClose(statusCode, reason);
     }
 
     @Override
     public void onWebSocketError(Throwable cause) {
-        WebSocketBus.getListener().onError(webSokcet, cause);
+        webSocketRouter.getListener().onError(webSocket, cause);
     }
 }

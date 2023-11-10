@@ -8,7 +8,7 @@ import org.noear.solon.data.annotation.Cache;
 /**
  * @author noear 2022/3/22 created
  */
-@Mapping(value = "demo2/rmt/sev", method = MethodType.SOCKET)
+@Mapping(value = "demo2/rmt/sev", method = MethodType.SOCKETD)
 @Remoting
 public class RemotingServiceImpl implements RemotingService {
     @Cache

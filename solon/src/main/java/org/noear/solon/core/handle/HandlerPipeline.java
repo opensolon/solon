@@ -1,8 +1,5 @@
 package org.noear.solon.core.handle;
 
-import org.noear.solon.core.message.Listener;
-import org.noear.solon.core.message.ListenerPipeline;
-
 import java.util.LinkedList;
 import java.util.List;
 

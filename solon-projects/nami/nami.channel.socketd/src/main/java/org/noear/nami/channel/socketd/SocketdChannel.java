@@ -4,9 +4,11 @@ package org.noear.nami.channel.socketd;
 import org.noear.nami.*;
 import org.noear.nami.common.Constants;
 import org.noear.nami.common.ContentTypes;
+import org.noear.socketd.SocketD;
 import org.noear.socketd.transport.core.Entity;
 import org.noear.socketd.transport.core.Session;
 import org.noear.socketd.transport.core.entity.EntityDefault;
+import org.noear.solon.net.socketd.handle.SocketdListenerToMvc;
 
 import java.util.Map;
 import java.util.function.Supplier;
@@ -18,10 +20,22 @@ import java.util.function.Supplier;
  * @since 1.2
  * @since 2.6
  */
-public class SocketChannel extends ChannelBase implements Channel {
+public class SocketdChannel extends ChannelBase implements Channel {
+    private static final SocketdListenerToMvc listenerToMvc = new SocketdListenerToMvc();
+    public static <T> T create(String url, Class<T> clz) throws Exception{
+        Session session = SocketD.createClient(url).listen(listenerToMvc).open();
+        return ProxyUtils.create(()->session, null, null, clz);
+    }
+
+    public static <T> T create(Session session, Class<T> clz){
+        return ProxyUtils.create(()->session, null, null, clz);
+    }
+
+
+
     public Supplier<Session> sessions;
 
-    public SocketChannel(Supplier<Session> sessions) {
+    public SocketdChannel(Supplier<Session> sessions) {
         this.sessions = sessions;
     }
 
@@ -42,21 +56,6 @@ public class SocketChannel extends ChannelBase implements Channel {
         //0.尝试解码器的过滤
         ctx.config.getDecoder().pretreatment(ctx);
 
-
-        if (ctx.method != null) {
-            //是否为握手
-            //
-            //Handshake h = ctx.method.getAnnotation(Handshake.class);
-//            if (h != null) {
-//                flag = MessageFlag.handshake;
-//
-//                if (Utils.isNotEmpty(h.handshakeHeader())) {
-//                    Map<String, String> headerMap = HeaderUtil.decodeHeaderMap(h.handshakeHeader());
-//                    ctx.headers.putAll(headerMap);
-//                }
-//            }
-        }
-
         //1.确定编码器
         Encoder encoder = ctx.config.getEncoder();
         if(encoder == null){
@@ -74,12 +73,9 @@ public class SocketChannel extends ChannelBase implements Channel {
 
         //3.获取会话
         Session session = sessions.get();
-//        if(ctx.config.getHeartbeat() > 0){
-//            session.startHeartbeatAuto(ctx.config.getHeartbeat());
-//        }
 
         //4.发送消息
-        Entity response = session.sendAndRequest(ctx.url, request, ctx.config.getTimeout());
+        Entity response = session.sendAndRequest(ctx.url, request, ctx.config.getTimeout() * 1000);
 
         if (response == null) {
             return null;

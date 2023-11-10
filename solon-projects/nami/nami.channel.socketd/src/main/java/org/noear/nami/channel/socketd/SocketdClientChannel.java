@@ -6,6 +6,7 @@ import org.noear.nami.Context;
 import org.noear.nami.Result;
 import org.noear.socketd.SocketD;
 import org.noear.socketd.transport.core.Session;
+import org.noear.solon.net.socketd.handle.SocketdListenerToMvc;
 
 import java.net.URI;
 import java.util.HashMap;
@@ -15,14 +16,16 @@ import java.util.Map;
  * @author noear 2021/1/1 created
  * @since 2.6
  */
-public class SocketClientChannel extends ChannelBase implements Channel {
-    public static final SocketClientChannel instance = new SocketClientChannel();
+public class SocketdClientChannel extends ChannelBase implements Channel {
+    public static final SocketdClientChannel instance = new SocketdClientChannel();
 
-    Map<String, SocketChannel> channelMap = new HashMap<>();
+    private static final SocketdListenerToMvc listenerToMvc = new SocketdListenerToMvc();
 
-    private SocketChannel get(URI uri) {
+    Map<String, SocketdChannel> channelMap = new HashMap<>();
+
+    private SocketdChannel get(URI uri) {
         String hostname = uri.getAuthority();
-        SocketChannel channel = channelMap.get(hostname);
+        SocketdChannel channel = channelMap.get(hostname);
 
         if (channel == null) {
             synchronized (hostname.intern()) {
@@ -30,8 +33,8 @@ public class SocketClientChannel extends ChannelBase implements Channel {
 
                 if (channel == null) {
                     try {
-                        Session session = SocketD.createClient(uri.toString()).open();
-                        channel = new SocketChannel(() -> session);
+                        Session session = SocketD.createClient(uri.toString()).listen(listenerToMvc).open();
+                        channel = new SocketdChannel(() -> session);
                         channelMap.put(hostname, channel);
                     } catch (RuntimeException e) {
                         throw e;
@@ -50,7 +53,7 @@ public class SocketClientChannel extends ChannelBase implements Channel {
         pretreatment(ctx);
 
         URI uri = URI.create(ctx.url);
-        SocketChannel channel = get(uri);
+        SocketdChannel channel = get(uri);
 
         return channel.call(ctx);
     }

@@ -1,8 +1,6 @@
 package org.noear.solon.core.route;
 
 import org.noear.solon.core.handle.*;
-import org.noear.solon.core.message.Listener;
-import org.noear.solon.core.message.Session;
 import org.noear.solon.core.util.PathAnalyzer;
 
 import java.util.*;
@@ -116,60 +114,6 @@ public interface Router {
      * @return 一批匹配的处理
      */
     List<Handler> matchMore(Context ctx, Endpoint endpoint);
-
-
-    /////////////////// for Listener ///////////////////
-
-
-    /**
-     * 添加路由关系 for Listener
-     *
-     * @param path     路径
-     * @param listener 监听接口
-     */
-    default void add(String path, Listener listener) {
-        add(path, MethodType.ALL, listener);
-    }
-
-
-    /**
-     * 添加路由关系 for Listener
-     *
-     * @param path     路径
-     * @param method   方法
-     * @param listener 监听接口
-     */
-    default void add(String path, MethodType method, Listener listener) {
-        add(path, method, 0, listener);
-    }
-
-    /**
-     * 添加路由关系 for Listener
-     *
-     * @param path     路径
-     * @param method   方法
-     * @param index    顺序位
-     * @param listener 监听接口
-     */
-    void add(String path, MethodType method, int index, Listener listener);
-
-    /**
-     * 区配一个目标（会话对象）
-     *
-     * @param session 会话对象
-     * @return 首个匹配监听
-     */
-    Listener matchOne(Session session);
-
-    /**
-     * 区配多个目标（会话对象）
-     *
-     * @since 2.5
-     * @param session 会话对象
-     * @return 多个匹配监听
-     */
-    List<Listener> matchMore(Session session);
-
 
     /**
      * 清空路由关系

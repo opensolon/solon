@@ -4,13 +4,13 @@ import org.noear.solon.Solon;
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Http;
 import org.noear.solon.annotation.Mapping;
-import org.noear.solon.annotation.WebSocket;
+import org.noear.solon.annotation.SocketD;
 import org.noear.solon.core.handle.ModelAndView;
 import org.noear.solon.core.handle.Context;
 
 @Controller
 public class WsDemoController {
-    @WebSocket
+    @SocketD
     @Mapping("/demoe/*/{id}")
     public void test(Context ctx, String id) throws Exception {
         if (ctx == null) {

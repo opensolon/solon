@@ -1,45 +1,48 @@
 package org.noear.solon.boot.smarthttp.websocket;
 
-import org.noear.solon.net.websocket.Handshake;
+import org.noear.solon.Utils;
 import org.noear.solon.net.websocket.WebSocketBase;
 import org.smartboot.http.server.WebSocketRequest;
 import org.smartboot.http.server.WebSocketResponse;
 import org.smartboot.http.server.impl.WebSocketRequestImpl;
 
-import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.net.URI;
 import java.nio.ByteBuffer;
 
 /**
  * @author noear
  * @since 2.0
  */
-public class _WebSokcetImpl extends WebSocketBase {
+public class _WebSocketImpl extends WebSocketBase {
     private final WebSocketRequest request;
     private final WebSocketResponse real;
-    private boolean isOpen = true;
-    public _WebSokcetImpl(WebSocketRequest request) {
+    public _WebSocketImpl(WebSocketRequest request) {
         this.request = request;
         this.real = ((WebSocketRequestImpl) request).getResponse();
+        this.init(buildUri(request));
     }
 
-    public void setOpen(boolean open) {
-        isOpen = open;
+    public URI buildUri(WebSocketRequest req) {
+        if (Utils.isEmpty(req.getQueryString())) {
+            return URI.create(req.getRequestURL());
+        } else {
+            if (req.getRequestURL().contains("?")) {
+                return URI.create(req.getRequestURL());
+            } else {
+                return URI.create(req.getRequestURL() + "?" + req.getQueryString());
+            }
+        }
     }
 
     @Override
     public boolean isValid() {
-        return isOpen;
+        return isClosed() == false;
     }
 
     @Override
     public boolean isSecure() {
         return request.isSecure();
-    }
-
-    @Override
-    public Handshake getHandshake() {
-        return null;
     }
 
     @Override
@@ -62,18 +65,9 @@ public class _WebSokcetImpl extends WebSocketBase {
         real.sendBinaryMessage(binary.array());
     }
 
-    private boolean isClosed;
-
-    public void setClosed(boolean closed) {
-        isClosed = closed;
-    }
-
-    public boolean isClosed() {
-        return isClosed;
-    }
-
     @Override
-    public void close() throws IOException {
+    public void close() {
+        super.close();
         real.close();
     }
 }

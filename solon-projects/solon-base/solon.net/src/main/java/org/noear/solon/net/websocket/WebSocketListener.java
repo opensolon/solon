@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 
 /**
+ * WebSoskcet 监听器
+ *
  * @author noear
  * @since 2.6
  */

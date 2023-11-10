@@ -2,9 +2,6 @@ package org.noear.solon.core.route;
 
 import org.noear.solon.core.Constants;
 import org.noear.solon.core.handle.*;
-import org.noear.solon.core.message.Listener;
-import org.noear.solon.core.message.ListenerHolder;
-import org.noear.solon.core.message.Session;
 
 import java.util.*;
 
@@ -15,8 +12,6 @@ import java.util.*;
 public class RouterDefault implements Router{
     //for handler
     private final RoutingTable<Handler>[] routesH;
-    //for listener
-    private final RoutingTable<Listener> routesL;
 
     public RouterDefault() {
         routesH = new RoutingTableDefault[3];
@@ -24,8 +19,6 @@ public class RouterDefault implements Router{
         routesH[0] = new RoutingTableDefault<>();//before:0
         routesH[1] = new RoutingTableDefault<>();//main
         routesH[2] = new RoutingTableDefault<>();//after:2
-
-        routesL = new RoutingTableDefault<>();
     }
     /**
      * 添加路由关系 for Handler
@@ -53,8 +46,6 @@ public class RouterDefault implements Router{
         routesH[Endpoint.before.code].remove(pathPrefix);
         routesH[Endpoint.main.code].remove(pathPrefix);
         routesH[Endpoint.after.code].remove(pathPrefix);
-
-        routesL.remove(pathPrefix);
     }
 
     /**
@@ -117,52 +108,6 @@ public class RouterDefault implements Router{
         return routesH[endpoint.code].matchMore(pathNew, method);
     }
 
-    /////////////////// for Listener ///////////////////
-
-
-    /**
-     * 添加路由关系 for Listener
-     *
-     * @param path 路径
-     * @param method 方法
-     * @param index 顺序位
-     * @param listener 监听接口
-     */
-    @Override
-    public void add(String path, MethodType method, int index, Listener listener) {
-        Listener lh = new ListenerHolder(path, listener);
-
-        routesL.add(new RoutingDefault<>(path, method, index, lh));
-    }
-
-    /**
-     * 区配一个目标（根据上下文）
-     *
-     * @param session 会话对象
-     * @return 首个匹配监听
-     */
-    @Override
-    public Listener matchOne(Session session) {
-        String path = session.pathNew();
-
-        if (path == null) {
-            return null;
-        } else {
-            return routesL.matchOne(path, session.method());
-        }
-    }
-
-    @Override
-    public List<Listener> matchMore(Session session) {
-        String path = session.pathNew();
-
-        if (path == null) {
-            return null;
-        } else {
-            return routesL.matchMore(path, session.method());
-        }
-    }
-
     /**
      * 清空路由关系
      */
@@ -171,7 +116,5 @@ public class RouterDefault implements Router{
         routesH[0].clear();
         routesH[1].clear();
         routesH[2].clear();
-
-        routesL.clear();
     }
 }

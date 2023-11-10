@@ -5,6 +5,7 @@ import org.noear.solon.net.websocket.WebSocketBase;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.net.URI;
 import java.nio.ByteBuffer;
 
 /**
@@ -16,11 +17,12 @@ public class _WebSocketImpl extends WebSocketBase {
 
     public _WebSocketImpl(org.java_websocket.WebSocket real) {
         this.real = real;
+        this.init(URI.create(real.getResourceDescriptor()));
     }
 
     @Override
     public boolean isValid() {
-        return real.isOpen();
+        return isClosed() == false && real.isOpen();
     }
 
     @Override
@@ -54,7 +56,8 @@ public class _WebSocketImpl extends WebSocketBase {
     }
 
     @Override
-    public void close() throws IOException {
+    public void close() {
+        super.close();
         real.close();
     }
 }

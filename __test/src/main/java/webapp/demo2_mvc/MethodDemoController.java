@@ -34,13 +34,13 @@ public class MethodDemoController {
     }
 
     //经典写法
-    @Mapping(value = "demo20", method = {MethodType.HTTP, MethodType.SOCKET})
+    @Mapping(value = "demo20", method = {MethodType.HTTP, MethodType.SOCKETD})
     public String demo20(String name) {
         return name;
     }
 
     //新增写法（新旧，2种都可以玩）
-    @Socket
+    @SocketD
     @Http
     @Mapping("demo21")
     public String demo21(String name) {

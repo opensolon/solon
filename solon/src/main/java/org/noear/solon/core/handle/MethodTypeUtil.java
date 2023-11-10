@@ -67,12 +67,8 @@ public class MethodTypeUtil {
             list.add(MethodType.HTTP);
         }
 
-        if (checker.test(Socket.class)) {
-            list.add(MethodType.SOCKET);
-        }
-
-        if (checker.test(WebSocket.class)) {
-            list.add(MethodType.WEBSOCKET);
+        if (checker.test(SocketD.class)) {
+            list.add(MethodType.SOCKETD);
         }
 
         return list;

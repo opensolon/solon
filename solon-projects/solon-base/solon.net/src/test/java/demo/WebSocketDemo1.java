@@ -1,7 +1,7 @@
 package demo;
 
 import org.noear.solon.net.annotation.ServerEndpoint;
-import org.noear.solon.net.websocket.Listener.SimpleWebSocketListener;
+import org.noear.solon.net.websocket.listener.SimpleWebSocketListener;
 import org.noear.solon.net.websocket.WebSocket;
 
 import java.io.IOException;

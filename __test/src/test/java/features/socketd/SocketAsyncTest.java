@@ -1,16 +1,21 @@
 package features.socketd;
 
+import org.java_websocket.impl.SimpleWebSocketClient;
+import org.java_websocket.client.WebSocketClient;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.noear.snack.ONode;
-import org.noear.solon.core.message.Listener;
-import org.noear.solon.core.message.Message;
-import org.noear.solon.core.message.Session;
-import org.noear.solon.socketd.SocketD;
+import org.noear.socketd.SocketD;
+import org.noear.socketd.transport.core.Message;
+import org.noear.socketd.transport.core.Session;
+import org.noear.socketd.transport.core.entity.StringEntity;
+import org.noear.socketd.transport.core.listener.SimpleListener;
 import org.noear.solon.test.SolonJUnit5Extension;
 import org.noear.solon.test.SolonTest;
 import webapp.App;
 
+import java.io.IOException;
+import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -26,16 +31,18 @@ public class SocketAsyncTest {
     public void test_async_message() throws Throwable {
         int _port = 8080 + 20000;
 
-        Session session = SocketD.createSession("tcp://localhost:" + _port, true);
-
         CompletableFuture<Boolean> check = new CompletableFuture<>();
-        session.listener(new Listener() {
-            @Override
-            public void onMessage(Session session, Message message) {
-                System.out.println("异步发送::实例监到，收到了：" + message);
-                check.complete(true);
-            }
-        });
+
+        Session session = SocketD.createClient("tcp://localhost:" + _port)
+                .listen(new SimpleListener(){
+                    @Override
+                    public void onMessage(Session session, Message message) throws IOException {
+                        System.out.println("异步发送::实例监到，收到了：" + message);
+                        check.complete(true);
+                    }
+                })
+                .open();
+
 
         String root = "tcp://localhost:" + _port;
         Map<String, Object> map = new HashMap<>();
@@ -43,28 +50,29 @@ public class SocketAsyncTest {
         String map_josn = ONode.stringify(map);
 
         //异步发
-        Message message = Message.wrap(root + "/demoh/rpc/hello", "Content-Type=application/json", map_josn);
-        session.sendAsync(message);
+        session.send(root + "/demoh/rpc/hello", new StringEntity(map_josn)
+                .meta("Content-Type", "application/json"));
 
         assert check.get(2, TimeUnit.SECONDS);
     }
 
     @Test
     public void test_async_message2() throws Throwable {
-        Session session = SocketD.createSession("ws://127.0.0.1:18080/demoe/websocket/12", true);
 
         CompletableFuture<Boolean> check = new CompletableFuture<>();
-        session.listener(new Listener() {
+
+        WebSocketClient webSocketClient = new SimpleWebSocketClient(URI.create("ws://127.0.0.1:18080/demoe/websocket/12")){
             @Override
-            public void onMessage(Session session, Message message) {
+            public void onMessage(String message) {
                 System.out.println("异步发送-ws::实例监到，收到了：" + message);
                 check.complete(true);
             }
-        });
+        };
+        webSocketClient.connectBlocking();
 
 
         //异步发
-        session.sendAsync("test");
+        webSocketClient.send("test");
 
         assert check.get(2, TimeUnit.SECONDS);
     }

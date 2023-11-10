@@ -10,7 +10,6 @@ import org.noear.solon.core.convert.ConverterFactory;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.event.EventListener;
 import org.noear.solon.core.handle.*;
-import org.noear.solon.core.message.Listener;
 import org.noear.solon.core.route.RouterInterceptor;
 import org.noear.solon.core.util.*;
 import org.noear.solon.core.wrap.*;
@@ -207,15 +206,6 @@ public class AppContext extends BeanContainer {
         beanBuilderAdd(Controller.class, (clz, bw, anno) -> {
             HandlerLoaderFactory.global().create(bw).load(Solon.app());
         });
-
-        //注册 @ServerEndpoint 构建器
-        beanBuilderAdd(ServerEndpoint.class, (clz, wrap, anno) -> {
-            if (Listener.class.isAssignableFrom(clz)) {
-                Listener l = wrap.raw();
-                Solon.app().router().add(Utils.annoAlias(anno.value(), anno.path()), anno.method(), l);
-            }
-        });
-
 
         //注册 @Inject 注入器
         beanInjectorAdd(Inject.class, ((varH, anno) -> {

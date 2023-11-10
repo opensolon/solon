@@ -1,31 +1,38 @@
 package webapp.demoh_socketd;
 
 import org.noear.solon.Solon;
-import org.noear.solon.core.handle.MethodType;
-import org.noear.solon.core.message.Listener;
-import org.noear.solon.core.message.Message;
-import org.noear.solon.core.message.Session;
-import org.noear.solon.annotation.ServerEndpoint;
+import org.noear.solon.net.annotation.ServerEndpoint;
+import org.noear.solon.net.websocket.WebSocket;
+import org.noear.solon.net.websocket.listener.SimpleWebSocketListener;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @ServerEndpoint(path = "**")
-public class SocketListenerImp implements Listener {
+public class SocketListenerImp extends SimpleWebSocketListener {
+    private Set<WebSocket> sessionMap = new HashSet<>();
     @Override
-    public void onMessage(Session session, Message message) {
-        System.out.println(session.pathNew() + ":" + message.resourceDescriptor());
+    public void onMessage(WebSocket session, String message) {
+        System.out.println(session.getPath());
 
         if (Solon.cfg().isDebugMode()) {
             return;
         }
 
-        if (session.method() == MethodType.WEBSOCKET) {
-            message.setHandled(true);
 
-            session.getOpenSessions().forEach(s -> {
-                s.send(message.bodyAsString() + "-" + s.getOpenSessions().size() + "-" + session.paramMap().toString());
+            sessionMap.forEach(s -> {
+                s.send(message + "-" + sessionMap.size() + "-" + session.getHandshake().getParamMap());
             });
-        } else {
-            System.out.println("X我收到了::" + message.toString());
-            //session.send("X我收到了::" + message.toString());
-        }
+
+    }
+
+    @Override
+    public void onOpen(WebSocket session)  {
+        sessionMap.add(session);
+    }
+
+    @Override
+    public void onClose(WebSocket session) {
+        sessionMap.remove(session);
     }
 }

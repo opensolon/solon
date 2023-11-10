@@ -11,7 +11,7 @@ import io.netty.handler.codec.http.websocketx.*;
 import io.netty.util.AttributeKey;
 import io.netty.util.CharsetUtil;
 import org.noear.solon.net.websocket.WebSocket;
-import org.noear.solon.net.websocket.WebSocketBus;
+import org.noear.solon.net.websocket.WebSocketRouter;
 
 import java.nio.ByteBuffer;
 
@@ -22,7 +22,9 @@ import java.nio.ByteBuffer;
 public class WsServerHandler extends SimpleChannelInboundHandler<Object> {
     public static final AttributeKey<String> ResourceDescriptorKey = AttributeKey.valueOf("ResourceDescriptor");
     public static final AttributeKey<WebSocketServerHandshaker> HandshakerKey = AttributeKey.valueOf("Handshaker");
-    public static final AttributeKey<WebSocket> SessionKey = AttributeKey.valueOf("Session");
+    public static final AttributeKey<_WebSocketImpl> SessionKey = AttributeKey.valueOf("Session");
+
+    private WebSocketRouter webSocketRouter = WebSocketRouter.getInstance();
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, Object msg) throws Exception {
@@ -67,7 +69,7 @@ public class WsServerHandler extends SimpleChannelInboundHandler<Object> {
             //listener.onOpen();
             _WebSocketImpl webSocket = new _WebSocketImpl(ctx);
             ctx.attr(SessionKey).set(webSocket);
-            WebSocketBus.getListener().onOpen(webSocket);
+            webSocketRouter.getListener().onOpen(webSocket);
         }
     }
 
@@ -94,7 +96,7 @@ public class WsServerHandler extends SimpleChannelInboundHandler<Object> {
             WebSocket webSocket = ctx.attr(SessionKey).get();
             String msgTxt = ((TextWebSocketFrame) frame).text();
 
-            WebSocketBus.getListener().onMessage(webSocket, msgTxt);
+            webSocketRouter.getListener().onMessage(webSocket, msgTxt);
             return;
         }
 
@@ -103,7 +105,7 @@ public class WsServerHandler extends SimpleChannelInboundHandler<Object> {
             WebSocket webSocket = ctx.attr(SessionKey).get();
             byte[] msgBytes = frame.content().array();
 
-            WebSocketBus.getListener().onMessage(webSocket, ByteBuffer.wrap(msgBytes));
+            webSocketRouter.getListener().onMessage(webSocket, ByteBuffer.wrap(msgBytes));
             return;
         }
     }
@@ -127,8 +129,13 @@ public class WsServerHandler extends SimpleChannelInboundHandler<Object> {
     @Override
     public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {
         //listener.onClose();
-        WebSocket webSocket = ctx.attr(SessionKey).get();
-        WebSocketBus.getListener().onClose(webSocket);
+        _WebSocketImpl webSocket = ctx.attr(SessionKey).get();
+        if (webSocket.isClosed()) {
+            return;
+        } else {
+            webSocket.close();
+        }
+        webSocketRouter.getListener().onClose(webSocket);
     }
 
     /**
@@ -138,7 +145,7 @@ public class WsServerHandler extends SimpleChannelInboundHandler<Object> {
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         //listener.onError();
         WebSocket webSocket = ctx.attr(SessionKey).get();
-        WebSocketBus.getListener().onError(webSocket, cause);
+        webSocketRouter.getListener().onError(webSocket, cause);
         ctx.close();
     }
 }

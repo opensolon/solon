@@ -4,11 +4,11 @@ import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
-import org.noear.solon.net.websocket.Handshake;
 import org.noear.solon.net.websocket.WebSocketBase;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.net.URI;
 import java.nio.ByteBuffer;
 
 /**
@@ -19,21 +19,17 @@ public class _WebSocketImpl extends WebSocketBase {
     private ChannelHandlerContext real;
     public _WebSocketImpl(ChannelHandlerContext real) {
         this.real = real;
+        this.init(URI.create(real.attr(WsServerHandler.ResourceDescriptorKey).get()));
     }
 
     @Override
     public boolean isValid() {
-         return real.channel().isOpen();
+         return isClosed() == false && real.channel().isOpen();
     }
 
     @Override
     public boolean isSecure() {
         return false;
-    }
-
-    @Override
-    public Handshake getHandshake() {
-        return null;
     }
 
     @Override
@@ -58,7 +54,8 @@ public class _WebSocketImpl extends WebSocketBase {
     }
 
     @Override
-    public void close() throws IOException {
+    public void close() {
+        super.close();
         real.close();
     }
 }

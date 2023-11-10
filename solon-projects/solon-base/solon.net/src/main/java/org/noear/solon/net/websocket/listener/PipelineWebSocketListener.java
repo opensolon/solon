@@ -1,4 +1,4 @@
-package org.noear.solon.net.websocket.Listener;
+package org.noear.solon.net.websocket.listener;
 
 import org.noear.solon.net.websocket.WebSocket;
 import org.noear.solon.net.websocket.WebSocketListener;

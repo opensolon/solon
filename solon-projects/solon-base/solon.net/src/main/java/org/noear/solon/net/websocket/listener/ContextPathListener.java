@@ -1,17 +1,9 @@
-package org.noear.solon.core.message;
+package org.noear.solon.net.websocket.listener;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.util.LogUtil;
-
-import java.io.IOException;
-
-/**
- * 提供 ContextPath 类似的功能（优先级要极高）
- *
- * @author noear
- * @since 2.5
- */
+import org.noear.solon.net.websocket.WebSocket;
 
 /**
  * 提供 ContextPath 类似的功能（优先级要极高）
@@ -19,7 +11,14 @@ import java.io.IOException;
  * @author noear
  * @since 2.5
  */
-public class ContextPathListener implements Listener {
+
+/**
+ * 提供 ContextPath 类似的功能（优先级要极高）
+ *
+ * @author noear
+ * @since 2.5
+ */
+public class ContextPathListener extends SimpleWebSocketListener {
     private final String contextPath0;
     private final String contextPath1;
     private final boolean forced;
@@ -55,29 +54,23 @@ public class ContextPathListener implements Listener {
         }
     }
 
-
     @Override
-    public void onOpen(Session session) {
+    public void onOpen(WebSocket s) {
         if (contextPath0 != null) {
-            if (session.pathNew().equals(contextPath0)) {
+            if (s.getPath().equals(contextPath0)) {
                 //www:888 加 abc 后，仍可以用 www:888/abc 打开
-                session.pathNew("/");
-            } else if (session.pathNew().startsWith(contextPath1)) {
-                session.pathNew(session.pathNew().substring(contextPath1.length() - 1));
+                s.setPathNew("/");
+            } else if (s.getPath().startsWith(contextPath1)) {
+                s.setPathNew(s.getPath().substring(contextPath1.length() - 1));
             } else {
                 if (forced) {
                     try {
-                        session.close();
-                    } catch (IOException e) {
+                        s.close();
+                    } catch (Exception e) {
                         LogUtil.global().warn("ContextPathListener onOpen failed!", e);
                     }
                 }
             }
         }
-    }
-
-    @Override
-    public void onMessage(Session session, Message message) throws IOException {
-
     }
 }

@@ -15,6 +15,7 @@ import org.noear.solon.core.AppContext;
 import org.noear.solon.core.ExtendLoader;
 import org.noear.solon.core.FactoryManager;
 import org.noear.solon.core.handle.MethodType;
+import org.noear.solon.net.websocket.WebSocketRouter;
 import org.noear.solon.scheduling.annotation.EnableAsync;
 import org.noear.solon.scheduling.annotation.EnableRetry;
 import org.noear.solon.web.cors.CrossHandler;
@@ -26,7 +27,6 @@ import org.noear.solon.serialization.JsonRenderFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import webapp.demo6_aop.TestImport;
-import webapp.models.CatTypeConverter;
 
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStreamWriter;
@@ -173,13 +173,7 @@ public class App {
 
 
         //socket server
-        app.socket("/seb/test", (c) -> {
-            String msg = c.body();
-            c.output("收到了...:" + msg);
-        });
-
-        //web socket wss 监听
-        app.ws("/seb/test", (c) -> {
+        app.socketd("/seb/test", (c) -> {
             String msg = c.body();
             c.output("收到了...:" + msg);
         });

@@ -229,15 +229,33 @@
             <artifactId>solon.validation</artifactId>
         </dependency>
 
-<!--        <dependency>-->
-<!--            <groupId>org.noear</groupId>-->
-<!--            <artifactId>solon.boot.websocket</artifactId>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>socketd-transport-java-tcp</artifactId>
+            <version>${socketd.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.boot.websocket.netty</artifactId>
+            <artifactId>socketd-transport-java-udp</artifactId>
+            <version>${socketd.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>socketd-transport-java-websocket</artifactId>
+            <version>${socketd.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.boot.websocket</artifactId>
+        </dependency>
+
+<!--        <dependency>-->
+<!--            <groupId>org.noear</groupId>-->
+<!--            <artifactId>solon.boot.websocket.netty</artifactId>-->
+<!--        </dependency>-->
 
 
 <!--                    <dependency>-->

@@ -2,12 +2,15 @@ package features.socketd;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.noear.socketd.SocketD;
+import org.noear.socketd.exception.SocketdTimeoutException;
+import org.noear.socketd.transport.core.Entity;
+import org.noear.socketd.transport.core.Session;
+import org.noear.socketd.transport.core.entity.StringEntity;
 import org.noear.solon.Solon;
 import org.noear.solon.test.SolonJUnit5Extension;
 import org.noear.solon.test.SolonTest;
-import org.noear.solon.core.message.Message;
 import webapp.App;
-import webapp.utils.SocketUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,26 +25,32 @@ public class SocketTest {
         //这是短链接模式
         //
         String root = "tcp://localhost:" + (20000 + Solon.cfg().serverPort());
+        Session session = SocketD.createClient(root).open();
 
-
-        Message msg = SocketUtils.send(root + "/demog/中文/1", "Hello 世界!");
-        System.out.println(msg.bodyAsString());
-        assert "我收到了：Hello 世界!".equals(msg.bodyAsString());
+        Entity msg = session.sendAndRequest(root + "/demog/中文/1", new StringEntity("Hello 世界!"));
+        System.out.println(msg.getDataAsString());
+        msg.getData().reset();
+        assert "我收到了：Hello 世界!".equals(msg.getDataAsString());
 
         Thread.sleep(100);
-        msg = SocketUtils.send(root + "/demog/中文/1", "Hello 世界!");
+        msg = session.sendAndRequest(root + "/demog/中文/1", new StringEntity("Hello 世界!"));
         System.out.println(msg.toString());
-        assert "我收到了：Hello 世界!".equals(msg.bodyAsString());
+        assert "我收到了：Hello 世界!".equals(msg.getDataAsString());
 
         Thread.sleep(100);
-        msg = SocketUtils.send(root + "/demog/中文/2", "Hello 世界2!");
+        msg = session.sendAndRequest(root + "/demog/中文/2", new StringEntity("Hello 世界2!"));
         System.out.println(msg.toString());
-        assert "我收到了：Hello 世界2!".equals(msg.bodyAsString());
+        assert "我收到了：Hello 世界2!".equals(msg.getDataAsString());
 
         Thread.sleep(100);
 
-        msg = SocketUtils.send(root + "/demog/中文/3", "close");
-        assert msg == null;
+        try {
+            msg = session.sendAndRequest(root + "/demog/中文/3", new StringEntity("close"));
+            //assert msg == null;
+            assert false;
+        } catch (SocketdTimeoutException e) {
+            assert true;
+        }
 
         Thread.sleep(100);
     }
@@ -51,8 +60,9 @@ public class SocketTest {
     public void test2() throws Throwable {
         //socket client
         String root = "tcp://localhost:" + (20000 + Solon.cfg().serverPort());
+        Session session = SocketD.createClient(root).open();
 
-        SocketUtils.send(root + "/seb/test", "Hello 世界!+1", (msg, err) -> {
+        session.sendAndSubscribe(root + "/seb/test", new StringEntity("Hello 世界!+1"), (msg) -> {
             if (msg == null) {
                 return;
             }
@@ -68,6 +78,8 @@ public class SocketTest {
         //socket client
         String root = "tcp://localhost:" + (20000 + Solon.cfg().serverPort());
 
+        Session session = SocketD.createClient(root).open();
+
         List<Integer> list = new ArrayList<>();
         for (int i = 0; i < 100; i++) {
             list.add(i);
@@ -75,7 +87,7 @@ public class SocketTest {
 
         list.parallelStream().forEach((i) -> {
             try {
-                SocketUtils.send(root + "/seb/test", "Hello 世界!+" + i, (msg, err) -> {
+                session.sendAndSubscribe(root + "/seb/test", new StringEntity("Hello 世界!+" + i), (msg) -> {
                     if (msg == null) {
                         return;
                     }
@@ -94,15 +106,17 @@ public class SocketTest {
         //socket client
         String root = "tcp://localhost:" + (20000 + Solon.cfg().serverPort());
 
+        Session session = SocketD.createClient(root).open();
 
-        SocketUtils.create(root).send(root + "/seb/test", "Hello 世界!", (msg, err) -> {
+
+        session.sendAndSubscribe(root + "/seb/test", new StringEntity("Hello 世界!"), (msg) -> {
             if (msg == null) {
                 return;
             }
             System.out.println(msg.toString());
         });
 
-        SocketUtils.create(root).send(root + "/seb/test", "Hello 世界!", (msg, err) -> {
+        session.sendAndSubscribe(root + "/seb/test", new StringEntity("Hello 世界!"), (msg) -> {
             if (msg == null) {
                 return;
             }

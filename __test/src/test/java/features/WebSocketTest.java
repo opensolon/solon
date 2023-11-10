@@ -1,11 +1,9 @@
 package features;
 
+import org.java_websocket.impl.SimpleWebSocketClient;
+import org.java_websocket.client.WebSocketClient;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.noear.solon.core.message.Listener;
-import org.noear.solon.core.message.Message;
-import org.noear.solon.core.message.Session;
-import org.noear.solon.socketd.SocketD;
 import org.noear.solon.test.SolonJUnit5Extension;
 import org.noear.solon.test.SolonTest;
 import webapp.App;
@@ -54,27 +52,26 @@ public class WebSocketTest {
 
     @Test
     public void test_async_message3_ws() throws Throwable {
-        Session session = SocketD.createSession("ws://127.0.0.1:18080/demoe/websocket/12", true);
-
         CompletableFuture<Boolean> check = new CompletableFuture<>();
-        session.listener(new Listener() {
+        WebSocketClient webSocketClient = new SimpleWebSocketClient(URI.create("ws://127.0.0.1:18080/demoe/websocket/12")){
             @Override
-            public void onMessage(Session session, Message message) {
+            public void onMessage(String message) {
                 System.out.println("异步发送-ws::实例监到，收到了：" + message);
                 check.complete(true);
             }
-        });
+        };
 
+        webSocketClient.connectBlocking();
 
         //异步发
-        session.sendAsync("test0");
-        session.sendAsync("test1");
-        session.sendAsync("test2");
-        session.sendAsync("test3");
+        webSocketClient.send("test0");
+        webSocketClient.send("test1");
+        webSocketClient.send("test2");
+        webSocketClient.send("test3");
 
         assert check.get(2, TimeUnit.SECONDS);
 
-        session.close();
+        webSocketClient.close();
 
         Thread.sleep(1000);
     }

@@ -6,9 +6,10 @@ import org.noear.nami.Nami;
 import org.noear.nami.coder.snack3.SnackDecoder;
 import org.noear.nami.coder.snack3.SnackEncoder;
 import org.noear.snack.ONode;
-import org.noear.solon.core.message.Message;
-import org.noear.solon.core.message.Session;
-import org.noear.solon.socketd.SocketD;
+import org.noear.socketd.SocketD;
+import org.noear.socketd.transport.core.Entity;
+import org.noear.socketd.transport.core.Session;
+import org.noear.socketd.transport.core.entity.StringEntity;
 import org.noear.solon.test.SolonJUnit5Extension;
 import org.noear.solon.test.SolonTest;
 import webapp.App;
@@ -25,24 +26,24 @@ public class SocketResponseTest {
     public void test() throws Throwable{
         int _port = 8080 + 20000;
 
-        Session session = SocketD.createSession("tcp://localhost:"+_port);
+        Session session = SocketD.createClient("tcp://localhost:"+_port).open();
 
 
         String root = "tcp://localhost:" + _port;
-        Message message =  Message.wrap(root + "/demog/中文/1",null, "Hello 世界!".getBytes());
 
-        Message rst = session.sendAndResponse(message);
+        Entity rst = session.sendAndRequest(root + "/demog/中文/1", new StringEntity("Hello 世界!"));
 
-        System.out.println(rst.bodyAsString());
+        String tmp = rst.getDataAsString();
+        System.out.println(tmp);
 
-        assert "我收到了：Hello 世界!".equals(rst.bodyAsString());
+        assert "我收到了：Hello 世界!".equals(tmp);
     }
 
     @Test
     public void test_rpc_message() throws Throwable {
         int _port = 8080 + 20000;
 
-        Session session = SocketD.createSession("tcp://localhost:"+ _port);
+        Session session = SocketD.createClient("tcp://localhost:"+ _port).open();
 
 
         String root = "tcp://localhost:" + _port;
@@ -50,10 +51,10 @@ public class SocketResponseTest {
         map.put("name", "noear");
         String map_josn = ONode.stringify(map);
 
-        Message message = Message.wrap(root + "/demoh/rpc/hello", ContentTypes.JSON, map_josn.getBytes());
 
-        Message rst = session.sendAndResponse(message);
-        String rst_str = ONode.deserialize(rst.bodyAsString());
+        Entity rst = session.sendAndRequest(root + "/demoh/rpc/hello",
+                new StringEntity(map_josn).metaString(ContentTypes.JSON));
+        String rst_str = ONode.deserialize(rst.getDataAsString());
 
         System.out.println("收到:" + rst_str);
 

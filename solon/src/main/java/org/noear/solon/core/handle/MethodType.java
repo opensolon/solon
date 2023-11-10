@@ -32,14 +32,9 @@ public enum MethodType {
     HTTP("HTTP", SignalType.HTTP),
 
     /**
-     * web socket send
-     */
-    WEBSOCKET("WEBSOCKET", SignalType.WEBSOCKET),
-
-    /**
      * socket listen
      */
-    SOCKET("SOCKET", SignalType.SOCKET),
+    SOCKETD("SOCKETD", SignalType.SOCKETD),
 
     ALL("ALL", SignalType.ALL);
 

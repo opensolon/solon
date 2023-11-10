@@ -1,16 +1,22 @@
 package org.noear.solon.net.websocket;
 
-import java.io.Closeable;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.util.Map;
 
 /**
+ * WebSocket 会话接口
+ *
  * @author noear
  * @since 2.6
  */
-public interface WebSocket extends Closeable {
+public interface WebSocket {
+    /**
+     * 获取会话Id
+     * */
+    String getSid();
+
     /**
      * 是否有效
      */
@@ -18,13 +24,38 @@ public interface WebSocket extends Closeable {
 
     /**
      * 是否安全
-     * */
+     */
     boolean isSecure();
 
     /**
      * 获取握手信息
      */
     Handshake getHandshake();
+
+    /**
+     * 获取参数
+     *
+     * @param name 参数名
+     */
+    String getParam(String name);
+
+    /**
+     * 获取参数或默认值
+     *
+     * @param name 参数名
+     * @param def  默认值
+     */
+    String getParamOrDefault(String name, String def);
+
+    /**
+     * 获取握手路径
+     */
+    String getPath();
+
+    /**
+     * 设置新路径
+     */
+    void setPathNew(String pathNew);
 
     /**
      * 获取远程地址
@@ -83,4 +114,9 @@ public interface WebSocket extends Closeable {
      *
      */
     void send(ByteBuffer binary);
+
+    /**
+     * 关闭
+     */
+    void close();
 }

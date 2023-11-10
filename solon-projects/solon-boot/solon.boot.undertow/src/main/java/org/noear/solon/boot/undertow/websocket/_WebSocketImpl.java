@@ -4,9 +4,12 @@ import io.undertow.websockets.core.WebSocketChannel;
 import io.undertow.websockets.core.WebSockets;
 import org.noear.solon.net.websocket.Handshake;
 import org.noear.solon.net.websocket.WebSocketBase;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.net.URI;
 import java.nio.ByteBuffer;
 
 /**
@@ -14,25 +17,22 @@ import java.nio.ByteBuffer;
  * @since 2.6
  */
 public class _WebSocketImpl extends WebSocketBase {
+    private static final Logger log = LoggerFactory.getLogger(_WebSocketImpl.class);
     private WebSocketChannel real;
 
     public _WebSocketImpl(WebSocketChannel real) {
         this.real = real;
+        this.init(URI.create(real.getUrl()));
     }
 
     @Override
     public boolean isValid() {
-        return real.isOpen();
+        return isClosed() == false && real.isOpen();
     }
 
     @Override
     public boolean isSecure() {
         return real.isSecure();
-    }
-
-    @Override
-    public Handshake getHandshake() {
-        return null;
     }
 
     @Override
@@ -57,7 +57,14 @@ public class _WebSocketImpl extends WebSocketBase {
     }
 
     @Override
-    public void close() throws IOException {
-        real.close();
+    public void close() {
+        super.close();
+        try {
+            real.close();
+        } catch (IOException e) {
+            if (log.isDebugEnabled()) {
+                log.debug("{}", e);
+            }
+        }
     }
 }
