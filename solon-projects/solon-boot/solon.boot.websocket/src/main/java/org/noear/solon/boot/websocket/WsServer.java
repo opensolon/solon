@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
+import java.util.Iterator;
 
 @SuppressWarnings("unchecked")
 public class WsServer extends WebSocketServer {
@@ -30,33 +31,54 @@ public class WsServer extends WebSocketServer {
         LogUtil.global().info("Server:Websocket onStart...");
     }
 
+
+    private _WebSocketImpl getSession(WebSocket conn) {
+        return getSession(conn, null);
+    }
+
+    private _WebSocketImpl getSession(WebSocket conn, ClientHandshake shake) {
+        _WebSocketImpl session = conn.getAttachment();
+
+        if (session == null) {
+            //直接从附件拿，不一定可靠
+            session = new _WebSocketImpl(conn);
+            conn.setAttachment(session);
+
+            if (shake != null) {
+                Iterator<String> httpFields = shake.iterateHttpFields();
+                while (httpFields.hasNext()) {
+                    String name = httpFields.next();
+                    session.putParam(name, shake.getFieldValue(name));
+                }
+            }
+        }
+
+        return session;
+    }
+
     @Override
     public void onOpen(WebSocket conn, ClientHandshake shake) {
-        _WebSocketImpl webSocket = new _WebSocketImpl(conn);
-
-        shake.iterateHttpFields().forEachRemaining(k -> {
-            webSocket.getHandshake().putParam(k, shake.getFieldValue(k));
-        });
-
-        conn.setAttachment(webSocket);
+        _WebSocketImpl webSocket = getSession(conn, shake);
         webSocketRouter.getListener().onOpen(webSocket);
     }
 
     @Override
     public void onClose(WebSocket conn, int i, String s, boolean b) {
-        _WebSocketImpl webSocket = conn.getAttachment();
+        _WebSocketImpl webSocket = getSession(conn);
         if (webSocket.isClosed()) {
             return;
         } else {
             webSocket.close();
         }
+
         webSocketRouter.getListener().onClose(webSocket);
     }
 
     @Override
     public void onMessage(WebSocket conn, String data) {
         try {
-            webSocketRouter.getListener().onMessage(conn.getAttachment(), data);
+            _WebSocketImpl webSocket = getSession(conn);
+            webSocketRouter.getListener().onMessage(webSocket, data);
         } catch (Throwable e) {
             log.warn(e.getMessage(), e);
         }
@@ -65,7 +87,8 @@ public class WsServer extends WebSocketServer {
     @Override
     public void onMessage(WebSocket conn, ByteBuffer data) {
         try {
-            webSocketRouter.getListener().onMessage(conn.getAttachment(), data);
+            _WebSocketImpl webSocket = getSession(conn);
+            webSocketRouter.getListener().onMessage(webSocket, data);
         } catch (Throwable e) {
             log.warn(e.getMessage(), e);
         }
@@ -74,7 +97,8 @@ public class WsServer extends WebSocketServer {
     @Override
     public void onError(WebSocket conn, Exception ex) {
         try {
-            webSocketRouter.getListener().onError(conn.getAttachment(), ex);
+            _WebSocketImpl webSocket = getSession(conn);
+            webSocketRouter.getListener().onError(webSocket, ex);
         } catch (Throwable e) {
             log.warn(e.getMessage(), e);
         }
