@@ -6,7 +6,6 @@ import org.noear.nami.Context;
 import org.noear.nami.Result;
 import org.noear.socketd.SocketD;
 import org.noear.socketd.transport.core.Session;
-import org.noear.solon.net.socketd.handle.SocketdMvc;
 
 import java.net.URI;
 import java.util.HashMap;
@@ -32,7 +31,7 @@ public class SocketdClientChannel extends ChannelBase implements Channel {
                 if (channel == null) {
                     try {
                         Session session = SocketD.createClient(uri.toString())
-                                .listen(SocketdMvc.getListener())
+                                .listen(SocketdChannel.socketdToHandler)
                                 .open();
                         channel = new SocketdChannel(() -> session);
                         channelMap.put(hostname, channel);

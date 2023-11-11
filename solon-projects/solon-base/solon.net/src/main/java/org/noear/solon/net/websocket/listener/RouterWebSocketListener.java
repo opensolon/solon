@@ -9,7 +9,6 @@ import org.noear.solon.net.websocket.WebSocketListener;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.util.Collection;
 
 /**
  * @author noear
@@ -63,7 +62,7 @@ public class RouterWebSocketListener implements WebSocketListener {
     /**
      * 区配一个目标
      */
-    protected WebSocketListener matchOne(WebSocket s) {
+    protected WebSocketListener matching(WebSocket s) {
         String path = s.getPath();
 
         if (path == null) {
@@ -73,66 +72,43 @@ public class RouterWebSocketListener implements WebSocketListener {
         }
     }
 
-    /**
-     * 区配多个目标
-     */
-    protected Collection<WebSocketListener> matchMore(WebSocket s) {
-        String path = s.getPath();
-
-        if (path == null) {
-            return null;
-        } else {
-            return routingTable.matchMore(path, MethodType.SOCKET);
-        }
-    }
-
     @Override
     public void onOpen(WebSocket s) {
-        Collection<WebSocketListener> listeners = matchMore(s);
-        if (listeners != null) {
-            for (WebSocketListener l1 : listeners) {
-                l1.onOpen(s);
-            }
+        WebSocketListener l1 = matching(s);
+        if (l1 != null) {
+            l1.onOpen(s);
         }
     }
 
     @Override
     public void onMessage(WebSocket s, String text) throws IOException {
-        Collection<WebSocketListener> listeners = matchMore(s);
-        if (listeners != null) {
-            for (WebSocketListener l1 : listeners) {
-                l1.onMessage(s, text);
-            }
+        WebSocketListener l1 = matching(s);
+        if (l1 != null) {
+            l1.onMessage(s, text);
         }
     }
 
     @Override
     public void onMessage(WebSocket s, ByteBuffer binary) throws IOException {
-        Collection<WebSocketListener> listeners = matchMore(s);
-        if (listeners != null) {
-            for (WebSocketListener l1 : listeners) {
-                l1.onMessage(s, binary);
-            }
+        WebSocketListener l1 = matching(s);
+        if (l1 != null) {
+            l1.onMessage(s, binary);
         }
     }
 
     @Override
     public void onClose(WebSocket s) {
-        Collection<WebSocketListener> listeners = matchMore(s);
-        if (listeners != null) {
-            for (WebSocketListener l1 : listeners) {
-                l1.onClose(s);
-            }
+        WebSocketListener l1 = matching(s);
+        if (l1 != null) {
+            l1.onClose(s);
         }
     }
 
     @Override
     public void onError(WebSocket s, Throwable error) {
-        Collection<WebSocketListener> listeners = matchMore(s);
-        if (listeners != null) {
-            for (WebSocketListener l1 : listeners) {
-                l1.onError(s, error);
-            }
+        WebSocketListener l1 = matching(s);
+        if (l1 != null) {
+            l1.onError(s, error);
         }
     }
 }

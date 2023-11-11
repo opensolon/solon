@@ -18,19 +18,19 @@ import org.noear.solon.net.websocket.WebSocket;
  * @author noear
  * @since 2.5
  */
-public class ContextPathListener extends SimpleWebSocketListener {
+public class ContextPathWebSocketListener extends SimpleWebSocketListener {
     private final String contextPath0;
     private final String contextPath1;
     private final boolean forced;
 
-    public ContextPathListener(boolean forced) {
+    public ContextPathWebSocketListener(boolean forced) {
         this(Solon.cfg().serverContextPath(), forced);
     }
 
     /**
      * @param contextPath '/demo/'
      */
-    public ContextPathListener(String contextPath, boolean forced) {
+    public ContextPathWebSocketListener(String contextPath, boolean forced) {
         this.forced = forced;
 
         if (Utils.isEmpty(contextPath)) {

@@ -2,6 +2,7 @@ package features.socketd;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.noear.nami.channel.socketd.SocketdChannel;
 import org.noear.snack.ONode;
 import org.noear.socketd.SocketD;
 import org.noear.socketd.transport.core.Entity;
@@ -10,7 +11,6 @@ import org.noear.socketd.transport.core.Session;
 import org.noear.socketd.transport.core.entity.StringEntity;
 import org.noear.socketd.transport.core.listener.PipelineListener;
 import org.noear.socketd.transport.core.listener.SimpleListener;
-import org.noear.solon.net.socketd.handle.SocketdMvc;
 import org.noear.solon.test.SolonJUnit5Extension;
 import org.noear.solon.test.SolonTest;
 import webapp.App;
@@ -33,7 +33,7 @@ public class SocketCallbackTest {
                     public void onMessage(Session session, Message message) {
                         System.out.println("实例监到，收到了："+message);
                     }
-                }).next(SocketdMvc.getListener()))
+                }).next(SocketdChannel.socketdToHandler))
                 .open();
 
         String root = "tcp://localhost:" + _port;

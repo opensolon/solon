@@ -1,8 +1,8 @@
 package webapp.demoe_websocket;
 
+import org.noear.nami.channel.socketd.SocketdChannel;
 import org.noear.solon.Solon;
 import org.noear.solon.net.annotation.ServerEndpoint;
-import org.noear.solon.net.socketd.handle.SocketdToMvc;
 import org.noear.solon.net.websocket.WebSocket;
 import org.noear.solon.net.websocket.listener.PipelineWebSocketListener;
 import org.noear.solon.net.websocket.listener.RouterWebSocketListener;
@@ -46,6 +46,6 @@ public class WebSocketListenerImp extends PipelineWebSocketListener {
             public void onMessage(WebSocket socket, String text) throws IOException {
                 socket.send("你好");
             }
-        })).next(new WebSocketToSocketd().listener(new SocketdToMvc()));
+        })).next(new WebSocketToSocketd().listener(SocketdChannel.socketdToHandler));
     }
 }

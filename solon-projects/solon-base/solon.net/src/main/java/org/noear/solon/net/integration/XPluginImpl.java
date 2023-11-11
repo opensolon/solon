@@ -3,17 +3,11 @@ package org.noear.solon.net.integration;
 import org.noear.socketd.SocketD;
 import org.noear.socketd.transport.client.Client;
 import org.noear.socketd.transport.core.Listener;
-import org.noear.socketd.transport.server.Server;
-import org.noear.socketd.transport.server.ServerConfig;
-import org.noear.socketd.transport.server.ServerConfigHandler;
-import org.noear.solon.Solon;
 import org.noear.solon.Utils;
-import org.noear.solon.boot.prop.impl.SocketServerProps;
 import org.noear.solon.core.*;
-import org.noear.solon.core.util.LogUtil;
-import org.noear.solon.core.util.RunUtil;
 import org.noear.solon.net.annotation.ClientEndpoint;
 import org.noear.solon.net.annotation.ServerEndpoint;
+import org.noear.solon.net.socketd.SocketdRouter;
 import org.noear.solon.net.websocket.WebSocketListener;
 import org.noear.solon.net.websocket.WebSocketRouter;
 import org.slf4j.Logger;
@@ -29,9 +23,9 @@ import java.util.List;
 public class XPluginImpl implements Plugin {
     static final Logger log = LoggerFactory.getLogger(XPluginImpl.class);
 
-    List<Server> socketdServerList = new ArrayList<>();
     List<Client> socketdClientList = new ArrayList<>();
 
+    SocketdRouter socketdRouter = SocketdRouter.getInstance();
     WebSocketRouter webSocketRouter = WebSocketRouter.getInstance();
 
     @Override
@@ -42,19 +36,6 @@ public class XPluginImpl implements Plugin {
         //添加注解处理
         context.beanBuilderAdd(ServerEndpoint.class, this::serverEndpointBuild);
         context.beanBuilderAdd(ClientEndpoint.class, this::clientEndpointBuild);
-
-        //构建生命事件
-        context.lifecycle(-99, () -> {
-            for (Server server : socketdServerList) {
-                long time_start = System.currentTimeMillis();
-
-                server.start();
-
-                long time_end = System.currentTimeMillis();
-                LogUtil.global().info("Connector:main: socket.d: Started ServerConnector@{[" + server.config().getSchema() + "]}{0.0.0.0:" + server.config().getPort() + "}");
-                LogUtil.global().info("Server:main: socket.d: Started (" + server.title() + ") @" + (time_end - time_start) + "ms");
-            }
-        });
 
         context.lifecycle(99, () -> {
             for (Client client : socketdClientList) {
@@ -69,33 +50,11 @@ public class XPluginImpl implements Plugin {
 
         //socket.d
         if (bw.raw() instanceof Listener) {
-            if (Utils.isEmpty(anno.schema())) {
-                throw new IllegalStateException("Socket.D listener need to specify the schema");
+            if (Utils.isEmpty(path)) {
+                path = "**";
             }
 
-            SocketServerProps props = new SocketServerProps(20000);
-
-            Server server = SocketD.createServer(anno.schema());
-            server.config(c -> {
-                c.port(props.getPort());
-                c.host(props.getHost());
-                c.coreThreads(props.getCoreThreads());
-                c.maxThreads(props.getMaxThreads(true));
-            });
-            server.listen(bw.raw());
-            if (bw.raw() instanceof ServerConfigHandler) {
-                server.config(bw.raw());
-            }
-
-            socketdServerList.add(server);
-
-            //登记信号
-            final String _wrapHost = props.getWrapHost();
-            final int _wrapPort = props.getWrapPort();
-            Signal _signal = new SignalSim(props.getName(), _wrapHost, _wrapPort, anno.schema(), SignalType.SOCKET);
-
-            Solon.app().signalAdd(_signal);
-
+            socketdRouter.main(path, bw.raw());
             registered = true;
         }
 
@@ -105,7 +64,7 @@ public class XPluginImpl implements Plugin {
                 path = "**";
             }
 
-            webSocketRouter.main(path, 1, bw.raw());
+            webSocketRouter.main(path, bw.raw());
             registered = true;
         }
 
@@ -129,12 +88,5 @@ public class XPluginImpl implements Plugin {
         }
 
         log.warn("@ClientEndpoint does not support type: {}", clz.getName());
-    }
-
-    @Override
-    public void stop() throws Throwable {
-        for (Server server : socketdServerList) {
-            RunUtil.runAndTry(server::stop);
-        }
     }
 }

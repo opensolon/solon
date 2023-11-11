@@ -3,7 +3,11 @@ package org.noear.solon.boot.socketd;
 import org.noear.socketd.SocketD;
 import org.noear.socketd.transport.core.Listener;
 import org.noear.socketd.transport.server.Server;
+import org.noear.solon.Solon;
 import org.noear.solon.boot.ServerLifecycle;
+import org.noear.solon.core.Signal;
+import org.noear.solon.core.SignalSim;
+import org.noear.solon.core.SignalType;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.LogUtil;
 
@@ -31,7 +35,16 @@ public class SdSocket implements ServerLifecycle {
             schema = "sd:tcp";
         }
 
+
         long time_start = System.currentTimeMillis();
+
+        //登记信号
+//        final String _wrapHost = props.getWrapHost();
+//        final int _wrapPort = props.getWrapPort();
+//        Signal _signal = new SignalSim(props.getName(), _wrapHost, _wrapPort, anno.schema(), SignalType.SOCKET);
+//
+//        Solon.app().signalAdd(_signal);
+
 
         server = SocketD.createServer(schema)
                 .config(c -> c.host(host).port(port))

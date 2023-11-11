@@ -23,7 +23,7 @@ public class WebSocketRouter {
     }
 
     /**
-     * 之前监听
+     * 前置监听
      */
     public void before(WebSocketListener listener) {
         rootListener.prev(listener);
@@ -32,12 +32,12 @@ public class WebSocketRouter {
     /**
      * 主监听
      */
-    public void main(String path, int index, WebSocketListener listener) {
-        routerListener.of(path, index, listener);
+    public void main(String path, WebSocketListener listener) {
+        routerListener.of(path, listener);
     }
 
     /**
-     * 之后监听
+     * 后置监听
      */
     public void after(WebSocketListener listener) {
         rootListener.next(listener);

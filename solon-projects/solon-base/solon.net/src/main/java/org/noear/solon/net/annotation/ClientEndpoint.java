@@ -1,8 +1,5 @@
 package org.noear.solon.net.annotation;
 
-
-import org.noear.solon.core.handle.MethodType;
-
 import java.lang.annotation.*;
 
 /**
@@ -19,11 +16,6 @@ public @interface ClientEndpoint {
     String url();
 
     /**
-     * 握手包头
-     * */
-    String handshakeHeader() default "";
-
-    /**
      * 是否自动重链
      * */
     boolean autoReconnect() default true;
@@ -31,5 +23,5 @@ public @interface ClientEndpoint {
     /**
      * 心跳频率（单位：秒）
      */
-    int heartbeatRate() default 30;
+    int heartbeatRate() default 20;
 }

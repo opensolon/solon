@@ -23,9 +23,4 @@ public @interface ServerEndpoint {
      * */
     @Alias("value")
     String path() default "";
-
-    /**
-     * 架构
-     */
-    String schema() default "";
 }
