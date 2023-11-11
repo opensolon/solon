@@ -37,13 +37,7 @@ public class SocketdContext extends ContextEmpty {
         _request = message;
         _response = new EntityDefault();
 
-//        String scheme = session.getHandshake().getScheme();
-//        if (scheme.startsWith("ws")) {
-//            _method = MethodType.WEBSOCKET;
-//        } else {
-//            _method = MethodType.SOCKET;
-//        }
-        _method = MethodType.SOCKETD;
+        _method = MethodType.SOCKET;
 
         //传递 sessoin param
         if (session.getHandshake().getParamMap().size() > 0) {
@@ -94,7 +88,7 @@ public class SocketdContext extends ContextEmpty {
 
     @Override
     public String protocol() {
-        return _method.name;
+        return _session.getHandshake().getScheme();
     }
 
 

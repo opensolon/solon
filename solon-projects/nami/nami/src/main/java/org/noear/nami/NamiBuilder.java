@@ -73,6 +73,13 @@ public class NamiBuilder {
         return this;
     }
 
+    /**
+     * 获取负载代理
+     * */
+    public Supplier<String> upstream() {
+        return _config.getUpstream();
+    }
+
 
     /**
      * 设置服务端地址

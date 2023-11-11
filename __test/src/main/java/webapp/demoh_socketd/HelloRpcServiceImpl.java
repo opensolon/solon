@@ -14,7 +14,7 @@ public class HelloRpcServiceImpl implements HelloRpcService {
     public String hello(String name) {
         Context ctx = Context.current();
 
-        if(MethodType.SOCKETD.name.equals(ctx.method())) {
+        if(MethodType.SOCKET.name.equals(ctx.method())) {
             NameRpcService rpc = SocketdChannel.create((Session) ctx.response(), NameRpcService.class);
             name = rpc.name(name);
         }

@@ -31,5 +31,6 @@
         <module>../../solon-projects/solon-boot/solon.boot.jetty.add.websocket</module>
         <module>../../solon-projects/solon-boot/solon.boot.undertow.add.jsp</module>
         <module>../../solon-projects/solon-boot/solon.boot.tomcat.add.jsp</module>
+        <module>../../solon-projects/solon-boot/solon.boot.socketd</module>
     </modules>
 </project>

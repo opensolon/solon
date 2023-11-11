@@ -271,6 +271,6 @@ public abstract class RouterWrapper implements HandlerSlots {
      * 添加socket方法的监听
      */
     public void socketd(String path, Handler handler) {
-        add(path, MethodType.SOCKETD, handler);
+        add(path, MethodType.SOCKET, handler);
     }
 }

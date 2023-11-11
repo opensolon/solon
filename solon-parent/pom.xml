@@ -31,7 +31,7 @@
         <water.version>2.11.4</water.version>
         <luffy.version>1.6.8</luffy.version>
         <redisx.version>1.6.2</redisx.version>
-        <socketd.version>2.0.12</socketd.version>
+        <socketd.version>2.0.13</socketd.version>
         <redisson.version>3.23.3</redisson.version>
         <lettuce.version>6.2.5.RELEASE</lettuce.version>
 
@@ -333,6 +333,12 @@
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.boot.websocket.netty</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.boot.socketd</artifactId>
                 <version>${solon.version}</version>
             </dependency>
 

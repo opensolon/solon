@@ -36,7 +36,7 @@ public class RouterWebSocketListener implements WebSocketListener {
     public RouterWebSocketListener of(String path, int index, WebSocketListener listener) {
         WebSocketListener lh = new ExpressWebSocketListener(path, listener);
 
-        routingTable.add(new RoutingDefault<>(path, MethodType.SOCKETD, index, lh));
+        routingTable.add(new RoutingDefault<>(path, MethodType.SOCKET, index, lh));
         return this;
     }
 
@@ -69,7 +69,7 @@ public class RouterWebSocketListener implements WebSocketListener {
         if (path == null) {
             return null;
         } else {
-            return routingTable.matchOne(path, MethodType.SOCKETD); //WEBSOCKET 取消了， 借用一下
+            return routingTable.matchOne(path, MethodType.SOCKET); //WEBSOCKET 取消了， 借用一下
         }
     }
 
@@ -82,7 +82,7 @@ public class RouterWebSocketListener implements WebSocketListener {
         if (path == null) {
             return null;
         } else {
-            return routingTable.matchMore(path, MethodType.SOCKETD);
+            return routingTable.matchMore(path, MethodType.SOCKET);
         }
     }
 

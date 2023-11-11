@@ -10,7 +10,7 @@ import java.util.Map;
 public class SocketChannelAdapter implements Handler {
     @Override
     public void handle(Context ctx) throws Throwable {
-        if (MethodType.SOCKETD.name.equals(ctx.method())) {
+        if (MethodType.SOCKET.name.equals(ctx.method())) {
             String json = ctx.body();
             Map<String, Object> tmp = (Map<String, Object>) ONode.load(json).toData();
 

@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Before({SocketChannelAdapter.class})
-@Mapping(value = "/demo5/test", method = {MethodType.HTTP, MethodType.SOCKETD})
+@Mapping(value = "/demo5/test", method = {MethodType.HTTP, MethodType.SOCKET})
 @Remoting
 public class rockservice implements rockapi {
 

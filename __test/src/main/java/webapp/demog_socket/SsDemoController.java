@@ -8,7 +8,7 @@ import org.noear.solon.core.handle.MethodType;
 @Controller
 public class SsDemoController {
 
-    @Mapping(value = "/demog/**", method = MethodType.SOCKETD)
+    @Mapping(value = "/demog/**", method = MethodType.SOCKET)
     public void test(Context ctx) throws Exception {
         if (ctx == null) {
             return;

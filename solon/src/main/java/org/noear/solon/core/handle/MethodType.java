@@ -34,7 +34,7 @@ public enum MethodType {
     /**
      * socket listen
      */
-    SOCKETD("SOCKETD", SignalType.SOCKETD),
+    SOCKET("SOCKET", SignalType.SOCKET),
 
     ALL("ALL", SignalType.ALL);
 

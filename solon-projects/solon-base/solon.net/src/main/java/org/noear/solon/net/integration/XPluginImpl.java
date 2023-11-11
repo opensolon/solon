@@ -51,7 +51,7 @@ public class XPluginImpl implements Plugin {
                 server.start();
 
                 long time_end = System.currentTimeMillis();
-                LogUtil.global().info("Connector:main: socket.d: Started ServerConnector@{["+server.config().getSchema()+"]}{0.0.0.0:" + server.config().getPort() + "}");
+                LogUtil.global().info("Connector:main: socket.d: Started ServerConnector@{[" + server.config().getSchema() + "]}{0.0.0.0:" + server.config().getPort() + "}");
                 LogUtil.global().info("Server:main: socket.d: Started (" + server.title() + ") @" + (time_end - time_start) + "ms");
             }
         });
@@ -63,7 +63,7 @@ public class XPluginImpl implements Plugin {
         });
     }
 
-    private void serverEndpointBuild(Class<?> clz, BeanWrap bw, ServerEndpoint anno){
+    private void serverEndpointBuild(Class<?> clz, BeanWrap bw, ServerEndpoint anno) {
         String path = Utils.annoAlias(anno.value(), anno.path());
         boolean registered = false;
 
@@ -75,13 +75,13 @@ public class XPluginImpl implements Plugin {
 
             SocketServerProps props = new SocketServerProps(20000);
 
-            ServerConfig serverConfig = new ServerConfig(anno.schema());
-            serverConfig.port(props.getPort());
-            serverConfig.host(props.getHost());
-            serverConfig.coreThreads(props.getCoreThreads());
-            serverConfig.maxThreads(props.getMaxThreads(true));
-
-            Server server = SocketD.createServer(serverConfig);
+            Server server = SocketD.createServer(anno.schema());
+            server.config(c -> {
+                c.port(props.getPort());
+                c.host(props.getHost());
+                c.coreThreads(props.getCoreThreads());
+                c.maxThreads(props.getMaxThreads(true));
+            });
             server.listen(bw.raw());
             if (bw.raw() instanceof ServerConfigHandler) {
                 server.config(bw.raw());
@@ -92,7 +92,7 @@ public class XPluginImpl implements Plugin {
             //登记信号
             final String _wrapHost = props.getWrapHost();
             final int _wrapPort = props.getWrapPort();
-            Signal _signal = new SignalSim(props.getName(), _wrapHost, _wrapPort, anno.schema(), SignalType.SOCKETD);
+            Signal _signal = new SignalSim(props.getName(), _wrapHost, _wrapPort, anno.schema(), SignalType.SOCKET);
 
             Solon.app().signalAdd(_signal);
 
@@ -114,7 +114,7 @@ public class XPluginImpl implements Plugin {
         }
     }
 
-    private void clientEndpointBuild(Class<?> clz, BeanWrap bw, ClientEndpoint anno){
+    private void clientEndpointBuild(Class<?> clz, BeanWrap bw, ClientEndpoint anno) {
         if (bw.raw() instanceof Listener) {
             Client client = SocketD.createClient(anno.url());
             client.config(options -> options
