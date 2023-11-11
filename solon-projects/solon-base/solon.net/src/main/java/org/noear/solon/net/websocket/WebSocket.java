@@ -28,9 +28,24 @@ public interface WebSocket {
     boolean isSecure();
 
     /**
-     * 获取握手信息
+     * 获取请求地址
+     * */
+    String getUrl();
+
+    /**
+     * 获取握手路径
      */
-    Handshake getHandshake();
+    String getPath();
+
+    /**
+     * 设置新路径
+     */
+    void setPathNew(String pathNew);
+
+    /**
+     * 获取参数字典
+     */
+    Map<String, String> getParamMap();
 
     /**
      * 获取参数
@@ -48,14 +63,12 @@ public interface WebSocket {
     String getParamOrDefault(String name, String def);
 
     /**
-     * 获取握手路径
+     * 添加参数
+     *
+     * @param name  名字
+     * @param value 值
      */
-    String getPath();
-
-    /**
-     * 设置新路径
-     */
-    void setPathNew(String pathNew);
+    String putParam(String name, String value);
 
     /**
      * 获取远程地址
@@ -68,12 +81,12 @@ public interface WebSocket {
     InetSocketAddress getLocalAddress() throws IOException;
 
     /**
-     * 设置连接附件
+     * 设置附件
      */
     <T> void setAttachment(T attachment);
 
     /**
-     * 获取连接附件
+     * 获取附件
      */
     <T> T getAttachment();
 
@@ -106,12 +119,16 @@ public interface WebSocket {
     <T> void setAttr(String name, T value);
 
     /**
+     * 发送文本
      *
+     * @param text 文本
      */
     void send(String text);
 
     /**
+     * 发送字节
      *
+     * @param binary 二进制
      */
     void send(ByteBuffer binary);
 

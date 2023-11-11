@@ -13,11 +13,13 @@ import java.util.Map;
  * @since 2.6
  */
 public class HandshakeImpl implements Handshake {
+    private final String url;
     private final URI uri;
     private final Map<String, String> paramMap;
 
     public HandshakeImpl(URI uri) {
         this.uri = uri;
+        this.url = uri.toString();
         this.paramMap = new HashMap<>();
 
         String queryString = uri.getQuery();
@@ -32,36 +34,16 @@ public class HandshakeImpl implements Handshake {
     }
 
     @Override
+    public String getUrl() {
+        return url;
+    }
+
+    @Override
     public URI getUri() {
         return uri;
     }
 
-    @Override
-    public String getScheme() {
-        return uri.getScheme();
-    }
-
-    @Override
-    public String getPath() {
-        return uri.getPath();
-    }
-
     public Map<String, String> getParamMap() {
         return paramMap;
-    }
-
-    @Override
-    public String getParam(String name) {
-        return paramMap.get(name);
-    }
-
-    @Override
-    public String getParamOrDefault(String name, String def) {
-        return paramMap.getOrDefault(name, def);
-    }
-
-    @Override
-    public String putParam(String name, String value) {
-        return paramMap.put(name, value);
     }
 }

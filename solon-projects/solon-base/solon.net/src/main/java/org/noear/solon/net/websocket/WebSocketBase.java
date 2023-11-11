@@ -35,25 +35,20 @@ public abstract class WebSocketBase implements WebSocket {
         return isClosed;
     }
 
-    @Override
-    public Handshake getHandshake() {
+
+    protected Handshake getHandshake() {
         return handshake;
     }
 
     @Override
-    public String getParam(String name) {
-        return handshake.getParam(name);
-    }
-
-    @Override
-    public String getParamOrDefault(String name, String def) {
-        return handshake.getParamOrDefault(name, def);
+    public String getUrl() {
+        return handshake.getUrl();
     }
 
     @Override
     public String getPath() {
         if (pathNew == null) {
-            return handshake.getPath();
+            return handshake.getUri().getPath();
         } else {
             return pathNew;
         }
@@ -62,6 +57,26 @@ public abstract class WebSocketBase implements WebSocket {
     @Override
     public void setPathNew(String pathNew) {
         this.pathNew = pathNew;
+    }
+
+    @Override
+    public Map<String, String> getParamMap() {
+        return handshake.getParamMap();
+    }
+
+    @Override
+    public String getParam(String name) {
+        return handshake.getParamMap().get(name);
+    }
+
+    @Override
+    public String getParamOrDefault(String name, String def) {
+        return handshake.getParamMap().getOrDefault(name, def);
+    }
+
+    @Override
+    public String putParam(String name, String value) {
+        return handshake.getParamMap().put(name, value);
     }
 
     @Override

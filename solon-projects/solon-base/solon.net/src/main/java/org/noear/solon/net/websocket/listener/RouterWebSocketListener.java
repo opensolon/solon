@@ -16,14 +16,14 @@ import java.util.Collection;
  * @since 2.5
  */
 public class RouterWebSocketListener implements WebSocketListener {
-    private final RoutingTable<WebSocketListener> routesL;
+    private final RoutingTable<WebSocketListener> routingTable;
 
     public RouterWebSocketListener() {
-        routesL = new RoutingTableDefault<>();
+        routingTable = new RoutingTableDefault<>();
     }
 
     public int count() {
-        return routesL.count();
+        return routingTable.count();
     }
 
     /**
@@ -33,10 +33,11 @@ public class RouterWebSocketListener implements WebSocketListener {
      * @param index    顺序位
      * @param listener 监听接口
      */
-    public void of(String path, int index, WebSocketListener listener) {
+    public RouterWebSocketListener of(String path, int index, WebSocketListener listener) {
         WebSocketListener lh = new ExpressWebSocketListener(path, listener);
 
-        routesL.add(new RoutingDefault<>(path, MethodType.SOCKETD, index, lh));
+        routingTable.add(new RoutingDefault<>(path, MethodType.SOCKETD, index, lh));
+        return this;
     }
 
     /**
@@ -45,8 +46,8 @@ public class RouterWebSocketListener implements WebSocketListener {
      * @param path     路径
      * @param listener 监听接口
      */
-    public void of(String path, WebSocketListener listener) {
-        of(path, 0, listener);
+    public RouterWebSocketListener of(String path, WebSocketListener listener) {
+        return of(path, 0, listener);
     }
 
     /**
@@ -54,33 +55,34 @@ public class RouterWebSocketListener implements WebSocketListener {
      *
      * @param path 路径
      */
-    public void remove(String path) {
-        routesL.remove(path);
+    public RouterWebSocketListener remove(String path) {
+        routingTable.remove(path);
+        return this;
     }
 
     /**
-     * 区配一个目标（根据上下文）
-     *
-     * @param s 会话对象
-     * @return 首个匹配监听
+     * 区配一个目标
      */
-    public WebSocketListener matchOne(WebSocket s) {
+    protected WebSocketListener matchOne(WebSocket s) {
         String path = s.getPath();
 
         if (path == null) {
             return null;
         } else {
-            return routesL.matchOne(path, MethodType.SOCKETD); //WEBSOCKET 取消了， 借用一下
+            return routingTable.matchOne(path, MethodType.SOCKETD); //WEBSOCKET 取消了， 借用一下
         }
     }
 
-    public Collection<WebSocketListener> matchMore(WebSocket s) {
+    /**
+     * 区配多个目标
+     */
+    protected Collection<WebSocketListener> matchMore(WebSocket s) {
         String path = s.getPath();
 
         if (path == null) {
             return null;
         } else {
-            return routesL.matchMore(path, MethodType.SOCKETD);
+            return routingTable.matchMore(path, MethodType.SOCKETD);
         }
     }
 

@@ -1,9 +1,6 @@
 package org.noear.solon.net.websocket.socketd;
 
-import org.noear.socketd.transport.core.Channel;
-import org.noear.socketd.transport.core.Frame;
-import org.noear.socketd.transport.core.Listener;
-import org.noear.socketd.transport.core.Processor;
+import org.noear.socketd.transport.core.*;
 import org.noear.socketd.transport.core.internal.ChannelDefault;
 import org.noear.socketd.transport.core.internal.ProcessorDefault;
 import org.noear.socketd.transport.server.ServerConfig;
@@ -41,23 +38,34 @@ public class WebSocketToSocketd implements WebSocketListener {
         return this;
     }
 
+    private Channel getChannel(WebSocket socket) {
+        Channel channel = socket.getAttachment();
+
+        if (channel == null) {
+            channel = new ChannelDefault<>(socket, config, assistant);
+            socket.setAttachment(channel);
+        }
+
+        return channel;
+    }
+
     @Override
     public void onOpen(WebSocket socket) {
-        Channel channel = new ChannelDefault<>(socket, config, assistant);
+        Channel channel = getChannel(socket);
         socket.setAttachment(channel);
     }
 
     @Override
     public void onMessage(WebSocket socket, String text) throws IOException {
-        if (log.isDebugEnabled()) {
-            log.debug("Unsupported onMessage(String test)");
+        if (log.isWarnEnabled()) {
+            log.warn("Unsupported onMessage(String test)");
         }
     }
 
     @Override
     public void onMessage(WebSocket socket, ByteBuffer binary) throws IOException {
         try {
-            Channel channel = socket.getAttachment();
+            Channel channel = getChannel(socket);
             Frame frame = assistant.read(binary);
 
             if (frame != null) {
@@ -71,7 +79,7 @@ public class WebSocketToSocketd implements WebSocketListener {
     @Override
     public void onClose(WebSocket socket) {
         try {
-            Channel channel = socket.getAttachment();
+            Channel channel = getChannel(socket);
             processor.onClose(channel);
         } catch (Throwable e) {
             log.warn(e.getMessage(), e);
@@ -81,7 +89,7 @@ public class WebSocketToSocketd implements WebSocketListener {
     @Override
     public void onError(WebSocket socket, Throwable error) {
         try {
-            Channel channel = socket.getAttachment();
+            Channel channel = getChannel(socket);
 
             if (channel != null) {
                 //有可能未 onOpen，就 onError 了；此时通道未成

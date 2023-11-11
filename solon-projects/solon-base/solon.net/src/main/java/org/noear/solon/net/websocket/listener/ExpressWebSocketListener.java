@@ -50,7 +50,7 @@ public class ExpressWebSocketListener implements WebSocketListener {
             Matcher pm = pathAnalyzer.matcher(s.getPath());
             if (pm.find()) {
                 for (int i = 0, len = pathKeys.size(); i < len; i++) {
-                    s.getHandshake().putParam(pathKeys.get(i), pm.group(i + 1));//不采用group name,可解决_的问题
+                    s.putParam(pathKeys.get(i), pm.group(i + 1));//不采用group name,可解决_的问题
                 }
             }
         }
