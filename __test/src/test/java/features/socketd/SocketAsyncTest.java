@@ -70,7 +70,6 @@ public class SocketAsyncTest {
         };
         webSocketClient.connectBlocking();
 
-
         //异步发
         webSocketClient.send("test");
 

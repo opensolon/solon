@@ -16,8 +16,8 @@ import java.io.IOException;
  * @author noear
  * @since 2.0
  */
-public class SocketdListenerToMvc extends SimpleListener {
-    private static final Logger log = LoggerFactory.getLogger(SocketdListenerToMvc.class);
+public class SocketdToMvc extends SimpleListener {
+    private static final Logger log = LoggerFactory.getLogger(SocketdToMvc.class);
 
     @Override
     public void onMessage(Session session, Message message) throws IOException {

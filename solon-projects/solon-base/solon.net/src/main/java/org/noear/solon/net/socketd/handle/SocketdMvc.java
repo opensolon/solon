@@ -7,12 +7,12 @@ package org.noear.solon.net.socketd.handle;
  * @since 2.0
  */
 public class SocketdMvc {
-    private static final SocketdListenerToMvc listener = new SocketdListenerToMvc();
+    private static final SocketdToMvc listener = new SocketdToMvc();
 
     /**
      * 获取转换监听
      * */
-    public static SocketdListenerToMvc getListener() {
+    public static SocketdToMvc getListener() {
         return listener;
     }
 }
