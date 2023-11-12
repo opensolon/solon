@@ -1,4 +1,4 @@
-package org.noear.solon.boot.websocket;
+package org.noear.solon.boot.websocket.server;
 
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;

@@ -1,4 +1,4 @@
-package org.noear.solon.boot.websocket;
+package org.noear.solon.boot.websocket.server;
 
 import org.noear.solon.net.websocket.Handshake;
 import org.noear.solon.net.websocket.WebSocketBase;
