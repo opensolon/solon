@@ -46,7 +46,7 @@ public class XPluginImpl implements Plugin {
 
 
         SocketServerProps serverProps = new SocketServerProps(20000);
-        ExecutorService channelExecutor = serverProps.getBioExecutor("socketd-");
+        ExecutorService channelExecutor = serverProps.getBioExecutor("Socketd-channelExecutor-");
 
         Server serverTmp = SocketD.createServerOrNull("sd:tcp");
         if (serverTmp != null) {
