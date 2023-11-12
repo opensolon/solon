@@ -72,6 +72,17 @@ public abstract class RouterWrapper implements HandlerSlots {
     }
 
     /**
+     * 添加过滤器（按先进后出策略执行）,如果有相同类的则不加
+     *
+     * @param index  顺序位
+     * @param filter 过滤器
+     * @since 2.6
+     */
+    public void filterIfAbsent(int index, Filter filter) {
+        _chainManager.addFilterIfAbsent(filter, index);
+    }
+
+    /**
      * 添加路由拦截器（按先进后出策略执行）
      *
      * @param interceptor 路由拦截器

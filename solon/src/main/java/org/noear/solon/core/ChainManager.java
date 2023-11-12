@@ -23,6 +23,7 @@ public class ChainManager {
      * 过滤器 节点
      */
     private final List<RankEntity<Filter>> filterNodes = new ArrayList<>();
+    private final Map<Class<?>, Object> filterMap = new HashMap<>();
 
     public Collection<Filter> getFilterNodes() {
         List<Filter> tmp = new ArrayList<>();
@@ -38,8 +39,20 @@ public class ChainManager {
      * 添加过滤器
      */
     public synchronized void addFilter(Filter filter, int index) {
+        filterMap.put(filter.getClass(), filter);
         filterNodes.add(new RankEntity(filter, index));
         filterNodes.sort(Comparator.comparingInt(f -> f.index));
+    }
+
+    /**
+     * 添加过滤器
+     */
+    public synchronized void addFilterIfAbsent(Filter filter, int index) {
+        if (filterMap.containsKey(filter.getClass())) {
+            return;
+        }
+
+        addFilter(filter, index);
     }
 
     /**
