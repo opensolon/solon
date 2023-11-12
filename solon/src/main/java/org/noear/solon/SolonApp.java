@@ -105,12 +105,7 @@ public class SolonApp extends RouterWrapper {
         initAwait();
 
         //2.1.内部初始化（如配置等，顺序不能乱）
-        init();
-
-        //2.2.自定义初始化
-        if (initialize != null) {
-            initialize.accept(this);
-        }
+        init(initialize);
 
         //3.运行应用（运行插件、扫描Bean等）
         run();
@@ -143,7 +138,7 @@ public class SolonApp extends RouterWrapper {
     /**
      * 初始化（不能合在构建函数里）
      */
-    private void init() throws Throwable {
+    private void init(ConsumerEx<SolonApp> initialize) throws Throwable {
         List<ClassLoader> loaderList;
 
         //1.尝试加载扩展文件夹
@@ -169,7 +164,13 @@ public class SolonApp extends RouterWrapper {
         //2.尝试扫描插件
         cfg().plugsScan(loaderList);
 
-        //3.尝试设置 context-path
+
+        //3.运行自定义初始化
+        if (initialize != null) {
+            initialize.accept(this);
+        }
+
+        //4.尝试设置 context-path
         if (Utils.isNotEmpty(cfg().serverContextPath())) {
             this.filter(-99, new ContextPathFilter(cfg().serverContextPath()));
         }
