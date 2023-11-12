@@ -14,7 +14,7 @@ public class UtWsChannelListener extends AbstractReceiveListener {
     static final Logger log = LoggerFactory.getLogger(UtWsChannelListener.class);
     private final String SESSION_KEY  ="session";
 
-    private WebSocketRouter webSocketRouter = WebSocketRouter.getInstance();
+    private final WebSocketRouter webSocketRouter = WebSocketRouter.getInstance();
 
     @Override
     public void handleEvent(WebSocketChannel channel) {
@@ -48,7 +48,7 @@ public class UtWsChannelListener extends AbstractReceiveListener {
 
     public void onOpen(WebSocketHttpExchange exchange, WebSocketChannel channel) {
 
-        _WebSocketImpl webSocket = new _WebSocketImpl(channel);
+        WebSocketImpl webSocket = new WebSocketImpl(channel);
         exchange.getRequestHeaders().forEach((k, v) -> {
             if (v.size() > 0) {
                 webSocket.putParam(k, v.get(0));
@@ -69,7 +69,7 @@ public class UtWsChannelListener extends AbstractReceiveListener {
                 ByteBuffer[] resource = pulledData.getResource();
                 ByteBuffer byteBuffer = WebSockets.mergeBuffers(resource);
 
-                _WebSocketImpl webSocket =  (_WebSocketImpl)channel.getAttribute(SESSION_KEY);
+                WebSocketImpl webSocket =  (WebSocketImpl)channel.getAttribute(SESSION_KEY);
                 webSocketRouter.getListener().onMessage(webSocket, byteBuffer);
             } finally {
                 pulledData.discard();
@@ -83,7 +83,7 @@ public class UtWsChannelListener extends AbstractReceiveListener {
     @Override
     protected void onFullTextMessage(WebSocketChannel channel, BufferedTextMessage msg) throws IOException {
         try {
-            _WebSocketImpl webSocket =  (_WebSocketImpl)channel.getAttribute(SESSION_KEY);
+            WebSocketImpl webSocket =  (WebSocketImpl)channel.getAttribute(SESSION_KEY);
             webSocketRouter.getListener().onMessage(webSocket, msg.getData());
         } catch (Throwable e) {
             log.warn(e.getMessage(), e);
@@ -92,7 +92,7 @@ public class UtWsChannelListener extends AbstractReceiveListener {
 
     @Override
     protected void onClose(WebSocketChannel channel, StreamSourceFrameChannel frameChannel) throws IOException {
-        _WebSocketImpl webSocket =  (_WebSocketImpl)channel.getAttribute(SESSION_KEY);
+        WebSocketImpl webSocket =  (WebSocketImpl)channel.getAttribute(SESSION_KEY);
         if (webSocket.isClosed()) {
             return;
         } else {
@@ -103,7 +103,7 @@ public class UtWsChannelListener extends AbstractReceiveListener {
 
     @Override
     protected void onError(WebSocketChannel channel, Throwable error) {
-        _WebSocketImpl webSocket =  (_WebSocketImpl)channel.getAttribute(SESSION_KEY);
+        WebSocketImpl webSocket =  (WebSocketImpl)channel.getAttribute(SESSION_KEY);
         webSocketRouter.getListener().onError(webSocket, error);
     }
 }

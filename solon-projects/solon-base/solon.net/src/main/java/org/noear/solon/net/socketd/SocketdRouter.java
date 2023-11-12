@@ -20,6 +20,7 @@ public class SocketdRouter {
     }
 
     public static SocketdRouter getInstance() {
+        //方便在单测环境下切换 SolonApp，可以相互独立
         return Solon.context().attachmentOf(SocketdRouter.class, SocketdRouter::new);
     }
 
@@ -33,7 +34,7 @@ public class SocketdRouter {
     /**
      * 主监听
      */
-    public void main(String path,  Listener listener) {
+    public void of(String path, Listener listener) {
         routerListener.of(path, listener);
     }
 

@@ -1,13 +1,14 @@
 package webapp.demoe_websocket;
 
 import org.noear.nami.channel.socketd.SocketdChannel;
+import org.noear.socketd.transport.core.ConfigImpl;
 import org.noear.solon.Solon;
 import org.noear.solon.net.annotation.ServerEndpoint;
 import org.noear.solon.net.websocket.WebSocket;
 import org.noear.solon.net.websocket.listener.PipelineWebSocketListener;
 import org.noear.solon.net.websocket.listener.RouterWebSocketListener;
 import org.noear.solon.net.websocket.listener.SimpleWebSocketListener;
-import org.noear.solon.net.websocket.socketd.WebSocketToSocketd;
+import org.noear.solon.net.websocket.socketd.ToSocketdWebSocketListener;
 
 import java.io.IOException;
 import java.util.HashSet;
@@ -41,11 +42,11 @@ public class WebSocketListenerImp extends PipelineWebSocketListener {
             public void onClose(WebSocket session) {
                 sessionMap.remove(session);
             }
-        }).next(new RouterWebSocketListener().of("/demoe/websocket/{id}", new SimpleWebSocketListener(){
+        }).next(new RouterWebSocketListener().of("/demoe/websocket/{id}", new SimpleWebSocketListener() {
             @Override
             public void onMessage(WebSocket socket, String text) throws IOException {
                 socket.send("你好");
             }
-        })).next(new WebSocketToSocketd().listener(SocketdChannel.socketdToHandler));
+        })).next(new ToSocketdWebSocketListener(new ConfigImpl(false), SocketdChannel.socketdToHandler));
     }
 }

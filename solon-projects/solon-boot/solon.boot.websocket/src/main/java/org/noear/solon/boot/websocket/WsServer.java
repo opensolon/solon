@@ -16,7 +16,8 @@ import java.util.Iterator;
 @SuppressWarnings("unchecked")
 public class WsServer extends WebSocketServer {
     static final Logger log = LoggerFactory.getLogger(WsServer.class);
-    private WebSocketRouter webSocketRouter = WebSocketRouter.getInstance();
+
+    private final WebSocketRouter webSocketRouter = WebSocketRouter.getInstance();
 
     public WsServer(int port) {
         super(new InetSocketAddress(port));
@@ -32,16 +33,16 @@ public class WsServer extends WebSocketServer {
     }
 
 
-    private _WebSocketImpl getSession(WebSocket conn) {
+    private WebSocketImpl getSession(WebSocket conn) {
         return getSession(conn, null);
     }
 
-    private _WebSocketImpl getSession(WebSocket conn, ClientHandshake shake) {
-        _WebSocketImpl session = conn.getAttachment();
+    private WebSocketImpl getSession(WebSocket conn, ClientHandshake shake) {
+        WebSocketImpl session = conn.getAttachment();
 
         if (session == null) {
             //直接从附件拿，不一定可靠
-            session = new _WebSocketImpl(conn);
+            session = new WebSocketImpl(conn);
             conn.setAttachment(session);
 
             if (shake != null) {
@@ -58,13 +59,13 @@ public class WsServer extends WebSocketServer {
 
     @Override
     public void onOpen(WebSocket conn, ClientHandshake shake) {
-        _WebSocketImpl webSocket = getSession(conn, shake);
+        WebSocketImpl webSocket = getSession(conn, shake);
         webSocketRouter.getListener().onOpen(webSocket);
     }
 
     @Override
     public void onClose(WebSocket conn, int i, String s, boolean b) {
-        _WebSocketImpl webSocket = getSession(conn);
+        WebSocketImpl webSocket = getSession(conn);
         if (webSocket.isClosed()) {
             return;
         } else {
@@ -77,7 +78,7 @@ public class WsServer extends WebSocketServer {
     @Override
     public void onMessage(WebSocket conn, String data) {
         try {
-            _WebSocketImpl webSocket = getSession(conn);
+            WebSocketImpl webSocket = getSession(conn);
             webSocketRouter.getListener().onMessage(webSocket, data);
         } catch (Throwable e) {
             log.warn(e.getMessage(), e);
@@ -87,7 +88,7 @@ public class WsServer extends WebSocketServer {
     @Override
     public void onMessage(WebSocket conn, ByteBuffer data) {
         try {
-            _WebSocketImpl webSocket = getSession(conn);
+            WebSocketImpl webSocket = getSession(conn);
             webSocketRouter.getListener().onMessage(webSocket, data);
         } catch (Throwable e) {
             log.warn(e.getMessage(), e);
@@ -97,7 +98,7 @@ public class WsServer extends WebSocketServer {
     @Override
     public void onError(WebSocket conn, Exception ex) {
         try {
-            _WebSocketImpl webSocket = getSession(conn);
+            WebSocketImpl webSocket = getSession(conn);
             webSocketRouter.getListener().onError(webSocket, ex);
         } catch (Throwable e) {
             log.warn(e.getMessage(), e);

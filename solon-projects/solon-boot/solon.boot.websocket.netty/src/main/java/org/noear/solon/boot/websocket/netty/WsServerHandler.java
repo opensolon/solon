@@ -22,9 +22,9 @@ import java.nio.ByteBuffer;
 public class WsServerHandler extends SimpleChannelInboundHandler<Object> {
     public static final AttributeKey<String> ResourceDescriptorKey = AttributeKey.valueOf("ResourceDescriptor");
     public static final AttributeKey<WebSocketServerHandshaker> HandshakerKey = AttributeKey.valueOf("Handshaker");
-    public static final AttributeKey<_WebSocketImpl> SessionKey = AttributeKey.valueOf("Session");
+    public static final AttributeKey<WebSocketImpl> SessionKey = AttributeKey.valueOf("Session");
 
-    private WebSocketRouter webSocketRouter = WebSocketRouter.getInstance();
+    private final WebSocketRouter webSocketRouter = WebSocketRouter.getInstance();
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, Object msg) throws Exception {
@@ -67,7 +67,7 @@ public class WsServerHandler extends SimpleChannelInboundHandler<Object> {
             ctx.attr(ResourceDescriptorKey).set(req.uri());
 
             //listener.onOpen();
-            _WebSocketImpl webSocket = new _WebSocketImpl(ctx);
+            WebSocketImpl webSocket = new WebSocketImpl(ctx);
             ctx.attr(SessionKey).set(webSocket);
             webSocketRouter.getListener().onOpen(webSocket);
         }
@@ -129,7 +129,7 @@ public class WsServerHandler extends SimpleChannelInboundHandler<Object> {
     @Override
     public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {
         //listener.onClose();
-        _WebSocketImpl webSocket = ctx.attr(SessionKey).get();
+        WebSocketImpl webSocket = ctx.attr(SessionKey).get();
         if (webSocket.isClosed()) {
             return;
         } else {

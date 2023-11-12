@@ -10,14 +10,14 @@ import java.nio.ByteBuffer;
 public class WebSocketListenerImpl extends WebSocketAdapter {
     static final Logger log = LoggerFactory.getLogger(WebSocketListenerImpl.class);
 
-    private _WebSocketImpl webSocket;
-    private WebSocketRouter webSocketRouter = WebSocketRouter.getInstance();
+    private WebSocketImpl webSocket;
+    private final WebSocketRouter webSocketRouter = WebSocketRouter.getInstance();
 
     @Override
     public void onWebSocketConnect(org.eclipse.jetty.websocket.api.Session sess) {
         super.onWebSocketConnect(sess);
 
-        webSocket = new _WebSocketImpl(sess);
+        webSocket = new WebSocketImpl(sess);
 
         sess.getUpgradeRequest().getHeaders().forEach((k, v) -> {
             if (v.size() > 0) {

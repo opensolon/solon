@@ -23,15 +23,16 @@ import java.util.List;
 public class XPluginImpl implements Plugin {
     static final Logger log = LoggerFactory.getLogger(XPluginImpl.class);
 
-    List<Client> socketdClientList = new ArrayList<>();
+    private final List<Client> socketdClientList = new ArrayList<>();
 
-    SocketdRouter socketdRouter = SocketdRouter.getInstance();
-    WebSocketRouter webSocketRouter = WebSocketRouter.getInstance();
+    private final SocketdRouter socketdRouter = SocketdRouter.getInstance();
+    private final WebSocketRouter webSocketRouter = WebSocketRouter.getInstance();
 
     @Override
     public void start(AppContext context) throws Throwable {
         //注入容器
         context.wrapAndPut(WebSocketRouter.class, webSocketRouter);
+        context.wrapAndPut(SocketdRouter.class, socketdRouter);
 
         //添加注解处理
         context.beanBuilderAdd(ServerEndpoint.class, this::serverEndpointBuild);
@@ -54,7 +55,7 @@ public class XPluginImpl implements Plugin {
                 path = "**";
             }
 
-            socketdRouter.main(path, bw.raw());
+            socketdRouter.of(path, bw.raw());
             registered = true;
         }
 
@@ -64,7 +65,7 @@ public class XPluginImpl implements Plugin {
                 path = "**";
             }
 
-            webSocketRouter.main(path, bw.raw());
+            webSocketRouter.of(path, bw.raw());
             registered = true;
         }
 

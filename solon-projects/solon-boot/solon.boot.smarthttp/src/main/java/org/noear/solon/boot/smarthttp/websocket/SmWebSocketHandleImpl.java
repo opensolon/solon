@@ -15,13 +15,13 @@ import java.nio.ByteBuffer;
 
 public class SmWebSocketHandleImpl extends WebSocketDefaultHandler {
     static final Logger log = LoggerFactory.getLogger(SmWebSocketHandleImpl.class);
-    static final AttachKey<_WebSocketImpl> SESSION_KEY = AttachKey.valueOf("SESSION");
+    static final AttachKey<WebSocketImpl> SESSION_KEY = AttachKey.valueOf("SESSION");
 
-    private WebSocketRouter webSocketRouter = WebSocketRouter.getInstance();
+    private final WebSocketRouter webSocketRouter = WebSocketRouter.getInstance();
 
     @Override
     public void onHandShake(WebSocketRequest request, WebSocketResponse response) {
-        _WebSocketImpl webSokcet = new _WebSocketImpl(request);
+        WebSocketImpl webSokcet = new WebSocketImpl(request);
         if (request.getAttachment() == null) {
             request.setAttachment(new Attachment());
         }
@@ -42,7 +42,7 @@ public class SmWebSocketHandleImpl extends WebSocketDefaultHandler {
     }
 
     private void onCloseDo(WebSocketRequest request) {
-        _WebSocketImpl webSocket = request.getAttachment().get(SESSION_KEY);
+        WebSocketImpl webSocket = request.getAttachment().get(SESSION_KEY);
         if (webSocket.isClosed()) {
             return;
         } else {

@@ -19,6 +19,7 @@ public class WebSocketRouter {
     }
 
     public static WebSocketRouter getInstance() {
+        //方便在单测环境下切换 SolonApp，可以相互独立
         return Solon.context().attachmentOf(WebSocketRouter.class, WebSocketRouter::new);
     }
 
@@ -32,7 +33,7 @@ public class WebSocketRouter {
     /**
      * 主监听
      */
-    public void main(String path, WebSocketListener listener) {
+    public void of(String path, WebSocketListener listener) {
         routerListener.of(path, listener);
     }
 

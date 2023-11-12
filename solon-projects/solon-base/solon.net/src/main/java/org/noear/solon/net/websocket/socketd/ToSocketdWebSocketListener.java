@@ -3,7 +3,6 @@ package org.noear.solon.net.websocket.socketd;
 import org.noear.socketd.transport.core.*;
 import org.noear.socketd.transport.core.internal.ChannelDefault;
 import org.noear.socketd.transport.core.internal.ProcessorDefault;
-import org.noear.socketd.transport.server.ServerConfig;
 import org.noear.solon.net.websocket.WebSocket;
 import org.noear.solon.net.websocket.WebSocketListener;
 import org.slf4j.Logger;
@@ -13,29 +12,24 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 
 /**
- * 将 WebSocket 转为 Sokcet.D 协议
+ * 转到 Sokcet.D 协议的 WebSocketListener（服务端、客户端，都可用）
  *
  * @author noear
  * @since 2.6
  */
-public class WebSocketToSocketd implements WebSocketListener {
+public class ToSocketdWebSocketListener implements WebSocketListener {
 
-    static final Logger log = LoggerFactory.getLogger(WebSocketToSocketd.class);
+    static final Logger log = LoggerFactory.getLogger(ToSocketdWebSocketListener.class);
 
-    private final ServerConfig config;
+    private final Config config;
     private final WebSocketChannelAssistant assistant;
     private final Processor processor;
 
-    public WebSocketToSocketd() {
-        config = new ServerConfig("ws");
-        assistant = new WebSocketChannelAssistant(config);
-        processor = new ProcessorDefault();
-    }
-
-
-    public WebSocketToSocketd listener(Listener listener) {
-        processor.setListener(listener);
-        return this;
+    public ToSocketdWebSocketListener(Config config, Listener listener) {
+        this.config = config;
+        this.assistant = new WebSocketChannelAssistant(config);
+        this.processor = new ProcessorDefault();
+        this.processor.setListener(listener);
     }
 
     private Channel getChannel(WebSocket socket) {
