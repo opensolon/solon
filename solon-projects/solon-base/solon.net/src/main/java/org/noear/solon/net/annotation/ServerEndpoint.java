@@ -1,7 +1,5 @@
 package org.noear.solon.net.annotation;
 
-import org.noear.solon.annotation.Alias;
-
 import java.lang.annotation.*;
 
 /**
@@ -15,12 +13,5 @@ public @interface ServerEndpoint {
     /**
      * 路径
      * */
-    @Alias("path")
-    String value() default "";
-
-    /**
-     * 路径
-     * */
-    @Alias("value")
-    String path() default "";
+    String value() default "**";
 }

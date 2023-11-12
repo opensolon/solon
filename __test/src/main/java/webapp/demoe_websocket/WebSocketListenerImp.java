@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
-@ServerEndpoint(path = "**")
+@ServerEndpoint
 public class WebSocketListenerImp extends PipelineWebSocketListener {
     public WebSocketListenerImp() {
         next(new SimpleWebSocketListener() {

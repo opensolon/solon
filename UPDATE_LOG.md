@@ -29,6 +29,7 @@
 * 重构 websocket 适配，基于 v2.0
 * 移除 AopContext（完成更名 AppContext 的第二步动作）
 * 移除 PathLimiter （已无用，留着有误导性）
+* 移除 SolonApp::enableWebSocketD,enableWebSocketMvc,enableSocketMvc（已无用，留着有误导性）
 * 设定 smart-http 为 solon-api 快捷组合包的默认 httpserver
 * jackson 升为 2.15.2
 * liteflow 升为 2.11.3
