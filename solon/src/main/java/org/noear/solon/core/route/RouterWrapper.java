@@ -102,6 +102,16 @@ public abstract class RouterWrapper implements HandlerSlots {
         _chainManager.addInterceptor(interceptor, index);
     }
 
+    /**
+     * 添加路由拦截器（按先进后出策略执行）,如果有相同类的则不加
+     *
+     * @param index       顺序位
+     * @param interceptor 路由拦截器
+     */
+    public void routerInterceptorIfAbsent(int index, RouterInterceptor interceptor) {
+        _chainManager.addInterceptorIfAbsent(interceptor, index);
+    }
+
 
 
     /**

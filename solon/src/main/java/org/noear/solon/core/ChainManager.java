@@ -20,10 +20,14 @@ import java.util.*;
  */
 public class ChainManager {
     /**
+     * 类型集合（用于重复检测）
+     * */
+    private final Set<Class<?>> typeSet = new HashSet<>();
+
+    /**
      * 过滤器 节点
      */
     private final List<RankEntity<Filter>> filterNodes = new ArrayList<>();
-    private final Map<Class<?>, Object> filterMap = new HashMap<>();
 
     public Collection<Filter> getFilterNodes() {
         List<Filter> tmp = new ArrayList<>();
@@ -39,16 +43,16 @@ public class ChainManager {
      * 添加过滤器
      */
     public synchronized void addFilter(Filter filter, int index) {
-        filterMap.put(filter.getClass(), filter);
+        typeSet.add(filter.getClass());
         filterNodes.add(new RankEntity(filter, index));
         filterNodes.sort(Comparator.comparingInt(f -> f.index));
     }
 
     /**
-     * 添加过滤器
+     * 添加过滤器，如果有相同类的则不加
      */
     public synchronized void addFilterIfAbsent(Filter filter, int index) {
-        if (filterMap.containsKey(filter.getClass())) {
+        if (typeSet.contains(filter.getClass())) {
             return;
         }
 
@@ -91,6 +95,8 @@ public class ChainManager {
      * 添加路由拦截器
      */
     public synchronized void addInterceptor(RouterInterceptor interceptor, int index) {
+        typeSet.add(interceptor.getClass());
+
         if (interceptor instanceof PathLimiter) {
             interceptor = new RouterInterceptorLimiter(interceptor, ((PathLimiter) interceptor).pathRule());
             LogUtil.global().warn("PathLimiter will be discarded, suggested use 'RouterInterceptor:pathPatterns'");
@@ -100,6 +106,17 @@ public class ChainManager {
 
         interceptorNodes.add(new RankEntity<>(interceptor, index));
         interceptorNodes.sort(Comparator.comparingInt(f -> f.index));
+    }
+
+    /**
+     * 添加路由拦截器，如果有相同类的则不加
+     */
+    public synchronized void addInterceptorIfAbsent(RouterInterceptor interceptor, int index) {
+        if (typeSet.contains(interceptor.getClass())) {
+            return;
+        }
+
+        addInterceptor(interceptor, index);
     }
 
     /**
