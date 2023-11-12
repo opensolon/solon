@@ -34,9 +34,5 @@
         <module>../../solon-projects/solon-web/solon.web.sdl</module>
         <module>../../solon-projects/solon-web/solon.web.sse</module>
         <module>../../solon-projects/solon-web/solon.web.flux</module>
-        <module>../../solon-projects/solon-scheduling/solon.scheduling</module>
-        <module>../../solon-projects/solon-scheduling/solon.scheduling.simple</module>
-        <module>../../solon-projects/solon-scheduling/solon.scheduling.quartz</module>
-        <module>../../solon-projects/solon-scheduling/solon.extend.schedule</module>
     </modules>
 </project>

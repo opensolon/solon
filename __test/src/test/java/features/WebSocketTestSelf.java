@@ -1,6 +1,6 @@
 package features;
 
-import org.java_websocket.impl.SimpleWebSocketClient;
+import org.noear.java_websocket.client.SimpleWebSocketClient;
 import org.java_websocket.client.WebSocketClient;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
