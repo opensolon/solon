@@ -724,7 +724,7 @@
 * 增加 @Body 注解，注入 body string 支持
 * 增加 @Validated List<?> 验证模式支持
 * 修复 solon.boot.socketd.websocket，去掉 session.path() 多余内容
-* 修复 sockted sessionBase::paramMap()，当 query=null 时会出错的问题
+* 修复 socketd sessionBase::paramMap()，当 query=null 时会出错的问题
 * 插件 solon.boot.smarthttp，升级 smart-http 为 1.1.10
 * 依赖 snack3 升级为 3.2.2
 

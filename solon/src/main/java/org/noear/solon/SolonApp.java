@@ -560,14 +560,14 @@ public class SolonApp extends RouterWrapper {
     private boolean _enableSocketD = false;
 
     /**
-     * 是否已启用 Socket as SockteD 信号接入
+     * 是否已启用 SocketD 信号接入
      */
     public boolean enableSocketD() {
         return _enableSocketD && NativeDetector.isNotAotRuntime();
     }
 
     /**
-     * 启用 Socket as SockteD 信号接入
+     * 启用 SocketD 信号接入
      *
      * @param enable 是否启用
      */

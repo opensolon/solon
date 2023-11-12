@@ -249,8 +249,14 @@
 
         <dependency>
             <groupId>org.noear</groupId>
+            <artifactId>solon.boot.socketd</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.noear</groupId>
             <artifactId>solon.boot.websocket</artifactId>
         </dependency>
+
 
 <!--        <dependency>-->
 <!--            <groupId>org.noear</groupId>-->

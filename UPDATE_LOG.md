@@ -25,7 +25,7 @@
 * 新增 sa-token-dao-redisson-jackson 模块
 * 添加 SolonApp::filterIfAbsent,routerInterceptorIfAbsent 接口
 * 调整 smart-http,jetty,undertow 统一使用 server.http.idleTimeout 配置
-* 重构 sockted 适配，基于 v2.0
+* 重构 socketd 适配，基于 v2.0
 * 重构 websocket 适配，基于 v2.0
 * 移除 AopContext（完成更名 AppContext 的第二步动作）
 * 移除 PathLimiter （已无用，留着有误导性）
@@ -68,16 +68,16 @@
 * 新增 solon.serialization.fury 插件
 * 新增 hibernate-solon-plugin 插件（提供标准 jpa 支持）
 * 修复 @Import::classes 未被执行的问题
-* 修复 sockted.session 关闭时，自动心跳不能停止的问题
+* 修复 socketd.session 关闭时，自动心跳不能停止的问题
 * 修复 solon.logging.logback 控制台等级 yml 配置失效的问题
 * 优化 Solon::cfg() 多配置加载的校验机制
 * 优化 solon.logging.logback 原生编译元信息配置
 * 优化 运行时退出勾子的处理，非 aot 情况下强制退出
-* 调整 sockted.session::sendHeartbeatAuto 更名为 startHeartbeatAuto （内部接口）
+* 调整 socketd.session::sendHeartbeatAuto 更名为 startHeartbeatAuto （内部接口）
 * 调整 @Init 的弃用提示（改为推荐了）
 * 添加 @Import::profiles, @Import::profilesIfAbsent 接口
 * 添加 DynamicDsKey 类, 替代 DynamicDsHolder
-* 添加 sockted.session::stopHeartbeatAuto 接口
+* 添加 socketd.session::stopHeartbeatAuto 接口
 * snack3 升为 3.2.81
 * liteflow 升为 2.11.2
 * sqltoy 升为 5.2.73
@@ -673,7 +673,7 @@
 * 新增 solon.web.sdl 插件替代 solon.web.sso（之前名字搞错了）
 * 插件 solon.boot.jetty 增加 jetty-servlet 依赖（solon.boot.jetty.add.servlet 就不需要了）
 * 插件 solon.boot.jlhttp 优化线程不够时会处理方式
-* 插件 solon.boot.sockted.jdksocket 优化线程不够时会处理方式
+* 插件 solon.boot.socketd.jdksocket 优化线程不够时会处理方式
 * 插件 solon.boot.smarthttp 优化二级池线程不够时会处理方式
 * 插件 solon-maven-plugin 打包机制，支持 scope system 包编译
 * 增加 @Configuration + @Inject 支持配置变更事件的注入
