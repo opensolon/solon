@@ -15,11 +15,11 @@ import webapp.App;
 public class RetryTest extends HttpTester {
     @Test
     public void test1() throws Exception{
-       assert  path("/demof/retry").execAsCode("GET") == 200;
+       assert  path("/demoe/retry").execAsCode("GET") == 200;
     }
 
     @Test
     public void test2() throws Exception{
-        assert  path("/demof/retry2").execAsCode("GET") == 500;
+        assert  path("/demoe/retry2").execAsCode("GET") == 500;
     }
 }

@@ -82,6 +82,8 @@ solon.logging.logger:
     level: INFO
   "org.thymeleaf":
     level: INFO
+  "org.java_websocket":
+    level: WARN
 
 solon.socketd:
   readBufferSize: "512"

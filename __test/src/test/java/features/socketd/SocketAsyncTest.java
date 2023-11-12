@@ -61,7 +61,7 @@ public class SocketAsyncTest {
 
         CompletableFuture<Boolean> check = new CompletableFuture<>();
 
-        WebSocketClient webSocketClient = new SimpleWebSocketClient(URI.create("ws://127.0.0.1:18080/demoe/websocket/12")){
+        WebSocketClient webSocketClient = new SimpleWebSocketClient(URI.create("ws://127.0.0.1:18080/demof/websocket/12")){
             @Override
             public void onMessage(String message) {
                 System.out.println("异步发送-ws::实例监到，收到了：" + message);

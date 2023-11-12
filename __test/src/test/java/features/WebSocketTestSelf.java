@@ -7,7 +7,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.noear.solon.test.SolonJUnit5Extension;
 import org.noear.solon.test.SolonTest;
 import webapp.App;
-import webapp.demoe_websocket.WsDemoClient;
+import webapp.demof_websocket.WsDemoClient;
 
 import java.net.URI;
 import java.util.concurrent.CompletableFuture;
@@ -24,7 +24,7 @@ public class WebSocketTestSelf {
         Thread.sleep(100);
         long time_start = System.currentTimeMillis();
 
-        WsDemoClient client = new WsDemoClient(URI.create("ws://127.0.0.1:8080/demoe/websocket/12"));
+        WsDemoClient client = new WsDemoClient(URI.create("ws://127.0.0.1:8080/demof/websocket/12"));
         client.connect();
 
         while (!client.isOpen()) {
@@ -53,7 +53,7 @@ public class WebSocketTestSelf {
     @Test
     public void test_async_message3_self_ws() throws Throwable {
         CompletableFuture<Boolean> check = new CompletableFuture<>();
-        WebSocketClient webSocketClient = new SimpleWebSocketClient(URI.create("ws://127.0.0.1:8080/demoe/websocket/12")){
+        WebSocketClient webSocketClient = new SimpleWebSocketClient(URI.create("ws://127.0.0.1:8080/demof/websocket/12")){
             @Override
             public void onMessage(String message) {
                 System.out.println("异步发送-ws-self::实例监到，收到了：" + message);

@@ -1,4 +1,4 @@
-package webapp.demof_schedule;
+package webapp.demoe_schedule;
 
 import it.sauronsoftware.cron4j.Task;
 import it.sauronsoftware.cron4j.TaskExecutionContext;

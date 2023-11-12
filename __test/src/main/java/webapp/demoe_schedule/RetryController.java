@@ -1,11 +1,11 @@
-package webapp.demof_schedule;
+package webapp.demoe_schedule;
 
 
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.annotation.Mapping;
 
-@Mapping("demof")
+@Mapping("demoe")
 @Controller
 public class RetryController {
     @Inject

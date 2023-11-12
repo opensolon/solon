@@ -67,7 +67,7 @@ public class SocketRpcTest {
     @Test
     public void test_rpc_api_ws1() throws Throwable {
         HelloRpcService rpc = Nami.builder()
-                .upstream(() -> "ws://localhost:" + (Solon.cfg().serverPort() + 15000))
+                .upstream(() -> "sd:ws://localhost:" + (Solon.cfg().serverPort() + 20002))
                 .create(HelloRpcService.class);
 
         String rst = rpc.hello("noear");

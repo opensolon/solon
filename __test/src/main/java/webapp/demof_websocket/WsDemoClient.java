@@ -1,4 +1,4 @@
-package webapp.demoe_websocket;
+package webapp.demof_websocket;
 
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;

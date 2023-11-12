@@ -1,6 +1,5 @@
-package webapp.demof_schedule;
+package webapp.demoe_schedule;
 
-import org.noear.solon.annotation.Component;
 import org.noear.solon.cloud.annotation.CloudJob;
 import org.noear.solon.scheduling.annotation.Scheduled;
 

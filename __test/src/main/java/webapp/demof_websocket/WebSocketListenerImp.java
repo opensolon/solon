@@ -1,4 +1,4 @@
-package webapp.demoe_websocket;
+package webapp.demof_websocket;
 
 import org.noear.nami.channel.socketd.SocketdChannel;
 import org.noear.socketd.transport.core.ConfigImpl;
@@ -42,7 +42,7 @@ public class WebSocketListenerImp extends PipelineWebSocketListener {
             public void onClose(WebSocket session) {
                 sessionMap.remove(session);
             }
-        }).next(new RouterWebSocketListener().of("/demoe/websocket/{id}", new SimpleWebSocketListener() {
+        }).next(new RouterWebSocketListener().of("/demof/websocket/{id}", new SimpleWebSocketListener() {
             @Override
             public void onMessage(WebSocket socket, String text) throws IOException {
                 socket.send("你好");
