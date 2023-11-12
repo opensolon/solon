@@ -49,7 +49,7 @@ public class WsServer extends WebSocketServer {
                 Iterator<String> httpFields = shake.iterateHttpFields();
                 while (httpFields.hasNext()) {
                     String name = httpFields.next();
-                    session.putParam(name, shake.getFieldValue(name));
+                    session.paramSet(name, shake.getFieldValue(name));
                 }
             }
         }

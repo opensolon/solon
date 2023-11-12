@@ -57,11 +57,11 @@ public class ContextPathWebSocketListener extends SimpleWebSocketListener {
     @Override
     public void onOpen(WebSocket s) {
         if (contextPath0 != null) {
-            if (s.getPath().equals(contextPath0)) {
+            if (s.path().equals(contextPath0)) {
                 //www:888 加 abc 后，仍可以用 www:888/abc 打开
-                s.setPathNew("/");
-            } else if (s.getPath().startsWith(contextPath1)) {
-                s.setPathNew(s.getPath().substring(contextPath1.length() - 1));
+                s.pathNew("/");
+            } else if (s.path().startsWith(contextPath1)) {
+                s.pathNew(s.path().substring(contextPath1.length() - 1));
             } else {
                 if (forced) {
                     try {

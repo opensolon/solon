@@ -33,11 +33,11 @@ public class ToSocketdWebSocketListener implements WebSocketListener {
     }
 
     private Channel getChannel(WebSocket socket) {
-        Channel channel = socket.getAttachment();
+        Channel channel = socket.attachment();
 
         if (channel == null) {
             channel = new ChannelDefault<>(socket, config, assistant);
-            socket.setAttachment(channel);
+            socket.attachment(channel);
         }
 
         return channel;
@@ -46,7 +46,7 @@ public class ToSocketdWebSocketListener implements WebSocketListener {
     @Override
     public void onOpen(WebSocket socket) {
         Channel channel = getChannel(socket);
-        socket.setAttachment(channel);
+        socket.attachment(channel);
     }
 
     @Override

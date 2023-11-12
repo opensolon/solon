@@ -21,7 +21,7 @@ public class WebSocketListenerImpl extends WebSocketAdapter {
 
         sess.getUpgradeRequest().getHeaders().forEach((k, v) -> {
             if (v.size() > 0) {
-                webSocket.putParam(k, v.get(0));
+                webSocket.paramSet(k, v.get(0));
             }
         });
 

@@ -15,7 +15,7 @@ public interface WebSocket {
     /**
      * 获取会话Id
      * */
-    String getSid();
+    String sid();
 
     /**
      * 是否有效
@@ -30,29 +30,29 @@ public interface WebSocket {
     /**
      * 获取请求地址
      * */
-    String getUrl();
+    String url();
 
     /**
      * 获取握手路径
      */
-    String getPath();
+    String path();
 
     /**
      * 设置新路径
      */
-    void setPathNew(String pathNew);
+    void pathNew(String pathNew);
 
     /**
      * 获取参数字典
      */
-    Map<String, String> getParamMap();
+    Map<String, String> paramMap();
 
     /**
      * 获取参数
      *
      * @param name 参数名
      */
-    String getParam(String name);
+    String param(String name);
 
     /**
      * 获取参数或默认值
@@ -60,7 +60,7 @@ public interface WebSocket {
      * @param name 参数名
      * @param def  默认值
      */
-    String getParamOrDefault(String name, String def);
+    String paramOrDefault(String name, String def);
 
     /**
      * 添加参数
@@ -68,39 +68,39 @@ public interface WebSocket {
      * @param name  名字
      * @param value 值
      */
-    String putParam(String name, String value);
+    String paramSet(String name, String value);
 
     /**
      * 获取远程地址
      */
-    InetSocketAddress getRemoteAddress() throws IOException;
+    InetSocketAddress remoteAddress() throws IOException;
 
     /**
      * 获取本地地址
      */
-    InetSocketAddress getLocalAddress() throws IOException;
+    InetSocketAddress localAddress() throws IOException;
 
     /**
      * 设置附件
      */
-    <T> void setAttachment(T attachment);
+    <T> void attachment(T attachment);
 
     /**
      * 获取附件
      */
-    <T> T getAttachment();
+    <T> T attachment();
 
     /**
      * 获取所有属性
      */
-    Map<String, Object> getAttrMap();
+    Map<String, Object> attrMap();
 
     /**
      * 获取属性
      *
      * @param name 名字
      */
-    <T> T getAttr(String name);
+    <T> T attr(String name);
 
     /**
      * 获取属性或默认值
@@ -108,7 +108,7 @@ public interface WebSocket {
      * @param name 名字
      * @param def  默认值
      */
-    <T> T getAttrOrDefault(String name, T def);
+    <T> T attrOrDefault(String name, T def);
 
     /**
      * 设置属性
@@ -116,7 +116,7 @@ public interface WebSocket {
      * @param name  名字
      * @param value 值
      */
-    <T> void setAttr(String name, T value);
+    <T> void attrSet(String name, T value);
 
     /**
      * 发送文本

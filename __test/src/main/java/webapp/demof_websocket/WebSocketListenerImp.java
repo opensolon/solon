@@ -22,14 +22,14 @@ public class WebSocketListenerImp extends PipelineWebSocketListener {
 
             @Override
             public void onMessage(WebSocket session, String message) {
-                System.out.println(session.getPath());
+                System.out.println(session.path());
 
                 if (Solon.cfg().isDebugMode()) {
                     return;
                 }
 
                 sessionMap.forEach(s -> {
-                    s.send(message + "-" + sessionMap.size() + "-" + session.getParamMap());
+                    s.send(message + "-" + sessionMap.size() + "-" + session.paramMap());
                 });
             }
 

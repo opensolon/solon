@@ -32,12 +32,12 @@ public class WebSocketImpl extends WebSocketBase {
     }
 
     @Override
-    public InetSocketAddress getRemoteAddress() {
+    public InetSocketAddress remoteAddress() {
         return (InetSocketAddress)real.channel().remoteAddress();
     }
 
     @Override
-    public InetSocketAddress getLocalAddress() {
+    public InetSocketAddress localAddress() {
         return (InetSocketAddress)real.channel().localAddress();
     }
 

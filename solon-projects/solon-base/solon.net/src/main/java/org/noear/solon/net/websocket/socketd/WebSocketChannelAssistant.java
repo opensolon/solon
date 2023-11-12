@@ -43,11 +43,11 @@ public class WebSocketChannelAssistant implements ChannelAssistant<WebSocket> {
 
     @Override
     public InetSocketAddress getRemoteAddress(WebSocket target) throws IOException {
-        return target.getRemoteAddress();
+        return target.remoteAddress();
     }
 
     @Override
     public InetSocketAddress getLocalAddress(WebSocket target) throws IOException {
-        return target.getLocalAddress();
+        return target.localAddress();
     }
 }

@@ -63,7 +63,7 @@ public class RouterWebSocketListener implements WebSocketListener {
      * 区配一个目标
      */
     protected WebSocketListener matching(WebSocket s) {
-        String path = s.getPath();
+        String path = s.path();
 
         if (path == null) {
             return null;

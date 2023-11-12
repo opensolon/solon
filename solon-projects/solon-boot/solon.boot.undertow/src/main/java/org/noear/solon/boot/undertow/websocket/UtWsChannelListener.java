@@ -51,7 +51,7 @@ public class UtWsChannelListener extends AbstractReceiveListener {
         WebSocketImpl webSocket = new WebSocketImpl(channel);
         exchange.getRequestHeaders().forEach((k, v) -> {
             if (v.size() > 0) {
-                webSocket.putParam(k, v.get(0));
+                webSocket.paramSet(k, v.get(0));
             }
         });
 
