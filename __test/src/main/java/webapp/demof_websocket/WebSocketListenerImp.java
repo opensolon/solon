@@ -1,6 +1,6 @@
 package webapp.demof_websocket;
 
-import org.noear.nami.channel.socketd.SocketdChannel;
+import org.noear.nami.channel.socketd.SocketdRpc;
 import org.noear.socketd.transport.core.ConfigImpl;
 import org.noear.solon.Solon;
 import org.noear.solon.net.annotation.ServerEndpoint;
@@ -47,6 +47,7 @@ public class WebSocketListenerImp extends PipelineWebSocketListener {
             public void onMessage(WebSocket socket, String text) throws IOException {
                 socket.send("你好");
             }
-        })).next(new ToSocketdWebSocketListener(new ConfigImpl(false), SocketdChannel.socketdToHandler));
+        })).next(new ToSocketdWebSocketListener(new ConfigImpl(false), SocketdRpc
+                .socketdToHandler));
     }
 }

@@ -1,39 +1,23 @@
 package org.noear.nami.channel.socketd;
 
-
 import org.noear.nami.*;
 import org.noear.nami.common.Constants;
 import org.noear.nami.common.ContentTypes;
-import org.noear.socketd.SocketD;
 import org.noear.socketd.transport.core.Entity;
 import org.noear.socketd.transport.core.Session;
 import org.noear.socketd.transport.core.entity.EntityDefault;
-import org.noear.solon.net.socketd.handle.ToHandlerListener;
 
 import java.util.Map;
 import java.util.function.Supplier;
 
 /**
- * Socket 通道
+ * Socketd 通道
  *
  * @author noear
  * @since 1.2
  * @since 2.6
  */
 public class SocketdChannel extends ChannelBase implements Channel {
-    public static final ToHandlerListener socketdToHandler = new ToHandlerListener();
-
-    public static <T> T create(String url, Class<T> clz) throws Exception{
-        Session session = SocketD.createClient(url).listen(socketdToHandler).open();
-        return ProxyUtils.create(()->session, null, null, clz);
-    }
-
-    public static <T> T create(Session session, Class<T> clz){
-        return ProxyUtils.create(()->session, null, null, clz);
-    }
-
-
-
     public Supplier<Session> sessions;
 
     public SocketdChannel(Supplier<Session> sessions) {

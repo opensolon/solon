@@ -12,7 +12,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @author noear 2021/1/1 created
+ * Socketd 客户端通道
+ *
+ * @author noear
+ * @since 1.3
  * @since 2.6
  */
 public class SocketdClientChannel extends ChannelBase implements Channel {
@@ -31,7 +34,7 @@ public class SocketdClientChannel extends ChannelBase implements Channel {
                 if (channel == null) {
                     try {
                         Session session = SocketD.createClient(uri.toString())
-                                .listen(SocketdChannel.socketdToHandler)
+                                .listen(SocketdRpc.socketdToHandler)
                                 .open();
                         channel = new SocketdChannel(() -> session);
                         channelMap.put(hostname, channel);
