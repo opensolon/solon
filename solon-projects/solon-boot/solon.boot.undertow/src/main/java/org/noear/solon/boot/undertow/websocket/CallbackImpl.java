@@ -9,10 +9,10 @@ import org.slf4j.LoggerFactory;
  * @author noear
  * @since 1.6
  */
-class _CallbackImpl implements WebSocketCallback<Void> {
-    static final Logger log = LoggerFactory.getLogger(_CallbackImpl.class);
+class CallbackImpl implements WebSocketCallback<Void> {
+    static final Logger log = LoggerFactory.getLogger(CallbackImpl.class);
 
-    public static final WebSocketCallback<Void> instance = new _CallbackImpl();
+    public static final WebSocketCallback<Void> instance = new CallbackImpl();
 
     @Override
     public void complete(WebSocketChannel webSocketChannel, Void unused) {

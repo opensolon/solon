@@ -14,10 +14,10 @@ import java.nio.ByteBuffer;
  * @author noear
  * @since 2.0
  */
-public class _WebSocketImpl extends WebSocketBase {
+public class WebSocketImpl extends WebSocketBase {
     private final WebSocketRequest request;
     private final WebSocketResponse real;
-    public _WebSocketImpl(WebSocketRequest request) {
+    public WebSocketImpl(WebSocketRequest request) {
         this.request = request;
         this.real = ((WebSocketRequestImpl) request).getResponse();
         this.init(buildUri(request));

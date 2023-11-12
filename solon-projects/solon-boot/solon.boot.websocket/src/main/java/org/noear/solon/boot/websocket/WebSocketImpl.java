@@ -12,10 +12,10 @@ import java.nio.ByteBuffer;
  * @author noear
  * @since 2.6
  */
-public class _WebSocketImpl extends WebSocketBase {
+public class WebSocketImpl extends WebSocketBase {
     private final org.java_websocket.WebSocket real;
 
-    public _WebSocketImpl(org.java_websocket.WebSocket real) {
+    public WebSocketImpl(org.java_websocket.WebSocket real) {
         this.real = real;
         this.init(URI.create(real.getResourceDescriptor()));
     }

@@ -6,7 +6,6 @@ import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import org.noear.solon.net.websocket.WebSocketBase;
 
-import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.URI;
 import java.nio.ByteBuffer;
@@ -15,9 +14,9 @@ import java.nio.ByteBuffer;
  * @author noear
  * @since 2.6
  */
-public class _WebSocketImpl extends WebSocketBase {
+public class WebSocketImpl extends WebSocketBase {
     private ChannelHandlerContext real;
-    public _WebSocketImpl(ChannelHandlerContext real) {
+    public WebSocketImpl(ChannelHandlerContext real) {
         this.real = real;
         this.init(URI.create(real.attr(WsServerHandler.ResourceDescriptorKey).get()));
     }

@@ -11,9 +11,9 @@ import java.nio.ByteBuffer;
  * @author noear
  * @since 2.6
  */
-public class _WebSocketImpl extends WebSocketBase {
+public class WebSocketImpl extends WebSocketBase {
     private final Session real;
-    public _WebSocketImpl(Session real){
+    public WebSocketImpl(Session real){
         this.real = real;
         this.init(real.getUpgradeRequest().getRequestURI());
     }
@@ -40,12 +40,12 @@ public class _WebSocketImpl extends WebSocketBase {
 
     @Override
     public void send(String text) {
-        real.getRemote().sendString(text, _CallbackImpl.instance);
+        real.getRemote().sendString(text, CallbackImpl.instance);
     }
 
     @Override
     public void send(ByteBuffer binary) {
-        real.getRemote().sendBytes(binary, _CallbackImpl.instance);
+        real.getRemote().sendBytes(binary, CallbackImpl.instance);
     }
 
 

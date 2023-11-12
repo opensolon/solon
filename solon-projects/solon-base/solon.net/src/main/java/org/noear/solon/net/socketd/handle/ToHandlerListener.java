@@ -11,13 +11,13 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 
 /**
- * Socket.D 监听器，转 Mvc 处理
+ * 转到 Handler 接口协议的 Listener（服务端、客户端，都可用）
  *
  * @author noear
  * @since 2.0
  */
-public class SocketdToHandler extends SimpleListener {
-    private static final Logger log = LoggerFactory.getLogger(SocketdToHandler.class);
+public class ToHandlerListener extends SimpleListener {
+    private static final Logger log = LoggerFactory.getLogger(ToHandlerListener.class);
 
     @Override
     public void onMessage(Session session, Message message) throws IOException {
