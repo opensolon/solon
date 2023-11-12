@@ -11,6 +11,7 @@ public class XPluginImp implements Plugin {
     @Override
     public void start(AppContext context) {
         NamiManager.reg("tcp", SocketdClientChannel.instance);
+        NamiManager.reg("udp", SocketdClientChannel.instance);
         NamiManager.reg("ws", SocketdClientChannel.instance);
         NamiManager.reg("wss", SocketdClientChannel.instance);
     }

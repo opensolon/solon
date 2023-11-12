@@ -257,6 +257,9 @@ public class NamiHandler implements InvocationHandler {
             type = method.getReturnType();
         }
 
+        if(url.startsWith("sd:")){
+            url = url.substring(3);
+        }
 
         //执行调用
         Object rst = new Nami(config)
