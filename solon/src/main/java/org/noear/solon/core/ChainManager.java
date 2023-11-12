@@ -2,11 +2,9 @@ package org.noear.solon.core;
 
 import org.noear.solon.Solon;
 import org.noear.solon.core.handle.*;
-import org.noear.solon.core.route.PathLimiter;
 import org.noear.solon.core.route.RouterInterceptor;
 import org.noear.solon.core.route.RouterInterceptorChainImpl;
 import org.noear.solon.core.route.RouterInterceptorLimiter;
-import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.core.util.RankEntity;
 import org.noear.solon.lang.Nullable;
 
@@ -44,6 +42,7 @@ public class ChainManager {
      */
     public synchronized void addFilter(Filter filter, int index) {
         typeSet.add(filter.getClass());
+
         filterNodes.add(new RankEntity(filter, index));
         filterNodes.sort(Comparator.comparingInt(f -> f.index));
     }
@@ -56,7 +55,11 @@ public class ChainManager {
             return;
         }
 
-        addFilter(filter, index);
+        //有同步锁，就不复用上面的代码了
+        typeSet.add(filter.getClass());
+
+        filterNodes.add(new RankEntity(filter, index));
+        filterNodes.sort(Comparator.comparingInt(f -> f.index));
     }
 
     /**
@@ -97,13 +100,7 @@ public class ChainManager {
     public synchronized void addInterceptor(RouterInterceptor interceptor, int index) {
         typeSet.add(interceptor.getClass());
 
-        if (interceptor instanceof PathLimiter) {
-            interceptor = new RouterInterceptorLimiter(interceptor, ((PathLimiter) interceptor).pathRule());
-            LogUtil.global().warn("PathLimiter will be discarded, suggested use 'RouterInterceptor:pathPatterns'");
-        } else {
-            interceptor = new RouterInterceptorLimiter(interceptor, interceptor.pathPatterns());
-        }
-
+        interceptor = new RouterInterceptorLimiter(interceptor, interceptor.pathPatterns());
         interceptorNodes.add(new RankEntity<>(interceptor, index));
         interceptorNodes.sort(Comparator.comparingInt(f -> f.index));
     }
@@ -116,7 +113,12 @@ public class ChainManager {
             return;
         }
 
-        addInterceptor(interceptor, index);
+        //有同步锁，就不复用上面的代码了
+        typeSet.add(interceptor.getClass());
+
+        interceptor = new RouterInterceptorLimiter(interceptor, interceptor.pathPatterns());
+        interceptorNodes.add(new RankEntity<>(interceptor, index));
+        interceptorNodes.sort(Comparator.comparingInt(f -> f.index));
     }
 
     /**

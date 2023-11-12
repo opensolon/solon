@@ -9,10 +9,10 @@ import org.noear.solon.core.route.*;
  * @author noear 2023/5/31 created
  */
 @Component
-public class RouterInterceptorImpl2 implements RouterInterceptor, PathLimiter {
+public class RouterInterceptorImpl2 implements RouterInterceptor {
 
     @Override
-    public PathRule pathRule() {
+    public PathRule pathPatterns() {
         return new PathRule().include("/admin/**").exclude("/admin/login");
     }
 
