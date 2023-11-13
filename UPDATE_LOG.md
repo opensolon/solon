@@ -34,6 +34,7 @@
 * 移除 PathLimiter （已无用，留着有误导性）
 * 移除 SolonApp::enableWebSocketD,enableWebSocketMvc,enableSocketMvc（已无用，留着有误导性）
 * 优化 http context-path 过滤器处理机制
+* 删除 socketd v1.0 相关的 10 多个插件（v2.0 独立仓库）
 * jackson 升为 2.15.2
 * liteflow 升为 2.11.3
 * activemq 升为 5.16.7
