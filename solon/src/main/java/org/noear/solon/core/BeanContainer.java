@@ -7,6 +7,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.core.aspect.Interceptor;
 import org.noear.solon.core.aspect.InterceptorEntity;
+import org.noear.solon.core.bean.LifecycleBean;
 import org.noear.solon.core.exception.InjectionException;
 import org.noear.solon.core.handle.HandlerLoader;
 import org.noear.solon.core.handle.HandlerLoaderFactory;
@@ -694,6 +695,20 @@ public abstract class BeanContainer {
                 getWrapAsync(varH.getGenericType().getTypeName(), (bw) -> {
                     varH.setValue(bw.get());
                 });
+
+                //补尝处理
+                if(Iterable.class.isAssignableFrom(varH.getType()) == false
+                        && Map.class.isAssignableFrom(varH.getType()) == false){
+
+                    lifecycle(()->{
+                        if(varH.isDone() == false) {
+                            BeanWrap bw = getWrap(varH.getType());
+                            if (bw != null) {
+                                varH.setValue(bw.get());
+                            }
+                        }
+                    });
+                }
             } else {
                 getWrapAsync(varH.getType(), (bw) -> {
                     varH.setValue(bw.get());
@@ -878,6 +893,16 @@ public abstract class BeanContainer {
             }
         }
     }
+
+    /**
+     * 添加生命周期 bean
+     */
+    public abstract void lifecycle(LifecycleBean lifecycle);
+
+    /**
+     * 添加生命周期 bean
+     */
+    public abstract void lifecycle(int index, LifecycleBean lifecycle);
 
     //////////////////////////
     //

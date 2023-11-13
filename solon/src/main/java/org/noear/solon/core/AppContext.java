@@ -845,6 +845,7 @@ public class AppContext extends BeanContainer {
     /**
      * 添加生命周期 bean
      */
+    @Override
     public void lifecycle(LifecycleBean lifecycle) {
         lifecycle(0, lifecycle);
     }
@@ -852,6 +853,7 @@ public class AppContext extends BeanContainer {
     /**
      * 添加生命周期 bean
      */
+    @Override
     public void lifecycle(int index, LifecycleBean lifecycle) {
         lifecycleBeans.add(new RankEntity<>(lifecycle, index));
 
