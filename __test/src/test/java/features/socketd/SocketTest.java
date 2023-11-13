@@ -29,19 +29,19 @@ public class SocketTest {
         Session session = SocketD.createClient(root).open();
 
         Entity msg = session.sendAndRequest(root + "/demog/中文/1", new StringEntity("Hello 世界!"));
-        System.out.println(msg.getDataAsString());
-        msg.getData().reset();
-        assert "我收到了：Hello 世界!".equals(msg.getDataAsString());
+        System.out.println(msg.dataAsString());
+        msg.data().reset();
+        assert "我收到了：Hello 世界!".equals(msg.dataAsString());
 
         Thread.sleep(100);
         msg = session.sendAndRequest(root + "/demog/中文/1", new StringEntity("Hello 世界!"));
         System.out.println(msg.toString());
-        assert "我收到了：Hello 世界!".equals(msg.getDataAsString());
+        assert "我收到了：Hello 世界!".equals(msg.dataAsString());
 
         Thread.sleep(100);
         msg = session.sendAndRequest(root + "/demog/中文/2", new StringEntity("Hello 世界2!"));
         System.out.println(msg.toString());
-        assert "我收到了：Hello 世界2!".equals(msg.getDataAsString());
+        assert "我收到了：Hello 世界2!".equals(msg.dataAsString());
 
         Thread.sleep(100);
 

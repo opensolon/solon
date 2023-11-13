@@ -13,11 +13,6 @@ import java.util.Map;
  */
 public interface WebSocket {
     /**
-     * 获取会话Id
-     * */
-    String sid();
-
-    /**
      * 是否有效
      */
     boolean isValid();
@@ -68,7 +63,7 @@ public interface WebSocket {
      * @param name  名字
      * @param value 值
      */
-    String paramSet(String name, String value);
+    void param(String name, String value);
 
     /**
      * 获取远程地址
@@ -79,16 +74,6 @@ public interface WebSocket {
      * 获取本地地址
      */
     InetSocketAddress localAddress() throws IOException;
-
-    /**
-     * 设置附件
-     */
-    <T> void attachment(T attachment);
-
-    /**
-     * 获取附件
-     */
-    <T> T attachment();
 
     /**
      * 获取所有属性
@@ -116,7 +101,7 @@ public interface WebSocket {
      * @param name  名字
      * @param value 值
      */
-    <T> void attrSet(String name, T value);
+    <T> void attr(String name, T value);
 
     /**
      * 发送文本

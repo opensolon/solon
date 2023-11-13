@@ -67,10 +67,10 @@ public class SocketdChannel extends ChannelBase implements Channel {
         }
 
         //2.构建结果
-        Result result = new Result(200, response.getDataAsBytes());
+        Result result = new Result(200, response.dataAsBytes());
 
         //2.1.设置头
-        Map<String, String> map = response.getMetaMap();
+        Map<String, String> map = response.metaMap();
         map.forEach((k, v) -> {
             result.headerAdd(k, v);
         });

@@ -18,6 +18,7 @@ import java.nio.ByteBuffer;
  * @since 2.6
  */
 public class ToSocketdWebSocketListener implements WebSocketListener {
+    static final String SOCKETD_KEY = "SOCKETD_KEY";
 
     static final Logger log = LoggerFactory.getLogger(ToSocketdWebSocketListener.class);
 
@@ -33,11 +34,11 @@ public class ToSocketdWebSocketListener implements WebSocketListener {
     }
 
     private Channel getChannel(WebSocket socket) {
-        Channel channel = socket.attachment();
+        Channel channel = socket.attr(SOCKETD_KEY);
 
         if (channel == null) {
             channel = new ChannelDefault<>(socket, config, assistant);
-            socket.attachment(channel);
+            socket.attr(SOCKETD_KEY, channel);
         }
 
         return channel;
@@ -45,8 +46,7 @@ public class ToSocketdWebSocketListener implements WebSocketListener {
 
     @Override
     public void onOpen(WebSocket socket) {
-        Channel channel = getChannel(socket);
-        socket.attachment(channel);
+        getChannel(socket);
     }
 
     @Override

@@ -46,7 +46,7 @@ public class SocketCallbackTest {
 
         CompletableFuture<Boolean> check = new CompletableFuture<>();
         session.sendAndSubscribe(root + "/demoh/rpc/hello", message, (rst) -> {
-            String rst_str = ONode.deserialize(rst.getDataAsString());
+            String rst_str = ONode.deserialize(rst.dataAsString());
 
             System.out.println("收到："+rst_str);
 

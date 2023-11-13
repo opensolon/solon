@@ -25,22 +25,22 @@ public class SocketdSessionState implements SessionState {
 
     @Override
     public String sessionId() {
-        return session.getSessionId();
+        return session.sessionId();
     }
 
     @Override
     public String sessionChangeId() {
-        return session.getSessionId();
+        return session.sessionId();
     }
 
     @Override
     public Collection<String> sessionKeys() {
-        return session.getAttrMap().keySet();
+        return session.attrMap().keySet();
     }
 
     @Override
     public <T> T sessionGet(String key, Class<T> clz) {
-        return (T) session.getAttr(key);
+        return (T) session.attr(key);
     }
 
     @Override
@@ -48,18 +48,18 @@ public class SocketdSessionState implements SessionState {
         if (val == null) {
             sessionRemove(key);
         } else {
-            session.setAttr(key, val);
+            session.attr(key, val);
         }
     }
 
     @Override
     public void sessionRemove(String key) {
-        session.getAttrMap().remove(key);
+        session.attrMap().remove(key);
     }
 
     @Override
     public void sessionClear() {
-        session.getAttrMap().clear();
+        session.attrMap().clear();
     }
 
     @Override

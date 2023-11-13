@@ -40,13 +40,13 @@ public class SocketdContext extends ContextEmpty {
         _method = MethodType.SOCKET;
 
         //传递 sessoin param
-        if (session.getHandshake().getParamMap().size() > 0) {
-            headerMap().putAll(session.getHandshake().getParamMap());
+        if (session.handshake().paramMap().size() > 0) {
+            headerMap().putAll(session.handshake().paramMap());
         }
 
         //传递 message meta
-        if (Utils.isNotEmpty(message.getMetaString())) {
-            headerMap().putAll(message.getMetaMap());
+        if (Utils.isNotEmpty(message.metaString())) {
+            headerMap().putAll(message.metaMap());
         }
 
         sessionState = new SocketdSessionState(_session);
@@ -61,7 +61,7 @@ public class SocketdContext extends ContextEmpty {
     @Override
     public String remoteIp() {
         try {
-            return _session.getRemoteAddress().getAddress().toString();
+            return _session.remoteAddress().getAddress().toString();
         } catch (IOException e) {
             throw new IllegalStateException(e);
         }
@@ -70,7 +70,7 @@ public class SocketdContext extends ContextEmpty {
     @Override
     public int remotePort() {
         try {
-            return _session.getRemoteAddress().getPort();
+            return _session.remoteAddress().getPort();
         } catch (IOException e) {
             throw new IllegalStateException(e);
         }
@@ -88,7 +88,7 @@ public class SocketdContext extends ContextEmpty {
 
     @Override
     public String protocol() {
-        return _session.getHandshake().getScheme();
+        return _session.handshake().uri().getScheme();
     }
 
 
@@ -106,16 +106,12 @@ public class SocketdContext extends ContextEmpty {
 
     @Override
     public String url() {
-        return _request.getTopic();
+        return _request.topic();
     }
 
     @Override
     public long contentLength() {
-        if (_request.getData() == null) {
-            return 0;
-        } else {
-            return _request.getDataSize();
-        }
+        return _request.dataSize();
     }
 
     @Override
@@ -130,7 +126,7 @@ public class SocketdContext extends ContextEmpty {
 
     @Override
     public InputStream bodyAsStream() throws IOException {
-        return _request.getData();
+        return _request.data();
     }
 
     //==============
@@ -147,17 +143,17 @@ public class SocketdContext extends ContextEmpty {
 
     @Override
     public void headerSet(String key, String val) {
-        _response.putMeta(key,val);
+        _response.meta(key,val);
     }
 
     @Override
     public void headerAdd(String key, String val) {
-        _response.putMeta(key,val);
+        _response.meta(key,val);
     }
 
     @Override
     public String headerOfResponse(String name) {
-        return _response.getMeta(name);
+        return _response.meta(name);
     }
 
 
@@ -223,7 +219,7 @@ public class SocketdContext extends ContextEmpty {
             _session.replyEnd(_request, _response);
         } else {
             if (dataSize > 0) {
-                log.warn("No reply is supported for the current message, key={}", _request.getSid());
+                log.warn("No reply is supported for the current message, sid={}", _request.sid());
             }
         }
     }

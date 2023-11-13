@@ -47,10 +47,10 @@ public class ExpressListener implements Listener {
     public void onOpen(Session s) throws IOException{
         //获取path var
         if (pathAnalyzer != null) {
-            Matcher pm = pathAnalyzer.matcher(s.getPath());
+            Matcher pm = pathAnalyzer.matcher(s.path());
             if (pm.find()) {
                 for (int i = 0, len = pathKeys.size(); i < len; i++) {
-                    s.getHandshake().putParam(pathKeys.get(i), pm.group(i + 1));//不采用group name,可解决_的问题
+                    s.handshake().param(pathKeys.get(i), pm.group(i + 1));//不采用group name,可解决_的问题
                 }
             }
         }

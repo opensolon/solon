@@ -21,8 +21,8 @@ public class ToHandlerListener extends SimpleListener {
 
     @Override
     public void onMessage(Session session, Message message) throws IOException {
-        if (Utils.isEmpty(message.getTopic())) {
-            log.warn("This message is missing topic, sid={}", message.getSid());
+        if (Utils.isEmpty(message.topic())) {
+            log.warn("This message is missing topic, sid={}", message.sid());
             return;
         }
 

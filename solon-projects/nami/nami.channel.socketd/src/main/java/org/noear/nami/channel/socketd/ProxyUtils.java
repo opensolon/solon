@@ -21,7 +21,7 @@ public class ProxyUtils {
      * 创建接口
      * */
     public static <T> T create(Supplier<Session> sessions, Encoder encoder, Decoder decoder, Class<T> service) {
-        URI uri = sessions.get().getHandshake().getUri();
+        URI uri = sessions.get().handshake().uri();
         if (uri == null) {
             uri = URI.create("tcp://socketd");
         }

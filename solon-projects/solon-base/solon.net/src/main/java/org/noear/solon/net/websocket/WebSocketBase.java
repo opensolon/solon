@@ -16,19 +16,13 @@ import java.util.Objects;
 public abstract class WebSocketBase implements WebSocket {
 
     private final Map<String, Object> attrMap = new HashMap<>();
-    private final String sid = Utils.guid();
-    private Object attachment;
     private Handshake handshake;
     private boolean isClosed;
     private String pathNew;
+    private String key = Utils.guid();
 
     protected void init(URI uri) {
         this.handshake = new HandshakeImpl(uri);
-    }
-
-    @Override
-    public String sid() {
-        return sid;
     }
 
     public boolean isClosed() {
@@ -75,20 +69,9 @@ public abstract class WebSocketBase implements WebSocket {
     }
 
     @Override
-    public String paramSet(String name, String value) {
-        return handshake.getParamMap().put(name, value);
+    public void param(String name, String value) {
+        handshake.getParamMap().put(name, value);
     }
-
-    @Override
-    public <T> void attachment(T attachment) {
-        this.attachment = attachment;
-    }
-
-    @Override
-    public <T> T attachment() {
-        return (T) attachment;
-    }
-
 
     @Override
     public Map<String, Object> attrMap() {
@@ -106,7 +89,7 @@ public abstract class WebSocketBase implements WebSocket {
     }
 
     @Override
-    public <T> void attrSet(String name, T value) {
+    public <T> void attr(String name, T value) {
         attrMap.put(name, value);
     }
 
@@ -118,13 +101,13 @@ public abstract class WebSocketBase implements WebSocket {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof WebSocket)) return false;
-        WebSocket that = (WebSocket) o;
-        return Objects.equals(sid(), that.sid());
+        if (o == null || getClass() != o.getClass()) return false;
+        WebSocketBase that = (WebSocketBase) o;
+        return Objects.equals(key, that.key);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(sid);
+        return Objects.hash(key);
     }
 }
