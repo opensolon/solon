@@ -189,9 +189,7 @@ public class AppContext extends BeanContainer {
             //组件化处理
             beanComponentized(bw);
 
-            if (Solon.cfg().isDebugMode()) {
-                LogUtil.global().warn("@ProxyComponent will be discarded, suggested use '@Component'");
-            }
+            LogUtil.global().warn("@ProxyComponent will be discarded, suggested use '@Component'");
         });
 
         //注册 @Remoting 构建器
