@@ -33,7 +33,7 @@ public class HibernateAdapterManager {
         HibernateAdapter db = dbMap.get(bw.name());
 
         if (db == null) {
-            synchronized (bw.name().intern()) {
+            synchronized (dbMap) {
                 db = dbMap.get(bw.name());
                 if (db == null) {
                     db = buildAdapter(bw);

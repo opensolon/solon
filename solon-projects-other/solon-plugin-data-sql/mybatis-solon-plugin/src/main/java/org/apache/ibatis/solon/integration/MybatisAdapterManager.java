@@ -29,7 +29,7 @@ public class MybatisAdapterManager {
     /**
      * 缓存适配器
      */
-    private static Map<String, MybatisAdapter> dbMap = new ConcurrentHashMap<>();
+    private static final Map<String, MybatisAdapter> dbMap = new ConcurrentHashMap<>();
 
     public static MybatisAdapter getOnly(String name){
         return dbMap.get(name);
@@ -46,7 +46,7 @@ public class MybatisAdapterManager {
         MybatisAdapter db = dbMap.get(bw.name());
 
         if (db == null) {
-            synchronized (bw.name().intern()) {
+            synchronized (dbMap) {
                 db = dbMap.get(bw.name());
                 if (db == null) {
                     db = buildAdapter(bw);

@@ -67,7 +67,7 @@ public abstract class CloudBreakerServiceLocalImpl implements CloudBreakerServic
 
         if(tmp == null && rootValue > 0) {
             //动态创建
-            synchronized (breakerName.intern()) {
+            synchronized (breakers) {
                 tmp = breakers.get(breakerName);
 
                 if (tmp == null) {

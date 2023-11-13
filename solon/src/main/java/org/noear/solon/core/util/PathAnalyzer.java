@@ -23,7 +23,7 @@ public class PathAnalyzer {
     /**
      * 分析器缓存
      */
-    private static Map<String, PathAnalyzer> cached = new LinkedHashMap<>();
+    private static final Map<String, PathAnalyzer> cached = new LinkedHashMap<>();
 
     public static void setCaseSensitive(boolean caseSensitive) {
         PathAnalyzer.caseSensitive = caseSensitive;
@@ -32,7 +32,7 @@ public class PathAnalyzer {
     public static PathAnalyzer get(String expr) {
         PathAnalyzer pa = cached.get(expr);
         if (pa == null) {
-            synchronized (expr.intern()) {
+            synchronized (cached) {
                 pa = cached.get(expr);
                 if (pa == null) {
                     pa = new PathAnalyzer(expr);

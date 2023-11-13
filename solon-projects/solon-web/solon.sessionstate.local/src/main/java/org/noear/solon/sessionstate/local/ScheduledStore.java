@@ -1,6 +1,9 @@
 package org.noear.solon.sessionstate.local;
 
+import org.noear.solon.core.util.RunUtil;
+
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.*;
 
@@ -10,8 +13,7 @@ import java.util.concurrent.*;
 class ScheduledStore {
     private int _defaultSeconds;
 
-    private Map<String, Entity> _data = new ConcurrentHashMap<>();   //缓存存储器
-    private static ScheduledExecutorService _exec = Executors.newSingleThreadScheduledExecutor(); //线程池
+    private Map<String, Entity> _data = new HashMap<>();   //缓存存储器
 
     public ScheduledStore(int seconds){
         _defaultSeconds = seconds;
@@ -22,7 +24,7 @@ class ScheduledStore {
     }
 
     public void put(String block, String key, Object obj) {
-        synchronized (block.intern()) {
+        synchronized (_data) {
             Entity ent = _data.get(block);
             if (ent == null) {
                 ent = new Entity();
@@ -33,9 +35,9 @@ class ScheduledStore {
 
             ent.map.put(key, obj);
 
-            ent.future = _exec.schedule(() -> {
+            ent.future = RunUtil.delay(() -> {
                 _data.remove(block);
-            }, _defaultSeconds, TimeUnit.SECONDS);
+            }, _defaultSeconds * 1000);
         }
     }
 
@@ -44,9 +46,9 @@ class ScheduledStore {
         if (ent != null) {
             ent.futureDel();
 
-            ent.future = _exec.schedule(() -> {
+            ent.future = RunUtil.delay(() -> {
                 _data.remove(block);
-            }, _defaultSeconds, TimeUnit.SECONDS);
+            }, _defaultSeconds * 1000);
         }
     }
 
@@ -60,7 +62,7 @@ class ScheduledStore {
     }
 
     public void remove(String block, String key) {
-        synchronized (block.intern()) {
+        synchronized (_data) {
             Entity ent = _data.get(block);
             if (ent != null) {
                 ent.map.remove(key);
@@ -69,7 +71,7 @@ class ScheduledStore {
     }
 
     public void clear(String block) {
-        synchronized (block.intern()) {
+        synchronized (_data) {
             Entity ent = _data.get(block);
             if (ent != null) {
                 ent.futureDel();
@@ -80,11 +82,13 @@ class ScheduledStore {
     }
 
     public void clear() {
-        for (Entity ent : _data.values()) {
-            ent.futureDel();
-        }
+        synchronized (_data) {
+            for (Entity ent : _data.values()) {
+                ent.futureDel();
+            }
 
-        _data.clear();
+            _data.clear();
+        }
     }
 
     //存储实体

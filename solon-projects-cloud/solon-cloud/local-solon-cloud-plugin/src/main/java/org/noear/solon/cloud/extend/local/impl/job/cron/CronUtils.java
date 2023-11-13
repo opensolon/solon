@@ -14,7 +14,7 @@ import java.util.TimeZone;
  * @since 1.6
  * */
 public class CronUtils {
-    private static Map<String, CronExpressionPlus> cached = new HashMap<>();
+    private static final Map<String, CronExpressionPlus> cached = new HashMap<>();
 
     /**
      * 获取表达式
@@ -25,7 +25,7 @@ public class CronUtils {
         CronExpressionPlus expr = cached.get(cron);
 
         if (expr == null) {
-            synchronized (cron.intern()) {
+            synchronized (cached) {
                 expr = cached.get(cron);
 
                 if (expr == null) {

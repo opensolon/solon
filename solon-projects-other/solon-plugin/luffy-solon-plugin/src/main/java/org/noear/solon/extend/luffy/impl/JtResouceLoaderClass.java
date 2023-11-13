@@ -15,14 +15,14 @@ import java.util.Map;
  */
 public class JtResouceLoaderClass implements JtResouceLoader {
 
-    Map<String, AFileModel> fileCached = new LinkedHashMap<>();
+    private final Map<String, AFileModel> fileCached = new LinkedHashMap<>();
 
     @Override
     public AFileModel fileGet(String path) throws Exception {
         AFileModel file = fileCached.get(path);
 
         if (file == null) {
-            synchronized (path.intern()) {
+            synchronized (fileCached) {
                 file = fileCached.get(path);
 
                 if (file == null) {
@@ -45,6 +45,8 @@ public class JtResouceLoaderClass implements JtResouceLoader {
                             file.edit_mode = JtMapping.getActuator("");
                         }
                     }
+
+                    fileCached.put(path, file);
                 }
             }
         }

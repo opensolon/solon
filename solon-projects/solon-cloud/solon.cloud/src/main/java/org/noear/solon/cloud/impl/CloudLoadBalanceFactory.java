@@ -74,7 +74,7 @@ public class CloudLoadBalanceFactory implements LoadBalance.Factory {
         CloudLoadBalance tmp = cached.get(cacheKey);
 
         if (tmp == null) {
-            synchronized (cacheKey.intern()) {
+            synchronized (cached) {
                 tmp = cached.get(cacheKey);
 
                 if (tmp == null) {
@@ -99,7 +99,7 @@ public class CloudLoadBalanceFactory implements LoadBalance.Factory {
         CloudLoadBalance tmp = cached.get(cacheKey);
 
         if (tmp == null) {
-            synchronized (cacheKey.intern()) {
+            synchronized (cached) {
                 tmp = cached.get(cacheKey);
 
                 if (tmp == null) {

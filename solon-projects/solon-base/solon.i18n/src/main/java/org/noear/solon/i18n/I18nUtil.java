@@ -67,7 +67,7 @@ public class I18nUtil {
         I18nBundle bundle = bundleCached.get(cacheKey);
 
         if (bundle == null) {
-            synchronized (cacheKey.intern()) {
+            synchronized (bundleCached) {
                 bundle = bundleCached.get(cacheKey);
 
                 if (bundle == null) {

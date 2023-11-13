@@ -18,7 +18,7 @@ public class LocalCacheService implements CacheService {
     private int _defaultSeconds;
 
     //缓存存储器
-    private Map<String, Entity> _data = new ConcurrentHashMap<>();
+    private final Map<String, Entity> _data = new ConcurrentHashMap<>();
     //计划线程池（用于超时处理）
     private static ScheduledExecutorService _exec = Executors.newSingleThreadScheduledExecutor();
 
@@ -55,7 +55,7 @@ public class LocalCacheService implements CacheService {
             seconds = getDefalutSeconds();
         }
 
-        synchronized (key.intern()) {
+        synchronized (_data) {
             Entity ent = _data.get(key);
             if (ent == null) {
                 //如果末存在，则新建实体
@@ -95,7 +95,7 @@ public class LocalCacheService implements CacheService {
      */
     @Override
     public void remove(String key) {
-        synchronized (key.intern()) {
+        synchronized (_data) {
             Entity ent = _data.remove(key);
 
             if (ent != null) {

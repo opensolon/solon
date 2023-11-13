@@ -29,7 +29,7 @@ public class CloudIdServiceFactoryImp implements CloudIdServiceFactory {
         CloudIdService tmp = cached.get(block);
 
         if (tmp == null) {
-            synchronized (block.intern()) {
+            synchronized (cached) {
                 tmp = cached.get(block);
                 if (tmp == null) {
                     tmp = new CloudIdServiceImp(block, workId, idStart);

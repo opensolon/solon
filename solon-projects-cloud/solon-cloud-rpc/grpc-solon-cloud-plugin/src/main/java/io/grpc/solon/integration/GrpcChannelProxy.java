@@ -15,8 +15,9 @@ import java.util.Map;
  * @since 1.9
  */
 public class GrpcChannelProxy extends Channel {
-    LoadBalance upstream;
-    Map<String, Channel> channelMap;
+    private final Map<String, Channel>  channelMap = new HashMap<>();
+
+    private LoadBalance upstream;
 
     public GrpcChannelProxy(String group, String service) {
         if (Utils.isEmpty(group)) {
@@ -29,7 +30,7 @@ public class GrpcChannelProxy extends Channel {
             throw new IllegalStateException("No service upstream found: " + service);
         }
 
-        channelMap = new HashMap<>();
+
     }
 
     @Override
@@ -47,7 +48,7 @@ public class GrpcChannelProxy extends Channel {
         Channel real = channelMap.get(server);
 
         if (real == null) {
-            synchronized (server.intern()) {
+            synchronized (channelMap) {
                 real = channelMap.get(server);
                 if (real == null) {
                     URI uri = URI.create(server);

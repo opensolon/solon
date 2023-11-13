@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -23,7 +24,7 @@ public class CloudI18nServiceWaterImpl implements CloudI18nService {
     static final Logger log = LoggerFactory.getLogger(CloudI18nServiceWaterImpl.class);
 
     private String packNameDefault;
-    private Map<String, Pack> packMap = new ConcurrentHashMap<>();
+    private Map<String, Pack> packMap = new HashMap<>();
 
     public CloudI18nServiceWaterImpl(CloudProps cloudProps){
         packNameDefault = cloudProps.getI18nDefault();
@@ -59,7 +60,7 @@ public class CloudI18nServiceWaterImpl implements CloudI18nService {
         Pack pack = packMap.get(packKey);
 
         if (pack == null) {
-            synchronized (packKey.intern()) {
+            synchronized (packMap) {
                 pack = packMap.get(packKey);
 
                 if (pack == null) {

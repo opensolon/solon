@@ -4,6 +4,7 @@ import org.noear.solon.core.BeanWrap;
 import org.noear.weed.DbContext;
 
 import javax.sql.DataSource;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -19,13 +20,13 @@ class DbManager {
     }
 
 
-    private Map<String, DbContext> dbMap = new ConcurrentHashMap<>();
+    private final Map<String, DbContext> dbMap = new HashMap<>();
 
     public DbContext get(BeanWrap bw) {
         DbContext db = dbMap.get(bw.name());
 
         if (db == null) {
-            synchronized (bw.name().intern()) {
+            synchronized (dbMap) {
                 db = dbMap.get(bw.name());
                 if (db == null) {
                     DataSource ds = bw.raw();

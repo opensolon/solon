@@ -21,14 +21,14 @@ import java.util.Map;
 public class SocketdClientChannel extends ChannelBase implements Channel {
     public static final SocketdClientChannel instance = new SocketdClientChannel();
 
-    Map<String, SocketdChannel> channelMap = new HashMap<>();
+    private final Map<String, SocketdChannel> channelMap = new HashMap<>();
 
     private SocketdChannel get(URI uri) {
         String hostname = uri.getAuthority();
         SocketdChannel channel = channelMap.get(hostname);
 
         if (channel == null) {
-            synchronized (hostname.intern()) {
+            synchronized (channelMap) {
                 channel = channelMap.get(hostname);
 
                 if (channel == null) {

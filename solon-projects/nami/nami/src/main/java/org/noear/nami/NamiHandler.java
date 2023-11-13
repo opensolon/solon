@@ -275,7 +275,7 @@ public class NamiHandler implements InvocationHandler {
     private Map<String, String> buildPathKeys(String path) {
         Map<String, String> pathKeys = pathKeysCached.get(path);
         if (pathKeys == null) {
-            synchronized (path.intern()) {
+            synchronized (pathKeysCached) {
                 pathKeys = pathKeysCached.get(path);
                 if (pathKeys == null) {
                     pathKeys = new LinkedHashMap<>();
