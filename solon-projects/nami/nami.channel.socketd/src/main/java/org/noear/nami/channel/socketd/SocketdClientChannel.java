@@ -23,8 +23,7 @@ public class SocketdClientChannel extends ChannelBase implements Channel {
 
     private final Map<String, SocketdChannel> channelMap = new HashMap<>();
 
-    private SocketdChannel get(URI uri) {
-        String hostname = uri.getAuthority();
+    private SocketdChannel get(String hostname, String url) {
         SocketdChannel channel = channelMap.get(hostname);
 
         if (channel == null) {
@@ -33,7 +32,7 @@ public class SocketdClientChannel extends ChannelBase implements Channel {
 
                 if (channel == null) {
                     try {
-                        Session session = SocketD.createClient(uri.toString())
+                        Session session = SocketD.createClient(url)
                                 .listen(SocketdProxy.socketdToHandler)
                                 .open();
                         channel = new SocketdChannel(() -> session);
@@ -55,7 +54,8 @@ public class SocketdClientChannel extends ChannelBase implements Channel {
         pretreatment(ctx);
 
         URI uri = URI.create(ctx.url);
-        SocketdChannel channel = get(uri);
+        String hostname = uri.getAuthority();
+        SocketdChannel channel = get(hostname, ctx.url);
 
         return channel.call(ctx);
     }

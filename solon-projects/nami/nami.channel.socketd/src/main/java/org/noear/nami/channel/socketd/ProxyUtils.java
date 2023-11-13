@@ -26,7 +26,7 @@ public class ProxyUtils {
             uri = URI.create("tcp://socketd");
         }
 
-        String server = uri.getScheme() + ":" + uri.getSchemeSpecificPart();
+        String server = uri.getScheme() + ":" + uri.getAuthority();
 
         return Nami.builder()
                 .encoder(encoder)
