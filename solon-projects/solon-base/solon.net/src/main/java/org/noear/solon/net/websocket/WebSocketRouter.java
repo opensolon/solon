@@ -31,6 +31,13 @@ public class WebSocketRouter {
     }
 
     /**
+     * 前置监听，如果之前还没有
+     */
+    public void beforeIfAbsent(WebSocketListener listener) {
+        rootListener.prevIfAbsent(listener);
+    }
+
+    /**
      * 主监听
      */
     public void of(String path, WebSocketListener listener) {
