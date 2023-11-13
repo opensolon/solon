@@ -2,7 +2,7 @@ package features.socketd;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.noear.nami.channel.socketd.SocketdRpc;
+import org.noear.nami.channel.socketd.SocketdProxy;
 import org.noear.snack.ONode;
 import org.noear.socketd.SocketD;
 import org.noear.socketd.transport.core.Entity;
@@ -33,7 +33,7 @@ public class SocketCallbackTest {
                     public void onMessage(Session session, Message message) {
                         System.out.println("实例监到，收到了："+message);
                     }
-                }).next(SocketdRpc.socketdToHandler))
+                }).next(SocketdProxy.socketdToHandler))
                 .open();
 
         String root = "tcp://localhost:" + _port;

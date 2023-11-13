@@ -6,12 +6,12 @@ import org.noear.solon.core.handle.Context;
 import org.noear.solon.net.socketd.handle.ToHandlerListener;
 
 /**
- * Socketd Rpc
+ * Socketd 代理
  *
  * @author noear
  * @since 2.6
  */
-public class SocketdRpc {
+public class SocketdProxy {
     public static final ToHandlerListener socketdToHandler = new ToHandlerListener();
 
     /**

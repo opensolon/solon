@@ -3,7 +3,7 @@ package features.socketd;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.noear.nami.Nami;
-import org.noear.nami.channel.socketd.SocketdRpc;
+import org.noear.nami.channel.socketd.SocketdProxy;
 import org.noear.nami.coder.snack3.SnackDecoder;
 import org.noear.nami.coder.snack3.SnackEncoder;
 import org.noear.snack.ONode;
@@ -28,7 +28,7 @@ public class SocketResponseTest {
         int _port = 8080 + 20000;
 
         Session session = SocketD.createClient("tcp://localhost:"+_port)
-                .listen(SocketdRpc.socketdToHandler)
+                .listen(SocketdProxy.socketdToHandler)
                 .open();
 
 
@@ -47,7 +47,7 @@ public class SocketResponseTest {
         int _port = 8080 + 20000;
 
         Session session = SocketD.createClient("tcp://localhost:"+ _port)
-                .listen(SocketdRpc.socketdToHandler)
+                .listen(SocketdProxy.socketdToHandler)
                 .open();
 
 

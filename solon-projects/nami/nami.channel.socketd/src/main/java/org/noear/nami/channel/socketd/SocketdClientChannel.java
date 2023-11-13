@@ -34,7 +34,7 @@ public class SocketdClientChannel extends ChannelBase implements Channel {
                 if (channel == null) {
                     try {
                         Session session = SocketD.createClient(uri.toString())
-                                .listen(SocketdRpc.socketdToHandler)
+                                .listen(SocketdProxy.socketdToHandler)
                                 .open();
                         channel = new SocketdChannel(() -> session);
                         channelMap.put(hostname, channel);

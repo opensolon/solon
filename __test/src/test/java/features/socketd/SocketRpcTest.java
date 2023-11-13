@@ -3,7 +3,7 @@ package features.socketd;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.noear.nami.Nami;
-import org.noear.nami.channel.socketd.SocketdRpc;
+import org.noear.nami.channel.socketd.SocketdProxy;
 import org.noear.solon.Solon;
 import org.noear.solon.test.SolonJUnit5Extension;
 import org.noear.solon.test.SolonTest;
@@ -18,7 +18,7 @@ public class SocketRpcTest {
     public void test_rpc_api() throws Throwable {
         int _port = 8080 + 20000;
 
-        HelloRpcService rpc = SocketdRpc.create("tcp://localhost:" + _port, HelloRpcService.class);
+        HelloRpcService rpc = SocketdProxy.create("tcp://localhost:" + _port, HelloRpcService.class);
 
         String rst = rpc.hello("noear");
 
