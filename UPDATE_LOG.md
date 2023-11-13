@@ -22,8 +22,8 @@
 
 ### 2.6.0
 * 设定 smart-http 为 solon-api 快捷组合包的默认 http-server
-* 重构 socketd 适配，基于 v2.0
-* 重构 websocket 适配，基于 v2.0
+* 重构 socketd 适配，升为 v2.0
+* 重构 websocket 适配，升为 v2.0
 * 新增 solon.net 模块用于定义网络接口，分离 websocket 与 socketd 的接口（分开后，用户层面更清爽）
 * 新增 solon.boot.socketd 插件
 * 新增 sa-token-dao-redisson-jackson 插件
