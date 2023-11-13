@@ -169,11 +169,6 @@ public class SolonApp extends RouterWrapper {
         if (initialize != null) {
             initialize.accept(this);
         }
-
-        //4.尝试设置 context-path
-        if (Utils.isNotEmpty(cfg().serverContextPath())) {
-            this.filterIfAbsent(-99, new ContextPathFilter(cfg().serverContextPath()));
-        }
     }
 
 
@@ -230,7 +225,12 @@ public class SolonApp extends RouterWrapper {
             RenderManager.mapping("." + k, v);
         });
 
-        //3.1.标识上下文加载完成
+        //3.1.尝试设置 context-path
+        if (Utils.isNotEmpty(cfg().serverContextPath())) {
+            this.filterIfAbsent(-99, new ContextPathFilter(false));
+        }
+
+        //3.2.标识上下文加载完成
         context().start();
 
         //event::4.x.推送App load end事件

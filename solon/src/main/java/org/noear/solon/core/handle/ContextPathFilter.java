@@ -18,6 +18,10 @@ public class ContextPathFilter implements Filter {
         this(Solon.cfg().serverContextPath(), forced);
     }
 
+    public ContextPathFilter(String contextPath) {
+        this(contextPath, false);
+    }
+
     /**
      * @param contextPath '/demo/'
      */
@@ -46,10 +50,6 @@ public class ContextPathFilter implements Filter {
             //有可能是 ContextPathFilter 是用户手动添加的！需要补一下配置
             Solon.cfg().serverContextPath(this.contextPath1);
         }
-    }
-
-    public ContextPathFilter(String contextPath) {
-        this(contextPath, false);
     }
 
 
