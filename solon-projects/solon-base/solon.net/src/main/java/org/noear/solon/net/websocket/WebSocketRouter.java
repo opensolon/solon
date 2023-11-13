@@ -31,7 +31,7 @@ public class WebSocketRouter {
     }
 
     /**
-     * 前置监听，如果之前还没有
+     * 前置监听，如果没有同类型的
      */
     public void beforeIfAbsent(WebSocketListener listener) {
         rootListener.prevIfAbsent(listener);
@@ -49,6 +49,13 @@ public class WebSocketRouter {
      */
     public void after(WebSocketListener listener) {
         rootListener.next(listener);
+    }
+
+    /**
+     * 后置监听，如果没有同类型的
+     */
+    public void afterIfAbsent(WebSocketListener listener) {
+        rootListener.nextIfAbsent(listener);
     }
 
     public WebSocketListener getListener() {
