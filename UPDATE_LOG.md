@@ -21,21 +21,23 @@
 * 新增 graphql-solon-plugin 插件
 
 ### 2.6.0
-* 新增 solon.net 模块用于定义网络接口，分离 websocket 与 socketd 的接口（分开后，用户层面更清爽）？？？
-* 新增 sa-token-dao-redisson-jackson 模块
-* 添加 SolonApp::filterIfAbsent,routerInterceptorIfAbsent 接口
-* 调整 smart-http,jetty,undertow 统一使用 server.http.idleTimeout 配置
+* 设定 smart-http 为 solon-api 快捷组合包的默认 http-server
 * 重构 socketd 适配，基于 v2.0
 * 重构 websocket 适配，基于 v2.0
+* 新增 solon.net 模块用于定义网络接口，分离 websocket 与 socketd 的接口（分开后，用户层面更清爽）
+* 新增 solon.boot.socketd 插件
+* 新增 sa-token-dao-redisson-jackson 插件
+* 添加 SolonApp::filterIfAbsent,routerInterceptorIfAbsent 接口
+* 调整 smart-http,jetty,undertow 统一使用 server.http.idleTimeout 配置
 * 移除 AopContext（完成更名 AppContext 的第二步动作）
 * 移除 PathLimiter （已无用，留着有误导性）
 * 移除 SolonApp::enableWebSocketD,enableWebSocketMvc,enableSocketMvc（已无用，留着有误导性）
-* 设定 smart-http 为 solon-api 快捷组合包的默认 httpserver
 * jackson 升为 2.15.2
 * liteflow 升为 2.11.3
 * activemq 升为 5.16.7
 * redisx 升为 1.6.2
 * minio8 升为 8.5.3
+* sqltoy 升为 5.2.79
 * fastjson2 升为 2.0.42
 
 
