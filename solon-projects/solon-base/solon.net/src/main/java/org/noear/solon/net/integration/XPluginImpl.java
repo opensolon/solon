@@ -4,20 +4,18 @@ import org.noear.socketd.transport.core.Listener;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.*;
+import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.net.annotation.ServerEndpoint;
 import org.noear.solon.net.socketd.SocketdRouter;
 import org.noear.solon.net.websocket.WebSocketListener;
 import org.noear.solon.net.websocket.WebSocketRouter;
 import org.noear.solon.net.websocket.listener.ContextPathWebSocketListener;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * @author noear
  * @since 2.6
  */
 public class XPluginImpl implements Plugin {
-    static final Logger log = LoggerFactory.getLogger(XPluginImpl.class);
 
     private final SocketdRouter socketdRouter = SocketdRouter.getInstance();
     private final WebSocketRouter webSocketRouter = WebSocketRouter.getInstance();
@@ -65,7 +63,7 @@ public class XPluginImpl implements Plugin {
         }
 
         if (registered == false) {
-            log.warn("@ServerEndpoint does not support type: {}", clz.getName());
+            LogUtil.global().warn("@ServerEndpoint does not support type: " + clz.getName());
         }
     }
 }
