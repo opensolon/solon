@@ -45,12 +45,7 @@ public class RollbackInterceptor implements Interceptor {
         try {
             if (isRollback) {
                 //应用（可能要改成开关控制）
-                Solon.app().routerInterceptor(Integer.MAX_VALUE, ((ctx, mainHandler, chain) -> {
-                    TranUtils.execute(new TranAnno(), () -> {
-                        chain.doIntercept(ctx, mainHandler);
-                        throw new RollbackException();
-                    });
-                }));
+                Solon.app().chainManager().addInterceptorIfAbsent(RollbackRouterInterceptor.getInstance(), Integer.MAX_VALUE);
 
                 //当前
                 TranUtils.execute(new TranAnno(), () -> {
@@ -72,6 +67,10 @@ public class RollbackInterceptor implements Interceptor {
         } finally {
             //恢复备份
             Solon.app().enableTransaction(enableTransactionBak);
+
+            if (isRollback) {
+                Solon.app().chainManager().removeInterceptor(RollbackRouterInterceptor.class);
+            }
         }
     }
 }
