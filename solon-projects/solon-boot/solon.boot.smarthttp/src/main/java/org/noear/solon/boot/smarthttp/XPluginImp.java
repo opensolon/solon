@@ -7,6 +7,7 @@ import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.prop.impl.HttpServerProps;
 import org.noear.solon.core.*;
 import org.noear.solon.core.event.EventBus;
+import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.core.util.LogUtil;
 
 public final class XPluginImp implements Plugin {
@@ -26,6 +27,16 @@ public final class XPluginImp implements Plugin {
     @Override
     public void start(AppContext context) {
         if (Solon.app().enableHttp() == false) {
+            return;
+        }
+
+        //如果有jetty插件，就不启动了
+        if (ClassUtil.loadClass("org.noear.solon.boot.jetty.XPluginImp") != null) {
+            return;
+        }
+
+        //如果有undrtow插件，就不启动了
+        if (ClassUtil.loadClass("org.noear.solon.boot.undertow.XPluginImp") != null) {
             return;
         }
 
