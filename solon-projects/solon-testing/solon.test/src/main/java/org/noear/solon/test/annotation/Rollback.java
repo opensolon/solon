@@ -11,7 +11,7 @@ import java.lang.annotation.Target;
  * @author noear
  * @since 1.10
  */
-@Target({ElementType.METHOD})
+@Target({ElementType.METHOD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Rollback {
     /**

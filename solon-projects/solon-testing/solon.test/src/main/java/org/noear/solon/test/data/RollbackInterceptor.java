@@ -25,43 +25,49 @@ public class RollbackInterceptor implements Interceptor {
             //没有容器，没法运行事务回滚
             return inv.invoke();
         } else {
-            AtomicReference val0 = new AtomicReference();
+            AtomicReference valRef = new AtomicReference();
 
-            Rollback anno0 = inv.getMethodAnnotation(Rollback.class);
-            if (anno0 == null) {
-                anno0 = new RollbackAnno(inv.getMethodAnnotation(TestRollback.class));
+            //尝试找函数上的
+            Rollback anno = inv.getMethodAnnotation(Rollback.class);
+            if (anno == null) {
+                TestRollback annoTmp = inv.getMethodAnnotation(TestRollback.class);
+                if (annoTmp != null) {
+                    anno = new RollbackAnno(annoTmp);
+                }
             }
 
-            rollbackDo(anno0.value(), () -> {
-                val0.set(inv.invoke());
-            });
+            //尝试找类上的
+            if (anno == null) {
+                anno = inv.getTargetAnnotation(Rollback.class);
+            }
 
-            return val0.get();
+            if (anno == null || anno.value() == false) {
+                //如果没有注解，或者不需要强制回滚
+                return inv.invoke();
+            } else {
+                //如果需要强制回滚
+                rollbackDo(() -> {
+                    valRef.set(inv.invoke());
+                });
+
+                return valRef.get();
+            }
         }
     }
 
     /**
      * 回滚事务
      */
-    public static void rollbackDo(boolean isRollback, RunnableEx runnable) throws Throwable {
-        //备份
-        boolean enableTransactionBak = Solon.app().enableTransaction();
-
+    public static void rollbackDo(RunnableEx runnable) throws Throwable {
         try {
-            if (isRollback) {
-                //应用（可能要改成开关控制）
-                Solon.app().chainManager().addInterceptorIfAbsent(RollbackRouterInterceptor.getInstance(), Integer.MAX_VALUE);
+            //应用 //添加路由拦截器（放到最里层）
+            Solon.app().chainManager().addInterceptorIfAbsent(RollbackRouterInterceptor.getInstance(), Integer.MAX_VALUE);
 
-                //当前
-                TranUtils.execute(new TranAnno(), () -> {
-                    runnable.run();
-                    throw new RollbackException();
-                });
-            } else {
-                //整体禁用（要改进禁用的控制泛型）
-                Solon.app().enableTransaction(false);
-            }
-
+            //当前
+            TranUtils.execute(new TranAnno(), () -> {
+                runnable.run();
+                throw new RollbackException();
+            });
         } catch (Throwable e) {
             e = Utils.throwableUnwrap(e);
             if (e instanceof RollbackException) {
@@ -70,12 +76,8 @@ public class RollbackInterceptor implements Interceptor {
                 throw e;
             }
         } finally {
-            //恢复备份
-            Solon.app().enableTransaction(enableTransactionBak);
-
-            if (isRollback) {
-                Solon.app().chainManager().removeInterceptor(RollbackRouterInterceptor.class);
-            }
+            //应用 //移除路由拦截器（恢复原状）
+            Solon.app().chainManager().removeInterceptor(RollbackRouterInterceptor.class);
         }
     }
 }
