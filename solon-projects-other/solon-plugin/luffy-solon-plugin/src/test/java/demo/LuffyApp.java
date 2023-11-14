@@ -1,14 +1,14 @@
-package openai;
+package demo;
 
 import org.noear.solon.Solon;
 import org.noear.solon.extend.luffy.LuffyHandler;
 
 /**
- * @author noear 2023/4/1 created
+ * @author noear 2023/11/14 created
  */
-public class App {
+public class LuffyApp {
     public static void main(String[] args) {
-        Solon.start(App.class, args, app -> {
+        Solon.start(LuffyApp.class, args, app -> {
             app.all("**", new LuffyHandler());
         });
     }

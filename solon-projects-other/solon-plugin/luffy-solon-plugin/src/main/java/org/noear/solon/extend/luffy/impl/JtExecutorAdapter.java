@@ -25,10 +25,20 @@ public class JtExecutorAdapter implements IJtExecutorAdapter, IJtConfigAdapter {
     private String _defaultExecutor;
     private String _defLogTag;
 
+    private JtResouceLoader forDebug = new JtResouceLoaderFile();
+    private JtResouceLoaderComposite forRelease = new JtResouceLoaderComposite();
+
 
     public JtExecutorAdapter() {
         _defaultExecutor = JtMapping.getActuator("");
         _defLogTag = "luffy";
+
+        forRelease.add(new JtResouceLoaderClass());
+
+        //添加外部扩展的资源加载器
+        Solon.context().subBeansOfType(JtResouceLoader.class, bean -> {
+            forRelease.add(bean);
+        });
     }
 
     @Override
@@ -66,8 +76,7 @@ public class JtExecutorAdapter implements IJtExecutorAdapter, IJtConfigAdapter {
         }
     }
 
-    JtResouceLoader forDebug = new JtResouceLoaderFile();
-    JtResouceLoader forRelease = new JtResouceLoaderClass();
+
 
     @Override
     public AFileModel fileGet(String path) throws Exception {
@@ -78,7 +87,7 @@ public class JtExecutorAdapter implements IJtExecutorAdapter, IJtConfigAdapter {
         }
 
         if (file == null) {
-            forRelease.fileGet(path);
+            file = forRelease.fileGet(path);
         }
 
         return file;
