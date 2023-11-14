@@ -8,6 +8,7 @@ import java.util.Enumeration;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.jar.JarOutputStream;
+import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 
 import static org.noear.solon.maven.plugin.Constant.JAR_CLASS_PATH;
@@ -58,12 +59,14 @@ public class ClassesMove {
             }
         } else {
             out.putNextEntry(new ZipEntry(base));
-            FileInputStream in = new FileInputStream(f);
-            int b;
-            while ((b = in.read()) != -1) {
-                out.write(b);
+            try (FileInputStream in = new FileInputStream(f);
+                 BufferedInputStream bis = new BufferedInputStream(in)) {
+                byte[] buffer = new byte[1024];
+                int len;
+                while ((len = bis.read(buffer)) > 0) {
+                    out.write(buffer, 0, len);
+                }
             }
-            in.close();
         }
     }
 
