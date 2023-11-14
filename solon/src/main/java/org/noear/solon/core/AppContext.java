@@ -269,11 +269,7 @@ public class AppContext extends BeanContainer {
                             return;
                         }
 
-                        Map<String, Object> beanMap = new HashMap<>();
-                        List<BeanWrap> wrapList = this.getWrapsOfType((Class<? extends Object>) valType);
-                        for (BeanWrap bw : wrapList) {
-                            beanMap.put(bw.name(), bw.raw());
-                        }
+                        Map<String, ?> beanMap = this.getBeansMapOfType((Class<?>) valType);
                         varH.setValue(beanMap);
                     });
                     return;

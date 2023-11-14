@@ -476,7 +476,7 @@ public abstract class BeanContainer {
 
 
     /**
-     * 获取某类型的 bean
+     * 获取某类型的 bean list
      *
      * @param baseType 基类
      */
@@ -490,6 +490,23 @@ public abstract class BeanContainer {
         });
 
         return beans;
+    }
+
+    /**
+     * 获取某类型的 bean map
+     *
+     * @param baseType 基类
+     */
+    public <T> Map<String,T> getBeansMapOfType(Class<T> baseType) {
+        Map<String, T> beanMap = new HashMap<>();
+
+        beanForeach(bw -> {
+            if (baseType.isAssignableFrom(bw.clz())) {
+                beanMap.put(bw.name(), bw.raw());
+            }
+        });
+
+        return beanMap;
     }
 
     /**

@@ -28,6 +28,7 @@
 * 新增 solon.boot.socketd 插件
 * 新增 sa-token-dao-redisson-jackson 插件
 * 添加 SolonApp::filterIfAbsent,routerInterceptorIfAbsent 接口
+* 添加 AppContext::getBeansMapOfType 接口
 * 添加 websocket context-path 过滤处理机制
 * 添加 `@Cache` 缓存注解处理对动态开关的支持（之前，只能在启动时决定）
 * 添加 `@Tran` 事务注解处理对动态开关的支持（之前，只能在启动时决定）
