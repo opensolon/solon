@@ -48,6 +48,8 @@
 * minio8 升为 8.5.3
 * sqltoy 升为 5.2.79
 * fastjson2 升为 2.0.42
+* luffy 升为 1.6.9
+* water 升为 2.12.0
 
 
 
