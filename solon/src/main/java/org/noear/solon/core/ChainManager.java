@@ -122,6 +122,21 @@ public class ChainManager {
     }
 
     /**
+     * 移除路由拦截器
+     */
+    public synchronized <T extends RouterInterceptor> void removeInterceptor(Class<T> clz) {
+        typeSet.add(clz);
+
+        interceptorNodes.removeIf(i -> {
+            if (i.target instanceof RouterInterceptorLimiter) {
+                return ((RouterInterceptorLimiter) i.target).getInterceptor().getClass() == clz;
+            } else {
+                return i.target.getClass() == clz;
+            }
+        });
+    }
+
+    /**
      * 执行路由拦截
      */
     public void doIntercept(Context x, @Nullable Handler mainHandler) throws Throwable {
