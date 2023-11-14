@@ -1,10 +1,10 @@
 package org.noear.solon.test.data;
 
+import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.aspect.Interceptor;
 import org.noear.solon.core.aspect.Invocation;
 import org.noear.solon.core.util.RunnableEx;
-import org.noear.solon.data.annotation.Tran;
 import org.noear.solon.data.annotation.TranAnno;
 import org.noear.solon.data.tran.TranUtils;
 import org.noear.solon.test.annotation.Rollback;
@@ -24,47 +24,44 @@ public class RollbackInterceptor implements Interceptor {
         AtomicReference val0 = new AtomicReference();
 
         Rollback anno0 = inv.getMethodAnnotation(Rollback.class);
-        if(anno0 == null){
+        if (anno0 == null) {
             anno0 = new RollbackAnno(inv.getMethodAnnotation(TestRollback.class));
         }
 
-        TranAnno anno1 = new TranAnno();
-
-        if (anno0 != null) {
-            anno1.policy(anno0.policy());
-            anno1.readOnly(anno0.readOnly());
-            anno1.isolation(anno0.isolation());
-            anno1.message(anno0.message());
-        }
-
-        rollbackDo(anno1, () -> {
+        rollbackDo(anno0.value(), () -> {
             val0.set(inv.invoke());
         });
 
         return val0.get();
     }
 
-
     /**
      * 回滚事务
      */
-    public static void rollbackDo(RunnableEx runnable) throws Throwable {
-        rollbackDo(null, runnable);
-    }
-
-    /**
-     * 回滚事务
-     */
-    public static void rollbackDo(Tran tran, RunnableEx runnable) throws Throwable {
-        if (tran == null) {
-            tran = new TranAnno();
-        }
+    public static void rollbackDo(boolean isRollback, RunnableEx runnable) throws Throwable {
+        //备份
+        boolean enableTransactionBak = Solon.app().enableTransaction();
 
         try {
-            TranUtils.execute(tran, () -> {
-                runnable.run();
-                throw new RollbackException();
-            });
+            if (isRollback) {
+                //应用（可能要改成开关控制）
+                Solon.app().routerInterceptor(Integer.MAX_VALUE, ((ctx, mainHandler, chain) -> {
+                    TranUtils.execute(new TranAnno(), () -> {
+                        chain.doIntercept(ctx, mainHandler);
+                        throw new RollbackException();
+                    });
+                }));
+
+                //当前
+                TranUtils.execute(new TranAnno(), () -> {
+                    runnable.run();
+                    throw new RollbackException();
+                });
+            } else {
+                //整体禁用（要改进禁用的控制泛型）
+                Solon.app().enableTransaction(false);
+            }
+
         } catch (Throwable e) {
             e = Utils.throwableUnwrap(e);
             if (e instanceof RollbackException) {
@@ -72,6 +69,9 @@ public class RollbackInterceptor implements Interceptor {
             } else {
                 throw e;
             }
+        } finally {
+            //恢复备份
+            Solon.app().enableTransaction(enableTransactionBak);
         }
     }
 }

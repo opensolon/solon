@@ -1,8 +1,6 @@
 package org.noear.solon.test.annotation;
 
 import org.noear.solon.annotation.Note;
-import org.noear.solon.data.tran.TranIsolation;
-import org.noear.solon.data.tran.TranPolicy;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -22,22 +20,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface TestRollback {
     /**
-     * 事务传导策略
-     * */
-    TranPolicy policy() default TranPolicy.required;
-
-    /*
-     * 事务隔离等级
-     * */
-    TranIsolation isolation() default TranIsolation.unspecified;
-
-    /**
-     * 只读事务
-     * */
-    boolean readOnly() default false;
-
-    /**
-     * 消息
-     * */
-    String message() default "";
+     * 是否回滚
+     */
+    boolean value() default true;
 }
