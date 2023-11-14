@@ -29,11 +29,16 @@
 * 新增 sa-token-dao-redisson-jackson 插件
 * 添加 SolonApp::filterIfAbsent,routerInterceptorIfAbsent 接口
 * 添加 websocket context-path 过滤处理机制
+* 添加 `@Cache` 缓存注解处理对动态开关的支持（之前，只能在启动时决定）
+* 添加 `@Tran` 事务注解处理对动态开关的支持（之前，只能在启动时决定）
+* 添加 solon.boot.smarthttp 外部优先级处理（成为默认后，要方便外部替换它）
 * 调整 smart-http,jetty,undertow 统一使用 server.http.idleTimeout 配置
+* 调整 `@ProxyComponent` 弃用提示为直接提示（之前为 debug 模式下）
 * 移除 AopContext（完成更名 AppContext 的第二步动作）
 * 移除 PathLimiter （已无用，留着有误导性）
 * 移除 SolonApp::enableWebSocketD,enableWebSocketMvc,enableSocketMvc（已无用，留着有误导性）
 * 优化 http context-path 过滤器处理机制
+* 优化 solon.test 的 `@Rollback` 注解处理，支持 web 的事务控制
 * 删除 socketd v1.0 相关的 10 多个插件（v2.0 独立仓库）
 * jackson 升为 2.15.2
 * liteflow 升为 2.11.3
