@@ -2,6 +2,7 @@ package org.noear.solon.extend.luffy.impl;
 
 import org.noear.luffy.model.AFileModel;
 import org.noear.solon.Solon;
+import org.noear.solon.Utils;
 import org.noear.solon.core.util.ResourceUtil;
 
 import java.io.File;
@@ -29,7 +30,7 @@ public class JtResouceLoaderClass implements JtResouceLoader {
                     file = new AFileModel();
 
                     file.content = fileContentGet(path);
-                    if (file.content != null) {
+                    if (Utils.isNotEmpty(file.content)) {
                         //如果有找到文件内容，则完善信息
                         //
                         File file1 = new File(path);

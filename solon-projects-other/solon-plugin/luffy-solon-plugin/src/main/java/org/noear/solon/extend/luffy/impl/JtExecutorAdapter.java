@@ -25,20 +25,16 @@ public class JtExecutorAdapter implements IJtExecutorAdapter, IJtConfigAdapter {
     private String _defaultExecutor;
     private String _defLogTag;
 
-    private JtResouceLoader forDebug = new JtResouceLoaderFile();
-    private JtResouceLoaderComposite forRelease = new JtResouceLoaderComposite();
+    private JtResouceLoader forDebug;
+    private JtResouceLoader forRelease;
 
 
-    public JtExecutorAdapter() {
+    public JtExecutorAdapter(JtResouceLoader resouceLoader) {
         _defaultExecutor = JtMapping.getActuator("");
         _defLogTag = "luffy";
 
-        forRelease.add(new JtResouceLoaderClass());
-
-        //添加外部扩展的资源加载器
-        Solon.context().subBeansOfType(JtResouceLoader.class, bean -> {
-            forRelease.add(bean);
-        });
+        forDebug = new JtResouceLoaderDebug();
+        forRelease = resouceLoader;
     }
 
     @Override
@@ -75,7 +71,6 @@ public class JtExecutorAdapter implements IJtExecutorAdapter, IJtConfigAdapter {
             log.error("{}\r\n{}", msg, err);
         }
     }
-
 
 
     @Override

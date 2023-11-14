@@ -4,6 +4,7 @@ import org.noear.luffy.dso.JtBridge;
 import org.noear.luffy.dso.JtFun;
 import org.noear.luffy.executor.ExecutorFactory;
 import org.noear.luffy.model.AFileModel;
+import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.ContextEmpty;
@@ -20,14 +21,29 @@ import java.util.concurrent.CompletableFuture;
 public class JtRun {
     private static CompletableFuture<Integer> initFuture = new CompletableFuture<>();
 
+    private static final JtResouceLoaderManager resouceLoader = new JtResouceLoaderManager();
     private static JtExecutorAdapter jtAdapter;
 
     public static void init() {
         if (jtAdapter == null) {
-            jtAdapter = new JtExecutorAdapter();
+            resouceLoader.add(0, new JtResouceLoaderClass());
+
+            //添加外部扩展的资源加载器
+            Solon.context().subBeansOfType(JtResouceLoader.class, bean -> {
+                resouceLoader.add(0, bean);
+            });
+
+            jtAdapter = new JtExecutorAdapter(resouceLoader);
             JtBridge.executorAdapterSet(jtAdapter);
             JtBridge.configAdapterSet(jtAdapter);
         }
+    }
+
+    /**
+     * 获取资源加载器（可以清空并替换为数据库的）
+     * */
+    public static JtResouceLoaderManager getResouceLoader() {
+        return resouceLoader;
     }
 
     public static Object call(String path, Context ctx) throws Exception {

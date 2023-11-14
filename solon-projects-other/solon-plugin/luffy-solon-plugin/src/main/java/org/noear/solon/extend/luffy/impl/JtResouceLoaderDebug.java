@@ -3,6 +3,7 @@ package org.noear.solon.extend.luffy.impl;
 import org.noear.luffy.model.AFileModel;
 import org.noear.solon.Solon;
 import org.noear.solon.core.util.IoUtil;
+import org.noear.solon.core.util.ResourceUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,19 +17,22 @@ import java.net.URI;
  * @author noear
  * @since 1.3
  */
-public class JtResouceLoaderFile implements JtResouceLoader {
-    static final Logger log = LoggerFactory.getLogger(JtResouceLoaderFile.class);
+public class JtResouceLoaderDebug implements JtResouceLoader {
+    static final Logger log = LoggerFactory.getLogger(JtResouceLoaderDebug.class);
 
+    private String _baseUri = "/luffy/";
     private File _baseDir;
 
-    public JtResouceLoaderFile() {
-        this("./luffy/");
-    }
+    public JtResouceLoaderDebug() {
+        String rootdir = ResourceUtil.getResource("/").toString().replace("target/classes/", "");
 
-    public JtResouceLoaderFile(String baseDir) {
-        _baseDir = new File(baseDir);
-        if (!_baseDir.exists()) {
-            _baseDir.mkdir();
+        if (rootdir.startsWith("file:")) {
+            String dir_str = rootdir + "src/main/resources" + _baseUri;
+            _baseDir = new File(URI.create(dir_str));
+            if (!_baseDir.exists()) {
+                dir_str = rootdir + "src/main/webapp" + _baseUri;
+                _baseDir = new File(URI.create(dir_str));
+            }
         }
     }
 
