@@ -21,18 +21,23 @@ import java.util.concurrent.atomic.AtomicReference;
 public class RollbackInterceptor implements Interceptor {
     @Override
     public Object doIntercept(Invocation inv) throws Throwable {
-        AtomicReference val0 = new AtomicReference();
+        if (Solon.app() == null) {
+            //没有容器，没法运行事务回滚
+            return inv.invoke();
+        } else {
+            AtomicReference val0 = new AtomicReference();
 
-        Rollback anno0 = inv.getMethodAnnotation(Rollback.class);
-        if (anno0 == null) {
-            anno0 = new RollbackAnno(inv.getMethodAnnotation(TestRollback.class));
+            Rollback anno0 = inv.getMethodAnnotation(Rollback.class);
+            if (anno0 == null) {
+                anno0 = new RollbackAnno(inv.getMethodAnnotation(TestRollback.class));
+            }
+
+            rollbackDo(anno0.value(), () -> {
+                val0.set(inv.invoke());
+            });
+
+            return val0.get();
         }
-
-        rollbackDo(anno0.value(), () -> {
-            val0.set(inv.invoke());
-        });
-
-        return val0.get();
     }
 
     /**
