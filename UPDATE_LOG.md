@@ -42,6 +42,7 @@
 * 优化 solon.test 的 `@Rollback` 注解处理，支持 web 的事务控制
 * 删除 socketd v1.0 相关的 10 多个插件（v2.0 独立仓库）
 * jackson 升为 2.15.2
+* pagehelper 升为 5.3.3
 * liteflow 升为 2.11.3
 * activemq 升为 5.16.7
 * redisx 升为 1.6.2
