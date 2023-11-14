@@ -1,5 +1,6 @@
 package org.noear.solon.data.tran.interceptor;
 
+import org.noear.solon.Solon;
 import org.noear.solon.core.aspect.Invocation;
 import org.noear.solon.data.annotation.Tran;
 import org.noear.solon.core.aspect.Interceptor;
@@ -18,22 +19,27 @@ public class TranInterceptor implements Interceptor {
 
     @Override
     public Object doIntercept(Invocation inv) throws Throwable {
-        Tran anno = inv.getMethodAnnotation(Tran.class);
-        if (anno == null) {
-            anno = inv.getTargetAnnotation(Tran.class);
-        }
+        //支持动态开关事务
+        if (Solon.app().enableTransaction()) {
+            Tran anno = inv.getMethodAnnotation(Tran.class);
+            if (anno == null) {
+                anno = inv.getTargetAnnotation(Tran.class);
+            }
 
-        if (anno == null) {
-            return inv.invoke();
+            if (anno == null) {
+                return inv.invoke();
+            } else {
+                AtomicReference val0 = new AtomicReference();
+                Tran anno0 = anno;
+
+                TranUtils.execute(anno0, () -> {
+                    val0.set(inv.invoke());
+                });
+
+                return val0.get();
+            }
         } else {
-            AtomicReference val0 = new AtomicReference();
-            Tran anno0 = anno;
-
-            TranUtils.execute(anno0, () -> {
-                val0.set(inv.invoke());
-            });
-
-            return val0.get();
+            return inv.invoke();
         }
     }
 }
