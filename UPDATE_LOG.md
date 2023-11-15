@@ -40,6 +40,7 @@
 * 移除 SolonApp::enableWebSocketD,enableWebSocketMvc,enableSocketMvc（已无用，留着有误导性）
 * 优化 http context-path 过滤器处理机制
 * 优化 solon.test 的 `@Rollback` 注解处理，支持 web 的事务控制
+* 优化 solon.scheduling.simple 保持与 jdk 调度服务的策略一致
 * 删除 socketd v1.0 相关的 10 多个插件（v2.0 独立仓库）
 * jackson 升为 2.15.2
 * pagehelper 升为 5.3.3
