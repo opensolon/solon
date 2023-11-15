@@ -71,57 +71,13 @@ Solon v2.6.0
 
 ## 生态架构图：
 
+* solon
+
 <img src="solon_schema.png" width="700" />
 
-## 你好世界：
+* solon cloud
 
-```xml
-<parent>
-    <groupId>org.noear</groupId>
-    <artifactId>solon-parent</artifactId>
-    <version>2.6.0</version>   
-</parent>
-
-<dependencies>
-    <dependency>
-        <groupId>org.noear</groupId>
-        <artifactId>solon-web</artifactId>
-    </dependency>
-</dependencies>
-```
-
-```java
-@SolonMain
-public class App {
-    public static void main(String[] args) {
-        Solon.start(App.class, args, app -> {
-            //Handler 模式：
-            app.get("/hello", c -> c.output("Hello world!"));
-        });
-    }
-}
-
-//Controller 模式：(mvc or rest-api)
-@Controller
-public class HelloController {
-    //限定 Socket 方法类型
-    @Socket
-    @Mapping("/mvc/hello")
-    public String hello(String name) {
-        return "Hello " + name;
-    }
-}
-
-//Remoting 模式：(rpc)
-@Mapping("/rpc/")
-@Remoting
-public class HelloServiceImpl implements HelloService {
-    @Override
-    public String hello() {
-        return "Hello world!";
-    }
-}
-```
+<img src="solon_cloud_schema.png" width="700" />
 
 ## 加入到交流群：
 

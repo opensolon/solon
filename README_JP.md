@@ -71,57 +71,13 @@ Solon v2.6.0
 
 ## エコシステム：
 
+* solon
+
 <img src="solon_schema.png" width="700" />
 
-## こんにちは世界：
+* solon cloud
 
-```xml
-<parent>
-    <groupId>org.noear</groupId>
-    <artifactId>solon-parent</artifactId>
-    <version>2.6.0</version>   
-</parent>
-
-<dependencies>
-    <dependency>
-        <groupId>org.noear</groupId>
-        <artifactId>solon-web</artifactId>
-    </dependency>
-</dependencies>
-```
-
-```java
-@SolonMain
-public class App {
-    public static void main(String[] args) {
-        Solon.start(App.class, args, app -> {
-            //Handler mode：
-            app.get("/hello", c -> c.output("Hello world!"));
-        });
-    }
-}
-
-//Controller mode：(mvc or rest-api)
-@Controller
-public class HelloController {
-    //Socketメソッドタイプの修飾
-    @Socket
-    @Mapping("/mvc/hello")
-    public String hello(String name) {
-        return "Hello " + name;
-    }
-}
-
-//Remoting mode：(rpc)
-@Mapping("/rpc/")
-@Remoting
-public class HelloServiceImpl implements HelloService {
-    @Override
-    public String hello() {
-        return "Hello world!";
-    }
-}
-```
+<img src="solon_cloud_schema.png" width="700" />
 
 ## 公式サイトと関するデモ・ケース：
 
