@@ -6,7 +6,7 @@
 
     <groupId>org.noear</groupId>
     <artifactId>solon-parent</artifactId>
-    <version>2.6.0</version>
+    <version>2.6.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>${project.artifactId}</name>
@@ -23,7 +23,7 @@
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
 
-        <solon.version>2.6.0</solon.version>
+        <solon.version>2.6.1-SNAPSHOT</solon.version>
         <solon-admin.version>2.6.0</solon-admin.version>
         <solon-integration.version>2.6.0</solon-integration.version>
 
@@ -229,6 +229,39 @@
                 <groupId>com.zaxxer</groupId>
                 <artifactId>HikariCP</artifactId>
                 <version>${hikaricp.version}</version>
+            </dependency>
+
+
+
+
+            <dependency>
+                <groupId>org.yaml</groupId>
+                <artifactId>snakeyaml</artifactId>
+                <version>${snakeyaml.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>snack3</artifactId>
+                <version>${snack3.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>redisx</artifactId>
+                <version>${redisx.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>${fastjson.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.squareup.okhttp3</groupId>
+                <artifactId>okhttp</artifactId>
+                <version>${okhttp.version}</version>
             </dependency>
 
             <dependency>
@@ -824,222 +857,9 @@
                 <version>${solon.version}</version>
             </dependency>
 
-
-            <dependency>
-                <groupId>org.yaml</groupId>
-                <artifactId>snakeyaml</artifactId>
-                <version>${snakeyaml.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>snack3</artifactId>
-                <version>${snack3.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>redisx</artifactId>
-                <version>${redisx.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.alibaba</groupId>
-                <artifactId>fastjson</artifactId>
-                <version>${fastjson.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.squareup.okhttp3</groupId>
-                <artifactId>okhttp</artifactId>
-                <version>${okhttp.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>captcha-solon-plugin</artifactId>
-                <version>${solon.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>jap-solon-plugin</artifactId>
-                <version>${solon.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>jap-ids-solon-plugin</artifactId>
-                <version>${solon.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>liteflow-solon-plugin</artifactId>
-                <version>${solon.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>easy-trans-solon-plugin</artifactId>
-                <version>${solon.version}</version>
-            </dependency>
-
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>detector-solon-plugin</artifactId>
-                <version>${solon.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>beetlsql-solon-plugin</artifactId>
-                <version>${solon.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>weed3-solon-plugin</artifactId>
-                <version>${solon.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>wood-solon-plugin</artifactId>
-                <version>${solon.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>bean-searcher-solon-plugin</artifactId>
-                <version>${solon.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>sqltoy-solon-plugin</artifactId>
-                <version>${solon.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>luffy-solon-plugin</artifactId>
-                <version>${solon.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>mybatis-solon-plugin</artifactId>
-                <version>${solon.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>mybatis-sqlhelper-solon-plugin</artifactId>
-                <version>${solon.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>mybatis-pagehelper-solon-plugin</artifactId>
-                <version>${solon.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>mybatis-plus-solon-plugin</artifactId>
-                <version>${solon.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>mybatis-plus-extension-solon-plugin</artifactId>
-                <version>${solon.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>mybatis-flex-solon-plugin</artifactId>
-                <version>${solon.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>activerecord-solon-plugin</artifactId>
-                <version>${solon.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>hibernate-solon-plugin</artifactId>
-                <version>${solon.version}</version>
-            </dependency>
-
-
-
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>cron4j-solon-plugin</artifactId>
-                <version>${solon.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>quartz-solon-plugin</artifactId>
-                <version>${solon.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>powerjob-solon-plugin</artifactId>
-                <version>${solon.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>dubbo-solon-plugin</artifactId>
-                <version>${solon.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>dubbo3-solon-plugin</artifactId>
-                <version>${solon.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>graphql-solon-plugin</artifactId>
-                <version>${solon.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>feign-solon-plugin</artifactId>
-                <version>${solon.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>forest-solon-plugin</artifactId>
-                <version>${solon.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>hasor-solon-plugin</artifactId>
-                <version>${solon.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>dbvisitor-solon-plugin</artifactId>
-                <version>${solon.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>hasordb-solon-plugin</artifactId>
                 <version>${solon.version}</version>
             </dependency>
 
@@ -1049,37 +869,306 @@
                 <version>${solon.version}</version>
             </dependency>
 
+
+            <!-- solon-integration:: begin -->
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>captcha-solon-plugin</artifactId>
+                <version>${solon-integration.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>jap-solon-plugin</artifactId>
+                <version>${solon-integration.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>jap-ids-solon-plugin</artifactId>
+                <version>${solon-integration.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>liteflow-solon-plugin</artifactId>
+                <version>${solon-integration.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>easy-trans-solon-plugin</artifactId>
+                <version>${solon-integration.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>beetlsql-solon-plugin</artifactId>
+                <version>${solon-integration.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>weed3-solon-plugin</artifactId>
+                <version>${solon-integration.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>wood-solon-plugin</artifactId>
+                <version>${solon-integration.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>bean-searcher-solon-plugin</artifactId>
+                <version>${solon-integration.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>sqltoy-solon-plugin</artifactId>
+                <version>${solon-integration.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>luffy-solon-plugin</artifactId>
+                <version>${solon-integration.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>mybatis-solon-plugin</artifactId>
+                <version>${solon-integration.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>mybatis-sqlhelper-solon-plugin</artifactId>
+                <version>${solon-integration.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>mybatis-pagehelper-solon-plugin</artifactId>
+                <version>${solon-integration.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>mybatis-plus-solon-plugin</artifactId>
+                <version>${solon-integration.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>mybatis-plus-extension-solon-plugin</artifactId>
+                <version>${solon-integration.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>mybatis-flex-solon-plugin</artifactId>
+                <version>${solon-integration.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>activerecord-solon-plugin</artifactId>
+                <version>${solon-integration.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>hibernate-solon-plugin</artifactId>
+                <version>${solon-integration.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>cron4j-solon-plugin</artifactId>
+                <version>${solon-integration.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>quartz-solon-plugin</artifactId>
+                <version>${solon-integration.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>powerjob-solon-plugin</artifactId>
+                <version>${solon-integration.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>dubbo-solon-plugin</artifactId>
+                <version>${solon-integration.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>dubbo3-solon-plugin</artifactId>
+                <version>${solon-integration.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>graphql-solon-plugin</artifactId>
+                <version>${solon-integration.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>feign-solon-plugin</artifactId>
+                <version>${solon-integration.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>forest-solon-plugin</artifactId>
+                <version>${solon-integration.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>hasor-solon-plugin</artifactId>
+                <version>${solon-integration.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>dbvisitor-solon-plugin</artifactId>
+                <version>${solon-integration.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>hasordb-solon-plugin</artifactId>
+                <version>${solon-integration.version}</version>
+            </dependency>
+
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>sureness-solon-plugin</artifactId>
-                <version>${solon.version}</version>
+                <version>${solon-integration.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>sa-token-solon-plugin</artifactId>
-                <version>${solon.version}</version>
+                <version>${solon-integration.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>sa-token-dao-redisson-jackson</artifactId>
-                <version>${solon.version}</version>
+                <version>${solon-integration.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>redisson-solon-plugin</artifactId>
-                <version>${solon.version}</version>
+                <version>${solon-integration.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>lettuce-solon-plugin</artifactId>
-                <version>${solon.version}</version>
+                <version>${solon-integration.version}</version>
             </dependency>
 
-            <!-- for solon cloud -->
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>pulsar2-solon-plugin</artifactId>
+                <version>${solon-integration.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>drools-solon-plugin</artifactId>
+                <version>${solon-integration.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>easypoi-web-solon</artifactId>
+                <version>${solon-integration.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>easypoi-wps-solon</artifactId>
+                <version>${solon-integration.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>easypoi-solon-plugin</artifactId>
+                <version>${solon-integration.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>simplejavamail-solon-plugin</artifactId>
+                <version>${solon-integration.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>sms4j-solon-plugin</artifactId>
+                <version>${solon-integration.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>weixin-java-cp-solon-plugin</artifactId>
+                <version>${solon-integration.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>weixin-java-miniapp-solon-plugin</artifactId>
+                <version>${solon-integration.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>weixin-java-mp-solon-plugin</artifactId>
+                <version>${solon-integration.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>weixin-java-open-solon-plugin</artifactId>
+                <version>${solon-integration.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>weixin-java-pay-solon-plugin</artifactId>
+                <version>${solon-integration.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>weixin-java-qidian-solon-plugin</artifactId>
+                <version>${solon-integration.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>orika-solon-plugin</artifactId>
+                <version>${solon-integration.version}</version>
+            </dependency>
+
+            <!-- solon-integration:: end -->
+
+            <!-- solon-cloud:: begin -->
+
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>local-solon-cloud-plugin</artifactId>
@@ -1262,8 +1351,6 @@
                 <version>${solon.version}</version>
             </dependency>
 
-
-
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>kafka-solon-cloud-plugin</artifactId>
@@ -1312,6 +1399,8 @@
                 <version>${solon.version}</version>
             </dependency>
 
+            <!-- solon-cloud:: end -->
+
 
             <!-- for logging -->
             <dependency>
@@ -1326,89 +1415,7 @@
                 <version>${solon.version}</version>
             </dependency>
 
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>pulsar2-solon-plugin</artifactId>
-                <version>${solon.version}</version>
-            </dependency>
 
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>drools-solon-plugin</artifactId>
-                <version>${solon.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>easypoi-web-solon</artifactId>
-                <version>${solon.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>easypoi-wps-solon</artifactId>
-                <version>${solon.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>easypoi-solon-plugin</artifactId>
-                <version>${solon.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>simplejavamail-solon-plugin</artifactId>
-                <version>${solon.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>sms4j-solon-plugin</artifactId>
-                <version>${solon.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>weixin-java-cp-solon-plugin</artifactId>
-                <version>${solon.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>weixin-java-miniapp-solon-plugin</artifactId>
-                <version>${solon.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>weixin-java-mp-solon-plugin</artifactId>
-                <version>${solon.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>weixin-java-open-solon-plugin</artifactId>
-                <version>${solon.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>weixin-java-pay-solon-plugin</artifactId>
-                <version>${solon.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>weixin-java-qidian-solon-plugin</artifactId>
-                <version>${solon.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>orika-solon-plugin</artifactId>
-                <version>${solon.version}</version>
-            </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
@@ -1485,6 +1492,7 @@
                 <version>${mapstruct.version}</version>
             </dependency>
 
+            <!-- dromara plugins:: begin -->
             <dependency>
                 <groupId>org.dromara.solon-plugins</groupId>
                 <artifactId>bee-solon-plugin</artifactId>
@@ -1521,6 +1529,8 @@
                 <version>${dromara-plugins.version}</version>
             </dependency>
         </dependencies>
+
+        <!-- dromara plugins:: end -->
     </dependencyManagement>
 
 
