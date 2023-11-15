@@ -25,6 +25,8 @@
 
         <solon.version>2.6.0</solon.version>
         <solon-admin.version>2.6.0</solon-admin.version>
+        <solon-integration.version>2.6.0</solon-integration.version>
+
         <snack3.version>3.2.82</snack3.version>
         <weed3.version>3.4.33</weed3.version>
         <wood.version>1.2.2</wood.version>

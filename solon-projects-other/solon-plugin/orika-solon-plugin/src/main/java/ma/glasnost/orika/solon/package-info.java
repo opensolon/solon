@@ -1,1 +1,0 @@
-package ma.glasnost.orika.solon;

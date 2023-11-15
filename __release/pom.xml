@@ -33,10 +33,6 @@
         <module>solon-cloud-bundle1</module>
         <module>solon-cloud-bundle2</module>
 
-        <module>solon-other-bundle1</module>
-        <module>solon-other-bundle2</module>
-        <module>solon-other-bundle3</module>
-
         <module>solon-shortcuts-bundle</module>
     </modules>
 </project>
