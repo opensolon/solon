@@ -91,7 +91,7 @@ public class RunUtil {
 
     /**
      * 运行并吃掉异常
-     * */
+     */
     public static void runAndTry(RunnableEx task) {
         try {
             task.run();
@@ -140,5 +140,19 @@ public class RunUtil {
      */
     public static ScheduledFuture<?> delayAndRepeat(Runnable task, long millis) {
         return scheduledExecutor.scheduleWithFixedDelay(task, 1000, millis, TimeUnit.MILLISECONDS);
+    }
+
+    /**
+     * 定时任务
+     * */
+    public static ScheduledFuture<?> scheduleAtFixedRate(Runnable task, long initialDelay, long millisPeriod) {
+        return scheduledExecutor.scheduleAtFixedRate(task, initialDelay, millisPeriod, TimeUnit.MILLISECONDS);
+    }
+
+    /**
+     * 定时任务
+     * */
+    public static ScheduledFuture<?> scheduleWithFixedDelay(Runnable task, long initialDelay, long millisDelay) {
+        return scheduledExecutor.scheduleWithFixedDelay(task, initialDelay, millisDelay, TimeUnit.MILLISECONDS);
     }
 }

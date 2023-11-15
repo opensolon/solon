@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Date;
 import java.util.TimeZone;
+import java.util.concurrent.ScheduledFuture;
 
 /**
  * Job 简单调度器
@@ -43,10 +44,14 @@ public class SimpleScheduler implements Lifecycle {
 
     /**
      * 执行线程
-     * */
-    private Thread thread;
+     */
+    private Thread jobThreadOfCron;
+    /**
+     * 执行任务
+     */
+    private ScheduledFuture<?> jobFutureOfFixed;
 
-    public SimpleScheduler(JobHolder jobHolder){
+    public SimpleScheduler(JobHolder jobHolder) {
         this.jobHolder = jobHolder;
 
         if (Utils.isNotEmpty(jobHolder.getScheduled().cron())) {
@@ -56,28 +61,51 @@ public class SimpleScheduler implements Lifecycle {
                 this.cron.setTimeZone(TimeZone.getTimeZone(jobHolder.getScheduled().zone()));
             }
         }
-
-        thread = new Thread(this::run);
-
-        if (Utils.isNotEmpty(jobHolder.getName())) {
-            thread.setName("Job:" + jobHolder.getName());
-        }
     }
 
     boolean isStarted = false;
 
     @Override
     public void start() throws Throwable {
-        if(isStarted == false) {
-            thread.start();
+        if (isStarted) {
+            return;
+        } else {
             isStarted = true;
+        }
+
+        if (jobHolder.getScheduled().fixedDelay() > 0) {
+            jobFutureOfFixed = RunUtil.scheduleWithFixedDelay(this::exec0,
+                    jobHolder.getScheduled().initialDelay(),
+                    jobHolder.getScheduled().fixedDelay());
+        } else if (jobHolder.getScheduled().fixedRate() > 0) {
+            jobFutureOfFixed = RunUtil.scheduleAtFixedRate(this::exec0,
+                    jobHolder.getScheduled().initialDelay(),
+                    jobHolder.getScheduled().fixedRate());
+        } else {
+            jobThreadOfCron = new Thread(this::run);
+
+            if (Utils.isNotEmpty(jobHolder.getName())) {
+                jobThreadOfCron.setName("Job:" + jobHolder.getName());
+            }
+
+            jobThreadOfCron.start();
         }
     }
 
     @Override
     public void stop() throws Throwable {
-        if (isStarted) {
+        if (isStarted = false) {
+            return;
+        } else {
             isStarted = false;
+        }
+
+        if (jobThreadOfCron != null) {
+            jobThreadOfCron.interrupt();
+        }
+
+        if (jobFutureOfFixed != null) {
+            jobFutureOfFixed.cancel(false);
         }
     }
 
@@ -87,20 +115,13 @@ public class SimpleScheduler implements Lifecycle {
             baseTime = new Date();
         }
 
-        if (jobHolder.getScheduled().fixedDelay() > 0 || jobHolder.getScheduled().fixedRate() > 0) {
-            //初始延迟 //只为 fixedDelay 和 fixedRate 服务
-            if (jobHolder.getScheduled().initialDelay() > 0) {
-                sleep0(jobHolder.getScheduled().initialDelay());
-            }
-        }
-
         while (true) {
             if (isStarted == false) {
                 break;
             }
 
             try {
-                scheduling();
+                runAsCron();
             } catch (Throwable e) {
                 e = Utils.throwableUnwrap(e);
                 log.warn(e.getMessage(), e);
@@ -111,54 +132,24 @@ public class SimpleScheduler implements Lifecycle {
     /**
      * 调度
      */
-    private void scheduling() throws Throwable {
-        if (jobHolder.getScheduled().fixedDelay() > 0) {
-            //::按固定延时调度（串行调用）
-            exec0(); //同步执行
-            sleep0(jobHolder.getScheduled().fixedDelay());
-        } else if (jobHolder.getScheduled().fixedRate() > 0) {
-            //::按固定频率调度（并行调用）
-            sleepMillis = System.currentTimeMillis() - baseTime.getTime();
+    private void runAsCron() throws Throwable {
+        //::按表达式调度（并行调用）
+        nextTime = cron.getNextValidTimeAfter(baseTime);
+        sleepMillis = System.currentTimeMillis() - nextTime.getTime();
 
-            if (sleepMillis >= jobHolder.getScheduled().fixedRate()) {
-                baseTime = new Date();
-                execAsParallel(); //异步执行
+        if (sleepMillis >= 0) {
+            baseTime = nextTime;
+            nextTime = cron.getNextValidTimeAfter(baseTime);
+
+            if (sleepMillis <= 1000) {
+                RunUtil.parallel(this::exec0);
 
                 //重新设定休息时间
-                sleepMillis = jobHolder.getScheduled().fixedRate();
-            } else {
-                //时间还未到（一般，第一次才会到这里来）
-                sleepMillis = 100;
+                sleepMillis = System.currentTimeMillis() - nextTime.getTime();
             }
-
-            sleep0(sleepMillis);
-        } else {
-            //::按表达式调度（并行调用）
-            nextTime = cron.getNextValidTimeAfter(baseTime);
-            sleepMillis = System.currentTimeMillis() - nextTime.getTime();
-
-            if (sleepMillis >= 0) {
-                baseTime = nextTime;
-                nextTime = cron.getNextValidTimeAfter(baseTime);
-
-                if (sleepMillis <= 1000) {
-                    execAsParallel();
-
-                    //重新设定休息时间
-                    sleepMillis = System.currentTimeMillis() - nextTime.getTime();
-                }
-            }
-
-            sleep0(sleepMillis);
         }
-    }
 
-
-    /**
-     * 并行执行（即异步执行）
-     */
-    private void execAsParallel() {
-        RunUtil.parallel(this::exec0);
+        sleep0(sleepMillis);
     }
 
     /**
