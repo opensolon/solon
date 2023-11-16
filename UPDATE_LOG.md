@@ -20,6 +20,9 @@
 * 调整 取消启动参数简写模式，保持与应用参数相同的名字 ???
 * 新增 graphql-solon-plugin 插件
 
+### 2.6.1
+* 删除 `@Dao`,`@Service`,`@Repository` 三个注解
+
 ### 2.6.0
 * 设定 smart-http 为 solon-api 快捷组合包的默认 http-server
 * 重构 socketd 适配，升为 v2.0
