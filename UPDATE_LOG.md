@@ -22,6 +22,7 @@
 
 ### 2.6.1
 * 添加 solon.docs 全局参数要制
+* 添加 solon.logging 配置提示文件
 * 调整 solon.auth 取消 AuthUtil 验证路径、权限、角色与登录绑死。由用户适配的处理器决定
 * 删除 `@Dao`,`@Service`,`@Repository` 三个注解
 

@@ -1,0 +1,74 @@
+{
+  "properties": [
+    {
+      "name": "solon.logging.logger.*.level",
+      "type": "java.lang.String",
+      "defaultValue": "TRACE",
+      "description": "记录器日志级别"
+    },
+    {
+      "name": "solon.logging.appender.console.level",
+      "type": "java.lang.String",
+      "defaultValue": "TRACE",
+      "description": "控制台添加器日志级别"
+    },
+    {
+      "name": "solon.logging.appender.console.enable",
+      "type": "java.lang.Boolean",
+      "defaultValue": "true",
+      "description": "控制台添加器日志启用"
+    },
+    {
+      "name": "solon.logging.appender.console.pattern",
+      "type": "java.lang.String",
+      "description": "控制台添加器日志内容模式"
+    },
+    {
+      "name": "solon.logging.appender.file.level",
+      "type": "java.lang.String",
+      "defaultValue": "INFO",
+      "description": "文件添加器日志级别"
+    },
+    {
+      "name": "solon.logging.appender.file.enable",
+      "type": "java.lang.Boolean",
+      "defaultValue": "true",
+      "description": "文件添加器日志启用"
+    },
+    {
+      "name": "solon.logging.appender.file.pattern",
+      "type": "java.lang.String",
+      "description": "文件添加器日志内容模式"
+    },
+    {
+      "name": "solon.logging.appender.file.name",
+      "type": "java.lang.String",
+      "defaultValue": "logs/${solon.app.name}",
+      "description": "文件添加器日志临时文件名"
+    },
+    {
+      "name": "solon.logging.appender.file.extension",
+      "type": "java.lang.String",
+      "defaultValue": ".log",
+      "description": "文件添加器日志扩展名"
+    },
+    {
+      "name": "solon.logging.appender.file.maxFileSize",
+      "type": "java.lang.String",
+      "defaultValue": "10 MB",
+      "description": "文件添加器日志单文件大小限制"
+    },
+    {
+      "name": "solon.logging.appender.file.maxHistory",
+      "type": "java.lang.String",
+      "defaultValue": "7",
+      "description": "文件添加器日志保留天数"
+    },
+    {
+      "name": "solon.logging.appender.file.rolling",
+      "type": "java.lang.String",
+      "defaultValue": "logs/${solon.app.name}_%d{yyyy-MM-dd}_%i.log",
+      "description": "文件添加器日志滚动保存策略（有它时，extension 无效）"
+    }
+  ]
+}
