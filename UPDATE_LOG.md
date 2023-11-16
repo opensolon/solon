@@ -21,6 +21,7 @@
 * 新增 graphql-solon-plugin 插件
 
 ### 2.6.1
+* 添加 solon.docs 全局参数要制
 * 删除 `@Dao`,`@Service`,`@Repository` 三个注解
 
 ### 2.6.0

@@ -5,6 +5,7 @@ import com.swagger.demo.model.HttpCodes;
 
 import io.swagger.models.auth.ApiKeyAuthDefinition;
 import io.swagger.models.auth.In;
+import io.swagger.models.parameters.HeaderParameter;
 import org.noear.solon.docs.ApiEnum;
 import org.noear.solon.docs.models.ApiInfo;
 import org.noear.solon.docs.DocDocket;
@@ -60,6 +61,7 @@ public class Config {
                 .globalResponseInData(true)
                 .securityExtensions("TOKEN", new ApiKeyAuthDefinition().in(In.HEADER))
                 .vendorExtensions("TOKEN", "xxx")
+                .globalParams(new HeaderParameter().name("token").required(true))
                 .apis("com.swagger.demo.controller.api2");
                 //.securityDefinitionInHeader("token");
 

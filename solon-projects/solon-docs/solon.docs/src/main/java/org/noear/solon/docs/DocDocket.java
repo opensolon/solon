@@ -3,10 +3,7 @@ package org.noear.solon.docs;
 import org.noear.solon.Utils;
 import org.noear.solon.docs.models.*;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 文档摘要
@@ -24,6 +21,7 @@ public class DocDocket {
     private Class<?> globalResult;
     private Map<Integer, String> globalResponseCodes = new LinkedHashMap<>();
     private boolean globalResponseInData = false;
+    private Set<Object> globalParams = new LinkedHashSet<>();
 
     private ApiInfo info = new ApiInfo();
     private List<ApiResource> apis = new ArrayList<>();
@@ -168,6 +166,21 @@ public class DocDocket {
         return this;
     }
 
+    public Set<Object> globalParams(){
+        return globalParams;
+    }
+
+    public DocDocket globalParams(Collection<Object> globalParams) {
+        if (globalParams != null) {
+            this.globalParams.addAll(globalParams);
+        }
+        return this;
+    }
+
+    public DocDocket globalParams(Object param) {
+        this.globalParams.add(param);
+        return this;
+    }
 
     public ApiExternalDocs externalDocs() {
         return externalDocs;
