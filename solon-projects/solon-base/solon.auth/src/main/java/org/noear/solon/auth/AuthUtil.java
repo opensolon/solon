@@ -75,12 +75,8 @@ public class AuthUtil {
      * @param method 请求方式
      */
     public static boolean verifyPath(String path, String method) {
-        //先验证是否有登录
-        if (verifyLogined()) {
-            return adapter().processor().verifyPath(path, method);
-        } else {
-            return false;
-        }
+        //是否要校验登录，由用户的适配处理器决定
+        return adapter().processor().verifyPath(path, method);
     }
 
     /**
@@ -108,12 +104,8 @@ public class AuthUtil {
      * @param logical 验证的逻辑关系
      */
     public static boolean verifyPermissions(String[] permissions, Logical logical) {
-        //先验证是否有登录
-        if (verifyLogined()) {
-            return adapter().processor().verifyPermissions(permissions, logical);
-        } else {
-            return false;
-        }
+        //是否要校验登录，由用户的适配处理器决定
+        return adapter().processor().verifyPermissions(permissions, logical);
     }
 
     /**
@@ -141,11 +133,7 @@ public class AuthUtil {
      * @param logical 验证的逻辑关系
      */
     public static boolean verifyRoles(String[] roles, Logical logical) {
-        //先验证是否有登录
-        if (verifyLogined()) {
-            return adapter().processor().verifyRoles(roles, logical);
-        } else {
-            return false;
-        }
+        //是否要校验登录，由用户的适配处理器决定
+        return adapter().processor().verifyRoles(roles, logical);
     }
 }
