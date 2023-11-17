@@ -97,6 +97,10 @@ public class RepackageMojo extends AbstractMojo {
         if (packaging != null) {
             if ("jar".equalsIgnoreCase(packaging)) {
                 PLUGIN_TYPE = PluginType.JAR;
+                if (ClassesMove.isNotChangeJar(project.getArtifact().getFile())){
+                    logger.info("Jar File No Change !!!");
+                    return;
+                }
                 //移动数据
                 ClassesMove.change(project.getArtifact().getFile());
                 //处理依赖
