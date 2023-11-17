@@ -51,7 +51,7 @@ public class RabbitConsumer {
             channel.queueBind(config.queue_normal, config.exchangeName, topic, args);
         }
 
-        channel.basicConsume(config.queue_normal, handler);
+        channel.basicConsume(config.queue_normal, false, handler);
     }
 
     /**
