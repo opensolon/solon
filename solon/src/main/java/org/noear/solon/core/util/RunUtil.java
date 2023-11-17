@@ -129,6 +129,12 @@ public class RunUtil {
         return CompletableFuture.supplyAsync(task, asyncExecutor);
     }
 
+    public static CompletableFuture<Void> asyncAndTry(RunnableEx task) {
+        return CompletableFuture.runAsync(()->{
+            runAndTry(task);
+        }, asyncExecutor);
+    }
+
     /**
      * 延迟执行
      */
