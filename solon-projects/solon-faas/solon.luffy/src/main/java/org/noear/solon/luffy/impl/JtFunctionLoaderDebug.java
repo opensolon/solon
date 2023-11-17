@@ -26,7 +26,9 @@ public class JtFunctionLoaderDebug implements JtFunctionLoader {
     private File _baseDir;
 
     public JtFunctionLoaderDebug() {
-        String rootdir = ResourceUtil.getResource("/").toString().replace("target/classes/", "");
+        String rootdir = ResourceUtil.getResource("/").toString()
+                .replace("target/classes/", "")
+                .replace("target/test-classes/", "");
 
         if (rootdir.startsWith("file:")) {
             String dir_str = rootdir + "src/main/resources" + _baseUri;
