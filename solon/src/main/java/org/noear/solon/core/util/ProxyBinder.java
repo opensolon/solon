@@ -14,12 +14,10 @@ public class ProxyBinder {
     private static ProxyBinder global;
     static {
         //（静态扩展约定：org.noear.solon.extend.impl.XxxxExt）
-        ProxyBinder ext = ClassUtil.tryInstance("org.noear.solon.extend.impl.ProxyBinderExt");
+        global = ClassUtil.tryInstance("org.noear.solon.extend.impl.ProxyBinderExt");
 
-        if (ext == null) {
+        if (global == null) {
             global = new ProxyBinder();
-        } else {
-            global = ext;
         }
     }
 

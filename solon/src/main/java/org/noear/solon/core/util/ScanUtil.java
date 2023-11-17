@@ -14,25 +14,23 @@ import java.util.function.Predicate;
  * @since 1.0
  * */
 public class ScanUtil {
-    static ResourceScanner scanner;
+    static ResourceScanner global;
 
     static {
         //（静态扩展约定：org.noear.solon.extend.impl.XxxxExt）
-        ResourceScanner ext = ClassUtil.tryInstance("org.noear.solon.extend.impl.ResourceScannerExt");
+        global = ClassUtil.tryInstance("org.noear.solon.extend.impl.ResourceScannerExt");
 
-        if (ext == null) {
-            scanner = new ResourceScanner();
-        } else {
-            scanner = ext;
+        if (global == null) {
+            global = new ResourceScanner();
         }
     }
 
     /**
-     * 设置扫描器
+     * 设置扫描器（用户层扩展）
      * */
     public static void setScanner(ResourceScanner scanner) {
         if (scanner != null) {
-            ScanUtil.scanner = scanner;
+            ScanUtil.global = scanner;
         }
     }
 
@@ -54,6 +52,6 @@ public class ScanUtil {
      * @param filter 过滤条件
      */
     public static Set<String> scan(ClassLoader classLoader, String path, Predicate<String> filter) {
-        return scanner.scan(classLoader, path, filter);
+        return global.scan(classLoader, path, filter);
     }
 }

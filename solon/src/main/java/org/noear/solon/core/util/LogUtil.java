@@ -11,12 +11,10 @@ public class LogUtil {
 
     static {
         //（静态扩展约定：org.noear.solon.extend.impl.XxxxExt）
-        LogUtil ext = ClassUtil.tryInstance("org.noear.solon.extend.impl.LogUtilExt");
+        global = ClassUtil.tryInstance("org.noear.solon.extend.impl.LogUtilExt");
 
-        if (ext == null) {
+        if (global == null) {
             global = new LogUtil();
-        } else {
-            global = ext;
         }
     }
 
