@@ -16,6 +16,10 @@
     <packaging>pom</packaging>
 
     <modules>
+        <module>../../solon-projects/solon-native/solon.aot</module>
+
+        <module>../../solon-projects/solon-faas/solon.luffy</module>
+
         <module>../../solon-projects/solon-detector/solon.health</module>
         <module>../../solon-projects/solon-detector/solon.health.detector</module>
         <module>../../solon-projects/solon-detector/detector-solon-plugin</module>
