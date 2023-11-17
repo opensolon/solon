@@ -1,6 +1,10 @@
 solon.app:
   name: demoapp
 
+#solon:
+#  logging:
+#    config: "./config/tmp.xml"
+
 solon.logging.appender:
   console:
     level: DEBUG

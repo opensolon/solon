@@ -12,10 +12,7 @@ import org.fusesource.jansi.AnsiConsole;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.runtime.NativeDetector;
-import org.noear.solon.core.util.ClassUtil;
-import org.noear.solon.core.util.JavaUtil;
-import org.noear.solon.core.util.LogUtil;
-import org.noear.solon.core.util.ResourceUtil;
+import org.noear.solon.core.util.*;
 import org.noear.solon.logging.LogIncubator;
 import org.noear.solon.logging.LogOptions;
 import org.noear.solon.logging.model.LoggerLevelEntity;
@@ -141,7 +138,10 @@ public class LogIncubatorImpl implements LogIncubator {
             if (logConfigFile.exists()) {
                 return logConfigFile.toURI().toURL();
             } else {
-                LogUtil.global().warn("Props: No log config file: " + logConfig);
+                //改成异步，不然 LogUtil.global() 初始化未完成
+                RunUtil.async(()->{
+                    LogUtil.global().warn("Props: No log config file: " + logConfig);
+                });
             }
         }
 
