@@ -1,9 +1,9 @@
 package demo;
 
 import org.noear.solon.Solon;
-import org.noear.solon.faas.luffy.LuffyHandler;
-import org.noear.solon.faas.luffy.impl.JtFunctionLoader;
-import org.noear.solon.faas.luffy.impl.JtFunctionLoaderFile;
+import org.noear.solon.luffy.LuffyHandler;
+import org.noear.solon.luffy.impl.JtFunctionLoader;
+import org.noear.solon.luffy.impl.JtFunctionLoaderFile;
 
 public class LuffyApp {
     public static void main(String[] args) {

@@ -1,4 +1,4 @@
-package org.noear.solon.faas.luffy.impl;
+package org.noear.solon.luffy.impl;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

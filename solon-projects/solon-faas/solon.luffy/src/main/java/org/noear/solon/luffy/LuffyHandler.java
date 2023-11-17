@@ -1,4 +1,4 @@
-package org.noear.solon.faas.luffy;
+package org.noear.solon.luffy;
 
 import org.noear.luffy.executor.ExecutorFactory;
 import org.noear.luffy.model.AFileModel;
@@ -6,7 +6,7 @@ import org.noear.luffy.utils.TextUtils;
 import org.noear.solon.Solon;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Handler;
-import org.noear.solon.faas.luffy.impl.JtRun;
+import org.noear.solon.luffy.impl.JtRun;
 
 /**
  * @author noear

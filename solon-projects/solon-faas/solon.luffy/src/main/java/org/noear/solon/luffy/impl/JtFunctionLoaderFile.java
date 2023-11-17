@@ -1,9 +1,8 @@
-package org.noear.solon.faas.luffy.impl;
+package org.noear.solon.luffy.impl;
 
 import org.noear.luffy.model.AFileModel;
 import org.noear.solon.Solon;
 import org.noear.solon.core.util.IoUtil;
-import org.noear.solon.core.util.ResourceUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,30 +10,26 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
 
 /**
- * 函数加载器 - 资源目录实现(调试模式)
+ * 函数加载器 -外部文件实现
  *
  * @author noear
  * @since 1.3
  */
-public class JtFunctionLoaderDebug implements JtFunctionLoader {
-    static final Logger log = LoggerFactory.getLogger(JtFunctionLoaderDebug.class);
+public class JtFunctionLoaderFile implements JtFunctionLoader {
+    static final Logger log = LoggerFactory.getLogger(JtFunctionLoaderFile.class);
 
-    private String _baseUri = "/luffy/";
     private File _baseDir;
 
-    public JtFunctionLoaderDebug() {
-        String rootdir = ResourceUtil.getResource("/").toString().replace("target/classes/", "");
+    public JtFunctionLoaderFile() {
+        this("./luffy/");
+    }
 
-        if (rootdir.startsWith("file:")) {
-            String dir_str = rootdir + "src/main/resources" + _baseUri;
-            _baseDir = new File(URI.create(dir_str));
-            if (!_baseDir.exists()) {
-                dir_str = rootdir + "src/main/webapp" + _baseUri;
-                _baseDir = new File(URI.create(dir_str));
-            }
+    public JtFunctionLoaderFile(String baseDir) {
+        _baseDir = new File(baseDir);
+        if (!_baseDir.exists()) {
+            _baseDir.mkdir();
         }
     }
 
@@ -69,7 +64,7 @@ public class JtFunctionLoaderDebug implements JtFunctionLoader {
         } else {
             File file = new File(_baseDir, path);
 
-            if (file.exists() && file.isFile()) {
+            if (file.exists()) {
                 try {
                     try (InputStream ins = new FileInputStream(file)) {
                         return IoUtil.transferToString(ins, Solon.encoding());

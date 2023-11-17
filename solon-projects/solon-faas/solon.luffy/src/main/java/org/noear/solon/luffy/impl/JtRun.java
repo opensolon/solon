@@ -1,4 +1,4 @@
-package org.noear.solon.faas.luffy.impl;
+package org.noear.solon.luffy.impl;
 
 import org.noear.luffy.dso.JtBridge;
 import org.noear.luffy.dso.JtFun;
