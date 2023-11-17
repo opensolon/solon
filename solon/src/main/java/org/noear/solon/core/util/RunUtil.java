@@ -37,7 +37,8 @@ public class RunUtil {
                 new LinkedBlockingQueue<Runnable>(),
                 new NamedThreadFactory("Solon-asyncExecutor-"));
 
-        scheduledExecutor = new ScheduledThreadPoolExecutor(Runtime.getRuntime().availableProcessors(),
+        int scheduledPoolSize = Runtime.getRuntime().availableProcessors() * 2;
+        scheduledExecutor = new ScheduledThreadPoolExecutor(scheduledPoolSize,
                 new NamedThreadFactory("Solon-echeduledExecutor-"));
     }
 
