@@ -39,7 +39,7 @@ public class RunUtil {
 
         int scheduledPoolSize = Runtime.getRuntime().availableProcessors() * 2;
         scheduledExecutor = new ScheduledThreadPoolExecutor(scheduledPoolSize,
-                new NamedThreadFactory("Solon-echeduledExecutor-"));
+                new NamedThreadFactory("Solon-scheduledExecutor-"));
     }
 
     public static void setScheduledExecutor(ScheduledExecutorService scheduledExecutor) {
