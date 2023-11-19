@@ -49,7 +49,7 @@ public class DownloadedFile {
     }
 
     /**
-     * 内容流
+     * 内容类型
      */
     public String getContentType() {
         return contentType;
@@ -72,7 +72,7 @@ public class DownloadedFile {
     }
 
     /**
-     * 内容类型（有些地方会动态构建，所以不能只读）
+     * 内容流
      */
     public InputStream getContent() {
         return content;
