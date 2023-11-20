@@ -29,7 +29,7 @@ public class WebSocketListenerImp extends PipelineWebSocketListener {
                 }
 
                 sessionMap.forEach(s -> {
-                    s.send(message + "-" + sessionMap.size() + "-" + session.paramMap());
+                    s.send(message);
                 });
             }
 

@@ -6,21 +6,65 @@
 </head>
 <body>
 <script type="text/javascript">
-    var sock = null;
-    //服务器的地址
-    var wsuri = "ws://127.0.0.1:18080/demof/websocket/13?guid=2";
-    window.onload = function() {
-        console.log("onload");
-        sock = new WebSocket(wsuri);
-        sock.onopen = function() {
-            //成功连接到服务器
-            alert("connected to " + wsuri);
-            sock.send("1111")
+    //包装一个客户端，带自动心跳的 //只是参考
+    function SimpleWebSocketClient(url) {
+        this.intervalId = 0;
+        this.socket = new WebSocket(url);
+
+        let self = this;
+
+        this.socket.onopen = function (e) {
+            //添加心跳
+            self.intervalId = setInterval(() => {
+                self.sendPing();
+            }, 20 * 1000);
+
+            if(self.onopen){
+                self.onopen(e);
+            }
         }
-        sock.onclose = function(e) {
+        this.socket.onclose = function (e) {
+            //取消心跳
+            clearInterval(self.intervalId);
+
+            if(self.onclose){
+                self.onclose(e);
+            }
+        }
+        this.socket.onmessage = function (e) {
+            if(self.onmessage){
+                self.onmessage(e);
+            }
+        }
+        this.socket.onerror = function (e) {
+            if(self.onerror){
+                self.onerror(e);
+            }
+        }
+        this.send = function (msg){
+            self.socket.send(msg);
+        }
+        this.sendPing = function (){
+            //发个 ping //这个可能不对，根据情况修改
+            self.socket.send(JSON.stringify({ type: "ping" }), { fin: true, opcode: 0x9 });
+        }
+    }
+
+    var serverUrl = "ws://127.0.0.1:18080/demoe/websocket/13?guid=2";
+    var client = null;
+
+    window.onload = function() {
+        client = new SimpleWebSocketClient(serverUrl);
+
+        client.onopen = (e)=>{
+            //成功连接到服务器
+            alert("connected to " + serverUrl);
+            client.send("1111")
+        }
+        client.onclose = function(e) {
             alert("connection closed (" + e.code + ")");
         }
-        sock.onmessage = function(e) {
+        client.onmessage = (e)=>{
             //服务器发送通知
             //开始处理
             document.getElementById("rst").append("message received: " + e.data+"\n");
@@ -29,7 +73,7 @@
 
     function send() {
         var msg = document.getElementById('message').value;
-        sock.send(msg);
+        client.send(msg);
     };
 
 </script>
