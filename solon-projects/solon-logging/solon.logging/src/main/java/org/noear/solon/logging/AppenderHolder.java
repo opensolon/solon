@@ -50,8 +50,8 @@ public final class AppenderHolder {
             meta.put("level", getLevel().name());
             meta.put("enable", enable);
 
-            //打印须异步（不然可能死循环）
-            LogUtil.global().infoAsync("Logging: " + getName() + " " + meta);
+            //打印须异步（不然可能死循环）//不需要打印了，必要不大
+            //LogUtil.global().debugAsync("Logging: " + getName() + " " + meta);
         } else {
             setLevel(real.getDefaultLevel());
         }

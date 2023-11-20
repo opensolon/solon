@@ -39,8 +39,8 @@ public class AppenderManager {
     public synchronized static void register(String name, Appender appender) {
         registerDo(name, appender, false);
 
-        //打印须异步（不然可能死循环）
-        LogUtil.global().infoAsync("Logging: LogAppender registered from the " + appender.getClass().getTypeName() + "#" + name);
+        //打印须异步（不然可能死循环）//不需要打印了，必要不大
+        //LogUtil.global().debugAsync("Logging: LogAppender registered from the " + appender.getClass().getTypeName() + "#" + name);
     }
 
     private static void registerDo(String name, Appender appender, boolean printed) {

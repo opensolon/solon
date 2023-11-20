@@ -22,21 +22,26 @@ public class LogUtil {
         return global;
     }
 
-    public void infoAsync(String content) {
-        RunUtil.async(() -> {
-            info(content);
-        });
-    }
-
-
     public void trace(String content) {
         System.out.print("[Solon] ");
         PrintUtil.purpleln(content);
     }
 
+    public void debugAsync(String content) {
+        RunUtil.async(() -> {
+            debug(content);
+        });
+    }
+
     public void debug(String content) {
         System.out.print("[Solon] ");
         PrintUtil.blueln(content);
+    }
+
+    public void infoAsync(String content) {
+        RunUtil.async(() -> {
+            info(content);
+        });
     }
 
     public void info(String content) {
