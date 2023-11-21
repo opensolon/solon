@@ -116,7 +116,7 @@ public class InvKeys {
                 }
 
                 if (fieldVal == null) {
-                    fieldVal = "null";
+                    fieldVal = "";
                 }
 
                 str2 = str2.replace(mark, fieldVal);
