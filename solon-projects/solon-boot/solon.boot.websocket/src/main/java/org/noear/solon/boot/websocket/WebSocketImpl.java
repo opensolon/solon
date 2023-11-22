@@ -31,11 +31,6 @@ public class WebSocketImpl extends WebSocketBase {
     }
 
     @Override
-    public Handshake getHandshake() {
-        return null;
-    }
-
-    @Override
     public InetSocketAddress remoteAddress() throws IOException {
         return real.getRemoteSocketAddress();
     }
