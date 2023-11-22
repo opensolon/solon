@@ -23,16 +23,21 @@ public interface ServerExecutorProps {
     int getMaxThreads(boolean bio);
 
     /**
-     * 闪置超时
+     * 闲置超时
      */
     long getIdleTimeout();
+
+    /**
+     * 闲置超时
+     */
+    long getIdleTimeoutOrDefault();
 
     /**
      * 获取一个执行器（Bio 一级执行器）
      */
     default ExecutorService getBioExecutor(String namePrefix) {
         return new ThreadPoolExecutor(getCoreThreads(), getMaxThreads(true),
-                getIdleTimeout(), TimeUnit.MILLISECONDS,
+                getIdleTimeoutOrDefault(), TimeUnit.MILLISECONDS,
                 new SynchronousQueue<>(), //BlockingQueue //SynchronousQueue
                 new NamedThreadFactory(namePrefix));
     }

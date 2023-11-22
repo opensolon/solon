@@ -118,7 +118,9 @@ abstract class JettyServerBase implements ServerLifecycle , HttpServerConfigure 
         }
 
 
-        serverConnector.setIdleTimeout(props.getIdleTimeout());
+        if(props.getIdleTimeout()>0) {
+            serverConnector.setIdleTimeout(props.getIdleTimeout());
+        }
         serverConnector.setPort(port);
 
         if (Utils.isNotEmpty(host)) {

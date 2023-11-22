@@ -33,6 +33,7 @@ public class SmHttpServer implements ServerLifecycle {
     private SslConfig sslConfig = new SslConfig(ServerConstants.SIGNAL_HTTP);
     private boolean enableDebug = false;
     private boolean isSecure;
+
     public boolean isSecure() {
         return isSecure;
     }
@@ -86,7 +87,7 @@ public class SmHttpServer implements ServerLifecycle {
         _config.threadNum(coreThreads);
 
         //这个是基于通讯层的。。。需要对 http 层和 ws 层分别定制
-        //_config.setIdleTimeout((int)props.getIdleTimeout());
+        _config.setIdleTimeout(0);
 
 
         if (ServerProps.request_maxHeaderSize > 0) {
