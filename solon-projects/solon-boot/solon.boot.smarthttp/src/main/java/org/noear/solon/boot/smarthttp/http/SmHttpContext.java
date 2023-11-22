@@ -1,5 +1,6 @@
 package org.noear.solon.boot.smarthttp.http;
 
+import org.noear.solon.boot.ServerProps;
 import org.noear.solon.boot.web.WebContextBase;
 import org.noear.solon.boot.web.Constants;
 import org.noear.solon.boot.web.RedirectUtils;
@@ -17,11 +18,9 @@ import org.smartboot.http.common.enums.HttpStatus;
 import org.smartboot.http.server.HttpRequest;
 import org.smartboot.http.server.HttpResponse;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.URI;
+import java.net.URLDecoder;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
@@ -133,9 +132,18 @@ public class SmHttpContext extends WebContextBase {
         return _request.getContentLength();
     }
 
+    private String queryString;
     @Override
     public String queryString() {
-        return _request.getQueryString();
+        try {
+            if (queryString == null) {
+                queryString = URLDecoder.decode(_request.getQueryString(), ServerProps.request_encoding);
+            }
+
+            return queryString;
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
