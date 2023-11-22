@@ -84,7 +84,9 @@ public class SmHttpServer implements ServerLifecycle {
         _config.bannerEnabled(false);
         _config.readBufferSize(1024 * 8); //默认: 8k
         _config.threadNum(coreThreads);
-        _config.setIdleTimeout((int)props.getIdleTimeout());
+
+        //这个是基于通讯层的。。。需要对 http 层和 ws 层分别定制
+        //_config.setIdleTimeout((int)props.getIdleTimeout());
 
 
         if (ServerProps.request_maxHeaderSize > 0) {
