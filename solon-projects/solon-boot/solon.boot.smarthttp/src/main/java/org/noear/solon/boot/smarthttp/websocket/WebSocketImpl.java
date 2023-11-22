@@ -58,11 +58,13 @@ public class WebSocketImpl extends WebSocketBase {
     @Override
     public void send(String text) {
         real.sendTextMessage(text);
+        real.flush();
     }
 
     @Override
     public void send(ByteBuffer binary) {
         real.sendBinaryMessage(binary.array());
+        real.flush();
     }
 
     @Override
