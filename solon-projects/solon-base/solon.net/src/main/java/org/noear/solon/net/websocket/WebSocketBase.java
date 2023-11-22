@@ -80,6 +80,11 @@ public abstract class WebSocketBase implements WebSocket {
     }
 
     @Override
+    public boolean attrHas(String name) {
+        return attrMap.containsKey(name);
+    }
+
+    @Override
     public <T> T attr(String name) {
         return (T) attrMap.get(name);
     }

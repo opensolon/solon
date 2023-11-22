@@ -26,12 +26,12 @@
 * 添加 solon.logging 配置提示文件
 * 添加 rabbitmq-solon-cloud-plugin 消息并发处理机制
 * 添加 RunUtil::asyncAndTry 接口
+* 添加 WebSocket::sid, attrHas 接口
 * 调整 solon.auth 取消 AuthUtil 验证路径、权限、角色与登录绑死。由用户适配的处理器决定
 * 调整 scheduledPoolSize 默认值多一倍
 * 调整 solon.scheduling.simple 过滤中断异常
 * 调整 solon.logging 注册日志打印，取消不必要的打印
 * 调整 RouterWebSocketListener 更名为 PathWebSocketListener 
-* 调整 WebSocket 接口，开放 sid
 * 调整 http-server 的 idleTimeout 策略
 * 修复 solon.logging.config 的配置文件不存在时会异常的问题
 * 移除 `@Dao`,`@Service`,`@Repository` 三个注解（弃用很久了，容易带来误解）

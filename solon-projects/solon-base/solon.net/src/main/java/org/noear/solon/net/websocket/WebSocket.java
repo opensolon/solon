@@ -86,6 +86,13 @@ public interface WebSocket {
     Map<String, Object> attrMap();
 
     /**
+     * 是有属性
+     *
+     * @param name 名字
+     */
+    boolean attrHas(String name);
+
+    /**
      * 获取属性
      *
      * @param name 名字
