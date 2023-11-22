@@ -19,7 +19,7 @@ public abstract class WebSocketBase implements WebSocket {
     private Handshake handshake;
     private boolean isClosed;
     private String pathNew;
-    private String key = Utils.guid();
+    private String sid = Utils.guid();
 
     protected void init(URI uri) {
         this.handshake = new HandshakeImpl(uri);
@@ -30,8 +30,9 @@ public abstract class WebSocketBase implements WebSocket {
     }
 
 
-    protected Handshake getHandshake() {
-        return handshake;
+    @Override
+    public String sid() {
+        return sid;
     }
 
     @Override
@@ -103,11 +104,11 @@ public abstract class WebSocketBase implements WebSocket {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         WebSocketBase that = (WebSocketBase) o;
-        return Objects.equals(key, that.key);
+        return Objects.equals(sid, that.sid);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(key);
+        return Objects.hash(sid);
     }
 }

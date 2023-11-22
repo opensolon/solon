@@ -13,6 +13,11 @@ import java.util.Map;
  */
 public interface WebSocket {
     /**
+     * 会话id
+     * */
+    String sid();
+
+    /**
      * 是否有效
      */
     boolean isValid();
