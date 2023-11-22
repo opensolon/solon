@@ -14,10 +14,10 @@ import java.nio.ByteBuffer;
  * @author noear
  * @since 2.5
  */
-public class RouterWebSocketListener implements WebSocketListener {
+public class PathWebSocketListener implements WebSocketListener {
     private final RoutingTable<WebSocketListener> routingTable;
 
-    public RouterWebSocketListener() {
+    public PathWebSocketListener() {
         routingTable = new RoutingTableDefault<>();
     }
 
@@ -32,7 +32,7 @@ public class RouterWebSocketListener implements WebSocketListener {
      * @param index    顺序位
      * @param listener 监听接口
      */
-    public RouterWebSocketListener of(String path, int index, WebSocketListener listener) {
+    public PathWebSocketListener of(String path, int index, WebSocketListener listener) {
         WebSocketListener lh = new ExpressWebSocketListener(path, listener);
 
         routingTable.add(new RoutingDefault<>(path, MethodType.SOCKET, index, lh));
@@ -45,7 +45,7 @@ public class RouterWebSocketListener implements WebSocketListener {
      * @param path     路径
      * @param listener 监听接口
      */
-    public RouterWebSocketListener of(String path, WebSocketListener listener) {
+    public PathWebSocketListener of(String path, WebSocketListener listener) {
         return of(path, 0, listener);
     }
 
@@ -54,7 +54,7 @@ public class RouterWebSocketListener implements WebSocketListener {
      *
      * @param path 路径
      */
-    public RouterWebSocketListener remove(String path) {
+    public PathWebSocketListener remove(String path) {
         routingTable.remove(path);
         return this;
     }

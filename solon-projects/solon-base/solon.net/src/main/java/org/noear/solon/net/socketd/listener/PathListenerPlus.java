@@ -2,7 +2,7 @@ package org.noear.solon.net.socketd.listener;
 
 import org.noear.socketd.transport.core.Listener;
 import org.noear.socketd.transport.core.listener.BuilderListener;
-import org.noear.socketd.transport.core.listener.RouterListener;
+import org.noear.socketd.transport.core.listener.PathListener;
 
 /**
  * 路由监听器增强版
@@ -10,17 +10,17 @@ import org.noear.socketd.transport.core.listener.RouterListener;
  * @author noear
  * @since 2.6
  */
-public class RouterListenerPlus extends RouterListener {
-    public RouterListenerPlus() {
-        super(new RouterExpress());
+public class PathListenerPlus extends PathListener {
+    public PathListenerPlus() {
+        super(new PathMapperExpress());
     }
 
     /**
      * 路由
      */
     @Override
-    public RouterListener of(String path, Listener listener) {
-        router.add(path, new ExpressListener(path, listener));
+    public PathListener of(String path, Listener listener) {
+        mapper.put(path, new ExpressListener(path, listener));
         return this;
     }
 
@@ -30,7 +30,7 @@ public class RouterListenerPlus extends RouterListener {
     @Override
     public BuilderListener of(String path) {
         BuilderListener listener = new BuilderListener();
-        router.add(path, new ExpressListener(path, listener));
+        mapper.put(path, new ExpressListener(path, listener));
         return listener;
     }
 }

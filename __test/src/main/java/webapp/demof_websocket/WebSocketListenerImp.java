@@ -6,7 +6,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.net.annotation.ServerEndpoint;
 import org.noear.solon.net.websocket.WebSocket;
 import org.noear.solon.net.websocket.listener.PipelineWebSocketListener;
-import org.noear.solon.net.websocket.listener.RouterWebSocketListener;
+import org.noear.solon.net.websocket.listener.PathWebSocketListener;
 import org.noear.solon.net.websocket.listener.SimpleWebSocketListener;
 import org.noear.solon.net.websocket.socketd.ToSocketdWebSocketListener;
 
@@ -42,7 +42,7 @@ public class WebSocketListenerImp extends PipelineWebSocketListener {
             public void onClose(WebSocket session) {
                 sessionMap.remove(session);
             }
-        }).next(new RouterWebSocketListener().of("/demof/websocket/{id}", new SimpleWebSocketListener() {
+        }).next(new PathWebSocketListener().of("/demof/websocket/{id}", new SimpleWebSocketListener() {
             @Override
             public void onMessage(WebSocket socket, String text) throws IOException {
                 socket.send("你好");

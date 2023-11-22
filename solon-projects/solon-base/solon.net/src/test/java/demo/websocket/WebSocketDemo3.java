@@ -2,7 +2,7 @@ package demo.websocket;
 
 import org.noear.solon.net.annotation.ServerEndpoint;
 import org.noear.solon.net.websocket.WebSocket;
-import org.noear.solon.net.websocket.listener.RouterWebSocketListener;
+import org.noear.solon.net.websocket.listener.PathWebSocketListener;
 import org.noear.solon.net.websocket.listener.SimpleWebSocketListener;
 
 import java.io.IOException;
@@ -12,7 +12,7 @@ import java.io.IOException;
  * @since 2.6
  */
 @ServerEndpoint
-public class WebSocketDemo3 extends RouterWebSocketListener {
+public class WebSocketDemo3 extends PathWebSocketListener {
     public WebSocketDemo3() {
         of("/admin", new SimpleWebSocketListener() {
             @Override

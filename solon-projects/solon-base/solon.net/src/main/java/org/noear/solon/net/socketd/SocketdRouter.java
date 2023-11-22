@@ -3,7 +3,7 @@ package org.noear.solon.net.socketd;
 import org.noear.socketd.transport.core.Listener;
 import org.noear.socketd.transport.core.listener.PipelineListener;
 import org.noear.solon.Solon;
-import org.noear.solon.net.socketd.listener.RouterListenerPlus;
+import org.noear.solon.net.socketd.listener.PathListenerPlus;
 
 /**
  * WebSoskcet 路由器
@@ -13,10 +13,10 @@ import org.noear.solon.net.socketd.listener.RouterListenerPlus;
  */
 public class SocketdRouter {
     private final PipelineListener rootListener = new PipelineListener();
-    private final RouterListenerPlus routerListener = new RouterListenerPlus();
+    private final PathListenerPlus pathListener = new PathListenerPlus();
 
     private SocketdRouter() {
-        rootListener.next(routerListener);
+        rootListener.next(pathListener);
     }
 
     public static SocketdRouter getInstance() {
@@ -35,7 +35,7 @@ public class SocketdRouter {
      * 主监听
      */
     public void of(String path, Listener listener) {
-        routerListener.of(path, listener);
+        pathListener.of(path, listener);
     }
 
     /**
