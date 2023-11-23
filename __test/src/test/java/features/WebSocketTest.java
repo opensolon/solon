@@ -22,19 +22,10 @@ public class WebSocketTest {
         //测试websocket框架
         //
         Thread.sleep(100);
-        long time_start = System.currentTimeMillis();
 
         WsDemoClient client = new WsDemoClient(URI.create("ws://127.0.0.1:18080/demof/websocket/12"));
-        client.connect();
+        client.connectBlocking();
 
-        while (!client.isOpen()) {
-            if (System.currentTimeMillis() - time_start > 1000 * 2) {
-                throw new RuntimeException("没有WebSocket服务或链接超时");
-            }
-
-            Thread.sleep(100);
-            //System.out.println("还没有打开:" + client.getReadyState());
-        }
         System.out.println("建立websocket连接");
         Exception errors = null;
         try {
