@@ -137,7 +137,13 @@ public class SmHttpContext extends WebContextBase {
     public String queryString() {
         try {
             if (queryString == null) {
-                queryString = URLDecoder.decode(_request.getQueryString(), ServerProps.request_encoding);
+                queryString = _request.getQueryString();
+
+                if (queryString == null) {
+                    queryString = "";
+                } else {
+                    queryString = URLDecoder.decode(queryString, ServerProps.request_encoding);
+                }
             }
 
             return queryString;

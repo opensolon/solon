@@ -35,6 +35,7 @@
 * 调整 RouterWebSocketListener 更名为 PathWebSocketListener 
 * 调整 http-server 的 idleTimeout 策略
 * 修复 solon.logging.config 的配置文件不存在时会异常的问题
+* 修复 solon.boot.smarthttp 获取 queryString 会中文乱码的问题 
 * 移除 `@Dao`,`@Service`,`@Repository` 三个注解（弃用很久了，容易带来误解）
 * snack3 升为 3.2.83
 * socket.d 升为 2.0.17
