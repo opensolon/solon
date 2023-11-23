@@ -25,7 +25,7 @@ import java.util.Set;
 import java.util.concurrent.Executor;
 
 abstract class UndertowServerBase implements ServerLifecycle, HttpServerConfigure {
-    protected HttpServerProps props = new HttpServerProps();
+    protected HttpServerProps props = HttpServerProps.getInstance();
     protected SslConfig sslConfig = new SslConfig(ServerConstants.SIGNAL_HTTP);
     protected boolean enableHttp2 = false;
 

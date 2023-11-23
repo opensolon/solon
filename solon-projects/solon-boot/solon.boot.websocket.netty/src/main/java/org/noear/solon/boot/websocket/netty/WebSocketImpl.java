@@ -4,7 +4,7 @@ import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
-import org.noear.solon.net.websocket.WebSocketBase;
+import org.noear.solon.net.websocket.WebSocketTimeoutBase;
 
 import java.net.InetSocketAddress;
 import java.net.URI;
@@ -14,7 +14,7 @@ import java.nio.ByteBuffer;
  * @author noear
  * @since 2.6
  */
-public class WebSocketImpl extends WebSocketBase {
+public class WebSocketImpl extends WebSocketTimeoutBase {
     private ChannelHandlerContext real;
     public WebSocketImpl(ChannelHandlerContext real) {
         this.real = real;
@@ -39,17 +39,6 @@ public class WebSocketImpl extends WebSocketBase {
     @Override
     public InetSocketAddress localAddress() {
         return (InetSocketAddress)real.channel().localAddress();
-    }
-
-    private long idleTimeout;
-    @Override
-    public long getIdleTimeout() {
-        return idleTimeout;
-    }
-
-    @Override
-    public void setIdleTimeout(long idleTimeout) {
-        this.idleTimeout = idleTimeout;
     }
 
 

@@ -25,7 +25,6 @@ import java.util.concurrent.Executor;
  */
 public class SmHttpServer implements ServerLifecycle {
     private HttpBootstrap server = null;
-    private HttpServerProps props = new HttpServerProps();
     private Handler handler;
     private int coreThreads;
     private Executor workExecutor;

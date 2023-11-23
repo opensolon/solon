@@ -31,7 +31,7 @@ import java.util.concurrent.Executor;
 
 abstract class JettyServerBase implements ServerLifecycle , HttpServerConfigure {
     protected Executor executor;
-    protected HttpServerProps props = new HttpServerProps();
+    protected HttpServerProps props = HttpServerProps.getInstance();
     protected SslConfig sslConfig = new SslConfig(ServerConstants.SIGNAL_HTTP);
     private boolean isSecure;
 

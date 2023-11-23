@@ -39,7 +39,7 @@ public class XPluginImp implements Plugin {
         //初始化属性
         ServerProps.init();
 
-        WebSocketServerProps props = new WebSocketServerProps(10000);
+        WebSocketServerProps props = WebSocketServerProps.getInstance();
         final String _host = props.getHost();
         final int _port = props.getPort();
         final String _name = props.getName();

@@ -1,7 +1,6 @@
 package org.noear.solon.boot.websocket;
 
-import org.noear.solon.net.websocket.Handshake;
-import org.noear.solon.net.websocket.WebSocketBase;
+import org.noear.solon.net.websocket.WebSocketTimeoutBase;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -12,7 +11,7 @@ import java.nio.ByteBuffer;
  * @author noear
  * @since 2.6
  */
-public class WebSocketImpl extends WebSocketBase {
+public class WebSocketImpl extends WebSocketTimeoutBase {
     private final org.java_websocket.WebSocket real;
 
     public WebSocketImpl(org.java_websocket.WebSocket real) {
@@ -40,16 +39,7 @@ public class WebSocketImpl extends WebSocketBase {
         return real.getLocalSocketAddress();
     }
 
-    private long idleTimeout;
-    @Override
-    public long getIdleTimeout() {
-        return idleTimeout;
-    }
 
-    @Override
-    public void setIdleTimeout(long idleTimeout) {
-        this.idleTimeout = idleTimeout;
-    }
 
     @Override
     public void send(String text) {

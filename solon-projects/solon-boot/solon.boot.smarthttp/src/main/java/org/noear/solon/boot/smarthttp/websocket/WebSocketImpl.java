@@ -1,7 +1,7 @@
 package org.noear.solon.boot.smarthttp.websocket;
 
 import org.noear.solon.Utils;
-import org.noear.solon.net.websocket.WebSocketBase;
+import org.noear.solon.net.websocket.WebSocketTimeoutBase;
 import org.smartboot.http.server.WebSocketRequest;
 import org.smartboot.http.server.WebSocketResponse;
 import org.smartboot.http.server.impl.WebSocketRequestImpl;
@@ -14,7 +14,7 @@ import java.nio.ByteBuffer;
  * @author noear
  * @since 2.0
  */
-public class WebSocketImpl extends WebSocketBase {
+public class WebSocketImpl extends WebSocketTimeoutBase {
     private final WebSocketRequest request;
     private final WebSocketResponse real;
     public WebSocketImpl(WebSocketRequest request) {
@@ -53,17 +53,6 @@ public class WebSocketImpl extends WebSocketBase {
     @Override
     public InetSocketAddress localAddress() {
         return request.getLocalAddress();
-    }
-
-    private long idleTimeout;
-    @Override
-    public long getIdleTimeout() {
-        return idleTimeout;
-    }
-
-    @Override
-    public void setIdleTimeout(long idleTimeout) {
-        this.idleTimeout = idleTimeout;
     }
 
     @Override

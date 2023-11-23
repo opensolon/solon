@@ -9,6 +9,16 @@ import org.noear.solon.boot.ServerConstants;
  * @since 1.8
  */
 public class SocketServerProps extends BaseServerProps {
+    private static SocketServerProps instance;
+
+    public static SocketServerProps getInstance() {
+        if (instance == null) {
+            instance = new SocketServerProps(20000);
+        }
+
+        return instance;
+    }
+
     public SocketServerProps(int portBase) {
         super(ServerConstants.SIGNAL_SOCKET, portBase);
     }

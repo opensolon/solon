@@ -32,7 +32,7 @@ public class ServerDemo {
         @Override
         public void start() throws Throwable {
             _server = new NettyHttpServer(new InetSocketAddress(Solon.cfg().serverPort()),
-                    new HttpServerProps(), Solon.app()::tryHandle);
+                    HttpServerProps.getInstance(), Solon.app()::tryHandle);
             _server.start(null, Solon.cfg().serverPort());
         }
 
