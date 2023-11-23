@@ -96,6 +96,19 @@ public class WsServerHandler extends SimpleChannelInboundHandler<Object> {
         //判断是否是维持链路的Ping消息
         if (frame instanceof PingWebSocketFrame) {
             ctx.channel().write(new PongWebSocketFrame(frame.content().retain()));
+
+            WebSocketImpl webSocket = ctx.attr(SessionKey).get();
+            if (webSocket != null) {
+                webSocket.onReceive();
+            }
+            return;
+        }
+
+        if(frame instanceof PongWebSocketFrame) {
+            WebSocketImpl webSocket = ctx.attr(SessionKey).get();
+            if (webSocket != null) {
+                webSocket.onReceive();
+            }
             return;
         }
 

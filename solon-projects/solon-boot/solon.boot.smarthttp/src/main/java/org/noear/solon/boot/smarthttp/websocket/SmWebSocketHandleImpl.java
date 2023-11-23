@@ -60,6 +60,26 @@ public class SmWebSocketHandleImpl extends WebSocketDefaultHandler {
     }
 
     @Override
+    public void handlePing(WebSocketRequest request, WebSocketResponse response) {
+        super.handlePing(request, response);
+
+        WebSocketImpl webSocket = request.getAttachment().get(SESSION_KEY);
+        if (webSocket != null) {
+            webSocket.onReceive();
+        }
+    }
+
+    @Override
+    public void handlePong(WebSocketRequest request, WebSocketResponse response) {
+        super.handlePong(request, response);
+
+        WebSocketImpl webSocket = request.getAttachment().get(SESSION_KEY);
+        if(webSocket != null) {
+            webSocket.onReceive();
+        }
+    }
+
+    @Override
     public void handleTextMessage(WebSocketRequest request, WebSocketResponse response, String data) {
         try {
             WebSocketImpl webSocket = request.getAttachment().get(SESSION_KEY);

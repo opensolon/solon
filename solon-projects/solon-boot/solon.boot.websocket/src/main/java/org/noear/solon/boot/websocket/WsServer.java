@@ -1,6 +1,7 @@
 package org.noear.solon.boot.websocket;
 
 import org.java_websocket.WebSocket;
+import org.java_websocket.framing.Framedata;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
 import org.noear.solon.boot.prop.impl.WebSocketServerProps;
@@ -80,6 +81,26 @@ public class WsServer extends WebSocketServer {
         }
 
         webSocketRouter.getListener().onClose(webSocket);
+    }
+
+    @Override
+    public void onWebsocketPing(WebSocket conn, Framedata f) {
+        super.onWebsocketPing(conn, f);
+
+        WebSocketImpl webSocket = getSession(conn);
+        if (webSocket != null) {
+            webSocket.onReceive();
+        }
+    }
+
+    @Override
+    public void onWebsocketPong(WebSocket conn, Framedata f) {
+        super.onWebsocketPong(conn, f);
+
+        WebSocketImpl webSocket = getSession(conn);
+        if (webSocket != null) {
+            webSocket.onReceive();
+        }
     }
 
     @Override
