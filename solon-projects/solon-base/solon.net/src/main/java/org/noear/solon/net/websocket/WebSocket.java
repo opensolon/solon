@@ -116,6 +116,16 @@ public interface WebSocket {
     <T> void attr(String name, T value);
 
     /**
+     * 获取闲置超时
+     * */
+    long getIdleTimeout();
+
+    /**
+     * 设置闲置超时
+     * */
+    void setIdleTimeout(long idleTimeout);
+
+    /**
      * 发送文本
      *
      * @param text 文本

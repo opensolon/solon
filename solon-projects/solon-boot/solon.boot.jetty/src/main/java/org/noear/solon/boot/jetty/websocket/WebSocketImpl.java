@@ -39,6 +39,16 @@ public class WebSocketImpl extends WebSocketBase {
     }
 
     @Override
+    public long getIdleTimeout() {
+        return real.getIdleTimeout();
+    }
+
+    @Override
+    public void setIdleTimeout(long idleTimeout) {
+        real.setIdleTimeout(idleTimeout);
+    }
+
+    @Override
     public void send(String text) {
         real.getRemote().sendString(text, CallbackImpl.instance);
     }

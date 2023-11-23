@@ -44,6 +44,16 @@ public class WebSocketImpl extends WebSocketBase {
         return real.getDestinationAddress();
     }
 
+    @Override
+    public long getIdleTimeout() {
+        return real.getIdleTimeout();
+    }
+
+    @Override
+    public void setIdleTimeout(long idleTimeout) {
+        real.setIdleTimeout(idleTimeout);
+    }
+
 
     @Override
     public void send(String text) {

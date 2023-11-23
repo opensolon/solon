@@ -41,6 +41,17 @@ public class WebSocketImpl extends WebSocketBase {
         return (InetSocketAddress)real.channel().localAddress();
     }
 
+    private long idleTimeout;
+    @Override
+    public long getIdleTimeout() {
+        return idleTimeout;
+    }
+
+    @Override
+    public void setIdleTimeout(long idleTimeout) {
+        this.idleTimeout = idleTimeout;
+    }
+
 
     @Override
     public void send(String text) {
