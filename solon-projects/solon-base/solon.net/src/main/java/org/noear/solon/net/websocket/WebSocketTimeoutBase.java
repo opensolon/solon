@@ -36,25 +36,30 @@ public abstract class WebSocketTimeoutBase extends WebSocketBase {
     @Override
     public void setIdleTimeout(long idleTimeout) {
         this.idleTimeout = idleTimeout;
+        this.liveTime = System.currentTimeMillis();
 
-        initIdleTimeoutFuture();
+        checkIdleTimeoutFuture();
     }
 
-    private synchronized void initIdleTimeoutFuture() {
-        liveTime = System.currentTimeMillis();
-
+    private synchronized void checkIdleTimeoutFuture() {
         if (idleTimeout > 0) {
-            if (idleTimeoutFuture == null) {
-                idleTimeoutFuture = RunUtil.delayAndRepeat(() -> {
-                    if (liveTime + idleTimeout < System.currentTimeMillis()) {
-                        if (log.isWarnEnabled()) {
-                            log.warn("WebSocket idle timeout, will close!");
-                        }
-
-                        this.close();
+            if (liveTime + idleTimeout < System.currentTimeMillis()) {
+                if (this.isValid()) {
+                    if (log.isDebugEnabled()) {
+                        log.debug("WebSocket idle timeout, will close!");
                     }
-                }, 10 * 1000);
+
+                    RunUtil.runAndTry(this::close);
+                    WebSocketRouter.getInstance().getListener().onClose(this);
+                    return;
+                }
             }
+
+            if (idleTimeoutFuture != null) {
+                idleTimeoutFuture.cancel(true);
+            }
+
+            idleTimeoutFuture = RunUtil.delay(this::checkIdleTimeoutFuture, idleTimeout);
         } else {
             if (idleTimeoutFuture != null) {
                 idleTimeoutFuture.cancel(true);
