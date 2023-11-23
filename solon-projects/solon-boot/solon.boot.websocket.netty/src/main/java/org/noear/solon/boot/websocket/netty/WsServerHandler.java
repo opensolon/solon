@@ -10,6 +10,7 @@ import io.netty.handler.codec.http.*;
 import io.netty.handler.codec.http.websocketx.*;
 import io.netty.util.AttributeKey;
 import io.netty.util.CharsetUtil;
+import org.noear.solon.boot.prop.impl.WebSocketServerProps;
 import org.noear.solon.net.websocket.WebSocket;
 import org.noear.solon.net.websocket.WebSocketRouter;
 
@@ -23,6 +24,8 @@ public class WsServerHandler extends SimpleChannelInboundHandler<Object> {
     public static final AttributeKey<String> ResourceDescriptorKey = AttributeKey.valueOf("ResourceDescriptor");
     public static final AttributeKey<WebSocketServerHandshaker> HandshakerKey = AttributeKey.valueOf("Handshaker");
     public static final AttributeKey<WebSocketImpl> SessionKey = AttributeKey.valueOf("Session");
+
+    static final WebSocketServerProps wsProps = WebSocketServerProps.getInstance();
 
     private final WebSocketRouter webSocketRouter = WebSocketRouter.getInstance();
 
@@ -70,6 +73,11 @@ public class WsServerHandler extends SimpleChannelInboundHandler<Object> {
             WebSocketImpl webSocket = new WebSocketImpl(ctx);
             ctx.attr(SessionKey).set(webSocket);
             webSocketRouter.getListener().onOpen(webSocket);
+
+            //设置闲置超时
+            if (wsProps.getIdleTimeout() > 0) {
+                webSocket.setIdleTimeout(wsProps.getIdleTimeout());
+            }
         }
     }
 
@@ -93,7 +101,9 @@ public class WsServerHandler extends SimpleChannelInboundHandler<Object> {
 
         if (frame instanceof TextWebSocketFrame) {
             //listener.onMessage();
-            WebSocket webSocket = ctx.attr(SessionKey).get();
+            WebSocketImpl webSocket = ctx.attr(SessionKey).get();
+            webSocket.onReceive();
+
             String msgTxt = ((TextWebSocketFrame) frame).text();
 
             webSocketRouter.getListener().onMessage(webSocket, msgTxt);
@@ -102,7 +112,9 @@ public class WsServerHandler extends SimpleChannelInboundHandler<Object> {
 
         if (frame instanceof BinaryWebSocketFrame) {
             //listener.onMessage();
-            WebSocket webSocket = ctx.attr(SessionKey).get();
+            WebSocketImpl webSocket = ctx.attr(SessionKey).get();
+            webSocket.onReceive();
+
             byte[] msgBytes = frame.content().array();
 
             webSocketRouter.getListener().onMessage(webSocket, ByteBuffer.wrap(msgBytes));

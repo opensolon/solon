@@ -66,11 +66,11 @@ public final class XPluginImp implements Plugin {
 
         long time_end = System.currentTimeMillis();
 
-        String serverUrl = props.buildServerUrl(_server.isSecure());
+        String httpServerUrl = props.buildHttpServerUrl(_server.isSecure());
 
         LogUtil.global()
                 .info("Connector:main: nettyhttp: Started ServerConnector@{HTTP/1.1,[http/1.1]}{"
-                        + serverUrl + "}");
+                        + httpServerUrl + "}");
         LogUtil.global()
                 .info("Server:main: nettyhttp: Started (" + solon_boot_ver() + ") @" + (time_end
                         - time_start) + "ms");

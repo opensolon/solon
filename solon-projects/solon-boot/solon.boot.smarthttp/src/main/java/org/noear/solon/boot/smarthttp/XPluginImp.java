@@ -81,11 +81,12 @@ public final class XPluginImp implements Plugin {
 
         String connectorInfo = "solon.connector:main: smarthttp: Started ServerConnector@{HTTP/1.1,[http/1.1]";
         if (app.enableWebSocket()) {
-            LogUtil.global().info(connectorInfo + "[WebSocket]}{0.0.0.0:" + _port + "}");
+            String wsServerUrl = props.buildWsServerUrl(_server.isSecure());
+            LogUtil.global().info(connectorInfo + "[WebSocket]}{" + wsServerUrl + "}");
         }
 
-        String serverUrl = props.buildServerUrl(_server.isSecure());
-        LogUtil.global().info(connectorInfo + "}{"+ serverUrl +"}");
+        String httpServerUrl = props.buildHttpServerUrl(_server.isSecure());
+        LogUtil.global().info(connectorInfo + "}{"+ httpServerUrl +"}");
         LogUtil.global().info("Server:main: smarthttp: Started (" + solon_boot_ver() + ") @" + (time_end - time_start) + "ms");
     }
 

@@ -65,7 +65,8 @@ public class XPluginImpl implements Plugin {
 
         long time_end = System.currentTimeMillis();
 
-        LogUtil.global().info("Connector:main: netty-websocket: Started ServerConnector@{HTTP/1.1,[WebSocket]}{0.0.0.0:" + _port + "}");
+        String wsServerUrl = props.buildWsServerUrl(false);
+        LogUtil.global().info("Connector:main: netty-websocket: Started ServerConnector@{HTTP/1.1,[WebSocket]}{" + wsServerUrl + "}");
         LogUtil.global().info("Server:main: netty-websocket: Started (" + solon_boot_ver() + ") @" + (time_end - time_start) + "ms");
     }
 

@@ -77,11 +77,12 @@ public final class XPluginImp implements Plugin {
 
         String connectorInfo = "solon.connector:main: tomcat: Started ServerConnector@{HTTP/1.1,[http/1.1]";
         if (app.enableWebSocket()) {
-            System.out.println(connectorInfo + "[WebSocket]}{0.0.0.0:" + _port + "}");
+            String wsServerUrl = props.buildWsServerUrl(false);
+            LogUtil.global().info(connectorInfo + "[WebSocket]}{" + wsServerUrl + "}");
         }
 
-        System.out.println(connectorInfo + "}{http://localhost:" + _port + "}");
-
+        String httpServerUrl = props.buildHttpServerUrl(false);
+        LogUtil.global().info(connectorInfo + "}{" + httpServerUrl + "}");
         LogUtil.global().info("Server:main: tomcat: Started (" + solon_boot_ver() + ") @" + (time_end - time_start) + "ms");
     }
 

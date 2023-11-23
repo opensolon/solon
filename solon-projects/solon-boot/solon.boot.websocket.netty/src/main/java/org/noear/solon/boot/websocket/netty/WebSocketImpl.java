@@ -45,11 +45,13 @@ public class WebSocketImpl extends WebSocketTimeoutBase {
     @Override
     public void send(String text) {
         real.writeAndFlush(new TextWebSocketFrame(text));
+        onSend();
     }
 
     @Override
     public void send(ByteBuffer binary) {
         real.writeAndFlush(new BinaryWebSocketFrame(Unpooled.wrappedBuffer(binary)));
+        onSend();
     }
 
     @Override

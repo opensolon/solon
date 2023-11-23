@@ -59,12 +59,16 @@ public class WebSocketImpl extends WebSocketTimeoutBase {
     public void send(String text) {
         real.sendTextMessage(text);
         real.flush();
+
+        onSend();
     }
 
     @Override
     public void send(ByteBuffer binary) {
         real.sendBinaryMessage(binary.array());
         real.flush();
+
+        onSend();
     }
 
     @Override

@@ -1,6 +1,8 @@
 package org.noear.solon.net.websocket;
 
 import org.noear.solon.Utils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.URI;
 import java.util.HashMap;
@@ -14,6 +16,7 @@ import java.util.Objects;
  * @since 2.6
  */
 public abstract class WebSocketBase implements WebSocket {
+    static final Logger log = LoggerFactory.getLogger(WebSocketBase.class);
 
     private final Map<String, Object> attrMap = new HashMap<>();
     private Handshake handshake;

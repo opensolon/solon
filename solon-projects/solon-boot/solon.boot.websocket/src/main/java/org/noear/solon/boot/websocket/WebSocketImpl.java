@@ -44,11 +44,13 @@ public class WebSocketImpl extends WebSocketTimeoutBase {
     @Override
     public void send(String text) {
         real.send(text);
+        onSend();
     }
 
     @Override
     public void send(ByteBuffer binary) {
         real.send(binary);
+        onSend();
     }
 
     @Override

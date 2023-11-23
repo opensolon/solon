@@ -60,6 +60,7 @@
 * 添加 solon.boot.smarthttp 外部优先级处理（成为默认后，要方便外部替换它）
 * 调整 smart-http,jetty,undertow 统一使用 server.http.idleTimeout 配置
 * 调整 `@ProxyComponent` 弃用提示为直接提示（之前为 debug 模式下）
+* 调整 websocket server 的地址打印
 * 移除 AopContext（完成更名 AppContext 的第二步动作）
 * 移除 PathLimiter （已无用，留着有误导性）
 * 移除 SolonApp::enableWebSocketD,enableWebSocketMvc,enableSocketMvc（已无用，留着有误导性）

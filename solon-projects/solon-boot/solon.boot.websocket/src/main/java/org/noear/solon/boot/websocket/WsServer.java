@@ -3,6 +3,7 @@ package org.noear.solon.boot.websocket;
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
+import org.noear.solon.boot.prop.impl.WebSocketServerProps;
 import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.net.websocket.WebSocketRouter;
 import org.slf4j.Logger;
@@ -16,6 +17,7 @@ import java.util.Iterator;
 @SuppressWarnings("unchecked")
 public class WsServer extends WebSocketServer {
     static final Logger log = LoggerFactory.getLogger(WsServer.class);
+    static final WebSocketServerProps wsProps = WebSocketServerProps.getInstance();
 
     private final WebSocketRouter webSocketRouter = WebSocketRouter.getInstance();
 
@@ -61,6 +63,11 @@ public class WsServer extends WebSocketServer {
     public void onOpen(WebSocket conn, ClientHandshake shake) {
         WebSocketImpl webSocket = getSession(conn, shake);
         webSocketRouter.getListener().onOpen(webSocket);
+
+        //设置闲置超时
+        if (wsProps.getIdleTimeout() > 0) {
+            webSocket.setIdleTimeout(wsProps.getIdleTimeout());
+        }
     }
 
     @Override
@@ -79,6 +86,8 @@ public class WsServer extends WebSocketServer {
     public void onMessage(WebSocket conn, String data) {
         try {
             WebSocketImpl webSocket = getSession(conn);
+            webSocket.onReceive();
+
             webSocketRouter.getListener().onMessage(webSocket, data);
         } catch (Throwable e) {
             log.warn(e.getMessage(), e);
@@ -89,6 +98,8 @@ public class WsServer extends WebSocketServer {
     public void onMessage(WebSocket conn, ByteBuffer data) {
         try {
             WebSocketImpl webSocket = getSession(conn);
+            webSocket.onReceive();
+
             webSocketRouter.getListener().onMessage(webSocket, data);
         } catch (Throwable e) {
             log.warn(e.getMessage(), e);
