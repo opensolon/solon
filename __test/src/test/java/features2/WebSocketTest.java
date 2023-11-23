@@ -35,11 +35,4 @@ public class WebSocketTest {
         client.connectBlocking();
         //client.close();
     }
-
-
-    public static void main(String[] args) throws Exception {
-        SimpleWebSocketClient client = new SimpleWebSocketClient("ws://127.0.0.1:8080");
-        client.connectBlocking();
-        //client.close();
-    }
 }

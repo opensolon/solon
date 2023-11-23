@@ -15,6 +15,7 @@ public class WebSocketImpl implements WebSocketListener {
     @Override
     public void onOpen(WebSocket socket) {
         System.out.println("::onOpen=" + socket.id());
+        socket.setIdleTimeout(3000);
     }
 
     @Override

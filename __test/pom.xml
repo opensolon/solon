@@ -258,16 +258,16 @@
             <artifactId>solon.boot.socketd</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.boot.websocket</artifactId>
-        </dependency>
-
-
 <!--        <dependency>-->
 <!--            <groupId>org.noear</groupId>-->
-<!--            <artifactId>solon.boot.websocket.netty</artifactId>-->
+<!--            <artifactId>solon.boot.websocket</artifactId>-->
 <!--        </dependency>-->
+
+
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.boot.websocket.netty</artifactId>
+        </dependency>
 
 
 <!--                    <dependency>-->
@@ -286,10 +286,10 @@
 <!--                    <version>${solon.version}</version>-->
 <!--                </dependency>-->
 
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.boot.smarthttp</artifactId>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.noear</groupId>-->
+<!--            <artifactId>solon.boot.smarthttp</artifactId>-->
+<!--        </dependency>-->
 
 
 <!--                <dependency>-->
@@ -304,20 +304,20 @@
 
 
 
-<!--                <dependency>-->
-<!--                    <groupId>org.noear</groupId>-->
-<!--                    <artifactId>solon.boot.jetty</artifactId>-->
-<!--                </dependency>-->
+                <dependency>
+                    <groupId>org.noear</groupId>
+                    <artifactId>solon.boot.jetty</artifactId>
+                </dependency>
 
-<!--                <dependency>-->
-<!--                    <groupId>org.noear</groupId>-->
-<!--                    <artifactId>solon.boot.jetty.add.websocket</artifactId>-->
-<!--                </dependency>-->
+                <dependency>
+                    <groupId>org.noear</groupId>
+                    <artifactId>solon.boot.jetty.add.websocket</artifactId>
+                </dependency>
 
-<!--                <dependency>-->
-<!--                    <groupId>org.noear</groupId>-->
-<!--                    <artifactId>solon.boot.jetty.add.jsp</artifactId>-->
-<!--                </dependency>-->
+                <dependency>
+                    <groupId>org.noear</groupId>
+                    <artifactId>solon.boot.jetty.add.jsp</artifactId>
+                </dependency>
 
 
         <dependency>
