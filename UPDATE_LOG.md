@@ -41,6 +41,7 @@
 * socket.d 升为 2.0.17
 * wood 升为 1.2.6
 * mysql-flex 升为 1.7.4
+* smartsocket 升为 1.5.38
 
 ### 2.6.0
 * 设定 smart-http 为 solon-api 快捷组合包的默认 http-server
@@ -72,7 +73,7 @@
 * minio8 升为 8.5.3
 * sqltoy 升为 5.2.81
 * fastjson2 升为 2.0.42
-* luffy 升为 1.6.9
+* luffy 升为 1.7.0
 * water 升为 2.12.0
 
 
