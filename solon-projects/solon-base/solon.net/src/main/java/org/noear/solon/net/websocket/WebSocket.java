@@ -15,7 +15,7 @@ public interface WebSocket {
     /**
      * 会话id
      * */
-    String sid();
+    String id();
 
     /**
      * 是否有效
@@ -33,7 +33,7 @@ public interface WebSocket {
     String url();
 
     /**
-     * 获取握手路径
+     * 获取请求路径
      */
     String path();
 

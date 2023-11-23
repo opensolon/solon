@@ -22,7 +22,7 @@ public abstract class WebSocketBase implements WebSocket {
     private Handshake handshake;
     private boolean isClosed;
     private String pathNew;
-    private String sid = Utils.guid();
+    private String id = Utils.guid();
 
     protected void init(URI uri) {
         this.handshake = new HandshakeImpl(uri);
@@ -33,16 +33,25 @@ public abstract class WebSocketBase implements WebSocket {
     }
 
 
+    /**
+     * 会话id
+     * */
     @Override
-    public String sid() {
-        return sid;
+    public String id() {
+        return id;
     }
 
+    /**
+     * 获取请求地址
+     * */
     @Override
     public String url() {
         return handshake.getUrl();
     }
 
+    /**
+     * 获取请求路径
+     */
     @Override
     public String path() {
         if (pathNew == null) {
@@ -112,11 +121,11 @@ public abstract class WebSocketBase implements WebSocket {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         WebSocketBase that = (WebSocketBase) o;
-        return Objects.equals(sid, that.sid);
+        return Objects.equals(id, that.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(sid);
+        return Objects.hash(id);
     }
 }

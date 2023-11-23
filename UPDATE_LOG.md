@@ -26,7 +26,7 @@
 * 添加 solon.logging 配置提示文件
 * 添加 rabbitmq-solon-cloud-plugin 消息并发处理机制
 * 添加 RunUtil::asyncAndTry 接口
-* 添加 WebSocket::sid, attrHas 接口
+* 添加 WebSocket::id, attrHas 接口
 * 添加 WebSocket::setIdleTimeout 接口
 * 调整 solon.auth 取消 AuthUtil 验证路径、权限、角色与登录绑死。由用户适配的处理器决定
 * 调整 scheduledPoolSize 默认值多一倍
