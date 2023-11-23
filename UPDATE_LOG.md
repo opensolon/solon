@@ -43,6 +43,7 @@
 * mysql-flex 升为 1.7.4
 * smartsocket 升为 1.5.38
 * undertow 升为 2.2.28.Final
+* netty 升为 4.1.82.Final
 
 ### 2.6.0
 * 设定 smart-http 为 solon-api 快捷组合包的默认 http-server
