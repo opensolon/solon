@@ -1,6 +1,7 @@
 package org.noear.solon.data.cache;
 
 import org.noear.solon.Utils;
+import org.noear.solon.core.util.RunUtil;
 
 import java.util.Map;
 import java.util.Properties;
@@ -19,9 +20,6 @@ public class LocalCacheService implements CacheService {
 
     //缓存存储器
     private final Map<String, Entity> _data = new ConcurrentHashMap<>();
-    //计划线程池（用于超时处理）
-    private static ScheduledExecutorService _exec = Executors.newSingleThreadScheduledExecutor();
-
     public LocalCacheService() {
         this(30);
     }
@@ -69,9 +67,9 @@ public class LocalCacheService implements CacheService {
 
             if (seconds > 0) {
                 //设定新的超时
-                ent.future = _exec.schedule(() -> {
+                ent.future = RunUtil.delay(() -> {
                     _data.remove(key);
-                }, seconds, TimeUnit.SECONDS);
+                }, seconds * 1000);
             }
         }
     }
