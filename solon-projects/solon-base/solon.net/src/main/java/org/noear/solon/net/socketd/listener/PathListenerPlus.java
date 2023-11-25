@@ -1,7 +1,7 @@
 package org.noear.solon.net.socketd.listener;
 
 import org.noear.socketd.transport.core.Listener;
-import org.noear.socketd.transport.core.listener.BuilderListener;
+import org.noear.socketd.transport.core.listener.EventListener;
 import org.noear.socketd.transport.core.listener.PathListener;
 
 /**
@@ -28,8 +28,8 @@ public class PathListenerPlus extends PathListener {
      * 路由
      */
     @Override
-    public BuilderListener of(String path) {
-        BuilderListener listener = new BuilderListener();
+    public EventListener of(String path) {
+        EventListener listener = new EventListener();
         mapper.put(path, new ExpressListener(path, listener));
         return listener;
     }

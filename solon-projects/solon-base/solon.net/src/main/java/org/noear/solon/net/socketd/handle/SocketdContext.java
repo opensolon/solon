@@ -106,7 +106,7 @@ public class SocketdContext extends ContextEmpty {
 
     @Override
     public String url() {
-        return _request.route();
+        return _request.event();
     }
 
     @Override
