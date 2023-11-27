@@ -15,6 +15,7 @@ import org.noear.solon.cloud.service.CloudEventObserverManger;
 import org.noear.solon.cloud.service.CloudEventServicePlus;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author noear
@@ -25,18 +26,20 @@ public class CloudEventServiceFolkMqImpl implements CloudEventServicePlus {
     private final MqClient client;
     private final FolkmqConsumeHandler folkmqConsumeHandler;
     private final CloudEventObserverManger observerManger;
-    public CloudEventServiceFolkMqImpl(CloudProps cloudProps) {
-        try {
-            this.client = FolkMQ.createClient(cloudProps.getEventServer())
-                    .autoAcknowledge(false)
-                    .connect();
-        } catch (IOException e) {
-            throw new IllegalStateException(e);
-        }
+    private final long publishTimeout;
 
+    public CloudEventServiceFolkMqImpl(CloudProps cloudProps) {
         this.cloudProps = cloudProps;
         this.observerManger = new CloudEventObserverManger();
         this.folkmqConsumeHandler = new FolkmqConsumeHandler(observerManger);
+        this.publishTimeout = cloudProps.getEventPublishTimeout();
+        this.client = FolkMQ.createClient(cloudProps.getEventServer())
+                .autoAcknowledge(false);
+        try {
+            client.connect();
+        } catch (IOException e) {
+            throw new IllegalStateException(e);
+        }
     }
 
     @Override
@@ -52,8 +55,14 @@ public class CloudEventServiceFolkMqImpl implements CloudEventServicePlus {
         //new topic
         String topicNew = FolkmqProps.getTopicNew(event);
         try {
-            client.publish(topicNew, event.content(), event.scheduled(), event.qos())
-                    .get();
+            if (publishTimeout > 0) {
+                //异步等待
+                client.publish(topicNew, event.content(), event.scheduled(), event.qos())
+                        .get(publishTimeout, TimeUnit.MILLISECONDS);
+            } else {
+                //异步
+                client.publish(topicNew, event.content(), event.scheduled(), event.qos());
+            }
         } catch (Throwable ex) {
             throw new CloudEventException(ex);
         }
