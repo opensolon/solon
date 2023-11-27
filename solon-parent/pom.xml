@@ -33,7 +33,8 @@
         <water.version>2.12.0</water.version>
         <luffy.version>1.7.0</luffy.version>
         <redisx.version>1.6.2</redisx.version>
-        <socketd.version>2.0.20</socketd.version>
+        <socketd.version>2.0.21</socketd.version>
+        <folkmq.version>1.0.7</folkmq.version>
         <redisson.version>3.23.3</redisson.version>
         <lettuce.version>6.2.5.RELEASE</lettuce.version>
 
@@ -1281,6 +1282,12 @@
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>activemq-solon-cloud-plugin</artifactId>
+                <version>${solon.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>folkmq-solon-cloud-plugin</artifactId>
                 <version>${solon.version}</version>
             </dependency>
 

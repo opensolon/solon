@@ -16,9 +16,6 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>../../solon-projects-cloud/solon-cloud-job/xxl-job-solon-cloud-plugin</module>
-        <module>../../solon-projects-cloud/solon-cloud-job/quartz-solon-cloud-plugin</module>
-        <module>../../solon-projects-cloud/solon-cloud-job/powerjob-solon-cloud-plugin</module>
         <module>../../solon-projects-cloud/solon-cloud-event/jedis-solon-cloud-plugin</module>
         <module>../../solon-projects-cloud/solon-cloud-event/rabbitmq-solon-cloud-plugin</module>
         <module>../../solon-projects-cloud/solon-cloud-event/rocketmq-solon-cloud-plugin</module>
@@ -29,6 +26,8 @@
         <module>../../solon-projects-cloud/solon-cloud-event/aliyun-ons-solon-cloud-plugin</module>
         <module>../../solon-projects-cloud/solon-cloud-event/activemq-solon-cloud-plugin</module>
         <module>../../solon-projects-cloud/solon-cloud-event/pulsar-solon-cloud-plugin</module>
+        <module>../../solon-projects-cloud/solon-cloud-event/folkmq-solon-cloud-plugin</module>
+
         <module>../../solon-projects-cloud/solon-cloud-file/aliyun-oss-solon-cloud-plugin</module>
         <module>../../solon-projects-cloud/solon-cloud-file/aws-s3-solon-cloud-plugin</module>
         <module>../../solon-projects-cloud/solon-cloud-file/qiniu-kodo-solon-cloud-plugin</module>

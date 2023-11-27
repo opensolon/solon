@@ -21,6 +21,7 @@
 * 新增 graphql-solon-plugin 插件
 
 ### 2.6.1
+* 新增 folkmq-solon-cloud-plugin 插件
 * 新增 solon.luffy 插件
 * 添加 solon.docs 全局参数支持
 * 添加 solon.logging 配置提示文件
@@ -38,7 +39,7 @@
 * 修复 solon.boot.smarthttp 获取 queryString 会中文乱码的问题 
 * 移除 `@Dao`,`@Service`,`@Repository` 三个注解（弃用很久了，容易带来误解）
 * snack3 升为 3.2.83
-* socket.d 升为 2.0.20
+* socket.d 升为 2.0.21
 * wood 升为 1.2.6
 * mysql-flex 升为 1.7.4
 * smartsocket 升为 1.5.38
