@@ -15,7 +15,6 @@
 * 新增 seata-solon-plugin 插件
 * 增加 quartz jdbc 及时更新支持（数据库里变了，它马上变） ???
 * 调整 solon.config.add 与 solon.config.load 合并，规范格式（同时支持内部与外部） ???
-* 调整 简化 SocketD ???
 * 调整 使用更多的 slf4j 替换 LogUtil ???
 * 调整 取消启动参数简写模式，保持与应用参数相同的名字 ???
 * 新增 graphql-solon-plugin 插件
@@ -43,7 +42,9 @@
 * snack3 升为 3.2.84
 * socket.d 升为 2.0.22
 * wood 升为 1.2.6
-* mysql-flex 升为 1.7.4
+* mysql-flex 升为 1.7.5
+* sqltoy 升为 5.2.82
+* beetlsql 升为 3.27.2-RELEASE
 * smartsocket 升为 1.5.38
 * undertow 升为 2.2.28.Final
 * netty 升为 4.1.86.Final
