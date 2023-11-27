@@ -339,14 +339,21 @@ public class ValidatorManager {
                             rst.setDescription(cw.clz().getSimpleName() + "." + fieldWrap.getName());
                         }
 
-                        if (rst.getData() instanceof BeanValidateInfo == false) {
-                            rst.setData(new BeanValidateInfo(anno, valid.message(anno)));
-                        }
-
                         if (VALIDATE_ALL){
-                            list.add((BeanValidateInfo) rst.getData());
                             result.setCode(rst.getCode());
+                            if (rst.getData() instanceof BeanValidateInfo ) {
+                                list.add((BeanValidateInfo) rst.getData());
+                            }else if (rst.getData() instanceof Collection){
+                                List<BeanValidateInfo> list2 = (List<BeanValidateInfo>) rst.getData();
+                                list.addAll(list2);
+                            }else {
+                                rst.setData(new BeanValidateInfo(anno, valid.message(anno)));
+                                list.add((BeanValidateInfo) rst.getData());
+                            }
                         }else {
+                            if (rst.getData() instanceof BeanValidateInfo == false) {
+                                rst.setData(new BeanValidateInfo(anno, valid.message(anno)));
+                            }
                             return rst;
                         }
                     }
