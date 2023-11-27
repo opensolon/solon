@@ -699,7 +699,7 @@ public abstract class Context {
      * 获取 session 状态（类型转换，存在风险）
      *
      * @param name 状态名
-     * @deprecated 2.3
+     * @since 2.3
      */
     public abstract  <T> T sessionOrDefault(String name, @NonNull T def);
 
