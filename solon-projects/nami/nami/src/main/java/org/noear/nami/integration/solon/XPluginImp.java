@@ -35,6 +35,9 @@ public class XPluginImp implements Plugin {
                 }
             }
 
+            //代理一下，把 name 改掉
+            anno = new NamiClientAnno(anno);
+
             if (Utils.isEmpty(anno.url()) && Utils.isEmpty(anno.name()) && anno.upstream().length == 0) {
                 throw new NamiException("@NamiClient configuration error: " + varH.getFullName());
             } else {
