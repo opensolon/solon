@@ -7,7 +7,6 @@ import org.slf4j.LoggerFactory;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * WebSocket 会话接口基础
@@ -114,18 +113,5 @@ public abstract class WebSocketBase implements WebSocket {
     @Override
     public void close() {
         isClosed = true;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        WebSocketBase that = (WebSocketBase) o;
-        return Objects.equals(id, that.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
     }
 }

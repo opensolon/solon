@@ -1,8 +1,7 @@
 package org.noear.solon.cloud.extend.folkmq.impl;
 
-import org.noear.folkmq.client.MqConsumerHandler;
+import org.noear.folkmq.client.MqConsumeHandler;
 import org.noear.folkmq.client.MqMessage;
-import org.noear.snack.ONode;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudEventHandler;
 import org.noear.solon.cloud.extend.folkmq.FolkmqProps;
@@ -17,15 +16,17 @@ import java.io.IOException;
  * @author noear
  * @since 2.6
  */
-public class FolkmqConsumeHandler implements MqConsumerHandler {
+public class FolkmqConsumeHandler implements MqConsumeHandler {
     static final Logger log = LoggerFactory.getLogger(FolkmqConsumeHandler.class);
 
     private CloudEventObserverManger observerManger;
-    public FolkmqConsumeHandler(CloudEventObserverManger observerManger){
+
+    public FolkmqConsumeHandler(CloudEventObserverManger observerManger) {
         this.observerManger = observerManger;
     }
+
     @Override
-    public void handle(MqMessage message) throws IOException {
+    public void consume(MqMessage message) throws IOException {
 
         try {
             Event event = new Event(message.getTopic(), message.getContent());
@@ -51,7 +52,7 @@ public class FolkmqConsumeHandler implements MqConsumerHandler {
 
     /**
      * 处理接收事件（会吃掉异常）
-     * */
+     */
     private boolean onReceive(Event event) throws Throwable {
         try {
             return onReceiveDo(event);
@@ -82,7 +83,7 @@ public class FolkmqConsumeHandler implements MqConsumerHandler {
         return isOk;
     }
 
-    private String getTopicNew(Event event){
+    private String getTopicNew(Event event) {
         return FolkmqProps.getTopicNew(event);
     }
 }
