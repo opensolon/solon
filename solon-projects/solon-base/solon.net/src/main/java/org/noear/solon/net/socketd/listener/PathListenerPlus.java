@@ -5,7 +5,7 @@ import org.noear.socketd.transport.core.listener.EventListener;
 import org.noear.socketd.transport.core.listener.PathListener;
 
 /**
- * 路由监听器增强版
+ * 路径监听器增强版
  *
  * @author noear
  * @since 2.6
