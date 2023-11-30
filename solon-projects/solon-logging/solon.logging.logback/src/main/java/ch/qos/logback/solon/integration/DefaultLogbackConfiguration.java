@@ -16,6 +16,8 @@ import ch.qos.logback.solon.SolonTagsConverter;
 import org.noear.solon.Solon;
 
 import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 默认配置（兼容原生编译）
@@ -28,17 +30,28 @@ public class DefaultLogbackConfiguration {
         synchronized (config.getConfigurationLock()) {
             prepare(config);
 
-            Appender<ILoggingEvent> consoleAppender = consoleAppender(config);
-            Appender<ILoggingEvent> solonAppender = solonAppender(config);
 
             boolean fileEnable = Solon.cfg().getBool("solon.logging.appender.file.enable", true);
+            boolean consoleEnable = Solon.cfg().getBool("solon.logging.appender.console.enable", true);
+
+            List<Appender<ILoggingEvent>> appenderList = new ArrayList<>();
 
             if (fileEnable) {
                 Appender<ILoggingEvent> fileAppender = fileAppender(config);
-                config.root(Level.TRACE, consoleAppender, fileAppender, solonAppender);
-            } else {
-                config.root(Level.TRACE, consoleAppender, solonAppender);
+                appenderList.add(fileAppender);
             }
+
+            if (consoleEnable) {
+                Appender<ILoggingEvent> consoleAppender = consoleAppender(config);
+                appenderList.add(consoleAppender);
+            }
+
+            Appender<ILoggingEvent> solonAppender = solonAppender(config);
+            appenderList.add(solonAppender);
+
+            Appender<ILoggingEvent>[] appenderAry = new Appender[appenderList.size()];
+            Level rootLevel = Level.toLevel(resolve(config, "${LOGGER_ROOT_LEVEL}"));
+            config.root(rootLevel, appenderList.toArray(appenderAry));
         }
     }
 
