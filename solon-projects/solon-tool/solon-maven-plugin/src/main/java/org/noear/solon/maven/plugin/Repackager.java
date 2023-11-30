@@ -1,6 +1,7 @@
 package org.noear.solon.maven.plugin;
 
 
+import org.apache.commons.io.FileUtils;
 import org.apache.maven.plugin.logging.Log;
 import org.noear.solon.maven.plugin.tools.SolonMavenUtil;
 import org.noear.solon.maven.plugin.tools.tool.*;
@@ -71,10 +72,10 @@ public class Repackager {
         File workingSource = this.source;
         if (this.source.equals(destination)) {
             workingSource = getBackupFile();
-            workingSource.delete();
-            renameFile(this.source, workingSource);
+            FileUtils.delete(workingSource);
+            FileUtils.moveFile(this.source, workingSource);
         }
-        destination.delete();
+        FileUtils.delete(destination);
         JarFile jarFileSource = new JarFile(workingSource);
         try {
             repackage(jarFileSource, destination, libraries);
