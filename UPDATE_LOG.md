@@ -19,6 +19,9 @@
 * 调整 取消启动参数简写模式，保持与应用参数相同的名字 ???
 * 新增 graphql-solon-plugin 插件
 
+### 2.6.2
+* 修复 solon.logging.logback 对 solon.logging.appender.console.enable 配置无效的问题
+
 ### 2.6.1
 * 新增 folkmq-solon-cloud-plugin 插件
 * 新增 solon.luffy 插件
