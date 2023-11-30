@@ -56,31 +56,39 @@ public class Repackager {
      * @throws IOException if the file cannot be repackaged
      */
     public void repackage(File destination, Libraries libraries) throws IOException {
-        if (destination == null || destination.isDirectory()) {
-            throw new IllegalArgumentException("Invalid destination");
-        }
-        if (libraries == null) {
-            throw new IllegalArgumentException("Libraries must not be null");
-        }
-        if (this.layout == null) {
-            this.layout = getLayoutFactory().getLayout(this.source);
-        }
-        if (alreadyRepackaged()) {
-            return;
-        }
-        destination = destination.getAbsoluteFile();
-        File workingSource = this.source;
-        if (this.source.equals(destination)) {
-            workingSource = getBackupFile();
-            FileUtils.delete(workingSource);
-            FileUtils.moveFile(this.source, workingSource);
-        }
-        FileUtils.delete(destination);
-        JarFile jarFileSource = new JarFile(workingSource);
         try {
-            repackage(jarFileSource, destination, libraries);
-        } finally {
-            jarFileSource.close();
+            if (destination == null || destination.isDirectory()) {
+                throw new IllegalArgumentException("Invalid destination");
+            }
+            if (libraries == null) {
+                throw new IllegalArgumentException("Libraries must not be null");
+            }
+            if (this.layout == null) {
+                this.layout = getLayoutFactory().getLayout(this.source);
+            }
+            if (alreadyRepackaged()) {
+                return;
+            }
+            destination = destination.getAbsoluteFile();
+            File workingSource = this.source;
+            if (this.source.equals(destination)) {
+                workingSource = getBackupFile();
+                if (workingSource.exists()) {
+                    FileUtils.delete(workingSource);
+                }
+                FileUtils.moveFile(this.source, workingSource);
+            }
+            if (destination.exists()) {
+                FileUtils.delete(destination);
+            }
+            JarFile jarFileSource = new JarFile(workingSource);
+            try {
+                repackage(jarFileSource, destination, libraries);
+            } finally {
+                jarFileSource.close();
+            }
+        }catch (Exception e){
+            logger.error(e.getMessage(),e);
         }
     }
 
