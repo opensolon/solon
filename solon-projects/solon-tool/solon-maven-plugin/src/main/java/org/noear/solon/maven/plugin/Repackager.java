@@ -1,6 +1,7 @@
 package org.noear.solon.maven.plugin;
 
 
+import org.apache.commons.io.FileUtils;
 import org.apache.maven.plugin.logging.Log;
 import org.noear.solon.maven.plugin.tools.SolonMavenUtil;
 import org.noear.solon.maven.plugin.tools.tool.*;
@@ -42,7 +43,7 @@ public class Repackager {
         }
         this.source = source.getAbsoluteFile();
 
-		this.mainClass = SolonMavenUtil.getStartClass(getFile(), mainClass, logger);
+        this.mainClass = SolonMavenUtil.getStartClass(getFile(), mainClass, logger);
         logger.info("The startup class of the JAR: " + this.mainClass);
     }
 
@@ -71,16 +72,21 @@ public class Repackager {
         File workingSource = this.source;
         if (this.source.equals(destination)) {
             workingSource = getBackupFile();
-            workingSource.delete();
-            renameFile(this.source, workingSource);
+            if (workingSource.exists()) {
+                FileUtils.delete(workingSource);
+            }
+            FileUtils.moveFile(this.source, workingSource);
         }
-        destination.delete();
+        if (destination.exists()) {
+            FileUtils.delete(destination);
+        }
         JarFile jarFileSource = new JarFile(workingSource);
         try {
             repackage(jarFileSource, destination, libraries);
         } finally {
             jarFileSource.close();
         }
+
     }
 
     private LayoutFactory getLayoutFactory() {
