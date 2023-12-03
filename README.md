@@ -4,7 +4,7 @@
 Solon v2.6.2-SNAPSHOT
 </h1>
 <p align="center">
-	<strong>Java new ecological application development framework, smaller, faster, simpler!</strong>
+	<strong>Java's new application development framework, smaller, faster, and easier!</strong>
 </p>
 <p align="center">
 	<a href="https://solon.noear.org/">https://solon.noear.org</a>

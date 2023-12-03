@@ -4,7 +4,7 @@
 Solon v2.6.2-SNAPSHOT
 </h1>
 <p align="center">
-	<strong>Java 新的生态型应用开发框架，更小、更快、更简单！</strong>
+	<strong>Java 新的应用开发框架，更小、更快、更简单！</strong>
 </p>
 <p align="center">
 	<a href="https://solon.noear.org/">https://solon.noear.org</a>
