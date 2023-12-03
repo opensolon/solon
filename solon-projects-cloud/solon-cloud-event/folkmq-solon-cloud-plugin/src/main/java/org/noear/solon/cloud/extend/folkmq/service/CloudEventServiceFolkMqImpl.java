@@ -2,6 +2,7 @@ package org.noear.solon.cloud.extend.folkmq.service;
 
 import org.noear.folkmq.FolkMQ;
 import org.noear.folkmq.client.MqClient;
+import org.noear.folkmq.client.MqMessage;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudEventHandler;
 import org.noear.solon.cloud.CloudProps;
@@ -55,13 +56,14 @@ public class CloudEventServiceFolkMqImpl implements CloudEventServicePlus {
         //new topic
         String topicNew = FolkmqProps.getTopicNew(event);
         try {
+            MqMessage message = new MqMessage(event.content()).scheduled(event.scheduled()).qos(event.qos());
             if (publishTimeout > 0) {
                 //异步等待
-                client.publish(topicNew, event.content(), event.scheduled(), event.qos())
+                client.publish(topicNew, message)
                         .get(publishTimeout, TimeUnit.MILLISECONDS);
             } else {
                 //异步
-                client.publish(topicNew, event.content(), event.scheduled(), event.qos());
+                client.publish(topicNew, message);
             }
         } catch (Throwable ex) {
             throw new CloudEventException(ex);
