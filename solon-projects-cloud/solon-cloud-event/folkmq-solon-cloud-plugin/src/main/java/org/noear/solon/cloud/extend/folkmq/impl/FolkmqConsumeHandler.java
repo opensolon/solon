@@ -1,7 +1,7 @@
 package org.noear.solon.cloud.extend.folkmq.impl;
 
+import org.noear.folkmq.client.IMqMessageReceived;
 import org.noear.folkmq.client.MqConsumeHandler;
-import org.noear.folkmq.client.MqMessage;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudEventHandler;
 import org.noear.solon.cloud.extend.folkmq.FolkmqProps;
@@ -26,8 +26,7 @@ public class FolkmqConsumeHandler implements MqConsumeHandler {
     }
 
     @Override
-    public void consume(MqMessage message) throws IOException {
-
+    public void consume(IMqMessageReceived message) throws IOException {
         try {
             Event event = new Event(message.getTopic(), message.getContent());
             event.times(message.getTimes());
