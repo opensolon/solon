@@ -21,6 +21,8 @@
 
 ### 2.6.2
 * 修复 solon.logging.logback 对 solon.logging.appender.console.enable 配置无效的问题
+* socket.d 升为 2.1.3
+* nacos2 升为 2.3.0
 
 ### 2.6.1
 * 新增 folkmq-solon-cloud-plugin 插件
