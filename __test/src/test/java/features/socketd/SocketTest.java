@@ -30,7 +30,6 @@ public class SocketTest {
 
         Entity msg = session.sendAndRequest(root + "/demog/中文/1", new StringEntity("Hello 世界!"));
         System.out.println(msg.dataAsString());
-        msg.data().reset();
         assert "我收到了：Hello 世界!".equals(msg.dataAsString());
 
         Thread.sleep(100);

@@ -17,6 +17,9 @@ import org.slf4j.LoggerFactory;
 import java.io.*;
 import java.net.URI;
 import java.net.URLEncoder;
+import java.nio.ByteBuffer;
+import java.nio.MappedByteBuffer;
+import java.nio.channels.FileChannel;
 
 /**
  * Socket.D Context + Hnalder 适配
@@ -124,9 +127,14 @@ public class SocketdContext extends ContextEmpty {
         return uri().getQuery();
     }
 
+    private InputStream bodyAsStream;
     @Override
     public InputStream bodyAsStream() throws IOException {
-        return _request.data();
+        if (bodyAsStream == null) {
+            bodyAsStream = new ByteArrayInputStream(_request.dataAsBytes());
+        }
+
+        return bodyAsStream;
     }
 
     //==============
@@ -191,9 +199,12 @@ public class SocketdContext extends ContextEmpty {
         headerSet(EntityMetas.META_DATA_DISPOSITION_FILENAME, fileName);
         contentType(contentType);
 
-        try (InputStream ins = new FileInputStream(file)) {
-            replyDo(ins, (int) file.length());
-        }
+        long len = file.length();
+        MappedByteBuffer byteBuffer = new RandomAccessFile(file, "r")
+                .getChannel()
+                .map(FileChannel.MapMode.READ_ONLY, 0, len);
+
+        replyDo(byteBuffer, (int) len);
     }
 
     @Override
@@ -204,16 +215,15 @@ public class SocketdContext extends ContextEmpty {
         headerSet(EntityMetas.META_DATA_DISPOSITION_FILENAME, fileName);
         contentType(file.getContentType());
 
-        try (InputStream ins = file.getContent()) {
-            replyDo(ins, (int) file.getContentSize());
-        }
+        byte[] bytes = IoUtil.transferToBytes(file.getContent());
+        replyDo(ByteBuffer.wrap(bytes), (int) file.getContentSize());
     }
 
     protected void commit() throws IOException {
-        replyDo(new ByteArrayInputStream(_outputStream.toByteArray()),  _outputStream.size());
+        replyDo(ByteBuffer.wrap(_outputStream.toByteArray()), _outputStream.size());
     }
 
-    private void replyDo(InputStream dataStream, int dataSize) throws IOException {
+    private void replyDo(ByteBuffer dataStream, int dataSize) throws IOException {
         if (_request.isRequest() || _request.isSubscribe()) {
             _response.data(dataStream);
             _session.replyEnd(_request, _response);
