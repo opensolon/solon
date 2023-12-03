@@ -14,7 +14,7 @@ Solon v2.6.2-SNAPSHOT
     <a target="_blank" href="https://central.sonatype.com/search?q=org.noear%3Asolon-parent">
         <img src="https://img.shields.io/maven-central/v/org.noear/solon.svg?label=Maven%20Central" alt="Maven" />
     </a>
-    <a target="_blank" href="https://www.apache.org/licenses/LICENSE-2.0.txt">
+    <a target="_blank" href="LICENSE">
 		<img src="https://img.shields.io/:License-Apache2-blue.svg" alt="Apache 2" />
 	</a>
     <a target="_blank" href="https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html">
