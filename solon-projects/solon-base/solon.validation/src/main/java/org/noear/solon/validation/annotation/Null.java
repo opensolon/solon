@@ -6,7 +6,7 @@ import org.noear.solon.annotation.Note;
 import java.lang.annotation.*;
 
 /**
- * 不能为null
+ * 必须为null
  *
  * @author noear
  * @since 1.0
