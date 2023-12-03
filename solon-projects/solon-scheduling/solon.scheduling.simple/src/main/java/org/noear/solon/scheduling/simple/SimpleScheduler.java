@@ -174,10 +174,7 @@ public class SimpleScheduler implements Lifecycle {
         try {
             Thread.sleep(millis);
         } catch (Throwable e) {
-            //过滤中断异常
-            if (e instanceof InterruptedException == false) {
-                log.warn(e.getMessage(), e);
-            }
+            //过滤异常
         }
     }
 }
