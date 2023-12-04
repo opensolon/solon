@@ -33,7 +33,7 @@ public class ToSocketdWebSocketListener implements WebSocketListener {
         this.assistant = new WebSocketChannelAssistant(config);
         this.processor = new ProcessorDefault();
         this.processor.setListener(listener);
-        this.supporter = new InnerChannelSupporter();
+        this.supporter = new InnerChannelSupporter(this);
     }
 
     private Channel getChannel(WebSocket socket) {
@@ -97,20 +97,26 @@ public class ToSocketdWebSocketListener implements WebSocketListener {
         }
     }
 
-    private class InnerChannelSupporter implements ChannelSupporter<WebSocket> {
+    private static class InnerChannelSupporter implements ChannelSupporter<WebSocket> {
+        private ToSocketdWebSocketListener l;
+
+        InnerChannelSupporter(ToSocketdWebSocketListener l) {
+            this.l = l;
+        }
+
         @Override
         public Processor processor() {
-            return processor;
+            return l.processor;
         }
 
         @Override
         public ChannelAssistant<WebSocket> assistant() {
-            return assistant;
+            return l.assistant;
         }
 
         @Override
         public Config config() {
-            return config;
+            return l.config;
         }
     }
 }
