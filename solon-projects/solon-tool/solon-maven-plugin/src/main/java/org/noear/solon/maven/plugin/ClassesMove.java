@@ -1,16 +1,11 @@
 package org.noear.solon.maven.plugin;
 
 
-import org.apache.commons.io.IOUtils;
-import org.apache.maven.plugin.logging.Log;
-
 import java.io.*;
-import java.nio.file.Files;
 import java.util.Enumeration;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.jar.JarOutputStream;
-import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 
 import static org.noear.solon.maven.plugin.Constant.JAR_CLASS_PATH;
@@ -23,8 +18,7 @@ public class ClassesMove {
      * @return
      */
     public static boolean isNotChangeJar(File file) {
-        try {
-            JarFile targetJarfile = new JarFile(file);
+        try (JarFile targetJarfile = new JarFile(file)) {
             Enumeration<JarEntry> entries = targetJarfile.entries();
             while (entries.hasMoreElements()) {
                 JarEntry jarEntry = entries.nextElement();
