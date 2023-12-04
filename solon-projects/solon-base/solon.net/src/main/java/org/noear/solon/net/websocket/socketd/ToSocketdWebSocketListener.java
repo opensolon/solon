@@ -26,18 +26,21 @@ public class ToSocketdWebSocketListener implements WebSocketListener {
     private final WebSocketChannelAssistant assistant;
     private final Processor processor;
 
+    private final InnerChannelSupporter supporter;
+
     public ToSocketdWebSocketListener(Config config, Listener listener) {
         this.config = config;
         this.assistant = new WebSocketChannelAssistant(config);
         this.processor = new ProcessorDefault();
         this.processor.setListener(listener);
+        this.supporter = new InnerChannelSupporter();
     }
 
     private Channel getChannel(WebSocket socket) {
         Channel channel = socket.attr(SOCKETD_KEY);
 
         if (channel == null) {
-            channel = new ChannelDefault<>(socket, config, assistant);
+            channel = new ChannelDefault<>(socket, supporter);
             socket.attr(SOCKETD_KEY, channel);
         }
 
@@ -91,6 +94,23 @@ public class ToSocketdWebSocketListener implements WebSocketListener {
             }
         } catch (Throwable e) {
             log.warn(e.getMessage(), e);
+        }
+    }
+
+    private class InnerChannelSupporter implements ChannelSupporter<WebSocket> {
+        @Override
+        public Processor processor() {
+            return processor;
+        }
+
+        @Override
+        public ChannelAssistant<WebSocket> assistant() {
+            return assistant;
+        }
+
+        @Override
+        public Config config() {
+            return config;
         }
     }
 }
