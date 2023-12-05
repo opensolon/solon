@@ -36,6 +36,9 @@ public class CloudEventServiceFolkMqImpl implements CloudEventServicePlus {
         this.publishTimeout = cloudProps.getEventPublishTimeout();
         this.client = FolkMQ.createClient(cloudProps.getEventServer())
                 .autoAcknowledge(false);
+        if (publishTimeout > 0) {
+            client.config(c -> c.requestTimeout(publishTimeout));
+        }
         try {
             client.connect();
         } catch (IOException e) {
@@ -58,12 +61,11 @@ public class CloudEventServiceFolkMqImpl implements CloudEventServicePlus {
         try {
             MqMessage message = new MqMessage(event.content()).scheduled(event.scheduled()).qos(event.qos());
             if (publishTimeout > 0) {
-                //异步等待
-                client.publish(topicNew, message)
-                        .get(publishTimeout, TimeUnit.MILLISECONDS);
+                //同步
+                client.publish(topicNew, message);
             } else {
                 //异步
-                client.publish(topicNew, message);
+                client.publishAsync(topicNew, message);
             }
         } catch (Throwable ex) {
             throw new CloudEventException(ex);
