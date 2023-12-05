@@ -24,7 +24,8 @@
 * 修复 maven 打包插件，出现 “Unable to rename XXX” 错误
 * socket.d 升为 2.1.4
 * nacos2 升为 2.3.0
-* folkmq 升为 1.0.12
+* folkmq 升为 1.0.15
+* sqltoy 升为 5.2.84
 
 ### 2.6.1
 * 新增 folkmq-solon-cloud-plugin 插件
