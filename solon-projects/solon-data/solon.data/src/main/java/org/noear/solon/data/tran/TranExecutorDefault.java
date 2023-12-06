@@ -171,7 +171,9 @@ public class TranExecutorDefault implements TranExecutor {
                 TranNode tran = create(meta);
 
                 //::加入上个事务***
-                stack.peek().tran.add(tran);
+                if(stack!=null && !stack.isEmpty()) {
+                	stack.peek().tran.add(tran);
+                }
 
                 applyDo(stack, tran, meta, runnable);
                 return;
