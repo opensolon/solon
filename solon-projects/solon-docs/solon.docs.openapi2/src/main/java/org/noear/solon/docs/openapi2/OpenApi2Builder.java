@@ -503,20 +503,18 @@ public class OpenApi2Builder {
                     if (schema instanceof RefModel){
                         RefModel refModel = (RefModel) schema;
                         model.setProperties(this.swagger.getDefinitions().get(refModel.getSimpleRef()).getProperties());
-                    }else {
-                        parameters.add(parameter);
+                    } else {
+                        if (schema instanceof ModelImpl) {
+                            ModelImpl schemaModelImpl = (ModelImpl) schema;
+                            ObjectProperty property = new ObjectProperty();
+                            property.setType( schemaModelImpl.getType());
+                            property.setDescription( schemaModelImpl.getDescription());
+                            model.setProperties(Collections.singletonMap(bodyParameter.getName(), property));
+                        }else {
+                            parameters.add(parameter);
+                        }
                     }
-                }else if (parameter instanceof QueryParameter){
-                    QueryParameter queryParameter = ((QueryParameter)parameter);
-                    if (Constants.QUERY_TYPE.equals(queryParameter.getIn())){
-                        ObjectProperty property = new ObjectProperty();
-                        property.setType(queryParameter.getType());
-                        property.setDescription(queryParameter.getDescription());
-                        model.setProperties(Collections.singletonMap(queryParameter.getName(),property));
-                    }else {
-                        parameters.add(parameter);
-                    }
-                }else {
+                } else {
                     parameters.add(parameter);
                 }
             }

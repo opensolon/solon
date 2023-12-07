@@ -30,9 +30,9 @@ public class UserApiApplicationJson {
     @Post
     @Consumes("application/json")
     @ApiImplicitParams(
-            @ApiImplicitParam(name = "roleName", value = "角色名称",required = true, paramType = "query")
+            @ApiImplicitParam(name = "roleName", value = "角色名称",dataType = "String",required = true, paramType = "body")
     )
-    public void userAddPath(@ApiParam("帅气路径") @Path String path,@ApiParam("用户名") String name,@Body RoleReq roleReq){
+    public void userAddPath(@ApiParam("帅气路径") @Path String path,@ApiParam("query用户名") String queryName,@Body RoleReq roleReq){
         //RoleReq 中有 roleId和name
     }
 }
