@@ -487,7 +487,8 @@ public class OpenApi2Builder {
     }
 
     private List<Parameter> mergeBodyParamList(ActionHolder actionHolder,List<Parameter> paramList){
-        if (actionHolder.action().consumes().equals("application/json") || paramList.stream().map(Parameter::getIn).anyMatch(in -> in.equals(ApiEnum.PARAM_TYPE_BODY))) {
+        ArrayList<Parameter> parameters = new ArrayList<>();
+        if ("application/json".equals(actionHolder.action().consumes()) || paramList.stream().map(Parameter::getIn).anyMatch(in -> in.equals(ApiEnum.PARAM_TYPE_BODY))) {
             BodyParameter finalBodyParameter = new BodyParameter();
             finalBodyParameter.setIn("body");
             finalBodyParameter.name("data");
@@ -501,13 +502,21 @@ public class OpenApi2Builder {
                     if (schema instanceof RefModel){
                         RefModel refModel = (RefModel) schema;
                         model.setProperties(this.swagger.getDefinitions().get(refModel.getSimpleRef()).getProperties());
+                    }else {
+                        parameters.add(parameter);
                     }
                 }else if (parameter instanceof QueryParameter){
                     QueryParameter queryParameter = ((QueryParameter)parameter);
-                    ObjectProperty property = new ObjectProperty();
-                    property.setType(queryParameter.getType());
-                    property.setDescription(queryParameter.getDescription());
-                    model.setProperties(Collections.singletonMap(queryParameter.getName(),property));
+                    if ("query".equals(queryParameter.getIn())){
+                        ObjectProperty property = new ObjectProperty();
+                        property.setType(queryParameter.getType());
+                        property.setDescription(queryParameter.getDescription());
+                        model.setProperties(Collections.singletonMap(queryParameter.getName(),property));
+                    }else {
+                        parameters.add(parameter);
+                    }
+                }else {
+                    parameters.add(parameter);
                 }
             }
             //String key = "Map[" + actionHolder.action().fullName() + "]";
@@ -515,9 +524,9 @@ public class OpenApi2Builder {
             String key = "Map[" + actionHolder.action().fullName().replace("/","_") + "]";
             this.swagger.addDefinition(key,model);
             finalBodyParameter.setSchema(new RefModel(key));
-            return Collections.singletonList(finalBodyParameter);
+            parameters.add(finalBodyParameter);
         }
-        return paramList;
+        return parameters;
     }
 
 
