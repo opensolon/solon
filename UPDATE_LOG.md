@@ -19,6 +19,9 @@
 * 调整 取消启动参数简写模式，保持与应用参数相同的名字 ???
 * 新增 graphql-solon-plugin 插件
 
+### 2.6.3
+* smart-http 升为 1.3.6
+
 ### 2.6.2
 * 修复 solon.logging.logback 对 solon.logging.appender.console.enable 配置无效的问题
 * 修复 maven 打包插件，出现 “Unable to rename XXX” 错误

@@ -55,7 +55,7 @@
         <undertow.jboss-jsp.version>2.0.0.Final</undertow.jboss-jsp.version>
         <tomcat.version>9.0.64</tomcat.version>
         <smartsocket.version>1.5.38</smartsocket.version>
-        <smarthttp.version>1.3.5</smarthttp.version>
+        <smarthttp.version>1.3.6</smarthttp.version>
         <vertx.version>4.4.1</vertx.version>
 
 
