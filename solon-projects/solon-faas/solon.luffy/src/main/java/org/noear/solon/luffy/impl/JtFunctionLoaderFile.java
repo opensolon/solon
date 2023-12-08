@@ -37,7 +37,6 @@ public class JtFunctionLoaderFile implements JtFunctionLoader {
     public AFileModel fileGet(String path) throws Exception {
         AFileModel file = new AFileModel();
 
-        file.file_id = path.hashCode();
         file.content = fileContentGet(path);
 
         if (file.content != null) {
@@ -55,6 +54,9 @@ public class JtFunctionLoaderFile implements JtFunctionLoader {
             } else {
                 file.edit_mode = JtMapping.getActuator("");
             }
+
+            //添加id
+            file.file_id = path.hashCode();
         }
 
         return file;

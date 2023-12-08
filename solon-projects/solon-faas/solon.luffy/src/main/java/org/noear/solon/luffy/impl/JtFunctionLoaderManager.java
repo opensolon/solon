@@ -14,15 +14,15 @@ public class JtFunctionLoaderManager implements JtFunctionLoader {
 
     /**
      * 添加
-     * */
+     */
     public void add(int index, JtFunctionLoader resouceLoader) {
         resouceLoaders.add(index, resouceLoader);
     }
 
     /**
      * 清空
-     * */
-    public void clear(){
+     */
+    public void clear() {
         resouceLoaders.clear();
     }
 
@@ -32,7 +32,7 @@ public class JtFunctionLoaderManager implements JtFunctionLoader {
         for (JtFunctionLoader rl : resouceLoaders) {
             aFile = rl.fileGet(path);
 
-            if (aFile != null) {
+            if (aFile != null && aFile.content != null) {
                 return aFile;
             }
         }

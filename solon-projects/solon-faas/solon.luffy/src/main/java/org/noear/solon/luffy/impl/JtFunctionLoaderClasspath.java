@@ -34,7 +34,6 @@ public class JtFunctionLoaderClasspath implements JtFunctionLoader {
                 if (file == null) {
                     file = new AFileModel();
 
-                    file.file_id = path.hashCode();
                     file.content = fileContentGet(path);
 
                     if (Utils.isNotEmpty(file.content)) {
@@ -52,6 +51,9 @@ public class JtFunctionLoaderClasspath implements JtFunctionLoader {
                         } else {
                             file.edit_mode = JtMapping.getActuator("");
                         }
+
+                        //添加id
+                        file.file_id = path.hashCode();
                     }
 
                     fileCached.put(path, file);

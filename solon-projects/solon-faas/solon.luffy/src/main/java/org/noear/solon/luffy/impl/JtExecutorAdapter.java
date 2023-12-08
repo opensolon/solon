@@ -81,7 +81,7 @@ public class JtExecutorAdapter implements IJtExecutorAdapter, IJtConfigAdapter {
             file = forDebug.fileGet(path);
         }
 
-        if (file == null) {
+        if (file == null || file.content == null) {
             file = forRelease.fileGet(path);
         }
 
