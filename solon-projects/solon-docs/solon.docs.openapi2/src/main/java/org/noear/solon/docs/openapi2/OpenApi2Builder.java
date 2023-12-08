@@ -28,6 +28,7 @@ import org.noear.solon.docs.exception.DocException;
 import org.noear.solon.docs.models.ApiContact;
 import org.noear.solon.docs.models.ApiLicense;
 import org.noear.solon.docs.models.ApiScheme;
+import org.noear.solon.docs.openapi2.common.Constants;
 import org.noear.solon.docs.openapi2.impl.ActionHolder;
 import org.noear.solon.docs.openapi2.impl.BuilderHelper;
 import org.noear.solon.docs.openapi2.impl.ParamHolder;
@@ -487,13 +488,14 @@ public class OpenApi2Builder {
     }
 
     private List<Parameter> mergeBodyParamList(ActionHolder actionHolder,List<Parameter> paramList){
-        if (actionHolder.action().consumes().equals("application/json") || paramList.stream().map(Parameter::getIn).anyMatch(in -> in.equals(ApiEnum.PARAM_TYPE_BODY))) {
+        ArrayList<Parameter> parameters = new ArrayList<>();
+        if (Constants.CONTENT_TYPE_JSON_TYPE.equals(actionHolder.action().consumes()) || paramList.stream().map(Parameter::getIn).anyMatch(in -> in.equals(ApiEnum.PARAM_TYPE_BODY))) {
             BodyParameter finalBodyParameter = new BodyParameter();
-            finalBodyParameter.setIn("body");
-            finalBodyParameter.name("data");
+            finalBodyParameter.setIn(Constants.BODY_TYPE);
+            finalBodyParameter.name(Constants.DATA);
             ModelImpl model = new ModelImpl();
-            model.setDescription("请求体");
-            model.setName("请求体");
+            model.setDescription(Constants.DEFAULT_BODY_NAME);
+            model.setName(Constants.DEFAULT_BODY_NAME);
             for (Parameter parameter : paramList) {
                 if (parameter instanceof BodyParameter) {
                     BodyParameter bodyParameter = ((BodyParameter) parameter);
@@ -501,23 +503,29 @@ public class OpenApi2Builder {
                     if (schema instanceof RefModel){
                         RefModel refModel = (RefModel) schema;
                         model.setProperties(this.swagger.getDefinitions().get(refModel.getSimpleRef()).getProperties());
+                    } else {
+                        if (schema instanceof ModelImpl) {
+                            ModelImpl schemaModelImpl = (ModelImpl) schema;
+                            ObjectProperty property = new ObjectProperty();
+                            property.setType( schemaModelImpl.getType());
+                            property.setDescription( schemaModelImpl.getDescription());
+                            model.setProperties(Collections.singletonMap(bodyParameter.getName(), property));
+                        }else {
+                            parameters.add(parameter);
+                        }
                     }
-                }else if (parameter instanceof QueryParameter){
-                    QueryParameter queryParameter = ((QueryParameter)parameter);
-                    ObjectProperty property = new ObjectProperty();
-                    property.setType(queryParameter.getType());
-                    property.setDescription(queryParameter.getDescription());
-                    model.setProperties(Collections.singletonMap(queryParameter.getName(),property));
+                } else {
+                    parameters.add(parameter);
                 }
             }
             //String key = "Map[" + actionHolder.action().fullName() + "]";
             // 避免其他平台数据导入错误
-            String key = "Map[" + actionHolder.action().fullName().replace("/","_") + "]";
+            String key = String.format("Map[%s]", actionHolder.action().fullName().replace("/", "_").replace("${", "").replace("}", ""));
             this.swagger.addDefinition(key,model);
             finalBodyParameter.setSchema(new RefModel(key));
-            return Collections.singletonList(finalBodyParameter);
+            parameters.add(finalBodyParameter);
         }
-        return paramList;
+        return parameters;
     }
 
 
