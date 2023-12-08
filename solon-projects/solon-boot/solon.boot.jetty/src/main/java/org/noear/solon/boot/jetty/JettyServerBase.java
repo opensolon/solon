@@ -82,7 +82,7 @@ abstract class JettyServerBase implements ServerLifecycle , HttpServerConfigure 
         HttpConnectionFactory httpFactory = new HttpConnectionFactory(config);
         ServerConnector serverConnector;
 
-        if (sslConfig.isSslEnable()) {
+        if (sslConfig.isSslEnable() && autoSsl) {
 
             String sslKeyStore = sslConfig.getProps().getSslKeyStore();
             String sslKeyStoreType = sslConfig.getProps().getSslKeyType();
