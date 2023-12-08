@@ -1,6 +1,7 @@
 package org.noear.nami.channel.socketd;
 
 import org.noear.socketd.SocketD;
+import org.noear.socketd.transport.client.ClientSession;
 import org.noear.socketd.transport.core.Session;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.net.socketd.handle.ToHandlerListener;
@@ -18,7 +19,7 @@ public class SocketdProxy {
      * 创建接口代理
      */
     public static <T> T create(String url, Class<T> clz) throws Exception {
-        Session session = SocketD.createClient(url).listen(socketdToHandler).open();
+        Session session = (Session) SocketD.createClient(url).listen(socketdToHandler).open();
         return ProxyUtils.create(() -> session, null, null, clz);
     }
 

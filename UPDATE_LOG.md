@@ -22,10 +22,13 @@
 ### 2.6.2
 * 修复 solon.logging.logback 对 solon.logging.appender.console.enable 配置无效的问题
 * 修复 maven 打包插件，出现 “Unable to rename XXX” 错误
-* socket.d 升为 2.1.4
+* 修复 jetty 适配，添加多个 http 端口时会受 ssl 配置影响
+* 修复 swagger 适配 `@Body` 后 path 参数不能显示的问题
+* 调整 solon.data nested 事务微略处理
+* socket.d 升为 2.1.7
+* folkmq 升为 1.0.18
 * nacos2 升为 2.3.0
-* folkmq 升为 1.0.15
-* sqltoy 升为 5.2.84
+* sqltoy 升为 5.2.85
 
 ### 2.6.1
 * 新增 folkmq-solon-cloud-plugin 插件

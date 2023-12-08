@@ -5,6 +5,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.noear.socketd.SocketD;
 import org.noear.socketd.exception.SocketdException;
 import org.noear.socketd.exception.SocketdTimeoutException;
+import org.noear.socketd.transport.client.ClientSession;
 import org.noear.socketd.transport.core.Entity;
 import org.noear.socketd.transport.core.Session;
 import org.noear.socketd.transport.core.entity.StringEntity;
@@ -26,7 +27,7 @@ public class SocketTest {
         //这是短链接模式
         //
         String root = "tcp://localhost:" + (20000 + Solon.cfg().serverPort());
-        Session session = SocketD.createClient(root).open();
+        ClientSession session = SocketD.createClient(root).open();
 
         Entity msg = session.sendAndRequest(root + "/demog/中文/1", new StringEntity("Hello 世界!"));
         System.out.println(msg.dataAsString());
@@ -60,7 +61,7 @@ public class SocketTest {
     public void test2() throws Throwable {
         //socket client
         String root = "tcp://localhost:" + (20000 + Solon.cfg().serverPort());
-        Session session = SocketD.createClient(root).open();
+        ClientSession session = SocketD.createClient(root).open();
 
         session.sendAndSubscribe(root + "/seb/test", new StringEntity("Hello 世界!+1"), (msg) -> {
             if (msg == null) {
@@ -78,7 +79,7 @@ public class SocketTest {
         //socket client
         String root = "tcp://localhost:" + (20000 + Solon.cfg().serverPort());
 
-        Session session = SocketD.createClient(root).open();
+        ClientSession session = SocketD.createClient(root).open();
 
         List<Integer> list = new ArrayList<>();
         for (int i = 0; i < 100; i++) {
@@ -106,7 +107,7 @@ public class SocketTest {
         //socket client
         String root = "tcp://localhost:" + (20000 + Solon.cfg().serverPort());
 
-        Session session = SocketD.createClient(root).open();
+        ClientSession session = SocketD.createClient(root).open();
 
 
         session.sendAndSubscribe(root + "/seb/test", new StringEntity("Hello 世界!"), (msg) -> {

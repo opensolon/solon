@@ -8,6 +8,7 @@ import org.noear.nami.coder.snack3.SnackDecoder;
 import org.noear.nami.coder.snack3.SnackEncoder;
 import org.noear.snack.ONode;
 import org.noear.socketd.SocketD;
+import org.noear.socketd.transport.client.ClientSession;
 import org.noear.socketd.transport.core.Entity;
 import org.noear.socketd.transport.core.Session;
 import org.noear.socketd.transport.core.entity.StringEntity;
@@ -27,7 +28,7 @@ public class SocketResponseTest {
     public void test() throws Throwable{
         int _port = 8080 + 20000;
 
-        Session session = SocketD.createClient("tcp://localhost:"+_port)
+        ClientSession session = SocketD.createClient("tcp://localhost:"+_port)
                 .listen(SocketdProxy.socketdToHandler)
                 .open();
 
@@ -46,7 +47,7 @@ public class SocketResponseTest {
     public void test_rpc_message() throws Throwable {
         int _port = 8080 + 20000;
 
-        Session session = SocketD.createClient("tcp://localhost:"+ _port)
+        ClientSession session = SocketD.createClient("tcp://localhost:"+ _port)
                 .listen(SocketdProxy.socketdToHandler)
                 .open();
 

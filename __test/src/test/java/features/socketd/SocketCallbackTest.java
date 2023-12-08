@@ -5,6 +5,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.noear.nami.channel.socketd.SocketdProxy;
 import org.noear.snack.ONode;
 import org.noear.socketd.SocketD;
+import org.noear.socketd.transport.client.ClientSession;
 import org.noear.socketd.transport.core.Entity;
 import org.noear.socketd.transport.core.Message;
 import org.noear.socketd.transport.core.Session;
@@ -27,7 +28,7 @@ public class SocketCallbackTest {
     public void test_callback_message() throws Throwable {
         int _port = 8080 + 20000;
 
-        Session session = SocketD.createClient("tcp://localhost:"+ _port)
+        ClientSession session = SocketD.createClient("tcp://localhost:"+ _port)
                 .listen(new PipelineListener().next(new SimpleListener(){
                     @Override
                     public void onMessage(Session session, Message message) {

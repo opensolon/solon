@@ -6,6 +6,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.noear.java_websocket.client.SimpleWebSocketClient;
 import org.noear.snack.ONode;
 import org.noear.socketd.SocketD;
+import org.noear.socketd.transport.client.ClientSession;
 import org.noear.socketd.transport.core.Message;
 import org.noear.socketd.transport.core.Session;
 import org.noear.socketd.transport.core.entity.StringEntity;
@@ -33,7 +34,7 @@ public class SocketAsyncTest {
 
         CompletableFuture<Boolean> check = new CompletableFuture<>();
 
-        Session session = SocketD.createClient("tcp://localhost:" + _port)
+        ClientSession session = SocketD.createClient("tcp://localhost:" + _port)
                 .listen(new SimpleListener(){
                     @Override
                     public void onMessage(Session session, Message message) throws IOException {

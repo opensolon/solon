@@ -5,6 +5,7 @@ import org.noear.nami.Encoder;
 import org.noear.nami.Nami;
 import org.noear.nami.common.Constants;
 import org.noear.nami.common.ContentTypes;
+import org.noear.socketd.transport.client.ClientSession;
 import org.noear.socketd.transport.core.Session;
 
 import java.net.URI;
