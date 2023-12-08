@@ -34,7 +34,9 @@ public class JtFunctionLoaderClasspath implements JtFunctionLoader {
                 if (file == null) {
                     file = new AFileModel();
 
+                    file.file_id = path.hashCode();
                     file.content = fileContentGet(path);
+
                     if (Utils.isNotEmpty(file.content)) {
                         //如果有找到文件内容，则完善信息
                         //

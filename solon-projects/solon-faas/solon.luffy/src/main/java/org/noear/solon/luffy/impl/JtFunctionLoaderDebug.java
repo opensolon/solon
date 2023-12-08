@@ -44,7 +44,9 @@ public class JtFunctionLoaderDebug implements JtFunctionLoader {
     public AFileModel fileGet(String path) throws Exception {
         AFileModel file = new AFileModel();
 
+        file.file_id = path.hashCode();
         file.content = fileContentGet(path);
+
         if (file.content != null) {
             //如果有找到文件内容，则完善信息
             //
