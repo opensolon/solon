@@ -63,6 +63,10 @@ public class JtFunctionLoaderClasspath implements JtFunctionLoader {
     protected String fileContentGet(String path) throws IOException {
         URL url = ResourceUtil.getResource("luffy/" + path);
 
+        if (url == null) {
+            return null;
+        }
+
         File file = new File(url.getFile());
 
         if (file.exists() && file.isFile()) {
