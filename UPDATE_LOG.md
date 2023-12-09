@@ -23,6 +23,7 @@
 * 修复 solon.luffy JtFunctionLoaderClasspath 可能会出现 null 异常的问题
 * 修复 solon.luffy XFun.callFile 的执行兼容性（添加 file_id 赋值）
 * smart-http 升为 1.3.6
+* luffy 升为 1.7.1
 
 ### 2.6.2
 * 修复 solon.logging.logback 对 solon.logging.appender.console.enable 配置无效的问题

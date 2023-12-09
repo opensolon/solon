@@ -140,9 +140,13 @@ public class JtExecutorAdapter implements IJtExecutorAdapter, IJtConfigAdapter {
     public Map cfgMap(String name) throws Exception {
         String val = Solon.cfg().get(name);
         Map tmp = new LinkedHashMap();
-        tmp.put("value", val);
-        tmp.put("name", name);
-        tmp.put("tag", "luffy");
+
+        if (val != null) {
+            tmp.put("value", val);
+            tmp.put("name", name);
+            tmp.put("tag", "luffy");
+        }
+
         return tmp;
     }
 }
