@@ -249,6 +249,10 @@ public class ConvertUtil {
             return converter.convert(val);
         }
 
+        if (Byte.class == type || type == Byte.TYPE) {
+            return Byte.parseByte(val);
+        }
+
         if (Short.class == type || type == Short.TYPE) {
             return Short.parseShort(val);
         }
