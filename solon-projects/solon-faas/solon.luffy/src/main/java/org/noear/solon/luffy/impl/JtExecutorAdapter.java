@@ -10,6 +10,9 @@ import org.noear.solon.logging.utils.TagsMDC;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -88,6 +91,11 @@ public class JtExecutorAdapter implements IJtExecutorAdapter, IJtConfigAdapter {
         return file;
     }
 
+    @Override
+    public List<AFileModel> fileFind(String tag, String label, boolean isCache) throws Exception {
+        return Collections.emptyList();
+    }
+
     private String _nodeId;
 
     @Override
@@ -126,5 +134,15 @@ public class JtExecutorAdapter implements IJtExecutorAdapter, IJtConfigAdapter {
 
             return true;
         }
+    }
+
+    @Override
+    public Map cfgMap(String name) throws Exception {
+        String val = Solon.cfg().get(name);
+        Map tmp = new LinkedHashMap();
+        tmp.put("value", val);
+        tmp.put("name", name);
+        tmp.put("tag", "luffy");
+        return tmp;
     }
 }

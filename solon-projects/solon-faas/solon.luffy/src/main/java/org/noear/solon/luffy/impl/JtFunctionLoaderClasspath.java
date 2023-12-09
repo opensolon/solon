@@ -51,9 +51,6 @@ public class JtFunctionLoaderClasspath implements JtFunctionLoader {
                         } else {
                             file.edit_mode = JtMapping.getActuator("");
                         }
-
-                        //添加id
-                        file.file_id = path.hashCode();
                     }
 
                     fileCached.put(path, file);

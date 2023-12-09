@@ -61,9 +61,6 @@ public class JtFunctionLoaderDebug implements JtFunctionLoader {
             } else {
                 file.edit_mode = JtMapping.getActuator("");
             }
-
-            //添加id
-            file.file_id = path.hashCode();
         }
 
         return file;
