@@ -148,7 +148,11 @@ public class DownloadedFile {
      * @since 2.5
      */
     public DownloadedFile(File file, String name) throws FileNotFoundException {
-        this.contentType = Utils.mime(file.getName());
+        this(file, name, Utils.mime(file.getName()));
+    }
+
+    public DownloadedFile(File file, String name, String contentType) throws FileNotFoundException {
+        this.contentType = contentType;
         this.contentSize = file.length();
         this.content = new FileInputStream(file);
         this.name = name;

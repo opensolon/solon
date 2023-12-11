@@ -77,7 +77,12 @@ public class Utils {
      * @param fileName 文件名
      */
     public static String mime(String fileName) {
-        return mimeMap.getContentTypeFor(fileName);
+        String tmp = mimeMap.getContentTypeFor(fileName);
+        if (tmp == null) {
+            return "application/octet-stream";
+        } else {
+            return tmp;
+        }
     }
 
     /**
