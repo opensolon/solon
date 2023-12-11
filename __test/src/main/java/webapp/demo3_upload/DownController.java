@@ -48,6 +48,8 @@ public class DownController {
         return new DownloadedFile(file).asAttachment(false);
     }
 
+
+
     @Mapping("f4")
     public void down4(Context ctx) throws IOException {
         String filePath = ResourceUtil.getResource("WEB-INF/static/debug.htm").getFile();
@@ -62,5 +64,11 @@ public class DownController {
         try (InputStream stream = ResourceUtil.getResource("WEB-INF/static/debug.htm").openStream()) {
             OutputUtils.global().outputStreamAsGzip(ctx, stream);
         }
+    }
+
+    @Mapping("f5")
+    public DownloadedFile down5() throws Exception {
+        File file = new File("/Users/noear/Movies/down_test.mp4");
+        return new DownloadedFile(file).asAttachment(false);
     }
 }
