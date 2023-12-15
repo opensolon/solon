@@ -641,7 +641,7 @@ public final class SolonProps extends Props {
      */
     public boolean stopSafe() {
         if(stopSafe == null){
-            stopSafe = "1".equals("solon.stop.safe");
+            stopSafe = "1".equals(get("solon.stop.safe"));
         }
 
         return stopSafe;
