@@ -24,6 +24,7 @@
             <groupId>org.noear</groupId>
             <artifactId>socketd</artifactId>
             <version>${socketd.version}</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 

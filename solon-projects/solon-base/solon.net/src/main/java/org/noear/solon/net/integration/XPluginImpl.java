@@ -4,6 +4,7 @@ import org.noear.socketd.transport.core.Listener;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.*;
+import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.net.annotation.ServerEndpoint;
 import org.noear.solon.net.socketd.SocketdRouter;
@@ -43,13 +44,15 @@ public class XPluginImpl implements Plugin {
         boolean registered = false;
 
         //socket.d
-        if (bw.raw() instanceof Listener) {
-            if (Utils.isEmpty(path)) {
-                path = "**";
-            }
+        if (ClassUtil.hasClass(() -> Listener.class)) {
+            if (bw.raw() instanceof Listener) {
+                if (Utils.isEmpty(path)) {
+                    path = "**";
+                }
 
-            socketdRouter.of(path, bw.raw());
-            registered = true;
+                socketdRouter.of(path, bw.raw());
+                registered = true;
+            }
         }
 
         //websocket
