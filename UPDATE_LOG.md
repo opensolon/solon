@@ -25,8 +25,8 @@
 * 添加 war 部署时 contextPath 自动识别对接处理
 * smart-http 升为 1.3.6
 * luffy 升为 1.7.2
-* folkmq 升为 1.0.19
-* socket.d 升为 2.1.9
+* folkmq 升为 1.0.22
+* socket.d 升为 2.1.14
 * beetl 升为 3.15.12.RELEASE
 * beetlsql 升为 3.27.3-RELEASE
 
