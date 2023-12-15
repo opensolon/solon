@@ -635,7 +635,7 @@ public final class SolonProps extends Props {
     }
 
 
-    Boolean stopSafe;
+    private Boolean stopSafe;
     /**
      * 停止安全的进行
      */
@@ -651,7 +651,7 @@ public final class SolonProps extends Props {
         stopSafe = value;
     }
 
-    Integer stopDelay;
+    private Integer stopDelay;
     /**
      * 停止延时
      */
