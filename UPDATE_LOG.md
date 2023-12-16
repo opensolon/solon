@@ -20,9 +20,13 @@
 * 新增 graphql-solon-plugin 插件
 
 ### 2.6.3
-* 修复 solon.luffy JtFunctionLoaderClasspath 可能会出现 null 异常的问题
-* 修复 solon.luffy XFun.callFile 的执行兼容性（添加 file_id 赋值）
-* 添加 war 部署时 contextPath 自动识别对接处理
+* 修复 solon.luffy 插件 JtFunctionLoaderClasspath 可能会出现 null 异常的问题
+* 修复 solon.luffy 插件 XFun.callFile 的执行兼容性（添加 file_id 赋值）
+* 修复 Solon.cfg().stopSafe() 自动配置失效的问题 
+* 修复 war 部署时 contextPath  自动识别失效的问题
+* 调整 solon.net 把 socketd 包改为 provided
+* 调整 Utils::mime 添加默认处理
+* 添加 ConvertUtil 对 Byte 类型的默认解析
 * smart-http 升为 1.3.6
 * luffy 升为 1.7.2
 * folkmq 升为 1.0.22
