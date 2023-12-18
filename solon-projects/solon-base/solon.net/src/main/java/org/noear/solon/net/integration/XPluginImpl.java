@@ -18,25 +18,28 @@ import org.noear.solon.net.websocket.listener.ContextPathWebSocketListener;
  */
 public class XPluginImpl implements Plugin {
 
-    private final SocketdRouter socketdRouter = SocketdRouter.getInstance();
-    private final WebSocketRouter webSocketRouter = WebSocketRouter.getInstance();
+    private SocketdRouter socketdRouter;
+    private WebSocketRouter webSocketRouter = WebSocketRouter.getInstance();
 
     @Override
     public void start(AppContext context) throws Throwable {
-        //注入容器
+        //websocket
         context.wrapAndPut(WebSocketRouter.class, webSocketRouter);
-        context.wrapAndPut(SocketdRouter.class, socketdRouter);
-
-        //添加注解处理
-        context.beanBuilderAdd(ServerEndpoint.class, this::serverEndpointBuild);
-
-
         context.lifecycle((() -> {
             //尝试设置 context-path
             if (Utils.isNotEmpty(Solon.cfg().serverContextPath())) {
                 webSocketRouter.beforeIfAbsent(new ContextPathWebSocketListener(false));
             }
         }));
+
+        //socket.d
+        if (ClassUtil.hasClass(() -> Listener.class)) {
+            socketdRouter = SocketdRouter.getInstance();
+            context.wrapAndPut(SocketdRouter.class, socketdRouter);
+        }
+
+        //添加注解处理
+        context.beanBuilderAdd(ServerEndpoint.class, this::serverEndpointBuild);
     }
 
     private void serverEndpointBuild(Class<?> clz, BeanWrap bw, ServerEndpoint anno) {
