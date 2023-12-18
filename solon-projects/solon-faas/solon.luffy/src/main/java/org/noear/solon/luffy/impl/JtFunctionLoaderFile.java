@@ -70,8 +70,7 @@ public class JtFunctionLoaderFile implements JtFunctionLoader {
 
                 if(fileModel.content != null){
                     //如果有更新，移除缓存
-                    String name = path.replace("/", "__");
-                    ExecutorFactory.del(name);
+                    JtRun.dele(path);
                 }
             }
         }
