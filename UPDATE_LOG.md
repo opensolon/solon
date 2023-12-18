@@ -24,6 +24,7 @@
 * 修复 solon.luffy 插件 XFun.callFile 的执行兼容性（添加 file_id 赋值）
 * 修复 Solon.cfg().stopSafe() 自动配置失效的问题 
 * 修复 war 部署时 contextPath  自动识别失效的问题
+* 调整 contextPath 配置，支持 '!' 开头（表示强制模式，即不再支持旧的地址请求）
 * 调整 solon.net 把 socketd 包改为 provided
 * 调整 Utils::mime 添加默认处理
 * 添加 ConvertUtil 对 Byte 类型的默认解析

@@ -28,7 +28,7 @@ public class XPluginImpl implements Plugin {
         context.lifecycle((() -> {
             //尝试设置 context-path
             if (Utils.isNotEmpty(Solon.cfg().serverContextPath())) {
-                webSocketRouter.beforeIfAbsent(new ContextPathWebSocketListener(false));
+                webSocketRouter.beforeIfAbsent(new ContextPathWebSocketListener());
             }
         }));
 

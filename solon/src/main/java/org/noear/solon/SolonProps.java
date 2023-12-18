@@ -462,6 +462,7 @@ public final class SolonProps extends Props {
 
 
     private String serverContextPath;
+    private boolean serverContextPathForced;
 
     /**
      * 获取服务主上下文路径
@@ -473,6 +474,12 @@ public final class SolonProps extends Props {
         }
 
         return serverContextPath;
+    }
+
+    public boolean serverContextPathForced() {
+        //初始化
+        serverContextPath();
+        return serverContextPathForced;
     }
 
     /**
@@ -488,6 +495,14 @@ public final class SolonProps extends Props {
         }
 
         if (serverContextPath.length() > 0) {
+
+            if (serverContextPath.startsWith("!")) {
+                serverContextPathForced = true;
+                serverContextPath = serverContextPath.substring(1);
+            } else {
+                serverContextPathForced = false;
+            }
+
             //确保是 / 开头
             if (serverContextPath.startsWith("/") == false) {
                 serverContextPath = "/" + serverContextPath;
