@@ -41,37 +41,72 @@ public class JtRun {
 
     /**
      * 获取资源加载器（可以清空并替换为数据库的）
-     * */
+     */
     public static JtFunctionLoaderManager getResouceLoader() {
         return resouceLoader;
     }
 
+    public static AFileModel fileGet(String path) throws Exception {
+        return jtAdapter.fileGet(path);
+    }
+
+    /**
+     * 删除缓存
+     */
+    public static void dele(String path) throws Exception {
+        //如果有更新，移除缓存
+        String name = path.replace("/", "__");
+        ExecutorFactory.del(name);
+    }
+
+    /**
+     * 调用函数
+     */
+    public static Object call(String path) throws Exception {
+        return call(path, ContextEmpty.create());
+    }
+
+    /**
+     * 调用函数
+     */
     public static Object call(String path, Context ctx) throws Exception {
         AFileModel file = JtBridge.fileGet(path);
 
         return ExecutorFactory.execOnly(file, ctx);
     }
 
+    /**
+     * 执行函数
+     */
+    public static void exec(String path) throws Exception {
+        exec(path, ContextEmpty.create());
+    }
+
+    /**
+     * 执行函数
+     */
     public static void exec(String path, Context ctx) throws Exception {
         AFileModel file = JtBridge.fileGet(path);
 
         ExecutorFactory.execOnly(file, ctx);
     }
 
-    public static void exec(String code) throws Exception {
+    /**
+     * 执行代码
+     */
+    public static void execCode(String code) throws Exception {
         AFileModel file = new AFileModel();
         file.path = Utils.md5(code);
         file.content = code;
         file.edit_mode = "javascript";
 
-        exec(file);
+        execFile(file);
     }
 
-    public static AFileModel fileGet(String path) throws Exception{
-        return jtAdapter.fileGet(path);
-    }
-
-    public static void exec(AFileModel file) throws Exception {
+    /**
+     * 执行文件
+     */
+    public static void execFile(AFileModel file) throws Exception {
         initFuture.get();
 
         Context ctx = ContextEmpty.create();
