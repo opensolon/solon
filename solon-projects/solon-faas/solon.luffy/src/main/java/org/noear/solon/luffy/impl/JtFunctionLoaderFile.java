@@ -1,5 +1,6 @@
 package org.noear.solon.luffy.impl;
 
+import org.noear.luffy.executor.ExecutorFactory;
 import org.noear.luffy.model.AFileModel;
 import org.noear.solon.Solon;
 import org.noear.solon.core.util.IoUtil;
@@ -65,6 +66,12 @@ public class JtFunctionLoaderFile implements JtFunctionLoader {
             synchronized (fileCached) {
                 if (fileModel.update_fulltime.getTime() != file.lastModified()) {
                     fileFillDo(fileModel, file, path);
+                }
+
+                if(fileModel.content != null){
+                    //如果有更新，移除缓存
+                    String name = path.replace("/", "__");
+                    ExecutorFactory.del(name);
                 }
             }
         }
