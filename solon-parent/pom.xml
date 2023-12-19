@@ -6,7 +6,7 @@
 
     <groupId>org.noear</groupId>
     <artifactId>solon-parent</artifactId>
-    <version>2.6.3-SNAPSHOT</version>
+    <version>2.6.3</version>
     <packaging>pom</packaging>
 
     <name>${project.artifactId}</name>
@@ -23,9 +23,9 @@
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
 
-        <solon.version>2.6.3-SNAPSHOT</solon.version>
-        <solon-admin.version>2.6.2</solon-admin.version>
-        <solon-integration.version>2.6.2</solon-integration.version>
+        <solon.version>2.6.3</solon.version>
+        <solon-admin.version>2.6.3</solon-admin.version>
+        <solon-integration.version>2.6.3</solon-integration.version>
 
         <snack3.version>3.2.84</snack3.version>
         <weed3.version>3.4.33</weed3.version>
@@ -33,8 +33,8 @@
         <water.version>2.12.0</water.version>
         <luffy.version>1.7.2</luffy.version>
         <redisx.version>1.6.2</redisx.version>
-        <socketd.version>2.1.14</socketd.version>
-        <folkmq.version>1.0.22</folkmq.version>
+        <socketd.version>2.1.15</socketd.version>
+        <folkmq.version>1.0.23</folkmq.version>
         <redisson.version>3.23.3</redisson.version>
         <lettuce.version>6.2.5.RELEASE</lettuce.version>
 
@@ -54,7 +54,7 @@
         <undertow.jboss-metadata.version>13.4.0.Final</undertow.jboss-metadata.version>
         <undertow.jboss-jsp.version>2.0.0.Final</undertow.jboss-jsp.version>
         <tomcat.version>9.0.64</tomcat.version>
-        <smartsocket.version>1.5.38</smartsocket.version>
+        <smartsocket.version>1.5.39</smartsocket.version>
         <smarthttp.version>1.3.6</smarthttp.version>
         <vertx.version>4.4.1</vertx.version>
 
@@ -98,8 +98,7 @@
         <logback.version>1.3.11</logback.version>
         <jansi.version>2.4.0</jansi.version>
 
-        <netty.version>4.1.86.Final</netty.version>
-        <rsocket.version>1.1.2</rsocket.version>
+        <netty.version>4.1.101.Final</netty.version>
 
         <springboot.version>2.0.4.RELEASE</springboot.version>
         <spring.version>5.0.8.RELEASE</spring.version>
@@ -144,7 +143,7 @@
 
         <activerecord.version>5.1.2</activerecord.version>
         <beetlsql.version>3.27.3-RELEASE</beetlsql.version>
-        <sqltoy.version>5.2.85</sqltoy.version>
+        <sqltoy.version>5.2.86</sqltoy.version>
         <mybatis-flex.version>1.7.5</mybatis-flex.version>
         <fastmybatis.version>2.9.7</fastmybatis.version>
         <dbvisitor.version>5.4.0</dbvisitor.version>

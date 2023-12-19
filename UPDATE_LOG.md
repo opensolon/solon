@@ -20,6 +20,7 @@
 * 新增 graphql-solon-plugin 插件
 
 ### 2.6.3
+* 发布 Solon FaaS
 * 修复 solon.luffy 插件 JtFunctionLoaderClasspath 可能会出现 null 异常的问题
 * 修复 solon.luffy 插件 XFun.callFile 的执行兼容性（添加 file_id 赋值）
 * 修复 Solon.cfg().stopSafe() 自动配置失效的问题 
@@ -32,8 +33,10 @@
 * luffy 升为 1.7.2
 * folkmq 升为 1.0.22
 * socket.d 升为 2.1.14
+* sqltoy 升为 5.2.86
 * beetl 升为 3.15.12.RELEASE
 * beetlsql 升为 3.27.3-RELEASE
+* netty 升为 4.1.101.Final
 
 ### 2.6.2
 * 修复 solon.logging.logback 对 solon.logging.appender.console.enable 配置无效的问题

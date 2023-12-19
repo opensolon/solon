@@ -35,11 +35,25 @@ public class Param4Controller {
         return user;
     }
 
+    @Mapping("json_2/{id}")
+    public Object test_json_2_path(@Path String id ,@Body Map user) throws IOException {
+        asyncTask.test();
+
+        return id;
+    }
+
     @Mapping("json2")
     public List<UserModel> test_json2(List<UserModel> list) throws IOException {
         asyncTask.test();
 
         return list;
+    }
+
+    @Mapping("json2/{id}")
+    public String test_json2_path(@Path String id, @Body List<UserModel> list) throws IOException {
+        asyncTask.test();
+
+        return id;
     }
 
     @Mapping("json3")
