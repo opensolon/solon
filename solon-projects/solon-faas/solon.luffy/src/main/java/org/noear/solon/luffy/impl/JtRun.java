@@ -109,29 +109,21 @@ public class JtRun {
     public static void execFile(AFileModel file) throws Exception {
         initFuture.get();
 
-        Context ctx = ContextEmpty.create();
+        Context ctx = ContextUtil.current();
 
-        ContextUtil.currentSet(ctx);
-        ExecutorFactory.execOnly(file, ctx);
-        ContextUtil.currentRemove();
+        if (ctx == null) {
+            ctx = ContextEmpty.create();
+
+            ContextUtil.currentSet(ctx);
+            ExecutorFactory.execOnly(file, ctx);
+            ContextUtil.currentRemove();
+        } else {
+            ExecutorFactory.execOnly(file, ctx);
+        }
     }
 
     public static void xfunInit() {
-        JtFun.g.set("afile_get_paths", (map) -> {
-            String tag = (String) map.get("tag");
-            String label = (String) map.get("label");
-            Boolean useCache = (Boolean) map.get("useCache");
-            return Collections.emptyList(); //return DbPaaSApi.fileGetPaths(tag, label, useCache);//List<AFileModel>
-        });
-
-        JtFun.g.set("afile_get", (map) -> {
-            String path = (String) map.get("path");
-            return jtAdapter.fileGet(path); //return DbPaaSApi.fileGet(path);//AFileModel
-        });
-
-        //CallUtil.callLabel(null, "hook.start", false, Collections.EMPTY_MAP);
-
-        //再等0.5秒
+        //再等0.5秒 //执行引擎需要加载东西
         try {
             Thread.sleep(500);
         } catch (Exception ex) {
