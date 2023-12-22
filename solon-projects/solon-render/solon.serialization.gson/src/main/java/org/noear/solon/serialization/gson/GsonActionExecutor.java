@@ -64,6 +64,11 @@ public class GsonActionExecutor extends ActionExecuteHandlerDefault {
 
     @Override
     protected Object changeValue(Context ctx, ParamWrap p, int pi, Class<?> pt, Object bodyObj) throws Exception {
+        if(p.isRequiredPath() || p.isRequiredCookie() || p.isRequiredHeader()){
+            //如果是 path、cookie, header
+            return super.changeValue(ctx, p, pi, pt, bodyObj);
+        }
+
         if (p.isRequiredBody() == false && ctx.paramMap().containsKey(p.getName())) {
             //有可能是path、queryString变量
             return super.changeValue(ctx, p, pi, pt, bodyObj);
