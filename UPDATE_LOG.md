@@ -19,6 +19,10 @@
 * 调整 取消启动参数简写模式，保持与应用参数相同的名字 ???
 * 新增 graphql-solon-plugin 插件
 
+### 2.6.4
+* 修复 @Header 与 @Body 同时注入时，@Header 会失效的问题
+* 添加 local-solon-cloud-plugin 对描述信息的获取
+
 ### 2.6.3
 * 发布 Solon FaaS
 * 修复 solon.luffy 插件 JtFunctionLoaderClasspath 可能会出现 null 异常的问题
