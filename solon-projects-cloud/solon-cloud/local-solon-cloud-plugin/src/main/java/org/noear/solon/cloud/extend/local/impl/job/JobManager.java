@@ -27,9 +27,9 @@ public class JobManager {
      * @param cron     cron 表达式
      * @param runnable 运行函数
      */
-    public static void add(String name, String cron, Runnable runnable) throws ParseException {
+    public static void add(String name, String description, String cron, Runnable runnable) throws ParseException {
         CronExpressionPlus cronX = CronUtils.get(cron);
-        addDo(name, new JobEntity(name, cronX, runnable));
+        addDo(name, new JobEntity(name,description, cronX, runnable));
     }
 
     /**
@@ -40,14 +40,14 @@ public class JobManager {
      * @param zone     时区(+08)
      * @param runnable 运行函数
      */
-    public static void add(String name, String cron, String zone,  Runnable runnable) throws ParseException {
+    public static void add(String name, String description, String cron, String zone,  Runnable runnable) throws ParseException {
         CronExpressionPlus cronX = CronUtils.get(cron);
 
         if (Utils.isNotEmpty(zone)) {
             cronX.setTimeZone(TimeZone.getTimeZone(ZoneId.of(zone)));
         }
 
-        addDo(name, new JobEntity(name, cronX, runnable));
+        addDo(name, new JobEntity(name, description, cronX, runnable));
     }
 
     /**
@@ -57,8 +57,8 @@ public class JobManager {
      * @param fixedRate 固定间隔毫秒数
      * @param runnable  运行函数
      */
-    public static void add(String name, long fixedRate, Runnable runnable) {
-        addDo(name, new JobEntity(name, fixedRate,  runnable));
+    public static void add(String name, String description, long fixedRate, Runnable runnable) {
+        addDo(name, new JobEntity(name,description, fixedRate,  runnable));
     }
 
     /**
@@ -84,6 +84,19 @@ public class JobManager {
     public static boolean contains(String name) {
         return jobEntityMap.containsKey(name);
     }
+
+    /**
+     * 获取任务描述信息
+     * 任务不存在或者不存在描述信息时返回null
+     * @param name 任务名称
+     */
+    public static String getDescription(String name) {
+        if(contains(name)){
+            return jobEntityMap.get(name).getDescription();
+        }
+        return null;
+    }
+
 
     /**
      * 任务数量

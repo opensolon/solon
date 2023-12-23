@@ -16,6 +16,11 @@ import java.util.Date;
  */
 class JobEntity extends Thread {
     static final Logger log = LoggerFactory.getLogger(JobEntity.class);
+
+    /**
+     * 描述信息
+     */
+    private String description;
     /**
      * 调度表达式
      */
@@ -50,16 +55,17 @@ class JobEntity extends Thread {
     private Date nextTime;
 
 
-    public JobEntity(String name, long fixedRate, Runnable runnable) {
-        this(name, null, fixedRate, runnable);
+    public JobEntity(String name, String description, long fixedRate, Runnable runnable) {
+        this(name, description,null, fixedRate, runnable);
     }
 
-    public JobEntity(String name, CronExpressionPlus cron, Runnable runnable) {
-        this(name, cron, 0,  runnable);
+    public JobEntity(String name, String description, CronExpressionPlus cron, Runnable runnable) {
+        this(name,description, cron, 0,  runnable);
     }
 
-    private JobEntity(String name, CronExpressionPlus cron, long fixedRate, Runnable runnable) {
+    private JobEntity(String name,String description, CronExpressionPlus cron, long fixedRate, Runnable runnable) {
         this.cron = cron;
+        this.description = description;
         this.fixedRate = fixedRate;
         this.runnable = runnable;
 
@@ -68,6 +74,14 @@ class JobEntity extends Thread {
         if (Utils.isNotEmpty(name)) {
             setName("Job:" + name);
         }
+    }
+
+    /**
+     * 获取描述信息
+     * @return
+     */
+    public String getDescription() {
+        return description;
     }
 
     /**

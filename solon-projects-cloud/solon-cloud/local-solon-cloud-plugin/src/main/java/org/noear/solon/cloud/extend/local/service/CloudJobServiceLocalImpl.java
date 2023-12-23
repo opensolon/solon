@@ -24,9 +24,9 @@ public class CloudJobServiceLocalImpl implements CloudJobService {
             Cron7X cron7X = Cron7X.parse(cron7x);
 
             if (cron7X.getInterval() == null) {
-                JobManager.add(name, cron7x, new CloudJobRunnable(handler));
+                JobManager.add(name, description, cron7x, new CloudJobRunnable(handler));
             } else {
-                JobManager.add(name, cron7X.getInterval(), new CloudJobRunnable(handler));
+                JobManager.add(name, description, cron7X.getInterval(), new CloudJobRunnable(handler));
             }
 
             TagsMDC.tag0("CloudJob");
