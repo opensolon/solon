@@ -23,6 +23,8 @@
 * 修复 @Header 与 @Body 同时注入时，@Header 会失效的问题
 * 添加 local-solon-cloud-plugin 对描述信息的获取
 * fastjson2 升级 2.0.44
+* socket.d 升为 2.1.16
+* folkmq 升为 1.0.24
 
 ### 2.6.3
 * 发布 Solon FaaS
