@@ -524,6 +524,8 @@ public class OpenApi2Builder {
             this.swagger.addDefinition(key,model);
             finalBodyParameter.setSchema(new RefModel(key));
             parameters.add(finalBodyParameter);
+        }else {
+            parameters.addAll(paramList);
         }
         return parameters;
     }
