@@ -42,7 +42,8 @@ public class SocketCallbackTest {
         map.put("name", "noear");
         String map_josn = ONode.stringify(map);
 
-        Entity message = new StringEntity(map_josn).meta("Content-Type", "application/json");
+        Entity message = new StringEntity(map_josn)
+                .metaPut("Content-Type", "application/json");
 
 
         CompletableFuture<Boolean> check = new CompletableFuture<>();

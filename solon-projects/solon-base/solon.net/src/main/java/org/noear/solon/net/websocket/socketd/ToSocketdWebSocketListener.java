@@ -36,8 +36,8 @@ public class ToSocketdWebSocketListener implements WebSocketListener {
         this.supporter = new InnerChannelSupporter(this);
     }
 
-    private Channel getChannel(WebSocket socket) {
-        Channel channel = socket.attr(SOCKETD_KEY);
+    private ChannelInternal getChannel(WebSocket socket) {
+        ChannelInternal channel = socket.attr(SOCKETD_KEY);
 
         if (channel == null) {
             channel = new ChannelDefault<>(socket, supporter);
@@ -62,7 +62,7 @@ public class ToSocketdWebSocketListener implements WebSocketListener {
     @Override
     public void onMessage(WebSocket socket, ByteBuffer binary) throws IOException {
         try {
-            Channel channel = getChannel(socket);
+            ChannelInternal channel = getChannel(socket);
             Frame frame = assistant.read(binary);
 
             if (frame != null) {
@@ -76,7 +76,7 @@ public class ToSocketdWebSocketListener implements WebSocketListener {
     @Override
     public void onClose(WebSocket socket) {
         try {
-            Channel channel = getChannel(socket);
+            ChannelInternal channel = getChannel(socket);
             processor.onClose(channel);
         } catch (Throwable e) {
             log.warn(e.getMessage(), e);
@@ -86,7 +86,7 @@ public class ToSocketdWebSocketListener implements WebSocketListener {
     @Override
     public void onError(WebSocket socket, Throwable error) {
         try {
-            Channel channel = getChannel(socket);
+            ChannelInternal channel = getChannel(socket);
 
             if (channel != null) {
                 //有可能未 onOpen，就 onError 了；此时通道未成
@@ -105,17 +105,17 @@ public class ToSocketdWebSocketListener implements WebSocketListener {
         }
 
         @Override
-        public Processor processor() {
+        public Processor getProcessor() {
             return l.processor;
         }
 
         @Override
-        public ChannelAssistant<WebSocket> assistant() {
+        public ChannelAssistant<WebSocket> getAssistant() {
             return l.assistant;
         }
 
         @Override
-        public Config config() {
+        public Config getConfig() {
             return l.config;
         }
     }

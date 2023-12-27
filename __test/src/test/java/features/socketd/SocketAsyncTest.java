@@ -52,7 +52,7 @@ public class SocketAsyncTest {
 
         //异步发
         session.send(root + "/demoh/rpc/hello", new StringEntity(map_josn)
-                .meta("Content-Type", "application/json"));
+                .metaPut("Content-Type", "application/json"));
 
         assert check.get(2, TimeUnit.SECONDS);
     }

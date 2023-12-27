@@ -98,9 +98,9 @@ public class XPluginImpl implements Plugin {
 
         long time_end = System.currentTimeMillis();
 
-        String serverUrl = server.config().getSchema() + "://localhost:" + portReal;
+        String serverUrl = server.getConfig().getSchema() + "://localhost:" + portReal;
         LogUtil.global().info("Connector:main: socket.d: Started ServerConnector@{" + serverUrl + "}");
-        LogUtil.global().info("Server:main: socket.d: Started (" + server.title() + ") @" + (time_end - time_start) + "ms");
+        LogUtil.global().info("Server:main: socket.d: Started (" + server.getTitle() + ") @" + (time_end - time_start) + "ms");
     }
 
     @Override

@@ -1,6 +1,6 @@
 package org.noear.solon.net.websocket;
 
-import org.noear.socketd.utils.Utils;
+import org.noear.solon.Utils;
 
 import java.net.URI;
 import java.util.HashMap;

@@ -48,7 +48,7 @@ public class SocketdSessionState implements SessionState {
         if (val == null) {
             sessionRemove(key);
         } else {
-            session.attr(key, val);
+            session.attrPut(key, val);
         }
     }
 

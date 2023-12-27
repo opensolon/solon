@@ -59,7 +59,7 @@ public class SocketResponseTest {
 
 
         Entity rst = session.sendAndRequest(root + "/demoh/rpc/hello",
-                new StringEntity(map_josn).metaString(ContentTypes.JSON));
+                new StringEntity(map_josn).metaStringSet(ContentTypes.JSON));
         String rst_str = ONode.deserialize(rst.dataAsString());
 
         System.out.println("收到:" + rst_str);

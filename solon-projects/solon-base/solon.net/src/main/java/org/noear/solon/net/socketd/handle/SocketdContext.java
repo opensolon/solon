@@ -151,12 +151,12 @@ public class SocketdContext extends ContextEmpty {
 
     @Override
     public void headerSet(String key, String val) {
-        _response.meta(key,val);
+        _response.metaPut(key,val);
     }
 
     @Override
     public void headerAdd(String key, String val) {
-        _response.meta(key,val);
+        _response.metaPut(key,val);
     }
 
     @Override
@@ -225,7 +225,7 @@ public class SocketdContext extends ContextEmpty {
 
     private void replyDo(ByteBuffer dataStream, int dataSize) throws IOException {
         if (_request.isRequest() || _request.isSubscribe()) {
-            _response.data(dataStream);
+            _response.dataSet(dataStream);
             _session.replyEnd(_request, _response);
         } else {
             if (dataSize > 0) {
