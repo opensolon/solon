@@ -1,7 +1,7 @@
 package org.noear.solon.net.socketd.listener;
 
 import org.noear.socketd.transport.core.Listener;
-import org.noear.socketd.transport.core.listener.PathMapper;
+import org.noear.socketd.transport.core.listener.RouteSelector;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.route.RoutingDefault;
 import org.noear.solon.core.route.RoutingTable;
@@ -13,12 +13,12 @@ import org.noear.solon.core.route.RoutingTableDefault;
  * @author noear
  * @since 2.0
  */
-public class PathMapperExpress implements PathMapper {
+public class RouteSelectorExpress implements RouteSelector<Listener> {
 
     private final RoutingTable<Listener> inner = new RoutingTableDefault<>();
 
     @Override
-    public Listener get(String path) {
+    public Listener select(String path) {
         return inner.matchOne(path, MethodType.SOCKET);
     }
 

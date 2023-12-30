@@ -50,7 +50,7 @@ public class ExpressListener implements Listener {
             Matcher pm = pathAnalyzer.matcher(s.path());
             if (pm.find()) {
                 for (int i = 0, len = pathKeys.size(); i < len; i++) {
-                    s.handshake().param(pathKeys.get(i), pm.group(i + 1));//不采用group name,可解决_的问题
+                    s.handshake().paramPut(pathKeys.get(i), pm.group(i + 1));//不采用group name,可解决_的问题
                 }
             }
         }

@@ -1,7 +1,7 @@
 package webapp.demof_websocket;
 
 import org.noear.nami.channel.socketd.SocketdProxy;
-import org.noear.socketd.transport.core.ConfigImpl;
+import org.noear.socketd.transport.core.internal.ConfigImpl;
 import org.noear.solon.Solon;
 import org.noear.solon.net.annotation.ServerEndpoint;
 import org.noear.solon.net.websocket.WebSocket;

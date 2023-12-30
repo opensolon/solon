@@ -24,8 +24,8 @@
 * 添加 local-solon-cloud-plugin 对描述信息的获取
 * fastjson2 升为 2.0.44
 * log4j 升为 2.22.0
-* socket.d 升为 2.2.0
-* folkmq 升为 1.0.25
+* socket.d 升为 2.2.1
+* folkmq 升为 1.0.26
 
 ### 2.6.3
 * 发布 Solon FaaS
