@@ -19,6 +19,10 @@
 * 调整 取消启动参数简写模式，保持与应用参数相同的名字 ???
 * 新增 graphql-solon-plugin 插件
 
+### 2.6.5
+* 修复 solon.auth 验证路径被强制转小写的问题
+* forest 升为 1.5.35
+
 ### 2.6.4
 * 新增 graphql-solon-plugin 插件（欢迎试用） 
 * 修复 @Header 与 @Body 同时注入时，@Header 会失效的问题
