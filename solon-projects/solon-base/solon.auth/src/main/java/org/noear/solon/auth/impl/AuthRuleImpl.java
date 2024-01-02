@@ -100,7 +100,7 @@ public class AuthRuleImpl implements AuthRule {
 
     @Override
     public void handle(Context ctx) throws Throwable {
-        String path = ctx.pathNew().toLowerCase();
+        String path = ctx.pathNew();
 
         if (pathRule.test(path) == false) {
             return;
