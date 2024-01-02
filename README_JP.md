@@ -1,7 +1,7 @@
 <h1 align="center" style="text-align:center;">
 <img src="solon_icon.png" width="128" />
 <br />
-Solon v2.6.4-SNAPSHOT
+Solon v2.6.4
 </h1>
 <p align="center">
 	<strong>Javaの新しいアプリケーション開発フレームワーク、より小さく、より速く、より簡単です!</strong>
@@ -65,7 +65,7 @@ Solon v2.6.4-SNAPSHOT
 * Web、Data、Job、Remoting、Cloudなどの開発シナリオをサポート
 * Handler+ContextとListener+Messageの2つのイベントモデルを両立
 * プラグイン式の拡張を強調し、異なるアプリケーションシーンに対応可能
-* GraalVm Native Imageパッケージをサポート
+* GraalVm Native Imageパッケージに対応しています。FaaSモデルの開発を支援します
 * サービスプラグインには「ホットプラグ」「ホットプラグ」「ホットマネジメント」ができます。
 
 

@@ -69,7 +69,7 @@ public class LocalCacheService implements CacheService {
                 //设定新的超时
                 ent.future = RunUtil.delay(() -> {
                     _data.remove(key);
-                }, seconds * 1000);
+                }, seconds * 1000L);
             }
         }
     }

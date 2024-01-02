@@ -1,6 +1,8 @@
 package webapp.demo2_mvc;
 
+import org.noear.solon.annotation.Body;
 import org.noear.solon.annotation.Controller;
+import org.noear.solon.annotation.Header;
 import org.noear.solon.annotation.Mapping;
 import org.noear.solon.core.handle.Context;
 

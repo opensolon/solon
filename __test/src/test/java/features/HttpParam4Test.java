@@ -44,6 +44,17 @@ public class HttpParam4Test extends HttpTester {
     }
 
     @Test
+    public void json_2_header() throws IOException {
+        //走json通过，这个格式会有问题
+        String json = "{id:1,name:'noear',date:'2021-12-12'}";
+
+        String json2 = path("/demo2/param4/json_2/header/t").header("id", "1").bodyJson(json).post();
+
+        assert json2 != null;
+        assert json2.startsWith("1{");
+    }
+
+    @Test
     public void json_2_path() throws IOException {
         //走json通过，这个格式会有问题
         String json = "{id:1,name:'noear',date:'2021-12-12'}";

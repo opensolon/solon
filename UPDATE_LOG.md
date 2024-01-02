@@ -20,11 +20,18 @@
 * 新增 graphql-solon-plugin 插件
 
 ### 2.6.4
+* 新增 graphql-solon-plugin 插件（欢迎试用） 
 * 修复 @Header 与 @Body 同时注入时，@Header 会失效的问题
+* 修复 LocalCacheService 时间过大时会超界的问题
 * 添加 local-solon-cloud-plugin 对描述信息的获取
 * fastjson2 升为 2.0.44
-* log4j 升为 2.22.0
-* socket.d 升为 2.2.1
+* log4j 升为 2.22.1
+* logback 升为 1.3.14
+* sqltoy 升为 5.2.88
+* mybatis-flex 升为 1.7.6
+* beetlsql 升为 3.27.4-RELEASE
+* fastmybatis 升为 2.10.0
+* socket.d 升为 2.2.2
 * folkmq 升为 1.0.26
 
 ### 2.6.3

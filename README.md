@@ -1,7 +1,7 @@
 <h1 align="center" style="text-align:center;">
 <img src="solon_icon.png" width="128" />
 <br />
-Solon v2.6.4-SNAPSHOT
+Solon v2.6.4
 </h1>
 <p align="center">
 	<strong>Java's new application development framework, smaller, faster, and easier!</strong>
@@ -65,7 +65,7 @@ Build from scratch. It has its own standards and norms and open ecology. Combina
 * Supports Web, Data, Job, Remoting, Cloud, and other development scenarios
 * The two architecture modes are Handler + Context and Listener + Message
 * Emphasizes plug-in extensibility, expandable and swappable, adaptable to different application scenarios
-* Supports GraalVm Native Image packaging
+* Supports GraalVm Native Image packaging. Support FaaS pattern development
 * Allow service plug-ins to hot-plug, hot-swap, and hot-manage.
 
 ## Ecosystem Architecture Diagram:

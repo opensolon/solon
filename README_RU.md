@@ -1,7 +1,7 @@
 <h1 align="center" style="text-align:center;">
 <img src="solon_icon.png" width="128" />
 <br />
-Solon v2.6.4-SNAPSHOT
+Solon v2.6.4
 </h1>
 <p align="center">
 	<strong>Новая структура разработки приложений Java, меньше, быстрее и проще!</strong>
@@ -65,7 +65,7 @@ Solon v2.6.4-SNAPSHOT
 * Поддерживаем любые сценарии развития, такие как Web, Data, Job, Remoting, Cloud и т.д
 * Совместить архитектурные модели Handler + Context и Listener + Message
 * Подчеркивает расширение плагина, расширяемое и переключаемое; Адаптация к различным параметрам применения
-* В поддержку "GraalVm Native Image"
+* Поддерживаем пакование "GraalVm Native Image". Поддержка разработки фаас модели
 * Позволяет бизнес-плагины "включать", "вырывать", "управление теплом"
 
 
