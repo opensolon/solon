@@ -2,16 +2,14 @@ package org.noear.solon.web.servlet;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
+import org.noear.solon.boot.ServerProps;
 import org.noear.solon.core.event.AppInitEndEvent;
 import org.noear.solon.core.event.AppLoadEndEvent;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.ContextPathFilter;
 import org.noear.solon.core.util.ClassUtil;
 
-import javax.servlet.ServletContext;
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
-import javax.servlet.ServletRegistration;
+import javax.servlet.*;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
@@ -44,9 +42,21 @@ public class SolonServletContextListener implements ServletContextListener {
 
         //2.注册加载完成事件
         EventBus.subscribe(AppLoadEndEvent.class, e -> {
-            ServletRegistration registration = sce.getServletContext().addServlet("solon", SolonServletHandler.class);
+            ServletRegistration.Dynamic registration = sce.getServletContext().addServlet("solon", SolonServletHandler.class);
             if (registration != null) {
+                //mapping
                 registration.addMapping("/*");
+
+                //configElement
+                long maxBodySize = (ServerProps.request_maxBodySize > 0 ? ServerProps.request_maxBodySize : -1L);
+                long maxFileSize = (ServerProps.request_maxFileSize > 0 ? ServerProps.request_maxFileSize : -1L);
+
+                MultipartConfigElement configElement = new MultipartConfigElement(
+                        System.getProperty("java.io.tmpdir"),
+                        maxFileSize,
+                        maxBodySize,
+                        0);
+                registration.setMultipartConfig(configElement);
             }
         });
 
