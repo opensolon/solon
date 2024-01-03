@@ -45,7 +45,9 @@ public class SolonServletContextListener implements ServletContextListener {
         //2.注册加载完成事件
         EventBus.subscribe(AppLoadEndEvent.class, e -> {
             ServletRegistration registration = sce.getServletContext().addServlet("solon", SolonServletHandler.class);
-            registration.addMapping("/*");
+            if (registration != null) {
+                registration.addMapping("/*");
+            }
         });
 
         //3.执行Main函数
