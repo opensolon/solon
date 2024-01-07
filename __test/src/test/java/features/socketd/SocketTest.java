@@ -29,24 +29,24 @@ public class SocketTest {
         String root = "tcp://localhost:" + (20000 + Solon.cfg().serverPort());
         ClientSession session = SocketD.createClient(root).open();
 
-        Entity msg = session.sendAndRequest(root + "/demog/中文/1", new StringEntity("Hello 世界!"));
+        Entity msg = session.sendAndRequest(root + "/demog/中文/1", new StringEntity("Hello 世界!")).await();
         System.out.println(msg.dataAsString());
         assert "我收到了：Hello 世界!".equals(msg.dataAsString());
 
         Thread.sleep(100);
-        msg = session.sendAndRequest(root + "/demog/中文/1", new StringEntity("Hello 世界!"));
+        msg = session.sendAndRequest(root + "/demog/中文/1", new StringEntity("Hello 世界!")).await();
         System.out.println(msg.toString());
         assert "我收到了：Hello 世界!".equals(msg.dataAsString());
 
         Thread.sleep(100);
-        msg = session.sendAndRequest(root + "/demog/中文/2", new StringEntity("Hello 世界2!"));
+        msg = session.sendAndRequest(root + "/demog/中文/2", new StringEntity("Hello 世界2!")).await();
         System.out.println(msg.toString());
         assert "我收到了：Hello 世界2!".equals(msg.dataAsString());
 
         Thread.sleep(100);
 
         try {
-            msg = session.sendAndRequest(root + "/demog/中文/3", new StringEntity("close"));
+            msg = session.sendAndRequest(root + "/demog/中文/3", new StringEntity("close")).await();
             //assert msg == null;
             assert false;
         } catch (SocketdException e) {
@@ -63,7 +63,7 @@ public class SocketTest {
         String root = "tcp://localhost:" + (20000 + Solon.cfg().serverPort());
         ClientSession session = SocketD.createClient(root).open();
 
-        session.sendAndSubscribe(root + "/seb/test", new StringEntity("Hello 世界!+1"), (msg) -> {
+        session.sendAndSubscribe(root + "/seb/test", new StringEntity("Hello 世界!+1")).thenReply( (msg) -> {
             if (msg == null) {
                 return;
             }
@@ -88,7 +88,7 @@ public class SocketTest {
 
         list.parallelStream().forEach((i) -> {
             try {
-                session.sendAndSubscribe(root + "/seb/test", new StringEntity("Hello 世界!+" + i), (msg) -> {
+                session.sendAndSubscribe(root + "/seb/test", new StringEntity("Hello 世界!+" + i)).thenReply( (msg) -> {
                     if (msg == null) {
                         return;
                     }
@@ -110,14 +110,14 @@ public class SocketTest {
         ClientSession session = SocketD.createClient(root).open();
 
 
-        session.sendAndSubscribe(root + "/seb/test", new StringEntity("Hello 世界!"), (msg) -> {
+        session.sendAndSubscribe(root + "/seb/test", new StringEntity("Hello 世界!")).thenReply( (msg) -> {
             if (msg == null) {
                 return;
             }
             System.out.println(msg.toString());
         });
 
-        session.sendAndSubscribe(root + "/seb/test", new StringEntity("Hello 世界!"), (msg) -> {
+        session.sendAndSubscribe(root + "/seb/test", new StringEntity("Hello 世界!")).thenReply((msg) -> {
             if (msg == null) {
                 return;
             }

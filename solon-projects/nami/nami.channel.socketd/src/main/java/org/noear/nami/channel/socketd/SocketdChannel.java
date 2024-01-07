@@ -60,7 +60,8 @@ public class SocketdChannel extends ChannelBase implements Channel {
         Session session = sessions.get();
 
         //4.发送消息
-        Entity response = session.sendAndRequest(ctx.url, request, ctx.config.getTimeout() * 1000);
+        Entity response = session.sendAndRequest(ctx.url, request, ctx.config.getTimeout() * 1000)
+                .await();
 
         if (response == null) {
             return null;

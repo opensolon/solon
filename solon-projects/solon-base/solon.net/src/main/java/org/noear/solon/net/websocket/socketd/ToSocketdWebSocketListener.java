@@ -1,8 +1,8 @@
 package org.noear.solon.net.websocket.socketd;
 
 import org.noear.socketd.transport.core.*;
-import org.noear.socketd.transport.core.internal.ChannelDefault;
-import org.noear.socketd.transport.core.internal.ProcessorDefault;
+import org.noear.socketd.transport.core.impl.ChannelDefault;
+import org.noear.socketd.transport.core.impl.ProcessorDefault;
 import org.noear.solon.net.websocket.WebSocket;
 import org.noear.solon.net.websocket.WebSocketListener;
 import org.slf4j.Logger;

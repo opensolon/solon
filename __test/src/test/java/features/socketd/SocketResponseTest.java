@@ -35,7 +35,7 @@ public class SocketResponseTest {
 
         String root = "tcp://localhost:" + _port;
 
-        Entity rst = session.sendAndRequest(root + "/demog/中文/1", new StringEntity("Hello 世界!"));
+        Entity rst = session.sendAndRequest(root + "/demog/中文/1", new StringEntity("Hello 世界!")).await();
 
         String tmp = rst.dataAsString();
         System.out.println(tmp);
@@ -59,7 +59,7 @@ public class SocketResponseTest {
 
 
         Entity rst = session.sendAndRequest(root + "/demoh/rpc/hello",
-                new StringEntity(map_josn).metaStringSet(ContentTypes.JSON));
+                new StringEntity(map_josn).metaStringSet(ContentTypes.JSON)).await();
         String rst_str = ONode.deserialize(rst.dataAsString());
 
         System.out.println("收到:" + rst_str);
