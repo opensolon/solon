@@ -56,6 +56,12 @@ public class ThymeleafRender implements Render {
 
     public ThymeleafRender(){
         this(AppClassLoader.global());
+        // 处理以下报错
+        // "Link base \"" + base + "\" cannot be context relative (/...) unless the context " +
+        //"used for executing the engine implements the " + IWebContext.class.getName() + " interface
+        BaseUrlLinkBuilder baseUrlLinkBuilder = new BaseUrlLinkBuilder();
+        baseUrlLinkBuilder.setBaseUrl("/");
+        this.provider.setLinkBuilder(baseUrlLinkBuilder);
     }
 
     public ThymeleafRender(ClassLoader classLoader) {
