@@ -43,25 +43,19 @@ public class ThymeleafRender implements Render {
     }
 
 
-
     private Map<String, Object> sharedVariables = new HashMap<>();
     private ClassLoader classLoader;
     private TemplateEngine provider = new TemplateEngine();
+
     /**
      * 引擎提供者
-     * */
+     */
     public TemplateEngine getProvider() {
         return provider;
     }
 
-    public ThymeleafRender(){
+    public ThymeleafRender() {
         this(AppClassLoader.global());
-        // 处理以下报错
-        // "Link base \"" + base + "\" cannot be context relative (/...) unless the context " +
-        //"used for executing the engine implements the " + IWebContext.class.getName() + " interface
-        BaseUrlLinkBuilder baseUrlLinkBuilder = new BaseUrlLinkBuilder();
-        baseUrlLinkBuilder.setBaseUrl("/");
-        this.provider.setLinkBuilder(baseUrlLinkBuilder);
     }
 
     public ThymeleafRender(ClassLoader classLoader) {
@@ -80,7 +74,7 @@ public class ThymeleafRender implements Render {
     }
 
     private void forDebug() {
-        if(Solon.cfg().isDebugMode() == false) {
+        if (Solon.cfg().isDebugMode() == false) {
             return;
         }
 

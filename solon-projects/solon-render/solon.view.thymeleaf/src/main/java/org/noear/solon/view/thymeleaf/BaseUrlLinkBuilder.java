@@ -15,9 +15,10 @@ public class BaseUrlLinkBuilder extends StandardLinkBuilder {
 
     @Override
     protected String computeContextPath(IExpressionContext context, String base, Map<String, Object> parameters) {
-        if(baseUrl==null){
+        if (baseUrl == null) {
             throw new TemplateProcessingException("baseUrl is null");
         }
+
         return baseUrl;
     }
 }

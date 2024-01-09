@@ -1,5 +1,7 @@
 package org.noear.solon.view.thymeleaf;
 
+import org.noear.solon.Solon;
+import org.noear.solon.Utils;
 import org.noear.solon.auth.AuthUtil;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
@@ -40,5 +42,15 @@ public class XPluginImp implements Plugin {
             authDialect.addProcessor(new AuthRolesTag(authDialect.getPrefix()));
             render.putDirective(authDialect);
         }
+
+        //添加 StandardLinkBuilder
+        String baseUrl = Solon.cfg().serverContextPath();
+        if (Utils.isEmpty(baseUrl)) {
+            baseUrl = "/";
+        }
+
+        BaseUrlLinkBuilder baseUrlLinkBuilder = new BaseUrlLinkBuilder();
+        baseUrlLinkBuilder.setBaseUrl(baseUrl);
+        render.getProvider().addLinkBuilder(baseUrlLinkBuilder);
     }
 }
