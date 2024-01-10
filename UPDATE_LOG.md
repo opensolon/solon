@@ -22,6 +22,7 @@
 ### 2.6.5
 * 修复 solon.auth 验证路径被强制转小写的问题
 * 添加 war 部署时，multipartConfig 自动配置并与 app.yml 对接
+* 添加 thymeleaf 适配对 `@{}` 语法的支持
 * forest 升为 1.5.35
 * mybatis-flex 升为 1.7.7
 * snack3 升为 3.2.85
