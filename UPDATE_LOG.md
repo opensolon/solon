@@ -25,8 +25,8 @@
 * forest 升为 1.5.35
 * mybatis-flex 升为 1.7.7
 * snack3 升为 3.2.85
-* folkmq 升为 1.0.27
-* socket.d 升为 2.3.0
+* folkmq 升为 1.0.28
+* socket.d 升为 2.3.4
 
 ### 2.6.4
 * 新增 graphql-solon-plugin 插件（欢迎试用） 
