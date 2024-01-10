@@ -142,12 +142,12 @@
         <freemarker.version>2.3.31</freemarker.version>
 
         <activerecord.version>5.1.2</activerecord.version>
-        <beetlsql.version>3.27.4-RELEASE</beetlsql.version>
+        <beetlsql.version>3.27.5-RELEASE</beetlsql.version>
         <sqltoy.version>5.2.88</sqltoy.version>
         <mybatis-flex.version>1.7.7</mybatis-flex.version>
         <fastmybatis.version>2.10.0</fastmybatis.version>
         <dbvisitor.version>5.4.0</dbvisitor.version>
-        <bean-searcher.version>4.2.4</bean-searcher.version>
+        <bean-searcher.version>4.2.6</bean-searcher.version>
 
         <liteflow.version>2.11.3</liteflow.version>
         <forest.version>1.5.35</forest.version>

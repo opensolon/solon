@@ -25,6 +25,8 @@
 * 添加 thymeleaf 适配对 `@{}` 语法的支持
 * forest 升为 1.5.35
 * mybatis-flex 升为 1.7.7
+* beetlsql 升为 3.27.5-RELEASE
+* bean-searcher 升为 4.2.6
 * snack3 升为 3.2.85
 * folkmq 升为 1.0.28
 * socket.d 升为 2.3.4
