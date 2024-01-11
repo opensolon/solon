@@ -146,7 +146,17 @@ public class RedissonCacheService implements CacheService {
         }
     }
 
+    protected boolean _enableMd5key = true;
+
+    public void enableMd5key(boolean enable) {
+        _enableMd5key = enable;
+    }
+
     protected String newKey(String key) {
-        return _cacheKeyHead + ":" + Utils.md5(key);
+        if (_enableMd5key) {
+            return _cacheKeyHead + ":" + Utils.md5(key);
+        } else {
+            return _cacheKeyHead + ":" + key;
+        }
     }
 }

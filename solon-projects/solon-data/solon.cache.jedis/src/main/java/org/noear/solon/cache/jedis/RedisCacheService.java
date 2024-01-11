@@ -35,11 +35,12 @@ public class RedisCacheService implements CacheService {
         return this;
     }
 
+
     public RedisCacheService(RedisClient client, int defSeconds) {
         this(client, null, defSeconds);
     }
 
-    public RedisCacheService(RedisClient client, String keyHeader, int defSeconds){
+    public RedisCacheService(RedisClient client, String keyHeader, int defSeconds) {
         this.client = client;
 
         if (Utils.isEmpty(keyHeader)) {
@@ -136,7 +137,7 @@ public class RedisCacheService implements CacheService {
         }
 
         try {
-            return (T)_serializer.deserialize(val,clz);
+            return (T) _serializer.deserialize(val, clz);
         } catch (Exception e) {
             log.warn(e.getMessage(), e);
             return null;
@@ -152,8 +153,17 @@ public class RedisCacheService implements CacheService {
         });
     }
 
+    protected boolean _enableMd5key = true;
+
+    public void enableMd5key(boolean enable) {
+        _enableMd5key = enable;
+    }
 
     protected String newKey(String key) {
-        return _cacheKeyHead + ":" + Utils.md5(key);
+        if (_enableMd5key) {
+            return _cacheKeyHead + ":" + Utils.md5(key);
+        } else {
+            return _cacheKeyHead + ":" + key;
+        }
     }
 }
