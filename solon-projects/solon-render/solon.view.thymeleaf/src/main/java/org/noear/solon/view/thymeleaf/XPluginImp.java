@@ -46,11 +46,15 @@ public class XPluginImp implements Plugin {
         //添加 StandardLinkBuilder
         String baseUrl = Solon.cfg().serverContextPath();
         if (Utils.isEmpty(baseUrl)) {
-            baseUrl = "/";
+            baseUrl = "";
+        } else {
+            if (baseUrl.endsWith("/")) {
+                baseUrl = baseUrl.substring(0, baseUrl.length() - 1);
+            }
         }
 
         BaseUrlLinkBuilder baseUrlLinkBuilder = new BaseUrlLinkBuilder();
         baseUrlLinkBuilder.setBaseUrl(baseUrl);
-        render.getProvider().addLinkBuilder(baseUrlLinkBuilder);
+        render.getProvider().setLinkBuilder(baseUrlLinkBuilder);
     }
 }
