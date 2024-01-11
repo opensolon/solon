@@ -213,7 +213,7 @@ public abstract class BaseServerProps implements ServerSignalProps, ServerExecut
         if (idleTimeout > 0) {
             return idleTimeout;
         } else {
-            return 600_000;
+            return 300_000;
         }
     }
 }
