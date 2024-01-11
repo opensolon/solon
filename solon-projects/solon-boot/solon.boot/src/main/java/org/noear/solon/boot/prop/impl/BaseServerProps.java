@@ -55,40 +55,40 @@ public abstract class BaseServerProps implements ServerSignalProps, ServerExecut
     }
 
 
-   private void initSignalProps(int portBase) {
-       name = Solon.cfg().get(PROP_NAME);
-       port = Solon.cfg().getInt(PROP_PORT, 0);
-       host = Solon.cfg().get(PROP_HOST);
+    private void initSignalProps(int portBase) {
+        name = Solon.cfg().get(PROP_NAME);
+        port = Solon.cfg().getInt(PROP_PORT, 0);
+        host = Solon.cfg().get(PROP_HOST);
 
-       wrapPort = Solon.cfg().getInt(PROP_WRAP_PORT, 0);
-       wrapHost = Solon.cfg().get(PROP_WRAP_HOST);
+        wrapPort = Solon.cfg().getInt(PROP_WRAP_PORT, 0);
+        wrapHost = Solon.cfg().get(PROP_WRAP_HOST);
 
-       //host + port
-       if (port < 1) {
-           port = portBase + Solon.cfg().serverPort();
-       }
+        //host + port
+        if (port < 1) {
+            port = portBase + Solon.cfg().serverPort();
+        }
 
-       if (Utils.isEmpty(host)) {
-           host = Solon.cfg().serverHost();
-       }
+        if (Utils.isEmpty(host)) {
+            host = Solon.cfg().serverHost();
+        }
 
-       //imageHost + imagePort
-       if (wrapPort < 1) {
-           wrapPort = Solon.cfg().serverWrapPort(true);
+        //imageHost + imagePort
+        if (wrapPort < 1) {
+            wrapPort = Solon.cfg().serverWrapPort(true);
 
-           if (wrapPort < 1) {
-               wrapPort = port;
-           }
-       }
+            if (wrapPort < 1) {
+                wrapPort = port;
+            }
+        }
 
-       if (Utils.isEmpty(wrapHost)) {
-           wrapHost = Solon.cfg().serverWrapHost(true);
+        if (Utils.isEmpty(wrapHost)) {
+            wrapHost = Solon.cfg().serverWrapHost(true);
 
-           if (Utils.isEmpty(wrapHost)) {
-               wrapHost = host;
-           }
-       }
-   }
+            if (Utils.isEmpty(wrapHost)) {
+                wrapHost = host;
+            }
+        }
+    }
 
 
     @Override
@@ -108,7 +108,7 @@ public abstract class BaseServerProps implements ServerSignalProps, ServerExecut
 
     /**
      * @since 1.12
-     * */
+     */
     @Override
     public int getWrapPort() {
         return wrapPort;
@@ -116,7 +116,7 @@ public abstract class BaseServerProps implements ServerSignalProps, ServerExecut
 
     /**
      * @since 1.12
-     * */
+     */
     @Override
     public String getWrapHost() {
         return wrapHost;
@@ -124,7 +124,7 @@ public abstract class BaseServerProps implements ServerSignalProps, ServerExecut
 
     ////////////////////////////////
 
-    private void initExecutorProps(){
+    private void initExecutorProps() {
         ioBound = Solon.cfg().getBool(PROP_IO_BOUND, true);
         idleTimeout = Solon.cfg().getLong(PROP_IDLE_TIMEOUT, 0L);
 
@@ -213,7 +213,7 @@ public abstract class BaseServerProps implements ServerSignalProps, ServerExecut
         if (idleTimeout > 0) {
             return idleTimeout;
         } else {
-            return 60000;
+            return 600_000;
         }
     }
 }

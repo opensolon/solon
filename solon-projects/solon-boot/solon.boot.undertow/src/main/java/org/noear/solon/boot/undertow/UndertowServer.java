@@ -69,13 +69,11 @@ public class UndertowServer extends UndertowServerBase implements ServerLifecycl
         }
 
 
-        if (props.getIdleTimeout() > 0) {
-            builder.setServerOption(UndertowOptions.IDLE_TIMEOUT, (int) props.getIdleTimeout());
-        }
+        builder.setServerOption(UndertowOptions.IDLE_TIMEOUT, (int) props.getIdleTimeoutOrDefault());
         builder.setIoThreads(props.getCoreThreads());
         builder.setWorkerThreads(props.getMaxThreads(props.isIoBound()));
 
-        if(enableHttp2){
+        if (enableHttp2) {
             builder.setServerOption(UndertowOptions.ENABLE_HTTP2, true);
         }
 
@@ -93,7 +91,7 @@ public class UndertowServer extends UndertowServerBase implements ServerLifecycl
         }
 
         //http add
-        for(Integer portAdd: addHttpPorts){
+        for (Integer portAdd : addHttpPorts) {
             builder.addHttpListener(portAdd, host);
         }
 

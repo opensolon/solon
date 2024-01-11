@@ -12,6 +12,7 @@ import java.util.concurrent.*;
  */
 public interface ServerExecutorProps {
     boolean isIoBound();
+
     /**
      * 核心线程数
      */
@@ -37,7 +38,7 @@ public interface ServerExecutorProps {
      */
     default ExecutorService getBioExecutor(String namePrefix) {
         return new ThreadPoolExecutor(getCoreThreads(), getMaxThreads(true),
-                getIdleTimeoutOrDefault(), TimeUnit.MILLISECONDS,
+                60, TimeUnit.SECONDS,
                 new SynchronousQueue<>(), //BlockingQueue //SynchronousQueue
                 new NamedThreadFactory(namePrefix));
     }
