@@ -24,6 +24,7 @@
 * 添加 war 部署时，multipartConfig 自动配置并与 app.yml 对接
 * 添加 thymeleaf 适配对 `@{}` 语法的支持
 * 添加 RedisCacheService,RedissonCacheService,MemCacheService::enableMd5key (默认为 true)
+* 添加 solon.serialization 对 ZonedDateTime 适配支持
 * forest 升为 1.5.35
 * mybatis-flex 升为 1.7.7
 * beetlsql 升为 3.27.5-RELEASE
