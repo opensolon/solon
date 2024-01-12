@@ -25,11 +25,19 @@
 * 添加 thymeleaf 适配对 `@{}` 语法的支持
 * 添加 RedisCacheService,RedissonCacheService,MemCacheService::enableMd5key (默认为 true)
 * 添加 solon.serialization 对 ZonedDateTime 适配支持
+* dubbo3 升为 3.2.10
+* hutool 升为 5.8.25
+* redisson 升为 3.24.3
+* lettuce 升为 6.2.7.RELEASE
+* fury 升为 0.4.1
+* fastjson2 升为 2.0.45
+* slf4j 升为 2.0.11
+* knife4j 升为 4.5.0
 * forest 升为 1.5.35
 * mybatis-flex 升为 1.7.7
 * beetlsql 升为 3.27.5-RELEASE
 * bean-searcher 升为 4.2.6
-* snack3 升为 3.2.86
+* snack3 升为 3.2.87
 * folkmq 升为 1.0.28
 * socket.d 升为 2.3.4
 

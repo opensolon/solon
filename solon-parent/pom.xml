@@ -27,7 +27,7 @@
         <solon-admin.version>2.6.4</solon-admin.version>
         <solon-integration.version>2.6.4</solon-integration.version>
 
-        <snack3.version>3.2.86</snack3.version>
+        <snack3.version>3.2.87</snack3.version>
         <weed3.version>3.4.33</weed3.version>
         <wood.version>1.2.6</wood.version>
         <water.version>2.12.0</water.version>
@@ -35,13 +35,13 @@
         <redisx.version>1.6.2</redisx.version>
         <socketd.version>2.3.4</socketd.version>
         <folkmq.version>1.0.28</folkmq.version>
-        <redisson.version>3.23.3</redisson.version>
-        <lettuce.version>6.2.5.RELEASE</lettuce.version>
+        <redisson.version>3.24.3</redisson.version>
+        <lettuce.version>6.2.7.RELEASE</lettuce.version>
 
         <fastjson.version>1.2.83</fastjson.version>
-        <fastjson2.version>2.0.44</fastjson2.version>
+        <fastjson2.version>2.0.45</fastjson2.version>
         <okhttp.version>3.14.9</okhttp.version>
-        <hutool.version>5.8.20</hutool.version>
+        <hutool.version>5.8.25</hutool.version>
 
         <asm.version>9.5</asm.version>
 
@@ -72,11 +72,11 @@
 
         <swagger.version>1.6.11</swagger.version>
         <swagger2.version>2.1.13</swagger2.version>
-        <knife4j.version>4.2.0</knife4j.version>
+        <knife4j.version>4.5.0</knife4j.version>
 
         <jackson.version>2.15.2</jackson.version>
         <gson.version>2.10.1</gson.version>
-        <fury.version>0.2.0</fury.version>
+        <fury.version>0.4.1</fury.version>
         <hessian.version>4.0.66</hessian.version>
         <hessian-sofa.version>4.0.4</hessian-sofa.version>
         <hessian-lite.version>3.2.13</hessian-lite.version>
@@ -93,7 +93,7 @@
 
         <guava.version>32.1.3-jre</guava.version>
 
-        <slf4j.version>2.0.9</slf4j.version>
+        <slf4j.version>2.0.11</slf4j.version>
         <log4j.version>2.22.1</log4j.version>
         <logback.version>1.3.14</logback.version>
         <jansi.version>2.4.0</jansi.version>
@@ -109,7 +109,7 @@
         <protobuf.version>3.22.3</protobuf.version>
         <grpc.version>1.54.1</grpc.version>
         <dubbo2.version>2.7.5</dubbo2.version>
-        <dubbo3.version>3.2.7</dubbo3.version>
+        <dubbo3.version>3.2.10</dubbo3.version>
 
         <rocketmq4.version>4.9.7</rocketmq4.version>
         <rocketmq5.version>5.0.5</rocketmq5.version>
