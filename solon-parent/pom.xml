@@ -6,7 +6,7 @@
 
     <groupId>org.noear</groupId>
     <artifactId>solon-parent</artifactId>
-    <version>2.6.5-SNAPSHOT</version>
+    <version>2.6.5</version>
     <packaging>pom</packaging>
 
     <name>${project.artifactId}</name>
@@ -23,9 +23,9 @@
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
 
-        <solon.version>2.6.5-SNAPSHOT</solon.version>
-        <solon-admin.version>2.6.4</solon-admin.version>
-        <solon-integration.version>2.6.4</solon-integration.version>
+        <solon.version>2.6.5</solon.version>
+        <solon-admin.version>2.6.5</solon-admin.version>
+        <solon-integration.version>2.6.5</solon-integration.version>
 
         <snack3.version>3.2.87</snack3.version>
         <weed3.version>3.4.33</weed3.version>
@@ -33,7 +33,7 @@
         <water.version>2.12.0</water.version>
         <luffy.version>1.7.2</luffy.version>
         <redisx.version>1.6.2</redisx.version>
-        <socketd.version>2.3.4</socketd.version>
+        <socketd.version>2.3.5</socketd.version>
         <folkmq.version>1.0.28</folkmq.version>
         <redisson.version>3.24.3</redisson.version>
         <lettuce.version>6.2.7.RELEASE</lettuce.version>
@@ -87,7 +87,7 @@
         <hamcrest.version>2.2</hamcrest.version>
         <mockito.version>4.11.0</mockito.version>
 
-        <mybatis.version>3.5.13</mybatis.version>
+        <mybatis.version>3.5.15</mybatis.version>
 
         <hikaricp.version>4.0.3</hikaricp.version>
 
@@ -153,7 +153,7 @@
         <forest.version>1.5.35</forest.version>
         <shardingsphere.version>5.3.2</shardingsphere.version>
         <seata.version>2.0.0-SNAPSHOT</seata.version>
-        <wx-java.version>4.4.9.B</wx-java.version>
+        <wx-java.version>4.6.0</wx-java.version>
         <graphql-java.version>18.3</graphql-java.version>
         <graphql-java-tools.version>12.1.0</graphql-java-tools.version>
 

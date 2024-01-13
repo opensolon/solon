@@ -34,6 +34,7 @@
 * slf4j 升为 2.0.11
 * knife4j 升为 4.5.0
 * forest 升为 1.5.35
+* mybatis 升为 3.5.15
 * mybatis-flex 升为 1.7.7
 * beetlsql 升为 3.27.5-RELEASE
 * bean-searcher 升为 4.2.6
@@ -114,7 +115,8 @@
 * beetlsql 升为 3.27.2-RELEASE
 * smartsocket 升为 1.5.38
 * undertow 升为 2.2.28.Final
-* netty 升为 4.1.86.Final
+* netty 升为 4.1.101.Final
+* wx-java 升为 4.6.0
 
 ### 2.6.0
 * 设定 smart-http 为 solon-api 快捷组合包的默认 http-server
