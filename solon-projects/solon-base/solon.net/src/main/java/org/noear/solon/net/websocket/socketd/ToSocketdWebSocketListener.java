@@ -28,12 +28,23 @@ public class ToSocketdWebSocketListener implements WebSocketListener {
 
     private final InnerChannelSupporter supporter;
 
+    public ToSocketdWebSocketListener(Config config) {
+        this(config, null);
+    }
+
     public ToSocketdWebSocketListener(Config config, Listener listener) {
         this.config = config;
         this.assistant = new WebSocketChannelAssistant(config);
         this.processor = new ProcessorDefault();
         this.processor.setListener(listener);
         this.supporter = new InnerChannelSupporter(this);
+    }
+
+    /**
+     * 设置 Socket.D 监听器
+     */
+    public void setListener(Listener listener) {
+        this.processor.setListener(listener);
     }
 
     private ChannelInternal getChannel(WebSocket socket) {

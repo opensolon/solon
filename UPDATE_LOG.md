@@ -19,6 +19,9 @@
 * 调整 取消启动参数简写模式，保持与应用参数相同的名字 ???
 * 新增 graphql-solon-plugin 插件
 
+### 2.6.6
+* 添加 ToSocketdWebSocketListener::setListener 接口
+
 ### 2.6.5
 * 修复 solon.auth 验证路径被强制转小写的问题
 * 添加 war 部署时，multipartConfig 自动配置并与 app.yml 对接
