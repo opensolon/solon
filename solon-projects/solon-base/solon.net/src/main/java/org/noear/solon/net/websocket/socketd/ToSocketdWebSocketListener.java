@@ -26,7 +26,7 @@ public class ToSocketdWebSocketListener implements WebSocketListener {
     static final Logger log = LoggerFactory.getLogger(ToSocketdWebSocketListener.class);
 
     private final Config config;
-    private final WebSocketChannelAssistant assistant;
+    private final InnerChannelAssistant assistant;
     private final Processor processor;
 
     private final InnerChannelSupporter supporter;
@@ -37,7 +37,7 @@ public class ToSocketdWebSocketListener implements WebSocketListener {
 
     public ToSocketdWebSocketListener(Config config, Listener listener) {
         this.config = config;
-        this.assistant = new WebSocketChannelAssistant(config);
+        this.assistant = new InnerChannelAssistant(config);
         this.processor = new ProcessorDefault();
         this.processor.setListener(listener);
         this.supporter = new InnerChannelSupporter(this);
@@ -50,6 +50,9 @@ public class ToSocketdWebSocketListener implements WebSocketListener {
         this.processor.setListener(listener);
     }
 
+    /**
+     * 获取 通道
+     */
     private ChannelInternal getChannel(WebSocket socket) {
         ChannelInternal channel = socket.attr(SOCKETD_KEY);
 
@@ -134,10 +137,10 @@ public class ToSocketdWebSocketListener implements WebSocketListener {
         }
     }
 
-    private static class WebSocketChannelAssistant implements ChannelAssistant<WebSocket> {
+    private static class InnerChannelAssistant implements ChannelAssistant<WebSocket> {
         private final Config config;
 
-        public WebSocketChannelAssistant(Config config) {
+        public InnerChannelAssistant(Config config) {
             this.config = config;
         }
 
