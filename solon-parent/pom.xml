@@ -45,8 +45,9 @@
 
         <asm.version>9.5</asm.version>
 
-        <servlet.version>4.0.1</servlet.version>
-        <servlet.jakarta.version>5.0.0</servlet.jakarta.version>
+        <javax.servlet.version>4.0.1</javax.servlet.version>
+        <javax.websocket.version>1.1</javax.websocket.version>
+        <jakarta.servlet.version>5.0.0</jakarta.servlet.version>
 
         <jetty.version>9.4.52.v20230823</jetty.version>
         <undertow.version>2.2.28.Final</undertow.version>
@@ -1464,7 +1465,13 @@
             <dependency>
                 <groupId>javax.servlet</groupId>
                 <artifactId>javax.servlet-api</artifactId>
-                <version>${servlet.version}</version>
+                <version>${javax.servlet.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>javax.websocket</groupId>
+                <artifactId>javax.websocket-api</artifactId>
+                <version>${javax.websocket.version}</version>
             </dependency>
 
             <dependency>
