@@ -259,6 +259,10 @@ public class Utils {
         return s == null || s.size() == 0;
     }
 
+    public static <T> boolean isEmpty(T[] array) {
+        return array == null || array.length == 0;
+    }
+
     /**
      * 检查字符串是否为非空
      *
