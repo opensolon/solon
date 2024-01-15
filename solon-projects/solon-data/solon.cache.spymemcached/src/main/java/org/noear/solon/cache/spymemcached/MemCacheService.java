@@ -26,8 +26,14 @@ public class MemCacheService implements CacheService {
     //重写时可能会用到
     protected String _cacheKeyHead;
     protected int _defaultSeconds;
+    protected boolean _enableMd5key = true;
 
     protected final MemcachedClient client;
+
+    public MemCacheService enableMd5key(boolean enable) {
+        _enableMd5key = enable;
+        return this;
+    }
 
     public MemCacheService(MemcachedClient client, int defSeconds) {
         this(client, null, defSeconds);
@@ -134,12 +140,6 @@ public class MemCacheService implements CacheService {
         client.delete(newKey);
     }
 
-
-    protected boolean _enableMd5key = true;
-
-    public void enableMd5key(boolean enable) {
-        _enableMd5key = enable;
-    }
 
     protected String newKey(String key) {
         if (_enableMd5key) {

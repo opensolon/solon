@@ -23,9 +23,21 @@ public class RedissonCacheService implements CacheService {
     protected String _cacheKeyHead;
     protected int _defaultSeconds;
     protected Serializer<String> _serializer = null;
+    protected boolean _enableMd5key = true;
 
     protected final RedissonClient client;
 
+    /**
+     * 启用 Md5 key（默认为 true）
+     * */
+    public RedissonCacheService enableMd5key(boolean enable) {
+        _enableMd5key = enable;
+        return this;
+    }
+
+    /**
+     * 配置序列化
+     * */
     public RedissonCacheService serializer(Serializer<String> serializer) {
         if (serializer != null) {
             this._serializer = serializer;
@@ -146,11 +158,6 @@ public class RedissonCacheService implements CacheService {
         }
     }
 
-    protected boolean _enableMd5key = true;
-
-    public void enableMd5key(boolean enable) {
-        _enableMd5key = enable;
-    }
 
     protected String newKey(String key) {
         if (_enableMd5key) {
