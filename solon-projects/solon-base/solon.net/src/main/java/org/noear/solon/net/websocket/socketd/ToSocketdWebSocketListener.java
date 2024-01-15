@@ -39,8 +39,15 @@ public class ToSocketdWebSocketListener implements WebSocketListener {
         this.config = config;
         this.assistant = new InnerChannelAssistant(config);
         this.processor = new ProcessorDefault();
-        this.processor.setListener(listener);
         this.supporter = new InnerChannelSupporter(this);
+
+        if (listener == null) {
+            if (this instanceof Listener) {
+                setListener((Listener) this);
+            }
+        } else {
+            setListener(listener);
+        }
     }
 
     /**
