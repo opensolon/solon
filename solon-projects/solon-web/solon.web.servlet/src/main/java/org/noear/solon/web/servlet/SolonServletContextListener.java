@@ -58,6 +58,10 @@ public class SolonServletContextListener implements ServletContextListener {
                         0);
                 registration.setMultipartConfig(configElement);
             }
+
+            if(e.app().enableWebSocket()){
+                SolonWebSocketEndpoint.addEndpoint(sce.getServletContext());
+            }
         });
 
         //3.执行Main函数
