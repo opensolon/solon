@@ -21,12 +21,15 @@
 
 ### 2.6.6
 * 添加 ToSocketdWebSocketListener::setListener 接口
-* 添加 WebSocket 支持 war 部署
+* 添加 WebSocket 支持 war 部署???
 * 添加 OffsetDateTime 请求注入支持
 * 强化 ToSocketdWebSocketListener 复用性
 * 调整 enableMd5key 返回（支持链式返回自己）
 * liteflow 升为 2.11.4
 * snack3 升为 3.2.88
+* bean-searcher 升为 4.2.7
+* sqltoy 升为 5.2.89
+* beetlsql 升为 3.28.0-RELEASE
 
 ### 2.6.5
 * 修复 solon.auth 验证路径被强制转小写的问题

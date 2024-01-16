@@ -25,7 +25,7 @@
 
         <solon.version>2.6.6-SNAPSHOT</solon.version>
         <solon-admin.version>2.6.5</solon-admin.version>
-        <solon-integration.version>2.6.5</solon-integration.version>
+        <solon-integration.version>2.6.6-SNAPSHOT</solon-integration.version>
 
         <snack3.version>3.2.88</snack3.version>
         <weed3.version>3.4.33</weed3.version>
@@ -143,12 +143,12 @@
         <freemarker.version>2.3.31</freemarker.version>
 
         <activerecord.version>5.1.2</activerecord.version>
-        <beetlsql.version>3.27.5-RELEASE</beetlsql.version>
-        <sqltoy.version>5.2.88</sqltoy.version>
+        <beetlsql.version>3.28.0-RELEASE</beetlsql.version>
+        <sqltoy.version>5.2.89</sqltoy.version>
         <mybatis-flex.version>1.7.7</mybatis-flex.version>
         <fastmybatis.version>2.10.0</fastmybatis.version>
         <dbvisitor.version>5.4.0</dbvisitor.version>
-        <bean-searcher.version>4.2.6</bean-searcher.version>
+        <bean-searcher.version>4.2.7</bean-searcher.version>
 
         <liteflow.version>2.11.4</liteflow.version>
         <forest.version>1.5.35</forest.version>
