@@ -26,6 +26,7 @@
 * 强化 ToSocketdWebSocketListener 复用性
 * 调整 enableMd5key 返回（支持链式返回自己）
 * liteflow 升为 2.11.4
+* snack3 升为 3.2.88
 
 ### 2.6.5
 * 修复 solon.auth 验证路径被强制转小写的问题
