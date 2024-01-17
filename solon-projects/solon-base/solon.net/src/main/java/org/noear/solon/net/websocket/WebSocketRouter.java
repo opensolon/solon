@@ -4,6 +4,10 @@ import org.noear.solon.Solon;
 import org.noear.solon.net.websocket.listener.PipelineWebSocketListener;
 import org.noear.solon.net.websocket.listener.PathWebSocketListener;
 
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * WebSoskcet 路由器
  *
@@ -13,6 +17,7 @@ import org.noear.solon.net.websocket.listener.PathWebSocketListener;
 public class WebSocketRouter {
     private final PipelineWebSocketListener rootListener = new PipelineWebSocketListener();
     private final PathWebSocketListener pathListener = new PathWebSocketListener();
+    private final Set<String> paths = new HashSet<>();
 
     private WebSocketRouter() {
         rootListener.next(pathListener);
@@ -42,6 +47,7 @@ public class WebSocketRouter {
      */
     public void of(String path, WebSocketListener listener) {
         pathListener.of(path, listener);
+        paths.add(path);
     }
 
     /**
@@ -60,5 +66,9 @@ public class WebSocketRouter {
 
     public WebSocketListener getListener() {
         return rootListener;
+    }
+
+    public Collection<String> getPaths() {
+        return paths;
     }
 }

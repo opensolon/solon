@@ -1,7 +1,11 @@
 package org.noear.solon.web.servlet;
 
+import org.noear.solon.Solon;
+import org.noear.solon.Utils;
+import org.noear.solon.net.annotation.ServerEndpoint;
 import org.noear.solon.net.websocket.WebSocket;
 import org.noear.solon.net.websocket.WebSocketBase;
+import org.noear.solon.net.websocket.WebSocketListener;
 import org.noear.solon.net.websocket.WebSocketRouter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,9 +13,13 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.ServletContext;
 import javax.websocket.*;
 import javax.websocket.server.ServerContainer;
+import javax.websocket.server.ServerEndpointConfig;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author noear
@@ -24,8 +32,17 @@ public class SolonWebSocketEndpoint extends Endpoint {
             throw new IllegalStateException("Missing javax.websocket.server.ServerContainer");
         }
 
+        Collection<String> paths = WebSocketRouter.getInstance().getPaths();
+
         try {
-            serverContainer.addEndpoint(SolonWebSocketEndpoint.class);
+            for (String path : paths) {
+                if(path.startsWith("/")) {
+                    ServerEndpointConfig endpointConfig = ServerEndpointConfig.Builder
+                            .create(SolonWebSocketEndpoint.class, path)
+                            .build();
+                    serverContainer.addEndpoint(endpointConfig);
+                }
+            }
         } catch (Throwable e) {
             throw new IllegalStateException(e);
         }
@@ -133,12 +150,21 @@ public class SolonWebSocketEndpoint extends Endpoint {
 
         @Override
         public void send(String text) {
-            real.getAsyncRemote().sendText(text);
+            try {
+                real.getBasicRemote().sendText(text);
+            } catch (IOException e) {
+                throw new IllegalStateException(e);
+            }
         }
 
         @Override
         public void send(ByteBuffer binary) {
-            real.getAsyncRemote().sendBinary(binary);
+            try {
+                real.getBasicRemote().sendBinary(binary);
+            } catch (IOException e) {
+                throw new IllegalStateException(e);
+            }
+
         }
 
         @Override

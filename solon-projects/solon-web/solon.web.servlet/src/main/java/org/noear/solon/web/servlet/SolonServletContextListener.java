@@ -8,6 +8,7 @@ import org.noear.solon.core.event.AppLoadEndEvent;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.ContextPathFilter;
 import org.noear.solon.core.util.ClassUtil;
+import org.noear.solon.net.websocket.WebSocketRouter;
 
 import javax.servlet.*;
 import java.lang.reflect.Method;

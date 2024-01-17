@@ -5,6 +5,10 @@ import org.noear.socketd.transport.core.listener.PipelineListener;
 import org.noear.solon.Solon;
 import org.noear.solon.net.socketd.listener.PathListenerPlus;
 
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * WebSoskcet 路由器
  *
@@ -14,6 +18,7 @@ import org.noear.solon.net.socketd.listener.PathListenerPlus;
 public class SocketdRouter {
     private final PipelineListener rootListener = new PipelineListener();
     private final PathListenerPlus pathListener = new PathListenerPlus();
+    private final Set<String> paths = new HashSet<>();
 
     private SocketdRouter() {
         rootListener.next(pathListener);
@@ -23,6 +28,7 @@ public class SocketdRouter {
         //方便在单测环境下切换 SolonApp，可以相互独立
         return Solon.context().attachmentOf(SocketdRouter.class, SocketdRouter::new);
     }
+
 
     /**
      * 前置监听
@@ -36,6 +42,7 @@ public class SocketdRouter {
      */
     public void of(String path, Listener listener) {
         pathListener.of(path, listener);
+        paths.add(path);
     }
 
     /**
@@ -47,5 +54,9 @@ public class SocketdRouter {
 
     public Listener getListener() {
         return rootListener;
+    }
+
+    public Collection<String> getPaths() {
+        return paths;
     }
 }
