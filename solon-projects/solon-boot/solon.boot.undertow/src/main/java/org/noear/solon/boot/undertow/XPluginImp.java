@@ -78,6 +78,9 @@ public final class XPluginImp implements Plugin {
         long time_end = System.currentTimeMillis();
 
         String connectorInfo = "Connector:main: undertow: Started ServerConnector@{HTTP/1.1,[http/1.1]";
+        if (_server.isSecure() && _server.enableHttp2) {
+            connectorInfo += ";HTTP/2,[http/2]";
+        }
         if (app.enableWebSocket()) {
             String wsServerUrl = props.buildWsServerUrl(_server.isSecure());
             LogUtil.global().info(connectorInfo + "[WebSocket]}{" + wsServerUrl + "}");
