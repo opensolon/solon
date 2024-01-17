@@ -5,6 +5,7 @@ import org.noear.solon.net.websocket.listener.PipelineWebSocketListener;
 import org.noear.solon.net.websocket.listener.PathWebSocketListener;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -69,6 +70,6 @@ public class WebSocketRouter {
     }
 
     public Collection<String> getPaths() {
-        return paths;
+        return Collections.unmodifiableSet(paths);
     }
 }

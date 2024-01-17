@@ -6,10 +6,10 @@ import org.noear.solon.net.websocket.WebSocketRouter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.servlet.ServletContext;
-import javax.websocket.*;
-import javax.websocket.server.ServerContainer;
-import javax.websocket.server.ServerEndpointConfig;
+import jakarta.servlet.ServletContext;
+import jakarta.websocket.*;
+import jakarta.websocket.server.ServerContainer;
+import jakarta.websocket.server.ServerEndpointConfig;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
@@ -21,9 +21,9 @@ import java.util.Collection;
  */
 public class SolonWebSocketEndpoint extends Endpoint {
     public static void addEndpoint(ServletContext sc) {
-        ServerContainer serverContainer = (ServerContainer) sc.getAttribute("javax.websocket.server.ServerContainer");
+        ServerContainer serverContainer = (ServerContainer) sc.getAttribute("jakarta.websocket.server.ServerContainer");
         if (serverContainer == null) {
-            throw new IllegalStateException("Missing javax.websocket.server.ServerContainer");
+            throw new IllegalStateException("Missing jakarta.websocket.server.ServerContainer");
         }
 
         Collection<String> paths = WebSocketRouter.getInstance().getPaths();

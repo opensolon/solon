@@ -21,7 +21,8 @@
 
 ### 2.6.6
 * 添加 ToSocketdWebSocketListener::setListener 接口
-* 添加 WebSocket 支持 war 部署???
+* 添加 WebSocket 支持 war(javax) 部署
+* 添加 WebSocket 支持 war(jakarta) 部署
 * 添加 OffsetDateTime 请求注入支持
 * 强化 ToSocketdWebSocketListener 复用性
 * 调整 enableMd5key 返回（支持链式返回自己）

@@ -6,6 +6,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.net.socketd.listener.PathListenerPlus;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -57,6 +58,6 @@ public class SocketdRouter {
     }
 
     public Collection<String> getPaths() {
-        return paths;
+        return Collections.unmodifiableSet(paths);
     }
 }
