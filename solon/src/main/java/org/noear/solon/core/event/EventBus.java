@@ -1,6 +1,5 @@
 package org.noear.solon.core.event;
 
-import org.noear.solon.Solon;
 import org.noear.solon.core.exception.EventException;
 import org.noear.solon.core.util.GenericUtil;
 import org.noear.solon.core.util.LogUtil;
