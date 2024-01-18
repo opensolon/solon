@@ -22,7 +22,7 @@ import java.util.*;
 import java.util.function.*;
 
 /**
- * Bean 容器，提供注册及关系映射管理（不直接使用；作为AopContext的基类）
+ * Bean 容器，提供注册及关系映射管理（不直接使用；作为AppContext的基类）
  *
  * @author noear
  * @since 1.0

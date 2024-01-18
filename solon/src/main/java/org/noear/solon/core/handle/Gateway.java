@@ -345,7 +345,7 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
     }
 
     /**
-     * 添加接口（适用于，从Aop工厂遍历加入；或者把rpc代理包装成bw）
+     * 添加接口（适用于，从应用容器遍历加入；或者把rpc代理包装成bw）
      */
     public void add(BeanWrap beanWp, boolean remoting) {
         add(null, beanWp, remoting);
