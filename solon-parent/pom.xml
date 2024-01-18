@@ -99,6 +99,8 @@
         <jansi.version>2.4.0</jansi.version>
 
         <netty.version>4.1.101.Final</netty.version>
+        <reactor-core.version>3.6.2</reactor-core.version>
+        <reactor-netty-http.version>1.1.15</reactor-netty-http.version>
 
         <springboot.version>2.0.4.RELEASE</springboot.version>
         <spring.version>5.0.8.RELEASE</spring.version>

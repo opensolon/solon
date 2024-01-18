@@ -31,6 +31,8 @@
 * bean-searcher 升为 4.2.7
 * sqltoy 升为 5.2.90
 * beetlsql 升为 3.28.0-RELEASE
+* reactor-netty-http 升为 1.1.15
+* reactor-core 升为 3.6.2
 
 ### 2.6.5
 * 修复 solon.auth 验证路径被强制转小写的问题
