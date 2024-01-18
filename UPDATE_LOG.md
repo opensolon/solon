@@ -29,7 +29,7 @@
 * liteflow 升为 2.11.4
 * snack3 升为 3.2.88
 * bean-searcher 升为 4.2.7
-* sqltoy 升为 5.2.89
+* sqltoy 升为 5.2.90
 * beetlsql 升为 3.28.0-RELEASE
 
 ### 2.6.5
