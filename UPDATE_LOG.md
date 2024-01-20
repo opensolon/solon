@@ -20,12 +20,11 @@
 * 新增 graphql-solon-plugin 插件
 
 ### 2.6.6
-* 添加 ToSocketdWebSocketListener::setListener 接口
+* 添加 ToSocketdWebSocketListener::setListener 接口，强第复用性
 * 添加 WebSocket 支持 war(javax) 部署
 * 添加 WebSocket 支持 war(jakarta) 部署
 * 添加 OffsetDateTime 请求注入支持
 * 添加 solon.boot.undertow 打印 http2 的启用情况
-* 强化 ToSocketdWebSocketListener 复用性
 * 调整 enableMd5key 返回（支持链式返回自己）
 * 调整 路由拦截器匹配规则采用pathNew方法（原为path）
 * liteflow 升为 2.11.4
