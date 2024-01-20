@@ -22,7 +22,7 @@ public class RouterInterceptorLimiter implements RouterInterceptor {
      * 是否匹配
      */
     protected boolean isMatched(Context ctx) {
-        return rule == null || rule.isEmpty() || rule.test(ctx.path());
+        return rule == null || rule.isEmpty() || rule.test(ctx.pathNew());
     }
 
     /**
