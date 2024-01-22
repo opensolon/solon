@@ -30,10 +30,13 @@
 * liteflow 升为 2.11.4
 * snack3 升为 3.2.88
 * bean-searcher 升为 4.2.7
-* sqltoy 升为 5.2.90
-* beetlsql 升为 3.28.0-RELEASE
+* sqltoy 升为 5.2.91
+* beetlsql 升为 3.28.1-RELEASE
 * reactor-netty-http 升为 1.1.15
 * reactor-core 升为 3.6.2
+* socket.d 升为 2.3.7
+* folkmq 升为 1.0.30
+* liteflow 升为 2.11.4.2
 
 ### 2.6.5
 * 修复 solon.auth 验证路径被强制转小写的问题
