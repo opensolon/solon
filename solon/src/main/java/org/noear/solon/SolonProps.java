@@ -524,6 +524,13 @@ public final class SolonProps extends Props {
     }
 
     /**
+     * 许可证
+     * */
+    public String licence(){
+        return get("solonee.licence");
+    }
+
+    /**
      * 是否为单测
      */
     public boolean testing() {

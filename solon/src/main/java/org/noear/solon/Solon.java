@@ -40,7 +40,7 @@ public class Solon {
      * 框架版本号
      */
     public static String version() {
-        return "2.6.6-M3";
+        return "2.6.6";
     }
 
     /**
@@ -183,6 +183,10 @@ public class Solon {
         }
 
         //5.启动完成
+        if(Utils.isNotEmpty(cfg().licence())){
+            LogUtil.global().info("SolonEE.Licence: " + cfg().licence());
+        }
+
         LogUtil.global().info("App: End loading elapsed=" + app.elapsedTimes() + "ms pid=" + pid + " v=" + Solon.version());
 
         return app;
