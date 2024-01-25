@@ -26,6 +26,7 @@
 * 添加 OffsetDateTime 请求注入支持
 * 添加 solon.boot.undertow 打印 http2 的启用情况
 * 添加 solonee.licence 配置支持
+* 添加 JacksonActionExecutor 支持设定全新 ObjectMapper
 * 调整 enableMd5key 返回（支持链式返回自己）
 * 调整 部分 new File() 改为 Paths.get().toFile()
 * 调整 路由拦截器匹配规则采用pathNew方法（原为path）
