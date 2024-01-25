@@ -2,6 +2,8 @@ package labs.labs1;
 
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
+import com.alibaba.fastjson2.JSONWriter;
+import features.model.UserDo;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.noear.solon.test.HttpTester;
@@ -36,5 +38,12 @@ public class TestDemo extends HttpTester {
 
         json = path("/hello").bodyJson("{\"name\":\"world\"}").post();
         assert "world".equals(json);
+    }
+
+    @Test
+    public void dubble_as_string() {
+        UserDo userDo = new UserDo();
+        String json = JSON.toJSONString(userDo, JSONWriter.Feature.WriteNullNumberAsZero, JSONWriter.Feature.WriteLongAsString);
+        System.out.println(json);
     }
 }

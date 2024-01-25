@@ -25,18 +25,21 @@
 * 添加 WebSocket 支持 war(jakarta) 部署
 * 添加 OffsetDateTime 请求注入支持
 * 添加 solon.boot.undertow 打印 http2 的启用情况
+* 添加 solonee.licence 配置支持
 * 调整 enableMd5key 返回（支持链式返回自己）
+* 调整 部分 new File() 改为 Paths.get().toFile()
 * 调整 路由拦截器匹配规则采用pathNew方法（原为path）
-* liteflow 升为 2.11.4
+* liteflow 升为 2.11.4.2
 * snack3 升为 3.2.88
 * bean-searcher 升为 4.2.7
-* sqltoy 升为 5.2.90
-* beetlsql 升为 3.28.1-RELEASE
+* sqltoy 升为 5.2.91
+* beetlsql 升为 3.29.0-RELEASE
 * reactor-netty-http 升为 1.1.15
 * reactor-core 升为 3.6.2
 * socket.d 升为 2.3.7
 * folkmq 升为 1.0.30
 * liteflow 升为 2.11.4.2
+* sms4j 升为 3.1.1
 
 ### 2.6.5
 * 修复 solon.auth 验证路径被强制转小写的问题

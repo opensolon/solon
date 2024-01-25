@@ -221,7 +221,7 @@ public class Props extends Properties {
             }
         }
 
-        Map<String, Props> groupProps = new HashMap<>();
+        Map<String, Props> groupProps = new LinkedHashMap<>();
 
         for (String group : groups) {
             Props tmp = rootProps.getProp(group);
