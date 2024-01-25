@@ -19,6 +19,7 @@ public class Constants {
     public static final String CONTENT_TYPE_FORM_URLENCODED = "application/x-www-form-urlencoded";
 
     public static final String AT_TYPE_JSON = "@type_json";
+    public static final String AT_JSON = "@json";
     public static final String AT_PROTOBUF = "@protobuf";
     public static final String AT_HESSIAN = "@hessian";
     public static final String AT_FURY = "@fury";
