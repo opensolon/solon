@@ -30,7 +30,7 @@ public class SocketResponseTest {
 
         ClientSession session = SocketD.createClient("tcp://localhost:"+_port)
                 .listen(SocketdProxy.socketdToHandler)
-                .open();
+                .openOrThow();
 
 
         String root = "tcp://localhost:" + _port;
@@ -49,7 +49,7 @@ public class SocketResponseTest {
 
         ClientSession session = SocketD.createClient("tcp://localhost:"+ _port)
                 .listen(SocketdProxy.socketdToHandler)
-                .open();
+                .openOrThow();
 
 
         String root = "tcp://localhost:" + _port;

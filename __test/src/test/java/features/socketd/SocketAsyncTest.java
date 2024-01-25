@@ -42,7 +42,7 @@ public class SocketAsyncTest {
                         check.complete(true);
                     }
                 })
-                .open();
+                .openOrThow();
 
 
         String root = "tcp://localhost:" + _port;

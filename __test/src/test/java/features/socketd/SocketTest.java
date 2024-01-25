@@ -27,7 +27,7 @@ public class SocketTest {
         //这是短链接模式
         //
         String root = "tcp://localhost:" + (20000 + Solon.cfg().serverPort());
-        ClientSession session = SocketD.createClient(root).open();
+        ClientSession session = SocketD.createClient(root).openOrThow();
 
         Entity msg = session.sendAndRequest(root + "/demog/中文/1", new StringEntity("Hello 世界!")).await();
         System.out.println(msg.dataAsString());
@@ -61,7 +61,7 @@ public class SocketTest {
     public void test2() throws Throwable {
         //socket client
         String root = "tcp://localhost:" + (20000 + Solon.cfg().serverPort());
-        ClientSession session = SocketD.createClient(root).open();
+        ClientSession session = SocketD.createClient(root).openOrThow();
 
         session.sendAndSubscribe(root + "/seb/test", new StringEntity("Hello 世界!+1")).thenReply( (msg) -> {
             if (msg == null) {
@@ -79,7 +79,7 @@ public class SocketTest {
         //socket client
         String root = "tcp://localhost:" + (20000 + Solon.cfg().serverPort());
 
-        ClientSession session = SocketD.createClient(root).open();
+        ClientSession session = SocketD.createClient(root).openOrThow();
 
         List<Integer> list = new ArrayList<>();
         for (int i = 0; i < 100; i++) {
@@ -107,7 +107,7 @@ public class SocketTest {
         //socket client
         String root = "tcp://localhost:" + (20000 + Solon.cfg().serverPort());
 
-        ClientSession session = SocketD.createClient(root).open();
+        ClientSession session = SocketD.createClient(root).openOrThow();
 
 
         session.sendAndSubscribe(root + "/seb/test", new StringEntity("Hello 世界!")).thenReply( (msg) -> {

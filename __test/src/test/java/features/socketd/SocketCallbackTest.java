@@ -35,7 +35,7 @@ public class SocketCallbackTest {
                         System.out.println("实例监到，收到了："+message);
                     }
                 }).next(SocketdProxy.socketdToHandler))
-                .open();
+                .openOrThow();
 
         String root = "tcp://localhost:" + _port;
         Map<String, Object> map = new HashMap<>();
