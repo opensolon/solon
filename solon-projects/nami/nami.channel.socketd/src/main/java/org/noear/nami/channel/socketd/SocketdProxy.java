@@ -19,7 +19,7 @@ public class SocketdProxy {
      * 创建接口代理
      */
     public static <T> T create(String url, Class<T> clz) throws Exception {
-        Session session = (Session) SocketD.createClient(url).listen(socketdToHandler).open();
+        Session session = (Session) SocketD.createClient(url).listen(socketdToHandler).openOrThow();
         return ProxyUtils.create(() -> session, null, null, clz);
     }
 

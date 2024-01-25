@@ -42,7 +42,7 @@ public class SocketdRouter {
      * 主监听
      */
     public void of(String path, Listener listener) {
-        pathListener.of(path, listener);
+        pathListener.doOf(path, listener);
         paths.add(path);
     }
 
