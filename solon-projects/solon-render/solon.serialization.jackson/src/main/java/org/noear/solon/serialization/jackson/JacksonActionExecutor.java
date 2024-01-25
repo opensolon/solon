@@ -21,10 +21,16 @@ import java.util.List;
 public class JacksonActionExecutor extends ActionExecuteHandlerDefault {
     private static final String label = "/json";
 
-    private final ObjectMapper mapper_type = new ObjectMapper();
+    private ObjectMapper mapper_type = new ObjectMapper();
 
     public ObjectMapper config(){
         return mapper_type;
+    }
+
+    public void config(ObjectMapper objectMapper){
+        if(objectMapper != null){
+            mapper_type = objectMapper;
+        }
     }
 
     public JacksonActionExecutor() {
