@@ -30,6 +30,7 @@
 * 调整 enableMd5key 返回（支持链式返回自己）
 * 调整 部分 new File() 改为 Paths.get().toFile()
 * 调整 路由拦截器匹配规则采用pathNew方法（原为path）
+* 修复 WebSocket 不能获取 queryString 单字母参数问题
 * liteflow 升为 2.11.4.2
 * snack3 升为 3.2.88
 * bean-searcher 升为 4.2.7
