@@ -23,7 +23,7 @@ public class WebSocketTest {
         //
         Thread.sleep(100);
 
-        WsDemoClient client = new WsDemoClient(URI.create("ws://127.0.0.1:18080/demof/websocket/12"));
+        WsDemoClient client = new WsDemoClient(URI.create("ws://127.0.0.1:18080/demof/websocket/12?u=a&p=1"));
         client.connectBlocking();
 
         System.out.println("建立websocket连接");
