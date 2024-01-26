@@ -33,11 +33,17 @@ public class ToHandlerListener extends SimpleListener {
 
             if (ctx.getHandled() || ctx.status() != 404) {
                 ctx.commit();
+            } else {
+                session.sendAlarm(message, "No event handler was found! like code=404");
             }
         } catch (Throwable e) {
             //context 初始化时，可能会出错
             //
             log.warn(e.getMessage(), e);
+
+            if (session.isValid()) {
+                session.sendAlarm(message, e.getMessage());
+            }
         }
     }
 }

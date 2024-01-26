@@ -21,6 +21,7 @@
 
 ### 2.6.6
 * 添加 ToSocketdWebSocketListener::setListener 接口，强第复用性
+* 添加 ToHandlerListener 对异常反馈的支持
 * 添加 WebSocket 支持 war(javax) 部署
 * 添加 WebSocket 支持 war(jakarta) 部署
 * 添加 OffsetDateTime 请求注入支持
