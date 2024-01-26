@@ -26,7 +26,7 @@ public class HandshakeImpl implements Handshake {
         if (Utils.isNotEmpty(queryString)) {
             for (String kvStr : queryString.split("&")) {
                 int idx = kvStr.indexOf('=');
-                if (idx > 1) {
+                if (idx > 0) {
                     paramMap.put(kvStr.substring(0, idx), kvStr.substring(idx + 1));
                 }
             }
