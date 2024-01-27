@@ -24,7 +24,7 @@
 * 添加 @AddMethod 注解（at class），实现 @Get, @Options 限定本意
 
 ### 2.6.6
-* 添加 ToSocketdWebSocketListener::setListener 接口，强第复用性
+* 添加 ToSocketdWebSocketListener::setListener 接口（更方便定制）
 * 添加 ToHandlerListener 对异常反馈的支持
 * 添加 WebSocket 支持 war(javax) 部署
 * 添加 WebSocket 支持 war(jakarta) 部署
@@ -38,6 +38,7 @@
 * 调整 ToHandlerListener 基类改为 EventListener（更方便定制）
 * 修复 WebSocket 不能获取 queryString 单字母参数问题
 * liteflow 升为 2.11.4.2
+* fastjson2 升为 2.0.44
 * snack3 升为 3.2.88
 * bean-searcher 升为 4.2.7
 * sqltoy 升为 5.2.91
