@@ -32,7 +32,7 @@ public class UndertowServerAddJsp extends UndertowServer {
 
 
         //添加taglib支持
-        HashMap<String, TagLibraryInfo> tagLibraryMap = JspTldLocator.createTldInfos("WEB-INF");
+        HashMap<String, TagLibraryInfo> tagLibraryMap = JspTldLocator.createTldInfos("WEB-INF","templates");
         JspServletBuilder.setupDeployment(builder, new HashMap<String, JspPropertyGroup>(), tagLibraryMap, new HackInstanceManager());
 
 

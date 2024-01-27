@@ -37,7 +37,7 @@ import java.util.jar.JarFile;
 public class JspTldLocator {
     static final Logger log = LoggerFactory.getLogger(JspTldLocator.class);
 
-    public static HashMap<String, TagLibraryInfo> createTldInfos(String webinfo_path) throws IOException {
+    public static HashMap<String, TagLibraryInfo> createTldInfos(String... dltDirs) throws IOException {
 
         List<URL> urls = getURLs();
 
@@ -72,9 +72,10 @@ public class JspTldLocator {
 
         //自己的.tld
         try {
-            ScanUtil.scan(AppClassLoader.global(), webinfo_path, n -> n.endsWith(".tld")).forEach((uri) -> {
-                loadTagLibraryInfo(tagLibInfos, () -> ResourceUtil.getResource(uri).openStream());
-            });
+            for (String dltDir : dltDirs)
+                ScanUtil.scan(AppClassLoader.global(), dltDir, n -> n.endsWith(".tld")).forEach((uri) -> {
+                    loadTagLibraryInfo(tagLibInfos, () -> ResourceUtil.getResource(uri).openStream());
+                });
         } catch (Throwable e) {
             log.warn(e.getMessage(), e);
         }
