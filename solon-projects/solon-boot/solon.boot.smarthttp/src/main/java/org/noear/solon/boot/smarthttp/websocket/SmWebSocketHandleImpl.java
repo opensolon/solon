@@ -9,6 +9,7 @@ import org.smartboot.http.server.WebSocketRequest;
 import org.smartboot.http.server.WebSocketResponse;
 import org.smartboot.http.server.handler.WebSocketDefaultHandler;
 import org.smartboot.http.server.impl.Request;
+import org.smartboot.http.server.impl.WebSocketRequestImpl;
 import org.smartboot.socket.util.AttachKey;
 import org.smartboot.socket.util.Attachment;
 
@@ -23,11 +24,17 @@ public class SmWebSocketHandleImpl extends WebSocketDefaultHandler {
 
     @Override
     public void onHandShake(WebSocketRequest request, WebSocketResponse response) {
-        WebSocketImpl webSocket = new WebSocketImpl(request);
-        if (request.getAttachment() == null) {
-            request.setAttachment(new Attachment());
+        WebSocketRequestImpl request1 = (WebSocketRequestImpl)request;
+
+        WebSocketImpl webSocket = new WebSocketImpl(request1);
+        request1.getHeaderNames().forEach(name -> {
+            webSocket.param(name, request1.getHeader(name));
+        });
+
+        if (request1.getAttachment() == null) {
+            request1.setAttachment(new Attachment());
         }
-        request.getAttachment().put(SESSION_KEY, webSocket);
+        request1.getAttachment().put(SESSION_KEY, webSocket);
 
         webSocketRouter.getListener().onOpen(webSocket);
 
@@ -49,7 +56,8 @@ public class SmWebSocketHandleImpl extends WebSocketDefaultHandler {
     }
 
     private void onCloseDo(WebSocketRequest request) {
-        WebSocketImpl webSocket = request.getAttachment().get(SESSION_KEY);
+        WebSocketRequestImpl request1 = (WebSocketRequestImpl)request;
+        WebSocketImpl webSocket = request1.getAttachment().get(SESSION_KEY);
         if (webSocket.isClosed()) {
             return;
         } else {
@@ -63,7 +71,8 @@ public class SmWebSocketHandleImpl extends WebSocketDefaultHandler {
     public void handlePing(WebSocketRequest request, WebSocketResponse response) {
         super.handlePing(request, response);
 
-        WebSocketImpl webSocket = request.getAttachment().get(SESSION_KEY);
+        WebSocketRequestImpl request1 = (WebSocketRequestImpl)request;
+        WebSocketImpl webSocket = request1.getAttachment().get(SESSION_KEY);
         if (webSocket != null) {
             webSocket.onReceive();
         }
@@ -73,7 +82,8 @@ public class SmWebSocketHandleImpl extends WebSocketDefaultHandler {
     public void handlePong(WebSocketRequest request, WebSocketResponse response) {
         super.handlePong(request, response);
 
-        WebSocketImpl webSocket = request.getAttachment().get(SESSION_KEY);
+        WebSocketRequestImpl request1 = (WebSocketRequestImpl)request;
+        WebSocketImpl webSocket = request1.getAttachment().get(SESSION_KEY);
         if(webSocket != null) {
             webSocket.onReceive();
         }
@@ -82,7 +92,8 @@ public class SmWebSocketHandleImpl extends WebSocketDefaultHandler {
     @Override
     public void handleTextMessage(WebSocketRequest request, WebSocketResponse response, String data) {
         try {
-            WebSocketImpl webSocket = request.getAttachment().get(SESSION_KEY);
+            WebSocketRequestImpl request1 = (WebSocketRequestImpl)request;
+            WebSocketImpl webSocket = request1.getAttachment().get(SESSION_KEY);
             webSocket.onReceive();
 
             webSocketRouter.getListener().onMessage(webSocket, data);
@@ -94,7 +105,8 @@ public class SmWebSocketHandleImpl extends WebSocketDefaultHandler {
     @Override
     public void handleBinaryMessage(WebSocketRequest request, WebSocketResponse response, byte[] data) {
         try {
-            WebSocketImpl webSocket = request.getAttachment().get(SESSION_KEY);
+            WebSocketRequestImpl request1 = (WebSocketRequestImpl)request;
+            WebSocketImpl webSocket = request1.getAttachment().get(SESSION_KEY);
             webSocket.onReceive();
 
             webSocketRouter.getListener().onMessage(webSocket, ByteBuffer.wrap(data));
@@ -106,7 +118,8 @@ public class SmWebSocketHandleImpl extends WebSocketDefaultHandler {
     @Override
     public void onError(WebSocketRequest request, Throwable error) {
         try {
-            WebSocket webSocket = request.getAttachment().get(SESSION_KEY);
+            WebSocketRequestImpl request1 = (WebSocketRequestImpl)request;
+            WebSocket webSocket = request1.getAttachment().get(SESSION_KEY);
             webSocketRouter.getListener().onError(webSocket, error);
         } catch (Throwable e) {
             log.warn(e.getMessage(), e);

@@ -1,5 +1,6 @@
 package org.noear.solon.boot.jetty.websocket;
 
+import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.WebSocketAdapter;
 import org.noear.solon.net.websocket.WebSocketRouter;
 import org.slf4j.Logger;
@@ -14,12 +15,11 @@ public class WebSocketListenerImpl extends WebSocketAdapter {
     private final WebSocketRouter webSocketRouter = WebSocketRouter.getInstance();
 
     @Override
-    public void onWebSocketConnect(org.eclipse.jetty.websocket.api.Session sess) {
-        super.onWebSocketConnect(sess);
+    public void onWebSocketConnect(Session session) {
+        super.onWebSocketConnect(session);
 
-        webSocket = new WebSocketImpl(sess);
-
-        sess.getUpgradeRequest().getHeaders().forEach((k, v) -> {
+        webSocket = new WebSocketImpl(session);
+        session.getUpgradeRequest().getHeaders().forEach((k, v) -> {
             if (v.size() > 0) {
                 webSocket.param(k, v.get(0));
             }

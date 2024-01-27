@@ -28,8 +28,8 @@
 * 添加 solon.boot.undertow 打印 http2 的启用情况
 * 添加 solonee.licence 配置支持
 * 添加 JacksonActionExecutor 支持设定全新 ObjectMapper
+* 添加 smarthttp 适配对 websocket header 的处理
 * 调整 enableMd5key 返回（支持链式返回自己）
-* 调整 部分 new File() 改为 Paths.get().toFile()
 * 调整 路由拦截器匹配规则采用pathNew方法（原为path）
 * 修复 WebSocket 不能获取 queryString 单字母参数问题
 * liteflow 升为 2.11.4.2
@@ -43,6 +43,7 @@
 * folkmq 升为 1.0.30
 * liteflow 升为 2.11.4.2
 * sms4j 升为 3.1.1
+* smarthttp 升为 1.3.8
 
 ### 2.6.5
 * 修复 solon.auth 验证路径被强制转小写的问题

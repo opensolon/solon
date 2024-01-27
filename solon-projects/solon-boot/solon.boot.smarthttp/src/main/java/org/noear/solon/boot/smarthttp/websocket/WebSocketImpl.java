@@ -15,11 +15,11 @@ import java.nio.ByteBuffer;
  * @since 2.0
  */
 public class WebSocketImpl extends WebSocketTimeoutBase {
-    private final WebSocketRequest request;
+    private final WebSocketRequestImpl request;
     private final WebSocketResponse real;
     public WebSocketImpl(WebSocketRequest request) {
-        this.request = request;
-        this.real = ((WebSocketRequestImpl) request).getResponse();
+        this.request = ((WebSocketRequestImpl) request);
+        this.real = this.request.getResponse();
         this.init(buildUri(request));
     }
 

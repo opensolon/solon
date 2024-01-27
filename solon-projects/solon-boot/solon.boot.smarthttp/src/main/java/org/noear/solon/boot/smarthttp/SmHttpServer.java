@@ -87,7 +87,7 @@ public class SmHttpServer implements ServerLifecycle {
         _config.threadNum(coreThreads);
 
         //这个是基于通讯层的。。。需要对 http 层和 ws 层分别定制
-        _config.setIdleTimeout((int)props.getIdleTimeoutOrDefault());
+        _config.setHttpIdleTimeout((int)props.getIdleTimeoutOrDefault());
 
 
         if (ServerProps.request_maxHeaderSize > 0) {
