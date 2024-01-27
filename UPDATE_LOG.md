@@ -19,6 +19,10 @@
 * 调整 取消启动参数简写模式，保持与应用参数相同的名字 ???
 * 新增 graphql-solon-plugin 插件
 
+### 2.7.0
+* 把 mvc 能力独立为 solon.mvc
+* 添加 @AddMethod 注解（at class），实现 @Get, @Options 限定本意
+
 ### 2.6.6
 * 添加 ToSocketdWebSocketListener::setListener 接口，强第复用性
 * 添加 ToHandlerListener 对异常反馈的支持
@@ -31,6 +35,7 @@
 * 添加 smarthttp 适配对 websocket header 的处理
 * 调整 enableMd5key 返回（支持链式返回自己）
 * 调整 路由拦截器匹配规则采用pathNew方法（原为path）
+* 调整 ToHandlerListener 基类改为 EventListener（更方便定制）
 * 修复 WebSocket 不能获取 queryString 单字母参数问题
 * liteflow 升为 2.11.4.2
 * snack3 升为 3.2.88

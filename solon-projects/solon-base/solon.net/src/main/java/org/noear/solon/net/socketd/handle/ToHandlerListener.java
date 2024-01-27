@@ -2,7 +2,7 @@ package org.noear.solon.net.socketd.handle;
 
 import org.noear.socketd.transport.core.Message;
 import org.noear.socketd.transport.core.Session;
-import org.noear.socketd.transport.core.listener.SimpleListener;
+import org.noear.socketd.transport.core.listener.EventListener;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.slf4j.Logger;
@@ -16,11 +16,15 @@ import java.io.IOException;
  * @author noear
  * @since 2.0
  */
-public class ToHandlerListener extends SimpleListener {
+public class ToHandlerListener extends EventListener {
     private static final Logger log = LoggerFactory.getLogger(ToHandlerListener.class);
 
-    @Override
-    public void onMessage(Session session, Message message) throws IOException {
+    public ToHandlerListener() {
+        super();
+        doOnMessage(this::onMessageDo);
+    }
+
+    protected void onMessageDo(Session session, Message message) throws IOException {
         if (Utils.isEmpty(message.event())) {
             log.warn("This message is missing route, sid={}", message.sid());
             return;
