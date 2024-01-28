@@ -19,14 +19,24 @@ public class SocketdProxy {
      * 创建接口代理
      */
     public static <T> T create(String url, Class<T> clz) throws Exception {
-        Session session = (Session) SocketD.createClient(url).listen(socketdToHandler).openOrThow();
+        ClientSession session;
+        if (url.contains(",")) {
+            session = SocketD.createClusterClient(url.split(","))
+                    .listen(socketdToHandler)
+                    .openOrThow();
+        } else {
+            session = SocketD.createClient(url)
+                    .listen(socketdToHandler)
+                    .openOrThow();
+        }
+
         return ProxyUtils.create(() -> session, null, null, clz);
     }
 
     /**
      * 创建接口代理
      */
-    public static <T> T create(Session session, Class<T> clz) {
+    public static <T> T create(ClientSession session, Class<T> clz) {
         return ProxyUtils.create(() -> session, null, null, clz);
     }
 

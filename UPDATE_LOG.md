@@ -23,6 +23,10 @@
 * 把 mvc 能力独立为 solon.mvc
 * 添加 @AddMethod 注解（at class），实现 @Get, @Options 限定本意
 
+### 2.6.7
+* 添加 undertow tld 对 templates 目录支持
+* 添加 SocketdProxy 对 socket.d 集群的支持
+
 ### 2.6.6
 * 添加 ToSocketdWebSocketListener::setListener 接口（更方便定制）
 * 添加 ToHandlerListener 对异常反馈的支持

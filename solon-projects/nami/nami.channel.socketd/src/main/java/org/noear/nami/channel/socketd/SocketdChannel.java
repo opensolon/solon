@@ -3,8 +3,8 @@ package org.noear.nami.channel.socketd;
 import org.noear.nami.*;
 import org.noear.nami.common.Constants;
 import org.noear.nami.common.ContentTypes;
+import org.noear.socketd.transport.client.ClientSession;
 import org.noear.socketd.transport.core.Entity;
-import org.noear.socketd.transport.core.Session;
 import org.noear.socketd.transport.core.entity.EntityDefault;
 
 import java.util.Map;
@@ -18,9 +18,9 @@ import java.util.function.Supplier;
  * @since 2.6
  */
 public class SocketdChannel extends ChannelBase implements Channel {
-    public Supplier<Session> sessions;
+    public Supplier<ClientSession> sessions;
 
-    public SocketdChannel(Supplier<Session> sessions) {
+    public SocketdChannel(Supplier<ClientSession> sessions) {
         this.sessions = sessions;
     }
 
@@ -57,7 +57,7 @@ public class SocketdChannel extends ChannelBase implements Channel {
         Entity request = new EntityDefault().metaMapPut(ctx.headers).dataSet(bytes);
 
         //3.获取会话
-        Session session = sessions.get();
+        ClientSession session = sessions.get();
 
         //4.发送消息
         Entity response = session.sendAndRequest(ctx.url, request, ctx.config.getTimeout() * 1000)
