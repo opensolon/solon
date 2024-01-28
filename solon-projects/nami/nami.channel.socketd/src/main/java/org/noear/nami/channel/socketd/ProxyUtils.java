@@ -16,19 +16,20 @@ import java.util.function.Supplier;
  * @since 1.10
  */
 public class ProxyUtils {
+    //真正使用的是 session，服务地址只是占个位
+    private static final String VIRTUAL_SERVER = "sd://nami";
+
     /**
      * 创建接口
      * */
     public static <T> T create(Supplier<ClientSession> sessions, Encoder encoder, Decoder decoder, Class<T> service) {
-        String server = "sd://proxy";
-
         return Nami.builder()
                 .encoder(encoder)
                 .decoder(decoder)
                 .headerSet(Constants.HEADER_ACCEPT, ContentTypes.JSON_VALUE) //相当于指定默认解码器 //如果指定不同的编码器，会被盖掉
                 .headerSet(Constants.HEADER_CONTENT_TYPE, ContentTypes.JSON_VALUE) //相当于指定默认编码器
                 .channel(new SocketdChannel(sessions))
-                .upstream(() -> server)
+                .upstream(() -> VIRTUAL_SERVER)
                 .create(service);
     }
 }
