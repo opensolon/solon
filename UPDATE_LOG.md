@@ -20,15 +20,13 @@
 * 新增 graphql-solon-plugin 插件
 
 ### 2.7.0
-* 把 mvc 能力独立为 solon.mvc
-
-### 2.6.7
 * 新增 solon.view.jsp.jakarta 插件
 * 添加 undertow jsp tld 对 templates 目录支持（简化 tld 的使用）
 * 添加 jetty jsp tld 对 templates 目录支持（简化 tld 的使用）
 * 添加 SocketdProxy 对 socket.d 集群的支持
 * 添加 @Addition 注解（用于间接附加注解）
 * 实现 @Get, @Options 注到到类上时的限定本意，由 @Addition 注解实现增加之意
+* 调整 mvc 能力独立为 solon.mvc???
 * 解除 WEB-INF 的目录依赖，早期是为了支持 jsp tld 文件的自动处理（仍然兼容）
 
 ### 2.6.6
@@ -158,7 +156,7 @@
 * netty 升为 4.1.101.Final
 * wx-java 升为 4.6.0
 
-### 2.6.0
+### 2.6.0（2023-11-15）
 * 设定 smart-http 为 solon-api 快捷组合包的默认 http-server
 * 重构 socketd 适配，升为 v2.0
 * 重构 websocket 适配，升为 v2.0
@@ -380,7 +378,7 @@
 * 调整 solon.docs.openapi2 对枚举类型的显示处理
 * beetlsql 升为 3.25.2-RELEASE
 
-### 2.5.2
+### 2.5.2（2023-09-02）
 * 增加 `@Component` 自动动态代理特性，即自动识别AOP需求并按需启用动态代理
 * 调整 `@ProxyComponent` 标为弃用，组件统一使用 `@Component`
 * 调整 `@Around` 标为弃用，统一使用 context::beanInterceptorAdd 接口添加拦截器
@@ -502,7 +500,7 @@
 * snack3 升为 3.2.73
 * beetlsql 升为 3.23.5-RELEASE
 
-### 2.4.0
+### 2.4.0（2023-07-20）
 * 新增 solon-openapi2-knife4j 插件，替代 solon-swagger2-knife4j
 * 增加 server.socket.ssl.* 配置
 * 增加 server.websocket.ssl.* 配置
