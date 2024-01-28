@@ -13,6 +13,7 @@ import org.noear.solon.boot.undertow.jsp.JspTldLocator;
 import org.noear.solon.core.AppClassLoader;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author by: Yukai
@@ -32,7 +33,7 @@ public class UndertowServerAddJsp extends UndertowServer {
 
 
         //添加taglib支持
-        HashMap<String, TagLibraryInfo> tagLibraryMap = JspTldLocator.createTldInfos("WEB-INF","templates");
+        Map<String, TagLibraryInfo> tagLibraryMap = JspTldLocator.createTldInfos("WEB-INF","templates");
         JspServletBuilder.setupDeployment(builder, new HashMap<String, JspPropertyGroup>(), tagLibraryMap, new HackInstanceManager());
 
 

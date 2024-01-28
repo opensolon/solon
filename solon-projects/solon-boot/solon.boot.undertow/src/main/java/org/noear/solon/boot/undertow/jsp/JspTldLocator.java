@@ -24,10 +24,7 @@ import java.io.InputStream;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLDecoder;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
@@ -37,7 +34,7 @@ import java.util.jar.JarFile;
 public class JspTldLocator {
     static final Logger log = LoggerFactory.getLogger(JspTldLocator.class);
 
-    public static HashMap<String, TagLibraryInfo> createTldInfos(String... dltDirs) throws IOException {
+    public static Map<String, TagLibraryInfo> createTldInfos(String... dltDirs) throws IOException {
 
         List<URL> urls = getURLs();
 
@@ -72,10 +69,11 @@ public class JspTldLocator {
 
         //自己的.tld
         try {
-            for (String dltDir : dltDirs)
+            for (String dltDir : dltDirs) {
                 ScanUtil.scan(AppClassLoader.global(), dltDir, n -> n.endsWith(".tld")).forEach((uri) -> {
                     loadTagLibraryInfo(tagLibInfos, () -> ResourceUtil.getResource(uri).openStream());
                 });
+            }
         } catch (Throwable e) {
             log.warn(e.getMessage(), e);
         }
