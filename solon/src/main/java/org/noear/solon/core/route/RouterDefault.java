@@ -59,6 +59,11 @@ public class RouterDefault implements Router{
         return routesH[endpoint.code].getAll();
     }
 
+    @Override
+    public Collection<Routing<Handler>> getBy(String path, Endpoint endpoint) {
+        return routesH[endpoint.code].getBy(path);
+    }
+
 
 
     /**
@@ -107,6 +112,8 @@ public class RouterDefault implements Router{
 
         return routesH[endpoint.code].matchMore(pathNew, method);
     }
+
+
 
     /**
      * 清空路由关系

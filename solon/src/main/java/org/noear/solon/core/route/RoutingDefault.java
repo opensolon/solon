@@ -94,6 +94,11 @@ public class RoutingDefault<T> implements Routing<T> {
         }
     }
 
+    @Override
+    public boolean test(String path2) {
+        return matches0(path2);
+    }
+
     private boolean matches0(String path2) {
         //1.如果当前为**，任何路径都可命中
         if ("**".equals(path) || "/**".equals(path)) {
@@ -107,5 +112,14 @@ public class RoutingDefault<T> implements Routing<T> {
 
         //3.正则检测
         return rule.matches(path2);
+    }
+
+    @Override
+    public String toString() {
+        return "Routing{" +
+                "index=" + index +
+                ", method=" + method +
+                ", path='" + path + '\'' +
+                '}';
     }
 }

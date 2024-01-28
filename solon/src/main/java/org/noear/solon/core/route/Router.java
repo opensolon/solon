@@ -89,6 +89,17 @@ public interface Router {
 
 
     /**
+     * 获取某个路径的某个处理点的路由记录
+     *
+     * @since 2.6
+     * @param path     路径
+     * @param endpoint 处理点
+     * @return 路径处理点的路由记录
+     */
+    Collection<Routing<Handler>> getBy(String path, Endpoint endpoint);
+
+
+    /**
      * 区配一个处理（根据上下文）
      *
      * @param ctx      上下文
@@ -108,10 +119,10 @@ public interface Router {
     /**
      * 区配多个处理（根据上下文）
      *
-     * @since 2.5
      * @param ctx      上下文
      * @param endpoint 处理点
      * @return 一批匹配的处理
+     * @since 2.5
      */
     List<Handler> matchMore(Context ctx, Endpoint endpoint);
 

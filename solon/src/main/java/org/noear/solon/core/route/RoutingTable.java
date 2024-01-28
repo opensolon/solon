@@ -41,9 +41,17 @@ public interface RoutingTable<T> {
     int count();
 
     /**
-     * 获取所有路由记录
+     * 获取所有的路由记录
      */
     Collection<Routing<T>> getAll();
+
+    /**
+     * 获取路径的路由记录
+     *
+     * @param path 路径
+     * @since 2.6
+     */
+    Collection<Routing<T>> getBy(String path);
 
     /**
      * 区配一个目标
@@ -57,10 +65,10 @@ public interface RoutingTable<T> {
     /**
      * 区配一个目标并给出状态
      *
-     * @since 2.5
      * @param path   路径
      * @param method 方法
      * @return 一个区配的目标
+     * @since 2.5
      */
     Result<T> matchOneAndStatus(String path, MethodType method);
 
@@ -68,10 +76,10 @@ public interface RoutingTable<T> {
     /**
      * 区配多个目标
      *
-     * @since 2.5
      * @param path   路径
      * @param method 方法
      * @return 一批区配的目标
+     * @since 2.5
      */
     List<T> matchMore(String path, MethodType method);
 

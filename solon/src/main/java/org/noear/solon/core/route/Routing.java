@@ -40,4 +40,12 @@ public interface Routing<T> {
      * @since 2.5
      */
     int degrees(MethodType method2, String path2);
+
+
+    /**
+     * 测试路径
+     *
+     * @since 2.6
+     */
+    boolean test(String path2);
 }

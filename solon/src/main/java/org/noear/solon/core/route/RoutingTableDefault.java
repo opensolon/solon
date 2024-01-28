@@ -52,6 +52,14 @@ public class RoutingTableDefault<T> implements RoutingTable<T> {
         return Collections.unmodifiableList(table);
     }
 
+    @Override
+    public Collection<Routing<T>> getBy(String path) {
+        return table.stream()
+                .filter(l -> l.test(path))
+                .sorted(Comparator.comparingInt(l -> l.index()))
+                .collect(Collectors.toList());
+    }
+
     /**
      * 区配一个目标
      *
