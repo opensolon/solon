@@ -84,7 +84,6 @@ Solon v2.7.0-SNAPSHOT
 * Адрес основной сети：[https://solon.noear.org](https://solon.noear.org)
 * Демо в комплекте с официальной сетью：[https://gitee.com/noear/solon-examples](https://gitee.com/noear/solon-examples)
 * Монометрия проекта：[__test](./__test/) 
-* Более функциональный пример проекта：[solon_api_demo](https://gitee.com/noear/solon_api_demo)  、 [solon_rpc_demo](https://gitee.com/noear/solon_rpc_demo) 、 [solon_socketd_demo](https://gitee.com/noear/solon_socketd_demo) 、 [solon_cloud_demo](https://gitee.com/noear/solon_cloud_demo) 、 [solon_auth_demo](https://gitee.com/noear/solon_auth_demo)
 * Дело пользователя：[Пользовательский проект с открытым исходным кодом](https://solon.noear.org/article/555)、[Коммерческий проект пользователя](https://solon.noear.org/article/cases)
 
 

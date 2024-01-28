@@ -84,7 +84,6 @@ Solon v2.7.0-SNAPSHOT
 * 公式サイト：[https://solon.noear.org](https://solon.noear.org)
 * 公式サイトのデモ：[https://gitee.com/noear/solon-examples](https://gitee.com/noear/solon-examples)
 * プロジェクトのシングルテスト：[__test](./__test/) 
-* プロジェクトの詳細機能のデモ：[solon_api_demo](https://gitee.com/noear/solon_api_demo)  、 [solon_rpc_demo](https://gitee.com/noear/solon_rpc_demo) 、 [solon_socketd_demo](https://gitee.com/noear/solon_socketd_demo) 、 [solon_cloud_demo](https://gitee.com/noear/solon_cloud_demo) 、 [solon_auth_demo](https://gitee.com/noear/solon_auth_demo)
 * ユーザーケース：[オープンソースプロジェクトです](https://solon.noear.org/article/555)、[ユーザービジネスです](https://solon.noear.org/article/cases)
 
 
