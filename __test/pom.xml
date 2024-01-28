@@ -487,11 +487,6 @@
             <scope>test</scope>
         </dependency>
 
-        <dependency>
-            <groupId>javax.servlet.jsp</groupId>
-            <artifactId>jsp-api</artifactId>
-        </dependency>
-
         <!--        <dependency>-->
         <!--            <groupId>org.activiti</groupId>-->
         <!--            <artifactId>activiti-engine</artifactId>-->

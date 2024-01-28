@@ -28,6 +28,7 @@
         <module>../../solon-projects/solon-render/solon.view</module>
         <module>../../solon-projects/solon-render/solon.view.freemarker</module>
         <module>../../solon-projects/solon-render/solon.view.jsp</module>
+        <module>../../solon-projects/solon-render/solon.view.jsp.jakarta</module>
         <module>../../solon-projects/solon-render/solon.view.velocity</module>
         <module>../../solon-projects/solon-render/solon.view.thymeleaf</module>
         <module>../../solon-projects/solon-render/solon.view.enjoy</module>

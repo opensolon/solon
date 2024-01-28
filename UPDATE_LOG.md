@@ -23,10 +23,12 @@
 * 把 mvc 能力独立为 solon.mvc
 
 ### 2.6.7
+* 新增 solon.view.jsp.jakarta 插件
 * 添加 undertow jsp tld 对 templates 目录支持
 * 添加 jetty jsp tld 对 templates 目录支持???
 * 添加 SocketdProxy 对 socket.d 集群的支持
-* 添加 @Addition 注解（用于间接附加注解），实现 @Get, @Options 限定本意
+* 添加 @Addition 注解（用于间接附加注解）
+* 实现 @Get, @Options 注到到类上时的限定本意，由 @Addition 注解实现增加之意
 
 ### 2.6.6
 * 添加 ToSocketdWebSocketListener::setListener 接口（更方便定制）
