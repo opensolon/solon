@@ -10,8 +10,8 @@ public class XPluginImp implements Plugin {
 
     @Override
     public void start(AppContext context) {
-        if (ClassUtil.loadClass("javax.servlet.ServletResponse") == null) {
-            LogUtil.global().warn("View: javax.servlet.ServletResponse not exists! JspRender failed to load.");
+        if (ClassUtil.loadClass("jakarta.servlet.ServletResponse") == null) {
+            LogUtil.global().warn("View: jakarta.servlet.ServletResponse not exists! JspRender failed to load.");
             return;
         }
 
