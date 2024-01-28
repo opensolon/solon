@@ -29,6 +29,7 @@
 * 添加 SocketdProxy 对 socket.d 集群的支持
 * 添加 @Addition 注解（用于间接附加注解）
 * 实现 @Get, @Options 注到到类上时的限定本意，由 @Addition 注解实现增加之意
+* 解除 WEB-INF 的目录依赖，早期是为了支持 jsp tld 文件的自动处理（仍然兼容）
 
 ### 2.6.6
 * 添加 ToSocketdWebSocketListener::setListener 接口（更方便定制）
