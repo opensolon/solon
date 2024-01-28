@@ -17,6 +17,7 @@ import java.util.function.Supplier;
  */
 public class ProxyUtils {
     //真正使用的是 session，服务地址只是占个位
+    //后端使用的是 path，hostname 只是为符合 nami 的标准
     private static final String VIRTUAL_SERVER = "sd://nami";
 
     /**
