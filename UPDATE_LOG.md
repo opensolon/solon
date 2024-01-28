@@ -676,7 +676,7 @@
 * mybatis-flex 升为 1.3.2
 * fastmybatis 升为 2.6.1
 
-### 2.3.0
+### 2.3.0（2023-05-25）
 * 升级 日志体系到 slf4j 2.x（如果冲突，排除旧的 1.x）!!!
 * 新增 solon.docs 插件!!!
 * 新增 solon-swagger2-knife4j 插件!!!
@@ -994,7 +994,7 @@
 * 添加 SerializationConfig，为渲染器提供统一的配置帮助
 
 
-### v2.2.0
+### v2.2.0（2023-02-28）
 
 * 概要：
 * 1.吸收近期使用需求，增强内核能力（完善 bean 的生命周期；调整 plugin 仅定位为 spi；）
@@ -1061,7 +1061,7 @@
 * 调整 local-solon-cloud-plugin 本地文件路径规范
 * 修复 mybatis-solon-plugin 与 solon-maven-plugin 打包插件的兼容性问题
 
-### v2.1.0
+### v2.1.0（2023-02-10）
 * 新增 activemq-solon-cloud-plugin 插件
 * 新增 solon.logging.log4j2（复制于 log4j2-solon-plugin）
 * 新增 solon.logging.logback（复制于 logback-solon-plugin）
@@ -1078,7 +1078,7 @@
 * 优化 安全停止与延时的配置(增加新的启动参数：stop.safe,和应用配置：solon.stop.safe)
 
 
-### v2.0.0
+### v2.0.0（2023-02-01）
 
 * 说明：第一个版只删除弃用代码，不加新功能
 *
