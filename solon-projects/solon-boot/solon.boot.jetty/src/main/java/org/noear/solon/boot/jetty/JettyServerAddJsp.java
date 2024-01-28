@@ -1,28 +1,41 @@
 package org.noear.solon.boot.jetty;
 
+import org.apache.tomcat.util.descriptor.tld.TaglibXml;
+import org.apache.tomcat.util.descriptor.tld.TldParser;
+import org.apache.tomcat.util.descriptor.tld.TldResourcePath;
 import org.eclipse.jetty.jsp.JettyJspServlet;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
-import org.noear.solon.Solon;
+import org.noear.solon.Utils;
 import org.noear.solon.boot.jetty.http.JtJspStarter;
+import org.noear.solon.boot.jetty.jsp.JspTldLocator;
+import org.noear.solon.core.AppClassLoader;
+import org.noear.solon.core.util.ResourceUtil;
+import org.noear.solon.core.util.ScanUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import javax.servlet.ServletContext;
+import javax.servlet.descriptor.TaglibDescriptor;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.Properties;
+import java.util.Map;
+import java.util.Set;
 
 class JettyServerAddJsp extends JettyServer {
 
     /**
      * 获取Server Handler
-     * */
+     */
     @Override
-    protected Handler buildHandler() throws IOException{
+    protected Handler buildHandler() throws IOException {
         ServletContextHandler handler = getServletHandler();
 
         enableJspSupport(handler);
+        addTdlSupport(handler.getServletContext());
 
         return handler;
     }
@@ -53,9 +66,22 @@ class JettyServerAddJsp extends JettyServer {
         ServletHolder holderJsp = new ServletHolder("jsp", JettyJspServlet.class);
         holderJsp.setInitOrder(0);
 
-        Properties properties = Solon.cfg().getProp("solon.jetty.jsp");
-        properties.forEach((k, v) -> holderJsp.setInitParameter((String)k, (String)v));
-
         handler.addServlet(holderJsp, "*.jsp");
+    }
+
+    private void addTdlSupport(ServletContext servletContext) throws IOException {
+        Map<String, TaglibDescriptor> tagLibInfos = JspTldLocator.createTldInfos("templates");
+
+        if (tagLibInfos.size() > 0) {
+            ServletContextHandler.JspConfig jspConfig = (ServletContextHandler.JspConfig) servletContext.getJspConfigDescriptor();
+            if (jspConfig == null) {
+                jspConfig = new ServletContextHandler.JspConfig();
+                ((ServletContextHandler.Context) servletContext).setJspConfigDescriptor(jspConfig);
+            }
+
+            for (TaglibDescriptor descriptor : tagLibInfos.values()) {
+                jspConfig.addTaglibDescriptor(descriptor);
+            }
+        }
     }
 }
