@@ -1,5 +1,6 @@
 package org.noear.solon.web.cors.annotation;
 
+import org.noear.solon.annotation.Addition;
 import org.noear.solon.annotation.Before;
 import org.noear.solon.annotation.Note;
 import org.noear.solon.annotation.Options;
@@ -11,7 +12,7 @@ import java.lang.annotation.*;
  * @author noear
  * @since 1.3
  */
-@Options //添加 Options
+@Addition(Options.class) //间接增加 Options
 @Inherited
 @Before({CrossOriginInterceptor.class})
 @Target({ElementType.TYPE, ElementType.METHOD})
