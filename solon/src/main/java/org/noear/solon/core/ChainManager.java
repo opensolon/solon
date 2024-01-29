@@ -229,7 +229,7 @@ public class ChainManager {
 
     public ActionExecuteHandler getExecuteHandlerDefault() {
         if (executeHandlerDefault == null) {
-            return FactoryManager.mvcFactory.getExecuteHandlerDefault();
+            return FactoryManager.mvcFactory().getExecuteHandlerDefault();
         } else {
             return executeHandlerDefault;
         }

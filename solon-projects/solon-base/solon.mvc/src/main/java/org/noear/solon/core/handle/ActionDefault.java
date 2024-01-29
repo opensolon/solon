@@ -5,6 +5,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.annotation.Consumes;
 import org.noear.solon.annotation.Produces;
 import org.noear.solon.core.*;
+import org.noear.solon.core.handle.*;
 import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.core.util.*;
 import org.noear.solon.core.wrap.MethodWrap;
@@ -16,12 +17,12 @@ import java.util.List;
 import java.util.regex.Matcher;
 
 /**
- * mvc:动作
+ * mvc:动作 默认实现
  *
  * @author noear
  * @since 1.0
  * */
-public class ActionImpl extends HandlerAide implements Action {
+public class ActionDefault extends HandlerAide implements Action {
     //bean 包装器
     private final BeanWrap bWrap;
     //bean 相关aide
@@ -49,11 +50,11 @@ public class ActionImpl extends HandlerAide implements Action {
     //path key 列表
     private List<String> pathKeys;
 
-    public ActionImpl(BeanWrap bWrap, Method method) {
+    public ActionDefault(BeanWrap bWrap, Method method) {
         this(bWrap, null, method, null, null, false, null);
     }
 
-    public ActionImpl(BeanWrap bWrap, HandlerAide bAide, Method method, Mapping mapping, String path, boolean remoting, Render render) {
+    public ActionDefault(BeanWrap bWrap, HandlerAide bAide, Method method, Mapping mapping, String path, boolean remoting, Render render) {
         this.bWrap = bWrap;
         this.bAide = bAide;
 

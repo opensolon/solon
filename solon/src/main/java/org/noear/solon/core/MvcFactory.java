@@ -15,37 +15,40 @@ import java.util.function.Predicate;
 public interface MvcFactory {
     /**
      * 创建处理加载器
-     * */
-    HandlerLoader createHandlerLoader(BeanWrap wrap);
+     */
+    ActionLoader createHandlerLoader(BeanWrap wrap);
 
     /**
      * 创建处理加载器
-     * */
-    default HandlerLoader createHandlerLoader(BeanWrap wrap, String mapping) {
+     */
+    default ActionLoader createHandlerLoader(BeanWrap wrap, String mapping) {
         return createHandlerLoader(wrap, mapping, wrap.remoting(), null, true);
     }
 
     /**
      * 创建处理加载器
-     * */
-    default HandlerLoader createHandlerLoader(BeanWrap wrap, String mapping, boolean remoting) {
+     */
+    default ActionLoader createHandlerLoader(BeanWrap wrap, String mapping, boolean remoting) {
         return createHandlerLoader(wrap, mapping, remoting, null, true);
     }
 
     /**
      * 创建处理加载器
-     * */
-    HandlerLoader createHandlerLoader(BeanWrap wrap, String mapping, boolean remoting, Render render, boolean allowMapping);
+     */
+    ActionLoader createHandlerLoader(BeanWrap wrap, String mapping, boolean remoting, Render render, boolean allowMapping);
 
     /**
      * 查找方式类型
-     * */
+     */
     Set<MethodType> findMethodTypes(Set<MethodType> list, Predicate<Class> checker);
 
     /**
      * 分析动作参数
-     * */
+     */
     void resolveActionParam(ActionParam vo, AnnotatedElement element);
 
+    /**
+     * 获取默认执行器
+     */
     ActionExecuteHandler getExecuteHandlerDefault();
 }

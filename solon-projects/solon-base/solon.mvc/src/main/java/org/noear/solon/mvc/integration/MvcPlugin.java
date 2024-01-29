@@ -7,7 +7,7 @@ import org.noear.solon.core.FactoryManager;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.event.AppBeanLoadEndEvent;
 import org.noear.solon.core.handle.ContextPathFilter;
-import org.noear.solon.mvc.MvcFactoryImpl;
+import org.noear.solon.mvc.MvcFactoryDefault;
 
 /**
  * @author noear
@@ -23,6 +23,6 @@ public class MvcPlugin implements Plugin {
             }
         });
 
-        FactoryManager.mvcFactory(new MvcFactoryImpl());
+        FactoryManager.mvcFactory(new MvcFactoryDefault());
     }
 }

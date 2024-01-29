@@ -1,7 +1,7 @@
 package org.noear.solon.core.handle;
 
 /**
- * 处理参数
+ * 动作参数
  *
  * @author noear
  * @since 2.7
@@ -25,14 +25,17 @@ public class ActionParam {
      * 必须输入 Body
      */
     public boolean isRequiredBody;
+
     /**
      * 必须输入 Header
      */
     public boolean isRequiredHeader;
+
     /**
      * 必须输入 Cookie
      */
     public boolean isRequiredCookie;
+
     /**
      * 必须输入 Path
      */

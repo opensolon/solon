@@ -60,10 +60,18 @@ public final class FactoryManager {
     }
 
 
-    static MvcFactory mvcFactory;
+    //////////
+    //
+    // mvcFactory 对接
+    //
+    private static MvcFactory mvcFactory;
+
+    public static boolean hasMvcFactory() {
+        return mvcFactory != null;
+    }
 
     public static MvcFactory mvcFactory() {
-        if(mvcFactory == null){
+        if (mvcFactory == null) {
             throw new IllegalStateException("The 'solon.mvc' plugin is missing");
         }
         return mvcFactory;

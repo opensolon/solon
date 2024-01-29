@@ -9,26 +9,26 @@ import java.util.Set;
 import java.util.function.Predicate;
 
 /**
- * 通用处理接口加载器工厂
+ * Mvc 对接工厂默认实现
  *
  * @author noear
- * @since 2.4
+ * @since 2.7
  */
-public class MvcFactoryImpl implements MvcFactory {
-    public HandlerLoader createHandlerLoader(BeanWrap wrap) {
-        return new HandlerLoaderImpl(wrap);
+public class MvcFactoryDefault implements MvcFactory {
+    public ActionLoader createHandlerLoader(BeanWrap wrap) {
+        return new ActionLoaderDefault(wrap);
     }
 
-    public HandlerLoader createHandlerLoader(BeanWrap wrap, String mapping) {
+    public ActionLoader createHandlerLoader(BeanWrap wrap, String mapping) {
         return createHandlerLoader(wrap, mapping, wrap.remoting(), null, true);
     }
 
-    public HandlerLoader createHandlerLoader(BeanWrap wrap, String mapping, boolean remoting) {
+    public ActionLoader createHandlerLoader(BeanWrap wrap, String mapping, boolean remoting) {
         return createHandlerLoader(wrap, mapping, remoting, null, true);
     }
 
-    public HandlerLoader createHandlerLoader(BeanWrap wrap, String mapping, boolean remoting, Render render, boolean allowMapping) {
-        return new HandlerLoaderImpl(wrap, mapping, remoting, render, allowMapping);
+    public ActionLoader createHandlerLoader(BeanWrap wrap, String mapping, boolean remoting, Render render, boolean allowMapping) {
+        return new ActionLoaderDefault(wrap, mapping, remoting, render, allowMapping);
     }
 
     @Override

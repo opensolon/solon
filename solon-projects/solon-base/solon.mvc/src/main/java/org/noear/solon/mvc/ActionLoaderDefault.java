@@ -16,12 +16,12 @@ import java.lang.reflect.Modifier;
 import java.util.*;
 
 /**
- * 通用处理接口加载器（根据bean加载）
+ * 动作加载器默认实现（根据bean加载）
  *
  * @author noear
  * @since 1.0
  * */
-public class HandlerLoaderImpl extends HandlerAide implements HandlerLoader {
+public class ActionLoaderDefault extends HandlerAide implements ActionLoader {
     protected BeanWrap bw;
     protected Render bRender;
     protected Mapping bMapping;
@@ -30,7 +30,7 @@ public class HandlerLoaderImpl extends HandlerAide implements HandlerLoader {
 
     protected boolean allowMapping;
 
-    public HandlerLoaderImpl(BeanWrap wrap) {
+    public ActionLoaderDefault(BeanWrap wrap) {
         bMapping = wrap.clz().getAnnotation(Mapping.class);
 
         if (bMapping == null) {
@@ -41,7 +41,7 @@ public class HandlerLoaderImpl extends HandlerAide implements HandlerLoader {
         }
     }
 
-    public HandlerLoaderImpl(BeanWrap wrap, String mapping, boolean remoting, Render render, boolean allowMapping) {
+    public ActionLoaderDefault(BeanWrap wrap, String mapping, boolean remoting, Render render, boolean allowMapping) {
         initDo(wrap, mapping, remoting, render, allowMapping);
     }
 
@@ -291,9 +291,9 @@ public class HandlerLoaderImpl extends HandlerAide implements HandlerLoader {
      */
     protected Action createAction(BeanWrap bw, Method method, Mapping mp, String path, boolean remoting) {
         if (allowMapping) {
-            return new ActionImpl(bw, this, method, mp, path, remoting, bRender);
+            return new ActionDefault(bw, this, method, mp, path, remoting, bRender);
         } else {
-            return new ActionImpl(bw, this, method, null, path, remoting, bRender);
+            return new ActionDefault(bw, this, method, null, path, remoting, bRender);
         }
     }
 

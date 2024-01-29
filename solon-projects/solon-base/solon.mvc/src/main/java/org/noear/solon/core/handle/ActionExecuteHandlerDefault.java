@@ -2,22 +2,20 @@ package org.noear.solon.core.handle;
 
 import org.noear.solon.Utils;
 import org.noear.solon.core.NvMap;
-import org.noear.solon.core.util.GenericUtil;
+import org.noear.solon.core.handle.*;
 import org.noear.solon.core.wrap.ClassWrap;
 import org.noear.solon.core.wrap.MethodWrap;
 import org.noear.solon.core.util.ConvertUtil;
 import org.noear.solon.core.wrap.ParamWrap;
 
 import java.io.InputStream;
-import java.lang.reflect.Type;
-import java.lang.reflect.TypeVariable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
 /**
- * 默认的ActionExecutor实现
+ * ActionExecutor 默认实现
  *
  * @see Action#callDo(Context, Object, MethodWrap)
  * @author noear
