@@ -21,6 +21,7 @@
 
 ### 2.7.0
 * 新增 solon.view.jsp.jakarta 插件
+* 新增 solon.command 插件
 * 添加 undertow jsp tld 对 templates 目录支持（简化 tld 的使用）
 * 添加 jetty jsp tld 对 templates 目录支持（简化 tld 的使用）
 * 添加 SocketdProxy 对 socket.d 集群的支持

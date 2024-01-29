@@ -23,13 +23,15 @@
         <module>../../solon-projects/solon-detector/solon.health</module>
         <module>../../solon-projects/solon-detector/solon.health.detector</module>
         <module>../../solon-projects/solon-detector/detector-solon-plugin</module>
-<!--        <module>../../solon-projects/solon-detector/solon-admin-client</module>-->
-<!--        <module>../../solon-projects/solon-detector/solon-admin-server</module>-->
-<!--        <module>../../solon-projects/solon-detector/solon-admin-server-ui</module>-->
 
         <module>../../solon-projects/solon-scheduling/solon.scheduling</module>
         <module>../../solon-projects/solon-scheduling/solon.scheduling.simple</module>
         <module>../../solon-projects/solon-scheduling/solon.scheduling.quartz</module>
         <module>../../solon-projects/solon-scheduling/solon.extend.schedule</module>
+
+        <module>../../solon-projects/solon-testing/solon.test</module>
+        <module>../../solon-projects/solon-testing/solon-test</module>
+        <module>../../solon-projects/solon-testing/solon-test-junit4</module>
+        <module>../../solon-projects/solon-testing/solon-test-junit5</module>
     </modules>
 </project>
