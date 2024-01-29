@@ -26,7 +26,7 @@
 * 添加 SocketdProxy 对 socket.d 集群的支持
 * 添加 @Addition 注解（用于间接附加注解）
 * 实现 @Get, @Options 注到到类上时的限定本意，由 @Addition 注解实现增加之意
-* 调整 mvc 能力独立为 solon.mvc???
+* 调整 内核的 mvc 能力实现，独立为 solon.mvc 插件
 * 调整 用 Path 接口替代部分 new File（支持更强的相对文件位置）???
 * 解除 WEB-INF 的目录依赖，早期是为了支持 jsp tld 文件的自动处理（仍然兼容）
 

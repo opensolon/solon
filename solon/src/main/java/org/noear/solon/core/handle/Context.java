@@ -2,7 +2,6 @@ package org.noear.solon.core.handle;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
-import org.noear.solon.annotation.Note;
 import org.noear.solon.core.Constants;
 import org.noear.solon.core.NvMap;
 import org.noear.solon.core.util.*;

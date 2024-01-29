@@ -1,8 +1,7 @@
 package org.noear.solon.core.wrap;
 
-import org.noear.solon.Utils;
-import org.noear.solon.annotation.*;
-import org.noear.solon.core.Constants;
+import org.noear.solon.core.FactoryManager;
+import org.noear.solon.core.handle.ActionParam;
 
 import java.lang.reflect.AnnotatedElement;
 
@@ -13,49 +12,39 @@ import java.lang.reflect.AnnotatedElement;
  * @since 2.4
  */
 public abstract class VarDescriptorBase implements VarDescriptor {
-    private AnnotatedElement element;
-    private String name;
-    private String defaultValue;
-
-    private boolean isRequiredInput;
-
-    private boolean isRequiredBody;
-    private boolean isRequiredHeader;
-    private boolean isRequiredCookie;
-    private boolean isRequiredPath;
-
-
+    private final AnnotatedElement element;
+    private final ActionParam vo = new ActionParam();
 
     @Override
     public boolean isRequiredBody() {
-        return isRequiredBody;
+        return vo.isRequiredBody;
     }
 
     @Override
     public boolean isRequiredHeader() {
-        return isRequiredHeader;
+        return vo.isRequiredHeader;
     }
 
     @Override
     public boolean isRequiredCookie() {
-        return isRequiredCookie;
+        return vo.isRequiredCookie;
     }
 
     @Override
     public boolean isRequiredPath() {
-        return isRequiredPath;
+        return vo.isRequiredPath;
     }
 
     @Override
     public boolean isRequiredInput() {
-        return isRequiredInput;
+        return vo.isRequiredInput;
     }
 
     @Override
     public String getRequiredHint() {
-        if (isRequiredHeader) {
+        if (vo.isRequiredHeader) {
             return "Required header @" + getName();
-        } else if (isRequiredCookie) {
+        } else if (vo.isRequiredCookie) {
             return "Required cookie @" + getName();
         } else {
             return "Required parameter @" + getName();
@@ -64,157 +53,23 @@ public abstract class VarDescriptorBase implements VarDescriptor {
 
     @Override
     public String getName() {
-        return name;
+        return vo.name;
     }
-
 
 
     @Override
     public String getDefaultValue() {
-        return defaultValue;
+        return vo.defaultValue;
     }
 
-    public VarDescriptorBase(AnnotatedElement element, String name){
+    public VarDescriptorBase(AnnotatedElement element, String name) {
         this.element = element;
-        this.name = name;
+        this.vo.name = name;
     }
 
-    protected void init(){
-        if (resolveBody() == false) {
-            if (resolveParam() == false) {
-                if (resolvePathVar() == false) {
-                    if (resolvePath() == false) {
-                        if (resolveHeader() == false) {
-                            resolveCookie();
-                        }
-                    }
-                }
-            }
-        }
+    protected void init() {
+        FactoryManager.mvcFactory().resolveActionParam(vo, element);
     }
 
     /////////////////
-
-    /**
-     * 分析 body 注解
-     */
-    private boolean resolveBody() {
-        Body bodyAnno = element.getAnnotation(Body.class);
-
-        if (bodyAnno == null) {
-            return false;
-        }
-
-        isRequiredBody = true;
-        return true;
-    }
-
-    /**
-     * 分析 param 注解
-     */
-    private boolean resolveParam() {
-        Param paramAnno = element.getAnnotation(Param.class);
-
-        if (paramAnno == null) {
-            return false;
-        }
-
-        String name2 = Utils.annoAlias(paramAnno.value(), paramAnno.name());
-        if (Utils.isNotEmpty(name2)) {
-            name = name2;
-        }
-
-        if (Constants.PARM_UNDEFINED_VALUE.equals(paramAnno.defaultValue()) == false) {
-            defaultValue = paramAnno.defaultValue();
-        }
-
-        isRequiredInput = paramAnno.required();
-
-        return true;
-    }
-
-    @Deprecated
-    private boolean resolvePathVar() {
-        PathVar paramAnno = element.getAnnotation(PathVar.class);
-
-        if (paramAnno == null) {
-            return false;
-        }
-
-        String name2 = Utils.annoAlias(paramAnno.value(), paramAnno.name());
-        if (Utils.isNotEmpty(name2)) {
-            name = name2;
-        }
-
-        isRequiredPath = true;
-        isRequiredInput = true;
-        return true;
-    }
-
-    private boolean resolvePath() {
-        Path paramAnno = element.getAnnotation(Path.class);
-
-        if (paramAnno == null) {
-            return false;
-        }
-
-        String name2 = Utils.annoAlias(paramAnno.value(), paramAnno.name());
-        if (Utils.isNotEmpty(name2)) {
-            name = name2;
-        }
-
-        isRequiredPath = true;
-        isRequiredInput = true;
-        return true;
-    }
-
-    /**
-     * 分析 header 注解
-     */
-    private boolean resolveHeader() {
-        Header headerAnno = element.getAnnotation(Header.class);
-
-        if (headerAnno == null) {
-            return false;
-        }
-
-        String name2 = Utils.annoAlias(headerAnno.value(), headerAnno.name());
-        if (Utils.isNotEmpty(name2)) {
-            name = name2;
-        }
-
-        if (Constants.PARM_UNDEFINED_VALUE.equals(headerAnno.defaultValue()) == false) {
-            defaultValue = headerAnno.defaultValue();
-        }
-
-        isRequiredInput = headerAnno.required();
-        isRequiredHeader = true;
-
-        return true;
-    }
-
-    /**
-     * 分析 cookie 注解
-     */
-    private boolean resolveCookie() {
-        Cookie cookieAnno = element.getAnnotation(Cookie.class);
-
-        if (cookieAnno == null) {
-            return false;
-        }
-
-        String name2 = Utils.annoAlias(cookieAnno.value(), cookieAnno.name());
-        if (Utils.isNotEmpty(name2)) {
-            name = name2;
-        }
-
-        if (Constants.PARM_UNDEFINED_VALUE.equals(cookieAnno.defaultValue()) == false) {
-            defaultValue = cookieAnno.defaultValue();
-        }
-
-        isRequiredInput = cookieAnno.required();
-        isRequiredCookie = true;
-
-        return true;
-    }
 }

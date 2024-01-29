@@ -202,7 +202,7 @@ public class AppContext extends BeanContainer {
 
         //注册 @Controller 构建器
         beanBuilderAdd(Controller.class, (clz, bw, anno) -> {
-            HandlerLoaderFactory.global().create(bw).load(Solon.app());
+            FactoryManager.mvcFactory().createHandlerLoader(bw).load(Solon.app());
         });
 
         //注册 @Inject 注入器
@@ -320,7 +320,7 @@ public class AppContext extends BeanContainer {
             Mapping mapping = annoEl.getAnnotation(Mapping.class);
             if (mapping != null) {
                 Handler handler = bw.raw();
-                Set<MethodType> v0 = MethodTypeUtil.findAndFill(new HashSet<>(), t -> annoEl.getAnnotation(t) != null);
+                Set<MethodType> v0 = FactoryManager.mvcFactory().findMethodTypes(new HashSet<>(), t -> annoEl.getAnnotation(t) != null);
                 if (v0.size() == 0) {
                     v0 = new HashSet<>(Arrays.asList(mapping.method()));
                 }

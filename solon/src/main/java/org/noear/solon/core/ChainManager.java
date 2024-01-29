@@ -182,7 +182,7 @@ public class ChainManager {
     /**
      * 动作默认执行器
      */
-    private ActionExecuteHandler executeHandlerDefault = new ActionExecuteHandlerDefault();
+    private ActionExecuteHandler executeHandlerDefault; //todo:new ActionExecuteHandlerDefault();
     /**
      * 动作执行库
      */
@@ -224,11 +224,15 @@ public class ChainManager {
             }
         }
 
-        return executeHandlerDefault;
+        return getExecuteHandlerDefault();
     }
 
     public ActionExecuteHandler getExecuteHandlerDefault() {
-        return executeHandlerDefault;
+        if (executeHandlerDefault == null) {
+            return FactoryManager.mvcFactory.getExecuteHandlerDefault();
+        } else {
+            return executeHandlerDefault;
+        }
     }
 
 

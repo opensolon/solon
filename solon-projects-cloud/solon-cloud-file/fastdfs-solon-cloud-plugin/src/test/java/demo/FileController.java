@@ -13,7 +13,7 @@ import java.io.IOException;
 /**
  * @author noear 2022/12/17 created
  */
-@Mapping("file")
+//@Mapping("file")
 @Controller
 public class FileController {
 
@@ -23,8 +23,8 @@ public class FileController {
      * @param ctx    请求上下文
      * @param bucket 存储桶
      */
-    @Get
-    @Mapping("{bucket}/**")
+    //@Get
+    //@Mapping("{bucket}/**")
     public DownloadedFile get(Context ctx, String bucket) throws IOException {
         String pathPrefix = "/file/" + bucket + "/";
         String fileName = ctx.path().substring(pathPrefix.length());
@@ -42,8 +42,8 @@ public class FileController {
      * @param ctx    请求上下文
      * @param bucket 存储桶
      */
-    @Post
-    @Mapping("{bucket}/**")
+    //@Post
+    //@Mapping("{bucket}/**")
     public Result post(Context ctx, String bucket, UploadedFile file) {
         String pathPrefix = "/file/" + bucket + "/";
         String fileName = ctx.path().substring(pathPrefix.length());
@@ -58,8 +58,8 @@ public class FileController {
      * @param ctx    请求上下文
      * @param bucket 存储桶
      */
-    @Delete
-    @Mapping("{bucket}/**")
+    //@Delete
+    //@Mapping("{bucket}/**")
     public Result delete(Context ctx, String bucket) {
         String pathPrefix = "/file/" + bucket + "/";
         String fileName = ctx.path().substring(pathPrefix.length());

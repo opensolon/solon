@@ -54,8 +54,24 @@ public final class FactoryManager {
 
     /**
      * 创建负载
-     * */
+     */
     public static LoadBalance newLoadBalance(String group, String service) {
         return loadBalanceFactory.create(group, service);
+    }
+
+
+    static MvcFactory mvcFactory;
+
+    public static MvcFactory mvcFactory() {
+        if(mvcFactory == null){
+            throw new IllegalStateException("The 'solon.mvc' plugin is missing");
+        }
+        return mvcFactory;
+    }
+
+    public static void mvcFactory(MvcFactory factory) {
+        if (factory != null) {
+            mvcFactory = factory;
+        }
     }
 }

@@ -45,7 +45,6 @@ public class HealthChecker {
         HealthCheckResult healthResult = new HealthCheckResult();
         healthResult.setDetails(details);
 
-        //todo:此处可能会异常？...by noear
         indicatorMap.forEach((name, indicator) -> {
             HealthCheckResult checkResult = checkItem(healthResult, indicator);
             details.put(name, checkResult);
