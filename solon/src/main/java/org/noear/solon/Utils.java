@@ -12,6 +12,7 @@ import java.net.*;
 import java.security.MessageDigest;
 import java.util.*;
 import java.util.concurrent.Future;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 
 /**
@@ -59,7 +60,7 @@ public class Utils {
 
     /**
      * 转为一个可变 List（Arrays.asList 不可变）
-     * */
+     */
     public static <T> List<T> asList(T[] ary) {
         if (ary == null) {
             return null;
@@ -101,7 +102,7 @@ public class Utils {
 
     /**
      * 是否为 Solon 代理类
-     * */
+     */
     public static boolean isProxyClass(Class<?> clz) {
         return clz.getName().contains("$$Solon");
     }
@@ -148,8 +149,8 @@ public class Utils {
      * a/??/b/?.xml
      *
      * @param pathExpr 路径表达式
-     * @deprecated 2.0
      * @removal true
+     * @deprecated 2.0
      */
     @Deprecated
     public static Collection<String> resolvePaths(String pathExpr) {
@@ -366,8 +367,8 @@ public class Utils {
 
 
     /**
-     * @deprecated 2.2
      * @removal true
+     * @deprecated 2.2
      */
     @Deprecated
     public static boolean hasClass(SupplierEx<Class<?>> test) {
@@ -378,8 +379,8 @@ public class Utils {
      * 根据字符串加载为一个类
      *
      * @param className 类名称
-     * @deprecated 2.2
      * @removal true
+     * @deprecated 2.2
      */
     @Deprecated
     public static Class<?> loadClass(String className) {
@@ -391,8 +392,8 @@ public class Utils {
      *
      * @param classLoader 类加载器
      * @param className   类名称
-     * @deprecated 2.2
      * @removal true
+     * @deprecated 2.2
      */
     @Deprecated
     public static Class<?> loadClass(ClassLoader classLoader, String className) {
@@ -403,8 +404,8 @@ public class Utils {
      * 根据类名实例化一个对象
      *
      * @param className 类名称
-     * @deprecated 2.2
      * @removal true
+     * @deprecated 2.2
      */
     @Deprecated
     public static <T> T newInstance(String className) {
@@ -412,8 +413,8 @@ public class Utils {
     }
 
     /**
-     * @deprecated 2.2
      * @removal true
+     * @deprecated 2.2
      */
     @Deprecated
     public static <T> T newInstance(String className, Properties prop) {
@@ -425,8 +426,8 @@ public class Utils {
      *
      * @param classLoader 类加载器
      * @param className   类名称
-     * @deprecated 2.2
      * @removal true
+     * @deprecated 2.2
      */
     @Deprecated
     public static <T> T newInstance(ClassLoader classLoader, String className) {
@@ -434,8 +435,8 @@ public class Utils {
     }
 
     /**
-     * @deprecated 2.2
      * @removal true
+     * @deprecated 2.2
      */
     @Deprecated
     public static <T> T newInstance(ClassLoader classLoader, String className, Properties prop) {
@@ -443,8 +444,8 @@ public class Utils {
     }
 
     /**
-     * @deprecated 2.2
      * @removal true
+     * @deprecated 2.2
      */
     @Deprecated
     public static <T> T newInstance(Class<?> clz) throws Exception {
@@ -452,8 +453,8 @@ public class Utils {
     }
 
     /**
-     * @deprecated 2.2
      * @removal true
+     * @deprecated 2.2
      */
     @Deprecated
     public static <T> T newInstance(Class<?> clz, Properties prop) throws Exception {
@@ -464,8 +465,8 @@ public class Utils {
      * 获取资源URL集
      *
      * @param name 资源名称
-     * @deprecated 2.2
      * @removal true
+     * @deprecated 2.2
      */
     @Deprecated
     public static Enumeration<URL> getResources(String name) throws IOException {
@@ -477,8 +478,8 @@ public class Utils {
      *
      * @param classLoader 类加载器
      * @param name        资源名称
-     * @deprecated 2.2
      * @removal true
+     * @deprecated 2.2
      */
     @Deprecated
     public static Enumeration<URL> getResources(ClassLoader classLoader, String name) throws IOException {
@@ -489,8 +490,8 @@ public class Utils {
      * 获取资源URL
      *
      * @param name 资源名称
-     * @deprecated 2.2
      * @removal true
+     * @deprecated 2.2
      */
     @Deprecated
     public static URL getResource(String name) {
@@ -502,8 +503,8 @@ public class Utils {
      *
      * @param classLoader 类加载器
      * @param name        资源名称
-     * @deprecated 2.2
      * @removal true
+     * @deprecated 2.2
      */
     @Deprecated
     public static URL getResource(ClassLoader classLoader, String name) {
@@ -514,8 +515,8 @@ public class Utils {
      * 获取资源并转为String
      *
      * @param name 资源名称
-     * @deprecated 2.2
      * @removal true
+     * @deprecated 2.2
      */
     @Deprecated
     public static String getResourceAsString(String name) throws IOException {
@@ -527,8 +528,8 @@ public class Utils {
      *
      * @param name    资源名称
      * @param charset 编码
-     * @deprecated 2.2
      * @removal true
+     * @deprecated 2.2
      */
     @Deprecated
     public static String getResourceAsString(String name, String charset) throws IOException {
@@ -541,8 +542,8 @@ public class Utils {
      * @param classLoader 类加载器
      * @param name        资源名称
      * @param charset     编码
-     * @deprecated 2.2
      * @removal true
+     * @deprecated 2.2
      */
     @Deprecated
     public static String getResourceAsString(ClassLoader classLoader, String name, String charset) throws IOException {
@@ -550,9 +551,9 @@ public class Utils {
     }
 
     /**
-     * @deprecated 2.4
      * @removal true
-     * */
+     * @deprecated 2.4
+     */
     @Deprecated
     public static String transferToString(InputStream ins) throws IOException {
         return IoUtil.transferToString(ins);
@@ -563,8 +564,8 @@ public class Utils {
      *
      * @param ins     输入流
      * @param charset 字符集
-     * @deprecated 2.4
      * @removal true
+     * @deprecated 2.4
      */
     @Deprecated
     public static String transferToString(InputStream ins, String charset) throws IOException {
@@ -575,8 +576,8 @@ public class Utils {
      * 将输入流转换为byte数组
      *
      * @param ins 输入流
-     * @deprecated  2.4
      * @removal true
+     * @deprecated 2.4
      */
     @Deprecated
     public static byte[] transferToBytes(InputStream ins) throws IOException {
@@ -588,8 +589,8 @@ public class Utils {
      *
      * @param ins 输入流
      * @param out 输出流
-     * @deprecated 2.4
      * @removal true
+     * @deprecated 2.4
      */
     @Deprecated
     public static <T extends OutputStream> T transferTo(InputStream ins, T out) throws IOException {
@@ -662,62 +663,110 @@ public class Utils {
     }
 
 
+    private static AtomicReference<String> _appFolder;
+
+    /**
+     * 应用所在文件夹
+     *
+     * @since 2.7
+     */
+    public static String appFolder() {
+        if (_appFolder == null) {
+            _appFolder = new AtomicReference<>();
+
+            URL temp = ResourceUtil.getResource("/");
+
+            if (temp == null) {
+                _appFolder.set(null);
+            } else {
+                String uri = temp.toString();
+
+                if (uri.contains("jar!/")) {
+                    //说明是 jar 运行
+                    int endIdx = uri.indexOf("jar!/");
+                    endIdx = uri.lastIndexOf("/", endIdx) + 1;
+
+                    uri = uri.substring(9, endIdx);
+                } else {
+                    int endIdx = uri.lastIndexOf("/classes/");
+                    if (endIdx > 0) {
+                        endIdx = endIdx + 1;
+                    } else {
+                        endIdx = uri.lastIndexOf("/") + 1;
+                    }
+
+                    if (uri.startsWith("file:/")) {
+                        uri = uri.substring(5, endIdx);
+                    } else {
+                        uri = uri.substring(0, endIdx);
+                    }
+                }
+
+                _appFolder.set(uri);
+            }
+        }
+
+        return _appFolder.get();
+    }
+
+    /**
+     * 获取文件
+     *
+     * @param uri 文件地址（支持相对位置）
+     * @since 2.7
+     */
+    public static File getFile(String uri) {
+        if (uri == null) {
+            return null;
+        }
+
+        String appDir = Utils.appFolder();
+        File file = null;
+
+        if (appDir != null) {
+            if (uri.startsWith("./")) {
+                file = new File(appDir, uri.substring(2));
+            } else if (uri.contains("/") == false) {
+                file = new File(appDir, uri);
+            }
+        }
+
+        if (file == null) {
+            file = new File(uri);
+        }
+
+        return file;
+    }
+
+    /**
+     * 获取目录并生成
+     *
+     * @param uri      目录地址（支持相对位置）
+     * @param autoMake 是否自动创建
+     * @since 2.7
+     */
+    public static File getFolderAndMake(String uri, boolean autoMake) {
+        File extDir = Utils.getFile(uri);
+
+        if (extDir != null) {
+            if (autoMake && extDir.exists() == false) {
+                extDir.mkdirs();
+            }
+        }
+
+        return extDir;
+    }
+
     /**
      * 构建应用扩展目录
      *
-     * @param extend   扩展配置
+     * @param extend   扩展目录
      * @param autoMake 是否自动创建
+     * @deprecated 2.7
      */
-    public static String buildExt(String extend, boolean autoMake) {
-        if (extend == null) {
-            return null;
-        }
-
-        if (extend.contains("/")) {
-            //如果全路径，直接返回
-            return extend;
-        }
-
-        LogUtil.global().info("Extend config: " + extend);
-
-        URL temp = ResourceUtil.getResource("");
-
-        if (temp == null) {
-            return null;
-        } else {
-            String uri = temp.toString();
-
-            LogUtil.global().info("Resource root: " + uri);
-
-            if (uri.startsWith("file:/")) {
-                int idx = uri.lastIndexOf("/target/");
-                if (idx > 0) {
-                    idx = idx + 8;
-                } else {
-                    idx = uri.lastIndexOf("/") + 1;
-                }
-
-                uri = uri.substring(5, idx);
-            } else {
-                int idx = uri.indexOf("jar!/");
-                idx = uri.lastIndexOf("/", idx) + 1;
-
-                uri = uri.substring(9, idx);
-            }
-
-            uri = uri + extend + "/";
-            File dir = new File(uri);
-
-            if (dir.exists() == false) {
-                if (autoMake) {
-                    dir.mkdir();
-                } else {
-                    return null;
-                }
-            }
-
-            return uri;
-        }
+    @Deprecated
+    public static File buildExt(String extend, boolean autoMake) {
+        return getFolderAndMake(extend, autoMake);
     }
 
     /**
