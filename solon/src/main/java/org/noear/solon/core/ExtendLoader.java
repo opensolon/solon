@@ -18,12 +18,20 @@ import java.util.function.Predicate;
 public class ExtendLoader {
     private static final ExtendLoader instance = new ExtendLoader();
     private static File folder;
+    private static String folderPath;
+
+    /**
+     * 扩展路径（绝对路径），File 模式
+     */
+    public static File folder() {
+        return folder;
+    }
 
     /**
      * 扩展路径（绝对路径）
      */
-    public static File folder() {
-        return folder;
+    public static String path(){
+        return folderPath;
     }
 
     /**
@@ -66,8 +74,11 @@ public class ExtendLoader {
             folder = Utils.getFolderAndMake(extend, autoMake);
 
             if (folder != null) {
+                //转为路径
+                folderPath = folder.toURI().toString();
+
                 //打印
-                LogUtil.global().info("Extend root: " + folder.toURI());
+                LogUtil.global().info("Extend root: " + folderPath);
 
                 //加载扩展内容
                 instance.loadFile(loaders, folder, filter);
