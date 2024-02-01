@@ -20,6 +20,7 @@
 * 新增 graphql-solon-plugin 插件
 
 ### 2.7.0
+* 调整 内核的 mvc 能力实现，独立为 solon.mvc 插件（需要 mvc 注解的插件，需要引入 solon.mvc）
 * 新增 solon.view.jsp.jakarta 插件
 * 新增 solon.command 插件
 * 添加 undertow jsp tld 对 templates 目录支持（简化 tld 的使用）
@@ -29,7 +30,6 @@
 * 添加 相对应用目录的文件获取接口
 * 调整 外部资源文件加载，保持与应用目录的相对位置（不因 user.dir 而变）
 * 调整 @Get, @Options 注解到类上时的限定效果，保持与方法上一样（原增量效果 @Addition 注解替代）
-* 调整 内核的 mvc 能力实现，独立为 solon.mvc 插件
 * 解除 WEB-INF 的目录依赖，早期是为了支持 jsp tld 文件的自动处理（仍然兼容）
 
 ### 2.6.6
