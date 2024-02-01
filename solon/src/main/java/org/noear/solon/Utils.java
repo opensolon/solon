@@ -680,7 +680,12 @@ public class Utils {
                 String uri = Utils.class.getProtectionDomain().getCodeSource().getLocation().getPath();
                 int endIdx = uri.lastIndexOf("/") + 1;
 
-                _appFolder.set(uri.substring(0, endIdx));
+                if (uri.startsWith("file:/")) {
+                    uri = uri.substring(5, endIdx);
+                } else {
+                    uri = uri.substring(0, endIdx);
+                }
+                _appFolder.set(uri);
             } else {
                 URL temp = ResourceUtil.getResource("/");
 
@@ -688,21 +693,24 @@ public class Utils {
                     _appFolder.set(null);
                 } else {
                     String uri = temp.getPath();
+                    int endIdx;
 
                     if (uri.contains("jar!/")) {
                         //说明是 jar 运行
-                        int endIdx = uri.indexOf("jar!/");
+                        endIdx = uri.indexOf("jar!/");
                         endIdx = uri.lastIndexOf("/", endIdx) + 1;
-
-                        uri = uri.substring(0, endIdx);
                     } else {
-                        int endIdx = uri.lastIndexOf("/classes/");
+                        endIdx = uri.lastIndexOf("/classes/");
                         if (endIdx > 0) {
                             endIdx = endIdx + 1;
                         } else {
                             endIdx = uri.lastIndexOf("/") + 1;
                         }
+                    }
 
+                    if (uri.startsWith("file:/")) {
+                        uri = uri.substring(5, endIdx);
+                    } else {
                         uri = uri.substring(0, endIdx);
                     }
 
