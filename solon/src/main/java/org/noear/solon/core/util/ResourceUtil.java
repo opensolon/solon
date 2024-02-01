@@ -167,7 +167,7 @@ public class ResourceUtil {
                     return file.toURI().toURL();
                 }
             } catch (Exception e) {
-                throw new RuntimeException(e);
+                throw new IllegalStateException(e);
             }
         }
     }

@@ -677,8 +677,9 @@ public class Utils {
 
             if (NativeDetector.inNativeImage()) {
                 //原生模式为单文件（所有类在一个位置）
-                String uri = Utils.class.getProtectionDomain().getCodeSource().getLocation().toString();
+                String uri = new File(Utils.class.getProtectionDomain().getCodeSource().getLocation().getFile()).toURI().toString();
                 int endIdx = uri.lastIndexOf("/") + 1;
+
                 _appFolder.set(uri.substring(0, endIdx));
             } else {
                 URL temp = ResourceUtil.getResource("/");
