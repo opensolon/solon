@@ -13,20 +13,20 @@ import java.net.URL;
  * @since 1.5
  */
 public class ExtendStaticRepository implements StaticRepository {
-    String location;
+    private File location;
 
     public ExtendStaticRepository() {
-        String path = ExtendLoader.path();
-        if (path == null) {
+        File folder = ExtendLoader.folder();
+        if (folder == null) {
             throw new IllegalStateException("No extension directory exists");
         }
 
-        location = (path + "static");
+        location = new File(folder, "static");
     }
 
     /**
      * @param relativePath 例：demo/file.htm （没有'/'开头）
-     * */
+     */
     @Override
     public URL find(String relativePath) throws Exception {
         File file = new File(location, relativePath);

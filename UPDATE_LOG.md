@@ -26,9 +26,10 @@
 * 添加 jetty jsp tld 对 templates 目录支持（简化 tld 的使用）
 * 添加 SocketdProxy 对 socket.d 集群的支持
 * 添加 @Addition 注解（用于间接附加注解）
-* 实现 @Get, @Options 注到到类上时的限定本意，由 @Addition 注解实现增加之意
+* 添加 相对应用目录的文件获取接口
+* 调整 外部资源文件加载，保持与应用目录的相对位置（不因 user.dir 而变）
+* 调整 @Get, @Options 注解到类上时的限定效果，保持与方法上一样（原增量效果 @Addition 注解替代）
 * 调整 内核的 mvc 能力实现，独立为 solon.mvc 插件
-* 调整 用 Path 接口替代部分 new File（支持更强的相对文件位置）???
 * 解除 WEB-INF 的目录依赖，早期是为了支持 jsp tld 文件的自动处理（仍然兼容）
 
 ### 2.6.6
@@ -55,7 +56,6 @@
 * reactor-core 升为 3.6.2
 * socket.d 升为 2.3.7
 * folkmq 升为 1.0.30
-* liteflow 升为 2.11.4.2
 * sms4j 升为 3.1.1
 * smarthttp 升为 1.3.8
 

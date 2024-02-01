@@ -159,13 +159,13 @@ public class ResourceUtil {
             return getResource(classLoader, uri.substring(Utils.TAG_classpath.length()));
         } else {
             try {
-                File file = new File(uri);
+                File file = Utils.getFile(uri);
 
                 if (file.exists() == false) {
                     return null;
+                } else {
+                    return file.toURI().toURL();
                 }
-
-                return file.toURI().toURL();
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }

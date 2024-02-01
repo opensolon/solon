@@ -17,13 +17,13 @@ import java.util.function.Predicate;
  * */
 public class ExtendLoader {
     private static final ExtendLoader instance = new ExtendLoader();
-    private static String path;
+    private static File folder;
 
     /**
      * 扩展路径（绝对路径）
      */
-    public static String path() {
-        return path;
+    public static File folder() {
+        return folder;
     }
 
     /**
@@ -63,17 +63,14 @@ public class ExtendLoader {
                 autoMake = true;
             }
 
-            extend = Utils.buildExt(extend, autoMake);
+            folder = Utils.getFolderAndMake(extend, autoMake);
 
-            if (extend != null) {
-                //缓存扩展目径
-                path = extend;
-
+            if (folder != null) {
                 //打印
-                LogUtil.global().info("Extend root: " + path);
+                LogUtil.global().info("Extend root: " + folder.toURI());
 
                 //加载扩展内容
-                instance.loadFile(loaders, new File(path), filter);
+                instance.loadFile(loaders, folder, filter);
             }
         }
 

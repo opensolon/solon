@@ -55,6 +55,7 @@ public class App {
         System.out.println("file.encoding=" + System.getProperty("file.encoding"));
         System.out.println("user.dir=" + System.getProperty("user.dir"));
         System.out.println("resource[/]=" + App.class.getResource("/").getPath());
+        System.out.println("resource[]=" + App.class.getResource("").getPath());
 
         //简化方式
         //SolonApp app = Solon.start(TestApp.class, args, x -> x.enableSocketD(true).enableWebSocket(true));
@@ -88,6 +89,7 @@ public class App {
         }).onAppLoadEnd(e -> {
             System.out.println("4.应用全加载完成了");
         }).start(App.class, args, x -> {
+            System.out.println("solon.app.folder[]=" + Utils.appFolder());
 
             x.enableSocketD(true);
             x.enableWebSocket(true);
@@ -121,7 +123,7 @@ public class App {
 
         //extend: /Users/noear/WORK/work_github/noear/solon/_test/target/app_ext/
         //System.out.println("extend: " + ExtendLoader.path()+"static");
-        System.out.println("extend: " + ExtendLoader.path());
+        System.out.println("extend: " + ExtendLoader.folder());
 
         System.out.println("testname : " + Solon.cfg().get("testname"));
 
