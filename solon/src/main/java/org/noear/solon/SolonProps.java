@@ -3,6 +3,7 @@ package org.noear.solon;
 import org.noear.solon.annotation.Import;
 import org.noear.solon.annotation.PropertySource;
 import org.noear.solon.core.*;
+import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.core.util.PluginUtil;
 import org.noear.solon.core.util.ResourceUtil;
 
@@ -33,9 +34,8 @@ import java.util.function.Predicate;
 public final class SolonProps extends Props {
     protected final List<String> warns = new ArrayList<>();
 
+    private final SolonApp app;
     private final NvMap args;
-    private final Class<?> source;
-    private final URL sourceLocation;
     private final boolean testing;
     private final List<PluginEntity> plugs = new ArrayList<>();
 
@@ -53,16 +53,14 @@ public final class SolonProps extends Props {
     private String extend;
     private String extendFilter;
 
-    public SolonProps(Class<?> source, NvMap args) throws Exception{
+    public SolonProps(SolonApp app, NvMap args) throws Exception{
         super(System.getProperties());
 
-        //1.接收启动参数
+        //1.关联应用
+        this.app = app;
+        //1.1.接收启动参数
         this.args = args;
-        //1.1.应用源
-        this.source = source;
-        //1.2.应用源位置
-        this.sourceLocation = source.getProtectionDomain().getCodeSource().getLocation();
-        //1.3.测试隔离
+        //1.2.测试隔离
         this.testing = args.containsKey("testing");
 
         //::: 开始加载
@@ -122,10 +120,10 @@ public final class SolonProps extends Props {
 
 
         //4.3.加载注解配置（优于固定配置）/v1.12
-        loadAdd(source.getAnnotation(PropertySource.class)); //v1.12 //@deprecated 2.5
+        loadAdd(app.source().getAnnotation(PropertySource.class)); //v1.12 //@deprecated 2.5
 
         //导入自己的，同时导入注解的 Import 注解
-        importPropsTry(source);
+        importPropsTry(app.source());
 
 
         //4.4.加载配置 solon.config.load //支持多文件（只支持内部，支持{env}）
@@ -148,10 +146,15 @@ public final class SolonProps extends Props {
         //5.初始化模式状态
 
         //是否为文件模式
-        isFilesMode = (sourceLocation.getPath().endsWith(".jar") == false
-                && sourceLocation.getPath().contains(".jar!/") == false
-                && sourceLocation.getPath().endsWith(".zip") == false
-                && sourceLocation.getPath().contains(".zip!/") == false);
+        isFilesMode = (app.sourceLocation().getPath().endsWith(".jar") == false
+                && app.sourceLocation().getPath().contains(".jar!/") == false
+                && app.sourceLocation().getPath().endsWith(".zip") == false
+                && app.sourceLocation().getPath().contains(".zip!/") == false);
+
+        if(NativeDetector.inNativeImage()){
+            //如果是原生运行
+            isFilesMode = false;
+        }
 
         //是否为调试模式
         isDebugMode = "1".equals(getArg("debug")); //调试模式
@@ -361,16 +364,22 @@ public final class SolonProps extends Props {
 
     /**
      * 应用源（即启动主类）
+     *
+     * @deprecated 2.7
      */
+    @Deprecated
     public Class<?> source() {
-        return source;
+        return app.source();
     }
 
     /**
      * 应用源位置
+     *
+     * @deprecated 2.7
      */
+    @Deprecated
     public URL sourceLocation() {
-        return sourceLocation;
+        return app.sourceLocation();
     }
 
     /**

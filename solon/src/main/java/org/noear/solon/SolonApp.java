@@ -12,6 +12,7 @@ import org.noear.solon.core.util.ConsumerEx;
 import org.noear.solon.core.util.LogUtil;
 
 import java.lang.annotation.Annotation;
+import java.net.URL;
 import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -38,6 +39,7 @@ public class SolonApp extends RouterWrapper {
     private final ConverterManager _converterManager; //转换管理器
 
     private final Class<?> _source; //应用加载源
+    private final URL _sourceLocation;
     private final long _startupTime;
 
     protected boolean stopped = false;
@@ -67,6 +69,7 @@ public class SolonApp extends RouterWrapper {
     protected SolonApp(Class<?> source, NvMap args) throws Exception {
         _startupTime = System.currentTimeMillis();
         _source = source;
+        _sourceLocation = source.getProtectionDomain().getCodeSource().getLocation();
         _converterManager = new ConverterManager();
 
         //添加启动类检测
@@ -80,7 +83,7 @@ public class SolonApp extends RouterWrapper {
         }
 
         //初始化配置
-        _cfg = new SolonProps(source, args);
+        _cfg = new SolonProps(this, args);
         _context = new AppContext(new AppClassLoader(AppClassLoader.global()), _cfg);
 
         //初始化路由
@@ -352,6 +355,13 @@ public class SolonApp extends RouterWrapper {
      */
     public Class<?> source() {
         return _source;
+    }
+
+    /**
+     * 启动入口类所在位置
+     */
+    public URL sourceLocation(){
+        return _sourceLocation;
     }
 
     /**

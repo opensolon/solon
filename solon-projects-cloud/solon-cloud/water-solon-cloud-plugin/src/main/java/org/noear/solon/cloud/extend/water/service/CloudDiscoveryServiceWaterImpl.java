@@ -97,7 +97,7 @@ public class CloudDiscoveryServiceWaterImpl extends TimerTask implements CloudDi
         }
 
         String protocol = Utils.annoAlias(instance.protocol(), "http");
-        String code_location = Solon.cfg().sourceLocation().getPath();
+        String code_location = Solon.app().sourceLocation().getPath();
         String checkPath;
         if (protocol.startsWith("http")) {
             checkPath = HealthHandler.HANDLER_PATH;

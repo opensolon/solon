@@ -55,7 +55,7 @@ public class GraalvmUtil {
      * META-INF/native-image + 启动类包名
      */
     public static String getNativeImageDir() {
-        String packageName = Solon.cfg().source().getPackage().getName();
+        String packageName = Solon.app().source().getPackage().getName();
         return NATIVE_IMAGE_DIR + "/" + packageName.replace('.', '/');
     }
 

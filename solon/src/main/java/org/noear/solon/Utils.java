@@ -2,6 +2,7 @@ package org.noear.solon;
 
 import org.noear.solon.core.PropsConverter;
 import org.noear.solon.core.PropsLoader;
+import org.noear.solon.core.runtime.NativeDetector;
 import org.noear.solon.core.util.*;
 import org.noear.solon.core.wrap.ClassWrap;
 
@@ -674,35 +675,42 @@ public class Utils {
         if (_appFolder == null) {
             _appFolder = new AtomicReference<>();
 
-            URL temp = ResourceUtil.getResource("/");
-
-            if (temp == null) {
-                _appFolder.set(null);
+            if (NativeDetector.inNativeImage()) {
+                //原生模式为单文件（所有类在一个位置）
+                String uri = Utils.class.getProtectionDomain().getCodeSource().getLocation().toString();
+                int endIdx = uri.lastIndexOf("/") + 1;
+                _appFolder.set(uri.substring(0, endIdx));
             } else {
-                String uri = temp.toString();
+                URL temp = ResourceUtil.getResource("/");
 
-                if (uri.contains("jar!/")) {
-                    //说明是 jar 运行
-                    int endIdx = uri.indexOf("jar!/");
-                    endIdx = uri.lastIndexOf("/", endIdx) + 1;
-
-                    uri = uri.substring(9, endIdx);
+                if (temp == null) {
+                    _appFolder.set(null);
                 } else {
-                    int endIdx = uri.lastIndexOf("/classes/");
-                    if (endIdx > 0) {
-                        endIdx = endIdx + 1;
+                    String uri = temp.toString();
+
+                    if (uri.contains("jar!/")) {
+                        //说明是 jar 运行
+                        int endIdx = uri.indexOf("jar!/");
+                        endIdx = uri.lastIndexOf("/", endIdx) + 1;
+
+                        uri = uri.substring(9, endIdx);
                     } else {
-                        endIdx = uri.lastIndexOf("/") + 1;
+                        int endIdx = uri.lastIndexOf("/classes/");
+                        if (endIdx > 0) {
+                            endIdx = endIdx + 1;
+                        } else {
+                            endIdx = uri.lastIndexOf("/") + 1;
+                        }
+
+                        if (uri.startsWith("file:/")) {
+                            uri = uri.substring(5, endIdx);
+                        } else {
+                            uri = uri.substring(0, endIdx);
+                        }
                     }
 
-                    if (uri.startsWith("file:/")) {
-                        uri = uri.substring(5, endIdx);
-                    } else {
-                        uri = uri.substring(0, endIdx);
-                    }
+                    _appFolder.set(uri);
                 }
-
-                _appFolder.set(uri);
             }
         }
 
