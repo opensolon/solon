@@ -677,7 +677,7 @@ public class Utils {
 
             if (NativeDetector.inNativeImage()) {
                 //原生模式为单文件（所有类在一个位置）
-                String uri = new File(Utils.class.getProtectionDomain().getCodeSource().getLocation().getFile()).toURI().toString();
+                String uri = Utils.class.getProtectionDomain().getCodeSource().getLocation().getPath();
                 int endIdx = uri.lastIndexOf("/") + 1;
 
                 _appFolder.set(uri.substring(0, endIdx));
@@ -687,14 +687,14 @@ public class Utils {
                 if (temp == null) {
                     _appFolder.set(null);
                 } else {
-                    String uri = temp.toString();
+                    String uri = temp.getPath();
 
                     if (uri.contains("jar!/")) {
                         //说明是 jar 运行
                         int endIdx = uri.indexOf("jar!/");
                         endIdx = uri.lastIndexOf("/", endIdx) + 1;
 
-                        uri = uri.substring(9, endIdx);
+                        uri = uri.substring(0, endIdx);
                     } else {
                         int endIdx = uri.lastIndexOf("/classes/");
                         if (endIdx > 0) {
@@ -703,11 +703,7 @@ public class Utils {
                             endIdx = uri.lastIndexOf("/") + 1;
                         }
 
-                        if (uri.startsWith("file:/")) {
-                            uri = uri.substring(5, endIdx);
-                        } else {
-                            uri = uri.substring(0, endIdx);
-                        }
+                        uri = uri.substring(0, endIdx);
                     }
 
                     _appFolder.set(uri);
