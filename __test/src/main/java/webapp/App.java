@@ -54,6 +54,7 @@ public class App {
         System.out.println("Default Charset in Use=" + getDefaultCharSet());
         System.out.println("file.encoding=" + System.getProperty("file.encoding"));
         System.out.println("user.dir=" + System.getProperty("user.dir"));
+        System.out.println("app.dir=" + Utils.appFolder());
         System.out.println("resource[/]=" + App.class.getResource("/").getPath());
         System.out.println("resource[]=" + App.class.getResource("").getPath());
 
@@ -89,8 +90,6 @@ public class App {
         }).onAppLoadEnd(e -> {
             System.out.println("4.应用全加载完成了");
         }).start(App.class, args, x -> {
-            System.out.println("solon.app.folder[]=" + Utils.appFolder());
-
             x.enableSocketD(true);
             x.enableWebSocket(true);
 
