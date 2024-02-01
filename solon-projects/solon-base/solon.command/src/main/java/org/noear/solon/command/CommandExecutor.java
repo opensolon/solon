@@ -5,5 +5,5 @@ package org.noear.solon.command;
  * @since 2.7
  */
 public interface CommandExecutor {
-    void execute();
+    void execute(String command) throws Throwable;
 }

@@ -93,7 +93,10 @@ public abstract class BeanContainer {
                 tmp = (T) attachments.get(clz);
                 if (tmp == null) {
                     tmp = supplier.get();
+                    //加到附件
                     attachments.put(clz, tmp);
+                    //同时注册到容器
+                    wrapAndPut(clz, tmp);
                 }
             }
         }

@@ -19,12 +19,13 @@ import org.noear.solon.net.websocket.listener.ContextPathWebSocketListener;
 public class XPluginImpl implements Plugin {
 
     private SocketdRouter socketdRouter;
-    private WebSocketRouter webSocketRouter = WebSocketRouter.getInstance();
+    private WebSocketRouter webSocketRouter;
 
     @Override
     public void start(AppContext context) throws Throwable {
+        webSocketRouter = WebSocketRouter.getInstance();
+
         //websocket
-        context.wrapAndPut(WebSocketRouter.class, webSocketRouter);
         context.lifecycle((() -> {
             //尝试设置 context-path
             if (Utils.isNotEmpty(Solon.cfg().serverContextPath())) {
@@ -35,7 +36,6 @@ public class XPluginImpl implements Plugin {
         //socket.d
         if (ClassUtil.hasClass(() -> Listener.class)) {
             socketdRouter = SocketdRouter.getInstance();
-            context.wrapAndPut(SocketdRouter.class, socketdRouter);
         }
 
         //添加注解处理
