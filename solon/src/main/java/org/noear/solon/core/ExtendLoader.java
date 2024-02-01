@@ -75,7 +75,7 @@ public class ExtendLoader {
 
             if (folder != null) {
                 //转为路径
-                folderPath = folder.getPath();
+                folderPath = folder.toURI().getPath();
 
                 //打印
                 LogUtil.global().info("Extend root: " + folderPath);
