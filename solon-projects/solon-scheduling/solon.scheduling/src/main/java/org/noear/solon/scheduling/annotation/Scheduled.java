@@ -6,7 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 定时任务注解
+ * 定时调度注解
  *
  * @author noear
  * @since 1.6

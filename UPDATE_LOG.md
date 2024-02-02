@@ -20,9 +20,9 @@
 * 新增 graphql-solon-plugin 插件
 
 ### 2.7.0
-* 调整 内核的 mvc 能力实现，独立为 solon.mvc 插件（需要 mvc 注解的插件，需要引入 solon.mvc）
+* 调整 内核的 mvc 能力实现，独立为 solon.mvc 插件（需要 mvc 注解的插件，现在需要引入 solon.mvc）
 * 新增 solon.view.jsp.jakarta 插件
-* 新增 solon.command 插件
+* 新增 solon.scheduling 插件对 command 调度的支持（即由命令行参数调度任务）
 * 添加 undertow jsp tld 对 templates 目录支持（简化 tld 的使用）
 * 添加 jetty jsp tld 对 templates 目录支持（简化 tld 的使用）
 * 添加 SocketdProxy 对 socket.d 集群的支持

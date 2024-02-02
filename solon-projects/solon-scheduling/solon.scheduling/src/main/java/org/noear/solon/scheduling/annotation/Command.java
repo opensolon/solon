@@ -1,8 +1,10 @@
-package org.noear.solon.command.annotation;
+package org.noear.solon.scheduling.annotation;
 
 import java.lang.annotation.*;
 
 /**
+ * 命令调度注解
+ *
  * @author noear
  * @since 2.7
  */

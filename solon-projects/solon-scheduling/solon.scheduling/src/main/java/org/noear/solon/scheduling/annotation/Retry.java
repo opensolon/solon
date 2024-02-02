@@ -9,7 +9,7 @@ import java.lang.annotation.*;
 import java.util.concurrent.TimeUnit;
 
 /**
- * 重试执行注解
+ * 重试调度注解
  *
  * @author kongweiguang
  * @since 2.3

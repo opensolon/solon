@@ -3,8 +3,12 @@ package org.noear.solon.scheduling.integration;
 import org.noear.solon.Solon;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
+import org.noear.solon.core.event.AppLoadEndEvent;
+import org.noear.solon.core.util.RunUtil;
 import org.noear.solon.scheduling.annotation.*;
 import org.noear.solon.scheduling.async.AsyncInterceptor;
+import org.noear.solon.scheduling.command.CommandExecutor;
+import org.noear.solon.scheduling.command.CommandManager;
 import org.noear.solon.scheduling.retry.RetryInterceptor;
 
 import java.lang.annotation.Annotation;
@@ -28,6 +32,24 @@ public class XPluginImp implements Plugin {
         Annotation enableRetryAnno = source.getAnnotation(EnableRetry.class);
         if (enableRetryAnno != null) {
             context.beanInterceptorAdd(Retry.class, new RetryInterceptor(context), Integer.MIN_VALUE);
+        }
+
+        //允许在外部手动构建，但是可能不会被启用
+        CommandManager commandManager = CommandManager.getInstance();
+        Annotation enableCommandAnno = source.getAnnotation(EnableCommand.class);
+        if (enableCommandAnno != null) {
+            //注册注解构建器
+            context.beanBuilderAdd(Command.class, (clz, bw, anno) -> {
+                //构建时，收集命令
+                if (bw.raw() instanceof CommandExecutor) {
+                    commandManager.register(anno.value(), bw.get());
+                }
+            });
+
+            //订阅事件（启动完成后开始执行）
+            context.onEvent(AppLoadEndEvent.class, e -> {
+                RunUtil.delay(commandManager::executeAll, 100);
+            });
         }
     }
 }

@@ -1,7 +1,6 @@
-package org.noear.solon.command.integration;
+package org.noear.solon.scheduling.command;
 
 import org.noear.solon.Solon;
-import org.noear.solon.command.CommandExecutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

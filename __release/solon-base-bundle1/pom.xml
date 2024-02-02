@@ -26,7 +26,6 @@
         <module>../../solon-projects/solon-base/solon.mvc</module>
         <module>../../solon-projects/solon-base/solon.net</module>
         <module>../../solon-projects/solon-base/solon.hotplug</module>
-        <module>../../solon-projects/solon-base/solon.command</module>
 
         <module>../../solon-projects/solon-tool/solon-maven-plugin</module>
         <module>../../solon-projects/solon-tool/solon-springboot-starter</module>

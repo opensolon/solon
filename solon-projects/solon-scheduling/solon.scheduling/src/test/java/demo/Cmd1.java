@@ -1,12 +1,11 @@
 package demo;
 
 import org.noear.solon.Solon;
-import org.noear.solon.command.CommandExecutor;
-import org.noear.solon.command.annotation.Command;
+import org.noear.solon.scheduling.annotation.Command;
+import org.noear.solon.scheduling.annotation.EnableCommand;
+import org.noear.solon.scheduling.command.CommandExecutor;
 
-/**
- * @author noear 2024/2/1 created
- */
+@EnableCommand
 @Command("cmd:user")
 public class Cmd1 implements CommandExecutor {
     @Override

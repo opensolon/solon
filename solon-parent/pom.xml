@@ -304,12 +304,6 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.command</artifactId>
-                <version>${solon.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.noear</groupId>
                 <artifactId>solon.boot</artifactId>
                 <version>${solon.version}</version>
             </dependency>
