@@ -4,6 +4,7 @@ import org.noear.socketd.transport.core.EntityMetas;
 import org.noear.socketd.transport.core.Message;
 import org.noear.socketd.transport.core.Session;
 import org.noear.socketd.transport.core.entity.EntityDefault;
+import org.noear.socketd.transport.core.entity.FileEntity;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.ContextAsyncListener;
@@ -18,8 +19,6 @@ import java.io.*;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.nio.ByteBuffer;
-import java.nio.MappedByteBuffer;
-import java.nio.channels.FileChannel;
 
 /**
  * Socket.D Context + Hnalder 适配
@@ -200,11 +199,11 @@ public class SocketdContext extends ContextEmpty {
         contentType(contentType);
 
         long len = file.length();
-        MappedByteBuffer byteBuffer = new RandomAccessFile(file, "r")
-                .getChannel()
-                .map(FileChannel.MapMode.READ_ONLY, 0, len);
+        FileEntity fileEntity = new FileEntity(file);
 
-        replyDo(byteBuffer, (int) len);
+        replyDo(fileEntity.data(), (int) len);
+
+        fileEntity.release();
     }
 
     @Override
