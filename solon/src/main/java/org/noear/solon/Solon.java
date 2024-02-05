@@ -240,15 +240,12 @@ public class Solon {
 
 
         if (delay > 0) {
-
-            String hint = "(1.prestop 2.delay 3.stop)";
-
-            LogUtil.global().info("App: Security to stop: begin..." + hint);
+            LogUtil.global().info("App: Security to stop: begin...(1.prestop 2.delay 3.stop)");
 
             //1.预停止
             Solon.cfg().plugs().forEach(p -> p.prestop());
             EventBus.publishTry(new AppPrestopEndEvent(Solon.app()));
-            LogUtil.global().info("App: Security to stop: 1 completed " + hint);
+            LogUtil.global().info("App: Security to stop: 1/3 completed");
 
 
             //2.延时标停
@@ -267,13 +264,13 @@ public class Solon {
                 sleep0(delay2);
             }
 
-            LogUtil.global().info("App: Security to stop: 2 completed " + hint);
+            LogUtil.global().info("App: Security to stop: 2/3 completed");
 
             //3.停止
             Solon.cfg().plugs().forEach(p -> p.stop());
             Solon.context().stop();
             EventBus.publishTry(new AppStopEndEvent(Solon.app()));
-            LogUtil.global().info("App: Security to stop: 3 completed " + hint);
+            LogUtil.global().info("App: Security to stop: 3/3 completed");
         } else {
             //1.预停止
             Solon.cfg().plugs().forEach(p -> p.prestop());
