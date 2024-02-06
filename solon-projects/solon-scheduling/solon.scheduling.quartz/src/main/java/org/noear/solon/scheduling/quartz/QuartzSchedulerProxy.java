@@ -52,7 +52,7 @@ public class QuartzSchedulerProxy implements Lifecycle {
      */
     public void remove(String name) throws SchedulerException {
         if (_scheduler != null) {
-            _scheduler.resumeJob(getJobKey(name));
+            _scheduler.deleteJob(getJobKey(name));
         }
     }
 
