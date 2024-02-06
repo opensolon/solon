@@ -31,6 +31,8 @@
 * 调整 外部资源文件加载，保持与应用目录的相对位置（不因 user.dir 而变）
 * 调整 @Get, @Options 注解到类上时的限定效果，保持与方法上一样（原增量效果 @Addition 注解替代）
 * 解除 WEB-INF 的目录依赖，早期是为了支持 jsp tld 文件的自动处理（仍然兼容）
+* socket.d 升为 2.3.11
+* folkmq 升为 1.0.32
 
 ### 2.6.6
 * 添加 ToSocketdWebSocketListener::setListener 接口（更方便定制）
