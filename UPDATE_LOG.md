@@ -33,6 +33,8 @@
 * 解除 WEB-INF 的目录依赖，早期是为了支持 jsp tld 文件的自动处理（仍然兼容）
 * socket.d 升为 2.3.11
 * folkmq 升为 1.0.32
+* sqltoy 升为 5.2.93
+* mybatis-flex 升为 1.7.8
 
 ### 2.6.6
 * 添加 ToSocketdWebSocketListener::setListener 接口（更方便定制）
