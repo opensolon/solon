@@ -1,5 +1,7 @@
 package org.noear.solon.core;
 
+import org.noear.solon.core.mvc.MvcFactoryDefault;
+
 import java.util.function.Function;
 
 /**
@@ -64,7 +66,7 @@ public final class FactoryManager {
     //
     // mvcFactory 对接
     //
-    private static MvcFactory mvcFactory;
+    private static MvcFactory mvcFactory = new MvcFactoryDefault();
 
     public static boolean hasMvcFactory() {
         return mvcFactory != null;

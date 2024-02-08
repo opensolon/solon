@@ -1,4 +1,4 @@
-package org.noear.solon.mvc;
+package org.noear.solon.core.mvc;
 
 import org.noear.solon.annotation.*;
 import org.noear.solon.core.handle.MethodType;

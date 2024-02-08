@@ -2,7 +2,7 @@ package org.noear.solon.serialization.fastjson2;
 
 import com.alibaba.fastjson2.*;
 import org.noear.solon.Utils;
-import org.noear.solon.mvc.ActionExecuteHandlerDefault;
+import org.noear.solon.core.mvc.ActionExecuteHandlerDefault;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.wrap.MethodWrap;
 import org.noear.solon.core.wrap.ParamWrap;
