@@ -189,7 +189,7 @@ public class AppContext extends BeanContainer {
             //组件化处理
             beanComponentized(bw);
 
-            LogUtil.global().warn("@ProxyComponent will be discarded, suggested use '@Component'");
+            LogUtil.global().error("@ProxyComponent will be discarded, suggested use '@Component'");
         });
 
         //注册 @Remoting 构建器
@@ -290,7 +290,7 @@ public class AppContext extends BeanContainer {
         if (Plugin.class.isAssignableFrom(clz)) {
             //如果是插件，则插入
             Solon.app().plug(bw.raw());
-            LogUtil.global().warn("'Plugin' will be deprecated as a component, please use 'LifecycleBean'");
+            LogUtil.global().error("'Plugin' will be deprecated as a component, please use 'LifecycleBean'");
             return;
         }
 
