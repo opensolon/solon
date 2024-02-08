@@ -46,28 +46,28 @@ public class XPluginImpl implements Plugin {
 
 
         SocketServerProps serverProps = new SocketServerProps(20000);
-        ExecutorService channelExecutor = serverProps.getBioExecutor("Socketd-channelExecutor-");
+        ExecutorService exchangeExecutor = serverProps.getBioExecutor("Socketd-channelExecutor-");
 
         Server serverTmp = SocketD.createServerOrNull("sd:tcp");
         if (serverTmp != null) {
-            serverTmp.config(c -> c.channelExecutor(channelExecutor));
+            serverTmp.config(c -> c.exchangeExecutor(exchangeExecutor));
             startServer1(serverTmp, serverProps, 0);
         }
 
         serverTmp = SocketD.createServerOrNull("sd:udp");
         if (serverTmp != null) {
-            serverTmp.config(c -> c.channelExecutor(channelExecutor));
+            serverTmp.config(c -> c.exchangeExecutor(exchangeExecutor));
             startServer1(serverTmp, serverProps, 1);
         }
 
         serverTmp = SocketD.createServerOrNull("sd:ws");
         if (serverTmp != null) {
-            serverTmp.config(c -> c.channelExecutor(channelExecutor));
+            serverTmp.config(c -> c.exchangeExecutor(exchangeExecutor));
             startServer1(serverTmp, serverProps, 2);
         }
 
         if (serverList.size() == 0) {
-            channelExecutor.shutdown();
+            exchangeExecutor.shutdown();
             LogUtil.global().warn("Missing socketd server provider!");
         }
     }

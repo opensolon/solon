@@ -228,6 +228,11 @@ public class SolonApp extends RouterWrapper {
             RenderManager.mapping("." + k, v);
         });
 
+        //3.1.尝试设置 context-path
+        if (Utils.isNotEmpty(Solon.cfg().serverContextPath())) {
+            Solon.app().filterIfAbsent(-99, new ContextPathFilter());
+        }
+
         //3.2.标识上下文加载完成
         context().start();
 

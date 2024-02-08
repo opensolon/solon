@@ -214,7 +214,7 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
 
         //前置处理（最多一次渲染）
         try {
-            for (Handler h : befores) {
+            for (Handler h : befores()) {
                 h.handle(c);
             }
 
@@ -244,7 +244,7 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
         } finally {
 
             //后置处理（确保不受前面的异常影响）
-            for (Handler h : afters) {
+            for (Handler h : afters()) {
                 h.handle(c);
             }
         }

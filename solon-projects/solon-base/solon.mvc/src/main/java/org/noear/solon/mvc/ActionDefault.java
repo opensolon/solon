@@ -1,4 +1,4 @@
-package org.noear.solon.core.handle;
+package org.noear.solon.mvc;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
@@ -249,12 +249,12 @@ public class ActionDefault extends HandlerAide implements Action {
         try {
             //前置处理（最多一次渲染）
             if (bAide != null) {
-                for (Handler h : bAide.befores) {
+                for (Handler h : bAide.befores()) {
                     h.handle(c);
                 }
             }
 
-            for (Handler h : befores) {
+            for (Handler h : befores()) {
                 h.handle(c);
             }
 
@@ -301,12 +301,12 @@ public class ActionDefault extends HandlerAide implements Action {
         } finally {
             //后置处理
             if (bAide != null) {
-                for (Handler h : bAide.afters) {
+                for (Handler h : bAide.afters()) {
                     h.handle(c);
                 }
             }
 
-            for (Handler h : afters) {
+            for (Handler h : afters()) {
                 h.handle(c);
             }
         }

@@ -1,13 +1,13 @@
 package demo;
 
-import org.noear.solon.annotation.Controller;
+import org.noear.solon.annotation.Component;
 import org.noear.solon.data.annotation.Cache;
 
 /**
  * @author noear
  * @since 1.5
  */
-@Controller
+@Component
 public class DemoController {
     @Cache
     public String hello(String name) {

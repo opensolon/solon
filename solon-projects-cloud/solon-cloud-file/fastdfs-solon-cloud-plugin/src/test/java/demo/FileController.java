@@ -14,7 +14,7 @@ import java.io.IOException;
  * @author noear 2022/12/17 created
  */
 //@Mapping("file")
-@Controller
+@Component
 public class FileController {
 
     /**

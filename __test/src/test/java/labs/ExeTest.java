@@ -1,7 +1,7 @@
 package labs;
 
 import org.noear.solon.Solon;
-import org.noear.solon.core.handle.ActionExecuteHandlerDefault;
+import org.noear.solon.mvc.ActionExecuteHandlerDefault;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.wrap.ParamWrap;
 

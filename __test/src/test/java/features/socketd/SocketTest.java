@@ -3,11 +3,9 @@ package features.socketd;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.noear.socketd.SocketD;
-import org.noear.socketd.exception.SocketdException;
-import org.noear.socketd.exception.SocketdTimeoutException;
+import org.noear.socketd.exception.SocketDException;
 import org.noear.socketd.transport.client.ClientSession;
 import org.noear.socketd.transport.core.Entity;
-import org.noear.socketd.transport.core.Session;
 import org.noear.socketd.transport.core.entity.StringEntity;
 import org.noear.solon.Solon;
 import org.noear.solon.test.SolonJUnit5Extension;
@@ -49,7 +47,7 @@ public class SocketTest {
             msg = session.sendAndRequest(root + "/demog/中文/3", new StringEntity("close")).await();
             //assert msg == null;
             assert false;
-        } catch (SocketdException e) {
+        } catch (SocketDException e) {
             assert true;
         }
 
