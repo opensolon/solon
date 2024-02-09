@@ -148,7 +148,7 @@
         <sqltoy.version>5.2.93</sqltoy.version>
         <mybatis-flex.version>1.7.8</mybatis-flex.version>
         <fastmybatis.version>2.10.0</fastmybatis.version>
-        <dbvisitor.version>5.4.0</dbvisitor.version>
+        <dbvisitor.version>5.4.1</dbvisitor.version>
         <bean-searcher.version>4.2.7</bean-searcher.version>
 
         <liteflow.version>2.11.4.2</liteflow.version>
@@ -341,18 +341,6 @@
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.boot.jetty.add.websocket</artifactId>
-                <version>${solon.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>solon.boot.tomcat</artifactId>
-                <version>${solon.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>solon.boot.tomcat.add.jsp</artifactId>
                 <version>${solon.version}</version>
             </dependency>
 

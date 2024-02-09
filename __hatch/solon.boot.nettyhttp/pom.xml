@@ -8,10 +8,10 @@
         <groupId>org.noear</groupId>
         <artifactId>solon-parent</artifactId>
         <version>2.7.0</version>
-        <relativePath>../../../solon-parent/pom.xml</relativePath>
+        <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>solon.boot.tomcat</artifactId>
+    <artifactId>solon.boot.nettyhttp</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>
@@ -21,27 +21,17 @@
         </dependency>
 
         <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.web.servlet</artifactId>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-all</artifactId>
+            <version>${netty.version}</version>
         </dependency>
 
-        <!-- server core begin -->
-        <dependency>
-            <groupId>org.apache.tomcat.embed</groupId>
-            <artifactId>tomcat-embed-core</artifactId>
-            <version>${tomcat.version}</version>
-        </dependency>
-        <!-- server core end -->
 
-        <!--jsp started-->
         <dependency>
-            <groupId>org.apache.tomcat.embed</groupId>
-            <artifactId>tomcat-embed-jasper</artifactId>
-            <version>${tomcat.version}</version>
-            <scope>provided</scope>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
         </dependency>
-        <!--jsp ended -->
     </dependencies>
-
 
 </project>

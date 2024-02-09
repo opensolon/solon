@@ -11,28 +11,37 @@
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>metrics-solon-plugin</artifactId>
+    <artifactId>solon.boot.tomcat</artifactId>
     <packaging>jar</packaging>
-
-    <properties>
-        <metrics.version>3.1.2</metrics.version>
-    </properties>
 
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon</artifactId>
+            <artifactId>solon.boot</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>io.dropwizard.metrics</groupId>
-            <artifactId>metrics-core</artifactId>
-            <version>${metrics.version}</version>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.web.servlet</artifactId>
         </dependency>
+
+        <!-- server core begin -->
         <dependency>
-            <groupId>io.dropwizard.metrics</groupId>
-            <artifactId>metrics-annotation</artifactId>
-            <version>${metrics.version}</version>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-core</artifactId>
+            <version>${tomcat.version}</version>
         </dependency>
+        <!-- server core end -->
+
+        <!--jsp started-->
+        <dependency>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-jasper</artifactId>
+            <version>${tomcat.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <!--jsp ended -->
     </dependencies>
+
+
 </project>

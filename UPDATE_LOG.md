@@ -37,6 +37,7 @@
 * folkmq 升为 1.0.32
 * sqltoy 升为 5.2.93
 * mybatis-flex 升为 1.7.8
+* dbvisitor 升为 5.4.1
 * fastjson2 升为 2.0.46
 
 ### 2.6.6
