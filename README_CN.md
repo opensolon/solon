@@ -62,7 +62,7 @@ Solon v2.7.0
 * 支持“注解”与“手动”两种模式，按需自由操控
 * Not Servlet，可以适配任何基础通讯框架（最小 0.3m 运行rpc架构）
 * [独特的 IOC/AOP 容器设计](https://solon.noear.org/article/241)。不会因为插件变多而启动变很慢
-* 支持 Web、Data、Job、Command、FaaS、Remoting、Cloud 等任何开发场景
+* 支持 Web、Scheduling、FaaS、Remoting、Cloud 等任何开发场景
 * 兼顾 Handler + Context 和 Listener + Message 两种架构模式
 * 强调插件式扩展，可扩展可切换；适应不同的应用场景
 * 支持 GraalVm Native Image 打包。支持 FaaS 模式开发

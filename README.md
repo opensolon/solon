@@ -62,7 +62,7 @@ Build from scratch. It has its own standards and norms and open ecology. Combina
 * Supports "annotation" and "manual" modes, freely controlled as needed
 * Not Servlet, can adapt to any basic communication framework (minimum 0.3m running rpc architecture)
 * [Unique IOC/AOP container design](https://solon.noear.org/article/241). It won't start slowly just because there are more plug-ins
-* Supports Web,Data,Job,Command,FaaS,Remoting,Cloud, and other development scenarios
+* Supports Web,Scheduling,FaaS,Remoting,Cloud, and other development scenarios
 * The two architecture modes are Handler + Context and Listener + Message
 * Emphasizes plug-in extensibility, expandable and swappable, adaptable to different application scenarios
 * Supports GraalVm Native Image packaging. Support FaaS pattern development

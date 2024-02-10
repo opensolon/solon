@@ -62,7 +62,7 @@ Solon v2.7.0
 * 「注釈」と「手動」2種類のモードをサポートし、必要に応じて自由に操作可能
 * Not Servlet、あらゆる通信インフラストラクチャに適合（最小0.3 mでrpcアーキテクチャが実行可能）
 * [ユニークなIOC/AOP容器のデザインです](https://solon.noear.org/article/241)。プラグインが多くなったからといって起動が遅くなることはありません
-* Web、Data、Job、Command、FaaS、Remoting、Cloud などの開発シナリオをサポート
+* Web、Scheduling、FaaS、Remoting、Cloud などの開発シナリオをサポート
 * Handler+ContextとListener+Messageの2つのイベントモデルを両立
 * プラグイン式の拡張を強調し、異なるアプリケーションシーンに対応可能
 * GraalVm Native Imageパッケージに対応しています。FaaSモデルの開発を支援します
