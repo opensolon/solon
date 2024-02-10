@@ -86,8 +86,6 @@ Solon v2.7.0
 | <img src="group_qq.png" width="120" />       | <img src="group_wx.png" width="120" /> 
 
 
-交流群里，会提供 "保姆级" 支持和帮助。如有需要，也可提供技术培训和顾问服务
-
 ## 官网及相关示例、案例：
 
 * 官网地址：[https://solon.noear.org](https://solon.noear.org)
