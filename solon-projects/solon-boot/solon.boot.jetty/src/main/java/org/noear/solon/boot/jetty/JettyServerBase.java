@@ -131,7 +131,7 @@ abstract class JettyServerBase implements ServerLifecycle , HttpServerConfigure 
         ServletContextHandler handler = new ServletContextHandler();
         handler.setContextPath("/");
         handler.addServlet(JtHttpContextServletHandler.class, "/").setAsyncSupported(true);
-        handler.setBaseResource(new ResourceCollection(getResourceURLs()));
+        //handler.setBaseResource(new ResourceCollection(getResourceURLs())); //这是静态资源，没必要还可能出错
 
 
         //添加session state 支持
