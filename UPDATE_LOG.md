@@ -17,7 +17,6 @@
 * 调整 solon.config.add 与 solon.config.load 合并，规范格式（同时支持内部与外部） ???
 * 调整 使用更多的 slf4j 替换 LogUtil ???
 * 调整 取消启动参数简写模式，保持与应用参数相同的名字 ???
-* 新增 graphql-solon-plugin 插件
 
 ### 2.7.0
 * 调整 内核的 mvc 能力实现，独立为 solon.core.mvc 包（为未来独立作准备）
