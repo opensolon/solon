@@ -32,7 +32,7 @@ public class AppClassLoader extends URLClassLoader {
     }
 
     /**
-     * 获取全局实例
+     * @return 获取全局实例
      * */
     public static AppClassLoader global() {
         return global;
@@ -40,6 +40,8 @@ public class AppClassLoader extends URLClassLoader {
 
     /**
      * 设置全局实例
+     *
+     * @param instance 全局实例
      * */
     public static void globalSet(AppClassLoader instance) {
         if (instance != null) {
@@ -49,6 +51,9 @@ public class AppClassLoader extends URLClassLoader {
 
     /**
      * 加载 jar 文件
+     *
+     * @param url jar url
+     * @return 自己
      * */
     public static AppClassLoader loadJar(URL url) {
         AppClassLoader loader = new AppClassLoader();
@@ -58,7 +63,10 @@ public class AppClassLoader extends URLClassLoader {
     }
 
     /**
-     * 加载文件或目录
+     * 加载 jar 文件或目录
+     *
+     * @param fileOrDir 文件或目录
+     * @return 自己
      * */
     public static AppClassLoader loadJar(File fileOrDir) {
         AppClassLoader loader = new AppClassLoader();

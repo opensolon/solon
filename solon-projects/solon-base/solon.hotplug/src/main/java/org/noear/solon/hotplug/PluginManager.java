@@ -115,7 +115,9 @@ public class PluginManager {
 
 
     /**
-     * 加载jar插件包
+     * 加载 jar 插件包
+     *
+     * @param file 文件
      * */
     public synchronized static PluginPackage loadJar(File file) {
         try {
@@ -135,7 +137,9 @@ public class PluginManager {
     }
 
     /**
-     * 卸载Jar插件包
+     * 卸载 Jar 插件包
+     *
+     * @param pluginPackage 插件包
      * */
     public synchronized static void unloadJar(PluginPackage pluginPackage) {
         try {
