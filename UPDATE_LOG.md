@@ -19,7 +19,7 @@
 * 调整 取消启动参数简写模式，保持与应用参数相同的名字 ???
 
 ### 2.7.0
-* 调整 内核的 mvc 能力实现，独立为 solon.core.mvc 包（为未来独立作准备）
+* 调整 内核的 mvc 能力实现，独立为 solon.core.mvc 包（为之后拆分作准备）
 * 新增 solon.view.jsp.jakarta 插件
 * 新增 solon.scheduling 插件对 command 调度的支持（即由命令行参数调度任务）
 * 添加 undertow jsp tld 对 templates 目录支持（简化 tld 的使用）
