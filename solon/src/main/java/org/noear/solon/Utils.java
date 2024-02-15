@@ -688,6 +688,9 @@ public class Utils {
                 _appFolder.set(uri);
             } else {
                 URL temp = ResourceUtil.getResource("/");
+                if (temp == null) {
+                    temp = ResourceUtil.getResource("");
+                }
 
                 if (temp == null) {
                     _appFolder.set(null);
