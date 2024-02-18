@@ -48,7 +48,7 @@
         <javax.servlet.version>4.0.1</javax.servlet.version>
         <jakarta.servlet.version>5.0.0</jakarta.servlet.version>
 
-        <jetty.version>9.4.52.v20230823</jetty.version>
+        <jetty.version>9.4.54.v20240208</jetty.version>
         <undertow.version>2.2.28.Final</undertow.version>
         <undertow.jastow.version>2.1.0.Final</undertow.jastow.version>
         <undertow.jboss-metadata.version>13.4.0.Final</undertow.jboss-metadata.version>

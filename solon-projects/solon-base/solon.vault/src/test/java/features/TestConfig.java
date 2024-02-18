@@ -1,6 +1,6 @@
 package features;
 
-import com.zaxxer.hikari.HikariDataSource;
+//import com.zaxxer.hikari.HikariDataSource;
 import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
@@ -38,8 +38,8 @@ public class TestConfig {
         return props;
     }
 
-    @Bean("db3")
-    private DataSource db3(@VaultInject("${test.db2}") HikariDataSource ds){
-        return ds;
-    }
+//    @Bean("db3")
+//    private DataSource db3(@VaultInject("${test.db2}") HikariDataSource ds){
+//        return ds;
+//    }
 }
