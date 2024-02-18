@@ -141,7 +141,7 @@
         <beetl.version>3.15.12.RELEASE</beetl.version>
         <enjoy.version>5.1.2</enjoy.version>
         <velocity.version>2.3</velocity.version>
-        <thymeleaf.version>3.0.14.RELEASE</thymeleaf.version>
+        <thymeleaf.version>3.0.15.RELEASE</thymeleaf.version>
         <freemarker.version>2.3.31</freemarker.version>
 
         <activerecord.version>5.1.2</activerecord.version>
