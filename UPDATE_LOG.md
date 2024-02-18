@@ -24,6 +24,7 @@
 * smarthttp 升为 1.3.9
 * smartsocket 升为 1.5.42
 * jetcd 升为 0.7.7
+* xxl-job 升为 2.4.0
 * thymeleaf 升为 3.0.15.RELEASE
 * jetty 升为 9.4.54.v20240208
 
