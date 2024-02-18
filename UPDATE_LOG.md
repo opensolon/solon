@@ -23,6 +23,7 @@
 * 调整 jetty 适配取消静态资源的配置（无必要）
 * smarthttp 升为 1.3.9
 * smartsocket 升为 1.5.42
+* jetcd 升为 0.7.7
 
 ### 2.7.0
 * 调整 内核的 mvc 能力实现，独立为 solon.core.mvc 包（为之后拆分作准备）

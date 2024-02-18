@@ -123,7 +123,7 @@
         <nacos1.version>1.4.5</nacos1.version>
         <nacos2.version>2.3.0</nacos2.version>
         <zookeeper.version>3.7.1</zookeeper.version>
-        <jetcd.version>0.5.0</jetcd.version>
+        <jetcd.version>0.7.7</jetcd.version>
         <polaris.version>1.14.1</polaris.version>
 
         <feign.version>8.18.0</feign.version>
