@@ -54,8 +54,8 @@
         <undertow.jboss-metadata.version>13.4.0.Final</undertow.jboss-metadata.version>
         <undertow.jboss-jsp.version>2.0.0.Final</undertow.jboss-jsp.version>
         <tomcat.version>9.0.64</tomcat.version>
-        <smartsocket.version>1.5.41</smartsocket.version>
-        <smarthttp.version>1.3.8</smarthttp.version>
+        <smartsocket.version>1.5.42</smartsocket.version>
+        <smarthttp.version>1.3.9</smarthttp.version>
         <vertx.version>4.4.1</vertx.version>
 
 
