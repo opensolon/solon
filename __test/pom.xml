@@ -477,7 +477,7 @@
         <dependency>
             <groupId>com.zaxxer</groupId>
             <artifactId>HikariCP</artifactId>
-            <version>${hikaricp5.version}</version>
+            <version>${hikaricp.version}</version>
             <scope>test</scope>
         </dependency>
 

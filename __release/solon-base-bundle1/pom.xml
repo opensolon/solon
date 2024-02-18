@@ -17,15 +17,16 @@
 
     <modules>
         <module>../../solon-projects/solon-base/solon.proxy</module>
-        <module>../../solon-projects/solon-base/solon.vault</module>
         <module>../../solon-projects/solon-base/solon.config.yaml</module>
         <module>../../solon-projects/solon-base/solon.banner</module>
-        <module>../../solon-projects/solon-base/solon.auth</module>
         <module>../../solon-projects/solon-base/solon.validation</module>
         <module>../../solon-projects/solon-base/solon.i18n</module>
         <module>../../solon-projects/solon-base/solon.mvc</module>
         <module>../../solon-projects/solon-base/solon.net</module>
         <module>../../solon-projects/solon-base/solon.hotplug</module>
+
+        <module>../../solon-projects/solon-security/solon.auth</module>
+        <module>../../solon-projects/solon-security/solon.vault</module>
 
         <module>../../solon-projects/solon-tool/solon-maven-plugin</module>
         <module>../../solon-projects/solon-tool/solon-springboot-starter</module>
