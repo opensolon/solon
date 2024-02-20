@@ -25,6 +25,12 @@ public interface IJobManager extends Lifecycle {
      * 任务获取
      * */
     JobHolder jobGet(String name);
+
+    /**
+     * 任务获取全部
+     */
+    Map<String, JobHolder> jobGetAll();
+
     /**
      * 任务移除
      * */

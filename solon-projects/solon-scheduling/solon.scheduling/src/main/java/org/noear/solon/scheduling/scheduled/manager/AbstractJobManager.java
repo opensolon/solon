@@ -86,6 +86,13 @@ public abstract class AbstractJobManager implements IJobManager {
         return jobMap.get(name);
     }
 
+    /**
+     * 任务获取全部
+     */
+    @Override
+    public Map<String, JobHolder> jobGetAll() {
+        return jobMap;
+    }
 
     /**
      * 任务移除
