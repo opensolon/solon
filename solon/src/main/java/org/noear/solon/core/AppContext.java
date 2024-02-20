@@ -923,6 +923,25 @@ public class AppContext extends BeanContainer {
     /**
      * 停止（一般在插件停止之后，再执行）
      */
+    public void prestop() {
+        started = false;
+
+        //执行生命周期bean //支持排序
+        List<RankEntity<LifecycleBean>> beans = new ArrayList<>(lifecycleBeans);
+        beans.sort(Comparator.comparingInt(f -> f.index));
+
+        for (RankEntity<LifecycleBean> b : beans) {
+            try {
+                b.target.prestop();
+            } catch (Throwable e) {
+                //e.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * 停止（一般在插件停止之后，再执行）
+     */
     public void stop() {
         started = false;
 

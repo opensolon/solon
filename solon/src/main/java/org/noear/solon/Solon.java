@@ -244,6 +244,7 @@ public class Solon {
 
             //1.预停止
             Solon.cfg().plugs().forEach(p -> p.prestop());
+            Solon.context().prestop();
             EventBus.publishTry(new AppPrestopEndEvent(Solon.app()));
             LogUtil.global().info("App: Security to stop: 1/3 completed");
 
@@ -274,6 +275,7 @@ public class Solon {
         } else {
             //1.预停止
             Solon.cfg().plugs().forEach(p -> p.prestop());
+            Solon.context().prestop();
             EventBus.publishTry(new AppPrestopEndEvent(Solon.app()));
 
             //2.标停

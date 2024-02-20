@@ -109,21 +109,22 @@ public class PluginPackage {
      * 预停止插件包
      */
     public synchronized void prestop() {
+        started = false;
         for (PluginEntity p1 : plugins) {
             p1.prestop();
         }
-        started = false;
+        context.prestop();
     }
 
     /**
      * 停止插件包
      */
     public synchronized void stop() {
+        started = false;
         for (PluginEntity p1 : plugins) {
             p1.stop();
         }
         context.stop();
         context.clear();
-        started = false;
     }
 }
