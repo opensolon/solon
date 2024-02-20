@@ -24,8 +24,8 @@
         <maven.compiler.target>${java.version}</maven.compiler.target>
 
         <solon.version>2.7.1-SNAPSHOT</solon.version>
-        <solon-admin.version>2.7.0</solon-admin.version>
-        <solon-integration.version>2.7.0</solon-integration.version>
+        <solon-admin.version>2.7.1-M2</solon-admin.version>
+        <solon-integration.version>2.7.1-M2</solon-integration.version>
 
         <snack3.version>3.2.88</snack3.version>
         <weed3.version>3.4.33</weed3.version>

@@ -6,6 +6,7 @@ import org.noear.solon.scheduling.annotation.Scheduled;
 import org.noear.solon.scheduling.scheduled.JobHandler;
 import org.noear.solon.scheduling.scheduled.JobHolder;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -91,7 +92,7 @@ public abstract class AbstractJobManager implements IJobManager {
      */
     @Override
     public Map<String, JobHolder> jobGetAll() {
-        return jobMap;
+        return Collections.unmodifiableMap(jobMap);
     }
 
     /**
