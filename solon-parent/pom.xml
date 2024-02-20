@@ -33,7 +33,7 @@
         <water.version>2.13.0</water.version>
         <luffy.version>1.7.3</luffy.version>
         <redisx.version>1.6.2</redisx.version>
-        <socketd.version>2.4.0</socketd.version>
+        <socketd.version>2.4.2</socketd.version>
         <folkmq.version>1.1.0</folkmq.version>
         <redisson.version>3.24.3</redisson.version>
         <lettuce.version>6.2.7.RELEASE</lettuce.version>
