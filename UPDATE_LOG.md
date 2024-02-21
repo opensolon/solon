@@ -23,6 +23,7 @@
 * 调整 jetty 适配取消静态资源的配置（无必要）
 * smarthttp 升为 1.3.9
 * smartsocket 升为 1.5.42
+* sqltoy 升为 5.2.95
 * socket.d 升为 2.4.2
 * jetcd 升为 0.7.7
 * xxl-job 升为 2.4.0
