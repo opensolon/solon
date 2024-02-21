@@ -926,16 +926,20 @@ public class AppContext extends BeanContainer {
     public void prestop() {
         started = false;
 
-        //执行生命周期bean //支持排序
-        List<RankEntity<LifecycleBean>> beans = new ArrayList<>(lifecycleBeans);
-        beans.sort(Comparator.comparingInt(f -> f.index));
+        try {
+            //执行生命周期bean //支持排序
+            List<RankEntity<LifecycleBean>> beans = new ArrayList<>(lifecycleBeans);
+            beans.sort(Comparator.comparingInt(f -> f.index));
 
-        for (RankEntity<LifecycleBean> b : beans) {
-            try {
-                b.target.prestop();
-            } catch (Throwable e) {
-                //e.printStackTrace();
+            for (RankEntity<LifecycleBean> b : beans) {
+                try {
+                    b.target.prestop();
+                } catch (Throwable e) {
+                    //e.printStackTrace();
+                }
             }
+        } catch (Throwable ignored) {
+            LogUtil.global().warn("AppContext prestop error", ignored);
         }
     }
 
@@ -945,19 +949,23 @@ public class AppContext extends BeanContainer {
     public void stop() {
         started = false;
 
-        //执行生命周期bean //支持排序
-        List<RankEntity<LifecycleBean>> beans = new ArrayList<>(lifecycleBeans);
-        beans.sort(Comparator.comparingInt(f -> f.index));
+        try {
+            //执行生命周期bean //支持排序
+            List<RankEntity<LifecycleBean>> beans = new ArrayList<>(lifecycleBeans);
+            beans.sort(Comparator.comparingInt(f -> f.index));
 
-        for (RankEntity<LifecycleBean> b : beans) {
-            try {
-                b.target.stop();
-            } catch (Throwable e) {
-                //e.printStackTrace();
+            for (RankEntity<LifecycleBean> b : beans) {
+                try {
+                    b.target.stop();
+                } catch (Throwable e) {
+                    //e.printStackTrace();
+                }
             }
-        }
 
-        //执行 Closeable 接口的 bean
-        beanStop0();
+            //执行 Closeable 接口的 bean
+            beanStop0();
+        } catch (Throwable ignored) {
+            LogUtil.global().warn("AppContext stop error", ignored);
+        }
     }
 }

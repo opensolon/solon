@@ -183,7 +183,7 @@ public class Solon {
         }
 
         //5.启动完成
-        if(Utils.isNotEmpty(cfg().licence())){
+        if (Utils.isNotEmpty(cfg().licence())) {
             LogUtil.global().info("SolonEE.Licence: " + cfg().licence());
         }
 
@@ -299,7 +299,7 @@ public class Solon {
     private static void sleep0(int seconds) {
         try {
             Thread.sleep(seconds * 1000L);
-        } catch (InterruptedException ignored) {
+        } catch (Throwable ignored) {
 
         }
     }
