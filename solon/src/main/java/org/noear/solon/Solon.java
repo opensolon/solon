@@ -250,19 +250,20 @@ public class Solon {
 
 
             //2.延时标停
+            LogUtil.global().info("App: Security to stop: delay " + delay + "s...");
             int delay1 = (int) (delay * 0.3);
             int delay2 = delay - delay1;
 
             //一段暂停
             if (delay1 > 0) {
-                sleep0(delay1);
+                sleep0(delay1); //给发现服务留时间
             }
 
-            Solon.app().stopped = true;
+            Solon.app().stopped = true; //http 503，lb 开始切流
 
             //二段暂停
             if (delay2 > 0) {
-                sleep0(delay2);
+                sleep0(delay2); //消化已有请求
             }
 
             LogUtil.global().info("App: Security to stop: 2/3 completed");
