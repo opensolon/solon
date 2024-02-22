@@ -3,6 +3,8 @@ package org.noear.solon.cloud.extend.folkmq.service;
 import org.noear.folkmq.FolkMQ;
 import org.noear.folkmq.client.MqClient;
 import org.noear.folkmq.client.MqMessage;
+import org.noear.folkmq.client.MqResponder;
+import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudEventHandler;
 import org.noear.solon.cloud.CloudProps;
@@ -14,17 +16,18 @@ import org.noear.solon.cloud.model.Event;
 import org.noear.solon.cloud.model.Instance;
 import org.noear.solon.cloud.service.CloudEventObserverManger;
 import org.noear.solon.cloud.service.CloudEventServicePlus;
+import org.noear.solon.core.event.EventBus;
 
 import java.io.IOException;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author noear
  * @since 2.6
  */
 public class CloudEventServiceFolkMqImpl implements CloudEventServicePlus {
+    protected final MqClient client;
+
     private final CloudProps cloudProps;
-    private final MqClient client;
     private final FolkmqConsumeHandler folkmqConsumeHandler;
     private final CloudEventObserverManger observerManger;
     private final long publishTimeout;
@@ -34,11 +37,27 @@ public class CloudEventServiceFolkMqImpl implements CloudEventServicePlus {
         this.observerManger = new CloudEventObserverManger();
         this.folkmqConsumeHandler = new FolkmqConsumeHandler(observerManger);
         this.publishTimeout = cloudProps.getEventPublishTimeout();
+
         this.client = FolkMQ.createClient(cloudProps.getEventServer())
+                .nameAs(Solon.cfg().appName())
                 .autoAcknowledge(false);
+
         if (publishTimeout > 0) {
             client.config(c -> c.requestTimeout(publishTimeout));
         }
+
+        //总线扩展
+        EventBus.publish(client);
+
+        //加入容器
+        Solon.context().wrapAndPut(MqClient.class, client);
+
+        //异步获取 MqResponder
+        Solon.context().getBeanAsync(MqResponder.class, bean->{
+            client.response(bean);
+        });
+
+
         try {
             client.connect();
         } catch (IOException e) {
