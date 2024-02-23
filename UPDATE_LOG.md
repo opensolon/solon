@@ -19,16 +19,28 @@
 * 调整 取消启动参数简写模式，保持与应用参数相同的名字 ???
 
 ### 2.7.1
-* 调整 外部资源文件加载，在 linux 下保持与应用目录的相对位置的处理
-* 调整 jetty 适配取消静态资源的配置（无必要）
+* 添加 solon LifecycleBean:prestop 生命节点，方便用户做安全停止
+* 添加 solon.scheduling IJobManager:jobGetAll 接口
+* 添加 folkmq-solon-cloud-plugin 新的 rpc 与 tran 能力适配
+* 调整 solon.boot.jetty 适配的静态资源处理
+* 优化 solon 外部资源文件的相对位置加载在不同 linux 的兼容性
+* 优化 solon 安全停止打印信息
+* socket.d 升为 2.4.3
+* folkmq 升为 1.2.0
+* jetty 升为 9.4.54.v20240208
+* undertow 升为 2.2.30.Final
 * smarthttp 升为 1.3.9
 * smartsocket 升为 1.5.42
 * sqltoy 升为 5.2.95
-* socket.d 升为 2.4.2
+* mybatis-flex 升为 1.7.9
+* beetlsql 升为 3.30.0-RELEASE
+* activerecord 升为 5.1.3
+* shardingsphere 升为 5.4.1
 * jetcd 升为 0.7.7
 * xxl-job 升为 2.4.0
 * thymeleaf 升为 3.0.15.RELEASE
-* jetty 升为 9.4.54.v20240208
+* enjoy 升为 5.1.3
+* beetl 升为 3.15.14.RELEASE
 
 ### 2.7.0
 * 调整 内核的 mvc 能力实现，独立为 solon.core.mvc 包（为之后拆分作准备）
