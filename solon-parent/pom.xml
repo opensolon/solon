@@ -34,7 +34,7 @@
         <luffy.version>1.7.4</luffy.version>
         <redisx.version>1.6.2</redisx.version>
         <socketd.version>2.4.3</socketd.version>
-        <folkmq.version>1.2.0</folkmq.version>
+        <folkmq.version>1.2.1</folkmq.version>
         <redisson.version>3.24.3</redisson.version>
         <lettuce.version>6.2.7.RELEASE</lettuce.version>
 
