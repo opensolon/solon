@@ -22,11 +22,27 @@ public class LogUtil {
         return global;
     }
 
+    /**
+     * 框架标题
+     */
+    public static String title() {
+        if (LicenceUtil.global().isEnable()) {
+            return "[Solon-EE] ";
+        } else {
+            return "[Solon] ";
+        }
+    }
+
     public void trace(String content) {
-        System.out.print("[Solon] ");
+        System.out.print(title() + " ");
+
         PrintUtil.purpleln(content);
     }
 
+    /**
+     * @deprecated 2.7
+     */
+    @Deprecated
     public void debugAsync(String content) {
         RunUtil.async(() -> {
             debug(content);
@@ -34,10 +50,14 @@ public class LogUtil {
     }
 
     public void debug(String content) {
-        System.out.print("[Solon] ");
+        System.out.print(title());
         PrintUtil.blueln(content);
     }
 
+    /**
+     * @deprecated 2.7
+     */
+    @Deprecated
     public void infoAsync(String content) {
         RunUtil.async(() -> {
             info(content);
@@ -45,7 +65,8 @@ public class LogUtil {
     }
 
     public void info(String content) {
-        System.out.println("[Solon] " + content);
+        System.out.print(title());
+        System.out.println(content);
     }
 
     public void warn(String content) {
@@ -53,7 +74,8 @@ public class LogUtil {
     }
 
     public void warn(String content, Throwable throwable) {
-        System.out.print("[Solon] ");
+        System.out.print(title());
+
         PrintUtil.yellowln("WARN: " + content);
         if (throwable != null) {
             throwable.printStackTrace();
@@ -65,7 +87,8 @@ public class LogUtil {
     }
 
     public void error(String content, Throwable throwable) {
-        System.out.print("[Solon] ");
+        System.out.print(title());
+
         PrintUtil.redln("ERROR: " + content);
         if (throwable != null) {
             throwable.printStackTrace();
