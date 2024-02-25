@@ -29,14 +29,12 @@ server.http.gzip:
     minSize: 4096
     mimeTypes: 'text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json,application/xml'
 
-
-solonee.licence: "0B231620-DD1B-4750-B8C5-BAC9F0BCCFCB"
-
 solon.env: test
 
 solon.app:
   name: testapp
   group: test
+  licence: "faPfGlSmhHiRFbCDMuYHjU6ntu6nfwji+td/NCiTFjSLDgC7OTS34AHam+2xXkA5T07MTb1aGDKzx5pNoVRoVg=="
 
 solon.drift: 1
 
