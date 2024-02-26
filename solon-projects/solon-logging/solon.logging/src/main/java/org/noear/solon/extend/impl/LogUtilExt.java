@@ -42,34 +42,34 @@ public class LogUtilExt extends LogUtil {
 
     @Override
     public void trace(String content) {
-        log.trace(title() + content);
+        log.trace(content);
     }
 
     @Override
     public void debug(String content) {
-        log.debug(title() + content);
+        log.debug(content);
     }
 
     @Override
     public void info(String content) {
-        log.info(title() + content);
+        log.info(content);
     }
 
     @Override
     public void warn(String content, Throwable throwable) {
         if (throwable == null) {
-            log.warn(title() + content);
+            log.warn(content);
         } else {
-            log.warn(title() + content, throwable);
+            log.warn(content, throwable);
         }
     }
 
     @Override
     public void error(String content, Throwable throwable) {
         if (throwable == null) {
-            log.error(title() + content);
+            log.error(content);
         } else {
-            log.error(title() + content, throwable);
+            log.error(content, throwable);
         }
     }
 }

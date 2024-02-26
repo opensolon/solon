@@ -25,16 +25,12 @@ public class LogUtil {
     /**
      * 框架标题
      */
-    public static String title() {
-        if (LicenceUtil.global().isEnable()) {
-            return "[Solon-EE] ";
-        } else {
-            return "[Solon] ";
-        }
+    protected static String title() {
+        return "[Solon] ";
     }
 
     public void trace(String content) {
-        System.out.print(title() + " ");
+        System.out.print(title());
 
         PrintUtil.purpleln(content);
     }
