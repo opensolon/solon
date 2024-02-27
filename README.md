@@ -48,25 +48,25 @@ Solon v2.7.1
 
 <hr />
 
-Startup is 5 to 10 times faster; QPS is 2 to 3 times higher; runtime memory is saved by 1/3 to 1/2; packaging can be reduced to 1/2 to 1/10
+2 to 3 times more concurrency Memory saving 1/3 ~ 1/2; Startup is 5-10 times faster. Packs can be shrunk to 1/2 to 1/10. Built from scratch, it has its own standard specification and open ecology.
 
 <hr />
 
 ## Introduction:
 
-Build from scratch. It has its own standards and norms and open ecology. Combination of different ecological plug-ins to meet different needs, convenient customization, rapid development:
+Better cost performance for computing:
+* Reduced runtime cost: 2-3 times more concurrency per second Memory saving 1/3 ~ 1/2;
 
-* **Restraint, simplicity, efficiency, openness and ecology**
-* Supports JDK8, JDK11, JDK17, JDK21
-* Http, WebSocket, Socket three signal unified development experience (commonly known as: three-source integration)
-* Supports "annotation" and "manual" modes, freely controlled as needed
-* Not Servlet, can adapt to any basic communication framework (minimum 0.3m running rpc architecture)
-* [Unique IOC/AOP container design](https://solon.noear.org/article/241). It won't start slowly just because there are more plug-ins
-* Supports Web,Scheduling,FaaS,Remoting,Cloud, and other development scenarios
-* The two architecture modes are Handler + Context and Listener + Message
-* Emphasizes plug-in extensibility, expandable and swappable, adaptable to different application scenarios
-* Supports GraalVm Native Image packaging. Support FaaS pattern development
-* Allow service plug-ins to hot-plug, hot-swap, and hot-manage.
+Greater developer productivity and a simpler coding experience:
+* Reduced learning cost: simple source code; It is easy for beginners to get started; Easy to use
+* Debugging efficiency: restarts are 5-10 times faster; Locate problems faster
+
+Faster production and deployment experience:
+* Smaller service packs, faster CI/DI: 1/2-1/10 pack size
+* Cloud native is more friendly (faster image pull, faster container ready) : packaging is 1/2-1/10 smaller, startup is 5-10 times faster
+
+Freer runtime compatibility options:
+* Supports java8, java11, java17, java21 runtime as well
 
 ## Ecosystem Architecture Diagram:
 
