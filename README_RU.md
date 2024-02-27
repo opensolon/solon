@@ -4,7 +4,7 @@
 Solon v2.7.1
 </h1>
 <p align="center">
-	<strong>Новая структура разработки приложений Java, меньше, быстрее и проще!</strong>
+	<strong>Новая система разработки приложений Java, быстрее, меньше и проще!</strong>
 </p>
 <p align="center">
 	<a href="https://solon.noear.org/">https://solon.noear.org</a>

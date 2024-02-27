@@ -4,7 +4,7 @@
 Solon v2.7.1
 </h1>
 <p align="center">
-	<strong>Javaの新しいアプリケーション開発フレームワーク、より小さく、より速く、より簡単です!</strong>
+	<strong>Javaの新しいアプリケーション開発フレームワーク、より速く、より小さく、より簡単です!</strong>
 </p>
 <p align="center">
 	<a href="https://solon.noear.org/">https://solon.noear.org</a>
