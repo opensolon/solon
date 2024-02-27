@@ -41,6 +41,7 @@
 * thymeleaf 升为 3.0.15.RELEASE
 * enjoy 升为 5.1.3
 * beetl 升为 3.15.14.RELEASE
+* forest 升为 1.5.36
 
 ### 2.7.0
 * 调整 内核的 mvc 能力实现，独立为 solon.core.mvc 包（为之后拆分作准备）
