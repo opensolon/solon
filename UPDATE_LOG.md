@@ -25,8 +25,8 @@
 * 调整 solon.boot.jetty 适配的静态资源处理
 * 优化 solon 外部资源文件的相对位置加载在不同 linux 的兼容性
 * 优化 solon 安全停止打印信息
-* socket.d 升为 2.4.3
-* folkmq 升为 1.2.0
+* socket.d 升为 2.4.4
+* folkmq 升为 1.2.2
 * jetty 升为 9.4.54.v20240208
 * undertow 升为 2.2.30.Final
 * smarthttp 升为 1.3.9

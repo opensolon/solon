@@ -3,7 +3,7 @@ package org.noear.solon.cloud.extend.folkmq.service;
 import org.noear.folkmq.FolkMQ;
 import org.noear.folkmq.client.MqClient;
 import org.noear.folkmq.client.MqMessage;
-import org.noear.folkmq.client.MqResponder;
+import org.noear.folkmq.client.MqTransactionCheckback;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudEventHandler;
@@ -52,9 +52,9 @@ public class CloudEventServiceFolkMqImpl implements CloudEventServicePlus {
         //加入容器
         Solon.context().wrapAndPut(MqClient.class, client);
 
-        //异步获取 MqResponder
-        Solon.context().getBeanAsync(MqResponder.class, bean->{
-            client.response(bean);
+        //异步获取 MqTransactionCheckback
+        Solon.context().getBeanAsync(MqTransactionCheckback.class, bean->{
+            client.transactionCheckback(bean);
         });
 
 
