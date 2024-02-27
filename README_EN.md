@@ -59,7 +59,7 @@ Built from scratch, it has its own standard specification and open ecology
 ## Introduction:
 
 Better cost performance for computing:
-* Reduced runtime cost: 2-3 times more concurrency per second Memory saving 1/3 ~ 1/2;
+* Reduced runtime cost: 2-3 times more concurrency per second Memory saving 1/3 ~ 1/2
 
 Greater developer productivity and a simpler coding experience:
 * Reduced learning cost: simple source code; It is easy for beginners to get started; Easy to use
