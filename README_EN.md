@@ -48,7 +48,11 @@ Solon v2.7.1
 
 <hr />
 
-2 to 3 times more concurrency Memory saving 1/3 ~ 1/2; Startup is 5-10 times faster. Packs can be shrunk to 1/2 to 1/10. Built from scratch, it has its own standard specification and open ecology.
+<p align="center">
+2 to 3 times more concurrency Memory saving 1/3 ~ 1/2; Startup is 5-10 times faster. Packs can be shrunk to 1/2 to 1/10
+<br/>
+Built from scratch, it has its own standard specification and open ecology
+</p>
 
 <hr />
 
