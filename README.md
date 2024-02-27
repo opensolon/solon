@@ -56,7 +56,7 @@ Built from scratch, it has its own standard specification and open ecology
 
 <hr />
 
-## Introduction:
+## Features:
 
 Better cost performance for computing:
 * Reduced runtime cost: 2-3 times more concurrency per second Memory saving 1/3 ~ 1/2
