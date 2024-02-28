@@ -5,6 +5,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Context;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.util.Base64;
 
@@ -49,8 +50,10 @@ public class BasicAuthUtil {
     }
 
     public static void response401(Context ctx) throws IOException {
+        String realm = URLEncoder.encode("请输入文档访问账号密码", "utf-8");
+
         ctx.status(401);
-        ctx.headerSet("WWW-Authenticate", "Basic realm=\"请输入文档访问账号密码\"");
+        ctx.headerSet("WWW-Authenticate", "Basic realm=\"" + realm + "\"");
         ctx.output("无权限访问");
     }
 }
